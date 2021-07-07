@@ -1,0 +1,13 @@
+{
+  "extends": "react-app",
+  "rules": {
+    "no-console": [
+      "warn",
+      {
+        "allow": ["error", "warn", "debug", "info"]
+      }
+    ],
+    "no-duplicate-imports": "warn",
+    "react/prefer-stateless-function": ["warn"]
+  }
+}
