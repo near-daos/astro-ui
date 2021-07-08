@@ -9,7 +9,9 @@
     "lint": "next lint",
     "commit": "cz",
     "prettier": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css,scss,html}\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "next": "11.0.1",
@@ -30,19 +32,26 @@
     ]
   },
   "devDependencies": {
-    "@types/react": "17.0.14",
-    "eslint": "7.30.0",
-    "eslint-config-next": "11.0.1",
-    "cz-conventional-changelog": "^3.3.0",
-    "typescript": "4.3.5",
+    "@babel/core": "^7.14.6",
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
+    "@storybook/addon-actions": "^6.3.3",
+    "@storybook/addon-essentials": "^6.3.3",
+    "@storybook/addon-links": "^6.3.3",
+    "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/react": "^6.3.3",
+    "@types/react": "17.0.14",
+    "babel-loader": "^8.2.2",
     "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "7.30.0",
+    "eslint-config-next": "11.0.1",
     "husky": "^7.0.1",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.2",
     "sass": "^1.35.1",
     "sass-loader": "^12.1.0",
-    "semantic-release": "^17.4.4"
+    "semantic-release": "^17.4.4",
+    "typescript": "4.3.5"
   }
 }
