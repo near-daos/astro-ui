@@ -8,10 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "commit": "cz",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css,scss,html}\"",
+    "prettier": "prettier --write \"./**/*.{ts,tsx,js,jsx,css,scss,html}\"",
+    "stylelint": "stylelint \"**/*.{css,scss}\" --quiet --fix",
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "stylelint-check": "stylelint-config-prettier-check"
   },
   "dependencies": {
     "next": "11.0.1",
@@ -27,7 +29,11 @@
     "*.{js,jsx,ts,tsx}": [
       "eslint --color --max-warnings 0 --no-ignore"
     ],
-    "*.{js,jsx,ts,tsx,css,scss,json,md}": [
+    "*.{js,jsx,ts,tsx,json,md}": [
+      "prettier --write"
+    ],
+    "*.{css,scss}": [
+      "stylelint  --quiet --syntax=scss --fix",
       "prettier --write"
     ]
   },
@@ -52,6 +58,12 @@
     "sass": "^1.35.1",
     "sass-loader": "^12.1.0",
     "semantic-release": "^17.4.4",
+    "stylelint": "^13.13.1",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-sass-guidelines": "^8.0.0",
+    "stylelint-config-standard": "^22.0.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-prettier": "^1.2.0",
     "typescript": "4.3.5"
   }
 }
