@@ -1,13 +1,36 @@
 {
-  "extends": ["next", "next/core-web-vitals"],
+  "extends": [
+    "next",
+    "next/core-web-vitals"
+  ],
   "rules": {
     "no-console": [
       "warn",
       {
-        "allow": ["error", "warn", "debug", "info"]
+        "allow": [
+          "error",
+          "warn",
+          "debug",
+          "info"
+        ]
       }
     ],
     "no-duplicate-imports": "warn",
-    "react/prefer-stateless-function": ["warn"]
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "../*"
+            ],
+            "message": "\nPlease use absolute paths for imports.\nExample:\n\n  import { Button } from 'components/button' // Good\n  import { Button } from '../components/button' // Bad"
+          }
+        ]
+      }
+    ],
+    "react/prefer-stateless-function": [
+      "warn"
+    ]
   }
 }
