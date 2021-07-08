@@ -1,5 +1,11 @@
 {
   "name": "astro",
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "./setupTests.ts"
+    ]
+  },
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,7 +19,8 @@
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "stylelint-check": "stylelint-config-prettier-check"
+    "stylelint-check": "stylelint-config-prettier-check",
+    "test": "jest"
   },
   "dependencies": {
     "next": "11.0.1",
@@ -39,6 +46,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
     "@storybook/addon-actions": "^6.3.3",
@@ -46,13 +54,18 @@
     "@storybook/addon-links": "^6.3.3",
     "@storybook/addon-postcss": "^2.0.0",
     "@storybook/react": "^6.3.3",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@types/jest": "^26.0.24",
     "@types/react": "17.0.14",
+    "babel-jest": "^27.0.6",
     "babel-loader": "^8.2.2",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "7.30.0",
     "eslint-config-next": "11.0.1",
     "husky": "^7.0.1",
+    "jest": "^27.0.6",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.2",
     "sass": "^1.35.1",
