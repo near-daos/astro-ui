@@ -6,11 +6,12 @@ interface DummyComponentProps {
 
 export const DummyComponent: React.FC<DummyComponentProps> = ({ label }) => {
   const [counter, setCounter] = useState(0);
+
   return (
-    <div onClick={() => setCounter(value => value + 1)}>
+    <button type="button" onClick={() => setCounter(value => value + 1)}>
       <h2>
         {label} {counter}
       </h2>
-    </div>
+    </button>
   );
 };

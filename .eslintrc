@@ -1,7 +1,8 @@
 {
   "extends": [
     "next",
-    "next/core-web-vitals"
+    "next/core-web-vitals",
+    "airbnb-typescript-prettier"
   ],
   "rules": {
     "no-console": [
@@ -29,8 +30,125 @@
         ]
       }
     ],
+    // Named exports are preferable
+    // https://blog.piotrnalepa.pl/2020/06/26/default-exports-vs-named-exports/
+    "import/prefer-default-export": "off",
     "react/prefer-stateless-function": [
       "warn"
+    ],
+    // Disable checking for missing 'import React'
+    // https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#whats-different-in-the-new-transform
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": [
+      "warn",
+      {
+        "html": "ignore",
+        "custom": "enforce",
+        "explicitSpread": "ignore",
+        "exceptions": [
+          "Component"
+        ]
+      }
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ],
+    "padding-line-between-statements": [
+      "error",
+      // Always require blank lines after directive (like 'use-strict'), except between directives
+      {
+        "blankLine": "always",
+        "prev": "directive",
+        "next": "*"
+      },
+      {
+        "blankLine": "any",
+        "prev": "directive",
+        "next": "directive"
+      },
+      // Always require blank lines after import, except between imports
+      {
+        "blankLine": "always",
+        "prev": "import",
+        "next": "*"
+      },
+      {
+        "blankLine": "any",
+        "prev": "import",
+        "next": "import"
+      },
+      // Always require blank lines before and after every sequence of variable declarations and export
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": [
+          "const",
+          "let",
+          "var",
+          "export"
+        ]
+      },
+      {
+        "blankLine": "always",
+        "prev": [
+          "const",
+          "let",
+          "var",
+          "export"
+        ],
+        "next": "*"
+      },
+      {
+        "blankLine": "any",
+        "prev": [
+          "const",
+          "let",
+          "var",
+          "export"
+        ],
+        "next": [
+          "const",
+          "let",
+          "var",
+          "export"
+        ]
+      },
+      // Always require blank lines before and after class declaration, if, do/while, switch, try
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": [
+          "if",
+          "class",
+          "for",
+          "do",
+          "while",
+          "switch",
+          "try"
+        ]
+      },
+      {
+        "blankLine": "always",
+        "prev": [
+          "if",
+          "class",
+          "for",
+          "do",
+          "while",
+          "switch",
+          "try"
+        ],
+        "next": "*"
+      },
+      // Always require blank lines before return statements
+      {
+        "blankLine": "always",
+        "prev": "*",
+        "next": "return"
+      }
     ]
   }
 }
