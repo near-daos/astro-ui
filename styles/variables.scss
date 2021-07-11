@@ -1,0 +1,69 @@
+:root {
+  // TODO: Use step for color variants (Waiting for designer response)
+  // BRAND COLOURS
+  --color-brand-neon-yellow: #e1fc31;
+  --color-brand-purple: #6038d0;
+  --color-brand-purple-light: #e8e0ff;
+  --color-brand-pink: #f6e3dd;
+  --color-brand-coral-red: #ff8743;
+  --color-brand-green: #0c422a;
+  --color-brand-green-dark: #0c422a;
+
+  // PRIMARY PURPLE
+  --color-primary-10: #f7f5fc;
+  --color-primary-20: #e8e0ff;
+  --color-primary-30: #c1b0f1;
+  --color-primary-40: #8060d9;
+  --color-primary-50: #6038d0;
+  --color-primary-60: #4b28ab;
+  --color-primary-70: #381e80;
+  --color-primary-80: #251455;
+  --color-primary-90: #130a2b;
+  --color-primary: var(--color-primary-50);
+
+  // NEUTRALS
+  --color-white: #fff;
+  --color-neutral-10: #fafafa;
+  --color-neutral-20: #f5f5f5;
+  --color-neutral-30: #f0f0f0;
+  --color-neutral-40: #d9d9d9;
+  --color-neutral-50: #bfbfbf;
+  --color-neutral-60: #8c8c8c;
+  --color-neutral-70: #595959;
+  --color-neutral-80: #434343;
+  --color-neutral-90: #201f1f;
+
+  // SUCCESS / GREEN
+  --color-success-10: #cff9ea;
+  --color-success-20: #9ff4d4;
+  --color-success-30: #6feebf;
+  --color-success-40: #3fe9aa;
+  --color-success-50: #19d992;
+  --color-success-60: #13a36e;
+  --color-success-70: #0c6d49;
+  --color-success-80: #063625;
+  --color-success-90: #052b1d;
+  --color-success: var(--color-success-50);
+
+  // ERROR / RED
+  --color-error-10: #fff3ec;
+  --color-error-20: #ffcfb4;
+  --color-error-30: #ffb78e;
+  --color-error-40: #ff9f69;
+  --color-error-50: #ff8743;
+  --color-error-60: #ff5e03;
+  --color-error-70: #c14600;
+  --color-error-80: #812f00;
+  --color-error-90: #401700;
+  --color-error: var(--color-error-50);
+
+  // PASTEL (CHIPS)
+  --color-pastel-violet: #f0daff;
+  --color-pastel-blurple: #d6d6ff;
+  --color-pastel-blue: #dae9ff;
+  --color-pastel-turqoise: #daf8ff;
+  --color-pastel-green: #e9ffda;
+  --color-pastel-red: #ffdeda;
+  --color-pastel-orange: #ffebd6;
+  --color-pastel-yellow: #fbffda;
+}
