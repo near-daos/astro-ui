@@ -1,0 +1,72 @@
+// Button sizes
+@mixin size(
+  $padding-vertical,
+  $padding-horizontal,
+  $font-size,
+  $line-height,
+  $border-radius
+) {
+  border-radius: $border-radius;
+  font-size: $font-size;
+  line-height: $line-height;
+  padding: $padding-vertical $padding-horizontal;
+}
+
+.btn {
+  @include size(0, 24px, 14px, 24px, 4px);
+  border: 2px solid transparent;
+  cursor: pointer;
+  height: 40px;
+  text-transform: uppercase;
+
+  > img {
+    vertical-align: baseline;
+  }
+}
+
+.primary {
+  background: var(--color-neutral-90);
+  color: var(--color-white);
+
+  &:hover {
+    background: var(--color-primary-70);
+  }
+
+  &:active {
+    background: var(--color-primary-60);
+  }
+
+  &:disabled {
+    background: var(--color-neutral-50);
+  }
+}
+
+.secondary {
+  background: transparent;
+  border: 2px solid var(--color-neutral-90);
+  color: var(--color-neutral-90);
+
+  &:hover {
+    border-color: var(--color-primary-70);
+  }
+
+  &:active {
+    border-color: var(--color-primary-60);
+  }
+
+  &:disabled {
+    border-color: var(--color-neutral-50);
+    color: var(--color-neutral-60);
+  }
+}
+
+.auth {
+  background: var(--color-neutral-90);
+  color: var(--color-white);
+  width: 196px;
+  /* TODO When darkmode would be implemented
+  :global(.dark-mode) & {
+    background: var(--color-brand-neon-yellow);
+    color: var(--color-neutral-90);
+  }*/
+}

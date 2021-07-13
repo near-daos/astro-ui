@@ -1,0 +1,35 @@
+.yes {
+  background: var(--color-success-10);
+  border-color: var(--color-success-80);
+  color: var(--color-success-80);
+
+  &:active {
+    background: var(--color-success-50);
+    border-color: transparent;
+    color: var(--color-white);
+  }
+}
+
+.no {
+  background: var(--color-error-10);
+  border-color: var(--color-error-50);
+  color: var(--color-error-50);
+
+  &:active {
+    background: var(--color-error-50);
+    border-color: transparent;
+    color: var(--color-white);
+  }
+}
+
+.spam {
+  background: var(--color-neutral-20);
+  border-color: var(--color-neutral-80);
+  color: var(--color-neutral-80);
+
+  &:active {
+    background: var(--color-neutral-60);
+    border-color: transparent;
+    color: var(--color-white);
+  }
+}
