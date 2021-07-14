@@ -19,9 +19,27 @@
   height: 40px;
   text-transform: uppercase;
 
-  > img {
+  > img,
+  svg {
     vertical-align: baseline;
   }
+}
+
+.size-small {
+  min-width: 80px;
+}
+
+.size-medium {
+  min-width: 180px;
+}
+
+.size-large {
+  min-width: 260px;
+}
+
+.size-block {
+  display: block;
+  width: 100%;
 }
 
 .primary {
@@ -63,10 +81,13 @@
 .auth {
   background: var(--color-neutral-90);
   color: var(--color-white);
-  width: 196px;
-  /* TODO When darkmode would be implemented
-  :global(.dark-mode) & {
-    background: var(--color-brand-neon-yellow);
-    color: var(--color-neutral-90);
-  }*/
+}
+
+:global(.dark-mode) .auth {
+  background: var(--color-brand-neon-yellow);
+  color: var(--color-neutral-90);
+
+  path {
+    fill: var(--color-neutral-90);
+  }
 }
