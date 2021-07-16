@@ -25,7 +25,6 @@
   "dependencies": {
     "@svgr/webpack": "^5.5.0",
     "classnames": "^2.3.1",
-    "framer-motion": "^4.1.17",
     "lodash.uniqueid": "^4.0.1",
     "next": "11.0.1",
     "next-compose-plugins": "^2.2.1",

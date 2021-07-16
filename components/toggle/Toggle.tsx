@@ -12,7 +12,7 @@ export const Toggle = React.forwardRef<HTMLInputElement, CheckboxProps>(
     const idRef = useRef(uniqueId('toggle-'));
     const [checked, setChecked] = useState(props.defaultChecked);
 
-    const value = props.checked || checked;
+    const value = props.checked != null ? props.checked : checked;
 
     return (
       <label htmlFor={props.id || idRef.current}>
