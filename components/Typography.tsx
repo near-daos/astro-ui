@@ -14,27 +14,28 @@ export const Title: React.FC<TitleProps> = ({
   size,
   className: classNameProp,
   ...rest
-}) => <div className={classNames(`title${size}`, classNameProp)} {...rest} />;
+}) => <p className={classNames(`title${size}`, classNameProp)} {...rest} />;
 
 export const Subtitle: React.FC<TitleProps> = ({
   size,
   className: classNameProp,
   ...rest
-}) => (
-  <div className={classNames(`subtitle${size}`, classNameProp)} {...rest} />
-);
+}) => <p className={classNames(`subtitle${size}`, classNameProp)} {...rest} />;
 
 export const Caption: React.FC<CaptionProps> = ({
+  children,
   size,
   className: classNameProp,
   ...rest
 }) => (
-  <div
+  <h6
     className={classNames(
       `caption`,
       size === 'small' ? 'small' : undefined,
       classNameProp
     )}
     {...rest}
-  />
+  >
+    {children}
+  </h6>
 );
