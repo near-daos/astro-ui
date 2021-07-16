@@ -17,8 +17,8 @@
     "prettier": "prettier --write \"./**/*.{ts,tsx,js,jsx,css,scss,html}\"",
     "stylelint": "stylelint \"**/*.{css,scss}\" --quiet --fix",
     "prepare": "husky install",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
+    "storybook": "start-storybook -s public -p 6006",
+    "build-storybook": "build-storybook -s public",
     "stylelint-check": "stylelint-config-prettier-check",
     "test": "jest"
   },
