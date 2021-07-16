@@ -2,10 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import styles from './button.module.scss';
 
-interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant: 'primary' | 'secondary';
   width: 'small' | 'medium' | 'large' | 'block';
-  type: 'button' | 'submit' | 'reset' | undefined;
   disabled: boolean | undefined;
 }
 
