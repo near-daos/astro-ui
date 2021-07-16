@@ -4,14 +4,14 @@ import styles from './button.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant: 'primary' | 'secondary';
-  width: 'small' | 'medium' | 'large' | 'block';
+  size: 'small' | 'medium' | 'large' | 'block';
   disabled: boolean | undefined;
 }
 
 export const Button: React.FC<ButtonProps> = ({
   children,
   variant = 'primary',
-  width = 'medium',
+  size = 'medium',
   disabled = false,
   className: classNameProp,
   ...props
@@ -29,7 +29,7 @@ export const Button: React.FC<ButtonProps> = ({
   const className = classNames(
     styles.btn,
     variants[variant],
-    sizes[width],
+    sizes[size],
     classNameProp
   );
 

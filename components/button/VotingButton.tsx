@@ -5,7 +5,6 @@ import styles from './voting-button.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant: 'no' | 'yes' | 'spam';
-  type: 'button' | 'submit' | 'reset' | undefined;
 }
 
 export const VotingButton: React.FC<ButtonProps> = ({
