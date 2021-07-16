@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lora:wght@500&display=swap');
+
+:root {
+  color: var(--color-brand-black);
+  font-size: 16px;
+}
+
+@mixin sentence-case {
+  text-transform: lowercase;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-size: 1em;
+}
+
+small {
+  @include sentence-case;
+  font-size: 0.875em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  @include sentence-case;
+  font-family: 'Lora', serif;
+}
+
+@mixin font($size, $height, $weight) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $height;
+}
+
+$headings: 'h1', 'h2', 'h3', 'h4', 'h5';
+
+/* prettier-ignore */
+$sizes: // Typography sizes
+  'h1' 2em 48px 500,
+  'h2' 1.5em 36px 500,
+  'h3' 1.125em 28px 500,
+  'h4' 1em 16px 500,
+  'h5' 0.875em 24px 500,
+  '.title1' 1.25em 28px bold,
+  '.title2' 1em 24px bold,
+  '.title3' 0.875em 24px bold,
+  '.title4' 0.75em 18px bold,
+  '.title5' 0.625em 16px bold,
+  '.subtitle1' 1.25em 28px 500,
+  '.subtitle2' 1em 24px 500,
+  '.subtitle3' 0.875em 24px 500,
+  '.subtitle4' 0.75em 18px 500,
+  '.subtitle5' 0.625em 16px 500;
+
+@each $name, $size, $height, $weight in $sizes {
+  #{$name} {
+    @include sentence-case;
+    @include font($size, $height, $weight);
+  }
+}
+
+p {
+  font-size: 1.125em;
+}
+
+.caption {
+  font-size: 0.75em;
+  line-height: 18px;
+
+  &.small {
+    font-size: 0.625em;
+    line-height: 16px;
+  }
+}
