@@ -1,0 +1,12 @@
+input[type='checkbox'] {
+  display: none;
+  position: absolute;
+}
+
+label {
+  display: inline-flex;
+  font-size: 0.75em;
+  gap: 8px;
+  line-height: 14px;
+  white-space: nowrap;
+}
