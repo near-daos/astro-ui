@@ -3,9 +3,8 @@ import classNames from 'classnames';
 import buttonStyles from './button.module.scss';
 import styles from './voting-button.module.scss';
 
-interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant: 'no' | 'yes' | 'spam';
-  type: 'button' | 'submit' | 'reset' | undefined;
 }
 
 export const VotingButton: React.FC<ButtonProps> = ({
