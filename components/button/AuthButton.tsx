@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
+import { ReactComponent as Logo } from 'assets/near.svg';
 import styles from './button.module.scss';
-import Logo from './assets/near.svg';
 
 type AuthButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
