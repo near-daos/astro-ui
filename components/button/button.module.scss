@@ -76,6 +76,21 @@
     border-color: var(--color-neutral-50);
     color: var(--color-neutral-60);
   }
+
+  :global(.dark-mode) & {
+    background: transparent;
+    border: 2px solid var(--color-white);
+    color: var(--color-white);
+  }
+}
+
+.tertiary {
+  background: transparent;
+  color: var(--color-neutral-90);
+
+  :global(.dark-mode) & {
+    color: var(--color-white);
+  }
 }
 
 .auth {
