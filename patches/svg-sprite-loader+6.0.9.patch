@@ -1,0 +1,27 @@
+This is the patch fix for svg-sprite-loader package bug with webpack 5
+https://github.com/JetBrains/svg-sprite-loader/issues/464
+
+diff --git a/node_modules/svg-sprite-loader/lib/utils/get-matched-rule-5.js b/node_modules/svg-sprite-loader/lib/utils/get-matched-rule-5.js
+index a5c1854..59af04f 100644
+--- a/node_modules/svg-sprite-loader/lib/utils/get-matched-rule-5.js
++++ b/node_modules/svg-sprite-loader/lib/utils/get-matched-rule-5.js
+@@ -8,13 +8,18 @@ const isSpriteLoader = (rule) => {
+   return /svg-sprite-loader/.test(rule.loader);
+ };
+
++const hasIterableProperty = (obj, name) =>
++  Object.prototype.hasOwnProperty.call(obj, name) &&
++      typeof obj[name][Symbol.iterator] === 'function'
++
++
+ module.exports = (compiler) => {
+   const rawRules = compiler.options.module.rules;
+   let spriteLoader = null;
+   for (const rawRule of rawRules) {
+     if (isSpriteLoader(rawRule)) {
+       spriteLoader = rawRule;
+-    } else if (Object.prototype.hasOwnProperty.call(rawRule, 'use')) {
++    } else if (hasIterableProperty(rawRule, 'use')) {
+       for (const subLoader of rawRule.use) {
+         if (isSpriteLoader(subLoader)) {
+           spriteLoader = subLoader;

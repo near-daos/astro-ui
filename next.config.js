@@ -1,27 +1,10 @@
 const path = require('path');
 const withPlugins = require('next-compose-plugins');
-const withSvgr = require('next-plugin-svgr');
+const svgSprite = require('./plugins/next-svg-sprites');
 
-module.exports = withPlugins(
-  [
-    [
-      withSvgr,
-      {
-        fileLoader: true,
-        svgrOptions: {
-          titleProp: true,
-          icon: true,
-          svgProps: {
-            height: 'auto'
-          }
-        }
-      }
-    ]
-  ],
-  {
-    reactStrictMode: true,
-    sassOptions: {
-      includePaths: [path.join(__dirname, 'styles')]
-    }
+module.exports = withPlugins([svgSprite], {
+  reactStrictMode: true,
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'styles')]
   }
-);
+});

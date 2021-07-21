@@ -1,21 +1,15 @@
-import React, { SVGProps } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import buttonStyles from './icon-button.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'small' | 'medium' | 'large';
-  icon: IconType;
-  activeIcon?: IconType;
 }
 
-type IconProps = SVGProps<HTMLOrSVGElement> & { title?: string };
-type IconType = React.FC<IconProps>;
-
-export const IconButton: React.VFC<ButtonProps> = ({
+export const IconButton: React.FC<ButtonProps> = ({
   className: classNameProp,
   size = 'small',
-  icon,
-  activeIcon,
+  children,
   ...props
 }) => {
   const sizes = {
@@ -31,15 +25,7 @@ export const IconButton: React.VFC<ButtonProps> = ({
 
   return (
     <button type="button" className={className} {...props}>
-      <style jsx>{`
-        button {
-          background-image: url("${icon}");
-        }
-
-        button:active {
-          background-image: ${activeIcon ? `url("${activeIcon}")` : undefined};
-        }
-      `}</style>
+      {children}
     </button>
   );
 };
