@@ -1,4 +1,7 @@
 const path = require('path');
+const { extendDefaultPlugins } = require('svgo');
+const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
+
 module.exports = {
   core: {
     builder: 'webpack5'
@@ -21,17 +24,48 @@ module.exports = {
       include: path.resolve(__dirname, '../')
     });
 
-    // Add svgr loader
-    const fileLoaderRule = config.module.rules.find(
-      rule => rule.test && rule.test.test('.svg')
-    );
-    fileLoaderRule.exclude = /\.svg$/;
+    // Disable svg processing by all default modules
+    config.module.rules = config.module.rules.map(rule => {
+      if (rule.test && rule.test.toString().includes('svg')) {
+        const test = rule.test
+          .toString()
+          .replace('svg|', '')
+          .replace(/\//g, '');
+        return {
+          ...rule,
+          test: new RegExp(test)
+        };
+      } else {
+        return rule;
+      }
+    });
 
     config.module.rules.push({
       test: /\.svg$/,
-      enforce: 'pre',
-      use: ['@svgr/webpack', 'url-loader']
+      use: [
+        {
+          loader: 'svg-sprite-loader',
+          options: {
+            extract: true,
+            publicPath: 'static/',
+            outputPath: '_next/static/'
+          }
+        },
+        {
+          loader: 'svgo-loader',
+          options: {
+            plugins: extendDefaultPlugins([
+              {
+                name: 'convertColors',
+                params: { currentColor: true }
+              }
+            ])
+          }
+        }
+      ]
     });
+
+    config.plugins.push(new SpriteLoaderPlugin());
 
     // Return the altered config
     return config;

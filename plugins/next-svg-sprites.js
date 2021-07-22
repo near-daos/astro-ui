@@ -7,10 +7,10 @@ module.exports = (nextConfig = {}) => {
     target: 'serverless',
     reactStrictMode: true,
     webpack: (config, options) => {
-      console.log(__dirname);
       config.module.rules.push({
         test: /\.svg$/,
-        include: path.join(process.cwd(), 'assets'),
+        include: path.join(process.cwd(), 'assets', 'icons'),
+
         use: [
           {
             loader: 'svg-sprite-loader',
