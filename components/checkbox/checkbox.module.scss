@@ -1,12 +1,17 @@
-input[type='checkbox'] {
-  display: none;
-  position: absolute;
-}
-
-label {
+.checkbox {
+  align-items: center;
   display: inline-flex;
   font-size: 0.75em;
   gap: 8px;
   line-height: 14px;
   white-space: nowrap;
+
+  input[type='checkbox'] {
+    display: none;
+    position: absolute;
+  }
+
+  svg {
+    fill: #000;
+  }
 }
