@@ -1,8 +1,8 @@
 const path = require('path');
 const withPlugins = require('next-compose-plugins');
-const withSvgr = require('next-svgr');
+const svgSprite = require('./plugins/next-svg-sprites');
 
-module.exports = withPlugins([withSvgr], {
+module.exports = withPlugins([svgSprite], {
   reactStrictMode: true,
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]
