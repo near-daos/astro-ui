@@ -8,6 +8,13 @@ module.exports = {
   },
 
   webpackFinal: async (config, { configType }) => {
+    const allowedColors = [
+      'none',
+      'white',
+      '#fff',
+      '#ffffff',
+      'rgb(255, 255, 255)'
+    ];
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // You can change the configuration based on that.
     // 'PRODUCTION' is used when building the static version of storybook.
@@ -16,6 +23,10 @@ module.exports = {
       ...(config.resolve.modules || []),
       path.resolve('./')
     ];
+
+    config.stats = {
+      errorDetails: true // --display-error-details
+    };
 
     // Make whatever fine-grained changes you need
     config.module.rules.push({
@@ -57,7 +68,11 @@ module.exports = {
             plugins: extendDefaultPlugins([
               {
                 name: 'convertColors',
-                params: { currentColor: true }
+                params: {
+                  currentColor: {
+                    exec: val => !allowedColors.includes(val)
+                  }
+                }
               }
             ])
           }
