@@ -76,6 +76,7 @@
     "babel-loader": "^8.2.2",
     "camelcase": "^6.2.0",
     "commitizen": "^4.2.4",
+    "csstype": "^3.0.8",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.30.0",
     "eslint-config-airbnb-typescript-prettier": "4.2.0",

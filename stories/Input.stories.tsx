@@ -1,0 +1,21 @@
+import React from 'react';
+import { Meta } from '@storybook/react';
+import { Input } from 'components/input/Input';
+
+export default {
+  title: 'Components/Input',
+  component: Input
+} as Meta;
+
+export const Template = (
+  args: React.ComponentProps<typeof Input>
+): JSX.Element => {
+  /* eslint-disable-next-line react/jsx-props-no-spreading */
+  return <Input {...args} />;
+};
+
+Template.storyName = 'Input';
+Template.args = {
+  label: 'Label',
+  placeholder: 'Sample text'
+};
