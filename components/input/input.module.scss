@@ -1,0 +1,95 @@
+.input {
+  color: var(--color-neutral-80);
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+
+  input {
+    border: 1.5px solid var(--color-neutral-40);
+    border-radius: 4px;
+    box-sizing: border-box;
+    flex-basis: 100%;
+    font-size: 1em;
+    height: 48px;
+    line-height: 24px;
+    padding: 10.5px;
+  }
+
+  .success {
+    border-color: var(--color-success);
+  }
+
+  .error {
+    border-color: var(--color-error-40);
+  }
+
+  input::-webkit-datetime-edit {
+    color: var(--color-neutral-40);
+  }
+
+  input::placeholder {
+    color: var(--color-neutral-60);
+  }
+
+  input:focus {
+    outline: 0;
+  }
+}
+
+.size-medium {
+  width: 16em;
+
+  input {
+    width: 16em;
+  }
+}
+
+.size-large {
+  width: 25em;
+
+  input {
+    width: 16em;
+  }
+}
+
+.size-small {
+  width: 42px;
+
+  input {
+    padding: 6.5px;
+    text-align: center;
+    width: 42px;
+  }
+}
+
+.size-content {
+  width: fit-content;
+
+  input {
+    flex-basis: initial;
+  }
+}
+
+.size-block {
+  width: 100%;
+}
+
+.label {
+  flex-basis: 100%;
+  font-size: 0.75em;
+  font-weight: 700;
+  line-height: 1.125em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.suffix {
+  align-self: flex-end;
+}
+
+.description {
+  flex-basis: 100%;
+  font-size: 0.75em;
+  font-weight: 400;
+  line-height: 1.125em;
+}
