@@ -9,7 +9,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "yarn generate-assets-index && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -21,7 +21,7 @@
     "build-storybook": "build-storybook -s public",
     "stylelint-check": "stylelint-config-prettier-check",
     "test": "jest",
-    "postinstall": "patch-package",
+    "postinstall": "patch-package && yarn generate-assets-index",
     "generate-assets-index": "node scripts/generateAssetsIndex.js"
   },
   "dependencies": {
