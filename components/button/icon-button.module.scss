@@ -4,6 +4,7 @@
   color: var(--color-primary-50);
   cursor: pointer;
   display: inline-block;
+  flex-shrink: 0;
   outline: 0;
   padding: 0;
 }
