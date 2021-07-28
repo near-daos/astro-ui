@@ -52,17 +52,7 @@
     // Disable checking for missing 'import React'
     // https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#whats-different-in-the-new-transform
     "react/react-in-jsx-scope": "off",
-    "react/jsx-props-no-spreading": [
-      "warn",
-      {
-        "html": "ignore",
-        "custom": "enforce",
-        "explicitSpread": "ignore",
-        "exceptions": [
-          "Component"
-        ]
-      }
-    ],
+    "react/jsx-props-no-spreading": "off",
     "import/no-extraneous-dependencies": [
       "error",
       {
