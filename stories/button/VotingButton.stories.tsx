@@ -20,6 +20,6 @@ export const VotingButton = (): JSX.Element => {
 };
 
 export default {
-  title: 'Components/Buttons',
+  title: 'Components/Buttons/Voting Button',
   component: VotingButtonComponent
 } as Meta;

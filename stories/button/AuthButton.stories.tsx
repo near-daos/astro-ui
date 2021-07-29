@@ -18,6 +18,6 @@ export const AuthButton = (): JSX.Element => {
 };
 
 export default {
-  title: 'Components/Buttons',
+  title: 'Components/Buttons/Auth Button',
   component: AuthButtonComponent
 } as Meta;
