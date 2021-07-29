@@ -1,0 +1,50 @@
+.select {
+  cursor: default;
+  min-width: 60px;
+  position: relative;
+  user-select: none;
+
+  input {
+    cursor: default;
+  }
+
+  ul {
+    padding-inline-start: 0;
+  }
+}
+
+.icon {
+  color: var(--color-neutral-80);
+  cursor: pointer;
+  position: absolute;
+  right: 14px;
+  top: 13px;
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.menu {
+  background: #fff;
+  list-style: none;
+  overflow-y: auto;
+  position: absolute;
+  top: 34px;
+  width: 100%;
+}
+
+.item {
+  border: 1px solid var(--color-neutral-20);
+  height: 40px;
+  padding: 7px 23px;
+}
+
+.active {
+  background: var(--color-primary-20);
+
+  &:hover {
+    background: var(--color-neutral-30);
+  }
+}

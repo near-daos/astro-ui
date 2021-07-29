@@ -1,7 +1,7 @@
 .input {
   color: var(--color-neutral-80);
   display: inline-flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.5em;
 
   input {
@@ -9,6 +9,7 @@
     border-radius: 4px;
     box-sizing: border-box;
     flex-basis: 100%;
+    flex-shrink: 0;
     font-size: 1em;
     height: 48px;
     line-height: 24px;
@@ -64,10 +65,6 @@
 
 .size-content {
   width: fit-content;
-
-  input {
-    flex-basis: initial;
-  }
 }
 
 .size-block {
@@ -75,7 +72,6 @@
 }
 
 .label {
-  flex-basis: 100%;
   font-size: 0.75em;
   font-weight: 700;
   line-height: 1.125em;
@@ -88,7 +84,6 @@
 }
 
 .description {
-  flex-basis: 100%;
   font-size: 0.75em;
   font-weight: 400;
   line-height: 1.125em;
