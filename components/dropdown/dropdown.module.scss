@@ -1,0 +1,36 @@
+.dropdown {
+  color: var(--color-primary-50);
+  cursor: default;
+  display: inline-flex;
+  min-width: 60px;
+  position: relative;
+  user-select: none;
+
+  ul {
+    padding-inline-start: 0;
+  }
+}
+
+.menu {
+  background: #fff;
+  color: var(--color-neutral-90);
+  list-style: none;
+  overflow-y: auto;
+  position: absolute;
+  top: 34px;
+  width: 200px;
+}
+
+.item {
+  border: 1px solid var(--color-neutral-20);
+  height: 40px;
+  padding: 7px 23px;
+}
+
+.active {
+  background: var(--color-primary-20);
+
+  &:hover {
+    background: var(--color-neutral-30);
+  }
+}
