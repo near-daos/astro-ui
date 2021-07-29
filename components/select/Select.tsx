@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import uniqueId from 'lodash.uniqueid';
 import classNames from 'classnames';
 import inputStyles from 'components/input/input.module.scss';
-import { useCombobox } from 'downshift';
+import { useCombobox, UseComboboxStateChange } from 'downshift';
 import { IconButton } from 'components/button/IconButton';
 import { Icon } from 'components/Icon';
 import styles from './select.module.scss';
@@ -13,15 +13,20 @@ interface Option {
   disabled?: boolean;
 }
 
-export interface SelectProps
-  extends Omit<React.HTMLProps<HTMLSelectElement>, 'size'> {
-  label?: string | undefined;
+interface SelectProps {
+  className?: string | undefined;
+  defaultValue?: string | undefined;
   description?: string | undefined;
-  isValid?: boolean | undefined;
+  id?: string | undefined;
   inputSize?: number | undefined;
-  size: 'medium' | 'large' | 'block' | 'content';
+  isSearchable?: boolean | undefined;
+  isValid?: boolean | undefined;
+  label?: string | undefined;
+  onChange?: (value?: string) => void;
   options: Option[];
-  isSearchable: boolean;
+  placeholder?: string | undefined;
+  size?: 'medium' | 'large' | 'block' | 'content';
+  value?: string | undefined;
 }
 
 function getStateClass(isValid: boolean | undefined) {
@@ -49,6 +54,10 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
       size,
       inputSize,
       isSearchable,
+      value,
+      defaultValue,
+      onChange,
+      placeholder = 'Select item...',
       ...props
     },
     externalRef
@@ -60,6 +69,27 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
     }, [options]);
 
     const idRef = useRef(uniqueId('input-'));
+
+    const handleInputChange: (
+      changes: UseComboboxStateChange<Option>
+    ) => void = ({ inputValue }) => {
+      if (inputValue == null || inputValue.length === 0) {
+        setInputItems(options);
+
+        return;
+      }
+
+      const lowerCaseInput = inputValue.toLowerCase();
+
+      setInputItems(
+        options.filter(
+          item =>
+            item.label.toLowerCase().startsWith(lowerCaseInput) ||
+            item.value.toLowerCase().startsWith(lowerCaseInput)
+        )
+      );
+    };
+
     const {
       isOpen,
       getComboboxProps,
@@ -67,35 +97,38 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
       getInputProps,
       getMenuProps,
       highlightedIndex,
-      getItemProps
+      selectedItem,
+      getItemProps,
+      selectItem
     } = useCombobox({
       items: inputItems,
-
       itemToString: item => (item != null ? item.label : ''),
-      onInputValueChange: isSearchable
-        ? ({ inputValue }) => {
-            if (inputValue == null || inputValue.length === 0) {
-              setInputItems(options);
+      onInputValueChange: isSearchable ? handleInputChange : undefined,
+      selectedItem: value
+        ? options.find(option => option.value === value)
+        : undefined,
 
-              return;
-            }
-
-            const lowerCaseInput = inputValue.toLowerCase();
-
-            setInputItems(
-              options.filter(
-                item =>
-                  item.label.toLowerCase().startsWith(lowerCaseInput) ||
-                  item.value.toLowerCase().startsWith(lowerCaseInput)
-              )
-            );
-          }
-        : undefined
+      onSelectedItemChange(changes) {
+        onChange?.(changes.selectedItem?.value);
+      }
     });
+
+    /* Making sure that default value would cause onChange call */
+    useEffect(() => {
+      if (!value && defaultValue && !selectedItem) {
+        const defaultOption = options.find(
+          option => option.value === defaultValue
+        );
+
+        if (defaultOption != null) {
+          selectItem(defaultOption);
+        }
+      }
+    }, [selectedItem, options, value, selectItem, defaultValue]);
 
     const className = classNames(
       inputStyles.input,
-      sizeClasses[size],
+      size ? sizeClasses[size] : undefined,
       styles.select,
       classNameProp
     );
@@ -114,7 +147,7 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
               id: idRef.current,
               ref: externalRef,
               readOnly: !isSearchable,
-              placeholder: 'Select item...'
+              placeholder
             })}
             className={inputClassName}
             size={inputSize}
