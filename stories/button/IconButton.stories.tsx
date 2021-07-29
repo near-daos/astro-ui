@@ -19,6 +19,6 @@ export const IconButton = (): JSX.Element => (
 );
 
 export default {
-  title: 'Components/Buttons',
+  title: 'Components/Buttons/Icon Button',
   component: IconButtonComponent
 } as Meta;

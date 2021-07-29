@@ -27,6 +27,6 @@ Button.args = {
 };
 
 export default {
-  title: 'Components/Buttons',
+  title: 'Components/Buttons/Button',
   component: ButtonComponent
 } as Meta;
