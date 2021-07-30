@@ -9,10 +9,7 @@ export default {
 
 export const Template = (
   args: React.ComponentProps<typeof Input>
-): JSX.Element => {
-  /* eslint-disable-next-line react/jsx-props-no-spreading */
-  return <Input {...args} />;
-};
+): JSX.Element => <Input {...args} />;
 
 Template.storyName = 'Input';
 Template.args = {
