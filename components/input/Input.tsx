@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
-import uniqueId from 'lodash.uniqueid';
+import React from 'react';
 import classNames from 'classnames';
 import { Property } from 'csstype';
+import { useId } from '@reach/auto-id';
 import styles from './input.module.scss';
 
 export interface InputProps
@@ -42,7 +42,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     },
     externalRef
   ) => {
-    const idRef = useRef(uniqueId('input-'));
+    const id = useId(props.id);
 
     const className = classNames(
       styles.input,
@@ -51,13 +51,13 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     );
 
     return (
-      <label className={className} htmlFor={props.id || idRef.current}>
+      <label className={className} htmlFor={id}>
         {label && label.length > 0 && (
           <span className={styles.label}>{label}</span>
         )}
         <input
           className={getStateClass(isValid)}
-          id={idRef.current}
+          id={id}
           {...props}
           size={inputSize}
           ref={externalRef}

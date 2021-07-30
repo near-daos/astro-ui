@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react';
-import uniqueId from 'lodash.uniqueid';
+import React, { useState } from 'react';
 import { Icon } from 'components/Icon';
 import classNames from 'classnames';
+import { useId } from '@reach/auto-id';
 import styles from './checkbox.module.scss';
 
 export interface CheckboxProps extends React.HTMLProps<HTMLInputElement> {
@@ -10,7 +10,7 @@ export interface CheckboxProps extends React.HTMLProps<HTMLInputElement> {
 
 export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
   ({ label, className: classNameProp, ...props }, externalRef) => {
-    const idRef = useRef(uniqueId('checkbox-'));
+    const id = useId(props.id);
     const [checked, setChecked] = useState(props.defaultChecked);
 
     const className = classNames(styles.checkbox, classNameProp);
@@ -18,9 +18,9 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     const value = props.checked != null ? props.checked : checked;
 
     return (
-      <label className={className} htmlFor={props.id || idRef.current}>
+      <label className={className} htmlFor={id}>
         <input
-          id={idRef.current}
+          id={id}
           {...props}
           ref={externalRef}
           type="checkbox"

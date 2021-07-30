@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import uniqueId from 'lodash.uniqueid';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import inputStyles from 'components/input/input.module.scss';
 import { useCombobox, UseComboboxStateChange } from 'downshift';
 import { IconButton } from 'components/button/IconButton';
 import { Icon } from 'components/Icon';
+import { useId } from '@reach/auto-id';
 import styles from './select.module.scss';
 
 interface Option {
@@ -68,7 +68,8 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
       setInputItems(options ?? []);
     }, [options]);
 
-    const idRef = useRef(uniqueId('input-'));
+    const id = useId(props.id);
+    const downshiftId = useId();
 
     const handleInputChange: (
       changes: UseComboboxStateChange<Option>
@@ -101,6 +102,7 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
       getItemProps,
       selectItem
     } = useCombobox({
+      id: `downshift-${downshiftId}`,
       items: inputItems,
       itemToString: item => (item != null ? item.label : ''),
       onInputValueChange: isSearchable ? handleInputChange : undefined,
@@ -137,14 +139,14 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
 
     return (
       <div {...getComboboxProps()} className={className}>
-        <label {...getToggleButtonProps()} htmlFor={props.id || idRef.current}>
+        <label {...getToggleButtonProps()} htmlFor={id}>
           {label && label.length > 0 && (
             <span className={inputStyles.label}>{label}</span>
           )}
           <input
             aria-readonly={!isSearchable}
             {...getInputProps({
-              id: idRef.current,
+              id,
               ref: externalRef,
               readOnly: !isSearchable,
               placeholder
