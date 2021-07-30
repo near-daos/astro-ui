@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import './toggle.module.scss';
-import uniqueId from 'lodash.uniqueid';
+import { useId } from '@reach/auto-id';
 import { ToggleDisplay } from './ToggleDisplay';
 
 export interface CheckboxProps extends React.HTMLProps<HTMLInputElement> {
@@ -9,15 +9,15 @@ export interface CheckboxProps extends React.HTMLProps<HTMLInputElement> {
 
 export const Toggle = React.forwardRef<HTMLInputElement, CheckboxProps>(
   ({ label, ...props }, externalRef) => {
-    const idRef = useRef(uniqueId('toggle-'));
+    const id = useId(props.id);
     const [checked, setChecked] = useState(props.defaultChecked);
 
     const value = props.checked != null ? props.checked : checked;
 
     return (
-      <label htmlFor={props.id || idRef.current}>
+      <label htmlFor={id}>
         <input
-          id={idRef.current}
+          id={id}
           {...props}
           ref={externalRef}
           type="checkbox"

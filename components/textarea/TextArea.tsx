@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
-import uniqueId from 'lodash.uniqueid';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Property } from 'csstype';
+import { useId } from '@reach/auto-id';
 import inputStyles from 'components/input/input.module.scss';
 import styles from './textarea.module.scss';
 
@@ -36,19 +36,20 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
     },
     externalRef
   ) => {
-    const idRef = useRef(uniqueId('input-'));
+    const id = useId(props.id);
 
     const className = classNames(styles.textarea, sizeClasses[size]);
 
     const [currentLength, setCurrentLength] = useState(0);
 
     return (
-      <label className={className} htmlFor={props.id || idRef.current}>
+      <label className={className} htmlFor={id}>
         {label && label.length > 0 && (
           <span className={inputStyles.label}>{label}</span>
         )}
         <TextareaAutosize
           {...props}
+          id={id}
           onChange={e => {
             props.onChange?.(e);
             setCurrentLength(e.currentTarget.value?.length);
@@ -56,7 +57,6 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           minRows={minRows}
           maxRows={maxRows}
           className={classNameProp}
-          id={idRef.current}
           ref={externalRef}
           style={{
             textAlign,
