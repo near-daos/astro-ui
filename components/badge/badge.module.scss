@@ -42,5 +42,6 @@ $colors: 'violet', 'blurple', 'blue', 'turqoise', 'green', 'red', 'orange',
 
   &.primary {
     background: var(--color-primary-20);
+    color: var(--color-primary-80);
   }
 }
