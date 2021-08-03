@@ -1,0 +1,36 @@
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.tabs {
+  display: flex;
+  min-height: 32px;
+  position: relative;
+}
+
+.fit-content {
+  width: fit-content;
+}
+
+.content {
+  margin-top: 5px;
+  width: 100%;
+}
+
+.active-line {
+  background: var(--color-brand-purple-light);
+  bottom: -2.5px;
+  height: 5px;
+  position: absolute;
+  transition: 0.2s;
+}
+
+.regular {
+  border-bottom: 1px solid var(--color-neutral-40);
+}
+
+.wrapped {
+  border: 1px dashed var(--color-primary-40);
+  padding: 12px;
+}

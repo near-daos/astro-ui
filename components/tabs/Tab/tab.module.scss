@@ -1,0 +1,49 @@
+.tab {
+  align-items: center;
+
+  color: var(--color-primary);
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  outline: none;
+
+  padding: 0 32px;
+
+  position: relative;
+
+  text-transform: capitalize;
+
+  transition: color 0.1s;
+
+  &:not(:last-of-type) {
+    margin-right: 24px;
+  }
+
+  &::after {
+    color: var(--color-primary);
+    content: attr(data-name);
+    font-family: Inter, 'sans-serif';
+    opacity: 0;
+    position: absolute;
+    transition: opacity 0.1s;
+  }
+}
+
+.active {
+  color: transparent;
+  &::after {
+    align-items: center;
+    color: var(--color-primary);
+    content: attr(data-name);
+    display: flex;
+    font-family: Inter, 'sans-serif';
+    font-size: 1em;
+    font-weight: 700;
+    justify-content: center;
+    line-height: 24px;
+    opacity: 1;
+    position: absolute;
+  }
+}
