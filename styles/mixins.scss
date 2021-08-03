@@ -3,3 +3,32 @@
   display: flex;
   justify-content: center;
 }
+
+@mixin sentence-case {
+  text-transform: lowercase;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+@mixin ellipse-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+
+/*
+  Customize input placeholder
+  Usage:
+  @include placeholder {
+    color: red;
+  }
+ */
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+  &:-moz-placeholder           {@content}
+  &::-moz-placeholder          {@content}
+  &:-ms-input-placeholder      {@content}
+}

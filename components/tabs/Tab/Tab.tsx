@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React, { FC, forwardRef, RefObject, useCallback } from 'react';
 
-import { handleEnterKeyPress } from 'components/tabs/helpers';
+import { handleEnterKeyPress } from 'helpers/keyboard';
 import { TabItem } from 'components/tabs/types';
 
 import styles from './tab.module.scss';

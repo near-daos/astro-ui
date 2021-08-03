@@ -1,21 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lora:wght@500&display=swap');
+@import 'styles/mixins';
 
 :root {
   color: var(--color-brand-black);
   font-size: 16px;
 }
 
-@mixin sentence-case {
-  text-transform: lowercase;
-
-  &::first-letter {
-    text-transform: uppercase;
-  }
-}
 
 body {
   font-family: 'Inter', sans-serif;
   font-size: 1em;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
 }
 
 small {
@@ -56,7 +56,8 @@ $sizes: // Typography sizes
   '.subtitle2' 1em 24px 500,
   '.subtitle3' 0.875em 24px 500,
   '.subtitle4' 0.75em 18px 500,
-  '.subtitle5' 0.625em 16px 500;
+  '.subtitle5' 0.625em 16px 500,
+  '.body1' 1em 24px 400;
 
 .subtitle1,
 .subtitle2,
