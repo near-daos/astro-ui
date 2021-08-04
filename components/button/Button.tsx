@@ -3,9 +3,9 @@ import classNames from 'classnames';
 import styles from './button.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant: 'primary' | 'secondary' | 'tertiary';
-  size: 'small' | 'medium' | 'large' | 'block';
-  disabled: boolean | undefined;
+  variant?: 'primary' | 'secondary' | 'tertiary';
+  size?: 'small' | 'medium' | 'large' | 'block';
+  disabled?: boolean | undefined;
 }
 
 export const Button: React.FC<ButtonProps> = ({
