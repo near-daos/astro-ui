@@ -5,9 +5,11 @@ import { Meta } from '@storybook/react';
 export default {
   title: 'Components/cards/DaoCard',
   component: DaoCard,
-  argTypes: {
-    checked: { control: 'boolean' }
-  }
+  decorators: [
+    story => (
+      <div style={{ padding: '1rem', background: 'lightgrey' }}>{story()}</div>
+    )
+  ]
 } as Meta;
 
 export const Template = (
