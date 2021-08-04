@@ -1,0 +1,72 @@
+.dao-card {
+  align-items: center;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-start;
+  max-width: 360px;
+  padding: 24px;
+  position: relative;
+
+  .icon-wrapper {
+    height: 64px;
+    width: 64px;
+  }
+
+  .title-caption {
+    padding-top: 8px;
+  }
+
+  .url-caption {
+    color: var(--color-neutral-50);
+    padding-top: 8px;
+  }
+
+  .description-caption {
+    padding-bottom: 54px;
+    padding-top: 16px;
+    text-align: center;
+  }
+}
+
+.active-proposals {
+  align-items: center;
+  background: var(--color-brand-neon-yellow);
+  border-radius: 24px;
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+
+  .active-proposals-caption {
+    margin: 0;
+    padding: 3px 18px;
+  }
+}
+
+.members-and-funds {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 16px;
+  width: 100%;
+
+  .flex-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+  }
+}
+
+.gray-caption {
+  color: var(--color-neutral-50);
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.upper-case {
+  text-transform: uppercase;
+}

@@ -13,11 +13,10 @@
 }
 
 @mixin ellipse-text {
-  text-overflow: ellipsis;
   overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 
 /*
   Customize input placeholder
@@ -25,10 +24,9 @@
   @include placeholder {
     color: red;
   }
- */
+*/
 @mixin placeholder {
-  &::-webkit-input-placeholder {@content}
-  &:-moz-placeholder           {@content}
-  &::-moz-placeholder          {@content}
-  &:-ms-input-placeholder      {@content}
+  &::placeholder {
+    @content;
+  }
 }
