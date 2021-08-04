@@ -1,4 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-lint-staged --quiet
+yarn lint-staged
+
+npx lint-staged --quiet
