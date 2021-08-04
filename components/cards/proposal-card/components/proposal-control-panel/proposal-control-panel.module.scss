@@ -1,0 +1,26 @@
+.root {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.item {
+  &:not(:first-of-type) {
+    margin-left: 40px;
+  }
+}
+
+.value {
+  margin-left: 8px;
+}
+
+.icon {
+  height: unset;
+  width: unset;
+}
+
+@media screen and (max-width: 768px) {
+  .root {
+    justify-content: flex-start;
+  }
+}
