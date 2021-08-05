@@ -74,6 +74,45 @@ $sizes: // Typography sizes
     @include font($size, $height, $weight);
   }
 }
+%title1 {
+  @include font(1.25em, 28px, 700);
+}
+%title2 {
+  @include font(1em, 24px, 700);
+}
+%title3 {
+  @include font(0.875em, 24px, 700);
+}
+%title4 {
+  @include font(0.75em, 18px, 700);
+}
+%title5 {
+  @include font(0.675em, 16px, 700);
+}
+%subtitle1 {
+  @include font(1.25em, 28px, 500);
+}
+%subtitle2 {
+  @include font(1em, 24px, 500);
+}
+%subtitle3 {
+  @include font(0.875em, 24px, 500);
+}
+%subtitle4 {
+  @include font(0.75em, 18px, 500);
+}
+%subtitle5 {
+  @include font(0.675em, 16px, 500);
+}
+%body1 {
+  @include font(1em, 24px, 400);
+}
+%paragraph1 {
+  @include font(1.125em, 28px, 400);
+}
+%caption1 {
+  @include font(0.875em, 18px, 400);
+}
 
 p {
   font-size: 1.125em;

@@ -1,3 +1,5 @@
+@import 'styles/typography';
+
 .dao-card {
   align-items: center;
   background-color: var(--color-white);
@@ -20,11 +22,13 @@
   }
 
   .url-caption {
+    @extend %subtitle3;
     color: var(--color-neutral-50);
     padding-top: 8px;
   }
 
   .description-caption {
+    @extend %body1;
     padding-bottom: 54px;
     padding-top: 16px;
     text-align: center;
@@ -40,6 +44,7 @@
   width: fit-content;
 
   .active-proposals-caption {
+    @extend %title4;
     margin: 0;
     padding: 3px 18px;
   }
@@ -60,6 +65,7 @@
 }
 
 .gray-caption {
+  @extend %subtitle3;
   color: var(--color-neutral-50);
 }
 

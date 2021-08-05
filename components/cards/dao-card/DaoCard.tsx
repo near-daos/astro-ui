@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import styles from 'components/cards/dao-card/dao-card.module.scss';
 import { FlagIcon } from 'components/cards/dao-card/FlagIcon';
 import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value/FormattedNumericValue';
@@ -27,7 +26,7 @@ const DaoCard: React.FC<DaoCardProps> = ({
     suffix?: string
   ) => (
     <div className={styles['flex-container']}>
-      <div className={(styles['gray-caption'], 'subtitle4')}>{caption}</div>
+      <div className={styles['gray-caption']}>{caption}</div>
       <FormattedNumericValue value={value} suffix={suffix} />
     </div>
   );
@@ -40,16 +39,10 @@ const DaoCard: React.FC<DaoCardProps> = ({
       <div className={styles['title-caption']}>
         <h2 className={styles['no-margin']}>{title}</h2>
       </div>
-      <div className={classNames('subtitle3', styles['url-caption'])}>
-        {daoAccountName}
-      </div>
-      <div className={classNames('body1', styles['description-caption'])}>
-        {description}
-      </div>
+      <div className={styles['url-caption']}>{daoAccountName}</div>
+      <div className={styles['description-caption']}>{description}</div>
       <div className={styles['active-proposals']}>
-        <div
-          className={classNames(styles['active-proposals-caption'], 'title4')}
-        >
+        <div className={styles['active-proposals-caption']}>
           {activeProposals} active proposals
         </div>
       </div>
