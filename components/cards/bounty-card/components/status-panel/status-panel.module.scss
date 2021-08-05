@@ -1,0 +1,28 @@
+@import 'styles/mixins';
+
+.root {
+  @include centralize;
+  align-items: stretch;
+  width: 64px;
+}
+
+.icon {
+  width: 20px;
+  svg {
+    color: var(--color-primary);
+  }
+}
+
+.default {
+  background: var(--color-success-40);
+}
+
+@media screen and (max-width: 768px) {
+  .root {
+    align-items: center;
+    height: 40px;
+    justify-content: flex-start;
+    padding-left: 21px;
+    width: 100%;
+  }
+}
