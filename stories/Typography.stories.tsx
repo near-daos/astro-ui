@@ -6,6 +6,8 @@ export default {
   title: 'Typography'
 } as Meta;
 
+type SizeType = React.ComponentProps<typeof Typography.Title>['size'];
+
 export const TypographyStory = (): JSX.Element => (
   <div
     style={{
@@ -21,8 +23,8 @@ export const TypographyStory = (): JSX.Element => (
       <h5>Heading 5</h5>
     </section>
     <section>
-      {[1, 2, 3, 4, 5].map(item => {
-        const size = item as 1 | 2 | 3 | 4 | 5;
+      {[1, 2, 3, 4, 5, 6].map(item => {
+        const size = item as SizeType;
 
         return (
           <div key={size}>
