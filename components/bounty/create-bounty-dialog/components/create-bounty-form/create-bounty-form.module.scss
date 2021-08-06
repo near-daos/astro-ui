@@ -1,0 +1,46 @@
+.root {
+  margin-top: 40px;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 24px;
+}
+
+.mr8 {
+  margin-right: 8px;
+}
+
+.ml8 {
+  margin-left: 8px;
+}
+
+.text-area {
+  &textarea {
+    width: 100%;
+  }
+}
+
+.input {
+  input {
+    padding: 12.5px;
+  }
+}
+
+.inline-input {
+  height: 48px;
+  margin: 0 8px;
+}
+
+.deadline-unit {
+  input {
+    max-width: 120px;
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+}

@@ -139,10 +139,10 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
 
     return (
       <div {...getComboboxProps()} className={className}>
+        {label && label.length > 0 && (
+          <span className={inputStyles.label}>{label}</span>
+        )}
         <label {...getToggleButtonProps()} htmlFor={id}>
-          {label && label.length > 0 && (
-            <span className={inputStyles.label}>{label}</span>
-          )}
           <input
             aria-readonly={!isSearchable}
             {...getInputProps({

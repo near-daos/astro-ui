@@ -3,7 +3,7 @@ export type ClaimedBy = {
   datetime: string;
 };
 
-export type BountyType = 'Default';
+export type BountyType = 'Passed' | 'Expired';
 export type DeadlineUnit = 'day' | 'week' | 'month';
 
 export type Bounty = {

@@ -14,11 +14,11 @@
 }
 
 .icon {
+  bottom: 18px;
   color: var(--color-neutral-80);
   cursor: pointer;
   position: absolute;
   right: 14px;
-  top: 13px;
 }
 
 .wrapper {
@@ -26,13 +26,19 @@
   width: 100%;
 }
 
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
 .menu {
   background: #fff;
   list-style: none;
   overflow-y: auto;
   position: absolute;
-  top: 34px;
+  top: 80%;
   width: 100%;
+  z-index: 1;
 }
 
 .item {

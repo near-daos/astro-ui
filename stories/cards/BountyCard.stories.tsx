@@ -22,7 +22,7 @@ export const Default = Template.bind({});
 
 Default.args = {
   data: {
-    type: 'Default',
+    type: 'Passed',
     status: 'Open',
     token: 'NEAR',
     amount: 253,
@@ -42,7 +42,7 @@ export const InProgress = Template.bind({});
 
 InProgress.args = {
   data: {
-    type: 'Default',
+    type: 'Passed',
     status: 'In progress',
     token: 'NEAR',
     amount: 112,
@@ -67,7 +67,7 @@ export const InProgressClaimedByMe = Template.bind({});
 
 InProgressClaimedByMe.args = {
   data: {
-    type: 'Default',
+    type: 'Passed',
     status: 'In progress',
     token: 'NEAR',
     amount: 112,
@@ -92,7 +92,7 @@ export const Completed = Template.bind({});
 
 Completed.args = {
   data: {
-    type: 'Default',
+    type: 'Passed',
     status: 'Completed',
     token: 'NEAR',
     amount: 34,

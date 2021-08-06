@@ -13,8 +13,12 @@
   }
 }
 
-.default {
+.passed {
   background: var(--color-success-40);
+}
+
+.expired {
+  background: var(--color-neutral-30);
 }
 
 @media screen and (max-width: 768px) {
