@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import { NavItem } from 'components/navitem/NavItem';
+import { NavItem } from 'components/nav-item/NavItem';
 
 export default {
   title: 'Components/NavItem',
