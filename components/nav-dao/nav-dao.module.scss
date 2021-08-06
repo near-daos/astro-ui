@@ -1,0 +1,53 @@
+@import 'styles/typography';
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  background: var(--color-primary-80);
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px 0 24px;
+
+  transition: background-color 0.1s;
+
+  &:hover {
+    background: var(--color-primary-60);
+  }
+}
+
+.name {
+  @extend %heading3;
+  align-items: center;
+  color: var(--color-neutral-20);
+  display: inline-flex;
+  gap: 12px;
+}
+
+.details {
+  @extend %caption2;
+  color: var(--color-primary-30);
+  cursor: pointer;
+  padding-left: 38px;
+}
+
+.counter {
+  margin-left: auto;
+}
+
+.header {
+  align-items: center;
+  background-color: var(--color-primary-70);
+  color: var(--color-neutral-20);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 12px;
+  padding: 19px 16px;
+  width: 100%;
+
+  h3 {
+    margin: 0;
+  }
+}
