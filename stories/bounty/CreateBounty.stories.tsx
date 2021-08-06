@@ -3,10 +3,10 @@ import { Meta, Story } from '@storybook/react';
 import {
   CreateBountyDialog,
   CreateBountyDialogProps
-} from 'components/bounty/create-bounty-dialog/create-bounty-dialog';
+} from 'features/bounty/dialogs/create-bounty-dialog/create-bounty-dialog';
 
 export default {
-  title: 'Components/CreateBounty',
+  title: 'Features/Bounty/Dialogs/CreateBounty',
   component: CreateBountyDialog,
   decorators: [
     story => (

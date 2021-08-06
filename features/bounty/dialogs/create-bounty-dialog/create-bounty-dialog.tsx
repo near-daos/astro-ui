@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
 
 import { Icon } from 'components/Icon';
-import { CreateBountyForm } from 'components/bounty/create-bounty-dialog/components/create-bounty-form/CreateBountyForm';
 
-import { CreateBountyInput } from 'components/bounty/create-bounty-dialog/types';
+import { CreateBountyForm } from './components/create-bounty-form/CreateBountyForm';
+
+import { CreateBountyInput } from './types';
 
 import styles from './create-bounty-dialog.module.scss';
 

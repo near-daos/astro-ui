@@ -11,14 +11,10 @@ import { Select } from 'components/select/Select';
 import {
   CreateBountyInput,
   Token
-} from 'components/bounty/create-bounty-dialog/types';
+} from 'features/bounty/dialogs/create-bounty-dialog/types';
 import { DeadlineUnit } from 'components/cards/bounty-card/types';
 
-import {
-  schema,
-  tokenOptions,
-  deadlineUnitOptions
-} from 'components/bounty/create-bounty-dialog/components/create-bounty-form/helpers';
+import { schema, tokenOptions, deadlineUnitOptions } from './helpers';
 
 import styles from './create-bounty-form.module.scss';
 
