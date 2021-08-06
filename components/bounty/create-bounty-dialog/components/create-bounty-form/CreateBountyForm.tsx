@@ -45,53 +45,49 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
-      <div className={styles.row}>
-        <Select
-          defaultValue={initialValues?.token}
-          className={cn(styles.mr8)}
-          placeholder=""
-          size="block"
-          label="Token"
-          options={tokenOptions}
-          {...register('token')}
-          onChange={v =>
-            setValue('token', (v || 'NEAR') as Token, {
-              shouldDirty: true
-            })
-          }
-        />
-        <Input
-          isValid={touchedFields.amount && !errors.amount?.message}
-          size="block"
-          textAlign="left"
-          type="number"
-          {...register('amount')}
-          label="Amount"
-          className={cn(styles.input, styles.ml8)}
-        />
-      </div>
-      <div className={styles.row}>
+      <Select
+        defaultValue={initialValues?.token}
+        className={cn(styles.token)}
+        placeholder=""
+        size="block"
+        label="Token"
+        options={tokenOptions}
+        {...register('token')}
+        onChange={v =>
+          setValue('token', (v || 'NEAR') as Token, {
+            shouldDirty: true
+          })
+        }
+      />
+      <Input
+        isValid={touchedFields.amount && !errors.amount?.message}
+        size="block"
+        textAlign="left"
+        type="number"
+        {...register('amount')}
+        label="Amount"
+        className={cn(styles.input, styles.amount)}
+      />
+      <div className={styles.group}>
         <TextArea
           size="block"
           textAlign="left"
           resize="none"
           placeholder="Sample text"
-          className={styles['text-area']}
+          className={cn(styles['text-area'])}
           label="Group"
           {...register('group')}
         />
       </div>
-      <div className={styles.row}>
-        <Input
-          size="block"
-          isValid={touchedFields.externalUrl && !errors.externalUrl?.message}
-          textAlign="left"
-          {...register('externalUrl')}
-          label="External URL"
-          className={cn(styles.input)}
-        />
-      </div>
-      <div className={styles.row}>
+      <Input
+        size="block"
+        isValid={touchedFields.externalUrl && !errors.externalUrl?.message}
+        textAlign="left"
+        {...register('externalUrl')}
+        label="External URL"
+        className={cn(styles.input, styles['external-url'])}
+      />
+      <div className={styles.slot}>
         Bounty can be claimed up to
         <Input
           size="small"
@@ -103,7 +99,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
         />
         times.
       </div>
-      <div className={styles.row}>
+      <div className={styles.deadline}>
         Once claimed, bounty must be completed in
         <Input
           size="small"
@@ -130,7 +126,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
           }
         />
       </div>
-      <div className={styles.row}>Vote details</div>
+      <div className={styles.vote}>Vote details</div>
       <div className={styles.footer}>
         <Button
           variant="secondary"
