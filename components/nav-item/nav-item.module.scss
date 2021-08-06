@@ -1,3 +1,5 @@
+@import 'styles/typography';
+
 .nav {
   align-items: center;
   color: var(--color-neutral-40);
@@ -14,6 +16,16 @@
   svg {
     margin-top: 2px;
   }
+}
+
+.sub {
+  @extend %subtitle4;
+  background: var(--color-primary-80);
+  color: rgba(255, 255, 255, 0.4);
+  display: inline-flex;
+  line-height: 24px;
+  padding: 8px 24px 8px 64px;
+  width: 100%;
 }
 
 .badge {
