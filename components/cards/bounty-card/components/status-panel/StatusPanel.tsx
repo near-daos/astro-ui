@@ -13,7 +13,8 @@ interface StatusPanelProps {
 
 export const StatusPanel: FC<StatusPanelProps> = ({ type }) => {
   const statusClassName = cn({
-    [styles.default]: type === 'Default'
+    [styles.passed]: type === 'Passed',
+    [styles.expired]: type === 'Expired'
   });
 
   return (
