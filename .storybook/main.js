@@ -61,7 +61,14 @@ module.exports = {
             publicPath: 'static/',
             outputPath: '_next/static/'
           }
-        },
+        }
+      ]
+    });
+
+    config.module.rules.push({
+      test: /\.svg$/,
+      exclude: /\.colors\.svg$/,
+      use: [
         {
           loader: 'svgo-loader',
           options: {
@@ -76,6 +83,15 @@ module.exports = {
               }
             ])
           }
+        }
+      ]
+    });
+
+    config.module.rules.push({
+      test: /\.colors\.svg$/,
+      use: [
+        {
+          loader: 'svgo-loader'
         }
       ]
     });

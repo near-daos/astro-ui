@@ -25,7 +25,15 @@ module.exports = (nextConfig = {}) => {
               extract: true,
               publicPath: 'static/'
             }
-          },
+          }
+        ]
+      });
+      config.module.rules.push({
+        test: /\.svg$/,
+        include: path.join(process.cwd(), 'assets', 'icons'),
+        exclude: /\.colors\.svg$/,
+
+        use: [
           {
             loader: 'svgo-loader',
             options: {
@@ -43,6 +51,7 @@ module.exports = (nextConfig = {}) => {
           }
         ]
       });
+
       config.plugins.push(new SpriteLoaderPlugin());
 
       return config;
