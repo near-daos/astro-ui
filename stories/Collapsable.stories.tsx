@@ -1,8 +1,7 @@
-import React from 'react';
-import { Collapsable } from 'components/collapsable/Collapsable';
 import { Meta } from '@storybook/react';
 import { IconButton } from 'components/button/IconButton';
-import { Icon } from 'components/Icon';
+import { Collapsable } from 'components/collapsable/Collapsable';
+import React from 'react';
 
 export default {
   title: 'Components/Collapsable',
@@ -21,16 +20,17 @@ export const Template = (
       renderHeading={(toggle, isOpen) => (
         <h1>
           Collapsable header
-          <IconButton size="large" onClick={() => toggle()} type="button">
-            <Icon
-              style={{
-                transform: isOpen ? undefined : 'rotate(-90deg)',
-                transition: 'all 100ms',
-                marginBottom: '8px'
-              }}
-              name="buttonArrowDown"
-            />
-          </IconButton>
+          <IconButton
+            style={{
+              transform: isOpen ? undefined : 'rotate(-90deg)',
+              transition: 'all 100ms',
+              marginBottom: '8px'
+            }}
+            icon="buttonArrowDown"
+            size="large"
+            onClick={() => toggle()}
+            type="button"
+          />
         </h1>
       )}
     >

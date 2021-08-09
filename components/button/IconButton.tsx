@@ -1,15 +1,20 @@
-import React from 'react';
 import classNames from 'classnames';
+import { Icon, IconName, IconProps } from 'components/Icon';
+import React from 'react';
 import buttonStyles from './icon-button.module.scss';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IconButtonProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+  icon: IconName;
   size?: 'small' | 'medium' | 'large';
+  iconProps?: Omit<IconProps, 'name' | 'width' | 'height'>;
 }
 
-export const IconButton: React.FC<ButtonProps> = ({
+export const IconButton: React.VFC<IconButtonProps> = ({
   className: classNameProp,
   size = 'small',
-  children,
+  icon,
+  iconProps = {},
   ...props
 }) => {
   const sizes = {
@@ -25,7 +30,7 @@ export const IconButton: React.FC<ButtonProps> = ({
 
   return (
     <button type="button" className={className} {...props}>
-      {children}
+      <Icon {...iconProps} name={icon} />
     </button>
   );
 };

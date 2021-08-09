@@ -1,9 +1,10 @@
+import { IconButtonProps } from 'components/button/IconButton';
 import React from 'react';
 import { VotingButton as VotingButtonComponent } from 'components/button/VotingButton';
 
-import { Meta } from '@storybook/react';
+import { Meta, Story } from '@storybook/react';
 
-export const VotingButton = (): JSX.Element => {
+export const VotingButton: Story<IconButtonProps> = () => {
   return (
     <div>
       <VotingButtonComponent type="button" variant="yes">

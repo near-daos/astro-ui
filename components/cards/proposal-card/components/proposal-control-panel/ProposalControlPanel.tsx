@@ -1,13 +1,6 @@
-import React, { FC } from 'react';
 import cn from 'classnames';
-
-import {
-  VotingNo,
-  VotingNoChecked,
-  VotingYes,
-  VotingYesChecked
-} from 'components/cards/proposal-card/components/proposal-control-panel/icons';
 import { IconButton } from 'components/button/IconButton';
+import React, { FC } from 'react';
 
 import styles from './proposal-control-panel.module.scss';
 
@@ -31,15 +24,21 @@ const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
   return (
     <div className={styles.root}>
       <span className={styles.item}>
-        <IconButton className={styles.icon} size="large" onClick={onLike}>
-          {liked ? <VotingYesChecked /> : <VotingYes />}
-        </IconButton>
+        <IconButton
+          icon={liked ? 'votingYesChecked' : 'votingYes'}
+          className={styles.icon}
+          size="large"
+          onClick={onLike}
+        />
         <span className={cn(styles.value, 'title3')}>{likes}</span>
       </span>
       <span className={styles.item}>
-        <IconButton className={styles.icon} size="large" onClick={onDislike}>
-          {disliked ? <VotingNoChecked /> : <VotingNo />}
-        </IconButton>
+        <IconButton
+          icon={disliked ? 'votingNoChecked' : 'votingNo'}
+          className={styles.icon}
+          size="large"
+          onClick={onDislike}
+        />
         <span className={cn(styles.value, 'title3')}>{dislikes}</span>
       </span>
     </div>

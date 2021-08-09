@@ -1,15 +1,14 @@
-import React from 'react';
 import * as icons from 'assets/icons';
+import React from 'react';
 
 export type IconName = keyof typeof icons;
 
-type IconProps = React.SVGProps<SVGSVGElement> & { title?: string };
+export type IconProps = React.SVGProps<SVGSVGElement> & {
+  name: IconName;
+  title?: string;
+};
 
-export const Icon: React.VFC<IconProps & { name: IconName }> = ({
-  name,
-  title,
-  ...svgProps
-}) => {
+export const Icon: React.VFC<IconProps> = ({ name, title, ...svgProps }) => {
   const { viewBox, url } = icons[name];
 
   return (
