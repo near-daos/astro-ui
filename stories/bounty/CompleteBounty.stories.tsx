@@ -2,20 +2,20 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 
 import {
-  UnclaimBountyDialog,
-  UnclaimBountyDialogProps
-} from 'features/bounty/dialogs/unclaim-bounty-dialog/UnclaimBountyDialog';
+  CompleteBountyDialog,
+  CompleteBountyDialogProps
+} from 'features/bounty/dialogs/complete-bounty-dialog/CompleteBountyDialog';
 
 export default {
-  title: 'Features/Bounty/Dialogs/UnclaimBounty',
-  component: UnclaimBountyDialog
+  title: 'Features/Bounty/Dialogs/CompleteBounty',
+  component: CompleteBountyDialog
 } as Meta;
 
-export const Template: Story<UnclaimBountyDialogProps> = (
+export const Template: Story<CompleteBountyDialogProps> = (
   args
-): JSX.Element => <UnclaimBountyDialog {...args} />;
+): JSX.Element => <CompleteBountyDialog {...args} />;
 
-Template.storyName = 'UnclaimBounty';
+Template.storyName = 'CompleteBounty';
 Template.args = {
   isOpen: true,
   data: {

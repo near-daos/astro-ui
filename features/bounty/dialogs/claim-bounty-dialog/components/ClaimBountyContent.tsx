@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
+import { format, parseISO } from 'date-fns';
+
 import { Bounty } from 'features/bounty/types';
 import { BountyCard } from 'components/cards/bounty-card';
-
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import { getDeadlineDate } from 'components/cards/bounty-card/helpers';
-import { format, parseISO } from 'date-fns';
 import { Button } from 'components/button/Button';
-import cn from 'classnames';
+import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 
 interface ClaimBountyContentProps {
   onClose: (...args: unknown[]) => void;
@@ -41,7 +42,9 @@ const ClaimBountyContent: FC<ClaimBountyContentProps> = ({
           you miss your deadline, you will loose your bond.
         </p>
       </div>
-      <div className={styles.vote}>Details</div>
+      <div className={styles.vote}>
+        <ExpandableDetails label="Details">Placeholder</ExpandableDetails>
+      </div>
       <div className={styles['important-content']}>
         <div className={styles.subtitle}>Bond</div>
         <div className={styles['value-wrapper']}>

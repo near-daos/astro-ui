@@ -8,6 +8,7 @@ import { Button } from 'components/button/Button';
 import { TextArea } from 'components/textarea/TextArea';
 import { Select } from 'components/select/Select';
 
+import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import {
   CreateBountyInput,
   Token
@@ -122,7 +123,9 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
           }
         />
       </div>
-      <div className={styles.vote}>Vote details</div>
+      <div className={styles.vote}>
+        <ExpandableDetails label="Vote details">Placeholder</ExpandableDetails>
+      </div>
       <div className={styles.footer}>
         <Button
           variant="secondary"
