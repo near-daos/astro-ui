@@ -1,19 +1,18 @@
 import React, { FC, useCallback } from 'react';
 
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
-
 import { Bounty } from 'features/bounty/types';
-
+import { Modal } from 'components/modal';
 import ClaimBountyContent from './components/ClaimBountyContent';
 
 export interface ClaimBountyDialogProps {
-  isOpen?: boolean;
+  isOpen: boolean;
   onClose: (...args: unknown[]) => void;
   data: Bounty;
 }
 
 export const ClaimBountyDialog: FC<ClaimBountyDialogProps> = ({
-  // isOpen,
+  isOpen,
   onClose,
   data
 }) => {
@@ -23,7 +22,7 @@ export const ClaimBountyDialog: FC<ClaimBountyDialogProps> = ({
   }, [onClose]);
 
   return (
-    <div className={styles.root}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <header className={styles.header}>
         <h2>Claim bounty</h2>
       </header>
@@ -32,6 +31,6 @@ export const ClaimBountyDialog: FC<ClaimBountyDialogProps> = ({
         onSubmit={handleSubmit}
         data={data}
       />
-    </div>
+    </Modal>
   );
 };

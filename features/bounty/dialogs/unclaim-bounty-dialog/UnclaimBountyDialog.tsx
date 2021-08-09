@@ -1,5 +1,7 @@
 import React, { FC, useCallback } from 'react';
 
+import { Modal } from 'components/modal';
+
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 
 import { Bounty } from 'features/bounty/types';
@@ -7,13 +9,13 @@ import { Bounty } from 'features/bounty/types';
 import UnclaimBountyContent from 'features/bounty/dialogs/unclaim-bounty-dialog/components/UnclaimBountyContent';
 
 export interface UnclaimBountyDialogProps {
-  isOpen?: boolean;
+  isOpen: boolean;
   onClose: (...args: unknown[]) => void;
   data: Bounty;
 }
 
 export const UnclaimBountyDialog: FC<UnclaimBountyDialogProps> = ({
-  // isOpen,
+  isOpen,
   onClose,
   data
 }) => {
@@ -23,7 +25,7 @@ export const UnclaimBountyDialog: FC<UnclaimBountyDialogProps> = ({
   }, [onClose]);
 
   return (
-    <div className={styles.root}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <header className={styles.header}>
         <h2>Unclaim bounty</h2>
       </header>
@@ -32,6 +34,6 @@ export const UnclaimBountyDialog: FC<UnclaimBountyDialogProps> = ({
         onSubmit={handleSubmit}
         data={data}
       />
-    </div>
+    </Modal>
   );
 };

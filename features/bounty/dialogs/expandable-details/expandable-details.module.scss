@@ -1,0 +1,15 @@
+@import 'styles/typography';
+
+.label {
+  @extend %title5;
+  align-items: center;
+  display: flex;
+  padding: 0;
+  text-transform: capitalize;
+  transform: translateX(-8px);
+}
+
+.icon {
+  min-width: 24px;
+  width: 24px;
+}

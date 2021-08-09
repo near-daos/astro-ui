@@ -7,21 +7,7 @@ import {
 
 export default {
   title: 'Features/Bounty/Dialogs/CreateBounty',
-  component: CreateBountyDialog,
-  decorators: [
-    story => (
-      <div
-        style={{
-          padding: 48,
-          background: 'white',
-          maxWidth: 640,
-          border: '1px solid grey'
-        }}
-      >
-        {story()}
-      </div>
-    )
-  ]
+  component: CreateBountyDialog
 } as Meta;
 
 export const Template: Story<CreateBountyDialogProps> = (args): JSX.Element => (
@@ -30,6 +16,7 @@ export const Template: Story<CreateBountyDialogProps> = (args): JSX.Element => (
 
 Template.storyName = 'CreateBounty';
 Template.args = {
+  isOpen: true,
   initialValues: {
     token: 'NEAR',
     slots: 3,

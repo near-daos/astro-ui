@@ -7,21 +7,7 @@ import {
 
 export default {
   title: 'Features/Bounty/Dialogs/ClaimBounty',
-  component: ClaimBountyDialog,
-  decorators: [
-    story => (
-      <div
-        style={{
-          padding: 48,
-          background: 'white',
-          maxWidth: 640,
-          border: '1px solid grey'
-        }}
-      >
-        {story()}
-      </div>
-    )
-  ]
+  component: ClaimBountyDialog
 } as Meta;
 
 export const Template: Story<ClaimBountyDialogProps> = (args): JSX.Element => (
@@ -30,6 +16,7 @@ export const Template: Story<ClaimBountyDialogProps> = (args): JSX.Element => (
 
 Template.storyName = 'ClaimBounty';
 Template.args = {
+  isOpen: true,
   data: {
     type: 'Passed',
     status: 'In progress',
