@@ -133,7 +133,7 @@ $sizes: // Typography sizes
 }
 
 %subtitle2 {
-  @include font(1.25em, 24px, 500);
+  @include font(1.125em, 24px, 500);
 }
 
 %subtitle3 {
@@ -154,6 +154,10 @@ $sizes: // Typography sizes
 
 %body1 {
   @include font(1em, 24px, 400);
+}
+
+%body2 {
+  @include font(0.875em, 24px, 400);
 }
 
 %paragraph1 {

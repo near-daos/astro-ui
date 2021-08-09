@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 
 import { Icon } from 'components/Icon';
 
+import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
+
 import { CreateBountyForm } from './components/create-bounty-form/CreateBountyForm';
 
 import { CreateBountyInput } from './types';
-
-import styles from './create-bounty-dialog.module.scss';
 
 export interface CreateBountyDialogProps {
   initialValues?: CreateBountyInput;

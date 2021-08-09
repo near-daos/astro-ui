@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import TextTruncate from 'react-text-truncate';
+import cn from 'classnames';
 
 import { StatusPanel } from 'components/cards/bounty-card/components/status-panel/StatusPanel';
 import {
@@ -14,9 +15,10 @@ import styles from './bounty-card.module.scss';
 
 export interface BountyCardProps {
   data: Bounty;
-  onClaim: () => void;
-  onUnclaim: () => void;
-  onComplete: () => void;
+  onClaim?: () => void;
+  onUnclaim?: () => void;
+  onComplete?: () => void;
+  variant?: 'default' | 'simple';
 }
 
 export const BountyCard: FC<BountyCardProps> = ({
@@ -35,26 +37,12 @@ export const BountyCard: FC<BountyCardProps> = ({
   },
   onClaim,
   onUnclaim,
-  onComplete
+  onComplete,
+  variant = 'Default'
 }) => {
-  return (
-    <div className={styles.root}>
-      <StatusPanel type={type} />
-      <div className={styles.content}>
-        <div className={styles.group}>
-          <TextTruncate
-            line={3}
-            element="span"
-            truncateText="…"
-            text={group}
-            textTruncateChild={null}
-          />
-        </div>
-        <div className={styles.reward}>
-          <span className={styles.value}>{amount}</span>
-          &nbsp;
-          <span className={styles['value-desc']}>{token}</span>
-        </div>
+  const cells =
+    variant === 'simple' ? null : (
+      <>
         {status === 'Open' && (
           <OpenCells claimed={claimed} slots={slots} onClaim={onClaim} />
         )}
@@ -75,6 +63,28 @@ export const BountyCard: FC<BountyCardProps> = ({
             deadlineUnit={deadlineUnit}
           />
         )}
+      </>
+    );
+
+  return (
+    <div className={cn(styles.root, { [styles.simple]: variant === 'simple' })}>
+      <StatusPanel type={type} />
+      <div className={styles.content}>
+        <div className={styles.group}>
+          <TextTruncate
+            line={3}
+            element="span"
+            truncateText="…"
+            text={group}
+            textTruncateChild={null}
+          />
+        </div>
+        <div className={styles.reward}>
+          <span className={styles.value}>{amount}</span>
+          &nbsp;
+          <span className={styles['value-desc']}>{token}</span>
+        </div>
+        {cells}
       </div>
     </div>
   );

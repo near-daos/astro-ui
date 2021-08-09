@@ -99,6 +99,21 @@
   width: 20px;
 }
 
+.root.simple {
+  background: var(--color-primary-10);
+  min-height: 64px;
+
+  .group {
+    @extend %body2;
+  }
+  .value {
+    @extend %title4;
+  }
+  .value-desc {
+    @extend %subtitle4;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .root {
     flex-direction: column;

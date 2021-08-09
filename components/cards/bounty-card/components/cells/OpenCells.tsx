@@ -7,7 +7,7 @@ import styles from 'components/cards/bounty-card/bounty-card.module.scss';
 interface OpenCellProps {
   claimed: number;
   slots: number;
-  onClaim: () => void;
+  onClaim?: () => void;
 }
 
 export const OpenCells: FC<OpenCellProps> = ({ claimed, slots, onClaim }) => (

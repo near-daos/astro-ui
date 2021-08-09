@@ -14,8 +14,8 @@ interface InProgressCellsProps {
   claimedByMe: boolean;
   deadlineThreshold: number;
   deadlineUnit: DeadlineUnit;
-  onUnclaim: () => void;
-  onComplete: () => void;
+  onUnclaim?: () => void;
+  onComplete?: () => void;
 }
 
 export const InProgressCells: FC<InProgressCellsProps> = ({
