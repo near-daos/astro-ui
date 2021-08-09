@@ -32,6 +32,36 @@
   }
 }
 
+.warning {
+  align-items: flex-start;
+  display: flex;
+  margin-top: 32px;
+
+  .icon {
+    min-width: 24px;
+    width: 24px;
+  }
+
+  .label {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+  }
+
+  .value,
+  p {
+    @extend %body1;
+    margin: 0;
+  }
+
+  &.success {
+    color: var(--color-success-70);
+  }
+
+  &.error {
+    color: var(--color-error-70);
+  }
+}
+
 .important-content {
   background: var(--color-primary-80);
   color: var(--color-white);
