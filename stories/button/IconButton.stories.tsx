@@ -1,24 +1,23 @@
+import { Meta, Story } from '@storybook/react';
+import { IconButton, IconButtonProps } from 'components/button/IconButton';
 import React from 'react';
-import { IconButton as IconButtonComponent } from 'components/button/IconButton';
-import { Meta } from '@storybook/react';
-import { Icon } from 'components/Icon';
 
-export const IconButton = (): JSX.Element => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <div>
-    <IconButtonComponent size="small">
-      <Icon name="buttonRefresh" />
-    </IconButtonComponent>
-    <IconButtonComponent size="medium">
-      <Icon name="buttonRefresh" />
-    </IconButtonComponent>
-    <IconButtonComponent size="large">
-      <Icon name="buttonRefresh" />
-    </IconButtonComponent>
-  </div>
-);
+export const Template: Story<IconButtonProps> = args => {
+  const { icon } = args;
+
+  if (!icon) return <div>Select icon</div>;
+
+  return <IconButton {...args} />;
+};
+
+Template.args = {
+  icon: 'buttonRefresh',
+  size: 'large'
+};
+
+Template.storyName = 'Icon Button';
 
 export default {
   title: 'Components/Buttons/Icon Button',
-  component: IconButtonComponent
+  component: IconButton
 } as Meta;

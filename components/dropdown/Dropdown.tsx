@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import { useSelect } from 'downshift';
 import { IconButton } from 'components/button/IconButton';
-import { Icon } from 'components/Icon';
 import { Title } from 'components/Typography';
+import { useSelect } from 'downshift';
+import React, { useEffect } from 'react';
 import styles from './dropdown.module.scss';
 
 interface Option {
@@ -70,9 +69,7 @@ export const Dropdown: React.VFC<DropdownProps> = ({
     <div className={className}>
       <Title size={3} {...getToggleButtonProps()}>
         {selectedItem?.label || placeholder}
-        <IconButton className={styles.icon}>
-          <Icon width={24} name="buttonArrowDown" />
-        </IconButton>
+        <IconButton size="medium" icon="buttonArrowDown" />
       </Title>
       <ul className={styles.menu} {...getMenuProps()}>
         {isOpen &&

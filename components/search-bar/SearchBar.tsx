@@ -48,9 +48,11 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder, onSubmit }) => {
       />
 
       <div className={styles['submit-icon']}>
-        <IconButton size="medium" onClick={handleSubmit}>
-          <Icon name="buttonArrowRight" width={24} height={24} />
-        </IconButton>
+        <IconButton
+          icon="buttonArrowRight"
+          size="medium"
+          onClick={handleSubmit}
+        />
       </div>
     </div>
   );

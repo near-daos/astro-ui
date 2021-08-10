@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useId } from '@reach/auto-id';
 import classNames from 'classnames';
+import { IconButton } from 'components/button/IconButton';
 import inputStyles from 'components/input/input.module.scss';
 import { useCombobox, UseComboboxStateChange } from 'downshift';
-import { IconButton } from 'components/button/IconButton';
-import { Icon } from 'components/Icon';
-import { useId } from '@reach/auto-id';
+import React, { useEffect, useState } from 'react';
 import styles from './select.module.scss';
 
 interface Option {
@@ -158,9 +157,7 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
           {description && description.length > 0 && (
             <span className={inputStyles.description}>{description}</span>
           )}
-          <IconButton className={styles.icon}>
-            <Icon width={24} name="buttonArrowDown" />
-          </IconButton>
+          <IconButton icon="buttonArrowDown" className={styles.icon} />
         </label>
         <ul className={classNames(styles.menu)} {...getMenuProps()}>
           {isOpen &&
