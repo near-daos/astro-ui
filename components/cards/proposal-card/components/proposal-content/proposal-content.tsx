@@ -112,3 +112,23 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
     </div>
   </>
 );
+
+interface TextWithLinkProps extends ProposalContentProps {
+  text: string;
+}
+
+export const TextWithLink: FC<TextWithLinkProps> = ({
+  text,
+  link,
+  linkTitle
+}) => (
+  <>
+    <div className={styles.row}>
+      <span className={cn('paragraph1', styles.text)}>{text}</span>
+      &nbsp;&nbsp;
+    </div>
+    <div className={styles.sub}>
+      <ExternalLink to={link}>{linkTitle}</ExternalLink>
+    </div>
+  </>
+);

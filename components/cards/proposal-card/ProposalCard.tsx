@@ -20,6 +20,7 @@ export interface ProposalCardProps {
   dislikes: number;
   liked: boolean;
   disliked: boolean;
+  variant?: 'Default' | 'SuperCollapsed';
   onLike: () => void;
   onDislike: () => void;
 }
@@ -34,18 +35,21 @@ export const ProposalCard: FC<ProposalCardProps> = ({
   liked,
   disliked,
   onLike,
-  onDislike
+  onDislike,
+  variant = 'Default'
 }) => {
   return (
     <div className={styles.root}>
       <ProposalStatusPanel status={status} type={type} />
       <div className={styles.content}>
-        <div className={styles.header}>
-          <span className={cn('body1', styles.title)}>{title}</span>
-          <span>
-            <Icon name="buttonBookmark" className={styles.icon} />
-          </span>
-        </div>
+        {variant !== 'SuperCollapsed' && (
+          <div className={styles.header}>
+            <span className={cn('body1', styles.title)}>{title}</span>
+            <span>
+              <Icon name="buttonBookmark" className={styles.icon} />
+            </span>
+          </div>
+        )}
         <div className={styles.body}>{children}</div>
         <div className={styles.footer}>
           <span>
