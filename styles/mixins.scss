@@ -18,6 +18,12 @@
   white-space: nowrap;
 }
 
+@mixin font($size, $height, $weight) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $height;
+}
+
 /*
   Customize input placeholder
   Usage:
