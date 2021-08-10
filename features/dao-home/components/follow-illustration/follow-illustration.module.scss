@@ -1,0 +1,85 @@
+.root {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  min-height: 240px;
+
+  position: relative;
+
+  width: 100%;
+}
+
+.flag,
+.path,
+.smile {
+  position: absolute;
+}
+
+.flag {
+  transform: translate(20px, -34px);
+}
+
+.smile {
+  animation: move 7000ms infinite forwards;
+  animation-timing-function: linear;
+  left: 0;
+  offset-distance: 0;
+  //offset-rotate: 20deg;
+  // stylelint-disable
+  offset-path: path(
+    'M301.242 23.007C300.687 18.3792 296.254 14.2513 288.131 10.8712C280.068 7.51609 268.632 5.01306 254.621 3.47537C226.612 0.4013 188.483 1.20272 146.884 6.62233C105.284 12.0419 68.1391 21.0472 41.7169 31.2127C28.5002 36.2976 18.0068 41.6576 10.9836 46.9782C3.90827 52.3383 0.586159 57.4766 1.14097 62.1044C1.69578 66.7323 6.12878 70.8602 14.252 74.2402C22.3153 77.5954 33.7513 80.0984 47.7619 81.6361C75.7713 84.7101 113.9 83.9087 155.499 78.4891C197.099 73.0695 234.244 64.0642 260.666 53.8987C273.883 48.8138 284.376 43.4538 291.399 38.1332C298.475 32.7731 301.797 27.6348 301.242 23.007Z'
+  );
+  // stylelint-enable
+  top: 0;
+  transform: scale(0.7);
+}
+
+.path.unfollow {
+  .route {
+    stroke: var(--color-neutral-60);
+    stroke-dasharray: 4 4;
+  }
+
+  .smile {
+    animation: none;
+    bottom: 70px;
+    right: 120px;
+    transform: scale(1) rotate(50deg);
+    transform-origin: center;
+  }
+}
+
+@keyframes move {
+  0% {
+    offset-distance: 0;
+    transform: scale(0.7);
+  }
+
+  10% {
+    transform: scale(0.5);
+  }
+
+  35% {
+    transform: scale(0.5);
+  }
+
+  55% {
+    transform: scale(1);
+  }
+
+  80% {
+    transform: scale(1);
+  }
+
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .root {
+    transform: scale(0.75);
+  }
+}
