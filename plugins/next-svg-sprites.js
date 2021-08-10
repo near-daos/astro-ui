@@ -52,6 +52,16 @@ module.exports = (nextConfig = {}) => {
         ]
       });
 
+      config.module.rules.push({
+        test: /\.colors\.svg$/,
+        include: path.join(process.cwd(), 'assets', 'icons'),
+        use: [
+          {
+            loader: 'svgo-loader'
+          }
+        ]
+      });
+
       config.plugins.push(new SpriteLoaderPlugin());
 
       return config;
