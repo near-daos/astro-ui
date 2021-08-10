@@ -4,13 +4,15 @@ import classNames from 'classnames';
 interface FormattedNumericValueProps {
   value: number;
   suffix?: string;
+  className?: string;
 }
 
 export const FormattedNumericValue: React.FC<FormattedNumericValueProps> = ({
   value,
-  suffix
+  suffix,
+  className
 }) => (
-  <div className={styles.root}>
+  <div className={classNames(styles.root, className)}>
     <span className="title3">{value.toLocaleString()}</span>
     &nbsp;
     {suffix ? (

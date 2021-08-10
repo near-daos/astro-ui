@@ -1,21 +1,25 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
-import { TokenCard } from 'components/cards/token-card/TokenCard';
+import { Meta, Story } from '@storybook/react';
+import {
+  TokenCard,
+  TokenCardProps,
+  TokenName
+} from 'components/cards/token-card/TokenCard';
+import { Header } from 'components/cards/token-card/components/header';
 
 export default {
   title: 'Components/cards/TokenCard',
   component: TokenCard,
   decorators: [
     story => (
-      <div style={{ padding: '1rem', background: 'lightgrey' }}>{story()}</div>
+      <div style={{ padding: '1rem', background: '#f7f5fc' }}>{story()}</div>
     )
   ]
 } as Meta;
 
-export const Template = (
-  args: React.ComponentProps<typeof TokenCard>
-): JSX.Element => (
+export const Template: Story<TokenCardProps> = (args): JSX.Element => (
   <>
+    <Header />
     <TokenCard {...args} />
   </>
 );
@@ -23,8 +27,8 @@ export const Template = (
 Template.storyName = 'TokenCard';
 
 Template.args = {
-  tokenName: 'NEAR',
-  tokensAmount: 877,
-  totalCost: 80569,
+  tokenName: TokenName.NEAR,
+  tokensBalance: 877,
+  totalValue: 80569,
   voteWeight: 50
 };

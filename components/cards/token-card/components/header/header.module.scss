@@ -1,0 +1,12 @@
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-primary-10);
+  padding-bottom: 12px;
+  padding-top: 12px;
+
+  .caption {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+  }
+}

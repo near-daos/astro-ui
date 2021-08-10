@@ -1,15 +1,39 @@
+@import 'styles/typography';
+
+.container {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 24px;
+  padding-right: 24px;
+
+  > div:first-child {
+    flex: 0 0 120px;
+  }
+
+  > div:nth-child(2) {
+    flex: 1;
+  }
+
+  > div:nth-child(3) {
+    flex: 1;
+  }
+
+  > div:last-child {
+    flex: 1;
+  }
+}
+
 .root {
   background-color: var(--color-white);
   border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
   padding: 24px;
 }
 
 .token-container {
   align-items: center;
   display: flex;
-  flex: 0 0 120px;
+
   justify-content: flex-start;
 
   .icon {
@@ -24,11 +48,8 @@
   }
 }
 
-.details {
-  align-items: center;
-  display: flex;
-  flex: 1;
-  justify-content: space-around;
+.tokens-balance {
+  @extend %title3;
 }
 
 .vote-weight {

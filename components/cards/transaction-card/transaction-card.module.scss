@@ -1,0 +1,56 @@
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  background-color: var(--color-white);
+  display: flex;
+  justify-content: space-between;
+  padding-right: 16px;
+}
+
+.icon {
+  align-items: center;
+  display: flex;
+  flex: 0 0 64px;
+  height: 80px;
+  justify-content: center;
+  margin-right: 16px;
+
+  .container {
+    height: 24px;
+    width: 24px;
+  }
+
+  &.green {
+    background-color: var(--color-success-40);
+  }
+
+  &.purple {
+    background-color: var(--color-brand-purple-light);
+  }
+}
+
+.token {
+  display: flex;
+  flex: 1;
+
+  .balance {
+    @extend %subtitle2;
+  }
+
+  .name {
+    @extend %title3;
+  }
+}
+
+.date {
+  @extend %body2;
+  flex: 1;
+}
+
+.account {
+  @extend %title3;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}

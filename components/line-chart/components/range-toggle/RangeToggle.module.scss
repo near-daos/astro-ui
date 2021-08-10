@@ -1,0 +1,30 @@
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-white);
+  display: flex;
+  padding: 2px;
+
+  .toggle {
+    background-color: var(--color-white);
+    color: var(--color-brand-purple);
+    min-width: 20px;
+    padding: 2px 8px;
+  }
+}
+
+.toggle {
+  @extend %title6;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  height: 20px;
+  justify-content: center;
+  margin: 0 4px;
+  opacity: 1;
+
+  &.active {
+    background-color: var(--color-brand-purple-light);
+    color: var(--color-brand-purple);
+  }
+}

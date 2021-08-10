@@ -1,0 +1,45 @@
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-brand-purple);
+  border-radius: 4px;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 4px 8px;
+  z-index: 10000;
+}
+
+/* if backdrop support: very transparent and blurred */
+@supports (
+  (-webkit-backdrop-filter: blur(5px)) or (backdrop-filter: blur(5px))
+) {
+  .root {
+    backdrop-filter: blur(5px);
+    background-color: var(--color-neutral-60);
+  }
+}
+
+.date {
+  @extend %subtitle5;
+  color: var(--color-white);
+  white-space: nowrap;
+}
+
+.group {
+  align-items: center;
+  display: flex;
+  white-space: nowrap;
+}
+
+.time,
+.label {
+  @extend %caption2;
+  color: var(--color-white);
+  white-space: nowrap;
+}
+
+.value {
+  @extend %subtitle5;
+  color: var(--color-white);
+  margin-left: 4px;
+}

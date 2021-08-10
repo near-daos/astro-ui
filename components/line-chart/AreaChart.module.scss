@@ -1,0 +1,17 @@
+@import 'styles/typography';
+
+.root {
+  flex: 1;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.caption {
+  @extend %title5;
+  color: var(--color-primary-10);
+}
