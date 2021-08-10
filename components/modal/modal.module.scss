@@ -26,7 +26,7 @@
 }
 
 .overlay {
-  align-items: center;
+  align-items: flex-start;
   background: rgba(#201f1f, 0.5);
   bottom: 0;
   display: flex;
@@ -54,6 +54,7 @@
   position: absolute;
   right: 36px;
   top: 36px;
+  transform: rotate(45deg);
 }
 
 .close {

@@ -2,7 +2,6 @@ import React, { FC, memo, ReactNode, useCallback } from 'react';
 import cn from 'classnames';
 import ReactModal from 'react-modal';
 
-import { Icon } from 'components/Icon';
 import { IconButton } from 'components/button/IconButton';
 
 import styles from './modal.module.scss';
@@ -40,12 +39,11 @@ export const Modal: FC<ModalProps> = memo(
         closeTimeoutMS={300}
       >
         <IconButton
+          icon="buttonAdd"
           size="medium"
           onClick={handleClose}
           className={styles['close-wrapper']}
-        >
-          <Icon name="buttonAdd" className={styles.close} width={24} />
-        </IconButton>
+        />
         <div>{children}</div>
       </ReactModal>
     );
