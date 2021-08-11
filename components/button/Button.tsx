@@ -22,10 +22,10 @@ export const Button: React.FC<ButtonProps> = ({
     tertiary: styles.tertiary
   };
   const sizes = {
-    small: styles['size-small'],
-    medium: styles['size-medium'],
-    large: styles['size-large'],
-    block: styles['size-block']
+    small: styles.sizeSmall,
+    medium: styles.sizeMedium,
+    large: styles.sizeLarge,
+    block: styles.sizeBlock
   };
   const className = classNames(
     styles.btn,
