@@ -8,12 +8,14 @@ export interface ProposalTrackerProps {
   title: string;
   subtitle: string;
   action: JSX.Element;
+  onClick: React.ButtonHTMLAttributes<HTMLButtonElement>['onClick'];
 }
 
 export const ProposalTrackerCard: FC<ProposalTrackerProps> = ({
   title,
   subtitle,
-  action
+  action,
+  onClick
 }) => {
   return (
     <div className={styles.root}>
@@ -25,7 +27,7 @@ export const ProposalTrackerCard: FC<ProposalTrackerProps> = ({
           {subtitle}
         </Typography.Subtitle>
       </div>
-      <Button className={styles.action} variant="tertiary">
+      <Button onClick={onClick} className={styles.action} variant="tertiary">
         {action}
       </Button>
     </div>
