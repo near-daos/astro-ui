@@ -1,0 +1,10 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.header {
+  @include centralize;
+
+  h2 {
+    margin: 0 14px;
+  }
+}

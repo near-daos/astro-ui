@@ -1,4 +1,7 @@
+@import 'styles/mixins';
+
 .tab {
+  @include ellipse-text;
   align-items: center;
 
   color: var(--color-primary);
