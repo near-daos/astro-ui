@@ -1,14 +1,19 @@
-import React from 'react';
 import { Meta } from '@storybook/react';
-import { Icon } from 'components/Icon';
 
 import * as icons from 'assets/icons';
+import { Icon } from 'components/Icon';
+import React from 'react';
 
 export type IconName = keyof typeof icons;
 
 export default {
   title: 'Components/Icon',
-  component: Icon
+  component: Icon,
+  parameters: {
+    backgrounds: {
+      default: 'light'
+    }
+  }
 } as Meta;
 
 export const Template = (): JSX.Element => (
@@ -21,7 +26,7 @@ export const Template = (): JSX.Element => (
           alignItems: 'center'
         }}
       >
-        <Icon name={key as IconName} width={24} />
+        <Icon name={key as IconName} width={40} />
         <span style={{ marginLeft: 24 }}>{key}</span>
       </li>
     ))}
@@ -29,7 +34,3 @@ export const Template = (): JSX.Element => (
 );
 
 Template.storyName = 'Icon';
-Template.args = {
-  label: 'Label',
-  placeholder: 'Sample text'
-};
