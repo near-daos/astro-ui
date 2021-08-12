@@ -13249,6 +13249,11 @@ react-colorful@^5.1.2:
   resolved "https://registry.yarnpkg.com/react-colorful/-/react-colorful-5.2.3.tgz#579faf42542e32645c5dee66c8530292b2d61646"
   integrity sha512-lAge4syxosZg9SX8fJiwOLd9ZJSW3poPBtypnz1aMiFoHsRnK5G3+INGGx9DGtsrso4h5uFYbiFpjAfWyK3Kag==
 
+react-countdown-hook@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-countdown-hook/-/react-countdown-hook-1.1.0.tgz#190dd48e3715c4c6cf5f2047a59874b2edce8318"
+  integrity sha512-qK9yIbJ+g0Gk/tAkXT0fXpfW2DiN/xyWePGtWtA3Bl19ZM7zsCOttXGMg+DTa0cNx4Yn/1WRwNuXng+QDs5ygw==
+
 react-dev-utils@^11.0.3:
   version "11.0.4"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-11.0.4.tgz#a7ccb60257a1ca2e0efe7a83e38e6700d17aa37a"

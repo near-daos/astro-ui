@@ -11,10 +11,19 @@ export interface ModalProps {
   onClose: () => void;
   children?: ReactNode;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  className?: string;
+  hideCloseIcon?: boolean;
 }
 
 export const Modal: FC<ModalProps> = memo(
-  ({ isOpen, onClose, children, size = 'md' }) => {
+  ({
+    isOpen,
+    onClose,
+    children,
+    size = 'md',
+    className = '',
+    hideCloseIcon
+  }) => {
     const handleClose = useCallback(() => {
       onClose();
     }, [onClose]);
@@ -24,7 +33,7 @@ export const Modal: FC<ModalProps> = memo(
         ariaHideApp={false}
         isOpen={isOpen}
         onRequestClose={handleClose}
-        className={cn(styles.root, {
+        className={cn(styles.root, className, {
           [styles.sm]: size === 'sm',
           [styles.md]: size === 'md',
           [styles.lg]: size === 'lg',
@@ -38,12 +47,14 @@ export const Modal: FC<ModalProps> = memo(
         shouldCloseOnEsc
         closeTimeoutMS={300}
       >
-        <IconButton
-          icon="buttonAdd"
-          size="medium"
-          onClick={handleClose}
-          className={styles['close-wrapper']}
-        />
+        {!hideCloseIcon && (
+          <IconButton
+            icon="buttonAdd"
+            size="medium"
+            onClick={handleClose}
+            className={styles['close-wrapper']}
+          />
+        )}
         <div>{children}</div>
       </ReactModal>
     );

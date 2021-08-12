@@ -23,6 +23,10 @@
   &.xl {
     width: 1024px;
   }
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .overlay {

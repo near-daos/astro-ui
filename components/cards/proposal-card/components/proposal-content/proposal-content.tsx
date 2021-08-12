@@ -8,8 +8,8 @@ import { Icon } from 'components/Icon';
 import styles from './proposal-content.module.scss';
 
 interface ProposalContentProps {
-  link: string;
-  linkTitle: string;
+  link?: string;
+  linkTitle?: string;
 }
 
 interface AddRemoveMemberProps extends ProposalContentProps {
@@ -31,9 +31,11 @@ export const AddMemberToGroup: FC<AddRemoveMemberProps> = ({
       &nbsp;&nbsp;
       <Badge size="medium">{groupName}</Badge>
     </div>
-    <div className={styles.sub}>
-      <ExternalLink to={link}>{linkTitle}</ExternalLink>
-    </div>
+    {link && (
+      <div className={styles.sub}>
+        <ExternalLink to={link}>{linkTitle}</ExternalLink>
+      </div>
+    )}
   </>
 );
 
@@ -51,9 +53,11 @@ export const RemoveMemberFromGroup: FC<AddRemoveMemberProps> = ({
       &nbsp;&nbsp;
       <Badge size="small">{groupName}</Badge>
     </div>
-    <div className={styles.sub}>
-      <ExternalLink to={link}>{linkTitle}</ExternalLink>
-    </div>
+    {link && (
+      <div className={styles.sub}>
+        <ExternalLink to={link}>{linkTitle}</ExternalLink>
+      </div>
+    )}
   </>
 );
 
@@ -72,9 +76,11 @@ export const CreateNewGroup: FC<NewGroupProps> = ({
       &nbsp;&nbsp;
       <Badge size="small">{groupName}</Badge>
     </div>
-    <div className={styles.sub}>
-      <ExternalLink to={link}>{linkTitle}</ExternalLink>
-    </div>
+    {link && (
+      <div className={styles.sub}>
+        <ExternalLink to={link}>{linkTitle}</ExternalLink>
+      </div>
+    )}
   </>
 );
 
@@ -82,7 +88,7 @@ interface RequestPayoutProps extends ProposalContentProps {
   amount: number;
   tokens: string;
   recipient: string;
-  reason: string;
+  reason?: string;
 }
 
 export const RequestPayout: FC<RequestPayoutProps> = ({
@@ -94,15 +100,19 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
   linkTitle
 }) => (
   <>
-    <div className={styles.row}>
-      <span className={cn('paragraph1', styles.text)}>
-        I would like to request a payment for {reason}
-      </span>
-      &nbsp;&nbsp;
-    </div>
-    <div className={styles.sub}>
-      <ExternalLink to={link}>{linkTitle}</ExternalLink>
-    </div>
+    {reason && (
+      <div className={styles.row}>
+        <span className={cn('paragraph1', styles.text)}>
+          I would like to request a payment for {reason}
+        </span>
+        &nbsp;&nbsp;
+      </div>
+    )}
+    {link && (
+      <div className={styles.sub}>
+        <ExternalLink to={link}>{linkTitle}</ExternalLink>
+      </div>
+    )}
     <div className={styles['sub-row']}>
       <span className={cn('title1', styles.value)}>{amount}</span>
       &nbsp;
@@ -127,8 +137,10 @@ export const TextWithLink: FC<TextWithLinkProps> = ({
       <span className={cn('paragraph1', styles.text)}>{text}</span>
       &nbsp;&nbsp;
     </div>
-    <div className={styles.sub}>
-      <ExternalLink to={link}>{linkTitle}</ExternalLink>
-    </div>
+    {link && (
+      <div className={styles.sub}>
+        <ExternalLink to={link}>{linkTitle}</ExternalLink>
+      </div>
+    )}
   </>
 );

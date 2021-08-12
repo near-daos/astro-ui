@@ -1,0 +1,66 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  min-height: 56px;
+  padding: 16px;
+}
+
+.icon {
+  @include centralize;
+  color: var(--color-primary-70);
+  flex: 0 0 24px;
+  width: 24px;
+
+  &.close {
+    transform: rotate(45deg);
+  }
+}
+
+.type {
+  @include centralize;
+  color: var(--color-primary-70);
+  flex: 1;
+  justify-content: flex-start;
+  margin: 0 0 0 24px;
+  text-transform: capitalize;
+}
+
+.vote {
+  @extend %caption1;
+  align-items: center;
+  display: flex;
+  flex: 1;
+}
+
+.active {
+  background: var(--color-brand-purple-light);
+}
+
+.passed {
+  background: var(--color-success-40);
+}
+
+.rejected {
+  background: var(--color-error-50);
+}
+
+.dismissed {
+  background: var(--color-neutral-60);
+}
+
+.expired {
+  background: var(--color-neutral-30);
+}
+
+@media screen and (max-width: 768px) {
+  .root {
+    align-items: center;
+    height: 40px;
+    justify-content: flex-start;
+    padding-left: 21px;
+    width: 100%;
+  }
+}

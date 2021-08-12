@@ -11,6 +11,7 @@ interface ProposalControlPanelProps {
   disliked: boolean;
   onLike: () => void;
   onDislike: () => void;
+  className?: string;
 }
 
 const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
@@ -19,10 +20,11 @@ const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
   dislikes,
   disliked,
   onLike,
-  onDislike
+  onDislike,
+  className = ''
 }) => {
   return (
-    <div className={styles.root}>
+    <div className={cn(styles.root, className)}>
       <span className={styles.item}>
         <IconButton
           icon={liked ? 'votingYesChecked' : 'votingYes'}
