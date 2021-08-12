@@ -1,0 +1,36 @@
+@import 'styles/typography';
+
+.root {
+  @include centralize;
+  background: #fff;
+  border-radius: 8px;
+  flex-direction: column;
+  text-align: center;
+}
+
+.content {
+  @include centralize;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  width: 100%;
+}
+
+.title {
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--color-neutral-60);
+  margin: 0;
+}
+
+.action {
+  @extend %title3;
+  @include centralize;
+  background: var(--color-brand-neon-yellow);
+  color: var(--color-primary-70);
+  height: 40px;
+  text-transform: none;
+  width: 100%;
+}
