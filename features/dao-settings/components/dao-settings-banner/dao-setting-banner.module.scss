@@ -1,0 +1,37 @@
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-primary-20);
+  display: grid;
+  grid-row-gap: 8px;
+  grid-template-areas:
+    'name control'
+    'desc none'
+    'details none';
+  grid-template-columns: 1fr 1fr;
+  padding: 34px 32px;
+}
+
+.name {
+  @extend %heading2;
+  grid-area: name;
+}
+
+.control {
+  align-items: center;
+  display: flex;
+  grid-area: control;
+  justify-content: flex-end;
+
+  > button {
+    margin-left: 16px;
+  }
+}
+
+.desc {
+  grid-area: desc;
+}
+
+.details {
+  grid-area: details;
+}
