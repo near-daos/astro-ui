@@ -1,0 +1,16 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
+
+.row {
+  margin-bottom: 24px;
+}
+
+.label {
+  @extend %subtitle5;
+  color: var(--color-neutral-60);
+}
