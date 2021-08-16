@@ -3,6 +3,7 @@ import React, { FC, useCallback, useState } from 'react';
 import { CreateOrAdoptTokenStep } from 'features/voting-token/components/create-or-adopt-token-step';
 import { CreateVotingTokenStep } from 'features/voting-token/components/create-voting-token-step';
 import { ConfirmTokenStep } from 'features/voting-token/components/confirm-token-step';
+import { ConfirmNearStep } from 'features/voting-token/components/confirm-near-step';
 
 import { TData, WizardContext } from './helpers';
 import { WizardFlow, WizardStep } from './types';
@@ -35,6 +36,10 @@ const ADOPT_NEAR_TOKEN_STEP = [
   {
     id: 1,
     component: CreateOrAdoptTokenStep
+  },
+  {
+    id: 2,
+    component: ConfirmNearStep
   }
 ];
 
