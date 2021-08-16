@@ -1,0 +1,43 @@
+@import 'styles/mixins';
+
+.root {
+  background: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 424px;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding: 36px 13px 13px;
+  position: relative;
+  text-align: center;
+  width: 360px;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.notes {
+  margin-bottom: 8px;
+  margin-top: 32px;
+}
+
+.title {
+  color: var(--color-primary-50);
+}
+
+.description {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.footer {
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
