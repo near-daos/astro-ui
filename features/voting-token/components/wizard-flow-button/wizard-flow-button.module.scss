@@ -1,0 +1,45 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  border: 1.5px solid var(--color-neutral-60);
+  display: flex;
+  height: 100%;
+  min-height: 134px;
+  padding: 23px 24px;
+
+  &:not(:last-of-type) {
+    margin-bottom: 16px;
+  }
+
+  &.active {
+    border-color: var(--color-primary-50);
+    box-shadow: 0 0 0 2px var(--color-primary-50);
+  }
+}
+
+.icon {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  min-width: 76px;
+}
+
+.title {
+  @extend %heading2;
+  text-align: left;
+  text-transform: lowercase;
+  &::first-letter {
+    text-transform: capitalize;
+  }
+}
+
+.description {
+  @extend %body1;
+  text-align: left;
+  text-transform: lowercase;
+  &::first-letter {
+    text-transform: capitalize;
+  }
+}
