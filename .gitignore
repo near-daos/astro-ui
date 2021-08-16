@@ -11,6 +11,8 @@
 # next.js
 /.next/
 /out/
+# generated at launch
+next-env.d.ts
 
 # production
 /build
