@@ -15,6 +15,11 @@ export const Template: Story<BondsAndDeadlinesTabProps> = (
   args
 ): JSX.Element => <BondsAndDeadlines {...args} />;
 
-Template.storyName = 'LinksTab';
+Template.storyName = 'BondsAndDeadlines';
 
-Template.args = {};
+Template.args = {
+  createProposalBond: 1.1,
+  proposalExpireTime: 7,
+  claimBountyBond: 2,
+  unclaimBountyTime: 3
+};

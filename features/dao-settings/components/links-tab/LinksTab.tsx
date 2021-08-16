@@ -15,6 +15,7 @@ type ExternalLink = {
 export interface LinksTabProps {
   links: ExternalLink[];
   onChange: (links: ExternalLink[]) => void;
+  viewMode: boolean;
 }
 
 function getLinkIcon(link: string) {
@@ -49,7 +50,7 @@ function getLinkIcon(link: string) {
   return 'socialAnyUrl';
 }
 
-const LinksTab: FC<LinksTabProps> = ({ links, onChange }) => {
+const LinksTab: FC<LinksTabProps> = ({ links, onChange, viewMode = true }) => {
   const handleClickAdd = React.useCallback(() => {
     const newId = nanoid();
     const newItem = {
@@ -75,38 +76,44 @@ const LinksTab: FC<LinksTabProps> = ({ links, onChange }) => {
         return (
           <div className={styles.row} key={item.id}>
             <Icon name={icon} className={styles.icon} />
-            <Input
-              size="large"
-              textAlign="left"
-              value={item.url}
-              onChange={e => {
-                const updatedLinks = links.map(link => {
-                  if (link.id === item.id) {
-                    return {
-                      ...link,
-                      url: (e.target as HTMLInputElement).value
-                    };
-                  }
+            {viewMode ? (
+              <span>{item.url}</span>
+            ) : (
+              <Input
+                size="large"
+                textAlign="left"
+                value={item.url}
+                onChange={e => {
+                  const updatedLinks = links.map(link => {
+                    if (link.id === item.id) {
+                      return {
+                        ...link,
+                        url: (e.target as HTMLInputElement).value
+                      };
+                    }
 
-                  return link;
-                });
+                    return link;
+                  });
 
-                onChange(updatedLinks);
-              }}
-            />
+                  onChange(updatedLinks);
+                }}
+              />
+            )}
           </div>
         );
       })}
-      <div className={styles.row}>
-        <Button
-          className={styles.add}
-          variant="tertiary"
-          onClick={handleClickAdd}
-        >
-          <Icon name="buttonAdd" className={styles.icon} />
-          <span>Add link</span>
-        </Button>
-      </div>
+      {!viewMode && (
+        <div className={styles.row}>
+          <Button
+            className={styles.add}
+            variant="tertiary"
+            onClick={handleClickAdd}
+          >
+            <Icon name="buttonAdd" className={styles.icon} />
+            <span>Add link</span>
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
