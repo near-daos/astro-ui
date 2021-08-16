@@ -34,6 +34,7 @@ export const DaoHeader: React.VFC<DAOHeaderProps> = ({
       )}
       <h3> {label} </h3>
       <Icon
+        width={24}
         style={{
           marginLeft: 'auto',
           transform: isOpen ? undefined : 'rotate(-90deg)',

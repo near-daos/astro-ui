@@ -21,10 +21,12 @@ export const Template = (
         <h1>
           Collapsable header
           <IconButton
-            style={{
-              transform: isOpen ? undefined : 'rotate(-90deg)',
-              transition: 'all 100ms',
-              marginBottom: '8px'
+            iconProps={{
+              style: {
+                transform: isOpen ? undefined : 'rotate(-90deg)',
+                transition: 'all 100ms',
+                marginBottom: '8px'
+              }
             }}
             icon="buttonArrowDown"
             size="large"

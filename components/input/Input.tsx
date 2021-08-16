@@ -1,7 +1,7 @@
-import React from 'react';
+import { useId } from '@reach/auto-id';
 import classNames from 'classnames';
 import { Property } from 'csstype';
-import { useId } from '@reach/auto-id';
+import React from 'react';
 import styles from './input.module.scss';
 
 export interface InputProps
@@ -10,8 +10,8 @@ export interface InputProps
   description?: string | undefined;
   isValid?: boolean | undefined;
   inputSize?: number | undefined;
-  size: 'small' | 'medium' | 'large' | 'block' | 'content';
-  textAlign: Property.TextAlign;
+  size?: 'small' | 'medium' | 'large' | 'block' | 'content';
+  textAlign?: Property.TextAlign;
 }
 
 function getStateClass(isValid: boolean | undefined) {
@@ -35,9 +35,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       className: classNameProp,
       description,
       isValid,
-      size,
+      size = 'small',
       inputSize,
-      textAlign,
+      textAlign = 'left',
       ...props
     },
     externalRef

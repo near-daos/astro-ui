@@ -16,7 +16,9 @@
   @include size(0, 24px, 14px, 24px, 4px);
   border: 2px solid transparent;
   cursor: pointer;
+  flex-shrink: 0;
   height: 40px;
+  min-height: 40px;
   text-transform: uppercase;
 
   > img,
