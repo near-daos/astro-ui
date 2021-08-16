@@ -37,6 +37,14 @@ Template.args = {
     claimedByMe: true,
     deadlineThreshold: 8,
     deadlineUnit: 'week',
-    bond: 0.3
+    voteDetails: [
+      { value: '50%', label: 'MEW holders' },
+      { value: '50%', label: 'cool group' },
+      { value: '1 person', label: 'Ombudspeople' }
+    ],
+    bondDetail: {
+      value: 0.3,
+      token: 'NEAR'
+    }
   }
 };

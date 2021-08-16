@@ -17,5 +17,14 @@ export const Template: Story<CreatePollDialogProps> = (args): JSX.Element => (
 
 Template.storyName = 'CreatePoll';
 Template.args = {
-  isOpen: true
+  isOpen: true,
+  voteDetails: [
+    { value: '50%', label: 'MEW holders' },
+    { value: '50%', label: 'cool group' },
+    { value: '1 person', label: 'Ombudspeople' }
+  ],
+  bondDetail: {
+    value: 0.3,
+    token: 'NEAR'
+  }
 };

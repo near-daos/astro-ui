@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import cn from 'classnames';
 import { format, parseISO } from 'date-fns';
 
 import { Bounty } from 'features/bounty/types';
@@ -8,6 +7,7 @@ import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import { getDeadlineDate } from 'components/cards/bounty-card/helpers';
 import { Button } from 'components/button/Button';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
+import { Bond } from 'components/bond';
 
 interface ClaimBountyContentProps {
   onClose: (...args: unknown[]) => void;
@@ -44,18 +44,9 @@ const ClaimBountyContent: FC<ClaimBountyContentProps> = ({
       </div>
       <div className={styles.vote}>
         <ExpandableDetails label="Details">Placeholder</ExpandableDetails>
+        <Bond {...data.bondDetail} className={styles['fit-container']} />
       </div>
-      <div className={styles['important-content']}>
-        <div className={styles.subtitle}>Bond</div>
-        <div className={styles['value-wrapper']}>
-          <div className={styles.value}>{data.bond}</div>
-          <div className={cn(styles.desc, styles.ml8)}>{data.token}</div>
-        </div>
-        <div className={styles.text}>
-          To prevent spam, you must pay a bond. The bond will be returned when
-          you complete the bounty before your deadline.
-        </div>
-      </div>
+
       <div className={styles.footer}>
         <Button
           variant="secondary"

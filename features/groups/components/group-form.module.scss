@@ -1,0 +1,84 @@
+.root {
+  display: grid;
+  grid-column-gap: 8px;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'groupName groupName'
+    'member member'
+    'groupDetails groupDetails'
+    'externalUrl externalUrl'
+    'voteDetails voteDetails'
+    'footer footer';
+  grid-template-columns: 1fr 1fr;
+  margin-top: 40px;
+}
+
+.member {
+  grid-area: member;
+}
+
+.name {
+  grid-area: groupName;
+}
+
+.detail {
+  grid-area: groupDetails;
+}
+
+.url {
+  grid-area: externalUrl;
+}
+
+.vote {
+  grid-area: voteDetails;
+}
+
+.footer {
+  display: flex;
+  grid-area: footer;
+  justify-content: flex-end;
+}
+
+.text-area {
+  &textarea {
+    width: 100%;
+  }
+}
+
+.input {
+  input {
+    flex-basis: unset;
+    padding: 12.5px;
+  }
+}
+
+.inline-input {
+  height: 48px;
+  margin: 0 8px;
+}
+
+.mr8 {
+  margin-right: 8px;
+}
+
+.ml8 {
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .root {
+    grid-template-areas:
+      'token'
+      'amount'
+      'recipient'
+      'group'
+      'externalUrl'
+      'voteDetails'
+      'footer';
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    justify-content: space-between;
+  }
+}

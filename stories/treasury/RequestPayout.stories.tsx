@@ -22,6 +22,15 @@ export const Template: Story<RequestPayoutPopupProps> = args => (
 Template.storyName = 'RequestPayout';
 Template.args = {
   isOpen: true,
+  voteDetails: [
+    { value: '50%', label: 'MEW holders' },
+    { value: '50%', label: 'cool group' },
+    { value: '1 person', label: 'Ombudspeople' }
+  ],
+  bondDetail: {
+    value: 0.3,
+    token: 'NEAR'
+  },
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onClose: () => {}
 };

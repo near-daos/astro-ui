@@ -15,12 +15,13 @@ import {
 } from 'features/bounty/dialogs/create-bounty-dialog/types';
 import { DeadlineUnit } from 'components/cards/bounty-card/types';
 
+import { VoteDetails } from 'components/vote-details';
 import { schema, tokenOptions, deadlineUnitOptions } from './helpers';
 
 import styles from './create-bounty-form.module.scss';
 
 interface CreateBountyFormProps {
-  initialValues?: CreateBountyInput;
+  initialValues: CreateBountyInput;
   onSubmit: () => void;
   onCancel: () => void;
 }
@@ -124,7 +125,9 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
         />
       </div>
       <div className={styles.vote}>
-        <ExpandableDetails label="Vote details">Placeholder</ExpandableDetails>
+        <ExpandableDetails label="Vote details">
+          <VoteDetails {...initialValues} />
+        </ExpandableDetails>
       </div>
       <div className={styles.footer}>
         <Button

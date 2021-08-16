@@ -1,5 +1,17 @@
 @import 'styles/typography';
 
+.content {
+  margin-left: -48px;
+  margin-right: -48px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in;
+}
+
+.opened {
+  max-height: 500px;
+}
+
 .label {
   @extend %title5;
   align-items: center;
@@ -11,5 +23,10 @@
 
 .icon {
   min-width: 24px;
+  transition: transform 0.3s;
   width: 24px;
+}
+
+.rotate {
+  transform: rotate(90deg);
 }

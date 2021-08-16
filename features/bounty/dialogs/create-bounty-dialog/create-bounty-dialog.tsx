@@ -10,7 +10,7 @@ import { CreateBountyInput } from './types';
 import { CreateBountyForm } from './components/create-bounty-form/CreateBountyForm';
 
 export interface CreateBountyDialogProps {
-  initialValues?: CreateBountyInput;
+  initialValues: CreateBountyInput;
   isOpen: boolean;
   onClose: (...args: unknown[]) => void;
 }

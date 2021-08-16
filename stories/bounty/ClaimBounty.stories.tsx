@@ -18,6 +18,10 @@ Template.storyName = 'ClaimBounty';
 Template.args = {
   isOpen: true,
   data: {
+    bondDetail: {
+      value: 0.3,
+      token: 'NEAR'
+    },
     type: 'Passed',
     status: 'In progress',
     token: 'NEAR',
@@ -35,7 +39,6 @@ Template.args = {
     ],
     claimedByMe: true,
     deadlineThreshold: 8,
-    deadlineUnit: 'week',
-    bond: 0.3
+    deadlineUnit: 'week'
   }
 };

@@ -1,0 +1,39 @@
+@import 'styles/typography';
+
+.root {
+  background: var(--color-primary-80);
+  color: var(--color-white);
+
+  .subtitle {
+    @extend %subtitle5;
+  }
+
+  .value-wrapper {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 2px;
+  }
+
+  .value-wrapper .value {
+    @extend %title2;
+  }
+
+  .value-wrapper .token {
+    @extend %subtitle2;
+  }
+
+  .text {
+    @extend %caption1;
+    margin-top: 16px;
+    word-break: break-all;
+  }
+}
+
+.mr8 {
+  margin-right: 8px;
+}
+
+.ml8 {
+  margin-left: 8px;
+}

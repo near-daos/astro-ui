@@ -7,12 +7,11 @@ import { Input } from 'components/input/Input';
 import { Select } from 'components/select/Select';
 import { tokenOptions } from 'features/bounty/dialogs/create-bounty-dialog/components/create-bounty-form/helpers';
 import { TextArea } from 'components/textarea/TextArea';
-import {
-  CreatePayoutInput,
-  Token
-} from 'features/treasury/request-payout-popup/types';
+import { CreatePayoutInput } from 'features/treasury/request-payout-popup/types';
 import { Button } from 'components/button/Button';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
+import { VoteDetails } from 'components/vote-details';
+import { Token } from 'features/types';
 import styles from './request-payout-form.module.scss';
 
 const schema = yup.object().shape({
@@ -32,7 +31,7 @@ interface IRequestPayoutForm {
 }
 
 interface RequestPayoutFormProps {
-  initialValues?: CreatePayoutInput;
+  initialValues: CreatePayoutInput;
   onSubmit: () => void;
   onCancel: () => void;
 }
@@ -115,7 +114,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
       />
       <div className={styles.vote}>
         <ExpandableDetails label="Vote details">
-          {initialValues?.voteDetails}
+          <VoteDetails {...initialValues} />
         </ExpandableDetails>
       </div>
       <div className={styles.footer}>

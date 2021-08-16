@@ -31,7 +31,11 @@ export const CompleteBountyDialog: FC<CompleteBountyDialogProps> = ({
       </header>
       <div className={styles.content}>
         <BountyCard variant="simple" data={data} />
-        <CompleteBountyForm onCancel={onClose} onSubmit={handleSubmit} />
+        <CompleteBountyForm
+          onCancel={onClose}
+          onSubmit={handleSubmit}
+          {...data}
+        />
       </div>
     </Modal>
   );

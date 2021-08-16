@@ -1,8 +1,8 @@
-import React, { FC, ReactNode } from 'react';
-import { Collapsable } from 'components/collapsable/Collapsable';
+import React, { FC, ReactNode, useState } from 'react';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 
+import classNames from 'classnames';
 import styles from './expandable-details.module.scss';
 
 interface ExpandableDetailsProps {
@@ -14,21 +14,25 @@ export const ExpandableDetails: FC<ExpandableDetailsProps> = ({
   label,
   children
 }) => {
+  const [isOpen, toggle] = useState(false);
+
   return (
-    <Collapsable
-      renderHeading={(toggle, isOpen) => (
-        <Button
-          size="small"
-          variant="tertiary"
-          className={styles.label}
-          onClick={() => toggle(!isOpen)}
-        >
-          <Icon name="buttonArrowRight" className={styles.icon} />
-          <span>{label}</span>
-        </Button>
-      )}
-    >
-      {children}
-    </Collapsable>
+    <>
+      <Button
+        size="small"
+        variant="tertiary"
+        className={styles.label}
+        onClick={() => toggle(!isOpen)}
+      >
+        <Icon
+          name="buttonArrowRight"
+          className={classNames(styles.icon, { [styles.rotate]: isOpen })}
+        />
+        <span>{label}</span>
+      </Button>
+      <div className={classNames(styles.content, { [styles.opened]: isOpen })}>
+        {children}
+      </div>
+    </>
   );
 };

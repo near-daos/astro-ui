@@ -1,3 +1,5 @@
+import { BondDetail, VoteDetail } from 'features/types';
+
 export type ClaimedBy = {
   name: string;
   datetime: string;
@@ -19,5 +21,6 @@ export type Bounty = {
   claimedByMe: boolean;
   deadlineThreshold: number;
   deadlineUnit: DeadlineUnit;
-  bond?: number;
+  voteDetails: VoteDetail[];
+  bondDetail: BondDetail;
 };
