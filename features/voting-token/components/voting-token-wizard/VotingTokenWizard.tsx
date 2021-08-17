@@ -3,6 +3,8 @@ import React, { FC, useCallback, useState } from 'react';
 import { CreateOrAdoptTokenStep } from 'features/voting-token/components/create-or-adopt-token-step';
 import { CreateVotingTokenStep } from 'features/voting-token/components/create-voting-token-step';
 import { ConfirmTokenStep } from 'features/voting-token/components/confirm-token-step';
+import { ChooseTokenFarmTokenStep } from 'features/voting-token/components/choose-token-farm-token-step';
+import { ConfirmTokenFarmTokenStep } from 'features/voting-token/components/confirm-token-farm-token-step';
 import { ConfirmNearStep } from 'features/voting-token/components/confirm-near-step';
 
 import { TData, WizardContext } from './helpers';
@@ -29,6 +31,14 @@ const ADOPT_TOKEN_FARM_STEPS = [
   {
     id: 1,
     component: CreateOrAdoptTokenStep
+  },
+  {
+    id: 2,
+    component: ChooseTokenFarmTokenStep
+  },
+  {
+    id: 3,
+    component: ConfirmTokenFarmTokenStep
   }
 ];
 
