@@ -1,0 +1,40 @@
+@import 'styles/mixins';
+
+.root {
+  @include centralize;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  margin-bottom: 124px;
+  text-align: center;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.button {
+  margin-top: 32px;
+}
+
+.target {
+  text-transform: capitalize;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.footer {
+  border-radius: 0 0 8px 8px;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
