@@ -1,0 +1,52 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  background: var(--color-white);
+  border-radius: 8px;
+  flex-direction: column;
+  height: 320px;
+  max-width: 100%;
+  padding: 48px 48px 48px 140px;
+  position: relative;
+  width: 566px;
+
+  h1 {
+    margin: 0;
+  }
+
+  .subtitle {
+    @extend %subtitle3;
+    color: var(--color-neutral-60);
+  }
+
+  .flag {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 240px;
+    left: -120px;
+    position: absolute;
+    top: 33px;
+    width: 240px;
+  }
+
+  .content {
+    font-size: 16px;
+    text-align: left;
+  }
+
+  .created {
+    @extend %subtitle6;
+    align-self: flex-start;
+    color: var(--color-neutral-60);
+  }
+
+  .links {
+    display: inline-flex;
+    gap: 14px;
+    list-style: none;
+    padding: 0;
+    width: 100%;
+  }
+}
