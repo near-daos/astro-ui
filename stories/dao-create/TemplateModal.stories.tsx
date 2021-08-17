@@ -43,8 +43,8 @@ const DemoComponent: FC<{ modalProps: DaoTemplateModalProps }> = ({
   const [showModal] = useModal<DaoTemplateModalProps>(DaoTemplateModal, {
     ...modalProps,
     options,
-    title: 'Who can create proposals?',
-    description: `Proposals aren't like voting on a question, requesting funds or adding new members. Every proposal has to be voted on.`
+    title: 'Foundation',
+    description: `A DAO where anyone can submit a new vote, but only a small committee efficiently votes on decisions and distributing funds.`
   });
 
   const handleClick = useCallback(async () => {

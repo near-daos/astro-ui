@@ -1,11 +1,11 @@
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { Modal } from 'components/modal';
+import * as footers from 'features/create-dao/components/footers';
 import {
   DaoOptionCard,
   DaoSettingOption
 } from 'features/create-dao/components/option-card/DaoOptionCard';
-import * as footers from 'features/create-dao/components/footers';
 import React, { FC } from 'react';
 
 import styles from './dao-template-modal.module.scss';
@@ -41,8 +41,10 @@ export const DaoTemplateModal: FC<DaoTemplateModalProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.root}>
-        <h2> {title} </h2>
-        <p className={styles.description}>{description}</p>
+        <section>
+          <h2 className={styles.title}> {title} </h2>
+          <p className={styles.description}>{description}</p>
+        </section>
 
         <div className={styles.list}>
           {options.map(option => (
