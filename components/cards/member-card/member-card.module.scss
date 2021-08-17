@@ -102,3 +102,16 @@
     margin-right: 8px;
   }
 }
+
+.root.expanded {
+  background: transparent;
+  max-width: 100%;
+
+  .body {
+    margin-top: 0;
+  }
+
+  .title {
+    margin-top: 24px;
+  }
+}

@@ -5,7 +5,7 @@ import { Icon } from 'components/Icon';
 
 import styles from './member-card.module.scss';
 
-type Token = {
+export type Token = {
   value: number;
   type: string;
   percent: number;
@@ -16,6 +16,7 @@ export interface MemberCardProps {
   title: string;
   tokens?: Token;
   votes: number;
+  expandedView?: boolean;
 }
 
 interface TokensProps {
@@ -44,13 +45,20 @@ const MemberCard: FC<MemberCardProps> = ({
   title,
   children,
   votes,
-  tokens
+  tokens,
+  expandedView
 }) => {
   return (
-    <div className={styles.root}>
-      <div className={styles['person-icon']}>
-        <Icon name="proposalRemoveMember" width={24} height={24} />
-      </div>
+    <div
+      className={cn(styles.root, {
+        [styles.expanded]: expandedView
+      })}
+    >
+      {!expandedView && (
+        <div className={styles['person-icon']}>
+          <Icon name="proposalRemoveMember" width={24} height={24} />
+        </div>
+      )}
 
       <div className={styles.body}>
         <div className={styles.smile}>
