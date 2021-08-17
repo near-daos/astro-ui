@@ -1,5 +1,4 @@
 const path = require('path');
-const withPlugins = require('next-compose-plugins');
 const svgSprite = require('./plugins/next-svg-sprites');
 const cssLoaderConfig = require('./plugins/css-loader-config');
 

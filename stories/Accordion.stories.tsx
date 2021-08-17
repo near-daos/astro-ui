@@ -1,9 +1,8 @@
-import React from 'react';
 import { Meta } from '@storybook/react';
-import { useAccordion } from 'hooks/useAccordion';
-import { Collapsable } from 'components/collapsable/Collapsable';
 import { IconButton } from 'components/button/IconButton';
-import { Icon } from 'components/Icon';
+import { Collapsable } from 'components/collapsable/Collapsable';
+import { useAccordion } from 'hooks/useAccordion';
+import React from 'react';
 
 export default {
   title: 'Components/Accordion'
@@ -65,16 +64,18 @@ const Header: React.FC<{
         }
       `}</style>
       {label}
-      <IconButton size="medium" type="button">
-        <Icon
-          style={{
+      <IconButton
+        iconProps={{
+          style: {
             transform: isOpen ? undefined : 'rotate(-90deg)',
             transition: 'all 100ms',
             marginBottom: '8px'
-          }}
-          name="buttonArrowDown"
-        />
-      </IconButton>
+          }
+        }}
+        icon="buttonArrowDown"
+        size="medium"
+        type="button"
+      />
     </section>
   );
 };

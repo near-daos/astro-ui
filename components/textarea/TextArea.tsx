@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import classNames from 'classnames';
-import TextareaAutosize from 'react-textarea-autosize';
-import { Property } from 'csstype';
 import { useId } from '@reach/auto-id';
+import classNames from 'classnames';
 import inputStyles from 'components/input/input.module.scss';
+import { Property } from 'csstype';
+import React, { useState } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
 import styles from './textarea.module.scss';
 
 export interface TextAreaProps
   extends React.ComponentProps<typeof TextareaAutosize> {
   label?: string | undefined;
   size: 'medium' | 'large' | 'block';
-  textAlign: Property.TextAlign;
-  resize: Property.Resize;
+  textAlign?: Property.TextAlign;
+  resize?: Property.Resize;
 }
 
 const sizeClasses = {
@@ -27,7 +27,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
       label,
       className: classNameProp,
       maxLength,
-      size,
+      size = 'medium',
       resize = 'none',
       minRows = 8,
       maxRows = 8,
