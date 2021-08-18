@@ -1,0 +1,38 @@
+@import 'styles/typography';
+
+.root {
+  @extend %body1;
+  align-items: center;
+  border-bottom: 1px solid var(--color-neutral-40);
+  display: grid;
+  grid-template-areas: 'amount delegated control';
+  grid-template-columns: 1fr 2fr 1fr;
+  padding: 28px 0;
+  width: 100%;
+}
+
+.amount {
+  display: grid;
+  grid-area: amount;
+  grid-column-gap: 8px;
+  grid-template-areas: 'value sub';
+  grid-template-columns: auto 1fr;
+}
+
+.delegated {
+  @extend %title3;
+  grid-area: delegated;
+}
+
+.control {
+  display: flex;
+  grid-area: control;
+  justify-content: flex-end;
+}
+
+@media screen and (max-width: 768px) {
+  .amount {
+    grid-template-areas: 'value' 'sub';
+    grid-template-columns: 1fr;
+  }
+}
