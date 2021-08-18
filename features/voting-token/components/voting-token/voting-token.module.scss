@@ -1,0 +1,62 @@
+@import 'styles/typography';
+
+.root {
+  @extend %body1;
+  align-items: center;
+  display: grid;
+  grid-template-areas: 'token symbol total control';
+  grid-template-columns: 20% 1fr 1fr 20%;
+  width: 100%;
+}
+
+.token {
+  //flex: 1 1 20%;
+  grid-area: token;
+}
+
+.symbol {
+  //flex: 1 1 30%;
+  grid-area: symbol;
+}
+
+.total {
+  //flex: 1 1 30%;
+  grid-area: total;
+}
+
+.control {
+  //flex: 1 1 20%;
+  grid-area: control;
+}
+
+.icon {
+  background-color: var(--color-brand-green-dark);
+  border-radius: 50%;
+  height: 32px;
+  margin-right: 12px;
+  overflow: hidden;
+  width: 32px;
+}
+
+.label {
+  @extend %subtitle5;
+  color: var(--color-neutral-60);
+  margin-bottom: 8px;
+}
+
+.value {
+  @extend %subtitle3;
+  align-items: center;
+  color: var(--color-neutral-90);
+  display: flex;
+}
+
+@media screen and (max-width: 768px) {
+  .root {
+    grid-row-gap: 12px;
+    grid-template-areas:
+      'token symbol'
+      'total control';
+    grid-template-columns: 1fr 1fr;
+  }
+}
