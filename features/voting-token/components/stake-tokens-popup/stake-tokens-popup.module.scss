@@ -1,0 +1,84 @@
+@import 'styles/typography';
+
+.root {
+  h2 {
+    margin-top: 0;
+    text-align: center;
+  }
+}
+
+.content {
+  margin-top: 40px;
+}
+
+.info {
+  display: grid;
+  grid-column-gap: 24px;
+  grid-template-areas: 'token symbol balance';
+  grid-template-columns: 1fr 2fr 1fr;
+}
+
+.token {
+  grid-area: token;
+}
+
+.symbol {
+  grid-area: symbol;
+}
+
+.balance {
+  grid-area: balance;
+}
+
+.label {
+  @extend %subtitle5;
+  color: var(--color-neutral-60);
+  margin-bottom: 8px;
+}
+
+.right {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.icon {
+  background-color: var(--color-brand-green-dark);
+  border-radius: 50%;
+  height: 32px;
+  margin-right: 12px;
+  overflow: hidden;
+  width: 32px;
+}
+
+.input {
+  margin-top: 32px;
+}
+
+.value {
+  @extend %subtitle3;
+  align-items: center;
+  color: var(--color-neutral-90);
+  display: flex;
+  line-height: 1.9;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px;
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .info {
+    grid-column-gap: 24px;
+    grid-template-areas:
+      'token balance'
+      'symbol symbol';
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer {
+    justify-content: space-around;
+  }
+}
