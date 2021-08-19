@@ -62,7 +62,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           size={inputSize}
           ref={externalRef}
           style={{ textAlign }}
-          type="text"
+          type={props.type ?? 'text'}
         />
         {description && description.length > 0 && (
           <span className={styles.description}>{description}</span>
