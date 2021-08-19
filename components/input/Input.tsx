@@ -1,12 +1,13 @@
+import React, { ReactNode } from 'react';
 import { useId } from '@reach/auto-id';
 import classNames from 'classnames';
 import { Property } from 'csstype';
-import React from 'react';
+
 import styles from './input.module.scss';
 
 export interface InputProps
-  extends Omit<React.HTMLProps<HTMLInputElement>, 'size'> {
-  label?: string | undefined;
+  extends Omit<React.HTMLProps<HTMLInputElement>, 'size' | 'label'> {
+  label?: string | ReactNode;
   description?: string | undefined;
   isValid?: boolean | undefined;
   inputSize?: number | undefined;
@@ -52,9 +53,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <label className={className} htmlFor={id}>
-        {label && label.length > 0 && (
-          <span className={styles.label}>{label}</span>
-        )}
+        {label && <span className={styles.label}>{label}</span>}
         <input
           className={getStateClass(isValid)}
           id={id}

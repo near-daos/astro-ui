@@ -19,12 +19,13 @@ interface SelectProps {
   id?: string | undefined;
   inputSize?: number | undefined;
   isSearchable?: boolean | undefined;
+  inputClassName?: string;
   isValid?: boolean | undefined;
   label?: string | undefined;
   onChange?: (value?: string) => void;
   options: Option[];
   placeholder?: string | undefined;
-  size?: 'medium' | 'large' | 'block' | 'content';
+  size?: 'small' | 'medium' | 'large' | 'block' | 'content';
   value?: string | undefined;
 }
 
@@ -52,6 +53,7 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
       isValid,
       size,
       inputSize,
+      inputClassName,
       isSearchable,
       value,
       defaultValue,
@@ -134,8 +136,6 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
       classNameProp
     );
 
-    const inputClassName = classNames(getStateClass(isValid));
-
     return (
       <div {...getComboboxProps()} className={className}>
         {label && label.length > 0 && (
@@ -150,7 +150,7 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
               readOnly: !isSearchable,
               placeholder
             })}
-            className={inputClassName}
+            className={classNames(getStateClass(isValid), inputClassName)}
             size={inputSize}
             type="text"
           />

@@ -1,3 +1,5 @@
+@import 'styles/typography';
+
 .select {
   cursor: default;
   min-width: 60px;
@@ -33,6 +35,7 @@
 
 .menu {
   background: #fff;
+  box-shadow: 0 8.89583px 30px rgba(0, 0, 0, 0.14);
   list-style: none;
   overflow-y: auto;
   position: absolute;

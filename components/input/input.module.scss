@@ -9,7 +9,6 @@
     border-radius: 4px;
     box-sizing: border-box;
     flex-basis: 100%;
-    flex-shrink: 0;
     font-size: 1em;
     height: 48px;
     line-height: 24px;
@@ -37,6 +36,14 @@
   }
 }
 
+.size-small {
+  width: 8em;
+
+  input {
+    width: 8em;
+  }
+}
+
 .size-medium {
   width: 16em;
 
@@ -53,7 +60,7 @@
   }
 }
 
-.size-small {
+.size-xl {
   width: 42px;
 
   input {

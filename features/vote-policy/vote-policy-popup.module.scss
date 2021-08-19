@@ -1,0 +1,48 @@
+@import 'styles/typography';
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.proposers {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
+
+.container {
+  width: 30%;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+
+  .buttons {
+    display: flex;
+    flex-basis: 32%;
+    justify-content: space-between;
+  }
+
+  button {
+    text-transform: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
+
+  .proposers {
+    display: none;
+  }
+
+  .footer {
+    flex-direction: column;
+    justify-content: space-around;
+    margin-top: 16px;
+  }
+}
