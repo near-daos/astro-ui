@@ -9,7 +9,7 @@ export enum GroupFormType {
 export interface GroupFormInput {
   groupType: GroupFormType;
   voteDetails: VoteDetail[];
-  bondDetails: BondDetail;
+  bondDetail: BondDetail;
   selectedGroup?: string;
   groups: string[];
   name?: string;
