@@ -8,7 +8,7 @@ export interface CheckboxProps extends React.HTMLProps<HTMLInputElement> {
 }
 
 export const Toggle = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ label, ...props }, externalRef) => {
+  ({ label, onChange, ...props }, externalRef) => {
     const id = useId(props.id);
     const [checked, setChecked] = useState(props.defaultChecked);
 
@@ -23,6 +23,10 @@ export const Toggle = React.forwardRef<HTMLInputElement, CheckboxProps>(
           type="checkbox"
           onChange={e => {
             setChecked(e.target.checked);
+
+            if (onChange) {
+              onChange(e);
+            }
           }}
         />
         <ToggleDisplay value={value} />
