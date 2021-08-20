@@ -1,8 +1,4 @@
 import 'assets/icons';
-import { AuthButton } from 'components/button/AuthButton';
-import { IconButton } from 'components/button/IconButton';
-import { Icon } from 'components/Icon';
-import { NavItem } from 'components/nav-item/NavItem';
 import Head from 'next/head';
 import Image from 'next/image';
 import React from 'react';
@@ -25,25 +21,6 @@ export default function Home(): JSX.Element {
           Get started by editing{' '}
           <code className={styles.code}>pages/index.js</code>
         </p>
-
-        <IconButton icon="buttonRefresh" size="large" />
-        <p>
-          Some text
-          <Icon name="socialTelegram" />
-          <NavItem label="Test Nav Item" href="#" icon="stateGear" />
-          <style jsx>
-            {`
-              p {
-                color: red;
-              }
-            `}
-          </style>
-        </p>
-
-        <AuthButton />
-
-        <IconButton size="large" icon="votingYesChecked" />
-
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
             <h2>Documentation &rarr;</h2>

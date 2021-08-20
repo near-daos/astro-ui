@@ -33,7 +33,8 @@ export const NameAndPurposeTab: FC<NameAndPurposeTabProps> = ({
             <span>{name}</span>
           ) : (
             <Input
-              size="large"
+              size="block"
+              value={name}
               maxLength={500}
               textAlign="left"
               onChange={e => {
@@ -50,8 +51,9 @@ export const NameAndPurposeTab: FC<NameAndPurposeTabProps> = ({
             <span>{purpose}</span>
           ) : (
             <TextArea
-              size="large"
+              size="block"
               textAlign="left"
+              value={purpose}
               resize="none"
               maxLength={500}
               onChange={e => {

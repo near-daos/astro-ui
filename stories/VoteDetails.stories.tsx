@@ -23,7 +23,7 @@ Template.args = {
     { value: '50%', label: 'cool group' },
     { value: '1 person', label: 'Ombudspeople' }
   ],
-  bondDetails: {
+  bondDetail: {
     value: 0.3,
     token: 'NEAR'
   }

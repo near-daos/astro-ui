@@ -8,11 +8,13 @@ import styles from './expandable-details.module.scss';
 interface ExpandableDetailsProps {
   label: string;
   children: ReactNode;
+  className?: string;
 }
 
 export const ExpandableDetails: FC<ExpandableDetailsProps> = ({
   label,
-  children
+  children,
+  className = ''
 }) => {
   const [isOpen, toggle] = useState(false);
 
@@ -30,7 +32,11 @@ export const ExpandableDetails: FC<ExpandableDetailsProps> = ({
         />
         <span>{label}</span>
       </Button>
-      <div className={classNames(styles.content, { [styles.opened]: isOpen })}>
+      <div
+        className={classNames(styles.content, className, {
+          [styles.opened]: isOpen
+        })}
+      >
         {children}
       </div>
     </>

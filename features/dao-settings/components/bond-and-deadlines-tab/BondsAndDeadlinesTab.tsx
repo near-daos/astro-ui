@@ -33,6 +33,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = ({
               <Input
                 className={styles.input}
                 size="small"
+                value={createProposalBond}
                 textAlign="left"
                 onChange={e => {
                   onChange(
@@ -57,6 +58,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = ({
                 className={styles.input}
                 size="small"
                 textAlign="left"
+                value={proposalExpireTime}
                 onChange={e => {
                   onChange(
                     'proposalExpireTime',
@@ -81,6 +83,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = ({
                 className={styles.input}
                 size="small"
                 textAlign="left"
+                value={claimBountyBond}
                 onChange={e => {
                   onChange(
                     'claimBountyBond',
@@ -106,6 +109,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = ({
                 className={styles.input}
                 size="small"
                 textAlign="left"
+                value={unclaimBountyTime}
                 onChange={e => {
                   onChange(
                     'unclaimBountyTime',

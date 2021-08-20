@@ -1,8 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
+import {
+  Tab,
+  Tabs as ReactTabs,
+  TabList,
+  TabPanel,
+  resetIdCounter
+} from 'react-tabs';
+
 import cn from 'classnames';
 
-// Components
-import { Tab } from './Tab';
+import 'react-tabs/style/react-tabs.css';
 
 // Types
 import { TabItem } from './types';
@@ -13,72 +20,37 @@ import styles from './tabs.module.scss';
 export interface TabsProps {
   className?: string;
   tabs: TabItem[];
-  variant: 'regular' | 'wrapped';
   fitContent?: boolean;
 }
 
-const Tabs: React.FC<TabsProps> = ({
-  tabs,
-  className,
-  variant = 'regular',
-  fitContent
-}) => {
-  const rootRef = useRef(null);
-  const activeTabRef = useRef(null);
+resetIdCounter();
 
-  const [activeTab, setActiveTab] = useState(tabs[0]);
-  const [activeLineStyles, setActiveLineStyles] = useState({
-    left: 0,
-    width: 0
-  });
-
-  useEffect(() => {
-    const activeEl = activeTabRef.current;
-    const rootEl = rootRef.current;
-
-    if (activeEl && rootEl) {
-      const {
-        left: rootLeft
-      } = (rootEl as HTMLElement).getBoundingClientRect();
-      const {
-        left: activeLeft,
-        width
-      } = (activeEl as HTMLElement).getBoundingClientRect();
-
-      setActiveLineStyles({
-        left: activeLeft - rootLeft - (variant === 'wrapped' ? 12 : 0),
-        width
-      });
-    }
-  }, [activeTab, variant]);
-
+const Tabs: React.FC<TabsProps> = ({ tabs, className, fitContent }) => {
   const rootClassName = cn(styles.root, className, {
-    [styles['fit-content']]: fitContent,
-    [styles.wrapped]: variant === 'wrapped'
+    [styles['fit-content']]: fitContent
   });
 
   return (
-    <div className={rootClassName} ref={rootRef}>
-      <div
-        className={cn(styles.tabs, {
-          [styles.regular]: variant === 'regular'
-        })}
-      >
-        {tabs.map(tab => {
-          const { id } = tab;
-          const isActive = activeTab.id === id;
-
-          const el = (
-            <Tab key={id} tab={tab} onClick={setActiveTab} active={isActive} />
-          );
-
-          return isActive ? React.cloneElement(el, { ref: activeTabRef }) : el;
-        })}
-        <span className={styles['active-line']} style={activeLineStyles} />
-      </div>
-      <div className={styles.content}>{activeTab.content}</div>
+    <div className={rootClassName}>
+      <ReactTabs>
+        <TabList className={styles.tabs}>
+          {tabs.map(item => (
+            <Tab
+              key={item.id}
+              selectedClassName={styles.active}
+              className={styles.tab}
+              data-name={item.label}
+            >
+              {item.label}
+            </Tab>
+          ))}
+        </TabList>
+        {tabs.map(item => (
+          <TabPanel key={item.id}>{item.content}</TabPanel>
+        ))}
+      </ReactTabs>
     </div>
   );
 };
 
-export default Tabs;
+export default React.memo(Tabs);

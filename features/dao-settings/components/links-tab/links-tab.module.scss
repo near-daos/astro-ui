@@ -21,6 +21,12 @@
   width: 24px;
 }
 
+.delete {
+  color: var(--color-error-70);
+  margin-left: 12px;
+  width: 24px;
+}
+
 .add {
   @extend %title3;
   align-items: center;

@@ -32,73 +32,75 @@ export const Sidebar: React.FC<SidebarProps> = ({ daoList, items }) => {
 
   return (
     <aside className={styles.sidebar}>
-      <Logo />
-      <DaoList {...getItemProps('dao')} items={daoList} />
+      <div className={styles.wrapper}>
+        <Logo />
+        <DaoList {...getItemProps('dao')} items={daoList} />
 
-      <nav className={styles.menu}>
-        {items.map(item => {
-          if (!item.subItems?.length) {
-            return (
-              <NavItem
-                className={styles.item}
-                label={item.label}
-                count={item.count}
-                href={item.href}
-                icon={item.logo}
-              />
-            );
-          }
-
-          return (
-            <Collapsable
-              {...getItemProps(item.label)}
-              key={item.label}
-              duration={250}
-              renderHeading={toggle => (
+        <nav className={styles.menu}>
+          {items.map(item => {
+            if (!item.subItems?.length) {
+              return (
                 <NavItem
-                  onClick={() => toggle()}
                   className={styles.item}
                   label={item.label}
                   count={item.count}
                   href={item.href}
                   icon={item.logo}
                 />
-              )}
-            >
-              {item.subItems.map(subItem => (
-                <NavSubItem
-                  key={subItem.label}
-                  count={subItem.count}
-                  label={subItem.label}
-                  href={subItem.href}
-                />
-              ))}
-            </Collapsable>
-          );
-        })}
-      </nav>
+              );
+            }
 
-      <nav className={styles.bottom}>
-        <NavItem
-          className={styles.item}
-          label="Home"
-          count={999}
-          href="#"
-          icon="stateHome"
-        />
-        <NavItem
-          className={styles.item}
-          label="All Communities"
-          href="#"
-          icon="stateCommunities"
-        />
-        <NavItem
-          className={styles.item}
-          label="Create a DAO"
-          href="#"
-          icon="stateCreateDao"
-        />
-      </nav>
+            return (
+              <Collapsable
+                {...getItemProps(item.label)}
+                key={item.label}
+                duration={250}
+                renderHeading={toggle => (
+                  <NavItem
+                    onClick={() => toggle()}
+                    className={styles.item}
+                    label={item.label}
+                    count={item.count}
+                    href={item.href}
+                    icon={item.logo}
+                  />
+                )}
+              >
+                {item.subItems.map(subItem => (
+                  <NavSubItem
+                    key={subItem.label}
+                    count={subItem.count}
+                    label={subItem.label}
+                    href={subItem.href}
+                  />
+                ))}
+              </Collapsable>
+            );
+          })}
+        </nav>
+
+        <nav className={styles.bottom}>
+          <NavItem
+            className={styles.item}
+            label="Home"
+            count={999}
+            href="#"
+            icon="stateHome"
+          />
+          <NavItem
+            className={styles.item}
+            label="All Communities"
+            href="#"
+            icon="stateCommunities"
+          />
+          <NavItem
+            className={styles.item}
+            label="Create a DAO"
+            href="#"
+            icon="stateCreateDao"
+          />
+        </nav>
+      </div>
     </aside>
   );
 };

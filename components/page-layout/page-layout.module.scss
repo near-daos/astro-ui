@@ -1,0 +1,38 @@
+.root {
+  display: grid;
+  grid-template-areas:
+    'aside header'
+    'aside main';
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: 72px 1fr;
+
+  min-height: 100vh;
+
+  header {
+    align-items: center;
+    background-color: var(--color-white);
+    display: flex;
+    grid-area: header;
+    height: 72px;
+    width: 100%;
+  }
+
+  aside {
+    grid-area: aside;
+    height: 100%;
+  }
+
+  main {
+    background-color: var(--color-primary-10);
+    grid-area: main;
+    padding: 0 120px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .root {
+    main {
+      padding: 0 48px;
+    }
+  }
+}

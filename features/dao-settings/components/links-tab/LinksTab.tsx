@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 import { Icon } from 'components/Icon';
 import { Input } from 'components/input/Input';
 import { Button } from 'components/button/Button';
+import { IconButton } from 'components/button/IconButton';
 
 import styles from './links-tab.module.scss';
 
@@ -14,7 +15,7 @@ type ExternalLink = {
 
 export interface LinksTabProps {
   links: ExternalLink[];
-  onChange: (links: ExternalLink[]) => void;
+  onChange: (name: string, links: ExternalLink[]) => void;
   viewMode: boolean;
 }
 
@@ -59,9 +60,9 @@ const LinksTab: FC<LinksTabProps> = ({ links, onChange, viewMode = true }) => {
     };
 
     if (links) {
-      onChange([...links, newItem]);
+      onChange('links', [...links, newItem]);
     } else {
-      onChange([newItem]);
+      onChange('links', [newItem]);
     }
   }, [links, onChange]);
 
@@ -79,25 +80,38 @@ const LinksTab: FC<LinksTabProps> = ({ links, onChange, viewMode = true }) => {
             {viewMode ? (
               <span>{item.url}</span>
             ) : (
-              <Input
-                size="large"
-                textAlign="left"
-                value={item.url}
-                onChange={e => {
-                  const updatedLinks = links.map(link => {
-                    if (link.id === item.id) {
-                      return {
-                        ...link,
-                        url: (e.target as HTMLInputElement).value
-                      };
-                    }
+              <>
+                <Input
+                  size="medium"
+                  textAlign="left"
+                  value={item.url}
+                  onChange={e => {
+                    const updatedLinks = links.map(link => {
+                      if (link.id === item.id) {
+                        return {
+                          ...link,
+                          url: (e.target as HTMLInputElement).value
+                        };
+                      }
 
-                    return link;
-                  });
+                      return link;
+                    });
 
-                  onChange(updatedLinks);
-                }}
-              />
+                    onChange('links', updatedLinks);
+                  }}
+                />
+                <IconButton
+                  icon="buttonDelete"
+                  className={styles.delete}
+                  onClick={() => {
+                    const updatedLinks = links.filter(link => {
+                      return link.id !== item.id;
+                    });
+
+                    onChange('links', updatedLinks);
+                  }}
+                />
+              </>
             )}
           </div>
         );
