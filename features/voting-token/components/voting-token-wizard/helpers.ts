@@ -3,6 +3,8 @@ import React, { useContext } from 'react';
 import { WizardFlow } from './types';
 
 export type TData = {
+  id: string;
+  balance: number;
   tokenName?: string;
   tokenSymbol?: string;
   totalSupplyOfToken: number;

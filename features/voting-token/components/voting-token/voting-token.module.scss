@@ -23,6 +23,7 @@
 
 .control {
   grid-area: control;
+  justify-self: flex-end;
 }
 
 .icon {
@@ -32,6 +33,14 @@
   margin-right: 12px;
   overflow: hidden;
   width: 32px;
+
+  .selected {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .label {

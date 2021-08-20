@@ -12,10 +12,12 @@ export const VotingTokenPopup: FC<VotingTokenPopupProps> = ({
   isOpen,
   onClose
 }) => {
-  const handleSubmit = useCallback(() => {
-    // todo - handle submit here
-    onClose('submitted');
-  }, [onClose]);
+  const handleSubmit = useCallback(
+    res => {
+      onClose(res);
+    },
+    [onClose]
+  );
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

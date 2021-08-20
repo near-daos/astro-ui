@@ -24,8 +24,10 @@ export const Template: Story<VotingTokenProps> = (args): JSX.Element => (
 Template.storyName = 'VotingToken';
 Template.args = {
   token: {
-    name: 'GOOSE',
-    symbol: 'goose.tkn.farm'
+    id: '1',
+    tokenName: 'GOOSE',
+    tokenSymbol: 'goose.tkn.farm',
+    balance: 19
   },
   totalStaked: 1234.22
 };

@@ -18,8 +18,8 @@ Template.storyName = 'StakeTokensPopup';
 Template.args = {
   isOpen: true,
   token: {
-    name: 'GOOSE',
-    symbol: 'goose.tkn.farm',
+    tokenName: 'GOOSE',
+    tokenSymbol: 'goose.tkn.farm',
     balance: 9,
     id: '1'
   },

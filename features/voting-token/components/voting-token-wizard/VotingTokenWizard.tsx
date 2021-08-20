@@ -60,7 +60,7 @@ const WIZARD_STEPS: { [key: string]: WizardStep[] } = {
 };
 
 interface VotingTokenWizardProps {
-  onSubmit: () => void;
+  onSubmit: (data: TData) => void;
   onClose: () => void;
 }
 
@@ -72,7 +72,7 @@ export const VotingTokenWizard: FC<VotingTokenWizardProps> = ({
     'CREATE_NEW_TOKEN_STEPS' as WizardFlow
   );
   const [activeStep, setActiveStep] = useState(1);
-  const [data, setData] = useState({} as TData);
+  const [data, setData] = useState({ balance: 34 } as TData);
 
   const handleSetSteps = useCallback((selectedFlow: WizardFlow) => {
     setActiveFlow(selectedFlow);
@@ -95,13 +95,13 @@ export const VotingTokenWizard: FC<VotingTokenWizardProps> = ({
   const handleSubmit = useCallback(
     d => {
       if (d) {
-        setData({
+        onSubmit({
           ...data,
           ...d
         });
+      } else {
+        onSubmit(data);
       }
-
-      onSubmit();
     },
     [data, onSubmit]
   );

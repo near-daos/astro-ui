@@ -9,7 +9,7 @@ type Stake = {
   id: string;
   amount: number;
   name: string;
-  delegatedTo: string;
+  delegatedTo?: string;
 };
 
 export interface AmountsStakedProps {
