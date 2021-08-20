@@ -16,6 +16,6 @@ export const Template: Story<BondProps> = args => <Bond {...args} />;
 
 Template.storyName = 'Bond';
 Template.args = {
-  value: '0.3',
+  value: 0.3,
   token: 'NEAR'
 };

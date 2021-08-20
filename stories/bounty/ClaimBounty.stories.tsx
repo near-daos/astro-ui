@@ -22,6 +22,11 @@ Template.args = {
       value: 0.3,
       token: 'NEAR'
     },
+    voteDetails: [
+      { value: '50%', label: 'MEW holders' },
+      { value: '50%', label: 'cool group' },
+      { value: '1 person', label: 'Ombudspeople' }
+    ],
     type: 'Passed',
     status: 'In progress',
     token: 'NEAR',
