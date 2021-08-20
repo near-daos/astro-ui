@@ -68,9 +68,9 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --color --max-warnings 0 --no-ignore",
-      "tsc-files --noEmit"
+      "eslint --color --max-warnings 0 --no-ignore"
     ],
+    "**/*.{ts,tsx}": "tsc-files --noEmit",
     "*.{js,jsx,ts,tsx,json,md}": [
       "prettier --write"
     ],
