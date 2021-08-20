@@ -22,7 +22,8 @@
     "stylelint-check": "stylelint-config-prettier-check",
     "test": "jest",
     "postinstall": "patch-package && yarn generate-assets-index",
-    "generate-assets-index": "node scripts/generateAssetsIndex.js"
+    "generate-assets-index": "node scripts/generateAssetsIndex.js",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.7.1",
@@ -67,7 +68,8 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --color --max-warnings 0 --no-ignore"
+      "eslint --color --max-warnings 0 --no-ignore",
+      "tsc --noEmit"
     ],
     "*.{js,jsx,ts,tsx,json,md}": [
       "prettier --write"
