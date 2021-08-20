@@ -69,7 +69,7 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --color --max-warnings 0 --no-ignore",
-      "tsc --noEmit"
+      "tsc-files --noEmit"
     ],
     "*.{js,jsx,ts,tsx,json,md}": [
       "prettier --write"
@@ -132,6 +132,7 @@
     "stylelint-order": "^4.1.0",
     "stylelint-prettier": "^1.2.0",
     "stylelint-scss": "^3.19.0",
+    "tsc-files": "^1.1.2",
     "typescript": "^4.3.5",
     "webpack": "5"
   }

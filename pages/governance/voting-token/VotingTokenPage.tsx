@@ -69,7 +69,7 @@ const VotingTokenPage: FC = () => {
       {token && (
         <VotingToken
           token={token}
-          totalStaked={0}
+          totalStaked={10}
           onStake={(res: string) => handleStake(token, res)}
         />
       )}
