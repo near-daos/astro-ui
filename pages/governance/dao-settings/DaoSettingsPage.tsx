@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { DaoSettingsView } from 'features/dao-settings';
 
-const DaoSettings: FC = () => {
+const DaoSettingsPage: FC = () => {
   return <DaoSettingsView />;
 };
 
-export default DaoSettings;
+export default DaoSettingsPage;
