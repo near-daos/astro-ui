@@ -50,6 +50,7 @@
   @extend %caption1;
   color: var(--color-neutral-60);
   margin-right: 8px;
+  width: max-content;
 }
 
 .max {
@@ -58,6 +59,7 @@
   color: var(--color-primary-60);
   height: auto;
   min-height: unset;
+  min-width: unset;
   padding: 4px;
   &:hover {
     color: var(--color-white);

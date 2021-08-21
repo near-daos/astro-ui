@@ -1,0 +1,29 @@
+@import 'styles/typography';
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 24px 0;
+}
+
+.subheader {
+  @extend %body1;
+}
+
+.warning {
+  @extend %body1;
+  align-self: center;
+  color: var(--color-error-70);
+  display: flex;
+  margin-top: 32px;
+
+  .icon {
+    margin-right: 10px;
+    width: 24px;
+  }
+}
+
+.row {
+  margin-top: 48px;
+}

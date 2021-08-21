@@ -45,7 +45,13 @@ export const ConfirmNearStep: FC = () => {
           variant="primary"
           size="small"
           className={styles.ml8}
-          onClick={() => handleSubmit()}
+          onClick={() =>
+            handleSubmit({
+              tokenIcon: 'iconNear',
+              tokenName: 'NEAR',
+              tokenSymbol: 'near.tkn'
+            })
+          }
         >
           Propose
         </Button>

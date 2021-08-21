@@ -11,8 +11,8 @@ import styles from './stake-tokens-popup.module.scss';
 type Token = {
   id: string;
   icon?: IconName;
-  name: string;
-  symbol: string;
+  tokenName?: string;
+  tokenSymbol?: string;
   balance: number;
 };
 
@@ -31,8 +31,11 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
 }) => {
   const [value, setValue] = useState('');
   const handleSubmit = useCallback(() => {
-    // todo - handle submit here
-    onClose('submitted');
+    onClose(value);
+  }, [onClose, value]);
+
+  const handleCancel = useCallback(() => {
+    onClose();
   }, [onClose]);
 
   const handleMax = useCallback(() => {
@@ -51,19 +54,19 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
                 <div className={styles.icon}>
                   {token.icon && <Icon name={token.icon} />}
                 </div>
-                {token.name}
+                {token.tokenName}
               </div>
             </div>
             <div className={styles.symbol}>
               <div className={styles.label}>&nbsp;</div>
-              <div className={styles.value}>{token.symbol}</div>
+              <div className={styles.value}>{token.tokenSymbol}</div>
             </div>
             <div className={styles.balance}>
               <div className={cn(styles.label, styles.right)}>Your balance</div>
               <div className={cn(styles.value, styles.right)}>
                 <strong>{token.balance}</strong>
                 &nbsp;
-                {token.name}
+                {token.tokenName}
               </div>
             </div>
           </div>
@@ -84,7 +87,7 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
           </div>
         </div>
         <div className={styles.footer}>
-          <Button variant="secondary" onClick={onClose} size="small">
+          <Button variant="secondary" onClick={handleCancel} size="small">
             Cancel
           </Button>
           &nbsp;&nbsp;

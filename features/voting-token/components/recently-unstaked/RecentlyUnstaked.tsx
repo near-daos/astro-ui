@@ -5,7 +5,7 @@ import { Button } from 'components/button/Button';
 
 import styles from './recently-unstaked.module.scss';
 
-type Stake = {
+export type Stake = {
   id: string;
   amount: number;
   name: string;

@@ -41,6 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ daoList, items }) => {
             if (!item.subItems?.length) {
               return (
                 <NavItem
+                  key={item.label}
                   className={styles.item}
                   label={item.label}
                   count={item.count}

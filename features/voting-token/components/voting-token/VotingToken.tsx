@@ -1,47 +1,77 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 
-import { Icon, IconName } from 'components/Icon';
+import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
+
+import { StakeTokensPopup } from 'features/voting-token/components/stake-tokens-popup';
+import { useModal } from 'components/modal';
 
 import styles from './voting-token.module.scss';
 
 type Token = {
-  icon?: IconName;
-  name: string;
-  symbol: string;
+  id: string;
+  tokenIcon?: string | ArrayBuffer | null;
+  tokenName?: string;
+  tokenSymbol?: string;
+  balance: number;
 };
 
 export interface VotingTokenProps {
   token: Token;
   totalStaked: number;
+  onStake: (res: string) => void;
 }
 
-export const VotingToken: FC<VotingTokenProps> = ({ token, totalStaked }) => {
+export const VotingToken: FC<VotingTokenProps> = ({
+  token,
+  totalStaked,
+  onStake
+}) => {
+  const [showModal] = useModal(StakeTokensPopup, { token, rate: 18 });
+
+  const handleStakeClick = useCallback(async () => {
+    const response = await showModal();
+
+    if (response?.length) {
+      onStake(response[0] as string);
+    }
+  }, [onStake, showModal]);
+
   return (
     <div className={styles.root}>
       <div className={styles.token}>
         <div className={styles.label}>Your voting token</div>
         <div className={styles.value}>
           <div className={styles.icon}>
-            {token.icon && <Icon name={token.icon} />}
+            {token.tokenIcon && token.tokenIcon === 'iconNear' && (
+              <Icon name={token.tokenIcon} />
+            )}
+            {token.tokenIcon && typeof token.tokenIcon === 'string' && (
+              <div
+                style={{ backgroundImage: `url(${token.tokenIcon})` }}
+                className={styles.selected}
+              />
+            )}
           </div>
-          {token.name}
+          {token.tokenName}
         </div>
       </div>
       <div className={styles.symbol}>
         <div className={styles.label}>&nbsp;</div>
-        {token.symbol}
+        {token.tokenSymbol}
       </div>
       <div className={styles.total}>
         <div className={styles.label}>Total staked</div>
         <div className={styles.value}>
           <strong>{totalStaked}</strong>
           &nbsp;
-          {token.name}
+          {token.tokenName}
         </div>
       </div>
       <div className={styles.control}>
-        <Button variant="secondary">Stake tokens</Button>
+        <Button variant="secondary" onClick={handleStakeClick}>
+          Stake tokens
+        </Button>
       </div>
     </div>
   );

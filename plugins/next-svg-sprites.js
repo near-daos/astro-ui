@@ -23,7 +23,8 @@ module.exports = (nextConfig = {}) => {
             loader: 'svg-sprite-loader',
             options: {
               extract: true,
-              publicPath: 'static/'
+              publicPath: 'static/',
+              outputPath: 'static/'
             }
           }
         ]

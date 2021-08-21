@@ -57,19 +57,19 @@ const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
     subItems: [
       {
         label: 'DAO settings',
-        href: '/governance/DaoSettings'
+        href: '/governance/dao-settings'
       },
       {
         label: 'Voting Policy',
-        href: '/governance/VotingPolicy'
+        href: '/governance/voting-policy'
       },
       {
         label: 'Voting Token',
-        href: '/governance/VotingToken'
+        href: '/governance/voting-token'
       },
       {
         label: 'Upgrade software Token',
-        href: '/governance/UpgradeSoftware'
+        href: '/governance/upgrade-software'
       }
     ]
   }
