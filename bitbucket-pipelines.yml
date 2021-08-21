@@ -1,0 +1,31 @@
+image: atlassian/default-image:2
+
+pipelines:
+  branches:
+    develop:
+      - step:
+          name: Installing & Linting
+          caches:
+            - node
+          script:
+            - yarn install 
+            - yarn lint
+            - yarn typecheck
+      - step:
+          name: Build artifact
+          script:
+            - yarn build-storybook
+          artifacts:
+            - storybook-static/*
+      - step:
+          name: Deploy to S3
+          deployment: development
+          script:
+            - pipe: atlassian/aws-s3-deploy:0.3.8
+              variables:
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_DEFAULT_REGION: 'us-east-2'
+                S3_BUCKET: 'astro-storybook'
+                LOCAL_PATH: 'storybook-static'
+                ACL: 'public-read'
