@@ -1,4 +1,4 @@
-image: atlassian/default-image:2
+image: node:14.16.0
 
 pipelines:
   branches:
