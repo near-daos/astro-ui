@@ -4,16 +4,13 @@ pipelines:
   branches:
     develop:
       - step:
-          name: Installing & Linting
+          name: Installing & Build artifact
           caches:
             - node
           script:
             - yarn install 
             - yarn lint
             - yarn typecheck
-      - step:
-          name: Build artifact
-          script:
             - yarn build-storybook
           artifacts:
             - storybook-static/*
