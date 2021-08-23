@@ -1,0 +1,7 @@
+.root {
+  :global .cropper-face.cropper-move {
+    background: url('/flag-mask.svg');
+    background-size: contain;
+    opacity: 1;
+  }
+}
