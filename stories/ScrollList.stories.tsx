@@ -1,11 +1,7 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import ScrollList, { ScrollListProps } from 'components/scroll-list/ScrollList';
-import {
-  TokenCard,
-  TokenCardProps,
-  TokenName
-} from 'components/cards/token-card';
+import { TokenCard, TokenName } from 'components/cards/token-card';
 import { nanoid } from 'nanoid';
 
 export default {
@@ -22,99 +18,24 @@ export const Template: Story<ScrollListProps> = args => (
   <ScrollList {...args} />
 );
 
-const tokenCards: Array<TokenCardProps> = [
-  {
-    id: nanoid(),
-    tokenName: TokenName.NEAR,
-    totalValue: 123123,
-    tokensBalance: 1231231,
-    voteWeight: 50
-  },
-  {
-    id: nanoid(),
-    tokenName: TokenName.NEAR,
-    totalValue: 123123,
-    tokensBalance: 1231231,
-    voteWeight: 90
-  },
-  {
-    id: nanoid(),
-    tokenName: TokenName.NEAR,
-    totalValue: 123123,
-    tokensBalance: 1231231,
-    voteWeight: 80
-  },
-  {
-    id: nanoid(),
-    tokenName: TokenName.NEAR,
-    totalValue: 123123,
-    tokensBalance: 1231231,
-    voteWeight: 30
-  },
-  {
-    id: nanoid(),
-    tokenName: TokenName.NEAR,
-    totalValue: 123123,
-    tokensBalance: 1231231,
-    voteWeight: 20
-  },
-  {
-    id: nanoid(),
-    tokenName: TokenName.NEAR,
-    totalValue: 123123,
-    tokensBalance: 1231231,
-    voteWeight: 20
-  },
-  {
-    id: nanoid(),
-    tokenName: TokenName.NEAR,
-    totalValue: 123123,
-    tokensBalance: 1231231,
-    voteWeight: 20
-  },
-  {
-    id: nanoid(),
-    tokenName: TokenName.NEAR,
-    totalValue: 123123,
-    tokensBalance: 1231231,
-    voteWeight: 20
-  },
-  {
-    id: nanoid(),
-    tokenName: TokenName.NEAR,
-    totalValue: 123123,
-    tokensBalance: 1231231,
-    voteWeight: 20
-  },
-  {
-    id: nanoid(),
-    tokenName: TokenName.NEAR,
-    totalValue: 123123,
-    tokensBalance: 1231231,
-    voteWeight: 20
-  },
-  {
-    id: nanoid(),
-    tokenName: TokenName.NEAR,
-    totalValue: 123123,
-    tokensBalance: 1231231,
-    voteWeight: 20
-  },
-  {
-    id: nanoid(),
-    tokenName: TokenName.NEAR,
-    totalValue: 123123,
-    tokensBalance: 1231231,
-    voteWeight: 20
-  },
-  {
-    id: nanoid(),
-    tokenName: TokenName.NEAR,
-    totalValue: 123123,
-    tokensBalance: 1231231,
-    voteWeight: 20
+const generateTokens = () => {
+  const cards = [];
+
+  for (let i = 0; i < 30; i += 1) {
+    cards.push({
+      id: nanoid(),
+      tokenName: TokenName.NEAR,
+      totalValue: 123123,
+      tokensBalance: 1231231,
+      voteWeight: 50,
+      href: ''
+    });
   }
-];
+
+  return cards;
+};
+
+const tokenCards = generateTokens();
 
 Template.storyName = 'ScrollList';
 Template.args = {

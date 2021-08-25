@@ -1,0 +1,71 @@
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-column-gap: 8px;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'accountName .  sendTokens'
+    'chart chart chart'
+    'label . .'
+    'tokens tokens tokens ';
+  grid-template-columns: 1fr 3fr 1fr;
+  padding-top: 56px;
+}
+
+.account {
+  grid-area: accountName;
+  width: 100%;
+
+  .caption {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+  }
+  .name {
+    @extend %title3;
+    align-items: center;
+    color: var(--color-brand-black);
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.send {
+  @extend %subtitle2;
+  color: var(--color-brand-black);
+  grid-area: sendTokens;
+  justify-self: end;
+
+  button {
+    min-width: fit-content;
+    text-transform: none;
+  }
+}
+
+.chart {
+  grid-area: chart;
+}
+
+.row {
+  margin-bottom: 16px;
+}
+
+.label {
+  grid-area: label;
+}
+
+.tokens {
+  grid-area: tokens;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .root {
+    grid-template-areas:
+      'accountName sendTokens sendTokens'
+      'chart chart chart'
+      'label . .'
+      'tokens tokens tokens ';
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}

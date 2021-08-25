@@ -1,27 +1,11 @@
 @import 'styles/typography';
 
-.container {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
+.grid {
+  display: grid;
+  grid-template-areas: 'token balance value fraction';
+  grid-template-columns: 1fr 1fr 1fr 2fr;
   padding-left: 24px;
   padding-right: 24px;
-
-  > div:first-child {
-    flex: 0 0 120px;
-  }
-
-  > div:nth-child(2) {
-    flex: 1;
-  }
-
-  > div:nth-child(3) {
-    flex: 1;
-  }
-
-  > div:last-child {
-    flex: 1;
-  }
 }
 
 .root {
@@ -33,6 +17,7 @@
 .token-container {
   align-items: center;
   display: flex;
+  grid-area: token;
 
   justify-content: flex-start;
 
@@ -48,23 +33,29 @@
   }
 }
 
-.tokens-balance {
-  @extend %title3;
+.total-value {
+  grid-area: value;
 }
 
-.vote-weight {
+.tokens-balance {
+  @extend %title3;
+  grid-area: balance;
+}
+
+.fraction {
   align-items: center;
   display: flex;
   flex: 1;
+  grid-area: fraction;
 }
 
-.total-weight {
+.fraction-total {
   background-color: var(--color-brand-purple-light);
   height: 8px;
   width: 100%;
 }
 
-.current-weight {
+.fraction-current {
   animation: weight 2s linear forwards;
   background-color: var(--color-brand-purple);
   height: 8px;
@@ -72,23 +63,23 @@
 }
 
 @media screen and (max-width: 768px) {
-  .root {
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 16px;
-  }
-
-  .token-container {
-    flex: 0 0;
+  .grid {
+    display: grid;
+    grid-row-gap: 22px;
+    grid-template-areas:
+      'token .'
+      'balance value'
+      'fraction fraction';
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 15px;
   }
 
   .details {
     justify-content: space-between;
-    margin-bottom: 10px;
   }
 
-  .token-container {
-    margin-bottom: 22px;
+  .total-value {
+    justify-self: end;
   }
 }
 

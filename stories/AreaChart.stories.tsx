@@ -1,5 +1,5 @@
 import React from 'react';
-import { AreaChart, AreaChartProps } from 'components/line-chart';
+import AreaChart, { AreaChartProps } from 'components/area-chart';
 import { Meta, Story } from '@storybook/react';
 import { addHours } from 'date-fns';
 

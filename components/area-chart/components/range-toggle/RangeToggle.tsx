@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 
-import { DOMAIN_RANGES } from 'components/line-chart/helpers';
+import { DOMAIN_RANGES } from 'components/area-chart/helpers';
 
 import { Button } from 'components/button/Button';
 import s from './RangeToggle.module.scss';

@@ -3,10 +3,11 @@ import classNames from 'classnames';
 import { TokenName } from 'components/cards/token-card';
 import { Icon } from 'components/Icon';
 import { format, parseISO } from 'date-fns';
+import { TransactionType } from 'pages/treasury/types';
 import s from './transaction-card.module.scss';
 
 export interface TransactionCardProps {
-  type: 'Deposit' | 'Windrow';
+  type: TransactionType;
   tokenName: TokenName;
   tokensBalance: number;
   date: string;

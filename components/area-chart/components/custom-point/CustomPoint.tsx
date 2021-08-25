@@ -6,9 +6,9 @@ import { VictoryLabelProps } from 'victory';
 import {
   CHART_MAIN_COLOR,
   POINT_LINE_COLOR
-} from 'components/line-chart/chart-styles';
+} from 'components/area-chart/chart-styles';
 
-import ChartTooltip from 'components/line-chart/components/chart-tooltip';
+import ChartTooltip from 'components/area-chart/components/chart-tooltip';
 
 interface CustomPointProps extends VictoryLabelProps {
   x?: number;
