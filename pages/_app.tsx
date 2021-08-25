@@ -6,11 +6,11 @@ import { ModalProvider } from 'components/modal';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   return (
-    <PageLayout>
-      <ModalProvider>
+    <ModalProvider>
+      <PageLayout>
         <Component {...pageProps} />
-      </ModalProvider>
-    </PageLayout>
+      </PageLayout>
+    </ModalProvider>
   );
 }
 

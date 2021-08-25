@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Property } from 'csstype';
 import styles from './badge.module.scss';
 
-type Variant =
+export type Variant =
   | 'violet'
   | 'blurple'
   | 'blue'

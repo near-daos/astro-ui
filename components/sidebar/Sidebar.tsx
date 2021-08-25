@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { useAccordion } from 'hooks/useAccordion';
 import { Logo } from 'components/logo/Logo';
 import { DaoList } from 'components/nav-dao/DaoList';
@@ -9,7 +9,8 @@ import styles from 'components/sidebar/sidebar.module.scss';
 import { IconName } from 'components/Icon';
 
 interface ItemBase {
-  label: string;
+  id: string;
+  label: string | ReactNode;
   href: string;
   count?: number;
 }
@@ -41,7 +42,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ daoList, items }) => {
             if (!item.subItems?.length) {
               return (
                 <NavItem
-                  key={item.label}
+                  key={item.id}
                   className={styles.item}
                   label={item.label}
                   count={item.count}
@@ -53,8 +54,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ daoList, items }) => {
 
             return (
               <Collapsable
-                {...getItemProps(item.label)}
-                key={item.label}
+                {...getItemProps(item.id)}
+                key={item.id}
                 duration={250}
                 renderHeading={toggle => (
                   <NavItem
@@ -69,7 +70,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ daoList, items }) => {
               >
                 {item.subItems.map(subItem => (
                   <NavSubItem
-                    key={subItem.label}
+                    key={subItem.id}
                     count={subItem.count}
                     label={subItem.label}
                     href={subItem.href}

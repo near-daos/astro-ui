@@ -36,10 +36,12 @@ export const GroupPopup: React.FC<GroupPopupProps> = ({
   isOpen,
   onClose
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const handleSubmit = () => {};
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const handleCancel = () => {};
+  const handleSubmit = () => {
+    onClose();
+  };
+  const handleCancel = () => {
+    onClose();
+  };
   const iconName = icons[initialValues.groupType];
   const header = headers[initialValues.groupType];
 

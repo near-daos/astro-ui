@@ -1,11 +1,11 @@
 import { UrlObject } from 'url';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import Link from 'next/link';
 import cn from 'classnames';
 import styles from './nav-item.module.scss';
 
 type DAONameProps = {
-  label: string;
+  label: string | ReactNode;
   href: string | UrlObject;
   count?: number;
   active?: boolean;

@@ -37,6 +37,7 @@ export const Dropdown: React.VFC<DropdownProps> = ({
     highlightedIndex,
     getItemProps
   } = useSelect({
+    id: 'dropdown',
     items: options,
     itemToString: item => (item != null ? item.label : ''),
     selectedItem: value

@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react';
+import React, { HTMLAttributes, ReactNode } from 'react';
 import Link from 'next/link';
 import { Icon, IconName } from 'components/Icon';
 import { Badge } from 'components/badge/Badge';
@@ -8,7 +8,7 @@ import { UrlObject } from 'url';
 import styles from './nav-item.module.scss';
 
 interface NavItemProps extends HTMLAttributes<HTMLAnchorElement> {
-  label: string;
+  label: string | ReactNode;
   href: string | UrlObject;
   icon: IconName;
   count?: number;

@@ -1,7 +1,7 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useCallback } from 'react';
 import cn from 'classnames';
 
-import { Icon } from 'components/Icon';
+import { IconButton } from 'components/button/IconButton';
 
 import styles from './member-card.module.scss';
 
@@ -17,6 +17,18 @@ export interface MemberCardProps {
   tokens?: Token;
   votes: number;
   expandedView?: boolean;
+  onRemoveClick?: () => void;
+  onClick?: ({
+    title,
+    children,
+    votes,
+    tokens
+  }: {
+    title: string;
+    children: ReactNode;
+    votes: number;
+    tokens?: Token;
+  }) => void;
 }
 
 interface TokensProps {
@@ -46,17 +58,42 @@ const MemberCard: FC<MemberCardProps> = ({
   children,
   votes,
   tokens,
-  expandedView
+  expandedView,
+  onClick,
+  onRemoveClick
 }) => {
+  const handleKeyPress = useCallback(
+    e => {
+      if (e.key === 'Enter' && onClick) {
+        onClick({ title, children, votes, tokens });
+      }
+    },
+    [children, onClick, title, tokens, votes]
+  );
+
   return (
     <div
+      tabIndex={0}
+      role="button"
+      onKeyPress={handleKeyPress}
+      onClick={() => onClick && onClick({ title, children, votes, tokens })}
       className={cn(styles.root, {
-        [styles.expanded]: expandedView
+        [styles.expanded]: expandedView,
+        [styles.clickable]: !!onClick
       })}
     >
       {!expandedView && (
         <div className={styles['person-icon']}>
-          <Icon name="proposalRemoveMember" width={24} height={24} />
+          <IconButton
+            icon="proposalRemoveMember"
+            onClick={e => {
+              e.stopPropagation();
+
+              if (onRemoveClick) {
+                onRemoveClick();
+              }
+            }}
+          />
         </div>
       )}
 

@@ -3,6 +3,7 @@
 .root {
   align-items: center;
   background: var(--color-white);
+  border: 0;
   border-radius: 8px;
 
   display: flex;
@@ -13,6 +14,10 @@
 
   padding: 24px;
   position: relative;
+}
+
+.clickable {
+  cursor: pointer;
 }
 
 .person-icon {
@@ -29,6 +34,7 @@
   @include centralize;
   flex-direction: column;
   margin: 24px 24px 0;
+  width: 100%;
 }
 
 .smile {
@@ -64,9 +70,13 @@
   align-items: flex-start;
   display: flex;
   flex-wrap: wrap;
+  height: 64px;
   justify-content: center;
 
   margin-top: 24px;
+  overflow: hidden;
+  width: 100%;
+
   > div {
     margin: 0 4px 8px;
   }
@@ -106,6 +116,7 @@
 .root.expanded {
   background: transparent;
   max-width: 100%;
+  width: 100%;
 
   .body {
     margin-top: 0;

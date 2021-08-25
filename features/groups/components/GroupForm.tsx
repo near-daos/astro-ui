@@ -87,7 +87,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
         : renderModifyGroup()}
       <Input
         size="block"
-        defaultValue={initialValues?.externalUrl}
+        defaultValue={initialValues?.name}
         isValid={touchedFields.externalUrl && !errors.externalUrl?.message}
         textAlign="left"
         {...register('memberName')}
