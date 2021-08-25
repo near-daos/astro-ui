@@ -1,0 +1,26 @@
+@import 'styles/typography';
+
+.root {
+  button {
+    @extend %body1;
+    font-weight: 700;
+    min-width: unset;
+  }
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 24px 0;
+}
+
+.subheader {
+  @extend %body1;
+}
+
+.link {
+  padding: 0;
+  text-decoration: underline;
+  text-transform: lowercase;
+}
