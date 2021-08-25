@@ -76,7 +76,11 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
         <ul className={styles.menu} {...getMenuProps()}>
           {isOpen &&
             options.map((item, index) => (
-              <li className={styles.item} {...getItemProps({ item, index })}>
+              <li
+                className={styles.item}
+                {...getItemProps({ item, index })}
+                key={item.label}
+              >
                 {item.component}
               </li>
             ))}

@@ -12,18 +12,22 @@ export interface VotePolicyPopupProps {
   onClose: (...args: unknown[]) => void;
   proposers: string[];
   policies: VotePolicy[];
+  title: string;
 }
 
 export const VotePolicyPopup: React.FC<VotePolicyPopupProps> = ({
   isOpen,
   onClose,
   proposers,
-  policies
+  policies,
+  title
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <header className={styles.header}>
-        <h2>Edit voting policy: Close Bounty</h2>
+        <span>Edit voting policy:</span>
+        &nbsp;
+        <span>{title}</span>
       </header>
       <div className={styles.content}>
         <div className={styles.proposers}>
@@ -46,8 +50,12 @@ export const VotePolicyPopup: React.FC<VotePolicyPopupProps> = ({
 
         <div className={styles.footer}>
           <div className={styles.buttons}>
-            <Button variant="secondary">Cancel</Button>
-            <Button>Save and continue</Button>
+            <Button variant="secondary" size="small" onClick={() => onClose()}>
+              Cancel
+            </Button>
+            <Button size="small" onClick={() => onClose()}>
+              Save and continue
+            </Button>
           </div>
         </div>
       </div>

@@ -45,7 +45,7 @@ export const Policies: React.FC<PoliciesProps> = ({
           const [header, style] = entry;
 
           return (
-            <div className={classNames(commonStyles.title, style)}>
+            <div className={classNames(commonStyles.title, style)} key={header}>
               {header}
             </div>
           );
@@ -53,13 +53,19 @@ export const Policies: React.FC<PoliciesProps> = ({
       </div>
       {selected.map((policy, index) => (
         <PolicyRow
+          key={policy.whoCanVote}
           policy={policy}
           groups={groups}
           tokens={tokens}
           removePolicyHandler={removePolicy(index)}
         />
       ))}
-      <Button className={styles.add} variant="tertiary" onClick={addPolicy}>
+      <Button
+        className={styles.add}
+        variant="tertiary"
+        onClick={addPolicy}
+        size="small"
+      >
         <Icon name="buttonAdd" className={styles.icon} />
         <div className={styles.caption}>Add</div>
       </Button>
