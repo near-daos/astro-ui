@@ -48,7 +48,7 @@ const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
       {
         id: 'nfts',
         label: 'NFTs',
-        href: '#'
+        href: '/treasury/nfts'
       },
       {
         id: 'plugins',
