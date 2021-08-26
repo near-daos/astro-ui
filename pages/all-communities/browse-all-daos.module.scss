@@ -1,0 +1,22 @@
+.root {
+  display: grid;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 24px 0;
+  text-transform: unset;
+}
+
+.filter {
+  position: relative;
+  z-index: 1;
+}
+
+.content {
+  display: grid;
+  grid-gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+}

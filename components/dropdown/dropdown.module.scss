@@ -13,6 +13,7 @@
 
 .menu {
   background: #fff;
+  box-shadow: 0 8.89583px 30px rgba(0, 0, 0, 0.14);
   color: var(--color-neutral-90);
   list-style: none;
   overflow-y: auto;
@@ -25,6 +26,7 @@
   border: 1px solid var(--color-neutral-20);
   height: 40px;
   padding: 7px 23px;
+  white-space: nowrap;
 }
 
 .active {
