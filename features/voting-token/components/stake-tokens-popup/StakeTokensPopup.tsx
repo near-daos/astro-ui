@@ -21,13 +21,15 @@ export interface StakeTokensPopupProps {
   onClose: (...args: unknown[]) => void;
   token: Token;
   rate: number;
+  variant: 'Stake' | 'Withdraw';
 }
 
 export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
   isOpen,
   onClose,
   token,
-  rate
+  rate,
+  variant = 'Stake'
 }) => {
   const [value, setValue] = useState('');
   const handleSubmit = useCallback(() => {
@@ -45,7 +47,7 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.root}>
-        <h2>Stake tokens</h2>
+        <h2>{variant} tokens</h2>
         <div className={styles.content}>
           <div className={styles.info}>
             <div className={styles.token}>
@@ -62,7 +64,9 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
               <div className={styles.value}>{token.tokenSymbol}</div>
             </div>
             <div className={styles.balance}>
-              <div className={cn(styles.label, styles.right)}>Your balance</div>
+              <div className={cn(styles.label, styles.right)}>
+                {variant === 'Stake' ? 'Your balance' : 'You can withdraw'}
+              </div>
               <div className={cn(styles.value, styles.right)}>
                 <strong>{token.balance}</strong>
                 &nbsp;
@@ -92,7 +96,7 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
           </Button>
           &nbsp;&nbsp;
           <Button variant="primary" onClick={handleSubmit} size="small">
-            Stake
+            {variant}
           </Button>
         </div>
       </div>
