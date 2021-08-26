@@ -78,7 +78,7 @@ export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
         textAlign="left"
         {...register('externalUrl')}
         label="External URL"
-        className={cn(styles.input, styles['external-url'])}
+        className={cn(styles.input, styles.externalUrl)}
       />
       <div className={styles.vote}>
         <ExpandableDetails label="Vote details">
