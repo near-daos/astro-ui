@@ -59,6 +59,12 @@
   margin-bottom: 10px;
 }
 
+.reset {
+  bottom: 40px;
+  position: fixed;
+  right: 40px;
+}
+
 @media screen and (max-width: 768px) {
   .root {
     grid-template-areas:

@@ -3,50 +3,24 @@ import { BondDetail, VoteDetail } from 'features/types';
 import { TransactionCardInput } from 'pages/treasury/types';
 import { ExpandedProposalCardProps } from 'components/cards/expanded-proposal-card';
 
-export const TOKENS_DATA = [
-  {
-    id: 'first',
-    tokenName: TokenName.NEAR,
-    tokensBalance: 123,
-    totalValue: 321321,
-    voteWeight: 10
-  },
-  {
-    id: 'second',
-    tokenName: TokenName.NEAR,
-    tokensBalance: 3,
-    totalValue: 3213,
-    voteWeight: 20
-  },
-  {
-    id: 'third',
-    tokenName: TokenName.NEAR,
-    tokensBalance: 393,
-    totalValue: 32132,
-    voteWeight: 30
-  },
-  {
-    id: 'fourth',
-    tokenName: TokenName.NEAR,
-    tokensBalance: 534,
-    totalValue: 3213,
-    voteWeight: 40
-  },
-  {
-    id: 'fifth',
-    tokenName: TokenName.NEAR,
-    tokensBalance: 111,
-    totalValue: 321321,
-    voteWeight: 50
-  },
-  {
-    id: 'six',
-    tokenName: TokenName.NEAR,
-    tokensBalance: 11,
-    totalValue: 321313,
-    voteWeight: 50
+const generateTokens = () => {
+  const tokens = [];
+
+  for (let i = 0; i < 50; i += 1) {
+    tokens.push({
+      id: `${i}`,
+      tokenName: TokenName.NEAR,
+      tokensBalance: i,
+      totalValue: 3 * i,
+      voteWeight: i,
+      href: ''
+    });
   }
-];
+
+  return tokens;
+};
+
+export const TOKENS_DATA = generateTokens();
 
 export const PROPOSAL_DATA: Omit<
   ExpandedProposalCardProps,
