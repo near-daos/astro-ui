@@ -5,13 +5,13 @@
   grid-column-gap: 8px;
   grid-row-gap: 24px;
   grid-template-areas:
-    'allTokens . .'
-    'token . sendTokens'
-    'chart chart chart'
-    'label . filter'
-    'transactions transactions transactions'
-    'pagination pagination pagination';
-  grid-template-columns: 1fr 3fr 1fr;
+    'allTokens allTokens'
+    'token sendTokens'
+    'chart chart'
+    'label filter'
+    'transactions transactions'
+    'pagination pagination';
+  grid-template-columns: 1fr 1fr;
   padding-top: 56px;
 
   button {
@@ -49,11 +49,15 @@
 }
 
 .chart {
+  background-color: var(--color-white);
+  border-radius: 8px;
   grid-area: chart;
+  padding-top: 20px;
 }
 
 .label {
   @extend %heading2;
+  align-self: center;
   grid-area: label;
 }
 
@@ -88,12 +92,25 @@
 @media screen and (max-width: 768px) {
   .root {
     grid-template-areas:
-      'allTokens allTokens .'
-      'token . sendTokens'
-      'chart chart chart'
-      'label label filter'
-      'transactions transactions transactions'
-      'pagination pagination pagination';
-    grid-template-columns: 1fr 1fr 1fr;
+      'allTokens allTokens'
+      'token token'
+      'sendTokens sendTokens'
+      'chart chart'
+      'label filter'
+      'transactions transactions'
+      'pagination pagination';
+  }
+
+  .label {
+    @include font(1.125em, 28px, 500);
+  }
+
+  .send {
+    text-align: center;
+    width: 100%;
+
+    button {
+      width: 100%;
+    }
   }
 }
