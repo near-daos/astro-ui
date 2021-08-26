@@ -50,15 +50,15 @@
   z-index: 10000000;
 }
 
-.overlay-after-open {
+.overlayAfterOpen {
   opacity: 1;
 }
 
-.overlay-before-close {
+.overlayBeforeClose {
   opacity: 0;
 }
 
-.close-wrapper {
+.closeWrapper {
   position: absolute;
   right: 36px;
   top: 36px;

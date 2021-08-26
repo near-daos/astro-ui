@@ -27,7 +27,7 @@ resetIdCounter();
 
 const Tabs: React.FC<TabsProps> = ({ tabs, className, fitContent }) => {
   const rootClassName = cn(styles.root, className, {
-    [styles['fit-content']]: fitContent
+    [styles.fitContent]: fitContent
   });
 
   return (

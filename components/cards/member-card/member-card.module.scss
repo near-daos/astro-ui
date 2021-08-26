@@ -20,7 +20,7 @@
   cursor: pointer;
 }
 
-.person-icon {
+.personIcon {
   position: absolute;
   right: 24px;
   top: 24px;
@@ -46,7 +46,7 @@
   position: relative;
   width: 64px;
 
-  .smile-stroke {
+  .smileStroke {
     fill: none;
     height: 64px;
     position: absolute;
@@ -89,7 +89,7 @@
   width: 100%;
 }
 
-.footer-item {
+.footerItem {
   @include centralize;
   flex: 1;
   flex-direction: column;

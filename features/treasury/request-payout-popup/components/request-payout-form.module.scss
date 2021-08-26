@@ -19,7 +19,7 @@
   grid-area: recipient;
   white-space: nowrap;
 
-  .input-inline {
+  .inputInline {
     transform: translateY(-12px);
   }
 }
@@ -50,7 +50,7 @@
   justify-content: flex-end;
 }
 
-.text-area {
+.textArea {
   &textarea {
     width: 100%;
   }
@@ -63,7 +63,7 @@
   }
 }
 
-.inline-input {
+.inlineInput {
   height: 48px;
   margin: 0 8px;
 }

@@ -8,18 +8,18 @@
     @extend %subtitle5;
   }
 
-  .value-wrapper {
+  .valueWrapper {
     align-items: center;
     display: flex;
     justify-content: flex-start;
     margin-top: 2px;
   }
 
-  .value-wrapper .value {
+  .valueWrapper .value {
     @extend %title2;
   }
 
-  .value-wrapper .token {
+  .valueWrapper .token {
     @extend %subtitle2;
   }
 

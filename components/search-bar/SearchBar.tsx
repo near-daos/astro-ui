@@ -33,7 +33,7 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder, onSubmit }) => {
 
   return (
     <div className={styles.root}>
-      <div className={styles['input-icon']}>
+      <div className={styles.inputIcon}>
         <Icon name="buttonSearch" width={24} height={24} />
       </div>
 
@@ -47,7 +47,7 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder, onSubmit }) => {
         onKeyUp={handleKeys}
       />
 
-      <div className={styles['submit-icon']}>
+      <div className={styles.submitIcon}>
         <IconButton
           icon="buttonArrowRight"
           size="medium"

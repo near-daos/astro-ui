@@ -36,11 +36,11 @@ function getStateClass(isValid: boolean | undefined) {
 }
 
 const sizeClasses = {
-  content: inputStyles['size-content'],
-  small: inputStyles['size-small'],
-  medium: inputStyles['size-medium'],
-  large: inputStyles['size-large'],
-  block: inputStyles['size-block']
+  content: inputStyles.sizeContent,
+  small: inputStyles.sizeSmall,
+  medium: inputStyles.sizeMedium,
+  large: inputStyles.sizeLarge,
+  block: inputStyles.sizeBlock
 };
 
 export const Select = React.forwardRef<HTMLInputElement, SelectProps>(

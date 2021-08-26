@@ -44,7 +44,7 @@ const ClaimBountyContent: FC<ClaimBountyContentProps> = ({
       </div>
       <div className={styles.vote}>
         <ExpandableDetails label="Details">Placeholder</ExpandableDetails>
-        <Bond {...data.bondDetail} className={styles['fit-container']} />
+        <Bond {...data.bondDetail} className={styles.fitContainer} />
       </div>
 
       <div className={styles.footer}>

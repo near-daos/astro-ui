@@ -3,7 +3,7 @@
   flex-direction: column;
 }
 
-.address-section {
+.addressSection {
   border-bottom: 1px solid var(--color-primary-60);
   display: flex;
   flex-direction: column;
@@ -11,13 +11,13 @@
   padding-bottom: 13px;
 }
 
-.address-input {
+.addressInput {
   align-items: flex-end;
   display: inline-flex;
   white-space: nowrap;
 }
 
-.address-alert {
+.addressAlert {
   color: var(--color-error-70);
   display: inline-flex;
   gap: 10px;
@@ -41,12 +41,12 @@
   gap: 16px;
   width: 100%;
 
-  .delete-btn {
+  .deleteBtn {
     color: var(--color-error-70);
   }
 }
 
-.add-link-button {
+.addLinkButton {
   align-items: center;
   color: var(--color-primary-60);
   display: inline-flex;
@@ -54,6 +54,6 @@
   line-height: 24px;
 }
 
-.social-icon {
+.socialIcon {
   color: var(--color-primary-60);
 }

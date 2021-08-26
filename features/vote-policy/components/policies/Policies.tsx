@@ -13,8 +13,8 @@ import {
 } from 'features/vote-policy/components/policy-row/PolicyRow';
 
 const headerValues = {
-  'Who can vote': commonStyles['who-can-vote'],
-  'Vote by': commonStyles['vote-by'],
+  'Who can vote': commonStyles.whoCanVote,
+  'Vote by': commonStyles.voteBy,
   Threshold: commonStyles.amount
 };
 

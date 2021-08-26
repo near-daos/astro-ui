@@ -88,7 +88,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
           label="Send to"
           className={cn(styles.input)}
         />
-        <span className={cn(styles.ml8, styles['input-inline'])}>.near</span>
+        <span className={cn(styles.ml8, styles.inputInline)}>.near</span>
       </div>
       <div className={styles.detail}>
         <TextArea
@@ -97,7 +97,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
           textAlign="left"
           resize="none"
           placeholder="Sample text"
-          className={cn(styles['text-area'])}
+          className={styles.textArea}
           label="detail"
           {...register('detail')}
         />

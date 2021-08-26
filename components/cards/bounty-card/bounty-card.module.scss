@@ -54,17 +54,17 @@
     margin-left: 8px;
   }
 
-  .primary-label {
+  .primaryLabel {
     @extend %body1;
     color: var(--color-neutral-90);
   }
 
-  .secondary-label {
+  .secondaryLabel {
     @extend %body1;
     color: var(--color-neutral-60);
   }
 
-  .align-left {
+  .alignLeft {
     margin-right: auto;
   }
 
@@ -77,7 +77,7 @@
     @extend %title2;
   }
 
-  .value-desc {
+  .valueDesc {
     @extend %subtitle2;
   }
 
@@ -109,7 +109,7 @@
   .value {
     @extend %title4;
   }
-  .value-desc {
+  .valueDesc {
     @extend %subtitle4;
   }
 }

@@ -16,7 +16,7 @@ export const FormattedNumericValue: React.FC<FormattedNumericValueProps> = ({
     <span className="title3">{value.toLocaleString()}</span>
     &nbsp;
     {suffix ? (
-      <span className={classNames('subtitle3', styles['upper-case'])}>
+      <span className={classNames('subtitle3', styles.upperCase)}>
         {suffix}
       </span>
     ) : null}

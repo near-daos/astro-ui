@@ -53,7 +53,7 @@ export const CreatePollForm: FC<CreatePollFormProps> = ({
           textAlign="left"
           resize="none"
           placeholder="Sample text"
-          className={cn(styles['text-area'])}
+          className={styles.textArea}
           label="Question or statement to vote on"
           {...register('question')}
         />

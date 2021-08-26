@@ -72,7 +72,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
           textAlign="left"
           resize="none"
           placeholder="Sample text"
-          className={cn(styles['text-area'])}
+          className={styles.textArea}
           label="Group"
           {...register('group')}
         />
@@ -93,7 +93,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
           textAlign="center"
           type="number"
           {...register('slots')}
-          className={styles['inline-input']}
+          className={styles.inlineInput}
         />
         times.
       </div>
@@ -107,12 +107,12 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
           }
           type="number"
           textAlign="center"
-          className={styles['inline-input']}
+          className={styles.inlineInput}
           {...register('deadlineThreshold')}
         />
         <Select
           defaultValue={initialValues?.deadlineUnit}
-          className={styles['deadline-unit']}
+          className={styles.deadlineUnit}
           placeholder=""
           size="content"
           options={deadlineUnitOptions}

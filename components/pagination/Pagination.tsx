@@ -30,9 +30,9 @@ const NavLabel = ({
   <div className={className}>
     {icon === 'buttonArrowLeft' && <Icon name={icon} width={24} />}
     <span
-      className={cn(styles['nav-label'], {
-        [styles['icon-left']]: icon === 'buttonArrowLeft',
-        [styles['icon-right']]: icon === 'buttonArrowRight'
+      className={cn(styles.navLabel, {
+        [styles.iconLeft]: icon === 'buttonArrowLeft',
+        [styles.iconRight]: icon === 'buttonArrowRight'
       })}
     >
       {label}
@@ -64,14 +64,14 @@ export const Pagination: React.FC<PaginationProps> = ({
           className={styles.next}
         />
       }
-      previousLinkClassName={styles['prev-link']}
-      nextLinkClassName={styles['next-link']}
+      previousLinkClassName={styles.prevLink}
+      nextLinkClassName={styles.nextLink}
       pageClassName={styles.page}
-      pageLinkClassName={styles['page-link']}
+      pageLinkClassName={styles.pageLink}
       disabledClassName={styles.disabled}
       activeClassName={styles.active}
       breakClassName={styles.break}
-      breakLinkClassName={styles['break-link']}
+      breakLinkClassName={styles.breakLink}
     />
   );
 };

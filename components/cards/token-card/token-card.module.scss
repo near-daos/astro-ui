@@ -14,7 +14,7 @@
   padding: 24px;
 }
 
-.token-container {
+.tokenContainer {
   align-items: center;
   display: flex;
   grid-area: token;
@@ -33,11 +33,11 @@
   }
 }
 
-.total-value {
+.totalValue {
   grid-area: value;
 }
 
-.tokens-balance {
+.tokensBalance {
   @extend %title3;
   grid-area: balance;
 }
@@ -49,13 +49,13 @@
   grid-area: fraction;
 }
 
-.fraction-total {
+.fractionTotal {
   background-color: var(--color-brand-purple-light);
   height: 8px;
   width: 100%;
 }
 
-.fraction-current {
+.fractionCurrent {
   animation: weight 2s linear forwards;
   background-color: var(--color-brand-purple);
   height: 8px;
@@ -78,7 +78,7 @@
     justify-content: space-between;
   }
 
-  .total-value {
+  .totalValue {
     justify-self: end;
   }
 }
