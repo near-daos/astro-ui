@@ -1,45 +1,94 @@
+import cn from 'classnames';
+import { useMount } from 'react-use';
+import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
+
+import get from 'lodash.get';
+import isEmpty from 'lodash.isempty';
+
 import { useAccordion } from 'hooks/useAccordion';
 import { Logo } from 'components/logo/Logo';
 import { DaoList } from 'components/nav-dao/DaoList';
 import { Collapsable } from 'components/collapsable/Collapsable';
 import { NavItem } from 'components/nav-item/NavItem';
 import { NavSubItem } from 'components/nav-item/NavSubItem';
-import styles from 'components/sidebar/sidebar.module.scss';
-import { IconName } from 'components/Icon';
+import { Icon, IconName } from 'components/Icon';
+
+import styles from './sidebar.module.scss';
 
 interface ItemBase {
   id: string;
   label: string | ReactNode;
   href: string;
   count?: number;
+  subHrefs?: string[];
 }
 
-interface MenuItem extends ItemBase {
+interface MenuItem extends Omit<ItemBase, 'href' | 'subHrefs'> {
   subItems: ItemBase[];
   logo: IconName;
+  href?: string;
 }
 
 interface SidebarProps {
   daoList: React.ComponentProps<typeof DaoList>['items'];
   items: MenuItem[];
+  className?: string;
+  fullscreen?: boolean;
+  closeSideBar?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ daoList, items }) => {
+export const Sidebar: React.FC<SidebarProps> = ({
+  daoList,
+  items,
+  className,
+  fullscreen,
+  closeSideBar
+}) => {
+  const router = useRouter();
+  const activeGroupId = get(router.asPath.split('/'), 1);
+
   const { getItemProps } = useAccordion({
     allowUnSelect: true,
-    allowMultiSelect: false
+    allowMultiSelect: false,
+    preSelected: (() => {
+      return isEmpty(activeGroupId) ? [] : [activeGroupId];
+    })()
+  });
+
+  const rootClassName = cn(styles.sidebar, className, {
+    [styles.fullscreen]: fullscreen
+  });
+
+  useMount(() => {
+    function close() {
+      if (closeSideBar) {
+        closeSideBar();
+      }
+    }
+
+    router.events.on('routeChangeComplete', close);
+
+    return () => router.events.off('routeChangeComplete', close);
   });
 
   return (
-    <aside className={styles.sidebar}>
+    <aside className={rootClassName}>
       <div className={styles.wrapper}>
-        <Logo />
+        <div className={styles.mobileHeader}>
+          <Icon
+            name="close"
+            className={styles.closeIcon}
+            onClick={closeSideBar}
+          />
+          <Icon name="whiteLogo" className={styles.logo} />
+        </div>
+        <Logo className={styles.mainLogo} />
         <DaoList {...getItemProps('dao')} items={daoList} />
 
         <nav className={styles.menu}>
           {items.map(item => {
-            if (!item.subItems?.length) {
+            if (isEmpty(item.subItems)) {
               return (
                 <NavItem
                   key={item.id}
@@ -65,6 +114,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ daoList, items }) => {
                     count={item.count}
                     href={item.href}
                     icon={item.logo}
+                    active={activeGroupId === item.id}
                   />
                 )}
               >
@@ -74,6 +124,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ daoList, items }) => {
                     count={subItem.count}
                     label={subItem.label}
                     href={subItem.href}
+                    subHrefs={subItem.subHrefs}
                   />
                 ))}
               </Collapsable>
@@ -83,10 +134,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ daoList, items }) => {
 
         <nav className={styles.bottom}>
           <NavItem
+            topDelimiter
             className={styles.item}
             label="Home"
             count={999}
-            href="#"
+            href="/"
             icon="stateHome"
           />
           <NavItem
@@ -98,7 +150,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ daoList, items }) => {
           <NavItem
             className={styles.item}
             label="Create a DAO"
-            href="#"
+            href="/"
             icon="stateCreateDao"
           />
         </nav>

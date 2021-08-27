@@ -3,6 +3,7 @@ import { useList } from 'react-use';
 interface UseAccordionParams {
   allowMultiSelect: boolean;
   allowUnSelect: boolean;
+  preSelected?: string[];
 }
 
 interface ItemProps {
@@ -24,10 +25,12 @@ const defaultOptions: UseAccordionParams = {
 export function useAccordion(
   options: UseAccordionParams = defaultOptions
 ): UseAccordionReturnT {
-  const [selected, { push, set, filter, clear }] = useList<string>([]);
+  const { preSelected, allowUnSelect, allowMultiSelect } = options;
+
+  const [selected, { push, set, filter, clear }] = useList<string>(preSelected);
 
   const toggleItem = (id: string) => {
-    if (options.allowMultiSelect) {
+    if (allowMultiSelect) {
       if (selected.includes(id)) {
         filter(item => item !== id);
       } else {
@@ -37,7 +40,7 @@ export function useAccordion(
       const [currentItem] = selected;
 
       if (currentItem === id) {
-        if (options.allowUnSelect) {
+        if (allowUnSelect) {
           clear();
         }
       } else {

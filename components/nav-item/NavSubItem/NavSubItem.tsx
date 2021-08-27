@@ -1,13 +1,18 @@
+import cn from 'classnames';
+import Link from 'next/link';
 import { UrlObject } from 'url';
 import React, { ReactNode } from 'react';
-import Link from 'next/link';
-import cn from 'classnames';
-import styles from './nav-item.module.scss';
+
+// eslint-disable-next-line no-restricted-imports
+import { useIsActive } from '../navHooks';
+
+import styles from './NavSubItem.module.scss';
 
 type DAONameProps = {
   label: string | ReactNode;
-  href: string | UrlObject;
+  href: string;
   count?: number;
+  subHrefs?: string[];
   active?: boolean;
   className?: string;
   detailsHref?: string | UrlObject;
@@ -18,13 +23,20 @@ export const NavSubItem: React.VFC<DAONameProps> = ({
   label,
   count,
   className,
-  href
+  href,
+  subHrefs
 }) => {
+  const isActive = useIsActive(href, subHrefs);
+
+  const rootClassName = cn(styles.sub, className, {
+    [styles.active]: isActive
+  });
+
   return (
-    <div className={styles.nav}>
+    <div>
       <Link passHref href={href}>
         {/* TODO Property 'href' would be overridden by Link. Check https://git.io/Jns2B */}
-        <a href="*" className={cn(styles.sub, className)}>
+        <a href="*" className={rootClassName}>
           {label}
           {Number.isFinite(count) && (
             <span className={styles.badge}>

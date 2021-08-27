@@ -75,6 +75,7 @@ const BrowseAllDaos: FC = () => {
       <div className={styles.content}>
         {data.map(item => (
           <DaoCard
+            key={item.name}
             title={item.name}
             daoAccountName={item.account}
             description={item.description}

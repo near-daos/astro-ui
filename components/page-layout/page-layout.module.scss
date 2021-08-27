@@ -6,26 +6,16 @@
   grid-template-areas:
     'aside header'
     'aside main';
-  grid-template-columns: 300px 1fr;
-  grid-template-rows: 72px 1fr;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
 
   min-height: 100vh;
 
-  header {
-    align-items: center;
-    background-color: var(--color-white);
-    display: flex;
-    grid-area: header;
-    height: 72px;
-    width: 100%;
-  }
-
-  aside {
+  .sideBar {
     grid-area: aside;
-    height: 100%;
   }
 
-  main {
+  .main {
     grid-area: main;
     margin: 0 auto;
     max-width: breakpoints.$max-content-width;
@@ -34,18 +24,18 @@
   }
 }
 
-@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+@media screen and (max-width: #{breakpoints.$screen-md - 1}px) {
   .root {
     grid-template-areas:
       'header'
       'main';
     grid-template-columns: 1fr;
 
-    main {
+    .main {
       padding: 0 24px 60px;
     }
 
-    aside {
+    .sideBar {
       display: none;
     }
   }
