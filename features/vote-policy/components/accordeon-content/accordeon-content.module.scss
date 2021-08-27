@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/typography';
 
 .root {
@@ -40,4 +41,14 @@
   align-items: center;
   display: flex;
   gap: 4px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    grid-gap: 32px;
+    grid-template-areas: 'propose' 'vote';
+    grid-template-columns: 1fr;
+
+    padding: 0 0 12px;
+  }
 }

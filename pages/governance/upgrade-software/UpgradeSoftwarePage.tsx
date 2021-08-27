@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
 
-import { Button } from 'components/button/Button';
-
 import styles from './upgrade-software-page.module.scss';
 
 const UpgradeSoftwarePage: FC = () => {
@@ -14,9 +12,7 @@ const UpgradeSoftwarePage: FC = () => {
       <div className={styles.subheader}>
         View the latest updates{' '}
         <Link href="http://example.com" passHref>
-          <Button variant="tertiary" className={styles.link}>
-            here
-          </Button>
+          <a className={styles.link}>here</a>
         </Link>
       </div>
     </div>

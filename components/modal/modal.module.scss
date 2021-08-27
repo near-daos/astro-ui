@@ -1,8 +1,12 @@
+@use 'styles/breakpoints';
+
 .root {
   background-color: var(--color-white);
   border-radius: 8px;
+  max-height: 100vh;
   max-width: 100%;
   min-width: 200px;
+  overflow: auto;
   padding: 48px;
   position: relative;
   width: 640px;
@@ -31,6 +35,10 @@
   &:focus {
     outline: none;
   }
+}
+
+.modalOpen {
+  overflow: hidden;
 }
 
 .overlay {
@@ -73,8 +81,26 @@
   width: 24px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: #{breakpoints.$screen-xs}px) {
+  .closeWrapper {
+    right: 28px;
+    top: 28px;
+  }
   .overlay {
-    padding: 12px;
+    align-items: flex-end;
+    padding: 0;
+  }
+  .root {
+    border-radius: 8px 8px 0 0;
+    padding: 48px 24px 24px;
+    transform: translateY(100%);
+    transition: all 300ms ease-out;
+  }
+
+  .contentAfterOpen {
+    transform: translateY(0);
+  }
+  .contentBeforeClose {
+    transform: translateY(100%);
   }
 }

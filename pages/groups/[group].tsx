@@ -97,10 +97,13 @@ const GroupPage: FC = () => {
       return 0;
     });
 
+  const page = Array.isArray(group) ? group[0] : group;
+  const pageTitle = page?.replace('-', ' ');
+
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h1>All members</h1>
+        <h1>{pageTitle}</h1>
         <Button
           size={isMobile ? 'block' : 'small'}
           variant="secondary"

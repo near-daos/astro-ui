@@ -1,8 +1,16 @@
 @import 'styles/typography';
+@import 'styles/mixins';
 
 .header {
   align-items: center;
   display: flex;
   justify-content: space-between;
   margin: 24px 0;
+}
+
+.changeButton {
+  display: none;
+  @include tablet-portrait {
+    display: block;
+  }
 }

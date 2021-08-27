@@ -65,6 +65,7 @@ const VotingPolicyPage: FC = () => {
         <h1>Voting policy</h1>
         {viewMode && (
           <Button
+            className={styles.changeButton}
             size="small"
             variant="secondary"
             onClick={() => setViewMode(false)}

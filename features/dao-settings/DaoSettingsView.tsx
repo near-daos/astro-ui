@@ -89,6 +89,7 @@ export const DaoSettingsView: FC = () => {
           <Button
             size="small"
             variant="secondary"
+            className={styles.changeButton}
             onClick={() => setViewMode(false)}
           >
             Edit
