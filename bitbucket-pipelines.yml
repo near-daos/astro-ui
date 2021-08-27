@@ -13,7 +13,7 @@ pipelines:
             - yarn typecheck
             - yarn build-storybook
           artifacts:
-            - storybook-static/*
+            - storybook-static/**
       - step:
           name: Deploy to S3
           deployment: development
