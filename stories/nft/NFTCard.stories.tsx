@@ -24,8 +24,6 @@ const Demo: FC<{ cards: StaticImageData[] }> = ({ cards }) => {
         }
       `}</style>
       {cards.map(img => {
-        // eslint-disable-next-line
-        // @ts-ignore
         return <NFTCard key={img.src} name={img.src} image={img} />;
       })}
     </div>
