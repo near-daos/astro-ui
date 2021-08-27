@@ -1,3 +1,5 @@
+@use 'styles/breakpoints';
+
 @mixin centralize {
   align-items: center;
   display: flex;
@@ -33,6 +35,51 @@
 */
 @mixin placeholder {
   &::placeholder {
+    @content;
+  }
+}
+
+// breakpoints exclusive
+@mixin mobile-only {
+  @media (max-width: #{breakpoints.$screen-xs - 1}px) {
+    @content;
+  }
+}
+
+@mixin tablet-portrait-only {
+  @media (min-width: #{breakpoints.$screen-xs}) and (max-width: #{breakpoints.$screen-sm - 1}px) {
+    @content;
+  }
+}
+
+@mixin tablet-landscape-only {
+  @media (min-width: #{breakpoints.$screen-sm}) and (max-width: #{breakpoints.$screen-md - 1}px) {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @media (min-width: #{breakpoints.$screen-xs}) and (max-width: #{breakpoints.$screen-md - 1}px) {
+    @content;
+  }
+}
+
+// breakpoints cascading
+
+@mixin desktop {
+  @media (min-width: #{breakpoints.$screen-md}px) {
+    @content;
+  }
+}
+
+@mixin tablet-portrait {
+  @media (min-width: #{breakpoints.$screen-xs}px) {
+    @content;
+  }
+}
+
+@mixin tablet-landscape {
+  @media (min-width: #{breakpoints.$screen-sm}px) {
     @content;
   }
 }

@@ -1,6 +1,6 @@
 @import 'styles/typography';
 
-.dao-card {
+.daoCard {
   align-items: center;
   background-color: var(--color-white);
   border-radius: 8px;
@@ -8,26 +8,27 @@
   flex-direction: column;
   height: 100%;
   justify-content: flex-start;
-  max-width: 360px;
+  max-width: 458px;
   padding: 24px;
   position: relative;
 
-  .icon-wrapper {
+  .iconWrapper {
     height: 64px;
     width: 64px;
   }
 
-  .title-caption {
+  .titleCaption {
     padding-top: 8px;
+    text-align: center;
   }
 
-  .url-caption {
+  .urlCaption {
     @extend %subtitle3;
     color: var(--color-neutral-50);
     padding-top: 8px;
   }
 
-  .description-caption {
+  .descriptionCaption {
     @extend %body1;
     padding-bottom: 54px;
     padding-top: 16px;
@@ -35,7 +36,7 @@
   }
 }
 
-.active-proposals {
+.activeProposals {
   align-items: center;
   background: var(--color-brand-neon-yellow);
   border-radius: 24px;
@@ -43,20 +44,20 @@
   justify-content: center;
   width: fit-content;
 
-  .active-proposals-caption {
+  .activeProposalsCaption {
     @extend %title4;
     margin: 0;
     padding: 3px 18px;
   }
 }
 
-.members-and-funds {
+.membersAndFunds {
   display: flex;
   justify-content: space-around;
   padding-top: 16px;
   width: 100%;
 
-  .flex-container {
+  .flexContainer {
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -64,15 +65,15 @@
   }
 }
 
-.gray-caption {
+.grayCaption {
   @extend %subtitle3;
   color: var(--color-neutral-50);
 }
 
-.no-margin {
+.noMargin {
   margin: 0;
 }
 
-.upper-case {
+.upperCase {
   text-transform: uppercase;
 }

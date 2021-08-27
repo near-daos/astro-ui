@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { CSSProperties, useCallback, useRef, useState } from 'react';
 
 import { IconButton } from 'components/button/IconButton';
 import { Button } from 'components/button/Button';
@@ -13,6 +13,9 @@ import { TokenCard, TokenName } from 'components/cards/token-card';
 import { Header } from 'components/cards/token-card/components/header';
 import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
 import { ChartData } from 'pages/treasury/types';
+import { useModal } from 'components/modal';
+import ScrollList from 'components/scroll-list/ScrollList';
+import { FixedSizeList, ListOnScrollProps } from 'react-window';
 import styles from './tokens.module.scss';
 
 interface TokenCardInput {
@@ -21,6 +24,7 @@ interface TokenCardInput {
   tokensBalance: number;
   totalValue: number;
   voteWeight: number;
+  href: '';
 }
 
 interface TokensPageProps {
@@ -36,15 +40,55 @@ const TokensPage: React.FC<TokensPageProps> = ({
   chartData = CHART_DATA,
   tokens = TOKENS_DATA
 }) => {
-  const [isSendTokenModalOpened, showSendTokenModal] = useState(false);
+  const [items] = useState(tokens);
+  const [showRequestPayoutPopup] = useModal(RequestPayoutPopup, {
+    type: 'send',
+    voteDetails: VOTE_DETAILS,
+    bondDetail: BOND_DETAIL
+  });
+  const [showResetScroll, setShowResetScroll] = useState(false);
+  const ref = useRef<FixedSizeList>(null);
 
-  const sendToken = useCallback(() => {
-    showSendTokenModal(false);
+  const handleScroll = useCallback(({ scrollOffset }: ListOnScrollProps) => {
+    if (scrollOffset > 100) {
+      setShowResetScroll(true);
+    } else {
+      setShowResetScroll(false);
+    }
   }, []);
 
-  const openModal = useCallback(() => {
-    showSendTokenModal(true);
-  }, []);
+  const handleClick = useCallback(() => showRequestPayoutPopup(), [
+    showRequestPayoutPopup
+  ]);
+
+  const resetScroll = useCallback(() => {
+    if (!ref || !ref.current) {
+      return;
+    }
+
+    ref.current.scrollToItem(0);
+  }, [ref]);
+
+  const renderCard = ({
+    index,
+    style
+  }: {
+    index: number;
+    style: CSSProperties;
+  }) => (
+    <div
+      style={{
+        ...style,
+        marginTop: '8px',
+        marginBottom: '8px'
+      }}
+    >
+      <TokenCard
+        {...items[index]}
+        href={`/treasury/tokens/transactions/${items[index].id}`}
+      />
+    </div>
+  );
 
   return (
     <div className={styles.root}>
@@ -56,16 +100,9 @@ const TokensPage: React.FC<TokensPageProps> = ({
         </div>
       </div>
       <div className={styles.send}>
-        <Button variant="secondary" onClick={openModal}>
+        <Button variant="secondary" onClick={handleClick}>
           Send tokens
         </Button>
-        <RequestPayoutPopup
-          type="send"
-          isOpen={isSendTokenModalOpened}
-          onClose={sendToken}
-          voteDetails={VOTE_DETAILS}
-          bondDetail={BOND_DETAIL}
-        />
       </div>
       <div className={styles.chart}>
         <AreaChart data={chartData} />
@@ -73,16 +110,24 @@ const TokensPage: React.FC<TokensPageProps> = ({
       <div className={styles.label}>All tokens</div>
       <div className={styles.tokens}>
         <Header />
-        {tokens.map(token => (
-          <div className={styles.row}>
-            <TokenCard
-              {...token}
-              href={`/treasury/tokens/transactions/${token.id}`}
-              key={token.id}
-            />
-          </div>
-        ))}
+        <ScrollList
+          itemCount={items.length}
+          onScroll={handleScroll}
+          height={700}
+          itemSize={96}
+          ref={ref}
+          renderItem={renderCard}
+        />
       </div>
+
+      {showResetScroll ? (
+        <IconButton
+          icon="buttonResetScroll"
+          size="large"
+          className={styles.reset}
+          onClick={resetScroll}
+        />
+      ) : null}
     </div>
   );
 };

@@ -47,7 +47,7 @@ export const PolicyRow: React.FC<PolicyRowProps> = ({
     <div className={styles.row}>
       <DropdownSelect
         label="Who can vote"
-        className={styles['who-can-vote']}
+        className={styles.whoCanVote}
         defaultValue={policy.whoCanVote}
         options={groups.map(group => ({
           label: group,
@@ -63,7 +63,7 @@ export const PolicyRow: React.FC<PolicyRowProps> = ({
         onChange={onVoteByChange}
         defaultValue={policy.voteBy}
         label="Vote By"
-        className={classNames(styles['vote-by'])}
+        className={classNames(styles.voteBy)}
       />
       <Input
         placeholder="Amount"
@@ -80,7 +80,7 @@ export const PolicyRow: React.FC<PolicyRowProps> = ({
         placeholder="Threshold"
         className={styles.threshold}
       />
-      <div className={styles['to-pass']}>
+      <div className={styles.toPass}>
         <span>to pass</span>
         <IconButton
           icon="buttonDelete"

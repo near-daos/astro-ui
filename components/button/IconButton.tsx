@@ -23,7 +23,7 @@ export const IconButton: React.VFC<IconButtonProps> = ({
     large: buttonStyles.large
   };
   const className = classNames(
-    buttonStyles['icon-button'],
+    buttonStyles.iconButton,
     sizes[size],
     classNameProp
   );

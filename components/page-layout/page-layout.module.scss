@@ -1,4 +1,7 @@
+@use 'styles/breakpoints';
+
 .root {
+  background-color: var(--color-primary-10);
   display: grid;
   grid-template-areas:
     'aside header'
@@ -23,16 +26,33 @@
   }
 
   main {
-    background-color: var(--color-primary-10);
     grid-area: main;
-    padding: 0 120px 60px;
+    margin: 0 auto;
+    max-width: breakpoints.$max-content-width;
+    padding: 0 48px 60px;
+    width: 100%;
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .root {
+    grid-template-areas:
+      'header'
+      'main';
+    grid-template-columns: 1fr;
+
     main {
-      padding: 0 48px;
+      padding: 0 24px 60px;
     }
+
+    aside {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-height: #{breakpoints.$screen-xs}) and (orientation: landscape) {
+  .root {
+    display: none;
   }
 }

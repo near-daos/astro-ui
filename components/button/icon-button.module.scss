@@ -1,4 +1,4 @@
-.icon-button {
+.iconButton {
   background: transparent center / contain no-repeat;
   border: 0;
   color: var(--color-primary-50);
@@ -9,21 +9,21 @@
   padding: 0;
 }
 
-.icon-button:active {
+.iconButton:active {
   color: var(--color-primary-60);
 }
 
-.icon-button.small {
+.iconButton.small {
   height: 16px;
   width: 16px;
 }
 
-.icon-button.medium {
+.iconButton.medium {
   height: 24px;
   width: 24px;
 }
 
-.icon-button.large {
+.iconButton.large {
   height: 40px;
   width: 40px;
 }

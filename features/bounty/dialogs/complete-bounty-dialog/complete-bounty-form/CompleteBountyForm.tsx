@@ -59,7 +59,7 @@ export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
           label="Send payment to"
           className={cn(styles.input)}
         />
-        <span className={cn(styles.ml8, styles['input-inline'])}>.near</span>
+        <span className={cn(styles.ml8, styles.inputInline)}>.near</span>
       </div>
       <div className={styles.group}>
         <TextArea
@@ -67,7 +67,7 @@ export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
           textAlign="left"
           resize="none"
           placeholder="Sample text"
-          className={cn(styles['text-area'])}
+          className={styles.textArea}
           label="Details"
           {...register('details')}
         />
@@ -78,7 +78,7 @@ export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
         textAlign="left"
         {...register('externalUrl')}
         label="External URL"
-        className={cn(styles.input, styles['external-url'])}
+        className={cn(styles.input, styles.externalUrl)}
       />
       <div className={styles.vote}>
         <ExpandableDetails label="Vote details">

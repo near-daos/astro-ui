@@ -41,7 +41,7 @@ const Tokens: FC<TokensProps> = ({ data }) => {
   const { value, type, percent } = data;
 
   return (
-    <div className={styles['footer-item']}>
+    <div className={styles.footerItem}>
       <div className={cn(styles.label, 'subtitle4')}>Tokens</div>
       <div className={styles.inline}>
         <span className={cn(styles.value, 'title2')}>
@@ -83,7 +83,7 @@ const MemberCard: FC<MemberCardProps> = ({
       })}
     >
       {!expandedView && (
-        <div className={styles['person-icon']}>
+        <div className={styles.personIcon}>
           <IconButton
             icon="proposalRemoveMember"
             onClick={e => {
@@ -99,7 +99,7 @@ const MemberCard: FC<MemberCardProps> = ({
 
       <div className={styles.body}>
         <div className={styles.smile}>
-          <svg className={styles['smile-stroke']}>
+          <svg className={styles.smileStroke}>
             <circle r={20} cx={32} cy={32} />
           </svg>
         </div>
@@ -109,7 +109,7 @@ const MemberCard: FC<MemberCardProps> = ({
 
       <div className={styles.footer}>
         <Tokens data={tokens} />
-        <div className={styles['footer-item']}>
+        <div className={styles.footerItem}>
           <span className={cn(styles.label, 'subtitle4')}>Votes casted</span>
           <div className={styles.inline}>
             <span className={cn(styles.value, 'title2')}>{votes}</span>

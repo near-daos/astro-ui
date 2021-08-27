@@ -25,28 +25,28 @@ const DaoCard: React.FC<DaoCardProps> = ({
     value: number,
     suffix?: string
   ) => (
-    <div className={styles['flex-container']}>
-      <div className={styles['gray-caption']}>{caption}</div>
+    <div className={styles.flexContainer}>
+      <div className={styles.grayCaption}>{caption}</div>
       <FormattedNumericValue value={value} suffix={suffix} />
     </div>
   );
 
   return (
-    <div className={styles['dao-card']}>
-      <div className={styles['icon-wrapper']}>
+    <div className={styles.daoCard}>
+      <div className={styles.iconWrapper}>
         <FlagIcon />
       </div>
-      <div className={styles['title-caption']}>
-        <h2 className={styles['no-margin']}>{title}</h2>
+      <div className={styles.titleCaption}>
+        <h2 className={styles.noMargin}>{title}</h2>
       </div>
-      <div className={styles['url-caption']}>{daoAccountName}</div>
-      <div className={styles['description-caption']}>{description}</div>
-      <div className={styles['active-proposals']}>
-        <div className={styles['active-proposals-caption']}>
+      <div className={styles.urlCaption}>{daoAccountName}</div>
+      <div className={styles.descriptionCaption}>{description}</div>
+      <div className={styles.activeProposals}>
+        <div className={styles.activeProposalsCaption}>
           {activeProposals} active proposals
         </div>
       </div>
-      <div className={styles['members-and-funds']}>
+      <div className={styles.membersAndFunds}>
         {renderFooterItem('Members', members)}
         {renderFooterItem('Funds', funds, 'usd')}
       </div>

@@ -25,12 +25,12 @@ export const CompletedCells: FC<CompletedCellsProps> = ({
   return (
     <>
       <div className={styles.slots}>
-        <span className={cn(styles['primary-label'], styles['align-left'])}>
+        <span className={cn(styles.primaryLabel, styles.alignLeft)}>
           claimed by <b>{claimedBy[0].name}</b>
         </span>
       </div>
       <div className={styles.control}>
-        <span className={styles['secondary-label']}>
+        <span className={styles.secondaryLabel}>
           due {format(deadline, 'LL.dd.yyyy')}
         </span>
       </div>

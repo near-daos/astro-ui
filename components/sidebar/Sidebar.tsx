@@ -92,7 +92,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ daoList, items }) => {
           <NavItem
             className={styles.item}
             label="All Communities"
-            href="#"
+            href="/all-communities"
             icon="stateCommunities"
           />
           <NavItem

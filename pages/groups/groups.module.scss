@@ -1,3 +1,5 @@
+@use 'styles/breakpoints';
+
 .root {
   display: grid;
 }
@@ -5,6 +7,7 @@
 .header {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   margin: 24px 0;
 }
@@ -17,5 +20,18 @@
 .content {
   display: grid;
   grid-gap: 24px;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(296px, 1fr));
+  place-items: start center;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .content {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-xs}px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
 }

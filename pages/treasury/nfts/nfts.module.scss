@@ -1,0 +1,30 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  @extend %heading1;
+  color: var(--color-brand-black);
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 48px;
+}
+
+.card {
+  height: 424px;
+  padding-bottom: 24px;
+  padding-right: 24px;
+  width: 296px;
+}
+
+@media screen and (max-width: 768px) {
+  .content {
+    justify-content: center;
+  }
+}

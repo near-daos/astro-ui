@@ -113,10 +113,10 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
         <ExternalLink to={link}>{linkTitle}</ExternalLink>
       </div>
     )}
-    <div className={styles['sub-row']}>
+    <div className={styles.subRow}>
       <span className={cn('title1', styles.value)}>{amount}</span>
       &nbsp;
-      <span className={cn('title1', styles['value-desc'])}>{tokens}</span>
+      <span className={cn('title1', styles.valueDesc)}>{tokens}</span>
       <Icon name="buttonArrowRight" className={styles.icon} />
       <span>{recipient}</span>
     </div>
