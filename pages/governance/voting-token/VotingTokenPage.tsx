@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
 import { nanoid } from 'nanoid';
+import cn from 'classnames';
 
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
@@ -12,6 +13,7 @@ import {
   RecentlyUnstaked,
   Stake
 } from 'features/voting-token/components/recently-unstaked';
+import { useDeviceType } from 'helpers/media';
 
 import styles from './voting-token-page.module.scss';
 
@@ -19,6 +21,7 @@ const VotingTokenPage: FC = () => {
   const [showModal] = useModal(VotingTokenPopup);
   const [token, setToken] = useState<TData | null>(null);
   const [stakes, setStakes] = useState<Stake[]>([]);
+  const { isMobile } = useDeviceType();
 
   const handleStartClick = useCallback(async () => {
     const response = await showModal();
@@ -47,7 +50,7 @@ const VotingTokenPage: FC = () => {
     <>
       <div className={styles.header}>
         <h1>Enable voting by token</h1>
-        {!token && (
+        {!token && !isMobile && (
           <Button size="small" variant="secondary" onClick={handleStartClick}>
             Start
           </Button>
@@ -64,6 +67,11 @@ const VotingTokenPage: FC = () => {
             Once a DAO adopts a token for voting, the choice of token cannot be
             changed.
           </div>
+          {isMobile && (
+            <div className={cn(styles.mobile, styles.row)}>
+              Visit Sputnik on your desktop to see proposed changes.
+            </div>
+          )}
         </>
       )}
       {token && (

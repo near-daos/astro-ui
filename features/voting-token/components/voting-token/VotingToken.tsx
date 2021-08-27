@@ -69,7 +69,7 @@ export const VotingToken: FC<VotingTokenProps> = ({
         </div>
       </div>
       <div className={styles.control}>
-        <Button variant="secondary" onClick={handleStakeClick}>
+        <Button variant="secondary" onClick={handleStakeClick} size="block">
           Stake tokens
         </Button>
       </div>

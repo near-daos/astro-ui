@@ -1,10 +1,11 @@
 import React, { FC, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import get from 'lodash.get';
+import { useMedia } from 'react-use';
 
+import MemberCard, { MemberCardPopup } from 'components/cards/member-card';
 import { Button } from 'components/button/Button';
 import { Dropdown } from 'components/dropdown/Dropdown';
-import MemberCard, { MemberCardPopup } from 'components/cards/member-card';
 import { Badge, Variant } from 'components/badge/Badge';
 import { GroupPopup } from 'features/groups';
 import { GroupFormInput, GroupFormType } from 'features/groups/types';
@@ -31,6 +32,7 @@ const GroupPage: FC = () => {
   const { group } = router.query;
   const [showCardModal] = useModal(MemberCardPopup);
   const [showGroupModal] = useModal(GroupPopup);
+  const isMobile = useMedia('(max-width: 640px)');
 
   const [activeSort, setActiveSort] = useState<string>(sortOptions[0].value);
 
@@ -99,7 +101,11 @@ const GroupPage: FC = () => {
     <div className={styles.root}>
       <div className={styles.header}>
         <h1>All members</h1>
-        <Button size="small" variant="secondary" onClick={handleAddClick}>
+        <Button
+          size={isMobile ? 'block' : 'small'}
+          variant="secondary"
+          onClick={handleAddClick}
+        >
           Add member to this group
         </Button>
       </div>

@@ -39,6 +39,7 @@ export const RecentlyUnstaked: FC<RecentlyUnstakedProps> = ({ stakes }) => {
         {stakes.map(({ id, ...rest }) => (
           <StakedEntry key={id} {...rest}>
             <Button
+              size="block"
               variant="secondary"
               onClick={() =>
                 handleWithdraw({

@@ -10,10 +10,12 @@
   flex-direction: column;
   justify-content: center;
 
-  max-width: 360px;
+  max-width: 328px;
 
   padding: 24px;
   position: relative;
+
+  width: 100%;
 }
 
 .clickable {
@@ -93,6 +95,7 @@
   @include centralize;
   flex: 1;
   flex-direction: column;
+  white-space: nowrap;
 
   .label {
     color: var(--color-neutral-60);

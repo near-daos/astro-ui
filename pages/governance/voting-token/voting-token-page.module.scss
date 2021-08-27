@@ -13,6 +13,7 @@
 
 .warning {
   @extend %body1;
+  align-items: flex-start;
   align-self: center;
   color: var(--color-error-70);
   display: flex;
@@ -20,8 +21,13 @@
 
   .icon {
     margin-right: 10px;
+    min-width: 24px;
     width: 24px;
   }
+}
+
+.mobile {
+  @extend %title3;
 }
 
 .row {

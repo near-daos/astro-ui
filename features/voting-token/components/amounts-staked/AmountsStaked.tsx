@@ -39,6 +39,7 @@ export const AmountsStaked: FC<AmountsStakedProps> = ({ stakes }) => {
         {stakes.map(({ id, ...rest }) => (
           <StakedEntry key={id} {...rest}>
             <Button
+              size="block"
               variant="secondary"
               onClick={() =>
                 handleChange({

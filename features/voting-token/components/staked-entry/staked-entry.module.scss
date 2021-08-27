@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/typography';
 
 .root {
@@ -30,9 +31,15 @@
   justify-content: flex-end;
 }
 
-@media screen and (max-width: 768px) {
-  .amount {
-    grid-template-areas: 'value' 'sub';
-    grid-template-columns: 1fr;
+@media screen and (max-width: #{breakpoints.$screen-xs}px) {
+  .root {
+    grid-row-gap: 16px;
+    grid-template-areas:
+      'amount delegated'
+      'control control';
+    grid-template-columns: 1fr 1fr;
+  }
+  .control {
+    justify-content: unset;
   }
 }
