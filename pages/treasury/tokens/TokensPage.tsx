@@ -16,6 +16,7 @@ import { ChartData } from 'pages/treasury/types';
 import { useModal } from 'components/modal';
 import ScrollList from 'components/scroll-list/ScrollList';
 import { FixedSizeList, ListOnScrollProps } from 'react-window';
+import { useMedia } from 'react-use';
 import styles from './tokens.module.scss';
 
 interface TokenCardInput {
@@ -47,7 +48,8 @@ const TokensPage: React.FC<TokensPageProps> = ({
     bondDetail: BOND_DETAIL
   });
   const [showResetScroll, setShowResetScroll] = useState(false);
-  const ref = useRef<FixedSizeList>(null);
+  const scrollListRef = useRef<FixedSizeList>(null);
+  const isMobileOrTablet = useMedia('(max-width: 768px)');
 
   const handleScroll = useCallback(({ scrollOffset }: ListOnScrollProps) => {
     if (scrollOffset > 100) {
@@ -62,12 +64,12 @@ const TokensPage: React.FC<TokensPageProps> = ({
   ]);
 
   const resetScroll = useCallback(() => {
-    if (!ref || !ref.current) {
+    if (!scrollListRef || !scrollListRef.current) {
       return;
     }
 
-    ref.current.scrollToItem(0);
-  }, [ref]);
+    scrollListRef.current.scrollToItem(0);
+  }, [scrollListRef]);
 
   const renderCard = ({
     index,
@@ -79,8 +81,8 @@ const TokensPage: React.FC<TokensPageProps> = ({
     <div
       style={{
         ...style,
-        marginTop: '8px',
-        marginBottom: '8px'
+        marginTop: isMobileOrTablet ? '16px' : '8px',
+        marginBottom: isMobileOrTablet ? '16px' : '8px'
       }}
     >
       <TokenCard
@@ -96,7 +98,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
         <div className={styles.caption}>DAO account name</div>
         <div className={styles.name}>
           {accountName}
-          <IconButton icon="buttonCopy" size="medium" />
+          <IconButton icon="buttonCopy" size="medium" className={styles.icon} />
         </div>
       </div>
       <div className={styles.send}>
@@ -114,8 +116,8 @@ const TokensPage: React.FC<TokensPageProps> = ({
           itemCount={items.length}
           onScroll={handleScroll}
           height={700}
-          itemSize={96}
-          ref={ref}
+          itemSize={isMobileOrTablet ? 168 : 96}
+          ref={scrollListRef}
           renderItem={renderCard}
         />
       </div>
@@ -123,7 +125,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
       {showResetScroll ? (
         <IconButton
           icon="buttonResetScroll"
-          size="large"
+          size={isMobileOrTablet ? 'medium' : 'large'}
           className={styles.reset}
           onClick={resetScroll}
         />

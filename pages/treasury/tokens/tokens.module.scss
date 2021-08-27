@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/typography';
 
 .root {
@@ -21,12 +22,17 @@
     @extend %subtitle5;
     color: var(--color-neutral-60);
   }
+
   .name {
     @extend %title3;
     align-items: center;
     color: var(--color-brand-black);
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+  }
+
+  .icon {
+    margin-left: 8px;
   }
 }
 
@@ -35,6 +41,7 @@
   color: var(--color-brand-black);
   grid-area: sendTokens;
   justify-self: end;
+  width: 100%;
 
   button {
     min-width: fit-content;
@@ -43,6 +50,7 @@
 }
 
 .chart {
+  background-color: var(--color-white);
   grid-area: chart;
 }
 
@@ -65,13 +73,32 @@
   right: 40px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: #{breakpoints.$screen-xs}px) {
   .root {
+    grid-row-gap: 40px;
     grid-template-areas:
-      'accountName sendTokens sendTokens'
-      'chart chart chart'
-      'label . .'
-      'tokens tokens tokens ';
-    grid-template-columns: 1fr 1fr 1fr;
+      'accountName accountName'
+      'sendTokens sendTokens'
+      'chart chart'
+      'label .'
+      'tokens tokens';
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .send {
+    button {
+      width: 100%;
+    }
+  }
+
+  .account {
+    .caption {
+      padding-bottom: 8px;
+    }
+  }
+
+  .reset {
+    bottom: 10px;
+    right: 10px;
   }
 }

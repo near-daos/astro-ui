@@ -1,17 +1,16 @@
+@use 'styles/breakpoints';
 @import 'styles/typography';
 
 .grid {
   display: grid;
   grid-template-areas: 'token balance value fraction';
   grid-template-columns: 1fr 1fr 1fr 2fr;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding: 24px;
 }
 
 .root {
   background-color: var(--color-white);
   border-radius: 8px;
-  padding: 24px;
 }
 
 .tokenContainer {
@@ -62,16 +61,15 @@
   width: 0;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .grid {
     display: grid;
-    grid-row-gap: 22px;
+    grid-row-gap: 20px;
     grid-template-areas:
       'token .'
       'balance value'
       'fraction fraction';
     grid-template-columns: 1fr 1fr;
-    margin-bottom: 15px;
   }
 
   .details {
