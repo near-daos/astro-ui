@@ -4,7 +4,7 @@ import styles from './ntf-card.module.scss';
 
 export interface NFTCardProps {
   name: string;
-  image: string;
+  image: StaticImageData;
   description?: string;
 }
 

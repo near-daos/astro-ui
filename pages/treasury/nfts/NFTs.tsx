@@ -14,8 +14,6 @@ const NFTs: React.FC<NFTsProps> = ({ cards = NFT_CARDS_DATA }) => {
       <div className={styles.content}>
         {cards.map(img => (
           <div className={styles.card} key={img.src}>
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-            {/*  @ts-ignore */}
             <NFTCard name={img.src} image={img} />
           </div>
         ))}
