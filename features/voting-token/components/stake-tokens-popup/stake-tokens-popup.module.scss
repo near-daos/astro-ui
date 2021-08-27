@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/typography';
 
 .root {
@@ -67,18 +68,28 @@
   justify-content: flex-end;
   margin-top: 32px;
   width: 100%;
+
+  > button:last-of-type {
+    margin-left: 8px;
+  }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: #{breakpoints.$screen-xs}px) {
   .info {
-    grid-column-gap: 24px;
+    grid-gap: 24px;
     grid-template-areas:
-      'token balance'
-      'symbol symbol';
+      'token symbol'
+      'balance balance';
     grid-template-columns: 1fr 1fr;
   }
 
+  .right {
+    justify-content: unset;
+    text-align: unset;
+  }
+
   .footer {
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 }

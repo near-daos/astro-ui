@@ -122,7 +122,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
       />
 
       <div className={styles.vote}>
-        <ExpandableDetails label="Vote details">
+        <ExpandableDetails label="Vote details" className={styles.voteDetails}>
           <VoteDetails {...initialValues} />
         </ExpandableDetails>
       </div>

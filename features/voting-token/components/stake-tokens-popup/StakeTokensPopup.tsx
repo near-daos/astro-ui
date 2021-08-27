@@ -6,6 +6,8 @@ import { Modal } from 'components/modal';
 import { Button } from 'components/button/Button';
 import { Icon, IconName } from 'components/Icon';
 
+import { useDeviceType } from 'helpers/media';
+
 import styles from './stake-tokens-popup.module.scss';
 
 type Token = {
@@ -31,6 +33,7 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
   rate,
   variant = 'Stake'
 }) => {
+  const { isMobile } = useDeviceType();
   const [value, setValue] = useState('');
   const handleSubmit = useCallback(() => {
     onClose(value);
@@ -91,11 +94,18 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
           </div>
         </div>
         <div className={styles.footer}>
-          <Button variant="secondary" onClick={handleCancel} size="small">
+          <Button
+            variant="secondary"
+            onClick={handleCancel}
+            size={isMobile ? 'block' : 'small'}
+          >
             Cancel
           </Button>
-          &nbsp;&nbsp;
-          <Button variant="primary" onClick={handleSubmit} size="small">
+          <Button
+            variant="primary"
+            onClick={handleSubmit}
+            size={isMobile ? 'block' : 'small'}
+          >
             {variant}
           </Button>
         </div>

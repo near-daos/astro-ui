@@ -57,6 +57,12 @@
   padding: 24px 32px;
 }
 
+@media screen and (max-width: #{breakpoints.$screen-md}px) {
+  .root {
+    margin: 0 -48px;
+  }
+}
+
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .root {
     grid-template-areas:

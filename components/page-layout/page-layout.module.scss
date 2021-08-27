@@ -27,11 +27,17 @@
 
   main {
     grid-area: main;
-    margin: 0 auto;
-    max-width: breakpoints.$max-content-width;
     overflow: hidden;
-    padding: 0 48px 60px;
+    padding: 0 120px 60px;
     width: 100%;
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-md}px) {
+  .root {
+    main {
+      padding: 0 48px 60px;
+    }
   }
 }
 
