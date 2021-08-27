@@ -1,10 +1,11 @@
 import React, { CSSProperties } from 'react';
-import { FixedSizeList } from 'react-window';
+import { FixedSizeList, ListOnScrollProps } from 'react-window';
 
 export interface ScrollListProps {
   height: number;
   itemSize: number;
   itemCount: number;
+  onScroll?: (props: ListOnScrollProps) => void;
   renderItem: ({
     index,
     style
@@ -14,22 +15,22 @@ export interface ScrollListProps {
   }) => JSX.Element;
 }
 
-const ScrollList: React.FC<ScrollListProps> = ({
-  height,
-  itemSize,
-  itemCount,
-  renderItem
-}) => {
-  return (
-    <FixedSizeList
-      height={height}
-      itemCount={itemCount}
-      itemSize={itemSize}
-      width="100%"
-    >
-      {renderItem}
-    </FixedSizeList>
-  );
-};
+const ScrollList = React.forwardRef<FixedSizeList, ScrollListProps>(
+  ({ height, itemSize, itemCount, onScroll, renderItem }, ref) => {
+    return (
+      <FixedSizeList
+        height={height}
+        itemCount={itemCount}
+        initialScrollOffset={100}
+        itemSize={itemSize}
+        ref={ref}
+        width="100%"
+        onScroll={onScroll}
+      >
+        {renderItem}
+      </FixedSizeList>
+    );
+  }
+);
 
 export default ScrollList;

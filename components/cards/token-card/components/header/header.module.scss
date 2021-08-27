@@ -1,13 +1,14 @@
 @import 'styles/typography';
 
 .root {
-  background-color: var(--color-primary-10);
+  background-color: var(--color-primary-50);
+  border-radius: 8px;
   padding-bottom: 12px;
   padding-top: 12px;
 
   .caption {
     @extend %subtitle5;
-    color: var(--color-neutral-60);
+    color: var(--color-white);
   }
 }
 
