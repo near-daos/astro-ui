@@ -93,3 +93,9 @@ $sizes: // Typography sizes
     @include font($size, $height, $weight);
   }
 }
+
+@media screen and (max-width: #{$screen-xs}px) {
+  :root {
+    font-size: 14px;
+  }
+}

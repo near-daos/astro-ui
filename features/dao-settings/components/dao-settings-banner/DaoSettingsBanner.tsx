@@ -41,7 +41,10 @@ export const DaoSettingsBanner: FC<DaoSettingsBannerProps> = ({
         </Button>
       </div>
       <div className={styles.desc}>
-        <ExpandableDetails label="Add description and links">
+        <ExpandableDetails
+          label="Add description and links"
+          className={styles.wrapper}
+        >
           <div className={styles.content}>
             <TextArea
               label="Details"

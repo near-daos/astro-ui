@@ -1,4 +1,6 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
+@import 'styles/typography';
 
 .root {
   display: flex;
@@ -9,8 +11,20 @@
   border-bottom: 1px solid var(--color-neutral-40);
   display: flex;
   min-height: 32px;
+  overflow: auto;
   padding: 0;
   position: relative;
+  width: 100%;
+}
+
+.tabs {
+  -ms-overflow-style: none;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .fitContent {
@@ -23,6 +37,7 @@
 }
 
 .tab {
+  @extend %body1;
   @include ellipse-text;
   align-items: center;
 
@@ -35,18 +50,15 @@
   justify-content: space-between;
   line-height: 30px;
   outline: none;
+  overflow: visible;
 
-  padding: 0 24px;
+  padding: 0 14px;
 
   position: relative;
 
   text-transform: capitalize;
 
   transition: color 0.1s;
-
-  &:not(:last-of-type) {
-    margin-right: 12px;
-  }
 
   &::after {
     color: var(--color-primary);
@@ -76,10 +88,11 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .tabs {
+    width: calc(100vw - 48px);
+  }
   .tab {
-    &:not(:last-of-type) {
-      margin-right: 24px;
-    }
+    font-size: 0.875em;
   }
 }

@@ -29,6 +29,7 @@
     grid-area: main;
     margin: 0 auto;
     max-width: breakpoints.$max-content-width;
+    overflow: hidden;
     padding: 0 48px 60px;
     width: 100%;
   }
@@ -48,11 +49,5 @@
     aside {
       display: none;
     }
-  }
-}
-
-@media screen and (max-height: #{breakpoints.$screen-xs}) and (orientation: landscape) {
-  .root {
-    display: none;
   }
 }
