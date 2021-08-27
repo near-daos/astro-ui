@@ -159,7 +159,6 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
           />
         </div>
       ) : null}
-      ;
     </div>
   );
 };
