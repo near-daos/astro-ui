@@ -15,10 +15,10 @@ export interface TextAreaProps
 }
 
 const sizeClasses = {
-  small: inputStyles['size-small'],
-  medium: inputStyles['size-medium'],
-  large: inputStyles['size-large'],
-  block: inputStyles['size-block']
+  small: inputStyles.sizeSmall,
+  medium: inputStyles.sizeMedium,
+  large: inputStyles.sizeLarge,
+  block: inputStyles.sizeBlock
 };
 
 export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(

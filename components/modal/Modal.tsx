@@ -41,8 +41,8 @@ export const Modal: FC<ModalProps> = memo(
         })}
         overlayClassName={{
           base: styles.overlay,
-          afterOpen: styles['overlay-after-open'],
-          beforeClose: styles['overlay-before-close']
+          afterOpen: styles.overlayAfterOpen,
+          beforeClose: styles.overlayBeforeClose
         }}
         shouldCloseOnEsc
         closeTimeoutMS={300}
@@ -52,7 +52,7 @@ export const Modal: FC<ModalProps> = memo(
             icon="buttonAdd"
             size="medium"
             onClick={handleClose}
-            className={styles['close-wrapper']}
+            className={styles.closeWrapper}
           />
         )}
         <div>{children}</div>

@@ -23,7 +23,7 @@
   }
 }
 
-.who-can-vote {
+.whoCanVote {
   grid-area: whoCanVote;
   > label:first-of-type {
     display: none;
@@ -37,7 +37,7 @@
   }
 }
 
-.to-pass {
+.toPass {
   @extend %body1;
   align-items: center;
   display: flex;
@@ -45,7 +45,7 @@
   justify-content: space-evenly;
 }
 
-.vote-by {
+.voteBy {
   grid-area: voteBy;
   > span:first-of-type {
     display: none;
@@ -70,7 +70,7 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .vote-by {
+  .voteBy {
     grid-area: voteBy;
     > span:first-of-type {
       display: block;
@@ -78,7 +78,7 @@
     }
   }
 
-  .who-can-vote {
+  .whoCanVote {
     grid-area: whoCanVote;
     margin-top: 16px;
     > label:first-of-type {
@@ -101,7 +101,7 @@
     }
   }
 
-  .to-pass {
+  .toPass {
     margin-top: 16px;
   }
 }

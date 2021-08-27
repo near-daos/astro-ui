@@ -27,19 +27,19 @@
   }
 }
 
-.size-small {
+.sizeSmall {
   min-width: 80px;
 }
 
-.size-medium {
+.sizeMedium {
   min-width: 180px;
 }
 
-.size-large {
+.sizeLarge {
   min-width: 260px;
 }
 
-.size-block {
+.sizeBlock {
   display: block;
   width: 100%;
 }
@@ -79,7 +79,7 @@
     color: var(--color-neutral-60);
   }
 
-  :global(.dark-mode) & {
+  :global(.darkMode) & {
     background: transparent;
     border: 2px solid var(--color-white);
     color: var(--color-white);
@@ -90,7 +90,7 @@
   background: transparent;
   color: var(--color-neutral-90);
 
-  :global(.dark-mode) & {
+  :global(.darkMode) & {
     color: var(--color-white);
   }
 }
@@ -100,7 +100,7 @@
   color: var(--color-white);
 }
 
-:global(.dark-mode) .auth {
+:global(.darkMode) .auth {
   background: var(--color-brand-neon-yellow);
   color: var(--color-neutral-90);
 

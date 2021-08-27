@@ -82,7 +82,7 @@ export const BountyCard: FC<BountyCardProps> = ({
         <div className={styles.reward}>
           <span className={styles.value}>{amount}</span>
           &nbsp;
-          <span className={styles['value-desc']}>{token}</span>
+          <span className={styles.valueDesc}>{token}</span>
         </div>
         {cells}
       </div>

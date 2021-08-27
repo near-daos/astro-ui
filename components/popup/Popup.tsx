@@ -33,12 +33,12 @@ export const Popup: React.FC<PopupProps & Config> = ({
     <div
       ref={setTooltipRef}
       {...getTooltipProps({
-        className: classNames(styles['tooltip-container'], className)
+        className: classNames(styles.tooltipContainer, className)
       })}
     >
       <div
         {...getArrowProps({
-          className: classNames(styles['tooltip-arrow'])
+          className: classNames(styles.tooltipArrow)
         })}
       />
       {children}
