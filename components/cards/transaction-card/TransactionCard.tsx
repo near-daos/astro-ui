@@ -38,7 +38,7 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
       </div>
       <div className={s.token}>
         <div className={s.balance}>{`${
-          type === 'Deposit' ? '+' : '-'
+          type === 'Deposit' ? '+' : '−'
         } ${tokensBalance}`}</div>
         <div>&nbsp;</div>
         <div className={s.name}>{tokenName}</div>

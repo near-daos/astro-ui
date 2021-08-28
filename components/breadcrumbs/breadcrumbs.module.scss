@@ -9,21 +9,12 @@
   @include desktop {
     display: none;
   }
-}
 
-.breadcrumbsLink {
-  color: var(--color-primary-50);
-}
+  .link {
+    color: var(--color-primary-50);
+  }
 
-.breadcrumbsArrow {
-  margin: 0 4px;
-}
-
-.breadcrumbsTest {
-  @extend %subtitle5;
-  display: none;
-
-  @include desktop {
-    display: inline;
+  .arrow {
+    margin: 0 4px;
   }
 }

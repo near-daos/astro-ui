@@ -1,3 +1,5 @@
+@use 'styles/breakpoints';
+
 .root {
   display: flex;
   flex-direction: column;
@@ -29,7 +31,7 @@
   margin-top: 32px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: #{breakpoints.$screen-xs}px) {
   .footer {
     justify-content: space-around;
   }

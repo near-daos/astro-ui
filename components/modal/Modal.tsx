@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode, useCallback } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useState } from 'react';
 import cn from 'classnames';
 import ReactModal from 'react-modal';
 
@@ -24,6 +24,7 @@ export const Modal: FC<ModalProps> = memo(
     className = '',
     hideCloseIcon
   }) => {
+    const [open, setOpen] = useState(isOpen);
     const handleClose = useCallback(() => {
       onClose();
     }, [onClose]);
@@ -31,14 +32,20 @@ export const Modal: FC<ModalProps> = memo(
     return (
       <ReactModal
         ariaHideApp={false}
-        isOpen={isOpen}
-        onRequestClose={handleClose}
-        className={cn(styles.root, className, {
-          [styles.sm]: size === 'sm',
-          [styles.md]: size === 'md',
-          [styles.lg]: size === 'lg',
-          [styles.xl]: size === 'xl'
-        })}
+        bodyOpenClassName={styles.modalOpen}
+        isOpen={open}
+        onAfterClose={handleClose}
+        onRequestClose={() => setOpen(false)}
+        className={{
+          base: cn(styles.root, className, {
+            [styles.sm]: size === 'sm',
+            [styles.md]: size === 'md',
+            [styles.lg]: size === 'lg',
+            [styles.xl]: size === 'xl'
+          }),
+          afterOpen: styles.contentAfterOpen,
+          beforeClose: styles.contentBeforeClose
+        }}
         overlayClassName={{
           base: styles.overlay,
           afterOpen: styles.overlayAfterOpen,
@@ -51,7 +58,7 @@ export const Modal: FC<ModalProps> = memo(
           <IconButton
             icon="buttonAdd"
             size="medium"
-            onClick={handleClose}
+            onClick={() => setOpen(false)}
             className={styles.closeWrapper}
           />
         )}

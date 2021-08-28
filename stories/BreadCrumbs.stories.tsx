@@ -21,6 +21,5 @@ export const Template: Story<BreadCrumbsProps> = (args): JSX.Element => (
 
 Template.storyName = 'BreadCrumbs';
 Template.args = {
-  locationPath: '/treasury/tokens/near',
-  testString: 'Switch to mobile view'
+  locationPath: '/treasury/tokens/near'
 };

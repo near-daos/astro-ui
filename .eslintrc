@@ -43,6 +43,12 @@
         ]
       }
     ],
+    // Using next/link component that passes href attribute down to wrapped <a /> tag so we dont need this warning
+    "jsx-a11y/anchor-is-valid": [ "error", {
+      "components": [ "Link" ],
+      "specialLink": [ "hrefLeft", "hrefRight" ],
+      "aspects": [ "invalidHref", "preferButton" ]
+    }],
     // Named exports are preferable
     // https://blog.piotrnalepa.pl/2020/06/26/default-exports-vs-named-exports/
     "import/prefer-default-export": "off",

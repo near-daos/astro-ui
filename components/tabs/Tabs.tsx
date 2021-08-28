@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Tab,
   Tabs as ReactTabs,
@@ -26,13 +26,17 @@ export interface TabsProps {
 resetIdCounter();
 
 const Tabs: React.FC<TabsProps> = ({ tabs, className, fitContent }) => {
+  const [tabIndex, setTabIndex] = useState(0);
   const rootClassName = cn(styles.root, className, {
     [styles.fitContent]: fitContent
   });
 
   return (
     <div className={rootClassName}>
-      <ReactTabs>
+      <ReactTabs
+        selectedIndex={tabIndex}
+        onSelect={index => setTabIndex(index)}
+      >
         <TabList className={styles.tabs}>
           {tabs.map(item => (
             <Tab
