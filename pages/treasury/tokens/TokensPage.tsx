@@ -15,6 +15,7 @@ import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
 import { ChartData } from 'lib/types/treasury';
 import { useModal } from 'components/modal';
 import ScrollList from 'components/scroll-list/ScrollList';
+import { BreadCrumbs } from 'components/breadcrumbs';
 import { FixedSizeList, ListOnScrollProps } from 'react-window';
 import { useMedia } from 'react-use';
 import styles from './tokens.module.scss';
@@ -94,6 +95,9 @@ const TokensPage: React.FC<TokensPageProps> = ({
 
   return (
     <div className={styles.root}>
+      <div className={styles.breadcrumbs}>
+        <BreadCrumbs />
+      </div>
       <div className={styles.account}>
         <div className={styles.caption}>DAO account name</div>
         <div className={styles.name}>
