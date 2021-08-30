@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import {
   Tab,
   Tabs as ReactTabs,
@@ -26,16 +27,33 @@ export interface TabsProps {
 resetIdCounter();
 
 const Tabs: React.FC<TabsProps> = ({ tabs, className, fitContent }) => {
-  const [tabIndex, setTabIndex] = useState(0);
+  const router = useRouter();
+
+  const [tabIndex, setTabIndex] = useState(
+    router.query.tab !== undefined ? +router.query?.tab : undefined
+  );
+
   const rootClassName = cn(styles.root, className, {
     [styles.fitContent]: fitContent
   });
+
+  useEffect(() => {
+    if (router.query.tab !== undefined && +router.query.tab !== tabIndex) {
+      setTabIndex(+router.query.tab);
+    } else if (router.query.tab === undefined) {
+      setTabIndex(0);
+    }
+  }, [router, router.query.tab, tabIndex]);
+
+  if (tabIndex === undefined) return null;
 
   return (
     <div className={rootClassName}>
       <ReactTabs
         selectedIndex={tabIndex}
-        onSelect={index => setTabIndex(index)}
+        onSelect={index => {
+          router.push(`?tab=${index}`, undefined, { shallow: true });
+        }}
       >
         <TabList className={styles.tabs}>
           {tabs.map(item => (
