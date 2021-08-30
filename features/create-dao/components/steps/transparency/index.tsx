@@ -3,7 +3,7 @@ import { Icon } from 'components/Icon';
 import { Title } from 'components/Typography';
 import { DaoPublicNotice } from 'features/create-dao/components/public-notice/DaoPublicNotice';
 import Link from 'next/link';
-import styles from 'pages/create-dao/steps/settings/settings.module.scss';
+import styles from 'features/create-dao/components/steps/settings/settings.module.scss';
 
 export function TransparencyView(): JSX.Element {
   return (

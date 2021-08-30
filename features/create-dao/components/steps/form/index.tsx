@@ -5,7 +5,7 @@ import { Title } from 'components/Typography';
 import { DaoCreateForm } from 'features/create-dao/components/dao-create-form/DaoCreateForm';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import styles from 'pages/create-dao/steps/form/form.module.scss';
+import styles from 'features/create-dao/components/steps/form/form.module.scss';
 
 import { useFormContext } from 'react-hook-form';
 

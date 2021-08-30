@@ -2,7 +2,7 @@ import cn from 'classnames';
 import { IconButton } from 'components/button/IconButton';
 import { IconName } from 'components/Icon';
 import * as Typography from 'components/Typography';
-import { Subject } from 'pages/create-dao/steps/types';
+import { Subject } from 'features/create-dao/components/steps/types';
 import React from 'react';
 import styles from './dao-option-card.module.scss';
 

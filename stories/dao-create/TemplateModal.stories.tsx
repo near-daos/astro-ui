@@ -5,7 +5,7 @@ import {
   DaoTemplateModal,
   DaoTemplateModalProps
 } from 'features/create-dao/components/template/DaoTemplateModal';
-import { DaoSettingOption } from 'pages/create-dao/steps/types';
+import { DaoSettingOption } from 'features/create-dao/components/steps/types';
 import React, { FC, useCallback } from 'react';
 
 const options: DaoSettingOption<string>[] = [

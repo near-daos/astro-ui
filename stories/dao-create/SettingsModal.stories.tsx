@@ -7,7 +7,7 @@ import {
   DaoSettingsModal,
   DaoSettingsModalProps
 } from 'features/create-dao/components/settings-modal/DaoSettingsModal';
-import { DAO_SUBJECT_OPTIONS } from 'pages/create-dao/steps/data';
+import { DAO_SUBJECT_OPTIONS } from 'features/create-dao/components/steps/data';
 import React, { FC, useCallback, useState } from 'react';
 
 const options = DAO_SUBJECT_OPTIONS.proposals;

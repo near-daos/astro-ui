@@ -10,9 +10,12 @@ import {
   DAO_STRUCTURE_OPTIONS,
   DAO_SUBJECT_OPTIONS,
   DAO_VOTING_POWER_OPTIONS
-} from 'pages/create-dao/steps/data';
-import styles from 'pages/create-dao/steps/settings/settings.module.scss';
-import { DAOFormValues, Subject } from 'pages/create-dao/steps/types';
+} from 'features/create-dao/components/steps/data';
+import styles from 'features/create-dao/components/steps/settings/settings.module.scss';
+import {
+  DAOFormValues,
+  Subject
+} from 'features/create-dao/components/steps/types';
 import { useCallback } from 'react';
 
 import { useFormContext } from 'react-hook-form';

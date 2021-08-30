@@ -8,9 +8,9 @@ import {
   DAO_PROPOSALS_OPTIONS,
   DAO_STRUCTURE_OPTIONS,
   DAO_VOTING_POWER_OPTIONS
-} from 'pages/create-dao/steps/data';
-import styles from 'pages/create-dao/steps/form/form.module.scss';
-import { DAOFormValues } from 'pages/create-dao/steps/types';
+} from 'features/create-dao/components/steps/data';
+import styles from 'features/create-dao/components/steps/form/form.module.scss';
+import { DAOFormValues } from 'features/create-dao/components/steps/types';
 import React from 'react';
 
 import { useFormContext } from 'react-hook-form';
