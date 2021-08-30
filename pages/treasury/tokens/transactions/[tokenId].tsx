@@ -18,6 +18,7 @@ import classNames from 'classnames';
 import { Pagination } from 'components/pagination';
 import { ExpandedProposalCard } from 'components/cards/expanded-proposal-card';
 import { RequestPayout } from 'components/cards/proposal-card';
+import { useModal } from 'components/modal';
 import { BreadCrumbs } from 'components/breadcrumbs';
 import styles from './TransactionsPage.module.scss';
 
@@ -41,18 +42,18 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
   const [currentPageContent, setCurrentPageContent] = useState<
     TransactionCardInput[]
   >(() => transactions.slice(0, ITEMS_PER_PAGE));
+  const [showRequestPayoutPopup] = useModal(RequestPayoutPopup, {
+    type: 'send',
+    voteDetails: VOTE_DETAILS,
+    bondDetail: BOND_DETAIL
+  });
 
-  const [isSendTokenModalOpened, showSendTokenModal] = useState(false);
   const [isProposalDetailsOpened, showProposalDetailsModal] = useState(false);
   const [sortByRecent, setSortByRecent] = useState(true);
 
-  const sendToken = useCallback(() => {
-    showSendTokenModal(false);
-  }, []);
-
-  const openModal = useCallback(() => {
-    showSendTokenModal(true);
-  }, []);
+  const handleClick = useCallback(() => showRequestPayoutPopup(), [
+    showRequestPayoutPopup
+  ]);
 
   const closeProposalDetails = useCallback(() => {
     showProposalDetailsModal(false);
@@ -102,16 +103,9 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
         &nbsp; NEAR
       </div>
       <div className={styles.send}>
-        <Button variant="secondary" onClick={openModal}>
+        <Button variant="secondary" onClick={handleClick}>
           Send tokens
         </Button>
-        <RequestPayoutPopup
-          type="send"
-          isOpen={isSendTokenModalOpened}
-          onClose={sendToken}
-          voteDetails={VOTE_DETAILS}
-          bondDetail={BOND_DETAIL}
-        />
       </div>
       <div className={styles.chart}>
         <AreaChart data={chartData} />
