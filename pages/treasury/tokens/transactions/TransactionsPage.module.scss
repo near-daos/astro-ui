@@ -17,6 +17,7 @@
   padding-top: 56px;
 
   @include tablet-landscape {
+    grid-row-gap: 40px;
     grid-template-areas:
       'allTokens allTokens'
       'token sendTokens'
@@ -24,11 +25,7 @@
       'label filter'
       'transactions transactions'
       'pagination pagination';
-  }
-
-  button {
-    padding: 0;
-    text-transform: none;
+    grid-template-columns: 2fr 1fr;
   }
 }
 
@@ -73,7 +70,12 @@
   }
 
   button {
+    text-transform: none;
     width: 100%;
+
+    @include tablet-landscape {
+      min-width: auto;
+    }
   }
 }
 
@@ -96,6 +98,10 @@
 
 .transactions {
   grid-area: transactions;
+
+  button {
+    text-transform: none;
+  }
 }
 
 .pagination {
@@ -116,6 +122,8 @@
   display: flex;
   grid-area: filter;
   justify-content: flex-end;
+  padding: 0;
+  text-transform: none;
 }
 
 .rotate {
