@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
+import dynamic from 'next/dynamic';
 
 import { Button } from 'components/button/Button';
 import Tabs from 'components/tabs/Tabs';
@@ -10,6 +11,10 @@ import LinksTab from 'features/dao-settings/components/links-tab/LinksTab';
 import styles from './dao-settings-view.module.scss';
 
 import { mockData, voteDetails } from './mockData';
+
+const FlagTab = dynamic(import('features/dao-settings/components/flag-tab'), {
+  ssr: false
+});
 
 export const DaoSettingsView: FC = () => {
   const [data, setData] = useState(mockData);
@@ -68,7 +73,13 @@ export const DaoSettingsView: FC = () => {
     {
       id: 4,
       label: 'Flag',
-      content: <div>Placeholder</div>
+      content: (
+        <FlagTab
+          onChange={handleChange}
+          viewMode={viewMode}
+          daoFlag={data.daoFlag}
+        />
+      )
     }
   ];
 

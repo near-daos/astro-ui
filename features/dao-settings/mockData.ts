@@ -12,7 +12,8 @@ export const mockData = {
   claimBountyBond: 2,
   unclaimBountyTime: 3,
   details: '',
-  externalLink: ''
+  externalLink: '',
+  daoFlag: ''
 };
 
 export const voteDetails = {
