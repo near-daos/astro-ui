@@ -1,0 +1,14 @@
+@use 'styles/breakpoints';
+
+.root {
+  .name {
+    color: var(--color-neutral-60);
+    margin-left: 12px;
+  }
+}
+
+@media screen and (max-width: breakpoints.$screen-sm - 1px) {
+  .name {
+    display: none;
+  }
+}
