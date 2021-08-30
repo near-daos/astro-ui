@@ -1,0 +1,24 @@
+@import 'styles/typography';
+
+.sub {
+  @extend %subtitle4;
+  background: var(--color-primary-80);
+  color: var(--color-white-opacity-5);
+  display: inline-flex;
+  line-height: 24px;
+  padding: 8px 24px 8px 64px;
+  width: 100%;
+
+  &.active {
+    color: var(--color-white);
+  }
+
+  &:hover {
+    background-color: var(--color-primary-50);
+    color: var(--color-white);
+  }
+}
+
+.badge {
+  margin-left: auto;
+}

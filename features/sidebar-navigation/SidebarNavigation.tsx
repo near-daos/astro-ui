@@ -2,104 +2,108 @@ import React, { FC } from 'react';
 import { Sidebar } from 'components/sidebar/Sidebar';
 import { AddGroupMenu } from 'features/groups/components/add-group-menu';
 
+import {
+  TASKS_SECTION_ID,
+  GROUPS_SECTION_ID,
+  TREASURY_SECTION_ID,
+  GOVERNANCE_SECTION_ID
+} from './constants';
+
 const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
   {
     id: 'overview',
     label: 'Overview',
-    href: '#',
+    href: '/overview',
     logo: 'stateOverview',
     count: 103,
     subItems: []
   },
   {
-    id: 'tasks',
+    id: TASKS_SECTION_ID,
     label: 'Tasks',
-    href: '#',
     logo: 'stateTasks',
     subItems: [
       {
         id: 'bounties',
         label: 'Bounties',
-        href: '#'
+        href: `/${TASKS_SECTION_ID}/bounties`
       },
       {
         id: 'polls',
         label: 'Polls',
-        href: '#'
+        href: `/${TASKS_SECTION_ID}/polls`
       },
       {
         id: 'plugins',
         label: 'Plugins',
-        href: '#'
+        href: `/${TASKS_SECTION_ID}/plugins`
       }
     ]
   },
   {
-    id: 'treasury',
+    id: TREASURY_SECTION_ID,
     label: 'Treasury',
-    href: '#',
     logo: 'stateTreasury',
     subItems: [
       {
         id: 'tokens',
         label: 'Tokens',
-        href: '/treasury/tokens'
+        href: `/${TREASURY_SECTION_ID}/tokens`,
+        subHrefs: ['/treasury/tokens/transactions/[tokenId]']
       },
       {
         id: 'nfts',
         label: 'NFTs',
-        href: '/treasury/nfts'
+        href: `/${TREASURY_SECTION_ID}/nfts`
       },
       {
         id: 'plugins',
         label: 'Plugins',
-        href: '#'
+        href: `/${TREASURY_SECTION_ID}/plugins`
       }
     ]
   },
   {
-    id: 'groups',
+    id: GROUPS_SECTION_ID,
     label: 'Groups',
-    href: '#',
     logo: 'stateMembersgroups',
     subItems: [
       {
         id: 'addGroup',
         label: <AddGroupMenu />,
-        href: '#'
+        href: `/${GROUPS_SECTION_ID}/all-members`
       },
       {
         id: 'allMembers',
         label: 'All Members',
-        href: '/groups/all-members'
+        href: `/${GROUPS_SECTION_ID}/all-members`
       }
     ]
   },
   {
-    id: 'governance',
+    id: GOVERNANCE_SECTION_ID,
     label: 'Governance',
-    href: '#',
     logo: 'stateGovernance',
     subItems: [
       {
         id: 'daoSettings',
         label: 'DAO settings',
-        href: '/governance/dao-settings'
+        href: `/${GOVERNANCE_SECTION_ID}/dao-settings`
       },
       {
         id: 'votingPolicy',
         label: 'Voting Policy',
-        href: '/governance/voting-policy'
+        href: `/${GOVERNANCE_SECTION_ID}/voting-policy`
       },
       {
         id: 'votingToken',
         label: 'Voting Token',
-        href: '/governance/voting-token'
+        href: `/${GOVERNANCE_SECTION_ID}/voting-token`
       },
       {
         id: 'upgradeSoftware',
         label: 'Upgrade software Token',
-        href: '/governance/upgrade-software'
+        href: `/${GOVERNANCE_SECTION_ID}/upgrade-software`
       }
     ]
   }
@@ -120,10 +124,20 @@ const availableGroups = [
   }
 ];
 
-export const SidebarNavigation: FC = () => {
+interface SidebarNavigationProps {
+  className?: string;
+  fullscreen?: boolean;
+  closeSideBar?: () => void;
+}
+
+export const SidebarNavigation: FC<SidebarNavigationProps> = ({
+  className,
+  fullscreen,
+  closeSideBar
+}) => {
   // Todo - we have to dynamically get list of available groups and generate sidebar menu items
   const items = sidebarItems.map(item => {
-    if (item.label === 'Groups') {
+    if (item.id === GROUPS_SECTION_ID) {
       return {
         ...item,
         subItems: [
@@ -131,7 +145,7 @@ export const SidebarNavigation: FC = () => {
           ...availableGroups.map(group => ({
             id: group.name,
             label: group.name,
-            href: `/groups/${group.slug}`
+            href: `/${GROUPS_SECTION_ID}/${group.slug}`
           }))
         ]
       };
@@ -140,5 +154,13 @@ export const SidebarNavigation: FC = () => {
     return item;
   });
 
-  return <Sidebar daoList={[]} items={items} />;
+  return (
+    <Sidebar
+      daoList={[]}
+      items={items}
+      className={className}
+      fullscreen={fullscreen}
+      closeSideBar={closeSideBar}
+    />
+  );
 };
