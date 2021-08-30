@@ -1,17 +1,46 @@
-@use 'styles/breakpoints';
 @import 'styles/typography';
+@import 'styles/mixins';
 
 .root {
   display: grid;
   grid-column-gap: 8px;
   grid-row-gap: 24px;
   grid-template-areas:
-    'accountName .  sendTokens'
-    'chart chart chart'
-    'label . .'
-    'tokens tokens tokens ';
-  grid-template-columns: 1fr 3fr 1fr;
+    'breadcrumbs breadcrumbs'
+    'accountName accountName'
+    'sendTokens sendTokens'
+    'chart chart'
+    'label label'
+    'tokens tokens';
+  grid-template-columns: 1fr 1fr;
   padding-top: 56px;
+
+  @include tablet-landscape {
+    grid-row-gap: 40px;
+    grid-template-areas:
+      'breadcrumbs breadcrumbs'
+      'accountName  sendTokens'
+      'chart chart'
+      'label label'
+      'tokens tokens';
+    grid-template-columns: 2fr 1fr;
+  }
+
+  @include desktop {
+    grid-template-areas:
+      'accountName sendTokens'
+      'chart chart'
+      'label label'
+      'tokens tokens';
+  }
+}
+
+.breadcrumbs {
+  grid-area: breadcrumbs;
+
+  @include desktop {
+    display: none;
+  }
 }
 
 .account {
@@ -21,6 +50,12 @@
   .caption {
     @extend %subtitle5;
     color: var(--color-neutral-60);
+    padding-bottom: 8px;
+    text-transform: uppercase;
+
+    @include tablet-portrait {
+      padding-bottom: 4px;
+    }
   }
 
   .name {
@@ -43,15 +78,25 @@
   justify-self: end;
   width: 100%;
 
+  @include tablet-landscape {
+    width: auto;
+  }
+
   button {
-    min-width: fit-content;
     text-transform: none;
+    width: 100%;
+
+    @include tablet-landscape {
+      min-width: auto;
+    }
   }
 }
 
 .chart {
   background-color: var(--color-white);
+  border-radius: 8px;
   grid-area: chart;
+  padding-top: 20px;
 }
 
 .row {
@@ -59,7 +104,12 @@
 }
 
 .label {
+  @extend %heading3;
   grid-area: label;
+
+  @include tablet-landscape {
+    @include font(1.5em, 36px, 500);
+  }
 }
 
 .tokens {
@@ -68,37 +118,12 @@
 }
 
 .reset {
-  bottom: 40px;
+  bottom: 10px;
   position: fixed;
-  right: 40px;
-}
+  right: 10px;
 
-@media screen and (max-width: #{breakpoints.$screen-xs}px) {
-  .root {
-    grid-row-gap: 40px;
-    grid-template-areas:
-      'accountName accountName'
-      'sendTokens sendTokens'
-      'chart chart'
-      'label .'
-      'tokens tokens';
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .send {
-    button {
-      width: 100%;
-    }
-  }
-
-  .account {
-    .caption {
-      padding-bottom: 8px;
-    }
-  }
-
-  .reset {
-    bottom: 10px;
-    right: 10px;
+  @include tablet-portrait {
+    bottom: 40px;
+    right: 40px;
   }
 }
