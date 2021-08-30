@@ -37,18 +37,20 @@ const Tabs: React.FC<TabsProps> = ({ tabs, className, fitContent }) => {
         selectedIndex={tabIndex}
         onSelect={index => setTabIndex(index)}
       >
-        <TabList className={styles.tabs}>
-          {tabs.map(item => (
-            <Tab
-              key={item.id}
-              selectedClassName={styles.active}
-              className={styles.tab}
-              data-name={item.label}
-            >
-              {item.label}
-            </Tab>
-          ))}
-        </TabList>
+        <div className={styles.tabsWrapper}>
+          <TabList className={styles.tabs}>
+            {tabs.map(item => (
+              <Tab
+                key={item.id}
+                selectedClassName={styles.active}
+                className={styles.tab}
+                data-name={item.label}
+              >
+                {item.label}
+              </Tab>
+            ))}
+          </TabList>
+        </div>
         {tabs.map(item => (
           <TabPanel key={item.id}>{item.content}</TabPanel>
         ))}

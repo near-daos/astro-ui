@@ -7,8 +7,13 @@
   flex-direction: column;
 }
 
-.tabs {
+.tabsWrapper {
   border-bottom: 1px solid var(--color-neutral-40);
+  height: 32px;
+  width: 100%;
+}
+
+.tabs {
   display: flex;
   min-height: 32px;
   overflow: auto;
