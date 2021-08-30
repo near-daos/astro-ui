@@ -1,4 +1,5 @@
 @import 'styles/typography';
+@import 'styles/mixins';
 
 .root {
   display: grid;
@@ -6,13 +7,24 @@
   grid-row-gap: 24px;
   grid-template-areas:
     'allTokens allTokens'
-    'token sendTokens'
+    'token token'
+    'sendTokens sendTokens'
     'chart chart'
     'label filter'
     'transactions transactions'
     'pagination pagination';
   grid-template-columns: 1fr 1fr;
   padding-top: 56px;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'allTokens allTokens'
+      'token sendTokens'
+      'chart chart'
+      'label filter'
+      'transactions transactions'
+      'pagination pagination';
+  }
 
   button {
     padding: 0;
@@ -26,6 +38,14 @@
   color: var(--color-primary-50);
   display: flex;
   grid-area: allTokens;
+}
+
+.backLink {
+  display: none;
+
+  @include desktop {
+    display: inline;
+  }
 }
 
 .icon {
@@ -46,6 +66,15 @@
   color: var(--color-brand-black);
   grid-area: sendTokens;
   justify-self: end;
+  width: 100%;
+
+  @include tablet-landscape {
+    width: auto;
+  }
+
+  button {
+    width: 100%;
+  }
 }
 
 .chart {
@@ -56,9 +85,13 @@
 }
 
 .label {
-  @extend %heading2;
+  @extend %heading3;
   align-self: center;
   grid-area: label;
+
+  @include tablet-landscape {
+    @include font(1.5em, 36px, 500);
+  }
 }
 
 .transactions {
@@ -87,30 +120,4 @@
 
 .rotate {
   transform: rotate(180deg);
-}
-
-@media screen and (max-width: 768px) {
-  .root {
-    grid-template-areas:
-      'allTokens allTokens'
-      'token token'
-      'sendTokens sendTokens'
-      'chart chart'
-      'label filter'
-      'transactions transactions'
-      'pagination pagination';
-  }
-
-  .label {
-    @include font(1.125em, 28px, 500);
-  }
-
-  .send {
-    text-align: center;
-    width: 100%;
-
-    button {
-      width: 100%;
-    }
-  }
 }

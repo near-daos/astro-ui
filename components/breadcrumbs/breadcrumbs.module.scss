@@ -1,0 +1,20 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.breadcrumbs {
+  @extend %subtitle5;
+  color: var(--color-neutral-70);
+  text-transform: capitalize;
+
+  @include desktop {
+    display: none;
+  }
+
+  .link {
+    color: var(--color-primary-50);
+  }
+
+  .arrow {
+    margin: 0 4px;
+  }
+}
