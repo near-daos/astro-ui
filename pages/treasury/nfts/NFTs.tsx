@@ -1,6 +1,6 @@
 import React from 'react';
 import { NFTCard } from 'features/nft/ntf-card/NFTCard';
-import { NFT_CARDS_DATA } from 'pages/treasury/nfts/mock';
+import { NFT_CARDS_DATA } from 'lib/mocks/treasury/nfts';
 import styles from './nfts.module.scss';
 
 interface NFTsProps {

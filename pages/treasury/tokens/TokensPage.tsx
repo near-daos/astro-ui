@@ -8,11 +8,11 @@ import {
   CHART_DATA,
   TOKENS_DATA,
   VOTE_DETAILS
-} from 'pages/treasury/tokens/mock';
+} from 'lib/mocks/treasury/tokens';
 import { TokenCard, TokenName } from 'components/cards/token-card';
 import { Header } from 'components/cards/token-card/components/header';
 import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
-import { ChartData } from 'pages/treasury/types';
+import { ChartData } from 'lib/types/treasury';
 import { useModal } from 'components/modal';
 import ScrollList from 'components/scroll-list/ScrollList';
 import { FixedSizeList, ListOnScrollProps } from 'react-window';

@@ -1,6 +1,6 @@
 import { TokenName } from 'components/cards/token-card';
 import { BondDetail, VoteDetail } from 'features/types';
-import { TransactionCardInput } from 'pages/treasury/types';
+import { TransactionCardInput } from 'lib/types/treasury';
 import { ExpandedProposalCardProps } from 'components/cards/expanded-proposal-card';
 
 const generateTokens = () => {

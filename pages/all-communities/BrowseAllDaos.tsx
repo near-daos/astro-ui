@@ -4,9 +4,8 @@ import get from 'lodash.get';
 import { Dropdown } from 'components/dropdown/Dropdown';
 import DaoCard from 'components/cards/dao-card';
 
+import { daos } from 'lib/mocks/all-communities';
 import styles from './browse-all-daos.module.scss';
-
-import { daos } from './mockData';
 
 const sortOptions = [
   {
