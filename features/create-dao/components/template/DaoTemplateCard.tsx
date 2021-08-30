@@ -25,11 +25,13 @@ export const DaoTemplateCard: VFC<DaoTemplateCardProps> = ({
 
   return (
     <div className={cn(styles.root, className)} {...props}>
-      <h2 className={styles.title}>{title}</h2>
-      <Typography.Subtitle size={6} className={styles.notes}>
-        {note}
-      </Typography.Subtitle>
-      <p className={styles.description}> {description}</p>
+      <div className={styles.content}>
+        <h2 className={styles.title}>{title}</h2>
+        <Typography.Subtitle size={6} className={styles.notes}>
+          {note}
+        </Typography.Subtitle>
+        <p className={styles.description}> {description}</p>
+      </div>
       <div className={cn(cardFooterStyles.root, background)} />
     </div>
   );

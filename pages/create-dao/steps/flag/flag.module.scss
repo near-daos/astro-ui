@@ -8,21 +8,14 @@
 }
 
 .header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 552px;
   text-align: center;
-  width: 100%;
 }
 
-.column {
+.form {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 552px;
-  padding: 10px;
-  width: 100%;
+  width: 552px;
 }
 
 .footer {

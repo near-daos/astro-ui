@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useFlagCropper } from 'features/create-dao/components/create-flag/FlagCropper';
 import { Button } from 'components/button/Button';
 
 import styles from './flag-tab.module.scss';
@@ -10,17 +9,7 @@ interface FlagTabProps {
   daoFlag?: string;
 }
 
-const FlagTab: FC<FlagTabProps> = ({ viewMode, onChange, daoFlag }) => {
-  const { node, crop, canvasRef } = useFlagCropper({
-    src: '/flags/flag-1.svg',
-    dragMode: false
-  });
-
-  const handleCrop = () => {
-    crop();
-    onChange('daoFlag', canvasRef.current?.toDataURL('image/png') ?? '');
-  };
-
+const FlagTab: FC<FlagTabProps> = ({ viewMode, daoFlag }) => {
   return (
     <div className={styles.root}>
       {viewMode ? (
@@ -70,12 +59,9 @@ const FlagTab: FC<FlagTabProps> = ({ viewMode, onChange, daoFlag }) => {
                 outline: 1px solid lightslategray;
               }
             `}</style>
-            <div className="cropper-container">{node}</div>
           </div>
           <div className={styles.btn}>
-            <Button size="small" onClick={handleCrop}>
-              Crop!
-            </Button>
+            <Button size="small">Crop!</Button>
           </div>
         </div>
       )}

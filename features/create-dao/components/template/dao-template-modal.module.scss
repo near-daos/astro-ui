@@ -5,12 +5,16 @@
   flex-direction: column;
   gap: 24px;
   justify-content: flex-start;
-  margin-bottom: 124px;
+  padding: 48px;
   text-align: center;
 
   h2 {
     margin: 0;
   }
+}
+
+.modal {
+  padding: 0;
 }
 
 .title {

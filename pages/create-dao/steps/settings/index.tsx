@@ -87,9 +87,13 @@ export function SettingsView(): JSX.Element {
             Step 1 of 5
           </Title>
         </div>
-        <Button style={{ textTransform: 'none' }}>
-          <span className={styles.gray}> Next:</span> Name your dao
-        </Button>
+        <Link href="/create-dao/transparency" as="/create-dao/transparency">
+          <a href="*">
+            <Button style={{ textTransform: 'none' }}>
+              <span className={styles.gray}> Next:</span> Name your dao
+            </Button>
+          </a>
+        </Link>
       </div>
     </div>
   );

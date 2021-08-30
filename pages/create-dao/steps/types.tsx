@@ -1,4 +1,5 @@
 import { IconName } from 'components/Icon';
+import { IDaoCreateForm } from 'features/create-dao/components/dao-create-form/DaoCreateForm';
 
 export type DAOType = 'club' | 'cooperative' | 'corporation' | 'foundation';
 export type Subject = 'proposals' | 'structure' | 'voting';
@@ -23,8 +24,8 @@ export type DaoSettingOption<T> = {
   description: string;
 };
 
-export type DAOFormValues = {
+export interface DAOFormValues extends IDaoCreateForm {
   proposals: DAOProposalsType;
   structure: DAOStructureType;
   voting: DAOVotingPowerType;
-};
+}

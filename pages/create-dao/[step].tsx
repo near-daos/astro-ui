@@ -1,7 +1,11 @@
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
+import { FlagView } from 'pages/create-dao/steps/flag';
+import { FormView } from 'pages/create-dao/steps/form';
 import { FoundationView } from 'pages/create-dao/steps/foundation';
+import { ReviewView } from 'pages/create-dao/steps/review';
 import { SettingsView } from 'pages/create-dao/steps/settings';
+import { TransparencyView } from 'pages/create-dao/steps/transparency';
 import { DAOFormValues } from 'pages/create-dao/steps/types';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -9,12 +13,14 @@ import styles from './page.module.scss';
 
 const steps = {
   foundation: FoundationView,
-  settings: SettingsView
+  settings: SettingsView,
+  transparency: TransparencyView,
+  form: FormView,
+  flag: FlagView,
+  review: ReviewView
 };
 
 type StepType = keyof typeof steps;
-
-const stepKeys = Object.keys(steps);
 
 const CreateDaoPage: NextPage<{ step: string }> = () => {
   const router = useRouter();
@@ -23,13 +29,18 @@ const CreateDaoPage: NextPage<{ step: string }> = () => {
     defaultValues: {
       proposals: undefined,
       structure: undefined,
-      voting: undefined
+      voting: undefined,
+      websites: [],
+      address: undefined,
+      purpose: undefined,
+      displayName: undefined,
+      flag: undefined
     }
   });
 
-  // router.events.on('routeChangeComplete', () => {
-  //   window.scrollTo(0, 0);
-  // });
+  Router.events.on('routeChangeComplete', () => {
+    window.scrollTo(0, 0);
+  });
 
   const { step } = router.query;
 
@@ -42,22 +53,8 @@ const CreateDaoPage: NextPage<{ step: string }> = () => {
       <FormProvider {...methods}>
         <CurrentStep />
       </FormProvider>
-      <pre>{JSON.stringify(methods.watch())}</pre>
     </div>
   );
-};
-
-CreateDaoPage.getInitialProps = async ({ query, res }) => {
-  const firstStep = stepKeys[0];
-
-  const { step } = query;
-
-  if (res && step !== firstStep) {
-    res.writeHead(301, { Location: `/create-dao/${firstStep}` });
-    res.end();
-  }
-
-  return { step: step as string };
 };
 
 export default CreateDaoPage;

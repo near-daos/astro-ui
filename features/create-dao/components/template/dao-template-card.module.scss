@@ -9,7 +9,6 @@
   height: 424px;
   justify-content: flex-start;
   overflow: hidden;
-  padding: 36px 13px 13px;
   position: relative;
   text-align: center;
   width: 360px;
@@ -17,6 +16,10 @@
   h2 {
     margin: 0;
   }
+}
+
+.content {
+  padding: 36px 13px 13px;
 }
 
 .notes {

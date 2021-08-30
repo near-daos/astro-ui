@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
 import { useId } from '@reach/auto-id';
-import classNames from 'classnames';
+import cn from 'classnames';
 import { Property } from 'csstype';
+import React, { ReactNode } from 'react';
 
 import styles from './input.module.scss';
 
@@ -39,29 +39,25 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       size = 'small',
       inputSize,
       textAlign = 'left',
+      type = 'text',
       ...props
     },
     externalRef
   ) => {
     const id = useId(props.id);
-
-    const className = classNames(
-      styles.input,
-      sizeClasses[size],
-      classNameProp
-    );
+    const className = cn(styles.input, sizeClasses[size], classNameProp);
 
     return (
       <label className={className} htmlFor={id}>
         {label && <span className={styles.label}>{label}</span>}
         <input
           className={getStateClass(isValid)}
-          id={id}
           {...props}
-          size={inputSize}
+          id={id}
           ref={externalRef}
+          type={type}
+          size={inputSize}
           style={{ textAlign }}
-          type={props.type ?? 'text'}
         />
         {description && description.length > 0 && (
           <span className={styles.description}>{description}</span>

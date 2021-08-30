@@ -1,13 +1,9 @@
-import React, { VFC } from 'react';
 import { IconButton } from 'components/button/IconButton';
+import { getSocialIconNameFromUrl } from 'helpers/getSocialIconNameFromUrl';
 import { ImageProps } from 'next/image';
+import React, { VFC } from 'react';
 
 import styles from './dao-details.module.scss';
-
-type ExternalLink = {
-  type: 'Twitter' | 'Discord' | 'AnyUrl';
-  url: string;
-};
 
 export interface DaoDetailsProps {
   title: string;
@@ -15,7 +11,7 @@ export interface DaoDetailsProps {
   flag: ImageProps['src'];
   subtitle: string;
   createdAt: string;
-  links: ExternalLink[];
+  links: string[];
 }
 
 export const DaoDetails: VFC<DaoDetailsProps> = ({
@@ -32,9 +28,9 @@ export const DaoDetails: VFC<DaoDetailsProps> = ({
     <div className={styles.flag} style={{ backgroundImage: `url(${flag})` }} />
     <ul className={styles.links}>
       {links.map(link => (
-        <li className={styles.link} key={link.type}>
-          <a href={link.url} target="_blank" rel="noreferrer">
-            <IconButton size="medium" icon={`social${link.type}`} />
+        <li className={styles.link} key={link}>
+          <a href={link} target="_blank" rel="noreferrer">
+            <IconButton size="medium" icon={getSocialIconNameFromUrl(link)} />
           </a>
         </li>
       ))}

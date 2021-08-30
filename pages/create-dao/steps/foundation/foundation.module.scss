@@ -4,19 +4,23 @@
   flex-direction: column;
   gap: 48px;
   justify-content: center;
-  width: 744px;
+  max-width: 744px;
+  width: 100%;
 }
 
 .header {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin: 12px;
+  max-width: 552px;
   text-align: center;
-  width: 552px;
+  width: 100%;
 }
 
 .cards {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
+  justify-content: center;
 }

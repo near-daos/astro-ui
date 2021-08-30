@@ -31,7 +31,7 @@ export const DaoTemplateModal: FC<DaoTemplateModalProps> = ({
   const background = backgrounds[variant];
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal className={styles.modal} isOpen={isOpen} onClose={onClose}>
       <div className={styles.root}>
         <section>
           <h2 className={styles.title}> {title} </h2>

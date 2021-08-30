@@ -11,17 +11,16 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 552px;
   text-align: center;
-  width: 100%;
+  width: 552px;
 }
 
 .column {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin: 12px;
   max-width: 552px;
-  padding: 10px;
   width: 100%;
 }
 
