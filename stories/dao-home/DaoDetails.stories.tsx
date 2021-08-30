@@ -36,18 +36,5 @@ Template.args = {
   description: `We’re a community grant for artists who want to build projects on our
     platform. Join our Discord channel to stay up to date with latest info!`,
   flag,
-  links: [
-    {
-      type: 'AnyUrl',
-      url: 'http://example.com'
-    },
-    {
-      type: 'Discord',
-      url: 'http://example.com'
-    },
-    {
-      type: 'Twitter',
-      url: 'http://example.com'
-    }
-  ]
+  links: ['http://example.com', 'http://discord.com', 'http://twitter.com']
 };

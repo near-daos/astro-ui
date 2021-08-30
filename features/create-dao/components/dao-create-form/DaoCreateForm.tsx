@@ -6,13 +6,15 @@ import { Input } from 'components/input/Input';
 import { TextArea } from 'components/textarea/TextArea';
 import { Title } from 'components/Typography';
 import { getSocialIconNameFromUrl } from 'helpers/getSocialIconNameFromUrl';
-import React, { FC, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { FC, HTMLProps, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import styles from './dao-create-form.module.scss';
 
-interface DaoCreateFormProps {
-  onSubmit: () => void;
+interface DaoCreateFormProps
+  extends Omit<HTMLProps<HTMLFormElement>, 'onSubmit'> {
+  initialValues?: Partial<IDaoCreateForm>;
+  onSubmit: SubmitHandler<IDaoCreateForm>;
 }
 
 export interface IDaoCreateForm {
@@ -20,6 +22,7 @@ export interface IDaoCreateForm {
   displayName: string;
   purpose: string;
   websites: string[];
+  flag: string;
 }
 
 const validUrlRegexp = /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
@@ -37,7 +40,11 @@ const schema = yup.object().shape({
     .of(yup.string().matches(validUrlRegexp, 'Enter correct url!').required())
 });
 
-export const DaoCreateForm: FC<DaoCreateFormProps> = ({ onSubmit }) => {
+export const DaoCreateForm: FC<DaoCreateFormProps> = ({
+  onSubmit,
+  initialValues = { websites: [''] },
+  ...props
+}) => {
   const {
     register,
     handleSubmit,
@@ -47,10 +54,12 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({ onSubmit }) => {
   } = useForm<IDaoCreateForm>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
-    defaultValues: { websites: [''] }
+    defaultValues: initialValues
   });
 
-  const [linksCount, setLinksCount] = useState(0);
+  const [linksCount, setLinksCount] = useState(
+    initialValues?.websites?.length ?? 0
+  );
 
   function addLink() {
     setLinksCount(count => count + 1);
@@ -66,7 +75,7 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({ onSubmit }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
+    <form {...props} onSubmit={handleSubmit(onSubmit)} className={styles.root}>
       <section className={styles.addressSection}>
         <div className={styles.addressInput}>
           <Input

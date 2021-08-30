@@ -2,30 +2,15 @@ import { Meta, Story } from '@storybook/react';
 import { Button } from 'components/button/Button';
 import { ModalProvider, useModal } from 'components/modal';
 import { Caption } from 'components/Typography';
-import { DaoSettingOption } from 'features/create-dao/components/option-card/DaoOptionCard';
 
 import {
   DaoSettingsModal,
   DaoSettingsModalProps
 } from 'features/create-dao/components/settings-modal/DaoSettingsModal';
+import { DAO_SUBJECT_OPTIONS } from 'pages/create-dao/steps/data';
 import React, { FC, useCallback, useState } from 'react';
 
-const options: DaoSettingOption[] = [
-  {
-    value: 'open',
-    icon: 'illustrationOpenOrganization',
-    subject: 'proposals',
-    title: 'Open',
-    description: 'Anyone can submit a proposal.'
-  },
-  {
-    value: 'members',
-    icon: 'illustrationMembersOnly',
-    subject: 'proposals',
-    title: 'Members Only',
-    description: 'Only members or token-holders can submit a proposal.'
-  }
-];
+const options = DAO_SUBJECT_OPTIONS.proposals;
 
 export default {
   title: 'Features/DAO Create/Popups/Settings Modal',

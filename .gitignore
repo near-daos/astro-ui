@@ -40,3 +40,6 @@ yarn-error.log*
 
 # Storybook
 storybook-static
+
+# tsc-files
+tsconfig.*.json

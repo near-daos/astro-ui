@@ -25,7 +25,7 @@ type TNearFunctionDetails = {
 };
 
 export const WizardContext = React.createContext<TWizardContext>({
-  // data: undefined,
+  // DAO_TEMPLATES: undefined,
   setData: () => null,
   onClose: () => null,
   initialData: {

@@ -1,31 +1,24 @@
+import cn from 'classnames';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { Modal } from 'components/modal';
-import * as footers from 'features/create-dao/components/footers';
-import {
-  DaoOptionCard,
-  DaoSettingOption
-} from 'features/create-dao/components/option-card/DaoOptionCard';
-import React, { FC } from 'react';
 
-import styles from './dao-template-modal.module.scss';
+import { DaoOptionCard } from 'features/create-dao/components/option-card/DaoOptionCard';
+import cardFooterStyles from 'features/create-dao/components/template/card-footer.module.scss';
+
+import styles from 'features/create-dao/components/template/dao-template-modal.module.scss';
+import { backgrounds } from 'features/create-dao/components/template/utils';
+import { DaoSettingOption, DAOType } from 'pages/create-dao/steps/types';
+import React, { FC } from 'react';
 
 export interface DaoTemplateModalProps {
   isOpen: boolean;
   onClose: (...args: unknown[]) => void;
-  options: DaoSettingOption[];
+  options: DaoSettingOption<string>[];
   title: string;
   description: string;
-  variant: keyof typeof footers;
+  variant: DAOType;
 }
-
-const computedStyle = getComputedStyle(document.documentElement);
-const backgrounds = {
-  Club: computedStyle.getPropertyValue('--color-brand-coral-red'),
-  Cooperative: computedStyle.getPropertyValue('--color-primary-50'),
-  Corporation: computedStyle.getPropertyValue('--color-brand-pink'),
-  Foundation: computedStyle.getPropertyValue('--color-brand-green')
-};
 
 export const DaoTemplateModal: FC<DaoTemplateModalProps> = ({
   isOpen,
@@ -35,11 +28,10 @@ export const DaoTemplateModal: FC<DaoTemplateModalProps> = ({
   description,
   variant
 }) => {
-  const BackgroundComponent = footers[variant];
   const background = backgrounds[variant];
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal className={styles.modal} isOpen={isOpen} onClose={onClose}>
       <div className={styles.root}>
         <section>
           <h2 className={styles.title}> {title} </h2>
@@ -61,9 +53,7 @@ export const DaoTemplateModal: FC<DaoTemplateModalProps> = ({
         <Button onClick={() => onClose(true)}> Select and customize</Button>
       </div>
 
-      <div style={{ background }} className={styles.footer}>
-        {BackgroundComponent && <BackgroundComponent />}
-      </div>
+      <div className={cn(cardFooterStyles.root, background)} />
     </Modal>
   );
 };

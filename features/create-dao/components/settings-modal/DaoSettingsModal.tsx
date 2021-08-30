@@ -1,10 +1,8 @@
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { Modal } from 'components/modal';
-import {
-  DaoOptionCard,
-  DaoSettingOption
-} from 'features/create-dao/components/option-card/DaoOptionCard';
+import { DaoOptionCard } from 'features/create-dao/components/option-card/DaoOptionCard';
+import { DaoSettingOption } from 'pages/create-dao/steps/types';
 import React, { FC, useState } from 'react';
 
 import styles from './dao-settings-modal.module.scss';
@@ -13,7 +11,7 @@ export interface DaoSettingsModalProps {
   isOpen: boolean;
   onClose: (...args: unknown[]) => void;
   initialValue?: string | undefined;
-  options: DaoSettingOption[];
+  options: DaoSettingOption<string>[];
   title: string;
   description: string;
   note: string;

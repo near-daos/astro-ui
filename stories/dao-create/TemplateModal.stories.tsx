@@ -1,14 +1,14 @@
 import { Meta, Story } from '@storybook/react';
 import { Button } from 'components/button/Button';
 import { ModalProvider, useModal } from 'components/modal';
-import { DaoSettingOption } from 'features/create-dao/components/option-card/DaoOptionCard';
 import {
   DaoTemplateModal,
   DaoTemplateModalProps
-} from 'features/create-dao/components/template-modal/DaoTemplateModal';
+} from 'features/create-dao/components/template/DaoTemplateModal';
+import { DaoSettingOption } from 'pages/create-dao/steps/types';
 import React, { FC, useCallback } from 'react';
 
-const options: DaoSettingOption[] = [
+const options: DaoSettingOption<string>[] = [
   {
     value: 'open',
     icon: 'illustrationOpenOrganization',
@@ -33,7 +33,7 @@ const options: DaoSettingOption[] = [
 ];
 
 export default {
-  title: 'Features/DAO Create/Popups/Template Modal',
+  title: 'Features/DAO Create/Popups/DAOTemplate Modal',
   decorators: [story => <ModalProvider>{story()}</ModalProvider>]
 } as Meta;
 
@@ -65,14 +65,14 @@ export const Template: Story<DaoTemplateModalProps> = (args): JSX.Element => (
 );
 
 Template.args = {
-  variant: 'Cooperative'
+  variant: 'cooperative'
 };
 
 Template.argTypes = {
   variant: {
-    options: ['Club', 'Cooperative', 'Corporation', 'Foundation'],
+    options: ['club', 'cooperative', 'corporation', 'foundation'],
     control: { type: 'select' }
   }
 };
 
-Template.storyName = 'Template Modal';
+Template.storyName = 'DAOTemplate Modal';

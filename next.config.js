@@ -20,6 +20,14 @@ module.exports = (phase, { defaultConfig }) => {
       reactStrictMode: true,
       sassOptions: {
         includePaths: [path.join(__dirname, 'styles')]
+      },
+      async rewrites() {
+        return [
+          {
+            source: '/create-dao',
+            destination: '/create-dao/foundation'
+          }
+        ];
       }
     }
   );

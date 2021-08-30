@@ -2,6 +2,7 @@ import cn from 'classnames';
 import { IconButton } from 'components/button/IconButton';
 import { IconName } from 'components/Icon';
 import * as Typography from 'components/Typography';
+import { Subject } from 'pages/create-dao/steps/types';
 import React from 'react';
 import styles from './dao-option-card.module.scss';
 
@@ -13,11 +14,17 @@ export interface DaoOptionCardProps
   editable?: boolean;
   editIcon?: IconName;
   onEditClick?: () => void;
-  subject: string;
+  subject: Subject;
   title: string;
   onClick?: () => void | undefined;
   description: string;
 }
+
+const SUBJECT_LABELS: Record<Subject, string> = {
+  proposals: 'Proposals',
+  structure: 'Structure',
+  voting: 'Voting Power'
+};
 
 export const DaoOptionCard: React.VFC<DaoOptionCardProps> = ({
   active,
@@ -45,7 +52,7 @@ export const DaoOptionCard: React.VFC<DaoOptionCardProps> = ({
       <div className={styles.icon}>{iconNode}</div>
       <div className={styles.content}>
         <Typography.Title className={styles.subject} size={5}>
-          {subject}
+          {SUBJECT_LABELS[subject]}
         </Typography.Title>
         <h2 className={styles.title}>{title}</h2>
         <p className={styles.description}>{description}</p>
@@ -60,12 +67,4 @@ export const DaoOptionCard: React.VFC<DaoOptionCardProps> = ({
       )}
     </div>
   );
-};
-
-export type DaoSettingOption = {
-  title: string;
-  value: string;
-  icon: IconName;
-  subject: string;
-  description: string;
 };

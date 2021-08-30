@@ -150,7 +150,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <NavItem
             className={styles.item}
             label="Create a DAO"
-            href="/"
+            href="/create-dao"
             icon="stateCreateDao"
           />
         </nav>

@@ -1,9 +1,10 @@
 import { Meta, Story } from '@storybook/react';
 import { Button } from 'components/button/Button';
 import {
-  useFlagCropper,
-  UseFlagCropperParams
-} from 'features/create-dao/components/create-flag/FlagCropper';
+  SelectFlag,
+  SelectFlagProps
+} from 'features/create-dao/components/select-flag/SelectFlag';
+
 import React, { useState } from 'react';
 
 export default {
@@ -22,17 +23,8 @@ export default {
   }
 } as Meta;
 
-export const Template: Story<UseFlagCropperParams> = (args): JSX.Element => {
+export const Template: Story<SelectFlagProps> = (args): JSX.Element => {
   const [imgData, setImgData] = useState<string | undefined>();
-
-  const { node, crop, canvasRef } = useFlagCropper({
-    ...args
-  });
-
-  const handleCrop = () => {
-    crop();
-    setImgData(canvasRef.current?.toDataURL('image/png'));
-  };
 
   return (
     <div className="root">
@@ -66,9 +58,12 @@ export const Template: Story<UseFlagCropperParams> = (args): JSX.Element => {
           outline: 1px solid lightslategray;
         }
       `}</style>
-      <div className="cropper-container">{node}</div>
+      <div className="cropper-container">
+        <SelectFlag id="flag" {...args} onSubmit={data => setImgData(data)} />
+      </div>
+
       <div>
-        <Button size="medium" onClick={handleCrop}>
+        <Button type="submit" form="flag" size="medium">
           Crop!
         </Button>
       </div>
@@ -84,6 +79,5 @@ export const Template: Story<UseFlagCropperParams> = (args): JSX.Element => {
 Template.storyName = 'Dao Create Flag';
 
 Template.args = {
-  src: '/flags/flag-1.svg',
-  dragMode: false
+  sources: ['/flags/flag-1.svg']
 };
