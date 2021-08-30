@@ -1,0 +1,38 @@
+.root {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  justify-content: center;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 552px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 552px;
+}
+
+.footer {
+  align-items: center;
+  display: inline-flex;
+  justify-content: space-between;
+  width: 552px;
+}
+
+.inline {
+  display: inline-flex;
+}
+
+.gray {
+  color: var(--color-neutral-60);
+}

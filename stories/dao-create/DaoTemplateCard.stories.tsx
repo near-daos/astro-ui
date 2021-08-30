@@ -2,11 +2,11 @@ import { Meta, Story } from '@storybook/react';
 import {
   DaoTemplateCard,
   DaoTemplateCardProps
-} from 'features/create-dao/components/template-card/DaoTemplateCard';
+} from 'features/create-dao/components/template/DaoTemplateCard';
 import React from 'react';
 
 export default {
-  title: 'Features/DAO Create/Dao Template Card',
+  title: 'Features/DAO Create/Dao DAOTemplate Card',
   component: DaoTemplateCard,
   parameters: {
     layout: 'centered',
@@ -26,17 +26,17 @@ export const Template: Story<DaoTemplateCardProps> = (args): JSX.Element => (
   <DaoTemplateCard {...args} />
 );
 
-Template.storyName = 'Dao Template Card';
+Template.storyName = 'Dao DAOTemplate Card';
 
 Template.args = {
-  variant: 'Foundation',
+  variant: 'foundation',
   title: 'Foundation',
   description: `A group giving donations\nAn organization funding community projects\nA fund for open-source projects`
 };
 
 Template.argTypes = {
   variant: {
-    options: ['Club', 'Cooperative', 'Corporation', 'Foundation'],
+    options: ['club', 'cooperative', 'corporation', 'foundation'],
     control: { type: 'select' }
   }
 };
