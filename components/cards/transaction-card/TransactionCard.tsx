@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { TokenName } from 'components/cards/token-card';
 import { Icon } from 'components/Icon';
 import { format, parseISO } from 'date-fns';
-import { TransactionType } from 'pages/treasury/types';
+import { TransactionType } from 'lib/types/treasury';
 import s from './transaction-card.module.scss';
 
 export interface TransactionCardProps {

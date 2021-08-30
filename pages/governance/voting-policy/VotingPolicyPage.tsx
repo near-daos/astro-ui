@@ -8,9 +8,8 @@ import { GroupsTabView } from 'features/vote-policy/components/groups-tab-view';
 import { TreasuryTabView } from 'features/vote-policy/components/treasury-tab-view';
 import { GovernanceTabView } from 'features/vote-policy/components/governance-tab-view';
 
+import { voteDetails, mockData } from 'lib/mocks/governance/voting-policy';
 import styles from './voting-policy-page.module.scss';
-
-import { voteDetails, mockData } from './mockData';
 
 const VotingPolicyPage: FC = () => {
   const [data, setData] = useState(mockData);

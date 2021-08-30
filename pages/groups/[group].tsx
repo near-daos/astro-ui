@@ -12,7 +12,7 @@ import { GroupFormInput, GroupFormType } from 'features/groups/types';
 
 import { useModal } from 'components/modal';
 
-import { groupColor, members, groupPopupData } from 'pages/groups/mockData';
+import { groupColor, members, groupPopupData } from 'lib/mocks/groups';
 
 import styles from './groups.module.scss';
 

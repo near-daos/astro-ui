@@ -10,9 +10,9 @@ import {
   PROPOSAL_DATA,
   TRANSACTIONS_DATA,
   VOTE_DETAILS
-} from 'pages/treasury/tokens/mock';
+} from 'lib/mocks/treasury/tokens';
 import dynamic from 'next/dynamic';
-import { ChartData, TransactionCardInput } from 'pages/treasury/types';
+import { ChartData, TransactionCardInput } from 'lib/types/treasury';
 import { TransactionCard } from 'components/cards/transaction-card';
 import classNames from 'classnames';
 import { Pagination } from 'components/pagination';
