@@ -5,4 +5,9 @@
     background-size: contain;
     opacity: 1;
   }
+
+  :global .cropper-container {
+    width: 100vw;
+    height: 100vw;
+  }
 }
