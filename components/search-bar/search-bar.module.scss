@@ -8,12 +8,16 @@
   height: 40px;
   justify-content: space-between;
   overflow: hidden;
+  transform: translateZ(0);
+  transition: all 0.2s ease-out;
+  width: 40px;
 }
 
 .submitIcon,
 .inputIcon {
   @include centralize;
   border-radius: 50%;
+  cursor: pointer;
   flex: 0 0 40px;
   height: 40px;
   width: 40px;
@@ -28,7 +32,7 @@
 }
 
 .inputIcon {
-  background: var(--color-brand-purple-light);
+  background: var(--color-white);
 }
 
 .input {
@@ -44,5 +48,12 @@
 
   @include placeholder {
     color: var(--color-neutral-60);
+  }
+}
+
+.root.expanded {
+  width: 100%;
+  .inputIcon {
+    background: var(--color-brand-purple-light);
   }
 }
