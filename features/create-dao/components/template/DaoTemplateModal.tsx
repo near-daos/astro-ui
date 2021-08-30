@@ -8,7 +8,10 @@ import cardFooterStyles from 'features/create-dao/components/template/card-foote
 
 import styles from 'features/create-dao/components/template/dao-template-modal.module.scss';
 import { backgrounds } from 'features/create-dao/components/template/utils';
-import { DaoSettingOption, DAOType } from 'pages/create-dao/steps/types';
+import {
+  DaoSettingOption,
+  DAOType
+} from 'features/create-dao/components/steps/types';
 import React, { FC } from 'react';
 
 export interface DaoTemplateModalProps {

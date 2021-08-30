@@ -11,8 +11,11 @@ import {
   DAO_STRUCTURE_OPTIONS,
   DAO_TEMPLATES,
   DAO_VOTING_POWER_OPTIONS
-} from 'pages/create-dao/steps/data';
-import { DAOFormValues, DAOTemplate } from 'pages/create-dao/steps/types';
+} from 'features/create-dao/components/steps/data';
+import {
+  DAOFormValues,
+  DAOTemplate
+} from 'features/create-dao/components/steps/types';
 import { useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styles from './foundation.module.scss';

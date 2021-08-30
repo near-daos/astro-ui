@@ -5,8 +5,8 @@ import { SelectFlag } from 'features/create-dao/components/select-flag/SelectFla
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import styles from 'pages/create-dao/steps/form/form.module.scss';
-import { DAOFormValues } from 'pages/create-dao/steps/types';
+import styles from 'features/create-dao/components/steps/form/form.module.scss';
+import { DAOFormValues } from 'features/create-dao/components/steps/types';
 
 import { useFormContext } from 'react-hook-form';
 

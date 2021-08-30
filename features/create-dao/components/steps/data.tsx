@@ -5,7 +5,7 @@ import {
   DAOTemplate,
   DAOType,
   DAOVotingPowerType
-} from 'pages/create-dao/steps/types';
+} from 'features/create-dao/components/steps/types';
 
 const DAO_PROPOSALS_OPEN: DaoSettingOption<DAOProposalsType> = {
   value: 'open',
