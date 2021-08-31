@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Button } from 'components/button/Button';
+import { SelectFlag } from 'features/create-dao/components/select-flag/SelectFlag';
 
 import styles from './flag-tab.module.scss';
 
@@ -9,7 +10,9 @@ interface FlagTabProps {
   daoFlag?: string;
 }
 
-const FlagTab: FC<FlagTabProps> = ({ viewMode, daoFlag }) => {
+const sources = ['/flags/flag-1.svg'];
+
+const FlagTab: FC<FlagTabProps> = ({ viewMode, daoFlag, onChange }) => {
   return (
     <div className={styles.root}>
       {viewMode ? (
@@ -59,9 +62,16 @@ const FlagTab: FC<FlagTabProps> = ({ viewMode, daoFlag }) => {
                 outline: 1px solid lightslategray;
               }
             `}</style>
+            <SelectFlag
+              id="flag"
+              sources={sources}
+              onSubmit={data => onChange('daoFlag', data)}
+            />
           </div>
           <div className={styles.btn}>
-            <Button size="small">Crop!</Button>
+            <Button type="submit" form="flag" size="small">
+              Crop!
+            </Button>
           </div>
         </div>
       )}
