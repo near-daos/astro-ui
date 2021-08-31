@@ -32,36 +32,6 @@ const FlagTab: FC<FlagTabProps> = ({ viewMode, daoFlag, onChange }) => {
       ) : (
         <div className={styles.edit}>
           <div className={styles.cropper}>
-            <style jsx>{`
-              .root {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 24px;
-                height: 100%;
-                width: 100%;
-              }
-
-              .cropper-container {
-                width: 100%;
-                flex-basis: 100%;
-              }
-
-              .images-container {
-                height: 300px;
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                gap: 1rem;
-              }
-
-              #mask-test {
-                width: 300px;
-                height: 300px;
-                outline: 1px solid lightslategray;
-              }
-            `}</style>
             <SelectFlag
               id="flag"
               sources={sources}
