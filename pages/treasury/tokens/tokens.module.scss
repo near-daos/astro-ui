@@ -6,7 +6,6 @@
   grid-column-gap: 8px;
   grid-row-gap: 24px;
   grid-template-areas:
-    'breadcrumbs breadcrumbs'
     'accountName accountName'
     'sendTokens sendTokens'
     'chart chart'
@@ -18,28 +17,11 @@
   @include tablet-landscape {
     grid-row-gap: 40px;
     grid-template-areas:
-      'breadcrumbs breadcrumbs'
       'accountName  sendTokens'
       'chart chart'
       'label label'
       'tokens tokens';
     grid-template-columns: 2fr 1fr;
-  }
-
-  @include desktop {
-    grid-template-areas:
-      'accountName sendTokens'
-      'chart chart'
-      'label label'
-      'tokens tokens';
-  }
-}
-
-.breadcrumbs {
-  grid-area: breadcrumbs;
-
-  @include desktop {
-    display: none;
   }
 }
 

@@ -19,7 +19,6 @@ import { Pagination } from 'components/pagination';
 import { ExpandedProposalCard } from 'components/cards/expanded-proposal-card';
 import { RequestPayout } from 'components/cards/proposal-card';
 import { useModal } from 'components/modal';
-import { BreadCrumbs } from 'components/breadcrumbs';
 import styles from './TransactionsPage.module.scss';
 
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
@@ -91,12 +90,11 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
       <div className={styles.back}>
         <Link href="/treasury/tokens">
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <a className={styles.backLink}>
+          <a>
             <Icon name="buttonArrowLeft" className={styles.icon} />
             All tokens
           </a>
         </Link>
-        <BreadCrumbs />
       </div>
       <div className={styles.token}>
         <Icon name="iconNear" className={styles.icon} />
