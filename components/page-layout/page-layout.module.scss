@@ -5,7 +5,8 @@
   display: grid;
   grid-template-areas:
     'aside header'
-    'aside main';
+    'aside main'
+    'footer footer';
   grid-template-columns: auto 1fr;
   grid-template-rows: auto 1fr;
 
@@ -35,7 +36,8 @@
   .root {
     grid-template-areas:
       'header'
-      'main';
+      'main'
+      'footer';
     grid-template-columns: 1fr;
 
     .main {

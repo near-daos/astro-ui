@@ -13,6 +13,7 @@ import { Collapsable } from 'components/collapsable/Collapsable';
 import { NavItem } from 'components/nav-item/NavItem';
 import { NavSubItem } from 'components/nav-item/NavSubItem';
 import { Icon, IconName } from 'components/Icon';
+import { AppFooter } from 'features/app-footer';
 
 import styles from './sidebar.module.scss';
 
@@ -154,6 +155,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
             icon="stateCreateDao"
           />
         </nav>
+        {/* todo - check if the user is logged in from auth service */}
+        <AppFooter isLoggedIn />
       </div>
     </aside>
   );
