@@ -15,7 +15,7 @@ import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
 import { ChartData } from 'lib/types/treasury';
 import { useModal } from 'components/modal';
 import ScrollList from 'components/scroll-list/ScrollList';
-import { FixedSizeList, ListOnScrollProps } from 'react-window';
+import { ListOnScrollProps, VariableSizeList } from 'react-window';
 import { useMedia } from 'react-use';
 import styles from './tokens.module.scss';
 
@@ -48,7 +48,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
     bondDetail: BOND_DETAIL
   });
   const [showResetScroll, setShowResetScroll] = useState(false);
-  const scrollListRef = useRef<FixedSizeList>(null);
+  const scrollListRef = useRef<VariableSizeList>(null);
   const isMobileOrTablet = useMedia('(max-width: 768px)');
 
   const handleScroll = useCallback(({ scrollOffset }: ListOnScrollProps) => {
@@ -58,6 +58,10 @@ const TokensPage: React.FC<TokensPageProps> = ({
       setShowResetScroll(false);
     }
   }, []);
+
+  const getItemHeight = useCallback(() => (isMobileOrTablet ? 168 : 96), [
+    isMobileOrTablet
+  ]);
 
   const handleClick = useCallback(() => showRequestPayoutPopup(), [
     showRequestPayoutPopup
@@ -116,7 +120,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
           itemCount={items.length}
           onScroll={handleScroll}
           height={700}
-          itemSize={isMobileOrTablet ? 168 : 96}
+          itemSize={getItemHeight}
           ref={scrollListRef}
           renderItem={renderCard}
         />

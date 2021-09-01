@@ -40,7 +40,7 @@ const tokenCards = generateTokens();
 Template.storyName = 'ScrollList';
 Template.args = {
   height: 944,
-  itemSize: 96,
+  itemSize: () => 96,
   itemCount: tokenCards.length,
   renderItem: ({ index, style }) => {
     return (

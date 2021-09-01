@@ -1,9 +1,15 @@
 import { UrlObject } from 'url';
-import React, { HTMLProps } from 'react';
+import React, { HTMLProps, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import cn from 'classnames';
 import { Badge } from 'components/badge/Badge';
+import { Button } from 'components/button/Button';
+import { useModal } from 'components/modal';
+import {
+  MemberCardPopup,
+  MemberCardPopupProps
+} from 'components/cards/member-card';
 import styles from './nav-dao.module.scss';
 
 interface DaoItemProps extends Omit<HTMLProps<HTMLDivElement>, 'href'> {
@@ -13,8 +19,6 @@ interface DaoItemProps extends Omit<HTMLProps<HTMLDivElement>, 'href'> {
   count?: number;
   active?: boolean;
   className?: string;
-  showDetails?: boolean;
-  detailsHref?: string | UrlObject;
   detailsClassName?: string;
 }
 
@@ -24,17 +28,40 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
   className,
   logo,
   href,
-  showDetails,
-  detailsHref,
   detailsClassName,
   ...props
 }) => {
+  const [showMemberCard] = useModal<MemberCardPopupProps>(MemberCardPopup, {
+    title: 'jonasteam.near',
+    children: (
+      <>
+        <Badge size="small" variant="green">
+          Atos
+        </Badge>
+        <Badge size="large" variant="orange">
+          Portos
+        </Badge>
+        <Badge size="medium">Aramis</Badge>
+        <Badge size="medium" variant="turqoise">
+          d&apos;Artagnan
+        </Badge>
+      </>
+    ),
+    votes: 23,
+    isOpen: true,
+    tokens: {
+      value: 5,
+      type: 'MEW',
+      percent: 11.5
+    }
+  });
+
+  const onDetailsClick = useCallback(async () => {
+    await showMemberCard();
+  }, [showMemberCard]);
+
   return (
-    <div
-      {...props}
-      className={cn(styles.item, className)}
-      style={{ paddingBottom: showDetails && detailsHref ? 0 : '12px' }}
-    >
+    <div {...props} className={cn(styles.item, className)}>
       <Link passHref href={href}>
         {/* TODO Property 'href' would be overridden by Link. Check https://git.io/Jns2B */}
         <a href="*" className={styles.name}>
@@ -55,14 +82,14 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
           )}
         </a>
       </Link>
-      {showDetails && detailsHref && (
-        <Link passHref href={detailsHref}>
-          {/* TODO Property 'href' would be overridden by Link. Check https://git.io/Jns2B */}
-          <a href="*" className={cn(styles.details, detailsClassName)}>
-            Details
-          </a>
-        </Link>
-      )}
+      <Button
+        variant="tertiary"
+        size="block"
+        onClick={onDetailsClick}
+        className={cn(styles.details, detailsClassName)}
+      >
+        Details
+      </Button>
     </div>
   );
 };

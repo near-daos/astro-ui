@@ -64,13 +64,11 @@ export const DaoList: React.VFC<DAOHeaderProps> = ({
               } else {
                 setSelected(dao.id);
               }
-
-              toggle();
             }}
             logo={dao.logo}
             count={dao.count}
             label={dao.label}
-            href={dao.id}
+            href={`/dao-home/${dao.id}`}
           />
         ))}
       </Collapsable>

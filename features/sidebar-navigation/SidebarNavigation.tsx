@@ -9,6 +9,26 @@ import {
   GOVERNANCE_SECTION_ID
 } from './constants';
 
+const AVAILABLE_DAOS = [
+  {
+    label: 'Dao Name 1',
+    id: 'dao-1',
+    count: 31,
+    logo: 'https://i.imgur.com/CklXZzD.png'
+  },
+  {
+    label: 'Dao Name 2',
+    id: 'dao-2',
+    logo: 'https://i.imgur.com/iPUZZ0D.png'
+  },
+  {
+    label: 'Dao Name 3',
+    id: 'dao-3',
+    logo: 'https://i.imgur.com/t5onQz9.png',
+    count: 1034
+  }
+];
+
 const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
   {
     id: 'overview',
@@ -156,7 +176,7 @@ export const SidebarNavigation: FC<SidebarNavigationProps> = ({
 
   return (
     <Sidebar
-      daoList={[]}
+      daoList={AVAILABLE_DAOS}
       items={items}
       className={className}
       fullscreen={fullscreen}

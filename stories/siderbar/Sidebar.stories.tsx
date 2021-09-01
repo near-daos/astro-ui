@@ -30,17 +30,17 @@ const daoList = [
     label: 'Dao Name 1',
     id: 'dao-1',
     count: 31,
-    logo: 'https://i.imgur.com/CklXZzD.png'
+    logo: ''
   },
   {
     label: 'Dao Name 2',
     id: 'dao-2',
-    logo: 'https://i.imgur.com/iPUZZ0D.png'
+    logo: ''
   },
   {
     label: 'Dao Name 3',
     id: 'dao-3',
-    logo: 'https://i.imgur.com/t5onQz9.png',
+    logo: '',
     count: 1034
   }
 ];

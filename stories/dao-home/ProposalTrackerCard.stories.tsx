@@ -22,8 +22,8 @@ export const Template: Story<ProposalTrackerProps> = (args): JSX.Element => (
 
 Template.storyName = 'Proposal Tracker';
 Template.args = {
-  title: '8 active votes',
-  subtitle: '132 proposals in total',
+  activeVotes: 8,
+  totalProposals: 132,
   action: (
     <>
       <Icon name="buttonAdd" width={24} /> Create proposal
