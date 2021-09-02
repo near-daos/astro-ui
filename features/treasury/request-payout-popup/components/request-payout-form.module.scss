@@ -1,3 +1,5 @@
+@use 'styles/breakpoints';
+
 .root {
   display: grid;
   grid-column-gap: 8px;
@@ -76,13 +78,13 @@
   margin-left: 8px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .root {
     grid-template-areas:
       'token'
       'amount'
       'recipient'
-      'group'
+      'payoutDetail'
       'externalUrl'
       'voteDetails'
       'footer';
@@ -90,6 +92,13 @@
   }
 
   .footer {
+    display: grid;
+    grid-gap: 8px;
+    grid-template-columns: 1fr 1fr;
     justify-content: space-between;
+  }
+
+  .voteDetails {
+    margin: 0 -24px;
   }
 }

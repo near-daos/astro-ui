@@ -3,15 +3,19 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import cn from 'classnames';
+
 import { Input } from 'components/input/Input';
 import { Select } from 'components/select/Select';
-import { tokenOptions } from 'features/bounty/dialogs/create-bounty-dialog/components/create-bounty-form/helpers';
 import { TextArea } from 'components/textarea/TextArea';
-import { CreatePayoutInput } from 'features/treasury/request-payout-popup/types';
 import { Button } from 'components/button/Button';
-import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { VoteDetails } from 'components/vote-details';
+import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
+import { tokenOptions } from 'features/bounty/dialogs/create-bounty-dialog/components/create-bounty-form/helpers';
+import { CreatePayoutInput } from 'features/treasury/request-payout-popup/types';
 import { Token } from 'features/types';
+
+import { useDeviceType } from 'helpers/media';
+
 import styles from './request-payout-form.module.scss';
 
 const schema = yup.object().shape({
@@ -41,6 +45,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
   onSubmit,
   onCancel
 }) => {
+  const { isMobile } = useDeviceType();
   const {
     register,
     handleSubmit,
@@ -112,7 +117,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
         className={cn(styles.input, styles.url)}
       />
       <div className={styles.vote}>
-        <ExpandableDetails label="Vote details">
+        <ExpandableDetails label="Vote details" className={styles.voteDetails}>
           <VoteDetails {...initialValues} />
         </ExpandableDetails>
       </div>
@@ -120,7 +125,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
         <Button
           variant="secondary"
           onClick={onCancel}
-          size="small"
+          size={isMobile ? 'block' : 'small'}
           className={styles.mr8}
         >
           Cancel
@@ -128,7 +133,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
         <Button
           variant="primary"
           type="submit"
-          size="small"
+          size={isMobile ? 'block' : 'small'}
           className={styles.ml8}
         >
           Propose
