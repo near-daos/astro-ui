@@ -10,7 +10,7 @@ interface AmountInputProps {
   label: string;
   placeholder: string;
   tokenName: string;
-  value?: string;
+  value?: string | number;
   onChange: (e: FormEvent) => void;
   cost: number;
   onMax: () => void;

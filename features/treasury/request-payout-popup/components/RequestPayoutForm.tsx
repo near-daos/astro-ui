@@ -82,7 +82,6 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
           isValid={touchedFields.recipient && !errors.recipient?.message}
           size="block"
           textAlign="left"
-          type="number"
           {...register('recipient')}
           placeholder="NEAR account name"
           label="Send to"

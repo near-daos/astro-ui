@@ -63,6 +63,27 @@
   line-height: 1.9;
 }
 
+.delegatedTo {
+  margin-top: 24px;
+
+  .inputLabel {
+    @extend %title5;
+    color: var(--color-neutral-80);
+    margin-bottom: 6px;
+  }
+}
+
+.row {
+  align-items: flex-end;
+  display: flex;
+  justify-content: flex-start;
+
+  > div:last-of-type {
+    margin-left: 8px;
+    transform: translateY(-10px);
+  }
+}
+
 .footer {
   display: flex;
   justify-content: flex-end;

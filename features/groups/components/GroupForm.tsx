@@ -53,7 +53,6 @@ export const GroupForm: React.FC<GroupFormProps> = ({
       defaultValue={initialValues?.selectedGroup}
       size="block"
       textAlign="left"
-      type="number"
       {...register('group')}
       label="Group name"
       className={cn(styles.input, styles.name)}

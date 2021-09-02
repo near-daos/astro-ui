@@ -3,6 +3,7 @@ import cn from 'classnames';
 
 import { AmountInput } from 'features/voting-token/components/amount-input';
 import { Modal } from 'components/modal';
+import { Input } from 'components/input/Input';
 import { Button } from 'components/button/Button';
 import { Icon, IconName } from 'components/Icon';
 
@@ -22,8 +23,10 @@ export interface StakeTokensPopupProps {
   isOpen: boolean;
   onClose: (...args: unknown[]) => void;
   token: Token;
+  amount?: number;
+  delegatedTo?: string;
   rate: number;
-  variant: 'Stake' | 'Withdraw';
+  variant: 'Stake' | 'Withdraw' | 'Change';
 }
 
 export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
@@ -31,13 +34,19 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
   onClose,
   token,
   rate,
-  variant = 'Stake'
+  variant = 'Stake',
+  delegatedTo = '',
+  amount = ''
 }) => {
   const { isMobile } = useDeviceType();
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(amount);
+  const [delegateTo, setDelegateTo] = useState(delegatedTo);
   const handleSubmit = useCallback(() => {
-    onClose(value);
-  }, [onClose, value]);
+    onClose({
+      delegateTo,
+      value
+    });
+  }, [delegateTo, onClose, value]);
 
   const handleCancel = useCallback(() => {
     onClose();
@@ -50,7 +59,11 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.root}>
-        <h2>{variant} tokens</h2>
+        <h2>
+          {variant === 'Change' && 'Change tokens amount'}
+          {variant === 'Withdraw' && 'Withdraw tokens'}
+          {variant === 'Stake' && 'Stake tokens'}
+        </h2>
         <div className={styles.content}>
           <div className={styles.info}>
             <div className={styles.token}>
@@ -92,6 +105,27 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
               cost={+(value ?? 0) * rate}
             />
           </div>
+          {variant === 'Change' && (
+            <div className={styles.delegatedTo}>
+              <div className={styles.label}>Delegated to</div>
+              <p>{delegateTo}</p>
+            </div>
+          )}
+          {variant === 'Stake' && (
+            <div className={styles.delegatedTo}>
+              <div className={styles.inputLabel}>Delegate to</div>
+              <div className={styles.row}>
+                <Input
+                  size="medium"
+                  value={delegateTo}
+                  onChange={e => {
+                    setDelegateTo((e.target as HTMLInputElement).value);
+                  }}
+                />
+                <div>.near</div>
+              </div>
+            </div>
+          )}
         </div>
         <div className={styles.footer}>
           <Button
