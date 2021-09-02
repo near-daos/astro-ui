@@ -31,12 +31,12 @@ DepositTransaction.args = {
   accountName: 'verylongnamegoeshere.near'
 };
 
-export const WindrowTransaction = Template.bind({});
+export const WithdrawTransaction = Template.bind({});
 
-WindrowTransaction.storyName = 'Windrow';
-WindrowTransaction.args = {
+WithdrawTransaction.storyName = 'Withdraw';
+WithdrawTransaction.args = {
   tokenName: TokenName.NEAR,
-  type: 'Windrow',
+  type: 'Withdraw',
   tokensBalance: 458,
   date: new Date().toISOString(),
   accountName: 'verylongnamegoeshere.near'

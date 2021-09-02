@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
-import React, { useCallback, useState } from 'react';
+import get from 'lodash.get';
+import React, { useCallback, useMemo, useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import classNames from 'classnames';
@@ -21,7 +22,6 @@ import { Pagination } from 'components/pagination';
 import { ExpandedProposalCard } from 'components/cards/expanded-proposal-card';
 import { RequestPayout } from 'components/cards/proposal-card';
 import { useModal } from 'components/modal';
-import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value';
 import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
 
 import styles from './TransactionsPage.module.scss';
@@ -94,24 +94,22 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
     [transactions]
   );
 
-  function renderChartCaption() {
-    return (
-      <>
-        <div className={styles.chartCaption}>
-          <div className={styles.chartLabel}>Number of tokens</div>
-          <div className={styles.chartValue}>
-            <FormattedNumericValue value={numberOfTokens} suffix="NEAR" />
-          </div>
-        </div>
-        <div className={styles.chartCaption}>
-          <div className={styles.chartLabel}>USD value</div>
-          <div className={styles.chartValue}>
-            <FormattedNumericValue value={usdValue} suffix="USD" />
-          </div>
-        </div>
-      </>
-    );
-  }
+  const captions = useMemo(() => {
+    const tokenType = get(transactions, '0.tokenName');
+
+    return [
+      {
+        label: 'Number of tokens',
+        value: numberOfTokens.toString(),
+        currency: tokenType
+      },
+      {
+        label: 'Total value',
+        value: Intl.NumberFormat('en-US').format(usdValue),
+        currency: 'USD'
+      }
+    ];
+  }, [transactions, numberOfTokens, usdValue]);
 
   return (
     <div className={styles.root}>
@@ -134,7 +132,7 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
         </Button>
       </div>
       <div className={styles.chart}>
-        <AreaChart data={chartData} caption={renderChartCaption()} />
+        <AreaChart data={chartData} captions={captions} />
       </div>
       <div className={styles.label}>Transactions</div>
       <Button

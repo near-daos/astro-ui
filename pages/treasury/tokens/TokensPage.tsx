@@ -1,4 +1,10 @@
-import React, { CSSProperties, useCallback, useRef, useState } from 'react';
+import React, {
+  CSSProperties,
+  useCallback,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import { ListOnScrollProps, VariableSizeList } from 'react-window';
 import { useMedia } from 'react-use';
 import dynamic from 'next/dynamic';
@@ -9,7 +15,6 @@ import { Button } from 'components/button/Button';
 import { TokenCard, TokenName } from 'components/cards/token-card';
 import { Header } from 'components/cards/token-card/components/header';
 import { useModal } from 'components/modal';
-import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value';
 import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
 
 import {
@@ -101,16 +106,20 @@ const TokensPage: React.FC<TokensPageProps> = ({
     </div>
   );
 
-  function renderChartCaption() {
-    return (
-      <div className={styles.chartCaption}>
-        <div className={styles.chartLabel}>Total value</div>
-        <div className={styles.chartValue}>
-          <FormattedNumericValue value={totalValue} suffix="USD" />
-        </div>
-      </div>
-    );
-  }
+  const captions = useMemo(
+    () => [
+      {
+        label: 'Total value',
+        value: Intl.NumberFormat('en-US').format(totalValue),
+        currency: 'USD'
+      }
+    ],
+    [totalValue]
+  );
+
+  const copyAccountName = useCallback(() => {
+    navigator.clipboard.writeText(accountName);
+  }, [accountName]);
 
   return (
     <div className={styles.root}>
@@ -118,7 +127,12 @@ const TokensPage: React.FC<TokensPageProps> = ({
         <div className={styles.caption}>DAO account name</div>
         <div className={styles.name}>
           {accountName}
-          <IconButton icon="buttonCopy" size="medium" className={styles.icon} />
+          <IconButton
+            icon="buttonCopy"
+            size="medium"
+            className={styles.icon}
+            onClick={copyAccountName}
+          />
         </div>
       </div>
       <div className={styles.send}>
@@ -127,7 +141,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
         </Button>
       </div>
       <div className={styles.chart}>
-        <AreaChart data={chartData} caption={renderChartCaption()} />
+        <AreaChart data={chartData} captions={captions} />
       </div>
       <div className={styles.label}>All tokens</div>
       <div className={styles.tokens}>

@@ -5,7 +5,7 @@ export interface ChartData {
   timestamp: number;
 }
 
-export type TransactionType = 'Deposit' | 'Windrow';
+export type TransactionType = 'Deposit' | 'Withdraw';
 
 export interface TransactionCardInput {
   type: TransactionType;

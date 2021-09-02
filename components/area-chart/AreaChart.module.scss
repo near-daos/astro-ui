@@ -12,21 +12,18 @@
   justify-content: space-between;
 }
 
-.chartCaption {
-  display: flex;
-  gap: 28px;
-}
-
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .root {
     padding: 24px;
   }
+
   .header {
     align-items: flex-start;
     flex-direction: column;
     gap: 16px;
   }
-  .chartCaption {
+
+  .caption {
     flex-direction: column;
     gap: 16px;
   }
