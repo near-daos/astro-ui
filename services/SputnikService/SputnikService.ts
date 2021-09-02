@@ -6,9 +6,9 @@ import { CreateDaoParams, DaoItem } from 'types/dao';
 import { timestampToReadable } from 'utils/timestampToReadable';
 import {
   CreateProposalParams,
+  DaoConfig,
   Proposal,
-  ProposalRaw,
-  ProposalType
+  ProposalRaw
 } from 'types/proposal';
 import { HttpService, httpService } from 'services/HttpService';
 import { ContractPool } from './ContractPool';
@@ -81,12 +81,21 @@ class SputnikService {
   }
 
   public async createDao(params: CreateDaoParams): Promise<any> {
+    const config: DaoConfig = {
+      name: params.name,
+      purpose: params.purpose,
+      metadata: ''
+    };
+
+    // TODO what should be in metadata?
     const argsList = {
       purpose: params.purpose,
       council: params.council.split('\n').filter(item => item),
       bond: new Decimal(params.bond).mul(yoktoNear).toFixed(),
       vote_period: new Decimal(params.votePeriod).mul('3.6e12').toFixed(),
-      grace_period: new Decimal(params.gracePeriod).mul('3.6e12').toFixed()
+      grace_period: new Decimal(params.gracePeriod).mul('3.6e12').toFixed(),
+      policy: [this.getAccountId()],
+      config
     };
 
     const amount = new Decimal(params.amountToTransfer);
@@ -109,42 +118,31 @@ class SputnikService {
     }
   }
 
+  // SputnikService.createProposal({
+  //   daoId: 'alexeydao.sputnikv2.testnet',
+  //   description: 'description',
+  //   kind: 'AddMemberToRole',
+  //   data: {
+  //     member_id: 'somenear.testnet',
+  //     role: 'council'
+  //   },
+  //   bond: '1000000000000000000000000'
+  // });
+  // TODO check data structures for different proposals
   public async createProposal(params: CreateProposalParams): Promise<any> {
-    const data: any = {
-      target: params.target,
-      description: params.description,
-      kind: {
-        type: params.kind.type
-      }
-    };
+    const { daoId, description, kind, data, bond } = params;
 
-    if (params.link) {
-      data.description = `${params.description} ---${params.link}`.trim();
-    }
-
-    if (params.kind.type === ProposalType.Payout) {
-      const amount = new Decimal(params.kind.amount);
-      const amountYokto = amount.mul(yoktoNear).toFixed();
-
-      data.kind.amount = amountYokto;
-    }
-
-    if (params.kind.type === ProposalType.ChangeVotePeriod) {
-      const votePeriod = new Decimal(params.kind.votePeriod).mul('3.6e12');
-
-      data.kind.vote_period = votePeriod;
-    }
-
-    if (params.kind.type === ProposalType.ChangePurpose) {
-      data.kind.purpose = params.kind.purpose;
-    }
-
-    return this.contractPool.get(params.daoId).add_proposal(
+    return this.contractPool.get(daoId).add_proposal(
       {
-        proposal: data
+        proposal: {
+          description,
+          kind: {
+            [kind]: data
+          }
+        }
       },
       new Decimal('30000000000000').toString(),
-      params.bond
+      bond
     );
   }
 
@@ -210,10 +208,6 @@ class SputnikService {
 
       throw error;
     }
-  }
-
-  public addProposal(contractId: string): Promise<void> {
-    return this.contractPool.get(contractId).add_proposal;
   }
 
   public vote(

@@ -24,27 +24,43 @@ export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
     setShowSideBar(false);
   }, [setShowSideBar]);
 
-  return (
-    <header className={styles.root}>
-      {showSideBar && (
-        <SidebarNavigation fullscreen closeSideBar={closeNavigation} />
-      )}
-      <div className={styles.mobileMenu}>
-        <Icon
-          name="hamburger"
-          className={styles.hamburgerIcon}
-          onClick={openNavigation}
-        />
-      </div>
-      {isLandingPage && (
+  const createDao = useCallback(() => {
+    // TODO Implement actual dao creation.
+    // TODO Data sample is below.
+    // SputnikService.createDao({
+    //   name: 'alexeydao',
+    //   purpose: 'Bring beauty and peace',
+    //   council: 'council',
+    //   bond: '0.1',
+    //   votePeriod: '168',
+    //   gracePeriod: '24',
+    //   amountToTransfer: '5'
+    // }).then(console.log);
+  }, []);
+
+  function renderSideBar() {
+    if (showSideBar) {
+      return <SidebarNavigation fullscreen closeSideBar={closeNavigation} />;
+    }
+
+    return null;
+  }
+
+  function renderLogo() {
+    if (isLandingPage) {
+      return (
         <div className={styles.flag}>
           <Icon name="proposalGovernance" className={styles.logo} />
         </div>
-      )}
-      <div className={cn(styles.search, styles.desktopOnly)}>
-        <SearchBar />
-      </div>
-      {isLandingPage && (
+      );
+    }
+
+    return null;
+  }
+
+  function renderDaoButtons() {
+    if (isLandingPage) {
+      return (
         <>
           <div className={cn(styles.communities, styles.desktopOnly)}>
             <Button size="small" variant="tertiary">
@@ -52,12 +68,32 @@ export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
             </Button>
           </div>
           <div className={cn(styles.createDao, styles.desktopOnly)}>
-            <Button size="small" variant="secondary">
+            <Button size="small" variant="secondary" onClick={createDao}>
               Create DAO
             </Button>
           </div>
         </>
-      )}
+      );
+    }
+
+    return null;
+  }
+
+  return (
+    <header className={styles.root}>
+      {renderSideBar()}
+      <div className={styles.mobileMenu}>
+        <Icon
+          name="hamburger"
+          className={styles.hamburgerIcon}
+          onClick={openNavigation}
+        />
+      </div>
+      {renderLogo()}
+      <div className={cn(styles.search, styles.desktopOnly)}>
+        <SearchBar />
+      </div>
+      {renderDaoButtons()}
       <div className={styles.signIn}>
         <AccountButton />
       </div>

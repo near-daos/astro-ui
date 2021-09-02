@@ -17,15 +17,23 @@ export class ContractPool {
 
     const contract = new Contract(this.account, contractId, {
       viewMethods: [
-        'get_council',
-        'get_bond',
-        'get_proposal',
-        'get_num_proposals',
+        'get_config',
+        'get_policy',
+        'get_staking_contract',
+        'get_available_amount',
+        'delegation_total_supply',
         'get_proposals',
-        'get_vote_period',
-        'get_purpose'
+        'get_last_proposal_id',
+        'get_proposal',
+        'get_bounty',
+        'get_bounties',
+        'get_last_bounty_id',
+        'get_bounty_claims',
+        'get_bounty_number_of_claims',
+        'delegation_balance_of',
+        'has_blob'
       ],
-      changeMethods: ['vote', 'add_proposal', 'finalize']
+      changeMethods: ['add_proposal', 'act_proposal']
     });
 
     this.pool[contractId] = contract;

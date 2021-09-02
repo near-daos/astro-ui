@@ -3,6 +3,8 @@ import React, { FC } from 'react';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 
+import { useAuthContext } from 'context/AuthContext';
+
 import styles from './account-button.module.scss';
 
 const SMILE = (
@@ -23,18 +25,17 @@ const SMILE = (
 );
 
 export const AccountButton: FC = () => {
-  // todo - fetch real user from auth service
-  const user = 'jonathan.near';
+  const { login, accountId } = useAuthContext();
 
   return (
     <div className={styles.root}>
-      {user ? (
+      {accountId ? (
         <>
           <span>{SMILE}</span>
-          <span className={styles.name}>{user}</span>
+          <span className={styles.name}>{accountId}</span>
         </>
       ) : (
-        <Button size="small">
+        <Button size="small" onClick={login}>
           Sign in{' '}
           <span className={styles.desktopOnly}>
             with <Icon name="logoNear" className={styles.iconLogo} />

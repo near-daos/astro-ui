@@ -1,9 +1,16 @@
-import CreateLayout from 'components/create-layout/CreateLayout';
+import { useMount } from 'react-use';
+import { useRouter } from 'next/router';
+import type { AppProps } from 'next/app';
+import React, { useState } from 'react';
+
 import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
-import type { AppProps } from 'next/app';
-import { useRouter } from 'next/router';
-import React from 'react';
+import CreateLayout from 'components/create-layout/CreateLayout';
+
+import { AuthWrapper } from 'context/AuthContext';
+
+import { SputnikService } from 'services/SputnikService';
+
 import 'styles/globals.scss';
 
 function usePageLayout(): React.FC {
@@ -17,15 +24,28 @@ function usePageLayout(): React.FC {
 }
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+  const [walletInitialized, setWalletInitialized] = useState(false);
+
   const Layout = usePageLayout();
 
-  return (
-    <ModalProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </ModalProvider>
-  );
+  useMount(async () => {
+    await SputnikService.init();
+    setWalletInitialized(true);
+  });
+
+  if (walletInitialized) {
+    return (
+      <AuthWrapper>
+        <ModalProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ModalProvider>
+      </AuthWrapper>
+    );
+  }
+
+  return <div />;
 }
 
 export default MyApp;

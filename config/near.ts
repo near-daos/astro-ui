@@ -1,4 +1,4 @@
-const CONTRACT_NAME = 'sputnik-v1.testnet';
+const CONTRACT_NAME = 'sputnikv2.testnet';
 
 export type NEAR_ENV =
   | 'production'
