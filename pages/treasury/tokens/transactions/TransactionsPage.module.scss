@@ -129,3 +129,19 @@
 .rotate {
   transform: rotate(180deg);
 }
+
+.chartCaption {
+  display: flex;
+  flex-direction: column;
+
+  .chartLabel {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+    margin-bottom: 4px;
+  }
+
+  .chartValue {
+    @extend %subtitle1;
+    color: var(--color-neutral-90);
+  }
+}

@@ -1,22 +1,25 @@
 import React, { CSSProperties, useCallback, useRef, useState } from 'react';
+import { ListOnScrollProps, VariableSizeList } from 'react-window';
+import { useMedia } from 'react-use';
+import dynamic from 'next/dynamic';
 
+import ScrollList from 'components/scroll-list/ScrollList';
 import { IconButton } from 'components/button/IconButton';
 import { Button } from 'components/button/Button';
-import dynamic from 'next/dynamic';
+import { TokenCard, TokenName } from 'components/cards/token-card';
+import { Header } from 'components/cards/token-card/components/header';
+import { useModal } from 'components/modal';
+import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value';
+import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
+
 import {
   BOND_DETAIL,
   CHART_DATA,
   TOKENS_DATA,
   VOTE_DETAILS
 } from 'lib/mocks/treasury/tokens';
-import { TokenCard, TokenName } from 'components/cards/token-card';
-import { Header } from 'components/cards/token-card/components/header';
-import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
 import { ChartData } from 'lib/types/treasury';
-import { useModal } from 'components/modal';
-import ScrollList from 'components/scroll-list/ScrollList';
-import { ListOnScrollProps, VariableSizeList } from 'react-window';
-import { useMedia } from 'react-use';
+
 import styles from './tokens.module.scss';
 
 interface TokenCardInput {
@@ -32,6 +35,7 @@ interface TokensPageProps {
   accountName: string;
   chartData: ChartData[];
   tokens: TokenCardInput[];
+  totalValue: number;
 }
 
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
@@ -39,7 +43,8 @@ const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
 const TokensPage: React.FC<TokensPageProps> = ({
   accountName = 'meowzers.sputnikdao.near',
   chartData = CHART_DATA,
-  tokens = TOKENS_DATA
+  tokens = TOKENS_DATA,
+  totalValue = 45876
 }) => {
   const [items] = useState(tokens);
   const [showRequestPayoutPopup] = useModal(RequestPayoutPopup, {
@@ -96,6 +101,17 @@ const TokensPage: React.FC<TokensPageProps> = ({
     </div>
   );
 
+  function renderChartCaption() {
+    return (
+      <div className={styles.chartCaption}>
+        <div className={styles.chartLabel}>Total value</div>
+        <div className={styles.chartValue}>
+          <FormattedNumericValue value={totalValue} suffix="USD" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.root}>
       <div className={styles.account}>
@@ -111,7 +127,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
         </Button>
       </div>
       <div className={styles.chart}>
-        <AreaChart data={chartData} />
+        <AreaChart data={chartData} caption={renderChartCaption()} />
       </div>
       <div className={styles.label}>All tokens</div>
       <div className={styles.tokens}>

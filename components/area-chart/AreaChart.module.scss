@@ -1,17 +1,33 @@
+@use 'styles/breakpoints';
 @import 'styles/typography';
 
 .root {
   flex: 1;
+  padding: 32px;
 }
 
 .header {
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 24px;
 }
 
-.caption {
-  @extend %title5;
-  color: var(--color-primary-10);
+.chartCaption {
+  display: flex;
+  gap: 28px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    padding: 24px;
+  }
+  .header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .chartCaption {
+    flex-direction: column;
+    gap: 16px;
+  }
 }

@@ -4,6 +4,7 @@ import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 
 import { useAuthContext } from 'context/AuthContext';
+import { useDeviceType } from 'helpers/media';
 
 import styles from './account-button.module.scss';
 
@@ -26,6 +27,7 @@ const SMILE = (
 
 export const AccountButton: FC = () => {
   const { login, accountId } = useAuthContext();
+  const { isMobile } = useDeviceType();
 
   return (
     <div className={styles.root}>
@@ -35,11 +37,13 @@ export const AccountButton: FC = () => {
           <span className={styles.name}>{accountId}</span>
         </>
       ) : (
-        <Button size="small" onClick={login}>
-          Sign in{' '}
-          <span className={styles.desktopOnly}>
-            with <Icon name="logoNear" className={styles.iconLogo} />
-          </span>
+        <Button size={isMobile ? 'small' : 'medium'} onClick={login}>
+          <span>Sign in </span>
+          {!isMobile && (
+            <span>
+              with&nbsp; <Icon name="logoNear" className={styles.iconLogo} />
+            </span>
+          )}
         </Button>
       )}
     </div>

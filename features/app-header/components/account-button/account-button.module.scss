@@ -7,6 +7,10 @@
   }
 }
 
+.iconLogo {
+  height: 10px;
+}
+
 @media screen and (max-width: breakpoints.$screen-sm - 1px) {
   .name {
     display: none;

@@ -9,7 +9,7 @@
     background-color: var(--color-white);
     color: var(--color-brand-purple);
     min-width: 20px;
-    padding: 2px 8px;
+    padding: 2px 3px;
   }
 }
 
@@ -21,7 +21,12 @@
   height: 20px;
   justify-content: center;
   margin: 0 4px;
+  min-height: 20px;
   opacity: 1;
+
+  &:first-of-type {
+    margin-left: 0;
+  }
 
   &.active {
     background-color: var(--color-brand-purple-light);

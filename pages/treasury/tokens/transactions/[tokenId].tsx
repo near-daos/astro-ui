@@ -1,9 +1,12 @@
 import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+import classNames from 'classnames';
+
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
-import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
+
 import {
   BOND_DETAIL,
   CHART_DATA,
@@ -11,14 +14,16 @@ import {
   TRANSACTIONS_DATA,
   VOTE_DETAILS
 } from 'lib/mocks/treasury/tokens';
-import dynamic from 'next/dynamic';
 import { ChartData, TransactionCardInput } from 'lib/types/treasury';
+
 import { TransactionCard } from 'components/cards/transaction-card';
-import classNames from 'classnames';
 import { Pagination } from 'components/pagination';
 import { ExpandedProposalCard } from 'components/cards/expanded-proposal-card';
 import { RequestPayout } from 'components/cards/proposal-card';
 import { useModal } from 'components/modal';
+import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value';
+import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
+
 import styles from './TransactionsPage.module.scss';
 
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
@@ -28,11 +33,15 @@ const ITEMS_PER_PAGE = 10;
 interface TransactionPageProps {
   chartData: ChartData[];
   transactions: TransactionCardInput[];
+  numberOfTokens: number;
+  usdValue: number;
 }
 
 const TransactionsPage: React.FC<TransactionPageProps> = ({
   chartData = CHART_DATA,
-  transactions = TRANSACTIONS_DATA
+  transactions = TRANSACTIONS_DATA,
+  numberOfTokens = 876,
+  usdValue = 457836.35
 }) => {
   const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -85,6 +94,25 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
     [transactions]
   );
 
+  function renderChartCaption() {
+    return (
+      <>
+        <div className={styles.chartCaption}>
+          <div className={styles.chartLabel}>Number of tokens</div>
+          <div className={styles.chartValue}>
+            <FormattedNumericValue value={numberOfTokens} suffix="NEAR" />
+          </div>
+        </div>
+        <div className={styles.chartCaption}>
+          <div className={styles.chartLabel}>USD value</div>
+          <div className={styles.chartValue}>
+            <FormattedNumericValue value={usdValue} suffix="USD" />
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <div className={styles.root}>
       <div className={styles.back}>
@@ -106,7 +134,7 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
         </Button>
       </div>
       <div className={styles.chart}>
-        <AreaChart data={chartData} />
+        <AreaChart data={chartData} caption={renderChartCaption()} />
       </div>
       <div className={styles.label}>Transactions</div>
       <Button

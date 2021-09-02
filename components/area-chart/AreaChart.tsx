@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, ReactNode, useMemo, useState } from 'react';
 import Measure from 'react-measure';
 import { VictoryChart, VictoryAxis, createContainer } from 'victory';
 import { VictoryArea } from 'victory-area';
@@ -17,12 +17,13 @@ import {
 
 export interface AreaChartProps {
   data: { timestamp: number; balance: number }[] | undefined;
+  caption: ReactNode;
 }
 
 // eslint-disable-next-line
 const VictoryZoomVoronoiContainer: any = createContainer('zoom', 'voronoi');
 
-export const AreaChart: FC<AreaChartProps> = ({ data = [] }) => {
+export const AreaChart: FC<AreaChartProps> = ({ data = [], caption }) => {
   const preparedData = useMemo(
     () =>
       data.map(item => ({
@@ -54,7 +55,7 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [] }) => {
       {({ measureRef }) => (
         <div className={styles.root} ref={measureRef}>
           <div className={styles.header}>
-            <div className={styles.caption}>Vault&apos;s Returns</div>
+            <div className={styles.chartCaption}>{caption}</div>
             <RangeToggle onClick={toggleDomain} activeRange={activeRange} />
           </div>
           <svg style={{ height: 0 }}>
@@ -67,7 +68,7 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [] }) => {
           </svg>
           <div className={styles.chartWrapper}>
             <VictoryChart
-              // padding={{ top: 20, bottom: 24, left: 18, right: 66 }}
+              padding={{ top: 24, bottom: 24, left: 38, right: 0 }}
               width={width}
               height={284}
               domainPadding={{ x: 100 }}
