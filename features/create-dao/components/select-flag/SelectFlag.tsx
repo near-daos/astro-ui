@@ -12,23 +12,92 @@ export interface SelectFlagProps {
   className?: string | undefined;
 }
 
+interface SelectFlagState {
+  background: number;
+  cropData: Cropper.CropBoxData;
+}
+
 export const SelectFlag: FC<SelectFlagProps> = ({
   sources,
   id,
   className,
   onSubmit
 }) => {
-  const [currentSource, setCurrentSource] = useState(0);
   const cropperRef = useRef<Cropper>();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const isMobile = useMedia('(max-width: 640px)');
+  const [historyData, setHistoryData] = useState<{
+    currentIndex: number;
+    stack: SelectFlagState[];
+  }>({
+    currentIndex: 0,
+    stack: [
+      {
+        background: 0,
+        cropData: {
+          left: 400,
+          top: 150,
+          width: 300,
+          height: 300
+        }
+      }
+    ]
+  });
 
-  const changeBackground = () => {
-    setCurrentSource(i => {
-      const isLastSource = i === sources.length - 1;
+  const saveState = (newBackground: number | undefined = undefined) => {
+    const cropper = cropperRef.current;
 
-      return isLastSource ? 0 : i + 1;
-    });
+    if (cropper != null) {
+      setHistoryData(({ currentIndex, stack }) => {
+        const newItem = {
+          background: newBackground || stack[currentIndex].background,
+          cropData: cropper.getCropBoxData()
+        };
+
+        const slice = stack.slice(0, currentIndex + 1);
+        const newValue = [...slice, newItem];
+
+        return {
+          currentIndex: newValue.length - 1,
+          stack: newValue
+        };
+      });
+    }
+  };
+
+  const undo = () => {
+    if (historyData.currentIndex === 0) return;
+
+    const selectFlagState = historyData.stack[historyData.currentIndex - 1];
+
+    cropperRef.current?.setCropBoxData(selectFlagState.cropData);
+    setHistoryData(({ currentIndex, stack }) => ({
+      currentIndex: currentIndex - 1,
+      stack
+    }));
+  };
+
+  const redo = () => {
+    if (historyData.currentIndex >= historyData.stack.length - 1) return;
+
+    const selectFlagState = historyData.stack[historyData.currentIndex + 1];
+
+    cropperRef.current?.setCropBoxData(selectFlagState.cropData);
+    setHistoryData(({ currentIndex, stack }) => ({
+      currentIndex: currentIndex + 1,
+      stack
+    }));
+  };
+
+  const currentBackgroundIndex =
+    sources[historyData.stack[historyData.currentIndex].background];
+
+  const shiftBackground = () => {
+    const selectFlagState = historyData.stack[historyData.currentIndex];
+    const i = selectFlagState.background;
+    const isLastSource = i === sources.length - 1;
+
+    saveState(isLastSource ? 0 : i + 1);
   };
 
   const crop = () => {
@@ -76,17 +145,18 @@ export const SelectFlag: FC<SelectFlagProps> = ({
     <div className={selectFlagStyles.root}>
       <div className={selectFlagStyles.actions}>
         <IconButton
-          disabled
-          onClick={() => setCurrentSource(i => i - 1)}
+          disabled={historyData.currentIndex === 0}
+          onClick={undo}
           size="medium"
           icon="navBack"
         />
+        <IconButton onClick={shiftBackground} size="medium" icon="navRefresh" />
         <IconButton
-          onClick={changeBackground}
+          onClick={redo}
+          disabled={historyData.currentIndex === historyData.stack.length - 1}
           size="medium"
-          icon="navRefresh"
+          icon="navForward"
         />
-        <IconButton disabled size="medium" icon="navForward" />
       </div>
       <form
         className={className}
@@ -97,8 +167,9 @@ export const SelectFlag: FC<SelectFlagProps> = ({
         }}
       >
         <FlagCropper
+          cropend={() => saveState()}
           dragMode={isMobile}
-          src={sources[currentSource]}
+          src={currentBackgroundIndex}
           cropperRef={cropperRef}
           canvasRef={canvasRef}
         />

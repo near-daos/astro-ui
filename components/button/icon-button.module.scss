@@ -27,3 +27,8 @@
   height: 40px;
   width: 40px;
 }
+
+.iconButton:disabled,
+.iconButton[disabled] {
+  color: var(--color-neutral-80);
+}
