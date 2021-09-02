@@ -9,23 +9,70 @@ import styles from './amounts-staked.module.scss';
 
 type Stake = {
   id: string;
-  amount: number;
+  amount?: number | string;
   name: string;
   delegatedTo?: string;
 };
 
 export interface AmountsStakedProps {
   stakes: Stake[];
+  onChangeStakes: (stakes: Stake[]) => void;
+  onUnstakeTokens: (stakes: Stake[], unstaked: Stake[]) => void;
 }
 
-export const AmountsStaked: FC<AmountsStakedProps> = ({ stakes }) => {
+export const AmountsStaked: FC<AmountsStakedProps> = ({
+  stakes,
+  onChangeStakes,
+  onUnstakeTokens
+}) => {
   const [showModal] = useModal(StakeTokensPopup);
 
-  const handleChange = useCallback(
-    async data => {
-      await showModal(data);
+  const handleUnstake = useCallback(
+    id => {
+      const {
+        newStakes,
+        unstaked
+      }: { newStakes: Stake[]; unstaked: Stake[] } = stakes.reduce(
+        (res, item) => {
+          if (item.id === id) {
+            res.unstaked.push(item);
+          } else {
+            res.newStakes.push(item);
+          }
+
+          return res;
+        },
+        { newStakes: [] as Stake[], unstaked: [] as Stake[] }
+      );
+
+      onUnstakeTokens(newStakes, unstaked);
     },
-    [showModal]
+    [onUnstakeTokens, stakes]
+  );
+
+  const handleChange = useCallback(
+    async (id, data) => {
+      const response = await showModal(data);
+
+      if (response.length) {
+        const updated = response[0];
+
+        onChangeStakes(
+          stakes.map(stake => {
+            if (stake.id === id) {
+              return {
+                ...stake,
+                amount: updated.value,
+                delegatedTo: updated.delegateTo
+              };
+            }
+
+            return stake;
+          })
+        );
+      }
+    },
+    [onChangeStakes, showModal, stakes]
   );
 
   return (
@@ -42,14 +89,17 @@ export const AmountsStaked: FC<AmountsStakedProps> = ({ stakes }) => {
               size="block"
               variant="secondary"
               onClick={() =>
-                handleChange({
+                handleChange(id, {
                   token: {
                     id,
                     tokenName: rest.name,
                     balance: rest.amount
                   },
                   rate: 18,
-                  variant: 'Stake'
+                  amount: rest.amount,
+                  delegatedTo: rest.delegatedTo,
+                  variant: 'Change',
+                  onUnstake: handleUnstake
                 })
               }
             >

@@ -10,7 +10,7 @@ import styles from './recently-unstaked.module.scss';
 
 export type Stake = {
   id: string;
-  amount: number;
+  amount?: number | string;
   name: string;
   delegatedTo?: string;
 };

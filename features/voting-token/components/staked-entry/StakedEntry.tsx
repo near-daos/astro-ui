@@ -3,7 +3,7 @@ import React, { FC, ReactNode } from 'react';
 import styles from './staked-entry.module.scss';
 
 export interface StakedEntryProps {
-  amount: number;
+  amount?: number | string;
   name: string;
   delegatedTo?: string;
   children: ReactNode;

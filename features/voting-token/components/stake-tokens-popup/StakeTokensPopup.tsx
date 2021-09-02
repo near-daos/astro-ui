@@ -19,14 +19,21 @@ type Token = {
   balance: number;
 };
 
+export type StakeResult = {
+  id?: string;
+  value?: string | number;
+  delegateTo: string;
+};
+
 export interface StakeTokensPopupProps {
   isOpen: boolean;
-  onClose: (...args: unknown[]) => void;
+  onClose: (...args: StakeResult[]) => void;
   token: Token;
   amount?: number;
   delegatedTo?: string;
   rate: number;
   variant: 'Stake' | 'Withdraw' | 'Change';
+  onUnstake?: (id: string) => void;
 }
 
 export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
@@ -36,7 +43,8 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
   rate,
   variant = 'Stake',
   delegatedTo = '',
-  amount = ''
+  amount = '',
+  onUnstake
 }) => {
   const { isMobile } = useDeviceType();
   const [value, setValue] = useState(amount);
@@ -81,7 +89,7 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
             </div>
             <div className={styles.balance}>
               <div className={cn(styles.label, styles.right)}>
-                {variant === 'Stake' ? 'Your balance' : 'You can withdraw'}
+                {variant === 'Withdraw' ? 'You can withdraw' : 'Your balance'}
               </div>
               <div className={cn(styles.value, styles.right)}>
                 <strong>{token.balance}</strong>
@@ -128,7 +136,24 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
           )}
         </div>
         <div className={styles.footer}>
+          {variant === 'Change' && (
+            <Button
+              className={styles.optionalButton}
+              variant="secondary"
+              onClick={() => {
+                if (onUnstake) {
+                  onUnstake(token.id);
+                }
+
+                handleCancel();
+              }}
+              size={isMobile ? 'block' : 'small'}
+            >
+              Unstake all tokens amount
+            </Button>
+          )}
           <Button
+            className={styles.button}
             variant="secondary"
             onClick={handleCancel}
             size={isMobile ? 'block' : 'small'}
@@ -136,11 +161,14 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
             Cancel
           </Button>
           <Button
+            className={styles.button}
             variant="primary"
             onClick={handleSubmit}
             size={isMobile ? 'block' : 'small'}
           >
-            {variant}
+            {variant === 'Stake' && 'Stake'}
+            {variant === 'Change' && 'Save changes'}
+            {variant === 'Withdraw' && 'Withdraw'}
           </Button>
         </div>
       </div>

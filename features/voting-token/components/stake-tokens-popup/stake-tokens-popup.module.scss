@@ -90,8 +90,25 @@
   margin-top: 32px;
   width: 100%;
 
-  > button:last-of-type {
+  > button:not(:first-of-type) {
     margin-left: 8px;
+  }
+
+  > button {
+    text-transform: unset;
+  }
+
+  .button1 {
+    grid-area: button1;
+  }
+
+  .button2 {
+    grid-area: button2;
+  }
+
+  .optionalButton {
+    grid-area: optionalButton;
+    margin-right: auto;
   }
 }
 
@@ -111,6 +128,14 @@
 
   .footer {
     display: grid;
+    grid-gap: 24px 16px;
+    grid-template-areas:
+      'optionalButton optionalButton'
+      'button1 button2';
     grid-template-columns: 1fr 1fr;
+
+    > button:not(:first-of-type) {
+      margin-left: 0;
+    }
   }
 }

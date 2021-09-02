@@ -19,8 +19,10 @@ import styles from './voting-token-page.module.scss';
 
 const VotingTokenPage: FC = () => {
   const [showModal] = useModal(VotingTokenPopup);
+  // TODO - use external API when ready instead of local state
   const [token, setToken] = useState<TData | null>(null);
   const [stakes, setStakes] = useState<Stake[]>([]);
+  const [unstaked, setUnstaked] = useState<Stake[]>([]);
   const { isMobile } = useDeviceType();
 
   const handleStartClick = useCallback(async () => {
@@ -32,14 +34,14 @@ const VotingTokenPage: FC = () => {
   }, [showModal]);
 
   const handleStake = useCallback(
-    (tkn, amount) => {
+    (tkn, stakeResult) => {
       setStakes([
         ...stakes,
         {
           id: nanoid(),
-          amount: Number(amount),
+          amount: Number(stakeResult.value),
           name: tkn.tokenName,
-          delegatedTo: tkn.tokensTarget
+          delegatedTo: stakeResult.delegateTo
         }
       ]);
     },
@@ -77,18 +79,25 @@ const VotingTokenPage: FC = () => {
       {token && (
         <VotingToken
           token={token}
-          totalStaked={10}
-          onStake={(res: string) => handleStake(token, res)}
+          balance={token.balance}
+          onStake={res => handleStake(token, res)}
         />
       )}
-      {!!stakes.length && (
+      {!!unstaked.length && (
         <div className={styles.row}>
-          <RecentlyUnstaked stakes={stakes} />
+          <RecentlyUnstaked stakes={unstaked} />
         </div>
       )}
       {!!stakes.length && (
         <div className={styles.row}>
-          <AmountsStaked stakes={stakes} />
+          <AmountsStaked
+            stakes={stakes}
+            onUnstakeTokens={(stk, unstk) => {
+              setUnstaked([...unstaked, ...unstk] as Stake[]);
+              setStakes(stk);
+            }}
+            onChangeStakes={res => setStakes(res)}
+          />
         </div>
       )}
     </>

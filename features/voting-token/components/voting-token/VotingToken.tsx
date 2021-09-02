@@ -3,7 +3,10 @@ import React, { FC, useCallback } from 'react';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 
-import { StakeTokensPopup } from 'features/voting-token/components/stake-tokens-popup';
+import {
+  StakeTokensPopup,
+  StakeResult
+} from 'features/voting-token/components/stake-tokens-popup';
 import { useModal } from 'components/modal';
 
 import styles from './voting-token.module.scss';
@@ -18,13 +21,13 @@ type Token = {
 
 export interface VotingTokenProps {
   token: Token;
-  totalStaked: number;
-  onStake: (res: string) => void;
+  balance: number;
+  onStake: (res: StakeResult) => void;
 }
 
 export const VotingToken: FC<VotingTokenProps> = ({
   token,
-  totalStaked,
+  balance,
   onStake
 }) => {
   const [showModal] = useModal(StakeTokensPopup, { token, rate: 18 });
@@ -33,7 +36,7 @@ export const VotingToken: FC<VotingTokenProps> = ({
     const response = await showModal();
 
     if (response?.length) {
-      onStake(response[0] as string);
+      onStake(response[0]);
     }
   }, [onStake, showModal]);
 
@@ -61,9 +64,9 @@ export const VotingToken: FC<VotingTokenProps> = ({
         {token.tokenSymbol}
       </div>
       <div className={styles.total}>
-        <div className={styles.label}>Total staked</div>
+        <div className={styles.label}>Your balance</div>
         <div className={styles.value}>
-          <strong>{totalStaked}</strong>
+          <strong>{balance}</strong>
           &nbsp;
           {token.tokenName}
         </div>

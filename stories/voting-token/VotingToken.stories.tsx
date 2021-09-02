@@ -29,5 +29,5 @@ Template.args = {
     tokenSymbol: 'goose.tkn.farm',
     balance: 19
   },
-  totalStaked: 1234.22
+  balance: 1234.22
 };
