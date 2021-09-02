@@ -1,0 +1,58 @@
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'daoDetails daoDetails proposals'
+    'daoDetails daoDetails daoInfo'
+    'filter . . '
+    'proposalList proposalList proposalList';
+  grid-template-columns: 1fr 1fr 1fr;
+  padding-top: 56px;
+}
+
+.daoDetails {
+  grid-area: daoDetails;
+}
+
+.onTop {
+  z-index: 10;
+}
+
+.proposalsDetails {
+  grid-area: proposalsDetails;
+}
+
+.daoInfo {
+  grid-area: daoInfo;
+}
+
+.filter {
+  grid-area: filter;
+}
+
+.proposalList {
+  grid-area: proposalList;
+}
+
+.votingEnds {
+  @extend %body1;
+  align-self: center;
+  display: flex;
+  margin-bottom: 24px;
+  margin-top: 40px;
+
+  .bold {
+    @extend %title3;
+  }
+
+  .icon {
+    transition: transform 0.5s;
+  }
+
+  .rotate {
+    transform: rotate(90deg);
+  }
+}

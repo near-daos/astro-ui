@@ -18,6 +18,9 @@ module.exports = (phase, { defaultConfig }) => {
     {
       ...defaultConfig,
       reactStrictMode: true,
+      images: {
+        domains: ['i.imgur.com']
+      },
       sassOptions: {
         includePaths: [path.join(__dirname, 'styles')]
       },

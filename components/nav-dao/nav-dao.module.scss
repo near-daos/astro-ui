@@ -28,9 +28,14 @@
 
 .details {
   @extend %caption2;
+  align-self: flex-start;
   color: var(--color-primary-30);
   cursor: pointer;
-  padding-left: 38px;
+  width: fit-content;
+
+  &button {
+    text-transform: none;
+  }
 }
 
 .counter {

@@ -1,9 +1,9 @@
 import React, { CSSProperties } from 'react';
-import { FixedSizeList, ListOnScrollProps } from 'react-window';
+import { VariableSizeList, ListOnScrollProps } from 'react-window';
 
 export interface ScrollListProps {
   height: number;
-  itemSize: number;
+  itemSize: (index: number) => number;
   itemCount: number;
   onScroll?: (props: ListOnScrollProps) => void;
   renderItem: ({
@@ -15,20 +15,19 @@ export interface ScrollListProps {
   }) => JSX.Element;
 }
 
-const ScrollList = React.forwardRef<FixedSizeList, ScrollListProps>(
+const ScrollList = React.forwardRef<VariableSizeList, ScrollListProps>(
   ({ height, itemSize, itemCount, onScroll, renderItem }, ref) => {
     return (
-      <FixedSizeList
+      <VariableSizeList
         height={height}
         itemCount={itemCount}
-        initialScrollOffset={100}
         itemSize={itemSize}
         ref={ref}
         width="100%"
         onScroll={onScroll}
       >
         {renderItem}
-      </FixedSizeList>
+      </VariableSizeList>
     );
   }
 );
