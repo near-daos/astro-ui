@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useMemo, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import Measure from 'react-measure';
 import { VictoryChart, VictoryAxis, createContainer } from 'victory';
 import { VictoryArea } from 'victory-area';
@@ -14,16 +14,18 @@ import {
   LEFT_AXIS_STYLES,
   LINE_STYLES
 } from './chart-styles';
+import { ChartCaption } from './components/chart-caption';
+import { ChartCaptionInterface } from './types';
 
 export interface AreaChartProps {
   data: { timestamp: number; balance: number }[] | undefined;
-  caption: ReactNode;
+  captions: ChartCaptionInterface[];
 }
 
 // eslint-disable-next-line
 const VictoryZoomVoronoiContainer: any = createContainer('zoom', 'voronoi');
 
-export const AreaChart: FC<AreaChartProps> = ({ data = [], caption }) => {
+export const AreaChart: FC<AreaChartProps> = ({ data = [], captions }) => {
   const preparedData = useMemo(
     () =>
       data.map(item => ({
@@ -55,7 +57,7 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [], caption }) => {
       {({ measureRef }) => (
         <div className={styles.root} ref={measureRef}>
           <div className={styles.header}>
-            <div className={styles.chartCaption}>{caption}</div>
+            <ChartCaption captions={captions} className={styles.caption} />
             <RangeToggle onClick={toggleDomain} activeRange={activeRange} />
           </div>
           <svg style={{ height: 0 }}>

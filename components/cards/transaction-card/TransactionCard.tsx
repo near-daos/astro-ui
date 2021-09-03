@@ -26,7 +26,7 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
       <div
         className={classNames(s.icon, {
           [s.purple]: type === 'Deposit',
-          [s.green]: type === 'Windrow'
+          [s.green]: type === 'Withdraw'
         })}
       >
         <Icon

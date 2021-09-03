@@ -68,7 +68,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
   },
   {
     transactionId: '4',
-    type: 'Windrow',
+    type: 'Withdraw',
     tokenName: TokenName.NEAR,
     tokensBalance: 223,
     date: new Date().toISOString(),
@@ -76,7 +76,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
   },
   {
     transactionId: '5',
-    type: 'Windrow',
+    type: 'Withdraw',
     tokenName: TokenName.NEAR,
     tokensBalance: 223,
     date: new Date().toISOString(),

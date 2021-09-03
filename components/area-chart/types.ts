@@ -16,3 +16,9 @@ export type DomainControl = {
   onZoomDataChange: () => void;
   maxDomainValue: number;
 };
+
+export interface ChartCaptionInterface {
+  label: string;
+  value: string;
+  currency: string;
+}
