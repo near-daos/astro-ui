@@ -5,7 +5,7 @@ import { Config } from 'react-popper-tooltip/dist/types';
 import styles from './styles.module.scss';
 
 interface PopupProps {
-  className?: string | undefined;
+  className?: string;
   anchor: HTMLElement | null;
 }
 
@@ -45,3 +45,7 @@ export const Popup: React.FC<PopupProps & Config> = ({
     </div>
   );
 };
+
+Popup.defaultProps = {
+  className: ''
+} as Partial<PopupProps>;

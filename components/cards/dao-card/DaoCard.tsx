@@ -11,7 +11,7 @@ interface DaoCardProps {
   daoAccountName: string;
   description: string | null;
   activeProposals: number;
-  funds: number;
+  funds: string;
   members: number;
 }
 
@@ -25,7 +25,7 @@ const DaoCard: React.FC<DaoCardProps> = ({
 }) => {
   const renderFooterItem = (
     caption: string,
-    value: number,
+    value: number | string,
     suffix?: string
   ) => (
     <div className={styles.flexContainer}>

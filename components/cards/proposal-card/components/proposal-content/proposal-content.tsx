@@ -39,6 +39,11 @@ export const AddMemberToGroup: FC<AddRemoveMemberProps> = ({
   </>
 );
 
+AddMemberToGroup.defaultProps = {
+  link: '',
+  linkTitle: ''
+} as ProposalContentProps;
+
 export const RemoveMemberFromGroup: FC<AddRemoveMemberProps> = ({
   name,
   groupName,
@@ -60,6 +65,11 @@ export const RemoveMemberFromGroup: FC<AddRemoveMemberProps> = ({
     )}
   </>
 );
+
+RemoveMemberFromGroup.defaultProps = {
+  link: '',
+  linkTitle: ''
+} as ProposalContentProps;
 
 interface NewGroupProps extends ProposalContentProps {
   groupName: string;
@@ -83,6 +93,11 @@ export const CreateNewGroup: FC<NewGroupProps> = ({
     )}
   </>
 );
+
+CreateNewGroup.defaultProps = {
+  link: '',
+  linkTitle: ''
+} as ProposalContentProps;
 
 interface RequestPayoutProps extends ProposalContentProps {
   amount: number;
@@ -123,6 +138,12 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
   </>
 );
 
+RequestPayout.defaultProps = {
+  link: '',
+  linkTitle: '',
+  reason: ''
+} as Partial<ProposalContentProps>;
+
 interface TextWithLinkProps extends ProposalContentProps {
   text: string;
 }
@@ -144,3 +165,8 @@ export const TextWithLink: FC<TextWithLinkProps> = ({
     )}
   </>
 );
+
+TextWithLink.defaultProps = {
+  link: '',
+  linkTitle: ''
+} as ProposalContentProps;

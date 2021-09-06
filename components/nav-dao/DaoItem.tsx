@@ -3,6 +3,7 @@ import React, { HTMLProps, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import cn from 'classnames';
+
 import { Badge } from 'components/badge/Badge';
 import { Button } from 'components/button/Button';
 import { useModal } from 'components/modal';
@@ -10,6 +11,10 @@ import {
   MemberCardPopup,
   MemberCardPopupProps
 } from 'components/cards/member-card';
+
+import { DAO } from 'types/dao';
+import { useAuthContext } from 'context/AuthContext';
+
 import styles from './nav-dao.module.scss';
 
 interface DaoItemProps extends Omit<HTMLProps<HTMLDivElement>, 'href'> {
@@ -20,6 +25,7 @@ interface DaoItemProps extends Omit<HTMLProps<HTMLDivElement>, 'href'> {
   active?: boolean;
   className?: string;
   detailsClassName?: string;
+  dao: DAO;
 }
 
 export const DaoItem: React.VFC<DaoItemProps> = ({
@@ -29,22 +35,21 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
   logo,
   href,
   detailsClassName,
+  dao,
   ...props
 }) => {
+  const { accountId } = useAuthContext();
   const [showMemberCard] = useModal<MemberCardPopupProps>(MemberCardPopup, {
-    title: 'jonasteam.near',
+    title: accountId,
     children: (
       <>
-        <Badge size="small" variant="green">
-          Atos
-        </Badge>
-        <Badge size="large" variant="orange">
-          Portos
-        </Badge>
-        <Badge size="medium">Aramis</Badge>
-        <Badge size="medium" variant="turqoise">
-          d&apos;Artagnan
-        </Badge>
+        {dao.groups
+          .filter(item => item.members.includes(accountId))
+          .map(item => (
+            <Badge size="small" variant="green" key={item.name}>
+              {item.name}
+            </Badge>
+          ))}
       </>
     ),
     votes: 23,

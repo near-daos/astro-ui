@@ -5,7 +5,7 @@ import { Dropdown } from 'components/dropdown/Dropdown';
 import DaoCard from 'components/cards/dao-card';
 
 import { SputnikService } from 'services/SputnikService';
-import { DaoItem } from 'types/dao';
+import { DAO } from 'types/dao';
 
 import styles from './browse-all-daos.module.scss';
 
@@ -33,7 +33,7 @@ const sortOptions = [
 ];
 
 interface BrowseAllDaosProps {
-  data: DaoItem[];
+  data: DAO[];
 }
 
 const BrowseAllDaos: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
@@ -71,10 +71,10 @@ const BrowseAllDaos: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
             key={item.id}
             title={item.name}
             daoAccountName={item.id}
-            description={item.purpose}
-            activeProposals={18}
-            funds={180}
-            members={item?.policy.roles.length}
+            description={item.description}
+            activeProposals={item.proposals}
+            funds={item.funds}
+            members={item.members}
           />
         ))}
       </div>

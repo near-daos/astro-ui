@@ -90,3 +90,13 @@ export const NavItem: React.FC<NavItemProps> = ({
     </div>
   );
 };
+
+NavItem.defaultProps = {
+  href: '',
+  count: undefined,
+  active: false,
+  className: '',
+  topDelimiter: false,
+  bottomDelimiter: false,
+  onClick: undefined
+} as Partial<NavItemProps>;

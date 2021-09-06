@@ -10,8 +10,8 @@ interface SidebarNavigationProps {
 }
 
 export const SidebarNavigation: FC<SidebarNavigationProps> = ({
-  className,
-  fullscreen,
+  className = '',
+  fullscreen = false,
   closeSideBar
 }) => {
   const { daosList, menuItems } = useSidebarData();

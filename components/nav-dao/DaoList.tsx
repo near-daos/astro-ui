@@ -1,6 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { Collapsable } from 'components/collapsable/Collapsable';
 import { useBoolean } from 'react-use';
+
+import { DAO } from 'types/dao';
+
 import styles from './nav-dao.module.scss';
 import { DaoItem } from './DaoItem';
 import { DaoHeader } from './DaoHeader';
@@ -10,12 +13,7 @@ interface DAOHeaderProps {
   isOpen: boolean;
   onChange?: (currentItem?: string) => void;
   currentItem?: string | undefined;
-  items: {
-    id: string;
-    label: string;
-    logo: string;
-    count?: number | undefined;
-  }[];
+  items: DAO[];
 }
 
 export const DaoList: React.VFC<DAOHeaderProps> = ({
@@ -51,12 +49,13 @@ export const DaoList: React.VFC<DAOHeaderProps> = ({
             logo={selectedItem?.logo}
             isOpen={isHeadingOpen}
             onClick={() => toggleHeading()}
-            label={selectedItem?.label || 'Select DAO'}
+            label={selectedItem?.name || 'Select DAO'}
           />
         )}
       >
         {items.map(dao => (
           <DaoItem
+            dao={dao}
             key={dao.id}
             onClick={() => {
               if (onChange) {
@@ -66,8 +65,8 @@ export const DaoList: React.VFC<DAOHeaderProps> = ({
               }
             }}
             logo={dao.logo}
-            count={dao.count}
-            label={dao.label}
+            count={dao.members}
+            label={dao.name}
             href={`/dao-home/${dao.id}`}
           />
         ))}

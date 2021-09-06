@@ -2,7 +2,7 @@ import styles from 'components/cards/components/formatted-numeric-value/formatte
 import classNames from 'classnames';
 
 interface FormattedNumericValueProps {
-  value: number;
+  value: number | string;
   suffix?: string;
   className?: string;
 }

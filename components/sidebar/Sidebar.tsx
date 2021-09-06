@@ -161,3 +161,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     </aside>
   );
 };
+
+Sidebar.defaultProps = {
+  className: '',
+  fullscreen: false,
+  closeSideBar: undefined
+};

@@ -2,14 +2,20 @@
 import { connect, Contract, keyStores, Near } from 'near-api-js';
 import { NearConfig, nearConfig } from 'config';
 import Decimal from 'decimal.js';
-import { CreateDaoParams, DaoItem } from 'types/dao';
-import { timestampToReadable } from 'utils/timestampToReadable';
+import { CreateDaoParams, DAO, Member } from 'types/dao';
+import { nanoid } from 'nanoid';
+// import { timestampToReadable } from 'utils/timestampToReadable';
 import {
   CreateProposalParams,
   DaoConfig,
   Proposal,
   ProposalRaw
 } from 'types/proposal';
+import {
+  mapDaoDTOListToDaoList,
+  DaoDTO,
+  mapDaoDTOtoDao
+} from 'services/SputnikService/mappers/dao';
 import { HttpService, httpService } from 'services/HttpService';
 import { ContractPool } from './ContractPool';
 import { yoktoNear, gas } from './constants';
@@ -150,12 +156,12 @@ class SputnikService {
     offset?: number;
     limit?: number;
     sort?: string;
-  }): Promise<DaoItem[]> {
+  }): Promise<DAO[]> {
     const offset = params?.offset ?? 0;
     const limit = params?.limit ?? 50;
     const sort = params?.sort ?? 'createdAt';
 
-    const { data: daos } = await this.httpService.get<DaoItem[]>('/daos', {
+    const { data } = await this.httpService.get<DaoDTO[]>('/daos', {
       params: {
         offset,
         limit,
@@ -163,19 +169,21 @@ class SputnikService {
       }
     });
 
-    return daos.map(dao => ({
-      ...dao,
-      votePeriod: timestampToReadable(parseInt(dao.policy.proposalPeriod, 10))
-    }));
+    return mapDaoDTOListToDaoList(data);
+
+    // return daos.map(dao => ({
+    //   ...dao,
+    //   votePeriod: timestampToReadable(parseInt(dao.policy.proposalPeriod, 10))
+    // }));
   }
 
-  public async getDaoById(daoId: string): Promise<DaoItem | null> {
+  public async getDaoById(daoId: string): Promise<DAO | null> {
     try {
-      const { data: dao } = await this.httpService.get<DaoItem>(
+      const { data: dao } = await this.httpService.get<DaoDTO>(
         `/daos/${daoId}`
       );
 
-      return dao;
+      return mapDaoDTOtoDao(dao);
     } catch (error) {
       if ([400, 404].includes(error.response.status)) {
         return null;
@@ -183,6 +191,46 @@ class SputnikService {
 
       throw error;
     }
+  }
+
+  public async getMembers(): Promise<Member[]> {
+    const res = await this.getDaoList();
+
+    const members = {} as Record<string, Member>;
+
+    res.forEach(dao => {
+      dao.groups.forEach(grp => {
+        const users = grp.members;
+
+        users.forEach(user => {
+          if (!members[user]) {
+            members[user] = {
+              id: nanoid(),
+              name: user,
+              groups: [grp.name],
+              tokens: {
+                type: 'NEAR',
+                value: 18,
+                percent: 14
+              },
+              votes: 12
+            };
+          } else {
+            members[user] = {
+              ...members[user],
+              groups: [...members[user].groups, grp.name]
+            };
+          }
+        });
+      });
+    });
+
+    return Object.values(members).map(item => {
+      return {
+        ...item,
+        groups: Array.from(new Set(item.groups))
+      };
+    });
   }
 
   public async getProposals(

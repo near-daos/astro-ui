@@ -48,8 +48,7 @@ const FileInput: FC<FileInputProps> = ({ disabled, onFileAdded, selected }) => {
 };
 
 FileInput.defaultProps = {
-  disabled: false,
-  onFileAdded: undefined
+  disabled: false
 };
 
 export default FileInput;

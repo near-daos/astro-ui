@@ -61,8 +61,9 @@
   }
 }
 
-.title {
+.title.title {
   margin-top: 8px;
+  text-transform: lowercase;
   &::first-letter {
     text-transform: lowercase;
   }

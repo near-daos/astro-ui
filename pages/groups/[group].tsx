@@ -1,7 +1,8 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import get from 'lodash.get';
 import { useMedia } from 'react-use';
+import { SputnikService } from 'services/SputnikService';
 
 import MemberCard, { MemberCardPopup } from 'components/cards/member-card';
 import { Button } from 'components/button/Button';
@@ -9,10 +10,11 @@ import { Dropdown } from 'components/dropdown/Dropdown';
 import { Badge, Variant } from 'components/badge/Badge';
 import { GroupPopup } from 'features/groups';
 import { GroupFormInput, GroupFormType } from 'features/groups/types';
-
 import { useModal } from 'components/modal';
 
-import { groupColor, members, groupPopupData } from 'lib/mocks/groups';
+import { Member } from 'types/dao';
+
+import { groupColor, groupPopupData } from 'lib/mocks/groups';
 
 import styles from './groups.module.scss';
 
@@ -30,6 +32,7 @@ const sortOptions = [
 const GroupPage: FC = () => {
   const router = useRouter();
   const { group } = router.query;
+  const [data, setData] = useState<Member[]>([]);
   const [showCardModal] = useModal(MemberCardPopup);
   const [showGroupModal] = useModal(GroupPopup);
   const isMobile = useMedia('(max-width: 640px)');
@@ -67,8 +70,14 @@ const GroupPage: FC = () => {
     [showCardModal]
   );
 
+  useEffect(() => {
+    SputnikService.getMembers().then(res => {
+      setData(res);
+    });
+  }, []);
+
   // Todo - we will fetch and select members dynamically
-  const data = members
+  const sortedData = data
     .filter(
       item =>
         !group ||
@@ -121,7 +130,7 @@ const GroupPage: FC = () => {
         />
       </div>
       <div className={styles.content}>
-        {data.map(item => (
+        {sortedData.map(item => (
           <MemberCard
             onRemoveClick={async () => {
               await handleRemoveClick(item);

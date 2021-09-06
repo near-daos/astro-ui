@@ -68,7 +68,7 @@
 }
 
 .voteDetails {
-  margin: 0 -24px;
+  margin: 0 -48px;
 }
 
 @media screen and (max-width: #{breakpoints.$screen-xs}px) {
@@ -81,6 +81,10 @@
       'voteDetails'
       'footer';
     grid-template-columns: 1fr;
+  }
+
+  .voteDetails {
+    margin: 0 -24px;
   }
 
   .footer {

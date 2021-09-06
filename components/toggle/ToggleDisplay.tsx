@@ -11,3 +11,7 @@ export const ToggleDisplay: React.FC<{ value?: boolean }> = ({ value }) => {
     </div>
   );
 };
+
+ToggleDisplay.defaultProps = {
+  value: false
+};

@@ -92,8 +92,7 @@ const Dropzone: FC<DropzoneProps> = ({ disabled, onFileAdded }) => {
 };
 
 Dropzone.defaultProps = {
-  disabled: false,
-  onFileAdded: undefined
+  disabled: false
 };
 
 export default Dropzone;

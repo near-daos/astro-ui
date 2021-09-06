@@ -1,4 +1,4 @@
-import { DaoItem } from 'types/dao';
+import { DAO } from 'types/dao';
 import { SputnikService } from 'services/SputnikService';
 
 import BrowseAllDaos from './BrowseAllDaos';
@@ -14,7 +14,7 @@ export async function getServerSideProps({
 }: {
   query: GetDaoListQuery;
 }): Promise<{
-  props: { data: DaoItem[] };
+  props: { data: DAO[] };
 }> {
   const data = await SputnikService.getDaoList(query);
 

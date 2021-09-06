@@ -27,7 +27,12 @@
   .urlCaption {
     @extend %subtitle3;
     color: var(--color-neutral-50);
+    overflow: hidden;
     padding-top: 8px;
+    text-align: center;
+    text-overflow: ellipsis;
+    width: 100%;
+    word-break: normal;
   }
 
   .descriptionCaption {

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import get from 'lodash.get';
 
 import { Sidebar } from 'components/sidebar';
 import { AddGroupMenu } from 'features/groups/components/add-group-menu';
@@ -7,7 +6,7 @@ import { AddGroupMenu } from 'features/groups/components/add-group-menu';
 import { SputnikService } from 'services/SputnikService';
 import { useAuthContext } from 'context/AuthContext';
 
-import { DaoItem, TRole } from 'types/dao';
+import { DAO } from 'types/dao';
 
 import {
   GOVERNANCE_SECTION_ID,
@@ -116,34 +115,22 @@ const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
   }
 ];
 
-const availableGroups = [
-  {
-    name: 'MEW holders',
-    slug: 'mew-holders'
-  },
-  {
-    name: 'NEAR holder',
-    slug: 'near-holders'
-  },
-  {
-    name: 'Ombudspeople',
-    slug: 'ombudspeople'
-  }
-];
-
-export type DaoListItem = {
-  logo: string;
-  label: string;
-} & DaoItem;
-
 type TSidebarData = {
-  daosList: DaoListItem[];
+  daosList: DAO[];
   menuItems: React.ComponentProps<typeof Sidebar>['items'];
 };
 
 export const useSidebarData = (): TSidebarData => {
   const { accountId } = useAuthContext();
-  const [daosList, setDaosList] = useState<DaoListItem[]>([]);
+  const [daosList, setDaosList] = useState<DAO[]>([]);
+
+  const groups = daosList.reduce((res, item) => {
+    item.groups.forEach(group => {
+      res[group.name] = group.slug;
+    });
+
+    return res;
+  }, {} as Record<string, string>);
 
   // Todo - we have to dynamically get list of available groups and generate sidebar menu items
   const menuItems = sidebarItems.map(item => {
@@ -152,10 +139,10 @@ export const useSidebarData = (): TSidebarData => {
         ...item,
         subItems: [
           ...item.subItems,
-          ...availableGroups.map(group => ({
-            id: group.name,
-            label: group.name,
-            href: `/${GROUPS_SECTION_ID}/${group.slug}`
+          ...Object.keys(groups).map(key => ({
+            id: key,
+            label: key,
+            href: `/${GROUPS_SECTION_ID}/${groups[key]}`
           }))
         ]
       };
@@ -165,26 +152,15 @@ export const useSidebarData = (): TSidebarData => {
   });
 
   useEffect(() => {
-    // TODO - fetch daos specifically for logged user then we can remove filtering
     SputnikService.getDaoList()
       .then(res => {
-        const userDaos = res
-          .filter(item => {
-            const daoPolicyRoles = get(item, 'policy.roles', []);
-            const councilRoles = daoPolicyRoles.find(
-              (role: TRole) => role.name === 'council'
-            );
-            const group = get(councilRoles, 'kind.group', []);
-
-            return group.includes(accountId);
-          })
-          .map(item => ({
-            ...item,
-            label: item.name,
-            id: item.id,
-            logo: 'https://i.imgur.com/t5onQz9.png',
-            count: 10
-          }));
+        const userDaos = res.map(item => ({
+          ...item,
+          label: item.name,
+          id: item.id,
+          logo: 'https://i.imgur.com/t5onQz9.png',
+          count: item.members
+        }));
 
         setDaosList(userDaos);
       })

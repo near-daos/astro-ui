@@ -1,3 +1,5 @@
+import { Token } from 'components/cards/member-card';
+
 export type CreateDaoParams = {
   name: string;
   amountToTransfer: string;
@@ -8,53 +10,30 @@ export type CreateDaoParams = {
   gracePeriod: string;
 };
 
-export type TPermission =
-  | '*:Finalize'
-  | '*:AddProposal'
-  | '*:VoteApprove'
-  | '*:VoteReject'
-  | '*:VoteRemove';
-
-export type TRole = {
-  kind: 'Everyone' | { group: string[] };
+export type TGroup = {
+  members: string[];
   name: string;
-  permissions: TPermission[];
+  permissions: string;
   votePolicy: unknown;
+  slug: string;
 };
 
-export type TVotePolicy = {
-  quorum: string;
-  threshold: number[];
-  weightKind: 'RoleWeight';
-};
-
-export type TPolicy = {
-  bountyBond: string;
-  bountyForgivenessPeriod: string;
-  createdAt: string;
-  daoId: string;
-  defaultVotePolicy: TVotePolicy;
-  proposalBond: string;
-  proposalPeriod: string;
-  roles: TRole[];
-};
-
-export type DaoItem = {
-  amount: string;
-  createTimestamp: string;
-  createdAt: string;
-  description: string | null;
+export type Member = {
   id: string;
-  lastBountyId: number;
-  lastProposalId: number;
-  link: string | null;
-  metadata: string;
   name: string;
-  policy: TPolicy;
-  purpose: string;
-  stakingContract: string;
-  status: 'Success';
-  totalSupply: string;
-  transactionHash: string;
-  updateTimestamp: string;
+  groups: string[];
+  tokens: Token;
+  votes: number;
+} & { [key: string]: string | string[] | Token | number };
+
+export type DAO = {
+  id: string;
+  name: string;
+  description: string;
+  members: number;
+  funds: string;
+  proposals: number;
+  createdAt: string;
+  logo: string;
+  groups: TGroup[];
 };
