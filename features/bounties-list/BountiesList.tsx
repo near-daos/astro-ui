@@ -3,7 +3,7 @@ import { Bounty } from 'components/cards/bounty-card/types';
 import { BountyCard } from 'components/cards/bounty-card';
 import { IconButton } from 'components/button/IconButton';
 import ScrollList from 'components/scroll-list/ScrollList';
-import { FixedSizeList, ListOnScrollProps } from 'react-window';
+import { ListOnScrollProps, VariableSizeList } from 'react-window';
 import { useMedia } from 'react-use';
 import styles from './bounties-list.module.scss';
 
@@ -26,7 +26,7 @@ export const BountiesList: FC<BountiesListProps> = ({
   const [tasks] = useState(regularBounties);
 
   const [showResetScroll, setShowResetScroll] = useState(false);
-  const scrollListRef = useRef<FixedSizeList>(null);
+  const scrollListRef = useRef<VariableSizeList>(null);
   const isMobileOrTablet = useMedia('(max-width: 768px)');
 
   const handleScroll = useCallback(({ scrollOffset }: ListOnScrollProps) => {
@@ -82,7 +82,7 @@ export const BountiesList: FC<BountiesListProps> = ({
         itemCount={regularBounties.length}
         onScroll={handleScroll}
         height={700}
-        itemSize={isMobileOrTablet ? 240 : 96}
+        itemSize={() => (isMobileOrTablet ? 240 : 96)}
         ref={scrollListRef}
         renderItem={renderCard}
       />
