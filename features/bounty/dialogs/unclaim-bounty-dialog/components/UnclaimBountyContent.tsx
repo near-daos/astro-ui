@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { differenceInCalendarDays, parseISO } from 'date-fns';
 import cn from 'classnames';
 
-import { BountyCard } from 'components/cards/bounty-card';
-import { Bounty } from 'features/bounty/types';
+import { BountyInfoCard } from 'components/cards/bounty-info-card';
+import { Bounty } from 'components/cards/bounty-card/types';
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
@@ -29,7 +29,7 @@ const UnclaimBountyContent: FC<UnclaimBountyContentProps> = ({
   return (
     <div className={styles.content}>
       <div className={styles.card}>
-        <BountyCard variant="simple" data={data} />
+        <BountyInfoCard data={data} />
       </div>
       <div
         className={cn(styles.warning, {

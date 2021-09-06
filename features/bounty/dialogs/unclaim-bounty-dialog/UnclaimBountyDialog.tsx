@@ -4,7 +4,7 @@ import { Modal } from 'components/modal';
 
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 
-import { Bounty } from 'features/bounty/types';
+import { Bounty } from 'components/cards/bounty-card/types';
 
 import UnclaimBountyContent from 'features/bounty/dialogs/unclaim-bounty-dialog/components/UnclaimBountyContent';
 

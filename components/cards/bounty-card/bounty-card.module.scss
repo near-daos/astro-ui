@@ -6,97 +6,165 @@
   background: var(--color-white);
   border-radius: 8px;
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   min-height: 80px;
   overflow: hidden;
+
+  @include tablet-landscape {
+    flex-direction: row;
+  }
 }
 
-.side {
-  display: flex;
-  flex: 0 0 64px;
-  height: 100%;
-}
-
-.content {
+.type {
   align-items: center;
   display: flex;
-  flex: 1;
+  height: 40px;
   justify-content: flex-start;
-  overflow: hidden;
-  padding: 20px 24px;
+  padding-left: 21px;
+  width: 100%;
 
-  .group {
-    @extend %body1;
-    @include ellipse-text;
-    flex: 2;
-    margin-right: 8px;
-    white-space: nowrap;
-  }
-
-  .reward {
-    flex: 0 0 70px;
-    margin: 0 8px;
-    white-space: nowrap;
-  }
-
-  .slots {
-    @extend %subtitle2;
-    align-items: center;
-    color: var(--color-success-60);
-    display: flex;
-    flex: 1;
-    justify-content: flex-end;
-    margin: 0 8px 0 16px;
-  }
-
-  .control {
-    flex: 0 0 120px;
-    margin-left: 8px;
-  }
-
-  .primaryLabel {
-    @extend %body1;
-    color: var(--color-neutral-90);
-  }
-
-  .secondaryLabel {
-    @extend %body1;
-    color: var(--color-neutral-60);
-  }
-
-  .alignLeft {
-    margin-right: auto;
-  }
-
-  .nowrap {
-    white-space: nowrap;
-    word-break: keep-all;
-  }
-
-  .value {
-    @extend %title2;
-  }
-
-  .valueDesc {
-    @extend %subtitle2;
-  }
-
-  .button {
-    margin: 0 4px;
+  @include tablet-landscape {
+    align-items: stretch;
+    height: auto;
+    justify-content: center;
+    padding-left: 0;
+    width: 64px;
   }
 }
 
-.header {
-  align-items: center;
-  color: var(--color-neutral-60);
-  display: flex;
-  justify-content: space-between;
-  text-transform: lowercase;
+.passed {
+  background: var(--color-success-40);
+}
+
+.expired {
+  background: var(--color-neutral-30);
 }
 
 .icon {
-  height: 20px;
   width: 20px;
+
+  svg {
+    color: var(--color-primary);
+  }
+}
+
+.content {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding: 16px;
+
+  @include tablet-portrait {
+    padding: 16px 24px;
+  }
+
+  @include tablet-landscape {
+    align-items: center;
+    flex-direction: row;
+  }
+}
+
+.group {
+  @extend %body1;
+  @include ellipse-text;
+  flex: 2;
+  margin-right: 8px;
+  white-space: normal;
+
+  @include tablet-landscape {
+    white-space: nowrap;
+  }
+}
+
+.reward {
+  flex-basis: 0;
+  margin: 12px 0 0;
+  white-space: nowrap;
+
+  @include tablet-landscape {
+    flex: 0 0 70px;
+    margin: 0 8px;
+  }
+}
+
+.slots {
+  @extend %subtitle3;
+  align-items: flex-end;
+  color: var(--color-success-60);
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  margin: 8px 0 0 auto;
+  width: 100%;
+
+  @include tablet-landscape {
+    align-items: center;
+    margin: 0 8px 0 16px;
+    width: auto;
+  }
+}
+
+.control {
+  flex-basis: 0;
+  margin: 8px 0 0;
+  width: 100%;
+
+  @include tablet-landscape {
+    flex: 0 0 120px;
+    margin: 0 0 0 8px;
+  }
+}
+
+.primaryLabel {
+  @extend %body1;
+  color: var(--color-neutral-90);
+}
+
+.secondaryLabel {
+  @extend %body1;
+  color: var(--color-neutral-60);
+}
+
+.alignLeft {
+  margin-right: auto;
+}
+
+.nowrap {
+  word-break: keep-all;
+}
+
+.value {
+  @extend %title2;
+}
+
+.valueDesc {
+  @extend %subtitle2;
+}
+
+.button {
+  text-transform: none;
+  width: calc(50% - 4px);
+
+  @include tablet-landscape {
+    margin: 0 4px;
+    width: auto;
+  }
+
+  + .button {
+    margin-left: 8px;
+
+    @include tablet-landscape {
+      margin-left: 4px;
+    }
+  }
+}
+
+.claim {
+  text-transform: none;
 }
 
 .root.simple {
@@ -111,37 +179,5 @@
   }
   .valueDesc {
     @extend %subtitle4;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .root {
-    flex-direction: column;
-  }
-  .content {
-    align-items: flex-start;
-    flex-direction: column;
-
-    .control {
-      flex-basis: 0;
-    }
-
-    .group {
-      white-space: normal;
-    }
-
-    .reward {
-      flex-basis: 0;
-      margin: 12px 0 0;
-    }
-
-    .slots {
-      align-items: flex-end;
-      margin: 8px 0 0 auto;
-    }
-
-    .control {
-      margin: 8px 0 0 auto;
-    }
   }
 }

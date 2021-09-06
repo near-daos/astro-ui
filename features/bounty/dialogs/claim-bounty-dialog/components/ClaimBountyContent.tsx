@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { format, parseISO } from 'date-fns';
 
-import { Bounty } from 'features/bounty/types';
-import { BountyCard } from 'components/cards/bounty-card';
+import { Bounty } from 'components/cards/bounty-card/types';
+import { BountyInfoCard } from 'components/cards/bounty-info-card';
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import { getDeadlineDate } from 'components/cards/bounty-card/helpers';
 import { Button } from 'components/button/Button';
@@ -30,7 +30,7 @@ const ClaimBountyContent: FC<ClaimBountyContentProps> = ({
   return (
     <div className={styles.content}>
       <div className={styles.card}>
-        <BountyCard variant="simple" data={data} />
+        <BountyInfoCard data={data} />
       </div>
       <div className={styles.deadline}>
         <div className={styles.label}>Deadline</div>

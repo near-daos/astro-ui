@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
-import { Bounty } from 'features/bounty/types';
+import { Bounty } from 'components/cards/bounty-card/types';
 import { Modal } from 'components/modal';
 import ClaimBountyContent from './components/ClaimBountyContent';
 

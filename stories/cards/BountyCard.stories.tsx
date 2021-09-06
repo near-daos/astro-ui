@@ -1,6 +1,7 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import { BountyCard, BountyCardProps } from 'components/cards/bounty-card';
+import { TokenName } from 'components/cards/token-card';
 
 export default {
   title: 'Components/Cards/BountyCard',
@@ -24,7 +25,7 @@ Default.args = {
   data: {
     type: 'Passed',
     status: 'Open',
-    token: 'NEAR',
+    token: TokenName.NEAR,
     amount: 253,
     group:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.',
@@ -34,7 +35,16 @@ Default.args = {
     claimedBy: [],
     claimedByMe: false,
     deadlineThreshold: 30,
-    deadlineUnit: 'day'
+    deadlineUnit: 'day',
+    voteDetails: [
+      { value: '50%', label: 'MEW holders' },
+      { value: '50%', label: 'cool group' },
+      { value: '1 person', label: 'Ombudspeople' }
+    ],
+    bondDetail: {
+      value: 0.3,
+      token: TokenName.NEAR
+    }
   }
 };
 
@@ -44,7 +54,7 @@ InProgress.args = {
   data: {
     type: 'Passed',
     status: 'In progress',
-    token: 'NEAR',
+    token: TokenName.NEAR,
     amount: 112,
     group:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',
@@ -59,7 +69,16 @@ InProgress.args = {
     ],
     claimedByMe: false,
     deadlineThreshold: 8,
-    deadlineUnit: 'week'
+    deadlineUnit: 'week',
+    voteDetails: [
+      { value: '50%', label: 'MEW holders' },
+      { value: '50%', label: 'cool group' },
+      { value: '1 person', label: 'Ombudspeople' }
+    ],
+    bondDetail: {
+      value: 0.3,
+      token: TokenName.NEAR
+    }
   }
 };
 
@@ -69,7 +88,7 @@ InProgressClaimedByMe.args = {
   data: {
     type: 'Passed',
     status: 'In progress',
-    token: 'NEAR',
+    token: TokenName.NEAR,
     amount: 112,
     group:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',
@@ -84,7 +103,16 @@ InProgressClaimedByMe.args = {
     ],
     claimedByMe: true,
     deadlineThreshold: 8,
-    deadlineUnit: 'week'
+    deadlineUnit: 'week',
+    voteDetails: [
+      { value: '50%', label: 'MEW holders' },
+      { value: '50%', label: 'cool group' },
+      { value: '1 person', label: 'Ombudspeople' }
+    ],
+    bondDetail: {
+      value: 0.3,
+      token: TokenName.NEAR
+    }
   }
 };
 
@@ -94,7 +122,7 @@ Completed.args = {
   data: {
     type: 'Passed',
     status: 'Completed',
-    token: 'NEAR',
+    token: TokenName.NEAR,
     amount: 34,
     group:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',
@@ -109,6 +137,15 @@ Completed.args = {
     ],
     claimedByMe: true,
     deadlineThreshold: 30,
-    deadlineUnit: 'day'
+    deadlineUnit: 'day',
+    voteDetails: [
+      { value: '50%', label: 'MEW holders' },
+      { value: '50%', label: 'cool group' },
+      { value: '1 person', label: 'Ombudspeople' }
+    ],
+    bondDetail: {
+      value: 0.3,
+      token: TokenName.NEAR
+    }
   }
 };

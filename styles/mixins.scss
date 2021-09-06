@@ -66,20 +66,26 @@
 
 // breakpoints cascading
 
+@mixin large-desktop {
+  @media (min-width: #{breakpoints.$screen-lg}px) {
+    @content;
+  }
+}
+
 @mixin desktop {
   @media (min-width: #{breakpoints.$screen-md}px) {
     @content;
   }
 }
 
-@mixin tablet-portrait {
-  @media (min-width: #{breakpoints.$screen-xs}px) {
+@mixin tablet-landscape {
+  @media (min-width: #{breakpoints.$screen-sm}px) {
     @content;
   }
 }
 
-@mixin tablet-landscape {
-  @media (min-width: #{breakpoints.$screen-sm}px) {
+@mixin tablet-portrait {
+  @media (min-width: #{breakpoints.$screen-xs}px) {
     @content;
   }
 }

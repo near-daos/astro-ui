@@ -2,10 +2,10 @@ import React, { FC, useCallback } from 'react';
 
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 
-import { Bounty } from 'features/bounty/types';
+import { Bounty } from 'components/cards/bounty-card/types';
 
 import { CompleteBountyForm } from 'features/bounty/dialogs/complete-bounty-dialog/complete-bounty-form/CompleteBountyForm';
-import { BountyCard } from 'components/cards/bounty-card';
+import { BountyInfoCard } from 'components/cards/bounty-info-card';
 import { Modal } from 'components/modal';
 
 export interface CompleteBountyDialogProps {
@@ -30,7 +30,7 @@ export const CompleteBountyDialog: FC<CompleteBountyDialogProps> = ({
         <h2>Complete bounty</h2>
       </header>
       <div className={styles.content}>
-        <BountyCard variant="simple" data={data} />
+        <BountyInfoCard data={data} />
         <CompleteBountyForm
           onCancel={onClose}
           onSubmit={handleSubmit}

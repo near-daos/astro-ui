@@ -109,6 +109,10 @@
   width: 100%;
 
   @include desktop {
+    padding: 46px 48px 30px;
+  }
+
+  @include large-desktop {
     padding: 54px 120px 36px;
   }
 

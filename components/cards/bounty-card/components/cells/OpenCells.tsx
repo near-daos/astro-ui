@@ -16,7 +16,12 @@ export const OpenCells: FC<OpenCellProps> = ({ claimed, slots, onClaim }) => (
       <span>{`${claimed}/${slots}`}</span>
     </div>
     <div className={styles.control}>
-      <Button variant="secondary" size="block" onClick={onClaim}>
+      <Button
+        variant="secondary"
+        size="block"
+        className={styles.claim}
+        onClick={onClaim}
+      >
         Claim
       </Button>
     </div>

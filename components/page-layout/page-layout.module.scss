@@ -1,51 +1,46 @@
 @use 'styles/breakpoints';
+@import 'styles/mixins';
 
 .root {
   background-color: var(--color-primary-10);
   display: grid;
   grid-template-areas:
-    'aside header'
-    'aside main'
-    'footer footer';
-  grid-template-columns: auto 1fr;
+    'header'
+    'main'
+    'footer';
+  grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
-
   min-height: 100vh;
 
+  @include desktop {
+    grid-template-areas:
+      'aside header'
+      'aside main'
+      'footer footer';
+    grid-template-columns: auto 1fr;
+  }
+
   .sideBar {
+    display: none;
     grid-area: aside;
+
+    @include desktop {
+      display: block;
+    }
   }
 
   .main {
     grid-area: main;
     overflow: hidden;
-    padding: 0 120px 60px;
+    padding: 0 24px 60px;
     width: 100%;
-  }
-}
 
-@media screen and (max-width: #{breakpoints.$screen-md}px) {
-  .root {
-    main {
+    @include desktop {
       padding: 0 48px 60px;
     }
-  }
-}
 
-@media screen and (max-width: #{breakpoints.$screen-md - 1}px) {
-  .root {
-    grid-template-areas:
-      'header'
-      'main'
-      'footer';
-    grid-template-columns: 1fr;
-
-    .main {
-      padding: 0 24px 60px;
-    }
-
-    .sideBar {
-      display: none;
+    @include large-desktop {
+      padding: 0 120px 60px;
     }
   }
 }
