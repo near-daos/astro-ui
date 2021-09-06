@@ -2,11 +2,11 @@ import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { Title } from 'components/Typography';
 import { SelectFlag } from 'features/create-dao/components/select-flag/SelectFlag';
+import styles from 'features/create-dao/components/steps/form/form.module.scss';
+import { DAOFormValues } from 'features/create-dao/components/steps/types';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import styles from 'features/create-dao/components/steps/form/form.module.scss';
-import { DAOFormValues } from 'features/create-dao/components/steps/types';
 
 import { useFormContext } from 'react-hook-form';
 
@@ -14,8 +14,9 @@ function FlagViewComponent(): JSX.Element {
   const { setValue } = useFormContext<DAOFormValues>();
   const router = useRouter();
 
-  const onSubmit = (data: string) => {
-    setValue('flag', data);
+  const onSubmit = (data: { file: File; preview: string }) => {
+    setValue('flag', data.file);
+    setValue('flagPreview', data.preview);
     router.push('/create-dao/review');
   };
 

@@ -1,9 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { connect, Contract, keyStores, Near } from 'near-api-js';
 import { NearConfig, nearConfig } from 'config';
 import Decimal from 'decimal.js';
-import { CreateDaoParams, DAO, Member } from 'types/dao';
 import { nanoid } from 'nanoid';
+import { connect, Contract, keyStores, Near } from 'near-api-js';
+import { HttpService, httpService } from 'services/HttpService';
+import {
+  DaoDTO,
+  mapDaoDTOListToDaoList,
+  mapDaoDTOtoDao
+} from 'services/SputnikService/mappers/dao';
+import { CreateDaoParams, DAO, Member } from 'types/dao';
 // import { timestampToReadable } from 'utils/timestampToReadable';
 import {
   CreateProposalParams,
@@ -11,16 +17,10 @@ import {
   Proposal,
   ProposalRaw
 } from 'types/proposal';
-import {
-  mapDaoDTOListToDaoList,
-  DaoDTO,
-  mapDaoDTOtoDao
-} from 'services/SputnikService/mappers/dao';
-import { HttpService, httpService } from 'services/HttpService';
+import { gas, yoktoNear } from './constants';
 import { ContractPool } from './ContractPool';
-import { yoktoNear, gas } from './constants';
-import { mapProposalRawToProposal } from './utils';
 import { SputnikWalletConnection } from './SputnikWalletConnection';
+import { mapProposalRawToProposal } from './utils';
 
 class SputnikService {
   private readonly config: NearConfig;
@@ -86,7 +86,7 @@ class SputnikService {
     return this.walletConnection.getAccountId();
   }
 
-  public async createDao(params: CreateDaoParams): Promise<any> {
+  public async createDao(params: CreateDaoParams): Promise<boolean> {
     const config: DaoConfig = {
       name: params.name,
       purpose: params.purpose,
@@ -109,7 +109,7 @@ class SputnikService {
     const args = Buffer.from(JSON.stringify(argsList)).toString('base64');
 
     try {
-      await this.factoryContract.create(
+      return await this.factoryContract.create(
         {
           name: params.name,
           args
@@ -122,6 +122,8 @@ class SputnikService {
         throw err;
       }
     }
+
+    return false;
   }
 
   // SputnikService.createProposal({
@@ -241,7 +243,11 @@ class SputnikService {
     const { data: proposals } = await this.httpService.get<ProposalRaw[]>(
       '/proposals',
       {
-        params: { daoId, offset, limit }
+        params: {
+          daoId,
+          offset,
+          limit
+        }
       }
     );
 
