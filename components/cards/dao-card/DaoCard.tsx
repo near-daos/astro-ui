@@ -1,12 +1,15 @@
 import React from 'react';
-import styles from 'components/cards/dao-card/dao-card.module.scss';
+import TextTruncate from 'react-text-truncate';
+
 import { FlagIcon } from 'components/cards/dao-card/FlagIcon';
 import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value/FormattedNumericValue';
+
+import styles from 'components/cards/dao-card/dao-card.module.scss';
 
 interface DaoCardProps {
   title: string;
   daoAccountName: string;
-  description: string;
+  description: string | null;
   activeProposals: number;
   funds: number;
   members: number;
@@ -40,7 +43,15 @@ const DaoCard: React.FC<DaoCardProps> = ({
         <h2 className={styles.noMargin}>{title}</h2>
       </div>
       <div className={styles.urlCaption}>{daoAccountName}</div>
-      <div className={styles.descriptionCaption}>{description}</div>
+      <div className={styles.descriptionCaption}>
+        <TextTruncate
+          line={2}
+          element="span"
+          truncateText="…"
+          text={description ?? ''}
+          textTruncateChild={null}
+        />
+      </div>
       <div className={styles.activeProposals}>
         <div className={styles.activeProposalsCaption}>
           {activeProposals} active proposals

@@ -13,7 +13,7 @@ export const FormattedNumericValue: React.FC<FormattedNumericValueProps> = ({
   className
 }) => (
   <div className={classNames(styles.root, className)}>
-    <span className="title3">{value.toLocaleString()}</span>
+    <span className="title3">{value?.toLocaleString()}</span>
     &nbsp;
     {suffix ? (
       <span className={classNames('subtitle3', styles.upperCase)}>

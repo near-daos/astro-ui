@@ -13,6 +13,17 @@
 
   transition: background-color 0.1s;
 
+  .details {
+    @extend %caption1;
+    align-self: flex-start;
+    color: var(--color-primary-30);
+    cursor: pointer;
+    margin-left: 20px;
+    padding: 0;
+    text-transform: capitalize;
+    width: fit-content;
+  }
+
   &:hover {
     background: var(--color-primary-60);
   }
@@ -24,18 +35,7 @@
   color: var(--color-neutral-20);
   display: inline-flex;
   gap: 12px;
-}
-
-.details {
-  @extend %caption2;
-  align-self: flex-start;
-  color: var(--color-primary-30);
-  cursor: pointer;
-  width: fit-content;
-
-  &button {
-    text-transform: none;
-  }
+  text-transform: capitalize;
 }
 
 .counter {

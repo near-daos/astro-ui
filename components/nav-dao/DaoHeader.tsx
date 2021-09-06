@@ -21,14 +21,7 @@ export const DaoHeader: React.VFC<DAOHeaderProps> = ({
   return (
     <div {...props} className={cn(styles.header, className)}>
       {logo ? (
-        <Image
-          src={logo}
-          width={24}
-          height={24}
-          alt={`${label} Dao Logo`}
-          placeholder="blur"
-          blurDataURL="/flag.svg"
-        />
+        <Image src={logo} width={24} height={24} alt={`${label} Dao Logo`} />
       ) : (
         <Icon width={24} height={24} name="flag" />
       )}

@@ -1,62 +1,56 @@
-import React, { FC, useState } from 'react';
-import get from 'lodash.get';
+import React, { FC, useCallback, useState } from 'react';
+import { useRouter } from 'next/router';
 
 import { Dropdown } from 'components/dropdown/Dropdown';
 import DaoCard from 'components/cards/dao-card';
 
-import { daos } from 'lib/mocks/all-communities';
+import { SputnikService } from 'services/SputnikService';
+import { DaoItem } from 'types/dao';
+
 import styles from './browse-all-daos.module.scss';
 
 const sortOptions = [
   {
     label: 'Most active',
-    value: 'Most active'
+    value: 'updatedAt'
   },
   {
     label: 'Newest',
-    value: 'Newest'
+    value: 'createdAt'
   },
   {
     label: 'Oldest',
-    value: 'Oldest'
+    value: '-createdAt'
   },
   {
     label: 'Biggest funds',
-    value: 'Biggest funds'
+    value: 'amount'
   },
   {
     label: 'Number of members',
-    value: 'Number of members'
+    value: 'totalSupply'
   }
 ];
 
-const BrowseAllDaos: FC = () => {
-  const [activeSort, setActiveSort] = useState<string>(sortOptions[0].value);
+interface BrowseAllDaosProps {
+  data: DaoItem[];
+}
 
-  // Todo - we will fetch and select daos dynamically
-  const data = daos.sort((a, b) => {
-    let sortField = '';
+const BrowseAllDaos: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
+  const router = useRouter();
+  const activeSort = (router.query.sort as string) ?? sortOptions[0].value;
 
-    if (activeSort === 'Most active') {
-      sortField = 'votes';
-    } else if (activeSort === 'Newest') {
-      sortField = 'date';
-    } else if (activeSort === 'Number of members') {
-      sortField = 'members';
-    } else if (activeSort === 'Biggest funds') {
-      sortField = 'funds';
-    }
+  const [data, setData] = useState(initialData);
 
-    if (get(a, sortField) > get(b, sortField)) {
-      return -1;
-    }
-
-    if (get(a, sortField) < get(b, sortField)) {
-      return 1;
-    }
-
-    return 0;
-  });
+  const handleSort = useCallback(
+    value => {
+      router.push(`?sort=${value}`, undefined, { shallow: true });
+      SputnikService.getDaoList({ sort: value })
+        .then(res => setData(res))
+        .catch(e => console.error(e));
+    },
+    [router]
+  );
 
   return (
     <div className={styles.root}>
@@ -68,19 +62,19 @@ const BrowseAllDaos: FC = () => {
           options={sortOptions}
           value={activeSort}
           defaultValue={activeSort}
-          onChange={value => setActiveSort(value ?? sortOptions[0].value)}
+          onChange={handleSort}
         />
       </div>
       <div className={styles.content}>
         {data.map(item => (
           <DaoCard
-            key={item.name}
+            key={item.id}
             title={item.name}
-            daoAccountName={item.account}
-            description={item.description}
-            activeProposals={item.activeProposals}
-            funds={item.funds}
-            members={item.members}
+            daoAccountName={item.id}
+            description={item.purpose}
+            activeProposals={18}
+            funds={180}
+            members={item?.policy.roles.length}
           />
         ))}
       </div>

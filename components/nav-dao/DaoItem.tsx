@@ -63,16 +63,8 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
   return (
     <div {...props} className={cn(styles.item, className)}>
       <Link passHref href={href}>
-        {/* TODO Property 'href' would be overridden by Link. Check https://git.io/Jns2B */}
-        <a href="*" className={styles.name}>
-          <Image
-            src={logo}
-            width={24}
-            height={24}
-            alt={`${label} Dao Logo`}
-            placeholder="blur"
-            blurDataURL="/flag.svg"
-          />
+        <a className={styles.name}>
+          <Image src={logo} width={24} height={24} alt={`${label} Dao Logo`} />
 
           {label}
           {Number.isFinite(count) && (
@@ -84,7 +76,7 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
       </Link>
       <Button
         variant="tertiary"
-        size="block"
+        size="small"
         onClick={onDetailsClick}
         className={cn(styles.details, detailsClassName)}
       >

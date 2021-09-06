@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
 import cn from 'classnames';
+import { useRouter } from 'next/router';
 
 import { Icon } from 'components/Icon';
 import SearchBar from 'components/search-bar';
@@ -14,6 +15,7 @@ export interface AppHeaderProps {
 }
 
 export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
+  const router = useRouter();
   const [showSideBar, setShowSideBar] = useState(false);
 
   const openNavigation = useCallback(() => {
@@ -63,7 +65,13 @@ export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
       return (
         <>
           <div className={cn(styles.communities, styles.desktopOnly)}>
-            <Button size="small" variant="tertiary">
+            <Button
+              size="small"
+              variant="tertiary"
+              onClick={() => {
+                router.push('/all-communities');
+              }}
+            >
               Communities
             </Button>
           </div>

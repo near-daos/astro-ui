@@ -146,17 +146,26 @@ class SputnikService {
     );
   }
 
-  public async getDaoList(offset = 0, limit = 50): Promise<DaoItem[]> {
+  public async getDaoList(params?: {
+    offset?: number;
+    limit?: number;
+    sort?: string;
+  }): Promise<DaoItem[]> {
+    const offset = params?.offset ?? 0;
+    const limit = params?.limit ?? 50;
+    const sort = params?.sort ?? 'createdAt';
+
     const { data: daos } = await this.httpService.get<DaoItem[]>('/daos', {
       params: {
         offset,
-        limit
+        limit,
+        sort
       }
     });
 
     return daos.map(dao => ({
       ...dao,
-      votePeriod: timestampToReadable(parseInt(dao.votePeriod, 10))
+      votePeriod: timestampToReadable(parseInt(dao.policy.proposalPeriod, 10))
     }));
   }
 
