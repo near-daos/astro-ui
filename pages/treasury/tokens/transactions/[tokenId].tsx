@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import get from 'lodash.get';
+import get from 'lodash/get';
 import React, { useCallback, useMemo, useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';

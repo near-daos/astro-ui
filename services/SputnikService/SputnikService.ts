@@ -240,9 +240,9 @@ class SputnikService {
   }): Promise<DAO[]> {
     const offset = params?.offset ?? 0;
     const limit = params?.limit ?? 50;
-    const sort = params?.sort ?? 'createdAt';
+    const sort = params?.sort ?? 'createdAt,ASC';
 
-    const { data } = await this.httpService.get<DaoDTO[]>('/daos', {
+    const { data } = await this.httpService.get<GetDAOsResponse>('/daos', {
       params: {
         offset,
         limit,
@@ -250,7 +250,7 @@ class SputnikService {
       }
     });
 
-    return mapDaoDTOListToDaoList(data);
+    return mapDaoDTOListToDaoList(data.data);
   }
 
   public async getDaoById(daoId: string): Promise<DAO | null> {

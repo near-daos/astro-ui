@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import get from 'lodash.get';
+import get from 'lodash/get';
 import { useMedia } from 'react-use';
 import { SputnikService } from 'services/SputnikService';
 

@@ -151,8 +151,19 @@ interface UpgradeSelf {
   hash: string;
 }
 
+// TODO describe proposal type properly
+// eslint-disable-next-line
+export type PolicyType = Object & {
+  roles: unknown[];
+  bountyBond: string;
+  proposalBond: string;
+  proposalPeriod: string;
+  defaultVotePolicy: unknown;
+  bountyForgivenessPeriod: string;
+};
+
 interface ChangePolicy {
-  policy: string;
+  policy: unknown;
 }
 
 interface AddRemoveMemberRole {

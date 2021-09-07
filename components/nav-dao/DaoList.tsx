@@ -1,42 +1,38 @@
-import React, { useMemo, useState } from 'react';
-import { Collapsable } from 'components/collapsable/Collapsable';
 import { useBoolean } from 'react-use';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Collapsable } from 'components/collapsable/Collapsable';
 
 import { DAO } from 'types/dao';
+import { selectSelectedDAO, setSelectedDAO } from 'store/dao';
 
-import styles from './nav-dao.module.scss';
 import { DaoItem } from './DaoItem';
 import { DaoHeader } from './DaoHeader';
 
-interface DAOHeaderProps {
+import styles from './nav-dao.module.scss';
+
+interface DAOListProps {
   toggle: (newState?: boolean) => void;
   isOpen: boolean;
-  onChange?: (currentItem?: string) => void;
-  currentItem?: string | undefined;
   items: DAO[];
 }
 
-export const DaoList: React.VFC<DAOHeaderProps> = ({
-  items,
-  currentItem,
-  onChange,
-  ...props
-}) => {
+export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
+  const dispatch = useDispatch();
+
   // TODO Probably it's better to use router params instead of currentItem prop
   // However url structure is unclear yet
   const [open, toggleState] = useBoolean(false);
-  const [selected, setSelected] = useState(currentItem);
   const { isOpen = open, toggle = toggleState } = props;
 
-  const selectedItem = useMemo(() => {
-    if (items.length === 0 || (!currentItem && !selected)) return null;
+  const selectedDao = useSelector(selectSelectedDAO);
 
-    if (currentItem != null) {
-      return items.find(dao => currentItem === dao.id);
-    }
-
-    return items.find(dao => selected === dao.id);
-  }, [items, currentItem, selected]);
+  const selectDao = useCallback(
+    (dao: DAO) => {
+      dispatch(setSelectedDAO(dao.id));
+    },
+    [dispatch]
+  );
 
   return (
     <div className={styles.daoHeader}>
@@ -46,10 +42,10 @@ export const DaoList: React.VFC<DAOHeaderProps> = ({
         duration={150}
         renderHeading={(toggleHeading, isHeadingOpen) => (
           <DaoHeader
-            logo={selectedItem?.logo}
+            logo={selectedDao?.logo}
             isOpen={isHeadingOpen}
             onClick={() => toggleHeading()}
-            label={selectedItem?.name || 'Select DAO'}
+            label={selectedDao?.name || 'Select DAO'}
           />
         )}
       >
@@ -57,16 +53,10 @@ export const DaoList: React.VFC<DAOHeaderProps> = ({
           <DaoItem
             dao={dao}
             key={dao.id}
-            onClick={() => {
-              if (onChange) {
-                onChange(dao.id);
-              } else {
-                setSelected(dao.id);
-              }
-            }}
             logo={dao.logo}
-            count={dao.members}
             label={dao.name}
+            count={dao.members}
+            selectDao={selectDao}
             href={`/dao-home/${dao.id}`}
           />
         ))}

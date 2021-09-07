@@ -26,6 +26,7 @@ interface DaoItemProps extends Omit<HTMLProps<HTMLDivElement>, 'href'> {
   className?: string;
   detailsClassName?: string;
   dao: DAO;
+  selectDao: (dao: DAO) => void;
 }
 
 export const DaoItem: React.VFC<DaoItemProps> = ({
@@ -36,6 +37,7 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
   href,
   detailsClassName,
   dao,
+  selectDao,
   ...props
 }) => {
   const { accountId } = useAuthContext();
@@ -65,8 +67,19 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
     await showMemberCard();
   }, [showMemberCard]);
 
+  function handleItemClick() {
+    selectDao(dao);
+  }
+
   return (
-    <div {...props} className={cn(styles.item, className)}>
+    <div
+      {...props}
+      tabIndex={0}
+      role="button"
+      onClick={handleItemClick}
+      onKeyPress={handleItemClick}
+      className={cn(styles.item, className)}
+    >
       <Link passHref href={href}>
         <a className={styles.name}>
           <Image src={logo} width={24} height={24} alt={`${label} Dao Logo`} />

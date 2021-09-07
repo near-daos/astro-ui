@@ -1,29 +1,29 @@
-import { GroupFormInput, GroupFormType } from 'features/groups/types';
 import React from 'react';
-import { TextArea } from 'components/textarea/TextArea';
-import cn from 'classnames';
-import { Input } from 'components/input/Input';
-import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
-import { Button } from 'components/button/Button';
 import * as yup from 'yup';
+import cn from 'classnames';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+
+import {
+  IGroupForm,
+  GroupFormType,
+  GroupFormInput
+} from 'features/groups/types';
+
+import { Input } from 'components/input/Input';
+import { Button } from 'components/button/Button';
 import { Select } from 'components/select/Select';
 import { VoteDetails } from 'components/vote-details';
+import { TextArea } from 'components/textarea/TextArea';
+
+import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
+
 import styles from './group-form.module.scss';
 
 interface GroupFormProps {
   initialValues: GroupFormInput;
   onCancel: () => void;
-  onSubmit: () => void;
-}
-
-interface IGroupForm {
-  group: string;
-  memberName: string;
-  detail: string;
-  externalUrl: string;
-  voteDetails: string;
+  onSubmit: (data: IGroupForm) => void;
 }
 
 const schema = yup.object().shape({

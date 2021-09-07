@@ -3,8 +3,8 @@ import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
 
-import get from 'lodash.get';
-import isEmpty from 'lodash.isempty';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
 import { useAccordion } from 'hooks/useAccordion';
 import { Logo } from 'components/logo/Logo';
