@@ -6,55 +6,67 @@
   background: var(--color-white);
   border-radius: 8px;
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   min-height: 80px;
   overflow: hidden;
+
+  @include tablet-landscape {
+    flex-direction: row;
+  }
 }
 
 .content {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   flex: 1;
+  flex-direction: column;
   justify-content: flex-start;
   overflow: hidden;
   padding: 20px 24px;
 
-  .token {
-    @extend %title3;
-    @include ellipse-text;
-    flex: 1;
-    margin-right: 8px;
-    white-space: nowrap;
-  }
-
-  .created {
-    @extend %caption1;
-    color: var(--color-neutral-60);
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    white-space: nowrap;
-  }
-
-  .function {
-    @extend %body1;
-    display: flex;
-    flex: 1;
-    justify-content: flex-end;
+  @include tablet-landscape {
+    align-items: center;
+    flex-direction: row;
   }
 }
 
-@media screen and (max-width: 768px) {
-  .root {
-    flex-direction: column;
-  }
-  .content {
-    align-items: flex-start;
-    flex-direction: column;
+.token {
+  @extend %title3;
+  @include ellipse-text;
+  flex: 1;
+  margin-bottom: 16px;
+  margin-right: 8px;
+  white-space: nowrap;
 
-    .token,
-    .created {
-      margin-bottom: 16px;
-    }
+  @include tablet-landscape {
+    flex: 3;
+    margin-bottom: 0;
+  }
+}
+
+.created {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  margin-bottom: 16px;
+  white-space: nowrap;
+
+  @include tablet-landscape {
+    flex: 2;
+    margin-bottom: 0;
+  }
+}
+
+.function {
+  @extend %body1;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+
+  @include tablet-landscape {
+    flex: 3;
   }
 }
