@@ -1,8 +1,13 @@
 @import 'styles/mixins';
 
 .row {
-  align-items: center;
   display: flex;
+  flex-wrap: wrap;
+
+  @include tablet-landscape {
+    align-items: center;
+    flex-wrap: nowrap;
+  }
 }
 
 .subRow {
@@ -17,8 +22,16 @@
 
 .text {
   @include sentence-case;
-  @include ellipse-text;
   font-family: Inter, 'sans-serif';
+  font-size: 1em;
+  white-space: normal;
+
+  @include tablet-landscape {
+    font-size: 1.125em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .value {
@@ -34,14 +47,4 @@
   height: 24px;
   margin: 0 24px;
   width: 24px;
-}
-
-@media screen and (max-width: 768px) {
-  .row {
-    flex-wrap: wrap;
-  }
-  .text {
-    font-size: 14px;
-    white-space: normal;
-  }
 }

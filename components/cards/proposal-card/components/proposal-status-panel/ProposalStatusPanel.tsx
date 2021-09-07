@@ -2,7 +2,8 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 import {
   ProposalStatus,
-  ProposalType
+  ProposalType,
+  ProposalVariant
 } from 'components/cards/proposal-card/types';
 import { Icon } from 'components/Icon';
 
@@ -11,6 +12,7 @@ import styles from './proposal-status.module.scss';
 interface ProposalStatusProps {
   status: ProposalStatus;
   type: ProposalType;
+  variant: ProposalVariant;
 }
 
 function getIconName(type: ProposalType) {
@@ -37,7 +39,11 @@ function getIconName(type: ProposalType) {
   }
 }
 
-const ProposalStatusPanel: FC<ProposalStatusProps> = ({ status, type }) => {
+const ProposalStatusPanel: FC<ProposalStatusProps> = ({
+  status,
+  type,
+  variant
+}) => {
   const statusClassName = cn({
     [styles.active]: status === 'Voting in progress',
     [styles.passed]: status === 'Passed',
@@ -51,6 +57,9 @@ const ProposalStatusPanel: FC<ProposalStatusProps> = ({ status, type }) => {
   return (
     <div className={cn(styles.root, statusClassName)}>
       <Icon name={iconName} className={styles.icon} />
+      {variant === 'SuperCollapsed' && (
+        <span className={styles.title}>Poll</span>
+      )}
     </div>
   );
 };

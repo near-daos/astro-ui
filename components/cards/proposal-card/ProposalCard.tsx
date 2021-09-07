@@ -4,7 +4,8 @@ import cn from 'classnames';
 import { Icon } from 'components/Icon';
 import {
   ProposalStatus,
-  ProposalType
+  ProposalType,
+  ProposalVariant
 } from 'components/cards/proposal-card/types';
 import ProposalStatusPanel from 'components/cards/proposal-card/components/proposal-status-panel/ProposalStatusPanel';
 import ProposalControlPanel from 'components/cards/proposal-card/components/proposal-control-panel/ProposalControlPanel';
@@ -20,7 +21,7 @@ export interface ProposalCardProps {
   dislikes: number;
   liked: boolean;
   disliked: boolean;
-  variant?: 'Default' | 'SuperCollapsed';
+  variant?: ProposalVariant;
   onLike: () => void;
   onDislike: () => void;
 }
@@ -38,9 +39,14 @@ export const ProposalCard: FC<ProposalCardProps> = ({
   onDislike,
   variant = 'Default'
 }) => {
+  const variantClassName = cn({
+    [styles.default]: variant === 'Default',
+    [styles.collapsed]: variant === 'SuperCollapsed'
+  });
+
   return (
     <div className={styles.root}>
-      <ProposalStatusPanel status={status} type={type} />
+      <ProposalStatusPanel status={status} type={type} variant={variant} />
       <div className={styles.content}>
         {variant !== 'SuperCollapsed' && (
           <div className={styles.header}>
@@ -50,7 +56,7 @@ export const ProposalCard: FC<ProposalCardProps> = ({
             </span>
           </div>
         )}
-        <div className={styles.body}>{children}</div>
+        <div className={cn(styles.body, variantClassName)}>{children}</div>
         <div className={styles.footer}>
           <span>
             <ProposalControlPanel

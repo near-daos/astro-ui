@@ -1,15 +1,34 @@
 @import 'styles/mixins';
+@import 'styles/typography';
 
 .root {
-  @include centralize;
-  align-items: stretch;
-  width: 64px;
+  align-items: center;
+  color: var(--color-primary-60);
+  display: flex;
+  height: 40px;
+  justify-content: flex-start;
+  padding-left: 16px;
+  width: 100%;
+
+  @include tablet-landscape {
+    align-items: stretch;
+    height: auto;
+    justify-content: center;
+    padding-left: 0;
+    width: 64px;
+  }
 }
 
 .icon {
   width: 20px;
-  svg {
-    color: var(--color-primary);
+}
+
+.title {
+  @extend %title4;
+  margin-left: 14px;
+
+  @include tablet-landscape {
+    display: none;
   }
 }
 
@@ -31,14 +50,4 @@
 
 .expired {
   background: var(--color-neutral-30);
-}
-
-@media screen and (max-width: 768px) {
-  .root {
-    align-items: center;
-    height: 40px;
-    justify-content: flex-start;
-    padding-left: 21px;
-    width: 100%;
-  }
 }

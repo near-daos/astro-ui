@@ -4,28 +4,21 @@
 .root {
   display: grid;
   grid-column-gap: 8px;
-  grid-row-gap: 24px;
+  grid-row-gap: 32px;
   grid-template-areas:
     'header'
-    'description'
     'create'
-    'bounties';
+    'polls';
   grid-template-columns: 1fr;
   padding-top: 56px;
 
   @include tablet-landscape {
+    grid-row-gap: 48px;
     grid-template-areas:
       'header create'
-      'description description'
-      'bounties bounties';
+      'polls polls';
     grid-template-columns: 1fr 1fr;
   }
-}
-
-.description {
-  @extend %body1;
-  grid-area: description;
-  width: 100%;
 }
 
 .create {
@@ -34,11 +27,9 @@
   color: var(--color-brand-black);
   grid-area: create;
   justify-self: end;
-  margin: 8px 0;
   width: 100%;
 
   @include tablet-landscape {
-    margin: 0;
     width: auto;
   }
 
@@ -61,12 +52,12 @@
   }
 }
 
-.bounties {
-  grid-area: bounties;
+.polls {
+  grid-area: polls;
+  margin-top: 16px;
 
   @include tablet-landscape {
-    margin-top: 0.5em;
-    width: auto;
+    margin-top: 0;
   }
 }
 

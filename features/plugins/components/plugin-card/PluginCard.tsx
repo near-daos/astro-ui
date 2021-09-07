@@ -18,7 +18,11 @@ export const PluginCard: FC<PluginCardProps> = ({
 }) => {
   return (
     <div className={cn(styles.root)}>
-      <StatusPanel type="Call NEAR function" status="Passed" />
+      <StatusPanel
+        type="Call NEAR function"
+        status="Passed"
+        variant="Default"
+      />
       <div className={styles.content}>
         <div className={styles.token}>{tokenName}</div>
         <div className={styles.created}>{created}</div>

@@ -17,3 +17,5 @@ export type ProposalStatus =
   | 'Rejected'
   | 'Dismissed as spam'
   | 'Expired';
+
+export type ProposalVariant = 'Default' | 'SuperCollapsed';

@@ -27,7 +27,7 @@ export const BountiesList: FC<BountiesListProps> = ({
 
   const [showResetScroll, setShowResetScroll] = useState(false);
   const scrollListRef = useRef<VariableSizeList>(null);
-  const isMobileOrTablet = useMedia('(max-width: 768px)');
+  const isMobileOrTablet = useMedia('(max-width: 767px)');
 
   const handleScroll = useCallback(({ scrollOffset }: ListOnScrollProps) => {
     if (scrollOffset > 100) {
