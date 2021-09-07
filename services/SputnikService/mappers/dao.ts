@@ -13,54 +13,68 @@ export type DaoPermission =
   | '*:VoteRemove';
 
 export type DaoRole = {
-  kind: 'Everyone' | { group: string[] };
+  createdAt: string;
+  id: string;
   name: string;
+  kind: 'Everyone' | 'Group';
+  balance: null;
+  accountIds: string[] | null;
   permissions: DaoPermission[];
-  votePolicy: unknown;
+  votePolicy: null;
 };
 
 export type DaoVotePolicy = {
+  weightKind: string;
   quorum: string;
-  threshold: number[];
-  weightKind: 'RoleWeight';
+  kind: string;
+  ratio: number[];
 };
 
 export type DaoPolicy = {
-  bountyBond: string;
-  bountyForgivenessPeriod: string;
   createdAt: string;
   daoId: string;
-  defaultVotePolicy: DaoVotePolicy;
   proposalBond: string;
+  bountyBond: string;
   proposalPeriod: string;
+  bountyForgivenessPeriod: string;
+  defaultVotePolicy: DaoVotePolicy;
   roles: DaoRole[];
 };
 
+type DaoConfig = {
+  name: string;
+  purpose: string;
+  metadata: string;
+};
+
 export type DaoDTO = {
-  amount: string;
-  createTimestamp: string;
   createdAt: string;
-  description: string | null;
+  transactionHash: string;
+  updateTransactionHash: string;
+  createTimestamp: string;
+  updateTimestamp: string;
   id: string;
+  config: DaoConfig;
+  amount: string;
+  totalSupply: string;
   lastBountyId: number;
   lastProposalId: number;
-  link: string | null;
-  metadata: string;
-  name: string;
-  policy: DaoPolicy;
-  purpose: string;
+  numberOfProposals: number;
   stakingContract: string;
+  numberOfMembers: number;
+  council: string[];
+  councilSeats: number;
+  link: unknown | null;
+  description: string | null;
   status: 'Success';
-  totalSupply: string;
-  transactionHash: string;
-  updateTimestamp: string;
+  policy: DaoPolicy;
 };
 
 export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
   // Calculate DAO members count
   const roles = get(daoDTO, 'policy.roles', []);
-  const councilRole = roles.find((item: DaoRole) => item.name === 'council');
-  const numberOfMembers = get(councilRole, 'kind.group', []).length;
+  // const councilRole = roles.find((item: DaoRole) => item.name === 'council');
+  const numberOfMembers = get(daoDTO, 'numberOfMembers', 0);
 
   // Transform amount
   const amountYokto = new Decimal(daoDTO.amount);
@@ -68,10 +82,10 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
 
   // Get DAO groups
   const daoGroups = roles
-    .filter((item: DaoRole) => item.kind !== 'Everyone')
+    .filter((item: DaoRole) => item.kind === 'Group')
     .map((item: DaoRole) => {
       return {
-        members: (item.kind as { group: string[] }).group,
+        members: item.accountIds,
         name: item.name,
         permissions: item.permissions,
         votePolicy: item.votePolicy,
@@ -79,10 +93,13 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
       };
     });
 
+  // DAO config
+  const config = get(daoDTO, 'config');
+
   return {
     id: daoDTO.id,
-    name: daoDTO.name,
-    description: daoDTO.purpose,
+    name: config?.name ?? '',
+    description: config?.purpose ?? '',
     members: numberOfMembers,
     proposals: 18,
     // TODO - where can we get DAO logo flag?
