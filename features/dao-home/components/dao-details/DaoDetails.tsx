@@ -30,7 +30,8 @@ export const DaoDetails: VFC<DaoDetailsProps> = ({
       {links.map(link => (
         <li className={styles.link} key={link}>
           <a href={link} target="_blank" rel="noreferrer">
-            <IconButton size="medium" icon={getSocialIconNameFromUrl(link)} />
+            <IconButton size="medium" icon={getSocialIconNameFromUrl(link)} />{' '}
+            {link}
           </a>
         </li>
       ))}

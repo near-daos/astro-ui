@@ -3,11 +3,12 @@
 /* eslint-disable no-underscore-dangle */
 import * as borsh from 'borsh';
 import {
-  WalletConnection,
+  ConnectedWalletAccount,
   KeyPair,
   transactions as Transactions,
-  ConnectedWalletAccount
+  WalletConnection
 } from 'near-api-js';
+import { Transaction } from 'near-api-js/src/transaction';
 import { SputnikConnectedWalletAccount } from './SputnikConnectedWalletAccount';
 
 interface SignInOptions {
@@ -19,6 +20,16 @@ interface SignInOptions {
 
 const LOGIN_WALLET_URL_SUFFIX = '/login/';
 const PENDING_ACCESS_KEY_PREFIX = 'pending_key';
+
+// Copied from NEAR API
+interface RequestSignTransactionsOptions {
+  /** list of transactions to sign */
+  transactions: Transaction[];
+  /** url NEAR Wallet will redirect to after transaction signing is complete */
+  callbackUrl?: string;
+  /** meta information NEAR Wallet will send back to the application. `meta` will be attached to the `callbackUrl` as a url search param */
+  meta?: string;
+}
 
 // todo refactor
 // @ts-ignore
@@ -96,7 +107,11 @@ export class SputnikWalletConnection extends WalletConnection {
   }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  async _requestSignTransactions({ transactions, meta }: any): Promise<void> {
+  async _requestSignTransactions({
+    transactions,
+    meta,
+    callbackUrl = `${window.origin}/callback`
+  }: RequestSignTransactionsOptions): Promise<void> {
     const newUrl = new URL('sign', this._walletBaseUrl);
 
     newUrl.searchParams.set(
@@ -112,7 +127,9 @@ export class SputnikWalletConnection extends WalletConnection {
         .join(',')
     );
 
-    newUrl.searchParams.set('callbackUrl', `${window.origin}/callback`);
+    if (callbackUrl) {
+      newUrl.searchParams.set('callbackUrl', callbackUrl);
+    }
 
     if (meta) {
       newUrl.searchParams.set('meta', meta);

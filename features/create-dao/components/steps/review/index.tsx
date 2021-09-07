@@ -2,8 +2,6 @@ import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { Title } from 'components/Typography';
 import { DaoOptionCard } from 'features/create-dao/components/option-card/DaoOptionCard';
-import { DaoDetails } from 'features/dao-home/components/dao-details/DaoDetails';
-import Link from 'next/link';
 import {
   DAO_PROPOSALS_OPTIONS,
   DAO_STRUCTURE_OPTIONS,
@@ -11,12 +9,15 @@ import {
 } from 'features/create-dao/components/steps/data';
 import styles from 'features/create-dao/components/steps/form/form.module.scss';
 import { DAOFormValues } from 'features/create-dao/components/steps/types';
+import { DaoDetails } from 'features/dao-home/components/dao-details/DaoDetails';
+import Link from 'next/link';
 import React from 'react';
 
 import { useFormContext } from 'react-hook-form';
+import { SputnikService } from 'services/SputnikService';
 
 export function ReviewView(): JSX.Element {
-  const { getValues } = useFormContext<DAOFormValues>();
+  const { getValues, handleSubmit } = useFormContext<DAOFormValues>();
 
   const dao = getValues();
 
@@ -26,6 +27,24 @@ export function ReviewView(): JSX.Element {
     DAO_VOTING_POWER_OPTIONS[dao.voting]
   ];
 
+  async function onSubmit(data: DAOFormValues) {
+    const isSuccess = await SputnikService.createDao({
+      name: data.address,
+      purpose: data.purpose,
+      council: 'council',
+      bond: '0.1',
+      votePeriod: '168',
+      gracePeriod: '24',
+      amountToTransfer: '5'
+    });
+
+    // const daoResult = await promise.then(() => console.log('After request'));
+
+    // const result = await awsUploader.uploadToBucket(data.flag);
+
+    console.log('wow', { isSuccess });
+  }
+
   return (
     <div className={styles.root}>
       <div className={styles.header}>
@@ -34,7 +53,7 @@ export function ReviewView(): JSX.Element {
       <div className={styles.form}>
         <DaoDetails
           title={dao.displayName}
-          flag={dao.flag}
+          flag={dao.flagPreview}
           subtitle={dao.address}
           createdAt="now"
           links={dao.websites}
@@ -64,13 +83,12 @@ export function ReviewView(): JSX.Element {
             Step 5 of 5
           </Title>
         </div>
-        <Link href="/overview" as="/overview">
-          <a href="*">
-            <Button style={{ textTransform: 'none' }}>
-              <span className={styles.gray}> Next:</span> Launch DAO
-            </Button>
-          </a>
-        </Link>
+        <Button
+          onClick={handleSubmit(onSubmit)}
+          style={{ textTransform: 'none' }}
+        >
+          <span className={styles.gray}> Next:</span> Launch DAO
+        </Button>
       </div>
     </div>
   );

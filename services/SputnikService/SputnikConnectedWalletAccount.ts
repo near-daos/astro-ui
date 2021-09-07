@@ -6,19 +6,18 @@ import {
   ConnectedWalletAccount,
   transactions as Transactions
 } from 'near-api-js';
-import { PublicKey } from 'near-api-js/lib/utils';
+import { SignAndSendTransactionOptions } from 'near-api-js/lib/account';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
+import { PublicKey } from 'near-api-js/lib/utils';
 
 // todo refactor
 // @ts-ignore
 export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   async _signAndSendTransaction({
     receiverId,
     actions,
-    walletMeta,
-    walletCallbackUrl = window.location.href
-  }: any): Promise<FinalExecutionOutcome> {
+    walletMeta
+  }: SignAndSendTransactionOptions): Promise<FinalExecutionOutcome> {
     const win = window.open(window.origin, '_blank');
 
     const localKey = await this.connection.signer.getPublicKey(
@@ -71,15 +70,37 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
     await this.walletConnection.requestSignTransactions({
       transactions: [transaction],
       meta: walletMeta,
-      callbackUrl: walletCallbackUrl
+      callbackUrl: `${window.origin}/transaction-complete`
     });
+
+    // const test = await Transactions.signTransaction(
+    //   transaction,
+    //   this.connection.signer,
+    //   this.accountId,
+    //   this.connection.networkId
+    // );
 
     if (win?.location) {
       win.location.href = (this.walletConnection as any).signTransactionUrl;
     }
 
-    // todo refactor
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    return new Promise(() => {});
+    return new Promise(resolve => {
+      window.sputnikRequestSignTransactionCompleted = async transactionHash => {
+        if (typeof transactionHash === 'string') {
+          resolve(
+            this.connection.provider.txStatus(transactionHash, this.accountId)
+          );
+        }
+
+        // TODO Refactor
+        // Task failed successfully (just to not break it on internal validation function)
+        // @ts-ignore
+        resolve({
+          status: {
+            SuccessValue: undefined
+          }
+        });
+      };
+    });
   }
 }

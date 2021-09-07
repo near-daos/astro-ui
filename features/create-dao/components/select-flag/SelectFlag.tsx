@@ -5,10 +5,15 @@ import { Cropper } from 'react-cropper';
 import { useMedia } from 'react-use';
 import selectFlagStyles from './select-flag.module.scss';
 
+type CropReturnType = {
+  file: File;
+  preview: string;
+};
+
 export interface SelectFlagProps {
   id?: string;
   sources: string[];
-  onSubmit?: (dataUrl: string) => void;
+  onSubmit?: (file: CropReturnType) => void;
   className?: string | undefined;
 }
 
@@ -100,7 +105,7 @@ export const SelectFlag: FC<SelectFlagProps> = ({
     saveState(isLastSource ? 0 : i + 1);
   };
 
-  const crop = () => {
+  const crop: () => Promise<CropReturnType | null> = async () => {
     const croppedCanvas = cropperRef.current?.getCroppedCanvas({
       minHeight: 1024,
       minWidth: 1024,
@@ -124,21 +129,35 @@ export const SelectFlag: FC<SelectFlagProps> = ({
 
       ctx.fillStyle = 'white';
       maskShape.forEach(shape => ctx.fill(shape));
-
       ctx.globalCompositeOperation = 'source-in';
-
       ctx.drawImage(croppedCanvas, 0, 0, 300, 300);
 
-      return canvas.toDataURL('image/png');
+      return new Promise((resolve, reject) => {
+        canvas.toBlob(blob => {
+          if (blob != null) {
+            const file = new File([blob], 'flag.png', { type: 'image/png' });
+            const preview = canvas.toDataURL('image/png');
+
+            resolve({
+              file,
+              preview
+            });
+          } else {
+            reject(new Error('Unable to convert canvas blob to file'));
+          }
+        }, 'image/png');
+      });
     }
 
     return null;
   };
 
-  const handleSumbit = (callback?: (dataURL: string) => void) => {
-    const data = crop();
+  const handleSumbit = async (callback?: (file: CropReturnType) => void) => {
+    const data = await crop();
 
-    if (data != null) callback?.(data);
+    if (data != null) {
+      callback?.(data);
+    }
   };
 
   return (

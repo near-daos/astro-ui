@@ -35,7 +35,7 @@ const FlagTab: FC<FlagTabProps> = ({ viewMode, daoFlag, onChange }) => {
             <SelectFlag
               id="flag"
               sources={sources}
-              onSubmit={data => onChange('daoFlag', data)}
+              onSubmit={data => onChange('daoFlag', data.preview)}
             />
           </div>
           <div className={styles.btn}>
