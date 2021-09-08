@@ -1,27 +1,10 @@
 import get from 'lodash/get';
 
 import { DAO } from 'types/dao';
+import { DaoRole } from 'types/role';
 
 import { yoktoNear } from 'services/SputnikService/constants';
 import Decimal from 'decimal.js';
-
-export type DaoPermission =
-  | '*:Finalize'
-  | '*:AddProposal'
-  | '*:VoteApprove'
-  | '*:VoteReject'
-  | '*:VoteRemove';
-
-export type DaoRole = {
-  createdAt: string;
-  id: string;
-  name: string;
-  kind: 'Everyone' | 'Group';
-  balance: null;
-  accountIds: string[] | null;
-  permissions: DaoPermission[];
-  votePolicy: null;
-};
 
 export type DaoVotePolicy = {
   weightKind: string;
