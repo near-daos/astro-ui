@@ -95,6 +95,7 @@ const DaoHome: React.FC<DaoHomeProps> = ({
   }) => (
     // todo filter proposals by subhours
     <Collapsable
+      key={title}
       isOpen
       renderHeading={(toggleHeading, isHeadingOpen) => (
         <div className={styles.votingEnds}>

@@ -1,4 +1,4 @@
-import get from 'lodash.get';
+import get from 'lodash/get';
 
 import { DAO } from 'types/dao';
 
@@ -46,6 +46,10 @@ type DaoConfig = {
   purpose: string;
   metadata: string;
 };
+
+export interface GetDAOsResponse {
+  data: DaoDTO[];
+}
 
 export type DaoDTO = {
   createdAt: string;
@@ -106,7 +110,8 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     logo: 'https://i.imgur.com/t5onQz9.png',
     funds,
     createdAt: daoDTO.createdAt,
-    groups: daoGroups
+    groups: daoGroups,
+    policy: daoDTO.policy
   };
 };
 

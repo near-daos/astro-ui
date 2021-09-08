@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
-
-import { Sidebar } from 'components/sidebar';
-import { AddGroupMenu } from 'features/groups/components/add-group-menu';
-
-import { SputnikService } from 'services/SputnikService';
-import { useAuthContext } from 'context/AuthContext';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { DAO } from 'types/dao';
+import { selectDAOs } from 'store/dao';
+import { Sidebar } from 'components/sidebar';
+import { AddGroupMenu } from 'features/groups/components/add-group-menu';
 
 import {
   GOVERNANCE_SECTION_ID,
@@ -121,8 +119,7 @@ type TSidebarData = {
 };
 
 export const useSidebarData = (): TSidebarData => {
-  const { accountId } = useAuthContext();
-  const [daosList, setDaosList] = useState<DAO[]>([]);
+  const daosList = useSelector(selectDAOs);
 
   const groups = daosList.reduce((res, item) => {
     item.groups.forEach(group => {
@@ -150,24 +147,6 @@ export const useSidebarData = (): TSidebarData => {
 
     return item;
   });
-
-  useEffect(() => {
-    SputnikService.getDaoList()
-      .then(res => {
-        const userDaos = res.map(item => ({
-          ...item,
-          label: item.name,
-          id: item.id,
-          logo: 'https://i.imgur.com/t5onQz9.png',
-          count: item.members
-        }));
-
-        setDaosList(userDaos);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }, [accountId]);
 
   return { daosList, menuItems };
 };

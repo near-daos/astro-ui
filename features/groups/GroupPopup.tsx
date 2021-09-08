@@ -1,9 +1,25 @@
-import { GroupFormInput, GroupFormType } from 'features/groups/types';
+import { useSelector } from 'react-redux';
+import React, { useCallback } from 'react';
+
 import { Modal } from 'components/modal';
-import styles from 'features/treasury/request-payout-popup/request-payout-popup.module.scss';
 import { Icon, IconName } from 'components/Icon';
-import React from 'react';
 import { GroupForm } from 'features/groups/components/GroupForm';
+
+import {
+  GroupFormInput,
+  GroupFormType,
+  IGroupForm
+} from 'features/groups/types';
+
+import { selectSelectedDAO } from 'store/dao';
+import { SputnikService } from 'services/SputnikService';
+
+import styles from 'features/treasury/request-payout-popup/request-payout-popup.module.scss';
+import {
+  getAddMemberProposal,
+  getChangePolicyProposal,
+  getRemoveMemberProposal
+} from './helpers';
 
 export interface GroupPopupProps {
   initialValues: GroupFormInput;
@@ -36,12 +52,44 @@ export const GroupPopup: React.FC<GroupPopupProps> = ({
   isOpen,
   onClose
 }) => {
-  const handleSubmit = () => {
+  const { groupType } = initialValues;
+
+  const selectedDao = useSelector(selectSelectedDAO);
+
+  const handleSubmit = useCallback(
+    (data: IGroupForm) => {
+      let proposalData;
+
+      if (selectedDao) {
+        if (groupType === GroupFormType.ADD_TO_GROUP) {
+          proposalData = getAddMemberProposal(data, selectedDao);
+        } else if (groupType === GroupFormType.REMOVE_FROM_GROUP) {
+          proposalData = getRemoveMemberProposal(data, selectedDao);
+        } else if (groupType === GroupFormType.CREATE_GROUP) {
+          // TODO fix generation of proposal data
+          proposalData = getChangePolicyProposal(data, selectedDao);
+        }
+
+        if (proposalData) {
+          SputnikService.createProposal(proposalData);
+        } else {
+          console.error('No proposal data to create proposal');
+        }
+      } else {
+        console.error(
+          'GroupPopup: There is no selected daoId. Can not create proposal.'
+        );
+      }
+
+      onClose();
+    },
+    [groupType, onClose, selectedDao]
+  );
+
+  const handleCancel = useCallback(() => {
     onClose();
-  };
-  const handleCancel = () => {
-    onClose();
-  };
+  }, [onClose]);
+
   const iconName = icons[initialValues.groupType];
   const header = headers[initialValues.groupType];
 

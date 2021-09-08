@@ -1,4 +1,5 @@
 import { Token } from 'components/cards/member-card';
+import { PolicyType } from './proposal';
 
 export type CreateDaoParams = {
   name: string;
@@ -36,4 +37,5 @@ export type DAO = {
   createdAt: string;
   logo: string;
   groups: TGroup[];
+  policy: PolicyType;
 };

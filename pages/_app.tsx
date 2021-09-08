@@ -1,11 +1,14 @@
 import { useMount } from 'react-use';
+import { Provider } from 'react-redux';
 import { useRouter } from 'next/router';
-import type { AppProps } from 'next/app';
 import React, { useState } from 'react';
+import type { AppProps } from 'next/app';
 
+import { store } from 'store';
 import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
 import CreateLayout from 'components/create-layout/CreateLayout';
+import { DataPrefetch } from 'features/data-prefetch/DataPrefetch';
 
 import { AuthWrapper } from 'context/AuthContext';
 
@@ -35,13 +38,16 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 
   if (walletInitialized) {
     return (
-      <AuthWrapper>
-        <ModalProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ModalProvider>
-      </AuthWrapper>
+      <Provider store={store}>
+        <DataPrefetch />
+        <AuthWrapper>
+          <ModalProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ModalProvider>
+        </AuthWrapper>
+      </Provider>
     );
   }
 
