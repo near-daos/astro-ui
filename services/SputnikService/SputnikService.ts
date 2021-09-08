@@ -15,7 +15,8 @@ import { SearchResultsData } from 'types/search';
 import {
   mapDaoDTOListToDaoList,
   DaoDTO,
-  mapDaoDTOtoDao
+  mapDaoDTOtoDao,
+  GetDAOsResponse
 } from 'services/SputnikService/mappers/dao';
 import { mapSearchResultsDTOToDataObject } from 'services/SputnikService/mappers/search-results';
 
