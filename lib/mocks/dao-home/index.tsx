@@ -22,6 +22,7 @@ export const DAO_DETAILS: DaoDetailsProps = {
 
 export const DAO_PROPOSALS: ProposalCardProps[] = [
   {
+    id: '1',
     type: 'Request payout',
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
@@ -45,6 +46,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     )
   },
   {
+    id: '2',
     type: 'Request payout',
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
@@ -68,6 +70,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     )
   },
   {
+    id: '3',
     type: 'Request payout',
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
@@ -91,6 +94,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     )
   },
   {
+    id: '4',
     type: 'Request payout',
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
@@ -114,6 +118,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     )
   },
   {
+    id: '5',
     type: 'Create group',
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
@@ -134,6 +139,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     )
   },
   {
+    id: '6',
     type: 'Remove member',
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
@@ -155,6 +161,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     )
   },
   {
+    id: '7',
     type: 'Add member',
     likes: 2,
     dislikes: 234,

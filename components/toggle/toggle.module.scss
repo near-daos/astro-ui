@@ -1,16 +1,21 @@
-input[type='checkbox'] {
-  display: none;
-  position: absolute;
-}
+.root {
+  align-items: center;
+  display: flex;
 
-label {
-  color: var(--color-primary-60);
-  display: inline-flex;
-  font-size: 1em;
-  font-weight: 500;
-  gap: 16px;
-  line-height: 22px;
-  white-space: nowrap;
+  input[type='checkbox'] {
+    display: none;
+    position: absolute;
+  }
+
+  label {
+    color: var(--color-primary-60);
+    display: inline-flex;
+    font-size: 1em;
+    font-weight: 500;
+    gap: 16px;
+    line-height: 22px;
+    white-space: nowrap;
+  }
 }
 
 .switch {
@@ -19,6 +24,7 @@ label {
   border-radius: 34px;
   display: inline-block;
   height: 24px;
+  margin-right: 12px;
   padding: 3px;
   position: relative;
   transition: background;

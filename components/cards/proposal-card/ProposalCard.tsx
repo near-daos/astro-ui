@@ -13,6 +13,7 @@ import ProposalControlPanel from 'components/cards/proposal-card/components/prop
 import styles from './proposal-card.module.scss';
 
 export interface ProposalCardProps {
+  id: string;
   type: ProposalType;
   status: ProposalStatus;
   title: string;

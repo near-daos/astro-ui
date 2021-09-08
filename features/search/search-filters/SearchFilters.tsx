@@ -1,4 +1,5 @@
 import React, { FC, FormEvent, useCallback } from 'react';
+import cn from 'classnames';
 
 import { Dropdown } from 'components/dropdown/Dropdown';
 import { Toggle } from 'components/toggle/Toggle';
@@ -16,7 +17,6 @@ export type FilterName =
   | 'governance';
 
 export interface SearchFiltersProps {
-  projectName: string;
   showFilter: string;
   searchFilter: string;
   includeTasks: boolean;
@@ -30,7 +30,6 @@ export interface SearchFiltersProps {
 }
 
 export const SearchFilters: FC<SearchFiltersProps> = ({
-  projectName,
   showFilter,
   searchFilter,
   includeTasks,
@@ -47,15 +46,12 @@ export const SearchFilters: FC<SearchFiltersProps> = ({
   );
 
   return (
-    <div>
-      <div className={styles.header}>
-        <div>results for</div>
-        <div className={styles.hide}>&nbsp;</div>
-        <div>&lsquo;{projectName}&rsquo;</div>
-      </div>
+    <div className={styles.root}>
       <div className={styles.content}>
         <div className={styles.show}>
+          <div className={styles.label}>Show</div>
           <Dropdown
+            className={styles.dropdown}
             options={showOptions}
             onChange={value => handleChange('show', value)}
             value={showFilter}
@@ -63,17 +59,20 @@ export const SearchFilters: FC<SearchFiltersProps> = ({
           />
         </div>
         <div className={styles.search}>
+          <div className={styles.label}>Search</div>
           <Dropdown
+            className={styles.dropdown}
             options={searchOptions}
             onChange={value => handleChange('search', value)}
             value={searchFilter}
             defaultValue={searchOptions[0].value}
           />
         </div>
+        <div className={cn(styles.type, styles.label)}>Type</div>
         <div className={styles.type1}>
           <Toggle
             label="Tasks"
-            defaultChecked={includeTasks}
+            // defaultChecked={includeTasks}
             checked={includeTasks}
             onChange={(e: FormEvent) =>
               handleChange('tasks', (e.target as HTMLInputElement).checked)
@@ -83,7 +82,7 @@ export const SearchFilters: FC<SearchFiltersProps> = ({
         <div className={styles.type2}>
           <Toggle
             label="Groups"
-            defaultChecked={includeGroups}
+            // defaultChecked={includeGroups}
             checked={includeGroups}
             onChange={(e: FormEvent) =>
               handleChange('groups', (e.target as HTMLInputElement).checked)
@@ -93,7 +92,7 @@ export const SearchFilters: FC<SearchFiltersProps> = ({
         <div className={styles.type3}>
           <Toggle
             label="Treasury"
-            defaultChecked={includeTreasury}
+            // defaultChecked={includeTreasury}
             checked={includeTreasury}
             onChange={(e: FormEvent) =>
               handleChange('treasury', (e.target as HTMLInputElement).checked)
@@ -103,7 +102,7 @@ export const SearchFilters: FC<SearchFiltersProps> = ({
         <div className={styles.type4}>
           <Toggle
             label="Governance"
-            defaultChecked={includeGovernance}
+            // defaultChecked={includeGovernance}
             checked={includeGovernance}
             onChange={(e: FormEvent) =>
               handleChange('governance', (e.target as HTMLInputElement).checked)

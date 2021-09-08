@@ -1,0 +1,46 @@
+@use 'styles/breakpoints';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  padding-top: 56px;
+}
+
+.card {
+  display: grid;
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'daoDetails daoDetails proposals'
+    'daoDetails daoDetails daoInfo';
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.daoDetails {
+  grid-area: daoDetails;
+}
+
+.proposals {
+  grid-area: proposals;
+}
+
+.daoInfo {
+  grid-area: daoInfo;
+}
+
+.divider {
+  background: var(--color-neutral-40);
+  height: 1.5px;
+  margin: 32px 0;
+  width: 100%;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .card {
+    grid-template-areas:
+      'daoDetails'
+      'proposals'
+      'daoInfo';
+    grid-template-columns: 1fr;
+  }
+}

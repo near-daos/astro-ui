@@ -22,11 +22,17 @@ export interface TabsProps {
   className?: string;
   tabs: TabItem[];
   fitContent?: boolean;
+  isControlled?: boolean;
 }
 
 resetIdCounter();
 
-const Tabs: React.FC<TabsProps> = ({ tabs, className, fitContent }) => {
+const Tabs: React.FC<TabsProps> = ({
+  tabs,
+  className,
+  fitContent,
+  isControlled = true
+}) => {
   const router = useRouter();
 
   const [tabIndex, setTabIndex] = useState(
@@ -47,14 +53,27 @@ const Tabs: React.FC<TabsProps> = ({ tabs, className, fitContent }) => {
 
   if (tabIndex === undefined) return null;
 
+  let tabsProps = {};
+
+  if (isControlled) {
+    tabsProps = {
+      selectedIndex: tabIndex,
+      onSelect: (index: number) => {
+        router.push(
+          {
+            pathname: '',
+            query: { ...router.query, tab: index }
+          },
+          undefined,
+          { shallow: true }
+        );
+      }
+    };
+  }
+
   return (
     <div className={rootClassName}>
-      <ReactTabs
-        selectedIndex={tabIndex}
-        onSelect={index => {
-          router.push(`?tab=${index}`, undefined, { shallow: true });
-        }}
-      >
+      <ReactTabs {...tabsProps}>
         <div className={styles.tabsWrapper}>
           <TabList className={styles.tabs}>
             {tabs.map(item => (

@@ -5,8 +5,9 @@
   background: var(--color-white);
   border-radius: 8px;
   flex-direction: column;
-  height: 320px;
+  height: 100%;
   max-width: 100%;
+  min-height: 286px;
   padding: 48px 48px 48px 140px;
   position: relative;
 
@@ -47,5 +48,12 @@
     list-style: none;
     padding: 0;
     width: 100%;
+  }
+
+  .link {
+    @extend %caption1;
+    align-items: center;
+    color: var(--color-primary-50);
+    display: flex;
   }
 }

@@ -21,16 +21,20 @@ interface CollapsableProps extends Pick<AnimateHeightProps, PickProps> {
   ) => JSX.Element;
   isOpen?: boolean;
   toggle?: (nextValue?: boolean) => void;
+  initialOpenState?: boolean;
 }
 
 export const Collapsable: React.FC<CollapsableProps> = ({
+  initialOpenState,
   children,
   height = 'auto',
   renderHeading,
   ...props
 }) => {
   const id = useId(props.id);
-  const [state, toggleState] = useToggle(false);
+  const [state, toggleState] = useToggle(
+    initialOpenState !== undefined ? initialOpenState : false
+  );
 
   const { isOpen = state, toggle = toggleState, ...animateProps } = props;
 

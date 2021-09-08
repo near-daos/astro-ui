@@ -6,6 +6,7 @@ import {
   ProposalVariant
 } from 'components/cards/proposal-card/types';
 import { ProposalCardProps } from 'components/cards/proposal-card';
+import { nanoid } from 'nanoid';
 
 const generatePoll = (
   status: ProposalStatus,
@@ -15,6 +16,7 @@ const generatePoll = (
   disliked: boolean,
   children: ReactNode
 ) => ({
+  id: nanoid(),
   type: 'Poll' as ProposalType,
   variant: 'SuperCollapsed' as ProposalVariant,
   title: 'jonathan.near',

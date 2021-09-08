@@ -1,0 +1,57 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  padding-top: 56px;
+}
+
+.votingEnds {
+  @extend %body1;
+  align-self: center;
+  display: flex;
+  //margin-top: 40px;
+  padding: 0;
+  text-transform: unset;
+
+  .bold {
+    @extend %title3;
+  }
+
+  .icon {
+    transition: transform 0.5s;
+  }
+
+  .rotate {
+    transform: rotate(90deg);
+  }
+}
+
+.daoDivider {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+  margin: 24px 0;
+
+  .flag {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 40px;
+    width: 40px;
+  }
+
+  h3 {
+    width: fit-content;
+  }
+
+  .divider {
+    background: var(--color-neutral-40);
+    flex: 1;
+    height: 1.5px;
+  }
+}
+
+.cardWrapper {
+  margin-bottom: 16px;
+}

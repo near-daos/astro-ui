@@ -44,7 +44,7 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
     children: (
       <>
         {dao.groups
-          .filter(item => item.members.includes(accountId))
+          .filter(item => item.members?.includes(accountId))
           .map(item => (
             <Badge size="small" variant="green" key={item.name}>
               {item.name}

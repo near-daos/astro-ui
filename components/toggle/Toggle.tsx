@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import './toggle.module.scss';
+
 import { useId } from '@reach/auto-id';
 import { ToggleDisplay } from './ToggleDisplay';
+
+import styles from './toggle.module.scss';
 
 export interface CheckboxProps extends React.HTMLProps<HTMLInputElement> {
   label?: string | undefined;
@@ -15,7 +17,7 @@ export const Toggle = React.forwardRef<HTMLInputElement, CheckboxProps>(
     const value = props.checked != null ? props.checked : checked;
 
     return (
-      <label htmlFor={id}>
+      <label htmlFor={id} className={styles.root}>
         <input
           id={id}
           {...props}

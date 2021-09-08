@@ -6,11 +6,20 @@
   border-radius: 40px;
   display: flex;
   height: 40px;
-  justify-content: space-between;
+  justify-content: flex-start;
   overflow: hidden;
+  position: relative;
   transform: translateZ(0);
   transition: all 0.2s ease-out;
   width: 40px;
+}
+
+.anchor {
+  height: 0;
+  left: 0;
+  position: absolute;
+  top: 100%;
+  width: 100%;
 }
 
 .submitIcon,

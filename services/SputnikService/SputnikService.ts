@@ -11,11 +11,14 @@ import {
   Proposal,
   ProposalRaw
 } from 'types/proposal';
+import { SearchResultsData } from 'types/search';
 import {
   mapDaoDTOListToDaoList,
   DaoDTO,
   mapDaoDTOtoDao
 } from 'services/SputnikService/mappers/dao';
+import { mapSearchResultsDTOToDataObject } from 'services/SputnikService/mappers/search-results';
+
 import { HttpService, httpService } from 'services/HttpService';
 import Big from 'big.js';
 import PromisePool from '@supercharge/promise-pool';
@@ -248,11 +251,6 @@ class SputnikService {
     });
 
     return mapDaoDTOListToDaoList(data);
-
-    // return daos.map(dao => ({
-    //   ...dao,
-    //   votePeriod: timestampToReadable(parseInt(dao.policy.proposalPeriod, 10))
-    // }));
   }
 
   public async getDaoById(daoId: string): Promise<DAO | null> {
@@ -308,6 +306,31 @@ class SputnikService {
         ...item,
         groups: Array.from(new Set(item.groups))
       };
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,class-methods-use-this
+  public async search(params: {
+    offset?: number;
+    limit?: number;
+    sort?: string;
+    query: string;
+  }): Promise<SearchResultsData | null> {
+    // const offset = params?.offset ?? 0;
+    // const limit = params?.limit ?? 50;
+
+    // const { data } = await this.httpService.get<SearchResultsDTO>('/search', {
+    //   params: {
+    //     offset,
+    //     limit,
+    //     query: params.query
+    //   }
+    // });
+
+    return mapSearchResultsDTOToDataObject(params.query, {
+      daos: [],
+      proposals: [],
+      members: []
     });
   }
 

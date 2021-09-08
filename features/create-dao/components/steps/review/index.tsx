@@ -28,7 +28,7 @@ export function ReviewView(): JSX.Element {
   ];
 
   async function onSubmit(data: DAOFormValues) {
-    const isSuccess = await SputnikService.createDao({
+    await SputnikService.createDao({
       name: data.address,
       purpose: data.purpose,
       council: 'council',
@@ -41,8 +41,6 @@ export function ReviewView(): JSX.Element {
     // const daoResult = await promise.then(() => console.log('After request'));
 
     // const result = await awsUploader.uploadToBucket(data.flag);
-
-    console.log('wow', { isSuccess });
   }
 
   return (

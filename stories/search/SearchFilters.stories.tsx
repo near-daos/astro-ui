@@ -22,6 +22,4 @@ export const Template: Story<SearchFiltersProps> = (args): JSX.Element => (
 );
 
 Template.storyName = 'SearchFilters';
-Template.args = {
-  projectName: 'community project'
-};
+Template.args = {};

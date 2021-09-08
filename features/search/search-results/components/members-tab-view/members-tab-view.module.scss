@@ -1,0 +1,12 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  padding-top: 56px;
+}
+
+.content {
+  display: grid;
+  grid-gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+  place-items: start center;
+}
