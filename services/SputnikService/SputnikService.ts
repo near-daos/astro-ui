@@ -1,26 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { connect, Contract, keyStores, Near } from 'near-api-js';
 import { NearConfig, nearConfig } from 'config';
 import Decimal from 'decimal.js';
-import { nanoid } from 'nanoid';
-import { connect, Contract, keyStores, Near } from 'near-api-js';
-import { HttpService, httpService } from 'services/HttpService';
-import {
-  DaoDTO,
-  mapDaoDTOListToDaoList,
-  mapDaoDTOtoDao
-} from 'services/SputnikService/mappers/dao';
+import { CreateTokenParams } from 'types/token';
 import { CreateDaoParams, DAO, Member } from 'types/dao';
-// import { timestampToReadable } from 'utils/timestampToReadable';
+import { nanoid } from 'nanoid';
 import {
   CreateProposalParams,
   DaoConfig,
   Proposal,
   ProposalRaw
 } from 'types/proposal';
-import { gas, yoktoNear } from './constants';
+import {
+  mapDaoDTOListToDaoList,
+  DaoDTO,
+  mapDaoDTOtoDao
+} from 'services/SputnikService/mappers/dao';
+import { HttpService, httpService } from 'services/HttpService';
+import Big from 'big.js';
+import PromisePool from '@supercharge/promise-pool';
 import { ContractPool } from './ContractPool';
-import { SputnikWalletConnection } from './SputnikWalletConnection';
+import { yoktoNear, gas } from './constants';
 import { mapProposalRawToProposal } from './utils';
+import { SputnikWalletConnection } from './SputnikWalletConnection';
 
 class SputnikService {
   private readonly config: NearConfig;
@@ -29,6 +31,8 @@ class SputnikService {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private factoryContract!: Contract & any;
+
+  private factoryTokenContract!: Contract & any;
 
   private walletConnection!: SputnikWalletConnection;
 
@@ -56,6 +60,20 @@ class SputnikService {
       viewMethods: ['get_dao_list'],
       changeMethods: ['create']
     });
+
+    this.factoryTokenContract = new Contract(
+      account,
+      this.config.tokenContractName,
+      {
+        viewMethods: [
+          'get_required_deposit',
+          'get_number_of_tokens',
+          'get_tokens',
+          'get_token'
+        ],
+        changeMethods: ['create_token', 'storage_deposit']
+      }
+    );
 
     this.contractPool = new ContractPool(account);
   }
@@ -86,7 +104,65 @@ class SputnikService {
     return this.walletConnection.getAccountId();
   }
 
-  public async createDao(params: CreateDaoParams): Promise<boolean> {
+  async computeRequiredDeposit(args: unknown) {
+    return Big(
+      await this.factoryTokenContract.get_required_deposit({
+        args,
+        account_id: this.getAccountId()
+      })
+    );
+  }
+
+  // for testing purpose
+  public async listTokens() {
+    const tokensCount = await this.factoryTokenContract.get_number_of_tokens();
+    const chunkSize = 5;
+    const chunkCount =
+      (tokensCount - (tokensCount % chunkSize)) / chunkSize + 1;
+
+    const { results, errors } = await PromisePool.withConcurrency(1)
+      .for([...Array(chunkCount).keys()])
+      .process(async offset =>
+        this.factoryTokenContract.get_tokens({
+          from_index: offset * chunkSize,
+          limit: chunkSize
+        })
+      );
+
+    // eslint-disable-next-line no-console
+    console.log(results, errors);
+  }
+
+  public async createToken(params: CreateTokenParams): Promise<any> {
+    const args = {
+      owner_id: this.getAccountId(),
+      total_supply: '1000000000000000000000',
+      metadata: {
+        spec: 'ft-1.0.0',
+        decimals: 18,
+        name: params.name,
+        symbol: params.symbol,
+        icon: params.icon
+      }
+    };
+
+    const TGas = Big(10).pow(12);
+    const BoatOfGas = Big(200).mul(TGas);
+    // const requiredDeposit = await this.computeRequiredDeposit(args);
+    //
+    // await this.factoryTokenContract.storage_deposit(
+    //   {},
+    //   BoatOfGas.toFixed(0),
+    //   requiredDeposit.toFixed(0)
+    // );
+
+    await this.factoryTokenContract.create_token(
+      { args },
+      BoatOfGas.toFixed(0)
+    );
+  }
+
+  public async createDao(params: CreateDaoParams): Promise<any> {
     const config: DaoConfig = {
       name: params.name,
       purpose: params.purpose,
