@@ -5,7 +5,7 @@ import { Cropper } from 'react-cropper';
 import { useMedia } from 'react-use';
 import selectFlagStyles from './select-flag.module.scss';
 
-type CropReturnType = {
+export type CropReturnType = {
   file: File;
   preview: string;
 };

@@ -8,7 +8,7 @@ import {
   transactions as Transactions,
   WalletConnection
 } from 'near-api-js';
-import { Transaction } from 'near-api-js/src/transaction';
+// import { Transaction } from 'near-api-js/src/transaction';
 import { SputnikConnectedWalletAccount } from './SputnikConnectedWalletAccount';
 
 interface SignInOptions {
@@ -17,6 +17,15 @@ interface SignInOptions {
   successUrl?: string;
   failureUrl?: string;
 }
+
+type Transaction = {
+  signerId: string;
+  publicKey: any;
+  nonce: number;
+  receiverId: string;
+  actions: any[];
+  blockHash: Uint8Array;
+};
 
 const LOGIN_WALLET_URL_SUFFIX = '/login/';
 const PENDING_ACCESS_KEY_PREFIX = 'pending_key';

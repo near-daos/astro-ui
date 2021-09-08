@@ -1,6 +1,7 @@
 import { Meta, Story } from '@storybook/react';
 import { Button } from 'components/button/Button';
 import {
+  CropReturnType,
   SelectFlag,
   SelectFlagProps
 } from 'features/create-dao/components/select-flag/SelectFlag';
@@ -24,7 +25,7 @@ export default {
 } as Meta;
 
 export const Template: Story<SelectFlagProps> = (args): JSX.Element => {
-  const [imgData, setImgData] = useState<string | undefined>();
+  const [imgData, setImgData] = useState<CropReturnType | null>(null);
 
   return (
     <div className="root">
@@ -69,8 +70,10 @@ export const Template: Story<SelectFlagProps> = (args): JSX.Element => {
       </div>
 
       <div className="images-container">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        {imgData && <img alt="Result" width={300} height={300} src={imgData} />}
+        {imgData && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img alt="Result" width={300} height={300} src={imgData?.preview} />
+        )}
       </div>
     </div>
   );
