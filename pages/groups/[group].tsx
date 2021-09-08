@@ -31,7 +31,7 @@ const sortOptions = [
 
 const GroupPage: FC = () => {
   const router = useRouter();
-  const { group } = router.query;
+  const group = router.query.group as string;
   const [data, setData] = useState<Member[]>([]);
   const [showCardModal] = useModal(MemberCardPopup);
   const [showGroupModal] = useModal(GroupPopup);
@@ -44,10 +44,12 @@ const GroupPage: FC = () => {
     await showGroupModal({
       initialValues: {
         ...(groupPopupData.initialValues as GroupFormInput),
-        groupType: GroupFormType.ADD_TO_GROUP
+        groupType: GroupFormType.ADD_TO_GROUP,
+        groups: [group],
+        selectedGroup: group
       }
     });
-  }, [showGroupModal]);
+  }, [group, showGroupModal]);
 
   const handleRemoveClick = useCallback(
     async item => {
