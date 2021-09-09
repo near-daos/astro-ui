@@ -1,9 +1,9 @@
 import { DAO, Member } from 'types/dao';
-import { ProposalCardProps } from 'components/cards/proposal-card';
+import { Proposal } from 'types/proposal';
 
 export interface SearchResultsData {
   query: string;
   daos: DAO[];
-  proposals: ProposalCardProps[];
+  proposals: Proposal[];
   members: Member[];
 }

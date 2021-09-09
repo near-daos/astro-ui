@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import {
-  ProposalStatus,
-  ProposalType,
+  // ProposalStatus,
+  // ProposalType,
   ProposalVariant
 } from 'components/cards/proposal-card/types';
 import { Icon } from 'components/Icon';
+import { ProposalStatus, ProposalType } from 'types/proposal';
 
 import styles from './proposal-status.module.scss';
 
@@ -17,24 +18,24 @@ interface ProposalStatusProps {
 
 function getIconName(type: ProposalType) {
   switch (type) {
-    case 'Add member':
+    case 'AddMemberToRole':
       return 'proposalAddMember';
-    case 'Remove member':
-      return 'proposalRemoveMember';
-    case 'Bounty done':
-      return 'proposalBounty';
-    case 'Create group':
-      return 'proposalCreateGroup';
-    case 'Request payout':
+    // case 'Remove member':
+    //   return 'proposalRemoveMember';
+    // case 'Bounty done':
+    //   return 'proposalBounty';
+    // case 'Create group':
+    //   return 'proposalCreateGroup';
+    case 'Transfer':
       return 'proposalSendFunds';
-    case 'Poll':
-      return 'proposalPoll';
-    case 'Create bounty':
-      return 'proposalBounty';
-    case 'Change DAO settings':
+    // case 'Poll':
+    //   return 'proposalPoll';
+    // case 'Create bounty':
+    //   return 'proposalBounty';
+    case 'ChangePolicy':
       return 'proposalGovernance';
     default:
-    case 'Call NEAR function':
+    case 'FunctionCall':
       return 'proposalNearFunctionCall';
   }
 }
@@ -45,10 +46,10 @@ const ProposalStatusPanel: FC<ProposalStatusProps> = ({
   variant
 }) => {
   const statusClassName = cn({
-    [styles.active]: status === 'Voting in progress',
-    [styles.passed]: status === 'Passed',
+    [styles.active]: status === 'InProgress',
+    [styles.passed]: status === 'Approved',
     [styles.rejected]: status === 'Rejected',
-    [styles.dismissed]: status === 'Dismissed as spam',
+    [styles.dismissed]: status === 'Removed',
     [styles.expired]: status === 'Expired'
   });
 

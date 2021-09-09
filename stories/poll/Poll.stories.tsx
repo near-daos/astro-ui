@@ -5,6 +5,7 @@ import {
   ProposalCardProps,
   TextWithLink
 } from 'components/cards/proposal-card';
+import { ProposalType } from 'types/proposal';
 
 export default {
   title: 'Features/Poll',
@@ -25,27 +26,27 @@ const Template: Story<ProposalCardProps> = (args): JSX.Element => (
 export const SuperCollapsedView = Template.bind({});
 
 SuperCollapsedView.args = {
-  type: 'Poll',
+  type: ProposalType.SetStakingContract,
   likes: 2,
   variant: 'SuperCollapsed',
   dislikes: 234,
   liked: true,
   disliked: false,
-  status: 'Passed',
+  status: 'Approved',
   children: <span>Should we have our offsite in Madrid, Spain in 2022?</span>
 };
 
 export const CollapsedView = Template.bind({});
 
 CollapsedView.args = {
-  type: 'Poll',
+  type: ProposalType.SetStakingContract,
   likes: 2,
   variant: 'Default',
   title: 'jonathan.near',
   dislikes: 234,
   liked: true,
   disliked: false,
-  status: 'Passed',
+  status: 'Approved',
   children: (
     <TextWithLink
       text="We, Meowsers fund, are committed to bring more cats to our DAO"

@@ -29,7 +29,7 @@ export const DaosTabView: FC = () => {
               link: `/dao/${item.id}`
             }
           };
-          const flag = ((item.logo as unknown) as StaticImageData).src;
+          const flag = item.logo;
           const proposalTrackerInfo = {
             activeVotes: 14,
             totalProposals: 3

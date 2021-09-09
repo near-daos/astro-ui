@@ -2,84 +2,52 @@
 
 import { DaoRole } from './role';
 
-export enum ProposalStatus {
-  // Vote for proposal has failed due (not enuough votes).
-  Fail = 'Fail',
-  // Given voting policy, the uncontested minimum of votes was acquired.
-  // Delaying the finalization of the proposal to check that there is no contenders (who would vote against).
-  Delay = 'Delay',
-  // Proposal has successfully passed.
-  Success = 'Success',
-  // Proposal was rejected by the vote.
-  Reject = 'Reject',
-  // Proposal is in active voting stage.
-  Vote = 'Vote'
-}
+export type FunctionCallAction = {
+  methodName: string;
+  args: string;
+  deposit: string;
+  gas: string;
+};
 
 export enum ProposalType {
-  ChangeVotePeriod = 'ChangeVotePeriod',
-  RemoveCouncil = 'RemoveCouncil',
-  NewCouncil = 'NewCouncil',
-  ChangePurpose = 'ChangePurpose',
-  Payout = 'Payout'
+  AddMemberToRole = 'AddMemberToRole',
+  FunctionCall = 'FunctionCall',
+  Transfer = 'Transfer',
+  SetStakingContract = 'SetStakingContract',
+  ChangePolicy = 'ChangePolicy'
 }
 
 export type ProposalKind =
   | {
-      type: ProposalType.Payout;
+      type: ProposalType.AddMemberToRole;
+      memberId: string;
+      role: string;
+    }
+  | {
+      type: ProposalType.FunctionCall;
+      receiverId: string;
+      actions: FunctionCallAction[];
+    }
+  | {
+      type: ProposalType.Transfer;
+      tokenId: string;
+      receiverId: string;
       amount: string;
+      msg: string | null;
     }
-  | {
-      type: ProposalType.ChangeVotePeriod;
-      votePeriod: string;
-    }
-  | {
-      type: ProposalType.NewCouncil;
-    }
-  | {
-      type: ProposalType.RemoveCouncil;
-    }
-  | {
-      type: ProposalType.ChangePurpose;
-      purpose: string;
-    };
+  | { type: ProposalType.SetStakingContract; stakingId: string }
+  | { type: ProposalType.ChangePolicy; policy: PolicyType };
 
-export type ProposalKindRaw =
-  | {
-      type: ProposalType.Payout;
-      amount: string;
-    }
-  | {
-      type: ProposalType.ChangeVotePeriod;
-      vote_period: string;
-    }
-  | {
-      type: ProposalType.NewCouncil;
-    }
-  | {
-      type: ProposalType.RemoveCouncil;
-    }
-  | {
-      type: ProposalType.ChangePurpose;
-      purpose: string;
-    };
-
-export type ProposalRaw = {
-  id: string;
-  target: string;
-  proposer: string;
-  description: string;
-  status: string;
-  kind: ProposalKindRaw;
-  votePeriodEnd: string;
-  voteYes: number;
-  voteNo: number;
-  txHash: string;
-  votes: { [key: string]: 'Yes' | 'No' };
-};
+export type ProposalStatus =
+  | 'Approved'
+  | 'InProgress'
+  | 'Rejected'
+  | 'Removed'
+  | 'Expired'
+  | 'Moved';
 
 export type Proposal = {
-  id: number;
+  id: string;
   daoId: string;
   target: string;
   proposer: string;

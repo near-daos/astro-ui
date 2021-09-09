@@ -9,8 +9,8 @@ interface ProposalControlPanelProps {
   liked: boolean;
   dislikes: number;
   disliked: boolean;
-  onLike: () => void;
-  onDislike: () => void;
+  onLike?: () => void;
+  onDislike?: () => void;
   className?: string;
 }
 
