@@ -97,6 +97,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   label={item.label}
                   count={item.count}
                   href={item.href}
+                  urlParams={router.query}
                   icon={item.logo}
                 />
               );
@@ -114,6 +115,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     label={item.label}
                     count={item.count}
                     href={item.href}
+                    urlParams={router.query}
                     icon={item.logo}
                     active={activeGroupId === item.id}
                   />
@@ -126,6 +128,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     label={subItem.label}
                     href={subItem.href}
                     subHrefs={subItem.subHrefs}
+                    urlParams={router.query}
                   />
                 ))}
               </Collapsable>

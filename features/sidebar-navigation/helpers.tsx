@@ -92,22 +92,22 @@ const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
       {
         id: 'daoSettings',
         label: 'DAO settings',
-        href: `/${GOVERNANCE_SECTION_ID}/dao-settings`
+        href: `/dao/[id]/${GOVERNANCE_SECTION_ID}/settings`
       },
       {
         id: 'votingPolicy',
         label: 'Voting Policy',
-        href: `/${GOVERNANCE_SECTION_ID}/voting-policy`
+        href: `/dao/[id]/${GOVERNANCE_SECTION_ID}/voting-policy`
       },
       {
         id: 'votingToken',
         label: 'Voting Token',
-        href: `/${GOVERNANCE_SECTION_ID}/voting-token`
+        href: `/dao/[id]/${GOVERNANCE_SECTION_ID}/voting-token`
       },
       {
         id: 'upgradeSoftware',
         label: 'Upgrade software Token',
-        href: `/${GOVERNANCE_SECTION_ID}/upgrade-software`
+        href: `/dao/[id]/${GOVERNANCE_SECTION_ID}/upgrade-software`
       }
     ]
   }

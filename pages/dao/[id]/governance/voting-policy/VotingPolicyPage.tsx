@@ -9,7 +9,7 @@ import { TreasuryTabView } from 'features/vote-policy/components/treasury-tab-vi
 import { GovernanceTabView } from 'features/vote-policy/components/governance-tab-view';
 
 import { voteDetails, mockData } from 'lib/mocks/governance/voting-policy';
-import styles from './voting-policy-page.module.scss';
+import styles from 'pages/dao/[id]/governance/voting-policy/voting-policy-page.module.scss';
 
 const VotingPolicyPage: FC = () => {
   const [data, setData] = useState(mockData);
