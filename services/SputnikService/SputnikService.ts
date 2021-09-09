@@ -2,9 +2,12 @@
 import { connect, Contract, keyStores, Near } from 'near-api-js';
 import { NearConfig, nearConfig } from 'config';
 import Decimal from 'decimal.js';
+
 import { CreateTokenParams } from 'types/token';
-import { CreateDaoParams, DAO, Member } from 'types/dao';
 import { nanoid } from 'nanoid';
+
+import { DAO, Member } from 'types/dao';
+// import { timestampToReadable } from 'utils/timestampToReadable';
 import { CreateProposalParams, DaoConfig, Proposal } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
 import {
@@ -128,7 +131,7 @@ class SputnikService {
 
     const { results, errors } = await PromisePool.withConcurrency(1)
       .for([...Array(chunkCount).keys()])
-      .process(async offset =>
+      .process(async (offset: number) =>
         this.factoryTokenContract.get_tokens({
           from_index: offset * chunkSize,
           limit: chunkSize
@@ -168,7 +171,7 @@ class SputnikService {
     );
   }
 
-  public async createDao(params: CreateDaoParams): Promise<any> {
+  public async createDao(params: any): Promise<boolean> {
     const config: DaoConfig = {
       name: params.name,
       purpose: params.purpose,
@@ -178,7 +181,7 @@ class SputnikService {
     // TODO what should be in metadata?
     const argsList = {
       purpose: params.purpose,
-      council: params.council.split('\n').filter(item => item),
+      council: params.council.split('\n').filter((item: string) => item),
       bond: new Decimal(params.bond).mul(yoktoNear).toFixed(),
       vote_period: new Decimal(params.votePeriod).mul('3.6e12').toFixed(),
       grace_period: new Decimal(params.gracePeriod).mul('3.6e12').toFixed(),
@@ -243,7 +246,7 @@ class SputnikService {
   }): Promise<DAO[]> {
     const offset = params?.offset ?? 0;
     const limit = params?.limit ?? 50;
-    const sort = params?.sort ?? 'createdAt,ASC';
+    const sort = params?.sort ?? 'createdAt,DESC';
 
     const { data } = await this.httpService.get<GetDAOsResponse>('/daos', {
       params: {

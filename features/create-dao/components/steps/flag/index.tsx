@@ -11,8 +11,10 @@ import { useRouter } from 'next/router';
 import { useFormContext } from 'react-hook-form';
 
 function FlagViewComponent(): JSX.Element {
-  const { setValue } = useFormContext<DAOFormValues>();
+  const { setValue, getValues } = useFormContext<DAOFormValues>();
   const router = useRouter();
+
+  const name = getValues('address');
 
   const onSubmit = (data: { file: File; preview: string }) => {
     setValue('flag', data.file);
@@ -35,7 +37,12 @@ function FlagViewComponent(): JSX.Element {
         <h2>Select your flag</h2>
         <p> Move the window around to pick your flag </p>
       </div>
-      <SelectFlag id="flag" onSubmit={onSubmit} sources={sources} />
+      <SelectFlag
+        id="flag"
+        fileName={`${name}.sputnikdao.near`}
+        onSubmit={onSubmit}
+        sources={sources}
+      />
 
       <div className={styles.footer}>
         <div style={{ gap: '16px' }} className={styles.inline}>

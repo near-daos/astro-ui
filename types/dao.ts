@@ -1,16 +1,6 @@
 import { Token } from 'components/cards/member-card';
 import { PolicyType } from './proposal';
 
-export type CreateDaoParams = {
-  name: string;
-  amountToTransfer: string;
-  purpose: string;
-  council: string;
-  bond: string;
-  votePeriod: string;
-  gracePeriod: string;
-};
-
 export type TGroup = {
   members: string[];
   name: string;

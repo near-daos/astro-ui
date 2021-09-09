@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
 
+import { DaoRole } from './role';
+
 export type FunctionCallAction = {
   methodName: string;
   args: string;
@@ -119,14 +121,21 @@ interface UpgradeSelf {
   hash: string;
 }
 
+interface DefaultVaultPolicy {
+  weightKind: string;
+  kind: string;
+  ratio: number[];
+  quorum: string;
+}
+
 // TODO describe proposal type properly
 // eslint-disable-next-line
 export type PolicyType = Object & {
-  roles: unknown[];
+  roles: DaoRole[];
   bountyBond: string;
   proposalBond: string;
   proposalPeriod: string;
-  defaultVotePolicy: unknown;
+  defaultVotePolicy: DefaultVaultPolicy;
   bountyForgivenessPeriod: string;
 };
 
