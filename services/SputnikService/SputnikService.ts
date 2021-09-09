@@ -5,12 +5,7 @@ import Decimal from 'decimal.js';
 import { CreateTokenParams } from 'types/token';
 import { CreateDaoParams, DAO, Member } from 'types/dao';
 import { nanoid } from 'nanoid';
-import {
-  CreateProposalParams,
-  DaoConfig,
-  Proposal,
-  ProposalRaw
-} from 'types/proposal';
+import { CreateProposalParams, DaoConfig, Proposal } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
 import {
   mapDaoDTOListToDaoList,
@@ -18,6 +13,11 @@ import {
   mapDaoDTOtoDao,
   GetDAOsResponse
 } from 'services/SputnikService/mappers/dao';
+import {
+  GetProposalsResponse,
+  mapProposalDTOToProposal,
+  ProposalDTO
+} from 'services/SputnikService/mappers/proposal';
 import { mapSearchResultsDTOToDataObject } from 'services/SputnikService/mappers/search-results';
 
 import { HttpService, httpService } from 'services/HttpService';
@@ -25,7 +25,6 @@ import Big from 'big.js';
 import PromisePool from '@supercharge/promise-pool';
 import { ContractPool } from './ContractPool';
 import { yoktoNear, gas } from './constants';
-import { mapProposalRawToProposal } from './utils';
 import { SputnikWalletConnection } from './SputnikWalletConnection';
 
 class SputnikService {
@@ -310,7 +309,6 @@ class SputnikService {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars,class-methods-use-this
   public async search(params: {
     offset?: number;
     limit?: number;
@@ -320,17 +318,32 @@ class SputnikService {
     // const offset = params?.offset ?? 0;
     // const limit = params?.limit ?? 50;
 
-    // const { data } = await this.httpService.get<SearchResultsDTO>('/search', {
-    //   params: {
-    //     offset,
-    //     limit,
-    //     query: params.query
-    //   }
-    // });
+    const result = await Promise.all([
+      await this.httpService.get<GetDAOsResponse>('/daos', {
+        params: {
+          s: {
+            id: {
+              $cont: params.query
+            }
+          }
+        }
+      }),
+      await this.httpService.get<GetProposalsResponse>('/proposals', {
+        params: {
+          s: {
+            proposer: {
+              $cont: params.query
+            }
+          }
+        }
+      })
+    ]);
+
+    // console.log(result);
 
     return mapSearchResultsDTOToDataObject(params.query, {
-      daos: [],
-      proposals: [],
+      daos: (result[0].data as unknown) as DaoDTO[],
+      proposals: (result[1].data as unknown) as ProposalDTO[],
       members: []
     });
   }
@@ -340,18 +353,17 @@ class SputnikService {
     offset = 0,
     limit = 50
   ): Promise<Proposal[]> {
-    const { data: proposals } = await this.httpService.get<ProposalRaw[]>(
-      '/proposals',
-      {
-        params: {
-          daoId,
-          offset,
-          limit
-        }
+    const { data: proposals } = await this.httpService.get<
+      GetProposalsResponse
+    >('/proposals', {
+      params: {
+        daoId,
+        offset,
+        limit
       }
-    );
+    });
 
-    return proposals.map(mapProposalRawToProposal);
+    return proposals.data.map(mapProposalDTOToProposal);
   }
 
   public async getProposal(
@@ -359,11 +371,11 @@ class SputnikService {
     index: number
   ): Promise<Proposal | null> {
     try {
-      const { data: proposal } = await this.httpService.get<ProposalRaw>(
+      const { data: proposal } = await this.httpService.get<ProposalDTO>(
         `/proposals/${contractId}-${index}`
       );
 
-      return mapProposalRawToProposal(proposal);
+      return mapProposalDTOToProposal(proposal);
     } catch (error) {
       if ([400, 404].includes(error.response.status)) {
         return null;

@@ -16,14 +16,6 @@ interface SearchResultsContextProps {
   handleClose: () => void;
 }
 
-interface InjectedSearchResultsProps {
-  searchResults: null | SearchResultsData;
-}
-
-interface SearchResultsProps {
-  children(props: InjectedSearchResultsProps): JSX.Element;
-}
-
 const SearchResultsContext = createContext<SearchResultsContextProps>({
   searchResults: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -35,13 +27,12 @@ const SearchResultsContext = createContext<SearchResultsContextProps>({
 export const useSearchResults = (): SearchResultsContextProps =>
   useContext(SearchResultsContext);
 
-export const SearchResults: FC<SearchResultsProps> = ({ children }) => {
+export const SearchResults: FC = ({ children }) => {
   const [searchResults, setSearchResults] = useState<null | SearchResultsData>(
     null
   );
 
   const handleSearch = useCallback(query => {
-    // fetch data here from service
     SputnikService.search({ query }).then(result => {
       setSearchResults(result);
     });
@@ -55,7 +46,7 @@ export const SearchResults: FC<SearchResultsProps> = ({ children }) => {
     <SearchResultsContext.Provider
       value={{ searchResults, handleSearch, handleClose }}
     >
-      {children({ searchResults })}
+      {children}
     </SearchResultsContext.Provider>
   );
 };

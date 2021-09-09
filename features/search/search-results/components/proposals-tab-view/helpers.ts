@@ -1,17 +1,17 @@
 import { useSearchResults } from 'features/search/search-results/SearchResults';
-import { ProposalCardProps } from 'components/cards/proposal-card';
 import { useCallback, useState } from 'react';
 import { FilterName } from 'features/search/search-filters';
+import { Proposal } from 'types/proposal';
 
 export interface Indexed {
-  [key: string]: ProposalCardProps[];
+  [key: string]: Proposal[];
 }
 
 export interface FilteredData extends Indexed {
-  lessThanHourProposals: ProposalCardProps[];
-  lessThanDayProposals: ProposalCardProps[];
-  lessThanWeekProposals: ProposalCardProps[];
-  otherProposals: ProposalCardProps[];
+  lessThanHourProposals: Proposal[];
+  lessThanDayProposals: Proposal[];
+  lessThanWeekProposals: Proposal[];
+  otherProposals: Proposal[];
 }
 
 type ShowFilterOption =
@@ -118,7 +118,7 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
   } = filteredProposals.reduce(
     (res, item) => {
       // Split items by groups (less than hour, day, week)
-      const votingEndsAt = new Date('2021-09-07').getMilliseconds();
+      const votingEndsAt = new Date(item.votePeriodEnd).getMilliseconds();
       const now = new Date().getMilliseconds();
       const diff = votingEndsAt - now;
 
@@ -135,11 +135,11 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
       return res;
     },
     {
-      lessThanHourProposals: [] as ProposalCardProps[],
-      lessThanDayProposals: [] as ProposalCardProps[],
-      lessThanWeekProposals: [] as ProposalCardProps[],
-      otherProposals: [] as ProposalCardProps[]
-    } as FilteredData
+      lessThanHourProposals: [] as Proposal[],
+      lessThanDayProposals: [] as Proposal[],
+      lessThanWeekProposals: [] as Proposal[],
+      otherProposals: [] as Proposal[]
+    }
   );
 
   return {

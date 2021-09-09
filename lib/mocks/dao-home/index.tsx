@@ -9,6 +9,7 @@ import {
   RequestPayout
 } from 'components/cards/proposal-card';
 import React from 'react';
+import { ProposalType } from 'types/proposal';
 
 export const DAO_DETAILS: DaoDetailsProps = {
   title: 'Meowzers',
@@ -23,7 +24,7 @@ export const DAO_DETAILS: DaoDetailsProps = {
 export const DAO_PROPOSALS: ProposalCardProps[] = [
   {
     id: '1',
-    type: 'Request payout',
+    type: ProposalType.Transfer,
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
@@ -32,7 +33,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dislikes: 134,
     liked: false,
     disliked: false,
-    status: 'Dismissed as spam',
+    status: 'Rejected',
     title: 'jonathan.near',
     children: (
       <RequestPayout
@@ -47,7 +48,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
   },
   {
     id: '2',
-    type: 'Request payout',
+    type: ProposalType.Transfer,
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
@@ -56,7 +57,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dislikes: 134,
     liked: false,
     disliked: false,
-    status: 'Dismissed as spam',
+    status: 'Rejected',
     title: 'jonathan.near',
     children: (
       <RequestPayout
@@ -71,7 +72,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
   },
   {
     id: '3',
-    type: 'Request payout',
+    type: ProposalType.Transfer,
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
@@ -80,7 +81,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dislikes: 134,
     liked: false,
     disliked: false,
-    status: 'Dismissed as spam',
+    status: 'Rejected',
     title: 'jonathan.near',
     children: (
       <RequestPayout
@@ -95,7 +96,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
   },
   {
     id: '4',
-    type: 'Request payout',
+    type: ProposalType.Transfer,
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
@@ -104,7 +105,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dislikes: 134,
     liked: false,
     disliked: false,
-    status: 'Dismissed as spam',
+    status: 'Rejected',
     title: 'jonathan.near',
     children: (
       <RequestPayout
@@ -119,7 +120,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
   },
   {
     id: '5',
-    type: 'Create group',
+    type: ProposalType.SetStakingContract,
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
@@ -128,7 +129,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dislikes: 134,
     liked: false,
     disliked: false,
-    status: 'Passed',
+    status: 'Approved',
     title: 'jonathan.near',
     children: (
       <CreateNewGroup
@@ -140,7 +141,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
   },
   {
     id: '6',
-    type: 'Remove member',
+    type: ProposalType.AddMemberToRole,
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
@@ -162,7 +163,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
   },
   {
     id: '7',
-    type: 'Add member',
+    type: ProposalType.AddMemberToRole,
     likes: 2,
     dislikes: 234,
     liked: true,
@@ -171,7 +172,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     onLike: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
-    status: 'Voting in progress',
+    status: 'InProgress',
     title: 'jonathan.near',
     children: (
       <AddMemberToGroup

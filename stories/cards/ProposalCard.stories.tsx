@@ -1,13 +1,14 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import {
+  AddMemberToGroup,
+  CreateNewGroup,
   ProposalCard,
   ProposalCardProps,
-  AddMemberToGroup,
   RemoveMemberFromGroup,
-  CreateNewGroup,
   RequestPayout
 } from 'components/cards/proposal-card';
+import { ProposalType } from 'types/proposal';
 
 export default {
   title: 'Components/Cards/ProposalCard',
@@ -28,12 +29,12 @@ const Template: Story<ProposalCardProps> = (args): JSX.Element => (
 export const WithAddMembersToGroup = Template.bind({});
 
 WithAddMembersToGroup.args = {
-  type: 'Add member',
+  type: ProposalType.AddMemberToRole,
   likes: 2,
   dislikes: 234,
   liked: true,
   disliked: false,
-  status: 'Voting in progress',
+  status: 'InProgress',
   title: 'jonathan.near',
   children: (
     <AddMemberToGroup
@@ -48,7 +49,7 @@ WithAddMembersToGroup.args = {
 export const WithRemoveMembersFromGroup = Template.bind({});
 
 WithRemoveMembersFromGroup.args = {
-  type: 'Remove member',
+  type: ProposalType.AddMemberToRole,
   likes: 50,
   dislikes: 134,
   liked: false,
@@ -68,12 +69,12 @@ WithRemoveMembersFromGroup.args = {
 export const WithCreateNewGroup = Template.bind({});
 
 WithCreateNewGroup.args = {
-  type: 'Create group',
+  type: ProposalType.SetStakingContract,
   likes: 50,
   dislikes: 134,
   liked: false,
   disliked: false,
-  status: 'Passed',
+  status: 'Approved',
   title: 'jonathan.near',
   children: (
     <CreateNewGroup
@@ -87,12 +88,12 @@ WithCreateNewGroup.args = {
 export const WithRequestPayout = Template.bind({});
 
 WithRequestPayout.args = {
-  type: 'Request payout',
+  type: ProposalType.Transfer,
   likes: 50,
   dislikes: 134,
   liked: false,
   disliked: false,
-  status: 'Dismissed as spam',
+  status: 'Rejected',
   title: 'jonathan.near',
   children: (
     <RequestPayout

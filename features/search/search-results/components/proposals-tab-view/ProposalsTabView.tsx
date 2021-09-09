@@ -85,7 +85,18 @@ export const ProposalsTabView: FC = () => {
           {data.map(item => {
             return (
               <div className={styles.cardWrapper} key={item.id}>
-                <ProposalCard {...item} />
+                <ProposalCard
+                  type={item.kind.type}
+                  status={item.status}
+                  likes={item.voteYes}
+                  dislikes={item.voteNo}
+                  id={item.id}
+                  title={item.proposer}
+                  liked={false}
+                  disliked={false}
+                >
+                  <div />
+                </ProposalCard>
               </div>
             );
           })}

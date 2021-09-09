@@ -42,7 +42,9 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
 
   useDebounce(
     () => {
-      handleSearch(value);
+      if (expanded) {
+        handleSearch(value);
+      }
     },
     1000,
     [value]
@@ -121,11 +123,12 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
         ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
       />
       {!!searchResults &&
+        expanded &&
         !router.pathname.includes('search-results') &&
         ReactDOM.createPortal(
           <div
             ref={setPopperElement as React.LegacyRef<HTMLDivElement>}
-            style={popperStyles.popper}
+            style={{ ...popperStyles.popper, zIndex: 100 }}
             {...attributes.popper}
           >
             <DropdownResults
