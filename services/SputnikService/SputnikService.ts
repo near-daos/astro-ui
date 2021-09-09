@@ -241,7 +241,7 @@ class SputnikService {
   }): Promise<DAO[]> {
     const offset = params?.offset ?? 0;
     const limit = params?.limit ?? 50;
-    const sort = params?.sort ?? 'createdAt,ASC';
+    const sort = params?.sort ?? 'createdAt,DESC';
 
     const { data } = await this.httpService.get<GetDAOsResponse>('/daos', {
       params: {

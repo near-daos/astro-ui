@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
 
+import { DaoRole } from './role';
+
 export enum ProposalStatus {
   // Vote for proposal has failed due (not enuough votes).
   Fail = 'Fail',
@@ -151,14 +153,21 @@ interface UpgradeSelf {
   hash: string;
 }
 
+interface DefaultVaultPolicy {
+  weightKind: string;
+  kind: string;
+  ratio: number[];
+  quorum: string;
+}
+
 // TODO describe proposal type properly
 // eslint-disable-next-line
 export type PolicyType = Object & {
-  roles: unknown[];
+  roles: DaoRole[];
   bountyBond: string;
   proposalBond: string;
   proposalPeriod: string;
-  defaultVotePolicy: unknown;
+  defaultVotePolicy: DefaultVaultPolicy;
   bountyForgivenessPeriod: string;
 };
 

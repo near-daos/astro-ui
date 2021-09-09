@@ -47,7 +47,7 @@ export const mapSearchResultsDTOToDataObject = (
         proposals: 132,
         createdAt: '2020-12-12',
         logo: (flag as unknown) as string,
-        groups: []
+        groups: [],
       }
     ],
     proposals: DAO_PROPOSALS,
