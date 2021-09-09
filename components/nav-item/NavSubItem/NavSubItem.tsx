@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import Link from 'next/link';
+import { ParsedUrlQueryInput } from 'querystring';
 import { UrlObject } from 'url';
 import React, { ReactNode } from 'react';
 
@@ -11,6 +12,7 @@ import styles from './NavSubItem.module.scss';
 type DAONameProps = {
   label: string | ReactNode;
   href: string;
+  urlParams?: string | null | ParsedUrlQueryInput | undefined;
   count?: number;
   subHrefs?: string[];
   active?: boolean;
@@ -24,6 +26,7 @@ export const NavSubItem: React.VFC<DAONameProps> = ({
   count,
   className,
   href,
+  urlParams,
   subHrefs
 }) => {
   const isActive = useIsActive(href, subHrefs);
@@ -34,7 +37,7 @@ export const NavSubItem: React.VFC<DAONameProps> = ({
 
   return (
     <div>
-      <Link passHref href={href}>
+      <Link passHref href={{ pathname: href, query: urlParams }}>
         {/* TODO Property 'href' would be overridden by Link. Check https://git.io/Jns2B */}
         <a href="*" className={rootClassName}>
           {label}
