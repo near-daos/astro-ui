@@ -12,12 +12,8 @@ const PageLayout: FC = ({ children }) => {
     <div className={styles.root}>
       <SidebarNavigation className={styles.sideBar} />
       <SearchResults>
-        {() => (
-          <>
-            <AppHeader isLandingPage={false} />
-            <main className={styles.main}>{children}</main>
-          </>
-        )}
+        <AppHeader isLandingPage={false} />
+        <main className={styles.main}>{children}</main>
       </SearchResults>
       {/* todo - check if the user is logged in from auth service */}
       <AppFooter isLoggedIn={false} />

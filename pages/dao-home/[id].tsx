@@ -24,6 +24,7 @@ import { Collapsable } from 'components/collapsable/Collapsable';
 import { IconButton } from 'components/button/IconButton';
 import classNames from 'classnames';
 import { Icon } from 'components/Icon';
+import { ProposalType } from 'types/proposal';
 import styles from './dao-home-page.module.scss';
 
 interface DaoHomeProps {
@@ -64,7 +65,7 @@ const DaoHome: React.FC<DaoHomeProps> = ({
   const getItemHeight = (index: number) => {
     const item = proposals[index];
 
-    return item.type === 'Request payout' ? 198 : 152;
+    return item.type === ProposalType.Transfer ? 198 : 152;
   };
 
   const renderCard = ({

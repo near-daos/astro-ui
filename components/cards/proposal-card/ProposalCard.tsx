@@ -2,11 +2,8 @@ import React, { FC, ReactNode } from 'react';
 import cn from 'classnames';
 
 import { Icon } from 'components/Icon';
-import {
-  ProposalStatus,
-  ProposalType,
-  ProposalVariant
-} from 'components/cards/proposal-card/types';
+import { ProposalVariant } from 'components/cards/proposal-card/types';
+import { ProposalStatus, ProposalType } from 'types/proposal';
 import ProposalStatusPanel from 'components/cards/proposal-card/components/proposal-status-panel/ProposalStatusPanel';
 import ProposalControlPanel from 'components/cards/proposal-card/components/proposal-control-panel/ProposalControlPanel';
 
@@ -23,8 +20,8 @@ export interface ProposalCardProps {
   liked: boolean;
   disliked: boolean;
   variant?: ProposalVariant;
-  onLike: () => void;
-  onDislike: () => void;
+  onLike?: () => void;
+  onDislike?: () => void;
 }
 
 export const ProposalCard: FC<ProposalCardProps> = ({

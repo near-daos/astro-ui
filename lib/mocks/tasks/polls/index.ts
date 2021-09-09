@@ -1,12 +1,13 @@
 import React, { ReactNode } from 'react';
 import { VoteDetail, BondDetail } from 'features/types';
 import {
-  ProposalType,
-  ProposalStatus,
+  // ProposalType,
+  // ProposalStatus,
   ProposalVariant
 } from 'components/cards/proposal-card/types';
 import { ProposalCardProps } from 'components/cards/proposal-card';
 import { nanoid } from 'nanoid';
+import { ProposalStatus, ProposalType } from 'types/proposal';
 
 const generatePoll = (
   status: ProposalStatus,
@@ -47,7 +48,7 @@ const generatePolls = () => {
   for (let i = 1; i < 51; i += 1) {
     const likes = Math.floor(Math.random() * 300) + 1;
     const dislikes = Math.floor(Math.random() * 300) + 1;
-    const status: ProposalStatus = likes >= dislikes ? 'Passed' : 'Rejected';
+    const status: ProposalStatus = likes >= dislikes ? 'Approved' : 'Rejected';
     const pollTextNode = React.createElement(
       'span',
       null,

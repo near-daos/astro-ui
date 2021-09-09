@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 
+import { ProposalType } from 'types/proposal';
 import StatusPanel from 'components/cards/proposal-card/components/proposal-status-panel/ProposalStatusPanel';
 
 import styles from './plugin-card.module.scss';
@@ -19,8 +20,8 @@ export const PluginCard: FC<PluginCardProps> = ({
   return (
     <div className={cn(styles.root)}>
       <StatusPanel
-        type="Call NEAR function"
-        status="Passed"
+        type={ProposalType.FunctionCall}
+        status="Approved"
         variant="Default"
       />
       <div className={styles.content}>

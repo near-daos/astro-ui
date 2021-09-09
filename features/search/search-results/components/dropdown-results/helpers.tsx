@@ -1,46 +1,42 @@
-import { ProposalCardProps } from 'components/cards/proposal-card';
 import styles from 'features/search/search-results/components/dropdown-results/dropdown-results.module.scss';
 import { Badge } from 'components/badge/Badge';
 import React, { ReactNode } from 'react';
+import { Proposal } from 'types/proposal';
 
-export function getProposalSearchSummary(
-  proposal: ProposalCardProps
-): ReactNode {
+export function getProposalSearchSummary(proposal: Proposal): ReactNode {
   let content;
 
-  switch (proposal.type) {
-    case 'Add member': {
+  switch (proposal.kind.type) {
+    case 'AddMemberToRole': {
       content = (
         <div className={styles.summary}>
           <span>
-            Add <strong>{proposal.title}</strong> as a member to
+            Add <strong>{proposal.kind.memberId}</strong> as a member to
           </span>
-          <Badge size="small">Group name</Badge>
+          <Badge size="small">{proposal.kind.role}</Badge>
         </div>
       );
       break;
     }
-    case 'Remove member': {
+    case 'ChangePolicy': {
       content = (
         <div className={styles.summary}>
           <span>
-            Remove <strong>{proposal.title}</strong> from
+            This is a proposal to change voting policies for our groups.
           </span>
-          <Badge size="small">Group name</Badge>
         </div>
       );
       break;
     }
-    case 'Create group': {
+    case 'FunctionCall': {
       content = (
         <div className={styles.summary}>
-          <span>Create new group</span>
-          <Badge size="small">Group name</Badge>
+          <span>Function call</span>
         </div>
       );
       break;
     }
-    case 'Request payout': {
+    case 'Transfer': {
       content = (
         <div className={styles.summary}>
           <span>I would like to request a payment</span>
@@ -56,7 +52,6 @@ export function getProposalSearchSummary(
   return (
     <div className={styles.row} key={proposal.id}>
       {content}
-      <div className={styles.secondaryLabel}>{proposal.type}</div>
     </div>
   );
 }
