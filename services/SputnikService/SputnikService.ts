@@ -18,7 +18,10 @@ import {
   mapProposalDTOToProposal,
   ProposalDTO
 } from 'services/SputnikService/mappers/proposal';
-import { mapSearchResultsDTOToDataObject } from 'services/SputnikService/mappers/search-results';
+import {
+  mapSearchResultsDTOToDataObject,
+  SearchResponse
+} from 'services/SputnikService/mappers/search-results';
 
 import { HttpService, httpService } from 'services/HttpService';
 import Big from 'big.js';
@@ -318,32 +321,15 @@ class SputnikService {
     // const offset = params?.offset ?? 0;
     // const limit = params?.limit ?? 50;
 
-    const result = await Promise.all([
-      await this.httpService.get<GetDAOsResponse>('/daos', {
-        params: {
-          s: {
-            id: {
-              $cont: params.query
-            }
-          }
-        }
-      }),
-      await this.httpService.get<GetProposalsResponse>('/proposals', {
-        params: {
-          s: {
-            proposer: {
-              $cont: params.query
-            }
-          }
-        }
-      })
-    ]);
-
-    // console.log(result);
+    const result = await this.httpService.get<SearchResponse>('/search', {
+      params: {
+        query: params.query
+      }
+    });
 
     return mapSearchResultsDTOToDataObject(params.query, {
-      daos: (result[0].data as unknown) as DaoDTO[],
-      proposals: (result[1].data as unknown) as ProposalDTO[],
+      daos: (result.data as SearchResponse).daos as DaoDTO[],
+      proposals: (result.data as SearchResponse).proposals as ProposalDTO[],
       members: []
     });
   }

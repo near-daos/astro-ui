@@ -4,12 +4,12 @@ import classNames from 'classnames';
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useFilteredProposalsData } from 'features/search/search-results/components/proposals-tab-view/helpers';
 import { Collapsable } from 'components/collapsable/Collapsable';
-import { ProposalCard } from 'components/cards/proposal-card';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { SearchFilters } from 'features/search/search-filters';
 import { NoResultsView } from 'features/search/search-results/components/no-results-view';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
+import ProposalCardRenderer from 'features/search/search-results/components/proposals-tab-view/ProposalCardRenderer';
 
 import tempFlag from 'stories/dao-home/assets/flag.png';
 
@@ -27,6 +27,10 @@ const voteByPeriod = [
   {
     title: 'less than a week',
     dataKey: 'lessThanWeekProposals'
+  },
+  {
+    title: 'more than a week',
+    dataKey: 'otherProposals'
   }
 ];
 
@@ -61,7 +65,7 @@ export const ProposalsTabView: FC = () => {
             className={styles.votingEnds}
             onClick={() => toggleHeading()}
           >
-            Voting ends in less &nbsp;
+            Voting ends in &nbsp;
             <div className={styles.bold}>{title}</div>
             <Icon
               name="buttonArrowRight"
@@ -85,18 +89,7 @@ export const ProposalsTabView: FC = () => {
           {data.map(item => {
             return (
               <div className={styles.cardWrapper} key={item.id}>
-                <ProposalCard
-                  type={item.kind.type}
-                  status={item.status}
-                  likes={item.voteYes}
-                  dislikes={item.voteNo}
-                  id={item.id}
-                  title={item.proposer}
-                  liked={false}
-                  disliked={false}
-                >
-                  <div />
-                </ProposalCard>
+                <ProposalCardRenderer proposal={item} />
               </div>
             );
           })}

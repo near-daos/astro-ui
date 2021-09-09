@@ -5,6 +5,8 @@ import { DAO } from 'types/dao';
 import { yoktoNear } from 'services/SputnikService/constants';
 import Decimal from 'decimal.js';
 
+import flag from 'stories/dao-home/assets/flag.png';
+
 export type DaoPermission =
   | '*:Finalize'
   | '*:AddProposal'
@@ -107,7 +109,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     members: numberOfMembers,
     proposals: 18,
     // TODO - where can we get DAO logo flag?
-    logo: 'https://i.imgur.com/t5onQz9.png',
+    logo: flag.src,
     funds,
     createdAt: daoDTO.createdAt,
     groups: daoGroups,
