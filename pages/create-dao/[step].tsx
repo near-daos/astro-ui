@@ -27,14 +27,15 @@ const CreateDaoPage: NextPage<{ step: string }> = () => {
 
   const methods = useForm<DAOFormValues>({
     defaultValues: {
-      proposals: 'open',
-      structure: 'flat',
-      voting: 'democratic',
+      proposals: undefined,
+      structure: undefined,
+      voting: undefined,
       websites: [],
-      address: (Math.random() * 100000000000000000).toString(),
-      purpose: 'abc',
-      displayName: 'Display Name!',
-      flag: undefined
+      address: undefined,
+      purpose: undefined,
+      displayName: undefined,
+      flag: undefined,
+      flagPreview: undefined
     }
   });
 

@@ -11,13 +11,16 @@ import styles from 'features/create-dao/components/steps/form/form.module.scss';
 import { DAOFormValues } from 'features/create-dao/components/steps/types';
 import { DaoDetails } from 'features/dao-home/components/dao-details/DaoDetails';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import { useFormContext } from 'react-hook-form';
+import awsUploader from 'services/AwsUploader/AwsUploader';
 import { SputnikService } from 'services/SputnikService';
 
 export function ReviewView(): JSX.Element {
   const { getValues, handleSubmit } = useFormContext<DAOFormValues>();
+  const router = useRouter();
 
   const dao = getValues();
 
@@ -28,6 +31,57 @@ export function ReviewView(): JSX.Element {
   ];
 
   async function onSubmit(data: DAOFormValues) {
+    function getDefaultVotePolicy() {
+      return data.voting === 'democratic'
+        ? {
+            weight_kind: 'RoleWeight',
+            quorum: '0',
+            threshold: [1, 2]
+          }
+        : {
+            weight_kind: 'TokenWeight',
+            quorum: '0',
+            threshold: 5
+          };
+    }
+
+    function getRoles() {
+      if (data.structure === 'flat') {
+        return [
+          {
+            name: 'all',
+            kind: 'Everyone',
+            permissions: ['*:AddProposal'],
+            vote_policy: {}
+          }
+        ];
+      }
+
+      return [
+        data.proposals === 'open'
+          ? {
+              name: 'all',
+              kind: 'Everyone',
+              permissions: ['*:AddProposal'],
+              vote_policy: {}
+            }
+          : {
+              name: 'council',
+              kind: { Group: [SputnikService.getAccountId()] },
+              permissions: [
+                '*:Finalize',
+                '*:AddProposal',
+                '*:VoteApprove',
+                '*:VoteReject',
+                '*:VoteRemove'
+              ],
+              vote_policy: {}
+            }
+      ];
+    }
+
+    await awsUploader.uploadToBucket(data.flag);
+
     await SputnikService.createDao({
       name: data.address,
       purpose: data.purpose,
@@ -35,12 +89,14 @@ export function ReviewView(): JSX.Element {
       bond: '0.1',
       votePeriod: '168',
       gracePeriod: '24',
-      amountToTransfer: '5'
+      amountToTransfer: '5',
+      default_vote_policy: getDefaultVotePolicy(),
+      policy: {
+        roles: getRoles()
+      }
     });
 
-    // const daoResult = await promise.then(() => console.log('After request'));
-
-    // const result = await awsUploader.uploadToBucket(data.flag);
+    await router.push('/');
   }
 
   return (

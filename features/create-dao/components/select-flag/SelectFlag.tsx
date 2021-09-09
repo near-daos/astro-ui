@@ -15,6 +15,7 @@ export interface SelectFlagProps {
   sources: string[];
   onSubmit?: (file: CropReturnType) => void;
   className?: string | undefined;
+  fileName?: string;
 }
 
 interface SelectFlagState {
@@ -26,7 +27,8 @@ export const SelectFlag: FC<SelectFlagProps> = ({
   sources,
   id,
   className,
-  onSubmit
+  onSubmit,
+  fileName = 'flag.png'
 }) => {
   const cropperRef = useRef<Cropper>();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -135,7 +137,7 @@ export const SelectFlag: FC<SelectFlagProps> = ({
       return new Promise((resolve, reject) => {
         canvas.toBlob(blob => {
           if (blob != null) {
-            const file = new File([blob], 'flag.png', { type: 'image/png' });
+            const file = new File([blob], fileName, { type: 'image/png' });
             const preview = canvas.toDataURL('image/png');
 
             resolve({
