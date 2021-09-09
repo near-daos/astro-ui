@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import Link from 'next/link';
+import { ParsedUrlQueryInput } from 'querystring';
 import React, { HTMLAttributes, ReactNode } from 'react';
 
 import { Badge } from 'components/badge/Badge';
@@ -13,6 +14,7 @@ import styles from './NavItem.module.scss';
 interface NavItemProps extends HTMLAttributes<HTMLAnchorElement> {
   label: string | ReactNode;
   href?: string;
+  urlParams?: string | null | ParsedUrlQueryInput | undefined;
   icon: IconName;
   count?: number;
   active?: boolean;
@@ -26,6 +28,7 @@ export const NavItem: React.FC<NavItemProps> = ({
   label,
   icon,
   href,
+  urlParams,
   count,
   active,
   className,
@@ -43,28 +46,24 @@ export const NavItem: React.FC<NavItemProps> = ({
   });
 
   function handleOnClick() {
-    if (onClick) {
-      onClick();
-    }
+    onClick?.();
   }
 
-  function renderContent() {
-    return (
-      <>
-        <Icon height={16} name={icon} />
-        <span> {label} </span>
-        {Number.isFinite(count) && (
-          <Badge className={styles.badge} variant="primary" size="small">
-            {count && count > 99 ? '99+' : count}
-          </Badge>
-        )}
-      </>
-    );
-  }
+  const renderContent = () => (
+    <>
+      <Icon height={16} name={icon} />
+      <span> {label} </span>
+      {Number.isFinite(count) && (
+        <Badge className={styles.badge} variant="primary" size="small">
+          {count && count > 99 ? '99+' : count}
+        </Badge>
+      )}
+    </>
+  );
 
   if (href) {
     return (
-      <Link href={href} passHref>
+      <Link href={{ pathname: href, query: urlParams }} passHref>
         {/* TODO Property 'href' would be overridden by Link. Check https://git.io/Jns2B */}
         <a
           {...props}

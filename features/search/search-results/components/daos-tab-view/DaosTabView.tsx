@@ -26,7 +26,7 @@ export const DaosTabView: FC = () => {
             createdAt: item.createdAt,
             more: {
               label: 'Show more',
-              link: `/dao-home/${item.id}`
+              link: `/dao/${item.id}`
             }
           };
           const flag = item.logo;

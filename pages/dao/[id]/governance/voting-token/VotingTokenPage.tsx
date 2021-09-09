@@ -15,7 +15,7 @@ import {
 } from 'features/voting-token/components/recently-unstaked';
 import { useDeviceType } from 'helpers/media';
 
-import styles from './voting-token-page.module.scss';
+import styles from 'pages/dao/[id]/governance/voting-token/voting-token-page.module.scss';
 
 const VotingTokenPage: FC = () => {
   const [showModal] = useModal(VotingTokenPopup);

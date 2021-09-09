@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
 
-import styles from './upgrade-software-page.module.scss';
+import styles from 'pages/dao/[id]/governance/upgrade-software/upgrade-software-page.module.scss';
 
 const UpgradeSoftwarePage: FC = () => {
   return (
