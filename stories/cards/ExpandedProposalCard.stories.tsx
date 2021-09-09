@@ -32,6 +32,6 @@ Template.args = {
   disliked: false,
   endsAt: '2021-08-12T12:00:52Z',
   children: (
-    <RequestPayout amount={678} recipient="jonathan.near" tokens="NEAR" />
+    <RequestPayout amount="678" recipient="jonathan.near" tokens="NEAR" />
   )
 };

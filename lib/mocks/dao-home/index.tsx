@@ -37,7 +37,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     title: 'jonathan.near',
     children: (
       <RequestPayout
-        amount={678}
+        amount="236"
         reason="the last 3 month of managing community on Discord"
         recipient="jonathan.near"
         tokens="NEAR"
@@ -61,7 +61,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     title: 'jonathan.near',
     children: (
       <RequestPayout
-        amount={678}
+        amount="345"
         reason="the last 3 month of managing community on Discord"
         recipient="jonathan.near"
         tokens="NEAR"
@@ -85,7 +85,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     title: 'jonathan.near',
     children: (
       <RequestPayout
-        amount={678}
+        amount="542"
         reason="the last 3 month of managing community on Discord"
         recipient="jonathan.near"
         tokens="NEAR"
@@ -109,7 +109,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     title: 'jonathan.near',
     children: (
       <RequestPayout
-        amount={678}
+        amount="674"
         reason="the last 3 month of managing community on Discord"
         recipient="jonathan.near"
         tokens="NEAR"

@@ -1,7 +1,7 @@
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { useCallback, useState } from 'react';
 import { FilterName } from 'features/search/search-filters';
-import { Proposal } from 'types/proposal';
+import { Proposal, ProposalType } from 'types/proposal';
 
 export interface Indexed {
   [key: string]: Proposal[];
@@ -64,24 +64,41 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
 
   const proposals = searchResults?.proposals ?? [];
 
-  const filteredProposals = proposals.filter(() => {
-    const matched = true;
+  const filteredProposals = proposals.filter(item => {
+    let matched = true;
 
     // Filter 'show'
     switch (filter.show) {
       case 'Accepted proposals': {
-        // todo - check if accepted proposal. What is it?
+        if (item.status !== 'Approved') {
+          matched = false;
+        }
+
         break;
       }
       case 'Active proposals': {
-        // todo - check if active proposal. What is it?
+        if (item.status !== 'InProgress') {
+          matched = false;
+        }
+
         break;
       }
       case 'Inactive proposals': {
-        // todo - check if inactive proposal. What is it?
+        if (item.status !== 'Removed') {
+          matched = false;
+        }
+
         break;
       }
       case 'Rejected / Dismissed / Expired': {
+        if (
+          item.status !== 'Rejected' &&
+          item.status !== 'Expired' &&
+          item.status !== 'Moved'
+        ) {
+          matched = false;
+        }
+
         break;
       }
       case 'All':
@@ -94,6 +111,12 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
     // Filter 'search'
     switch (filter.search) {
       case 'In this DAO': {
+        const selectedDaoId = '';
+
+        if (item.daoId !== selectedDaoId) {
+          matched = false;
+        }
+
         break;
       }
       case 'In all DAOs':
@@ -103,8 +126,43 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
     }
 
     // Filter flags here
-    if (filter.tasks) {
-      // TODO - how can we check if specific item relates to tasks, groups etc.?
+    if (!filter.tasks) {
+      if (
+        item.kind.type === ProposalType.AddBounty ||
+        item.kind.type === ProposalType.BountyDone ||
+        item.kind.type === ProposalType.Vote ||
+        item.kind.type === ProposalType.FunctionCall
+      ) {
+        matched = false;
+      }
+    }
+
+    if (!filter.governance) {
+      if (
+        item.kind.type === ProposalType.ChangePolicy ||
+        item.kind.type === ProposalType.UpgradeRemote ||
+        item.kind.type === ProposalType.UpgradeSelf
+      ) {
+        matched = false;
+      }
+    }
+
+    if (!filter.groups) {
+      if (
+        item.kind.type === ProposalType.AddMemberToRole ||
+        item.kind.type === ProposalType.RemoveMemberFromRole
+      ) {
+        matched = false;
+      }
+    }
+
+    if (!filter.treasury) {
+      if (
+        item.kind.type === ProposalType.SetStakingContract ||
+        item.kind.type === ProposalType.Transfer
+      ) {
+        matched = false;
+      }
     }
 
     return matched;

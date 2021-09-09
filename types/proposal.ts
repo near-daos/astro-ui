@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-
 import { DaoRole } from './role';
 
 export type FunctionCallAction = {
@@ -11,15 +10,38 @@ export type FunctionCallAction = {
 
 export enum ProposalType {
   AddMemberToRole = 'AddMemberToRole',
+  RemoveMemberFromRole = 'RemoveMemberFromRole',
   FunctionCall = 'FunctionCall',
   Transfer = 'Transfer',
   SetStakingContract = 'SetStakingContract',
-  ChangePolicy = 'ChangePolicy'
+  ChangePolicy = 'ChangePolicy',
+  ChangeConfig = 'ChangeConfig',
+  UpgradeSelf = 'UpgradeSelf',
+  UpgradeRemote = 'UpgradeRemote',
+  AddBounty = 'AddBounty',
+  BountyDone = 'BountyDone',
+  Vote = 'Vote'
 }
+
+export type Bounty = {
+  id: string;
+  bountyId: number;
+  daoId: string;
+  description: string;
+  token: string;
+  amount: string;
+  times: string;
+  maxDeadline: string;
+};
 
 export type ProposalKind =
   | {
       type: ProposalType.AddMemberToRole;
+      memberId: string;
+      role: string;
+    }
+  | {
+      type: ProposalType.RemoveMemberFromRole;
       memberId: string;
       role: string;
     }
@@ -29,6 +51,25 @@ export type ProposalKind =
       actions: FunctionCallAction[];
     }
   | {
+      type: ProposalType.UpgradeRemote;
+      receiverId: string;
+      hash: string;
+      methodName: string;
+    }
+  | {
+      type: ProposalType.UpgradeSelf;
+      hash: string;
+    }
+  | {
+      type: ProposalType.BountyDone;
+      receiverId: string;
+      bountyId: string;
+    }
+  | {
+      type: ProposalType.AddBounty;
+      bounty: Bounty;
+    }
+  | {
       type: ProposalType.Transfer;
       tokenId: string;
       receiverId: string;
@@ -36,7 +77,8 @@ export type ProposalKind =
       msg: string | null;
     }
   | { type: ProposalType.SetStakingContract; stakingId: string }
-  | { type: ProposalType.ChangePolicy; policy: PolicyType };
+  | { type: ProposalType.ChangePolicy; policy: PolicyType }
+  | { type: ProposalType.Vote };
 
 export type ProposalStatus =
   | 'Approved'
@@ -90,20 +132,6 @@ export interface CreateProposalParams {
     | BountyDone
     | Vote;
   bond: string;
-}
-
-interface Bounty {
-  // Description of the bounty.
-  description: string;
-  // Token the bounty will be paid out.
-  token: string;
-  // Amount to be paid out.
-  amount: string;
-  // How many times this bounty can be done.
-  times: string;
-  // Max deadline from claim that can be spend on this bounty.
-  // Duration in nanosecond wrapped into a struct for JSON serialization as a string.
-  max_deadline: string;
 }
 
 interface AddBounty {
