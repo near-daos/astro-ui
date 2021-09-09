@@ -4,7 +4,6 @@ import { NearConfig, nearConfig } from 'config';
 import Decimal from 'decimal.js';
 
 import { CreateTokenParams } from 'types/token';
-import { nanoid } from 'nanoid';
 
 import { DAO, Member } from 'types/dao';
 // import { timestampToReadable } from 'utils/timestampToReadable';
@@ -22,6 +21,7 @@ import {
   ProposalDTO
 } from 'services/SputnikService/mappers/proposal';
 import {
+  extractMembersFromDaosList,
   mapSearchResultsDTOToDataObject,
   SearchResponse
 } from 'services/SputnikService/mappers/search-results';
@@ -278,41 +278,7 @@ class SputnikService {
   public async getMembers(): Promise<Member[]> {
     const res = await this.getDaoList();
 
-    const members = {} as Record<string, Member>;
-
-    res.forEach(dao => {
-      dao.groups.forEach(grp => {
-        const users = grp.members;
-
-        users.forEach(user => {
-          if (!members[user]) {
-            members[user] = {
-              id: nanoid(),
-              name: user,
-              groups: [grp.name],
-              tokens: {
-                type: 'NEAR',
-                value: 18,
-                percent: 14
-              },
-              votes: 12
-            };
-          } else {
-            members[user] = {
-              ...members[user],
-              groups: [...members[user].groups, grp.name]
-            };
-          }
-        });
-      });
-    });
-
-    return Object.values(members).map(item => {
-      return {
-        ...item,
-        groups: Array.from(new Set(item.groups))
-      };
-    });
+    return extractMembersFromDaosList(res);
   }
 
   public async search(params: {

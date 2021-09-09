@@ -25,8 +25,7 @@ import { IconButton } from 'components/button/IconButton';
 import classNames from 'classnames';
 import { Icon } from 'components/Icon';
 import { ProposalType } from 'types/proposal';
-
-import styles from 'pages/dao/[id]/dao-home-page.module.scss';
+import styles from './dao-home-page.module.scss';
 
 interface DaoHomeProps {
   daoDetails: DaoDetailsProps;

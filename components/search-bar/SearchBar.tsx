@@ -46,7 +46,7 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
         handleSearch(value);
       }
     },
-    1000,
+    500,
     [value]
   );
 
@@ -63,12 +63,12 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
   }, [handleClose]);
 
   const handleSubmit = useCallback(() => {
-    if (value.trim() && searchResults) {
+    if (value.trim()) {
       router.push('/search-results');
     } else {
       handleCancel();
     }
-  }, [handleCancel, router, searchResults, value]);
+  }, [handleCancel, router, value]);
 
   const handleChange = useCallback(e => {
     const newValue = e.target.value;

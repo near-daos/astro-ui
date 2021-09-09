@@ -9,7 +9,7 @@ import { Icon } from 'components/Icon';
 import { SearchFilters } from 'features/search/search-filters';
 import { NoResultsView } from 'features/search/search-results/components/no-results-view';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
-import ProposalCardRenderer from 'features/search/search-results/components/proposals-tab-view/ProposalCardRenderer';
+import { ProposalCardRenderer } from 'components/cards/proposal-card';
 
 import tempFlag from 'stories/dao-home/assets/flag.png';
 

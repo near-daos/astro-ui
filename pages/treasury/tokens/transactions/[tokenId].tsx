@@ -167,7 +167,7 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
           onDislike={() => {}}
           onClose={closeProposalDetails}
         >
-          <RequestPayout amount={678} recipient="jonathan.near" tokens="NEAR" />
+          <RequestPayout amount="678" recipient="jonathan.near" tokens="NEAR" />
         </ExpandedProposalCard>
       </div>
       {pageCount > 0 ? (

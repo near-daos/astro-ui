@@ -1,9 +1,11 @@
 import { FC } from 'react';
 import cn from 'classnames';
 
+import { PolicyType } from 'types/proposal';
+
 import { Badge } from 'components/badge/Badge';
-import ExternalLink from 'components/cards/proposal-card/components/external-link/ExternalLink';
 import { Icon } from 'components/Icon';
+import ExternalLink from 'components/cards/proposal-card/components/external-link/ExternalLink';
 
 import styles from './proposal-content.module.scss';
 
@@ -100,10 +102,10 @@ CreateNewGroup.defaultProps = {
 } as ProposalContentProps;
 
 interface RequestPayoutProps extends ProposalContentProps {
-  amount: number;
+  amount: string;
   tokens: string;
   recipient: string;
-  reason?: string;
+  reason?: string | null;
 }
 
 export const RequestPayout: FC<RequestPayoutProps> = ({
@@ -170,3 +172,46 @@ TextWithLink.defaultProps = {
   link: '',
   linkTitle: ''
 } as ProposalContentProps;
+
+interface FunctionCallProps extends ProposalContentProps {
+  recipient: string;
+}
+
+export const FunctionCall: FC<FunctionCallProps> = ({
+  recipient,
+  link,
+  linkTitle
+}) => (
+  <>
+    <div className={styles.row}>
+      <span className={cn('paragraph1', styles.text)}>{recipient}</span>
+      &nbsp;&nbsp;
+    </div>
+    {link && (
+      <div className={styles.sub}>
+        <ExternalLink to={link}>{linkTitle}</ExternalLink>
+      </div>
+    )}
+  </>
+);
+
+interface ChangePolicyProps extends ProposalContentProps {
+  policy?: PolicyType;
+}
+
+export const ChangePolicy: FC<ChangePolicyProps> = ({ link, linkTitle }) => (
+  <>
+    <div className={styles.row}>
+      <span className={cn('paragraph1', styles.text)}>
+        This is a proposal to change voting policies for our groups. See details
+        in the link
+      </span>
+      &nbsp;&nbsp;
+    </div>
+    {link && (
+      <div className={styles.sub}>
+        <ExternalLink to={link}>{linkTitle}</ExternalLink>
+      </div>
+    )}
+  </>
+);
