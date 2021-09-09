@@ -21,7 +21,7 @@
 }
 
 .text {
-  @include sentence-case;
+  //@include sentence-case;
   font-family: Inter, 'sans-serif';
   font-size: 1em;
   white-space: normal;

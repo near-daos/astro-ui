@@ -18,7 +18,18 @@ export const DAO_DETAILS: DaoDetailsProps = {
     platform. Join our Discord channel to stay up to date with latest info!`,
   flag,
   createdAt: '',
-  links: ['http://example.com', 'http://discord.com', 'http://twitter.com']
+  links: [
+    'http://example.com',
+    'http://discord.com',
+    'http://telegram.org',
+    'http://twitter.com'
+  ],
+  more: {
+    label: 'Show more',
+    link: 'http://example.com'
+  },
+  sendFunds: true,
+  followed: true
 };
 
 export const DAO_PROPOSALS: ProposalCardProps[] = [

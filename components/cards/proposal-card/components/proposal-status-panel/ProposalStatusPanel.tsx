@@ -1,10 +1,5 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
-import {
-  // ProposalStatus,
-  // ProposalType,
-  ProposalVariant
-} from 'components/cards/proposal-card/types';
 import { Icon } from 'components/Icon';
 import { ProposalStatus, ProposalType } from 'types/proposal';
 
@@ -13,7 +8,6 @@ import styles from './proposal-status.module.scss';
 interface ProposalStatusProps {
   status: ProposalStatus;
   type: ProposalType;
-  variant: ProposalVariant;
 }
 
 function getIconName(type: ProposalType) {
@@ -40,11 +34,31 @@ function getIconName(type: ProposalType) {
   }
 }
 
-const ProposalStatusPanel: FC<ProposalStatusProps> = ({
-  status,
-  type,
-  variant
-}) => {
+function getTitle(type: ProposalType) {
+  switch (type) {
+    case 'AddMemberToRole':
+      return 'Add member to role';
+    // case 'Remove member':
+    //   return 'proposalRemoveMember';
+    // case 'Bounty done':
+    //   return 'proposalBounty';
+    // case 'Create group':
+    //   return 'proposalCreateGroup';
+    case 'Transfer':
+      return 'Transfer';
+    // case 'Poll':
+    //   return 'proposalPoll';
+    // case 'Create bounty':
+    //   return 'proposalBounty';
+    case 'ChangePolicy':
+      return 'Change policy';
+    default:
+    case 'FunctionCall':
+      return 'Function call';
+  }
+}
+
+const ProposalStatusPanel: FC<ProposalStatusProps> = ({ status, type }) => {
   const statusClassName = cn({
     [styles.active]: status === 'InProgress',
     [styles.passed]: status === 'Approved',
@@ -54,13 +68,12 @@ const ProposalStatusPanel: FC<ProposalStatusProps> = ({
   });
 
   const iconName = getIconName(type);
+  const title = getTitle(type);
 
   return (
     <div className={cn(styles.root, statusClassName)}>
       <Icon name={iconName} className={styles.icon} />
-      {variant === 'SuperCollapsed' && (
-        <span className={styles.title}>Poll</span>
-      )}
+      <span className={styles.title}>{title}</span>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+@import 'styles/mixins';
 @import 'styles/typography';
 
 .root {
@@ -5,12 +6,21 @@
   grid-column-gap: 24px;
   grid-row-gap: 24px;
   grid-template-areas:
-    'daoDetails daoDetails proposals'
-    'daoDetails daoDetails daoInfo'
-    'filter . . '
-    'proposalList proposalList proposalList';
-  grid-template-columns: 1fr 1fr 1fr;
-  padding-top: 56px;
+    'daoDetails'
+    ' proposals'
+    'daoInfo'
+    'proposalList';
+  grid-template-columns: 1fr;
+  padding-top: 24px;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'daoDetails daoDetails proposals'
+      'daoDetails daoDetails daoInfo'
+      'proposalList proposalList proposalList';
+    grid-template-columns: 1fr 1fr 1fr;
+    padding-top: 56px;
+  }
 }
 
 .daoDetails {
@@ -27,10 +37,6 @@
 
 .daoInfo {
   grid-area: daoInfo;
-}
-
-.filter {
-  grid-area: filter;
 }
 
 .proposalList {

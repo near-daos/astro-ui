@@ -89,7 +89,7 @@ $sizes: // Typography sizes
 
 @each $name, $size, $height, $weight in $sizes {
   #{$name} {
-    @include sentence-case;
+    //@include sentence-case;
     @include font($size, $height, $weight);
   }
 }

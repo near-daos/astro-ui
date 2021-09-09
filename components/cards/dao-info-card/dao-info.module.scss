@@ -2,22 +2,20 @@
 
 .root {
   @include centralize;
-  background: #fff;
+  background: var(--color-white);
   border-radius: 8px;
   flex-direction: column;
   gap: 24px;
-  min-height: 162px;
+  height: 100%;
   padding: 24px;
   text-align: center;
-}
-
-.subtitle {
-  margin: 0;
-  text-transform: none;
 }
 
 .title {
   color: var(--color-neutral-60);
   margin: 0 0 4px;
-  text-transform: none;
+}
+
+.subtitle {
+  margin: 0;
 }

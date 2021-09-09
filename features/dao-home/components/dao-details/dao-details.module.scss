@@ -5,55 +5,188 @@
   background: var(--color-white);
   border-radius: 8px;
   flex-direction: column;
-  height: 100%;
-  max-width: 100%;
-  min-height: 286px;
-  padding: 48px 48px 48px 140px;
+  justify-content: center;
+  margin-top: 170px;
+  padding: 80px 24px 40px;
   position: relative;
+  text-align: center;
+
+  @include tablet-portrait {
+    padding: 80px 48px 40px;
+  }
+
+  @include tablet-landscape {
+    height: 100%;
+    margin-top: 0;
+    padding: 36px 24px 36px 186px;
+    text-align: left;
+  }
+
+  @include desktop {
+    padding: 32px 24px 32px 160px;
+  }
+
+  @include large-desktop {
+    padding: 48px 30px 48px 140px;
+  }
 
   h1 {
     margin: 0;
   }
+}
 
-  .subtitle {
-    @extend %subtitle3;
-    color: var(--color-neutral-60);
+.subtitle {
+  @extend %subtitle3;
+  color: var(--color-neutral-60);
+}
+
+.flag {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 240px;
+  left: 50%;
+  position: absolute;
+  top: -162px;
+  transform: translateX(-120px);
+  width: 240px;
+
+  @include tablet-landscape {
+    left: -54px;
+    top: 20px;
+    transform: none;
+  }
+  @include desktop {
+    left: -78px;
   }
 
-  .flag {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    height: 240px;
-    left: -120px;
-    position: absolute;
+  @include large-desktop {
+    left: -96px;
     top: 33px;
-    width: 240px;
+  }
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  @include tablet-landscape {
+    align-items: flex-start;
   }
 
-  .content {
-    font-size: 16px;
-    text-align: left;
-  }
-
-  .created {
-    @extend %subtitle6;
-    align-self: flex-start;
-    color: var(--color-neutral-60);
-  }
-
-  .links {
-    display: inline-flex;
-    gap: 14px;
-    list-style: none;
-    padding: 0;
-    width: 100%;
-  }
-
-  .link {
-    @extend %caption1;
+  @include large-desktop {
     align-items: center;
+    flex-direction: row;
+  }
+}
+
+.send {
+  @extend %title4;
+  align-items: center;
+  border: 0;
+  color: var(--color-primary-50);
+  display: flex;
+  margin-top: 12px;
+  min-width: initial;
+  padding: 0;
+  text-transform: none;
+
+  @include large-desktop {
+    flex-direction: row;
+    height: 30px;
+    margin: 0 0 0 10px;
+    min-height: initial;
+  }
+}
+
+.content {
+  font-size: 16px;
+}
+
+.created {
+  @extend %subtitle6;
+  align-self: flex-start;
+  color: var(--color-neutral-60);
+}
+
+.row.bottom {
+  @include large-desktop {
+    justify-content: space-between;
+  }
+}
+
+.links {
+  display: inline-flex;
+  gap: 14px;
+  list-style: none;
+  padding: 0;
+}
+
+.link {
+  @extend %caption1;
+  color: var(--color-primary-50);
+  display: block;
+  margin-top: 4px;
+
+  @include tablet-landscape {
+    display: inline;
+    margin-top: 0;
+  }
+
+  .linkText,
+  .right {
+    display: inline;
+
+    @include tablet-landscape {
+      display: none;
+    }
+  }
+
+  .external {
+    display: none;
+
+    @include tablet-landscape {
+      display: inline;
+      margin: -2px 0 0 8px;
+    }
+  }
+}
+
+.follow {
+  @extend %title2;
+  align-items: center;
+  border: 0;
+  color: var(--color-primary-50);
+  display: flex;
+  margin: 12px auto 0;
+  min-width: initial;
+  padding: 0;
+  text-transform: none;
+  width: auto;
+
+  @include tablet-landscape {
+    margin: 12px 0 0;
+  }
+
+  @include large-desktop {
+    margin: 0;
+  }
+
+  .icon {
+    color: var(--color-neutral-60);
+    margin-right: 10px;
+  }
+}
+
+.followed {
+  .icon {
     color: var(--color-primary-50);
-    display: flex;
+  }
+}
+
+.followCell {
+  @include large-desktop {
+    margin-left: auto;
   }
 }

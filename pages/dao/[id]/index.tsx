@@ -25,7 +25,8 @@ import { IconButton } from 'components/button/IconButton';
 import classNames from 'classnames';
 import { Icon } from 'components/Icon';
 import { ProposalType } from 'types/proposal';
-import styles from './dao-home-page.module.scss';
+import { useMedia } from 'react-use';
+import styles from 'pages/dao/[id]/dao-home-page.module.scss';
 
 interface DaoHomeProps {
   daoDetails: DaoDetailsProps;
@@ -62,10 +63,19 @@ const DaoHome: React.FC<DaoHomeProps> = ({
     showCreateProposalModal
   ]);
 
+  const isMobile = useMedia('(max-width: 767px)');
+
   const getItemHeight = (index: number) => {
     const item = proposals[index];
+    let itemHeight;
 
-    return item.type === ProposalType.Transfer ? 198 : 152;
+    if (isMobile) {
+      itemHeight = item.type === ProposalType.Transfer ? 338 : 244;
+    } else {
+      itemHeight = item.type === ProposalType.Transfer ? 198 : 152;
+    }
+
+    return itemHeight;
   };
 
   const renderCard = ({
@@ -78,8 +88,8 @@ const DaoHome: React.FC<DaoHomeProps> = ({
     <div
       style={{
         ...style,
-        marginTop: '8px',
-        marginBottom: '8px'
+        marginTop: '0',
+        marginBottom: '16px'
       }}
     >
       <ProposalCard {...proposals[index]} />
@@ -141,7 +151,7 @@ const DaoHome: React.FC<DaoHomeProps> = ({
       <div className={styles.daoInfo}>
         <DaoInfoCard {...daoInfo} />
       </div>
-      <div className={styles.filter}>
+      <div className={styles.proposalList}>
         <Dropdown
           className={styles.onTop}
           defaultValue="Active proposals"
@@ -151,9 +161,9 @@ const DaoHome: React.FC<DaoHomeProps> = ({
             { label: 'My proposals', value: 'My proposals' }
           ]}
         />
-      </div>
-      <div className={styles.proposalList}>
-        {voteByPeriod.map(period => renderProposalsByVotePeriod(period))}
+        {voteByPeriod.map(period => (
+          <div key={period.subHours}>{renderProposalsByVotePeriod(period)}</div>
+        ))}
       </div>
     </div>
   );
