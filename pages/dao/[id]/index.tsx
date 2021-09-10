@@ -1,41 +1,49 @@
-import {
-  DaoDetails,
-  DaoDetailsProps
-} from 'features/dao-home/components/dao-details/DaoDetails';
-import React, { CSSProperties, useCallback } from 'react';
-import { DAO_DETAILS, DAO_INFO, DAO_PROPOSALS } from 'lib/mocks/dao-home';
-import {
-  DaoInfoCard,
-  DaoInfoCardProps
-} from 'components/cards/dao-info-card/DaoInfoCard';
-import {
-  ProposalTrackerCard,
-  ProposalTrackerProps
-} from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
-import { Dropdown } from 'components/dropdown/Dropdown';
-import {
-  ProposalCard,
-  ProposalCardProps
-} from 'components/cards/proposal-card';
-import ScrollList from 'components/scroll-list/ScrollList';
-import { useModal } from 'components/modal';
-import { CreateProposalPopup } from 'features/dao-home/components/create-proposal-popup/CreateProposalPopup';
-import { Collapsable } from 'components/collapsable/Collapsable';
-import { IconButton } from 'components/button/IconButton';
-import classNames from 'classnames';
-import { Icon } from 'components/Icon';
-import { ProposalType } from 'types/proposal';
-import { useMedia } from 'react-use';
-import styles from 'pages/dao/[id]/dao-home-page.module.scss';
+import React, {
+  FC,
+  useState,
+  useEffect,
+  useCallback,
+  CSSProperties
+} from 'react';
 
-interface DaoHomeProps {
-  daoDetails: DaoDetailsProps;
-  daoInfo: DaoInfoCardProps;
-  proposalTrackerInfo: ProposalTrackerProps;
-  proposals: ProposalCardProps[];
+import axios from 'axios';
+import cn from 'classnames';
+import get from 'lodash/get';
+import { useSelector } from 'react-redux';
+import { useMedia, useMount } from 'react-use';
+
+import { DaoDetails } from 'features/dao-home/components/dao-details/DaoDetails';
+import { CreateProposalPopup } from 'features/dao-home/components/create-proposal-popup/CreateProposalPopup';
+import ProposalCardRenderer from 'features/search/search-results/components/proposals-tab-view/ProposalCardRenderer';
+
+import { Icon } from 'components/Icon';
+import { useModal } from 'components/modal';
+import { Dropdown } from 'components/dropdown/Dropdown';
+import { IconButton } from 'components/button/IconButton';
+import ScrollList from 'components/scroll-list/ScrollList';
+import { Collapsable } from 'components/collapsable/Collapsable';
+import { DaoInfoCard } from 'components/cards/dao-info-card/DaoInfoCard';
+import { ProposalTrackerCard } from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
+
+import { Proposal, ProposalType } from 'types/proposal';
+
+import { selectSelectedDAO } from 'store/dao';
+import { SputnikService } from 'services/SputnikService';
+
+import {
+  getProposalStats,
+  getDaoDetailsFromDao,
+  getFundAndMembersNum
+} from './helpers';
+
+import styles from './dao-home-page.module.scss';
+
+interface VoteByPeriodInterface {
+  title: string;
+  subHours: number;
 }
 
-const voteByPeriod = [
+const voteByPeriod: VoteByPeriodInterface[] = [
   {
     title: 'less then 1 hour',
     subHours: 1
@@ -50,13 +58,12 @@ const voteByPeriod = [
   }
 ];
 
-const DaoHome: React.FC<DaoHomeProps> = ({
-  daoDetails = DAO_DETAILS,
-  daoInfo = DAO_INFO,
-  proposalTrackerInfo = { activeVotes: 8, totalProposals: 9 },
-  proposals = DAO_PROPOSALS
-}) => {
-  const flag = (daoDetails.flag as StaticImageData).src;
+const DaoHome: FC = () => {
+  const selectedDao = useSelector(selectSelectedDAO);
+
+  const [nearPrice, setNearPrice] = useState(0);
+  const [proposals, setProposals] = useState<Proposal[]>([]);
+
   const [showCreateProposalModal] = useModal(CreateProposalPopup);
 
   const handleClick = useCallback(() => showCreateProposalModal(), [
@@ -65,81 +72,117 @@ const DaoHome: React.FC<DaoHomeProps> = ({
 
   const isMobile = useMedia('(max-width: 767px)');
 
+  useEffect(() => {
+    async function fetchProposals() {
+      if (selectedDao) {
+        const daoProposals = await SputnikService.getProposals(selectedDao.id);
+
+        setProposals(daoProposals);
+      }
+    }
+
+    fetchProposals();
+  }, [selectedDao]);
+
+  useMount(async () => {
+    const data = await axios.get('/api/nearPrice');
+    const price = get(data, 'data.near.usd');
+
+    setNearPrice(price);
+  });
+
   const getItemHeight = (index: number) => {
     const item = proposals[index];
     let itemHeight;
 
     if (isMobile) {
-      itemHeight = item.type === ProposalType.Transfer ? 338 : 244;
+      itemHeight = item.kind.type === ProposalType.Transfer ? 338 : 244;
     } else {
-      itemHeight = item.type === ProposalType.Transfer ? 198 : 152;
+      itemHeight = item.kind.type === ProposalType.Transfer ? 198 : 152;
     }
 
     return itemHeight;
   };
 
-  const renderCard = ({
-    index,
-    style
-  }: {
-    index: number;
-    style: CSSProperties;
-  }) => (
-    <div
-      style={{
-        ...style,
-        marginTop: '0',
-        marginBottom: '16px'
-      }}
-    >
-      <ProposalCard {...proposals[index]} />
-    </div>
-  );
+  function renderCard(cardData: { index: number; style: CSSProperties }) {
+    const { index, style } = cardData;
 
-  const renderProposalsByVotePeriod = ({
-    title,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    subHours
-  }: {
-    title: string;
-    subHours: number;
-  }) => (
-    // todo filter proposals by subhours
-    <Collapsable
-      key={title}
-      isOpen
-      renderHeading={(toggleHeading, isHeadingOpen) => (
-        <div className={styles.votingEnds}>
-          Voting ends in less &nbsp;
-          <div className={styles.bold}>{title}</div>
-          <IconButton
-            icon="buttonArrowRight"
-            size="medium"
-            onClick={() => toggleHeading()}
-            className={classNames(styles.icon, {
-              [styles.rotate]: isHeadingOpen
-            })}
-          />
-        </div>
-      )}
-    >
-      <ScrollList
-        renderItem={renderCard}
-        itemCount={proposals.length}
-        height={500}
-        itemSize={getItemHeight}
-      />
-    </Collapsable>
-  );
-
-  return (
-    <div className={styles.root}>
-      <div className={styles.daoDetails}>
-        <DaoDetails {...daoDetails} flag={flag} />
+    return (
+      <div
+        style={{
+          ...style,
+          marginTop: '0',
+          marginBottom: '16px'
+        }}
+      >
+        <ProposalCardRenderer proposal={proposals[index]} />
       </div>
+    );
+  }
+
+  function renderProposalsByVotePeriod(period: VoteByPeriodInterface) {
+    const { title, subHours } = period;
+
+    return (
+      // todo filter proposals by subhours
+      <Collapsable
+        isOpen
+        key={subHours}
+        renderHeading={(toggleHeading, isHeadingOpen) => (
+          <div className={styles.votingEnds}>
+            Voting ends in less &nbsp;
+            <div className={styles.bold}>{title}</div>
+            <IconButton
+              icon="buttonArrowRight"
+              size="medium"
+              onClick={() => toggleHeading()}
+              className={cn(styles.icon, {
+                [styles.rotate]: isHeadingOpen
+              })}
+            />
+          </div>
+        )}
+      >
+        <ScrollList
+          renderItem={renderCard}
+          itemCount={proposals.length}
+          height={500}
+          itemSize={getItemHeight}
+        />
+      </Collapsable>
+    );
+  }
+
+  function renderDaoDetails() {
+    if (!selectedDao) {
+      return null;
+    }
+
+    const daoDetails = getDaoDetailsFromDao(selectedDao);
+    const { title, description, flag, subtitle, createdAt, links } = daoDetails;
+
+    return (
+      <div className={styles.daoDetails}>
+        <DaoDetails
+          title={title}
+          description={description}
+          flag={flag}
+          subtitle={subtitle}
+          createdAt={createdAt}
+          links={links}
+        />
+      </div>
+    );
+  }
+
+  function renderProposalTracker() {
+    const { activeVotes, totalProposals } = getProposalStats(proposals);
+
+    return (
       <div className={styles.proposals}>
         <ProposalTrackerCard
-          {...proposalTrackerInfo}
+          activeVotes={activeVotes}
+          totalProposals={totalProposals}
           onClick={handleClick}
           action={
             <>
@@ -148,9 +191,39 @@ const DaoHome: React.FC<DaoHomeProps> = ({
           }
         />
       </div>
+    );
+  }
+
+  function renderDaoMembersFundInfo() {
+    if (!selectedDao) {
+      return null;
+    }
+
+    const { members, fund } = getFundAndMembersNum(selectedDao, nearPrice);
+
+    const info = [
+      {
+        label: 'Members',
+        value: `${members}`
+      },
+      {
+        label: 'DAO funds',
+        value: `${fund} USD`
+      }
+    ];
+
+    return (
       <div className={styles.daoInfo}>
-        <DaoInfoCard {...daoInfo} />
+        <DaoInfoCard items={info} />
       </div>
+    );
+  }
+
+  return (
+    <div className={styles.root}>
+      {renderDaoDetails()}
+      {renderProposalTracker()}
+      {renderDaoMembersFundInfo()}
       <div className={styles.proposalList}>
         <Dropdown
           className={styles.onTop}

@@ -22,6 +22,7 @@ interface CollapsableProps extends Pick<AnimateHeightProps, PickProps> {
   isOpen?: boolean;
   toggle?: (nextValue?: boolean) => void;
   initialOpenState?: boolean;
+  className?: string;
 }
 
 export const Collapsable: React.FC<CollapsableProps> = ({
@@ -29,6 +30,7 @@ export const Collapsable: React.FC<CollapsableProps> = ({
   children,
   height = 'auto',
   renderHeading,
+  className,
   ...props
 }) => {
   const id = useId(props.id);
@@ -46,6 +48,7 @@ export const Collapsable: React.FC<CollapsableProps> = ({
         id={id}
         duration={500}
         height={isOpen ? height : 0}
+        className={className}
       >
         {children}
       </AnimateHeight>

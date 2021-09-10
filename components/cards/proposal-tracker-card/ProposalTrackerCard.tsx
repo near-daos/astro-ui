@@ -20,7 +20,7 @@ export const ProposalTrackerCard: FC<ProposalTrackerProps> = ({
     <div className={styles.root}>
       <div className={styles.content}>
         <Typography.Subtitle className={styles.title} size={3}>
-          <strong>{activeVotes}</strong> active votes
+          <strong>{activeVotes}</strong> active proposals
         </Typography.Subtitle>
         <Typography.Subtitle className={styles.subtitle} size={6}>
           {`${totalProposals} proposals in total`}
