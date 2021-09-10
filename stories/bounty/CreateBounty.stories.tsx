@@ -24,7 +24,7 @@ Template.args = {
     deadlineThreshold: 3,
     deadlineUnit: 'day',
     externalUrl: '',
-    group: '',
+    details: '',
     voteDetails: [
       { value: '50%', label: 'MEW holders' },
       { value: '50%', label: 'cool group' },

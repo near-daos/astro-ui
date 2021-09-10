@@ -6,7 +6,7 @@ export type Token = 'NEAR';
 export type CreateBountyInput = {
   token: Token;
   amount: number;
-  group: string;
+  details: string;
   externalUrl: string;
   slots: number;
   deadlineThreshold: number;

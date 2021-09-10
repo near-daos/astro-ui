@@ -22,7 +22,7 @@ import styles from './create-bounty-form.module.scss';
 
 interface CreateBountyFormProps {
   initialValues: CreateBountyInput;
-  onSubmit: () => void;
+  onSubmit: (data: CreateBountyInput) => void;
   onCancel: () => void;
 }
 
@@ -66,15 +66,15 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
         label="Amount"
         className={cn(styles.input, styles.amount)}
       />
-      <div className={styles.group}>
+      <div className={styles.details}>
         <TextArea
           size="block"
           textAlign="left"
           resize="none"
           placeholder="Sample text"
           className={styles.textArea}
-          label="Group"
-          {...register('group')}
+          label="Details"
+          {...register('details')}
         />
       </div>
       <Input
