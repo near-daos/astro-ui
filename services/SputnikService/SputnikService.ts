@@ -312,7 +312,7 @@ class SputnikService {
       GetProposalsResponse
     >('/proposals', {
       params: {
-        daoId,
+        filter: `daoId||$eq||${daoId}`,
         offset,
         limit
       }

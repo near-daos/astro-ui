@@ -6,10 +6,10 @@ import { Collapsable } from 'components/collapsable/Collapsable';
 import { DAO } from 'types/dao';
 import { selectSelectedDAO, setSelectedDAO } from 'store/dao';
 
-import { DaoItem } from './DaoItem';
-import { DaoHeader } from './DaoHeader';
+import { DaoItem } from 'components/nav-dao/DaoItem';
+import { DaoHeader } from 'components/nav-dao/DaoHeader';
 
-import styles from './nav-dao.module.scss';
+import styles from './dao-list.module.scss';
 
 interface DAOListProps {
   toggle: (newState?: boolean) => void;
@@ -35,8 +35,9 @@ export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
   );
 
   return (
-    <div className={styles.daoHeader}>
+    <div>
       <Collapsable
+        className={styles.collapsable}
         isOpen={isOpen}
         toggle={toggle}
         duration={150}

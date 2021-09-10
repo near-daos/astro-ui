@@ -1,4 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import https from 'https';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 type Data = {
@@ -9,5 +10,12 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ): void {
-  res.status(200).json({ name: 'John Doe' });
+  https.get(
+    'https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd',
+    resp => {
+      resp.on('data', d => {
+        res.status(200).json(d);
+      });
+    }
+  );
 }
