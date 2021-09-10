@@ -3,26 +3,26 @@ import { Proposal } from 'types/proposal';
 
 import { formatCurrency } from 'utils/formatCurrency';
 
-interface DaoDetailsI {
+type DaoDetailsType = {
   title: string;
   subtitle: string;
   description: string;
   flag: string;
   createdAt: string;
   links: string[];
-}
+};
 
-interface ProposalStatsI {
+type ProposalStatsType = {
   activeVotes: number;
   totalProposals: number;
-}
+};
 
-interface FundMemberNumI {
+type FundMemberNumType = {
   members: number;
   fund: string;
-}
+};
 
-export function getDaoDetailsFromDao(dao: DAO): DaoDetailsI {
+export function getDaoDetailsFromDao(dao: DAO): DaoDetailsType {
   const { id, name, logo, createdAt, description } = dao;
 
   const daoDetails = {
@@ -38,7 +38,7 @@ export function getDaoDetailsFromDao(dao: DAO): DaoDetailsI {
   return daoDetails;
 }
 
-export function getProposalStats(proposals: Proposal[]): ProposalStatsI {
+export function getProposalStats(proposals: Proposal[]): ProposalStatsType {
   const result = proposals.reduce(
     (acc, proposal) => {
       acc.totalProposals += 1;
@@ -61,7 +61,7 @@ export function getProposalStats(proposals: Proposal[]): ProposalStatsI {
 export function getFundAndMembersNum(
   dao: DAO,
   nearPrice: number
-): FundMemberNumI {
+): FundMemberNumType {
   const { groups, funds } = dao;
 
   const membs = groups
