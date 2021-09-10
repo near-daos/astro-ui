@@ -64,7 +64,7 @@ const UsePluginWizard: FC<UsePluginWizardProps> = ({
   return (
     <div className={styles.root}>
       <WizardContext.Provider value={{ data, setData, initialData, onClose }}>
-        {activeStep === 1 && <Tabs tabs={TABS} />}
+        {activeStep === 1 && <Tabs tabs={TABS} isControlled={false} />}
         {activeStep === 2 && <CreateTokenView />}
       </WizardContext.Provider>
     </div>

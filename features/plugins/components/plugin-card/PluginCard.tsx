@@ -19,11 +19,7 @@ export const PluginCard: FC<PluginCardProps> = ({
 }) => {
   return (
     <div className={cn(styles.root)}>
-      <StatusPanel
-        type={ProposalType.FunctionCall}
-        status="Approved"
-        variant="Default"
-      />
+      <StatusPanel type={ProposalType.FunctionCall} status="Approved" />
       <div className={styles.content}>
         <div className={styles.token}>{tokenName}</div>
         <div className={styles.created}>{created}</div>

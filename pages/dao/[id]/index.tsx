@@ -9,8 +9,8 @@ import React, {
 import axios from 'axios';
 import cn from 'classnames';
 import get from 'lodash/get';
-import { useMount } from 'react-use';
 import { useSelector } from 'react-redux';
+import { useMedia, useMount } from 'react-use';
 
 import { DaoDetails } from 'features/dao-home/components/dao-details/DaoDetails';
 import { CreateProposalPopup } from 'features/dao-home/components/create-proposal-popup/CreateProposalPopup';
@@ -70,6 +70,8 @@ const DaoHome: FC = () => {
     showCreateProposalModal
   ]);
 
+  const isMobile = useMedia('(max-width: 767px)');
+
   useEffect(() => {
     async function fetchProposals() {
       if (selectedDao) {
@@ -91,8 +93,15 @@ const DaoHome: FC = () => {
 
   const getItemHeight = (index: number) => {
     const item = proposals[index];
+    let itemHeight;
 
-    return item.kind.type === ProposalType.Transfer ? 198 : 152;
+    if (isMobile) {
+      itemHeight = item.kind.type === ProposalType.Transfer ? 338 : 244;
+    } else {
+      itemHeight = item.kind.type === ProposalType.Transfer ? 198 : 152;
+    }
+
+    return itemHeight;
   };
 
   function renderCard(cardData: { index: number; style: CSSProperties }) {
@@ -102,8 +111,8 @@ const DaoHome: FC = () => {
       <div
         style={{
           ...style,
-          marginTop: '8px',
-          marginBottom: '8px'
+          marginTop: '0',
+          marginBottom: '16px'
         }}
       >
         <ProposalCardRenderer proposal={proposals[index]} />
@@ -215,7 +224,7 @@ const DaoHome: FC = () => {
       {renderDaoDetails()}
       {renderProposalTracker()}
       {renderDaoMembersFundInfo()}
-      <div className={styles.filter}>
+      <div className={styles.proposalList}>
         <Dropdown
           className={styles.onTop}
           defaultValue="Active proposals"
@@ -225,9 +234,9 @@ const DaoHome: FC = () => {
             { label: 'My proposals', value: 'My proposals' }
           ]}
         />
-      </div>
-      <div className={styles.proposalList}>
-        {voteByPeriod.map(period => renderProposalsByVotePeriod(period))}
+        {voteByPeriod.map(period => (
+          <div key={period.subHours}>{renderProposalsByVotePeriod(period)}</div>
+        ))}
       </div>
     </div>
   );

@@ -44,7 +44,7 @@ export const CreateProposalPopup: FC<CreateProposalPopupProps> = ({
         <ProposalButton
           icon="proposalRequestPayout"
           title="Request a payout"
-          description="Completed a task? Request your payout from DAO."
+          description="Completed a task? Request your payout from the DAO."
         />
         <ProposalButton
           icon="proposalClaimBounty"

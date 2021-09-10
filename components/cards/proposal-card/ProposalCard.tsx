@@ -44,7 +44,7 @@ export const ProposalCard: FC<ProposalCardProps> = ({
 
   return (
     <div className={styles.root}>
-      <ProposalStatusPanel status={status} type={type} variant={variant} />
+      <ProposalStatusPanel status={status} type={type} />
       <div className={styles.content}>
         {variant !== 'SuperCollapsed' && (
           <div className={styles.header}>
