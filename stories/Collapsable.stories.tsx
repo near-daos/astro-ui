@@ -18,25 +18,35 @@ export const Template = (
     <Collapsable
       {...args}
       renderHeading={(toggle, isOpen) => (
-        <h1>
+        <section
+          tabIndex={-1}
+          role="button"
+          onClick={() => toggle()}
+          onKeyDown={e => e.key === 'Spacebar' && toggle()}
+          className="header"
+        >
+          <style jsx>{`
+            .header {
+              cursor: pointer;
+            }
+          `}</style>
           Collapsable header
           <IconButton
             iconProps={{
               style: {
                 transform: isOpen ? undefined : 'rotate(-90deg)',
                 transition: 'all 100ms',
-                marginBottom: '8px'
+                marginBottom: '5px'
               }
             }}
             icon="buttonArrowDown"
-            size="large"
-            onClick={() => toggle()}
+            size="medium"
             type="button"
           />
-        </h1>
+        </section>
       )}
     >
-      <b> Collapsable content </b>
+      <h3>Collapsable content</h3>
       <p>
         Rich in mystery Vangelis rich in heavy atoms circumnavigated how far
         away kindling the energy hidden in matter. Ship of the imagination

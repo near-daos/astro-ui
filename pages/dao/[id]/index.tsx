@@ -126,19 +126,21 @@ const DaoHome: FC = () => {
     return (
       // todo filter proposals by subhours
       <Collapsable
-        isOpen
         key={subHours}
-        renderHeading={(toggleHeading, isHeadingOpen) => (
-          <div className={styles.votingEnds}>
+        renderHeading={(toggle, isOpen) => (
+          <div
+            tabIndex={-1}
+            role="button"
+            onClick={() => toggle()}
+            onKeyDown={e => e.key === 'Spacebar' && toggle()}
+            className={styles.votingEnds}
+          >
             Voting ends in less &nbsp;
-            <div className={styles.bold}>{title}</div>
+            <span className={styles.bold}>{title}</span>
             <IconButton
               icon="buttonArrowRight"
               size="medium"
-              onClick={() => toggleHeading()}
-              className={cn(styles.icon, {
-                [styles.rotate]: isHeadingOpen
-              })}
+              className={cn(styles.icon, { [styles.rotate]: isOpen })}
             />
           </div>
         )}

@@ -69,7 +69,7 @@ const Header: React.FC<{
           style: {
             transform: isOpen ? undefined : 'rotate(-90deg)',
             transition: 'all 100ms',
-            marginBottom: '8px'
+            marginBottom: '5px'
           }
         }}
         icon="buttonArrowDown"
@@ -100,6 +100,7 @@ export const Template = (args: TemplateParams): JSX.Element => {
       {items.map(({ id, label, content }) => {
         return (
           <Collapsable
+            key={id}
             {...getItemProps(id)}
             renderHeading={(toggle, isOpen) => (
               <Header label={label} isOpen={isOpen} toggle={toggle} />
