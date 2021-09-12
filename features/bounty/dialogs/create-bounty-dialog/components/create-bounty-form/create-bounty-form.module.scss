@@ -4,7 +4,7 @@
   grid-row-gap: 24px;
   grid-template-areas:
     'token amount'
-    'group group'
+    'details details'
     'externalUrl externalUrl'
     'slot slot'
     'deadline deadline'
@@ -22,8 +22,8 @@
   grid-area: amount;
 }
 
-.group {
-  grid-area: group;
+.details {
+  grid-area: details;
 }
 
 .externalUrl {

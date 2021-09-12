@@ -24,14 +24,11 @@ export enum ProposalType {
 }
 
 export type Bounty = {
-  id: string;
-  bountyId: number;
-  daoId: string;
   description: string;
   token: string;
   amount: string;
-  times: string;
-  maxDeadline: string;
+  times: number;
+  max_deadline: string;
 };
 
 export type ProposalKind =

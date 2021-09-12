@@ -1,3 +1,5 @@
+import first from 'lodash/first';
+
 import { RootState } from 'store';
 import { createSelector } from '@reduxjs/toolkit';
 
@@ -13,6 +15,10 @@ export const selectDAOs = createSelector(getDaoState, daoState => {
 
 export const selectSelectedDAO = createSelector(getDaoState, daoState => {
   const { daos, selectedDaoId } = daoState;
+
+  if (!selectedDaoId) {
+    return first(daos);
+  }
 
   return daos.find(d => d.id === selectedDaoId);
 });
