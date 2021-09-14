@@ -14,7 +14,7 @@ import { useMedia, useMount } from 'react-use';
 
 import { DaoDetails } from 'features/dao-home/components/dao-details/DaoDetails';
 import { CreateProposalPopup } from 'features/dao-home/components/create-proposal-popup/CreateProposalPopup';
-import ProposalCardRenderer from 'features/search/search-results/components/proposals-tab-view/ProposalCardRenderer';
+import { ProposalCardRenderer } from 'components/cards/proposal-card/ProposalCardRenderer';
 
 import { Icon } from 'components/Icon';
 import { useModal } from 'components/modal';
@@ -127,6 +127,7 @@ const DaoHome: FC = () => {
       // todo filter proposals by subhours
       <Collapsable
         key={subHours}
+        initialOpenState
         renderHeading={(toggle, isOpen) => (
           <div
             tabIndex={-1}

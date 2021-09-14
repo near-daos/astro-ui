@@ -37,6 +37,8 @@ export const PROPOSAL_DATA: Omit<
   likes: 50,
   dislikes: 134,
   liked: false,
+  dismisses: 0,
+  dismissed: false,
   disliked: false,
   endsAt: '2021-08-12T12:00:52Z'
 };

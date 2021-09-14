@@ -21,6 +21,8 @@ interface ContentPanelProps {
   disliked: boolean;
   onLike: () => void;
   onDislike: () => void;
+  dismisses: number;
+  dismissed: boolean;
 }
 
 export const ContentPanel: FC<ContentPanelProps> = ({
@@ -35,7 +37,9 @@ export const ContentPanel: FC<ContentPanelProps> = ({
   liked,
   disliked,
   onLike,
-  onDislike
+  onDislike,
+  dismisses,
+  dismissed
 }) => {
   return (
     <div className={styles.root}>
@@ -61,6 +65,8 @@ export const ContentPanel: FC<ContentPanelProps> = ({
         liked={liked}
         dislikes={dislikes}
         disliked={disliked}
+        dismisses={dismisses}
+        dismissed={dismissed}
       />
       <div className={styles.votes}>
         <ExpandableDetails label="Vote details">Placeholder</ExpandableDetails>
