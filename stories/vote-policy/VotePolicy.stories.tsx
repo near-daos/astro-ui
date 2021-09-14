@@ -19,14 +19,17 @@ export const Template: Story<VotePolicyPopupProps> = args => (
 Template.storyName = 'VotePolicyPopup';
 Template.args = {
   proposers: ['MEW holders', 'NEAR holders'],
-  policies: [
-    {
-      whoCanVote: 'MEW holders',
-      voteBy: 'Person',
-      amount: 50,
-      threshold: '% of group'
-    }
-  ],
+  data: {
+    whoCanPropose: 'MEW holders',
+    policies: [
+      {
+        whoCanVote: 'MEW holders',
+        voteBy: 'Person',
+        amount: 50,
+        threshold: '% of group'
+      }
+    ]
+  },
   isOpen: true,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onClose: () => {}

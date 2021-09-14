@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import Link from 'next/link';
 
 import { Button } from 'components/button/Button';
 import * as Typography from 'components/Typography';
@@ -31,14 +32,16 @@ export const DropdownResults: FC<DropdownResultsProps> = ({ width }) => {
           </Typography.Subtitle>
           {searchResults?.daos.slice(0, allDaoRes ? undefined : 3).map(item => {
             return (
-              <div className={styles.row} key={item.id}>
-                <div
-                  className={styles.flag}
-                  style={{ backgroundImage: `url(${flag})` }}
-                />
-                <div className={styles.name}>{item.name}</div>
-                <div className={styles.daoId}>{item.id}</div>
-              </div>
+              <Link href={`/dao/${item.id}`}>
+                <a className={styles.row} key={item.id}>
+                  <div
+                    className={styles.flag}
+                    style={{ backgroundImage: `url(${flag})` }}
+                  />
+                  <div className={styles.name}>{item.name}</div>
+                  <div className={styles.daoId}>{item.id}</div>
+                </a>
+              </Link>
             );
           })}
           {!allDaoRes && searchResults?.daos.length > 3 && (

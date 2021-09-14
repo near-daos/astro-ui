@@ -1,69 +1,50 @@
 import React, { FC } from 'react';
 
 import { AccordeonContent } from 'features/vote-policy/components/accordeon-content';
-import {
-  closeBounty,
-  createBounty,
-  createPoll,
-  nearFunction
-} from 'features/vote-policy/components/tasks-tab-view/mockData';
 import { AccordeonRow } from 'features/vote-policy/components/accordeon-row';
+
+import { DaoVotePolicy, TGroup } from 'types/dao';
+import {
+  getPoliciesList,
+  getProposersList,
+  PolicyProps,
+  VotingPolicyPageInitialData
+} from 'features/vote-policy/helpers';
 
 import styles from './treasury-tab-view.module.scss';
 
 export interface TreasuryTabViewProps {
   viewMode?: boolean;
+  defaultVotePolicy: DaoVotePolicy;
+  groups: TGroup[];
+  onChange: (name: string, value: PolicyProps) => void;
+  data: VotingPolicyPageInitialData;
 }
 
 export const TreasuryTabView: FC<TreasuryTabViewProps> = ({
-  viewMode = true
+  viewMode = true,
+  defaultVotePolicy,
+  groups,
+  data,
+  onChange
 }) => {
   const items = [
     {
       id: '1',
-      label: 'Create bounty',
+      label: 'Request payout',
       content: (
         <AccordeonContent
-          action="Create bounty"
+          onChange={v => onChange('transfer', v)}
+          data={data.transfer as PolicyProps}
+          action="Request payout"
           viewMode={viewMode}
-          proposers={createBounty.proposers}
-          policies={createBounty.policies}
-        />
-      )
-    },
-    {
-      id: '2',
-      label: 'Close bounty',
-      content: (
-        <AccordeonContent
-          action="Close bounty"
-          viewMode={viewMode}
-          proposers={closeBounty.proposers}
-          policies={closeBounty.policies}
-        />
-      )
-    },
-    {
-      id: '3',
-      label: 'Create poll',
-      content: (
-        <AccordeonContent
-          action="Create poll"
-          viewMode={viewMode}
-          proposers={createPoll.proposers}
-          policies={createPoll.policies}
-        />
-      )
-    },
-    {
-      id: '4',
-      label: 'NEAR function',
-      content: (
-        <AccordeonContent
-          action="NEAR function"
-          viewMode={viewMode}
-          proposers={nearFunction.proposers}
-          policies={nearFunction.policies}
+          proposers={getProposersList(groups, 'transfer', 'AddProposal')}
+          policies={getPoliciesList(
+            groups,
+            'transfer',
+            ['VoteApprove', 'VoteReject', 'VoteRemove'],
+            defaultVotePolicy
+          )}
         />
       )
     }
@@ -71,9 +52,7 @@ export const TreasuryTabView: FC<TreasuryTabViewProps> = ({
 
   return (
     <div className={styles.root}>
-      <p>
-        Create and vote on bounties, resolutions, and calling NEAR functions.
-      </p>
+      <p>Create and vote on request payout proposals.</p>
       <div className={styles.content}>
         <AccordeonRow items={items} />
       </div>

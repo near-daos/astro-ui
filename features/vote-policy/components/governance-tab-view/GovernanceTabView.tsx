@@ -1,69 +1,88 @@
 import React, { FC } from 'react';
 
 import { AccordeonContent } from 'features/vote-policy/components/accordeon-content';
-import {
-  closeBounty,
-  createBounty,
-  createPoll,
-  nearFunction
-} from 'features/vote-policy/components/tasks-tab-view/mockData';
 import { AccordeonRow } from 'features/vote-policy/components/accordeon-row';
+
+import { DaoVotePolicy, TGroup } from 'types/dao';
+import {
+  getPoliciesList,
+  getProposersList,
+  PolicyProps,
+  VotingPolicyPageInitialData
+} from 'features/vote-policy/helpers';
 
 import styles from './governance-tab-view.module.scss';
 
 export interface GovernanceTabViewProps {
   viewMode?: boolean;
+  defaultVotePolicy: DaoVotePolicy;
+  groups: TGroup[];
+  onChange: (name: string, value: PolicyProps) => void;
+  data: VotingPolicyPageInitialData;
 }
 
 export const GovernanceTabView: FC<GovernanceTabViewProps> = ({
-  viewMode = true
+  viewMode = true,
+  defaultVotePolicy,
+  groups,
+  data,
+  onChange
 }) => {
   const items = [
     {
       id: '1',
-      label: 'Create bounty',
+      label: 'Upgrade self',
       content: (
         <AccordeonContent
-          action="Create bounty"
+          onChange={v => onChange('upgradeSelf', v)}
+          data={data.upgradeSelf as PolicyProps}
+          action="Upgrade self"
           viewMode={viewMode}
-          proposers={createBounty.proposers}
-          policies={createBounty.policies}
+          proposers={getProposersList(groups, 'upgradeSelf', 'AddProposal')}
+          policies={getPoliciesList(
+            groups,
+            'upgradeSelf',
+            ['VoteApprove', 'VoteReject', 'VoteRemove'],
+            defaultVotePolicy
+          )}
         />
       )
     },
     {
       id: '2',
-      label: 'Close bounty',
+      label: 'Upgrade remote',
       content: (
         <AccordeonContent
-          action="Close bounty"
+          onChange={v => onChange('upgradeRemote', v)}
+          data={data.upgradeSelf as PolicyProps}
+          action="Upgrade remote"
           viewMode={viewMode}
-          proposers={closeBounty.proposers}
-          policies={closeBounty.policies}
+          proposers={getProposersList(groups, 'upgradeRemote', 'AddProposal')}
+          policies={getPoliciesList(
+            groups,
+            'upgradeRemote',
+            ['VoteApprove', 'VoteReject', 'VoteRemove'],
+            defaultVotePolicy
+          )}
         />
       )
     },
     {
       id: '3',
-      label: 'Create poll',
+      label: 'Config',
       content: (
         <AccordeonContent
+          onChange={v => onChange('config', v)}
+          data={data.config as PolicyProps}
           action="Create poll"
           viewMode={viewMode}
-          proposers={createPoll.proposers}
-          policies={createPoll.policies}
-        />
-      )
-    },
-    {
-      id: '4',
-      label: 'NEAR function',
-      content: (
-        <AccordeonContent
-          action="NEAR function"
-          viewMode={viewMode}
-          proposers={nearFunction.proposers}
-          policies={nearFunction.policies}
+          proposers={getProposersList(groups, 'config', 'AddProposal')}
+          policies={getPoliciesList(
+            groups,
+            'config',
+            ['VoteApprove', 'VoteReject', 'VoteRemove'],
+            defaultVotePolicy
+          )}
         />
       )
     }
@@ -71,9 +90,7 @@ export const GovernanceTabView: FC<GovernanceTabViewProps> = ({
 
   return (
     <div className={styles.root}>
-      <p>
-        Create and vote on bounties, resolutions, and calling NEAR functions.
-      </p>
+      <p>Create and vote on update configuration proposals.</p>
       <div className={styles.content}>
         <AccordeonRow items={items} />
       </div>

@@ -148,7 +148,7 @@ interface UpgradeSelf {
   hash: string;
 }
 
-interface DefaultVaultPolicy {
+export interface DefaultVaultPolicy {
   weightKind: string;
   kind: string;
   ratio: number[];

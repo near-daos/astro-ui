@@ -5,6 +5,7 @@ import { VotePolicy } from 'features/vote-policy/components/policy-row';
 import { Badge } from 'components/badge/Badge';
 import { useModal } from 'components/modal';
 import { VotePolicyPopup } from 'features/vote-policy/VotePolicyPopup';
+import { PolicyProps } from 'features/vote-policy/helpers';
 
 import styles from './accordeon-content.module.scss';
 
@@ -12,38 +13,48 @@ interface AccordeonContentProps {
   proposers: string[];
   policies: VotePolicy[];
   viewMode: boolean;
-  action: 'Create bounty' | 'Close bounty' | 'Create poll' | 'NEAR function';
+  action:
+    | 'Create bounty'
+    | 'Close bounty'
+    | 'Create poll'
+    | 'NEAR function'
+    | 'Add member to group'
+    | 'Remove member from group'
+    | 'Request payout'
+    | 'Upgrade self'
+    | 'Upgrade remote';
+  onChange: (value: PolicyProps) => void;
+  data: PolicyProps;
 }
 
 export const AccordeonContent: FC<AccordeonContentProps> = ({
   proposers,
-  policies,
   viewMode,
-  action
+  action,
+  onChange,
+  data
 }) => {
   const [showModal] = useModal(VotePolicyPopup, {
-    policies,
-    proposers,
     title: action
   });
 
   const handleEdit = useCallback(async () => {
-    await showModal();
-  }, [showModal]);
+    const result = await showModal({ data, proposers });
+
+    if (result?.length) {
+      onChange(result[0] as PolicyProps);
+    }
+  }, [data, onChange, proposers, showModal]);
 
   return (
     <div className={styles.root}>
       <div className={styles.propose}>
         <div className={styles.label}>Who can propose</div>
-        {proposers.map(item => (
-          <Badge key={item} size="small">
-            {item}
-          </Badge>
-        ))}
+        <Badge size="small">{data.whoCanPropose}</Badge>
       </div>
       <div className={styles.vote}>
         <div className={styles.label}>Who can vote</div>
-        {policies.map(item => (
+        {data.policies.map(item => (
           <div
             key={`${item.whoCanVote}_${item.amount}_${item.threshold}`}
             className={styles.row}
@@ -51,7 +62,7 @@ export const AccordeonContent: FC<AccordeonContentProps> = ({
             <Badge size="small">{item.whoCanVote}</Badge>
             <div>{item.amount}</div>
             <div>{item.threshold}</div>
-            <div>{item.voteBy}</div>
+            <div>to pass</div>
           </div>
         ))}
       </div>

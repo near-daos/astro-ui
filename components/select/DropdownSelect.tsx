@@ -1,12 +1,13 @@
 import { useSelect } from 'downshift';
+import cn from 'classnames';
 import React, { useEffect } from 'react';
 import { Icon } from 'components/Icon';
-import classNames from 'classnames';
 import styles from './dropdown-select.module.scss';
 
 interface Option {
   label: string;
   component: JSX.Element;
+  disabled?: boolean;
 }
 
 interface DropdownSelectProps {
@@ -14,13 +15,15 @@ interface DropdownSelectProps {
   className?: string;
   label?: string;
   defaultValue?: string;
+  onChange: (value?: string) => void;
 }
 
 export const DropdownSelect: React.FC<DropdownSelectProps> = ({
   options,
   className,
   label,
-  defaultValue
+  defaultValue,
+  onChange
 }) => {
   const {
     isOpen,
@@ -32,7 +35,10 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
     getItemProps
   } = useSelect({
     items: options,
-    itemToString: item => (item != null ? item.label : '')
+    itemToString: item => (item != null ? item.label : ''),
+    onSelectedItemChange(changes) {
+      onChange?.(changes.selectedItem?.label);
+    }
   });
 
   useEffect(() => {
@@ -48,7 +54,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
   }, [defaultValue, options, selectItem, selectedItem]);
 
   return (
-    <div className={classNames(styles.root, className)}>
+    <div className={cn(styles.root, className)}>
       {label && (
         // eslint-disable-next-line jsx-a11y/label-has-associated-control
         <label className={styles.label} {...getLabelProps}>
@@ -69,21 +75,29 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
             </div>
             <Icon
               name="buttonArrowDown"
-              className={classNames(styles.icon, { [styles.rotate]: isOpen })}
+              className={cn(styles.icon, { [styles.rotate]: isOpen })}
             />
           </div>
         </button>
         <ul className={styles.menu} {...getMenuProps()}>
           {isOpen &&
-            options.map((item, index) => (
-              <li
-                className={styles.item}
-                {...getItemProps({ item, index })}
-                key={item.label}
-              >
-                {item.component}
-              </li>
-            ))}
+            options.map((item, index) => {
+              const props = !item.disabled
+                ? { ...getItemProps({ item, index }) }
+                : {};
+
+              return (
+                <li
+                  className={cn(styles.item, {
+                    [styles.disabled]: item.disabled
+                  })}
+                  {...props}
+                  key={item.label}
+                >
+                  {item.component}
+                </li>
+              );
+            })}
         </ul>
       </div>
     </div>

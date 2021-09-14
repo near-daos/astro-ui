@@ -90,8 +90,7 @@ export const DaoSettingsView: FC = () => {
         onSubmit={handleSubmit}
         onChange={handleChange}
         viewMode={viewMode}
-        details={data.details}
-        externalLink={data.externalLink}
+        data={data}
         voteDetails={voteDetails}
       />
       <div className={styles.header}>

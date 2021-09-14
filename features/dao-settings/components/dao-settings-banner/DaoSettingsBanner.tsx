@@ -6,26 +6,31 @@ import { Input } from 'components/input/Input';
 import { Button } from 'components/button/Button';
 import { TextArea } from 'components/textarea/TextArea';
 
+import { DaoSettingsProps } from 'features/vote-policy/helpers';
+
 import styles from './dao-setting-banner.module.scss';
 
 export interface DaoSettingsBannerProps {
   onCancel: () => void;
   onSubmit: () => void;
-  onChange: (name: string, value: string) => void;
+  onChange: (name: string, value: DaoSettings) => void;
   viewMode: boolean;
-  details?: string;
-  externalLink?: string;
   voteDetails: VoteDetailsProps;
+  data: DaoSettingsProps;
 }
+
+type DaoSettings = {
+  externalLink?: string | null;
+  details: string;
+};
 
 export const DaoSettingsBanner: FC<DaoSettingsBannerProps> = ({
   onChange,
   onSubmit,
   onCancel,
   viewMode = true,
-  details = '',
-  externalLink,
-  voteDetails
+  voteDetails,
+  data
 }) => {
   if (viewMode) return null;
 
@@ -51,20 +56,26 @@ export const DaoSettingsBanner: FC<DaoSettingsBannerProps> = ({
               size="large"
               textAlign="left"
               resize="none"
-              value={details}
+              value={data.details}
               maxLength={500}
               onChange={e => {
-                onChange('details', (e.target as HTMLTextAreaElement).value);
+                onChange('daoSettings', {
+                  ...data,
+                  details: (e.target as HTMLTextAreaElement).value
+                });
               }}
             />
             <Input
               label="External link"
               size="large"
-              value={externalLink}
+              value={data.externalLink}
               placeholder="add link"
               textAlign="left"
               onChange={e => {
-                onChange('externalLink', (e.target as HTMLInputElement).value);
+                onChange('daoSettings', {
+                  ...data,
+                  externalLink: (e.target as HTMLTextAreaElement).value
+                });
               }}
             />
           </div>

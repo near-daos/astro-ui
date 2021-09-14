@@ -3,20 +3,32 @@ import React, { FC } from 'react';
 import { AccordeonRow } from 'features/vote-policy/components/accordeon-row';
 import { AccordeonContent } from 'features/vote-policy/components/accordeon-content';
 
+import { DaoVotePolicy, TGroup } from 'types/dao';
+
 import {
-  createBounty,
-  closeBounty,
-  createPoll,
-  nearFunction
-} from 'features/vote-policy/components/tasks-tab-view/mockData';
+  getPoliciesList,
+  getProposersList,
+  PolicyProps,
+  VotingPolicyPageInitialData
+} from 'features/vote-policy/helpers';
 
 import styles from './tasks-tab-view.module.scss';
 
 export interface TasksTabViewProps {
   viewMode?: boolean;
+  defaultVotePolicy: DaoVotePolicy;
+  groups: TGroup[];
+  onChange: (name: string, value: PolicyProps) => void;
+  data: VotingPolicyPageInitialData;
 }
 
-export const TasksTabView: FC<TasksTabViewProps> = ({ viewMode = true }) => {
+export const TasksTabView: FC<TasksTabViewProps> = ({
+  viewMode = true,
+  defaultVotePolicy,
+  groups,
+  onChange,
+  data
+}) => {
   const items = [
     {
       id: '1',
@@ -25,8 +37,15 @@ export const TasksTabView: FC<TasksTabViewProps> = ({ viewMode = true }) => {
         <AccordeonContent
           action="Create bounty"
           viewMode={viewMode}
-          proposers={createBounty.proposers}
-          policies={createBounty.policies}
+          onChange={v => onChange('addBounty', v)}
+          data={data.addBounty as PolicyProps}
+          proposers={getProposersList(groups, 'addBounty', 'AddProposal')}
+          policies={getPoliciesList(
+            groups,
+            'addBounty',
+            ['VoteApprove', 'VoteReject', 'VoteRemove'],
+            defaultVotePolicy
+          )}
         />
       )
     },
@@ -36,9 +55,16 @@ export const TasksTabView: FC<TasksTabViewProps> = ({ viewMode = true }) => {
       content: (
         <AccordeonContent
           action="Close bounty"
+          onChange={v => onChange('bountyDone', v)}
+          data={data.bountyDone as PolicyProps}
           viewMode={viewMode}
-          proposers={closeBounty.proposers}
-          policies={closeBounty.policies}
+          proposers={getProposersList(groups, 'bountyDone', 'AddProposal')}
+          policies={getPoliciesList(
+            groups,
+            'bountyDone',
+            ['VoteApprove', 'VoteReject', 'VoteRemove'],
+            defaultVotePolicy
+          )}
         />
       )
     },
@@ -48,9 +74,16 @@ export const TasksTabView: FC<TasksTabViewProps> = ({ viewMode = true }) => {
       content: (
         <AccordeonContent
           action="Create poll"
+          onChange={v => onChange('setVoteToken', v)}
+          data={data.setVoteToken as PolicyProps}
           viewMode={viewMode}
-          proposers={createPoll.proposers}
-          policies={createPoll.policies}
+          proposers={getProposersList(groups, 'setVoteToken', 'AddProposal')}
+          policies={getPoliciesList(
+            groups,
+            'setVoteToken',
+            ['VoteApprove', 'VoteReject', 'VoteRemove'],
+            defaultVotePolicy
+          )}
         />
       )
     },
@@ -61,8 +94,15 @@ export const TasksTabView: FC<TasksTabViewProps> = ({ viewMode = true }) => {
         <AccordeonContent
           action="NEAR function"
           viewMode={viewMode}
-          proposers={nearFunction.proposers}
-          policies={nearFunction.policies}
+          onChange={v => onChange('call', v)}
+          data={data.call as PolicyProps}
+          proposers={getProposersList(groups, 'call', 'AddProposal')}
+          policies={getPoliciesList(
+            groups,
+            'call',
+            ['VoteApprove', 'VoteReject', 'VoteRemove'],
+            defaultVotePolicy
+          )}
         />
       )
     }

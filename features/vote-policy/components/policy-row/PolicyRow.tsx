@@ -17,40 +17,56 @@ export interface VotePolicy {
 interface PolicyRowProps {
   policy: VotePolicy;
   groups: string[];
+  selectedGroups: string[];
   tokens: string[];
   removePolicyHandler: () => void;
+  updatePolicyHandler: (policy: VotePolicy) => void;
 }
+
+const VOTE_BY = ['Person', 'Token'];
+const mapToOptions = (values: string[]) =>
+  values.map((value: string) => ({ label: value, value }));
 
 export const PolicyRow: React.FC<PolicyRowProps> = ({
   policy,
   groups,
+  selectedGroups,
   tokens,
-  removePolicyHandler
+  removePolicyHandler,
+  updatePolicyHandler
 }) => {
-  const VOTE_BY = ['Person', 'Token'];
-
-  const mapToOptions = (values: string[]) =>
-    values.map((value: string) => ({ label: value, value }));
-
   const [thresholds, setThresholds] = useState(
     policy.voteBy === 'Person' ? ['% of group', 'persons'] : tokens
+  );
+
+  const handleChange = useCallback(
+    (name: string, value?: string) => {
+      updatePolicyHandler({
+        ...policy,
+        [name]: value
+      });
+    },
+    [policy, updatePolicyHandler]
   );
 
   const onVoteByChange = useCallback(
     voteBy => {
       setThresholds(voteBy === 'Person' ? ['% of group', 'persons'] : tokens);
+      handleChange('voteBy', voteBy);
     },
-    [tokens]
+    [handleChange, tokens]
   );
 
   return (
     <div className={styles.row}>
       <DropdownSelect
         label="Who can vote"
+        onChange={v => handleChange('whoCanVote', v)}
         className={styles.whoCanVote}
         defaultValue={policy.whoCanVote}
         options={groups.map(group => ({
           label: group,
+          disabled: selectedGroups.includes(group),
           component: <Group name={group} />
         }))}
       />
@@ -66,6 +82,9 @@ export const PolicyRow: React.FC<PolicyRowProps> = ({
         className={classNames(styles.voteBy)}
       />
       <Input
+        onChange={e =>
+          handleChange('amount', (e.target as HTMLInputElement).value)
+        }
         placeholder="Amount"
         textAlign="left"
         label={<span>&nbsp;</span>}
@@ -76,6 +95,7 @@ export const PolicyRow: React.FC<PolicyRowProps> = ({
       <Select
         options={mapToOptions(thresholds)}
         label="Threshold"
+        onChange={v => handleChange('threshold', v)}
         defaultValue={policy.threshold}
         placeholder="Threshold"
         className={styles.threshold}

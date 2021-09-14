@@ -1,11 +1,18 @@
 import { Token } from 'components/cards/member-card';
 import { PolicyType } from './proposal';
 
+export type DaoVotePolicy = {
+  weightKind: string;
+  quorum: string;
+  kind: string;
+  ratio: number[];
+};
+
 export type TGroup = {
   members: string[];
   name: string;
-  permissions: string;
-  votePolicy: unknown;
+  permissions: string[];
+  votePolicy: DaoVotePolicy;
   slug: string;
 };
 
@@ -28,4 +35,5 @@ export type DAO = {
   logo: string;
   groups: TGroup[];
   policy: PolicyType;
+  link?: string | null;
 };

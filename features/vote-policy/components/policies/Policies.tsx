@@ -1,7 +1,7 @@
 import classNames from 'classnames';
+import difference from 'lodash/difference';
 
-import React, { useCallback } from 'react';
-import { useList } from 'react-use';
+import React from 'react';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import styles from 'features/vote-policy/components/policies/policies.module.scss';
@@ -22,19 +22,20 @@ interface PoliciesProps {
   policies: VotePolicy[];
   groups: string[];
   tokens: string[];
+  onAdd: () => void;
+  onRemove: (index: number) => () => void;
+  onUpdate: (index: number, item: VotePolicy) => void;
 }
 
 export const Policies: React.FC<PoliciesProps> = ({
   policies,
   groups,
-  tokens
+  tokens,
+  onAdd,
+  onRemove,
+  onUpdate
 }) => {
-  const [selected, { push, removeAt }] = useList(policies);
-
-  const addPolicy = useCallback(() => push({}), [push]);
-  const removePolicy = useCallback((index: number) => () => removeAt(index), [
-    removeAt
-  ]);
+  const selectedGroups = policies.map(item => item.whoCanVote ?? '');
 
   return (
     <>
@@ -51,19 +52,22 @@ export const Policies: React.FC<PoliciesProps> = ({
           );
         })}
       </div>
-      {selected.map((policy, index) => (
+      {policies.map((policy, index) => (
         <PolicyRow
           key={policy.whoCanVote}
+          selectedGroups={selectedGroups}
           policy={policy}
           groups={groups}
           tokens={tokens}
-          removePolicyHandler={removePolicy(index)}
+          updatePolicyHandler={v => onUpdate(index, v)}
+          removePolicyHandler={onRemove(index)}
         />
       ))}
       <Button
+        disabled={difference(selectedGroups, groups).length === 0}
         className={styles.add}
         variant="tertiary"
-        onClick={addPolicy}
+        onClick={onAdd}
         size="small"
       >
         <Icon name="buttonAdd" className={styles.icon} />
