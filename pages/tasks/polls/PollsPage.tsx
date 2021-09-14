@@ -1,28 +1,36 @@
-import React, { CSSProperties, FC, useCallback, useRef, useState } from 'react';
-import {
-  ProposalCard,
-  ProposalCardProps
-} from 'components/cards/proposal-card';
+import React, {
+  CSSProperties,
+  FC,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
+import { ListOnScrollProps, VariableSizeList } from 'react-window';
+import { useMedia } from 'react-use';
+import { useRouter } from 'next/router';
+
 import { CreatePollDialog } from 'features/poll/dialogs/create-poll-dialog/CreatePollDialog';
+import { ProposalCardRenderer } from 'components/cards/proposal-card';
 import { useModal } from 'components/modal/hooks';
 import ScrollList from 'components/scroll-list/ScrollList';
 import { Button } from 'components/button/Button';
 import { IconButton } from 'components/button/IconButton';
-import {
-  POLLS_DATA,
-  VOTE_DETAIL_DATA,
-  BOND_DETAIL_DATA
-} from 'lib/mocks/tasks/polls';
-import { ListOnScrollProps, VariableSizeList } from 'react-window';
-import { useMedia } from 'react-use';
+
+import { VOTE_DETAIL_DATA, BOND_DETAIL_DATA } from 'lib/mocks/tasks/polls';
+
+import { Proposal } from 'types/proposal';
+import { SputnikService } from 'services/SputnikService';
+
 import styles from './polls.module.scss';
 
 interface PollsPageProps {
-  polls: ProposalCardProps[];
+  data: Proposal[];
 }
 
-const PollsPage: FC<PollsPageProps> = ({ polls = POLLS_DATA }) => {
-  const [pollsList] = useState(polls);
+const PollsPage: FC<PollsPageProps> = () => {
+  const { query } = useRouter();
+  const [pollsList, setPollsList] = useState<Proposal[]>([]);
 
   const [showCreatePollDialog] = useModal(CreatePollDialog, {
     voteDetails: VOTE_DETAIL_DATA,
@@ -53,6 +61,14 @@ const PollsPage: FC<PollsPageProps> = ({ polls = POLLS_DATA }) => {
     scrollListRef.current.scrollToItem(0);
   }, [scrollListRef]);
 
+  useEffect(() => {
+    if (query.id) {
+      SputnikService.getPolls(query.id as string).then(res =>
+        setPollsList(res)
+      );
+    }
+  }, [query.id]);
+
   const renderCard = ({
     index,
     style
@@ -67,7 +83,7 @@ const PollsPage: FC<PollsPageProps> = ({ polls = POLLS_DATA }) => {
         marginBottom: '16px'
       }}
     >
-      <ProposalCard {...pollsList[index]} />
+      <ProposalCardRenderer proposal={pollsList[index]} />
     </div>
   );
 
@@ -84,7 +100,7 @@ const PollsPage: FC<PollsPageProps> = ({ polls = POLLS_DATA }) => {
           itemCount={pollsList.length}
           onScroll={handleScroll}
           height={700}
-          itemSize={() => (isMobileOrTablet ? 186 : 92)}
+          itemSize={() => (isMobileOrTablet ? 186 : 120)}
           ref={scrollListRef}
           renderItem={renderCard}
         />

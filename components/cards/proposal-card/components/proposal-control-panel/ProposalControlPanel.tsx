@@ -9,8 +9,11 @@ interface ProposalControlPanelProps {
   liked: boolean;
   dislikes: number;
   disliked: boolean;
+  dismisses: number;
+  dismissed: boolean;
   onLike?: () => void;
   onDislike?: () => void;
+  onRemove?: () => void;
   className?: string;
 }
 
@@ -19,8 +22,11 @@ const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
   liked,
   dislikes,
   disliked,
+  dismisses,
+  dismissed,
   onLike,
   onDislike,
+  onRemove,
   className = ''
 }) => {
   return (
@@ -42,6 +48,15 @@ const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
           onClick={onDislike}
         />
         <span className={cn(styles.value, 'title3')}>{dislikes}</span>
+      </span>
+      <span className={styles.item}>
+        <IconButton
+          icon={dismissed ? 'votingDismissChecked' : 'votingDismiss'}
+          className={styles.icon}
+          size="large"
+          onClick={onRemove}
+        />
+        <span className={cn(styles.value, 'title3')}>{dismisses}</span>
       </span>
     </div>
   );

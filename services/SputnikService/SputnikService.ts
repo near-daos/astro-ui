@@ -321,6 +321,26 @@ class SputnikService {
     return proposals.data.map(mapProposalDTOToProposal);
   }
 
+  public async getPolls(
+    daoId: string,
+    offset = 0,
+    limit = 50
+  ): Promise<Proposal[]> {
+    const { data: proposals } = await this.httpService.get<
+      GetProposalsResponse
+    >('/proposals', {
+      params: {
+        filter: `daoId||$eq||${daoId}`,
+        offset,
+        limit
+      }
+    });
+
+    return proposals.data
+      .filter(item => item.kind.type === 'Vote')
+      .map(mapProposalDTOToProposal);
+  }
+
   public async getProposal(
     contractId: string,
     index: number
@@ -341,13 +361,13 @@ class SputnikService {
   }
 
   public vote(
-    contractId: string,
+    daoId: string,
     proposalId: number,
-    vote: 'Yes' | 'No'
+    action: 'VoteApprove' | 'VoteRemove' | 'VoteReject'
   ): Promise<void> {
-    return this.contractPool.get(contractId).vote({
+    return this.contractPool.get(daoId).act_proposal({
       id: proposalId,
-      vote
+      action
     });
   }
 

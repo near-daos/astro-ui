@@ -30,7 +30,9 @@ const generatePoll = (
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onLike: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  onDislike: () => {}
+  onDislike: () => {},
+  dismisses: 0,
+  dismissed: false
 });
 
 const generatePolls = () => {

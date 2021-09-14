@@ -44,6 +44,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dislikes: 134,
     liked: false,
     disliked: false,
+    dismisses: 0,
+    dismissed: false,
     status: 'Rejected',
     title: 'jonathan.near',
     children: (
@@ -68,6 +70,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dislikes: 134,
     liked: false,
     disliked: false,
+    dismisses: 0,
+    dismissed: false,
     status: 'Rejected',
     title: 'jonathan.near',
     children: (
@@ -92,6 +96,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dislikes: 134,
     liked: false,
     disliked: false,
+    dismisses: 0,
+    dismissed: false,
     status: 'Rejected',
     title: 'jonathan.near',
     children: (
@@ -116,6 +122,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dislikes: 134,
     liked: false,
     disliked: false,
+    dismisses: 0,
+    dismissed: false,
     status: 'Rejected',
     title: 'jonathan.near',
     children: (
@@ -140,6 +148,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dislikes: 134,
     liked: false,
     disliked: false,
+    dismisses: 0,
+    dismissed: false,
     status: 'Approved',
     title: 'jonathan.near',
     children: (
@@ -161,6 +171,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dislikes: 134,
     liked: false,
     disliked: false,
+    dismisses: 0,
+    dismissed: false,
     status: 'Rejected',
     title: 'jonathan.near',
     children: (
@@ -179,6 +191,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dislikes: 234,
     liked: true,
     disliked: false,
+    dismisses: 0,
+    dismissed: false,
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onLike: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types

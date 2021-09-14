@@ -14,18 +14,17 @@ function getIconName(type: ProposalType) {
   switch (type) {
     case 'AddMemberToRole':
       return 'proposalAddMember';
-    // case 'Remove member':
-    //   return 'proposalRemoveMember';
-    // case 'Bounty done':
-    //   return 'proposalBounty';
+    case 'RemoveMemberFromRole':
+      return 'proposalRemoveMember';
+    case 'BountyDone':
+    case 'AddBounty':
+      return 'proposalBounty';
     // case 'Create group':
     //   return 'proposalCreateGroup';
     case 'Transfer':
       return 'proposalSendFunds';
-    // case 'Poll':
-    //   return 'proposalPoll';
-    // case 'Create bounty':
-    //   return 'proposalBounty';
+    case 'Vote':
+      return 'proposalPoll';
     case 'ChangePolicy':
       return 'proposalGovernance';
     default:
@@ -38,18 +37,17 @@ function getTitle(type: ProposalType) {
   switch (type) {
     case 'AddMemberToRole':
       return 'Add member to role';
-    // case 'Remove member':
-    //   return 'proposalRemoveMember';
-    // case 'Bounty done':
-    //   return 'proposalBounty';
+    case 'RemoveMemberFromRole':
+      return 'proposalRemoveMember';
+    case 'BountyDone':
+    case 'AddBounty':
+      return 'proposalBounty';
     // case 'Create group':
     //   return 'proposalCreateGroup';
     case 'Transfer':
       return 'Transfer';
-    // case 'Poll':
-    //   return 'proposalPoll';
-    // case 'Create bounty':
-    //   return 'proposalBounty';
+    case 'Vote':
+      return 'proposalPoll';
     case 'ChangePolicy':
       return 'Change policy';
     default:

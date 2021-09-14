@@ -30,6 +30,8 @@ export interface ExpandedProposalCardProps {
   onLike: () => void;
   onDislike: () => void;
   endsAt: string;
+  dismisses: number;
+  dismissed: boolean;
 }
 
 export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
@@ -49,7 +51,9 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
   disliked,
   onLike,
   onDislike,
-  endsAt
+  endsAt,
+  dismisses,
+  dismissed
 }) => {
   const handleVote = useCallback(
     d => {
@@ -80,6 +84,8 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
         disliked={disliked}
         onLike={onLike}
         onDislike={onDislike}
+        dismisses={dismisses}
+        dismissed={dismissed}
       >
         {children}
       </ContentPanel>

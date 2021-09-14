@@ -17,11 +17,14 @@ export interface ProposalCardProps {
   children: ReactNode;
   likes: number;
   dislikes: number;
+  dismisses: number;
   liked: boolean;
   disliked: boolean;
+  dismissed: boolean;
   variant?: ProposalVariant;
   onLike?: () => void;
   onDislike?: () => void;
+  onRemove?: () => void;
 }
 
 export const ProposalCard: FC<ProposalCardProps> = ({
@@ -33,8 +36,11 @@ export const ProposalCard: FC<ProposalCardProps> = ({
   dislikes,
   liked,
   disliked,
+  dismisses,
+  dismissed,
   onLike,
   onDislike,
+  onRemove,
   variant = 'Default'
 }) => {
   const variantClassName = cn({
@@ -60,10 +66,13 @@ export const ProposalCard: FC<ProposalCardProps> = ({
             <ProposalControlPanel
               onLike={onLike}
               onDislike={onDislike}
+              onRemove={onRemove}
               likes={likes}
               liked={liked}
               dislikes={dislikes}
               disliked={disliked}
+              dismisses={dismisses}
+              dismissed={dismissed}
             />
           </span>
         </div>

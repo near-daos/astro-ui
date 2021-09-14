@@ -17,8 +17,10 @@ export type ProposalDTO = {
   updateTransactionHash: string;
   updatedAt: string;
   voteCounts: Record<string, number[]>;
-  votes: Record<string, 'Approve'>;
+  votes: Record<string, 'Approve' | 'Reject' | 'Remove'>;
 };
+
+type VoteState = 'Yes' | 'No' | 'Dismiss';
 
 export interface GetProposalsResponse {
   data: ProposalDTO[];
@@ -29,6 +31,7 @@ export const mapProposalDTOToProposal = (
 ): Proposal => {
   return {
     id: proposalDTO.id,
+    proposalId: proposalDTO.proposalId,
     daoId: proposalDTO.daoId,
     target: '',
     proposer: proposalDTO.proposer,
@@ -44,12 +47,26 @@ export const mapProposalDTOToProposal = (
       (res, item) => res + item[1],
       0
     ),
+    voteRemove: Object.values(proposalDTO.voteCounts).reduce(
+      (res, item) => res + item[2],
+      0
+    ),
     txHash: proposalDTO.transactionHash,
     votes: Object.keys(proposalDTO.votes).reduce((res, key) => {
-      res[key] = proposalDTO.votes[key] === 'Approve' ? 'Yes' : 'No';
+      let value: VoteState;
+
+      if (proposalDTO.votes[key] === 'Approve') {
+        value = 'Yes';
+      } else if (proposalDTO.votes[key] === 'Reject') {
+        value = 'No';
+      } else {
+        value = 'Dismiss';
+      }
+
+      res[key] = value;
 
       return res;
-    }, {} as Record<string, 'Yes' | 'No'>),
+    }, {} as Record<string, VoteState>),
     createdAt: proposalDTO.createdAt
   };
 };

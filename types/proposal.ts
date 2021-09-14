@@ -87,6 +87,7 @@ export type ProposalStatus =
 
 export type Proposal = {
   id: string;
+  proposalId: number;
   daoId: string;
   target: string;
   proposer: string;
@@ -96,9 +97,10 @@ export type Proposal = {
   votePeriodEnd: string;
   voteYes: number;
   voteNo: number;
+  voteRemove: number;
   txHash: string;
   votes: {
-    [key: string]: 'Yes' | 'No';
+    [key: string]: 'Yes' | 'No' | 'Dismiss';
   };
   // votePeriodConvertedEndDate: Date;   --- not working with SSR
   createdAt: string;
