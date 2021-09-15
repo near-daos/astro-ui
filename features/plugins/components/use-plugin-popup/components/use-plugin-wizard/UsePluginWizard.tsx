@@ -1,17 +1,25 @@
 import React, { FC, useCallback, useState } from 'react';
-
+import dynamic from 'next/dynamic';
 import Tabs from 'components/tabs/Tabs';
 import {
   IWizardInitialData,
   IWizardResult
 } from 'features/plugins/components/use-plugin-popup/types';
 import PreviousFunctionsView from 'features/plugins/components/use-plugin-popup/components/use-plugin-wizard/components/pevious-functions-view/PreviousFunctionsView';
-import NewFunctionView from 'features/plugins/components/use-plugin-popup/components/use-plugin-wizard/components/new-function-view/NewFunctionView';
 import CreateTokenView from 'features/plugins/components/use-plugin-popup/components/use-plugin-wizard/components/create-token-view/CreateTokenView';
 
 import { WizardContext } from './helpers';
 
 import styles from './use-plugin-wizard.module.scss';
+
+const NewFunctionView = dynamic(
+  import(
+    'features/plugins/components/use-plugin-popup/components/use-plugin-wizard/components/new-function-view/NewFunctionView'
+  ),
+  {
+    ssr: false
+  }
+);
 
 const TABS = [
   {

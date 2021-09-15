@@ -37,7 +37,7 @@ import {
   getProposalStats,
   getDaoDetailsFromDao,
   getFundAndMembersNum
-} from './helpers';
+} from 'features/dao-home/helpers';
 
 import styles from './dao-home-page.module.scss';
 
