@@ -11,7 +11,9 @@ export { firebaseConfig } from './firebase';
 export const appConfig = {
   logoPath: 'https://sputnik-dao.s3.eu-central-1.amazonaws.com/',
   // todo refactor
-  apiUrl: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/`,
+  apiUrl: process.browser
+    ? '/api-server/v1/'
+    : `${process.env.NEXT_PUBLIC_API_URL}/api/v1/`,
   awsUseLocalConf: Boolean(
     JSON.parse(process.env.NEXT_PUBLIC_AWS_USE_LOCAL_CONF || 'false')
   )

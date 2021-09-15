@@ -27,6 +27,10 @@ module.exports = (phase, { defaultConfig }) => {
       async rewrites() {
         return [
           {
+            source: '/api-server/:path*',
+            destination: process.env.NEXT_PUBLIC_API_URL + '/api/:path*' // Proxy to Backend
+          },
+          {
             source: '/create-dao',
             destination: '/create-dao/foundation'
           }
