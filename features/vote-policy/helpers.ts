@@ -2,6 +2,7 @@ import { DAO, DaoVotePolicy, TGroup } from 'types/dao';
 import { VotePolicy } from 'features/vote-policy/components/policy-row';
 import { CreateProposalParams } from 'types/proposal';
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
+import snakeCase from 'lodash/snakeCase';
 
 type Scope =
   | 'addBounty'
@@ -104,7 +105,7 @@ export type DaoSettingsProps = {
 };
 
 export type PolicyProps = {
-  whoCanPropose: string;
+  whoCanPropose: string[];
   policies: VotePolicy[];
 };
 
@@ -136,11 +137,7 @@ export const getInitialData = (
 
   const views = POLICIES_VIEWS.reduce((res, item) => {
     res[item] = {
-      whoCanPropose: getProposersList(
-        dao.groups,
-        item as Scope,
-        'AddProposal'
-      )[0],
+      whoCanPropose: getProposersList(dao.groups, item as Scope, 'AddProposal'),
       policies: getPoliciesList(
         dao.groups,
         item as Scope,
@@ -181,6 +178,27 @@ type VotePolicyRequest = {
   threshold: [number, number];
 };
 
+function getThreshold(value: number): [number, number] {
+  const fraction = value / 100;
+  const gcd = (a: number, b: number): number => {
+    if (b < 0.0000001) return a; // Since there is a limited precision we need to limit the value.
+
+    return gcd(b, Math.floor(a % b)); // Discard any fractions due to limitations in precision.
+  };
+
+  const len = fraction.toString().length - 2;
+
+  let denominator = 10 ** len;
+  let numerator = fraction * denominator;
+
+  const divisor = gcd(numerator, denominator); // Should be 5
+
+  numerator /= divisor; // Should be 687
+  denominator /= divisor; // Should be 2000
+
+  return [numerator, denominator];
+}
+
 export const getNewProposalObject = (
   dao: DAO,
   data: VotingPolicyPageInitialData
@@ -201,23 +219,53 @@ export const getNewProposalObject = (
             };
           }
 
+          // console.log(role.permissions, data);
+
           return {
             name: role.name,
             kind: {
               Group: role.accountIds
             },
-            permissions: [...role.permissions],
+            permissions: Object.keys(data).reduce((res, key) => {
+              if (key !== 'daoSettings') {
+                const { whoCanPropose, policies } = data[key] as PolicyProps;
+
+                const voters = policies.map(item => item.whoCanVote);
+
+                const snakeKey = snakeCase(key);
+
+                if (whoCanPropose.includes(role.name)) {
+                  res.push(`${snakeKey}:AddProposal`);
+                }
+
+                if (voters.includes(role.name)) {
+                  res.push(`${snakeKey}:VoteApprove`);
+                  res.push(`${snakeKey}:VoteReject`);
+                  res.push(`${snakeKey}:VoteRemove`);
+                  res.push(`${snakeKey}:VoteFinalize`);
+                }
+              }
+
+              return res;
+            }, [] as string[]),
             vote_policy: keysToSnakeCase(
               Object.keys(data).reduce((res, key) => {
                 if (key !== 'daoSettings') {
-                  const values = data[key] as VotePolicy;
+                  const { policies } = data[key] as PolicyProps;
+                  const values = policies.find(
+                    item => item.whoCanVote === role.name
+                  );
 
-                  res[key] = {
-                    weight_kind:
-                      values.voteBy === 'Person' ? 'RoleWeight' : 'TokenWeight',
-                    quorum: '0',
-                    threshold: [4, 5]
-                  };
+                  if (values) {
+                    res[key] = {
+                      weight_kind:
+                        values?.voteBy === 'Person'
+                          ? 'RoleWeight'
+                          : 'TokenWeight',
+                      quorum: '0',
+                      threshold: getThreshold(values.amount ?? 0)
+                    };
+                  }
                 }
 
                 return res;

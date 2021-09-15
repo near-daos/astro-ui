@@ -20,7 +20,7 @@ Template.storyName = 'VotePolicyPopup';
 Template.args = {
   proposers: ['MEW holders', 'NEAR holders'],
   data: {
-    whoCanPropose: 'MEW holders',
+    whoCanPropose: ['MEW holders'],
     policies: [
       {
         whoCanVote: 'MEW holders',

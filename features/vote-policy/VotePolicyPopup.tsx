@@ -2,10 +2,10 @@ import React, { useCallback, useState } from 'react';
 import { Modal } from 'components/modal';
 import { useList } from 'react-use';
 import { Policies } from 'features/vote-policy/components/policies';
-import { DropdownSelect } from 'components/select/DropdownSelect';
 import styles from 'features/vote-policy/vote-policy-popup.module.scss';
 import { Button } from 'components/button/Button';
 import { PolicyProps } from 'features/vote-policy/helpers';
+import { DropdownMultiSelect } from 'components/select/DropdownMultiSelect';
 import { Group } from './components/group/Group';
 
 export interface VotePolicyPopupProps {
@@ -23,7 +23,7 @@ export const VotePolicyPopup: React.FC<VotePolicyPopupProps> = ({
   title,
   data
 }) => {
-  const [proposer, setProposer] = useState<string>(data.whoCanPropose);
+  const [proposer, setProposer] = useState<string[]>(data.whoCanPropose);
 
   const [selected, { push, removeAt, updateAt }] = useList(data.policies);
   const addPolicy = useCallback(
@@ -50,8 +50,8 @@ export const VotePolicyPopup: React.FC<VotePolicyPopupProps> = ({
       <div className={styles.content}>
         <div className={styles.proposers}>
           <div className={styles.container}>
-            <DropdownSelect
-              onChange={v => setProposer(v ?? '')}
+            <DropdownMultiSelect
+              onChange={v => setProposer(v)}
               label="Who can propose"
               defaultValue={proposer}
               options={proposers.map(item => ({

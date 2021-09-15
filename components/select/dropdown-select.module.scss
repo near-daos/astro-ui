@@ -39,15 +39,54 @@
     justify-content: space-between;
   }
 
-  .selected {
+  .selected,
+  .selectedMeasure {
     display: flex;
     flex: 1;
+  }
+
+  .selected .selectedWrapper {
+    margin-right: 4px;
+  }
+
+  .selectedMeasure .selectedWrapper {
+    margin-right: 4px;
+  }
+
+  .selectedMeasure {
+    height: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+  }
+  .selectedMeasure > div {
+    visibility: hidden;
+  }
+
+  .collapsedLabel {
+    visibility: hidden;
+  }
+
+  .collapsedLabel.visible {
+    visibility: visible;
   }
 
   .placeholder {
     @extend %body1;
     color: var(--color-neutral-60);
     font-size: 16px;
+  }
+}
+
+.selectedFullList {
+  border-bottom: 1px solid var(--color-neutral-40);
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4px 8px;
+
+  .selectedWrapper {
+    display: inline-block;
+    margin: 4px;
   }
 }
 
@@ -76,9 +115,9 @@
 
 .item {
   display: flex;
-  height: 40px;
   justify-content: flex-start;
-  padding: 11px 32px;
+  min-height: 40px;
+  padding: 11px 18px;
 
   &:hover {
     background-color: var(--color-neutral-30);
@@ -92,4 +131,9 @@
 
 .rotate {
   transform: rotate(180deg);
+}
+
+.checkbox {
+  margin-right: 8px;
+  pointer-events: none;
 }

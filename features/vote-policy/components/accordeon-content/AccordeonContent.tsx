@@ -50,7 +50,11 @@ export const AccordeonContent: FC<AccordeonContentProps> = ({
     <div className={styles.root}>
       <div className={styles.propose}>
         <div className={styles.label}>Who can propose</div>
-        <Badge size="small">{data.whoCanPropose}</Badge>
+        {data.whoCanPropose.map(item => (
+          <Badge size="small" key={item}>
+            {item}
+          </Badge>
+        ))}
       </div>
       <div className={styles.vote}>
         <div className={styles.label}>Who can vote</div>
