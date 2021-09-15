@@ -6,16 +6,22 @@ type Data = {
   name: string;
 };
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
-): void {
-  https.get(
-    'https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd',
-    resp => {
-      resp.on('data', d => {
-        res.status(200).json(d);
-      });
-    }
-  );
+): Promise<NextApiResponse<Data>> {
+  return new Promise((resolve, reject) => {
+    https.get(
+      'https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd',
+      resp => {
+        resp.on('data', d => {
+          res.status(200).json(d);
+          resolve(d);
+        });
+        resp.on('error', err => {
+          reject(err);
+        });
+      }
+    );
+  });
 }
