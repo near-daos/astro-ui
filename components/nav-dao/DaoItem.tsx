@@ -1,4 +1,3 @@
-import { UrlObject } from 'url';
 import React, { HTMLProps, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -19,14 +18,12 @@ import styles from './nav-dao.module.scss';
 
 interface DaoItemProps extends Omit<HTMLProps<HTMLDivElement>, 'href'> {
   label: string;
-  href: string | UrlObject;
   logo: string;
   count?: number;
   active?: boolean;
   className?: string;
   detailsClassName?: string;
   dao: DAO;
-  selectDao: (dao: DAO) => void;
 }
 
 export const DaoItem: React.VFC<DaoItemProps> = ({
@@ -34,10 +31,8 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
   count,
   className,
   logo,
-  href,
   detailsClassName,
   dao,
-  selectDao,
   ...props
 }) => {
   const { accountId } = useAuthContext();
@@ -67,20 +62,14 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
     await showMemberCard();
   }, [showMemberCard]);
 
-  function handleItemClick() {
-    selectDao(dao);
-  }
-
   return (
     <div
       {...props}
       tabIndex={0}
       role="button"
-      onClick={handleItemClick}
-      onKeyPress={handleItemClick}
       className={cn(styles.item, className)}
     >
-      <Link passHref href={href}>
+      <Link passHref href={`/dao/${dao.id}`}>
         <a className={styles.name}>
           <Image src={logo} width={24} height={24} alt={`${label} Dao Logo`} />
 

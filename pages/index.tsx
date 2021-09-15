@@ -1,6 +1,36 @@
 import 'assets/icons';
+import { GetServerSideProps } from 'next';
 import React from 'react';
+import { SputnikService } from 'services/SputnikService';
+import { DAO } from 'types/dao';
 
-export default function Home(): JSX.Element {
+export default function RootPage(): JSX.Element {
   return <div />;
 }
+
+export const getServerSideProps: GetServerSideProps<{
+  fallback: { '/daos': DAO[] };
+}> = async ({ res, params }) => {
+  const data = await SputnikService.getDaoList();
+
+  if (data.length === 0) {
+    res.statusCode = 302;
+    res.setHeader('location', `/all-communities`);
+  }
+
+  if (!params || params.dao == null) {
+    res.statusCode = 302;
+
+    const [dao] = data;
+
+    res.setHeader('location', `/dao/${dao.id}`);
+  }
+
+  return {
+    props: {
+      fallback: {
+        '/daos': data
+      }
+    }
+  };
+};

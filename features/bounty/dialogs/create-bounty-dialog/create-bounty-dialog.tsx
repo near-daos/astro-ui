@@ -1,10 +1,9 @@
-import { useSelector } from 'react-redux';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
 import React, { FC, useCallback } from 'react';
 
 import { Icon } from 'components/Icon';
 import { Modal } from 'components/modal';
 
-import { selectSelectedDAO } from 'store/dao';
 import { SputnikService } from 'services/SputnikService';
 
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
@@ -25,7 +24,7 @@ export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
   isOpen,
   onClose
 }) => {
-  const selectedDao = useSelector(selectSelectedDAO);
+  const selectedDao = useSelectedDAO();
 
   const handleSubmit = useCallback(
     (data: CreateBountyInput) => {

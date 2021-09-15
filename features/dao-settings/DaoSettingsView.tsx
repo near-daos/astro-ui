@@ -1,4 +1,6 @@
-import React, { FC, useCallback, useState } from 'react';
+import Decimal from 'decimal.js';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import { Button } from 'components/button/Button';
@@ -7,6 +9,8 @@ import { NameAndPurposeTab } from 'features/dao-settings/components/name-and-pup
 import { DaoSettingsBanner } from 'features/dao-settings/components/dao-settings-banner';
 import { BondsAndDeadlines } from 'features/dao-settings/components/bond-and-deadlines-tab';
 import LinksTab from 'features/dao-settings/components/links-tab/LinksTab';
+import { yoktoNear } from 'services/SputnikService';
+import { DAO } from 'types/dao';
 
 import styles from './dao-settings-view.module.scss';
 
@@ -17,12 +21,22 @@ const FlagTab = dynamic(import('features/dao-settings/components/flag-tab'), {
 });
 
 export const DaoSettingsView: FC = () => {
-  const [data, setData] = useState(mockData);
+  const dao = useSelectedDAO();
+  const [data, setData] = useState<DAO | null>(dao);
   const [viewMode, setViewMode] = useState(true);
 
+  useEffect(() => {
+    if (dao != null) {
+      setData(dao);
+    }
+  }, [dao]);
+
+  // TODO This is hack and this whole thing should be done as form
   const handleChange = useCallback(
     (name, value) => {
-      setData({ ...data, [name]: value });
+      if (data != null) {
+        setData({ ...data, [name]: value });
+      }
     },
     [data]
   );
@@ -31,6 +45,8 @@ export const DaoSettingsView: FC = () => {
     setViewMode(true);
   }, []);
 
+  if (data == null) return null;
+
   const tabs = [
     {
       id: 1,
@@ -38,10 +54,10 @@ export const DaoSettingsView: FC = () => {
       content: (
         <NameAndPurposeTab
           onChange={handleChange}
-          accountName={data.accountName}
+          accountName={data.id}
           viewMode={viewMode}
           name={data.name}
-          purpose={data.purpose}
+          purpose={data.description}
         />
       )
     },
@@ -50,7 +66,8 @@ export const DaoSettingsView: FC = () => {
       label: 'Links',
       content: (
         <LinksTab
-          links={data.links}
+          // links={data.links} // TODO Where are links
+          links={[]}
           onChange={handleChange}
           viewMode={viewMode}
         />
@@ -63,10 +80,18 @@ export const DaoSettingsView: FC = () => {
         <BondsAndDeadlines
           onChange={handleChange}
           viewMode={viewMode}
-          createProposalBond={data.createProposalBond}
-          proposalExpireTime={data.proposalExpireTime}
-          claimBountyBond={data.claimBountyBond}
-          unclaimBountyTime={data.unclaimBountyTime}
+          createProposalBond={new Decimal(data.policy.proposalBond)
+            .div(yoktoNear)
+            .toFixed()}
+          claimBountyBond={new Decimal(data.policy.bountyBond)
+            .div(yoktoNear)
+            .toFixed()}
+          proposalExpireTime={new Decimal(data.policy.proposalPeriod)
+            .div('3.6e12')
+            .toFixed()}
+          unclaimBountyTime={new Decimal(data.policy.proposalPeriod)
+            .div('3.6e12')
+            .toFixed()}
         />
       )
     },
@@ -77,7 +102,7 @@ export const DaoSettingsView: FC = () => {
         <FlagTab
           onChange={handleChange}
           viewMode={viewMode}
-          daoFlag={data.daoFlag}
+          daoFlag={data.logo}
         />
       )
     }
@@ -90,7 +115,10 @@ export const DaoSettingsView: FC = () => {
         onSubmit={handleSubmit}
         onChange={handleChange}
         viewMode={viewMode}
-        data={data}
+        data={{
+          details: mockData.details,
+          externalLink: mockData.externalLink
+        }}
         voteDetails={voteDetails}
       />
       <div className={styles.header}>

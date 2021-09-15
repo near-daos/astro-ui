@@ -7,10 +7,10 @@ import styles from './bonds-and-deadlines-tab.module.scss';
 export interface BondsAndDeadlinesTabProps {
   onChange: (name: string, value: string) => void;
   viewMode: boolean;
-  createProposalBond: number;
-  proposalExpireTime: number;
-  claimBountyBond: number;
-  unclaimBountyTime: number;
+  createProposalBond: string;
+  proposalExpireTime: string;
+  claimBountyBond: string;
+  unclaimBountyTime: string;
 }
 
 export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = ({

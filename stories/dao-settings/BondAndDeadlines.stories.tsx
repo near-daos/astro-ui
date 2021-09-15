@@ -18,8 +18,8 @@ export const Template: Story<BondsAndDeadlinesTabProps> = (
 Template.storyName = 'BondsAndDeadlines';
 
 Template.args = {
-  createProposalBond: 1.1,
-  proposalExpireTime: 7,
-  claimBountyBond: 2,
-  unclaimBountyTime: 3
+  createProposalBond: '1.1',
+  proposalExpireTime: '7',
+  claimBountyBond: '2',
+  unclaimBountyTime: '3'
 };

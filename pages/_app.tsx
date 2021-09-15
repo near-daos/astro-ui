@@ -1,3 +1,4 @@
+import { useDAOList } from 'hooks/useDAOList';
 import { useMount } from 'react-use';
 import { Provider } from 'react-redux';
 import { useRouter } from 'next/router';
@@ -8,13 +9,13 @@ import { store } from 'store';
 import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
 import CreateLayout from 'components/create-layout/CreateLayout';
-import { DataPrefetch } from 'features/data-prefetch/DataPrefetch';
 
 import { AuthWrapper } from 'context/AuthContext';
 
 import { SputnikService } from 'services/SputnikService';
 
 import 'styles/globals.scss';
+import { SWRConfig } from 'swr';
 
 function usePageLayout(): React.FC {
   const router = useRouter();
@@ -36,18 +37,21 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     setWalletInitialized(true);
   });
 
-  if (walletInitialized) {
+  const { isLoading: isLoadingDAOList, daos } = useDAOList(walletInitialized);
+
+  if (walletInitialized && !isLoadingDAOList) {
     return (
-      <Provider store={store}>
-        <DataPrefetch />
-        <AuthWrapper>
-          <ModalProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </ModalProvider>
-        </AuthWrapper>
-      </Provider>
+      <SWRConfig value={{ fallback: { '/daos': daos } }}>
+        <Provider store={store}>
+          <AuthWrapper>
+            <ModalProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </ModalProvider>
+          </AuthWrapper>
+        </Provider>
+      </SWRConfig>
     );
   }
 

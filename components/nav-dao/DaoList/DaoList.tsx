@@ -1,10 +1,9 @@
+import { useSelectedDAO } from 'hooks/useSelectedDao';
 import { useBoolean } from 'react-use';
-import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { Collapsable } from 'components/collapsable/Collapsable';
 
 import { DAO } from 'types/dao';
-import { selectSelectedDAO, setSelectedDAO } from 'store/dao';
 
 import { DaoItem } from 'components/nav-dao/DaoItem';
 import { DaoHeader } from 'components/nav-dao/DaoHeader';
@@ -18,21 +17,10 @@ interface DAOListProps {
 }
 
 export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
-  const dispatch = useDispatch();
-
-  // TODO Probably it's better to use router params instead of currentItem prop
-  // However url structure is unclear yet
   const [open, toggleState] = useBoolean(false);
   const { isOpen = open, toggle = toggleState } = props;
 
-  const selectedDao = useSelector(selectSelectedDAO);
-
-  const selectDao = useCallback(
-    (dao: DAO) => {
-      dispatch(setSelectedDAO(dao.id));
-    },
-    [dispatch]
-  );
+  const selectedDao = useSelectedDAO();
 
   return (
     <div>
@@ -46,19 +34,18 @@ export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
             logo={selectedDao?.logo}
             isOpen={isHeadingOpen}
             onClick={() => toggleHeading()}
-            label={selectedDao?.name || 'Select DAO'}
+            label={selectedDao?.name || ''}
           />
         )}
       >
         {items.map(dao => (
           <DaoItem
+            onClick={() => toggle(false)}
             dao={dao}
             key={dao.id}
             logo={dao.logo}
             label={dao.name}
             count={dao.members}
-            selectDao={selectDao}
-            href={`/dao/${dao.id}`}
           />
         ))}
       </Collapsable>

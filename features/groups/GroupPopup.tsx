@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
 import React, { useCallback } from 'react';
 
 import { Modal } from 'components/modal';
@@ -11,7 +11,6 @@ import {
   IGroupForm
 } from 'features/groups/types';
 
-import { selectSelectedDAO } from 'store/dao';
 import { SputnikService } from 'services/SputnikService';
 
 import styles from 'features/treasury/request-payout-popup/request-payout-popup.module.scss';
@@ -54,7 +53,7 @@ export const GroupPopup: React.FC<GroupPopupProps> = ({
 }) => {
   const { groupType } = initialValues;
 
-  const selectedDao = useSelector(selectSelectedDAO);
+  const selectedDao = useSelectedDAO();
 
   const handleSubmit = useCallback(
     (data: IGroupForm) => {

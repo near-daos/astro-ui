@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
 import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
@@ -47,12 +48,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
   closeSideBar
 }) => {
   const router = useRouter();
-  const activeGroupId = get(router.asPath.split('/'), 1);
+  const activeGroupId = get(router.asPath.split('/'), 3);
 
   const { getItemProps } = useAccordion({
     allowUnSelect: true,
     allowMultiSelect: false,
     preSelected: (() => {
+      if (activeGroupId === 'dao') return [];
+
       return isEmpty(activeGroupId) ? [] : [activeGroupId];
     })()
   });
@@ -73,6 +76,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     return () => router.events.off('routeChangeComplete', close);
   });
 
+  const currentDao = useSelectedDAO();
+
   return (
     <aside className={rootClassName}>
       <div className={styles.wrapper}>
@@ -84,7 +89,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           />
           <Icon name="whiteLogo" className={styles.logo} />
         </div>
-        <Logo className={styles.mainLogo} />
+        <Logo src={currentDao?.logo} className={styles.mainLogo} />
         <DaoList {...getItemProps('dao')} items={daoList} />
 
         <nav className={styles.menu}>
@@ -97,7 +102,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   label={item.label}
                   count={item.count}
                   href={item.href}
-                  urlParams={router.query}
                   icon={item.logo}
                 />
               );
@@ -115,7 +119,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     label={item.label}
                     count={item.count}
                     href={item.href}
-                    urlParams={router.query}
                     icon={item.logo}
                     active={activeGroupId === item.id}
                   />
@@ -127,8 +130,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     count={subItem.count}
                     label={subItem.label}
                     href={subItem.href}
+                    urlParams={{ dao: currentDao?.id }}
                     subHrefs={subItem.subHrefs}
-                    urlParams={router.query}
                   />
                 ))}
               </Collapsable>
