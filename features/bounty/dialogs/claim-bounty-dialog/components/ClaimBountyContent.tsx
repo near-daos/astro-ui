@@ -7,7 +7,7 @@ import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import { getDeadlineDate } from 'components/cards/bounty-card/helpers';
 import { Button } from 'components/button/Button';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
-import { Bond } from 'components/bond';
+import { VoteDetails } from 'components/vote-details';
 
 interface ClaimBountyContentProps {
   onClose: (...args: unknown[]) => void;
@@ -43,8 +43,9 @@ const ClaimBountyContent: FC<ClaimBountyContentProps> = ({
         </p>
       </div>
       <div className={styles.vote}>
-        <ExpandableDetails label="Details">Placeholder</ExpandableDetails>
-        <Bond {...data.bondDetail} className={styles.fitContainer} />
+        <ExpandableDetails label="Details">
+          <VoteDetails scope="transfer" />
+        </ExpandableDetails>
       </div>
 
       <div className={styles.footer}>

@@ -19,7 +19,7 @@ export const ProgressBar: FC<ProgressBarProps> = ({ detail }) => {
     return cn({
       [styles.positive]: vote === 'Yes',
       [styles.negative]: vote === 'No',
-      [styles.trash]: vote === 'Trash'
+      [styles.trash]: vote === 'Dismiss'
     });
   };
 

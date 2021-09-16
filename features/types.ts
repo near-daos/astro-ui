@@ -1,6 +1,6 @@
 export type Token = 'NEAR';
 
-export type Vote = 'Yes' | 'No' | 'Trash';
+export type Vote = 'Yes' | 'No' | 'Dismiss';
 
 export type VoteDetail = {
   limit: string;
