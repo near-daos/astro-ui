@@ -23,9 +23,9 @@ Template.args = {
       token: 'NEAR'
     },
     voteDetails: [
-      { value: '50%', label: 'MEW holders' },
-      { value: '50%', label: 'cool group' },
-      { value: '1 person', label: 'Ombudspeople' }
+      { limit: '50%', label: 'MEW holders' },
+      { limit: '50%', label: 'cool group' },
+      { limit: '1 person', label: 'Ombudspeople' }
     ],
     type: 'Passed',
     status: 'In progress',

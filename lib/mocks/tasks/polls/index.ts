@@ -76,9 +76,9 @@ const generatePolls = () => {
 export const POLLS_DATA = generatePolls();
 
 export const VOTE_DETAIL_DATA: VoteDetail[] = [
-  { value: '50%', label: 'MEW holders' },
-  { value: '50%', label: 'cool group' },
-  { value: '1 person', label: 'Ombudspeople' }
+  { limit: '50%', label: 'MEW holders' },
+  { limit: '50%', label: 'cool group' },
+  { limit: '1 person', label: 'Ombudspeople' }
 ];
 
 export const BOND_DETAIL_DATA: BondDetail = {

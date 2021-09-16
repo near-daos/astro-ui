@@ -35,9 +35,9 @@ const generateBounty = (
   deadlineThreshold,
   deadlineUnit: 'day' as DeadlineUnit,
   voteDetails: [
-    { value: '50%', label: 'MEW holders' },
-    { value: '50%', label: 'cool group' },
-    { value: '1 person', label: 'Ombudspeople' }
+    { limit: '50%', label: 'MEW holders' },
+    { limit: '50%', label: 'cool group' },
+    { limit: '1 person', label: 'Ombudspeople' }
   ],
   bondDetail: {
     value: 0.3,
@@ -101,9 +101,9 @@ export const CREATE_BOUNTY_INITIAL: CreateBountyInput = {
   externalUrl: '',
   details: '',
   voteDetails: [
-    { value: '50%', label: 'MEW holders' },
-    { value: '50%', label: 'cool group' },
-    { value: '1 person', label: 'Ombudspeople' }
+    { limit: '50%', label: 'MEW holders' },
+    { limit: '50%', label: 'cool group' },
+    { limit: '1 person', label: 'Ombudspeople' }
   ],
   bondDetail: {
     value: 0.3,

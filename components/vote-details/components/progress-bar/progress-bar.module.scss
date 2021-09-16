@@ -1,0 +1,51 @@
+.root {
+  margin: 20px 0 12px;
+  position: relative;
+}
+
+.limit {
+  animation: voteLimit 2s linear forwards;
+  background-color: var(--color-white);
+  bottom: 10px;
+  height: 6px;
+  left: 0;
+  position: absolute;
+  width: 2px;
+}
+
+.bar {
+  background-color: var(--color-primary-10);
+  display: flex;
+  height: 6px;
+  width: 100%;
+}
+
+.vote {
+  animation: voteBar 2s linear forwards;
+  height: 100%;
+  width: 0;
+}
+
+.vote.positive {
+  background-color: var(--color-success-50);
+}
+
+.vote.negative {
+  background-color: var(--color-error-60);
+}
+
+.vote.trash {
+  background-color: var(--color-neutral-60);
+}
+
+@keyframes voteBar {
+  to {
+    width: var(--voteWeight);
+  }
+}
+
+@keyframes voteLimit {
+  to {
+    left: var(--voteLimit);
+  }
+}

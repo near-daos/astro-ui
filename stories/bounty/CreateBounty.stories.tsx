@@ -26,9 +26,9 @@ Template.args = {
     externalUrl: '',
     details: '',
     voteDetails: [
-      { value: '50%', label: 'MEW holders' },
-      { value: '50%', label: 'cool group' },
-      { value: '1 person', label: 'Ombudspeople' }
+      { limit: '50%', label: 'MEW holders' },
+      { limit: '50%', label: 'cool group' },
+      { limit: '1 person', label: 'Ombudspeople' }
     ],
     bondDetail: {
       value: 0.3,
