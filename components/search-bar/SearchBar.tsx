@@ -35,24 +35,42 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
 
   const [value, setValue] = useState('');
   const [expanded, setExpanded] = useState(false);
+  const [focused, setFocused] = useState(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const { handleSearch, handleClose, searchResults } = useSearchResults();
+  const {
+    handleSearch,
+    handleClose,
+    searchResults,
+    setSearchResults
+  } = useSearchResults();
 
   useDebounce(
     () => {
-      if (expanded) {
-        handleSearch(value);
+      const query = value?.trim() ?? '';
+
+      if (expanded && query.length > 0) {
+        handleSearch(query);
+      } else if (expanded) {
+        setSearchResults(null);
       }
     },
     500,
     [value]
   );
 
-  useClickAway(ref, () => {
+  useClickAway(ref, e => {
     if (!searchResults) {
       setExpanded(false);
+    }
+
+    const searchResElement = (e.target as HTMLElement).closest(
+      '#astro_search-results'
+    );
+
+    if (!searchResElement) {
+      setFocused(false);
     }
   });
 
@@ -80,6 +98,8 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
   const handleKeys: KeyboardEventHandler<HTMLInputElement> = e => {
     if (e.key === 'Enter') {
       handleSubmit();
+    } else if (e.key === 'Escape' && value.trim().length) {
+      setValue('');
     } else if (e.key === 'Escape') {
       handleCancel();
     }
@@ -104,6 +124,8 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
         ref={inputRef}
         tabIndex={0}
         value={value}
+        onFocus={() => setFocused(true)}
+        // onBlur={() => setFocused(false)}
         onChange={handleChange}
         className={cn(styles.input, 'body1')}
         type="text"
@@ -124,9 +146,11 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
       />
       {!!searchResults &&
         expanded &&
+        focused &&
         !router.pathname.includes('search-results') &&
         ReactDOM.createPortal(
           <div
+            id="astro_search-results"
             ref={setPopperElement as React.LegacyRef<HTMLDivElement>}
             style={{ ...popperStyles.popper, zIndex: 100 }}
             {...attributes.popper}
