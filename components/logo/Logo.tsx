@@ -20,7 +20,7 @@ export const Logo: React.VFC<LogoProps> = ({ className, src, ...props }) => {
     <Link href={{ href: '/dao/[dao]', query: router.query }} passHref>
       <a href="*" {...props} className={cn(styles.logo, className)}>
         {src ? (
-          <Image src={src} width={48} height={48} />
+          <Image loading="eager" src={src} width={48} height={48} />
         ) : (
           <Icon width={48} height={48} name="flag" />
         )}
