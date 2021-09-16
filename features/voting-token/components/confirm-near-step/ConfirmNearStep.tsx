@@ -4,6 +4,7 @@ import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { useWizardContext } from 'features/voting-token/components/voting-token-wizard/helpers';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
+import { VoteDetails } from 'components/vote-details';
 
 import styles from './confirm-near-step.module.scss';
 
@@ -29,7 +30,9 @@ export const ConfirmNearStep: FC = () => {
         </span>
       </div>
       <div className={styles.vote}>
-        <ExpandableDetails label="Vote details">placeholder</ExpandableDetails>
+        <ExpandableDetails label="Vote details">
+          <VoteDetails scope="setVoteToken" />
+        </ExpandableDetails>
       </div>
       <div className={styles.footer}>
         <Button

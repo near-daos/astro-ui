@@ -14,7 +14,7 @@ import { DAO } from 'types/dao';
 
 import styles from './dao-settings-view.module.scss';
 
-import { mockData, voteDetails } from './mockData';
+import { mockData } from './mockData';
 
 const FlagTab = dynamic(import('features/dao-settings/components/flag-tab'), {
   ssr: false
@@ -119,7 +119,7 @@ export const DaoSettingsView: FC = () => {
           details: mockData.details,
           externalLink: mockData.externalLink
         }}
-        voteDetails={voteDetails}
+        scope="config"
       />
       <div className={styles.header}>
         <h1>DAO settings</h1>

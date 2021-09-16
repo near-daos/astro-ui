@@ -1,10 +1,11 @@
 import { DAO, DaoVotePolicy, TGroup } from 'types/dao';
 import { VotePolicy } from 'features/vote-policy/components/policy-row';
-import { CreateProposalParams } from 'types/proposal';
+import { CreateProposalParams, Proposal } from 'types/proposal';
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
 import snakeCase from 'lodash/snakeCase';
+import { VoteDetail, VoterDetail } from 'features/types';
 
-type Scope =
+export type Scope =
   | 'addBounty'
   | 'config'
   | 'policy'
@@ -158,18 +159,45 @@ export const getInitialData = (
   };
 };
 
-// ProposalKind::ChangeConfig { .. } => "config",
-//   ProposalKind::ChangePolicy { .. } => "policy",
-//   ProposalKind::AddMemberToRole { .. } => "add_member_to_role",
-//   ProposalKind::RemoveMemberFromRole { .. } => "remove_member_from_role",
-//   ProposalKind::FunctionCall { .. } => "call",
-//   ProposalKind::UpgradeSelf { .. } => "upgrade_self",
-//   ProposalKind::UpgradeRemote { .. } => "upgrade_remote",
-//   ProposalKind::Transfer { .. } => "transfer",
-//   ProposalKind::SetStakingContract { .. } => "set_vote_token",
-//   ProposalKind::AddBounty { .. } => "add_bounty",
-//   ProposalKind::BountyDone { .. } => "bounty_done",
-//   ProposalKind::Vote => "vote",
+export function getVoteDetails(
+  dao: DAO | null,
+  scope: Scope,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  proposal?: Proposal | null
+): { details: VoteDetail[]; votersList: VoterDetail[] } {
+  if (!dao)
+    return {
+      details: [],
+      votersList: []
+    };
+
+  const policiesList = getPoliciesList(
+    dao.groups,
+    scope,
+    ['VoteApprove', 'VoteReject', 'VoteRemove'],
+    dao.policy.defaultVotePolicy
+  );
+
+  const details = policiesList.map(item => {
+    if (item.voteBy === 'Person') {
+      return {
+        label: item.whoCanVote ?? '',
+        limit: `${item.amount} ${
+          item.threshold === '% of group'
+            ? '%'
+            : `person${item.amount ?? 0 > 1 ? 's' : ''}`
+        }`
+      };
+    }
+
+    return {
+      label: item.whoCanVote ?? '',
+      limit: `${item.amount} ${item.threshold} tokens`
+    };
+  });
+
+  return { details, votersList: [] };
+}
 
 type VotePolicyRequest = {
   // eslint-disable-next-line camelcase

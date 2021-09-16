@@ -4,7 +4,7 @@ import { Token } from 'features/types';
 import styles from './bond.module.scss';
 
 export interface BondProps {
-  value: number;
+  value: number | string;
   token: Token;
   className?: string;
 }

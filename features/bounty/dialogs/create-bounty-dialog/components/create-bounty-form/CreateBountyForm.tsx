@@ -126,7 +126,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
       </div>
       <div className={styles.vote}>
         <ExpandableDetails label="Vote details">
-          <VoteDetails {...initialValues} />
+          <VoteDetails scope="policy" />
         </ExpandableDetails>
       </div>
       <div className={styles.footer}>

@@ -4,6 +4,7 @@ import { useWizardContext } from 'features/voting-token/components/voting-token-
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
+import { VoteDetails } from 'components/vote-details';
 
 import styles from './confirm-token-farm-token-step.module.scss';
 
@@ -38,7 +39,9 @@ export const ConfirmTokenFarmTokenStep: FC = () => {
         </span>
       </div>
       <div className={styles.vote}>
-        <ExpandableDetails label="Vote details">placeholder</ExpandableDetails>
+        <ExpandableDetails label="Vote details">
+          <VoteDetails scope="setVoteToken" />
+        </ExpandableDetails>
       </div>
       <div className={styles.footer}>
         <Button

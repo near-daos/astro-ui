@@ -118,7 +118,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
       />
       <div className={styles.vote}>
         <ExpandableDetails label="Vote details" className={styles.voteDetails}>
-          <VoteDetails {...initialValues} />
+          <VoteDetails scope="transfer" />
         </ExpandableDetails>
       </div>
       <div className={styles.footer}>

@@ -16,7 +16,6 @@ import { useModal } from 'components/modal/hooks';
 import ScrollList from 'components/scroll-list/ScrollList';
 import { Button } from 'components/button/Button';
 import { IconButton } from 'components/button/IconButton';
-import { VOTE_DETAIL_DATA, BOND_DETAIL_DATA } from 'lib/mocks/tasks/polls';
 import styles from 'pages/dao/[dao]/tasks/polls/polls.module.scss';
 import { SputnikService } from 'services/SputnikService';
 import { Proposal } from 'types/proposal';
@@ -29,10 +28,7 @@ const PollsPage: FC<PollsPageProps> = () => {
   const { query } = useRouter();
   const [pollsList, setPollsList] = useState<Proposal[]>([]);
 
-  const [showCreatePollDialog] = useModal(CreatePollDialog, {
-    voteDetails: VOTE_DETAIL_DATA,
-    bondDetail: BOND_DETAIL_DATA
-  });
+  const [showCreatePollDialog] = useModal(CreatePollDialog);
 
   const [showResetScroll, setShowResetScroll] = useState(false);
   const scrollListRef = useRef<VariableSizeList>(null);

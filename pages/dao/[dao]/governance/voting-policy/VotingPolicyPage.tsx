@@ -8,7 +8,6 @@ import { TasksTabView } from 'features/vote-policy/components/tasks-tab-view';
 import { GroupsTabView } from 'features/vote-policy/components/groups-tab-view';
 import { TreasuryTabView } from 'features/vote-policy/components/treasury-tab-view';
 import { GovernanceTabView } from 'features/vote-policy/components/governance-tab-view';
-import { voteDetails } from 'lib/mocks/governance/voting-policy';
 import {
   getInitialData,
   getNewProposalObject
@@ -119,7 +118,7 @@ const VotingPolicyPage: FC = () => {
         onChange={handleChange}
         viewMode={viewMode}
         data={data.daoSettings}
-        voteDetails={voteDetails}
+        scope="policy"
       />
       <div className={styles.header}>
         <h1>Voting policy</h1>

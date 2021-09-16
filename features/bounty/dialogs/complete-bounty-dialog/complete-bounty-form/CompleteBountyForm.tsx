@@ -11,12 +11,10 @@ import { Button } from 'components/button/Button';
 import { TextArea } from 'components/textarea/TextArea';
 
 import { VoteDetails } from 'components/vote-details';
-import { BondDetail, VoteDetail } from 'features/types';
+
 import styles from './complete-bounty-form.module.scss';
 
 interface CompleteBountyFormProps {
-  voteDetails: VoteDetail[];
-  bondDetail: BondDetail;
   onSubmit: () => void;
   onCancel: () => void;
 }
@@ -35,9 +33,7 @@ const schema = yup.object().shape({
 
 export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
   onSubmit,
-  onCancel,
-  voteDetails,
-  bondDetail
+  onCancel
 }) => {
   const {
     register,
@@ -82,7 +78,7 @@ export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
       />
       <div className={styles.vote}>
         <ExpandableDetails label="Vote details">
-          <VoteDetails voteDetails={voteDetails} bondDetail={bondDetail} />
+          <VoteDetails scope="bountyDone" />
         </ExpandableDetails>
       </div>
       <div className={styles.footer}>

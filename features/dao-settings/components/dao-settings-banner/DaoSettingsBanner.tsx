@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 
-import { VoteDetails, VoteDetailsProps } from 'components/vote-details';
+import { VoteDetails } from 'components/vote-details';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { Input } from 'components/input/Input';
 import { Button } from 'components/button/Button';
 import { TextArea } from 'components/textarea/TextArea';
 
-import { DaoSettingsProps } from 'features/vote-policy/helpers';
+import { DaoSettingsProps, Scope } from 'features/vote-policy/helpers';
 
 import styles from './dao-setting-banner.module.scss';
 
@@ -15,7 +15,7 @@ export interface DaoSettingsBannerProps {
   onSubmit: () => void;
   onChange: (name: string, value: DaoSettings) => void;
   viewMode: boolean;
-  voteDetails: VoteDetailsProps;
+  scope: Scope;
   data: DaoSettingsProps;
 }
 
@@ -29,7 +29,7 @@ export const DaoSettingsBanner: FC<DaoSettingsBannerProps> = ({
   onSubmit,
   onCancel,
   viewMode = true,
-  voteDetails,
+  scope,
   data
 }) => {
   if (viewMode) return null;
@@ -83,11 +83,7 @@ export const DaoSettingsBanner: FC<DaoSettingsBannerProps> = ({
       </div>
       <div className={styles.details}>
         <ExpandableDetails label="Vote details" className={styles.wrapper}>
-          <VoteDetails
-            className={styles.expanded}
-            voteDetails={voteDetails.voteDetails}
-            bondDetail={voteDetails.bondDetail}
-          />
+          <VoteDetails className={styles.expanded} scope={scope} />
         </ExpandableDetails>
       </div>
     </div>
