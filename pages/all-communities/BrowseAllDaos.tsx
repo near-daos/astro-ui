@@ -12,23 +12,23 @@ import styles from './browse-all-daos.module.scss';
 const sortOptions = [
   {
     label: 'Most active',
-    value: 'updatedAt'
+    value: 'lastProposalId,DESC'
   },
   {
     label: 'Newest',
-    value: 'createdAt'
+    value: 'createdAt,DESC'
   },
   {
     label: 'Oldest',
-    value: '-createdAt'
+    value: 'createdAt,ASC'
   },
   {
     label: 'Biggest funds',
-    value: 'amount'
+    value: 'amount,DESC'
   },
   {
     label: 'Number of members',
-    value: 'totalSupply'
+    value: 'numberOfMembers,DESC'
   }
 ];
 
@@ -38,14 +38,14 @@ interface BrowseAllDaosProps {
 
 const BrowseAllDaos: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
   const router = useRouter();
-  const activeSort = (router.query.sort as string) ?? sortOptions[0].value;
+  const activeSort = (router.query.sort as string) ?? sortOptions[1].value;
 
   const [data, setData] = useState(initialData);
 
   const handleSort = useCallback(
     value => {
       router.push(`?sort=${value}`, undefined, { shallow: true });
-      SputnikService.getDaoList({ sort: value })
+      SputnikService.getDaoList({ sort: `${value}` })
         .then(res => setData(res))
         .catch(e => console.error(e));
     },
