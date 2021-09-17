@@ -21,15 +21,19 @@ import styles from './sidebar.module.scss';
 interface ItemBase {
   id: string;
   label: string | ReactNode;
-  href: string;
+  href?: string;
   count?: number;
   subHrefs?: string[];
+  disabled?: boolean;
+  as?: string;
 }
 
 interface MenuItem extends Omit<ItemBase, 'href' | 'subHrefs'> {
   subItems: ItemBase[];
   logo: IconName;
   href?: string;
+  disabled?: boolean;
+  as?: string;
 }
 
 interface SidebarProps {
@@ -130,6 +134,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     count={subItem.count}
                     label={subItem.label}
                     href={subItem.href}
+                    as={subItem.as}
+                    disabled={subItem.disabled}
                     urlParams={{ dao: currentDao?.id }}
                     subHrefs={subItem.subHrefs}
                   />
