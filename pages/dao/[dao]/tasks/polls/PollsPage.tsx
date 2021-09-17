@@ -26,13 +26,18 @@ interface PollsPageProps {
 
 const PollsPage: FC<PollsPageProps> = () => {
   const { query } = useRouter();
+
   const [pollsList, setPollsList] = useState<Proposal[]>([]);
 
-  const [showCreatePollDialog] = useModal(CreatePollDialog);
+  const [showModal] = useModal(CreatePollDialog);
 
   const [showResetScroll, setShowResetScroll] = useState(false);
   const scrollListRef = useRef<VariableSizeList>(null);
   const isMobileOrTablet = useMedia('(max-width: 767px)');
+
+  function fetchPolls(daoId: string) {
+    SputnikService.getPolls(daoId).then(res => setPollsList(res));
+  }
 
   const handleScroll = useCallback(({ scrollOffset }: ListOnScrollProps) => {
     if (scrollOffset > 100) {
@@ -42,9 +47,10 @@ const PollsPage: FC<PollsPageProps> = () => {
     }
   }, []);
 
-  const handleCreateClick = useCallback(() => showCreatePollDialog(), [
-    showCreatePollDialog
-  ]);
+  const handleCreateClick = useCallback(async () => {
+    await showModal();
+    fetchPolls(query.dao as string);
+  }, [query.dao, showModal]);
 
   const resetScroll = useCallback(() => {
     if (!scrollListRef || !scrollListRef.current) {
@@ -55,12 +61,10 @@ const PollsPage: FC<PollsPageProps> = () => {
   }, [scrollListRef]);
 
   useEffect(() => {
-    if (query.id) {
-      SputnikService.getPolls(query.id as string).then(res =>
-        setPollsList(res)
-      );
+    if (query.dao) {
+      fetchPolls(query.dao as string);
     }
-  }, [query.id]);
+  }, [query.dao]);
 
   const renderCard = ({
     index,
@@ -109,21 +113,5 @@ const PollsPage: FC<PollsPageProps> = () => {
     </div>
   );
 };
-
-export async function getServerSideProps({
-  query
-}: {
-  query: string;
-}): Promise<{
-  props: { data: Proposal[] };
-}> {
-  const data = await SputnikService.getProposals(query);
-
-  return {
-    props: {
-      data
-    }
-  };
-}
 
 export default PollsPage;
