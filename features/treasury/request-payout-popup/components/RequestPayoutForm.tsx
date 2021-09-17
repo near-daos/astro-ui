@@ -36,7 +36,7 @@ interface IRequestPayoutForm {
 
 interface RequestPayoutFormProps {
   initialValues: CreatePayoutInput;
-  onSubmit: () => void;
+  onSubmit: (data: CreatePayoutInput) => void;
   onCancel: () => void;
 }
 
@@ -52,7 +52,11 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
     setValue,
     formState: { errors, touchedFields }
   } = useForm<IRequestPayoutForm>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    defaultValues: {
+      ...initialValues,
+      amount: ''
+    }
   });
 
   return (
@@ -63,6 +67,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
         placeholder=""
         size="block"
         label="Token"
+        disabled
         options={tokenOptions}
         {...register('token')}
         onChange={v =>
