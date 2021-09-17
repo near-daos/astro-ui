@@ -60,10 +60,9 @@ export type DaoDTO = {
 };
 
 export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
-  // Calculate DAO members count
   const roles = get(daoDTO, 'policy.roles', []);
-  // const councilRole = roles.find((item: DaoRole) => item.name === 'council');
   const numberOfMembers = get(daoDTO, 'numberOfMembers', 0);
+  const numberOfProposals = get(daoDTO, 'lastProposalId', 0);
 
   // Transform amount
   const amountYokto = new Decimal(daoDTO.amount);
@@ -90,7 +89,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     name: config?.name ?? '',
     description: config?.purpose ?? '',
     members: numberOfMembers,
-    proposals: 18,
+    proposals: numberOfProposals,
     // TODO - where can we get DAO logo flag?
     logo: flag.src,
     funds,

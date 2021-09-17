@@ -1,5 +1,6 @@
 import React from 'react';
 import TextTruncate from 'react-text-truncate';
+import Link from 'next/link';
 
 import { FlagIcon } from 'components/cards/dao-card/FlagIcon';
 import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value/FormattedNumericValue';
@@ -35,33 +36,35 @@ const DaoCard: React.FC<DaoCardProps> = ({
   );
 
   return (
-    <div className={styles.daoCard}>
-      <div className={styles.iconWrapper}>
-        <FlagIcon />
-      </div>
-      <div className={styles.titleCaption}>
-        <h2 className={styles.noMargin}>{title}</h2>
-      </div>
-      <div className={styles.urlCaption}>{daoAccountName}</div>
-      <div className={styles.descriptionCaption}>
-        <TextTruncate
-          line={2}
-          element="span"
-          truncateText="…"
-          text={description ?? ''}
-          textTruncateChild={null}
-        />
-      </div>
-      <div className={styles.activeProposals}>
-        <div className={styles.activeProposalsCaption}>
-          {activeProposals} active proposals
+    <Link href={`/dao/${daoAccountName}`} passHref>
+      <div className={styles.daoCard}>
+        <div className={styles.iconWrapper}>
+          <FlagIcon />
+        </div>
+        <div className={styles.titleCaption}>
+          <h2 className={styles.noMargin}>{title}</h2>
+        </div>
+        <div className={styles.urlCaption}>{daoAccountName}</div>
+        <div className={styles.descriptionCaption}>
+          <TextTruncate
+            line={2}
+            element="span"
+            truncateText="…"
+            text={description ?? ''}
+            textTruncateChild={null}
+          />
+        </div>
+        <div className={styles.activeProposals}>
+          <div className={styles.activeProposalsCaption}>
+            {activeProposals} active proposals
+          </div>
+        </div>
+        <div className={styles.membersAndFunds}>
+          {renderFooterItem('Members', members)}
+          {renderFooterItem('Funds', funds, 'usd')}
         </div>
       </div>
-      <div className={styles.membersAndFunds}>
-        {renderFooterItem('Members', members)}
-        {renderFooterItem('Funds', funds, 'usd')}
-      </div>
-    </div>
+    </Link>
   );
 };
 
