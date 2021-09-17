@@ -6,6 +6,6 @@ export type CreatePayoutInput = {
   recipient?: string;
   payoutDetail?: string;
   externalUrl?: string;
-  voteDetails: VoteDetail[];
-  bondDetail: BondDetail;
+  voteDetails?: VoteDetail[];
+  bondDetail?: BondDetail;
 };
