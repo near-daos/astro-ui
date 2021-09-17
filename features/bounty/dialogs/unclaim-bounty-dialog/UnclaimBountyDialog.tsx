@@ -7,6 +7,8 @@ import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import { Bounty } from 'components/cards/bounty-card/types';
 
 import UnclaimBountyContent from 'features/bounty/dialogs/unclaim-bounty-dialog/components/UnclaimBountyContent';
+import { SputnikService } from 'services/SputnikService';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
 
 export interface UnclaimBountyDialogProps {
   isOpen: boolean;
@@ -19,10 +21,16 @@ export const UnclaimBountyDialog: FC<UnclaimBountyDialogProps> = ({
   onClose,
   data
 }) => {
+  const selectedDao = useSelectedDAO();
+
   const handleSubmit = useCallback(() => {
-    // todo - handle unclaim bounty here
+    if (!selectedDao) {
+      return;
+    }
+
+    SputnikService.unclaimBounty(selectedDao.id, data.id);
     onClose('submitted');
-  }, [onClose]);
+  }, [data.id, onClose, selectedDao]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

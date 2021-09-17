@@ -4,4 +4,6 @@ export type CreateTokenParams = {
   icon: string;
 };
 
-export type Token = CreateTokenParams;
+export enum Token {
+  NEAR = 'NEAR'
+}

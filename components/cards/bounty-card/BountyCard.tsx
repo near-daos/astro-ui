@@ -3,14 +3,14 @@ import TextTruncate from 'react-text-truncate';
 import { StatusPanel } from 'components/cards/bounty-card/components/status-panel/StatusPanel';
 import {
   OpenCells,
-  InProgressCells,
-  CompletedCells
+  InProgressCells
 } from 'components/cards/bounty-card/components/cells';
 import { Bounty } from 'components/cards/bounty-card/types';
 import { ClaimBountyDialog } from 'features/bounty/dialogs/claim-bounty-dialog/ClaimBountyDialog';
 import { UnclaimBountyDialog } from 'features/bounty/dialogs/unclaim-bounty-dialog/UnclaimBountyDialog';
 import { CompleteBountyDialog } from 'features/bounty/dialogs/complete-bounty-dialog/CompleteBountyDialog';
 import { useModal } from 'components/modal';
+import { SputnikService } from 'services/SputnikService';
 import styles from './bounty-card.module.scss';
 
 export interface BountyCardProps {
@@ -19,24 +19,21 @@ export interface BountyCardProps {
 
 export const BountyCard: FC<BountyCardProps> = ({ data }) => {
   const {
-    type,
-    status,
     token,
     amount,
-    group,
+    description,
     slots,
-    claimed,
     claimedBy,
-    claimedByMe,
-    deadlineThreshold,
-    deadlineUnit
+    deadlineThreshold
   } = data;
   const [showClaimBountyDialog] = useModal(ClaimBountyDialog, {
     data
   });
+
   const [showUnclaimBountyDialog] = useModal(UnclaimBountyDialog, {
     data
   });
+
   const [showCompleteBountyDialog] = useModal(CompleteBountyDialog, {
     data
   });
@@ -51,16 +48,22 @@ export const BountyCard: FC<BountyCardProps> = ({ data }) => {
     showCompleteBountyDialog
   ]);
 
+  const status = claimedBy.length > 0 ? 'In progress' : 'Open';
+
+  const claimedByMe = !!claimedBy.find(
+    claim => claim.accountId === SputnikService.getAccountId()
+  );
+
   return (
     <div className={styles.root}>
-      <StatusPanel type={type} />
+      <StatusPanel type="Passed" />
       <div className={styles.content}>
         <div className={styles.group}>
           <TextTruncate
             line={3}
             element="span"
             truncateText="…"
-            text={group}
+            text={description}
             textTruncateChild={null}
           />
         </div>
@@ -71,7 +74,7 @@ export const BountyCard: FC<BountyCardProps> = ({ data }) => {
         </div>
         {status === 'Open' && (
           <OpenCells
-            claimed={claimed}
+            claimed={claimedBy.length}
             slots={slots}
             onClaim={handleClaimClick}
           />
@@ -81,18 +84,16 @@ export const BountyCard: FC<BountyCardProps> = ({ data }) => {
             claimedBy={claimedBy}
             claimedByMe={claimedByMe}
             deadlineThreshold={deadlineThreshold}
-            deadlineUnit={deadlineUnit}
             onUnclaim={handleUnclaimClick}
-            onComplete={handleCompleteClick}
+            onComplete={() => handleCompleteClick()}
           />
         )}
-        {status === 'Completed' && (
-          <CompletedCells
-            claimedBy={claimedBy}
-            deadlineThreshold={deadlineThreshold}
-            deadlineUnit={deadlineUnit}
-          />
-        )}
+        {/* {status === 'Completed' && ( */}
+        {/*  <CompletedCells */}
+        {/*    claimedBy={claimedBy} */}
+        {/*    deadlineThreshold={deadlineThreshold} */}
+        {/*  /> */}
+        {/* )} */}
       </div>
     </div>
   );
