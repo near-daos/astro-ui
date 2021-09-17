@@ -1,4 +1,4 @@
-import { TokenName } from 'components/cards/token-card';
+import { Token } from 'types/token';
 
 export interface ChartData {
   balance: number;
@@ -10,7 +10,7 @@ export type TransactionType = 'Deposit' | 'Withdraw';
 export interface TransactionCardInput {
   type: TransactionType;
   transactionId: string;
-  tokenName: TokenName;
+  tokenName: Token;
   tokensBalance: number;
   date: string;
   accountName: string;

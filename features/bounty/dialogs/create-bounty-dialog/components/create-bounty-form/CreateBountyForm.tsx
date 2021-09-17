@@ -88,7 +88,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
       <div className={styles.slot}>
         Bounty can be claimed up to
         <Input
-          size="small"
+          size="content"
           isValid={touchedFields.slots && !errors.slots?.message}
           textAlign="center"
           type="number"
@@ -100,7 +100,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
       <div className={styles.deadline}>
         Once claimed, bounty must be completed in
         <Input
-          size="small"
+          size="content"
           isValid={
             touchedFields.deadlineThreshold &&
             !errors.deadlineThreshold?.message

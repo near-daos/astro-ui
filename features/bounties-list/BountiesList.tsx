@@ -5,6 +5,8 @@ import { IconButton } from 'components/button/IconButton';
 import ScrollList from 'components/scroll-list/ScrollList';
 import { ListOnScrollProps, VariableSizeList } from 'react-window';
 import { useMedia } from 'react-use';
+import { SputnikService } from 'services/SputnikService';
+import partition from 'lodash/partition';
 import styles from './bounties-list.module.scss';
 
 export interface BountiesListProps {
@@ -16,14 +18,13 @@ export const BountiesList: FC<BountiesListProps> = ({
   bountiesList,
   isInProgress
 }) => {
-  const myBounties = isInProgress
-    ? bountiesList.filter(bounty => bounty.claimedByMe)
-    : [];
-  const regularBounties = isInProgress
-    ? bountiesList.filter(bounty => !bounty.claimedByMe)
-    : bountiesList;
-
-  const [tasks] = useState(regularBounties);
+  const [myBounties, regularBounties] = isInProgress
+    ? partition(bountiesList, bounty =>
+        bounty.claimedBy.filter(
+          claim => claim.accountId === SputnikService.getAccountId()
+        )
+      )
+    : [[], bountiesList];
 
   const [showResetScroll, setShowResetScroll] = useState(false);
   const scrollListRef = useRef<VariableSizeList>(null);
@@ -59,7 +60,7 @@ export const BountiesList: FC<BountiesListProps> = ({
         marginBottom: '16px'
       }}
     >
-      <BountyCard {...{ data: tasks[index] }} />
+      <BountyCard {...{ data: regularBounties[index] }} />
     </div>
   );
 

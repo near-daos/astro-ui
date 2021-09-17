@@ -7,7 +7,6 @@ import omit from 'lodash/omit';
 import { CreateTokenParams } from 'types/token';
 
 import { DAO, Member } from 'types/dao';
-// import { timestampToReadable } from 'utils/timestampToReadable';
 import { CreateProposalParams, DaoConfig, Proposal } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
 import {
@@ -30,6 +29,7 @@ import {
 import { HttpService, httpService } from 'services/HttpService';
 import Big from 'big.js';
 import PromisePool from '@supercharge/promise-pool';
+import { BountiesResponse, BountyResponse } from 'types/bounties';
 import { ContractPool } from './ContractPool';
 import { yoktoNear, gas } from './constants';
 import { SputnikWalletConnection } from './SputnikWalletConnection';
@@ -86,6 +86,23 @@ class SputnikService {
     );
 
     this.contractPool = new ContractPool(account);
+  }
+
+  public claimBounty(
+    daoId: string,
+    args: { bountyId: number; deadline: string; bountyBond: string }
+  ) {
+    const { bountyId: id, deadline, bountyBond } = args;
+    const amount = new Decimal(args.bountyBond);
+    const amountYokto = amount.mul(yoktoNear).toFixed();
+
+    this.contractPool
+      .get(daoId)
+      .bounty_claim({ id, deadline, bountyBond }, gas, amountYokto.toString());
+  }
+
+  public unclaimBounty(daoId: string, bountyId: string) {
+    this.contractPool.get(daoId).bounty_giveup({ id: bountyId }, gas);
   }
 
   public isAuthorized(): boolean {
@@ -365,6 +382,30 @@ class SputnikService {
 
       throw error;
     }
+  }
+
+  public async getBountiesByDaoId(
+    daoId: string,
+    params?: {
+      offset?: number;
+      limit?: number;
+      sort?: string;
+    }
+  ): Promise<BountyResponse[]> {
+    const offset = params?.offset ?? 0;
+    const limit = params?.limit ?? 50;
+    const sort = params?.sort ?? 'createdAt,DESC';
+
+    const { data } = await this.httpService.get<BountiesResponse>('/bounties', {
+      params: {
+        filter: `daoId||$eq||${daoId}`,
+        offset,
+        limit,
+        sort
+      }
+    });
+
+    return data.data;
   }
 
   public vote(

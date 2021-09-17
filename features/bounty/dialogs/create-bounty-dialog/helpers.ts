@@ -27,12 +27,11 @@ export function getAddBountyProposal(
     token,
     amount,
     details,
-    externalUrl,
     deadlineUnit,
     deadlineThreshold
   } = data;
 
-  const proposalDescription = `${details}, ${externalUrl}`;
+  const proposalDescription = `${details}`;
 
   return {
     daoId,

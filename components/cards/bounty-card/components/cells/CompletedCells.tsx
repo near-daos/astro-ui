@@ -19,14 +19,14 @@ export const CompletedCells: FC<CompletedCellsProps> = ({
   deadlineThreshold,
   deadlineUnit
 }) => {
-  const startDate = parseISO(claimedBy[0]?.datetime);
+  const startDate = parseISO(claimedBy[0]?.starTime);
   const deadline = getDeadlineDate(startDate, deadlineThreshold, deadlineUnit);
 
   return (
     <>
       <div className={styles.slots}>
         <span className={cn(styles.primaryLabel, styles.alignLeft)}>
-          claimed by <b>{claimedBy[0].name}</b>
+          claimed by <b>{claimedBy[0].accountId}</b>
         </span>
       </div>
       <div className={styles.control}>

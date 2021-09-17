@@ -10,7 +10,7 @@ export interface BountyInfoCardProps {
 }
 
 export const BountyInfoCard: FC<BountyInfoCardProps> = ({ data }) => {
-  const { token, amount, group } = data;
+  const { token, amount, description } = data;
 
   return (
     <div className={cn(styles.root, styles.simple)}>
@@ -23,7 +23,7 @@ export const BountyInfoCard: FC<BountyInfoCardProps> = ({ data }) => {
             line={3}
             element="span"
             truncateText="…"
-            text={group}
+            text={description}
             textTruncateChild={null}
           />
         </div>
