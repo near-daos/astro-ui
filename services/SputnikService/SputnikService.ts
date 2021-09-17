@@ -2,6 +2,7 @@
 import { connect, Contract, keyStores, Near } from 'near-api-js';
 import { NearConfig, nearConfig } from 'config';
 import Decimal from 'decimal.js';
+import omit from 'lodash/omit';
 
 import { CreateTokenParams } from 'types/token';
 
@@ -304,18 +305,20 @@ class SputnikService {
   }
 
   public async getProposals(
-    daoId: string,
+    daoId?: string,
     offset = 0,
     limit = 50
   ): Promise<Proposal[]> {
+    const params = {
+      filter: `daoId||$eq||${daoId}`,
+      offset,
+      limit
+    };
+
     const { data: proposals } = await this.httpService.get<
       GetProposalsResponse
     >('/proposals', {
-      params: {
-        filter: `daoId||$eq||${daoId}`,
-        offset,
-        limit
-      }
+      params: daoId ? params : omit(params, 'filter')
     });
 
     return proposals.data.map(mapProposalDTOToProposal);

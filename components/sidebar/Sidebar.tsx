@@ -144,8 +144,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             topDelimiter
             className={styles.item}
             label="Home"
-            count={999}
-            href="/"
+            href="/home"
             icon="stateHome"
           />
           <NavItem

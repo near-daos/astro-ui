@@ -1,4 +1,5 @@
 import { Proposal, ProposalKind } from 'types/proposal';
+import { DaoDTO } from 'services/SputnikService/mappers/dao';
 
 export type ProposalDTO = {
   createTimestamp: string;
@@ -18,6 +19,7 @@ export type ProposalDTO = {
   updatedAt: string;
   voteCounts: Record<string, number[]>;
   votes: Record<string, 'Approve' | 'Reject' | 'Remove'>;
+  dao: DaoDTO;
 };
 
 type VoteState = 'Yes' | 'No' | 'Dismiss';
@@ -67,7 +69,10 @@ export const mapProposalDTOToProposal = (
 
       return res;
     }, {} as Record<string, VoteState>),
-    createdAt: proposalDTO.createdAt
+    createdAt: proposalDTO.createdAt,
+    daoDetails: {
+      name: proposalDTO.dao.config.name
+    }
   };
 };
 
