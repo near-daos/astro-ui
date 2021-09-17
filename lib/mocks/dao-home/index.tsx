@@ -48,6 +48,12 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dismissed: false,
     status: 'Rejected',
     title: 'jonathan.near',
+    votePeriodEnd: '',
+    daoDetails: {
+      name: 'my-awesome-dao'
+    },
+    proposalId: 1,
+    daoId: 'my-awesome-dao',
     children: (
       <RequestPayout
         amount="236"
@@ -74,6 +80,12 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dismissed: false,
     status: 'Rejected',
     title: 'jonathan.near',
+    votePeriodEnd: '',
+    daoDetails: {
+      name: 'my-awesome-dao'
+    },
+    proposalId: 1,
+    daoId: 'my-awesome-dao',
     children: (
       <RequestPayout
         amount="345"
@@ -100,6 +112,12 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dismissed: false,
     status: 'Rejected',
     title: 'jonathan.near',
+    votePeriodEnd: '',
+    daoDetails: {
+      name: 'my-awesome-dao'
+    },
+    proposalId: 1,
+    daoId: 'my-awesome-dao',
     children: (
       <RequestPayout
         amount="542"
@@ -126,6 +144,12 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dismissed: false,
     status: 'Rejected',
     title: 'jonathan.near',
+    votePeriodEnd: '',
+    daoDetails: {
+      name: 'my-awesome-dao'
+    },
+    proposalId: 1,
+    daoId: 'my-awesome-dao',
     children: (
       <RequestPayout
         amount="674"
@@ -152,6 +176,12 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dismissed: false,
     status: 'Approved',
     title: 'jonathan.near',
+    votePeriodEnd: '',
+    daoDetails: {
+      name: 'my-awesome-dao'
+    },
+    proposalId: 1,
+    daoId: 'my-awesome-dao',
     children: (
       <CreateNewGroup
         groupName="Test Group"
@@ -175,6 +205,12 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dismissed: false,
     status: 'Rejected',
     title: 'jonathan.near',
+    votePeriodEnd: '',
+    daoDetails: {
+      name: 'my-awesome-dao'
+    },
+    proposalId: 1,
+    daoId: 'my-awesome-dao',
     children: (
       <RemoveMemberFromGroup
         name="johana.near"
@@ -199,6 +235,12 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     onDislike: () => {},
     status: 'InProgress',
     title: 'jonathan.near',
+    votePeriodEnd: '',
+    daoDetails: {
+      name: 'my-awesome-dao'
+    },
+    proposalId: 1,
+    daoId: 'my-awesome-dao',
     children: (
       <AddMemberToGroup
         name="johana.near"

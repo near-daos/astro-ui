@@ -165,6 +165,8 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
           onLike={() => {}}
           /* eslint-disable-next-line @typescript-eslint/no-empty-function */
           onDislike={() => {}}
+          /* eslint-disable-next-line @typescript-eslint/no-empty-function */
+          onRemove={() => {}}
           onClose={closeProposalDetails}
         >
           <RequestPayout amount="678" recipient="jonathan.near" tokens="NEAR" />

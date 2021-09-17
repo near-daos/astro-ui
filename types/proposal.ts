@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { DaoRole } from './role';
 
-type DaoDetails = {
+export type DaoDetails = {
   name: string;
 };
 

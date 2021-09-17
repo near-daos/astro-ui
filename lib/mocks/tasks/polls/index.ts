@@ -32,7 +32,13 @@ const generatePoll = (
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onDislike: () => {},
   dismisses: 0,
-  dismissed: false
+  dismissed: false,
+  votePeriodEnd: '',
+  daoDetails: {
+    name: 'my-awesome-dao'
+  },
+  proposalId: 1,
+  daoId: 'my-awesome-dao'
 });
 
 const generatePolls = () => {

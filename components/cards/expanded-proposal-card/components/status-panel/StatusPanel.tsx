@@ -1,12 +1,10 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
-import {
-  ProposalStatus,
-  ProposalType
-} from 'components/cards/proposal-card/types';
+
 import { useCountdown } from 'components/cards/expanded-proposal-card/helpers';
 import { Icon } from 'components/Icon';
 import * as Typography from 'components/Typography';
+import { ProposalStatus, ProposalType } from 'types/proposal';
 
 import styles from './status-panel.module.scss';
 
@@ -14,38 +12,43 @@ interface StatusPanelProps {
   status: ProposalStatus;
   type: ProposalType;
   endsAt: string;
+  onClose: () => void;
 }
 
 function getIconName(type: ProposalType) {
   switch (type) {
-    case 'Add member':
+    case 'AddMemberToRole':
       return 'proposalAddMember';
-    case 'Remove member':
+    case 'RemoveMemberFromRole':
       return 'proposalRemoveMember';
-    case 'Bounty done':
+    case 'BountyDone':
+    case 'AddBounty':
       return 'proposalBounty';
-    case 'Create group':
-      return 'proposalCreateGroup';
-    case 'Request payout':
+    // case 'Create group':
+    //   return 'proposalCreateGroup';
+    case 'Transfer':
       return 'proposalSendFunds';
-    case 'Poll':
+    case 'Vote':
       return 'proposalPoll';
-    case 'Create bounty':
-      return 'proposalBounty';
-    case 'Change DAO settings':
+    case 'ChangePolicy':
       return 'proposalGovernance';
     default:
-    case 'Call NEAR function':
+    case 'FunctionCall':
       return 'proposalNearFunctionCall';
   }
 }
 
-export const StatusPanel: FC<StatusPanelProps> = ({ status, type, endsAt }) => {
+export const StatusPanel: FC<StatusPanelProps> = ({
+  status,
+  type,
+  endsAt,
+  onClose
+}) => {
   const statusClassName = cn({
-    [styles.active]: status === 'Voting in progress',
-    [styles.passed]: status === 'Passed',
+    [styles.active]: status === 'InProgress',
+    [styles.passed]: status === 'Approved',
     [styles.rejected]: status === 'Rejected',
-    [styles.dismissed]: status === 'Dismissed as spam',
+    [styles.dismissed]: status === 'Removed',
     [styles.expired]: status === 'Expired'
   });
 
@@ -62,7 +65,11 @@ export const StatusPanel: FC<StatusPanelProps> = ({ status, type, endsAt }) => {
       <span className={styles.vote}>
         {timeLeft ? `Voting ends in ${timeLeft}` : 'Voting ended'}
       </span>
-      <Icon name="buttonAdd" className={cn(styles.icon, styles.close)} />
+      <Icon
+        name="buttonAdd"
+        className={cn(styles.icon, styles.close)}
+        onClick={onClose}
+      />
     </div>
   );
 };

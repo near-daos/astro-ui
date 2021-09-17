@@ -5,13 +5,17 @@
   border-radius: 0 0 8px 8px;
   display: flex;
   flex-direction: column;
-  padding: 32px 16px 20px;
+  padding: 16px 16px 20px;
+
+  :global .paragraph1 {
+    white-space: normal;
+  }
 }
 
 .header {
   align-items: center;
   display: flex;
-  justify-content: space-between;
+  gap: 12px;
 }
 
 .left,
@@ -22,6 +26,10 @@
   p {
     margin: 0;
   }
+}
+
+.left {
+  flex: 1;
 }
 
 .right {
@@ -39,7 +47,7 @@
 .name {
   @extend %subtitle3;
   color: var(--color-neutral-60);
-  margin-top: 24px;
+  margin: 16px 0;
 }
 
 .control {
@@ -49,4 +57,21 @@
 
 .votes {
   margin-top: 35px;
+  .voteDetails {
+    margin: 16px -24px -24px;
+  }
+}
+
+.flag {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 24px;
+  width: 24px;
+}
+
+.content {
+  display: grid;
+  grid-gap: 24px;
+  grid-template-columns: 1fr 2fr;
 }
