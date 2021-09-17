@@ -56,6 +56,7 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
         <>
           {Object.keys(data).map(daoName => (
             <DaoSection
+              key={daoName}
               expanded={filter.daoViewFilter === daoName}
               onFilterSet={() => {
                 onFilterChange('daoViewFilter', daoName);

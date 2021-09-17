@@ -11,9 +11,9 @@ interface ProposalControlPanelProps {
   disliked: boolean;
   dismisses: number;
   dismissed: boolean;
-  onLike?: () => void;
-  onDislike?: () => void;
-  onRemove?: () => void;
+  onLike?: (e?: Partial<Event>) => void;
+  onDislike?: (e?: Partial<Event>) => void;
+  onRemove?: (e?: Partial<Event>) => void;
   className?: string;
 }
 

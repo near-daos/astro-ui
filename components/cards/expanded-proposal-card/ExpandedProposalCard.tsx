@@ -5,10 +5,9 @@ import { StatusPanel } from 'components/cards/expanded-proposal-card/components/
 import { VotePanel } from 'components/cards/expanded-proposal-card/components/vote-panel';
 import { ContentPanel } from 'components/cards/expanded-proposal-card/components/content-panel';
 
-import {
-  ProposalStatus,
-  ProposalType
-} from 'components/cards/proposal-card/types';
+import { DaoDetails, ProposalStatus, ProposalType } from 'types/proposal';
+import { useSelectedProposal } from 'hooks/useSelectedProposal';
+import { useDaoData } from 'hooks/useDaoData';
 
 import styles from './expanded-proposal-card.module.scss';
 
@@ -29,9 +28,13 @@ export interface ExpandedProposalCardProps {
   disliked: boolean;
   onLike: () => void;
   onDislike: () => void;
+  onRemove: () => void;
   endsAt: string;
   dismisses: number;
   dismissed: boolean;
+  daoDetails: DaoDetails;
+  proposalId: number;
+  daoId: string;
 }
 
 export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
@@ -51,26 +54,55 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
   disliked,
   onLike,
   onDislike,
+  onRemove,
   endsAt,
   dismisses,
-  dismissed
+  dismissed,
+  daoDetails,
+  proposalId,
+  daoId
 }) => {
   const handleVote = useCallback(
     d => {
-      onClose('voted', d);
+      switch (d.vote) {
+        case 'yes': {
+          onLike();
+          break;
+        }
+        case 'no': {
+          onDislike();
+          break;
+        }
+        default: {
+          onRemove();
+          break;
+        }
+      }
     },
-    [onClose]
+    [onDislike, onLike, onRemove]
   );
+
+  const proposalData = useSelectedProposal(daoId, proposalId);
+  const daoData = useDaoData(daoId);
 
   return (
     <Modal
-      size="sm"
+      size={
+        type === ProposalType.ChangePolicy || type === ProposalType.ChangeConfig
+          ? 'xxl'
+          : 'sm'
+      }
       isOpen={isOpen}
       onClose={onClose}
       className={styles.root}
       hideCloseIcon
     >
-      <StatusPanel status={status} type={type} endsAt={endsAt} />
+      <StatusPanel
+        status={status}
+        type={type}
+        endsAt={endsAt}
+        onClose={onClose}
+      />
       <VotePanel onSubmit={handleVote} />
       <ContentPanel
         title={title}
@@ -86,6 +118,21 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
         onDislike={onDislike}
         dismisses={dismisses}
         dismissed={dismissed}
+        daoDetails={daoDetails}
+        type={type}
+        proposalId={proposalId}
+        daoData={
+          type === ProposalType.ChangePolicy ||
+          type === ProposalType.ChangeConfig
+            ? daoData
+            : null
+        }
+        proposalData={
+          type === ProposalType.ChangePolicy ||
+          type === ProposalType.ChangeConfig
+            ? proposalData
+            : null
+        }
       >
         {children}
       </ContentPanel>

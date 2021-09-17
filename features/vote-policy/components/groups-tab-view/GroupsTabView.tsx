@@ -17,8 +17,9 @@ export interface GroupsTabViewProps {
   viewMode?: boolean;
   defaultVotePolicy: DaoVotePolicy;
   groups: TGroup[];
-  onChange: (name: string, value: PolicyProps) => void;
+  onChange?: (name: string, value: PolicyProps) => void;
   data: VotingPolicyPageInitialData;
+  showTitle?: boolean;
 }
 
 export const GroupsTabView: FC<GroupsTabViewProps> = ({
@@ -26,7 +27,8 @@ export const GroupsTabView: FC<GroupsTabViewProps> = ({
   defaultVotePolicy,
   groups,
   data,
-  onChange
+  onChange,
+  showTitle
 }) => {
   const items = [
     {
@@ -34,7 +36,7 @@ export const GroupsTabView: FC<GroupsTabViewProps> = ({
       label: 'Add member to group',
       content: (
         <AccordeonContent
-          onChange={v => onChange('addMemberToRole', v)}
+          onChange={v => onChange?.('addMemberToRole', v)}
           data={data.addMemberToRole as PolicyProps}
           action="Add member to group"
           viewMode={viewMode}
@@ -53,7 +55,7 @@ export const GroupsTabView: FC<GroupsTabViewProps> = ({
       label: 'Remove member from group',
       content: (
         <AccordeonContent
-          onChange={v => onChange('removeMemberFromRole', v)}
+          onChange={v => onChange?.('removeMemberFromRole', v)}
           data={data.removeMemberFromRole as PolicyProps}
           action="Remove member from group"
           viewMode={viewMode}
@@ -75,7 +77,9 @@ export const GroupsTabView: FC<GroupsTabViewProps> = ({
 
   return (
     <div className={styles.root}>
-      <p>Create and vote for adding and removing members to/from groups.</p>
+      {showTitle && (
+        <p>Create and vote for adding and removing members to/from groups.</p>
+      )}
       <div className={styles.content}>
         <AccordeonRow items={items} />
       </div>

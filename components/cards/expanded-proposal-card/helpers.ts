@@ -1,6 +1,8 @@
 import { parseISO, differenceInMilliseconds } from 'date-fns';
 import { useEffect } from 'react';
 import useCountDown from 'react-countdown-hook';
+import { ProposalType } from 'types/proposal';
+import { Scope } from 'features/vote-policy/helpers';
 
 function formatCountdown(seconds: number) {
   const d = Math.floor(seconds / (24 * 3600));
@@ -42,4 +44,33 @@ export function useCountdown(endsAt: string): string | null {
   }, [actions]);
 
   return timeLeft > 0 ? formatCountdown(timeLeft / 1000) : null;
+}
+
+export function getScope(proposalType: ProposalType): Scope {
+  switch (proposalType) {
+    case 'ChangePolicy':
+      return 'policy';
+    case ProposalType.AddBounty:
+      return 'addBounty';
+    case ProposalType.BountyDone:
+      return 'bountyDone';
+    case ProposalType.AddMemberToRole:
+      return 'addMemberToRole';
+    case ProposalType.RemoveMemberFromRole:
+      return 'removeMemberFromRole';
+    case ProposalType.FunctionCall:
+      return 'call';
+    case ProposalType.Transfer:
+      return 'transfer';
+    case ProposalType.UpgradeRemote:
+      return 'upgradeRemote';
+    case ProposalType.UpgradeSelf:
+      return 'upgradeSelf';
+    case ProposalType.Vote:
+      return 'vote';
+    case ProposalType.SetStakingContract:
+    case ProposalType.ChangeConfig:
+    default:
+      return 'config';
+  }
 }

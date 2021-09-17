@@ -24,17 +24,38 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
 }) => {
   const { accountId } = useAuthContext();
   let content;
-  const handleVote = useCallback(() => {
-    SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteApprove');
-  }, [proposal.daoId, proposal.proposalId]);
+  const handleVote = useCallback(
+    e => {
+      if (e) {
+        e.stopPropagation();
+      }
 
-  const handleUnvote = useCallback(() => {
-    SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteReject');
-  }, [proposal.daoId, proposal.proposalId]);
+      SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteApprove');
+    },
+    [proposal.daoId, proposal.proposalId]
+  );
 
-  const handleRemove = useCallback(() => {
-    SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteRemove');
-  }, [proposal.daoId, proposal.proposalId]);
+  const handleUnvote = useCallback(
+    e => {
+      if (e) {
+        e.stopPropagation();
+      }
+
+      SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteReject');
+    },
+    [proposal.daoId, proposal.proposalId]
+  );
+
+  const handleRemove = useCallback(
+    e => {
+      if (e) {
+        e.stopPropagation();
+      }
+
+      SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteRemove');
+    },
+    [proposal.daoId, proposal.proposalId]
+  );
 
   switch (proposal.kind.type) {
     case ProposalType.AddMemberToRole: {
@@ -121,6 +142,10 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
       onLike={handleVote}
       onDislike={handleUnvote}
       onRemove={handleRemove}
+      votePeriodEnd={proposal.votePeriodEnd}
+      daoDetails={proposal.daoDetails}
+      proposalId={proposal.proposalId}
+      daoId={proposal.daoId}
     >
       {content}
     </ProposalCard>

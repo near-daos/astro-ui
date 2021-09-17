@@ -17,8 +17,9 @@ export interface TreasuryTabViewProps {
   viewMode?: boolean;
   defaultVotePolicy: DaoVotePolicy;
   groups: TGroup[];
-  onChange: (name: string, value: PolicyProps) => void;
+  onChange?: (name: string, value: PolicyProps) => void;
   data: VotingPolicyPageInitialData;
+  showTitle?: boolean;
 }
 
 export const TreasuryTabView: FC<TreasuryTabViewProps> = ({
@@ -26,7 +27,8 @@ export const TreasuryTabView: FC<TreasuryTabViewProps> = ({
   defaultVotePolicy,
   groups,
   data,
-  onChange
+  onChange,
+  showTitle
 }) => {
   const items = [
     {
@@ -34,7 +36,7 @@ export const TreasuryTabView: FC<TreasuryTabViewProps> = ({
       label: 'Request payout',
       content: (
         <AccordeonContent
-          onChange={v => onChange('transfer', v)}
+          onChange={v => onChange?.('transfer', v)}
           data={data.transfer as PolicyProps}
           action="Request payout"
           viewMode={viewMode}
@@ -52,7 +54,7 @@ export const TreasuryTabView: FC<TreasuryTabViewProps> = ({
 
   return (
     <div className={styles.root}>
-      <p>Create and vote on request payout proposals.</p>
+      {showTitle && <p>Create and vote on request payout proposals.</p>}
       <div className={styles.content}>
         <AccordeonRow items={items} />
       </div>

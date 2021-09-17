@@ -40,6 +40,7 @@ export const mapProposalDTOToProposal = (
     description: proposalDTO.description,
     status: proposalDTO.status,
     kind: proposalDTO.kind,
+    // todo
     votePeriodEnd: '',
     voteYes: Object.values(proposalDTO.voteCounts).reduce(
       (res, item) => res + item[0],

@@ -1,0 +1,6 @@
+@import 'styles/typography';
+
+.title {
+  @extend %title5;
+  margin: 4px;
+}
