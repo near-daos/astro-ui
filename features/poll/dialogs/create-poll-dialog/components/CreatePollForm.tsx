@@ -14,8 +14,13 @@ import { VoteDetails } from 'components/vote-details';
 
 import styles from './create-poll-form.module.scss';
 
+type CreatePollInput = {
+  question: string;
+  externalUrl: string;
+};
+
 interface CreatePollFormProps {
-  onSubmit: () => void;
+  onSubmit: (data: CreatePollInput) => void;
   onCancel: () => void;
 }
 

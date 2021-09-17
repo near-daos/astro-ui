@@ -5,6 +5,8 @@ import { Modal } from 'components/modal';
 import { CreatePollForm } from 'features/poll/dialogs/create-poll-dialog/components/CreatePollForm';
 import styles from 'features/poll/dialogs/poll-dialogs.module.scss';
 import { Icon } from 'components/Icon';
+import { SputnikService } from 'services/SputnikService';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
 
 export interface CreatePollDialogProps {
   isOpen: boolean;
@@ -15,10 +17,23 @@ export const CreatePollDialog: FC<CreatePollDialogProps> = ({
   isOpen,
   onClose
 }) => {
-  const handleSubmit = useCallback(() => {
-    // todo - handle create poll here
-    onClose('submitted');
-  }, [onClose]);
+  const selectedDao = useSelectedDAO();
+
+  const handleSubmit = useCallback(
+    data => {
+      if (selectedDao) {
+        SputnikService.createProposal({
+          daoId: selectedDao.id,
+          description: data.question,
+          kind: 'Vote',
+          bond: selectedDao.policy.proposalBond
+        }).then(() => {
+          onClose();
+        });
+      }
+    },
+    [onClose, selectedDao]
+  );
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

@@ -86,7 +86,7 @@ const GroupPage: FC = () => {
         group === 'all-members' ||
         item.groups
           .map(grp => grp.toLowerCase())
-          .includes((group as string).replace('-', ' '))
+          .includes((group as string).replace('-', ' ').toLowerCase())
     )
     .sort((a, b) => {
       let sortField = '';

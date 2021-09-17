@@ -29,44 +29,44 @@ export const GovernanceTabView: FC<GovernanceTabViewProps> = ({
   onChange
 }) => {
   const items = [
-    {
-      id: '1',
-      label: 'Upgrade self',
-      content: (
-        <AccordeonContent
-          onChange={v => onChange('upgradeSelf', v)}
-          data={data.upgradeSelf as PolicyProps}
-          action="Upgrade self"
-          viewMode={viewMode}
-          proposers={getProposersList(groups, 'upgradeSelf', 'AddProposal')}
-          policies={getPoliciesList(
-            groups,
-            'upgradeSelf',
-            ['VoteApprove', 'VoteReject', 'VoteRemove'],
-            defaultVotePolicy
-          )}
-        />
-      )
-    },
-    {
-      id: '2',
-      label: 'Upgrade remote',
-      content: (
-        <AccordeonContent
-          onChange={v => onChange('upgradeRemote', v)}
-          data={data.upgradeSelf as PolicyProps}
-          action="Upgrade remote"
-          viewMode={viewMode}
-          proposers={getProposersList(groups, 'upgradeRemote', 'AddProposal')}
-          policies={getPoliciesList(
-            groups,
-            'upgradeRemote',
-            ['VoteApprove', 'VoteReject', 'VoteRemove'],
-            defaultVotePolicy
-          )}
-        />
-      )
-    },
+    // {
+    //   id: '1',
+    //   label: 'Upgrade self',
+    //   content: (
+    //     <AccordeonContent
+    //       onChange={v => onChange('upgradeSelf', v)}
+    //       data={data.upgradeSelf as PolicyProps}
+    //       action="Upgrade self"
+    //       viewMode={viewMode}
+    //       proposers={getProposersList(groups, 'upgradeSelf', 'AddProposal')}
+    //       policies={getPoliciesList(
+    //         groups,
+    //         'upgradeSelf',
+    //         ['VoteApprove', 'VoteReject', 'VoteRemove'],
+    //         defaultVotePolicy
+    //       )}
+    //     />
+    //   )
+    // },
+    // {
+    //   id: '2',
+    //   label: 'Upgrade remote',
+    //   content: (
+    //     <AccordeonContent
+    //       onChange={v => onChange('upgradeRemote', v)}
+    //       data={data.upgradeSelf as PolicyProps}
+    //       action="Upgrade remote"
+    //       viewMode={viewMode}
+    //       proposers={getProposersList(groups, 'upgradeRemote', 'AddProposal')}
+    //       policies={getPoliciesList(
+    //         groups,
+    //         'upgradeRemote',
+    //         ['VoteApprove', 'VoteReject', 'VoteRemove'],
+    //         defaultVotePolicy
+    //       )}
+    //     />
+    //   )
+    // },
     {
       id: '3',
       label: 'Config',
