@@ -125,7 +125,7 @@ export interface CreateProposalParams {
     | 'AddBounty'
     | 'BountyDone'
     | 'Vote';
-  data:
+  data?:
     | ChangeConfig
     | ChangePolicy
     | AddRemoveMemberRole

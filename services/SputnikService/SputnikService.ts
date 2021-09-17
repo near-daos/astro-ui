@@ -226,13 +226,17 @@ class SputnikService {
   public async createProposal(params: CreateProposalParams): Promise<any> {
     const { daoId, description, kind, data, bond } = params;
 
+    const kindData = data
+      ? {
+          [kind]: data
+        }
+      : kind;
+
     return this.contractPool.get(daoId).add_proposal(
       {
         proposal: {
           description,
-          kind: {
-            [kind]: data
-          }
+          kind: kindData
         }
       },
       new Decimal('30000000000000').toString(),
