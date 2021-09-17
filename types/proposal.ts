@@ -1,6 +1,10 @@
 /* eslint-disable camelcase */
 import { DaoRole } from './role';
 
+type DaoDetails = {
+  name: string;
+};
+
 export type FunctionCallAction = {
   methodName: string;
   args: string;
@@ -104,6 +108,7 @@ export type Proposal = {
   };
   // votePeriodConvertedEndDate: Date;   --- not working with SSR
   createdAt: string;
+  daoDetails: DaoDetails;
 };
 
 export interface CreateProposalParams {

@@ -2,6 +2,7 @@ import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { useCallback, useState } from 'react';
 import { FilterName } from 'features/search/search-filters';
 import { Proposal, ProposalType } from 'types/proposal';
+import { useRouter } from 'next/router';
 
 export interface Indexed {
   [key: string]: Proposal[];
@@ -43,6 +44,8 @@ export interface FilteredProposalsData {
 
 export const useFilteredProposalsData = (): FilteredProposalsData => {
   const { searchResults } = useSearchResults();
+  const router = useRouter();
+  const daoId = router.query.dao;
   const [filter, setFilter] = useState({
     show: 'All' as ShowFilterOption,
     search: 'In this DAO' as SearchFilterOption,
@@ -107,13 +110,10 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
       }
     }
 
-    // TODO - how can we get currently selected DAO? It looks like we need a way to keep some data for the whole app
     // Filter 'search'
     switch (filter.search) {
       case 'In this DAO': {
-        const selectedDaoId = '';
-
-        if (item.daoId !== selectedDaoId) {
+        if (item.daoId !== daoId) {
           matched = false;
         }
 
