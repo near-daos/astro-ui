@@ -71,7 +71,13 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
     >
       <Link passHref href={`/dao/${dao.id}`}>
         <a className={styles.name}>
-          <Image src={logo} width={24} height={24} alt={`${label} Dao Logo`} />
+          <Image
+            loading="eager"
+            src={logo}
+            width={24}
+            height={24}
+            alt={`${label} Dao Logo`}
+          />
 
           {label}
           {Number.isFinite(count) && (
