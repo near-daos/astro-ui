@@ -1,4 +1,4 @@
-import { useDAOList } from 'hooks/useDAOList';
+import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
 import React, { FC } from 'react';
 
 import { Sidebar } from 'components/sidebar/Sidebar';
@@ -16,7 +16,7 @@ export const SidebarNavigation: FC<SidebarNavigationProps> = ({
   closeSideBar
 }) => {
   const menuItems = useSidebarData();
-  const { daos } = useDAOList();
+  const { daos } = useDaoListPerCurrentUser();
 
   return (
     <Sidebar
