@@ -35,6 +35,7 @@ interface TokensProps {
   data?: Token;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Tokens: FC<TokensProps> = ({ data }) => {
   if (!data) return null;
 
@@ -108,7 +109,7 @@ const MemberCard: FC<MemberCardProps> = ({
       </div>
 
       <div className={styles.footer}>
-        <Tokens data={tokens} />
+        {/* <Tokens data={tokens} /> */}
         <div className={styles.footerItem}>
           <span className={cn(styles.label, 'subtitle4')}>Votes casted</span>
           <div className={styles.inline}>
