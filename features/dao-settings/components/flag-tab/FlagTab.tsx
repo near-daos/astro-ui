@@ -1,19 +1,23 @@
-import { useSelectedDAO } from 'hooks/useSelectedDao';
-import React, { FC } from 'react';
-import { Button } from 'components/button/Button';
+import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CropReturnType,
   SelectFlag
 } from 'features/create-dao/components/select-flag/SelectFlag';
+import {
+  LinksFormData,
+  schema
+} from 'features/dao-settings/components/links-tab';
+import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
+import React, { FC } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useToggle } from 'react-use';
 import awsUploader from 'services/AwsUploader/AwsUploader';
-import Image from 'next/image';
 import { useSWRConfig } from 'swr';
 
 import styles from './flag-tab.module.scss';
 
 interface FlagTabProps {
-  onChange: (name: string, value: string) => void;
-  viewMode: boolean;
   daoFlag?: string;
 }
 
@@ -26,14 +30,24 @@ const sources = [
   '/flags/flag-6.svg'
 ];
 
-const FlagTab: FC<FlagTabProps> = ({ viewMode, daoFlag }) => {
+const FlagTab: FC<FlagTabProps> = ({ daoFlag }) => {
   const dao = useSelectedDAO();
   const { mutate } = useSWRConfig();
+  const [viewMode, setViewMode] = useToggle(true);
+
+  const methods = useForm<LinksFormData>({
+    mode: 'onChange',
+    defaultValues: {
+      details: '',
+      externalUrl: ''
+    },
+    resolver: yupResolver(schema)
+  });
 
   async function onSubmit(data: CropReturnType) {
     await awsUploader.uploadToBucket(data.file);
-
     await mutate('/daos');
+    setViewMode(true);
   }
 
   const fileName = dao?.id;
@@ -41,45 +55,53 @@ const FlagTab: FC<FlagTabProps> = ({ viewMode, daoFlag }) => {
   if (!fileName) throw Error('Cannot upload flag. Unknown dao ID');
 
   return (
-    <div className={styles.root}>
-      {viewMode ? (
-        <div className={styles.preview}>
-          <div>
-            {daoFlag
-              ? 'Your DAO flag. It looks great!'
-              : 'You have no DAO flag yet. Time to create one!'}
+    <>
+      <FormProvider {...methods}>
+        <ProposalBanner
+          scope="config"
+          title="Flag"
+          form="flag"
+          onEdit={setViewMode}
+          viewMode={viewMode}
+          onCancel={setViewMode}
+        />
+      </FormProvider>
+      <div className={styles.root}>
+        {viewMode ? (
+          <div className={styles.preview}>
+            <div>
+              {daoFlag
+                ? 'Your DAO flag. It looks great!'
+                : 'You have no DAO flag yet. Time to create one!'}
+            </div>
+            <div className="images-container">
+              {daoFlag && (
+                // eslint-disable-next-line
+                <img
+                  loading="eager"
+                  alt="Result"
+                  width={256}
+                  height={256}
+                  src={daoFlag}
+                />
+              )}
+            </div>
           </div>
-          <div className="images-container">
-            {daoFlag && (
-              // eslint-disable-next-line
-              <Image
-                loading="eager"
-                alt="Result"
-                width={300}
-                height={300}
-                src={daoFlag}
+        ) : (
+          <div className={styles.edit}>
+            Move the window around to pick your new flag.
+            <div className={styles.cropper}>
+              <SelectFlag
+                id="flag"
+                fileName={fileName}
+                sources={sources}
+                onSubmit={onSubmit}
               />
-            )}
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className={styles.edit}>
-          <div className={styles.cropper}>
-            <SelectFlag
-              id="flag"
-              fileName={fileName}
-              sources={sources}
-              onSubmit={onSubmit}
-            />
-          </div>
-          <div className={styles.btn}>
-            <Button type="submit" form="flag" size="small">
-              Crop!
-            </Button>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 

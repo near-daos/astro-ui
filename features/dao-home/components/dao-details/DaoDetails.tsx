@@ -1,11 +1,11 @@
-import React, { VFC } from 'react';
-import Link from 'next/link';
-import { IconButton } from 'components/button/IconButton';
-import { getSocialIconNameFromUrl } from 'helpers/getSocialIconNameFromUrl';
-import { ImageProps } from 'next/image';
-import { Icon } from 'components/Icon';
-import { Button } from 'components/button/Button';
 import cn from 'classnames';
+import { Button } from 'components/button/Button';
+import { IconButton } from 'components/button/IconButton';
+import { Icon } from 'components/Icon';
+import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
+import { ImageProps } from 'next/image';
+import Link from 'next/link';
+import React, { VFC } from 'react';
 import styles from './dao-details.module.scss';
 
 export interface DaoDetailsProps {
@@ -75,10 +75,7 @@ export const DaoDetails: VFC<DaoDetailsProps> = ({
               {links.map(link => (
                 <li className={styles.link} key={link}>
                   <a href={link} target="_blank" rel="noreferrer">
-                    <IconButton
-                      size="medium"
-                      icon={getSocialIconNameFromUrl(link)}
-                    />
+                    <IconButton size="medium" icon={getSocialLinkIcon(link)} />
                   </a>
                 </li>
               ))}

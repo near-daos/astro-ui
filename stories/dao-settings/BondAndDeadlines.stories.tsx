@@ -1,10 +1,9 @@
-import React from 'react';
-
 import { Meta, Story } from '@storybook/react';
 import {
   BondsAndDeadlines,
   BondsAndDeadlinesTabProps
 } from 'features/dao-settings/components/bond-and-deadlines-tab';
+import React from 'react';
 
 export default {
   title: 'Features/DAO Settings/BondsAndDeadlines',
@@ -18,8 +17,8 @@ export const Template: Story<BondsAndDeadlinesTabProps> = (
 Template.storyName = 'BondsAndDeadlines';
 
 Template.args = {
-  createProposalBond: '1.1',
-  proposalExpireTime: '7',
-  claimBountyBond: '2',
-  unclaimBountyTime: '3'
+  createProposalBond: 1.1,
+  proposalExpireTime: 7,
+  claimBountyBond: 2,
+  unclaimBountyTime: 3
 };
