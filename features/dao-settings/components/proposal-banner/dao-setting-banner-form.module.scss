@@ -71,21 +71,43 @@
 
 @media screen and (max-width: #{breakpoints.$screen-md}px) {
   .root {
-    margin: 0 -48px;
+    margin: 0 48px;
   }
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .root {
     grid-template-areas:
-      'name control'
+      'name name'
       'desc desc'
-      'details details';
+      'details details'
+      'control control';
     grid-template-columns: 1fr 1fr;
-    margin: 0 -24px;
+    margin: 0 -24px 24px;
+    padding: 34px 24px 24px;
   }
   .control {
-    justify-content: flex-end;
-    margin-bottom: 16px;
+    justify-content: space-between;
+    margin-top: 24px;
+
+    > button {
+      margin-left: 0;
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 0;
+  }
+
+  .wrapper {
+    margin: 0;
+  }
+
+  .details {
+    .wrapper {
+      margin: 0 -24px;
+    }
   }
 }
