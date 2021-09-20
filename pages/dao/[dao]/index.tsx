@@ -1,7 +1,7 @@
 import { ProposalCardProps } from 'components/cards/proposal-card';
 import { useSelectedDAO } from 'hooks/useSelectedDao';
 import { NextPage } from 'next';
-import React, { useState, useEffect, useCallback, CSSProperties } from 'react';
+import React, { useState, useCallback, CSSProperties } from 'react';
 
 import axios from 'axios';
 import cn from 'classnames';
@@ -30,19 +30,20 @@ import {
   ProposalTrackerProps
 } from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
 
-import { Proposal, ProposalType } from 'types/proposal';
-import { SputnikService } from 'services/SputnikService';
+import { ProposalType } from 'types/proposal';
 
 import {
   getProposalStats,
   getDaoDetailsFromDao,
-  getFundAndMembersNum
+  getFundAndMembersNum,
+  useFilteredData
 } from 'features/dao-home/helpers';
 
 import styles from './dao-home-page.module.scss';
 
 interface VoteByPeriodInterface {
   title: string;
+  key: string;
   subHours: number;
 }
 
@@ -56,23 +57,31 @@ interface DaoHomeProps {
 const voteByPeriod: VoteByPeriodInterface[] = [
   {
     title: 'less then 1 hour',
+    key: 'lessThanHourProposals',
     subHours: 1
   },
   {
     title: 'less than a day',
+    key: 'lessThanDayProposals',
     subHours: 24
   },
   {
     title: 'less than a week',
+    key: 'lessThanWeekProposals',
     subHours: 120
+  },
+  {
+    title: 'more than a week',
+    key: 'otherProposals',
+    subHours: 121
   }
 ];
 
 const DAOHome: NextPage<DaoHomeProps> = () => {
   const selectedDao = useSelectedDAO();
+  const { filter, onFilterChange, filteredData, data } = useFilteredData();
 
   const [nearPrice, setNearPrice] = useState(0);
-  const [proposals, setProposals] = useState<Proposal[]>([]);
 
   const [showCreateProposalModal] = useModal(CreateProposalPopup);
 
@@ -82,62 +91,50 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
 
   const isMobile = useMedia('(max-width: 767px)');
 
-  useEffect(() => {
-    async function fetchProposals() {
-      if (selectedDao) {
-        const daoProposals = await SputnikService.getProposals(selectedDao.id);
-
-        setProposals(daoProposals);
-      }
-    }
-
-    fetchProposals();
-  }, [selectedDao]);
-
   useMount(async () => {
-    const data = await axios.get('/api/nearPrice');
-    const price = get(data, 'data.near.usd');
+    const nearPriceData = await axios.get('/api/nearPrice');
+    const price = get(nearPriceData, 'data.near.usd');
 
     setNearPrice(price);
   });
 
-  const getItemHeight = (index: number) => {
-    const item = proposals[index];
-    let itemHeight;
+  function renderProposalsByVotePeriod(period: VoteByPeriodInterface) {
+    const { title, key } = period;
+    const proposals = filteredData[key];
 
-    if (isMobile) {
-      itemHeight = item.kind.type === ProposalType.Transfer ? 338 : 244;
-    } else {
-      itemHeight = item.kind.type === ProposalType.Transfer ? 198 : 152;
+    const getItemHeight = (index: number) => {
+      const item = proposals[index];
+      let itemHeight;
+
+      if (isMobile) {
+        itemHeight = item.kind.type === ProposalType.Transfer ? 338 : 244;
+      } else {
+        itemHeight = item.kind.type === ProposalType.Transfer ? 198 : 152;
+      }
+
+      return itemHeight;
+    };
+
+    function renderCard(cardData: { index: number; style: CSSProperties }) {
+      const { index, style } = cardData;
+
+      return (
+        <div
+          style={{
+            ...style,
+            marginTop: '0',
+            marginBottom: '16px'
+          }}
+        >
+          <ProposalCardRenderer proposal={proposals[index]} />
+        </div>
+      );
     }
 
-    return itemHeight;
-  };
-
-  function renderCard(cardData: { index: number; style: CSSProperties }) {
-    const { index, style } = cardData;
-
     return (
-      <div
-        style={{
-          ...style,
-          marginTop: '0',
-          marginBottom: '16px'
-        }}
-      >
-        <ProposalCardRenderer proposal={proposals[index]} />
-      </div>
-    );
-  }
-
-  function renderProposalsByVotePeriod(period: VoteByPeriodInterface) {
-    const { title, subHours } = period;
-
-    return (
-      // todo filter proposals by subhours
       <Collapsable
-        key={subHours}
-        initialOpenState
+        key={key + proposals.length}
+        initialOpenState={proposals.length > 0}
         renderHeading={(toggle, isOpen) => (
           <div
             tabIndex={-1}
@@ -146,7 +143,7 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
             onKeyDown={e => e.key === 'Spacebar' && toggle()}
             className={styles.votingEnds}
           >
-            Voting ends in less &nbsp;
+            Voting ends in&nbsp;
             <span className={styles.bold}>{title}</span>
             <IconButton
               icon="buttonArrowRight"
@@ -189,7 +186,7 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
   }
 
   function renderProposalTracker() {
-    const { activeVotes, totalProposals } = getProposalStats(proposals);
+    const { activeVotes, totalProposals } = getProposalStats(data);
 
     return (
       <div className={styles.proposals}>
@@ -241,6 +238,8 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
         <Dropdown
           className={styles.onTop}
           defaultValue="Active proposals"
+          onChange={onFilterChange}
+          value={filter}
           options={[
             { label: 'Active proposals', value: 'Active proposals' },
             { label: 'Recent proposals', value: 'Recent proposals' },

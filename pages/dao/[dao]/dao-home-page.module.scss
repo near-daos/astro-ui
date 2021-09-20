@@ -48,8 +48,7 @@
   align-self: center;
   cursor: pointer;
   display: flex;
-  margin-bottom: 24px;
-  margin-top: 40px;
+  margin: 12px 0;
 
   .bold {
     @extend %title3;
