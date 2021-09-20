@@ -1,25 +1,49 @@
 import React from 'react';
 import cn from 'classnames';
-import { Icon } from 'components/Icon';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+
+import { Icon } from 'components/Icon';
+
 import styles from './nav-dao.module.scss';
 
 interface DAOHeaderProps extends React.HTMLProps<HTMLHeadingElement> {
-  label: string;
-  className?: string;
-  isOpen?: boolean;
   logo?: string;
+  label: string;
+  daoId?: string;
+  isOpen: boolean;
+  className?: string;
+  openCloseDropdown: () => void;
 }
 
 export const DaoHeader: React.VFC<DAOHeaderProps> = ({
+  daoId,
   label,
   className,
   isOpen,
   logo,
+  openCloseDropdown,
   ...props
 }) => {
+  const router = useRouter();
+
+  function onElementClick() {
+    if (daoId) {
+      router.push(`/dao/${daoId}`);
+    } else {
+      openCloseDropdown();
+    }
+  }
+
   return (
-    <div {...props} className={cn(styles.header, className)}>
+    <div
+      {...props}
+      tabIndex={0}
+      role="button"
+      onClick={onElementClick}
+      onKeyPress={onElementClick}
+      className={cn(styles.header, className)}
+    >
       {logo ? (
         <Image src={logo} width={24} height={24} alt={`${label} Dao Logo`} />
       ) : (
@@ -34,6 +58,7 @@ export const DaoHeader: React.VFC<DAOHeaderProps> = ({
           transition: 'all 100ms'
         }}
         name="buttonArrowDown"
+        onClick={openCloseDropdown}
       />
     </div>
   );
