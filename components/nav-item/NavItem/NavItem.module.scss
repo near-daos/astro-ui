@@ -20,9 +20,13 @@
     color: var(--color-white);
   }
 
-  svg {
-    margin-top: 2px;
+  &:focus {
+    outline: none;
   }
+}
+
+.label {
+  margin-left: 4px;
 }
 
 .badge {
