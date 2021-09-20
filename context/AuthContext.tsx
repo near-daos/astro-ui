@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { createContext, FC, useContext, useState } from 'react';
 
 import { SputnikService } from 'services/SputnikService';
@@ -5,15 +6,19 @@ import { SputnikService } from 'services/SputnikService';
 interface AuthContextInterface {
   accountId: string;
   login: () => void;
+  logout: () => void;
 }
 
+/* eslint-disable @typescript-eslint/no-empty-function */
 const AuthContext = createContext<AuthContextInterface>({
   accountId: '',
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  login: () => {}
+  login: () => {},
+  logout: () => {}
 });
+/* eslint-enable @typescript-eslint/no-empty-function */
 
 export const AuthWrapper: FC = ({ children }) => {
+  const router = useRouter();
   const [accountId, setAccountId] = useState(SputnikService.getAccountId());
 
   async function login() {
@@ -26,9 +31,16 @@ export const AuthWrapper: FC = ({ children }) => {
     }
   }
 
+  async function logout() {
+    await SputnikService.logout();
+    setAccountId('');
+    router.push('/all-communities');
+  }
+
   const data = {
     accountId,
-    login
+    login,
+    logout
   };
 
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;

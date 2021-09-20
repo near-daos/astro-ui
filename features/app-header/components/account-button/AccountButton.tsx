@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import { useClickAway } from 'react-use';
+import React, { FC, useRef, useState } from 'react';
 
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
@@ -26,16 +27,59 @@ const SMILE = (
 );
 
 export const AccountButton: FC = () => {
-  const { login, accountId } = useAuthContext();
+  const { login, logout, accountId } = useAuthContext();
   const { isMobile } = useDeviceType();
+
+  const ref = useRef(null);
+  const [showPopup, setShowPopup] = useState(false);
+
+  useClickAway(ref, () => {
+    setShowPopup(false);
+  });
+
+  function toggleShowPopup() {
+    setShowPopup(!showPopup);
+  }
+
+  function renderSignOutPopup() {
+    if (showPopup) {
+      return (
+        <div
+          tabIndex={0}
+          role="button"
+          onClick={logout}
+          onKeyPress={logout}
+          className={styles.popup}
+        >
+          Sign out
+        </div>
+      );
+    }
+
+    return null;
+  }
+
+  function renderLoggedUserInfo() {
+    return (
+      <div
+        ref={ref}
+        tabIndex={0}
+        role="button"
+        onClick={toggleShowPopup}
+        onKeyPress={toggleShowPopup}
+        className={styles.loggedUserInfo}
+      >
+        <span>{SMILE}</span>
+        <span className={styles.name}>{accountId}</span>
+        {renderSignOutPopup()}
+      </div>
+    );
+  }
 
   return (
     <div className={styles.root}>
       {accountId ? (
-        <>
-          <span>{SMILE}</span>
-          <span className={styles.name}>{accountId}</span>
-        </>
+        renderLoggedUserInfo()
       ) : (
         <Button size={isMobile ? 'small' : 'medium'} onClick={login}>
           <span>Sign in </span>
