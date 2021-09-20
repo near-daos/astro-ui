@@ -1,7 +1,7 @@
-import React from 'react';
 import cn from 'classnames';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import React, { MouseEvent, KeyboardEvent } from 'react';
 
 import { Icon } from 'components/Icon';
 
@@ -35,6 +35,15 @@ export const DaoHeader: React.VFC<DAOHeaderProps> = ({
     }
   }
 
+  function toggleHeading(e: MouseEvent | KeyboardEvent) {
+    e.stopPropagation();
+    openCloseDropdown();
+  }
+
+  const iconClassName = cn(styles.expandCollapseIcon, {
+    [styles.open]: isOpen
+  });
+
   return (
     <div
       {...props}
@@ -50,16 +59,15 @@ export const DaoHeader: React.VFC<DAOHeaderProps> = ({
         <Icon width={24} height={24} name="flag" />
       )}
       <h3> {label} </h3>
-      <Icon
-        width={24}
-        style={{
-          marginLeft: 'auto',
-          transform: isOpen ? undefined : 'rotate(-90deg)',
-          transition: 'all 100ms'
-        }}
-        name="buttonArrowDown"
-        onClick={openCloseDropdown}
-      />
+      <div
+        tabIndex={0}
+        role="button"
+        onClick={toggleHeading}
+        onKeyPress={toggleHeading}
+        className={styles.expandCollapseElement}
+      >
+        <Icon width={24} name="buttonArrowDown" className={iconClassName} />
+      </div>
     </div>
   );
 };
