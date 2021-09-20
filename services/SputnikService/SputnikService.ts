@@ -6,7 +6,7 @@ import omit from 'lodash/omit';
 
 import { CreateTokenParams } from 'types/token';
 
-import { CreateDaoInput, DAO, Member } from 'types/dao';
+import { CreateDaoInput, DAO } from 'types/dao';
 import { CreateProposalParams, DaoConfig, Proposal } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
 import {
@@ -21,7 +21,6 @@ import {
   ProposalDTO
 } from 'services/SputnikService/mappers/proposal';
 import {
-  extractMembersFromDaosList,
   mapSearchResultsDTOToDataObject,
   SearchResponse
 } from 'services/SputnikService/mappers/search-results';
@@ -312,12 +311,6 @@ class SputnikService {
 
       throw error;
     }
-  }
-
-  public async getMembers(): Promise<Member[]> {
-    const res = await this.getDaoList();
-
-    return extractMembersFromDaosList(res);
   }
 
   public async search(params: {

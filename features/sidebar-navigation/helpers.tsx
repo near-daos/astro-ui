@@ -1,6 +1,5 @@
 import { Sidebar } from 'components/sidebar';
 import { AddGroupMenu } from 'features/groups/components/add-group-menu';
-import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
 import React, { useMemo } from 'react';
 import { useSelectedDAO } from 'hooks/useSelectedDao';
 
@@ -96,19 +95,15 @@ const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
 type TSidebarData = React.ComponentProps<typeof Sidebar>['items'];
 
 export const useSidebarData = (): TSidebarData => {
-  const { daos } = useDaoListPerCurrentUser();
   const selectedDao = useSelectedDAO();
 
   return useMemo(() => {
-    const groups = daos.reduce((res, item) => {
-      item.groups.forEach(group => {
-        res[group.name] = group.slug;
-      });
+    const groups = {} as Record<string, string>;
 
-      return res;
-    }, {} as Record<string, string>);
+    selectedDao?.groups.forEach(group => {
+      groups[group.name] = group.slug;
+    });
 
-    // Todo - we have to dynamically get list of available groups and generate sidebar menu items
     return sidebarItems.map(item => {
       if (item.id === GROUPS_SECTION_ID) {
         return {
@@ -150,5 +145,5 @@ export const useSidebarData = (): TSidebarData => {
 
       return item;
     });
-  }, [daos, selectedDao?.id]);
+  }, [selectedDao?.groups, selectedDao?.id]);
 };
