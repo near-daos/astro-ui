@@ -22,6 +22,21 @@ export const AppFooter: FC<AppFooterProps> = ({
     );
   }
 
+  function renderPrivacyAndPolicySection() {
+    // <Link passHref href="/policy">
+    //   <a href="*" className={styles.link}>
+    //     Privacy Policy
+    //   </a>
+    // </Link>
+    // <Link passHref href="/terms">
+    //   <a href="*" className={styles.link}>
+    //     Terms of Use
+    //   </a>
+    // </Link>
+
+    return 'Community developed. Not audited. Use at your own risk.';
+  }
+
   return (
     <footer className={styles.root}>
       <div
@@ -51,18 +66,7 @@ export const AppFooter: FC<AppFooterProps> = ({
             {/* {renderSocialIcon('https://github.com/', 'socialGithub')} */}
             {renderSocialIcon('https://t.me/astro_near', 'socialTelegram')}
           </div>
-          <div className={styles.links}>
-            <Link passHref href="/policy">
-              <a href="*" className={styles.link}>
-                Privacy Policy
-              </a>
-            </Link>
-            <Link passHref href="/terms">
-              <a href="*" className={styles.link}>
-                Terms of Use
-              </a>
-            </Link>
-          </div>
+          <div className={styles.links}>{renderPrivacyAndPolicySection()}</div>
           <div className={styles.copyright}>
             SputnikDAO 2021. The software is an&nbsp;open source and provided
             “as&nbsp;is”, without warranty of&nbsp;any kind.
