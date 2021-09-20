@@ -96,7 +96,7 @@ export function ReviewView(): JSX.Element {
       }
     });
 
-    await router.push('/');
+    await router.push('/home');
   }
 
   return (
