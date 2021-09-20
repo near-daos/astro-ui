@@ -14,15 +14,12 @@ import {
 
 interface InProgressCellsProps {
   claimedBy: ClaimedBy[];
-  claimedByMe: boolean;
-  deadlineThreshold: string;
   onUnclaim?: () => void;
   onComplete?: () => void;
 }
 
 export const InProgressCells: FC<InProgressCellsProps> = ({
   claimedBy,
-  claimedByMe,
   onComplete,
   onUnclaim
 }) => {
@@ -46,29 +43,27 @@ export const InProgressCells: FC<InProgressCellsProps> = ({
   return (
     <>
       <div className={styles.slots}>
-        {claimedByMe && (
-          <>
-            <Button
-              variant="secondary"
-              size="block"
-              className={styles.button}
-              onClick={onUnclaim}
-            >
-              <span className={styles.nowrap}>Unclaim</span>
-            </Button>
-            <Button
-              variant="primary"
-              size="block"
-              className={styles.button}
-              onClick={onComplete}
-            >
-              <span className={styles.nowrap}>Complete</span>
-            </Button>
-            <div className={styles.control}>
-              <span className={styles.secondaryLabel}>due {due}</span>
-            </div>
-          </>
-        )}
+        <>
+          <Button
+            variant="secondary"
+            size="block"
+            className={styles.button}
+            onClick={onUnclaim}
+          >
+            <span className={styles.nowrap}>Unclaim</span>
+          </Button>
+          <Button
+            variant="primary"
+            size="block"
+            className={styles.button}
+            onClick={onComplete}
+          >
+            <span className={styles.nowrap}>Complete</span>
+          </Button>
+          <div className={styles.control}>
+            <span className={styles.secondaryLabel}>due {due}</span>
+          </div>
+        </>
       </div>
     </>
   );

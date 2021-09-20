@@ -9,8 +9,8 @@ export interface IModal {
 export type ModalType = React.FunctionComponentElement<IModal>;
 
 export interface ModalContextType {
-  showModal(component: ModalType): void;
-  hideModal(): void;
+  showModal(id: string, component: ModalType): void;
+  hideModal(id: string): void;
 }
 
 const outsideOfProvider = (): Error => {

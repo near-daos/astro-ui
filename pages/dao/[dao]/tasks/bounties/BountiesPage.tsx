@@ -18,12 +18,7 @@ export const CREATE_BOUNTY_INITIAL = {
   deadlineThreshold: 3,
   deadlineUnit: 'day' as DeadlineUnit,
   externalUrl: '',
-  details: '',
-  voteDetails: [
-    { value: '50%', label: 'MEW holders' },
-    { value: '50%', label: 'cool group' },
-    { value: '1 person', label: 'Ombudspeople' }
-  ]
+  details: ''
 };
 
 const BountiesPage: FC = () => {
@@ -59,32 +54,31 @@ const BountiesPage: FC = () => {
     });
   }, [selectedDao]);
 
-  const openBounties = bounties.filter(bounty => bounty.claimedBy.length === 0);
-
-  const inProgressBounties = bounties.filter(
-    bounty => bounty.claimedBy.length > 0
+  const inProgressBounties = bounties.filter(bounty =>
+    bounty.claimedBy.find(
+      claim => claim.accountId === SputnikService.getAccountId()
+    )
   );
 
-  const completedBounties: Bounty[] = [];
-  const numberOpenBounties = openBounties.length;
+  const numberOpenBounties = bounties.length;
   const numberInProgressBounties = inProgressBounties.length;
-  const numberCompletedBounties = completedBounties.length;
+  const numberCompletedBounties = 0;
 
   const tabs = [];
   const tabOpen = {
     id: 1,
     label: `Open (${numberOpenBounties})`,
-    content: <BountiesList bountiesList={openBounties} />
+    content: <BountiesList bountiesList={bounties} inProgress={false} />
   };
   const tabInProgress = {
     id: 2,
     label: `In Progress (${numberInProgressBounties})`,
-    content: <BountiesList bountiesList={inProgressBounties} isInProgress />
+    content: <BountiesList bountiesList={inProgressBounties} inProgress />
   };
   const tabCompleted = {
     id: 3,
     label: `Completed (${numberCompletedBounties})`,
-    content: <BountiesList bountiesList={completedBounties} />
+    content: <BountiesList bountiesList={[]} inProgress={false} />
   };
 
   if (numberOpenBounties > 0) {

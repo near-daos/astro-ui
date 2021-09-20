@@ -33,6 +33,7 @@ export const CompleteBountyDialog: FC<CompleteBountyDialogProps> = ({
       }
 
       const { id: daoId } = selectedDao;
+
       const proposal = getCompleteBountyProposal(daoId, data.id, input);
 
       SputnikService.createProposal(proposal);

@@ -5,27 +5,18 @@ import { IconButton } from 'components/button/IconButton';
 import ScrollList from 'components/scroll-list/ScrollList';
 import { ListOnScrollProps, VariableSizeList } from 'react-window';
 import { useMedia } from 'react-use';
-import { SputnikService } from 'services/SputnikService';
-import partition from 'lodash/partition';
+
 import styles from './bounties-list.module.scss';
 
 export interface BountiesListProps {
   bountiesList: Bounty[];
-  isInProgress?: boolean;
+  inProgress: boolean;
 }
 
 export const BountiesList: FC<BountiesListProps> = ({
   bountiesList,
-  isInProgress
+  inProgress
 }) => {
-  const [myBounties, regularBounties] = isInProgress
-    ? partition(bountiesList, bounty =>
-        bounty.claimedBy.filter(
-          claim => claim.accountId === SputnikService.getAccountId()
-        )
-      )
-    : [[], bountiesList];
-
   const [showResetScroll, setShowResetScroll] = useState(false);
   const scrollListRef = useRef<VariableSizeList>(null);
   const isMobileOrTablet = useMedia('(max-width: 767px)');
@@ -52,35 +43,24 @@ export const BountiesList: FC<BountiesListProps> = ({
   }: {
     index: number;
     style: CSSProperties;
-  }) => (
-    <div
-      style={{
-        ...style,
-        marginTop: '0',
-        marginBottom: '16px'
-      }}
-    >
-      <BountyCard {...{ data: regularBounties[index] }} />
-    </div>
-  );
+  }) => {
+    return (
+      <div
+        style={{
+          ...style,
+          marginTop: '0',
+          marginBottom: '16px'
+        }}
+      >
+        <BountyCard data={bountiesList[index]} inProgress={inProgress} />
+      </div>
+    );
+  };
 
   return (
     <div className={styles.root}>
-      {isInProgress && myBounties.length > 0 && (
-        <>
-          <div className={styles.header}>Your bounties</div>
-          <div className={styles.top}>
-            {myBounties.map(bounty => (
-              <div className={styles.card} key={bounty.amount}>
-                <BountyCard {...{ data: bounty }} />
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-      {isInProgress && <div className={styles.header}>Everyone’s bounties</div>}
       <ScrollList
-        itemCount={regularBounties.length}
+        itemCount={bountiesList.length}
         onScroll={handleScroll}
         height={700}
         itemSize={() => (isMobileOrTablet ? 240 : 96)}
