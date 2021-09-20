@@ -1,6 +1,8 @@
-import React, { FC } from 'react';
 import Link from 'next/link';
-import { Icon } from 'components/Icon';
+import React, { FC } from 'react';
+
+import { Icon, IconName } from 'components/Icon';
+
 import styles from './app-footer.module.scss';
 
 export interface AppFooterProps {
@@ -12,6 +14,14 @@ export const AppFooter: FC<AppFooterProps> = ({
   isLandingPage,
   isLoggedIn
 }) => {
+  function renderSocialIcon(href: string, icon: IconName) {
+    return (
+      <a href={href} rel="noopener noreferrer" target="_blank">
+        <Icon name={icon} width={24} className={styles.icon} />
+      </a>
+    );
+  }
+
   return (
     <footer className={styles.root}>
       <div
@@ -36,18 +46,10 @@ export const AppFooter: FC<AppFooterProps> = ({
             </div>
           )}
           <div className={styles.social}>
-            <a href="https://discord.com/" rel="noopener noreferrer">
-              <Icon name="socialDiscord" width={24} className={styles.icon} />
-            </a>
-            <a href="https://twitter.com/" rel="noopener noreferrer">
-              <Icon name="socialTwitter" width={24} className={styles.icon} />
-            </a>
-            <a href="https://github.com/" rel="noopener noreferrer">
-              <Icon name="socialGithub" width={24} className={styles.icon} />
-            </a>
-            <a href="https://telegram.org/" rel="noopener noreferrer">
-              <Icon name="socialTelegram" width={24} className={styles.icon} />
-            </a>
+            {/* {renderSocialIcon('https://discord.com/', 'socialDiscord')} */}
+            {renderSocialIcon('https://twitter.com/AstroDao', 'socialTwitter')}
+            {/* {renderSocialIcon('https://github.com/', 'socialGithub')} */}
+            {renderSocialIcon('https://t.me/astro_near', 'socialTelegram')}
           </div>
           <div className={styles.links}>
             <Link passHref href="/policy">
