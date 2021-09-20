@@ -15,10 +15,15 @@
   flex-direction: column;
 }
 
+.scrolling {
+  height: calc(100vh - 320px);
+  overflow-y: auto;
+}
+
 .bottom {
   background: var(--color-primary-70);
   margin-top: auto;
-  padding-bottom: 48px;
+  padding-bottom: 10px;
 }
 
 .sub {

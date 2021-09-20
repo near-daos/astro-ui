@@ -94,81 +94,81 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <Icon name="whiteLogo" className={styles.logo} />
         </div>
         <Logo src={currentDao?.logo} className={styles.mainLogo} />
-        <DaoList {...getItemProps('dao')} items={daoList} />
-
-        <nav className={styles.menu}>
-          {items.map(item => {
-            if (isEmpty(item.subItems)) {
-              return (
-                <NavItem
-                  key={item.id}
-                  className={styles.item}
-                  label={item.label}
-                  count={item.count}
-                  href={item.href}
-                  icon={item.logo}
-                />
-              );
-            }
-
-            return (
-              <Collapsable
-                {...getItemProps(item.id)}
-                key={item.id}
-                duration={250}
-                renderHeading={toggle => (
+        <div className={styles.scrolling}>
+          <DaoList {...getItemProps('dao')} items={daoList} />
+          <nav className={styles.menu}>
+            {items.map(item => {
+              if (isEmpty(item.subItems)) {
+                return (
                   <NavItem
-                    onClick={() => toggle()}
+                    key={item.id}
                     className={styles.item}
                     label={item.label}
                     count={item.count}
                     href={item.href}
                     icon={item.logo}
-                    active={activeGroupId === item.id}
                   />
-                )}
-              >
-                {item.subItems.map(subItem => (
-                  <NavSubItem
-                    key={subItem.id}
-                    count={subItem.count}
-                    label={subItem.label}
-                    href={subItem.href}
-                    as={subItem.as}
-                    disabled={subItem.disabled}
-                    urlParams={{ dao: currentDao?.id }}
-                    subHrefs={subItem.subHrefs}
-                  />
-                ))}
-              </Collapsable>
-            );
-          })}
-        </nav>
-        <div className={styles.delimiter} />
-        <nav className={styles.bottom}>
-          <NavItem
-            topDelimiter
-            className={styles.item}
-            label="Home"
-            href="/home"
-            icon="stateHome"
-          />
-          <NavItem
-            className={styles.item}
-            label="All Communities"
-            href="/all-communities"
-            icon="stateCommunities"
-          />
-          <NavItem
-            className={styles.item}
-            label="Create a DAO"
-            href="/create-dao"
-            icon="stateCreateDao"
-          />
-        </nav>
-        {/* todo - check if the user is logged in from auth service */}
-        <AppFooter isLoggedIn />
+                );
+              }
+
+              return (
+                <Collapsable
+                  {...getItemProps(item.id)}
+                  key={item.id}
+                  duration={250}
+                  renderHeading={toggle => (
+                    <NavItem
+                      onClick={() => toggle()}
+                      className={styles.item}
+                      label={item.label}
+                      count={item.count}
+                      href={item.href}
+                      icon={item.logo}
+                      active={activeGroupId === item.id}
+                    />
+                  )}
+                >
+                  {item.subItems.map(subItem => (
+                    <NavSubItem
+                      key={subItem.id}
+                      count={subItem.count}
+                      label={subItem.label}
+                      href={subItem.href}
+                      as={subItem.as}
+                      disabled={subItem.disabled}
+                      urlParams={{ dao: currentDao?.id }}
+                      subHrefs={subItem.subHrefs}
+                    />
+                  ))}
+                </Collapsable>
+              );
+            })}
+          </nav>
+          <div className={styles.delimiter} />
+          <nav className={styles.bottom}>
+            <NavItem
+              topDelimiter
+              className={styles.item}
+              label="Home"
+              href="/home"
+              icon="stateHome"
+            />
+            <NavItem
+              className={styles.item}
+              label="All Communities"
+              href="/all-communities"
+              icon="stateCommunities"
+            />
+            <NavItem
+              className={styles.item}
+              label="Create a DAO"
+              href="/create-dao"
+              icon="stateCreateDao"
+            />
+          </nav>
+        </div>
       </div>
+      <AppFooter isLoggedIn />
     </aside>
   );
 };
