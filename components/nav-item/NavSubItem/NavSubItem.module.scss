@@ -29,3 +29,10 @@
 .badge {
   margin-left: auto;
 }
+
+.disabled {
+  &:hover {
+    background: var(--color-primary-80);
+    color: var(--color-white-opacity-5);
+  }
+}

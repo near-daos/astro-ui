@@ -14,6 +14,7 @@ export interface DAOTemplate {
   proposals: DAOProposalsType;
   structure: DAOStructureType;
   voting: DAOVotingPowerType;
+  disabled?: boolean;
 }
 
 export type DaoSettingOption<T> = {
@@ -22,6 +23,7 @@ export type DaoSettingOption<T> = {
   icon: IconName;
   subject: Subject;
   description: string;
+  disabled?: boolean;
 };
 
 export interface DAOFormValues extends IDaoCreateForm {

@@ -59,12 +59,13 @@ export function FoundationView(): JSX.Element {
         </Typography.Subtitle>
       </div>
       <div className={styles.cards}>
-        {Object.values(DAO_TEMPLATES).map(template => (
+        {DAO_TEMPLATES.map(template => (
           <DaoTemplateCard
             key={template.variant}
             title={template.title}
             description={template.description}
             variant={template.variant}
+            disabled={template.disabled}
             onClick={() => handleClick(template)}
           />
         ))}

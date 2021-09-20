@@ -40,6 +40,15 @@ export const NavSubItem: React.VFC<DAONameProps> = ({
     [styles.disabled]: disabled
   });
 
+  const disabledAttributes = disabled
+    ? { tabIndex: -1, 'aria-disabled': true }
+    : {};
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if (disabled) {
+      e.preventDefault();
+    }
+  };
   const content = (
     <>
       {label}
@@ -63,7 +72,12 @@ export const NavSubItem: React.VFC<DAONameProps> = ({
     <div>
       <Link passHref href={{ pathname: href, query: urlParams }} as={as}>
         {/* TODO Property 'href' would be overridden by Link. Check https://git.io/Jns2B */}
-        <a href="*" className={rootClassName}>
+        <a
+          href="*"
+          className={rootClassName}
+          {...disabledAttributes}
+          onClick={handleClick}
+        >
           {content}
         </a>
       </Link>

@@ -1,4 +1,5 @@
 @import 'styles/mixins';
+@import 'styles/helpers';
 
 .root {
   background: #fff;
@@ -37,4 +38,8 @@
   line-height: 2.5;
   margin: 0;
   white-space: pre-wrap;
+}
+
+.disabled {
+  @extend %disabled;
 }

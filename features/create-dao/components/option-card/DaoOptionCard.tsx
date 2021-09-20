@@ -12,6 +12,7 @@ export interface DaoOptionCardProps
   className?: string;
   iconNode?: JSX.Element;
   editable?: boolean;
+  disabled?: boolean;
   editIcon?: IconName;
   onEditClick?: () => void;
   subject: Subject;
@@ -34,6 +35,7 @@ export const DaoOptionCard: React.VFC<DaoOptionCardProps> = ({
   title,
   description,
   editable,
+  disabled,
   editIcon = 'buttonEdit',
   onEditClick,
   ...props
@@ -42,7 +44,8 @@ export const DaoOptionCard: React.VFC<DaoOptionCardProps> = ({
     styles.root,
     {
       [styles.active]: active,
-      [styles.editable]: editable
+      [styles.editable]: editable,
+      [styles.disabled]: disabled
     },
     classNameProp
   );
