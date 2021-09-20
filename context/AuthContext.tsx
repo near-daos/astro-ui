@@ -1,7 +1,7 @@
+import { useRouter } from 'next/router';
 import { createContext, FC, useContext, useState } from 'react';
 
 import { SputnikService } from 'services/SputnikService';
-import { useRouter } from 'next/router';
 
 interface AuthContextInterface {
   accountId: string;
