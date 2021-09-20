@@ -28,9 +28,3 @@
 .badge {
   margin-left: auto;
 }
-
-@media screen and (max-width: breakpoints.$screen-md - 1px) {
-  .topDelimiter {
-    border-top: 1px solid var(--color-white-opacity-5);
-  }
-}

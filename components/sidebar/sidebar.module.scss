@@ -38,6 +38,12 @@
   overflow-y: auto;
 }
 
+.delimiter {
+  background-color: var(--color-brand-purple);
+  height: 1px;
+  margin: 28px 16px 28px 24px;
+}
+
 .mobileHeader {
   align-items: center;
   color: #fff;
