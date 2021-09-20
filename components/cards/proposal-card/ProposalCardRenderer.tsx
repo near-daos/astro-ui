@@ -60,7 +60,7 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
     case ProposalType.AddMemberToRole: {
       content = (
         <AddMemberToGroup
-          name={proposal.proposer}
+          name={proposal.kind.memberId}
           groupName={proposal.kind.role}
           link="https://example.com"
           linkTitle="reddit.com"
@@ -71,7 +71,7 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
     case ProposalType.RemoveMemberFromRole: {
       content = (
         <RemoveMemberFromGroup
-          name={proposal.proposer}
+          name={proposal.kind.memberId}
           groupName={proposal.kind.role}
           link="https://example.com"
           linkTitle="reddit.com"

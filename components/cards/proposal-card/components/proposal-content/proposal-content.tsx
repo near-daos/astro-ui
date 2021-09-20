@@ -6,6 +6,7 @@ import { PolicyType } from 'types/proposal';
 import { Badge } from 'components/badge/Badge';
 import { Icon } from 'components/Icon';
 import ExternalLink from 'components/cards/proposal-card/components/external-link/ExternalLink';
+import { formatYoktoValue } from 'helpers/format';
 
 import styles from './proposal-content.module.scss';
 
@@ -131,7 +132,9 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
       </div>
     )}
     <div className={styles.subRow}>
-      <span className={cn('title1', styles.value)}>{amount}</span>
+      <span className={cn('title1', styles.value)}>
+        {formatYoktoValue(amount)}
+      </span>
       &nbsp;
       <span className={cn('title1', styles.valueDesc)}>{tokens}</span>
       <Icon name="buttonArrowRight" className={styles.icon} />

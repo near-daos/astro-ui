@@ -83,16 +83,14 @@ const MemberCard: FC<MemberCardProps> = ({
         [styles.clickable]: !!onClick
       })}
     >
-      {!expandedView && (
+      {!expandedView && onRemoveClick && (
         <div className={styles.personIcon}>
           <IconButton
             icon="proposalRemoveMember"
             onClick={e => {
               e.stopPropagation();
 
-              if (onRemoveClick) {
-                onRemoveClick();
-              }
+              onRemoveClick();
             }}
           />
         </div>

@@ -1,3 +1,5 @@
+@use 'styles/breakpoints';
+
 .root {
   display: grid;
   grid-column-gap: 8px;
@@ -81,12 +83,12 @@
   margin-left: 8px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .root {
     grid-template-areas:
       'token'
       'amount'
-      'group'
+      'details'
       'externalUrl'
       'slot'
       'deadline'
@@ -97,5 +99,11 @@
 
   .footer {
     justify-content: space-between;
+  }
+
+  .vote {
+    .voteDetails {
+      margin: 0 -24px;
+    }
   }
 }
