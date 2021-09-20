@@ -91,9 +91,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
             className={styles.closeIcon}
             onClick={closeSideBar}
           />
-          <Icon name="whiteLogo" className={styles.logo} />
+          
+          <Icon name="appLogo" width={92} />
         </div>
-        <Logo src={currentDao?.logo} className={styles.mainLogo} />
+        <Logo className={styles.mainLogo} />
         <div className={styles.scrolling}>
           <DaoList {...getItemProps('dao')} items={daoList} />
           <nav className={styles.menu}>
