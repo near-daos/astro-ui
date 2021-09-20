@@ -1,36 +1,19 @@
 import React, { FC, useCallback } from 'react';
 
-import { GroupFormInput, GroupFormType } from 'features/groups/types';
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
-import { GroupPopup } from 'features/groups';
 import { NoResultsView } from 'features/search/search-results/components/no-results-view';
 
 import MemberCard, { MemberCardPopup } from 'components/cards/member-card';
 import { Badge, Variant } from 'components/badge/Badge';
 import { useModal } from 'components/modal';
-import { groupColor, groupPopupData } from 'lib/mocks/groups';
+import { groupColor } from 'lib/mocks/groups';
 
 import styles from './members-tab-view.module.scss';
 
 export const MembersTabView: FC = () => {
   const { searchResults } = useSearchResults();
   const [showCardModal] = useModal(MemberCardPopup);
-  const [showGroupModal] = useModal(GroupPopup);
-
-  const handleRemoveClick = useCallback(
-    async item => {
-      await showGroupModal({
-        initialValues: {
-          ...(groupPopupData.initialValues as GroupFormInput),
-          groups: item.groups,
-          name: item.name,
-          groupType: GroupFormType.REMOVE_FROM_GROUP
-        }
-      });
-    },
-    [showGroupModal]
-  );
 
   const handleCardClick = useCallback(
     async d => {
@@ -48,9 +31,6 @@ export const MembersTabView: FC = () => {
         <div className={styles.content}>
           {searchResults?.members.map(item => (
             <MemberCard
-              onRemoveClick={async () => {
-                await handleRemoveClick(item);
-              }}
               onClick={handleCardClick}
               key={item.name}
               title={item.name}
