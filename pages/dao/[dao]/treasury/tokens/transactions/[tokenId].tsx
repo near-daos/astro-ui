@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import get from 'lodash/get';
 import React, { useCallback, useMemo, useState } from 'react';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import classNames from 'classnames';
@@ -55,6 +56,9 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
     voteDetails: VOTE_DETAILS,
     bondDetail: BOND_DETAIL
   });
+
+  const selectedDao = useSelectedDAO();
+  const accountName = selectedDao?.id || '';
 
   const [isProposalDetailsOpened, showProposalDetailsModal] = useState(false);
   const [sortByRecent, setSortByRecent] = useState(true);
@@ -114,7 +118,7 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.back}>
-        <Link href="/treasury/tokens">
+        <Link href={`/dao/${accountName}/treasury/tokens`}>
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a>
             <Icon name="buttonArrowLeft" className={styles.icon} />

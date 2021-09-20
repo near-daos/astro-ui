@@ -104,7 +104,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
     >
       <TokenCard
         {...items[index]}
-        href={`/treasury/tokens/transactions/${items[index].id}`}
+        href={`/dao/${accountName}/treasury/tokens/transactions/${items[index].id}`}
       />
     </div>
   );
