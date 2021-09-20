@@ -11,8 +11,16 @@ export function useSelectedDAO(): DAO | null {
   const currentDao = useMemo(() => {
     if (daos == null || daos.length === 0) return null;
 
-    return daoId != null ? daos.find(dao => dao.id === daoId) : daos[0];
-  }, [daoId, daos]);
+    if (daoId != null) {
+      return daos.find(dao => dao.id === daoId);
+    }
+
+    const defaultDao = daos[0];
+
+    router.push({ pathname: `/dao/${defaultDao.id}`, query: router.query });
+
+    return defaultDao;
+  }, [daoId, daos, router]);
 
   return currentDao ?? null;
 }

@@ -113,7 +113,7 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
       <section className={styles.links}>
         <Title size={5}>Links</Title>
         {Array.from({ length: linksCount }, (_, i) => i).map(index => (
-          <div className={styles.link}>
+          <div className={styles.link} key={index}>
             <Icon
               className={styles.socialIcon}
               name={getSocialIconNameFromUrl(

@@ -32,7 +32,7 @@ export const DropdownResults: FC<DropdownResultsProps> = ({ width }) => {
           </Typography.Subtitle>
           {searchResults?.daos.slice(0, allDaoRes ? undefined : 3).map(item => {
             return (
-              <Link href={`/dao/${item.id}`}>
+              <Link href={`/dao/${item.id}`} key={item.id}>
                 <a className={styles.row} key={item.id}>
                   <div
                     className={styles.flag}

@@ -17,6 +17,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import awsUploader from 'services/AwsUploader/AwsUploader';
 import { SputnikService } from 'services/SputnikService';
+import { RolesRequest, VotePolicyRequest } from 'types/dao';
 
 export function ReviewView(): JSX.Element {
   const { getValues, handleSubmit } = useFormContext<DAOFormValues>();
@@ -90,9 +91,13 @@ export function ReviewView(): JSX.Element {
       votePeriod: '168',
       gracePeriod: '24',
       amountToTransfer: '5',
-      default_vote_policy: getDefaultVotePolicy(),
       policy: {
-        roles: getRoles()
+        roles: getRoles() as RolesRequest[],
+        defaultVotePolicy: getDefaultVotePolicy() as VotePolicyRequest,
+        proposalBond: '0.1',
+        proposalPeriod: '168',
+        bountyBond: '0.1',
+        bountyForgivenessPeriod: '168'
       }
     });
 
