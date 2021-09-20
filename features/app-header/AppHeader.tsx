@@ -38,7 +38,7 @@ export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
     if (isLandingPage) {
       return (
         <div className={styles.flag}>
-          <Icon name="proposalGovernance" className={styles.logo} />
+          <Icon width={92} name="appLogo" />
         </div>
       );
     }
