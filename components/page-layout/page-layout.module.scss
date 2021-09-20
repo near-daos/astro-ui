@@ -6,8 +6,7 @@
   display: grid;
   grid-template-areas:
     'header'
-    'main'
-    'footer';
+    'main';
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
   min-height: 100vh;
@@ -15,8 +14,7 @@
   @include desktop {
     grid-template-areas:
       'aside header'
-      'aside main'
-      'footer footer';
+      'aside main';
     grid-template-columns: auto 1fr;
   }
 
@@ -26,6 +24,9 @@
 
     @include desktop {
       display: block;
+      height: 100vh;
+      position: sticky;
+      top: 0;
     }
   }
 

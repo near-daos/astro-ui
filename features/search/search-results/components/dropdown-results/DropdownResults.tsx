@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import Link from 'next/link';
 
 import { Button } from 'components/button/Button';
 import * as Typography from 'components/Typography';
@@ -14,9 +13,17 @@ import styles from './dropdown-results.module.scss';
 
 interface DropdownResultsProps {
   width: number;
+  onDaoClick: (id: string) => void;
+  onProposalClick: () => void;
+  onMemberClick: () => void;
 }
 
-export const DropdownResults: FC<DropdownResultsProps> = ({ width }) => {
+export const DropdownResults: FC<DropdownResultsProps> = ({
+  width,
+  onDaoClick,
+  onProposalClick,
+  onMemberClick
+}) => {
   const { searchResults } = useSearchResults();
   const [allDaoRes, setAllDaoRes] = useState(false);
   const [allProposalRes, setAllProposalRes] = useState(false);
@@ -32,16 +39,19 @@ export const DropdownResults: FC<DropdownResultsProps> = ({ width }) => {
           </Typography.Subtitle>
           {searchResults?.daos.slice(0, allDaoRes ? undefined : 3).map(item => {
             return (
-              <Link href={`/dao/${item.id}`} key={item.id}>
-                <a className={styles.row} key={item.id}>
-                  <div
-                    className={styles.flag}
-                    style={{ backgroundImage: `url(${flag})` }}
-                  />
-                  <div className={styles.name}>{item.name}</div>
-                  <div className={styles.daoId}>{item.id}</div>
-                </a>
-              </Link>
+              <Button
+                variant="tertiary"
+                className={styles.row}
+                key={item.id}
+                onClick={() => onDaoClick(item.id)}
+              >
+                <div
+                  className={styles.flag}
+                  style={{ backgroundImage: `url(${flag})` }}
+                />
+                <div className={styles.name}>{item.name}</div>
+                <div className={styles.daoId}>{item.id}</div>
+              </Button>
             );
           })}
           {!allDaoRes && searchResults?.daos.length > 3 && (
@@ -64,7 +74,7 @@ export const DropdownResults: FC<DropdownResultsProps> = ({ width }) => {
           {searchResults?.proposals
             .slice(0, allProposalRes ? undefined : 3)
             .map(item => {
-              return getProposalSearchSummary(item);
+              return getProposalSearchSummary(item, onProposalClick);
             })}
           {!allProposalRes && searchResults?.proposals.length > 3 && (
             <Button
@@ -87,9 +97,14 @@ export const DropdownResults: FC<DropdownResultsProps> = ({ width }) => {
             .slice(0, allMembersRes ? undefined : 3)
             .map(item => {
               return (
-                <div className={styles.row} key={item.id}>
+                <Button
+                  variant="tertiary"
+                  onClick={onMemberClick}
+                  className={styles.row}
+                  key={item.id}
+                >
                   <strong>{item.name}</strong>
-                </div>
+                </Button>
               );
             })}
           {!allMembersRes && searchResults?.members.length > 3 && (

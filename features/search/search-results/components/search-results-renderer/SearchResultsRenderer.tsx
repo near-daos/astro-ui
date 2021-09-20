@@ -38,7 +38,7 @@ export const SearchResultsRenderer: FC = () => {
         <span>&nbsp;&lsquo;{searchResults?.query}&rsquo;</span>
       </div>
       <div className={styles.content}>
-        <Tabs tabs={TABS} isControlled={false} />
+        <Tabs tabs={TABS} />
       </div>
     </div>
   );

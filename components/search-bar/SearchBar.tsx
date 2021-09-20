@@ -156,6 +156,12 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
             {...attributes.popper}
           >
             <DropdownResults
+              onDaoClick={id => {
+                router.push(`/dao/${id}`);
+                handleCancel();
+              }}
+              onProposalClick={() => router.push('/search-results?tab=1')}
+              onMemberClick={() => router.push('/search-results?tab=2')}
               width={inputRef.current?.getBoundingClientRect().width ?? 0}
             />
           </div>,
