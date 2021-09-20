@@ -1,11 +1,11 @@
-import { useDAOList } from 'hooks/useDAOList';
+import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { DAO } from 'types/dao';
 
 export function useSelectedDAO(): DAO | null {
   const router = useRouter();
-  const { daos } = useDAOList();
+  const { daos } = useDaoListPerCurrentUser();
   const daoId = router.query.dao;
 
   const currentDao = useMemo(() => {

@@ -1,6 +1,6 @@
 import { Sidebar } from 'components/sidebar';
 import { AddGroupMenu } from 'features/groups/components/add-group-menu';
-import { useDAOList } from 'hooks/useDAOList';
+import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
 import React, { useMemo } from 'react';
 import { useSelectedDAO } from 'hooks/useSelectedDao';
 
@@ -96,7 +96,7 @@ const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
 type TSidebarData = React.ComponentProps<typeof Sidebar>['items'];
 
 export const useSidebarData = (): TSidebarData => {
-  const { daos } = useDAOList();
+  const { daos } = useDaoListPerCurrentUser();
   const selectedDao = useSelectedDAO();
 
   return useMemo(() => {
