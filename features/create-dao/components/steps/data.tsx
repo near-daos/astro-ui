@@ -3,7 +3,6 @@ import {
   DaoSettingOption,
   DAOStructureType,
   DAOTemplate,
-  DAOType,
   DAOVotingPowerType
 } from 'features/create-dao/components/steps/types';
 
@@ -53,7 +52,8 @@ const DAO_VOTING_POWER_TOKEN: DaoSettingOption<DAOVotingPowerType> = {
   icon: 'illustrationTokenWeighted',
   subject: 'voting',
   title: 'Weighted',
-  description: 'The more tokens you own, the more voting power you get. '
+  description: 'The more tokens you own, the more voting power you get. ',
+  disabled: true
 };
 
 const DAO_TEMPLATE_FOUNDATION: DAOTemplate = {
@@ -85,7 +85,8 @@ const DAO_TEMPLATE_CORP: DAOTemplate = {
 A startup or company`,
   proposals: 'closed',
   structure: 'groups',
-  voting: 'weighted'
+  voting: 'weighted',
+  disabled: true
 };
 
 const DAO_TEMPLATE_COOP: DAOTemplate = {
@@ -98,12 +99,12 @@ A creative collective`,
   voting: 'democratic'
 };
 
-export const DAO_TEMPLATES: Record<DAOType, DAOTemplate> = {
-  foundation: DAO_TEMPLATE_FOUNDATION,
-  club: DAO_TEMPLATE_CLUB,
-  corporation: DAO_TEMPLATE_CORP,
-  cooperative: DAO_TEMPLATE_COOP
-};
+export const DAO_TEMPLATES: DAOTemplate[] = [
+  DAO_TEMPLATE_FOUNDATION,
+  DAO_TEMPLATE_CLUB,
+  DAO_TEMPLATE_CORP,
+  DAO_TEMPLATE_COOP
+];
 
 export const DAO_VOTING_POWER_OPTIONS: Record<
   DAOVotingPowerType,

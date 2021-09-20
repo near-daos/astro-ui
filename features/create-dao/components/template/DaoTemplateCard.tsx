@@ -11,6 +11,7 @@ export interface DaoTemplateCardProps extends HTMLAttributes<HTMLDivElement> {
   description: string;
   variant: keyof typeof backgrounds;
   className?: string;
+  disabled?: boolean;
 }
 
 export const DaoTemplateCard: VFC<DaoTemplateCardProps> = ({
@@ -19,12 +20,16 @@ export const DaoTemplateCard: VFC<DaoTemplateCardProps> = ({
   description,
   variant,
   className,
+  disabled,
   ...props
 }) => {
   const background = backgrounds[variant];
 
   return (
-    <div className={cn(styles.root, className)} {...props}>
+    <div
+      className={cn(styles.root, className, { [styles.disabled]: disabled })}
+      {...props}
+    >
       <div className={styles.content}>
         <h2 className={styles.title}>{title}</h2>
         <Typography.Subtitle size={6} className={styles.notes}>

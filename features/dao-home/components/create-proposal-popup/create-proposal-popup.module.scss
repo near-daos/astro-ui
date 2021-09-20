@@ -23,24 +23,6 @@
     width: 100%;
   }
 
-  .left {
-    @include centralize;
-    min-width: 100px;
-  }
-
-  .right {
-    width: 100%;
-  }
-
-  .title {
-    @extend %heading2;
-    color: var(--color-primary-50);
-  }
-
-  .description {
-    @extend %body1;
-  }
-
   .proposal:hover {
     border-color: var(--color-primary-50);
     box-shadow: 0 0 0 2px var(--color-primary-50);

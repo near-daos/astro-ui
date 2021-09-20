@@ -1,0 +1,16 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.left {
+  @include centralize;
+  min-width: 100px;
+}
+
+.title {
+  @extend %heading2;
+  color: var(--color-primary-50);
+}
+
+.description {
+  @extend %body1;
+}

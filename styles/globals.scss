@@ -1,5 +1,6 @@
 @import '~sanitize.css';
 @import 'variables';
+@import 'helpers';
 @import 'typography';
 @import 'breakpoints';
 
@@ -98,4 +99,8 @@ $sizes: // Typography sizes
   :root {
     font-size: 14px;
   }
+}
+
+.disabled {
+  @extend %disabled;
 }

@@ -1,40 +1,22 @@
 import React, { FC, useCallback } from 'react';
 
 import { useModal, Modal } from 'components/modal';
-import { Icon, IconName } from 'components/Icon';
 
 import { Button } from 'components/button/Button';
 import { useRouter } from 'next/router';
 import { useSelectedDAO } from 'hooks/useSelectedDao';
 import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
+
+import { ProposalClaimIcon } from './components/ProposalClaimIcon';
+import { ProposalRequestPayout } from './components/ProposalRequestPayout';
+import { ProposalButtonContent } from './components/proposal-button-content';
+
 import styles from './create-proposal-popup.module.scss';
 
 export interface CreateProposalPopupProps {
   isOpen: boolean;
   onClose: (...args: unknown[]) => void;
 }
-
-interface ProposalButtonContentProps {
-  icon: IconName;
-  title: string;
-  description: string;
-}
-
-const ProposalButtonContent: FC<ProposalButtonContentProps> = ({
-  icon,
-  title,
-  description
-}) => (
-  <>
-    <div className={styles.left}>
-      <Icon name={icon} width={40} />
-    </div>
-    <div className={styles.right}>
-      <div className={styles.title}>{title}</div>
-      <div className={styles.description}>{description}</div>
-    </div>
-  </>
-);
 
 export const CreateProposalPopup: FC<CreateProposalPopupProps> = ({
   isOpen,
@@ -71,7 +53,7 @@ export const CreateProposalPopup: FC<CreateProposalPopupProps> = ({
           onClick={requestPayoutClickHandler}
         >
           <ProposalButtonContent
-            icon="proposalRequestPayout"
+            icon={ProposalRequestPayout}
             title="Request a payout"
             description="Completed a task? Request your payout from the DAO."
           />
@@ -83,7 +65,7 @@ export const CreateProposalPopup: FC<CreateProposalPopupProps> = ({
           onClick={claimBountyClickHandler}
         >
           <ProposalButtonContent
-            icon="proposalClaimBounty"
+            icon={ProposalClaimIcon}
             title="Claim a bounty"
             description="Sign up here to work on a specific bounty."
           />
