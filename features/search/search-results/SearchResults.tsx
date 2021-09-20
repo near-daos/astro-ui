@@ -14,6 +14,7 @@ interface SearchResultsContextProps {
   searchResults: SearchResultsData | null;
   handleSearch: (query: string) => void;
   handleClose: () => void;
+  setSearchResults: (res: null) => void;
 }
 
 const SearchResultsContext = createContext<SearchResultsContextProps>({
@@ -21,7 +22,9 @@ const SearchResultsContext = createContext<SearchResultsContextProps>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   handleSearch: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  handleClose: () => {}
+  handleClose: () => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  setSearchResults: () => {}
 });
 
 export const useSearchResults = (): SearchResultsContextProps =>
@@ -44,7 +47,7 @@ export const SearchResults: FC = ({ children }) => {
 
   return (
     <SearchResultsContext.Provider
-      value={{ searchResults, handleSearch, handleClose }}
+      value={{ searchResults, handleSearch, handleClose, setSearchResults }}
     >
       {children}
     </SearchResultsContext.Provider>

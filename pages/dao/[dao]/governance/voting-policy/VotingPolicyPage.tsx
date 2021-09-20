@@ -1,18 +1,16 @@
-import { useSelectedDAO } from 'hooks/useSelectedDao';
-import React, { FC, useCallback, useEffect, useState } from 'react';
-
-import { DaoSettingsBanner } from 'features/dao-settings/components/dao-settings-banner';
 import { Button } from 'components/button/Button';
 import Tabs from 'components/tabs/Tabs';
-import { TasksTabView } from 'features/vote-policy/components/tasks-tab-view';
-import { GroupsTabView } from 'features/vote-policy/components/groups-tab-view';
-import { TreasuryTabView } from 'features/vote-policy/components/treasury-tab-view';
+import { DaoSettingsBanner } from 'features/vote-policy/components/banner';
 import { GovernanceTabView } from 'features/vote-policy/components/governance-tab-view';
-import { voteDetails } from 'lib/mocks/governance/voting-policy';
+import { GroupsTabView } from 'features/vote-policy/components/groups-tab-view';
+import { TasksTabView } from 'features/vote-policy/components/tasks-tab-view';
+import { TreasuryTabView } from 'features/vote-policy/components/treasury-tab-view';
 import {
   getInitialData,
   getNewProposalObject
 } from 'features/vote-policy/helpers';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import styles from './voting-policy-page.module.scss';
 
@@ -30,7 +28,10 @@ const VotingPolicyPage: FC = () => {
   const handleChange = useCallback(
     (name, value) => {
       if (data) {
-        setData({ ...data, [name]: value });
+        setData({
+          ...data,
+          [name]: value
+        });
       }
     },
     [data]
@@ -119,7 +120,7 @@ const VotingPolicyPage: FC = () => {
         onChange={handleChange}
         viewMode={viewMode}
         data={data.daoSettings}
-        voteDetails={voteDetails}
+        scope="policy"
       />
       <div className={styles.header}>
         <h1>Voting policy</h1>

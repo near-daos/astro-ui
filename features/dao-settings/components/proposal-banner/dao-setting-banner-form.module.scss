@@ -1,0 +1,91 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-primary-20);
+  display: grid;
+  grid-row-gap: 8px;
+  grid-template-areas:
+    'name control'
+    'desc none'
+    'details details';
+  grid-template-columns: 1fr 1fr;
+  margin: 0 -120px;
+  margin-bottom: 40px;
+  padding: 34px 132px 12px;
+
+  &.view {
+    background-color: transparent;
+  }
+}
+
+.name {
+  @extend %heading2;
+  grid-area: name;
+}
+
+.control {
+  align-items: center;
+  display: flex;
+  grid-area: control;
+  justify-content: flex-end;
+
+  > button {
+    margin-left: 16px;
+  }
+}
+
+.desc {
+  grid-area: desc;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 148px;
+}
+
+.details {
+  grid-area: details;
+}
+
+.wrapper {
+  margin: 0 -132px;
+  transform: translateY(12px);
+}
+
+.expanded {
+  padding: 24px 32px;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+
+  h2 {
+    display: inline-block;
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-md}px) {
+  .root {
+    margin: 0 -48px;
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    grid-template-areas:
+      'name control'
+      'desc desc'
+      'details details';
+    grid-template-columns: 1fr 1fr;
+    margin: 0 -24px;
+  }
+  .control {
+    justify-content: flex-end;
+    margin-bottom: 16px;
+  }
+}

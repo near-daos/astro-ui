@@ -26,20 +26,6 @@ export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
     setShowSideBar(false);
   }, [setShowSideBar]);
 
-  const createDao = useCallback(() => {
-    // TODO Implement actual dao creation.
-    // TODO Data sample is below.
-    // SputnikService.createDao({
-    //   name: 'alexeydao',
-    //   purpose: 'Bring beauty and peace',
-    //   council: 'council',
-    //   bond: '0.1',
-    //   votePeriod: '168',
-    //   gracePeriod: '24',
-    //   amountToTransfer: '5'
-    // }).then(console.log);
-  }, []);
-
   function renderSideBar() {
     if (showSideBar) {
       return <SidebarNavigation fullscreen closeSideBar={closeNavigation} />;
@@ -52,7 +38,7 @@ export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
     if (isLandingPage) {
       return (
         <div className={styles.flag}>
-          <Icon name="proposalGovernance" className={styles.logo} />
+          <Icon width={92} name="appLogo" />
         </div>
       );
     }
@@ -73,11 +59,6 @@ export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
               }}
             >
               Communities
-            </Button>
-          </div>
-          <div className={cn(styles.createDao, styles.desktopOnly)}>
-            <Button size="small" variant="secondary" onClick={createDao}>
-              Create DAO
             </Button>
           </div>
         </>

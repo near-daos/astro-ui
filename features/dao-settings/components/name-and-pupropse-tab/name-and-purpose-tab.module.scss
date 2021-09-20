@@ -3,7 +3,6 @@
 .root {
   display: flex;
   flex-direction: column;
-  margin-top: 40px;
   max-width: 640px;
 
   p {
@@ -19,4 +18,8 @@
   @extend %subtitle5;
   color: var(--color-neutral-60);
   margin-bottom: 4px;
+}
+
+.purpose {
+  white-space: pre-wrap;
 }

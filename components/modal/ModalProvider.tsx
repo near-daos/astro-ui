@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useMemo } from 'react';
+import omit from 'lodash/omit';
 import { ModalType, ModalContext } from './ModalContext';
 
 export interface ModalProviderProps {
@@ -14,14 +15,21 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
     throw new Error(`Container must be a DOM element.`);
   }
 
-  const [currentModal, setCurrentModal] = useState<ModalType | null>(null);
+  const [modals, setModals] = useState<Record<string, ModalType>>({});
 
   const showModal = useCallback(
-    (modal: ModalType) => setCurrentModal(modal),
-    []
+    (id: string, modal: ModalType) => {
+      setModals({ ...modals, [id]: modal });
+    },
+    [modals]
   );
 
-  const hideModal = useCallback(() => setCurrentModal(null), []);
+  const hideModal = useCallback(
+    (id: string) => {
+      setModals(omit(modals, [id]));
+    },
+    [modals]
+  );
 
   const contextValue = useMemo(() => ({ showModal, hideModal }), [
     hideModal,
@@ -32,7 +40,7 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
     <ModalContext.Provider value={contextValue}>
       <>
         {children}
-        {currentModal}
+        {Object.values(modals)}
       </>
     </ModalContext.Provider>
   );

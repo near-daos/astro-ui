@@ -5,6 +5,7 @@ import {
   ExpandedProposalCardProps
 } from 'components/cards/expanded-proposal-card';
 import { RequestPayout } from 'components/cards/proposal-card';
+import { ProposalType } from 'types/proposal';
 
 export default {
   title: 'Components/Cards/ExpandedProposalCard',
@@ -18,8 +19,8 @@ export const Template: Story<ExpandedProposalCardProps> = (
 Template.storyName = 'ExpandedProposalCard';
 Template.args = {
   isOpen: true,
-  status: 'Voting in progress',
-  type: 'Request payout',
+  status: 'InProgress',
+  type: ProposalType.Transfer,
   title: 'meowzers.sputnikdao.near',
   name: 'jonathan.near',
   text:

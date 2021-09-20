@@ -4,20 +4,20 @@
 .root {
   @extend %body1;
   width: 100%;
+
   .header {
     @extend %body1;
   }
+
   .cropper {
     display: block;
+    margin-top: 2rem;
   }
 
   .btn {
     margin-top: 24px;
   }
 
-  .preview {
-    margin-top: 42px;
-  }
   .edit {
     @include centralize;
     flex-direction: column;

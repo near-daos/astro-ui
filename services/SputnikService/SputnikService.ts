@@ -2,11 +2,11 @@
 import { connect, Contract, keyStores, Near } from 'near-api-js';
 import { NearConfig, nearConfig } from 'config';
 import Decimal from 'decimal.js';
+import omit from 'lodash/omit';
 
 import { CreateTokenParams } from 'types/token';
 
-import { DAO, Member } from 'types/dao';
-// import { timestampToReadable } from 'utils/timestampToReadable';
+import { CreateDaoInput, DAO } from 'types/dao';
 import { CreateProposalParams, DaoConfig, Proposal } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
 import {
@@ -21,7 +21,6 @@ import {
   ProposalDTO
 } from 'services/SputnikService/mappers/proposal';
 import {
-  extractMembersFromDaosList,
   mapSearchResultsDTOToDataObject,
   SearchResponse
 } from 'services/SputnikService/mappers/search-results';
@@ -29,6 +28,7 @@ import {
 import { HttpService, httpService } from 'services/HttpService';
 import Big from 'big.js';
 import PromisePool from '@supercharge/promise-pool';
+import { BountiesResponse, BountyResponse } from 'types/bounties';
 import { ContractPool } from './ContractPool';
 import { yoktoNear, gas } from './constants';
 import { SputnikWalletConnection } from './SputnikWalletConnection';
@@ -85,6 +85,23 @@ class SputnikService {
     );
 
     this.contractPool = new ContractPool(account);
+  }
+
+  public claimBounty(
+    daoId: string,
+    args: { bountyId: number; deadline: string; bountyBond: string }
+  ) {
+    const { bountyId: id, deadline, bountyBond } = args;
+    const amount = new Decimal(args.bountyBond);
+    const amountYokto = amount.mul(yoktoNear).toFixed();
+
+    this.contractPool
+      .get(daoId)
+      .bounty_claim({ id, deadline, bountyBond }, gas, amountYokto.toString());
+  }
+
+  public unclaimBounty(daoId: string, bountyId: string) {
+    this.contractPool.get(daoId).bounty_giveup({ id: bountyId }, gas);
   }
 
   public isAuthorized(): boolean {
@@ -171,7 +188,7 @@ class SputnikService {
     );
   }
 
-  public async createDao(params: any): Promise<boolean> {
+  public async createDao(params: CreateDaoInput): Promise<boolean> {
     const config: DaoConfig = {
       name: params.name,
       purpose: params.purpose,
@@ -185,7 +202,24 @@ class SputnikService {
       bond: new Decimal(params.bond).mul(yoktoNear).toFixed(),
       vote_period: new Decimal(params.votePeriod).mul('3.6e12').toFixed(),
       grace_period: new Decimal(params.gracePeriod).mul('3.6e12').toFixed(),
-      policy: [this.getAccountId()],
+      policy: {
+        roles: params.policy.roles,
+        default_vote_policy: params.policy.defaultVotePolicy,
+        proposal_bond: new Decimal(params.policy.proposalBond)
+          .mul(yoktoNear)
+          .toFixed(),
+        proposal_period: new Decimal(params.policy.proposalPeriod)
+          .mul('3.6e12')
+          .toFixed(),
+        bounty_bond: new Decimal(params.policy.bountyBond)
+          .mul(yoktoNear)
+          .toFixed(),
+        bounty_forgiveness_period: new Decimal(
+          params.policy.bountyForgivenessPeriod
+        )
+          .mul('3.6e12')
+          .toFixed()
+      },
       config
     };
 
@@ -225,13 +259,17 @@ class SputnikService {
   public async createProposal(params: CreateProposalParams): Promise<any> {
     const { daoId, description, kind, data, bond } = params;
 
+    const kindData = data
+      ? {
+          [kind]: data
+        }
+      : kind;
+
     return this.contractPool.get(daoId).add_proposal(
       {
         proposal: {
           description,
-          kind: {
-            [kind]: data
-          }
+          kind: kindData
         }
       },
       new Decimal('30000000000000').toString(),
@@ -275,12 +313,6 @@ class SputnikService {
     }
   }
 
-  public async getMembers(): Promise<Member[]> {
-    const res = await this.getDaoList();
-
-    return extractMembersFromDaosList(res);
-  }
-
   public async search(params: {
     offset?: number;
     limit?: number;
@@ -304,18 +336,20 @@ class SputnikService {
   }
 
   public async getProposals(
-    daoId: string,
+    daoId?: string,
     offset = 0,
     limit = 50
   ): Promise<Proposal[]> {
+    const params = {
+      filter: `daoId||$eq||${daoId}`,
+      offset,
+      limit
+    };
+
     const { data: proposals } = await this.httpService.get<
       GetProposalsResponse
     >('/proposals', {
-      params: {
-        filter: `daoId||$eq||${daoId}`,
-        offset,
-        limit
-      }
+      params: daoId ? params : omit(params, 'filter')
     });
 
     return proposals.data.map(mapProposalDTOToProposal);
@@ -358,6 +392,30 @@ class SputnikService {
 
       throw error;
     }
+  }
+
+  public async getBountiesByDaoId(
+    daoId: string,
+    params?: {
+      offset?: number;
+      limit?: number;
+      sort?: string;
+    }
+  ): Promise<BountyResponse[]> {
+    const offset = params?.offset ?? 0;
+    const limit = params?.limit ?? 50;
+    const sort = params?.sort ?? 'createdAt,DESC';
+
+    const { data } = await this.httpService.get<BountiesResponse>('/bounties', {
+      params: {
+        filter: `daoId||$eq||${daoId}`,
+        offset,
+        limit,
+        sort
+      }
+    });
+
+    return data.data;
   }
 
   public vote(

@@ -11,9 +11,8 @@ import {
 } from 'components/cards/proposal-card/components/proposal-content/proposal-content';
 import { ProposalCard } from 'components/cards/proposal-card/ProposalCard';
 
-import { SputnikService, yoktoNear } from 'services/SputnikService';
+import { SputnikService } from 'services/SputnikService';
 import { useAuthContext } from 'context/AuthContext';
-import Decimal from 'decimal.js';
 
 interface ProposalCardRendererProps {
   proposal: Proposal;
@@ -24,17 +23,38 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
 }) => {
   const { accountId } = useAuthContext();
   let content;
-  const handleVote = useCallback(() => {
-    SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteApprove');
-  }, [proposal.daoId, proposal.proposalId]);
+  const handleVote = useCallback(
+    e => {
+      if (e) {
+        e.stopPropagation();
+      }
 
-  const handleUnvote = useCallback(() => {
-    SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteReject');
-  }, [proposal.daoId, proposal.proposalId]);
+      SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteApprove');
+    },
+    [proposal.daoId, proposal.proposalId]
+  );
 
-  const handleRemove = useCallback(() => {
-    SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteRemove');
-  }, [proposal.daoId, proposal.proposalId]);
+  const handleUnvote = useCallback(
+    e => {
+      if (e) {
+        e.stopPropagation();
+      }
+
+      SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteReject');
+    },
+    [proposal.daoId, proposal.proposalId]
+  );
+
+  const handleRemove = useCallback(
+    e => {
+      if (e) {
+        e.stopPropagation();
+      }
+
+      SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteRemove');
+    },
+    [proposal.daoId, proposal.proposalId]
+  );
 
   switch (proposal.kind.type) {
     case ProposalType.AddMemberToRole: {
@@ -60,12 +80,9 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
       break;
     }
     case ProposalType.Transfer: {
-      const amountYokto = new Decimal(proposal.kind.amount);
-      const amount = amountYokto.div(yoktoNear).toFixed(2);
-
       content = (
         <RequestPayout
-          amount={amount}
+          amount={proposal.kind.amount}
           reason={proposal.kind.msg}
           recipient={proposal.kind.receiverId}
           tokens={proposal.kind.tokenId}
@@ -121,6 +138,10 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
       onLike={handleVote}
       onDislike={handleUnvote}
       onRemove={handleRemove}
+      votePeriodEnd={proposal.votePeriodEnd}
+      daoDetails={proposal.daoDetails}
+      proposalId={proposal.proposalId}
+      daoId={proposal.daoId}
     >
       {content}
     </ProposalCard>

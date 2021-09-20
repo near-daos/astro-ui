@@ -1,6 +1,10 @@
 /* eslint-disable camelcase */
 import { DaoRole } from './role';
 
+export type DaoDetails = {
+  name: string;
+};
+
 export type FunctionCallAction = {
   methodName: string;
   args: string;
@@ -23,7 +27,7 @@ export enum ProposalType {
   Vote = 'Vote'
 }
 
-export type Bounty = {
+export type AddBountyRequest = {
   description: string;
   token: string;
   amount: string;
@@ -64,7 +68,7 @@ export type ProposalKind =
     }
   | {
       type: ProposalType.AddBounty;
-      bounty: Bounty;
+      bounty: AddBountyRequest;
     }
   | {
       type: ProposalType.Transfer;
@@ -104,6 +108,7 @@ export type Proposal = {
   };
   // votePeriodConvertedEndDate: Date;   --- not working with SSR
   createdAt: string;
+  daoDetails: DaoDetails;
 };
 
 export interface CreateProposalParams {
@@ -120,7 +125,7 @@ export interface CreateProposalParams {
     | 'AddBounty'
     | 'BountyDone'
     | 'Vote';
-  data:
+  data?:
     | ChangeConfig
     | ChangePolicy
     | AddRemoveMemberRole
@@ -134,7 +139,7 @@ export interface CreateProposalParams {
 }
 
 interface AddBounty {
-  bounty: Bounty;
+  bounty: AddBountyRequest;
 }
 
 interface UpgradeRemote {
@@ -184,7 +189,7 @@ interface Transfer {
 }
 
 interface BountyDone {
-  bounty_id: string;
+  bounty_id: number;
   // valid account id
   receiver_id: string;
 }

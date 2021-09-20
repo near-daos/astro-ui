@@ -17,8 +17,9 @@ export interface GovernanceTabViewProps {
   viewMode?: boolean;
   defaultVotePolicy: DaoVotePolicy;
   groups: TGroup[];
-  onChange: (name: string, value: PolicyProps) => void;
+  onChange?: (name: string, value: PolicyProps) => void;
   data: VotingPolicyPageInitialData;
+  showTitle?: boolean;
 }
 
 export const GovernanceTabView: FC<GovernanceTabViewProps> = ({
@@ -26,53 +27,54 @@ export const GovernanceTabView: FC<GovernanceTabViewProps> = ({
   defaultVotePolicy,
   groups,
   data,
-  onChange
+  onChange,
+  showTitle = true
 }) => {
   const items = [
-    {
-      id: '1',
-      label: 'Upgrade self',
-      content: (
-        <AccordeonContent
-          onChange={v => onChange('upgradeSelf', v)}
-          data={data.upgradeSelf as PolicyProps}
-          action="Upgrade self"
-          viewMode={viewMode}
-          proposers={getProposersList(groups, 'upgradeSelf', 'AddProposal')}
-          policies={getPoliciesList(
-            groups,
-            'upgradeSelf',
-            ['VoteApprove', 'VoteReject', 'VoteRemove'],
-            defaultVotePolicy
-          )}
-        />
-      )
-    },
-    {
-      id: '2',
-      label: 'Upgrade remote',
-      content: (
-        <AccordeonContent
-          onChange={v => onChange('upgradeRemote', v)}
-          data={data.upgradeSelf as PolicyProps}
-          action="Upgrade remote"
-          viewMode={viewMode}
-          proposers={getProposersList(groups, 'upgradeRemote', 'AddProposal')}
-          policies={getPoliciesList(
-            groups,
-            'upgradeRemote',
-            ['VoteApprove', 'VoteReject', 'VoteRemove'],
-            defaultVotePolicy
-          )}
-        />
-      )
-    },
+    // {
+    //   id: '1',
+    //   label: 'Upgrade self',
+    //   content: (
+    //     <AccordeonContent
+    //       onChange={v => onChange('upgradeSelf', v)}
+    //       data={data.upgradeSelf as PolicyProps}
+    //       action="Upgrade self"
+    //       viewMode={viewMode}
+    //       proposers={getProposersList(groups, 'upgradeSelf', 'AddProposal')}
+    //       policies={getPoliciesList(
+    //         groups,
+    //         'upgradeSelf',
+    //         ['VoteApprove', 'VoteReject', 'VoteRemove'],
+    //         defaultVotePolicy
+    //       )}
+    //     />
+    //   )
+    // },
+    // {
+    //   id: '2',
+    //   label: 'Upgrade remote',
+    //   content: (
+    //     <AccordeonContent
+    //       onChange={v => onChange('upgradeRemote', v)}
+    //       data={data.upgradeSelf as PolicyProps}
+    //       action="Upgrade remote"
+    //       viewMode={viewMode}
+    //       proposers={getProposersList(groups, 'upgradeRemote', 'AddProposal')}
+    //       policies={getPoliciesList(
+    //         groups,
+    //         'upgradeRemote',
+    //         ['VoteApprove', 'VoteReject', 'VoteRemove'],
+    //         defaultVotePolicy
+    //       )}
+    //     />
+    //   )
+    // },
     {
       id: '3',
       label: 'Config',
       content: (
         <AccordeonContent
-          onChange={v => onChange('config', v)}
+          onChange={v => onChange?.('config', v)}
           data={data.config as PolicyProps}
           action="Create poll"
           viewMode={viewMode}
@@ -90,7 +92,7 @@ export const GovernanceTabView: FC<GovernanceTabViewProps> = ({
 
   return (
     <div className={styles.root}>
-      <p>Create and vote on update configuration proposals.</p>
+      {showTitle && <p>Create and vote on update configuration proposals.</p>}
       <div className={styles.content}>
         <AccordeonRow items={items} />
       </div>

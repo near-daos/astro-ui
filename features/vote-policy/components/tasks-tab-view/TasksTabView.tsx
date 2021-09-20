@@ -18,8 +18,9 @@ export interface TasksTabViewProps {
   viewMode?: boolean;
   defaultVotePolicy: DaoVotePolicy;
   groups: TGroup[];
-  onChange: (name: string, value: PolicyProps) => void;
+  onChange?: (name: string, value: PolicyProps) => void;
   data: VotingPolicyPageInitialData;
+  showTitle?: boolean;
 }
 
 export const TasksTabView: FC<TasksTabViewProps> = ({
@@ -27,7 +28,8 @@ export const TasksTabView: FC<TasksTabViewProps> = ({
   defaultVotePolicy,
   groups,
   onChange,
-  data
+  data,
+  showTitle = true
 }) => {
   const items = [
     {
@@ -37,7 +39,7 @@ export const TasksTabView: FC<TasksTabViewProps> = ({
         <AccordeonContent
           action="Create bounty"
           viewMode={viewMode}
-          onChange={v => onChange('addBounty', v)}
+          onChange={v => onChange?.('addBounty', v)}
           data={data.addBounty as PolicyProps}
           proposers={getProposersList(groups, 'addBounty', 'AddProposal')}
           policies={getPoliciesList(
@@ -55,7 +57,7 @@ export const TasksTabView: FC<TasksTabViewProps> = ({
       content: (
         <AccordeonContent
           action="Close bounty"
-          onChange={v => onChange('bountyDone', v)}
+          onChange={v => onChange?.('bountyDone', v)}
           data={data.bountyDone as PolicyProps}
           viewMode={viewMode}
           proposers={getProposersList(groups, 'bountyDone', 'AddProposal')}
@@ -74,7 +76,7 @@ export const TasksTabView: FC<TasksTabViewProps> = ({
       content: (
         <AccordeonContent
           action="Create poll"
-          onChange={v => onChange('setVoteToken', v)}
+          onChange={v => onChange?.('setVoteToken', v)}
           data={data.setVoteToken as PolicyProps}
           viewMode={viewMode}
           proposers={getProposersList(groups, 'setVoteToken', 'AddProposal')}
@@ -94,7 +96,7 @@ export const TasksTabView: FC<TasksTabViewProps> = ({
         <AccordeonContent
           action="NEAR function"
           viewMode={viewMode}
-          onChange={v => onChange('call', v)}
+          onChange={v => onChange?.('call', v)}
           data={data.call as PolicyProps}
           proposers={getProposersList(groups, 'call', 'AddProposal')}
           policies={getPoliciesList(
@@ -110,9 +112,11 @@ export const TasksTabView: FC<TasksTabViewProps> = ({
 
   return (
     <div className={styles.root}>
-      <p>
-        Create and vote on bounties, resolutions, and calling NEAR functions.
-      </p>
+      {showTitle && (
+        <p>
+          Create and vote on bounties, resolutions, and calling NEAR functions.
+        </p>
+      )}
       <div className={styles.content}>
         <AccordeonRow items={items} />
       </div>

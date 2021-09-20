@@ -13,7 +13,7 @@ import dynamic from 'next/dynamic';
 import ScrollList from 'components/scroll-list/ScrollList';
 import { IconButton } from 'components/button/IconButton';
 import { Button } from 'components/button/Button';
-import { TokenCard, TokenName } from 'components/cards/token-card';
+import { TokenCard } from 'components/cards/token-card';
 import { Header } from 'components/cards/token-card/components/header';
 import { useModal } from 'components/modal';
 import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
@@ -27,10 +27,11 @@ import {
 import { ChartData } from 'lib/types/treasury';
 
 import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
+import { Token } from 'types/token';
 
 interface TokenCardInput {
   id: string;
-  tokenName: TokenName;
+  tokenName: Token.NEAR;
   tokensBalance: number;
   totalValue: number;
   voteWeight: number;
@@ -103,7 +104,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
     >
       <TokenCard
         {...items[index]}
-        href={`/treasury/tokens/transactions/${items[index].id}`}
+        href={`/dao/${accountName}/treasury/tokens/transactions/${items[index].id}`}
       />
     </div>
   );

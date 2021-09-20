@@ -27,6 +27,7 @@ interface SelectProps {
   placeholder?: string | undefined;
   size?: 'small' | 'medium' | 'large' | 'block' | 'content';
   value?: string | undefined;
+  disabled?: boolean;
 }
 
 function getStateClass(isValid: boolean | undefined) {
@@ -59,6 +60,7 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
       defaultValue,
       onChange,
       placeholder = 'Select item...',
+      disabled,
       ...props
     },
     externalRef
@@ -133,7 +135,10 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
       inputStyles.input,
       size ? sizeClasses[size] : undefined,
       styles.select,
-      classNameProp
+      classNameProp,
+      {
+        [styles.disabled]: disabled
+      }
     );
 
     return (

@@ -21,6 +21,7 @@ export const OpenCells: FC<OpenCellProps> = ({ claimed, slots, onClaim }) => (
         size="block"
         className={styles.claim}
         onClick={onClaim}
+        disabled={claimed === slots}
       >
         Claim
       </Button>

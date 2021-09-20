@@ -57,3 +57,10 @@
     background: var(--color-neutral-30);
   }
 }
+
+.disabled {
+  cursor: default;
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+}

@@ -1,46 +1,84 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import Tabs from 'components/tabs/Tabs';
-import { Bounty, BountyStatus } from 'components/cards/bounty-card/types';
+import { Bounty, DeadlineUnit } from 'components/cards/bounty-card/types';
 import { BountiesList } from 'features/bounties-list';
 import { CreateBountyDialog } from 'features/bounty/dialogs/create-bounty-dialog/create-bounty-dialog';
 import { Button } from 'components/button/Button';
 import { useModal } from 'components/modal/hooks';
-import { BOUNTIES_DATA, CREATE_BOUNTY_INITIAL } from 'lib/mocks/tasks/bounties';
 import styles from 'pages/dao/[dao]/tasks/bounties/bounties.module.scss';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
+import { SputnikService } from 'services/SputnikService';
+import { BountyResponse } from 'types/bounties';
+import { Token } from 'types/token';
 
-interface BountiesPageProps {
-  bounties: Bounty[];
-}
+export const CREATE_BOUNTY_INITIAL = {
+  token: Token.NEAR,
+  slots: 3,
+  amount: 0,
+  deadlineThreshold: 3,
+  deadlineUnit: 'day' as DeadlineUnit,
+  externalUrl: '',
+  details: ''
+};
 
-const BountiesPage: FC<BountiesPageProps> = ({ bounties = BOUNTIES_DATA }) => {
-  const openBounties = bounties.filter(
-    (bounty: { status: BountyStatus }) => bounty.status === 'Open'
+const BountiesPage: FC = () => {
+  const selectedDao = useSelectedDAO();
+  const [bounties, setBounties] = useState<Bounty[]>([]);
+
+  useEffect(() => {
+    if (!selectedDao) {
+      return;
+    }
+
+    SputnikService.getBountiesByDaoId(selectedDao.id).then(result => {
+      const data: Bounty[] = result.map(
+        (response: BountyResponse): Bounty => {
+          return {
+            amount: response.amount,
+            forgivenessPeriod: response.dao.policy.bountyForgivenessPeriod,
+            claimedBy: response.bountyClaims.map(claim => ({
+              deadline: claim.deadline,
+              accountId: claim.accountId,
+              starTime: claim.startTime
+            })),
+            deadlineThreshold: response.maxDeadline,
+            slots: Number(response.times),
+            id: response.bountyId,
+            token: 'NEAR',
+            description: response.description
+          };
+        }
+      );
+
+      setBounties(data);
+    });
+  }, [selectedDao]);
+
+  const inProgressBounties = bounties.filter(bounty =>
+    bounty.claimedBy.find(
+      claim => claim.accountId === SputnikService.getAccountId()
+    )
   );
-  const inProgressBounties = bounties.filter(
-    (bounty: { status: BountyStatus }) => bounty.status === 'In progress'
-  );
-  const completedBounties = bounties.filter(
-    (bounty: { status: BountyStatus }) => bounty.status === 'Completed'
-  );
-  const numberOpenBounties = openBounties.length;
+
+  const numberOpenBounties = bounties.length;
   const numberInProgressBounties = inProgressBounties.length;
-  const numberCompletedBounties = completedBounties.length;
+  const numberCompletedBounties = 0;
 
   const tabs = [];
   const tabOpen = {
     id: 1,
     label: `Open (${numberOpenBounties})`,
-    content: <BountiesList bountiesList={openBounties} />
+    content: <BountiesList bountiesList={bounties} inProgress={false} />
   };
   const tabInProgress = {
     id: 2,
     label: `In Progress (${numberInProgressBounties})`,
-    content: <BountiesList bountiesList={inProgressBounties} isInProgress />
+    content: <BountiesList bountiesList={inProgressBounties} inProgress />
   };
   const tabCompleted = {
     id: 3,
     label: `Completed (${numberCompletedBounties})`,
-    content: <BountiesList bountiesList={completedBounties} />
+    content: <BountiesList bountiesList={[]} inProgress={false} />
   };
 
   if (numberOpenBounties > 0) {
@@ -56,7 +94,9 @@ const BountiesPage: FC<BountiesPageProps> = ({ bounties = BOUNTIES_DATA }) => {
   }
 
   const [showCreateBountyDialog] = useModal(CreateBountyDialog, {
-    initialValues: CREATE_BOUNTY_INITIAL
+    initialValues: {
+      ...CREATE_BOUNTY_INITIAL
+    }
   });
 
   const handleCreateClick = useCallback(() => showCreateBountyDialog(), [

@@ -11,13 +11,16 @@ import { Button } from 'components/button/Button';
 import { TextArea } from 'components/textarea/TextArea';
 
 import { VoteDetails } from 'components/vote-details';
-import { BondDetail, VoteDetail } from 'features/types';
+
 import styles from './create-poll-form.module.scss';
 
+type CreatePollInput = {
+  question: string;
+  externalUrl: string;
+};
+
 interface CreatePollFormProps {
-  voteDetails: VoteDetail[];
-  bondDetail: BondDetail;
-  onSubmit: () => void;
+  onSubmit: (data: CreatePollInput) => void;
   onCancel: () => void;
 }
 
@@ -33,9 +36,7 @@ const schema = yup.object().shape({
 
 export const CreatePollForm: FC<CreatePollFormProps> = ({
   onSubmit,
-  onCancel,
-  voteDetails,
-  bondDetail
+  onCancel
 }) => {
   const {
     register,
@@ -68,7 +69,7 @@ export const CreatePollForm: FC<CreatePollFormProps> = ({
       />
       <div className={styles.vote}>
         <ExpandableDetails label="Vote details">
-          <VoteDetails voteDetails={voteDetails} bondDetail={bondDetail} />
+          <VoteDetails scope="vote" />
         </ExpandableDetails>
       </div>
       <div className={styles.footer}>

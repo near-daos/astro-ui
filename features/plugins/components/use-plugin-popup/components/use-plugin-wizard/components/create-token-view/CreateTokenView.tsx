@@ -10,6 +10,7 @@ import {
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { Input } from 'components/input/Input';
 import { Button } from 'components/button/Button';
+import { VoteDetails } from 'components/vote-details';
 
 import styles from './create-token-view.module.scss';
 
@@ -84,7 +85,9 @@ const CreateTokenView: FC = () => {
         />
       </div>
       <div className={styles.vote}>
-        <ExpandableDetails label="Vote details">Placeholder</ExpandableDetails>
+        <ExpandableDetails label="Vote details">
+          <VoteDetails scope="call" />
+        </ExpandableDetails>
       </div>
       <div className={styles.footer}>
         <Button

@@ -21,16 +21,19 @@ import styles from './sidebar.module.scss';
 interface ItemBase {
   id: string;
   label: string | ReactNode;
-  href: string;
+  href?: string;
   count?: number;
   subHrefs?: string[];
   disabled?: boolean;
+  as?: string;
 }
 
 interface MenuItem extends Omit<ItemBase, 'href' | 'subHrefs'> {
   subItems: ItemBase[];
   logo: IconName;
   href?: string;
+  disabled?: boolean;
+  as?: string;
 }
 
 interface SidebarProps {
@@ -88,9 +91,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
             className={styles.closeIcon}
             onClick={closeSideBar}
           />
-          <Icon name="whiteLogo" className={styles.logo} />
+          <Icon name="appLogo" width={92} />
         </div>
-        <Logo src={currentDao?.logo} className={styles.mainLogo} />
+        <Logo className={styles.mainLogo} />
         <DaoList {...getItemProps('dao')} items={daoList} />
 
         <nav className={styles.menu}>
@@ -131,8 +134,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     count={subItem.count}
                     label={subItem.label}
                     href={subItem.href}
-                    urlParams={{ dao: currentDao?.id }}
+                    as={subItem.as}
                     disabled={subItem.disabled}
+                    urlParams={{ dao: currentDao?.id }}
                     subHrefs={subItem.subHrefs}
                   />
                 ))}
@@ -140,14 +144,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
             );
           })}
         </nav>
-
+        <div className={styles.delimiter} />
         <nav className={styles.bottom}>
           <NavItem
             topDelimiter
             className={styles.item}
             label="Home"
-            count={999}
-            href="/"
+            href="/home"
             icon="stateHome"
           />
           <NavItem

@@ -17,15 +17,13 @@ import { Member } from 'types/dao';
 import { groupColor, groupPopupData } from 'lib/mocks/groups';
 
 import styles from 'pages/dao/[dao]/groups/groups.module.scss';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
+import { extractMembersFromDao } from 'services/SputnikService/mappers/search-results';
 
 const sortOptions = [
   {
     label: 'Most active',
     value: 'Most active'
-  },
-  {
-    label: '# of tokens',
-    value: '# of tokens'
   }
 ];
 
@@ -35,6 +33,7 @@ const GroupPage: FC = () => {
   const [data, setData] = useState<Member[]>([]);
   const [showCardModal] = useModal(MemberCardPopup);
   const [showGroupModal] = useModal(GroupPopup);
+  const selectedDao = useSelectedDAO();
   const isMobile = useMedia('(max-width: 640px)');
 
   const [activeSort, setActiveSort] = useState<string>(sortOptions[0].value);
@@ -73,10 +72,16 @@ const GroupPage: FC = () => {
   );
 
   useEffect(() => {
-    SputnikService.getMembers().then(res => {
-      setData(res);
+    if (!selectedDao) {
+      return;
+    }
+
+    SputnikService.getProposals(selectedDao.id).then(res => {
+      const members = extractMembersFromDao(selectedDao, res);
+
+      setData(members);
     });
-  }, []);
+  }, [selectedDao]);
 
   // Todo - we will fetch and select members dynamically
   const sortedData = data
@@ -86,7 +91,7 @@ const GroupPage: FC = () => {
         group === 'all-members' ||
         item.groups
           .map(grp => grp.toLowerCase())
-          .includes((group as string).replace('-', ' '))
+          .includes((group as string).replace('-', ' ').toLowerCase())
     )
     .sort((a, b) => {
       let sortField = '';

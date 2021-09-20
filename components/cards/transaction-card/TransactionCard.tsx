@@ -1,14 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
-import { TokenName } from 'components/cards/token-card';
 import { Icon } from 'components/Icon';
 import { format, parseISO } from 'date-fns';
 import { TransactionType } from 'lib/types/treasury';
+import { Token } from 'types/token';
 import s from './transaction-card.module.scss';
 
 export interface TransactionCardProps {
   type: TransactionType;
-  tokenName: TokenName;
+  tokenName: Token;
   tokensBalance: number;
   date: string;
   accountName: string;

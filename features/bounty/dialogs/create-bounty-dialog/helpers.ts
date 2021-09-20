@@ -5,7 +5,7 @@ import { DeadlineUnit } from 'components/cards/bounty-card/types';
 
 import { CreateBountyInput } from './types';
 
-function getDeadline(timeAmount: number, unit: DeadlineUnit): string {
+export function getDeadline(timeAmount: number, unit: DeadlineUnit): string {
   const nanosecondsInDay = new Decimal('8.64e+13');
   let multiplier = timeAmount;
 
@@ -22,17 +22,9 @@ export function getAddBountyProposal(
   daoId: string,
   data: CreateBountyInput
 ): CreateProposalParams {
-  const {
-    slots,
-    token,
-    amount,
-    details,
-    externalUrl,
-    deadlineUnit,
-    deadlineThreshold
-  } = data;
+  const { slots, amount, details, deadlineUnit, deadlineThreshold } = data;
 
-  const proposalDescription = `${details}, ${externalUrl}`;
+  const proposalDescription = `${details}`;
 
   return {
     daoId,
@@ -41,7 +33,7 @@ export function getAddBountyProposal(
     data: {
       bounty: {
         description: proposalDescription,
-        token,
+        token: '',
         amount: amount.toString(),
         times: slots,
         max_deadline: getDeadline(deadlineThreshold, deadlineUnit)

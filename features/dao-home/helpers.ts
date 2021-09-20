@@ -2,6 +2,14 @@ import { DAO } from 'types/dao';
 import { Proposal } from 'types/proposal';
 
 import { formatCurrency } from 'utils/formatCurrency';
+import { useCallback, useEffect, useState } from 'react';
+import { SputnikService } from 'services/SputnikService';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
+import { useAuthContext } from 'context/AuthContext';
+
+export interface Indexed {
+  [key: string]: Proposal[];
+}
 
 type DaoDetailsType = {
   title: string;
@@ -78,5 +86,109 @@ export function getFundAndMembersNum(
   return {
     members: membs.length,
     fund: formatCurrency(parseFloat(funds) * nearPrice)
+  };
+}
+
+type ProposalsFilter = 'Active proposals' | 'Recent proposals' | 'My proposals';
+
+export interface FilteredData extends Indexed {
+  lessThanHourProposals: Proposal[];
+  lessThanDayProposals: Proposal[];
+  lessThanWeekProposals: Proposal[];
+  otherProposals: Proposal[];
+}
+
+interface ProposalsData {
+  filter: ProposalsFilter;
+  onFilterChange: (val?: string) => void;
+  filteredData: FilteredData;
+  data: Proposal[];
+}
+
+export function splitProposalsByVotingPeriod(data: Proposal[]): FilteredData {
+  return data.reduce(
+    (res, item) => {
+      // Split items by groups (less than hour, day, week)
+      const votingEndsAt = new Date(item.votePeriodEnd).getMilliseconds();
+      const now = new Date().getMilliseconds();
+      const diff = votingEndsAt - now;
+
+      if (diff < 3.6e6) {
+        res.lessThanHourProposals.push(item);
+      } else if (diff < 8.64e7) {
+        res.lessThanDayProposals.push(item);
+      } else if (diff < 6.048e8) {
+        res.lessThanWeekProposals.push(item);
+      } else {
+        res.otherProposals.push(item);
+      }
+
+      return res;
+    },
+    {
+      lessThanHourProposals: [] as Proposal[],
+      lessThanDayProposals: [] as Proposal[],
+      lessThanWeekProposals: [] as Proposal[],
+      otherProposals: [] as Proposal[]
+    }
+  );
+}
+
+export function useFilteredData(): ProposalsData {
+  const selectedDao = useSelectedDAO();
+  const { accountId } = useAuthContext();
+  const [filter, setFilter] = useState<ProposalsFilter>('Active proposals');
+  const [proposals, setProposals] = useState<Proposal[]>([]);
+
+  useEffect(() => {
+    async function fetchProposals() {
+      if (selectedDao) {
+        const daoProposals = await SputnikService.getProposals(selectedDao.id);
+
+        setProposals(daoProposals);
+      }
+    }
+
+    fetchProposals();
+  }, [selectedDao]);
+
+  const onFilterChange = useCallback(value => {
+    setFilter(value);
+  }, []);
+
+  const filteredData = proposals.filter(item => {
+    switch (filter) {
+      case 'Active proposals': {
+        return item.status === 'InProgress';
+      }
+      case 'Recent proposals': {
+        return item.status !== 'InProgress';
+      }
+      case 'My proposals': {
+        return item.proposer === accountId;
+      }
+      default: {
+        return true;
+      }
+    }
+  });
+
+  const {
+    lessThanHourProposals,
+    lessThanDayProposals,
+    lessThanWeekProposals,
+    otherProposals
+  } = splitProposalsByVotingPeriod(filteredData);
+
+  return {
+    filter,
+    onFilterChange,
+    filteredData: {
+      lessThanHourProposals,
+      lessThanDayProposals,
+      lessThanWeekProposals,
+      otherProposals
+    },
+    data: proposals
   };
 }

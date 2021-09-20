@@ -33,7 +33,12 @@ export class ContractPool {
         'delegation_balance_of',
         'has_blob'
       ],
-      changeMethods: ['add_proposal', 'act_proposal']
+      changeMethods: [
+        'add_proposal',
+        'act_proposal',
+        'bounty_claim',
+        'bounty_giveup'
+      ]
     });
 
     this.pool[contractId] = contract;

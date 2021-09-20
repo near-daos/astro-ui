@@ -1,8 +1,7 @@
-import { BondDetail, VoteDetail } from 'features/types';
-
 export type ClaimedBy = {
-  name: string;
-  datetime: string;
+  accountId: string;
+  deadline: string;
+  starTime: string;
 };
 
 export type BountyType = 'Passed' | 'Expired';
@@ -10,18 +9,13 @@ export type BountyStatus = 'Open' | 'In progress' | 'Completed';
 export type DeadlineUnit = 'day' | 'week' | 'month';
 
 export type Bounty = {
-  type: BountyType; // icon/color todo - do we have one icon only? colors?
-  status: BountyStatus;
+  id: string;
   token: 'NEAR';
   amount: number;
-  group: string;
+  description: string;
+  forgivenessPeriod: string;
   externalUrl?: string;
   slots: number;
-  claimed: number;
   claimedBy: ClaimedBy[];
-  claimedByMe: boolean;
-  deadlineThreshold: number;
-  deadlineUnit: DeadlineUnit;
-  voteDetails: VoteDetail[];
-  bondDetail: BondDetail;
+  deadlineThreshold: string;
 };

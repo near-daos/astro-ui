@@ -7,24 +7,31 @@ export default {
   component: VoteDetails,
   decorators: [
     story => (
-      <div style={{ padding: '1rem', background: 'lightgrey' }}>{story()}</div>
+      <div
+        style={{ padding: '1rem', background: 'lightgrey', maxWidth: '1024px' }}
+      >
+        {story()}
+      </div>
     )
   ]
 } as Meta;
 
-export const Template: Story<VoteDetailsProps> = args => (
-  <VoteDetails {...args} />
-);
+const Template: Story<VoteDetailsProps> = args => <VoteDetails {...args} />;
 
-Template.storyName = 'VoteDetails';
-Template.args = {
-  voteDetails: [
-    { value: '50%', label: 'MEW holders' },
-    { value: '50%', label: 'cool group' },
-    { value: '1 person', label: 'Ombudspeople' }
-  ],
-  bondDetail: {
-    value: 0.3,
-    token: 'NEAR'
-  }
+export const Default = Template.bind({});
+
+Default.args = {
+  showProgress: false
+};
+
+export const VoteProgress = Template.bind({});
+
+VoteProgress.args = {
+  showProgress: true
+};
+
+export const VoteProgressOneGroup = Template.bind({});
+
+VoteProgressOneGroup.args = {
+  showProgress: true
 };

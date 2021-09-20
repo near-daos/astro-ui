@@ -44,8 +44,16 @@ export const VotePanel: FC<VotePanelProps> = ({ onSubmit }) => {
             No
           </Button>
         </div>
-        <div className={styles.right}>
-          <Button size="small" onClick={handleSubmit}>
+        <div
+          className={cn(styles.right, {
+            [styles.disabled]: !vote || !reportSpam
+          })}
+        >
+          <Button
+            size="small"
+            onClick={handleSubmit}
+            disabled={!vote && !reportSpam}
+          >
             Vote
           </Button>
         </div>
@@ -54,7 +62,7 @@ export const VotePanel: FC<VotePanelProps> = ({ onSubmit }) => {
         <Checkbox
           selected={reportSpam}
           label="Report spam"
-          onChange={() => setReportSpam(!reportSpam)}
+          onClick={() => setReportSpam(!reportSpam)}
         />
       </div>
     </div>

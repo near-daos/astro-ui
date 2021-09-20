@@ -11,55 +11,48 @@ import { Button } from 'components/button/Button';
 import { TextArea } from 'components/textarea/TextArea';
 
 import { VoteDetails } from 'components/vote-details';
-import { BondDetail, VoteDetail } from 'features/types';
+
+import { SputnikService } from 'services/SputnikService';
 import styles from './complete-bounty-form.module.scss';
 
 interface CompleteBountyFormProps {
-  voteDetails: VoteDetail[];
-  bondDetail: BondDetail;
-  onSubmit: () => void;
+  onSubmit: (data: CompleteBountyFormInput) => void;
   onCancel: () => void;
 }
 
-interface ICompleteBountyForm {
+export interface CompleteBountyFormInput {
   recipient: string;
   details: string;
-  externalUrl: string;
 }
 
 const schema = yup.object().shape({
-  recipient: yup.string().required(),
-  details: yup.string(),
-  externalUrl: yup.string()
+  recipient: yup.string(),
+  details: yup.string()
 });
 
 export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
   onSubmit,
-  onCancel,
-  voteDetails,
-  bondDetail
+  onCancel
 }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, touchedFields }
-  } = useForm<ICompleteBountyForm>({
-    resolver: yupResolver(schema)
+  const { register, handleSubmit } = useForm<CompleteBountyFormInput>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      recipient: SputnikService.getAccountId()
+    }
   });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
       <div className={styles.recipient}>
         <Input
-          isValid={touchedFields.recipient && !errors.recipient?.message}
           size="block"
           textAlign="left"
-          type="number"
-          {...register('recipient')}
+          type="text"
           label="Send payment to"
           className={cn(styles.input)}
+          {...register('recipient')}
         />
-        <span className={cn(styles.ml8, styles.inputInline)}>.near</span>
+        {/* <span className={cn(styles.ml8, styles.inputInline)}></span> */}
       </div>
       <div className={styles.group}>
         <TextArea
@@ -72,17 +65,17 @@ export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
           {...register('details')}
         />
       </div>
-      <Input
-        size="block"
-        isValid={touchedFields.externalUrl && !errors.externalUrl?.message}
-        textAlign="left"
-        {...register('externalUrl')}
-        label="External URL"
-        className={cn(styles.input, styles.externalUrl)}
-      />
+      {/* <Input */}
+      {/*  size="block" */}
+      {/*  isValid={touchedFields.externalUrl && !errors.externalUrl?.message} */}
+      {/*  textAlign="left" */}
+      {/*  {...register('externalUrl')} */}
+      {/*  label="External URL" */}
+      {/*  className={cn(styles.input, styles.externalUrl)} */}
+      {/* /> */}
       <div className={styles.vote}>
         <ExpandableDetails label="Vote details">
-          <VoteDetails voteDetails={voteDetails} bondDetail={bondDetail} />
+          <VoteDetails scope="bountyDone" />
         </ExpandableDetails>
       </div>
       <div className={styles.footer}>

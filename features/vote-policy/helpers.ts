@@ -1,10 +1,11 @@
-import { DAO, DaoVotePolicy, TGroup } from 'types/dao';
+import { DAO, DaoVotePolicy, TGroup, VotePolicyRequest } from 'types/dao';
 import { VotePolicy } from 'features/vote-policy/components/policy-row';
-import { CreateProposalParams } from 'types/proposal';
+import { CreateProposalParams, Proposal } from 'types/proposal';
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
 import snakeCase from 'lodash/snakeCase';
+import { Vote, VoteDetail, VoterDetail } from 'features/types';
 
-type Scope =
+export type Scope =
   | 'addBounty'
   | 'config'
   | 'policy'
@@ -158,25 +159,72 @@ export const getInitialData = (
   };
 };
 
-// ProposalKind::ChangeConfig { .. } => "config",
-//   ProposalKind::ChangePolicy { .. } => "policy",
-//   ProposalKind::AddMemberToRole { .. } => "add_member_to_role",
-//   ProposalKind::RemoveMemberFromRole { .. } => "remove_member_from_role",
-//   ProposalKind::FunctionCall { .. } => "call",
-//   ProposalKind::UpgradeSelf { .. } => "upgrade_self",
-//   ProposalKind::UpgradeRemote { .. } => "upgrade_remote",
-//   ProposalKind::Transfer { .. } => "transfer",
-//   ProposalKind::SetStakingContract { .. } => "set_vote_token",
-//   ProposalKind::AddBounty { .. } => "add_bounty",
-//   ProposalKind::BountyDone { .. } => "bounty_done",
-//   ProposalKind::Vote => "vote",
+export function getVoteDetails(
+  dao: DAO | null,
+  scope: Scope,
+  proposal?: Proposal | null
+): { details: VoteDetail[]; votersList: VoterDetail[] } {
+  if (!dao)
+    return {
+      details: [],
+      votersList: []
+    };
 
-type VotePolicyRequest = {
-  // eslint-disable-next-line camelcase
-  weight_kind: 'RoleWeight' | 'TokenWeight';
-  quorum: string;
-  threshold: [number, number];
-};
+  const policiesList = getPoliciesList(
+    dao.groups,
+    scope,
+    ['VoteApprove', 'VoteReject', 'VoteRemove'],
+    dao.policy.defaultVotePolicy
+  );
+
+  const details = policiesList.map(item => {
+    const group = dao.groups.find(gr => gr.name === item.whoCanVote);
+    const totalMembers = group?.members.length ?? 0;
+
+    const votesData = !proposal
+      ? []
+      : [
+          {
+            vote: 'Yes' as Vote,
+            percent: (proposal.voteYes * 100) / totalMembers
+          },
+          {
+            vote: 'No' as Vote,
+            percent: (proposal.voteNo * 100) / totalMembers
+          },
+          {
+            vote: 'Dismiss' as Vote,
+            percent: (proposal.voteRemove * 100) / totalMembers
+          }
+        ];
+
+    if (item.voteBy === 'Person') {
+      return {
+        label: item.whoCanVote ?? '',
+        limit: `${item.amount} ${
+          item.threshold === '% of group'
+            ? '%'
+            : `person${item.amount ?? 0 > 1 ? 's' : ''}`
+        }`,
+        data: votesData
+      };
+    }
+
+    return {
+      label: item.whoCanVote ?? '',
+      limit: `${item.amount} ${item.threshold} tokens`,
+      data: votesData
+    };
+  });
+
+  const votersList = proposal?.votes
+    ? Object.keys(proposal.votes).map(key => {
+        return { name: key, vote: proposal.votes[key] };
+      })
+    : [];
+
+  return { details, votersList };
+}
 
 function getThreshold(value: number): [number, number] {
   const fraction = value / 100;

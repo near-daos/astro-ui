@@ -4,6 +4,7 @@ import {
   ClaimBountyDialog,
   ClaimBountyDialogProps
 } from 'features/bounty/dialogs/claim-bounty-dialog/ClaimBountyDialog';
+import { Token } from 'types/token';
 
 export default {
   title: 'Features/Bounty/Dialogs/ClaimBounty',
@@ -18,32 +19,15 @@ Template.storyName = 'ClaimBounty';
 Template.args = {
   isOpen: true,
   data: {
-    bondDetail: {
-      value: 0.3,
-      token: 'NEAR'
-    },
-    voteDetails: [
-      { value: '50%', label: 'MEW holders' },
-      { value: '50%', label: 'cool group' },
-      { value: '1 person', label: 'Ombudspeople' }
-    ],
-    type: 'Passed',
-    status: 'In progress',
-    token: 'NEAR',
+    id: '',
+    forgivenessPeriod: '',
+    token: Token.NEAR,
     amount: 112,
-    group:
+    description:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',
     externalUrl: '',
     slots: 3,
-    claimed: 1,
-    claimedBy: [
-      {
-        name: 'annie.near',
-        datetime: '2021-08-01'
-      }
-    ],
-    claimedByMe: true,
-    deadlineThreshold: 8,
-    deadlineUnit: 'week'
+    claimedBy: [],
+    deadlineThreshold: '8'
   }
 };

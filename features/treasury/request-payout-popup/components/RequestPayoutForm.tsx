@@ -16,6 +16,7 @@ import { Token } from 'features/types';
 
 import { useDeviceType } from 'helpers/media';
 
+import { SputnikService } from 'services/SputnikService';
 import styles from './request-payout-form.module.scss';
 
 const schema = yup.object().shape({
@@ -36,7 +37,7 @@ interface IRequestPayoutForm {
 
 interface RequestPayoutFormProps {
   initialValues: CreatePayoutInput;
-  onSubmit: () => void;
+  onSubmit: (data: CreatePayoutInput) => void;
   onCancel: () => void;
 }
 
@@ -52,7 +53,12 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
     setValue,
     formState: { errors, touchedFields }
   } = useForm<IRequestPayoutForm>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    defaultValues: {
+      ...initialValues,
+      amount: '',
+      recipient: SputnikService.getAccountId()
+    }
   });
 
   return (
@@ -63,6 +69,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
         placeholder=""
         size="block"
         label="Token"
+        disabled
         options={tokenOptions}
         {...register('token')}
         onChange={v =>
@@ -92,7 +99,6 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
           label="Send to"
           className={cn(styles.input)}
         />
-        <span className={cn(styles.ml8, styles.inputInline)}>.near</span>
       </div>
       <div className={styles.detail}>
         <TextArea
@@ -106,19 +112,19 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
           {...register('detail')}
         />
       </div>
-      <Input
-        size="block"
-        defaultValue={initialValues?.externalUrl}
-        isValid={touchedFields.externalUrl && !errors.externalUrl?.message}
-        textAlign="left"
-        {...register('externalUrl')}
-        label="External URL"
-        placeholder="Add link"
-        className={cn(styles.input, styles.url)}
-      />
+      {/* <Input */}
+      {/*  size="block" */}
+      {/*  defaultValue={initialValues?.externalUrl} */}
+      {/*  isValid={touchedFields.externalUrl && !errors.externalUrl?.message} */}
+      {/*  textAlign="left" */}
+      {/*  {...register('externalUrl')} */}
+      {/*  label="External URL" */}
+      {/*  placeholder="Add link" */}
+      {/*  className={cn(styles.input, styles.url)} */}
+      {/* /> */}
       <div className={styles.vote}>
         <ExpandableDetails label="Vote details" className={styles.voteDetails}>
-          <VoteDetails {...initialValues} />
+          <VoteDetails scope="transfer" />
         </ExpandableDetails>
       </div>
       <div className={styles.footer}>

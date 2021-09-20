@@ -5,9 +5,10 @@ import { Icon } from 'components/Icon';
 import { Input } from 'components/input/Input';
 import { TextArea } from 'components/textarea/TextArea';
 import { Title } from 'components/Typography';
-import { getSocialIconNameFromUrl } from 'helpers/getSocialIconNameFromUrl';
+import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 import React, { FC, HTMLProps, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { validUrlRegexp, validWebsiteName } from 'utils/regexp';
 import * as yup from 'yup';
 import styles from './dao-create-form.module.scss';
 
@@ -25,9 +26,6 @@ export interface IDaoCreateForm {
   flag: File;
   flagPreview: string;
 }
-
-const validUrlRegexp = /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
-const validWebsiteName = /^[a-z0-9-]+$/g;
 
 const schema = yup.object().shape({
   address: yup
@@ -113,12 +111,10 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
       <section className={styles.links}>
         <Title size={5}>Links</Title>
         {Array.from({ length: linksCount }, (_, i) => i).map(index => (
-          <div className={styles.link}>
+          <div className={styles.link} key={index}>
             <Icon
               className={styles.socialIcon}
-              name={getSocialIconNameFromUrl(
-                getValues(`websites.${index}` as const)
-              )}
+              name={getSocialLinkIcon(getValues(`websites.${index}` as const))}
               width={24}
             />
             <Input

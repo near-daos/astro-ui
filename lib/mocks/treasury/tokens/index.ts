@@ -1,6 +1,7 @@
-import { TokenName } from 'components/cards/token-card';
 import { BondDetail, VoteDetail } from 'features/types';
 import { TransactionCardInput } from 'lib/types/treasury';
+import { Token } from 'types/token';
+import { ProposalType } from 'types/proposal';
 import { ExpandedProposalCardProps } from 'components/cards/expanded-proposal-card';
 
 const generateTokens = () => {
@@ -9,7 +10,7 @@ const generateTokens = () => {
   for (let i = 0; i < 50; i += 1) {
     tokens.push({
       id: `${i}`,
-      tokenName: TokenName.NEAR,
+      tokenName: Token.NEAR,
       tokensBalance: i,
       totalValue: 3 * i,
       voteWeight: i,
@@ -24,10 +25,10 @@ export const TOKENS_DATA = generateTokens();
 
 export const PROPOSAL_DATA: Omit<
   ExpandedProposalCardProps,
-  'children' | 'onClose' | 'onDislike' | 'onLike' | 'isOpen'
+  'children' | 'onClose' | 'onDislike' | 'onLike' | 'isOpen' | 'onRemove'
 > = {
-  status: 'Voting in progress',
-  type: 'Request payout',
+  status: 'InProgress',
+  type: ProposalType.Transfer,
   title: 'meowzers.sputnikdao.near',
   name: 'jonathan.near',
   text:
@@ -40,14 +41,19 @@ export const PROPOSAL_DATA: Omit<
   dismisses: 0,
   dismissed: false,
   disliked: false,
-  endsAt: '2021-08-12T12:00:52Z'
+  endsAt: '2021-08-12T12:00:52Z',
+  daoDetails: {
+    name: 'my awesome dao'
+  },
+  proposalId: 1,
+  daoId: 'my-awesome-dao'
 };
 
 export const TRANSACTIONS_DATA: TransactionCardInput[] = [
   {
     transactionId: '1',
     type: 'Deposit',
-    tokenName: TokenName.NEAR,
+    tokenName: Token.NEAR,
     tokensBalance: 2321,
     date: new Date().toISOString(),
     accountName: 'verylongnamegoeshere.near'
@@ -55,7 +61,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
   {
     transactionId: '2',
     type: 'Deposit',
-    tokenName: TokenName.NEAR,
+    tokenName: Token.NEAR,
     tokensBalance: 223,
     date: new Date().toISOString(),
     accountName: 'verylongnamegoeshere.near'
@@ -63,7 +69,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
   {
     transactionId: '3',
     type: 'Deposit',
-    tokenName: TokenName.NEAR,
+    tokenName: Token.NEAR,
     tokensBalance: 323,
     date: new Date().toISOString(),
     accountName: 'verylongnamegoeshere.near'
@@ -71,7 +77,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
   {
     transactionId: '4',
     type: 'Withdraw',
-    tokenName: TokenName.NEAR,
+    tokenName: Token.NEAR,
     tokensBalance: 223,
     date: new Date().toISOString(),
     accountName: 'verylongnamegoeshere.near'
@@ -79,7 +85,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
   {
     transactionId: '5',
     type: 'Withdraw',
-    tokenName: TokenName.NEAR,
+    tokenName: Token.NEAR,
     tokensBalance: 223,
     date: new Date().toISOString(),
     accountName: 'test.near'
@@ -424,9 +430,9 @@ export const CHART_DATA = [
 ];
 
 export const VOTE_DETAILS: VoteDetail[] = [
-  { value: '50%', label: 'MEW holders' },
-  { value: '50%', label: 'cool group' },
-  { value: '1 person', label: 'Ombudspeople' }
+  { limit: '50%', label: 'MEW holders' },
+  { limit: '50%', label: 'cool group' },
+  { limit: '1 person', label: 'Ombudspeople' }
 ];
 
 export const BOND_DETAIL: BondDetail = {

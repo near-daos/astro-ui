@@ -1,7 +1,7 @@
 import { Sidebar } from 'components/sidebar';
 import { AddGroupMenu } from 'features/groups/components/add-group-menu';
-import { useDAOList } from 'hooks/useDAOList';
 import React, { useMemo } from 'react';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
 
 import {
   GOVERNANCE_SECTION_ID,
@@ -29,7 +29,8 @@ const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
       {
         id: 'plugins',
         label: 'Plugins',
-        href: `/dao/[dao]/${TASKS_SECTION_ID}/plugins`
+        href: `/dao/[dao]/${TASKS_SECTION_ID}/plugins`,
+        disabled: true
       }
     ]
   },
@@ -58,13 +59,7 @@ const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
     subItems: [
       {
         id: 'addGroup',
-        label: <AddGroupMenu />,
-        href: `/dao/[dao]/${GROUPS_SECTION_ID}/all-members`
-      },
-      {
-        id: 'allMembers',
-        label: 'All Members',
-        href: `/dao/[dao]/${GROUPS_SECTION_ID}/all-members`
+        label: <AddGroupMenu />
       }
     ]
   },
@@ -102,34 +97,55 @@ const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
 type TSidebarData = React.ComponentProps<typeof Sidebar>['items'];
 
 export const useSidebarData = (): TSidebarData => {
-  const { daos } = useDAOList();
+  const selectedDao = useSelectedDAO();
 
   return useMemo(() => {
-    const groups = daos.reduce((res, item) => {
-      item.groups.forEach(group => {
-        res[group.name] = group.slug;
-      });
+    const groups = {} as Record<string, string>;
 
-      return res;
-    }, {} as Record<string, string>);
+    selectedDao?.groups.forEach(group => {
+      groups[group.name] = group.slug;
+    });
 
-    // Todo - we have to dynamically get list of available groups and generate sidebar menu items
     return sidebarItems.map(item => {
       if (item.id === GROUPS_SECTION_ID) {
         return {
           ...item,
           subItems: [
             ...item.subItems,
-            ...Object.keys(groups).map(key => ({
-              id: key,
-              label: key,
-              href: `/dao/[dao]/${GROUPS_SECTION_ID}/${groups[key]}`
-            }))
+            {
+              id: 'allMembers',
+              label: 'All Members',
+              href: `/dao/[dao]/${GROUPS_SECTION_ID}/[group]`,
+              as: `/dao/${selectedDao?.id}/${GROUPS_SECTION_ID}/all-members`
+            },
+            ...Object.keys(groups).map(key => {
+              let href;
+
+              if (key !== 'all-groups') {
+                href = {
+                  href: `/dao/[dao]/${GROUPS_SECTION_ID}/[group]`,
+                  as:
+                    key !== 'all-groups'
+                      ? `/dao/${selectedDao?.id}/${GROUPS_SECTION_ID}/${groups[key]}`
+                      : undefined
+                };
+              } else {
+                href = {
+                  href: `/dao/[dao]/${GROUPS_SECTION_ID}/${groups[key]}`
+                };
+              }
+
+              return {
+                ...href,
+                id: key,
+                label: key
+              };
+            })
           ]
         };
       }
 
       return item;
     });
-  }, [daos]);
+  }, [selectedDao?.groups, selectedDao?.id]);
 };

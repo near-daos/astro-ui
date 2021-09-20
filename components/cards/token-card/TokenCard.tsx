@@ -3,19 +3,16 @@ import React, { CSSProperties } from 'react';
 import classNames from 'classnames';
 import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value';
 import { Icon } from 'components/Icon';
+import { Token } from 'types/token';
 import styles from './token-card.module.scss';
 
 export interface TokenCardProps {
   id: string;
-  tokenName: TokenName;
+  tokenName: Token;
   tokensBalance: number;
   totalValue: number;
   voteWeight: number;
   href: string;
-}
-
-export enum TokenName {
-  NEAR = 'NEAR'
 }
 
 export const TokenCard: React.FC<TokenCardProps> = ({

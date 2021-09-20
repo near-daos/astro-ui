@@ -6,8 +6,6 @@ import { DaoRole } from 'types/role';
 import { yoktoNear } from 'services/SputnikService/constants';
 import Decimal from 'decimal.js';
 
-import flag from 'stories/dao-home/assets/flag.png';
-
 export type DaoVotePolicy = {
   weightKind: string;
   quorum: string;
@@ -60,10 +58,9 @@ export type DaoDTO = {
 };
 
 export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
-  // Calculate DAO members count
   const roles = get(daoDTO, 'policy.roles', []);
-  // const councilRole = roles.find((item: DaoRole) => item.name === 'council');
   const numberOfMembers = get(daoDTO, 'numberOfMembers', 0);
+  const numberOfProposals = get(daoDTO, 'lastProposalId', 0);
 
   // Transform amount
   const amountYokto = new Decimal(daoDTO.amount);
@@ -90,9 +87,10 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     name: config?.name ?? '',
     description: config?.purpose ?? '',
     members: numberOfMembers,
-    proposals: 18,
-    // TODO - where can we get DAO logo flag?
-    logo: flag.src,
+    proposals: numberOfProposals,
+    logo: `https://sputnik-dao.s3.eu-central-1.amazonaws.com/${
+      daoDTO.id
+    }?timestamp=${Date.now()}`,
     funds,
     createdAt: daoDTO.createdAt,
     groups: daoGroups,

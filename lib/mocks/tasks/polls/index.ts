@@ -32,7 +32,13 @@ const generatePoll = (
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onDislike: () => {},
   dismisses: 0,
-  dismissed: false
+  dismissed: false,
+  votePeriodEnd: '',
+  daoDetails: {
+    name: 'my-awesome-dao'
+  },
+  proposalId: 1,
+  daoId: 'my-awesome-dao'
 });
 
 const generatePolls = () => {
@@ -76,9 +82,9 @@ const generatePolls = () => {
 export const POLLS_DATA = generatePolls();
 
 export const VOTE_DETAIL_DATA: VoteDetail[] = [
-  { value: '50%', label: 'MEW holders' },
-  { value: '50%', label: 'cool group' },
-  { value: '1 person', label: 'Ombudspeople' }
+  { limit: '50%', label: 'MEW holders' },
+  { limit: '50%', label: 'cool group' },
+  { limit: '1 person', label: 'Ombudspeople' }
 ];
 
 export const BOND_DETAIL_DATA: BondDetail = {

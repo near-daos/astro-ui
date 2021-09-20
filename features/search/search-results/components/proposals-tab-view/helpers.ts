@@ -1,11 +1,12 @@
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { useCallback, useState } from 'react';
 import { FilterName } from 'features/search/search-filters';
+import {
+  Indexed,
+  splitProposalsByVotingPeriod
+} from 'features/dao-home/helpers';
 import { Proposal, ProposalType } from 'types/proposal';
-
-export interface Indexed {
-  [key: string]: Proposal[];
-}
+import { useRouter } from 'next/router';
 
 export interface FilteredData extends Indexed {
   lessThanHourProposals: Proposal[];
@@ -43,6 +44,8 @@ export interface FilteredProposalsData {
 
 export const useFilteredProposalsData = (): FilteredProposalsData => {
   const { searchResults } = useSearchResults();
+  const router = useRouter();
+  const daoId = router.query.dao;
   const [filter, setFilter] = useState({
     show: 'All' as ShowFilterOption,
     search: 'In this DAO' as SearchFilterOption,
@@ -107,13 +110,10 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
       }
     }
 
-    // TODO - how can we get currently selected DAO? It looks like we need a way to keep some data for the whole app
     // Filter 'search'
     switch (filter.search) {
       case 'In this DAO': {
-        const selectedDaoId = '';
-
-        if (item.daoId !== selectedDaoId) {
+        if (item.daoId !== daoId) {
           matched = false;
         }
 
@@ -173,32 +173,7 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
     lessThanDayProposals,
     lessThanWeekProposals,
     otherProposals
-  } = filteredProposals.reduce(
-    (res, item) => {
-      // Split items by groups (less than hour, day, week)
-      const votingEndsAt = new Date(item.votePeriodEnd).getMilliseconds();
-      const now = new Date().getMilliseconds();
-      const diff = votingEndsAt - now;
-
-      if (diff < 3.6e6) {
-        res.lessThanHourProposals.push(item);
-      } else if (diff < 8.64e7) {
-        res.lessThanDayProposals.push(item);
-      } else if (diff < 6.048e8) {
-        res.lessThanWeekProposals.push(item);
-      } else {
-        res.otherProposals.push(item);
-      }
-
-      return res;
-    },
-    {
-      lessThanHourProposals: [] as Proposal[],
-      lessThanDayProposals: [] as Proposal[],
-      lessThanWeekProposals: [] as Proposal[],
-      otherProposals: [] as Proposal[]
-    }
-  );
+  } = splitProposalsByVotingPeriod(filteredProposals);
 
   return {
     filteredProposalsData: {
