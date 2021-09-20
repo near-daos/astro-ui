@@ -8,6 +8,13 @@
   overflow: auto;
   padding: 24px;
   width: 100%;
+
+  button {
+    font-size: unset;
+    margin: 4px 0;
+    padding: 0;
+    text-transform: none;
+  }
 }
 
 .label {
