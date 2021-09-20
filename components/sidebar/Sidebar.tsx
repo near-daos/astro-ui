@@ -24,6 +24,7 @@ interface ItemBase {
   href: string;
   count?: number;
   subHrefs?: string[];
+  disabled?: boolean;
 }
 
 interface MenuItem extends Omit<ItemBase, 'href' | 'subHrefs'> {
@@ -131,6 +132,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     label={subItem.label}
                     href={subItem.href}
                     urlParams={{ dao: currentDao?.id }}
+                    disabled={subItem.disabled}
                     subHrefs={subItem.subHrefs}
                   />
                 ))}

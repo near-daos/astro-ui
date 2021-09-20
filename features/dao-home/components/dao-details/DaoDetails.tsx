@@ -87,7 +87,11 @@ export const DaoDetails: VFC<DaoDetailsProps> = ({
           <div className={styles.followCell}>
             <Button
               variant="secondary"
-              className={cn(styles.follow, followed && styles.followed)}
+              className={cn(
+                styles.follow,
+                followed && styles.followed,
+                'disabled'
+              )}
             >
               <Icon name="buttonBookmark" width={24} className={styles.icon} />
               {followed ? 'Unfollow' : 'Follow'}

@@ -46,6 +46,7 @@ export const DaoSettingsModal: FC<DaoSettingsModalProps> = ({
               iconNode={<Icon width={56} name={option.icon} />}
               title={option.title}
               subject={option.subject}
+              disabled={option.disabled}
               description={option.description}
             />
           ))}

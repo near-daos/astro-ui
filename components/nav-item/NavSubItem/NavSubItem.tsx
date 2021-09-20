@@ -19,6 +19,7 @@ type DAONameProps = {
   className?: string;
   detailsHref?: string | UrlObject;
   detailsClassName?: string;
+  disabled?: boolean;
 };
 
 export const NavSubItem: React.VFC<DAONameProps> = ({
@@ -27,19 +28,36 @@ export const NavSubItem: React.VFC<DAONameProps> = ({
   className,
   href,
   urlParams,
-  subHrefs
+  subHrefs,
+  disabled
 }) => {
   const isActive = useIsActive(href, subHrefs);
 
   const rootClassName = cn(styles.sub, className, {
-    [styles.active]: isActive
+    [styles.active]: isActive,
+    [styles.disabled]: disabled
   });
+
+  const disabledAttributes = disabled
+    ? { tabIndex: -1, 'aria-disabled': true }
+    : {};
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if (disabled) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <div>
       <Link passHref href={{ pathname: href, query: urlParams }}>
         {/* TODO Property 'href' would be overridden by Link. Check https://git.io/Jns2B */}
-        <a href="*" className={rootClassName}>
+        <a
+          href="*"
+          className={rootClassName}
+          {...disabledAttributes}
+          onClick={handleClick}
+        >
           {label}
           {Number.isFinite(count) && (
             <span className={styles.badge}>
