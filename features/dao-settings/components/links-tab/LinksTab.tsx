@@ -1,10 +1,17 @@
-import React, { FC } from 'react';
-import { nanoid } from 'nanoid';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Button } from 'components/button/Button';
+import { IconButton } from 'components/button/IconButton';
 
 import { Icon } from 'components/Icon';
 import { Input } from 'components/input/Input';
-import { Button } from 'components/button/Button';
-import { IconButton } from 'components/button/IconButton';
+import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
+import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
+import { nanoid } from 'nanoid';
+import React, { FC, useCallback } from 'react';
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
+import { useToggle } from 'react-use';
+import { validUrlRegexp } from 'utils/regexp';
+import * as yup from 'yup';
 
 import styles from './links-tab.module.scss';
 
@@ -14,121 +21,160 @@ type ExternalLink = {
 };
 
 export interface LinksTabProps {
+  accountName: string;
+  links: string[];
+}
+
+export interface LinksFormData {
   links: ExternalLink[];
-  onChange: (name: string, links: ExternalLink[]) => void;
-  viewMode: boolean;
+  details: '';
+  externalUrl: '';
 }
 
-function getLinkIcon(link: string) {
-  if (link.indexOf('twitter') > -1) {
-    return 'socialTwitter';
-  }
+export const schema = yup.object().shape({
+  links: yup.array().of(
+    yup.object().shape({
+      id: yup.string().required(),
+      url: yup
+        .string()
+        .matches(validUrlRegexp, 'Enter correct url!')
+        .required('Enter url')
+    })
+  )
+});
 
-  if (link.indexOf('discord') > -1) {
-    return 'socialDiscord';
-  }
+const LinksTab: FC<LinksTabProps> = ({ links, accountName }) => {
+  const [viewMode, setViewMode] = useToggle(true);
 
-  if (link.indexOf('facebook') > -1) {
-    return 'socialFacebook';
-  }
+  const methods = useForm<LinksFormData>({
+    mode: 'onChange',
+    defaultValues: {
+      links: links.map(url => ({
+        url,
+        id: nanoid()
+      })),
+      details: '',
+      externalUrl: ''
+    },
+    resolver: yupResolver(schema)
+  });
 
-  if (link.indexOf('github') > -1) {
-    return 'socialGithub';
-  }
+  const {
+    register,
+    reset,
+    watch,
+    handleSubmit,
+    control,
+    formState: { errors, touchedFields, isDirty, isValid }
+  } = methods;
 
-  if (link.indexOf('instagram') > -1) {
-    return 'socialInstagram';
-  }
+  const { fields, append, remove } = useFieldArray({
+    name: 'links',
+    keyName: 'id',
+    control
+  });
 
-  if (link.indexOf('slack') > -1) {
-    return 'socialSlack';
-  }
+  const onCancel = useCallback(() => {
+    setViewMode(true);
+    reset({
+      links: links.map(url => ({
+        url,
+        id: nanoid()
+      }))
+    });
+  }, [links, reset, setViewMode]);
 
-  if (link.indexOf('telegram') > -1) {
-    return 'socialTelegram';
-  }
+  const onSubmit = useCallback(
+    async (data: LinksFormData) => {
+      const websites = data.links.map(item => item.url);
 
-  return 'socialAnyUrl';
-}
-
-const LinksTab: FC<LinksTabProps> = ({ links, onChange, viewMode = true }) => {
-  const handleClickAdd = React.useCallback(() => {
-    const newId = nanoid();
-    const newItem = {
-      id: newId,
-      url: ''
-    };
-
-    if (links) {
-      onChange('links', [...links, newItem]);
-    } else {
-      onChange('links', [newItem]);
-    }
-  }, [links, onChange]);
+      // TODO POST to backend
+      console.debug({
+        accountName,
+        websites
+      });
+      setViewMode(true);
+    },
+    [accountName, setViewMode]
+  );
 
   return (
-    <div className={styles.root}>
-      <div className={styles.row}>
-        <div className={styles.label}>Links</div>
-      </div>
-      {links.map(item => {
-        const icon = getLinkIcon(item.url);
-
-        return (
-          <div className={styles.row} key={item.id}>
-            <Icon name={icon} className={styles.icon} />
-            {viewMode ? (
-              <span>{item.url}</span>
-            ) : (
-              <>
-                <Input
-                  size="medium"
-                  textAlign="left"
-                  value={item.url}
-                  onChange={e => {
-                    const updatedLinks = links.map(link => {
-                      if (link.id === item.id) {
-                        return {
-                          ...link,
-                          url: (e.target as HTMLInputElement).value
-                        };
-                      }
-
-                      return link;
-                    });
-
-                    onChange('links', updatedLinks);
-                  }}
-                />
-                <IconButton
-                  icon="buttonDelete"
-                  className={styles.delete}
-                  onClick={() => {
-                    const updatedLinks = links.filter(link => {
-                      return link.id !== item.id;
-                    });
-
-                    onChange('links', updatedLinks);
-                  }}
-                />
-              </>
-            )}
-          </div>
-        );
-      })}
-      {!viewMode && (
+    <>
+      <FormProvider {...methods}>
+        <ProposalBanner
+          scope="config"
+          title="Links"
+          form="links"
+          disable={!isValid || !isDirty}
+          onEdit={setViewMode}
+          viewMode={viewMode}
+          onCancel={onCancel}
+        />
+      </FormProvider>
+      <form
+        id="links"
+        onSubmit={handleSubmit(onSubmit)}
+        className={styles.root}
+      >
         <div className={styles.row}>
-          <Button
-            className={styles.add}
-            variant="tertiary"
-            onClick={handleClickAdd}
-          >
-            <Icon name="buttonAdd" className={styles.icon} />
-            <span>Add link</span>
-          </Button>
+          <div className={styles.label}>Links</div>
         </div>
-      )}
-    </div>
+        {viewMode
+          ? links.map(item => {
+              const icon = getSocialLinkIcon(item);
+
+              return (
+                <div className={styles.row} key={item}>
+                  <Icon name={icon} className={styles.icon} />
+                  <span>{item}</span>
+                </div>
+              );
+            })
+          : fields.map((field, index) => {
+              const currentUrl = watch(`links.${index}.url`);
+              const icon = getSocialLinkIcon(currentUrl);
+
+              return (
+                <div className={styles.row} key={field.id}>
+                  <Icon name={icon} className={styles.icon} />
+
+                  <Input
+                    {...register(`links.${index}.url`)}
+                    isValid={
+                      touchedFields?.links?.[index]?.url &&
+                      !errors?.links?.[index]?.url?.message
+                    }
+                    size="medium"
+                    textAlign="left"
+                  />
+                  <IconButton
+                    onClick={() => remove(index)}
+                    icon="buttonDelete"
+                    className={styles.delete}
+                  />
+                </div>
+              );
+            })}
+
+        {!viewMode && (
+          <div className={styles.row}>
+            <Button
+              className={styles.add}
+              variant="tertiary"
+              onClick={() =>
+                append({
+                  id: nanoid(),
+                  url: ''
+                })
+              }
+            >
+              <Icon name="buttonAdd" className={styles.icon} />
+              <span>Add link</span>
+            </Button>
+          </div>
+        )}
+      </form>
+    </>
   );
 };
 

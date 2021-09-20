@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import cn from 'classnames';
 import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import {
+  resetIdCounter,
   Tab,
-  Tabs as ReactTabs,
   TabList,
   TabPanel,
-  resetIdCounter
+  Tabs as ReactTabs
 } from 'react-tabs';
-
-import cn from 'classnames';
 
 import 'react-tabs/style/react-tabs.css';
 
-// Types
-import { TabItem } from './types';
-
 // Styles
 import styles from './tabs.module.scss';
+
+// Types
+import { TabItem } from './types';
 
 export interface TabsProps {
   className?: string;
   tabs: TabItem[];
   fitContent?: boolean;
   isControlled?: boolean;
+  renderTabHeader?: (id: string, label?: string | undefined) => void;
 }
 
 resetIdCounter();
@@ -62,7 +62,10 @@ const Tabs: React.FC<TabsProps> = ({
         router.push(
           {
             pathname: '',
-            query: { ...router.query, tab: index }
+            query: {
+              ...router.query,
+              tab: index
+            }
           },
           undefined,
           { shallow: true }

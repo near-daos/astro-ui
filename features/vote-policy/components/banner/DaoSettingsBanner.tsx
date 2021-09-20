@@ -1,14 +1,14 @@
-import React, { FC } from 'react';
+import { Button } from 'components/button/Button';
+import { Input } from 'components/input/Input';
+import { TextArea } from 'components/textarea/TextArea';
 
 import { VoteDetails } from 'components/vote-details';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
-import { Input } from 'components/input/Input';
-import { Button } from 'components/button/Button';
-import { TextArea } from 'components/textarea/TextArea';
+
+import styles from 'features/vote-policy/components/banner/dao-setting-banner.module.scss';
 
 import { DaoSettingsProps, Scope } from 'features/vote-policy/helpers';
-
-import styles from './dao-setting-banner.module.scss';
+import React, { FC } from 'react';
 
 export interface DaoSettingsBannerProps {
   onCancel: () => void;

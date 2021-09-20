@@ -1,10 +1,9 @@
-import React from 'react';
-
 import { Meta, Story } from '@storybook/react';
 import {
   DaoSettingsBanner,
   DaoSettingsBannerProps
-} from 'features/dao-settings/components/dao-settings-banner';
+} from 'features/vote-policy/components/banner';
+import React from 'react';
 
 export default {
   title: 'Features/Dao Settings/DaoSettingsBanner',
