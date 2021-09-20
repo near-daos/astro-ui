@@ -9,6 +9,7 @@ import {
   ProposalDTO
 } from 'services/SputnikService/mappers/proposal';
 import { DAO, Member } from 'types/dao';
+import { Proposal } from 'types/proposal';
 
 type MemberDTO = {
   id: string;
@@ -71,6 +72,59 @@ export const extractMembersFromDaosList = (daos: DAO[]): Member[] => {
   });
 };
 
+export const extractMembersFromDao = (
+  dao: DAO,
+  proposals: Proposal[]
+): Member[] => {
+  const votesPerProposer = proposals.reduce((acc, currentProposal) => {
+    const vote = currentProposal.votes[currentProposal.proposer];
+
+    if (vote) {
+      if (acc[currentProposal.proposer]) {
+        acc[currentProposal.proposer] += 1;
+      } else {
+        acc[currentProposal.proposer] = 1;
+      }
+    }
+
+    return acc;
+  }, {} as Record<string, number>);
+
+  const members = {} as Record<string, Member>;
+
+  dao.groups.forEach(grp => {
+    const users = grp.members;
+
+    users.forEach(user => {
+      if (!members[user]) {
+        members[user] = {
+          id: nanoid(),
+          name: user,
+          groups: [grp.name],
+          tokens: {
+            type: 'NEAR',
+            value: 18,
+            percent: 14
+          },
+          votes: votesPerProposer[user]
+        };
+      } else {
+        members[user] = {
+          ...members[user],
+          groups: [...members[user].groups, grp.name]
+        };
+      }
+    });
+  });
+
+  return Object.values(members).map(item => {
+    return {
+      ...item,
+      groups: Array.from(new Set(item.groups))
+    };
+  });
+};
+
 export const mapSearchResultsDTOToDataObject = (
   query: string,
   data: SearchResultsDTO
@@ -80,8 +134,8 @@ export const mapSearchResultsDTOToDataObject = (
   }
 
   const daos = mapDaoDTOListToDaoList(data.daos);
-  const members = extractMembersFromDaosList(daos);
   const proposals = mapProposalDTOListToProposalList(data.proposals);
+  const members = extractMembersFromDaosList(daos);
 
   return {
     query,
