@@ -48,7 +48,7 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
   const daoId = router.query.dao;
   const [filter, setFilter] = useState({
     show: 'All' as ShowFilterOption,
-    search: 'In this DAO' as SearchFilterOption,
+    search: 'In all DAOs' as SearchFilterOption,
     tasks: true,
     groups: true,
     treasury: true,

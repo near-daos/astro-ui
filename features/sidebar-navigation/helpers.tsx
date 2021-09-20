@@ -85,7 +85,7 @@ const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
       },
       {
         id: 'upgradeSoftware',
-        label: 'Upgrade software Token',
+        label: 'Upgrade software',
         href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/upgrade-software`
       }
     ]
