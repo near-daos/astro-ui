@@ -1,11 +1,9 @@
 import { useDAOList } from 'hooks/useDAOList';
 import { useMount } from 'react-use';
-import { Provider } from 'react-redux';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import type { AppProps } from 'next/app';
 
-import { store } from 'store';
 import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
 import CreateLayout from 'components/create-layout/CreateLayout';
@@ -42,15 +40,13 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   if (walletInitialized && !isLoadingDAOList) {
     return (
       <SWRConfig value={{ fallback: { '/daos': daos } }}>
-        <Provider store={store}>
-          <AuthWrapper>
-            <ModalProvider>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </ModalProvider>
-          </AuthWrapper>
-        </Provider>
+        <AuthWrapper>
+          <ModalProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ModalProvider>
+        </AuthWrapper>
       </SWRConfig>
     );
   }

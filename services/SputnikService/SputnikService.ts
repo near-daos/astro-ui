@@ -6,7 +6,7 @@ import omit from 'lodash/omit';
 
 import { CreateTokenParams } from 'types/token';
 
-import { DAO, Member } from 'types/dao';
+import { CreateDaoInput, DAO, Member } from 'types/dao';
 import { CreateProposalParams, DaoConfig, Proposal } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
 import {
@@ -189,7 +189,7 @@ class SputnikService {
     );
   }
 
-  public async createDao(params: any): Promise<boolean> {
+  public async createDao(params: CreateDaoInput): Promise<boolean> {
     const config: DaoConfig = {
       name: params.name,
       purpose: params.purpose,
@@ -203,7 +203,7 @@ class SputnikService {
       bond: new Decimal(params.bond).mul(yoktoNear).toFixed(),
       vote_period: new Decimal(params.votePeriod).mul('3.6e12').toFixed(),
       grace_period: new Decimal(params.gracePeriod).mul('3.6e12').toFixed(),
-      policy: [this.getAccountId()],
+      policy: params.policy,
       config
     };
 
