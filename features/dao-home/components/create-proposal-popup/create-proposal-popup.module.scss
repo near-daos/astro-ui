@@ -28,6 +28,10 @@
     min-width: 100px;
   }
 
+  .right {
+    width: 100%;
+  }
+
   .title {
     @extend %heading2;
     color: var(--color-primary-50);

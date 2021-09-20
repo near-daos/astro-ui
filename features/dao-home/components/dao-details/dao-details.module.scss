@@ -30,6 +30,10 @@
     padding: 48px 30px 48px 140px;
   }
 
+  @include mobile-only {
+    margin-top: 0;
+  }
+
   h1 {
     margin: 0;
   }

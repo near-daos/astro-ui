@@ -54,6 +54,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
+  gap: 8px;
   justify-content: flex-start;
   overflow: hidden;
   padding: 16px;
@@ -86,7 +87,7 @@
   white-space: nowrap;
 
   @include tablet-landscape {
-    flex: 0 0 70px;
+    flex: 1 0 70px;
     margin: 0 8px;
   }
 }
@@ -104,7 +105,7 @@
   @include tablet-landscape {
     align-items: center;
     margin: 0 8px 0 16px;
-    width: auto;
+    //width: auto;
   }
 }
 
@@ -116,6 +117,10 @@
   @include tablet-landscape {
     flex: 0 0 120px;
     margin: 0 0 0 8px;
+  }
+
+  @include mobile-only {
+    display: none;
   }
 }
 
