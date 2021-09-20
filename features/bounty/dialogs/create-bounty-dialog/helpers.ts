@@ -22,14 +22,7 @@ export function getAddBountyProposal(
   daoId: string,
   data: CreateBountyInput
 ): CreateProposalParams {
-  const {
-    slots,
-    token,
-    amount,
-    details,
-    deadlineUnit,
-    deadlineThreshold
-  } = data;
+  const { slots, amount, details, deadlineUnit, deadlineThreshold } = data;
 
   const proposalDescription = `${details}`;
 
@@ -40,7 +33,7 @@ export function getAddBountyProposal(
     data: {
       bounty: {
         description: proposalDescription,
-        token,
+        token: '',
         amount: amount.toString(),
         times: slots,
         max_deadline: getDeadline(deadlineThreshold, deadlineUnit)
