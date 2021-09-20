@@ -16,6 +16,7 @@ import { Token } from 'features/types';
 
 import { useDeviceType } from 'helpers/media';
 
+import { SputnikService } from 'services/SputnikService';
 import styles from './request-payout-form.module.scss';
 
 const schema = yup.object().shape({
@@ -55,7 +56,8 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
     resolver: yupResolver(schema),
     defaultValues: {
       ...initialValues,
-      amount: ''
+      amount: '',
+      recipient: SputnikService.getAccountId()
     }
   });
 
@@ -97,7 +99,6 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
           label="Send to"
           className={cn(styles.input)}
         />
-        <span className={cn(styles.ml8, styles.inputInline)}>.near</span>
       </div>
       <div className={styles.detail}>
         <TextArea
@@ -111,16 +112,16 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
           {...register('detail')}
         />
       </div>
-      <Input
-        size="block"
-        defaultValue={initialValues?.externalUrl}
-        isValid={touchedFields.externalUrl && !errors.externalUrl?.message}
-        textAlign="left"
-        {...register('externalUrl')}
-        label="External URL"
-        placeholder="Add link"
-        className={cn(styles.input, styles.url)}
-      />
+      {/* <Input */}
+      {/*  size="block" */}
+      {/*  defaultValue={initialValues?.externalUrl} */}
+      {/*  isValid={touchedFields.externalUrl && !errors.externalUrl?.message} */}
+      {/*  textAlign="left" */}
+      {/*  {...register('externalUrl')} */}
+      {/*  label="External URL" */}
+      {/*  placeholder="Add link" */}
+      {/*  className={cn(styles.input, styles.url)} */}
+      {/* /> */}
       <div className={styles.vote}>
         <ExpandableDetails label="Vote details" className={styles.voteDetails}>
           <VoteDetails scope="transfer" />

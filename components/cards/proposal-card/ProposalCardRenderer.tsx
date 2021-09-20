@@ -11,9 +11,8 @@ import {
 } from 'components/cards/proposal-card/components/proposal-content/proposal-content';
 import { ProposalCard } from 'components/cards/proposal-card/ProposalCard';
 
-import { SputnikService, yoktoNear } from 'services/SputnikService';
+import { SputnikService } from 'services/SputnikService';
 import { useAuthContext } from 'context/AuthContext';
-import Decimal from 'decimal.js';
 
 interface ProposalCardRendererProps {
   proposal: Proposal;
@@ -81,12 +80,9 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
       break;
     }
     case ProposalType.Transfer: {
-      const amountYokto = new Decimal(proposal.kind.amount);
-      const amount = amountYokto.div(yoktoNear).toFixed(2);
-
       content = (
         <RequestPayout
-          amount={amount}
+          amount={proposal.kind.amount}
           reason={proposal.kind.msg}
           recipient={proposal.kind.receiverId}
           tokens={proposal.kind.tokenId}

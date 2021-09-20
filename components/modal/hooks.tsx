@@ -1,11 +1,11 @@
 import { FunctionComponent, useContext } from 'react';
+import { nanoid } from 'nanoid';
 import { ModalContext, IModal } from './ModalContext';
 
 type OnCloseParameters<T extends IModal> = Parameters<T['onClose']>;
 
 type UseModalResult<T extends IModal> = [
-  (props?: Partial<T>) => Promise<OnCloseParameters<T>>,
-  () => void
+  (props?: Partial<T>) => Promise<OnCloseParameters<T>>
 ];
 
 export const useModal = <P extends IModal>(
@@ -14,11 +14,9 @@ export const useModal = <P extends IModal>(
 ): UseModalResult<P> => {
   const context = useContext(ModalContext);
 
-  const hideModal = () => {
-    context.hideModal();
-  };
-
   const showModal = (modalProps: Partial<P> = {}) => {
+    const id = nanoid();
+
     return new Promise<OnCloseParameters<P>>(resolve => {
       const props = {
         ...initialProps,
@@ -26,7 +24,7 @@ export const useModal = <P extends IModal>(
       };
 
       const onCloseModal = (...args: OnCloseParameters<P>) => {
-        context.hideModal();
+        context.hideModal(id);
 
         props.onClose?.(...args);
         resolve(args);
@@ -36,11 +34,11 @@ export const useModal = <P extends IModal>(
         <Component {...(props as P)} isOpen onClose={onCloseModal} />
       );
 
-      context.showModal(modal);
+      context.showModal(id, modal);
     });
   };
 
-  return [showModal, hideModal];
+  return [showModal];
 };
 
 export default useModal;

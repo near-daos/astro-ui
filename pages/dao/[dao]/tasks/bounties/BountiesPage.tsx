@@ -18,12 +18,7 @@ export const CREATE_BOUNTY_INITIAL = {
   deadlineThreshold: 3,
   deadlineUnit: 'day' as DeadlineUnit,
   externalUrl: '',
-  details: '',
-  voteDetails: [
-    { value: '50%', label: 'MEW holders' },
-    { value: '50%', label: 'cool group' },
-    { value: '1 person', label: 'Ombudspeople' }
-  ]
+  details: ''
 };
 
 const BountiesPage: FC = () => {
