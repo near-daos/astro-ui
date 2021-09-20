@@ -10,20 +10,12 @@ export default function RootPage(): JSX.Element {
 
 export const getServerSideProps: GetServerSideProps<{
   fallback: { '/daos': DAO[] };
-}> = async ({ res, params }) => {
+}> = async ({ res }) => {
   const data = await SputnikService.getDaoList();
 
   if (data.length === 0) {
     res.statusCode = 302;
     res.setHeader('location', `/all-communities`);
-  }
-
-  if (!params || params.dao == null) {
-    res.statusCode = 302;
-
-    const [dao] = data;
-
-    res.setHeader('location', `/dao/${dao.id}`);
   }
 
   return {

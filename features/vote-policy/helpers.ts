@@ -1,4 +1,4 @@
-import { DAO, DaoVotePolicy, TGroup } from 'types/dao';
+import { DAO, DaoVotePolicy, TGroup, VotePolicyRequest } from 'types/dao';
 import { VotePolicy } from 'features/vote-policy/components/policy-row';
 import { CreateProposalParams, Proposal } from 'types/proposal';
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
@@ -225,13 +225,6 @@ export function getVoteDetails(
 
   return { details, votersList };
 }
-
-type VotePolicyRequest = {
-  // eslint-disable-next-line camelcase
-  weight_kind: 'RoleWeight' | 'TokenWeight';
-  quorum: string;
-  threshold: [number, number];
-};
 
 function getThreshold(value: number): [number, number] {
   const fraction = value / 100;

@@ -1,12 +1,12 @@
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { useCallback, useState } from 'react';
 import { FilterName } from 'features/search/search-filters';
+import {
+  Indexed,
+  splitProposalsByVotingPeriod
+} from 'features/dao-home/helpers';
 import { Proposal, ProposalType } from 'types/proposal';
 import { useRouter } from 'next/router';
-
-export interface Indexed {
-  [key: string]: Proposal[];
-}
 
 export interface FilteredData extends Indexed {
   lessThanHourProposals: Proposal[];
@@ -173,32 +173,7 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
     lessThanDayProposals,
     lessThanWeekProposals,
     otherProposals
-  } = filteredProposals.reduce(
-    (res, item) => {
-      // Split items by groups (less than hour, day, week)
-      const votingEndsAt = new Date(item.votePeriodEnd).getMilliseconds();
-      const now = new Date().getMilliseconds();
-      const diff = votingEndsAt - now;
-
-      if (diff < 3.6e6) {
-        res.lessThanHourProposals.push(item);
-      } else if (diff < 8.64e7) {
-        res.lessThanDayProposals.push(item);
-      } else if (diff < 6.048e8) {
-        res.lessThanWeekProposals.push(item);
-      } else {
-        res.otherProposals.push(item);
-      }
-
-      return res;
-    },
-    {
-      lessThanHourProposals: [] as Proposal[],
-      lessThanDayProposals: [] as Proposal[],
-      lessThanWeekProposals: [] as Proposal[],
-      otherProposals: [] as Proposal[]
-    }
-  );
+  } = splitProposalsByVotingPeriod(filteredProposals);
 
   return {
     filteredProposalsData: {
