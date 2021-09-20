@@ -38,6 +38,8 @@ module.exports = (nextConfig = {}) => {
           {
             loader: 'svgo-loader',
             options: {
+              // TODO // We should get rid of this. It processes all icons and replaces
+              // TODO // colors even where we should keep them (e.g. colorful icons).
               plugins: extendDefaultPlugins([
                 {
                   name: 'convertColors',
