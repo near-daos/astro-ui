@@ -144,7 +144,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             );
           })}
         </nav>
-
+        <div className={styles.delimiter} />
         <nav className={styles.bottom}>
           <NavItem
             topDelimiter
