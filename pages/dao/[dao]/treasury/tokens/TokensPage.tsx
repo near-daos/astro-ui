@@ -17,6 +17,8 @@ import { TokenCard } from 'components/cards/token-card';
 import { Header } from 'components/cards/token-card/components/header';
 import { useModal } from 'components/modal';
 import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
+import { CopyButton } from 'features/copy-button';
+import { Token } from 'types/token';
 
 import {
   BOND_DETAIL,
@@ -27,7 +29,6 @@ import {
 import { ChartData } from 'lib/types/treasury';
 
 import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
-import { Token } from 'types/token';
 
 interface TokenCardInput {
   id: string;
@@ -120,22 +121,13 @@ const TokensPage: React.FC<TokensPageProps> = ({
     [totalValue]
   );
 
-  const copyAccountName = useCallback(() => {
-    navigator.clipboard.writeText(accountName);
-  }, [accountName]);
-
   return (
     <div className={styles.root}>
       <div className={styles.account}>
         <div className={styles.caption}>DAO account name</div>
         <div className={styles.name}>
           {accountName}
-          <IconButton
-            icon="buttonCopy"
-            size="medium"
-            className={styles.icon}
-            onClick={copyAccountName}
-          />
+          <CopyButton text={accountName} className={styles.icon} />
         </div>
       </div>
       <div className={styles.send}>
