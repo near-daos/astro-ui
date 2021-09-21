@@ -111,7 +111,7 @@ const MemberCard: FC<MemberCardProps> = ({
         <div className={styles.footerItem}>
           <span className={cn(styles.label, 'subtitle4')}>Votes casted</span>
           <div className={styles.inline}>
-            <span className={cn(styles.value, 'title2')}>{votes}</span>
+            <span className={cn(styles.value, 'title2')}>{votes || '0'}</span>
           </div>
         </div>
       </div>

@@ -34,8 +34,25 @@ export interface SearchResponse {
   proposals: ProposalDTO[];
 }
 
-export const extractMembersFromDaosList = (daos: DAO[]): Member[] => {
+export const extractMembersFromDaosList = (
+  daos: DAO[],
+  proposals: Proposal[]
+): Member[] => {
   const members = {} as Record<string, Member>;
+
+  const votesPerProposer = proposals.reduce((acc, currentProposal) => {
+    const vote = currentProposal.votes[currentProposal.proposer];
+
+    if (vote) {
+      if (acc[currentProposal.proposer]) {
+        acc[currentProposal.proposer] += 1;
+      } else {
+        acc[currentProposal.proposer] = 1;
+      }
+    }
+
+    return acc;
+  }, {} as Record<string, number>);
 
   daos.forEach(dao => {
     dao.groups.forEach(grp => {
@@ -52,7 +69,7 @@ export const extractMembersFromDaosList = (daos: DAO[]): Member[] => {
               value: 18,
               percent: 14
             },
-            votes: 12
+            votes: votesPerProposer[user]
           };
         } else {
           members[user] = {
@@ -135,7 +152,7 @@ export const mapSearchResultsDTOToDataObject = (
 
   const daos = mapDaoDTOListToDaoList(data.daos);
   const proposals = mapProposalDTOListToProposalList(data.proposals);
-  const members = extractMembersFromDaosList(daos);
+  const members = extractMembersFromDaosList(daos, proposals);
 
   return {
     query,

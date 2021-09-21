@@ -8,6 +8,7 @@ import {
   ProposalFilter
 } from 'features/member-home/types';
 import { useAllProposals } from 'hooks/useAllProposals';
+import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
 
 export const daoOptions = [
   {
@@ -81,6 +82,8 @@ export function arrangeByDao(proposals: Proposal[]): ProposalByDao {
 }
 
 export const useFilteredMemberHomeData = (): FilteredProposalsData => {
+  const { daos } = useDaoListPerCurrentUser();
+  const myDaos = daos.map(item => item.id);
   const proposals = useAllProposals() ?? [];
   const { accountId } = useAuthContext();
   const [filter, setFilter] = useState({
@@ -149,7 +152,10 @@ export const useFilteredMemberHomeData = (): FilteredProposalsData => {
       // Filter 'daoFilter'
       switch (filter.daoFilter) {
         case 'My DAOs': {
-          // todo - currntly we dont have groups info in dao inside proposal response
+          if (!myDaos.includes(item.daoId)) {
+            matched = false;
+          }
+
           break;
         }
         case 'Following DAOs': {
