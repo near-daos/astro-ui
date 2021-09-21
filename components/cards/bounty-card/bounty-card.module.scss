@@ -98,29 +98,33 @@
   color: var(--color-success-60);
   display: flex;
   flex: 1;
+  flex-wrap: wrap;
   justify-content: flex-end;
   margin: 8px 0 0 auto;
   width: 100%;
 
   @include tablet-landscape {
     align-items: center;
+    flex-wrap: nowrap;
     margin: 0 8px 0 16px;
-    //width: auto;
+  }
+}
+
+.slots.inprogress {
+  @include tablet-landscape {
+    flex: 0 0 325px;
   }
 }
 
 .control {
-  flex-basis: 0;
-  margin: 8px 0 0;
+  margin: 0 0 8px;
+  order: 1;
   width: 100%;
 
   @include tablet-landscape {
     flex: 0 0 120px;
     margin: 0 0 0 8px;
-  }
-
-  @include mobile-only {
-    display: none;
+    order: 3;
   }
 }
 
@@ -151,6 +155,7 @@
 }
 
 .button {
+  margin-bottom: 8px;
   text-transform: none;
   width: calc(50% - 4px);
 
@@ -165,6 +170,22 @@
     @include tablet-landscape {
       margin-left: 4px;
     }
+  }
+}
+
+.unclaim {
+  order: 2;
+
+  @include tablet-landscape {
+    order: 1;
+  }
+}
+
+.complete {
+  order: 3;
+
+  @include tablet-landscape {
+    order: 2;
   }
 }
 

@@ -11,6 +11,7 @@ import {
   millisecondsToMinutes,
   minutesToHours
 } from 'date-fns';
+import cn from 'classnames';
 
 interface InProgressCellsProps {
   claimedBy: ClaimedBy[];
@@ -42,12 +43,12 @@ export const InProgressCells: FC<InProgressCellsProps> = ({
 
   return (
     <>
-      <div className={styles.slots}>
+      <div className={cn(styles.slots, styles.inprogress)}>
         <>
           <Button
             variant="secondary"
             size="block"
-            className={styles.button}
+            className={cn(styles.button, styles.unclaim)}
             onClick={onUnclaim}
           >
             <span className={styles.nowrap}>Unclaim</span>
@@ -55,7 +56,7 @@ export const InProgressCells: FC<InProgressCellsProps> = ({
           <Button
             variant="primary"
             size="block"
-            className={styles.button}
+            className={cn(styles.button, styles.complete)}
             onClick={onComplete}
           >
             <span className={styles.nowrap}>Complete</span>
