@@ -3,6 +3,7 @@ import { DaoRole } from './role';
 
 export type DaoDetails = {
   name: string;
+  logo: string;
 };
 
 export type FunctionCallAction = {

@@ -6,7 +6,7 @@ export function useAllProposals(): Proposal[] | null {
   const [data, setData] = useState<Proposal[] | null>(null);
 
   useEffect(() => {
-    SputnikService.getProposals().then(res => setData(res));
+    SputnikService.getProposals(undefined, 0, 500).then(res => setData(res));
   }, []);
 
   return data;

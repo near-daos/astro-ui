@@ -72,7 +72,10 @@ export const mapProposalDTOToProposal = (
     }, {} as Record<string, VoteState>),
     createdAt: proposalDTO.createdAt,
     daoDetails: {
-      name: proposalDTO.dao.config.name
+      name: proposalDTO.dao.config.name,
+      logo: `https://sputnik-dao.s3.eu-central-1.amazonaws.com/${
+        proposalDTO.daoId
+      }?timestamp=${Date.now()}`
     }
   };
 };

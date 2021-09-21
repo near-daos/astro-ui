@@ -17,11 +17,11 @@ export const daoOptions = [
   {
     label: 'My DAOs',
     value: 'My DAOs'
-  },
-  {
-    label: 'Following DAOs',
-    value: 'Following DAOs'
   }
+  // {
+  //   label: 'Following DAOs',
+  //   value: 'Following DAOs'
+  // }
 ];
 
 export const proposalOptions = [
@@ -58,16 +58,22 @@ export const voteByPeriod = [
   }
 ];
 
-function arrangeByDao(proposals: Proposal[]): { [key: string]: Proposal[] } {
+export function arrangeByDao(proposals: Proposal[]): ProposalByDao {
   const result: ProposalByDao = {};
 
   proposals.forEach(item => {
-    const daoName = item.daoDetails.name;
+    const { name, logo } = item.daoDetails;
 
-    if (result[daoName]) {
-      result[daoName].push(item);
+    if (result[name]) {
+      result[name].proposals.push(item);
     } else {
-      result[daoName] = [item];
+      result[name] = {
+        dao: {
+          name,
+          logo
+        },
+        proposals: [item]
+      };
     }
   });
 
@@ -82,6 +88,7 @@ export const useFilteredMemberHomeData = (): FilteredProposalsData => {
     proposalFilter: 'Active proposals' as ProposalFilter,
     daoViewFilter: null
   });
+  let selectedDaoFlag;
 
   const onFilterChange = useCallback(
     (name, value) => {
@@ -133,6 +140,10 @@ export const useFilteredMemberHomeData = (): FilteredProposalsData => {
       // Filter by specific dao
       if (item.daoDetails.name !== filter.daoViewFilter) {
         matched = false;
+      }
+
+      if (item.daoDetails.name === filter.daoViewFilter) {
+        selectedDaoFlag = item.daoDetails.logo;
       }
     } else {
       // Filter 'daoFilter'
@@ -195,6 +206,7 @@ export const useFilteredMemberHomeData = (): FilteredProposalsData => {
       otherProposals: arrangeByDao(otherProposals)
     },
     filter,
-    onFilterChange
+    onFilterChange,
+    selectedDaoFlag
   };
 };

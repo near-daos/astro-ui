@@ -6,8 +6,16 @@ export type ProposalFilter =
   | 'Recent proposals'
   | 'My proposals';
 
+export type DaoProposal = {
+  dao: {
+    name: string;
+    logo: string;
+  };
+  proposals: Proposal[];
+};
+
 export interface ProposalByDao {
-  [key: string]: Proposal[];
+  [key: string]: DaoProposal;
 }
 
 export interface Indexed {
@@ -31,4 +39,5 @@ export type FilteredProposalsData = {
   filteredProposalsData: FilteredData;
   filter: ProposalsFilter;
   onFilterChange: (name: string, value: string | null) => void;
+  selectedDaoFlag?: string;
 };
