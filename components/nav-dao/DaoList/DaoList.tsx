@@ -47,6 +47,7 @@ export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
             logo={dao.logo}
             label={dao.name}
             count={dao.members}
+            selected={selectedDao?.id === dao.id}
           />
         ))}
       </Collapsable>
