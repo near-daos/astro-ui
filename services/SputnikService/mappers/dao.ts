@@ -2,9 +2,7 @@ import get from 'lodash/get';
 
 import { DAO } from 'types/dao';
 import { DaoRole } from 'types/role';
-
-import { yoktoNear } from 'services/SputnikService/constants';
-import Decimal from 'decimal.js';
+import { formatYoktoValue } from 'helpers/format';
 
 export type DaoVotePolicy = {
   weightKind: string;
@@ -63,8 +61,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
   const numberOfProposals = get(daoDTO, 'lastProposalId', 0);
 
   // Transform amount
-  const amountYokto = new Decimal(daoDTO.amount);
-  const funds = amountYokto.div(yoktoNear).toFixed(2);
+  const funds = formatYoktoValue(daoDTO.amount);
 
   // Get DAO groups
   const daoGroups = roles

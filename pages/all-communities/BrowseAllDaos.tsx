@@ -6,6 +6,10 @@ import DaoCard from 'components/cards/dao-card';
 
 import { SputnikService } from 'services/SputnikService';
 import { DAO } from 'types/dao';
+import {
+  getActiveProposalsCountByDao,
+  useAllProposals
+} from 'hooks/useAllProposals';
 
 import styles from './browse-all-daos.module.scss';
 
@@ -40,16 +44,39 @@ const BrowseAllDaos: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
   const router = useRouter();
   const activeSort = (router.query.sort as string) ?? sortOptions[1].value;
 
+  const proposals = useAllProposals();
+  const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
+
   const [data, setData] = useState(initialData);
 
   const handleSort = useCallback(
     value => {
       router.push(`?sort=${value}`, undefined, { shallow: true });
-      SputnikService.getDaoList({ sort: `${value}` })
-        .then(res => setData(res))
-        .catch(e => console.error(e));
+
+      if (value === 'lastProposalId,DESC') {
+        const sorted = data.sort((a, b) => {
+          if (a.proposals > b.proposals) return -1;
+
+          if (a.proposals < b.proposals) return 1;
+
+          return 0;
+        });
+
+        setData(sorted);
+      } else {
+        SputnikService.getDaoList({ sort: `${value}` })
+          .then(res => {
+            const sorted = res.map(item => ({
+              ...item,
+              proposals: activeProposalsByDao[item.id] ?? 0
+            }));
+
+            setData(sorted);
+          })
+          .catch(e => console.error(e));
+      }
     },
-    [router]
+    [activeProposalsByDao, data, router]
   );
 
   return (
@@ -66,17 +93,20 @@ const BrowseAllDaos: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
         />
       </div>
       <div className={styles.content}>
-        {data.map(item => (
-          <DaoCard
-            key={item.id}
-            title={item.name}
-            daoAccountName={item.id}
-            description={item.description}
-            activeProposals={item.proposals}
-            funds={item.funds}
-            members={item.members}
-          />
-        ))}
+        {data.map(item => {
+          return (
+            <DaoCard
+              key={item.id}
+              flag={item.logo}
+              title={item.name}
+              daoAccountName={item.id}
+              description={item.description}
+              activeProposals={item.proposals ?? 0}
+              funds={item.funds}
+              members={item.members}
+            />
+          );
+        })}
       </div>
     </div>
   );

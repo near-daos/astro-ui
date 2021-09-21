@@ -2,13 +2,16 @@ import React from 'react';
 import TextTruncate from 'react-text-truncate';
 import Link from 'next/link';
 
-import { FlagIcon } from 'components/cards/dao-card/FlagIcon';
 import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value/FormattedNumericValue';
+import { ImageWithFallback } from 'components/image-with-fallback';
 
 import styles from 'components/cards/dao-card/dao-card.module.scss';
 
+import defaultFlag from 'stories/dao-home/assets/flag.png';
+
 interface DaoCardProps {
   title: string;
+  flag: string;
   daoAccountName: string;
   description: string | null;
   activeProposals: number;
@@ -18,6 +21,7 @@ interface DaoCardProps {
 
 const DaoCard: React.FC<DaoCardProps> = ({
   title,
+  flag,
   daoAccountName,
   description,
   activeProposals,
@@ -39,7 +43,13 @@ const DaoCard: React.FC<DaoCardProps> = ({
     <Link href={`/dao/${daoAccountName}`} passHref>
       <div className={styles.daoCard}>
         <div className={styles.iconWrapper}>
-          <FlagIcon />
+          <ImageWithFallback
+            fallbackSrc={defaultFlag.src}
+            src={flag}
+            width={64}
+            height={64}
+            alt={`${title} Dao Logo`}
+          />
         </div>
         <div className={styles.titleCaption}>
           <h2 className={styles.noMargin}>{title}</h2>
