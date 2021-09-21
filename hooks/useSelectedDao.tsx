@@ -15,9 +15,9 @@ export function useSelectedDAO(): DAO | null {
       return dao;
     }
 
-    const defaultDao = daos[0];
+    const defaultDao = daos[0] || null;
 
-    if (router.pathname === '/') {
+    if (router.pathname === '/' && defaultDao) {
       router.push({ pathname: `/dao/${defaultDao.id}`, query: router.query });
     }
 
