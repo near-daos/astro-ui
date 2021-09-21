@@ -7,13 +7,16 @@ import React, { ReactNode } from 'react';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 
+import { useHasDao } from 'hooks/useHasDao';
 import { useAccordion } from 'hooks/useAccordion';
+
 import { Logo } from 'components/logo/Logo';
 import { DaoList } from 'components/nav-dao/DaoList';
 import { Collapsable } from 'components/collapsable/Collapsable';
 import { NavItem } from 'components/nav-item/NavItem';
 import { NavSubItem } from 'components/nav-item/NavSubItem';
 import { Icon, IconName } from 'components/Icon';
+
 import { AppFooter } from 'features/app-footer';
 
 import styles from './sidebar.module.scss';
@@ -52,6 +55,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   closeSideBar
 }) => {
   const router = useRouter();
+  const showDaoNavItems = useHasDao();
+
   const activeGroupId = get(router.asPath.split('/'), 3);
 
   const { getItemProps } = useAccordion({
@@ -82,19 +87,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const currentDao = useSelectedDAO();
 
-  return (
-    <aside className={rootClassName}>
-      <div className={styles.wrapper}>
-        <div className={styles.mobileHeader}>
-          <Icon
-            name="close"
-            className={styles.closeIcon}
-            onClick={closeSideBar}
-          />
-          <Icon name="appLogo" width={92} />
-        </div>
-        <Logo className={styles.mainLogo} />
-        <div className={styles.scrolling}>
+  function renderDaoNavItems() {
+    if (showDaoNavItems) {
+      return (
+        <>
           <DaoList {...getItemProps('dao')} items={daoList} />
           <nav className={styles.menu}>
             {items.map(item => {
@@ -144,6 +140,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
               );
             })}
           </nav>
+        </>
+      );
+    }
+
+    return null;
+  }
+
+  return (
+    <aside className={rootClassName}>
+      <div className={styles.wrapper}>
+        <div className={styles.mobileHeader}>
+          <Icon
+            name="close"
+            className={styles.closeIcon}
+            onClick={closeSideBar}
+          />
+          <Icon name="appLogo" width={92} />
+        </div>
+        <Logo className={styles.mainLogo} />
+        <div className={styles.scrolling}>
+          {renderDaoNavItems()}
           <div className={styles.delimiter} />
           <nav className={styles.bottom}>
             <NavItem
