@@ -24,6 +24,10 @@
     width: fit-content;
   }
 
+  &.selected {
+    background-color: var(--color-primary-70);
+  }
+
   &:hover {
     background: var(--color-primary-60);
   }
