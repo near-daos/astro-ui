@@ -1,6 +1,5 @@
 import React from 'react';
 import { NextPage } from 'next';
-import tempFlag from 'stories/dao-home/assets/flag.png';
 
 import { Dropdown } from 'components/dropdown/Dropdown';
 import { Button } from 'components/button/Button';
@@ -19,9 +18,9 @@ const Home: NextPage = () => {
   const {
     filter,
     filteredProposalsData,
-    onFilterChange
+    onFilterChange,
+    selectedDaoFlag
   } = useFilteredMemberHomeData();
-  const flag = (tempFlag as StaticImageData).src;
 
   return (
     <div className={styles.root}>
@@ -30,7 +29,7 @@ const Home: NextPage = () => {
           <div className={styles.row}>
             <div
               className={styles.flag}
-              style={{ backgroundImage: `url(${flag})` }}
+              style={{ backgroundImage: `url(${selectedDaoFlag})` }}
             />
             <h1>{filter.daoViewFilter}</h1>
             <Button

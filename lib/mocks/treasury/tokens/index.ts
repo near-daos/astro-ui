@@ -43,7 +43,8 @@ export const PROPOSAL_DATA: Omit<
   disliked: false,
   endsAt: '2021-08-12T12:00:52Z',
   daoDetails: {
-    name: 'my awesome dao'
+    name: 'my awesome dao',
+    logo: ''
   },
   proposalId: 1,
   daoId: 'my-awesome-dao'

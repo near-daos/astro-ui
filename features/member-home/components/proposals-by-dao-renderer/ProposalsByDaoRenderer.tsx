@@ -1,4 +1,4 @@
-import tempFlag from 'stories/dao-home/assets/flag.png';
+import isEmpty from 'lodash/isEmpty';
 import { Collapsable } from 'components/collapsable/Collapsable';
 import { Button } from 'components/button/Button';
 import styles from 'features/search/search-results/components/proposals-tab-view/proposals-tab-view.module.scss';
@@ -22,11 +22,13 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
   filter,
   onFilterChange
 }) => {
-  const flag = (tempFlag as StaticImageData).src;
-
   const scrollToTop = useCallback(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  if (isEmpty(data)) {
+    return null;
+  }
 
   return (
     <Collapsable
@@ -54,20 +56,25 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
     >
       {Object.keys(data).length ? (
         <>
-          {Object.keys(data).map(daoName => (
-            <DaoSection
-              key={daoName}
-              expanded={filter.daoViewFilter === daoName}
-              onFilterSet={() => {
-                onFilterChange('daoViewFilter', daoName);
-                scrollToTop();
-              }}
-              filter={filter.daoViewFilter}
-              daoName={daoName}
-              proposals={data[daoName]}
-              flag={flag}
-            />
-          ))}
+          {Object.keys(data).map(daoName => {
+            const daoProposalData = data[daoName];
+            const flag = daoProposalData.dao.logo;
+
+            return (
+              <DaoSection
+                key={daoName}
+                expanded={filter.daoViewFilter === daoName}
+                onFilterSet={() => {
+                  onFilterChange('daoViewFilter', daoName);
+                  scrollToTop();
+                }}
+                filter={filter.daoViewFilter}
+                daoName={daoName}
+                proposals={daoProposalData.proposals}
+                flag={flag}
+              />
+            );
+          })}
         </>
       ) : (
         <div className={styles.noDataWarning}>There are no proposals</div>

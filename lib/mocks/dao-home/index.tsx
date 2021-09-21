@@ -50,7 +50,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     title: 'jonathan.near',
     votePeriodEnd: '',
     daoDetails: {
-      name: 'my-awesome-dao'
+      name: 'my-awesome-dao',
+      logo: ''
     },
     proposalId: 1,
     daoId: 'my-awesome-dao',
@@ -82,7 +83,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     title: 'jonathan.near',
     votePeriodEnd: '',
     daoDetails: {
-      name: 'my-awesome-dao'
+      name: 'my-awesome-dao',
+      logo: ''
     },
     proposalId: 1,
     daoId: 'my-awesome-dao',
@@ -114,7 +116,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     title: 'jonathan.near',
     votePeriodEnd: '',
     daoDetails: {
-      name: 'my-awesome-dao'
+      name: 'my-awesome-dao',
+      logo: ''
     },
     proposalId: 1,
     daoId: 'my-awesome-dao',
@@ -146,7 +149,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     title: 'jonathan.near',
     votePeriodEnd: '',
     daoDetails: {
-      name: 'my-awesome-dao'
+      name: 'my-awesome-dao',
+      logo: ''
     },
     proposalId: 1,
     daoId: 'my-awesome-dao',
@@ -178,7 +182,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     title: 'jonathan.near',
     votePeriodEnd: '',
     daoDetails: {
-      name: 'my-awesome-dao'
+      name: 'my-awesome-dao',
+      logo: ''
     },
     proposalId: 1,
     daoId: 'my-awesome-dao',
@@ -207,7 +212,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     title: 'jonathan.near',
     votePeriodEnd: '',
     daoDetails: {
-      name: 'my-awesome-dao'
+      name: 'my-awesome-dao',
+      logo: ''
     },
     proposalId: 1,
     daoId: 'my-awesome-dao',
@@ -237,7 +243,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     title: 'jonathan.near',
     votePeriodEnd: '',
     daoDetails: {
-      name: 'my-awesome-dao'
+      name: 'my-awesome-dao',
+      logo: ''
     },
     proposalId: 1,
     daoId: 'my-awesome-dao',

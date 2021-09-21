@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
+import isEmpty from 'lodash/isEmpty';
 
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useFilteredProposalsData } from 'features/search/search-results/components/proposals-tab-view/helpers';
@@ -10,8 +11,6 @@ import { SearchFilters } from 'features/search/search-filters';
 import { NoResultsView } from 'features/search/search-results/components/no-results-view';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { ProposalCardRenderer } from 'components/cards/proposal-card';
-
-import tempFlag from 'stories/dao-home/assets/flag.png';
 
 import styles from './proposals-tab-view.module.scss';
 
@@ -51,9 +50,7 @@ export const ProposalsTabView: FC = () => {
   }) => {
     const data = filteredProposalsData[dataKey];
 
-    if (!data.length) return null;
-
-    const flag = (tempFlag as StaticImageData).src;
+    if (isEmpty(data)) return null;
 
     return (
       <Collapsable
@@ -77,23 +74,31 @@ export const ProposalsTabView: FC = () => {
           </Button>
         )}
       >
-        <>
-          <div className={styles.daoDivider}>
-            <div
-              className={styles.flag}
-              style={{ backgroundImage: `url(${flag})` }}
-            />
-            <h3>Dao title</h3>
-            <div className={styles.divider} />
-          </div>
-          {data.map(item => {
-            return (
-              <div className={styles.cardWrapper} key={item.id}>
-                <ProposalCardRenderer proposal={item} />
+        {Object.keys(data).map(daoName => {
+          const daoProposalData = data[daoName];
+          const flag = daoProposalData.dao.logo;
+          const { proposals } = daoProposalData;
+
+          return (
+            <React.Fragment key={daoName}>
+              <div className={styles.daoDivider}>
+                <div
+                  className={styles.flag}
+                  style={{ backgroundImage: `url(${flag})` }}
+                />
+                <h3>{daoName}</h3>
+                <div className={styles.divider} />
               </div>
-            );
-          })}
-        </>
+              {proposals.map(item => {
+                return (
+                  <div className={styles.cardWrapper} key={item.id}>
+                    <ProposalCardRenderer proposal={item} />
+                  </div>
+                );
+              })}
+            </React.Fragment>
+          );
+        })}
       </Collapsable>
     );
   };

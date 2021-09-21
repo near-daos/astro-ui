@@ -8,6 +8,7 @@ import {
   ProposalFilter
 } from 'features/member-home/types';
 import { useAllProposals } from 'hooks/useAllProposals';
+import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
 
 export const daoOptions = [
   {
@@ -17,11 +18,11 @@ export const daoOptions = [
   {
     label: 'My DAOs',
     value: 'My DAOs'
-  },
-  {
-    label: 'Following DAOs',
-    value: 'Following DAOs'
   }
+  // {
+  //   label: 'Following DAOs',
+  //   value: 'Following DAOs'
+  // }
 ];
 
 export const proposalOptions = [
@@ -58,16 +59,22 @@ export const voteByPeriod = [
   }
 ];
 
-function arrangeByDao(proposals: Proposal[]): { [key: string]: Proposal[] } {
+export function arrangeByDao(proposals: Proposal[]): ProposalByDao {
   const result: ProposalByDao = {};
 
   proposals.forEach(item => {
-    const daoName = item.daoDetails.name;
+    const { name, logo } = item.daoDetails;
 
-    if (result[daoName]) {
-      result[daoName].push(item);
+    if (result[name]) {
+      result[name].proposals.push(item);
     } else {
-      result[daoName] = [item];
+      result[name] = {
+        dao: {
+          name,
+          logo
+        },
+        proposals: [item]
+      };
     }
   });
 
@@ -75,6 +82,8 @@ function arrangeByDao(proposals: Proposal[]): { [key: string]: Proposal[] } {
 }
 
 export const useFilteredMemberHomeData = (): FilteredProposalsData => {
+  const { daos } = useDaoListPerCurrentUser();
+  const myDaos = daos.map(item => item.id);
   const proposals = useAllProposals() ?? [];
   const { accountId } = useAuthContext();
   const [filter, setFilter] = useState({
@@ -82,6 +91,7 @@ export const useFilteredMemberHomeData = (): FilteredProposalsData => {
     proposalFilter: 'Active proposals' as ProposalFilter,
     daoViewFilter: null
   });
+  let selectedDaoFlag;
 
   const onFilterChange = useCallback(
     (name, value) => {
@@ -134,11 +144,18 @@ export const useFilteredMemberHomeData = (): FilteredProposalsData => {
       if (item.daoDetails.name !== filter.daoViewFilter) {
         matched = false;
       }
+
+      if (item.daoDetails.name === filter.daoViewFilter) {
+        selectedDaoFlag = item.daoDetails.logo;
+      }
     } else {
       // Filter 'daoFilter'
       switch (filter.daoFilter) {
         case 'My DAOs': {
-          // todo - currntly we dont have groups info in dao inside proposal response
+          if (!myDaos.includes(item.daoId)) {
+            matched = false;
+          }
+
           break;
         }
         case 'Following DAOs': {
@@ -195,6 +212,7 @@ export const useFilteredMemberHomeData = (): FilteredProposalsData => {
       otherProposals: arrangeByDao(otherProposals)
     },
     filter,
-    onFilterChange
+    onFilterChange,
+    selectedDaoFlag
   };
 };
