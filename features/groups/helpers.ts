@@ -79,7 +79,15 @@ export function getRemoveMemberProposal(
   return getAddRemoveMemberProposal(formData, dao, true);
 }
 
-function dataRoleToContractRole(role: DaoRole) {
+type ContractRole = {
+  name: string;
+  kind: 'Everyone' | { Group: string[] | null };
+  permissions: string[];
+  // eslint-disable-next-line camelcase
+  vote_policy: Record<string, string>;
+};
+
+export function dataRoleToContractRole(role: DaoRole): ContractRole {
   const { name, kind, permissions, votePolicy, accountIds } = role;
 
   const newKind =

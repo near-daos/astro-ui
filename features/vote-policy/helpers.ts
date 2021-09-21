@@ -267,8 +267,6 @@ export const getNewProposalObject = (
             };
           }
 
-          // console.log(role.permissions, data);
-
           return {
             name: role.name,
             kind: {
