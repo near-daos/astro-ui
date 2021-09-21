@@ -6,6 +6,17 @@ import Decimal from 'decimal.js';
 import omit from 'lodash/omit';
 import { connect, Contract, keyStores, Near } from 'near-api-js';
 
+import { CreateTokenParams } from 'types/token';
+import { RequestQueryBuilder } from '@nestjsx/crud-request';
+
+import { CreateDaoInput, DAO } from 'types/dao';
+import {
+  CreateProposalParams,
+  DaoConfig,
+  Proposal,
+  ProposalType
+} from 'types/proposal';
+import { SearchResultsData } from 'types/search';
 import { HttpService, httpService } from 'services/HttpService';
 import {
   DaoDTO,
@@ -24,11 +35,6 @@ import {
 } from 'services/SputnikService/mappers/search-results';
 import { BountiesResponse, BountyResponse } from 'types/bounties';
 
-import { CreateDaoInput, DAO } from 'types/dao';
-import { CreateProposalParams, DaoConfig, Proposal } from 'types/proposal';
-import { SearchResultsData } from 'types/search';
-
-import { CreateTokenParams } from 'types/token';
 import { gas, yoktoNear } from './constants';
 import { ContractPool } from './ContractPool';
 import { SputnikWalletConnection } from './SputnikWalletConnection';
@@ -343,6 +349,26 @@ class SputnikService {
       proposals: (result.data as SearchResponse).proposals as ProposalDTO[],
       members: []
     });
+  }
+
+  public async getBountiesDone(daoId: string): Promise<Proposal[]> {
+    const queryString = RequestQueryBuilder.create()
+      .setFilter({ field: 'daoId', operator: '$eq', value: daoId })
+      .setFilter({
+        field: 'kind',
+        operator: '$cont',
+        value: ProposalType.BountyDone
+      })
+      .setLimit(500)
+      .setOffset(0)
+      .sortBy({ field: 'createdAt', order: 'DESC' })
+      .query();
+
+    const { data: bounties } = await this.httpService.get<GetProposalsResponse>(
+      `/proposals?${queryString}`
+    );
+
+    return bounties.data.map(mapProposalDTOToProposal);
   }
 
   public async getProposals(

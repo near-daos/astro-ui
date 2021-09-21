@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import TextTruncate from 'react-text-truncate';
 import { StatusPanel } from 'components/cards/bounty-card/components/status-panel/StatusPanel';
-import { Bounty } from 'components/cards/bounty-card/types';
+import { Bounty, BountyStatus } from 'components/cards/bounty-card/types';
 
 import { useModal } from 'components/modal';
 import { ClaimBountyDialog } from 'features/bounty/dialogs/claim-bounty-dialog/ClaimBountyDialog';
@@ -11,14 +11,15 @@ import {
   InProgressCells,
   OpenCells
 } from 'components/cards/bounty-card/components/cells';
+import { format, parseISO } from 'date-fns';
 import styles from './bounty-card.module.scss';
 
 export interface BountyCardProps {
   data: Bounty;
-  inProgress: boolean;
+  status: BountyStatus;
 }
 
-export const BountyCard: FC<BountyCardProps> = ({ data, inProgress }) => {
+export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
   const { token, amount, description, claimedBy, slots } = data;
 
   const [showClaimBountyDialog] = useModal(ClaimBountyDialog, { data });
@@ -36,6 +37,43 @@ export const BountyCard: FC<BountyCardProps> = ({ data, inProgress }) => {
   const handleCompleteClick = useCallback(() => showCompleteBountyDialog(), [
     showCompleteBountyDialog
   ]);
+
+  const renderStatusBasedInfo = () => {
+    switch (status) {
+      case 'Open':
+        return (
+          <OpenCells
+            claimed={claimedBy.length}
+            slots={slots}
+            onClaim={handleClaimClick}
+          />
+        );
+      case 'In progress':
+        return (
+          <InProgressCells
+            claimedBy={claimedBy}
+            onUnclaim={handleUnclaimClick}
+            onComplete={() => handleCompleteClick()}
+          />
+        );
+      case 'Completed':
+        return (
+          <div>
+            <span>Complete date</span>
+            <span>
+              {' '}
+              {format(
+                parseISO(data.completionDate ? data.completionDate : ''),
+                'LL.d.yyyy-H.mm'
+              )}
+            </span>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className={styles.root}>
@@ -55,19 +93,7 @@ export const BountyCard: FC<BountyCardProps> = ({ data, inProgress }) => {
           &nbsp;
           <span className={styles.valueDesc}>{token}</span>
         </div>
-        {inProgress ? (
-          <InProgressCells
-            claimedBy={claimedBy}
-            onUnclaim={handleUnclaimClick}
-            onComplete={() => handleCompleteClick()}
-          />
-        ) : (
-          <OpenCells
-            claimed={claimedBy.length}
-            slots={slots}
-            onClaim={handleClaimClick}
-          />
-        )}
+        {renderStatusBasedInfo()}
       </div>
     </div>
   );
