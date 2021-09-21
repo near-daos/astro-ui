@@ -6,9 +6,11 @@ type useDaoListPerCurrentUserReturn = {
   daos: DAO[];
 };
 
-export function useDaoListPerCurrentUser(): useDaoListPerCurrentUserReturn {
+export function useDaoListPerCurrentUser(
+  enabled = true
+): useDaoListPerCurrentUserReturn {
   const { daos } = useDAOList();
-  const accountId = SputnikService.getAccountId();
+  const accountId = enabled ? SputnikService.getAccountId() : '';
 
   const data = daos.filter(
     dao =>
