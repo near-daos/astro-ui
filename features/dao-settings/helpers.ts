@@ -2,6 +2,8 @@ import Decimal from 'decimal.js';
 import { yoktoNear } from 'services/SputnikService';
 import { DAO } from 'types/dao';
 import { CreateProposalParams } from 'types/proposal';
+import { dataRoleToContractRole } from 'features/groups/helpers';
+import { keysToSnakeCase } from 'utils/keysToSnakeCase';
 
 export interface NameAndPurposeData {
   name: string;
@@ -51,7 +53,11 @@ export function getChangeBondDeadlinesProposal(
     externalUrl
   }: BondsAndDeadlinesData
 ): CreateProposalParams {
-  const { id } = dao;
+  const { id, policy } = dao;
+
+  const { defaultVotePolicy } = policy;
+
+  const { ratio, quorum, weightKind } = defaultVotePolicy;
 
   return {
     daoId: id,
@@ -59,17 +65,20 @@ export function getChangeBondDeadlinesProposal(
     kind: 'ChangePolicy',
     data: {
       policy: {
-        ...dao.policy,
-        proposal_bond: new Decimal(createProposalBond)
-          .mul(yoktoNear)
-          .toNumber(),
+        roles: dao.policy.roles.map(daoRole => dataRoleToContractRole(daoRole)),
+        default_vote_policy: keysToSnakeCase({
+          quorum,
+          threshold: ratio,
+          weightKind
+        }),
+        proposal_bond: new Decimal(createProposalBond).mul(yoktoNear).toFixed(),
         proposal_period: new Decimal(proposalExpireTime)
-          .mul(yoktoNear)
-          .toNumber(),
-        bounty_bond: new Decimal(claimBountyBond).mul(yoktoNear).toNumber(),
+          .mul('3.6e12')
+          .toFixed(),
+        bounty_bond: new Decimal(claimBountyBond).mul(yoktoNear).toFixed(),
         bounty_forgiveness_period: new Decimal(unclaimBountyTime)
-          .mul(yoktoNear)
-          .toNumber()
+          .mul('3.6e12')
+          .toFixed()
       }
     },
     bond: '1000000000000000000000000'

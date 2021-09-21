@@ -1,5 +1,4 @@
 import { Token } from 'components/cards/member-card';
-import { DaoRole } from 'types/role';
 import { PolicyType } from './proposal';
 
 export type DaoVotePolicy = {
@@ -41,15 +40,18 @@ export type DAO = {
 
 export type VotePolicyRequest = {
   // eslint-disable-next-line camelcase
-  weight_kind: 'RoleWeight' | 'TokenWeight';
+  weight_kind: string;
   quorum: string;
   threshold: [number, number];
 };
 
 export type RolesRequest = {
+  name: string;
+  kind: string;
+  permissions: string[];
   // eslint-disable-next-line camelcase
   vote_policy: Record<string, string>;
-} & Pick<DaoRole, 'name' | 'kind' | 'permissions'>;
+};
 
 export type PolicyTypeRequest = {
   roles: RolesRequest[];
