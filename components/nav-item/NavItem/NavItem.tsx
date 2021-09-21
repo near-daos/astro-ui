@@ -52,7 +52,7 @@ export const NavItem: React.FC<NavItemProps> = ({
   const renderContent = () => (
     <>
       <Icon height={16} name={icon} />
-      <span> {label} </span>
+      <span className={styles.label}> {label} </span>
       {Number.isFinite(count) && (
         <Badge className={styles.badge} variant="primary" size="small">
           {count && count > 99 ? '99+' : count}
