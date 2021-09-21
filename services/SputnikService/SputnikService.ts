@@ -1,19 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { connect, Contract, keyStores, Near } from 'near-api-js';
+import PromisePool from '@supercharge/promise-pool';
+import Big from 'big.js';
 import { NearConfig, nearConfig } from 'config';
 import Decimal from 'decimal.js';
 import omit from 'lodash/omit';
+import { connect, Contract, keyStores, Near } from 'near-api-js';
 
-import { CreateTokenParams } from 'types/token';
-
-import { CreateDaoInput, DAO } from 'types/dao';
-import { CreateProposalParams, DaoConfig, Proposal } from 'types/proposal';
-import { SearchResultsData } from 'types/search';
+import { HttpService, httpService } from 'services/HttpService';
 import {
-  mapDaoDTOListToDaoList,
   DaoDTO,
-  mapDaoDTOtoDao,
-  GetDAOsResponse
+  GetDAOsResponse,
+  mapDaoDTOListToDaoList,
+  mapDaoDTOtoDao
 } from 'services/SputnikService/mappers/dao';
 import {
   GetProposalsResponse,
@@ -24,13 +22,15 @@ import {
   mapSearchResultsDTOToDataObject,
   SearchResponse
 } from 'services/SputnikService/mappers/search-results';
-
-import { HttpService, httpService } from 'services/HttpService';
-import Big from 'big.js';
-import PromisePool from '@supercharge/promise-pool';
 import { BountiesResponse, BountyResponse } from 'types/bounties';
+
+import { CreateDaoInput, DAO } from 'types/dao';
+import { CreateProposalParams, DaoConfig, Proposal } from 'types/proposal';
+import { SearchResultsData } from 'types/search';
+
+import { CreateTokenParams } from 'types/token';
+import { gas, yoktoNear } from './constants';
 import { ContractPool } from './ContractPool';
-import { yoktoNear, gas } from './constants';
 import { SputnikWalletConnection } from './SputnikWalletConnection';
 
 class SputnikService {
@@ -95,9 +95,15 @@ class SputnikService {
     const amount = new Decimal(args.bountyBond);
     const amountYokto = amount.mul(yoktoNear).toFixed();
 
-    this.contractPool
-      .get(daoId)
-      .bounty_claim({ id, deadline, bountyBond }, gas, amountYokto.toString());
+    this.contractPool.get(daoId).bounty_claim(
+      {
+        id,
+        deadline,
+        bountyBond
+      },
+      gas,
+      amountYokto.toString()
+    );
   }
 
   public unclaimBounty(daoId: string, bountyId: string) {
@@ -281,6 +287,7 @@ class SputnikService {
     offset?: number;
     limit?: number;
     sort?: string;
+    filter?: string;
   }): Promise<DAO[]> {
     const offset = params?.offset ?? 0;
     const limit = params?.limit ?? 500;
@@ -288,6 +295,7 @@ class SputnikService {
 
     const { data } = await this.httpService.get<GetDAOsResponse>('/daos', {
       params: {
+        filter: params?.filter,
         offset,
         limit,
         sort
