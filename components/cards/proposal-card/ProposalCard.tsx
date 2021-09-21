@@ -1,7 +1,7 @@
 import React, { FC, ReactNode, useCallback } from 'react';
 import cn from 'classnames';
 
-import { Icon } from 'components/Icon';
+// import { Icon } from 'components/Icon';
 import { ProposalVariant } from 'components/cards/proposal-card/types';
 import { DaoDetails, ProposalStatus, ProposalType } from 'types/proposal';
 import ProposalStatusPanel from 'components/cards/proposal-card/components/proposal-status-panel/ProposalStatusPanel';
@@ -92,7 +92,7 @@ export const ProposalCard: FC<ProposalCardProps> = ({
           <div className={styles.header}>
             <span className={cn('body1', styles.title)}>{title}</span>
             <span>
-              <Icon name="buttonBookmark" className={styles.icon} />
+              {/* <Icon name="buttonBookmark" className={styles.icon} /> */}
             </span>
           </div>
         )}
