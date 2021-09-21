@@ -1,6 +1,6 @@
-import React, { FC, useCallback, useState } from 'react';
 import cn from 'classnames';
 import { useRouter } from 'next/router';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import { Icon } from 'components/Icon';
 import SearchBar from 'components/search-bar';
@@ -17,6 +17,16 @@ export interface AppHeaderProps {
 export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
   const router = useRouter();
   const [showSideBar, setShowSideBar] = useState(false);
+
+  useEffect(() => {
+    const bodyEl = document.querySelector('body');
+
+    if (bodyEl) {
+      const overflow = showSideBar ? 'hidden' : 'auto';
+
+      bodyEl.style.overflow = overflow;
+    }
+  }, [showSideBar]);
 
   const openNavigation = useCallback(() => {
     setShowSideBar(true);
