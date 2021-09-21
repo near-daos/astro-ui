@@ -1,12 +1,12 @@
-import { useSelectedDAO } from 'hooks/useSelectedDao';
-import { useBoolean } from 'react-use';
-import React from 'react';
 import { Collapsable } from 'components/collapsable/Collapsable';
-
-import { DAO } from 'types/dao';
+import { DaoHeader } from 'components/nav-dao/DaoHeader';
 
 import { DaoItem } from 'components/nav-dao/DaoItem';
-import { DaoHeader } from 'components/nav-dao/DaoHeader';
+import { DAO_COOKIE, useSelectedDAO } from 'hooks/useSelectedDao';
+import React from 'react';
+import { useBoolean, useCookie } from 'react-use';
+
+import { DAO } from 'types/dao';
 
 import styles from './dao-list.module.scss';
 
@@ -21,6 +21,7 @@ export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
   const { isOpen = open, toggle = toggleState } = props;
 
   const selectedDao = useSelectedDAO();
+  const [, setSelectedDaoCookie] = useCookie(DAO_COOKIE);
 
   return (
     <div>
@@ -41,7 +42,10 @@ export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
       >
         {items.map(dao => (
           <DaoItem
-            onClick={() => toggle(false)}
+            onClick={() => {
+              toggle(false);
+              setSelectedDaoCookie(dao.id, { expires: 30 * 24 * 60 * 60 });
+            }}
             dao={dao}
             key={dao.id}
             logo={dao.logo}

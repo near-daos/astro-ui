@@ -1,46 +1,43 @@
-import { ProposalCardProps } from 'components/cards/proposal-card';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
-import { NextPage } from 'next';
-import React, { useState, useCallback, CSSProperties } from 'react';
-import { useRouter } from 'next/router';
-
 import axios from 'axios';
 import cn from 'classnames';
-import get from 'lodash/get';
-import { useMedia, useMount } from 'react-use';
+import { IconButton } from 'components/button/IconButton';
+import {
+  DaoInfoCard,
+  DaoInfoCardProps
+} from 'components/cards/dao-info-card/DaoInfoCard';
+import { ProposalCardProps } from 'components/cards/proposal-card';
+import { ProposalCardRenderer } from 'components/cards/proposal-card/ProposalCardRenderer';
+import {
+  ProposalTrackerCard,
+  ProposalTrackerProps
+} from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
+import { Collapsable } from 'components/collapsable/Collapsable';
+import { Dropdown } from 'components/dropdown/Dropdown';
+
+import { Icon } from 'components/Icon';
+import { useModal } from 'components/modal';
+import ScrollList from 'components/scroll-list/ScrollList';
+import { CreateProposalPopup } from 'features/dao-home/components/create-proposal-popup/CreateProposalPopup';
 
 import {
   DaoDetails,
   DaoDetailsProps
 } from 'features/dao-home/components/dao-details/DaoDetails';
-import { CreateProposalPopup } from 'features/dao-home/components/create-proposal-popup/CreateProposalPopup';
-import { ProposalCardRenderer } from 'components/cards/proposal-card/ProposalCardRenderer';
-
-import { SputnikService } from 'services/SputnikService';
-
-import { Icon } from 'components/Icon';
-import { useModal } from 'components/modal';
-import { Dropdown } from 'components/dropdown/Dropdown';
-import { IconButton } from 'components/button/IconButton';
-import ScrollList from 'components/scroll-list/ScrollList';
-import { Collapsable } from 'components/collapsable/Collapsable';
-import {
-  DaoInfoCard,
-  DaoInfoCardProps
-} from 'components/cards/dao-info-card/DaoInfoCard';
-import {
-  ProposalTrackerCard,
-  ProposalTrackerProps
-} from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
-
-import { ProposalType } from 'types/proposal';
 
 import {
-  getProposalStats,
   getDaoDetailsFromDao,
   getFundAndMembersNum,
+  getProposalStats,
   useFilteredData
 } from 'features/dao-home/helpers';
+import { useDao } from 'hooks/useDao';
+import get from 'lodash/get';
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import React, { CSSProperties, useCallback, useState } from 'react';
+import { useMedia, useMount } from 'react-use';
+
+import { ProposalType } from 'types/proposal';
 
 import styles from './dao-home-page.module.scss';
 
@@ -81,12 +78,9 @@ const voteByPeriod: VoteByPeriodInterface[] = [
 ];
 
 const DAOHome: NextPage<DaoHomeProps> = () => {
-  // TODO: a quick fix to display DAO of other users
   const router = useRouter();
   const daoId = router.query.dao as string;
-  const [selectedDao, setSelectDao] = useState(useSelectedDAO());
-  //
-
+  const dao = useDao(daoId);
   const { filter, onFilterChange, filteredData, data } = useFilteredData();
 
   const [nearPrice, setNearPrice] = useState(0);
@@ -102,10 +96,6 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
   useMount(async () => {
     const nearPriceData = await axios.get('/api/nearPrice');
     const price = get(nearPriceData, 'data.near.usd');
-
-    // TODO: a quick fix to display DAO of other users
-    SputnikService.getDaoById(daoId).then(setSelectDao);
-    //
 
     setNearPrice(price);
   });
@@ -180,11 +170,11 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
   }
 
   function renderDaoDetails() {
-    if (!selectedDao) {
+    if (!dao) {
       return null;
     }
 
-    const daoDetails = getDaoDetailsFromDao(selectedDao);
+    const daoDetails = getDaoDetailsFromDao(dao);
     const { title, description, flag, subtitle, createdAt, links } = daoDetails;
 
     return (
@@ -221,11 +211,11 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
   }
 
   function renderDaoMembersFundInfo() {
-    if (!selectedDao) {
+    if (!dao) {
       return null;
     }
 
-    const { members, fund } = getFundAndMembersNum(selectedDao, nearPrice);
+    const { members, fund } = getFundAndMembersNum(dao, nearPrice);
 
     const info = [
       {
@@ -257,9 +247,18 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
           onChange={onFilterChange}
           value={filter}
           options={[
-            { label: 'Active proposals', value: 'Active proposals' },
-            { label: 'Recent proposals', value: 'Recent proposals' },
-            { label: 'My proposals', value: 'My proposals' }
+            {
+              label: 'Active proposals',
+              value: 'Active proposals'
+            },
+            {
+              label: 'Recent proposals',
+              value: 'Recent proposals'
+            },
+            {
+              label: 'My proposals',
+              value: 'My proposals'
+            }
           ]}
         />
         {voteByPeriod.map(period => (
