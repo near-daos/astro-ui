@@ -1,6 +1,6 @@
 .tooltipContainer {
   --tooltipBackground: var(--color-primary-10);
-  --tooltipBorder: transparent;
+  --tooltipBorder: var(--color-primary-80);
   background-color: var(--tooltipBackground);
   border: 1px solid var(--tooltipBorder);
   border-radius: 3px;
