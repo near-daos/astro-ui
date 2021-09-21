@@ -18,4 +18,5 @@ export type Bounty = {
   slots: number;
   claimedBy: ClaimedBy[];
   deadlineThreshold: string;
+  completionDate?: string;
 };

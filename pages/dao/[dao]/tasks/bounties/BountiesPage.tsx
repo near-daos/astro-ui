@@ -8,10 +8,11 @@ import { useModal } from 'components/modal/hooks';
 import styles from 'pages/dao/[dao]/tasks/bounties/bounties.module.scss';
 import { useSelectedDAO } from 'hooks/useSelectedDao';
 import { SputnikService } from 'services/SputnikService';
-import { BountyResponse } from 'types/bounties';
 import { Token } from 'types/token';
+import { useBountiesPerDao } from 'hooks/useBountiesPerDao';
+import { BountyDoneProposalType } from 'types/proposal';
 
-export const CREATE_BOUNTY_INITIAL = {
+const CREATE_BOUNTY_INITIAL = {
   token: Token.NEAR,
   slots: 3,
   amount: 0,
@@ -22,37 +23,24 @@ export const CREATE_BOUNTY_INITIAL = {
 };
 
 const BountiesPage: FC = () => {
-  const selectedDao = useSelectedDAO();
-  const [bounties, setBounties] = useState<Bounty[]>([]);
+  const bounties = useBountiesPerDao();
+  const dao = useSelectedDAO();
+  const [bountiesDoneProposals, setBountiesDoneProposals] = useState<
+    BountyDoneProposalType[]
+  >([]);
 
   useEffect(() => {
-    if (!selectedDao) {
-      return;
-    }
+    SputnikService.getBountiesDone(dao?.id ?? '').then(bountyDoneProposals => {
+      const doneProposals = bountyDoneProposals.map(proposal => {
+        return {
+          ...(proposal.kind as BountyDoneProposalType),
+          completedDate: proposal.createdAt
+        };
+      });
 
-    SputnikService.getBountiesByDaoId(selectedDao.id).then(result => {
-      const data: Bounty[] = result.map(
-        (response: BountyResponse): Bounty => {
-          return {
-            amount: response.amount,
-            forgivenessPeriod: response.dao.policy.bountyForgivenessPeriod,
-            claimedBy: response.bountyClaims.map(claim => ({
-              deadline: claim.deadline,
-              accountId: claim.accountId,
-              starTime: claim.startTime
-            })),
-            deadlineThreshold: response.maxDeadline,
-            slots: Number(response.times),
-            id: response.bountyId,
-            token: 'NEAR',
-            description: response.description
-          };
-        }
-      );
-
-      setBounties(data);
+      setBountiesDoneProposals(doneProposals);
     });
-  }, [selectedDao]);
+  }, [dao?.id]);
 
   const inProgressBounties = bounties.filter(bounty =>
     bounty.claimedBy.find(
@@ -60,25 +48,44 @@ const BountiesPage: FC = () => {
     )
   );
 
+  const completedBounties = bountiesDoneProposals
+    .map(bountyDoneProposal => {
+      const completedBounty = bounties.find(
+        bounty => bounty.id === bountyDoneProposal.bountyId
+      );
+
+      return completedBounty
+        ? {
+            ...completedBounty,
+            completionDate: bountyDoneProposal.completedDate
+          }
+        : undefined;
+    })
+    .filter(completedBounty => !!completedBounty) as Bounty[];
+
   const numberOpenBounties = bounties.length;
   const numberInProgressBounties = inProgressBounties.length;
-  const numberCompletedBounties = 0;
+  const numberCompletedBounties = completedBounties.length;
 
   const tabs = [];
   const tabOpen = {
     id: 1,
     label: `Open (${numberOpenBounties})`,
-    content: <BountiesList bountiesList={bounties} inProgress={false} />
+    content: <BountiesList bountiesList={bounties} status="Open" />
   };
   const tabInProgress = {
     id: 2,
     label: `In Progress (${numberInProgressBounties})`,
-    content: <BountiesList bountiesList={inProgressBounties} inProgress />
+    content: (
+      <BountiesList bountiesList={inProgressBounties} status="In progress" />
+    )
   };
   const tabCompleted = {
     id: 3,
     label: `Completed (${numberCompletedBounties})`,
-    content: <BountiesList bountiesList={[]} inProgress={false} />
+    content: (
+      <BountiesList bountiesList={completedBounties} status="Completed" />
+    )
   };
 
   if (numberOpenBounties > 0) {

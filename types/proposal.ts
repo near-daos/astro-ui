@@ -36,6 +36,13 @@ export type AddBountyRequest = {
   max_deadline: string;
 };
 
+export type BountyDoneProposalType = {
+  type: ProposalType.BountyDone;
+  receiverId: string;
+  bountyId: string;
+  completedDate?: string;
+};
+
 export type ProposalKind =
   | {
       type: ProposalType.AddMemberToRole;
@@ -62,11 +69,7 @@ export type ProposalKind =
       type: ProposalType.UpgradeSelf;
       hash: string;
     }
-  | {
-      type: ProposalType.BountyDone;
-      receiverId: string;
-      bountyId: string;
-    }
+  | BountyDoneProposalType
   | {
       type: ProposalType.AddBounty;
       bounty: AddBountyRequest;

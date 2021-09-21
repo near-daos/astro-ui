@@ -1,5 +1,5 @@
 import React, { CSSProperties, FC, useCallback, useRef, useState } from 'react';
-import { Bounty } from 'components/cards/bounty-card/types';
+import { Bounty, BountyStatus } from 'components/cards/bounty-card/types';
 import { BountyCard } from 'components/cards/bounty-card';
 import { IconButton } from 'components/button/IconButton';
 import ScrollList from 'components/scroll-list/ScrollList';
@@ -10,12 +10,12 @@ import styles from './bounties-list.module.scss';
 
 export interface BountiesListProps {
   bountiesList: Bounty[];
-  inProgress: boolean;
+  status: BountyStatus;
 }
 
 export const BountiesList: FC<BountiesListProps> = ({
   bountiesList,
-  inProgress
+  status
 }) => {
   const [showResetScroll, setShowResetScroll] = useState(false);
   const scrollListRef = useRef<VariableSizeList>(null);
@@ -52,7 +52,7 @@ export const BountiesList: FC<BountiesListProps> = ({
           marginBottom: '16px'
         }}
       >
-        <BountyCard data={bountiesList[index]} inProgress={inProgress} />
+        <BountyCard data={bountiesList[index]} status={status} />
       </div>
     );
   };
