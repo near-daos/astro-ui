@@ -4,8 +4,8 @@ import { Proposal } from 'types/proposal';
 import { formatCurrency } from 'utils/formatCurrency';
 import { useCallback, useEffect, useState } from 'react';
 import { SputnikService } from 'services/SputnikService';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
 import { useAuthContext } from 'context/AuthContext';
+import { useRouter } from 'next/router';
 
 export interface Indexed {
   [key: string]: Proposal[];
@@ -135,22 +135,24 @@ export function splitProposalsByVotingPeriod(data: Proposal[]): FilteredData {
 }
 
 export function useFilteredData(): ProposalsData {
-  const selectedDao = useSelectedDAO();
+  const router = useRouter();
   const { accountId } = useAuthContext();
   const [filter, setFilter] = useState<ProposalsFilter>('Active proposals');
   const [proposals, setProposals] = useState<Proposal[]>([]);
 
   useEffect(() => {
     async function fetchProposals() {
-      if (selectedDao) {
-        const daoProposals = await SputnikService.getProposals(selectedDao.id);
+      if (router.query.dao) {
+        const daoProposals = await SputnikService.getProposals(
+          router.query.dao as string
+        );
 
         setProposals(daoProposals);
       }
     }
 
     fetchProposals();
-  }, [selectedDao]);
+  }, [router.query.dao]);
 
   const onFilterChange = useCallback(value => {
     setFilter(value);
