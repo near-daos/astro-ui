@@ -84,6 +84,7 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
 
   const proposalData = useSelectedProposal(daoId, proposalId);
   const daoData = useDaoData(daoId);
+  const voted = liked || disliked || dismissed || status !== 'InProgress';
 
   return (
     <Modal
@@ -103,7 +104,7 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
         endsAt={endsAt}
         onClose={onClose}
       />
-      <VotePanel onSubmit={handleVote} />
+      <VotePanel onSubmit={handleVote} disabled={voted} />
       <ContentPanel
         title={title}
         name={name}

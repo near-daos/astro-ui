@@ -13,9 +13,10 @@ type Vote = {
 
 interface VotePanelProps {
   onSubmit: (vote: Vote) => void;
+  disabled: boolean;
 }
 
-export const VotePanel: FC<VotePanelProps> = ({ onSubmit }) => {
+export const VotePanel: FC<VotePanelProps> = ({ onSubmit, disabled }) => {
   const [vote, setVote] = useState<'yes' | 'no' | null>(null);
   const [reportSpam, setReportSpam] = useState(false);
 
@@ -24,11 +25,16 @@ export const VotePanel: FC<VotePanelProps> = ({ onSubmit }) => {
   }, [vote, reportSpam, onSubmit]);
 
   return (
-    <div className={styles.root}>
+    <div
+      className={cn(styles.root, {
+        [styles.disabled]: disabled
+      })}
+    >
       <div className={styles.row}>
         <div className={styles.left}>
           <Button
-            onClick={() => setVote('yes')}
+            disabled={disabled}
+            onClick={() => !disabled && setVote('yes')}
             variant="secondary"
             size="small"
             className={cn(styles.yes, { [styles.selected]: vote === 'yes' })}
@@ -36,7 +42,8 @@ export const VotePanel: FC<VotePanelProps> = ({ onSubmit }) => {
             Yes
           </Button>
           <Button
-            onClick={() => setVote('no')}
+            disabled={disabled}
+            onClick={() => !disabled && setVote('no')}
             variant="secondary"
             size="small"
             className={cn(styles.no, { [styles.selected]: vote === 'no' })}
@@ -52,7 +59,7 @@ export const VotePanel: FC<VotePanelProps> = ({ onSubmit }) => {
           <Button
             size="small"
             onClick={handleSubmit}
-            disabled={!vote && !reportSpam}
+            disabled={(!vote && !reportSpam) || disabled}
           >
             Vote
           </Button>
@@ -60,6 +67,7 @@ export const VotePanel: FC<VotePanelProps> = ({ onSubmit }) => {
       </div>
       <div className={styles.row}>
         <Checkbox
+          disabled={disabled}
           selected={reportSpam}
           label="Report spam"
           onClick={() => setReportSpam(!reportSpam)}

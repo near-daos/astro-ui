@@ -100,6 +100,7 @@ export const ProposalCard: FC<ProposalCardProps> = ({
         <div className={styles.footer}>
           <span>
             <ProposalControlPanel
+              status={status}
               onLike={onLike}
               onDislike={onDislike}
               onRemove={onRemove}

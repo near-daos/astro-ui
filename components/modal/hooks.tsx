@@ -31,7 +31,7 @@ export const useModal = <P extends IModal>(
       };
 
       const modal = (
-        <Component {...(props as P)} isOpen onClose={onCloseModal} />
+        <Component {...(props as P)} isOpen onClose={onCloseModal} key={id} />
       );
 
       context.showModal(id, modal);

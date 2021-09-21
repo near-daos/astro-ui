@@ -13,7 +13,9 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     const id = useId(props.id);
     const [checked, setChecked] = useState(props.defaultChecked);
 
-    const className = classNames(styles.checkbox, classNameProp);
+    const className = classNames(styles.checkbox, classNameProp, {
+      [styles.disabled]: props.disabled
+    });
 
     const value = props.checked != null ? props.checked : checked;
 

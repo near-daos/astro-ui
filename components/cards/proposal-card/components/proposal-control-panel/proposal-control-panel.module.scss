@@ -31,4 +31,8 @@
 .icon {
   height: unset;
   width: unset;
+
+  &.voted {
+    cursor: default;
+  }
 }

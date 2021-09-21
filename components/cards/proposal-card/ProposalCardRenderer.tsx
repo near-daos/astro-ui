@@ -1,5 +1,4 @@
 import React, { FC, useCallback } from 'react';
-import camelCase from 'lodash/camelCase';
 import { Proposal, ProposalType } from 'types/proposal';
 import {
   AddMemberToGroup,
@@ -121,8 +120,6 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
     }
   }
 
-  const accId = camelCase(accountId);
-
   return (
     <ProposalCard
       type={proposal.kind.type}
@@ -132,9 +129,9 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
       dismisses={proposal.voteRemove}
       id={proposal.id}
       title={proposal.proposer}
-      liked={proposal.votes[accId] === 'Yes'}
-      disliked={proposal.votes[accId] === 'No'}
-      dismissed={proposal.votes[accId] === 'Dismiss'}
+      liked={proposal.votes[accountId] === 'Yes'}
+      disliked={proposal.votes[accountId] === 'No'}
+      dismissed={proposal.votes[accountId] === 'Dismiss'}
       onLike={handleVote}
       onDislike={handleUnvote}
       onRemove={handleRemove}

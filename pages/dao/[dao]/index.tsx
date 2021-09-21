@@ -143,6 +143,10 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
       );
     }
 
+    if (!proposals.length) {
+      return null;
+    }
+
     return (
       <Collapsable
         key={key + proposals.length}
