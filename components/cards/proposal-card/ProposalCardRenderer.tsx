@@ -2,7 +2,6 @@ import React, { FC, useCallback } from 'react';
 import { Proposal, ProposalType } from 'types/proposal';
 import {
   AddMemberToGroup,
-  ChangePolicy,
   FunctionCall,
   RemoveMemberFromGroup,
   RequestPayout,
@@ -101,22 +100,12 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
       );
       break;
     }
-    case ProposalType.ChangePolicy: {
-      content = (
-        <ChangePolicy link="https://example.com" linkTitle="reddit.com" />
-      );
-      break;
-    }
-    case ProposalType.Vote: {
-      content = <TextWithLink text={proposal.description} />;
-      break;
-    }
-    case ProposalType.AddBounty: {
-      content = <TextWithLink text={proposal.description} />;
-      break;
-    }
+    case ProposalType.AddBounty:
+    case ProposalType.ChangePolicy:
+    case ProposalType.Vote:
     default: {
-      content = null;
+      content = <TextWithLink text={proposal.description} />;
+      break;
     }
   }
 
