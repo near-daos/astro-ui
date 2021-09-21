@@ -288,6 +288,7 @@ class SputnikService {
     limit?: number;
     sort?: string;
     filter?: string;
+    createdBy?: string;
   }): Promise<DAO[]> {
     const offset = params?.offset ?? 0;
     const limit = params?.limit ?? 500;
@@ -298,7 +299,8 @@ class SputnikService {
         filter: params?.filter,
         offset,
         limit,
-        sort
+        sort,
+        createdBy: params?.createdBy
       }
     });
 

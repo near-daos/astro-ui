@@ -41,7 +41,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
   const { daos: userDaos } = useDaoListPerCurrentUser(walletInitialized);
 
   useEffect(() => {
-    if (!isLoadingDAOList && isEmpty(userDaos)) {
+    if (!isLoadingDAOList && isEmpty(userDaos) && router.pathname === '/') {
       router.push('/all-communities');
     }
     // eslint-disable-next-line

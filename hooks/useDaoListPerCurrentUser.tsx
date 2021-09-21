@@ -1,6 +1,6 @@
 import { SputnikService } from 'services/SputnikService';
 import { DAO } from 'types/dao';
-import { useDAOList } from 'hooks/useDAOList';
+import { useEffect, useState } from 'react';
 
 type useDaoListPerCurrentUserReturn = {
   daos: DAO[];
@@ -9,16 +9,18 @@ type useDaoListPerCurrentUserReturn = {
 export function useDaoListPerCurrentUser(
   enabled = true
 ): useDaoListPerCurrentUserReturn {
-  const { daos } = useDAOList();
   const accountId = enabled ? SputnikService.getAccountId() : '';
+  const [daos, setDaos] = useState<DAO[]>([]);
 
-  const data = daos.filter(
-    dao =>
-      dao.policy.roles.filter(role => role.accountIds?.includes(accountId))
-        .length > 0
-  );
+  useEffect(() => {
+    if (accountId) {
+      SputnikService.getDaoList({
+        filter: `createdBy||$eq||${accountId}`
+      }).then(setDaos);
+    }
+  }, [accountId]);
 
   return {
-    daos: data
+    daos
   };
 }
