@@ -77,6 +77,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
           <div className={styles.name}>{title}</div>
           <div>{children}</div>
           <ProposalControlPanel
+            status={proposalData?.status}
             className={styles.control}
             onLike={onLike}
             onDislike={onDislike}

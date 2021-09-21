@@ -22,7 +22,7 @@
 .type {
   @include centralize;
   color: var(--color-primary-70);
-  flex: 1;
+  flex: 0.5;
   justify-content: flex-start;
   margin: 0 0 0 24px;
   text-transform: capitalize;

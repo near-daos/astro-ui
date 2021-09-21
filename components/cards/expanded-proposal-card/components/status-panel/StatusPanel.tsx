@@ -63,7 +63,9 @@ export const StatusPanel: FC<StatusPanelProps> = ({
         {type}
       </Typography.Title>
       <span className={styles.vote}>
-        {timeLeft ? `Voting ends in ${timeLeft}` : 'Voting ended'}
+        {timeLeft && status === 'InProgress'
+          ? `Voting ends in ${timeLeft}`
+          : 'Voting ended'}
       </span>
       <Icon
         name="buttonAdd"

@@ -1,3 +1,4 @@
+import get from 'lodash/get';
 import { Proposal, ProposalKind } from 'types/proposal';
 import { DaoDTO } from 'services/SputnikService/mappers/dao';
 
@@ -28,6 +29,15 @@ export interface GetProposalsResponse {
   data: ProposalDTO[];
 }
 
+function getProposalVotingEndDate(
+  submissionTime: string,
+  proposalPeriod: string
+): string {
+  const endsAt = (Number(submissionTime) + Number(proposalPeriod)) / 1000000;
+
+  return new Date(endsAt).toISOString();
+}
+
 export const mapProposalDTOToProposal = (
   proposalDTO: ProposalDTO
 ): Proposal => {
@@ -41,7 +51,10 @@ export const mapProposalDTOToProposal = (
     status: proposalDTO.status,
     kind: proposalDTO.kind,
     // todo
-    votePeriodEnd: '',
+    votePeriodEnd: getProposalVotingEndDate(
+      get(proposalDTO, 'submissionTime'),
+      get(proposalDTO, 'dao.policy.proposalPeriod')
+    ),
     voteYes: Object.values(proposalDTO.voteCounts).reduce(
       (res, item) => res + item[0],
       0

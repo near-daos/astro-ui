@@ -14,4 +14,8 @@
   svg {
     fill: #000;
   }
+
+  &.disabled {
+    opacity: 0.5;
+  }
 }
