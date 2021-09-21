@@ -27,9 +27,14 @@ const sortOptions = [
   }
 ];
 
+const groupMap: { [key: string]: string } = {
+  'all-members': 'all'
+};
+
 const GroupPage: FC = () => {
   const router = useRouter();
-  const group = router.query.group as string;
+  const paramGroup = router.query.group as string;
+  const group = groupMap[paramGroup] || paramGroup;
   const [data, setData] = useState<Member[]>([]);
   const [showCardModal] = useModal(MemberCardPopup);
   const [showGroupModal] = useModal(GroupPopup);

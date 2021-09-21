@@ -2,6 +2,7 @@ import { ProposalCardProps } from 'components/cards/proposal-card';
 import { useSelectedDAO } from 'hooks/useSelectedDao';
 import { NextPage } from 'next';
 import React, { useState, useCallback, CSSProperties } from 'react';
+import { useRouter } from 'next/router';
 
 import axios from 'axios';
 import cn from 'classnames';
@@ -14,6 +15,8 @@ import {
 } from 'features/dao-home/components/dao-details/DaoDetails';
 import { CreateProposalPopup } from 'features/dao-home/components/create-proposal-popup/CreateProposalPopup';
 import { ProposalCardRenderer } from 'components/cards/proposal-card/ProposalCardRenderer';
+
+import { SputnikService } from 'services/SputnikService';
 
 import { Icon } from 'components/Icon';
 import { useModal } from 'components/modal';
@@ -78,7 +81,12 @@ const voteByPeriod: VoteByPeriodInterface[] = [
 ];
 
 const DAOHome: NextPage<DaoHomeProps> = () => {
-  const selectedDao = useSelectedDAO();
+  // TODO: a quick fix to display DAO of other users
+  const router = useRouter();
+  const daoId = router.query.dao as string;
+  const [selectedDao, setSelectDao] = useState(useSelectedDAO());
+  //
+
   const { filter, onFilterChange, filteredData, data } = useFilteredData();
 
   const [nearPrice, setNearPrice] = useState(0);
@@ -94,6 +102,10 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
   useMount(async () => {
     const nearPriceData = await axios.get('/api/nearPrice');
     const price = get(nearPriceData, 'data.near.usd');
+
+    // TODO: a quick fix to display DAO of other users
+    SputnikService.getDaoById(daoId).then(setSelectDao);
+    //
 
     setNearPrice(price);
   });

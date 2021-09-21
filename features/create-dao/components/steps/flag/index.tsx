@@ -7,6 +7,7 @@ import { DAOFormValues } from 'features/create-dao/components/steps/types';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { nearConfig } from 'config/index';
 
 import { useFormContext } from 'react-hook-form';
 
@@ -39,7 +40,7 @@ function FlagViewComponent(): JSX.Element {
       </div>
       <SelectFlag
         id="flag"
-        fileName={`${name}.sputnikdao.near`}
+        fileName={`${name}.${nearConfig.contractName}`}
         onSubmit={onSubmit}
         sources={sources}
       />
