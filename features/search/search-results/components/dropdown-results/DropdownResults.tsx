@@ -1,11 +1,10 @@
 import React, { FC, useState } from 'react';
+import Image from 'next/image';
 
 import { Button } from 'components/button/Button';
 import * as Typography from 'components/Typography';
 import { useSearchResults } from 'features/search/search-results';
 import { NoResultsView } from 'features/search/search-results/components/no-results-view';
-
-import tempFlag from 'stories/dao-home/assets/flag.png';
 
 import { getProposalSearchSummary } from 'features/search/search-results/components/dropdown-results/helpers';
 
@@ -28,7 +27,6 @@ export const DropdownResults: FC<DropdownResultsProps> = ({
   const [allDaoRes, setAllDaoRes] = useState(false);
   const [allProposalRes, setAllProposalRes] = useState(false);
   const [allMembersRes, setAllMembersRes] = useState(false);
-  const flag = (tempFlag as StaticImageData).src;
 
   return (
     <div className={styles.root} style={{ width }}>
@@ -45,9 +43,12 @@ export const DropdownResults: FC<DropdownResultsProps> = ({
                 key={item.id}
                 onClick={() => onDaoClick(item.id)}
               >
-                <div
-                  className={styles.flag}
-                  style={{ backgroundImage: `url(${flag})` }}
+                <Image
+                  loading="eager"
+                  src={item.logo}
+                  width={24}
+                  height={24}
+                  alt={`${item.name} Dao Logo`}
                 />
                 <div className={styles.name}>{item.name}</div>
                 <div className={styles.daoId}>{item.id}</div>

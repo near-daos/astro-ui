@@ -70,7 +70,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
               <Typography.Title size={3}>{daoDetails.name}</Typography.Title>
             </div>
             <div className={styles.right}>
-              <Icon name="buttonBookmark" className={styles.icon} />
+              {/* <Icon name="buttonBookmark" className={styles.icon} /> */}
               <Icon name="buttonShare" className={styles.icon} />
             </div>
           </div>
