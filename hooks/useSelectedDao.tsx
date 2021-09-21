@@ -1,29 +1,32 @@
 import { useDao } from 'hooks/useDao';
-import { useCallback, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useCookie } from 'react-use';
-import { SputnikService } from 'services/SputnikService';
 import { DAO } from 'types/dao';
+import { useDaoListPerCurrentUser } from './useDaoListPerCurrentUser';
 
 export const DAO_COOKIE = 'selectedDao';
 
 export function useSelectedDAO(): DAO | null {
+  const router = useRouter();
+  const daoId = router.query.dao;
+  const { daos } = useDaoListPerCurrentUser(true);
   const [selectedDaoCookie, setSelectedDaoCookie] = useCookie(DAO_COOKIE);
 
-  const initCookie = useCallback(async () => {
-    const [firstDao] = await SputnikService.getDaoList({ limit: 1 });
-
-    setSelectedDaoCookie(firstDao.id, { expires: 30 * 24 * 60 * 60 });
-  }, [setSelectedDaoCookie]);
-
   useEffect(() => {
-    if (selectedDaoCookie == null) {
-      initCookie();
-      // TODO Enable after SSR
-      // console.warn(
-      //   'Unable to find selected dao cookie. Setting it to the first dao in the list'
-      // );
+    const selectedDao = daos.find(item => item.id === daoId) || daos[0];
+
+    if (selectedDao) {
+      setSelectedDaoCookie(selectedDao.id, { expires: 30 * 24 * 60 * 60 });
+
+      if (router.pathname === '/') {
+        router.push({
+          pathname: `/dao/${selectedDao.id}`,
+          query: router.query
+        });
+      }
     }
-  }, [initCookie, selectedDaoCookie]);
+  }, [daoId, daos, router, setSelectedDaoCookie]);
 
   const currentDao = useDao(selectedDaoCookie || '', {
     enabled: !!selectedDaoCookie
