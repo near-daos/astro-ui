@@ -11,3 +11,23 @@ export function useAllProposals(): Proposal[] | null {
 
   return data;
 }
+
+export function getActiveProposalsCountByDao(
+  proposals: Proposal[] | null
+): Record<string, number> {
+  const result = {} as Record<string, number>;
+
+  if (!proposals) return result;
+
+  proposals.forEach(proposal => {
+    if (proposal.status === 'InProgress') {
+      if (result[proposal.daoId]) {
+        result[proposal.daoId] += 1;
+      } else {
+        result[proposal.daoId] = 1;
+      }
+    }
+  });
+
+  return result;
+}

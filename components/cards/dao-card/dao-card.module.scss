@@ -13,6 +13,7 @@
   min-width: 270px;
   padding: 24px;
   position: relative;
+  transition: box-shadow 0.4s;
   width: 100%;
 
   .iconWrapper {
@@ -41,6 +42,10 @@
     min-height: 90px;
     padding-top: 16px;
     text-align: center;
+  }
+
+  &:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   }
 }
 

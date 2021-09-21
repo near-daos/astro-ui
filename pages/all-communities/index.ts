@@ -1,5 +1,6 @@
 import { DAO } from 'types/dao';
 import { SputnikService } from 'services/SputnikService';
+import { getActiveProposalsCountByDao } from 'hooks/useAllProposals';
 
 import BrowseAllDaos from './BrowseAllDaos';
 
@@ -17,10 +18,15 @@ export async function getServerSideProps({
   props: { data: DAO[] };
 }> {
   const data = await SputnikService.getDaoList(query);
+  const proposals = await SputnikService.getProposals(undefined, 0, 500);
+  const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
 
   return {
     props: {
-      data
+      data: data.map(item => ({
+        ...item,
+        proposals: activeProposalsByDao[item.id] ?? 0
+      }))
     }
   };
 }
