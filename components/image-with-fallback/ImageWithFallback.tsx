@@ -1,16 +1,23 @@
-import React, { FC, useState } from 'react';
-import Image from 'next/image';
+import Image, { ImageProps } from 'next/image';
+import React, { useState, VFC } from 'react';
 
-type ImageWithFallbackProps = {
+interface ImageWithFallbackProps {
   fallbackSrc: string;
   src: string;
   width: number;
   height: number;
   alt: string;
-};
+  loading?: ImageProps['loading'];
+}
 
-export const ImageWithFallback: FC<ImageWithFallbackProps> = props => {
-  const { src, fallbackSrc, width, height, alt } = props;
+export const ImageWithFallback: VFC<ImageWithFallbackProps> = ({
+  alt,
+  fallbackSrc,
+  height,
+  loading,
+  src,
+  width
+}) => {
   const [imgSrc, setImgSrc] = useState<string>(src);
 
   return (
@@ -19,9 +26,8 @@ export const ImageWithFallback: FC<ImageWithFallbackProps> = props => {
       width={width}
       height={height}
       src={imgSrc}
-      onError={() => {
-        setImgSrc(fallbackSrc);
-      }}
+      loading={loading}
+      onError={() => setImgSrc(fallbackSrc)}
     />
   );
 };

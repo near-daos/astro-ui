@@ -1,12 +1,11 @@
-import React, { FC, useState } from 'react';
-import Image from 'next/image';
-
 import { Button } from 'components/button/Button';
+import { ImageWithFallback } from 'components/image-with-fallback';
 import * as Typography from 'components/Typography';
 import { useSearchResults } from 'features/search/search-results';
-import { NoResultsView } from 'features/search/search-results/components/no-results-view';
 
 import { getProposalSearchSummary } from 'features/search/search-results/components/dropdown-results/helpers';
+import { NoResultsView } from 'features/search/search-results/components/no-results-view';
+import React, { FC, useState } from 'react';
 
 import styles from './dropdown-results.module.scss';
 
@@ -43,7 +42,8 @@ export const DropdownResults: FC<DropdownResultsProps> = ({
                 key={item.id}
                 onClick={() => onDaoClick(item.id)}
               >
-                <Image
+                <ImageWithFallback
+                  fallbackSrc="/flag.svg"
                   loading="eager"
                   src={item.logo}
                   width={24}
