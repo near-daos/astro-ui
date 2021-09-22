@@ -1,9 +1,9 @@
 import cn from 'classnames';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import React, { MouseEvent, KeyboardEvent } from 'react';
 
 import { Icon } from 'components/Icon';
+import { ImageWithFallback } from 'components/image-with-fallback';
+import { useRouter } from 'next/router';
+import React, { KeyboardEvent, MouseEvent } from 'react';
 
 import styles from './nav-dao.module.scss';
 
@@ -54,7 +54,14 @@ export const DaoHeader: React.VFC<DAOHeaderProps> = ({
       className={cn(styles.header, className)}
     >
       {logo ? (
-        <Image src={logo} width={24} height={24} alt={`${label} Dao Logo`} />
+        <ImageWithFallback
+          fallbackSrc="/flag.svg"
+          loading="eager"
+          src={logo}
+          width={24}
+          height={24}
+          alt={`${label} Dao Logo`}
+        />
       ) : (
         <Icon width={24} height={24} name="flag" />
       )}
