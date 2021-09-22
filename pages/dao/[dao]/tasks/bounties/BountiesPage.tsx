@@ -1,16 +1,16 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import Tabs from 'components/tabs/Tabs';
+import { Button } from 'components/button/Button';
 import { Bounty, DeadlineUnit } from 'components/cards/bounty-card/types';
+import { useModal } from 'components/modal/hooks';
+import Tabs from 'components/tabs/Tabs';
 import { BountiesList } from 'features/bounties-list';
 import { CreateBountyDialog } from 'features/bounty/dialogs/create-bounty-dialog/create-bounty-dialog';
-import { Button } from 'components/button/Button';
-import { useModal } from 'components/modal/hooks';
+import { useDaoBounties } from 'hooks/useDaoBounties';
+import { useRouter } from 'next/router';
 import styles from 'pages/dao/[dao]/tasks/bounties/bounties.module.scss';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { SputnikService } from 'services/SputnikService';
-import { Token } from 'types/token';
-import { useBountiesPerDao } from 'hooks/useBountiesPerDao';
 import { BountyDoneProposalType } from 'types/proposal';
+import { Token } from 'types/token';
 
 const CREATE_BOUNTY_INITIAL = {
   token: Token.NEAR,
@@ -23,14 +23,15 @@ const CREATE_BOUNTY_INITIAL = {
 };
 
 const BountiesPage: FC = () => {
-  const bounties = useBountiesPerDao();
-  const dao = useSelectedDAO();
+  const router = useRouter();
+  const daoId = router.query.dao as string;
+  const bounties = useDaoBounties(daoId);
   const [bountiesDoneProposals, setBountiesDoneProposals] = useState<
     BountyDoneProposalType[]
   >([]);
 
   useEffect(() => {
-    SputnikService.getBountiesDone(dao?.id ?? '').then(bountyDoneProposals => {
+    SputnikService.getBountiesDone(daoId).then(bountyDoneProposals => {
       const doneProposals = bountyDoneProposals.map(proposal => {
         return {
           ...(proposal.kind as BountyDoneProposalType),
@@ -40,7 +41,7 @@ const BountiesPage: FC = () => {
 
       setBountiesDoneProposals(doneProposals);
     });
-  }, [dao?.id]);
+  }, [daoId]);
 
   const inProgressBounties = bounties.filter(bounty =>
     bounty.claimedBy.find(
