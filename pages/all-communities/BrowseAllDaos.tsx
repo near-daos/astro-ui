@@ -11,6 +11,11 @@ import {
   useAllProposals
 } from 'hooks/useAllProposals';
 
+import { useMount } from 'react-use';
+import axios from 'axios';
+import get from 'lodash/get';
+import { formatCurrency } from 'utils/formatCurrency';
+
 import styles from './browse-all-daos.module.scss';
 
 const sortOptions = [
@@ -48,6 +53,7 @@ const BrowseAllDaos: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
   const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
 
   const [data, setData] = useState(initialData);
+  const [nearPrice, setNearPrice] = useState(0);
 
   const handleSort = useCallback(
     value => {
@@ -79,6 +85,13 @@ const BrowseAllDaos: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
     [activeProposalsByDao, data, router]
   );
 
+  useMount(async () => {
+    const nearPriceData = await axios.get('/api/nearPrice');
+    const price = get(nearPriceData, 'data.near.usd');
+
+    setNearPrice(price);
+  });
+
   return (
     <div className={styles.root}>
       <div className={styles.header}>
@@ -102,7 +115,7 @@ const BrowseAllDaos: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
               daoAccountName={item.id}
               description={item.description}
               activeProposals={item.proposals ?? 0}
-              funds={item.funds}
+              funds={formatCurrency(parseFloat(item.funds) * nearPrice)}
               members={item.members}
             />
           );

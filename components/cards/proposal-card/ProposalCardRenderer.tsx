@@ -60,8 +60,6 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
         <AddMemberToGroup
           name={proposal.kind.memberId}
           groupName={proposal.kind.role}
-          link="https://example.com"
-          linkTitle="reddit.com"
         />
       );
       break;
@@ -71,8 +69,6 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
         <RemoveMemberFromGroup
           name={proposal.kind.memberId}
           groupName={proposal.kind.role}
-          link="https://example.com"
-          linkTitle="reddit.com"
         />
       );
       break;
@@ -84,20 +80,12 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
           reason={proposal.kind.msg}
           recipient={proposal.kind.receiverId}
           tokens={proposal.kind.tokenId}
-          link="https://example.com"
-          linkTitle="reddit.com"
         />
       );
       break;
     }
     case ProposalType.FunctionCall: {
-      content = (
-        <FunctionCall
-          recipient={proposal.kind.receiverId}
-          link="https://example.com"
-          linkTitle="reddit.com"
-        />
-      );
+      content = <FunctionCall recipient={proposal.kind.receiverId} />;
       break;
     }
     case ProposalType.AddBounty:
