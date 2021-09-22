@@ -8,8 +8,6 @@ import { useBoolean, useCookie } from 'react-use';
 
 import { DAO } from 'types/dao';
 
-import styles from './dao-list.module.scss';
-
 interface DAOListProps {
   toggle: (newState?: boolean) => void;
   isOpen: boolean;
@@ -26,7 +24,6 @@ export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
   return (
     <div>
       <Collapsable
-        className={styles.collapsable}
         isOpen={isOpen}
         toggle={toggle}
         duration={150}
