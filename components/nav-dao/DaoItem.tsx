@@ -1,18 +1,18 @@
-import React, { HTMLProps, useCallback } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 import cn from 'classnames';
 
 import { Badge } from 'components/badge/Badge';
 import { Button } from 'components/button/Button';
-import { useModal } from 'components/modal';
 import {
   MemberCardPopup,
   MemberCardPopupProps
 } from 'components/cards/member-card';
+import { ImageWithFallback } from 'components/image-with-fallback';
+import { useModal } from 'components/modal';
+import { useAuthContext } from 'context/AuthContext';
+import Link from 'next/link';
+import React, { HTMLProps, useCallback } from 'react';
 
 import { DAO } from 'types/dao';
-import { useAuthContext } from 'context/AuthContext';
 
 import styles from './nav-dao.module.scss';
 
@@ -72,7 +72,8 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
     <div {...props} tabIndex={0} role="button" className={rootClassName}>
       <Link passHref href={`/dao/${dao.id}`}>
         <a className={styles.name}>
-          <Image
+          <ImageWithFallback
+            fallbackSrc="/flag.svg"
             loading="eager"
             src={logo}
             width={24}
