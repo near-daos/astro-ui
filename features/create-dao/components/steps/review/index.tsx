@@ -43,7 +43,7 @@ export function ReviewView(): JSX.Element {
       gracePeriod: '24',
       amountToTransfer: '5',
       policy: {
-        ...getRolesVotingPolicy(data),
+        ...getRolesVotingPolicy(data, SputnikService.getAccountId()),
         proposalBond: '0.1',
         proposalPeriod: '168',
         bountyBond: '0.1',
