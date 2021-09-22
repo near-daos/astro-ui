@@ -101,7 +101,7 @@ export function ReviewView(): JSX.Element {
       }
     });
 
-    await router.push('/home');
+    await router.push(`/dao/${data.address}?pending=true`);
   }
 
   return (
