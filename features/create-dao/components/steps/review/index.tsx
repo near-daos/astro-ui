@@ -52,7 +52,7 @@ export function ReviewView(): JSX.Element {
           {
             name: 'all',
             kind: 'Everyone',
-            permissions: ['*:AddProposal'],
+            permissions: ['*:*'],
             vote_policy: {}
           }
         ];
