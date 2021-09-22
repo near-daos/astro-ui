@@ -1,11 +1,11 @@
 import Tabs from 'components/tabs/Tabs';
 import Decimal from 'decimal.js';
 import { NameAndPurposeTab } from 'features/dao-settings/components/name-and-pupropse-tab';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
+import { useDao } from 'hooks/useDao';
 import dynamic from 'next/dynamic';
-import React, { FC, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { FC } from 'react';
 import { yoktoNear } from 'services/SputnikService';
-import { DAO } from 'types/dao';
 import { BondsAndDeadlines } from './components/bond-and-deadlines-tab';
 import LinksTab from './components/links-tab/LinksTab';
 
@@ -16,16 +16,11 @@ const FlagTab = dynamic(import('features/dao-settings/components/flag-tab'), {
 });
 
 export const DaoSettingsView: FC = () => {
-  const dao = useSelectedDAO();
-  const [data, setData] = useState<DAO | null>(dao);
+  const router = useRouter();
+  const daoId = router.query.dao as string;
+  const dao = useDao(daoId);
 
-  useEffect(() => {
-    if (dao != null) {
-      setData(dao);
-    }
-  }, [dao]);
-
-  if (data == null) return null;
+  if (dao == null) return null;
 
   const tabs = [
     {
@@ -33,9 +28,9 @@ export const DaoSettingsView: FC = () => {
       label: 'Name & Purpose',
       content: (
         <NameAndPurposeTab
-          accountName={data.id}
-          name={data.name}
-          purpose={data.description}
+          accountName={dao.id}
+          name={dao.name}
+          purpose={dao.description}
         />
       )
     },
@@ -44,7 +39,7 @@ export const DaoSettingsView: FC = () => {
       label: 'Links',
       content: (
         <LinksTab
-          accountName={data.id}
+          accountName={dao.id}
           links={[]} // TODO Where are links
         />
       )
@@ -54,17 +49,17 @@ export const DaoSettingsView: FC = () => {
       label: 'Bond & Deadlines',
       content: (
         <BondsAndDeadlines
-          accountName={data.id}
-          createProposalBond={new Decimal(data.policy.proposalBond)
+          accountName={dao.id}
+          createProposalBond={new Decimal(dao.policy.proposalBond)
             .div(yoktoNear)
             .toNumber()}
-          claimBountyBond={new Decimal(data.policy.bountyBond)
+          claimBountyBond={new Decimal(dao.policy.bountyBond)
             .div(yoktoNear)
             .toNumber()}
-          proposalExpireTime={new Decimal(data.policy.proposalPeriod)
+          proposalExpireTime={new Decimal(dao.policy.proposalPeriod)
             .div('3.6e12')
             .toNumber()}
-          unclaimBountyTime={new Decimal(data.policy.proposalPeriod)
+          unclaimBountyTime={new Decimal(dao.policy.proposalPeriod)
             .div('3.6e12')
             .toNumber()}
         />
@@ -73,7 +68,7 @@ export const DaoSettingsView: FC = () => {
     {
       id: 4,
       label: 'Flag',
-      content: <FlagTab daoFlag={data.logo} />
+      content: <FlagTab daoFlag={dao.logo} />
     }
   ];
 

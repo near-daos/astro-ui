@@ -9,13 +9,16 @@ import {
   getInitialData,
   getNewProposalObject
 } from 'features/vote-policy/helpers';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
+import { useDao } from 'hooks/useDao';
+import { useRouter } from 'next/router';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import styles from './voting-policy-page.module.scss';
 
 const VotingPolicyPage: FC = () => {
-  const dao = useSelectedDAO();
+  const router = useRouter();
+  const daoId = router.query.dao as string;
+  const dao = useDao(daoId);
 
   const [data, setData] = useState(dao ? getInitialData(dao) : undefined);
 

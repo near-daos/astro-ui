@@ -1,14 +1,14 @@
-import React, { FC, useCallback } from 'react';
+import { Bounty } from 'components/cards/bounty-card/types';
 
 import { Modal } from 'components/modal';
 
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 
-import { Bounty } from 'components/cards/bounty-card/types';
-
 import UnclaimBountyContent from 'features/bounty/dialogs/unclaim-bounty-dialog/components/UnclaimBountyContent';
+import { useDao } from 'hooks/useDao';
+import { useRouter } from 'next/router';
+import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
 
 export interface UnclaimBountyDialogProps {
   isOpen: boolean;
@@ -21,16 +21,18 @@ export const UnclaimBountyDialog: FC<UnclaimBountyDialogProps> = ({
   onClose,
   data
 }) => {
-  const selectedDao = useSelectedDAO();
+  const router = useRouter();
+  const daoId = router.query.dao as string;
+  const currentDao = useDao(daoId);
 
   const handleSubmit = useCallback(() => {
-    if (!selectedDao) {
+    if (!currentDao) {
       return;
     }
 
-    SputnikService.unclaimBounty(selectedDao.id, data.id);
+    SputnikService.unclaimBounty(currentDao.id, data.id);
     onClose('submitted');
-  }, [data.id, onClose, selectedDao]);
+  }, [data.id, onClose, currentDao]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

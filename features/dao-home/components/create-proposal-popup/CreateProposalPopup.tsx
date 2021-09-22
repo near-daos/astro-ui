@@ -1,15 +1,13 @@
-import React, { FC, useCallback } from 'react';
-
-import { useModal, Modal } from 'components/modal';
-
 import { Button } from 'components/button/Button';
-import { useRouter } from 'next/router';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
+
+import { Modal, useModal } from 'components/modal';
 import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
+import { useRouter } from 'next/router';
+import React, { FC, useCallback } from 'react';
+import { ProposalButtonContent } from './components/proposal-button-content';
 
 import { ProposalClaimIcon } from './components/ProposalClaimIcon';
 import { ProposalRequestPayout } from './components/ProposalRequestPayout';
-import { ProposalButtonContent } from './components/proposal-button-content';
 
 import styles from './create-proposal-popup.module.scss';
 
@@ -23,7 +21,7 @@ export const CreateProposalPopup: FC<CreateProposalPopupProps> = ({
   onClose
 }) => {
   const router = useRouter();
-  const selectedDao = useSelectedDAO();
+  const daoId = router.query.dao as string;
 
   const [showRequestPayoutPopup] = useModal(RequestPayoutPopup);
 
@@ -33,13 +31,11 @@ export const CreateProposalPopup: FC<CreateProposalPopupProps> = ({
   }, [onClose, showRequestPayoutPopup]);
 
   const claimBountyClickHandler = useCallback(async () => {
-    if (!selectedDao) {
-      return;
-    }
+    if (!daoId) return;
 
-    await router.push(`/dao/${selectedDao.id}/tasks/bounties`);
+    await router.push(`/dao/${daoId}/tasks/bounties`);
     onClose('submitted');
-  }, [onClose, router, selectedDao]);
+  }, [onClose, router, daoId]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

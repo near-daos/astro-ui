@@ -4,10 +4,7 @@ import { DAO } from 'types/dao';
 
 type Options = { enabled: boolean } & SWRConfiguration<DAO | null>;
 
-export function useDao(
-  daoId: string,
-  options?: Options
-): DAO | null | undefined {
+export function useDao(daoId: string, options?: Options): DAO | null {
   const { enabled = true } = options || {};
 
   const { data } = useSWR(
@@ -16,5 +13,5 @@ export function useDao(
     options
   );
 
-  return data;
+  return data ?? null;
 }

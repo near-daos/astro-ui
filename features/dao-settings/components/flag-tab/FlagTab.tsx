@@ -8,7 +8,8 @@ import {
   schema
 } from 'features/dao-settings/components/links-tab';
 import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
+import { useDao } from 'hooks/useDao';
+import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
@@ -31,7 +32,10 @@ const sources = [
 ];
 
 const FlagTab: FC<FlagTabProps> = ({ daoFlag }) => {
-  const dao = useSelectedDAO();
+  const router = useRouter();
+  const daoId = router.query.dao as string;
+  const dao = useDao(daoId);
+
   const { mutate } = useSWRConfig();
   const [viewMode, setViewMode] = useToggle(true);
 
