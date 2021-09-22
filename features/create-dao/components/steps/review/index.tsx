@@ -17,7 +17,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import awsUploader from 'services/AwsUploader/AwsUploader';
 import { SputnikService } from 'services/SputnikService';
-import { RolesRequest, VotePolicyRequest } from 'types/dao';
+import { getRolesVotingPolicy } from 'features/create-dao/components/steps/review/helpers';
 
 export function ReviewView(): JSX.Element {
   const { getValues, handleSubmit } = useFormContext<DAOFormValues>();
@@ -32,55 +32,6 @@ export function ReviewView(): JSX.Element {
   ];
 
   async function onSubmit(data: DAOFormValues) {
-    function getDefaultVotePolicy() {
-      return data.voting === 'democratic'
-        ? {
-            weight_kind: 'RoleWeight',
-            quorum: '0',
-            threshold: [1, 2]
-          }
-        : {
-            weight_kind: 'TokenWeight',
-            quorum: '0',
-            threshold: 5
-          };
-    }
-
-    function getRoles() {
-      if (data.structure === 'flat') {
-        return [
-          {
-            name: 'all',
-            kind: 'Everyone',
-            permissions: ['*:*'],
-            vote_policy: {}
-          }
-        ];
-      }
-
-      return [
-        data.proposals === 'open'
-          ? {
-              name: 'all',
-              kind: 'Everyone',
-              permissions: ['*:AddProposal'],
-              vote_policy: {}
-            }
-          : {
-              name: 'council',
-              kind: { Group: [SputnikService.getAccountId()] },
-              permissions: [
-                '*:Finalize',
-                '*:AddProposal',
-                '*:VoteApprove',
-                '*:VoteReject',
-                '*:VoteRemove'
-              ],
-              vote_policy: {}
-            }
-      ];
-    }
-
     await awsUploader.uploadToBucket(data.flag);
 
     await SputnikService.createDao({
@@ -92,8 +43,7 @@ export function ReviewView(): JSX.Element {
       gracePeriod: '24',
       amountToTransfer: '5',
       policy: {
-        roles: getRoles() as RolesRequest[],
-        defaultVotePolicy: getDefaultVotePolicy() as VotePolicyRequest,
+        ...getRolesVotingPolicy(data),
         proposalBond: '0.1',
         proposalPeriod: '168',
         bountyBond: '0.1',

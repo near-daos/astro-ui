@@ -42,12 +42,12 @@ export type VotePolicyRequest = {
   // eslint-disable-next-line camelcase
   weight_kind: string;
   quorum: string;
-  threshold: [number, number];
+  threshold: number[] | number;
 };
 
 export type RolesRequest = {
   name: string;
-  kind: string;
+  kind: string | { Group: string[] };
   permissions: string[];
   // eslint-disable-next-line camelcase
   vote_policy: Record<string, string>;
