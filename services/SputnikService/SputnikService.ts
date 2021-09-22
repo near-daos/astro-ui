@@ -1,22 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import PromisePool from '@supercharge/promise-pool';
 import Big from 'big.js';
 import { NearConfig, nearConfig } from 'config';
 import Decimal from 'decimal.js';
 import omit from 'lodash/omit';
 import { connect, Contract, keyStores, Near } from 'near-api-js';
-
-import { CreateTokenParams } from 'types/token';
-import { RequestQueryBuilder } from '@nestjsx/crud-request';
-
-import { CreateDaoInput, DAO } from 'types/dao';
-import {
-  CreateProposalParams,
-  DaoConfig,
-  Proposal,
-  ProposalType
-} from 'types/proposal';
-import { SearchResultsData } from 'types/search';
 import { HttpService, httpService } from 'services/HttpService';
 import {
   DaoDTO,
@@ -33,7 +22,22 @@ import {
   mapSearchResultsDTOToDataObject,
   SearchResponse
 } from 'services/SputnikService/mappers/search-results';
+import {
+  GetTransactionsResponse,
+  TransactionDTO
+} from 'services/SputnikService/mappers/transactions';
 import { BountiesResponse, BountyResponse } from 'types/bounties';
+
+import { CreateDaoInput, DAO } from 'types/dao';
+import {
+  CreateProposalParams,
+  DaoConfig,
+  Proposal,
+  ProposalType
+} from 'types/proposal';
+import { SearchResultsData } from 'types/search';
+
+import { CreateTokenParams } from 'types/token';
 
 import { gas, yoktoNear } from './constants';
 import { ContractPool } from './ContractPool';
@@ -353,7 +357,11 @@ class SputnikService {
 
   public async getBountiesDone(daoId: string): Promise<Proposal[]> {
     const queryString = RequestQueryBuilder.create()
-      .setFilter({ field: 'daoId', operator: '$eq', value: daoId })
+      .setFilter({
+        field: 'daoId',
+        operator: '$eq',
+        value: daoId
+      })
       .setFilter({
         field: 'kind',
         operator: '$cont',
@@ -361,7 +369,10 @@ class SputnikService {
       })
       .setLimit(500)
       .setOffset(0)
-      .sortBy({ field: 'createdAt', order: 'DESC' })
+      .sortBy({
+        field: 'createdAt',
+        order: 'DESC'
+      })
       .query();
 
     const { data: bounties } = await this.httpService.get<GetProposalsResponse>(
@@ -389,6 +400,26 @@ class SputnikService {
     });
 
     return proposals.data.map(mapProposalDTOToProposal);
+  }
+
+  public async getTransfers(
+    daoId?: string,
+    offset = 0,
+    limit = 50
+  ): Promise<TransactionDTO[]> {
+    const params = {
+      filter: `receiverAccountId||$eq||${daoId}`,
+      offset,
+      limit
+    };
+
+    const { data: transfers } = await this.httpService.get<
+      GetTransactionsResponse
+    >('/transactions/transfers', {
+      params: daoId ? params : omit(params, 'filter')
+    });
+
+    return transfers.data;
   }
 
   public async getPolls(
