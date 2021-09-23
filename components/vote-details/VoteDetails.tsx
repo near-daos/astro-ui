@@ -36,7 +36,7 @@ export const VoteDetails: React.FC<VoteDetailsProps> = ({
     [daoProposal, scope, currentDao]
   );
 
-  const bond = formatYoktoValue(currentDao?.policy.proposalBond ?? '');
+  const bond = formatYoktoValue(currentDao?.policy.proposalBond ?? '0');
 
   const renderDetail = (detail: VoteDetail, index: number) => (
     <div className={styles.detail} key={detail.label}>
