@@ -1,59 +1,57 @@
 import classNames from 'classnames';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Button } from 'components/button/Button';
-import { ExpandedProposalCard } from 'components/cards/expanded-proposal-card';
-import { RequestPayout } from 'components/cards/proposal-card';
-
-import { TransactionCard } from 'components/cards/transaction-card';
 
 import { Icon } from 'components/Icon';
-import { useModal } from 'components/modal';
-import { Pagination } from 'components/pagination';
-import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
 
-import {
-  BOND_DETAIL,
-  CHART_DATA,
-  PROPOSAL_DATA,
-  TRANSACTIONS_DATA,
-  VOTE_DETAILS
-} from 'lib/mocks/treasury/tokens';
-import { ChartData, TransactionCardInput } from 'lib/types/treasury';
+import { PROPOSAL_DATA } from 'lib/mocks/treasury/tokens';
+import { ChartData } from 'lib/types/treasury';
 import get from 'lodash/get';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+
+import { TransactionCard } from 'components/cards/transaction-card';
+import { Pagination } from 'components/pagination';
+import { ExpandedProposalCard } from 'components/cards/expanded-proposal-card';
+import { RequestPayout } from 'components/cards/proposal-card';
+import { useModal } from 'components/modal';
+import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
 
 import styles from 'pages/dao/[dao]/treasury/tokens/transactions/TransactionsPage.module.scss';
-import React, { useCallback, useMemo, useState } from 'react';
+import { SputnikService } from 'services/SputnikService';
+import { Token } from 'types/token';
+import { Transaction } from 'types/transaction';
+import { useNearPrice } from 'hooks/useNearPrice';
+import { formatCurrency } from 'utils/formatCurrency';
+import { getChartData } from 'features/treasury/helpers';
 
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
 
 const ITEMS_PER_PAGE = 10;
 
-interface TransactionPageProps {
-  chartData: ChartData[];
-  transactions: TransactionCardInput[];
-  numberOfTokens: number;
-  usdValue: number;
+export interface TransactionPageProps {
+  data: {
+    chartData: ChartData[];
+    transactions: Transaction[];
+    numberOfTokens: number;
+  };
 }
 
 const TransactionsPage: React.FC<TransactionPageProps> = ({
-  chartData = CHART_DATA,
-  transactions = TRANSACTIONS_DATA,
-  numberOfTokens = 876,
-  usdValue = 457836.35
+  data: { chartData, transactions, numberOfTokens }
 }) => {
+  const nearPrice = useNearPrice();
   const router = useRouter();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { tokenId } = router.query;
+
   const pageCount = Math.round(transactions.length / ITEMS_PER_PAGE);
-  const [currentPageContent, setCurrentPageContent] = useState<
-    TransactionCardInput[]
-  >(() => transactions.slice(0, ITEMS_PER_PAGE));
+
+  const [currentPageContent, setCurrentPageContent] = useState<Transaction[]>(
+    () => transactions.slice(0, ITEMS_PER_PAGE)
+  );
+
   const [showRequestPayoutPopup] = useModal(RequestPayoutPopup, {
-    type: 'send',
-    voteDetails: VOTE_DETAILS,
-    bondDetail: BOND_DETAIL
+    type: 'send'
   });
 
   const daoId = router.query.dao as string;
@@ -75,9 +73,7 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
 
   const filterClickHandler = useCallback(() => {
     const sorted = currentPageContent.sort((a, b) =>
-      sortByRecent
-        ? b.tokensBalance - a.tokensBalance
-        : a.tokensBalance - b.tokensBalance
+      sortByRecent ? b.timestamp - a.timestamp : a.timestamp - b.timestamp
     );
 
     setCurrentPageContent(sorted);
@@ -107,17 +103,17 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
       },
       {
         label: 'Total value',
-        value: Intl.NumberFormat('en-US').format(usdValue),
+        value: formatCurrency(numberOfTokens * nearPrice),
         currency: 'USD'
       }
     ];
-  }, [transactions, numberOfTokens, usdValue]);
+  }, [transactions, numberOfTokens, nearPrice]);
 
   return (
     <div className={styles.root}>
       <div className={styles.back}>
         <Link href={`/dao/${daoId}/treasury/tokens`}>
-          <a href="*">
+          <a>
             <Icon name="buttonArrowLeft" className={styles.icon} />
             All tokens
           </a>
@@ -156,7 +152,13 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
             key={transaction.transactionId}
             onClick={openProposalDetails}
           >
-            <TransactionCard {...transaction} />
+            <TransactionCard
+              tokenName={Token.NEAR}
+              type={transaction.type}
+              deposit={transaction.deposit}
+              date={transaction.date}
+              accountName={transaction.signerAccountId}
+            />
           </Button>
         ))}
         <ExpandedProposalCard
@@ -184,6 +186,32 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
       ) : null}
     </div>
   );
+};
+
+interface GetTransactionsQuery {
+  dao: string;
+  tokenId: string;
+}
+
+export const getServerSideProps = async ({
+  query
+}: {
+  query: GetTransactionsQuery;
+}): Promise<{
+  props: TransactionPageProps;
+}> => {
+  const dao = await SputnikService.getDaoById(query.dao);
+  const transactions = await SputnikService.getTransfers(query.dao);
+
+  return {
+    props: {
+      data: {
+        chartData: getChartData(transactions, query.dao),
+        transactions,
+        numberOfTokens: Number(dao?.funds) ?? '0'
+      }
+    }
+  };
 };
 
 export default TransactionsPage;

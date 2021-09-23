@@ -1,10 +1,12 @@
 @use 'styles/breakpoints';
 @import 'styles/typography';
+@import 'styles/mixins';
 
 .grid {
   display: grid;
+  grid-gap: 8px;
   grid-template-areas: 'token balance value fraction';
-  grid-template-columns: 1fr 1fr 1fr 2fr;
+  grid-template-columns: 2fr 1fr 1fr 2fr;
   padding: 24px;
 }
 
@@ -16,14 +18,22 @@
 .tokenContainer {
   align-items: center;
   display: flex;
+  gap: 12px;
   grid-area: token;
 
   justify-content: flex-start;
 
-  .icon {
+  .iconWrapper {
     height: 32px;
-    margin-right: 12px;
     width: 32px;
+  }
+
+  .icon {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
   }
 
   .name {
@@ -33,11 +43,15 @@
 }
 
 .totalValue {
+  align-items: center;
+  display: flex;
   grid-area: value;
 }
 
 .tokensBalance {
   @extend %title3;
+  align-items: center;
+  display: flex;
   grid-area: balance;
 }
 
@@ -55,10 +69,9 @@
 }
 
 .fractionCurrent {
-  animation: weight 2s linear forwards;
   background-color: var(--color-brand-purple);
   height: 8px;
-  width: 0;
+  width: var(--currentWeight);
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
@@ -78,11 +91,5 @@
 
   .totalValue {
     justify-self: end;
-  }
-}
-
-@keyframes weight {
-  to {
-    width: var(--currentWeight);
   }
 }

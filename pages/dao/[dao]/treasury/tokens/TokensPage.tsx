@@ -1,24 +1,4 @@
 import { Button } from 'components/button/Button';
-import { IconButton } from 'components/button/IconButton';
-import { TokenCard } from 'components/cards/token-card';
-import { Header } from 'components/cards/token-card/components/header';
-import { useModal } from 'components/modal';
-
-import ScrollList from 'components/scroll-list/ScrollList';
-import { CopyButton } from 'features/copy-button';
-import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
-
-import {
-  BOND_DETAIL,
-  CHART_DATA,
-  TOKENS_DATA,
-  VOTE_DETAILS
-} from 'lib/mocks/treasury/tokens';
-import { ChartData } from 'lib/types/treasury';
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
-
-import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
 import React, {
   CSSProperties,
   useCallback,
@@ -26,44 +6,51 @@ import React, {
   useRef,
   useState
 } from 'react';
-import { useMedia } from 'react-use';
 import { ListOnScrollProps, VariableSizeList } from 'react-window';
-import { Token } from 'types/token';
+import { useMedia } from 'react-use';
+import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
-interface TokenCardInput {
-  id: string;
-  tokenName: Token.NEAR;
-  tokensBalance: number;
-  totalValue: number;
-  voteWeight: number;
-  href: '';
-}
+import ScrollList from 'components/scroll-list/ScrollList';
+import { IconButton } from 'components/button/IconButton';
+import { TokenCard } from 'components/cards/token-card';
+import { Header } from 'components/cards/token-card/components/header';
+import { useModal } from 'components/modal';
 
-interface TokensPageProps {
-  chartData: ChartData[];
-  tokens: TokenCardInput[];
-  totalValue: number;
+import { CopyButton } from 'features/copy-button';
+import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
+import { TokenType } from 'types/token';
+
+import { ChartData } from 'lib/types/treasury';
+import { formatCurrency } from 'utils/formatCurrency';
+import { useNearPrice } from 'hooks/useNearPrice';
+
+import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
+
+export interface TokensPageProps {
+  data: {
+    chartData: ChartData[];
+    tokens: TokenType[];
+    totalValue: string;
+    totalTokensValue: number;
+  };
 }
 
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
 
 const TokensPage: React.FC<TokensPageProps> = ({
-  chartData = CHART_DATA,
-  tokens = TOKENS_DATA,
-  totalValue = 45876
+  data: { chartData, tokens, totalValue, totalTokensValue }
 }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
 
-  const [items] = useState(tokens);
   const [showRequestPayoutPopup] = useModal(RequestPayoutPopup, {
-    type: 'send',
-    voteDetails: VOTE_DETAILS,
-    bondDetail: BOND_DETAIL
+    type: 'send'
   });
   const [showResetScroll, setShowResetScroll] = useState(false);
   const scrollListRef = useRef<VariableSizeList>(null);
   const isMobileOrTablet = useMedia('(max-width: 768px)');
+  const nearPrice = useNearPrice();
 
   const handleScroll = useCallback(({ scrollOffset }: ListOnScrollProps) => {
     if (scrollOffset > 100) {
@@ -95,30 +82,47 @@ const TokensPage: React.FC<TokensPageProps> = ({
   }: {
     index: number;
     style: CSSProperties;
-  }) => (
-    <div
-      style={{
-        ...style,
-        marginTop: isMobileOrTablet ? '16px' : '8px',
-        marginBottom: isMobileOrTablet ? '16px' : '8px'
-      }}
-    >
-      <TokenCard
-        {...items[index]}
-        href={`/dao/${daoId}/treasury/tokens/transactions/${items[index].id}`}
-      />
-    </div>
-  );
+  }) => {
+    const tokenData = tokens[index];
+
+    return (
+      <div
+        style={{
+          ...style,
+          marginTop: isMobileOrTablet ? '16px' : '8px',
+          marginBottom: isMobileOrTablet ? '16px' : '8px'
+        }}
+      >
+        <TokenCard
+          id={tokenData.id}
+          icon={tokenData.icon}
+          tokenName={tokenData.name}
+          tokensBalance={Number(tokenData.totalSupply)}
+          totalValue={
+            tokenData.name === 'near'
+              ? formatCurrency(parseFloat(tokenData.totalSupply) * nearPrice)
+              : null
+          }
+          voteWeight={(Number(tokenData.totalSupply) * 100) / totalTokensValue}
+          href={
+            tokenData.name === 'near'
+              ? `/dao/${daoId}/treasury/tokens/transactions/${tokens[index].id}`
+              : null
+          }
+        />
+      </div>
+    );
+  };
 
   const captions = useMemo(
     () => [
       {
         label: 'Total value',
-        value: Intl.NumberFormat('en-US').format(totalValue),
+        value: formatCurrency(parseFloat(totalValue) * nearPrice),
         currency: 'USD'
       }
     ],
-    [totalValue]
+    [nearPrice, totalValue]
   );
 
   return (
@@ -142,7 +146,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
       <div className={styles.tokens}>
         <Header />
         <ScrollList
-          itemCount={items.length}
+          itemCount={tokens.length}
           onScroll={handleScroll}
           height={700}
           itemSize={getItemHeight}

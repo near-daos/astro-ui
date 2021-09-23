@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import PromisePool from '@supercharge/promise-pool';
 import Big from 'big.js';
 import { NearConfig, nearConfig } from 'config';
@@ -6,12 +7,6 @@ import Decimal from 'decimal.js';
 import omit from 'lodash/omit';
 import { Contract, keyStores, Near } from 'near-api-js';
 
-import { CreateTokenParams, NftToken } from 'types/token';
-import { RequestQueryBuilder } from '@nestjsx/crud-request';
-
-import { CreateDaoInput, DAO } from 'types/dao';
-import { CreateProposalParams, Proposal, ProposalType } from 'types/proposal';
-import { SearchResultsData } from 'types/search';
 import { HttpService, httpService } from 'services/HttpService';
 import {
   DaoDTO,
@@ -25,13 +20,30 @@ import {
   mapProposalDTOToProposal,
   ProposalDTO
 } from 'services/SputnikService/mappers/proposal';
+import { mapTokensDTOToTokens } from 'services/SputnikService/mappers/token';
 import {
   mapSearchResultsDTOToDataObject,
   SearchResponse
 } from 'services/SputnikService/mappers/search-results';
+import {
+  GetTransactionsResponse,
+  mapTransactionDTOToTransaction
+} from 'services/SputnikService/mappers/transaction';
 import { BountiesResponse, BountyResponse } from 'types/bounties';
 
 import { PaginationResponse } from 'types/api';
+import { CreateDaoInput, DAO } from 'types/dao';
+import { CreateProposalParams, Proposal, ProposalType } from 'types/proposal';
+import { SearchResultsData } from 'types/search';
+
+import {
+  CreateTokenParams,
+  GetTokensResponse,
+  TokenType,
+  NftToken
+} from 'types/token';
+import { Transaction } from 'types/transaction';
+
 import { gas, yoktoNear } from './constants';
 import { ContractPool } from './ContractPool';
 import { SputnikWalletConnection } from './SputnikWalletConnection';
@@ -339,7 +351,11 @@ class SputnikService {
 
   public async getBountiesDone(daoId: string): Promise<Proposal[]> {
     const queryString = RequestQueryBuilder.create()
-      .setFilter({ field: 'daoId', operator: '$eq', value: daoId })
+      .setFilter({
+        field: 'daoId',
+        operator: '$eq',
+        value: daoId
+      })
       .setFilter({
         field: 'kind',
         operator: '$cont',
@@ -347,7 +363,10 @@ class SputnikService {
       })
       .setLimit(500)
       .setOffset(0)
-      .sortBy({ field: 'createdAt', order: 'DESC' })
+      .sortBy({
+        field: 'createdAt',
+        order: 'DESC'
+      })
       .query();
 
     const { data: bounties } = await this.httpService.get<GetProposalsResponse>(
@@ -375,6 +394,29 @@ class SputnikService {
     });
 
     return proposals.data.map(mapProposalDTOToProposal);
+  }
+
+  public async getTransfers(daoId?: string): Promise<Transaction[]> {
+    const queryString = RequestQueryBuilder.create()
+      .setFilter({
+        field: 'receiverAccountId',
+        operator: '$eq',
+        value: daoId
+      })
+      // .setOr({ field: 'signerAccountId', operator: '$eq', value: daoId })
+      .setLimit(500)
+      .setOffset(0)
+      .sortBy({
+        field: 'blockTimestamp',
+        order: 'DESC'
+      })
+      .query();
+
+    const { data: transfers } = await this.httpService.get<
+      GetTransactionsResponse
+    >(`/transactions/transfers?${queryString}`);
+
+    return mapTransactionDTOToTransaction(transfers.data, daoId);
   }
 
   public async getPolls(
@@ -464,6 +506,26 @@ class SputnikService {
       id: proposalId,
       action
     });
+  }
+
+  public async getTokens(params?: {
+    offset?: number;
+    limit?: number;
+    sort?: string;
+  }): Promise<TokenType[]> {
+    const offset = params?.offset ?? 0;
+    const limit = params?.limit ?? 50;
+    const sort = params?.sort ?? 'createdAt,DESC';
+
+    const { data } = await this.httpService.get<GetTokensResponse>('/tokens', {
+      params: {
+        offset,
+        limit,
+        sort
+      }
+    });
+
+    return mapTokensDTOToTokens(data.data);
   }
 
   public finalize(contractId: string, proposalId: number): Promise<void> {

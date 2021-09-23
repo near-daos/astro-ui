@@ -1,7 +1,6 @@
 import { Icon } from 'components/Icon';
 import { Modal } from 'components/modal';
 import { RequestPayoutForm } from 'features/treasury/request-payout-popup/components/RequestPayoutForm';
-import { BondDetail, VoteDetail } from 'features/types';
 import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
@@ -10,8 +9,6 @@ import styles from './request-payout-popup.module.scss';
 
 export interface RequestPayoutPopupProps {
   type: 'send' | 'request';
-  voteDetails: VoteDetail[];
-  bondDetail: BondDetail;
   isOpen: boolean;
   onClose: (...args: unknown[]) => void;
 }
