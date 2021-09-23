@@ -4,9 +4,9 @@ import Big from 'big.js';
 import { NearConfig, nearConfig } from 'config';
 import Decimal from 'decimal.js';
 import omit from 'lodash/omit';
-import { connect, Contract, keyStores, Near } from 'near-api-js';
+import { Contract, keyStores, Near } from 'near-api-js';
 
-import { CreateTokenParams } from 'types/token';
+import { CreateTokenParams, NftToken } from 'types/token';
 import { RequestQueryBuilder } from '@nestjsx/crud-request';
 
 import { CreateDaoInput, DAO } from 'types/dao';
@@ -35,6 +35,7 @@ import {
 } from 'services/SputnikService/mappers/search-results';
 import { BountiesResponse, BountyResponse } from 'types/bounties';
 
+import { PaginationResponse } from 'types/api';
 import { gas, yoktoNear } from './constants';
 import { ContractPool } from './ContractPool';
 import { SputnikWalletConnection } from './SputnikWalletConnection';
@@ -59,12 +60,12 @@ class SputnikService {
     this.config = config;
   }
 
-  public async init(): Promise<void> {
-    this.near = await connect({
-      deps: {
-        keyStore: new keyStores.BrowserLocalStorageKeyStore()
-      },
-      ...this.config
+  public init(): void {
+    const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+
+    this.near = new Near({
+      ...this.config,
+      keyStore
     });
 
     this.walletConnection = new SputnikWalletConnection(this.near, 'sputnik');
@@ -450,6 +451,21 @@ class SputnikService {
         sort
       }
     });
+
+    return data.data;
+  }
+
+  public async getNfts(
+    ownerId: string,
+    offset = 0,
+    limit = 50
+  ): Promise<NftToken[]> {
+    const { data } = await this.httpService.get<PaginationResponse<NftToken>>(
+      '/tokens/nfts',
+      {
+        params: { offset, limit, filter: `ownerId||$eq||${ownerId}` }
+      }
+    );
 
     return data.data;
   }
