@@ -33,7 +33,7 @@ const PollsPage: FC<PollsPageProps> = () => {
 
   const [showResetScroll, setShowResetScroll] = useState(false);
   const scrollListRef = useRef<VariableSizeList>(null);
-  const isMobileOrTablet = useMedia('(max-width: 767px)');
+  const isMobile = useMedia('(max-width: 767px)');
 
   function fetchPolls(daoId: string) {
     SputnikService.getPolls(daoId).then(res => setPollsList(res));
@@ -97,14 +97,14 @@ const PollsPage: FC<PollsPageProps> = () => {
           itemCount={pollsList.length}
           onScroll={handleScroll}
           height={700}
-          itemSize={() => (isMobileOrTablet ? 186 : 120)}
+          itemSize={() => (isMobile ? 230 : 158)}
           ref={scrollListRef}
           renderItem={renderCard}
         />
         {showResetScroll ? (
           <IconButton
             icon="buttonResetScroll"
-            size={isMobileOrTablet ? 'medium' : 'large'}
+            size={isMobile ? 'medium' : 'large'}
             className={styles.reset}
             onClick={resetScroll}
           />

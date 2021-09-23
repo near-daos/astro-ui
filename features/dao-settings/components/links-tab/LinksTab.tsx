@@ -13,6 +13,10 @@ import { useToggle } from 'react-use';
 import { validUrlRegexp } from 'utils/regexp';
 import * as yup from 'yup';
 
+import { DaoConfig } from 'types/proposal';
+import { fromMetadataToBase64 } from 'services/SputnikService/mappers/dao';
+import { SputnikService } from 'services/SputnikService';
+import { getChangeConfigProposal } from 'features/dao-settings/helpers';
 import styles from './links-tab.module.scss';
 
 type ExternalLink = {
@@ -23,6 +27,11 @@ type ExternalLink = {
 export interface LinksTabProps {
   accountName: string;
   links: string[];
+  currentDaoSettings: {
+    name: string;
+    purpose: string;
+    flag: string;
+  };
 }
 
 export interface LinksFormData {
@@ -43,7 +52,11 @@ export const schema = yup.object().shape({
   )
 });
 
-const LinksTab: FC<LinksTabProps> = ({ links, accountName }) => {
+const LinksTab: FC<LinksTabProps> = ({
+  links,
+  accountName,
+  currentDaoSettings
+}) => {
   const [viewMode, setViewMode] = useToggle(true);
 
   const methods = useForm<LinksFormData>({
@@ -86,16 +99,24 @@ const LinksTab: FC<LinksTabProps> = ({ links, accountName }) => {
 
   const onSubmit = useCallback(
     async (data: LinksFormData) => {
-      const websites = data.links.map(item => item.url);
+      const url = currentDaoSettings.flag.split('/');
+      const fileName = url[url.length - 1];
 
-      // TODO POST to backend
-      console.debug({
-        accountName,
-        websites
-      });
+      const newDaoConfig: DaoConfig = {
+        name: currentDaoSettings.name,
+        purpose: currentDaoSettings.purpose,
+        metadata: fromMetadataToBase64({
+          links: data.links.map(item => item.url),
+          flag: fileName
+        })
+      };
+
+      await SputnikService.createProposal(
+        getChangeConfigProposal(accountName, newDaoConfig, 'Changing links')
+      );
       setViewMode(true);
     },
-    [accountName, setViewMode]
+    [currentDaoSettings, accountName, setViewMode]
   );
 
   return (

@@ -1,15 +1,15 @@
-import { useRouter } from 'next/router';
-import get from 'lodash/get';
-import React, { useCallback, useMemo, useState } from 'react';
-import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import classNames from 'classnames';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Button } from 'components/button/Button';
 
 import { Icon } from 'components/Icon';
-import { Button } from 'components/button/Button';
 
 import { PROPOSAL_DATA } from 'lib/mocks/treasury/tokens';
 import { ChartData } from 'lib/types/treasury';
+import get from 'lodash/get';
+import dynamic from 'next/dynamic';
 
 import { TransactionCard } from 'components/cards/transaction-card';
 import { Pagination } from 'components/pagination';
@@ -43,7 +43,6 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
 }) => {
   const nearPrice = useNearPrice();
   const router = useRouter();
-  const { dao } = router.query;
 
   const pageCount = Math.round(transactions.length / ITEMS_PER_PAGE);
 
@@ -54,6 +53,8 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
   const [showRequestPayoutPopup] = useModal(RequestPayoutPopup, {
     type: 'send'
   });
+
+  const daoId = router.query.dao as string;
 
   const [isProposalDetailsOpened, showProposalDetailsModal] = useState(false);
   const [sortByRecent, setSortByRecent] = useState(true);
@@ -111,8 +112,7 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.back}>
-        <Link href={`/dao/${dao}/treasury/tokens`}>
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <Link href={`/dao/${daoId}/treasury/tokens`}>
           <a>
             <Icon name="buttonArrowLeft" className={styles.icon} />
             All tokens

@@ -1,17 +1,16 @@
-import { useSelectedDAO } from 'hooks/useSelectedDao';
-import React, { FC, useCallback } from 'react';
-
 import { Icon } from 'components/Icon';
 import { Modal } from 'components/modal';
 
+import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
+import { useRouter } from 'next/router';
+import React, { FC, useCallback } from 'react';
+
 import { SputnikService } from 'services/SputnikService';
 
-import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
-
 import { CreateBountyForm } from './components/create-bounty-form/CreateBountyForm';
+import { getAddBountyProposal } from './helpers';
 
 import { CreateBountyInput } from './types';
-import { getAddBountyProposal } from './helpers';
 
 export interface CreateBountyDialogProps {
   initialValues: CreateBountyInput;
@@ -24,24 +23,24 @@ export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
   isOpen,
   onClose
 }) => {
-  const selectedDao = useSelectedDAO();
+  const router = useRouter();
+  const daoId = router.query.dao as string;
 
   const handleSubmit = useCallback(
     (data: CreateBountyInput) => {
-      if (!selectedDao) {
+      if (!daoId) {
         console.error(
-          'Bounty proposal can not be created. There is no selectedDao'
+          'Bounty proposal can not be created. No dao id specified'
         );
       } else {
-        const { id } = selectedDao;
-        const proposal = getAddBountyProposal(id, data);
+        const proposal = getAddBountyProposal(daoId, data);
 
         SputnikService.createProposal(proposal);
       }
 
       onClose('submitted');
     },
-    [selectedDao, onClose]
+    [daoId, onClose]
   );
 
   return (

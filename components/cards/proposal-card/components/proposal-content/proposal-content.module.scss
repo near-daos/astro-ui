@@ -1,19 +1,21 @@
 @import 'styles/mixins';
 
 .row {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
+  height: 56px;
 
   @include tablet-landscape {
-    align-items: center;
     flex-wrap: nowrap;
+    height: auto;
+    min-height: 28px;
   }
 }
 
 .subRow {
   align-items: center;
   display: flex;
-  margin-top: 17px;
 }
 
 .sub {
@@ -21,16 +23,23 @@
 }
 
 .text {
-  //@include sentence-case;
   font-family: Inter, 'sans-serif';
   font-size: 1em;
+  overflow: hidden;
   white-space: normal;
 
   @include tablet-landscape {
     font-size: 1.125em;
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  > div {
+    font-size: 14px;
+
+    @include tablet-portrait {
+      font-size: 16px;
+    }
   }
 }
 

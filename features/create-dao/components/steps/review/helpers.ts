@@ -1,5 +1,4 @@
 import { RolesRequest, VotePolicyRequest } from 'types/dao';
-import { SputnikService } from 'services/SputnikService';
 import { DAOFormValues } from 'features/create-dao/components/steps/types';
 
 const EveryoneCanDoEverythingPolicy = {
@@ -16,9 +15,9 @@ const EveryoneCanSubmitProposal = {
   vote_policy: {}
 };
 
-const GroupMembersCanActOnProposals = {
+const GroupMembersCanActOnProposals = (accountId: string) => ({
   name: 'council',
-  kind: { Group: [SputnikService.getAccountId()] },
+  kind: { Group: [accountId] },
   permissions: [
     '*:Finalize',
     '*:AddProposal',
@@ -27,7 +26,7 @@ const GroupMembersCanActOnProposals = {
     '*:VoteRemove'
   ],
   vote_policy: {}
-};
+});
 
 const DemocraticVoting = {
   weight_kind: 'RoleWeight',
@@ -42,7 +41,8 @@ const TokenBasedVoting = {
 };
 
 export function getRolesVotingPolicy(
-  data: DAOFormValues
+  data: DAOFormValues,
+  accountId: string
 ): {
   roles: RolesRequest[];
   defaultVotePolicy: VotePolicyRequest;
@@ -52,7 +52,7 @@ export function getRolesVotingPolicy(
   if (data.structure === 'flat') {
     roles.push(EveryoneCanDoEverythingPolicy);
   } else if (data.structure === 'groups') {
-    roles.push(GroupMembersCanActOnProposals);
+    roles.push(GroupMembersCanActOnProposals(accountId));
 
     if (data.proposals === 'open') {
       roles.push(EveryoneCanSubmitProposal);

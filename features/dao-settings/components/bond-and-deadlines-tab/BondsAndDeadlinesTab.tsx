@@ -5,7 +5,8 @@ import {
   BondsAndDeadlinesData,
   getChangeBondDeadlinesProposal
 } from 'features/dao-settings/helpers';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
+import { useDao } from 'hooks/useDao';
+import { useRouter } from 'next/router';
 import React, { FC, useCallback } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
@@ -37,7 +38,9 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = ({
 }) => {
   const [viewMode, setViewMode] = useToggle(true);
 
-  const dao = useSelectedDAO();
+  const router = useRouter();
+  const daoId = router.query.dao as string;
+  const dao = useDao(daoId);
 
   const methods = useForm<BondsAndDeadlinesData>({
     mode: 'onChange',

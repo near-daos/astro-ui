@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import { Proposal } from 'types/proposal';
 
-export function useSelectedProposal(
+export function useProposal(
   daoId?: string,
   proposalId?: number
 ): Proposal | null {

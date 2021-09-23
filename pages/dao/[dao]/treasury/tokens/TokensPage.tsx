@@ -1,3 +1,4 @@
+import { Button } from 'components/button/Button';
 import React, {
   CSSProperties,
   useCallback,
@@ -12,19 +13,19 @@ import dynamic from 'next/dynamic';
 
 import ScrollList from 'components/scroll-list/ScrollList';
 import { IconButton } from 'components/button/IconButton';
-import { Button } from 'components/button/Button';
 import { TokenCard } from 'components/cards/token-card';
 import { Header } from 'components/cards/token-card/components/header';
 import { useModal } from 'components/modal';
-import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
+
 import { CopyButton } from 'features/copy-button';
+import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
 import { TokenType } from 'types/token';
 
 import { ChartData } from 'lib/types/treasury';
 import { formatCurrency } from 'utils/formatCurrency';
+import { useNearPrice } from 'hooks/useNearPrice';
 
 import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
-import { useNearPrice } from 'hooks/useNearPrice';
 
 export interface TokensPageProps {
   data: {
@@ -41,7 +42,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
   data: { chartData, tokens, totalValue, totalTokensValue }
 }) => {
   const router = useRouter();
-  const accountName = router.query.dao as string;
+  const daoId = router.query.dao as string;
 
   const [showRequestPayoutPopup] = useModal(RequestPayoutPopup, {
     type: 'send'
@@ -105,7 +106,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
           voteWeight={(Number(tokenData.totalSupply) * 100) / totalTokensValue}
           href={
             tokenData.name === 'near'
-              ? `/dao/${accountName}/treasury/tokens/transactions/${tokens[index].id}`
+              ? `/dao/${daoId}/treasury/tokens/transactions/${tokens[index].id}`
               : null
           }
         />
@@ -129,8 +130,8 @@ const TokensPage: React.FC<TokensPageProps> = ({
       <div className={styles.account}>
         <div className={styles.caption}>DAO account name</div>
         <div className={styles.name}>
-          {accountName}
-          <CopyButton text={accountName} className={styles.icon} />
+          {daoId}
+          <CopyButton text={daoId} className={styles.icon} />
         </div>
       </div>
       <div className={styles.send}>

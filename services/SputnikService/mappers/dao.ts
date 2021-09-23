@@ -3,6 +3,7 @@ import get from 'lodash/get';
 import { DAO } from 'types/dao';
 import { DaoRole } from 'types/role';
 import { formatYoktoValue } from 'helpers/format';
+import { awsConfig } from 'config';
 
 export type DaoVotePolicy = {
   weightKind: string;
@@ -55,6 +56,19 @@ export type DaoDTO = {
   policy: DaoPolicy;
 };
 
+export type DaoMetadata = {
+  links: string[];
+  flag: string;
+};
+
+export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
+  return Buffer.from(JSON.stringify(metadata)).toString('base64');
+};
+
+export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
+  return JSON.parse(Buffer.from(metaAsBase64, 'base64').toString('ascii'));
+};
+
 export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
   const roles = get(daoDTO, 'policy.roles', []);
   const numberOfMembers = get(daoDTO, 'numberOfMembers', 0);
@@ -76,8 +90,12 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
       };
     });
 
-  // DAO config
   const config = get(daoDTO, 'config');
+
+  const meta = config.metadata ? fromBase64ToMetadata(config.metadata) : null;
+
+  const getLogoUrl = (flag: string) =>
+    `https://${awsConfig.bucket}.s3.${awsConfig.region}.amazonaws.com/${flag}`;
 
   return {
     id: daoDTO.id,
@@ -85,13 +103,12 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     description: config?.purpose ?? '',
     members: numberOfMembers,
     proposals: numberOfProposals,
-    logo: `https://sputnik-dao.s3.eu-central-1.amazonaws.com/${
-      daoDTO.id
-    }?timestamp=${Date.now()}`,
+    logo: meta ? getLogoUrl(meta.flag) : getLogoUrl(daoDTO.id),
     funds,
     createdAt: daoDTO.createdAt,
     groups: daoGroups,
-    policy: daoDTO.policy
+    policy: daoDTO.policy,
+    links: meta ? meta.links : []
   };
 };
 

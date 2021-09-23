@@ -10,7 +10,8 @@ const TransactionComplete: React.FC = () => {
         window.location.toString()
       ).searchParams.get('transactionHashes');
 
-      SputnikService.init().then(() => callback?.(transactionHashes));
+      SputnikService.init();
+      callback?.(transactionHashes);
 
       setTimeout(() => {
         window.close();

@@ -1,19 +1,16 @@
-import { useSelectedDAO } from 'hooks/useSelectedDao';
-import { useEffect, useState } from 'react';
 import { Bounty } from 'components/cards/bounty-card/types';
+import { useEffect, useState } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import { BountyResponse } from 'types/bounties';
 
-export const useBountiesPerDao = (): Bounty[] => {
-  const selectedDao = useSelectedDAO();
+// TODO Proper data fetching
+export function useDaoBounties(daoId: string): Bounty[] {
   const [bounties, setBounties] = useState<Bounty[]>([]);
 
   useEffect(() => {
-    if (!selectedDao) {
-      return;
-    }
+    if (!daoId) return;
 
-    SputnikService.getBountiesByDaoId(selectedDao.id).then(result => {
+    SputnikService.getBountiesByDaoId(daoId).then(result => {
       const data: Bounty[] = result.map(
         (response: BountyResponse): Bounty => {
           return {
@@ -35,7 +32,7 @@ export const useBountiesPerDao = (): Bounty[] => {
 
       setBounties(data);
     });
-  }, [selectedDao]);
+  }, [daoId]);
 
   return bounties;
-};
+}

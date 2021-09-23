@@ -5,10 +5,12 @@ import Big from 'big.js';
 import { NearConfig, nearConfig } from 'config';
 import Decimal from 'decimal.js';
 import omit from 'lodash/omit';
-import { connect, Contract, keyStores, Near } from 'near-api-js';
+import { Contract, keyStores, Near } from 'near-api-js';
+
 import { HttpService, httpService } from 'services/HttpService';
 import {
   DaoDTO,
+  fromMetadataToBase64,
   GetDAOsResponse,
   mapDaoDTOListToDaoList,
   mapDaoDTOtoDao
@@ -29,16 +31,17 @@ import {
 } from 'services/SputnikService/mappers/transaction';
 import { BountiesResponse, BountyResponse } from 'types/bounties';
 
+import { PaginationResponse } from 'types/api';
 import { CreateDaoInput, DAO } from 'types/dao';
-import {
-  CreateProposalParams,
-  DaoConfig,
-  Proposal,
-  ProposalType
-} from 'types/proposal';
+import { CreateProposalParams, Proposal, ProposalType } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
 
-import { CreateTokenParams, GetTokensResponse, TokenType } from 'types/token';
+import {
+  CreateTokenParams,
+  GetTokensResponse,
+  TokenType,
+  NftToken
+} from 'types/token';
 import { Transaction } from 'types/transaction';
 
 import { gas, yoktoNear } from './constants';
@@ -65,12 +68,12 @@ class SputnikService {
     this.config = config;
   }
 
-  public async init(): Promise<void> {
-    this.near = await connect({
-      deps: {
-        keyStore: new keyStores.BrowserLocalStorageKeyStore()
-      },
-      ...this.config
+  public init(): void {
+    const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+
+    this.near = new Near({
+      ...this.config,
+      keyStore
     });
 
     this.walletConnection = new SputnikWalletConnection(this.near, 'sputnik');
@@ -207,13 +210,6 @@ class SputnikService {
   }
 
   public async createDao(params: CreateDaoInput): Promise<boolean> {
-    const config: DaoConfig = {
-      name: params.name,
-      purpose: params.purpose,
-      metadata: ''
-    };
-
-    // TODO what should be in metadata?
     const argsList = {
       purpose: params.purpose,
       council: params.council.split('\n').filter((item: string) => item),
@@ -238,7 +234,14 @@ class SputnikService {
           .mul('3.6e12')
           .toFixed()
       },
-      config
+      config: {
+        name: params.name,
+        purpose: params.purpose,
+        metadata: fromMetadataToBase64({
+          links: params.links,
+          flag: params.flag
+        })
+      }
     };
 
     const amount = new Decimal(params.amountToTransfer);
@@ -263,17 +266,6 @@ class SputnikService {
     return false;
   }
 
-  // SputnikService.createProposal({
-  //   daoId: 'alexeydao.sputnikv2.testnet',
-  //   description: 'description',
-  //   kind: 'AddMemberToRole',
-  //   data: {
-  //     member_id: 'somenear.testnet',
-  //     role: 'council'
-  //   },
-  //   bond: '1000000000000000000000000'
-  // });
-  // TODO check data structures for different proposals
   public async createProposal(params: CreateProposalParams): Promise<any> {
     const { daoId, description, kind, data, bond } = params;
 
@@ -490,6 +482,21 @@ class SputnikService {
     return data.data;
   }
 
+  public async getNfts(
+    ownerId: string,
+    offset = 0,
+    limit = 50
+  ): Promise<NftToken[]> {
+    const { data } = await this.httpService.get<PaginationResponse<NftToken>>(
+      '/tokens/nfts',
+      {
+        params: { offset, limit, filter: `ownerId||$eq||${ownerId}` }
+      }
+    );
+
+    return data.data;
+  }
+
   public vote(
     daoId: string,
     proposalId: number,
@@ -518,7 +525,6 @@ class SputnikService {
       }
     });
 
-    // todo - map and transform data
     return mapTokensDTOToTokens(data.data);
   }
 

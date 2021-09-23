@@ -1,24 +1,24 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import get from 'lodash/get';
-import { useMedia } from 'react-use';
-import { SputnikService } from 'services/SputnikService';
+import { Badge, Variant } from 'components/badge/Badge';
+import { Button } from 'components/button/Button';
 
 import MemberCard, { MemberCardPopup } from 'components/cards/member-card';
-import { Button } from 'components/button/Button';
 import { Dropdown } from 'components/dropdown/Dropdown';
-import { Badge, Variant } from 'components/badge/Badge';
+import { useModal } from 'components/modal';
 import { GroupPopup } from 'features/groups';
 import { GroupFormInput, GroupFormType } from 'features/groups/types';
-import { useModal } from 'components/modal';
-
-import { Member } from 'types/dao';
+import { useDao } from 'hooks/useDao';
 
 import { groupColor, groupPopupData } from 'lib/mocks/groups';
+import get from 'lodash/get';
+import { useRouter } from 'next/router';
 
 import styles from 'pages/dao/[dao]/groups/groups.module.scss';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import { useMedia } from 'react-use';
+import { SputnikService } from 'services/SputnikService';
 import { extractMembersFromDao } from 'services/SputnikService/mappers/search-results';
+
+import { Member } from 'types/dao';
 
 const sortOptions = [
   {
@@ -34,11 +34,13 @@ const groupMap: { [key: string]: string } = {
 const GroupPage: FC = () => {
   const router = useRouter();
   const paramGroup = router.query.group as string;
+  const daoId = router.query.dao as string;
+
   const group = groupMap[paramGroup] || paramGroup;
   const [data, setData] = useState<Member[]>([]);
   const [showCardModal] = useModal(MemberCardPopup);
   const [showGroupModal] = useModal(GroupPopup);
-  const selectedDao = useSelectedDAO();
+  const selectedDao = useDao(daoId);
   const isMobile = useMedia('(max-width: 640px)');
 
   const [activeSort, setActiveSort] = useState<string>(sortOptions[0].value);
@@ -76,10 +78,9 @@ const GroupPage: FC = () => {
     [showCardModal]
   );
 
+  // TODO Proper data fetching
   useEffect(() => {
-    if (!selectedDao) {
-      return;
-    }
+    if (!selectedDao) return;
 
     SputnikService.getProposals(selectedDao.id).then(res => {
       const members = extractMembersFromDao(selectedDao, res);

@@ -1,8 +1,6 @@
-import { useSelectedDAO } from 'hooks/useSelectedDao';
-import React, { useCallback } from 'react';
+import { Icon, IconName } from 'components/Icon';
 
 import { Modal } from 'components/modal';
-import { Icon, IconName } from 'components/Icon';
 import { GroupForm } from 'features/groups/components/GroupForm';
 
 import {
@@ -11,9 +9,12 @@ import {
   IGroupForm
 } from 'features/groups/types';
 
-import { SputnikService } from 'services/SputnikService';
-
 import styles from 'features/treasury/request-payout-popup/request-payout-popup.module.scss';
+import { useDao } from 'hooks/useDao';
+import { useRouter } from 'next/router';
+import React, { useCallback } from 'react';
+
+import { SputnikService } from 'services/SputnikService';
 import {
   getAddMemberProposal,
   getChangePolicyProposal,
@@ -53,20 +54,22 @@ export const GroupPopup: React.FC<GroupPopupProps> = ({
 }) => {
   const { groupType } = initialValues;
 
-  const selectedDao = useSelectedDAO();
+  const router = useRouter();
+  const daoId = router.query.dao as string;
+  const currentDao = useDao(daoId);
 
   const handleSubmit = useCallback(
     (data: IGroupForm) => {
       let proposalData;
 
-      if (selectedDao) {
+      if (currentDao) {
         if (groupType === GroupFormType.ADD_TO_GROUP) {
-          proposalData = getAddMemberProposal(data, selectedDao);
+          proposalData = getAddMemberProposal(data, currentDao);
         } else if (groupType === GroupFormType.REMOVE_FROM_GROUP) {
-          proposalData = getRemoveMemberProposal(data, selectedDao);
+          proposalData = getRemoveMemberProposal(data, currentDao);
         } else if (groupType === GroupFormType.CREATE_GROUP) {
           // TODO fix generation of proposal data
-          proposalData = getChangePolicyProposal(data, selectedDao);
+          proposalData = getChangePolicyProposal(data, currentDao);
         }
 
         if (proposalData) {
@@ -82,7 +85,7 @@ export const GroupPopup: React.FC<GroupPopupProps> = ({
 
       onClose();
     },
-    [groupType, onClose, selectedDao]
+    [groupType, onClose, currentDao]
   );
 
   const handleCancel = useCallback(() => {
