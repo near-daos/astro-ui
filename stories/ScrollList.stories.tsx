@@ -25,8 +25,9 @@ const generateTokens = () => {
   for (let i = 0; i < 30; i += 1) {
     cards.push({
       id: nanoid(),
+      icon: '',
       tokenName: Token.NEAR,
-      totalValue: 123123,
+      totalValue: '123123',
       tokensBalance: 1231231,
       voteWeight: 50,
       href: ''

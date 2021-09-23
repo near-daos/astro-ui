@@ -18,14 +18,15 @@ import {
   mapProposalDTOToProposal,
   ProposalDTO
 } from 'services/SputnikService/mappers/proposal';
+import { mapTokensDTOToTokens } from 'services/SputnikService/mappers/token';
 import {
   mapSearchResultsDTOToDataObject,
   SearchResponse
 } from 'services/SputnikService/mappers/search-results';
 import {
   GetTransactionsResponse,
-  TransactionDTO
-} from 'services/SputnikService/mappers/transactions';
+  mapTransactionDTOToTransaction
+} from 'services/SputnikService/mappers/transaction';
 import { BountiesResponse, BountyResponse } from 'types/bounties';
 
 import { CreateDaoInput, DAO } from 'types/dao';
@@ -37,7 +38,8 @@ import {
 } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
 
-import { CreateTokenParams } from 'types/token';
+import { CreateTokenParams, GetTokensResponse, TokenType } from 'types/token';
+import { Transaction } from 'types/transaction';
 
 import { gas, yoktoNear } from './constants';
 import { ContractPool } from './ContractPool';
@@ -402,24 +404,27 @@ class SputnikService {
     return proposals.data.map(mapProposalDTOToProposal);
   }
 
-  public async getTransfers(
-    daoId?: string,
-    offset = 0,
-    limit = 50
-  ): Promise<TransactionDTO[]> {
-    const params = {
-      filter: `receiverAccountId||$eq||${daoId}`,
-      offset,
-      limit
-    };
+  public async getTransfers(daoId?: string): Promise<Transaction[]> {
+    const queryString = RequestQueryBuilder.create()
+      .setFilter({
+        field: 'receiverAccountId',
+        operator: '$eq',
+        value: daoId
+      })
+      // .setOr({ field: 'signerAccountId', operator: '$eq', value: daoId })
+      .setLimit(500)
+      .setOffset(0)
+      .sortBy({
+        field: 'blockTimestamp',
+        order: 'DESC'
+      })
+      .query();
 
     const { data: transfers } = await this.httpService.get<
       GetTransactionsResponse
-    >('/transactions/transfers', {
-      params: daoId ? params : omit(params, 'filter')
-    });
+    >(`/transactions/transfers?${queryString}`);
 
-    return transfers.data;
+    return mapTransactionDTOToTransaction(transfers.data, daoId);
   }
 
   public async getPolls(
@@ -494,6 +499,27 @@ class SputnikService {
       id: proposalId,
       action
     });
+  }
+
+  public async getTokens(params?: {
+    offset?: number;
+    limit?: number;
+    sort?: string;
+  }): Promise<TokenType[]> {
+    const offset = params?.offset ?? 0;
+    const limit = params?.limit ?? 50;
+    const sort = params?.sort ?? 'createdAt,DESC';
+
+    const { data } = await this.httpService.get<GetTokensResponse>('/tokens', {
+      params: {
+        offset,
+        limit,
+        sort
+      }
+    });
+
+    // todo - map and transform data
+    return mapTokensDTOToTokens(data.data);
   }
 
   public finalize(contractId: string, proposalId: number): Promise<void> {

@@ -26,7 +26,6 @@ DepositTransaction.storyName = 'Deposit';
 DepositTransaction.args = {
   tokenName: Token.NEAR,
   type: 'Deposit',
-  tokensBalance: 678,
   date: new Date().toISOString(),
   accountName: 'verylongnamegoeshere.near'
 };
@@ -37,7 +36,6 @@ WithdrawTransaction.storyName = 'Withdraw';
 WithdrawTransaction.args = {
   tokenName: Token.NEAR,
   type: 'Withdraw',
-  tokensBalance: 458,
   date: new Date().toISOString(),
   accountName: 'verylongnamegoeshere.near'
 };

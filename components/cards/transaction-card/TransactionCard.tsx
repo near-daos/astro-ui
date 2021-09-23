@@ -9,7 +9,7 @@ import s from './transaction-card.module.scss';
 export interface TransactionCardProps {
   type: TransactionType;
   tokenName: Token;
-  tokensBalance: number;
+  deposit: string;
   date: string;
   accountName: string;
 }
@@ -17,7 +17,7 @@ export interface TransactionCardProps {
 export const TransactionCard: React.FC<TransactionCardProps> = ({
   tokenName,
   type,
-  tokensBalance,
+  deposit,
   date,
   accountName
 }) => {
@@ -39,7 +39,7 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
       <div className={s.token}>
         <div className={s.balance}>{`${
           type === 'Deposit' ? '+' : '−'
-        } ${tokensBalance}`}</div>
+        } ${deposit}`}</div>
         <div>&nbsp;</div>
         <div className={s.name}>{tokenName}</div>
       </div>

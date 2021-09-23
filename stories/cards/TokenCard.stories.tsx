@@ -29,6 +29,6 @@ Template.storyName = 'TokenCard';
 Template.args = {
   tokenName: Token.NEAR,
   tokensBalance: 877,
-  totalValue: 80569,
+  totalValue: '80569',
   voteWeight: 50
 };

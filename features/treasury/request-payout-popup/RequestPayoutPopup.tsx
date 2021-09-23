@@ -2,15 +2,12 @@ import { Modal } from 'components/modal';
 import { Icon } from 'components/Icon';
 import React, { useCallback } from 'react';
 import { RequestPayoutForm } from 'features/treasury/request-payout-popup/components/RequestPayoutForm';
-import { BondDetail, VoteDetail } from 'features/types';
 import { SputnikService } from 'services/SputnikService';
 import { useSelectedDAO } from 'hooks/useSelectedDao';
 import styles from './request-payout-popup.module.scss';
 
 export interface RequestPayoutPopupProps {
   type: 'send' | 'request';
-  voteDetails: VoteDetail[];
-  bondDetail: BondDetail;
   isOpen: boolean;
   onClose: (...args: unknown[]) => void;
 }
