@@ -1,23 +1,23 @@
 import cn from 'classnames';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
-import { useMount } from 'react-use';
-import { useRouter } from 'next/router';
-import React, { ReactNode } from 'react';
-
-import get from 'lodash/get';
-import isEmpty from 'lodash/isEmpty';
-
-import { useHasDao } from 'hooks/useHasDao';
-import { useAccordion } from 'hooks/useAccordion';
+import { Collapsable } from 'components/collapsable/Collapsable';
+import { Icon, IconName } from 'components/Icon';
 
 import { Logo } from 'components/logo/Logo';
 import { DaoList } from 'components/nav-dao/DaoList';
-import { Collapsable } from 'components/collapsable/Collapsable';
 import { NavItem } from 'components/nav-item/NavItem';
 import { NavSubItem } from 'components/nav-item/NavSubItem';
-import { Icon, IconName } from 'components/Icon';
 
 import { AppFooter } from 'features/app-footer';
+import { useAccordion } from 'hooks/useAccordion';
+
+import { useHasDao } from 'hooks/useHasDao';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
+
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+import { useRouter } from 'next/router';
+import React, { ReactNode } from 'react';
+import { useMount } from 'react-use';
 
 import styles from './sidebar.module.scss';
 
@@ -75,9 +75,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   useMount(() => {
     function close() {
-      if (closeSideBar) {
-        closeSideBar();
-      }
+      closeSideBar?.();
     }
 
     router.events.on('routeChangeComplete', close);
