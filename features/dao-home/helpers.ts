@@ -1,15 +1,14 @@
+import { useRouter } from 'next/router';
+
 import { DAO } from 'types/dao';
-import { Proposal } from 'types/proposal';
+import { Proposal, ProposalsByEndTime } from 'types/proposal';
 
 import { formatCurrency } from 'utils/formatCurrency';
 import { useCallback, useEffect, useState } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import { useAuthContext } from 'context/AuthContext';
-import { useRouter } from 'next/router';
 
-export interface Indexed {
-  [key: string]: Proposal[];
-}
+import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
 
 type DaoDetailsType = {
   title: string;
@@ -90,47 +89,11 @@ export function getFundAndMembersNum(
 
 type ProposalsFilter = 'Active proposals' | 'Recent proposals' | 'My proposals';
 
-export interface FilteredData extends Indexed {
-  lessThanHourProposals: Proposal[];
-  lessThanDayProposals: Proposal[];
-  lessThanWeekProposals: Proposal[];
-  otherProposals: Proposal[];
-}
-
 interface ProposalsData {
   filter: ProposalsFilter;
   onFilterChange: (val?: string) => void;
-  filteredData: FilteredData;
+  filteredData: ProposalsByEndTime;
   data: Proposal[];
-}
-
-export function splitProposalsByVotingPeriod(data: Proposal[]): FilteredData {
-  return data.reduce(
-    (res, item) => {
-      // Split items by groups (less than hour, day, week)
-      const votingEndsAt = new Date(item.votePeriodEnd).getMilliseconds();
-      const now = new Date().getMilliseconds();
-      const diff = votingEndsAt - now;
-
-      if (diff < 3.6e6) {
-        res.lessThanHourProposals.push(item);
-      } else if (diff < 8.64e7) {
-        res.lessThanDayProposals.push(item);
-      } else if (diff < 6.048e8) {
-        res.lessThanWeekProposals.push(item);
-      } else {
-        res.otherProposals.push(item);
-      }
-
-      return res;
-    },
-    {
-      lessThanHourProposals: [] as Proposal[],
-      lessThanDayProposals: [] as Proposal[],
-      lessThanWeekProposals: [] as Proposal[],
-      otherProposals: [] as Proposal[]
-    }
-  );
 }
 
 export function useFilteredData(): ProposalsData {
@@ -174,22 +137,12 @@ export function useFilteredData(): ProposalsData {
     }
   });
 
-  const {
-    lessThanHourProposals,
-    lessThanDayProposals,
-    lessThanWeekProposals,
-    otherProposals
-  } = splitProposalsByVotingPeriod(filteredData);
+  const proposalsByVotingPeriod = splitProposalsByVotingPeriod(filteredData);
 
   return {
     filter,
     onFilterChange,
-    filteredData: {
-      lessThanHourProposals,
-      lessThanDayProposals,
-      lessThanWeekProposals,
-      otherProposals
-    },
+    filteredData: proposalsByVotingPeriod,
     data: proposals
   };
 }

@@ -2,6 +2,11 @@ import React, { FC } from 'react';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 
+import {
+  VOTE_BY_PERIOD,
+  VoteByPeriodInterface
+} from 'constants/votingConstants';
+
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useFilteredProposalsData } from 'features/search/search-results/components/proposals-tab-view/helpers';
 import { Collapsable } from 'components/collapsable/Collapsable';
@@ -14,25 +19,6 @@ import { ProposalCardRenderer } from 'components/cards/proposal-card';
 
 import styles from './proposals-tab-view.module.scss';
 
-const voteByPeriod = [
-  {
-    title: 'less then 1 hour',
-    dataKey: 'lessThanHourProposals'
-  },
-  {
-    title: 'less than a day',
-    dataKey: 'lessThanDayProposals'
-  },
-  {
-    title: 'less than a week',
-    dataKey: 'lessThanWeekProposals'
-  },
-  {
-    title: 'more than a week',
-    dataKey: 'otherProposals'
-  }
-];
-
 export const ProposalsTabView: FC = () => {
   const {
     filteredProposalsData,
@@ -41,20 +27,33 @@ export const ProposalsTabView: FC = () => {
   } = useFilteredProposalsData();
   const { searchResults } = useSearchResults();
 
-  const renderProposalsByVotePeriod = ({
-    title,
-    dataKey
-  }: {
-    title: string;
-    dataKey: string;
-  }) => {
-    const data = filteredProposalsData[dataKey];
+  const renderProposalsByVotePeriod = (votePeriod: VoteByPeriodInterface) => {
+    const { key, title } = votePeriod;
+    const data = filteredProposalsData[key];
 
     if (isEmpty(data)) return null;
 
+    function getHeader() {
+      if (key === 'otherProposals') {
+        return (
+          <>
+            Voting &nbsp;
+            <span className={styles.bold}>ended</span>
+          </>
+        );
+      }
+
+      return (
+        <>
+          Voting ends in &nbsp;
+          <span className={styles.bold}>{title}</span>
+        </>
+      );
+    }
+
     return (
       <Collapsable
-        key={title}
+        key={key}
         initialOpenState
         renderHeading={(toggleHeading, isHeadingOpen) => (
           <Button
@@ -62,8 +61,7 @@ export const ProposalsTabView: FC = () => {
             className={styles.votingEnds}
             onClick={() => toggleHeading()}
           >
-            Voting ends in &nbsp;
-            <div className={styles.bold}>{title}</div>
+            {getHeader()}
             <Icon
               name="buttonArrowRight"
               width={24}
@@ -119,7 +117,7 @@ export const ProposalsTabView: FC = () => {
       />
       <Highlighter>
         <div className={styles.proposalList}>
-          {voteByPeriod.map(period => renderProposalsByVotePeriod(period))}
+          {VOTE_BY_PERIOD.map(period => renderProposalsByVotePeriod(period))}
         </div>
       </Highlighter>
     </div>

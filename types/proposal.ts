@@ -218,3 +218,15 @@ enum Vote {
   Reject = 0x1,
   Remove = 0x2
 }
+
+export interface Indexed {
+  [key: string]: Proposal[];
+}
+
+export interface ProposalsByEndTime extends Indexed {
+  lessThanHourProposals: Proposal[];
+  lessThanDayProposals: Proposal[];
+  lessThanWeekProposals: Proposal[];
+  moreThanWeekProposals: Proposal[];
+  otherProposals: Proposal[];
+}

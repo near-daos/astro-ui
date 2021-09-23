@@ -8,9 +8,11 @@ import classNames from 'classnames';
 import React, { FC, useCallback } from 'react';
 import { ProposalByDao, ProposalsFilter } from 'features/member-home/types';
 import { DaoSection } from 'features/member-home/components/dao-section';
+import { VotePeriodKey } from 'constants/votingConstants';
 
 interface ProposalsByDaoRendererProps {
   title: string;
+  periodKey: VotePeriodKey;
   data: ProposalByDao;
   filter: ProposalsFilter;
   onFilterChange: (name: string, value: string) => void;
@@ -18,6 +20,7 @@ interface ProposalsByDaoRendererProps {
 
 export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
   title,
+  periodKey,
   data,
   filter,
   onFilterChange
@@ -28,6 +31,24 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
 
   if (isEmpty(data)) {
     return null;
+  }
+
+  function getHeader() {
+    if (periodKey === 'otherProposals') {
+      return (
+        <>
+          Voting &nbsp;
+          <span className={styles.bold}>ended</span>
+        </>
+      );
+    }
+
+    return (
+      <>
+        Voting ends in &nbsp;
+        <span className={styles.bold}>{title}</span>
+      </>
+    );
   }
 
   return (
@@ -42,8 +63,7 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
           className={styles.votingEnds}
           onClick={() => toggleHeading()}
         >
-          Voting ends in &nbsp;
-          <div className={styles.bold}>{title}</div>
+          {getHeader()}
           <Icon
             name="buttonArrowRight"
             width={24}
