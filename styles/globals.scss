@@ -23,7 +23,7 @@ a {
 
 :root {
   color: var(--color-brand-black);
-  font-size: 16px;
+  font-size: 14px;
 }
 
 body {
@@ -95,9 +95,9 @@ $sizes: // Typography sizes
   }
 }
 
-@media screen and (max-width: #{$screen-xs}px) {
+@media screen and (min-width: #{$screen-xs}px) {
   :root {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
