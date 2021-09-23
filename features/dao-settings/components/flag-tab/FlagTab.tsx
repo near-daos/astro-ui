@@ -8,18 +8,22 @@ import {
   schema
 } from 'features/dao-settings/components/links-tab';
 import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
-import { useDao } from 'hooks/useDao';
-import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
 import awsUploader from 'services/AwsUploader/AwsUploader';
 import { useSWRConfig } from 'swr';
 
+import { DaoConfig } from 'types/proposal';
+import { fromMetadataToBase64 } from 'services/SputnikService/mappers/dao';
+import { SputnikService } from 'services/SputnikService';
+import { getChangeConfigProposal } from 'features/dao-settings/helpers';
 import styles from './flag-tab.module.scss';
 
 interface FlagTabProps {
   daoFlag?: string;
+  daoId: string;
+  currentDaoSettings: { links: string[]; name: string; purpose: string };
 }
 
 const sources = [
@@ -31,11 +35,7 @@ const sources = [
   '/flags/flag-6.svg'
 ];
 
-const FlagTab: FC<FlagTabProps> = ({ daoFlag }) => {
-  const router = useRouter();
-  const daoId = router.query.dao as string;
-  const dao = useDao(daoId);
-
+const FlagTab: FC<FlagTabProps> = ({ daoFlag, daoId, currentDaoSettings }) => {
   const { mutate } = useSWRConfig();
   const [viewMode, setViewMode] = useToggle(true);
 
@@ -49,12 +49,24 @@ const FlagTab: FC<FlagTabProps> = ({ daoFlag }) => {
   });
 
   async function onSubmit(data: CropReturnType) {
-    await awsUploader.uploadToBucket(data.file);
+    const { Key: fileName } = await awsUploader.uploadToBucket(data.file);
+    const newDaoConfig: DaoConfig = {
+      name: currentDaoSettings.name,
+      purpose: currentDaoSettings.purpose,
+      metadata: fromMetadataToBase64({
+        links: currentDaoSettings.links,
+        flag: fileName
+      })
+    };
+
+    await SputnikService.createProposal(
+      getChangeConfigProposal(daoId, newDaoConfig, 'Changing flag')
+    );
     await mutate('/daos');
     setViewMode(true);
   }
 
-  const fileName = dao?.id;
+  const fileName = daoId;
 
   if (!fileName) throw Error('Cannot upload flag. Unknown dao ID');
 

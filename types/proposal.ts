@@ -205,8 +205,13 @@ interface ChangeConfig {
 export interface DaoConfig {
   name: string;
   purpose: string;
-  metadata: string;
+  metadata: string | undefined;
 }
+
+export type ConfigChangeReason =
+  | 'Changing name/purpose'
+  | 'Changing links'
+  | 'Changing flag';
 
 enum Vote {
   Approve = 0x0,

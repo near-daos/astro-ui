@@ -13,7 +13,7 @@ import { DaoDetails } from 'features/dao-home/components/dao-details/DaoDetails'
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-
+import { CreateDaoInput } from 'types/dao';
 import { useFormContext } from 'react-hook-form';
 import awsUploader from 'services/AwsUploader/AwsUploader';
 import { SputnikService } from 'services/SputnikService';
@@ -32,12 +32,14 @@ export function ReviewView(): JSX.Element {
   ];
 
   async function onSubmit(data: DAOFormValues) {
-    await awsUploader.uploadToBucket(data.flag);
+    const { Key: fileName } = await awsUploader.uploadToBucket(data.flag);
 
     await SputnikService.createDao({
       name: data.address,
       purpose: data.purpose,
       council: 'council',
+      links: data.websites,
+      flag: fileName,
       bond: '0.1',
       votePeriod: '168',
       gracePeriod: '24',
@@ -49,7 +51,7 @@ export function ReviewView(): JSX.Element {
         bountyBond: '0.1',
         bountyForgivenessPeriod: '168'
       }
-    });
+    } as CreateDaoInput);
 
     await router.push('/home');
   }
