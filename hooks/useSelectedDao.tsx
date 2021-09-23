@@ -7,6 +7,9 @@ import { useDaoListPerCurrentUser } from './useDaoListPerCurrentUser';
 
 export const DAO_COOKIE = 'selectedDao';
 
+/**
+ * @deprecated useDad hook should be used instead
+ */
 export function useSelectedDAO(): DAO | null {
   const router = useRouter();
   const daoId = router.query.dao;

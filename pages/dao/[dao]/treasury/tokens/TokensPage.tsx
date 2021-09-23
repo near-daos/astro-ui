@@ -1,24 +1,12 @@
-import { useSelectedDAO } from 'hooks/useSelectedDao';
-import React, {
-  CSSProperties,
-  useCallback,
-  useMemo,
-  useRef,
-  useState
-} from 'react';
-import { ListOnScrollProps, VariableSizeList } from 'react-window';
-import { useMedia } from 'react-use';
-import dynamic from 'next/dynamic';
-
-import ScrollList from 'components/scroll-list/ScrollList';
-import { IconButton } from 'components/button/IconButton';
 import { Button } from 'components/button/Button';
+import { IconButton } from 'components/button/IconButton';
 import { TokenCard } from 'components/cards/token-card';
 import { Header } from 'components/cards/token-card/components/header';
 import { useModal } from 'components/modal';
-import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
+
+import ScrollList from 'components/scroll-list/ScrollList';
 import { CopyButton } from 'features/copy-button';
-import { Token } from 'types/token';
+import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
 
 import {
   BOND_DETAIL,
@@ -27,8 +15,20 @@ import {
   VOTE_DETAILS
 } from 'lib/mocks/treasury/tokens';
 import { ChartData } from 'lib/types/treasury';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 
 import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
+import React, {
+  CSSProperties,
+  useCallback,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
+import { useMedia } from 'react-use';
+import { ListOnScrollProps, VariableSizeList } from 'react-window';
+import { Token } from 'types/token';
 
 interface TokenCardInput {
   id: string;
@@ -52,8 +52,8 @@ const TokensPage: React.FC<TokensPageProps> = ({
   tokens = TOKENS_DATA,
   totalValue = 45876
 }) => {
-  const selectedDao = useSelectedDAO();
-  const accountName = selectedDao?.id || '';
+  const router = useRouter();
+  const daoId = router.query.dao as string;
 
   const [items] = useState(tokens);
   const [showRequestPayoutPopup] = useModal(RequestPayoutPopup, {
@@ -105,7 +105,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
     >
       <TokenCard
         {...items[index]}
-        href={`/dao/${accountName}/treasury/tokens/transactions/${items[index].id}`}
+        href={`/dao/${daoId}/treasury/tokens/transactions/${items[index].id}`}
       />
     </div>
   );
@@ -126,8 +126,8 @@ const TokensPage: React.FC<TokensPageProps> = ({
       <div className={styles.account}>
         <div className={styles.caption}>DAO account name</div>
         <div className={styles.name}>
-          {accountName}
-          <CopyButton text={accountName} className={styles.icon} />
+          {daoId}
+          <CopyButton text={daoId} className={styles.icon} />
         </div>
       </div>
       <div className={styles.send}>

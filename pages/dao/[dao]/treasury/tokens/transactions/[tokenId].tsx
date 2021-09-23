@@ -1,13 +1,14 @@
-import { useRouter } from 'next/router';
-import get from 'lodash/get';
-import React, { useCallback, useMemo, useState } from 'react';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
-import Link from 'next/link';
-import dynamic from 'next/dynamic';
 import classNames from 'classnames';
+import { Button } from 'components/button/Button';
+import { ExpandedProposalCard } from 'components/cards/expanded-proposal-card';
+import { RequestPayout } from 'components/cards/proposal-card';
+
+import { TransactionCard } from 'components/cards/transaction-card';
 
 import { Icon } from 'components/Icon';
-import { Button } from 'components/button/Button';
+import { useModal } from 'components/modal';
+import { Pagination } from 'components/pagination';
+import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
 
 import {
   BOND_DETAIL,
@@ -17,15 +18,13 @@ import {
   VOTE_DETAILS
 } from 'lib/mocks/treasury/tokens';
 import { ChartData, TransactionCardInput } from 'lib/types/treasury';
-
-import { TransactionCard } from 'components/cards/transaction-card';
-import { Pagination } from 'components/pagination';
-import { ExpandedProposalCard } from 'components/cards/expanded-proposal-card';
-import { RequestPayout } from 'components/cards/proposal-card';
-import { useModal } from 'components/modal';
-import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
+import get from 'lodash/get';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import styles from 'pages/dao/[dao]/treasury/tokens/transactions/TransactionsPage.module.scss';
+import React, { useCallback, useMemo, useState } from 'react';
 
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
 
@@ -57,8 +56,7 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
     bondDetail: BOND_DETAIL
   });
 
-  const selectedDao = useSelectedDAO();
-  const accountName = selectedDao?.id || '';
+  const daoId = router.query.dao as string;
 
   const [isProposalDetailsOpened, showProposalDetailsModal] = useState(false);
   const [sortByRecent, setSortByRecent] = useState(true);
@@ -118,9 +116,8 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.back}>
-        <Link href={`/dao/${accountName}/treasury/tokens`}>
-          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-          <a>
+        <Link href={`/dao/${daoId}/treasury/tokens`}>
+          <a href="*">
             <Icon name="buttonArrowLeft" className={styles.icon} />
             All tokens
           </a>
