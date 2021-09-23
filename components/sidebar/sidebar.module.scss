@@ -7,7 +7,7 @@
   height: 100%;
   min-height: 100vh;
   overflow-y: hidden;
-  width: 300px;
+  width: 304px;
 
   /* Turn on custom 4px wide scrollbar */
   ::-webkit-scrollbar {
@@ -41,7 +41,7 @@
 
 .scrolling {
   height: calc(100vh - 320px);
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 .bottom {
