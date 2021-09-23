@@ -153,7 +153,7 @@ export const getInitialData = (
   return {
     ...views,
     daoSettings: {
-      externalLink: dao?.link ?? '',
+      externalLink: '',
       details: dao?.description ?? ''
     }
   };

@@ -81,6 +81,7 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
   const router = useRouter();
   const daoId = router.query.dao as string;
   const dao = useDao(daoId);
+
   const { filter, onFilterChange, filteredData, data } = useFilteredData();
 
   const [nearPrice, setNearPrice] = useState(0);

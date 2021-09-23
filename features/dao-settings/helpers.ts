@@ -1,34 +1,35 @@
 import Decimal from 'decimal.js';
 import { yoktoNear } from 'services/SputnikService';
 import { DAO } from 'types/dao';
-import { CreateProposalParams } from 'types/proposal';
+import {
+  ConfigChangeReason,
+  CreateProposalParams,
+  DaoConfig
+} from 'types/proposal';
 import { dataRoleToContractRole } from 'features/groups/helpers';
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
 
 export interface NameAndPurposeData {
   name: string;
   purpose: string;
-  details: string;
-  externalUrl: string;
 }
 
 export function getChangeConfigProposal(
   daoId: string,
-  { name, purpose, externalUrl, details }: NameAndPurposeData
+  { name, purpose, metadata }: DaoConfig,
+  reason: ConfigChangeReason
 ): CreateProposalParams {
-  const proposalDescription = `${details}, ${externalUrl}`;
-
   return {
     kind: 'ChangeConfig',
     daoId,
     data: {
       config: {
-        metadata: '',
+        metadata,
         name,
         purpose
       }
     },
-    description: proposalDescription,
+    description: `${reason} for ${daoId}`,
     bond: '1000000000000000000000000'
   };
 }

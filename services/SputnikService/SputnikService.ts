@@ -10,16 +10,12 @@ import { CreateTokenParams, NftToken } from 'types/token';
 import { RequestQueryBuilder } from '@nestjsx/crud-request';
 
 import { CreateDaoInput, DAO } from 'types/dao';
-import {
-  CreateProposalParams,
-  DaoConfig,
-  Proposal,
-  ProposalType
-} from 'types/proposal';
+import { CreateProposalParams, Proposal, ProposalType } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
 import { HttpService, httpService } from 'services/HttpService';
 import {
   DaoDTO,
+  fromMetadataToBase64,
   GetDAOsResponse,
   mapDaoDTOListToDaoList,
   mapDaoDTOtoDao
@@ -202,13 +198,6 @@ class SputnikService {
   }
 
   public async createDao(params: CreateDaoInput): Promise<boolean> {
-    const config: DaoConfig = {
-      name: params.name,
-      purpose: params.purpose,
-      metadata: ''
-    };
-
-    // TODO what should be in metadata?
     const argsList = {
       purpose: params.purpose,
       council: params.council.split('\n').filter((item: string) => item),
@@ -233,7 +222,14 @@ class SputnikService {
           .mul('3.6e12')
           .toFixed()
       },
-      config
+      config: {
+        name: params.name,
+        purpose: params.purpose,
+        metadata: fromMetadataToBase64({
+          links: params.links,
+          flag: params.flag
+        })
+      }
     };
 
     const amount = new Decimal(params.amountToTransfer);
@@ -258,17 +254,6 @@ class SputnikService {
     return false;
   }
 
-  // SputnikService.createProposal({
-  //   daoId: 'alexeydao.sputnikv2.testnet',
-  //   description: 'description',
-  //   kind: 'AddMemberToRole',
-  //   data: {
-  //     member_id: 'somenear.testnet',
-  //     role: 'council'
-  //   },
-  //   bond: '1000000000000000000000000'
-  // });
-  // TODO check data structures for different proposals
   public async createProposal(params: CreateProposalParams): Promise<any> {
     const { daoId, description, kind, data, bond } = params;
 

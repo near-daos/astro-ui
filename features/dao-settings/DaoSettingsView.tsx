@@ -1,9 +1,8 @@
 import Tabs from 'components/tabs/Tabs';
 import Decimal from 'decimal.js';
 import { NameAndPurposeTab } from 'features/dao-settings/components/name-and-pupropse-tab';
-import { useDao } from 'hooks/useDao';
+import { DAO } from 'types/dao';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 import { yoktoNear } from 'services/SputnikService';
 import { BondsAndDeadlines } from './components/bond-and-deadlines-tab';
@@ -15,12 +14,14 @@ const FlagTab = dynamic(import('features/dao-settings/components/flag-tab'), {
   ssr: false
 });
 
-export const DaoSettingsView: FC = () => {
-  const router = useRouter();
-  const daoId = router.query.dao as string;
-  const dao = useDao(daoId);
+interface DaoSettingsPageProps {
+  data: DAO;
+}
 
-  if (dao == null) return null;
+export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
+  if (!dao) {
+    return null;
+  }
 
   const tabs = [
     {
@@ -31,6 +32,7 @@ export const DaoSettingsView: FC = () => {
           accountName={dao.id}
           name={dao.name}
           purpose={dao.description}
+          currentDaoMetadata={{ links: dao.links, flag: dao.logo }}
         />
       )
     },
@@ -40,7 +42,12 @@ export const DaoSettingsView: FC = () => {
       content: (
         <LinksTab
           accountName={dao.id}
-          links={[]} // TODO Where are links
+          links={dao.links}
+          currentDaoSettings={{
+            name: dao.name,
+            purpose: dao.description,
+            flag: dao.logo
+          }}
         />
       )
     },
@@ -68,7 +75,17 @@ export const DaoSettingsView: FC = () => {
     {
       id: 4,
       label: 'Flag',
-      content: <FlagTab daoFlag={dao.logo} />
+      content: (
+        <FlagTab
+          daoFlag={dao.logo}
+          daoId={dao.id}
+          currentDaoSettings={{
+            links: dao.links,
+            name: dao.name,
+            purpose: dao.description
+          }}
+        />
+      )
     }
   ];
 
