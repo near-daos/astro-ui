@@ -107,19 +107,20 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
 
   const isMobile = useMedia('(max-width: 767px)');
 
-  function getPendingDaoId() {
+  const getPendingDaoId = useCallback(() => {
     return `${daoId}.${nearConfig.contractName}`;
-  }
+  }, [daoId]);
 
-  async function fetchPendingDaoInfo() {
-    const daoInfo = await SputnikService.getDaoById(getPendingDaoId());
+  const fetchPendingDaoInfo = useCallback(async () => {
+    const id = getPendingDaoId();
+    const daoInfo = await SputnikService.getDaoById(id);
 
     if (!daoInfo) {
       timeoutId.current = setTimeout(fetchPendingDaoInfo, 2000);
     } else {
-      router.push(`/dao/${daoId}`);
+      router.push(`/dao/${id}`);
     }
-  }
+  }, [router, getPendingDaoId]);
 
   useMount(async () => {
     const nearPriceData = await axios.get('/api/nearPrice');
@@ -140,8 +141,7 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
         clearTimeout(timeout);
       }
     };
-    // eslint-disable-next-line
-  }, [daoId, isPending]);
+  }, [daoId, isPending, fetchPendingDaoInfo]);
 
   function renderProposalsByVotePeriod(period: VoteByPeriodInterface) {
     const { title, key } = period;
