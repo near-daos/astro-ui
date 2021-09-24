@@ -35,7 +35,8 @@ const DAO_STRUCTURE_FLAT: DaoSettingOption<DAOStructureType> = {
   icon: 'illustrationFlatOrganization',
   subject: 'structure',
   title: 'Flat',
-  description: 'No groups; all members have equal access.'
+  description: 'No groups; all members have equal access.',
+  disabled: true
 };
 
 const DAO_PROPOSALS_CLOSED: DaoSettingOption<DAOProposalsType> = {
@@ -75,7 +76,8 @@ A group of fans
 A social club`,
   proposals: 'closed',
   structure: 'flat',
-  voting: 'democratic'
+  voting: 'democratic',
+  disabled: true
 };
 
 const DAO_TEMPLATE_CORP: DAOTemplate = {
