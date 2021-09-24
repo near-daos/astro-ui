@@ -11,7 +11,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
 import { SputnikService } from 'services/SputnikService';
 import * as yup from 'yup';
-
+import { DaoConfig } from 'types/proposal';
+import {
+  DaoMetadata,
+  fromMetadataToBase64
+} from 'services/SputnikService/mappers/dao';
 import styles from './name-and-purpose-tab.module.scss';
 
 export const schema = yup.object().shape({
@@ -23,12 +27,14 @@ export interface NameAndPurposeTabProps {
   accountName: string;
   name: string;
   purpose: string;
+  currentDaoMetadata: DaoMetadata;
 }
 
 export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
   accountName,
   name,
-  purpose
+  purpose,
+  currentDaoMetadata
 }) => {
   const [viewMode, setViewMode] = useToggle(true);
   const [isSubmitting, setSubmitting] = useToggle(false);
@@ -38,9 +44,7 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
     reValidateMode: 'onChange',
     defaultValues: {
       name,
-      purpose,
-      details: '',
-      externalUrl: ''
+      purpose
     },
     resolver: yupResolver(schema)
   });
@@ -54,13 +58,29 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
   const onSubmit = useCallback(
     async (data: NameAndPurposeData) => {
       setSubmitting(true);
+
+      const { links, flag } = currentDaoMetadata;
+
+      const url = flag.split('/');
+      const fileName = url[url.length - 1];
+
+      const newDaoConfig: DaoConfig = {
+        name: data.name,
+        purpose: data.purpose,
+        metadata: fromMetadataToBase64({ links, flag: fileName })
+      };
+
       await SputnikService.createProposal(
-        getChangeConfigProposal(accountName, data)
+        getChangeConfigProposal(
+          accountName,
+          newDaoConfig,
+          'Changing name/purpose'
+        )
       );
       setSubmitting(false);
       setViewMode(true);
     },
-    [setSubmitting, accountName, setViewMode]
+    [setSubmitting, currentDaoMetadata, accountName, setViewMode]
   );
 
   const onCancel = useCallback(() => {
@@ -126,8 +146,6 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
             ) : (
               <TextArea
                 {...register('purpose')}
-                // TODO Text area valid state?
-                // isValid={touchedFields.purpose && !errors.purpose?.message}
                 size="block"
                 textAlign="left"
                 resize="none"

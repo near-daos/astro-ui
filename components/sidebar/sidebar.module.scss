@@ -7,7 +7,31 @@
   height: 100%;
   min-height: 100vh;
   overflow-y: hidden;
-  width: 300px;
+  width: 304px;
+
+  /* Turn on custom 4px wide scrollbar */
+  ::-webkit-scrollbar {
+    background: transparent;
+    border-radius: 0;
+    width: 4px;
+  }
+
+  /* hover effect for both scrollbar area, and scrollbar 'thumb' */
+  ::-webkit-scrollbar:hover {
+    background-color: rgba(232, 224, 255, 0.09);
+  }
+
+  /* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
+  ::-webkit-scrollbar-thumb:vertical {
+    background-color: rgba(232, 224, 255, 1);
+    border-radius: 0;
+  }
+
+  ::-webkit-scrollbar-thumb:vertical:active {
+    /* Some darker color when you click it */
+    background: rgba(232, 224, 255, 0.61);
+    border-radius: 0;
+  }
 }
 
 .wrapper {
@@ -17,7 +41,7 @@
 
 .scrolling {
   height: calc(100vh - 320px);
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 .bottom {

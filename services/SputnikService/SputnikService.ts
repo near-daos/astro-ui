@@ -1,25 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import PromisePool from '@supercharge/promise-pool';
 import Big from 'big.js';
 import { NearConfig, nearConfig } from 'config';
 import Decimal from 'decimal.js';
 import omit from 'lodash/omit';
-import { connect, Contract, keyStores, Near } from 'near-api-js';
+import { Contract, keyStores, Near } from 'near-api-js';
 
-import { CreateTokenParams } from 'types/token';
-import { RequestQueryBuilder } from '@nestjsx/crud-request';
-
-import { CreateDaoInput, DAO } from 'types/dao';
-import {
-  CreateProposalParams,
-  DaoConfig,
-  Proposal,
-  ProposalType
-} from 'types/proposal';
-import { SearchResultsData } from 'types/search';
 import { HttpService, httpService } from 'services/HttpService';
 import {
   DaoDTO,
+  fromMetadataToBase64,
   GetDAOsResponse,
   mapDaoDTOListToDaoList,
   mapDaoDTOtoDao
@@ -29,11 +20,29 @@ import {
   mapProposalDTOToProposal,
   ProposalDTO
 } from 'services/SputnikService/mappers/proposal';
+import { mapTokensDTOToTokens } from 'services/SputnikService/mappers/token';
 import {
   mapSearchResultsDTOToDataObject,
   SearchResponse
 } from 'services/SputnikService/mappers/search-results';
+import {
+  GetTransactionsResponse,
+  mapTransactionDTOToTransaction
+} from 'services/SputnikService/mappers/transaction';
 import { BountiesResponse, BountyResponse } from 'types/bounties';
+
+import { PaginationResponse } from 'types/api';
+import { CreateDaoInput, DAO } from 'types/dao';
+import { CreateProposalParams, Proposal, ProposalType } from 'types/proposal';
+import { SearchResultsData } from 'types/search';
+
+import {
+  CreateTokenParams,
+  GetTokensResponse,
+  TokenType,
+  NftToken
+} from 'types/token';
+import { Transaction } from 'types/transaction';
 
 import { gas, yoktoNear } from './constants';
 import { ContractPool } from './ContractPool';
@@ -59,12 +68,12 @@ class SputnikService {
     this.config = config;
   }
 
-  public async init(): Promise<void> {
-    this.near = await connect({
-      deps: {
-        keyStore: new keyStores.BrowserLocalStorageKeyStore()
-      },
-      ...this.config
+  public init(): void {
+    const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+
+    this.near = new Near({
+      ...this.config,
+      keyStore
     });
 
     this.walletConnection = new SputnikWalletConnection(this.near, 'sputnik');
@@ -201,13 +210,6 @@ class SputnikService {
   }
 
   public async createDao(params: CreateDaoInput): Promise<boolean> {
-    const config: DaoConfig = {
-      name: params.name,
-      purpose: params.purpose,
-      metadata: ''
-    };
-
-    // TODO what should be in metadata?
     const argsList = {
       purpose: params.purpose,
       council: params.council.split('\n').filter((item: string) => item),
@@ -232,7 +234,14 @@ class SputnikService {
           .mul('3.6e12')
           .toFixed()
       },
-      config
+      config: {
+        name: params.name,
+        purpose: params.purpose,
+        metadata: fromMetadataToBase64({
+          links: params.links,
+          flag: params.flag
+        })
+      }
     };
 
     const amount = new Decimal(params.amountToTransfer);
@@ -257,17 +266,6 @@ class SputnikService {
     return false;
   }
 
-  // SputnikService.createProposal({
-  //   daoId: 'alexeydao.sputnikv2.testnet',
-  //   description: 'description',
-  //   kind: 'AddMemberToRole',
-  //   data: {
-  //     member_id: 'somenear.testnet',
-  //     role: 'council'
-  //   },
-  //   bond: '1000000000000000000000000'
-  // });
-  // TODO check data structures for different proposals
   public async createProposal(params: CreateProposalParams): Promise<any> {
     const { daoId, description, kind, data, bond } = params;
 
@@ -353,7 +351,11 @@ class SputnikService {
 
   public async getBountiesDone(daoId: string): Promise<Proposal[]> {
     const queryString = RequestQueryBuilder.create()
-      .setFilter({ field: 'daoId', operator: '$eq', value: daoId })
+      .setFilter({
+        field: 'daoId',
+        operator: '$eq',
+        value: daoId
+      })
       .setFilter({
         field: 'kind',
         operator: '$cont',
@@ -361,7 +363,10 @@ class SputnikService {
       })
       .setLimit(500)
       .setOffset(0)
-      .sortBy({ field: 'createdAt', order: 'DESC' })
+      .sortBy({
+        field: 'createdAt',
+        order: 'DESC'
+      })
       .query();
 
     const { data: bounties } = await this.httpService.get<GetProposalsResponse>(
@@ -389,6 +394,29 @@ class SputnikService {
     });
 
     return proposals.data.map(mapProposalDTOToProposal);
+  }
+
+  public async getTransfers(daoId?: string): Promise<Transaction[]> {
+    const queryString = RequestQueryBuilder.create()
+      .setFilter({
+        field: 'receiverAccountId',
+        operator: '$eq',
+        value: daoId
+      })
+      // .setOr({ field: 'signerAccountId', operator: '$eq', value: daoId })
+      .setLimit(500)
+      .setOffset(0)
+      .sortBy({
+        field: 'blockTimestamp',
+        order: 'DESC'
+      })
+      .query();
+
+    const { data: transfers } = await this.httpService.get<
+      GetTransactionsResponse
+    >(`/transactions/transfers?${queryString}`);
+
+    return mapTransactionDTOToTransaction(transfers.data, daoId);
   }
 
   public async getPolls(
@@ -454,6 +482,21 @@ class SputnikService {
     return data.data;
   }
 
+  public async getNfts(
+    ownerId: string,
+    offset = 0,
+    limit = 50
+  ): Promise<NftToken[]> {
+    const { data } = await this.httpService.get<PaginationResponse<NftToken>>(
+      '/tokens/nfts',
+      {
+        params: { offset, limit, filter: `ownerId||$eq||${ownerId}` }
+      }
+    );
+
+    return data.data;
+  }
+
   public vote(
     daoId: string,
     proposalId: number,
@@ -463,6 +506,26 @@ class SputnikService {
       id: proposalId,
       action
     });
+  }
+
+  public async getTokens(params?: {
+    offset?: number;
+    limit?: number;
+    sort?: string;
+  }): Promise<TokenType[]> {
+    const offset = params?.offset ?? 0;
+    const limit = params?.limit ?? 50;
+    const sort = params?.sort ?? 'createdAt,DESC';
+
+    const { data } = await this.httpService.get<GetTokensResponse>('/tokens', {
+      params: {
+        offset,
+        limit,
+        sort
+      }
+    });
+
+    return mapTokensDTOToTokens(data.data);
   }
 
   public finalize(contractId: string, proposalId: number): Promise<void> {

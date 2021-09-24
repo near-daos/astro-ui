@@ -1,13 +1,13 @@
-import React, { FC, ReactNode, useCallback } from 'react';
-import { Modal } from 'components/modal';
+import { ContentPanel } from 'components/cards/expanded-proposal-card/components/content-panel';
 
 import { StatusPanel } from 'components/cards/expanded-proposal-card/components/status-panel';
 import { VotePanel } from 'components/cards/expanded-proposal-card/components/vote-panel';
-import { ContentPanel } from 'components/cards/expanded-proposal-card/components/content-panel';
+import { Modal } from 'components/modal';
+import { useDao } from 'hooks/useDao';
+import { useProposal } from 'hooks/useProposal';
+import React, { FC, ReactNode, useCallback } from 'react';
 
 import { DaoDetails, ProposalStatus, ProposalType } from 'types/proposal';
-import { useSelectedProposal } from 'hooks/useSelectedProposal';
-import { useDaoData } from 'hooks/useDaoData';
 
 import styles from './expanded-proposal-card.module.scss';
 
@@ -82,8 +82,8 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
     [onDislike, onLike, onRemove]
   );
 
-  const proposalData = useSelectedProposal(daoId, proposalId);
-  const daoData = useDaoData(daoId);
+  const proposalData = useProposal(daoId, proposalId);
+  const daoData = useDao(daoId);
   const voted = liked || disliked || dismissed || status !== 'InProgress';
 
   return (

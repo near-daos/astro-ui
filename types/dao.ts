@@ -35,7 +35,7 @@ export type DAO = {
   logo: string;
   groups: TGroup[];
   policy: PolicyType;
-  link?: string | null;
+  links: string[];
 };
 
 export type VotePolicyRequest = {
@@ -69,6 +69,8 @@ export interface CreateDaoInput {
   bond: string;
   votePeriod: string;
   gracePeriod: string;
+  links: [];
+  flag: string;
   amountToTransfer: string;
   policy: PolicyTypeRequest;
 }

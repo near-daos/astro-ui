@@ -44,6 +44,10 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [], captions }) => {
     onZoomDataChange
   } = useDomainControl(preparedData || []);
 
+  if (!preparedData.length) {
+    return null;
+  }
+
   return (
     <Measure
       onResize={contentRect => {
@@ -78,6 +82,7 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [], captions }) => {
               containerComponent={
                 <VictoryZoomVoronoiContainer
                   allowZoom={false}
+                  constrainToVisibleArea
                   responsive={false}
                   zoomDimension="x"
                   labels={() => ' '}

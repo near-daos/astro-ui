@@ -1,14 +1,15 @@
 import cn from 'classnames';
-import React, { useMemo } from 'react';
 import { Bond } from 'components/bond';
 import { VoteDetail } from 'features/types';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
 import { getVoteDetails, Scope } from 'features/vote-policy/helpers';
 import { formatYoktoValue } from 'helpers/format';
-import { useSelectedProposal } from 'hooks/useSelectedProposal';
+import { useDao } from 'hooks/useDao';
+import { useProposal } from 'hooks/useProposal';
+import { useRouter } from 'next/router';
+import React, { useMemo } from 'react';
+import { ProgressBar } from './components/progress-bar/ProgressBar';
 
 import { VotersList } from './components/voters-list/VotersList';
-import { ProgressBar } from './components/progress-bar/ProgressBar';
 
 import styles from './vote-details.module.scss';
 
@@ -18,21 +19,24 @@ export interface VoteDetailsProps {
   className?: string;
   proposalId?: number;
 }
+
 export const VoteDetails: React.FC<VoteDetailsProps> = ({
   scope,
   showProgress,
   className = '',
   proposalId
 }) => {
-  const selectedDao = useSelectedDAO();
-  const daoProposal = useSelectedProposal(selectedDao?.id, proposalId);
+  const router = useRouter();
+  const daoId = router.query.dao as string;
+  const currentDao = useDao(daoId);
+  const daoProposal = useProposal(currentDao?.id, proposalId);
 
   const { details, votersList } = useMemo(
-    () => getVoteDetails(selectedDao, scope, daoProposal),
-    [daoProposal, scope, selectedDao]
+    () => getVoteDetails(currentDao, scope, daoProposal),
+    [daoProposal, scope, currentDao]
   );
 
-  const bond = formatYoktoValue(selectedDao?.policy.proposalBond ?? '');
+  const bond = formatYoktoValue(currentDao?.policy.proposalBond ?? '0');
 
   const renderDetail = (detail: VoteDetail, index: number) => (
     <div className={styles.detail} key={detail.label}>

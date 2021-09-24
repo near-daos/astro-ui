@@ -34,6 +34,20 @@
   width: 24px;
 }
 
+.iconWrapper {
+  height: 32px;
+  margin-right: 12px;
+  width: 32px;
+
+  .icon {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+  }
+}
+
 .back {
   @extend %title3;
   align-items: center;

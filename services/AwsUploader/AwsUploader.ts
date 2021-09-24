@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk';
 import { ManagedUpload } from 'aws-sdk/clients/s3';
 import { awsConfig, appConfig } from 'config';
+import { nanoid } from 'nanoid';
 
 const SECOND = 1000;
 
@@ -61,11 +62,13 @@ export class AwsUploader {
   }
 
   uploadToBucket = async (file: File): Promise<ManagedUpload.SendData> => {
+    const fileName = nanoid();
+
     try {
       const response = await this.awsS3Instance
         .upload({
           Bucket: this.bucketName,
-          Key: file.name,
+          Key: fileName,
           Body: file,
           ACL: 'public-read',
           ContentType: 'image/png'

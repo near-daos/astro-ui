@@ -27,12 +27,11 @@ export const AddMemberToGroup: FC<AddRemoveMemberProps> = ({
   linkTitle
 }) => (
   <>
-    <div className={styles.row}>
-      <span className={cn('paragraph1', styles.text)}>
-        Add <b>{name}</b> as member to
+    <div className={cn(styles.row, 'proposalInfo')}>
+      <span className={cn(styles.text, 'paragraph1')}>
+        Add <b>{name}</b> as member to&nbsp;&nbsp;
+        <Badge size="medium">{groupName}</Badge>
       </span>
-      &nbsp;&nbsp;
-      <Badge size="medium">{groupName}</Badge>
     </div>
     {link && (
       <div className={styles.sub}>
@@ -54,12 +53,11 @@ export const RemoveMemberFromGroup: FC<AddRemoveMemberProps> = ({
   linkTitle
 }) => (
   <>
-    <div className={styles.row}>
-      <span className={cn('paragraph1', styles.text)}>
-        Remove <b>{name}</b> from
+    <div className={cn(styles.row, 'proposalInfo')}>
+      <span className={cn(styles.text, 'paragraph1')}>
+        Remove <b>{name}</b> from&nbsp;&nbsp;
+        <Badge size="small">{groupName}</Badge>
       </span>
-      &nbsp;&nbsp;
-      <Badge size="small">{groupName}</Badge>
     </div>
     {link && (
       <div className={styles.sub}>
@@ -84,10 +82,11 @@ export const CreateNewGroup: FC<NewGroupProps> = ({
   linkTitle
 }) => (
   <>
-    <div className={styles.row}>
-      <span className={cn('paragraph1', styles.text)}>Create new group</span>
-      &nbsp;&nbsp;
-      <Badge size="small">{groupName}</Badge>
+    <div className={cn(styles.row, 'proposalInfo')}>
+      <span className={cn(styles.text, 'paragraph1')}>
+        Create new group&nbsp;&nbsp;
+        <Badge size="small">{groupName}</Badge>
+      </span>
     </div>
     {link && (
       <div className={styles.sub}>
@@ -119,11 +118,10 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
 }) => (
   <>
     {reason && (
-      <div className={styles.row}>
-        <span className={cn('paragraph1', styles.text)}>
+      <div className={cn(styles.row, 'proposalInfo')}>
+        <span className={cn(styles.text, 'paragraph1')}>
           I would like to request a payment for {reason}
         </span>
-        &nbsp;&nbsp;
       </div>
     )}
     {link && (
@@ -159,9 +157,8 @@ export const TextWithLink: FC<TextWithLinkProps> = ({
   linkTitle
 }) => (
   <>
-    <div className={styles.row}>
-      <span className={cn('paragraph1', styles.text)}>{text}</span>
-      &nbsp;&nbsp;
+    <div className={cn(styles.row, 'proposalInfo')}>
+      <span className={cn(styles.text, 'paragraph1')}>{text}</span>
     </div>
     {link && (
       <div className={styles.sub}>
@@ -186,9 +183,8 @@ export const FunctionCall: FC<FunctionCallProps> = ({
   linkTitle
 }) => (
   <>
-    <div className={styles.row}>
-      <span className={cn('paragraph1', styles.text)}>{recipient}</span>
-      &nbsp;&nbsp;
+    <div className={cn(styles.row, 'proposalInfo')}>
+      <span className={cn(styles.text, 'paragraph1')}>{recipient}</span>
     </div>
     {link && (
       <div className={styles.sub}>
@@ -204,12 +200,11 @@ interface ChangePolicyProps extends ProposalContentProps {
 
 export const ChangePolicy: FC<ChangePolicyProps> = ({ link, linkTitle }) => (
   <>
-    <div className={styles.row}>
-      <span className={cn('paragraph1', styles.text)}>
+    <div className={cn(styles.row, 'proposalInfo')}>
+      <span className={cn(styles.text, 'paragraph1')}>
         This is a proposal to change voting policies for our groups. See details
         in the link
       </span>
-      &nbsp;&nbsp;
     </div>
     {link && (
       <div className={styles.sub}>

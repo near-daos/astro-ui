@@ -33,7 +33,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
   const Layout = usePageLayout();
 
   useMount(async () => {
-    await SputnikService.init();
+    SputnikService.init();
     setWalletInitialized(true);
   });
 

@@ -1,11 +1,12 @@
-import React, { FC, useCallback } from 'react';
-
-import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import { Bounty } from 'components/cards/bounty-card/types';
 import { Modal } from 'components/modal';
-import { SputnikService } from 'services/SputnikService';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
+
+import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import { formatYoktoValue } from 'helpers/format';
+import { useDao } from 'hooks/useDao';
+import { useRouter } from 'next/router';
+import React, { FC, useCallback } from 'react';
+import { SputnikService } from 'services/SputnikService';
 import ClaimBountyContent from './components/ClaimBountyContent';
 
 export interface ClaimBountyDialogProps {
@@ -19,20 +20,20 @@ export const ClaimBountyDialog: FC<ClaimBountyDialogProps> = ({
   onClose,
   data
 }) => {
-  const selectedDao = useSelectedDAO();
+  const router = useRouter();
+  const daoId = router.query.dao as string;
+  const currentDao = useDao(daoId);
 
   const handleSubmit = useCallback(() => {
-    if (!selectedDao) {
-      return;
-    }
+    if (!currentDao) return;
 
-    SputnikService.claimBounty(selectedDao.id, {
+    SputnikService.claimBounty(currentDao.id, {
       bountyId: Number(data.id),
       deadline: data.deadlineThreshold,
-      bountyBond: formatYoktoValue(selectedDao.policy.bountyBond)
+      bountyBond: formatYoktoValue(currentDao.policy.bountyBond)
     });
     onClose('submitted');
-  }, [data.deadlineThreshold, data.id, onClose, selectedDao]);
+  }, [data.deadlineThreshold, data.id, onClose, currentDao]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

@@ -1,12 +1,13 @@
-import React, { FC, useCallback } from 'react';
+import { Icon } from 'components/Icon';
 
 import { Modal } from 'components/modal';
 
 import { CreatePollForm } from 'features/poll/dialogs/create-poll-dialog/components/CreatePollForm';
 import styles from 'features/poll/dialogs/poll-dialogs.module.scss';
-import { Icon } from 'components/Icon';
+import { useDao } from 'hooks/useDao';
+import { useRouter } from 'next/router';
+import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
 
 export interface CreatePollDialogProps {
   isOpen: boolean;
@@ -17,22 +18,24 @@ export const CreatePollDialog: FC<CreatePollDialogProps> = ({
   isOpen,
   onClose
 }) => {
-  const selectedDao = useSelectedDAO();
+  const router = useRouter();
+  const daoId = router.query.dao as string;
+  const currentDao = useDao(daoId);
 
   const handleSubmit = useCallback(
-    data => {
-      if (selectedDao) {
-        SputnikService.createProposal({
-          daoId: selectedDao.id,
-          description: data.question,
-          kind: 'Vote',
-          bond: selectedDao.policy.proposalBond
-        }).then(() => {
-          onClose();
-        });
-      }
+    async data => {
+      if (!currentDao) return;
+
+      await SputnikService.createProposal({
+        daoId: currentDao.id,
+        description: data.question,
+        kind: 'Vote',
+        bond: currentDao.policy.proposalBond
+      });
+
+      onClose();
     },
-    [onClose, selectedDao]
+    [onClose, currentDao]
   );
 
   return (

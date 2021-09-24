@@ -1,16 +1,14 @@
-import { Modal } from 'components/modal';
 import { Icon } from 'components/Icon';
-import React, { useCallback } from 'react';
+import { Modal } from 'components/modal';
 import { RequestPayoutForm } from 'features/treasury/request-payout-popup/components/RequestPayoutForm';
-import { BondDetail, VoteDetail } from 'features/types';
+import { useDao } from 'hooks/useDao';
+import { useRouter } from 'next/router';
+import React, { useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
 import styles from './request-payout-popup.module.scss';
 
 export interface RequestPayoutPopupProps {
   type: 'send' | 'request';
-  voteDetails: VoteDetail[];
-  bondDetail: BondDetail;
   isOpen: boolean;
   onClose: (...args: unknown[]) => void;
 }
@@ -20,17 +18,19 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
   isOpen,
   onClose
 }) => {
-  const selectedDao = useSelectedDAO();
+  const router = useRouter();
+  const daoId = router.query.dao as string;
+  const currentDao = useDao(daoId);
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const handleSubmit = useCallback(
     data => {
-      if (selectedDao) {
+      if (currentDao) {
         SputnikService.createProposal({
-          daoId: selectedDao.id,
+          daoId: currentDao.id,
           description: data.detail,
           kind: 'Transfer',
-          bond: selectedDao.policy.proposalBond,
+          bond: currentDao.policy.proposalBond,
           data: {
             token_id: '',
             receiver_id: data.recipient,
@@ -41,7 +41,7 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
         });
       }
     },
-    [onClose, selectedDao]
+    [onClose, currentDao]
   );
 
   return (
