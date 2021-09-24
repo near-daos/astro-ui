@@ -30,7 +30,7 @@ export const getServerSideProps = async ({
   return {
     props: {
       data: {
-        chartData: getChartData(transactions, query.dao),
+        chartData: getChartData(transactions),
         tokens: [
           {
             id: 'NEAR',

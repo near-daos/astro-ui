@@ -1,10 +1,7 @@
 import { Transaction } from 'types/transaction';
 import { ChartData } from 'lib/types/treasury';
 
-export function getChartData(
-  transactions: Transaction[],
-  daoId: string
-): ChartData[] {
+export function getChartData(transactions: Transaction[]): ChartData[] {
   let value = 0;
   const result: ChartData[] = [];
 
@@ -17,7 +14,7 @@ export function getChartData(
       return 0;
     })
     .forEach((item: Transaction) => {
-      const income = item.receiverAccountId === daoId;
+      const income = item.type === 'Deposit';
       let balance;
 
       const deposit = Number(item.deposit);

@@ -1,3 +1,5 @@
+export type TransactionType = 'Deposit' | 'Withdraw';
+
 export type Transaction = {
   transactionId: string;
   timestamp: number;
@@ -5,5 +7,5 @@ export type Transaction = {
   receiverAccountId: string;
   signerAccountId: string;
   deposit: string;
-  type: 'Deposit' | 'Withdraw';
+  type: TransactionType;
 };

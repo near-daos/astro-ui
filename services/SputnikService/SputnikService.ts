@@ -399,11 +399,20 @@ class SputnikService {
   public async getTransfers(daoId?: string): Promise<Transaction[]> {
     const queryString = RequestQueryBuilder.create()
       .setFilter({
+        field: 'transactionAction.actionKind',
+        operator: '$eq',
+        value: 'TRANSFER'
+      })
+      .setFilter({
         field: 'receiverAccountId',
         operator: '$eq',
         value: daoId
       })
-      // .setOr({ field: 'signerAccountId', operator: '$eq', value: daoId })
+      .setOr({
+        field: 'receipts.predecessorAccountId',
+        operator: '$eq',
+        value: daoId
+      })
       .setLimit(500)
       .setOffset(0)
       .sortBy({
@@ -414,9 +423,9 @@ class SputnikService {
 
     const { data: transfers } = await this.httpService.get<
       GetTransactionsResponse
-    >(`/transactions/transfers?${queryString}`);
+    >(`/transactions?${queryString}`);
 
-    return mapTransactionDTOToTransaction(transfers.data, daoId);
+    return mapTransactionDTOToTransaction(transfers.data);
   }
 
   public async getPolls(
