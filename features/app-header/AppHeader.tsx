@@ -21,10 +21,10 @@ export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
   useEffect(() => {
     const bodyEl = document.querySelector('body');
 
-    if (bodyEl) {
-      const overflow = showSideBar ? 'hidden' : 'auto';
-
-      bodyEl.style.overflow = overflow;
+    if (bodyEl && showSideBar) {
+      bodyEl.style.overflow = 'hidden';
+    } else if (bodyEl && !showSideBar) {
+      bodyEl.style.removeProperty('overflow');
     }
   }, [showSideBar]);
 
