@@ -14,8 +14,12 @@
 }
 
 .modal {
-  overflow: hidden;
   padding: 0;
+
+  @include tablet-portrait {
+    max-height: none;
+    overflow: hidden;
+  }
 }
 
 .title {
