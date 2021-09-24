@@ -108,7 +108,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     createdAt: daoDTO.createdAt,
     groups: daoGroups,
     policy: daoDTO.policy,
-    links: meta ? meta.links : []
+    links: meta && meta.links ? meta.links : []
   };
 };
 

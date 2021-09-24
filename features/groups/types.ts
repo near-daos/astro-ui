@@ -1,5 +1,3 @@
-import { BondDetail, VoteDetail } from 'features/types';
-
 export enum GroupFormType {
   CREATE_GROUP,
   ADD_TO_GROUP,
@@ -8,8 +6,6 @@ export enum GroupFormType {
 
 export interface GroupFormInput {
   groupType: GroupFormType;
-  voteDetails: VoteDetail[];
-  bondDetail: BondDetail;
   selectedGroup?: string;
   groups: string[];
   name?: string;
