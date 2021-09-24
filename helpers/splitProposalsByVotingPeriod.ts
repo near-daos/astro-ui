@@ -12,13 +12,13 @@ export function splitProposalsByVotingPeriod(
       const now = new Date().getTime();
       const hoursLeft = votingEndsAt - now;
 
-      if (hoursLeft < 0) {
+      if (hoursLeft < 0 || item.status !== 'InProgress') {
         res.otherProposals.push(item);
-      } else if (hoursLeft < ONE_HOUR) {
+      } else if (hoursLeft < ONE_HOUR * 3.6e6) {
         res.lessThanHourProposals.push(item);
-      } else if (hoursLeft < HOURS_IN_DAY) {
+      } else if (hoursLeft < HOURS_IN_DAY * 3.6e6) {
         res.lessThanDayProposals.push(item);
-      } else if (hoursLeft < HOURS_IN_WEEK) {
+      } else if (hoursLeft < HOURS_IN_WEEK * 3.6e6) {
         res.lessThanWeekProposals.push(item);
       } else {
         res.moreThanWeekProposals.push(item);

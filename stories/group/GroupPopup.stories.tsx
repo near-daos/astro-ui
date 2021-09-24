@@ -22,16 +22,7 @@ NewGroup.args = {
   isOpen: true,
   initialValues: {
     groupType: GroupFormType.CREATE_GROUP,
-    groups: [],
-    voteDetails: [
-      { limit: '50%', label: 'MEW holders' },
-      { limit: '50%', label: 'cool group' },
-      { limit: '1 person', label: 'Ombudspeople' }
-    ],
-    bondDetail: {
-      value: 0.3,
-      token: 'NEAR'
-    }
+    groups: []
   }
 };
 
@@ -42,16 +33,7 @@ AddMemberGroup.args = {
   isOpen: true,
   initialValues: {
     groupType: GroupFormType.ADD_TO_GROUP,
-    groups: [],
-    voteDetails: [
-      { limit: '50%', label: 'MEW holders' },
-      { limit: '50%', label: 'cool group' },
-      { limit: '1 person', label: 'Ombudspeople' }
-    ],
-    bondDetail: {
-      value: 0.3,
-      token: 'NEAR'
-    }
+    groups: []
   }
 };
 
@@ -62,15 +44,6 @@ RemoveMemberFromGroup.args = {
   isOpen: true,
   initialValues: {
     groupType: GroupFormType.REMOVE_FROM_GROUP,
-    groups: [],
-    voteDetails: [
-      { limit: '50%', label: 'MEW holders' },
-      { limit: '50%', label: 'cool group' },
-      { limit: '1 person', label: 'Ombudspeople' }
-    ],
-    bondDetail: {
-      value: 0.3,
-      token: 'NEAR'
-    }
+    groups: []
   }
 };

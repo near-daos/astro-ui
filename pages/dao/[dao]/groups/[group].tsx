@@ -1,14 +1,13 @@
-import { Badge, Variant } from 'components/badge/Badge';
+import { Badge } from 'components/badge/Badge';
 import { Button } from 'components/button/Button';
 
 import MemberCard, { MemberCardPopup } from 'components/cards/member-card';
 import { Dropdown } from 'components/dropdown/Dropdown';
 import { useModal } from 'components/modal';
 import { GroupPopup } from 'features/groups';
-import { GroupFormInput, GroupFormType } from 'features/groups/types';
+import { GroupFormType } from 'features/groups/types';
 import { useDao } from 'hooks/useDao';
 
-import { groupColor, groupPopupData } from 'lib/mocks/groups';
 import get from 'lodash/get';
 import { useRouter } from 'next/router';
 
@@ -46,10 +45,8 @@ const GroupPage: FC = () => {
   const [activeSort, setActiveSort] = useState<string>(sortOptions[0].value);
 
   const handleAddClick = useCallback(async () => {
-    // todo - where cna we get these initial values?
     await showGroupModal({
       initialValues: {
-        ...(groupPopupData.initialValues as GroupFormInput),
         groupType: GroupFormType.ADD_TO_GROUP,
         groups: [group],
         selectedGroup: group
@@ -61,7 +58,6 @@ const GroupPage: FC = () => {
     async item => {
       await showGroupModal({
         initialValues: {
-          ...(groupPopupData.initialValues as GroupFormInput),
           groups: item.groups,
           name: item.name,
           groupType: GroupFormType.REMOVE_FROM_GROUP
@@ -95,6 +91,7 @@ const GroupPage: FC = () => {
       item =>
         !group ||
         group === 'all-members' ||
+        group === 'all' ||
         item.groups
           .map(grp => grp.toLowerCase())
           .includes((group as string).replace('-', ' ').toLowerCase())
@@ -154,11 +151,11 @@ const GroupPage: FC = () => {
             votes={item.votes}
             tokens={item.tokens}
           >
-            {item.groups.map(grp => (
+            {item.groups.map((grp, i) => (
               <Badge
                 key={grp}
                 size="small"
-                variant={groupColor[grp] as Variant}
+                variant={i % 2 > 0 ? 'turqoise' : 'blue'}
               >
                 {grp}
               </Badge>

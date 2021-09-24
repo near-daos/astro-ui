@@ -11,16 +11,7 @@ export const AddGroupMenu: FC = () => {
   const [showGroupModal] = useModal(GroupPopup, {
     initialValues: {
       groupType: GroupFormType.CREATE_GROUP,
-      groups: [],
-      voteDetails: [
-        { limit: '50%', label: 'MEW holders' },
-        { limit: '50%', label: 'cool group' },
-        { limit: '1 person', label: 'Ombudspeople' }
-      ],
-      bondDetail: {
-        value: 0.3,
-        token: 'NEAR'
-      }
+      groups: []
     }
   });
 
