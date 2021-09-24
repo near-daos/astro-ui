@@ -1,16 +1,17 @@
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { useCallback, useState } from 'react';
 import { FilterName } from 'features/search/search-filters';
-import { splitProposalsByVotingPeriod } from 'features/dao-home/helpers';
 import { ProposalType } from 'types/proposal';
 import { useRouter } from 'next/router';
 import { arrangeByDao } from 'features/member-home';
 import { Indexed, ProposalByDao } from 'features/member-home/types';
+import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
 
 export interface FilteredData extends Indexed {
   lessThanHourProposals: ProposalByDao;
   lessThanDayProposals: ProposalByDao;
   lessThanWeekProposals: ProposalByDao;
+  moreThanWeekProposals: ProposalByDao;
   otherProposals: ProposalByDao;
 }
 
@@ -171,6 +172,7 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
     lessThanHourProposals,
     lessThanDayProposals,
     lessThanWeekProposals,
+    moreThanWeekProposals,
     otherProposals
   } = splitProposalsByVotingPeriod(filteredProposals);
 
@@ -179,6 +181,7 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
       lessThanHourProposals: arrangeByDao(lessThanHourProposals),
       lessThanDayProposals: arrangeByDao(lessThanDayProposals),
       lessThanWeekProposals: arrangeByDao(lessThanWeekProposals),
+      moreThanWeekProposals: arrangeByDao(moreThanWeekProposals),
       otherProposals: arrangeByDao(otherProposals)
     },
     filter,

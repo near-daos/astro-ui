@@ -47,6 +47,7 @@ import { useRouter } from 'next/router';
 
 import { ProposalType } from 'types/proposal';
 import { SputnikService } from 'services/SputnikService';
+import { VOTE_BY_PERIOD } from 'constants/votingConstants';
 
 import styles from './dao-home-page.module.scss';
 
@@ -62,29 +63,6 @@ interface DaoHomeProps {
   proposalTrackerInfo: ProposalTrackerProps;
   proposals: ProposalCardProps[];
 }
-
-const voteByPeriod: VoteByPeriodInterface[] = [
-  {
-    title: 'less than 1 hour',
-    key: 'lessThanHourProposals',
-    subHours: 1
-  },
-  {
-    title: 'less than a day',
-    key: 'lessThanDayProposals',
-    subHours: 24
-  },
-  {
-    title: 'less than a week',
-    key: 'lessThanWeekProposals',
-    subHours: 120
-  },
-  {
-    title: 'more than a week',
-    key: 'otherProposals',
-    subHours: 121
-  }
-];
 
 const DAOHome: NextPage<DaoHomeProps> = () => {
   const timeoutId = useRef<NodeJS.Timeout>();
@@ -180,6 +158,24 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
       return null;
     }
 
+    function getHeader() {
+      if (key === 'otherProposals') {
+        return (
+          <>
+            Voting &nbsp;
+            <span className={styles.bold}>ended</span>
+          </>
+        );
+      }
+
+      return (
+        <>
+          Voting ends in &nbsp;
+          <span className={styles.bold}>{title}</span>
+        </>
+      );
+    }
+
     return (
       <Collapsable
         key={key + proposals.length}
@@ -192,8 +188,7 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
             onKeyDown={e => e.key === 'Spacebar' && toggle()}
             className={styles.votingEnds}
           >
-            Voting ends in&nbsp;
-            <span className={styles.bold}>{title}</span>
+            {getHeader()}
             <IconButton
               icon="buttonArrowRight"
               size="medium"
@@ -316,8 +311,8 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
             }
           ]}
         />
-        {voteByPeriod.map(period => (
-          <div key={period.subHours}>{renderProposalsByVotePeriod(period)}</div>
+        {VOTE_BY_PERIOD.map(period => (
+          <div key={period.key}>{renderProposalsByVotePeriod(period)}</div>
         ))}
       </div>
     </div>

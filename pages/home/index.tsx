@@ -1,6 +1,8 @@
 import React from 'react';
 import { NextPage } from 'next';
 
+import { VOTE_BY_PERIOD } from 'constants/votingConstants';
+
 import { Dropdown } from 'components/dropdown/Dropdown';
 import { Button } from 'components/button/Button';
 
@@ -8,7 +10,6 @@ import {
   ProposalsByDaoRenderer,
   proposalOptions,
   daoOptions,
-  voteByPeriod,
   useFilteredMemberHomeData
 } from 'features/member-home';
 
@@ -58,13 +59,14 @@ const Home: NextPage = () => {
         />
       </div>
       <div className={styles.content}>
-        {voteByPeriod.map(period => (
+        {VOTE_BY_PERIOD.map(period => (
           <ProposalsByDaoRenderer
             filter={filter}
             onFilterChange={onFilterChange}
-            key={period.title}
+            key={period.key}
             title={period.title}
-            data={filteredProposalsData[period.dataKey]}
+            periodKey={period.key}
+            data={filteredProposalsData[period.key]}
           />
         ))}
       </div>

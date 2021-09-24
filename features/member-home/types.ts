@@ -26,6 +26,7 @@ export interface FilteredData extends Indexed {
   lessThanHourProposals: ProposalByDao;
   lessThanDayProposals: ProposalByDao;
   lessThanWeekProposals: ProposalByDao;
+  moreThanWeekProposals: ProposalByDao;
   otherProposals: ProposalByDao;
 }
 
