@@ -41,6 +41,12 @@ export const Modal: FC<ModalProps> = memo(
 
         bodyEl.style.overflow = overflow;
       }
+
+      return () => {
+        if (bodyEl) {
+          bodyEl.style.overflow = 'auto';
+        }
+      };
     }, [open]);
 
     const handleClose = useCallback(() => {

@@ -1,5 +1,16 @@
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  CSSProperties
+} from 'react';
 import axios from 'axios';
 import cn from 'classnames';
+import { useMedia, useMount } from 'react-use';
+
+import { nearConfig } from 'config/index';
+
 import { IconButton } from 'components/button/IconButton';
 import {
   DaoInfoCard,
@@ -13,7 +24,6 @@ import {
 } from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
 import { Collapsable } from 'components/collapsable/Collapsable';
 import { Dropdown } from 'components/dropdown/Dropdown';
-
 import { Icon } from 'components/Icon';
 import { useModal } from 'components/modal';
 import ScrollList from 'components/scroll-list/ScrollList';
@@ -34,10 +44,9 @@ import { useDao } from 'hooks/useDao';
 import get from 'lodash/get';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React, { CSSProperties, useCallback, useState } from 'react';
-import { useMedia, useMount } from 'react-use';
 
 import { ProposalType } from 'types/proposal';
+import { SputnikService } from 'services/SputnikService';
 import { VOTE_BY_PERIOD } from 'constants/votingConstants';
 
 import styles from './dao-home-page.module.scss';
@@ -56,7 +65,11 @@ interface DaoHomeProps {
 }
 
 const DAOHome: NextPage<DaoHomeProps> = () => {
+  const timeoutId = useRef<NodeJS.Timeout>();
+
   const router = useRouter();
+  const isPending = router.query.pending;
+
   const daoId = router.query.dao as string;
   const dao = useDao(daoId);
 
@@ -72,12 +85,41 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
 
   const isMobile = useMedia('(max-width: 767px)');
 
+  const getPendingDaoId = useCallback(() => {
+    return `${daoId}.${nearConfig.contractName}`;
+  }, [daoId]);
+
+  const fetchPendingDaoInfo = useCallback(async () => {
+    const id = getPendingDaoId();
+    const daoInfo = await SputnikService.getDaoById(id);
+
+    if (!daoInfo) {
+      timeoutId.current = setTimeout(fetchPendingDaoInfo, 2000);
+    } else {
+      router.push(`/dao/${id}`);
+    }
+  }, [router, getPendingDaoId]);
+
   useMount(async () => {
     const nearPriceData = await axios.get('/api/nearPrice');
     const price = get(nearPriceData, 'data.near.usd');
 
     setNearPrice(price);
   });
+
+  useEffect(() => {
+    if (isPending) {
+      fetchPendingDaoInfo();
+    }
+
+    return () => {
+      const timeout = timeoutId.current;
+
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [daoId, isPending, fetchPendingDaoInfo]);
 
   function renderProposalsByVotePeriod(period: VoteByPeriodInterface) {
     const { title, key } = period;
@@ -166,11 +208,21 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
   }
 
   function renderDaoDetails() {
-    if (!dao) {
+    if (!dao && !isPending) {
       return null;
     }
 
-    const daoDetails = getDaoDetailsFromDao(dao);
+    const daoDetails = dao
+      ? getDaoDetailsFromDao(dao)
+      : {
+          title: daoId as string,
+          subtitle: getPendingDaoId(),
+          description: 'Dao is being created. Please, be patient.',
+          flag: '',
+          createdAt: '',
+          links: []
+        };
+
     const { title, description, flag, subtitle, createdAt, links } = daoDetails;
 
     return (
@@ -190,17 +242,19 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
   function renderProposalTracker() {
     const { activeVotes, totalProposals } = getProposalStats(data);
 
+    const action = isPending ? null : (
+      <>
+        <Icon name="buttonAdd" width={24} /> Create proposal
+      </>
+    );
+
     return (
       <div className={styles.proposals}>
         <ProposalTrackerCard
           activeVotes={activeVotes}
           totalProposals={totalProposals}
           onClick={handleClick}
-          action={
-            <>
-              <Icon name="buttonAdd" width={24} /> Create proposal
-            </>
-          }
+          action={action}
         />
       </div>
     );
