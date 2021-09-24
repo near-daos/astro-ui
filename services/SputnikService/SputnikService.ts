@@ -517,7 +517,8 @@ class SputnikService {
     });
   }
 
-  public async getTokens(params?: {
+  public async getTokens(params: {
+    dao: string;
     offset?: number;
     limit?: number;
     sort?: string;
@@ -528,6 +529,7 @@ class SputnikService {
 
     const { data } = await this.httpService.get<GetTokensResponse>('/tokens', {
       params: {
+        filter: `ownerId||$eq||${params.dao}`,
         offset,
         limit,
         sort

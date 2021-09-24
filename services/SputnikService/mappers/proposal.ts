@@ -38,10 +38,39 @@ function getProposalVotingEndDate(
   return new Date(endsAt).toISOString();
 }
 
+function getVotesStatistic(proposal: ProposalDTO) {
+  const result = {
+    voteYes: 0,
+    voteNo: 0,
+    voteRemove: 0,
+    votes: {} as Record<string, VoteState>
+  };
+
+  Object.keys(proposal.votes).forEach(key => {
+    let value: VoteState;
+
+    if (proposal.votes[key] === 'Approve') {
+      result.voteYes += 1;
+      value = 'Yes';
+    } else if (proposal.votes[key] === 'Reject') {
+      result.voteNo += 1;
+      value = 'No';
+    } else {
+      result.voteRemove += 1;
+      value = 'Dismiss';
+    }
+
+    result.votes[key] = value;
+  });
+
+  return result;
+}
+
 export const mapProposalDTOToProposal = (
   proposalDTO: ProposalDTO
 ): Proposal => {
   return {
+    ...getVotesStatistic(proposalDTO),
     id: proposalDTO.id,
     proposalId: proposalDTO.proposalId,
     daoId: proposalDTO.daoId,
@@ -50,39 +79,11 @@ export const mapProposalDTOToProposal = (
     description: proposalDTO.description,
     status: proposalDTO.status,
     kind: proposalDTO.kind,
-    // todo
     votePeriodEnd: getProposalVotingEndDate(
       get(proposalDTO, 'submissionTime'),
       get(proposalDTO, 'dao.policy.proposalPeriod')
     ),
-    voteYes: Object.values(proposalDTO.voteCounts).reduce(
-      (res, item) => res + item[0],
-      0
-    ),
-    voteNo: Object.values(proposalDTO.voteCounts).reduce(
-      (res, item) => res + item[1],
-      0
-    ),
-    voteRemove: Object.values(proposalDTO.voteCounts).reduce(
-      (res, item) => res + item[2],
-      0
-    ),
     txHash: proposalDTO.transactionHash,
-    votes: Object.keys(proposalDTO.votes).reduce((res, key) => {
-      let value: VoteState;
-
-      if (proposalDTO.votes[key] === 'Approve') {
-        value = 'Yes';
-      } else if (proposalDTO.votes[key] === 'Reject') {
-        value = 'No';
-      } else {
-        value = 'Dismiss';
-      }
-
-      res[key] = value;
-
-      return res;
-    }, {} as Record<string, VoteState>),
     createdAt: proposalDTO.createdAt,
     daoDetails: {
       name: proposalDTO.dao.config.name,
