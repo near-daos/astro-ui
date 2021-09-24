@@ -53,7 +53,7 @@ export function ReviewView(): JSX.Element {
       }
     } as CreateDaoInput);
 
-    await router.push('/home');
+    await router.push(`/dao/${data.address}?pending=true`);
   }
 
   return (
