@@ -148,7 +148,7 @@ class SputnikService {
   }
 
   public getAccountId(): string {
-    return this.walletConnection.getAccountId();
+    return this.walletConnection?.getAccountId();
   }
 
   async computeRequiredDeposit(args: unknown) {

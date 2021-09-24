@@ -1,10 +1,11 @@
+import { useCookie } from 'react-use';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useCookie } from 'react-use';
-import { DAO } from 'types/dao';
-import { useDaoListPerCurrentUser } from './useDaoListPerCurrentUser';
 
-export const DAO_COOKIE = 'selectedDao';
+import { DAO } from 'types/dao';
+import { DAO_COOKIE } from 'constants/cookies';
+
+import { useDaoListPerCurrentUser } from './useDaoListPerCurrentUser';
 
 /**
  * @deprecated useDad hook should be used instead
@@ -12,7 +13,7 @@ export const DAO_COOKIE = 'selectedDao';
 export function useSelectedDAO(): DAO | null {
   const [selectedDaoCookie] = useCookie(DAO_COOKIE);
   const router = useRouter();
-  const { daos } = useDaoListPerCurrentUser(true);
+  const { daos } = useDaoListPerCurrentUser();
 
   const [selectedDao, setSelectedDao] = useState<DAO | null>(null);
 

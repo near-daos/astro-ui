@@ -2,8 +2,7 @@ import { useCookie } from 'react-use';
 import { useRouter } from 'next/router';
 import { createContext, FC, useContext, useState } from 'react';
 
-import { DAO_COOKIE } from 'hooks/useSelectedDao';
-
+import { DAO_COOKIE } from 'constants/cookies';
 import { SputnikService } from 'services/SputnikService';
 
 interface AuthContextInterface {
