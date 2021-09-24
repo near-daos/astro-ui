@@ -1,4 +1,11 @@
-import React, { FC, memo, ReactNode, useCallback, useState } from 'react';
+import React, {
+  FC,
+  memo,
+  ReactNode,
+  useCallback,
+  useState,
+  useEffect
+} from 'react';
 import cn from 'classnames';
 import ReactModal from 'react-modal';
 
@@ -25,6 +32,22 @@ export const Modal: FC<ModalProps> = memo(
     hideCloseIcon
   }) => {
     const [open, setOpen] = useState(isOpen);
+
+    useEffect(() => {
+      const bodyEl = document.querySelector('body');
+
+      if (bodyEl) {
+        const overflow = open ? 'hidden' : 'auto';
+
+        bodyEl.style.overflow = overflow;
+      }
+
+      return () => {
+        if (bodyEl) {
+          bodyEl.style.overflow = 'auto';
+        }
+      };
+    }, [open]);
 
     const handleClose = useCallback(() => {
       onClose();
