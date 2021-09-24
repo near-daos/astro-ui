@@ -1,6 +1,5 @@
-import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useCookie } from 'react-use';
 import { DAO } from 'types/dao';
 import { useDaoListPerCurrentUser } from './useDaoListPerCurrentUser';
@@ -11,17 +10,23 @@ export const DAO_COOKIE = 'selectedDao';
  * @deprecated useDad hook should be used instead
  */
 export function useSelectedDAO(): DAO | null {
+  const [selectedDaoCookie] = useCookie(DAO_COOKIE);
   const router = useRouter();
-  const daoId = router.query.dao;
   const { daos } = useDaoListPerCurrentUser(true);
-  const [selectedDaoCookie, setSelectedDaoCookie] = useCookie(DAO_COOKIE);
+
+  const [selectedDao, setSelectedDao] = useState<DAO | null>(null);
 
   useEffect(() => {
-    const selectedDao = daos.find(item => item.id === daoId) || daos[0];
+    const daoId = router.query.dao;
 
+    const idForFilter = daoId || selectedDaoCookie;
+    const currentDao = daos.find(item => item.id === idForFilter) || daos[0];
+
+    setSelectedDao(currentDao);
+  }, [daos, router, selectedDaoCookie, setSelectedDao]);
+
+  useEffect(() => {
     if (selectedDao) {
-      setSelectedDaoCookie(selectedDao.id, { expires: 30 * 24 * 60 * 60 });
-
       if (router.pathname === '/') {
         router.push({
           pathname: `/dao/${selectedDao.id}`,
@@ -29,11 +34,7 @@ export function useSelectedDAO(): DAO | null {
         });
       }
     }
-  }, [daoId, daos, router, setSelectedDaoCookie]);
+  }, [router, selectedDao]);
 
-  const currentDao = useDao(selectedDaoCookie || '', {
-    enabled: !!selectedDaoCookie
-  });
-
-  return currentDao ?? null;
+  return selectedDao ?? null;
 }

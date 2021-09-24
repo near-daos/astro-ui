@@ -17,6 +17,8 @@ export function useDaoListPerCurrentUser(
       SputnikService.getDaoList({
         filter: `createdBy||$eq||${accountId}`
       }).then(setDaos);
+    } else {
+      setDaos([]);
     }
   }, [accountId]);
 
