@@ -97,7 +97,6 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
       timeoutId.current = setTimeout(fetchPendingDaoInfo, 2000);
     } else {
       router.push(`/dao/${id}`);
-      window.location.reload();
     }
   }, [router, getPendingDaoId]);
 
