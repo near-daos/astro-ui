@@ -6,7 +6,6 @@ import { PolicyType } from 'types/proposal';
 import { Badge } from 'components/badge/Badge';
 import { Icon } from 'components/Icon';
 import ExternalLink from 'components/cards/proposal-card/components/external-link/ExternalLink';
-import { formatYoktoValue } from 'helpers/format';
 
 import styles from './proposal-content.module.scss';
 
@@ -103,14 +102,14 @@ CreateNewGroup.defaultProps = {
 
 interface RequestPayoutProps extends ProposalContentProps {
   amount: string;
-  tokens: string;
+  tokens?: string;
   recipient: string;
   reason?: string | null;
 }
 
 export const RequestPayout: FC<RequestPayoutProps> = ({
   amount,
-  tokens,
+  // tokens,
   recipient,
   reason,
   link,
@@ -130,11 +129,11 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
       </div>
     )}
     <div className={styles.subRow}>
-      <span className={cn('title1', styles.value)}>
-        {formatYoktoValue(amount)}
-      </span>
+      <span className={cn('title1', styles.value)}>{amount}</span>
       &nbsp;
-      <span className={cn('title1', styles.valueDesc)}>{tokens}</span>
+      <span className={cn('title1', styles.valueDesc)}>
+        <Icon name="logoNear" />
+      </span>
       <Icon name="buttonArrowRight" className={styles.icon} />
       <span>{recipient}</span>
     </div>

@@ -206,7 +206,7 @@ export const getServerSideProps = async ({
   return {
     props: {
       data: {
-        chartData: getChartData(transactions, query.dao),
+        chartData: getChartData(transactions),
         transactions,
         numberOfTokens: Number(dao?.funds) ?? '0'
       }
