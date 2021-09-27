@@ -249,7 +249,7 @@ class SputnikService {
     const args = Buffer.from(JSON.stringify(argsList)).toString('base64');
 
     try {
-      return await this.factoryContract.create(
+      const result = await this.factoryContract.create(
         {
           name: params.name,
           args
@@ -257,6 +257,8 @@ class SputnikService {
         gas,
         amountYokto.toString()
       );
+
+      return result;
     } catch (err) {
       if (err.message !== 'Failed to redirect to sign transaction') {
         throw err;
