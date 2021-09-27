@@ -12,7 +12,7 @@ export type TGroup = {
   members: string[];
   name: string;
   permissions: string[];
-  votePolicy: DaoVotePolicy;
+  votePolicy: Record<string, DaoVotePolicy>;
   slug: string;
 };
 

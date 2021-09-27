@@ -132,7 +132,7 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
       <span className={cn('title1', styles.value)}>{amount}</span>
       &nbsp;
       <span className={cn('title1', styles.valueDesc)}>
-        <Icon name="logoNear" />
+        <Icon name="logoNear" width={43} />
       </span>
       <Icon name="buttonArrowRight" className={styles.icon} />
       <span>{recipient}</span>
