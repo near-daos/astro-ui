@@ -1,3 +1,5 @@
+@import 'styles/mixins';
+
 .root {
   display: flex;
   flex-direction: column;
@@ -19,9 +21,26 @@
 }
 
 .addressAlert {
+  align-items: flex-start;
   color: var(--color-error-70);
   display: inline-flex;
   gap: 10px;
+}
+
+.addressAlertIcon {
+  flex-shrink: 0;
+
+  @include tablet-portrait {
+    margin-top: 2px;
+  }
+}
+
+.addressAlertText {
+  margin-top: 1px;
+
+  @include tablet-portrait {
+    margin-top: 0;
+  }
 }
 
 .info {

@@ -87,8 +87,22 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
           .sputnikdao.near
         </div>
         <p className={styles.addressAlert}>
-          <Icon width={24} name="buttonAlert" />
-          Choose wisely. You can&apos;t change this later.
+          <Icon
+            width={24}
+            name="buttonAlert"
+            className={styles.addressAlertIcon}
+          />
+          {errors.address?.message && (
+            <span className={styles.addressAlertText}>
+              Incorrect DAO address&nbsp;&mdash; you can use lowercase letters,
+              numbers and hyphen only.
+            </span>
+          )}
+          {!errors.address?.message && (
+            <span className={styles.addressAlertText}>
+              Choose wisely. You can&apos;t change this later.
+            </span>
+          )}
         </p>
       </section>
 
