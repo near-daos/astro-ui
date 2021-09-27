@@ -349,6 +349,14 @@ class SputnikService {
     });
   }
 
+  public async getAccountDaos(accountId: string): Promise<DAO[]> {
+    const { data } = await this.httpService.get<DaoDTO[]>(
+      `/daos/account-daos/${accountId}`
+    );
+
+    return mapDaoDTOListToDaoList(data);
+  }
+
   public async getBountiesDone(daoId: string): Promise<Proposal[]> {
     const queryString = RequestQueryBuilder.create()
       .setFilter({
