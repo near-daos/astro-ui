@@ -24,7 +24,8 @@ interface PolicyRowContentProps {
     | 'Request payout'
     | 'Upgrade self'
     | 'Upgrade remote'
-    | 'Config';
+    | 'Config'
+    | 'Policy';
   onChange: (value: PolicyProps) => void;
   data: PolicyProps;
   groups: TGroup[];

@@ -55,6 +55,27 @@ export const GovernanceTabView: FC<GovernanceTabViewProps> = ({
             groups={groups}
           />
         </Collapsable>
+        <Collapsable
+          initialOpenState
+          renderHeading={(toggle, isOpen) => (
+            <Header label="Policy" isOpen={isOpen} toggle={toggle} />
+          )}
+        >
+          <PolicyRowContent
+            onChange={v => onChange?.('config', v)}
+            data={data.config as PolicyProps}
+            action="Policy"
+            viewMode={viewMode}
+            proposers={getProposersList(groups, 'policy', 'AddProposal')}
+            policies={getPoliciesList(
+              groups,
+              'policy',
+              ['VoteApprove', 'VoteReject', 'VoteRemove'],
+              defaultVotePolicy
+            )}
+            groups={groups}
+          />
+        </Collapsable>
       </div>
     </div>
   );

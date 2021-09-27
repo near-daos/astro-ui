@@ -137,7 +137,8 @@ const POLICIES_VIEWS = [
   'transfer',
   'upgradeSelf',
   'upgradeRemote',
-  'config'
+  'config',
+  'policy'
 ];
 
 export const getInitialData = (
