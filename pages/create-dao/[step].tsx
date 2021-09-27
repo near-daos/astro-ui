@@ -1,3 +1,9 @@
+import React from 'react';
+import { NextPage } from 'next';
+import isEmpty from 'lodash/isEmpty';
+import { Router, useRouter } from 'next/router';
+import { FormProvider, useForm } from 'react-hook-form';
+
 import { FlagView } from 'features/create-dao/components/steps/flag';
 import { FormView } from 'features/create-dao/components/steps/form';
 import { FoundationView } from 'features/create-dao/components/steps/foundation';
@@ -5,10 +11,7 @@ import { ReviewView } from 'features/create-dao/components/steps/review';
 import { SettingsView } from 'features/create-dao/components/steps/settings';
 import { TransparencyView } from 'features/create-dao/components/steps/transparency';
 import { DAOFormValues } from 'features/create-dao/components/steps/types';
-import { NextPage } from 'next';
-import { Router, useRouter } from 'next/router';
-import React from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+
 import styles from './page.module.scss';
 
 const steps = {
@@ -45,7 +48,15 @@ const CreateDaoPage: NextPage<{ step: string }> = () => {
 
   const { step } = router.query;
 
-  if (step == null) return null;
+  if (step === null) {
+    return null;
+  }
+
+  if (step !== 'foundation' && isEmpty(methods.getValues('structure'))) {
+    router.push('/create-dao');
+
+    return null;
+  }
 
   const CurrentStep = steps[step as StepType];
 
