@@ -369,6 +369,11 @@ class SputnikService {
         operator: '$cont',
         value: ProposalType.BountyDone
       })
+      .setFilter({
+        field: 'status',
+        operator: '$eq',
+        value: 'Approved'
+      })
       .setLimit(500)
       .setOffset(0)
       .sortBy({
