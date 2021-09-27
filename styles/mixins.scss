@@ -6,14 +6,6 @@
   justify-content: center;
 }
 
-@mixin sentence-case {
-  text-transform: lowercase;
-
-  &::first-letter {
-    text-transform: uppercase;
-  }
-}
-
 @mixin ellipse-text {
   overflow: hidden;
   text-overflow: ellipsis;

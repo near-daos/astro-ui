@@ -38,7 +38,6 @@ select {
 }
 
 small {
-  @include sentence-case;
   font-size: 0.875em;
 }
 
@@ -51,7 +50,6 @@ h2,
 h3,
 h4,
 h5 {
-  @include sentence-case;
   font-family: 'Lora', serif;
 }
 
@@ -90,7 +88,6 @@ $sizes: // Typography sizes
 
 @each $name, $size, $height, $weight in $sizes {
   #{$name} {
-    //@include sentence-case;
     @include font($size, $height, $weight);
   }
 }
