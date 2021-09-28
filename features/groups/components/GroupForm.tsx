@@ -47,6 +47,17 @@ export const GroupForm: React.FC<GroupFormProps> = ({
     resolver: yupResolver(schema)
   });
 
+  const getVoteDetailsScope = (groupType: number) => {
+    switch (groupType) {
+      case GroupFormType.REMOVE_FROM_GROUP:
+        return 'removeMemberFromRole';
+      case GroupFormType.ADD_TO_GROUP:
+        return 'addMemberToRole';
+      default:
+        return 'policy';
+    }
+  };
+
   const renderNewGroup = () => (
     <Input
       isValid={touchedFields.group && !errors.group?.message}
@@ -122,7 +133,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
 
       <div className={styles.vote}>
         <ExpandableDetails label="Vote details" className={styles.voteDetails}>
-          <VoteDetails scope="policy" />
+          <VoteDetails scope={getVoteDetailsScope(initialValues.groupType)} />
         </ExpandableDetails>
       </div>
       <div className={styles.footer}>

@@ -4,8 +4,6 @@ import { Bounty } from 'components/cards/bounty-card/types';
 import { BountyInfoCard } from 'components/cards/bounty-info-card';
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import { Button } from 'components/button/Button';
-import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
-import { VoteDetails } from 'components/vote-details';
 import { formatDeadlineDate, formatForgivenessDuration } from 'helpers/format';
 
 interface ClaimBountyContentProps {
@@ -35,11 +33,6 @@ const ClaimBountyContent: FC<ClaimBountyContentProps> = ({
           <b>{forgivenessDuration}</b>. After that, if you miss your deadline,
           you will loose your bond.
         </p>
-      </div>
-      <div className={styles.vote}>
-        <ExpandableDetails label="Details">
-          <VoteDetails scope="transfer" />
-        </ExpandableDetails>
       </div>
 
       <div className={styles.footer}>
