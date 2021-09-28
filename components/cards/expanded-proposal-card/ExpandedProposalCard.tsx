@@ -7,7 +7,12 @@ import { useDao } from 'hooks/useDao';
 import { useProposal } from 'hooks/useProposal';
 import React, { FC, ReactNode, useCallback } from 'react';
 
-import { DaoDetails, ProposalStatus, ProposalType } from 'types/proposal';
+import {
+  DaoDetails,
+  ProposalType,
+  ProposalStatus,
+  ProposalVotingPermissions
+} from 'types/proposal';
 
 import styles from './expanded-proposal-card.module.scss';
 
@@ -35,6 +40,7 @@ export interface ExpandedProposalCardProps {
   daoDetails: DaoDetails;
   proposalId: number;
   daoId: string;
+  permissions: ProposalVotingPermissions;
 }
 
 export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
@@ -60,7 +66,8 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
   dismissed,
   daoDetails,
   proposalId,
-  daoId
+  daoId,
+  permissions
 }) => {
   const handleVote = useCallback(
     d => {
@@ -104,7 +111,11 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
         endsAt={endsAt}
         onClose={onClose}
       />
-      <VotePanel onSubmit={handleVote} disabled={voted} />
+      <VotePanel
+        onSubmit={handleVote}
+        disabled={voted}
+        permissions={permissions}
+      />
       <ContentPanel
         title={title}
         name={name}
@@ -122,6 +133,7 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
         daoDetails={daoDetails}
         type={type}
         proposalId={proposalId}
+        permissions={permissions}
         daoData={
           type === ProposalType.ChangePolicy ||
           type === ProposalType.ChangeConfig

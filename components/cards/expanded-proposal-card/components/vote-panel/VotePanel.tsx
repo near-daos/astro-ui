@@ -4,6 +4,8 @@ import cn from 'classnames';
 import { Button } from 'components/button/Button';
 import { Checkbox } from 'components/checkbox/Checkbox';
 
+import { ProposalVotingPermissions } from 'types/proposal';
+
 import styles from './vote-panel.module.scss';
 
 type Vote = {
@@ -14,9 +16,16 @@ type Vote = {
 interface VotePanelProps {
   onSubmit: (vote: Vote) => void;
   disabled: boolean;
+  permissions: ProposalVotingPermissions;
 }
 
-export const VotePanel: FC<VotePanelProps> = ({ onSubmit, disabled }) => {
+export const VotePanel: FC<VotePanelProps> = ({
+  onSubmit,
+  disabled,
+  permissions
+}) => {
+  const { canApprove, canReject } = permissions;
+
   const [vote, setVote] = useState<'yes' | 'no' | null>(null);
   const [reportSpam, setReportSpam] = useState(false);
 
@@ -33,7 +42,7 @@ export const VotePanel: FC<VotePanelProps> = ({ onSubmit, disabled }) => {
       <div className={styles.row}>
         <div className={styles.left}>
           <Button
-            disabled={disabled}
+            disabled={disabled || !canApprove}
             onClick={() => !disabled && setVote('yes')}
             variant="secondary"
             size="small"
@@ -42,7 +51,7 @@ export const VotePanel: FC<VotePanelProps> = ({ onSubmit, disabled }) => {
             Yes
           </Button>
           <Button
-            disabled={disabled}
+            disabled={disabled || !canReject}
             onClick={() => !disabled && setVote('no')}
             variant="secondary"
             size="small"

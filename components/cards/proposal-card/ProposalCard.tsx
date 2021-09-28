@@ -1,7 +1,8 @@
-import React, { FC, ReactNode, useCallback } from 'react';
 import cn from 'classnames';
+import React, { FC, ReactNode, useCallback } from 'react';
 
-// import { Icon } from 'components/Icon';
+import { useAuthContext } from 'context/AuthContext';
+
 import { ProposalVariant } from 'components/cards/proposal-card/types';
 import { DaoDetails, ProposalStatus, ProposalType } from 'types/proposal';
 import ProposalStatusPanel from 'components/cards/proposal-card/components/proposal-status-panel/ProposalStatusPanel';
@@ -9,6 +10,8 @@ import ProposalControlPanel from 'components/cards/proposal-card/components/prop
 
 import { useModal } from 'components/modal';
 import { ExpandedProposalCard } from 'components/cards/expanded-proposal-card';
+
+import { useGetVotePermissions } from './hooks/useGetVotePermissions';
 
 import styles from './proposal-card.module.scss';
 
@@ -54,6 +57,10 @@ export const ProposalCard: FC<ProposalCardProps> = ({
   proposalId,
   daoId
 }) => {
+  const { accountId } = useAuthContext();
+
+  const permissions = useGetVotePermissions(daoId, type, accountId);
+
   const variantClassName = cn({
     [styles.default]: variant === 'Default',
     [styles.collapsed]: variant === 'SuperCollapsed'
@@ -76,7 +83,8 @@ export const ProposalCard: FC<ProposalCardProps> = ({
     dismissed,
     daoDetails,
     proposalId,
-    daoId
+    daoId,
+    permissions
   });
 
   const handleCardClick = useCallback(async () => {
@@ -110,6 +118,7 @@ export const ProposalCard: FC<ProposalCardProps> = ({
               disliked={disliked}
               dismisses={dismisses}
               dismissed={dismissed}
+              permissions={permissions}
             />
           </span>
         </div>

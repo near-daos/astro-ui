@@ -9,30 +9,3 @@
     justify-content: flex-end;
   }
 }
-
-.item {
-  align-items: center;
-  display: flex;
-  min-width: 80px;
-
-  @include tablet-landscape {
-    min-width: 90px;
-  }
-
-  &:not(:first-of-type) {
-    margin-left: 16px;
-  }
-}
-
-.value {
-  margin-left: 8px;
-}
-
-.icon {
-  height: unset;
-  width: unset;
-
-  &.voted {
-    cursor: default;
-  }
-}

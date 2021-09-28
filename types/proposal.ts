@@ -13,6 +13,12 @@ export type FunctionCallAction = {
   gas: string;
 };
 
+export interface ProposalVotingPermissions {
+  canApprove: boolean;
+  canReject: boolean;
+  canDelete: boolean;
+}
+
 export enum ProposalType {
   AddMemberToRole = 'AddMemberToRole',
   RemoveMemberFromRole = 'RemoveMemberFromRole',
