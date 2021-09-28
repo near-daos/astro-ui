@@ -23,7 +23,7 @@ export function FormView(): JSX.Element {
           id="dao-create-form"
           initialValues={getValues()}
           onSubmit={async data => {
-            reset({ ...getValues(), ...data });
+            reset({ ...getValues(), ...data, address: data.displayName });
             await router.push('/create-dao/flag');
           }}
         />
