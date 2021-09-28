@@ -61,7 +61,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
   const renderNewGroup = () => (
     <Input
       isValid={touchedFields.group && !errors.group?.message}
-      defaultValue={initialValues?.selectedGroup}
+      defaultValue={initialValues?.selectedGroup?.toLowerCase()}
       size="block"
       textAlign="left"
       {...register('group')}
@@ -72,7 +72,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
 
   const renderModifyGroup = () => (
     <Select
-      defaultValue={initialValues.selectedGroup}
+      defaultValue={initialValues?.selectedGroup?.toLowerCase()}
       className={styles.name}
       placeholder=""
       size="block"
