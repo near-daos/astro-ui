@@ -1,23 +1,29 @@
-import { Button } from 'components/button/Button';
-import { Icon } from 'components/Icon';
-import { Title } from 'components/Typography';
-import { DaoOptionCard } from 'features/create-dao/components/option-card/DaoOptionCard';
+import React from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import isBoolean from 'lodash/isBoolean';
+import { useFormContext } from 'react-hook-form';
+
 import {
   DAO_PROPOSALS_OPTIONS,
   DAO_STRUCTURE_OPTIONS,
   DAO_VOTING_POWER_OPTIONS
 } from 'features/create-dao/components/steps/data';
-import styles from 'features/create-dao/components/steps/form/form.module.scss';
+
+import { Icon } from 'components/Icon';
+import { Title } from 'components/Typography';
+import { Button } from 'components/button/Button';
 import { DAOFormValues } from 'features/create-dao/components/steps/types';
 import { DaoDetails } from 'features/dao-home/components/dao-details/DaoDetails';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React from 'react';
-import { CreateDaoInput } from 'types/dao';
-import { useFormContext } from 'react-hook-form';
-import awsUploader from 'services/AwsUploader/AwsUploader';
-import { SputnikService } from 'services/SputnikService';
+import { DaoOptionCard } from 'features/create-dao/components/option-card/DaoOptionCard';
 import { getRolesVotingPolicy } from 'features/create-dao/components/steps/review/helpers';
+
+import { SputnikService } from 'services/SputnikService';
+import awsUploader from 'services/AwsUploader/AwsUploader';
+
+import { CreateDaoInput } from 'types/dao';
+
+import styles from 'features/create-dao/components/steps/form/form.module.scss';
 
 export function ReviewView(): JSX.Element {
   const { getValues, handleSubmit } = useFormContext<DAOFormValues>();
@@ -34,7 +40,7 @@ export function ReviewView(): JSX.Element {
   async function onSubmit(data: DAOFormValues) {
     const { Key: fileName } = await awsUploader.uploadToBucket(data.flag);
 
-    await SputnikService.createDao({
+    const result = await SputnikService.createDao({
       name: data.address,
       purpose: data.purpose,
       council: 'council',
@@ -53,7 +59,9 @@ export function ReviewView(): JSX.Element {
       }
     } as CreateDaoInput);
 
-    await router.push(`/dao/${data.address}?pending=true`);
+    if (isBoolean(result)) {
+      await router.push(`/dao/${data.address}?pending=true`);
+    }
   }
 
   return (
