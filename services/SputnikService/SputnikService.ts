@@ -107,17 +107,14 @@ class SputnikService {
     args: { bountyId: number; deadline: string; bountyBond: string }
   ) {
     const { bountyId: id, deadline, bountyBond } = args;
-    const amount = new Decimal(args.bountyBond);
-    const amountYokto = amount.mul(yoktoNear).toFixed();
 
     this.contractPool.get(daoId).bounty_claim(
       {
         id,
-        deadline,
-        bountyBond
+        deadline
       },
       gas,
-      amountYokto.toString()
+      bountyBond
     );
   }
 

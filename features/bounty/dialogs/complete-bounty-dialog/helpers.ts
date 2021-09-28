@@ -4,7 +4,8 @@ import { CompleteBountyFormInput } from 'features/bounty/dialogs/complete-bounty
 export function getCompleteBountyProposal(
   daoId: string,
   bountyId: string,
-  data: CompleteBountyFormInput
+  data: CompleteBountyFormInput,
+  bond: string
 ): CreateProposalParams {
   return {
     daoId,
@@ -14,6 +15,6 @@ export function getCompleteBountyProposal(
       receiver_id: data.recipient,
       bounty_id: Number(bountyId)
     },
-    bond: '1000000000000000000000000'
+    bond
   };
 }

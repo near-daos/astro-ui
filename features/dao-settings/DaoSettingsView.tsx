@@ -33,6 +33,7 @@ export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
           name={dao.name}
           purpose={dao.description}
           currentDaoMetadata={{ links: dao.links, flag: dao.logo }}
+          proposalBond={dao.policy.proposalBond}
         />
       )
     },
@@ -48,6 +49,7 @@ export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
             purpose: dao.description,
             flag: dao.logo
           }}
+          proposalBond={dao.policy.proposalBond}
         />
       )
     },
@@ -69,6 +71,7 @@ export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
           unclaimBountyTime={new Decimal(dao.policy.proposalPeriod)
             .div('3.6e12')
             .toNumber()}
+          proposalBond={dao.policy.proposalBond}
         />
       )
     },
@@ -84,6 +87,7 @@ export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
             name: dao.name,
             purpose: dao.description
           }}
+          proposalBond={dao.policy.proposalBond}
         />
       )
     }

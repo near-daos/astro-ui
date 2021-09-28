@@ -20,7 +20,7 @@ export const ProposalButtonContent: FC<ProposalButtonContentProps> = ({
       <div className={styles.left}>
         <I />
       </div>
-      <div>
+      <div className={styles.wrapper}>
         <div className={styles.title}>{title}</div>
         <div className={styles.description}>{description}</div>
       </div>

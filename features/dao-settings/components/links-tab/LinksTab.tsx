@@ -32,6 +32,7 @@ export interface LinksTabProps {
     purpose: string;
     flag: string;
   };
+  proposalBond: string;
 }
 
 export interface LinksFormData {
@@ -55,7 +56,8 @@ export const schema = yup.object().shape({
 const LinksTab: FC<LinksTabProps> = ({
   links,
   accountName,
-  currentDaoSettings
+  currentDaoSettings,
+  proposalBond
 }) => {
   const [viewMode, setViewMode] = useToggle(true);
 
@@ -112,11 +114,16 @@ const LinksTab: FC<LinksTabProps> = ({
       };
 
       await SputnikService.createProposal(
-        getChangeConfigProposal(accountName, newDaoConfig, 'Changing links')
+        getChangeConfigProposal(
+          accountName,
+          newDaoConfig,
+          'Changing links',
+          proposalBond
+        )
       );
       setViewMode(true);
     },
-    [currentDaoSettings, accountName, setViewMode]
+    [currentDaoSettings, accountName, setViewMode, proposalBond]
   );
 
   return (

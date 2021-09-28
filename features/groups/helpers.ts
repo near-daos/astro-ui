@@ -61,7 +61,7 @@ function getAddRemoveMemberProposal(
       member_id: memberName,
       role: group
     },
-    bond: '1000000000000000000000000'
+    bond: dao.policy.proposalBond
   };
 }
 
@@ -154,6 +154,6 @@ export function getChangePolicyProposal(
         bounty_forgiveness_period: bountyForgivenessPeriod
       }
     },
-    bond: '1000000000000000000000000'
+    bond: dao.policy.proposalBond
   };
 }

@@ -9,37 +9,37 @@ import {
   CompleteBountyFormInput
 } from 'features/bounty/dialogs/complete-bounty-dialog/complete-bounty-form/CompleteBountyForm';
 import { getCompleteBountyProposal } from 'features/bounty/dialogs/complete-bounty-dialog/helpers';
-import { useDao } from 'hooks/useDao';
-import { useRouter } from 'next/router';
 import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
+import { useRouter } from 'next/router';
 
 export interface CompleteBountyDialogProps {
   isOpen: boolean;
   onClose: (...args: unknown[]) => void;
   data: Bounty;
+  bond: string;
 }
 
 export const CompleteBountyDialog: FC<CompleteBountyDialogProps> = ({
   isOpen,
   onClose,
-  data
+  data,
+  bond
 }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
-  const currentDao = useDao(daoId);
 
   const handleSubmit = useCallback(
     (input: CompleteBountyFormInput) => {
-      if (!currentDao) return;
+      if (!daoId) return;
 
-      const proposal = getCompleteBountyProposal(currentDao.id, data.id, input);
+      const proposal = getCompleteBountyProposal(daoId, data.id, input, bond);
 
       SputnikService.createProposal(proposal);
 
       onClose('submitted');
     },
-    [data, onClose, currentDao]
+    [daoId, data.id, bond, onClose]
   );
 
   return (

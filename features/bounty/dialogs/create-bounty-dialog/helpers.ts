@@ -1,6 +1,7 @@
 import Decimal from 'decimal.js';
 
 import { CreateProposalParams } from 'types/proposal';
+import { DAO } from 'types/dao';
 import { DeadlineUnit } from 'components/cards/bounty-card/types';
 
 import { CreateBountyInput } from './types';
@@ -20,7 +21,8 @@ export function getDeadline(timeAmount: number, unit: DeadlineUnit): string {
 
 export function getAddBountyProposal(
   daoId: string,
-  data: CreateBountyInput
+  data: CreateBountyInput,
+  dao: DAO
 ): CreateProposalParams {
   const { slots, amount, details, deadlineUnit, deadlineThreshold } = data;
 
@@ -39,6 +41,6 @@ export function getAddBountyProposal(
         max_deadline: getDeadline(deadlineThreshold, deadlineUnit)
       }
     },
-    bond: '1000000000000000000000000'
+    bond: dao.policy.proposalBond
   };
 }

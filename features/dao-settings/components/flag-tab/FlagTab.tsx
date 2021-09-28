@@ -24,6 +24,7 @@ interface FlagTabProps {
   daoFlag?: string;
   daoId: string;
   currentDaoSettings: { links: string[]; name: string; purpose: string };
+  proposalBond: string;
 }
 
 const sources = [
@@ -35,7 +36,12 @@ const sources = [
   '/flags/flag-6.svg'
 ];
 
-const FlagTab: FC<FlagTabProps> = ({ daoFlag, daoId, currentDaoSettings }) => {
+const FlagTab: FC<FlagTabProps> = ({
+  daoFlag,
+  daoId,
+  currentDaoSettings,
+  proposalBond
+}) => {
   const { mutate } = useSWRConfig();
   const [viewMode, setViewMode] = useToggle(true);
 
@@ -60,7 +66,12 @@ const FlagTab: FC<FlagTabProps> = ({ daoFlag, daoId, currentDaoSettings }) => {
     };
 
     await SputnikService.createProposal(
-      getChangeConfigProposal(daoId, newDaoConfig, 'Changing flag')
+      getChangeConfigProposal(
+        daoId,
+        newDaoConfig,
+        'Changing flag',
+        proposalBond
+      )
     );
     await mutate('/daos');
     setViewMode(true);
