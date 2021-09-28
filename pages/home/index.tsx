@@ -1,4 +1,5 @@
 import React from 'react';
+import Tabs from 'components/tabs/Tabs';
 import { NextPage } from 'next';
 
 import { VOTE_BY_PERIOD } from 'constants/votingConstants';
@@ -8,7 +9,6 @@ import { Button } from 'components/button/Button';
 
 import {
   ProposalsByDaoRenderer,
-  proposalOptions,
   daoOptions,
   useFilteredMemberHomeData
 } from 'features/member-home';
@@ -22,6 +22,35 @@ const Home: NextPage = () => {
     onFilterChange,
     selectedDaoFlag
   } = useFilteredMemberHomeData();
+
+  const tabContent = VOTE_BY_PERIOD.map(period => (
+    <ProposalsByDaoRenderer
+      filter={filter}
+      onFilterChange={onFilterChange}
+      key={period.key}
+      title={period.title}
+      periodKey={period.key}
+      data={filteredProposalsData[period.key]}
+    />
+  ));
+
+  const tabs = [
+    {
+      id: 1,
+      label: 'Active proposals',
+      content: <>{tabContent}</>
+    },
+    {
+      id: 2,
+      label: 'Recent proposals',
+      content: <>{tabContent}</>
+    },
+    {
+      id: 3,
+      label: 'My proposals',
+      content: <>{tabContent}</>
+    }
+  ];
 
   return (
     <div className={styles.root}>
@@ -50,25 +79,12 @@ const Home: NextPage = () => {
             className={styles.primaryFilter}
           />
         )}
-
-        <Dropdown
-          value={filter.proposalFilter}
-          onChange={val => onFilterChange('proposalFilter', val ?? '')}
-          options={proposalOptions}
-          defaultValue="Active proposals"
-        />
       </div>
       <div className={styles.content}>
-        {VOTE_BY_PERIOD.map(period => (
-          <ProposalsByDaoRenderer
-            filter={filter}
-            onFilterChange={onFilterChange}
-            key={period.key}
-            title={period.title}
-            periodKey={period.key}
-            data={filteredProposalsData[period.key]}
-          />
-        ))}
+        <Tabs
+          tabs={tabs}
+          onTabSelect={name => onFilterChange('proposalFilter', name ?? '')}
+        />
       </div>
     </div>
   );

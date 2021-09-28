@@ -23,6 +23,7 @@ export interface TabsProps {
   fitContent?: boolean;
   isControlled?: boolean;
   renderTabHeader?: (id: string, label?: string | undefined) => void;
+  onTabSelect?: (name: string) => void;
 }
 
 resetIdCounter();
@@ -31,7 +32,8 @@ const Tabs: React.FC<TabsProps> = ({
   tabs,
   className,
   fitContent,
-  isControlled = true
+  isControlled = true,
+  onTabSelect
 }) => {
   const router = useRouter();
 
@@ -59,6 +61,12 @@ const Tabs: React.FC<TabsProps> = ({
     tabsProps = {
       selectedIndex: tabIndex,
       onSelect: (index: number) => {
+        if (onTabSelect) {
+          const name = tabs[index]?.label;
+
+          onTabSelect(name as string);
+        }
+
         router.push(
           {
             pathname: '',

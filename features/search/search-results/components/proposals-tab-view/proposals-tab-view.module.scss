@@ -12,9 +12,12 @@
   @extend %body1;
   align-self: center;
   display: flex;
-  //margin-top: 40px;
   padding: 0;
   text-transform: unset;
+
+  &:first-child {
+    margin-top: 40px;
+  }
 
   .bold {
     @extend %title3;
@@ -33,7 +36,7 @@
   align-items: center;
   display: flex;
   gap: 24px;
-  margin: 24px 0;
+  margin: 0 0 12px;
 
   .flag {
     background-position: center center;
@@ -62,6 +65,10 @@
 
 .cardWrapper {
   margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 40px;
+  }
 }
 
 .collapseControl {
