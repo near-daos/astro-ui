@@ -6,15 +6,12 @@ import { Button } from 'components/button/Button';
 
 import { Icon } from 'components/Icon';
 
-import { PROPOSAL_DATA } from 'lib/mocks/treasury/tokens';
 import { ChartData } from 'lib/types/treasury';
 import get from 'lodash/get';
 import dynamic from 'next/dynamic';
 
 import { TransactionCard } from 'components/cards/transaction-card';
 import { Pagination } from 'components/pagination';
-import { ExpandedProposalCard } from 'components/cards/expanded-proposal-card';
-import { RequestPayout } from 'components/cards/proposal-card';
 import { useModal } from 'components/modal';
 import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
 
@@ -56,20 +53,11 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
 
   const daoId = router.query.dao as string;
 
-  const [isProposalDetailsOpened, showProposalDetailsModal] = useState(false);
   const [sortByRecent, setSortByRecent] = useState(true);
 
   const handleClick = useCallback(() => showRequestPayoutPopup(), [
     showRequestPayoutPopup
   ]);
-
-  const closeProposalDetails = useCallback(() => {
-    showProposalDetailsModal(false);
-  }, []);
-
-  const openProposalDetails = useCallback(() => {
-    showProposalDetailsModal(true);
-  }, []);
 
   const filterClickHandler = useCallback(() => {
     const sorted = currentPageContent.sort((a, b) =>
@@ -145,13 +133,7 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
       </Button>
       <div className={styles.transactions}>
         {currentPageContent.map(transaction => (
-          <Button
-            variant="tertiary"
-            size="block"
-            className={styles.row}
-            key={transaction.transactionId}
-            onClick={openProposalDetails}
-          >
+          <div className={styles.row}>
             <TransactionCard
               tokenName={Token.NEAR}
               type={transaction.type}
@@ -159,21 +141,8 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
               date={transaction.date}
               accountName={transaction.signerAccountId}
             />
-          </Button>
+          </div>
         ))}
-        <ExpandedProposalCard
-          {...PROPOSAL_DATA}
-          isOpen={isProposalDetailsOpened}
-          /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-          onLike={() => {}}
-          /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-          onDislike={() => {}}
-          /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-          onRemove={() => {}}
-          onClose={closeProposalDetails}
-        >
-          <RequestPayout amount="678" recipient="jonathan.near" tokens="NEAR" />
-        </ExpandedProposalCard>
       </div>
       {pageCount > 0 ? (
         <div className={styles.pagination}>
