@@ -27,7 +27,7 @@ export interface BondsAndDeadlinesTabProps {
 export const schema = yup.object().shape({
   createProposalBond: yup.number().min(0).required(),
   proposalExpireTime: yup.number().integer().min(1).required(),
-  claimBountyBond: yup.number().integer().min(1).required(),
+  claimBountyBond: yup.number().min(0).required(),
   unclaimBountyTime: yup.number().integer().min(1).required()
 });
 
