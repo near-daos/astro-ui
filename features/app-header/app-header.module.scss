@@ -9,7 +9,7 @@
   grid-area: header;
   height: 72px;
   justify-content: space-between;
-  padding: 0 32px;
+  padding: 0 32px 0 0;
   width: 100%;
 }
 
@@ -25,6 +25,7 @@
 
 .flag {
   display: block;
+  padding: 18px;
 
   .logo {
     height: 34px;
