@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { DaoRole } from './role';
+import { DaoRole, DefaultVotePolicy } from './role';
 
 export type DaoDetails = {
   name: string;
@@ -163,13 +163,6 @@ interface UpgradeSelf {
   hash: string;
 }
 
-export interface DefaultVaultPolicy {
-  weightKind: string;
-  kind: string;
-  ratio: number[];
-  quorum: string;
-}
-
 // TODO describe proposal type properly
 // eslint-disable-next-line
 export type PolicyType = Object & {
@@ -177,7 +170,7 @@ export type PolicyType = Object & {
   bountyBond: string;
   proposalBond: string;
   proposalPeriod: string;
-  defaultVotePolicy: DefaultVaultPolicy;
+  defaultVotePolicy: DefaultVotePolicy;
   bountyForgivenessPeriod: string;
 };
 

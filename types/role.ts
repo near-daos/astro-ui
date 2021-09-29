@@ -5,6 +5,13 @@ export type ProposalAction =
   | 'VoteReject'
   | 'VoteRemove';
 
+export interface DefaultVotePolicy {
+  weightKind: string;
+  kind: string;
+  ratio: number[];
+  quorum: string;
+}
+
 export type DaoPermission =
   | '*:Finalize'
   | '*:AddProposal'
@@ -20,5 +27,5 @@ export type DaoRole = {
   balance: null;
   accountIds: string[] | null;
   permissions: DaoPermission[];
-  votePolicy: null;
+  votePolicy: Record<string, DefaultVotePolicy>;
 };

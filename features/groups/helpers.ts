@@ -1,7 +1,7 @@
 import values from 'lodash/values';
-
-import { DAO } from 'types/dao';
-import { DaoRole } from 'types/role';
+import isEmpty from 'lodash/isEmpty';
+import { DAO, VotePolicyRequest } from 'types/dao';
+import { DaoRole, DefaultVotePolicy } from 'types/role';
 import { CreateProposalParams } from 'types/proposal';
 
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
@@ -87,6 +87,26 @@ type ContractRole = {
   vote_policy: Record<string, string>;
 };
 
+function formatVotePolicy(value: DefaultVotePolicy) {
+  return {
+    weight_kind: value.weightKind,
+    quorum: value.quorum,
+    threshold: value.ratio
+  };
+}
+
+function formatVotePolicies(data: Record<string, DefaultVotePolicy>) {
+  return keysToSnakeCase(
+    Object.keys(data).reduce((res, key) => {
+      const value = data[key];
+
+      res[key] = formatVotePolicy(value);
+
+      return res;
+    }, {} as Record<string, VotePolicyRequest>)
+  );
+}
+
 export function dataRoleToContractRole(role: DaoRole): ContractRole {
   const { name, kind, permissions, votePolicy, accountIds } = role;
 
@@ -101,7 +121,8 @@ export function dataRoleToContractRole(role: DaoRole): ContractRole {
     name,
     kind: newKind,
     permissions: values(permissions),
-    vote_policy: votePolicy || {}
+    vote_policy:
+      votePolicy && !isEmpty(votePolicy) ? formatVotePolicies(votePolicy) : {}
   };
 
   return contractRole;
