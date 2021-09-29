@@ -1,6 +1,13 @@
 image: node:14.16.0
 
+options:
+  size: 2x
+
 definitions:
+  services:
+    docker:
+      memory: 7128
+
   steps:
     - step: &set-environment
         name: Set Environment
@@ -25,7 +32,6 @@ definitions:
           - docker
         caches:
           - docker
-        size: 2x
         script:
           - source environment.sh
           - >-
@@ -82,7 +88,6 @@ pipelines:
               echo export DOCKER_ENV_TAG=develop-$BITBUCKET_COMMIT >> environment.sh
 
       - step: *docker-build-publish
-        size: 2x
 
       - step:
           <<: *helm-build-deploy
