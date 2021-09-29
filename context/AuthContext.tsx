@@ -29,6 +29,8 @@ export const AuthWrapper: FC = ({ children }) => {
     if (id) {
       setAccountId(id);
     }
+
+    router.push('/home');
   }
 
   async function logout() {
