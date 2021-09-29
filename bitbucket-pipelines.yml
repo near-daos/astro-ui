@@ -25,6 +25,7 @@ definitions:
           - docker
         caches:
           - docker
+        size: 2x
         script:
           - source environment.sh
           - >-
@@ -81,6 +82,7 @@ pipelines:
               echo export DOCKER_ENV_TAG=develop-$BITBUCKET_COMMIT >> environment.sh
 
       - step: *docker-build-publish
+        size: 2x
 
       - step:
           <<: *helm-build-deploy
