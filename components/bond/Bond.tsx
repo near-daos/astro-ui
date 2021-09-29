@@ -18,8 +18,9 @@ export const Bond: React.FC<BondProps> = ({ value, token, className }) => {
         <div className={cn(styles.token, styles.ml8)}>{token}</div>
       </div>
       <div className={styles.text}>
-        To prevent spam, you must pay a bond. The bond will be returned when you
-        complete the bounty before your deadline.
+        To prevent spam, you must pay a bond. The bond will be returned to you
+        when the proposal is approved or rejected. The bond will not be returned
+        if your proposal is marked as spam or expires.
       </div>
     </div>
   );
