@@ -112,16 +112,16 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
           {...register('detail')}
         />
       </div>
-      {/* <Input */}
-      {/*  size="block" */}
-      {/*  defaultValue={initialValues?.externalUrl} */}
-      {/*  isValid={touchedFields.externalUrl && !errors.externalUrl?.message} */}
-      {/*  textAlign="left" */}
-      {/*  {...register('externalUrl')} */}
-      {/*  label="External URL" */}
-      {/*  placeholder="Add link" */}
-      {/*  className={cn(styles.input, styles.url)} */}
-      {/* /> */}
+      <Input
+        size="block"
+        defaultValue={initialValues?.externalUrl}
+        isValid={touchedFields.externalUrl && !errors.externalUrl?.message}
+        textAlign="left"
+        {...register('externalUrl')}
+        label="External URL"
+        placeholder="Add link"
+        className={cn(styles.input, styles.url)}
+      />
       <div className={styles.vote}>
         <ExpandableDetails label="Vote details" className={styles.voteDetails}>
           <VoteDetails scope="transfer" />

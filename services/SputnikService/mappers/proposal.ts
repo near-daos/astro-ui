@@ -1,6 +1,7 @@
 import get from 'lodash/get';
 import { Proposal, ProposalKind } from 'types/proposal';
 import { DaoDTO } from 'services/SputnikService/mappers/dao';
+import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 export type ProposalDTO = {
   createTimestamp: string;
@@ -69,6 +70,10 @@ function getVotesStatistic(proposal: ProposalDTO) {
 export const mapProposalDTOToProposal = (
   proposalDTO: ProposalDTO
 ): Proposal => {
+  const [description, link] = proposalDTO.description.split(
+    EXTERNAL_LINK_SEPARATOR
+  );
+
   return {
     ...getVotesStatistic(proposalDTO),
     id: proposalDTO.id,
@@ -76,7 +81,8 @@ export const mapProposalDTOToProposal = (
     daoId: proposalDTO.daoId,
     target: '',
     proposer: proposalDTO.proposer,
-    description: proposalDTO.description,
+    description,
+    link: link ?? '',
     status: proposalDTO.status,
     kind: proposalDTO.kind,
     votePeriodEnd: getProposalVotingEndDate(

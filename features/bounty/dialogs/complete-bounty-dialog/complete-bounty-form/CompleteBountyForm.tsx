@@ -23,11 +23,13 @@ interface CompleteBountyFormProps {
 export interface CompleteBountyFormInput {
   recipient: string;
   details: string;
+  externalUrl: string;
 }
 
 const schema = yup.object().shape({
   recipient: yup.string(),
-  details: yup.string()
+  details: yup.string(),
+  externalUrl: yup.string()
 });
 
 export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
@@ -65,14 +67,13 @@ export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
           {...register('details')}
         />
       </div>
-      {/* <Input */}
-      {/*  size="block" */}
-      {/*  isValid={touchedFields.externalUrl && !errors.externalUrl?.message} */}
-      {/*  textAlign="left" */}
-      {/*  {...register('externalUrl')} */}
-      {/*  label="External URL" */}
-      {/*  className={cn(styles.input, styles.externalUrl)} */}
-      {/* /> */}
+      <Input
+        size="block"
+        textAlign="left"
+        {...register('externalUrl')}
+        label="External URL"
+        className={cn(styles.input, styles.externalUrl)}
+      />
       <div className={styles.vote}>
         <ExpandableDetails label="Vote details">
           <VoteDetails scope="bountyDone" />

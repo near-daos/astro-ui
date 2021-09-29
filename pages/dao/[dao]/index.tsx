@@ -132,7 +132,7 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
       if (isMobile) {
         itemHeight = item.kind.type === ProposalType.Transfer ? 200 : 230;
       } else {
-        itemHeight = 158;
+        itemHeight = 190;
       }
 
       return itemHeight;

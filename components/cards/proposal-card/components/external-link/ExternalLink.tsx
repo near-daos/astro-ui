@@ -1,5 +1,6 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, useState } from 'react';
 import cn from 'classnames';
+import { useMount } from 'react-use';
 
 import { Icon } from 'components/Icon';
 
@@ -7,10 +8,21 @@ import styles from './external-link.module.scss';
 
 interface ExternalLinkProps {
   to: string;
-  children: ReactNode;
 }
 
-const ExternalLink: FC<ExternalLinkProps> = ({ to, children }) => {
+const ExternalLink: FC<ExternalLinkProps> = ({ to }) => {
+  const [linkTitle, setLinkTitle] = useState('');
+
+  useMount(() => {
+    try {
+      const { hostname } = new URL(to ?? '');
+
+      setLinkTitle(hostname);
+    } catch (e) {
+      // do nothing
+    }
+  });
+
   return (
     <a
       href={to}
@@ -20,7 +32,7 @@ const ExternalLink: FC<ExternalLinkProps> = ({ to, children }) => {
     >
       <Icon name="buttonExternal" width={14} />
       &nbsp;
-      <span className={cn('caption1', styles.text)}>{children}</span>
+      <span className={cn('caption1', styles.text)}>{linkTitle}&nbsp;</span>
     </a>
   );
 };

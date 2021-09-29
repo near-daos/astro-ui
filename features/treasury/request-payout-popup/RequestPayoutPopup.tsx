@@ -5,6 +5,7 @@ import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
+import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import styles from './request-payout-popup.module.scss';
 
 export interface RequestPayoutPopupProps {
@@ -28,7 +29,7 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
       if (currentDao) {
         SputnikService.createProposal({
           daoId: currentDao.id,
-          description: data.detail,
+          description: `${data.detail}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
           kind: 'Transfer',
           bond: currentDao.policy.proposalBond,
           data: {

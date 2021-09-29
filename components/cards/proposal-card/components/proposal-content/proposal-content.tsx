@@ -22,8 +22,7 @@ interface AddRemoveMemberProps extends ProposalContentProps {
 export const AddMemberToGroup: FC<AddRemoveMemberProps> = ({
   name,
   groupName,
-  link,
-  linkTitle
+  link
 }) => (
   <>
     <div className={cn(styles.row, 'proposalInfo')}>
@@ -34,7 +33,7 @@ export const AddMemberToGroup: FC<AddRemoveMemberProps> = ({
     </div>
     {link && (
       <div className={styles.sub}>
-        <ExternalLink to={link}>{linkTitle}</ExternalLink>
+        <ExternalLink to={link} />
       </div>
     )}
   </>
@@ -48,8 +47,7 @@ AddMemberToGroup.defaultProps = {
 export const RemoveMemberFromGroup: FC<AddRemoveMemberProps> = ({
   name,
   groupName,
-  link,
-  linkTitle
+  link
 }) => (
   <>
     <div className={cn(styles.row, 'proposalInfo')}>
@@ -60,7 +58,7 @@ export const RemoveMemberFromGroup: FC<AddRemoveMemberProps> = ({
     </div>
     {link && (
       <div className={styles.sub}>
-        <ExternalLink to={link}>{linkTitle}</ExternalLink>
+        <ExternalLink to={link} />
       </div>
     )}
   </>
@@ -75,11 +73,7 @@ interface NewGroupProps extends ProposalContentProps {
   groupName: string;
 }
 
-export const CreateNewGroup: FC<NewGroupProps> = ({
-  groupName,
-  link,
-  linkTitle
-}) => (
+export const CreateNewGroup: FC<NewGroupProps> = ({ groupName, link }) => (
   <>
     <div className={cn(styles.row, 'proposalInfo')}>
       <span className={cn(styles.text, 'paragraph1')}>
@@ -89,7 +83,7 @@ export const CreateNewGroup: FC<NewGroupProps> = ({
     </div>
     {link && (
       <div className={styles.sub}>
-        <ExternalLink to={link}>{linkTitle}</ExternalLink>
+        <ExternalLink to={link} />
       </div>
     )}
   </>
@@ -112,20 +106,15 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
   // tokens,
   recipient,
   reason,
-  link,
-  linkTitle
+  link
 }) => (
   <>
-    {reason && (
-      <div className={cn(styles.row, 'proposalInfo')}>
-        <span className={cn(styles.text, 'paragraph1')}>
-          I would like to request a payment for {reason}
-        </span>
-      </div>
-    )}
+    <div className={cn(styles.row, 'proposalInfo')}>
+      <span className={cn(styles.text, 'paragraph1')}>{reason}</span>
+    </div>
     {link && (
       <div className={styles.sub}>
-        <ExternalLink to={link}>{linkTitle}</ExternalLink>
+        <ExternalLink to={link} />
       </div>
     )}
     <div className={styles.subRow}>
@@ -142,7 +131,6 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
 
 RequestPayout.defaultProps = {
   link: '',
-  linkTitle: '',
   reason: ''
 } as Partial<ProposalContentProps>;
 
@@ -150,22 +138,20 @@ interface TextWithLinkProps extends ProposalContentProps {
   text: string;
 }
 
-export const TextWithLink: FC<TextWithLinkProps> = ({
-  text,
-  link,
-  linkTitle
-}) => (
-  <>
-    <div className={cn(styles.row, 'proposalInfo')}>
-      <span className={cn(styles.text, 'paragraph1')}>{text}</span>
-    </div>
-    {link && (
-      <div className={styles.sub}>
-        <ExternalLink to={link}>{linkTitle}</ExternalLink>
+export const TextWithLink: FC<TextWithLinkProps> = ({ text, link }) => {
+  return (
+    <>
+      <div className={cn(styles.row, 'proposalInfo')}>
+        <span className={cn(styles.text, 'paragraph1')}>{text}</span>
       </div>
-    )}
-  </>
-);
+      {link && (
+        <div className={styles.sub}>
+          <ExternalLink to={link} />
+        </div>
+      )}
+    </>
+  );
+};
 
 TextWithLink.defaultProps = {
   link: '',
@@ -176,18 +162,14 @@ interface FunctionCallProps extends ProposalContentProps {
   recipient: string;
 }
 
-export const FunctionCall: FC<FunctionCallProps> = ({
-  recipient,
-  link,
-  linkTitle
-}) => (
+export const FunctionCall: FC<FunctionCallProps> = ({ recipient, link }) => (
   <>
     <div className={cn(styles.row, 'proposalInfo')}>
       <span className={cn(styles.text, 'paragraph1')}>{recipient}</span>
     </div>
     {link && (
       <div className={styles.sub}>
-        <ExternalLink to={link}>{linkTitle}</ExternalLink>
+        <ExternalLink to={link} />
       </div>
     )}
   </>
@@ -197,7 +179,7 @@ interface ChangePolicyProps extends ProposalContentProps {
   policy?: PolicyType;
 }
 
-export const ChangePolicy: FC<ChangePolicyProps> = ({ link, linkTitle }) => (
+export const ChangePolicy: FC<ChangePolicyProps> = ({ link }) => (
   <>
     <div className={cn(styles.row, 'proposalInfo')}>
       <span className={cn(styles.text, 'paragraph1')}>
@@ -207,7 +189,7 @@ export const ChangePolicy: FC<ChangePolicyProps> = ({ link, linkTitle }) => (
     </div>
     {link && (
       <div className={styles.sub}>
-        <ExternalLink to={link}>{linkTitle}</ExternalLink>
+        <ExternalLink to={link} />
       </div>
     )}
   </>
