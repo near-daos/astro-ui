@@ -38,7 +38,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
   });
 
   const { isLoading: isLoadingDAOList, daos } = useDAOList(walletInitialized);
-  const { daos: userDaos } = useDaoListPerCurrentUser(walletInitialized);
+  const { daos: userDaos } = useDaoListPerCurrentUser();
 
   useEffect(() => {
     if (!isLoadingDAOList && isEmpty(userDaos) && router.pathname === '/') {

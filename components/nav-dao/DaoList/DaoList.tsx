@@ -2,11 +2,12 @@ import { Collapsable } from 'components/collapsable/Collapsable';
 import { DaoHeader } from 'components/nav-dao/DaoHeader';
 
 import { DaoItem } from 'components/nav-dao/DaoItem';
-import { DAO_COOKIE, useSelectedDAO } from 'hooks/useSelectedDao';
+import { useSelectedDAO } from 'hooks/useSelectedDao';
 import React from 'react';
 import { useBoolean, useCookie } from 'react-use';
 
 import { DAO } from 'types/dao';
+import { DAO_COOKIE } from 'constants/cookies';
 
 interface DAOListProps {
   toggle: (newState?: boolean) => void;
