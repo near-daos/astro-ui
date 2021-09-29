@@ -9,10 +9,6 @@ dist
 node_modules
 coverage
 
-# Environment (contains sensitive data)
-.env
-.env.*
-
 # Docker compose 
 docker-compose.yml
 docker-compose-*.yml
