@@ -1,7 +1,8 @@
 import cn from 'classnames';
-import { IconButton } from 'components/button/IconButton';
 import React, { FC } from 'react';
-import { ProposalStatus } from 'types/proposal';
+import { ProposalStatus, ProposalVotingPermissions } from 'types/proposal';
+
+import ProposalControlButton from './components/proposal-control-button';
 
 import styles from './proposal-control-panel.module.scss';
 
@@ -12,6 +13,7 @@ interface ProposalControlPanelProps {
   disliked: boolean;
   dismisses: number;
   dismissed: boolean;
+  permissions: ProposalVotingPermissions;
   onLike?: (e?: Partial<Event>) => void;
   onDislike?: (e?: Partial<Event>) => void;
   onRemove?: (e?: Partial<Event>) => void;
@@ -30,46 +32,54 @@ const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
   onLike,
   onDislike,
   onRemove,
+  permissions,
   className = ''
 }) => {
+  const { canApprove, canReject, canDelete } = permissions;
   const voted =
     liked || disliked || dismissed || (status && status !== 'InProgress');
 
   return (
     <div className={cn(styles.root, className)}>
-      <span className={styles.item}>
-        <IconButton
-          icon={liked ? 'votingYesChecked' : 'votingYes'}
-          className={cn(styles.icon, {
-            [styles.voted]: voted
-          })}
-          size="large"
-          onClick={!voted ? onLike : undefined}
-        />
-        <span className={cn(styles.value, 'title3')}>{likes}</span>
-      </span>
-      <span className={styles.item}>
-        <IconButton
-          icon={disliked ? 'votingNoChecked' : 'votingNo'}
-          className={cn(styles.icon, {
-            [styles.voted]: voted
-          })}
-          size="large"
-          onClick={!voted ? onDislike : undefined}
-        />
-        <span className={cn(styles.value, 'title3')}>{dislikes}</span>
-      </span>
-      <span className={styles.item}>
-        <IconButton
-          icon={dismissed ? 'votingDismissChecked' : 'votingDismiss'}
-          className={cn(styles.icon, {
-            [styles.voted]: voted
-          })}
-          size="large"
-          onClick={!voted ? onRemove : undefined}
-        />
-        <span className={cn(styles.value, 'title3')}>{dismisses}</span>
-      </span>
+      <ProposalControlButton
+        icon={(() => {
+          if (liked) {
+            return 'votingYesChecked';
+          }
+
+          return canApprove ? 'votingYes' : 'votingYesDisabled';
+        })()}
+        voted={voted}
+        times={likes}
+        onClick={onLike}
+        disabled={!canApprove}
+      />
+      <ProposalControlButton
+        icon={(() => {
+          if (disliked) {
+            return 'votingNoChecked';
+          }
+
+          return canReject ? 'votingNo' : 'votingNoDisabled';
+        })()}
+        voted={voted}
+        times={dislikes}
+        onClick={onDislike}
+        disabled={!canReject}
+      />
+      <ProposalControlButton
+        icon={(() => {
+          if (dismissed) {
+            return 'votingDismissChecked';
+          }
+
+          return canDelete ? 'votingDismiss' : 'votingDismissDisabled';
+        })()}
+        voted={voted}
+        times={dismisses}
+        onClick={onRemove}
+        disabled={!canDelete}
+      />
     </div>
   );
 };

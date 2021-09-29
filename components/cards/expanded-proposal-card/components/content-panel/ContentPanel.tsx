@@ -4,7 +4,12 @@ import { Icon } from 'components/Icon';
 import * as Typography from 'components/Typography';
 import ProposalControlPanel from 'components/cards/proposal-card/components/proposal-control-panel/ProposalControlPanel';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
-import { DaoDetails, Proposal, ProposalType } from 'types/proposal';
+import {
+  Proposal,
+  DaoDetails,
+  ProposalType,
+  ProposalVotingPermissions
+} from 'types/proposal';
 import { VoteDetails } from 'components/vote-details';
 import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card/components/proposed-changes-renderer';
 import { DAO } from 'types/dao';
@@ -33,6 +38,7 @@ interface ContentPanelProps {
   proposalId: number;
   proposalData?: Proposal | null;
   daoData?: DAO | null;
+  permissions: ProposalVotingPermissions;
 }
 
 export const ContentPanel: FC<ContentPanelProps> = ({
@@ -50,7 +56,8 @@ export const ContentPanel: FC<ContentPanelProps> = ({
   type,
   proposalId,
   proposalData,
-  daoData
+  daoData,
+  permissions
 }) => {
   const flag = (tempFlag as StaticImageData).src;
 
@@ -87,6 +94,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
             disliked={disliked}
             dismisses={dismisses}
             dismissed={dismissed}
+            permissions={permissions}
           />
         </div>
         {proposalData && daoData && (

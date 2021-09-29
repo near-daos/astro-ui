@@ -1,8 +1,6 @@
 import { BondDetail, VoteDetail } from 'features/types';
 import { TransactionCardInput } from 'lib/types/treasury';
 import { Token } from 'types/token';
-import { ProposalType } from 'types/proposal';
-import { ExpandedProposalCardProps } from 'components/cards/expanded-proposal-card';
 
 const generateTokens = () => {
   const tokens = [];
@@ -22,33 +20,6 @@ const generateTokens = () => {
 };
 
 export const TOKENS_DATA = generateTokens();
-
-export const PROPOSAL_DATA: Omit<
-  ExpandedProposalCardProps,
-  'children' | 'onClose' | 'onDislike' | 'onLike' | 'isOpen' | 'onRemove'
-> = {
-  status: 'InProgress',
-  type: ProposalType.Transfer,
-  title: 'meowzers.sputnikdao.near',
-  name: 'jonathan.near',
-  text:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis eleifend habitant laoreet ornare vitae consequat. Potenti ut urna, ultricies elit nam. Feugiat porta elit ultricies eu mollis. Faucibus mauris faucibus aliquam non. ',
-  link: 'https://example.com',
-  linkTitle: 'reddit.com/group',
-  likes: 50,
-  dislikes: 134,
-  liked: false,
-  dismisses: 0,
-  dismissed: false,
-  disliked: false,
-  endsAt: '2021-08-12T12:00:52Z',
-  daoDetails: {
-    name: 'my awesome dao',
-    logo: ''
-  },
-  proposalId: 1,
-  daoId: 'my-awesome-dao'
-};
 
 export const TRANSACTIONS_DATA: TransactionCardInput[] = [
   {

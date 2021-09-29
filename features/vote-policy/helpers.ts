@@ -6,6 +6,7 @@ import snakeCase from 'lodash/snakeCase';
 import { Vote, VoteDetail, VoterDetail } from 'features/types';
 import difference from 'lodash/difference';
 import isEmpty from 'lodash/isEmpty';
+import { ProposalAction } from 'types/role';
 
 export type Scope =
   | 'addBounty'
@@ -21,17 +22,10 @@ export type Scope =
   | 'bountyDone'
   | 'vote';
 
-type Action =
-  | 'Finalize'
-  | 'AddProposal'
-  | 'VoteApprove'
-  | 'VoteReject'
-  | 'VoteRemove';
-
 export const getProposersList = (
   groups: TGroup[],
   scope: Scope,
-  action: Action
+  action: ProposalAction
 ): string[] => {
   return groups.reduce((res, item) => {
     const { permissions } = item;
@@ -71,7 +65,7 @@ export const getVotePolicyData = (
 export const getPoliciesList = (
   groups: TGroup[],
   scope: Scope,
-  action: Action | Action[],
+  action: ProposalAction | ProposalAction[],
   defaultVotePolicy: DaoVotePolicy
 ): VotePolicy[] => {
   return groups.reduce((res, item) => {

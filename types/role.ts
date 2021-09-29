@@ -1,3 +1,10 @@
+export type ProposalAction =
+  | 'Finalize'
+  | 'AddProposal'
+  | 'VoteApprove'
+  | 'VoteReject'
+  | 'VoteRemove';
+
 export type DaoPermission =
   | '*:Finalize'
   | '*:AddProposal'
