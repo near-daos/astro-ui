@@ -68,7 +68,6 @@ export const GroupPopup: React.FC<GroupPopupProps> = ({
         } else if (groupType === GroupFormType.REMOVE_FROM_GROUP) {
           proposalData = getRemoveMemberProposal(data, currentDao);
         } else if (groupType === GroupFormType.CREATE_GROUP) {
-          // TODO fix generation of proposal data
           proposalData = getChangePolicyProposal(data, currentDao);
         }
 

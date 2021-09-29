@@ -44,7 +44,7 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
         <div className={s.name}>{tokenName}</div>
       </div>
 
-      <div className={s.date}>{format(parseISO(date), 'dd.LL.yyyy H:MM')}</div>
+      <div className={s.date}>{format(parseISO(date), 'dd.LL.yyyy hh:mm')}</div>
       <div className={s.account}>{accountName}</div>
     </div>
   );

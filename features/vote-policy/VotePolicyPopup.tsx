@@ -4,7 +4,8 @@ import { useList } from 'react-use';
 import { Policies } from 'features/vote-policy/components/policies';
 import styles from 'features/vote-policy/vote-policy-popup.module.scss';
 import { Button } from 'components/button/Button';
-import { PolicyProps } from 'features/vote-policy/helpers';
+import { TGroup } from 'types/dao';
+import { getNextGroup, PolicyProps } from 'features/vote-policy/helpers';
 import { DropdownMultiSelect } from 'components/select/DropdownMultiSelect';
 import { Group } from './components/group/Group';
 
@@ -14,6 +15,7 @@ export interface VotePolicyPopupProps {
   proposers: string[];
   title: string;
   data: PolicyProps;
+  groups: TGroup[];
 }
 
 export const VotePolicyPopup: React.FC<VotePolicyPopupProps> = ({
@@ -21,20 +23,25 @@ export const VotePolicyPopup: React.FC<VotePolicyPopupProps> = ({
   onClose,
   proposers,
   title,
-  data
+  data,
+  groups
 }) => {
   const [proposer, setProposer] = useState<string[]>(data.whoCanPropose);
 
   const [selected, { push, removeAt, updateAt }] = useList(data.policies);
+
   const addPolicy = useCallback(
     () =>
       push({
-        whoCanVote: '',
+        whoCanVote: getNextGroup(
+          groups.map(item => item.name ?? ''),
+          selected.map(item => item.whoCanVote ?? '')
+        ),
         voteBy: 'Person',
         amount: undefined,
         threshold: undefined
       }),
-    [push]
+    [groups, push, selected]
   );
   const removePolicy = useCallback((index: number) => () => removeAt(index), [
     removeAt
@@ -67,7 +74,7 @@ export const VotePolicyPopup: React.FC<VotePolicyPopupProps> = ({
           onUpdate={updateAt}
           onRemove={removePolicy}
           policies={selected}
-          groups={data.policies.map(item => item.whoCanVote ?? '')}
+          groups={groups.map(item => item.name)}
           tokens={['NEAR', 'MEW']}
         />
 

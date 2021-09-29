@@ -17,7 +17,8 @@ export interface NameAndPurposeData {
 export function getChangeConfigProposal(
   daoId: string,
   { name, purpose, metadata }: DaoConfig,
-  reason: ConfigChangeReason
+  reason: ConfigChangeReason,
+  proposalBond: string
 ): CreateProposalParams {
   return {
     kind: 'ChangeConfig',
@@ -30,7 +31,7 @@ export function getChangeConfigProposal(
       }
     },
     description: `${reason} for ${daoId}`,
-    bond: '1000000000000000000000000'
+    bond: proposalBond
   };
 }
 
@@ -52,7 +53,8 @@ export function getChangeBondDeadlinesProposal(
     unclaimBountyTime,
     details,
     externalUrl
-  }: BondsAndDeadlinesData
+  }: BondsAndDeadlinesData,
+  proposalBond: string
 ): CreateProposalParams {
   const { id, policy } = dao;
 
@@ -82,6 +84,6 @@ export function getChangeBondDeadlinesProposal(
           .toFixed()
       }
     },
-    bond: '1000000000000000000000000'
+    bond: proposalBond
   };
 }

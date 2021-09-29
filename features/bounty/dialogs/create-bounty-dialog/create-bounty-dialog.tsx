@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import React, { FC, useCallback } from 'react';
 
 import { SputnikService } from 'services/SputnikService';
+import { DAO } from 'types/dao';
 
 import { CreateBountyForm } from './components/create-bounty-form/CreateBountyForm';
 import { getAddBountyProposal } from './helpers';
@@ -16,12 +17,14 @@ export interface CreateBountyDialogProps {
   initialValues: CreateBountyInput;
   isOpen: boolean;
   onClose: (...args: unknown[]) => void;
+  dao: DAO;
 }
 
 export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
   initialValues,
   isOpen,
-  onClose
+  onClose,
+  dao
 }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
@@ -33,14 +36,14 @@ export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
           'Bounty proposal can not be created. No dao id specified'
         );
       } else {
-        const proposal = getAddBountyProposal(daoId, data);
+        const proposal = getAddBountyProposal(daoId, data, dao);
 
         SputnikService.createProposal(proposal);
       }
 
       onClose('submitted');
     },
-    [daoId, onClose]
+    [dao, daoId, onClose]
   );
 
   return (

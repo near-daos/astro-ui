@@ -28,13 +28,15 @@ export interface NameAndPurposeTabProps {
   name: string;
   purpose: string;
   currentDaoMetadata: DaoMetadata;
+  proposalBond: string;
 }
 
 export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
   accountName,
   name,
   purpose,
-  currentDaoMetadata
+  currentDaoMetadata,
+  proposalBond
 }) => {
   const [viewMode, setViewMode] = useToggle(true);
   const [isSubmitting, setSubmitting] = useToggle(false);
@@ -74,13 +76,14 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
         getChangeConfigProposal(
           accountName,
           newDaoConfig,
-          'Changing name/purpose'
+          'Changing name/purpose',
+          proposalBond
         )
       );
       setSubmitting(false);
       setViewMode(true);
     },
-    [setSubmitting, currentDaoMetadata, accountName, setViewMode]
+    [setSubmitting, currentDaoMetadata, accountName, proposalBond, setViewMode]
   );
 
   const onCancel = useCallback(() => {

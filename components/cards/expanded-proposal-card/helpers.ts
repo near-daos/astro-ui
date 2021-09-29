@@ -8,7 +8,6 @@ function formatCountdown(seconds: number) {
   const d = Math.floor(seconds / (24 * 3600));
   const h = Math.floor((seconds - d * 24 * 3600) / 3600);
   const m = Math.floor((seconds - d * 24 * 3600 - h * 3600) / 60);
-  const s = Math.floor(seconds - d * 24 * 3600 - h * 3600 - m * 60);
 
   let res = '';
 
@@ -22,10 +21,6 @@ function formatCountdown(seconds: number) {
 
   if (m > 0) {
     res += `${m}m `;
-  }
-
-  if (s > 0) {
-    res += `${s}s`;
   }
 
   return res;

@@ -23,7 +23,7 @@ interface PolicyRowProps {
   updatePolicyHandler: (policy: VotePolicy) => void;
 }
 
-const VOTE_BY = ['Person', 'Token'];
+const VOTE_BY = ['Person'];
 const mapToOptions = (values: string[]) =>
   values.map((value: string) => ({ label: value, value }));
 
@@ -75,6 +75,7 @@ export const PolicyRow: React.FC<PolicyRowProps> = ({
           label: value,
           value
         }))}
+        disabled
         placeholder="Vote By"
         onChange={onVoteByChange}
         defaultValue={policy.voteBy}
@@ -103,6 +104,7 @@ export const PolicyRow: React.FC<PolicyRowProps> = ({
       <div className={styles.toPass}>
         <span>to pass</span>
         <IconButton
+          disabled={selectedGroups.length === 1}
           icon="buttonDelete"
           size="medium"
           onClick={removePolicyHandler}

@@ -1,5 +1,6 @@
 import { IconButton } from 'components/button/IconButton';
 import { FlagCropper } from 'components/create-flag/FlagCropper';
+import { random } from 'lodash';
 import React, { FC, useRef, useState } from 'react';
 import { Cropper } from 'react-cropper';
 import { useMedia } from 'react-use';
@@ -101,10 +102,15 @@ export const SelectFlag: FC<SelectFlagProps> = ({
 
   const shiftBackground = () => {
     const selectFlagState = historyData.stack[historyData.currentIndex];
-    const i = selectFlagState.background;
-    const isLastSource = i === sources.length - 1;
+    const currentIndex = selectFlagState.background;
 
-    saveState(isLastSource ? 0 : i + 1);
+    let nextIndex = currentIndex;
+
+    while (nextIndex === currentIndex) {
+      nextIndex = random(0, sources.length);
+    }
+
+    saveState(nextIndex);
   };
 
   const crop: () => Promise<CropReturnType | null> = async () => {

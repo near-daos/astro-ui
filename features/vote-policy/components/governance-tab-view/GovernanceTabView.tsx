@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 
-import { AccordeonContent } from 'features/vote-policy/components/accordeon-content';
-import { AccordeonRow } from 'features/vote-policy/components/accordeon-row';
-
+import { PolicyRowContent } from 'features/vote-policy/components/policy-row-content';
+import { Header } from 'features/vote-policy/components/policy-row-header';
+import { Collapsable } from 'components/collapsable/Collapsable';
 import { DaoVotePolicy, TGroup } from 'types/dao';
 import {
   getPoliciesList,
@@ -30,71 +30,52 @@ export const GovernanceTabView: FC<GovernanceTabViewProps> = ({
   onChange,
   showTitle = true
 }) => {
-  const items = [
-    // {
-    //   id: '1',
-    //   label: 'Upgrade self',
-    //   content: (
-    //     <AccordeonContent
-    //       onChange={v => onChange('upgradeSelf', v)}
-    //       data={data.upgradeSelf as PolicyProps}
-    //       action="Upgrade self"
-    //       viewMode={viewMode}
-    //       proposers={getProposersList(groups, 'upgradeSelf', 'AddProposal')}
-    //       policies={getPoliciesList(
-    //         groups,
-    //         'upgradeSelf',
-    //         ['VoteApprove', 'VoteReject', 'VoteRemove'],
-    //         defaultVotePolicy
-    //       )}
-    //     />
-    //   )
-    // },
-    // {
-    //   id: '2',
-    //   label: 'Upgrade remote',
-    //   content: (
-    //     <AccordeonContent
-    //       onChange={v => onChange('upgradeRemote', v)}
-    //       data={data.upgradeSelf as PolicyProps}
-    //       action="Upgrade remote"
-    //       viewMode={viewMode}
-    //       proposers={getProposersList(groups, 'upgradeRemote', 'AddProposal')}
-    //       policies={getPoliciesList(
-    //         groups,
-    //         'upgradeRemote',
-    //         ['VoteApprove', 'VoteReject', 'VoteRemove'],
-    //         defaultVotePolicy
-    //       )}
-    //     />
-    //   )
-    // },
-    {
-      id: '3',
-      label: 'Config',
-      content: (
-        <AccordeonContent
-          onChange={v => onChange?.('config', v)}
-          data={data.config as PolicyProps}
-          action="Create poll"
-          viewMode={viewMode}
-          proposers={getProposersList(groups, 'config', 'AddProposal')}
-          policies={getPoliciesList(
-            groups,
-            'config',
-            ['VoteApprove', 'VoteReject', 'VoteRemove'],
-            defaultVotePolicy
-          )}
-        />
-      )
-    }
-  ];
-
   return (
     <div className={styles.root}>
       {showTitle && <p>Create and vote on update configuration proposals.</p>}
       <div className={styles.content}>
-        <AccordeonRow items={items} />
+        <Collapsable
+          initialOpenState
+          renderHeading={(toggle, isOpen) => (
+            <Header label="Config" isOpen={isOpen} toggle={toggle} />
+          )}
+        >
+          <PolicyRowContent
+            onChange={v => onChange?.('config', v)}
+            data={data.config as PolicyProps}
+            action="Config"
+            viewMode={viewMode}
+            proposers={getProposersList(groups, 'config', 'AddProposal')}
+            policies={getPoliciesList(
+              groups,
+              'config',
+              ['VoteApprove', 'VoteReject', 'VoteRemove'],
+              defaultVotePolicy
+            )}
+            groups={groups}
+          />
+        </Collapsable>
+        <Collapsable
+          initialOpenState
+          renderHeading={(toggle, isOpen) => (
+            <Header label="Policy" isOpen={isOpen} toggle={toggle} />
+          )}
+        >
+          <PolicyRowContent
+            onChange={v => onChange?.('config', v)}
+            data={data.config as PolicyProps}
+            action="Policy"
+            viewMode={viewMode}
+            proposers={getProposersList(groups, 'policy', 'AddProposal')}
+            policies={getPoliciesList(
+              groups,
+              'policy',
+              ['VoteApprove', 'VoteReject', 'VoteRemove'],
+              defaultVotePolicy
+            )}
+            groups={groups}
+          />
+        </Collapsable>
       </div>
     </div>
   );

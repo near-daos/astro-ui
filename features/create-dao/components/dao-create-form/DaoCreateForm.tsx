@@ -28,11 +28,10 @@ export interface IDaoCreateForm {
 }
 
 const schema = yup.object().shape({
-  address: yup
+  displayName: yup
     .string()
     .matches(validWebsiteName, 'Enter correct address!')
     .required(),
-  displayName: yup.string().required(),
   purpose: yup.string().max(500),
   websites: yup
     .array()
@@ -49,12 +48,15 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
     handleSubmit,
     getValues,
     setValue,
+    watch,
     formState: { errors, touchedFields }
   } = useForm<IDaoCreateForm>({
-    mode: 'onBlur',
+    mode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: initialValues
   });
+
+  watch('displayName');
 
   const [linksCount, setLinksCount] = useState(
     initialValues?.websites?.length ?? 0
@@ -81,15 +83,13 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
             isValid={touchedFields.address && !errors.address?.message}
             size="block"
             textAlign="left"
-            {...register('address')}
+            onChange={undefined}
+            disabled
+            value={getValues('displayName') ?? ''}
             label="DAO ADDRESS"
           />
           .sputnikdao.near
         </div>
-        <p className={styles.addressAlert}>
-          <Icon width={24} name="buttonAlert" />
-          Choose wisely. You can&apos;t change this later.
-        </p>
       </section>
 
       <section className={styles.info}>
@@ -99,6 +99,25 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
           {...register('displayName')}
           label="display name"
         />
+
+        <p className={styles.addressAlert}>
+          <Icon
+            width={24}
+            name="buttonAlert"
+            className={styles.addressAlertIcon}
+          />
+          {errors.displayName?.message && (
+            <span className={styles.addressAlertText}>
+              Incorrect DAO name&nbsp;&mdash; you can use lowercase letters,
+              numbers and hyphen only.
+            </span>
+          )}
+          {!errors.displayName?.message && (
+            <span className={styles.addressAlertText}>
+              Choose wisely. You can&apos;t change this later.
+            </span>
+          )}
+        </p>
 
         <TextArea
           size="block"

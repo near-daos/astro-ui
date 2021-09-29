@@ -15,9 +15,7 @@ export function useDaoListPerCurrentUser(): useDaoListPerCurrentUserReturn {
 
   useEffect(() => {
     if (accountId) {
-      SputnikService.getDaoList({
-        filter: `createdBy||$eq||${accountId}`
-      }).then(setDaos);
+      SputnikService.getAccountDaos(accountId).then(setDaos);
     } else {
       setDaos([]);
     }

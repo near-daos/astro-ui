@@ -1,3 +1,4 @@
+import uniq from 'lodash/uniq';
 import { Badge } from 'components/badge/Badge';
 import { Button } from 'components/button/Button';
 
@@ -6,18 +7,18 @@ import { Dropdown } from 'components/dropdown/Dropdown';
 import { useModal } from 'components/modal';
 import { GroupPopup } from 'features/groups';
 import { GroupFormType } from 'features/groups/types';
-import { useDao } from 'hooks/useDao';
 
 import get from 'lodash/get';
 import { useRouter } from 'next/router';
 
 import styles from 'pages/dao/[dao]/groups/groups.module.scss';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useMedia } from 'react-use';
+
+import { DAO, Member } from 'types/dao';
+import { GetServerSideProps } from 'next';
 import { SputnikService } from 'services/SputnikService';
 import { extractMembersFromDao } from 'services/SputnikService/mappers/search-results';
-
-import { Member } from 'types/dao';
 
 const sortOptions = [
   {
@@ -30,16 +31,19 @@ const groupMap: { [key: string]: string } = {
   'all-members': 'all'
 };
 
-const GroupPage: FC = () => {
+interface GroupPageProps {
+  dao: DAO;
+  members: Member[];
+  availableGroups: string[];
+}
+
+const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
   const router = useRouter();
   const paramGroup = router.query.group as string;
-  const daoId = router.query.dao as string;
 
   const group = groupMap[paramGroup] || paramGroup;
-  const [data, setData] = useState<Member[]>([]);
   const [showCardModal] = useModal(MemberCardPopup);
   const [showGroupModal] = useModal(GroupPopup);
-  const selectedDao = useDao(daoId);
   const isMobile = useMedia('(max-width: 640px)');
 
   const [activeSort, setActiveSort] = useState<string>(sortOptions[0].value);
@@ -48,11 +52,11 @@ const GroupPage: FC = () => {
     await showGroupModal({
       initialValues: {
         groupType: GroupFormType.ADD_TO_GROUP,
-        groups: [group],
+        groups: availableGroups,
         selectedGroup: group
       }
     });
-  }, [group, showGroupModal]);
+  }, [availableGroups, group, showGroupModal]);
 
   const handleRemoveClick = useCallback(
     async item => {
@@ -74,19 +78,7 @@ const GroupPage: FC = () => {
     [showCardModal]
   );
 
-  // TODO Proper data fetching
-  useEffect(() => {
-    if (!selectedDao) return;
-
-    SputnikService.getProposals(selectedDao.id).then(res => {
-      const members = extractMembersFromDao(selectedDao, res);
-
-      setData(members);
-    });
-  }, [selectedDao]);
-
-  // Todo - we will fetch and select members dynamically
-  const sortedData = data
+  const sortedData = members
     .filter(
       item =>
         !group ||
@@ -128,7 +120,9 @@ const GroupPage: FC = () => {
           variant="secondary"
           onClick={handleAddClick}
         >
-          Add member to this group
+          {pageTitle === 'all'
+            ? 'Add member to group'
+            : 'Add member to this group'}
         </Button>
       </div>
       <div className={styles.filter}>
@@ -165,6 +159,36 @@ const GroupPage: FC = () => {
       </div>
     </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({
+  query
+}): Promise<{
+  props: { dao: DAO | null; members: Member[]; availableGroups: string[] };
+}> => {
+  const dao = await SputnikService.getDaoById(query.dao as string);
+
+  const members = await SputnikService.getProposals(query.dao as string).then(
+    res => {
+      return dao ? extractMembersFromDao(dao, res) : [];
+    }
+  );
+
+  const availableGroups = members.reduce((res, item) => {
+    const groups = item.groups.map(grp => grp.toLowerCase());
+
+    res.push(...groups);
+
+    return res;
+  }, [] as string[]);
+
+  return {
+    props: {
+      dao,
+      members,
+      availableGroups: uniq(availableGroups)
+    }
+  };
 };
 
 export default GroupPage;

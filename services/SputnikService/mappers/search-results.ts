@@ -118,12 +118,13 @@ export const extractMembersFromDao = (
           id: nanoid(),
           name: user,
           groups: [grp.name],
+          // TODO - tokens are now hidden in UI
           tokens: {
             type: 'NEAR',
             value: 18,
             percent: 14
           },
-          votes: votesPerProposer[user]
+          votes: votesPerProposer[user] ?? null
         };
       } else {
         members[user] = {

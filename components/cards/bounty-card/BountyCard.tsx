@@ -4,6 +4,7 @@ import { StatusPanel } from 'components/cards/bounty-card/components/status-pane
 import { Bounty, BountyStatus } from 'components/cards/bounty-card/types';
 
 import { useModal } from 'components/modal';
+import { useBountyPageContext } from 'features/bounty/helpers';
 import { ClaimBountyDialog } from 'features/bounty/dialogs/claim-bounty-dialog/ClaimBountyDialog';
 import { UnclaimBountyDialog } from 'features/bounty/dialogs/unclaim-bounty-dialog/UnclaimBountyDialog';
 import { CompleteBountyDialog } from 'features/bounty/dialogs/complete-bounty-dialog/CompleteBountyDialog';
@@ -21,12 +22,19 @@ export interface BountyCardProps {
 
 export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
   const { token, amount, description, claimedBy, slots } = data;
+  const { dao } = useBountyPageContext();
 
-  const [showClaimBountyDialog] = useModal(ClaimBountyDialog, { data });
+  const [showClaimBountyDialog] = useModal(ClaimBountyDialog, {
+    data,
+    bond: dao.policy.bountyBond
+  });
 
   const [showUnclaimBountyDialog] = useModal(UnclaimBountyDialog, { data });
 
-  const [showCompleteBountyDialog] = useModal(CompleteBountyDialog, { data });
+  const [showCompleteBountyDialog] = useModal(CompleteBountyDialog, {
+    data,
+    bond: dao.policy.proposalBond
+  });
 
   const handleClaimClick = useCallback(() => showClaimBountyDialog(), [
     showClaimBountyDialog

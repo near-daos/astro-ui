@@ -1,9 +1,7 @@
-import React, { FC, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { IconButton } from 'components/button/IconButton';
-import { Collapsable } from 'components/collapsable/Collapsable';
-import { useAccordion } from 'hooks/useAccordion';
 
-import styles from './accordeon-row.module.scss';
+import styles from './policy-row-header.module.scss';
 
 interface RowItem {
   id: string;
@@ -42,27 +40,5 @@ export const Header: React.FC<{
       />
       {label}
     </section>
-  );
-};
-
-export const AccordeonRow: FC<AccordeonRowProps> = ({ items }) => {
-  const { getItemProps } = useAccordion();
-
-  return (
-    <div className={styles.root}>
-      {items.map(({ id, label, content }) => {
-        return (
-          <Collapsable
-            key={id}
-            {...getItemProps(id)}
-            renderHeading={(toggle, isOpen) => (
-              <Header label={label} isOpen={isOpen} toggle={toggle} />
-            )}
-          >
-            {content}
-          </Collapsable>
-        );
-      })}
-    </div>
   );
 };

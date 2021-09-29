@@ -64,7 +64,7 @@ export const Policies: React.FC<PoliciesProps> = ({
         />
       ))}
       <Button
-        disabled={difference(selectedGroups, groups).length === 0}
+        disabled={difference(groups, selectedGroups).length === 0}
         className={styles.add}
         variant="tertiary"
         onClick={onAdd}

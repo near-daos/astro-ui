@@ -4,6 +4,8 @@ import { CreateProposalParams, Proposal } from 'types/proposal';
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
 import snakeCase from 'lodash/snakeCase';
 import { Vote, VoteDetail, VoterDetail } from 'features/types';
+import difference from 'lodash/difference';
+import isEmpty from 'lodash/isEmpty';
 
 export type Scope =
   | 'addBounty'
@@ -37,7 +39,7 @@ export const getProposersList = (
       const [_scope, _action] = permission.split(':');
 
       return (
-        (_scope === '*' || _scope === scope) &&
+        (_scope === '*' || _scope === snakeCase(scope)) &&
         (_action === action || _action === '*')
       );
     });
@@ -55,7 +57,8 @@ export const getVotePolicyData = (
   votePolicy: DaoVotePolicy | null,
   defaultVotePolicy: DaoVotePolicy
 ): VotePolicy => {
-  const policy = votePolicy || defaultVotePolicy;
+  const policy =
+    votePolicy && !isEmpty(votePolicy) ? votePolicy : defaultVotePolicy;
 
   return {
     whoCanVote: name,
@@ -74,6 +77,8 @@ export const getPoliciesList = (
   return groups.reduce((res, item) => {
     const { permissions } = item;
 
+    const expectedScope = snakeCase(scope);
+
     const isPermitted = permissions.find((permission: string) => {
       const [_scope, _action] = permission.split(':');
 
@@ -87,12 +92,16 @@ export const getPoliciesList = (
         }
       });
 
-      return (_scope === '*' || _scope === scope) && matched;
+      return (_scope === '*' || _scope === expectedScope) && matched;
     });
 
     if (isPermitted) {
       res.push(
-        getVotePolicyData(item.name, item.votePolicy, defaultVotePolicy)
+        getVotePolicyData(
+          item.name,
+          item.votePolicy[expectedScope],
+          defaultVotePolicy
+        )
       );
     }
 
@@ -121,14 +130,15 @@ export type VotingPolicyPageInitialData = {
 const POLICIES_VIEWS = [
   'addBounty',
   'bountyDone',
-  'setVoteToken',
+  'setVoteToken', // todo - is this a Create poll action?
   'call',
   'addMemberToRole',
   'removeMemberFromRole',
   'transfer',
   'upgradeSelf',
   'upgradeRemote',
-  'config'
+  'config',
+  'policy'
 ];
 
 export const getInitialData = (
@@ -154,7 +164,7 @@ export const getInitialData = (
     ...views,
     daoSettings: {
       externalLink: '',
-      details: dao?.description ?? ''
+      details: ''
     }
   };
 };
@@ -333,3 +343,12 @@ export const getNewProposalObject = (
     bond: dao.policy.proposalBond
   };
 };
+
+export function getNextGroup(
+  allGroups: string[],
+  selectedGroups: string[]
+): string {
+  const availableGroups = difference(allGroups, selectedGroups);
+
+  return availableGroups[0] ?? '';
+}

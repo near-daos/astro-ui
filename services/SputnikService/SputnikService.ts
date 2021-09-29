@@ -107,17 +107,14 @@ class SputnikService {
     args: { bountyId: number; deadline: string; bountyBond: string }
   ) {
     const { bountyId: id, deadline, bountyBond } = args;
-    const amount = new Decimal(args.bountyBond);
-    const amountYokto = amount.mul(yoktoNear).toFixed();
 
     this.contractPool.get(daoId).bounty_claim(
       {
         id,
-        deadline,
-        bountyBond
+        deadline
       },
       gas,
-      amountYokto.toString()
+      bountyBond
     );
   }
 
@@ -249,7 +246,7 @@ class SputnikService {
     const args = Buffer.from(JSON.stringify(argsList)).toString('base64');
 
     try {
-      return await this.factoryContract.create(
+      const result = await this.factoryContract.create(
         {
           name: params.name,
           args
@@ -257,6 +254,8 @@ class SputnikService {
         gas,
         amountYokto.toString()
       );
+
+      return result;
     } catch (err) {
       if (err.message !== 'Failed to redirect to sign transaction') {
         throw err;
@@ -349,6 +348,14 @@ class SputnikService {
     });
   }
 
+  public async getAccountDaos(accountId: string): Promise<DAO[]> {
+    const { data } = await this.httpService.get<DaoDTO[]>(
+      `/daos/account-daos/${accountId}`
+    );
+
+    return mapDaoDTOListToDaoList(data);
+  }
+
   public async getBountiesDone(daoId: string): Promise<Proposal[]> {
     const queryString = RequestQueryBuilder.create()
       .setFilter({
@@ -360,6 +367,11 @@ class SputnikService {
         field: 'kind',
         operator: '$cont',
         value: ProposalType.BountyDone
+      })
+      .setFilter({
+        field: 'status',
+        operator: '$eq',
+        value: 'Approved'
       })
       .setLimit(500)
       .setOffset(0)

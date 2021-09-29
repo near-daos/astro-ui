@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 
@@ -48,7 +49,11 @@ export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
     if (isLandingPage) {
       return (
         <div className={styles.flag}>
-          <Icon width={92} name="appLogo" />
+          <Link href="/home" passHref>
+            <a href="*">
+              <Icon width={92} name="appLogo" />
+            </a>
+          </Link>
         </div>
       );
     }

@@ -6,10 +6,11 @@ import { Badge } from 'components/badge/Badge';
 import { useModal } from 'components/modal';
 import { VotePolicyPopup } from 'features/vote-policy/VotePolicyPopup';
 import { PolicyProps } from 'features/vote-policy/helpers';
+import { TGroup } from 'types/dao';
 
-import styles from './accordeon-content.module.scss';
+import styles from './policy-row-content.module.scss';
 
-interface AccordeonContentProps {
+interface PolicyRowContentProps {
   proposers: string[];
   policies: VotePolicy[];
   viewMode: boolean;
@@ -22,20 +23,25 @@ interface AccordeonContentProps {
     | 'Remove member from group'
     | 'Request payout'
     | 'Upgrade self'
-    | 'Upgrade remote';
+    | 'Upgrade remote'
+    | 'Config'
+    | 'Policy';
   onChange: (value: PolicyProps) => void;
   data: PolicyProps;
+  groups: TGroup[];
 }
 
-export const AccordeonContent: FC<AccordeonContentProps> = ({
+export const PolicyRowContent: FC<PolicyRowContentProps> = ({
   proposers,
   viewMode,
   action,
   onChange,
-  data
+  data,
+  groups
 }) => {
   const [showModal] = useModal(VotePolicyPopup, {
-    title: action
+    title: action,
+    groups
   });
 
   const handleEdit = useCallback(async () => {
