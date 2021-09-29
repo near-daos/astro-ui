@@ -1,28 +1,117 @@
 image: node:14.16.0
 
+definitions:
+  steps:
+    - step: &set-environment
+        name: Set Environment
+        artifacts:
+          - environment.sh
+
+    - step: &build
+        name: Installing & Build artifact
+        caches:
+          - node
+        script:
+          - yarn install 
+          - yarn lint
+          - yarn typecheck
+          - yarn build-storybook
+        artifacts:
+          - storybook-static/**
+    
+    - step: &docker-build-publish
+        name: Docker - Build and Publish
+        services:
+          - docker
+        caches:
+          - docker
+        script:
+          - source environment.sh
+          - >-
+            docker build
+            -t $APP_NAME:latest
+            -t $APP_NAME:develop-latest
+            -t $APP_NAME:$DOCKER_ENV_TAG
+            .
+
+          - pipe: atlassian/aws-ecr-push-image:1.4.2
+            variables:
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+              IMAGE_NAME: $APP_NAME
+              TAGS: >-
+                latest
+                develop-latest
+                $DOCKER_ENV_TAG
+                
+    - step: &helm-build-deploy
+        name: Helm - Build and Deploy
+        image: alpine/helm:3.6.3
+        script:
+          - source environment.sh
+          - export CHART_FOLDER=deployment/app-chart
+          - helm lint $CHART_FOLDER
+          - >-
+            helm template $APP_NAME $CHART_FOLDER
+            --set image.tag=$DOCKER_ENV_TAG
+            --set environment.near_env=$NEAR_ENV
+            --set environment.near_contract_name=$NEAR_CONTRACT_NAME
+            > $APP_NAME-manifest.yml
+
+          - pipe: atlassian/aws-eks-kubectl-run:1.4.2
+            variables:
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+              CLUSTER_NAME: $EKS_CLUSTER_NAME
+              KUBECTL_COMMAND: 'apply'
+              RESOURCE_PATH: '$APP_NAME-manifest.yml'
+              KUBECTL_ARGS:
+                - "--namespace=$DEPLOYMENT_NAMESPACE"
+
 pipelines:
+  custom:
+    feature:
+      - step:
+          <<: *set-environment
+
+          script:
+            - >-
+              echo export DOCKER_ENV_TAG=develop-$BITBUCKET_COMMIT >> environment.sh
+
+      - step: *docker-build-publish
+
+      - step:
+          <<: *helm-build-deploy
+          deployment: Development
+
   branches:
     develop:
       - step:
-          name: Installing & Build artifact
-          caches:
-            - node
+          <<: *set-environment
+
           script:
-            - yarn install 
-            - yarn lint
-            - yarn typecheck
-            - yarn build-storybook
-          artifacts:
-            - storybook-static/**
+            - >-
+              echo export DOCKER_ENV_TAG=develop-$BITBUCKET_COMMIT >> environment.sh
+
+      - step: *build
+      
       - step:
           name: Deploy to S3
           deployment: development
           script:
             - pipe: atlassian/aws-s3-deploy:0.3.8
               variables:
-                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                AWS_ACCESS_KEY_ID: $AWS_S3_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_S3_SECRET_ACCESS_KEY
                 AWS_DEFAULT_REGION: 'us-east-2'
                 S3_BUCKET: 'astro-storybook'
                 LOCAL_PATH: 'storybook-static'
                 ACL: 'public-read'
+
+      - step: *docker-build-publish
+
+      - step:
+          <<: *helm-build-deploy
+          deployment: Development
