@@ -56,16 +56,16 @@
   width: 240px;
 
   @include tablet-landscape {
-    left: -54px;
+    left: -56px;
     top: 20px;
     transform: none;
   }
   @include desktop {
-    left: -78px;
+    left: -82px;
   }
 
   @include large-desktop {
-    left: -96px;
+    left: -102px;
     top: 33px;
   }
 }
