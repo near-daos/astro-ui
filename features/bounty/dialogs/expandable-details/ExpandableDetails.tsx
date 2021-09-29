@@ -16,7 +16,8 @@ export const ExpandableDetails: FC<ExpandableDetailsProps> = ({
   children,
   className = ''
 }) => {
-  const [isOpen, toggle] = useState(false);
+  const initialState = label === 'Vote details';
+  const [isOpen, toggle] = useState(initialState);
 
   return (
     <>
