@@ -21,7 +21,8 @@
     "build-storybook": "build-storybook -s public",
     "stylelint-check": "stylelint-config-prettier-check",
     "test": "jest",
-    "prebuild": "patch-package && yarn generate-assets-index",
+    "generate-assets": "patch-package && yarn generate-assets-index",
+    "prebuild": "yarn generate-assets",
     "generate-assets-index": "node scripts/generateAssetsIndex.js",
     "typecheck": "tsc --noEmit"
   },

@@ -19,7 +19,8 @@ definitions:
         caches:
           - node
         script:
-          - yarn install 
+          - yarn install
+          - yarn generate-assets
           - yarn lint
           - yarn typecheck
           - yarn build-storybook
@@ -95,8 +96,8 @@ pipelines:
           script:
             - pipe: atlassian/aws-s3-deploy:0.3.8
               variables:
-                AWS_ACCESS_KEY_ID: $AWS_S3_ACCESS_KEY_ID
-                AWS_SECRET_ACCESS_KEY: $AWS_S3_SECRET_ACCESS_KEY
+                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                 AWS_DEFAULT_REGION: 'us-east-2'
                 S3_BUCKET: 'astro-storybook'
                 LOCAL_PATH: 'storybook-static'
