@@ -60,6 +60,7 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
         <AddMemberToGroup
           name={proposal.kind.memberId}
           groupName={proposal.kind.role}
+          link={proposal.link}
         />
       );
       break;
@@ -69,6 +70,7 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
         <RemoveMemberFromGroup
           name={proposal.kind.memberId}
           groupName={proposal.kind.role}
+          link={proposal.link}
         />
       );
       break;
@@ -80,19 +82,27 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
           reason={proposal.kind.msg}
           recipient={proposal.kind.receiverId}
           tokens={proposal.kind.tokenId}
+          link={proposal.link}
         />
       );
       break;
     }
     case ProposalType.FunctionCall: {
-      content = <FunctionCall recipient={proposal.kind.receiverId} />;
+      content = (
+        <FunctionCall
+          recipient={proposal.kind.receiverId}
+          link={proposal.link}
+        />
+      );
       break;
     }
     case ProposalType.AddBounty:
     case ProposalType.ChangePolicy:
     case ProposalType.Vote:
     default: {
-      content = <TextWithLink text={proposal.description} />;
+      content = (
+        <TextWithLink text={proposal.description} link={proposal.link} />
+      );
       break;
     }
   }

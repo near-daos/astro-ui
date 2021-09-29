@@ -119,6 +119,7 @@ export type Proposal = {
   // votePeriodConvertedEndDate: Date;   --- not working with SSR
   createdAt: string;
   daoDetails: DaoDetails;
+  link: string;
 };
 
 export interface CreateProposalParams {

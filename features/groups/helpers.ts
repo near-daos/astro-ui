@@ -3,6 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import { DAO, VotePolicyRequest } from 'types/dao';
 import { DaoRole, DefaultVotePolicy } from 'types/role';
 import { CreateProposalParams } from 'types/proposal';
+import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
 
@@ -55,7 +56,7 @@ function getAddRemoveMemberProposal(
 
   return {
     daoId: id,
-    description: `${detail} ${externalUrl}`,
+    description: `${detail}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
     kind: isRemove ? 'RemoveMemberFromRole' : 'AddMemberToRole',
     data: {
       member_id: memberName,
@@ -149,7 +150,7 @@ export function getChangePolicyProposal(
 
   return {
     daoId: id,
-    description: `${detail} ${externalUrl}`,
+    description: `${detail}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
     kind: 'ChangePolicy',
     data: {
       policy: {

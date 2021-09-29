@@ -8,6 +8,7 @@ import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
+import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 export interface CreatePollDialogProps {
   isOpen: boolean;
@@ -28,7 +29,7 @@ export const CreatePollDialog: FC<CreatePollDialogProps> = ({
 
       await SputnikService.createProposal({
         daoId: currentDao.id,
-        description: data.question,
+        description: `${data.question}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
         kind: 'Vote',
         bond: currentDao.policy.proposalBond
       });
