@@ -170,12 +170,22 @@ export const useSidebarData = (): {
           0,
           500
         );
+        const votesCountByDao = proposals.reduce((res, item) => {
+          if (res[item.daoId] !== undefined) {
+            res[item.daoId] += Object.keys(item.votes).length;
+          } else {
+            res[item.daoId] = Object.keys(item.votes).length;
+          }
+
+          return res;
+        }, {} as Record<string, number>);
         const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
 
         const updatedDaos = accountDaos.map(dao => {
           return {
             ...dao,
-            proposals: activeProposalsByDao[dao.id]
+            proposals: activeProposalsByDao[dao.id],
+            votes: votesCountByDao[dao.id]
           };
         });
 
