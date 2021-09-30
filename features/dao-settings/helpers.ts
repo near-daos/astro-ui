@@ -10,8 +10,8 @@ import { dataRoleToContractRole } from 'features/groups/helpers';
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
 
 export interface NameAndPurposeData {
-  name: string;
   purpose: string;
+  displayName: string;
 }
 
 export function getChangeConfigProposal(

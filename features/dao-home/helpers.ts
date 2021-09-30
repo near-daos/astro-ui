@@ -30,10 +30,10 @@ type FundMemberNumType = {
 };
 
 export function getDaoDetailsFromDao(dao: DAO): DaoDetailsType {
-  const { id, name, logo, createdAt, description, links } = dao;
+  const { id, name, logo, createdAt, description, links, displayName } = dao;
 
   const daoDetails = {
-    title: name,
+    title: displayName || name,
     subtitle: id,
     description,
     flag: logo,

@@ -1,15 +1,20 @@
+import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from 'components/button/Button';
-import { IconButton } from 'components/button/IconButton';
-import { Icon } from 'components/Icon';
-import { Input } from 'components/input/Input';
-import { TextArea } from 'components/textarea/TextArea';
-import { Title } from 'components/Typography';
-import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 import React, { FC, HTMLProps, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+
+import { Icon } from 'components/Icon';
+import { Title } from 'components/Typography';
+import { Input } from 'components/input/Input';
+import { Button } from 'components/button/Button';
+import { IconButton } from 'components/button/IconButton';
+import { TextArea } from 'components/textarea/TextArea';
+
+import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 import { validUrlRegexp, validWebsiteName } from 'utils/regexp';
-import * as yup from 'yup';
+
+import { formatDaoAddress } from './helpers';
+
 import styles from './dao-create-form.module.scss';
 
 interface DaoCreateFormProps
@@ -56,7 +61,7 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
     defaultValues: initialValues
   });
 
-  watch('displayName');
+  const displayName = watch('displayName');
 
   const [linksCount, setLinksCount] = useState(
     initialValues?.websites?.length ?? 0
@@ -85,7 +90,7 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
             textAlign="left"
             onChange={undefined}
             disabled
-            value={getValues('displayName') ?? ''}
+            value={formatDaoAddress(displayName)}
             label="DAO ADDRESS"
           />
           .sputnikdao.near
@@ -108,8 +113,8 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
           />
           {errors.displayName?.message && (
             <span className={styles.addressAlertText}>
-              Incorrect DAO name&nbsp;&mdash; you can use lowercase letters,
-              numbers and hyphen only.
+              Incorrect DAO name&nbsp;&mdash; you can use letters, numbers,
+              hyphen and spaces only.
             </span>
           )}
           {!errors.displayName?.message && (

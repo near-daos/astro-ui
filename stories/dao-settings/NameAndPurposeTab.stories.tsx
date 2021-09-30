@@ -18,7 +18,7 @@ export const Template: Story<NameAndPurposeTabProps> = (args): JSX.Element => (
 Template.storyName = 'NameAndPurposeTab';
 
 Template.args = {
-  accountName: 'meowzers.sputnikdao.near',
+  daoId: 'meowzers.sputnikdao.near',
   name: 'meowzers',
   purpose:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis eleifend habitant laoreet ornare vitae consequat. Potenti ut urna, ultricies elit nam. Feugiat porta elit ultricies eu mollis. Faucibus mauris faucibus aliquam non. '

@@ -19,12 +19,12 @@ import {
 import styles from './name-and-purpose-tab.module.scss';
 
 export const schema = yup.object().shape({
-  name: yup.string().min(2).required(),
+  displayName: yup.string().min(2).required(),
   purpose: yup.string().max(500)
 });
 
 export interface NameAndPurposeTabProps {
-  accountName: string;
+  daoId: string;
   name: string;
   purpose: string;
   currentDaoMetadata: DaoMetadata;
@@ -32,7 +32,7 @@ export interface NameAndPurposeTabProps {
 }
 
 export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
-  accountName,
+  daoId,
   name,
   purpose,
   currentDaoMetadata,
@@ -41,12 +41,16 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
   const [viewMode, setViewMode] = useToggle(true);
   const [isSubmitting, setSubmitting] = useToggle(false);
 
+  const getDisplayName = useCallback(() => {
+    return currentDaoMetadata.displayName || name;
+  }, [name, currentDaoMetadata.displayName]);
+
   const methods = useForm<NameAndPurposeData>({
     mode: 'onChange',
     reValidateMode: 'onChange',
     defaultValues: {
-      name,
-      purpose
+      purpose,
+      displayName: getDisplayName()
     },
     resolver: yupResolver(schema)
   });
@@ -67,14 +71,18 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
       const fileName = url[url.length - 1];
 
       const newDaoConfig: DaoConfig = {
-        name: data.name,
+        name,
         purpose: data.purpose,
-        metadata: fromMetadataToBase64({ links, flag: fileName })
+        metadata: fromMetadataToBase64({
+          links,
+          flag: fileName,
+          displayName: data.displayName
+        })
       };
 
       await SputnikService.createProposal(
         getChangeConfigProposal(
-          accountName,
+          daoId,
           newDaoConfig,
           'Changing name/purpose',
           proposalBond
@@ -83,16 +91,16 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
       setSubmitting(false);
       setViewMode(true);
     },
-    [setSubmitting, currentDaoMetadata, accountName, proposalBond, setViewMode]
+    [name, setSubmitting, currentDaoMetadata, daoId, proposalBond, setViewMode]
   );
 
   const onCancel = useCallback(() => {
     setViewMode(true);
     reset({
-      name,
-      purpose
+      purpose,
+      displayName: getDisplayName()
     });
-  }, [name, purpose, reset, setViewMode]);
+  }, [purpose, reset, setViewMode, getDisplayName]);
 
   function getDisableTooltip() {
     if (!isDirty) return 'You need to make changes to submit proposal';
@@ -123,17 +131,19 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
       >
         <div className={styles.row}>
           <div className={styles.label}>Account name (cannot be changed)</div>
-          <p>{accountName}</p>
+          <p>{daoId}</p>
         </div>
         <div className={styles.row}>
           <div>
-            <div className={styles.label}>Name</div>
+            <div className={styles.label}>Display Name</div>
             {viewMode ? (
-              <span>{name}</span>
+              <span>{getDisplayName()}</span>
             ) : (
               <Input
-                {...register('name')}
-                isValid={touchedFields.name && !errors.name?.message}
+                {...register('displayName')}
+                isValid={
+                  touchedFields.displayName && !errors.displayName?.message
+                }
                 size="block"
                 maxLength={500}
                 textAlign="left"

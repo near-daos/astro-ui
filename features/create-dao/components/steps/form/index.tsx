@@ -1,13 +1,16 @@
-import { Button } from 'components/button/Button';
-import { Icon } from 'components/Icon';
-import { Title } from 'components/Typography';
-
-import { DaoCreateForm } from 'features/create-dao/components/dao-create-form/DaoCreateForm';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import styles from 'features/create-dao/components/steps/form/form.module.scss';
-
 import { useFormContext } from 'react-hook-form';
+
+import { Icon } from 'components/Icon';
+import { Title } from 'components/Typography';
+import { Button } from 'components/button/Button';
+
+import { DaoCreateForm } from 'features/create-dao/components/dao-create-form/DaoCreateForm';
+
+import { formatDaoAddress } from 'features/create-dao/components/dao-create-form/helpers';
+
+import styles from 'features/create-dao/components/steps/form/form.module.scss';
 
 export function FormView(): JSX.Element {
   const { getValues, reset } = useFormContext();
@@ -23,7 +26,11 @@ export function FormView(): JSX.Element {
           id="dao-create-form"
           initialValues={getValues()}
           onSubmit={async data => {
-            reset({ ...getValues(), ...data, address: data.displayName });
+            reset({
+              ...getValues(),
+              ...data,
+              address: formatDaoAddress(data.displayName)
+            });
             await router.push('/create-dao/flag');
           }}
         />

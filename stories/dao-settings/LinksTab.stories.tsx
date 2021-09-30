@@ -16,10 +16,4 @@ export const Template: Story<LinksTabProps> = (args): JSX.Element => (
 
 Template.storyName = 'LinksTab';
 
-Template.args = {
-  links: [
-    'http://example.com',
-    'http://discord.com/meowsers/join',
-    'https://twitter.com/meowsers/join'
-  ]
-};
+Template.args = {};
