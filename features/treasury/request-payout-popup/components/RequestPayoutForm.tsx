@@ -21,9 +21,9 @@ import styles from './request-payout-form.module.scss';
 
 const schema = yup.object().shape({
   token: yup.string().required(),
-  amount: yup.string(),
-  recipient: yup.string(),
-  detail: yup.string(),
+  amount: yup.string().required(),
+  recipient: yup.string().required(),
+  detail: yup.string().required(),
   externalUrl: yup.string()
 });
 
@@ -102,6 +102,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
       </div>
       <div className={styles.detail}>
         <TextArea
+          isValid={touchedFields.detail && !errors.detail?.message}
           size="block"
           defaultValue={initialValues?.payoutDetail}
           textAlign="left"

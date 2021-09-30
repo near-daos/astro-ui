@@ -27,8 +27,8 @@ export interface CompleteBountyFormInput {
 }
 
 const schema = yup.object().shape({
-  recipient: yup.string(),
-  details: yup.string(),
+  recipient: yup.string().required(),
+  details: yup.string().required(),
   externalUrl: yup.string()
 });
 
@@ -36,7 +36,11 @@ export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
   onSubmit,
   onCancel
 }) => {
-  const { register, handleSubmit } = useForm<CompleteBountyFormInput>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, touchedFields }
+  } = useForm<CompleteBountyFormInput>({
     resolver: yupResolver(schema),
     defaultValues: {
       recipient: SputnikService.getAccountId()
@@ -47,6 +51,7 @@ export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
     <form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
       <div className={styles.recipient}>
         <Input
+          isValid={touchedFields.recipient && !errors.recipient?.message}
           size="block"
           textAlign="left"
           type="text"
@@ -58,6 +63,7 @@ export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
       </div>
       <div className={styles.group}>
         <TextArea
+          isValid={touchedFields.details && !errors.details?.message}
           size="block"
           textAlign="left"
           resize="none"
