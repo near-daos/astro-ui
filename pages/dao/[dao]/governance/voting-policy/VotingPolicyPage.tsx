@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual';
 import { Button } from 'components/button/Button';
 import Tabs from 'components/tabs/Tabs';
 import { DaoSettingsBanner } from 'features/vote-policy/components/banner';
@@ -33,7 +34,10 @@ const VotingPolicyPage: FC = () => {
       if (data) {
         setData({
           ...data,
-          [name]: value
+          [name]: {
+            ...value,
+            isDirty: true
+          }
         });
       }
     },
@@ -43,7 +47,7 @@ const VotingPolicyPage: FC = () => {
   const handleSubmit = useCallback(() => {
     setViewMode(true);
 
-    if (data && dao) {
+    if (data && dao && !isEqual(getInitialData(dao), data)) {
       const proposal = getNewProposalObject(dao, data);
 
       SputnikService.createProposal(proposal);
