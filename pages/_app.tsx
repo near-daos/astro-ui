@@ -44,7 +44,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
       router.push('/home');
     } else if (router.pathname === '/' && userDaos != null) {
       router.push('/all-communities');
-    } else if (!walletInitialized) {
+    } else if (!walletInitialized && router.pathname === '/') {
       router.push('/all-communities');
     }
   }, [router, userDaos, walletInitialized]);
