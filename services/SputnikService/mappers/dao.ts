@@ -47,7 +47,7 @@ export type DaoDTO = {
   lastProposalId: number;
   numberOfProposals: number;
   stakingContract: string;
-  numberOfMembers: number;
+  numberOfAssociates: number;
   council: string[];
   councilSeats: number;
   link: unknown | null;
@@ -71,7 +71,7 @@ export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
 
 export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
   const roles = get(daoDTO, 'policy.roles', []);
-  const numberOfMembers = get(daoDTO, 'numberOfMembers', 0);
+  const numberOfAssociates = get(daoDTO, 'numberOfAssociates', 0);
   const numberOfProposals = get(daoDTO, 'lastProposalId', 0);
 
   // Transform amount
@@ -101,7 +101,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     id: daoDTO.id,
     name: config?.name ?? '',
     description: config?.purpose ?? '',
-    members: numberOfMembers,
+    members: numberOfAssociates,
     proposals: numberOfProposals,
     logo: meta ? getLogoUrl(meta.flag) : getLogoUrl(daoDTO.id),
     funds,
