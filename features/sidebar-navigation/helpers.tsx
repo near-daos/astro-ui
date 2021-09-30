@@ -1,7 +1,8 @@
 import { Sidebar } from 'components/sidebar';
 import { AddGroupMenu } from 'features/groups/components/add-group-menu';
 import React, { useMemo } from 'react';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
+import { useDao } from 'hooks/useDao';
+import { useRouter } from 'next/router';
 
 import {
   GOVERNANCE_SECTION_ID,
@@ -97,7 +98,8 @@ const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
 type TSidebarData = React.ComponentProps<typeof Sidebar>['items'];
 
 export const useSidebarData = (): TSidebarData => {
-  const selectedDao = useSelectedDAO();
+  const router = useRouter();
+  const selectedDao = useDao(router.query.dao as string);
 
   return useMemo(() => {
     const groups = {} as Record<string, string>;
@@ -107,7 +109,7 @@ export const useSidebarData = (): TSidebarData => {
     });
 
     return sidebarItems.map(item => {
-      if (item.id === GROUPS_SECTION_ID) {
+      if (item.id === GROUPS_SECTION_ID && selectedDao) {
         return {
           ...item,
           subItems: [
@@ -147,5 +149,5 @@ export const useSidebarData = (): TSidebarData => {
 
       return item;
     });
-  }, [selectedDao?.groups, selectedDao?.id]);
+  }, [selectedDao]);
 };
