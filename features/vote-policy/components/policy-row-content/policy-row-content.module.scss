@@ -8,6 +8,10 @@
   grid-template-columns: 1fr 2fr 2fr 24px;
 
   padding: 0 12px 12px;
+
+  > div {
+    white-space: nowrap;
+  }
 }
 
 .propose {
@@ -33,7 +37,6 @@
 .label {
   @extend %subtitle5;
   color: var(--color-neutral-60);
-  //margin-bottom: 12px;
 }
 
 .row {
