@@ -4,6 +4,9 @@ options:
   size: 2x
 
 definitions:
+  caches:
+    docker-cache: docker-cache
+
   services:
     docker:
       memory: 7128
@@ -30,15 +33,21 @@ definitions:
         services:
           - docker
         caches:
-          - docker
+          - docker-cache
         script:
           - source environment.sh
+          - >-
+            if [[ -f "docker-cache/cache.tar" ]]; then
+              docker load < docker-cache/cache.tar;
+            fi
           - >-
             docker build
             -t $APP_NAME:latest
             -t $APP_NAME:develop-latest
             -t $APP_NAME:$DOCKER_ENV_TAG
             .
+          - >-
+            docker save $(docker images -qa) > docker-cache/cache.tar;
 
           - pipe: atlassian/aws-ecr-push-image:1.4.2
             variables:
