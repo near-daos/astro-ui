@@ -23,9 +23,7 @@ definitions:
           - yarn generate-assets
           - yarn lint
           - yarn typecheck
-          - yarn build-storybook
-        artifacts:
-          - storybook-static/**
+          - yarn build
     
     - step: &docker-build-publish
         name: Docker - Build and Publish
@@ -79,6 +77,10 @@ definitions:
                 - "--namespace=$DEPLOYMENT_NAMESPACE"
 
 pipelines:
+  pull-requests:
+    '**':
+      - step: *build
+
   branches:
     develop:
       - step:
@@ -90,21 +92,24 @@ pipelines:
 
       - step: *build
       
+      - step: *docker-build-publish
+
       - step:
-          name: Deploy to S3
+          <<: *helm-build-deploy
           deployment: development
+
+    staging:
+      - step:
+          <<: *set-environment
+
           script:
-            - pipe: atlassian/aws-s3-deploy:0.3.8
-              variables:
-                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-                AWS_DEFAULT_REGION: 'us-east-2'
-                S3_BUCKET: 'astro-storybook'
-                LOCAL_PATH: 'storybook-static'
-                ACL: 'public-read'
+            - >-
+              echo export DOCKER_ENV_TAG=staging-$BITBUCKET_COMMIT >> environment.sh
+
+      - step: *build
 
       - step: *docker-build-publish
 
       - step:
           <<: *helm-build-deploy
-          deployment: test
+          deployment: Staging
