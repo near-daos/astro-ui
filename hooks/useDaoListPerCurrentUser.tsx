@@ -1,23 +1,21 @@
 import { useEffect, useState } from 'react';
 
 import { DAO } from 'types/dao';
-import { useAuthContext } from 'context/AuthContext';
 import { SputnikService } from 'services/SputnikService';
 
 type useDaoListPerCurrentUserReturn = {
-  daos: DAO[];
+  daos: DAO[] | null;
 };
 
 export function useDaoListPerCurrentUser(): useDaoListPerCurrentUserReturn {
-  const { accountId } = useAuthContext();
-
-  const [daos, setDaos] = useState<DAO[]>([]);
+  const [daos, setDaos] = useState<DAO[] | null>(null);
+  const accountId = SputnikService.getAccountId();
 
   useEffect(() => {
     if (accountId) {
-      SputnikService.getAccountDaos(accountId).then(setDaos);
-    } else {
-      setDaos([]);
+      SputnikService.getAccountDaos(accountId).then(data => {
+        setDaos(data);
+      });
     }
   }, [accountId]);
 

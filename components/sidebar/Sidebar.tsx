@@ -19,6 +19,7 @@ import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
 import { useMount } from 'react-use';
 
+import { useAuthContext } from 'context/AuthContext';
 import styles from './sidebar.module.scss';
 
 interface ItemBase {
@@ -55,7 +56,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   closeSideBar
 }) => {
   const router = useRouter();
-  const showDaoNavItems = useHasDao();
+  const hasDao = useHasDao();
+  const { accountId } = useAuthContext();
+
+  const showDaoNavItems = hasDao && !!accountId;
 
   const activeGroupId = get(router.asPath.split('/'), 3);
 
@@ -161,13 +165,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {renderDaoNavItems()}
           <div className={styles.delimiter} />
           <nav className={styles.bottom}>
-            <NavItem
-              topDelimiter
-              className={styles.item}
-              label="Home"
-              href="/home"
-              icon="stateHome"
-            />
+            {showDaoNavItems && (
+              <NavItem
+                topDelimiter
+                className={styles.item}
+                label="Home"
+                href="/home"
+                icon="stateHome"
+              />
+            )}
             <NavItem
               className={styles.item}
               label="All Communities"

@@ -65,7 +65,7 @@ export function arrangeByDao(proposals: Proposal[]): ProposalByDao {
 
 export const useFilteredMemberHomeData = (): FilteredProposalsData => {
   const { daos } = useDaoListPerCurrentUser();
-  const myDaos = daos.map(item => item.id);
+  const myDaos = daos?.map(item => item.id) || [];
   const proposals = useAllProposals() ?? [];
   const { accountId } = useAuthContext();
   const [filter, setFilter] = useState({

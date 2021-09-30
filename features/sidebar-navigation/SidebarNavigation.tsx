@@ -20,7 +20,7 @@ export const SidebarNavigation: FC<SidebarNavigationProps> = ({
 
   return (
     <Sidebar
-      daoList={daos}
+      daoList={daos ?? []}
       items={menuItems}
       className={className}
       fullscreen={fullscreen}

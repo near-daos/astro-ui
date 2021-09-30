@@ -4,9 +4,7 @@ import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
 
 import { AuthWrapper } from 'context/AuthContext';
-import { useDAOList } from 'hooks/useDAOList';
 import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
-import isEmpty from 'lodash/isEmpty';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -15,6 +13,7 @@ import { useMount } from 'react-use';
 import { SputnikService } from 'services/SputnikService';
 import 'styles/globals.scss';
 import { SWRConfig } from 'swr';
+import { useDAOList } from 'hooks/useDAOList';
 
 function usePageLayout(): React.FC {
   const router = useRouter();
@@ -37,17 +36,20 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
     setWalletInitialized(true);
   });
 
-  const { isLoading: isLoadingDAOList, daos } = useDAOList(walletInitialized);
+  const { daos } = useDAOList(walletInitialized);
   const { daos: userDaos } = useDaoListPerCurrentUser();
 
   useEffect(() => {
-    if (!isLoadingDAOList && isEmpty(userDaos) && router.pathname === '/') {
+    if (router.pathname === '/' && userDaos != null && userDaos.length) {
+      router.push('/home');
+    } else if (router.pathname === '/' && userDaos != null) {
+      router.push('/all-communities');
+    } else if (!walletInitialized) {
       router.push('/all-communities');
     }
-    // eslint-disable-next-line
-  }, [isLoadingDAOList]);
+  }, [router, userDaos, walletInitialized]);
 
-  if (walletInitialized && !isLoadingDAOList) {
+  if (walletInitialized) {
     return (
       <SWRConfig value={{ fallback: { '/daos': daos } }}>
         <AuthWrapper>
