@@ -40,6 +40,7 @@ export function useGetVotePermissions(
       const type = APP_TO_CONTRACT_PROPOSAL_TYPE[proposalType];
 
       return (
+        groupPerms.includes('*:*') ||
         groupPerms.includes(`*:${permission}`) ||
         groupPerms.includes(`${type}:${permission}`)
       );
