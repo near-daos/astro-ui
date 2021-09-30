@@ -2,6 +2,7 @@ import * as yup from 'yup';
 
 export const schema = yup.object().shape({
   amount: yup.number().positive().integer().required(),
+  details: yup.string().required(),
   slots: yup.number().positive().integer().required(),
   deadlineThreshold: yup.number().positive().integer().required()
 });
