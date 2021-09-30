@@ -175,3 +175,14 @@ export const useFilteredMemberHomeData = (): FilteredProposalsData => {
     selectedDaoFlag
   };
 };
+
+export function useUserHasProposals(): boolean {
+  const { accountId } = useAuthContext();
+  const proposals = useAllProposals() ?? [];
+
+  const hasProposals = proposals.some(proposal => {
+    return proposal.proposer === accountId;
+  });
+
+  return hasProposals;
+}
