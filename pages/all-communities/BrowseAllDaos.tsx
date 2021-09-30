@@ -37,7 +37,7 @@ const sortOptions = [
   },
   {
     label: 'Number of members',
-    value: 'numberOfMembers,DESC'
+    value: 'numberOfAssociates,DESC'
   }
 ];
 
