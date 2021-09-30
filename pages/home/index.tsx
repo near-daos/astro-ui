@@ -36,7 +36,6 @@ const Home: NextPage = () => {
           tab: 2
         }
       });
-      onFilterChange('proposalFilter', 'My proposals');
     }
   }, [router, hasProposals, onFilterChange]);
 

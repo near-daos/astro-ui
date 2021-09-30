@@ -1,4 +1,6 @@
-import { useCallback, useState } from 'react';
+import isEmpty from 'lodash/isEmpty';
+import { useCallback, useEffect, useState } from 'react';
+
 import { Proposal } from 'types/proposal';
 import { useAuthContext } from 'context/AuthContext';
 import {
@@ -10,6 +12,8 @@ import {
 import { useAllProposals } from 'hooks/useAllProposals';
 import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
 import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
+
+import { SputnikService } from 'services/SputnikService';
 
 export const daoOptions = [
   {
@@ -178,11 +182,19 @@ export const useFilteredMemberHomeData = (): FilteredProposalsData => {
 
 export function useUserHasProposals(): boolean {
   const { accountId } = useAuthContext();
-  const proposals = useAllProposals() ?? [];
+  const [hasProposals, setHasProposals] = useState(false);
 
-  const hasProposals = proposals.some(proposal => {
-    return proposal.proposer === accountId;
-  });
+  useEffect(() => {
+    async function checkIfHasProposals() {
+      if (accountId) {
+        const proposals = await SputnikService.getUserProposals(accountId);
+
+        setHasProposals(!isEmpty(proposals));
+      }
+    }
+
+    checkIfHasProposals();
+  }, [accountId]);
 
   return hasProposals;
 }

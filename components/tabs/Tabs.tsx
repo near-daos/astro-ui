@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import isNil from 'lodash/isNil';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import {
@@ -37,23 +38,34 @@ const Tabs: React.FC<TabsProps> = ({
 }) => {
   const router = useRouter();
 
-  const [tabIndex, setTabIndex] = useState(
-    router.query.tab !== undefined ? +router.query?.tab : undefined
-  );
+  const [tabIndex, setTabIndex] = useState(0);
 
   const rootClassName = cn(styles.root, className, {
     [styles.fitContent]: fitContent
   });
 
   useEffect(() => {
-    if (router.query.tab !== undefined && +router.query.tab !== tabIndex) {
-      setTabIndex(+router.query.tab);
-    } else if (router.query.tab === undefined) {
+    const queryTabIndex = router.query.tab;
+
+    if (!isNil(queryTabIndex) && +queryTabIndex !== tabIndex) {
+      const newTabIndex = +queryTabIndex;
+
+      setTabIndex(newTabIndex);
+
+      if (onTabSelect) {
+        const name = tabs[newTabIndex]?.label;
+
+        onTabSelect(name);
+      }
+    } else if (isNil(queryTabIndex)) {
       setTabIndex(0);
     }
-  }, [router, router.query.tab, tabIndex]);
+    // eslint-disable-next-line
+  }, [router, router.query.tab, tabIndex, onTabSelect]);
 
-  if (tabIndex === undefined) return null;
+  if (isNil(tabIndex)) {
+    return null;
+  }
 
   let tabsProps = {};
 
@@ -64,7 +76,7 @@ const Tabs: React.FC<TabsProps> = ({
         if (onTabSelect) {
           const name = tabs[index]?.label;
 
-          onTabSelect(name as string);
+          onTabSelect(name);
         }
 
         router.push(
