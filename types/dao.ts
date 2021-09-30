@@ -42,7 +42,7 @@ export type VotePolicyRequest = {
   // eslint-disable-next-line camelcase
   weight_kind: string;
   quorum: string;
-  threshold: number[] | number;
+  threshold: number[] | string;
 };
 
 export type RolesRequest = {
@@ -50,7 +50,7 @@ export type RolesRequest = {
   kind: string | { Group: string[] };
   permissions: string[];
   // eslint-disable-next-line camelcase
-  vote_policy: Record<string, string>;
+  vote_policy: Record<string, VotePolicyRequest>;
 };
 
 export type PolicyTypeRequest = {
@@ -65,7 +65,6 @@ export type PolicyTypeRequest = {
 export interface CreateDaoInput {
   name: string;
   purpose: string;
-  council: 'council';
   bond: string;
   votePeriod: string;
   gracePeriod: string;

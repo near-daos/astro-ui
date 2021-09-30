@@ -209,7 +209,6 @@ class SputnikService {
   public async createDao(params: CreateDaoInput): Promise<boolean> {
     const argsList = {
       purpose: params.purpose,
-      council: params.council.split('\n').filter((item: string) => item),
       bond: new Decimal(params.bond).mul(yoktoNear).toFixed(),
       vote_period: new Decimal(params.votePeriod).mul('3.6e12').toFixed(),
       grace_period: new Decimal(params.gracePeriod).mul('3.6e12').toFixed(),

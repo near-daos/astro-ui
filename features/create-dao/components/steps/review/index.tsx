@@ -43,7 +43,6 @@ export function ReviewView(): JSX.Element {
     const result = await SputnikService.createDao({
       name: data.address,
       purpose: data.purpose,
-      council: 'council',
       links: data.websites,
       flag: fileName,
       bond: '0.1',

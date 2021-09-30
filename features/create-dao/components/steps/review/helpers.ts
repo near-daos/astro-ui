@@ -1,22 +1,8 @@
 import { RolesRequest, VotePolicyRequest } from 'types/dao';
 import { DAOFormValues } from 'features/create-dao/components/steps/types';
 
-const EveryoneCanDoEverythingPolicy = {
-  name: 'all',
-  kind: 'Everyone',
-  permissions: ['*:*'],
-  vote_policy: {}
-};
-
-const EveryoneCanSubmitProposal = {
-  name: 'all',
-  kind: 'Everyone',
-  permissions: ['*:AddProposal'],
-  vote_policy: {}
-};
-
-const GroupMembersCanActOnProposals = (accountId: string) => ({
-  name: 'council',
+const EveryoneCanDoEverything = (accountId: string) => ({
+  name: 'Everyone',
   kind: { Group: [accountId] },
   permissions: [
     '*:Finalize',
@@ -28,6 +14,30 @@ const GroupMembersCanActOnProposals = (accountId: string) => ({
   vote_policy: {}
 });
 
+const EveryoneCanSubmitProposal = {
+  name: 'all',
+  kind: 'Everyone',
+  permissions: ['*:AddProposal'],
+  vote_policy: {}
+};
+
+const GroupMembersCanActOnProposals = (
+  groupName: string,
+  accountId: string,
+  votePolicy?: Record<string, VotePolicyRequest>
+) => ({
+  name: groupName,
+  kind: { Group: [accountId] },
+  permissions: [
+    '*:Finalize',
+    '*:AddProposal',
+    '*:VoteApprove',
+    '*:VoteReject',
+    '*:VoteRemove'
+  ],
+  vote_policy: votePolicy || {}
+});
+
 const DemocraticVoting = {
   weight_kind: 'RoleWeight',
   quorum: '0',
@@ -37,7 +47,7 @@ const DemocraticVoting = {
 const TokenBasedVoting = {
   weight_kind: 'TokenWeight',
   quorum: '0',
-  threshold: 5
+  threshold: '5'
 };
 
 export function getRolesVotingPolicy(
@@ -50,18 +60,25 @@ export function getRolesVotingPolicy(
   const roles: RolesRequest[] = [];
 
   if (data.structure === 'flat') {
-    roles.push(EveryoneCanDoEverythingPolicy);
+    roles.push(EveryoneCanDoEverything(accountId), EveryoneCanSubmitProposal);
   } else if (data.structure === 'groups') {
-    roles.push(GroupMembersCanActOnProposals(accountId));
+    roles.push(GroupMembersCanActOnProposals('Council', accountId));
 
     if (data.proposals === 'open') {
       roles.push(EveryoneCanSubmitProposal);
+    }
+
+    if (data.voting === 'weighted') {
+      roles.push(
+        GroupMembersCanActOnProposals('Committee', accountId, {
+          policy: TokenBasedVoting
+        })
+      );
     }
   }
 
   return {
     roles,
-    defaultVotePolicy:
-      data.voting === 'democratic' ? DemocraticVoting : TokenBasedVoting
+    defaultVotePolicy: DemocraticVoting
   };
 }

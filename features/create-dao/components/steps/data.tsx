@@ -35,15 +35,13 @@ const DAO_STRUCTURE_FLAT: DaoSettingOption<DAOStructureType> = {
   icon: 'illustrationFlatOrganization',
   subject: 'structure',
   title: 'Flat',
-  description: 'No groups; all members have equal access.',
-  disabled: true
+  description: 'No groups; all members have equal access.'
 };
 
 const DAO_PROPOSALS_CLOSED: DaoSettingOption<DAOProposalsType> = {
   value: 'closed',
   icon: 'illustrationGroupsAndCommitttees',
   subject: 'proposals',
-
   title: 'Members only',
   description: 'Only members or token-holders can submit a proposal.'
 };
@@ -53,8 +51,7 @@ const DAO_VOTING_POWER_TOKEN: DaoSettingOption<DAOVotingPowerType> = {
   icon: 'illustrationTokenWeighted',
   subject: 'voting',
   title: 'Weighted',
-  description: 'The more tokens you own, the more voting power you get. ',
-  disabled: true
+  description: 'The more tokens you own, the more voting power you get. '
 };
 
 const DAO_TEMPLATE_FOUNDATION: DAOTemplate = {
@@ -76,8 +73,7 @@ A group of fans
 A social club`,
   proposals: 'closed',
   structure: 'flat',
-  voting: 'democratic',
-  disabled: true
+  voting: 'democratic'
 };
 
 const DAO_TEMPLATE_CORP: DAOTemplate = {
@@ -87,8 +83,7 @@ const DAO_TEMPLATE_CORP: DAOTemplate = {
 A startup or company`,
   proposals: 'closed',
   structure: 'groups',
-  voting: 'weighted',
-  disabled: true
+  voting: 'weighted'
 };
 
 const DAO_TEMPLATE_COOP: DAOTemplate = {
