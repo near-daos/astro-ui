@@ -134,18 +134,8 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
         type={type}
         proposalId={proposalId}
         permissions={permissions}
-        daoData={
-          type === ProposalType.ChangePolicy ||
-          type === ProposalType.ChangeConfig
-            ? daoData
-            : null
-        }
-        proposalData={
-          type === ProposalType.ChangePolicy ||
-          type === ProposalType.ChangeConfig
-            ? proposalData
-            : null
-        }
+        daoData={type === ProposalType.ChangePolicy ? daoData : null}
+        proposalData={type === ProposalType.ChangePolicy ? proposalData : null}
       >
         {children}
       </ContentPanel>

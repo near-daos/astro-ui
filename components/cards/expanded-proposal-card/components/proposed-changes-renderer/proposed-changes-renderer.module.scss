@@ -4,3 +4,24 @@
   @extend %title5;
   margin: 4px;
 }
+
+.policyWrapper {
+  margin-top: 32px;
+
+  .policyLabel {
+    @extend %subtitle4;
+    color: var(--color-neutral-60);
+    margin-bottom: 12px;
+  }
+
+  .policy {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+  }
+
+  .bold {
+    font-weight: bold;
+  }
+}
