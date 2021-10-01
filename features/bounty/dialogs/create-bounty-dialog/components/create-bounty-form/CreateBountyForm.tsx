@@ -42,7 +42,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.root} noValidate>
       <Select
         defaultValue={initialValues?.token}
         className={cn(styles.token)}
@@ -62,6 +62,8 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
         size="block"
         textAlign="left"
         type="number"
+        step="0.1"
+        min="0.1"
         {...register('amount')}
         label="Amount"
         className={cn(styles.input, styles.amount)}
