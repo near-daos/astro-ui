@@ -12,6 +12,13 @@ export interface TextAreaProps
   size: 'medium' | 'large' | 'block';
   textAlign?: Property.TextAlign;
   resize?: Property.Resize;
+  isValid?: boolean | undefined;
+}
+
+function getStateClass(isValid: boolean | undefined) {
+  if (isValid === undefined) return undefined;
+
+  return isValid ? styles.valid : styles.notValid;
 }
 
 const sizeClasses = {
@@ -26,6 +33,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
     {
       label,
       className: classNameProp,
+      isValid,
       maxLength,
       size = 'medium',
       resize = 'none',
@@ -37,9 +45,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
     externalRef
   ) => {
     const id = useId(props.id);
-
     const className = classNames(styles.textarea, sizeClasses[size]);
-
     const [currentLength, setCurrentLength] = useState(0);
 
     return (
@@ -56,7 +62,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           }}
           minRows={minRows}
           maxRows={maxRows}
-          className={classNameProp}
+          className={classNames(classNameProp, getStateClass(isValid))}
           ref={externalRef}
           style={{
             textAlign,

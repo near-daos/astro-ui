@@ -5,35 +5,15 @@ import { Title } from 'components/Typography';
 import { DaoOptionCard } from 'features/create-dao/components/option-card/DaoOptionCard';
 import { DaoSettingsModal } from 'features/create-dao/components/settings-modal/DaoSettingsModal';
 import Link from 'next/link';
-import {
-  DAO_PROPOSALS_OPTIONS,
-  DAO_STRUCTURE_OPTIONS,
-  DAO_SUBJECT_OPTIONS,
-  DAO_VOTING_POWER_OPTIONS
-} from 'features/create-dao/components/steps/data';
+import { DAO_SUBJECT_OPTIONS } from 'features/create-dao/components/steps/data';
 import styles from 'features/create-dao/components/steps/settings/settings.module.scss';
-import {
-  DAOFormValues,
-  Subject
-} from 'features/create-dao/components/steps/types';
+import { Subject } from 'features/create-dao/components/steps/types';
 import { useCallback } from 'react';
 
-import { useFormContext } from 'react-hook-form';
+import { useDaoFormState } from 'features/create-dao/components/steps/hooks';
 
 export function SettingsView(): JSX.Element {
-  const { getValues, watch, setValue } = useFormContext<DAOFormValues>();
-
-  const [structure, voting, proposals] = watch([
-    'structure',
-    'voting',
-    'proposals'
-  ]);
-
-  const options = [
-    DAO_STRUCTURE_OPTIONS[structure],
-    DAO_VOTING_POWER_OPTIONS[voting],
-    DAO_PROPOSALS_OPTIONS[proposals]
-  ];
+  const { options, getValues, setValue } = useDaoFormState();
 
   const [showModal] = useModal(DaoSettingsModal);
 

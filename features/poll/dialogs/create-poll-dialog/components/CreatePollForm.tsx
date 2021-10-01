@@ -50,6 +50,7 @@ export const CreatePollForm: FC<CreatePollFormProps> = ({
     <form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
       <div className={styles.group}>
         <TextArea
+          isValid={touchedFields.question && !errors.question?.message}
           size="block"
           textAlign="left"
           resize="none"

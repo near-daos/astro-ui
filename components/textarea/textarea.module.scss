@@ -3,7 +3,6 @@
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0.5em;
-  //width: 400px;
 
   textarea {
     border: 1.5px solid var(--color-neutral-40);
@@ -18,6 +17,14 @@
 
   textarea:focus {
     outline: 0;
+  }
+
+  .valid {
+    border-color: var(--color-success);
+  }
+
+  .notValid {
+    border-color: var(--color-error-40);
   }
 }
 

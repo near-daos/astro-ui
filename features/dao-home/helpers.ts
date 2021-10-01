@@ -32,7 +32,7 @@ type FundMemberNumType = {
 export function getDaoDetailsFromDao(dao: DAO): DaoDetailsType {
   const { id, name, logo, createdAt, description, links } = dao;
 
-  const daoDetails = {
+  return {
     title: name,
     subtitle: id,
     description,
@@ -40,12 +40,10 @@ export function getDaoDetailsFromDao(dao: DAO): DaoDetailsType {
     createdAt,
     links
   };
-
-  return daoDetails;
 }
 
 export function getProposalStats(proposals: Proposal[]): ProposalStatsType {
-  const result = proposals.reduce(
+  return proposals.reduce(
     (acc, proposal) => {
       acc.totalProposals += 1;
 
@@ -60,8 +58,6 @@ export function getProposalStats(proposals: Proposal[]): ProposalStatsType {
       totalProposals: 0
     }
   );
-
-  return result;
 }
 
 export function getFundAndMembersNum(

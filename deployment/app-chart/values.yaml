@@ -1,0 +1,91 @@
+# Default values for astro-ui.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: 398077236708.dkr.ecr.eu-central-1.amazonaws.com
+  tag: latest
+  name: astro-ui
+  pullPolicy: Always
+
+imagePullSecrets: [ ]
+nameOverride: ""
+fullnameOverride: ""
+
+container:
+  # Specifies the internal container port
+  internalPort: 3000
+  # Specifies the endpoint for liveness checks
+  livenessProbe:
+    failureThreshold: 10
+    initialDelaySeconds: 90
+    periodSeconds: 60
+    successThreshold: 1
+    timeoutSeconds: 60
+    port: 3000
+    path: /api/health
+  readinessProbe:
+    failureThreshold: 10
+    initialDelaySeconds: 20
+    periodSeconds: 60
+    successThreshold: 1
+    timeoutSeconds: 60
+    port: 3000
+    path: /api/health
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 3000
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    cpu: 300m
+    memory: 400Mi
+  requests:
+    cpu: 200m
+    memory: 300Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+version:
+  commit: latest
+  branch: develop
+
+environment:
+  near_env: "testnet"
+  near_contract_name: "sputnikv2.testnet"
+  next_public_api_url: "http://a6f2431dfded249d18fc7a20377342db-2021398035.eu-central-1.elb.amazonaws.com"
+  next_public_aws_bucket: "sputnik-dao"
+  next_public_aws_region: "eu-central-1"
+  next_public_aws_identity_pool_id: "eu-central-1:5887fd21-7b40-4871-a6cb-21097fe079a2"

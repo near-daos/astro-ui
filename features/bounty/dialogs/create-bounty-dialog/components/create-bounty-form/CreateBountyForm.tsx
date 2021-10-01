@@ -68,6 +68,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
       />
       <div className={styles.details}>
         <TextArea
+          isValid={touchedFields.details && !errors.details?.message}
           size="block"
           textAlign="left"
           resize="none"

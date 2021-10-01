@@ -16,9 +16,10 @@ import { useSelectedDAO } from 'hooks/useSelectedDao';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 import { useMount } from 'react-use';
 
+import { useAuthContext } from 'context/AuthContext';
 import styles from './sidebar.module.scss';
 
 interface ItemBase {
@@ -55,7 +56,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   closeSideBar
 }) => {
   const router = useRouter();
-  const showDaoNavItems = useHasDao();
+  const hasDao = useHasDao();
+  const { accountId, login } = useAuthContext();
+
+  const showDaoNavItems = hasDao && !!accountId;
 
   const activeGroupId = get(router.asPath.split('/'), 3);
 
@@ -82,6 +86,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
     return () => router.events.off('routeChangeComplete', close);
   });
+
+  const createDao = useCallback(
+    () => (accountId ? router.push('/create-dao') : login()),
+    [login, router, accountId]
+  );
 
   const currentDao = useSelectedDAO();
 
@@ -161,13 +170,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {renderDaoNavItems()}
           <div className={styles.delimiter} />
           <nav className={styles.bottom}>
-            <NavItem
-              topDelimiter
-              className={styles.item}
-              label="Home"
-              href="/home"
-              icon="stateHome"
-            />
+            {showDaoNavItems && (
+              <NavItem
+                topDelimiter
+                className={styles.item}
+                label="Home"
+                href="/home"
+                icon="stateHome"
+              />
+            )}
             <NavItem
               className={styles.item}
               label="All Communities"
@@ -176,8 +187,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
             />
             <NavItem
               className={styles.item}
+              onClick={createDao}
               label="Create a DAO"
-              href="/create-dao"
               icon="stateCreateDao"
             />
           </nav>

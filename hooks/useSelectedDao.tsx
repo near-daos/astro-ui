@@ -21,21 +21,13 @@ export function useSelectedDAO(): DAO | null {
     const daoId = router.query.dao;
 
     const idForFilter = daoId || selectedDaoCookie;
-    const currentDao = daos.find(item => item.id === idForFilter) || daos[0];
 
-    setSelectedDao(currentDao);
-  }, [daos, router, selectedDaoCookie, setSelectedDao]);
+    if (daos) {
+      const currentDao = daos?.find(item => item.id === idForFilter) || daos[0];
 
-  useEffect(() => {
-    if (selectedDao) {
-      if (router.pathname === '/') {
-        router.push({
-          pathname: `/dao/${selectedDao.id}`,
-          query: router.query
-        });
-      }
+      setSelectedDao(currentDao);
     }
-  }, [router, selectedDao]);
+  }, [daos, router, selectedDaoCookie, setSelectedDao]);
 
   return selectedDao ?? null;
 }

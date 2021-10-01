@@ -1,7 +1,11 @@
 import { Sidebar } from 'components/sidebar';
 import { AddGroupMenu } from 'features/groups/components/add-group-menu';
-import React, { useMemo } from 'react';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDao } from 'hooks/useDao';
+import { useRouter } from 'next/router';
+import { getActiveProposalsCountByDao } from 'hooks/useAllProposals';
+import { SputnikService } from 'services/SputnikService';
+import { DAO } from 'types/dao';
 
 import {
   GOVERNANCE_SECTION_ID,
@@ -96,10 +100,16 @@ const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
 
 type TSidebarData = React.ComponentProps<typeof Sidebar>['items'];
 
-export const useSidebarData = (): TSidebarData => {
-  const selectedDao = useSelectedDAO();
+export const useSidebarData = (): {
+  daos: DAO[] | null;
+  menuItems: TSidebarData;
+} => {
+  const router = useRouter();
+  const selectedDaoId = router.query.dao as string;
+  const selectedDao = useDao(selectedDaoId);
+  const [daos, setDaos] = useState<DAO[] | null>(null);
 
-  return useMemo(() => {
+  const menuItems = useMemo(() => {
     const groups = {} as Record<string, string>;
 
     selectedDao?.groups.forEach(group => {
@@ -107,7 +117,7 @@ export const useSidebarData = (): TSidebarData => {
     });
 
     return sidebarItems.map(item => {
-      if (item.id === GROUPS_SECTION_ID) {
+      if (item.id === GROUPS_SECTION_ID && selectedDao) {
         return {
           ...item,
           subItems: [
@@ -147,5 +157,46 @@ export const useSidebarData = (): TSidebarData => {
 
       return item;
     });
-  }, [selectedDao?.groups, selectedDao?.id]);
+  }, [selectedDao]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const accountId = SputnikService.getAccountId();
+
+      if (accountId) {
+        const accountDaos = await SputnikService.getAccountDaos(accountId);
+        const proposals = await SputnikService.getActiveProposals(
+          accountDaos.map(item => item.id),
+          0,
+          500
+        );
+        const votesCountByDao = proposals.reduce((res, item) => {
+          if (res[item.daoId] !== undefined) {
+            res[item.daoId] += Object.keys(item.votes).length;
+          } else {
+            res[item.daoId] = Object.keys(item.votes).length;
+          }
+
+          return res;
+        }, {} as Record<string, number>);
+        const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
+
+        const updatedDaos = accountDaos.map(dao => {
+          return {
+            ...dao,
+            proposals: activeProposalsByDao[dao.id],
+            votes: votesCountByDao[dao.id]
+          };
+        });
+
+        setDaos(updatedDaos);
+      }
+    }
+    fetchData();
+  }, [selectedDaoId]);
+
+  return {
+    menuItems,
+    daos
+  };
 };

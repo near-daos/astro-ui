@@ -1,4 +1,3 @@
-import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
 import React, { FC } from 'react';
 
 import { Sidebar } from 'components/sidebar/Sidebar';
@@ -15,12 +14,11 @@ export const SidebarNavigation: FC<SidebarNavigationProps> = ({
   fullscreen = false,
   closeSideBar
 }) => {
-  const menuItems = useSidebarData();
-  const { daos } = useDaoListPerCurrentUser();
+  const { daos, menuItems } = useSidebarData();
 
   return (
     <Sidebar
-      daoList={daos}
+      daoList={daos ?? []}
       items={menuItems}
       className={className}
       fullscreen={fullscreen}

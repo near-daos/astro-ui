@@ -209,7 +209,6 @@ class SputnikService {
   public async createDao(params: CreateDaoInput): Promise<boolean> {
     const argsList = {
       purpose: params.purpose,
-      council: params.council.split('\n').filter((item: string) => item),
       bond: new Decimal(params.bond).mul(yoktoNear).toFixed(),
       vote_period: new Decimal(params.votePeriod).mul('3.6e12').toFixed(),
       grace_period: new Decimal(params.gracePeriod).mul('3.6e12').toFixed(),
@@ -386,6 +385,37 @@ class SputnikService {
     );
 
     return bounties.data.map(mapProposalDTOToProposal);
+  }
+
+  public async getActiveProposals(
+    daoIds: string[],
+    offset = 0,
+    limit = 50
+  ): Promise<Proposal[]> {
+    const queryString = RequestQueryBuilder.create()
+      .setFilter({
+        field: 'daoId',
+        operator: '$in',
+        value: daoIds
+      })
+      .setFilter({
+        field: 'status',
+        operator: '$eq',
+        value: 'InProgress'
+      })
+      .setLimit(limit)
+      .setOffset(offset)
+      .sortBy({
+        field: 'createdAt',
+        order: 'DESC'
+      })
+      .query();
+
+    const { data: proposals } = await this.httpService.get<
+      GetProposalsResponse
+    >(`/proposals?${queryString}`);
+
+    return proposals.data.map(mapProposalDTOToProposal);
   }
 
   public async getUserProposals(accountId: string) {

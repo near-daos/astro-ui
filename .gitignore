@@ -43,3 +43,5 @@ storybook-static
 
 # tsc-files
 tsconfig.*.json
+
+.history
