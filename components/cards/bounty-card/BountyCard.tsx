@@ -13,6 +13,7 @@ import {
   OpenCells
 } from 'components/cards/bounty-card/components/cells';
 import { format, parseISO } from 'date-fns';
+import { formatYoktoValue } from 'helpers/format';
 import styles from './bounty-card.module.scss';
 
 export interface BountyCardProps {
@@ -23,6 +24,8 @@ export interface BountyCardProps {
 export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
   const { token, amount, description, claimedBy, slots } = data;
   const { dao } = useBountyPageContext();
+
+  const amountValue = formatYoktoValue(amount);
 
   const [showClaimBountyDialog] = useModal(ClaimBountyDialog, {
     data,
@@ -97,7 +100,7 @@ export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
           />
         </div>
         <div className={styles.reward}>
-          <span className={styles.value}>{amount}</span>
+          <span className={styles.value}>{amountValue}</span>
           &nbsp;
           <span className={styles.valueDesc}>{token}</span>
         </div>

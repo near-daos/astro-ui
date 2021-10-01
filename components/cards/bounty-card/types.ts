@@ -11,7 +11,7 @@ export type DeadlineUnit = 'day' | 'week' | 'month';
 export type Bounty = {
   id: string;
   token: 'NEAR';
-  amount: number;
+  amount: string;
   description: string;
   forgivenessPeriod: string;
   externalUrl?: string;

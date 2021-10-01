@@ -22,7 +22,7 @@ Template.args = {
     id: '',
     forgivenessPeriod: '',
     token: Token.NEAR,
-    amount: 112,
+    amount: '112',
     description:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',
     externalUrl: '',
