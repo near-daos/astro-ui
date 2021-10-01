@@ -14,10 +14,12 @@ import { useAuthContext } from 'context/AuthContext';
 
 interface ProposalCardRendererProps {
   proposal: Proposal;
+  showExpanded?: boolean;
 }
 
-export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
-  proposal
+const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
+  proposal,
+  showExpanded
 }) => {
   const { accountId } = useAuthContext();
   let content;
@@ -126,8 +128,11 @@ export const ProposalCardRenderer: FC<ProposalCardRendererProps> = ({
       daoDetails={proposal.daoDetails}
       proposalId={proposal.proposalId}
       daoId={proposal.daoId}
+      showExpanded={showExpanded}
     >
       {content}
     </ProposalCard>
   );
 };
+
+export const ProposalCardRenderer = React.memo(ProposalCardRendererComponent);

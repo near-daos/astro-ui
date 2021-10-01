@@ -1,0 +1,52 @@
+@import 'styles/typography';
+.root {
+  > div {
+    margin-bottom: 16px;
+  }
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+  justify-content: flex-start;
+  margin: 16px 0;
+}
+
+.votingEnds {
+  @extend %body1;
+  align-self: center;
+  cursor: pointer;
+  display: flex;
+  margin: 12px 0;
+
+  .bold {
+    @extend %title3;
+    margin-right: 4px;
+  }
+
+  .icon {
+    transition: transform 0.5s;
+  }
+
+  .rotate {
+    transform: rotate(90deg);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.divider {
+  background: var(--color-neutral-40);
+  flex: 1;
+  height: 1.5px;
+}
+
+.toggle {
+  @extend %title5;
+  color: var(--color-primary);
+  text-align: right;
+  text-transform: capitalize;
+}

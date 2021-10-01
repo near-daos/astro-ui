@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 
-import { Icon } from 'components/Icon';
+import { IconButton } from 'components/button/IconButton';
 import * as Typography from 'components/Typography';
 import ProposalControlPanel from 'components/cards/proposal-card/components/proposal-control-panel/ProposalControlPanel';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
@@ -15,6 +15,7 @@ import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card
 import { DAO } from 'types/dao';
 import { getScope } from 'components/cards/expanded-proposal-card/helpers';
 import tempFlag from 'stories/dao-home/assets/flag.png';
+import { copyTextToClipboard } from 'helpers/clipboard';
 
 import styles from './content-panel.module.scss';
 
@@ -39,9 +40,11 @@ interface ContentPanelProps {
   proposalData?: Proposal | null;
   daoData?: DAO | null;
   permissions: ProposalVotingPermissions;
+  id: string;
 }
 
 export const ContentPanel: FC<ContentPanelProps> = ({
+  id,
   title,
   children,
   likes,
@@ -78,7 +81,16 @@ export const ContentPanel: FC<ContentPanelProps> = ({
             </div>
             <div className={styles.right}>
               {/* <Icon name="buttonBookmark" className={styles.icon} /> */}
-              <Icon name="buttonShare" className={styles.icon} />
+              <IconButton
+                icon="buttonShare"
+                className={styles.icon}
+                onClick={() => {
+                  const loc = document.location;
+                  const url = `${loc.origin}${loc.pathname}?proposal=${id}`;
+
+                  copyTextToClipboard(url);
+                }}
+              />
             </div>
           </div>
           <div className={styles.name}>{title}</div>

@@ -41,6 +41,7 @@ export interface ExpandedProposalCardProps {
   proposalId: number;
   daoId: string;
   permissions: ProposalVotingPermissions;
+  id: string;
 }
 
 export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
@@ -67,7 +68,8 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
   daoDetails,
   proposalId,
   daoId,
-  permissions
+  permissions,
+  id
 }) => {
   const handleVote = useCallback(
     d => {
@@ -95,11 +97,7 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
 
   return (
     <Modal
-      size={
-        type === ProposalType.ChangePolicy || type === ProposalType.ChangeConfig
-          ? 'xxl'
-          : 'sm'
-      }
+      size={type === ProposalType.ChangePolicy ? 'xxl' : 'sm'}
       isOpen={isOpen}
       onClose={onClose}
       className={styles.root}
@@ -117,6 +115,7 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
         permissions={permissions}
       />
       <ContentPanel
+        id={id}
         title={title}
         name={name}
         text={text}

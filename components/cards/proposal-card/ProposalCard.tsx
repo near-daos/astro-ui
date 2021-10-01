@@ -1,5 +1,6 @@
 import cn from 'classnames';
-import React, { FC, ReactNode, useCallback } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 import { useAuthContext } from 'context/AuthContext';
 
@@ -35,9 +36,10 @@ export interface ProposalCardProps {
   daoDetails: DaoDetails;
   proposalId: number;
   daoId: string;
+  showExpanded?: boolean;
 }
 
-export const ProposalCard: FC<ProposalCardProps> = ({
+const ProposalCardComponent: FC<ProposalCardProps> = ({
   status,
   type,
   title,
@@ -55,7 +57,9 @@ export const ProposalCard: FC<ProposalCardProps> = ({
   votePeriodEnd,
   daoDetails,
   proposalId,
-  daoId
+  daoId,
+  showExpanded,
+  id
 }) => {
   const { accountId } = useAuthContext();
 
@@ -84,12 +88,37 @@ export const ProposalCard: FC<ProposalCardProps> = ({
     daoDetails,
     proposalId,
     daoId,
-    permissions
+    permissions,
+    id
   });
+  const router = useRouter();
 
   const handleCardClick = useCallback(async () => {
     await showModal();
   }, [showModal]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (showExpanded) {
+        router.push(
+          {
+            pathname: '',
+            query: {
+              ...router.query,
+              proposal: ''
+            }
+          },
+          undefined,
+          { shallow: true }
+        );
+        handleCardClick();
+      }
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [handleCardClick, router, showExpanded]);
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
@@ -126,3 +155,5 @@ export const ProposalCard: FC<ProposalCardProps> = ({
     </div>
   );
 };
+
+export const ProposalCard = React.memo(ProposalCardComponent);
