@@ -16,6 +16,7 @@ definitions:
         name: Set Environment
         artifacts:
           - environment.sh
+          - .env.local
 
     - step: &build
         name: Installing & Build artifact
@@ -27,6 +28,8 @@ definitions:
           - yarn lint
           - yarn typecheck
           - yarn build
+        artifacts:
+          - .next/**
     
     - step: &docker-build-publish
         name: Docker - Build and Publish
@@ -42,6 +45,7 @@ definitions:
             fi
           - >-
             docker build
+            -f Dockerfile_pipelines
             -t $APP_NAME:latest
             -t $APP_NAME:develop-latest
             -t $APP_NAME:$DOCKER_ENV_TAG
@@ -90,6 +94,24 @@ pipelines:
     '**':
       - step: *build
 
+  custom:
+    qa:
+      - step:
+          <<: *set-environment
+
+          script:
+            - >-
+              echo export DOCKER_ENV_TAG=qa-$BITBUCKET_COMMIT >> environment.sh
+            - env >> .env.local
+
+      - step: *build
+
+      - step: *docker-build-publish
+
+      - step:
+          <<: *helm-build-deploy
+          deployment: qa
+
   branches:
     develop:
       - step:
@@ -98,27 +120,12 @@ pipelines:
           script:
             - >-
               echo export DOCKER_ENV_TAG=develop-$BITBUCKET_COMMIT >> environment.sh
+            - env >> .env.local
 
       - step: *build
-      
+
       - step: *docker-build-publish
 
       - step:
           <<: *helm-build-deploy
           deployment: development
-
-    staging:
-      - step:
-          <<: *set-environment
-
-          script:
-            - >-
-              echo export DOCKER_ENV_TAG=staging-$BITBUCKET_COMMIT >> environment.sh
-
-      - step: *build
-
-      - step: *docker-build-publish
-
-      - step:
-          <<: *helm-build-deploy
-          deployment: Staging
