@@ -50,7 +50,7 @@ export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <header className={styles.header}>
         <Icon name="proposalBounty" width={24} />
-        <h2>Create new bounty</h2>
+        <h2>Propose Bounty</h2>
       </header>
       <CreateBountyForm
         initialValues={initialValues}

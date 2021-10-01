@@ -21,7 +21,15 @@ import styles from './request-payout-form.module.scss';
 
 const schema = yup.object().shape({
   token: yup.string().required(),
-  amount: yup.string().required(),
+  amount: yup
+    .number()
+    .positive()
+    .required()
+    .test(
+      'onlyOneDecimal',
+      'Only numbers with one optional decimal place please',
+      value => /^\d*(?:\.\d)?$/.test(`${value}`)
+    ),
   recipient: yup.string().required(),
   detail: yup.string().required(),
   externalUrl: yup.string()
@@ -29,7 +37,7 @@ const schema = yup.object().shape({
 
 interface IRequestPayoutForm {
   token: Token;
-  amount: string;
+  amount: number;
   recipient: string;
   detail: string;
   externalUrl: string;
@@ -56,13 +64,13 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
     resolver: yupResolver(schema),
     defaultValues: {
       ...initialValues,
-      amount: '',
+      amount: 0,
       recipient: SputnikService.getAccountId()
     }
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.root} noValidate>
       <Select
         defaultValue={initialValues?.token}
         className={cn(styles.token)}
@@ -84,6 +92,8 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
         size="block"
         textAlign="left"
         type="number"
+        step="0.1"
+        min="0.1"
         {...register('amount')}
         label="Amount"
         className={cn(styles.input, styles.amount)}

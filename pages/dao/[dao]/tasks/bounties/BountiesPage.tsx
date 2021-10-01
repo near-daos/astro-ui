@@ -112,7 +112,7 @@ const BountiesPage: FC<BountiesPageProps> = ({
         <div className={styles.header}>Bounties</div>
         <div className={styles.create}>
           <Button variant="secondary" onClick={handleCreateClick}>
-            Create new bounty
+            Propose Bounty
           </Button>
         </div>
         <div className={styles.description}>

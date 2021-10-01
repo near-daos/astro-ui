@@ -4,7 +4,8 @@ import { RequestPayoutForm } from 'features/treasury/request-payout-popup/compon
 import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
-import { SputnikService } from 'services/SputnikService';
+import Decimal from 'decimal.js';
+import { SputnikService, yoktoNear } from 'services/SputnikService';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import styles from './request-payout-popup.module.scss';
 
@@ -35,7 +36,7 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
           data: {
             token_id: '',
             receiver_id: data.recipient,
-            amount: data.amount
+            amount: new Decimal(data.amount).mul(yoktoNear).toFixed()
           }
         }).then(() => {
           onClose();

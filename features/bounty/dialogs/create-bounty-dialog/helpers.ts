@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-
+import { yoktoNear } from 'services/SputnikService';
 import { CreateProposalParams } from 'types/proposal';
 import { DAO } from 'types/dao';
 import { DeadlineUnit } from 'components/cards/bounty-card/types';
@@ -44,7 +44,7 @@ export function getAddBountyProposal(
       bounty: {
         description: proposalDescription,
         token: '',
-        amount: amount.toString(),
+        amount: new Decimal(amount).mul(yoktoNear).toFixed(),
         times: slots,
         max_deadline: getDeadline(deadlineThreshold, deadlineUnit)
       }
