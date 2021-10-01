@@ -66,8 +66,4 @@
 
 .footer {
   margin-top: 12px;
-
-  @include tablet-landscape {
-    margin-top: -20px;
-  }
 }
