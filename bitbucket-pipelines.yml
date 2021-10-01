@@ -16,6 +16,7 @@ definitions:
         name: Set Environment
         artifacts:
           - environment.sh
+          - .env.local
 
     - step: &build
         name: Installing & Build artifact
