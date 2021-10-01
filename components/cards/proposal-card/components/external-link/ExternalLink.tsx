@@ -1,6 +1,6 @@
-import React, { FC, useState } from 'react';
 import cn from 'classnames';
 import { useMount } from 'react-use';
+import React, { FC, MouseEvent, useState } from 'react';
 
 import { Icon } from 'components/Icon';
 
@@ -23,11 +23,16 @@ const ExternalLink: FC<ExternalLinkProps> = ({ to }) => {
     }
   });
 
+  function stopPropagation(e: MouseEvent) {
+    e.stopPropagation();
+  }
+
   return (
     <a
       href={to}
       target="_blank"
       rel="noreferrer"
+      onClick={stopPropagation}
       className={cn('caption1', styles.root)}
     >
       <Icon name="buttonExternal" width={14} />
