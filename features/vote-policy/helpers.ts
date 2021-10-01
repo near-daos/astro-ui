@@ -1,12 +1,13 @@
-import { DAO, DaoVotePolicy, TGroup, VotePolicyRequest } from 'types/dao';
+import { DAO, DaoVotePolicy, TGroup } from 'types/dao';
 import { VotePolicy } from 'features/vote-policy/components/policy-row';
 import { CreateProposalParams, Proposal } from 'types/proposal';
-import { keysToSnakeCase } from 'utils/keysToSnakeCase';
 import snakeCase from 'lodash/snakeCase';
 import { Vote, VoteDetail, VoterDetail } from 'features/types';
 import difference from 'lodash/difference';
 import isEmpty from 'lodash/isEmpty';
 import { ProposalAction } from 'types/role';
+import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { dataRoleToContractRole } from 'features/groups/helpers';
 
 export type Scope =
   | 'addBounty'
@@ -55,7 +56,7 @@ export const getVotePolicyData = (
     votePolicy && !isEmpty(votePolicy) ? votePolicy : defaultVotePolicy;
 
   return {
-    whoCanVote: name,
+    // whoCanVote: name,
     voteBy: policy.weightKind === 'RoleWeight' ? 'Person' : 'Token',
     amount: (policy.ratio[0] / policy.ratio[1]) * 100,
     threshold: policy.kind === 'Ratio' ? '% of group' : 'persons'
@@ -116,48 +117,41 @@ export type PolicyProps = {
 };
 
 export type Indexed = {
-  [key: string]: PolicyProps | DaoSettingsProps;
+  [key: string]: VotePolicy | DaoSettingsProps;
 };
 
 export type VotingPolicyPageInitialData = {
   daoSettings: DaoSettingsProps;
+  policy: VotePolicy;
 } & Indexed;
 
-const POLICIES_VIEWS = [
-  'addBounty',
-  'bountyDone',
-  'setVoteToken', // todo - is this a Create poll action?
-  'call',
-  'addMemberToRole',
-  'removeMemberFromRole',
-  'transfer',
-  'upgradeSelf',
-  'upgradeRemote',
-  'config',
-  'policy'
-];
+// const POLICIES_VIEWS = [
+//   'addBounty',
+//   'bountyDone',
+//   'setVoteToken', // todo - is this a Create poll action?
+//   'call',
+//   'addMemberToRole',
+//   'removeMemberFromRole',
+//   'transfer',
+//   'upgradeSelf',
+//   'upgradeRemote',
+//   'config',
+//   'policy'
+// ];
 
 export const getInitialData = (
   dao?: DAO
 ): VotingPolicyPageInitialData | null => {
   if (!dao) return null;
 
-  const views = POLICIES_VIEWS.reduce((res, item) => {
-    res[item] = {
-      whoCanPropose: getProposersList(dao.groups, item as Scope, 'AddProposal'),
-      policies: getPoliciesList(
-        dao.groups,
-        item as Scope,
-        ['VoteApprove', 'VoteReject', 'VoteRemove'],
-        dao.policy.defaultVotePolicy
-      )
-    } as PolicyProps;
-
-    return res;
-  }, {} as VotingPolicyPageInitialData);
+  const defaulPolicy = dao.policy.defaultVotePolicy;
 
   return {
-    ...views,
+    policy: {
+      voteBy: defaulPolicy.weightKind === 'RoleWeight' ? 'Person' : 'Token',
+      amount: (defaulPolicy.ratio[0] / defaulPolicy.ratio[1]) * 100,
+      threshold: defaulPolicy.kind === 'Ratio' ? '% of group' : 'persons'
+    },
     daoSettings: {
       externalLink: '',
       details: ''
@@ -169,59 +163,42 @@ export function getVoteDetails(
   dao: DAO | null,
   scope: Scope,
   proposal?: Proposal | null
-): { details: VoteDetail[]; votersList: VoterDetail[] } {
+): { details: VoteDetail; votersList: VoterDetail[] } {
   if (!dao)
     return {
-      details: [],
+      details: {
+        limit: '',
+        label: ''
+      },
       votersList: []
     };
 
-  const policiesList = getPoliciesList(
-    dao.groups,
-    scope,
-    ['VoteApprove', 'VoteReject', 'VoteRemove'],
-    dao.policy.defaultVotePolicy
-  );
+  const votesData = !proposal
+    ? []
+    : [
+        {
+          vote: 'Yes' as Vote,
+          percent: (proposal.voteYes * 100) / dao.members
+        },
+        {
+          vote: 'No' as Vote,
+          percent: (proposal.voteNo * 100) / dao.members
+        },
+        {
+          vote: 'Dismiss' as Vote,
+          percent: (proposal.voteRemove * 100) / dao.members
+        }
+      ];
 
-  const details = policiesList.map(item => {
-    const group = dao.groups.find(gr => gr.name === item.whoCanVote);
-    const totalMembers = group?.members.length ?? 0;
+  const defaulPolicy = dao.policy.defaultVotePolicy;
 
-    const votesData = !proposal
-      ? []
-      : [
-          {
-            vote: 'Yes' as Vote,
-            percent: (proposal.voteYes * 100) / totalMembers
-          },
-          {
-            vote: 'No' as Vote,
-            percent: (proposal.voteNo * 100) / totalMembers
-          },
-          {
-            vote: 'Dismiss' as Vote,
-            percent: (proposal.voteRemove * 100) / totalMembers
-          }
-        ];
+  const amount = (defaulPolicy.ratio[0] / defaulPolicy.ratio[1]) * 100;
 
-    if (item.voteBy === 'Person') {
-      return {
-        label: item.whoCanVote ?? '',
-        limit: `${item.amount} ${
-          item.threshold === '% of group'
-            ? '%'
-            : `person${item.amount ?? 0 > 1 ? 's' : ''}`
-        }`,
-        data: votesData
-      };
-    }
-
-    return {
-      label: item.whoCanVote ?? '',
-      limit: `${item.amount} ${item.threshold} tokens`,
-      data: votesData
-    };
-  });
+  const details = {
+    label: '',
+    limit: `${amount}%`,
+    data: votesData
+  };
 
   const votersList = proposal?.votes
     ? Object.keys(proposal.votes).map(key => {
@@ -259,79 +236,14 @@ export const getNewProposalObject = (
 ): CreateProposalParams => {
   return {
     daoId: dao.id,
-    description: `${data.daoSettings.details} ${data.daoSettings.externalLink}`,
+    description: `${data.daoSettings.details}${EXTERNAL_LINK_SEPARATOR}${data.daoSettings.externalLink}`,
     kind: 'ChangePolicy',
     data: {
       policy: {
-        roles: dao.policy.roles.map(role => {
-          if (role.kind === 'Everyone') {
-            return {
-              name: 'all',
-              kind: 'Everyone',
-              permissions: ['*:AddProposal'],
-              vote_policy: {}
-            };
-          }
-
-          return {
-            name: role.name,
-            kind: {
-              Group: role.accountIds
-            },
-            permissions: Object.keys(data).reduce((res, key) => {
-              if (key !== 'daoSettings') {
-                const { whoCanPropose, policies } = data[key] as PolicyProps;
-
-                const voters = policies.map(item => item.whoCanVote);
-
-                const snakeKey = snakeCase(key);
-
-                if (whoCanPropose.includes(role.name)) {
-                  res.push(`${snakeKey}:AddProposal`);
-                }
-
-                if (voters.includes(role.name)) {
-                  res.push(`${snakeKey}:VoteApprove`);
-                  res.push(`${snakeKey}:VoteReject`);
-                  res.push(`${snakeKey}:VoteRemove`);
-                  res.push(`${snakeKey}:VoteFinalize`);
-                }
-              }
-
-              return res;
-            }, [] as string[]),
-            vote_policy: keysToSnakeCase(
-              Object.keys(data).reduce((res, key) => {
-                if (!data[key].isDirty) {
-                  return res;
-                }
-
-                if (key !== 'daoSettings') {
-                  const { policies } = data[key] as PolicyProps;
-                  const values = policies.find(
-                    item => item.whoCanVote === role.name
-                  );
-
-                  if (values) {
-                    res[key] = {
-                      weight_kind:
-                        values?.voteBy === 'Person'
-                          ? 'RoleWeight'
-                          : 'TokenWeight',
-                      quorum: '0',
-                      threshold: getThreshold(values.amount ?? 0)
-                    };
-                  }
-                }
-
-                return res;
-              }, {} as Record<string, VotePolicyRequest>)
-            )
-          };
-        }),
+        roles: [...dao.policy.roles.map(dataRoleToContractRole)],
         default_vote_policy: {
           quorum: '0',
-          threshold: [1, 2],
+          threshold: getThreshold(data.policy.amount as number),
           weight_kind: 'RoleWeight'
         },
         proposal_bond: dao.policy.proposalBond,

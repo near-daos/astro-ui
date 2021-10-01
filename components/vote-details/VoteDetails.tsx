@@ -38,13 +38,12 @@ export const VoteDetails: React.FC<VoteDetailsProps> = ({
 
   const bond = formatYoktoValue(currentDao?.policy.proposalBond ?? '0');
 
-  const renderDetail = (detail: VoteDetail, index: number) => (
+  const renderDetail = (detail: VoteDetail) => (
     <div className={styles.detail} key={detail.label}>
-      {index > 0 && <div className={styles.or}>OR</div>}
       <div className={styles.row}>
         <span className={styles.limit}>{detail.limit}</span>
-        <span className={styles.separator}>&nbsp;of&nbsp;</span>
-        <span className={styles.label}>{detail.label}</span>
+        <span className={styles.separator}>&nbsp;of</span>
+        <span className={styles.label}>group</span>
       </div>
       {showProgress && <ProgressBar detail={detail} />}
     </div>
@@ -54,7 +53,7 @@ export const VoteDetails: React.FC<VoteDetailsProps> = ({
     <div className={cn(styles.root, className)}>
       <div className={cn(styles.details, styles.item)}>
         <div className={styles.description}>Minimum votes needed</div>
-        {details.map((detail, index) => renderDetail(detail, index))}
+        {renderDetail(details)}
       </div>
       <div className={styles.item}>
         {showProgress && votersList ? (

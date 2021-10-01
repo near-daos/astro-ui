@@ -1,31 +1,46 @@
 import isEqual from 'lodash/isEqual';
 import { Button } from 'components/button/Button';
-import Tabs from 'components/tabs/Tabs';
 import { DaoSettingsBanner } from 'features/vote-policy/components/banner';
-import { GovernanceTabView } from 'features/vote-policy/components/governance-tab-view';
-import { GroupsTabView } from 'features/vote-policy/components/groups-tab-view';
-import { TasksTabView } from 'features/vote-policy/components/tasks-tab-view';
-import { TreasuryTabView } from 'features/vote-policy/components/treasury-tab-view';
 import {
   getInitialData,
-  getNewProposalObject
+  getNewProposalObject,
+  VotingPolicyPageInitialData
 } from 'features/vote-policy/helpers';
 import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { SputnikService } from 'services/SputnikService';
+import { Badge, Variant } from 'components/badge/Badge';
+import EditDefaultPolicy from 'features/vote-policy/components/edit-default-policy/EditDefaultPolicy';
+
 import styles from './voting-policy-page.module.scss';
+
+function getBadgeVariant(index: number): Variant {
+  const variants = [
+    'violet',
+    'blurple',
+    'blue',
+    'turqoise',
+    'green',
+    'red',
+    'orange',
+    'yellow',
+    'primary'
+  ];
+
+  return (variants[index] || variants[index % variants.length]) as Variant;
+}
 
 const VotingPolicyPage: FC = () => {
   const router = useRouter();
   const daoId = router.query.dao as string;
   const dao = useDao(daoId);
 
-  const [data, setData] = useState(dao ? getInitialData(dao) : undefined);
+  const [data, setData] = useState<VotingPolicyPageInitialData | null>(null);
 
   useEffect(() => {
-    if (dao) setData(getInitialData(dao));
-  }, [dao]);
+    if (dao && !data) setData(getInitialData(dao));
+  }, [dao, data]);
 
   const [viewMode, setViewMode] = useState(true);
 
@@ -58,64 +73,6 @@ const VotingPolicyPage: FC = () => {
     return null;
   }
 
-  const { defaultVotePolicy } = dao.policy;
-  const { groups } = dao;
-
-  const tabs = [
-    {
-      id: 1,
-      label: 'Tasks',
-      content: (
-        <TasksTabView
-          viewMode={viewMode}
-          defaultVotePolicy={defaultVotePolicy}
-          groups={groups}
-          onChange={handleChange}
-          data={data}
-        />
-      )
-    },
-    {
-      id: 2,
-      label: 'Groups',
-      content: (
-        <GroupsTabView
-          viewMode={viewMode}
-          defaultVotePolicy={defaultVotePolicy}
-          groups={groups}
-          onChange={handleChange}
-          data={data}
-        />
-      )
-    },
-    {
-      id: 3,
-      label: 'Treasury',
-      content: (
-        <TreasuryTabView
-          viewMode={viewMode}
-          defaultVotePolicy={defaultVotePolicy}
-          groups={groups}
-          onChange={handleChange}
-          data={data}
-        />
-      )
-    },
-    {
-      id: 4,
-      label: 'Governance',
-      content: (
-        <GovernanceTabView
-          viewMode={viewMode}
-          defaultVotePolicy={defaultVotePolicy}
-          groups={groups}
-          onChange={handleChange}
-          data={data}
-        />
-      )
-    }
-  ];
-
   return (
     <div className={styles.root}>
       <DaoSettingsBanner
@@ -143,7 +100,33 @@ const VotingPolicyPage: FC = () => {
         )}
       </div>
       <div className={styles.content}>
-        <Tabs tabs={tabs} />
+        <div className={styles.groupsWrapper}>
+          {dao.groups.map((group, i) => {
+            return (
+              <Badge size="small" key={group.slug} variant={getBadgeVariant(i)}>
+                {group.name}
+              </Badge>
+            );
+          })}
+        </div>
+        <div className={styles.policyWrapper}>
+          <div className={styles.policyLabel}>Voting policy default</div>
+          {viewMode ? (
+            <div className={styles.policy}>
+              <div>{data.policy.voteBy}</div>
+              <div className={styles.bold}>{data.policy.amount}</div>
+              <div>{data.policy.threshold}</div>
+              <div>to pass</div>
+            </div>
+          ) : (
+            <EditDefaultPolicy
+              policy={data.policy}
+              onChange={value => {
+                handleChange('policy', value);
+              }}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
