@@ -418,6 +418,24 @@ class SputnikService {
     return proposals.data.map(mapProposalDTOToProposal);
   }
 
+  public async getUserProposals(accountId: string) {
+    const queryString = RequestQueryBuilder.create()
+      .setFilter({
+        field: 'proposer',
+        operator: '$eq',
+        value: accountId
+      })
+      .setLimit(500)
+      .setOffset(0)
+      .query();
+
+    const response = await this.httpService.get<GetProposalsResponse>(
+      `/proposals?${queryString}`
+    );
+
+    return response.data.data;
+  }
+
   public async getProposals(
     daoId?: string,
     offset = 0,

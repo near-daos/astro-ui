@@ -1,27 +1,43 @@
-import React from 'react';
-import Tabs from 'components/tabs/Tabs';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 
 import { VOTE_BY_PERIOD } from 'constants/votingConstants';
 
-import { Dropdown } from 'components/dropdown/Dropdown';
+import Tabs from 'components/tabs/Tabs';
 import { Button } from 'components/button/Button';
+import { Dropdown } from 'components/dropdown/Dropdown';
 
 import {
   ProposalsByDaoRenderer,
   daoOptions,
-  useFilteredMemberHomeData
+  useFilteredMemberHomeData,
+  useUserHasProposals
 } from 'features/member-home';
 
 import styles from './home.module.scss';
 
 const Home: NextPage = () => {
+  const router = useRouter();
+
   const {
     filter,
     filteredProposalsData,
     onFilterChange,
     selectedDaoFlag
   } = useFilteredMemberHomeData();
+
+  const hasProposals = useUserHasProposals();
+
+  useEffect(() => {
+    if (!router.query.tab && hasProposals) {
+      router.push({
+        query: {
+          tab: 2
+        }
+      });
+    }
+  }, [router, hasProposals, onFilterChange]);
 
   const tabContent = VOTE_BY_PERIOD.map(period => (
     <ProposalsByDaoRenderer
