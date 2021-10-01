@@ -106,11 +106,13 @@ export const getPoliciesList = (
 export type DaoSettingsProps = {
   externalLink: string;
   details: string;
+  isDirty?: boolean;
 };
 
 export type PolicyProps = {
   whoCanPropose: string[];
   policies: VotePolicy[];
+  isDirty?: boolean;
 };
 
 export type Indexed = {
@@ -300,6 +302,10 @@ export const getNewProposalObject = (
             }, [] as string[]),
             vote_policy: keysToSnakeCase(
               Object.keys(data).reduce((res, key) => {
+                if (!data[key].isDirty) {
+                  return res;
+                }
+
                 if (key !== 'daoSettings') {
                   const { policies } = data[key] as PolicyProps;
                   const values = policies.find(
