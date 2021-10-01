@@ -387,6 +387,37 @@ class SputnikService {
     return bounties.data.map(mapProposalDTOToProposal);
   }
 
+  public async getActiveProposals(
+    daoIds: string[],
+    offset = 0,
+    limit = 50
+  ): Promise<Proposal[]> {
+    const queryString = RequestQueryBuilder.create()
+      .setFilter({
+        field: 'daoId',
+        operator: '$in',
+        value: daoIds
+      })
+      .setFilter({
+        field: 'status',
+        operator: '$eq',
+        value: 'InProgress'
+      })
+      .setLimit(limit)
+      .setOffset(offset)
+      .sortBy({
+        field: 'createdAt',
+        order: 'DESC'
+      })
+      .query();
+
+    const { data: proposals } = await this.httpService.get<
+      GetProposalsResponse
+    >(`/proposals?${queryString}`);
+
+    return proposals.data.map(mapProposalDTOToProposal);
+  }
+
   public async getProposals(
     daoId?: string,
     offset = 0,

@@ -36,6 +36,7 @@ export type DAO = {
   groups: TGroup[];
   policy: PolicyType;
   links: string[];
+  votes?: number;
 };
 
 export type VotePolicyRequest = {

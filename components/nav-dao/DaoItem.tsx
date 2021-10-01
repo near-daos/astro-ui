@@ -53,7 +53,6 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
           ))}
       </>
     ),
-    votes: 23,
     isOpen: true,
     tokens: {
       value: 5,
@@ -63,8 +62,11 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
   });
 
   const onDetailsClick = useCallback(async () => {
-    await showMemberCard();
-  }, [showMemberCard]);
+    await showMemberCard({
+      title: dao.id,
+      votes: dao.votes
+    });
+  }, [dao, showMemberCard]);
 
   const rootClassName = cn(styles.item, className, {
     [styles.selected]: selected
