@@ -12,6 +12,7 @@
   text-align: center;
 
   @include tablet-portrait {
+    margin-top: 80px;
     padding: 80px 48px 40px;
   }
 
@@ -31,7 +32,7 @@
   }
 
   @include mobile-only {
-    margin-top: 0;
+    margin-top: 80px;
   }
 
   h1 {
@@ -60,6 +61,11 @@
     left: -56px;
     top: 20px;
     transform: none;
+
+    &.centered {
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 
   @include desktop {
