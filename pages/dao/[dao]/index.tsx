@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import axios from 'axios';
 import cn from 'classnames';
+import isEmpty from 'lodash/isEmpty';
 import { useMedia, useMount } from 'react-use';
 
 import { nearConfig } from 'config/index';
@@ -49,6 +50,8 @@ import { ProposalType } from 'types/proposal';
 import { SputnikService } from 'services/SputnikService';
 import { VOTE_BY_PERIOD } from 'constants/votingConstants';
 
+import { useAuthContext } from 'context/AuthContext';
+
 import styles from './dao-home-page.module.scss';
 
 interface VoteByPeriodInterface {
@@ -66,6 +69,7 @@ interface DaoHomeProps {
 
 const DAOHome: NextPage<DaoHomeProps> = () => {
   const timeoutId = useRef<NodeJS.Timeout>();
+  const { accountId } = useAuthContext();
 
   const router = useRouter();
   const isPending = router.query.pending;
@@ -242,11 +246,12 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
   function renderProposalTracker() {
     const { activeVotes, totalProposals } = getProposalStats(data);
 
-    const action = isPending ? null : (
-      <>
-        <Icon name="buttonAdd" width={24} /> Create proposal
-      </>
-    );
+    const action =
+      isPending || isEmpty(accountId) ? null : (
+        <>
+          <Icon name="buttonAdd" width={24} /> Create proposal
+        </>
+      );
 
     return (
       <div className={styles.proposals}>
