@@ -15,15 +15,19 @@ import awsUploader from 'services/AwsUploader/AwsUploader';
 import { useSWRConfig } from 'swr';
 
 import { DaoConfig } from 'types/proposal';
-import { fromMetadataToBase64 } from 'services/SputnikService/mappers/dao';
+import {
+  DaoMetadata,
+  fromMetadataToBase64
+} from 'services/SputnikService/mappers/dao';
 import { SputnikService } from 'services/SputnikService';
 import { getChangeConfigProposal } from 'features/dao-settings/helpers';
 import styles from './flag-tab.module.scss';
 
 interface FlagTabProps {
-  daoFlag?: string;
   daoId: string;
-  currentDaoSettings: { links: string[]; name: string; purpose: string };
+  name: string;
+  purpose: string;
+  currentDaoMetadata: DaoMetadata;
   proposalBond: string;
 }
 
@@ -37,11 +41,14 @@ const sources = [
 ];
 
 const FlagTab: FC<FlagTabProps> = ({
-  daoFlag,
   daoId,
-  currentDaoSettings,
+  name,
+  purpose,
+  currentDaoMetadata,
   proposalBond
 }) => {
+  const daoFlag = currentDaoMetadata.flag;
+
   const { mutate } = useSWRConfig();
   const [viewMode, setViewMode] = useToggle(true);
 
@@ -57,11 +64,12 @@ const FlagTab: FC<FlagTabProps> = ({
   async function onSubmit(data: CropReturnType) {
     const { Key: fileName } = await awsUploader.uploadToBucket(data.file);
     const newDaoConfig: DaoConfig = {
-      name: currentDaoSettings.name,
-      purpose: currentDaoSettings.purpose,
+      name,
+      purpose,
       metadata: fromMetadataToBase64({
-        links: currentDaoSettings.links,
-        flag: fileName
+        links: currentDaoMetadata.links,
+        flag: fileName,
+        displayName: currentDaoMetadata.displayName
       })
     };
 

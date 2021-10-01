@@ -59,6 +59,7 @@ export type DaoDTO = {
 export type DaoMetadata = {
   links: string[];
   flag: string;
+  displayName: string;
 };
 
 export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
@@ -108,7 +109,8 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     createdAt: daoDTO.createdAt,
     groups: daoGroups,
     policy: daoDTO.policy,
-    links: meta && meta.links ? meta.links : []
+    links: meta && meta.links ? meta.links : [],
+    displayName: meta?.displayName || ''
   };
 };
 

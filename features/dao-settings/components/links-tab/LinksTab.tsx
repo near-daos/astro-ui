@@ -14,7 +14,10 @@ import { validUrlRegexp } from 'utils/regexp';
 import * as yup from 'yup';
 
 import { DaoConfig } from 'types/proposal';
-import { fromMetadataToBase64 } from 'services/SputnikService/mappers/dao';
+import {
+  DaoMetadata,
+  fromMetadataToBase64
+} from 'services/SputnikService/mappers/dao';
 import { SputnikService } from 'services/SputnikService';
 import { getChangeConfigProposal } from 'features/dao-settings/helpers';
 import styles from './links-tab.module.scss';
@@ -25,13 +28,10 @@ type ExternalLink = {
 };
 
 export interface LinksTabProps {
-  accountName: string;
-  links: string[];
-  currentDaoSettings: {
-    name: string;
-    purpose: string;
-    flag: string;
-  };
+  daoId: string;
+  name: string;
+  purpose: string;
+  currentDaoMetadata: DaoMetadata;
   proposalBond: string;
 }
 
@@ -54,11 +54,13 @@ export const schema = yup.object().shape({
 });
 
 const LinksTab: FC<LinksTabProps> = ({
-  links,
-  accountName,
-  currentDaoSettings,
+  daoId,
+  name,
+  purpose,
+  currentDaoMetadata,
   proposalBond
 }) => {
+  const { links } = currentDaoMetadata;
   const [viewMode, setViewMode] = useToggle(true);
 
   const methods = useForm<LinksFormData>({
@@ -101,21 +103,22 @@ const LinksTab: FC<LinksTabProps> = ({
 
   const onSubmit = useCallback(
     async (data: LinksFormData) => {
-      const url = currentDaoSettings.flag.split('/');
+      const url = currentDaoMetadata.flag.split('/');
       const fileName = url[url.length - 1];
 
       const newDaoConfig: DaoConfig = {
-        name: currentDaoSettings.name,
-        purpose: currentDaoSettings.purpose,
+        name,
+        purpose,
         metadata: fromMetadataToBase64({
           links: data.links.map(item => item.url),
-          flag: fileName
+          flag: fileName,
+          displayName: currentDaoMetadata.displayName
         })
       };
 
       await SputnikService.createProposal(
         getChangeConfigProposal(
-          accountName,
+          daoId,
           newDaoConfig,
           'Changing links',
           proposalBond
@@ -123,7 +126,7 @@ const LinksTab: FC<LinksTabProps> = ({
       );
       setViewMode(true);
     },
-    [currentDaoSettings, accountName, setViewMode, proposalBond]
+    [name, purpose, currentDaoMetadata, daoId, setViewMode, proposalBond]
   );
 
   return (

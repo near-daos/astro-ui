@@ -36,6 +36,7 @@ export type DAO = {
   groups: TGroup[];
   policy: PolicyType;
   links: string[];
+  displayName: string;
   votes?: number;
 };
 
@@ -72,5 +73,6 @@ export interface CreateDaoInput {
   links: [];
   flag: string;
   amountToTransfer: string;
+  displayName: string;
   policy: PolicyTypeRequest;
 }

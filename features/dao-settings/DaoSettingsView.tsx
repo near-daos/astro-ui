@@ -29,10 +29,14 @@ export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
       label: 'Name & Purpose',
       content: (
         <NameAndPurposeTab
-          accountName={dao.id}
+          daoId={dao.id}
           name={dao.name}
           purpose={dao.description}
-          currentDaoMetadata={{ links: dao.links, flag: dao.logo }}
+          currentDaoMetadata={{
+            links: dao.links,
+            flag: dao.logo,
+            displayName: dao.displayName
+          }}
           proposalBond={dao.policy.proposalBond}
         />
       )
@@ -42,12 +46,13 @@ export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
       label: 'Links',
       content: (
         <LinksTab
-          accountName={dao.id}
-          links={dao.links}
-          currentDaoSettings={{
-            name: dao.name,
-            purpose: dao.description,
-            flag: dao.logo
+          daoId={dao.id}
+          name={dao.name}
+          purpose={dao.description}
+          currentDaoMetadata={{
+            links: dao.links,
+            flag: dao.logo,
+            displayName: dao.displayName
           }}
           proposalBond={dao.policy.proposalBond}
         />
@@ -80,12 +85,13 @@ export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
       label: 'Flag',
       content: (
         <FlagTab
-          daoFlag={dao.logo}
           daoId={dao.id}
-          currentDaoSettings={{
+          name={dao.name}
+          purpose={dao.description}
+          currentDaoMetadata={{
             links: dao.links,
-            name: dao.name,
-            purpose: dao.description
+            flag: dao.logo,
+            displayName: dao.displayName
           }}
           proposalBond={dao.policy.proposalBond}
         />

@@ -235,7 +235,8 @@ class SputnikService {
         purpose: params.purpose,
         metadata: fromMetadataToBase64({
           links: params.links,
-          flag: params.flag
+          flag: params.flag,
+          displayName: params.displayName
         })
       }
     };

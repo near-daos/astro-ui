@@ -30,16 +30,18 @@ type FundMemberNumType = {
 };
 
 export function getDaoDetailsFromDao(dao: DAO): DaoDetailsType {
-  const { id, name, logo, createdAt, description, links } = dao;
+  const { id, name, logo, createdAt, description, links, displayName } = dao;
 
-  return {
-    title: name,
+  const daoDetails = {
+    title: displayName || name,
     subtitle: id,
     description,
     flag: logo,
     createdAt,
     links
   };
+
+  return daoDetails;
 }
 
 export function getProposalStats(proposals: Proposal[]): ProposalStatsType {
