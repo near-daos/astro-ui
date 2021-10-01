@@ -54,12 +54,14 @@
   top: -162px;
   transform: translateX(-120px);
   width: 240px;
+  z-index: 1;
 
   @include tablet-landscape {
     left: -56px;
     top: 20px;
     transform: none;
   }
+
   @include desktop {
     left: -82px;
   }
