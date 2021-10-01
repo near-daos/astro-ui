@@ -45,7 +45,7 @@ export function getDaoDetailsFromDao(dao: DAO): DaoDetailsType {
 }
 
 export function getProposalStats(proposals: Proposal[]): ProposalStatsType {
-  const result = proposals.reduce(
+  return proposals.reduce(
     (acc, proposal) => {
       acc.totalProposals += 1;
 
@@ -60,8 +60,6 @@ export function getProposalStats(proposals: Proposal[]): ProposalStatsType {
       totalProposals: 0
     }
   );
-
-  return result;
 }
 
 export function getFundAndMembersNum(

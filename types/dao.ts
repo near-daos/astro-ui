@@ -37,6 +37,7 @@ export type DAO = {
   policy: PolicyType;
   links: string[];
   displayName: string;
+  votes?: number;
 };
 
 export type VotePolicyRequest = {

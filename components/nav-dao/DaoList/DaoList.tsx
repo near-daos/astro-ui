@@ -48,7 +48,7 @@ export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
             key={dao.id}
             logo={dao.logo}
             label={dao.name}
-            count={dao.members}
+            count={dao.proposals}
             selected={selectedDao?.id === dao.id}
           />
         ))}
