@@ -185,12 +185,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
               href="/all-communities"
               icon="stateCommunities"
             />
-            <NavItem
-              className={styles.item}
-              onClick={createDao}
-              label="Create a DAO"
-              icon="stateCreateDao"
-            />
+            {accountId && (
+              <NavItem
+                className={styles.item}
+                onClick={createDao}
+                label="Create a DAO"
+                icon="stateCreateDao"
+              />
+            )}
           </nav>
         </div>
       </div>
