@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { FC, HTMLProps, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import cn from 'classnames';
 
 import { Icon } from 'components/Icon';
 import { Title } from 'components/Typography';
@@ -105,7 +106,11 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
           label="display name"
         />
 
-        <p className={styles.addressAlert}>
+        <p
+          className={cn(styles.addressAlert, {
+            [styles.error]: errors.displayName?.message
+          })}
+        >
           <Icon
             width={24}
             name="buttonAlert"

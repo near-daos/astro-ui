@@ -22,9 +22,12 @@
 
 .addressAlert {
   align-items: flex-start;
-  color: var(--color-error-70);
   display: inline-flex;
   gap: 10px;
+
+  &.error {
+    color: var(--color-error-70);
+  }
 }
 
 .addressAlertIcon {
