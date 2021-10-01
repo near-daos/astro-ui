@@ -1,11 +1,14 @@
 import cn from 'classnames';
+import Link from 'next/link';
+import { ImageProps } from 'next/image';
+import React, { useEffect, useRef, useState, VFC } from 'react';
+
+import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { IconButton } from 'components/button/IconButton';
-import { Icon } from 'components/Icon';
+
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
-import { ImageProps } from 'next/image';
-import Link from 'next/link';
-import React, { VFC } from 'react';
+
 import styles from './dao-details.module.scss';
 
 export interface DaoDetailsProps {
@@ -34,9 +37,22 @@ export const DaoDetails: VFC<DaoDetailsProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   followed
 }) => {
+  const [centerFlag, setCenterFlag] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const MIN_HEIGHT = 240;
+
+    if (ref.current) {
+      const height = ref.current.offsetHeight;
+
+      setCenterFlag(height < MIN_HEIGHT);
+    }
+  }, []);
+
   return (
     <>
-      <div className={styles.root}>
+      <div className={styles.root} ref={ref}>
         <h1>{title}</h1>
         <div className={styles.row}>
           <div className={styles.subtitle}>{subtitle}</div>
@@ -67,7 +83,7 @@ export const DaoDetails: VFC<DaoDetailsProps> = ({
           )}
         </p>
         <div
-          className={styles.flag}
+          className={cn(styles.flag, { [styles.centered]: centerFlag })}
           style={{ backgroundImage: `url(${flag})` }}
         />
         <div className={cn(styles.row, styles.bottom)}>
