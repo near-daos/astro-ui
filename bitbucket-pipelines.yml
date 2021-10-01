@@ -93,6 +93,24 @@ pipelines:
     '**':
       - step: *build
 
+  custom:
+    qa:
+      - step:
+          <<: *set-environment
+
+          script:
+            - >-
+              echo export DOCKER_ENV_TAG=qa-$BITBUCKET_COMMIT >> environment.sh
+            - env >> .env.local
+
+      - step: *build
+
+      - step: *docker-build-publish
+
+      - step:
+          <<: *helm-build-deploy
+          deployment: qa
+
   branches:
     develop:
       - step:
@@ -101,27 +119,12 @@ pipelines:
           script:
             - >-
               echo export DOCKER_ENV_TAG=develop-$BITBUCKET_COMMIT >> environment.sh
+            - env >> .env.local
 
       - step: *build
-      
+
       - step: *docker-build-publish
 
       - step:
           <<: *helm-build-deploy
           deployment: development
-
-    staging:
-      - step:
-          <<: *set-environment
-
-          script:
-            - >-
-              echo export DOCKER_ENV_TAG=staging-$BITBUCKET_COMMIT >> environment.sh
-
-      - step: *build
-
-      - step: *docker-build-publish
-
-      - step:
-          <<: *helm-build-deploy
-          deployment: Staging
