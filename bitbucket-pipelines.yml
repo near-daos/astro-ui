@@ -96,6 +96,8 @@ definitions:
 pipelines:
   pull-requests:
     '**':
+      - step: *set-environment
+
       - step: *build
 
   custom:
