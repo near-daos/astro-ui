@@ -122,6 +122,9 @@ pipelines:
           script:
             - >-
               echo export DOCKER_ENV_TAG=develop-$BITBUCKET_COMMIT >> environment.sh
+            - export NEAR_ENV=$NEAR_ENV_PROD
+            - export NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_PROD
+            - export NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY_PROD
             - env >> .env.local
 
       - step: *build
