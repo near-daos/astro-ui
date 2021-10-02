@@ -62,6 +62,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
         size="block"
         textAlign="left"
         type="number"
+        lang="en-US"
         step="0.1"
         min="0.1"
         {...register('amount')}

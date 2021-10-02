@@ -26,7 +26,7 @@ Default.args = {
     id: '',
     forgivenessPeriod: '',
     token: Token.NEAR,
-    amount: 112,
+    amount: '112',
     description:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',
     externalUrl: '',
@@ -43,7 +43,7 @@ InProgress.args = {
     id: '',
     forgivenessPeriod: '',
     token: Token.NEAR,
-    amount: 112,
+    amount: '112',
     description:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',
     externalUrl: '',
@@ -60,7 +60,7 @@ InProgressClaimedByMe.args = {
     id: '',
     forgivenessPeriod: '',
     token: Token.NEAR,
-    amount: 112,
+    amount: '112',
     description:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',
     externalUrl: '',
@@ -77,7 +77,7 @@ Completed.args = {
     id: '',
     forgivenessPeriod: '',
     token: Token.NEAR,
-    amount: 34,
+    amount: '34',
     description:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',
     externalUrl: '',

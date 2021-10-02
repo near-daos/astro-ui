@@ -11,7 +11,7 @@ export interface BountyResponse {
   };
   bountyClaims: BountyClaimResponse[];
   token: string;
-  amount: number;
+  amount: string;
   maxDeadline: string;
   numberOfClaims: number;
 }
