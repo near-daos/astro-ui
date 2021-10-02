@@ -131,6 +131,7 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
         dismissed={dismissed}
         daoDetails={daoDetails}
         type={type}
+        status={status}
         proposalId={proposalId}
         permissions={permissions}
         daoData={type === ProposalType.ChangePolicy ? daoData : null}

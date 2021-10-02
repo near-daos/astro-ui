@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { IconButton } from 'components/button/IconButton';
 import cn from 'classnames';
 import { Collapsable } from 'components/collapsable/Collapsable';
@@ -22,6 +22,16 @@ export const ProposalCollapsableSection: FC<ProposalCollapsableSectionProps> = (
   title
 }) => {
   const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    const containsExpanded = !!proposals?.find(
+      item => item.id === expandedProposalId
+    );
+
+    if (containsExpanded) {
+      setExpanded(true);
+    }
+  }, [expandedProposalId, proposals]);
 
   if (!proposals.length) {
     return null;
@@ -84,6 +94,7 @@ export const ProposalCollapsableSection: FC<ProposalCollapsableSectionProps> = (
         {proposals.slice(0, expanded ? undefined : 3).map((item: Proposal) => {
           return (
             <ProposalCardRenderer
+              key={item.id}
               proposal={item}
               showExpanded={item.id === expandedProposalId}
             />

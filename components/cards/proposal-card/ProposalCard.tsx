@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import omit from 'lodash/omit';
 import React, { FC, ReactNode, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
@@ -103,17 +104,14 @@ const ProposalCardComponent: FC<ProposalCardProps> = ({
         router.push(
           {
             pathname: '',
-            query: {
-              ...router.query,
-              proposal: ''
-            }
+            query: omit(router.query, ['proposal', 'proposalStatus'])
           },
           undefined,
           { shallow: true }
         );
         handleCardClick();
       }
-    }, 1000);
+    }, 0);
 
     return () => {
       clearTimeout(timer);

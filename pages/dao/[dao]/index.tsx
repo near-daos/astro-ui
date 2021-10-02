@@ -34,6 +34,7 @@ import { useRouter } from 'next/router';
 
 import { SputnikService } from 'services/SputnikService';
 import { VOTE_BY_PERIOD } from 'constants/votingConstants';
+import { ProposalStatus } from 'types/proposal';
 
 import { useAuthContext } from 'context/AuthContext';
 import { useNearPrice } from 'hooks/useNearPrice';
@@ -52,13 +53,17 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
   const { accountId } = useAuthContext();
 
   const router = useRouter();
-  const isPending = router.query.pending;
+  const {
+    pending: isPending,
+    proposal: proposalId,
+    proposalStatus,
+    dao: daoId
+  } = router.query;
+  const dao = useDao(daoId as string);
 
-  const proposalId = router.query.proposal;
-  const daoId = router.query.dao as string;
-  const dao = useDao(daoId);
-
-  const { filter, onFilterChange, filteredData, data } = useFilteredData();
+  const { filter, onFilterChange, filteredData, data } = useFilteredData(
+    proposalStatus ? (proposalStatus as ProposalStatus) : undefined
+  );
 
   const nearPrice = useNearPrice();
 
@@ -204,6 +209,7 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
         />
         {VOTE_BY_PERIOD.map(period => (
           <ProposalCollapsableSection
+            key={period.key}
             proposals={filteredData[period.key]}
             title={period.title}
             view={period.key}
