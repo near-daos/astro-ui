@@ -5,7 +5,7 @@ import { PolicyType } from 'types/proposal';
 
 import { Badge } from 'components/badge/Badge';
 import { Icon } from 'components/Icon';
-import ExternalLink from 'components/cards/proposal-card/components/external-link/ExternalLink';
+import ExternalLink from 'components/cards/components/external-link/ExternalLink';
 import { formatYoktoValue } from 'helpers/format';
 
 import styles from './proposal-content.module.scss';
