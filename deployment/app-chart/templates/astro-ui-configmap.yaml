@@ -9,3 +9,4 @@ data:
   NEXT_PUBLIC_AWS_BUCKET: "{{ .Values.environment.next_public_aws_bucket }}"
   NEXT_PUBLIC_AWS_REGION: "{{ .Values.environment.next_public_aws_region }}"
   NEXT_PUBLIC_AWS_IDENTITY_POOL_ID: "{{ .Values.environment.next_public_aws_identity_pool_id }}"
+  NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY: "{{ .Values.environment.next_public_google_analytics_key }}"
