@@ -33,7 +33,7 @@ export const getNearConfig = (env: NEAR_ENV): NearConfig => {
         walletFormat: '.near',
         networkId: 'mainnet',
         nodeUrl: 'https://rpc.mainnet.near.org',
-        contractName: 'sputnikdao.near',
+        contractName: 'sputnik-dao.near',
         tokenContractName: '',
         walletUrl: 'https://wallet.near.org',
         helperUrl: 'https://helper.mainnet.near.org',
