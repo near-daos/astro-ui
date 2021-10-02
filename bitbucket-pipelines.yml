@@ -132,20 +132,20 @@ pipelines:
           <<: *helm-build-deploy
           deployment: development
 
-    tags:
-    '*':
-      - step:
-          <<: *set-environment
+  tags:
+  '*':
+    - step:
+        <<: *set-environment
 
-          script:
-            - >-
-              echo export DOCKER_ENV_TAG=$BITBUCKET_TAG >> environment.sh
-            - env >> .env.local
+        script:
+          - >-
+            echo export DOCKER_ENV_TAG=$BITBUCKET_TAG >> environment.sh
+          - env >> .env.local
 
-      - step: *build
+    - step: *build
 
-      - step: *docker-build-publish
-          
-      - step:
-          <<: *helm-build-deploy
-          deployment: Production
+    - step: *docker-build-publish
+        
+    - step:
+        <<: *helm-build-deploy
+        deployment: Production
