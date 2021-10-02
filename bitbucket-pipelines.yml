@@ -96,7 +96,13 @@ definitions:
 pipelines:
   pull-requests:
     '**':
-      - step: *set-environment
+      - step:
+          <<: *set-environment
+
+          script:
+            - >-
+              echo export DOCKER_ENV_TAG=qa-$BITBUCKET_COMMIT >> environment.sh
+            - env >> .env.local
 
       - step: *build
 
