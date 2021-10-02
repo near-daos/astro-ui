@@ -23,6 +23,7 @@ definitions:
         caches:
           - node
         script:
+          - source environment.sh
           - yarn install
           - yarn generate-assets
           - yarn lint
@@ -140,6 +141,9 @@ pipelines:
           script:
             - >-
               echo export DOCKER_ENV_TAG=$BITBUCKET_TAG >> environment.sh
+            - echo export NEAR_ENV=$NEAR_ENV_PROD >> environment.sh
+            - echo export NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_PROD >> environment.sh
+            - echo export NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY_PROD >> environment.sh
             - export NEAR_ENV=$NEAR_ENV_PROD
             - export NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_PROD
             - export NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY_PROD
