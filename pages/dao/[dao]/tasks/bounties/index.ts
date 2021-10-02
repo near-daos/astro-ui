@@ -5,6 +5,7 @@ import { SputnikService } from 'services/SputnikService';
 import { BountyDoneProposalType } from 'types/proposal';
 import { Bounty } from 'components/cards/bounty-card/types';
 import { BountyResponse } from 'types/bounties';
+import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 export const getServerSideProps: GetServerSideProps = async ({
   query
@@ -33,6 +34,10 @@ export const getServerSideProps: GetServerSideProps = async ({
   ).then(result => {
     return result.map(
       (response: BountyResponse): Bounty => {
+        const [description, url] = response.description.split(
+          EXTERNAL_LINK_SEPARATOR
+        );
+
         return {
           amount: response.amount,
           forgivenessPeriod: response.dao.policy.bountyForgivenessPeriod,
@@ -45,7 +50,8 @@ export const getServerSideProps: GetServerSideProps = async ({
           slots: Number(response.times),
           id: response.bountyId,
           token: 'NEAR',
-          description: response.description
+          description,
+          externalUrl: url
         };
       }
     );
