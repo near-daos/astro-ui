@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async ({
           id: response.bountyId,
           token: 'NEAR',
           description,
-          externalUrl: url
+          externalUrl: url || ''
         };
       }
     );

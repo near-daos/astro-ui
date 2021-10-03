@@ -14,6 +14,7 @@ import {
 } from 'components/cards/bounty-card/components/cells';
 import { format, parseISO } from 'date-fns';
 import { formatYoktoValue } from 'helpers/format';
+import ExternalLink from 'components/cards/components/external-link/ExternalLink';
 import styles from './bounty-card.module.scss';
 
 export interface BountyCardProps {
@@ -22,7 +23,7 @@ export interface BountyCardProps {
 }
 
 export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
-  const { token, amount, description, claimedBy, slots } = data;
+  const { token, amount, description, claimedBy, slots, externalUrl } = data;
   const { dao } = useBountyPageContext();
 
   const amountValue = formatYoktoValue(amount);
@@ -98,6 +99,11 @@ export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
             text={description}
             textTruncateChild={null}
           />
+          {externalUrl && (
+            <div>
+              <ExternalLink to={externalUrl} />
+            </div>
+          )}
         </div>
         <div className={styles.reward}>
           <span className={styles.value}>{amountValue}</span>
