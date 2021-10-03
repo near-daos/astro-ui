@@ -16,13 +16,13 @@ definitions:
         name: Set Environment
         artifacts:
           - environment.sh
-          - .env.local
 
     - step: &build
         name: Installing & Build artifact
         caches:
           - node
         script:
+          - source environment.sh
           - yarn install
           - yarn generate-assets
           - yarn lint
@@ -30,7 +30,7 @@ definitions:
           - yarn build
         artifacts:
           - .next/**
-    
+
     - step: &docker-build-publish
         name: Docker - Build and Publish
         services:
@@ -63,7 +63,7 @@ definitions:
                 latest
                 develop-latest
                 $DOCKER_ENV_TAG
-                
+
     - step: &helm-build-deploy
         name: Helm - Build and Deploy
         image: alpine/helm:3.6.3
@@ -78,6 +78,7 @@ definitions:
             --set environment.near_contract_name=$NEAR_CONTRACT_NAME
             --set environment.next_public_api_url=$NEXT_PUBLIC_API_URL
             --set environment.next_public_google_analytics_key=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY
+            --set environment.next_public_near_env=$NEXT_PUBLIC_NEAR_ENV
             > $APP_NAME-manifest.yml
 
           - pipe: atlassian/aws-eks-kubectl-run:1.4.2
@@ -94,6 +95,13 @@ definitions:
 pipelines:
   pull-requests:
     '**':
+      - step:
+          <<: *set-environment
+
+          script:
+            - >-
+              echo export DOCKER_ENV_TAG=qa-$BITBUCKET_COMMIT >> environment.sh
+
       - step: *build
 
   custom:
@@ -104,7 +112,6 @@ pipelines:
           script:
             - >-
               echo export DOCKER_ENV_TAG=qa-$BITBUCKET_COMMIT >> environment.sh
-            - env >> .env.local
 
       - step: *build
 
@@ -122,7 +129,6 @@ pipelines:
           script:
             - >-
               echo export DOCKER_ENV_TAG=develop-$BITBUCKET_COMMIT >> environment.sh
-            - env >> .env.local
 
       - step: *build
 
@@ -140,15 +146,15 @@ pipelines:
           script:
             - >-
               echo export DOCKER_ENV_TAG=$BITBUCKET_TAG >> environment.sh
-            - export NEAR_ENV=$NEAR_ENV_PROD
-            - export NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_PROD
-            - export NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY_PROD
-            - env >> .env.local
+            - echo export NEAR_ENV=$NEAR_ENV_PROD >> environment.sh
+            - echo export NEXT_PUBLIC_NEAR_ENV=$NEXT_PUBLIC_NEAR_ENV_PROD >> environment.sh
+            - echo export NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_PROD >> environment.sh
+            - echo export NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY_PROD >> environment.sh
 
       - step: *build
 
       - step: *docker-build-publish
-          
+
       - step:
           <<: *helm-build-deploy
           deployment: Production

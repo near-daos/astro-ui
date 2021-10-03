@@ -6,6 +6,7 @@ data:
   NEAR_ENV: "{{ .Values.environment.near_env }}"
   NEAR_CONTRACT_NAME: "{{ .Values.environment.near_contract_name }}"
   NEXT_PUBLIC_API_URL: "{{ .Values.environment.next_public_api_url }}"
+  NEXT_PUBLIC_NEAR_ENV: "{{ .Values.environment.next_public_near_env }}"
   NEXT_PUBLIC_AWS_BUCKET: "{{ .Values.environment.next_public_aws_bucket }}"
   NEXT_PUBLIC_AWS_REGION: "{{ .Values.environment.next_public_aws_region }}"
   NEXT_PUBLIC_AWS_IDENTITY_POOL_ID: "{{ .Values.environment.next_public_aws_identity_pool_id }}"
