@@ -16,7 +16,6 @@ definitions:
         name: Set Environment
         artifacts:
           - environment.sh
-          - .env.local
 
     - step: &build
         name: Installing & Build artifact
@@ -102,7 +101,6 @@ pipelines:
           script:
             - >-
               echo export DOCKER_ENV_TAG=qa-$BITBUCKET_COMMIT >> environment.sh
-            - env >> .env.local
 
       - step: *build
 
@@ -114,7 +112,6 @@ pipelines:
           script:
             - >-
               echo export DOCKER_ENV_TAG=qa-$BITBUCKET_COMMIT >> environment.sh
-            - env >> .env.local
 
       - step: *build
 
@@ -132,7 +129,6 @@ pipelines:
           script:
             - >-
               echo export DOCKER_ENV_TAG=develop-$BITBUCKET_COMMIT >> environment.sh
-            - env >> .env.local
 
       - step: *build
 
@@ -154,11 +150,6 @@ pipelines:
             - echo export NEXT_PUBLIC_NEAR_ENV=$NEXT_PUBLIC_NEAR_ENV_PROD >> environment.sh
             - echo export NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_PROD >> environment.sh
             - echo export NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY_PROD >> environment.sh
-            - export NEAR_ENV=$NEAR_ENV_PROD
-            - export NEXT_PUBLIC_NEAR_ENV=$NEXT_PUBLIC_NEAR_ENV_PROD
-            - export NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_PROD
-            - export NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY_PROD
-            - env >> .env.local
 
       - step: *build
 
