@@ -8,7 +8,8 @@ import {
   Proposal,
   DaoDetails,
   ProposalType,
-  ProposalVotingPermissions
+  ProposalVotingPermissions,
+  ProposalStatus
 } from 'types/proposal';
 import { VoteDetails } from 'components/vote-details';
 import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card/components/proposed-changes-renderer';
@@ -41,6 +42,7 @@ interface ContentPanelProps {
   daoData?: DAO | null;
   permissions: ProposalVotingPermissions;
   id: string;
+  status: ProposalStatus;
 }
 
 export const ContentPanel: FC<ContentPanelProps> = ({
@@ -60,7 +62,8 @@ export const ContentPanel: FC<ContentPanelProps> = ({
   proposalId,
   proposalData,
   daoData,
-  permissions
+  permissions,
+  status
 }) => {
   const flag = (tempFlag as StaticImageData).src;
 
@@ -86,7 +89,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
                 className={styles.icon}
                 onClick={() => {
                   const loc = document.location;
-                  const url = `${loc.origin}${loc.pathname}?proposal=${id}`;
+                  const url = `${loc.origin}${loc.pathname}?proposal=${id}&proposalStatus=${status}`;
 
                   copyTextToClipboard(url);
                 }}
