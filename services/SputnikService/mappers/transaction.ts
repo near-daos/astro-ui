@@ -53,6 +53,7 @@ export type GetTransactionsResponse = {
 };
 
 export function mapTransactionDTOToTransaction(
+  daoId: string,
   data: TransactionDTO[]
 ): Transaction[] {
   return data.map(item => {
@@ -64,22 +65,19 @@ export function mapTransactionDTOToTransaction(
       item.transactionAction.args.method_name === 'create'
     ) {
       deposit = formatYoktoValue(item.transactionAction.args.deposit);
+    } else if (item.transactionAction.actionKind === 'TRANSFER') {
+      type = 'Deposit';
+      deposit = formatYoktoValue(item.transactionAction.args.deposit);
     } else {
-      type =
-        item.transactionAction.actionKind === 'TRANSFER'
-          ? 'Deposit'
-          : 'Withdraw';
+      const receipt = item.receipts.find(
+        r =>
+          r.receiptAction?.actionKind === 'TRANSFER' &&
+          r.receiptAction.args.deposit
+      );
 
-      if (type === 'Deposit') {
-        deposit = formatYoktoValue(item.transactionAction.args.deposit);
-      } else {
-        const receipt = item.receipts.find(
-          r => r.receiptAction?.actionKind === 'TRANSFER'
-        );
-
-        if (receipt && receipt.receiptAction?.args.deposit) {
-          deposit = formatYoktoValue(receipt.receiptAction?.args.deposit);
-        }
+      if (receipt && receipt.receiptAction?.args.deposit) {
+        type = 'Deposit';
+        deposit = formatYoktoValue(receipt.receiptAction?.args.deposit);
       }
     }
 

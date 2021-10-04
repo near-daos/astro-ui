@@ -15,3 +15,11 @@ export function useNearPrice(): number {
 
   return nearPrice;
 }
+
+export async function fetchNearPrice(): Promise<number> {
+  const nearPriceData = await axios.get(
+    'https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd'
+  );
+
+  return Number(get(nearPriceData, 'data.near.usd'));
+}
