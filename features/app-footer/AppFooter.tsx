@@ -66,6 +66,9 @@ export const AppFooter: FC<AppFooterProps> = ({
             {/* {renderSocialIcon('https://github.com/', 'socialGithub')} */}
             {renderSocialIcon('https://t.me/astro_near', 'socialTelegram')}
           </div>
+          <div className={styles.report}>
+            <a href="https://airtable.com/shr4ZmQzmTE5cKZm3">Report an issue</a>
+          </div>
           <div className={styles.links}>{renderPrivacyAndPolicySection()}</div>
           <div className={styles.copyright}>
             SputnikDAO 2021. The software is an&nbsp;open source and provided
