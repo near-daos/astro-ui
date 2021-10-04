@@ -175,9 +175,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   );
 
   const availableGroups = members.reduce((res, item) => {
-    const groups = item.groups.map(grp => grp.toLowerCase());
-
-    res.push(...groups);
+    res.push(...item.groups);
 
     return res;
   }, [] as string[]);
