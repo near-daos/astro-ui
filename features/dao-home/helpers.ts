@@ -85,7 +85,10 @@ export function getFundAndMembersNum(
   };
 }
 
-type ProposalsFilter = 'Active proposals' | 'Recent proposals' | 'My proposals';
+export type ProposalsFilter =
+  | 'Active proposals'
+  | 'Recent proposals'
+  | 'My proposals';
 
 interface ProposalsData {
   filter: ProposalsFilter;
