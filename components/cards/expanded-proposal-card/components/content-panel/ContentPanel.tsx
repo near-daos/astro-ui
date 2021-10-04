@@ -42,11 +42,13 @@ interface ContentPanelProps {
   daoData?: DAO | null;
   permissions: ProposalVotingPermissions;
   id: string;
+  daoId: string;
   status: ProposalStatus;
 }
 
 export const ContentPanel: FC<ContentPanelProps> = ({
   id,
+  daoId,
   title,
   children,
   likes,
@@ -119,6 +121,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
       <div className={styles.votes}>
         <ExpandableDetails label="Vote details" className={styles.voteDetails}>
           <VoteDetails
+            proposalDaoId={daoId}
             scope={getScope(type)}
             showProgress
             proposalId={proposalId}
