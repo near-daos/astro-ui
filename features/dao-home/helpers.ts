@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 
 import { DAO } from 'types/dao';
-import { Proposal, ProposalsByEndTime } from 'types/proposal';
+import { Proposal, ProposalsByEndTime, ProposalStatus } from 'types/proposal';
 
 import { formatCurrency } from 'utils/formatCurrency';
 import { useCallback, useEffect, useState } from 'react';
@@ -94,10 +94,20 @@ interface ProposalsData {
   data: Proposal[];
 }
 
-export function useFilteredData(): ProposalsData {
+function getInitialFilter(status?: ProposalStatus) {
+  if (!status || status === 'InProgress') return 'Active proposals';
+
+  return 'Recent proposals';
+}
+
+export function useFilteredData(
+  proposalStatus?: ProposalStatus
+): ProposalsData {
   const router = useRouter();
   const { accountId } = useAuthContext();
-  const [filter, setFilter] = useState<ProposalsFilter>('Active proposals');
+  const [filter, setFilter] = useState<ProposalsFilter>(() =>
+    getInitialFilter(proposalStatus)
+  );
   const [proposals, setProposals] = useState<Proposal[]>([]);
 
   useEffect(() => {
@@ -113,6 +123,16 @@ export function useFilteredData(): ProposalsData {
 
     fetchProposals();
   }, [router.query.dao]);
+
+  useEffect(() => {
+    if (proposalStatus) {
+      setFilter(
+        proposalStatus === 'InProgress'
+          ? 'Active proposals'
+          : 'Recent proposals'
+      );
+    }
+  }, [proposalStatus]);
 
   const onFilterChange = useCallback(value => {
     setFilter(value);
