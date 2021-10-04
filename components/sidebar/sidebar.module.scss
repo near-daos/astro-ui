@@ -40,7 +40,8 @@
 }
 
 .scrolling {
-  height: calc(100vh - 340px);
+  $logo-bottom-part-height: 380px;
+  height: calc(100vh - #{$logo-bottom-part-height});
   overflow-y: scroll;
 }
 
