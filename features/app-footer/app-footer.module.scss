@@ -66,11 +66,31 @@
   }
 }
 
+.report {
+  color: var(--color-primary-30);
+  font-size: 14px;
+  grid-area: report;
+  transition: color 0.4s;
+
+  &:hover {
+    color: var(--color-primary-40);
+  }
+}
+
 .links {
   column-gap: 24px;
   display: flex;
+  flex-direction: column;
   font-size: 14px;
   grid-area: links;
+
+  //.separator {
+  //  background: var(--color-neutral-10);
+  //  height: 1.5px;
+  //  margin: 16px 0;
+  //  opacity: 0.3;
+  //  width: 100%;
+  //}
 }
 
 .link {
@@ -121,6 +141,7 @@
     grid-template-areas:
       'invitation'
       'social'
+      'report'
       'links'
       'copyright'
       'powered';
@@ -129,10 +150,10 @@
     @include tablet-landscape {
       grid-gap: 32px;
       grid-template-areas:
-        'invitation invitation'
-        'social powered'
-        'links copyright';
-      grid-template-columns: 3fr 10fr;
+        'invitation invitation invitation'
+        'social social powered'
+        'links report copyright';
+      grid-template-columns: 3fr 2fr 8fr;
     }
   }
 
@@ -191,6 +212,7 @@
   .wrapper {
     grid-template-areas:
       'social'
+      'report'
       'links'
       'copyright'
       'powered';
