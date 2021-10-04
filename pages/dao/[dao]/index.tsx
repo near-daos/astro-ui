@@ -209,6 +209,7 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
         />
         {VOTE_BY_PERIOD.map(period => (
           <ProposalCollapsableSection
+            filter={filter}
             key={period.key}
             proposals={filteredData[period.key]}
             title={period.title}
