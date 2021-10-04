@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState } from 'react';
 import cn from 'classnames';
 
 import { Button } from 'components/button/Button';
-import { Checkbox } from 'components/checkbox/Checkbox';
+// import { Checkbox } from 'components/checkbox/Checkbox';
 
 import { ProposalVotingPermissions } from 'types/proposal';
 
@@ -10,7 +10,7 @@ import styles from './vote-panel.module.scss';
 
 type Vote = {
   vote: 'yes' | 'no' | null;
-  reportSpam: boolean;
+  // reportSpam: boolean;
 };
 
 interface VotePanelProps {
@@ -27,11 +27,26 @@ export const VotePanel: FC<VotePanelProps> = ({
   const { canApprove, canReject } = permissions;
 
   const [vote, setVote] = useState<'yes' | 'no' | null>(null);
-  const [reportSpam, setReportSpam] = useState(false);
+  // const [reportSpam, setReportSpam] = useState(false);
 
   const handleSubmit = useCallback(() => {
-    onSubmit({ vote, reportSpam });
-  }, [vote, reportSpam, onSubmit]);
+    onSubmit({ vote /* reportSpam */ });
+  }, [vote, /* reportSpam, */ onSubmit]);
+
+  function renderReportSpam() {
+    // return (
+    //   <div className={styles.row}>
+    //     <Checkbox
+    //       disabled={disabled}
+    //       selected={reportSpam}
+    //       label="Report spam"
+    //       onClick={() => setReportSpam(!reportSpam)}
+    //     />
+    //   </div>
+    // );
+
+    return null;
+  }
 
   return (
     <div
@@ -62,26 +77,19 @@ export const VotePanel: FC<VotePanelProps> = ({
         </div>
         <div
           className={cn(styles.right, {
-            [styles.disabled]: !vote || !reportSpam
+            [styles.disabled]: !vote /* || !reportSpam */
           })}
         >
           <Button
             size="small"
             onClick={handleSubmit}
-            disabled={(!vote && !reportSpam) || disabled}
+            disabled={!vote /* && !reportSpam */ || disabled}
           >
             Vote
           </Button>
         </div>
       </div>
-      <div className={styles.row}>
-        <Checkbox
-          disabled={disabled}
-          selected={reportSpam}
-          label="Report spam"
-          onClick={() => setReportSpam(!reportSpam)}
-        />
-      </div>
+      {renderReportSpam()}
     </div>
   );
 };
