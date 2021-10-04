@@ -47,23 +47,36 @@ export function useGetVotePermissions(
     }
 
     if (accountId && dao) {
-      const groupRole = dao.policy.roles.find(r => r.kind === 'Group');
+      const groupRole = dao.policy.roles.filter(({ kind, accountIds }) => {
+        return kind === 'Group' && accountIds?.includes(accountId);
+      });
 
-      if (groupRole) {
-        const { accountIds, permissions: groupPerms } = groupRole;
+      const perms = groupRole.reduce(
+        (acc, { permissions: groupPerms }) => {
+          const { canApprove, canReject, canDelete } = acc;
 
-        if (accountIds?.includes(accountId)) {
-          const canApprove = checkPermissions('VoteApprove', groupPerms);
-          const canReject = checkPermissions('VoteReject', groupPerms);
-          const canDelete = checkPermissions('VoteRemove', groupPerms);
+          if (!canApprove) {
+            acc.canApprove = checkPermissions('VoteApprove', groupPerms);
+          }
 
-          setPermissions({
-            canApprove,
-            canReject,
-            canDelete
-          });
+          if (!canReject) {
+            acc.canReject = checkPermissions('VoteReject', groupPerms);
+          }
+
+          if (!canDelete) {
+            acc.canDelete = checkPermissions('VoteRemove', groupPerms);
+          }
+
+          return acc;
+        },
+        {
+          canApprove: false,
+          canReject: false,
+          canDelete: false
         }
-      }
+      );
+
+      setPermissions(perms);
     }
   }, [dao, accountId, proposalType]);
 
