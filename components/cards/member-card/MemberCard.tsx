@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useCallback } from 'react';
 import cn from 'classnames';
-
+import TextTruncate from 'react-text-truncate';
 import { IconButton } from 'components/button/IconButton';
 
 import styles from './member-card.module.scss';
@@ -102,7 +102,15 @@ const MemberCard: FC<MemberCardProps> = ({
             <circle r={20} cx={32} cy={32} />
           </svg>
         </div>
-        <div className={cn(styles.title, 'title1')}>{title}</div>
+        <div className={cn(styles.title, 'title1')}>
+          <TextTruncate
+            line={expandedView ? 10 : 2}
+            element="span"
+            truncateText="…"
+            text={title ?? ''}
+            textTruncateChild={null}
+          />
+        </div>
         <div className={styles.tags}>{children}</div>
       </div>
 
