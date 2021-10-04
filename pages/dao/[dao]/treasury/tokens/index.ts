@@ -4,6 +4,7 @@ import Tokens, {
 import { SputnikService } from 'services/SputnikService';
 import { TokenType } from 'types/token';
 import { getChartData } from 'features/treasury/helpers';
+import { fetchNearPrice } from 'hooks/useNearPrice';
 
 interface GetTokensQuery {
   dao: string;
@@ -21,6 +22,7 @@ export const getServerSideProps = async ({
   const tokens = await SputnikService.getTokens(query);
   const dao = await SputnikService.getDaoById(query.dao);
   const transactions = await SputnikService.getTransfers(query.dao);
+  const price = await fetchNearPrice();
 
   const totalTokensValue = tokens.reduce(
     (res, item) => res + Number(item.totalSupply),
@@ -30,7 +32,7 @@ export const getServerSideProps = async ({
   return {
     props: {
       data: {
-        chartData: getChartData(transactions),
+        chartData: getChartData(transactions, price),
         tokens: [
           {
             id: 'NEAR',

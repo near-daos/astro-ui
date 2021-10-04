@@ -19,9 +19,10 @@ import styles from 'pages/dao/[dao]/treasury/tokens/transactions/TransactionsPag
 import { SputnikService } from 'services/SputnikService';
 import { Token } from 'types/token';
 import { Transaction } from 'types/transaction';
-import { useNearPrice } from 'hooks/useNearPrice';
+import { fetchNearPrice, useNearPrice } from 'hooks/useNearPrice';
 import { formatCurrency } from 'utils/formatCurrency';
 import { getChartData } from 'features/treasury/helpers';
+import { useMount } from 'react-use';
 
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
 
@@ -97,6 +98,10 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
     ];
   }, [transactions, numberOfTokens, nearPrice]);
 
+  useMount(() => {
+    SputnikService.getTransfers(daoId);
+  });
+
   return (
     <div className={styles.root}>
       <div className={styles.back}>
@@ -133,7 +138,10 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
       </Button>
       <div className={styles.transactions}>
         {currentPageContent.map(transaction => (
-          <div className={styles.row}>
+          <div
+            className={styles.row}
+            key={`${transaction.type}_${transaction.timestamp}_${transaction.deposit}`}
+          >
             <TransactionCard
               tokenName={Token.NEAR}
               type={transaction.type}
@@ -171,11 +179,12 @@ export const getServerSideProps = async ({
 }> => {
   const dao = await SputnikService.getDaoById(query.dao);
   const transactions = await SputnikService.getTransfers(query.dao);
+  const price = await fetchNearPrice();
 
   return {
     props: {
       data: {
-        chartData: getChartData(transactions),
+        chartData: getChartData(transactions, price),
         transactions,
         numberOfTokens: Number(dao?.funds) ?? '0'
       }

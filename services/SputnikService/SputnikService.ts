@@ -520,7 +520,7 @@ class SputnikService {
       GetTransactionsResponse
     >(`/transactions?${queryString}`);
 
-    return mapTransactionDTOToTransaction(transfers.data);
+    return mapTransactionDTOToTransaction(daoId as string, transfers.data);
   }
 
   public async getPolls(

@@ -1,7 +1,10 @@
 import { Transaction } from 'types/transaction';
 import { ChartData } from 'lib/types/treasury';
 
-export function getChartData(transactions: Transaction[]): ChartData[] {
+export function getChartData(
+  transactions: Transaction[],
+  price: number
+): ChartData[] {
   let value = 0;
   const result: ChartData[] = [];
 
@@ -17,7 +20,7 @@ export function getChartData(transactions: Transaction[]): ChartData[] {
       const income = item.type === 'Deposit';
       let balance;
 
-      const deposit = Number(item.deposit);
+      const deposit = Number(Number(item.deposit) * price);
 
       if (income) {
         balance = value + deposit;
