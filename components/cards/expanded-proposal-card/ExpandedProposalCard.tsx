@@ -116,6 +116,7 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
       />
       <ContentPanel
         id={id}
+        daoId={daoId}
         title={title}
         name={name}
         text={text}

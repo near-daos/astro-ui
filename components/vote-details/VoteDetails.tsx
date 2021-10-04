@@ -14,6 +14,7 @@ import { VotersList } from './components/voters-list/VotersList';
 import styles from './vote-details.module.scss';
 
 export interface VoteDetailsProps {
+  proposalDaoId?: string;
   showProgress?: boolean;
   scope: Scope;
   className?: string;
@@ -21,13 +22,14 @@ export interface VoteDetailsProps {
 }
 
 export const VoteDetails: React.FC<VoteDetailsProps> = ({
+  proposalDaoId,
   scope,
   showProgress,
   className = '',
   proposalId
 }) => {
   const router = useRouter();
-  const daoId = router.query.dao as string;
+  const daoId = proposalDaoId || (router.query.dao as string);
   const currentDao = useDao(daoId);
   const daoProposal = useProposal(currentDao?.id, proposalId);
 
