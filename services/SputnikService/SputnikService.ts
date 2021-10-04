@@ -43,6 +43,7 @@ import {
   NftToken
 } from 'types/token';
 import { Transaction } from 'types/transaction';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import { gas, yoktoNear } from './constants';
 import { ContractPool } from './ContractPool';
@@ -108,18 +109,36 @@ class SputnikService {
   ) {
     const { bountyId: id, deadline, bountyBond } = args;
 
-    this.contractPool.get(daoId).bounty_claim(
-      {
-        id,
-        deadline
-      },
-      gas,
-      bountyBond
-    );
+    this.contractPool
+      .get(daoId)
+      .bounty_claim(
+        {
+          id,
+          deadline
+        },
+        gas,
+        bountyBond
+      )
+      .then(() => {
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
+          lifetime: 20000
+        });
+      });
   }
 
   public unclaimBounty(daoId: string, bountyId: string) {
-    this.contractPool.get(daoId).bounty_giveup({ id: bountyId }, gas);
+    this.contractPool
+      .get(daoId)
+      .bounty_giveup({ id: bountyId }, gas)
+      .then(() => {
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
+          lifetime: 20000
+        });
+      });
   }
 
   public isAuthorized(): boolean {
@@ -255,6 +274,12 @@ class SputnikService {
         amountYokto.toString()
       );
 
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+        lifetime: 20000
+      });
+
       return result;
     } catch (err) {
       if (err.message !== 'Failed to redirect to sign transaction') {
@@ -274,16 +299,25 @@ class SputnikService {
         }
       : kind;
 
-    return this.contractPool.get(daoId).add_proposal(
-      {
-        proposal: {
-          description,
-          kind: kindData
-        }
-      },
-      new Decimal('30000000000000').toString(),
-      bond
-    );
+    return this.contractPool
+      .get(daoId)
+      .add_proposal(
+        {
+          proposal: {
+            description,
+            kind: kindData
+          }
+        },
+        new Decimal('30000000000000').toString(),
+        bond
+      )
+      .then(() => {
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+          lifetime: 20000
+        });
+      });
   }
 
   public async getDaoList(params?: {
@@ -572,10 +606,19 @@ class SputnikService {
     proposalId: number,
     action: 'VoteApprove' | 'VoteRemove' | 'VoteReject'
   ): Promise<void> {
-    return this.contractPool.get(daoId).act_proposal({
-      id: proposalId,
-      action
-    });
+    return this.contractPool
+      .get(daoId)
+      .act_proposal({
+        id: proposalId,
+        action
+      })
+      .then(() => {
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
+          lifetime: 20000
+        });
+      });
   }
 
   public async getTokens(params: {
