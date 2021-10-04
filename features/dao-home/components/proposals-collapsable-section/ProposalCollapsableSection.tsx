@@ -1,25 +1,34 @@
-import React, { FC, useEffect, useState } from 'react';
-import { IconButton } from 'components/button/IconButton';
 import cn from 'classnames';
-import { Collapsable } from 'components/collapsable/Collapsable';
+import isEmpty from 'lodash/isEmpty';
+import React, { FC, useEffect, useState } from 'react';
+
 import { Proposal } from 'types/proposal';
-import { ProposalCardRenderer } from 'components/cards/proposal-card';
+
+import { ProposalsFilter } from 'features/dao-home/helpers';
+
+import { VotePeriodKey } from 'constants/votingConstants';
+
 import { Button } from 'components/button/Button';
+import { IconButton } from 'components/button/IconButton';
+import { Collapsable } from 'components/collapsable/Collapsable';
+import { ProposalCardRenderer } from 'components/cards/proposal-card';
 
 import styles from './proposal-collapsable-section.module.scss';
 
 interface ProposalCollapsableSectionProps {
   proposals: Proposal[];
   expandedProposalId?: string;
-  view: string;
+  view: VotePeriodKey;
   title: string;
+  filter: ProposalsFilter;
 }
 
 export const ProposalCollapsableSection: FC<ProposalCollapsableSectionProps> = ({
   proposals,
   expandedProposalId,
   view,
-  title
+  title,
+  filter
 }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -33,7 +42,10 @@ export const ProposalCollapsableSection: FC<ProposalCollapsableSectionProps> = (
     }
   }, [expandedProposalId, proposals]);
 
-  if (!proposals.length) {
+  if (
+    isEmpty(proposals) ||
+    (filter === 'Active proposals' && view === 'otherProposals')
+  ) {
     return null;
   }
 
