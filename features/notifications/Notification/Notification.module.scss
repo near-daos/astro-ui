@@ -1,0 +1,62 @@
+@import 'styles/typography';
+
+.root {
+  backdrop-filter: blur(16px);
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(32, 31, 31, 0.15);
+
+  display: grid;
+  grid-gap: 24px;
+  grid-template-areas: 'status content closeIcon';
+  grid-template-columns: 48px 1fr 48px;
+
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.status {
+  align-items: center;
+  display: flex;
+  grid-area: status;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+
+  &.info {
+    background-color: var(--color-info);
+  }
+
+  &.success {
+    background-color: var(--color-success);
+  }
+
+  &.error {
+    background-color: var(--color-error);
+  }
+}
+
+.info {
+  background-color: var(--color-pastel-turqoise);
+}
+
+.success {
+  background-color: var(--color-success-20);
+}
+
+.error {
+  background-color: var(--color-error-20);
+}
+
+.closeIcon {
+  color: var(--color-neutral-60);
+  cursor: pointer;
+  grid-area: closeIcon;
+  place-self: center;
+}
+
+.content {
+  @extend %caption1;
+  grid-area: content;
+  padding: 12px 0;
+  place-self: start start;
+}

@@ -78,8 +78,9 @@ export class AwsUploader {
       return response;
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.error(err);
-      throw err;
+      console.error('Could not upload image to s3', err);
+
+      return Promise.reject();
     }
   };
 }

@@ -81,7 +81,7 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
       content = (
         <RequestPayout
           amount={proposal.kind.amount}
-          reason={proposal.kind.msg}
+          reason={proposal.description}
           recipient={proposal.kind.receiverId}
           tokens={proposal.kind.tokenId}
           link={proposal.link}

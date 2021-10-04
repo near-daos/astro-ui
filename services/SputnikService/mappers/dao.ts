@@ -72,7 +72,6 @@ export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
 
 export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
   const roles = get(daoDTO, 'policy.roles', []);
-  const numberOfAssociates = get(daoDTO, 'numberOfAssociates', 0);
   const numberOfProposals = get(daoDTO, 'lastProposalId', 0);
 
   // Transform amount
@@ -98,11 +97,22 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
   const getLogoUrl = (flag: string) =>
     `https://${awsConfig.bucket}.s3.${awsConfig.region}.amazonaws.com/${flag}`;
 
+  const numberOfMembers = daoGroups
+    .map(({ members }: { members: string[] }) => members)
+    .flat()
+    .reduce((acc: string[], member: string) => {
+      if (!acc.includes(member)) {
+        acc.push(member);
+      }
+
+      return acc;
+    }, []).length;
+
   return {
     id: daoDTO.id,
     name: config?.name ?? '',
     description: config?.purpose ?? '',
-    members: numberOfAssociates,
+    members: numberOfMembers,
     proposals: numberOfProposals,
     logo: meta ? getLogoUrl(meta.flag) : getLogoUrl('default'),
     funds,
