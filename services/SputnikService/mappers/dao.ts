@@ -104,7 +104,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     description: config?.purpose ?? '',
     members: numberOfAssociates,
     proposals: numberOfProposals,
-    logo: meta ? getLogoUrl(meta.flag) : getLogoUrl(daoDTO.id),
+    logo: meta ? getLogoUrl(meta.flag) : getLogoUrl('default'),
     funds,
     createdAt: daoDTO.createdAt,
     groups: daoGroups,
