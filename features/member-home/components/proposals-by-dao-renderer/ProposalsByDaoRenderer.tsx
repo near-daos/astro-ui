@@ -29,7 +29,11 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
     window.scrollTo(0, 0);
   }, []);
 
-  if (isEmpty(data)) {
+  if (
+    isEmpty(data) ||
+    (periodKey === 'otherProposals' &&
+      filter.proposalFilter === 'Active proposals')
+  ) {
     return null;
   }
 
