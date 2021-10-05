@@ -99,7 +99,12 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
       break;
     }
     case ProposalType.AddBounty:
-    case ProposalType.ChangePolicy:
+    case ProposalType.ChangePolicy: {
+      content = (
+        <TextWithLink text={`Change policy: ${proposal.description}`} />
+      );
+      break;
+    }
     case ProposalType.Vote:
     default: {
       content = (

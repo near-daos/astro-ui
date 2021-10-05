@@ -31,13 +31,15 @@ export const schema = yup.object().shape({
   unclaimBountyTime: yup.number().integer().min(1).required()
 });
 
-export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = ({
-  createProposalBond,
-  proposalExpireTime,
-  claimBountyBond,
-  unclaimBountyTime,
-  proposalBond
-}) => {
+export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
+  const {
+    createProposalBond,
+    proposalExpireTime,
+    claimBountyBond,
+    unclaimBountyTime,
+    proposalBond
+  } = props;
+
   const [viewMode, setViewMode] = useToggle(true);
 
   const router = useRouter();
@@ -51,9 +53,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = ({
       createProposalBond,
       proposalExpireTime,
       claimBountyBond,
-      unclaimBountyTime,
-      details: '',
-      externalUrl: ''
+      unclaimBountyTime
     },
     resolver: yupResolver(schema)
   });
@@ -86,12 +86,12 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = ({
     async (data: BondsAndDeadlinesData) => {
       if (dao != null) {
         await SputnikService.createProposal(
-          getChangeBondDeadlinesProposal(dao, data, proposalBond)
+          getChangeBondDeadlinesProposal(dao, data, props, proposalBond)
         );
         setViewMode(true);
       }
     },
-    [dao, proposalBond, setViewMode]
+    [dao, proposalBond, setViewMode, props]
   );
 
   return (

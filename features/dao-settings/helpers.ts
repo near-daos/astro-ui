@@ -50,10 +50,15 @@ export function getChangeBondDeadlinesProposal(
     createProposalBond,
     proposalExpireTime,
     claimBountyBond,
-    unclaimBountyTime,
-    details,
-    externalUrl
+    unclaimBountyTime
   }: BondsAndDeadlinesData,
+  initialValues: {
+    accountName: string;
+    createProposalBond: number;
+    proposalExpireTime: number;
+    claimBountyBond: number;
+    unclaimBountyTime: number;
+  },
   proposalBond: string
 ): CreateProposalParams {
   const { id, policy } = dao;
@@ -62,9 +67,31 @@ export function getChangeBondDeadlinesProposal(
 
   const { ratio, quorum, weightKind } = defaultVotePolicy;
 
+  const generateDescription = () => {
+    const description = [];
+
+    if (createProposalBond !== initialValues.createProposalBond) {
+      description.push(`new proposal bond is ${createProposalBond}`);
+    }
+
+    if (proposalExpireTime !== initialValues.proposalExpireTime) {
+      description.push(`new proposal expire time is ${proposalExpireTime}`);
+    }
+
+    if (claimBountyBond !== initialValues.claimBountyBond) {
+      description.push(`new bounty claim bond: ${claimBountyBond}`);
+    }
+
+    if (unclaimBountyTime !== initialValues.unclaimBountyTime) {
+      description.push(`new bounty forgiveness period: ${unclaimBountyTime}`);
+    }
+
+    return description.join(', ');
+  };
+
   return {
     daoId: id,
-    description: `${details} ${externalUrl}`,
+    description: generateDescription(),
     kind: 'ChangePolicy',
     data: {
       policy: {
