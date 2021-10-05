@@ -89,6 +89,10 @@ export type ProposalKind =
     }
   | { type: ProposalType.SetStakingContract; stakingId: string }
   | { type: ProposalType.ChangePolicy; policy: PolicyType }
+  | {
+      type: ProposalType.ChangeConfig;
+      config: { metadata: string; name: string };
+    }
   | { type: ProposalType.Vote };
 
 export type ProposalStatus =
