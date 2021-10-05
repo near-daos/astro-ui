@@ -19,7 +19,11 @@ module.exports = (phase, { defaultConfig }) => {
       ...defaultConfig,
       reactStrictMode: true,
       images: {
-        domains: ['i.imgur.com', 'sputnik-dao.s3.eu-central-1.amazonaws.com']
+        domains: [
+          'i.imgur.com',
+          'sputnik-dao.s3.eu-central-1.amazonaws.com',
+          'ipfs.io'
+        ]
       },
       sassOptions: {
         includePaths: [path.join(__dirname, 'styles')]
