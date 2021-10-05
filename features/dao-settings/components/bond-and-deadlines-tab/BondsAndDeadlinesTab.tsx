@@ -31,13 +31,15 @@ export const schema = yup.object().shape({
   unclaimBountyTime: yup.number().integer().min(1).required()
 });
 
-export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = ({
-  createProposalBond,
-  proposalExpireTime,
-  claimBountyBond,
-  unclaimBountyTime,
-  proposalBond
-}) => {
+export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
+  const {
+    createProposalBond,
+    proposalExpireTime,
+    claimBountyBond,
+    unclaimBountyTime,
+    proposalBond
+  } = props;
+
   const [viewMode, setViewMode] = useToggle(true);
 
   const router = useRouter();
@@ -51,9 +53,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = ({
       createProposalBond,
       proposalExpireTime,
       claimBountyBond,
-      unclaimBountyTime,
-      details: '',
-      externalUrl: ''
+      unclaimBountyTime
     },
     resolver: yupResolver(schema)
   });
@@ -85,13 +85,18 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = ({
   const onSubmit = useCallback(
     async (data: BondsAndDeadlinesData) => {
       if (dao != null) {
-        await SputnikService.createProposal(
-          getChangeBondDeadlinesProposal(dao, data, proposalBond)
+        const proposal = getChangeBondDeadlinesProposal(
+          dao,
+          data,
+          props,
+          proposalBond
         );
+
+        await SputnikService.createProposal(proposal);
         setViewMode(true);
       }
     },
-    [dao, proposalBond, setViewMode]
+    [dao, proposalBond, setViewMode, props]
   );
 
   return (
@@ -158,7 +163,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = ({
                   textAlign="left"
                 />
               )}
-              <span className={styles.ml8}>days</span>
+              <span className={styles.ml8}>hours</span>
             </>
           </div>
         </div>
@@ -211,7 +216,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = ({
                   textAlign="left"
                 />
               )}
-              <span className={styles.ml8}>days</span>
+              <span className={styles.ml8}>hours</span>
             </>
           </div>
         </div>

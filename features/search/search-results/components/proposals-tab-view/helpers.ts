@@ -141,7 +141,8 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
       if (
         item.kind.type === ProposalType.ChangePolicy ||
         item.kind.type === ProposalType.UpgradeRemote ||
-        item.kind.type === ProposalType.UpgradeSelf
+        item.kind.type === ProposalType.UpgradeSelf ||
+        item.kind.type === ProposalType.ChangeConfig
       ) {
         matched = false;
       }

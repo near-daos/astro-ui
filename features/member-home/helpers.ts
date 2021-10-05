@@ -9,7 +9,6 @@ import {
   ProposalByDao,
   ProposalFilter
 } from 'features/member-home/types';
-import { useAllProposals } from 'hooks/useAllProposals';
 import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
 import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
 
@@ -70,7 +69,7 @@ export function arrangeByDao(proposals: Proposal[]): ProposalByDao {
 export const useFilteredMemberHomeData = (): FilteredProposalsData => {
   const { daos } = useDaoListPerCurrentUser();
   const myDaos = daos?.map(item => item.id) || [];
-  const proposals = useAllProposals() ?? [];
+  const [proposals, setProposals] = useState<Proposal[]>([]);
   const { accountId } = useAuthContext();
   const [filter, setFilter] = useState({
     daoFilter: 'All DAOs' as DaoFilter,
@@ -88,6 +87,16 @@ export const useFilteredMemberHomeData = (): FilteredProposalsData => {
     },
     [filter]
   );
+
+  useEffect(() => {
+    async function getData() {
+      const data = await SputnikService.getFilteredProposals(filter, accountId);
+
+      setProposals(data);
+    }
+
+    getData();
+  }, [accountId, filter]);
 
   const filteredProposals = proposals.filter(item => {
     let matched = true;

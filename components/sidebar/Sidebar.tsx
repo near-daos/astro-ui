@@ -167,18 +167,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
         <Logo className={styles.mainLogo} />
         <div className={styles.scrolling}>
+          {showDaoNavItems && (
+            <NavItem
+              topDelimiter
+              className={styles.item}
+              label="Home"
+              href="/home"
+              icon="stateHome"
+            />
+          )}
           {renderDaoNavItems()}
           <div className={styles.delimiter} />
           <nav className={styles.bottom}>
-            {showDaoNavItems && (
-              <NavItem
-                topDelimiter
-                className={styles.item}
-                label="Home"
-                href="/home"
-                icon="stateHome"
-              />
-            )}
             <NavItem
               className={styles.item}
               label="All Communities"

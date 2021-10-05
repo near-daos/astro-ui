@@ -32,7 +32,7 @@ export function useCountdown(endsAt: string): string | null {
 
   const diff = differenceInMilliseconds(end, start);
 
-  const [timeLeft, actions] = useCountDown(diff);
+  const [timeLeft, actions] = useCountDown(diff, 1000 * 60);
 
   useEffect(() => {
     actions.start();

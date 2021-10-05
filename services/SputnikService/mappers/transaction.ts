@@ -56,39 +56,41 @@ export function mapTransactionDTOToTransaction(
   daoId: string,
   data: TransactionDTO[]
 ): Transaction[] {
-  return data.map(item => {
-    let deposit = '0';
-    let type = 'Deposit' as TransactionType;
+  return (
+    data?.map(item => {
+      let deposit = '0';
+      let type = 'Deposit' as TransactionType;
 
-    if (
-      item.transactionAction.actionKind === 'FUNCTION_CALL' &&
-      item.transactionAction.args.method_name === 'create'
-    ) {
-      deposit = formatYoktoValue(item.transactionAction.args.deposit);
-    } else if (item.transactionAction.actionKind === 'TRANSFER') {
-      type = 'Deposit';
-      deposit = formatYoktoValue(item.transactionAction.args.deposit);
-    } else {
-      const receipt = item.receipts.find(
-        r =>
-          r.receiptAction?.actionKind === 'TRANSFER' &&
-          r.receiptAction.args.deposit
-      );
-
-      if (receipt && receipt.receiptAction?.args.deposit) {
+      if (
+        item.transactionAction.actionKind === 'FUNCTION_CALL' &&
+        item.transactionAction.args.method_name === 'create'
+      ) {
+        deposit = formatYoktoValue(item.transactionAction.args.deposit);
+      } else if (item.transactionAction.actionKind === 'TRANSFER') {
         type = 'Deposit';
-        deposit = formatYoktoValue(receipt.receiptAction?.args.deposit);
-      }
-    }
+        deposit = formatYoktoValue(item.transactionAction.args.deposit);
+      } else {
+        const receipt = item.receipts.find(
+          r =>
+            r.receiptAction?.actionKind === 'TRANSFER' &&
+            r.receiptAction.args.deposit
+        );
 
-    return {
-      transactionId: item.transactionHash,
-      timestamp: Number(item.blockTimestamp) / 1000000,
-      receiverAccountId: item.receiverAccountId,
-      signerAccountId: item.signerAccountId,
-      deposit,
-      type,
-      date: new Date(Number(item.blockTimestamp) / 1000000).toISOString()
-    };
-  });
+        if (receipt && receipt.receiptAction?.args.deposit) {
+          type = 'Deposit';
+          deposit = formatYoktoValue(receipt.receiptAction?.args.deposit);
+        }
+      }
+
+      return {
+        transactionId: item.transactionHash,
+        timestamp: Number(item.blockTimestamp) / 1000000,
+        receiverAccountId: item.receiverAccountId,
+        signerAccountId: item.signerAccountId,
+        deposit,
+        type,
+        date: new Date(Number(item.blockTimestamp) / 1000000).toISOString()
+      };
+    }) ?? []
+  );
 }

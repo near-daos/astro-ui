@@ -21,7 +21,7 @@ const NFTs: NextPage<NFTsProps> = ({ nfts = [] }) => {
             <NFTCard
               name={nft.metadata.title}
               image={{
-                src: nft.metadata.media,
+                src: `https://ipfs.io/ipfs/${nft.metadata.media}`,
                 width: 296,
                 height: 424
               }}

@@ -4,7 +4,7 @@
 .root {
   border-radius: 8px 8px 0 0;
   display: flex;
-  min-height: 56px;
+  height: 56px;
   padding: 16px;
 }
 
@@ -15,6 +15,7 @@
   width: 24px;
 
   &.close {
+    cursor: pointer;
     transform: rotate(45deg);
   }
 }
