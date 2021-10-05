@@ -29,14 +29,12 @@ export const Template: Story<DaoTemplateCardProps> = (args): JSX.Element => (
 Template.storyName = 'Dao DAOTemplate Card';
 
 Template.args = {
-  variant: 'foundation',
-  title: 'Foundation',
-  description: `A group giving donations\nAn organization funding community projects\nA fund for open-source projects`
-};
-
-Template.argTypes = {
-  variant: {
-    options: ['club', 'cooperative', 'corporation', 'foundation'],
-    control: { type: 'select' }
+  template: {
+    title: 'Foundation',
+    description: `A group giving donations\nAn organization funding community projects\nA fund for open-source projects`,
+    variant: 'foundation',
+    proposals: 'open',
+    structure: 'groups',
+    voting: 'democratic'
   }
 };
