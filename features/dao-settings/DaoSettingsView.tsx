@@ -73,7 +73,7 @@ export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
           proposalExpireTime={new Decimal(dao.policy.proposalPeriod)
             .div('3.6e12')
             .toNumber()}
-          unclaimBountyTime={new Decimal(dao.policy.proposalPeriod)
+          unclaimBountyTime={new Decimal(dao.policy.bountyForgivenessPeriod)
             .div('3.6e12')
             .toNumber()}
           proposalBond={dao.policy.proposalBond}
