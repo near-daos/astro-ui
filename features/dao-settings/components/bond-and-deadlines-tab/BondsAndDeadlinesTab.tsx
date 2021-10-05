@@ -85,9 +85,14 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
   const onSubmit = useCallback(
     async (data: BondsAndDeadlinesData) => {
       if (dao != null) {
-        await SputnikService.createProposal(
-          getChangeBondDeadlinesProposal(dao, data, props, proposalBond)
+        const proposal = getChangeBondDeadlinesProposal(
+          dao,
+          data,
+          props,
+          proposalBond
         );
+
+        await SputnikService.createProposal(proposal);
         setViewMode(true);
       }
     },
@@ -158,7 +163,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
                   textAlign="left"
                 />
               )}
-              <span className={styles.ml8}>days</span>
+              <span className={styles.ml8}>hours</span>
             </>
           </div>
         </div>
@@ -211,7 +216,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
                   textAlign="left"
                 />
               )}
-              <span className={styles.ml8}>days</span>
+              <span className={styles.ml8}>hours</span>
             </>
           </div>
         </div>
