@@ -16,7 +16,6 @@ import { Token } from 'features/types';
 
 import { useDeviceType } from 'helpers/media';
 
-import { SputnikService } from 'services/SputnikService';
 import styles from './request-payout-form.module.scss';
 
 const schema = yup.object().shape({
@@ -64,8 +63,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
     resolver: yupResolver(schema),
     defaultValues: {
       ...initialValues,
-      amount: 0,
-      recipient: SputnikService.getAccountId()
+      amount: 0
     }
   });
 
