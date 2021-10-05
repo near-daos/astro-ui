@@ -1,10 +1,11 @@
 import * as Typography from 'components/Typography';
 import React, { FC } from 'react';
 
+import Link from 'next/link';
 import styles from './dao-info.module.scss';
 
 export interface DaoInfoCardProps {
-  items: { label: string; value: string }[];
+  items: { label: string; value: string; link?: string }[];
 }
 
 export const DaoInfoCard: FC<DaoInfoCardProps> = ({ items }) => (
@@ -15,7 +16,13 @@ export const DaoInfoCard: FC<DaoInfoCardProps> = ({ items }) => (
           {item.label}
         </Typography.Subtitle>
         <Typography.Title className={styles.subtitle} size={3}>
-          {item.value}
+          {item.link ? (
+            <Link href={item.link}>
+              <a>{item.value}</a>
+            </Link>
+          ) : (
+            item.value
+          )}
         </Typography.Title>
       </div>
     ))}
