@@ -58,12 +58,12 @@ const Home: NextPage = () => {
     },
     {
       id: 2,
-      label: 'Active proposals',
+      label: 'All Active proposals',
       content: <>{tabContent}</>
     },
     {
       id: 3,
-      label: 'Recent proposals',
+      label: 'All Finalized proposals',
       content: <>{tabContent}</>
     }
   ];
