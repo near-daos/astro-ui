@@ -167,7 +167,7 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
       {
         label: 'Members',
         value: `${members}`,
-        link: `/dao/${dao.id}/treasury/tokens`
+        link: `/dao/${dao.id}/groups/all-members`
       },
       {
         label: 'DAO funds',
