@@ -475,7 +475,11 @@ class SputnikService {
     filter: {
       daoViewFilter: null;
       daoFilter: 'All DAOs' | 'My DAOs' | 'Following DAOs';
-      proposalFilter: 'Active proposals' | 'Recent proposals' | 'My proposals';
+      proposalFilter:
+        | 'Active proposals'
+        | 'Recent proposals'
+        | 'My proposals'
+        | null;
     },
     accountId: string
   ): Promise<Proposal[]> {
@@ -518,7 +522,7 @@ class SputnikService {
     }
 
     queryString
-      .setLimit(500)
+      .setLimit(1000)
       .setOffset(0)
       .sortBy({
         field: 'createdAt',
