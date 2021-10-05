@@ -15,6 +15,7 @@
   width: 24px;
 
   &.close {
+    cursor: pointer;
     transform: rotate(45deg);
   }
 }
