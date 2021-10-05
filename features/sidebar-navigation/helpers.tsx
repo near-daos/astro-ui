@@ -10,93 +10,10 @@ import { DAO } from 'types/dao';
 import {
   GOVERNANCE_SECTION_ID,
   GROUPS_SECTION_ID,
+  OVERVIEW_SECTION_ID,
   TASKS_SECTION_ID,
   TREASURY_SECTION_ID
 } from './constants';
-
-const sidebarItems: React.ComponentProps<typeof Sidebar>['items'] = [
-  {
-    id: TASKS_SECTION_ID,
-    label: 'Tasks',
-    logo: 'stateTasks',
-    subItems: [
-      {
-        id: 'bounties',
-        label: 'Bounties',
-        href: `/dao/[dao]/${TASKS_SECTION_ID}/bounties`
-      },
-      {
-        id: 'polls',
-        label: 'Polls',
-        href: `/dao/[dao]/${TASKS_SECTION_ID}/polls`
-      },
-      {
-        id: 'plugins',
-        label: 'Plugins',
-        href: `/dao/[dao]/${TASKS_SECTION_ID}/plugins`,
-        disabled: true
-      }
-    ]
-  },
-  {
-    id: TREASURY_SECTION_ID,
-    label: 'Treasury',
-    logo: 'stateTreasury',
-    subItems: [
-      {
-        id: 'tokens',
-        label: 'Tokens',
-        href: `/dao/[dao]/${TREASURY_SECTION_ID}/tokens`,
-        subHrefs: ['/dao/[dao]/treasury/tokens/transactions/[tokenId]']
-      },
-      {
-        id: 'nfts',
-        label: 'NFTs',
-        href: `/dao/[dao]/${TREASURY_SECTION_ID}/nfts`
-      }
-    ]
-  },
-  {
-    id: GROUPS_SECTION_ID,
-    label: 'Groups',
-    logo: 'stateMembersgroups',
-    subItems: [
-      {
-        id: 'addGroup',
-        label: <AddGroupMenu />
-      }
-    ]
-  },
-  {
-    id: GOVERNANCE_SECTION_ID,
-    label: 'Governance',
-    logo: 'stateGovernance',
-    subItems: [
-      {
-        id: 'daoSettings',
-        label: 'DAO settings',
-        href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/settings`
-      },
-      {
-        id: 'votingPolicy',
-        label: 'Voting Policy',
-        href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/voting-policy`
-      },
-      {
-        id: 'votingToken',
-        label: 'Voting Token',
-        href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/voting-token`,
-        disabled: true
-      },
-      {
-        id: 'upgradeSoftware',
-        label: 'Upgrade software',
-        href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/upgrade-software`,
-        disabled: true
-      }
-    ]
-  }
-];
 
 type TSidebarData = React.ComponentProps<typeof Sidebar>['items'];
 
@@ -108,6 +25,101 @@ export const useSidebarData = (): {
   const selectedDaoId = router.query.dao as string;
   const selectedDao = useDao(selectedDaoId);
   const [daos, setDaos] = useState<DAO[] | null>(null);
+
+  const sidebarItems: React.ComponentProps<
+    typeof Sidebar
+  >['items'] = useMemo(() => {
+    return [
+      {
+        id: OVERVIEW_SECTION_ID,
+        label: 'Overview',
+        logo: 'stateOverview',
+        subItems: [],
+        href: `/dao/${selectedDaoId}`
+      },
+      {
+        id: TASKS_SECTION_ID,
+        label: 'Tasks',
+        logo: 'stateTasks',
+        subItems: [
+          {
+            id: 'bounties',
+            label: 'Bounties',
+            href: `/dao/[dao]/${TASKS_SECTION_ID}/bounties`
+          },
+          {
+            id: 'polls',
+            label: 'Polls',
+            href: `/dao/[dao]/${TASKS_SECTION_ID}/polls`
+          },
+          {
+            id: 'plugins',
+            label: 'Plugins',
+            href: `/dao/[dao]/${TASKS_SECTION_ID}/plugins`,
+            disabled: true
+          }
+        ]
+      },
+      {
+        id: TREASURY_SECTION_ID,
+        label: 'Treasury',
+        logo: 'stateTreasury',
+        subItems: [
+          {
+            id: 'tokens',
+            label: 'Tokens',
+            href: `/dao/[dao]/${TREASURY_SECTION_ID}/tokens`,
+            subHrefs: ['/dao/[dao]/treasury/tokens/transactions/[tokenId]']
+          },
+          {
+            id: 'nfts',
+            label: 'NFTs',
+            href: `/dao/[dao]/${TREASURY_SECTION_ID}/nfts`
+          }
+        ]
+      },
+      {
+        id: GROUPS_SECTION_ID,
+        label: 'Groups',
+        logo: 'stateMembersgroups',
+        subItems: [
+          {
+            id: 'addGroup',
+            label: <AddGroupMenu />
+          }
+        ]
+      },
+      {
+        id: GOVERNANCE_SECTION_ID,
+        label: 'Governance',
+        logo: 'stateGovernance',
+        subItems: [
+          {
+            id: 'daoSettings',
+            label: 'DAO settings',
+            href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/settings`
+          },
+          {
+            id: 'votingPolicy',
+            label: 'Voting Policy',
+            href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/voting-policy`
+          },
+          {
+            id: 'votingToken',
+            label: 'Voting Token',
+            href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/voting-token`,
+            disabled: true
+          },
+          {
+            id: 'upgradeSoftware',
+            label: 'Upgrade software',
+            href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/upgrade-software`,
+            disabled: true
+          }
+        ]
+      }
+    ];
+  }, [selectedDaoId]);
 
   const menuItems = useMemo(() => {
     const groups = {} as Record<string, string>;
@@ -157,7 +169,7 @@ export const useSidebarData = (): {
 
       return item;
     });
-  }, [selectedDao]);
+  }, [selectedDao, sidebarItems]);
 
   useEffect(() => {
     async function fetchData() {
@@ -192,6 +204,7 @@ export const useSidebarData = (): {
         setDaos(updatedDaos);
       }
     }
+
     fetchData();
   }, [selectedDaoId]);
 
