@@ -471,6 +471,68 @@ class SputnikService {
     return response.data.data;
   }
 
+  public async getFilteredProposals(
+    filter: {
+      daoViewFilter: null;
+      daoFilter: 'All DAOs' | 'My DAOs' | 'Following DAOs';
+      proposalFilter: 'Active proposals' | 'Recent proposals' | 'My proposals';
+    },
+    accountId: string
+  ): Promise<Proposal[]> {
+    const queryString = RequestQueryBuilder.create();
+
+    if (filter.daoViewFilter) {
+      queryString.setFilter({
+        field: 'daoId',
+        operator: '$eq',
+        value: filter.daoViewFilter
+      });
+    } else if (filter.daoFilter === 'My DAOs') {
+      const accountDaos = await this.getAccountDaos(accountId);
+
+      queryString.setFilter({
+        field: 'daoId',
+        operator: '$in',
+        value: accountDaos.map(item => item.id)
+      });
+    }
+
+    if (filter.proposalFilter === 'Active proposals') {
+      queryString.setFilter({
+        field: 'status',
+        operator: '$eq',
+        value: 'InProgress'
+      });
+    } else if (filter.proposalFilter === 'My proposals') {
+      queryString.setFilter({
+        field: 'proposer',
+        operator: '$eq',
+        value: accountId
+      });
+    } else if (filter.proposalFilter === 'Recent proposals') {
+      queryString.setFilter({
+        field: 'status',
+        operator: '$in',
+        value: ['Approved', 'Rejected', 'Expired', 'Moved']
+      });
+    }
+
+    queryString
+      .setLimit(500)
+      .setOffset(0)
+      .sortBy({
+        field: 'createdAt',
+        order: 'DESC'
+      })
+      .query();
+
+    const { data: proposals } = await this.httpService.get<
+      GetProposalsResponse
+    >(`/proposals?${queryString.queryString}`);
+
+    return proposals.data.map(mapProposalDTOToProposal);
+  }
+
   public async getProposals(
     daoId?: string,
     offset = 0,
