@@ -557,8 +557,8 @@ class SputnikService {
     const queryString = RequestQueryBuilder.create()
       .setFilter({
         field: 'transactionAction.actionKind',
-        operator: '$eq',
-        value: 'TRANSFER'
+        operator: '$in',
+        value: ['TRANSFER', 'FUNCTION_CALL']
       })
       .setFilter({
         field: 'receiverAccountId',
