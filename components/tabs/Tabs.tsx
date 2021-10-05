@@ -47,8 +47,11 @@ const Tabs: React.FC<TabsProps> = ({
   useEffect(() => {
     const queryTabIndex = router.query.tab;
 
-    if (!isNil(queryTabIndex) && +queryTabIndex !== tabIndex) {
-      const newTabIndex = +queryTabIndex;
+    if (
+      isNil(queryTabIndex) ||
+      (!isNil(queryTabIndex) && +queryTabIndex !== tabIndex)
+    ) {
+      const newTabIndex = queryTabIndex ? +queryTabIndex : 0;
 
       setTabIndex(newTabIndex);
 
@@ -57,8 +60,6 @@ const Tabs: React.FC<TabsProps> = ({
 
         onTabSelect(name);
       }
-    } else if (isNil(queryTabIndex)) {
-      setTabIndex(0);
     }
     // eslint-disable-next-line
   }, [router, router.query.tab, tabIndex, onTabSelect]);

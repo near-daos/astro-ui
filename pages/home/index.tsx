@@ -33,7 +33,7 @@ const Home: NextPage = () => {
     if (!router.query.tab && hasProposals) {
       router.push({
         query: {
-          tab: 2
+          tab: 0
         }
       });
     }
@@ -53,17 +53,17 @@ const Home: NextPage = () => {
   const tabs = [
     {
       id: 1,
-      label: 'Active proposals',
+      label: 'My proposals',
       content: <>{tabContent}</>
     },
     {
       id: 2,
-      label: 'Recent proposals',
+      label: 'Active proposals',
       content: <>{tabContent}</>
     },
     {
       id: 3,
-      label: 'My proposals',
+      label: 'Recent proposals',
       content: <>{tabContent}</>
     }
   ];
