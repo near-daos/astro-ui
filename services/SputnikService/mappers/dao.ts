@@ -1,16 +1,9 @@
 import get from 'lodash/get';
 
-import { DAO } from 'types/dao';
+import { DAO, DaoVotePolicy } from 'types/dao';
 import { DaoRole } from 'types/role';
 import { formatYoktoValue } from 'helpers/format';
 import { awsConfig } from 'config';
-
-export type DaoVotePolicy = {
-  weightKind: string;
-  quorum: string;
-  kind: string;
-  ratio: number[];
-};
 
 export type DaoPolicy = {
   createdAt: string;

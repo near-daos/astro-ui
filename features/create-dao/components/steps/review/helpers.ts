@@ -71,7 +71,7 @@ export function getRolesVotingPolicy(
     if (data.voting === 'weighted') {
       roles.push(
         GroupMembersCanActOnProposals('Committee', accountId, {
-          policy: TokenBasedVoting
+          '*.*': TokenBasedVoting
         })
       );
     }

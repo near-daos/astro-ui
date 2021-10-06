@@ -10,6 +10,7 @@ export interface DefaultVotePolicy {
   kind: string;
   ratio: number[];
   quorum: string;
+  weight: string;
 }
 
 export type DaoPermission =
