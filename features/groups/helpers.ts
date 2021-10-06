@@ -84,28 +84,28 @@ type ContractRole = {
   name: string;
   kind: 'Everyone' | { Group: string[] | null };
   permissions: string[];
-  // eslint-disable-next-line camelcase
-  vote_policy: Record<string, string>;
+  // eslint-disable-next-line camelcase,@typescript-eslint/ban-types
+  vote_policy: Record<string, VotePolicyRequest> | {};
 };
 
 function formatVotePolicy(value: DefaultVotePolicy) {
   return {
     weight_kind: value.weightKind,
     quorum: value.quorum,
-    threshold: value.ratio
+    threshold: value.ratio ?? value.weight
   };
 }
 
-function formatVotePolicies(data: Record<string, DefaultVotePolicy>) {
-  return keysToSnakeCase(
-    Object.keys(data).reduce((res, key) => {
-      const value = data[key];
+function formatVotePolicies(
+  data: Record<string, DefaultVotePolicy>
+): Record<string, VotePolicyRequest> {
+  return Object.keys(data).reduce((res, key) => {
+    const value = data[key];
 
-      res[key] = formatVotePolicy(value);
+    res[key] = formatVotePolicy(value);
 
-      return res;
-    }, {} as Record<string, VotePolicyRequest>)
-  );
+    return res;
+  }, {} as Record<string, VotePolicyRequest>);
 }
 
 export function dataRoleToContractRole(role: DaoRole): ContractRole {
@@ -118,15 +118,15 @@ export function dataRoleToContractRole(role: DaoRole): ContractRole {
         }
       : kind;
 
-  const contractRole = {
+  return {
     name,
     kind: newKind,
     permissions: values(permissions),
     vote_policy:
-      votePolicy && !isEmpty(votePolicy) ? formatVotePolicies(votePolicy) : {}
+      votePolicy && !isEmpty(votePolicy)
+        ? formatVotePolicies(votePolicy)
+        : ({} as Record<string, VotePolicyRequest>)
   };
-
-  return contractRole;
 }
 
 export function getChangePolicyProposal(
@@ -161,7 +161,13 @@ export function getChangePolicyProposal(
             kind: {
               Group: members
             },
-            permissions: ['*:*'],
+            permissions: [
+              '*:Finalize',
+              '*:AddProposal',
+              '*:VoteApprove',
+              '*:VoteReject',
+              '*:VoteRemove'
+            ],
             vote_policy: {}
           }
         ],

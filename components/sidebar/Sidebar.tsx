@@ -94,59 +94,78 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const currentDao = useSelectedDAO();
 
+  function renderSelectedDaoAdditionalPages() {
+    const { route } = router;
+
+    if (['/home', '/create-dao', '/all-communities'].includes(route)) {
+      return null;
+    }
+
+    return (
+      <nav className={styles.menu}>
+        {items.map(item => {
+          if (isEmpty(item.subItems)) {
+            return (
+              <NavItem
+                key={item.id}
+                className={styles.item}
+                label={item.label}
+                count={item.count}
+                href={item.href}
+                icon={item.logo}
+              />
+            );
+          }
+
+          return (
+            <Collapsable
+              {...getItemProps(item.id)}
+              key={item.id}
+              duration={250}
+              renderHeading={toggle => (
+                <NavItem
+                  onClick={() => toggle()}
+                  className={styles.item}
+                  label={item.label}
+                  count={item.count}
+                  href={item.href}
+                  icon={item.logo}
+                  active={activeGroupId === item.id}
+                />
+              )}
+            >
+              {item.subItems.map(subItem => (
+                <NavSubItem
+                  key={subItem.id}
+                  count={subItem.count}
+                  label={subItem.label}
+                  href={subItem.href}
+                  as={subItem.as}
+                  disabled={subItem.disabled}
+                  urlParams={{ dao: currentDao?.id }}
+                  subHrefs={subItem.subHrefs}
+                />
+              ))}
+            </Collapsable>
+          );
+        })}
+      </nav>
+    );
+  }
+
   function renderDaoNavItems() {
     if (showDaoNavItems) {
       return (
         <>
+          <NavItem
+            topDelimiter
+            className={styles.item}
+            label="Home"
+            href="/home"
+            icon="stateHome"
+          />
           <DaoList {...getItemProps('dao')} items={daoList} />
-          <nav className={styles.menu}>
-            {items.map(item => {
-              if (isEmpty(item.subItems)) {
-                return (
-                  <NavItem
-                    key={item.id}
-                    className={styles.item}
-                    label={item.label}
-                    count={item.count}
-                    href={item.href}
-                    icon={item.logo}
-                  />
-                );
-              }
-
-              return (
-                <Collapsable
-                  {...getItemProps(item.id)}
-                  key={item.id}
-                  duration={250}
-                  renderHeading={toggle => (
-                    <NavItem
-                      onClick={() => toggle()}
-                      className={styles.item}
-                      label={item.label}
-                      count={item.count}
-                      href={item.href}
-                      icon={item.logo}
-                      active={activeGroupId === item.id}
-                    />
-                  )}
-                >
-                  {item.subItems.map(subItem => (
-                    <NavSubItem
-                      key={subItem.id}
-                      count={subItem.count}
-                      label={subItem.label}
-                      href={subItem.href}
-                      as={subItem.as}
-                      disabled={subItem.disabled}
-                      urlParams={{ dao: currentDao?.id }}
-                      subHrefs={subItem.subHrefs}
-                    />
-                  ))}
-                </Collapsable>
-              );
-            })}
-          </nav>
+          {renderSelectedDaoAdditionalPages()}
         </>
       );
     }
@@ -167,15 +186,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
         <Logo className={styles.mainLogo} />
         <div className={styles.scrolling}>
-          {showDaoNavItems && (
-            <NavItem
-              topDelimiter
-              className={styles.item}
-              label="Home"
-              href="/home"
-              icon="stateHome"
-            />
-          )}
           {renderDaoNavItems()}
           <div className={styles.delimiter} />
           <nav className={styles.bottom}>

@@ -22,7 +22,6 @@ import { Transaction } from 'types/transaction';
 import { fetchNearPrice, useNearPrice } from 'hooks/useNearPrice';
 import { formatCurrency } from 'utils/formatCurrency';
 import { getChartData } from 'features/treasury/helpers';
-import { useMount } from 'react-use';
 
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
 
@@ -97,10 +96,6 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
       }
     ];
   }, [transactions, numberOfTokens, nearPrice]);
-
-  useMount(() => {
-    SputnikService.getTransfers(daoId);
-  });
 
   return (
     <div className={styles.root}>

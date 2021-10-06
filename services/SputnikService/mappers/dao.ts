@@ -1,16 +1,9 @@
 import get from 'lodash/get';
 
-import { DAO } from 'types/dao';
+import { DAO, DaoVotePolicy } from 'types/dao';
 import { DaoRole } from 'types/role';
 import { formatYoktoValue } from 'helpers/format';
 import { awsConfig } from 'config';
-
-export type DaoVotePolicy = {
-  weightKind: string;
-  quorum: string;
-  kind: string;
-  ratio: number[];
-};
 
 export type DaoPolicy = {
   createdAt: string;
@@ -70,6 +63,9 @@ export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
   return JSON.parse(Buffer.from(metaAsBase64, 'base64').toString('ascii'));
 };
 
+export const getLogoUrl = (flag: string): string =>
+  `https://${awsConfig.bucket}.s3.${awsConfig.region}.amazonaws.com/${flag}`;
+
 export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
   const roles = get(daoDTO, 'policy.roles', []);
   const numberOfProposals = get(daoDTO, 'lastProposalId', 0);
@@ -93,9 +89,6 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
   const config = get(daoDTO, 'config');
 
   const meta = config.metadata ? fromBase64ToMetadata(config.metadata) : null;
-
-  const getLogoUrl = (flag: string) =>
-    `https://${awsConfig.bucket}.s3.${awsConfig.region}.amazonaws.com/${flag}`;
 
   const numberOfMembers = daoGroups
     .map(({ members }: { members: string[] }) => members)

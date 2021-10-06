@@ -11,7 +11,7 @@ import {
 export const formatYoktoValue = (value: string): string => {
   const amountYokto = new Decimal(value);
 
-  return amountYokto.div(yoktoNear).toFixed(2);
+  return Number(amountYokto.div(yoktoNear).toFixed(5)).toString();
 };
 
 export const toHoursAndFormat = (

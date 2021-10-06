@@ -1,10 +1,12 @@
+import sortBy from 'lodash/sortBy';
+import React, { useMemo } from 'react';
+import { useBoolean, useCookie } from 'react-use';
+
 import { Collapsable } from 'components/collapsable/Collapsable';
 import { DaoHeader } from 'components/nav-dao/DaoHeader';
 
 import { DaoItem } from 'components/nav-dao/DaoItem';
 import { useSelectedDAO } from 'hooks/useSelectedDao';
-import React from 'react';
-import { useBoolean, useCookie } from 'react-use';
 
 import { DAO } from 'types/dao';
 import { DAO_COOKIE } from 'constants/cookies';
@@ -22,6 +24,11 @@ export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
   const selectedDao = useSelectedDAO();
   const [, setSelectedDaoCookie] = useCookie(DAO_COOKIE);
 
+  const sortedItems = useMemo(() => {
+    // TODO check if we can sort this on BE
+    return sortBy(items, 'id');
+  }, [items]);
+
   return (
     <div>
       <Collapsable
@@ -30,7 +37,6 @@ export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
         duration={150}
         renderHeading={(toggleHeading, isHeadingOpen) => (
           <DaoHeader
-            daoId={selectedDao?.id}
             logo={selectedDao?.logo}
             isOpen={isHeadingOpen}
             label={selectedDao?.name || ''}
@@ -38,7 +44,7 @@ export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
           />
         )}
       >
-        {items.map(dao => (
+        {sortedItems.map(dao => (
           <DaoItem
             onClick={() => {
               toggle(false);

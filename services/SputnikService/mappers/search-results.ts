@@ -36,7 +36,8 @@ export interface SearchResponse {
 
 export const extractMembersFromDaosList = (
   daos: DAO[],
-  proposals: Proposal[]
+  proposals: Proposal[],
+  query: string
 ): Member[] => {
   const members = {} as Record<string, Member>;
 
@@ -81,12 +82,16 @@ export const extractMembersFromDaosList = (
     });
   });
 
-  return Object.values(members).map(item => {
-    return {
-      ...item,
-      groups: Array.from(new Set(item.groups))
-    };
-  });
+  return Object.values(members)
+    .map(item => {
+      return {
+        ...item,
+        groups: Array.from(new Set(item.groups))
+      };
+    })
+    .filter(item => {
+      return item.name && item.name.includes(query);
+    });
 };
 
 export const extractMembersFromDao = (
@@ -153,7 +158,7 @@ export const mapSearchResultsDTOToDataObject = (
 
   const daos = mapDaoDTOListToDaoList(data.daos);
   const proposals = mapProposalDTOListToProposalList(data.proposals);
-  const members = extractMembersFromDaosList(daos, proposals);
+  const members = extractMembersFromDaosList(daos, proposals, query);
 
   return {
     query,

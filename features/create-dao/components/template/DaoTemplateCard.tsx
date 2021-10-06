@@ -1,34 +1,46 @@
+import { FC } from 'react';
 import cn from 'classnames';
+
 import * as Typography from 'components/Typography';
-import cardFooterStyles from 'features/create-dao/components/template/card-footer.module.scss';
+import { DAOTemplate } from 'features/create-dao/components/steps/types';
 import { backgrounds } from 'features/create-dao/components/template/utils';
-import { HTMLAttributes, VFC } from 'react';
+import cardFooterStyles from 'features/create-dao/components/template/card-footer.module.scss';
+
 import styles from './dao-template-card.module.scss';
 
-export interface DaoTemplateCardProps extends HTMLAttributes<HTMLDivElement> {
-  title: string;
+export interface DaoTemplateCardProps {
   note?: string;
-  description: string;
-  variant: keyof typeof backgrounds;
   className?: string;
-  disabled?: boolean;
+  template: DAOTemplate;
+  onClick?: (template: DAOTemplate) => void;
 }
 
-export const DaoTemplateCard: VFC<DaoTemplateCardProps> = ({
-  title,
+export const DaoTemplateCard: FC<DaoTemplateCardProps> = ({
   note = 'Great for',
-  description,
-  variant,
   className,
-  disabled,
-  ...props
+  template,
+  onClick
 }) => {
+  const { title, description, variant, disabled } = template;
   const background = backgrounds[variant];
+
+  function handleClick() {
+    if (onClick) {
+      onClick(template);
+    }
+  }
+
+  const rootClassName = cn(styles.root, className, {
+    [styles.disabled]: disabled
+  });
 
   return (
     <div
-      className={cn(styles.root, className, { [styles.disabled]: disabled })}
-      {...props}
+      role="button"
+      tabIndex={0}
+      onClick={handleClick}
+      onKeyPress={handleClick}
+      className={rootClassName}
     >
       <div className={styles.content}>
         <h2 className={styles.title}>{title}</h2>

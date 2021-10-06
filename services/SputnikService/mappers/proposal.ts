@@ -1,6 +1,10 @@
 import get from 'lodash/get';
 import { Proposal, ProposalKind } from 'types/proposal';
-import { DaoDTO } from 'services/SputnikService/mappers/dao';
+import {
+  DaoDTO,
+  fromBase64ToMetadata,
+  getLogoUrl
+} from 'services/SputnikService/mappers/dao';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 export type ProposalDTO = {
@@ -74,6 +78,9 @@ export const mapProposalDTOToProposal = (
     EXTERNAL_LINK_SEPARATOR
   );
 
+  const config = get(proposalDTO.dao, 'config');
+  const meta = config.metadata ? fromBase64ToMetadata(config.metadata) : null;
+
   return {
     ...getVotesStatistic(proposalDTO),
     id: proposalDTO.id,
@@ -93,9 +100,8 @@ export const mapProposalDTOToProposal = (
     createdAt: proposalDTO.createdAt,
     daoDetails: {
       name: proposalDTO.dao.config.name,
-      logo: `https://sputnik-dao.s3.eu-central-1.amazonaws.com/${
-        proposalDTO.daoId
-      }?timestamp=${Date.now()}`
+      logo:
+        meta && meta.flag ? getLogoUrl(meta.flag) : getLogoUrl('default.png')
     }
   };
 };

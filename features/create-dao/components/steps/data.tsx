@@ -91,7 +91,7 @@ const DAO_TEMPLATE_COOP: DAOTemplate = {
   title: 'Cooperative',
   description: `A business with members
 A creative collective`,
-  proposals: 'open',
+  proposals: 'closed',
   structure: 'groups',
   voting: 'democratic'
 };

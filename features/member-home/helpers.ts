@@ -13,6 +13,7 @@ import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
 import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
 
 import { SputnikService } from 'services/SputnikService';
+import { useRouter } from 'next/router';
 
 export const daoOptions = [
   {
@@ -66,14 +67,30 @@ export function arrangeByDao(proposals: Proposal[]): ProposalByDao {
   return result;
 }
 
+function getProposalFilter(tab?: string | string[]) {
+  switch (tab) {
+    case '1': {
+      return 'Active proposals' as ProposalFilter;
+    }
+    case '2': {
+      return 'Recent proposals' as ProposalFilter;
+    }
+    default: {
+      return 'My proposals' as ProposalFilter;
+    }
+  }
+}
+
 export const useFilteredMemberHomeData = (): FilteredProposalsData => {
+  const router = useRouter();
+  const { tab } = router.query;
   const { daos } = useDaoListPerCurrentUser();
   const myDaos = daos?.map(item => item.id) || [];
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const { accountId } = useAuthContext();
   const [filter, setFilter] = useState({
     daoFilter: 'All DAOs' as DaoFilter,
-    proposalFilter: 'Active proposals' as ProposalFilter,
+    proposalFilter: getProposalFilter(tab),
     daoViewFilter: null
   });
   let selectedDaoFlag;
@@ -90,13 +107,18 @@ export const useFilteredMemberHomeData = (): FilteredProposalsData => {
 
   useEffect(() => {
     async function getData() {
-      const data = await SputnikService.getFilteredProposals(filter, accountId);
+      if (tab) {
+        const data = await SputnikService.getFilteredProposals(
+          filter,
+          accountId
+        );
 
-      setProposals(data);
+        setProposals(data);
+      }
     }
 
     getData();
-  }, [accountId, filter]);
+  }, [accountId, filter, tab]);
 
   const filteredProposals = proposals.filter(item => {
     let matched = true;

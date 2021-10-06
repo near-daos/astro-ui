@@ -79,6 +79,7 @@ definitions:
             --set environment.next_public_api_url=$NEXT_PUBLIC_API_URL
             --set environment.next_public_google_analytics_key=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY
             --set environment.next_public_near_env=$NEXT_PUBLIC_NEAR_ENV
+            --set ingress.host=$K8S_INGRESS_HOST
             > $APP_NAME-manifest.yml
 
           - pipe: atlassian/aws-eks-kubectl-run:1.4.2
@@ -137,6 +138,26 @@ pipelines:
       - step:
           <<: *helm-build-deploy
           deployment: development
+
+    staging:
+      - step:
+          <<: *set-environment
+
+          script:
+            - >-
+              echo export DOCKER_ENV_TAG=staging-$BITBUCKET_COMMIT >> environment.sh
+            - echo export NEAR_ENV=$NEAR_ENV_STAGING >> environment.sh
+            - echo export NEXT_PUBLIC_NEAR_ENV=$NEXT_PUBLIC_NEAR_ENV_STAGING >> environment.sh
+            - echo export NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_STAGING >> environment.sh
+            - echo export NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY_STAGING >> environment.sh
+
+      - step: *build
+
+      - step: *docker-build-publish
+          
+      - step:
+          <<: *helm-build-deploy
+          deployment: Staging
 
   tags:
     '*':

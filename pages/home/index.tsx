@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { VOTE_BY_PERIOD } from 'constants/votingConstants';
 
@@ -37,7 +37,7 @@ const Home: NextPage = () => {
         }
       });
     }
-  }, [router, hasProposals, onFilterChange]);
+  }, [router, hasProposals]);
 
   const tabContent = VOTE_BY_PERIOD.map(period => (
     <ProposalsByDaoRenderer
@@ -58,15 +58,21 @@ const Home: NextPage = () => {
     },
     {
       id: 2,
-      label: 'Active proposals',
+      label: 'All Active proposals',
       content: <>{tabContent}</>
     },
     {
       id: 3,
-      label: 'Recent proposals',
+      label: 'All Finalized proposals',
       content: <>{tabContent}</>
     }
   ];
+
+  const handleTabSelect = useCallback(
+    name => onFilterChange('proposalFilter', name ?? ''),
+    // eslint-disable-next-line
+    []
+  );
 
   return (
     <div className={styles.root}>
@@ -91,16 +97,13 @@ const Home: NextPage = () => {
             value={filter.daoFilter}
             onChange={val => onFilterChange('daoFilter', val ?? '')}
             options={daoOptions}
-            defaultValue="All DAOs"
+            // defaultValue="All DAOs"
             className={styles.primaryFilter}
           />
         )}
       </div>
       <div className={styles.content}>
-        <Tabs
-          tabs={tabs}
-          onTabSelect={name => onFilterChange('proposalFilter', name ?? '')}
-        />
+        <Tabs tabs={tabs} onTabSelect={handleTabSelect} />
       </div>
     </div>
   );
