@@ -8,6 +8,7 @@ import { Button } from 'components/button/Button';
 import { IconButton } from 'components/button/IconButton';
 
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
+import { composeProperLinkUrl } from 'helpers/composeProperLinkUrl';
 
 import styles from './dao-details.module.scss';
 
@@ -91,7 +92,11 @@ export const DaoDetails: VFC<DaoDetailsProps> = ({
             <ul className={styles.links}>
               {links.map(link => (
                 <li className={styles.link} key={link}>
-                  <a href={link} target="_blank" rel="noreferrer">
+                  <a
+                    href={composeProperLinkUrl(link)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <IconButton size="medium" icon={getSocialLinkIcon(link)} />
                   </a>
                 </li>
