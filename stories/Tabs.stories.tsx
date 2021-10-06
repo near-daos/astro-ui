@@ -8,7 +8,9 @@ export default {
   decorators: [story => <div style={{ padding: '1rem' }}>{story()}</div>]
 } as Meta;
 
-const Template: Story<TabsProps> = (args): JSX.Element => <Tabs {...args} />;
+const Template: Story<TabsProps<string>> = (args): JSX.Element => (
+  <Tabs {...args} />
+);
 
 export const Default = Template.bind({});
 

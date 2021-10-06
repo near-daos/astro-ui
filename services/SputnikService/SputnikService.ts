@@ -473,7 +473,7 @@ class SputnikService {
 
   public async getFilteredProposals(
     filter: {
-      daoViewFilter: null;
+      daoViewFilter: string | null;
       daoFilter: 'All DAOs' | 'My DAOs' | 'Following DAOs';
       proposalFilter:
         | 'Active proposals'

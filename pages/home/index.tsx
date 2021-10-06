@@ -9,13 +9,22 @@ import { Button } from 'components/button/Button';
 import { Dropdown } from 'components/dropdown/Dropdown';
 
 import {
-  ProposalsByDaoRenderer,
   daoOptions,
-  useFilteredMemberHomeData,
-  useUserHasProposals
+  useUserHasProposals,
+  ProposalsByDaoRenderer,
+  useFilteredMemberHomeData
 } from 'features/member-home';
+import {
+  DaoFilterValues,
+  ProposalFilterValues
+} from 'features/member-home/types';
 
 import styles from './home.module.scss';
+
+type TabLabels =
+  | 'My proposals'
+  | 'All Active proposals'
+  | 'All Finalized proposals';
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -50,7 +59,7 @@ const Home: NextPage = () => {
     />
   ));
 
-  const tabs = [
+  const tabs: { id: number; label: TabLabels; content: JSX.Element }[] = [
     {
       id: 1,
       label: 'My proposals',
@@ -69,7 +78,19 @@ const Home: NextPage = () => {
   ];
 
   const handleTabSelect = useCallback(
-    name => onFilterChange('proposalFilter', name ?? ''),
+    (name: TabLabels) => {
+      const tabLabelToFIlterName: {
+        [key in TabLabels]: ProposalFilterValues;
+      } = {
+        'My proposals': 'My proposals',
+        'All Active proposals': 'Active proposals',
+        'All Finalized proposals': 'Recent proposals'
+      };
+
+      const proposalFilter: ProposalFilterValues = tabLabelToFIlterName[name];
+
+      return onFilterChange({ proposalFilter });
+    },
     // eslint-disable-next-line
     []
   );
@@ -87,23 +108,22 @@ const Home: NextPage = () => {
             <Button
               variant="secondary"
               size="small"
-              onClick={() => onFilterChange('daoViewFilter', null)}
+              onClick={() => onFilterChange({ daoViewFilter: null })}
             >
               Remove filter
             </Button>
           </div>
         ) : (
-          <Dropdown
+          <Dropdown<DaoFilterValues>
             value={filter.daoFilter}
-            onChange={val => onFilterChange('daoFilter', val ?? '')}
+            onChange={val => onFilterChange({ daoFilter: val })}
             options={daoOptions}
-            // defaultValue="All DAOs"
             className={styles.primaryFilter}
           />
         )}
       </div>
       <div className={styles.content}>
-        <Tabs tabs={tabs} onTabSelect={handleTabSelect} />
+        <Tabs<TabLabels> tabs={tabs} onTabSelect={handleTabSelect} />
       </div>
     </div>
   );

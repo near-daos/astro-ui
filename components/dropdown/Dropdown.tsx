@@ -1,33 +1,39 @@
 import classNames from 'classnames';
+import { useSelect } from 'downshift';
+import React, { PropsWithChildren, useEffect } from 'react';
+
 import { IconButton } from 'components/button/IconButton';
 import { Title } from 'components/Typography';
-import { useSelect } from 'downshift';
-import React, { useEffect } from 'react';
+
 import styles from './dropdown.module.scss';
 
-interface Option {
-  value: string;
+interface Option<T> {
+  value: T;
   label: string;
   disabled?: boolean;
 }
 
-export interface DropdownProps {
-  value?: string;
+export interface DropdownProps<T> {
+  value: T;
   className?: string;
-  onChange?: (value?: string) => void;
-  options: Option[];
-  defaultValue?: string | undefined;
+  onChange: (value: T) => void;
+  options: Option<T>[];
+  defaultValue?: T;
   placeholder?: string;
 }
 
-export const Dropdown: React.VFC<DropdownProps> = ({
-  options,
-  className: classNameProp,
-  onChange,
-  value,
-  defaultValue,
-  placeholder
-}) => {
+export const Dropdown = <T,>(
+  props: PropsWithChildren<DropdownProps<T>>
+): JSX.Element => {
+  const {
+    options,
+    className: classNameProp,
+    onChange,
+    value,
+    defaultValue,
+    placeholder
+  } = props;
+
   const {
     isOpen,
     getToggleButtonProps,
@@ -44,7 +50,11 @@ export const Dropdown: React.VFC<DropdownProps> = ({
       ? options.find(option => option.value === value)
       : undefined,
     onSelectedItemChange(changes) {
-      onChange?.(changes.selectedItem?.value);
+      const val = changes.selectedItem?.value;
+
+      if (val) {
+        onChange(val);
+      }
     },
     defaultSelectedItem: defaultValue
       ? options.find(option => option.value === defaultValue)

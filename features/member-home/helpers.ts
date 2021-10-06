@@ -4,10 +4,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { Proposal } from 'types/proposal';
 import { useAuthContext } from 'context/AuthContext';
 import {
-  DaoFilter,
-  FilteredProposalsData,
   ProposalByDao,
-  ProposalFilter
+  DaoFilterValues,
+  ProposalsFilter,
+  ProposalFilterValues,
+  FilteredProposalsData
 } from 'features/member-home/types';
 import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
 import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
@@ -15,7 +16,7 @@ import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeri
 import { SputnikService } from 'services/SputnikService';
 import { useRouter } from 'next/router';
 
-export const daoOptions = [
+export const daoOptions: { value: DaoFilterValues; label: string }[] = [
   {
     value: 'All DAOs',
     label: 'All DAOs'
@@ -23,25 +24,6 @@ export const daoOptions = [
   {
     label: 'My DAOs',
     value: 'My DAOs'
-  }
-  // {
-  //   label: 'Following DAOs',
-  //   value: 'Following DAOs'
-  // }
-];
-
-export const proposalOptions = [
-  {
-    label: 'Active proposals',
-    value: 'Active proposals'
-  },
-  {
-    label: 'Recent proposals',
-    value: 'Recent proposals'
-  },
-  {
-    label: 'My proposals',
-    value: 'My proposals'
   }
 ];
 
@@ -67,16 +49,16 @@ export function arrangeByDao(proposals: Proposal[]): ProposalByDao {
   return result;
 }
 
-function getProposalFilter(tab?: string | string[]) {
+function getProposalFilter(tab?: string | string[]): ProposalFilterValues {
   switch (tab) {
     case '1': {
-      return 'Active proposals' as ProposalFilter;
+      return 'Active proposals';
     }
     case '2': {
-      return 'Recent proposals' as ProposalFilter;
+      return 'Recent proposals';
     }
     default: {
-      return 'My proposals' as ProposalFilter;
+      return 'My proposals';
     }
   }
 }
@@ -84,19 +66,25 @@ function getProposalFilter(tab?: string | string[]) {
 export const useFilteredMemberHomeData = (): FilteredProposalsData => {
   const router = useRouter();
   const { tab } = router.query;
-  const { daos } = useDaoListPerCurrentUser();
-  const myDaos = daos?.map(item => item.id) || [];
-  const [proposals, setProposals] = useState<Proposal[]>([]);
+
   const { accountId } = useAuthContext();
-  const [filter, setFilter] = useState({
-    daoFilter: 'All DAOs' as DaoFilter,
+  const { daos } = useDaoListPerCurrentUser();
+
+  const [proposals, setProposals] = useState<Proposal[]>([]);
+  const [filter, setFilter] = useState<ProposalsFilter>({
+    daoFilter: 'All DAOs',
     proposalFilter: getProposalFilter(tab),
     daoViewFilter: null
   });
+
+  const myDaos = daos?.map(item => item.id) || [];
+
   let selectedDaoFlag;
 
   const onFilterChange = useCallback(
-    (name, value) => {
+    filterObj => {
+      const [name, value] = Object.entries(filterObj)[0];
+
       setFilter({
         ...filter,
         [name]: value

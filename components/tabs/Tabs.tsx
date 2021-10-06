@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import isNil from 'lodash/isNil';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
 import {
   resetIdCounter,
   Tab,
@@ -18,24 +18,28 @@ import styles from './tabs.module.scss';
 // Types
 import { TabItem } from './types';
 
-export interface TabsProps {
+export interface TabsProps<T> {
   className?: string;
-  tabs: TabItem[];
+  tabs: TabItem<T>[];
   fitContent?: boolean;
   isControlled?: boolean;
   renderTabHeader?: (id: string, label?: string | undefined) => void;
-  onTabSelect?: (name: string) => void;
+  onTabSelect?: (name: T) => void;
 }
 
 resetIdCounter();
 
-const Tabs: React.FC<TabsProps> = ({
-  tabs,
-  className,
-  fitContent,
-  isControlled = true,
-  onTabSelect
-}) => {
+const Tabs = <T,>(
+  props: PropsWithChildren<TabsProps<T>>
+): JSX.Element | null => {
+  const {
+    tabs,
+    className,
+    fitContent,
+    isControlled = true,
+    onTabSelect
+  } = props;
+
   const router = useRouter();
 
   const [tabIndex, setTabIndex] = useState(0);
@@ -120,4 +124,4 @@ const Tabs: React.FC<TabsProps> = ({
   );
 };
 
-export default React.memo(Tabs);
+export default Tabs;
