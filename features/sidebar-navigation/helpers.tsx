@@ -17,6 +17,17 @@ import {
 
 type TSidebarData = React.ComponentProps<typeof Sidebar>['items'];
 
+function checkIfDaoDataLoaded(
+  selectedDaoId: string | undefined,
+  daos: DAO[] | null
+) {
+  if (!selectedDaoId || daos === null) {
+    return false;
+  }
+
+  return !!daos.find(item => item.id === selectedDaoId);
+}
+
 export const useSidebarData = (): {
   daos: DAO[] | null;
   menuItems: TSidebarData;
@@ -25,6 +36,8 @@ export const useSidebarData = (): {
   const selectedDaoId = router.query.dao as string;
   const selectedDao = useDao(selectedDaoId);
   const [daos, setDaos] = useState<DAO[] | null>(null);
+
+  const daoDataLoaded = checkIfDaoDataLoaded(selectedDaoId, daos);
 
   const sidebarItems: React.ComponentProps<
     typeof Sidebar
@@ -175,7 +188,7 @@ export const useSidebarData = (): {
     async function fetchData() {
       const accountId = SputnikService.getAccountId();
 
-      if (accountId) {
+      if (accountId && !daoDataLoaded) {
         const accountDaos = await SputnikService.getAccountDaos(accountId);
         const proposals = await SputnikService.getActiveProposals(
           accountDaos.map(item => item.id),
@@ -206,7 +219,7 @@ export const useSidebarData = (): {
     }
 
     fetchData();
-  }, [selectedDaoId]);
+  }, [selectedDaoId, daoDataLoaded]);
 
   return {
     menuItems,
