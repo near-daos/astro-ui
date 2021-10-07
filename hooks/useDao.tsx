@@ -8,7 +8,7 @@ export function useDao(daoId: string, options?: Options): DAO | null {
   const { enabled = true } = options || {};
 
   const { data } = useSWR(
-    enabled ? ['/daos', daoId] : null,
+    enabled ? ['/daos', daoId ?? ''] : null,
     (_, id) => SputnikService.getDaoById(id),
     options
   );

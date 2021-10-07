@@ -112,6 +112,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@types/big.js": "^6.1.2",
+    "@types/cookie": "^0.4.1",
     "@types/jest": "^26.0.24",
     "@types/lodash": "^4.14.172",
     "@types/mark.js": "^8.11.6",

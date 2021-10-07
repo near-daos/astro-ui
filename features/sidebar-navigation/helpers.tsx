@@ -190,11 +190,13 @@ export const useSidebarData = (): {
 
       if (accountId && !daoDataLoaded) {
         const accountDaos = await SputnikService.getAccountDaos(accountId);
-        const proposals = await SputnikService.getActiveProposals(
-          accountDaos.map(item => item.id),
-          0,
-          500
-        );
+        const proposals = accountDaos?.length
+          ? await SputnikService.getActiveProposals(
+              accountDaos.map(item => item.id),
+              0,
+              500
+            )
+          : [];
         const votesCountByDao = proposals.reduce((res, item) => {
           if (res[item.daoId] !== undefined) {
             res[item.daoId] += Object.keys(item.votes).length;

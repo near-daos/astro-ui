@@ -8,6 +8,7 @@ export type ProposalFilterValues =
 
 export type DaoProposal = {
   dao: {
+    id: string;
     name: string;
     logo: string;
   };

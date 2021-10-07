@@ -45,12 +45,13 @@ interface RequestSignTransactionsOptions {
 export class SputnikWalletConnection extends WalletConnection {
   public signTransactionUrl = '';
 
+  // @ts-ignore
   async requestSignIn(
     contractIdOrOptions?: string | SignInOptions,
     title?: string,
     successUrl?: string,
     failureUrl?: string
-  ): Promise<void> {
+  ): Promise<string | undefined> {
     const win = window.open(window.origin, '_blank');
 
     let options;
@@ -103,14 +104,14 @@ export class SputnikWalletConnection extends WalletConnection {
       });
     }
 
-    return new Promise<void>(resolve => {
+    return new Promise<string | undefined>(resolve => {
       if (win?.location) {
         win.location.href = newUrl.toString();
       }
 
-      window.sputnikRequestSignInCompleted = async () => {
+      window.sputnikRequestSignInCompleted = async accountId => {
         win?.close();
-        resolve();
+        resolve(accountId);
       };
     });
   }
@@ -119,7 +120,7 @@ export class SputnikWalletConnection extends WalletConnection {
   async _requestSignTransactions({
     transactions,
     meta,
-    callbackUrl = `${window.origin}/callback`
+    callbackUrl = `${window.origin}/callback/auth`
   }: RequestSignTransactionsOptions): Promise<void> {
     const newUrl = new URL('sign', this._walletBaseUrl);
 

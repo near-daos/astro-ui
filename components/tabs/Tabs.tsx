@@ -25,6 +25,7 @@ export interface TabsProps<T> {
   isControlled?: boolean;
   renderTabHeader?: (id: string, label?: string | undefined) => void;
   onTabSelect?: (name: T) => void;
+  skipShallow?: boolean;
 }
 
 resetIdCounter();
@@ -37,9 +38,9 @@ const Tabs = <T,>(
     className,
     fitContent,
     isControlled = true,
-    onTabSelect
+    onTabSelect,
+    skipShallow = false
   } = props;
-
   const router = useRouter();
 
   const [tabIndex, setTabIndex] = useState(0);
@@ -93,7 +94,7 @@ const Tabs = <T,>(
             }
           },
           undefined,
-          { shallow: true }
+          { shallow: !skipShallow }
         );
       }
     };

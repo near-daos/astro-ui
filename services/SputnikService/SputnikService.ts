@@ -6,6 +6,7 @@ import { NearConfig, nearConfig } from 'config';
 import Decimal from 'decimal.js';
 import omit from 'lodash/omit';
 import { Contract, keyStores, Near } from 'near-api-js';
+import { CookieService } from 'services/CookieService';
 
 import { HttpService, httpService } from 'services/HttpService';
 import {
@@ -153,8 +154,8 @@ class SputnikService {
     await this.walletConnection.requestSignIn(
       this.config.contractName,
       'Sputnik DAO',
-      `${window.origin}/callback`,
-      `${window.origin}/callback`
+      `${window.origin}/callback/auth`,
+      `${window.origin}/callback/auth`
     );
     await this.init();
   }
@@ -164,6 +165,10 @@ class SputnikService {
   }
 
   public getAccountId(): string {
+    if (!process.browser) {
+      return CookieService.get('account');
+    }
+
     return this.walletConnection?.getAccountId();
   }
 
@@ -474,7 +479,7 @@ class SputnikService {
   public async getFilteredProposals(
     filter: {
       daoViewFilter: string | null;
-      daoFilter: 'All DAOs' | 'My DAOs' | 'Following DAOs';
+      daoFilter: 'All DAOs' | 'My DAOs' | 'Following DAOs' | null;
       proposalFilter:
         | 'Active proposals'
         | 'Recent proposals'
