@@ -52,8 +52,10 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
   }, [router, userDaos, walletInitialized]);
 
   useEffect(() => {
-    if (!account) {
-      SputnikService.logout().then(() => router.push('/all-communities'));
+    if (!account && SputnikService.getAccountId()) {
+      SputnikService.logout().then(() => {
+        router.push('/all-communities');
+      });
     }
   }, [account, router]);
 
