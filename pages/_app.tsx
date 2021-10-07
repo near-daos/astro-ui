@@ -4,7 +4,6 @@ import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
 
 import { AuthWrapper } from 'context/AuthContext';
-import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
 import type { AppContext, AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -13,7 +12,6 @@ import { useMount } from 'react-use';
 import { SputnikService } from 'services/SputnikService';
 import 'styles/globals.scss';
 import { SWRConfig } from 'swr';
-import { useDAOList } from 'hooks/useDAOList';
 import { CookieService } from 'services/CookieService';
 
 function usePageLayout(): React.FC {
@@ -38,19 +36,6 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
     setWalletInitialized(true);
   });
 
-  const { daos } = useDAOList(walletInitialized);
-  const { daos: userDaos } = useDaoListPerCurrentUser();
-
-  useEffect(() => {
-    if (router.pathname === '/' && userDaos != null && userDaos.length) {
-      router.push('/home');
-    } else if (router.pathname === '/' && userDaos != null) {
-      router.push('/all-communities');
-    } else if (!walletInitialized && router.pathname === '/') {
-      router.push('/all-communities');
-    }
-  }, [router, userDaos, walletInitialized]);
-
   useEffect(() => {
     if (!account && SputnikService.getAccountId()) {
       SputnikService.logout().then(() => {
@@ -61,7 +46,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
 
   if (walletInitialized) {
     return (
-      <SWRConfig value={{ fallback: { '/daos': daos } }}>
+      <SWRConfig value={{ fallback: pageProps?.fallback || {} }}>
         <AuthWrapper>
           <ModalProvider>
             <Layout>
@@ -76,8 +61,41 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
   return <div />;
 }
 
-App.getInitialProps = async ({ ctx }: AppContext) => {
+App.getInitialProps = async ({ ctx, router }: AppContext) => {
   CookieService.initServerSideCookies(ctx.req?.headers.cookie || null);
+
+  const account = CookieService.get<string | undefined>('account');
+
+  const { res } = ctx;
+
+  if (account) {
+    const data = await SputnikService.getAccountDaos(account);
+
+    if (router.pathname === '/' && res != null) {
+      if (data.length > 0) {
+        res.writeHead(302, { location: `/home` });
+      } else {
+        res.writeHead(302, { location: '/all-communities' });
+      }
+
+      res.end();
+    }
+
+    return {
+      pageProps: {
+        fallback: { [`/daos/account-daos/${account}`]: data }
+      }
+    };
+  }
+
+  if (router.pathname === '/' && res != null) {
+    res.writeHead(302, { location: '/all-communities' });
+    res.end();
+
+    return {
+      daos: []
+    };
+  }
 
   return {};
 };
