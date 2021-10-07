@@ -489,7 +489,7 @@ class SputnikService {
       queryString.setFilter({
         field: 'daoId',
         operator: '$eq',
-        value: filter.daoViewFilter
+        value: `${filter.daoViewFilter}.${nearConfig.contractName}`
       });
     } else if (filter.daoFilter === 'My DAOs') {
       const accountDaos = await this.getAccountDaos(accountId);
