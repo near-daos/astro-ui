@@ -1,11 +1,11 @@
 import { Sidebar } from 'components/sidebar';
 import { AddGroupMenu } from 'features/groups/components/add-group-menu';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDao } from 'hooks/useDao';
-import { useRouter } from 'next/router';
 import { getActiveProposalsCountByDao } from 'hooks/useAllProposals';
 import { SputnikService } from 'services/SputnikService';
+import { CookieService } from 'services/CookieService';
 import { DAO } from 'types/dao';
+import { useAccountData } from 'features/account-data';
 
 import {
   GOVERNANCE_SECTION_ID,
@@ -32,9 +32,9 @@ export const useSidebarData = (): {
   daos: DAO[] | null;
   menuItems: TSidebarData;
 } => {
-  const router = useRouter();
-  const selectedDaoId = router.query.dao as string;
-  const selectedDao = useDao(selectedDaoId);
+  const { accountDaos } = useAccountData();
+  const selectedDaoId = CookieService.get('selectedDao');
+  const selectedDao = accountDaos?.find(item => item.id === selectedDaoId);
   const [daos, setDaos] = useState<DAO[] | null>(null);
 
   const daoDataLoaded = checkIfDaoDataLoaded(selectedDaoId, daos);
@@ -185,11 +185,10 @@ export const useSidebarData = (): {
   }, [selectedDao, sidebarItems]);
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchAdditionalData() {
       const accountId = SputnikService.getAccountId();
 
       if (accountId && !daoDataLoaded) {
-        const accountDaos = await SputnikService.getAccountDaos(accountId);
         const proposals = accountDaos?.length
           ? await SputnikService.getActiveProposals(
               accountDaos.map(item => item.id),
@@ -208,7 +207,7 @@ export const useSidebarData = (): {
         }, {} as Record<string, number>);
         const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
 
-        const updatedDaos = accountDaos.map(dao => {
+        const updatedDaos = accountDaos?.map(dao => {
           return {
             ...dao,
             proposals: activeProposalsByDao[dao.id],
@@ -220,8 +219,8 @@ export const useSidebarData = (): {
       }
     }
 
-    fetchData();
-  }, [selectedDaoId, daoDataLoaded]);
+    fetchAdditionalData();
+  }, [selectedDaoId, daoDataLoaded, accountDaos]);
 
   return {
     menuItems,

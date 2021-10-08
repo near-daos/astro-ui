@@ -7,7 +7,7 @@ import { Title } from 'components/Typography';
 
 import styles from './dropdown.module.scss';
 
-interface Option<T> {
+export interface Option<T> {
   value: T;
   label: string;
   disabled?: boolean;

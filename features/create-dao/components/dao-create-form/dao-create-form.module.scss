@@ -24,10 +24,6 @@
   align-items: flex-start;
   display: inline-flex;
   gap: 10px;
-
-  &.error {
-    color: var(--color-error-70);
-  }
 }
 
 .addressAlertIcon {
@@ -44,6 +40,12 @@
   @include tablet-portrait {
     margin-top: 0;
   }
+}
+
+.addressError {
+  color: var(--color-error-70);
+  font-size: 1em;
+  margin-block: 0.5em;
 }
 
 .info {

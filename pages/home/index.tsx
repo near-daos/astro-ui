@@ -101,13 +101,24 @@ const Home: NextPage<HomeProps> = ({ proposals }) => {
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps = async ({
-  query
-}): Promise<{
-  props: { proposals: Proposal[] };
-}> => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { tab, daoFilter, daoViewFilter } = query;
   const accountId = CookieService.get('account');
+
+  let accountDaos;
+
+  if (accountId) {
+    accountDaos = await SputnikService.getAccountDaos(accountId);
+  }
+
+  if (!accountDaos || !accountDaos.length) {
+    return {
+      redirect: {
+        destination: '/all-communities',
+        permanent: false
+      }
+    };
+  }
 
   const filter = {
     daoFilter: daoFilter ? (daoFilter as DaoFilterValues) : 'All DAOs',

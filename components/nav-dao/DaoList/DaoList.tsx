@@ -1,12 +1,9 @@
-import sortBy from 'lodash/sortBy';
-import React, { useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useBoolean, useCookie } from 'react-use';
 
 import { Collapsable } from 'components/collapsable/Collapsable';
 import { DaoHeader } from 'components/nav-dao/DaoHeader';
-
 import { DaoItem } from 'components/nav-dao/DaoItem';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
 
 import { DAO } from 'types/dao';
 import { DAO_COOKIE } from 'constants/cookies';
@@ -21,13 +18,15 @@ export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
   const [open, toggleState] = useBoolean(false);
   const { isOpen = open, toggle = toggleState } = props;
 
-  const selectedDao = useSelectedDAO();
-  const [, setSelectedDaoCookie] = useCookie(DAO_COOKIE);
+  const [selectedDaoId, setSelectedDaoCookie] = useCookie(DAO_COOKIE);
+  const selectedDao = items?.find(item => item.id === selectedDaoId);
 
-  const sortedItems = useMemo(() => {
-    // TODO check if we can sort this on BE
-    return sortBy(items, 'id');
-  }, [items]);
+  useEffect(() => {
+    // Set selected dao cookie if it is not present but we have account daos loaded
+    if (!selectedDaoId && items.length) {
+      setSelectedDaoCookie(items[0].id);
+    }
+  }, [items, selectedDaoId, setSelectedDaoCookie]);
 
   return (
     <div>
@@ -44,7 +43,7 @@ export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
           />
         )}
       >
-        {sortedItems.map(dao => (
+        {items.map(dao => (
           <DaoItem
             onClick={() => {
               toggle(false);

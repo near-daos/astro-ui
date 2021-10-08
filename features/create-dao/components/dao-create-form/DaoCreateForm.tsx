@@ -2,7 +2,6 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { FC, HTMLProps, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import cn from 'classnames';
 
 import { Icon } from 'components/Icon';
 import { Title } from 'components/Typography';
@@ -84,6 +83,33 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
   return (
     <form {...props} onSubmit={handleSubmit(onSubmit)} className={styles.root}>
       <section className={styles.addressSection}>
+        <p className={styles.addressAlert}>
+          <Icon
+            width={24}
+            name="buttonAlert"
+            className={styles.addressAlertIcon}
+          />
+          <span className={styles.addressAlertText}>
+            Choose wisely. You can&apos;t change this later.
+          </span>
+        </p>
+
+        <Input
+          isValid={touchedFields.displayName && !errors.displayName?.message}
+          size="block"
+          {...register('displayName')}
+          label="display name"
+        />
+
+        {errors.displayName?.message && (
+          <p className={styles.addressError}>
+            Incorrect DAO name&nbsp;&mdash; you can use letters, numbers, hyphen
+            and spaces only.
+          </p>
+        )}
+      </section>
+
+      <section className={styles.info}>
         <div className={styles.addressInput}>
           <Input
             isValid={touchedFields.address && !errors.address?.message}
@@ -96,38 +122,6 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
           />
           .sputnikdao.near
         </div>
-      </section>
-
-      <section className={styles.info}>
-        <Input
-          isValid={touchedFields.displayName && !errors.displayName?.message}
-          size="block"
-          {...register('displayName')}
-          label="display name"
-        />
-
-        <p
-          className={cn(styles.addressAlert, {
-            [styles.error]: errors.displayName?.message
-          })}
-        >
-          <Icon
-            width={24}
-            name="buttonAlert"
-            className={styles.addressAlertIcon}
-          />
-          {errors.displayName?.message && (
-            <span className={styles.addressAlertText}>
-              Incorrect DAO name&nbsp;&mdash; you can use letters, numbers,
-              hyphen and spaces only.
-            </span>
-          )}
-          {!errors.displayName?.message && (
-            <span className={styles.addressAlertText}>
-              Choose wisely. You can&apos;t change this later.
-            </span>
-          )}
-        </p>
 
         <TextArea
           size="block"
