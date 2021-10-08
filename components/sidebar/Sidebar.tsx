@@ -10,14 +10,12 @@ import { NavSubItem } from 'components/nav-item/NavSubItem';
 import { AppFooter } from 'features/app-footer';
 import { useAccordion } from 'hooks/useAccordion';
 
-import { useHasDao } from 'hooks/useHasDao';
-import { useSelectedDAO } from 'hooks/useSelectedDao';
-
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useCallback } from 'react';
-import { useMount } from 'react-use';
+import { useCookie, useMount } from 'react-use';
+import { DAO_COOKIE } from 'constants/cookies';
 
 import { useAuthContext } from 'context/AuthContext';
 import styles from './sidebar.module.scss';
@@ -56,11 +54,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   closeSideBar
 }) => {
   const router = useRouter();
-  const hasDao = useHasDao();
+  const [selectedDao] = useCookie(DAO_COOKIE);
   const { accountId, login } = useAuthContext();
-
-  const showDaoNavItems = hasDao && !!accountId;
-
+  const showDaoNavItems = !!daoList.length && !!accountId;
   const activeGroupId = get(router.asPath.split('/'), 3);
 
   const { getItemProps } = useAccordion({
@@ -91,8 +87,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
     () => (accountId ? router.push('/create-dao') : login()),
     [login, router, accountId]
   );
-
-  const currentDao = useSelectedDAO();
 
   function renderSelectedDaoAdditionalPages() {
     const { route } = router;
@@ -142,7 +136,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   href={subItem.href}
                   as={subItem.as}
                   disabled={subItem.disabled}
-                  urlParams={{ dao: currentDao?.id }}
+                  urlParams={{ dao: selectedDao }}
                   subHrefs={subItem.subHrefs}
                 />
               ))}

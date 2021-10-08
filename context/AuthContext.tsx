@@ -2,9 +2,8 @@ import { useCookie } from 'react-use';
 import { useRouter } from 'next/router';
 import { createContext, FC, useContext, useState } from 'react';
 
-import { DAO_COOKIE } from 'constants/cookies';
+import { ACCOUNT_COOKIE, DAO_COOKIE } from 'constants/cookies';
 import { SputnikService } from 'services/SputnikService';
-import { CookieService } from 'services/CookieService';
 
 interface AuthContextInterface {
   accountId: string;
@@ -24,6 +23,7 @@ export const AuthWrapper: FC = ({ children }) => {
   const router = useRouter();
   const [accountId, setAccountId] = useState(SputnikService.getAccountId());
   const [, , deleteSelectedDaoCookie] = useCookie(DAO_COOKIE);
+  const [, , deleteAccountCookie] = useCookie(ACCOUNT_COOKIE);
 
   async function login() {
     await SputnikService.login();
@@ -41,7 +41,8 @@ export const AuthWrapper: FC = ({ children }) => {
     deleteSelectedDaoCookie();
     await SputnikService.logout();
     setAccountId('');
-    CookieService.remove('account');
+    deleteAccountCookie();
+    // CookieService.remove('account');
     router.push('/all-communities');
   }
 

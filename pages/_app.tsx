@@ -13,6 +13,8 @@ import { SputnikService } from 'services/SputnikService';
 import 'styles/globals.scss';
 import { SWRConfig } from 'swr';
 import { CookieService } from 'services/CookieService';
+import sortBy from 'lodash/sortBy';
+import { AccountDataContext } from 'features/account-data';
 
 function usePageLayout(): React.FC {
   const router = useRouter();
@@ -49,9 +51,13 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
       <SWRConfig value={{ fallback: pageProps?.fallback || {} }}>
         <AuthWrapper>
           <ModalProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <AccountDataContext.Provider
+              value={{ accountDaos: pageProps?.accountDaos }}
+            >
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </AccountDataContext.Provider>
           </ModalProvider>
         </AuthWrapper>
       </SWRConfig>
@@ -83,7 +89,8 @@ App.getInitialProps = async ({ ctx, router }: AppContext) => {
 
     return {
       pageProps: {
-        fallback: { [`/daos/account-daos/${account}`]: data }
+        fallback: { [`/daos/account-daos/${account}`]: data },
+        accountDaos: sortBy(data, 'id')
       }
     };
   }
