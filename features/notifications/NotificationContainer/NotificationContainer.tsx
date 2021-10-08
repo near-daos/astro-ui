@@ -104,7 +104,7 @@ export const NotificationContainer: React.FC = () => {
   useEffect(() => {
     function onScroll() {
       setStyles({
-        bottom: 16
+        top: 16
       });
     }
 

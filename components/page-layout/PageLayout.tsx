@@ -12,10 +12,12 @@ const PageLayout: FC = ({ children }) => {
     <div className={styles.root}>
       <SidebarNavigation className={styles.sideBar} />
       <SearchResults>
-        <AppHeader isLandingPage={false} />
-        <main className={styles.main}>{children}</main>
+        <div className={styles.content}>
+          <AppHeader isLandingPage={false} />
+          <main className={styles.main}>{children}</main>
+          <NotificationContainer />
+        </div>
       </SearchResults>
-      <NotificationContainer />
     </div>
   );
 };
