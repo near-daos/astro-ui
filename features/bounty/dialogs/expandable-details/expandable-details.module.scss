@@ -1,11 +1,15 @@
+@use 'styles/breakpoints';
 @import 'styles/typography';
 
 .content {
-  margin-left: -48px;
-  margin-right: -48px;
+  margin: 0 -48px;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
+
+  @media screen and (max-width: #{breakpoints.$screen-xs}px) {
+    margin: 0 -24px;
+  }
 }
 
 .opened {

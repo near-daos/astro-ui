@@ -17,10 +17,11 @@ export interface FilteredData extends Indexed {
 
 type ShowFilterOption =
   | 'All'
-  | 'Active proposals'
-  | 'Accepted proposals'
-  | 'Inactive proposals'
-  | 'Rejected / Dismissed / Expired';
+  | 'Active Proposals'
+  | 'Accepted Proposals'
+  | 'Inactive Proposals'
+  | 'Rejected / Expired Proposals'
+  | 'Spam / Dismissed Proposals';
 
 type SearchFilterOption = 'In this DAO' | 'In all DAOs';
 
@@ -72,33 +73,36 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
 
     // Filter 'show'
     switch (filter.show) {
-      case 'Accepted proposals': {
+      case 'Accepted Proposals': {
         if (item.status !== 'Approved') {
           matched = false;
         }
 
         break;
       }
-      case 'Active proposals': {
+      case 'Active Proposals': {
         if (item.status !== 'InProgress') {
           matched = false;
         }
 
         break;
       }
-      case 'Inactive proposals': {
+      case 'Inactive Proposals': {
         if (item.status !== 'Removed') {
           matched = false;
         }
 
         break;
       }
-      case 'Rejected / Dismissed / Expired': {
-        if (
-          item.status !== 'Rejected' &&
-          item.status !== 'Expired' &&
-          item.status !== 'Moved'
-        ) {
+      case 'Rejected / Expired Proposals': {
+        if (item.status !== 'Rejected' && item.status !== 'Expired') {
+          matched = false;
+        }
+
+        break;
+      }
+      case 'Spam / Dismissed Proposals': {
+        if (item.status !== 'Moved') {
           matched = false;
         }
 

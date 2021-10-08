@@ -4,20 +4,24 @@ export const showOptions = [
     value: 'All'
   },
   {
-    label: 'Active proposals',
-    value: 'Active proposals'
+    label: 'Active Proposals',
+    value: 'Active Proposals'
   },
   {
-    label: 'Accepted proposals',
-    value: 'Accepted proposals'
+    label: 'Accepted Proposals',
+    value: 'Accepted Proposals'
   },
   {
-    label: 'Inactive proposals',
-    value: 'Inactive proposals'
+    label: 'Inactive Proposals',
+    value: 'Inactive Proposals'
   },
   {
-    label: 'Rejected / Dismissed / Expired',
-    value: 'Rejected / Dismissed / Expired'
+    label: 'Rejected / Expired Proposals',
+    value: 'Rejected / Expired Proposals'
+  },
+  {
+    label: 'Spam / Dismissed Proposals',
+    value: 'Spam / Dismissed Proposals'
   }
 ];
 

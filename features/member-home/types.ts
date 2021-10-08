@@ -1,13 +1,14 @@
 import { Proposal } from 'types/proposal';
 
-export type DaoFilter = 'All DAOs' | 'My DAOs' | 'Following DAOs';
-export type ProposalFilter =
+export type DaoFilterValues = 'All DAOs' | 'My DAOs' | 'Following DAOs';
+export type ProposalFilterValues =
   | 'Active proposals'
   | 'Recent proposals'
   | 'My proposals';
 
 export type DaoProposal = {
   dao: {
+    id: string;
     name: string;
     logo: string;
   };
@@ -22,6 +23,18 @@ export interface Indexed {
   [key: string]: ProposalByDao;
 }
 
+export interface DaoFilter {
+  daoFilter: DaoFilterValues;
+}
+
+export interface ProposalFilter {
+  proposalFilter: ProposalFilterValues;
+}
+
+export interface DaoViewFilter {
+  daoViewFilter: string | null;
+}
+
 export interface FilteredData extends Indexed {
   lessThanHourProposals: ProposalByDao;
   lessThanDayProposals: ProposalByDao;
@@ -30,15 +43,11 @@ export interface FilteredData extends Indexed {
   otherProposals: ProposalByDao;
 }
 
-export type ProposalsFilter = {
-  daoFilter: DaoFilter;
-  proposalFilter: ProposalFilter;
-  daoViewFilter: string | null;
-};
+export type ProposalsFilter = DaoFilter & ProposalFilter & DaoViewFilter;
 
 export type FilteredProposalsData = {
   filteredProposalsData: FilteredData;
   filter: ProposalsFilter;
-  onFilterChange: (name: string, value: string | null) => void;
+  onFilterChange: (filter: DaoFilter | ProposalFilter | DaoViewFilter) => void;
   selectedDaoFlag?: string;
 };

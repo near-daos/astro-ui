@@ -4,8 +4,7 @@ import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
 
 import { AuthWrapper } from 'context/AuthContext';
-import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
-import type { AppProps } from 'next/app';
+import type { AppContext, AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useMount } from 'react-use';
@@ -13,7 +12,7 @@ import { useMount } from 'react-use';
 import { SputnikService } from 'services/SputnikService';
 import 'styles/globals.scss';
 import { SWRConfig } from 'swr';
-import { useDAOList } from 'hooks/useDAOList';
+import { CookieService } from 'services/CookieService';
 
 function usePageLayout(): React.FC {
   const router = useRouter();
@@ -28,6 +27,7 @@ function usePageLayout(): React.FC {
 function App({ Component, pageProps }: AppProps): JSX.Element {
   const router = useRouter();
   const [walletInitialized, setWalletInitialized] = useState(false);
+  const account = CookieService.get('account');
 
   const Layout = usePageLayout();
 
@@ -36,22 +36,17 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
     setWalletInitialized(true);
   });
 
-  const { daos } = useDAOList(walletInitialized);
-  const { daos: userDaos } = useDaoListPerCurrentUser();
-
   useEffect(() => {
-    if (router.pathname === '/' && userDaos != null && userDaos.length) {
-      router.push('/home');
-    } else if (router.pathname === '/' && userDaos != null) {
-      router.push('/all-communities');
-    } else if (!walletInitialized && router.pathname === '/') {
-      router.push('/all-communities');
+    if (!account && SputnikService.getAccountId()) {
+      SputnikService.logout().then(() => {
+        router.push('/all-communities');
+      });
     }
-  }, [router, userDaos, walletInitialized]);
+  }, [account, router]);
 
   if (walletInitialized) {
     return (
-      <SWRConfig value={{ fallback: { '/daos': daos } }}>
+      <SWRConfig value={{ fallback: pageProps?.fallback || {} }}>
         <AuthWrapper>
           <ModalProvider>
             <Layout>
@@ -66,19 +61,43 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
   return <div />;
 }
 
-/* TODO Not works yet. WIP
-const getInitialProps: NextPage['getInitialProps'] = ctx => {
-  const cookies = nookies.get(ctx);
+App.getInitialProps = async ({ ctx, router }: AppContext) => {
+  CookieService.initServerSideCookies(ctx.req?.headers.cookie || null);
 
-  nookies.set(ctx, 'selectedDao', 'brand-new-dao.sputnikv2.testnet', {
-    maxAge: 30 * 24 * 60 * 60,
-    path: '/'
-  });
+  const account = CookieService.get<string | undefined>('account');
 
-  return { cookies };
+  const { res } = ctx;
+
+  if (account) {
+    const data = await SputnikService.getAccountDaos(account);
+
+    if (router.pathname === '/' && res != null) {
+      if (data.length > 0) {
+        res.writeHead(302, { location: `/home` });
+      } else {
+        res.writeHead(302, { location: '/all-communities' });
+      }
+
+      res.end();
+    }
+
+    return {
+      pageProps: {
+        fallback: { [`/daos/account-daos/${account}`]: data }
+      }
+    };
+  }
+
+  if (router.pathname === '/' && res != null) {
+    res.writeHead(302, { location: '/all-communities' });
+    res.end();
+
+    return {
+      daos: []
+    };
+  }
+
+  return {};
 };
-
-App.getInitialProps = getInitialProps;
-*/
 
 export default App;

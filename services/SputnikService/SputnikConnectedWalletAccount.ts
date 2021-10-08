@@ -70,7 +70,7 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
     await this.walletConnection.requestSignTransactions({
       transactions: [transaction],
       meta: walletMeta,
-      callbackUrl: `${window.origin}/transaction-complete`
+      callbackUrl: `${window.origin}/callback/transaction`
     });
 
     // const test = await Transactions.signTransaction(

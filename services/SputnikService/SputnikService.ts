@@ -6,6 +6,7 @@ import { NearConfig, nearConfig } from 'config';
 import Decimal from 'decimal.js';
 import omit from 'lodash/omit';
 import { Contract, keyStores, Near } from 'near-api-js';
+import { CookieService } from 'services/CookieService';
 
 import { HttpService, httpService } from 'services/HttpService';
 import {
@@ -153,8 +154,8 @@ class SputnikService {
     await this.walletConnection.requestSignIn(
       this.config.contractName,
       'Sputnik DAO',
-      `${window.origin}/callback`,
-      `${window.origin}/callback`
+      `${window.origin}/callback/auth`,
+      `${window.origin}/callback/auth`
     );
     await this.init();
   }
@@ -164,6 +165,10 @@ class SputnikService {
   }
 
   public getAccountId(): string {
+    if (!process.browser) {
+      return CookieService.get('account');
+    }
+
     return this.walletConnection?.getAccountId();
   }
 
@@ -473,8 +478,8 @@ class SputnikService {
 
   public async getFilteredProposals(
     filter: {
-      daoViewFilter: null;
-      daoFilter: 'All DAOs' | 'My DAOs' | 'Following DAOs';
+      daoViewFilter: string | null;
+      daoFilter: 'All DAOs' | 'My DAOs' | 'Following DAOs' | null;
       proposalFilter:
         | 'Active proposals'
         | 'Recent proposals'
@@ -489,7 +494,7 @@ class SputnikService {
       queryString.setFilter({
         field: 'daoId',
         operator: '$eq',
-        value: filter.daoViewFilter
+        value: `${filter.daoViewFilter}.${nearConfig.contractName}`
       });
     } else if (filter.daoFilter === 'My DAOs') {
       const accountDaos = await this.getAccountDaos(accountId);

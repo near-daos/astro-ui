@@ -1,6 +1,5 @@
-import { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import React, { useCallback, useEffect } from 'react';
+import { GetServerSideProps, NextPage } from 'next';
+import React from 'react';
 
 import { VOTE_BY_PERIOD } from 'constants/votingConstants';
 
@@ -9,35 +8,33 @@ import { Button } from 'components/button/Button';
 import { Dropdown } from 'components/dropdown/Dropdown';
 
 import {
-  ProposalsByDaoRenderer,
   daoOptions,
   useFilteredMemberHomeData,
-  useUserHasProposals
+  getProposalFilter,
+  ProposalsByDaoRenderer
 } from 'features/member-home';
+import { DaoFilterValues } from 'features/member-home/types';
+import { SputnikService } from 'services/SputnikService';
+import { Proposal } from 'types/proposal';
+import { CookieService } from 'services/CookieService';
 
 import styles from './home.module.scss';
 
-const Home: NextPage = () => {
-  const router = useRouter();
+interface HomeProps {
+  proposals: Proposal[];
+}
+type TabLabels =
+  | 'My proposals'
+  | 'All Active proposals'
+  | 'All Finalized proposals';
 
+const Home: NextPage<HomeProps> = ({ proposals }) => {
   const {
     filter,
     filteredProposalsData,
     onFilterChange,
     selectedDaoFlag
-  } = useFilteredMemberHomeData();
-
-  const hasProposals = useUserHasProposals();
-
-  useEffect(() => {
-    if (!router.query.tab && hasProposals) {
-      router.push({
-        query: {
-          tab: 0
-        }
-      });
-    }
-  }, [router, hasProposals]);
+  } = useFilteredMemberHomeData(proposals);
 
   const tabContent = VOTE_BY_PERIOD.map(period => (
     <ProposalsByDaoRenderer
@@ -50,7 +47,7 @@ const Home: NextPage = () => {
     />
   ));
 
-  const tabs = [
+  const tabs: { id: number; label: TabLabels; content: JSX.Element }[] = [
     {
       id: 1,
       label: 'My proposals',
@@ -68,12 +65,6 @@ const Home: NextPage = () => {
     }
   ];
 
-  const handleTabSelect = useCallback(
-    name => onFilterChange('proposalFilter', name ?? ''),
-    // eslint-disable-next-line
-    []
-  );
-
   return (
     <div className={styles.root}>
       <div className={styles.filters}>
@@ -87,26 +78,52 @@ const Home: NextPage = () => {
             <Button
               variant="secondary"
               size="small"
-              onClick={() => onFilterChange('daoViewFilter', null)}
+              onClick={() => onFilterChange({ daoViewFilter: null })}
             >
               Remove filter
             </Button>
           </div>
         ) : (
-          <Dropdown
-            value={filter.daoFilter}
-            onChange={val => onFilterChange('daoFilter', val ?? '')}
+          <Dropdown<DaoFilterValues>
+            value={filter.daoFilter ?? ''}
+            onChange={val => onFilterChange({ daoFilter: val })}
             options={daoOptions}
-            // defaultValue="All DAOs"
             className={styles.primaryFilter}
           />
         )}
       </div>
       <div className={styles.content}>
-        <Tabs tabs={tabs} onTabSelect={handleTabSelect} />
+        <Tabs tabs={tabs} skipShallow />
       </div>
     </div>
   );
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps = async ({
+  query
+}): Promise<{
+  props: { proposals: Proposal[] };
+}> => {
+  const { tab, daoFilter, daoViewFilter } = query;
+  const accountId = CookieService.get('account');
+
+  const filter = {
+    daoFilter: daoFilter ? (daoFilter as DaoFilterValues) : 'All DAOs',
+    proposalFilter: getProposalFilter(tab),
+    daoViewFilter: daoViewFilter ? (daoViewFilter as string) : null
+  };
+
+  let proposals = [] as Proposal[];
+
+  if (accountId) {
+    proposals = await SputnikService.getFilteredProposals(filter, accountId);
+  }
+
+  return {
+    props: {
+      proposals
+    }
+  };
+};

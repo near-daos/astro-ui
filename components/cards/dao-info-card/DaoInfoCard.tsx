@@ -5,7 +5,7 @@ import Link from 'next/link';
 import styles from './dao-info.module.scss';
 
 export interface DaoInfoCardProps {
-  items: { label: string; value: string; link?: string }[];
+  items: { label: string; value: string; link?: string | null }[];
 }
 
 export const DaoInfoCard: FC<DaoInfoCardProps> = ({ items }) => (

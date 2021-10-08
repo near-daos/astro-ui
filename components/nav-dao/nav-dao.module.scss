@@ -27,16 +27,20 @@
   &.selected {
     background-color: var(--color-primary-70);
   }
+}
 
-  &:hover {
-    background: var(--color-primary-60);
+.item:hover {
+  background: var(--color-primary-60);
+
+  .name {
+    color: var(--color-white);
   }
 }
 
 .name {
   @extend %heading3;
   align-items: center;
-  color: var(--color-neutral-20);
+  color: var(--color-primary-30);
   display: inline-flex;
   gap: 12px;
 }
@@ -48,7 +52,7 @@
 .header {
   align-items: center;
   background-color: var(--color-primary-70);
-  color: var(--color-neutral-20);
+  color: var(--color-primary-30);
   cursor: pointer;
   display: inline-flex;
   gap: 12px;
@@ -58,6 +62,16 @@
 
   h3 {
     margin: 0;
+  }
+
+  &:hover {
+    background: var(--color-primary-50);
+    color: var(--color-white);
+  }
+
+  &.open {
+    background-color: var(--color-primary-70);
+    color: var(--color-white);
   }
 }
 

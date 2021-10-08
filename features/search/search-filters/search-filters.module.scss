@@ -1,4 +1,5 @@
 @import 'styles/typography';
+@import 'styles/mixins';
 
 .root {
   margin-bottom: 64px;
@@ -6,10 +7,16 @@
 
 .header {
   @extend %heading1;
-  align-items: center;
+  align-items: flex-start;
   display: flex;
+  flex-direction: column;
   margin-bottom: 48px;
   text-transform: lowercase;
+
+  @include tablet-landscape {
+    align-items: center;
+    flex-direction: row;
+  }
 
   > div:first-of-type {
     color: var(--color-neutral-60);
@@ -19,13 +26,33 @@
 .content {
   display: grid;
   grid-column-gap: 24px;
-  grid-row-gap: 32px;
+  grid-row-gap: 24px;
   grid-template-areas:
-    'show show search search'
-    'type . . .'
-    'type1 type2 type3 type4';
-  grid-template-columns: repeat(4, auto);
-  max-width: 60%;
+    'show show'
+    'search search'
+    'type .'
+    'type1 type2'
+    'type3 type4';
+  grid-template-columns: 1fr 1fr;
+  max-width: 100%;
+
+  @include tablet-landscape {
+    grid-row-gap: 32px;
+    grid-template-areas:
+      'show show search search'
+      'type . . .'
+      'type1 type2 type3 type4';
+    grid-template-columns: repeat(4, auto);
+    max-width: 82%;
+  }
+
+  @include desktop {
+    max-width: 95%;
+  }
+
+  @include large-desktop {
+    max-width: 81%;
+  }
 }
 
 .show {
@@ -64,22 +91,7 @@
 }
 
 @media screen and (max-width: 768px) {
-  .header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
   .hide {
     display: none;
-  }
-  .content {
-    grid-row-gap: 24px;
-    grid-template-areas:
-      'show show'
-      'search search'
-      'type .'
-      'type1 type2'
-      'type3 type4';
-    grid-template-columns: 1fr 1fr;
-    max-width: 100%;
   }
 }

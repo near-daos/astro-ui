@@ -4,18 +4,17 @@ import { useCallback, useEffect, useState } from 'react';
 import { Proposal } from 'types/proposal';
 import { useAuthContext } from 'context/AuthContext';
 import {
-  DaoFilter,
   FilteredProposalsData,
   ProposalByDao,
-  ProposalFilter
+  DaoFilterValues,
+  ProposalFilterValues
 } from 'features/member-home/types';
-import { useDaoListPerCurrentUser } from 'hooks/useDaoListPerCurrentUser';
 import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
 
 import { SputnikService } from 'services/SputnikService';
 import { useRouter } from 'next/router';
 
-export const daoOptions = [
+export const daoOptions: { value: DaoFilterValues; label: string }[] = [
   {
     value: 'All DAOs',
     label: 'All DAOs'
@@ -23,25 +22,6 @@ export const daoOptions = [
   {
     label: 'My DAOs',
     value: 'My DAOs'
-  }
-  // {
-  //   label: 'Following DAOs',
-  //   value: 'Following DAOs'
-  // }
-];
-
-export const proposalOptions = [
-  {
-    label: 'Active proposals',
-    value: 'Active proposals'
-  },
-  {
-    label: 'Recent proposals',
-    value: 'Recent proposals'
-  },
-  {
-    label: 'My proposals',
-    value: 'My proposals'
   }
 ];
 
@@ -57,7 +37,8 @@ export function arrangeByDao(proposals: Proposal[]): ProposalByDao {
       result[name] = {
         dao: {
           name,
-          logo
+          logo,
+          id: item.daoId
         },
         proposals: [item]
       };
@@ -67,127 +48,58 @@ export function arrangeByDao(proposals: Proposal[]): ProposalByDao {
   return result;
 }
 
-function getProposalFilter(tab?: string | string[]) {
+export function getProposalFilter(
+  tab?: string | string[]
+): ProposalFilterValues {
   switch (tab) {
     case '1': {
-      return 'Active proposals' as ProposalFilter;
+      return 'Active proposals' as ProposalFilterValues;
     }
     case '2': {
-      return 'Recent proposals' as ProposalFilter;
+      return 'Recent proposals' as ProposalFilterValues;
     }
     default: {
-      return 'My proposals' as ProposalFilter;
+      return 'My proposals' as ProposalFilterValues;
     }
   }
 }
 
-export const useFilteredMemberHomeData = (): FilteredProposalsData => {
+export const useFilteredMemberHomeData = (
+  proposals: Proposal[]
+): FilteredProposalsData => {
   const router = useRouter();
-  const { tab } = router.query;
-  const { daos } = useDaoListPerCurrentUser();
-  const myDaos = daos?.map(item => item.id) || [];
-  const [proposals, setProposals] = useState<Proposal[]>([]);
-  const { accountId } = useAuthContext();
-  const [filter, setFilter] = useState({
-    daoFilter: 'All DAOs' as DaoFilter,
+  const { tab, daoFilter, daoViewFilter } = router.query;
+  const filter = {
+    daoFilter: daoFilter ? (daoFilter as DaoFilterValues) : 'All DAOs',
     proposalFilter: getProposalFilter(tab),
-    daoViewFilter: null
-  });
+    daoViewFilter: daoViewFilter ? (daoViewFilter as string) : null
+  };
   let selectedDaoFlag;
 
   const onFilterChange = useCallback(
-    (name, value) => {
-      setFilter({
-        ...filter,
-        [name]: value
-      });
+    filterObj => {
+      const [name, value] = Object.entries(filterObj)[0];
+
+      if (name !== 'tab' && name !== 'proposalFilter') {
+        router.push({
+          pathname: '',
+          query: {
+            ...router.query,
+            [name]: value as string
+          }
+        });
+      }
     },
-    [filter]
+    [router]
   );
 
-  useEffect(() => {
-    async function getData() {
-      if (tab) {
-        const data = await SputnikService.getFilteredProposals(
-          filter,
-          accountId
-        );
-
-        setProposals(data);
-      }
-    }
-
-    getData();
-  }, [accountId, filter, tab]);
-
-  const filteredProposals = proposals.filter(item => {
-    let matched = true;
-
-    // Filter 'proposalFilter'
-    switch (filter.proposalFilter) {
-      case 'Active proposals': {
-        if (item.status !== 'InProgress') {
-          matched = false;
-        }
-
-        break;
-      }
-      case 'Recent proposals': {
-        if (
-          item.status !== 'Approved' &&
-          item.status !== 'Rejected' &&
-          item.status !== 'Expired' &&
-          item.status !== 'Moved'
-        ) {
-          matched = false;
-        }
-
-        break;
-      }
-      case 'My proposals': {
-        if (item.proposer !== accountId) {
-          matched = false;
-        }
-
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-
-    if (filter.daoViewFilter) {
-      // Filter by specific dao
-      if (item.daoDetails.name !== filter.daoViewFilter) {
-        matched = false;
-      }
-
+  if (filter.daoViewFilter) {
+    proposals.forEach(item => {
       if (item.daoDetails.name === filter.daoViewFilter) {
         selectedDaoFlag = item.daoDetails.logo;
       }
-    } else {
-      // Filter 'daoFilter'
-      switch (filter.daoFilter) {
-        case 'My DAOs': {
-          if (!myDaos.includes(item.daoId)) {
-            matched = false;
-          }
-
-          break;
-        }
-        case 'Following DAOs': {
-          // todo - how can I check if Im following this dao?
-          break;
-        }
-        case 'All DAOs':
-        default: {
-          break;
-        }
-      }
-    }
-
-    return matched;
-  });
+    });
+  }
 
   const {
     lessThanHourProposals,
@@ -195,7 +107,7 @@ export const useFilteredMemberHomeData = (): FilteredProposalsData => {
     lessThanWeekProposals,
     moreThanWeekProposals,
     otherProposals
-  } = splitProposalsByVotingPeriod(filteredProposals);
+  } = splitProposalsByVotingPeriod(proposals);
 
   return {
     filteredProposalsData: {

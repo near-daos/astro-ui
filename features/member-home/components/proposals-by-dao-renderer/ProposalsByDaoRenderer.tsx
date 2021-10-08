@@ -1,21 +1,28 @@
-import isEmpty from 'lodash/isEmpty';
-import { Collapsable } from 'components/collapsable/Collapsable';
-import { Button } from 'components/button/Button';
-import styles from 'features/search/search-results/components/proposals-tab-view/proposals-tab-view.module.scss';
-import { Icon } from 'components/Icon';
 import classNames from 'classnames';
-
+import isEmpty from 'lodash/isEmpty';
 import React, { FC, useCallback } from 'react';
-import { ProposalByDao, ProposalsFilter } from 'features/member-home/types';
-import { DaoSection } from 'features/member-home/components/dao-section';
+
 import { VotePeriodKey } from 'constants/votingConstants';
+
+import { Icon } from 'components/Icon';
+import { Button } from 'components/button/Button';
+import { Collapsable } from 'components/collapsable/Collapsable';
+
+import { DaoSection } from 'features/member-home/components/dao-section';
+import {
+  DaoViewFilter,
+  ProposalByDao,
+  ProposalsFilter
+} from 'features/member-home/types';
+
+import styles from 'features/search/search-results/components/proposals-tab-view/proposals-tab-view.module.scss';
 
 interface ProposalsByDaoRendererProps {
   title: string;
   periodKey: VotePeriodKey;
   data: ProposalByDao;
   filter: ProposalsFilter;
-  onFilterChange: (name: string, value: string) => void;
+  onFilterChange: (filter: DaoViewFilter) => void;
 }
 
 export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
@@ -89,7 +96,7 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
                 key={daoName}
                 expanded={filter.daoViewFilter === daoName}
                 onFilterSet={() => {
-                  onFilterChange('daoViewFilter', daoName);
+                  onFilterChange({ daoViewFilter: daoName });
                   scrollToTop();
                 }}
                 filter={filter.daoViewFilter}

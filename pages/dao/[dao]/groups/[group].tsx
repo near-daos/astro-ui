@@ -64,11 +64,12 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
         initialValues: {
           groups: item.groups,
           name: item.name,
-          groupType: GroupFormType.REMOVE_FROM_GROUP
+          groupType: GroupFormType.REMOVE_FROM_GROUP,
+          selectedGroup: group
         }
       });
     },
-    [showGroupModal]
+    [group, showGroupModal]
   );
 
   const handleCardClick = useCallback(
