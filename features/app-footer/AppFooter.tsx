@@ -80,6 +80,7 @@ export const AppFooter: FC<AppFooterProps> = ({
               <Icon name="logoNearFull" width={77} className={styles.logo} />
             </i>
           </div>
+          <div className={styles.version}>Version: 0.0.1-RC18</div>
         </div>
       </div>
     </footer>

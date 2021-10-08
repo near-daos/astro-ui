@@ -77,6 +77,11 @@
   }
 }
 
+.version {
+  @extend %subtitle5;
+  color: var(--color-primary-30);
+}
+
 .links {
   column-gap: 24px;
   display: flex;
