@@ -38,7 +38,9 @@ export const DaoHeader: React.VFC<DAOHeaderProps> = ({
       role="button"
       onClick={toggleHeading}
       onKeyPress={toggleHeading}
-      className={cn(styles.header, className)}
+      className={cn(styles.header, className, {
+        [styles.open]: isOpen
+      })}
     >
       {logo ? (
         <ImageWithFallback
