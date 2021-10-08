@@ -23,7 +23,7 @@ COPY public ./public
 COPY plugins ./plugins
 
 # Copying next pre-built artifact from bitbucket pipelines
-COPY .next ./.next
+COPY --chown=nextjs:nodejs .next ./.next
 
 USER nextjs
 
