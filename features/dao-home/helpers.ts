@@ -9,6 +9,7 @@ import { SputnikService } from 'services/SputnikService';
 import { useAuthContext } from 'context/AuthContext';
 
 import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
+import { Option } from 'components/dropdown/Dropdown';
 
 type DaoDetailsType = {
   title: string;
@@ -166,4 +167,28 @@ export function useFilteredData(
     filteredData: proposalsByVotingPeriod,
     data: proposals
   };
+}
+
+export function getProposalsFilterOptions(
+  accountId?: string
+): Option<string>[] {
+  const options = [
+    {
+      label: 'Active proposals',
+      value: 'Active proposals'
+    },
+    {
+      label: 'Recent proposals',
+      value: 'Recent proposals'
+    }
+  ];
+
+  if (accountId) {
+    options.push({
+      label: 'My proposals',
+      value: 'My proposals'
+    });
+  }
+
+  return options;
 }

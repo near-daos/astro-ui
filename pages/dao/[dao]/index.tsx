@@ -26,7 +26,8 @@ import {
   getDaoDetailsFromDao,
   getFundAndMembersNum,
   getProposalStats,
-  useFilteredData
+  useFilteredData,
+  getProposalsFilterOptions
 } from 'features/dao-home/helpers';
 import { useDao } from 'hooks/useDao';
 import { NextPage } from 'next';
@@ -194,20 +195,7 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
           defaultValue="Active proposals"
           onChange={onFilterChange}
           value={filter}
-          options={[
-            {
-              label: 'Active proposals',
-              value: 'Active proposals'
-            },
-            {
-              label: 'Recent proposals',
-              value: 'Recent proposals'
-            },
-            {
-              label: 'My proposals',
-              value: 'My proposals'
-            }
-          ]}
+          options={getProposalsFilterOptions(accountId)}
         />
         {VOTE_BY_PERIOD.map(period => (
           <ProposalCollapsableSection
