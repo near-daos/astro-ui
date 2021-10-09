@@ -40,7 +40,7 @@
 }
 
 .scrolling {
-  $logo-bottom-part-height: 380px;
+  $logo-bottom-part-height: 330px;
   height: calc(100vh - #{$logo-bottom-part-height});
   overflow-y: scroll;
 }
@@ -71,7 +71,7 @@
 .delimiter {
   background-color: var(--color-brand-purple);
   height: 1px;
-  margin: 28px 16px 28px 24px;
+  margin: 14px 16px 14px 24px;
 }
 
 .mobileHeader {

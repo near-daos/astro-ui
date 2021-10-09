@@ -158,6 +158,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             href="/home"
             icon="stateHome"
           />
+          <div className={styles.delimiter} />
           <DaoList {...getItemProps('dao')} items={daoList} />
           {renderSelectedDaoAdditionalPages()}
         </>

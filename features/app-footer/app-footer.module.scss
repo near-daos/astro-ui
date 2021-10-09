@@ -9,7 +9,6 @@
 
 .wrapper {
   display: grid;
-  grid-row-gap: 16px;
   grid-template-columns: 1fr;
   margin: auto;
   width: 100%;
@@ -55,7 +54,6 @@
   column-gap: 24px;
   display: flex;
   grid-area: social;
-  margin-bottom: 16px;
 }
 
 .icon {
@@ -72,7 +70,7 @@
   grid-area: report;
   transition: color 0.4s;
 
-  &:hover {
+  :hover {
     color: var(--color-primary-40);
   }
 }
@@ -80,6 +78,8 @@
 .version {
   @extend %subtitle5;
   color: var(--color-primary-30);
+  grid-area: version;
+  margin-top: 12px;
 }
 
 .links {
@@ -88,6 +88,7 @@
   flex-direction: column;
   font-size: 14px;
   grid-area: links;
+  margin-top: 12px;
 
   //.separator {
   //  background: var(--color-neutral-10);
@@ -113,6 +114,7 @@
   @include font(0.75em, 18px, 400);
   color: var(--color-neutral-60);
   grid-area: copyright;
+  margin-top: 12px;
 }
 
 .powered {
@@ -121,7 +123,7 @@
   column-gap: 12px;
   display: flex;
   grid-area: powered;
-  margin-top: 16px;
+  margin-top: 12px;
 
   span {
     flex-shrink: 0;
@@ -131,7 +133,7 @@
 
 .bottom {
   background-color: var(--color-brand-black);
-  padding: 36px 24px;
+  padding: 24px;
   width: 100%;
 
   @include desktop {
@@ -146,10 +148,11 @@
     grid-template-areas:
       'invitation'
       'social'
-      'report'
-      'links'
+      'powered'
       'copyright'
-      'powered';
+      'links'
+      'version'
+      'report';
     max-width: 1130px;
 
     @include tablet-landscape {
@@ -157,8 +160,19 @@
       grid-template-areas:
         'invitation invitation invitation'
         'social social powered'
-        'links report copyright';
-      grid-template-columns: 3fr 2fr 8fr;
+        'links report copyright'
+        'version . .';
+      grid-template-columns: 2fr 1fr 3fr;
+    }
+
+    @include desktop {
+      grid-template-columns: 3fr 1fr 3fr;
+    }
+  }
+
+  .links {
+    @include tablet-landscape {
+      margin-top: 0;
     }
   }
 
@@ -177,6 +191,12 @@
 
     @include desktop {
       margin-bottom: 20px;
+    }
+  }
+
+  .report {
+    @include tablet-landscape {
+      line-height: 1;
     }
   }
 
@@ -201,7 +221,14 @@
   .copyright {
     @include tablet-landscape {
       justify-self: end;
+      margin-top: 0;
       text-align: right;
+    }
+  }
+
+  .version {
+    @include tablet-landscape {
+      margin-top: 0;
     }
   }
 }
@@ -210,17 +237,18 @@
   background-color: var(--color-primary-70);
   bottom: 0;
   left: 0;
-  padding: 24px;
+  padding: 16px 24px;
   position: absolute;
   width: 100%;
 
   .wrapper {
     grid-template-areas:
       'social'
-      'report'
-      'links'
+      'powered'
       'copyright'
-      'powered';
+      'links'
+      'version'
+      'report';
   }
 
   .copyright {
