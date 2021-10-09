@@ -8,11 +8,11 @@ import { formatCurrency } from 'utils/formatCurrency';
 
 import { useNearPrice } from 'hooks/useNearPrice';
 
-import styles from './MyDaos.module.scss';
+import styles from './MyDaosPage.module.scss';
 
-const MyDaosPage: FC = () => {
+export const MyDaosPage: FC = () => {
   const nearPrice = useNearPrice();
-  const { accountDaos } = useAccountData();
+  const { accountDaos = [] } = useAccountData();
 
   function renderDaos() {
     return accountDaos.map(dao => {
@@ -40,5 +40,3 @@ const MyDaosPage: FC = () => {
     </div>
   );
 };
-
-export default MyDaosPage;

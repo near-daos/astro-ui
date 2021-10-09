@@ -16,7 +16,7 @@ import { useNearPrice } from 'hooks/useNearPrice';
 
 import { formatCurrency } from 'utils/formatCurrency';
 
-import styles from './browse-all-daos.module.scss';
+import styles from './AllDaosPage.module.scss';
 
 const sortOptions = [
   {
@@ -45,7 +45,9 @@ interface BrowseAllDaosProps {
   data: DAO[];
 }
 
-const BrowseAllDaos: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
+export const AllDaosPage: FC<BrowseAllDaosProps> = ({
+  data: initialData = []
+}) => {
   const router = useRouter();
   const nearPrice = useNearPrice();
 
@@ -89,7 +91,7 @@ const BrowseAllDaos: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h1>Browse all DAOs</h1>
+        <h1>All Communities</h1>
       </div>
       <div className={styles.filter}>
         <Dropdown
@@ -118,5 +120,3 @@ const BrowseAllDaos: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
     </div>
   );
 };
-
-export default BrowseAllDaos;

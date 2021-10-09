@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 
+import { ALL_DAOS_URL } from 'constants/routing';
+
 import { Icon } from 'components/Icon';
 import SearchBar from 'components/search-bar';
 import { Button } from 'components/button/Button';
@@ -70,7 +72,7 @@ export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
               size="small"
               variant="tertiary"
               onClick={() => {
-                router.push('/all-communities');
+                router.push(ALL_DAOS_URL);
               }}
             >
               Communities

@@ -1,25 +1,20 @@
-import { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
+import { NextPage } from 'next';
+
+import { Proposal } from 'types/proposal';
 
 import { VOTE_BY_PERIOD } from 'constants/votingConstants';
 
+import {
+  ProposalsByDaoRenderer,
+  useFilteredMemberHomeData
+} from 'features/member-home';
+import { AllFinalizedProposals } from 'features/member-home/components/all-finalized-proposals';
+
 import Tabs from 'components/tabs/Tabs';
 import { Button } from 'components/button/Button';
-import { Dropdown } from 'components/dropdown/Dropdown';
 
-import {
-  daoOptions,
-  useFilteredMemberHomeData,
-  getProposalFilter,
-  ProposalsByDaoRenderer
-} from 'features/member-home';
-import { DaoFilterValues } from 'features/member-home/types';
-import { AllFinalizedProposals } from 'features/member-home/components/all-finalized-proposals';
-import { SputnikService } from 'services/SputnikService';
-import { Proposal } from 'types/proposal';
-import { CookieService } from 'services/CookieService';
-
-import styles from './home.module.scss';
+import styles from './AllFeedPage.module.scss';
 
 interface HomeProps {
   proposals: Proposal[];
@@ -30,7 +25,7 @@ type TabLabels =
   | 'All Active proposals'
   | 'All Finalized proposals';
 
-const Home: NextPage<HomeProps> = ({ proposals }) => {
+export const AllFeedPage: NextPage<HomeProps> = ({ proposals }) => {
   const {
     filter,
     filteredProposalsData,
@@ -56,11 +51,6 @@ const Home: NextPage<HomeProps> = ({ proposals }) => {
     label: TabLabels;
     content: JSX.Element | JSX.Element[];
   }[] = [
-    {
-      id: 1,
-      label: 'My proposals',
-      content: tabContent
-    },
     {
       id: 2,
       label: 'All Active proposals',
@@ -98,12 +88,7 @@ const Home: NextPage<HomeProps> = ({ proposals }) => {
             </Button>
           </div>
         ) : (
-          <Dropdown<DaoFilterValues>
-            value={filter.daoFilter ?? ''}
-            onChange={val => onFilterChange({ daoFilter: val })}
-            options={daoOptions}
-            className={styles.primaryFilter}
-          />
+          <h1>Astro Feed</h1>
         )}
       </div>
       <div className={styles.content}>
@@ -111,44 +96,4 @@ const Home: NextPage<HomeProps> = ({ proposals }) => {
       </div>
     </div>
   );
-};
-
-export default Home;
-
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { tab, daoFilter, daoViewFilter } = query;
-  const accountId = CookieService.get('account');
-
-  let accountDaos;
-
-  if (accountId) {
-    accountDaos = await SputnikService.getAccountDaos(accountId);
-  }
-
-  if (!accountDaos || !accountDaos.length) {
-    return {
-      redirect: {
-        destination: '/all-communities',
-        permanent: false
-      }
-    };
-  }
-
-  const filter = {
-    daoFilter: daoFilter ? (daoFilter as DaoFilterValues) : 'All DAOs',
-    proposalFilter: getProposalFilter(tab),
-    daoViewFilter: daoViewFilter ? (daoViewFilter as string) : null
-  };
-
-  let proposals = [] as Proposal[];
-
-  if (accountId) {
-    proposals = await SputnikService.getFilteredProposals(filter, accountId);
-  }
-
-  return {
-    props: {
-      proposals
-    }
-  };
 };

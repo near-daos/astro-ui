@@ -19,9 +19,8 @@
 
 .content {
   display: grid;
-  grid-gap: 24px;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  place-items: start center;
+  grid-gap: 50px 70px;
+  grid-template-columns: repeat(auto-fit, minmax(444px, 1fr));
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {

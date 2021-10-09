@@ -1,25 +1,29 @@
-import CreateLayout from 'components/create-layout/CreateLayout';
+import { SWRConfig } from 'swr';
+import sortBy from 'lodash/sortBy';
+import { useMount } from 'react-use';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import type { AppContext, AppProps } from 'next/app';
+
+import { ALL_DAOS_URL, CREATE_DAO_URL } from 'constants/routing';
+
+import { AuthWrapper } from 'context/AuthContext';
 
 import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
+import CreateLayout from 'components/create-layout/CreateLayout';
 
-import { AuthWrapper } from 'context/AuthContext';
-import type { AppContext, AppProps } from 'next/app';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { useMount } from 'react-use';
+import { AccountDataContext } from 'features/account-data';
 
 import { SputnikService } from 'services/SputnikService';
-import 'styles/globals.scss';
-import { SWRConfig } from 'swr';
 import { CookieService } from 'services/CookieService';
-import sortBy from 'lodash/sortBy';
-import { AccountDataContext } from 'features/account-data';
+
+import 'styles/globals.scss';
 
 function usePageLayout(): React.FC {
   const router = useRouter();
 
-  if (router.route.match('/create-dao')) {
+  if (router.route.match(CREATE_DAO_URL)) {
     return CreateLayout;
   }
 
@@ -41,7 +45,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
   useEffect(() => {
     if (!account && SputnikService.getAccountId()) {
       SputnikService.logout().then(() => {
-        router.push('/all-communities');
+        router.push(ALL_DAOS_URL);
       });
     }
   }, [account, router]);
@@ -68,35 +72,24 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
 }
 
 App.getInitialProps = async ({ ctx, router }: AppContext) => {
-  CookieService.initServerSideCookies(ctx.req?.headers.cookie || null);
+  const { req, res } = ctx;
+
+  CookieService.initServerSideCookies(req?.headers.cookie || null);
 
   const account = CookieService.get<string | undefined>('account');
-
-  const { res } = ctx;
 
   if (account) {
     const data = await SputnikService.getAccountDaos(account);
 
-    if (router.pathname === '/' && res != null) {
-      if (data.length > 0) {
-        res.writeHead(302, { location: `/home` });
-      } else {
-        res.writeHead(302, { location: '/all-communities' });
-      }
-
-      res.end();
-    }
-
     return {
       pageProps: {
-        fallback: { [`/daos/account-daos/${account}`]: data },
         accountDaos: sortBy(data, 'id')
       }
     };
   }
 
   if (router.pathname === '/' && res != null) {
-    res.writeHead(302, { location: '/all-communities' });
+    res.writeHead(302, { location: ALL_DAOS_URL });
     res.end();
 
     return {

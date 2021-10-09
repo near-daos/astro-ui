@@ -1,11 +1,16 @@
-import { Sidebar } from 'components/sidebar';
-import { AddGroupMenu } from 'features/groups/components/add-group-menu';
+import find from 'lodash/find';
 import React, { useEffect, useMemo, useState } from 'react';
+
+import { DAO } from 'types/dao';
+
+import { Sidebar } from 'components/sidebar';
+import { useAccountData } from 'features/account-data';
+import { AddGroupMenu } from 'features/groups/components/add-group-menu';
+
 import { getActiveProposalsCountByDao } from 'hooks/useAllProposals';
+
 import { SputnikService } from 'services/SputnikService';
 import { CookieService } from 'services/CookieService';
-import { DAO } from 'types/dao';
-import { useAccountData } from 'features/account-data';
 
 import {
   GOVERNANCE_SECTION_ID,
@@ -25,7 +30,7 @@ function checkIfDaoDataLoaded(
     return false;
   }
 
-  return !!daos.find(item => item.id === selectedDaoId);
+  return !!find(daos, item => item.id === selectedDaoId);
 }
 
 export const useSidebarData = (): {

@@ -1,6 +1,5 @@
 .daos {
-  column-gap: 70;
   display: grid;
+  grid-gap: 50px 70px;
   grid-template-columns: repeat(auto-fit, minmax(444px, 1fr));
-  row-gap: 50px;
 }

@@ -1,23 +1,32 @@
 import cn from 'classnames';
-import { Collapsable } from 'components/collapsable/Collapsable';
-import { Icon, IconName } from 'components/Icon';
-
-import { Logo } from 'components/logo/Logo';
-import { DaoList } from 'components/nav-dao/DaoList';
-import { NavItem } from 'components/nav-item/NavItem';
-import { NavSubItem } from 'components/nav-item/NavSubItem';
-
-import { AppFooter } from 'features/app-footer';
-import { useAccordion } from 'hooks/useAccordion';
-
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
-import React, { ReactNode, useCallback } from 'react';
 import { useCookie, useMount } from 'react-use';
+import React, { ReactNode, useCallback } from 'react';
+
+import {
+  MY_DAOS_URL,
+  MY_FEED_URL,
+  ALL_DAOS_URL,
+  ALL_FEED_URL,
+  CREATE_DAO_URL
+} from 'constants/routing';
 import { DAO_COOKIE } from 'constants/cookies';
 
 import { useAuthContext } from 'context/AuthContext';
+
+import { Logo } from 'components/logo/Logo';
+import { Icon, IconName } from 'components/Icon';
+import { DaoList } from 'components/nav-dao/DaoList';
+import { NavItem } from 'components/nav-item/NavItem';
+import { NavSubItem } from 'components/nav-item/NavSubItem';
+import { Collapsable } from 'components/collapsable/Collapsable';
+
+import { AppFooter } from 'features/app-footer';
+
+import { useAccordion } from 'hooks/useAccordion';
+
 import styles from './sidebar.module.scss';
 
 interface ItemBase {
@@ -84,14 +93,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
   });
 
   const createDao = useCallback(
-    () => (accountId ? router.push('/create-dao') : login()),
+    () => (accountId ? router.push(CREATE_DAO_URL) : login()),
     [login, router, accountId]
   );
 
   function renderSelectedDaoAdditionalPages() {
     const { route } = router;
 
-    if (['/home', '/create-dao', '/all-communities'].includes(route)) {
+    if (
+      [
+        MY_DAOS_URL,
+        MY_FEED_URL,
+        ALL_DAOS_URL,
+        ALL_FEED_URL,
+        CREATE_DAO_URL
+      ].includes(route)
+    ) {
       return null;
     }
 
@@ -151,14 +168,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (showDaoNavItems) {
       return (
         <>
-          <NavItem
-            topDelimiter
-            className={styles.item}
-            label="Home"
-            href="/home"
-            icon="stateHome"
-          />
-          <div className={styles.delimiter} />
           <DaoList {...getItemProps('dao')} items={daoList} />
           {renderSelectedDaoAdditionalPages()}
         </>
@@ -168,26 +177,49 @@ export const Sidebar: React.FC<SidebarProps> = ({
     return null;
   }
 
-  function renderHomeNavItem() {
+  function renderNavItemsOfLoggedUser() {
     if (accountId) {
-      const myDaosHref = '/new/home/my-daos';
-      const myFeedHref = '/new/home/my-feed';
-
       return (
-        <NavItem
-          label="Home"
-          icon="stateHome"
-          href={myDaosHref}
-          subHrefs={[myFeedHref]}
-          className={styles.item}
-        >
-          <NavSubItem label="My Daos" href={myDaosHref} />
-          <NavSubItem label="My Feed" href={myFeedHref} />
-        </NavItem>
+        <>
+          <NavItem
+            label="Home"
+            icon="stateHome"
+            href={MY_DAOS_URL}
+            subHrefs={[MY_FEED_URL]}
+            className={styles.item}
+          >
+            <NavSubItem label="My Daos" href={MY_DAOS_URL} />
+            <NavSubItem label="My Feed" href={MY_FEED_URL} />
+          </NavItem>
+          <NavItem
+            className={styles.item}
+            onClick={createDao}
+            label="Create a DAO"
+            icon="stateCreateDao"
+          />
+        </>
       );
     }
 
     return null;
+  }
+
+  function renderAllCommunities() {
+    return (
+      <nav className={styles.bottom}>
+        <NavItem
+          href={ALL_DAOS_URL}
+          subHrefs={[ALL_FEED_URL]}
+          label="All Communities"
+          icon="stateCommunities"
+          className={styles.item}
+        >
+          <NavSubItem label="Explore Daos" href={ALL_DAOS_URL} />
+          <NavSubItem label="Astro Feed" href={ALL_FEED_URL} />
+        </NavItem>
+        <div className={styles.delimiter} />
+      </nav>
+    );
   }
 
   return (
@@ -203,24 +235,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
         <Logo className={styles.mainLogo} />
         <div className={styles.scrolling}>
-          {renderHomeNavItem()}
-          <hr />
+          {renderNavItemsOfLoggedUser()}
+          {renderAllCommunities()}
           {renderDaoNavItems()}
-          <div className={styles.delimiter} />
-          <nav className={styles.bottom}>
-            <NavItem
-              className={styles.item}
-              label="All Communities"
-              href="/all-communities"
-              icon="stateCommunities"
-            />
-            <NavItem
-              className={styles.item}
-              onClick={createDao}
-              label="Create a DAO"
-              icon="stateCreateDao"
-            />
-          </nav>
         </div>
       </div>
       <AppFooter isLoggedIn />

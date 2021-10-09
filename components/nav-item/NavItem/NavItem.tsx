@@ -41,27 +41,47 @@ export const NavItem: FC<NavItemProps> = ({
 }) => {
   const isActive = useIsActive(href, subHrefs);
 
-  const rootClassName = cn(styles.nav, className, {
-    [styles.active]: active || isActive,
-    [styles.topDelimiter]: topDelimiter,
-    [styles.bottomDelimiter]: bottomDelimiter
-  });
-
   function handleOnClick() {
     onClick?.();
   }
 
-  const renderContent = () => (
-    <>
-      <Icon height={16} name={icon} className={styles.icon} />
-      <span className={styles.label}> {label} </span>
-      {Number.isFinite(count) && (
-        <Badge className={styles.badge} variant="primary" size="small">
-          {count && count > 99 ? '99+' : count}
-        </Badge>
-      )}
-    </>
-  );
+  function renderContent() {
+    const rootClassName = cn(styles.nav, className, {
+      [styles.active]: active || isActive,
+      [styles.topDelimiter]: topDelimiter,
+      [styles.bottomDelimiter]: bottomDelimiter
+    });
+
+    const props = {
+      onClick: handleOnClick,
+      onKeyPress: handleOnClick,
+      className: rootClassName
+    };
+
+    const content = (
+      <>
+        <Icon height={16} name={icon} className={styles.icon} />
+        <span className={styles.label}> {label} </span>
+        {Number.isFinite(count) && (
+          <Badge className={styles.badge} variant="primary" size="small">
+            {count && count > 99 ? '99+' : count}
+          </Badge>
+        )}
+      </>
+    );
+
+    if (href) {
+      return (
+        <Link href={{ pathname: href, query: urlParams }} passHref>
+          <a href="*" {...props}>
+            {content}
+          </a>
+        </Link>
+      );
+    }
+
+    return <div {...props}>{content}</div>;
+  }
 
   function renderChildren() {
     if (isActive) {
@@ -73,16 +93,7 @@ export const NavItem: FC<NavItemProps> = ({
 
   return (
     <>
-      <Link href={{ pathname: href, query: urlParams }} passHref>
-        <a
-          href="*"
-          onClick={handleOnClick}
-          onKeyPress={handleOnClick}
-          className={rootClassName}
-        >
-          {renderContent()}
-        </a>
-      </Link>
+      {renderContent()}
       {renderChildren()}
     </>
   );

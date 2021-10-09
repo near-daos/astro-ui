@@ -48,18 +48,19 @@ export function arrangeByDao(proposals: Proposal[]): ProposalByDao {
   return result;
 }
 
+// TODO check if we really need to cast returned values to ProposalFilterValues type
 export function getProposalFilter(
   tab?: string | string[]
 ): ProposalFilterValues {
   switch (tab) {
+    case '0': {
+      return 'Active proposals' as ProposalFilterValues;
+    }
     case '1': {
       return 'Active proposals' as ProposalFilterValues;
     }
-    case '2': {
-      return 'Recent proposals' as ProposalFilterValues;
-    }
     default: {
-      return 'My proposals' as ProposalFilterValues;
+      return 'Recent proposals' as ProposalFilterValues;
     }
   }
 }
