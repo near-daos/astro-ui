@@ -484,6 +484,7 @@ class SputnikService {
         | 'Active proposals'
         | 'Recent proposals'
         | 'My proposals'
+        | 'Polls'
         | null;
     },
     accountId: string
@@ -523,6 +524,12 @@ class SputnikService {
         field: 'status',
         operator: '$in',
         value: ['Approved', 'Rejected', 'Expired', 'Moved']
+      });
+    } else if (filter.proposalFilter === 'Polls') {
+      queryString.setFilter({
+        field: 'kind',
+        operator: '$cont',
+        value: ProposalType.Vote
       });
     }
 
@@ -631,6 +638,26 @@ class SputnikService {
 
       throw error;
     }
+  }
+
+  public async getBounties(params?: {
+    offset?: number;
+    limit?: number;
+    sort?: string;
+  }): Promise<BountyResponse[]> {
+    const offset = params?.offset ?? 0;
+    const limit = params?.limit ?? 50;
+    const sort = params?.sort ?? 'createdAt,DESC';
+
+    const { data } = await this.httpService.get<BountiesResponse>('/bounties', {
+      params: {
+        offset,
+        limit,
+        sort
+      }
+    });
+
+    return data.data;
   }
 
   public async getBountiesByDaoId(

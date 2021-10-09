@@ -30,14 +30,14 @@ export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
 
   const [showClaimBountyDialog] = useModal(ClaimBountyDialog, {
     data,
-    bond: dao.policy.bountyBond
+    bond: dao.policy?.bountyBond
   });
 
   const [showUnclaimBountyDialog] = useModal(UnclaimBountyDialog, { data });
 
   const [showCompleteBountyDialog] = useModal(CompleteBountyDialog, {
     data,
-    bond: dao.policy.proposalBond
+    bond: dao.policy?.proposalBond
   });
 
   const handleClaimClick = useCallback(() => showClaimBountyDialog(), [
