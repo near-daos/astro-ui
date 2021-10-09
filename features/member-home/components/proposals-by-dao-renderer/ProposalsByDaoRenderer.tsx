@@ -1,8 +1,10 @@
+import React, { FC } from 'react';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
-import React, { FC, useCallback } from 'react';
 
 import { VotePeriodKey } from 'constants/votingConstants';
+
+import { scrollToTop } from 'utils/scrollToTop';
 
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
@@ -32,10 +34,6 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
   filter,
   onFilterChange
 }) => {
-  const scrollToTop = useCallback(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   if (
     isEmpty(data) ||
     (periodKey === 'otherProposals' &&
@@ -85,31 +83,25 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
         </Button>
       )}
     >
-      {Object.keys(data).length ? (
-        <>
-          {Object.keys(data).map(daoName => {
-            const daoProposalData = data[daoName];
-            const flag = daoProposalData.dao.logo;
+      {Object.keys(data).map(daoName => {
+        const daoProposalData = data[daoName];
+        const flag = daoProposalData.dao.logo;
 
-            return (
-              <DaoSection
-                key={daoName}
-                expanded={filter.daoViewFilter === daoName}
-                onFilterSet={() => {
-                  onFilterChange({ daoViewFilter: daoName });
-                  scrollToTop();
-                }}
-                filter={filter.daoViewFilter}
-                daoName={daoName}
-                proposals={daoProposalData.proposals}
-                flag={flag}
-              />
-            );
-          })}
-        </>
-      ) : (
-        <div className={styles.noDataWarning}>There are no proposals</div>
-      )}
+        return (
+          <DaoSection
+            key={daoName}
+            expanded={filter.daoViewFilter === daoName}
+            onFilterSet={() => {
+              onFilterChange({ daoViewFilter: daoName });
+              scrollToTop();
+            }}
+            filter={filter.daoViewFilter}
+            daoName={daoName}
+            proposals={daoProposalData.proposals}
+            flag={flag}
+          />
+        );
+      })}
     </Collapsable>
   );
 };

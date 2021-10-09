@@ -14,6 +14,7 @@ import {
   ProposalsByDaoRenderer
 } from 'features/member-home';
 import { DaoFilterValues } from 'features/member-home/types';
+import { AllFinalizedProposals } from 'features/member-home/components/all-finalized-proposals';
 import { SputnikService } from 'services/SputnikService';
 import { Proposal } from 'types/proposal';
 import { CookieService } from 'services/CookieService';
@@ -23,6 +24,7 @@ import styles from './home.module.scss';
 interface HomeProps {
   proposals: Proposal[];
 }
+
 type TabLabels =
   | 'My proposals'
   | 'All Active proposals'
@@ -36,32 +38,44 @@ const Home: NextPage<HomeProps> = ({ proposals }) => {
     selectedDaoFlag
   } = useFilteredMemberHomeData(proposals);
 
-  const tabContent = VOTE_BY_PERIOD.map(period => (
-    <ProposalsByDaoRenderer
-      filter={filter}
-      onFilterChange={onFilterChange}
-      key={period.key}
-      title={period.title}
-      periodKey={period.key}
-      data={filteredProposalsData[period.key]}
-    />
-  ));
+  const tabContent = VOTE_BY_PERIOD.map(period => {
+    return (
+      <ProposalsByDaoRenderer
+        filter={filter}
+        onFilterChange={onFilterChange}
+        key={period.key}
+        title={period.title}
+        periodKey={period.key}
+        data={filteredProposalsData[period.key]}
+      />
+    );
+  });
 
-  const tabs: { id: number; label: TabLabels; content: JSX.Element }[] = [
+  const tabs: {
+    id: number;
+    label: TabLabels;
+    content: JSX.Element | JSX.Element[];
+  }[] = [
     {
       id: 1,
       label: 'My proposals',
-      content: <>{tabContent}</>
+      content: tabContent
     },
     {
       id: 2,
       label: 'All Active proposals',
-      content: <>{tabContent}</>
+      content: tabContent
     },
     {
       id: 3,
       label: 'All Finalized proposals',
-      content: <>{tabContent}</>
+      content: (
+        <AllFinalizedProposals
+          changeFilter={onFilterChange}
+          selectedDao={filter.daoViewFilter}
+          data={filteredProposalsData.otherProposals}
+        />
+      )
     }
   ];
 

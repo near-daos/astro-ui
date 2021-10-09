@@ -10,7 +10,7 @@ interface DaoSectionProps {
   daoName: string;
   proposals: Proposal[];
   flag: string;
-  onFilterSet: (val: boolean) => void;
+  onFilterSet: () => void;
   expanded: boolean;
   filter: string | null;
 }
@@ -40,7 +40,7 @@ export const DaoSection: FC<DaoSectionProps> = ({
           <Button
             variant="tertiary"
             className={styles.toggle}
-            onClick={() => onFilterSet(true)}
+            onClick={() => onFilterSet()}
           >
             View all ({proposals.length})
           </Button>

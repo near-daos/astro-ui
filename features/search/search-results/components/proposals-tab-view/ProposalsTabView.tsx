@@ -20,12 +20,14 @@ import { ProposalCardRenderer } from 'components/cards/proposal-card';
 import styles from './proposals-tab-view.module.scss';
 
 export const ProposalsTabView: FC = () => {
+  const { searchResults } = useSearchResults();
+  const { query, proposals } = searchResults || {};
+
   const {
     filteredProposalsData,
     filter,
     onFilterChange
-  } = useFilteredProposalsData();
-  const { searchResults } = useSearchResults();
+  } = useFilteredProposalsData(proposals || []);
 
   const renderProposalsByVotePeriod = (votePeriod: VoteByPeriodInterface) => {
     const { key, title } = votePeriod;
@@ -75,7 +77,7 @@ export const ProposalsTabView: FC = () => {
         {Object.keys(data).map(daoName => {
           const daoProposalData = data[daoName];
           const flag = daoProposalData.dao.logo;
-          const { proposals } = daoProposalData;
+          const { proposals: daoProposals } = daoProposalData;
 
           return (
             <React.Fragment key={daoName}>
@@ -87,7 +89,7 @@ export const ProposalsTabView: FC = () => {
                 <h3>{daoName}</h3>
                 <div className={styles.divider} />
               </div>
-              {proposals.map(item => {
+              {daoProposals.map(item => {
                 return (
                   <div className={styles.cardWrapper} key={item.id}>
                     <ProposalCardRenderer proposal={item} />
@@ -101,8 +103,9 @@ export const ProposalsTabView: FC = () => {
     );
   };
 
-  if (!searchResults?.proposals.length)
-    return <NoResultsView query={searchResults?.query} />;
+  if (isEmpty(proposals)) {
+    return <NoResultsView query={query} />;
+  }
 
   return (
     <div className={styles.root}>

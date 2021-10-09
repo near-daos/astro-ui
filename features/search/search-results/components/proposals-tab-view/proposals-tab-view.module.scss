@@ -75,13 +75,6 @@
   margin-bottom: 12px;
 }
 
-.noDataWarning {
-  color: var(--color-neutral-60);
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-}
-
 .toggle {
   @extend %title5;
   color: var(--color-primary);
