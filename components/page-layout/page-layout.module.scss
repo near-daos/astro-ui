@@ -2,7 +2,9 @@
 @import 'styles/mixins';
 
 .root {
-  background-color: var(--color-primary-10);
+  background-color: var(--color-white);
+  background-image: url('/assets/illustrations/bg-stars.svg');
+  background-repeat: repeat;
   display: grid;
   grid-template-areas:
     'header'
