@@ -2,12 +2,7 @@ import get from 'lodash/get';
 import Link from 'next/link';
 import React, { FC } from 'react';
 import isEmpty from 'lodash/isEmpty';
-import { useCookie } from 'react-use';
 import { useRouter } from 'next/router';
-
-import { nearConfig } from 'config';
-
-import { DAO_COOKIE } from 'constants/cookies';
 
 import { NavItem } from 'components/nav-item/NavItem';
 import { NavSubItem } from 'components/nav-item/NavSubItem';
@@ -24,9 +19,9 @@ export const DaoNavMenu: FC = () => {
   const router = useRouter();
   const items = useGetDaoNavItems();
 
-  const [selectedDao] = useCookie(DAO_COOKIE);
+  const daoId = router.query.dao as string;
 
-  const dao = useDao(selectedDao as string);
+  const dao = useDao(daoId);
 
   const activeGroupId = get(router.asPath.split('/'), 3);
 
@@ -43,8 +38,6 @@ export const DaoNavMenu: FC = () => {
   if (!dao) {
     return null;
   }
-
-  const daoName = selectedDao?.replace(`.${nearConfig.contractName}`, '');
 
   function renderSelectedDaoAdditionalPages() {
     return (
@@ -88,7 +81,7 @@ export const DaoNavMenu: FC = () => {
                   href={subItem.href}
                   as={subItem.as}
                   disabled={subItem.disabled}
-                  urlParams={{ dao: selectedDao }}
+                  urlParams={{ dao: dao?.id }}
                   subHrefs={subItem.subHrefs}
                 />
               ))}
@@ -111,7 +104,7 @@ export const DaoNavMenu: FC = () => {
             height={50}
             alt="Dao Logo"
           />
-          {daoName}
+          {dao.name}
         </div>
       </Link>
       {renderSelectedDaoAdditionalPages()}
