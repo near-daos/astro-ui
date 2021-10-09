@@ -37,12 +37,13 @@ export const DaosTabView: FC = () => {
           const daoInfo = {
             items: [
               {
-                label: 'Members',
-                value: `${item.members}`
+                label: 'DAO funds',
+                value: `${item.funds}`,
+                valueType: `USD`
               },
               {
-                label: 'DAO funds',
-                value: `${item.funds} USD`
+                label: 'Members',
+                value: `${item.members}`
               }
             ]
           };

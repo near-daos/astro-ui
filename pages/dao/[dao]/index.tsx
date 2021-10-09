@@ -13,7 +13,6 @@ import {
   ProposalTrackerProps
 } from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
 import { Dropdown } from 'components/dropdown/Dropdown';
-import { Icon } from 'components/Icon';
 import { useModal } from 'components/modal';
 import { CreateProposalPopup } from 'features/dao-home/components/create-proposal-popup/CreateProposalPopup';
 import { ProposalCollapsableSection } from 'features/dao-home/components/proposals-collapsable-section';
@@ -139,11 +138,7 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
     const { activeVotes, totalProposals } = getProposalStats(data);
 
     const action =
-      isPending || isEmpty(accountId) ? null : (
-        <>
-          <Icon name="buttonAdd" width={24} /> Create proposal
-        </>
-      );
+      isPending || isEmpty(accountId) ? null : <>Create proposal</>;
 
     return (
       <div className={styles.proposals}>
@@ -166,14 +161,15 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
 
     const info = [
       {
+        label: 'DAO funds',
+        value: `${fund}`,
+        valueType: `USD`,
+        link: accountId ? `/dao/${dao.id}/treasury/tokens` : null
+      },
+      {
         label: 'Members',
         value: `${members}`,
         link: accountId ? `/dao/${dao.id}/groups/all-members` : null
-      },
-      {
-        label: 'DAO funds',
-        value: `${fund} USD`,
-        link: accountId ? `/dao/${dao.id}/treasury/tokens` : null
       }
     ];
 

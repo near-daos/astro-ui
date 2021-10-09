@@ -4,6 +4,7 @@
   @include centralize;
   background: var(--color-white);
   border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
@@ -15,12 +16,17 @@
   flex-direction: column;
   gap: 8px;
   height: 100%;
-  padding: 24px;
+  padding: 24px 16px;
   width: 100%;
 }
 
 .title {
   margin: 0;
+
+  &.active {
+    font-size: 1.375em;
+    line-height: 1.25em;
+  }
 }
 
 .subtitle {
@@ -31,8 +37,9 @@
 .action {
   @extend %title3;
   @include centralize;
-  background: var(--color-brand-neon-yellow);
-  color: var(--color-primary-70);
+  background: var(--color-success);
+  border-radius: 0 0 8px 8px;
+  color: var(--color-brand-black);
   height: 40px;
   padding: 0;
   text-transform: none;
