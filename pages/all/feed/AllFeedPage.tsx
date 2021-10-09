@@ -25,7 +25,7 @@ type TabLabels =
   | 'All Active proposals'
   | 'All Finalized proposals';
 
-export const AllFeedPage: NextPage<HomeProps> = ({ proposals }) => {
+const AllFeedPage: NextPage<HomeProps> = ({ proposals }) => {
   const {
     filter,
     filteredProposalsData,
@@ -97,3 +97,5 @@ export const AllFeedPage: NextPage<HomeProps> = ({ proposals }) => {
     </div>
   );
 };
+
+export default AllFeedPage;

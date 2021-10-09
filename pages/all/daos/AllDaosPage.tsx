@@ -45,9 +45,7 @@ interface BrowseAllDaosProps {
   data: DAO[];
 }
 
-export const AllDaosPage: FC<BrowseAllDaosProps> = ({
-  data: initialData = []
-}) => {
+const AllDaosPage: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
   const router = useRouter();
   const nearPrice = useNearPrice();
 
@@ -120,3 +118,5 @@ export const AllDaosPage: FC<BrowseAllDaosProps> = ({
     </div>
   );
 };
+
+export default AllDaosPage;

@@ -6,7 +6,7 @@ import { DaoFilterValues } from 'features/member-home/types';
 import { CookieService } from 'services/CookieService';
 import { SputnikService } from 'services/SputnikService';
 
-import { AllFeedPage } from './AllFeedPage';
+import AllFeedPage from './AllFeedPage';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { tab, daoFilter, daoViewFilter } = query;

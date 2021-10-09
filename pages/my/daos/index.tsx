@@ -1,3 +1,3 @@
-import { MyDaosPage } from './MyDaosPage';
+import MyDaosPage from './MyDaosPage';
 
 export default MyDaosPage;
