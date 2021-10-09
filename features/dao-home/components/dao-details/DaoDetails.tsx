@@ -42,7 +42,7 @@ export const DaoDetails: VFC<DaoDetailsProps> = ({
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const MIN_HEIGHT = 240;
+    const MIN_HEIGHT = 204;
 
     if (ref.current) {
       const height = ref.current.offsetHeight;

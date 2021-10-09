@@ -49,18 +49,18 @@
 .flag {
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
-  height: 240px;
+  background-size: auto;
+  height: 204px;
   left: 50%;
   position: absolute;
-  top: -162px;
-  transform: translateX(-120px);
-  width: 240px;
+  top: -140px;
+  transform: translateX(-50%);
+  width: 180px;
   z-index: 1;
 
   @include tablet-landscape {
-    left: -56px;
-    top: 20px;
+    left: -24px;
+    top: 50px;
     transform: none;
 
     &.centered {
@@ -70,12 +70,11 @@
   }
 
   @include desktop {
-    left: -82px;
+    left: -38px;
   }
 
   @include large-desktop {
-    left: -102px;
-    top: 33px;
+    left: -62px;
   }
 }
 

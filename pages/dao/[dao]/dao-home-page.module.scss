@@ -11,7 +11,7 @@
     'proposals'
     'proposalList';
   grid-template-columns: 1fr;
-  padding-top: 24px;
+  padding-top: 80px;
 
   @include tablet-landscape {
     grid-template-areas:
