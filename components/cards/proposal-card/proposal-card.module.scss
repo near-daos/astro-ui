@@ -4,13 +4,35 @@
   align-items: stretch;
   background: var(--color-neutral-10);
   border-radius: 8px;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   overflow: hidden;
+  transition: box-shadow 0.4s;
 
   @include tablet-landscape {
     flex-direction: row;
+  }
+
+  &.inProgress:hover {
+    box-shadow: 3px 2px 24px var(--color-in-progress-opacity-25);
+  }
+
+  &.approved:hover {
+    box-shadow: 3px 2px 24px var(--color-approved-opacity-25);
+  }
+
+  &.rejected:hover {
+    box-shadow: 3px 2px 24px var(--color-rejected-opacity-25);
+  }
+
+  &.expired:hover {
+    box-shadow: 3px 2px 24px var(--color-expired-opacity-25);
+  }
+
+  &.removed:hover {
+    box-shadow: 3px 2px 24px var(--color-dismissed-opacity-25);
   }
 }
 

@@ -115,9 +115,17 @@ const ProposalCardComponent: FC<ProposalCardProps> = ({
     };
   }, [handleCardClick, router, showExpanded]);
 
+  const statusClassName = cn({
+    [styles.inProgress]: status === 'InProgress',
+    [styles.approved]: status === 'Approved',
+    [styles.rejected]: status === 'Rejected',
+    [styles.expired]: status === 'Expired',
+    [styles.removed]: status === 'Removed'
+  });
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
-    <div className={styles.root} onClick={handleCardClick}>
+    <div className={cn(styles.root, statusClassName)} onClick={handleCardClick}>
       <ProposalStatusPanel status={status} type={type} />
       <div className={styles.content}>
         {variant !== 'SuperCollapsed' && (
