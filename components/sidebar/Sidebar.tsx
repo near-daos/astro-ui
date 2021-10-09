@@ -1,9 +1,7 @@
 import cn from 'classnames';
-import get from 'lodash/get';
-import isEmpty from 'lodash/isEmpty';
+import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
-import { useCookie, useMount } from 'react-use';
-import React, { ReactNode, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 import {
   MY_DAOS_URL,
@@ -12,71 +10,34 @@ import {
   ALL_FEED_URL,
   CREATE_DAO_URL
 } from 'constants/routing';
-import { DAO_COOKIE } from 'constants/cookies';
 
 import { useAuthContext } from 'context/AuthContext';
 
 import { Logo } from 'components/logo/Logo';
-import { Icon, IconName } from 'components/Icon';
-import { DaoList } from 'components/nav-dao/DaoList';
+import { Icon } from 'components/Icon';
 import { NavItem } from 'components/nav-item/NavItem';
 import { NavSubItem } from 'components/nav-item/NavSubItem';
-import { Collapsable } from 'components/collapsable/Collapsable';
 
 import { AppFooter } from 'features/app-footer';
 
-import { useAccordion } from 'hooks/useAccordion';
+import { DaoNavMenu } from './components/DaoNavMenu';
 
 import styles from './sidebar.module.scss';
 
-interface ItemBase {
-  id: string;
-  label: string | ReactNode;
-  href?: string;
-  count?: number;
-  subHrefs?: string[];
-  disabled?: boolean;
-  as?: string;
-}
-
-interface MenuItem extends Omit<ItemBase, 'href' | 'subHrefs'> {
-  subItems: ItemBase[];
-  logo: IconName;
-  href?: string;
-  disabled?: boolean;
-  as?: string;
-}
-
 interface SidebarProps {
-  daoList: React.ComponentProps<typeof DaoList>['items'];
-  items: MenuItem[];
   className?: string;
   fullscreen?: boolean;
   closeSideBar?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
-  daoList,
-  items,
   className,
   fullscreen,
   closeSideBar
 }) => {
   const router = useRouter();
-  const [selectedDao] = useCookie(DAO_COOKIE);
+
   const { accountId, login } = useAuthContext();
-  const showDaoNavItems = !!daoList.length && !!accountId;
-  const activeGroupId = get(router.asPath.split('/'), 3);
-
-  const { getItemProps } = useAccordion({
-    allowUnSelect: true,
-    allowMultiSelect: false,
-    preSelected: (() => {
-      if (activeGroupId === 'dao') return [];
-
-      return isEmpty(activeGroupId) ? [] : [activeGroupId];
-    })()
-  });
 
   const rootClassName = cn(styles.sidebar, className, {
     [styles.fullscreen]: fullscreen
@@ -96,86 +57,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
     () => (accountId ? router.push(CREATE_DAO_URL) : login()),
     [login, router, accountId]
   );
-
-  function renderSelectedDaoAdditionalPages() {
-    const { route } = router;
-
-    if (
-      [
-        MY_DAOS_URL,
-        MY_FEED_URL,
-        ALL_DAOS_URL,
-        ALL_FEED_URL,
-        CREATE_DAO_URL
-      ].includes(route)
-    ) {
-      return null;
-    }
-
-    return (
-      <nav className={styles.menu}>
-        {items.map(item => {
-          if (isEmpty(item.subItems)) {
-            return (
-              <NavItem
-                key={item.id}
-                className={styles.item}
-                label={item.label}
-                count={item.count}
-                href={item.href}
-                icon={item.logo}
-              />
-            );
-          }
-
-          return (
-            <Collapsable
-              {...getItemProps(item.id)}
-              key={item.id}
-              duration={250}
-              renderHeading={toggle => (
-                <NavItem
-                  onClick={() => toggle()}
-                  className={styles.item}
-                  label={item.label}
-                  count={item.count}
-                  href={item.href}
-                  icon={item.logo}
-                  active={activeGroupId === item.id}
-                />
-              )}
-            >
-              {item.subItems.map(subItem => (
-                <NavSubItem
-                  key={subItem.id}
-                  count={subItem.count}
-                  label={subItem.label}
-                  href={subItem.href}
-                  as={subItem.as}
-                  disabled={subItem.disabled}
-                  urlParams={{ dao: selectedDao }}
-                  subHrefs={subItem.subHrefs}
-                />
-              ))}
-            </Collapsable>
-          );
-        })}
-      </nav>
-    );
-  }
-
-  function renderDaoNavItems() {
-    if (showDaoNavItems) {
-      return (
-        <>
-          <DaoList {...getItemProps('dao')} items={daoList} />
-          {renderSelectedDaoAdditionalPages()}
-        </>
-      );
-    }
-
-    return null;
-  }
 
   function renderNavItemsOfLoggedUser() {
     if (accountId) {
@@ -220,6 +101,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className={styles.delimiter} />
       </nav>
     );
+  }
+
+  function renderDaoNavItems() {
+    const { route } = router;
+
+    if (
+      [
+        MY_DAOS_URL,
+        MY_FEED_URL,
+        ALL_DAOS_URL,
+        ALL_FEED_URL,
+        CREATE_DAO_URL
+      ].includes(route)
+    ) {
+      return null;
+    }
+
+    return <DaoNavMenu />;
   }
 
   return (

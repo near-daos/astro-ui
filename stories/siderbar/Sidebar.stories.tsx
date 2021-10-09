@@ -1,6 +1,8 @@
 import React from 'react';
-import { Sidebar } from 'components/sidebar/Sidebar';
 import { Meta } from '@storybook/react';
+
+import { MenuItem } from 'components/sidebar/types';
+import { Sidebar } from 'components/sidebar/Sidebar';
 
 export default {
   title: 'Components/Sidebar',
@@ -45,7 +47,7 @@ const daoList = [
   }
 ];
 
-const items: React.ComponentProps<typeof Sidebar>['items'] = [
+const items: MenuItem[] = [
   {
     id: 'overview',
     label: 'Overview',

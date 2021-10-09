@@ -1,0 +1,120 @@
+import get from 'lodash/get';
+import Link from 'next/link';
+import React, { FC } from 'react';
+import isEmpty from 'lodash/isEmpty';
+import { useCookie } from 'react-use';
+import { useRouter } from 'next/router';
+
+import { nearConfig } from 'config';
+
+import { DAO_COOKIE } from 'constants/cookies';
+
+import { NavItem } from 'components/nav-item/NavItem';
+import { NavSubItem } from 'components/nav-item/NavSubItem';
+import { Collapsable } from 'components/collapsable/Collapsable';
+import { ImageWithFallback } from 'components/image-with-fallback';
+import { useGetDaoNavItems } from 'components/sidebar/components/DaoNavMenu/helpers';
+
+import { useDao } from 'hooks/useDao';
+import { useAccordion } from 'hooks/useAccordion';
+
+import styles from 'components/sidebar/sidebar.module.scss';
+
+export const DaoNavMenu: FC = () => {
+  const router = useRouter();
+  const items = useGetDaoNavItems();
+
+  const [selectedDao] = useCookie(DAO_COOKIE);
+
+  const dao = useDao(selectedDao as string);
+
+  const activeGroupId = get(router.asPath.split('/'), 3);
+
+  const { getItemProps } = useAccordion({
+    allowUnSelect: true,
+    allowMultiSelect: false,
+    preSelected: (() => {
+      if (activeGroupId === 'dao') return [];
+
+      return isEmpty(activeGroupId) ? [] : [activeGroupId];
+    })()
+  });
+
+  if (!dao) {
+    return null;
+  }
+
+  const daoName = selectedDao?.replace(`.${nearConfig.contractName}`, '');
+
+  function renderSelectedDaoAdditionalPages() {
+    return (
+      <nav className={styles.menu}>
+        {items.map(item => {
+          if (isEmpty(item.subItems)) {
+            return (
+              <NavItem
+                key={item.id}
+                className={styles.item}
+                label={item.label}
+                count={item.count}
+                href={item.href}
+                icon={item.logo}
+              />
+            );
+          }
+
+          return (
+            <Collapsable
+              {...getItemProps(item.id)}
+              key={item.id}
+              duration={250}
+              renderHeading={toggle => (
+                <NavItem
+                  onClick={() => toggle()}
+                  className={styles.item}
+                  label={item.label}
+                  count={item.count}
+                  href={item.href}
+                  icon={item.logo}
+                  active={activeGroupId === item.id}
+                />
+              )}
+            >
+              {item.subItems.map(subItem => (
+                <NavSubItem
+                  key={subItem.id}
+                  count={subItem.count}
+                  label={subItem.label}
+                  href={subItem.href}
+                  as={subItem.as}
+                  disabled={subItem.disabled}
+                  urlParams={{ dao: selectedDao }}
+                  subHrefs={subItem.subHrefs}
+                />
+              ))}
+            </Collapsable>
+          );
+        })}
+      </nav>
+    );
+  }
+
+  return (
+    <>
+      <Link passHref href={`/dao/${dao.id}`}>
+        <div className={styles.selectedDao}>
+          <ImageWithFallback
+            fallbackSrc="/flag.svg"
+            loading="eager"
+            src={dao?.logo || '/flag.svg'}
+            width={50}
+            height={50}
+            alt="Dao Logo"
+          />
+          {daoName}
+        </div>
+      </Link>
+      {renderSelectedDaoAdditionalPages()}
+    </>
+  );
+};

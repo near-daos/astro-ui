@@ -74,6 +74,14 @@
   margin: 14px 16px 14px 24px;
 }
 
+.selectedDao {
+  align-items: center;
+  color: var(--color-white);
+  cursor: pointer;
+  display: flex;
+  padding: 12px 16px 12px 24px;
+}
+
 .mobileHeader {
   align-items: center;
   color: #fff;
