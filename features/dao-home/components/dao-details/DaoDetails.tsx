@@ -54,7 +54,14 @@ export const DaoDetails: VFC<DaoDetailsProps> = ({
   return (
     <>
       <div className={styles.root} ref={ref}>
-        <h1>{title}</h1>
+        <h1>
+          {more && (
+            <Link href={more.link}>
+              <a>{title}</a>
+            </Link>
+          )}
+          {!more && <>{title}</>}
+        </h1>
         <div className={styles.row}>
           <div className={styles.subtitle}>{subtitle}</div>
           {sendFunds && (
