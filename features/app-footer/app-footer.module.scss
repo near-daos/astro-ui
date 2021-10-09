@@ -2,6 +2,7 @@
 @import 'styles/typography';
 
 .root {
+  background-color: var(--color-brand-black);
   color: var(--color-white);
   grid-area: footer;
   width: 100%;
@@ -41,11 +42,11 @@
 }
 
 .register {
-  color: var(--color-primary-30);
+  color: var(--color-error-20);
   transition: color 0.4s;
 
   &:hover {
-    color: var(--color-primary-40);
+    color: var(--color-brand-coral-red);
   }
 }
 
@@ -60,33 +61,37 @@
   transition: color 0.4s;
 
   &:hover {
-    color: var(--color-primary-30);
+    color: var(--color-error-30);
   }
 }
 
 .report {
-  color: var(--color-primary-30);
-  font-size: 14px;
   grid-area: report;
-  transition: color 0.4s;
 
-  :hover {
-    color: var(--color-primary-40);
+  a {
+    color: var(--color-error-20);
+    font-size: 14px;
+    transition: color 0.4s;
+  }
+
+  a:hover {
+    color: var(--color-brand-coral-red);
   }
 }
 
 .version {
   @extend %subtitle5;
-  color: var(--color-primary-30);
+  color: var(--color-white);
   grid-area: version;
   margin-top: 12px;
 }
 
 .links {
+  @include font(0.75em, 18px, 400);
+  color: var(--color-brand-coral-red);
   column-gap: 24px;
   display: flex;
   flex-direction: column;
-  font-size: 14px;
   grid-area: links;
   margin-top: 12px;
 
@@ -112,7 +117,7 @@
 
 .copyright {
   @include font(0.75em, 18px, 400);
-  color: var(--color-neutral-60);
+  color: var(--color-brand-coral-red);
   grid-area: copyright;
   margin-top: 12px;
 }
@@ -132,7 +137,6 @@
 }
 
 .bottom {
-  background-color: var(--color-brand-black);
   padding: 24px;
   width: 100%;
 
@@ -234,7 +238,6 @@
 }
 
 .side {
-  background-color: var(--color-primary-70);
   bottom: 0;
   left: 0;
   padding: 16px 24px;
@@ -249,9 +252,5 @@
       'links'
       'version'
       'report';
-  }
-
-  .copyright {
-    color: var(--color-primary-30);
   }
 }

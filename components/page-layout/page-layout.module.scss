@@ -41,6 +41,8 @@
     }
 
     @include large-desktop {
+      margin: auto;
+      max-width: 1125px;
       padding: 0 94px 60px 72px;
     }
   }

@@ -24,7 +24,8 @@ export const ProposalTrackerCard: FC<ProposalTrackerProps> = ({
           className={cn(styles.title, styles.active)}
           size={2}
         >
-          <strong>{activeVotes}</strong> active proposals
+          <span>{activeVotes}</span> active{' '}
+          {activeVotes === 1 ? 'proposal' : 'proposals'}
         </Typography.Subtitle>
         <Typography.Subtitle className={styles.subtitle} size={6}>
           {`${totalProposals} proposals in total`}

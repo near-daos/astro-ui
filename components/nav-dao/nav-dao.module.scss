@@ -6,7 +6,7 @@
 }
 
 .item {
-  background: var(--color-primary-80);
+  background: var(--color-neutral-85);
   display: flex;
   flex-direction: column;
   padding: 14px 16px 0 24px;
@@ -16,7 +16,7 @@
   .details {
     @extend %caption1;
     align-self: flex-start;
-    color: var(--color-primary-30);
+    color: var(--color-white-opacity-5);
     cursor: pointer;
     margin-left: 20px;
     padding: 0;
@@ -24,13 +24,17 @@
     width: fit-content;
   }
 
+  .details:hover {
+    color: var(--color-neutral-50);
+  }
+
   &.selected {
-    background-color: var(--color-primary-70);
+    background-color: var(--color-brand-black);
   }
 }
 
 .item:hover {
-  background: var(--color-primary-60);
+  background: var(--color-black);
 
   .name {
     color: var(--color-white);
@@ -40,7 +44,7 @@
 .name {
   @extend %heading3;
   align-items: center;
-  color: var(--color-primary-30);
+  color: var(--color-white-opacity-5);
   display: inline-flex;
   gap: 12px;
 }
@@ -51,8 +55,8 @@
 
 .header {
   align-items: center;
-  background-color: var(--color-primary-70);
-  color: var(--color-primary-30);
+  background-color: var(--color-brand-black);
+  color: var(--color-white);
   cursor: pointer;
   display: inline-flex;
   gap: 12px;
@@ -66,12 +70,12 @@
   }
 
   &:hover {
-    background: var(--color-primary-50);
+    background: var(--color-black);
     color: var(--color-white);
   }
 
   &.open {
-    background-color: var(--color-primary-70);
+    background-color: var(--color-brand-black);
     color: var(--color-white);
   }
 }
