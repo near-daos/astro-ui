@@ -41,13 +41,12 @@ interface ContentPanelProps {
   proposalData?: Proposal | null;
   daoData?: DAO | null;
   permissions: ProposalVotingPermissions;
-  id: string;
+  id?: string;
   daoId: string;
   status?: ProposalStatus;
 }
 
 export const ContentPanel: FC<ContentPanelProps> = ({
-  id,
   daoId,
   title,
   children,
@@ -91,7 +90,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
                 onClick={() => {
                   const loc = document.location;
 
-                  const url = `${loc.href}&proposal=${id}`;
+                  const url = `${loc.href}`;
 
                   copyTextToClipboard(url);
                 }}

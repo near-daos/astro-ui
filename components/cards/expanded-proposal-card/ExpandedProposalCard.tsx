@@ -1,3 +1,5 @@
+import omit from 'lodash/omit';
+import { useRouter } from 'next/router';
 import { ContentPanel } from 'components/cards/expanded-proposal-card/components/content-panel';
 
 import { StatusPanel } from 'components/cards/expanded-proposal-card/components/status-panel';
@@ -5,7 +7,7 @@ import { VotePanel } from 'components/cards/expanded-proposal-card/components/vo
 import { Modal } from 'components/modal';
 import { useDao } from 'hooks/useDao';
 import { useProposal } from 'hooks/useProposal';
-import React, { FC, ReactNode, useCallback } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect } from 'react';
 
 import {
   DaoDetails,
@@ -71,6 +73,7 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
   permissions,
   id
 }) => {
+  const router = useRouter();
   const handleVote = useCallback(
     d => {
       switch (d.vote) {
@@ -94,6 +97,32 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
   const proposalData = useProposal(daoId, proposalId);
   const daoData = useDao(daoId);
   const voted = liked || disliked || dismissed || status !== 'InProgress';
+
+  useEffect(() => {
+    router.push(
+      {
+        pathname: '',
+        query: {
+          ...router.query,
+          proposal: id
+        }
+      },
+      undefined,
+      { shallow: true }
+    );
+
+    return () => {
+      router.push(
+        {
+          pathname: '',
+          query: omit(router.query, ['proposal'])
+        },
+        undefined,
+        { shallow: true }
+      );
+    };
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Modal

@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import omit from 'lodash/omit';
 import React, { FC, ReactNode, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
@@ -11,7 +10,10 @@ import ProposalStatusPanel from 'components/cards/proposal-card/components/propo
 import ProposalControlPanel from 'components/cards/proposal-card/components/proposal-control-panel/ProposalControlPanel';
 
 import { useModal } from 'components/modal';
-import { ExpandedProposalCard } from 'components/cards/expanded-proposal-card';
+import {
+  ExpandedProposalCard,
+  ExpandedProposalCardProps
+} from 'components/cards/expanded-proposal-card';
 
 import { useGetVotePermissions } from './hooks/useGetVotePermissions';
 
@@ -71,47 +73,42 @@ const ProposalCardComponent: FC<ProposalCardProps> = ({
     [styles.collapsed]: variant === 'SuperCollapsed'
   });
 
-  const [showModal] = useModal(ExpandedProposalCard, {
-    status,
-    type,
-    title,
-    children,
-    likes,
-    dislikes,
-    liked,
-    disliked,
-    onLike,
-    onDislike,
-    onRemove,
-    endsAt: votePeriodEnd,
-    dismisses,
-    dismissed,
-    daoDetails,
-    proposalId,
-    daoId,
-    permissions,
-    id
-  });
+  const [showModal] = useModal<ExpandedProposalCardProps>(
+    ExpandedProposalCard,
+    {
+      status,
+      type,
+      title,
+      children,
+      likes,
+      dislikes,
+      liked,
+      disliked,
+      onLike,
+      onDislike,
+      onRemove,
+      endsAt: votePeriodEnd,
+      dismisses,
+      dismissed,
+      daoDetails,
+      proposalId,
+      daoId,
+      permissions,
+      id
+    }
+  );
   const router = useRouter();
 
   const handleCardClick = useCallback(async () => {
-    await showModal();
-  }, [showModal]);
+    await showModal({ id });
+  }, [id, showModal]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (showExpanded) {
-        router.push(
-          {
-            pathname: '',
-            query: omit(router.query, ['proposal', 'proposalStatus'])
-          },
-          undefined,
-          { shallow: true }
-        );
         handleCardClick();
       }
-    }, 0);
+    }, 1000);
 
     return () => {
       clearTimeout(timer);
