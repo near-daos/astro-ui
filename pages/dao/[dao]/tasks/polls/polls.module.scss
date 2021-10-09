@@ -71,3 +71,23 @@
     right: 40px;
   }
 }
+
+.proposalsView {
+  margin-top: 32px;
+}
+
+.proposalCardWrapper {
+  margin-bottom: 16px;
+}
+
+.activeProposalsTab {
+  color: var(--color-primary-50);
+}
+
+.approvedProposalsTab {
+  color: var(--color-brand-green);
+}
+
+.failedProposalsTab {
+  color: var(--color-brand-coral-red);
+}
