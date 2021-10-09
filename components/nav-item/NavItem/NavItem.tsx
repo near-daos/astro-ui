@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import Link from 'next/link';
 import { ParsedUrlQueryInput } from 'querystring';
-import React, { HTMLAttributes, ReactNode } from 'react';
+import React, { FC, HTMLAttributes, ReactNode } from 'react';
 
 import { Badge } from 'components/badge/Badge';
 import { Icon, IconName } from 'components/Icon';
@@ -21,10 +21,11 @@ interface NavItemProps extends HTMLAttributes<HTMLAnchorElement> {
   className?: string;
   topDelimiter?: boolean;
   bottomDelimiter?: boolean;
+  subHrefs?: string[];
   onClick?: () => void;
 }
 
-export const NavItem: React.FC<NavItemProps> = ({
+export const NavItem: FC<NavItemProps> = ({
   label,
   icon,
   href,
@@ -34,10 +35,11 @@ export const NavItem: React.FC<NavItemProps> = ({
   className,
   topDelimiter,
   bottomDelimiter,
+  subHrefs = [],
   onClick,
-  ...props
+  children
 }) => {
-  const isActive = useIsActive(href);
+  const isActive = useIsActive(href, subHrefs);
 
   const rootClassName = cn(styles.nav, className, {
     [styles.active]: active || isActive,
@@ -51,7 +53,7 @@ export const NavItem: React.FC<NavItemProps> = ({
 
   const renderContent = () => (
     <>
-      <Icon height={16} name={icon} />
+      <Icon height={16} name={icon} className={styles.icon} />
       <span className={styles.label}> {label} </span>
       {Number.isFinite(count) && (
         <Badge className={styles.badge} variant="primary" size="small">
@@ -61,32 +63,28 @@ export const NavItem: React.FC<NavItemProps> = ({
     </>
   );
 
-  if (href) {
-    return (
+  function renderChildren() {
+    if (isActive) {
+      return children;
+    }
+
+    return null;
+  }
+
+  return (
+    <>
       <Link href={{ pathname: href, query: urlParams }} passHref>
-        {/* TODO Property 'href' would be overridden by Link. Check https://git.io/Jns2B */}
         <a
-          {...props}
           href="*"
           onClick={handleOnClick}
+          onKeyPress={handleOnClick}
           className={rootClassName}
         >
           {renderContent()}
         </a>
       </Link>
-    );
-  }
-
-  return (
-    <div
-      tabIndex={0}
-      role="button"
-      onClick={handleOnClick}
-      onKeyPress={handleOnClick}
-      className={rootClassName}
-    >
-      {renderContent()}
-    </div>
+      {renderChildren()}
+    </>
   );
 };
 

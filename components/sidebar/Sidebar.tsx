@@ -168,6 +168,28 @@ export const Sidebar: React.FC<SidebarProps> = ({
     return null;
   }
 
+  function renderHomeNavItem() {
+    if (accountId) {
+      const myDaosHref = '/new/home/my-daos';
+      const myFeedHref = '/new/home/my-feed';
+
+      return (
+        <NavItem
+          label="Home"
+          icon="stateHome"
+          href={myDaosHref}
+          subHrefs={[myFeedHref]}
+          className={styles.item}
+        >
+          <NavSubItem label="My Daos" href={myDaosHref} />
+          <NavSubItem label="My Feed" href={myFeedHref} />
+        </NavItem>
+      );
+    }
+
+    return null;
+  }
+
   return (
     <aside className={rootClassName}>
       <div className={styles.wrapper}>
@@ -181,6 +203,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
         <Logo className={styles.mainLogo} />
         <div className={styles.scrolling}>
+          {renderHomeNavItem()}
+          <hr />
           {renderDaoNavItems()}
           <div className={styles.delimiter} />
           <nav className={styles.bottom}>

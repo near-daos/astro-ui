@@ -25,6 +25,10 @@
   }
 }
 
+.active .icon {
+  color: var(--color-success);
+}
+
 .label {
   margin-left: 4px;
 }

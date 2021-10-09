@@ -1,19 +1,19 @@
-import React, { FC, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
+import React, { FC, useCallback, useState } from 'react';
 
-import { Dropdown } from 'components/dropdown/Dropdown';
+import { DAO } from 'types/dao';
+
 import DaoCard from 'components/cards/dao-card';
+import { Dropdown } from 'components/dropdown/Dropdown';
 
 import { SputnikService } from 'services/SputnikService';
-import { DAO } from 'types/dao';
 import {
-  getActiveProposalsCountByDao,
-  useAllProposals
+  useAllProposals,
+  getActiveProposalsCountByDao
 } from 'hooks/useAllProposals';
 
-import { useMount } from 'react-use';
-import axios from 'axios';
-import get from 'lodash/get';
+import { useNearPrice } from 'hooks/useNearPrice';
+
 import { formatCurrency } from 'utils/formatCurrency';
 
 import styles from './browse-all-daos.module.scss';
@@ -47,13 +47,14 @@ interface BrowseAllDaosProps {
 
 const BrowseAllDaos: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
   const router = useRouter();
+  const nearPrice = useNearPrice();
+
   const activeSort = (router.query.sort as string) ?? sortOptions[1].value;
 
   const proposals = useAllProposals();
   const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
 
   const [data, setData] = useState(initialData);
-  const [nearPrice, setNearPrice] = useState(0);
 
   const handleSort = useCallback(
     value => {
@@ -84,13 +85,6 @@ const BrowseAllDaos: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
     },
     [activeProposalsByDao, data, router]
   );
-
-  useMount(async () => {
-    const nearPriceData = await axios.get('/api/nearPrice');
-    const price = get(nearPriceData, 'data.near.usd');
-
-    setNearPrice(price);
-  });
 
   return (
     <div className={styles.root}>
