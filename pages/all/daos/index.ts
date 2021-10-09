@@ -2,7 +2,7 @@ import { DAO } from 'types/dao';
 import { SputnikService } from 'services/SputnikService';
 import { getActiveProposalsCountByDao } from 'hooks/useAllProposals';
 
-import { AllDaosPage } from './AllDaosPage';
+import AllDaosPage from './AllDaosPage';
 
 interface GetDaoListQuery {
   sort?: string;

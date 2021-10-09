@@ -1,3 +1,3 @@
-import { MyFeedPage } from './MyFeedPage';
+import MyFeedPage from './MyFeedPage';
 
 export default MyFeedPage;

@@ -10,7 +10,7 @@ import { useNearPrice } from 'hooks/useNearPrice';
 
 import styles from './MyDaosPage.module.scss';
 
-export const MyDaosPage: FC = () => {
+const MyDaosPage: FC = () => {
   const nearPrice = useNearPrice();
   const { accountDaos = [] } = useAccountData();
 
@@ -40,3 +40,5 @@ export const MyDaosPage: FC = () => {
     </div>
   );
 };
+
+export default MyDaosPage;

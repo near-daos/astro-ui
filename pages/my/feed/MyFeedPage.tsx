@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-export const MyFeedPage: FC = () => {
+const MyFeedPage: FC = () => {
   // TODO implement actual page
   return (
     <div>
@@ -8,3 +8,5 @@ export const MyFeedPage: FC = () => {
     </div>
   );
 };
+
+export default MyFeedPage;
