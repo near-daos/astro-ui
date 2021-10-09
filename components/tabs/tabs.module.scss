@@ -24,7 +24,7 @@
 
 .tabs {
   -ms-overflow-style: none;
-  overflow-y: scroll;
+  overflow-y: hidden;
   scrollbar-width: none;
 }
 
@@ -62,7 +62,7 @@
   &::after {
     align-items: center;
     border-bottom: 4px solid var(--color-brand-purple-light);
-    color: var(--color-primary);
+    color: currentColor;
     content: attr(data-name);
     cursor: pointer;
     display: flex;
@@ -77,10 +77,11 @@
 }
 
 .active {
-  color: transparent;
+  transform: translateY(100%);
 
   &::after {
     opacity: 1;
+    transform: translateY(-100%);
   }
 }
 

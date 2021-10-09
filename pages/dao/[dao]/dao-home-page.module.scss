@@ -67,3 +67,15 @@
     outline: none;
   }
 }
+
+.activeProposalsTab {
+  color: var(--color-primary-50);
+}
+
+.approvedProposalsTab {
+  color: var(--color-brand-green);
+}
+
+.failedProposalsTab {
+  color: var(--color-brand-coral-red);
+}

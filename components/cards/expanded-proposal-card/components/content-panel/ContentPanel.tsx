@@ -43,7 +43,7 @@ interface ContentPanelProps {
   permissions: ProposalVotingPermissions;
   id: string;
   daoId: string;
-  status: ProposalStatus;
+  status?: ProposalStatus;
 }
 
 export const ContentPanel: FC<ContentPanelProps> = ({
@@ -64,8 +64,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
   proposalId,
   proposalData,
   daoData,
-  permissions,
-  status
+  permissions
 }) => {
   const flag = (tempFlag as StaticImageData).src;
 
@@ -91,7 +90,8 @@ export const ContentPanel: FC<ContentPanelProps> = ({
                 className={styles.icon}
                 onClick={() => {
                   const loc = document.location;
-                  const url = `${loc.origin}${loc.pathname}?proposal=${id}&proposalStatus=${status}`;
+
+                  const url = `${loc.href}&proposal=${id}`;
 
                   copyTextToClipboard(url);
                 }}

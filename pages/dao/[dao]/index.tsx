@@ -12,7 +12,6 @@ import {
   ProposalTrackerCard,
   ProposalTrackerProps
 } from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
-import { Dropdown } from 'components/dropdown/Dropdown';
 import { useModal } from 'components/modal';
 import { CreateProposalPopup } from 'features/dao-home/components/create-proposal-popup/CreateProposalPopup';
 import { ProposalCollapsableSection } from 'features/dao-home/components/proposals-collapsable-section';
@@ -20,21 +19,23 @@ import {
   DaoDetails,
   DaoDetailsProps
 } from 'features/dao-home/components/dao-details/DaoDetails';
+import { ProposalsTabsFilter } from 'components/proposals-tabs-filter';
 
 import {
+  filterProposalsByStatus,
   getDaoDetailsFromDao,
   getFundAndMembersNum,
   getProposalStats,
-  useFilteredData,
-  getProposalsFilterOptions
+  useProposalsData
 } from 'features/dao-home/helpers';
+import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
 import { useDao } from 'hooks/useDao';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
 import { SputnikService } from 'services/SputnikService';
 import { VOTE_BY_PERIOD } from 'constants/votingConstants';
-import { ProposalStatus } from 'types/proposal';
+import { Proposal } from 'types/proposal';
 
 import { useAuthContext } from 'context/AuthContext';
 import { useNearPrice } from 'hooks/useNearPrice';
@@ -53,17 +54,10 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
   const { accountId } = useAuthContext();
 
   const router = useRouter();
-  const {
-    pending: isPending,
-    proposal: proposalId,
-    proposalStatus,
-    dao: daoId
-  } = router.query;
+  const { pending: isPending, proposal: proposalId, dao: daoId } = router.query;
   const dao = useDao(daoId as string);
 
-  const { filter, onFilterChange, filteredData, data } = useFilteredData(
-    proposalStatus ? (proposalStatus as ProposalStatus) : undefined
-  );
+  const { data } = useProposalsData();
 
   const nearPrice = useNearPrice();
 
@@ -186,23 +180,41 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
       {renderProposalTracker()}
       {renderDaoMembersFundInfo()}
       <div className={styles.proposalList}>
-        <Dropdown
-          className={styles.onTop}
-          defaultValue="Active proposals"
-          onChange={onFilterChange}
-          value={filter}
-          options={getProposalsFilterOptions(accountId)}
+        <ProposalsTabsFilter
+          proposals={data}
+          filter={filterProposalsByStatus}
+          tabsConfig={[
+            {
+              label: 'Active proposals',
+              className: styles.activeProposalsTab
+            },
+            {
+              label: 'Approved',
+              className: styles.approvedProposalsTab
+            },
+            {
+              label: 'Failed',
+              className: styles.failedProposalsTab
+            }
+          ]}
+          tabContentRenderer={(proposals: Proposal[]) => {
+            const filteredData = splitProposalsByVotingPeriod(proposals);
+
+            return (
+              <>
+                {VOTE_BY_PERIOD.map(period => (
+                  <ProposalCollapsableSection
+                    key={period.key}
+                    proposals={filteredData[period.key]}
+                    title={period.title}
+                    view={period.key}
+                    expandedProposalId={(proposalId ?? '') as string}
+                  />
+                ))}
+              </>
+            );
+          }}
         />
-        {VOTE_BY_PERIOD.map(period => (
-          <ProposalCollapsableSection
-            filter={filter}
-            key={period.key}
-            proposals={filteredData[period.key]}
-            title={period.title}
-            view={period.key}
-            expandedProposalId={(proposalId ?? '') as string}
-          />
-        ))}
       </div>
     </div>
   );

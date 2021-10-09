@@ -4,8 +4,6 @@ import React, { FC, useEffect, useState } from 'react';
 
 import { Proposal } from 'types/proposal';
 
-import { ProposalsFilter } from 'features/dao-home/helpers';
-
 import { VotePeriodKey } from 'constants/votingConstants';
 
 import { Button } from 'components/button/Button';
@@ -20,15 +18,13 @@ interface ProposalCollapsableSectionProps {
   expandedProposalId?: string;
   view: VotePeriodKey;
   title: string;
-  filter: ProposalsFilter;
 }
 
 export const ProposalCollapsableSection: FC<ProposalCollapsableSectionProps> = ({
   proposals,
   expandedProposalId,
   view,
-  title,
-  filter
+  title
 }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -42,10 +38,7 @@ export const ProposalCollapsableSection: FC<ProposalCollapsableSectionProps> = (
     }
   }, [expandedProposalId, proposals]);
 
-  if (
-    isEmpty(proposals) ||
-    (filter === 'Active proposals' && view === 'otherProposals')
-  ) {
+  if (isEmpty(proposals)) {
     return null;
   }
 

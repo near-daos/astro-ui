@@ -1,14 +1,12 @@
 import { useRouter } from 'next/router';
 
 import { DAO } from 'types/dao';
-import { Proposal, ProposalsByEndTime, ProposalStatus } from 'types/proposal';
+import { Proposal } from 'types/proposal';
 
 import { formatCurrency } from 'utils/formatCurrency';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SputnikService } from 'services/SputnikService';
-import { useAuthContext } from 'context/AuthContext';
 
-import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
 import { Option } from 'components/dropdown/Dropdown';
 
 type DaoDetailsType = {
@@ -92,26 +90,11 @@ export type ProposalsFilter =
   | 'My proposals';
 
 interface ProposalsData {
-  filter: ProposalsFilter;
-  onFilterChange: (val?: string) => void;
-  filteredData: ProposalsByEndTime;
   data: Proposal[];
 }
 
-function getInitialFilter(status?: ProposalStatus) {
-  if (!status || status === 'InProgress') return 'Active proposals';
-
-  return 'Recent proposals';
-}
-
-export function useFilteredData(
-  proposalStatus?: ProposalStatus
-): ProposalsData {
+export function useProposalsData(): ProposalsData {
   const router = useRouter();
-  const { accountId } = useAuthContext();
-  const [filter, setFilter] = useState<ProposalsFilter>(() =>
-    getInitialFilter(proposalStatus)
-  );
   const [proposals, setProposals] = useState<Proposal[]>([]);
 
   useEffect(() => {
@@ -128,45 +111,32 @@ export function useFilteredData(
     fetchProposals();
   }, [router.query.dao]);
 
-  useEffect(() => {
-    if (proposalStatus) {
-      setFilter(
-        proposalStatus === 'InProgress'
-          ? 'Active proposals'
-          : 'Recent proposals'
-      );
-    }
-  }, [proposalStatus]);
-
-  const onFilterChange = useCallback(value => {
-    setFilter(value);
-  }, []);
-
-  const filteredData = proposals.filter(item => {
-    switch (filter) {
-      case 'Active proposals': {
-        return item.status === 'InProgress';
-      }
-      case 'Recent proposals': {
-        return item.status !== 'InProgress';
-      }
-      case 'My proposals': {
-        return item.proposer === accountId;
-      }
-      default: {
-        return true;
-      }
-    }
-  });
-
-  const proposalsByVotingPeriod = splitProposalsByVotingPeriod(filteredData);
-
   return {
-    filter,
-    onFilterChange,
-    filteredData: proposalsByVotingPeriod,
     data: proposals
   };
+}
+
+export function filterProposalsByStatus(proposals: Proposal[]): Proposal[][] {
+  return proposals.reduce(
+    (res, item) => {
+      switch (item.status) {
+        case 'InProgress': {
+          res[0].push(item);
+          break;
+        }
+        case 'Approved': {
+          res[1].push(item);
+          break;
+        }
+        default: {
+          res[2].push(item);
+        }
+      }
+
+      return res;
+    },
+    [[] as Proposal[], [] as Proposal[], [] as Proposal[]]
+  );
 }
 
 export function getProposalsFilterOptions(
