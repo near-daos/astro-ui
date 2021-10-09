@@ -1,10 +1,11 @@
 import { SWRConfig } from 'swr';
 import sortBy from 'lodash/sortBy';
-import { useMount } from 'react-use';
+import { useCookie, useMount } from 'react-use';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import type { AppContext, AppProps } from 'next/app';
 
+import { DAO_COOKIE } from 'constants/cookies';
 import { ALL_DAOS_URL, CREATE_DAO_URL } from 'constants/routing';
 
 import { AuthWrapper } from 'context/AuthContext';
@@ -32,10 +33,13 @@ function usePageLayout(): React.FC {
 
 function App({ Component, pageProps }: AppProps): JSX.Element {
   const router = useRouter();
-  const [walletInitialized, setWalletInitialized] = useState(false);
-  const account = CookieService.get('account');
 
   const Layout = usePageLayout();
+
+  const [walletInitialized, setWalletInitialized] = useState(false);
+  const [, setSelectedDaoCookie] = useCookie(DAO_COOKIE);
+
+  const account = CookieService.get('account');
 
   useMount(async () => {
     SputnikService.init();
@@ -49,6 +53,12 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
       });
     }
   }, [account, router]);
+
+  useEffect(() => {
+    if (router.query.dao) {
+      setSelectedDaoCookie(router.query.dao as string);
+    }
+  }, [router, setSelectedDaoCookie]);
 
   if (walletInitialized) {
     return (

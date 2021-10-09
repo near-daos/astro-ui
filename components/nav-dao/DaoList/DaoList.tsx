@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useBoolean, useCookie } from 'react-use';
 
 import { Collapsable } from 'components/collapsable/Collapsable';
@@ -20,13 +20,6 @@ export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
 
   const [selectedDaoId, setSelectedDaoCookie] = useCookie(DAO_COOKIE);
   const selectedDao = items?.find(item => item.id === selectedDaoId);
-
-  useEffect(() => {
-    // Set selected dao cookie if it is not present but we have account daos loaded
-    if (!selectedDaoId && items.length) {
-      setSelectedDaoCookie(items[0].id);
-    }
-  }, [items, selectedDaoId, setSelectedDaoCookie]);
 
   return (
     <div>

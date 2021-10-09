@@ -1,60 +1,26 @@
-import find from 'lodash/find';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
-import { DAO } from 'types/dao';
+import { MenuItem } from 'components/sidebar/types';
 
-import { Sidebar } from 'components/sidebar';
 import { useAccountData } from 'features/account-data';
 import { AddGroupMenu } from 'features/groups/components/add-group-menu';
 
-import { getActiveProposalsCountByDao } from 'hooks/useAllProposals';
-
-import { SputnikService } from 'services/SputnikService';
 import { CookieService } from 'services/CookieService';
 
 import {
-  GOVERNANCE_SECTION_ID,
-  GROUPS_SECTION_ID,
-  OVERVIEW_SECTION_ID,
   TASKS_SECTION_ID,
-  TREASURY_SECTION_ID
+  GROUPS_SECTION_ID,
+  TREASURY_SECTION_ID,
+  GOVERNANCE_SECTION_ID
 } from './constants';
 
-type TSidebarData = React.ComponentProps<typeof Sidebar>['items'];
-
-function checkIfDaoDataLoaded(
-  selectedDaoId: string | undefined,
-  daos: DAO[] | null
-) {
-  if (!selectedDaoId || daos === null) {
-    return false;
-  }
-
-  return !!find(daos, item => item.id === selectedDaoId);
-}
-
-export const useSidebarData = (): {
-  daos: DAO[] | null;
-  menuItems: TSidebarData;
-} => {
+export const useGetDaoNavItems = (): MenuItem[] => {
   const { accountDaos } = useAccountData();
   const selectedDaoId = CookieService.get('selectedDao');
   const selectedDao = accountDaos?.find(item => item.id === selectedDaoId);
-  const [daos, setDaos] = useState<DAO[] | null>(null);
 
-  const daoDataLoaded = checkIfDaoDataLoaded(selectedDaoId, daos);
-
-  const sidebarItems: React.ComponentProps<
-    typeof Sidebar
-  >['items'] = useMemo(() => {
+  const sidebarItems: MenuItem[] = useMemo(() => {
     return [
-      {
-        id: OVERVIEW_SECTION_ID,
-        label: 'Overview',
-        logo: 'stateOverview',
-        subItems: [],
-        href: `/dao/${selectedDaoId}`
-      },
       {
         id: TASKS_SECTION_ID,
         label: 'Tasks',
@@ -137,7 +103,7 @@ export const useSidebarData = (): {
         ]
       }
     ];
-  }, [selectedDaoId]);
+  }, []);
 
   const menuItems = useMemo(() => {
     const groups = {} as Record<string, string>;
@@ -189,46 +155,5 @@ export const useSidebarData = (): {
     });
   }, [selectedDao, sidebarItems]);
 
-  useEffect(() => {
-    async function fetchAdditionalData() {
-      const accountId = SputnikService.getAccountId();
-
-      if (accountId && !daoDataLoaded) {
-        const proposals = accountDaos?.length
-          ? await SputnikService.getActiveProposals(
-              accountDaos.map(item => item.id),
-              0,
-              500
-            )
-          : [];
-        const votesCountByDao = proposals.reduce((res, item) => {
-          if (res[item.daoId] !== undefined) {
-            res[item.daoId] += Object.keys(item.votes).length;
-          } else {
-            res[item.daoId] = Object.keys(item.votes).length;
-          }
-
-          return res;
-        }, {} as Record<string, number>);
-        const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
-
-        const updatedDaos = accountDaos?.map(dao => {
-          return {
-            ...dao,
-            proposals: activeProposalsByDao[dao.id],
-            votes: votesCountByDao[dao.id]
-          };
-        });
-
-        setDaos(updatedDaos);
-      }
-    }
-
-    fetchAdditionalData();
-  }, [selectedDaoId, daoDataLoaded, accountDaos]);
-
-  return {
-    menuItems,
-    daos
-  };
+  return menuItems;
 };
