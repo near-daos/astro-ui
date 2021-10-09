@@ -54,7 +54,7 @@ export const DaoHeader: React.VFC<DAOHeaderProps> = ({
       ) : (
         <Icon width={24} height={24} name="flag" />
       )}
-      <h3> {label} </h3>
+      <h3>{label}</h3>
       <div className={styles.expandCollapseElement}>
         <Icon width={24} name="buttonArrowDown" className={iconClassName} />
       </div>

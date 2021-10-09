@@ -38,7 +38,7 @@ export const DaoList: React.VFC<DAOListProps> = ({ items, ...props }) => {
           <DaoHeader
             logo={selectedDao?.logo}
             isOpen={isHeadingOpen}
-            label={selectedDao?.name || ''}
+            label={selectedDao?.displayName || selectedDao?.name || ''}
             openCloseDropdown={toggleHeading}
           />
         )}
