@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import { useMount } from 'react-use';
 import React, { FC, MouseEvent, useState } from 'react';
+import { composeProperLinkUrl } from 'helpers/composeProperLinkUrl';
 
 import { Icon } from 'components/Icon';
 
@@ -13,9 +14,11 @@ interface ExternalLinkProps {
 const ExternalLink: FC<ExternalLinkProps> = ({ to }) => {
   const [linkTitle, setLinkTitle] = useState('');
 
+  const link = composeProperLinkUrl(to);
+
   useMount(() => {
     try {
-      const { hostname } = new URL(to ?? '');
+      const { hostname } = new URL(link ?? '');
 
       setLinkTitle(hostname);
     } catch (e) {
@@ -29,7 +32,7 @@ const ExternalLink: FC<ExternalLinkProps> = ({ to }) => {
 
   return (
     <a
-      href={to}
+      href={link}
       target="_blank"
       rel="noreferrer"
       onClick={stopPropagation}
@@ -37,7 +40,7 @@ const ExternalLink: FC<ExternalLinkProps> = ({ to }) => {
     >
       <Icon name="buttonExternal" width={14} />
       &nbsp;
-      <span className={cn('caption1', styles.text)}>{linkTitle}&nbsp;</span>
+      <span className={cn('caption1', styles.text)}>{linkTitle}</span>
     </a>
   );
 };
