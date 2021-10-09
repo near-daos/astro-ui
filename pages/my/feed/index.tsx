@@ -1,14 +1,19 @@
 import { GetServerSideProps } from 'next';
-import { CookieService } from 'services/CookieService';
+
+import { Proposal } from 'types/proposal';
+
+import { Bounty } from 'components/cards/bounty-card/types';
+
 import {
   DaoFilterValues,
   ProposalFilterValues
 } from 'features/member-home/types';
+
+import { CookieService } from 'services/CookieService';
 import { SputnikService } from 'services/SputnikService';
 import { mapBountyResponseToBounty } from 'services/SputnikService/mappers/bounty';
-import { Bounty } from 'components/cards/bounty-card/types';
-import { Proposal } from 'types/proposal';
-import { MyFeedPage } from './MyFeedPage';
+
+import MyFeedPage from './MyFeedPage';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { tab, daoViewFilter } = query;
