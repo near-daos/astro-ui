@@ -108,7 +108,7 @@ export const DaoNavMenu: FC = () => {
                 alt="Dao Logo"
               />
             </div>
-            {dao.name}
+            {dao.displayName || dao.name}
           </div>
         </Link>
         {renderSelectedDaoAdditionalPages()}
