@@ -68,9 +68,9 @@ const PluginsPage: FC<PluginPageProps> = ({ plugins = PLUGINS_DATA }) => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.header}>Plugins</div>
-      <div className={styles.create}>
-        <Button variant="secondary" onClick={handleCreateClick}>
+      <div className={styles.header}>
+        <span>Plugins</span>
+        <Button variant="black" size="small" onClick={handleCreateClick}>
           Run a plugin
         </Button>
       </div>

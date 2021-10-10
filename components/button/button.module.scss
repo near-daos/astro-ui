@@ -97,6 +97,17 @@
   }
 }
 
+.black {
+  background: var(--color-neutral-90);
+  color: var(--color-white);
+  text-transform: none;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 0 40px var(--color-black);
+  }
+}
+
 .auth {
   background: var(--color-neutral-90);
   color: var(--color-white);

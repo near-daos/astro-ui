@@ -39,9 +39,9 @@ const PollsPage: FC<PollsPageProps> = () => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.header}>Polls</div>
-      <div className={styles.create}>
-        <Button variant="secondary" onClick={handleCreateClick}>
+      <div className={styles.header}>
+        <span>Polls</span>
+        <Button variant="black" size="small" onClick={handleCreateClick}>
           Create new poll
         </Button>
       </div>

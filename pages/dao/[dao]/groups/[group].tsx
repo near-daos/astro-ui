@@ -13,7 +13,6 @@ import { useRouter } from 'next/router';
 
 import styles from 'pages/dao/[dao]/groups/groups.module.scss';
 import React, { FC, useCallback, useState } from 'react';
-import { useMedia } from 'react-use';
 
 import { DAO, Member } from 'types/dao';
 import { GetServerSideProps } from 'next';
@@ -44,9 +43,17 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
   const group = groupMap[paramGroup] || paramGroup;
   const [showCardModal] = useModal(MemberCardPopup);
   const [showGroupModal] = useModal(GroupPopup);
-  const isMobile = useMedia('(max-width: 640px)');
 
   const [activeSort, setActiveSort] = useState<string>(sortOptions[0].value);
+
+  const handleCreateGroup = useCallback(async () => {
+    await showGroupModal({
+      initialValues: {
+        groupType: GroupFormType.CREATE_GROUP,
+        groups: []
+      }
+    });
+  }, [showGroupModal]);
 
   const handleAddClick = useCallback(async () => {
     await showGroupModal({
@@ -115,16 +122,16 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h1>{pageTitle}</h1>
-        <Button
-          size={isMobile ? 'block' : 'small'}
-          variant="secondary"
-          onClick={handleAddClick}
-        >
-          {pageTitle === 'all'
-            ? 'Add member to group'
-            : 'Add member to this group'}
-        </Button>
+        <span>{pageTitle === 'all' ? 'All Members' : <>{pageTitle}</>}</span>
+        {pageTitle === 'all' ? (
+          <Button size="small" variant="black" onClick={handleCreateGroup}>
+            Create a Group
+          </Button>
+        ) : (
+          <Button size="small" variant="black" onClick={handleAddClick}>
+            Add member to this group
+          </Button>
+        )}
       </div>
       <div className={styles.filter}>
         <Dropdown
@@ -134,7 +141,7 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
           onChange={value => setActiveSort(value ?? sortOptions[0].value)}
         />
       </div>
-      <div className={styles.content}>
+      <div className={styles.members}>
         {sortedData.map(item => (
           <MemberCard
             onRemoveClick={async () => {

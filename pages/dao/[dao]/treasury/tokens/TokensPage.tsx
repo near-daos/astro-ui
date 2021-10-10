@@ -127,17 +127,18 @@ const TokensPage: React.FC<TokensPageProps> = ({
 
   return (
     <div className={styles.root}>
+      <div className={styles.header}>
+        <span>Tokens</span>
+        <Button variant="black" size="small" onClick={handleClick}>
+          Send tokens
+        </Button>
+      </div>
       <div className={styles.account}>
         <div className={styles.caption}>DAO account name</div>
         <div className={styles.name}>
           {daoId}
           <CopyButton text={daoId} className={styles.icon} />
         </div>
-      </div>
-      <div className={styles.send}>
-        <Button variant="secondary" onClick={handleClick}>
-          Send tokens
-        </Button>
       </div>
       <div className={styles.chart}>
         <AreaChart data={chartData} captions={captions} />

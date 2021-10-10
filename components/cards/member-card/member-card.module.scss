@@ -5,21 +5,23 @@
   background: var(--color-neutral-10);
   border: 0;
   border-radius: 8px;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
-
   max-width: 328px;
-
   padding: 24px;
   position: relative;
-
   width: 100%;
 }
 
 .clickable {
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   cursor: pointer;
+  transition: box-shadow 0.4s;
+
+  &:hover {
+    box-shadow: 3px 2px 24px var(--color-black-opacity-25);
+  }
 }
 
 .personIcon {

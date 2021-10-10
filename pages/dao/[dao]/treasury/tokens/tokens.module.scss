@@ -6,22 +6,33 @@
   grid-column-gap: 8px;
   grid-row-gap: 24px;
   grid-template-areas:
+    'header header'
     'accountName accountName'
-    'sendTokens sendTokens'
     'chart chart'
     'label label'
     'tokens tokens';
   grid-template-columns: 1fr 1fr;
   padding-top: 56px;
+}
 
-  @include tablet-landscape {
-    grid-row-gap: 40px;
-    grid-template-areas:
-      'accountName  sendTokens'
-      'chart chart'
-      'label label'
-      'tokens tokens';
-    grid-template-columns: 2fr 1fr;
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  grid-area: header;
+
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
+    gap: 35px;
+  }
+
+  span {
+    @extend %heading2;
+
+    @include tablet-landscape {
+      @include font(2em, 48px, 500);
+    }
   }
 }
 
@@ -50,27 +61,6 @@
 
   .icon {
     margin-left: 8px;
-  }
-}
-
-.send {
-  @extend %subtitle2;
-  color: var(--color-brand-black);
-  grid-area: sendTokens;
-  justify-self: end;
-  width: 100%;
-
-  @include tablet-landscape {
-    width: auto;
-  }
-
-  button {
-    text-transform: none;
-    width: 100%;
-
-    @include tablet-landscape {
-      min-width: auto;
-    }
   }
 }
 
