@@ -502,14 +502,18 @@ class SputnikService {
         operator: '$eq',
         value: `${filter.daoViewFilter}.${nearConfig.contractName}`
       });
-    } else if (filter.daoFilter === 'My DAOs') {
+    } else if (filter.daoFilter === 'My DAOs' && accountId) {
       const accountDaos = await this.getAccountDaos(accountId);
 
-      queryString.setFilter({
-        field: 'daoId',
-        operator: '$in',
-        value: accountDaos.map(item => item.id)
-      });
+      if (accountDaos.length) {
+        queryString.setFilter({
+          field: 'daoId',
+          operator: '$in',
+          value: accountDaos.map(item => item.id)
+        });
+      } else {
+        return Promise.resolve([]);
+      }
     }
 
     if (filter.proposalFilter === 'Active proposals') {
@@ -530,7 +534,10 @@ class SputnikService {
         operator: '$in',
         value: ['Approved', 'Rejected', 'Expired', 'Moved']
       });
-    } else if (filter.proposalFilter === 'Polls') {
+    }
+
+    // Polls
+    if (filter.proposalFilter === 'Polls') {
       queryString.setFilter({
         field: 'kind',
         operator: '$cont',
