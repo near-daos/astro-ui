@@ -122,13 +122,13 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <span>{pageTitle === 'all' ? 'All Members' : <>{pageTitle}</>}</span>
+        <h1>{pageTitle === 'all' ? 'All Members' : <>{pageTitle}</>}</h1>
         {pageTitle === 'all' ? (
-          <Button size="small" variant="black" onClick={handleCreateGroup}>
-            Create a Group
+          <Button variant="black" size="small" onClick={handleCreateGroup}>
+            Create new group
           </Button>
         ) : (
-          <Button size="small" variant="black" onClick={handleAddClick}>
+          <Button variant="black" size="small" onClick={handleAddClick}>
             Add member to this group
           </Button>
         )}
@@ -141,7 +141,7 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
           onChange={value => setActiveSort(value ?? sortOptions[0].value)}
         />
       </div>
-      <div className={styles.members}>
+      <div className={styles.content}>
         {sortedData.map(item => (
           <MemberCard
             onRemoveClick={async () => {

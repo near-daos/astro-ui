@@ -1,9 +1,10 @@
-import { useRouter } from 'next/router';
 import React, { FC, useCallback, useState } from 'react';
 
 import { DAO } from 'types/dao';
 
 import DaoCard from 'components/cards/dao-card';
+import { Button } from 'components/button/Button';
+import { CREATE_DAO_URL } from 'constants/routing';
 import { Dropdown } from 'components/dropdown/Dropdown';
 
 import { SputnikService } from 'services/SputnikService';
@@ -12,9 +13,11 @@ import {
   getActiveProposalsCountByDao
 } from 'hooks/useAllProposals';
 
-import { useNearPrice } from 'hooks/useNearPrice';
-
 import { formatCurrency } from 'utils/formatCurrency';
+
+import { useRouter } from 'next/router';
+import { useNearPrice } from 'hooks/useNearPrice';
+import { useAuthContext } from 'context/AuthContext';
 
 import styles from './AllDaosPage.module.scss';
 
@@ -48,6 +51,7 @@ interface BrowseAllDaosProps {
 const AllDaosPage: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
   const router = useRouter();
   const nearPrice = useNearPrice();
+  const { accountId, login } = useAuthContext();
 
   const activeSort = (router.query.sort as string) ?? sortOptions[1].value;
 
@@ -86,10 +90,18 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
     [activeProposalsByDao, data, router]
   );
 
+  const handleCreateDao = useCallback(
+    () => (accountId ? router.push(CREATE_DAO_URL) : login()),
+    [login, router, accountId]
+  );
+
   return (
     <div className={styles.root}>
       <div className={styles.header}>
         <h1>All Communities</h1>
+        <Button variant="black" size="small" onClick={handleCreateDao}>
+          Create new DAO
+        </Button>
       </div>
       <div className={styles.filter}>
         <Dropdown

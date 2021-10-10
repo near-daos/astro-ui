@@ -14,7 +14,9 @@ interface NFTsProps {
 const NFTs: NextPage<NFTsProps> = ({ nfts = [] }) => {
   return (
     <div className={styles.root}>
-      <div className={styles.label}>All NFTs</div>
+      <div className={styles.header}>
+        <h1>All NFTs</h1>
+      </div>
       <div className={styles.content}>
         {nfts.map(nft => (
           <div className={styles.card} key={nft.metadata.media}>

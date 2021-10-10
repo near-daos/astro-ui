@@ -128,7 +128,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <span>Tokens</span>
+        <h1>Tokens</h1>
         <Button variant="black" size="small" onClick={handleClick}>
           Send tokens
         </Button>

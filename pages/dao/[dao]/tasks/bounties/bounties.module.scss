@@ -24,12 +24,8 @@
     gap: 35px;
   }
 
-  span {
-    @extend %heading2;
-
-    @include tablet-landscape {
-      @include font(2em, 48px, 500);
-    }
+  h1 {
+    margin: 0;
   }
 }
 

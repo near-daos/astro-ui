@@ -1,4 +1,3 @@
-@import 'styles/typography';
 @import 'styles/mixins';
 
 .root {
@@ -7,7 +6,7 @@
   grid-template-areas:
     'header'
     'filter'
-    'members';
+    'content';
   grid-template-columns: 1fr;
   padding-top: 56px;
 }
@@ -24,13 +23,8 @@
     gap: 35px;
   }
 
-  span {
-    @extend %heading2;
-    text-transform: capitalize;
-
-    @include tablet-landscape {
-      @include font(2em, 48px, 500);
-    }
+  h1 {
+    margin: 0;
   }
 }
 
@@ -40,9 +34,9 @@
   z-index: 1;
 }
 
-.members {
+.content {
   display: grid;
-  grid-area: members;
+  grid-area: content;
   grid-gap: 24px;
   grid-template-columns: 1fr;
   place-items: start center;

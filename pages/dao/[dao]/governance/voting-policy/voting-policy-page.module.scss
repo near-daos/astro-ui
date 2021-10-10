@@ -4,14 +4,23 @@
 .header {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  margin: 24px 0;
+  margin: 56px 0 24px;
+
+  h1 {
+    margin: 0;
+  }
 }
 
 .changeButton {
-  display: none;
+  margin-top: 24px;
+  text-transform: none;
+  width: 100%;
+
   @include tablet-portrait {
-    display: block;
+    margin-top: 0;
+    width: auto;
   }
 }
 

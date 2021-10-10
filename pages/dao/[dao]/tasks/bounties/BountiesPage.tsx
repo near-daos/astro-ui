@@ -110,7 +110,7 @@ const BountiesPage: FC<BountiesPageProps> = ({
     <BountyPageContext.Provider value={getContextValue()}>
       <div className={styles.root}>
         <div className={styles.header}>
-          <span>Bounties</span>
+          <h1>Bounties</h1>
           <Button variant="black" size="small" onClick={handleCreateClick}>
             Create new bounty
           </Button>

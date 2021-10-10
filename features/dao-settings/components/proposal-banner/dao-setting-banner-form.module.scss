@@ -61,11 +61,23 @@
 .header {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 1rem;
 
   h2 {
     display: inline-block;
+  }
+
+  button {
+    margin-bottom: 24px;
+    text-transform: none;
+    width: 100%;
+
+    @include tablet-portrait {
+      margin-bottom: 0;
+      width: auto;
+    }
   }
 }
 

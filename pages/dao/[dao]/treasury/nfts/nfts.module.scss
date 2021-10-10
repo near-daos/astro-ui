@@ -1,19 +1,33 @@
-@import 'styles/typography';
+@import 'styles/mixins';
 
 .root {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'header'
+    'content';
+  grid-template-columns: 1fr;
+  padding-top: 56px;
 }
 
-.label {
-  @extend %heading1;
-  color: var(--color-brand-black);
+.header {
+  grid-area: header;
+
+  h1 {
+    margin: 0;
+  }
 }
 
 .content {
   display: flex;
   flex-wrap: wrap;
+  grid-area: content;
+  justify-content: center;
   padding-top: 48px;
+
+  @include tablet-landscape {
+    justify-content: flex-start;
+  }
 }
 
 .card {
@@ -21,10 +35,4 @@
   padding-bottom: 24px;
   padding-right: 24px;
   width: 296px;
-}
-
-@media screen and (max-width: 768px) {
-  .content {
-    justify-content: center;
-  }
 }

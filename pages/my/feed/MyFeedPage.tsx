@@ -85,18 +85,18 @@ const MyFeedPage: FC<MyFeedPageProps> = ({ proposals, bounties, filter }) => {
       <div className={styles.row}>
         <h1>My Feed</h1>
         {filter.daoViewFilter && (
-          <div>
-            <Button
-              onClick={() => {
-                router.push({
-                  pathname: '',
-                  query: omit(router.query, ['daoViewFilter'])
-                });
-              }}
-            >
-              Remove filter
-            </Button>
-          </div>
+          <Button
+            variant="secondary"
+            size="small"
+            onClick={() => {
+              router.push({
+                pathname: '',
+                query: omit(router.query, ['daoViewFilter'])
+              });
+            }}
+          >
+            Remove filter
+          </Button>
         )}
       </div>
       <div>
