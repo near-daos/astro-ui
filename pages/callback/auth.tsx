@@ -1,31 +1,18 @@
-import { NextPage } from 'next';
+import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { GetServerSideProps, NextPage } from 'next';
 import { useEffect } from 'react';
-import { CookieService } from 'services/CookieService';
 import { SputnikService } from 'services/SputnikService';
-
-const COOKIE_EXPIRES_TIME = Number(
-  process.env.NEXT_PUBLIC_ACCOUNT_COOKIE_EXPIRES
-);
 
 const Callback: NextPage = () => {
   useEffect(() => {
     if (window.opener && window.opener.sputnikRequestSignInCompleted) {
+      const { searchParams } = new URL(window.location.toString());
+      const accountId = searchParams.get('account_id') || undefined;
+      const errorCode = searchParams.get('errorCode') || undefined;
+
       SputnikService.init();
 
-      const expirationDate = new Date();
-
-      expirationDate.setDate(expirationDate.getDate() + COOKIE_EXPIRES_TIME);
-      CookieService.set('account', SputnikService.getAccountId(), {
-        secure: window.location.protocol === 'https:', // To make it work properly on deploys
-        path: '/',
-        expires: Number.isInteger(COOKIE_EXPIRES_TIME)
-          ? expirationDate
-          : undefined
-      });
-
-      window.opener?.sputnikRequestSignInCompleted(
-        SputnikService.getAccountId()
-      );
+      window.opener?.sputnikRequestSignInCompleted({ accountId, errorCode });
 
       setTimeout(() => {
         window.close();
@@ -39,6 +26,20 @@ const Callback: NextPage = () => {
   }, []);
 
   return null;
+};
+
+export const getServerSideProps: GetServerSideProps = async ({
+  res,
+  query
+}) => {
+  const accountId = query.account_id;
+
+  res.setHeader(
+    'set-cookie',
+    `${ACCOUNT_COOKIE}=${accountId}; path=/; Max-Age=${Number.MAX_SAFE_INTEGER}`
+  );
+
+  return { props: {} };
 };
 
 export default Callback;

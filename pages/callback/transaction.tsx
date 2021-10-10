@@ -1,18 +1,22 @@
 import { NextPage } from 'next';
 import { useEffect } from 'react';
-import { SputnikService } from 'services/SputnikService';
 
 const Transaction: NextPage = () => {
   useEffect(() => {
     const callback = window.opener?.sputnikRequestSignTransactionCompleted;
 
     if (typeof callback === 'function') {
-      const transactionHashes = new URL(
-        window.location.toString()
-      ).searchParams.get('transactionHashes');
+      const { searchParams } = new URL(window.location.toString());
+      const transactionHashes = searchParams.get('transactionHashes');
+      const errorCode = searchParams.get('errorCode');
 
-      SputnikService.init();
-      callback?.(transactionHashes);
+      if (transactionHashes) {
+        callback?.({ transactionHashes });
+      } else if (errorCode) {
+        callback?.({ errorCode });
+      } else {
+        callback?.({ errorCode: 'unknown' });
+      }
 
       setTimeout(() => {
         window.close();

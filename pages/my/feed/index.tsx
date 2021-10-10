@@ -13,11 +13,12 @@ import { CookieService } from 'services/CookieService';
 import { SputnikService } from 'services/SputnikService';
 import { mapBountyResponseToBounty } from 'services/SputnikService/mappers/bounty';
 
+import { ACCOUNT_COOKIE } from 'constants/cookies';
 import MyFeedPage from './MyFeedPage';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { tab, daoViewFilter } = query;
-  const accountId = CookieService.get('account');
+  const accountId = CookieService.get(ACCOUNT_COOKIE);
 
   let proposals: Proposal[] = [];
   let bounties: Bounty[] = [];

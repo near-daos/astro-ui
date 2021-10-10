@@ -46,9 +46,10 @@ import {
 import { Transaction } from 'types/transaction';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
+import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { gas, yoktoNear } from './constants';
 import { ContractPool } from './ContractPool';
-import { SputnikWalletConnection } from './SputnikWalletConnection';
+import { SputnikWalletConnection } from './overrides/SputnikWalletConnection';
 
 class SputnikService {
   private readonly config: NearConfig;
@@ -147,17 +148,17 @@ class SputnikService {
       return this.walletConnection.isSignedIn();
     }
 
-    return true;
+    return !!CookieService.get(ACCOUNT_COOKIE);
   }
 
   public async login(): Promise<void> {
-    await this.walletConnection.requestSignIn(
+    await this.walletConnection.sputnikRequestSignIn(
       this.config.contractName,
-      'Sputnik DAO',
       `${window.origin}/callback/auth`,
       `${window.origin}/callback/auth`
     );
-    await this.init();
+
+    this.init();
   }
 
   public async logout(): Promise<void> {
@@ -166,10 +167,14 @@ class SputnikService {
 
   public getAccountId(): string {
     if (!process.browser) {
-      return CookieService.get('account');
+      return CookieService.get(ACCOUNT_COOKIE);
     }
 
-    return this.walletConnection?.getAccountId();
+    if (!this.walletConnection && process.browser) {
+      this.init();
+    }
+
+    return this.walletConnection.getAccountId();
   }
 
   async computeRequiredDeposit(args: unknown) {
