@@ -13,7 +13,7 @@ import {
 
 import { useAuthContext } from 'context/AuthContext';
 
-import { Logo } from 'components/logo/Logo';
+import { Logo } from 'components/Logo';
 import { Icon } from 'components/Icon';
 import { NavItem } from 'components/nav-item/NavItem';
 import { NavSubItem } from 'components/nav-item/NavSubItem';
@@ -22,7 +22,7 @@ import { AppFooter } from 'features/app-footer';
 
 import { DaoNavMenu } from './components/DaoNavMenu';
 
-import styles from './sidebar.module.scss';
+import styles from './Sidebar.module.scss';
 
 interface SidebarProps {
   className?: string;
@@ -58,27 +58,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
     [login, router, accountId]
   );
 
-  function renderNavItemsOfLoggedUser() {
+  function renderHomeNavItem() {
     if (accountId) {
       return (
-        <>
-          <NavItem
-            label="Home"
-            icon="stateHome"
-            href={MY_DAOS_URL}
-            subHrefs={[MY_FEED_URL]}
-            className={styles.item}
-          >
-            <NavSubItem label="My Daos" href={MY_DAOS_URL} />
-            <NavSubItem label="My Feed" href={MY_FEED_URL} />
-          </NavItem>
-          <NavItem
-            className={styles.item}
-            onClick={createDao}
-            label="Create a DAO"
-            icon="stateCreateDao"
-          />
-        </>
+        <NavItem
+          label="Home"
+          icon="stateHome"
+          href={MY_DAOS_URL}
+          subHrefs={[MY_FEED_URL]}
+          className={styles.item}
+        >
+          <NavSubItem label="My Daos" href={MY_DAOS_URL} />
+          <NavSubItem label="My Feed" href={MY_FEED_URL} />
+        </NavItem>
+      );
+    }
+
+    return null;
+  }
+
+  function renderCreateDaoNavItem() {
+    if (accountId) {
+      return (
+        <NavItem
+          className={styles.item}
+          onClick={createDao}
+          label="Create a DAO"
+          icon="stateCreateDao"
+        />
       );
     }
 
@@ -98,7 +105,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <NavSubItem label="Explore Daos" href={ALL_DAOS_URL} />
           <NavSubItem label="Astro Feed" href={ALL_FEED_URL} />
         </NavItem>
-        <div className={styles.delimiter} />
       </nav>
     );
   }
@@ -134,9 +140,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
         <Logo className={styles.mainLogo} />
         <div className={styles.scrolling}>
-          {renderNavItemsOfLoggedUser()}
+          {renderHomeNavItem()}
           {renderAllCommunities()}
           {renderDaoNavItems()}
+          {renderCreateDaoNavItem()}
         </div>
       </div>
       <AppFooter isLoggedIn />

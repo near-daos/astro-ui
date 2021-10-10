@@ -1,0 +1,36 @@
+@import 'styles/typography';
+
+.menu {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.item {
+  background: var(--color-brand-black);
+  display: flex;
+  padding: 12px 16px 12px 48px;
+}
+
+.delimiter {
+  background-color: var(--color-neutral-70);
+  height: 1px;
+  margin: 14px 16px 14px 24px;
+}
+
+.selectedDao {
+  @extend %heading3;
+  align-items: center;
+  color: var(--color-white);
+  cursor: pointer;
+  display: flex;
+  margin-top: 22px;
+  padding: 12px 16px 12px 100px;
+  position: relative;
+}
+
+.daoLogo {
+  left: 34px;
+  position: absolute;
+}

@@ -13,7 +13,7 @@ import { useGetDaoNavItems } from 'components/sidebar/components/DaoNavMenu/help
 import { useDao } from 'hooks/useDao';
 import { useAccordion } from 'hooks/useAccordion';
 
-import styles from 'components/sidebar/sidebar.module.scss';
+import styles from './DaoNavMenu.module.scss';
 
 export const DaoNavMenu: FC = () => {
   const router = useRouter();
@@ -94,20 +94,26 @@ export const DaoNavMenu: FC = () => {
 
   return (
     <>
-      <Link passHref href={`/dao/${dao.id}`}>
-        <div className={styles.selectedDao}>
-          <ImageWithFallback
-            fallbackSrc="/flag.svg"
-            loading="eager"
-            src={dao?.logo || '/flag.svg'}
-            width={50}
-            height={50}
-            alt="Dao Logo"
-          />
-          {dao.name}
-        </div>
-      </Link>
-      {renderSelectedDaoAdditionalPages()}
+      <div className={styles.delimiter} />
+      <div className={styles.navItems}>
+        <Link passHref href={`/dao/${dao.id}`}>
+          <div className={styles.selectedDao}>
+            <div className={styles.daoLogo}>
+              <ImageWithFallback
+                fallbackSrc="/flag.svg"
+                loading="eager"
+                src={dao?.logo || '/flag.svg'}
+                width={70}
+                height={70}
+                alt="Dao Logo"
+              />
+            </div>
+            {dao.name}
+          </div>
+        </Link>
+        {renderSelectedDaoAdditionalPages()}
+      </div>
+      <div className={styles.delimiter} />
     </>
   );
 };

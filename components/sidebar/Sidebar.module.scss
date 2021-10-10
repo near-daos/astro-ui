@@ -40,7 +40,7 @@
 }
 
 .scrolling {
-  $logo-bottom-part-height: 345px;
+  $logo-bottom-part-height: 385px;
   height: calc(100vh - #{$logo-bottom-part-height});
   overflow-y: scroll;
 }
@@ -61,27 +61,6 @@
   padding: 12px 16px 12px 24px;
 }
 
-.menu {
-  display: flex;
-  flex-basis: 100%;
-  flex-direction: column;
-  overflow-y: auto;
-}
-
-.delimiter {
-  background-color: var(--color-neutral-70);
-  height: 1px;
-  margin: 14px 16px 14px 24px;
-}
-
-.selectedDao {
-  align-items: center;
-  color: var(--color-white);
-  cursor: pointer;
-  display: flex;
-  padding: 12px 16px 12px 24px;
-}
-
 .mobileHeader {
   align-items: center;
   color: #fff;
@@ -98,6 +77,7 @@
 
 .mainLogo {
   display: inline;
+  margin-bottom: 38px;
   width: fit-content;
 }
 
