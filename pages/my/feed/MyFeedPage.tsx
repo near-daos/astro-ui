@@ -60,11 +60,7 @@ interface MyFeedPageProps {
   filter: ProposalsFilter;
 }
 
-export const MyFeedPage: FC<MyFeedPageProps> = ({
-  proposals,
-  bounties,
-  filter
-}) => {
+const MyFeedPage: FC<MyFeedPageProps> = ({ proposals, bounties, filter }) => {
   const router = useRouter();
   const tabs = [
     {
@@ -109,3 +105,5 @@ export const MyFeedPage: FC<MyFeedPageProps> = ({
     </div>
   );
 };
+
+export default MyFeedPage;
