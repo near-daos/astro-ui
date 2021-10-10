@@ -12,6 +12,10 @@
   padding: 24px;
   position: relative;
   width: 100%;
+
+  @include large-desktop {
+    max-width: 296px;
+  }
 }
 
 .clickable {

@@ -30,15 +30,22 @@
 .content {
   display: grid;
   grid-area: content;
-  grid-gap: 50px 70px;
+  grid-gap: 50px;
   grid-template-columns: 1fr;
+  margin-top: 16px;
   place-items: start center;
 
   @include tablet-portrait {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(444px, 1fr));
   }
 
   @include tablet-landscape {
-    grid-template-columns: repeat(auto-fit, minmax(444px, 1fr));
+    grid-gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  }
+
+  @include large-desktop {
+    grid-gap: 50px;
+    grid-template-columns: repeat(auto-fit, minmax(374px, 1fr));
   }
 }

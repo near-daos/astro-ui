@@ -35,17 +35,9 @@
 }
 
 .content {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
   grid-area: content;
-  grid-gap: 24px;
-  grid-template-columns: 1fr;
-  place-items: start center;
-
-  @include tablet-portrait {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  @include tablet-landscape {
-    grid-template-columns: repeat(auto-fill, minmax(296px, 1fr));
-  }
+  justify-content: center;
 }
