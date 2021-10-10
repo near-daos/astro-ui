@@ -1,24 +1,30 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable no-underscore-dangle */
 import * as borsh from 'borsh';
 import {
   ConnectedWalletAccount,
   transactions as Transactions
 } from 'near-api-js';
-import { SignAndSendTransactionOptions } from 'near-api-js/lib/account';
-import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { PublicKey } from 'near-api-js/lib/utils';
+import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 
-// todo refactor
-// @ts-ignore
+import { SputnikWalletConnection } from './types';
+
 export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
-  async _signAndSendTransaction({
-    receiverId,
-    actions,
-    walletMeta
-  }: SignAndSendTransactionOptions): Promise<FinalExecutionOutcome> {
-    const win = window.open(window.origin, '_blank');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async signAndSendTransaction(...args: any[]): Promise<FinalExecutionOutcome> {
+    let options = args[0];
+
+    if (typeof args[0] === 'string') {
+      options = {
+        receiverId: args[0],
+        actions: args[1]
+      };
+    }
+
+    const { receiverId, actions, walletMeta } = options;
+    const walletConnection = this.walletConnection as SputnikWalletConnection;
+
+    const win = window.open(`${window.origin}/pending`, '_blank');
 
     const localKey = await this.connection.signer.getPublicKey(
       this.accountId,
@@ -54,10 +60,12 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
     const block = await this.connection.provider.block({
       finality: 'final'
     });
+
     const blockHash = borsh.baseDecode(block.header.hash);
     const publicKey = PublicKey.from(accessKey.public_key);
     // TODO: Cache & listen for nonce updates for given access key
     const nonce = accessKey.access_key.nonce + 1;
+
     const transaction = Transactions.createTransaction(
       this.accountId,
       publicKey,
@@ -67,39 +75,32 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
       blockHash
     );
 
-    await this.walletConnection.requestSignTransactions({
+    await walletConnection.sputnikRequestSignTransactions({
       transactions: [transaction],
       meta: walletMeta,
       callbackUrl: `${window.origin}/callback/transaction`
     });
 
-    // const test = await Transactions.signTransaction(
-    //   transaction,
-    //   this.connection.signer,
-    //   this.accountId,
-    //   this.connection.networkId
-    // );
-
-    if (win?.location) {
-      win.location.href = (this.walletConnection as any).signTransactionUrl;
+    if (win?.location && walletConnection.signTransactionUrl) {
+      win.location.href = walletConnection.signTransactionUrl;
     }
 
-    return new Promise(resolve => {
-      window.sputnikRequestSignTransactionCompleted = async transactionHash => {
-        if (typeof transactionHash === 'string') {
+    return new Promise((resolve, reject) => {
+      window.sputnikRequestSignTransactionCompleted = async ({
+        transactionHashes,
+        errorCode
+      }) => {
+        if (typeof transactionHashes === 'string') {
           resolve(
-            this.connection.provider.txStatus(transactionHash, this.accountId)
+            this.connection.provider.txStatus(transactionHashes, this.accountId)
           );
         }
 
-        // TODO Refactor
-        // Task failed successfully (just to not break it on internal validation function)
-        // @ts-ignore
-        resolve({
-          status: {
-            SuccessValue: undefined
-          }
-        });
+        if (errorCode) {
+          reject(new Error(errorCode));
+        }
+
+        reject(new Error('Something went wrong!'));
       };
     });
   }

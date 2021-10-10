@@ -1,10 +1,10 @@
-import { SWRConfig } from 'swr';
-import { useCookie, useMount } from 'react-use';
+import React from 'react';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
 import type { AppContext, AppProps } from 'next/app';
 
-import { DAO_COOKIE } from 'constants/cookies';
+import { SWRConfig } from 'swr';
+import { useMount } from 'react-use';
+
 import { ALL_DAOS_URL, CREATE_DAO_URL, MY_FEED_URL } from 'constants/routing';
 
 import { AuthWrapper } from 'context/AuthContext';
@@ -15,6 +15,8 @@ import CreateLayout from 'components/create-layout/CreateLayout';
 
 import { SputnikService } from 'services/SputnikService';
 import { CookieService } from 'services/CookieService';
+
+import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 
 import 'styles/globals.scss';
 
@@ -30,48 +32,30 @@ function usePageLayout(): React.FC {
 
 function App({ Component, pageProps }: AppProps): JSX.Element {
   const router = useRouter();
-
   const Layout = usePageLayout();
-
-  const [walletInitialized, setWalletInitialized] = useState(false);
-  const [, setSelectedDaoCookie] = useCookie(DAO_COOKIE);
-
-  const account = CookieService.get('account');
 
   useMount(async () => {
     SputnikService.init();
-    setWalletInitialized(true);
+
+    CookieService.set(
+      ACCOUNT_COOKIE,
+      SputnikService.getAccountId(),
+      DEFAULT_OPTIONS
+    );
+    CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
   });
 
-  useEffect(() => {
-    if (!account && SputnikService.getAccountId()) {
-      SputnikService.logout().then(() => {
-        router.push(ALL_DAOS_URL);
-      });
-    }
-  }, [account, router]);
-
-  useEffect(() => {
-    if (router.query.dao) {
-      setSelectedDaoCookie(router.query.dao as string);
-    }
-  }, [router, setSelectedDaoCookie]);
-
-  if (walletInitialized) {
-    return (
-      <SWRConfig value={{ fallback: pageProps?.fallback || {} }}>
-        <AuthWrapper>
-          <ModalProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </ModalProvider>
-        </AuthWrapper>
-      </SWRConfig>
-    );
-  }
-
-  return <div />;
+  return (
+    <SWRConfig value={{ fallback: pageProps?.fallback || {} }}>
+      <AuthWrapper>
+        <ModalProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ModalProvider>
+      </AuthWrapper>
+    </SWRConfig>
+  );
 }
 
 App.getInitialProps = async ({ ctx, router }: AppContext) => {
@@ -79,7 +63,7 @@ App.getInitialProps = async ({ ctx, router }: AppContext) => {
 
   CookieService.initServerSideCookies(req?.headers.cookie || null);
 
-  const account = CookieService.get<string | undefined>('account');
+  const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
   if (account && res && router.pathname === '/') {
     res.writeHead(302, { location: MY_FEED_URL });

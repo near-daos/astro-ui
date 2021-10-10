@@ -9,7 +9,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "rm -rf .next && yarn generate-assets-index && next dev",
+    "dev": "rm -rf .next && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -23,6 +23,7 @@
     "test": "jest",
     "generate-assets": "patch-package && yarn generate-assets-index",
     "prebuild": "yarn generate-assets",
+    "postinstall": "yarn generate-assets",
     "generate-assets-index": "node scripts/generateAssetsIndex.js",
     "typecheck": "tsc --noEmit"
   },

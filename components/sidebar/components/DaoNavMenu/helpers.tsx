@@ -8,6 +8,7 @@ import { CookieService } from 'services/CookieService';
 
 import { SputnikService } from 'services/SputnikService';
 import { DAO } from 'types/dao';
+import { DAO_COOKIE } from 'constants/cookies';
 import {
   TASKS_SECTION_ID,
   GROUPS_SECTION_ID,
@@ -17,7 +18,7 @@ import {
 
 export const useGetDaoNavItems = (): MenuItem[] => {
   const [selectedDao, setSelectedDao] = useState<DAO | null>();
-  const selectedDaoId = CookieService.get('selectedDao');
+  const selectedDaoId = CookieService.get(DAO_COOKIE);
 
   useEffect(() => {
     SputnikService.getDaoById(selectedDaoId).then(setSelectedDao);

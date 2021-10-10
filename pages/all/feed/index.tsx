@@ -6,11 +6,12 @@ import { DaoFilterValues } from 'features/member-home/types';
 import { CookieService } from 'services/CookieService';
 import { SputnikService } from 'services/SputnikService';
 
+import { ACCOUNT_COOKIE } from 'constants/cookies';
 import AllFeedPage from './AllFeedPage';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { tab, daoFilter, daoViewFilter } = query;
-  const accountId = CookieService.get('account');
+  const accountId = CookieService.get(ACCOUNT_COOKIE);
 
   const filter = {
     daoFilter: daoFilter ? (daoFilter as DaoFilterValues) : 'All DAOs',
