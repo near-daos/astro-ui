@@ -1,12 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { MenuItem } from 'components/sidebar/types';
 
-import { useAccountData } from 'features/account-data';
 import { AddGroupMenu } from 'features/groups/components/add-group-menu';
 
 import { CookieService } from 'services/CookieService';
 
+import { SputnikService } from 'services/SputnikService';
+import { DAO } from 'types/dao';
 import {
   TASKS_SECTION_ID,
   GROUPS_SECTION_ID,
@@ -15,9 +16,12 @@ import {
 } from './constants';
 
 export const useGetDaoNavItems = (): MenuItem[] => {
-  const { accountDaos } = useAccountData();
+  const [selectedDao, setSelectedDao] = useState<DAO | null>();
   const selectedDaoId = CookieService.get('selectedDao');
-  const selectedDao = accountDaos?.find(item => item.id === selectedDaoId);
+
+  useEffect(() => {
+    SputnikService.getDaoById(selectedDaoId).then(setSelectedDao);
+  }, [selectedDaoId]);
 
   const sidebarItems: MenuItem[] = useMemo(() => {
     return [

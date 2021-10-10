@@ -34,9 +34,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         return result
           .map(mapBountyResponseToBounty)
           .filter(bounty =>
-            bounty.claimedBy.find(
-              claim => claim.accountId === SputnikService.getAccountId()
-            )
+            bounty.claimedBy.find(claim => claim.accountId === accountId)
           );
       });
       break;

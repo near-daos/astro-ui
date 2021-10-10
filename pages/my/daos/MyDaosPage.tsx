@@ -2,17 +2,19 @@ import React, { FC } from 'react';
 
 import DaoCard from 'components/cards/dao-card';
 
-import { useAccountData } from 'features/account-data';
-
 import { formatCurrency } from 'utils/formatCurrency';
 
 import { useNearPrice } from 'hooks/useNearPrice';
 
+import { DAO } from 'types/dao';
 import styles from './MyDaosPage.module.scss';
 
-const MyDaosPage: FC = () => {
+interface MyDaosPageProps {
+  accountDaos: DAO[];
+}
+
+const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
   const nearPrice = useNearPrice();
-  const { accountDaos = [] } = useAccountData();
 
   function renderDaos() {
     return accountDaos.map(dao => {

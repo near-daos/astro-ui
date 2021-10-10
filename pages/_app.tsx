@@ -1,20 +1,17 @@
 import { SWRConfig } from 'swr';
-import sortBy from 'lodash/sortBy';
 import { useCookie, useMount } from 'react-use';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import type { AppContext, AppProps } from 'next/app';
 
 import { DAO_COOKIE } from 'constants/cookies';
-import { ALL_DAOS_URL, CREATE_DAO_URL } from 'constants/routing';
+import { ALL_DAOS_URL, CREATE_DAO_URL, MY_FEED_URL } from 'constants/routing';
 
 import { AuthWrapper } from 'context/AuthContext';
 
 import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
 import CreateLayout from 'components/create-layout/CreateLayout';
-
-import { AccountDataContext } from 'features/account-data';
 
 import { SputnikService } from 'services/SputnikService';
 import { CookieService } from 'services/CookieService';
@@ -65,13 +62,9 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
       <SWRConfig value={{ fallback: pageProps?.fallback || {} }}>
         <AuthWrapper>
           <ModalProvider>
-            <AccountDataContext.Provider
-              value={{ accountDaos: pageProps?.accountDaos }}
-            >
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </AccountDataContext.Provider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
           </ModalProvider>
         </AuthWrapper>
       </SWRConfig>
@@ -88,17 +81,14 @@ App.getInitialProps = async ({ ctx, router }: AppContext) => {
 
   const account = CookieService.get<string | undefined>('account');
 
-  if (account) {
-    const data = await SputnikService.getAccountDaos(account);
+  if (account && res && router.pathname === '/') {
+    res.writeHead(302, { location: MY_FEED_URL });
+    res.end();
 
-    return {
-      pageProps: {
-        accountDaos: sortBy(data, 'id')
-      }
-    };
+    return {};
   }
 
-  if (router.pathname === '/' && res != null) {
+  if (router.pathname === '/' && res != null && !account) {
     res.writeHead(302, { location: ALL_DAOS_URL });
     res.end();
 
