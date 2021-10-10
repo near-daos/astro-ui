@@ -1,3 +1,4 @@
+@import 'styles/mixins';
 @import 'styles/typography';
 
 .menu {
@@ -14,9 +15,14 @@
 }
 
 .delimiter {
-  background-color: var(--color-neutral-70);
+  background-color: var(--color-white-opacity-10);
   height: 1px;
   margin: 14px 16px 14px 24px;
+
+  @include mobile-only {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 .selectedDao {

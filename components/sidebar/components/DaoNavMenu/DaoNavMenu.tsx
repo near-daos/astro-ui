@@ -63,7 +63,7 @@ export const DaoNavMenu: FC = () => {
               duration={250}
               renderHeading={toggle => (
                 <NavItem
-                  onClick={() => toggle()}
+                  onClick={toggle}
                   className={styles.item}
                   label={item.label}
                   count={item.count}

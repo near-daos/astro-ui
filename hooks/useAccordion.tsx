@@ -7,8 +7,7 @@ interface UseAccordionParams {
 }
 
 interface ItemProps {
-  isOpen: boolean;
-  toggle: (nextValue?: boolean) => void;
+  initialOpenState: boolean;
 }
 
 interface UseAccordionReturnT {
@@ -50,8 +49,7 @@ export function useAccordion(
   };
 
   const getItemProps = (id: string): ItemProps => ({
-    toggle: () => toggleItem(id),
-    isOpen: selected.includes(id)
+    initialOpenState: selected.includes(id)
   });
 
   return {

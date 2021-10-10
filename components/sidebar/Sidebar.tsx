@@ -17,6 +17,7 @@ import { Logo } from 'components/Logo';
 import { Icon } from 'components/Icon';
 import { NavItem } from 'components/nav-item/NavItem';
 import { NavSubItem } from 'components/nav-item/NavSubItem';
+import { Collapsable } from 'components/collapsable/Collapsable';
 
 import { AppFooter } from 'features/app-footer';
 
@@ -58,19 +59,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
     [login, router, accountId]
   );
 
+  function isSectionExpanded(hrefs: string[]): boolean {
+    const { pathname } = router;
+
+    return hrefs.includes(pathname);
+  }
+
   function renderHomeNavItem() {
     if (accountId) {
+      const subHrefs = [MY_DAOS_URL, MY_FEED_URL];
+
       return (
-        <NavItem
-          label="Home"
-          icon="stateHome"
-          href={MY_DAOS_URL}
-          subHrefs={[MY_FEED_URL]}
-          className={styles.item}
+        <Collapsable
+          initialOpenState={isSectionExpanded(subHrefs)}
+          renderHeading={toggle => {
+            return (
+              <NavItem
+                label="Home"
+                icon="stateHome"
+                onClick={toggle}
+                className={styles.item}
+                subHrefs={subHrefs}
+              />
+            );
+          }}
         >
           <NavSubItem label="My Daos" href={MY_DAOS_URL} />
           <NavSubItem label="My Feed" href={MY_FEED_URL} />
-        </NavItem>
+        </Collapsable>
       );
     }
 
@@ -93,18 +109,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
   }
 
   function renderAllCommunities() {
+    const subHrefs = [ALL_DAOS_URL, ALL_FEED_URL];
+
     return (
       <nav className={styles.bottom}>
-        <NavItem
-          href={ALL_DAOS_URL}
-          subHrefs={[ALL_FEED_URL]}
-          label="All Communities"
-          icon="stateCommunities"
-          className={styles.item}
+        <Collapsable
+          initialOpenState={isSectionExpanded(subHrefs)}
+          renderHeading={toggle => {
+            return (
+              <NavItem
+                onClick={toggle}
+                subHrefs={subHrefs}
+                label="All Communities"
+                icon="stateCommunities"
+                className={styles.item}
+              />
+            );
+          }}
         >
           <NavSubItem label="Explore Daos" href={ALL_DAOS_URL} />
           <NavSubItem label="Astro Feed" href={ALL_FEED_URL} />
-        </NavItem>
+        </Collapsable>
       </nav>
     );
   }
