@@ -21,12 +21,14 @@ interface AllFinalizedProposalsProps {
   data: ProposalByDao;
   selectedDao: string | null;
   changeFilter: (filter: DaoViewFilter) => void;
+  expandedProposalId?: string;
 }
 
 export const AllFinalizedProposals: FC<AllFinalizedProposalsProps> = ({
   data,
   selectedDao,
-  changeFilter
+  changeFilter,
+  expandedProposalId
 }) => {
   const proposals = Object.values(data)
     .map(({ proposals: props }) => props)
@@ -58,6 +60,7 @@ export const AllFinalizedProposals: FC<AllFinalizedProposalsProps> = ({
           daoName={daoName}
           proposals={daoProposalData.proposals}
           flag={flag}
+          expandedProposalId={expandedProposalId}
         />
       );
     });

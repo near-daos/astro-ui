@@ -15,6 +15,7 @@ interface DaoSectionProps {
   onFilterSet: () => void;
   expanded: boolean;
   filter: string | null;
+  expandedProposalId?: string;
 }
 
 export const DaoSection: FC<DaoSectionProps> = ({
@@ -24,7 +25,8 @@ export const DaoSection: FC<DaoSectionProps> = ({
   flag,
   onFilterSet,
   expanded,
-  filter
+  filter,
+  expandedProposalId
 }) => {
   return (
     <>
@@ -57,7 +59,10 @@ export const DaoSection: FC<DaoSectionProps> = ({
       {proposals.slice(0, expanded ? undefined : 3).map(item => {
         return (
           <div className={styles.cardWrapper} key={item.id}>
-            <ProposalCardRenderer proposal={item} />
+            <ProposalCardRenderer
+              proposal={item}
+              showExpanded={item.id === expandedProposalId}
+            />
           </div>
         );
       })}

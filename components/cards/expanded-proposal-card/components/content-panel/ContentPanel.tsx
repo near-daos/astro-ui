@@ -1,6 +1,5 @@
 import React, { FC, ReactNode } from 'react';
 
-import { IconButton } from 'components/button/IconButton';
 import * as Typography from 'components/Typography';
 import ProposalControlPanel from 'components/cards/proposal-card/components/proposal-control-panel/ProposalControlPanel';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
@@ -16,7 +15,7 @@ import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card
 import { DAO } from 'types/dao';
 import { getScope } from 'components/cards/expanded-proposal-card/helpers';
 import tempFlag from 'stories/dao-home/assets/flag.png';
-import { copyTextToClipboard } from 'helpers/clipboard';
+import { CopyButton } from 'features/copy-button';
 
 import styles from './content-panel.module.scss';
 
@@ -84,16 +83,9 @@ export const ContentPanel: FC<ContentPanelProps> = ({
             </div>
             <div className={styles.right}>
               {/* <Icon name="buttonBookmark" className={styles.icon} /> */}
-              <IconButton
-                icon="buttonShare"
-                className={styles.icon}
-                onClick={() => {
-                  const loc = document.location;
-
-                  const url = `${loc.href}`;
-
-                  copyTextToClipboard(url);
-                }}
+              <CopyButton
+                text={document.location.href}
+                iconName="buttonShare"
               />
             </div>
           </div>

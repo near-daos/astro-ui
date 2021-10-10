@@ -23,6 +23,7 @@ const AllActiveProposalsView: FC<ProposalsTabProps> = ({
   filter
 }) => {
   const router = useRouter();
+  const { proposal: proposalId } = router.query;
   const filteredData = splitProposalsByVotingPeriod(proposals);
 
   const handleFilterChange = useCallback(
@@ -48,6 +49,7 @@ const AllActiveProposalsView: FC<ProposalsTabProps> = ({
           title={period.title}
           periodKey={period.key}
           data={arrangeByDao(filteredData[period.key])}
+          expandedProposalId={(proposalId ?? '') as string}
         />
       ))}
     </>

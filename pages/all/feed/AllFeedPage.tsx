@@ -1,5 +1,6 @@
 import React from 'react';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 
 import { Proposal } from 'types/proposal';
 
@@ -26,6 +27,8 @@ type TabLabels =
   | 'All Finalized proposals';
 
 const AllFeedPage: NextPage<HomeProps> = ({ proposals }) => {
+  const router = useRouter();
+  const { proposal: proposalId } = router.query;
   const {
     filter,
     filteredProposalsData,
@@ -42,6 +45,7 @@ const AllFeedPage: NextPage<HomeProps> = ({ proposals }) => {
         title={period.title}
         periodKey={period.key}
         data={filteredProposalsData[period.key]}
+        expandedProposalId={(proposalId ?? '') as string}
       />
     );
   });
@@ -64,6 +68,7 @@ const AllFeedPage: NextPage<HomeProps> = ({ proposals }) => {
           changeFilter={onFilterChange}
           selectedDao={filter.daoViewFilter}
           data={filteredProposalsData.otherProposals}
+          expandedProposalId={(proposalId ?? '') as string}
         />
       )
     }

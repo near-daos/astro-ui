@@ -25,6 +25,7 @@ interface ProposalsByDaoRendererProps {
   data: ProposalByDao;
   filter: ProposalsFilter;
   onFilterChange: (filter: DaoViewFilter) => void;
+  expandedProposalId?: string;
 }
 
 export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
@@ -32,7 +33,8 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
   periodKey,
   data,
   filter,
-  onFilterChange
+  onFilterChange,
+  expandedProposalId
 }) => {
   if (
     isEmpty(data) ||
@@ -100,6 +102,7 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
             daoName={daoName}
             proposals={daoProposalData.proposals}
             flag={flag}
+            expandedProposalId={expandedProposalId}
           />
         );
       })}
