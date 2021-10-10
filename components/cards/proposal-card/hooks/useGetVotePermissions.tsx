@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { useDao } from 'hooks/useDao';
 import { ProposalAction } from 'types/role';
 import { ProposalType, ProposalVotingPermissions } from 'types/proposal';
+import { DAO } from 'types/dao';
 
 const APP_TO_CONTRACT_PROPOSAL_TYPE = {
   [ProposalType.ChangeConfig]: 'config',
@@ -20,12 +20,10 @@ const APP_TO_CONTRACT_PROPOSAL_TYPE = {
 };
 
 export function useGetVotePermissions(
-  daoId: string,
+  dao: DAO,
   proposalType: ProposalType,
   accountId: string
 ): ProposalVotingPermissions {
-  const dao = useDao(daoId);
-
   const [permissions, setPermissions] = useState<ProposalVotingPermissions>({
     canApprove: false,
     canReject: false,

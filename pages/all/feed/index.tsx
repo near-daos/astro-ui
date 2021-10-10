@@ -10,11 +10,11 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import AllFeedPage from './AllFeedPage';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { tab, daoFilter, daoViewFilter } = query;
+  const { tab, daoViewFilter } = query;
   const accountId = CookieService.get(ACCOUNT_COOKIE);
 
   const filter = {
-    daoFilter: daoFilter ? (daoFilter as DaoFilterValues) : 'All DAOs',
+    daoFilter: 'All DAOs' as DaoFilterValues,
     proposalFilter: getProposalFilter(tab),
     daoViewFilter: daoViewFilter ? (daoViewFilter as string) : null
   };

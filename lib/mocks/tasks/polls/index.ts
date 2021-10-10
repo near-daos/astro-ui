@@ -8,6 +8,7 @@ import {
 import { ProposalCardProps } from 'components/cards/proposal-card';
 import { nanoid } from 'nanoid';
 import { ProposalStatus, ProposalType } from 'types/proposal';
+import { DAO } from 'types/dao';
 
 const generatePoll = (
   status: ProposalStatus,
@@ -39,7 +40,8 @@ const generatePoll = (
     logo: ''
   },
   proposalId: 1,
-  daoId: 'my-awesome-dao'
+  daoId: 'my-awesome-dao',
+  dao: {} as DAO
 });
 
 const generatePolls = () => {

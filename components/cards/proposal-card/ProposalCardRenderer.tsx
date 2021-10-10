@@ -134,6 +134,7 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
       proposalId={proposal.proposalId}
       daoId={proposal.daoId}
       showExpanded={showExpanded}
+      dao={proposal.dao}
     >
       {content}
     </ProposalCard>

@@ -1,5 +1,5 @@
 import { Token } from 'components/cards/member-card';
-import { PolicyType } from './proposal';
+import { PolicyType } from 'types/policy';
 
 export type DaoVotePolicy = {
   weightKind: string;

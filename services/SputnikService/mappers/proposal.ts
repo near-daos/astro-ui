@@ -3,7 +3,8 @@ import { Proposal, ProposalKind } from 'types/proposal';
 import {
   DaoDTO,
   fromBase64ToMetadata,
-  getLogoUrl
+  getLogoUrl,
+  mapDaoDTOtoDao
 } from 'services/SputnikService/mappers/dao';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
@@ -98,6 +99,7 @@ export const mapProposalDTOToProposal = (
     ),
     txHash: proposalDTO.transactionHash,
     createdAt: proposalDTO.createdAt,
+    dao: mapDaoDTOtoDao(proposalDTO.dao),
     daoDetails: {
       name: proposalDTO.dao.config.name,
       logo:

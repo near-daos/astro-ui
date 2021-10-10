@@ -14,7 +14,7 @@ import {
   ExpandedProposalCard,
   ExpandedProposalCardProps
 } from 'components/cards/expanded-proposal-card';
-
+import { DAO } from 'types/dao';
 import { useGetVotePermissions } from './hooks/useGetVotePermissions';
 
 import styles from './proposal-card.module.scss';
@@ -40,6 +40,7 @@ export interface ProposalCardProps {
   proposalId: number;
   daoId: string;
   showExpanded?: boolean;
+  dao: DAO;
 }
 
 const ProposalCardComponent: FC<ProposalCardProps> = ({
@@ -62,11 +63,12 @@ const ProposalCardComponent: FC<ProposalCardProps> = ({
   proposalId,
   daoId,
   showExpanded,
-  id
+  id,
+  dao
 }) => {
   const { accountId } = useAuthContext();
 
-  const permissions = useGetVotePermissions(daoId, type, accountId);
+  const permissions = useGetVotePermissions(dao, type, accountId);
 
   const variantClassName = cn({
     [styles.default]: variant === 'Default',

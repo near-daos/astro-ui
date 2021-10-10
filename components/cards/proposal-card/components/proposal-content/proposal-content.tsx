@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import cn from 'classnames';
 
-import { PolicyType } from 'types/proposal';
+import { PolicyType } from 'types/policy';
 
 import { Badge } from 'components/badge/Badge';
 import { Icon } from 'components/Icon';
