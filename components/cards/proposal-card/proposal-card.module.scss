@@ -50,16 +50,19 @@
 
 .header {
   align-items: center;
-  color: var(--color-neutral-60);
   display: flex;
   justify-content: space-between;
-  text-transform: lowercase;
 }
 
 .title {
-  color: var(--color-neutral-50);
-  font-weight: 700;
+  color: var(--color-neutral-60);
+  font-size: 1em;
+  font-weight: 500;
   text-transform: lowercase;
+
+  @include tablet-landscape {
+    font-weight: 700;
+  }
 }
 
 .icon {
@@ -68,16 +71,7 @@
 }
 
 .body {
-  @include ellipse-text;
   margin-top: 10px;
-  max-width: 100%;
-  white-space: nowrap;
-
-  &.default {
-    @include tablet-landscape {
-      padding-right: 64px;
-    }
-  }
 
   &.collapsed {
     @include tablet-landscape {
@@ -88,4 +82,10 @@
 
 .footer {
   margin-top: 12px;
+
+  &.transfer {
+    @include tablet-landscape {
+      margin-top: -44px;
+    }
+  }
 }

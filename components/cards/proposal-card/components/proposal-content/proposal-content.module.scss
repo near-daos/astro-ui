@@ -1,44 +1,42 @@
 @import 'styles/mixins';
 
 .row {
-  align-items: center;
   display: flex;
-  flex-wrap: wrap;
-  height: 56px;
-
-  @include tablet-landscape {
-    flex-wrap: nowrap;
-    height: auto;
-    min-height: 28px;
-  }
 }
 
 .subRow {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
+  height: 48px;
+  margin-top: 10px;
+  max-width: 432px;
+
+  @include desktop {
+    width: calc(100% - 305px);
+  }
 }
 
 .sub {
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .text {
-  font-family: Inter, 'sans-serif';
   font-size: 1em;
-  overflow: hidden;
-  white-space: normal;
+  font-weight: 400;
+  line-height: 24px;
 
   @include tablet-landscape {
     font-size: 1.125em;
-    text-overflow: ellipsis;
+    line-height: 28px;
+  }
+
+  b {
+    font-weight: 700;
   }
 
   > div {
-    font-size: 14px;
-
-    @include tablet-portrait {
-      font-size: 16px;
-    }
+    font-size: 12px;
   }
 }
 
@@ -53,7 +51,7 @@
 }
 
 .icon {
-  height: 24px;
-  margin: 0 24px;
+  height: 25px;
+  margin: 0 20px;
   width: 24px;
 }
