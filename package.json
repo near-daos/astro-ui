@@ -24,7 +24,7 @@
     "generate-assets": "patch-package && yarn generate-assets-index",
     "prebuild": "yarn generate-assets",
     "postinstall": "yarn generate-assets",
-    "generate-assets-index": "node ./scripts/generateAssetsIndex.js",
+    "generate-assets-index": "[ -f \"./scripts/generateAssetsIndex.js\" ] && node scripts/generateAssetsIndex.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
