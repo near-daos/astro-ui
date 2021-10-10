@@ -13,10 +13,7 @@ import {
   getActiveProposalsCountByDao
 } from 'hooks/useAllProposals';
 
-import { formatCurrency } from 'utils/formatCurrency';
-
 import { useRouter } from 'next/router';
-import { useNearPrice } from 'hooks/useNearPrice';
 import { useAuthContext } from 'context/AuthContext';
 
 import styles from './AllDaosPage.module.scss';
@@ -50,7 +47,6 @@ interface BrowseAllDaosProps {
 
 const AllDaosPage: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
   const router = useRouter();
-  const nearPrice = useNearPrice();
   const { accountId, login } = useAuthContext();
 
   const activeSort = (router.query.sort as string) ?? sortOptions[1].value;
@@ -115,13 +111,13 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
         {data.map(item => {
           return (
             <DaoCard
+              dao={item}
               key={item.id}
               flag={item.logo}
               title={item.name}
               daoAccountName={item.id}
               description={item.description}
               activeProposals={item.proposals ?? 0}
-              funds={formatCurrency(parseFloat(item.funds) * nearPrice)}
               members={item.members}
             />
           );

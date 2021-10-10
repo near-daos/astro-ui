@@ -4,10 +4,7 @@ import DaoCard from 'components/cards/dao-card';
 import { Button } from 'components/button/Button';
 import { CREATE_DAO_URL } from 'constants/routing';
 
-import { formatCurrency } from 'utils/formatCurrency';
-
 import { useRouter } from 'next/router';
-import { useNearPrice } from 'hooks/useNearPrice';
 import { useAuthContext } from 'context/AuthContext';
 
 import { DAO } from 'types/dao';
@@ -19,22 +16,21 @@ interface MyDaosPageProps {
 
 const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
   const router = useRouter();
-  const nearPrice = useNearPrice();
   const { accountId, login } = useAuthContext();
 
   function renderDaos() {
     return accountDaos.map(dao => {
-      const { id, logo, name, description, proposals, members, funds } = dao;
+      const { id, logo, name, description, proposals, members } = dao;
 
       return (
         <DaoCard
+          dao={dao}
           key={id}
           flag={logo}
           title={name}
           daoAccountName={id}
           description={description}
           activeProposals={proposals ?? 0}
-          funds={formatCurrency(parseFloat(funds) * nearPrice)}
           members={members}
         />
       );
