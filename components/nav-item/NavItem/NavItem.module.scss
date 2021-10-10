@@ -16,7 +16,6 @@
   }
 
   &:hover {
-    background-color: var(--color-black);
     color: var(--color-white);
   }
 
@@ -25,8 +24,14 @@
   }
 }
 
-.active .icon {
-  color: var(--color-success);
+.active {
+  &:hover {
+    color: var(--color-success);
+  }
+
+  .icon {
+    color: var(--color-success);
+  }
 }
 
 .label {

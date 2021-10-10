@@ -2,7 +2,6 @@
 
 .sub {
   @extend %subtitle4;
-  background: var(--color-neutral-85);
   color: var(--color-white-opacity-5);
   display: inline-flex;
   line-height: 24px;
@@ -14,7 +13,6 @@
   }
 
   &:hover {
-    background-color: var(--color-black);
     color: var(--color-white);
   }
 
