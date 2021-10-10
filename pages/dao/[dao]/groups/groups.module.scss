@@ -35,9 +35,23 @@
 }
 
 .content {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
+  display: grid;
   grid-area: content;
-  justify-content: center;
+  grid-gap: 24px;
+  grid-template-columns: 1fr;
+  place-items: start center;
+
+  @include tablet-portrait {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include tablet-landscape {
+    grid-gap: 48px;
+    grid-template-columns: repeat(auto-fill, minmax(328px, 1fr));
+  }
+
+  @include large-desktop {
+    grid-gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(296px, 1fr));
+  }
 }
