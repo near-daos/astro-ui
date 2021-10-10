@@ -79,7 +79,11 @@ export const AccountButton: FC = () => {
       {accountId ? (
         renderLoggedUserInfo()
       ) : (
-        <Button size={isMobile ? 'small' : 'medium'} onClick={login}>
+        <Button
+          onClick={login}
+          className={styles.auth}
+          size={isMobile ? 'small' : 'medium'}
+        >
           <span>Sign in </span>
           {!isMobile && (
             <span>

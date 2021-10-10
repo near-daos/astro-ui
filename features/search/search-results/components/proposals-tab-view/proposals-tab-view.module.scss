@@ -37,6 +37,8 @@
   display: flex;
   gap: 24px;
   margin: 0 0 12px;
+  padding-left: 46px;
+  position: relative;
 
   .daoLink {
     align-items: center;
@@ -47,8 +49,10 @@
     background-position: center center;
     background-repeat: no-repeat;
     background-size: contain;
-    height: 40px;
-    width: 40px;
+    height: 100px;
+    left: -44px;
+    position: absolute;
+    width: 100px;
   }
 
   h3 {
@@ -57,7 +61,7 @@
   }
 
   .divider {
-    background: var(--color-neutral-40);
+    background: var(--color-primary-20);
     flex: 1;
     height: 1.5px;
   }
