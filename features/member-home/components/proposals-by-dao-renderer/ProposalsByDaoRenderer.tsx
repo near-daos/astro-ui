@@ -96,6 +96,7 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
               scrollToTop();
             }}
             filter={filter.daoViewFilter}
+            daoId={daoProposalData.dao.id}
             daoName={daoName}
             proposals={daoProposalData.proposals}
             flag={flag}

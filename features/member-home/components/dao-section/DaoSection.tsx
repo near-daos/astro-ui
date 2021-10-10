@@ -5,8 +5,10 @@ import { ProposalCardRenderer } from 'components/cards/proposal-card';
 import styles from 'features/search/search-results/components/proposals-tab-view/proposals-tab-view.module.scss';
 import { Proposal } from 'types/proposal';
 import { Button } from 'components/button/Button';
+import Link from 'next/link';
 
 interface DaoSectionProps {
+  daoId: string;
   daoName: string;
   proposals: Proposal[];
   flag: string;
@@ -16,6 +18,7 @@ interface DaoSectionProps {
 }
 
 export const DaoSection: FC<DaoSectionProps> = ({
+  daoId,
   daoName,
   proposals,
   flag,
@@ -28,11 +31,16 @@ export const DaoSection: FC<DaoSectionProps> = ({
       <div className={styles.daoDivider}>
         {!filter && (
           <>
-            <div
-              className={styles.flag}
-              style={{ backgroundImage: `url(${flag})` }}
-            />
-            <h3>{daoName}</h3>
+            <Link passHref href={`/dao/${daoId}`}>
+              <a className={styles.daoLink}>
+                <div
+                  className={styles.flag}
+                  style={{ backgroundImage: `url(${flag})` }}
+                />
+                <h3>{daoName}</h3>
+              </a>
+            </Link>
+
             <div className={styles.divider} />
           </>
         )}

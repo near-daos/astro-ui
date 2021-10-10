@@ -38,6 +38,11 @@
   gap: 24px;
   margin: 0 0 12px;
 
+  .daoLink {
+    align-items: center;
+    display: flex;
+  }
+
   .flag {
     background-position: center center;
     background-repeat: no-repeat;

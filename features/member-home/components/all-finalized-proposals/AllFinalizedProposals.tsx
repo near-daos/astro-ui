@@ -54,6 +54,7 @@ export const AllFinalizedProposals: FC<AllFinalizedProposalsProps> = ({
             scrollToTop();
           }}
           filter={selectedDao}
+          daoId={daoProposalData.dao.id}
           daoName={daoName}
           proposals={daoProposalData.proposals}
           flag={flag}
