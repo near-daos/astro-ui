@@ -13,7 +13,7 @@ import { Collapsable } from 'components/collapsable/Collapsable';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { SearchFilters } from 'features/search/search-filters';
-import { NoResultsView } from 'features/search/search-results/components/no-results-view';
+import { NoSearchResultsView } from 'features/search/search-results/components/no-search-results-view';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { ProposalCardRenderer } from 'components/cards/proposal-card';
 
@@ -104,7 +104,7 @@ export const ProposalsTabView: FC = () => {
   };
 
   if (isEmpty(proposals)) {
-    return <NoResultsView query={query} />;
+    return <NoSearchResultsView query={query} />;
   }
 
   return (

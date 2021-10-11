@@ -5,6 +5,8 @@ import { IconButton } from 'components/button/IconButton';
 import ScrollList from 'components/scroll-list/ScrollList';
 import { ListOnScrollProps, VariableSizeList } from 'react-window';
 import { useMedia } from 'react-use';
+import isEmpty from 'lodash/isEmpty';
+import { NoResultsView } from 'features/no-results-view';
 
 import styles from './bounties-list.module.scss';
 
@@ -36,6 +38,10 @@ export const BountiesList: FC<BountiesListProps> = ({
 
     scrollListRef.current.scrollToItem(0);
   }, [scrollListRef]);
+
+  if (isEmpty(bountiesList)) {
+    return <NoResultsView title="No proposals here" />;
+  }
 
   const renderCard = ({
     index,

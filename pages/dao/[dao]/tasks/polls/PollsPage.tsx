@@ -1,5 +1,6 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import { CreatePollDialog } from 'features/poll/dialogs/create-poll-dialog/CreatePollDialog';
 import { ProposalCardRenderer } from 'components/cards/proposal-card';
@@ -11,6 +12,7 @@ import { Proposal } from 'types/proposal';
 import { ProposalsTabsFilter } from 'components/proposals-tabs-filter';
 import { filterProposalsByStatus } from 'features/dao-home/helpers';
 import { useAuthContext } from 'context/AuthContext';
+import { NoResultsView } from 'features/no-results-view';
 
 interface PollsPageProps {
   data: Proposal[];
@@ -70,15 +72,21 @@ const PollsPage: FC<PollsPageProps> = () => {
               className: styles.failedProposalsTab
             }
           ]}
-          tabContentRenderer={(proposals: Proposal[]) => (
-            <div className={styles.proposalsView}>
-              {proposals.map(item => (
-                <div className={styles.proposalCardWrapper}>
-                  <ProposalCardRenderer proposal={item} />
-                </div>
-              ))}
-            </div>
-          )}
+          tabContentRenderer={(proposals: Proposal[]) => {
+            if (isEmpty(proposals)) {
+              return <NoResultsView title="No proposals here" />;
+            }
+
+            return (
+              <div className={styles.proposalsView}>
+                {proposals.map(item => (
+                  <div className={styles.proposalCardWrapper}>
+                    <ProposalCardRenderer proposal={item} />
+                  </div>
+                ))}
+              </div>
+            );
+          }}
         />
       </div>
     </div>
