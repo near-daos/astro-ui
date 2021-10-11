@@ -1,4 +1,4 @@
-export type Token = 'NEAR';
+export type Token = 'NEAR' | 'Fungible Token';
 
 export type Vote = 'Yes' | 'No' | 'Dismiss';
 

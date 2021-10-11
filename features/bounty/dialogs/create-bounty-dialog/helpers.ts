@@ -31,7 +31,9 @@ export function getAddBountyProposal(
     details,
     deadlineUnit,
     deadlineThreshold,
-    externalUrl
+    externalUrl,
+    tokenAddress,
+    token
   } = data;
 
   const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
@@ -43,7 +45,7 @@ export function getAddBountyProposal(
     data: {
       bounty: {
         description: proposalDescription,
-        token: '',
+        token: token === 'Fungible Token' && tokenAddress ? tokenAddress : '',
         amount: new Decimal(amount).mul(yoktoNear).toFixed(),
         times: slots,
         max_deadline: getDeadline(deadlineThreshold, deadlineUnit)

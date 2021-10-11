@@ -34,5 +34,9 @@ export const tokenOptions = [
   {
     value: 'NEAR',
     label: 'NEAR'
+  },
+  {
+    value: 'Fungible Token',
+    label: 'Fungible Token'
   }
 ];

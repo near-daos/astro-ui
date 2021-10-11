@@ -83,7 +83,7 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
           amount={proposal.kind.amount}
           reason={proposal.description}
           recipient={proposal.kind.receiverId}
-          tokens={proposal.kind.tokenId}
+          token={proposal.kind.tokenId}
           link={proposal.link}
         />
       );

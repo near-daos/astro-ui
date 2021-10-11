@@ -4,7 +4,6 @@ import {
   ClaimBountyDialog,
   ClaimBountyDialogProps
 } from 'features/bounty/dialogs/claim-bounty-dialog/ClaimBountyDialog';
-import { Token } from 'types/token';
 
 export default {
   title: 'Features/Bounty/Dialogs/ClaimBounty',
@@ -21,7 +20,7 @@ Template.args = {
   data: {
     id: '',
     forgivenessPeriod: '',
-    token: Token.NEAR,
+    token: 'NEAR',
     amount: '112',
     description:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',

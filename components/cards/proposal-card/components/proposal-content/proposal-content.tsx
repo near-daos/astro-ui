@@ -8,6 +8,7 @@ import { Icon } from 'components/Icon';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
 import { formatYoktoValue } from 'helpers/format';
 
+import { Token } from 'features/types';
 import styles from './proposal-content.module.scss';
 
 interface ProposalContentProps {
@@ -97,14 +98,14 @@ CreateNewGroup.defaultProps = {
 
 interface RequestPayoutProps extends ProposalContentProps {
   amount: string;
-  tokens?: string;
+  token: Token | string;
   recipient: string;
   reason?: string | null;
 }
 
 export const RequestPayout: FC<RequestPayoutProps> = ({
   amount,
-  // tokens,
+  token,
   recipient,
   reason,
   link
@@ -124,7 +125,7 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
       </span>
       &nbsp;
       <span className={cn('title1', styles.valueDesc)}>
-        <Icon name="logoNear" width={43} />
+        {token === '' ? 'NEAR' : 'FT'}
       </span>
       <Icon name="transfer" className={styles.icon} />
       <span>{recipient}</span>

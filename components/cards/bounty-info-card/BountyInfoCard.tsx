@@ -33,7 +33,9 @@ export const BountyInfoCard: FC<BountyInfoCardProps> = ({ data }) => {
         <div className={styles.reward}>
           <span className={styles.value}>{amountValue}</span>
           &nbsp;
-          <span className={styles.valueDesc}>{token}</span>
+          <span className={styles.valueDesc}>
+            {token === '' ? 'NEAR' : 'FT'}
+          </span>
         </div>
       </div>
     </div>
