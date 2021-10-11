@@ -61,7 +61,7 @@ export const Feed: FC<FeedProps> = ({ proposals, bounties, filter, title }) => {
   return (
     <div className={styles.root}>
       <div className={styles.row}>
-        <h1>{filter.daoViewFilter ?? title}</h1>
+        <h1>{filter?.daoViewFilter ?? title}</h1>
         {filter.daoViewFilter && (
           <Button
             variant="secondary"

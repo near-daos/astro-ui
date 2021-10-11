@@ -95,7 +95,23 @@
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .tabs {
+    display: flex;
+    order: 2;
     width: calc(100vw - 48px);
+  }
+
+  .optional {
+    display: block;
+    flex: 1;
+    order: 1;
+    width: 100%;
+  }
+
+  .tabsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    height: unset;
   }
 
   .tab {

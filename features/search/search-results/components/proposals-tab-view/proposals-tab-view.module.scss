@@ -102,4 +102,10 @@
       min-width: unset;
     }
   }
+
+  .votingEnds {
+    &:first-child {
+      margin-top: 20px;
+    }
+  }
 }
