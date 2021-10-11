@@ -1,5 +1,10 @@
 import get from 'lodash/get';
-import { Proposal, ProposalKind } from 'types/proposal';
+import {
+  CreateProposalParams,
+  Proposal,
+  ProposalKind,
+  ProposalType
+} from 'types/proposal';
 import {
   DaoDTO,
   fromBase64ToMetadata,
@@ -87,7 +92,6 @@ export const mapProposalDTOToProposal = (
     id: proposalDTO.id,
     proposalId: proposalDTO.proposalId,
     daoId: proposalDTO.daoId,
-    target: '',
     proposer: proposalDTO.proposer,
     description,
     link: link ?? '',
@@ -114,4 +118,88 @@ export const mapProposalDTOListToProposalList = (
   return proposalList.map(proposalItem => {
     return mapProposalDTOToProposal(proposalItem);
   });
+};
+
+export const mapCreateParamsToPropsalKind = (
+  params: CreateProposalParams
+): ProposalKind => {
+  switch (params.kind) {
+    case 'AddBounty':
+      return {
+        type: ProposalType.AddBounty,
+        bounty: {
+          description: 'string',
+          token: 'string',
+          amount: 'string',
+          times: 0,
+          max_deadline: 'string'
+        }
+      };
+    case 'AddMemberToRole':
+      return {
+        type: ProposalType.AddMemberToRole,
+        memberId: 'string',
+        role: 'string'
+      };
+    case 'BountyDone':
+      return {
+        type: ProposalType.BountyDone,
+        receiverId: 'string;',
+        bountyId: 'string;',
+        completedDate: 'string'
+      };
+    case 'ChangeConfig':
+      return {
+        type: ProposalType.ChangeConfig,
+        config: { metadata: 'string', name: 'string' }
+      };
+    case 'ChangePolicy':
+      return {
+        type: ProposalType.ChangePolicy,
+        policy: {
+          roles: [], // DaoRole
+          bountyBond: 'string',
+          proposalBond: 'string',
+          proposalPeriod: 'string',
+          defaultVotePolicy: {
+            weightKind: 'string',
+            kind: 'string',
+            ratio: [], // number
+            quorum: 'string',
+            weight: 'string'
+          },
+          bountyForgivenessPeriod: 'string'
+        }
+      };
+    case 'RemoveMemberFromRole':
+      return {
+        type: ProposalType.RemoveMemberFromRole,
+        memberId: 'string',
+        role: 'string'
+      };
+    case 'Transfer':
+      return {
+        type: ProposalType.Transfer,
+        tokenId: 'string',
+        receiverId: 'string',
+        amount: 'string',
+        msg: 'string'
+      };
+    case 'UpgradeRemote':
+      return {
+        type: ProposalType.UpgradeRemote,
+        receiverId: 'string',
+        hash: 'string',
+        methodName: 'string'
+      };
+    case 'UpgradeSelf':
+      return {
+        type: ProposalType.UpgradeSelf,
+        hash: 'string'
+      };
+    case 'Vote':
+      return { type: ProposalType.Vote };
+    default:
+      throw new Error();
+  }
 };

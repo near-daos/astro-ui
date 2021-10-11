@@ -10,8 +10,10 @@ import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { SputnikWalletConnection } from './types';
 
 export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async signAndSendTransaction(...args: any[]): Promise<FinalExecutionOutcome> {
+  protected async signAndSendTransaction(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ...args: any[]
+  ): Promise<FinalExecutionOutcome> {
     let options = args[0];
 
     if (typeof args[0] === 'string') {
@@ -91,9 +93,12 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
         errorCode
       }) => {
         if (typeof transactionHashes === 'string') {
-          resolve(
-            this.connection.provider.txStatus(transactionHashes, this.accountId)
+          const result = await this.connection.provider.txStatus(
+            transactionHashes,
+            this.accountId
           );
+
+          resolve(result);
         }
 
         if (errorCode) {

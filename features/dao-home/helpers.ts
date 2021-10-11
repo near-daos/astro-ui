@@ -89,11 +89,11 @@ export type ProposalsFilter =
   | 'Recent proposals'
   | 'My proposals';
 
-interface ProposalsData {
-  data: Proposal[];
+interface UseProposalsResult {
+  proposals: Proposal[];
 }
 
-export function useProposalsData(): ProposalsData {
+export function useProposals(): UseProposalsResult {
   const router = useRouter();
   const [proposals, setProposals] = useState<Proposal[]>([]);
 
@@ -112,7 +112,7 @@ export function useProposalsData(): ProposalsData {
   }, [router.query.dao]);
 
   return {
-    data: proposals
+    proposals
   };
 }
 

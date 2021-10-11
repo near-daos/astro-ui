@@ -37,6 +37,7 @@
     "aws-sdk": "^2.975.0",
     "axios": "^0.21.1",
     "big.js": "^6.0.3",
+    "bn.js": "^5.2.0",
     "borsh": "^0.6.0",
     "camelcase-keys": "^7.0.0",
     "classnames": "^2.3.1",

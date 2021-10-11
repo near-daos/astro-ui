@@ -12,7 +12,7 @@ import styles from './request-payout-popup.module.scss';
 export interface RequestPayoutPopupProps {
   type: 'send' | 'request';
   isOpen: boolean;
-  onClose: (...args: unknown[]) => void;
+  onClose: (proposalId?: string) => void;
 }
 
 export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
@@ -24,11 +24,10 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
   const daoId = router.query.dao as string;
   const currentDao = useDao(daoId);
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const handleSubmit = useCallback(
-    data => {
+    async data => {
       if (currentDao) {
-        SputnikService.createProposal({
+        await SputnikService.createProposal({
           daoId: currentDao.id,
           description: `${data.detail}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
           kind: 'Transfer',
@@ -38,9 +37,9 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
             receiver_id: data.recipient,
             amount: new Decimal(data.amount).mul(yoktoNear).toFixed()
           }
-        }).then(() => {
-          onClose();
         });
+
+        onClose();
       }
     },
     [onClose, currentDao]
