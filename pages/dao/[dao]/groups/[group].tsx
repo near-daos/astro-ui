@@ -2,7 +2,10 @@ import uniq from 'lodash/uniq';
 import { Badge } from 'components/badge/Badge';
 import { Button } from 'components/button/Button';
 
-import MemberCard, { MemberCardPopup } from 'components/cards/member-card';
+import MemberCard, {
+  GroupsRenderer,
+  MemberCardPopup
+} from 'components/cards/member-card';
 import { Dropdown } from 'components/dropdown/Dropdown';
 import { useModal } from 'components/modal';
 import { GroupPopup } from 'features/groups';
@@ -153,15 +156,20 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
             votes={item.votes}
             tokens={item.tokens}
           >
-            {item.groups.map((grp, i) => (
-              <Badge
-                key={grp}
-                size="small"
-                variant={i % 2 > 0 ? 'turqoise' : 'blue'}
-              >
-                {grp}
-              </Badge>
-            ))}
+            <GroupsRenderer
+              selectedItems={item.groups.map((grp, i) => ({
+                label: grp,
+                component: (
+                  <Badge
+                    key={grp}
+                    size="small"
+                    variant={i % 2 > 0 ? 'turqoise' : 'blue'}
+                  >
+                    {grp}
+                  </Badge>
+                )
+              }))}
+            />
           </MemberCard>
         ))}
       </div>
