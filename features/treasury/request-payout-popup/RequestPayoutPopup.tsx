@@ -1,6 +1,9 @@
 import { Icon } from 'components/Icon';
 import { Modal } from 'components/modal';
-import { RequestPayoutForm } from 'features/treasury/request-payout-popup/components/RequestPayoutForm';
+import {
+  IRequestPayoutForm,
+  RequestPayoutForm
+} from 'features/treasury/request-payout-popup/components/RequestPayoutForm';
 import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
@@ -25,7 +28,7 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
   const currentDao = useDao(daoId);
 
   const handleSubmit = useCallback(
-    async data => {
+    async (data: IRequestPayoutForm) => {
       if (currentDao) {
         await SputnikService.createProposal({
           daoId: currentDao.id,
@@ -33,7 +36,10 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
           kind: 'Transfer',
           bond: currentDao.policy.proposalBond,
           data: {
-            token_id: '',
+            token_id:
+              data.token === 'Fungible Token' && data.tokenAddress
+                ? data.tokenAddress
+                : '',
             receiver_id: data.recipient,
             amount: new Decimal(data.amount).mul(yoktoNear).toFixed()
           }

@@ -207,12 +207,12 @@ class SputnikService {
   }
 
   public async createProposal(params: CreateProposalParams): Promise<any> {
-    await this.sputnikDaoService.addProposal(params);
-
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-      lifetime: 20000
+    return this.sputnikDaoService.addProposal(params).then(() => {
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+        lifetime: 20000
+      });
     });
   }
 

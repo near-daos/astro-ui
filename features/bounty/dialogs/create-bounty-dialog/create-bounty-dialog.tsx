@@ -38,10 +38,10 @@ export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
       } else {
         const proposal = getAddBountyProposal(daoId, data, dao);
 
-        SputnikService.createProposal(proposal);
+        SputnikService.createProposal(proposal).then(() => {
+          onClose('submitted');
+        });
       }
-
-      onClose('submitted');
     },
     [dao, daoId, onClose]
   );

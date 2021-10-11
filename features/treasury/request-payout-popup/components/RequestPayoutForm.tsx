@@ -34,8 +34,9 @@ const schema = yup.object().shape({
   externalUrl: yup.string()
 });
 
-interface IRequestPayoutForm {
+export interface IRequestPayoutForm {
   token: Token;
+  tokenAddress?: string;
   amount: number;
   recipient: string;
   detail: string;
@@ -44,7 +45,7 @@ interface IRequestPayoutForm {
 
 interface RequestPayoutFormProps {
   initialValues: CreatePayoutInput;
-  onSubmit: (data: CreatePayoutInput) => void;
+  onSubmit: (data: IRequestPayoutForm) => void;
   onCancel: () => void;
 }
 
@@ -58,6 +59,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors, touchedFields }
   } = useForm<IRequestPayoutForm>({
     resolver: yupResolver(schema),
@@ -67,6 +69,8 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
     }
   });
 
+  const selectedToken = watch('token');
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.root} noValidate>
       <Select
@@ -75,7 +79,6 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
         placeholder=""
         size="block"
         label="Token"
-        disabled
         options={tokenOptions}
         {...register('token')}
         onChange={v =>
@@ -84,6 +87,16 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
           })
         }
       />
+      {selectedToken === ('Fungible Token' as Token) && (
+        <Input
+          size="block"
+          isValid={touchedFields.tokenAddress && !errors.tokenAddress?.message}
+          textAlign="left"
+          {...register('tokenAddress')}
+          label="Token address"
+          className={cn(styles.input, styles.tokenAddress)}
+        />
+      )}
       <Input
         isValid={touchedFields.amount && !errors.amount?.message}
         defaultValue={initialValues?.amount}

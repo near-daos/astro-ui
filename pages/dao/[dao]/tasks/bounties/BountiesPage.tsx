@@ -8,13 +8,13 @@ import styles from 'pages/dao/[dao]/tasks/bounties/bounties.module.scss';
 import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import { BountyDoneProposalType } from 'types/proposal';
-import { Token } from 'types/token';
 import { DAO } from 'types/dao';
 import { BountyPageContext } from 'features/bounty/helpers';
 import { useAuthContext } from 'context/AuthContext';
+import { Token } from 'features/types';
 
 const CREATE_BOUNTY_INITIAL = {
-  token: Token.NEAR,
+  token: 'NEAR' as Token,
   slots: 3,
   amount: 0,
   deadlineThreshold: 3,

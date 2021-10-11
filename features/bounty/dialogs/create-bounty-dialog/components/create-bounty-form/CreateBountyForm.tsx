@@ -9,11 +9,9 @@ import { TextArea } from 'components/textarea/TextArea';
 import { Select } from 'components/select/Select';
 
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
-import {
-  CreateBountyInput,
-  Token
-} from 'features/bounty/dialogs/create-bounty-dialog/types';
+import { CreateBountyInput } from 'features/bounty/dialogs/create-bounty-dialog/types';
 import { DeadlineUnit } from 'components/cards/bounty-card/types';
+import { Token } from 'features/types';
 
 import { VoteDetails } from 'components/vote-details';
 import { schema, tokenOptions, deadlineUnitOptions } from './helpers';
@@ -35,11 +33,14 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors, touchedFields }
   } = useForm<CreateBountyInput>({
     defaultValues: initialValues,
     resolver: yupResolver(schema)
   });
+
+  const selectedToken = watch('token');
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.root} noValidate>
@@ -52,11 +53,21 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
         options={tokenOptions}
         {...register('token')}
         onChange={v =>
-          setValue('token', (v || 'NEAR') as Token, {
+          setValue('token', v as Token, {
             shouldDirty: true
           })
         }
       />
+      {selectedToken === ('Fungible Token' as Token) && (
+        <Input
+          size="block"
+          isValid={touchedFields.tokenAddress && !errors.tokenAddress?.message}
+          textAlign="left"
+          {...register('tokenAddress')}
+          label="Token address"
+          className={cn(styles.input, styles.tokenAddress)}
+        />
+      )}
       <Input
         isValid={touchedFields.amount && !errors.amount?.message}
         size="block"
