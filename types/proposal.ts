@@ -108,7 +108,6 @@ export type Proposal = {
   id: string;
   proposalId: number;
   daoId: string;
-  target: string;
   proposer: string;
   description: string;
   status: ProposalStatus;
