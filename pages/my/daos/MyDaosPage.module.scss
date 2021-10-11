@@ -46,6 +46,6 @@
 
   @include large-desktop {
     grid-gap: 50px;
-    grid-template-columns: repeat(auto-fit, minmax(374px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(444px, 1fr));
   }
 }

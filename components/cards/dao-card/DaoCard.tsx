@@ -4,8 +4,6 @@ import TextTruncate from 'react-text-truncate';
 
 import { DAO } from 'types/dao';
 
-import { useNearPrice } from 'hooks/useNearPrice';
-
 import defaultFlag from 'stories/dao-home/assets/flag.png';
 
 import { ImageWithFallback } from 'components/image-with-fallback';
@@ -21,8 +19,8 @@ interface DaoCardProps {
   flag: string;
   daoAccountName: string;
   description: string | null;
-  activeProposals: number;
   members: number;
+  nearPrice: number;
 }
 
 // TODO refactor component to get all data from dao prop
@@ -32,11 +30,9 @@ const DaoCard: React.FC<DaoCardProps> = ({
   flag,
   daoAccountName,
   description,
-  activeProposals,
+  nearPrice,
   members
 }) => {
-  const nearPrice = useNearPrice();
-
   const { funds, proposals } = dao;
 
   function roundToTwoDigits(num: string) {
@@ -101,7 +97,7 @@ const DaoCard: React.FC<DaoCardProps> = ({
           <div className={styles.delimiter} />
           <div className={styles.activeProposals}>
             <span className={styles.activeProposalsNumber}>
-              {activeProposals}&nbsp;
+              {proposals}&nbsp;
             </span>
             active proposals
           </div>
