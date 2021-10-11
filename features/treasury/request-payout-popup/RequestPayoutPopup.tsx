@@ -40,9 +40,12 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
         });
 
         onClose();
+
+        // Reload page to force call of the getServerSideProps of page
+        router.replace(router.asPath);
       }
     },
-    [onClose, currentDao]
+    [router, onClose, currentDao]
   );
 
   return (
