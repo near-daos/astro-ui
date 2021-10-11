@@ -24,6 +24,7 @@ import { TokenType } from 'types/token';
 import { ChartData } from 'lib/types/treasury';
 import { formatCurrency } from 'utils/formatCurrency';
 import { useNearPrice } from 'hooks/useNearPrice';
+import { useAuthContext } from 'context/AuthContext';
 
 import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
 
@@ -43,6 +44,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
 }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
+  const { accountId, login } = useAuthContext();
 
   const [showRequestPayoutPopup] = useModal(RequestPayoutPopup, {
     type: 'send'
@@ -64,9 +66,10 @@ const TokensPage: React.FC<TokensPageProps> = ({
     isMobileOrTablet
   ]);
 
-  const handleClick = useCallback(() => showRequestPayoutPopup(), [
-    showRequestPayoutPopup
-  ]);
+  const handleClick = useCallback(
+    () => (accountId ? showRequestPayoutPopup() : login()),
+    [login, showRequestPayoutPopup, accountId]
+  );
 
   const resetScroll = useCallback(() => {
     if (!scrollListRef || !scrollListRef.current) {

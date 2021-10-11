@@ -11,6 +11,7 @@ import { BountyDoneProposalType } from 'types/proposal';
 import { Token } from 'types/token';
 import { DAO } from 'types/dao';
 import { BountyPageContext } from 'features/bounty/helpers';
+import { useAuthContext } from 'context/AuthContext';
 
 const CREATE_BOUNTY_INITIAL = {
   token: Token.NEAR,
@@ -33,6 +34,8 @@ const BountiesPage: FC<BountiesPageProps> = ({
   bountiesDone,
   bounties
 }) => {
+  const { accountId, login } = useAuthContext();
+
   const inProgressBounties = bounties.filter(bounty =>
     bounty.claimedBy.find(
       claim => claim.accountId === SputnikService.getAccountId()
@@ -98,9 +101,10 @@ const BountiesPage: FC<BountiesPageProps> = ({
     dao
   });
 
-  const handleCreateClick = useCallback(() => showCreateBountyDialog(), [
-    showCreateBountyDialog
-  ]);
+  const handleCreateClick = useCallback(
+    () => (accountId ? showCreateBountyDialog() : login()),
+    [login, showCreateBountyDialog, accountId]
+  );
 
   const getContextValue = useCallback(() => {
     return { dao };

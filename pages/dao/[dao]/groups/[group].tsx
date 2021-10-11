@@ -21,6 +21,7 @@ import { DAO, Member } from 'types/dao';
 import { GetServerSideProps } from 'next';
 import { SputnikService } from 'services/SputnikService';
 import { extractMembersFromDao } from 'services/SputnikService/mappers/search-results';
+import { useAuthContext } from 'context/AuthContext';
 
 const sortOptions = [
   {
@@ -42,6 +43,7 @@ interface GroupPageProps {
 const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
   const router = useRouter();
   const paramGroup = router.query.group as string;
+  const { accountId, login } = useAuthContext();
 
   const group = groupMap[paramGroup] || paramGroup;
   const [showCardModal] = useModal(MemberCardPopup);
@@ -49,7 +51,7 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
 
   const [activeSort, setActiveSort] = useState<string>(sortOptions[0].value);
 
-  const handleCreateGroup = useCallback(async () => {
+  const showCreateGroupDialog = useCallback(async () => {
     await showGroupModal({
       initialValues: {
         groupType: GroupFormType.CREATE_GROUP,
@@ -58,7 +60,12 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
     });
   }, [showGroupModal]);
 
-  const handleAddClick = useCallback(async () => {
+  const handleCreateGroup = useCallback(
+    () => (accountId ? showCreateGroupDialog() : login()),
+    [login, showCreateGroupDialog, accountId]
+  );
+
+  const showAddMemberDialog = useCallback(async () => {
     await showGroupModal({
       initialValues: {
         groupType: GroupFormType.ADD_TO_GROUP,
@@ -68,7 +75,12 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
     });
   }, [availableGroups, group, showGroupModal]);
 
-  const handleRemoveClick = useCallback(
+  const handleAddClick = useCallback(
+    () => (accountId ? showAddMemberDialog() : login()),
+    [login, showAddMemberDialog, accountId]
+  );
+
+  const showRemoveMemberDialog = useCallback(
     async item => {
       await showGroupModal({
         initialValues: {
@@ -80,6 +92,11 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
       });
     },
     [group, showGroupModal]
+  );
+
+  const handleRemoveClick = useCallback(
+    item => (accountId ? showRemoveMemberDialog(item) : login()),
+    [login, showRemoveMemberDialog, accountId]
   );
 
   const handleCardClick = useCallback(

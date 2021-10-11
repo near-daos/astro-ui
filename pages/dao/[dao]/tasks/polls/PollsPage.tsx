@@ -10,6 +10,7 @@ import { SputnikService } from 'services/SputnikService';
 import { Proposal } from 'types/proposal';
 import { ProposalsTabsFilter } from 'components/proposals-tabs-filter';
 import { filterProposalsByStatus } from 'features/dao-home/helpers';
+import { useAuthContext } from 'context/AuthContext';
 
 interface PollsPageProps {
   data: Proposal[];
@@ -17,6 +18,7 @@ interface PollsPageProps {
 
 const PollsPage: FC<PollsPageProps> = () => {
   const { query } = useRouter();
+  const { accountId, login } = useAuthContext();
 
   const [pollsList, setPollsList] = useState<Proposal[]>([]);
 
@@ -26,7 +28,7 @@ const PollsPage: FC<PollsPageProps> = () => {
     SputnikService.getPolls(daoId).then(res => setPollsList(res));
   }
 
-  const handleCreateClick = useCallback(async () => {
+  const showCreatePollDialog = useCallback(async () => {
     await showModal();
     fetchPolls(query.dao as string);
   }, [query.dao, showModal]);
@@ -36,6 +38,11 @@ const PollsPage: FC<PollsPageProps> = () => {
       fetchPolls(query.dao as string);
     }
   }, [query.dao]);
+
+  const handleCreateClick = useCallback(
+    () => (accountId ? showCreatePollDialog() : login()),
+    [login, showCreatePollDialog, accountId]
+  );
 
   return (
     <div className={styles.root}>

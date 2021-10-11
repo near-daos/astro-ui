@@ -22,6 +22,7 @@ import { Transaction } from 'types/transaction';
 import { fetchNearPrice, useNearPrice } from 'hooks/useNearPrice';
 import { formatCurrency } from 'utils/formatCurrency';
 import { getChartData } from 'features/treasury/helpers';
+import { useAuthContext } from 'context/AuthContext';
 
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
 
@@ -40,6 +41,7 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
 }) => {
   const nearPrice = useNearPrice();
   const router = useRouter();
+  const { accountId, login } = useAuthContext();
 
   const pageCount = Math.round(transactions.length / ITEMS_PER_PAGE);
 
@@ -55,9 +57,10 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
 
   const [sortByRecent, setSortByRecent] = useState(true);
 
-  const handleClick = useCallback(() => showRequestPayoutPopup(), [
-    showRequestPayoutPopup
-  ]);
+  const handleClick = useCallback(
+    () => (accountId ? showRequestPayoutPopup() : login()),
+    [login, showRequestPayoutPopup, accountId]
+  );
 
   const filterClickHandler = useCallback(() => {
     const sorted = currentPageContent.sort((a, b) =>
