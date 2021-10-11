@@ -1,7 +1,5 @@
-import React, { useRef, useEffect, useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
-
-import { nearConfig } from 'config/index';
 
 import { DaoInfoCard } from 'components/cards/dao-info-card/DaoInfoCard';
 import { ProposalTrackerCard } from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
@@ -41,68 +39,30 @@ const DAOHome: NextPage<DaoHomeProps> = ({
   dao: initialDao,
   proposals: initialProposals
 }) => {
-  const timeoutId = useRef<NodeJS.Timeout>();
-  const { accountId } = useAuthContext();
-
   const router = useRouter();
-  const { pending: isPending, proposal: proposalId, dao: daoId } = router.query;
+  const { proposal: proposalId } = router.query;
+
+  const { accountId } = useAuthContext();
+  const nearPrice = useNearPrice();
 
   const [dao] = useState(initialDao);
-  const [proposals] = useState(initialProposals);
-
-  const nearPrice = useNearPrice();
+  const [proposals, setProposals] = useState(initialProposals);
 
   const [showCreateProposalModal] = useModal(CreateProposalPopup);
 
   const handleClick = useCallback(async () => {
     await showCreateProposalModal();
-  }, [showCreateProposalModal]);
-
-  const getPendingDaoId = useCallback(() => {
-    return `${daoId}.${nearConfig.contractName}`;
-  }, [daoId]);
-
-  const fetchPendingDaoInfo = useCallback(async () => {
-    const id = getPendingDaoId();
-    const daoInfo = await SputnikService.getDaoById(id);
-
-    if (!daoInfo) {
-      timeoutId.current = setTimeout(fetchPendingDaoInfo, 2000);
-    } else {
-      router.push(`/dao/${id}`);
-    }
-  }, [router, getPendingDaoId]);
+    // TODO: refactor
+    SputnikService.getProposals(dao.id).then(setProposals);
+  }, [showCreateProposalModal, dao.id]);
 
   useEffect(() => {
-    if (isPending) {
-      fetchPendingDaoInfo();
-    }
-
-    return () => {
-      const timeout = timeoutId.current;
-
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-    };
-  }, [daoId, isPending, fetchPendingDaoInfo]);
+    // TODO: refactor
+    SputnikService.getProposals(dao.id).then(setProposals);
+  }, [dao.id]);
 
   function renderDaoDetails() {
-    if (!dao && !isPending) {
-      return null;
-    }
-
-    const daoDetails = dao
-      ? getDaoDetailsFromDao(dao)
-      : {
-          title: daoId as string,
-          subtitle: getPendingDaoId(),
-          description: 'Dao is being created. Please, be patient.',
-          flag: '',
-          createdAt: '',
-          links: []
-        };
-
+    const daoDetails = getDaoDetailsFromDao(dao);
     const { title, description, flag, subtitle, createdAt, links } = daoDetails;
 
     return (
@@ -122,8 +82,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
   function renderProposalTracker() {
     const { activeVotes, totalProposals } = getProposalStats(proposals);
 
-    const action =
-      isPending || isEmpty(accountId) ? null : <>Create proposal</>;
+    const action = isEmpty(accountId) ? null : <>Create proposal</>;
 
     return (
       <div className={styles.proposals}>
@@ -138,10 +97,6 @@ const DAOHome: NextPage<DaoHomeProps> = ({
   }
 
   function renderDaoMembersFundInfo() {
-    if (!dao) {
-      return null;
-    }
-
     const { members, fund } = getFundAndMembersNum(dao, nearPrice);
 
     const info = [
@@ -214,12 +169,11 @@ const DAOHome: NextPage<DaoHomeProps> = ({
 export default DAOHome;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const isPending = Boolean(query.pending);
   const daoId = query.dao as string;
 
   const dao = await SputnikService.getDaoById(daoId as string);
 
-  if (!dao && !isPending) {
+  if (!dao) {
     return {
       notFound: true
     };

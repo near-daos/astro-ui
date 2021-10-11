@@ -6,6 +6,7 @@ import {
 } from 'near-api-js';
 import { PublicKey } from 'near-api-js/lib/utils';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
+import { SignAndSendTransactionOptions } from 'near-api-js/lib/account';
 
 import { SputnikWalletConnection } from './types';
 
@@ -14,7 +15,7 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ...args: any[]
   ): Promise<FinalExecutionOutcome> {
-    let options = args[0];
+    let options: SignAndSendTransactionOptions = args[0];
 
     if (typeof args[0] === 'string') {
       options = {
@@ -23,7 +24,14 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
       };
     }
 
-    const { receiverId, actions, walletMeta } = options;
+    const { receiverId, actions, walletMeta, walletCallbackUrl } = options;
+
+    if (!walletCallbackUrl) {
+      throw new Error(
+        'SputnikConnectedWalletAccount: walletCallbackUrl is not defined!'
+      );
+    }
+
     const walletConnection = this.walletConnection as SputnikWalletConnection;
 
     const win = window.open(`${window.origin}/pending`, '_blank');
@@ -80,7 +88,7 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
     await walletConnection.sputnikRequestSignTransactions({
       transactions: [transaction],
       meta: walletMeta,
-      callbackUrl: `${window.origin}/callback/transaction`
+      callbackUrl: walletCallbackUrl
     });
 
     if (win?.location && walletConnection.signTransactionUrl) {

@@ -24,7 +24,12 @@ export class SputnikDaoService {
   }
 
   private functionCall(props: FunctionCallOptions) {
-    return this.sputnikWalletService.getAccount().functionCall(props);
+    const accountId = this.sputnikWalletService.getAccountId();
+
+    return this.sputnikWalletService.getAccount().functionCall({
+      ...props,
+      walletCallbackUrl: `${window.origin}/api-server/v1/transactions/wallet/callback/${accountId}`
+    });
   }
 
   public async create(params: CreateDaoParams): Promise<void> {
@@ -43,8 +48,7 @@ export class SputnikDaoService {
           args
         },
         gas: new BN('300000000000000'),
-        attachedDeposit: amount,
-        walletCallbackUrl: this.sputnikWalletService.callbackUrl
+        attachedDeposit: amount
       });
     } catch (err) {
       console.error(err);

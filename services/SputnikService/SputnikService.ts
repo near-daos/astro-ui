@@ -186,7 +186,7 @@ class SputnikService {
 
   public async createDao(params: CreateDaoInput): Promise<boolean> {
     try {
-      this.sputnikDaoService.create(params);
+      await this.sputnikDaoService.create(params);
 
       showNotification({
         type: NOTIFICATION_TYPES.INFO,

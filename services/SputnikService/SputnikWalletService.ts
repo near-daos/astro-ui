@@ -11,8 +11,6 @@ export class SputnikWalletService {
 
   public readonly failureUrl: string = `${window.origin}/callback/auth`;
 
-  public readonly callbackUrl: string = `${window.origin}/callback/transaction`;
-
   constructor(near: Near) {
     this.near = near;
   }
