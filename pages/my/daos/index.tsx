@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { CookieService } from 'services/CookieService';
 import { SputnikService } from 'services/SputnikService';
+import { getActiveProposalsCountByDao } from 'hooks/useAllProposals';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
@@ -12,9 +13,15 @@ export const getServerSideProps: GetServerSideProps = async () => {
     ? await SputnikService.getAccountDaos(account)
     : [];
 
+  const proposals = await SputnikService.getProposals(undefined, 0, 500);
+  const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
+
   return {
     props: {
-      accountDaos
+      accountDaos: accountDaos.map(item => ({
+        ...item,
+        proposals: activeProposalsByDao[item.id] ?? 0
+      }))
     }
   };
 };
