@@ -101,7 +101,7 @@ const DaoCard: React.FC<DaoCardProps> = ({
             </span>
             active proposals
           </div>
-          <div className={styles.totalProposals}>{proposals} in total</div>
+          {/* <div className={styles.totalProposals}>{proposals} in total</div> */}
           <div className={styles.createProposal}>Create Proposal</div>
         </div>
       </div>
