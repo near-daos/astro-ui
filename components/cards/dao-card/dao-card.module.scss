@@ -1,13 +1,12 @@
+@import 'styles/mixins';
 @import 'styles/typography';
 
 .daoCard {
   $border-radius: 8px;
-
   background-color: var(--color-neutral-10);
   border-radius: $border-radius;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   cursor: pointer;
-
   display: flex;
   flex-direction: column;
   height: 430px;
@@ -32,21 +31,23 @@
     width: 140px;
   }
 
+  .headerContent {
+    padding-right: 20px;
+  }
+
   .urlCaption {
     @extend %subtitle4;
     color: var(--color-neutral-60);
-    overflow: hidden;
-    text-align: center;
-    text-overflow: ellipsis;
-    width: 100%;
-    word-break: normal;
   }
 
   .descriptionCaption {
     @extend %body1;
     min-height: 90px;
-    padding: 0 52px;
-    text-align: center;
+    padding: 0 24px;
+
+    @include tablet-portrait {
+      padding: 0 52px;
+    }
   }
 
   .createProposal {
@@ -54,7 +55,6 @@
     align-items: center;
     background-color: var(--color-brand-green);
     border-radius: 0 0 $border-radius $border-radius;
-
     display: flex;
     height: 40px;
     justify-content: center;
@@ -71,14 +71,17 @@
 
 .activeProposals {
   @extend %title4;
-
   font-family: Inter, 'sans-serif';
   font-size: 22px;
   font-weight: 300;
   line-height: 24px;
-
   margin-bottom: 20px;
+  padding: 0 24px;
   text-align: center;
+
+  @include tablet-portrait {
+    padding: 0 52px;
+  }
 
   .activeProposalsNumber {
     font-size: 28px;
@@ -88,8 +91,12 @@
 
 .membersAndFunds {
   display: flex;
-  padding: 0 52px;
+  padding: 0 24px;
   width: 100%;
+
+  @include tablet-portrait {
+    padding: 0 52px;
+  }
 
   .nearFundsValue,
   .nearFundsSuffix {
@@ -118,7 +125,11 @@
   height: fit-content;
 
   &:first-of-type {
-    margin-right: 90px;
+    width: 45%;
+
+    @include tablet-portrait {
+      width: 50%;
+    }
   }
 }
 
@@ -128,8 +139,12 @@
   margin-bottom: 4px;
 }
 
-.noMargin {
+.headerText {
   margin: 0;
+
+  @include mobile-only {
+    @include font(1.3em, 28px, 500);
+  }
 }
 
 .upperCase {

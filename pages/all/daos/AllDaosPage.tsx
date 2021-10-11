@@ -117,7 +117,8 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
               dao={item}
               key={item.id}
               flag={item.logo}
-              title={item.name}
+              name={item.name}
+              displayName={item.displayName}
               nearPrice={nearPrice}
               daoAccountName={item.id}
               description={item.description}

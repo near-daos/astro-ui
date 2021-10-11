@@ -15,7 +15,8 @@ import styles from 'components/cards/dao-card/dao-card.module.scss';
 
 interface DaoCardProps {
   dao: DAO;
-  title: string;
+  name: string;
+  displayName: string;
   flag: string;
   daoAccountName: string;
   description: string | null;
@@ -26,7 +27,8 @@ interface DaoCardProps {
 // TODO refactor component to get all data from dao prop
 const DaoCard: React.FC<DaoCardProps> = ({
   dao,
-  title,
+  name,
+  displayName,
   flag,
   daoAccountName,
   description,
@@ -34,6 +36,8 @@ const DaoCard: React.FC<DaoCardProps> = ({
   members
 }) => {
   const { funds, proposals } = dao;
+
+  const title = displayName || name;
 
   function roundToTwoDigits(num: string) {
     return Math.round((parseFloat(num) + Number.EPSILON) * 100) / 100;
@@ -57,8 +61,8 @@ const DaoCard: React.FC<DaoCardProps> = ({
                 alt={`${title} Dao Logo`}
               />
             </div>
-            <div>
-              <h2 className={styles.noMargin}>{title}</h2>
+            <div className={styles.headerContent}>
+              <h2 className={styles.headerText}>{title}</h2>
               <div className={styles.urlCaption}>{daoAccountName}</div>
             </div>
           </div>

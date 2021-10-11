@@ -41,6 +41,8 @@
 .cardFooter {
   align-items: center;
   background-color: var(--color-brand-purple-light);
+  border: 0;
+  cursor: pointer;
   display: flex;
   grid-area: cardFooter;
   height: 40px;

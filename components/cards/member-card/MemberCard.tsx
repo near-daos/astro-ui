@@ -1,7 +1,7 @@
 import React, { FC, ReactNode, useCallback } from 'react';
 import cn from 'classnames';
 import TextTruncate from 'react-text-truncate';
-import { IconButton } from 'components/button/IconButton';
+import { Icon } from 'components/Icon';
 
 import { SMILE } from 'features/dao-home/components/follow-illustration/FollowIllustration';
 
@@ -108,18 +108,19 @@ const MemberCard: FC<MemberCardProps> = ({
         </div>
       </div>
       {!expandedView && onRemoveClick && (
-        <div className={styles.cardFooter}>
-          <div className={styles.personIcon}>
-            <IconButton
-              icon="proposalRemoveMember"
-              onClick={e => {
-                e.stopPropagation();
+        <button
+          type="button"
+          className={styles.cardFooter}
+          onClick={e => {
+            e.stopPropagation();
 
-                onRemoveClick();
-              }}
-            />
+            onRemoveClick();
+          }}
+        >
+          <div className={styles.personIcon}>
+            <Icon name="proposalRemoveMember" width={16} />
           </div>
-        </div>
+        </button>
       )}
     </div>
   );

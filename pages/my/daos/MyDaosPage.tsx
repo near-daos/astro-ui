@@ -23,14 +23,15 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
 
   function renderDaos() {
     return accountDaos.map(dao => {
-      const { id, logo, name, description, members } = dao;
+      const { id, logo, name, displayName, description, members } = dao;
 
       return (
         <DaoCard
           dao={dao}
           key={id}
           flag={logo}
-          title={name}
+          name={name}
+          displayName={displayName}
           daoAccountName={id}
           nearPrice={nearPrice}
           description={description}
