@@ -1,5 +1,5 @@
 import get from 'lodash/get';
-import { Proposal, ProposalKind } from 'types/proposal';
+import { Proposal, ProposalKind, ProposalStatus } from 'types/proposal';
 import {
   DaoDTO,
   fromBase64ToMetadata,
@@ -7,6 +7,7 @@ import {
   mapDaoDTOtoDao
 } from 'services/SputnikService/mappers/dao';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { parseISO } from 'date-fns';
 
 export type ProposalDTO = {
   createTimestamp: string;
@@ -72,6 +73,20 @@ function getVotesStatistic(proposal: ProposalDTO) {
   return result;
 }
 
+function getProposalStatus(
+  status: ProposalStatus,
+  votingEndsAt: string
+): ProposalStatus {
+  if (status !== 'InProgress') {
+    return status;
+  }
+
+  const now = new Date();
+  const endsAt = parseISO(votingEndsAt);
+
+  return now < endsAt ? 'InProgress' : 'Expired';
+}
+
 export const mapProposalDTOToProposal = (
   proposalDTO: ProposalDTO
 ): Proposal => {
@@ -82,6 +97,11 @@ export const mapProposalDTOToProposal = (
   const config = get(proposalDTO.dao, 'config');
   const meta = config.metadata ? fromBase64ToMetadata(config.metadata) : null;
 
+  const votePeriodEnd = getProposalVotingEndDate(
+    get(proposalDTO, 'submissionTime'),
+    get(proposalDTO, 'dao.policy.proposalPeriod')
+  );
+
   return {
     ...getVotesStatistic(proposalDTO),
     id: proposalDTO.id,
@@ -91,12 +111,9 @@ export const mapProposalDTOToProposal = (
     proposer: proposalDTO.proposer,
     description,
     link: link ?? '',
-    status: proposalDTO.status,
+    status: getProposalStatus(proposalDTO.status, votePeriodEnd),
     kind: proposalDTO.kind,
-    votePeriodEnd: getProposalVotingEndDate(
-      get(proposalDTO, 'submissionTime'),
-      get(proposalDTO, 'dao.policy.proposalPeriod')
-    ),
+    votePeriodEnd,
     txHash: proposalDTO.transactionHash,
     createdAt: proposalDTO.createdAt,
     dao: mapDaoDTOtoDao(proposalDTO.dao),
