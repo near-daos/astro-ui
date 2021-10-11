@@ -1,15 +1,12 @@
+import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { MenuItem } from 'components/sidebar/types';
 
 import { AddGroupMenu } from 'features/groups/components/add-group-menu';
 
-import { CookieService } from 'services/CookieService';
-
 import { SputnikService } from 'services/SputnikService';
 import { DAO } from 'types/dao';
-import { DAO_COOKIE } from 'constants/cookies';
-import { useRouter } from 'next/router';
 import {
   TASKS_SECTION_ID,
   GROUPS_SECTION_ID,
@@ -19,13 +16,17 @@ import {
 
 export const useGetDaoNavItems = (): MenuItem[] => {
   const router = useRouter();
-  const daoId = router.query.daoId as string;
+  const accountId = SputnikService.getAccountId();
+
   const [selectedDao, setSelectedDao] = useState<DAO | null>();
-  const selectedDaoId = CookieService.get(daoId || DAO_COOKIE);
+
+  const selectedDaoId = router.query.dao as string;
 
   useEffect(() => {
-    SputnikService.getDaoById(selectedDaoId).then(setSelectedDao);
-  }, [selectedDaoId]);
+    if (accountId) {
+      SputnikService.getDaoById(selectedDaoId).then(setSelectedDao);
+    }
+  }, [accountId, selectedDaoId]);
 
   const sidebarItems: MenuItem[] = useMemo(() => {
     return [
