@@ -1,5 +1,7 @@
 import React, { FC, useCallback } from 'react';
 
+import { useNearPrice } from 'hooks/useNearPrice';
+
 import DaoCard from 'components/cards/dao-card';
 import { Button } from 'components/button/Button';
 import { CREATE_DAO_URL } from 'constants/routing';
@@ -16,11 +18,12 @@ interface MyDaosPageProps {
 
 const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
   const router = useRouter();
+  const nearPrice = useNearPrice();
   const { accountId, login } = useAuthContext();
 
   function renderDaos() {
     return accountDaos.map(dao => {
-      const { id, logo, name, description, proposals, members } = dao;
+      const { id, logo, name, description, members } = dao;
 
       return (
         <DaoCard
@@ -29,8 +32,8 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
           flag={logo}
           title={name}
           daoAccountName={id}
+          nearPrice={nearPrice}
           description={description}
-          activeProposals={proposals ?? 0}
           members={members}
         />
       );

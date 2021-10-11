@@ -8,6 +8,8 @@ import { CREATE_DAO_URL } from 'constants/routing';
 import { Dropdown } from 'components/dropdown/Dropdown';
 
 import { SputnikService } from 'services/SputnikService';
+
+import { useNearPrice } from 'hooks/useNearPrice';
 import {
   useAllProposals,
   getActiveProposalsCountByDao
@@ -47,6 +49,7 @@ interface BrowseAllDaosProps {
 
 const AllDaosPage: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
   const router = useRouter();
+  const nearPrice = useNearPrice();
   const { accountId, login } = useAuthContext();
 
   const activeSort = (router.query.sort as string) ?? sortOptions[1].value;
@@ -115,9 +118,9 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
               key={item.id}
               flag={item.logo}
               title={item.name}
+              nearPrice={nearPrice}
               daoAccountName={item.id}
               description={item.description}
-              activeProposals={item.proposals ?? 0}
               members={item.members}
             />
           );
