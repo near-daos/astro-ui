@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { createContext, FC, useContext, useState } from 'react';
 
-import { ALL_DAOS_URL, MY_DAOS_URL } from 'constants/routing';
+import { ALL_DAOS_URL } from 'constants/routing';
 import { ACCOUNT_COOKIE, DAO_COOKIE } from 'constants/cookies';
 
 import { SputnikService } from 'services/SputnikService';
@@ -34,8 +34,6 @@ export const AuthWrapper: FC = ({ children }) => {
       if (id) {
         setAccountId(id);
       }
-
-      router.push(MY_DAOS_URL);
     } catch (err) {
       // TODO: add error handling
       console.error(err);
