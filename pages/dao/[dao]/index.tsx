@@ -15,6 +15,8 @@ import {
   getFundAndMembersNum,
   getProposalStats
 } from 'features/dao-home/helpers';
+import { NoResultsView } from 'features/no-results-view';
+import { isProposalsByEndTimeEmpty } from 'helpers/isProposalsByEndTimeEmpty';
 import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -145,6 +147,10 @@ const DAOHome: NextPage<DaoHomeProps> = ({
           ]}
           tabContentRenderer={(tabProposals: Proposal[]) => {
             const filteredData = splitProposalsByVotingPeriod(tabProposals);
+
+            if (isProposalsByEndTimeEmpty(filteredData)) {
+              return <NoResultsView title="No proposals here" />;
+            }
 
             return (
               <>

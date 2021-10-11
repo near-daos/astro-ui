@@ -61,7 +61,6 @@ const BountiesPage: FC<BountiesPageProps> = ({
   const numberInProgressBounties = inProgressBounties.length;
   const numberCompletedBounties = completedBounties.length;
 
-  const tabs = [];
   const tabOpen = {
     id: 1,
     label: `Open (${numberOpenBounties})`,
@@ -82,17 +81,7 @@ const BountiesPage: FC<BountiesPageProps> = ({
     )
   };
 
-  if (numberOpenBounties > 0) {
-    tabs.push(tabOpen);
-  }
-
-  if (numberInProgressBounties > 0) {
-    tabs.push(tabInProgress);
-  }
-
-  if (numberCompletedBounties > 0) {
-    tabs.push(tabCompleted);
-  }
+  const tabs = [tabOpen, tabInProgress, tabCompleted];
 
   const [showCreateBountyDialog] = useModal(CreateBountyDialog, {
     initialValues: {

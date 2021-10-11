@@ -4,7 +4,7 @@ import * as Typography from 'components/Typography';
 import { useSearchResults } from 'features/search/search-results';
 
 import { getProposalSearchSummary } from 'features/search/search-results/components/dropdown-results/helpers';
-import { NoResultsView } from 'features/search/search-results/components/no-results-view';
+import { NoSearchResultsView } from 'features/search/search-results/components/no-search-results-view';
 import React, { FC, useState } from 'react';
 
 import styles from './dropdown-results.module.scss';
@@ -122,7 +122,7 @@ export const DropdownResults: FC<DropdownResultsProps> = ({
 
       {!searchResults?.proposals.length &&
         !searchResults?.daos.length &&
-        !searchResults?.members.length && <NoResultsView />}
+        !searchResults?.members.length && <NoSearchResultsView />}
     </div>
   );
 };

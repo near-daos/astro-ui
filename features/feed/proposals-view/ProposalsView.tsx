@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
 import { VOTE_BY_PERIOD } from 'constants/votingConstants';
 import { arrangeByDao, ProposalsByDaoRenderer } from 'features/member-home';
+import { isProposalsByEndTimeEmpty } from 'helpers/isProposalsByEndTimeEmpty';
+import { NoResultsView } from 'features/no-results-view';
 
 interface ProposalsTabProps {
   proposals: Proposal[];
@@ -28,6 +30,10 @@ export const ProposalsView: FC<ProposalsTabProps> = ({ proposals, filter }) => {
     },
     [router]
   );
+
+  if (isProposalsByEndTimeEmpty(filteredData)) {
+    return <NoResultsView title="No proposals here" />;
+  }
 
   return (
     <>
