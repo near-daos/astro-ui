@@ -1,6 +1,6 @@
 import { useSelect } from 'downshift';
 import cn from 'classnames';
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { Icon } from 'components/Icon';
 import styles from './dropdown-select.module.scss';
 
@@ -16,6 +16,8 @@ export interface DropdownSelectProps {
   label?: string;
   defaultValue?: string;
   onChange: (value?: string) => void;
+  placeholder?: string;
+  controlIcon?: ReactNode;
 }
 
 export const DropdownSelect: React.FC<DropdownSelectProps> = ({
@@ -23,7 +25,9 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
   className,
   label,
   defaultValue,
-  onChange
+  onChange,
+  placeholder,
+  controlIcon
 }) => {
   const {
     isOpen,
@@ -70,13 +74,17 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
           <div className={styles.container}>
             <div className={styles.selected}>
               {selectedItem?.component ?? (
-                <div className={styles.placeholder}>Choose group</div>
+                <div className={styles.placeholder}>
+                  {placeholder || 'Choose group'}
+                </div>
               )}
             </div>
-            <Icon
-              name="buttonArrowDown"
-              className={cn(styles.icon, { [styles.rotate]: isOpen })}
-            />
+            {controlIcon || (
+              <Icon
+                name="buttonArrowDown"
+                className={cn(styles.icon, { [styles.rotate]: isOpen })}
+              />
+            )}
           </div>
         </button>
         <ul className={styles.menu} {...getMenuProps()}>

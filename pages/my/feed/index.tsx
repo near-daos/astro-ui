@@ -6,7 +6,8 @@ import { Bounty } from 'components/cards/bounty-card/types';
 
 import {
   DaoFilterValues,
-  ProposalFilterValues
+  ProposalFilterOptions,
+  ProposalFilterStatusOptions
 } from 'features/member-home/types';
 
 import { CookieService } from 'services/CookieService';
@@ -17,7 +18,7 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import MyFeedPage from './MyFeedPage';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { tab, daoViewFilter } = query;
+  const { tab, daoViewFilter, status } = query;
   const accountId = CookieService.get(ACCOUNT_COOKIE);
 
   let proposals: Proposal[] = [];
@@ -25,41 +26,52 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   const filter = {
     daoFilter: 'My DAOs' as DaoFilterValues,
-    proposalFilter: 'Active proposals' as ProposalFilterValues,
-    daoViewFilter: daoViewFilter ? (daoViewFilter as string) : null
+    proposalFilter: 'Active proposals' as ProposalFilterOptions,
+    daoViewFilter: daoViewFilter ? (daoViewFilter as string) : null,
+    status: status ? (status as ProposalFilterStatusOptions) : null
   };
+
+  let proposalFilter;
 
   switch (tab) {
     case '1': {
-      bounties = await SputnikService.getBounties().then(result => {
-        return result
-          .map(mapBountyResponseToBounty)
-          .filter(bounty =>
-            bounty.claimedBy.find(claim => claim.accountId === accountId)
-          );
-      });
+      proposalFilter = 'Governance' as ProposalFilterOptions;
       break;
     }
     case '2': {
-      proposals = await SputnikService.getFilteredProposals(
-        {
-          ...filter,
-          proposalFilter: 'Polls' as ProposalFilterValues
-        },
-        accountId
-      );
+      proposalFilter = 'Financial' as ProposalFilterOptions;
+      break;
+    }
+    case '4': {
+      proposalFilter = 'Polls' as ProposalFilterOptions;
+      break;
+    }
+    case '5': {
+      proposalFilter = 'Groups' as ProposalFilterOptions;
       break;
     }
     case '0':
     default: {
-      proposals = await SputnikService.getFilteredProposals(
-        {
-          ...filter,
-          proposalFilter: 'Active proposals' as ProposalFilterValues
-        },
-        accountId
-      );
+      proposalFilter = null;
     }
+  }
+
+  if (tab === '3') {
+    bounties = await SputnikService.getBounties().then(result => {
+      return result
+        .map(mapBountyResponseToBounty)
+        .filter(bounty =>
+          bounty.claimedBy.find(claim => claim.accountId === accountId)
+        );
+    });
+  } else {
+    proposals = await SputnikService.getFilteredProposals(
+      {
+        ...filter,
+        proposalFilter
+      },
+      accountId
+    );
   }
 
   return {

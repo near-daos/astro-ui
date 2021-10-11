@@ -8,18 +8,26 @@
 }
 
 .tabsWrapper {
-  border-bottom: 1px solid var(--color-neutral-20);
+  align-items: center;
+  display: flex;
+  gap: 24px;
   height: 32px;
   width: 100%;
 }
 
 .tabs {
+  border-bottom: 1px solid var(--color-neutral-20);
   display: flex;
+  flex: 1;
   min-height: 32px;
   overflow: auto;
   padding: 0;
   position: relative;
   width: 100%;
+}
+
+.optional {
+  flex: 0.25;
 }
 
 .tabs {

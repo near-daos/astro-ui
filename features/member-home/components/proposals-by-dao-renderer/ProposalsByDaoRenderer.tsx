@@ -36,11 +36,7 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
   onFilterChange,
   expandedProposalId
 }) => {
-  if (
-    isEmpty(data) ||
-    (periodKey === 'otherProposals' &&
-      filter.proposalFilter === 'Active proposals')
-  ) {
+  if (isEmpty(data)) {
     return null;
   }
 

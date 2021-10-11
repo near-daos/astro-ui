@@ -6,6 +6,21 @@ export type ProposalFilterValues =
   | 'Recent proposals'
   | 'My proposals';
 
+export type ProposalFilterOptions =
+  | 'Polls'
+  | 'Governance'
+  | 'Financial'
+  | 'Bounties'
+  | 'Groups'
+  | null;
+
+export type ProposalFilterStatusOptions =
+  | 'All'
+  | 'Active proposals'
+  | 'Approved'
+  | 'Failed'
+  | null;
+
 export type DaoProposal = {
   dao: {
     id: string;

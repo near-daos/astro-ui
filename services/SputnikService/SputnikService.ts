@@ -34,6 +34,10 @@ import { PaginationResponse } from 'types/api';
 import { CreateDaoInput, DAO } from 'types/dao';
 import { CreateProposalParams, Proposal, ProposalType } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
+import {
+  ProposalFilterOptions,
+  ProposalFilterStatusOptions
+} from 'features/member-home/types';
 
 import {
   CreateTokenParams,
@@ -405,17 +409,14 @@ class SputnikService {
     filter: {
       daoViewFilter: string | null;
       daoFilter: 'All DAOs' | 'My DAOs' | 'Following DAOs' | null;
-      proposalFilter:
-        | 'Active proposals'
-        | 'Recent proposals'
-        | 'My proposals'
-        | 'Polls'
-        | null;
+      proposalFilter: ProposalFilterOptions;
+      status: ProposalFilterStatusOptions;
     },
     accountId: string
   ): Promise<Proposal[]> {
     const queryString = RequestQueryBuilder.create();
 
+    // specific DAO
     if (filter.daoViewFilter) {
       queryString.setFilter({
         field: 'daoId',
@@ -436,32 +437,62 @@ class SputnikService {
       }
     }
 
-    if (filter.proposalFilter === 'Active proposals') {
+    // Statuses
+    if (filter.status && filter.status === 'Active proposals') {
       queryString.setFilter({
         field: 'status',
         operator: '$eq',
         value: 'InProgress'
       });
-    } else if (filter.proposalFilter === 'My proposals') {
+    } else if (filter.status && filter.status === 'Approved') {
       queryString.setFilter({
-        field: 'proposer',
+        field: 'status',
         operator: '$eq',
-        value: accountId
+        value: 'Approved'
       });
-    } else if (filter.proposalFilter === 'Recent proposals') {
+    } else if (filter.status && filter.status === 'Failed') {
       queryString.setFilter({
         field: 'status',
         operator: '$in',
-        value: ['Approved', 'Rejected', 'Expired', 'Moved']
+        value: ['Rejected', 'Expired', 'Moved']
       });
     }
 
-    // Polls
+    // Kinds
     if (filter.proposalFilter === 'Polls') {
       queryString.setFilter({
         field: 'kind',
         operator: '$cont',
         value: ProposalType.Vote
+      });
+    }
+
+    if (filter.proposalFilter === 'Governance') {
+      queryString.setFilter({
+        field: 'kind',
+        operator: '$cont',
+        value: ProposalType.ChangePolicy
+      });
+    }
+
+    if (filter.proposalFilter === 'Financial') {
+      queryString.setFilter({
+        field: 'kind',
+        operator: '$cont',
+        value: ProposalType.Transfer
+      });
+    }
+
+    if (filter.proposalFilter === 'Groups') {
+      queryString.setFilter({
+        field: 'kind',
+        operator: '$cont',
+        value: ProposalType.AddMemberToRole
+      });
+      queryString.setOr({
+        field: 'kind',
+        operator: '$cont',
+        value: ProposalType.RemoveMemberFromRole
       });
     }
 
