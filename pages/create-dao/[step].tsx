@@ -1,7 +1,7 @@
-import React from 'react';
 import { NextPage } from 'next';
 import isEmpty from 'lodash/isEmpty';
 import { Router, useRouter } from 'next/router';
+import React, { useCallback, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { CREATE_DAO_URL } from 'constants/routing';
@@ -29,6 +29,7 @@ type StepType = keyof typeof steps;
 
 const CreateDaoPage: NextPage<{ step: string }> = () => {
   const router = useRouter();
+  const { step } = router.query;
 
   const methods = useForm<DAOFormValues>({
     defaultValues: {
@@ -44,19 +45,21 @@ const CreateDaoPage: NextPage<{ step: string }> = () => {
     }
   });
 
+  const isPageReloaded = useCallback(() => {
+    return step !== 'foundation' && isEmpty(methods.getValues('structure'));
+  }, [step, methods]);
+
+  useEffect(() => {
+    if (isPageReloaded()) {
+      router.push(CREATE_DAO_URL);
+    }
+  }, [router, isPageReloaded]);
+
   Router.events.on('routeChangeComplete', () => {
     window.scrollTo(0, 0);
   });
 
-  const { step } = router.query;
-
-  if (step === null) {
-    return null;
-  }
-
-  if (step !== 'foundation' && isEmpty(methods.getValues('structure'))) {
-    router.push(CREATE_DAO_URL);
-
+  if (step === null || isPageReloaded()) {
     return null;
   }
 
