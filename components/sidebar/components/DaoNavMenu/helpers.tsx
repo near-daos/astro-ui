@@ -130,23 +130,18 @@ export const useGetDaoNavItems = (): MenuItem[] => {
             {
               id: 'allMembers',
               label: 'All Members',
-              href: `/dao/[dao]/${GROUPS_SECTION_ID}/[group]`,
-              as: `/dao/${selectedDao?.id}/${GROUPS_SECTION_ID}/all-members`
+              href: `/dao/${selectedDao?.id}/${GROUPS_SECTION_ID}/all-members`
             },
             ...Object.keys(groups).map(key => {
               let href;
 
               if (key !== 'all-groups') {
                 href = {
-                  href: `/dao/[dao]/${GROUPS_SECTION_ID}/[group]`,
-                  as:
-                    key !== 'all-groups'
-                      ? `/dao/${selectedDao?.id}/${GROUPS_SECTION_ID}/${groups[key]}`
-                      : undefined
+                  href: `/dao/${selectedDao?.id}/${GROUPS_SECTION_ID}/${groups[key]}`
                 };
               } else {
                 href = {
-                  href: `/dao/[dao]/${GROUPS_SECTION_ID}/${groups[key]}`
+                  href: `/dao/${selectedDao?.id}/${GROUPS_SECTION_ID}/${groups[key]}`
                 };
               }
 
