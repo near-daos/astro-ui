@@ -5,9 +5,13 @@ import { GroupFormType } from 'features/groups/types';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 
+import { SputnikService } from 'services/SputnikService';
+
 import styles from './add-group-menu.module.scss';
 
 export const AddGroupMenu: FC = () => {
+  const accountId = SputnikService.getAccountId();
+
   const [showGroupModal] = useModal(GroupPopup, {
     initialValues: {
       groupType: GroupFormType.CREATE_GROUP,
@@ -16,8 +20,12 @@ export const AddGroupMenu: FC = () => {
   });
 
   const handleClick = useCallback(async () => {
-    await showGroupModal();
-  }, [showGroupModal]);
+    if (accountId) {
+      await showGroupModal();
+    } else {
+      SputnikService.login();
+    }
+  }, [accountId, showGroupModal]);
 
   return (
     <Button onClick={handleClick} variant="tertiary" className={styles.root}>
