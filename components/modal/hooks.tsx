@@ -28,10 +28,8 @@ export const useModal = <P extends IModal>(
       };
 
       const onCloseModal = (...args: OnCloseParameters<P>) => {
-        context.hideModal(id);
-
-        props.onClose?.(...args);
         resolve(args);
+        context.hideModal(id);
       };
 
       const modal = (

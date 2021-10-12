@@ -49,8 +49,11 @@ export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
     showUnclaimBountyDialog
   ]);
   const handleCompleteClick = useCallback(async () => {
-    await showCompleteBountyDialog();
-    router.push(`/dao/${dao.id}`);
+    const result = await showCompleteBountyDialog();
+
+    if (result.includes('submitted')) {
+      router.push(`/dao/${dao.id}`);
+    }
   }, [dao.id, router, showCompleteBountyDialog]);
 
   const renderStatusBasedInfo = () => {

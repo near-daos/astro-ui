@@ -12,6 +12,7 @@ import { DAO } from 'types/dao';
 import { BountyPageContext } from 'features/bounty/helpers';
 import { useAuthContext } from 'context/AuthContext';
 import { Token } from 'features/types';
+import { useRouter } from 'next/router';
 
 const CREATE_BOUNTY_INITIAL = {
   token: 'NEAR' as Token,
@@ -35,6 +36,7 @@ const BountiesPage: FC<BountiesPageProps> = ({
   bounties
 }) => {
   const { accountId, login } = useAuthContext();
+  const router = useRouter();
 
   const inProgressBounties = bounties.filter(bounty =>
     bounty.claimedBy.find(
@@ -90,10 +92,17 @@ const BountiesPage: FC<BountiesPageProps> = ({
     dao
   });
 
-  const handleCreateClick = useCallback(
-    () => (accountId ? showCreateBountyDialog() : login()),
-    [login, showCreateBountyDialog, accountId]
-  );
+  const handleCreateClick = useCallback(async () => {
+    if (!accountId) {
+      login();
+    } else {
+      const result = await showCreateBountyDialog();
+
+      if (result.includes('submitted')) {
+        router.push(`/dao/${dao.id}`);
+      }
+    }
+  }, [accountId, login, showCreateBountyDialog, router, dao.id]);
 
   const getContextValue = useCallback(() => {
     return { dao };

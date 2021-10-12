@@ -4,6 +4,7 @@ import { utils } from 'near-api-js';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { CreateProposalParams } from 'types/proposal';
 import { AnyObject } from 'yup/lib/types';
+import { appConfig } from 'config';
 import { mapCreateDaoParamsToContractArgs } from './mappers/dao';
 import { SputnikWalletService } from './SputnikWalletService';
 import { ClaimBountyParams, CreateDaoParams } from './types/dao';
@@ -28,7 +29,9 @@ export class SputnikDaoService {
 
     return this.sputnikWalletService.getAccount().functionCall({
       ...props,
-      walletCallbackUrl: `${window.origin}/api-server/v1/transactions/wallet/callback/${accountId}`
+      walletCallbackUrl: appConfig.walledUseLocalRedirect
+        ? `${window.origin}/callback/transaction`
+        : `${window.origin}/api-server/v1/transactions/wallet/callback/${accountId}`
     });
   }
 
