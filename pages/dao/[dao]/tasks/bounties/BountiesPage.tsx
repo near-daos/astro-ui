@@ -44,6 +44,8 @@ const BountiesPage: FC<BountiesPageProps> = ({
     )
   );
 
+  const openBounties = bounties.filter(bounty => bounty.slots !== 0);
+
   const completedBounties = bountiesDone
     .map(bountyDoneProposal => {
       const completedBounty = bounties.find(
@@ -59,14 +61,14 @@ const BountiesPage: FC<BountiesPageProps> = ({
     })
     .filter(completedBounty => !!completedBounty) as Bounty[];
 
-  const numberOpenBounties = bounties.length;
+  const numberOpenBounties = openBounties.length;
   const numberInProgressBounties = inProgressBounties.length;
   const numberCompletedBounties = completedBounties.length;
 
   const tabOpen = {
     id: 1,
     label: `Open (${numberOpenBounties})`,
-    content: <BountiesList bountiesList={bounties} status="Open" />
+    content: <BountiesList bountiesList={openBounties} status="Open" />
   };
   const tabInProgress = {
     id: 2,
