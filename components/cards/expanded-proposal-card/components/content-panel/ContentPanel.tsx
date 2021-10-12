@@ -1,6 +1,5 @@
 import React, { FC, ReactNode } from 'react';
 
-import { IconButton } from 'components/button/IconButton';
 import * as Typography from 'components/Typography';
 import ProposalControlPanel from 'components/cards/proposal-card/components/proposal-control-panel/ProposalControlPanel';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
@@ -16,7 +15,7 @@ import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card
 import { DAO } from 'types/dao';
 import { getScope } from 'components/cards/expanded-proposal-card/helpers';
 import tempFlag from 'stories/dao-home/assets/flag.png';
-import { copyTextToClipboard } from 'helpers/clipboard';
+import { CopyButton } from 'features/copy-button';
 
 import styles from './content-panel.module.scss';
 
@@ -41,13 +40,12 @@ interface ContentPanelProps {
   proposalData?: Proposal | null;
   daoData?: DAO | null;
   permissions: ProposalVotingPermissions;
-  id: string;
+  id?: string;
   daoId: string;
-  status: ProposalStatus;
+  status?: ProposalStatus;
 }
 
 export const ContentPanel: FC<ContentPanelProps> = ({
-  id,
   daoId,
   title,
   children,
@@ -64,8 +62,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
   proposalId,
   proposalData,
   daoData,
-  permissions,
-  status
+  permissions
 }) => {
   const flag = (tempFlag as StaticImageData).src;
 
@@ -86,15 +83,9 @@ export const ContentPanel: FC<ContentPanelProps> = ({
             </div>
             <div className={styles.right}>
               {/* <Icon name="buttonBookmark" className={styles.icon} /> */}
-              <IconButton
-                icon="buttonShare"
-                className={styles.icon}
-                onClick={() => {
-                  const loc = document.location;
-                  const url = `${loc.origin}${loc.pathname}?proposal=${id}&proposalStatus=${status}`;
-
-                  copyTextToClipboard(url);
-                }}
+              <CopyButton
+                text={document.location.href}
+                iconName="buttonShare"
               />
             </div>
           </div>

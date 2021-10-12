@@ -24,6 +24,7 @@ import { TokenType } from 'types/token';
 import { ChartData } from 'lib/types/treasury';
 import { formatCurrency } from 'utils/formatCurrency';
 import { useNearPrice } from 'hooks/useNearPrice';
+import { useAuthContext } from 'context/AuthContext';
 
 import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
 
@@ -43,6 +44,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
 }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
+  const { accountId, login } = useAuthContext();
 
   const [showRequestPayoutPopup] = useModal(RequestPayoutPopup, {
     type: 'send'
@@ -64,9 +66,10 @@ const TokensPage: React.FC<TokensPageProps> = ({
     isMobileOrTablet
   ]);
 
-  const handleClick = useCallback(() => showRequestPayoutPopup(), [
-    showRequestPayoutPopup
-  ]);
+  const handleClick = useCallback(
+    () => (accountId ? showRequestPayoutPopup() : login()),
+    [login, showRequestPayoutPopup, accountId]
+  );
 
   const resetScroll = useCallback(() => {
     if (!scrollListRef || !scrollListRef.current) {
@@ -127,17 +130,18 @@ const TokensPage: React.FC<TokensPageProps> = ({
 
   return (
     <div className={styles.root}>
+      <div className={styles.header}>
+        <h1>Tokens</h1>
+        <Button variant="black" size="small" onClick={handleClick}>
+          Send tokens
+        </Button>
+      </div>
       <div className={styles.account}>
         <div className={styles.caption}>DAO account name</div>
         <div className={styles.name}>
           {daoId}
           <CopyButton text={daoId} className={styles.icon} />
         </div>
-      </div>
-      <div className={styles.send}>
-        <Button variant="secondary" onClick={handleClick}>
-          Send tokens
-        </Button>
       </div>
       <div className={styles.chart}>
         <AreaChart data={chartData} captions={captions} />

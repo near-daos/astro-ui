@@ -2,7 +2,7 @@ import React, { FC, useCallback } from 'react';
 
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
-import { NoResultsView } from 'features/search/search-results/components/no-results-view';
+import { NoSearchResultsView } from 'features/search/search-results/components/no-search-results-view';
 
 import MemberCard, { MemberCardPopup } from 'components/cards/member-card';
 import { Badge, Variant } from 'components/badge/Badge';
@@ -23,7 +23,7 @@ export const MembersTabView: FC = () => {
   );
 
   if (!searchResults?.members?.length)
-    return <NoResultsView query={searchResults?.query} />;
+    return <NoSearchResultsView query={searchResults?.query} />;
 
   return (
     <div className={styles.root}>

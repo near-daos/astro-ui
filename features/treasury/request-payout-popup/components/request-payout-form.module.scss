@@ -6,6 +6,7 @@
   grid-row-gap: 24px;
   grid-template-areas:
     'token amount'
+    'tokenAddress tokenAddress'
     'recipient recipient'
     'payoutDetail payoutDetail'
     'externalUrl externalUrl'
@@ -36,6 +37,10 @@
 
 .amount {
   grid-area: amount;
+}
+
+.tokenAddress {
+  grid-area: tokenAddress;
 }
 
 .url {
@@ -96,9 +101,5 @@
     grid-gap: 8px;
     grid-template-columns: 1fr 1fr;
     justify-content: space-between;
-  }
-
-  .voteDetails {
-    margin: 0 -24px;
   }
 }

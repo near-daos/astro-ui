@@ -3,22 +3,29 @@
 
 .root {
   display: grid;
-  grid-column-gap: 8px;
   grid-row-gap: 24px;
   grid-template-areas:
     'header'
     'description'
-    'create'
     'bounties';
   grid-template-columns: 1fr;
   padding-top: 56px;
+}
 
-  @include tablet-landscape {
-    grid-template-areas:
-      'header create'
-      'description description'
-      'bounties bounties';
-    grid-template-columns: 1fr 1fr;
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  grid-area: header;
+
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
+    gap: 35px;
+  }
+
+  h1 {
+    margin: 0;
   }
 }
 
@@ -26,39 +33,6 @@
   @extend %body1;
   grid-area: description;
   width: 100%;
-}
-
-.create {
-  @extend %subtitle2;
-  align-self: center;
-  color: var(--color-brand-black);
-  grid-area: create;
-  justify-self: end;
-  margin: 8px 0;
-  width: 100%;
-
-  @include tablet-landscape {
-    margin: 0;
-    width: auto;
-  }
-
-  button {
-    text-transform: none;
-    width: 100%;
-
-    @include tablet-landscape {
-      min-width: auto;
-    }
-  }
-}
-
-.header {
-  @extend %heading2;
-  grid-area: header;
-
-  @include tablet-landscape {
-    @include font(2em, 48px, 500);
-  }
 }
 
 .bounties {

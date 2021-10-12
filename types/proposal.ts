@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
-import { DaoRole, DefaultVotePolicy } from './role';
+import { DAO } from 'types/dao';
+import { PolicyType } from 'types/policy';
 
 export type DaoDetails = {
   name: string;
@@ -107,7 +108,6 @@ export type Proposal = {
   id: string;
   proposalId: number;
   daoId: string;
-  target: string;
   proposer: string;
   description: string;
   status: ProposalStatus;
@@ -124,6 +124,7 @@ export type Proposal = {
   createdAt: string;
   daoDetails: DaoDetails;
   link: string;
+  dao: DAO;
 };
 
 export interface CreateProposalParams {
@@ -167,17 +168,6 @@ interface UpgradeRemote {
 interface UpgradeSelf {
   hash: string;
 }
-
-// TODO describe proposal type properly
-// eslint-disable-next-line
-export type PolicyType = Object & {
-  roles: DaoRole[];
-  bountyBond: string;
-  proposalBond: string;
-  proposalPeriod: string;
-  defaultVotePolicy: DefaultVotePolicy;
-  bountyForgivenessPeriod: string;
-};
 
 interface ChangePolicy {
   policy: unknown;

@@ -35,9 +35,9 @@ export const CompleteBountyDialog: FC<CompleteBountyDialogProps> = ({
 
       const proposal = getCompleteBountyProposal(daoId, data.id, input, bond);
 
-      SputnikService.createProposal(proposal);
-
-      onClose('submitted');
+      SputnikService.createProposal(proposal).then(() => {
+        onClose('submitted');
+      });
     },
     [daoId, data.id, bond, onClose]
   );

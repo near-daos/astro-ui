@@ -24,6 +24,7 @@ import awsUploader from 'services/AwsUploader/AwsUploader';
 import { CreateDaoInput } from 'types/dao';
 
 import styles from 'features/create-dao/components/steps/form/form.module.scss';
+import { nearConfig } from 'config';
 
 export function ReviewView(): JSX.Element {
   const { getValues, handleSubmit } = useFormContext<DAOFormValues>();
@@ -60,7 +61,7 @@ export function ReviewView(): JSX.Element {
     } as CreateDaoInput);
 
     if (isBoolean(result)) {
-      await router.push(`/dao/${data.address}?pending=true`);
+      await router.push(`/dao/${data.address}.${nearConfig.contractName}`);
     }
   }
 

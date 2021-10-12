@@ -47,7 +47,7 @@ const PATH = (
   </svg>
 );
 
-const SMILE = (
+export const SMILE = (
   <svg
     width="43"
     height="43"

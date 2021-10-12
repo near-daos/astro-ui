@@ -49,7 +49,7 @@ export const getServerSideProps: GetServerSideProps = async ({
           deadlineThreshold: response.maxDeadline,
           slots: Number(response.times),
           id: response.bountyId,
-          token: 'NEAR',
+          token: response.token,
           description,
           externalUrl: url || ''
         };

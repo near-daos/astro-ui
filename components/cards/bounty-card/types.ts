@@ -1,3 +1,5 @@
+import { Token } from 'features/types';
+
 export type ClaimedBy = {
   accountId: string;
   deadline: string;
@@ -10,7 +12,7 @@ export type DeadlineUnit = 'day' | 'week' | 'month';
 
 export type Bounty = {
   id: string;
-  token: 'NEAR';
+  token: Token | string;
   amount: string;
   description: string;
   forgivenessPeriod: string;

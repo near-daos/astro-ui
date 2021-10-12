@@ -1,10 +1,10 @@
-import React, { FC, FormEvent, useCallback } from 'react';
 import cn from 'classnames';
+import React, { FC, FormEvent, useCallback } from 'react';
 
-import { Dropdown } from 'components/dropdown/Dropdown';
 import { Toggle } from 'components/toggle/Toggle';
+import { Dropdown } from 'components/dropdown/Dropdown';
 
-import { searchOptions, showOptions } from './helpers';
+import { Option, daoFilterOptions, statusFilterOptions } from './helpers';
 
 import styles from './search-filters.module.scss';
 
@@ -23,10 +23,12 @@ export interface SearchFiltersProps {
   includeGroups: boolean;
   includeTreasury: boolean;
   includeGovernance: boolean;
+  statusDropdownOptions?: Option[];
   onChange: (
     filterName: FilterName,
     filterValue: string | boolean | undefined
   ) => void;
+  showDaoFilter?: boolean;
 }
 
 export const SearchFilters: FC<SearchFiltersProps> = ({
@@ -36,6 +38,8 @@ export const SearchFilters: FC<SearchFiltersProps> = ({
   includeGroups,
   includeTreasury,
   includeGovernance,
+  showDaoFilter = true,
+  statusDropdownOptions = statusFilterOptions,
   onChange
 }) => {
   const handleChange = useCallback(
@@ -45,6 +49,27 @@ export const SearchFilters: FC<SearchFiltersProps> = ({
     [onChange]
   );
 
+  function renderDaoFilter() {
+    let filter = null;
+
+    if (showDaoFilter) {
+      filter = (
+        <>
+          <div className={styles.label}>Search</div>
+          <Dropdown
+            className={styles.dropdown}
+            options={daoFilterOptions}
+            onChange={value => handleChange('search', value)}
+            value={searchFilter}
+            defaultValue={daoFilterOptions[0].value}
+          />
+        </>
+      );
+    }
+
+    return <div className={styles.search}>{filter}</div>;
+  }
+
   return (
     <div className={styles.root}>
       <div className={styles.content}>
@@ -52,27 +77,17 @@ export const SearchFilters: FC<SearchFiltersProps> = ({
           <div className={styles.label}>Show</div>
           <Dropdown
             className={styles.dropdown}
-            options={showOptions}
+            options={statusDropdownOptions}
             onChange={value => handleChange('show', value)}
             value={showFilter}
-            defaultValue={showOptions[0].value}
+            defaultValue={statusDropdownOptions[0].value}
           />
         </div>
-        <div className={styles.search}>
-          <div className={styles.label}>Search</div>
-          <Dropdown
-            className={styles.dropdown}
-            options={searchOptions}
-            onChange={value => handleChange('search', value)}
-            value={searchFilter}
-            defaultValue={searchOptions[0].value}
-          />
-        </div>
+        {renderDaoFilter()}
         <div className={cn(styles.type, styles.label)}>Type</div>
         <div className={styles.type1}>
           <Toggle
             label="Tasks"
-            // defaultChecked={includeTasks}
             checked={includeTasks}
             onChange={(e: FormEvent) =>
               handleChange('tasks', (e.target as HTMLInputElement).checked)
@@ -82,7 +97,6 @@ export const SearchFilters: FC<SearchFiltersProps> = ({
         <div className={styles.type2}>
           <Toggle
             label="Groups"
-            // defaultChecked={includeGroups}
             checked={includeGroups}
             onChange={(e: FormEvent) =>
               handleChange('groups', (e.target as HTMLInputElement).checked)
@@ -92,7 +106,6 @@ export const SearchFilters: FC<SearchFiltersProps> = ({
         <div className={styles.type3}>
           <Toggle
             label="Treasury"
-            // defaultChecked={includeTreasury}
             checked={includeTreasury}
             onChange={(e: FormEvent) =>
               handleChange('treasury', (e.target as HTMLInputElement).checked)
@@ -102,7 +115,6 @@ export const SearchFilters: FC<SearchFiltersProps> = ({
         <div className={styles.type4}>
           <Toggle
             label="Governance"
-            // defaultChecked={includeGovernance}
             checked={includeGovernance}
             onChange={(e: FormEvent) =>
               handleChange('governance', (e.target as HTMLInputElement).checked)

@@ -52,14 +52,11 @@ export function getProposalFilter(
   tab?: string | string[]
 ): ProposalFilterValues {
   switch (tab) {
-    case '1': {
+    case '0': {
       return 'Active proposals' as ProposalFilterValues;
     }
-    case '2': {
-      return 'Recent proposals' as ProposalFilterValues;
-    }
     default: {
-      return 'My proposals' as ProposalFilterValues;
+      return 'Recent proposals' as ProposalFilterValues;
     }
   }
 }

@@ -13,7 +13,7 @@ import styles from './create-proposal-popup.module.scss';
 
 export interface CreateProposalPopupProps {
   isOpen: boolean;
-  onClose: (...args: unknown[]) => void;
+  onClose: (proposalId?: string) => void;
 }
 
 export const CreateProposalPopup: FC<CreateProposalPopupProps> = ({
@@ -26,15 +26,16 @@ export const CreateProposalPopup: FC<CreateProposalPopupProps> = ({
   const [showRequestPayoutPopup] = useModal(RequestPayoutPopup);
 
   const requestPayoutClickHandler = useCallback(async () => {
-    await showRequestPayoutPopup();
-    onClose('submitted');
+    const [proposalId] = await showRequestPayoutPopup();
+
+    onClose(proposalId);
   }, [onClose, showRequestPayoutPopup]);
 
   const claimBountyClickHandler = useCallback(async () => {
     if (!daoId) return;
 
     await router.push(`/dao/${daoId}/tasks/bounties`);
-    onClose('submitted');
+    onClose();
   }, [onClose, router, daoId]);
 
   return (

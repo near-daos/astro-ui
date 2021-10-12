@@ -5,14 +5,14 @@
   border-radius: 0 0 8px 8px;
   display: flex;
   flex-direction: column;
-  padding: 16px 16px 20px;
-
-  :global .proposalInfo {
-    height: auto;
-  }
+  padding: 16px 24px 20px;
 
   :global .paragraph1 {
     white-space: normal;
+  }
+
+  :global .transferModal {
+    width: 100%;
   }
 }
 
@@ -49,20 +49,31 @@
 }
 
 .name {
-  @extend %subtitle3;
   color: var(--color-neutral-60);
-  margin: 16px 0;
+  font-size: 1em;
+  font-weight: 500;
+  margin: 16px 0 10px;
+  text-transform: lowercase;
+
+  @include tablet-landscape {
+    font-weight: 700;
+  }
 }
 
 .control {
   justify-content: flex-start;
-  margin-top: 24px;
+  margin-top: 10px;
 }
 
 .votes {
-  margin-top: 35px;
+  margin-top: 24px;
+
   .voteDetails {
-    margin: 16px -16px -20px;
+    margin: 16px -24px -20px;
+  }
+
+  .voteDetails > div {
+    padding: 24px;
   }
 }
 

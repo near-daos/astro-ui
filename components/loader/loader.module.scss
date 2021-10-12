@@ -1,0 +1,91 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+$path1: 'M351.986 124.186C352.129 119.963 348.655 115.543 341.527 111.202C334.469 106.903 324.124 102.868 311.215 99.3258C285.411 92.2449 249.559 87.1843 209.783 85.8398C170.007 84.4953 133.894 87.1234 107.671 92.4457C94.553 95.1083 83.9586 98.4355 76.6264 102.248C69.2215 106.098 65.4571 110.273 65.3144 114.496C65.1716 118.72 68.6454 123.14 75.7735 127.481C82.8316 131.78 93.177 135.815 106.086 139.357C131.89 146.438 167.742 151.499 207.518 152.843C247.294 154.188 283.406 151.559 309.629 146.237C322.748 143.574 333.342 140.247 340.674 136.435C348.079 132.585 351.843 128.41 351.986 124.186Z';
+$path2: 'M382.266 47.8082C381.167 45.2197 378.909 43.1154 375.47 41.5225C372.025 39.9268 367.451 38.8728 361.842 38.3695C350.626 37.3631 335.466 38.5744 317.403 41.8428C281.291 48.3771 233.772 63.0966 183.419 84.4636C133.066 105.831 89.4633 129.778 59.673 151.209C44.7719 161.929 33.3671 171.99 26.298 180.756C22.7629 185.139 20.3424 189.161 19.0963 192.748C17.8525 196.328 17.7969 199.414 18.8953 202.002C19.9937 204.591 22.2518 206.695 25.6907 208.288C29.1358 209.884 33.7105 210.938 39.3191 211.441C50.5349 212.447 65.6952 211.236 83.7582 207.968C119.87 201.433 167.389 186.714 217.742 165.347C268.095 143.98 311.698 120.032 341.488 98.6015C356.389 87.8818 367.794 77.8203 374.863 69.0549C378.398 64.6715 380.819 60.6491 382.065 57.0627C383.309 53.4828 383.364 50.3967 382.266 47.8082Z';
+
+.root {
+  @include centralize;
+  flex-direction: column;
+  min-height: 70vh;
+}
+
+.subtitle {
+  @extend %paragraph1;
+}
+
+.logo {
+  position: relative;
+}
+
+.ellipse1 {
+  animation: move 5000ms infinite forwards;
+
+  animation-timing-function: linear;
+  offset-distance: 0;
+  // stylelint-disable
+  offset-path: path($path1);
+  // stylelint-enable
+}
+
+.ellipse2 {
+  animation: move1 5000ms infinite forwards;
+
+  animation-timing-function: linear;
+  offset-distance: 30%;
+  // stylelint-disable
+  offset-path: path($path1);
+  // stylelint-enable
+  transform: scale(0.8);
+}
+
+.ellipse3 {
+  animation: move 5000ms infinite forwards;
+
+  animation-timing-function: linear;
+  offset-distance: 40%;
+  // stylelint-disable
+  offset-path: path($path2);
+  // stylelint-enable
+}
+
+.ellipse4 {
+  animation: move2 5000ms infinite forwards;
+
+  animation-timing-function: linear;
+  offset-distance: 10%;
+  // stylelint-disable
+  offset-path: path($path1);
+  // stylelint-enable
+  transform: scale(0.8);
+}
+
+@keyframes move {
+  0% {
+    offset-distance: 0;
+  }
+
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+@keyframes move1 {
+  0% {
+    offset-distance: 40%;
+  }
+
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+@keyframes move2 {
+  0% {
+    offset-distance: 20%;
+  }
+
+  100% {
+    offset-distance: 100%;
+  }
+}

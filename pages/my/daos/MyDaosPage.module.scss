@@ -1,0 +1,52 @@
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'header'
+    'content';
+  grid-template-columns: 1fr;
+  padding-top: 56px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  grid-area: header;
+
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
+    gap: 35px;
+  }
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.content {
+  display: grid;
+  grid-area: content;
+  grid-gap: 50px;
+  grid-template-columns: 1fr;
+  margin-top: 16px;
+  place-items: start center;
+
+  @include tablet-portrait {
+    grid-template-columns: repeat(auto-fit, minmax(444px, 1fr));
+  }
+
+  @include tablet-landscape {
+    grid-gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    place-items: start start;
+  }
+
+  @include large-desktop {
+    grid-gap: 50px;
+    grid-template-columns: repeat(auto-fit, minmax(367px, 1fr));
+  }
+}

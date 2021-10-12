@@ -7,16 +7,16 @@
   grid-row-gap: 24px;
   grid-template-areas:
     'daoDetails'
-    ' proposals'
     'daoInfo'
+    'proposals'
     'proposalList';
   grid-template-columns: 1fr;
-  padding-top: 24px;
+  padding-top: 80px;
 
   @include tablet-landscape {
     grid-template-areas:
-      'daoDetails daoDetails proposals'
       'daoDetails daoDetails daoInfo'
+      'daoDetails daoDetails proposals'
       'proposalList proposalList proposalList';
     grid-template-columns: 1fr 1fr 1fr;
     padding-top: 56px;
@@ -66,4 +66,16 @@
   &:focus {
     outline: none;
   }
+}
+
+.activeProposalsTab {
+  color: var(--color-primary-50);
+}
+
+.approvedProposalsTab {
+  color: var(--color-brand-green);
+}
+
+.failedProposalsTab {
+  color: var(--color-brand-coral-red);
 }

@@ -1,6 +1,9 @@
 import { Icon } from 'components/Icon';
 import { Modal } from 'components/modal';
-import { RequestPayoutForm } from 'features/treasury/request-payout-popup/components/RequestPayoutForm';
+import {
+  IRequestPayoutForm,
+  RequestPayoutForm
+} from 'features/treasury/request-payout-popup/components/RequestPayoutForm';
 import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
@@ -12,7 +15,7 @@ import styles from './request-payout-popup.module.scss';
 export interface RequestPayoutPopupProps {
   type: 'send' | 'request';
   isOpen: boolean;
-  onClose: (...args: unknown[]) => void;
+  onClose: (proposalId?: string) => void;
 }
 
 export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
@@ -24,26 +27,31 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
   const daoId = router.query.dao as string;
   const currentDao = useDao(daoId);
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const handleSubmit = useCallback(
-    data => {
+    async (data: IRequestPayoutForm) => {
       if (currentDao) {
-        SputnikService.createProposal({
+        await SputnikService.createProposal({
           daoId: currentDao.id,
           description: `${data.detail}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
           kind: 'Transfer',
           bond: currentDao.policy.proposalBond,
           data: {
-            token_id: '',
+            token_id:
+              data.token === 'Fungible Token' && data.tokenAddress
+                ? data.tokenAddress
+                : '',
             receiver_id: data.recipient,
             amount: new Decimal(data.amount).mul(yoktoNear).toFixed()
           }
-        }).then(() => {
-          onClose();
         });
+
+        onClose();
+
+        // Reload page to force call of the getServerSideProps of page
+        router.replace(router.asPath);
       }
     },
-    [onClose, currentDao]
+    [router, onClose, currentDao]
   );
 
   return (

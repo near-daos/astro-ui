@@ -16,12 +16,21 @@
   }
 
   &:hover {
-    background-color: var(--color-primary-50);
     color: var(--color-white);
   }
 
   &:focus {
     outline: none;
+  }
+}
+
+.active {
+  &:hover {
+    color: var(--color-success);
+  }
+
+  .icon {
+    color: var(--color-success);
   }
 }
 

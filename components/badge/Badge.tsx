@@ -12,6 +12,7 @@ export type Variant =
   | 'red'
   | 'orange'
   | 'yellow'
+  | 'neonYellow'
   | 'primary';
 
 const sizes = {

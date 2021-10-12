@@ -15,6 +15,7 @@ import {
 import { format, parseISO } from 'date-fns';
 import { formatYoktoValue } from 'helpers/format';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
+import { useRouter } from 'next/router';
 import styles from './bounty-card.module.scss';
 
 export interface BountyCardProps {
@@ -25,19 +26,20 @@ export interface BountyCardProps {
 export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
   const { token, amount, description, claimedBy, slots, externalUrl } = data;
   const { dao } = useBountyPageContext();
+  const router = useRouter();
 
   const amountValue = formatYoktoValue(amount);
 
   const [showClaimBountyDialog] = useModal(ClaimBountyDialog, {
     data,
-    bond: dao.policy.bountyBond
+    bond: dao.policy?.bountyBond
   });
 
   const [showUnclaimBountyDialog] = useModal(UnclaimBountyDialog, { data });
 
   const [showCompleteBountyDialog] = useModal(CompleteBountyDialog, {
     data,
-    bond: dao.policy.proposalBond
+    bond: dao.policy?.proposalBond
   });
 
   const handleClaimClick = useCallback(() => showClaimBountyDialog(), [
@@ -46,9 +48,13 @@ export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
   const handleUnclaimClick = useCallback(() => showUnclaimBountyDialog(), [
     showUnclaimBountyDialog
   ]);
-  const handleCompleteClick = useCallback(() => showCompleteBountyDialog(), [
-    showCompleteBountyDialog
-  ]);
+  const handleCompleteClick = useCallback(async () => {
+    const result = await showCompleteBountyDialog();
+
+    if (result.includes('submitted')) {
+      router.push(`/dao/${dao.id}`);
+    }
+  }, [dao.id, router, showCompleteBountyDialog]);
 
   const renderStatusBasedInfo = () => {
     switch (status) {
@@ -108,7 +114,9 @@ export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
         <div className={styles.reward}>
           <span className={styles.value}>{amountValue}</span>
           &nbsp;
-          <span className={styles.valueDesc}>{token}</span>
+          <span className={styles.valueDesc}>
+            {token === '' ? 'NEAR' : 'FT'}
+          </span>
         </div>
         {renderStatusBasedInfo()}
       </div>

@@ -4,6 +4,8 @@ import isEmpty from 'lodash/isEmpty';
 import { Router, useRouter } from 'next/router';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { CREATE_DAO_URL } from 'constants/routing';
+
 import { FlagView } from 'features/create-dao/components/steps/flag';
 import { FormView } from 'features/create-dao/components/steps/form';
 import { FoundationView } from 'features/create-dao/components/steps/foundation';
@@ -53,7 +55,7 @@ const CreateDaoPage: NextPage<{ step: string }> = () => {
   }
 
   if (step !== 'foundation' && isEmpty(methods.getValues('structure'))) {
-    router.push('/create-dao');
+    router.push(CREATE_DAO_URL);
 
     return null;
   }

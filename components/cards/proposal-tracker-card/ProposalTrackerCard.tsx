@@ -1,6 +1,7 @@
 import { Button } from 'components/button/Button';
 import * as Typography from 'components/Typography';
 import React, { FC } from 'react';
+import cn from 'classnames';
 import styles from './proposal-tracker.module.scss';
 
 export interface ProposalTrackerProps {
@@ -19,8 +20,12 @@ export const ProposalTrackerCard: FC<ProposalTrackerProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.content}>
-        <Typography.Subtitle className={styles.title} size={3}>
-          <strong>{activeVotes}</strong> active proposals
+        <Typography.Subtitle
+          className={cn(styles.title, styles.active)}
+          size={2}
+        >
+          <span>{activeVotes}</span> active{' '}
+          {activeVotes === 1 ? 'proposal' : 'proposals'}
         </Typography.Subtitle>
         <Typography.Subtitle className={styles.subtitle} size={6}>
           {`${totalProposals} proposals in total`}

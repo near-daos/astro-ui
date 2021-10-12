@@ -5,34 +5,44 @@ import { ProposalCardRenderer } from 'components/cards/proposal-card';
 import styles from 'features/search/search-results/components/proposals-tab-view/proposals-tab-view.module.scss';
 import { Proposal } from 'types/proposal';
 import { Button } from 'components/button/Button';
+import Link from 'next/link';
 
 interface DaoSectionProps {
+  daoId: string;
   daoName: string;
   proposals: Proposal[];
   flag: string;
-  onFilterSet: (val: boolean) => void;
+  onFilterSet: () => void;
   expanded: boolean;
   filter: string | null;
+  expandedProposalId?: string;
 }
 
 export const DaoSection: FC<DaoSectionProps> = ({
+  daoId,
   daoName,
   proposals,
   flag,
   onFilterSet,
   expanded,
-  filter
+  filter,
+  expandedProposalId
 }) => {
   return (
     <>
       <div className={styles.daoDivider}>
         {!filter && (
           <>
-            <div
-              className={styles.flag}
-              style={{ backgroundImage: `url(${flag})` }}
-            />
-            <h3>{daoName}</h3>
+            <Link passHref href={`/dao/${daoId}`}>
+              <a className={styles.daoLink}>
+                <div
+                  className={styles.flag}
+                  style={{ backgroundImage: `url(${flag})` }}
+                />
+                <h3>{daoName}</h3>
+              </a>
+            </Link>
+
             <div className={styles.divider} />
           </>
         )}
@@ -40,7 +50,7 @@ export const DaoSection: FC<DaoSectionProps> = ({
           <Button
             variant="tertiary"
             className={styles.toggle}
-            onClick={() => onFilterSet(true)}
+            onClick={() => onFilterSet()}
           >
             View all ({proposals.length})
           </Button>
@@ -49,7 +59,10 @@ export const DaoSection: FC<DaoSectionProps> = ({
       {proposals.slice(0, expanded ? undefined : 3).map(item => {
         return (
           <div className={styles.cardWrapper} key={item.id}>
-            <ProposalCardRenderer proposal={item} />
+            <ProposalCardRenderer
+              proposal={item}
+              showExpanded={item.id === expandedProposalId}
+            />
           </div>
         );
       })}

@@ -2,7 +2,9 @@
 @import 'styles/mixins';
 
 .root {
-  background-color: var(--color-primary-10);
+  background-color: var(--color-white);
+  background-image: url('/assets/illustrations/bg-stars.svg');
+  background-repeat: repeat;
   display: grid;
   grid-template-areas:
     'header'
@@ -32,6 +34,7 @@
 
   .main {
     grid-area: main;
+    min-height: 100vh;
     overflow: hidden;
     padding: 0 24px 60px;
     width: 100%;
@@ -41,7 +44,9 @@
     }
 
     @include large-desktop {
-      padding: 0 120px 60px;
+      margin: auto;
+      max-width: 1125px;
+      padding: 0 94px 60px 72px;
     }
   }
 

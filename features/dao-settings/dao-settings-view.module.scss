@@ -4,7 +4,11 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin: 24px 0;
+  margin-top: 56px;
+
+  h1 {
+    margin-top: 0;
+  }
 }
 
 .changeButton {

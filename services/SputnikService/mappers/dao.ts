@@ -4,6 +4,9 @@ import { DAO, DaoVotePolicy } from 'types/dao';
 import { DaoRole } from 'types/role';
 import { formatYoktoValue } from 'helpers/format';
 import { awsConfig } from 'config';
+import Decimal from 'decimal.js';
+import { CreateDaoParams } from 'services/SputnikService/types';
+import { yoktoNear } from '..';
 
 export type DaoPolicy = {
   createdAt: string;
@@ -121,4 +124,44 @@ export const mapDaoDTOListToDaoList = (daoList: DaoDTO[]): DAO[] => {
   return daoList.map(daoItem => {
     return mapDaoDTOtoDao(daoItem);
   });
+};
+
+export const mapCreateDaoParamsToContractArgs = (
+  params: CreateDaoParams
+): string => {
+  const argsList = {
+    purpose: params.purpose,
+    bond: new Decimal(params.bond).mul(yoktoNear).toFixed(),
+    vote_period: new Decimal(params.votePeriod).mul('3.6e12').toFixed(),
+    grace_period: new Decimal(params.gracePeriod).mul('3.6e12').toFixed(),
+    policy: {
+      roles: params.policy.roles,
+      default_vote_policy: params.policy.defaultVotePolicy,
+      proposal_bond: new Decimal(params.policy.proposalBond)
+        .mul(yoktoNear)
+        .toFixed(),
+      proposal_period: new Decimal(params.policy.proposalPeriod)
+        .mul('3.6e12')
+        .toFixed(),
+      bounty_bond: new Decimal(params.policy.bountyBond)
+        .mul(yoktoNear)
+        .toFixed(),
+      bounty_forgiveness_period: new Decimal(
+        params.policy.bountyForgivenessPeriod
+      )
+        .mul('3.6e12')
+        .toFixed()
+    },
+    config: {
+      name: params.name,
+      purpose: params.purpose,
+      metadata: fromMetadataToBase64({
+        links: params.links,
+        flag: params.flag,
+        displayName: params.displayName
+      })
+    }
+  };
+
+  return Buffer.from(JSON.stringify(argsList)).toString('base64');
 };

@@ -87,7 +87,7 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
 
           {label}
           {Number.isFinite(count) && (
-            <Badge className={styles.counter} variant="primary" size="small">
+            <Badge className={styles.counter} variant="neonYellow" size="small">
               {count && count > 99 ? '99+' : count}
             </Badge>
           )}

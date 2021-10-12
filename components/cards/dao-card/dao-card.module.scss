@@ -1,92 +1,159 @@
+@import 'styles/mixins';
 @import 'styles/typography';
 
 .daoCard {
-  align-items: center;
-  background-color: var(--color-white);
-  border-radius: 8px;
+  $border-radius: 8px;
+  background-color: var(--color-neutral-10);
+  border-radius: $border-radius;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  justify-content: flex-start;
+  height: 430px;
+  justify-content: space-between;
   max-width: 458px;
   min-width: 270px;
-  padding: 24px;
   position: relative;
   transition: box-shadow 0.4s;
   width: 100%;
 
-  .iconWrapper {
-    height: 64px;
-    width: 64px;
+  &:hover {
+    box-shadow: 3px 2px 24px var(--color-black-opacity-25);
   }
 
-  .titleCaption {
-    padding-top: 8px;
-    text-align: center;
+  .header {
+    align-items: center;
+    display: flex;
+  }
+
+  .iconWrapper {
+    height: 140px;
+    width: 140px;
+  }
+
+  .headerContent {
+    padding-right: 20px;
   }
 
   .urlCaption {
-    @extend %subtitle3;
-    color: var(--color-neutral-50);
-    overflow: hidden;
-    padding-top: 8px;
-    text-align: center;
-    text-overflow: ellipsis;
-    width: 100%;
-    word-break: normal;
+    @extend %subtitle4;
+    color: var(--color-neutral-60);
   }
 
   .descriptionCaption {
     @extend %body1;
     min-height: 90px;
-    padding-top: 16px;
-    text-align: center;
+    padding: 0 24px;
+
+    @include tablet-portrait {
+      padding: 0 52px;
+    }
   }
 
-  &:hover {
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  .createProposal {
+    @extend %title3;
+    align-items: center;
+    background-color: var(--color-brand-green);
+    border-radius: 0 0 $border-radius $border-radius;
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    text-align: center;
   }
 }
 
-.activeProposals {
-  align-items: center;
-  background: var(--color-brand-neon-yellow);
-  border-radius: 24px;
-  display: flex;
-  justify-content: center;
-  width: fit-content;
+.delimiter {
+  background-color: var(--color-primary-10);
+  height: 1px;
+  margin: 18px 32px 12px;
+  width: calc(100% - 64px);
+}
 
-  .activeProposalsCaption {
-    @extend %title4;
-    margin: 0;
-    padding: 3px 18px;
+.activeProposals {
+  @extend %title4;
+  font-family: Inter, 'sans-serif';
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 24px;
+  margin-bottom: 20px;
+  padding: 0 24px;
+  text-align: center;
+
+  @include tablet-portrait {
+    padding: 0 52px;
+  }
+
+  .activeProposalsNumber {
+    font-size: 28px;
+    font-weight: 700;
   }
 }
 
 .membersAndFunds {
   display: flex;
-  justify-content: space-around;
-  padding-top: 16px;
+  padding: 0 24px;
   width: 100%;
 
-  .flexContainer {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    height: fit-content;
+  @include tablet-portrait {
+    padding: 0 52px;
+  }
+
+  .nearFundsValue,
+  .nearFundsSuffix {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+  }
+
+  .nearFundsValue {
+    font-weight: 700;
+  }
+
+  .usdFundsValue,
+  .usdFundsSuffix {
+    color: var(--color-neutral-50);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+  }
+}
+
+.membersAndFundsContainer {
+  @extend %title3;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+
+  &:first-of-type {
+    width: 45%;
+
+    @include tablet-portrait {
+      width: 50%;
+    }
   }
 }
 
 .grayCaption {
-  @extend %subtitle3;
-  color: var(--color-neutral-50);
+  @extend %subtitle5;
+  color: var(--color-neutral-60);
+  margin-bottom: 4px;
 }
 
-.noMargin {
+.headerText {
   margin: 0;
+
+  @include mobile-only {
+    @include font(1.3em, 28px, 500);
+  }
 }
 
 .upperCase {
   text-transform: uppercase;
+}
+
+.totalProposals {
+  @extend %subtitle6;
+  color: var(--color-neutral-60);
+  margin-bottom: 20px;
+  text-align: center;
 }

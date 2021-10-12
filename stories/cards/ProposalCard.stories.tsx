@@ -100,7 +100,7 @@ WithRequestPayout.args = {
       amount="678"
       reason="the last 3 month of managing community on Discord"
       recipient="jonathan.near"
-      tokens="NEAR"
+      token="NEAR"
       link="https://example.com"
       linkTitle="reddit.com"
     />

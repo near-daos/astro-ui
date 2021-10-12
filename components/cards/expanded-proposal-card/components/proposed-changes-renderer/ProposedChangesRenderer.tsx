@@ -8,9 +8,11 @@ import styles from './proposed-changes-renderer.module.scss';
 interface ProposedChangesRendererProps {
   dao: DAO;
   proposal: Proposal;
+  inline?: boolean;
 }
 
 export const ProposedChangesRenderer: FC<ProposedChangesRendererProps> = ({
+  inline = false,
   dao,
   proposal
 }) => {
@@ -32,7 +34,7 @@ export const ProposedChangesRenderer: FC<ProposedChangesRendererProps> = ({
 
   return (
     <div>
-      <div className={styles.title}>Proposed changes:</div>
+      {!inline && <div className={styles.title}>Proposed changes:</div>}
       <div className={styles.policyWrapper}>
         <div className={styles.policyLabel}>Voting policy default</div>
         <div className={styles.policy}>

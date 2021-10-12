@@ -11,8 +11,13 @@
 }
 
 .root {
-  background-color: var(--color-white);
+  background-color: var(--color-neutral-10);
   border-radius: 8px;
+  transition: box-shadow 0.4s;
+
+  &:hover {
+    box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  }
 }
 
 .tokenContainer {

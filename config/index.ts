@@ -14,6 +14,7 @@ export const appConfig = {
   apiUrl: process.browser
     ? '/api-server/v1/'
     : `${process.env.NEXT_PUBLIC_API_URL}/api/v1/`,
+  walledUseLocalRedirect: process.env.NEXT_PUBLIC_LOCAL_WALLET_REDIRECT,
   awsUseLocalConf: Boolean(
     JSON.parse(process.env.NEXT_PUBLIC_AWS_USE_LOCAL_CONF || 'false')
   )

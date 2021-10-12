@@ -7,7 +7,7 @@
   flex-direction: column;
   gap: 24px;
   justify-content: space-between;
-  padding: 24px;
+  padding: 24px 48px;
 
   @include tablet-portrait {
     align-items: flex-start;

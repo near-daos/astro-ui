@@ -8,12 +8,14 @@ import styles from 'pages/dao/[dao]/tasks/bounties/bounties.module.scss';
 import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import { BountyDoneProposalType } from 'types/proposal';
-import { Token } from 'types/token';
 import { DAO } from 'types/dao';
 import { BountyPageContext } from 'features/bounty/helpers';
+import { useAuthContext } from 'context/AuthContext';
+import { Token } from 'features/types';
+import { useRouter } from 'next/router';
 
 const CREATE_BOUNTY_INITIAL = {
-  token: Token.NEAR,
+  token: 'NEAR' as Token,
   slots: 3,
   amount: 0,
   deadlineThreshold: 3,
@@ -33,11 +35,16 @@ const BountiesPage: FC<BountiesPageProps> = ({
   bountiesDone,
   bounties
 }) => {
+  const { accountId, login } = useAuthContext();
+  const router = useRouter();
+
   const inProgressBounties = bounties.filter(bounty =>
     bounty.claimedBy.find(
       claim => claim.accountId === SputnikService.getAccountId()
     )
   );
+
+  const openBounties = bounties.filter(bounty => bounty.slots !== 0);
 
   const completedBounties = bountiesDone
     .map(bountyDoneProposal => {
@@ -54,15 +61,14 @@ const BountiesPage: FC<BountiesPageProps> = ({
     })
     .filter(completedBounty => !!completedBounty) as Bounty[];
 
-  const numberOpenBounties = bounties.length;
+  const numberOpenBounties = openBounties.length;
   const numberInProgressBounties = inProgressBounties.length;
   const numberCompletedBounties = completedBounties.length;
 
-  const tabs = [];
   const tabOpen = {
     id: 1,
     label: `Open (${numberOpenBounties})`,
-    content: <BountiesList bountiesList={bounties} status="Open" />
+    content: <BountiesList bountiesList={openBounties} status="Open" />
   };
   const tabInProgress = {
     id: 2,
@@ -79,17 +85,7 @@ const BountiesPage: FC<BountiesPageProps> = ({
     )
   };
 
-  if (numberOpenBounties > 0) {
-    tabs.push(tabOpen);
-  }
-
-  if (numberInProgressBounties > 0) {
-    tabs.push(tabInProgress);
-  }
-
-  if (numberCompletedBounties > 0) {
-    tabs.push(tabCompleted);
-  }
+  const tabs = [tabOpen, tabInProgress, tabCompleted];
 
   const [showCreateBountyDialog] = useModal(CreateBountyDialog, {
     initialValues: {
@@ -98,9 +94,17 @@ const BountiesPage: FC<BountiesPageProps> = ({
     dao
   });
 
-  const handleCreateClick = useCallback(() => showCreateBountyDialog(), [
-    showCreateBountyDialog
-  ]);
+  const handleCreateClick = useCallback(async () => {
+    if (!accountId) {
+      login();
+    } else {
+      const result = await showCreateBountyDialog();
+
+      if (result.includes('submitted')) {
+        router.push(`/dao/${dao.id}`);
+      }
+    }
+  }, [accountId, login, showCreateBountyDialog, router, dao.id]);
 
   const getContextValue = useCallback(() => {
     return { dao };
@@ -109,10 +113,10 @@ const BountiesPage: FC<BountiesPageProps> = ({
   return (
     <BountyPageContext.Provider value={getContextValue()}>
       <div className={styles.root}>
-        <div className={styles.header}>Bounties</div>
-        <div className={styles.create}>
-          <Button variant="secondary" onClick={handleCreateClick}>
-            Propose Bounty
+        <div className={styles.header}>
+          <h1>Bounties</h1>
+          <Button variant="black" size="small" onClick={handleCreateClick}>
+            Create new bounty
           </Button>
         </div>
         <div className={styles.description}>

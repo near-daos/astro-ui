@@ -4,7 +4,7 @@ import { DaoDetails } from 'features/dao-home/components/dao-details/DaoDetails'
 import { ProposalTrackerCard } from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
 import { DaoInfoCard } from 'components/cards/dao-info-card/DaoInfoCard';
 import { Highlighter } from 'features/search/search-results/components/highlighter';
-import { NoResultsView } from 'features/search/search-results/components/no-results-view';
+import { NoSearchResultsView } from 'features/search/search-results/components/no-search-results-view';
 
 import styles from './dao-tab-view.module.scss';
 
@@ -12,7 +12,7 @@ export const DaosTabView: FC = () => {
   const { searchResults } = useSearchResults();
 
   if (!searchResults?.daos?.length)
-    return <NoResultsView query={searchResults?.query} />;
+    return <NoSearchResultsView query={searchResults?.query} />;
 
   return (
     <div className={styles.root}>
@@ -37,12 +37,13 @@ export const DaosTabView: FC = () => {
           const daoInfo = {
             items: [
               {
-                label: 'Members',
-                value: `${item.members}`
+                label: 'DAO funds',
+                value: `${item.funds}`,
+                valueType: `USD`
               },
               {
-                label: 'DAO funds',
-                value: `${item.funds} USD`
+                label: 'Members',
+                value: `${item.members}`
               }
             ]
           };

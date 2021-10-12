@@ -1,11 +1,19 @@
-import { useSearchResults } from 'features/search/search-results/SearchResults';
-import { useCallback, useState } from 'react';
-import { FilterName } from 'features/search/search-filters';
-import { ProposalType } from 'types/proposal';
 import { useRouter } from 'next/router';
+import { useCallback, useState } from 'react';
+
+import { Proposal } from 'types/proposal';
+
 import { arrangeByDao } from 'features/member-home';
+import { FilterName } from 'features/search/search-filters';
 import { Indexed, ProposalByDao } from 'features/member-home/types';
 import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
+
+import {
+  isGovernanceProposal,
+  isGroupProposal,
+  isTaskProposal,
+  isTreasuryProposal
+} from 'utils/proposalFilters';
 
 export interface FilteredData extends Indexed {
   lessThanHourProposals: ProposalByDao;
@@ -43,10 +51,12 @@ export interface FilteredProposalsData {
   ) => void;
 }
 
-export const useFilteredProposalsData = (): FilteredProposalsData => {
-  const { searchResults } = useSearchResults();
+export const useFilteredProposalsData = (
+  proposals: Proposal[]
+): FilteredProposalsData => {
   const router = useRouter();
   const daoId = router.query.dao;
+
   const [filter, setFilter] = useState({
     show: 'All' as ShowFilterOption,
     search: 'In all DAOs' as SearchFilterOption,
@@ -65,8 +75,6 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
     },
     [filter]
   );
-
-  const proposals = searchResults?.proposals ?? [];
 
   const filteredProposals = proposals.filter(item => {
     let matched = true;
@@ -131,41 +139,25 @@ export const useFilteredProposalsData = (): FilteredProposalsData => {
 
     // Filter flags here
     if (!filter.tasks) {
-      if (
-        item.kind.type === ProposalType.AddBounty ||
-        item.kind.type === ProposalType.BountyDone ||
-        item.kind.type === ProposalType.Vote ||
-        item.kind.type === ProposalType.FunctionCall
-      ) {
+      if (isTaskProposal(item)) {
         matched = false;
       }
     }
 
     if (!filter.governance) {
-      if (
-        item.kind.type === ProposalType.ChangePolicy ||
-        item.kind.type === ProposalType.UpgradeRemote ||
-        item.kind.type === ProposalType.UpgradeSelf ||
-        item.kind.type === ProposalType.ChangeConfig
-      ) {
+      if (isGovernanceProposal(item)) {
         matched = false;
       }
     }
 
     if (!filter.groups) {
-      if (
-        item.kind.type === ProposalType.AddMemberToRole ||
-        item.kind.type === ProposalType.RemoveMemberFromRole
-      ) {
+      if (isGroupProposal(item)) {
         matched = false;
       }
     }
 
     if (!filter.treasury) {
-      if (
-        item.kind.type === ProposalType.SetStakingContract ||
-        item.kind.type === ProposalType.Transfer
-      ) {
+      if (isTreasuryProposal(item)) {
         matched = false;
       }
     }

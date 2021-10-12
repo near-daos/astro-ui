@@ -52,7 +52,7 @@ const VotingTokenPage: FC = () => {
     <>
       <div className={styles.header}>
         <h1>Enable voting by token</h1>
-        {!token && !isMobile && (
+        {!token && (
           <Button size="small" variant="secondary" onClick={handleStartClick}>
             Start
           </Button>

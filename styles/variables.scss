@@ -32,9 +32,9 @@
   --color-neutral-60: #8c8c8c;
   --color-neutral-70: #595959;
   --color-neutral-80: #434343;
+  --color-neutral-85: #2c2c2c;
   --color-neutral-90: #201f1f;
-
-  --color-white-opacity-5: rgba(255, 255, 255, 0.5);
+  --color-black: #000;
 
   // SUCCESS / GREEN
   --color-success-10: #cff9ea;
@@ -72,4 +72,16 @@
   --color-pastel-red: #ffdeda;
   --color-pastel-orange: #ffebd6;
   --color-pastel-yellow: #fbffda;
+
+  // SHADOWS
+  --color-white-opacity-5: rgba(255, 255, 255, 0.5);
+  --color-white-opacity-10: rgba(255, 255, 255, 0.1);
+  --color-black-opacity-1: rgba(0, 0, 0, 0.1);
+  --color-black-opacity-25: rgba(0, 0, 0, 0.25);
+  --color-in-progress-opacity-25: rgba(123, 97, 255, 0.25);
+  --color-approved-opacity-35: rgba(0, 187, 118, 0.35);
+  --color-rejected-opacity-25: rgba(255, 135, 67, 0.25);
+  --color-rejected-opacity-35: rgba(255, 135, 67, 0.35);
+  --color-expired-opacity-25: rgba(140, 140, 140, 0.25);
+  --color-removed-opacity-25: rgba(32, 32, 32, 0.25);
 }

@@ -58,11 +58,11 @@ function getTitle(type: ProposalType) {
 
 const ProposalStatusPanel: FC<ProposalStatusProps> = ({ status, type }) => {
   const statusClassName = cn({
-    [styles.active]: status === 'InProgress',
-    [styles.passed]: status === 'Approved',
+    [styles.inProgress]: status === 'InProgress',
+    [styles.approved]: status === 'Approved',
     [styles.rejected]: status === 'Rejected',
-    [styles.dismissed]: status === 'Removed',
-    [styles.expired]: status === 'Expired'
+    [styles.expired]: status === 'Expired',
+    [styles.removed]: status === 'Removed'
   });
 
   const iconName = getIconName(type);

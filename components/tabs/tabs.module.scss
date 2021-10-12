@@ -8,13 +8,17 @@
 }
 
 .tabsWrapper {
-  border-bottom: 1px solid var(--color-neutral-40);
+  align-items: center;
+  display: flex;
+  gap: 24px;
   height: 32px;
   width: 100%;
 }
 
 .tabs {
+  border-bottom: 1px solid var(--color-neutral-20);
   display: flex;
+  flex: 1;
   min-height: 32px;
   overflow: auto;
   padding: 0;
@@ -22,9 +26,13 @@
   width: 100%;
 }
 
+.optional {
+  flex: 0.25;
+}
+
 .tabs {
   -ms-overflow-style: none;
-  overflow-y: scroll;
+  overflow-y: hidden;
   scrollbar-width: none;
 }
 
@@ -62,7 +70,7 @@
   &::after {
     align-items: center;
     border-bottom: 4px solid var(--color-brand-purple-light);
-    color: var(--color-primary);
+    color: currentColor;
     content: attr(data-name);
     cursor: pointer;
     display: flex;
@@ -77,16 +85,33 @@
 }
 
 .active {
-  color: transparent;
+  transform: translateY(100%);
 
   &::after {
     opacity: 1;
+    transform: translateY(-100%);
   }
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .tabs {
+    display: flex;
+    order: 2;
     width: calc(100vw - 48px);
+  }
+
+  .optional {
+    display: block;
+    flex: 1;
+    order: 1;
+    width: 100%;
+  }
+
+  .tabsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    height: unset;
   }
 
   .tab {

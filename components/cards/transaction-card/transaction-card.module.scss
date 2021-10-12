@@ -2,7 +2,7 @@
 
 .root {
   align-items: center;
-  background-color: var(--color-white);
+  background-color: var(--color-neutral-10);
   border-radius: 8px;
   display: grid;
   grid-template-areas: 'transactionType tokenBalance date account';

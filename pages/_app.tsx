@@ -1,25 +1,29 @@
-import CreateLayout from 'components/create-layout/CreateLayout';
+import React from 'react';
+import { useRouter } from 'next/router';
+import type { AppContext, AppProps } from 'next/app';
+
+import { SWRConfig } from 'swr';
+import { useMount } from 'react-use';
+
+import { ALL_DAOS_URL, CREATE_DAO_URL, MY_FEED_URL } from 'constants/routing';
+
+import { AuthWrapper } from 'context/AuthContext';
 
 import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
-
-import { AuthWrapper } from 'context/AuthContext';
-import type { AppContext, AppProps } from 'next/app';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { useMount } from 'react-use';
+import CreateLayout from 'components/create-layout/CreateLayout';
 
 import { SputnikService } from 'services/SputnikService';
-import 'styles/globals.scss';
-import { SWRConfig } from 'swr';
 import { CookieService } from 'services/CookieService';
-import sortBy from 'lodash/sortBy';
-import { AccountDataContext } from 'features/account-data';
+
+import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
+
+import 'styles/globals.scss';
 
 function usePageLayout(): React.FC {
   const router = useRouter();
 
-  if (router.route.match('/create-dao')) {
+  if (router.route.match(CREATE_DAO_URL)) {
     return CreateLayout;
   }
 
@@ -28,75 +32,48 @@ function usePageLayout(): React.FC {
 
 function App({ Component, pageProps }: AppProps): JSX.Element {
   const router = useRouter();
-  const [walletInitialized, setWalletInitialized] = useState(false);
-  const account = CookieService.get('account');
-
   const Layout = usePageLayout();
 
   useMount(async () => {
     SputnikService.init();
-    setWalletInitialized(true);
+
+    CookieService.set(
+      ACCOUNT_COOKIE,
+      SputnikService.getAccountId(),
+      DEFAULT_OPTIONS
+    );
+    CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
   });
 
-  useEffect(() => {
-    if (!account && SputnikService.getAccountId()) {
-      SputnikService.logout().then(() => {
-        router.push('/all-communities');
-      });
-    }
-  }, [account, router]);
-
-  if (walletInitialized) {
-    return (
-      <SWRConfig value={{ fallback: pageProps?.fallback || {} }}>
-        <AuthWrapper>
-          <ModalProvider>
-            <AccountDataContext.Provider
-              value={{ accountDaos: pageProps?.accountDaos }}
-            >
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </AccountDataContext.Provider>
-          </ModalProvider>
-        </AuthWrapper>
-      </SWRConfig>
-    );
-  }
-
-  return <div />;
+  return (
+    <SWRConfig value={{ fallback: pageProps?.fallback || {} }}>
+      <AuthWrapper>
+        <ModalProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ModalProvider>
+      </AuthWrapper>
+    </SWRConfig>
+  );
 }
 
 App.getInitialProps = async ({ ctx, router }: AppContext) => {
-  CookieService.initServerSideCookies(ctx.req?.headers.cookie || null);
+  const { req, res } = ctx;
 
-  const account = CookieService.get<string | undefined>('account');
+  CookieService.initServerSideCookies(req?.headers.cookie || null);
 
-  const { res } = ctx;
+  const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
-  if (account) {
-    const data = await SputnikService.getAccountDaos(account);
+  if (account && res && router.pathname === '/') {
+    res.writeHead(302, { location: MY_FEED_URL });
+    res.end();
 
-    if (router.pathname === '/' && res != null) {
-      if (data.length > 0) {
-        res.writeHead(302, { location: `/home` });
-      } else {
-        res.writeHead(302, { location: '/all-communities' });
-      }
-
-      res.end();
-    }
-
-    return {
-      pageProps: {
-        fallback: { [`/daos/account-daos/${account}`]: data },
-        accountDaos: sortBy(data, 'id')
-      }
-    };
+    return {};
   }
 
-  if (router.pathname === '/' && res != null) {
-    res.writeHead(302, { location: '/all-communities' });
+  if (router.pathname === '/' && res != null && !account) {
+    res.writeHead(302, { location: ALL_DAOS_URL });
     res.end();
 
     return {

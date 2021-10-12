@@ -34,6 +34,15 @@
   z-index: 1000;
 }
 
+.auth {
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    background-color: var(--color-neutral-90);
+    box-shadow: 0 0 40px var(--color-black);
+  }
+}
+
 @media screen and (max-width: breakpoints.$screen-md - 1px) {
   .popup {
     bottom: -46px;

@@ -10,6 +10,7 @@ import {
 } from 'components/cards/proposal-card';
 import React from 'react';
 import { ProposalType } from 'types/proposal';
+import { DAO } from 'types/dao';
 
 export const DAO_DETAILS: DaoDetailsProps = {
   title: 'Meowzers',
@@ -60,11 +61,12 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
         amount="236"
         reason="the last 3 month of managing community on Discord"
         recipient="jonathan.near"
-        tokens="NEAR"
+        token="NEAR"
         link="https://example.com"
         linkTitle="reddit.com"
       />
-    )
+    ),
+    dao: {} as DAO
   },
   {
     id: '2',
@@ -93,11 +95,12 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
         amount="345"
         reason="the last 3 month of managing community on Discord"
         recipient="jonathan.near"
-        tokens="NEAR"
+        token="NEAR"
         link="https://example.com"
         linkTitle="reddit.com"
       />
-    )
+    ),
+    dao: {} as DAO
   },
   {
     id: '3',
@@ -126,11 +129,12 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
         amount="542"
         reason="the last 3 month of managing community on Discord"
         recipient="jonathan.near"
-        tokens="NEAR"
+        token="NEAR"
         link="https://example.com"
         linkTitle="reddit.com"
       />
-    )
+    ),
+    dao: {} as DAO
   },
   {
     id: '4',
@@ -159,11 +163,12 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
         amount="674"
         reason="the last 3 month of managing community on Discord"
         recipient="jonathan.near"
-        tokens="NEAR"
+        token="NEAR"
         link="https://example.com"
         linkTitle="reddit.com"
       />
-    )
+    ),
+    dao: {} as DAO
   },
   {
     id: '5',
@@ -193,7 +198,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
         link="https://example.com"
         linkTitle="reddit.com"
       />
-    )
+    ),
+    dao: {} as DAO
   },
   {
     id: '6',
@@ -224,7 +230,8 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
         link="https://example.com"
         linkTitle="reddit.com"
       />
-    )
+    ),
+    dao: {} as DAO
   },
   {
     id: '7',
@@ -242,6 +249,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     status: 'InProgress',
     title: 'jonathan.near',
     votePeriodEnd: '',
+    dao: {} as DAO,
     daoDetails: {
       name: 'my-awesome-dao',
       logo: ''

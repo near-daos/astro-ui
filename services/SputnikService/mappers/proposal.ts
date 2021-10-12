@@ -1,11 +1,19 @@
 import get from 'lodash/get';
-import { Proposal, ProposalKind } from 'types/proposal';
+import {
+  CreateProposalParams,
+  Proposal,
+  ProposalKind,
+  ProposalStatus,
+  ProposalType
+} from 'types/proposal';
 import {
   DaoDTO,
   fromBase64ToMetadata,
-  getLogoUrl
+  getLogoUrl,
+  mapDaoDTOtoDao
 } from 'services/SputnikService/mappers/dao';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { parseISO } from 'date-fns';
 
 export type ProposalDTO = {
   createTimestamp: string;
@@ -71,6 +79,20 @@ function getVotesStatistic(proposal: ProposalDTO) {
   return result;
 }
 
+function getProposalStatus(
+  status: ProposalStatus,
+  votingEndsAt: string
+): ProposalStatus {
+  if (status !== 'InProgress') {
+    return status;
+  }
+
+  const now = new Date();
+  const endsAt = parseISO(votingEndsAt);
+
+  return now < endsAt ? 'InProgress' : 'Expired';
+}
+
 export const mapProposalDTOToProposal = (
   proposalDTO: ProposalDTO
 ): Proposal => {
@@ -81,23 +103,25 @@ export const mapProposalDTOToProposal = (
   const config = get(proposalDTO.dao, 'config');
   const meta = config.metadata ? fromBase64ToMetadata(config.metadata) : null;
 
+  const votePeriodEnd = getProposalVotingEndDate(
+    get(proposalDTO, 'submissionTime'),
+    get(proposalDTO, 'dao.policy.proposalPeriod')
+  );
+
   return {
     ...getVotesStatistic(proposalDTO),
     id: proposalDTO.id,
     proposalId: proposalDTO.proposalId,
     daoId: proposalDTO.daoId,
-    target: '',
     proposer: proposalDTO.proposer,
     description,
     link: link ?? '',
-    status: proposalDTO.status,
+    status: getProposalStatus(proposalDTO.status, votePeriodEnd),
     kind: proposalDTO.kind,
-    votePeriodEnd: getProposalVotingEndDate(
-      get(proposalDTO, 'submissionTime'),
-      get(proposalDTO, 'dao.policy.proposalPeriod')
-    ),
+    votePeriodEnd,
     txHash: proposalDTO.transactionHash,
     createdAt: proposalDTO.createdAt,
+    dao: mapDaoDTOtoDao(proposalDTO.dao),
     daoDetails: {
       name: proposalDTO.dao.config.name,
       logo:
@@ -112,4 +136,88 @@ export const mapProposalDTOListToProposalList = (
   return proposalList.map(proposalItem => {
     return mapProposalDTOToProposal(proposalItem);
   });
+};
+
+export const mapCreateParamsToPropsalKind = (
+  params: CreateProposalParams
+): ProposalKind => {
+  switch (params.kind) {
+    case 'AddBounty':
+      return {
+        type: ProposalType.AddBounty,
+        bounty: {
+          description: 'string',
+          token: 'string',
+          amount: 'string',
+          times: 0,
+          max_deadline: 'string'
+        }
+      };
+    case 'AddMemberToRole':
+      return {
+        type: ProposalType.AddMemberToRole,
+        memberId: 'string',
+        role: 'string'
+      };
+    case 'BountyDone':
+      return {
+        type: ProposalType.BountyDone,
+        receiverId: 'string;',
+        bountyId: 'string;',
+        completedDate: 'string'
+      };
+    case 'ChangeConfig':
+      return {
+        type: ProposalType.ChangeConfig,
+        config: { metadata: 'string', name: 'string' }
+      };
+    case 'ChangePolicy':
+      return {
+        type: ProposalType.ChangePolicy,
+        policy: {
+          roles: [], // DaoRole
+          bountyBond: 'string',
+          proposalBond: 'string',
+          proposalPeriod: 'string',
+          defaultVotePolicy: {
+            weightKind: 'string',
+            kind: 'string',
+            ratio: [], // number
+            quorum: 'string',
+            weight: 'string'
+          },
+          bountyForgivenessPeriod: 'string'
+        }
+      };
+    case 'RemoveMemberFromRole':
+      return {
+        type: ProposalType.RemoveMemberFromRole,
+        memberId: 'string',
+        role: 'string'
+      };
+    case 'Transfer':
+      return {
+        type: ProposalType.Transfer,
+        tokenId: 'string',
+        receiverId: 'string',
+        amount: 'string',
+        msg: 'string'
+      };
+    case 'UpgradeRemote':
+      return {
+        type: ProposalType.UpgradeRemote,
+        receiverId: 'string',
+        hash: 'string',
+        methodName: 'string'
+      };
+    case 'UpgradeSelf':
+      return {
+        type: ProposalType.UpgradeSelf,
+        hash: 'string'
+      };
+    case 'Vote':
+      return { type: ProposalType.Vote };
+    default:
+      throw new Error();
+  }
 };

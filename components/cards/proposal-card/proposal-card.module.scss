@@ -2,15 +2,37 @@
 
 .root {
   align-items: stretch;
-  background: var(--color-white);
+  background: var(--color-neutral-10);
   border-radius: 8px;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   overflow: hidden;
+  transition: box-shadow 0.4s;
 
   @include tablet-landscape {
     flex-direction: row;
+  }
+
+  &.inProgress:hover {
+    box-shadow: 3px 2px 24px var(--color-in-progress-opacity-25);
+  }
+
+  &.approved:hover {
+    box-shadow: 3px 2px 24px var(--color-approved-opacity-35);
+  }
+
+  &.rejected:hover {
+    box-shadow: 3px 2px 24px var(--color-rejected-opacity-25);
+  }
+
+  &.expired:hover {
+    box-shadow: 3px 2px 24px var(--color-expired-opacity-25);
+  }
+
+  &.removed:hover {
+    box-shadow: 3px 2px 24px var(--color-removed-opacity-25);
   }
 }
 
@@ -28,16 +50,19 @@
 
 .header {
   align-items: center;
-  color: var(--color-neutral-60);
   display: flex;
   justify-content: space-between;
-  text-transform: lowercase;
 }
 
 .title {
-  color: var(--color-neutral-50);
-  font-weight: 700;
+  color: var(--color-neutral-60);
+  font-size: 1em;
+  font-weight: 500;
   text-transform: lowercase;
+
+  @include tablet-landscape {
+    font-weight: 700;
+  }
 }
 
 .icon {
@@ -46,16 +71,7 @@
 }
 
 .body {
-  @include ellipse-text;
   margin-top: 10px;
-  max-width: 100%;
-  white-space: nowrap;
-
-  &.default {
-    @include tablet-landscape {
-      padding-right: 64px;
-    }
-  }
 
   &.collapsed {
     @include tablet-landscape {
@@ -66,4 +82,10 @@
 
 .footer {
   margin-top: 12px;
+
+  &.transfer {
+    @include tablet-landscape {
+      margin-top: -44px;
+    }
+  }
 }

@@ -39,7 +39,8 @@ const Tabs = <T,>(
     fitContent,
     isControlled = true,
     onTabSelect,
-    skipShallow = false
+    skipShallow = false,
+    children
   } = props;
   const router = useRouter();
 
@@ -109,13 +110,14 @@ const Tabs = <T,>(
               <Tab
                 key={item.id}
                 selectedClassName={styles.active}
-                className={styles.tab}
+                className={cn(styles.tab, item.className)}
                 data-name={item.label}
               >
                 {item.label}
               </Tab>
             ))}
           </TabList>
+          <div className={styles.optional}>{children}</div>
         </div>
         {tabs.map(item => (
           <TabPanel key={item.id}>{item.content}</TabPanel>

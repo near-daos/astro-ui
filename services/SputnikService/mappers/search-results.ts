@@ -30,8 +30,12 @@ export interface SearchResultsDTO {
 }
 
 export interface SearchResponse {
-  daos: DaoDTO[];
-  proposals: ProposalDTO[];
+  daos: {
+    data: DaoDTO[];
+  };
+  proposals: {
+    data: ProposalDTO[];
+  };
 }
 
 export const extractMembersFromDaosList = (
@@ -156,8 +160,8 @@ export const mapSearchResultsDTOToDataObject = (
     return null;
   }
 
-  const daos = mapDaoDTOListToDaoList(data.daos);
-  const proposals = mapProposalDTOListToProposalList(data.proposals);
+  const daos = mapDaoDTOListToDaoList(data.daos ?? []);
+  const proposals = mapProposalDTOListToProposalList(data.proposals ?? []);
   const members = extractMembersFromDaosList(daos, proposals, query);
 
   return {

@@ -1,0 +1,100 @@
+@import 'styles/typography';
+
+.sidebar {
+  background: var(--color-brand-black);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+  overflow-y: hidden;
+  width: 315px;
+
+  /* Turn on custom 4px wide scrollbar */
+  ::-webkit-scrollbar {
+    background: transparent;
+    border-radius: 0;
+    width: 4px;
+  }
+
+  /* hover effect for both scrollbar area, and scrollbar 'thumb' */
+  ::-webkit-scrollbar:hover {
+    background-color: rgba(232, 224, 255, 0.09);
+  }
+
+  /* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
+  ::-webkit-scrollbar-thumb:vertical {
+    background-color: rgba(232, 224, 255, 1);
+    border-radius: 0;
+  }
+
+  ::-webkit-scrollbar-thumb:vertical:active {
+    /* Some darker color when you click it */
+    background: rgba(232, 224, 255, 0.61);
+    border-radius: 0;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.scrolling {
+  $logo-bottom-part-height: 434px;
+  height: calc(100vh - #{$logo-bottom-part-height});
+  overflow-y: scroll;
+}
+
+.bottom {
+  background: var(--color-brand-black);
+  margin-top: auto;
+  padding-bottom: 10px;
+}
+
+.sub {
+  background: var(--color-primary-80);
+}
+
+.item {
+  background: var(--color-brand-black);
+  display: flex;
+  padding: 12px 16px 12px 24px;
+}
+
+.mobileHeader {
+  align-items: center;
+  color: #fff;
+  display: none;
+  justify-content: space-between;
+  padding: 24px;
+
+  .closeIcon {
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+  }
+}
+
+.mainLogo {
+  display: inline;
+  margin-bottom: 38px;
+  width: fit-content;
+}
+
+.fullscreen {
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100vw;
+  z-index: 10;
+
+  .mainLogo {
+    display: none;
+  }
+
+  .mobileHeader {
+    display: flex;
+  }
+}

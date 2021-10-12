@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import omit from 'lodash/omit';
 import React, { FC, ReactNode, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
@@ -11,8 +10,11 @@ import ProposalStatusPanel from 'components/cards/proposal-card/components/propo
 import ProposalControlPanel from 'components/cards/proposal-card/components/proposal-control-panel/ProposalControlPanel';
 
 import { useModal } from 'components/modal';
-import { ExpandedProposalCard } from 'components/cards/expanded-proposal-card';
-
+import {
+  ExpandedProposalCard,
+  ExpandedProposalCardProps
+} from 'components/cards/expanded-proposal-card';
+import { DAO } from 'types/dao';
 import { useGetVotePermissions } from './hooks/useGetVotePermissions';
 
 import styles from './proposal-card.module.scss';
@@ -38,6 +40,7 @@ export interface ProposalCardProps {
   proposalId: number;
   daoId: string;
   showExpanded?: boolean;
+  dao: DAO;
 }
 
 const ProposalCardComponent: FC<ProposalCardProps> = ({
@@ -60,79 +63,89 @@ const ProposalCardComponent: FC<ProposalCardProps> = ({
   proposalId,
   daoId,
   showExpanded,
-  id
+  id,
+  dao
 }) => {
   const { accountId } = useAuthContext();
 
-  const permissions = useGetVotePermissions(daoId, type, accountId);
+  const permissions = useGetVotePermissions(dao, type, accountId);
 
   const variantClassName = cn({
     [styles.default]: variant === 'Default',
     [styles.collapsed]: variant === 'SuperCollapsed'
   });
 
-  const [showModal] = useModal(ExpandedProposalCard, {
-    status,
-    type,
-    title,
-    children,
-    likes,
-    dislikes,
-    liked,
-    disliked,
-    onLike,
-    onDislike,
-    onRemove,
-    endsAt: votePeriodEnd,
-    dismisses,
-    dismissed,
-    daoDetails,
-    proposalId,
-    daoId,
-    permissions,
-    id
-  });
+  const [showModal] = useModal<ExpandedProposalCardProps>(
+    ExpandedProposalCard,
+    {
+      status,
+      type,
+      title,
+      children,
+      likes,
+      dislikes,
+      liked,
+      disliked,
+      onLike,
+      onDislike,
+      onRemove,
+      endsAt: votePeriodEnd,
+      dismisses,
+      dismissed,
+      daoDetails,
+      proposalId,
+      daoId,
+      permissions,
+      id
+    }
+  );
   const router = useRouter();
 
   const handleCardClick = useCallback(async () => {
-    await showModal();
-  }, [showModal]);
+    await showModal({ id });
+  }, [id, showModal]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (showExpanded) {
-        router.push(
-          {
-            pathname: '',
-            query: omit(router.query, ['proposal', 'proposalStatus'])
-          },
-          undefined,
-          { shallow: true }
-        );
         handleCardClick();
       }
-    }, 0);
+    }, 1000);
 
     return () => {
       clearTimeout(timer);
     };
   }, [handleCardClick, router, showExpanded]);
 
+  const statusClassName = cn({
+    [styles.inProgress]: status === 'InProgress',
+    [styles.approved]: status === 'Approved',
+    [styles.rejected]: status === 'Rejected',
+    [styles.expired]: status === 'Expired',
+    [styles.removed]: status === 'Removed'
+  });
+
+  const footerClassName = cn({
+    [styles.transfer]: type === 'Transfer'
+  });
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
-    <div className={styles.root} onClick={handleCardClick}>
+    <div className={cn(styles.root, statusClassName)} onClick={handleCardClick}>
       <ProposalStatusPanel status={status} type={type} />
       <div className={styles.content}>
         {variant !== 'SuperCollapsed' && (
           <div className={styles.header}>
-            <span className={cn('body1', styles.title)}>{title}</span>
+            <span className={styles.title}>{title}</span>
+            {/*
             <span>
-              {/* <Icon name="buttonBookmark" className={styles.icon} /> */}
+               <Icon name="buttonBookmark" className={styles.icon} />
             </span>
+            */}
           </div>
         )}
         <div className={cn(styles.body, variantClassName)}>{children}</div>
-        <div className={styles.footer}>
+        <div className={cn(styles.footer, footerClassName)}>
           <span>
             <ProposalControlPanel
               status={status}

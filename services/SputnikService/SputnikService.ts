@@ -3,7 +3,6 @@ import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import PromisePool from '@supercharge/promise-pool';
 import Big from 'big.js';
 import { NearConfig, nearConfig } from 'config';
-import Decimal from 'decimal.js';
 import omit from 'lodash/omit';
 import { Contract, keyStores, Near } from 'near-api-js';
 import { CookieService } from 'services/CookieService';
@@ -11,7 +10,6 @@ import { CookieService } from 'services/CookieService';
 import { HttpService, httpService } from 'services/HttpService';
 import {
   DaoDTO,
-  fromMetadataToBase64,
   GetDAOsResponse,
   mapDaoDTOListToDaoList,
   mapDaoDTOtoDao
@@ -36,6 +34,10 @@ import { PaginationResponse } from 'types/api';
 import { CreateDaoInput, DAO } from 'types/dao';
 import { CreateProposalParams, Proposal, ProposalType } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
+import {
+  ProposalFilterOptions,
+  ProposalFilterStatusOptions
+} from 'features/member-home/types';
 
 import {
   CreateTokenParams,
@@ -46,25 +48,22 @@ import {
 import { Transaction } from 'types/transaction';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
-import { gas, yoktoNear } from './constants';
-import { ContractPool } from './ContractPool';
-import { SputnikWalletConnection } from './SputnikWalletConnection';
+import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { SputnikWalletService } from './SputnikWalletService';
+import { SputnikDaoService } from './SputnikDaoService';
 
 class SputnikService {
   private readonly config: NearConfig;
 
   private readonly httpService: HttpService = httpService;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private factoryContract!: Contract & any;
+  private sputnikWalletService!: SputnikWalletService;
+
+  private sputnikDaoService!: SputnikDaoService;
 
   private factoryTokenContract!: Contract & any;
 
-  private walletConnection!: SputnikWalletConnection;
-
   private near!: Near;
-
-  private contractPool!: ContractPool;
 
   constructor(config: NearConfig) {
     this.config = config;
@@ -78,14 +77,15 @@ class SputnikService {
       keyStore
     });
 
-    this.walletConnection = new SputnikWalletConnection(this.near, 'sputnik');
+    this.sputnikWalletService = new SputnikWalletService(this.near);
+    this.sputnikWalletService.init();
 
-    const account = this.walletConnection.account();
+    const account = this.sputnikWalletService.getAccount();
 
-    this.factoryContract = new Contract(account, this.config.contractName, {
-      viewMethods: ['get_dao_list'],
-      changeMethods: ['create']
-    });
+    this.sputnikDaoService = new SputnikDaoService(
+      this.config.contractName,
+      this.sputnikWalletService
+    );
 
     this.factoryTokenContract = new Contract(
       account,
@@ -100,76 +100,34 @@ class SputnikService {
         changeMethods: ['create_token', 'storage_deposit']
       }
     );
-
-    this.contractPool = new ContractPool(account);
-  }
-
-  public claimBounty(
-    daoId: string,
-    args: { bountyId: number; deadline: string; bountyBond: string }
-  ) {
-    const { bountyId: id, deadline, bountyBond } = args;
-
-    this.contractPool
-      .get(daoId)
-      .bounty_claim(
-        {
-          id,
-          deadline
-        },
-        gas,
-        bountyBond
-      )
-      .then(() => {
-        showNotification({
-          type: NOTIFICATION_TYPES.INFO,
-          description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
-          lifetime: 20000
-        });
-      });
-  }
-
-  public unclaimBounty(daoId: string, bountyId: string) {
-    this.contractPool
-      .get(daoId)
-      .bounty_giveup({ id: bountyId }, gas)
-      .then(() => {
-        showNotification({
-          type: NOTIFICATION_TYPES.INFO,
-          description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
-          lifetime: 20000
-        });
-      });
   }
 
   public isAuthorized(): boolean {
-    if (process.browser && this.walletConnection) {
-      return this.walletConnection.isSignedIn();
+    if (process.browser && this.sputnikWalletService) {
+      return !!this.sputnikWalletService.getAccountId();
     }
 
-    return true;
+    return !!CookieService.get(ACCOUNT_COOKIE);
   }
 
   public async login(): Promise<void> {
-    await this.walletConnection.requestSignIn(
-      this.config.contractName,
-      'Sputnik DAO',
-      `${window.origin}/callback/auth`,
-      `${window.origin}/callback/auth`
-    );
-    await this.init();
+    await this.sputnikWalletService.login();
   }
 
   public async logout(): Promise<void> {
-    this.walletConnection.signOut();
+    this.sputnikWalletService.logout();
   }
 
   public getAccountId(): string {
     if (!process.browser) {
-      return CookieService.get('account');
+      return CookieService.get(ACCOUNT_COOKIE);
     }
 
-    return this.walletConnection?.getAccountId();
+    if (!this.sputnikWalletService && process.browser) {
+      this.init();
+    }
+
+    return this.sputnikWalletService.getAccountId();
   }
 
   async computeRequiredDeposit(args: unknown) {
@@ -231,53 +189,8 @@ class SputnikService {
   }
 
   public async createDao(params: CreateDaoInput): Promise<boolean> {
-    const argsList = {
-      purpose: params.purpose,
-      bond: new Decimal(params.bond).mul(yoktoNear).toFixed(),
-      vote_period: new Decimal(params.votePeriod).mul('3.6e12').toFixed(),
-      grace_period: new Decimal(params.gracePeriod).mul('3.6e12').toFixed(),
-      policy: {
-        roles: params.policy.roles,
-        default_vote_policy: params.policy.defaultVotePolicy,
-        proposal_bond: new Decimal(params.policy.proposalBond)
-          .mul(yoktoNear)
-          .toFixed(),
-        proposal_period: new Decimal(params.policy.proposalPeriod)
-          .mul('3.6e12')
-          .toFixed(),
-        bounty_bond: new Decimal(params.policy.bountyBond)
-          .mul(yoktoNear)
-          .toFixed(),
-        bounty_forgiveness_period: new Decimal(
-          params.policy.bountyForgivenessPeriod
-        )
-          .mul('3.6e12')
-          .toFixed()
-      },
-      config: {
-        name: params.name,
-        purpose: params.purpose,
-        metadata: fromMetadataToBase64({
-          links: params.links,
-          flag: params.flag,
-          displayName: params.displayName
-        })
-      }
-    };
-
-    const amount = new Decimal(params.amountToTransfer);
-    const amountYokto = amount.mul(yoktoNear).toFixed();
-    const args = Buffer.from(JSON.stringify(argsList)).toString('base64');
-
     try {
-      const result = await this.factoryContract.create(
-        {
-          name: params.name,
-          args
-        },
-        gas,
-        amountYokto.toString()
-      );
+      await this.sputnikDaoService.create(params);
 
       showNotification({
         type: NOTIFICATION_TYPES.INFO,
@@ -285,44 +198,63 @@ class SputnikService {
         lifetime: 20000
       });
 
-      return result;
+      return true;
     } catch (err) {
-      if (err.message !== 'Failed to redirect to sign transaction') {
-        throw err;
-      }
+      console.error(err);
     }
 
     return false;
   }
 
   public async createProposal(params: CreateProposalParams): Promise<any> {
-    const { daoId, description, kind, data, bond } = params;
-
-    const kindData = data
-      ? {
-          [kind]: data
-        }
-      : kind;
-
-    return this.contractPool
-      .get(daoId)
-      .add_proposal(
-        {
-          proposal: {
-            description,
-            kind: kindData
-          }
-        },
-        new Decimal('30000000000000').toString(),
-        bond
-      )
-      .then(() => {
-        showNotification({
-          type: NOTIFICATION_TYPES.INFO,
-          description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-          lifetime: 20000
-        });
+    return this.sputnikDaoService.addProposal(params).then(() => {
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+        lifetime: 20000
       });
+    });
+  }
+
+  public async claimBounty(
+    daoId: string,
+    args: { bountyId: number; deadline: string; bountyBond: string }
+  ) {
+    await this.sputnikDaoService.claimBounty({ daoId, ...args });
+
+    showNotification({
+      type: NOTIFICATION_TYPES.INFO,
+      description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
+      lifetime: 20000
+    });
+  }
+
+  public async unclaimBounty(daoId: string, bountyId: string) {
+    await this.sputnikDaoService.unclaimBounty(daoId, bountyId);
+
+    showNotification({
+      type: NOTIFICATION_TYPES.INFO,
+      description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
+      lifetime: 20000
+    });
+  }
+
+  public async finalize(contractId: string, proposalId: number): Promise<void> {
+    return this.sputnikDaoService.finalize(contractId, proposalId);
+  }
+
+  public async vote(
+    daoId: string,
+    proposalId: number,
+    action: 'VoteApprove' | 'VoteRemove' | 'VoteReject'
+  ): Promise<void> {
+    return this.sputnikDaoService.vote(daoId, proposalId, action).then(() => {
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
+        lifetime: 20000
+      });
+    });
   }
 
   public async getDaoList(params?: {
@@ -371,9 +303,6 @@ class SputnikService {
     sort?: string;
     query: string;
   }): Promise<SearchResultsData | null> {
-    // const offset = params?.offset ?? 0;
-    // const limit = params?.limit ?? 50;
-
     const result = await this.httpService.get<SearchResponse>('/search', {
       params: {
         query: params.query
@@ -381,8 +310,9 @@ class SputnikService {
     });
 
     return mapSearchResultsDTOToDataObject(params.query, {
-      daos: (result.data as SearchResponse).daos as DaoDTO[],
-      proposals: (result.data as SearchResponse).proposals as ProposalDTO[],
+      daos: (result.data as SearchResponse)?.daos?.data as DaoDTO[],
+      proposals: (result.data as SearchResponse)?.proposals
+        ?.data as ProposalDTO[],
       members: []
     });
   }
@@ -480,49 +410,90 @@ class SputnikService {
     filter: {
       daoViewFilter: string | null;
       daoFilter: 'All DAOs' | 'My DAOs' | 'Following DAOs' | null;
-      proposalFilter:
-        | 'Active proposals'
-        | 'Recent proposals'
-        | 'My proposals'
-        | null;
+      proposalFilter: ProposalFilterOptions;
+      status: ProposalFilterStatusOptions;
     },
     accountId: string
   ): Promise<Proposal[]> {
     const queryString = RequestQueryBuilder.create();
 
+    // specific DAO
     if (filter.daoViewFilter) {
       queryString.setFilter({
         field: 'daoId',
         operator: '$eq',
         value: `${filter.daoViewFilter}.${nearConfig.contractName}`
       });
-    } else if (filter.daoFilter === 'My DAOs') {
+    } else if (filter.daoFilter === 'My DAOs' && accountId) {
       const accountDaos = await this.getAccountDaos(accountId);
 
-      queryString.setFilter({
-        field: 'daoId',
-        operator: '$in',
-        value: accountDaos.map(item => item.id)
-      });
+      if (accountDaos.length) {
+        queryString.setFilter({
+          field: 'daoId',
+          operator: '$in',
+          value: accountDaos.map(item => item.id)
+        });
+      } else {
+        return Promise.resolve([]);
+      }
     }
 
-    if (filter.proposalFilter === 'Active proposals') {
+    // Statuses
+    if (filter.status && filter.status === 'Active proposals') {
       queryString.setFilter({
         field: 'status',
         operator: '$eq',
         value: 'InProgress'
       });
-    } else if (filter.proposalFilter === 'My proposals') {
+    } else if (filter.status && filter.status === 'Approved') {
       queryString.setFilter({
-        field: 'proposer',
+        field: 'status',
         operator: '$eq',
-        value: accountId
+        value: 'Approved'
       });
-    } else if (filter.proposalFilter === 'Recent proposals') {
+    } else if (filter.status && filter.status === 'Failed') {
       queryString.setFilter({
         field: 'status',
         operator: '$in',
-        value: ['Approved', 'Rejected', 'Expired', 'Moved']
+        value: ['Rejected', 'Expired', 'Moved']
+      });
+    }
+
+    // Kinds
+    if (filter.proposalFilter === 'Polls') {
+      queryString.setFilter({
+        field: 'kind',
+        operator: '$cont',
+        value: ProposalType.Vote
+      });
+    }
+
+    if (filter.proposalFilter === 'Governance') {
+      queryString.setFilter({
+        field: 'kind',
+        operator: '$cont',
+        value: ProposalType.ChangePolicy
+      });
+    }
+
+    if (filter.proposalFilter === 'Financial') {
+      queryString.setFilter({
+        field: 'kind',
+        operator: '$cont',
+        value: ProposalType.Transfer
+      });
+    }
+
+    if (filter.proposalFilter === 'Groups') {
+      queryString.setFilter({
+        field: 'kind',
+        operator: '$cont',
+        value: ProposalType.AddMemberToRole
+      });
+      queryString.setOr({
+        field: 'kind',
+        operator: '$cont',
+        value: ProposalType.RemoveMemberFromRole
       });
     }
 
@@ -633,6 +604,26 @@ class SputnikService {
     }
   }
 
+  public async getBounties(params?: {
+    offset?: number;
+    limit?: number;
+    sort?: string;
+  }): Promise<BountyResponse[]> {
+    const offset = params?.offset ?? 0;
+    const limit = params?.limit ?? 50;
+    const sort = params?.sort ?? 'createdAt,DESC';
+
+    const { data } = await this.httpService.get<BountiesResponse>('/bounties', {
+      params: {
+        offset,
+        limit,
+        sort
+      }
+    });
+
+    return data.data;
+  }
+
   public async getBountiesByDaoId(
     daoId: string,
     params?: {
@@ -672,26 +663,6 @@ class SputnikService {
     return data.data;
   }
 
-  public vote(
-    daoId: string,
-    proposalId: number,
-    action: 'VoteApprove' | 'VoteRemove' | 'VoteReject'
-  ): Promise<void> {
-    return this.contractPool
-      .get(daoId)
-      .act_proposal({
-        id: proposalId,
-        action
-      })
-      .then(() => {
-        showNotification({
-          type: NOTIFICATION_TYPES.INFO,
-          description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
-          lifetime: 20000
-        });
-      });
-  }
-
   public async getTokens(params: {
     dao: string;
     offset?: number;
@@ -712,12 +683,6 @@ class SputnikService {
     });
 
     return mapTokensDTOToTokens(data.data);
-  }
-
-  public finalize(contractId: string, proposalId: number): Promise<void> {
-    return this.contractPool.get(contractId).finalize({
-      id: proposalId
-    });
   }
 }
 

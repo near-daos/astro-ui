@@ -12,12 +12,15 @@ import { PLUGINS_DATA, PLUGIN_INITIAL_DATA } from 'lib/mocks/tasks/plugins';
 import { ListOnScrollProps, VariableSizeList } from 'react-window';
 import { useMedia } from 'react-use';
 import styles from 'pages/dao/[dao]/tasks/plugins/plugins.module.scss';
+import { useAuthContext } from 'context/AuthContext';
 
 interface PluginPageProps {
   plugins: PluginCardProps[];
 }
 
 const PluginsPage: FC<PluginPageProps> = ({ plugins = PLUGINS_DATA }) => {
+  const { accountId, login } = useAuthContext();
+
   const [pluginsList] = useState(plugins);
 
   const [showUsePluginPopup] = useModal(UsePluginPopup, {
@@ -36,9 +39,10 @@ const PluginsPage: FC<PluginPageProps> = ({ plugins = PLUGINS_DATA }) => {
     }
   }, []);
 
-  const handleCreateClick = useCallback(() => showUsePluginPopup(), [
-    showUsePluginPopup
-  ]);
+  const handleCreateClick = useCallback(
+    () => (accountId ? showUsePluginPopup() : login()),
+    [login, showUsePluginPopup, accountId]
+  );
 
   const resetScroll = useCallback(() => {
     if (!scrollListRef || !scrollListRef.current) {
@@ -68,9 +72,9 @@ const PluginsPage: FC<PluginPageProps> = ({ plugins = PLUGINS_DATA }) => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.header}>Plugins</div>
-      <div className={styles.create}>
-        <Button variant="secondary" onClick={handleCreateClick}>
+      <div className={styles.header}>
+        <h1>Plugins</h1>
+        <Button variant="black" size="small" onClick={handleCreateClick}>
           Run a plugin
         </Button>
       </div>

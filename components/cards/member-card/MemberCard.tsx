@@ -1,7 +1,9 @@
 import React, { FC, ReactNode, useCallback } from 'react';
 import cn from 'classnames';
 import TextTruncate from 'react-text-truncate';
-import { IconButton } from 'components/button/IconButton';
+import { Icon } from 'components/Icon';
+
+import { SMILE } from 'features/dao-home/components/follow-illustration/FollowIllustration';
 
 import styles from './member-card.module.scss';
 
@@ -83,26 +85,9 @@ const MemberCard: FC<MemberCardProps> = ({
         [styles.clickable]: !!onClick
       })}
     >
-      {!expandedView && onRemoveClick && (
-        <div className={styles.personIcon}>
-          <IconButton
-            icon="proposalRemoveMember"
-            onClick={e => {
-              e.stopPropagation();
-
-              onRemoveClick();
-            }}
-          />
-        </div>
-      )}
-
       <div className={styles.body}>
-        <div className={styles.smile}>
-          <svg className={styles.smileStroke}>
-            <circle r={20} cx={32} cy={32} />
-          </svg>
-        </div>
-        <div className={cn(styles.title, 'title1')}>
+        {SMILE}
+        <div className={cn(styles.title, 'title2')}>
           <TextTruncate
             line={expandedView ? 10 : 2}
             element="span"
@@ -111,10 +96,9 @@ const MemberCard: FC<MemberCardProps> = ({
             textTruncateChild={null}
           />
         </div>
-        <div className={styles.tags}>{children}</div>
       </div>
-
-      <div className={styles.footer}>
+      <div className={styles.tags}>{children}</div>
+      <div className={styles.votes}>
         {/* <Tokens data={tokens} /> */}
         <div className={styles.footerItem}>
           <span className={cn(styles.label, 'subtitle4')}>Votes casted</span>
@@ -123,6 +107,21 @@ const MemberCard: FC<MemberCardProps> = ({
           </div>
         </div>
       </div>
+      {!expandedView && onRemoveClick && (
+        <button
+          type="button"
+          className={styles.cardFooter}
+          onClick={e => {
+            e.stopPropagation();
+
+            onRemoveClick();
+          }}
+        >
+          <div className={styles.personIcon}>
+            <Icon name="proposalRemoveMember" width={16} />
+          </div>
+        </button>
+      )}
     </div>
   );
 };

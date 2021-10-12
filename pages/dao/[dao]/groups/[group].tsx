@@ -2,7 +2,10 @@ import uniq from 'lodash/uniq';
 import { Badge } from 'components/badge/Badge';
 import { Button } from 'components/button/Button';
 
-import MemberCard, { MemberCardPopup } from 'components/cards/member-card';
+import MemberCard, {
+  GroupsRenderer,
+  MemberCardPopup
+} from 'components/cards/member-card';
 import { Dropdown } from 'components/dropdown/Dropdown';
 import { useModal } from 'components/modal';
 import { GroupPopup } from 'features/groups';
@@ -13,12 +16,12 @@ import { useRouter } from 'next/router';
 
 import styles from 'pages/dao/[dao]/groups/groups.module.scss';
 import React, { FC, useCallback, useState } from 'react';
-import { useMedia } from 'react-use';
 
 import { DAO, Member } from 'types/dao';
 import { GetServerSideProps } from 'next';
 import { SputnikService } from 'services/SputnikService';
 import { extractMembersFromDao } from 'services/SputnikService/mappers/search-results';
+import { useAuthContext } from 'context/AuthContext';
 
 const sortOptions = [
   {
@@ -40,15 +43,29 @@ interface GroupPageProps {
 const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
   const router = useRouter();
   const paramGroup = router.query.group as string;
+  const { accountId, login } = useAuthContext();
 
   const group = groupMap[paramGroup] || paramGroup;
   const [showCardModal] = useModal(MemberCardPopup);
   const [showGroupModal] = useModal(GroupPopup);
-  const isMobile = useMedia('(max-width: 640px)');
 
   const [activeSort, setActiveSort] = useState<string>(sortOptions[0].value);
 
-  const handleAddClick = useCallback(async () => {
+  const showCreateGroupDialog = useCallback(async () => {
+    await showGroupModal({
+      initialValues: {
+        groupType: GroupFormType.CREATE_GROUP,
+        groups: []
+      }
+    });
+  }, [showGroupModal]);
+
+  const handleCreateGroup = useCallback(
+    () => (accountId ? showCreateGroupDialog() : login()),
+    [login, showCreateGroupDialog, accountId]
+  );
+
+  const showAddMemberDialog = useCallback(async () => {
     await showGroupModal({
       initialValues: {
         groupType: GroupFormType.ADD_TO_GROUP,
@@ -58,7 +75,12 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
     });
   }, [availableGroups, group, showGroupModal]);
 
-  const handleRemoveClick = useCallback(
+  const handleAddClick = useCallback(
+    () => (accountId ? showAddMemberDialog() : login()),
+    [login, showAddMemberDialog, accountId]
+  );
+
+  const showRemoveMemberDialog = useCallback(
     async item => {
       await showGroupModal({
         initialValues: {
@@ -70,6 +92,11 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
       });
     },
     [group, showGroupModal]
+  );
+
+  const handleRemoveClick = useCallback(
+    item => (accountId ? showRemoveMemberDialog(item) : login()),
+    [login, showRemoveMemberDialog, accountId]
   );
 
   const handleCardClick = useCallback(
@@ -115,16 +142,16 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h1>{pageTitle}</h1>
-        <Button
-          size={isMobile ? 'block' : 'small'}
-          variant="secondary"
-          onClick={handleAddClick}
-        >
-          {pageTitle === 'all'
-            ? 'Add member to group'
-            : 'Add member to this group'}
-        </Button>
+        <h1>{pageTitle === 'all' ? 'All Members' : <>{pageTitle}</>}</h1>
+        {pageTitle === 'all' ? (
+          <Button variant="black" size="small" onClick={handleCreateGroup}>
+            Create new group
+          </Button>
+        ) : (
+          <Button variant="black" size="small" onClick={handleAddClick}>
+            Add member to this group
+          </Button>
+        )}
       </div>
       <div className={styles.filter}>
         <Dropdown
@@ -146,15 +173,20 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
             votes={item.votes}
             tokens={item.tokens}
           >
-            {item.groups.map((grp, i) => (
-              <Badge
-                key={grp}
-                size="small"
-                variant={i % 2 > 0 ? 'turqoise' : 'blue'}
-              >
-                {grp}
-              </Badge>
-            ))}
+            <GroupsRenderer
+              selectedItems={item.groups.map((grp, i) => ({
+                label: grp,
+                component: (
+                  <Badge
+                    key={grp}
+                    size="small"
+                    variant={i % 2 > 0 ? 'turqoise' : 'blue'}
+                  >
+                    {grp}
+                  </Badge>
+                )
+              }))}
+            />
           </MemberCard>
         ))}
       </div>

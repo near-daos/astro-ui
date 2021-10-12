@@ -1,13 +1,14 @@
 import { FC } from 'react';
 import cn from 'classnames';
 
-import { PolicyType } from 'types/proposal';
+import { PolicyType } from 'types/policy';
 
 import { Badge } from 'components/badge/Badge';
 import { Icon } from 'components/Icon';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
 import { formatYoktoValue } from 'helpers/format';
 
+import { Token } from 'features/types';
 import styles from './proposal-content.module.scss';
 
 interface ProposalContentProps {
@@ -26,8 +27,8 @@ export const AddMemberToGroup: FC<AddRemoveMemberProps> = ({
   link
 }) => (
   <>
-    <div className={cn(styles.row, 'proposalInfo')}>
-      <span className={cn(styles.text, 'paragraph1')}>
+    <div className={styles.row}>
+      <span className={styles.text}>
         Add <b>{name}</b> as member to&nbsp;&nbsp;
         <Badge size="medium">{groupName}</Badge>
       </span>
@@ -51,8 +52,8 @@ export const RemoveMemberFromGroup: FC<AddRemoveMemberProps> = ({
   link
 }) => (
   <>
-    <div className={cn(styles.row, 'proposalInfo')}>
-      <span className={cn(styles.text, 'paragraph1')}>
+    <div className={styles.row}>
+      <span className={styles.text}>
         Remove <b>{name}</b> from&nbsp;&nbsp;
         <Badge size="small">{groupName}</Badge>
       </span>
@@ -76,8 +77,8 @@ interface NewGroupProps extends ProposalContentProps {
 
 export const CreateNewGroup: FC<NewGroupProps> = ({ groupName, link }) => (
   <>
-    <div className={cn(styles.row, 'proposalInfo')}>
-      <span className={cn(styles.text, 'paragraph1')}>
+    <div className={styles.row}>
+      <span className={styles.text}>
         Create new group&nbsp;&nbsp;
         <Badge size="small">{groupName}</Badge>
       </span>
@@ -97,36 +98,36 @@ CreateNewGroup.defaultProps = {
 
 interface RequestPayoutProps extends ProposalContentProps {
   amount: string;
-  tokens?: string;
+  token: Token | string;
   recipient: string;
   reason?: string | null;
 }
 
 export const RequestPayout: FC<RequestPayoutProps> = ({
   amount,
-  // tokens,
+  token,
   recipient,
   reason,
   link
 }) => (
   <>
-    <div className={cn(styles.row, 'proposalInfo')}>
-      <span className={cn(styles.text, 'paragraph1')}>{reason}</span>
+    <div className={styles.row}>
+      <span className={styles.text}>{reason}</span>
     </div>
     {link && (
       <div className={styles.sub}>
         <ExternalLink to={link} />
       </div>
     )}
-    <div className={styles.subRow}>
+    <div className={cn(styles.subRow, 'transferModal')}>
       <span className={cn('title1', styles.value)}>
         {formatYoktoValue(amount)}
       </span>
       &nbsp;
       <span className={cn('title1', styles.valueDesc)}>
-        <Icon name="logoNear" width={43} />
+        {token === '' ? 'NEAR' : 'FT'}
       </span>
-      <Icon name="buttonArrowRight" className={styles.icon} />
+      <Icon name="transfer" className={styles.icon} />
       <span>{recipient}</span>
     </div>
   </>
@@ -144,8 +145,8 @@ interface TextWithLinkProps extends ProposalContentProps {
 export const TextWithLink: FC<TextWithLinkProps> = ({ text, link }) => {
   return (
     <>
-      <div className={cn(styles.row, 'proposalInfo')}>
-        <span className={cn(styles.text, 'paragraph1')}>{text}</span>
+      <div className={styles.row}>
+        <span className={styles.text}>{text}</span>
       </div>
       {link && (
         <div className={styles.sub}>
@@ -167,8 +168,8 @@ interface FunctionCallProps extends ProposalContentProps {
 
 export const FunctionCall: FC<FunctionCallProps> = ({ recipient, link }) => (
   <>
-    <div className={cn(styles.row, 'proposalInfo')}>
-      <span className={cn(styles.text, 'paragraph1')}>{recipient}</span>
+    <div className={styles.row}>
+      <span className={styles.text}>{recipient}</span>
     </div>
     {link && (
       <div className={styles.sub}>
@@ -184,8 +185,8 @@ interface ChangePolicyProps extends ProposalContentProps {
 
 export const ChangePolicy: FC<ChangePolicyProps> = ({ link }) => (
   <>
-    <div className={cn(styles.row, 'proposalInfo')}>
-      <span className={cn(styles.text, 'paragraph1')}>
+    <div className={styles.row}>
+      <span className={styles.text}>
         This is a proposal to change voting policies for our groups. See details
         in the link
       </span>

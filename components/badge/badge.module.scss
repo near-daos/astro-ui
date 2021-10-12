@@ -2,7 +2,6 @@ $colors: 'violet', 'blurple', 'blue', 'turqoise', 'green', 'red', 'orange',
   'yellow';
 .badge {
   align-items: center;
-  background: var(--color-pastel-blue);
   border-radius: 100px;
   display: inline-flex;
   font-weight: 700;
@@ -43,5 +42,10 @@ $colors: 'violet', 'blurple', 'blue', 'turqoise', 'green', 'red', 'orange',
   &.primary {
     background: var(--color-primary-20);
     color: var(--color-primary-80);
+  }
+
+  &.neonYellow {
+    background: var(--color-brand-neon-yellow);
+    color: var(--color-brand-black);
   }
 }

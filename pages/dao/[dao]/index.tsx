@@ -1,124 +1,70 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
 
-import { nearConfig } from 'config/index';
-
-import {
-  DaoInfoCard,
-  DaoInfoCardProps
-} from 'components/cards/dao-info-card/DaoInfoCard';
-import { ProposalCardProps } from 'components/cards/proposal-card';
-import {
-  ProposalTrackerCard,
-  ProposalTrackerProps
-} from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
-import { Dropdown } from 'components/dropdown/Dropdown';
-import { Icon } from 'components/Icon';
+import { DaoInfoCard } from 'components/cards/dao-info-card/DaoInfoCard';
+import { ProposalTrackerCard } from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
 import { useModal } from 'components/modal';
 import { CreateProposalPopup } from 'features/dao-home/components/create-proposal-popup/CreateProposalPopup';
 import { ProposalCollapsableSection } from 'features/dao-home/components/proposals-collapsable-section';
-import {
-  DaoDetails,
-  DaoDetailsProps
-} from 'features/dao-home/components/dao-details/DaoDetails';
+import { DaoDetails } from 'features/dao-home/components/dao-details/DaoDetails';
+import { ProposalsTabsFilter } from 'components/proposals-tabs-filter';
 
 import {
+  filterProposalsByStatus,
   getDaoDetailsFromDao,
   getFundAndMembersNum,
-  getProposalStats,
-  useFilteredData,
-  getProposalsFilterOptions
+  getProposalStats
 } from 'features/dao-home/helpers';
-import { useDao } from 'hooks/useDao';
-import { NextPage } from 'next';
+import { NoResultsView } from 'features/no-results-view';
+import { isProposalsByEndTimeEmpty } from 'helpers/isProposalsByEndTimeEmpty';
+import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
+import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 
 import { SputnikService } from 'services/SputnikService';
 import { VOTE_BY_PERIOD } from 'constants/votingConstants';
-import { ProposalStatus } from 'types/proposal';
+import { Proposal } from 'types/proposal';
 
 import { useAuthContext } from 'context/AuthContext';
 import { useNearPrice } from 'hooks/useNearPrice';
 
+import { DAO } from 'types/dao';
+
 import styles from './dao-home-page.module.scss';
 
 interface DaoHomeProps {
-  daoDetails: DaoDetailsProps;
-  daoInfo: DaoInfoCardProps;
-  proposalTrackerInfo: ProposalTrackerProps;
-  proposals: ProposalCardProps[];
+  dao: DAO;
+  proposals: Proposal[];
 }
 
-const DAOHome: NextPage<DaoHomeProps> = () => {
-  const timeoutId = useRef<NodeJS.Timeout>();
-  const { accountId } = useAuthContext();
-
+const DAOHome: NextPage<DaoHomeProps> = ({
+  dao: initialDao,
+  proposals: initialProposals
+}) => {
   const router = useRouter();
-  const {
-    pending: isPending,
-    proposal: proposalId,
-    proposalStatus,
-    dao: daoId
-  } = router.query;
-  const dao = useDao(daoId as string);
+  const { proposal: proposalId } = router.query;
 
-  const { filter, onFilterChange, filteredData, data } = useFilteredData(
-    proposalStatus ? (proposalStatus as ProposalStatus) : undefined
-  );
-
+  const { accountId } = useAuthContext();
   const nearPrice = useNearPrice();
+
+  const [dao] = useState(initialDao);
+  const [proposals, setProposals] = useState(initialProposals);
 
   const [showCreateProposalModal] = useModal(CreateProposalPopup);
 
-  const handleClick = useCallback(() => showCreateProposalModal(), [
-    showCreateProposalModal
-  ]);
-
-  const getPendingDaoId = useCallback(() => {
-    return `${daoId}.${nearConfig.contractName}`;
-  }, [daoId]);
-
-  const fetchPendingDaoInfo = useCallback(async () => {
-    const id = getPendingDaoId();
-    const daoInfo = await SputnikService.getDaoById(id);
-
-    if (!daoInfo) {
-      timeoutId.current = setTimeout(fetchPendingDaoInfo, 2000);
-    } else {
-      router.push(`/dao/${id}`);
-    }
-  }, [router, getPendingDaoId]);
+  const handleClick = useCallback(async () => {
+    await showCreateProposalModal();
+    // TODO: refactor
+    SputnikService.getProposals(dao.id).then(setProposals);
+  }, [showCreateProposalModal, dao.id]);
 
   useEffect(() => {
-    if (isPending) {
-      fetchPendingDaoInfo();
-    }
-
-    return () => {
-      const timeout = timeoutId.current;
-
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-    };
-  }, [daoId, isPending, fetchPendingDaoInfo]);
+    // TODO: refactor
+    SputnikService.getProposals(dao.id).then(setProposals);
+  }, [dao.id]);
 
   function renderDaoDetails() {
-    if (!dao && !isPending) {
-      return null;
-    }
-
-    const daoDetails = dao
-      ? getDaoDetailsFromDao(dao)
-      : {
-          title: daoId as string,
-          subtitle: getPendingDaoId(),
-          description: 'Dao is being created. Please, be patient.',
-          flag: '',
-          createdAt: '',
-          links: []
-        };
-
+    const daoDetails = getDaoDetailsFromDao(dao);
     const { title, description, flag, subtitle, createdAt, links } = daoDetails;
 
     return (
@@ -136,14 +82,9 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
   }
 
   function renderProposalTracker() {
-    const { activeVotes, totalProposals } = getProposalStats(data);
+    const { activeVotes, totalProposals } = getProposalStats(proposals);
 
-    const action =
-      isPending || isEmpty(accountId) ? null : (
-        <>
-          <Icon name="buttonAdd" width={24} /> Create proposal
-        </>
-      );
+    const action = isEmpty(accountId) ? null : <>Create proposal</>;
 
     return (
       <div className={styles.proposals}>
@@ -158,22 +99,19 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
   }
 
   function renderDaoMembersFundInfo() {
-    if (!dao) {
-      return null;
-    }
-
     const { members, fund } = getFundAndMembersNum(dao, nearPrice);
 
     const info = [
       {
+        label: 'DAO funds',
+        value: `${fund}`,
+        valueType: `USD`,
+        link: accountId ? `/dao/${dao.id}/treasury/tokens` : null
+      },
+      {
         label: 'Members',
         value: `${members}`,
         link: accountId ? `/dao/${dao.id}/groups/all-members` : null
-      },
-      {
-        label: 'DAO funds',
-        value: `${fund} USD`,
-        link: accountId ? `/dao/${dao.id}/treasury/tokens` : null
       }
     ];
 
@@ -190,26 +128,69 @@ const DAOHome: NextPage<DaoHomeProps> = () => {
       {renderProposalTracker()}
       {renderDaoMembersFundInfo()}
       <div className={styles.proposalList}>
-        <Dropdown
-          className={styles.onTop}
-          defaultValue="Active proposals"
-          onChange={onFilterChange}
-          value={filter}
-          options={getProposalsFilterOptions(accountId)}
+        <ProposalsTabsFilter
+          proposals={proposals}
+          filter={filterProposalsByStatus}
+          tabsConfig={[
+            {
+              label: 'Active proposals',
+              className: styles.activeProposalsTab
+            },
+            {
+              label: 'Approved',
+              className: styles.approvedProposalsTab
+            },
+            {
+              label: 'Failed',
+              className: styles.failedProposalsTab
+            }
+          ]}
+          tabContentRenderer={(tabProposals: Proposal[]) => {
+            const filteredData = splitProposalsByVotingPeriod(tabProposals);
+
+            if (isProposalsByEndTimeEmpty(filteredData)) {
+              return <NoResultsView title="No proposals here" />;
+            }
+
+            return (
+              <>
+                {VOTE_BY_PERIOD.map(period => (
+                  <ProposalCollapsableSection
+                    key={period.key}
+                    proposals={filteredData[period.key]}
+                    title={period.title}
+                    view={period.key}
+                    expandedProposalId={(proposalId ?? '') as string}
+                  />
+                ))}
+              </>
+            );
+          }}
         />
-        {VOTE_BY_PERIOD.map(period => (
-          <ProposalCollapsableSection
-            filter={filter}
-            key={period.key}
-            proposals={filteredData[period.key]}
-            title={period.title}
-            view={period.key}
-            expandedProposalId={(proposalId ?? '') as string}
-          />
-        ))}
       </div>
     </div>
   );
 };
 
 export default DAOHome;
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const daoId = query.dao as string;
+
+  const dao = await SputnikService.getDaoById(daoId as string);
+
+  if (!dao) {
+    return {
+      notFound: true
+    };
+  }
+
+  const proposals = await SputnikService.getProposals(daoId as string);
+
+  return {
+    props: {
+      dao,
+      proposals
+    }
+  };
+};
