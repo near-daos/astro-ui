@@ -51,7 +51,7 @@ export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
     if (isLandingPage) {
       return (
         <div className={styles.flag}>
-          <Link href="/home" passHref>
+          <Link href={ALL_DAOS_URL} passHref>
             <a href="*">
               <Icon width={92} name="appLogo" />
             </a>
