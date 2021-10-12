@@ -75,17 +75,6 @@ const VotingPolicyPage: FC = () => {
 
   return (
     <div className={styles.root}>
-      <DaoSettingsBanner
-        onCancel={() => {
-          setViewMode(true);
-          setData(getInitialData(dao));
-        }}
-        onSubmit={handleSubmit}
-        onChange={handleChange}
-        viewMode={viewMode}
-        data={data.daoSettings}
-        scope="policy"
-      />
       <div className={styles.header}>
         <h1>Voting policy</h1>
         {viewMode && (
@@ -99,6 +88,17 @@ const VotingPolicyPage: FC = () => {
           </Button>
         )}
       </div>
+      <DaoSettingsBanner
+        onCancel={() => {
+          setViewMode(true);
+          setData(getInitialData(dao));
+        }}
+        onSubmit={handleSubmit}
+        onChange={handleChange}
+        viewMode={viewMode}
+        data={data.daoSettings}
+        scope="policy"
+      />
       <div className={styles.content}>
         <div className={styles.groupsWrapper}>
           {dao.groups.map((group, i) => {

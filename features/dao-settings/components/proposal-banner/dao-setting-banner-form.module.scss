@@ -2,7 +2,6 @@
 @import 'styles/typography';
 
 .root {
-  background-color: var(--color-primary-20);
   display: grid;
   grid-row-gap: 8px;
   grid-template-areas:
@@ -10,9 +9,8 @@
     'desc none'
     'details details';
   grid-template-columns: 1fr 1fr;
-  //margin: 0 -120px;
   margin-bottom: 40px;
-  padding: 34px 132px 12px;
+  padding: 34px 0;
 
   &.view {
     background-color: transparent;
@@ -42,7 +40,7 @@
 .content {
   display: flex;
   flex-direction: column;
-  padding: 24px 148px;
+  padding: 24px 0;
 }
 
 .details {
@@ -50,7 +48,7 @@
 }
 
 .wrapper {
-  margin: 0 -132px;
+  margin: 0;
   transform: translateY(12px);
 }
 
