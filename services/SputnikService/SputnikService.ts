@@ -248,12 +248,12 @@ class SputnikService {
     proposalId: number,
     action: 'VoteApprove' | 'VoteRemove' | 'VoteReject'
   ): Promise<void> {
-    await this.sputnikDaoService.vote(daoId, proposalId, action);
-
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
-      lifetime: 20000
+    return this.sputnikDaoService.vote(daoId, proposalId, action).then(() => {
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
+        lifetime: 20000
+      });
     });
   }
 

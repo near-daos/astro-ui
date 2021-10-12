@@ -11,6 +11,8 @@ import { ProposalCard } from 'components/cards/proposal-card/ProposalCard';
 
 import { SputnikService } from 'services/SputnikService';
 import { useAuthContext } from 'context/AuthContext';
+import { useRouter } from 'next/router';
+import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card/components/proposed-changes-renderer';
 
 interface ProposalCardRendererProps {
   proposal: Proposal;
@@ -21,39 +23,58 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
   proposal,
   showExpanded
 }) => {
+  const router = useRouter();
   const { accountId } = useAuthContext();
   let content;
   const handleVote = useCallback(
-    e => {
+    async e => {
       if (e) {
         e.stopPropagation();
       }
 
-      SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteApprove');
+      await SputnikService.vote(
+        proposal.daoId,
+        proposal.proposalId,
+        'VoteApprove'
+      );
+
+      await router.replace(router.asPath);
     },
-    [proposal.daoId, proposal.proposalId]
+    [proposal.daoId, proposal.proposalId, router]
   );
 
   const handleUnvote = useCallback(
-    e => {
+    async e => {
       if (e) {
         e.stopPropagation();
       }
 
-      SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteReject');
+      await SputnikService.vote(
+        proposal.daoId,
+        proposal.proposalId,
+        'VoteReject'
+      );
+
+      await router.replace(router.asPath);
     },
-    [proposal.daoId, proposal.proposalId]
+    [proposal.daoId, proposal.proposalId, router]
   );
 
   const handleRemove = useCallback(
-    e => {
+    async e => {
       if (e) {
         e.stopPropagation();
       }
 
-      SputnikService.vote(proposal.daoId, proposal.proposalId, 'VoteRemove');
+      await SputnikService.vote(
+        proposal.daoId,
+        proposal.proposalId,
+        'VoteRemove'
+      );
+
+      await router.replace(router.asPath);
     },
-    [proposal.daoId, proposal.proposalId]
+    [proposal.daoId, proposal.proposalId, router]
   );
 
   switch (proposal.kind.type) {
@@ -100,7 +121,14 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
     }
     case ProposalType.ChangePolicy: {
       content = (
-        <TextWithLink text={`Change policy: ${proposal.description}`} />
+        <>
+          <TextWithLink text={`Change policy: ${proposal.description} `} />
+          <ProposedChangesRenderer
+            dao={proposal.dao}
+            proposal={proposal}
+            inline
+          />
+        </>
       );
       break;
     }
