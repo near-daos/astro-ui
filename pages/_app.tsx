@@ -19,6 +19,8 @@ import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 
 import 'styles/globals.scss';
+import { useRouterLoading } from 'hooks/useRouterLoading';
+import { Loader } from 'components/loader';
 
 function usePageLayout(): React.FC {
   const router = useRouter();
@@ -45,12 +47,14 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
   });
 
+  const isLoading = useRouterLoading();
+
   return (
     <SWRConfig value={{ fallback: pageProps?.fallback || {} }}>
       <AuthWrapper>
         <ModalProvider>
           <Layout>
-            <Component {...pageProps} />
+            {isLoading ? <Loader /> : <Component {...pageProps} />}
           </Layout>
         </ModalProvider>
       </AuthWrapper>

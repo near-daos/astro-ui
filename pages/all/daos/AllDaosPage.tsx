@@ -17,6 +17,8 @@ import {
 
 import { useRouter } from 'next/router';
 import { useAuthContext } from 'context/AuthContext';
+import { useRouterLoading } from 'hooks/useRouterLoading';
+import { Loader } from 'components/loader';
 
 import styles from './AllDaosPage.module.scss';
 
@@ -93,6 +95,12 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
     () => (accountId ? router.push(CREATE_DAO_URL) : login()),
     [login, router, accountId]
   );
+
+  const isLoading = useRouterLoading();
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className={styles.root}>

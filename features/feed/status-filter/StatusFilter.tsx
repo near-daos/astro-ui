@@ -43,7 +43,7 @@ const StatusFilter: VFC = () => {
     <DropdownSelect
       placeholder="Filter by"
       controlIcon={<Icon name="filter" className={styles.icon} />}
-      defaultValue={(router.query.status as string) || 'All'}
+      // defaultValue={(router.query.status as string) || 'All'}
       options={FILTER_OPTIONS}
       onChange={value => handleFilterChange({ status: value })}
     />
