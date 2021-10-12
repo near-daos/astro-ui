@@ -82,11 +82,17 @@ const PRELOADER = (
   </svg>
 );
 
-export const Loader: FC = () => {
+interface LoaderProps {
+  title?: string;
+}
+
+export const Loader: FC<LoaderProps> = ({
+  title = 'Receiving data from the wallet'
+}) => {
   return (
     <div className={styles.root}>
       <div className={styles.logo}>{PRELOADER}</div>
-      <h2 className={styles.title}>Receiving data from the wallet</h2>
+      <h2 className={styles.title}>{title}</h2>
       <div className={styles.subtitle}>This may take some time</div>
     </div>
   );
