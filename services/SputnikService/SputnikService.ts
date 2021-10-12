@@ -310,8 +310,9 @@ class SputnikService {
     });
 
     return mapSearchResultsDTOToDataObject(params.query, {
-      daos: (result.data as SearchResponse).daos as DaoDTO[],
-      proposals: (result.data as SearchResponse).proposals as ProposalDTO[],
+      daos: (result.data as SearchResponse)?.daos?.data as DaoDTO[],
+      proposals: (result.data as SearchResponse)?.proposals
+        ?.data as ProposalDTO[],
       members: []
     });
   }
