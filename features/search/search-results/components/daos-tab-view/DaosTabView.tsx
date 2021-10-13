@@ -18,8 +18,9 @@ export const DaosTabView: FC = () => {
     <div className={styles.root}>
       <Highlighter>
         {searchResults?.daos.map(item => {
+          const title = item.displayName || item.name;
           const daoDetails = {
-            title: item.name,
+            title,
             subtitle: item.id,
             description: item.description,
             links: [],
