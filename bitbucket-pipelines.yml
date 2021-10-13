@@ -122,6 +122,22 @@ pipelines:
           <<: *helm-build-deploy
           deployment: qa
 
+    test:
+      - step:
+          <<: *set-environment
+
+          script:
+            - >-
+              echo export DOCKER_ENV_TAG=test-$BITBUCKET_COMMIT >> environment.sh
+
+      - step: *build
+
+      - step: *docker-build-publish
+
+      - step:
+          <<: *helm-build-deploy
+          deployment: test
+
   branches:
     develop:
       - step:
