@@ -81,7 +81,7 @@ const VotingPolicyPage: FC = () => {
           <Button
             className={styles.changeButton}
             size="small"
-            variant="secondary"
+            variant="primary"
             onClick={() => setViewMode(false)}
           >
             Change
@@ -109,6 +109,7 @@ const VotingPolicyPage: FC = () => {
             );
           })}
         </div>
+        <div className={styles.separator} />
         <div className={styles.policyWrapper}>
           <div className={styles.policyLabel}>Voting policy default</div>
           {viewMode ? (

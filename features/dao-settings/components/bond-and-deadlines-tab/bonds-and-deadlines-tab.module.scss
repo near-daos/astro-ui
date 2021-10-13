@@ -3,17 +3,36 @@
 .root {
   display: flex;
   flex-direction: column;
+  max-width: 640px;
 }
 
 .row {
   align-items: flex-end;
   display: flex;
   flex-direction: row;
+  gap: 80px;
   margin-bottom: 24px;
+
+  > div {
+    margin-bottom: 24px;
+  }
+
+  &.viewMode {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
 .title {
   @extend %title1;
+}
+
+.subtitle {
+  @extend %heading2;
+  align-items: center;
+  display: flex;
+  margin: 34px 0 24px;
 }
 
 .ml8 {
