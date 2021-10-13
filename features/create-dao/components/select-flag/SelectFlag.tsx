@@ -17,6 +17,7 @@ export interface SelectFlagProps {
   onSubmit?: (file: CropReturnType) => void;
   className?: string | undefined;
   fileName?: string;
+  title?: string;
 }
 
 interface SelectFlagState {
@@ -29,6 +30,7 @@ export const SelectFlag: FC<SelectFlagProps> = ({
   id,
   className,
   onSubmit,
+  title,
   fileName = 'flag.png'
 }) => {
   const cropperRef = useRef<Cropper>();
@@ -170,20 +172,27 @@ export const SelectFlag: FC<SelectFlagProps> = ({
 
   return (
     <div className={selectFlagStyles.root}>
-      <div className={selectFlagStyles.actions}>
-        <IconButton
-          disabled={historyData.currentIndex === 0}
-          onClick={undo}
-          size="medium"
-          icon="navBack"
-        />
-        <IconButton onClick={shiftBackground} size="medium" icon="navRefresh" />
-        <IconButton
-          onClick={redo}
-          disabled={historyData.currentIndex === historyData.stack.length - 1}
-          size="medium"
-          icon="navForward"
-        />
+      <div className={selectFlagStyles.header}>
+        {title && <div>{title}</div>}
+        <div className={selectFlagStyles.actions}>
+          <IconButton
+            disabled={historyData.currentIndex === 0}
+            onClick={undo}
+            size="medium"
+            icon="navBack"
+          />
+          <IconButton
+            onClick={shiftBackground}
+            size="medium"
+            icon="navRefresh"
+          />
+          <IconButton
+            onClick={redo}
+            disabled={historyData.currentIndex === historyData.stack.length - 1}
+            size="medium"
+            icon="navForward"
+          />
+        </div>
       </div>
       <form
         className={className}
