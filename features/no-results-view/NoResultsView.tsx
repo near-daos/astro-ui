@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 import styles from './no-results-view.module.scss';
 
 interface NoResultsViewProps {
-  title: string;
+  title: ReactNode;
   subTitle?: string;
 }
 
