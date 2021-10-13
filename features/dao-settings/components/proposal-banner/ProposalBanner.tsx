@@ -4,8 +4,9 @@ import { TextArea } from 'components/textarea/TextArea';
 import { VoteDetails } from 'components/vote-details';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { Scope } from 'features/vote-policy/helpers';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { SputnikService } from 'services/SputnikService';
 
 import styles from './dao-setting-banner-form.module.scss';
 
@@ -33,16 +34,26 @@ export const ProposalBanner: FC<ProposalBannerProps> = ({
   disableTooltip,
   scope
 }) => {
+  const accountId = SputnikService.getAccountId();
+
   const { register } = useFormContext<{
     externalUrl?: string;
     details?: string;
   }>();
 
+  const onEditClick = useCallback(() => {
+    if (accountId) {
+      onEdit();
+    } else {
+      SputnikService.login();
+    }
+  }, [accountId, onEdit]);
+
   if (viewMode) {
     return (
       <div className={styles.header}>
         {title && <h2>{title}</h2>}
-        <Button onClick={onEdit} size="small" variant="secondary">
+        <Button onClick={onEditClick} size="small" variant="secondary">
           Edit
         </Button>
       </div>
