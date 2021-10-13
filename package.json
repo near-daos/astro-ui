@@ -71,6 +71,7 @@
     "react-tabs": "^3.2.2",
     "react-text-truncate": "^0.17.0",
     "react-textarea-autosize": "^8.3.3",
+    "react-tooltip": "^4.2.21",
     "react-use": "^17.2.4",
     "react-window": "^1.8.6",
     "react-window-infinite-loader": "^1.0.7",
