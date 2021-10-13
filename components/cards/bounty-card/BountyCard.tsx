@@ -98,13 +98,15 @@ export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
       <StatusPanel type="Passed" />
       <div className={styles.content}>
         <div className={styles.group}>
-          <TextTruncate
-            line={3}
-            element="span"
-            truncateText="…"
-            text={description}
-            textTruncateChild={null}
-          />
+          <span data-tip={description}>
+            <TextTruncate
+              line={3}
+              element="span"
+              truncateText="…"
+              text={description}
+              textTruncateChild={null}
+            />
+          </span>
           {externalUrl && (
             <div>
               <ExternalLink to={externalUrl} />
