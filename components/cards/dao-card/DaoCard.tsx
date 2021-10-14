@@ -56,7 +56,7 @@ const DaoCard: React.FC<DaoCardProps> = ({
   }
 
   function onCreateProposal(e: MouseEvent | KeyboardEvent) {
-    e.preventDefault();
+    e.stopPropagation();
 
     if (accountId) {
       router.push({
