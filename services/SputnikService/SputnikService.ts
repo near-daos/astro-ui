@@ -689,6 +689,12 @@ class SputnikService {
     return data.data;
   }
 
+  public async getAllTokens(): Promise<TokenType[]> {
+    const { data } = await this.httpService.get<TokenType[]>('/tokens');
+
+    return mapTokensDTOToTokens(data);
+  }
+
   public async getTokens(params: {
     dao: string;
     offset?: number;
