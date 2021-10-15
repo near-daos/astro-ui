@@ -1,14 +1,16 @@
-import * as yup from 'yup';
 import React from 'react';
+import * as yup from 'yup';
+import cn from 'classnames';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import cn from 'classnames';
 
 import { Input } from 'components/input/Input';
 import { Select } from 'components/select/Select';
 import { TextArea } from 'components/textarea/TextArea';
 import { Button } from 'components/button/Button';
 import { VoteDetails } from 'components/vote-details';
+import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
+
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { tokenOptions } from 'features/bounty/dialogs/create-bounty-dialog/components/create-bounty-form/helpers';
 import { CreatePayoutInput } from 'features/treasury/request-payout-popup/types';
@@ -22,6 +24,7 @@ const schema = yup.object().shape({
   token: yup.string().required(),
   amount: yup
     .number()
+    .typeError('Must be a valid number.')
     .positive()
     .required()
     .test(
@@ -73,18 +76,42 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.root} noValidate>
-      <Select
-        defaultValue={initialValues?.token}
-        className={cn(styles.token)}
-        placeholder=""
-        size="block"
-        label="Token"
-        options={tokenOptions}
-        {...register('token')}
-        onChange={v =>
-          setValue('token', (v || 'NEAR') as Token, {
-            shouldDirty: true
-          })
+      <InputFormWrapper
+        errors={errors}
+        className={styles.token}
+        component={
+          <Select
+            defaultValue={initialValues?.token}
+            placeholder=""
+            size="block"
+            label="Token"
+            options={tokenOptions}
+            {...register('token')}
+            onChange={v =>
+              setValue('token', (v || 'NEAR') as Token, {
+                shouldDirty: true
+              })
+            }
+          />
+        }
+      />
+      <InputFormWrapper
+        errors={errors}
+        className={styles.amount}
+        component={
+          <Input
+            isValid={touchedFields.amount && !errors.amount?.message}
+            defaultValue={initialValues?.amount}
+            size="block"
+            textAlign="left"
+            type="number"
+            lang="en-US"
+            step="0.1"
+            min="0.1"
+            {...register('amount')}
+            label="Amount"
+            className={cn(styles.input, styles.amount)}
+          />
         }
       />
       {selectedToken === ('Fungible Token' as Token) && (
@@ -97,19 +124,6 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
           className={cn(styles.input, styles.tokenAddress)}
         />
       )}
-      <Input
-        isValid={touchedFields.amount && !errors.amount?.message}
-        defaultValue={initialValues?.amount}
-        size="block"
-        textAlign="left"
-        type="number"
-        lang="en-US"
-        step="0.1"
-        min="0.1"
-        {...register('amount')}
-        label="Amount"
-        className={cn(styles.input, styles.amount)}
-      />
       <div className={styles.recipient}>
         <Input
           defaultValue={initialValues?.recipient}
