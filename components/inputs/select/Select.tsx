@@ -1,7 +1,7 @@
 import { useId } from '@reach/auto-id';
 import classNames from 'classnames';
 import { IconButton } from 'components/button/IconButton';
-import inputStyles from 'components/input/input.module.scss';
+import inputStyles from 'components/inputs/input/input.module.scss';
 import { useCombobox, UseComboboxStateChange } from 'downshift';
 import React, { useEffect, useState } from 'react';
 import styles from './select.module.scss';

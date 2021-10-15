@@ -4,9 +4,9 @@ import cn from 'classnames';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Input } from 'components/input/Input';
-import { Select } from 'components/select/Select';
-import { TextArea } from 'components/textarea/TextArea';
+import { Input } from 'components/inputs/input/Input';
+import { Select } from 'components/inputs/select/Select';
+import { TextArea } from 'components/inputs/textarea/TextArea';
 import { Button } from 'components/button/Button';
 import { VoteDetails } from 'components/vote-details';
 import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';

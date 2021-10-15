@@ -5,7 +5,7 @@ import * as yup from 'yup';
 
 import { useWizardContext } from 'features/plugins/components/use-plugin-popup/components/use-plugin-wizard/helpers';
 import { NearFunction } from 'features/plugins/components/use-plugin-popup/types';
-import { Select } from 'components/select/Select';
+import { Select } from 'components/inputs/select/Select';
 import { Button } from 'components/button/Button';
 
 import styles from './previous-functions-view.module.scss';

@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
-import { Select } from 'components/select/Select';
+import { Select } from 'components/inputs/select/Select';
 import classNames from 'classnames';
-import { Input } from 'components/input/Input';
+import { Input } from 'components/inputs/input/Input';
 import { VotePolicy } from 'features/vote-policy/components/policy-row';
 
 import styles from './edit-default-policy.module.scss';

@@ -3,7 +3,7 @@ import { Button } from 'components/button/Button';
 import { IconButton } from 'components/button/IconButton';
 
 import { Icon } from 'components/Icon';
-import { Input } from 'components/input/Input';
+import { Input } from 'components/inputs/input/Input';
 import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 import { nanoid } from 'nanoid';

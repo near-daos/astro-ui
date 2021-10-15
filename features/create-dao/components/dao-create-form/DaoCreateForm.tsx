@@ -5,10 +5,10 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { Icon } from 'components/Icon';
 import { Title } from 'components/Typography';
-import { Input } from 'components/input/Input';
+import { Input } from 'components/inputs/input/Input';
 import { Button } from 'components/button/Button';
 import { IconButton } from 'components/button/IconButton';
-import { TextArea } from 'components/textarea/TextArea';
+import { TextArea } from 'components/inputs/textarea/TextArea';
 
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 import { validUrlRegexp, validWebsiteName } from 'utils/regexp';

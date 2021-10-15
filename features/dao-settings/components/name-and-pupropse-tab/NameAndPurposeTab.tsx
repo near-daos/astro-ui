@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import cn from 'classnames';
-import { Input } from 'components/input/Input';
-import { TextArea } from 'components/textarea/TextArea';
+import { Input } from 'components/inputs/input/Input';
+import { TextArea } from 'components/inputs/textarea/TextArea';
 import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
 import {
   getChangeConfigProposal,

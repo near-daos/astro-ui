@@ -8,7 +8,7 @@ import {
   useWizardContext
 } from 'features/plugins/components/use-plugin-popup/components/use-plugin-wizard/helpers';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
-import { Input } from 'components/input/Input';
+import { Input } from 'components/inputs/input/Input';
 import { Button } from 'components/button/Button';
 import { VoteDetails } from 'components/vote-details';
 

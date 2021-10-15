@@ -6,9 +6,9 @@ import * as yup from 'yup';
 
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 
-import { Input } from 'components/input/Input';
+import { Input } from 'components/inputs/input/Input';
 import { Button } from 'components/button/Button';
-import { TextArea } from 'components/textarea/TextArea';
+import { TextArea } from 'components/inputs/textarea/TextArea';
 
 import { VoteDetails } from 'components/vote-details';
 
