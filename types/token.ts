@@ -36,21 +36,13 @@ export type NftToken = {
 };
 
 export type TokenType = {
-  isArchived: boolean;
-  createdAt: string;
-  updatedAt: string;
-  transactionHash: string | null;
-  updateTransactionHash: string | null;
-  createTimestamp: number | null;
-  updateTimestamp: number | null;
+  transactionHash: string;
   id: string;
   ownerId: string;
   totalSupply: string;
   decimals: number;
   icon: string;
   name: string;
-  reference: string | null;
-  referenceHash: string | null;
   spec: string;
   symbol: string;
 };
