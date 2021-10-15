@@ -1,6 +1,6 @@
 import { Button } from 'components/button/Button';
-import { Input } from 'components/input/Input';
-import { TextArea } from 'components/textarea/TextArea';
+import { Input } from 'components/inputs/input/Input';
+import { TextArea } from 'components/inputs/textarea/TextArea';
 import { VoteDetails } from 'components/vote-details';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { Scope } from 'features/vote-policy/helpers';

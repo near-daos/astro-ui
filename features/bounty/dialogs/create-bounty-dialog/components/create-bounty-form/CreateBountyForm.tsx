@@ -3,10 +3,10 @@ import cn from 'classnames';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Input } from 'components/input/Input';
+import { Input } from 'components/inputs/input/Input';
 import { Button } from 'components/button/Button';
-import { TextArea } from 'components/textarea/TextArea';
-import { Select } from 'components/select/Select';
+import { TextArea } from 'components/inputs/textarea/TextArea';
+import { Select } from 'components/inputs/select/Select';
 
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { CreateBountyInput } from 'features/bounty/dialogs/create-bounty-dialog/types';

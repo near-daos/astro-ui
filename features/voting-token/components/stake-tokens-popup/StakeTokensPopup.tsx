@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 import { AmountInput } from 'features/voting-token/components/amount-input';
 import { Modal } from 'components/modal';
-import { Input } from 'components/input/Input';
+import { Input } from 'components/inputs/input/Input';
 import { Button } from 'components/button/Button';
 import { Icon, IconName } from 'components/Icon';
 

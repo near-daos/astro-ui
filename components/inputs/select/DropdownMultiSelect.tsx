@@ -3,7 +3,7 @@ import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import cn from 'classnames';
 import { useMeasure } from 'react-use';
 
-import { Checkbox } from 'components/checkbox/Checkbox';
+import { Checkbox } from 'components/inputs/checkbox/Checkbox';
 import { Icon } from 'components/Icon';
 import { Badge } from 'components/badge/Badge';
 

@@ -6,7 +6,7 @@ import styles from 'features/vote-policy/vote-policy-popup.module.scss';
 import { Button } from 'components/button/Button';
 import { TGroup } from 'types/dao';
 import { getNextGroup, PolicyProps } from 'features/vote-policy/helpers';
-import { DropdownMultiSelect } from 'components/select/DropdownMultiSelect';
+import { DropdownMultiSelect } from 'components/inputs/select/DropdownMultiSelect';
 import { Group } from './components/group/Group';
 
 export interface VotePolicyPopupProps {

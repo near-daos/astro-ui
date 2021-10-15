@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Input } from 'components/input/Input';
+import { Input } from 'components/inputs/input/Input';
 import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
 import {
   BondsAndDeadlinesData,

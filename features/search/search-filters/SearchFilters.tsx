@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React, { FC, FormEvent, useCallback } from 'react';
 
-import { Toggle } from 'components/toggle/Toggle';
+import { Toggle } from 'components/inputs/toggle/Toggle';
 import { Dropdown } from 'components/dropdown/Dropdown';
 
 import { Option, daoFilterOptions, statusFilterOptions } from './helpers';

@@ -10,11 +10,11 @@ import {
   GroupFormInput
 } from 'features/groups/types';
 
-import { Input } from 'components/input/Input';
+import { Input } from 'components/inputs/input/Input';
 import { Button } from 'components/button/Button';
-import { Select } from 'components/select/Select';
+import { Select } from 'components/inputs/select/Select';
 import { VoteDetails } from 'components/vote-details';
-import { TextArea } from 'components/textarea/TextArea';
+import { TextArea } from 'components/inputs/textarea/TextArea';
 
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 

@@ -1,6 +1,6 @@
 import React, { useCallback, VFC } from 'react';
 import { useRouter } from 'next/router';
-import { DropdownSelect } from 'components/select/DropdownSelect';
+import { DropdownSelect } from 'components/inputs/select/DropdownSelect';
 import { Icon } from 'components/Icon';
 
 import styles from './status-filter.module.scss';
