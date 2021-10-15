@@ -13,6 +13,7 @@ import {
 import { CookieService } from 'services/CookieService';
 import { SputnikService } from 'services/SputnikService';
 import { mapBountyResponseToBounty } from 'services/SputnikService/mappers/bounty';
+import { filterProposalsByStatus } from 'features/feed/helpers';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import MyFeedPage from './MyFeedPage';
@@ -74,9 +75,18 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     );
   }
 
+  // Additional filtering for expired proposals
+  if (filter.status === 'Active proposals') {
+    proposals = proposals.filter(item => item.status === 'InProgress');
+  } else if (filter.status === 'Failed') {
+    const failedStatuses = ['Rejected', 'Expired', 'Moved'];
+
+    proposals = proposals.filter(item => failedStatuses.includes(item.status));
+  }
+
   return {
     props: {
-      proposals,
+      proposals: filterProposalsByStatus(filter.status, proposals),
       bounties,
       filter
     }

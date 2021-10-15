@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { RequestQueryBuilder } from '@nestjsx/crud-request';
+import {
+  RequestQueryBuilder,
+  SConditionAND,
+  SFields
+} from '@nestjsx/crud-request';
 import PromisePool from '@supercharge/promise-pool';
 import Big from 'big.js';
 import { NearConfig, nearConfig } from 'config';
@@ -417,21 +421,25 @@ class SputnikService {
   ): Promise<Proposal[]> {
     const queryString = RequestQueryBuilder.create();
 
+    const search: SFields | SConditionAND = {
+      $and: []
+    };
+
     // specific DAO
     if (filter.daoViewFilter) {
-      queryString.setFilter({
-        field: 'daoId',
-        operator: '$eq',
-        value: `${filter.daoViewFilter}.${nearConfig.contractName}`
+      search.$and?.push({
+        daoId: {
+          $eq: `${filter.daoViewFilter}.${nearConfig.contractName}`
+        }
       });
     } else if (filter.daoFilter === 'My DAOs' && accountId) {
       const accountDaos = await this.getAccountDaos(accountId);
 
       if (accountDaos.length) {
-        queryString.setFilter({
-          field: 'daoId',
-          operator: '$in',
-          value: accountDaos.map(item => item.id)
+        search.$and?.push({
+          daoId: {
+            $in: accountDaos.map(item => item.id)
+          }
         });
       } else {
         return Promise.resolve([]);
@@ -440,62 +448,80 @@ class SputnikService {
 
     // Statuses
     if (filter.status && filter.status === 'Active proposals') {
-      queryString.setFilter({
-        field: 'status',
-        operator: '$eq',
-        value: 'InProgress'
+      // Fetch all InProgress items and then do additional filtering for Expired
+      search.$and?.push({
+        status: {
+          $eq: 'InProgress'
+        }
       });
     } else if (filter.status && filter.status === 'Approved') {
-      queryString.setFilter({
-        field: 'status',
-        operator: '$eq',
-        value: 'Approved'
+      search.$and?.push({
+        status: {
+          $eq: 'Approved'
+        }
       });
     } else if (filter.status && filter.status === 'Failed') {
-      queryString.setFilter({
-        field: 'status',
-        operator: '$in',
-        value: ['Rejected', 'Expired', 'Moved']
+      // Fetch failed including InProgress items and then do additional filtering for Expired
+      search.$and?.push({
+        status: {
+          $in: ['Rejected', 'Expired', 'Moved', 'InProgress']
+        }
       });
     }
 
     // Kinds
     if (filter.proposalFilter === 'Polls') {
-      queryString.setFilter({
-        field: 'kind',
-        operator: '$cont',
-        value: ProposalType.Vote
+      // TODO - how to distinguish between ChangePolicy and Vote?
+      search.$and?.push({
+        kind: {
+          $cont: ProposalType.Vote
+        }
       });
     }
 
     if (filter.proposalFilter === 'Governance') {
-      queryString.setFilter({
-        field: 'kind',
-        operator: '$cont',
-        value: ProposalType.ChangePolicy
+      search.$and?.push({
+        $or: [
+          {
+            kind: {
+              $cont: ProposalType.ChangeConfig
+            }
+          },
+          {
+            kind: {
+              $cont: ProposalType.ChangePolicy
+            }
+          }
+        ]
       });
     }
 
     if (filter.proposalFilter === 'Financial') {
-      queryString.setFilter({
-        field: 'kind',
-        operator: '$cont',
-        value: ProposalType.Transfer
+      search.$and?.push({
+        kind: {
+          $cont: ProposalType.Transfer
+        }
       });
     }
 
     if (filter.proposalFilter === 'Groups') {
-      queryString.setFilter({
-        field: 'kind',
-        operator: '$cont',
-        value: ProposalType.AddMemberToRole
-      });
-      queryString.setOr({
-        field: 'kind',
-        operator: '$cont',
-        value: ProposalType.RemoveMemberFromRole
+      search.$and?.push({
+        $or: [
+          {
+            kind: {
+              $cont: ProposalType.AddMemberToRole
+            }
+          },
+          {
+            kind: {
+              $cont: ProposalType.RemoveMemberFromRole
+            }
+          }
+        ]
       });
     }
+
+    queryString.search(search);
 
     queryString
       .setLimit(1000)
