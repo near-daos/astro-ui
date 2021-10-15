@@ -28,8 +28,8 @@ interface GroupFormProps {
 
 const schema = yup.object().shape({
   group: yup.string().required(),
-  member: yup.string(),
-  detail: yup.string(),
+  memberName: yup.string().required(),
+  detail: yup.string().required(),
   externalUrl: yup.string()
 });
 
@@ -98,7 +98,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
       <Input
         size="block"
         defaultValue={initialValues?.name}
-        isValid={touchedFields.externalUrl && !errors.externalUrl?.message}
+        isValid={touchedFields.memberName && !errors.memberName?.message}
         textAlign="left"
         {...register('memberName')}
         label={
@@ -112,6 +112,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
       <div className={styles.detail}>
         <TextArea
           size="block"
+          isValid={touchedFields.detail && !errors.detail?.message}
           defaultValue={initialValues?.detail}
           textAlign="left"
           resize="none"
