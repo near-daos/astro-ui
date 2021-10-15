@@ -267,7 +267,7 @@ class SputnikService {
     sort?: string;
     filter?: string;
     createdBy?: string;
-  }): Promise<DAO[]> {
+  }): Promise<{ data: DAO[]; total: number }> {
     const offset = params?.offset ?? 0;
     const limit = params?.limit ?? 500;
     const sort = params?.sort ?? 'createdAt,DESC';
@@ -282,7 +282,10 @@ class SputnikService {
       }
     });
 
-    return mapDaoDTOListToDaoList(data.data);
+    return {
+      data: mapDaoDTOListToDaoList(data.data),
+      total: data.total
+    };
   }
 
   public async getDaoById(daoId: string): Promise<DAO | null> {
@@ -412,12 +415,13 @@ class SputnikService {
 
   public async getFilteredProposals(
     filter: {
-      daoViewFilter: string | null;
-      daoFilter: 'All DAOs' | 'My DAOs' | 'Following DAOs' | null;
-      proposalFilter: ProposalFilterOptions;
-      status: ProposalFilterStatusOptions;
+      daoViewFilter?: string | null;
+      daoFilter?: 'All DAOs' | 'My DAOs' | 'Following DAOs' | null;
+      proposalFilter?: ProposalFilterOptions;
+      status?: ProposalFilterStatusOptions;
+      daosIdsFilter?: string[];
     },
-    accountId: string
+    accountId?: string
   ): Promise<Proposal[]> {
     const queryString = RequestQueryBuilder.create();
 
@@ -522,6 +526,15 @@ class SputnikService {
     }
 
     queryString.search(search);
+
+    // DaosIds
+    if (filter.daosIdsFilter) {
+      queryString.setFilter({
+        field: 'daoId',
+        operator: '$in',
+        value: filter.daosIdsFilter
+      });
+    }
 
     queryString
       .setLimit(1000)

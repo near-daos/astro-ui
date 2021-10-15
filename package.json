@@ -63,6 +63,7 @@
     "react-cropper": "^2.1.8",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.12.2",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-measure": "^2.5.2",
     "react-modal": "^3.14.3",
     "react-paginate": "^7.1.3",

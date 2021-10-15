@@ -27,6 +27,7 @@ type DaoConfig = {
 
 export interface GetDAOsResponse {
   data: DaoDTO[];
+  total: number;
 }
 
 export type DaoDTO = {
