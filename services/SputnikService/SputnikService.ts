@@ -729,6 +729,18 @@ class SputnikService {
 
     return mapTokensDTOToTokens(data.data);
   }
+
+  public async nearAccountExist(accountId: string): Promise<boolean> {
+    const account = await this.near.account(accountId);
+
+    try {
+      await account.state();
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }
 
 const nearService = new SputnikService(nearConfig);
