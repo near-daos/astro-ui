@@ -173,13 +173,6 @@ class SputnikService {
 
     const TGas = Big(10).pow(12);
     const BoatOfGas = Big(200).mul(TGas);
-    // const requiredDeposit = await this.computeRequiredDeposit(args);
-    //
-    // await this.factoryTokenContract.storage_deposit(
-    //   {},
-    //   BoatOfGas.toFixed(0),
-    //   requiredDeposit.toFixed(0)
-    // );
 
     await this.factoryTokenContract.create_token(
       { args },
