@@ -11,6 +11,8 @@ import Decimal from 'decimal.js';
 import { SputnikService, yoktoNear } from 'services/SputnikService';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { TokenType } from 'types/token';
+import { FUNGIBLE_TOKEN } from 'features/types';
+
 import styles from './request-payout-popup.module.scss';
 
 export interface RequestPayoutPopupProps {
@@ -38,7 +40,7 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
     async (data: IRequestPayoutForm) => {
       if (currentDao) {
         const getTokenDecimals = () => {
-          if (data.token === 'Fungible Token' && data.tokenAddress) {
+          if (data.token === FUNGIBLE_TOKEN && data.tokenAddress) {
             const tokenSymbol = data.tokenAddress.split('.')[0];
             const ft = tokens.find(token => token.symbol === tokenSymbol);
 
@@ -55,7 +57,7 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
           bond: currentDao.policy.proposalBond,
           data: {
             token_id:
-              data.token === 'Fungible Token' && data.tokenAddress
+              data.token === FUNGIBLE_TOKEN && data.tokenAddress
                 ? data.tokenAddress
                 : '',
             receiver_id: data.recipient,

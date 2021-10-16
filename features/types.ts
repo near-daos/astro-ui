@@ -1,4 +1,7 @@
-export type Token = 'NEAR' | 'Fungible Token';
+export const NEAR_TOKEN = 'NEAR';
+export const FUNGIBLE_TOKEN = 'Fungible Token';
+
+export type Token = typeof NEAR_TOKEN | typeof FUNGIBLE_TOKEN;
 
 export type Vote = 'Yes' | 'No' | 'Dismiss';
 
