@@ -91,7 +91,7 @@ const VotingPolicyPage: FC = () => {
           <Button
             className={styles.changeButton}
             size="small"
-            variant="primary"
+            variant="black"
             onClick={onChangeButtonClick}
           >
             Change
