@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import isEmpty from 'lodash/isEmpty';
 
 import { DaoInfoCard } from 'components/cards/dao-info-card/DaoInfoCard';
@@ -40,19 +40,12 @@ interface DaoHomeProps {
   apiTokens: TokenType[];
 }
 
-const DAOHome: NextPage<DaoHomeProps> = ({
-  dao: initialDao,
-  proposals: initialProposals,
-  apiTokens
-}) => {
+const DAOHome: NextPage<DaoHomeProps> = ({ dao, proposals, apiTokens }) => {
   const router = useRouter();
   const { proposal: proposalId } = router.query;
 
   const { accountId } = useAuthContext();
   const nearPrice = useNearPrice();
-
-  const [dao] = useState(initialDao);
-  const [proposals, setProposals] = useState(initialProposals);
 
   const [showCreateProposalModal] = useModal(CreateProposalPopup);
 
@@ -62,16 +55,15 @@ const DAOHome: NextPage<DaoHomeProps> = ({
     setTokens(apiTokens);
   }, [apiTokens, setTokens]);
 
+  const refreshData = useCallback(() => {
+    router.replace(router.asPath);
+  }, [router]);
+
   const handleClick = useCallback(async () => {
     await showCreateProposalModal();
-    // TODO: refactor
-    SputnikService.getProposals(dao.id).then(setProposals);
-  }, [showCreateProposalModal, dao.id]);
 
-  useEffect(() => {
-    // TODO: refactor
-    SputnikService.getProposals(dao.id).then(setProposals);
-  }, [dao.id]);
+    refreshData();
+  }, [refreshData, showCreateProposalModal]);
 
   function renderDaoDetails() {
     const daoDetails = getDaoDetailsFromDao(dao);
