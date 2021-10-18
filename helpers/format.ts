@@ -8,11 +8,11 @@ import {
   minutesToHours
 } from 'date-fns';
 
-export const formatYoktoValue = (value: string): string => {
+export function formatYoktoValue(value: string, divider = yoktoNear): string {
   const amountYokto = new Decimal(value);
 
-  return Number(amountYokto.div(yoktoNear).toFixed(5)).toString();
-};
+  return Number(amountYokto.div(divider).toFixed(5)).toString();
+}
 
 export const toHoursAndFormat = (
   duration: string,

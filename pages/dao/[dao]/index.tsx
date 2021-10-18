@@ -26,20 +26,24 @@ import { VOTE_BY_PERIOD } from 'constants/votingConstants';
 import { Proposal } from 'types/proposal';
 
 import { useAuthContext } from 'context/AuthContext';
+import { useCustomTokensContext } from 'context/CustomTokensContext';
 import { useNearPrice } from 'hooks/useNearPrice';
 
 import { DAO } from 'types/dao';
+import { TokenType } from 'types/token';
 
 import styles from './dao-home-page.module.scss';
 
 interface DaoHomeProps {
   dao: DAO;
   proposals: Proposal[];
+  apiTokens: TokenType[];
 }
 
 const DAOHome: NextPage<DaoHomeProps> = ({
   dao: initialDao,
-  proposals: initialProposals
+  proposals: initialProposals,
+  apiTokens
 }) => {
   const router = useRouter();
   const { proposal: proposalId } = router.query;
@@ -51,6 +55,12 @@ const DAOHome: NextPage<DaoHomeProps> = ({
   const [proposals, setProposals] = useState(initialProposals);
 
   const [showCreateProposalModal] = useModal(CreateProposalPopup);
+
+  const { setTokens } = useCustomTokensContext();
+
+  useEffect(() => {
+    setTokens(apiTokens);
+  }, [apiTokens, setTokens]);
 
   const handleClick = useCallback(async () => {
     await showCreateProposalModal();
@@ -194,12 +204,14 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
   }
 
+  const apiTokens = (await SputnikService.getAllTokens()) || [];
   const proposals = await SputnikService.getProposals(daoId as string);
 
   return {
     props: {
       dao,
-      proposals
+      proposals,
+      apiTokens
     }
   };
 };

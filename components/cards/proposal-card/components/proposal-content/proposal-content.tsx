@@ -1,14 +1,18 @@
 import { FC } from 'react';
 import cn from 'classnames';
 
+import { Token } from 'features/types';
 import { PolicyType } from 'types/policy';
+
+import { useCustomTokensContext } from 'context/CustomTokensContext';
 
 import { Badge } from 'components/badge/Badge';
 import { Icon } from 'components/Icon';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
 import { formatYoktoValue } from 'helpers/format';
 
-import { Token } from 'features/types';
+import { getTokenDivider } from 'utils/getTokenDivider';
+
 import styles from './proposal-content.module.scss';
 
 interface ProposalContentProps {
@@ -109,29 +113,37 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
   recipient,
   reason,
   link
-}) => (
-  <>
-    <div className={styles.row}>
-      <span className={styles.text}>{reason}</span>
-    </div>
-    {link && (
-      <div className={styles.sub}>
-        <ExternalLink to={link} />
+}) => {
+  const { tokens } = useCustomTokensContext();
+
+  function getTokenValue() {
+    const divider = getTokenDivider(tokens, token);
+
+    return formatYoktoValue(amount, divider);
+  }
+
+  return (
+    <>
+      <div className={styles.row}>
+        <span className={styles.text}>{reason}</span>
       </div>
-    )}
-    <div className={cn(styles.subRow, 'transferModal')}>
-      <span className={cn('title1', styles.value)}>
-        {formatYoktoValue(amount)}
-      </span>
-      &nbsp;
-      <span className={cn('title1', styles.valueDesc)}>
-        {token === '' ? 'NEAR' : 'FT'}
-      </span>
-      <Icon name="transfer" className={styles.icon} />
-      <span>{recipient}</span>
-    </div>
-  </>
-);
+      {link && (
+        <div className={styles.sub}>
+          <ExternalLink to={link} />
+        </div>
+      )}
+      <div className={cn(styles.subRow, 'transferModal')}>
+        <span className={cn('title1', styles.value)}>{getTokenValue()}</span>
+        &nbsp;
+        <span className={cn('title1', styles.valueDesc)}>
+          {token === '' ? 'NEAR' : 'FT'}
+        </span>
+        <Icon name="transfer" className={styles.icon} />
+        <span>{recipient}</span>
+      </div>
+    </>
+  );
+};
 
 RequestPayout.defaultProps = {
   link: '',
