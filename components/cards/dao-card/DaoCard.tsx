@@ -17,6 +17,7 @@ import { formatCurrency } from 'utils/formatCurrency';
 import { SputnikService } from 'services/SputnikService';
 
 import styles from 'components/cards/dao-card/dao-card.module.scss';
+import { ExplorerLink } from 'components/explorer-link';
 
 interface DaoCardProps {
   dao: DAO;
@@ -43,7 +44,7 @@ const DaoCard: React.FC<DaoCardProps> = ({
   const router = useRouter();
   const accountId = SputnikService.getAccountId();
 
-  const { id, funds, proposals } = dao;
+  const { id, funds, proposals, txHash } = dao;
 
   const title = displayName || name;
 
@@ -73,6 +74,7 @@ const DaoCard: React.FC<DaoCardProps> = ({
   return (
     <Link href={`/dao/${daoAccountName}`} passHref>
       <div className={styles.daoCard}>
+        <ExplorerLink transaction={txHash} isAbsolute />
         <div>
           <div className={styles.header}>
             <div className={styles.iconWrapper}>

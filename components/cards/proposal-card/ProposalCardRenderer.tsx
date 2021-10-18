@@ -151,6 +151,7 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
       dismisses={proposal.voteRemove}
       id={proposal.id}
       title={proposal.proposer}
+      transaction={proposal.txHash}
       liked={proposal.votes[accountId] === 'Yes'}
       disliked={proposal.votes[accountId] === 'No'}
       dismissed={proposal.votes[accountId] === 'Dismiss'}

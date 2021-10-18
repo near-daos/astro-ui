@@ -24,6 +24,7 @@ export const DaosTabView: FC = () => {
             subtitle: item.id,
             description: item.description,
             links: [],
+            transaction: item.txHash,
             createdAt: item.createdAt,
             more: {
               label: 'Show more',

@@ -107,6 +107,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
 
   return {
     id: daoDTO.id,
+    txHash: daoDTO.transactionHash,
     name: config?.name ?? '',
     description: config?.purpose ?? '',
     members: numberOfMembers,

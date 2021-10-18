@@ -25,6 +25,7 @@ export const DAO_DETAILS: DaoDetailsProps = {
     'http://telegram.org',
     'http://twitter.com'
   ],
+  transaction: '',
   more: {
     label: 'Show more',
     link: 'http://example.com'
@@ -37,6 +38,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
   {
     id: '1',
     type: ProposalType.Transfer,
+    transaction: '',
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
@@ -71,6 +73,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
   {
     id: '2',
     type: ProposalType.Transfer,
+    transaction: '',
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
@@ -105,6 +108,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
   {
     id: '3',
     type: ProposalType.Transfer,
+    transaction: '',
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
@@ -139,6 +143,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
   {
     id: '4',
     type: ProposalType.Transfer,
+    transaction: '',
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
@@ -173,6 +178,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
   {
     id: '5',
     type: ProposalType.SetStakingContract,
+    transaction: '',
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
@@ -204,6 +210,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
   {
     id: '6',
     type: ProposalType.AddMemberToRole,
+    transaction: '',
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
     onDislike: () => {},
     // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/explicit-module-boundary-types
@@ -236,6 +243,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
   {
     id: '7',
     type: ProposalType.AddMemberToRole,
+    transaction: '',
     likes: 2,
     dislikes: 234,
     liked: true,

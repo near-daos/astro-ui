@@ -16,6 +16,7 @@ type DaoDetailsType = {
   flag: string;
   createdAt: string;
   links: string[];
+  txHash: string;
 };
 
 type ProposalStatsType = {
@@ -29,7 +30,16 @@ type FundMemberNumType = {
 };
 
 export function getDaoDetailsFromDao(dao: DAO): DaoDetailsType {
-  const { id, name, logo, createdAt, description, links, displayName } = dao;
+  const {
+    id,
+    name,
+    logo,
+    createdAt,
+    description,
+    links,
+    txHash,
+    displayName
+  } = dao;
 
   const daoDetails = {
     title: displayName || name,
@@ -37,7 +47,8 @@ export function getDaoDetailsFromDao(dao: DAO): DaoDetailsType {
     description,
     flag: logo,
     createdAt,
-    links
+    links,
+    txHash
   };
 
   return daoDetails;

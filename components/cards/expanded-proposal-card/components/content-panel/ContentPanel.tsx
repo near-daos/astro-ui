@@ -16,6 +16,7 @@ import { DAO } from 'types/dao';
 import { getScope } from 'components/cards/expanded-proposal-card/helpers';
 import tempFlag from 'stories/dao-home/assets/flag.png';
 import { CopyButton } from 'features/copy-button';
+import { ExplorerLink } from 'components/explorer-link';
 
 import styles from './content-panel.module.scss';
 
@@ -26,6 +27,7 @@ interface ContentPanelProps {
   link: string;
   linkTitle: string;
   children: ReactNode;
+  transaction: string;
   likes: number;
   dislikes: number;
   liked: boolean;
@@ -49,6 +51,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
   daoId,
   title,
   children,
+  transaction,
   likes,
   dislikes,
   liked,
@@ -80,6 +83,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
             />
             <div className={styles.left}>
               <Typography.Title size={3}>{daoDetails.name}</Typography.Title>
+              <ExplorerLink transaction={transaction} />
             </div>
             <div className={styles.right}>
               {/* <Icon name="buttonBookmark" className={styles.icon} /> */}

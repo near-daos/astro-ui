@@ -65,7 +65,15 @@ const DAOHome: NextPage<DaoHomeProps> = ({
 
   function renderDaoDetails() {
     const daoDetails = getDaoDetailsFromDao(dao);
-    const { title, description, flag, subtitle, createdAt, links } = daoDetails;
+    const {
+      title,
+      description,
+      flag,
+      txHash,
+      subtitle,
+      createdAt,
+      links
+    } = daoDetails;
 
     return (
       <div className={styles.daoDetails}>
@@ -76,6 +84,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
           subtitle={subtitle}
           createdAt={createdAt}
           links={links}
+          transaction={txHash}
         />
       </div>
     );
