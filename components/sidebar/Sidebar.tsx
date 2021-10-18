@@ -31,6 +31,13 @@ interface SidebarProps {
   closeSideBar?: () => void;
 }
 
+const NOT_COLLAPSABLE_MENU_ITEMS = [
+  MY_DAOS_URL,
+  MY_FEED_URL,
+  ALL_DAOS_URL,
+  ALL_FEED_URL
+];
+
 export const Sidebar: React.FC<SidebarProps> = ({
   className,
   fullscreen,
@@ -68,16 +75,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
   function renderHomeNavItem() {
     if (accountId) {
       const subHrefs = [MY_DAOS_URL, MY_FEED_URL];
+      const { route } = router;
+
+      const isExpanded = isSectionExpanded(subHrefs);
+      const notCollapsable =
+        NOT_COLLAPSABLE_MENU_ITEMS.includes(route) && isExpanded;
 
       return (
         <Collapsable
-          initialOpenState={isSectionExpanded(subHrefs)}
+          initialOpenState={notCollapsable || isExpanded}
           renderHeading={toggle => {
             return (
               <NavItem
                 label="Home"
                 icon="stateHome"
-                onClick={toggle}
+                onClick={notCollapsable ? undefined : toggle}
                 className={styles.item}
                 subHrefs={subHrefs}
               />
@@ -110,15 +122,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   function renderAllCommunities() {
     const subHrefs = [ALL_DAOS_URL, ALL_FEED_URL];
+    const { route } = router;
+
+    const isExpanded = isSectionExpanded(subHrefs);
+    const notCollapsable =
+      NOT_COLLAPSABLE_MENU_ITEMS.includes(route) && isExpanded;
 
     return (
       <nav className={styles.bottom}>
         <Collapsable
-          initialOpenState={isSectionExpanded(subHrefs)}
+          initialOpenState={notCollapsable || isExpanded}
           renderHeading={toggle => {
             return (
               <NavItem
-                onClick={toggle}
+                onClick={notCollapsable ? undefined : toggle}
                 subHrefs={subHrefs}
                 label="All Communities"
                 icon="stateCommunities"
