@@ -124,6 +124,7 @@ export const mapProposalDTOToProposal = (
     dao: mapDaoDTOtoDao(proposalDTO.dao),
     daoDetails: {
       name: proposalDTO.dao.config.name,
+      displayName: meta?.displayName || '',
       logo:
         meta && meta.flag ? getLogoUrl(meta.flag) : getLogoUrl('default.png')
     }

@@ -8,9 +8,9 @@
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  height: 48px;
   margin-top: 10px;
   max-width: 432px;
+  min-height: 50px;
 
   @include desktop {
     width: calc(100% - 305px);

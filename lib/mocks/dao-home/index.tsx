@@ -54,6 +54,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     votePeriodEnd: '',
     daoDetails: {
       name: 'my-awesome-dao',
+      displayName: 'My Awesome DAO',
       logo: ''
     },
     proposalId: 1,
@@ -89,6 +90,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     votePeriodEnd: '',
     daoDetails: {
       name: 'my-awesome-dao',
+      displayName: 'My Awesome DAO',
       logo: ''
     },
     proposalId: 1,
@@ -124,6 +126,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     votePeriodEnd: '',
     daoDetails: {
       name: 'my-awesome-dao',
+      displayName: 'My Awesome DAO',
       logo: ''
     },
     proposalId: 1,
@@ -159,6 +162,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     votePeriodEnd: '',
     daoDetails: {
       name: 'my-awesome-dao',
+      displayName: 'My Awesome DAO',
       logo: ''
     },
     proposalId: 1,
@@ -194,6 +198,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     votePeriodEnd: '',
     daoDetails: {
       name: 'my-awesome-dao',
+      displayName: 'My Awesome DAO',
       logo: ''
     },
     proposalId: 1,
@@ -226,6 +231,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     votePeriodEnd: '',
     daoDetails: {
       name: 'my-awesome-dao',
+      displayName: 'My Awesome DAO',
       logo: ''
     },
     proposalId: 1,
@@ -260,6 +266,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     dao: {} as DAO,
     daoDetails: {
       name: 'my-awesome-dao',
+      displayName: 'My Awesome DAO',
       logo: ''
     },
     proposalId: 1,

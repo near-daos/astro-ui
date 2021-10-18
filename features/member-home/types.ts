@@ -25,6 +25,7 @@ export type DaoProposal = {
   dao: {
     id: string;
     name: string;
+    displayName: string;
     logo: string;
   };
   proposals: Proposal[];

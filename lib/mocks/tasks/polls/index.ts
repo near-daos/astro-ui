@@ -39,6 +39,7 @@ const generatePoll = (
   votePeriodEnd: '',
   daoDetails: {
     name: 'my-awesome-dao',
+    displayName: 'My Awesome DAO',
     logo: ''
   },
   proposalId: 1,

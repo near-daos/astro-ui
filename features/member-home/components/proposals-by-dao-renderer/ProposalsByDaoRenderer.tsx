@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
 
 import { VotePeriodKey } from 'constants/votingConstants';
 
@@ -82,8 +83,15 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
       )}
     >
       {Object.keys(data).map(daoName => {
-        const daoProposalData = data[daoName];
-        const flag = daoProposalData.dao.logo;
+        const daoProposalData = get(data, daoName) || {};
+        const { proposals } = daoProposalData;
+        const {
+          id: daoId,
+          logo: flag,
+          name,
+          displayName
+        } = daoProposalData.dao;
+        const daoTitle = displayName || name;
 
         return (
           <DaoSection
@@ -94,9 +102,9 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
               scrollToTop();
             }}
             filter={filter.daoViewFilter}
-            daoId={daoProposalData.dao.id}
-            daoName={daoName}
-            proposals={daoProposalData.proposals}
+            daoId={daoId}
+            daoName={daoTitle}
+            proposals={proposals}
             flag={flag}
             expandedProposalId={expandedProposalId}
           />
