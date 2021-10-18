@@ -2,15 +2,15 @@ import { Tokens } from 'context/CustomTokensContext';
 
 import { NEAR_TOKEN } from 'features/types';
 
-import { yoktoNear } from 'services/SputnikService';
+import { YOKTO_NEAR } from 'services/sputnik/constants';
 
 export function getTokenDivider(tokens: Tokens, tokenName?: string): number {
   if (!tokenName || tokenName === NEAR_TOKEN) {
-    return yoktoNear;
+    return YOKTO_NEAR;
   }
 
   const tokenSymbol = tokenName.split('.')[0];
   const ft = tokens[tokenSymbol];
 
-  return ft ? 10 ** ft.decimals : yoktoNear;
+  return ft ? 10 ** ft.decimals : YOKTO_NEAR;
 }

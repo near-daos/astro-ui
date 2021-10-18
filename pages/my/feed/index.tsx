@@ -12,7 +12,7 @@ import {
 
 import { CookieService } from 'services/CookieService';
 import { SputnikService } from 'services/SputnikService';
-import { mapBountyResponseToBounty } from 'services/SputnikService/mappers/bounty';
+import { mapBountyResponseToBounty } from 'services/sputnik/mappers';
 import { filterProposalsByStatus } from 'features/feed/helpers';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';

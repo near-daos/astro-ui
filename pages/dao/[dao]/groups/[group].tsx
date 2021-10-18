@@ -20,7 +20,7 @@ import React, { FC, useCallback, useState } from 'react';
 import { DAO, Member } from 'types/dao';
 import { GetServerSideProps } from 'next';
 import { SputnikService } from 'services/SputnikService';
-import { extractMembersFromDao } from 'services/SputnikService/mappers/search-results';
+import { extractMembersFromDao } from 'services/sputnik/mappers';
 import { useAuthContext } from 'context/AuthContext';
 
 const sortOptions = [

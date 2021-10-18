@@ -17,7 +17,7 @@ import { DaoConfig } from 'types/proposal';
 import {
   DaoMetadata,
   fromMetadataToBase64
-} from 'services/SputnikService/mappers/dao';
+} from 'services/sputnik/mappers/dao';
 
 import styles from './name-and-purpose-tab.module.scss';
 

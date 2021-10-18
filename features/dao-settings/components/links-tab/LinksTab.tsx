@@ -17,7 +17,7 @@ import { DaoConfig } from 'types/proposal';
 import {
   DaoMetadata,
   fromMetadataToBase64
-} from 'services/SputnikService/mappers/dao';
+} from 'services/sputnik/mappers/dao';
 import { SputnikService } from 'services/SputnikService';
 import { getChangeConfigProposal } from 'features/dao-settings/helpers';
 import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
