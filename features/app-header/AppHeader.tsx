@@ -85,8 +85,10 @@ export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
     return null;
   }
 
+  const rootElClassName = cn(styles.root, styles.sticky);
+
   return (
-    <header className={styles.root}>
+    <header className={rootElClassName}>
       {renderSideBar()}
       <div className={styles.mobileMenu}>
         <Icon
