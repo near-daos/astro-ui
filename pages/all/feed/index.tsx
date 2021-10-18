@@ -82,11 +82,14 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     proposals = proposals.filter(item => failedStatuses.includes(item.status));
   }
 
+  const apiTokens = (await SputnikService.getAllTokens()) || [];
+
   return {
     props: {
       proposals: filterProposalsByStatus(filter.status, proposals),
       bounties,
-      filter
+      filter,
+      apiTokens
     }
   };
 };
