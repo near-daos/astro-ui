@@ -7,7 +7,7 @@ import {
 } from 'features/member-home/types';
 import { Proposal } from 'types/proposal';
 import { Bounty } from 'components/cards/bounty-card/types';
-import { mapBountyResponseToBounty } from 'services/SputnikService/mappers/bounty';
+import { mapBountyResponseToBounty } from 'services/sputnik/mappers';
 import { filterProposalsByStatus } from 'features/feed/helpers';
 import { CookieService } from 'services/CookieService';
 import { SputnikService } from 'services/SputnikService';

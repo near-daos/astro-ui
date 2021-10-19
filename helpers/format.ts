@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import { yoktoNear } from 'services/SputnikService';
+import { YOKTO_NEAR } from 'services/sputnik/constants';
 import {
   addHours,
   format,
@@ -8,7 +8,7 @@ import {
   minutesToHours
 } from 'date-fns';
 
-export function formatYoktoValue(value: string, divider = yoktoNear): string {
+export function formatYoktoValue(value: string, divider = YOKTO_NEAR): string {
   const amountYokto = new Decimal(value);
 
   return Number(amountYokto.div(divider).toFixed(5)).toString();

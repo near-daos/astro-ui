@@ -14,24 +14,19 @@ import { CookieService } from 'services/CookieService';
 import { HttpService, httpService } from 'services/HttpService';
 import {
   DaoDTO,
+  ProposalDTO,
+  SearchResponse,
   GetDAOsResponse,
-  mapDaoDTOListToDaoList,
-  mapDaoDTOtoDao
-} from 'services/SputnikService/mappers/dao';
-import {
   GetProposalsResponse,
-  mapProposalDTOToProposal,
-  ProposalDTO
-} from 'services/SputnikService/mappers/proposal';
-import { mapTokensDTOToTokens } from 'services/SputnikService/mappers/token';
-import {
-  mapSearchResultsDTOToDataObject,
-  SearchResponse
-} from 'services/SputnikService/mappers/search-results';
-import {
   GetTransactionsResponse,
-  mapTransactionDTOToTransaction
-} from 'services/SputnikService/mappers/transaction';
+  mapDaoDTOtoDao,
+  mapTokensDTOToTokens,
+  mapDaoDTOListToDaoList,
+  mapProposalDTOToProposal,
+  mapTransactionDTOToTransaction,
+  mapSearchResultsDTOToDataObject
+} from 'services/sputnik/mappers';
+
 import { BountiesResponse, BountyResponse } from 'types/bounties';
 
 import { PaginationResponse } from 'types/api';

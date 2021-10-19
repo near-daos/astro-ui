@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import BN from 'bn.js';
 import { utils } from 'near-api-js';
-import { FunctionCallOptions } from 'near-api-js/lib/account';
-import { CreateProposalParams } from 'types/proposal';
 import { AnyObject } from 'yup/lib/types';
+import { FunctionCallOptions } from 'near-api-js/lib/account';
+
 import { appConfig } from 'config';
-import { mapCreateDaoParamsToContractArgs } from './mappers/dao';
+
+import { CreateProposalParams } from 'types/proposal';
+
+import { mapCreateDaoParamsToContractArgs } from 'services/sputnik/mappers';
+import { ClaimBountyParams, CreateDaoParams } from 'services/sputnik/types';
+
 import { SputnikWalletService } from './SputnikWalletService';
-import { ClaimBountyParams, CreateDaoParams } from './types/dao';
 
 const GAS_VALUE = new BN('300000000000000');
 

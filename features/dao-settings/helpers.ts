@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import { yoktoNear } from 'services/SputnikService';
+import { YOKTO_NEAR } from 'services/sputnik/constants';
 import { DAO } from 'types/dao';
 import {
   ConfigChangeReason,
@@ -101,11 +101,13 @@ export function getChangeBondDeadlinesProposal(
           threshold: ratio,
           weightKind
         }),
-        proposal_bond: new Decimal(createProposalBond).mul(yoktoNear).toFixed(),
+        proposal_bond: new Decimal(createProposalBond)
+          .mul(YOKTO_NEAR)
+          .toFixed(),
         proposal_period: new Decimal(proposalExpireTime)
           .mul('3.6e12')
           .toFixed(),
-        bounty_bond: new Decimal(claimBountyBond).mul(yoktoNear).toFixed(),
+        bounty_bond: new Decimal(claimBountyBond).mul(YOKTO_NEAR).toFixed(),
         bounty_forgiveness_period: new Decimal(unclaimBountyTime)
           .mul('3.6e12')
           .toFixed()

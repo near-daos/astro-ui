@@ -11,7 +11,7 @@ import {
   fromBase64ToMetadata,
   getLogoUrl,
   mapDaoDTOtoDao
-} from 'services/SputnikService/mappers/dao';
+} from 'services/sputnik/mappers/dao';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { parseISO } from 'date-fns';
 
