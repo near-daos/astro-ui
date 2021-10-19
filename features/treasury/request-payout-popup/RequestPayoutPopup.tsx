@@ -23,7 +23,7 @@ import styles from './request-payout-popup.module.scss';
 export interface RequestPayoutPopupProps {
   type: 'send' | 'request';
   isOpen: boolean;
-  onClose: (proposalId?: string) => void;
+  onClose: (created?: boolean) => void;
 }
 
 export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
@@ -61,13 +61,10 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
           }
         });
 
-        onClose();
-
-        // Reload page to force call of the getServerSideProps of page
-        router.replace(router.asPath);
+        onClose(true);
       }
     },
-    [tokens, router, onClose, currentDao]
+    [tokens, onClose, currentDao]
   );
 
   return (

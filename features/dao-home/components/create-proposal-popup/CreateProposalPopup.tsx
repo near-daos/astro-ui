@@ -13,7 +13,7 @@ import styles from './create-proposal-popup.module.scss';
 
 export interface CreateProposalPopupProps {
   isOpen: boolean;
-  onClose: (proposalId?: string) => void;
+  onClose: (created?: boolean) => void;
 }
 
 export const CreateProposalPopup: FC<CreateProposalPopupProps> = ({
@@ -26,9 +26,9 @@ export const CreateProposalPopup: FC<CreateProposalPopupProps> = ({
   const [showRequestPayoutPopup] = useModal(RequestPayoutPopup);
 
   const requestPayoutClickHandler = useCallback(async () => {
-    const [proposalId] = await showRequestPayoutPopup();
+    const [isCreated] = await showRequestPayoutPopup();
 
-    onClose(proposalId);
+    onClose(isCreated);
   }, [onClose, showRequestPayoutPopup]);
 
   const claimBountyClickHandler = useCallback(async () => {

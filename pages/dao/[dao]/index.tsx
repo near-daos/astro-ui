@@ -60,9 +60,11 @@ const DAOHome: NextPage<DaoHomeProps> = ({ dao, proposals, apiTokens }) => {
   }, [router]);
 
   const handleClick = useCallback(async () => {
-    await showCreateProposalModal();
+    const [isCreated] = await showCreateProposalModal();
 
-    refreshData();
+    if (isCreated) {
+      refreshData();
+    }
   }, [refreshData, showCreateProposalModal]);
 
   function renderDaoDetails() {
