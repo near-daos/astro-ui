@@ -20,14 +20,18 @@ export const ExplorerLink: React.VFC<ExplorerLinkProps> = ({
   }
 
   return (
-    <a
-      href={explorerLink}
-      onClick={stopPropagation}
-      className={cn(styles.root, { [styles.absolute]: isAbsolute })}
-      target="_blank"
-      rel="noreferrer"
-    >
-      <Icon name="buttonExternal" className={styles.icon} />
-    </a>
+    <>
+      {transaction && (
+        <a
+          href={explorerLink}
+          onClick={stopPropagation}
+          className={cn(styles.root, { [styles.absolute]: isAbsolute })}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Icon name="buttonExternal" className={styles.icon} />
+        </a>
+      )}
+    </>
   );
 };
