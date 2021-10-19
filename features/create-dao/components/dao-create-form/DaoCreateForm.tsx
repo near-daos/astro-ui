@@ -35,7 +35,9 @@ export interface IDaoCreateForm {
 const schema = yup.object().shape({
   displayName: yup
     .string()
-    .matches(validWebsiteName, 'Enter correct address!')
+    .trim()
+    .min(3, 'tooShortAddress')
+    .matches(validWebsiteName, 'incorrectAddress')
     .required(),
   purpose: yup.string().max(500),
   websites: yup
@@ -80,6 +82,18 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
     setLinksCount(count => count - 1);
   }
 
+  const showDaoNameErrorMessage = (message: string) => {
+    switch (message) {
+      case 'tooShortAddress':
+        return 'at least 3 characters expected.';
+      case 'incorrectAddress':
+        return 'you can use letters and numbers only with hyphens and spaces in the middle.';
+      default:
+      case '':
+        return '';
+    }
+  };
+
   return (
     <form {...props} onSubmit={handleSubmit(onSubmit)} className={styles.root}>
       <section className={styles.addressSection}>
@@ -103,8 +117,8 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
 
         {errors.displayName?.message && (
           <p className={styles.addressError}>
-            Incorrect DAO name&nbsp;&mdash; you can use letters, numbers, hyphen
-            and spaces only.
+            Incorrect DAO name&nbsp;&mdash;{' '}
+            {showDaoNameErrorMessage(errors.displayName?.message)}
           </p>
         )}
       </section>
