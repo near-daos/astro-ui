@@ -13,11 +13,10 @@ import { ImageWithFallback } from 'components/image-with-fallback';
 import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value/FormattedNumericValue';
 
 import { formatCurrency } from 'utils/formatCurrency';
-
-import { SputnikService } from 'services/SputnikService';
+import { ExplorerLink } from 'components/explorer-link';
+import { useAuthContext } from 'context/AuthContext';
 
 import styles from 'components/cards/dao-card/dao-card.module.scss';
-import { ExplorerLink } from 'components/explorer-link';
 
 interface DaoCardProps {
   dao: DAO;
@@ -42,7 +41,7 @@ const DaoCard: React.FC<DaoCardProps> = ({
   members
 }) => {
   const router = useRouter();
-  const accountId = SputnikService.getAccountId();
+  const { login, accountId } = useAuthContext();
 
   const { id, funds, proposals, txHash } = dao;
 
@@ -67,7 +66,7 @@ const DaoCard: React.FC<DaoCardProps> = ({
         }
       });
     } else {
-      SputnikService.login();
+      login();
     }
   }
 
