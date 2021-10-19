@@ -29,7 +29,7 @@ export function arrangeByDao(proposals: Proposal[]): ProposalByDao {
   const result: ProposalByDao = {};
 
   proposals.forEach(item => {
-    const { name, logo } = item.daoDetails;
+    const { name, logo, displayName } = item.daoDetails;
 
     if (result[name]) {
       result[name].proposals.push(item);
@@ -37,6 +37,7 @@ export function arrangeByDao(proposals: Proposal[]): ProposalByDao {
       result[name] = {
         dao: {
           name,
+          displayName: displayName || '',
           logo,
           id: item.daoId
         },

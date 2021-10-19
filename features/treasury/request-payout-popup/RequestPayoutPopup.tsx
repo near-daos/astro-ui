@@ -1,3 +1,7 @@
+import { useMount } from 'react-use';
+
+import { FUNGIBLE_TOKEN } from 'features/types';
+
 import { Icon } from 'components/Icon';
 import { Modal } from 'components/modal';
 import {
@@ -8,14 +12,18 @@ import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import Decimal from 'decimal.js';
-import { SputnikService, yoktoNear } from 'services/SputnikService';
+import { SputnikService } from 'services/SputnikService';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+
+import { getTokenDivider } from 'utils/getTokenDivider';
+import { useCustomTokensContext } from 'context/CustomTokensContext';
+
 import styles from './request-payout-popup.module.scss';
 
 export interface RequestPayoutPopupProps {
   type: 'send' | 'request';
   isOpen: boolean;
-  onClose: (proposalId?: string) => void;
+  onClose: (created?: boolean) => void;
 }
 
 export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
@@ -24,8 +32,14 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
   onClose
 }) => {
   const router = useRouter();
+  const { tokens, fetchAndSetTokens } = useCustomTokensContext();
+
   const daoId = router.query.dao as string;
   const currentDao = useDao(daoId);
+
+  useMount(() => {
+    fetchAndSetTokens();
+  });
 
   const handleSubmit = useCallback(
     async (data: IRequestPayoutForm) => {
@@ -37,21 +51,20 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
           bond: currentDao.policy.proposalBond,
           data: {
             token_id:
-              data.token === 'Fungible Token' && data.tokenAddress
+              data.token === FUNGIBLE_TOKEN && data.tokenAddress
                 ? data.tokenAddress
                 : '',
             receiver_id: data.recipient,
-            amount: new Decimal(data.amount).mul(yoktoNear).toFixed()
+            amount: new Decimal(data.amount)
+              .mul(getTokenDivider(tokens, data.tokenAddress))
+              .toFixed()
           }
         });
 
-        onClose();
-
-        // Reload page to force call of the getServerSideProps of page
-        router.replace(router.asPath);
+        onClose(true);
       }
     },
-    [router, onClose, currentDao]
+    [tokens, onClose, currentDao]
   );
 
   return (

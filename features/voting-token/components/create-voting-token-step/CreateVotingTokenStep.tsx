@@ -7,7 +7,7 @@ import { WizardStepProps } from 'features/voting-token/components/voting-token-w
 import { useWizardContext } from 'features/voting-token/components/voting-token-wizard/helpers';
 import { UploadAvatarInput } from 'features/voting-token/components/upload-avatar-input';
 import { Button } from 'components/button/Button';
-import { Input } from 'components/input/Input';
+import { Input } from 'components/inputs/input/Input';
 
 import styles from './create-voting-token-step.module.scss';
 

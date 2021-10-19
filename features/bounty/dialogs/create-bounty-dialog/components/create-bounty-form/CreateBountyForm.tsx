@@ -3,15 +3,15 @@ import cn from 'classnames';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Input } from 'components/input/Input';
+import { Input } from 'components/inputs/input/Input';
 import { Button } from 'components/button/Button';
-import { TextArea } from 'components/textarea/TextArea';
-import { Select } from 'components/select/Select';
+import { TextArea } from 'components/inputs/textarea/TextArea';
+import { Select } from 'components/inputs/select/Select';
 
+import { FUNGIBLE_TOKEN, Token } from 'features/types';
+import { DeadlineUnit } from 'components/cards/bounty-card/types';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { CreateBountyInput } from 'features/bounty/dialogs/create-bounty-dialog/types';
-import { DeadlineUnit } from 'components/cards/bounty-card/types';
-import { Token } from 'features/types';
 
 import { VoteDetails } from 'components/vote-details';
 import { schema, tokenOptions, deadlineUnitOptions } from './helpers';
@@ -58,7 +58,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
           })
         }
       />
-      {selectedToken === ('Fungible Token' as Token) && (
+      {selectedToken === FUNGIBLE_TOKEN && (
         <Input
           size="block"
           isValid={touchedFields.tokenAddress && !errors.tokenAddress?.message}

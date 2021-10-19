@@ -1,15 +1,11 @@
 import { nanoid } from 'nanoid';
-import {
-  DaoDTO,
-  mapDaoDTOListToDaoList
-} from 'services/SputnikService/mappers/dao';
-import { SearchResultsData } from 'types/search';
-import {
-  mapProposalDTOListToProposalList,
-  ProposalDTO
-} from 'services/SputnikService/mappers/proposal';
+
 import { DAO, Member } from 'types/dao';
 import { Proposal } from 'types/proposal';
+import { SearchResultsData } from 'types/search';
+
+import { DaoDTO, mapDaoDTOListToDaoList } from './dao';
+import { mapProposalDTOListToProposalList, ProposalDTO } from './proposal';
 
 type MemberDTO = {
   id: string;

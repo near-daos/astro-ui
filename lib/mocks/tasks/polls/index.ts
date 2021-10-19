@@ -16,7 +16,8 @@ const generatePoll = (
   dislikes: number,
   liked: boolean,
   disliked: boolean,
-  children: ReactNode
+  children: ReactNode,
+  transaction: string
 ) => ({
   id: nanoid(),
   type: 'Poll' as ProposalType,
@@ -28,6 +29,7 @@ const generatePoll = (
   liked,
   disliked,
   children,
+  transaction,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onLike: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -37,6 +39,7 @@ const generatePoll = (
   votePeriodEnd: '',
   daoDetails: {
     name: 'my-awesome-dao',
+    displayName: 'My Awesome DAO',
     logo: ''
   },
   proposalId: 1,
@@ -67,13 +70,15 @@ const generatePolls = () => {
     );
     const liked = myVotes[likes % 2];
     const disliked = liked ? false : myVotes[dislikes % 2];
+    const transaction = '';
     const pollsItem: ProposalCardProps = generatePoll(
       status,
       likes,
       dislikes,
       liked,
       disliked,
-      pollTextNode
+      pollTextNode,
+      transaction
     );
 
     polls.push(pollsItem);

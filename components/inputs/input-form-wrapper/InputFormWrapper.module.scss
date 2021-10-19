@@ -1,0 +1,16 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.error {
+  @extend %caption1;
+  color: var(--color-error-70);
+  margin-top: 8px;
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
+}

@@ -27,6 +27,7 @@ export type Member = {
 
 export type DAO = {
   id: string;
+  txHash: string;
   name: string;
   description: string;
   members: number;

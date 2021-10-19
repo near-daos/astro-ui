@@ -9,6 +9,7 @@ import { IconButton } from 'components/button/IconButton';
 
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 import { composeProperLinkUrl } from 'helpers/composeProperLinkUrl';
+import { ExplorerLink } from 'components/explorer-link';
 
 import styles from './dao-details.module.scss';
 
@@ -19,6 +20,7 @@ export interface DaoDetailsProps {
   subtitle: string;
   createdAt: string;
   links: string[];
+  transaction?: string;
   more?: {
     label: string;
     link: string;
@@ -32,6 +34,7 @@ export const DaoDetails: VFC<DaoDetailsProps> = ({
   subtitle,
   description,
   links,
+  transaction,
   flag,
   more,
   sendFunds,
@@ -54,6 +57,7 @@ export const DaoDetails: VFC<DaoDetailsProps> = ({
   return (
     <>
       <div className={styles.root} ref={ref}>
+        {transaction && <ExplorerLink transaction={transaction} isAbsolute />}
         <h1>
           {more && (
             <Link href={more.link}>

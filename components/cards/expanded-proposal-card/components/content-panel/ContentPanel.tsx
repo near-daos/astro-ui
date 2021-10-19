@@ -14,8 +14,8 @@ import { VoteDetails } from 'components/vote-details';
 import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card/components/proposed-changes-renderer';
 import { DAO } from 'types/dao';
 import { getScope } from 'components/cards/expanded-proposal-card/helpers';
-import tempFlag from 'stories/dao-home/assets/flag.png';
 import { CopyButton } from 'features/copy-button';
+import { ExplorerLink } from 'components/explorer-link';
 
 import styles from './content-panel.module.scss';
 
@@ -26,6 +26,7 @@ interface ContentPanelProps {
   link: string;
   linkTitle: string;
   children: ReactNode;
+  transaction: string;
   likes: number;
   dislikes: number;
   liked: boolean;
@@ -49,6 +50,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
   daoId,
   title,
   children,
+  transaction,
   likes,
   dislikes,
   liked,
@@ -64,7 +66,8 @@ export const ContentPanel: FC<ContentPanelProps> = ({
   daoData,
   permissions
 }) => {
-  const flag = (tempFlag as StaticImageData).src;
+  const flag = daoDetails.logo;
+  const daoTitle = daoDetails.displayName || daoDetails.name;
 
   return (
     <div className={styles.root}>
@@ -79,7 +82,8 @@ export const ContentPanel: FC<ContentPanelProps> = ({
               style={{ backgroundImage: `url(${flag})` }}
             />
             <div className={styles.left}>
-              <Typography.Title size={3}>{daoDetails.name}</Typography.Title>
+              <Typography.Title size={3}>{daoTitle}</Typography.Title>
+              <ExplorerLink transaction={transaction} />
             </div>
             <div className={styles.right}>
               {/* <Icon name="buttonBookmark" className={styles.icon} /> */}

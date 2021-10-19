@@ -11,7 +11,7 @@ import {
   fromBase64ToMetadata,
   getLogoUrl,
   mapDaoDTOtoDao
-} from 'services/SputnikService/mappers/dao';
+} from 'services/sputnik/mappers/dao';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { parseISO } from 'date-fns';
 
@@ -124,6 +124,7 @@ export const mapProposalDTOToProposal = (
     dao: mapDaoDTOtoDao(proposalDTO.dao),
     daoDetails: {
       name: proposalDTO.dao.config.name,
+      displayName: meta?.displayName || '',
       logo:
         meta && meta.flag ? getLogoUrl(meta.flag) : getLogoUrl('default.png')
     }

@@ -1,0 +1,11 @@
+.root {
+  align-items: center;
+  color: var(--color-primary);
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+
+  &:hover {
+    background-color: var(--color-neutral-10);
+  }
+}

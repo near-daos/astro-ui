@@ -36,6 +36,8 @@ const VotingPolicyPage: FC = () => {
   const daoId = router.query.dao as string;
   const dao = useDao(daoId);
 
+  const accountId = SputnikService.getAccountId();
+
   const [data, setData] = useState<VotingPolicyPageInitialData | null>(null);
 
   useEffect(() => {
@@ -69,6 +71,14 @@ const VotingPolicyPage: FC = () => {
     }
   }, [dao, data]);
 
+  const onChangeButtonClick = useCallback(() => {
+    if (accountId) {
+      setViewMode(false);
+    } else {
+      SputnikService.login();
+    }
+  }, [accountId]);
+
   if (!data || !dao) {
     return null;
   }
@@ -81,8 +91,8 @@ const VotingPolicyPage: FC = () => {
           <Button
             className={styles.changeButton}
             size="small"
-            variant="secondary"
-            onClick={() => setViewMode(false)}
+            variant="black"
+            onClick={onChangeButtonClick}
           >
             Change
           </Button>
@@ -109,6 +119,7 @@ const VotingPolicyPage: FC = () => {
             );
           })}
         </div>
+        <div className={styles.separator} />
         <div className={styles.policyWrapper}>
           <div className={styles.policyLabel}>Voting policy default</div>
           {viewMode ? (

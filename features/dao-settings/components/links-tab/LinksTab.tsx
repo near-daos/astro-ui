@@ -3,7 +3,7 @@ import { Button } from 'components/button/Button';
 import { IconButton } from 'components/button/IconButton';
 
 import { Icon } from 'components/Icon';
-import { Input } from 'components/input/Input';
+import { Input } from 'components/inputs/input/Input';
 import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 import { nanoid } from 'nanoid';
@@ -17,9 +17,10 @@ import { DaoConfig } from 'types/proposal';
 import {
   DaoMetadata,
   fromMetadataToBase64
-} from 'services/SputnikService/mappers/dao';
+} from 'services/sputnik/mappers/dao';
 import { SputnikService } from 'services/SputnikService';
 import { getChangeConfigProposal } from 'features/dao-settings/helpers';
+import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
 import styles from './links-tab.module.scss';
 
 type ExternalLink = {
@@ -132,60 +133,66 @@ const LinksTab: FC<LinksTabProps> = ({
   return (
     <>
       <FormProvider {...methods}>
-        <ProposalBanner
-          scope="config"
-          title="Links"
-          form="links"
-          disable={!isValid || !isDirty}
-          onEdit={setViewMode}
-          viewMode={viewMode}
-          onCancel={onCancel}
-        />
+        {!viewMode && (
+          <ProposalBanner
+            scope="config"
+            title="Links"
+            form="links"
+            disable={!isValid || !isDirty}
+            onEdit={setViewMode}
+            viewMode={viewMode}
+            onCancel={onCancel}
+          />
+        )}
       </FormProvider>
+
       <form
         id="links"
         onSubmit={handleSubmit(onSubmit)}
         className={styles.root}
       >
+        <div className={styles.label}>Links</div>
         <div className={styles.row}>
-          <div className={styles.label}>Links</div>
+          <div>
+            {viewMode
+              ? links.map(item => {
+                  const icon = getSocialLinkIcon(item);
+
+                  return (
+                    <div key={item}>
+                      <Icon name={icon} className={styles.icon} />
+                      <span>{item}</span>
+                    </div>
+                  );
+                })
+              : fields.map((field, index) => {
+                  const currentUrl = watch(`links.${index}.url`);
+                  const icon = getSocialLinkIcon(currentUrl);
+
+                  return (
+                    <div className={styles.row} key={field.id}>
+                      <Icon name={icon} className={styles.icon} />
+
+                      <Input
+                        {...register(`links.${index}.url`)}
+                        isValid={
+                          touchedFields?.links?.[index]?.url &&
+                          !errors?.links?.[index]?.url?.message
+                        }
+                        size="medium"
+                        textAlign="left"
+                      />
+                      <IconButton
+                        onClick={() => remove(index)}
+                        icon="buttonDelete"
+                        className={styles.delete}
+                      />
+                    </div>
+                  );
+                })}
+          </div>
+          {viewMode && <EditButton onClick={setViewMode} />}
         </div>
-        {viewMode
-          ? links.map(item => {
-              const icon = getSocialLinkIcon(item);
-
-              return (
-                <div className={styles.row} key={item}>
-                  <Icon name={icon} className={styles.icon} />
-                  <span>{item}</span>
-                </div>
-              );
-            })
-          : fields.map((field, index) => {
-              const currentUrl = watch(`links.${index}.url`);
-              const icon = getSocialLinkIcon(currentUrl);
-
-              return (
-                <div className={styles.row} key={field.id}>
-                  <Icon name={icon} className={styles.icon} />
-
-                  <Input
-                    {...register(`links.${index}.url`)}
-                    isValid={
-                      touchedFields?.links?.[index]?.url &&
-                      !errors?.links?.[index]?.url?.message
-                    }
-                    size="medium"
-                    textAlign="left"
-                  />
-                  <IconButton
-                    onClick={() => remove(index)}
-                    icon="buttonDelete"
-                    className={styles.delete}
-                  />
-                </div>
-              );
-            })}
 
         {!viewMode && (
           <div className={styles.row}>

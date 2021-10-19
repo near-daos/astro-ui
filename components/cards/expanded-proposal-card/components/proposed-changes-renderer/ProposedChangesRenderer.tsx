@@ -18,6 +18,8 @@ export const ProposedChangesRenderer: FC<ProposedChangesRendererProps> = ({
 }) => {
   const [data] = useState(dao ? getInitialData(dao) : undefined);
 
+  if (!data) return null;
+
   const kind = (proposal?.kind as unknown) as {
     type: ProposalType.ChangePolicy;
     policy: {
@@ -27,10 +29,11 @@ export const ProposedChangesRenderer: FC<ProposedChangesRendererProps> = ({
   const newPolicy = kind.policy.defaultVotePolicy;
 
   const voteBy = newPolicy.weightKind === 'RoleWeight' ? 'Person' : 'Token';
-  const amount = (newPolicy.threshold[0] / newPolicy.threshold[1]) * 100;
+  const amount =
+    newPolicy?.threshold && Array.isArray(newPolicy?.threshold)
+      ? (newPolicy.threshold[0] / newPolicy.threshold[1]) * 100
+      : '';
   const threshold = '% of group';
-
-  if (!data) return null;
 
   return (
     <div>

@@ -10,8 +10,33 @@
   }
 }
 
+.separator {
+  background-color: var(--color-neutral-20);
+  height: 1px;
+  margin: 40px 0 32px;
+  width: 100%;
+}
+
 .row {
   margin-bottom: 24px;
+}
+
+.panel {
+  background-color: var(--color-neutral-10);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  display: block;
+  margin-top: 32px;
+  padding: 24px;
+  width: fit-content;
+
+  > p {
+    margin-bottom: 0;
+  }
+}
+
+.inline {
+  display: flex;
 }
 
 .label {

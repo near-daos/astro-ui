@@ -7,8 +7,8 @@ import {
 } from 'features/member-home/types';
 import { Proposal } from 'types/proposal';
 import { Bounty } from 'components/cards/bounty-card/types';
-import { mapBountyResponseToBounty } from 'services/SputnikService/mappers/bounty';
-
+import { mapBountyResponseToBounty } from 'services/sputnik/mappers';
+import { filterProposalsByStatus } from 'features/feed/helpers';
 import { CookieService } from 'services/CookieService';
 import { SputnikService } from 'services/SputnikService';
 
@@ -73,11 +73,23 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     );
   }
 
+  // Additional filtering for expired proposals
+  if (filter.status === 'Active proposals') {
+    proposals = proposals.filter(item => item.status === 'InProgress');
+  } else if (filter.status === 'Failed') {
+    const failedStatuses = ['Rejected', 'Expired', 'Moved'];
+
+    proposals = proposals.filter(item => failedStatuses.includes(item.status));
+  }
+
+  const apiTokens = (await SputnikService.getAllTokens()) || [];
+
   return {
     props: {
-      proposals,
+      proposals: filterProposalsByStatus(filter.status, proposals),
       bounties,
-      filter
+      filter,
+      apiTokens
     }
   };
 };

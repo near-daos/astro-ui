@@ -24,6 +24,7 @@ export interface ExpandedProposalCardProps {
   status: ProposalStatus;
   type: ProposalType;
   title: string;
+  transaction: string;
   name: string;
   text: string;
   link: string;
@@ -52,6 +53,7 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
   status,
   type,
   title,
+  transaction,
   name,
   text,
   link,
@@ -149,6 +151,7 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
         title={title}
         name={name}
         text={text}
+        transaction={transaction}
         link={link}
         linkTitle={linkTitle}
         likes={likes}

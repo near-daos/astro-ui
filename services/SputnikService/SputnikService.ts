@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { RequestQueryBuilder } from '@nestjsx/crud-request';
+import {
+  RequestQueryBuilder,
+  SConditionAND,
+  SFields
+} from '@nestjsx/crud-request';
 import PromisePool from '@supercharge/promise-pool';
 import Big from 'big.js';
 import { NearConfig, nearConfig } from 'config';
@@ -10,24 +14,19 @@ import { CookieService } from 'services/CookieService';
 import { HttpService, httpService } from 'services/HttpService';
 import {
   DaoDTO,
+  ProposalDTO,
+  SearchResponse,
   GetDAOsResponse,
-  mapDaoDTOListToDaoList,
-  mapDaoDTOtoDao
-} from 'services/SputnikService/mappers/dao';
-import {
   GetProposalsResponse,
-  mapProposalDTOToProposal,
-  ProposalDTO
-} from 'services/SputnikService/mappers/proposal';
-import { mapTokensDTOToTokens } from 'services/SputnikService/mappers/token';
-import {
-  mapSearchResultsDTOToDataObject,
-  SearchResponse
-} from 'services/SputnikService/mappers/search-results';
-import {
   GetTransactionsResponse,
-  mapTransactionDTOToTransaction
-} from 'services/SputnikService/mappers/transaction';
+  mapDaoDTOtoDao,
+  mapTokensDTOToTokens,
+  mapDaoDTOListToDaoList,
+  mapProposalDTOToProposal,
+  mapTransactionDTOToTransaction,
+  mapSearchResultsDTOToDataObject
+} from 'services/sputnik/mappers';
+
 import { BountiesResponse, BountyResponse } from 'types/bounties';
 
 import { PaginationResponse } from 'types/api';
@@ -263,7 +262,7 @@ class SputnikService {
     sort?: string;
     filter?: string;
     createdBy?: string;
-  }): Promise<DAO[]> {
+  }): Promise<{ data: DAO[]; total: number }> {
     const offset = params?.offset ?? 0;
     const limit = params?.limit ?? 500;
     const sort = params?.sort ?? 'createdAt,DESC';
@@ -278,7 +277,10 @@ class SputnikService {
       }
     });
 
-    return mapDaoDTOListToDaoList(data.data);
+    return {
+      data: mapDaoDTOListToDaoList(data.data),
+      total: data.total
+    };
   }
 
   public async getDaoById(daoId: string): Promise<DAO | null> {
@@ -408,30 +410,35 @@ class SputnikService {
 
   public async getFilteredProposals(
     filter: {
-      daoViewFilter: string | null;
-      daoFilter: 'All DAOs' | 'My DAOs' | 'Following DAOs' | null;
-      proposalFilter: ProposalFilterOptions;
-      status: ProposalFilterStatusOptions;
+      daoViewFilter?: string | null;
+      daoFilter?: 'All DAOs' | 'My DAOs' | 'Following DAOs' | null;
+      proposalFilter?: ProposalFilterOptions;
+      status?: ProposalFilterStatusOptions;
+      daosIdsFilter?: string[];
     },
-    accountId: string
+    accountId?: string
   ): Promise<Proposal[]> {
     const queryString = RequestQueryBuilder.create();
 
+    const search: SFields | SConditionAND = {
+      $and: []
+    };
+
     // specific DAO
     if (filter.daoViewFilter) {
-      queryString.setFilter({
-        field: 'daoId',
-        operator: '$eq',
-        value: `${filter.daoViewFilter}.${nearConfig.contractName}`
+      search.$and?.push({
+        daoId: {
+          $eq: `${filter.daoViewFilter}.${nearConfig.contractName}`
+        }
       });
     } else if (filter.daoFilter === 'My DAOs' && accountId) {
       const accountDaos = await this.getAccountDaos(accountId);
 
       if (accountDaos.length) {
-        queryString.setFilter({
-          field: 'daoId',
-          operator: '$in',
-          value: accountDaos.map(item => item.id)
+        search.$and?.push({
+          daoId: {
+            $in: accountDaos.map(item => item.id)
+          }
         });
       } else {
         return Promise.resolve([]);
@@ -440,60 +447,87 @@ class SputnikService {
 
     // Statuses
     if (filter.status && filter.status === 'Active proposals') {
-      queryString.setFilter({
-        field: 'status',
-        operator: '$eq',
-        value: 'InProgress'
+      // Fetch all InProgress items and then do additional filtering for Expired
+      search.$and?.push({
+        status: {
+          $eq: 'InProgress'
+        }
       });
     } else if (filter.status && filter.status === 'Approved') {
-      queryString.setFilter({
-        field: 'status',
-        operator: '$eq',
-        value: 'Approved'
+      search.$and?.push({
+        status: {
+          $eq: 'Approved'
+        }
       });
     } else if (filter.status && filter.status === 'Failed') {
-      queryString.setFilter({
-        field: 'status',
-        operator: '$in',
-        value: ['Rejected', 'Expired', 'Moved']
+      // Fetch failed including InProgress items and then do additional filtering for Expired
+      search.$and?.push({
+        status: {
+          $in: ['Rejected', 'Expired', 'Moved', 'InProgress']
+        }
       });
     }
 
     // Kinds
     if (filter.proposalFilter === 'Polls') {
-      queryString.setFilter({
-        field: 'kind',
-        operator: '$cont',
-        value: ProposalType.Vote
+      // TODO - how to distinguish between ChangePolicy and Vote?
+      search.$and?.push({
+        kind: {
+          $cont: ProposalType.Vote
+        }
       });
     }
 
     if (filter.proposalFilter === 'Governance') {
-      queryString.setFilter({
-        field: 'kind',
-        operator: '$cont',
-        value: ProposalType.ChangePolicy
+      search.$and?.push({
+        $or: [
+          {
+            kind: {
+              $cont: ProposalType.ChangeConfig
+            }
+          },
+          {
+            kind: {
+              $cont: ProposalType.ChangePolicy
+            }
+          }
+        ]
       });
     }
 
     if (filter.proposalFilter === 'Financial') {
-      queryString.setFilter({
-        field: 'kind',
-        operator: '$cont',
-        value: ProposalType.Transfer
+      search.$and?.push({
+        kind: {
+          $cont: ProposalType.Transfer
+        }
       });
     }
 
     if (filter.proposalFilter === 'Groups') {
-      queryString.setFilter({
-        field: 'kind',
-        operator: '$cont',
-        value: ProposalType.AddMemberToRole
+      search.$and?.push({
+        $or: [
+          {
+            kind: {
+              $cont: ProposalType.AddMemberToRole
+            }
+          },
+          {
+            kind: {
+              $cont: ProposalType.RemoveMemberFromRole
+            }
+          }
+        ]
       });
-      queryString.setOr({
-        field: 'kind',
-        operator: '$cont',
-        value: ProposalType.RemoveMemberFromRole
+    }
+
+    queryString.search(search);
+
+    // DaosIds
+    if (filter.daosIdsFilter) {
+      queryString.setFilter({
+        field: 'daoId',
+        operator: '$in',
+        value: filter.daosIdsFilter
       });
     }
 
@@ -663,6 +697,12 @@ class SputnikService {
     return data.data;
   }
 
+  public async getAllTokens(): Promise<TokenType[]> {
+    const { data } = await this.httpService.get<TokenType[]>('/tokens');
+
+    return mapTokensDTOToTokens(data);
+  }
+
   public async getTokens(params: {
     dao: string;
     offset?: number;
@@ -683,6 +723,18 @@ class SputnikService {
     });
 
     return mapTokensDTOToTokens(data.data);
+  }
+
+  public async nearAccountExist(accountId: string): Promise<boolean> {
+    const account = await this.near.account(accountId);
+
+    try {
+      await account.state();
+
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
 

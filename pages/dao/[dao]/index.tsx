@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import isEmpty from 'lodash/isEmpty';
 
 import { DaoInfoCard } from 'components/cards/dao-info-card/DaoInfoCard';
@@ -26,46 +26,58 @@ import { VOTE_BY_PERIOD } from 'constants/votingConstants';
 import { Proposal } from 'types/proposal';
 
 import { useAuthContext } from 'context/AuthContext';
+import { useCustomTokensContext } from 'context/CustomTokensContext';
 import { useNearPrice } from 'hooks/useNearPrice';
 
 import { DAO } from 'types/dao';
+import { TokenType } from 'types/token';
 
 import styles from './dao-home-page.module.scss';
 
 interface DaoHomeProps {
   dao: DAO;
   proposals: Proposal[];
+  apiTokens: TokenType[];
 }
 
-const DAOHome: NextPage<DaoHomeProps> = ({
-  dao: initialDao,
-  proposals: initialProposals
-}) => {
+const DAOHome: NextPage<DaoHomeProps> = ({ dao, proposals, apiTokens }) => {
   const router = useRouter();
   const { proposal: proposalId } = router.query;
 
   const { accountId } = useAuthContext();
   const nearPrice = useNearPrice();
 
-  const [dao] = useState(initialDao);
-  const [proposals, setProposals] = useState(initialProposals);
-
   const [showCreateProposalModal] = useModal(CreateProposalPopup);
 
-  const handleClick = useCallback(async () => {
-    await showCreateProposalModal();
-    // TODO: refactor
-    SputnikService.getProposals(dao.id).then(setProposals);
-  }, [showCreateProposalModal, dao.id]);
+  const { setTokens } = useCustomTokensContext();
 
   useEffect(() => {
-    // TODO: refactor
-    SputnikService.getProposals(dao.id).then(setProposals);
-  }, [dao.id]);
+    setTokens(apiTokens);
+  }, [apiTokens, setTokens]);
+
+  const refreshData = useCallback(() => {
+    router.replace(router.asPath);
+  }, [router]);
+
+  const handleClick = useCallback(async () => {
+    const [isCreated] = await showCreateProposalModal();
+
+    if (isCreated) {
+      refreshData();
+    }
+  }, [refreshData, showCreateProposalModal]);
 
   function renderDaoDetails() {
     const daoDetails = getDaoDetailsFromDao(dao);
-    const { title, description, flag, subtitle, createdAt, links } = daoDetails;
+    const {
+      title,
+      description,
+      flag,
+      txHash,
+      subtitle,
+      createdAt,
+      links
+    } = daoDetails;
 
     return (
       <div className={styles.daoDetails}>
@@ -76,6 +88,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
           subtitle={subtitle}
           createdAt={createdAt}
           links={links}
+          transaction={txHash}
         />
       </div>
     );
@@ -185,12 +198,14 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
   }
 
+  const apiTokens = (await SputnikService.getAllTokens()) || [];
   const proposals = await SputnikService.getProposals(daoId as string);
 
   return {
     props: {
       dao,
-      proposals
+      proposals,
+      apiTokens
     }
   };
 };

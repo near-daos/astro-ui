@@ -1,19 +1,14 @@
 import React, { FC, useCallback, useState } from 'react';
-
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { DAO } from 'types/dao';
 
 import DaoCard from 'components/cards/dao-card';
 import { Button } from 'components/button/Button';
 import { CREATE_DAO_URL } from 'constants/routing';
 import { Dropdown } from 'components/dropdown/Dropdown';
-
-import { SputnikService } from 'services/SputnikService';
+import { getDaosList } from 'features/daos/helpers';
 
 import { useNearPrice } from 'hooks/useNearPrice';
-import {
-  useAllProposals,
-  getActiveProposalsCountByDao
-} from 'hooks/useAllProposals';
 
 import { useRouter } from 'next/router';
 import { useAuthContext } from 'context/AuthContext';
@@ -47,25 +42,44 @@ const sortOptions = [
 
 interface BrowseAllDaosProps {
   data: DAO[];
+  total: number;
 }
 
-const AllDaosPage: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
+const AllDaosPage: FC<BrowseAllDaosProps> = ({
+  data: initialData = [],
+  total: totalItemsAvailable
+}) => {
   const router = useRouter();
   const nearPrice = useNearPrice();
   const { accountId, login } = useAuthContext();
 
   const activeSort = (router.query.sort as string) ?? sortOptions[1].value;
 
-  const proposals = useAllProposals();
-  const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
-
   const [data, setData] = useState(initialData);
+  const [hasMore, setHasMore] = useState(
+    initialData.length !== totalItemsAvailable
+  );
+
+  const getMoreDaos = async () => {
+    const { daos: newData, total } = await getDaosList({
+      offset: data.length,
+      limit: 20,
+      sort: (router.query.sort as string) ?? ''
+    });
+
+    if (data.length + newData.length === total) {
+      setHasMore(false);
+    }
+
+    setData(existingData => [...existingData, ...newData]);
+  };
 
   const handleSort = useCallback(
-    value => {
+    async value => {
       router.push(`?sort=${value}`, undefined, { shallow: true });
 
       if (value === 'lastProposalId,DESC') {
+        // todo - this is not working , we have to decide how to get most active
         const sorted = data.sort((a, b) => {
           if (a.proposals > b.proposals) return -1;
 
@@ -76,19 +90,17 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
 
         setData(sorted);
       } else {
-        SputnikService.getDaoList({ sort: `${value}` })
-          .then(res => {
-            const sorted = res.map(item => ({
-              ...item,
-              proposals: activeProposalsByDao[item.id] ?? 0
-            }));
+        const res = await getDaosList({
+          sort: `${value}`,
+          offset: 0,
+          limit: 20
+        });
 
-            setData(sorted);
-          })
-          .catch(e => console.error(e));
+        setHasMore(res.daos.length !== res.total);
+        setData(res.daos);
       }
     },
-    [activeProposalsByDao, data, router]
+    [data, router]
   );
 
   const handleCreateDao = useCallback(
@@ -118,23 +130,35 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({ data: initialData = [] }) => {
           onChange={handleSort}
         />
       </div>
-      <div className={styles.content}>
-        {data.map(item => {
-          return (
-            <DaoCard
-              dao={item}
-              key={item.id}
-              flag={item.logo}
-              name={item.name}
-              displayName={item.displayName}
-              nearPrice={nearPrice}
-              daoAccountName={item.id}
-              description={item.description}
-              members={item.members}
-            />
-          );
-        })}
-      </div>
+      <InfiniteScroll
+        dataLength={data.length}
+        next={getMoreDaos}
+        hasMore={hasMore}
+        loader={<h4 className={styles.loading}>Loading...</h4>}
+        endMessage={
+          <p className={styles.loading}>
+            <b>You have seen it all</b>
+          </p>
+        }
+      >
+        <div className={styles.content}>
+          {data.map(item => {
+            return (
+              <DaoCard
+                dao={item}
+                key={item.id}
+                flag={item.logo}
+                name={item.name}
+                displayName={item.displayName}
+                nearPrice={nearPrice}
+                daoAccountName={item.id}
+                description={item.description}
+                members={item.members}
+              />
+            );
+          })}
+        </div>
+      </InfiniteScroll>
     </div>
   );
 };

@@ -1,20 +1,24 @@
-import * as yup from 'yup';
 import React from 'react';
+import * as yup from 'yup';
+import cn from 'classnames';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import cn from 'classnames';
 
-import { Input } from 'components/input/Input';
-import { Select } from 'components/select/Select';
-import { TextArea } from 'components/textarea/TextArea';
+import { Input } from 'components/inputs/input/Input';
+import { Select } from 'components/inputs/select/Select';
+import { TextArea } from 'components/inputs/textarea/TextArea';
 import { Button } from 'components/button/Button';
 import { VoteDetails } from 'components/vote-details';
+import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
+
+import { FUNGIBLE_TOKEN, Token } from 'features/types';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
-import { tokenOptions } from 'features/bounty/dialogs/create-bounty-dialog/components/create-bounty-form/helpers';
 import { CreatePayoutInput } from 'features/treasury/request-payout-popup/types';
-import { Token } from 'features/types';
+import { tokenOptions } from 'features/bounty/dialogs/create-bounty-dialog/components/create-bounty-form/helpers';
 
 import { useDeviceType } from 'helpers/media';
+
+import { SputnikService } from 'services/SputnikService';
 
 import styles from './request-payout-form.module.scss';
 
@@ -22,6 +26,7 @@ const schema = yup.object().shape({
   token: yup.string().required(),
   amount: yup
     .number()
+    .typeError('Must be a valid number.')
     .positive()
     .required()
     .test(
@@ -29,7 +34,24 @@ const schema = yup.object().shape({
       'Only numbers with one optional decimal place please',
       value => /^\d*(?:\.\d)?$/.test(`${value}`)
     ),
-  recipient: yup.string().required(),
+  tokenAddress: yup.string().when('token', (token, yupSchema) => {
+    if (token === FUNGIBLE_TOKEN) {
+      return yupSchema.test(
+        'notValidNearAccount',
+        'Only valid near accounts are allowed',
+        (value?: string | null) => SputnikService.nearAccountExist(value || '')
+      );
+    }
+
+    return yupSchema.test('', '', () => true);
+  }),
+  recipient: yup
+    .string()
+    .test(
+      'notValidNearAccount',
+      'Only valid near accounts are allowed',
+      value => SputnikService.nearAccountExist(value || '')
+    ),
   detail: yup.string().required(),
   externalUrl: yup.string()
 });
@@ -71,74 +93,105 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
 
   const selectedToken = watch('token');
 
+  function isFieldValid(name: keyof IRequestPayoutForm) {
+    return touchedFields[name] && !errors[name]?.message;
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.root} noValidate>
-      <Select
-        defaultValue={initialValues?.token}
-        className={cn(styles.token)}
-        placeholder=""
-        size="block"
-        label="Token"
-        options={tokenOptions}
-        {...register('token')}
-        onChange={v =>
-          setValue('token', (v || 'NEAR') as Token, {
-            shouldDirty: true
-          })
+      <InputFormWrapper
+        errors={errors}
+        className={styles.token}
+        component={
+          <Select
+            defaultValue={initialValues?.token}
+            placeholder=""
+            size="block"
+            label="Token"
+            options={tokenOptions}
+            {...register('token')}
+            onChange={v =>
+              setValue('token', (v || 'NEAR') as Token, {
+                shouldDirty: true
+              })
+            }
+          />
         }
       />
-      {selectedToken === ('Fungible Token' as Token) && (
-        <Input
-          size="block"
-          isValid={touchedFields.tokenAddress && !errors.tokenAddress?.message}
-          textAlign="left"
-          {...register('tokenAddress')}
-          label="Token address"
-          className={cn(styles.input, styles.tokenAddress)}
+      <InputFormWrapper
+        errors={errors}
+        className={styles.amount}
+        component={
+          <Input
+            isValid={isFieldValid('amount')}
+            defaultValue={initialValues?.amount}
+            size="block"
+            textAlign="left"
+            type="number"
+            lang="en-US"
+            step="0.1"
+            min="0.1"
+            {...register('amount')}
+            label="Amount"
+            className={cn(styles.input, styles.amount)}
+          />
+        }
+      />
+      {selectedToken === FUNGIBLE_TOKEN && (
+        <InputFormWrapper
+          errors={errors}
+          className={styles.tokenAddress}
+          component={
+            <Input
+              size="block"
+              isValid={isFieldValid('tokenAddress')}
+              textAlign="left"
+              {...register('tokenAddress')}
+              label="Token address"
+              className={styles.input}
+            />
+          }
         />
       )}
-      <Input
-        isValid={touchedFields.amount && !errors.amount?.message}
-        defaultValue={initialValues?.amount}
-        size="block"
-        textAlign="left"
-        type="number"
-        lang="en-US"
-        step="0.1"
-        min="0.1"
-        {...register('amount')}
-        label="Amount"
-        className={cn(styles.input, styles.amount)}
+      <InputFormWrapper
+        errors={errors}
+        className={styles.recipient}
+        component={
+          <Input
+            defaultValue={initialValues?.recipient}
+            isValid={isFieldValid('recipient')}
+            size="block"
+            textAlign="left"
+            {...register('recipient')}
+            placeholder="NEAR account name"
+            label="Send to"
+            className={cn(styles.input)}
+          />
+        }
       />
-      <div className={styles.recipient}>
-        <Input
-          defaultValue={initialValues?.recipient}
-          isValid={touchedFields.recipient && !errors.recipient?.message}
-          size="block"
-          textAlign="left"
-          {...register('recipient')}
-          placeholder="NEAR account name"
-          label="Send to"
-          className={cn(styles.input)}
-        />
-      </div>
-      <div className={styles.detail}>
-        <TextArea
-          isValid={touchedFields.detail && !errors.detail?.message}
-          size="block"
-          defaultValue={initialValues?.payoutDetail}
-          textAlign="left"
-          resize="none"
-          placeholder="Sample text"
-          className={styles.textArea}
-          label="detail"
-          {...register('detail')}
-        />
-      </div>
+
+      <InputFormWrapper
+        errors={errors}
+        className={styles.detail}
+        component={
+          <TextArea
+            isValid={isFieldValid('detail')}
+            size="block"
+            defaultValue={initialValues?.payoutDetail}
+            textAlign="left"
+            resize="none"
+            placeholder="Sample text"
+            className={styles.textArea}
+            label="detail"
+            {...register('detail')}
+          />
+        }
+      />
+
       <Input
         size="block"
         defaultValue={initialValues?.externalUrl}
-        isValid={touchedFields.externalUrl && !errors.externalUrl?.message}
+        isValid={isFieldValid('externalUrl')}
         textAlign="left"
         {...register('externalUrl')}
         label="External URL"

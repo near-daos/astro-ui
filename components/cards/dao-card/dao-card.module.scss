@@ -32,7 +32,7 @@
   }
 
   .headerContent {
-    padding-right: 20px;
+    padding-right: 50px;
   }
 
   .urlCaption {
@@ -53,7 +53,7 @@
   .createProposal {
     @extend %title3;
     align-items: center;
-    background-color: var(--color-brand-green);
+    background-color: var(--color-neutral-30);
     border-radius: 0 0 $border-radius $border-radius;
     display: flex;
     height: 40px;

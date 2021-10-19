@@ -4,6 +4,7 @@ import { PolicyType } from 'types/policy';
 
 export type DaoDetails = {
   name: string;
+  displayName: string | undefined;
   logo: string;
 };
 

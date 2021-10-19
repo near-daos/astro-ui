@@ -4,7 +4,7 @@ import { NameAndPurposeTab } from 'features/dao-settings/components/name-and-pup
 import { DAO } from 'types/dao';
 import dynamic from 'next/dynamic';
 import React, { FC } from 'react';
-import { yoktoNear } from 'services/SputnikService';
+import { YOKTO_NEAR } from 'services/sputnik/constants';
 import { BondsAndDeadlines } from './components/bond-and-deadlines-tab';
 import LinksTab from './components/links-tab/LinksTab';
 
@@ -65,10 +65,10 @@ export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
         <BondsAndDeadlines
           accountName={dao.id}
           createProposalBond={new Decimal(dao.policy.proposalBond)
-            .div(yoktoNear)
+            .div(YOKTO_NEAR)
             .toNumber()}
           claimBountyBond={new Decimal(dao.policy.bountyBond)
-            .div(yoktoNear)
+            .div(YOKTO_NEAR)
             .toNumber()}
           proposalExpireTime={new Decimal(dao.policy.proposalPeriod)
             .div('3.6e12')

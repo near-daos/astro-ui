@@ -11,6 +11,12 @@
   justify-content: space-between;
   padding: 0 32px 0 0;
   width: 100%;
+
+  &.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
 }
 
 .mobileMenu {
@@ -42,6 +48,7 @@
 
 .signIn {
   justify-self: flex-end;
+
   .iconLogo {
     color: var(--color-white);
     height: 11px;

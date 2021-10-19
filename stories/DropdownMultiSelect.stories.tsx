@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/react';
 import {
   DropdownMultiSelect,
   DropdownMultiSelectProps
-} from 'components/select/DropdownMultiSelect';
+} from 'components/inputs/select/DropdownMultiSelect';
 import { Badge } from 'components/badge/Badge';
 
 export default {

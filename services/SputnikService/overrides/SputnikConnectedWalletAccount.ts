@@ -34,7 +34,7 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
 
     const walletConnection = this.walletConnection as SputnikWalletConnection;
 
-    const win = window.open(`${window.origin}/pending`, '_blank');
+    const win = window.open(`${window.origin}/callback/pending`, '_blank');
 
     const localKey = await this.connection.signer.getPublicKey(
       this.accountId,

@@ -1,7 +1,5 @@
 import { DAO } from 'types/dao';
-import { SputnikService } from 'services/SputnikService';
-import { getActiveProposalsCountByDao } from 'hooks/useAllProposals';
-
+import { getDaosList } from 'features/daos/helpers';
 import AllDaosPage from './AllDaosPage';
 
 interface GetDaoListQuery {
@@ -15,18 +13,18 @@ export async function getServerSideProps({
 }: {
   query: GetDaoListQuery;
 }): Promise<{
-  props: { data: DAO[] };
+  props: { data: DAO[]; total: number };
 }> {
-  const data = await SputnikService.getDaoList(query);
-  const proposals = await SputnikService.getProposals(undefined, 0, 500);
-  const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
+  const { daos: data, total } = await getDaosList({
+    offset: 0,
+    limit: 20,
+    sort: (query.sort as string) ?? ''
+  });
 
   return {
     props: {
-      data: data.map(item => ({
-        ...item,
-        proposals: activeProposalsByDao[item.id] ?? 0
-      }))
+      data,
+      total
     }
   };
 }

@@ -32,7 +32,7 @@ export class SputnikWalletConnection extends WalletConnection {
     newUrl.searchParams.set('contract_id', contractId);
     newUrl.searchParams.set('public_key', accessKey.getPublicKey().toString());
 
-    const win = window.open(`${window.origin}/pending`, '_blank');
+    const win = window.open(`${window.origin}/callback/pending`, '_blank');
 
     await this._keyStore.setKey(
       this._networkId,

@@ -1,5 +1,7 @@
 import * as yup from 'yup';
 
+import { Token, NEAR_TOKEN, FUNGIBLE_TOKEN } from 'features/types';
+
 export const schema = yup.object().shape({
   amount: yup
     .number()
@@ -30,13 +32,13 @@ export const deadlineUnitOptions = [
   }
 ];
 
-export const tokenOptions = [
+export const tokenOptions: { label: string; value: Token }[] = [
   {
-    value: 'NEAR',
-    label: 'NEAR'
+    label: 'NEAR',
+    value: NEAR_TOKEN
   },
   {
-    value: 'Fungible Token',
-    label: 'Fungible Token'
+    label: 'Fungible Token',
+    value: FUNGIBLE_TOKEN
   }
 ];

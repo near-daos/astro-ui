@@ -1,11 +1,14 @@
+import isEmpty from 'lodash/isEmpty';
+import ReactTooltip from 'react-tooltip';
+import { useMedia, useMount } from 'react-use';
+import { ListOnScrollProps, VariableSizeList } from 'react-window';
 import React, { CSSProperties, FC, useCallback, useRef, useState } from 'react';
-import { Bounty, BountyStatus } from 'components/cards/bounty-card/types';
+
 import { BountyCard } from 'components/cards/bounty-card';
 import { IconButton } from 'components/button/IconButton';
 import ScrollList from 'components/scroll-list/ScrollList';
-import { ListOnScrollProps, VariableSizeList } from 'react-window';
-import { useMedia } from 'react-use';
-import isEmpty from 'lodash/isEmpty';
+import { Bounty, BountyStatus } from 'components/cards/bounty-card/types';
+
 import { NoResultsView } from 'features/no-results-view';
 
 import styles from './bounties-list.module.scss';
@@ -22,6 +25,20 @@ export const BountiesList: FC<BountiesListProps> = ({
   const [showResetScroll, setShowResetScroll] = useState(false);
   const scrollListRef = useRef<VariableSizeList>(null);
   const isMobileOrTablet = useMedia('(max-width: 767px)');
+
+  const [mounted, setMounted] = useState(false);
+
+  useMount(() => {
+    setMounted(true);
+  });
+
+  function renderTooltip() {
+    if (mounted) {
+      return <ReactTooltip className={styles.tooltip} />;
+    }
+
+    return null;
+  }
 
   const handleScroll = useCallback(({ scrollOffset }: ListOnScrollProps) => {
     if (scrollOffset > 100) {
@@ -81,6 +98,7 @@ export const BountiesList: FC<BountiesListProps> = ({
           onClick={resetScroll}
         />
       ) : null}
+      {renderTooltip()}
     </div>
   );
 };

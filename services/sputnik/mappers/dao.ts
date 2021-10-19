@@ -5,8 +5,8 @@ import { DaoRole } from 'types/role';
 import { formatYoktoValue } from 'helpers/format';
 import { awsConfig } from 'config';
 import Decimal from 'decimal.js';
-import { CreateDaoParams } from 'services/SputnikService/types';
-import { yoktoNear } from '..';
+import { CreateDaoParams } from 'services/sputnik/types';
+import { YOKTO_NEAR } from 'services/sputnik/constants';
 
 export type DaoPolicy = {
   createdAt: string;
@@ -27,6 +27,7 @@ type DaoConfig = {
 
 export interface GetDAOsResponse {
   data: DaoDTO[];
+  total: number;
 }
 
 export type DaoDTO = {
@@ -106,6 +107,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
 
   return {
     id: daoDTO.id,
+    txHash: daoDTO.transactionHash,
     name: config?.name ?? '',
     description: config?.purpose ?? '',
     members: numberOfMembers,
@@ -131,20 +133,20 @@ export const mapCreateDaoParamsToContractArgs = (
 ): string => {
   const argsList = {
     purpose: params.purpose,
-    bond: new Decimal(params.bond).mul(yoktoNear).toFixed(),
+    bond: new Decimal(params.bond).mul(YOKTO_NEAR).toFixed(),
     vote_period: new Decimal(params.votePeriod).mul('3.6e12').toFixed(),
     grace_period: new Decimal(params.gracePeriod).mul('3.6e12').toFixed(),
     policy: {
       roles: params.policy.roles,
       default_vote_policy: params.policy.defaultVotePolicy,
       proposal_bond: new Decimal(params.policy.proposalBond)
-        .mul(yoktoNear)
+        .mul(YOKTO_NEAR)
         .toFixed(),
       proposal_period: new Decimal(params.policy.proposalPeriod)
         .mul('3.6e12')
         .toFixed(),
       bounty_bond: new Decimal(params.policy.bountyBond)
-        .mul(yoktoNear)
+        .mul(YOKTO_NEAR)
         .toFixed(),
       bounty_forgiveness_period: new Decimal(
         params.policy.bountyForgivenessPeriod

@@ -149,7 +149,10 @@ export const getInitialData = (
   return {
     policy: {
       voteBy: defaulPolicy.weightKind === 'RoleWeight' ? 'Person' : 'Token',
-      amount: (defaulPolicy.ratio[0] / defaulPolicy.ratio[1]) * 100,
+      amount:
+        defaulPolicy?.ratio && defaulPolicy.ratio.length
+          ? (defaulPolicy.ratio[0] / defaulPolicy.ratio[1]) * 100
+          : 0,
       threshold: defaulPolicy.kind === 'Ratio' ? '% of group' : 'persons'
     },
     daoSettings: {

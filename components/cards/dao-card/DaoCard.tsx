@@ -1,6 +1,9 @@
-import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import TextTruncate from 'react-text-truncate';
+import React, { MouseEvent, KeyboardEvent } from 'react';
+
+import { SINGLE_DAO_PAGE } from 'constants/routing';
 
 import { DAO } from 'types/dao';
 
@@ -10,6 +13,8 @@ import { ImageWithFallback } from 'components/image-with-fallback';
 import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value/FormattedNumericValue';
 
 import { formatCurrency } from 'utils/formatCurrency';
+import { ExplorerLink } from 'components/explorer-link';
+import { useAuthContext } from 'context/AuthContext';
 
 import styles from 'components/cards/dao-card/dao-card.module.scss';
 
@@ -35,7 +40,10 @@ const DaoCard: React.FC<DaoCardProps> = ({
   nearPrice,
   members
 }) => {
-  const { funds, proposals } = dao;
+  const router = useRouter();
+  const { login, accountId } = useAuthContext();
+
+  const { id, funds, proposals, txHash } = dao;
 
   const title = displayName || name;
 
@@ -47,9 +55,25 @@ const DaoCard: React.FC<DaoCardProps> = ({
     return formatCurrency(parseFloat(funds) * nearPrice);
   }
 
+  function onCreateProposal(e: MouseEvent | KeyboardEvent) {
+    e.stopPropagation();
+
+    if (accountId) {
+      router.push({
+        pathname: SINGLE_DAO_PAGE,
+        query: {
+          dao: id
+        }
+      });
+    } else {
+      login();
+    }
+  }
+
   return (
     <Link href={`/dao/${daoAccountName}`} passHref>
       <div className={styles.daoCard}>
+        <ExplorerLink transaction={txHash} isAbsolute />
         <div>
           <div className={styles.header}>
             <div className={styles.iconWrapper}>
@@ -106,7 +130,15 @@ const DaoCard: React.FC<DaoCardProps> = ({
             active proposals
           </div>
           {/* <div className={styles.totalProposals}>{proposals} in total</div> */}
-          <div className={styles.createProposal}>Create Proposal</div>
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={onCreateProposal}
+            onKeyPress={onCreateProposal}
+            className={styles.createProposal}
+          >
+            Create Proposal
+          </div>
         </div>
       </div>
     </Link>

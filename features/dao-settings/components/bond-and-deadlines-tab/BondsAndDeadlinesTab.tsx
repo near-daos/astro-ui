@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Input } from 'components/input/Input';
+import { Input } from 'components/inputs/input/Input';
 import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
 import {
   BondsAndDeadlinesData,
@@ -12,6 +12,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
 import { SputnikService } from 'services/SputnikService';
 import * as yup from 'yup';
+import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
+import cn from 'classnames';
 
 import styles from './bonds-and-deadlines-tab.module.scss';
 
@@ -102,22 +104,32 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
   return (
     <>
       <FormProvider {...methods}>
-        <ProposalBanner
-          scope="policy"
-          title="Bonds & Deadlines"
-          form="bonds-deadlines"
-          disable={!isValid || !isDirty}
-          onEdit={setViewMode}
-          viewMode={viewMode}
-          onCancel={onCancel}
-        />
+        {!viewMode && (
+          <ProposalBanner
+            scope="policy"
+            title="Bonds & Deadlines"
+            form="bonds-deadlines"
+            disable={!isValid || !isDirty}
+            onEdit={setViewMode}
+            viewMode={viewMode}
+            onCancel={onCancel}
+          />
+        )}
       </FormProvider>
       <form
         id="bonds-deadlines"
         onSubmit={handleSubmit(onSubmit)}
         className={styles.root}
       >
-        <div className={styles.row}>
+        <div className={styles.subtitle}>
+          Proposals
+          {viewMode && <EditButton onClick={setViewMode} />}
+        </div>
+        <div
+          className={cn(styles.row, {
+            [styles.viewMode]: viewMode
+          })}
+        >
           <div>
             <div className={styles.label}>Bond to create proposal</div>
             <>
@@ -141,8 +153,6 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
               <span className={styles.ml8}>NEAR</span>
             </>
           </div>
-        </div>
-        <div className={styles.row}>
           <div>
             <div className={styles.label}>Time before proposal expire</div>
             <>
@@ -167,8 +177,12 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
             </>
           </div>
         </div>
-        <br />
-        <div className={styles.row}>
+        <div className={styles.subtitle}>Bounties</div>
+        <div
+          className={cn(styles.row, {
+            [styles.viewMode]: viewMode
+          })}
+        >
           <div>
             <div className={styles.label}>Bond to claim a bounty</div>
             <>
@@ -192,8 +206,6 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
               <span className={styles.ml8}>NEAR</span>
             </>
           </div>
-        </div>
-        <div className={styles.row}>
           <div>
             <div className={styles.label}>
               Time to unclaim a bounty without penalty

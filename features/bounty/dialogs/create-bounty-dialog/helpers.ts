@@ -1,9 +1,13 @@
 import Decimal from 'decimal.js';
-import { yoktoNear } from 'services/SputnikService';
-import { CreateProposalParams } from 'types/proposal';
-import { DAO } from 'types/dao';
-import { DeadlineUnit } from 'components/cards/bounty-card/types';
+
+import { FUNGIBLE_TOKEN } from 'features/types';
+import { YOKTO_NEAR } from 'services/sputnik/constants';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+
+import { DAO } from 'types/dao';
+import { CreateProposalParams } from 'types/proposal';
+
+import { DeadlineUnit } from 'components/cards/bounty-card/types';
 
 import { CreateBountyInput } from './types';
 
@@ -45,8 +49,8 @@ export function getAddBountyProposal(
     data: {
       bounty: {
         description: proposalDescription,
-        token: token === 'Fungible Token' && tokenAddress ? tokenAddress : '',
-        amount: new Decimal(amount).mul(yoktoNear).toFixed(),
+        token: token === FUNGIBLE_TOKEN && tokenAddress ? tokenAddress : '',
+        amount: new Decimal(amount).mul(YOKTO_NEAR).toFixed(),
         times: slots,
         max_deadline: getDeadline(deadlineThreshold, deadlineUnit)
       }

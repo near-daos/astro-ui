@@ -1,3 +1,3 @@
 export function formatDaoAddress(address = ''): string {
-  return address.toLowerCase().replace(/ +/g, ' ').replace(/ /g, '-');
+  return address.toLowerCase().trim().replace(/ +/g, ' ').replace(/ /g, '-');
 }

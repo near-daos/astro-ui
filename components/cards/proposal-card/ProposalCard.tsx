@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useAuthContext } from 'context/AuthContext';
 
 import { ProposalVariant } from 'components/cards/proposal-card/types';
+import { ExplorerLink } from 'components/explorer-link';
 import { DaoDetails, ProposalStatus, ProposalType } from 'types/proposal';
 import ProposalStatusPanel from 'components/cards/proposal-card/components/proposal-status-panel/ProposalStatusPanel';
 import ProposalControlPanel from 'components/cards/proposal-card/components/proposal-control-panel/ProposalControlPanel';
@@ -25,6 +26,7 @@ export interface ProposalCardProps {
   status: ProposalStatus;
   title: string;
   children: ReactNode;
+  transaction: string;
   likes: number;
   dislikes: number;
   dismisses: number;
@@ -48,6 +50,7 @@ const ProposalCardComponent: FC<ProposalCardProps> = ({
   type,
   title,
   children,
+  transaction,
   likes,
   dislikes,
   liked,
@@ -82,6 +85,7 @@ const ProposalCardComponent: FC<ProposalCardProps> = ({
       type,
       title,
       children,
+      transaction,
       likes,
       dislikes,
       liked,
@@ -137,11 +141,7 @@ const ProposalCardComponent: FC<ProposalCardProps> = ({
         {variant !== 'SuperCollapsed' && (
           <div className={styles.header}>
             <span className={styles.title}>{title}</span>
-            {/*
-            <span>
-               <Icon name="buttonBookmark" className={styles.icon} />
-            </span>
-            */}
+            <ExplorerLink transaction={transaction} />
           </div>
         )}
         <div className={cn(styles.body, variantClassName)}>{children}</div>

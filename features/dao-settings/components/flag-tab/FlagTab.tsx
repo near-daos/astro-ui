@@ -18,9 +18,10 @@ import { DaoConfig } from 'types/proposal';
 import {
   DaoMetadata,
   fromMetadataToBase64
-} from 'services/SputnikService/mappers/dao';
+} from 'services/sputnik/mappers/dao';
 import { SputnikService } from 'services/SputnikService';
 import { getChangeConfigProposal } from 'features/dao-settings/helpers';
+import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
 import styles from './flag-tab.module.scss';
 
 interface FlagTabProps {
@@ -92,22 +93,23 @@ const FlagTab: FC<FlagTabProps> = ({
   return (
     <>
       <FormProvider {...methods}>
-        <ProposalBanner
-          scope="config"
-          title="Flag"
-          form="flag"
-          onEdit={setViewMode}
-          viewMode={viewMode}
-          onCancel={setViewMode}
-        />
+        {!viewMode && (
+          <ProposalBanner
+            scope="config"
+            title="Flag"
+            form="flag"
+            onEdit={setViewMode}
+            viewMode={viewMode}
+            onCancel={setViewMode}
+          />
+        )}
       </FormProvider>
       <div className={styles.root}>
         {viewMode ? (
           <div className={styles.preview}>
-            <div>
-              {daoFlag
-                ? 'Your DAO flag. It looks great!'
-                : 'You have no DAO flag yet. Time to create one!'}
+            <div className={styles.subtitle}>
+              Your DAO flag
+              {viewMode && <EditButton onClick={setViewMode} />}
             </div>
             <div className="images-container">
               {daoFlag && (
@@ -124,10 +126,10 @@ const FlagTab: FC<FlagTabProps> = ({
           </div>
         ) : (
           <div className={styles.edit}>
-            Move the window around to pick your new flag.
             <div className={styles.cropper}>
               <SelectFlag
                 id="flag"
+                title="Move the window around to pick your new flag."
                 fileName={fileName}
                 sources={sources}
                 onSubmit={onSubmit}

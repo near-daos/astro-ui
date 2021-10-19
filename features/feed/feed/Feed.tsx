@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useEffect } from 'react';
 import omit from 'lodash/omit';
 import Tabs from 'components/tabs/Tabs';
 import { Proposal } from 'types/proposal';
@@ -11,6 +11,8 @@ import { Button } from 'components/button/Button';
 import dynamic from 'next/dynamic';
 import { useRouterLoading } from 'hooks/useRouterLoading';
 import { Loader } from 'components/loader';
+import { TokenType } from 'types/token';
+import { useCustomTokensContext } from 'context/CustomTokensContext';
 
 import styles from './feed.module.scss';
 
@@ -23,19 +25,33 @@ interface FeedProps {
   bounties: Bounty[];
   filter: ProposalsFilter;
   title: string;
+  apiTokens: TokenType[];
 }
 
 function getTabContent(component: ReactNode, isLoading: boolean) {
   return isLoading ? <Loader /> : component;
 }
 
-export const Feed: FC<FeedProps> = ({ proposals, bounties, filter, title }) => {
+export const Feed: FC<FeedProps> = ({
+  proposals,
+  bounties,
+  filter,
+  title,
+  apiTokens
+}) => {
   const router = useRouter();
   const isLoading = useRouterLoading();
   const content = getTabContent(
     <ProposalsView proposals={proposals} filter={filter} />,
     isLoading
   );
+
+  const { setTokens } = useCustomTokensContext();
+
+  useEffect(() => {
+    setTokens(apiTokens);
+  }, [apiTokens, setTokens]);
+
   const tabs = [
     {
       id: 0,

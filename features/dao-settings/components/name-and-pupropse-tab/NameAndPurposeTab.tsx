@@ -1,11 +1,13 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Input } from 'components/input/Input';
-import { TextArea } from 'components/textarea/TextArea';
+import cn from 'classnames';
+import { Input } from 'components/inputs/input/Input';
+import { TextArea } from 'components/inputs/textarea/TextArea';
 import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
 import {
   getChangeConfigProposal,
   NameAndPurposeData
 } from 'features/dao-settings/helpers';
+import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
 import React, { useCallback, VFC } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
@@ -15,7 +17,8 @@ import { DaoConfig } from 'types/proposal';
 import {
   DaoMetadata,
   fromMetadataToBase64
-} from 'services/SputnikService/mappers/dao';
+} from 'services/sputnik/mappers/dao';
+
 import styles from './name-and-purpose-tab.module.scss';
 
 export const schema = yup.object().shape({
@@ -112,30 +115,36 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
 
   return (
     <>
+      <div className={cn(styles.row, styles.panel)}>
+        <div className={styles.label}>Account name (cannot be changed)</div>
+        <p>{daoId}</p>
+      </div>
+
+      <div className={styles.separator} />
+
       <FormProvider {...methods}>
-        <ProposalBanner
-          scope="config"
-          title="Name & Purpose"
-          form="settings"
-          disable={!isValid || !isDirty || isSubmitting}
-          disableTooltip={getDisableTooltip()}
-          onEdit={setViewMode}
-          viewMode={viewMode}
-          onCancel={onCancel}
-        />
+        {!viewMode && (
+          <ProposalBanner
+            scope="config"
+            title="Name & Purpose"
+            form="settings"
+            disable={!isValid || !isDirty || isSubmitting}
+            disableTooltip={getDisableTooltip()}
+            onEdit={setViewMode}
+            viewMode={viewMode}
+            onCancel={onCancel}
+          />
+        )}
       </FormProvider>
+
       <form
         id="settings"
         onSubmit={handleSubmit(onSubmit)}
         className={styles.root}
       >
-        <div className={styles.row}>
-          <div className={styles.label}>Account name (cannot be changed)</div>
-          <p>{daoId}</p>
-        </div>
-        <div className={styles.row}>
+        <div className={cn(styles.row, styles.inline)}>
           <div>
-            <div className={styles.label}>Display Name</div>
+            <div className={styles.label}>Name</div>
             {viewMode ? (
               <span>{getDisplayName()}</span>
             ) : (
@@ -150,7 +159,9 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
               />
             )}
           </div>
+          {viewMode && <EditButton onClick={setViewMode} />}
         </div>
+
         <div className={styles.row}>
           <div>
             <div className={styles.label}>Purpose</div>
