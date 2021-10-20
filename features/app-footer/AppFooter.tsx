@@ -80,7 +80,15 @@ export const AppFooter: FC<AppFooterProps> = ({
               <Icon name="logoNearFull" width={77} className={styles.logo} />
             </i>
           </div>
-          <div className={styles.version}>Version: RC-21.0</div>
+
+          <a
+            className={styles.version}
+            href={process.env.NEXT_PUBLIC_CHANGELOG_URL}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Version: {process.env.NEXT_PUBLIC_APP_VERSION}
+          </a>
         </div>
       </div>
     </footer>
