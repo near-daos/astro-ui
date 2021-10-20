@@ -9,6 +9,7 @@ import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 export interface UnclaimBountyDialogProps {
   isOpen: boolean;
@@ -25,12 +26,19 @@ export const UnclaimBountyDialog: FC<UnclaimBountyDialogProps> = ({
   const daoId = router.query.dao as string;
   const currentDao = useDao(daoId);
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     if (!currentDao) {
       return;
     }
 
-    SputnikService.unclaimBounty(currentDao.id, data.id);
+    await SputnikService.unclaimBounty(currentDao.id, data.id);
+
+    showNotification({
+      type: NOTIFICATION_TYPES.INFO,
+      description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
+      lifetime: 20000
+    });
+
     onClose('submitted');
   }, [data.id, onClose, currentDao]);
 

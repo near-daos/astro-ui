@@ -7,6 +7,7 @@ import React, { FC, useCallback } from 'react';
 
 import { SputnikService } from 'services/SputnikService';
 import { DAO } from 'types/dao';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import { CreateBountyForm } from './components/create-bounty-form/CreateBountyForm';
 import { getAddBountyProposal } from './helpers';
@@ -39,6 +40,11 @@ export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
         const proposal = getAddBountyProposal(daoId, data, dao);
 
         SputnikService.createProposal(proposal).then(() => {
+          showNotification({
+            type: NOTIFICATION_TYPES.INFO,
+            description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+            lifetime: 20000
+          });
           onClose('submitted');
         });
       }

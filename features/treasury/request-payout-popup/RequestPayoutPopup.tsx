@@ -17,6 +17,7 @@ import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 import { getTokenDivider } from 'utils/getTokenDivider';
 import { useCustomTokensContext } from 'context/CustomTokensContext';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import styles from './request-payout-popup.module.scss';
 
@@ -59,6 +60,12 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
               .mul(getTokenDivider(tokens, data.tokenAddress))
               .toFixed()
           }
+        });
+
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+          lifetime: 20000
         });
 
         onClose(true);

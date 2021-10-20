@@ -13,6 +13,7 @@ import { useToggle } from 'react-use';
 import { SputnikService } from 'services/SputnikService';
 import * as yup from 'yup';
 import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import cn from 'classnames';
 
 import styles from './bonds-and-deadlines-tab.module.scss';
@@ -95,6 +96,12 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
         );
 
         await SputnikService.createProposal(proposal);
+
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+          lifetime: 20000
+        });
         setViewMode(true);
       }
     },

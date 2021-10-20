@@ -45,7 +45,6 @@ import {
   NftToken
 } from 'types/token';
 import { Transaction } from 'types/transaction';
-import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikWalletService } from './SputnikWalletService';
@@ -184,12 +183,6 @@ class SputnikService {
     try {
       await this.sputnikDaoService.create(params);
 
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000
-      });
-
       return true;
     } catch (err) {
       console.error(err);
@@ -199,13 +192,7 @@ class SputnikService {
   }
 
   public async createProposal(params: CreateProposalParams): Promise<any> {
-    return this.sputnikDaoService.addProposal(params).then(() => {
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000
-      });
-    });
+    return this.sputnikDaoService.addProposal(params);
   }
 
   public async claimBounty(
@@ -213,22 +200,10 @@ class SputnikService {
     args: { bountyId: number; deadline: string; bountyBond: string }
   ) {
     await this.sputnikDaoService.claimBounty({ daoId, ...args });
-
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
-      lifetime: 20000
-    });
   }
 
   public async unclaimBounty(daoId: string, bountyId: string) {
     await this.sputnikDaoService.unclaimBounty(daoId, bountyId);
-
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
-      lifetime: 20000
-    });
   }
 
   public async finalize(contractId: string, proposalId: number): Promise<void> {
@@ -240,13 +215,7 @@ class SputnikService {
     proposalId: number,
     action: 'VoteApprove' | 'VoteRemove' | 'VoteReject'
   ): Promise<void> {
-    return this.sputnikDaoService.vote(daoId, proposalId, action).then(() => {
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
-        lifetime: 20000
-      });
-    });
+    return this.sputnikDaoService.vote(daoId, proposalId, action);
   }
 
   public async getDaoList(params?: {

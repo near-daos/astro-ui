@@ -18,6 +18,7 @@ import {
   DaoMetadata,
   fromMetadataToBase64
 } from 'services/sputnik/mappers/dao';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import styles from './name-and-purpose-tab.module.scss';
 
@@ -91,6 +92,11 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
           proposalBond
         )
       );
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+        lifetime: 20000
+      });
       setSubmitting(false);
       setViewMode(true);
     },

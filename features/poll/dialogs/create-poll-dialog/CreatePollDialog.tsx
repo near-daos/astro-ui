@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 export interface CreatePollDialogProps {
   isOpen: boolean;
@@ -32,6 +33,12 @@ export const CreatePollDialog: FC<CreatePollDialogProps> = ({
         description: `${data.question}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
         kind: 'Vote',
         bond: currentDao.policy.proposalBond
+      });
+
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+        lifetime: 20000
       });
 
       onClose();
