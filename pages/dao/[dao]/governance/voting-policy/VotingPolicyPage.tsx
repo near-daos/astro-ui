@@ -61,13 +61,15 @@ const VotingPolicyPage: FC = () => {
     [data]
   );
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     setViewMode(true);
 
     if (data && dao && !isEqual(getInitialData(dao), data)) {
       const proposal = getNewProposalObject(dao, data);
 
-      SputnikService.createProposal(proposal);
+      await SputnikService.createProposal(proposal);
+
+      setData(getInitialData(dao));
     }
   }, [dao, data]);
 
