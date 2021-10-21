@@ -1,3 +1,5 @@
+@import 'styles/typography';
+
 .input {
   color: var(--color-neutral-80);
   display: inline-flex;
@@ -5,7 +7,7 @@
   gap: 0.5em;
 
   input {
-    border: 1.5px solid var(--color-neutral-40);
+    border: 1.5px solid var(--color-neutral-60);
     border-radius: 4px;
     box-sizing: border-box;
     flex-basis: 100%;
@@ -80,11 +82,11 @@
 }
 
 .label {
-  font-size: 0.75em;
-  font-weight: 700;
-  line-height: 1.125em;
+  @extend %title5;
+  //text-transform: uppercase;
+  color: var(--color-neutral-60);
+  //line-height: 1.125em;
   margin: 0;
-  text-transform: uppercase;
 }
 
 .suffix {

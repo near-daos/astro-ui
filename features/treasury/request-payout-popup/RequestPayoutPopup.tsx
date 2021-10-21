@@ -13,6 +13,7 @@ import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 import { useCustomTokensContext } from 'context/CustomTokensContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { VoteDetails } from 'components/vote-details';
 
 import styles from './request-payout-popup.module.scss';
 
@@ -69,14 +70,18 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
           name={type === 'send' ? 'proposalReceivedFunds' : 'proposalSendFunds'}
           width={24}
         />
-        <h2>{type === 'send' ? 'Send tokens' : 'Request tokens'}</h2>
+        <h2>Propose transfer</h2>
       </header>
+      <div className={styles.policyWrapper}>
+        <VoteDetails scope="transfer" showBond={false} />
+      </div>
       <div className={styles.content}>
         <RequestPayoutForm
           onCancel={onClose}
           onSubmit={handleSubmit}
           initialValues={{ tokenSymbol: 'NEAR' }}
           tokens={tokens}
+          bond={currentDao?.policy.proposalBond}
         />
       </div>
     </Modal>

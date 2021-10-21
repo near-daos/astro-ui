@@ -1,11 +1,12 @@
 @use 'styles/breakpoints';
+@import 'styles/typography';
 
 .root {
   display: grid;
   grid-column-gap: 8px;
   grid-row-gap: 24px;
   grid-template-areas:
-    'token amount'
+    'token token'
     'tokenAddress tokenAddress'
     'recipient recipient'
     'payoutDetail payoutDetail'
@@ -51,9 +52,19 @@
 }
 
 .footer {
+  align-items: center;
   display: flex;
   grid-area: footer;
-  justify-content: flex-end;
+  justify-content: space-between;
+}
+
+.label {
+  @extend %title5;
+  color: var(--color-neutral-60);
+}
+
+.bold {
+  font-weight: bold;
 }
 
 .textArea {
@@ -86,11 +97,9 @@
   .root {
     grid-template-areas:
       'token'
-      'amount'
       'recipient'
       'payoutDetail'
       'externalUrl'
-      'voteDetails'
       'footer';
     grid-template-columns: 1fr;
   }
@@ -98,7 +107,15 @@
   .footer {
     display: grid;
     grid-gap: 8px;
+    grid-template-columns: 1fr;
+    justify-content: space-between;
+  }
+
+  .buttonsWrapper {
+    display: grid;
+    grid-gap: 8px;
     grid-template-columns: 1fr 1fr;
     justify-content: space-between;
+    margin-top: 12px;
   }
 }

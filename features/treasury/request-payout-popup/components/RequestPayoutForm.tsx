@@ -5,13 +5,11 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Input } from 'components/inputs/input/Input';
-import { Select } from 'components/inputs/select/Select';
 import { TextArea } from 'components/inputs/textarea/TextArea';
 import { Button } from 'components/button/Button';
-import { VoteDetails } from 'components/vote-details';
 import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
-
-import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
+import { TokenInput } from 'components/inputs/token-input';
+import { BondInfo } from 'components/bond';
 import { CreatePayoutInput } from 'features/treasury/request-payout-popup/types';
 
 import { useDeviceType } from 'helpers/media';
@@ -19,10 +17,11 @@ import { useDeviceType } from 'helpers/media';
 import { SputnikService } from 'services/SputnikService';
 
 import { Tokens } from 'context/CustomTokensContext';
+
 import styles from './request-payout-form.module.scss';
 
 const schema = yup.object().shape({
-  token: yup.string().required(),
+  tokenSymbol: yup.string().required(),
   amount: yup
     .number()
     .typeError('Must be a valid number.')
@@ -57,19 +56,23 @@ interface RequestPayoutFormProps {
   onSubmit: (data: IRequestPayoutForm) => void;
   onCancel: () => void;
   tokens: Tokens;
+  bond?: string;
 }
 
 export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
   initialValues,
   onSubmit,
   onCancel,
-  tokens
+  tokens,
+  bond
 }) => {
   const { isMobile } = useDeviceType();
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
+    getValues,
     formState: { errors, touchedFields }
   } = useForm<IRequestPayoutForm>({
     resolver: yupResolver(schema),
@@ -79,14 +82,16 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
     }
   });
 
+  const amount = register('amount');
+
+  register('tokenSymbol');
+
+  watch('amount');
+  watch('tokenSymbol');
+
   function isFieldValid(name: keyof IRequestPayoutForm) {
     return touchedFields[name] && !errors[name]?.message;
   }
-
-  const tokenOptions = Object.values(tokens).map(token => ({
-    value: token.symbol,
-    label: token.symbol
-  }));
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.root} noValidate>
@@ -94,37 +99,19 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
         errors={errors}
         className={styles.token}
         component={
-          <Select
-            defaultValue={initialValues?.tokenSymbol}
-            placeholder=""
-            size="block"
-            label="Token"
-            options={tokenOptions}
-            {...register('tokenSymbol')}
-            onChange={v =>
-              setValue('tokenSymbol', v ?? '', {
+          <TokenInput
+            tokens={tokens}
+            onTokenSelect={v =>
+              setValue('tokenSymbol', v as string, {
                 shouldDirty: true
               })
             }
-          />
-        }
-      />
-      <InputFormWrapper
-        errors={errors}
-        className={styles.amount}
-        component={
-          <Input
-            isValid={isFieldValid('amount')}
-            defaultValue={initialValues?.amount}
-            size="block"
-            textAlign="left"
-            type="number"
-            lang="en-US"
-            step="0.1"
-            min="0.1"
-            {...register('amount')}
-            label="Amount"
-            className={cn(styles.input, styles.amount)}
+            error={touchedFields.amount && !!errors.amount}
+            success={touchedFields.amount && !errors.amount}
+            name="amount"
+            selectedToken={getValues().tokenSymbol}
+            inputProps={amount}
+            amount={getValues().amount}
           />
         }
       />
@@ -157,7 +144,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
             resize="none"
             placeholder="Sample text"
             className={styles.textArea}
-            label="detail"
+            label="Details"
             {...register('detail')}
           />
         }
@@ -173,28 +160,26 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
         placeholder="Add link"
         className={cn(styles.input, styles.url)}
       />
-      <div className={styles.vote}>
-        <ExpandableDetails label="Vote details" className={styles.voteDetails}>
-          <VoteDetails scope="transfer" />
-        </ExpandableDetails>
-      </div>
       <div className={styles.footer}>
-        <Button
-          variant="secondary"
-          onClick={onCancel}
-          size={isMobile ? 'block' : 'small'}
-          className={styles.mr8}
-        >
-          Cancel
-        </Button>
-        <Button
-          variant="primary"
-          type="submit"
-          size={isMobile ? 'block' : 'small'}
-          className={styles.ml8}
-        >
-          Propose
-        </Button>
+        <BondInfo bond={bond} />
+        <div className={styles.buttonsWrapper}>
+          <Button
+            variant="secondary"
+            onClick={onCancel}
+            size={isMobile ? 'block' : 'small'}
+            className={styles.mr8}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            type="submit"
+            size={isMobile ? 'block' : 'small'}
+            className={styles.ml8}
+          >
+            Propose
+          </Button>
+        </div>
       </div>
     </form>
   );
