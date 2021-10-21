@@ -9,6 +9,10 @@ import {
 } from 'date-fns';
 
 export function formatYoktoValue(value: string, divider = YOKTO_NEAR): string {
+  if (!value) {
+    return '0';
+  }
+
   const amountYokto = new Decimal(value);
 
   return Number(amountYokto.div(divider).toFixed(5)).toString();
