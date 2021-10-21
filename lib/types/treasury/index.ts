@@ -1,4 +1,4 @@
-import { Token } from 'types/token';
+import { TokenDeprecated } from 'types/token';
 
 export interface ChartData {
   balance: number;
@@ -10,7 +10,7 @@ export type TransactionType = 'Deposit' | 'Withdraw';
 export interface TransactionCardInput {
   type: TransactionType;
   transactionId: string;
-  tokenName: Token;
+  tokenName: TokenDeprecated;
   tokensBalance: number;
   date: string;
   accountName: string;

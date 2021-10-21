@@ -3,12 +3,12 @@ import classNames from 'classnames';
 import { Icon } from 'components/Icon';
 import { format, parseISO } from 'date-fns';
 import { TransactionType } from 'lib/types/treasury';
-import { Token } from 'types/token';
+import { TokenDeprecated } from 'types/token';
 import s from './transaction-card.module.scss';
 
 export interface TransactionCardProps {
   type: TransactionType;
-  tokenName: Token;
+  tokenName: TokenDeprecated;
   deposit: string;
   date: string;
   accountName: string;

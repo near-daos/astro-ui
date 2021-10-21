@@ -1,7 +1,3 @@
-import { useMount } from 'react-use';
-
-import { FUNGIBLE_TOKEN } from 'features/types';
-
 import { Icon } from 'components/Icon';
 import { Modal } from 'components/modal';
 import {
@@ -15,7 +11,6 @@ import Decimal from 'decimal.js';
 import { SputnikService } from 'services/SputnikService';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
-import { getTokenDivider } from 'utils/getTokenDivider';
 import { useCustomTokensContext } from 'context/CustomTokensContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
@@ -33,32 +28,25 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
   onClose
 }) => {
   const router = useRouter();
-  const { tokens, fetchAndSetTokens } = useCustomTokensContext();
+  const { tokens } = useCustomTokensContext();
 
   const daoId = router.query.dao as string;
   const currentDao = useDao(daoId);
 
-  useMount(() => {
-    fetchAndSetTokens();
-  });
-
   const handleSubmit = useCallback(
     async (data: IRequestPayoutForm) => {
       if (currentDao) {
+        const token = tokens[data.tokenSymbol];
+
         await SputnikService.createProposal({
           daoId: currentDao.id,
           description: `${data.detail}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
           kind: 'Transfer',
           bond: currentDao.policy.proposalBond,
           data: {
-            token_id:
-              data.token === FUNGIBLE_TOKEN && data.tokenAddress
-                ? data.tokenAddress
-                : '',
+            token_id: token.tokenId,
             receiver_id: data.recipient,
-            amount: new Decimal(data.amount)
-              .mul(getTokenDivider(tokens, data.tokenAddress))
-              .toFixed()
+            amount: new Decimal(data.amount).mul(10 ** token.decimals).toFixed()
           }
         });
 
@@ -87,7 +75,8 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
         <RequestPayoutForm
           onCancel={onClose}
           onSubmit={handleSubmit}
-          initialValues={{ token: 'NEAR' }}
+          initialValues={{ tokenSymbol: 'NEAR' }}
+          tokens={tokens}
         />
       </div>
     </Modal>
