@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from 'components/inputs/input/Input';
 import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
 import {
+  navigateToDaoPage,
   BondsAndDeadlinesData,
   getChangeBondDeadlinesProposal
 } from 'features/dao-settings/helpers';
@@ -103,9 +104,11 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
           lifetime: 20000
         });
         setViewMode(true);
+
+        navigateToDaoPage(router);
       }
     },
-    [dao, proposalBond, setViewMode, props]
+    [dao, proposalBond, setViewMode, props, router]
   );
 
   return (

@@ -1,13 +1,17 @@
 import Decimal from 'decimal.js';
-import { YOKTO_NEAR } from 'services/sputnik/constants';
-import { DAO } from 'types/dao';
+import { NextRouter } from 'next/router';
+
 import {
+  DaoConfig,
   ConfigChangeReason,
-  CreateProposalParams,
-  DaoConfig
+  CreateProposalParams
 } from 'types/proposal';
-import { dataRoleToContractRole } from 'features/groups/helpers';
+import { DAO } from 'types/dao';
+
+import { SINGLE_DAO_PAGE } from 'constants/routing';
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
+import { YOKTO_NEAR } from 'services/sputnik/constants';
+import { dataRoleToContractRole } from 'features/groups/helpers';
 
 export interface NameAndPurposeData {
   purpose: string;
@@ -115,4 +119,18 @@ export function getChangeBondDeadlinesProposal(
     },
     bond: proposalBond
   };
+}
+
+export function navigateToDaoPage(router: NextRouter): void {
+  const {
+    push,
+    query: { dao }
+  } = router;
+
+  push({
+    pathname: SINGLE_DAO_PAGE,
+    query: {
+      dao
+    }
+  });
 }

@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CropReturnType,
@@ -20,7 +21,10 @@ import {
   fromMetadataToBase64
 } from 'services/sputnik/mappers/dao';
 import { SputnikService } from 'services/SputnikService';
-import { getChangeConfigProposal } from 'features/dao-settings/helpers';
+import {
+  navigateToDaoPage,
+  getChangeConfigProposal
+} from 'features/dao-settings/helpers';
 import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import styles from './flag-tab.module.scss';
@@ -49,6 +53,7 @@ const FlagTab: FC<FlagTabProps> = ({
   currentDaoMetadata,
   proposalBond
 }) => {
+  const router = useRouter();
   const daoFlag = currentDaoMetadata.flag;
 
   const { mutate } = useSWRConfig();
@@ -90,6 +95,8 @@ const FlagTab: FC<FlagTabProps> = ({
     });
     await mutate('/daos');
     setViewMode(true);
+
+    navigateToDaoPage(router);
   }
 
   const fileName = daoId;
