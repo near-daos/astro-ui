@@ -13,7 +13,7 @@ import { Transaction } from 'types/transaction';
 import { SearchResultsData } from 'types/search';
 import { Proposal, ProposalType } from 'types/proposal';
 import { BountiesResponse, BountyResponse } from 'types/bounties';
-import { GetTokensResponse, NftToken, TokenType } from 'types/token';
+import { GetTokensResponse, NftToken, Token, TokenResponse } from 'types/token';
 
 import {
   DaoDTO,
@@ -449,8 +449,8 @@ class SputnikHttpServiceClass {
     return data.data;
   }
 
-  public async getAllTokens(): Promise<TokenType[]> {
-    const { data } = await this.httpService.get<TokenType[]>('/tokens');
+  public async getAllTokens(): Promise<Token[]> {
+    const { data } = await this.httpService.get<TokenResponse[]>('/tokens');
 
     return mapTokensDTOToTokens(data);
   }
@@ -460,7 +460,7 @@ class SputnikHttpServiceClass {
     offset?: number;
     limit?: number;
     sort?: string;
-  }): Promise<TokenType[]> {
+  }): Promise<Token[]> {
     const offset = params?.offset ?? 0;
     const limit = params?.limit ?? 50;
     const sort = params?.sort ?? 'createdAt,DESC';
