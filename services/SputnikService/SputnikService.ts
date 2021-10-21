@@ -433,10 +433,10 @@ class SputnikService {
 
     // Kinds
     if (filter.proposalFilter === 'Polls') {
-      // TODO - how to distinguish between ChangePolicy and Vote?
       search.$and?.push({
         kind: {
-          $cont: ProposalType.Vote
+          $cont: ProposalType.Vote,
+          $excl: ProposalType.ChangePolicy
         }
       });
     }
@@ -567,19 +567,40 @@ class SputnikService {
     offset = 0,
     limit = 50
   ): Promise<Proposal[]> {
+    const queryString = RequestQueryBuilder.create();
+
+    const search: SFields | SConditionAND = {
+      $and: [
+        {
+          daoId: {
+            $eq: daoId
+          }
+        },
+        {
+          kind: {
+            $cont: ProposalType.Vote,
+            $excl: ProposalType.ChangePolicy
+          }
+        }
+      ]
+    };
+
+    queryString.search(search);
+
+    queryString
+      .setLimit(limit ?? 1000)
+      .setOffset(offset ?? 0)
+      .sortBy({
+        field: 'createdAt',
+        order: 'DESC'
+      })
+      .query();
+
     const { data: proposals } = await this.httpService.get<
       GetProposalsResponse
-    >('/proposals', {
-      params: {
-        filter: `daoId||$eq||${daoId}`,
-        offset,
-        limit
-      }
-    });
+    >(`/proposals?${queryString.queryString}`);
 
-    return proposals.data
-      .filter(item => item.kind.type === 'Vote')
-      .map(mapProposalDTOToProposal);
+    return proposals.data.map(mapProposalDTOToProposal);
   }
 
   public async getProposal(
