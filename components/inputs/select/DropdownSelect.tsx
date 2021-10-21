@@ -41,7 +41,9 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
     items: options,
     itemToString: item => (item != null ? item.label : ''),
     onSelectedItemChange(changes) {
-      onChange?.(changes.selectedItem?.label);
+      if (changes.selectedItem?.label !== defaultValue) {
+        onChange?.(changes.selectedItem?.label);
+      }
     }
   });
 
