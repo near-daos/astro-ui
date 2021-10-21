@@ -16,7 +16,7 @@
     "commit": "cz",
     "prettier": "prettier --write \"./**/*.{ts,tsx,js,jsx,css,scss,html}\"",
     "stylelint": "stylelint \"**/*.{css,scss}\" --quiet --fix",
-    "prepare": "husky install && chmod ug+x .husky/*",
+    "prepare": "husky install",
     "storybook": "yarn generate-assets-index && start-storybook -s public -p 6006",
     "build-storybook": "build-storybook -s public",
     "stylelint-check": "stylelint-config-prettier-check",
