@@ -14,18 +14,15 @@ import {
   LEFT_AXIS_STYLES,
   LINE_STYLES
 } from './chart-styles';
-import { ChartCaption } from './components/chart-caption';
-import { ChartCaptionInterface } from './types';
 
 export interface AreaChartProps {
   data: { timestamp: number; balance: number }[] | undefined;
-  captions: ChartCaptionInterface[];
 }
 
 // eslint-disable-next-line
 const VictoryZoomVoronoiContainer: any = createContainer('zoom', 'voronoi');
 
-export const AreaChart: FC<AreaChartProps> = ({ data = [], captions }) => {
+export const AreaChart: FC<AreaChartProps> = ({ data = [] }) => {
   const preparedData = useMemo(
     () =>
       data.map(item => ({
@@ -61,7 +58,7 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [], captions }) => {
       {({ measureRef }) => (
         <div className={styles.root} ref={measureRef}>
           <div className={styles.header}>
-            <ChartCaption captions={captions} className={styles.caption} />
+            <div className={styles.title}>TVL Over Time</div>
             <RangeToggle onClick={toggleDomain} activeRange={activeRange} />
           </div>
           <svg style={{ height: 0 }}>

@@ -8,7 +8,7 @@ import s from './RangeToggle.module.scss';
 
 const TOGGLE_SET = [
   {
-    label: '24h',
+    label: '24H',
     type: DOMAIN_RANGES.DAY
   },
   {

@@ -1,100 +1,58 @@
-@use 'styles/breakpoints';
-@import 'styles/typography';
 @import 'styles/mixins';
 
 .grid {
   display: grid;
-  grid-gap: 8px;
-  grid-template-areas: 'token balance value fraction';
-  grid-template-columns: 2fr 1fr 1fr 2fr;
-  padding: 24px;
+  flex-shrink: 1;
+  grid-template-areas:
+    'icon tokenBalance'
+    'icon totalValue';
+  grid-template-columns: 52px auto;
+  padding: 20px;
 }
 
 .root {
   background-color: var(--color-neutral-10);
   border-radius: 8px;
-  transition: box-shadow 0.4s;
-
-  &:hover {
-    box-shadow: 3px 2px 24px var(--color-black-opacity-1);
-  }
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
 }
 
-.tokenContainer {
+.iconContainer {
   align-items: center;
   display: flex;
-  gap: 12px;
-  grid-area: token;
-
-  justify-content: flex-start;
+  grid-area: icon;
 
   .iconWrapper {
     height: 32px;
     width: 32px;
   }
 
+  .iconWrapper svg {
+    color: var(--color-brand-black);
+  }
+
   .icon {
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
     height: 100%;
     width: 100%;
   }
+}
 
-  .name {
-    color: var(--color-neutral-90);
+.tokenBalance {
+  @include font(18px, 24px, 700);
+  grid-area: tokenBalance;
+
+  .tokenName {
+    font-weight: 300;
     text-transform: uppercase;
   }
 }
 
 .totalValue {
+  @include font(12px, 18px, 500);
   align-items: center;
-  display: flex;
-  grid-area: value;
-}
-
-.tokensBalance {
-  @extend %title3;
-  align-items: center;
-  display: flex;
-  grid-area: balance;
-}
-
-.fraction {
-  align-items: center;
-  display: flex;
-  flex: 1;
-  grid-area: fraction;
-}
-
-.fractionTotal {
-  background-color: var(--color-brand-purple-light);
-  height: 8px;
-  width: 100%;
-}
-
-.fractionCurrent {
-  background-color: var(--color-brand-purple);
-  height: 8px;
-  width: var(--currentWeight);
-}
-
-@media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .grid {
-    display: grid;
-    grid-row-gap: 20px;
-    grid-template-areas:
-      'token .'
-      'balance value'
-      'fraction fraction';
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .details {
-    justify-content: space-between;
-  }
-
-  .totalValue {
-    justify-self: end;
-  }
+  color: var(--color-neutral-50);
+  grid-area: totalValue;
+  height: 18px;
 }

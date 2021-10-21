@@ -1,6 +1,6 @@
 import { BondDetail, VoteDetail } from 'features/types';
 import { TransactionCardInput } from 'lib/types/treasury';
-import { TokenDeprecated } from 'types/token';
+import { Token, TokenDeprecated } from 'types/token';
 
 const generateTokens = () => {
   const tokens = [];
@@ -61,6 +61,49 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
     tokensBalance: 223,
     date: new Date().toISOString(),
     accountName: 'test.near'
+  }
+];
+
+export const TOKENS_MOCK: Token[] = [
+  {
+    tokenId: 'NEAR',
+    decimals: 0,
+    symbol: '',
+    icon: 'near',
+    totalSupply: '6.50239',
+    balance: ''
+  },
+  {
+    tokenId: 'MEOW',
+    decimals: 0,
+    symbol: '',
+    icon: 'meow',
+    totalSupply: '23.5536',
+    balance: ''
+  },
+  {
+    tokenId: 'NEAR',
+    decimals: 0,
+    symbol: '',
+    icon: 'near',
+    totalSupply: '12.529',
+    balance: ''
+  },
+  {
+    tokenId: 'MEOW',
+    decimals: 0,
+    symbol: '',
+    icon: 'meow',
+    totalSupply: '7.534',
+    balance: ''
+  },
+  {
+    tokenId: 'TEST',
+    decimals: 0,
+    symbol: '',
+    icon: 'test',
+    totalSupply: '423.55398',
+    balance: ''
   }
 ];
 

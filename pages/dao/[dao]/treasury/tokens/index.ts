@@ -24,11 +24,6 @@ export const getServerSideProps = async ({
   const transactions = await SputnikService.getTransfers(query.dao);
   const price = await fetchNearPrice();
 
-  const totalTokensValue = tokens.reduce(
-    (res, item) => res + Number(item.totalSupply),
-    Number(dao?.funds) ?? 0
-  );
-
   return {
     props: {
       data: {
@@ -43,7 +38,7 @@ export const getServerSideProps = async ({
           ...tokens
         ],
         totalValue: dao?.funds ?? '0',
-        totalTokensValue
+        transactions
       }
     }
   };

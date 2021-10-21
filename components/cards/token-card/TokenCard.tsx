@@ -1,77 +1,62 @@
-import Link from 'next/link';
-import React, { CSSProperties } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value';
 import { Icon } from 'components/Icon';
+import { validUrlRegexp } from 'utils/regexp';
 import styles from './token-card.module.scss';
 
 export interface TokenCardProps {
-  id: string;
+  tokenId: string;
   icon: string;
-  tokenName: string;
   tokensBalance: number;
   totalValue: string | null;
-  voteWeight: number;
-  href: string | null;
 }
 
 export const TokenCard: React.FC<TokenCardProps> = ({
+  tokenId,
   icon,
-  tokenName,
   tokensBalance,
-  totalValue,
-  voteWeight,
-  href
+  totalValue
 }) => {
-  const iconStyles = icon
+  function getTokenIconName(iconName: string) {
+    switch (iconName) {
+      case 'near':
+        return 'tokenNear';
+      case 'meow':
+        return 'socialSlack';
+      default:
+        return '';
+    }
+  }
+
+  const tokenIconName = getTokenIconName(icon);
+
+  const iconStyles = icon.match(validUrlRegexp)
     ? { backgroundImage: `url(${icon})` }
     : {
-        background: 'var(--color-brand-neon-yellow)',
-        borderRadius: '50%',
-        overflow: 'hidden'
+        background: 'var(--color-brand-black)',
+        borderRadius: '50%'
       };
 
-  const content = (
+  return (
     <div className={classNames(styles.root, styles.grid)}>
-      <div className={styles.tokenContainer}>
+      <div className={styles.iconContainer}>
         <div className={styles.iconWrapper}>
-          {tokenName === 'near' ? (
-            <Icon name="iconNear" />
+          {tokenIconName !== '' ? (
+            <Icon name={tokenIconName} width={32} />
           ) : (
             <div className={styles.icon} style={iconStyles} />
           )}
         </div>
-        <div className={classNames('subtitle3', styles.name)}>{tokenName}</div>
       </div>
-      <div className={styles.tokensBalance}>{tokensBalance}</div>
-      {totalValue ? (
-        <FormattedNumericValue
-          value={totalValue}
-          suffix="usd"
-          className={styles.totalValue}
-        />
-      ) : (
-        '-'
-      )}
-      <div className={styles.fraction}>
-        <div className={styles.fractionTotal}>
-          <div
-            className={styles.fractionCurrent}
-            style={{ '--currentWeight': `${voteWeight}px` } as CSSProperties}
-          />
-        </div>
+      <div className={styles.tokenBalance}>
+        {tokensBalance} <span className={styles.tokenName}>{tokenId}</span>
+      </div>
+      <div className={styles.totalValue}>
+        {totalValue && (
+          <FormattedNumericValue value={totalValue} suffix="usd" />
+        )}
       </div>
     </div>
-  );
-
-  if (!href) {
-    return content;
-  }
-
-  return (
-    <Link href={href} passHref>
-      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-      <a>{content}</a>
-    </Link>
   );
 };

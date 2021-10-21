@@ -1,30 +1,38 @@
-@use 'styles/breakpoints';
+@import 'styles/mixins';
 @import 'styles/typography';
 
 .root {
+  background-color: var(--color-neutral-10);
   flex: 1;
-  padding: 32px;
+  margin: 0 -24px;
+  padding: 24px 24px 24px 12px;
+
+  @include tablet-portrait {
+    border-radius: 8px;
+    box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+    margin: 0;
+  }
+
+  @include tablet-landscape {
+    padding: 32px 32px 32px 20px;
+  }
 }
 
 .header {
-  align-items: center;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  margin: 0 36px;
+  row-gap: 22px;
+
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 0 0 36px;
+  }
 }
 
-@media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .root {
-    padding: 24px;
-  }
-
-  .header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .caption {
-    flex-direction: column;
-    gap: 16px;
-  }
+.title {
+  @extend %title3;
+  white-space: nowrap;
 }

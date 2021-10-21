@@ -25,27 +25,26 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
     <div className={s.root}>
       <div
         className={classNames(s.icon, {
-          [s.purple]: type === 'Deposit',
-          [s.green]: type === 'Withdraw'
+          [s.deposit]: type === 'Deposit',
+          [s.withdraw]: type === 'Withdraw'
         })}
       >
         <Icon
-          className={s.container}
           name={
             type === 'Deposit' ? 'proposalReceivedFunds' : 'proposalSendFunds'
           }
+          width={24}
+          className={s.container}
         />
       </div>
       <div className={s.token}>
-        <div className={s.balance}>{`${
+        <span className={s.balance}>{`${
           type === 'Deposit' ? '+' : '−'
-        } ${deposit}`}</div>
-        <div>&nbsp;</div>
-        <div className={s.name}>{tokenName}</div>
+        } ${deposit}`}</span>{' '}
+        <span className={s.name}>{tokenName}</span>
       </div>
-
-      <div className={s.date}>{format(parseISO(date), 'dd.LL.yyyy hh:mm')}</div>
       <div className={s.account}>{accountName}</div>
+      <div className={s.date}>{format(parseISO(date), 'dd.LL.yyyy hh:mm')}</div>
     </div>
   );
 };

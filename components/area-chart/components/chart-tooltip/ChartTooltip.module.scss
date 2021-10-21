@@ -2,10 +2,10 @@
 
 .root {
   background-color: var(--color-brand-purple);
-  border-radius: 4px;
+  border-radius: 2px;
   box-sizing: border-box;
   overflow: hidden;
-  padding: 4px 8px;
+  padding: 4px 8px 3px;
   z-index: 10000;
 }
 
@@ -15,7 +15,7 @@
 ) {
   .root {
     backdrop-filter: blur(5px);
-    background-color: var(--color-neutral-60);
+    background-color: var(--color-brand-black-opacity-70);
   }
 }
 
@@ -31,7 +31,6 @@
   white-space: nowrap;
 }
 
-.time,
 .label {
   @extend %caption2;
   color: var(--color-white);
