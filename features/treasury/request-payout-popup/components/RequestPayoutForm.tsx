@@ -144,6 +144,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
             resize="none"
             placeholder="Sample text"
             className={styles.textArea}
+            maxLength={500}
             label="Details"
             {...register('detail')}
           />

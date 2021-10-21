@@ -8,6 +8,8 @@ import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import { DAO } from 'types/dao';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { useCustomTokensContext } from 'context/CustomTokensContext';
+import { VoteDetails } from 'components/vote-details';
 
 import { CreateBountyForm } from './components/create-bounty-form/CreateBountyForm';
 import { getAddBountyProposal } from './helpers';
@@ -28,6 +30,7 @@ export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
   dao
 }) => {
   const router = useRouter();
+  const { tokens } = useCustomTokensContext();
   const daoId = router.query.dao as string;
 
   const handleSubmit = useCallback(
@@ -56,12 +59,17 @@ export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <header className={styles.header}>
         <Icon name="proposalBounty" width={24} />
-        <h2>Propose Bounty</h2>
+        <h2>Propose new Bounty</h2>
       </header>
+      <div className={styles.policyWrapper}>
+        <VoteDetails scope="transfer" showBond={false} />
+      </div>
       <CreateBountyForm
-        initialValues={initialValues}
         onCancel={onClose}
         onSubmit={handleSubmit}
+        initialValues={initialValues}
+        tokens={tokens}
+        bond={dao?.policy.proposalBond}
       />
     </Modal>
   );

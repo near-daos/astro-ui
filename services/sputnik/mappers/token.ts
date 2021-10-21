@@ -5,7 +5,7 @@ export function mapTokensDTOToTokens(data: TokenResponse[]): Token[] {
   return data.map(item => {
     return {
       ...item,
-      balance: formatYoktoValue(item.balance)
+      balance: formatYoktoValue(item.balance, item.decimals)
     };
   });
 }

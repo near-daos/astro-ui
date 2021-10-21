@@ -19,6 +19,7 @@ interface TokenInputProps {
   error?: boolean;
   success?: boolean;
   name: string;
+  disableTokensSelect?: boolean;
 }
 
 export const TokenInput: FC<TokenInputProps> = ({
@@ -29,7 +30,8 @@ export const TokenInput: FC<TokenInputProps> = ({
   selectedToken,
   error,
   success,
-  name
+  name,
+  disableTokensSelect
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const handleInputClick = useCallback(() => {
@@ -78,10 +80,11 @@ export const TokenInput: FC<TokenInputProps> = ({
         onClick={handleInputClick}
       >
         <DropdownSelect
+          disabled={disableTokensSelect}
           className={styles.select}
           options={tokenOptions}
           onChange={onTokenSelect}
-          defaultValue={tokenOptions[0].label}
+          defaultValue={selectedTokenData?.symbol}
         />
         <div className={styles.inputWrapper}>
           <Input
@@ -95,12 +98,12 @@ export const TokenInput: FC<TokenInputProps> = ({
             {...inputProps}
             ref={inputRef}
           />
-          <div className={styles.sub}>
-            &nbsp;
-            {!!amount &&
-              selectedTokenData?.symbol === 'NEAR' &&
-              `≈$${cost?.toFixed(2)}`}
-          </div>
+          {selectedTokenData?.symbol === 'NEAR' && (
+            <div className={styles.sub}>
+              &nbsp;
+              {`≈$${cost?.toFixed(2) ?? 0}`}
+            </div>
+          )}
         </div>
       </div>
     </div>
