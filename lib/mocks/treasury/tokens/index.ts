@@ -1,6 +1,6 @@
 import { BondDetail, VoteDetail } from 'features/types';
 import { TransactionCardInput } from 'lib/types/treasury';
-import { TokenDeprecated } from 'types/token';
+import { Token } from 'types/token';
 
 const generateTokens = () => {
   const tokens = [];
@@ -8,7 +8,7 @@ const generateTokens = () => {
   for (let i = 0; i < 50; i += 1) {
     tokens.push({
       id: `${i}`,
-      tokenName: TokenDeprecated.NEAR,
+      tokenName: Token.NEAR,
       tokensBalance: i,
       totalValue: 3 * i,
       voteWeight: i,
@@ -25,7 +25,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
   {
     transactionId: '1',
     type: 'Deposit',
-    tokenName: TokenDeprecated.NEAR,
+    tokenName: Token.NEAR,
     tokensBalance: 2321,
     date: new Date().toISOString(),
     accountName: 'verylongnamegoeshere.near'
@@ -33,7 +33,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
   {
     transactionId: '2',
     type: 'Deposit',
-    tokenName: TokenDeprecated.NEAR,
+    tokenName: Token.NEAR,
     tokensBalance: 223,
     date: new Date().toISOString(),
     accountName: 'verylongnamegoeshere.near'
@@ -41,7 +41,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
   {
     transactionId: '3',
     type: 'Deposit',
-    tokenName: TokenDeprecated.NEAR,
+    tokenName: Token.NEAR,
     tokensBalance: 323,
     date: new Date().toISOString(),
     accountName: 'verylongnamegoeshere.near'
@@ -49,7 +49,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
   {
     transactionId: '4',
     type: 'Withdraw',
-    tokenName: TokenDeprecated.NEAR,
+    tokenName: Token.NEAR,
     tokensBalance: 223,
     date: new Date().toISOString(),
     accountName: 'verylongnamegoeshere.near'
@@ -57,7 +57,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
   {
     transactionId: '5',
     type: 'Withdraw',
-    tokenName: TokenDeprecated.NEAR,
+    tokenName: Token.NEAR,
     tokensBalance: 223,
     date: new Date().toISOString(),
     accountName: 'test.near'

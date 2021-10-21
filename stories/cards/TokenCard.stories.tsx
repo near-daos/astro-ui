@@ -5,7 +5,7 @@ import {
   TokenCardProps
 } from 'components/cards/token-card/TokenCard';
 import { Header } from 'components/cards/token-card/components/header';
-import { TokenDeprecated } from 'types/token';
+import { Token } from 'types/token';
 
 export default {
   title: 'Components/cards/TokenCard',
@@ -27,7 +27,7 @@ export const Template: Story<TokenCardProps> = (args): JSX.Element => (
 Template.storyName = 'TokenCard';
 
 Template.args = {
-  tokenName: TokenDeprecated.NEAR,
+  tokenName: Token.NEAR,
   tokensBalance: 877,
   totalValue: '80569',
   voteWeight: 50

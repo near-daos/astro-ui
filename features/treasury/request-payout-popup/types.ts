@@ -1,7 +1,7 @@
-import { BondDetail, VoteDetail } from 'features/types';
+import { BondDetail, Token, VoteDetail } from 'features/types';
 
 export type CreatePayoutInput = {
-  tokenSymbol?: string;
+  token?: Token;
   amount?: number;
   recipient?: string;
   payoutDetail?: string;

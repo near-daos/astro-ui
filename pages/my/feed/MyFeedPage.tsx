@@ -4,13 +4,13 @@ import { Proposal } from 'types/proposal';
 import { Bounty } from 'components/cards/bounty-card/types';
 import { ProposalsFilter } from 'features/member-home/types';
 import { Feed } from 'features/feed/feed';
-import { Token } from 'types/token';
+import { TokenType } from 'types/token';
 
 interface HomeProps {
   proposals: Proposal[];
   bounties: Bounty[];
   filter: ProposalsFilter;
-  apiTokens: Token[];
+  apiTokens: TokenType[];
 }
 
 const MyFeedPage: NextPage<HomeProps> = props => {

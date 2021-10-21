@@ -2,7 +2,7 @@ import Tokens, {
   TokensPageProps
 } from 'pages/dao/[dao]/treasury/tokens/TokensPage';
 import { SputnikService } from 'services/SputnikService';
-import { Token } from 'types/token';
+import { TokenType } from 'types/token';
 import { getChartData } from 'features/treasury/helpers';
 import { fetchNearPrice } from 'hooks/useNearPrice';
 
@@ -35,11 +35,11 @@ export const getServerSideProps = async ({
         chartData: getChartData(transactions, price),
         tokens: [
           {
-            tokenId: 'NEAR',
+            id: 'NEAR',
             totalSupply: dao?.funds ?? '0',
             icon: 'near',
-            symbol: 'near'
-          } as Token,
+            name: 'near'
+          } as TokenType,
           ...tokens
         ],
         totalValue: dao?.funds ?? '0',

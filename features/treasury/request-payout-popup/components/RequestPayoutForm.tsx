@@ -11,14 +11,15 @@ import { Button } from 'components/button/Button';
 import { VoteDetails } from 'components/vote-details';
 import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
 
+import { FUNGIBLE_TOKEN, Token } from 'features/types';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { CreatePayoutInput } from 'features/treasury/request-payout-popup/types';
+import { tokenOptions } from 'features/bounty/dialogs/create-bounty-dialog/components/create-bounty-form/helpers';
 
 import { useDeviceType } from 'helpers/media';
 
 import { SputnikService } from 'services/SputnikService';
 
-import { Tokens } from 'context/CustomTokensContext';
 import styles from './request-payout-form.module.scss';
 
 const schema = yup.object().shape({
@@ -33,6 +34,17 @@ const schema = yup.object().shape({
       'Only numbers with one optional decimal place please',
       value => /^\d*(?:\.\d)?$/.test(`${value}`)
     ),
+  tokenAddress: yup.string().when('token', (token, yupSchema) => {
+    if (token === FUNGIBLE_TOKEN) {
+      return yupSchema.test(
+        'notValidNearAccount',
+        'Only valid near accounts are allowed',
+        (value?: string | null) => SputnikService.nearAccountExist(value || '')
+      );
+    }
+
+    return yupSchema.test('', '', () => true);
+  }),
   recipient: yup
     .string()
     .test(
@@ -45,7 +57,8 @@ const schema = yup.object().shape({
 });
 
 export interface IRequestPayoutForm {
-  tokenSymbol: string;
+  token: Token;
+  tokenAddress?: string;
   amount: number;
   recipient: string;
   detail: string;
@@ -56,20 +69,19 @@ interface RequestPayoutFormProps {
   initialValues: CreatePayoutInput;
   onSubmit: (data: IRequestPayoutForm) => void;
   onCancel: () => void;
-  tokens: Tokens;
 }
 
 export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
   initialValues,
   onSubmit,
-  onCancel,
-  tokens
+  onCancel
 }) => {
   const { isMobile } = useDeviceType();
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors, touchedFields }
   } = useForm<IRequestPayoutForm>({
     resolver: yupResolver(schema),
@@ -79,14 +91,11 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
     }
   });
 
+  const selectedToken = watch('token');
+
   function isFieldValid(name: keyof IRequestPayoutForm) {
     return touchedFields[name] && !errors[name]?.message;
   }
-
-  const tokenOptions = Object.values(tokens).map(token => ({
-    value: token.symbol,
-    label: token.symbol
-  }));
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.root} noValidate>
@@ -95,14 +104,14 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
         className={styles.token}
         component={
           <Select
-            defaultValue={initialValues?.tokenSymbol}
+            defaultValue={initialValues?.token}
             placeholder=""
             size="block"
             label="Token"
             options={tokenOptions}
-            {...register('tokenSymbol')}
+            {...register('token')}
             onChange={v =>
-              setValue('tokenSymbol', v ?? '', {
+              setValue('token', (v || 'NEAR') as Token, {
                 shouldDirty: true
               })
             }
@@ -128,6 +137,22 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
           />
         }
       />
+      {selectedToken === FUNGIBLE_TOKEN && (
+        <InputFormWrapper
+          errors={errors}
+          className={styles.tokenAddress}
+          component={
+            <Input
+              size="block"
+              isValid={isFieldValid('tokenAddress')}
+              textAlign="left"
+              {...register('tokenAddress')}
+              label="Token address"
+              className={styles.input}
+            />
+          }
+        />
+      )}
       <InputFormWrapper
         errors={errors}
         className={styles.recipient}

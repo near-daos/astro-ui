@@ -41,9 +41,8 @@ import {
 import {
   CreateTokenParams,
   GetTokensResponse,
-  NftToken,
-  Token,
-  TokenResponse
+  TokenType,
+  NftToken
 } from 'types/token';
 import { Transaction } from 'types/transaction';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
@@ -698,8 +697,8 @@ class SputnikService {
     return data.data;
   }
 
-  public async getAllTokens(): Promise<Token[]> {
-    const { data } = await this.httpService.get<TokenResponse[]>('/tokens');
+  public async getAllTokens(): Promise<TokenType[]> {
+    const { data } = await this.httpService.get<TokenType[]>('/tokens');
 
     return mapTokensDTOToTokens(data);
   }
@@ -709,7 +708,7 @@ class SputnikService {
     offset?: number;
     limit?: number;
     sort?: string;
-  }): Promise<Token[]> {
+  }): Promise<TokenType[]> {
     const offset = params?.offset ?? 0;
     const limit = params?.limit ?? 50;
     const sort = params?.sort ?? 'createdAt,DESC';
@@ -736,20 +735,6 @@ class SputnikService {
     } catch (e) {
       return false;
     }
-  }
-
-  public async getAccountTokens(accountId: string): Promise<Token[]> {
-    const { data } = await this.httpService.get<TokenResponse[]>(
-      `/tokens/account-tokens/${accountId}`
-    );
-
-    const ftTokens = mapTokensDTOToTokens(data);
-
-    // insert default NEAR token
-    return [
-      ...ftTokens,
-      { tokenId: '', symbol: 'NEAR', decimals: 24, balance: '', icon: '' }
-    ];
   }
 }
 

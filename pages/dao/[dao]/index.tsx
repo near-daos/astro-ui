@@ -30,17 +30,17 @@ import { useCustomTokensContext } from 'context/CustomTokensContext';
 import { useNearPrice } from 'hooks/useNearPrice';
 
 import { DAO } from 'types/dao';
-import { Token } from 'types/token';
+import { TokenType } from 'types/token';
 
 import styles from './dao-home-page.module.scss';
 
 interface DaoHomeProps {
   dao: DAO;
   proposals: Proposal[];
-  tokens: Token[];
+  apiTokens: TokenType[];
 }
 
-const DAOHome: NextPage<DaoHomeProps> = ({ dao, proposals, tokens }) => {
+const DAOHome: NextPage<DaoHomeProps> = ({ dao, proposals, apiTokens }) => {
   const router = useRouter();
   const { proposal: proposalId } = router.query;
 
@@ -52,8 +52,8 @@ const DAOHome: NextPage<DaoHomeProps> = ({ dao, proposals, tokens }) => {
   const { setTokens } = useCustomTokensContext();
 
   useEffect(() => {
-    setTokens(tokens);
-  }, [tokens, setTokens]);
+    setTokens(apiTokens);
+  }, [apiTokens, setTokens]);
 
   const refreshData = useCallback(() => {
     router.replace(router.asPath);
@@ -198,14 +198,14 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
   }
 
-  const tokens = await SputnikService.getAccountTokens(daoId as string);
+  const apiTokens = (await SputnikService.getAllTokens()) || [];
   const proposals = await SputnikService.getProposals(daoId as string);
 
   return {
     props: {
       dao,
       proposals,
-      tokens
+      apiTokens
     }
   };
 };

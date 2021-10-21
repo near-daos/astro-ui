@@ -11,7 +11,7 @@ import { Button } from 'components/button/Button';
 import dynamic from 'next/dynamic';
 import { useRouterLoading } from 'hooks/useRouterLoading';
 import { Loader } from 'components/loader';
-import { Token } from 'types/token';
+import { TokenType } from 'types/token';
 import { useCustomTokensContext } from 'context/CustomTokensContext';
 
 import styles from './feed.module.scss';
@@ -25,7 +25,7 @@ interface FeedProps {
   bounties: Bounty[];
   filter: ProposalsFilter;
   title: string;
-  apiTokens: Token[];
+  apiTokens: TokenType[];
 }
 
 function getTabContent(component: ReactNode, isLoading: boolean) {

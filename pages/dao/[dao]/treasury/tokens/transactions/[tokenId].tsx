@@ -17,7 +17,7 @@ import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
 
 import styles from 'pages/dao/[dao]/treasury/tokens/transactions/TransactionsPage.module.scss';
 import { SputnikService } from 'services/SputnikService';
-import { TokenDeprecated } from 'types/token';
+import { Token } from 'types/token';
 import { Transaction } from 'types/transaction';
 import { fetchNearPrice, useNearPrice } from 'hooks/useNearPrice';
 import { formatCurrency } from 'utils/formatCurrency';
@@ -141,7 +141,7 @@ const TransactionsPage: React.FC<TransactionPageProps> = ({
             key={`${transaction.type}_${transaction.timestamp}_${transaction.deposit}`}
           >
             <TransactionCard
-              tokenName={TokenDeprecated.NEAR}
+              tokenName={Token.NEAR}
               type={transaction.type}
               deposit={transaction.deposit}
               date={transaction.date}
