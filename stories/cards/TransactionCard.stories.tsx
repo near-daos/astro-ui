@@ -4,7 +4,7 @@ import {
   TransactionCard,
   TransactionCardProps
 } from 'components/cards/transaction-card';
-import { Token } from 'types/token';
+import { TokenDeprecated } from 'types/token';
 
 export default {
   title: 'Components/cards/TransactionCard',
@@ -24,7 +24,7 @@ export const DepositTransaction = Template.bind({});
 
 DepositTransaction.storyName = 'Deposit';
 DepositTransaction.args = {
-  tokenName: Token.NEAR,
+  tokenName: TokenDeprecated.NEAR,
   type: 'Deposit',
   date: new Date().toISOString(),
   accountName: 'verylongnamegoeshere.near'
@@ -34,7 +34,7 @@ export const WithdrawTransaction = Template.bind({});
 
 WithdrawTransaction.storyName = 'Withdraw';
 WithdrawTransaction.args = {
-  tokenName: Token.NEAR,
+  tokenName: TokenDeprecated.NEAR,
   type: 'Withdraw',
   date: new Date().toISOString(),
   accountName: 'verylongnamegoeshere.near'

@@ -19,7 +19,7 @@ import { useModal } from 'components/modal';
 
 import { CopyButton } from 'features/copy-button';
 import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
-import { TokenType } from 'types/token';
+import { Token } from 'types/token';
 
 import { ChartData } from 'lib/types/treasury';
 import { formatCurrency } from 'utils/formatCurrency';
@@ -31,7 +31,7 @@ import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
 export interface TokensPageProps {
   data: {
     chartData: ChartData[];
-    tokens: TokenType[];
+    tokens: Token[];
     totalValue: string;
     totalTokensValue: number;
   };
@@ -97,19 +97,17 @@ const TokensPage: React.FC<TokensPageProps> = ({
         }}
       >
         <TokenCard
-          id={tokenData.id}
+          id={tokenData.tokenId}
           icon={tokenData.icon}
-          tokenName={tokenData.name}
+          tokenName={tokenData.symbol}
           tokensBalance={Number(tokenData.totalSupply)}
-          totalValue={
-            tokenData.name === 'near'
-              ? formatCurrency(parseFloat(tokenData.totalSupply) * nearPrice)
-              : null
-          }
+          totalValue={formatCurrency(
+            parseFloat(tokenData.totalSupply ?? '0') * nearPrice
+          )}
           voteWeight={(Number(tokenData.totalSupply) * 100) / totalTokensValue}
           href={
-            tokenData.name === 'near'
-              ? `/dao/${daoId}/treasury/tokens/transactions/${tokens[index].id}`
+            tokenData.symbol === 'near'
+              ? `/dao/${daoId}/treasury/tokens/transactions/${tokens[index].tokenId}`
               : null
           }
         />

@@ -1,15 +1,15 @@
 import reduce from 'lodash/reduce';
 import { createContext, FC, useCallback, useContext, useState } from 'react';
 
-import { TokenType } from 'types/token';
 import { SputnikService } from 'services/SputnikService';
+import { Token } from 'types/token';
 
-export type Tokens = Record<string, TokenType>;
+export type Tokens = Record<string, Token>;
 
 interface CustomTokensContextInterface {
   tokens: Tokens;
   fetchAndSetTokens: () => void;
-  setTokens: (tokens: TokenType[]) => void;
+  setTokens: (tokens: Token[]) => void;
 }
 
 /* eslint-disable @typescript-eslint/no-empty-function */
@@ -23,13 +23,13 @@ const CustomTokensContext = createContext<CustomTokensContextInterface>({
 export const CustomTokensProvider: FC = ({ children }) => {
   const [tokens, setInnerTokens] = useState<Tokens>({});
 
-  const setTokens = useCallback((tkns: TokenType[]) => {
+  const setTokens = useCallback((tkns: Token[]) => {
     const resToken = reduce(
       tkns,
       (acc, token) => {
-        const { id } = token;
+        const { symbol } = token;
 
-        acc[id] = token;
+        acc[symbol] = token;
 
         return acc;
       },
