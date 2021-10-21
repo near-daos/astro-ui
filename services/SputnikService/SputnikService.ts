@@ -726,13 +726,7 @@ class SputnikService {
       `/tokens/account-tokens/${accountId}`
     );
 
-    const ftTokens = mapTokensDTOToTokens(data);
-
-    // insert default NEAR token
-    return [
-      ...ftTokens,
-      { tokenId: '', symbol: 'NEAR', decimals: 24, balance: '', icon: '' }
-    ];
+    return mapTokensDTOToTokens(data);
   }
 }
 
