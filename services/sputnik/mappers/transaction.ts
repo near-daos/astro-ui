@@ -129,7 +129,8 @@ export const mapReceiptsResponse = (
       if (
         !item.receiptAction ||
         !item.receiptAction.args?.deposit ||
-        item.receiptAction.args.method_name === 'act_proposal'
+        item.receiptAction.args.method_name === 'act_proposal' ||
+        item.receiptAction.args.method_name === 'ft_transfer'
       ) {
         // filter out not relevant items
         return res;
