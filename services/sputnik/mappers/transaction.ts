@@ -1,5 +1,5 @@
 import { formatYoktoValue } from 'helpers/format';
-import { Transaction, TransactionType } from 'types/transaction';
+import { Receipt, Transaction, TransactionType } from 'types/transaction';
 import Decimal from 'decimal.js';
 
 type ReceiptAction = {
@@ -12,13 +12,13 @@ type ReceiptAction = {
   };
 };
 
-type Receipt = {
+export type ReceiptDTO = {
   receiptId: string;
   predecessorAccountId: string;
   receiverAccountId: string;
   originatedFromTransactionHash: string;
   includedInBlockTimestamp: string;
-  receiptAction: ReceiptAction | null;
+  receiptAction: ReceiptAction;
 };
 
 export type TransactionDTO = {
@@ -46,7 +46,7 @@ export type TransactionDTO = {
     indexInTransaction: number;
   };
   transactionHash: string;
-  receipts: Receipt[];
+  receipts: ReceiptDTO[];
 };
 
 export type GetTransactionsResponse = {
@@ -110,3 +110,47 @@ export function mapTransactionDTOToTransaction(
     }, [] as Transaction[]) ?? []
   );
 }
+
+export type GetAccountReceiptsResponse = {
+  data: ReceiptDTO[];
+};
+
+export const mapReceiptsResponse = (
+  accountId: string,
+  data: ReceiptDTO[]
+): Receipt[] => {
+  return data.reduce((res, item) => {
+    let deposit = '';
+    let type = 'Deposit' as TransactionType;
+
+    if (
+      item.predecessorAccountId === accountId &&
+      item.receiptAction?.args?.deposit
+    ) {
+      type = 'Withdraw';
+      deposit = formatYoktoValue(item.receiptAction.args.deposit);
+    } else if (
+      item.receiverAccountId === accountId &&
+      item.receiptAction?.args?.deposit
+    ) {
+      type = 'Deposit';
+      deposit = formatYoktoValue(item.receiptAction.args.deposit);
+    }
+
+    if (deposit) {
+      res.push({
+        receiptId: item.receiptId,
+        timestamp: Number(item.includedInBlockTimestamp) / 1000000,
+        receiverAccountId: item.receiverAccountId,
+        predecessorAccountId: item.predecessorAccountId,
+        deposit,
+        type,
+        date: new Date(
+          Number(item.includedInBlockTimestamp) / 1000000
+        ).toISOString()
+      });
+    }
+
+    return res;
+  }, [] as Receipt[]);
+};

@@ -27,8 +27,8 @@ export const Template: Story<TokenCardProps> = (args): JSX.Element => (
 Template.storyName = 'TokenCard';
 
 Template.args = {
-  tokenId: TokenDeprecated.NEAR,
+  symbol: TokenDeprecated.NEAR,
   icon: 'near',
-  tokensBalance: 877,
+  balance: 877,
   totalValue: '80569'
 };

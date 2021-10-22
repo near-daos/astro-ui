@@ -2,41 +2,31 @@ import React from 'react';
 import classNames from 'classnames';
 import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value';
 import { Icon } from 'components/Icon';
-import { validUrlRegexp } from 'utils/regexp';
 import styles from './token-card.module.scss';
 
 export interface TokenCardProps {
-  tokenId: string;
+  symbol: string;
   icon: string;
-  tokensBalance: number;
+  balance: number;
   totalValue: string | null;
 }
 
 export const TokenCard: React.FC<TokenCardProps> = ({
-  tokenId,
+  symbol,
   icon,
-  tokensBalance,
+  balance,
   totalValue
 }) => {
   function getTokenIconName(iconName: string) {
     switch (iconName) {
-      case 'near':
+      case 'NEAR':
         return 'tokenNear';
-      case 'meow':
-        return 'socialSlack';
       default:
         return '';
     }
   }
 
   const tokenIconName = getTokenIconName(icon);
-
-  const iconStyles = icon.match(validUrlRegexp)
-    ? { backgroundImage: `url(${icon})` }
-    : {
-        background: 'var(--color-brand-black)',
-        borderRadius: '50%'
-      };
 
   return (
     <div className={classNames(styles.root, styles.grid)}>
@@ -45,12 +35,15 @@ export const TokenCard: React.FC<TokenCardProps> = ({
           {tokenIconName !== '' ? (
             <Icon name={tokenIconName} width={32} />
           ) : (
-            <div className={styles.icon} style={iconStyles} />
+            <div
+              className={styles.icon}
+              style={{ backgroundImage: `url(${icon})` }}
+            />
           )}
         </div>
       </div>
       <div className={styles.tokenBalance}>
-        {tokensBalance} <span className={styles.tokenName}>{tokenId}</span>
+        {balance} <span className={styles.tokenName}>{symbol}</span>
       </div>
       <div className={styles.totalValue}>
         {totalValue && (

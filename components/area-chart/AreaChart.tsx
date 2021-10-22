@@ -100,7 +100,7 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [] }) => {
                 orientation="left"
                 // offsetX={60}
                 style={LEFT_AXIS_STYLES}
-                tickFormat={d => `$${d.toLocaleString()}`}
+                tickFormat={d => `${d.toLocaleString()}`}
               />
               <VictoryArea
                 style={LINE_STYLES}

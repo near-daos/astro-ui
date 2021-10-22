@@ -33,7 +33,7 @@ const ChartTooltip: FC<ChartTooltipProps> = ({ data }) => {
           <span className={styles.label}>Total value:</span>
           <span className={styles.value}>{`${value.toLocaleString()}`}</span>
           <span>&nbsp;</span>
-          <span className={styles.label}>USD</span>
+          <span className={styles.value}>NEAR</span>
         </div>
       )}
     </div>

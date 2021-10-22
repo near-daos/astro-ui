@@ -8,14 +8,16 @@ import {
   minutesToHours
 } from 'date-fns';
 
-export function formatYoktoValue(value: string, divider = YOKTO_NEAR): string {
+export function formatYoktoValue(value: string, divider?: number): string {
   if (!value) {
     return '0';
   }
 
+  const dividerValue = divider ? 10 ** divider : YOKTO_NEAR;
+
   const amountYokto = new Decimal(value);
 
-  return Number(amountYokto.div(divider).toFixed(5)).toString();
+  return Number(amountYokto.div(dividerValue).toFixed(5)).toString();
 }
 
 export const toHoursAndFormat = (

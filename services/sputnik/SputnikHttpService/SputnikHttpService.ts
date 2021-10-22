@@ -9,7 +9,7 @@ import { nearConfig } from 'config';
 
 import { DAO } from 'types/dao';
 import { PaginationResponse } from 'types/api';
-import { Transaction } from 'types/transaction';
+import { Receipt, Transaction } from 'types/transaction';
 import { SearchResultsData } from 'types/search';
 import { Proposal, ProposalType } from 'types/proposal';
 import { BountiesResponse, BountyResponse } from 'types/bounties';
@@ -27,7 +27,9 @@ import {
   mapDaoDTOListToDaoList,
   mapProposalDTOToProposal,
   mapSearchResultsDTOToDataObject,
-  mapTransactionDTOToTransaction
+  mapTransactionDTOToTransaction,
+  ReceiptDTO,
+  mapReceiptsResponse
 } from 'services/sputnik/mappers';
 import { HttpService, httpService } from 'services/HttpService';
 
@@ -349,6 +351,14 @@ class SputnikHttpServiceClass {
     >(`/transactions?${queryString}`);
 
     return mapTransactionDTOToTransaction(daoId as string, transfers.data);
+  }
+
+  public async getAccountReceipts(accountId?: string): Promise<Receipt[]> {
+    const { data } = await this.httpService.get<ReceiptDTO[]>(
+      `/transactions/receipts/account-receipts/${accountId}`
+    );
+
+    return mapReceiptsResponse(accountId as string, data);
   }
 
   public async getPolls(

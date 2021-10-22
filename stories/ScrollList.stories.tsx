@@ -27,7 +27,7 @@ const generateTokens = () => {
       symbol: '',
       icon: 'near',
       totalValue: '123123',
-      tokensBalance: 1231231
+      balance: 1231231
     });
   }
 

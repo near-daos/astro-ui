@@ -24,7 +24,9 @@ import {
   mapDaoDTOListToDaoList,
   mapProposalDTOToProposal,
   mapTransactionDTOToTransaction,
-  mapSearchResultsDTOToDataObject
+  mapSearchResultsDTOToDataObject,
+  mapReceiptsResponse,
+  ReceiptDTO
 } from 'services/sputnik/mappers';
 
 import { BountiesResponse, BountyResponse } from 'types/bounties';
@@ -45,7 +47,7 @@ import {
   Token,
   TokenResponse
 } from 'types/token';
-import { Transaction } from 'types/transaction';
+import { Receipt, Transaction } from 'types/transaction';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikWalletService } from './SputnikWalletService';
@@ -560,6 +562,14 @@ class SputnikService {
     >(`/transactions?${queryString}`);
 
     return mapTransactionDTOToTransaction(daoId as string, transfers.data);
+  }
+
+  public async getAccountReceipts(accountId?: string): Promise<Receipt[]> {
+    const { data } = await this.httpService.get<ReceiptDTO[]>(
+      `/transactions/receipts/account-receipts/${accountId}`
+    );
+
+    return mapReceiptsResponse(accountId as string, data);
   }
 
   public async getPolls(

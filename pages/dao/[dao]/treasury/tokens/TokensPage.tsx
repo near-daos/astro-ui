@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import classNames from 'classnames';
@@ -15,36 +15,37 @@ import { CopyButton } from 'features/copy-button';
 
 import { TokenCard } from 'components/cards/token-card';
 import { Token, TokenDeprecated } from 'types/token';
-// import { TOKENS_MOCK } from 'lib/mocks/treasury/tokens';
 
 import { ChartCaption } from 'components/area-chart/components/chart-caption';
 import { ChartData } from 'lib/types/treasury';
 
 import { TransactionCard } from 'components/cards/transaction-card';
-import { Transaction } from 'types/transaction';
+import { Receipt } from 'types/transaction';
 import { Pagination } from 'components/pagination';
 
 import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
+import { useCustomTokensContext } from 'context/CustomTokensContext';
 
 export interface TokensPageProps {
   data: {
     chartData: ChartData[];
-    tokens: Token[];
+    daoTokens: Token[];
     totalValue: string;
-    transactions: Transaction[];
+    receipts: Receipt[];
   };
 }
 
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
 
 const TokensPage: React.FC<TokensPageProps> = ({
-  data: { chartData, tokens, totalValue, transactions }
+  data: { chartData, daoTokens, totalValue, receipts }
 }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
   const nearPrice = useNearPrice();
   const { accountId, login } = useAuthContext();
   const TRANSACTIONS_PER_PAGE = 10;
+  const { setTokens } = useCustomTokensContext();
 
   const [showRequestPayoutPopup] = useModal(RequestPayoutPopup, {
     type: 'send'
@@ -66,10 +67,14 @@ const TokensPage: React.FC<TokensPageProps> = ({
     [nearPrice, totalValue]
   );
 
-  const pageCount = Math.round(transactions.length / TRANSACTIONS_PER_PAGE);
+  useEffect(() => {
+    setTokens(daoTokens);
+  }, [setTokens, daoTokens]);
 
-  const [currentPageContent, setCurrentPageContent] = useState<Transaction[]>(
-    () => transactions.slice(0, TRANSACTIONS_PER_PAGE)
+  const pageCount = Math.round(receipts.length / TRANSACTIONS_PER_PAGE);
+
+  const [currentPageContent, setCurrentPageContent] = useState<Receipt[]>(() =>
+    receipts.slice(0, TRANSACTIONS_PER_PAGE)
   );
 
   const [sortByRecent, setSortByRecent] = useState(true);
@@ -85,14 +90,14 @@ const TokensPage: React.FC<TokensPageProps> = ({
 
   const pageChangeHandler = useCallback(
     ({ selected }) => {
-      const newContent = transactions.slice(
+      const newContent = receipts.slice(
         selected * TRANSACTIONS_PER_PAGE,
         (selected + 1) * TRANSACTIONS_PER_PAGE
       );
 
       setCurrentPageContent(newContent);
     },
-    [transactions]
+    [receipts]
   );
 
   return (
@@ -100,7 +105,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
       <div className={styles.header}>
         <h1>Tokens</h1>
         <Button variant="black" size="small" onClick={handleClick}>
-          Send Tokens
+          Propose Payout
         </Button>
       </div>
       <div className={styles.account}>
@@ -117,17 +122,15 @@ const TokensPage: React.FC<TokensPageProps> = ({
         <AreaChart data={chartData} />
       </div>
       <div className={styles.tokens}>
-        {/* todo: remove temporary tokens mock data */}
-        {/* {TOKENS_MOCK.map(({ tokenId, icon, totalSupply }) => ( */}
-        {tokens.map(({ tokenId, icon, totalSupply }) => (
+        {daoTokens.map(({ tokenId, icon, symbol, balance }) => (
           <TokenCard
-            key={`${tokenId}-${totalSupply}`}
-            tokenId={tokenId}
-            icon={icon}
-            tokensBalance={Number(totalSupply)}
+            key={`${tokenId}-${symbol}`}
+            symbol={symbol}
+            icon={symbol === 'NEAR' ? 'NEAR' : icon}
+            balance={Number(balance)}
             totalValue={
-              tokenId === TokenDeprecated.NEAR && totalSupply
-                ? formatCurrency(parseFloat(totalSupply) * nearPrice)
+              symbol === TokenDeprecated.NEAR && balance
+                ? formatCurrency(parseFloat(balance) * nearPrice)
                 : null
             }
           />
@@ -149,14 +152,14 @@ const TokensPage: React.FC<TokensPageProps> = ({
       </Button>
       <div className={styles.transactions}>
         {currentPageContent.map(
-          ({ type, timestamp, deposit, date, signerAccountId }) => (
+          ({ type, timestamp, deposit, date, predecessorAccountId }) => (
             <div className={styles.row} key={`${type}_${timestamp}_${deposit}`}>
               <TransactionCard
                 tokenName={TokenDeprecated.NEAR}
                 type={type}
                 deposit={deposit}
                 date={date}
-                accountName={signerAccountId}
+                accountName={predecessorAccountId}
               />
             </div>
           )
