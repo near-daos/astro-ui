@@ -71,34 +71,16 @@ const TokensPage: React.FC<TokensPageProps> = ({
     setTokens(daoTokens);
   }, [setTokens, daoTokens]);
 
+  // TODO - existing receipts endpoint doesn't support pagination yet
   const pageCount = Math.round(receipts.length / TRANSACTIONS_PER_PAGE);
-
-  const [currentPageContent, setCurrentPageContent] = useState<Receipt[]>(() =>
-    receipts.slice(0, TRANSACTIONS_PER_PAGE)
-  );
-
-  const [sortByRecent, setSortByRecent] = useState(true);
-
+  const [activePage, setActivePage] = useState(0);
+  const [sortAsc, setSortAsc] = useState(false);
   const filterClickHandler = useCallback(() => {
-    const sorted = currentPageContent.sort((a, b) =>
-      sortByRecent ? b.timestamp - a.timestamp : a.timestamp - b.timestamp
-    );
-
-    setCurrentPageContent(sorted);
-    setSortByRecent(!sortByRecent);
-  }, [currentPageContent, sortByRecent]);
-
-  const pageChangeHandler = useCallback(
-    ({ selected }) => {
-      const newContent = receipts.slice(
-        selected * TRANSACTIONS_PER_PAGE,
-        (selected + 1) * TRANSACTIONS_PER_PAGE
-      );
-
-      setCurrentPageContent(newContent);
-    },
-    [receipts]
-  );
+    setSortAsc(!sortAsc);
+  }, [sortAsc]);
+  const pageChangeHandler = useCallback(({ selected }) => {
+    setActivePage(selected);
+  }, []);
 
   return (
     <div className={styles.root}>
@@ -142,28 +124,46 @@ const TokensPage: React.FC<TokensPageProps> = ({
         className={styles.filter}
         onClick={filterClickHandler}
       >
-        {sortByRecent ? 'Most recent' : 'Less recent'}
+        {sortAsc ? 'Less recent' : 'Most recent'}
         <Icon
           name="buttonArrowUp"
           className={classNames(styles.filterIcon, {
-            [styles.rotate]: sortByRecent
+            [styles.rotate]: sortAsc
           })}
         />
       </Button>
       <div className={styles.transactions}>
-        {currentPageContent.map(
-          ({ type, timestamp, deposit, date, predecessorAccountId }) => (
-            <div className={styles.row} key={`${type}_${timestamp}_${deposit}`}>
-              <TransactionCard
-                tokenName={TokenDeprecated.NEAR}
-                type={type}
-                deposit={deposit}
-                date={date}
-                accountName={predecessorAccountId}
-              />
-            </div>
+        {receipts
+          .sort((a, b) =>
+            sortAsc ? a.timestamp - b.timestamp : b.timestamp - a.timestamp
           )
-        )}
+          .slice(
+            activePage * TRANSACTIONS_PER_PAGE,
+            (activePage + 1) * TRANSACTIONS_PER_PAGE
+          )
+          .map(
+            ({
+              type,
+              timestamp,
+              deposit,
+              date,
+              predecessorAccountId,
+              receiptId
+            }) => (
+              <div
+                className={styles.row}
+                key={`${type}_${timestamp}_${deposit}_${receiptId}`}
+              >
+                <TransactionCard
+                  tokenName={TokenDeprecated.NEAR}
+                  type={type}
+                  deposit={deposit}
+                  date={date}
+                  accountName={predecessorAccountId}
+                />
+              </div>
+            )
+          )}
       </div>
       {pageCount > 0 ? (
         <div className={styles.pagination}>
