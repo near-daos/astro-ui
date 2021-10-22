@@ -24,15 +24,34 @@
   .header {
     align-items: center;
     display: flex;
+    margin-top: 5px;
   }
 
   .iconWrapper {
-    height: 140px;
-    width: 140px;
-  }
+    align-self: flex-start;
+    flex-shrink: 0;
+    height: 100px;
+    width: 100px;
 
-  .headerContent {
-    padding-right: 50px;
+    @include tablet-portrait {
+      height: 120px;
+      width: 120px;
+    }
+
+    @include tablet-landscape {
+      height: 100px;
+      width: 100px;
+    }
+
+    @include desktop {
+      height: 110px;
+      width: 110px;
+    }
+
+    @include large-desktop {
+      height: 140px;
+      width: 140px;
+    }
   }
 
   .urlCaption {
@@ -42,6 +61,7 @@
 
   .descriptionCaption {
     @extend %body1;
+    margin-top: 8px;
     min-height: 90px;
     padding: 0 24px;
 
@@ -141,6 +161,7 @@
 
 .headerText {
   margin: 0;
+  padding-right: 40px;
 
   @include mobile-only {
     @include font(1.3em, 28px, 500);
