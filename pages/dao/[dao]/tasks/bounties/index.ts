@@ -6,6 +6,7 @@ import { BountyDoneProposalType } from 'types/proposal';
 import { Bounty } from 'components/cards/bounty-card/types';
 import { BountyResponse } from 'types/bounties';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { Token } from 'types/token';
 
 export const getServerSideProps: GetServerSideProps = async ({
   query
@@ -14,9 +15,11 @@ export const getServerSideProps: GetServerSideProps = async ({
     dao: DAO | null;
     bountiesDone: BountyDoneProposalType[];
     bounties: Bounty[];
+    tokens: Token[];
   };
 }> => {
   const dao = await SputnikService.getDaoById(query.dao as string);
+  const daoTokens = await SputnikService.getAccountTokens(query.dao as string);
 
   const bountiesDone = await SputnikService.getBountiesDone(
     query.dao as string
@@ -61,7 +64,8 @@ export const getServerSideProps: GetServerSideProps = async ({
     props: {
       dao,
       bountiesDone,
-      bounties
+      bounties,
+      tokens: daoTokens
     }
   };
 };

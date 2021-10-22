@@ -9,6 +9,8 @@ type ReceiptAction = {
   actionKind: 'TRANSFER';
   args: {
     deposit: string;
+    // eslint-disable-next-line camelcase
+    method_name?: string;
   };
 };
 
@@ -123,32 +125,49 @@ export const mapReceiptsResponse = (
     let deposit = '';
     let type = 'Deposit' as TransactionType;
 
-    if (
-      item.predecessorAccountId === accountId &&
-      item.receiptAction?.args?.deposit
-    ) {
-      type = 'Withdraw';
-      deposit = formatYoktoValue(item.receiptAction.args.deposit);
-    } else if (
-      item.receiverAccountId === accountId &&
-      item.receiptAction?.args?.deposit
-    ) {
-      type = 'Deposit';
-      deposit = formatYoktoValue(item.receiptAction.args.deposit);
-    }
+    if (item) {
+      if (
+        !item.receiptAction ||
+        !item.receiptAction.args?.deposit ||
+        item.receiptAction.args.method_name === 'act_proposal'
+      ) {
+        // filter out not relevant items
+        return res;
+      }
 
-    if (deposit) {
-      res.push({
-        receiptId: item.receiptId,
-        timestamp: Number(item.includedInBlockTimestamp) / 1000000,
-        receiverAccountId: item.receiverAccountId,
-        predecessorAccountId: item.predecessorAccountId,
-        deposit,
-        type,
-        date: new Date(
-          Number(item.includedInBlockTimestamp) / 1000000
-        ).toISOString()
-      });
+      if (item.receiptAction.args.method_name === 'add_proposal') {
+        // catch incoming bond from create proposal
+        type = 'Deposit';
+        deposit = formatYoktoValue(item.receiptAction.args.deposit);
+      } else if (
+        item.predecessorAccountId === accountId &&
+        item.receiptAction?.args?.deposit
+      ) {
+        // catch withdraw case
+        type = 'Withdraw';
+        deposit = formatYoktoValue(item.receiptAction.args.deposit);
+      } else if (
+        item.receiverAccountId === accountId &&
+        item.receiptAction?.args?.deposit
+      ) {
+        // catch deposit case
+        type = 'Deposit';
+        deposit = formatYoktoValue(item.receiptAction.args.deposit);
+      }
+
+      if (deposit) {
+        res.push({
+          receiptId: item.receiptId,
+          timestamp: Number(item.includedInBlockTimestamp) / 1000000,
+          receiverAccountId: item.receiverAccountId,
+          predecessorAccountId: item.predecessorAccountId,
+          deposit,
+          type,
+          date: new Date(
+            Number(item.includedInBlockTimestamp) / 1000000
+          ).toISOString()
+        });
+      }
     }
 
     return res;
