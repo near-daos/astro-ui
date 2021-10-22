@@ -67,7 +67,34 @@ export const AppFooter: FC<AppFooterProps> = ({
             {renderSocialIcon('https://t.me/astro_near', 'socialTelegram')}
           </div>
           <div className={styles.report}>
-            <a href="https://airtable.com/shr4ZmQzmTE5cKZm3">Report an issue</a>
+            <a
+              className={styles.devLink}
+              href="https://airtable.com/shr4ZmQzmTE5cKZm3"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Report an issue
+            </a>
+          </div>
+          <div className={styles.version}>
+            <a
+              className={styles.devLink}
+              href={process.env.NEXT_PUBLIC_CHANGELOG_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Build number: {process.env.NEXT_PUBLIC_APP_VERSION}
+            </a>
+          </div>
+          <div className={styles.progress}>
+            <a
+              className={styles.devLink}
+              href={process.env.NEXT_PUBLIC_DEV_PROGRESS_URL}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Dev Progress
+            </a>
           </div>
           <div className={styles.links}>{renderPrivacyAndPolicySection()}</div>
           <div className={styles.copyright}>
@@ -80,15 +107,6 @@ export const AppFooter: FC<AppFooterProps> = ({
               <Icon name="logoNearFull" width={77} className={styles.logo} />
             </i>
           </div>
-
-          <a
-            className={styles.version}
-            href={process.env.NEXT_PUBLIC_CHANGELOG_URL}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            Version: {process.env.NEXT_PUBLIC_APP_VERSION}
-          </a>
         </div>
       </div>
     </footer>

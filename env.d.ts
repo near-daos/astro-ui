@@ -9,6 +9,7 @@ declare global {
 
       NEXT_PUBLIC_APP_VERSION: string;
       NEXT_PUBLIC_CHANGELOG_URL: string;
+      NEXT_PUBLIC_DEV_PROGRESS_URL: string;
 
       NEXT_PUBLIC_API_URL: string;
       NEXT_PUBLIC_LOCAL_WALLET_REDIRECT: boolean;
