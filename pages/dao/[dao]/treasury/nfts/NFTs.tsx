@@ -19,11 +19,11 @@ const NFTs: NextPage<NFTsProps> = ({ nfts = [] }) => {
       </div>
       <div className={styles.content}>
         {nfts.map(nft => (
-          <div className={styles.card} key={nft.metadata.media}>
+          <div className={styles.card} key={nft.uri}>
             <NFTCard
-              name={nft.metadata.title}
+              name={nft.title}
               image={{
-                src: `https://ipfs.io/ipfs/${nft.metadata.media}`,
+                src: `${nft.uri}`,
                 width: 296,
                 height: 424
               }}
@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<{
   nfts: NftToken[];
 }> = async ({ query }) => {
   const daoId = query.dao as string;
-  const nfts = await SputnikService.getNfts(daoId);
+  const nfts = await SputnikService.getAccountNFTs(daoId);
 
   return {
     props: {

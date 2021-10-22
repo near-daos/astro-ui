@@ -8,18 +8,18 @@ export enum TokenDeprecated {
   NEAR = 'NEAR'
 }
 
-export type NftToken = {
+export type NftTokenResponse = {
   id: string;
-  ownerId: string;
   tokenId: string;
+  ownerId: string;
   minter: string;
-  transactionHash: string;
-  updateTransactionHash: string;
-  createTimestamp: number;
-  updateTimestamp: number;
+  baseUri: string;
+  symbol: string;
+  icon: string;
+  reference: string;
+  referenceHash: string;
   metadata: {
-    tokenId: string;
-    copies: number;
+    copies: 0;
     description: string;
     expiresAt: string;
     extra: string;
@@ -33,6 +33,13 @@ export type NftToken = {
     updatedAt: string;
     approvedAccountIds: [string];
   };
+};
+
+export type NftToken = {
+  id: string;
+  uri: string;
+  description: string;
+  title: string;
 };
 
 export type TokenResponse = {

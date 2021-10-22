@@ -31,7 +31,6 @@ import {
 
 import { BountiesResponse, BountyResponse } from 'types/bounties';
 
-import { PaginationResponse } from 'types/api';
 import { CreateDaoInput, DAO } from 'types/dao';
 import { CreateProposalParams, Proposal, ProposalType } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
@@ -44,6 +43,7 @@ import {
   CreateTokenParams,
   GetTokensResponse,
   NftToken,
+  NftTokenResponse,
   Token,
   TokenResponse
 } from 'types/token';
@@ -676,19 +676,17 @@ class SputnikService {
     return data.data;
   }
 
-  public async getNfts(
-    ownerId: string,
-    offset = 0,
-    limit = 50
-  ): Promise<NftToken[]> {
-    const { data } = await this.httpService.get<PaginationResponse<NftToken>>(
-      '/tokens/nfts',
-      {
-        params: { offset, limit, filter: `ownerId||$eq||${ownerId}` }
-      }
+  public async getAccountNFTs(accountId: string): Promise<NftToken[]> {
+    const { data } = await this.httpService.get<NftTokenResponse[]>(
+      `/tokens/nfts/account-nfts/${accountId}`
     );
 
-    return data.data;
+    return data.map(response => ({
+      id: response.id,
+      uri: `${response.baseUri}/${response.metadata.media}`,
+      description: response.metadata.description,
+      title: response.metadata.title
+    }));
   }
 
   public async getAllTokens(): Promise<Token[]> {
