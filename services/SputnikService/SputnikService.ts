@@ -198,6 +198,10 @@ class SputnikService {
     return this.sputnikDaoService.addProposal(params);
   }
 
+  public async registerUserToToken(tokenId: string) {
+    return this.sputnikDaoService.registerToToken(tokenId);
+  }
+
   public async claimBounty(
     daoId: string,
     args: { bountyId: number; deadline: string; bountyBond: string }

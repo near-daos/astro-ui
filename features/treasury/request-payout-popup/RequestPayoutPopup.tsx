@@ -39,6 +39,10 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
       if (currentDao) {
         const token = tokens[data.tokenSymbol];
 
+        if (token.tokenId) {
+          await SputnikService.registerUserToToken(token.tokenId);
+        }
+
         await SputnikService.createProposal({
           daoId: currentDao.id,
           description: `${data.detail}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,

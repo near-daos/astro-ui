@@ -86,6 +86,19 @@ export class SputnikDaoService {
     });
   }
 
+  async registerToToken(tokenId: string): Promise<AnyObject> {
+    return this.functionCall({
+      methodName: 'storage_deposit',
+      contractId: tokenId,
+      args: {
+        registration_only: true
+      },
+      gas: GAS_VALUE,
+      // 0.1 NEAR, minimal value
+      attachedDeposit: new BN('100000000000000000000000')
+    });
+  }
+
   public async vote(
     daoId: string,
     proposalId: number,
