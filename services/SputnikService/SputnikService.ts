@@ -687,7 +687,9 @@ class SputnikService {
 
     return data.map(response => ({
       id: response.id,
-      uri: `${response.baseUri}/${response.metadata.media}`,
+      uri: response.baseUri
+        ? `${response.baseUri}/${response.metadata.media}`
+        : `https://cloudflare-ipfs.com/ipfs/${response.metadata.media}`,
       description: response.metadata.description,
       title: response.metadata.title
     }));
