@@ -1,11 +1,11 @@
 import { formatYoktoValue } from 'helpers/format';
-import { TokenType } from 'types/token';
+import { Token, TokenResponse } from 'types/token';
 
-export function mapTokensDTOToTokens(data: TokenType[]): TokenType[] {
+export function mapTokensDTOToTokens(data: TokenResponse[]): Token[] {
   return data.map(item => {
     return {
       ...item,
-      totalSupply: formatYoktoValue(item.totalSupply)
+      balance: formatYoktoValue(item.balance, item.decimals)
     };
   });
 }

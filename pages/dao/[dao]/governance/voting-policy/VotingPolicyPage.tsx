@@ -12,6 +12,7 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import { Badge, Variant } from 'components/badge/Badge';
 import EditDefaultPolicy from 'features/vote-policy/components/edit-default-policy/EditDefaultPolicy';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import styles from './voting-policy-page.module.scss';
 
@@ -61,13 +62,21 @@ const VotingPolicyPage: FC = () => {
     [data]
   );
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     setViewMode(true);
 
     if (data && dao && !isEqual(getInitialData(dao), data)) {
       const proposal = getNewProposalObject(dao, data);
 
-      SputnikService.createProposal(proposal);
+      await SputnikService.createProposal(proposal);
+
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+        lifetime: 20000
+      });
+
+      setData(getInitialData(dao));
     }
   }, [dao, data]);
 

@@ -3,15 +3,17 @@
 
 .root {
   display: grid;
-  grid-column-gap: 8px;
-  grid-row-gap: 24px;
+  grid-row-gap: 14px;
   grid-template-areas:
     'header header'
-    'accountName accountName'
+    'account account'
+    'total total'
+    'tokens tokens'
     'chart chart'
-    'label label'
-    'tokens tokens';
-  grid-template-columns: 1fr 1fr;
+    'label filter'
+    'transactions transactions'
+    'pagination pagination';
+  grid-template-columns: 2fr 1fr;
   padding-top: 56px;
 }
 
@@ -33,18 +35,12 @@
 }
 
 .account {
-  grid-area: accountName;
-  width: 100%;
+  grid-area: account;
 
   .caption {
     @extend %subtitle5;
     color: var(--color-neutral-60);
-    padding-bottom: 8px;
-    text-transform: uppercase;
-
-    @include tablet-portrait {
-      padding-bottom: 4px;
-    }
+    padding-bottom: 4px;
   }
 
   .name {
@@ -60,18 +56,27 @@
   }
 }
 
-.chart {
-  background-color: var(--color-white);
-  border-radius: 8px;
-  grid-area: chart;
+.total {
+  grid-area: total;
+  margin-top: 8px;
 }
 
-.row {
-  margin-bottom: 16px;
+.tokens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  grid-area: tokens;
+  margin: 20px 0 26px;
+}
+
+.chart {
+  grid-area: chart;
+  margin-bottom: 26px;
 }
 
 .label {
   @extend %heading3;
+  align-self: center;
   grid-area: label;
 
   @include tablet-landscape {
@@ -79,18 +84,41 @@
   }
 }
 
-.tokens {
-  grid-area: tokens;
-  margin-bottom: 10px;
+.filter {
+  @extend %title3;
+  align-items: center;
+  color: var(--color-primary-50);
+  display: flex;
+  grid-area: filter;
+  justify-content: flex-end;
+  padding: 0;
+  text-transform: none;
 }
 
-.reset {
-  bottom: 10px;
-  position: fixed;
-  right: 10px;
+.filterIcon {
+  margin-left: 7px;
+  transition: all 0.5s;
+  width: 24px;
 
-  @include tablet-portrait {
-    bottom: 40px;
-    right: 40px;
+  &.rotate {
+    transform: rotate(180deg);
   }
+}
+
+.transactions {
+  grid-area: transactions;
+  margin-top: 18px;
+
+  button {
+    text-transform: none;
+  }
+}
+
+.row {
+  margin-bottom: 16px;
+}
+
+.pagination {
+  grid-area: pagination;
+  justify-self: center;
 }

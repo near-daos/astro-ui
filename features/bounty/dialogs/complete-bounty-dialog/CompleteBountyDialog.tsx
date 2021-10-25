@@ -12,6 +12,7 @@ import { getCompleteBountyProposal } from 'features/bounty/dialogs/complete-boun
 import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import { useRouter } from 'next/router';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 export interface CompleteBountyDialogProps {
   isOpen: boolean;
@@ -36,6 +37,11 @@ export const CompleteBountyDialog: FC<CompleteBountyDialogProps> = ({
       const proposal = getCompleteBountyProposal(daoId, data.id, input, bond);
 
       SputnikService.createProposal(proposal).then(() => {
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+          lifetime: 20000
+        });
         onClose('submitted');
       });
     },

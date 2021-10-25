@@ -15,6 +15,7 @@ import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
 import { SputnikService } from 'services/SputnikService';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import {
   getAddMemberProposal,
   getChangePolicyProposal,
@@ -59,7 +60,7 @@ export const GroupPopup: React.FC<GroupPopupProps> = ({
   const currentDao = useDao(daoId);
 
   const handleSubmit = useCallback(
-    (data: IGroupForm) => {
+    async (data: IGroupForm) => {
       let proposalData;
 
       if (currentDao) {
@@ -72,7 +73,12 @@ export const GroupPopup: React.FC<GroupPopupProps> = ({
         }
 
         if (proposalData) {
-          SputnikService.createProposal(proposalData);
+          await SputnikService.createProposal(proposalData);
+          showNotification({
+            type: NOTIFICATION_TYPES.INFO,
+            description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+            lifetime: 20000
+          });
         } else {
           console.error('No proposal data to create proposal');
         }

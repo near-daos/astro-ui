@@ -135,6 +135,7 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
         next={getMoreDaos}
         hasMore={hasMore}
         loader={<h4 className={styles.loading}>Loading...</h4>}
+        style={{ overflow: 'initial' }}
         endMessage={
           <p className={styles.loading}>
             <b>You have seen it all</b>

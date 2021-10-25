@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import ClaimBountyContent from './components/ClaimBountyContent';
 
 export interface ClaimBountyDialogProps {
@@ -22,14 +23,21 @@ export const ClaimBountyDialog: FC<ClaimBountyDialogProps> = ({
   const router = useRouter();
   const daoId = router.query.dao as string;
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     if (!daoId) return;
 
-    SputnikService.claimBounty(daoId, {
+    await SputnikService.claimBounty(daoId, {
       bountyId: Number(data.id),
       deadline: data.deadlineThreshold,
       bountyBond: bond
     });
+
+    showNotification({
+      type: NOTIFICATION_TYPES.INFO,
+      description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
+      lifetime: 20000
+    });
+
     onClose('submitted');
   }, [daoId, data.id, data.deadlineThreshold, bond, onClose]);
 

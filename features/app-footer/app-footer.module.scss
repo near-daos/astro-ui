@@ -42,11 +42,10 @@
 }
 
 .register {
-  color: var(--color-error-20);
-  transition: color 0.4s;
+  color: var(--color-success-20);
 
   &:hover {
-    color: var(--color-brand-coral-red);
+    color: var(--color-success);
   }
 }
 
@@ -55,7 +54,7 @@
   column-gap: 24px;
   display: flex;
   grid-area: social;
-  margin-bottom: 34px;
+  margin-bottom: 14px;
 }
 
 .icon {
@@ -66,22 +65,31 @@
 
 .report {
   grid-area: report;
+  margin-top: 8px;
+}
 
-  a {
-    color: var(--color-white);
-    font-size: 14px;
-  }
+.progress {
+  display: none;
+  grid-area: progress;
+  margin-top: 8px;
 
-  a:hover {
-    color: var(--color-success);
+  @include tablet-landscape {
+    text-align: right;
   }
 }
 
 .version {
-  @extend %subtitle5;
-  color: var(--color-white);
   grid-area: version;
-  margin-top: 12px;
+  margin-top: 8px;
+}
+
+.devLink {
+  @include font(12px, 18px, 500);
+  color: var(--color-white);
+
+  &:hover {
+    color: var(--color-success);
+  }
 }
 
 .links {
@@ -118,7 +126,7 @@
   column-gap: 12px;
   display: flex;
   grid-area: powered;
-  margin-top: 28px;
+  margin-top: 16px;
 
   span {
     flex-shrink: 0;
@@ -142,11 +150,13 @@
     grid-template-areas:
       'invitation'
       'social'
-      'copyright'
-      'powered'
-      'links'
+      'report'
       'version'
-      'report';
+      'progress'
+      'copyright'
+      'links'
+      'powered';
+
     max-width: 1130px;
 
     @include tablet-landscape {
@@ -155,7 +165,7 @@
         'invitation invitation invitation'
         'social social powered'
         'links report copyright'
-        'version . .';
+        'version . progress';
       grid-template-columns: 2fr 1fr 3fr;
     }
 
@@ -220,7 +230,9 @@
     }
   }
 
-  .version {
+  .report,
+  .version,
+  .progress {
     @include tablet-landscape {
       margin-top: 0;
     }
@@ -238,9 +250,15 @@
     grid-template-areas:
       'social'
       'report'
+      'version'
+      'progress'
       'copyright'
       'links'
-      'powered'
-      'version';
+      'powered';
+  }
+
+  .progress {
+    display: block;
+    text-align: left;
   }
 }

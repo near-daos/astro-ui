@@ -25,6 +25,7 @@ import { CreateDaoInput } from 'types/dao';
 
 import styles from 'features/create-dao/components/steps/form/form.module.scss';
 import { nearConfig } from 'config';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 export function ReviewView(): JSX.Element {
   const { getValues, handleSubmit } = useFormContext<DAOFormValues>();
@@ -61,6 +62,12 @@ export function ReviewView(): JSX.Element {
     } as CreateDaoInput);
 
     if (isBoolean(result)) {
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+        lifetime: 20000
+      });
+
       await router.push(`/dao/${data.address}.${nearConfig.contractName}`);
     }
   }

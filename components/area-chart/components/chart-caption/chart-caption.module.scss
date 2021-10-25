@@ -11,12 +11,15 @@
 }
 
 .valueHolder {
+  align-items: flex-end;
   display: flex;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .value {
-  @extend %title1;
+  font-size: 2em;
+  font-weight: 700;
+  line-height: 34px;
   margin-right: 4px;
 }
 

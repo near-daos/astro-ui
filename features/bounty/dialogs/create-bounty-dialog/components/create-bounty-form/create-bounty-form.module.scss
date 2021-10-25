@@ -5,15 +5,12 @@
   grid-column-gap: 8px;
   grid-row-gap: 24px;
   grid-template-areas:
-    'token amount'
-    'tokenAddress tokenAddress'
-    'details details'
-    'externalUrl externalUrl'
-    'slot slot'
-    'deadline deadline'
-    'voteDetails voteDetails'
-    'footer footer';
-  grid-template-columns: 1fr 1fr;
+    'token token token'
+    'details details details'
+    'externalUrl externalUrl externalUrl'
+    'slot deadline deadlineSelect'
+    'footer footer footer';
+  grid-template-columns: 3fr 1fr 2fr;
   margin-top: 40px;
 }
 
@@ -50,9 +47,11 @@
 }
 
 .footer {
+  align-items: center;
   display: flex;
   grid-area: footer;
-  justify-content: flex-end;
+  justify-content: space-between;
+  margin-top: 32px;
 }
 
 .textArea {
@@ -69,15 +68,28 @@
 }
 
 .inlineInput {
-  height: 48px;
-  margin: 0 8px;
-  width: 10%;
+  input {
+    padding: 12.5px;
+    text-align: left !important;
+  }
+
+  /* stylelint-disable */
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+  /* stylelint-enable */
 }
 
-.deadlineUnit {
-  input {
-    max-width: 120px;
-  }
+.deadlineSelect {
+  grid-area: deadlineSelect;
 }
 
 .mr8 {
@@ -92,17 +104,27 @@
   .root {
     grid-template-areas:
       'token'
-      'amount'
       'details'
       'externalUrl'
       'slot'
       'deadline'
-      'voteDetails'
+      'deadlineSelect'
       'footer';
     grid-template-columns: 1fr;
   }
 
   .footer {
+    display: grid;
+    grid-gap: 8px;
+    grid-template-columns: 1fr;
     justify-content: space-between;
+  }
+
+  .buttonsWrapper {
+    display: grid;
+    grid-gap: 8px;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+    margin: 12px 0;
   }
 }

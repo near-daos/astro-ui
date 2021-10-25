@@ -8,13 +8,15 @@ import { Button } from 'components/button/Button';
 import { TextArea } from 'components/inputs/textarea/TextArea';
 import { Select } from 'components/inputs/select/Select';
 
-import { FUNGIBLE_TOKEN, Token } from 'features/types';
 import { DeadlineUnit } from 'components/cards/bounty-card/types';
-import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { CreateBountyInput } from 'features/bounty/dialogs/create-bounty-dialog/types';
+import { Tokens } from 'context/CustomTokensContext';
+import { TokenInput } from 'components/inputs/token-input';
+import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
+import { BondInfo } from 'components/bond';
+import { useDeviceType } from 'helpers/media';
 
-import { VoteDetails } from 'components/vote-details';
-import { schema, tokenOptions, deadlineUnitOptions } from './helpers';
+import { schema, deadlineUnitOptions } from './helpers';
 
 import styles from './create-bounty-form.module.scss';
 
@@ -22,12 +24,16 @@ interface CreateBountyFormProps {
   initialValues: CreateBountyInput;
   onSubmit: (data: CreateBountyInput) => void;
   onCancel: () => void;
+  tokens: Tokens;
+  bond?: string;
 }
 
 export const CreateBountyForm: FC<CreateBountyFormProps> = ({
   initialValues,
   onSubmit,
-  onCancel
+  onCancel,
+  tokens,
+  bond
 }) => {
   const {
     register,
@@ -39,46 +45,37 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
     defaultValues: initialValues,
     resolver: yupResolver(schema)
   });
+  const { isMobile } = useDeviceType();
 
-  const selectedToken = watch('token');
+  const amount = register('amount');
+
+  register('token');
+
+  const currentAmount = watch('amount');
+  const currentToken = watch('token');
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.root} noValidate>
-      <Select
-        defaultValue={initialValues?.token}
-        className={cn(styles.token)}
-        placeholder=""
-        size="block"
-        label="Token"
-        options={tokenOptions}
-        {...register('token')}
-        onChange={v =>
-          setValue('token', v as Token, {
-            shouldDirty: true
-          })
+      <InputFormWrapper
+        errors={errors}
+        className={styles.token}
+        component={
+          <TokenInput
+            disableTokensSelect
+            tokens={tokens}
+            onTokenSelect={v =>
+              setValue('token', v as string, {
+                shouldDirty: true
+              })
+            }
+            error={touchedFields.amount && !!errors.amount}
+            success={touchedFields.amount && !errors.amount}
+            name="amount"
+            selectedToken={currentToken}
+            inputProps={amount}
+            amount={currentAmount}
+          />
         }
-      />
-      {selectedToken === FUNGIBLE_TOKEN && (
-        <Input
-          size="block"
-          isValid={touchedFields.tokenAddress && !errors.tokenAddress?.message}
-          textAlign="left"
-          {...register('tokenAddress')}
-          label="Token address"
-          className={cn(styles.input, styles.tokenAddress)}
-        />
-      )}
-      <Input
-        isValid={touchedFields.amount && !errors.amount?.message}
-        size="block"
-        textAlign="left"
-        type="number"
-        lang="en-US"
-        step="0.1"
-        min="0.1"
-        {...register('amount')}
-        label="Amount"
-        className={cn(styles.input, styles.amount)}
       />
       <div className={styles.details}>
         <TextArea
@@ -88,6 +85,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
           resize="none"
           placeholder="Sample text"
           className={styles.textArea}
+          maxLength={500}
           label="Details"
           {...register('details')}
         />
@@ -101,35 +99,37 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
         className={cn(styles.input, styles.externalUrl)}
       />
       <div className={styles.slot}>
-        Bounty can be claimed up to
         <Input
-          size="content"
+          size="block"
           isValid={touchedFields.slots && !errors.slots?.message}
           textAlign="center"
           type="number"
+          label="Number of bounty claims"
           {...register('slots')}
           className={styles.inlineInput}
         />
-        times.
       </div>
       <div className={styles.deadline}>
-        Once claimed, bounty must be completed in
         <Input
-          size="content"
+          size="block"
           isValid={
             touchedFields.deadlineThreshold &&
             !errors.deadlineThreshold?.message
           }
           type="number"
+          label="Complete in"
           textAlign="center"
           className={styles.inlineInput}
           {...register('deadlineThreshold')}
         />
+      </div>
+      <div className={styles.deadlineSelect}>
         <Select
           defaultValue={initialValues?.deadlineUnit}
           className={styles.deadlineUnit}
           placeholder=""
-          size="content"
+          size="block"
+          label="&nbsp;"
           options={deadlineUnitOptions}
           {...register('deadlineUnit')}
           onChange={v =>
@@ -139,28 +139,26 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
           }
         />
       </div>
-      <div className={styles.vote}>
-        <ExpandableDetails label="Vote details" className={styles.voteDetails}>
-          <VoteDetails scope="addBounty" />
-        </ExpandableDetails>
-      </div>
       <div className={styles.footer}>
-        <Button
-          variant="secondary"
-          onClick={onCancel}
-          size="small"
-          className={styles.mr8}
-        >
-          Cancel
-        </Button>
-        <Button
-          variant="primary"
-          type="submit"
-          size="small"
-          className={styles.ml8}
-        >
-          Propose
-        </Button>
+        <BondInfo bond={bond} />
+        <div className={styles.buttonsWrapper}>
+          <Button
+            variant="secondary"
+            onClick={onCancel}
+            size={isMobile ? 'block' : 'small'}
+            className={styles.mr8}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            type="submit"
+            size={isMobile ? 'block' : 'small'}
+            className={styles.ml8}
+          >
+            Propose
+          </Button>
+        </div>
       </div>
     </form>
   );

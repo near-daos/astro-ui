@@ -39,7 +39,9 @@ export const ProposedChangesRenderer: FC<ProposedChangesRendererProps> = ({
     <div>
       {!inline && <div className={styles.title}>Proposed changes:</div>}
       <div className={styles.policyWrapper}>
-        <div className={styles.policyLabel}>Voting policy default</div>
+        <div className={styles.policyLabel}>
+          Set new voting policy defaults as
+        </div>
         <div className={styles.policy}>
           <div>{voteBy}</div>
           <div className={styles.bold}>{amount}</div>

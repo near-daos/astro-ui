@@ -1,4 +1,5 @@
 @import 'styles/mixins';
+@import 'styles/typography';
 
 .row {
   display: flex;
@@ -45,7 +46,7 @@
 }
 
 .valueDesc {
-  font-weight: 500;
+  @extend %subtitle3;
   min-width: 43px;
   text-transform: uppercase;
 }

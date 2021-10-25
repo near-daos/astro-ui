@@ -1,3 +1,4 @@
+@import 'styles/mixins';
 @import 'styles/typography';
 
 .root {
@@ -5,94 +6,92 @@
   background-color: var(--color-neutral-10);
   border-radius: 8px;
   display: grid;
-  grid-template-areas: 'transactionType tokenBalance date account';
-  grid-template-columns: 64px 1fr 1fr 1fr;
-  min-height: 64px;
-  text-align: left;
+  grid-template-areas:
+    'transactionType tokenBalance'
+    'transactionType account'
+    'transactionType date';
+  grid-template-columns: 24px 1fr;
+  grid-template-rows: 40% 24% 36%;
+  min-height: 125px;
+
+  @include tablet-portrait {
+    grid-template-areas: 'transactionType tokenBalance account date';
+    grid-template-columns: 64px 1fr 1.5fr 1fr;
+    grid-template-rows: 100%;
+    min-height: 72px;
+  }
 }
 
 .icon {
-  align-items: center;
+  @include centralize;
   border-radius: 8px 0 0 8px;
-  display: flex;
   grid-area: transactionType;
   height: 100%;
-  justify-content: center;
 
   .container {
-    height: 24px;
-    width: 24px;
+    color: var(--color-primary-70);
   }
 
-  &.green {
+  &.deposit {
     background-color: var(--color-success-40);
   }
 
-  &.purple {
-    background-color: var(--color-brand-purple-light);
+  &.withdraw {
+    background-color: var(--color-brand-coral-red);
   }
 }
 
 .token {
-  display: flex;
-  flex: 1;
+  align-self: end;
   grid-area: tokenBalance;
-  justify-self: start;
-  margin-left: 16px;
+  margin: 0 0 4px 16px;
+
+  @include tablet-portrait {
+    align-self: center;
+    margin: 0 0 0 16px;
+  }
 
   .balance {
-    @extend %title2;
+    @include font(1.4em, 28px, 700);
     white-space: nowrap;
+
+    @include tablet-portrait {
+      @include font(1em, 24px, 700);
+    }
   }
 
   .name {
-    @extend %subtitle2;
+    @include font(1.4em, 28px, 500);
+
+    @include tablet-portrait {
+      @include font(1em, 24px, 500);
+    }
+  }
+}
+
+.account {
+  @extend %subtitle3;
+  grid-area: account;
+  margin-left: 16px;
+
+  @include tablet-portrait {
+    @include font(1em, 24px, 700);
+    justify-self: center;
+    margin-left: 0;
   }
 }
 
 .date {
-  @extend %body2;
+  @extend %body1;
+  align-self: start;
   color: var(--color-neutral-60);
   grid-area: date;
-}
+  margin: 4px 0 0 16px;
 
-.account {
-  @extend %title3;
-  grid-area: account;
-  justify-self: end;
-  margin-right: 16px;
-}
-
-@media screen and (max-width: 1024px) {
-  .root {
-    grid-template-areas:
-      'transactionType tokenBalance tokenBalance'
-      'transactionType account date';
-    grid-template-columns: 40px 1fr 1fr;
-    grid-template-rows: 50% 50%;
-    min-height: 92px;
-  }
-
-  .token {
-    align-self: end;
-
-    .balance {
-      @include font(1.25em, 28px, 700);
-    }
-
-    .name {
-      @include font(1.25em, 28px, 500);
-    }
-  }
-
-  .date {
+  @include tablet-portrait {
+    @include font(0.875em, 24px, 400);
+    align-self: center;
     justify-self: end;
-    margin-right: 16px;
-  }
-
-  .account {
-    @include font(0.875em, 18px, 500);
-    justify-self: start;
-    margin-left: 16px;
+    margin: 0 16px 0 0;
   }
 }

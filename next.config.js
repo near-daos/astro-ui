@@ -22,7 +22,9 @@ module.exports = (phase, { defaultConfig }) => {
         domains: [
           'i.imgur.com',
           'sputnik-dao.s3.eu-central-1.amazonaws.com',
-          'ipfs.io'
+          'ipfs.io',
+          'ipfs.fleek.co',
+          'cloudflare-ipfs.com'
         ]
       },
       sassOptions: {

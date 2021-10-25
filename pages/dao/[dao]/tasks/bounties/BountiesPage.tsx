@@ -5,17 +5,18 @@ import Tabs from 'components/tabs/Tabs';
 import { BountiesList } from 'features/bounties-list';
 import { CreateBountyDialog } from 'features/bounty/dialogs/create-bounty-dialog/create-bounty-dialog';
 import styles from 'pages/dao/[dao]/tasks/bounties/bounties.module.scss';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import { BountyDoneProposalType } from 'types/proposal';
 import { DAO } from 'types/dao';
 import { BountyPageContext } from 'features/bounty/helpers';
 import { useAuthContext } from 'context/AuthContext';
-import { Token } from 'features/types';
 import { useRouter } from 'next/router';
+import { useCustomTokensContext } from 'context/CustomTokensContext';
+import { Token } from 'types/token';
 
 const CREATE_BOUNTY_INITIAL = {
-  token: 'NEAR' as Token,
+  token: 'NEAR',
   slots: 3,
   amount: 0,
   deadlineThreshold: 3,
@@ -28,15 +29,22 @@ interface BountiesPageProps {
   dao: DAO;
   bountiesDone: BountyDoneProposalType[];
   bounties: Bounty[];
+  tokens: Token[];
 }
 
 const BountiesPage: FC<BountiesPageProps> = ({
   dao,
   bountiesDone,
-  bounties
+  bounties,
+  tokens
 }) => {
   const { accountId, login } = useAuthContext();
   const router = useRouter();
+  const { setTokens } = useCustomTokensContext();
+
+  useEffect(() => {
+    setTokens(tokens);
+  }, [setTokens, tokens]);
 
   const inProgressBounties = bounties.filter(bounty =>
     bounty.claimedBy.find(

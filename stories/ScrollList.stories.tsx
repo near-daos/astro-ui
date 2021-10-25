@@ -2,7 +2,6 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import ScrollList, { ScrollListProps } from 'components/scroll-list/ScrollList';
 import { TokenCard } from 'components/cards/token-card';
-import { nanoid } from 'nanoid';
 
 export default {
   title: 'Components/ScrollList',
@@ -23,13 +22,12 @@ const generateTokens = () => {
 
   for (let i = 0; i < 30; i += 1) {
     cards.push({
-      id: nanoid(),
-      icon: '',
-      tokenName: 'NEAR',
+      tokenId: 'NEAR',
+      decimals: 0,
+      symbol: '',
+      icon: 'near',
       totalValue: '123123',
-      tokensBalance: 1231231,
-      voteWeight: 50,
-      href: ''
+      balance: 1231231
     });
   }
 

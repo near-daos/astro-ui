@@ -19,6 +19,7 @@ export interface VoteDetailsProps {
   scope: Scope;
   className?: string;
   proposalId?: number;
+  showBond?: boolean;
 }
 
 export const VoteDetails: React.FC<VoteDetailsProps> = ({
@@ -26,7 +27,8 @@ export const VoteDetails: React.FC<VoteDetailsProps> = ({
   scope,
   showProgress,
   className = '',
-  proposalId
+  proposalId,
+  showBond = true
 }) => {
   const router = useRouter();
   const daoId = proposalDaoId || (router.query.dao as string);
@@ -51,19 +53,30 @@ export const VoteDetails: React.FC<VoteDetailsProps> = ({
     </div>
   );
 
+  function renderBond() {
+    if (showBond)
+      return (
+        <div className={styles.item}>
+          <Bond value={bond} token="NEAR" className={styles.item} />;
+        </div>
+      );
+
+    return null;
+  }
+
   return (
     <div className={cn(styles.root, className)}>
       <div className={cn(styles.details, styles.item)}>
         <div className={styles.description}>Minimum votes needed</div>
         {renderDetail(details)}
       </div>
-      <div className={styles.item}>
-        {showProgress && votersList ? (
+      {showProgress && votersList ? (
+        <div className={styles.item}>
           <VotersList votersList={votersList} />
-        ) : (
-          <Bond value={bond} token="NEAR" className={styles.item} />
-        )}
-      </div>
+        </div>
+      ) : (
+        renderBond()
+      )}
     </div>
   );
 };

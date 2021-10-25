@@ -13,6 +13,7 @@ import { SputnikService } from 'services/SputnikService';
 import { useAuthContext } from 'context/AuthContext';
 import { useRouter } from 'next/router';
 import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card/components/proposed-changes-renderer';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 interface ProposalCardRendererProps {
   proposal: Proposal;
@@ -38,6 +39,12 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
         'VoteApprove'
       );
 
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
+        lifetime: 20000
+      });
+
       await router.replace(router.asPath);
     },
     [proposal.daoId, proposal.proposalId, router]
@@ -55,6 +62,12 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
         'VoteReject'
       );
 
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
+        lifetime: 20000
+      });
+
       await router.replace(router.asPath);
     },
     [proposal.daoId, proposal.proposalId, router]
@@ -71,6 +84,12 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
         proposal.proposalId,
         'VoteRemove'
       );
+
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
+        lifetime: 20000
+      });
 
       await router.replace(router.asPath);
     },

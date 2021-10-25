@@ -9,3 +9,13 @@ export type Transaction = {
   deposit: string;
   type: TransactionType;
 };
+
+export type Receipt = {
+  receiptId: string;
+  timestamp: number;
+  receiverAccountId: string;
+  predecessorAccountId: string;
+  deposit: string;
+  type: TransactionType;
+  date: string;
+};

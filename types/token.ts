@@ -4,22 +4,22 @@ export type CreateTokenParams = {
   icon: string;
 };
 
-export enum Token {
+export enum TokenDeprecated {
   NEAR = 'NEAR'
 }
 
-export type NftToken = {
+export type NftTokenResponse = {
   id: string;
-  ownerId: string;
   tokenId: string;
+  ownerId: string;
   minter: string;
-  transactionHash: string;
-  updateTransactionHash: string;
-  createTimestamp: number;
-  updateTimestamp: number;
+  baseUri: string;
+  symbol: string;
+  icon: string;
+  reference: string;
+  referenceHash: string;
   metadata: {
-    tokenId: string;
-    copies: number;
+    copies: 0;
     description: string;
     expiresAt: string;
     extra: string;
@@ -35,18 +35,36 @@ export type NftToken = {
   };
 };
 
-export type TokenType = {
+export type NftToken = {
+  id: string;
+  uri: string;
+  description: string;
+  title: string;
+};
+
+export type TokenResponse = {
   transactionHash: string;
   id: string;
   ownerId: string;
+  tokenId: string;
   totalSupply: string;
   decimals: number;
   icon: string;
   name: string;
   spec: string;
   symbol: string;
+  balance: string;
+};
+
+export type Token = {
+  tokenId: string;
+  decimals: number;
+  symbol: string;
+  icon: string;
+  totalSupply?: string;
+  balance: string;
 };
 
 export type GetTokensResponse = {
-  data: TokenType[];
+  data: TokenResponse[];
 };

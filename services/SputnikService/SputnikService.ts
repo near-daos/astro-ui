@@ -24,12 +24,13 @@ import {
   mapDaoDTOListToDaoList,
   mapProposalDTOToProposal,
   mapTransactionDTOToTransaction,
-  mapSearchResultsDTOToDataObject
+  mapSearchResultsDTOToDataObject,
+  mapReceiptsResponse,
+  ReceiptDTO
 } from 'services/sputnik/mappers';
 
 import { BountiesResponse, BountyResponse } from 'types/bounties';
 
-import { PaginationResponse } from 'types/api';
 import { CreateDaoInput, DAO } from 'types/dao';
 import { CreateProposalParams, Proposal, ProposalType } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
@@ -41,11 +42,12 @@ import {
 import {
   CreateTokenParams,
   GetTokensResponse,
-  TokenType,
-  NftToken
+  NftToken,
+  NftTokenResponse,
+  Token,
+  TokenResponse
 } from 'types/token';
-import { Transaction } from 'types/transaction';
-import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { Receipt, Transaction } from 'types/transaction';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikWalletService } from './SputnikWalletService';
@@ -173,13 +175,6 @@ class SputnikService {
 
     const TGas = Big(10).pow(12);
     const BoatOfGas = Big(200).mul(TGas);
-    // const requiredDeposit = await this.computeRequiredDeposit(args);
-    //
-    // await this.factoryTokenContract.storage_deposit(
-    //   {},
-    //   BoatOfGas.toFixed(0),
-    //   requiredDeposit.toFixed(0)
-    // );
 
     await this.factoryTokenContract.create_token(
       { args },
@@ -191,12 +186,6 @@ class SputnikService {
     try {
       await this.sputnikDaoService.create(params);
 
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000
-      });
-
       return true;
     } catch (err) {
       console.error(err);
@@ -206,13 +195,11 @@ class SputnikService {
   }
 
   public async createProposal(params: CreateProposalParams): Promise<any> {
-    return this.sputnikDaoService.addProposal(params).then(() => {
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000
-      });
-    });
+    return this.sputnikDaoService.addProposal(params);
+  }
+
+  public async registerUserToToken(tokenId: string) {
+    return this.sputnikDaoService.registerToToken(tokenId);
   }
 
   public async claimBounty(
@@ -220,22 +207,10 @@ class SputnikService {
     args: { bountyId: number; deadline: string; bountyBond: string }
   ) {
     await this.sputnikDaoService.claimBounty({ daoId, ...args });
-
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
-      lifetime: 20000
-    });
   }
 
   public async unclaimBounty(daoId: string, bountyId: string) {
     await this.sputnikDaoService.unclaimBounty(daoId, bountyId);
-
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
-      lifetime: 20000
-    });
   }
 
   public async finalize(contractId: string, proposalId: number): Promise<void> {
@@ -247,13 +222,7 @@ class SputnikService {
     proposalId: number,
     action: 'VoteApprove' | 'VoteRemove' | 'VoteReject'
   ): Promise<void> {
-    return this.sputnikDaoService.vote(daoId, proposalId, action).then(() => {
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
-        lifetime: 20000
-      });
-    });
+    return this.sputnikDaoService.vote(daoId, proposalId, action);
   }
 
   public async getDaoList(params?: {
@@ -470,10 +439,10 @@ class SputnikService {
 
     // Kinds
     if (filter.proposalFilter === 'Polls') {
-      // TODO - how to distinguish between ChangePolicy and Vote?
       search.$and?.push({
         kind: {
-          $cont: ProposalType.Vote
+          $cont: ProposalType.Vote,
+          $excl: ProposalType.ChangePolicy
         }
       });
     }
@@ -599,24 +568,53 @@ class SputnikService {
     return mapTransactionDTOToTransaction(daoId as string, transfers.data);
   }
 
+  public async getAccountReceipts(accountId?: string): Promise<Receipt[]> {
+    const { data } = await this.httpService.get<ReceiptDTO[]>(
+      `/transactions/receipts/account-receipts/${accountId}`
+    );
+
+    return mapReceiptsResponse(accountId as string, data);
+  }
+
   public async getPolls(
     daoId: string,
     offset = 0,
     limit = 50
   ): Promise<Proposal[]> {
+    const queryString = RequestQueryBuilder.create();
+
+    const search: SFields | SConditionAND = {
+      $and: [
+        {
+          daoId: {
+            $eq: daoId
+          }
+        },
+        {
+          kind: {
+            $cont: ProposalType.Vote,
+            $excl: ProposalType.ChangePolicy
+          }
+        }
+      ]
+    };
+
+    queryString.search(search);
+
+    queryString
+      .setLimit(limit ?? 1000)
+      .setOffset(offset ?? 0)
+      .sortBy({
+        field: 'createdAt',
+        order: 'DESC'
+      })
+      .query();
+
     const { data: proposals } = await this.httpService.get<
       GetProposalsResponse
-    >('/proposals', {
-      params: {
-        filter: `daoId||$eq||${daoId}`,
-        offset,
-        limit
-      }
-    });
+    >(`/proposals?${queryString.queryString}`);
 
-    return proposals.data
-      .filter(item => item.kind.type === 'Vote')
-      .map(mapProposalDTOToProposal);
+    return proposals.data.map(mapProposalDTOToProposal);
   }
 
   public async getProposal(
@@ -682,23 +680,23 @@ class SputnikService {
     return data.data;
   }
 
-  public async getNfts(
-    ownerId: string,
-    offset = 0,
-    limit = 50
-  ): Promise<NftToken[]> {
-    const { data } = await this.httpService.get<PaginationResponse<NftToken>>(
-      '/tokens/nfts',
-      {
-        params: { offset, limit, filter: `ownerId||$eq||${ownerId}` }
-      }
+  public async getAccountNFTs(accountId: string): Promise<NftToken[]> {
+    const { data } = await this.httpService.get<NftTokenResponse[]>(
+      `/tokens/nfts/account-nfts/${accountId}`
     );
 
-    return data.data;
+    return data.map(response => ({
+      id: response.id,
+      uri: response.baseUri
+        ? `${response.baseUri}/${response.metadata.media}`
+        : `https://cloudflare-ipfs.com/ipfs/${response.metadata.media}`,
+      description: response.metadata.description,
+      title: response.metadata.title
+    }));
   }
 
-  public async getAllTokens(): Promise<TokenType[]> {
-    const { data } = await this.httpService.get<TokenType[]>('/tokens');
+  public async getAllTokens(): Promise<Token[]> {
+    const { data } = await this.httpService.get<TokenResponse[]>('/tokens');
 
     return mapTokensDTOToTokens(data);
   }
@@ -708,7 +706,7 @@ class SputnikService {
     offset?: number;
     limit?: number;
     sort?: string;
-  }): Promise<TokenType[]> {
+  }): Promise<Token[]> {
     const offset = params?.offset ?? 0;
     const limit = params?.limit ?? 50;
     const sort = params?.sort ?? 'createdAt,DESC';
@@ -735,6 +733,14 @@ class SputnikService {
     } catch (e) {
       return false;
     }
+  }
+
+  public async getAccountTokens(accountId: string): Promise<Token[]> {
+    const { data } = await this.httpService.get<TokenResponse[]>(
+      `/tokens/account-tokens/${accountId}`
+    );
+
+    return mapTokensDTOToTokens(data);
   }
 }
 

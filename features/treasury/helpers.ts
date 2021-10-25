@@ -1,14 +1,11 @@
-import { Transaction } from 'types/transaction';
+import { Receipt } from 'types/transaction';
 import { ChartData } from 'lib/types/treasury';
 
-export function getChartData(
-  transactions: Transaction[],
-  price: number
-): ChartData[] {
+export function getChartData(receipts: Receipt[]): ChartData[] {
   let value = 0;
   const result: ChartData[] = [];
 
-  transactions
+  receipts
     .sort((a, b) => {
       if (a.timestamp > b.timestamp) return 1;
 
@@ -16,11 +13,11 @@ export function getChartData(
 
       return 0;
     })
-    .forEach((item: Transaction) => {
+    .forEach((item: Receipt) => {
       const income = item.type === 'Deposit';
       let balance;
 
-      const deposit = Number(Number(item.deposit) * price);
+      const deposit = Number(item.deposit);
 
       if (income) {
         balance = value + deposit;

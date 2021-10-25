@@ -1,77 +1,55 @@
-import Link from 'next/link';
-import React, { CSSProperties } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value';
 import { Icon } from 'components/Icon';
 import styles from './token-card.module.scss';
 
 export interface TokenCardProps {
-  id: string;
+  symbol: string;
   icon: string;
-  tokenName: string;
-  tokensBalance: number;
+  balance: number;
   totalValue: string | null;
-  voteWeight: number;
-  href: string | null;
 }
 
 export const TokenCard: React.FC<TokenCardProps> = ({
+  symbol,
   icon,
-  tokenName,
-  tokensBalance,
-  totalValue,
-  voteWeight,
-  href
+  balance,
+  totalValue
 }) => {
-  const iconStyles = icon
-    ? { backgroundImage: `url(${icon})` }
-    : {
-        background: 'var(--color-brand-neon-yellow)',
-        borderRadius: '50%',
-        overflow: 'hidden'
-      };
-
-  const content = (
-    <div className={classNames(styles.root, styles.grid)}>
-      <div className={styles.tokenContainer}>
-        <div className={styles.iconWrapper}>
-          {tokenName === 'near' ? (
-            <Icon name="iconNear" />
-          ) : (
-            <div className={styles.icon} style={iconStyles} />
-          )}
-        </div>
-        <div className={classNames('subtitle3', styles.name)}>{tokenName}</div>
-      </div>
-      <div className={styles.tokensBalance}>{tokensBalance}</div>
-      {totalValue ? (
-        <FormattedNumericValue
-          value={totalValue}
-          suffix="usd"
-          className={styles.totalValue}
-        />
-      ) : (
-        '-'
-      )}
-      <div className={styles.fraction}>
-        <div className={styles.fractionTotal}>
-          <div
-            className={styles.fractionCurrent}
-            style={{ '--currentWeight': `${voteWeight}px` } as CSSProperties}
-          />
-        </div>
-      </div>
-    </div>
-  );
-
-  if (!href) {
-    return content;
+  function getTokenIconName(iconName: string) {
+    switch (iconName) {
+      case 'NEAR':
+        return 'tokenNear';
+      default:
+        return '';
+    }
   }
 
+  const tokenIconName = getTokenIconName(icon);
+
   return (
-    <Link href={href} passHref>
-      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-      <a>{content}</a>
-    </Link>
+    <div className={classNames(styles.root, styles.grid)}>
+      <div className={styles.iconContainer}>
+        <div className={styles.iconWrapper}>
+          {tokenIconName !== '' ? (
+            <Icon name={tokenIconName} width={32} />
+          ) : (
+            <div
+              className={styles.icon}
+              style={{ backgroundImage: `url(${icon})` }}
+            />
+          )}
+        </div>
+      </div>
+      <div className={styles.tokenBalance}>
+        {balance} <span className={styles.tokenName}>{symbol}</span>
+      </div>
+      <div className={styles.totalValue}>
+        {totalValue && (
+          <FormattedNumericValue value={totalValue} suffix="usd" />
+        )}
+      </div>
+    </div>
   );
 };

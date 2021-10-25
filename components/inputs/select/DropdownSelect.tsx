@@ -18,6 +18,7 @@ export interface DropdownSelectProps {
   onChange: (value?: string) => void;
   placeholder?: string;
   controlIcon?: ReactNode;
+  disabled?: boolean;
 }
 
 export const DropdownSelect: React.FC<DropdownSelectProps> = ({
@@ -27,7 +28,8 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
   defaultValue,
   onChange,
   placeholder,
-  controlIcon
+  controlIcon,
+  disabled = false
 }) => {
   const {
     isOpen,
@@ -41,7 +43,9 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
     items: options,
     itemToString: item => (item != null ? item.label : ''),
     onSelectedItemChange(changes) {
-      onChange?.(changes.selectedItem?.label);
+      if (changes.selectedItem?.label !== defaultValue) {
+        onChange?.(changes.selectedItem?.label);
+      }
     }
   });
 
@@ -67,6 +71,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
       )}
       <div className={styles.dropdown}>
         <button
+          disabled={disabled}
           type="button"
           className={styles.select}
           {...getToggleButtonProps()}

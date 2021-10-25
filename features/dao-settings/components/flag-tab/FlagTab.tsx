@@ -22,6 +22,7 @@ import {
 import { SputnikService } from 'services/SputnikService';
 import { getChangeConfigProposal } from 'features/dao-settings/helpers';
 import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import styles from './flag-tab.module.scss';
 
 interface FlagTabProps {
@@ -82,6 +83,11 @@ const FlagTab: FC<FlagTabProps> = ({
         proposalBond
       )
     );
+    showNotification({
+      type: NOTIFICATION_TYPES.INFO,
+      description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+      lifetime: 20000
+    });
     await mutate('/daos');
     setViewMode(true);
   }

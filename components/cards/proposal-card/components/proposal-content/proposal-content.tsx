@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import cn from 'classnames';
 
 import { Token } from 'features/types';
@@ -10,8 +10,6 @@ import { Badge } from 'components/badge/Badge';
 import { Icon } from 'components/Icon';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
 import { formatYoktoValue } from 'helpers/format';
-
-import { getTokenDivider } from 'utils/getTokenDivider';
 
 import styles from './proposal-content.module.scss';
 
@@ -116,11 +114,19 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
 }) => {
   const { tokens } = useCustomTokensContext();
 
-  function getTokenValue() {
-    const divider = getTokenDivider(tokens, token);
+  const tokenData = useMemo(() => {
+    const tokensData = Object.values(tokens).find(
+      item => item.tokenId === token
+    );
+    const divider = tokensData?.decimals;
+    const symbol = tokensData?.symbol;
+    const value = formatYoktoValue(amount, divider);
 
-    return formatYoktoValue(amount, divider);
-  }
+    return {
+      value,
+      symbol
+    };
+  }, [amount, token, tokens]);
 
   return (
     <>
@@ -133,10 +139,10 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
         </div>
       )}
       <div className={cn(styles.subRow, 'transferModal')}>
-        <span className={cn('title1', styles.value)}>{getTokenValue()}</span>
+        <span className={cn('title1', styles.value)}>{tokenData.value}</span>
         &nbsp;
         <span className={cn('title1', styles.valueDesc)}>
-          {token === '' ? 'NEAR' : 'FT'}
+          {tokenData.symbol}
         </span>
         <Icon name="transfer" className={styles.icon} />
         <span>{recipient}</span>

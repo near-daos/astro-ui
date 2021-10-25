@@ -1,8 +1,7 @@
 import { DeadlineUnit } from 'components/cards/bounty-card/types';
-import { Token } from 'features/types';
 
 export type CreateBountyInput = {
-  token: Token;
+  token: string;
   amount: number;
   details: string;
   externalUrl: string;
