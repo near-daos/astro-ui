@@ -9,6 +9,7 @@ import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { Input } from 'components/inputs/input/Input';
 import { Button } from 'components/button/Button';
 import { TextArea } from 'components/inputs/textarea/TextArea';
+import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
 
 import { VoteDetails } from 'components/vote-details';
 
@@ -49,15 +50,21 @@ export const CreatePollForm: FC<CreatePollFormProps> = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
       <div className={styles.group}>
-        <TextArea
-          isValid={touchedFields.question && !errors.question?.message}
-          size="block"
-          textAlign="left"
-          resize="none"
-          placeholder="Sample text"
-          className={styles.textArea}
-          label="Question or statement to vote on"
-          {...register('question')}
+        <InputFormWrapper
+          errors={errors}
+          className={styles.token}
+          component={
+            <TextArea
+              isValid={touchedFields.question && !errors.question?.message}
+              size="block"
+              textAlign="left"
+              resize="none"
+              placeholder="Sample text"
+              className={styles.textArea}
+              label="Question or statement to vote on"
+              {...register('question')}
+            />
+          }
         />
       </div>
       <Input

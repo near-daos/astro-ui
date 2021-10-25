@@ -3,17 +3,17 @@ import cn from 'classnames';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Input } from 'components/inputs/input/Input';
-import { Button } from 'components/button/Button';
-import { TextArea } from 'components/inputs/textarea/TextArea';
-import { Select } from 'components/inputs/select/Select';
-
-import { DeadlineUnit } from 'components/cards/bounty-card/types';
-import { CreateBountyInput } from 'features/bounty/dialogs/create-bounty-dialog/types';
-import { Tokens } from 'context/CustomTokensContext';
-import { TokenInput } from 'components/inputs/token-input';
-import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
 import { BondInfo } from 'components/bond';
+import { Button } from 'components/button/Button';
+import { Tokens } from 'context/CustomTokensContext';
+import { Input } from 'components/inputs/input/Input';
+import { Select } from 'components/inputs/select/Select';
+import { TokenInput } from 'components/inputs/token-input';
+import { TextArea } from 'components/inputs/textarea/TextArea';
+import { DeadlineUnit } from 'components/cards/bounty-card/types';
+import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
+
+import { CreateBountyInput } from 'features/bounty/dialogs/create-bounty-dialog/types';
 import { useDeviceType } from 'helpers/media';
 
 import { schema, deadlineUnitOptions } from './helpers';
@@ -77,19 +77,23 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
           />
         }
       />
-      <div className={styles.details}>
-        <TextArea
-          isValid={touchedFields.details && !errors.details?.message}
-          size="block"
-          textAlign="left"
-          resize="none"
-          placeholder="Sample text"
-          className={styles.textArea}
-          maxLength={500}
-          label="Details"
-          {...register('details')}
-        />
-      </div>
+      <InputFormWrapper
+        errors={errors}
+        className={styles.details}
+        component={
+          <TextArea
+            isValid={touchedFields.details && !errors.details?.message}
+            size="block"
+            textAlign="left"
+            resize="none"
+            placeholder="Sample text"
+            className={styles.textArea}
+            maxLength={500}
+            label="Details"
+            {...register('details')}
+          />
+        }
+      />
       <Input
         size="block"
         isValid={touchedFields.externalUrl && !errors.externalUrl?.message}
@@ -98,47 +102,59 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
         label="External URL"
         className={cn(styles.input, styles.externalUrl)}
       />
-      <div className={styles.slot}>
-        <Input
-          size="block"
-          isValid={touchedFields.slots && !errors.slots?.message}
-          textAlign="center"
-          type="number"
-          label="Number of bounty claims"
-          {...register('slots')}
-          className={styles.inlineInput}
-        />
-      </div>
-      <div className={styles.deadline}>
-        <Input
-          size="block"
-          isValid={
-            touchedFields.deadlineThreshold &&
-            !errors.deadlineThreshold?.message
-          }
-          type="number"
-          label="Complete in"
-          textAlign="center"
-          className={styles.inlineInput}
-          {...register('deadlineThreshold')}
-        />
-      </div>
-      <div className={styles.deadlineSelect}>
-        <Select
-          defaultValue={initialValues?.deadlineUnit}
-          className={styles.deadlineUnit}
-          placeholder=""
-          size="block"
-          label="&nbsp;"
-          options={deadlineUnitOptions}
-          {...register('deadlineUnit')}
-          onChange={v =>
-            setValue('deadlineUnit', (v || 'day') as DeadlineUnit, {
-              shouldDirty: true
-            })
-          }
-        />
-      </div>
+      <InputFormWrapper
+        errors={errors}
+        className={styles.slot}
+        component={
+          <Input
+            size="block"
+            isValid={touchedFields.slots && !errors.slots?.message}
+            textAlign="center"
+            type="number"
+            label="Number of bounty claims"
+            {...register('slots')}
+            className={styles.inlineInput}
+          />
+        }
+      />
+      <InputFormWrapper
+        errors={errors}
+        className={styles.deadline}
+        component={
+          <Input
+            size="block"
+            isValid={
+              touchedFields.deadlineThreshold &&
+              !errors.deadlineThreshold?.message
+            }
+            type="number"
+            label="Complete in"
+            textAlign="center"
+            className={styles.inlineInput}
+            {...register('deadlineThreshold')}
+          />
+        }
+      />
+      <InputFormWrapper
+        errors={errors}
+        className={styles.deadlineSelect}
+        component={
+          <Select
+            defaultValue={initialValues?.deadlineUnit}
+            className={styles.deadlineUnit}
+            placeholder=""
+            size="block"
+            label="&nbsp;"
+            options={deadlineUnitOptions}
+            {...register('deadlineUnit')}
+            onChange={v =>
+              setValue('deadlineUnit', (v || 'day') as DeadlineUnit, {
+                shouldDirty: true
+              })
+            }
+          />
+        }
+      />
       <div className={styles.footer}>
         <BondInfo bond={bond} />
         <div className={styles.buttonsWrapper}>
