@@ -106,16 +106,30 @@ const Tabs = <T,>(
       <ReactTabs {...tabsProps}>
         <div className={styles.tabsWrapper}>
           <TabList className={styles.tabs}>
-            {tabs.map(item => (
-              <Tab
-                key={item.id}
-                selectedClassName={styles.active}
-                className={cn(styles.tab, item.className)}
-                data-name={item.label}
-              >
-                {item.label}
-              </Tab>
-            ))}
+            {tabs.map(item => {
+              if (typeof item.label === 'string') {
+                return (
+                  <Tab
+                    key={item.id}
+                    selectedClassName={styles.active}
+                    className={cn(styles.tab, item.className)}
+                    data-name={item.label}
+                  >
+                    {item.label}
+                  </Tab>
+                );
+              }
+
+              return (
+                <Tab
+                  key={item.id}
+                  selectedClassName={styles.tabComponentActive}
+                  className={cn(styles.tabComponent, item.className)}
+                >
+                  {item.label}
+                </Tab>
+              );
+            })}
           </TabList>
           <div className={styles.optional}>{children}</div>
         </div>

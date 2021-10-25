@@ -1,9 +1,9 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
 export interface TabItem<T = string> {
   id: number | string;
   label: T;
-  content?: React.ReactNode;
+  content?: ReactNode;
   onClick?: (tab: TabItem) => void;
   className?: string;
 }
