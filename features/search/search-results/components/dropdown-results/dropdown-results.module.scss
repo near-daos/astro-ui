@@ -27,12 +27,14 @@
   align-items: center;
   display: flex;
   gap: 16px;
+  height: auto;
   justify-content: flex-start;
   margin: 16px 0;
   width: 100%;
   > div {
     align-items: center;
     display: flex;
+    justify-content: flex-start;
   }
 }
 
@@ -41,6 +43,10 @@
   display: flex;
   gap: 16px;
   justify-content: flex-start;
+
+  > span {
+    text-align: left;
+  }
 }
 
 .secondaryLabel {

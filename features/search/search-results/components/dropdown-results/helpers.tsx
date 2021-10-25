@@ -3,6 +3,7 @@ import { Badge } from 'components/badge/Badge';
 import React, { ReactNode } from 'react';
 import { Proposal, ProposalType } from 'types/proposal';
 import { Button } from 'components/button/Button';
+import TextTruncate from 'react-text-truncate';
 
 export function getProposalSearchSummary(
   proposal: Proposal,
@@ -68,7 +69,13 @@ export function getProposalSearchSummary(
     default: {
       content = (
         <div className={styles.summary}>
-          <span>{proposal.description}</span>
+          <TextTruncate
+            line={3}
+            element="span"
+            truncateText="…"
+            text={proposal.description}
+            textTruncateChild={null}
+          />
         </div>
       );
     }
