@@ -18,47 +18,45 @@ export const getServerSideProps: GetServerSideProps = async ({
     tokens: Token[];
   };
 }> => {
-  const dao = await SputnikService.getDaoById(query.dao as string);
-  const daoTokens = await SputnikService.getAccountTokens(query.dao as string);
+  const daoId = query.dao as string;
 
-  const bountiesDone = await SputnikService.getBountiesDone(
-    query.dao as string
-  ).then(bountyDoneProposals => {
-    return bountyDoneProposals.map(proposal => {
-      return {
-        ...(proposal.kind as BountyDoneProposalType),
-        completedDate: proposal.createdAt
-      };
-    });
-  });
-
-  const bounties = await SputnikService.getBountiesByDaoId(
-    query.dao as string
-  ).then(result => {
-    return result.map(
-      (response: BountyResponse): Bounty => {
-        const [description, url] = response.description.split(
-          EXTERNAL_LINK_SEPARATOR
-        );
-
+  const [dao, daoTokens, bountiesDone, bounties] = await Promise.all([
+    SputnikService.getDaoById(daoId),
+    SputnikService.getAccountTokens(daoId),
+    SputnikService.getBountiesDone(daoId).then(bountyDoneProposals => {
+      return bountyDoneProposals.map(proposal => {
         return {
-          amount: response.amount,
-          forgivenessPeriod: response.dao.policy.bountyForgivenessPeriod,
-          claimedBy: response.bountyClaims.map(claim => ({
-            deadline: claim.deadline,
-            accountId: claim.accountId,
-            starTime: claim.startTime
-          })),
-          deadlineThreshold: response.maxDeadline,
-          slots: Number(response.times),
-          id: response.bountyId,
-          token: response.token,
-          description,
-          externalUrl: url || ''
+          ...(proposal.kind as BountyDoneProposalType),
+          completedDate: proposal.createdAt
         };
-      }
-    );
-  });
+      });
+    }),
+    SputnikService.getBountiesByDaoId(daoId).then(result =>
+      result.map(
+        (response: BountyResponse): Bounty => {
+          const [description, url] = response.description.split(
+            EXTERNAL_LINK_SEPARATOR
+          );
+
+          return {
+            amount: response.amount,
+            forgivenessPeriod: response.dao.policy.bountyForgivenessPeriod,
+            claimedBy: response.bountyClaims.map(claim => ({
+              deadline: claim.deadline,
+              accountId: claim.accountId,
+              starTime: claim.startTime
+            })),
+            deadlineThreshold: response.maxDeadline,
+            slots: Number(response.times),
+            id: response.bountyId,
+            token: response.token,
+            description,
+            externalUrl: url || ''
+          };
+        }
+      )
+    )
+  ]);
 
   return {
     props: {

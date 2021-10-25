@@ -199,19 +199,19 @@ export const getServerSideProps: GetServerSideProps = async ({
 }): Promise<{
   props: { dao: DAO | null; members: Member[]; availableGroups: string[] };
 }> => {
-  const dao = await SputnikService.getDaoById(query.dao as string);
+  const daoId = query.dao as string;
 
-  const members = await SputnikService.getProposals(query.dao as string).then(
-    res => {
-      return dao ? extractMembersFromDao(dao, res) : [];
-    }
-  );
+  const [dao, proposals] = await Promise.all([
+    SputnikService.getDaoById(daoId),
+    SputnikService.getProposals(daoId)
+  ]);
+  const members = dao ? extractMembersFromDao(dao, proposals) : [];
 
-  const availableGroups = members.reduce((res, item) => {
+  const availableGroups = members.reduce<string[]>((res, item) => {
     res.push(...item.groups);
 
     return res;
-  }, [] as string[]);
+  }, []);
 
   return {
     props: {

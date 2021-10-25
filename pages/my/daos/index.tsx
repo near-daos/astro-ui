@@ -9,11 +9,16 @@ import MyDaosPage from './MyDaosPage';
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
-  const accountDaos = account
-    ? await SputnikService.getAccountDaos(account)
-    : [];
 
-  const proposals = await SputnikService.getProposals(undefined, 0, 500);
+  const accountDaosPromise = account
+    ? SputnikService.getAccountDaos(account)
+    : Promise.resolve([]);
+
+  const [accountDaos, proposals] = await Promise.all([
+    accountDaosPromise,
+    SputnikService.getProposals(undefined, 0, 500)
+  ]);
+
   const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
 
   return {

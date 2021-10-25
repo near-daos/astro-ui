@@ -190,7 +190,7 @@ export default DAOHome;
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const daoId = query.dao as string;
 
-  const dao = await SputnikService.getDaoById(daoId as string);
+  const dao = await SputnikService.getDaoById(daoId);
 
   if (!dao) {
     return {
@@ -198,8 +198,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
   }
 
-  const tokens = await SputnikService.getAccountTokens(daoId as string);
-  const proposals = await SputnikService.getProposals(daoId as string);
+  const [tokens, proposals] = await Promise.all([
+    SputnikService.getAccountTokens(daoId),
+    SputnikService.getProposals(daoId)
+  ]);
 
   return {
     props: {

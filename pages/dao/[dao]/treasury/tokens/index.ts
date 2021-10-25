@@ -19,9 +19,11 @@ export const getServerSideProps = async ({
 }> => {
   const daoId = query.dao as string;
 
-  const daoTokens = await SputnikService.getAccountTokens(daoId);
-  const dao = await SputnikService.getDaoById(daoId);
-  const receipts = await SputnikService.getAccountReceipts(daoId);
+  const [daoTokens, dao, receipts] = await Promise.all([
+    SputnikService.getAccountTokens(daoId),
+    SputnikService.getDaoById(daoId),
+    SputnikService.getAccountReceipts(daoId)
+  ]);
 
   return {
     props: {

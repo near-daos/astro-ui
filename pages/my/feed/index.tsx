@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next';
 
 import { Proposal } from 'types/proposal';
+import { Token } from 'types/token';
 
 import { Bounty } from 'components/cards/bounty-card/types';
 
@@ -16,14 +17,12 @@ import { mapBountyResponseToBounty } from 'services/sputnik/mappers';
 import { filterProposalsByStatus } from 'features/feed/helpers';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
+
 import MyFeedPage from './MyFeedPage';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { tab, daoViewFilter, status } = query;
   const accountId = CookieService.get(ACCOUNT_COOKIE);
-
-  let proposals: Proposal[] = [];
-  let bounties: Bounty[] = [];
 
   const filter = {
     daoFilter: 'My DAOs' as DaoFilterValues,
@@ -32,23 +31,23 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     status: status ? (status as ProposalFilterStatusOptions) : null
   };
 
-  let proposalFilter;
+  let proposalFilter: ProposalFilterOptions;
 
   switch (tab) {
     case '1': {
-      proposalFilter = 'Governance' as ProposalFilterOptions;
+      proposalFilter = 'Governance';
       break;
     }
     case '2': {
-      proposalFilter = 'Financial' as ProposalFilterOptions;
+      proposalFilter = 'Financial';
       break;
     }
     case '4': {
-      proposalFilter = 'Polls' as ProposalFilterOptions;
+      proposalFilter = 'Polls';
       break;
     }
     case '5': {
-      proposalFilter = 'Groups' as ProposalFilterOptions;
+      proposalFilter = 'Groups';
       break;
     }
     case '0':
@@ -57,34 +56,47 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     }
   }
 
-  if (tab === '3') {
-    bounties = await SputnikService.getBounties().then(result => {
-      return result
-        .map(mapBountyResponseToBounty)
-        .filter(bounty =>
-          bounty.claimedBy.find(claim => claim.accountId === accountId)
-        );
-    });
-  } else {
-    proposals = await SputnikService.getFilteredProposals(
-      {
-        ...filter,
-        proposalFilter
-      },
-      accountId
-    );
-  }
+  const [apiTokens, bounties, proposals]: [
+    Token[],
+    Bounty[],
+    Proposal[]
+  ] = await Promise.all([
+    SputnikService.getAllTokens(),
+    Promise.resolve().then(async () => {
+      if (tab === '3') {
+        const result = await SputnikService.getBounties();
 
-  // Additional filtering for expired proposals
-  if (filter.status === 'Active proposals') {
-    proposals = proposals.filter(item => item.status === 'InProgress');
-  } else if (filter.status === 'Failed') {
-    const failedStatuses = ['Rejected', 'Expired', 'Moved'];
+        return result
+          .map(mapBountyResponseToBounty)
+          .filter(bounty =>
+            bounty.claimedBy.find(claim => claim.accountId === accountId)
+          );
+      }
 
-    proposals = proposals.filter(item => failedStatuses.includes(item.status));
-  }
+      return [];
+    }),
+    Promise.resolve().then(async () => {
+      if (tab === '3') return [];
 
-  const apiTokens = (await SputnikService.getAllTokens()) || [];
+      let result = await SputnikService.getFilteredProposals(
+        {
+          ...filter,
+          proposalFilter
+        },
+        accountId
+      );
+
+      if (filter.status === 'Active proposals') {
+        result = result.filter(item => item.status === 'InProgress');
+      } else if (filter.status === 'Failed') {
+        const failedStatuses = ['Rejected', 'Expired', 'Moved'];
+
+        result = result.filter(item => failedStatuses.includes(item.status));
+      }
+
+      return result;
+    })
+  ]);
 
   return {
     props: {
