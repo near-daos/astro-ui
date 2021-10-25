@@ -79,17 +79,17 @@ export const AppFooter: FC<AppFooterProps> = ({
           <div className={styles.version}>
             <a
               className={styles.devLink}
-              href={process.env.NEXT_PUBLIC_CHANGELOG_URL}
+              href="https://doc.clickup.com/p/h/4fh9y-341/f6e2cb99c0b9ce3"
               target="_blank"
               rel="noreferrer noopener"
             >
-              Build number: {process.env.NEXT_PUBLIC_APP_VERSION}
+              Build number: 21.5
             </a>
           </div>
           <div className={styles.progress}>
             <a
               className={styles.devLink}
-              href={process.env.NEXT_PUBLIC_DEV_PROGRESS_URL}
+              href="https://app.clickup.com/4703550/v/b/li/150305945"
               target="_blank"
               rel="noreferrer noopener"
             >
