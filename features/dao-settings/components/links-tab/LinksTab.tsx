@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from 'components/button/Button';
 import { IconButton } from 'components/button/IconButton';
@@ -19,9 +21,13 @@ import {
   fromMetadataToBase64
 } from 'services/sputnik/mappers/dao';
 import { SputnikService } from 'services/SputnikService';
-import { getChangeConfigProposal } from 'features/dao-settings/helpers';
+import {
+  navigateToDaoPage,
+  getChangeConfigProposal
+} from 'features/dao-settings/helpers';
 import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+
 import styles from './links-tab.module.scss';
 
 type ExternalLink = {
@@ -62,6 +68,8 @@ const LinksTab: FC<LinksTabProps> = ({
   currentDaoMetadata,
   proposalBond
 }) => {
+  const router = useRouter();
+
   const { links } = currentDaoMetadata;
   const [viewMode, setViewMode] = useToggle(true);
 
@@ -132,8 +140,18 @@ const LinksTab: FC<LinksTabProps> = ({
         lifetime: 20000
       });
       setViewMode(true);
+
+      navigateToDaoPage(router);
     },
-    [name, purpose, currentDaoMetadata, daoId, setViewMode, proposalBond]
+    [
+      name,
+      router,
+      purpose,
+      currentDaoMetadata,
+      daoId,
+      setViewMode,
+      proposalBond
+    ]
   );
 
   return (

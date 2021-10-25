@@ -1,24 +1,29 @@
-import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import cn from 'classnames';
+import { useToggle } from 'react-use';
+import { useRouter } from 'next/router';
+import React, { useCallback, VFC } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { DaoConfig } from 'types/proposal';
+
 import { Input } from 'components/inputs/input/Input';
 import { TextArea } from 'components/inputs/textarea/TextArea';
-import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
 import {
-  getChangeConfigProposal,
-  NameAndPurposeData
+  navigateToDaoPage,
+  NameAndPurposeData,
+  getChangeConfigProposal
 } from 'features/dao-settings/helpers';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
 import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
-import React, { useCallback, VFC } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useToggle } from 'react-use';
-import { SputnikService } from 'services/SputnikService';
-import * as yup from 'yup';
-import { DaoConfig } from 'types/proposal';
+
 import {
   DaoMetadata,
   fromMetadataToBase64
 } from 'services/sputnik/mappers/dao';
-import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { SputnikService } from 'services/SputnikService';
 
 import styles from './name-and-purpose-tab.module.scss';
 
@@ -42,6 +47,8 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
   currentDaoMetadata,
   proposalBond
 }) => {
+  const router = useRouter();
+
   const [viewMode, setViewMode] = useToggle(true);
   const [isSubmitting, setSubmitting] = useToggle(false);
 
@@ -99,8 +106,18 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
       });
       setSubmitting(false);
       setViewMode(true);
+
+      navigateToDaoPage(router);
     },
-    [name, setSubmitting, currentDaoMetadata, daoId, proposalBond, setViewMode]
+    [
+      name,
+      router,
+      setSubmitting,
+      currentDaoMetadata,
+      daoId,
+      proposalBond,
+      setViewMode
+    ]
   );
 
   const onCancel = useCallback(() => {

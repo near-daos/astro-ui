@@ -1,18 +1,24 @@
 import isEqual from 'lodash/isEqual';
+import { useRouter } from 'next/router';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+
+import { SINGLE_DAO_PAGE } from 'constants/routing';
+
+import { useDao } from 'hooks/useDao';
+
 import { Button } from 'components/button/Button';
-import { DaoSettingsBanner } from 'features/vote-policy/components/banner';
+import { Badge, Variant } from 'components/badge/Badge';
+
 import {
   getInitialData,
   getNewProposalObject,
   VotingPolicyPageInitialData
 } from 'features/vote-policy/helpers';
-import { useDao } from 'hooks/useDao';
-import { useRouter } from 'next/router';
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import { SputnikService } from 'services/SputnikService';
-import { Badge, Variant } from 'components/badge/Badge';
-import EditDefaultPolicy from 'features/vote-policy/components/edit-default-policy/EditDefaultPolicy';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { DaoSettingsBanner } from 'features/vote-policy/components/banner';
+import EditDefaultPolicy from 'features/vote-policy/components/edit-default-policy/EditDefaultPolicy';
+
+import { SputnikService } from 'services/SputnikService';
 
 import styles from './voting-policy-page.module.scss';
 
@@ -77,8 +83,15 @@ const VotingPolicyPage: FC = () => {
       });
 
       setData(getInitialData(dao));
+
+      router.push({
+        pathname: SINGLE_DAO_PAGE,
+        query: {
+          dao: daoId
+        }
+      });
     }
-  }, [dao, data]);
+  }, [dao, data, daoId, router]);
 
   const onChangeButtonClick = useCallback(() => {
     if (accountId) {
