@@ -9,7 +9,7 @@ import { nearConfig } from 'config';
 
 import { DAO } from 'types/dao';
 import { PaginationResponse } from 'types/api';
-import { Receipt, Transaction } from 'types/transaction';
+import { Receipt } from 'types/transaction';
 import { SearchResultsData } from 'types/search';
 import { Proposal, ProposalType } from 'types/proposal';
 import { BountiesResponse, BountyResponse } from 'types/bounties';
@@ -21,13 +21,11 @@ import {
   SearchResponse,
   GetDAOsResponse,
   GetProposalsResponse,
-  GetTransactionsResponse,
   mapDaoDTOtoDao,
   mapTokensDTOToTokens,
   mapDaoDTOListToDaoList,
   mapProposalDTOToProposal,
   mapSearchResultsDTOToDataObject,
-  mapTransactionDTOToTransaction,
   ReceiptDTO,
   mapReceiptsResponse
 } from 'services/sputnik/mappers';
@@ -319,38 +317,6 @@ class SputnikHttpServiceClass {
     });
 
     return proposals.data.map(mapProposalDTOToProposal);
-  }
-
-  public async getTransfers(daoId?: string): Promise<Transaction[]> {
-    const queryString = RequestQueryBuilder.create()
-      .setFilter({
-        field: 'transactionAction.actionKind',
-        operator: '$in',
-        value: ['TRANSFER', 'FUNCTION_CALL']
-      })
-      .setFilter({
-        field: 'receiverAccountId',
-        operator: '$eq',
-        value: daoId
-      })
-      .setOr({
-        field: 'receipts.predecessorAccountId',
-        operator: '$eq',
-        value: daoId
-      })
-      .setLimit(500)
-      .setOffset(0)
-      .sortBy({
-        field: 'blockTimestamp',
-        order: 'DESC'
-      })
-      .query();
-
-    const { data: transfers } = await this.httpService.get<
-      GetTransactionsResponse
-    >(`/transactions?${queryString}`);
-
-    return mapTransactionDTOToTransaction(daoId as string, transfers.data);
   }
 
   public async getAccountReceipts(accountId?: string): Promise<Receipt[]> {

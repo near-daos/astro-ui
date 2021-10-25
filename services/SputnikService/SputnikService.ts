@@ -18,12 +18,10 @@ import {
   SearchResponse,
   GetDAOsResponse,
   GetProposalsResponse,
-  GetTransactionsResponse,
   mapDaoDTOtoDao,
   mapTokensDTOToTokens,
   mapDaoDTOListToDaoList,
   mapProposalDTOToProposal,
-  mapTransactionDTOToTransaction,
   mapSearchResultsDTOToDataObject,
   mapReceiptsResponse,
   ReceiptDTO
@@ -47,7 +45,7 @@ import {
   Token,
   TokenResponse
 } from 'types/token';
-import { Receipt, Transaction } from 'types/transaction';
+import { Receipt } from 'types/transaction';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikWalletService } from './SputnikWalletService';
@@ -534,38 +532,6 @@ class SputnikService {
     });
 
     return proposals.data.map(mapProposalDTOToProposal);
-  }
-
-  public async getTransfers(daoId?: string): Promise<Transaction[]> {
-    const queryString = RequestQueryBuilder.create()
-      .setFilter({
-        field: 'transactionAction.actionKind',
-        operator: '$in',
-        value: ['TRANSFER', 'FUNCTION_CALL']
-      })
-      .setFilter({
-        field: 'receiverAccountId',
-        operator: '$eq',
-        value: daoId
-      })
-      .setOr({
-        field: 'receipts.predecessorAccountId',
-        operator: '$eq',
-        value: daoId
-      })
-      .setLimit(500)
-      .setOffset(0)
-      .sortBy({
-        field: 'blockTimestamp',
-        order: 'DESC'
-      })
-      .query();
-
-    const { data: transfers } = await this.httpService.get<
-      GetTransactionsResponse
-    >(`/transactions?${queryString}`);
-
-    return mapTransactionDTOToTransaction(daoId as string, transfers.data);
   }
 
   public async getAccountReceipts(accountId?: string): Promise<Receipt[]> {
