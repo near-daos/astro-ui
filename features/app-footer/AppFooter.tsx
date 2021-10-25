@@ -79,7 +79,7 @@ export const AppFooter: FC<AppFooterProps> = ({
           <div className={styles.version}>
             <a
               className={styles.devLink}
-              href="https://app.clickup.com/4703550/v/dc/4fh9y-5381/4fh9y-341"
+              href="https://doc.clickup.com/p/h/4fh9y-341/f6e2cb99c0b9ce3"
               target="_blank"
               rel="noreferrer noopener"
             >
