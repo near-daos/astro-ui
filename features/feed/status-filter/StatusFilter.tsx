@@ -1,11 +1,15 @@
-import React, { useCallback, VFC } from 'react';
+import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
-import { DropdownSelect } from 'components/inputs/select/DropdownSelect';
+import React, { useCallback, VFC } from 'react';
+
 import { Icon } from 'components/Icon';
+import { DropdownSelect } from 'components/inputs/select/DropdownSelect';
 
 import styles from './status-filter.module.scss';
 
 const StatusFilter: VFC = () => {
+  const DEFAULT_FILTER = 'Active proposals';
+
   const router = useRouter();
   const FILTER_OPTIONS = [
     {
@@ -13,7 +17,7 @@ const StatusFilter: VFC = () => {
       component: <div className={styles.all}>All</div>
     },
     {
-      label: 'Active proposals',
+      label: DEFAULT_FILTER,
       component: <div className={styles.activeProposals}>Active proposals</div>
     },
     {
@@ -39,11 +43,17 @@ const StatusFilter: VFC = () => {
     [router]
   );
 
+  useMount(() => {
+    if (!router.query.status) {
+      handleFilterChange({ status: DEFAULT_FILTER });
+    }
+  });
+
   return (
     <DropdownSelect
       placeholder="Filter by"
       controlIcon={<Icon name="filter" className={styles.icon} />}
-      defaultValue={(router.query.status as string) || 'All'}
+      defaultValue={(router.query.status as string) || DEFAULT_FILTER}
       options={FILTER_OPTIONS}
       onChange={value => handleFilterChange({ status: value })}
     />
