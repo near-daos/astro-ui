@@ -1,7 +1,7 @@
 import React from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import { NFTCard } from 'features/nft/ntf-card/NFTCard';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 
 import { NftToken } from 'types/token';
 
@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<{
   nfts: NftToken[];
 }> = async ({ query }) => {
   const daoId = query.dao as string;
-  const nfts = await SputnikService.getAccountNFTs(daoId);
+  const nfts = await SputnikHttpService.getAccountNFTs(daoId);
 
   return {
     props: {

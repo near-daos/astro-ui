@@ -1,4 +1,4 @@
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 import useSWR, { SWRConfiguration } from 'swr';
 import { DAO } from 'types/dao';
 
@@ -9,7 +9,7 @@ export function useDao(daoId: string, options?: Options): DAO | null {
 
   const { data } = useSWR(
     enabled ? ['/daos', daoId ?? ''] : null,
-    (_, id) => SputnikService.getDaoById(id),
+    (_, id) => SputnikHttpService.getDaoById(id),
     options
   );
 

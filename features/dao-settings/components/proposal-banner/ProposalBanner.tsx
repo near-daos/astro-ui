@@ -6,7 +6,7 @@ import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { Scope } from 'features/vote-policy/helpers';
 import React, { FC, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 
 import styles from './dao-setting-banner-form.module.scss';
 
@@ -34,7 +34,7 @@ export const ProposalBanner: FC<ProposalBannerProps> = ({
   disableTooltip,
   scope
 }) => {
-  const accountId = SputnikService.getAccountId();
+  const accountId = SputnikNearService.getAccountId();
 
   const { register } = useFormContext<{
     externalUrl?: string;
@@ -45,7 +45,7 @@ export const ProposalBanner: FC<ProposalBannerProps> = ({
     if (accountId) {
       onEdit();
     } else {
-      SputnikService.login();
+      SputnikNearService.login();
     }
   }, [accountId, onEdit]);
 

@@ -4,7 +4,7 @@ import { ClaimedBy } from 'components/cards/bounty-card/types';
 import { Button } from 'components/button/Button';
 
 import styles from 'components/cards/bounty-card/bounty-card.module.scss';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import {
   addHours,
   format,
@@ -25,7 +25,7 @@ export const InProgressCells: FC<InProgressCellsProps> = ({
   onUnclaim
 }) => {
   const myClaim = claimedBy.find(
-    claim => claim.accountId === SputnikService.getAccountId()
+    claim => claim.accountId === SputnikNearService.getAccountId()
   );
 
   const calculateDueDate = (claim: ClaimedBy) => {

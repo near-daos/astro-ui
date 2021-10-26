@@ -21,7 +21,7 @@ import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeri
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 import { VOTE_BY_PERIOD } from 'constants/votingConstants';
 import { Proposal } from 'types/proposal';
 
@@ -190,7 +190,7 @@ export default DAOHome;
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const daoId = query.dao as string;
 
-  const dao = await SputnikService.getDaoById(daoId);
+  const dao = await SputnikHttpService.getDaoById(daoId);
 
   if (!dao) {
     return {
@@ -199,8 +199,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
 
   const [tokens, proposals] = await Promise.all([
-    SputnikService.getAccountTokens(daoId),
-    SputnikService.getProposals(daoId)
+    SputnikHttpService.getAccountTokens(daoId),
+    SputnikHttpService.getProposals(daoId)
   ]);
 
   return {

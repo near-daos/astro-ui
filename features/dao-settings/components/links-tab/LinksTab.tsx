@@ -20,7 +20,7 @@ import {
   DaoMetadata,
   fromMetadataToBase64
 } from 'services/sputnik/mappers/dao';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import {
   navigateToDaoPage,
   getChangeConfigProposal
@@ -126,7 +126,7 @@ const LinksTab: FC<LinksTabProps> = ({
         })
       };
 
-      await SputnikService.createProposal(
+      await SputnikNearService.createProposal(
         getChangeConfigProposal(
           daoId,
           newDaoConfig,

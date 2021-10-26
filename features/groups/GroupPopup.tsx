@@ -14,7 +14,7 @@ import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import {
   getAddMemberProposal,
@@ -73,7 +73,7 @@ export const GroupPopup: React.FC<GroupPopupProps> = ({
         }
 
         if (proposalData) {
-          await SputnikService.createProposal(proposalData);
+          await SputnikNearService.createProposal(proposalData);
           showNotification({
             type: NOTIFICATION_TYPES.INFO,
             description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,

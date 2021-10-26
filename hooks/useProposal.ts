@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 import { Proposal } from 'types/proposal';
 
 export function useProposal(
@@ -10,7 +10,9 @@ export function useProposal(
 
   useEffect(() => {
     if (daoId && proposalId !== undefined) {
-      SputnikService.getProposal(daoId, proposalId).then(res => setData(res));
+      SputnikHttpService.getProposal(daoId, proposalId).then(res =>
+        setData(res)
+      );
     }
   }, [daoId, proposalId]);
 

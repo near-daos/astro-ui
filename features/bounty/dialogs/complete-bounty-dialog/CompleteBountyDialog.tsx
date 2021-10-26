@@ -10,7 +10,7 @@ import {
 } from 'features/bounty/dialogs/complete-bounty-dialog/complete-bounty-form/CompleteBountyForm';
 import { getCompleteBountyProposal } from 'features/bounty/dialogs/complete-bounty-dialog/helpers';
 import React, { FC, useCallback } from 'react';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { DAO } from 'types/dao';
 import { Token } from 'types/token';
@@ -39,7 +39,7 @@ export const CompleteBountyDialog: FC<CompleteBountyDialogProps> = ({
         dao.policy.proposalBond
       );
 
-      SputnikService.createProposal(proposal).then(() => {
+      SputnikNearService.createProposal(proposal).then(() => {
         showNotification({
           type: NOTIFICATION_TYPES.INFO,
           description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,

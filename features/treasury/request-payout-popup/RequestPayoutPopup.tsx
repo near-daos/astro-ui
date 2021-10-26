@@ -8,7 +8,7 @@ import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import Decimal from 'decimal.js';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 import { useCustomTokensContext } from 'context/CustomTokensContext';
@@ -40,10 +40,10 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
         const token = tokens[data.tokenSymbol];
 
         if (token.tokenId) {
-          await SputnikService.registerUserToToken(token.tokenId);
+          await SputnikNearService.registerUserToToken(token.tokenId);
         }
 
-        await SputnikService.createProposal({
+        await SputnikNearService.createProposal({
           daoId: currentDao.id,
           description: `${data.detail}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
           kind: 'Transfer',

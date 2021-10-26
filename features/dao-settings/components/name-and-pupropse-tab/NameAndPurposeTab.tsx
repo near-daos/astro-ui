@@ -23,7 +23,7 @@ import {
   DaoMetadata,
   fromMetadataToBase64
 } from 'services/sputnik/mappers/dao';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 
 import styles from './name-and-purpose-tab.module.scss';
 
@@ -91,7 +91,7 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
         })
       };
 
-      await SputnikService.createProposal(
+      await SputnikNearService.createProposal(
         getChangeConfigProposal(
           daoId,
           newDaoConfig,

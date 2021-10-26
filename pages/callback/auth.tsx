@@ -1,7 +1,7 @@
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { GetServerSideProps, NextPage } from 'next';
 import { useEffect } from 'react';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 
 const Callback: NextPage = () => {
   useEffect(() => {
@@ -10,7 +10,7 @@ const Callback: NextPage = () => {
       const accountId = searchParams.get('account_id') || undefined;
       const errorCode = searchParams.get('errorCode') || undefined;
 
-      SputnikService.init();
+      SputnikNearService.init();
 
       window.opener?.sputnikRequestSignInCompleted({ accountId, errorCode });
 

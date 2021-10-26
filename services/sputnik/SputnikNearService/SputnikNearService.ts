@@ -8,14 +8,13 @@ import { NearConfig, nearConfig } from 'config';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import { CreateDaoInput } from 'types/dao';
-import { CreateTokenParams, SputnikTokenService } from 'types/token';
 import { CreateProposalParams } from 'types/proposal';
-
-import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { CreateTokenParams, SputnikTokenService } from 'types/token';
 
 import { CookieService } from 'services/CookieService';
-import { SputnikDaoService } from 'services/SputnikService/SputnikDaoService';
-import { SputnikWalletService } from 'services/SputnikService/SputnikWalletService';
+
+import { SputnikDaoService } from './services/SputnikDaoService';
+import { SputnikWalletService } from './services/SputnikWalletService';
 
 class SputnikNearServiceClass {
   private readonly config: NearConfig;
@@ -153,12 +152,6 @@ class SputnikNearServiceClass {
     try {
       await this.sputnikDaoService.create(params);
 
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000
-      });
-
       return true;
     } catch (err) {
       console.error(err);
@@ -167,14 +160,12 @@ class SputnikNearServiceClass {
     return false;
   }
 
-  public async createProposal(params: CreateProposalParams): Promise<void> {
-    await this.sputnikDaoService.addProposal(params);
+  public async createProposal(params: CreateProposalParams) {
+    return this.sputnikDaoService.addProposal(params);
+  }
 
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-      lifetime: 20000
-    });
+  public async registerUserToToken(tokenId: string) {
+    return this.sputnikDaoService.registerToToken(tokenId);
   }
 
   public async claimBounty(
@@ -182,22 +173,10 @@ class SputnikNearServiceClass {
     args: { bountyId: number; deadline: string; bountyBond: string }
   ) {
     await this.sputnikDaoService.claimBounty({ daoId, ...args });
-
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
-      lifetime: 20000
-    });
   }
 
   public async unclaimBounty(daoId: string, bountyId: string) {
     await this.sputnikDaoService.unclaimBounty(daoId, bountyId);
-
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
-      lifetime: 20000
-    });
   }
 
   public async finalize(
@@ -211,14 +190,8 @@ class SputnikNearServiceClass {
     daoId: string,
     proposalId: number,
     action: 'VoteApprove' | 'VoteRemove' | 'VoteReject'
-  ): Promise<void> {
-    return this.sputnikDaoService.vote(daoId, proposalId, action).then(() => {
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
-        lifetime: 20000
-      });
-    });
+  ): Promise<FinalExecutionOutcome> {
+    return this.sputnikDaoService.vote(daoId, proposalId, action);
   }
 
   public async nearAccountExist(accountId: string): Promise<boolean> {

@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 import { DaoSettingsView } from 'features/dao-settings';
 import { DAO } from 'types/dao';
 
@@ -8,7 +8,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }): Promise<{
   props: { data: DAO | null };
 }> => {
-  const data = await SputnikService.getDaoById(query.dao as string);
+  const data = await SputnikHttpService.getDaoById(query.dao as string);
 
   return {
     props: {

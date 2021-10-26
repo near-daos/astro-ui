@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 import { Proposal } from 'types/proposal';
 
 export function useDaoProposals(): Proposal[] | null {
@@ -11,7 +11,9 @@ export function useDaoProposals(): Proposal[] | null {
 
   useEffect(() => {
     if (daoId) {
-      SputnikService.getProposals(daoId as string).then(res => setData(res));
+      SputnikHttpService.getProposals(daoId as string).then(res =>
+        setData(res)
+      );
     }
   }, [daoId]);
 

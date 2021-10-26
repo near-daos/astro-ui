@@ -18,7 +18,7 @@ import { DaoDetails } from 'features/dao-home/components/dao-details/DaoDetails'
 import { DaoOptionCard } from 'features/create-dao/components/option-card/DaoOptionCard';
 import { getRolesVotingPolicy } from 'features/create-dao/components/steps/review/helpers';
 
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import awsUploader from 'services/AwsUploader/AwsUploader';
 
 import { CreateDaoInput } from 'types/dao';
@@ -42,7 +42,7 @@ export function ReviewView(): JSX.Element {
   async function onSubmit(data: DAOFormValues) {
     const { Key: fileName } = await awsUploader.uploadToBucket(data.flag);
 
-    const result = await SputnikService.createDao({
+    const result = await SputnikNearService.createDao({
       name: data.address,
       purpose: data.purpose,
       links: data.websites,
@@ -53,7 +53,7 @@ export function ReviewView(): JSX.Element {
       amountToTransfer: '5',
       displayName: data.displayName,
       policy: {
-        ...getRolesVotingPolicy(data, SputnikService.getAccountId()),
+        ...getRolesVotingPolicy(data, SputnikNearService.getAccountId()),
         proposalBond: '0.1',
         proposalPeriod: '168',
         bountyBond: '0.1',

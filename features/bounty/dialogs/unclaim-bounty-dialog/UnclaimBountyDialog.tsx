@@ -7,7 +7,7 @@ import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import UnclaimBountyContent from 'features/bounty/dialogs/unclaim-bounty-dialog/components/UnclaimBountyContent';
 
 import React, { FC, useCallback } from 'react';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { DAO } from 'types/dao';
 import { Token } from 'types/token';
@@ -28,7 +28,7 @@ export const UnclaimBountyDialog: FC<UnclaimBountyDialogProps> = ({
   token
 }) => {
   const handleSubmit = useCallback(async () => {
-    await SputnikService.unclaimBounty(dao.id, data.id);
+    await SputnikNearService.unclaimBounty(dao.id, data.id);
 
     showNotification({
       type: NOTIFICATION_TYPES.INFO,

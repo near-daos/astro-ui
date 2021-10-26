@@ -12,7 +12,7 @@ import { TextArea } from 'components/inputs/textarea/TextArea';
 
 import { VoteDetails } from 'components/vote-details';
 
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import styles from './complete-bounty-form.module.scss';
 
 interface CompleteBountyFormProps {
@@ -43,7 +43,7 @@ export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
   } = useForm<CompleteBountyFormInput>({
     resolver: yupResolver(schema),
     defaultValues: {
-      recipient: SputnikService.getAccountId()
+      recipient: SputnikNearService.getAccountId()
     }
   });
 

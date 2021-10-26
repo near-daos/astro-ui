@@ -9,7 +9,7 @@ import {
 } from 'components/cards/proposal-card/components/proposal-content/proposal-content';
 import { ProposalCard } from 'components/cards/proposal-card/ProposalCard';
 
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import { useAuthContext } from 'context/AuthContext';
 import { useRouter } from 'next/router';
 import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card/components/proposed-changes-renderer';
@@ -33,7 +33,7 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
         e.stopPropagation();
       }
 
-      await SputnikService.vote(
+      await SputnikNearService.vote(
         proposal.daoId,
         proposal.proposalId,
         'VoteApprove'
@@ -56,7 +56,7 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
         e.stopPropagation();
       }
 
-      await SputnikService.vote(
+      await SputnikNearService.vote(
         proposal.daoId,
         proposal.proposalId,
         'VoteReject'
@@ -79,7 +79,7 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
         e.stopPropagation();
       }
 
-      await SputnikService.vote(
+      await SputnikNearService.vote(
         proposal.daoId,
         proposal.proposalId,
         'VoteRemove'

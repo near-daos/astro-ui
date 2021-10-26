@@ -1,7 +1,7 @@
 import Tokens, {
   TokensPageProps
 } from 'pages/dao/[dao]/treasury/tokens/TokensPage';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 import { getChartData } from 'features/treasury/helpers';
 
 interface GetTokensQuery {
@@ -20,9 +20,9 @@ export const getServerSideProps = async ({
   const daoId = query.dao;
 
   const [daoTokens, dao, receipts] = await Promise.all([
-    SputnikService.getAccountTokens(daoId),
-    SputnikService.getDaoById(daoId),
-    SputnikService.getAccountReceipts(daoId)
+    SputnikHttpService.getAccountTokens(daoId),
+    SputnikHttpService.getDaoById(daoId),
+    SputnikHttpService.getAccountReceipts(daoId)
   ]);
 
   return {

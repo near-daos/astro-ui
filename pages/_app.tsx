@@ -14,7 +14,7 @@ import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
 import CreateLayout from 'components/create-layout/CreateLayout';
 
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
 
 import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
@@ -36,11 +36,11 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
   const Layout = usePageLayout();
 
   useMount(async () => {
-    SputnikService.init();
+    SputnikNearService.init();
 
     CookieService.set(
       ACCOUNT_COOKIE,
-      SputnikService.getAccountId(),
+      SputnikNearService.getAccountId(),
       DEFAULT_OPTIONS
     );
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);

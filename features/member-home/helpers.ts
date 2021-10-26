@@ -11,7 +11,7 @@ import {
 } from 'features/member-home/types';
 import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
 
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 import { useRouter } from 'next/router';
 
 export const daoOptions: { value: DaoFilterValues; label: string }[] = [
@@ -128,7 +128,7 @@ export function useUserHasProposals(): boolean {
   useEffect(() => {
     async function checkIfHasProposals() {
       if (accountId) {
-        const proposals = await SputnikService.getUserProposals(accountId);
+        const proposals = await SputnikHttpService.getUserProposals(accountId);
 
         setHasProposals(!isEmpty(proposals));
       }

@@ -1,4 +1,4 @@
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 import { getActiveProposalsCountByDao } from 'hooks/useAllProposals';
 import { DAO } from 'types/dao';
 
@@ -16,13 +16,13 @@ export async function getDaosList({
   daos: DAO[];
   total: number;
 }> {
-  const { data: daoList, total } = await SputnikService.getDaoList({
+  const { data: daoList, total } = await SputnikHttpService.getDaoList({
     sort,
     offset,
     limit
   });
   const daoIds = daoList.map(item => item.id);
-  const proposals = await SputnikService.getFilteredProposals({
+  const proposals = await SputnikHttpService.getFilteredProposals({
     daosIdsFilter: daoIds
   });
   const activeProposalsByDao = getActiveProposalsCountByDao(proposals);

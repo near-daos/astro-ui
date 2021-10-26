@@ -7,7 +7,7 @@ import { ProposalCardRenderer } from 'components/cards/proposal-card';
 import { useModal } from 'components/modal/hooks';
 import { Button } from 'components/button/Button';
 import styles from 'pages/dao/[dao]/tasks/polls/polls.module.scss';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 import { Proposal } from 'types/proposal';
 import { ProposalsTabsFilter } from 'components/proposals-tabs-filter';
 import { filterProposalsByStatus } from 'features/dao-home/helpers';
@@ -27,7 +27,7 @@ const PollsPage: FC<PollsPageProps> = () => {
   const [showModal] = useModal(CreatePollDialog);
 
   function fetchPolls(daoId: string) {
-    SputnikService.getPolls(daoId).then(res => setPollsList(res));
+    SputnikHttpService.getPolls(daoId).then(res => setPollsList(res));
   }
 
   const showCreatePollDialog = useCallback(async () => {

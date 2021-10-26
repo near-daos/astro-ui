@@ -7,7 +7,7 @@ import styles from 'features/poll/dialogs/poll-dialogs.module.scss';
 import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback } from 'react';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
@@ -28,7 +28,7 @@ export const CreatePollDialog: FC<CreatePollDialogProps> = ({
     async data => {
       if (!currentDao) return;
 
-      await SputnikService.createProposal({
+      await SputnikNearService.createProposal({
         daoId: currentDao.id,
         description: `${data.question}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
         kind: 'Vote',
