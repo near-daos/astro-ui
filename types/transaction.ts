@@ -17,5 +17,6 @@ export type Receipt = {
   predecessorAccountId: string;
   deposit: string;
   type: TransactionType;
+  txHash: string;
   date: string;
 };

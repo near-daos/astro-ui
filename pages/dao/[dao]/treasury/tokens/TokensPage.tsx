@@ -148,7 +148,8 @@ const TokensPage: React.FC<TokensPageProps> = ({
               deposit,
               date,
               predecessorAccountId,
-              receiptId
+              receiptId,
+              txHash
             }) => (
               <div
                 className={styles.row}
@@ -159,6 +160,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
                   type={type}
                   deposit={deposit}
                   date={date}
+                  txHash={txHash}
                   accountName={predecessorAccountId}
                 />
               </div>

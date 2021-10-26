@@ -4,6 +4,7 @@ import { Icon } from 'components/Icon';
 import { format, parseISO } from 'date-fns';
 import { TransactionType } from 'lib/types/treasury';
 import { TokenDeprecated } from 'types/token';
+import { ExplorerLink } from 'components/explorer-link';
 import s from './transaction-card.module.scss';
 
 export interface TransactionCardProps {
@@ -12,6 +13,7 @@ export interface TransactionCardProps {
   deposit: string;
   date: string;
   accountName: string;
+  txHash: string;
 }
 
 export const TransactionCard: React.FC<TransactionCardProps> = ({
@@ -19,10 +21,12 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
   type,
   deposit,
   date,
-  accountName
+  accountName,
+  txHash
 }) => {
   return (
     <div className={s.root}>
+      <ExplorerLink transaction={txHash} isAbsolute />
       <div
         className={classNames(s.icon, {
           [s.deposit]: type === 'Deposit',

@@ -13,10 +13,11 @@
   grid-template-columns: 24px 1fr;
   grid-template-rows: 40% 24% 36%;
   min-height: 125px;
+  position: relative;
 
   @include tablet-portrait {
     grid-template-areas: 'transactionType tokenBalance account date';
-    grid-template-columns: 64px 1fr 1.5fr 1fr;
+    grid-template-columns: 64px 0.8fr 1.4fr 1fr;
     grid-template-rows: 100%;
     min-height: 72px;
   }
@@ -92,6 +93,10 @@
     @include font(0.875em, 24px, 400);
     align-self: center;
     justify-self: end;
-    margin: 0 16px 0 0;
+    margin: 0 50px 0 0;
+  }
+
+  @include large-desktop {
+    margin-right: 56px;
   }
 }

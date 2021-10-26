@@ -113,6 +113,7 @@ export const mapReceiptsResponse = (
             predecessorAccountId: item.predecessorAccountId,
             deposit,
             type,
+            txHash: item.originatedFromTransactionHash,
             date
           });
         }
