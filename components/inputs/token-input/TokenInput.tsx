@@ -19,7 +19,6 @@ interface TokenInputProps {
   error?: boolean;
   success?: boolean;
   name: string;
-  disableTokensSelect?: boolean;
 }
 
 export const TokenInput: FC<TokenInputProps> = ({
@@ -30,8 +29,7 @@ export const TokenInput: FC<TokenInputProps> = ({
   selectedToken,
   error,
   success,
-  name,
-  disableTokensSelect
+  name
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const handleInputClick = useCallback(() => {
@@ -80,7 +78,6 @@ export const TokenInput: FC<TokenInputProps> = ({
         onClick={handleInputClick}
       >
         <DropdownSelect
-          disabled={disableTokensSelect}
           className={styles.select}
           options={tokenOptions}
           onChange={onTokenSelect}

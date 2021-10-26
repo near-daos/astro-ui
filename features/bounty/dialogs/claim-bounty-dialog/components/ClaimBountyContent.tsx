@@ -5,15 +5,18 @@ import { BountyInfoCard } from 'components/cards/bounty-info-card';
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import { Button } from 'components/button/Button';
 import { formatDeadlineDate, formatForgivenessDuration } from 'helpers/format';
+import { Token } from 'types/token';
 
 interface ClaimBountyContentProps {
   onClose: (...args: unknown[]) => void;
   onSubmit: () => void;
   data: Bounty;
+  token: Token;
 }
 
 const ClaimBountyContent: FC<ClaimBountyContentProps> = ({
   data,
+  token,
   onClose,
   onSubmit
 }) => {
@@ -23,7 +26,7 @@ const ClaimBountyContent: FC<ClaimBountyContentProps> = ({
   return (
     <div className={styles.content}>
       <div className={styles.card}>
-        <BountyInfoCard data={data} />
+        <BountyInfoCard data={data} token={token} />
       </div>
       <div className={styles.deadline}>
         <div className={styles.label}>Deadline</div>

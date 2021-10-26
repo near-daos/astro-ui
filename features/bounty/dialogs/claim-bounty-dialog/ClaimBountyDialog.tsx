@@ -1,35 +1,33 @@
 import { Bounty } from 'components/cards/bounty-card/types';
 import { Modal } from 'components/modal';
-import { useRouter } from 'next/router';
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { DAO } from 'types/dao';
+import { Token } from 'types/token';
 import ClaimBountyContent from './components/ClaimBountyContent';
 
 export interface ClaimBountyDialogProps {
   isOpen: boolean;
   onClose: (...args: unknown[]) => void;
   data: Bounty;
-  bond: string;
+  dao: DAO;
+  token: Token;
 }
 
 export const ClaimBountyDialog: FC<ClaimBountyDialogProps> = ({
   isOpen,
   onClose,
   data,
-  bond
+  dao,
+  token
 }) => {
-  const router = useRouter();
-  const daoId = router.query.dao as string;
-
   const handleSubmit = useCallback(async () => {
-    if (!daoId) return;
-
-    await SputnikService.claimBounty(daoId, {
+    await SputnikService.claimBounty(dao.id, {
       bountyId: Number(data.id),
       deadline: data.deadlineThreshold,
-      bountyBond: bond
+      bountyBond: dao.policy.proposalBond
     });
 
     showNotification({
@@ -39,7 +37,13 @@ export const ClaimBountyDialog: FC<ClaimBountyDialogProps> = ({
     });
 
     onClose('submitted');
-  }, [daoId, data.id, data.deadlineThreshold, bond, onClose]);
+  }, [
+    dao.id,
+    data.id,
+    data.deadlineThreshold,
+    dao.policy.proposalBond,
+    onClose
+  ]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -50,6 +54,7 @@ export const ClaimBountyDialog: FC<ClaimBountyDialogProps> = ({
         onClose={onClose}
         onSubmit={handleSubmit}
         data={data}
+        token={token}
       />
     </Modal>
   );

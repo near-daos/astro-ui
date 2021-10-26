@@ -3,17 +3,16 @@ import { Bounty, DeadlineUnit } from 'components/cards/bounty-card/types';
 import { useModal } from 'components/modal/hooks';
 import Tabs from 'components/tabs/Tabs';
 import { BountiesList } from 'features/bounties-list';
-import { CreateBountyDialog } from 'features/bounty/dialogs/create-bounty-dialog/create-bounty-dialog';
+import { CreateBountyDialog } from 'features/bounty/dialogs/create-bounty-dialog/CreateBountyDialog';
 import styles from 'pages/dao/[dao]/tasks/bounties/bounties.module.scss';
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import { BountyDoneProposalType } from 'types/proposal';
 import { DAO } from 'types/dao';
 import { BountyPageContext } from 'features/bounty/helpers';
 import { useAuthContext } from 'context/AuthContext';
 import { useRouter } from 'next/router';
-import { useCustomTokensContext } from 'context/CustomTokensContext';
-import { Token } from 'types/token';
+import { Tokens } from 'context/CustomTokensContext';
 
 const CREATE_BOUNTY_INITIAL = {
   token: 'NEAR',
@@ -25,11 +24,11 @@ const CREATE_BOUNTY_INITIAL = {
   details: ''
 };
 
-interface BountiesPageProps {
+export interface BountiesPageProps {
   dao: DAO;
   bountiesDone: BountyDoneProposalType[];
   bounties: Bounty[];
-  tokens: Token[];
+  tokens: Tokens;
 }
 
 const BountiesPage: FC<BountiesPageProps> = ({
@@ -40,11 +39,6 @@ const BountiesPage: FC<BountiesPageProps> = ({
 }) => {
   const { accountId, login } = useAuthContext();
   const router = useRouter();
-  const { setTokens } = useCustomTokensContext();
-
-  useEffect(() => {
-    setTokens(tokens);
-  }, [setTokens, tokens]);
 
   const inProgressBounties = bounties.filter(bounty =>
     bounty.claimedBy.find(
@@ -99,7 +93,8 @@ const BountiesPage: FC<BountiesPageProps> = ({
     initialValues: {
       ...CREATE_BOUNTY_INITIAL
     },
-    dao
+    dao,
+    tokens
   });
 
   const handleCreateClick = useCallback(async () => {
@@ -109,14 +104,14 @@ const BountiesPage: FC<BountiesPageProps> = ({
       const result = await showCreateBountyDialog();
 
       if (result.includes('submitted')) {
-        router.push(`/dao/${dao.id}`);
+        router.push(`/dao/${dao?.id}`);
       }
     }
-  }, [accountId, login, showCreateBountyDialog, router, dao.id]);
+  }, [accountId, login, showCreateBountyDialog, router, dao?.id]);
 
   const getContextValue = useCallback(() => {
-    return { dao };
-  }, [dao]);
+    return { dao, tokens };
+  }, [dao, tokens]);
 
   return (
     <BountyPageContext.Provider value={getContextValue()}>
@@ -124,7 +119,7 @@ const BountiesPage: FC<BountiesPageProps> = ({
         <div className={styles.header}>
           <h1>Bounties</h1>
           <Button variant="black" size="small" onClick={handleCreateClick}>
-            Create new bounty
+            New bounty proposal
           </Button>
         </div>
         <div className={styles.description}>

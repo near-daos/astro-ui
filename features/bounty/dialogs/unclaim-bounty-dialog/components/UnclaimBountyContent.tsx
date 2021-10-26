@@ -7,17 +7,20 @@ import { Bounty } from 'components/cards/bounty-card/types';
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
+import { Token } from 'types/token';
 
 interface UnclaimBountyContentProps {
   onClose: (...args: unknown[]) => void;
   onSubmit: () => void;
   data: Bounty;
+  token: Token;
 }
 
 type ActionStatus = 'error' | 'success';
 
 const UnclaimBountyContent: FC<UnclaimBountyContentProps> = ({
   data,
+  token,
   onClose,
   onSubmit
 }) => {
@@ -29,7 +32,7 @@ const UnclaimBountyContent: FC<UnclaimBountyContentProps> = ({
   return (
     <div className={styles.content}>
       <div className={styles.card}>
-        <BountyInfoCard data={data} />
+        <BountyInfoCard data={data} token={token} />
       </div>
       <div
         className={cn(styles.warning, {

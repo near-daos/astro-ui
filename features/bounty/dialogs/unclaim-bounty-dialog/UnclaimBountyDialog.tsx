@@ -5,33 +5,30 @@ import { Modal } from 'components/modal';
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 
 import UnclaimBountyContent from 'features/bounty/dialogs/unclaim-bounty-dialog/components/UnclaimBountyContent';
-import { useDao } from 'hooks/useDao';
-import { useRouter } from 'next/router';
+
 import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { DAO } from 'types/dao';
+import { Token } from 'types/token';
 
 export interface UnclaimBountyDialogProps {
   isOpen: boolean;
   onClose: (...args: unknown[]) => void;
   data: Bounty;
+  dao: DAO;
+  token: Token;
 }
 
 export const UnclaimBountyDialog: FC<UnclaimBountyDialogProps> = ({
   isOpen,
   onClose,
-  data
+  data,
+  dao,
+  token
 }) => {
-  const router = useRouter();
-  const daoId = router.query.dao as string;
-  const currentDao = useDao(daoId);
-
   const handleSubmit = useCallback(async () => {
-    if (!currentDao) {
-      return;
-    }
-
-    await SputnikService.unclaimBounty(currentDao.id, data.id);
+    await SputnikService.unclaimBounty(dao.id, data.id);
 
     showNotification({
       type: NOTIFICATION_TYPES.INFO,
@@ -40,7 +37,7 @@ export const UnclaimBountyDialog: FC<UnclaimBountyDialogProps> = ({
     });
 
     onClose('submitted');
-  }, [data.id, onClose, currentDao]);
+  }, [data.id, onClose, dao]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -51,6 +48,7 @@ export const UnclaimBountyDialog: FC<UnclaimBountyDialogProps> = ({
         onClose={onClose}
         onSubmit={handleSubmit}
         data={data}
+        token={token}
       />
     </Modal>
   );

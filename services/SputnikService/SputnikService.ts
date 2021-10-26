@@ -24,13 +24,19 @@ import {
   mapProposalDTOToProposal,
   mapSearchResultsDTOToDataObject,
   mapReceiptsResponse,
-  ReceiptDTO
+  ReceiptDTO,
+  mapBountyResponseToBounty
 } from 'services/sputnik/mappers';
 
 import { BountiesResponse, BountyResponse } from 'types/bounties';
 
 import { CreateDaoInput, DAO } from 'types/dao';
-import { CreateProposalParams, Proposal, ProposalType } from 'types/proposal';
+import {
+  BountyDoneProposalType,
+  CreateProposalParams,
+  Proposal,
+  ProposalType
+} from 'types/proposal';
 import { SearchResultsData } from 'types/search';
 import {
   ProposalFilterOptions,
@@ -48,6 +54,7 @@ import {
 import { Receipt } from 'types/transaction';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { Bounty } from 'components/cards/bounty-card/types';
 import { SputnikWalletService } from './SputnikWalletService';
 import { SputnikDaoService } from './SputnikDaoService';
 
@@ -294,7 +301,9 @@ class SputnikService {
     return mapDaoDTOListToDaoList(data);
   }
 
-  public async getBountiesDone(daoId: string): Promise<Proposal[]> {
+  public async getBountiesDone(
+    daoId: string
+  ): Promise<BountyDoneProposalType[]> {
     const queryString = RequestQueryBuilder.create()
       .setFilter({
         field: 'daoId',
@@ -323,7 +332,12 @@ class SputnikService {
       `/proposals?${queryString}`
     );
 
-    return bounties.data.map(mapProposalDTOToProposal);
+    return bounties.data
+      .map(mapProposalDTOToProposal)
+      .map(bountyDoneProposal => ({
+        ...(bountyDoneProposal.kind as BountyDoneProposalType),
+        completedDate: bountyDoneProposal.createdAt
+      }));
   }
 
   public async getActiveProposals(
@@ -629,7 +643,7 @@ class SputnikService {
       limit?: number;
       sort?: string;
     }
-  ): Promise<BountyResponse[]> {
+  ): Promise<Bounty[]> {
     const offset = params?.offset ?? 0;
     const limit = params?.limit ?? 50;
     const sort = params?.sort ?? 'createdAt,DESC';
@@ -643,7 +657,7 @@ class SputnikService {
       }
     });
 
-    return data.data;
+    return data.data.map(mapBountyResponseToBounty);
   }
 
   public async getAccountNFTs(accountId: string): Promise<NftToken[]> {

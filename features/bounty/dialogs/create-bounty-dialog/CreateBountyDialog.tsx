@@ -2,15 +2,14 @@ import { Icon } from 'components/Icon';
 import { Modal } from 'components/modal';
 
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
-import { useRouter } from 'next/router';
 import React, { FC, useCallback } from 'react';
 
 import { SputnikService } from 'services/SputnikService';
-import { DAO } from 'types/dao';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-import { useCustomTokensContext } from 'context/CustomTokensContext';
 import { VoteDetails } from 'components/vote-details';
 
+import { Tokens } from 'context/CustomTokensContext';
+import { DAO } from 'types/dao';
 import { CreateBountyForm } from './components/create-bounty-form/CreateBountyForm';
 import { getAddBountyProposal } from './helpers';
 
@@ -21,26 +20,24 @@ export interface CreateBountyDialogProps {
   isOpen: boolean;
   onClose: (...args: unknown[]) => void;
   dao: DAO;
+  tokens: Tokens;
 }
 
 export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
+  dao,
+  tokens,
   initialValues,
   isOpen,
-  onClose,
-  dao
+  onClose
 }) => {
-  const router = useRouter();
-  const { tokens } = useCustomTokensContext();
-  const daoId = router.query.dao as string;
-
   const handleSubmit = useCallback(
     (data: CreateBountyInput) => {
-      if (!daoId) {
+      if (!dao) {
         console.error(
           'Bounty proposal can not be created. No dao id specified'
         );
       } else {
-        const proposal = getAddBountyProposal(daoId, data, dao);
+        const proposal = getAddBountyProposal(dao, data, tokens);
 
         SputnikService.createProposal(proposal).then(() => {
           showNotification({
@@ -52,7 +49,7 @@ export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
         });
       }
     },
-    [dao, daoId, onClose]
+    [dao, onClose, tokens]
   );
 
   return (

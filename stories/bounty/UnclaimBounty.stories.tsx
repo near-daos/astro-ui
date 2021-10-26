@@ -21,7 +21,7 @@ Template.args = {
   data: {
     id: '',
     forgivenessPeriod: '',
-    token: 'NEAR',
+    tokenId: 'NEAR',
     amount: '112',
     description:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',

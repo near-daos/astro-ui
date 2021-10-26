@@ -18,7 +18,7 @@ export const mapBountyResponseToBounty = (response: BountyResponse): Bounty => {
     deadlineThreshold: response.maxDeadline,
     slots: Number(response.times),
     id: response.bountyId,
-    token: 'NEAR',
+    tokenId: response.token,
     description,
     externalUrl: url || ''
   };

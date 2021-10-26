@@ -13,9 +13,9 @@ import {
   OpenCells
 } from 'components/cards/bounty-card/components/cells';
 import { format, parseISO } from 'date-fns';
-import { formatYoktoValue } from 'helpers/format';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
 import { useRouter } from 'next/router';
+import { TokenWidget } from 'components/token';
 import styles from './bounty-card.module.scss';
 
 export interface BountyCardProps {
@@ -24,22 +24,33 @@ export interface BountyCardProps {
 }
 
 export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
-  const { token, amount, description, claimedBy, slots, externalUrl } = data;
-  const { dao } = useBountyPageContext();
+  const { tokenId, amount, description, claimedBy, slots, externalUrl } = data;
+  const { dao, tokens } = useBountyPageContext();
   const router = useRouter();
 
-  const amountValue = formatYoktoValue(amount);
+  const tokenIndex = Object.values(tokens).findIndex(
+    daoToken => daoToken.tokenId === tokenId
+  );
+
+  const token =
+    tokenIndex === -1 ? tokens.NEAR : Object.values(tokens)[tokenIndex];
 
   const [showClaimBountyDialog] = useModal(ClaimBountyDialog, {
     data,
-    bond: dao.policy?.bountyBond
+    dao,
+    token
   });
 
-  const [showUnclaimBountyDialog] = useModal(UnclaimBountyDialog, { data });
+  const [showUnclaimBountyDialog] = useModal(UnclaimBountyDialog, {
+    data,
+    dao,
+    token
+  });
 
   const [showCompleteBountyDialog] = useModal(CompleteBountyDialog, {
     data,
-    bond: dao.policy?.proposalBond
+    dao,
+    token
   });
 
   const handleClaimClick = useCallback(() => showClaimBountyDialog(), [
@@ -52,9 +63,9 @@ export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
     const result = await showCompleteBountyDialog();
 
     if (result.includes('submitted')) {
-      router.push(`/dao/${dao.id}`);
+      router.push(`/dao/${dao?.id}`);
     }
-  }, [dao.id, router, showCompleteBountyDialog]);
+  }, [dao?.id, router, showCompleteBountyDialog]);
 
   const renderStatusBasedInfo = () => {
     switch (status) {
@@ -113,13 +124,10 @@ export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
             </div>
           )}
         </div>
-        <div className={styles.reward}>
-          <span className={styles.value}>{amountValue}</span>
-          &nbsp;
-          <span className={styles.valueDesc}>
-            {token === '' ? 'NEAR' : 'FT'}
-          </span>
+        <div className={styles.tokenWrapper}>
+          <TokenWidget token={token} amount={amount} />
         </div>
+
         {renderStatusBasedInfo()}
       </div>
     </div>

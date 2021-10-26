@@ -11,30 +11,33 @@ import {
 import { getCompleteBountyProposal } from 'features/bounty/dialogs/complete-bounty-dialog/helpers';
 import React, { FC, useCallback } from 'react';
 import { SputnikService } from 'services/SputnikService';
-import { useRouter } from 'next/router';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { DAO } from 'types/dao';
+import { Token } from 'types/token';
 
 export interface CompleteBountyDialogProps {
   isOpen: boolean;
   onClose: (...args: unknown[]) => void;
   data: Bounty;
-  bond: string;
+  dao: DAO;
+  token: Token;
 }
 
 export const CompleteBountyDialog: FC<CompleteBountyDialogProps> = ({
   isOpen,
   onClose,
   data,
-  bond
+  dao,
+  token
 }) => {
-  const router = useRouter();
-  const daoId = router.query.dao as string;
-
   const handleSubmit = useCallback(
     (input: CompleteBountyFormInput) => {
-      if (!daoId) return;
-
-      const proposal = getCompleteBountyProposal(daoId, data.id, input, bond);
+      const proposal = getCompleteBountyProposal(
+        dao.id,
+        data.id,
+        input,
+        dao.policy.proposalBond
+      );
 
       SputnikService.createProposal(proposal).then(() => {
         showNotification({
@@ -45,7 +48,7 @@ export const CompleteBountyDialog: FC<CompleteBountyDialogProps> = ({
         onClose('submitted');
       });
     },
-    [daoId, data.id, bond, onClose]
+    [dao.id, data.id, dao.policy.proposalBond, onClose]
   );
 
   return (
@@ -54,7 +57,7 @@ export const CompleteBountyDialog: FC<CompleteBountyDialogProps> = ({
         <h2>Complete bounty</h2>
       </header>
       <div className={styles.content}>
-        <BountyInfoCard data={data} />
+        <BountyInfoCard data={data} token={token} />
         <CompleteBountyForm onCancel={onClose} onSubmit={handleSubmit} />
       </div>
     </Modal>

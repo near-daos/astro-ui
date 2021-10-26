@@ -3,17 +3,17 @@ import TextTruncate from 'react-text-truncate';
 import { Bounty } from 'components/cards/bounty-card/types';
 import { Icon } from 'components/Icon';
 import cn from 'classnames';
-import { formatYoktoValue } from 'helpers/format';
 import styles from 'components/cards/bounty-card/bounty-card.module.scss';
+import { Token } from 'types/token';
+import { TokenWidget } from 'components/token';
 
 export interface BountyInfoCardProps {
   data: Bounty;
+  token: Token;
 }
 
-export const BountyInfoCard: FC<BountyInfoCardProps> = ({ data }) => {
-  const { token, amount, description } = data;
-
-  const amountValue = formatYoktoValue(amount);
+export const BountyInfoCard: FC<BountyInfoCardProps> = ({ data, token }) => {
+  const { amount, description } = data;
 
   return (
     <div className={cn(styles.root, styles.simple)}>
@@ -30,13 +30,7 @@ export const BountyInfoCard: FC<BountyInfoCardProps> = ({ data }) => {
             textTruncateChild={null}
           />
         </div>
-        <div className={styles.reward}>
-          <span className={styles.value}>{amountValue}</span>
-          &nbsp;
-          <span className={styles.valueDesc}>
-            {token === '' ? 'NEAR' : 'FT'}
-          </span>
-        </div>
+        <TokenWidget token={token} amount={amount} />
       </div>
     </div>
   );

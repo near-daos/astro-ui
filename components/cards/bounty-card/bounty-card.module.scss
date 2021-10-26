@@ -55,7 +55,7 @@
   flex: 1;
   flex-direction: column;
   gap: 8px;
-  justify-content: flex-start;
+  justify-content: space-between;
   overflow: hidden;
   padding: 16px;
 
@@ -72,7 +72,6 @@
 .group {
   @extend %body1;
   @include ellipse-text;
-  flex: 2;
   margin-right: 8px;
   white-space: normal;
 
@@ -81,14 +80,16 @@
   }
 }
 
-.reward {
+.tokenWrapper {
+  align-items: center;
+  display: flex;
   flex-basis: 0;
-  margin: 12px 0 0;
+  justify-content: space-evenly;
   white-space: nowrap;
 
   @include tablet-landscape {
     flex: 1 0 70px;
-    margin: 0 8px;
+    margin: 0 100px;
   }
 }
 
@@ -104,7 +105,7 @@
   width: 100%;
 
   @include tablet-landscape {
-    align-items: center;
+    align-items: flex-end;
     flex-wrap: nowrap;
     margin: 0 8px 0 16px;
   }
@@ -112,6 +113,7 @@
 
 .slots.inprogress {
   @include tablet-landscape {
+    align-items: center;
     flex: 0 0 325px;
   }
 }
@@ -144,14 +146,6 @@
 
 .nowrap {
   word-break: keep-all;
-}
-
-.value {
-  @extend %title2;
-}
-
-.valueDesc {
-  @extend %subtitle3;
 }
 
 .button {

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import { BountyCard, BountyCardProps } from 'components/cards/bounty-card';
-import { TokenDeprecated } from 'types/token';
 
 export default {
   title: 'Components/Cards/BountyCard',
@@ -25,7 +24,7 @@ Default.args = {
   data: {
     id: '',
     forgivenessPeriod: '',
-    token: TokenDeprecated.NEAR,
+    tokenId: '',
     amount: '112',
     description:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',
@@ -42,7 +41,7 @@ InProgress.args = {
   data: {
     id: '',
     forgivenessPeriod: '',
-    token: TokenDeprecated.NEAR,
+    tokenId: '',
     amount: '112',
     description:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',
@@ -59,7 +58,7 @@ InProgressClaimedByMe.args = {
   data: {
     id: '',
     forgivenessPeriod: '',
-    token: TokenDeprecated.NEAR,
+    tokenId: '',
     amount: '112',
     description:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',
@@ -76,7 +75,7 @@ Completed.args = {
   data: {
     id: '',
     forgivenessPeriod: '',
-    token: TokenDeprecated.NEAR,
+    tokenId: '',
     amount: '34',
     description:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.',

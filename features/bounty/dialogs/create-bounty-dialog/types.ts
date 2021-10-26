@@ -5,7 +5,6 @@ export type CreateBountyInput = {
   amount: number;
   details: string;
   externalUrl: string;
-  tokenAddress?: string;
   slots: number;
   deadlineThreshold: number;
   deadlineUnit: DeadlineUnit;
