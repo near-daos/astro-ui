@@ -110,6 +110,12 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
     inputRef?.current?.focus();
   }, []);
 
+  function getDropdownWidth() {
+    return document?.body?.offsetWidth < 768
+      ? 0
+      : inputRef.current?.getBoundingClientRect().width ?? 0;
+  }
+
   return (
     <div className={cn(styles.root, { [styles.expanded]: expanded })} ref={ref}>
       <div className={styles.inputIcon}>
@@ -162,7 +168,7 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
               }}
               onProposalClick={() => router.push('/search-results?tab=1')}
               onMemberClick={() => router.push('/search-results?tab=2')}
-              width={inputRef.current?.getBoundingClientRect().width ?? 0}
+              width={getDropdownWidth()}
             />
           </div>,
           document.body

@@ -98,7 +98,7 @@ export const AppHeader: FC<AppHeaderProps> = ({ isLandingPage }) => {
         />
       </div>
       {renderLogo()}
-      <div className={cn(styles.search, styles.desktopOnly)}>
+      <div className={styles.search}>
         <SearchBar />
       </div>
       {renderDaoButtons()}
