@@ -10,6 +10,11 @@
   height: 100%;
   padding: 24px 16px;
   text-align: center;
+  transition: box-shadow 0.4s;
+
+  &:hover {
+    box-shadow: 3px 2px 24px var(--color-black-opacity-25);
+  }
 }
 
 .title {

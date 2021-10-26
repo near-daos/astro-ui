@@ -11,6 +11,7 @@
   padding: 80px 24px 40px;
   position: relative;
   text-align: center;
+  transition: box-shadow 0.4s;
 
   @include tablet-portrait {
     margin-top: 80px;
@@ -34,6 +35,10 @@
 
   @include mobile-only {
     margin-top: 80px;
+  }
+
+  &:hover {
+    box-shadow: 3px 2px 24px var(--color-black-opacity-25);
   }
 
   h1 {
