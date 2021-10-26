@@ -117,7 +117,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
           textAlign="left"
           resize="none"
           placeholder="Sample text"
-          label="detail"
+          label="Details"
           {...register('detail')}
         />
       </div>
