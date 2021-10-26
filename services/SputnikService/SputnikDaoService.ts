@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import BN from 'bn.js';
 import { utils } from 'near-api-js';
-import { AnyObject } from 'yup/lib/types';
+import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 
 import { appConfig } from 'config';
@@ -63,7 +62,9 @@ export class SputnikDaoService {
     }
   }
 
-  async addProposal(params: CreateProposalParams): Promise<AnyObject> {
+  async addProposal(
+    params: CreateProposalParams
+  ): Promise<FinalExecutionOutcome> {
     const { daoId, description, kind, data, bond } = params;
 
     const kindData = data
@@ -86,7 +87,7 @@ export class SputnikDaoService {
     });
   }
 
-  async registerToToken(tokenId: string): Promise<AnyObject> {
+  async registerToToken(tokenId: string): Promise<FinalExecutionOutcome> {
     return this.functionCall({
       methodName: 'storage_deposit',
       contractId: tokenId,
@@ -103,7 +104,7 @@ export class SputnikDaoService {
     daoId: string,
     proposalId: number,
     action: 'VoteApprove' | 'VoteRemove' | 'VoteReject'
-  ): Promise<any> {
+  ): Promise<FinalExecutionOutcome> {
     return this.functionCall({
       methodName: 'act_proposal',
       contractId: daoId,
@@ -114,7 +115,10 @@ export class SputnikDaoService {
     });
   }
 
-  public async finalize(daoId: string, proposalId: number): Promise<any> {
+  public async finalize(
+    daoId: string,
+    proposalId: number
+  ): Promise<FinalExecutionOutcome> {
     return this.functionCall({
       methodName: 'finalize',
       contractId: daoId,
@@ -124,7 +128,9 @@ export class SputnikDaoService {
     });
   }
 
-  public async claimBounty(params: ClaimBountyParams): Promise<any> {
+  public async claimBounty(
+    params: ClaimBountyParams
+  ): Promise<FinalExecutionOutcome> {
     const { daoId, bountyId: id, deadline, bountyBond } = params;
 
     return this.functionCall({
@@ -139,7 +145,10 @@ export class SputnikDaoService {
     });
   }
 
-  public unclaimBounty(daoId: string, bountyId: string): Promise<any> {
+  public unclaimBounty(
+    daoId: string,
+    bountyId: string
+  ): Promise<FinalExecutionOutcome> {
     return this.functionCall({
       methodName: 'bounty_giveup',
       contractId: daoId,

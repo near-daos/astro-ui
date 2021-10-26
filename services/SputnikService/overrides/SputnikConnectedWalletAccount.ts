@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import * as borsh from 'borsh';
 import {
   ConnectedWalletAccount,
@@ -7,22 +6,22 @@ import {
 import { PublicKey } from 'near-api-js/lib/utils';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { SignAndSendTransactionOptions } from 'near-api-js/lib/account';
+import { Action } from 'near-api-js/lib/transaction';
 
 import { SputnikWalletConnection } from './types';
 
 export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
   protected async signAndSendTransaction(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ...args: any[]
+    receiverIdOrTxOptions: string | SignAndSendTransactionOptions,
+    txActions: Action[]
   ): Promise<FinalExecutionOutcome> {
-    let options: SignAndSendTransactionOptions = args[0];
-
-    if (typeof args[0] === 'string') {
-      options = {
-        receiverId: args[0],
-        actions: args[1]
-      };
-    }
+    const options: SignAndSendTransactionOptions =
+      typeof receiverIdOrTxOptions === 'string'
+        ? {
+            receiverId: receiverIdOrTxOptions,
+            actions: txActions
+          }
+        : receiverIdOrTxOptions;
 
     const { receiverId, actions, walletMeta, walletCallbackUrl } = options;
 
@@ -100,7 +99,7 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
         transactionHashes,
         errorCode
       }) => {
-        if (typeof transactionHashes === 'string') {
+        if (typeof transactionHashes !== 'undefined') {
           const result = await this.connection.provider.txStatus(
             transactionHashes,
             this.accountId

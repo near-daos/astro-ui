@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   RequestQueryBuilder,
   SConditionAND,
@@ -9,6 +8,7 @@ import Big from 'big.js';
 import { NearConfig, nearConfig } from 'config';
 import omit from 'lodash/omit';
 import { Contract, keyStores, Near } from 'near-api-js';
+import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { CookieService } from 'services/CookieService';
 
 import { HttpService, httpService } from 'services/HttpService';
@@ -49,11 +49,13 @@ import {
   NftToken,
   NftTokenResponse,
   Token,
-  TokenResponse
+  TokenResponse,
+  SputnikTokenService
 } from 'types/token';
 import { Receipt } from 'types/transaction';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
+
 import { Bounty } from 'components/cards/bounty-card/types';
 import { SputnikWalletService } from './SputnikWalletService';
 import { SputnikDaoService } from './SputnikDaoService';
@@ -67,7 +69,7 @@ class SputnikService {
 
   private sputnikDaoService!: SputnikDaoService;
 
-  private factoryTokenContract!: Contract & any;
+  private factoryTokenContract!: SputnikTokenService;
 
   private near!: Near;
 
@@ -137,17 +139,22 @@ class SputnikService {
   }
 
   async computeRequiredDeposit(args: unknown) {
-    return Big(
-      await this.factoryTokenContract.get_required_deposit({
-        args,
-        account_id: this.getAccountId()
-      })
-    );
+    const bigSource = await this.factoryTokenContract.get_required_deposit?.({
+      args,
+      account_id: this.getAccountId()
+    });
+
+    if (!bigSource) return undefined;
+
+    return Big(bigSource);
   }
 
   // for testing purpose
-  public async listTokens() {
-    const tokensCount = await this.factoryTokenContract.get_number_of_tokens();
+  public async listTokens(): Promise<void> {
+    const tokensCount = await this.factoryTokenContract.get_number_of_tokens?.();
+
+    if (typeof tokensCount === 'undefined') return;
+
     const chunkSize = 5;
     const chunkCount =
       (tokensCount - (tokensCount % chunkSize)) / chunkSize + 1;
@@ -155,7 +162,7 @@ class SputnikService {
     const { results, errors } = await PromisePool.withConcurrency(1)
       .for([...Array(chunkCount).keys()])
       .process(async (offset: number) =>
-        this.factoryTokenContract.get_tokens({
+        this.factoryTokenContract.get_tokens?.({
           from_index: offset * chunkSize,
           limit: chunkSize
         })
@@ -165,7 +172,7 @@ class SputnikService {
     console.log(results, errors);
   }
 
-  public async createToken(params: CreateTokenParams): Promise<any> {
+  public async createToken(params: CreateTokenParams): Promise<void> {
     const args = {
       owner_id: this.getAccountId(),
       total_supply: '1000000000000000000000',
@@ -181,7 +188,7 @@ class SputnikService {
     const TGas = Big(10).pow(12);
     const BoatOfGas = Big(200).mul(TGas);
 
-    await this.factoryTokenContract.create_token(
+    await this.factoryTokenContract.create_token?.(
       { args },
       BoatOfGas.toFixed(0)
     );
@@ -199,7 +206,7 @@ class SputnikService {
     return false;
   }
 
-  public async createProposal(params: CreateProposalParams): Promise<any> {
+  public async createProposal(params: CreateProposalParams) {
     return this.sputnikDaoService.addProposal(params);
   }
 
@@ -218,7 +225,10 @@ class SputnikService {
     await this.sputnikDaoService.unclaimBounty(daoId, bountyId);
   }
 
-  public async finalize(contractId: string, proposalId: number): Promise<void> {
+  public async finalize(
+    contractId: string,
+    proposalId: number
+  ): Promise<FinalExecutionOutcome> {
     return this.sputnikDaoService.finalize(contractId, proposalId);
   }
 
@@ -226,7 +236,7 @@ class SputnikService {
     daoId: string,
     proposalId: number,
     action: 'VoteApprove' | 'VoteRemove' | 'VoteReject'
-  ): Promise<void> {
+  ): Promise<FinalExecutionOutcome> {
     return this.sputnikDaoService.vote(daoId, proposalId, action);
   }
 
@@ -548,12 +558,12 @@ class SputnikService {
     return proposals.data.map(mapProposalDTOToProposal);
   }
 
-  public async getAccountReceipts(accountId?: string): Promise<Receipt[]> {
+  public async getAccountReceipts(accountId: string): Promise<Receipt[]> {
     const { data } = await this.httpService.get<ReceiptDTO[]>(
       `/transactions/receipts/account-receipts/${accountId}`
     );
 
-    return mapReceiptsResponse(accountId as string, data);
+    return mapReceiptsResponse(accountId, data);
   }
 
   public async getPolls(

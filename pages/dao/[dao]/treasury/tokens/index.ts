@@ -17,7 +17,7 @@ export const getServerSideProps = async ({
 }): Promise<{
   props: TokensPageProps;
 }> => {
-  const daoId = query.dao as string;
+  const daoId = query.dao;
 
   const [daoTokens, dao, receipts] = await Promise.all([
     SputnikService.getAccountTokens(daoId),

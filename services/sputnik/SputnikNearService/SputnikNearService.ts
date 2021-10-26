@@ -1,14 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Big from 'big.js';
 import PromisePool from '@supercharge/promise-pool';
 import { Contract, keyStores, Near } from 'near-api-js';
+import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 
 import { NearConfig, nearConfig } from 'config';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import { CreateDaoInput } from 'types/dao';
-import { CreateTokenParams } from 'types/token';
+import { CreateTokenParams, SputnikTokenService } from 'types/token';
 import { CreateProposalParams } from 'types/proposal';
 
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
@@ -24,7 +24,7 @@ class SputnikNearServiceClass {
 
   private sputnikDaoService!: SputnikDaoService;
 
-  private factoryTokenContract!: Contract & any;
+  private factoryTokenContract!: SputnikTokenService;
 
   private near!: Near;
 
@@ -94,17 +94,22 @@ class SputnikNearServiceClass {
   }
 
   async computeRequiredDeposit(args: unknown) {
-    return Big(
-      await this.factoryTokenContract.get_required_deposit({
-        args,
-        account_id: this.getAccountId()
-      })
-    );
+    const bigSource = await this.factoryTokenContract.get_required_deposit?.({
+      args,
+      account_id: this.getAccountId()
+    });
+
+    if (!bigSource) return undefined;
+
+    return Big(bigSource);
   }
 
   // for testing purpose
-  public async listTokens() {
-    const tokensCount = await this.factoryTokenContract.get_number_of_tokens();
+  public async listTokens(): Promise<void> {
+    const tokensCount = await this.factoryTokenContract.get_number_of_tokens?.();
+
+    if (typeof tokensCount === 'undefined') return;
+
     const chunkSize = 5;
     const chunkCount =
       (tokensCount - (tokensCount % chunkSize)) / chunkSize + 1;
@@ -112,7 +117,7 @@ class SputnikNearServiceClass {
     const { results, errors } = await PromisePool.withConcurrency(1)
       .for([...Array(chunkCount).keys()])
       .process(async (offset: number) =>
-        this.factoryTokenContract.get_tokens({
+        this.factoryTokenContract.get_tokens?.({
           from_index: offset * chunkSize,
           limit: chunkSize
         })
@@ -122,7 +127,7 @@ class SputnikNearServiceClass {
     console.log(results, errors);
   }
 
-  public async createToken(params: CreateTokenParams): Promise<any> {
+  public async createToken(params: CreateTokenParams): Promise<void> {
     const args = {
       owner_id: this.getAccountId(),
       total_supply: '1000000000000000000000',
@@ -138,7 +143,7 @@ class SputnikNearServiceClass {
     const TGas = Big(10).pow(12);
     const BoatOfGas = Big(200).mul(TGas);
 
-    await this.factoryTokenContract.create_token(
+    await this.factoryTokenContract.create_token?.(
       { args },
       BoatOfGas.toFixed(0)
     );
@@ -162,13 +167,13 @@ class SputnikNearServiceClass {
     return false;
   }
 
-  public async createProposal(params: CreateProposalParams): Promise<any> {
-    return this.sputnikDaoService.addProposal(params).then(() => {
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000
-      });
+  public async createProposal(params: CreateProposalParams): Promise<void> {
+    await this.sputnikDaoService.addProposal(params);
+
+    showNotification({
+      type: NOTIFICATION_TYPES.INFO,
+      description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+      lifetime: 20000
     });
   }
 
@@ -195,7 +200,10 @@ class SputnikNearServiceClass {
     });
   }
 
-  public async finalize(contractId: string, proposalId: number): Promise<void> {
+  public async finalize(
+    contractId: string,
+    proposalId: number
+  ): Promise<FinalExecutionOutcome> {
     return this.sputnikDaoService.finalize(contractId, proposalId);
   }
 
