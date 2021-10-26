@@ -44,7 +44,7 @@ export const TokenInput: FC<TokenInputProps> = ({
       <div className={styles.row}>
         <div className={styles.iconWrapper}>
           {token.symbol === 'NEAR' ? (
-            <Icon name="iconNear" />
+            <Icon name="tokenNearBig" />
           ) : (
             <div
               style={{ backgroundImage: `url(${token.icon})` }}
