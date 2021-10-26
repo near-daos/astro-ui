@@ -5,7 +5,7 @@ import { Proposal } from 'types/proposal';
 
 import { formatCurrency } from 'utils/formatCurrency';
 import { useEffect, useState } from 'react';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 
 import { Option } from 'components/dropdown/Dropdown';
 
@@ -111,7 +111,7 @@ export function useProposals(): UseProposalsResult {
   useEffect(() => {
     async function fetchProposals() {
       if (router.query.dao) {
-        const daoProposals = await SputnikService.getProposals(
+        const daoProposals = await SputnikHttpService.getProposals(
           router.query.dao as string
         );
 

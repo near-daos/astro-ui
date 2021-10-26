@@ -5,7 +5,7 @@ import { MenuItem } from 'components/sidebar/types';
 
 import { AddGroupMenu } from 'features/groups/components/add-group-menu';
 
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService, SputnikNearService } from 'services/sputnik';
 import { DAO } from 'types/dao';
 import {
   TASKS_SECTION_ID,
@@ -16,7 +16,7 @@ import {
 
 export const useGetDaoNavItems = (): MenuItem[] => {
   const router = useRouter();
-  const accountId = SputnikService.getAccountId();
+  const accountId = SputnikNearService.getAccountId();
 
   const [selectedDao, setSelectedDao] = useState<DAO | null>();
 
@@ -24,7 +24,7 @@ export const useGetDaoNavItems = (): MenuItem[] => {
 
   useEffect(() => {
     if (accountId) {
-      SputnikService.getDaoById(selectedDaoId).then(setSelectedDao);
+      SputnikHttpService.getDaoById(selectedDaoId).then(setSelectedDao);
     }
   }, [accountId, selectedDaoId]);
 

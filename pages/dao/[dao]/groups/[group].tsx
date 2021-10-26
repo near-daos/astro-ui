@@ -19,7 +19,7 @@ import React, { FC, useCallback, useState } from 'react';
 
 import { DAO, Member } from 'types/dao';
 import { GetServerSideProps } from 'next';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 import { extractMembersFromDao } from 'services/sputnik/mappers';
 import { useAuthContext } from 'context/AuthContext';
 
@@ -202,8 +202,8 @@ export const getServerSideProps: GetServerSideProps = async ({
   const daoId = query.dao as string;
 
   const [dao, proposals] = await Promise.all([
-    SputnikService.getDaoById(daoId),
-    SputnikService.getProposals(daoId)
+    SputnikHttpService.getDaoById(daoId),
+    SputnikHttpService.getProposals(daoId)
   ]);
   const members = dao ? extractMembersFromDao(dao, proposals) : [];
 

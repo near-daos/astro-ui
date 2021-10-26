@@ -4,7 +4,7 @@ import { createContext, FC, useContext, useState } from 'react';
 import { ALL_DAOS_URL } from 'constants/routing';
 import { ACCOUNT_COOKIE, DAO_COOKIE } from 'constants/cookies';
 
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
 
 interface AuthContextInterface {
@@ -23,13 +23,13 @@ const AuthContext = createContext<AuthContextInterface>({
 
 export const AuthWrapper: FC = ({ children }) => {
   const router = useRouter();
-  const [accountId, setAccountId] = useState(SputnikService.getAccountId());
+  const [accountId, setAccountId] = useState(SputnikNearService.getAccountId());
 
   async function login() {
     try {
-      await SputnikService.login();
+      await SputnikNearService.login();
 
-      const id = SputnikService.getAccountId();
+      const id = SputnikNearService.getAccountId();
 
       if (id) {
         setAccountId(id);
@@ -41,7 +41,7 @@ export const AuthWrapper: FC = ({ children }) => {
   }
 
   async function logout() {
-    await SputnikService.logout();
+    await SputnikNearService.logout();
 
     setAccountId('');
     CookieService.remove(ACCOUNT_COOKIE);

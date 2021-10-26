@@ -6,7 +6,7 @@ import { BountiesList } from 'features/bounties-list';
 import { CreateBountyDialog } from 'features/bounty/dialogs/create-bounty-dialog/CreateBountyDialog';
 import styles from 'pages/dao/[dao]/tasks/bounties/bounties.module.scss';
 import React, { FC, useCallback } from 'react';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import { BountyDoneProposalType } from 'types/proposal';
 import { DAO } from 'types/dao';
 import { BountyPageContext } from 'features/bounty/helpers';
@@ -42,7 +42,7 @@ const BountiesPage: FC<BountiesPageProps> = ({
 
   const inProgressBounties = bounties.filter(bounty =>
     bounty.claimedBy.find(
-      claim => claim.accountId === SputnikService.getAccountId()
+      claim => claim.accountId === SputnikNearService.getAccountId()
     )
   );
 

@@ -18,7 +18,7 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { DaoSettingsBanner } from 'features/vote-policy/components/banner';
 import EditDefaultPolicy from 'features/vote-policy/components/edit-default-policy/EditDefaultPolicy';
 
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 
 import styles from './voting-policy-page.module.scss';
 
@@ -43,7 +43,7 @@ const VotingPolicyPage: FC = () => {
   const daoId = router.query.dao as string;
   const dao = useDao(daoId);
 
-  const accountId = SputnikService.getAccountId();
+  const accountId = SputnikNearService.getAccountId();
 
   const [data, setData] = useState<VotingPolicyPageInitialData | null>(null);
 
@@ -74,7 +74,7 @@ const VotingPolicyPage: FC = () => {
     if (data && dao && !isEqual(getInitialData(dao), data)) {
       const proposal = getNewProposalObject(dao, data);
 
-      await SputnikService.createProposal(proposal);
+      await SputnikNearService.createProposal(proposal);
 
       showNotification({
         type: NOTIFICATION_TYPES.INFO,
@@ -97,7 +97,7 @@ const VotingPolicyPage: FC = () => {
     if (accountId) {
       setViewMode(false);
     } else {
-      SputnikService.login();
+      SputnikNearService.login();
     }
   }, [accountId]);
 

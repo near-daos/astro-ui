@@ -1,7 +1,7 @@
 import reduce from 'lodash/reduce';
 import { createContext, FC, useCallback, useContext, useState } from 'react';
 
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 import { Token } from 'types/token';
 
 export type Tokens = Record<string, Token>;
@@ -40,7 +40,7 @@ export const CustomTokensProvider: FC = ({ children }) => {
   }, []);
 
   async function fetchAndSetTokens() {
-    const t = await SputnikService.getAllTokens();
+    const t = await SputnikHttpService.getAllTokens();
 
     setTokens(t);
   }

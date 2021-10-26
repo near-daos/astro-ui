@@ -12,7 +12,7 @@ import {
 } from 'features/member-home/types';
 
 import { CookieService } from 'services/CookieService';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 import { mapBountyResponseToBounty } from 'services/sputnik/mappers';
 import { filterProposalsByStatus } from 'features/feed/helpers';
 
@@ -61,10 +61,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     Bounty[],
     Proposal[]
   ] = await Promise.all([
-    SputnikService.getAllTokens(),
+    SputnikHttpService.getAllTokens(),
     Promise.resolve().then(async () => {
       if (tab === '3') {
-        const result = await SputnikService.getBounties();
+        const result = await SputnikHttpService.getBounties();
 
         return result
           .map(mapBountyResponseToBounty)
@@ -78,7 +78,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     Promise.resolve().then(async () => {
       if (tab === '3') return [];
 
-      let result = await SputnikService.getFilteredProposals(
+      let result = await SputnikHttpService.getFilteredProposals(
         {
           ...filter,
           proposalFilter

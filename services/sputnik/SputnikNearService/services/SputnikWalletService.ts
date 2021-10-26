@@ -1,6 +1,6 @@
 import { nearConfig } from 'config';
 import { ConnectedWalletAccount, Near } from 'near-api-js';
-import { SputnikWalletConnection } from './overrides/SputnikWalletConnection';
+import { SputnikWalletConnection } from 'services/sputnik/SputnikNearService/overrides/SputnikWalletConnection';
 
 export class SputnikWalletService {
   private readonly near: Near;

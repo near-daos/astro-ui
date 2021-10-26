@@ -6,7 +6,7 @@ import React, {
   useState
 } from 'react';
 
-import { SputnikService } from 'services/SputnikService';
+import { SputnikHttpService } from 'services/sputnik';
 
 import { SearchResultsData } from 'types/search';
 
@@ -36,7 +36,7 @@ export const SearchResults: FC = ({ children }) => {
   );
 
   const handleSearch = useCallback(query => {
-    SputnikService.search({ query }).then(result => {
+    SputnikHttpService.search({ query }).then(result => {
       setSearchResults(result);
     });
   }, []);

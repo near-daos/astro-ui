@@ -14,7 +14,7 @@ import { CreatePayoutInput } from 'features/treasury/request-payout-popup/types'
 
 import { useDeviceType } from 'helpers/media';
 
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 
 import { Tokens } from 'context/CustomTokensContext';
 
@@ -37,7 +37,7 @@ const schema = yup.object().shape({
     .test(
       'notValidNearAccount',
       'Only valid near accounts are allowed',
-      value => SputnikService.nearAccountExist(value || '')
+      value => SputnikNearService.nearAccountExist(value || '')
     ),
   detail: yup.string().required(),
   externalUrl: yup.string()

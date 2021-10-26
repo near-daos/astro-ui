@@ -7,27 +7,34 @@ import omit from 'lodash/omit';
 
 import { nearConfig } from 'config';
 
+import {
+  Token,
+  NftToken,
+  TokenResponse,
+  NftTokenResponse,
+  GetTokensResponse
+} from 'types/token';
 import { DAO } from 'types/dao';
-import { PaginationResponse } from 'types/api';
 import { Receipt } from 'types/transaction';
 import { SearchResultsData } from 'types/search';
-import { Proposal, ProposalType } from 'types/proposal';
+import { Bounty } from 'components/cards/bounty-card/types';
 import { BountiesResponse, BountyResponse } from 'types/bounties';
-import { GetTokensResponse, NftToken, Token, TokenResponse } from 'types/token';
+import { BountyDoneProposalType, Proposal, ProposalType } from 'types/proposal';
 
 import {
   DaoDTO,
+  ReceiptDTO,
   ProposalDTO,
   SearchResponse,
   GetDAOsResponse,
   GetProposalsResponse,
   mapDaoDTOtoDao,
+  mapReceiptsResponse,
   mapTokensDTOToTokens,
   mapDaoDTOListToDaoList,
   mapProposalDTOToProposal,
-  mapSearchResultsDTOToDataObject,
-  ReceiptDTO,
-  mapReceiptsResponse
+  mapBountyResponseToBounty,
+  mapSearchResultsDTOToDataObject
 } from 'services/sputnik/mappers';
 import { HttpService, httpService } from 'services/HttpService';
 
@@ -110,7 +117,9 @@ class SputnikHttpServiceClass {
     return mapDaoDTOListToDaoList(data);
   }
 
-  public async getBountiesDone(daoId: string): Promise<Proposal[]> {
+  public async getBountiesDone(
+    daoId: string
+  ): Promise<BountyDoneProposalType[]> {
     const queryString = RequestQueryBuilder.create()
       .setFilter({
         field: 'daoId',
@@ -139,7 +148,43 @@ class SputnikHttpServiceClass {
       `/proposals?${queryString}`
     );
 
-    return bounties.data.map(mapProposalDTOToProposal);
+    return bounties.data
+      .map(mapProposalDTOToProposal)
+      .map(bountyDoneProposal => ({
+        ...(bountyDoneProposal.kind as BountyDoneProposalType),
+        completedDate: bountyDoneProposal.createdAt
+      }));
+  }
+
+  public async getActiveProposals(
+    daoIds: string[],
+    offset = 0,
+    limit = 50
+  ): Promise<Proposal[]> {
+    const queryString = RequestQueryBuilder.create()
+      .setFilter({
+        field: 'daoId',
+        operator: '$in',
+        value: daoIds
+      })
+      .setFilter({
+        field: 'status',
+        operator: '$eq',
+        value: 'InProgress'
+      })
+      .setLimit(limit)
+      .setOffset(offset)
+      .sortBy({
+        field: 'createdAt',
+        order: 'DESC'
+      })
+      .query();
+
+    const { data: proposals } = await this.httpService.get<
+      GetProposalsResponse
+    >(`/proposals?${queryString}`);
+
+    return proposals.data.map(mapProposalDTOToProposal);
   }
 
   public async getUserProposals(accountId: string) {
@@ -319,12 +364,12 @@ class SputnikHttpServiceClass {
     return proposals.data.map(mapProposalDTOToProposal);
   }
 
-  public async getAccountReceipts(accountId?: string): Promise<Receipt[]> {
+  public async getAccountReceipts(accountId: string): Promise<Receipt[]> {
     const { data } = await this.httpService.get<ReceiptDTO[]>(
       `/transactions/receipts/account-receipts/${accountId}`
     );
 
-    return mapReceiptsResponse(accountId as string, data);
+    return mapReceiptsResponse(accountId, data);
   }
 
   public async getPolls(
@@ -414,7 +459,7 @@ class SputnikHttpServiceClass {
       limit?: number;
       sort?: string;
     }
-  ): Promise<BountyResponse[]> {
+  ): Promise<Bounty[]> {
     const offset = params?.offset ?? 0;
     const limit = params?.limit ?? 50;
     const sort = params?.sort ?? 'createdAt,DESC';
@@ -428,22 +473,22 @@ class SputnikHttpServiceClass {
       }
     });
 
-    return data.data;
+    return data.data.map(mapBountyResponseToBounty);
   }
 
-  public async getNfts(
-    ownerId: string,
-    offset = 0,
-    limit = 50
-  ): Promise<NftToken[]> {
-    const { data } = await this.httpService.get<PaginationResponse<NftToken>>(
-      '/tokens/nfts',
-      {
-        params: { offset, limit, filter: `ownerId||$eq||${ownerId}` }
-      }
+  public async getAccountNFTs(accountId: string): Promise<NftToken[]> {
+    const { data } = await this.httpService.get<NftTokenResponse[]>(
+      `/tokens/nfts/account-nfts/${accountId}`
     );
 
-    return data.data;
+    return data.map(response => ({
+      id: response.id,
+      uri: response.baseUri
+        ? `${response.baseUri}/${response.metadata.media}`
+        : `https://cloudflare-ipfs.com/ipfs/${response.metadata.media}`,
+      description: response.metadata.description,
+      title: response.metadata.title
+    }));
   }
 
   public async getAllTokens(): Promise<Token[]> {
@@ -472,6 +517,14 @@ class SputnikHttpServiceClass {
     });
 
     return mapTokensDTOToTokens(data.data);
+  }
+
+  public async getAccountTokens(accountId: string): Promise<Token[]> {
+    const { data } = await this.httpService.get<TokenResponse[]>(
+      `/tokens/account-tokens/${accountId}`
+    );
+
+    return mapTokensDTOToTokens(data);
   }
 }
 

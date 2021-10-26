@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import React, { FC, useCallback } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useToggle } from 'react-use';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import * as yup from 'yup';
 import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
@@ -96,7 +96,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
           proposalBond
         );
 
-        await SputnikService.createProposal(proposal);
+        await SputnikNearService.createProposal(proposal);
 
         showNotification({
           type: NOTIFICATION_TYPES.INFO,

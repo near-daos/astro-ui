@@ -2,7 +2,7 @@ import { Bounty } from 'components/cards/bounty-card/types';
 import { Modal } from 'components/modal';
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import React, { FC, useCallback } from 'react';
-import { SputnikService } from 'services/SputnikService';
+import { SputnikNearService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { DAO } from 'types/dao';
 import { Token } from 'types/token';
@@ -24,7 +24,7 @@ export const ClaimBountyDialog: FC<ClaimBountyDialogProps> = ({
   token
 }) => {
   const handleSubmit = useCallback(async () => {
-    await SputnikService.claimBounty(dao.id, {
+    await SputnikNearService.claimBounty(dao.id, {
       bountyId: Number(data.id),
       deadline: data.deadlineThreshold,
       bountyBond: dao.policy.proposalBond
