@@ -1,6 +1,6 @@
 export const CHART_MAIN_COLOR = '#381e80';
-export const POINT_LINE_COLOR = '#381e80';
-const AXIS_COLOR = '#29292a';
+export const POINT_LINE_COLOR = '#BFBFBF';
+const AXIS_COLOR = '#F7F5FC';
 const TICK_COLOR = '#7c7c7d';
 const STROKE_COLOR = '#6038D0';
 const FONT_FAMILY = 'Inter';

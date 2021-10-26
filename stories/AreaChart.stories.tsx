@@ -6,7 +6,9 @@ import { addHours } from 'date-fns';
 export default {
   title: 'Components/AreaChart',
   component: AreaChart,
-  decorators: [story => <div style={{ padding: '1rem' }}>{story()}</div>]
+  decorators: [
+    story => <div style={{ padding: '1rem', maxWidth: '900px' }}>{story()}</div>
+  ]
 } as Meta;
 
 function getRandomAmount(initial: number) {

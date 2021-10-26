@@ -33,8 +33,17 @@ const CustomPoint: FC<CustomPointProps> = ({ x, y = 0, datum }) => {
       <line
         x1={x}
         x2={x}
-        y1={40}
-        y2={234}
+        y1={10}
+        y2={256}
+        stroke={POINT_LINE_COLOR}
+        strokeWidth={1}
+        strokeDasharray="4 4"
+      />
+      <line
+        x1={36}
+        x2={900}
+        y1={y}
+        y2={y}
         stroke={POINT_LINE_COLOR}
         strokeWidth={1}
         strokeDasharray="4 4"
