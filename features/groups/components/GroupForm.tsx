@@ -101,11 +101,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
         isValid={touchedFields.memberName && !errors.memberName?.message}
         textAlign="left"
         {...register('memberName')}
-        label={
-          initialValues.groupType === GroupFormType.REMOVE_FROM_GROUP
-            ? 'Remove member'
-            : 'Add member'
-        }
+        label="Member name"
         placeholder="Member name"
         className={cn(styles.input, styles.member)}
       />
