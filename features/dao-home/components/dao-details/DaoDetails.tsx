@@ -57,7 +57,13 @@ export const DaoDetails: VFC<DaoDetailsProps> = ({
   return (
     <>
       <div className={styles.root} ref={ref}>
-        {transaction && <ExplorerLink transaction={transaction} isAbsolute />}
+        {transaction && (
+          <ExplorerLink
+            linkData={transaction}
+            linkType="transaction"
+            isAbsolute
+          />
+        )}
         <h1>
           {more && (
             <Link href={more.link}>

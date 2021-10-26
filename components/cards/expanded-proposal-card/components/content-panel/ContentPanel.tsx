@@ -83,7 +83,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
             />
             <div className={styles.left}>
               <Typography.Title size={3}>{daoTitle}</Typography.Title>
-              <ExplorerLink transaction={transaction} />
+              <ExplorerLink linkData={transaction} linkType="transaction" />
             </div>
             <div className={styles.right}>
               {/* <Icon name="buttonBookmark" className={styles.icon} /> */}

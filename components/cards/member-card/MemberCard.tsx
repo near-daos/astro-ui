@@ -2,6 +2,7 @@ import React, { FC, ReactNode, useCallback } from 'react';
 import cn from 'classnames';
 import TextTruncate from 'react-text-truncate';
 import { Icon } from 'components/Icon';
+import { ExplorerLink } from 'components/explorer-link';
 
 import { SMILE } from 'features/dao-home/components/follow-illustration/FollowIllustration';
 
@@ -85,6 +86,7 @@ const MemberCard: FC<MemberCardProps> = ({
         [styles.clickable]: !!onClick
       })}
     >
+      <ExplorerLink linkData={title} linkType="member" isAbsolute />
       <div className={styles.body}>
         {SMILE}
         <div className={cn(styles.title, 'title2')}>

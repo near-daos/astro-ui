@@ -141,7 +141,7 @@ const ProposalCardComponent: FC<ProposalCardProps> = ({
         {variant !== 'SuperCollapsed' && (
           <div className={styles.header}>
             <span className={styles.title}>{title}</span>
-            <ExplorerLink transaction={transaction} />
+            <ExplorerLink linkData={transaction} linkType="transaction" />
           </div>
         )}
         <div className={cn(styles.body, variantClassName)}>{children}</div>

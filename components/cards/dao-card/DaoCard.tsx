@@ -73,7 +73,7 @@ const DaoCard: React.FC<DaoCardProps> = ({
   return (
     <Link href={`/dao/${daoAccountName}`} passHref>
       <div className={styles.daoCard}>
-        <ExplorerLink transaction={txHash} isAbsolute />
+        <ExplorerLink linkData={txHash} linkType="transaction" isAbsolute />
         <div>
           <div className={styles.header}>
             <div className={styles.iconWrapper}>
