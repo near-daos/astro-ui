@@ -14,6 +14,7 @@ export const NFTCard: VFC<NFTCardProps> = ({ name, image }) => (
     width="296px"
     height="424px"
     layout="intrinsic"
+    priority
     alt={name}
     src={image}
     className={styles.root}
