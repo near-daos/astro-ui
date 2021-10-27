@@ -19,12 +19,12 @@ const ProposalControlButton: FC<ProposalControlButtonProps> = ({
   voted,
   times,
   disabled,
-  onClick
+  onClick,
 }) => {
   const statusClassName = cn({
     [styles.yesAvailable]: icon === 'votingYes' && !voted && !disabled,
     [styles.noAvailable]: icon === 'votingNo' && !voted && !disabled,
-    [styles.dismissAvailable]: icon === 'votingDismiss' && !voted && !disabled
+    [styles.dismissAvailable]: icon === 'votingDismiss' && !voted && !disabled,
   });
 
   return (
@@ -32,7 +32,7 @@ const ProposalControlButton: FC<ProposalControlButtonProps> = ({
       <IconButton
         icon={icon}
         className={cn(styles.icon, statusClassName, {
-          [styles.voted]: voted
+          [styles.voted]: voted,
         })}
         size="large"
         onClick={!voted && !disabled ? onClick : undefined}

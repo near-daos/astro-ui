@@ -26,7 +26,7 @@ export const DaoSection: FC<DaoSectionProps> = ({
   onFilterSet,
   expanded,
   filter,
-  expandedProposalId
+  expandedProposalId,
 }) => {
   return (
     <>

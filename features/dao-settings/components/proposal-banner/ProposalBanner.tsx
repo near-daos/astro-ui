@@ -32,7 +32,7 @@ export const ProposalBanner: FC<ProposalBannerProps> = ({
   form,
   disable,
   disableTooltip,
-  scope
+  scope,
 }) => {
   const accountId = SputnikNearService.getAccountId();
 

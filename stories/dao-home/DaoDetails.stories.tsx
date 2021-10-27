@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/react';
 
 import {
   DaoDetails,
-  DaoDetailsProps
+  DaoDetailsProps,
 } from 'features/dao-home/components/dao-details/DaoDetails';
 import React from 'react';
 import flag from './assets/flag.png';
@@ -17,11 +17,11 @@ export default {
       values: [
         {
           name: 'primary',
-          value: '#E8E0FF'
-        }
-      ]
-    }
-  }
+          value: '#E8E0FF',
+        },
+      ],
+    },
+  },
 } as Meta;
 
 export const Template: Story<DaoDetailsProps> = (args): JSX.Element => {
@@ -40,12 +40,12 @@ Template.args = {
     'http://example.com',
     'http://discord.com',
     'http://telegram.org',
-    'http://twitter.com'
+    'http://twitter.com',
   ],
   more: {
     label: 'Show more',
-    link: 'http://example.com'
+    link: 'http://example.com',
   },
   sendFunds: true,
-  followed: true
+  followed: true,
 };

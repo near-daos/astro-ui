@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import Tabs from 'components/tabs/Tabs';
 import {
   IWizardInitialData,
-  IWizardResult
+  IWizardResult,
 } from 'features/plugins/components/use-plugin-popup/types';
 import PreviousFunctionsView from 'features/plugins/components/use-plugin-popup/components/use-plugin-wizard/components/pevious-functions-view/PreviousFunctionsView';
 import CreateTokenView from 'features/plugins/components/use-plugin-popup/components/use-plugin-wizard/components/create-token-view/CreateTokenView';
@@ -17,7 +17,7 @@ const NewFunctionView = dynamic(
     'features/plugins/components/use-plugin-popup/components/use-plugin-wizard/components/new-function-view/NewFunctionView'
   ),
   {
-    ssr: false
+    ssr: false,
   }
 );
 
@@ -25,13 +25,13 @@ const TABS = [
   {
     id: 1,
     label: 'Previous functions',
-    content: <PreviousFunctionsView />
+    content: <PreviousFunctionsView />,
   },
   {
     id: 2,
     label: 'New function',
-    content: <NewFunctionView />
-  }
+    content: <NewFunctionView />,
+  },
 ];
 
 interface UsePluginWizardProps {
@@ -43,21 +43,21 @@ interface UsePluginWizardProps {
 const UsePluginWizard: FC<UsePluginWizardProps> = ({
   initialData,
   onClose,
-  onSubmit
+  onSubmit,
 }) => {
   const [activeStep, setActiveStep] = useState(1);
   const [data, setWizardData] = useState({
     nearFunction: undefined,
     tokenName: '',
     amountToMint: '',
-    recipient: ''
+    recipient: '',
   });
 
   const setData = useCallback(
     d => {
       setWizardData({
         ...data,
-        ...d
+        ...d,
       });
 
       if (activeStep !== 2) {

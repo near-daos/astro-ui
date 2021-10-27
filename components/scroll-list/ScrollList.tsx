@@ -8,7 +8,7 @@ export interface ScrollListProps {
   onScroll?: (props: ListOnScrollProps) => void;
   renderItem: ({
     index,
-    style
+    style,
   }: {
     index: number;
     style: CSSProperties;

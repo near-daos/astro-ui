@@ -33,7 +33,7 @@ const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
   onDislike,
   onRemove,
   permissions,
-  className = ''
+  className = '',
 }) => {
   const { canApprove, canReject, canDelete } = permissions;
   const voted =

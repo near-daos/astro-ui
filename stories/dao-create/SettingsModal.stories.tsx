@@ -5,7 +5,7 @@ import { Caption } from 'components/Typography';
 
 import {
   DaoSettingsModal,
-  DaoSettingsModalProps
+  DaoSettingsModalProps,
 } from 'features/create-dao/components/settings-modal/DaoSettingsModal';
 import { DAO_SUBJECT_OPTIONS } from 'features/create-dao/components/steps/data';
 import React, { FC, useCallback, useState } from 'react';
@@ -14,18 +14,18 @@ const options = DAO_SUBJECT_OPTIONS.proposals;
 
 export default {
   title: 'Features/DAO Create/Popups/Settings Modal',
-  decorators: [story => <ModalProvider>{story()}</ModalProvider>]
+  decorators: [story => <ModalProvider>{story()}</ModalProvider>],
 } as Meta;
 
 const DemoComponent: FC<{ modalProps: DaoSettingsModalProps }> = ({
-  modalProps
+  modalProps,
 }) => {
   const [showModal] = useModal<DaoSettingsModalProps>(DaoSettingsModal, {
     ...modalProps,
     options,
     title: 'Who can create proposals?',
     description: `Proposals aren't like voting on a question, requesting funds or adding new members. Every proposal has to be voted on.`,
-    note: 'You can change this setting later'
+    note: 'You can change this setting later',
   });
 
   const [currentValue, setValue] = useState('');

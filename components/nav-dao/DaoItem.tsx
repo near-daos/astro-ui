@@ -4,7 +4,7 @@ import { Badge } from 'components/badge/Badge';
 import { Button } from 'components/button/Button';
 import {
   MemberCardPopup,
-  MemberCardPopupProps
+  MemberCardPopupProps,
 } from 'components/cards/member-card';
 import { ImageWithFallback } from 'components/image-with-fallback';
 import { useModal } from 'components/modal';
@@ -57,19 +57,19 @@ export const DaoItem: React.VFC<DaoItemProps> = ({
     tokens: {
       value: 5,
       type: 'MEW',
-      percent: 11.5
-    }
+      percent: 11.5,
+    },
   });
 
   const onDetailsClick = useCallback(async () => {
     await showMemberCard({
       title: dao.id,
-      votes: dao.votes
+      votes: dao.votes,
     });
   }, [dao, showMemberCard]);
 
   const rootClassName = cn(styles.item, className, {
-    [styles.selected]: selected
+    [styles.selected]: selected,
   });
 
   return (

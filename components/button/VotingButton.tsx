@@ -16,7 +16,7 @@ export const VotingButton: React.FC<ButtonProps> = ({
   const variants = {
     no: styles.yes,
     yes: styles.no,
-    spam: styles.spam
+    spam: styles.spam,
   };
   const className = classNames(
     buttonStyles.btn,

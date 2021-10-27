@@ -3,7 +3,7 @@ import { VoteDetail, BondDetail } from 'features/types';
 import {
   // ProposalType,
   // ProposalStatus,
-  ProposalVariant
+  ProposalVariant,
 } from 'components/cards/proposal-card/types';
 import { ProposalCardProps } from 'components/cards/proposal-card';
 import { nanoid } from 'nanoid';
@@ -40,11 +40,11 @@ const generatePoll = (
   daoDetails: {
     name: 'my-awesome-dao',
     displayName: 'My Awesome DAO',
-    logo: ''
+    logo: '',
   },
   proposalId: 1,
   daoId: 'my-awesome-dao',
-  dao: {} as DAO
+  dao: {} as DAO,
 });
 
 const generatePolls = () => {
@@ -55,7 +55,7 @@ const generatePolls = () => {
     'What do you think about renaming our DAO from Meowzers to Wowzers?',
     'Based on our discussion on Discord, I would like to open this question',
     'Do you want to create new DAO only for or grant programme?',
-    'Should we hire a full-time marketing person to help us spread our message?'
+    'Should we hire a full-time marketing person to help us spread our message?',
   ];
   const myVotes = [false, true];
 
@@ -92,10 +92,10 @@ export const POLLS_DATA = generatePolls();
 export const VOTE_DETAIL_DATA: VoteDetail[] = [
   { limit: '50%', label: 'MEW holders' },
   { limit: '50%', label: 'cool group' },
-  { limit: '1 person', label: 'Ombudspeople' }
+  { limit: '1 person', label: 'Ombudspeople' },
 ];
 
 export const BOND_DETAIL_DATA: BondDetail = {
   value: 0.3,
-  token: 'NEAR'
+  token: 'NEAR',
 };

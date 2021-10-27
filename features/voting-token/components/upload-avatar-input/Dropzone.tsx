@@ -71,7 +71,7 @@ const Dropzone: FC<DropzoneProps> = ({ disabled, onFileAdded }) => {
   return (
     <div
       className={cn(styles.root, {
-        [styles.highlighted]: highlighted
+        [styles.highlighted]: highlighted,
       })}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
@@ -92,7 +92,7 @@ const Dropzone: FC<DropzoneProps> = ({ disabled, onFileAdded }) => {
 };
 
 Dropzone.defaultProps = {
-  disabled: false
+  disabled: false,
 };
 
 export default Dropzone;

@@ -3,7 +3,7 @@ import { Button } from 'components/button/Button';
 import { ModalProvider, useModal } from 'components/modal';
 import {
   DaoTemplateModal,
-  DaoTemplateModalProps
+  DaoTemplateModalProps,
 } from 'features/create-dao/components/template/DaoTemplateModal';
 import { DaoSettingOption } from 'features/create-dao/components/steps/types';
 import React, { FC, useCallback } from 'react';
@@ -14,37 +14,37 @@ const options: DaoSettingOption<string>[] = [
     icon: 'illustrationOpenOrganization',
     subject: 'proposals',
     title: 'Open',
-    description: 'Anyone can submit a proposal.'
+    description: 'Anyone can submit a proposal.',
   },
   {
     value: 'members',
     icon: 'illustrationGroupsAndCommitttees',
     subject: 'proposals',
     title: 'Members Only',
-    description: 'Only members or token-holders can submit a proposal.'
+    description: 'Only members or token-holders can submit a proposal.',
   },
   {
     value: 'members',
     icon: 'illustrationVotePerMember',
     subject: 'proposals',
     title: 'Democratic',
-    description: 'Every member gets one vote.'
-  }
+    description: 'Every member gets one vote.',
+  },
 ];
 
 export default {
   title: 'Features/DAO Create/Popups/DAOTemplate Modal',
-  decorators: [story => <ModalProvider>{story()}</ModalProvider>]
+  decorators: [story => <ModalProvider>{story()}</ModalProvider>],
 } as Meta;
 
 const DemoComponent: FC<{ modalProps: DaoTemplateModalProps }> = ({
-  modalProps
+  modalProps,
 }) => {
   const [showModal] = useModal<DaoTemplateModalProps>(DaoTemplateModal, {
     ...modalProps,
     options,
     title: 'Foundation',
-    description: `A DAO where anyone can submit a new vote, but only a small committee efficiently votes on decisions and distributing funds.`
+    description: `A DAO where anyone can submit a new vote, but only a small committee efficiently votes on decisions and distributing funds.`,
   });
 
   const handleClick = useCallback(async () => {
@@ -65,14 +65,14 @@ export const Template: Story<DaoTemplateModalProps> = (args): JSX.Element => (
 );
 
 Template.args = {
-  variant: 'cooperative'
+  variant: 'cooperative',
 };
 
 Template.argTypes = {
   variant: {
     options: ['club', 'cooperative', 'corporation', 'foundation'],
-    control: { type: 'select' }
-  }
+    control: { type: 'select' },
+  },
 };
 
 Template.storyName = 'DAOTemplate Modal';

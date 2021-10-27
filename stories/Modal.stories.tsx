@@ -33,7 +33,7 @@ interface DemoComponentProps {
 const DemoComponent: FC<DemoComponentProps> = ({ handleModalOutput }) => {
   const [showModal] = useModal(DemoModal, {
     title: 'This is my new modal',
-    description: 'This is my description'
+    description: 'This is my description',
   });
 
   const handleClick = useCallback(async () => {
@@ -56,8 +56,8 @@ export default {
   component: DemoComponent,
   decorators: [story => <ModalProvider>{story()}</ModalProvider>],
   argTypes: {
-    handleModalOutput: { action: 'clicked' }
-  }
+    handleModalOutput: { action: 'clicked' },
+  },
 } as Meta;
 
 export const Template: Story<DemoComponentProps> = (args): JSX.Element => (

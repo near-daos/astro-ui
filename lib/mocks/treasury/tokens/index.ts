@@ -12,7 +12,7 @@ const generateTokens = () => {
       tokensBalance: i,
       totalValue: 3 * i,
       voteWeight: i,
-      href: ''
+      href: '',
     });
   }
 
@@ -28,7 +28,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
     tokenName: TokenDeprecated.NEAR,
     tokensBalance: 2321,
     date: new Date().toISOString(),
-    accountName: 'verylongnamegoeshere.near'
+    accountName: 'verylongnamegoeshere.near',
   },
   {
     transactionId: '2',
@@ -36,7 +36,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
     tokenName: TokenDeprecated.NEAR,
     tokensBalance: 223,
     date: new Date().toISOString(),
-    accountName: 'verylongnamegoeshere.near'
+    accountName: 'verylongnamegoeshere.near',
   },
   {
     transactionId: '3',
@@ -44,7 +44,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
     tokenName: TokenDeprecated.NEAR,
     tokensBalance: 323,
     date: new Date().toISOString(),
-    accountName: 'verylongnamegoeshere.near'
+    accountName: 'verylongnamegoeshere.near',
   },
   {
     transactionId: '4',
@@ -52,7 +52,7 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
     tokenName: TokenDeprecated.NEAR,
     tokensBalance: 223,
     date: new Date().toISOString(),
-    accountName: 'verylongnamegoeshere.near'
+    accountName: 'verylongnamegoeshere.near',
   },
   {
     transactionId: '5',
@@ -60,8 +60,8 @@ export const TRANSACTIONS_DATA: TransactionCardInput[] = [
     tokenName: TokenDeprecated.NEAR,
     tokensBalance: 223,
     date: new Date().toISOString(),
-    accountName: 'test.near'
-  }
+    accountName: 'test.near',
+  },
 ];
 
 export const TOKENS_MOCK: Token[] = [
@@ -71,7 +71,7 @@ export const TOKENS_MOCK: Token[] = [
     symbol: '',
     icon: 'near',
     totalSupply: '6.50239',
-    balance: ''
+    balance: '',
   },
   {
     tokenId: 'MEOW',
@@ -79,7 +79,7 @@ export const TOKENS_MOCK: Token[] = [
     symbol: '',
     icon: 'meow',
     totalSupply: '23.5536',
-    balance: ''
+    balance: '',
   },
   {
     tokenId: 'NEAR',
@@ -87,7 +87,7 @@ export const TOKENS_MOCK: Token[] = [
     symbol: '',
     icon: 'near',
     totalSupply: '12.529',
-    balance: ''
+    balance: '',
   },
   {
     tokenId: 'MEOW',
@@ -95,7 +95,7 @@ export const TOKENS_MOCK: Token[] = [
     symbol: '',
     icon: 'meow',
     totalSupply: '7.534',
-    balance: ''
+    balance: '',
   },
   {
     tokenId: 'TEST',
@@ -103,8 +103,8 @@ export const TOKENS_MOCK: Token[] = [
     symbol: '',
     icon: 'test',
     totalSupply: '423.55398',
-    balance: ''
-  }
+    balance: '',
+  },
 ];
 
 export const CHART_DATA = [
@@ -441,16 +441,16 @@ export const CHART_DATA = [
   { balance: 773.3433866651458, timestamp: 15525360000 },
   { balance: 283.70104267445106, timestamp: 1552546800 },
   { balance: 400.75616301147886, timestamp: 1552557600 },
-  { balance: 807.7128955167653, timestamp: 15525684000 }
+  { balance: 807.7128955167653, timestamp: 15525684000 },
 ];
 
 export const VOTE_DETAILS: VoteDetail[] = [
   { limit: '50%', label: 'MEW holders' },
   { limit: '50%', label: 'cool group' },
-  { limit: '1 person', label: 'Ombudspeople' }
+  { limit: '1 person', label: 'Ombudspeople' },
 ];
 
 export const BOND_DETAIL: BondDetail = {
   value: 0.3,
-  token: 'NEAR'
+  token: 'NEAR',
 };

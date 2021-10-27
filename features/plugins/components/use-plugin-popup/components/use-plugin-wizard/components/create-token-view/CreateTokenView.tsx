@@ -5,7 +5,7 @@ import * as yup from 'yup';
 
 import {
   getNearFunctionDetails,
-  useWizardContext
+  useWizardContext,
 } from 'features/plugins/components/use-plugin-popup/components/use-plugin-wizard/helpers';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { Input } from 'components/inputs/input/Input';
@@ -17,7 +17,7 @@ import styles from './create-token-view.module.scss';
 const schema = yup.object().shape({
   tokenName: yup.string().required(),
   amountToMint: yup.number().integer().positive().required(),
-  recipient: yup.string().required()
+  recipient: yup.string().required(),
 });
 
 interface IForm {
@@ -34,10 +34,10 @@ const CreateTokenView: FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { touchedFields, errors }
+    formState: { touchedFields, errors },
   } = useForm<IForm>({
     defaultValues: data,
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
 
   const onSubmit: SubmitHandler<IForm> = d => {

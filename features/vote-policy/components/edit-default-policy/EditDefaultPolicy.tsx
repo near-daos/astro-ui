@@ -18,13 +18,13 @@ interface EditDefaultPolicyProps {
 
 const EditDefaultPolicy: FC<EditDefaultPolicyProps> = ({
   policy,
-  onChange
+  onChange,
 }) => {
   const handleChange = useCallback(
     (name: string, value?: string) => {
       onChange({
         ...policy,
-        [name]: value
+        [name]: value,
       });
     },
     [policy, onChange]

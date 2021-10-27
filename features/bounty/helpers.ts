@@ -4,7 +4,7 @@ import { Tokens } from 'context/CustomTokensContext';
 
 export const BountyPageContext = createContext<IBountyPageContext>({
   dao: undefined,
-  tokens: {}
+  tokens: {},
 });
 
 interface IBountyPageContext {

@@ -31,7 +31,7 @@ export function splitProposalsByVotingPeriod(
       lessThanDayProposals: [] as Proposal[],
       lessThanWeekProposals: [] as Proposal[],
       moreThanWeekProposals: [] as Proposal[],
-      otherProposals: [] as Proposal[]
+      otherProposals: [] as Proposal[],
     }
   );
 }

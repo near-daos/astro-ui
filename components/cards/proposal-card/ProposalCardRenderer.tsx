@@ -5,7 +5,7 @@ import {
   FunctionCall,
   RemoveMemberFromGroup,
   RequestPayout,
-  TextWithLink
+  TextWithLink,
 } from 'components/cards/proposal-card/components/proposal-content/proposal-content';
 import { ProposalCard } from 'components/cards/proposal-card/ProposalCard';
 
@@ -22,7 +22,7 @@ interface ProposalCardRendererProps {
 
 const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
   proposal,
-  showExpanded
+  showExpanded,
 }) => {
   const router = useRouter();
   const { accountId } = useAuthContext();
@@ -42,7 +42,7 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
       showNotification({
         type: NOTIFICATION_TYPES.INFO,
         description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
-        lifetime: 20000
+        lifetime: 20000,
       });
 
       await router.replace(router.asPath);
@@ -65,7 +65,7 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
       showNotification({
         type: NOTIFICATION_TYPES.INFO,
         description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
-        lifetime: 20000
+        lifetime: 20000,
       });
 
       await router.replace(router.asPath);
@@ -88,7 +88,7 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
       showNotification({
         type: NOTIFICATION_TYPES.INFO,
         description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
-        lifetime: 20000
+        lifetime: 20000,
       });
 
       await router.replace(router.asPath);

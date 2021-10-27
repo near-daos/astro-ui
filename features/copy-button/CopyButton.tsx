@@ -17,7 +17,7 @@ const COPY_TEXT = 'Copy';
 export const CopyButton: FC<CopyButtonProps> = ({
   text,
   className,
-  iconName = 'buttonCopy'
+  iconName = 'buttonCopy',
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const [tooltip, setTooltip] = useState(COPY_TEXT);

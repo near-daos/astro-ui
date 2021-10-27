@@ -40,7 +40,7 @@ const schema = yup.object().shape({
       value => SputnikNearService.nearAccountExist(value || '')
     ),
   detail: yup.string().required(),
-  externalUrl: yup.string()
+  externalUrl: yup.string(),
 });
 
 export interface IRequestPayoutForm {
@@ -64,7 +64,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
   onSubmit,
   onCancel,
   tokens,
-  bond
+  bond,
 }) => {
   const { isMobile } = useDeviceType();
   const {
@@ -73,13 +73,13 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
     setValue,
     watch,
     getValues,
-    formState: { errors, touchedFields }
+    formState: { errors, touchedFields },
   } = useForm<IRequestPayoutForm>({
     resolver: yupResolver(schema),
     defaultValues: {
       ...initialValues,
-      amount: 0
-    }
+      amount: 0,
+    },
   });
 
   const amount = register('amount');
@@ -103,7 +103,7 @@ export const RequestPayoutForm: React.FC<RequestPayoutFormProps> = ({
             tokens={tokens}
             onTokenSelect={v =>
               setValue('tokenSymbol', v as string, {
-                shouldDirty: true
+                shouldDirty: true,
               })
             }
             error={touchedFields.amount && !!errors.amount}

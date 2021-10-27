@@ -15,7 +15,7 @@ export interface UnfollowPopupProps {
 export const UnfollowPopup: FC<UnfollowPopupProps> = ({
   isOpen,
   onClose,
-  target
+  target,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

@@ -12,7 +12,7 @@ import { Badge, Variant } from 'components/badge/Badge';
 import {
   getInitialData,
   getNewProposalObject,
-  VotingPolicyPageInitialData
+  VotingPolicyPageInitialData,
 } from 'features/vote-policy/helpers';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { DaoSettingsBanner } from 'features/vote-policy/components/banner';
@@ -32,7 +32,7 @@ function getBadgeVariant(index: number): Variant {
     'red',
     'orange',
     'yellow',
-    'primary'
+    'primary',
   ];
 
   return (variants[index] || variants[index % variants.length]) as Variant;
@@ -60,8 +60,8 @@ const VotingPolicyPage: FC = () => {
           ...data,
           [name]: {
             ...value,
-            isDirty: true
-          }
+            isDirty: true,
+          },
         });
       }
     },
@@ -79,7 +79,7 @@ const VotingPolicyPage: FC = () => {
       showNotification({
         type: NOTIFICATION_TYPES.INFO,
         description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000
+        lifetime: 20000,
       });
 
       setData(getInitialData(dao));
@@ -87,8 +87,8 @@ const VotingPolicyPage: FC = () => {
       router.push({
         pathname: SINGLE_DAO_PAGE,
         query: {
-          dao: daoId
-        }
+          dao: daoId,
+        },
       });
     }
   }, [dao, data, daoId, router]);

@@ -31,7 +31,7 @@ export const Dropdown = <T,>(
     onChange,
     value,
     defaultValue,
-    placeholder
+    placeholder,
   } = props;
 
   const {
@@ -41,7 +41,7 @@ export const Dropdown = <T,>(
     selectedItem,
     selectItem,
     highlightedIndex,
-    getItemProps
+    getItemProps,
   } = useSelect({
     id: 'dropdown',
     items: options,
@@ -58,7 +58,7 @@ export const Dropdown = <T,>(
     },
     defaultSelectedItem: defaultValue
       ? options.find(option => option.value === defaultValue)
-      : undefined
+      : undefined,
   });
 
   const className = classNames(styles.dropdown, classNameProp);
@@ -94,7 +94,7 @@ export const Dropdown = <T,>(
               {...getItemProps({
                 disabled: item.disabled,
                 item,
-                index
+                index,
               })}
             >
               {item.label}

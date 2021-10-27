@@ -8,8 +8,8 @@ export default {
   decorators: [
     story => (
       <div style={{ padding: '1rem', background: 'lightgrey' }}>{story()}</div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 export const Template: Story<VotePolicyPopupProps> = args => (
@@ -26,11 +26,11 @@ Template.args = {
         whoCanVote: 'MEW holders',
         voteBy: 'Person',
         amount: 50,
-        threshold: '% of group'
-      }
-    ]
+        threshold: '% of group',
+      },
+    ],
   },
   isOpen: true,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  onClose: () => {}
+  onClose: () => {},
 };

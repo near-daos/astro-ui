@@ -68,14 +68,14 @@ export const extractMembersFromDaosList = (
             tokens: {
               type: 'NEAR',
               value: 18,
-              percent: 14
+              percent: 14,
             },
-            votes: votesPerProposer[user]
+            votes: votesPerProposer[user],
           };
         } else {
           members[user] = {
             ...members[user],
-            groups: [...members[user].groups, grp.name]
+            groups: [...members[user].groups, grp.name],
           };
         }
       });
@@ -86,7 +86,7 @@ export const extractMembersFromDaosList = (
     .map(item => {
       return {
         ...item,
-        groups: Array.from(new Set(item.groups))
+        groups: Array.from(new Set(item.groups)),
       };
     })
     .filter(item => {
@@ -127,14 +127,14 @@ export const extractMembersFromDao = (
           tokens: {
             type: 'NEAR',
             value: 18,
-            percent: 14
+            percent: 14,
           },
-          votes: votesPerProposer[user] ?? null
+          votes: votesPerProposer[user] ?? null,
         };
       } else {
         members[user] = {
           ...members[user],
-          groups: [...members[user].groups, grp.name]
+          groups: [...members[user].groups, grp.name],
         };
       }
     });
@@ -143,7 +143,7 @@ export const extractMembersFromDao = (
   return Object.values(members).map(item => {
     return {
       ...item,
-      groups: Array.from(new Set(item.groups))
+      groups: Array.from(new Set(item.groups)),
     };
   });
 };
@@ -164,6 +164,6 @@ export const mapSearchResultsDTOToDataObject = (
     query,
     daos,
     proposals,
-    members
+    members,
   };
 };

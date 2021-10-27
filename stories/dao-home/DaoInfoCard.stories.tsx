@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react';
 import {
   DaoInfoCard,
-  DaoInfoCardProps
+  DaoInfoCardProps,
 } from 'components/cards/dao-info-card/DaoInfoCard';
 import React from 'react';
 
@@ -10,9 +10,9 @@ export default {
   component: DaoInfoCard,
   parameters: {
     backgrounds: {
-      default: 'light'
-    }
-  }
+      default: 'light',
+    },
+  },
 } as Meta;
 
 export const Template: Story<DaoInfoCardProps> = (args): JSX.Element => (
@@ -24,11 +24,11 @@ Template.args = {
   items: [
     {
       label: 'Members',
-      value: '96'
+      value: '96',
     },
     {
       label: 'DAO funds',
-      value: '54,650.42 USD'
-    }
-  ]
+      value: '54,650.42 USD',
+    },
+  ],
 };

@@ -33,7 +33,7 @@ export enum ProposalType {
   UpgradeRemote = 'UpgradeRemote',
   AddBounty = 'AddBounty',
   BountyDone = 'BountyDone',
-  Vote = 'Vote'
+  Vote = 'Vote',
 }
 
 export type AddBountyRequest = {
@@ -211,7 +211,7 @@ export type ConfigChangeReason =
 enum Vote {
   Approve = 0x0,
   Reject = 0x1,
-  Remove = 0x2
+  Remove = 0x2,
 }
 
 export interface Indexed {

@@ -6,8 +6,8 @@ export default {
   title: 'Components/Checkbox',
   component: Checkbox,
   argTypes: {
-    checked: { control: 'boolean' }
-  }
+    checked: { control: 'boolean' },
+  },
 } as Meta;
 
 export const Template = (
@@ -21,5 +21,5 @@ export const Template = (
 
 Template.storyName = 'Checkbox';
 Template.args = {
-  label: 'Checkbox'
+  label: 'Checkbox',
 };

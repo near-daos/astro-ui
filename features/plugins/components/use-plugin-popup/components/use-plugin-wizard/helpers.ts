@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 import {
   IWizardInitialData,
-  NearFunction
+  NearFunction,
 } from 'features/plugins/components/use-plugin-popup/types';
 
 type TData = {
@@ -29,8 +29,8 @@ export const WizardContext = React.createContext<TWizardContext>({
   setData: () => null,
   onClose: () => null,
   initialData: {
-    functions: []
-  }
+    functions: [],
+  },
 });
 
 export const useWizardContext = () => useContext<TWizardContext>(WizardContext);

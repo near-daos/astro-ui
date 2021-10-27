@@ -11,15 +11,15 @@ export default {
       values: [
         {
           name: 'sidebar',
-          value: '#251455'
-        }
-      ]
+          value: '#251455',
+        },
+      ],
     },
     nextRouter: {
       pathname: '/',
-      asPath: '/'
-    }
-  }
+      asPath: '/',
+    },
+  },
 } as Meta;
 
 export const Template = (
@@ -35,22 +35,22 @@ const items = [
     label: 'Dao Name 1',
     id: 'dao-1',
     count: 31,
-    logo: ''
+    logo: '',
   },
   {
     label: 'Dao Name 2',
     id: 'dao-2',
-    logo: ''
+    logo: '',
   },
   {
     label: 'Dao Name 3',
     id: 'dao-3',
     logo: '',
-    count: 1034
-  }
+    count: 1034,
+  },
 ];
 
 Template.args = {
   items,
-  onChange: null
+  onChange: null,
 };

@@ -25,7 +25,7 @@ export const UnclaimBountyDialog: FC<UnclaimBountyDialogProps> = ({
   onClose,
   data,
   dao,
-  token
+  token,
 }) => {
   const handleSubmit = useCallback(async () => {
     await SputnikNearService.unclaimBounty(dao.id, data.id);
@@ -33,7 +33,7 @@ export const UnclaimBountyDialog: FC<UnclaimBountyDialogProps> = ({
     showNotification({
       type: NOTIFICATION_TYPES.INFO,
       description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
-      lifetime: 20000
+      lifetime: 20000,
     });
 
     onClose('submitted');

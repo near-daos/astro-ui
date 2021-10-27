@@ -7,7 +7,7 @@ interface NoSearchResultsViewProps {
 }
 
 export const NoSearchResultsView: FC<NoSearchResultsViewProps> = ({
-  query
+  query,
 }) => {
   const title = query ? 'No results' : `No results for ${query}`;
 

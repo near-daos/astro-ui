@@ -2,12 +2,12 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import {
   ClaimBountyDialog,
-  ClaimBountyDialogProps
+  ClaimBountyDialogProps,
 } from 'features/bounty/dialogs/claim-bounty-dialog/ClaimBountyDialog';
 
 export default {
   title: 'Features/Bounty/Dialogs/ClaimBounty',
-  component: ClaimBountyDialog
+  component: ClaimBountyDialog,
 } as Meta;
 
 export const Template: Story<ClaimBountyDialogProps> = (args): JSX.Element => (
@@ -27,6 +27,6 @@ Template.args = {
     externalUrl: '',
     slots: 3,
     claimedBy: [],
-    deadlineThreshold: '8'
-  }
+    deadlineThreshold: '8',
+  },
 };

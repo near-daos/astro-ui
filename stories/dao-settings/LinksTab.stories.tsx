@@ -1,13 +1,13 @@
 import { Meta, Story } from '@storybook/react';
 
 import LinksTab, {
-  LinksTabProps
+  LinksTabProps,
 } from 'features/dao-settings/components/links-tab/LinksTab';
 import React from 'react';
 
 export default {
   title: 'Features/DAO Settings/LinksTab',
-  component: LinksTab
+  component: LinksTab,
 } as Meta;
 
 export const Template: Story<LinksTabProps> = (args): JSX.Element => (

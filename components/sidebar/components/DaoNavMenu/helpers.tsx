@@ -11,7 +11,7 @@ import {
   TASKS_SECTION_ID,
   GROUPS_SECTION_ID,
   TREASURY_SECTION_ID,
-  GOVERNANCE_SECTION_ID
+  GOVERNANCE_SECTION_ID,
 } from './constants';
 
 export const useGetDaoNavItems = (): MenuItem[] => {
@@ -38,20 +38,20 @@ export const useGetDaoNavItems = (): MenuItem[] => {
           {
             id: 'bounties',
             label: 'Bounties',
-            href: `/dao/[dao]/${TASKS_SECTION_ID}/bounties`
+            href: `/dao/[dao]/${TASKS_SECTION_ID}/bounties`,
           },
           {
             id: 'polls',
             label: 'Polls',
-            href: `/dao/[dao]/${TASKS_SECTION_ID}/polls`
+            href: `/dao/[dao]/${TASKS_SECTION_ID}/polls`,
           },
           {
             id: 'plugins',
             label: 'Plugins',
             href: `/dao/[dao]/${TASKS_SECTION_ID}/plugins`,
-            disabled: true
-          }
-        ]
+            disabled: true,
+          },
+        ],
       },
       {
         id: TREASURY_SECTION_ID,
@@ -62,14 +62,14 @@ export const useGetDaoNavItems = (): MenuItem[] => {
             id: 'tokens',
             label: 'Tokens',
             href: `/dao/[dao]/${TREASURY_SECTION_ID}/tokens`,
-            subHrefs: ['/dao/[dao]/treasury/tokens/transactions/[tokenId]']
+            subHrefs: ['/dao/[dao]/treasury/tokens/transactions/[tokenId]'],
           },
           {
             id: 'nfts',
             label: 'NFTs',
-            href: `/dao/[dao]/${TREASURY_SECTION_ID}/nfts`
-          }
-        ]
+            href: `/dao/[dao]/${TREASURY_SECTION_ID}/nfts`,
+          },
+        ],
       },
       {
         id: GROUPS_SECTION_ID,
@@ -78,9 +78,9 @@ export const useGetDaoNavItems = (): MenuItem[] => {
         subItems: [
           {
             id: 'addGroup',
-            label: <AddGroupMenu />
-          }
-        ]
+            label: <AddGroupMenu />,
+          },
+        ],
       },
       {
         id: GOVERNANCE_SECTION_ID,
@@ -90,27 +90,27 @@ export const useGetDaoNavItems = (): MenuItem[] => {
           {
             id: 'daoSettings',
             label: 'DAO settings',
-            href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/settings`
+            href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/settings`,
           },
           {
             id: 'votingPolicy',
             label: 'Voting Policy',
-            href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/voting-policy`
+            href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/voting-policy`,
           },
           {
             id: 'votingToken',
             label: 'Voting Token',
             href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/voting-token`,
-            disabled: true
+            disabled: true,
           },
           {
             id: 'upgradeSoftware',
             label: 'Upgrade software',
             href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/upgrade-software`,
-            disabled: true
-          }
-        ]
-      }
+            disabled: true,
+          },
+        ],
+      },
     ];
   }, []);
 
@@ -130,28 +130,28 @@ export const useGetDaoNavItems = (): MenuItem[] => {
             {
               id: 'allMembers',
               label: 'All Members',
-              href: `/dao/${selectedDao?.id}/${GROUPS_SECTION_ID}/all-members`
+              href: `/dao/${selectedDao?.id}/${GROUPS_SECTION_ID}/all-members`,
             },
             ...Object.keys(groups).map(key => {
               let href;
 
               if (key !== 'all-groups') {
                 href = {
-                  href: `/dao/${selectedDao?.id}/${GROUPS_SECTION_ID}/${groups[key]}`
+                  href: `/dao/${selectedDao?.id}/${GROUPS_SECTION_ID}/${groups[key]}`,
                 };
               } else {
                 href = {
-                  href: `/dao/${selectedDao?.id}/${GROUPS_SECTION_ID}/${groups[key]}`
+                  href: `/dao/${selectedDao?.id}/${GROUPS_SECTION_ID}/${groups[key]}`,
                 };
               }
 
               return {
                 ...href,
                 id: key,
-                label: key
+                label: key,
               };
-            })
-          ]
+            }),
+          ],
         };
       }
 

@@ -14,7 +14,7 @@ interface ExpandableDetailsProps {
 export const ExpandableDetails: FC<ExpandableDetailsProps> = ({
   label,
   children,
-  className = ''
+  className = '',
 }) => {
   const initialState = label === 'Vote details';
   const [isOpen, toggle] = useState(initialState);
@@ -35,7 +35,7 @@ export const ExpandableDetails: FC<ExpandableDetailsProps> = ({
       </Button>
       <div
         className={classNames(styles.content, className, {
-          [styles.opened]: isOpen
+          [styles.opened]: isOpen,
         })}
       >
         {children}

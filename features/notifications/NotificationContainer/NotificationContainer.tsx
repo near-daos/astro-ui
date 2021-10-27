@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 import {
   SHOW_NOTIFICATION_EVENT,
   HIDE_NOTIFICATION_EVENT,
-  HIDE_NOTIFICATION_EVENT_BY_TAG
+  HIDE_NOTIFICATION_EVENT_BY_TAG,
 } from 'constants/common';
 import { Notification } from 'features/notifications/Notification';
 
@@ -11,7 +11,7 @@ import {
   HideNotificationEvent,
   HideNotificationByTagEvent,
   NotificationProps,
-  ShowNotificationEvent
+  ShowNotificationEvent,
 } from 'features/notifications/types';
 
 import s from './NotificationContainer.module.scss';
@@ -32,7 +32,7 @@ export const NotificationContainer: React.FC = () => {
       const noty = {
         ...e.detail,
         id: idStorage.current.toString(),
-        timestamp: new Date().getTime()
+        timestamp: new Date().getTime(),
       };
 
       idStorage.current += 1;
@@ -104,7 +104,7 @@ export const NotificationContainer: React.FC = () => {
   useEffect(() => {
     function onScroll() {
       setStyles({
-        top: 16
+        top: 16,
       });
     }
 

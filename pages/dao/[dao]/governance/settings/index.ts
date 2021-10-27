@@ -4,7 +4,7 @@ import { DaoSettingsView } from 'features/dao-settings';
 import { DAO } from 'types/dao';
 
 export const getServerSideProps: GetServerSideProps = async ({
-  query
+  query,
 }): Promise<{
   props: { data: DAO | null };
 }> => {
@@ -12,8 +12,8 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
-      data
-    }
+      data,
+    },
   };
 };
 

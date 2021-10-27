@@ -46,10 +46,10 @@ export const RecentlyUnstaked: FC<RecentlyUnstakedProps> = ({ stakes }) => {
                   token: {
                     id,
                     tokenName: rest.name,
-                    balance: rest.amount
+                    balance: rest.amount,
                   },
                   rate: 18,
-                  variant: 'Withdraw'
+                  variant: 'Withdraw',
                 })
               }
             >

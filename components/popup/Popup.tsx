@@ -20,7 +20,7 @@ export const Popup: React.FC<PopupProps & Config> = ({
     getTooltipProps,
     setTooltipRef,
     setTriggerRef,
-    visible
+    visible,
   } = usePopperTooltip(config);
 
   useEffect(() => {
@@ -33,12 +33,12 @@ export const Popup: React.FC<PopupProps & Config> = ({
     <div
       ref={setTooltipRef}
       {...getTooltipProps({
-        className: classNames(styles.tooltipContainer, className)
+        className: classNames(styles.tooltipContainer, className),
       })}
     >
       <div
         {...getArrowProps({
-          className: classNames(styles.tooltipArrow)
+          className: classNames(styles.tooltipArrow),
         })}
       />
       {children}
@@ -47,5 +47,5 @@ export const Popup: React.FC<PopupProps & Config> = ({
 };
 
 Popup.defaultProps = {
-  className: ''
+  className: '',
 } as Partial<PopupProps>;

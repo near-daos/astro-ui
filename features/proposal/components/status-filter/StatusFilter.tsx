@@ -10,20 +10,20 @@ const StatusFilter: VFC = () => {
   const FILTER_OPTIONS = [
     {
       label: 'All',
-      component: <div className={styles.all}>All</div>
+      component: <div className={styles.all}>All</div>,
     },
     {
       label: 'Approved',
-      component: <div className={styles.approved}>Approved</div>
+      component: <div className={styles.approved}>Approved</div>,
     },
     {
       label: 'Rejected',
-      component: <div className={styles.failed}>Rejected</div>
+      component: <div className={styles.failed}>Rejected</div>,
     },
     {
       label: 'Dismissed',
-      component: <div className={styles.dismissed}>Dismissed</div>
-    }
+      component: <div className={styles.dismissed}>Dismissed</div>,
+    },
   ];
 
   const handleFilterChange = useCallback(
@@ -32,8 +32,8 @@ const StatusFilter: VFC = () => {
         pathname: '',
         query: {
           ...router.query,
-          status
-        }
+          status,
+        },
       });
     },
     [router]

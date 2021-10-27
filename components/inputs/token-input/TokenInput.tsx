@@ -29,7 +29,7 @@ export const TokenInput: FC<TokenInputProps> = ({
   selectedToken,
   error,
   success,
-  name
+  name,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const handleInputClick = useCallback(() => {
@@ -54,7 +54,7 @@ export const TokenInput: FC<TokenInputProps> = ({
         </div>
         <div>{token.symbol}</div>
       </div>
-    )
+    ),
   }));
 
   const selectedTokenData = tokens[selectedToken];
@@ -73,7 +73,7 @@ export const TokenInput: FC<TokenInputProps> = ({
       <div
         className={cn(styles.inputContainer, {
           [styles.error]: !!error,
-          [styles.success]: success
+          [styles.success]: success,
         })}
         onClick={handleInputClick}
       >

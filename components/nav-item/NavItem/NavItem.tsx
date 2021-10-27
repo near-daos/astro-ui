@@ -37,7 +37,7 @@ export const NavItem: FC<NavItemProps> = ({
   bottomDelimiter,
   subHrefs = [],
   onClick,
-  children
+  children,
 }) => {
   const isActive = useIsActive(href, subHrefs);
 
@@ -49,13 +49,13 @@ export const NavItem: FC<NavItemProps> = ({
     const rootClassName = cn(styles.nav, className, {
       [styles.active]: active || isActive,
       [styles.topDelimiter]: topDelimiter,
-      [styles.bottomDelimiter]: bottomDelimiter
+      [styles.bottomDelimiter]: bottomDelimiter,
     });
 
     const props = {
       onClick: handleOnClick,
       onKeyPress: handleOnClick,
-      className: rootClassName
+      className: rootClassName,
     };
 
     const content = (
@@ -106,5 +106,5 @@ NavItem.defaultProps = {
   className: '',
   topDelimiter: false,
   bottomDelimiter: false,
-  onClick: undefined
+  onClick: undefined,
 } as Partial<NavItemProps>;

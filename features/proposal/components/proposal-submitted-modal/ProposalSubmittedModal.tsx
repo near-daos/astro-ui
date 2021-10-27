@@ -11,7 +11,7 @@ export interface ProposalSubmittedModalProps {
 
 export const ProposalSubmittedModal: VFC<ProposalSubmittedModalProps> = ({
   isOpen,
-  onClose
+  onClose,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

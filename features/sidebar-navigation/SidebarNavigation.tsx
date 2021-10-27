@@ -11,7 +11,7 @@ interface SidebarNavigationProps {
 export const SidebarNavigation: FC<SidebarNavigationProps> = ({
   className = '',
   fullscreen = false,
-  closeSideBar
+  closeSideBar,
 }) => {
   return (
     <Sidebar

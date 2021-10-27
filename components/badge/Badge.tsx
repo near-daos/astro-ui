@@ -19,7 +19,7 @@ const sizes = {
   small: styles.small,
   medium: styles.medium,
   large: styles.large,
-  block: styles.block
+  block: styles.block,
 };
 
 interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -58,7 +58,7 @@ export const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
         {...props}
         style={{
           background,
-          textTransform
+          textTransform,
         }}
         className={className}
       >

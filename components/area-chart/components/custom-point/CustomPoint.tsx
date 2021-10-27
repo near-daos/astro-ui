@@ -5,7 +5,7 @@ import { VictoryLabelProps } from 'victory';
 
 import {
   CHART_MAIN_COLOR,
-  POINT_LINE_COLOR
+  POINT_LINE_COLOR,
 } from 'components/area-chart/chart-styles';
 
 import ChartTooltip from 'components/area-chart/components/chart-tooltip';

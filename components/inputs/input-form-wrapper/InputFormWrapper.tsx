@@ -13,7 +13,7 @@ interface InputFormWrapperProps {
 export const InputFormWrapper: FC<InputFormWrapperProps> = ({
   errors,
   className,
-  component
+  component,
 }) => {
   function getError() {
     const name = component?.props?.name;

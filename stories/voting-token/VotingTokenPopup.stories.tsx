@@ -4,7 +4,7 @@ import { VotingTokenPopup, VotingTokenPopupProps } from 'features/voting-token';
 
 export default {
   title: 'Features/VotingToken/VotingTokenPopup',
-  component: VotingTokenPopup
+  component: VotingTokenPopup,
 } as Meta;
 
 export const Template: Story<VotingTokenPopupProps> = (args): JSX.Element => (
@@ -13,5 +13,5 @@ export const Template: Story<VotingTokenPopupProps> = (args): JSX.Element => (
 
 Template.storyName = 'VotingTokenPopup';
 Template.args = {
-  isOpen: true
+  isOpen: true,
 };

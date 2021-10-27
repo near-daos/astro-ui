@@ -10,8 +10,8 @@ export default {
       <div style={{ padding: '1rem', background: 'lightgrey', maxWidth: 1024 }}>
         {story()}
       </div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 const Template: Story<BountyCardProps> = (args): JSX.Element => (
@@ -31,8 +31,8 @@ Default.args = {
     externalUrl: '',
     deadlineThreshold: '',
     slots: 3,
-    claimedBy: []
-  }
+    claimedBy: [],
+  },
 };
 
 export const InProgress = Template.bind({});
@@ -48,8 +48,8 @@ InProgress.args = {
     externalUrl: '',
     deadlineThreshold: '',
     slots: 3,
-    claimedBy: []
-  }
+    claimedBy: [],
+  },
 };
 
 export const InProgressClaimedByMe = Template.bind({});
@@ -65,8 +65,8 @@ InProgressClaimedByMe.args = {
     externalUrl: '',
     slots: 3,
     claimedBy: [],
-    deadlineThreshold: '8'
-  }
+    deadlineThreshold: '8',
+  },
 };
 
 export const Completed = Template.bind({});
@@ -85,9 +85,9 @@ Completed.args = {
       {
         accountId: 'vicky.near',
         starTime: '2021-01-01',
-        deadline: ''
-      }
+        deadline: '',
+      },
     ],
-    deadlineThreshold: '30'
-  }
+    deadlineThreshold: '30',
+  },
 };

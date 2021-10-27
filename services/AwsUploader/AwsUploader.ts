@@ -8,23 +8,23 @@ const SECOND = 1000;
 const getGlobalAWSConfig = () => {
   let baseConfig: AWS.ConfigurationOptions = {
     httpOptions: {
-      timeout: SECOND * 30
-    }
+      timeout: SECOND * 30,
+    },
   };
 
   if (appConfig.awsUseLocalConf) {
     baseConfig = {
       ...baseConfig,
       accessKeyId: awsConfig.accessKeyId,
-      secretAccessKey: awsConfig.secretAccessKey
+      secretAccessKey: awsConfig.secretAccessKey,
     };
   } else {
     baseConfig = {
       ...baseConfig,
       region: awsConfig.region,
       credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: awsConfig.identityPoolId
-      })
+        IdentityPoolId: awsConfig.identityPoolId,
+      }),
     };
   }
 
@@ -37,13 +37,13 @@ const getInstanceConfig = () => {
       apiVersion: awsConfig.apiVersion,
       params: { Bucket: awsConfig.bucket },
       endpoint: awsConfig.endpoint,
-      s3ForcePathStyle: awsConfig.s3ForcePathStyle
+      s3ForcePathStyle: awsConfig.s3ForcePathStyle,
     };
   }
 
   return {
     apiVersion: awsConfig.apiVersion,
-    params: { Bucket: awsConfig.bucket }
+    params: { Bucket: awsConfig.bucket },
   };
 };
 
@@ -71,7 +71,7 @@ export class AwsUploader {
           Key: fileName,
           Body: file,
           ACL: 'public-read',
-          ContentType: 'image/png'
+          ContentType: 'image/png',
         })
         .promise();
 

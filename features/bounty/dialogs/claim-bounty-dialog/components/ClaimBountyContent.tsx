@@ -18,7 +18,7 @@ const ClaimBountyContent: FC<ClaimBountyContentProps> = ({
   data,
   token,
   onClose,
-  onSubmit
+  onSubmit,
 }) => {
   const forgivenessDuration = formatForgivenessDuration(data.forgivenessPeriod);
   const deadline = formatDeadlineDate(data.deadlineThreshold);

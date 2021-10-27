@@ -37,7 +37,7 @@ export const getNearConfig = (env: NEAR_ENV): NearConfig => {
         tokenContractName: '',
         walletUrl: 'https://wallet.near.org',
         helperUrl: 'https://helper.mainnet.near.org',
-        explorerUrl: 'https://explorer.mainnet.near.org'
+        explorerUrl: 'https://explorer.mainnet.near.org',
       };
     case 'testnet':
     case 'development':
@@ -49,7 +49,7 @@ export const getNearConfig = (env: NEAR_ENV): NearConfig => {
         tokenContractName: TOKEN_CONTRACT_NAME,
         walletUrl: 'https://wallet.testnet.near.org',
         helperUrl: 'https://helper.testnet.near.org',
-        explorerUrl: 'https://explorer.testnet.near.org'
+        explorerUrl: 'https://explorer.testnet.near.org',
       };
     case 'betanet':
       return {
@@ -60,7 +60,7 @@ export const getNearConfig = (env: NEAR_ENV): NearConfig => {
         contractName: CONTRACT_NAME,
         walletUrl: 'https://wallet.betanet.near.org',
         helperUrl: 'https://helper.betanet.near.org',
-        explorerUrl: 'https://explorer.betanet.near.org'
+        explorerUrl: 'https://explorer.betanet.near.org',
       };
     case 'local':
       return {
@@ -69,7 +69,7 @@ export const getNearConfig = (env: NEAR_ENV): NearConfig => {
         keyPath: `${process.env.HOME}/.near/validator_key.json`,
         walletUrl: 'http://localhost:4000/wallet',
         tokenContractName: '',
-        contractName: CONTRACT_NAME
+        contractName: CONTRACT_NAME,
       };
     case 'test':
     case 'ci':
@@ -78,7 +78,7 @@ export const getNearConfig = (env: NEAR_ENV): NearConfig => {
         nodeUrl: 'https://rpc.ci-testnet.near.org',
         tokenContractName: '',
         contractName: CONTRACT_NAME,
-        masterAccount: 'test.near'
+        masterAccount: 'test.near',
       };
     case 'ci-betanet':
       return {
@@ -86,7 +86,7 @@ export const getNearConfig = (env: NEAR_ENV): NearConfig => {
         nodeUrl: 'https://rpc.ci-betanet.near.org',
         tokenContractName: '',
         contractName: CONTRACT_NAME,
-        masterAccount: 'test.near'
+        masterAccount: 'test.near',
       };
     default:
       throw Error(

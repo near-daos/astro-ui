@@ -7,7 +7,7 @@ import { useFormContext } from 'react-hook-form';
 import {
   DAO_PROPOSALS_OPTIONS,
   DAO_STRUCTURE_OPTIONS,
-  DAO_VOTING_POWER_OPTIONS
+  DAO_VOTING_POWER_OPTIONS,
 } from 'features/create-dao/components/steps/data';
 
 import { Icon } from 'components/Icon';
@@ -36,7 +36,7 @@ export function ReviewView(): JSX.Element {
   const options = [
     DAO_PROPOSALS_OPTIONS[dao.proposals],
     DAO_STRUCTURE_OPTIONS[dao.structure],
-    DAO_VOTING_POWER_OPTIONS[dao.voting]
+    DAO_VOTING_POWER_OPTIONS[dao.voting],
   ];
 
   async function onSubmit(data: DAOFormValues) {
@@ -57,15 +57,15 @@ export function ReviewView(): JSX.Element {
         proposalBond: '0.1',
         proposalPeriod: '168',
         bountyBond: '0.1',
-        bountyForgivenessPeriod: '168'
-      }
+        bountyForgivenessPeriod: '168',
+      },
     } as CreateDaoInput);
 
     if (isBoolean(result)) {
       showNotification({
         type: NOTIFICATION_TYPES.INFO,
         description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000
+        lifetime: 20000,
       });
 
       await router.push(`/dao/${data.address}.${nearConfig.contractName}`);

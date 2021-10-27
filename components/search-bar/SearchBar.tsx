@@ -3,7 +3,7 @@ import React, {
   KeyboardEventHandler,
   useCallback,
   useRef,
-  useState
+  useState,
 } from 'react';
 import cn from 'classnames';
 import { useClickAway, useDebounce } from 'react-use';
@@ -43,7 +43,7 @@ const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
     handleSearch,
     handleClose,
     searchResults,
-    setSearchResults
+    setSearchResults,
   } = useSearchResults();
 
   useDebounce(

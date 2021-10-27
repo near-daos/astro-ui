@@ -38,7 +38,7 @@ export const VotingStatistic: FC<VotingStatisticProps> = ({ data }) => {
             <span
               className={cn(styles.bar, {
                 [styles.yes]: item.vote === 'Yes',
-                [styles.no]: item.vote === 'No'
+                [styles.no]: item.vote === 'No',
               })}
               style={{ width: `${item.percent}%` }}
             />

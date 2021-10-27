@@ -12,7 +12,7 @@ module.exports = (nextConfig = {}) => {
         'white',
         '#fff',
         '#ffffff',
-        'rgb(255, 255, 255)'
+        'rgb(255, 255, 255)',
       ];
       config.module.rules.push({
         test: /\.svg$/,
@@ -24,10 +24,10 @@ module.exports = (nextConfig = {}) => {
             options: {
               extract: true,
               publicPath: 'static/',
-              outputPath: 'static/'
-            }
-          }
-        ]
+              outputPath: 'static/',
+            },
+          },
+        ],
       });
       config.module.rules.push({
         test: /\.svg$/,
@@ -45,14 +45,14 @@ module.exports = (nextConfig = {}) => {
                   name: 'convertColors',
                   params: {
                     currentColor: {
-                      exec: val => !allowedColors.includes(val)
-                    }
-                  }
-                }
-              ])
-            }
-          }
-        ]
+                      exec: val => !allowedColors.includes(val),
+                    },
+                  },
+                },
+              ]),
+            },
+          },
+        ],
       });
 
       config.module.rules.push({
@@ -60,14 +60,14 @@ module.exports = (nextConfig = {}) => {
         include: path.join(process.cwd(), 'assets', 'icons'),
         use: [
           {
-            loader: 'svgo-loader'
-          }
-        ]
+            loader: 'svgo-loader',
+          },
+        ],
       });
 
       config.plugins.push(new SpriteLoaderPlugin());
 
       return config;
-    }
+    },
   });
 };

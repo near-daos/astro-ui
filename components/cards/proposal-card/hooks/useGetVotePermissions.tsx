@@ -16,7 +16,7 @@ const APP_TO_CONTRACT_PROPOSAL_TYPE = {
   [ProposalType.SetStakingContract]: 'set_vote_token',
   [ProposalType.AddBounty]: 'add_bounty',
   [ProposalType.BountyDone]: 'bounty_done',
-  [ProposalType.Vote]: 'vote'
+  [ProposalType.Vote]: 'vote',
 };
 
 export function useGetVotePermissions(
@@ -27,7 +27,7 @@ export function useGetVotePermissions(
   const [permissions, setPermissions] = useState<ProposalVotingPermissions>({
     canApprove: false,
     canReject: false,
-    canDelete: false
+    canDelete: false,
   });
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export function useGetVotePermissions(
         {
           canApprove: false,
           canReject: false,
-          canDelete: false
+          canDelete: false,
         }
       );
 

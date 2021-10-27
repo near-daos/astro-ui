@@ -44,7 +44,7 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
   variant = 'Stake',
   delegatedTo = '',
   amount = '',
-  onUnstake
+  onUnstake,
 }) => {
   const { isMobile } = useDeviceType();
   const [value, setValue] = useState(amount);
@@ -52,7 +52,7 @@ export const StakeTokensPopup: FC<StakeTokensPopupProps> = ({
   const handleSubmit = useCallback(() => {
     onClose({
       delegateTo,
-      value
+      value,
     });
   }, [delegateTo, onClose, value]);
 

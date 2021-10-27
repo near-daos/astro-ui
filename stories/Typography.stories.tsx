@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react';
 import * as Typography from 'components/Typography';
 
 export default {
-  title: 'Typography'
+  title: 'Typography',
 } as Meta;
 
 type SizeType = React.ComponentProps<typeof Typography.Title>['size'];
@@ -12,7 +12,7 @@ export const TypographyStory = (): JSX.Element => (
   <div
     style={{
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
     }}
   >
     <section>

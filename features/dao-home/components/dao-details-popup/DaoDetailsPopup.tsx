@@ -27,7 +27,7 @@ export const DaoDetailsPopup: FC<DaoDetailsPopupProps> = ({
   subtitle,
   children,
   createdAt,
-  links
+  links,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

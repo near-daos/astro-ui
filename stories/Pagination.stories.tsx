@@ -7,8 +7,8 @@ export default {
   component: PaginationComponent,
   argTypes: {
     onPageChange: {
-      action: 'changes'
-    }
+      action: 'changes',
+    },
   },
   decorators: [
     story => (
@@ -17,8 +17,8 @@ export default {
       >
         {story()}
       </div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 const Template: Story<PaginationProps> = (args): JSX.Element => (
@@ -30,5 +30,5 @@ export const Default = Template.bind({});
 Default.args = {
   pageCount: 99,
   pagesVisible: 1,
-  pagesRange: 4
+  pagesRange: 4,
 };

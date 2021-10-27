@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import {
   DropdownMultiSelect,
-  DropdownMultiSelectProps
+  DropdownMultiSelectProps,
 } from 'components/inputs/select/DropdownMultiSelect';
 import { Badge } from 'components/badge/Badge';
 
@@ -16,8 +16,8 @@ export default {
       >
         {story()}
       </div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 export const Template: Story<DropdownMultiSelectProps> = (
@@ -30,18 +30,18 @@ Template.args = {
     {
       label: 'Jason Born',
       component: <Badge size="small">Jason Born</Badge>,
-      disabled: false
+      disabled: false,
     },
     {
       label: 'James Bond, the Spy',
       component: <Badge size="small">James Bond, the Spy</Badge>,
-      disabled: false
+      disabled: false,
     },
     {
       label: 'Ethan Hunt',
       component: <Badge size="small">Ethan Hunt</Badge>,
-      disabled: false
-    }
+      disabled: false,
+    },
   ],
-  label: 'Who can propose'
+  label: 'Who can propose',
 };

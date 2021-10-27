@@ -10,7 +10,7 @@ export interface VotingTokenPopupProps {
 
 export const VotingTokenPopup: FC<VotingTokenPopupProps> = ({
   isOpen,
-  onClose
+  onClose,
 }) => {
   const handleSubmit = useCallback(
     res => {

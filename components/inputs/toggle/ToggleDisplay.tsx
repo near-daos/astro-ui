@@ -13,5 +13,5 @@ export const ToggleDisplay: React.FC<{ value?: boolean }> = ({ value }) => {
 };
 
 ToggleDisplay.defaultProps = {
-  value: false
+  value: false,
 };

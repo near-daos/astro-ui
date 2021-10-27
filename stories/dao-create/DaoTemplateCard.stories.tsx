@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react';
 import {
   DaoTemplateCard,
-  DaoTemplateCardProps
+  DaoTemplateCardProps,
 } from 'features/create-dao/components/template/DaoTemplateCard';
 import React from 'react';
 
@@ -15,11 +15,11 @@ export default {
       values: [
         {
           name: 'bg',
-          value: '#E8E0FF'
-        }
-      ]
-    }
-  }
+          value: '#E8E0FF',
+        },
+      ],
+    },
+  },
 } as Meta;
 
 export const Template: Story<DaoTemplateCardProps> = (args): JSX.Element => (
@@ -35,6 +35,6 @@ Template.args = {
     variant: 'foundation',
     proposals: 'open',
     structure: 'groups',
-    voting: 'democratic'
-  }
+    voting: 'democratic',
+  },
 };

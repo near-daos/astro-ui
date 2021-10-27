@@ -29,7 +29,7 @@ export function FormView(): JSX.Element {
             reset({
               ...getValues(),
               ...data,
-              address: formatDaoAddress(data.displayName)
+              address: formatDaoAddress(data.displayName),
             });
             await router.push('/create-dao/flag');
           }}

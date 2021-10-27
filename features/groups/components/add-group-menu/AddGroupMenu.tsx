@@ -15,8 +15,8 @@ export const AddGroupMenu: FC = () => {
   const [showGroupModal] = useModal(GroupPopup, {
     initialValues: {
       groupType: GroupFormType.CREATE_GROUP,
-      groups: []
-    }
+      groups: [],
+    },
   });
 
   const handleClick = useCallback(async () => {

@@ -3,7 +3,7 @@ import { dispatchCustomEvent } from 'helpers/events';
 import {
   SHOW_NOTIFICATION_EVENT,
   HIDE_NOTIFICATION_EVENT,
-  HIDE_NOTIFICATION_EVENT_BY_TAG
+  HIDE_NOTIFICATION_EVENT_BY_TAG,
 } from './notificationConstants';
 
 import { NotificationRawData } from './types';

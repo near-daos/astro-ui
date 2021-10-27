@@ -17,18 +17,18 @@ export const SearchResultsRenderer: FC = () => {
     {
       id: 0,
       label: `DAOs (${searchResults?.daos.length ?? 0})`,
-      content: <DaosTabView />
+      content: <DaosTabView />,
     },
     {
       id: 1,
       label: `Proposals (${searchResults?.proposals.length ?? 0})`,
-      content: <ProposalsTabView />
+      content: <ProposalsTabView />,
     },
     {
       id: 2,
       label: `Members (${searchResults?.members.length ?? 0})`,
-      content: <MembersTabView />
-    }
+      content: <MembersTabView />,
+    },
   ];
 
   return (

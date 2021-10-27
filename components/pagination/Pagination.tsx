@@ -21,7 +21,7 @@ export interface PaginationProps
 const NavLabel = ({
   label,
   className,
-  icon
+  icon,
 }: {
   label: string;
   className: string;
@@ -32,7 +32,7 @@ const NavLabel = ({
     <span
       className={cn(styles.navLabel, {
         [styles.iconLeft]: icon === 'buttonArrowLeft',
-        [styles.iconRight]: icon === 'buttonArrowRight'
+        [styles.iconRight]: icon === 'buttonArrowRight',
       })}
     >
       {label}

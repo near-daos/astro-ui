@@ -28,7 +28,7 @@ function getInitialValues(values?: string[]): Option[] {
 
   return values.map(item => ({
     label: item,
-    component: <Badge size="small">{item}</Badge>
+    component: <Badge size="small">{item}</Badge>,
   }));
 }
 
@@ -37,7 +37,7 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
   className,
   label,
   defaultValue,
-  onChange
+  onChange,
 }) => {
   const [selectedItems, setSelectedItems] = useState<Option[]>(() =>
     getInitialValues(defaultValue)
@@ -52,7 +52,7 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
       case Downshift.stateChangeTypes.clickItem:
         return {
           ...changes,
-          isOpen: true
+          isOpen: true,
         };
       default:
         return changes;
@@ -100,7 +100,7 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
         getMenuProps,
         getItemProps,
         getToggleButtonProps,
-        isOpen
+        isOpen,
       }) => {
         return (
           <div className={cn(styles.root, className)}>
@@ -136,7 +136,7 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
                         styles.collapsedLabel,
                         styles.selectedWrapper,
                         {
-                          [styles.visible]: showPlaceholder
+                          [styles.visible]: showPlaceholder,
                         }
                       )}
                     >
@@ -167,7 +167,7 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
                         styles.collapsedLabel,
                         styles.selectedWrapper,
                         {
-                          [styles.visible]: showPlaceholder
+                          [styles.visible]: showPlaceholder,
                         }
                       )}
                     >
@@ -203,7 +203,7 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
                     return (
                       <li
                         className={cn(styles.item, {
-                          [styles.disabled]: item.disabled
+                          [styles.disabled]: item.disabled,
                         })}
                         {...props}
                         key={item.label}

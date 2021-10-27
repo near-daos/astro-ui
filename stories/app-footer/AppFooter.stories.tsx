@@ -4,7 +4,7 @@ import { AppFooter, AppFooterProps } from 'features/app-footer';
 
 export default {
   title: 'features/AppFooter',
-  component: AppFooter
+  component: AppFooter,
 } as Meta;
 
 export const Template: Story<AppFooterProps> = (args): JSX.Element => (
@@ -14,5 +14,5 @@ export const Template: Story<AppFooterProps> = (args): JSX.Element => (
 Template.storyName = 'AppFooter';
 Template.args = {
   isLandingPage: true,
-  isLoggedIn: false
+  isLoggedIn: false,
 };

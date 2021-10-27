@@ -19,7 +19,7 @@ export const Highlighter: FC = ({ children }) => {
       instance.unmark({
         done: () => {
           instance.mark(t);
-        }
+        },
       });
     }
   }, [searchResults?.query]);

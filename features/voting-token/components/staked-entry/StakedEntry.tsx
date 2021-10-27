@@ -13,7 +13,7 @@ export const StakedEntry: FC<StakedEntryProps> = ({
   amount,
   name,
   delegatedTo,
-  children
+  children,
 }) => {
   return (
     <div className={styles.root}>

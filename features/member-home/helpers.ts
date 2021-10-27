@@ -7,7 +7,7 @@ import {
   FilteredProposalsData,
   ProposalByDao,
   DaoFilterValues,
-  ProposalFilterValues
+  ProposalFilterValues,
 } from 'features/member-home/types';
 import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
 
@@ -17,12 +17,12 @@ import { useRouter } from 'next/router';
 export const daoOptions: { value: DaoFilterValues; label: string }[] = [
   {
     value: 'All DAOs',
-    label: 'All DAOs'
+    label: 'All DAOs',
   },
   {
     label: 'My DAOs',
-    value: 'My DAOs'
-  }
+    value: 'My DAOs',
+  },
 ];
 
 export function arrangeByDao(proposals: Proposal[]): ProposalByDao {
@@ -39,9 +39,9 @@ export function arrangeByDao(proposals: Proposal[]): ProposalByDao {
           name,
           displayName: displayName || '',
           logo,
-          id: item.daoId
+          id: item.daoId,
         },
-        proposals: [item]
+        proposals: [item],
       };
     }
   });
@@ -70,7 +70,7 @@ export const useFilteredMemberHomeData = (
   const filter = {
     daoFilter: daoFilter ? (daoFilter as DaoFilterValues) : 'All DAOs',
     proposalFilter: getProposalFilter(tab),
-    daoViewFilter: daoViewFilter ? (daoViewFilter as string) : null
+    daoViewFilter: daoViewFilter ? (daoViewFilter as string) : null,
   };
   let selectedDaoFlag;
 
@@ -83,8 +83,8 @@ export const useFilteredMemberHomeData = (
           pathname: '',
           query: {
             ...router.query,
-            [name]: value as string
-          }
+            [name]: value as string,
+          },
         });
       }
     },
@@ -104,7 +104,7 @@ export const useFilteredMemberHomeData = (
     lessThanDayProposals,
     lessThanWeekProposals,
     moreThanWeekProposals,
-    otherProposals
+    otherProposals,
   } = splitProposalsByVotingPeriod(proposals);
 
   return {
@@ -113,11 +113,11 @@ export const useFilteredMemberHomeData = (
       lessThanDayProposals: arrangeByDao(lessThanDayProposals),
       lessThanWeekProposals: arrangeByDao(lessThanWeekProposals),
       moreThanWeekProposals: arrangeByDao(moreThanWeekProposals),
-      otherProposals: arrangeByDao(otherProposals)
+      otherProposals: arrangeByDao(otherProposals),
     },
     filter,
     onFilterChange,
-    selectedDaoFlag
+    selectedDaoFlag,
   };
 };
 

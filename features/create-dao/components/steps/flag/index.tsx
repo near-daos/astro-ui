@@ -29,7 +29,7 @@ function FlagViewComponent(): JSX.Element {
     '/flags/flag-3.svg',
     '/flags/flag-4.svg',
     '/flags/flag-5.svg',
-    '/flags/flag-6.svg'
+    '/flags/flag-6.svg',
   ];
 
   return (
@@ -66,5 +66,5 @@ function FlagViewComponent(): JSX.Element {
 }
 
 export const FlagView = dynamic(() => Promise.resolve(FlagViewComponent), {
-  ssr: false
+  ssr: false,
 });

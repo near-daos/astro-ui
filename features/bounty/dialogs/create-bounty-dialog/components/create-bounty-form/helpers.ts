@@ -14,31 +14,31 @@ export const schema = yup.object().shape({
     ),
   details: yup.string().required(),
   slots: yup.number().positive().integer().required(),
-  deadlineThreshold: yup.number().positive().integer().required()
+  deadlineThreshold: yup.number().positive().integer().required(),
 });
 
 export const deadlineUnitOptions = [
   {
     value: 'day',
-    label: 'days'
+    label: 'days',
   },
   {
     value: 'week',
-    label: 'weeks'
+    label: 'weeks',
   },
   {
     value: 'month',
-    label: 'months'
-  }
+    label: 'months',
+  },
 ];
 
 export const tokenOptions: { label: string; value: Token }[] = [
   {
     label: 'NEAR',
-    value: NEAR_TOKEN
+    value: NEAR_TOKEN,
   },
   {
     label: 'Fungible Token',
-    value: FUNGIBLE_TOKEN
-  }
+    value: FUNGIBLE_TOKEN,
+  },
 ];

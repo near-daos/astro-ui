@@ -4,7 +4,7 @@ import { TextArea } from 'components/inputs/textarea/TextArea';
 
 export default {
   title: 'Components/TextArea',
-  component: TextArea
+  component: TextArea,
 } as Meta;
 
 export const Template = (
@@ -15,5 +15,5 @@ Template.storyName = 'TextArea';
 Template.args = {
   label: 'Label',
   placeholder: 'Sample text',
-  maxLength: 500
+  maxLength: 500,
 };

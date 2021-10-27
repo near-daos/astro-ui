@@ -8,7 +8,7 @@ import { Bounty } from 'components/cards/bounty-card/types';
 import {
   DaoFilterValues,
   ProposalFilterOptions,
-  ProposalFilterStatusOptions
+  ProposalFilterStatusOptions,
 } from 'features/member-home/types';
 
 import { CookieService } from 'services/CookieService';
@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     daoFilter: 'My DAOs' as DaoFilterValues,
     proposalFilter: 'Active proposals' as ProposalFilterOptions,
     daoViewFilter: daoViewFilter ? (daoViewFilter as string) : null,
-    status: status ? (status as ProposalFilterStatusOptions) : null
+    status: status ? (status as ProposalFilterStatusOptions) : null,
   };
 
   let proposalFilter: ProposalFilterOptions;
@@ -81,7 +81,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       let result = await SputnikHttpService.getFilteredProposals(
         {
           ...filter,
-          proposalFilter
+          proposalFilter,
         },
         accountId
       );
@@ -95,7 +95,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       }
 
       return result;
-    })
+    }),
   ]);
 
   return {
@@ -103,8 +103,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       proposals: filterProposalsByStatus(filter.status, proposals),
       bounties,
       filter,
-      apiTokens
-    }
+      apiTokens,
+    },
   };
 };
 

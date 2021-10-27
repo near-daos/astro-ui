@@ -4,7 +4,7 @@ import { NextRouter } from 'next/router';
 import {
   DaoConfig,
   ConfigChangeReason,
-  CreateProposalParams
+  CreateProposalParams,
 } from 'types/proposal';
 import { DAO } from 'types/dao';
 
@@ -31,11 +31,11 @@ export function getChangeConfigProposal(
       config: {
         metadata,
         name,
-        purpose
-      }
+        purpose,
+      },
     },
     description: `${reason} for ${daoId}`,
-    bond: proposalBond
+    bond: proposalBond,
   };
 }
 
@@ -54,7 +54,7 @@ export function getChangeBondDeadlinesProposal(
     createProposalBond,
     proposalExpireTime,
     claimBountyBond,
-    unclaimBountyTime
+    unclaimBountyTime,
   }: BondsAndDeadlinesData,
   initialValues: {
     accountName: string;
@@ -103,7 +103,7 @@ export function getChangeBondDeadlinesProposal(
         default_vote_policy: keysToSnakeCase({
           quorum,
           threshold: ratio,
-          weightKind
+          weightKind,
         }),
         proposal_bond: new Decimal(createProposalBond)
           .mul(YOKTO_NEAR)
@@ -114,23 +114,23 @@ export function getChangeBondDeadlinesProposal(
         bounty_bond: new Decimal(claimBountyBond).mul(YOKTO_NEAR).toFixed(),
         bounty_forgiveness_period: new Decimal(unclaimBountyTime)
           .mul('3.6e12')
-          .toFixed()
-      }
+          .toFixed(),
+      },
     },
-    bond: proposalBond
+    bond: proposalBond,
   };
 }
 
 export function navigateToDaoPage(router: NextRouter): void {
   const {
     push,
-    query: { dao }
+    query: { dao },
   } = router;
 
   push({
     pathname: SINGLE_DAO_PAGE,
     query: {
-      dao
-    }
+      dao,
+    },
   });
 }

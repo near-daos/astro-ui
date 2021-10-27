@@ -9,8 +9,8 @@ export default {
   decorators: [
     story => (
       <div style={{ padding: '1rem', background: 'lightgrey' }}>{story()}</div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 const Template: Story<MemberCardProps> = (args): JSX.Element => (
@@ -36,13 +36,13 @@ Default.args = {
   tokens: {
     value: 5,
     type: 'MEW',
-    percent: 11.5
-  }
+    percent: 11.5,
+  },
 };
 
 export const WithoutTokens = Template.bind({});
 
 WithoutTokens.args = {
   title: 'jonasteam.near',
-  votes: 23
+  votes: 23,
 };

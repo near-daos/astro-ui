@@ -22,7 +22,7 @@ const UnclaimBountyContent: FC<UnclaimBountyContentProps> = ({
   data,
   token,
   onClose,
-  onSubmit
+  onSubmit,
 }) => {
   const startDate = parseISO(data.claimedBy[0]?.starTime);
 
@@ -37,7 +37,7 @@ const UnclaimBountyContent: FC<UnclaimBountyContentProps> = ({
       <div
         className={cn(styles.warning, {
           [styles.success]: status === 'success',
-          [styles.error]: status === 'error'
+          [styles.error]: status === 'error',
         })}
       >
         <Icon name="buttonAlert" className={cn(styles.icon, styles.mr8)} />

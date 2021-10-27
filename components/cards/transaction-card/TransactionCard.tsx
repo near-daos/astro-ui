@@ -22,7 +22,7 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
   deposit,
   date,
   accountName,
-  txHash
+  txHash,
 }) => {
   return (
     <div className={s.root}>
@@ -30,7 +30,7 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
       <div
         className={classNames(s.icon, {
           [s.deposit]: type === 'Deposit',
-          [s.withdraw]: type === 'Withdraw'
+          [s.withdraw]: type === 'Withdraw',
         })}
       >
         <Icon

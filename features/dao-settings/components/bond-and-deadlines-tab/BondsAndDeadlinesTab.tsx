@@ -4,7 +4,7 @@ import { ProposalBanner } from 'features/dao-settings/components/proposal-banner
 import {
   navigateToDaoPage,
   BondsAndDeadlinesData,
-  getChangeBondDeadlinesProposal
+  getChangeBondDeadlinesProposal,
 } from 'features/dao-settings/helpers';
 import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
@@ -32,7 +32,7 @@ export const schema = yup.object().shape({
   createProposalBond: yup.number().min(0).required(),
   proposalExpireTime: yup.number().integer().min(1).required(),
   claimBountyBond: yup.number().min(0).required(),
-  unclaimBountyTime: yup.number().integer().min(1).required()
+  unclaimBountyTime: yup.number().integer().min(1).required(),
 });
 
 export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
@@ -41,7 +41,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
     proposalExpireTime,
     claimBountyBond,
     unclaimBountyTime,
-    proposalBond
+    proposalBond,
   } = props;
 
   const [viewMode, setViewMode] = useToggle(true);
@@ -57,16 +57,16 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
       createProposalBond,
       proposalExpireTime,
       claimBountyBond,
-      unclaimBountyTime
+      unclaimBountyTime,
     },
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
 
   const {
     register,
     reset,
     handleSubmit,
-    formState: { errors, touchedFields, isDirty, isValid }
+    formState: { errors, touchedFields, isDirty, isValid },
   } = methods;
 
   const onCancel = useCallback(() => {
@@ -75,7 +75,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
       createProposalBond,
       proposalExpireTime,
       claimBountyBond,
-      unclaimBountyTime
+      unclaimBountyTime,
     });
   }, [
     claimBountyBond,
@@ -83,7 +83,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
     proposalExpireTime,
     reset,
     setViewMode,
-    unclaimBountyTime
+    unclaimBountyTime,
   ]);
 
   const onSubmit = useCallback(
@@ -101,7 +101,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
         showNotification({
           type: NOTIFICATION_TYPES.INFO,
           description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-          lifetime: 20000
+          lifetime: 20000,
         });
         setViewMode(true);
 
@@ -137,7 +137,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
         </div>
         <div
           className={cn(styles.row, {
-            [styles.viewMode]: viewMode
+            [styles.viewMode]: viewMode,
           })}
         >
           <div>
@@ -149,7 +149,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
                 <Input
                   {...register('createProposalBond', {
                     valueAsNumber: true,
-                    required: true
+                    required: true,
                   })}
                   isValid={
                     touchedFields.createProposalBond &&
@@ -172,7 +172,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
                 <Input
                   {...register('proposalExpireTime', {
                     valueAsNumber: true,
-                    required: true
+                    required: true,
                   })}
                   isValid={
                     touchedFields.proposalExpireTime &&
@@ -190,7 +190,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
         <div className={styles.subtitle}>Bounties</div>
         <div
           className={cn(styles.row, {
-            [styles.viewMode]: viewMode
+            [styles.viewMode]: viewMode,
           })}
         >
           <div>
@@ -202,7 +202,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
                 <Input
                   {...register('claimBountyBond', {
                     valueAsNumber: true,
-                    required: true
+                    required: true,
                   })}
                   isValid={
                     touchedFields.claimBountyBond &&
@@ -227,7 +227,7 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
                 <Input
                   {...register('unclaimBountyTime', {
                     valueAsNumber: true,
-                    required: true
+                    required: true,
                   })}
                   isValid={
                     touchedFields.unclaimBountyTime &&

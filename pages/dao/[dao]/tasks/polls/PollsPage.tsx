@@ -61,16 +61,16 @@ const PollsPage: FC<PollsPageProps> = () => {
           tabsConfig={[
             {
               label: 'Active proposals',
-              className: styles.activeProposalsTab
+              className: styles.activeProposalsTab,
             },
             {
               label: 'Approved',
-              className: styles.approvedProposalsTab
+              className: styles.approvedProposalsTab,
             },
             {
               label: 'Failed',
-              className: styles.failedProposalsTab
-            }
+              className: styles.failedProposalsTab,
+            },
           ]}
           tabContentRenderer={(proposals: Proposal[]) => {
             if (isEmpty(proposals)) {

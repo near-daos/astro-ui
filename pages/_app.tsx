@@ -80,7 +80,7 @@ App.getInitialProps = async ({ ctx, router }: AppContext) => {
     res.end();
 
     return {
-      daos: []
+      daos: [],
     };
   }
 

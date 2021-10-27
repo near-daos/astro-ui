@@ -40,7 +40,7 @@ export const SearchFilters: FC<SearchFiltersProps> = ({
   includeGovernance,
   showDaoFilter = true,
   statusDropdownOptions = statusFilterOptions,
-  onChange
+  onChange,
 }) => {
   const handleChange = useCallback(
     (name: FilterName, value: string | boolean | undefined) => {

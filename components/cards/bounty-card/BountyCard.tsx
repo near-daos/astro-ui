@@ -10,7 +10,7 @@ import { UnclaimBountyDialog } from 'features/bounty/dialogs/unclaim-bounty-dial
 import { CompleteBountyDialog } from 'features/bounty/dialogs/complete-bounty-dialog/CompleteBountyDialog';
 import {
   InProgressCells,
-  OpenCells
+  OpenCells,
 } from 'components/cards/bounty-card/components/cells';
 import { format, parseISO } from 'date-fns';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
@@ -38,26 +38,26 @@ export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
   const [showClaimBountyDialog] = useModal(ClaimBountyDialog, {
     data,
     dao,
-    token
+    token,
   });
 
   const [showUnclaimBountyDialog] = useModal(UnclaimBountyDialog, {
     data,
     dao,
-    token
+    token,
   });
 
   const [showCompleteBountyDialog] = useModal(CompleteBountyDialog, {
     data,
     dao,
-    token
+    token,
   });
 
   const handleClaimClick = useCallback(() => showClaimBountyDialog(), [
-    showClaimBountyDialog
+    showClaimBountyDialog,
   ]);
   const handleUnclaimClick = useCallback(() => showUnclaimBountyDialog(), [
-    showUnclaimBountyDialog
+    showUnclaimBountyDialog,
   ]);
   const handleCompleteClick = useCallback(async () => {
     const result = await showCompleteBountyDialog();

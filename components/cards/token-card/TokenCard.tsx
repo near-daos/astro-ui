@@ -15,7 +15,7 @@ export const TokenCard: React.FC<TokenCardProps> = ({
   symbol,
   icon,
   balance,
-  totalValue
+  totalValue,
 }) => {
   function getTokenIconName(iconName: string) {
     switch (iconName) {

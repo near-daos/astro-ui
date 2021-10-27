@@ -22,5 +22,5 @@ export const VotingButton: Story<IconButtonProps> = () => {
 
 export default {
   title: 'Components/Buttons/Voting Button',
-  component: VotingButtonComponent
+  component: VotingButtonComponent,
 } as Meta;

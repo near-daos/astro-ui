@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react';
 import {
   ProposalTrackerCard,
-  ProposalTrackerProps
+  ProposalTrackerProps,
 } from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
 import { Icon } from 'components/Icon';
 import React from 'react';
@@ -11,9 +11,9 @@ export default {
   component: ProposalTrackerCard,
   parameters: {
     backgrounds: {
-      default: 'light'
-    }
-  }
+      default: 'light',
+    },
+  },
 } as Meta;
 
 export const Template: Story<ProposalTrackerProps> = (args): JSX.Element => (
@@ -28,5 +28,5 @@ Template.args = {
     <>
       <Icon name="buttonAdd" width={24} /> Create proposal
     </>
-  )
+  ),
 };

@@ -25,7 +25,7 @@ export interface MemberCardProps {
     title,
     children,
     votes,
-    tokens
+    tokens,
   }: {
     title: string;
     children: ReactNode;
@@ -64,7 +64,7 @@ const MemberCard: FC<MemberCardProps> = ({
   tokens,
   expandedView,
   onClick,
-  onRemoveClick
+  onRemoveClick,
 }) => {
   const handleKeyPress = useCallback(
     e => {
@@ -83,7 +83,7 @@ const MemberCard: FC<MemberCardProps> = ({
       onClick={() => onClick && onClick({ title, children, votes, tokens })}
       className={cn(styles.root, {
         [styles.expanded]: expandedView,
-        [styles.clickable]: !!onClick
+        [styles.clickable]: !!onClick,
       })}
     >
       <ExplorerLink linkData={title} linkType="member" isAbsolute />

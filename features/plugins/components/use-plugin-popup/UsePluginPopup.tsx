@@ -18,7 +18,7 @@ export interface UsePluginPopupProps {
 export const UsePluginPopup: FC<UsePluginPopupProps> = ({
   isOpen,
   onClose,
-  initialData
+  initialData,
 }) => {
   const handleSubmit = useCallback(() => {
     // todo - handle create bounty here

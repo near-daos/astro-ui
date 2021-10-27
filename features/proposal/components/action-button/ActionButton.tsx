@@ -17,7 +17,7 @@ export const ActionButton: FC<ActionButtonProps> = ({
   className,
   iconName,
   onClick,
-  tooltip
+  tooltip,
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
 

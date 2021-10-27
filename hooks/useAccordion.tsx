@@ -18,7 +18,7 @@ interface UseAccordionReturnT {
 
 const defaultOptions: UseAccordionParams = {
   allowMultiSelect: false,
-  allowUnSelect: false
+  allowUnSelect: false,
 };
 
 export function useAccordion(
@@ -49,12 +49,12 @@ export function useAccordion(
   };
 
   const getItemProps = (id: string): ItemProps => ({
-    initialOpenState: selected.includes(id)
+    initialOpenState: selected.includes(id),
   });
 
   return {
     selected,
     toggleItem,
-    getItemProps
+    getItemProps,
   };
 }

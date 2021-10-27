@@ -30,7 +30,7 @@ export const DaoSettingsBanner: FC<DaoSettingsBannerProps> = ({
   onCancel,
   viewMode = true,
   scope,
-  data
+  data,
 }) => {
   if (viewMode) return null;
 
@@ -61,7 +61,7 @@ export const DaoSettingsBanner: FC<DaoSettingsBannerProps> = ({
               onChange={e => {
                 onChange('daoSettings', {
                   ...data,
-                  details: (e.target as HTMLTextAreaElement).value
+                  details: (e.target as HTMLTextAreaElement).value,
                 });
               }}
             />
@@ -74,7 +74,7 @@ export const DaoSettingsBanner: FC<DaoSettingsBannerProps> = ({
               onChange={e => {
                 onChange('daoSettings', {
                   ...data,
-                  externalLink: (e.target as HTMLTextAreaElement).value
+                  externalLink: (e.target as HTMLTextAreaElement).value,
                 });
               }}
             />

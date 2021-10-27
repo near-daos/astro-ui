@@ -10,7 +10,7 @@ import {
   getPoliciesList,
   getProposersList,
   PolicyProps,
-  VotingPolicyPageInitialData
+  VotingPolicyPageInitialData,
 } from 'features/vote-policy/helpers';
 
 import styles from './tasks-tab-view.module.scss';
@@ -30,7 +30,7 @@ export const TasksTabView: FC<TasksTabViewProps> = ({
   groups,
   onChange,
   data,
-  showTitle = true
+  showTitle = true,
 }) => {
   return (
     <div className={styles.root}>

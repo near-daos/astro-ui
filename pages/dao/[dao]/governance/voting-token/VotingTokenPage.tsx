@@ -11,7 +11,7 @@ import { AmountsStaked } from 'features/voting-token/components/amounts-staked';
 import { VotingToken } from 'features/voting-token/components/voting-token';
 import {
   RecentlyUnstaked,
-  Stake
+  Stake,
 } from 'features/voting-token/components/recently-unstaked';
 import { useDeviceType } from 'helpers/media';
 
@@ -41,8 +41,8 @@ const VotingTokenPage: FC = () => {
           id: nanoid(),
           amount: Number(stakeResult.value),
           name: tkn.tokenName,
-          delegatedTo: stakeResult.delegateTo
-        }
+          delegatedTo: stakeResult.delegateTo,
+        },
       ]);
     },
     [stakes]

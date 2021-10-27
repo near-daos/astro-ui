@@ -6,7 +6,7 @@ import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 
 import {
   CompleteBountyForm,
-  CompleteBountyFormInput
+  CompleteBountyFormInput,
 } from 'features/bounty/dialogs/complete-bounty-dialog/complete-bounty-form/CompleteBountyForm';
 import { getCompleteBountyProposal } from 'features/bounty/dialogs/complete-bounty-dialog/helpers';
 import React, { FC, useCallback } from 'react';
@@ -28,7 +28,7 @@ export const CompleteBountyDialog: FC<CompleteBountyDialogProps> = ({
   onClose,
   data,
   dao,
-  token
+  token,
 }) => {
   const handleSubmit = useCallback(
     (input: CompleteBountyFormInput) => {
@@ -43,7 +43,7 @@ export const CompleteBountyDialog: FC<CompleteBountyDialogProps> = ({
         showNotification({
           type: NOTIFICATION_TYPES.INFO,
           description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-          lifetime: 20000
+          lifetime: 20000,
         });
         onClose('submitted');
       });

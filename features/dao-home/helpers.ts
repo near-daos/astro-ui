@@ -38,7 +38,7 @@ export function getDaoDetailsFromDao(dao: DAO): DaoDetailsType {
     description,
     links,
     txHash,
-    displayName
+    displayName,
   } = dao;
 
   const daoDetails = {
@@ -48,7 +48,7 @@ export function getDaoDetailsFromDao(dao: DAO): DaoDetailsType {
     flag: logo,
     createdAt,
     links,
-    txHash
+    txHash,
   };
 
   return daoDetails;
@@ -67,7 +67,7 @@ export function getProposalStats(proposals: Proposal[]): ProposalStatsType {
     },
     {
       activeVotes: 0,
-      totalProposals: 0
+      totalProposals: 0,
     }
   );
 }
@@ -91,7 +91,7 @@ export function getFundAndMembersNum(
 
   return {
     members: membs.length,
-    fund: formatCurrency(parseFloat(funds) * nearPrice)
+    fund: formatCurrency(parseFloat(funds) * nearPrice),
   };
 }
 
@@ -123,7 +123,7 @@ export function useProposals(): UseProposalsResult {
   }, [router.query.dao]);
 
   return {
-    proposals
+    proposals,
   };
 }
 
@@ -156,18 +156,18 @@ export function getProposalsFilterOptions(
   const options = [
     {
       label: 'Active proposals',
-      value: 'Active proposals'
+      value: 'Active proposals',
     },
     {
       label: 'Recent proposals',
-      value: 'Recent proposals'
-    }
+      value: 'Recent proposals',
+    },
   ];
 
   if (accountId) {
     options.push({
       label: 'My proposals',
-      value: 'My proposals'
+      value: 'My proposals',
     });
   }
 

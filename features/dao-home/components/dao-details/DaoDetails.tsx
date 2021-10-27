@@ -39,7 +39,7 @@ export const DaoDetails: VFC<DaoDetailsProps> = ({
   more,
   sendFunds,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  followed
+  followed,
 }) => {
   const [centerFlag, setCenterFlag] = useState(false);
   const ref = useRef<HTMLDivElement>(null);

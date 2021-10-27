@@ -8,7 +8,7 @@ import {
   MY_FEED_URL,
   ALL_DAOS_URL,
   ALL_FEED_URL,
-  CREATE_DAO_URL
+  CREATE_DAO_URL,
 } from 'constants/routing';
 
 import { useAuthContext } from 'context/AuthContext';
@@ -35,20 +35,20 @@ const NOT_COLLAPSABLE_MENU_ITEMS = [
   MY_DAOS_URL,
   MY_FEED_URL,
   ALL_DAOS_URL,
-  ALL_FEED_URL
+  ALL_FEED_URL,
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({
   className,
   fullscreen,
-  closeSideBar
+  closeSideBar,
 }) => {
   const router = useRouter();
 
   const { accountId, login } = useAuthContext();
 
   const rootClassName = cn(styles.sidebar, className, {
-    [styles.fullscreen]: fullscreen
+    [styles.fullscreen]: fullscreen,
   });
 
   useMount(() => {
@@ -160,7 +160,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         MY_FEED_URL,
         ALL_DAOS_URL,
         ALL_FEED_URL,
-        CREATE_DAO_URL
+        CREATE_DAO_URL,
       ].includes(route)
     ) {
       return null;
@@ -196,5 +196,5 @@ export const Sidebar: React.FC<SidebarProps> = ({
 Sidebar.defaultProps = {
   className: '',
   fullscreen: false,
-  closeSideBar: undefined
+  closeSideBar: undefined,
 };

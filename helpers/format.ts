@@ -5,7 +5,7 @@ import {
   format,
   formatDuration,
   millisecondsToMinutes,
-  minutesToHours
+  minutesToHours,
 } from 'date-fns';
 
 export function formatYoktoValue(value: string, divider?: number): string {

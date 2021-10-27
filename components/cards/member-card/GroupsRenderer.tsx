@@ -45,7 +45,7 @@ export const GroupsRenderer: FC<GroupsRendererProps> = ({ selectedItems }) => {
         })}
         <div
           className={cn(styles.collapsedLabel, styles.selectedWrapper, {
-            [styles.visible]: showPlaceholder
+            [styles.visible]: showPlaceholder,
           })}
         >
           <Badge size="small" variant="turqoise">
@@ -69,7 +69,7 @@ export const GroupsRenderer: FC<GroupsRendererProps> = ({ selectedItems }) => {
           })}
         <div
           className={cn(styles.collapsedLabel, styles.selectedWrapper, {
-            [styles.visible]: showPlaceholder
+            [styles.visible]: showPlaceholder,
           })}
         >
           <Badge size="small" variant="turqoise">

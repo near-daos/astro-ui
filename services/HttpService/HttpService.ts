@@ -9,7 +9,7 @@ export class HttpService {
   constructor(config?: AxiosRequestConfig) {
     this.client = axios.create({
       baseURL: appConfig.apiUrl,
-      ...config
+      ...config,
     });
   }
 

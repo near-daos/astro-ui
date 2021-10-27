@@ -2,12 +2,12 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import {
   CreateBountyDialog,
-  CreateBountyDialogProps
+  CreateBountyDialogProps,
 } from 'features/bounty/dialogs/create-bounty-dialog/CreateBountyDialog';
 
 export default {
   title: 'Features/Bounty/Dialogs/CreateBounty',
-  component: CreateBountyDialog
+  component: CreateBountyDialog,
 } as Meta;
 
 export const Template: Story<CreateBountyDialogProps> = (args): JSX.Element => (
@@ -24,6 +24,6 @@ Template.args = {
     deadlineThreshold: 3,
     deadlineUnit: 'day',
     externalUrl: '',
-    details: ''
-  }
+    details: '',
+  },
 };

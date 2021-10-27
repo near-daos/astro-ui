@@ -3,7 +3,7 @@ import {
   DaoSettingOption,
   DAOStructureType,
   DAOTemplate,
-  DAOVotingPowerType
+  DAOVotingPowerType,
 } from 'features/create-dao/components/steps/types';
 
 const DAO_PROPOSALS_OPEN: DaoSettingOption<DAOProposalsType> = {
@@ -11,7 +11,7 @@ const DAO_PROPOSALS_OPEN: DaoSettingOption<DAOProposalsType> = {
   icon: 'illustrationOpenOrganization',
   subject: 'proposals',
   title: 'Open',
-  description: 'Anyone can submit a proposal.'
+  description: 'Anyone can submit a proposal.',
 };
 
 const DAO_STRUCTURE_GROUPS: DaoSettingOption<DAOStructureType> = {
@@ -19,7 +19,7 @@ const DAO_STRUCTURE_GROUPS: DaoSettingOption<DAOStructureType> = {
   icon: 'illustrationGroupsAndCommitttees',
   subject: 'structure',
   title: 'Members Only',
-  description: 'Specific groups can vote on specific proposals.'
+  description: 'Specific groups can vote on specific proposals.',
 };
 
 const DAO_VOTING_POWER_DEMOCRATIC: DaoSettingOption<DAOVotingPowerType> = {
@@ -27,7 +27,7 @@ const DAO_VOTING_POWER_DEMOCRATIC: DaoSettingOption<DAOVotingPowerType> = {
   icon: 'illustrationVotePerMember',
   subject: 'voting',
   title: 'Democratic',
-  description: 'Every member gets one vote.'
+  description: 'Every member gets one vote.',
 };
 
 const DAO_STRUCTURE_FLAT: DaoSettingOption<DAOStructureType> = {
@@ -35,7 +35,7 @@ const DAO_STRUCTURE_FLAT: DaoSettingOption<DAOStructureType> = {
   icon: 'illustrationFlatOrganization',
   subject: 'structure',
   title: 'Flat',
-  description: 'No groups; all members have equal access.'
+  description: 'No groups; all members have equal access.',
 };
 
 const DAO_PROPOSALS_CLOSED: DaoSettingOption<DAOProposalsType> = {
@@ -43,7 +43,7 @@ const DAO_PROPOSALS_CLOSED: DaoSettingOption<DAOProposalsType> = {
   icon: 'illustrationGroupsAndCommitttees',
   subject: 'proposals',
   title: 'Members only',
-  description: 'Only members or token-holders can submit a proposal.'
+  description: 'Only members or token-holders can submit a proposal.',
 };
 
 const DAO_VOTING_POWER_TOKEN: DaoSettingOption<DAOVotingPowerType> = {
@@ -51,7 +51,7 @@ const DAO_VOTING_POWER_TOKEN: DaoSettingOption<DAOVotingPowerType> = {
   icon: 'illustrationTokenWeighted',
   subject: 'voting',
   title: 'Weighted',
-  description: 'The more tokens you own, the more voting power you get. '
+  description: 'The more tokens you own, the more voting power you get. ',
 };
 
 const DAO_TEMPLATE_FOUNDATION: DAOTemplate = {
@@ -62,7 +62,7 @@ An organization funding community projects
 A fund for open-source projects`,
   proposals: 'open',
   structure: 'groups',
-  voting: 'democratic'
+  voting: 'democratic',
 };
 
 const DAO_TEMPLATE_CLUB: DAOTemplate = {
@@ -73,7 +73,7 @@ A group of fans
 A social club`,
   proposals: 'closed',
   structure: 'flat',
-  voting: 'democratic'
+  voting: 'democratic',
 };
 
 const DAO_TEMPLATE_CORP: DAOTemplate = {
@@ -83,7 +83,7 @@ const DAO_TEMPLATE_CORP: DAOTemplate = {
 A startup or company`,
   proposals: 'closed',
   structure: 'groups',
-  voting: 'weighted'
+  voting: 'weighted',
 };
 
 const DAO_TEMPLATE_COOP: DAOTemplate = {
@@ -93,14 +93,14 @@ const DAO_TEMPLATE_COOP: DAOTemplate = {
 A creative collective`,
   proposals: 'closed',
   structure: 'groups',
-  voting: 'democratic'
+  voting: 'democratic',
 };
 
 export const DAO_TEMPLATES: DAOTemplate[] = [
   DAO_TEMPLATE_FOUNDATION,
   DAO_TEMPLATE_CLUB,
   DAO_TEMPLATE_CORP,
-  DAO_TEMPLATE_COOP
+  DAO_TEMPLATE_COOP,
 ];
 
 export const DAO_VOTING_POWER_OPTIONS: Record<
@@ -108,7 +108,7 @@ export const DAO_VOTING_POWER_OPTIONS: Record<
   DaoSettingOption<DAOVotingPowerType>
 > = {
   democratic: DAO_VOTING_POWER_DEMOCRATIC,
-  weighted: DAO_VOTING_POWER_TOKEN
+  weighted: DAO_VOTING_POWER_TOKEN,
 };
 
 export const DAO_STRUCTURE_OPTIONS: Record<
@@ -116,7 +116,7 @@ export const DAO_STRUCTURE_OPTIONS: Record<
   DaoSettingOption<DAOStructureType>
 > = {
   flat: DAO_STRUCTURE_FLAT,
-  groups: DAO_STRUCTURE_GROUPS
+  groups: DAO_STRUCTURE_GROUPS,
 };
 
 export const DAO_PROPOSALS_OPTIONS: Record<
@@ -124,11 +124,11 @@ export const DAO_PROPOSALS_OPTIONS: Record<
   DaoSettingOption<DAOProposalsType>
 > = {
   open: DAO_PROPOSALS_OPEN,
-  closed: DAO_PROPOSALS_CLOSED
+  closed: DAO_PROPOSALS_CLOSED,
 };
 
 export const DAO_SUBJECT_OPTIONS = {
   voting: Object.values(DAO_VOTING_POWER_OPTIONS),
   structure: Object.values(DAO_STRUCTURE_OPTIONS),
-  proposals: Object.values(DAO_PROPOSALS_OPTIONS)
+  proposals: Object.values(DAO_PROPOSALS_OPTIONS),
 };

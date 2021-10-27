@@ -18,7 +18,7 @@ export interface CreatePollDialogProps {
 
 export const CreatePollDialog: FC<CreatePollDialogProps> = ({
   isOpen,
-  onClose
+  onClose,
 }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
@@ -32,13 +32,13 @@ export const CreatePollDialog: FC<CreatePollDialogProps> = ({
         daoId: currentDao.id,
         description: `${data.question}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
         kind: 'Vote',
-        bond: currentDao.policy.proposalBond
+        bond: currentDao.policy.proposalBond,
       });
 
       showNotification({
         type: NOTIFICATION_TYPES.INFO,
         description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000
+        lifetime: 20000,
       });
 
       onClose();

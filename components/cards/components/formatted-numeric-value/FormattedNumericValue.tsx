@@ -14,7 +14,7 @@ export const FormattedNumericValue: React.FC<FormattedNumericValueProps> = ({
   suffix,
   className,
   valueClassName,
-  suffixClassName
+  suffixClassName,
 }) => (
   <div className={cn(styles.root, className)}>
     <span className={cn('title3', valueClassName)}>

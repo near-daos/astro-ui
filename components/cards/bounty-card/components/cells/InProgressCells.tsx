@@ -9,7 +9,7 @@ import {
   addHours,
   format,
   millisecondsToMinutes,
-  minutesToHours
+  minutesToHours,
 } from 'date-fns';
 import cn from 'classnames';
 
@@ -22,7 +22,7 @@ interface InProgressCellsProps {
 export const InProgressCells: FC<InProgressCellsProps> = ({
   claimedBy,
   onComplete,
-  onUnclaim
+  onUnclaim,
 }) => {
   const myClaim = claimedBy.find(
     claim => claim.accountId === SputnikNearService.getAccountId()

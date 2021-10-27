@@ -9,16 +9,16 @@ const EveryoneCanDoEverything = (accountId: string) => ({
     '*:AddProposal',
     '*:VoteApprove',
     '*:VoteReject',
-    '*:VoteRemove'
+    '*:VoteRemove',
   ],
-  vote_policy: {}
+  vote_policy: {},
 });
 
 const EveryoneCanSubmitProposal = {
   name: 'all',
   kind: 'Everyone',
   permissions: ['*:AddProposal'],
-  vote_policy: {}
+  vote_policy: {},
 };
 
 const GroupMembersCanActOnProposals = (
@@ -33,21 +33,21 @@ const GroupMembersCanActOnProposals = (
     '*:AddProposal',
     '*:VoteApprove',
     '*:VoteReject',
-    '*:VoteRemove'
+    '*:VoteRemove',
   ],
-  vote_policy: votePolicy || {}
+  vote_policy: votePolicy || {},
 });
 
 const DemocraticVoting = {
   weight_kind: 'RoleWeight',
   quorum: '0',
-  threshold: [1, 2]
+  threshold: [1, 2],
 };
 
 const TokenBasedVoting = {
   weight_kind: 'TokenWeight',
   quorum: '0',
-  threshold: '5'
+  threshold: '5',
 };
 
 export function getRolesVotingPolicy(
@@ -71,7 +71,7 @@ export function getRolesVotingPolicy(
     if (data.voting === 'weighted') {
       roles.push(
         GroupMembersCanActOnProposals('Committee', accountId, {
-          '*.*': TokenBasedVoting
+          '*.*': TokenBasedVoting,
         })
       );
     }
@@ -79,6 +79,6 @@ export function getRolesVotingPolicy(
 
   return {
     roles,
-    defaultVotePolicy: DemocraticVoting
+    defaultVotePolicy: DemocraticVoting,
   };
 }

@@ -8,7 +8,7 @@ import {
   DaoDetails,
   ProposalType,
   ProposalVotingPermissions,
-  ProposalStatus
+  ProposalStatus,
 } from 'types/proposal';
 import { VoteDetails } from 'components/vote-details';
 import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card/components/proposed-changes-renderer';
@@ -64,7 +64,7 @@ export const ContentPanel: FC<ContentPanelProps> = ({
   proposalId,
   proposalData,
   daoData,
-  permissions
+  permissions,
 }) => {
   const flag = daoDetails.logo;
   const daoTitle = daoDetails.displayName || daoDetails.name;

@@ -17,7 +17,7 @@ interface AuthContextInterface {
 const AuthContext = createContext<AuthContextInterface>({
   accountId: '',
   login: () => {},
-  logout: () => {}
+  logout: () => {},
 });
 /* eslint-enable @typescript-eslint/no-empty-function */
 
@@ -53,7 +53,7 @@ export const AuthWrapper: FC = ({ children }) => {
   const data = {
     accountId,
     login,
-    logout
+    logout,
   };
 
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;

@@ -22,7 +22,7 @@ const steps = {
   transparency: TransparencyView,
   form: FormView,
   flag: FlagView,
-  review: ReviewView
+  review: ReviewView,
 };
 
 type StepType = keyof typeof steps;
@@ -41,8 +41,8 @@ const CreateDaoPage: NextPage<{ step: string }> = () => {
       purpose: undefined,
       displayName: undefined,
       flag: undefined,
-      flagPreview: undefined
-    }
+      flagPreview: undefined,
+    },
   });
 
   const isPageReloaded = useCallback(() => {

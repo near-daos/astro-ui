@@ -22,7 +22,7 @@ export const Modal: FC<ModalProps> = memo(
     children,
     size = 'md',
     className = '',
-    hideCloseIcon
+    hideCloseIcon,
   }) => {
     const [open, setOpen] = useState(isOpen);
 
@@ -43,15 +43,15 @@ export const Modal: FC<ModalProps> = memo(
             [styles.md]: size === 'md',
             [styles.lg]: size === 'lg',
             [styles.xl]: size === 'xl',
-            [styles.xxl]: size === 'xxl'
+            [styles.xxl]: size === 'xxl',
           }),
           afterOpen: styles.contentAfterOpen,
-          beforeClose: styles.contentBeforeClose
+          beforeClose: styles.contentBeforeClose,
         }}
         overlayClassName={{
           base: styles.overlay,
           afterOpen: styles.overlayAfterOpen,
-          beforeClose: styles.overlayBeforeClose
+          beforeClose: styles.overlayBeforeClose,
         }}
         shouldCloseOnEsc
         closeTimeoutMS={300}

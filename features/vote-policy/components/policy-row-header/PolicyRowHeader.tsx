@@ -31,8 +31,8 @@ export const Header: React.FC<{
           style: {
             transform: isOpen ? undefined : 'rotate(-90deg)',
             transition: 'all 100ms',
-            marginBottom: '8px'
-          }
+            marginBottom: '8px',
+          },
         }}
         icon="buttonArrowDown"
         size="medium"

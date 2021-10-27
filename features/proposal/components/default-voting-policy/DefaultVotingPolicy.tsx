@@ -8,7 +8,7 @@ interface DefaultVotingPolicyProps {
 }
 
 export const DefaultVotingPolicy: FC<DefaultVotingPolicyProps> = ({
-  policy
+  policy,
 }) => {
   const voteBy = policy.weightKind === 'RoleWeight' ? 'Person' : 'Token';
   const amount =

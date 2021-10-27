@@ -11,7 +11,7 @@ export function getBadgeVariant(name: string): Variant {
     'red',
     'orange',
     'yellow',
-    'primary'
+    'primary',
   ];
 
   return (variants[name.length] ||

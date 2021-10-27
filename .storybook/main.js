@@ -4,7 +4,7 @@ const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
 module.exports = {
   core: {
-    builder: 'webpack5'
+    builder: 'webpack5',
   },
 
   webpackFinal: async (config, { configType }) => {
@@ -13,7 +13,7 @@ module.exports = {
       'white',
       '#fff',
       '#ffffff',
-      'rgb(255, 255, 255)'
+      'rgb(255, 255, 255)',
     ];
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // You can change the configuration based on that.
@@ -21,11 +21,11 @@ module.exports = {
 
     config.resolve.modules = [
       ...(config.resolve.modules || []),
-      path.resolve('./')
+      path.resolve('./'),
     ];
 
     config.stats = {
-      errorDetails: true // --display-error-details
+      errorDetails: true, // --display-error-details
     };
 
     // Make whatever fine-grained changes you need
@@ -38,12 +38,12 @@ module.exports = {
           options: {
             importLoaders: 2,
             localsConvention: 'camelCase',
-            modules: true
-          }
+            modules: true,
+          },
         },
-        'sass-loader'
+        'sass-loader',
       ],
-      include: path.resolve(__dirname, '../')
+      include: path.resolve(__dirname, '../'),
     });
 
     // Disable svg processing by all default modules
@@ -55,7 +55,7 @@ module.exports = {
           .replace(/\//g, '');
         return {
           ...rule,
-          test: new RegExp(test)
+          test: new RegExp(test),
         };
       } else {
         return rule;
@@ -70,10 +70,10 @@ module.exports = {
           options: {
             extract: true,
             publicPath: 'static/',
-            outputPath: '_next/static/'
-          }
-        }
-      ]
+            outputPath: '_next/static/',
+          },
+        },
+      ],
     });
 
     config.module.rules.push({
@@ -90,23 +90,23 @@ module.exports = {
                 name: 'convertColors',
                 params: {
                   currentColor: {
-                    exec: val => !allowedColors.includes(val)
-                  }
-                }
-              }
-            ])
-          }
-        }
-      ]
+                    exec: val => !allowedColors.includes(val),
+                  },
+                },
+              },
+            ]),
+          },
+        },
+      ],
     });
 
     config.module.rules.push({
       test: /\.colors\.svg$/,
       use: [
         {
-          loader: 'svgo-loader'
-        }
-      ]
+          loader: 'svgo-loader',
+        },
+      ],
     });
 
     config.plugins.push(new SpriteLoaderPlugin());
@@ -116,12 +116,12 @@ module.exports = {
   },
   stories: [
     '../stories/**/*.stories.mdx',
-    '../stories/**/*.stories.@(js|jsx|ts|tsx)'
+    '../stories/**/*.stories.@(js|jsx|ts|tsx)',
   ],
   addons: [
     'storybook-addon-next-router',
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-    '@storybook/addon-actions'
-  ]
+    '@storybook/addon-actions',
+  ],
 };

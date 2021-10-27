@@ -36,7 +36,7 @@ class SputnikNearServiceClass {
 
     this.near = new Near({
       ...this.config,
-      keyStore
+      keyStore,
     });
 
     this.sputnikWalletService = new SputnikWalletService(this.near);
@@ -57,9 +57,9 @@ class SputnikNearServiceClass {
           'get_required_deposit',
           'get_number_of_tokens',
           'get_tokens',
-          'get_token'
+          'get_token',
         ],
-        changeMethods: ['create_token', 'storage_deposit']
+        changeMethods: ['create_token', 'storage_deposit'],
       }
     );
   }
@@ -95,7 +95,7 @@ class SputnikNearServiceClass {
   async computeRequiredDeposit(args: unknown) {
     const bigSource = await this.factoryTokenContract.get_required_deposit?.({
       args,
-      account_id: this.getAccountId()
+      account_id: this.getAccountId(),
     });
 
     if (!bigSource) return undefined;
@@ -118,7 +118,7 @@ class SputnikNearServiceClass {
       .process(async (offset: number) =>
         this.factoryTokenContract.get_tokens?.({
           from_index: offset * chunkSize,
-          limit: chunkSize
+          limit: chunkSize,
         })
       );
 
@@ -135,8 +135,8 @@ class SputnikNearServiceClass {
         decimals: 18,
         name: params.name,
         symbol: params.symbol,
-        icon: params.icon
-      }
+        icon: params.icon,
+      },
     };
 
     const TGas = Big(10).pow(12);

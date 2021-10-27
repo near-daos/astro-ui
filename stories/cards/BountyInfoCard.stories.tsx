@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import {
   BountyInfoCard,
-  BountyInfoCardProps
+  BountyInfoCardProps,
 } from 'components/cards/bounty-info-card';
 
 export default {
@@ -13,8 +13,8 @@ export default {
       <div style={{ padding: '1rem', background: 'lightgrey', maxWidth: 1024 }}>
         {story()}
       </div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 export const Template: Story<BountyInfoCardProps> = (args): JSX.Element => (
@@ -34,6 +34,6 @@ Template.args = {
     externalUrl: '',
     slots: 3,
     claimedBy: [],
-    deadlineThreshold: '30'
-  }
+    deadlineThreshold: '30',
+  },
 };

@@ -47,7 +47,7 @@ export class SputnikWalletConnection extends WalletConnection {
 
       window.sputnikRequestSignInCompleted = async ({
         accountId,
-        errorCode = 'unknown'
+        errorCode = 'unknown',
       }) => {
         win?.close();
 
@@ -65,7 +65,7 @@ export class SputnikWalletConnection extends WalletConnection {
   async sputnikRequestSignTransactions({
     transactions,
     callbackUrl,
-    meta
+    meta,
   }: SputnikRequestSignTransactionsOptions): Promise<void> {
     const newUrl = new URL('sign', this._walletBaseUrl);
 

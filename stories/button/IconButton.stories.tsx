@@ -12,12 +12,12 @@ export const Template: Story<IconButtonProps> = args => {
 
 Template.args = {
   icon: 'buttonRefresh',
-  size: 'large'
+  size: 'large',
 };
 
 Template.storyName = 'Icon Button';
 
 export default {
   title: 'Components/Buttons/Icon Button',
-  component: IconButton
+  component: IconButton,
 } as Meta;

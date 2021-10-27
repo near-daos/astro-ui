@@ -24,7 +24,7 @@ export interface DaoOptionCardProps
 const SUBJECT_LABELS: Record<Subject, string> = {
   proposals: 'Proposals',
   structure: 'Structure',
-  voting: 'Voting Power'
+  voting: 'Voting Power',
 };
 
 export const DaoOptionCard: React.VFC<DaoOptionCardProps> = ({
@@ -45,7 +45,7 @@ export const DaoOptionCard: React.VFC<DaoOptionCardProps> = ({
     {
       [styles.active]: active,
       [styles.editable]: editable,
-      [styles.disabled]: disabled
+      [styles.disabled]: disabled,
     },
     classNameProp
   );

@@ -12,7 +12,7 @@ import {
   allStatusFilterOption,
   inactiveProposalsStatusFilterOption,
   rejectedProposalsStatusFilterOption,
-  spamDismissedProposalsStatusFilterOption
+  spamDismissedProposalsStatusFilterOption,
 } from 'features/search/search-filters/helpers';
 
 import styles from './all-finalized-proposals.module.scss';
@@ -28,7 +28,7 @@ export const AllFinalizedProposals: FC<AllFinalizedProposalsProps> = ({
   data,
   selectedDao,
   changeFilter,
-  expandedProposalId
+  expandedProposalId,
 }) => {
   const proposals = Object.values(data)
     .map(({ proposals: props }) => props)
@@ -37,7 +37,7 @@ export const AllFinalizedProposals: FC<AllFinalizedProposalsProps> = ({
   const {
     filter,
     onFilterChange,
-    filteredProposalsData
+    filteredProposalsData,
   } = useFilteredProposalsData(proposals || []);
 
   function renderProposalsByDaos() {
@@ -82,7 +82,7 @@ export const AllFinalizedProposals: FC<AllFinalizedProposalsProps> = ({
           acceptedProposalsStatusFilterOption,
           inactiveProposalsStatusFilterOption,
           rejectedProposalsStatusFilterOption,
-          spamDismissedProposalsStatusFilterOption
+          spamDismissedProposalsStatusFilterOption,
         ]}
       />
       {renderProposalsByDaos()}

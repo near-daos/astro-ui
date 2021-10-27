@@ -4,13 +4,13 @@ import { Meta, Story } from '@storybook/react';
 
 import {
   DaoDetailsPopup,
-  DaoDetailsPopupProps
+  DaoDetailsPopupProps,
 } from 'features/dao-home/components/dao-details-popup/DaoDetailsPopup';
 
 export default {
   title: 'Features/DAO Home/Popups/DaoDetailsPopup',
 
-  component: DaoDetailsPopup
+  component: DaoDetailsPopup,
 } as Meta;
 
 export const Template: Story<DaoDetailsPopupProps> = (args): JSX.Element => (
@@ -27,16 +27,16 @@ Template.args = {
   links: [
     {
       type: 'AnyUrl',
-      url: 'http://example.com'
+      url: 'http://example.com',
     },
     {
       type: 'Discord',
-      url: 'http://example.com'
+      url: 'http://example.com',
     },
     {
       type: 'Twitter',
-      url: 'http://example.com'
-    }
+      url: 'http://example.com',
+    },
   ],
   children: (
     <div>
@@ -54,5 +54,5 @@ Template.args = {
         over 20k in total so far.
       </p>
     </div>
-  )
+  ),
 };

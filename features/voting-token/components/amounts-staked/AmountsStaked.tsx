@@ -23,7 +23,7 @@ export interface AmountsStakedProps {
 export const AmountsStaked: FC<AmountsStakedProps> = ({
   stakes,
   onChangeStakes,
-  onUnstakeTokens
+  onUnstakeTokens,
 }) => {
   const [showModal] = useModal(StakeTokensPopup);
 
@@ -31,7 +31,7 @@ export const AmountsStaked: FC<AmountsStakedProps> = ({
     id => {
       const {
         newStakes,
-        unstaked
+        unstaked,
       }: { newStakes: Stake[]; unstaked: Stake[] } = stakes.reduce(
         (res, item) => {
           if (item.id === id) {
@@ -63,7 +63,7 @@ export const AmountsStaked: FC<AmountsStakedProps> = ({
               return {
                 ...stake,
                 amount: updated.value,
-                delegatedTo: updated.delegateTo
+                delegatedTo: updated.delegateTo,
               };
             }
 
@@ -93,13 +93,13 @@ export const AmountsStaked: FC<AmountsStakedProps> = ({
                   token: {
                     id,
                     tokenName: rest.name,
-                    balance: rest.amount
+                    balance: rest.amount,
                   },
                   rate: 18,
                   amount: rest.amount,
                   delegatedTo: rest.delegatedTo,
                   variant: 'Change',
-                  onUnstake: handleUnstake
+                  onUnstake: handleUnstake,
                 })
               }
             >

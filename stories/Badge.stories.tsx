@@ -7,8 +7,8 @@ export default {
   component: Badge,
   argTypes: {
     background: { type: 'string' },
-    label: { type: 'string' }
-  }
+    label: { type: 'string' },
+  },
 } as Meta;
 
 export const Template = (
@@ -21,7 +21,7 @@ export const Template = (
       style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '1rem'
+        gap: '1rem',
       }}
     >
       <Badge {...args}>{label}</Badge>
@@ -43,5 +43,5 @@ Template.storyName = 'Badge';
 Template.args = {
   variant: 'blue',
   size: 'medium',
-  label: 'Group Name'
+  label: 'Group Name',
 };

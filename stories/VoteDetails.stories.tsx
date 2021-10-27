@@ -12,8 +12,8 @@ export default {
       >
         {story()}
       </div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 const Template: Story<VoteDetailsProps> = args => <VoteDetails {...args} />;
@@ -21,17 +21,17 @@ const Template: Story<VoteDetailsProps> = args => <VoteDetails {...args} />;
 export const Default = Template.bind({});
 
 Default.args = {
-  showProgress: false
+  showProgress: false,
 };
 
 export const VoteProgress = Template.bind({});
 
 VoteProgress.args = {
-  showProgress: true
+  showProgress: true,
 };
 
 export const VoteProgressOneGroup = Template.bind({});
 
 VoteProgressOneGroup.args = {
-  showProgress: true
+  showProgress: true,
 };

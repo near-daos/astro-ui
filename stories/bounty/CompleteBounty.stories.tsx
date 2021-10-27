@@ -3,12 +3,12 @@ import { Meta, Story } from '@storybook/react';
 
 import {
   CompleteBountyDialog,
-  CompleteBountyDialogProps
+  CompleteBountyDialogProps,
 } from 'features/bounty/dialogs/complete-bounty-dialog/CompleteBountyDialog';
 
 export default {
   title: 'Features/Bounty/Dialogs/CompleteBounty',
-  component: CompleteBountyDialog
+  component: CompleteBountyDialog,
 } as Meta;
 
 export const Template: Story<CompleteBountyDialogProps> = (
@@ -28,6 +28,6 @@ Template.args = {
     externalUrl: '',
     slots: 3,
     claimedBy: [],
-    deadlineThreshold: '8'
-  }
+    deadlineThreshold: '8',
+  },
 };

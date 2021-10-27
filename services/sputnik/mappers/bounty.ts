@@ -13,13 +13,13 @@ export const mapBountyResponseToBounty = (response: BountyResponse): Bounty => {
     claimedBy: response.bountyClaims.map(claim => ({
       deadline: claim.deadline,
       accountId: claim.accountId,
-      starTime: claim.startTime
+      starTime: claim.startTime,
     })),
     deadlineThreshold: response.maxDeadline,
     slots: Number(response.times),
     id: response.bountyId,
     tokenId: response.token,
     description,
-    externalUrl: url || ''
+    externalUrl: url || '',
   };
 };

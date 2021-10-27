@@ -7,8 +7,8 @@ export default {
   title: 'Components/Collapsable',
   component: Collapsable,
   argTypes: {
-    checked: { control: 'boolean' }
-  }
+    checked: { control: 'boolean' },
+  },
 } as Meta;
 
 export const Template = (
@@ -36,8 +36,8 @@ export const Template = (
               style: {
                 transform: isOpen ? undefined : 'rotate(-90deg)',
                 transition: 'all 100ms',
-                marginBottom: '5px'
-              }
+                marginBottom: '5px',
+              },
             }}
             icon="buttonArrowDown"
             size="medium"
@@ -65,5 +65,5 @@ export const Template = (
 
 Template.storyName = 'Collapsable';
 Template.args = {
-  label: 'Collapsable'
+  label: 'Collapsable',
 };
