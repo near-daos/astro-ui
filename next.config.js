@@ -24,24 +24,24 @@ module.exports = (phase, { defaultConfig }) => {
           'sputnik-dao.s3.eu-central-1.amazonaws.com',
           'ipfs.io',
           'ipfs.fleek.co',
-          'cloudflare-ipfs.com'
-        ]
+          'cloudflare-ipfs.com',
+        ],
       },
       sassOptions: {
-        includePaths: [path.join(__dirname, 'styles')]
+        includePaths: [path.join(__dirname, 'styles')],
       },
       async rewrites() {
         return [
           {
             source: '/api-server/:path*',
-            destination: process.env.NEXT_PUBLIC_API_URL + '/api/:path*' // Proxy to Backend
+            destination: process.env.NEXT_PUBLIC_API_URL + '/api/:path*', // Proxy to Backend
           },
           {
             source: '/create-dao',
-            destination: '/create-dao/foundation'
-          }
+            destination: '/create-dao/foundation',
+          },
         ];
-      }
+      },
     }
   );
 

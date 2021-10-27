@@ -9,7 +9,7 @@ interface GetDaoListQuery {
 }
 
 export async function getServerSideProps({
-  query
+  query,
 }: {
   query: GetDaoListQuery;
 }): Promise<{
@@ -18,14 +18,14 @@ export async function getServerSideProps({
   const { daos: data, total } = await getDaosList({
     offset: 0,
     limit: 20,
-    sort: (query.sort as string) ?? ''
+    sort: (query.sort as string) ?? '',
   });
 
   return {
     props: {
       data,
-      total
-    }
+      total,
+    },
   };
 }
 

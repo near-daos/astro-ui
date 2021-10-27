@@ -21,7 +21,7 @@ const CREATE_BOUNTY_INITIAL = {
   deadlineThreshold: 3,
   deadlineUnit: 'day' as DeadlineUnit,
   externalUrl: '',
-  details: ''
+  details: '',
 };
 
 export interface BountiesPageProps {
@@ -35,7 +35,7 @@ const BountiesPage: FC<BountiesPageProps> = ({
   dao,
   bountiesDone,
   bounties,
-  tokens
+  tokens,
 }) => {
   const { accountId, login } = useAuthContext();
   const router = useRouter();
@@ -57,7 +57,7 @@ const BountiesPage: FC<BountiesPageProps> = ({
       return completedBounty
         ? {
             ...completedBounty,
-            completionDate: bountyDoneProposal.completedDate
+            completionDate: bountyDoneProposal.completedDate,
           }
         : undefined;
     })
@@ -70,31 +70,31 @@ const BountiesPage: FC<BountiesPageProps> = ({
   const tabOpen = {
     id: 1,
     label: `Open (${numberOpenBounties})`,
-    content: <BountiesList bountiesList={openBounties} status="Open" />
+    content: <BountiesList bountiesList={openBounties} status="Open" />,
   };
   const tabInProgress = {
     id: 2,
     label: `In Progress (${numberInProgressBounties})`,
     content: (
       <BountiesList bountiesList={inProgressBounties} status="In progress" />
-    )
+    ),
   };
   const tabCompleted = {
     id: 3,
     label: `Completed (${numberCompletedBounties})`,
     content: (
       <BountiesList bountiesList={completedBounties} status="Completed" />
-    )
+    ),
   };
 
   const tabs = [tabOpen, tabInProgress, tabCompleted];
 
   const [showCreateBountyDialog] = useModal(CreateBountyDialog, {
     initialValues: {
-      ...CREATE_BOUNTY_INITIAL
+      ...CREATE_BOUNTY_INITIAL,
     },
     dao,
-    tokens
+    tokens,
   });
 
   const handleCreateClick = useCallback(async () => {

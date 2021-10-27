@@ -20,7 +20,7 @@ export const DropdownResults: FC<DropdownResultsProps> = ({
   width,
   onDaoClick,
   onProposalClick,
-  onMemberClick
+  onMemberClick,
 }) => {
   const { searchResults } = useSearchResults();
   const [allDaoRes, setAllDaoRes] = useState(false);

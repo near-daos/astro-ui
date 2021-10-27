@@ -13,5 +13,5 @@ export const NFT_CARDS_DATA = [
   example4,
   example5,
   example6,
-  example7
+  example7,
 ];

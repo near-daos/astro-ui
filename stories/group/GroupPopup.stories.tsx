@@ -9,8 +9,8 @@ export default {
   decorators: [
     story => (
       <div style={{ padding: '1rem', background: 'lightgrey' }}>{story()}</div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 const Template: Story<GroupPopupProps> = args => <GroupPopup {...args} />;
@@ -22,8 +22,8 @@ NewGroup.args = {
   isOpen: true,
   initialValues: {
     groupType: GroupFormType.CREATE_GROUP,
-    groups: []
-  }
+    groups: [],
+  },
 };
 
 export const AddMemberGroup = Template.bind({});
@@ -33,8 +33,8 @@ AddMemberGroup.args = {
   isOpen: true,
   initialValues: {
     groupType: GroupFormType.ADD_TO_GROUP,
-    groups: []
-  }
+    groups: [],
+  },
 };
 
 export const RemoveMemberFromGroup = Template.bind({});
@@ -44,6 +44,6 @@ RemoveMemberFromGroup.args = {
   isOpen: true,
   initialValues: {
     groupType: GroupFormType.REMOVE_FROM_GROUP,
-    groups: []
-  }
+    groups: [],
+  },
 };

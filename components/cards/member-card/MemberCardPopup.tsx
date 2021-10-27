@@ -17,7 +17,7 @@ export const MemberCardPopup: FC<MemberCardPopupProps> = ({
   title,
   children,
   votes,
-  tokens
+  tokens,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

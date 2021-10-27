@@ -6,7 +6,7 @@ export const daos = [
       'We’re a collective helping digital artists all around the world.',
     activeProposals: 45,
     members: 145,
-    funds: 23553
+    funds: 23553,
   },
   {
     name: 'Createbase Community',
@@ -15,7 +15,7 @@ export const daos = [
       'We’re a collective helping digital artists all around the world.',
     activeProposals: 56,
     members: 23,
-    funds: 12462
+    funds: 12462,
   },
   {
     name: 'Mission impossible',
@@ -24,6 +24,6 @@ export const daos = [
       'We’re a collective helping digital artists all around the world.',
     activeProposals: 12,
     members: 43,
-    funds: 4523
-  }
+    funds: 4523,
+  },
 ];

@@ -7,7 +7,7 @@ import { DaoTemplateCard } from 'features/create-dao/components/template/DaoTemp
 import { DAO_TEMPLATES } from 'features/create-dao/components/steps/data';
 import {
   DAOFormValues,
-  DAOTemplate
+  DAOTemplate,
 } from 'features/create-dao/components/steps/types';
 
 import styles from './foundation.module.scss';

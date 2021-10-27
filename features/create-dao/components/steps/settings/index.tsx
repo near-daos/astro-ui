@@ -25,7 +25,7 @@ export function SettingsView(): JSX.Element {
 
       const result = await showModal({
         options: subjectOptions,
-        initialValue: getValues(subject)
+        initialValue: getValues(subject),
       });
 
       const [value] = (result as unknown) as [SubjectOptionValueT];

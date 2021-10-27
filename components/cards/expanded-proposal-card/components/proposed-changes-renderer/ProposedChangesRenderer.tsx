@@ -14,7 +14,7 @@ interface ProposedChangesRendererProps {
 export const ProposedChangesRenderer: FC<ProposedChangesRendererProps> = ({
   inline = false,
   dao,
-  proposal
+  proposal,
 }) => {
   const [data] = useState(dao ? getInitialData(dao) : undefined);
 

@@ -20,24 +20,24 @@ import styles from './AllDaosPage.module.scss';
 const sortOptions = [
   {
     label: 'Most active',
-    value: 'lastProposalId,DESC'
+    value: 'lastProposalId,DESC',
   },
   {
     label: 'Newest',
-    value: 'createdAt,DESC'
+    value: 'createdAt,DESC',
   },
   {
     label: 'Oldest',
-    value: 'createdAt,ASC'
+    value: 'createdAt,ASC',
   },
   {
     label: 'Biggest funds',
-    value: 'amount,DESC'
+    value: 'amount,DESC',
   },
   {
     label: 'Number of members',
-    value: 'numberOfMembers,DESC'
-  }
+    value: 'numberOfMembers,DESC',
+  },
 ];
 
 interface BrowseAllDaosProps {
@@ -47,7 +47,7 @@ interface BrowseAllDaosProps {
 
 const AllDaosPage: FC<BrowseAllDaosProps> = ({
   data: initialData = [],
-  total: totalItemsAvailable
+  total: totalItemsAvailable,
 }) => {
   const router = useRouter();
   const nearPrice = useNearPrice();
@@ -64,7 +64,7 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
     const { daos: newData, total } = await getDaosList({
       offset: data.length,
       limit: 20,
-      sort: (router.query.sort as string) ?? ''
+      sort: (router.query.sort as string) ?? '',
     });
 
     if (data.length + newData.length === total) {
@@ -93,7 +93,7 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
         const res = await getDaosList({
           sort: `${value}`,
           offset: 0,
-          limit: 20
+          limit: 20,
         });
 
         setHasMore(res.daos.length !== res.total);

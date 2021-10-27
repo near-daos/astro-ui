@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react';
 import {
   DaoCreateForm,
-  IDaoCreateForm
+  IDaoCreateForm,
 } from 'features/create-dao/components/dao-create-form/DaoCreateForm';
 import React from 'react';
 
@@ -15,11 +15,11 @@ export default {
       values: [
         {
           name: 'bg',
-          value: '#E8E0FF'
-        }
-      ]
-    }
-  }
+          value: '#E8E0FF',
+        },
+      ],
+    },
+  },
 } as Meta;
 
 export const Template: Story<IDaoCreateForm> = (args): JSX.Element => (

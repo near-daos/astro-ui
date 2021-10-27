@@ -12,7 +12,7 @@ import {
   isGovernanceProposal,
   isGroupProposal,
   isTaskProposal,
-  isTreasuryProposal
+  isTreasuryProposal,
 } from 'utils/proposalFilters';
 
 export interface FilteredData extends Indexed {
@@ -63,14 +63,14 @@ export const useFilteredProposalsData = (
     tasks: true,
     groups: true,
     treasury: true,
-    governance: true
+    governance: true,
   });
 
   const onFilterChange = useCallback(
     (name, value) => {
       setFilter({
         ...filter,
-        [name]: value
+        [name]: value,
       });
     },
     [filter]
@@ -170,7 +170,7 @@ export const useFilteredProposalsData = (
     lessThanDayProposals,
     lessThanWeekProposals,
     moreThanWeekProposals,
-    otherProposals
+    otherProposals,
   } = splitProposalsByVotingPeriod(filteredProposals);
 
   return {
@@ -179,9 +179,9 @@ export const useFilteredProposalsData = (
       lessThanDayProposals: arrangeByDao(lessThanDayProposals),
       lessThanWeekProposals: arrangeByDao(lessThanWeekProposals),
       moreThanWeekProposals: arrangeByDao(moreThanWeekProposals),
-      otherProposals: arrangeByDao(otherProposals)
+      otherProposals: arrangeByDao(otherProposals),
     },
     filter,
-    onFilterChange
+    onFilterChange,
   };
 };

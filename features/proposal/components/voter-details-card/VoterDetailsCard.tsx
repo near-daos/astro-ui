@@ -12,7 +12,7 @@ import styles from './voter-details-card.module.scss';
 const GroupsRenderer = dynamic(
   import('components/cards/member-card/GroupsRenderer'),
   {
-    ssr: false
+    ssr: false,
   }
 );
 
@@ -25,7 +25,7 @@ interface VoterDetailsCardProps {
 export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
   vote,
   name,
-  groups
+  groups,
 }) => {
   let icon;
 
@@ -49,7 +49,7 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
       <Badge size="small" variant={getBadgeVariant(n)}>
         {n}
       </Badge>
-    )
+    ),
   }));
 
   return (
@@ -58,7 +58,7 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
         className={cn(styles.status, {
           [styles.yes]: vote === 'Yes',
           [styles.no]: vote === 'No',
-          [styles.dismiss]: vote === 'Dismiss'
+          [styles.dismiss]: vote === 'Dismiss',
         })}
       >
         <Icon width={24} name={icon as IconName} />

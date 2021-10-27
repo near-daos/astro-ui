@@ -4,22 +4,22 @@ import { ModalProvider, useModal } from 'components/modal';
 
 import {
   ProposalSubmittedModal,
-  ProposalSubmittedModalProps
+  ProposalSubmittedModalProps,
 } from 'features/proposal/components/proposal-submitted-modal/ProposalSubmittedModal';
 import React, { FC, useCallback } from 'react';
 
 export default {
   title: 'Features/Proposal/Popups/Proposal Submitted Modal',
-  decorators: [story => <ModalProvider>{story()}</ModalProvider>]
+  decorators: [story => <ModalProvider>{story()}</ModalProvider>],
 } as Meta;
 
 const DemoComponent: FC<{ modalProps: ProposalSubmittedModalProps }> = ({
-  modalProps
+  modalProps,
 }) => {
   const [showModal] = useModal<ProposalSubmittedModalProps>(
     ProposalSubmittedModal,
     {
-      ...modalProps
+      ...modalProps,
     }
   );
 

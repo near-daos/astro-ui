@@ -10,13 +10,13 @@ export default {
   parameters: {
     layout: 'fullscreen',
     backgrounds: {
-      default: 'dark'
+      default: 'dark',
     },
     nextRouter: {
       pathname: '/',
-      asPath: '/'
-    }
-  }
+      asPath: '/',
+    },
+  },
 } as Meta;
 
 export const Template = (
@@ -32,19 +32,19 @@ const daoList = [
     label: 'Dao Name 1',
     id: 'dao-1',
     count: 31,
-    logo: ''
+    logo: '',
   },
   {
     label: 'Dao Name 2',
     id: 'dao-2',
-    logo: ''
+    logo: '',
   },
   {
     label: 'Dao Name 3',
     id: 'dao-3',
     logo: '',
-    count: 1034
-  }
+    count: 1034,
+  },
 ];
 
 const items: MenuItem[] = [
@@ -54,7 +54,7 @@ const items: MenuItem[] = [
     href: '#',
     logo: 'stateOverview',
     count: 103,
-    subItems: []
+    subItems: [],
   },
   {
     id: 'tasks',
@@ -65,19 +65,19 @@ const items: MenuItem[] = [
       {
         id: 'bounties',
         label: 'Bounties',
-        href: '#'
+        href: '#',
       },
       {
         id: 'polls',
         label: 'Polls',
-        href: '#'
+        href: '#',
       },
       {
         id: 'plugins',
         label: 'Plugins',
-        href: '#'
-      }
-    ]
+        href: '#',
+      },
+    ],
   },
   {
     id: 'treasury',
@@ -88,19 +88,19 @@ const items: MenuItem[] = [
       {
         id: 'tokens',
         label: 'Tokens',
-        href: '#'
+        href: '#',
       },
       {
         id: 'nfts',
         label: 'NFTs',
-        href: '#'
+        href: '#',
       },
       {
         id: 'plugins',
         label: 'Plugins',
-        href: '#'
-      }
-    ]
+        href: '#',
+      },
+    ],
   },
   {
     id: 'test',
@@ -110,13 +110,13 @@ const items: MenuItem[] = [
     subItems: [...new Array(43)].map((_, index) => ({
       id: `test_${index}`,
       label: `Test ${index}`,
-      href: '#'
-    }))
-  }
+      href: '#',
+    })),
+  },
 ];
 
 Template.storyName = 'Sidebar';
 Template.args = {
   daoList,
-  items
+  items,
 };

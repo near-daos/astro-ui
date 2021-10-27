@@ -3,12 +3,12 @@ import { Meta, Story } from '@storybook/react';
 
 import {
   UnclaimBountyDialog,
-  UnclaimBountyDialogProps
+  UnclaimBountyDialogProps,
 } from 'features/bounty/dialogs/unclaim-bounty-dialog/UnclaimBountyDialog';
 
 export default {
   title: 'Features/Bounty/Dialogs/UnclaimBounty',
-  component: UnclaimBountyDialog
+  component: UnclaimBountyDialog,
 } as Meta;
 
 export const Template: Story<UnclaimBountyDialogProps> = (
@@ -28,6 +28,6 @@ Template.args = {
     externalUrl: '',
     slots: 3,
     claimedBy: [],
-    deadlineThreshold: '8'
-  }
+    deadlineThreshold: '8',
+  },
 };

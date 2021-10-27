@@ -9,7 +9,7 @@ export interface ModalProviderProps {
 
 export const ModalProvider: React.FC<ModalProviderProps> = ({
   container,
-  children
+  children,
 }: ModalProviderProps) => {
   if (container && !(container instanceof HTMLElement)) {
     throw new Error(`Container must be a DOM element.`);
@@ -33,7 +33,7 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
 
   const contextValue = useMemo(() => ({ showModal, hideModal }), [
     hideModal,
-    showModal
+    showModal,
   ]);
 
   return (

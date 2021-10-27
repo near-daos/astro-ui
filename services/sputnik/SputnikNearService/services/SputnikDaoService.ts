@@ -34,7 +34,7 @@ export class SputnikDaoService {
       ...props,
       walletCallbackUrl: appConfig.walledUseLocalRedirect
         ? `${window.origin}/callback/transaction`
-        : `${window.origin}/api-server/v1/transactions/wallet/callback/${accountId}`
+        : `${window.origin}/api-server/v1/transactions/wallet/callback/${accountId}`,
     });
   }
 
@@ -51,10 +51,10 @@ export class SputnikDaoService {
         methodName: 'create',
         args: {
           name: params.name,
-          args
+          args,
         },
         gas: new BN('300000000000000'),
-        attachedDeposit: amount
+        attachedDeposit: amount,
       });
     } catch (err) {
       console.error(err);
@@ -69,7 +69,7 @@ export class SputnikDaoService {
 
     const kindData = data
       ? {
-          [kind]: data
+          [kind]: data,
         }
       : kind;
 
@@ -79,11 +79,11 @@ export class SputnikDaoService {
       args: {
         proposal: {
           description,
-          kind: kindData
-        }
+          kind: kindData,
+        },
       },
       gas: GAS_VALUE,
-      attachedDeposit: new BN(bond)
+      attachedDeposit: new BN(bond),
     });
   }
 
@@ -92,11 +92,11 @@ export class SputnikDaoService {
       methodName: 'storage_deposit',
       contractId: tokenId,
       args: {
-        registration_only: true
+        registration_only: true,
       },
       gas: GAS_VALUE,
       // 0.1 NEAR, minimal value
-      attachedDeposit: new BN('100000000000000000000000')
+      attachedDeposit: new BN('100000000000000000000000'),
     });
   }
 
@@ -110,8 +110,8 @@ export class SputnikDaoService {
       contractId: daoId,
       args: {
         id: proposalId,
-        action
-      }
+        action,
+      },
     });
   }
 
@@ -123,8 +123,8 @@ export class SputnikDaoService {
       methodName: 'finalize',
       contractId: daoId,
       args: {
-        id: proposalId
-      }
+        id: proposalId,
+      },
     });
   }
 
@@ -138,10 +138,10 @@ export class SputnikDaoService {
       contractId: daoId,
       args: {
         id,
-        deadline
+        deadline,
       },
       gas: GAS_VALUE,
-      attachedDeposit: new BN(bountyBond)
+      attachedDeposit: new BN(bountyBond),
     });
   }
 
@@ -153,9 +153,9 @@ export class SputnikDaoService {
       methodName: 'bounty_giveup',
       contractId: daoId,
       args: {
-        id: bountyId
+        id: bountyId,
       },
-      gas: GAS_VALUE
+      gas: GAS_VALUE,
     });
   }
 }

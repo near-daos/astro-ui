@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import {
   StakedEntry,
-  StakedEntryProps
+  StakedEntryProps,
 } from 'features/voting-token/components/staked-entry';
 import { Button } from 'components/button/Button';
 
@@ -14,8 +14,8 @@ export default {
       <div style={{ padding: '1rem', background: '#e5e5e5', maxWidth: 1024 }}>
         {story()}
       </div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 export const Template: Story<StakedEntryProps> = (args): JSX.Element => (
@@ -27,5 +27,5 @@ Template.args = {
   amount: 222,
   name: 'GOOSE',
   delegatedTo: 'annie.near',
-  children: <Button variant="secondary">Change</Button>
+  children: <Button variant="secondary">Change</Button>,
 };

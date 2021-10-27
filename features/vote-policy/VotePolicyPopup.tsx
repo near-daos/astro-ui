@@ -24,7 +24,7 @@ export const VotePolicyPopup: React.FC<VotePolicyPopupProps> = ({
   proposers,
   title,
   data,
-  groups
+  groups,
 }) => {
   const [proposer, setProposer] = useState<string[]>(data.whoCanPropose);
 
@@ -39,12 +39,12 @@ export const VotePolicyPopup: React.FC<VotePolicyPopupProps> = ({
         ),
         voteBy: 'Person',
         amount: undefined,
-        threshold: undefined
+        threshold: undefined,
       }),
     [groups, push, selected]
   );
   const removePolicy = useCallback((index: number) => () => removeAt(index), [
-    removeAt
+    removeAt,
   ]);
 
   return (
@@ -63,7 +63,7 @@ export const VotePolicyPopup: React.FC<VotePolicyPopupProps> = ({
               defaultValue={proposer}
               options={proposers.map(item => ({
                 label: item,
-                component: <Group name={item} />
+                component: <Group name={item} />,
               }))}
             />
           </div>
@@ -88,7 +88,7 @@ export const VotePolicyPopup: React.FC<VotePolicyPopupProps> = ({
               onClick={() =>
                 onClose({
                   whoCanPropose: proposer,
-                  policies: selected
+                  policies: selected,
                 })
               }
             >

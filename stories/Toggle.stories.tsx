@@ -6,8 +6,8 @@ export default {
   title: 'Components/Toggle',
   component: Toggle,
   argTypes: {
-    checked: { control: 'boolean' }
-  }
+    checked: { control: 'boolean' },
+  },
 } as Meta;
 
 export const Template = (
@@ -21,5 +21,5 @@ export const Template = (
 
 Template.storyName = 'Toggle';
 Template.args = {
-  label: 'Toggle'
+  label: 'Toggle',
 };

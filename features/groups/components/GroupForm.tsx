@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {
   IGroupForm,
   GroupFormType,
-  GroupFormInput
+  GroupFormInput,
 } from 'features/groups/types';
 
 import { Input } from 'components/inputs/input/Input';
@@ -30,21 +30,21 @@ const schema = yup.object().shape({
   group: yup.string().required(),
   memberName: yup.string().required(),
   detail: yup.string().required(),
-  externalUrl: yup.string()
+  externalUrl: yup.string(),
 });
 
 export const GroupForm: React.FC<GroupFormProps> = ({
   initialValues,
   onCancel,
-  onSubmit
+  onSubmit,
 }) => {
   const {
     register,
     handleSubmit,
     setValue,
-    formState: { errors, touchedFields }
+    formState: { errors, touchedFields },
   } = useForm<IGroupForm>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
 
   const getVoteDetailsScope = (groupType: number) => {
@@ -79,12 +79,12 @@ export const GroupForm: React.FC<GroupFormProps> = ({
       label="Group"
       options={initialValues.groups.map(group => ({
         value: group,
-        label: group
+        label: group,
       }))}
       {...register('group')}
       onChange={v =>
         setValue('group', v || 'NEAR', {
-          shouldDirty: true
+          shouldDirty: true,
         })
       }
     />

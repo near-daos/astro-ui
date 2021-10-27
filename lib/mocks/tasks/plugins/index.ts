@@ -4,7 +4,7 @@ import { IWizardInitialData } from 'features/plugins/components/use-plugin-popup
 const generatePlugin = (tokenName: string, created: string) => ({
   tokenName,
   created,
-  functionName: 'FunctionName'
+  functionName: 'FunctionName',
 });
 
 const generatePlugins = () => {
@@ -32,7 +32,7 @@ export const PLUGIN_INITIAL_DATA: IWizardInitialData = {
       id: '1',
       functionName: 'Token Farm: Create new token',
       code:
-        '{"contract":"app.tokenfarm.near","method":"createToken","description":"Create a new token on token farm","args":[]}'
-    }
-  ]
+        '{"contract":"app.tokenfarm.near","method":"createToken","description":"Create a new token on token farm","args":[]}',
+    },
+  ],
 };

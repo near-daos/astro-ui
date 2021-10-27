@@ -38,7 +38,7 @@ export interface TokensPageProps {
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
 
 const TokensPage: React.FC<TokensPageProps> = ({
-  data: { chartData, daoTokens, totalValue, receipts }
+  data: { chartData, daoTokens, totalValue, receipts },
 }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
@@ -48,7 +48,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
   const { setTokens } = useCustomTokensContext();
 
   const [showRequestPayoutPopup] = useModal(RequestPayoutPopup, {
-    type: 'send'
+    type: 'send',
   });
 
   const handleClick = useCallback(
@@ -61,8 +61,8 @@ const TokensPage: React.FC<TokensPageProps> = ({
       {
         label: 'Total Value Locked',
         value: formatCurrency(parseFloat(totalValue) * nearPrice),
-        currency: 'USD'
-      }
+        currency: 'USD',
+      },
     ],
     [nearPrice, totalValue]
   );
@@ -128,7 +128,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
         <Icon
           name="buttonArrowUp"
           className={classNames(styles.filterIcon, {
-            [styles.rotate]: sortAsc
+            [styles.rotate]: sortAsc,
           })}
         />
       </Button>
@@ -149,7 +149,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
               date,
               predecessorAccountId,
               receiptId,
-              txHash
+              txHash,
             }) => (
               <div
                 className={styles.row}

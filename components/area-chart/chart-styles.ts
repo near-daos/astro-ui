@@ -13,8 +13,8 @@ export const LEFT_AXIS_STYLES = {
     fontSize: 10,
     padding: 5,
     fill: TICK_COLOR,
-    fontFamily: FONT_FAMILY
-  }
+    fontFamily: FONT_FAMILY,
+  },
 };
 
 export const BOTTOM_AXIS_STYLES = {
@@ -25,14 +25,14 @@ export const BOTTOM_AXIS_STYLES = {
     fontSize: 12,
     padding: 5,
     fill: TICK_COLOR,
-    fontFamily: FONT_FAMILY
-  }
+    fontFamily: FONT_FAMILY,
+  },
 };
 
 export const LINE_STYLES = {
   data: {
     fill: 'url(#gradient)',
     stroke: STROKE_COLOR,
-    strokeWidth: '2px'
-  }
+    strokeWidth: '2px',
+  },
 };

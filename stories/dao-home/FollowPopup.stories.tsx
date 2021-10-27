@@ -2,12 +2,12 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import {
   FollowPopup,
-  FollowPopupProps
+  FollowPopupProps,
 } from 'features/dao-home/components/follow-popup/FollowPopup';
 
 export default {
   title: 'Features/DAO Home/Popups/FollowPopup',
-  component: FollowPopup
+  component: FollowPopup,
 } as Meta;
 
 export const Template: Story<FollowPopupProps> = (args): JSX.Element => (
@@ -17,5 +17,5 @@ export const Template: Story<FollowPopupProps> = (args): JSX.Element => (
 Template.storyName = 'FollowPopup';
 Template.args = {
   isOpen: true,
-  target: 'meowzers'
+  target: 'meowzers',
 };

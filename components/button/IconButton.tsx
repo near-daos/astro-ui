@@ -20,7 +20,7 @@ export const IconButton: React.VFC<IconButtonProps> = ({
   const sizes = {
     small: buttonStyles.small,
     medium: buttonStyles.medium,
-    large: buttonStyles.large
+    large: buttonStyles.large,
   };
   const className = classNames(
     buttonStyles.iconButton,

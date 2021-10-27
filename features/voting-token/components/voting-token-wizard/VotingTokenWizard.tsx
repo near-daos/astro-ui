@@ -15,48 +15,48 @@ import styles from './voting-token-wizard.module.scss';
 const CREATE_NEW_TOKEN_STEPS = [
   {
     id: 1,
-    component: CreateOrAdoptTokenStep
+    component: CreateOrAdoptTokenStep,
   },
   {
     id: 2,
-    component: CreateVotingTokenStep
+    component: CreateVotingTokenStep,
   },
   {
     id: 3,
-    component: ConfirmTokenStep
-  }
+    component: ConfirmTokenStep,
+  },
 ];
 
 const ADOPT_TOKEN_FARM_STEPS = [
   {
     id: 1,
-    component: CreateOrAdoptTokenStep
+    component: CreateOrAdoptTokenStep,
   },
   {
     id: 2,
-    component: ChooseTokenFarmTokenStep
+    component: ChooseTokenFarmTokenStep,
   },
   {
     id: 3,
-    component: ConfirmTokenFarmTokenStep
-  }
+    component: ConfirmTokenFarmTokenStep,
+  },
 ];
 
 const ADOPT_NEAR_TOKEN_STEP = [
   {
     id: 1,
-    component: CreateOrAdoptTokenStep
+    component: CreateOrAdoptTokenStep,
   },
   {
     id: 2,
-    component: ConfirmNearStep
-  }
+    component: ConfirmNearStep,
+  },
 ];
 
 const WIZARD_STEPS: { [key: string]: WizardStep[] } = {
   CREATE_NEW_TOKEN_STEPS,
   ADOPT_NEAR_TOKEN_STEP,
-  ADOPT_TOKEN_FARM_STEPS
+  ADOPT_TOKEN_FARM_STEPS,
 };
 
 interface VotingTokenWizardProps {
@@ -66,7 +66,7 @@ interface VotingTokenWizardProps {
 
 export const VotingTokenWizard: FC<VotingTokenWizardProps> = ({
   onClose,
-  onSubmit
+  onSubmit,
 }) => {
   const [activeFlow, setActiveFlow] = useState(
     'CREATE_NEW_TOKEN_STEPS' as WizardFlow
@@ -83,7 +83,7 @@ export const VotingTokenWizard: FC<VotingTokenWizardProps> = ({
       if (d) {
         setData({
           ...data,
-          ...d
+          ...d,
         });
       }
 
@@ -97,7 +97,7 @@ export const VotingTokenWizard: FC<VotingTokenWizardProps> = ({
       if (d) {
         onSubmit({
           ...data,
-          ...d
+          ...d,
         });
       } else {
         onSubmit(data);
@@ -126,7 +126,7 @@ export const VotingTokenWizard: FC<VotingTokenWizardProps> = ({
           handleCancel,
           handleSubmit,
           activeFlow,
-          data
+          data,
         }}
       >
         {steps

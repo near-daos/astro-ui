@@ -1,7 +1,7 @@
 import React, { CSSProperties, FC, useCallback, useRef, useState } from 'react';
 import {
   PluginCard,
-  PluginCardProps
+  PluginCardProps,
 } from 'features/plugins/components/plugin-card/PluginCard';
 import { UsePluginPopup } from 'features/plugins/components/use-plugin-popup';
 import { useModal } from 'components/modal/hooks';
@@ -24,7 +24,7 @@ const PluginsPage: FC<PluginPageProps> = ({ plugins = PLUGINS_DATA }) => {
   const [pluginsList] = useState(plugins);
 
   const [showUsePluginPopup] = useModal(UsePluginPopup, {
-    initialData: PLUGIN_INITIAL_DATA
+    initialData: PLUGIN_INITIAL_DATA,
   });
 
   const [showResetScroll, setShowResetScroll] = useState(false);
@@ -54,7 +54,7 @@ const PluginsPage: FC<PluginPageProps> = ({ plugins = PLUGINS_DATA }) => {
 
   const renderCard = ({
     index,
-    style
+    style,
   }: {
     index: number;
     style: CSSProperties;
@@ -63,7 +63,7 @@ const PluginsPage: FC<PluginPageProps> = ({ plugins = PLUGINS_DATA }) => {
       style={{
         ...style,
         marginTop: '0',
-        marginBottom: '16px'
+        marginBottom: '16px',
       }}
     >
       <PluginCard {...pluginsList[index]} />

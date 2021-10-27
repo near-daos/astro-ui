@@ -28,7 +28,7 @@ export const DaoHeader: React.VFC<DAOHeaderProps> = ({
   }
 
   const iconClassName = cn(styles.expandCollapseIcon, {
-    [styles.open]: isOpen
+    [styles.open]: isOpen,
   });
 
   return (
@@ -39,7 +39,7 @@ export const DaoHeader: React.VFC<DAOHeaderProps> = ({
       onClick={toggleHeading}
       onKeyPress={toggleHeading}
       className={cn(styles.header, className, {
-        [styles.open]: isOpen
+        [styles.open]: isOpen,
       })}
     >
       {logo ? (

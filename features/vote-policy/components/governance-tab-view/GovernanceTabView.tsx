@@ -8,7 +8,7 @@ import {
   getPoliciesList,
   getProposersList,
   PolicyProps,
-  VotingPolicyPageInitialData
+  VotingPolicyPageInitialData,
 } from 'features/vote-policy/helpers';
 
 import styles from './governance-tab-view.module.scss';
@@ -28,7 +28,7 @@ export const GovernanceTabView: FC<GovernanceTabViewProps> = ({
   groups,
   data,
   onChange,
-  showTitle = true
+  showTitle = true,
 }) => {
   return (
     <div className={styles.root}>

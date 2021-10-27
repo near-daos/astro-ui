@@ -9,13 +9,13 @@ import commonStyles from 'features/vote-policy/components/common.module.scss';
 
 import {
   PolicyRow,
-  VotePolicy
+  VotePolicy,
 } from 'features/vote-policy/components/policy-row/PolicyRow';
 
 const headerValues = {
   'Who can vote': commonStyles.whoCanVote,
   'Vote by': commonStyles.voteBy,
-  Threshold: commonStyles.amount
+  Threshold: commonStyles.amount,
 };
 
 interface PoliciesProps {
@@ -33,7 +33,7 @@ export const Policies: React.FC<PoliciesProps> = ({
   tokens,
   onAdd,
   onRemove,
-  onUpdate
+  onUpdate,
 }) => {
   const selectedGroups = policies.map(item => item.whoCanVote ?? '');
 

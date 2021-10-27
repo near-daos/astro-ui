@@ -15,12 +15,12 @@ import StatusFilter from 'features/proposal/components/status-filter';
 import { VotingStatistic } from 'features/proposal/components/voting-statistic';
 import {
   MobileProposalActions,
-  ProposalActions
+  ProposalActions,
 } from 'features/proposal/components/proposal-actions';
 import { VoterDetail } from 'features/types';
 import {
   getBadgeVariant,
-  getProposalNameByType
+  getProposalNameByType,
 } from 'features/proposal/helpers';
 import { useDeviceType } from 'helpers/media';
 
@@ -47,7 +47,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
   dao,
   proposal,
   availableGroups,
-  members
+  members,
 }) => {
   const router = useRouter();
   const voteStatus = (router.query.status ?? 'All') as string;
@@ -65,7 +65,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
 
       return {
         ...item,
-        groups: member?.groups ?? []
+        groups: member?.groups ?? [],
       };
     });
 
@@ -94,7 +94,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
             {item}
           </Badge>
         ),
-        content: <VotersList data={votersByGroups[item]} />
+        content: <VotersList data={votersByGroups[item]} />,
       };
     });
   }, [availableGroups, votersByGroups]);
@@ -155,7 +155,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
 export default ProposalPage;
 
 export const getServerSideProps: GetServerSideProps = async ({
-  query
+  query,
 }): Promise<{
   props: {
     dao: DAO | null;
@@ -169,7 +169,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const [dao, proposal] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
-    SputnikHttpService.getProposalById(proposalId)
+    SputnikHttpService.getProposalById(proposalId),
   ]);
 
   const members = dao && proposal ? extractMembersFromDao(dao, [proposal]) : [];
@@ -185,7 +185,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       dao,
       proposal,
       members,
-      availableGroups: ['All Members', ...uniq(availableGroups)]
-    }
+      availableGroups: ['All Members', ...uniq(availableGroups)],
+    },
   };
 };

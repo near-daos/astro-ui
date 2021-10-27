@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import {
   PluginCard,
-  PluginCardProps
+  PluginCardProps,
 } from 'features/plugins/components/plugin-card';
 
 export default {
@@ -13,8 +13,8 @@ export default {
       <div style={{ padding: '1rem', background: 'lightgrey', maxWidth: 1024 }}>
         {story()}
       </div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 export const Template: Story<PluginCardProps> = (args): JSX.Element => (
@@ -25,5 +25,5 @@ Template.storyName = 'UsePluginPopup';
 Template.args = {
   tokenName: 'tkn.near',
   functionName: 'FunctionName',
-  created: '2021-02-07'
+  created: '2021-02-07',
 };

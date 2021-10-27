@@ -2,12 +2,12 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import {
   UsePluginPopup,
-  UsePluginPopupProps
+  UsePluginPopupProps,
 } from 'features/plugins/components/use-plugin-popup/UsePluginPopup';
 
 export default {
   title: 'Features/Plugins/Popups/UsePluginPopup',
-  component: UsePluginPopup
+  component: UsePluginPopup,
 } as Meta;
 
 export const Template: Story<UsePluginPopupProps> = (args): JSX.Element => (
@@ -23,8 +23,8 @@ Template.args = {
         id: '1',
         functionName: 'Token Farm: Create new token',
         code:
-          '{"contract":"app.tokenfarm.near","method":"createToken","description":"Create a new token on token farm","args":[]}'
-      }
-    ]
-  }
+          '{"contract":"app.tokenfarm.near","method":"createToken","description":"Create a new token on token farm","args":[]}',
+      },
+    ],
+  },
 };

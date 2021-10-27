@@ -12,7 +12,7 @@ import { useDomainControl } from './helpers';
 import {
   BOTTOM_AXIS_STYLES,
   LEFT_AXIS_STYLES,
-  LINE_STYLES
+  LINE_STYLES,
 } from './chart-styles';
 
 export interface AreaChartProps {
@@ -27,7 +27,7 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [] }) => {
     () =>
       data.map(item => ({
         x: new Date(item.timestamp),
-        y: item.balance
+        y: item.balance,
       })),
     [data]
   );
@@ -38,7 +38,7 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [] }) => {
     toggleDomain,
     activeRange,
     verticalDomain,
-    onZoomDataChange
+    onZoomDataChange,
   } = useDomainControl(preparedData || []);
 
   if (!preparedData.length) {
@@ -107,7 +107,7 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [] }) => {
                 data={preparedData}
                 animate={{
                   duration: 500,
-                  onLoad: { duration: 1000 }
+                  onLoad: { duration: 1000 },
                 }}
               />
             </VictoryChart>

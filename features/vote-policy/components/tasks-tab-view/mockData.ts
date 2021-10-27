@@ -7,15 +7,15 @@ export const createBounty = {
       whoCanVote: 'MEW holders',
       voteBy: 'Person',
       amount: 50,
-      threshold: '% of group'
+      threshold: '% of group',
     } as VotePolicy,
     {
       whoCanVote: 'NEAR holders',
       voteBy: 'Person',
       amount: 5,
-      threshold: 'persons'
-    } as VotePolicy
-  ]
+      threshold: 'persons',
+    } as VotePolicy,
+  ],
 };
 
 export const closeBounty = {
@@ -25,15 +25,15 @@ export const closeBounty = {
       whoCanVote: 'MEW holders',
       voteBy: 'Person',
       amount: 50,
-      threshold: '% of group'
+      threshold: '% of group',
     } as VotePolicy,
     {
       whoCanVote: 'NEAR holders',
       voteBy: 'Person',
       amount: 5,
-      threshold: 'persons'
-    } as VotePolicy
-  ]
+      threshold: 'persons',
+    } as VotePolicy,
+  ],
 };
 
 export const createPoll = {
@@ -43,15 +43,15 @@ export const createPoll = {
       whoCanVote: 'MEW holders',
       voteBy: 'Person',
       amount: 50,
-      threshold: '% of group'
+      threshold: '% of group',
     } as VotePolicy,
     {
       whoCanVote: 'NEAR holders',
       voteBy: 'Person',
       amount: 5,
-      threshold: 'persons'
-    } as VotePolicy
-  ]
+      threshold: 'persons',
+    } as VotePolicy,
+  ],
 };
 
 export const nearFunction = {
@@ -61,13 +61,13 @@ export const nearFunction = {
       whoCanVote: 'MEW holders',
       voteBy: 'Person',
       amount: 50,
-      threshold: '% of group'
+      threshold: '% of group',
     } as VotePolicy,
     {
       whoCanVote: 'NEAR holders',
       voteBy: 'Person',
       amount: 5,
-      threshold: 'persons'
-    } as VotePolicy
-  ]
+      threshold: 'persons',
+    } as VotePolicy,
+  ],
 };

@@ -22,5 +22,5 @@ const outsideOfProvider = (): Error => {
  */
 export const ModalContext = React.createContext<ModalContextType>({
   showModal: outsideOfProvider,
-  hideModal: outsideOfProvider
+  hideModal: outsideOfProvider,
 });

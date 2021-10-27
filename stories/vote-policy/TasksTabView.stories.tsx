@@ -3,12 +3,12 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import {
   TasksTabView,
-  TasksTabViewProps
+  TasksTabViewProps,
 } from 'features/vote-policy/components/tasks-tab-view';
 
 export default {
   title: 'Features/VotingPolicy/TasksTabView',
-  component: TasksTabView
+  component: TasksTabView,
 } as Meta;
 
 export const Template: Story<TasksTabViewProps> = (args): JSX.Element => (

@@ -28,7 +28,7 @@ export const VoteDetails: React.FC<VoteDetailsProps> = ({
   showProgress,
   className = '',
   proposalId,
-  showBond = true
+  showBond = true,
 }) => {
   const router = useRouter();
   const daoId = proposalDaoId || (router.query.dao as string);
@@ -54,12 +54,13 @@ export const VoteDetails: React.FC<VoteDetailsProps> = ({
   );
 
   function renderBond() {
-    if (showBond)
+    if (showBond) {
       return (
         <div className={styles.item}>
           <Bond value={bond} token="NEAR" className={styles.item} />;
         </div>
       );
+    }
 
     return null;
   }

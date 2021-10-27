@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import {
   RecentlyUnstaked,
-  RecentlyUnstakedProps
+  RecentlyUnstakedProps,
 } from 'features/voting-token/components/recently-unstaked';
 
 export default {
@@ -13,8 +13,8 @@ export default {
       <div style={{ padding: '1rem', background: '#e5e5e5', maxWidth: 1024 }}>
         {story()}
       </div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 export const Template: Story<RecentlyUnstakedProps> = (args): JSX.Element => (
@@ -27,12 +27,12 @@ Template.args = {
     {
       id: '1',
       amount: 222,
-      name: 'GOOSE'
+      name: 'GOOSE',
     },
     {
       id: '2',
       amount: 234,
-      name: 'MOON'
-    }
-  ]
+      name: 'MOON',
+    },
+  ],
 };

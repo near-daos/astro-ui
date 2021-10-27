@@ -20,7 +20,7 @@ export interface BountiesListProps {
 
 export const BountiesList: FC<BountiesListProps> = ({
   bountiesList,
-  status
+  status,
 }) => {
   const [showResetScroll, setShowResetScroll] = useState(false);
   const scrollListRef = useRef<VariableSizeList>(null);
@@ -62,7 +62,7 @@ export const BountiesList: FC<BountiesListProps> = ({
 
   const renderCard = ({
     index,
-    style
+    style,
   }: {
     index: number;
     style: CSSProperties;
@@ -72,7 +72,7 @@ export const BountiesList: FC<BountiesListProps> = ({
         style={{
           ...style,
           marginTop: '0',
-          marginBottom: '16px'
+          marginBottom: '16px',
         }}
       >
         <BountyCard data={bountiesList[index]} status={status} />

@@ -15,7 +15,7 @@ export interface PluginCardProps {
 export const PluginCard: FC<PluginCardProps> = ({
   tokenName,
   created,
-  functionName
+  functionName,
 }) => {
   return (
     <div className={cn(styles.root)}>

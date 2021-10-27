@@ -10,7 +10,7 @@ import example6 from './assets/example-6.png';
 import example7 from './assets/example-7.png';
 
 export default {
-  title: 'Features/NFT/NFTCard'
+  title: 'Features/NFT/NFTCard',
 } as Meta;
 
 const Demo: FC<{ cards: StaticImageData[] }> = ({ cards }) => {
@@ -37,5 +37,5 @@ export const Template: Story<{ cards: StaticImageData[] }> = (
 Template.storyName = 'NFTCard';
 
 Template.args = {
-  cards: [example1, example2, example3, example4, example5, example6, example7]
+  cards: [example1, example2, example3, example4, example5, example6, example7],
 };

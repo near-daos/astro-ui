@@ -8,7 +8,7 @@ export type CreateTokenParams = {
 };
 
 export enum TokenDeprecated {
-  NEAR = 'NEAR'
+  NEAR = 'NEAR',
 }
 
 export type NftTokenResponse = {

@@ -1,4 +1,4 @@
 export {
   default,
-  getServerSideProps
+  getServerSideProps,
 } from 'pages/dao/[dao]/treasury/nfts/NFTs';

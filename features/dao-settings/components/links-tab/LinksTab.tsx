@@ -18,12 +18,12 @@ import * as yup from 'yup';
 import { DaoConfig } from 'types/proposal';
 import {
   DaoMetadata,
-  fromMetadataToBase64
+  fromMetadataToBase64,
 } from 'services/sputnik/mappers/dao';
 import { SputnikNearService } from 'services/sputnik';
 import {
   navigateToDaoPage,
-  getChangeConfigProposal
+  getChangeConfigProposal,
 } from 'features/dao-settings/helpers';
 import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
@@ -56,9 +56,9 @@ export const schema = yup.object().shape({
       url: yup
         .string()
         .matches(validUrlRegexp, 'Enter correct url!')
-        .required('Enter url')
+        .required('Enter url'),
     })
-  )
+  ),
 });
 
 const LinksTab: FC<LinksTabProps> = ({
@@ -66,7 +66,7 @@ const LinksTab: FC<LinksTabProps> = ({
   name,
   purpose,
   currentDaoMetadata,
-  proposalBond
+  proposalBond,
 }) => {
   const router = useRouter();
 
@@ -78,12 +78,12 @@ const LinksTab: FC<LinksTabProps> = ({
     defaultValues: {
       links: links.map(url => ({
         url,
-        id: nanoid()
+        id: nanoid(),
       })),
       details: '',
-      externalUrl: ''
+      externalUrl: '',
     },
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
 
   const {
@@ -92,13 +92,13 @@ const LinksTab: FC<LinksTabProps> = ({
     watch,
     handleSubmit,
     control,
-    formState: { errors, touchedFields, isDirty, isValid }
+    formState: { errors, touchedFields, isDirty, isValid },
   } = methods;
 
   const { fields, append, remove } = useFieldArray({
     name: 'links',
     keyName: 'id',
-    control
+    control,
   });
 
   const onCancel = useCallback(() => {
@@ -106,8 +106,8 @@ const LinksTab: FC<LinksTabProps> = ({
     reset({
       links: links.map(url => ({
         url,
-        id: nanoid()
-      }))
+        id: nanoid(),
+      })),
     });
   }, [links, reset, setViewMode]);
 
@@ -122,8 +122,8 @@ const LinksTab: FC<LinksTabProps> = ({
         metadata: fromMetadataToBase64({
           links: data.links.map(item => item.url),
           flag: fileName,
-          displayName: currentDaoMetadata.displayName
-        })
+          displayName: currentDaoMetadata.displayName,
+        }),
       };
 
       await SputnikNearService.createProposal(
@@ -137,7 +137,7 @@ const LinksTab: FC<LinksTabProps> = ({
       showNotification({
         type: NOTIFICATION_TYPES.INFO,
         description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000
+        lifetime: 20000,
       });
       setViewMode(true);
 
@@ -150,7 +150,7 @@ const LinksTab: FC<LinksTabProps> = ({
       currentDaoMetadata,
       daoId,
       setViewMode,
-      proposalBond
+      proposalBond,
     ]
   );
 
@@ -226,7 +226,7 @@ const LinksTab: FC<LinksTabProps> = ({
               onClick={() =>
                 append({
                   id: nanoid(),
-                  url: ''
+                  url: '',
                 })
               }
             >

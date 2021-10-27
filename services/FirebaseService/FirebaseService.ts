@@ -43,7 +43,7 @@ export class FirebaseService {
   private handleMessage = (payload: any): void => {
     const notificationOptions = {
       body: payload.notification.body,
-      icon: payload.notification.image
+      icon: payload.notification.image,
     };
 
     const notification = new Notification(
@@ -57,7 +57,7 @@ export class FirebaseService {
 
   public async getToken(): Promise<string> {
     return this.messaging.getToken({
-      vapidKey: this.config.vapidKey
+      vapidKey: this.config.vapidKey,
     });
   }
 }

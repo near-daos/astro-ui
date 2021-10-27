@@ -42,7 +42,7 @@ const schema = yup.object().shape({
   purpose: yup.string().max(500),
   websites: yup
     .array()
-    .of(yup.string().matches(validUrlRegexp, 'Enter correct url!').required())
+    .of(yup.string().matches(validUrlRegexp, 'Enter correct url!').required()),
 });
 
 export const DaoCreateForm: FC<DaoCreateFormProps> = ({
@@ -56,11 +56,11 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
     getValues,
     setValue,
     watch,
-    formState: { errors, touchedFields }
+    formState: { errors, touchedFields },
   } = useForm<IDaoCreateForm>({
     mode: 'onChange',
     resolver: yupResolver(schema),
-    defaultValues: initialValues
+    defaultValues: initialValues,
   });
 
   const displayName = watch('displayName');
@@ -157,7 +157,7 @@ export const DaoCreateForm: FC<DaoCreateFormProps> = ({
             <Input
               placeholder="https://"
               {...register(`websites.${index}` as const, {
-                shouldUnregister: true
+                shouldUnregister: true,
               })}
               key={`websites.${index}` as const}
               isValid={

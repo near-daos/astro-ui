@@ -24,7 +24,7 @@ export const ProposalCollapsableSection: FC<ProposalCollapsableSectionProps> = (
   proposals,
   expandedProposalId,
   view,
-  title
+  title,
 }) => {
   const [expanded, setExpanded] = useState(true);
 

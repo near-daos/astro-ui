@@ -4,22 +4,22 @@ import { Select } from 'components/inputs/select/Select';
 
 export default {
   title: 'Components/Select',
-  component: Select
+  component: Select,
 } as Meta;
 
 const options = [
   {
     label: 'Test 1',
-    value: 'test-1'
+    value: 'test-1',
   },
   {
     label: 'Test 2',
-    value: 'test-2'
+    value: 'test-2',
   },
   {
     label: 'Test 3',
-    value: 'test-3'
-  }
+    value: 'test-3',
+  },
 ];
 
 export const Template = (
@@ -45,5 +45,5 @@ Template.storyName = 'Select';
 
 Template.args = {
   size: 'large',
-  options
+  options,
 };

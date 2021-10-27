@@ -29,22 +29,22 @@ export interface CompleteBountyFormInput {
 const schema = yup.object().shape({
   recipient: yup.string().required(),
   details: yup.string().required(),
-  externalUrl: yup.string()
+  externalUrl: yup.string(),
 });
 
 export const CompleteBountyForm: FC<CompleteBountyFormProps> = ({
   onSubmit,
-  onCancel
+  onCancel,
 }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, touchedFields }
+    formState: { errors, touchedFields },
   } = useForm<CompleteBountyFormInput>({
     resolver: yupResolver(schema),
     defaultValues: {
-      recipient: SputnikNearService.getAccountId()
-    }
+      recipient: SputnikNearService.getAccountId(),
+    },
   });
 
   return (

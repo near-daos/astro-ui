@@ -60,9 +60,9 @@ function getAddRemoveMemberProposal(
     kind: isRemove ? 'RemoveMemberFromRole' : 'AddMemberToRole',
     data: {
       member_id: memberName,
-      role: group
+      role: group,
     },
-    bond: dao.policy.proposalBond
+    bond: dao.policy.proposalBond,
   };
 }
 
@@ -92,7 +92,7 @@ function formatVotePolicy(value: DefaultVotePolicy) {
   return {
     weight_kind: value.weightKind,
     quorum: value.quorum,
-    threshold: value.ratio ?? value.weight
+    threshold: value.ratio ?? value.weight,
   };
 }
 
@@ -114,7 +114,7 @@ export function dataRoleToContractRole(role: DaoRole): ContractRole {
   const newKind =
     kind === 'Group'
       ? {
-          Group: accountIds
+          Group: accountIds,
         }
       : kind;
 
@@ -125,7 +125,7 @@ export function dataRoleToContractRole(role: DaoRole): ContractRole {
     vote_policy:
       votePolicy && !isEmpty(votePolicy)
         ? formatVotePolicies(votePolicy)
-        : ({} as Record<string, VotePolicyRequest>)
+        : ({} as Record<string, VotePolicyRequest>),
   };
 }
 
@@ -143,7 +143,7 @@ export function getChangePolicyProposal(
     proposalBond,
     proposalPeriod,
     defaultVotePolicy,
-    bountyForgivenessPeriod
+    bountyForgivenessPeriod,
   } = policy;
 
   const { ratio, quorum, weightKind } = defaultVotePolicy;
@@ -159,29 +159,29 @@ export function getChangePolicyProposal(
           {
             name: group,
             kind: {
-              Group: members
+              Group: members,
             },
             permissions: [
               '*:Finalize',
               '*:AddProposal',
               '*:VoteApprove',
               '*:VoteReject',
-              '*:VoteRemove'
+              '*:VoteRemove',
             ],
-            vote_policy: {}
-          }
+            vote_policy: {},
+          },
         ],
         default_vote_policy: keysToSnakeCase({
           quorum,
           threshold: ratio,
-          weightKind
+          weightKind,
         }),
         proposal_bond: proposalBond,
         proposal_period: proposalPeriod,
         bounty_bond: bountyBond,
-        bounty_forgiveness_period: bountyForgivenessPeriod
-      }
+        bounty_forgiveness_period: bountyForgivenessPeriod,
+      },
     },
-    bond: dao.policy.proposalBond
+    bond: dao.policy.proposalBond,
   };
 }

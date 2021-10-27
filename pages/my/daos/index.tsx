@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   const [accountDaos, proposals] = await Promise.all([
     accountDaosPromise,
-    SputnikHttpService.getProposals(undefined, 0, 500)
+    SputnikHttpService.getProposals(undefined, 0, 500),
   ]);
 
   const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
@@ -25,9 +25,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       accountDaos: accountDaos.map(item => ({
         ...item,
-        proposals: activeProposalsByDao[item.id] ?? 0
-      }))
-    }
+        proposals: activeProposalsByDao[item.id] ?? 0,
+      })),
+    },
   };
 };
 

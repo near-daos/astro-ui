@@ -17,9 +17,9 @@ export const members: Member[] = [
     tokens: {
       type: 'NEAR',
       value: 18,
-      percent: 14
+      percent: 14,
     },
-    votes: 12
+    votes: 12,
   },
   {
     id: '2',
@@ -28,9 +28,9 @@ export const members: Member[] = [
     tokens: {
       type: 'NEAR',
       value: 24,
-      percent: 30
+      percent: 30,
     },
-    votes: 7
+    votes: 7,
   },
   {
     id: '3',
@@ -39,9 +39,9 @@ export const members: Member[] = [
     tokens: {
       type: 'MEW',
       value: 345,
-      percent: 39
+      percent: 39,
     },
-    votes: 44
+    votes: 44,
   },
   {
     id: '4',
@@ -50,9 +50,9 @@ export const members: Member[] = [
     tokens: {
       type: 'MEW',
       value: 56,
-      percent: 34
+      percent: 34,
     },
-    votes: 78
+    votes: 78,
   },
   {
     id: '5',
@@ -61,9 +61,9 @@ export const members: Member[] = [
     tokens: {
       type: 'MEW',
       value: 33,
-      percent: 35
+      percent: 35,
     },
-    votes: 134
+    votes: 134,
   },
   {
     id: '6',
@@ -72,9 +72,9 @@ export const members: Member[] = [
     tokens: {
       type: 'MEW',
       value: 6,
-      percent: 34
+      percent: 34,
     },
-    votes: 12
+    votes: 12,
   },
   {
     id: '7',
@@ -83,16 +83,16 @@ export const members: Member[] = [
     tokens: {
       type: 'MEW',
       value: 98,
-      percent: 39
+      percent: 39,
     },
-    votes: 118
-  }
+    votes: 118,
+  },
 ];
 
 export const groupColor = {
   'MEW holders': 'violet',
   'NEAR holders': 'turqoise',
-  Ombudspeople: 'orange'
+  Ombudspeople: 'orange',
 } as { [key: string]: string };
 
 export const groupPopupData = {
@@ -102,11 +102,11 @@ export const groupPopupData = {
     voteDetails: [
       { limit: '50%', label: 'MEW holders' },
       { limit: '50%', label: 'cool group' },
-      { limit: '1 person', label: 'Ombudspeople' }
+      { limit: '1 person', label: 'Ombudspeople' },
     ],
     bondDetail: {
       value: 0.3,
-      token: 'NEAR'
-    }
-  }
+      token: 'NEAR',
+    },
+  },
 };

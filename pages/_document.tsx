@@ -3,7 +3,7 @@ import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 import {
   GOOGLE_TAG_MANAGER,
-  GOOGLE_TAG_MANAGER_NO_SCRIPT
+  GOOGLE_TAG_MANAGER_NO_SCRIPT,
 } from 'constants/googleTagManager';
 
 export default class MyDocument extends Document {
@@ -13,14 +13,14 @@ export default class MyDocument extends Document {
         <Head>
           <script
             dangerouslySetInnerHTML={{
-              __html: GOOGLE_TAG_MANAGER
+              __html: GOOGLE_TAG_MANAGER,
             }}
           />
         </Head>
         <body>
           <noscript
             dangerouslySetInnerHTML={{
-              __html: GOOGLE_TAG_MANAGER_NO_SCRIPT
+              __html: GOOGLE_TAG_MANAGER_NO_SCRIPT,
             }}
           />
           <Main />

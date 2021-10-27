@@ -52,7 +52,7 @@ export const ConfirmNearStep: FC = () => {
             handleSubmit({
               tokenIcon: 'iconNear',
               tokenName: 'NEAR',
-              tokenSymbol: 'near.tkn'
+              tokenSymbol: 'near.tkn',
             })
           }
         >

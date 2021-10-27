@@ -28,7 +28,7 @@ export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
   tokens,
   initialValues,
   isOpen,
-  onClose
+  onClose,
 }) => {
   const handleSubmit = useCallback(
     (data: CreateBountyInput) => {
@@ -43,7 +43,7 @@ export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
           showNotification({
             type: NOTIFICATION_TYPES.INFO,
             description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-            lifetime: 20000
+            lifetime: 20000,
           });
           onClose('submitted');
         });

@@ -14,7 +14,7 @@ interface UploadAvatarInputProps {
 
 export const UploadAvatarInput: FC<UploadAvatarInputProps> = ({
   onChange,
-  selected
+  selected,
 }) => {
   const [selectedImage, setSelectedImage] = React.useState<
     string | ArrayBuffer

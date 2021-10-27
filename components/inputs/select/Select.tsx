@@ -41,7 +41,7 @@ const sizeClasses = {
   small: inputStyles.sizeSmall,
   medium: inputStyles.sizeMedium,
   large: inputStyles.sizeLarge,
-  block: inputStyles.sizeBlock
+  block: inputStyles.sizeBlock,
 };
 
 export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
@@ -103,7 +103,7 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
       highlightedIndex,
       selectedItem,
       getItemProps,
-      selectItem
+      selectItem,
     } = useCombobox({
       id: `downshift-${downshiftId}`,
       items: inputItems,
@@ -115,7 +115,7 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
 
       onSelectedItemChange(changes) {
         onChange?.(changes.selectedItem?.value);
-      }
+      },
     });
 
     /* Making sure that default value would cause onChange call */
@@ -137,7 +137,7 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
       styles.select,
       classNameProp,
       {
-        [styles.disabled]: disabled
+        [styles.disabled]: disabled,
       }
     );
 
@@ -153,7 +153,7 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
               id,
               ref: externalRef,
               readOnly: !isSearchable,
-              placeholder
+              placeholder,
             })}
             className={classNames(getStateClass(isValid), inputClassName)}
             size={inputSize}
@@ -176,7 +176,7 @@ export const Select = React.forwardRef<HTMLInputElement, SelectProps>(
                 {...getItemProps({
                   disabled: item.disabled,
                   item,
-                  index
+                  index,
                 })}
               >
                 {item.label}

@@ -15,18 +15,18 @@ interface IForm {
 }
 
 const schema = yup.object().shape({
-  functionName: yup.string().required()
+  functionName: yup.string().required(),
 });
 
 const PreviousFunctionsView: FC = () => {
   const { setData, initialData, onClose } = useWizardContext();
   const { register, handleSubmit, setValue } = useForm<IForm>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
 
   const options = initialData.functions.map((item: NearFunction) => ({
     label: item.functionName,
-    value: item.id
+    value: item.id,
   }));
 
   const onSubmit: SubmitHandler<IForm> = d => {
@@ -38,8 +38,8 @@ const PreviousFunctionsView: FC = () => {
       nearFunction: {
         id: func?.id,
         functionName: func?.functionName,
-        code: func?.code
-      }
+        code: func?.code,
+      },
     });
   };
 
@@ -58,7 +58,7 @@ const PreviousFunctionsView: FC = () => {
               (item: { label: string; value: string }) => item.value === v
             )?.label ?? '',
             {
-              shouldDirty: true
+              shouldDirty: true,
             }
           );
         }}

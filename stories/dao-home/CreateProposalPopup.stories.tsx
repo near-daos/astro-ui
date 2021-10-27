@@ -4,12 +4,12 @@ import { Meta, Story } from '@storybook/react';
 
 import {
   CreateProposalPopup,
-  CreateProposalPopupProps
+  CreateProposalPopupProps,
 } from 'features/dao-home/components/create-proposal-popup/CreateProposalPopup';
 
 export default {
   title: 'Features/DAO Home/Popups/CreateProposalPopup',
-  component: CreateProposalPopup
+  component: CreateProposalPopup,
 } as Meta;
 
 export const Template: Story<CreateProposalPopupProps> = (
@@ -19,5 +19,5 @@ export const Template: Story<CreateProposalPopupProps> = (
 Template.storyName = 'CreateProposalPopup';
 
 Template.args = {
-  isOpen: true
+  isOpen: true,
 };

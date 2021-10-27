@@ -12,6 +12,6 @@ export function useDeviceType(): {
   return {
     isMobile,
     isDesktop,
-    isTablet
+    isTablet,
   };
 }

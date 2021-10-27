@@ -22,7 +22,7 @@ export const MobileProposalActions: FC = () => {
         icon="buttonMore"
         size="medium"
         className={cn({
-          [styles.open]: open
+          [styles.open]: open,
         })}
         onClick={() => setOpen(!open)}
       />

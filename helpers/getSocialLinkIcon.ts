@@ -7,7 +7,7 @@ const dict: Partial<Record<IconName, string[]>> = {
   socialGithub: ['github'],
   socialInstagram: ['instagram'],
   socialSlack: ['slack'],
-  socialTelegram: ['telegram', 't.me']
+  socialTelegram: ['telegram', 't.me'],
 };
 
 export function getSocialLinkIcon(link?: string): IconName {

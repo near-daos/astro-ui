@@ -6,7 +6,7 @@ import {
   CreateNewGroup,
   ProposalCardProps,
   RemoveMemberFromGroup,
-  RequestPayout
+  RequestPayout,
 } from 'components/cards/proposal-card';
 import React from 'react';
 import { ProposalType } from 'types/proposal';
@@ -23,15 +23,15 @@ export const DAO_DETAILS: DaoDetailsProps = {
     'http://example.com',
     'http://discord.com',
     'http://telegram.org',
-    'http://twitter.com'
+    'http://twitter.com',
   ],
   transaction: '',
   more: {
     label: 'Show more',
-    link: 'http://example.com'
+    link: 'http://example.com',
   },
   sendFunds: true,
-  followed: true
+  followed: true,
 };
 
 export const DAO_PROPOSALS: ProposalCardProps[] = [
@@ -55,7 +55,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     daoDetails: {
       name: 'my-awesome-dao',
       displayName: 'My Awesome DAO',
-      logo: ''
+      logo: '',
     },
     proposalId: 1,
     daoId: 'my-awesome-dao',
@@ -69,7 +69,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
         linkTitle="reddit.com"
       />
     ),
-    dao: {} as DAO
+    dao: {} as DAO,
   },
   {
     id: '2',
@@ -91,7 +91,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     daoDetails: {
       name: 'my-awesome-dao',
       displayName: 'My Awesome DAO',
-      logo: ''
+      logo: '',
     },
     proposalId: 1,
     daoId: 'my-awesome-dao',
@@ -105,7 +105,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
         linkTitle="reddit.com"
       />
     ),
-    dao: {} as DAO
+    dao: {} as DAO,
   },
   {
     id: '3',
@@ -127,7 +127,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     daoDetails: {
       name: 'my-awesome-dao',
       displayName: 'My Awesome DAO',
-      logo: ''
+      logo: '',
     },
     proposalId: 1,
     daoId: 'my-awesome-dao',
@@ -141,7 +141,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
         linkTitle="reddit.com"
       />
     ),
-    dao: {} as DAO
+    dao: {} as DAO,
   },
   {
     id: '4',
@@ -163,7 +163,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     daoDetails: {
       name: 'my-awesome-dao',
       displayName: 'My Awesome DAO',
-      logo: ''
+      logo: '',
     },
     proposalId: 1,
     daoId: 'my-awesome-dao',
@@ -177,7 +177,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
         linkTitle="reddit.com"
       />
     ),
-    dao: {} as DAO
+    dao: {} as DAO,
   },
   {
     id: '5',
@@ -199,7 +199,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     daoDetails: {
       name: 'my-awesome-dao',
       displayName: 'My Awesome DAO',
-      logo: ''
+      logo: '',
     },
     proposalId: 1,
     daoId: 'my-awesome-dao',
@@ -210,7 +210,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
         linkTitle="reddit.com"
       />
     ),
-    dao: {} as DAO
+    dao: {} as DAO,
   },
   {
     id: '6',
@@ -232,7 +232,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     daoDetails: {
       name: 'my-awesome-dao',
       displayName: 'My Awesome DAO',
-      logo: ''
+      logo: '',
     },
     proposalId: 1,
     daoId: 'my-awesome-dao',
@@ -244,7 +244,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
         linkTitle="reddit.com"
       />
     ),
-    dao: {} as DAO
+    dao: {} as DAO,
   },
   {
     id: '7',
@@ -267,7 +267,7 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
     daoDetails: {
       name: 'my-awesome-dao',
       displayName: 'My Awesome DAO',
-      logo: ''
+      logo: '',
     },
     proposalId: 1,
     daoId: 'my-awesome-dao',
@@ -278,19 +278,19 @@ export const DAO_PROPOSALS: ProposalCardProps[] = [
         link="https://example.com"
         linkTitle="reddit.com"
       />
-    )
-  }
+    ),
+  },
 ];
 
 export const DAO_INFO: DaoInfoCardProps = {
   items: [
     {
       label: 'Members',
-      value: '96'
+      value: '96',
     },
     {
       label: 'DAO funds',
-      value: '54,650.42 USD'
-    }
-  ]
+      value: '54,650.42 USD',
+    },
+  ],
 };

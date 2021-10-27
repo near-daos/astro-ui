@@ -22,7 +22,7 @@ interface VotePanelProps {
 export const VotePanel: FC<VotePanelProps> = ({
   onSubmit,
   disabled,
-  permissions
+  permissions,
 }) => {
   const { canApprove, canReject } = permissions;
 
@@ -51,7 +51,7 @@ export const VotePanel: FC<VotePanelProps> = ({
   return (
     <div
       className={cn(styles.root, {
-        [styles.disabled]: disabled
+        [styles.disabled]: disabled,
       })}
     >
       <div className={styles.row}>
@@ -77,7 +77,7 @@ export const VotePanel: FC<VotePanelProps> = ({
         </div>
         <div
           className={cn(styles.right, {
-            [styles.disabled]: !vote /* || !reportSpam */
+            [styles.disabled]: !vote /* || !reportSpam */,
           })}
         >
           <Button

@@ -17,5 +17,5 @@ export const appConfig = {
   walledUseLocalRedirect: process.env.NEXT_PUBLIC_LOCAL_WALLET_REDIRECT,
   awsUseLocalConf: Boolean(
     JSON.parse(process.env.NEXT_PUBLIC_AWS_USE_LOCAL_CONF || 'false')
-  )
+  ),
 };

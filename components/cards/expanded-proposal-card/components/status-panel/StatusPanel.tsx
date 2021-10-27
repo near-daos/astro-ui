@@ -42,14 +42,14 @@ export const StatusPanel: FC<StatusPanelProps> = ({
   status,
   type,
   endsAt,
-  onClose
+  onClose,
 }) => {
   const statusClassName = cn({
     [styles.active]: status === 'InProgress',
     [styles.passed]: status === 'Approved',
     [styles.rejected]: status === 'Rejected',
     [styles.dismissed]: status === 'Removed',
-    [styles.expired]: status === 'Expired'
+    [styles.expired]: status === 'Expired',
   });
 
   const iconName = getIconName(type);

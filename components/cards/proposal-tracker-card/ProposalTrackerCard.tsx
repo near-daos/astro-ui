@@ -15,7 +15,7 @@ export const ProposalTrackerCard: FC<ProposalTrackerProps> = ({
   activeVotes,
   totalProposals,
   action,
-  onClick
+  onClick,
 }) => {
   return (
     <div className={styles.root}>

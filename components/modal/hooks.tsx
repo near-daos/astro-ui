@@ -24,7 +24,7 @@ export const useModal = <P extends IModal>(
     return new Promise<OnCloseParameters<P>>(resolve => {
       const props = {
         ...initialProps,
-        ...modalProps
+        ...modalProps,
       };
 
       const onCloseModal = (...args: OnCloseParameters<P>) => {

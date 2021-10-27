@@ -31,13 +31,13 @@ export const NavSubItem: React.VFC<DAONameProps> = ({
   urlParams,
   subHrefs,
   disabled,
-  as
+  as,
 }) => {
   const isActive = useIsActive(href, subHrefs);
 
   const rootClassName = cn(styles.sub, className, {
     [styles.active]: isActive,
-    [styles.disabled]: disabled
+    [styles.disabled]: disabled,
   });
 
   const disabledAttributes = disabled

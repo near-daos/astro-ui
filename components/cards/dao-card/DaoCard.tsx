@@ -38,7 +38,7 @@ const DaoCard: React.FC<DaoCardProps> = ({
   daoAccountName,
   description,
   nearPrice,
-  members
+  members,
 }) => {
   const router = useRouter();
   const { login, accountId } = useAuthContext();
@@ -62,8 +62,8 @@ const DaoCard: React.FC<DaoCardProps> = ({
       router.push({
         pathname: SINGLE_DAO_PAGE,
         query: {
-          dao: id
-        }
+          dao: id,
+        },
       });
     } else {
       login();

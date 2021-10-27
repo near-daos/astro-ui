@@ -10,12 +10,12 @@ import styles from './choose-token-farm-token-step.module.scss';
 const options = [
   {
     label: 'GOOSE',
-    value: 'GOOSE'
+    value: 'GOOSE',
   },
   {
     label: 'MOON',
-    value: 'MOON'
-  }
+    value: 'MOON',
+  },
 ];
 
 export const ChooseTokenFarmTokenStep: FC = () => {

@@ -13,7 +13,7 @@ import { TextArea } from 'components/inputs/textarea/TextArea';
 import {
   navigateToDaoPage,
   NameAndPurposeData,
-  getChangeConfigProposal
+  getChangeConfigProposal,
 } from 'features/dao-settings/helpers';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
@@ -21,7 +21,7 @@ import { EditButton } from 'features/dao-settings/components/edit-button/EditBut
 
 import {
   DaoMetadata,
-  fromMetadataToBase64
+  fromMetadataToBase64,
 } from 'services/sputnik/mappers/dao';
 import { SputnikNearService } from 'services/sputnik';
 
@@ -29,7 +29,7 @@ import styles from './name-and-purpose-tab.module.scss';
 
 export const schema = yup.object().shape({
   displayName: yup.string().min(2).required(),
-  purpose: yup.string().max(500)
+  purpose: yup.string().max(500),
 });
 
 export interface NameAndPurposeTabProps {
@@ -45,7 +45,7 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
   name,
   purpose,
   currentDaoMetadata,
-  proposalBond
+  proposalBond,
 }) => {
   const router = useRouter();
 
@@ -61,15 +61,15 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
     reValidateMode: 'onChange',
     defaultValues: {
       purpose,
-      displayName: getDisplayName()
+      displayName: getDisplayName(),
     },
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
   const {
     register,
     reset,
     handleSubmit,
-    formState: { errors, touchedFields, isDirty, isValid }
+    formState: { errors, touchedFields, isDirty, isValid },
   } = methods;
 
   const onSubmit = useCallback(
@@ -87,8 +87,8 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
         metadata: fromMetadataToBase64({
           links,
           flag: fileName,
-          displayName: data.displayName
-        })
+          displayName: data.displayName,
+        }),
       };
 
       await SputnikNearService.createProposal(
@@ -102,7 +102,7 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
       showNotification({
         type: NOTIFICATION_TYPES.INFO,
         description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000
+        lifetime: 20000,
       });
       setSubmitting(false);
       setViewMode(true);
@@ -116,7 +116,7 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
       currentDaoMetadata,
       daoId,
       proposalBond,
-      setViewMode
+      setViewMode,
     ]
   );
 
@@ -124,7 +124,7 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
     setViewMode(true);
     reset({
       purpose,
-      displayName: getDisplayName()
+      displayName: getDisplayName(),
     });
   }, [purpose, reset, setViewMode, getDisplayName]);
 

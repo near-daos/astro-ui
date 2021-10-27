@@ -16,7 +16,7 @@ interface CustomTokensContextInterface {
 const CustomTokensContext = createContext<CustomTokensContextInterface>({
   tokens: {},
   fetchAndSetTokens: () => {},
-  setTokens: () => {}
+  setTokens: () => {},
 });
 /* eslint-enable @typescript-eslint/no-empty-function */
 
@@ -48,7 +48,7 @@ export const CustomTokensProvider: FC = ({ children }) => {
   const data = {
     tokens,
     setTokens,
-    fetchAndSetTokens
+    fetchAndSetTokens,
   };
 
   return (

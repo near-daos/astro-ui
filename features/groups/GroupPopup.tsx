@@ -6,7 +6,7 @@ import { GroupForm } from 'features/groups/components/GroupForm';
 import {
   GroupFormInput,
   GroupFormType,
-  IGroupForm
+  IGroupForm,
 } from 'features/groups/types';
 
 import styles from 'features/treasury/request-payout-popup/request-payout-popup.module.scss';
@@ -19,7 +19,7 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import {
   getAddMemberProposal,
   getChangePolicyProposal,
-  getRemoveMemberProposal
+  getRemoveMemberProposal,
 } from './helpers';
 
 export interface GroupPopupProps {
@@ -39,19 +39,19 @@ type IconType = {
 const icons: IconType = {
   [GroupFormType.ADD_TO_GROUP]: 'proposalAddMember' as IconName,
   [GroupFormType.CREATE_GROUP]: 'proposalCreateGroup' as IconName,
-  [GroupFormType.REMOVE_FROM_GROUP]: 'proposalRemoveMember' as IconName
+  [GroupFormType.REMOVE_FROM_GROUP]: 'proposalRemoveMember' as IconName,
 };
 
 const headers: HeaderType = {
   [GroupFormType.CREATE_GROUP]: 'Create new group',
   [GroupFormType.REMOVE_FROM_GROUP]: 'Remove member from group',
-  [GroupFormType.ADD_TO_GROUP]: 'Add member to group'
+  [GroupFormType.ADD_TO_GROUP]: 'Add member to group',
 };
 
 export const GroupPopup: React.FC<GroupPopupProps> = ({
   initialValues,
   isOpen,
-  onClose
+  onClose,
 }) => {
   const { groupType } = initialValues;
 
@@ -77,7 +77,7 @@ export const GroupPopup: React.FC<GroupPopupProps> = ({
           showNotification({
             type: NOTIFICATION_TYPES.INFO,
             description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-            lifetime: 20000
+            lifetime: 20000,
           });
         } else {
           console.error('No proposal data to create proposal');

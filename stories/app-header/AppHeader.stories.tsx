@@ -4,7 +4,7 @@ import { AppHeader, AppHeaderProps } from 'features/app-header';
 
 export default {
   title: 'features/AppHeader',
-  component: AppHeader
+  component: AppHeader,
 } as Meta;
 
 export const Template: Story<AppHeaderProps> = (args): JSX.Element => (
@@ -13,5 +13,5 @@ export const Template: Story<AppHeaderProps> = (args): JSX.Element => (
 
 Template.storyName = 'AppHeader';
 Template.args = {
-  isLandingPage: false
+  isLandingPage: false,
 };

@@ -11,8 +11,9 @@ import styles from './dao-tab-view.module.scss';
 export const DaosTabView: FC = () => {
   const { searchResults } = useSearchResults();
 
-  if (!searchResults?.daos?.length)
+  if (!searchResults?.daos?.length) {
     return <NoSearchResultsView query={searchResults?.query} />;
+  }
 
   return (
     <div className={styles.root}>
@@ -28,26 +29,26 @@ export const DaosTabView: FC = () => {
             createdAt: item.createdAt,
             more: {
               label: 'Show more',
-              link: `/dao/${item.id}`
-            }
+              link: `/dao/${item.id}`,
+            },
           };
           const flag = item.logo;
           const proposalTrackerInfo = {
             activeVotes: 14,
-            totalProposals: 3
+            totalProposals: 3,
           };
           const daoInfo = {
             items: [
               {
                 label: 'DAO funds',
                 value: `${item.funds}`,
-                valueType: `USD`
+                valueType: `USD`,
               },
               {
                 label: 'Members',
-                value: `${item.members}`
-              }
-            ]
+                value: `${item.members}`,
+              },
+            ],
           };
 
           return (

@@ -11,9 +11,9 @@ export default {
   component: Icon,
   parameters: {
     backgrounds: {
-      default: 'light'
-    }
-  }
+      default: 'light',
+    },
+  },
 } as Meta;
 
 export const Template = (): JSX.Element => (
@@ -23,7 +23,7 @@ export const Template = (): JSX.Element => (
         style={{
           margin: '8px 0',
           display: 'flex',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
         <Icon name={key as IconName} width={40} />

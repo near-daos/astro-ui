@@ -12,11 +12,11 @@ export default {
       values: [
         {
           name: 'bg',
-          value: '#E8E0FF'
-        }
-      ]
-    }
-  }
+          value: '#E8E0FF',
+        },
+      ],
+    },
+  },
 } as Meta;
 
 export const Template: Story = (args): JSX.Element => (

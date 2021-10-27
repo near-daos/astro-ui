@@ -5,7 +5,7 @@ import { useAccordion } from 'hooks/useAccordion';
 import React from 'react';
 
 export default {
-  title: 'Components/Accordion'
+  title: 'Components/Accordion',
 } as Meta;
 
 const dummyContent = (
@@ -26,23 +26,23 @@ const items = [
   {
     id: 'test-1',
     label: 'Test Label 1',
-    content: dummyContent
+    content: dummyContent,
   },
   {
     id: 'test-2',
     label: 'Test Label 2',
-    content: dummyContent
+    content: dummyContent,
   },
   {
     id: 'test-3',
     label: 'Test Label 3',
-    content: dummyContent
+    content: dummyContent,
   },
   {
     id: 'test-4',
     label: 'Test Label 4',
-    content: dummyContent
-  }
+    content: dummyContent,
+  },
 ];
 
 const Header: React.FC<{
@@ -69,8 +69,8 @@ const Header: React.FC<{
           style: {
             transform: isOpen ? undefined : 'rotate(-90deg)',
             transition: 'all 100ms',
-            marginBottom: '5px'
-          }
+            marginBottom: '5px',
+          },
         }}
         icon="buttonArrowDown"
         size="medium"
@@ -117,5 +117,5 @@ export const Template = (args: TemplateParams): JSX.Element => {
 Template.storyName = 'Accordion';
 Template.args = {
   allowMultiSelect: false,
-  allowUnSelect: true
+  allowUnSelect: true,
 };

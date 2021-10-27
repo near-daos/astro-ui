@@ -4,22 +4,22 @@ import { Dropdown } from 'components/dropdown/Dropdown';
 
 export default {
   title: 'Components/Dropdown',
-  component: Dropdown
+  component: Dropdown,
 } as Meta;
 
 const options = [
   {
     label: 'Test 1',
-    value: 'test-1'
+    value: 'test-1',
   },
   {
     label: 'Test 2',
-    value: 'test-2'
+    value: 'test-2',
   },
   {
     label: 'Test 3',
-    value: 'test-3'
-  }
+    value: 'test-3',
+  },
 ];
 
 export const Template = (
@@ -45,5 +45,5 @@ Template.storyName = 'Dropdown';
 
 Template.args = {
   options,
-  defaultValue: 'test-1'
+  defaultValue: 'test-1',
 };

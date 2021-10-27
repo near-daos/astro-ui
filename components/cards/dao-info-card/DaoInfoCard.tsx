@@ -22,7 +22,7 @@ export const DaoInfoCard: FC<DaoInfoCardProps> = ({ items }) => (
         </Typography.Subtitle>
         <Typography.Title
           className={cn(styles.subtitle, {
-            [styles.members]: item.label === 'Members'
+            [styles.members]: item.label === 'Members',
           })}
           size={3}
         >

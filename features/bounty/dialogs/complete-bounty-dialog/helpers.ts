@@ -16,8 +16,8 @@ export function getCompleteBountyProposal(
     kind: 'BountyDone',
     data: {
       receiver_id: data.recipient,
-      bounty_id: Number(bountyId)
+      bounty_id: Number(bountyId),
     },
-    bond
+    bond,
   };
 }

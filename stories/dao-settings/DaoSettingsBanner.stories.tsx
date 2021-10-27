@@ -1,13 +1,13 @@
 import { Meta, Story } from '@storybook/react';
 import {
   DaoSettingsBanner,
-  DaoSettingsBannerProps
+  DaoSettingsBannerProps,
 } from 'features/vote-policy/components/banner';
 import React from 'react';
 
 export default {
   title: 'Features/Dao Settings/DaoSettingsBanner',
-  component: DaoSettingsBanner
+  component: DaoSettingsBanner,
 } as Meta;
 
 export const Template: Story<DaoSettingsBannerProps> = (args): JSX.Element => (

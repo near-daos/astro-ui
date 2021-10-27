@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import {
   TransactionCard,
-  TransactionCardProps
+  TransactionCardProps,
 } from 'components/cards/transaction-card';
 import { TokenDeprecated } from 'types/token';
 
@@ -12,8 +12,8 @@ export default {
   decorators: [
     story => (
       <div style={{ padding: '1rem', background: '#f7f5fc' }}>{story()}</div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 const Template: Story<TransactionCardProps> = (args): JSX.Element => (
@@ -27,7 +27,7 @@ DepositTransaction.args = {
   tokenName: TokenDeprecated.NEAR,
   type: 'Deposit',
   date: new Date().toISOString(),
-  accountName: 'verylongnamegoeshere.near'
+  accountName: 'verylongnamegoeshere.near',
 };
 
 export const WithdrawTransaction = Template.bind({});
@@ -37,5 +37,5 @@ WithdrawTransaction.args = {
   tokenName: TokenDeprecated.NEAR,
   type: 'Withdraw',
   date: new Date().toISOString(),
-  accountName: 'verylongnamegoeshere.near'
+  accountName: 'verylongnamegoeshere.near',
 };

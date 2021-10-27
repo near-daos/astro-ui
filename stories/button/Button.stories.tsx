@@ -23,10 +23,10 @@ Button.args = {
   text: 'Button',
   variant: 'primary',
   width: 'medium',
-  type: 'button'
+  type: 'button',
 };
 
 export default {
   title: 'Components/Buttons/Button',
-  component: ButtonComponent
+  component: ButtonComponent,
 } as Meta;

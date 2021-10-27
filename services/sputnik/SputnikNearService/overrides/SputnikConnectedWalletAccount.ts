@@ -1,7 +1,7 @@
 import * as borsh from 'borsh';
 import {
   ConnectedWalletAccount,
-  transactions as Transactions
+  transactions as Transactions,
 } from 'near-api-js';
 import { PublicKey } from 'near-api-js/lib/utils';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
@@ -19,7 +19,7 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
       typeof receiverIdOrTxOptions === 'string'
         ? {
             receiverId: receiverIdOrTxOptions,
-            actions: txActions
+            actions: txActions,
           }
         : receiverIdOrTxOptions;
 
@@ -55,7 +55,7 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
       try {
         return await super.signAndSendTransaction({
           receiverId,
-          actions
+          actions,
         });
       } catch (e) {
         if (e.type === 'NotEnoughAllowance') {
@@ -67,7 +67,7 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
     }
 
     const block = await this.connection.provider.block({
-      finality: 'final'
+      finality: 'final',
     });
 
     const blockHash = borsh.baseDecode(block.header.hash);
@@ -87,7 +87,7 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
     await walletConnection.sputnikRequestSignTransactions({
       transactions: [transaction],
       meta: walletMeta,
-      callbackUrl: walletCallbackUrl
+      callbackUrl: walletCallbackUrl,
     });
 
     if (win?.location && walletConnection.signTransactionUrl) {
@@ -97,7 +97,7 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
     return new Promise((resolve, reject) => {
       window.sputnikRequestSignTransactionCompleted = async ({
         transactionHashes,
-        errorCode
+        errorCode,
       }) => {
         if (typeof transactionHashes !== 'undefined') {
           const result = await this.connection.provider.txStatus(

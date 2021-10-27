@@ -21,19 +21,19 @@ export const ClaimBountyDialog: FC<ClaimBountyDialogProps> = ({
   onClose,
   data,
   dao,
-  token
+  token,
 }) => {
   const handleSubmit = useCallback(async () => {
     await SputnikNearService.claimBounty(dao.id, {
       bountyId: Number(data.id),
       deadline: data.deadlineThreshold,
-      bountyBond: dao.policy.proposalBond
+      bountyBond: dao.policy.proposalBond,
     });
 
     showNotification({
       type: NOTIFICATION_TYPES.INFO,
       description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
-      lifetime: 20000
+      lifetime: 20000,
     });
 
     onClose('submitted');
@@ -42,7 +42,7 @@ export const ClaimBountyDialog: FC<ClaimBountyDialogProps> = ({
     data.id,
     data.deadlineThreshold,
     dao.policy.proposalBond,
-    onClose
+    onClose,
   ]);
 
   return (

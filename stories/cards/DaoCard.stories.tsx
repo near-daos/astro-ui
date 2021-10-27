@@ -8,8 +8,8 @@ export default {
   decorators: [
     story => (
       <div style={{ padding: '1rem', background: 'lightgrey' }}>{story()}</div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 export const Template = (
@@ -29,5 +29,5 @@ Template.args = {
     'We’re a collective helping digital artists all around  the  world.',
   activeProposals: 46,
   members: 145,
-  funds: 23553
+  funds: 23553,
 };

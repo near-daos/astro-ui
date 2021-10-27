@@ -30,7 +30,7 @@ const Callback: NextPage = () => {
 
 export const getServerSideProps: GetServerSideProps = async ({
   res,
-  query
+  query,
 }) => {
   const accountId = query.account_id;
 

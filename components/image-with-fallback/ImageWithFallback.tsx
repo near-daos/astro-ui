@@ -16,7 +16,7 @@ export const ImageWithFallback: VFC<ImageWithFallbackProps> = ({
   height,
   loading,
   src,
-  width
+  width,
 }) => {
   const [imgSrc, setImgSrc] = useState<string>(src);
 

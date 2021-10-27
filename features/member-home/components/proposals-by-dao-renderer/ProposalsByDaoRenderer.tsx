@@ -15,7 +15,7 @@ import { DaoSection } from 'features/member-home/components/dao-section';
 import {
   DaoViewFilter,
   ProposalByDao,
-  ProposalsFilter
+  ProposalsFilter,
 } from 'features/member-home/types';
 
 import styles from 'features/search/search-results/components/proposals-tab-view/proposals-tab-view.module.scss';
@@ -35,7 +35,7 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
   data,
   filter,
   onFilterChange,
-  expandedProposalId
+  expandedProposalId,
 }) => {
   if (isEmpty(data)) {
     return null;
@@ -76,7 +76,7 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
             name="buttonArrowRight"
             width={24}
             className={classNames(styles.icon, {
-              [styles.rotate]: isHeadingOpen
+              [styles.rotate]: isHeadingOpen,
             })}
           />
         </Button>
@@ -89,7 +89,7 @@ export const ProposalsByDaoRenderer: FC<ProposalsByDaoRendererProps> = ({
           id: daoId,
           logo: flag,
           name,
-          displayName
+          displayName,
         } = daoProposalData.dao;
         const daoTitle = displayName || name;
 

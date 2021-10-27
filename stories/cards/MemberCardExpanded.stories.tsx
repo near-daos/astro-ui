@@ -3,12 +3,12 @@ import { Meta, Story } from '@storybook/react';
 import { Badge } from 'components/badge/Badge';
 import {
   MemberCardPopup,
-  MemberCardPopupProps
+  MemberCardPopupProps,
 } from 'components/cards/member-card';
 
 export default {
   title: 'Components/Cards/MemberCardExpanded',
-  component: MemberCardPopup
+  component: MemberCardPopup,
 } as Meta;
 
 export const Template: Story<MemberCardPopupProps> = (args): JSX.Element => (
@@ -34,6 +34,6 @@ Template.args = {
   tokens: {
     value: 5,
     type: 'MEW',
-    percent: 11.5
-  }
+    percent: 11.5,
+  },
 };

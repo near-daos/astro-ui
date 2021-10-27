@@ -9,7 +9,7 @@ import {
   getPoliciesList,
   getProposersList,
   PolicyProps,
-  VotingPolicyPageInitialData
+  VotingPolicyPageInitialData,
 } from 'features/vote-policy/helpers';
 
 import styles from './treasury-tab-view.module.scss';
@@ -29,7 +29,7 @@ export const TreasuryTabView: FC<TreasuryTabViewProps> = ({
   groups,
   data,
   onChange,
-  showTitle = true
+  showTitle = true,
 }) => {
   return (
     <div className={styles.root}>

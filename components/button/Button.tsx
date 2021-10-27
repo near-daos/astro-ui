@@ -20,13 +20,13 @@ export const Button: React.FC<ButtonProps> = ({
     primary: styles.primary,
     secondary: styles.secondary,
     tertiary: styles.tertiary,
-    black: styles.black
+    black: styles.black,
   };
   const sizes = {
     small: styles.sizeSmall,
     medium: styles.sizeMedium,
     large: styles.sizeLarge,
-    block: styles.sizeBlock
+    block: styles.sizeBlock,
   };
   const className = classNames(
     styles.btn,

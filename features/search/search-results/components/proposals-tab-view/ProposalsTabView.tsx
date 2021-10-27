@@ -5,7 +5,7 @@ import get from 'lodash/get';
 
 import {
   VOTE_BY_PERIOD,
-  VoteByPeriodInterface
+  VoteByPeriodInterface,
 } from 'constants/votingConstants';
 
 import { Highlighter } from 'features/search/search-results/components/highlighter';
@@ -28,7 +28,7 @@ export const ProposalsTabView: FC = () => {
   const {
     filteredProposalsData,
     filter,
-    onFilterChange
+    onFilterChange,
   } = useFilteredProposalsData(proposals || []);
 
   const renderProposalsByVotePeriod = (votePeriod: VoteByPeriodInterface) => {
@@ -70,7 +70,7 @@ export const ProposalsTabView: FC = () => {
               name="buttonArrowRight"
               width={24}
               className={classNames(styles.icon, {
-                [styles.rotate]: isHeadingOpen
+                [styles.rotate]: isHeadingOpen,
               })}
             />
           </Button>
@@ -83,7 +83,7 @@ export const ProposalsTabView: FC = () => {
             id: daoId,
             logo: flag,
             name,
-            displayName
+            displayName,
           } = daoProposalData.dao;
           const daoTitle = displayName || name;
 

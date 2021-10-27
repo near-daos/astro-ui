@@ -4,7 +4,7 @@ import { Input } from 'components/inputs/input/Input';
 
 export default {
   title: 'Components/Input',
-  component: Input
+  component: Input,
 } as Meta;
 
 export const Template = (
@@ -14,5 +14,5 @@ export const Template = (
 Template.storyName = 'Input';
 Template.args = {
   label: 'Label',
-  placeholder: 'Sample text'
+  placeholder: 'Sample text',
 };

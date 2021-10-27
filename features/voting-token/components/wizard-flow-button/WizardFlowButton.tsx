@@ -18,14 +18,14 @@ export const WizardFlowButton: FC<WizardFlowButtonProps> = ({
   icon,
   title,
   description,
-  active
+  active,
 }) => {
   return (
     <Button
       variant="tertiary"
       onClick={onClick}
       className={cn(styles.root, {
-        [styles.active]: active
+        [styles.active]: active,
       })}
     >
       <div className={styles.icon}>{icon}</div>

@@ -9,7 +9,7 @@ import {
   getPoliciesList,
   getProposersList,
   PolicyProps,
-  VotingPolicyPageInitialData
+  VotingPolicyPageInitialData,
 } from 'features/vote-policy/helpers';
 
 import styles from './groups-tab-view.module.scss';
@@ -29,7 +29,7 @@ export const GroupsTabView: FC<GroupsTabViewProps> = ({
   groups,
   data,
   onChange,
-  showTitle = true
+  showTitle = true,
 }) => {
   return (
     <div className={styles.root}>

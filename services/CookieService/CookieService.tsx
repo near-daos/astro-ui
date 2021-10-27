@@ -8,7 +8,7 @@ import {
   CookieGetOptions,
   CookieParseOptions,
   Cookies,
-  CookieSetOptions
+  CookieSetOptions,
 } from './types';
 import { hasDocumentCookie, parseCookies, readCookie } from './utils';
 
@@ -77,7 +77,7 @@ export class CookieService {
 
     this.cookies = {
       ...this.cookies,
-      [name]: valueObjectOrString
+      [name]: valueObjectOrString,
     };
 
     if (this.HAS_DOCUMENT_COOKIE) {
@@ -87,7 +87,7 @@ export class CookieService {
     this._emitChange({
       name,
       value: valueObjectOrString,
-      options
+      options,
     });
   }
 
@@ -95,7 +95,7 @@ export class CookieService {
     const finalOptions = {
       ...options,
       expires: new Date(1970, 1, 1, 0, 0, 1),
-      maxAge: 0
+      maxAge: 0,
     };
 
     this.cookies = { ...this.cookies };
@@ -108,7 +108,7 @@ export class CookieService {
     this._emitChange({
       name,
       value: undefined,
-      options: finalOptions
+      options: finalOptions,
     });
   }
 

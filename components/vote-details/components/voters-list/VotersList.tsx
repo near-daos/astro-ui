@@ -19,7 +19,7 @@ export const VotersList: FC<VotersListProps> = ({ votersList }) => {
     return cn({
       [styles.positive]: vote === 'Yes',
       [styles.negative]: vote === 'No',
-      [styles.trash]: vote === 'Dismiss'
+      [styles.trash]: vote === 'Dismiss',
     });
   };
 

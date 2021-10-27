@@ -24,7 +24,7 @@ export const Transfer: FC<TransferProps> = ({ amount, token, recipient }) => {
 
     return {
       value,
-      symbol
+      symbol,
     };
   }, [amount, token, tokens]);
 

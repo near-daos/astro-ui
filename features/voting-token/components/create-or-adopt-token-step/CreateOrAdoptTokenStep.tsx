@@ -15,7 +15,7 @@ export const CreateOrAdoptTokenStep: FC<WizardStepProps> = () => {
     handleCancel,
     handleNext,
     handleSetSteps,
-    activeFlow
+    activeFlow,
   } = useWizardContext();
 
   return (

@@ -24,7 +24,7 @@ export const DaoSettingsModal: FC<DaoSettingsModalProps> = ({
   options = [],
   title,
   description,
-  note
+  note,
 }) => {
   const [value, setValue] = useState(initialValue);
 

@@ -1,7 +1,7 @@
 export enum GroupFormType {
   CREATE_GROUP,
   ADD_TO_GROUP,
-  REMOVE_FROM_GROUP
+  REMOVE_FROM_GROUP,
 }
 
 export interface GroupFormInput {

@@ -5,7 +5,7 @@ import SearchBar, { SearchBarProps } from 'components/search-bar';
 export default {
   title: 'Components/SearchBar',
   component: SearchBar,
-  decorators: [story => <div style={{ padding: '8px' }}>{story()}</div>]
+  decorators: [story => <div style={{ padding: '8px' }}>{story()}</div>],
 } as Meta;
 
 const Template: Story<SearchBarProps> = (args): JSX.Element => (
@@ -15,5 +15,5 @@ const Template: Story<SearchBarProps> = (args): JSX.Element => (
 export const Default = Template.bind({});
 
 Default.args = {
-  placeholder: 'Search for a proposal or community'
+  placeholder: 'Search for a proposal or community',
 };

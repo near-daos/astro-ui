@@ -4,7 +4,7 @@ import { Popup } from 'components/popup/Popup';
 
 export default {
   title: 'Components/Popup',
-  component: Popup
+  component: Popup,
 } as Meta;
 
 export const Template = (

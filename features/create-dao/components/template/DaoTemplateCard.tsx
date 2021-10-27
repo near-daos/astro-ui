@@ -19,7 +19,7 @@ export const DaoTemplateCard: FC<DaoTemplateCardProps> = ({
   note = 'Great for',
   className,
   template,
-  onClick
+  onClick,
 }) => {
   const { title, description, variant, disabled } = template;
   const background = backgrounds[variant];
@@ -31,7 +31,7 @@ export const DaoTemplateCard: FC<DaoTemplateCardProps> = ({
   }
 
   const rootClassName = cn(styles.root, className, {
-    [styles.disabled]: disabled
+    [styles.disabled]: disabled,
   });
 
   return (

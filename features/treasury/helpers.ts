@@ -29,7 +29,7 @@ export function getChartData(receipts: Receipt[]): ChartData[] {
 
       result.push({
         balance,
-        timestamp: item.timestamp
+        timestamp: item.timestamp,
       });
     });
 

@@ -11,7 +11,7 @@ interface ProposalButtonContentProps {
 export const ProposalButtonContent: FC<ProposalButtonContentProps> = ({
   icon,
   title,
-  description
+  description,
 }) => {
   const I = icon;
 

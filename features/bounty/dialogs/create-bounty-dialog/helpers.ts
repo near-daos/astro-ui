@@ -35,7 +35,7 @@ export function getAddBountyProposal(
     deadlineUnit,
     deadlineThreshold,
     externalUrl,
-    token
+    token,
   } = data;
 
   const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
@@ -52,9 +52,9 @@ export function getAddBountyProposal(
         token: tokenId,
         amount: new Decimal(amount).mul(tokenDecimal).toFixed(),
         times: slots,
-        max_deadline: getDeadline(deadlineThreshold, deadlineUnit)
-      }
+        max_deadline: getDeadline(deadlineThreshold, deadlineUnit),
+      },
     },
-    bond: dao.policy.proposalBond
+    bond: dao.policy.proposalBond,
   };
 }

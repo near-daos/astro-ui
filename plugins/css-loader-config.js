@@ -23,7 +23,7 @@ module.exports = (nextConfig = {}) => {
         styleRules.find(
           ({ test: reg, use }) =>
             reg.test('file.module.scss') && use.loader !== 'error-loader'
-        )
+        ),
       ].filter(n => n); // remove 'undefined' values
       // Add the 'localsConvention' config option to the CSS loader config in each of these rules.
       cssModuleRules.forEach(cmr => {
@@ -37,6 +37,6 @@ module.exports = (nextConfig = {}) => {
         }
       });
       return config;
-    }
+    },
   });
 };

@@ -6,7 +6,7 @@ import {
   ProposalCard,
   ProposalCardProps,
   RemoveMemberFromGroup,
-  RequestPayout
+  RequestPayout,
 } from 'components/cards/proposal-card';
 import { ProposalType } from 'types/proposal';
 
@@ -18,8 +18,8 @@ export default {
       <div style={{ padding: '1rem', background: 'lightgrey', maxWidth: 1024 }}>
         {story()}
       </div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 const Template: Story<ProposalCardProps> = (args): JSX.Element => (
@@ -43,7 +43,7 @@ WithAddMembersToGroup.args = {
       link="https://example.com"
       linkTitle="reddit.com"
     />
-  )
+  ),
 };
 
 export const WithRemoveMembersFromGroup = Template.bind({});
@@ -63,7 +63,7 @@ WithRemoveMembersFromGroup.args = {
       link="https://example.com"
       linkTitle="reddit.com"
     />
-  )
+  ),
 };
 
 export const WithCreateNewGroup = Template.bind({});
@@ -82,7 +82,7 @@ WithCreateNewGroup.args = {
       link="https://example.com"
       linkTitle="reddit.com"
     />
-  )
+  ),
 };
 
 export const WithRequestPayout = Template.bind({});
@@ -104,5 +104,5 @@ WithRequestPayout.args = {
       link="https://example.com"
       linkTitle="reddit.com"
     />
-  )
+  ),
 };

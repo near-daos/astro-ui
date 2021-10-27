@@ -13,7 +13,7 @@ import {
   filterProposalsByStatus,
   getDaoDetailsFromDao,
   getFundAndMembersNum,
-  getProposalStats
+  getProposalStats,
 } from 'features/dao-home/helpers';
 import { NoResultsView } from 'features/no-results-view';
 import { isProposalsByEndTimeEmpty } from 'helpers/isProposalsByEndTimeEmpty';
@@ -76,7 +76,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({ dao, proposals, tokens }) => {
       txHash,
       subtitle,
       createdAt,
-      links
+      links,
     } = daoDetails;
 
     return (
@@ -119,13 +119,13 @@ const DAOHome: NextPage<DaoHomeProps> = ({ dao, proposals, tokens }) => {
         label: 'DAO funds',
         value: `${fund}`,
         valueType: `USD`,
-        link: accountId ? `/dao/${dao.id}/treasury/tokens` : null
+        link: accountId ? `/dao/${dao.id}/treasury/tokens` : null,
       },
       {
         label: 'Members',
         value: `${members}`,
-        link: accountId ? `/dao/${dao.id}/groups/all-members` : null
-      }
+        link: accountId ? `/dao/${dao.id}/groups/all-members` : null,
+      },
     ];
 
     return (
@@ -147,16 +147,16 @@ const DAOHome: NextPage<DaoHomeProps> = ({ dao, proposals, tokens }) => {
           tabsConfig={[
             {
               label: 'Active proposals',
-              className: styles.activeProposalsTab
+              className: styles.activeProposalsTab,
             },
             {
               label: 'Approved',
-              className: styles.approvedProposalsTab
+              className: styles.approvedProposalsTab,
             },
             {
               label: 'Failed',
-              className: styles.failedProposalsTab
-            }
+              className: styles.failedProposalsTab,
+            },
           ]}
           tabContentRenderer={(tabProposals: Proposal[]) => {
             const filteredData = splitProposalsByVotingPeriod(tabProposals);
@@ -194,20 +194,20 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   if (!dao) {
     return {
-      notFound: true
+      notFound: true,
     };
   }
 
   const [tokens, proposals] = await Promise.all([
     SputnikHttpService.getAccountTokens(daoId),
-    SputnikHttpService.getProposals(daoId)
+    SputnikHttpService.getProposals(daoId),
   ]);
 
   return {
     props: {
       dao,
       proposals,
-      tokens
-    }
+      tokens,
+    },
   };
 };

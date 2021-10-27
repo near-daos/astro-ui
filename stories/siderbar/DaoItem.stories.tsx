@@ -12,15 +12,15 @@ export default {
       values: [
         {
           name: 'sidebar',
-          value: '#251455'
-        }
-      ]
+          value: '#251455',
+        },
+      ],
     },
     nextRouter: {
       pathname: '/',
-      asPath: '/'
-    }
-  }
+      asPath: '/',
+    },
+  },
 } as Meta;
 
 export const Template = (
@@ -35,5 +35,5 @@ Template.args = {
   href: '#',
   logo: 'https://i.imgur.com/iPUZZ0D.png',
   label: 'Dao Name 1',
-  count: 22
+  count: 22,
 };

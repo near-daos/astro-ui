@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/react';
 import {
   ProposalCard,
   ProposalCardProps,
-  TextWithLink
+  TextWithLink,
 } from 'components/cards/proposal-card';
 import { ProposalType } from 'types/proposal';
 
@@ -15,8 +15,8 @@ export default {
       <div style={{ padding: '1rem', background: 'lightgrey', maxWidth: 1024 }}>
         {story()}
       </div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 const Template: Story<ProposalCardProps> = (args): JSX.Element => (
@@ -33,7 +33,7 @@ SuperCollapsedView.args = {
   liked: true,
   disliked: false,
   status: 'Approved',
-  children: <span>Should we have our offsite in Madrid, Spain in 2022?</span>
+  children: <span>Should we have our offsite in Madrid, Spain in 2022?</span>,
 };
 
 export const CollapsedView = Template.bind({});
@@ -53,5 +53,5 @@ CollapsedView.args = {
       link="http://example.com"
       linkTitle="reddit.com/group"
     />
-  )
+  ),
 };

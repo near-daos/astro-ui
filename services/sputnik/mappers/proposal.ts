@@ -4,13 +4,13 @@ import {
   Proposal,
   ProposalKind,
   ProposalStatus,
-  ProposalType
+  ProposalType,
 } from 'types/proposal';
 import {
   DaoDTO,
   fromBase64ToMetadata,
   getLogoUrl,
-  mapDaoDTOtoDao
+  mapDaoDTOtoDao,
 } from 'services/sputnik/mappers/dao';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { parseISO } from 'date-fns';
@@ -56,7 +56,7 @@ function getVotesStatistic(proposal: ProposalDTO) {
     voteYes: 0,
     voteNo: 0,
     voteRemove: 0,
-    votes: {} as Record<string, VoteState>
+    votes: {} as Record<string, VoteState>,
   };
 
   Object.keys(proposal.votes).forEach(key => {
@@ -126,8 +126,8 @@ export const mapProposalDTOToProposal = (
       name: proposalDTO.dao.config.name,
       displayName: meta?.displayName || '',
       logo:
-        meta && meta.flag ? getLogoUrl(meta.flag) : getLogoUrl('default.png')
-    }
+        meta && meta.flag ? getLogoUrl(meta.flag) : getLogoUrl('default.png'),
+    },
   };
 };
 
@@ -151,26 +151,26 @@ export const mapCreateParamsToPropsalKind = (
           token: 'string',
           amount: 'string',
           times: 0,
-          max_deadline: 'string'
-        }
+          max_deadline: 'string',
+        },
       };
     case 'AddMemberToRole':
       return {
         type: ProposalType.AddMemberToRole,
         memberId: 'string',
-        role: 'string'
+        role: 'string',
       };
     case 'BountyDone':
       return {
         type: ProposalType.BountyDone,
         receiverId: 'string;',
         bountyId: 'string;',
-        completedDate: 'string'
+        completedDate: 'string',
       };
     case 'ChangeConfig':
       return {
         type: ProposalType.ChangeConfig,
-        config: { metadata: 'string', name: 'string' }
+        config: { metadata: 'string', name: 'string' },
       };
     case 'ChangePolicy':
       return {
@@ -185,16 +185,16 @@ export const mapCreateParamsToPropsalKind = (
             kind: 'string',
             ratio: [], // number
             quorum: 'string',
-            weight: 'string'
+            weight: 'string',
           },
-          bountyForgivenessPeriod: 'string'
-        }
+          bountyForgivenessPeriod: 'string',
+        },
       };
     case 'RemoveMemberFromRole':
       return {
         type: ProposalType.RemoveMemberFromRole,
         memberId: 'string',
-        role: 'string'
+        role: 'string',
       };
     case 'Transfer':
       return {
@@ -202,19 +202,19 @@ export const mapCreateParamsToPropsalKind = (
         tokenId: 'string',
         receiverId: 'string',
         amount: 'string',
-        msg: 'string'
+        msg: 'string',
       };
     case 'UpgradeRemote':
       return {
         type: ProposalType.UpgradeRemote,
         receiverId: 'string',
         hash: 'string',
-        methodName: 'string'
+        methodName: 'string',
       };
     case 'UpgradeSelf':
       return {
         type: ProposalType.UpgradeSelf,
-        hash: 'string'
+        hash: 'string',
       };
     case 'Vote':
       return { type: ProposalType.Vote };

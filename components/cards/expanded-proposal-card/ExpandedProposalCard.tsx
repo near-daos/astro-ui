@@ -13,7 +13,7 @@ import {
   DaoDetails,
   ProposalType,
   ProposalStatus,
-  ProposalVotingPermissions
+  ProposalVotingPermissions,
 } from 'types/proposal';
 
 import styles from './expanded-proposal-card.module.scss';
@@ -73,7 +73,7 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
   proposalId,
   daoId,
   permissions,
-  id
+  id,
 }) => {
   const router = useRouter();
   const handleVote = useCallback(
@@ -106,8 +106,8 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
         pathname: '',
         query: {
           ...router.query,
-          proposal: id
-        }
+          proposal: id,
+        },
       },
       undefined,
       { shallow: true }
@@ -117,7 +117,7 @@ export const ExpandedProposalCard: FC<ExpandedProposalCardProps> = ({
       router.push(
         {
           pathname: '',
-          query: omit(router.query, ['proposal'])
+          query: omit(router.query, ['proposal']),
         },
         undefined,
         { shallow: true }

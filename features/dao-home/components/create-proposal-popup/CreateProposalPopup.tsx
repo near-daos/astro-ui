@@ -18,7 +18,7 @@ export interface CreateProposalPopupProps {
 
 export const CreateProposalPopup: FC<CreateProposalPopupProps> = ({
   isOpen,
-  onClose
+  onClose,
 }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;

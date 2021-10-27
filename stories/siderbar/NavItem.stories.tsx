@@ -11,15 +11,15 @@ export default {
       values: [
         {
           name: 'sidebar',
-          value: '#251455'
-        }
-      ]
+          value: '#251455',
+        },
+      ],
     },
     nextRouter: {
       pathname: '/',
-      asPath: '/'
-    }
-  }
+      asPath: '/',
+    },
+  },
 } as Meta;
 
 export const Template = (
@@ -33,5 +33,5 @@ Template.storyName = 'NavItem';
 Template.args = {
   href: '#',
   icon: 'stateGear',
-  label: 'Option'
+  label: 'Option',
 };

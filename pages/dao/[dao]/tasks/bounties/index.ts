@@ -1,5 +1,5 @@
 import Bounties, {
-  BountiesPageProps
+  BountiesPageProps,
 } from 'pages/dao/[dao]/tasks/bounties/BountiesPage';
 import { GetServerSideProps } from 'next';
 import { SputnikHttpService } from 'services/sputnik';
@@ -7,19 +7,19 @@ import { Tokens } from 'context/CustomTokensContext';
 import reduce from 'lodash/reduce';
 
 export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async ({
-  query
+  query,
 }) => {
   const daoId = query.dao as string;
   const [dao, tokens, bountiesDone, bounties] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
     SputnikHttpService.getAccountTokens(daoId),
     SputnikHttpService.getBountiesDone(daoId),
-    SputnikHttpService.getBountiesByDaoId(daoId)
+    SputnikHttpService.getBountiesByDaoId(daoId),
   ]);
 
   if (!dao) {
     return {
-      notFound: true
+      notFound: true,
     };
   }
 
@@ -39,8 +39,8 @@ export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async (
           return acc;
         },
         {} as Tokens
-      )
-    }
+      ),
+    },
   };
 };
 

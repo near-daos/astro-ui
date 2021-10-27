@@ -15,7 +15,7 @@ const schema = yup.object().shape({
   tokenName: yup.string().required(),
   tokenSymbol: yup.string().required(),
   totalTokenSupply: yup.number().positive().integer(),
-  tokensTarget: yup.string().required()
+  tokensTarget: yup.string().required(),
 });
 
 interface IForm {
@@ -32,9 +32,9 @@ export const CreateVotingTokenStep: FC<WizardStepProps> = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, touchedFields }
+    formState: { errors, touchedFields },
   } = useForm<IForm>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
 
   const onSubmit: SubmitHandler<IForm> = data => {

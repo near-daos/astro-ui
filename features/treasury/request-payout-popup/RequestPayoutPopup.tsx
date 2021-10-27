@@ -2,7 +2,7 @@ import { Icon } from 'components/Icon';
 import { Modal } from 'components/modal';
 import {
   IRequestPayoutForm,
-  RequestPayoutForm
+  RequestPayoutForm,
 } from 'features/treasury/request-payout-popup/components/RequestPayoutForm';
 import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
@@ -26,7 +26,7 @@ export interface RequestPayoutPopupProps {
 export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
   type,
   isOpen,
-  onClose
+  onClose,
 }) => {
   const router = useRouter();
   const { tokens } = useCustomTokensContext();
@@ -51,14 +51,16 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
           data: {
             token_id: token.tokenId,
             receiver_id: data.recipient,
-            amount: new Decimal(data.amount).mul(10 ** token.decimals).toFixed()
-          }
+            amount: new Decimal(data.amount)
+              .mul(10 ** token.decimals)
+              .toFixed(),
+          },
         });
 
         showNotification({
           type: NOTIFICATION_TYPES.INFO,
           description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-          lifetime: 20000
+          lifetime: 20000,
         });
 
         onClose(true);

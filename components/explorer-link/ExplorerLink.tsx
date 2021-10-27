@@ -14,7 +14,7 @@ interface ExplorerLinkProps {
 export const ExplorerLink: React.VFC<ExplorerLinkProps> = ({
   linkData,
   linkType,
-  isAbsolute
+  isAbsolute,
 }) => {
   function generateExplorerLink(type: ExplorerLinkType) {
     switch (type) {

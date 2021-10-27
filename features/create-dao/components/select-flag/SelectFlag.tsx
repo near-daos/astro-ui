@@ -31,7 +31,7 @@ export const SelectFlag: FC<SelectFlagProps> = ({
   className,
   onSubmit,
   title,
-  fileName = 'flag.png'
+  fileName = 'flag.png',
 }) => {
   const cropperRef = useRef<Cropper>();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -48,10 +48,10 @@ export const SelectFlag: FC<SelectFlagProps> = ({
           left: 400,
           top: 150,
           width: 300,
-          height: 300
-        }
-      }
-    ]
+          height: 300,
+        },
+      },
+    ],
   });
 
   const saveState = (newBackground: number | undefined = undefined) => {
@@ -61,7 +61,7 @@ export const SelectFlag: FC<SelectFlagProps> = ({
       setHistoryData(({ currentIndex, stack }) => {
         const newItem = {
           background: newBackground || stack[currentIndex].background,
-          cropData: cropper.getCropBoxData()
+          cropData: cropper.getCropBoxData(),
         };
 
         const slice = stack.slice(0, currentIndex + 1);
@@ -69,7 +69,7 @@ export const SelectFlag: FC<SelectFlagProps> = ({
 
         return {
           currentIndex: newValue.length - 1,
-          stack: newValue
+          stack: newValue,
         };
       });
     }
@@ -83,7 +83,7 @@ export const SelectFlag: FC<SelectFlagProps> = ({
     cropperRef.current?.setCropBoxData(selectFlagState.cropData);
     setHistoryData(({ currentIndex, stack }) => ({
       currentIndex: currentIndex - 1,
-      stack
+      stack,
     }));
   };
 
@@ -95,7 +95,7 @@ export const SelectFlag: FC<SelectFlagProps> = ({
     cropperRef.current?.setCropBoxData(selectFlagState.cropData);
     setHistoryData(({ currentIndex, stack }) => ({
       currentIndex: currentIndex + 1,
-      stack
+      stack,
     }));
   };
 
@@ -120,7 +120,7 @@ export const SelectFlag: FC<SelectFlagProps> = ({
       minHeight: 1024,
       minWidth: 1024,
       imageSmoothingEnabled: true,
-      imageSmoothingQuality: 'high'
+      imageSmoothingQuality: 'high',
     });
 
     const canvas = canvasRef.current;
@@ -134,7 +134,7 @@ export const SelectFlag: FC<SelectFlagProps> = ({
         new Path2D('M60 140.525L202.2 89.7052V201.181L60 252V140.525Z'),
         new Path2D(
           'M97.8076 98.8197L240.007 48V159.475L97.8076 210.295V98.8197Z'
-        )
+        ),
       ];
 
       ctx.fillStyle = 'white';
@@ -150,7 +150,7 @@ export const SelectFlag: FC<SelectFlagProps> = ({
 
             resolve({
               file,
-              preview
+              preview,
             });
           } else {
             reject(new Error('Unable to convert canvas blob to file'));

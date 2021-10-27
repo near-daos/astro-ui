@@ -26,7 +26,7 @@ const sizeClasses = {
   small: styles.sizeSmall,
   medium: styles.sizeMedium,
   large: styles.sizeLarge,
-  block: styles.sizeBlock
+  block: styles.sizeBlock,
 };
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(

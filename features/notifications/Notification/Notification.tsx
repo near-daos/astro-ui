@@ -7,7 +7,7 @@ import { HIDE_NOTIFICATION_EVENT } from 'constants/common';
 
 import {
   NOTIFICATION_TYPES,
-  NotificationProps
+  NotificationProps,
 } from 'features/notifications/types';
 
 import s from './Notification.module.scss';
@@ -19,7 +19,7 @@ export const Notification: React.FC<NotificationProps> = props => {
     [s.success]: type === NOTIFICATION_TYPES.SUCCESS,
     [s.error]: type === NOTIFICATION_TYPES.ERROR,
     [s.info]: type === NOTIFICATION_TYPES.INFO,
-    [s.flat]: flat
+    [s.flat]: flat,
   });
 
   function getIconName(): IconName {
@@ -49,7 +49,7 @@ export const Notification: React.FC<NotificationProps> = props => {
         className={cn(s.status, {
           [s.success]: type === NOTIFICATION_TYPES.SUCCESS,
           [s.error]: type === NOTIFICATION_TYPES.ERROR,
-          [s.info]: type === NOTIFICATION_TYPES.INFO
+          [s.info]: type === NOTIFICATION_TYPES.INFO,
         })}
       >
         <Icon name={getIconName()} width={18} />

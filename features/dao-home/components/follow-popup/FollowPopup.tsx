@@ -15,7 +15,7 @@ export interface FollowPopupProps {
 export const FollowPopup: FC<FollowPopupProps> = ({
   isOpen,
   onClose,
-  target
+  target,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

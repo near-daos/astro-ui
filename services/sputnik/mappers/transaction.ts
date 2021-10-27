@@ -62,7 +62,7 @@ const EXCLUDE_METHODS = [
   'act_proposal',
   'ft_transfer',
   'storage_deposit',
-  'new'
+  'new',
 ];
 
 export const mapReceiptsResponse = (
@@ -114,7 +114,7 @@ export const mapReceiptsResponse = (
             deposit,
             type,
             txHash: item.originatedFromTransactionHash,
-            date
+            date,
           });
         }
 

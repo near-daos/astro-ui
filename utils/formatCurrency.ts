@@ -1,7 +1,7 @@
 export function formatCurrency(amount: number): string {
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD'
+    currency: 'USD',
   });
 
   return formatter.formatToParts(amount).reduce((acc, part) => {

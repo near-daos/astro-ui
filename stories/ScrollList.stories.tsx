@@ -9,8 +9,8 @@ export default {
   decorators: [
     story => (
       <div style={{ padding: '1rem', background: 'lightgrey' }}>{story()}</div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 export const Template: Story<ScrollListProps> = args => (
@@ -27,7 +27,7 @@ const generateTokens = () => {
       symbol: '',
       icon: 'near',
       totalValue: '123123',
-      balance: 1231231
+      balance: 1231231,
     });
   }
 
@@ -47,5 +47,5 @@ Template.args = {
         <TokenCard {...tokenCards[index]} />
       </div>
     );
-  }
+  },
 };

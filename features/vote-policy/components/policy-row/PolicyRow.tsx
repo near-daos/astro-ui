@@ -33,7 +33,7 @@ export const PolicyRow: React.FC<PolicyRowProps> = ({
   selectedGroups,
   tokens,
   removePolicyHandler,
-  updatePolicyHandler
+  updatePolicyHandler,
 }) => {
   const [thresholds, setThresholds] = useState(
     policy.voteBy === 'Person' ? ['% of group', 'persons'] : tokens
@@ -43,7 +43,7 @@ export const PolicyRow: React.FC<PolicyRowProps> = ({
     (name: string, value?: string) => {
       updatePolicyHandler({
         ...policy,
-        [name]: value
+        [name]: value,
       });
     },
     [policy, updatePolicyHandler]
@@ -67,13 +67,13 @@ export const PolicyRow: React.FC<PolicyRowProps> = ({
         options={groups.map(group => ({
           label: group,
           disabled: selectedGroups.includes(group),
-          component: <Group name={group} />
+          component: <Group name={group} />,
         }))}
       />
       <Select
         options={VOTE_BY.map(value => ({
           label: value,
-          value
+          value,
         }))}
         disabled
         placeholder="Vote By"

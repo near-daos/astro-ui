@@ -25,7 +25,7 @@ const NFTs: NextPage<NFTsProps> = ({ nfts = [] }) => {
               image={{
                 src: `${nft.uri}`,
                 width: 296,
-                height: 424
+                height: 424,
               }}
             />
           </div>
@@ -43,8 +43,8 @@ export const getServerSideProps: GetServerSideProps<{
 
   return {
     props: {
-      nfts
-    }
+      nfts,
+    },
   };
 };
 

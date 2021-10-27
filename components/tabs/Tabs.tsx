@@ -7,7 +7,7 @@ import {
   Tab,
   TabList,
   TabPanel,
-  Tabs as ReactTabs
+  Tabs as ReactTabs,
 } from 'react-tabs';
 
 import 'react-tabs/style/react-tabs.css';
@@ -40,14 +40,14 @@ const Tabs = <T,>(
     isControlled = true,
     onTabSelect,
     skipShallow = false,
-    children
+    children,
   } = props;
   const router = useRouter();
 
   const [tabIndex, setTabIndex] = useState(0);
 
   const rootClassName = cn(styles.root, className, {
-    [styles.fitContent]: fitContent
+    [styles.fitContent]: fitContent,
   });
 
   useEffect(() => {
@@ -91,13 +91,13 @@ const Tabs = <T,>(
             pathname: '',
             query: {
               ...router.query,
-              tab: index
-            }
+              tab: index,
+            },
           },
           undefined,
           { shallow: !skipShallow }
         );
-      }
+      },
     };
   }
 

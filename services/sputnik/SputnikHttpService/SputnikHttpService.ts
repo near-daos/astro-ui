@@ -1,7 +1,7 @@
 import {
   SFields,
   SConditionAND,
-  RequestQueryBuilder
+  RequestQueryBuilder,
 } from '@nestjsx/crud-request';
 import omit from 'lodash/omit';
 
@@ -12,7 +12,7 @@ import {
   NftToken,
   TokenResponse,
   NftTokenResponse,
-  GetTokensResponse
+  GetTokensResponse,
 } from 'types/token';
 import { DAO } from 'types/dao';
 import { Receipt } from 'types/transaction';
@@ -34,13 +34,13 @@ import {
   mapDaoDTOListToDaoList,
   mapProposalDTOToProposal,
   mapBountyResponseToBounty,
-  mapSearchResultsDTOToDataObject
+  mapSearchResultsDTOToDataObject,
 } from 'services/sputnik/mappers';
 import { HttpService, httpService } from 'services/HttpService';
 
 import {
   ProposalFilterOptions,
-  ProposalFilterStatusOptions
+  ProposalFilterStatusOptions,
 } from 'features/member-home/types';
 
 class SputnikHttpServiceClass {
@@ -63,13 +63,13 @@ class SputnikHttpServiceClass {
         offset,
         limit,
         sort,
-        createdBy: params?.createdBy
-      }
+        createdBy: params?.createdBy,
+      },
     });
 
     return {
       data: mapDaoDTOListToDaoList(data.data),
-      total: data.total
+      total: data.total,
     };
   }
 
@@ -97,15 +97,15 @@ class SputnikHttpServiceClass {
   }): Promise<SearchResultsData | null> {
     const result = await this.httpService.get<SearchResponse>('/search', {
       params: {
-        query: params.query
-      }
+        query: params.query,
+      },
     });
 
     return mapSearchResultsDTOToDataObject(params.query, {
       daos: (result.data as SearchResponse)?.daos?.data as DaoDTO[],
       proposals: (result.data as SearchResponse)?.proposals
         ?.data as ProposalDTO[],
-      members: []
+      members: [],
     });
   }
 
@@ -124,23 +124,23 @@ class SputnikHttpServiceClass {
       .setFilter({
         field: 'daoId',
         operator: '$eq',
-        value: daoId
+        value: daoId,
       })
       .setFilter({
         field: 'kind',
         operator: '$cont',
-        value: ProposalType.BountyDone
+        value: ProposalType.BountyDone,
       })
       .setFilter({
         field: 'status',
         operator: '$eq',
-        value: 'Approved'
+        value: 'Approved',
       })
       .setLimit(500)
       .setOffset(0)
       .sortBy({
         field: 'createdAt',
-        order: 'DESC'
+        order: 'DESC',
       })
       .query();
 
@@ -152,7 +152,7 @@ class SputnikHttpServiceClass {
       .map(mapProposalDTOToProposal)
       .map(bountyDoneProposal => ({
         ...(bountyDoneProposal.kind as BountyDoneProposalType),
-        completedDate: bountyDoneProposal.createdAt
+        completedDate: bountyDoneProposal.createdAt,
       }));
   }
 
@@ -165,18 +165,18 @@ class SputnikHttpServiceClass {
       .setFilter({
         field: 'daoId',
         operator: '$in',
-        value: daoIds
+        value: daoIds,
       })
       .setFilter({
         field: 'status',
         operator: '$eq',
-        value: 'InProgress'
+        value: 'InProgress',
       })
       .setLimit(limit)
       .setOffset(offset)
       .sortBy({
         field: 'createdAt',
-        order: 'DESC'
+        order: 'DESC',
       })
       .query();
 
@@ -192,7 +192,7 @@ class SputnikHttpServiceClass {
       .setFilter({
         field: 'proposer',
         operator: '$eq',
-        value: accountId
+        value: accountId,
       })
       .setLimit(500)
       .setOffset(0)
@@ -218,15 +218,15 @@ class SputnikHttpServiceClass {
     const queryString = RequestQueryBuilder.create();
 
     const search: SFields | SConditionAND = {
-      $and: []
+      $and: [],
     };
 
     // specific DAO
     if (filter.daoViewFilter) {
       search.$and?.push({
         daoId: {
-          $eq: `${filter.daoViewFilter}.${nearConfig.contractName}`
-        }
+          $eq: `${filter.daoViewFilter}.${nearConfig.contractName}`,
+        },
       });
     } else if (filter.daoFilter === 'My DAOs' && accountId) {
       const accountDaos = await this.getAccountDaos(accountId);
@@ -234,8 +234,8 @@ class SputnikHttpServiceClass {
       if (accountDaos.length) {
         search.$and?.push({
           daoId: {
-            $in: accountDaos.map(item => item.id)
-          }
+            $in: accountDaos.map(item => item.id),
+          },
         });
       } else {
         return Promise.resolve([]);
@@ -247,21 +247,21 @@ class SputnikHttpServiceClass {
       // Fetch all InProgress items and then do additional filtering for Expired
       search.$and?.push({
         status: {
-          $eq: 'InProgress'
-        }
+          $eq: 'InProgress',
+        },
       });
     } else if (filter.status && filter.status === 'Approved') {
       search.$and?.push({
         status: {
-          $eq: 'Approved'
-        }
+          $eq: 'Approved',
+        },
       });
     } else if (filter.status && filter.status === 'Failed') {
       // Fetch failed including InProgress items and then do additional filtering for Expired
       search.$and?.push({
         status: {
-          $in: ['Rejected', 'Expired', 'Moved', 'InProgress']
-        }
+          $in: ['Rejected', 'Expired', 'Moved', 'InProgress'],
+        },
       });
     }
 
@@ -270,8 +270,8 @@ class SputnikHttpServiceClass {
       search.$and?.push({
         kind: {
           $cont: ProposalType.Vote,
-          $excl: ProposalType.ChangePolicy
-        }
+          $excl: ProposalType.ChangePolicy,
+        },
       });
     }
 
@@ -280,23 +280,23 @@ class SputnikHttpServiceClass {
         $or: [
           {
             kind: {
-              $cont: ProposalType.ChangeConfig
-            }
+              $cont: ProposalType.ChangeConfig,
+            },
           },
           {
             kind: {
-              $cont: ProposalType.ChangePolicy
-            }
-          }
-        ]
+              $cont: ProposalType.ChangePolicy,
+            },
+          },
+        ],
       });
     }
 
     if (filter.proposalFilter === 'Financial') {
       search.$and?.push({
         kind: {
-          $cont: ProposalType.Transfer
-        }
+          $cont: ProposalType.Transfer,
+        },
       });
     }
 
@@ -305,15 +305,15 @@ class SputnikHttpServiceClass {
         $or: [
           {
             kind: {
-              $cont: ProposalType.AddMemberToRole
-            }
+              $cont: ProposalType.AddMemberToRole,
+            },
           },
           {
             kind: {
-              $cont: ProposalType.RemoveMemberFromRole
-            }
-          }
-        ]
+              $cont: ProposalType.RemoveMemberFromRole,
+            },
+          },
+        ],
       });
     }
 
@@ -324,7 +324,7 @@ class SputnikHttpServiceClass {
       queryString.setFilter({
         field: 'daoId',
         operator: '$in',
-        value: filter.daosIdsFilter
+        value: filter.daosIdsFilter,
       });
     }
 
@@ -333,7 +333,7 @@ class SputnikHttpServiceClass {
       .setOffset(0)
       .sortBy({
         field: 'createdAt',
-        order: 'DESC'
+        order: 'DESC',
       })
       .query();
 
@@ -368,13 +368,13 @@ class SputnikHttpServiceClass {
     const params = {
       filter: `daoId||$eq||${daoId}`,
       offset,
-      limit
+      limit,
     };
 
     const { data: proposals } = await this.httpService.get<
       GetProposalsResponse
     >('/proposals', {
-      params: daoId ? params : omit(params, 'filter')
+      params: daoId ? params : omit(params, 'filter'),
     });
 
     return proposals.data.map(mapProposalDTOToProposal);
@@ -399,16 +399,16 @@ class SputnikHttpServiceClass {
       $and: [
         {
           daoId: {
-            $eq: daoId
-          }
+            $eq: daoId,
+          },
         },
         {
           kind: {
             $cont: ProposalType.Vote,
-            $excl: ProposalType.ChangePolicy
-          }
-        }
-      ]
+            $excl: ProposalType.ChangePolicy,
+          },
+        },
+      ],
     };
 
     queryString.search(search);
@@ -418,7 +418,7 @@ class SputnikHttpServiceClass {
       .setOffset(offset ?? 0)
       .sortBy({
         field: 'createdAt',
-        order: 'DESC'
+        order: 'DESC',
       })
       .query();
 
@@ -461,8 +461,8 @@ class SputnikHttpServiceClass {
       params: {
         offset,
         limit,
-        sort
-      }
+        sort,
+      },
     });
 
     return data.data;
@@ -485,8 +485,8 @@ class SputnikHttpServiceClass {
         filter: `daoId||$eq||${daoId}`,
         offset,
         limit,
-        sort
-      }
+        sort,
+      },
     });
 
     return data.data.map(mapBountyResponseToBounty);
@@ -503,7 +503,7 @@ class SputnikHttpServiceClass {
         ? `${response.baseUri}/${response.metadata.media}`
         : `https://cloudflare-ipfs.com/ipfs/${response.metadata.media}`,
       description: response.metadata.description,
-      title: response.metadata.title
+      title: response.metadata.title,
     }));
   }
 
@@ -528,8 +528,8 @@ class SputnikHttpServiceClass {
         filter: `ownerId||$eq||${params.dao}`,
         offset,
         limit,
-        sort
-      }
+        sort,
+      },
     });
 
     return mapTokensDTOToTokens(data.data);

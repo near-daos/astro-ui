@@ -2,7 +2,7 @@ export enum NOTIFICATION_TYPES {
   SUCCESS = 'Success',
   ERROR = 'Error',
   WARNING = 'Warning',
-  INFO = 'Info'
+  INFO = 'Info',
 }
 
 export interface NotificationRawData {

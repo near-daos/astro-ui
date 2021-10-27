@@ -7,5 +7,5 @@ export const awsConfig = {
   accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
   region: process.env.NEXT_PUBLIC_AWS_REGION || '',
-  identityPoolId: process.env.NEXT_PUBLIC_AWS_IDENTITY_POOL_ID || ''
+  identityPoolId: process.env.NEXT_PUBLIC_AWS_IDENTITY_POOL_ID || '',
 };

@@ -59,7 +59,7 @@ export const getVotePolicyData = (
     // whoCanVote: name,
     voteBy: policy.weightKind === 'RoleWeight' ? 'Person' : 'Token',
     amount: (policy.ratio[0] / policy.ratio[1]) * 100,
-    threshold: policy.kind === 'Ratio' ? '% of group' : 'persons'
+    threshold: policy.kind === 'Ratio' ? '% of group' : 'persons',
   };
 };
 
@@ -153,12 +153,12 @@ export const getInitialData = (
         defaulPolicy?.ratio && defaulPolicy.ratio.length
           ? (defaulPolicy.ratio[0] / defaulPolicy.ratio[1]) * 100
           : 0,
-      threshold: defaulPolicy.kind === 'Ratio' ? '% of group' : 'persons'
+      threshold: defaulPolicy.kind === 'Ratio' ? '% of group' : 'persons',
     },
     daoSettings: {
       externalLink: '',
-      details: ''
-    }
+      details: '',
+    },
   };
 };
 
@@ -167,30 +167,31 @@ export function getVoteDetails(
   scope: Scope,
   proposal?: Proposal | null
 ): { details: VoteDetail; votersList: VoterDetail[] } {
-  if (!dao)
+  if (!dao) {
     return {
       details: {
         limit: '',
-        label: ''
+        label: '',
       },
-      votersList: []
+      votersList: [],
     };
+  }
 
   const votesData = !proposal
     ? []
     : [
         {
           vote: 'Yes' as Vote,
-          percent: (proposal.voteYes * 100) / dao.members
+          percent: (proposal.voteYes * 100) / dao.members,
         },
         {
           vote: 'No' as Vote,
-          percent: (proposal.voteNo * 100) / dao.members
+          percent: (proposal.voteNo * 100) / dao.members,
         },
         {
           vote: 'Dismiss' as Vote,
-          percent: (proposal.voteRemove * 100) / dao.members
-        }
+          percent: (proposal.voteRemove * 100) / dao.members,
+        },
       ];
 
   const defaulPolicy = dao.policy.defaultVotePolicy;
@@ -200,7 +201,7 @@ export function getVoteDetails(
   const details = {
     label: '',
     limit: `${amount}%`,
-    data: votesData
+    data: votesData,
   };
 
   const votersList = proposal?.votes
@@ -272,15 +273,15 @@ export const getNewProposalObject = (
         default_vote_policy: {
           quorum: '0',
           threshold: getThreshold(data.policy.amount as number),
-          weight_kind: 'RoleWeight'
+          weight_kind: 'RoleWeight',
         },
         proposal_bond: dao.policy.proposalBond,
         proposal_period: dao.policy.proposalPeriod,
         bounty_bond: dao.policy.bountyBond,
-        bounty_forgiveness_period: dao.policy.bountyForgivenessPeriod
-      }
+        bounty_forgiveness_period: dao.policy.bountyForgivenessPeriod,
+      },
     },
-    bond: dao.policy.proposalBond
+    bond: dao.policy.proposalBond,
   };
 };
 

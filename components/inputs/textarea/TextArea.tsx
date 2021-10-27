@@ -25,7 +25,7 @@ const sizeClasses = {
   small: inputStyles.sizeSmall,
   medium: inputStyles.sizeMedium,
   large: inputStyles.sizeLarge,
-  block: inputStyles.sizeBlock
+  block: inputStyles.sizeBlock,
 };
 
 export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
@@ -66,14 +66,14 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           ref={externalRef}
           style={{
             textAlign,
-            resize
+            resize,
           }}
         />
         {maxLength != null && (
           <span
             className={classNames(styles.length, {
               [styles.error]: currentLength > maxLength,
-              [styles.success]: currentLength > 0 && currentLength < maxLength
+              [styles.success]: currentLength > 0 && currentLength < maxLength,
             })}
           >
             {currentLength}/{maxLength}

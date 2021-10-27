@@ -33,17 +33,17 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
   onSubmit,
   onCancel,
   tokens,
-  bond
+  bond,
 }) => {
   const {
     register,
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, touchedFields }
+    formState: { errors, touchedFields },
   } = useForm<CreateBountyInput>({
     defaultValues: initialValues,
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
   const { isMobile } = useDeviceType();
 
@@ -64,7 +64,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
             tokens={tokens}
             onTokenSelect={v =>
               setValue('token', v as string, {
-                shouldDirty: true
+                shouldDirty: true,
               })
             }
             error={touchedFields.amount && !!errors.amount}
@@ -148,7 +148,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
             {...register('deadlineUnit')}
             onChange={v =>
               setValue('deadlineUnit', (v || 'day') as DeadlineUnit, {
-                shouldDirty: true
+                shouldDirty: true,
               })
             }
           />

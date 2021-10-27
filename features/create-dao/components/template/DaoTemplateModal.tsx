@@ -10,7 +10,7 @@ import styles from 'features/create-dao/components/template/dao-template-modal.m
 import { backgrounds } from 'features/create-dao/components/template/utils';
 import {
   DaoSettingOption,
-  DAOType
+  DAOType,
 } from 'features/create-dao/components/steps/types';
 import React, { FC } from 'react';
 
@@ -29,7 +29,7 @@ export const DaoTemplateModal: FC<DaoTemplateModalProps> = ({
   options = [],
   title,
   description,
-  variant
+  variant,
 }) => {
   const background = backgrounds[variant];
 

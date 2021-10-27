@@ -11,7 +11,7 @@ interface GetDaoListProps {
 export async function getDaosList({
   sort,
   offset,
-  limit
+  limit,
 }: GetDaoListProps): Promise<{
   daos: DAO[];
   total: number;
@@ -19,21 +19,21 @@ export async function getDaosList({
   const { data: daoList, total } = await SputnikHttpService.getDaoList({
     sort,
     offset,
-    limit
+    limit,
   });
   const daoIds = daoList.map(item => item.id);
   const proposals = await SputnikHttpService.getFilteredProposals({
-    daosIdsFilter: daoIds
+    daosIdsFilter: daoIds,
   });
   const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
 
   const newData = daoList.map(item => ({
     ...item,
-    proposals: activeProposalsByDao[item.id] ?? 0
+    proposals: activeProposalsByDao[item.id] ?? 0,
   }));
 
   return {
     daos: newData,
-    total
+    total,
   };
 }

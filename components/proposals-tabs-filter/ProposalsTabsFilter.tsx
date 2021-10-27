@@ -18,14 +18,14 @@ export const ProposalsTabsFilter: FC<ProposalsTabsFilterProps<Proposal>> = ({
   proposals,
   tabContentRenderer,
   tabsConfig,
-  filter
+  filter,
 }) => {
   const filteredData = filter(proposals);
 
   const tabs = tabsConfig.map((item, i) => ({
     ...item,
     id: i,
-    content: tabContentRenderer(filteredData[i])
+    content: tabContentRenderer(filteredData[i]),
   }));
 
   return (

@@ -86,7 +86,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
         name: item.name,
         permissions: item.permissions,
         votePolicy: item.votePolicy,
-        slug: item.name
+        slug: item.name,
       };
     });
 
@@ -118,7 +118,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     groups: daoGroups,
     policy: daoDTO.policy,
     links: meta && meta.links ? meta.links : [],
-    displayName: meta?.displayName || ''
+    displayName: meta?.displayName || '',
   };
 };
 
@@ -152,7 +152,7 @@ export const mapCreateDaoParamsToContractArgs = (
         params.policy.bountyForgivenessPeriod
       )
         .mul('3.6e12')
-        .toFixed()
+        .toFixed(),
     },
     config: {
       name: params.name,
@@ -160,9 +160,9 @@ export const mapCreateDaoParamsToContractArgs = (
       metadata: fromMetadataToBase64({
         links: params.links,
         flag: params.flag,
-        displayName: params.displayName
-      })
-    }
+        displayName: params.displayName,
+      }),
+    },
   };
 
   return Buffer.from(JSON.stringify(argsList)).toString('base64');

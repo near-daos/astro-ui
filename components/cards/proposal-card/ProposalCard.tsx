@@ -59,7 +59,7 @@ const ProposalCardComponent: FC<ProposalCardProps> = ({
   daoId,
   showExpanded,
   id,
-  dao
+  dao,
 }) => {
   const { accountId } = useAuthContext();
 
@@ -67,7 +67,7 @@ const ProposalCardComponent: FC<ProposalCardProps> = ({
 
   const variantClassName = cn({
     [styles.default]: variant === 'Default',
-    [styles.collapsed]: variant === 'SuperCollapsed'
+    [styles.collapsed]: variant === 'SuperCollapsed',
   });
 
   const router = useRouter();
@@ -93,11 +93,11 @@ const ProposalCardComponent: FC<ProposalCardProps> = ({
     [styles.approved]: status === 'Approved',
     [styles.rejected]: status === 'Rejected',
     [styles.expired]: status === 'Expired',
-    [styles.removed]: status === 'Removed'
+    [styles.removed]: status === 'Removed',
   });
 
   const footerClassName = cn({
-    [styles.transfer]: type === 'Transfer'
+    [styles.transfer]: type === 'Transfer',
   });
 
   return (

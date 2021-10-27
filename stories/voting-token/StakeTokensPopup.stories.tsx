@@ -2,12 +2,12 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import {
   StakeTokensPopup,
-  StakeTokensPopupProps
+  StakeTokensPopupProps,
 } from 'features/voting-token/components/stake-tokens-popup';
 
 export default {
   title: 'Features/VotingToken/StakeTokensPopup',
-  component: StakeTokensPopup
+  component: StakeTokensPopup,
 } as Meta;
 
 export const Template: Story<StakeTokensPopupProps> = (args): JSX.Element => (
@@ -21,7 +21,7 @@ Template.args = {
     tokenName: 'GOOSE',
     tokenSymbol: 'goose.tkn.farm',
     balance: 9,
-    id: '1'
+    id: '1',
   },
-  rate: 18
+  rate: 18,
 };

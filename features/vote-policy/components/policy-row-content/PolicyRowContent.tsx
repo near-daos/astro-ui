@@ -37,11 +37,11 @@ export const PolicyRowContent: FC<PolicyRowContentProps> = ({
   action,
   onChange,
   data,
-  groups
+  groups,
 }) => {
   const [showModal] = useModal(VotePolicyPopup, {
     title: action,
-    groups
+    groups,
   });
 
   const handleEdit = useCallback(async () => {

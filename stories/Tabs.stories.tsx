@@ -6,7 +6,7 @@ import { Badge } from 'components/badge/Badge';
 export default {
   title: 'Components/Tabs',
   component: Tabs,
-  decorators: [story => <div style={{ padding: '1rem' }}>{story()}</div>]
+  decorators: [story => <div style={{ padding: '1rem' }}>{story()}</div>],
 } as Meta;
 
 const Template: Story<TabsProps<ReactNode>> = (args): JSX.Element => (
@@ -24,7 +24,7 @@ Default.args = {
         <div style={{ padding: 24, marginTop: 5, background: 'lavender' }}>
           Tab 1 content
         </div>
-      )
+      ),
     },
     {
       id: 1,
@@ -33,7 +33,7 @@ Default.args = {
         <div style={{ padding: 24, marginTop: 5, background: 'lightgreen' }}>
           Tab 2 content
         </div>
-      )
+      ),
     },
     {
       id: 2,
@@ -42,9 +42,9 @@ Default.args = {
         <div style={{ padding: 24, marginTop: 5, background: 'lightsalmon' }}>
           Tab 3 content
         </div>
-      )
-    }
-  ]
+      ),
+    },
+  ],
 };
 
 export const CustomTabsComponents = Template.bind({});
@@ -58,7 +58,7 @@ CustomTabsComponents.args = {
         <div style={{ padding: 24, marginTop: 5, background: 'lavender' }}>
           Tab 1 content
         </div>
-      )
+      ),
     },
     {
       id: 1,
@@ -71,7 +71,7 @@ CustomTabsComponents.args = {
         <div style={{ padding: 24, marginTop: 5, background: 'lightgreen' }}>
           Tab 2 content
         </div>
-      )
+      ),
     },
     {
       id: 2,
@@ -84,7 +84,7 @@ CustomTabsComponents.args = {
         <div style={{ padding: 24, marginTop: 5, background: 'lightsalmon' }}>
           Tab 3 content
         </div>
-      )
-    }
-  ]
+      ),
+    },
+  ],
 };

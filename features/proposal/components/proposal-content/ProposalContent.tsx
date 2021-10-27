@@ -4,7 +4,7 @@ import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card
 import {
   AddMemberToGroup,
   FunctionCall,
-  RemoveMemberFromGroup
+  RemoveMemberFromGroup,
 } from 'components/cards/proposal-card';
 import { Transfer } from 'features/proposal/components/proposal-content/Transfer';
 

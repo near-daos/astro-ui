@@ -2,11 +2,11 @@ import { useRouter } from 'next/router';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   CropReturnType,
-  SelectFlag
+  SelectFlag,
 } from 'features/create-dao/components/select-flag/SelectFlag';
 import {
   LinksFormData,
-  schema
+  schema,
 } from 'features/dao-settings/components/links-tab';
 import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
 import React, { FC } from 'react';
@@ -18,12 +18,12 @@ import { useSWRConfig } from 'swr';
 import { DaoConfig } from 'types/proposal';
 import {
   DaoMetadata,
-  fromMetadataToBase64
+  fromMetadataToBase64,
 } from 'services/sputnik/mappers/dao';
 import { SputnikNearService } from 'services/sputnik';
 import {
   navigateToDaoPage,
-  getChangeConfigProposal
+  getChangeConfigProposal,
 } from 'features/dao-settings/helpers';
 import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
@@ -43,7 +43,7 @@ const sources = [
   '/flags/flag-3.svg',
   '/flags/flag-4.svg',
   '/flags/flag-5.svg',
-  '/flags/flag-6.svg'
+  '/flags/flag-6.svg',
 ];
 
 const FlagTab: FC<FlagTabProps> = ({
@@ -51,7 +51,7 @@ const FlagTab: FC<FlagTabProps> = ({
   name,
   purpose,
   currentDaoMetadata,
-  proposalBond
+  proposalBond,
 }) => {
   const router = useRouter();
   const daoFlag = currentDaoMetadata.flag;
@@ -63,9 +63,9 @@ const FlagTab: FC<FlagTabProps> = ({
     mode: 'onChange',
     defaultValues: {
       details: '',
-      externalUrl: ''
+      externalUrl: '',
     },
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
 
   async function onSubmit(data: CropReturnType) {
@@ -76,8 +76,8 @@ const FlagTab: FC<FlagTabProps> = ({
       metadata: fromMetadataToBase64({
         links: currentDaoMetadata.links,
         flag: fileName,
-        displayName: currentDaoMetadata.displayName
-      })
+        displayName: currentDaoMetadata.displayName,
+      }),
     };
 
     await SputnikNearService.createProposal(
@@ -91,7 +91,7 @@ const FlagTab: FC<FlagTabProps> = ({
     showNotification({
       type: NOTIFICATION_TYPES.INFO,
       description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-      lifetime: 20000
+      lifetime: 20000,
     });
     await mutate('/daos');
     setViewMode(true);

@@ -62,7 +62,7 @@ const ProposalStatusPanel: FC<ProposalStatusProps> = ({ status, type }) => {
     [styles.approved]: status === 'Approved',
     [styles.rejected]: status === 'Rejected',
     [styles.expired]: status === 'Expired',
-    [styles.removed]: status === 'Removed'
+    [styles.removed]: status === 'Removed',
   });
 
   const iconName = getIconName(type);

@@ -32,7 +32,7 @@ export const DaoNavMenu: FC = () => {
       if (activeGroupId === 'dao') return [];
 
       return isEmpty(activeGroupId) ? [] : [activeGroupId];
-    })()
+    })(),
   });
 
   if (!dao) {

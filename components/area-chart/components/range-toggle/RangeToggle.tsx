@@ -9,24 +9,24 @@ import s from './RangeToggle.module.scss';
 const TOGGLE_SET = [
   {
     label: '24H',
-    type: DOMAIN_RANGES.DAY
+    type: DOMAIN_RANGES.DAY,
   },
   {
     label: '1W',
-    type: DOMAIN_RANGES.WEEK
+    type: DOMAIN_RANGES.WEEK,
   },
   {
     label: '1M',
-    type: DOMAIN_RANGES.MONTH
+    type: DOMAIN_RANGES.MONTH,
   },
   {
     label: '1Y',
-    type: DOMAIN_RANGES.YEAR
+    type: DOMAIN_RANGES.YEAR,
   },
   {
     label: 'All',
-    type: DOMAIN_RANGES.ALL
-  }
+    type: DOMAIN_RANGES.ALL,
+  },
 ];
 
 interface RangeToggleProps {
@@ -41,7 +41,7 @@ const RangeToggle: FC<RangeToggleProps> = ({ onClick, activeRange }) => (
         key={type}
         size="small"
         className={cn(s.toggle, {
-          [s.active]: activeRange === type
+          [s.active]: activeRange === type,
         })}
         onClick={() => onClick(type)}
       >

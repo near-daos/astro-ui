@@ -23,7 +23,7 @@ export const AmountInput: FC<AmountInputProps> = ({
   value,
   onChange,
   cost,
-  onMax
+  onMax,
 }) => {
   return (
     <div>
@@ -48,7 +48,7 @@ export const AmountInput: FC<AmountInputProps> = ({
       </div>
       <div
         className={cn(styles.cost, {
-          [styles.active]: cost > 0
+          [styles.active]: cost > 0,
         })}
       >
         ≈${cost}

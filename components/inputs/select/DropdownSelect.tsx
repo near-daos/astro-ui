@@ -29,7 +29,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
   onChange,
   placeholder,
   controlIcon,
-  disabled = false
+  disabled = false,
 }) => {
   const {
     isOpen,
@@ -38,7 +38,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
     selectItem,
     getLabelProps,
     getMenuProps,
-    getItemProps
+    getItemProps,
   } = useSelect({
     items: options,
     itemToString: item => (item != null ? item.label : ''),
@@ -46,7 +46,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
       if (changes.selectedItem?.label !== defaultValue) {
         onChange?.(changes.selectedItem?.label);
       }
-    }
+    },
   });
 
   useEffect(() => {
@@ -102,7 +102,7 @@ export const DropdownSelect: React.FC<DropdownSelectProps> = ({
               return (
                 <li
                   className={cn(styles.item, {
-                    [styles.disabled]: item.disabled
+                    [styles.disabled]: item.disabled,
                   })}
                   {...props}
                   key={item.label}

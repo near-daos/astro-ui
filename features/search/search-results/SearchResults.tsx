@@ -3,7 +3,7 @@ import React, {
   FC,
   useCallback,
   useContext,
-  useState
+  useState,
 } from 'react';
 
 import { SputnikHttpService } from 'services/sputnik';
@@ -24,7 +24,7 @@ const SearchResultsContext = createContext<SearchResultsContextProps>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   handleClose: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setSearchResults: () => {}
+  setSearchResults: () => {},
 });
 
 export const useSearchResults = (): SearchResultsContextProps =>

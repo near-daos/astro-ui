@@ -87,7 +87,7 @@ interface LoaderProps {
 }
 
 export const Loader: FC<LoaderProps> = ({
-  title = 'Receiving data from the contract'
+  title = 'Receiving data from the contract',
 }) => {
   return (
     <div className={styles.root}>

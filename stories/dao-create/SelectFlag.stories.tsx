@@ -3,7 +3,7 @@ import { Button } from 'components/button/Button';
 import {
   CropReturnType,
   SelectFlag,
-  SelectFlagProps
+  SelectFlagProps,
 } from 'features/create-dao/components/select-flag/SelectFlag';
 
 import React, { useState } from 'react';
@@ -17,11 +17,11 @@ export default {
       values: [
         {
           name: 'bg',
-          value: '#E8E0FF'
-        }
-      ]
-    }
-  }
+          value: '#E8E0FF',
+        },
+      ],
+    },
+  },
 } as Meta;
 
 export const Template: Story<SelectFlagProps> = (args): JSX.Element => {
@@ -82,5 +82,5 @@ export const Template: Story<SelectFlagProps> = (args): JSX.Element => {
 Template.storyName = 'Dao Create Flag';
 
 Template.args = {
-  sources: ['/flags/flag-1.svg']
+  sources: ['/flags/flag-1.svg'],
 };

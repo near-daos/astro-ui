@@ -32,19 +32,19 @@ interface ICreatePollForm {
 
 const schema = yup.object().shape({
   question: yup.string().required(),
-  externalUrl: yup.string()
+  externalUrl: yup.string(),
 });
 
 export const CreatePollForm: FC<CreatePollFormProps> = ({
   onSubmit,
-  onCancel
+  onCancel,
 }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, touchedFields }
+    formState: { errors, touchedFields },
   } = useForm<ICreatePollForm>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
 
   return (

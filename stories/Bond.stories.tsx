@@ -8,8 +8,8 @@ export default {
   decorators: [
     story => (
       <div style={{ padding: '1rem', background: 'lightgrey' }}>{story()}</div>
-    )
-  ]
+    ),
+  ],
 } as Meta;
 
 export const Template: Story<BondProps> = args => <Bond {...args} />;
@@ -17,5 +17,5 @@ export const Template: Story<BondProps> = args => <Bond {...args} />;
 Template.storyName = 'Bond';
 Template.args = {
   value: 0.3,
-  token: 'NEAR'
+  token: 'NEAR',
 };

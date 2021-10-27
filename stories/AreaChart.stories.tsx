@@ -7,8 +7,10 @@ export default {
   title: 'Components/AreaChart',
   component: AreaChart,
   decorators: [
-    story => <div style={{ padding: '1rem', maxWidth: '900px' }}>{story()}</div>
-  ]
+    story => (
+      <div style={{ padding: '1rem', maxWidth: '900px' }}>{story()}</div>
+    ),
+  ],
 } as Meta;
 
 function getRandomAmount(initial: number) {
@@ -26,7 +28,7 @@ function generateData() {
   for (let i = 0; i < 1000; i += 3) {
     RETURNS.push({
       timestamp: addHours(startDate, i).getTime(),
-      balance: getRandomAmount(0)
+      balance: getRandomAmount(0),
     });
   }
 
@@ -43,5 +45,5 @@ export const Template: Story<AreaChartProps> = (
 
 Template.storyName = 'AreaChart';
 Template.args = {
-  data: generateData()
+  data: generateData(),
 };

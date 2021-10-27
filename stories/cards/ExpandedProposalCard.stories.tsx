@@ -2,14 +2,14 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import {
   ExpandedProposalCard,
-  ExpandedProposalCardProps
+  ExpandedProposalCardProps,
 } from 'components/cards/expanded-proposal-card';
 import { RequestPayout } from 'components/cards/proposal-card';
 import { ProposalType } from 'types/proposal';
 
 export default {
   title: 'Components/Cards/ExpandedProposalCard',
-  component: ExpandedProposalCard
+  component: ExpandedProposalCard,
 } as Meta;
 
 export const Template: Story<ExpandedProposalCardProps> = (
@@ -34,5 +34,5 @@ Template.args = {
   endsAt: '2021-08-12T12:00:52Z',
   children: (
     <RequestPayout amount="678" recipient="jonathan.near" token="NEAR" />
-  )
+  ),
 };

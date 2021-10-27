@@ -4,7 +4,7 @@ import { Button } from 'components/button/Button';
 
 import MemberCard, {
   GroupsRenderer,
-  MemberCardPopup
+  MemberCardPopup,
 } from 'components/cards/member-card';
 import { Dropdown } from 'components/dropdown/Dropdown';
 import { useModal } from 'components/modal';
@@ -26,12 +26,12 @@ import { useAuthContext } from 'context/AuthContext';
 const sortOptions = [
   {
     label: 'Most active',
-    value: 'Most active'
-  }
+    value: 'Most active',
+  },
 ];
 
 const groupMap: { [key: string]: string } = {
-  'all-members': 'all'
+  'all-members': 'all',
 };
 
 interface GroupPageProps {
@@ -55,8 +55,8 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
     await showGroupModal({
       initialValues: {
         groupType: GroupFormType.CREATE_GROUP,
-        groups: []
-      }
+        groups: [],
+      },
     });
   }, [showGroupModal]);
 
@@ -70,8 +70,8 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
       initialValues: {
         groupType: GroupFormType.ADD_TO_GROUP,
         groups: availableGroups,
-        selectedGroup: group
-      }
+        selectedGroup: group,
+      },
     });
   }, [availableGroups, group, showGroupModal]);
 
@@ -87,8 +87,8 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
           groups: item.groups,
           name: item.name,
           groupType: GroupFormType.REMOVE_FROM_GROUP,
-          selectedGroup: group
-        }
+          selectedGroup: group,
+        },
       });
     },
     [group, showGroupModal]
@@ -184,7 +184,7 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
                   >
                     {grp}
                   </Badge>
-                )
+                ),
               }))}
             />
           </MemberCard>
@@ -195,7 +195,7 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
-  query
+  query,
 }): Promise<{
   props: { dao: DAO | null; members: Member[]; availableGroups: string[] };
 }> => {
@@ -203,7 +203,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const [dao, proposals] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
-    SputnikHttpService.getProposals(daoId)
+    SputnikHttpService.getProposals(daoId),
   ]);
   const members = dao ? extractMembersFromDao(dao, proposals) : [];
 
@@ -217,8 +217,8 @@ export const getServerSideProps: GetServerSideProps = async ({
     props: {
       dao,
       members,
-      availableGroups: uniq(availableGroups)
-    }
+      availableGroups: uniq(availableGroups),
+    },
   };
 };
 

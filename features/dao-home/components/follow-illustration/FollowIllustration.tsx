@@ -69,13 +69,13 @@ interface FollowIllustrationProps {
 }
 
 const FollowIllustration: FC<FollowIllustrationProps> = ({
-  variant = 'follow'
+  variant = 'follow',
 }) => {
   return (
     <div className={styles.root}>
       <div
         className={cn(styles.path, {
-          [styles.unfollow]: variant === 'unfollow'
+          [styles.unfollow]: variant === 'unfollow',
         })}
       >
         {PATH}

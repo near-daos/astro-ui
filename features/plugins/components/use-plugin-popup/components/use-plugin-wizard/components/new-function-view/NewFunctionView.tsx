@@ -30,8 +30,8 @@ const NewFunctionView: FC = () => {
       nearFunction: {
         id: nanoid(),
         functionName: '',
-        code
-      }
+        code,
+      },
     });
   }, [code, setData]);
 
@@ -62,7 +62,7 @@ const NewFunctionView: FC = () => {
             enableLiveAutocompletion: true,
             enableSnippets: false,
             showLineNumbers: false,
-            tabSize: 2
+            tabSize: 2,
           }}
         />
       </div>

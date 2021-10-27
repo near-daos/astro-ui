@@ -11,7 +11,7 @@ import LinksTab from './components/links-tab/LinksTab';
 import styles from './dao-settings-view.module.scss';
 
 const FlagTab = dynamic(import('features/dao-settings/components/flag-tab'), {
-  ssr: false
+  ssr: false,
 });
 
 interface DaoSettingsPageProps {
@@ -35,11 +35,11 @@ export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
           currentDaoMetadata={{
             links: dao.links,
             flag: dao.logo,
-            displayName: dao.displayName
+            displayName: dao.displayName,
           }}
           proposalBond={dao.policy.proposalBond}
         />
-      )
+      ),
     },
     {
       id: 2,
@@ -52,11 +52,11 @@ export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
           currentDaoMetadata={{
             links: dao.links,
             flag: dao.logo,
-            displayName: dao.displayName
+            displayName: dao.displayName,
           }}
           proposalBond={dao.policy.proposalBond}
         />
-      )
+      ),
     },
     {
       id: 3,
@@ -78,7 +78,7 @@ export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
             .toNumber()}
           proposalBond={dao.policy.proposalBond}
         />
-      )
+      ),
     },
     {
       id: 4,
@@ -91,12 +91,12 @@ export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
           currentDaoMetadata={{
             links: dao.links,
             flag: dao.logo,
-            displayName: dao.displayName
+            displayName: dao.displayName,
           }}
           proposalBond={dao.policy.proposalBond}
         />
-      )
-    }
+      ),
+    },
   ];
 
   return (

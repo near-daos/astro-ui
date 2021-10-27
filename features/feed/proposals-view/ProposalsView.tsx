@@ -24,8 +24,8 @@ export const ProposalsView: FC<ProposalsTabProps> = ({ proposals, filter }) => {
         pathname: '',
         query: {
           ...router.query,
-          daoViewFilter
-        }
+          daoViewFilter,
+        },
       });
     },
     [router]

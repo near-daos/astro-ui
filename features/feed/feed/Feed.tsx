@@ -17,7 +17,7 @@ import { useCustomTokensContext } from 'context/CustomTokensContext';
 import styles from './feed.module.scss';
 
 const StatusFilter = dynamic(import('features/feed/status-filter'), {
-  ssr: false
+  ssr: false,
 });
 
 interface FeedProps {
@@ -37,7 +37,7 @@ export const Feed: FC<FeedProps> = ({
   bounties,
   filter,
   title,
-  apiTokens
+  apiTokens,
 }) => {
   const router = useRouter();
   const isLoading = useRouterLoading();
@@ -56,17 +56,17 @@ export const Feed: FC<FeedProps> = ({
     {
       id: 0,
       label: 'All proposals',
-      content
+      content,
     },
     {
       id: 1,
       label: 'Governance',
-      content
+      content,
     },
     {
       id: 2,
       label: 'Financial',
-      content
+      content,
     },
     {
       id: 3,
@@ -74,18 +74,18 @@ export const Feed: FC<FeedProps> = ({
       content: getTabContent(
         <BountiesList bountiesList={bounties} status="In progress" />,
         isLoading
-      )
+      ),
     },
     {
       id: 4,
       label: 'Polls',
-      content
+      content,
     },
     {
       id: 5,
       label: 'Groups',
-      content
-    }
+      content,
+    },
   ];
 
   return (
@@ -99,7 +99,7 @@ export const Feed: FC<FeedProps> = ({
             onClick={() => {
               router.push({
                 pathname: '',
-                query: omit(router.query, ['daoViewFilter'])
+                query: omit(router.query, ['daoViewFilter']),
               });
             }}
           >

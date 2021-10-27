@@ -27,7 +27,7 @@ interface AddRemoveMemberProps extends ProposalContentProps {
 export const AddMemberToGroup: FC<AddRemoveMemberProps> = ({
   name,
   groupName,
-  link
+  link,
 }) => (
   <>
     <div className={styles.row}>
@@ -48,13 +48,13 @@ export const AddMemberToGroup: FC<AddRemoveMemberProps> = ({
 
 AddMemberToGroup.defaultProps = {
   link: '',
-  linkTitle: ''
+  linkTitle: '',
 } as ProposalContentProps;
 
 export const RemoveMemberFromGroup: FC<AddRemoveMemberProps> = ({
   name,
   groupName,
-  link
+  link,
 }) => (
   <>
     <div className={styles.row}>
@@ -75,7 +75,7 @@ export const RemoveMemberFromGroup: FC<AddRemoveMemberProps> = ({
 
 RemoveMemberFromGroup.defaultProps = {
   link: '',
-  linkTitle: ''
+  linkTitle: '',
 } as ProposalContentProps;
 
 interface NewGroupProps extends ProposalContentProps {
@@ -100,7 +100,7 @@ export const CreateNewGroup: FC<NewGroupProps> = ({ groupName, link }) => (
 
 CreateNewGroup.defaultProps = {
   link: '',
-  linkTitle: ''
+  linkTitle: '',
 } as ProposalContentProps;
 
 interface RequestPayoutProps extends ProposalContentProps {
@@ -115,7 +115,7 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
   token,
   recipient,
   reason,
-  link
+  link,
 }) => {
   const { tokens } = useCustomTokensContext();
 
@@ -129,7 +129,7 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
 
     return {
       value,
-      symbol
+      symbol,
     };
   }, [amount, token, tokens]);
 
@@ -158,7 +158,7 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
 
 RequestPayout.defaultProps = {
   link: '',
-  reason: ''
+  reason: '',
 } as Partial<ProposalContentProps>;
 
 interface TextWithLinkProps extends ProposalContentProps {
@@ -182,7 +182,7 @@ export const TextWithLink: FC<TextWithLinkProps> = ({ text, link }) => {
 
 TextWithLink.defaultProps = {
   link: '',
-  linkTitle: ''
+  linkTitle: '',
 } as ProposalContentProps;
 
 interface FunctionCallProps extends ProposalContentProps {

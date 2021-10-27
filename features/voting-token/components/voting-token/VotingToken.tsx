@@ -5,7 +5,7 @@ import { Button } from 'components/button/Button';
 
 import {
   StakeTokensPopup,
-  StakeResult
+  StakeResult,
 } from 'features/voting-token/components/stake-tokens-popup';
 import { useModal } from 'components/modal';
 
@@ -28,7 +28,7 @@ export interface VotingTokenProps {
 export const VotingToken: FC<VotingTokenProps> = ({
   token,
   balance,
-  onStake
+  onStake,
 }) => {
   const [showModal] = useModal(StakeTokensPopup, { token, rate: 18 });
 

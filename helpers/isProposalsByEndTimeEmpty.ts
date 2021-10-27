@@ -8,7 +8,7 @@ export function isProposalsByEndTimeEmpty(data: ProposalsByEndTime): boolean {
     lessThanDayProposals,
     lessThanWeekProposals,
     moreThanWeekProposals,
-    otherProposals
+    otherProposals,
   } = data;
 
   return (

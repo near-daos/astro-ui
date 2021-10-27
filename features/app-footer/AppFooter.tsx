@@ -12,7 +12,7 @@ export interface AppFooterProps {
 
 export const AppFooter: FC<AppFooterProps> = ({
   isLandingPage,
-  isLoggedIn
+  isLoggedIn,
 }) => {
   function renderSocialIcon(href: string, icon: IconName) {
     return (
