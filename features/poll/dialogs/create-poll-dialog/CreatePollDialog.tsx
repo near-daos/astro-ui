@@ -1,15 +1,16 @@
-import { Icon } from 'components/Icon';
-
-import { Modal } from 'components/modal';
-
-import { CreatePollForm } from 'features/poll/dialogs/create-poll-dialog/components/CreatePollForm';
-import styles from 'features/poll/dialogs/poll-dialogs.module.scss';
-import { useDao } from 'hooks/useDao';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback } from 'react';
+
+import { Icon } from 'components/Icon';
+import { Modal } from 'components/modal';
+import { SputnikWalletError } from 'errors/SputnikWalletError';
+import { CreatePollForm } from 'features/poll/dialogs/create-poll-dialog/components/CreatePollForm';
+import { useDao } from 'hooks/useDao';
 import { SputnikNearService } from 'services/sputnik';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+
+import styles from 'features/poll/dialogs/poll-dialogs.module.scss';
 
 export interface CreatePollDialogProps {
   isOpen: boolean;
@@ -26,22 +27,38 @@ export const CreatePollDialog: FC<CreatePollDialogProps> = ({
 
   const handleSubmit = useCallback(
     async data => {
-      if (!currentDao) return;
+      if (!currentDao) {
+        console.error('!currentDao');
 
-      await SputnikNearService.createProposal({
-        daoId: currentDao.id,
-        description: `${data.question}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
-        kind: 'Vote',
-        bond: currentDao.policy.proposalBond,
-      });
+        return;
+      }
 
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000,
-      });
+      try {
+        await SputnikNearService.createProposal({
+          daoId: currentDao.id,
+          description: `${data.question}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
+          kind: 'Vote',
+          bond: currentDao.policy.proposalBond,
+        });
 
-      onClose();
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+          lifetime: 20000,
+        });
+
+        onClose();
+      } catch (error) {
+        console.warn(error);
+
+        if (error instanceof SputnikWalletError) {
+          showNotification({
+            type: NOTIFICATION_TYPES.ERROR,
+            description: error.message,
+            lifetime: 20000,
+          });
+        }
+      }
     },
     [onClose, currentDao]
   );

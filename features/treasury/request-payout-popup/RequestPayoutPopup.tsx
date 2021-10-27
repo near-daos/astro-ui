@@ -1,19 +1,20 @@
+import { useRouter } from 'next/router';
+import React, { useCallback } from 'react';
+import Decimal from 'decimal.js';
+
 import { Icon } from 'components/Icon';
 import { Modal } from 'components/modal';
+import { VoteDetails } from 'components/vote-details';
 import {
   IRequestPayoutForm,
   RequestPayoutForm,
 } from 'features/treasury/request-payout-popup/components/RequestPayoutForm';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { useDao } from 'hooks/useDao';
-import { useRouter } from 'next/router';
-import React, { useCallback } from 'react';
-import Decimal from 'decimal.js';
 import { SputnikNearService } from 'services/sputnik';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
-
+import { SputnikWalletError } from 'errors/SputnikWalletError';
 import { useCustomTokensContext } from 'context/CustomTokensContext';
-import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-import { VoteDetails } from 'components/vote-details';
 
 import styles from './request-payout-popup.module.scss';
 
@@ -36,7 +37,9 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
 
   const handleSubmit = useCallback(
     async (data: IRequestPayoutForm) => {
-      if (currentDao) {
+      if (!currentDao) return;
+
+      try {
         const token = tokens[data.tokenSymbol];
 
         if (token.tokenId) {
@@ -64,6 +67,16 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
         });
 
         onClose(true);
+      } catch (error) {
+        console.warn(error);
+
+        if (error instanceof SputnikWalletError) {
+          showNotification({
+            type: NOTIFICATION_TYPES.ERROR,
+            description: error.message,
+            lifetime: 20000,
+          });
+        }
       }
     },
     [tokens, onClose, currentDao]

@@ -148,16 +148,8 @@ class SputnikNearServiceClass {
     );
   }
 
-  public async createDao(params: CreateDaoInput): Promise<boolean> {
-    try {
-      await this.sputnikDaoService.create(params);
-
-      return true;
-    } catch (err) {
-      console.error(err);
-    }
-
-    return false;
+  public async createDao(params: CreateDaoInput): Promise<void> {
+    await this.sputnikDaoService.create(params);
   }
 
   public async createProposal(params: CreateProposalParams) {

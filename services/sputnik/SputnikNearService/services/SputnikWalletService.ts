@@ -19,9 +19,7 @@ export class SputnikWalletService {
     this.walletConnection = new SputnikWalletConnection(this.near, 'sputnik');
   }
 
-  public async login(
-    contractId: string = nearConfig.contractName
-  ): Promise<void> {
+  public async login(contractId = nearConfig.contractName): Promise<void> {
     await this.walletConnection.sputnikRequestSignIn(
       contractId,
       this.successUrl,

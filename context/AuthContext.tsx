@@ -4,8 +4,11 @@ import { createContext, FC, useContext, useState } from 'react';
 import { ALL_DAOS_URL } from 'constants/routing';
 import { ACCOUNT_COOKIE, DAO_COOKIE } from 'constants/cookies';
 
+import { SputnikWalletError } from 'errors/SputnikWalletError';
 import { SputnikNearService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
+
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 interface AuthContextInterface {
   accountId: string;
@@ -35,8 +38,15 @@ export const AuthWrapper: FC = ({ children }) => {
         setAccountId(id);
       }
     } catch (err) {
-      // TODO: add error handling
-      console.error(err);
+      console.warn(err);
+
+      if (err instanceof SputnikWalletError) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          description: err.message,
+          lifetime: 20000,
+        });
+      }
     }
   }
 

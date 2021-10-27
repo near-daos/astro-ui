@@ -1,8 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 import * as borsh from 'borsh';
-import { reject } from 'lodash';
-import { KeyPair, WalletConnection, ConnectedWalletAccount } from 'near-api-js';
-import { Transaction, SCHEMA } from 'near-api-js/lib/transaction';
+import { ConnectedWalletAccount, KeyPair, WalletConnection } from 'near-api-js';
+import { SCHEMA, Transaction } from 'near-api-js/lib/transaction';
+
+import {
+  SputnikWalletError,
+  SputnikWalletErrorCodes,
+} from 'errors/SputnikWalletError';
 
 import { SputnikConnectedWalletAccount } from './SputnikConnectedWalletAccount';
 
@@ -40,14 +44,14 @@ export class SputnikWalletConnection extends WalletConnection {
       accessKey
     );
 
-    return new Promise<string | undefined>(resolve => {
+    return new Promise<string | undefined>((resolve, reject) => {
       if (win?.location) {
         win.location.href = newUrl.toString();
       }
 
       window.sputnikRequestSignInCompleted = async ({
         accountId,
-        errorCode = 'unknown',
+        errorCode,
       }) => {
         win?.close();
 
@@ -57,7 +61,11 @@ export class SputnikWalletConnection extends WalletConnection {
           return;
         }
 
-        reject(new Error(errorCode));
+        reject(
+          new SputnikWalletError({
+            errorCode: errorCode || SputnikWalletErrorCodes.userRejected,
+          })
+        );
       };
     });
   }

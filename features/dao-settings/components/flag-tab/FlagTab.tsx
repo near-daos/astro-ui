@@ -1,5 +1,10 @@
+import React, { FC } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useToggle } from 'react-use';
+import { useSWRConfig } from 'swr';
 import { useRouter } from 'next/router';
 import { yupResolver } from '@hookform/resolvers/yup';
+
 import {
   CropReturnType,
   SelectFlag,
@@ -9,12 +14,10 @@ import {
   schema,
 } from 'features/dao-settings/components/links-tab';
 import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
-import React, { FC } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useToggle } from 'react-use';
-import awsUploader from 'services/AwsUploader/AwsUploader';
-import { useSWRConfig } from 'swr';
 
+import awsUploader from 'services/AwsUploader/AwsUploader';
+
+import { SputnikWalletError } from 'errors/SputnikWalletError';
 import { DaoConfig } from 'types/proposal';
 import {
   DaoMetadata,
@@ -27,6 +30,7 @@ import {
 } from 'features/dao-settings/helpers';
 import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+
 import styles from './flag-tab.module.scss';
 
 interface FlagTabProps {
@@ -69,34 +73,46 @@ const FlagTab: FC<FlagTabProps> = ({
   });
 
   async function onSubmit(data: CropReturnType) {
-    const { Key: fileName } = await awsUploader.uploadToBucket(data.file);
-    const newDaoConfig: DaoConfig = {
-      name,
-      purpose,
-      metadata: fromMetadataToBase64({
-        links: currentDaoMetadata.links,
-        flag: fileName,
-        displayName: currentDaoMetadata.displayName,
-      }),
-    };
+    try {
+      const { Key: fileName } = await awsUploader.uploadToBucket(data.file);
+      const newDaoConfig: DaoConfig = {
+        name,
+        purpose,
+        metadata: fromMetadataToBase64({
+          links: currentDaoMetadata.links,
+          flag: fileName,
+          displayName: currentDaoMetadata.displayName,
+        }),
+      };
 
-    await SputnikNearService.createProposal(
-      getChangeConfigProposal(
-        daoId,
-        newDaoConfig,
-        'Changing flag',
-        proposalBond
-      )
-    );
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-      lifetime: 20000,
-    });
-    await mutate('/daos');
-    setViewMode(true);
+      await SputnikNearService.createProposal(
+        getChangeConfigProposal(
+          daoId,
+          newDaoConfig,
+          'Changing flag',
+          proposalBond
+        )
+      );
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+        lifetime: 20000,
+      });
+      await mutate('/daos');
+      setViewMode(true);
 
-    navigateToDaoPage(router);
+      navigateToDaoPage(router);
+    } catch (error) {
+      console.warn(error);
+
+      if (error instanceof SputnikWalletError) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          description: error.message,
+          lifetime: 20000,
+        });
+      }
+    }
   }
 
   const fileName = daoId;

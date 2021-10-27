@@ -1,16 +1,15 @@
-import { Bounty } from 'components/cards/bounty-card/types';
-
-import { Modal } from 'components/modal';
-
-import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
-
-import UnclaimBountyContent from 'features/bounty/dialogs/unclaim-bounty-dialog/components/UnclaimBountyContent';
-
 import React, { FC, useCallback } from 'react';
-import { SputnikNearService } from 'services/sputnik';
+
+import { SputnikWalletError } from 'errors/SputnikWalletError';
+import { Bounty } from 'components/cards/bounty-card/types';
+import { Modal } from 'components/modal';
+import UnclaimBountyContent from 'features/bounty/dialogs/unclaim-bounty-dialog/components/UnclaimBountyContent';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { SputnikNearService } from 'services/sputnik';
 import { DAO } from 'types/dao';
 import { Token } from 'types/token';
+
+import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 
 export interface UnclaimBountyDialogProps {
   isOpen: boolean;
@@ -28,15 +27,27 @@ export const UnclaimBountyDialog: FC<UnclaimBountyDialogProps> = ({
   token,
 }) => {
   const handleSubmit = useCallback(async () => {
-    await SputnikNearService.unclaimBounty(dao.id, data.id);
+    try {
+      await SputnikNearService.unclaimBounty(dao.id, data.id);
 
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
-      lifetime: 20000,
-    });
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
+        lifetime: 20000,
+      });
 
-    onClose('submitted');
+      onClose('submitted');
+    } catch (error) {
+      console.warn(error);
+
+      if (error instanceof SputnikWalletError) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          description: error.message,
+          lifetime: 20000,
+        });
+      }
+    }
   }, [data.id, onClose, dao]);
 
   return (

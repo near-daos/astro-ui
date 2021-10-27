@@ -1,11 +1,14 @@
+import React, { FC, useCallback } from 'react';
+
 import { Bounty } from 'components/cards/bounty-card/types';
 import { Modal } from 'components/modal';
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
-import React, { FC, useCallback } from 'react';
 import { SputnikNearService } from 'services/sputnik';
+import { SputnikWalletError } from 'errors/SputnikWalletError';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { DAO } from 'types/dao';
 import { Token } from 'types/token';
+
 import ClaimBountyContent from './components/ClaimBountyContent';
 
 export interface ClaimBountyDialogProps {
@@ -24,19 +27,31 @@ export const ClaimBountyDialog: FC<ClaimBountyDialogProps> = ({
   token,
 }) => {
   const handleSubmit = useCallback(async () => {
-    await SputnikNearService.claimBounty(dao.id, {
-      bountyId: Number(data.id),
-      deadline: data.deadlineThreshold,
-      bountyBond: dao.policy.proposalBond,
-    });
+    try {
+      await SputnikNearService.claimBounty(dao.id, {
+        bountyId: Number(data.id),
+        deadline: data.deadlineThreshold,
+        bountyBond: dao.policy.proposalBond,
+      });
 
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
-      lifetime: 20000,
-    });
+      showNotification({
+        type: NOTIFICATION_TYPES.INFO,
+        description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds`,
+        lifetime: 20000,
+      });
 
-    onClose('submitted');
+      onClose('submitted');
+    } catch (error) {
+      console.warn(error);
+
+      if (error instanceof SputnikWalletError) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          description: error.message,
+          lifetime: 20000,
+        });
+      }
+    }
   }, [
     dao.id,
     data.id,

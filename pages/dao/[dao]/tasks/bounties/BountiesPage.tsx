@@ -104,7 +104,7 @@ const BountiesPage: FC<BountiesPageProps> = ({
       const result = await showCreateBountyDialog();
 
       if (result.includes('submitted')) {
-        router.push(`/dao/${dao?.id}`);
+        await router.push(`/dao/${dao?.id}`);
       }
     }
   }, [accountId, login, showCreateBountyDialog, router, dao?.id]);

@@ -6,6 +6,8 @@ import { SINGLE_DAO_PAGE } from 'constants/routing';
 
 import { useDao } from 'hooks/useDao';
 
+import { SputnikWalletError } from 'errors/SputnikWalletError';
+
 import { Button } from 'components/button/Button';
 import { Badge, Variant } from 'components/badge/Badge';
 
@@ -72,24 +74,36 @@ const VotingPolicyPage: FC = () => {
     setViewMode(true);
 
     if (data && dao && !isEqual(getInitialData(dao), data)) {
-      const proposal = getNewProposalObject(dao, data);
+      try {
+        const proposal = getNewProposalObject(dao, data);
 
-      await SputnikNearService.createProposal(proposal);
+        await SputnikNearService.createProposal(proposal);
 
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000,
-      });
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+          lifetime: 20000,
+        });
 
-      setData(getInitialData(dao));
+        setData(getInitialData(dao));
 
-      router.push({
-        pathname: SINGLE_DAO_PAGE,
-        query: {
-          dao: daoId,
-        },
-      });
+        router.push({
+          pathname: SINGLE_DAO_PAGE,
+          query: {
+            dao: daoId,
+          },
+        });
+      } catch (error) {
+        console.warn(error);
+
+        if (error instanceof SputnikWalletError) {
+          showNotification({
+            type: NOTIFICATION_TYPES.ERROR,
+            description: error.message,
+            lifetime: 20000,
+          });
+        }
+      }
     }
   }, [dao, data, daoId, router]);
 

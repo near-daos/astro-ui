@@ -45,21 +45,16 @@ export class SputnikDaoService {
       utils.format.parseNearAmount(params.amountToTransfer) || '0'
     );
 
-    try {
-      await this.functionCall({
-        contractId: this.factoryContractId,
-        methodName: 'create',
-        args: {
-          name: params.name,
-          args,
-        },
-        gas: new BN('300000000000000'),
-        attachedDeposit: amount,
-      });
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
+    await this.functionCall({
+      contractId: this.factoryContractId,
+      methodName: 'create',
+      args: {
+        name: params.name,
+        args,
+      },
+      gas: new BN('300000000000000'),
+      attachedDeposit: amount,
+    });
   }
 
   async addProposal(

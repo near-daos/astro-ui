@@ -1,18 +1,18 @@
-import { Icon } from 'components/Icon';
-import { Modal } from 'components/modal';
-
-import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import React, { FC, useCallback } from 'react';
-
-import { SputnikNearService } from 'services/sputnik';
-import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-import { VoteDetails } from 'components/vote-details';
 
 import { Tokens } from 'context/CustomTokensContext';
 import { DAO } from 'types/dao';
+import { SputnikWalletError } from 'errors/SputnikWalletError';
+import { SputnikNearService } from 'services/sputnik';
+import { Icon } from 'components/Icon';
+import { Modal } from 'components/modal';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { VoteDetails } from 'components/vote-details';
+
+import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
+
 import { CreateBountyForm } from './components/create-bounty-form/CreateBountyForm';
 import { getAddBountyProposal } from './helpers';
-
 import { CreateBountyInput } from './types';
 
 export interface CreateBountyDialogProps {
@@ -31,22 +31,36 @@ export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
   onClose,
 }) => {
   const handleSubmit = useCallback(
-    (data: CreateBountyInput) => {
+    async (data: CreateBountyInput) => {
       if (!dao) {
         console.error(
           'Bounty proposal can not be created. No dao id specified'
         );
-      } else {
-        const proposal = getAddBountyProposal(dao, data, tokens);
 
-        SputnikNearService.createProposal(proposal).then(() => {
+        return;
+      }
+
+      const proposal = getAddBountyProposal(dao, data, tokens);
+
+      try {
+        await SputnikNearService.createProposal(proposal);
+
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+          lifetime: 20000,
+        });
+        onClose('submitted');
+      } catch (error) {
+        console.warn(error);
+
+        if (error instanceof SputnikWalletError) {
           showNotification({
-            type: NOTIFICATION_TYPES.INFO,
-            description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+            type: NOTIFICATION_TYPES.ERROR,
+            description: error.message,
             lifetime: 20000,
           });
-          onClose('submitted');
-        });
+        }
       }
     },
     [dao, onClose, tokens]

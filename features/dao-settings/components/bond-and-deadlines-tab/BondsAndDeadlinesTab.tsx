@@ -1,3 +1,10 @@
+import { useRouter } from 'next/router';
+import React, { FC, useCallback } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useToggle } from 'react-use';
+import * as yup from 'yup';
+import cn from 'classnames';
+
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from 'components/inputs/input/Input';
 import { ProposalBanner } from 'features/dao-settings/components/proposal-banner';
@@ -6,16 +13,11 @@ import {
   BondsAndDeadlinesData,
   getChangeBondDeadlinesProposal,
 } from 'features/dao-settings/helpers';
+import { SputnikWalletError } from 'errors/SputnikWalletError';
 import { useDao } from 'hooks/useDao';
-import { useRouter } from 'next/router';
-import React, { FC, useCallback } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useToggle } from 'react-use';
 import { SputnikNearService } from 'services/sputnik';
-import * as yup from 'yup';
 import { EditButton } from 'features/dao-settings/components/edit-button/EditButton';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-import cn from 'classnames';
 
 import styles from './bonds-and-deadlines-tab.module.scss';
 
@@ -88,7 +90,9 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
 
   const onSubmit = useCallback(
     async (data: BondsAndDeadlinesData) => {
-      if (dao != null) {
+      if (!dao) return;
+
+      try {
         const proposal = getChangeBondDeadlinesProposal(
           dao,
           data,
@@ -106,6 +110,16 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
         setViewMode(true);
 
         navigateToDaoPage(router);
+      } catch (error) {
+        console.warn(error);
+
+        if (error instanceof SputnikWalletError) {
+          showNotification({
+            type: NOTIFICATION_TYPES.ERROR,
+            description: error.message,
+            lifetime: 20000,
+          });
+        }
       }
     },
     [dao, proposalBond, setViewMode, props, router]

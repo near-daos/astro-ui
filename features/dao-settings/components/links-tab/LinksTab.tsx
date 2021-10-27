@@ -15,6 +15,7 @@ import { useToggle } from 'react-use';
 import { validUrlRegexp } from 'utils/regexp';
 import * as yup from 'yup';
 
+import { SputnikWalletError } from 'errors/SputnikWalletError';
 import { DaoConfig } from 'types/proposal';
 import {
   DaoMetadata,
@@ -113,35 +114,47 @@ const LinksTab: FC<LinksTabProps> = ({
 
   const onSubmit = useCallback(
     async (data: LinksFormData) => {
-      const url = currentDaoMetadata.flag.split('/');
-      const fileName = url[url.length - 1];
+      try {
+        const url = currentDaoMetadata.flag.split('/');
+        const fileName = url[url.length - 1];
 
-      const newDaoConfig: DaoConfig = {
-        name,
-        purpose,
-        metadata: fromMetadataToBase64({
-          links: data.links.map(item => item.url),
-          flag: fileName,
-          displayName: currentDaoMetadata.displayName,
-        }),
-      };
+        const newDaoConfig: DaoConfig = {
+          name,
+          purpose,
+          metadata: fromMetadataToBase64({
+            links: data.links.map(item => item.url),
+            flag: fileName,
+            displayName: currentDaoMetadata.displayName,
+          }),
+        };
 
-      await SputnikNearService.createProposal(
-        getChangeConfigProposal(
-          daoId,
-          newDaoConfig,
-          'Changing links',
-          proposalBond
-        )
-      );
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000,
-      });
-      setViewMode(true);
+        await SputnikNearService.createProposal(
+          getChangeConfigProposal(
+            daoId,
+            newDaoConfig,
+            'Changing links',
+            proposalBond
+          )
+        );
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+          lifetime: 20000,
+        });
+        setViewMode(true);
 
-      navigateToDaoPage(router);
+        navigateToDaoPage(router);
+      } catch (error) {
+        console.warn(error);
+
+        if (error instanceof SputnikWalletError) {
+          showNotification({
+            type: NOTIFICATION_TYPES.ERROR,
+            description: error.message,
+            lifetime: 20000,
+          });
+        }
+      }
     },
     [
       name,

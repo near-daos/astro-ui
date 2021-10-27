@@ -8,6 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { DaoConfig } from 'types/proposal';
 
+import { SputnikWalletError } from 'errors/SputnikWalletError';
 import { Input } from 'components/inputs/input/Input';
 import { TextArea } from 'components/inputs/textarea/TextArea';
 import {
@@ -74,40 +75,52 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
 
   const onSubmit = useCallback(
     async (data: NameAndPurposeData) => {
-      setSubmitting(true);
+      try {
+        setSubmitting(true);
 
-      const { links, flag } = currentDaoMetadata;
+        const { links, flag } = currentDaoMetadata;
 
-      const url = flag.split('/');
-      const fileName = url[url.length - 1];
+        const url = flag.split('/');
+        const fileName = url[url.length - 1];
 
-      const newDaoConfig: DaoConfig = {
-        name,
-        purpose: data.purpose,
-        metadata: fromMetadataToBase64({
-          links,
-          flag: fileName,
-          displayName: data.displayName,
-        }),
-      };
+        const newDaoConfig: DaoConfig = {
+          name,
+          purpose: data.purpose,
+          metadata: fromMetadataToBase64({
+            links,
+            flag: fileName,
+            displayName: data.displayName,
+          }),
+        };
 
-      await SputnikNearService.createProposal(
-        getChangeConfigProposal(
-          daoId,
-          newDaoConfig,
-          'Changing name/purpose',
-          proposalBond
-        )
-      );
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000,
-      });
-      setSubmitting(false);
-      setViewMode(true);
+        await SputnikNearService.createProposal(
+          getChangeConfigProposal(
+            daoId,
+            newDaoConfig,
+            'Changing name/purpose',
+            proposalBond
+          )
+        );
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+          lifetime: 20000,
+        });
+        setSubmitting(false);
+        setViewMode(true);
 
-      navigateToDaoPage(router);
+        navigateToDaoPage(router);
+      } catch (error) {
+        console.warn(error);
+
+        if (error instanceof SputnikWalletError) {
+          showNotification({
+            type: NOTIFICATION_TYPES.ERROR,
+            description: error.message,
+            lifetime: 20000,
+          });
+        }
+      }
     },
     [
       name,

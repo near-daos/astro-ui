@@ -1,27 +1,29 @@
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { GetServerSideProps, NextPage } from 'next';
 import { useEffect } from 'react';
+
+import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
+
 import { SputnikNearService } from 'services/sputnik';
 
 const Callback: NextPage = () => {
   useEffect(() => {
-    if (window.opener && window.opener.sputnikRequestSignInCompleted) {
+    if (window.opener?.sputnikRequestSignInCompleted) {
       const { searchParams } = new URL(window.location.toString());
       const accountId = searchParams.get('account_id') || undefined;
-      const errorCode = searchParams.get('errorCode') || undefined;
+      const errorCode = (searchParams.get('errorCode') ||
+        undefined) as SputnikWalletErrorCodes;
 
       SputnikNearService.init();
 
-      window.opener?.sputnikRequestSignInCompleted({ accountId, errorCode });
+      window.opener.sputnikRequestSignInCompleted({ accountId, errorCode });
 
       setTimeout(() => {
         window.close();
       }, 1500);
     } else {
       console.error('Unable to find login callback function');
-      setTimeout(() => {
-        window.close();
-      }, 1500);
+      window.close();
     }
   }, []);
 

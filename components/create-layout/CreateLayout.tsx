@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+
+import { NotificationContainer } from 'features/notifications';
 import { AppHeader } from 'features/app-header';
 import { AppFooter } from 'features/app-footer';
 import { SearchResults } from 'features/search/search-results';
@@ -11,6 +13,7 @@ const CreateLayout: FC = ({ children }) => {
       <SearchResults>
         <AppHeader isLandingPage />
         <main className={styles.main}>{children}</main>
+        <NotificationContainer />
       </SearchResults>
       <AppFooter isLandingPage />
     </div>

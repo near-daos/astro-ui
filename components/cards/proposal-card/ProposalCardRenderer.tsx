@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react';
-import { Proposal, ProposalType } from 'types/proposal';
+import { useRouter } from 'next/router';
 import {
   AddMemberToGroup,
   FunctionCall,
@@ -7,12 +7,12 @@ import {
   RequestPayout,
   TextWithLink,
 } from 'components/cards/proposal-card/components/proposal-content/proposal-content';
+import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card/components/proposed-changes-renderer';
 import { ProposalCard } from 'components/cards/proposal-card/ProposalCard';
-
+import { Proposal, ProposalType } from 'types/proposal';
 import { SputnikNearService } from 'services/sputnik';
 import { useAuthContext } from 'context/AuthContext';
-import { useRouter } from 'next/router';
-import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card/components/proposed-changes-renderer';
+import { SputnikWalletError } from 'errors/SputnikWalletError';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 interface ProposalCardRendererProps {
@@ -33,19 +33,31 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
         e.stopPropagation();
       }
 
-      await SputnikNearService.vote(
-        proposal.daoId,
-        proposal.proposalId,
-        'VoteApprove'
-      );
+      try {
+        await SputnikNearService.vote(
+          proposal.daoId,
+          proposal.proposalId,
+          'VoteApprove'
+        );
 
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
-        lifetime: 20000,
-      });
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
+          lifetime: 20000,
+        });
 
-      await router.replace(router.asPath);
+        await router.replace(router.asPath);
+      } catch (error) {
+        console.warn(error);
+
+        if (error instanceof SputnikWalletError) {
+          showNotification({
+            type: NOTIFICATION_TYPES.ERROR,
+            description: error.message,
+            lifetime: 20000,
+          });
+        }
+      }
     },
     [proposal.daoId, proposal.proposalId, router]
   );
@@ -56,19 +68,31 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
         e.stopPropagation();
       }
 
-      await SputnikNearService.vote(
-        proposal.daoId,
-        proposal.proposalId,
-        'VoteReject'
-      );
+      try {
+        await SputnikNearService.vote(
+          proposal.daoId,
+          proposal.proposalId,
+          'VoteReject'
+        );
 
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
-        lifetime: 20000,
-      });
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
+          lifetime: 20000,
+        });
 
-      await router.replace(router.asPath);
+        await router.replace(router.asPath);
+      } catch (error) {
+        console.warn(error);
+
+        if (error instanceof SputnikWalletError) {
+          showNotification({
+            type: NOTIFICATION_TYPES.ERROR,
+            description: error.message,
+            lifetime: 20000,
+          });
+        }
+      }
     },
     [proposal.daoId, proposal.proposalId, router]
   );
@@ -79,19 +103,31 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
         e.stopPropagation();
       }
 
-      await SputnikNearService.vote(
-        proposal.daoId,
-        proposal.proposalId,
-        'VoteRemove'
-      );
+      try {
+        await SputnikNearService.vote(
+          proposal.daoId,
+          proposal.proposalId,
+          'VoteRemove'
+        );
 
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
-        lifetime: 20000,
-      });
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please refresh the page in few seconds.`,
+          lifetime: 20000,
+        });
 
-      await router.replace(router.asPath);
+        await router.replace(router.asPath);
+      } catch (error) {
+        console.warn(error);
+
+        if (error instanceof SputnikWalletError) {
+          showNotification({
+            type: NOTIFICATION_TYPES.ERROR,
+            description: error.message,
+            lifetime: 20000,
+          });
+        }
+      }
     },
     [proposal.daoId, proposal.proposalId, router]
   );

@@ -1,6 +1,7 @@
 import { Icon, IconName } from 'components/Icon';
 
 import { Modal } from 'components/modal';
+import { SputnikWalletError } from 'errors/SputnikWalletError';
 import { GroupForm } from 'features/groups/components/GroupForm';
 
 import {
@@ -61,9 +62,17 @@ export const GroupPopup: React.FC<GroupPopupProps> = ({
 
   const handleSubmit = useCallback(
     async (data: IGroupForm) => {
-      let proposalData;
+      try {
+        let proposalData;
 
-      if (currentDao) {
+        if (!currentDao) {
+          console.error(
+            'GroupPopup: There is no selected daoId. Can not create proposal.'
+          );
+
+          return;
+        }
+
         if (groupType === GroupFormType.ADD_TO_GROUP) {
           proposalData = getAddMemberProposal(data, currentDao);
         } else if (groupType === GroupFormType.REMOVE_FROM_GROUP) {
@@ -72,23 +81,31 @@ export const GroupPopup: React.FC<GroupPopupProps> = ({
           proposalData = getChangePolicyProposal(data, currentDao);
         }
 
-        if (proposalData) {
-          await SputnikNearService.createProposal(proposalData);
+        if (!proposalData) {
+          console.error('No proposal data to create proposal');
+
+          return;
+        }
+
+        await SputnikNearService.createProposal(proposalData);
+        showNotification({
+          type: NOTIFICATION_TYPES.INFO,
+          description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+          lifetime: 20000,
+        });
+
+        onClose();
+      } catch (error) {
+        console.warn(error);
+
+        if (error instanceof SputnikWalletError) {
           showNotification({
-            type: NOTIFICATION_TYPES.INFO,
-            description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+            type: NOTIFICATION_TYPES.ERROR,
+            description: error.message,
             lifetime: 20000,
           });
-        } else {
-          console.error('No proposal data to create proposal');
         }
-      } else {
-        console.error(
-          'GroupPopup: There is no selected daoId. Can not create proposal.'
-        );
       }
-
-      onClose();
     },
     [groupType, onClose, currentDao]
   );

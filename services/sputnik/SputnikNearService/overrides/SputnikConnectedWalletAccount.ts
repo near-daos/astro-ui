@@ -8,6 +8,11 @@ import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { SignAndSendTransactionOptions } from 'near-api-js/lib/account';
 import { Action } from 'near-api-js/lib/transaction';
 
+import {
+  SputnikWalletError,
+  SputnikWalletErrorCodes,
+} from 'errors/SputnikWalletError';
+
 import { SputnikWalletConnection } from './types';
 
 export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
@@ -108,11 +113,11 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
           resolve(result);
         }
 
-        if (errorCode) {
-          reject(new Error(errorCode));
-        }
-
-        reject(new Error('Something went wrong!'));
+        reject(
+          new SputnikWalletError({
+            errorCode: errorCode || SputnikWalletErrorCodes.unknownError,
+          })
+        );
       };
     });
   }
