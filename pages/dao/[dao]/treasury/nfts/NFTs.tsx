@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { GetServerSideProps, NextPage } from 'next';
+import {
+  // GetServerSideProps,
+  NextPage
+} from 'next';
 import { NFTCard } from 'features/nft/ntf-card/NFTCard';
 import { SputnikService } from 'services/SputnikService';
 
@@ -41,17 +44,17 @@ const NFTs: NextPage = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<{
-  nfts: NftToken[];
-}> = async ({ query }) => {
-  const daoId = query.dao as string;
-  const nfts = await SputnikService.getAccountNFTs(daoId);
-
-  return {
-    props: {
-      nfts
-    }
-  };
-};
+// export const getServerSideProps: GetServerSideProps<{
+//   nfts: NftToken[];
+// }> = async ({ query }) => {
+//   const daoId = query.dao as string;
+//   const nfts = await SputnikService.getAccountNFTs(daoId);
+//
+//   return {
+//     props: {
+//       nfts
+//     }
+//   };
+// };
 
 export default NFTs;
