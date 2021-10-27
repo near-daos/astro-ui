@@ -212,6 +212,31 @@ export function getVoteDetails(
   return { details, votersList };
 }
 
+export const filterByVote = (
+  voteStatus: string,
+  votes: VoterDetail[]
+): VoterDetail[] => {
+  return votes.filter(item => {
+    if (voteStatus === 'All') {
+      return true;
+    }
+
+    if (voteStatus === 'Approved') {
+      return item.vote === 'Yes';
+    }
+
+    if (voteStatus === 'Rejected') {
+      return item.vote === 'No';
+    }
+
+    if (voteStatus === 'Dismiss') {
+      return item.vote === 'Dismiss';
+    }
+
+    return false;
+  });
+};
+
 function getThreshold(value: number): [number, number] {
   const fraction = value / 100;
   const gcd = (a: number, b: number): number => {

@@ -1,6 +1,9 @@
+@import 'styles/typography';
+
 .tooltipContainer {
   --tooltipBackground: var(--color-primary-10);
-  --tooltipBorder: var(--color-primary-80);
+  --tooltipBorder: none;
+  @extend %caption1;
   background-color: var(--tooltipBackground);
   border: 1px solid var(--tooltipBorder);
   border-radius: 3px;
@@ -28,7 +31,7 @@
 }
 
 .tooltipArrow::before {
-  border-style: solid;
+  //border-style: solid;
   content: '';
   display: block;
   height: 0;

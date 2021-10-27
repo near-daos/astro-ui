@@ -344,6 +344,22 @@ class SputnikHttpServiceClass {
     return proposals.data.map(mapProposalDTOToProposal);
   }
 
+  public async getProposalById(proposalId: string): Promise<Proposal | null> {
+    try {
+      const { data: proposal } = await this.httpService.get<ProposalDTO>(
+        `/proposals/${proposalId}`
+      );
+
+      return mapProposalDTOToProposal(proposal);
+    } catch (error) {
+      if ([400, 404].includes(error.response.status)) {
+        return null;
+      }
+
+      throw error;
+    }
+  }
+
   public async getProposals(
     daoId?: string,
     offset = 0,

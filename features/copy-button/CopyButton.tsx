@@ -4,6 +4,8 @@ import { Popup } from 'components/popup/Popup';
 import { IconButton } from 'components/button/IconButton';
 import { IconName } from 'components/Icon';
 
+import styles from './copy-button.module.scss';
+
 interface CopyButtonProps {
   text: string;
   className?: string;
@@ -32,7 +34,11 @@ export const CopyButton: FC<CopyButtonProps> = ({
   return (
     <>
       <div ref={setRef} className={className}>
-        <IconButton size="medium" icon={iconName} onClick={copyAccountName} />
+        <IconButton
+          icon={iconName}
+          onClick={copyAccountName}
+          className={styles.btn}
+        />
       </div>
       <Popup anchor={ref} placement="right">
         {tooltip}

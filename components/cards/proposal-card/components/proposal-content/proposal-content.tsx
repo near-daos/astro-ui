@@ -10,6 +10,7 @@ import { Badge } from 'components/badge/Badge';
 import { Icon } from 'components/Icon';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
 import { formatYoktoValue } from 'helpers/format';
+import { getBadgeVariant } from 'features/proposal/helpers';
 
 import styles from './proposal-content.module.scss';
 
@@ -32,7 +33,9 @@ export const AddMemberToGroup: FC<AddRemoveMemberProps> = ({
     <div className={styles.row}>
       <span className={styles.text}>
         Add <b>{name}</b> as member to&nbsp;&nbsp;
-        <Badge size="medium">{groupName}</Badge>
+        <Badge size="medium" variant={getBadgeVariant(groupName)}>
+          {groupName}
+        </Badge>
       </span>
     </div>
     {link && (
@@ -57,7 +60,9 @@ export const RemoveMemberFromGroup: FC<AddRemoveMemberProps> = ({
     <div className={styles.row}>
       <span className={styles.text}>
         Remove <b>{name}</b> from&nbsp;&nbsp;
-        <Badge size="small">{groupName}</Badge>
+        <Badge size="small" variant={getBadgeVariant(groupName)}>
+          {groupName}
+        </Badge>
       </span>
     </div>
     {link && (
@@ -119,7 +124,7 @@ export const RequestPayout: FC<RequestPayoutProps> = ({
       item => item.tokenId === token
     );
     const divider = tokensData?.decimals;
-    const symbol = tokensData?.symbol;
+    const symbol = tokensData?.symbol ?? 'NEAR';
     const value = formatYoktoValue(amount, divider);
 
     return {

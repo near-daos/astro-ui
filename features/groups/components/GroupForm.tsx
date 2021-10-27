@@ -111,6 +111,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
           isValid={touchedFields.detail && !errors.detail?.message}
           defaultValue={initialValues?.detail}
           textAlign="left"
+          maxLength={500}
           resize="none"
           placeholder="Sample text"
           label="Details"

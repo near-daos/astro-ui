@@ -1,0 +1,52 @@
+@import 'styles/typography';
+
+.root {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+
+  > button,
+  div {
+    margin-bottom: 12px;
+  }
+}
+
+.icon {
+  color: var(--color-neutral-50);
+
+  &:hover {
+    color: var(--color-primary-50);
+  }
+}
+
+.mobileRoot {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.open {
+  background-color: var(--color-neutral-10);
+  border-radius: 4px;
+}
+
+.options {
+  background-color: var(--color-neutral-10);
+  border-radius: 4px;
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  padding: 12px 0;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: calc(100vw - 48px);
+}
+
+.button {
+  @extend %subtitle3;
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  text-transform: capitalize;
+}

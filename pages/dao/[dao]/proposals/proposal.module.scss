@@ -1,0 +1,157 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-template-areas:
+    'breadcrumb breadcrumb'
+    'proposalInfo proposalStat'
+    'body body';
+  grid-template-columns: 3fr 2fr;
+  margin-top: 56px;
+}
+
+.breadcrumb {
+  @extend %caption1;
+  align-items: center;
+  color: var(--color-neutral-70);
+  display: flex;
+  gap: 8px;
+  grid-area: breadcrumb;
+  margin-bottom: 42px;
+  position: relative;
+
+  .link {
+    align-items: center;
+    display: flex;
+  }
+
+  .activeLink {
+    color: var(--color-primary-50);
+  }
+
+  .daoFlag {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 42px;
+    left: -42px;
+    position: absolute;
+    width: 42px;
+  }
+}
+
+.header {
+  align-items: flex-start;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin-top: 42px;
+}
+
+.proposalInfo {
+  flex: 3;
+  grid-area: proposalInfo;
+
+  .title {
+    @extend %heading1;
+    margin: 0;
+  }
+  > div {
+    width: auto;
+  }
+}
+
+.proposalStat {
+  grid-area: proposalStat;
+}
+
+.label {
+  @extend %subtitle6;
+  color: var(--color-neutral-60);
+  margin-bottom: 4px;
+}
+
+.sub {
+  @extend %body1;
+  color: var(--color-neutral-60);
+}
+
+.subheader {
+  margin: 32px 0;
+}
+
+.content {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
+
+.description {
+  margin: 32px 0 14px;
+
+  > p {
+    margin: 0;
+  }
+}
+
+.row {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+
+  > div:first-of-type {
+    flex: 1 0 80%;
+  }
+
+  > div:last-of-type {
+    flex: 1 1 20%;
+  }
+}
+
+.body {
+  grid-area: body;
+  margin-top: 24px;
+}
+
+.mobileActions {
+  display: none;
+  grid-area: mobileActions;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    grid-template-areas:
+      'breadcrumb mobileActions'
+      'proposalInfo proposalInfo'
+      'proposalStat proposalStat'
+      'body body';
+    grid-template-columns: 1fr 34px;
+  }
+
+  .breadcrumb {
+    margin-bottom: 24px;
+    .daoFlag {
+      left: 0;
+      position: relative;
+    }
+  }
+
+  .mobileActions {
+    align-items: center;
+    display: flex;
+    height: 42px;
+    justify-content: center;
+  }
+
+  .proposalInfo {
+    .title {
+      @include font(1.5em, 36px, 500);
+    }
+  }
+
+  .proposalStat {
+    margin-top: 42px;
+  }
+}

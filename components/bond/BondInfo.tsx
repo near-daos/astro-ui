@@ -21,7 +21,7 @@ export const BondInfo: FC<BondInfoProps> = ({ bond }) => {
         <div ref={setRef} className="">
           <Icon name="info" width={12} className={styles.icon} />
         </div>
-        <Popup anchor={ref} placement="top-end" offset={[0, 10]}>
+        <Popup anchor={ref} offset={[0, 10]}>
           {TOOLTIP}
         </Popup>
       </div>

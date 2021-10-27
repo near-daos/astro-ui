@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -135,4 +136,18 @@
 .checkbox {
   margin-right: 8px;
   pointer-events: none;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .select {
+    flex: 0 0 40px;
+    width: 40px;
+  }
+  .select .selected {
+    display: none;
+  }
+  .menu {
+    right: calc(100% - 48px);
+    width: max-content;
+  }
 }

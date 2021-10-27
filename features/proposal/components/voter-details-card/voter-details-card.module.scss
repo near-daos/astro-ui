@@ -1,0 +1,95 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  background-color: var(--color-neutral-10);
+  border-radius: 8px;
+  display: grid;
+  grid-template-areas: 'status name groups other link';
+  grid-template-columns: 44px 1fr 1fr 1fr 44px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.status {
+  @include centralize;
+
+  grid-area: status;
+  height: 100%;
+
+  &.yes {
+    background-color: var(--color-success-10);
+  }
+
+  &.no {
+    background-color: var(--color-error-10);
+  }
+
+  &.dismiss {
+    background-color: var(--color-neutral-10);
+  }
+}
+
+.name {
+  @extend %title4;
+  grid-area: name;
+  padding: 24px;
+}
+
+.groups {
+  @include centralize;
+
+  grid-area: groups;
+
+  > div {
+    @extend %title5;
+  }
+}
+
+.other {
+  color: var(--color-neutral-60);
+  grid-area: other;
+  padding: 24px;
+}
+
+.link {
+  grid-area: link;
+  padding: 24px 0;
+}
+
+.iconWrapper {
+  align-items: center;
+  background-color: var(--color-primary-20);
+  border-radius: 50%;
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    grid-template-areas:
+      'status name link'
+      'status groups groups'
+      'status other other';
+    grid-template-columns: 44px 1fr 44px;
+  }
+
+  .name {
+    padding: 12px;
+  }
+
+  .groups {
+    padding: 0 12px;
+  }
+
+  .other {
+    padding: 12px;
+  }
+
+  .link {
+    padding: 4px;
+  }
+}

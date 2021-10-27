@@ -19,6 +19,7 @@ export type VoteValue = {
 export type VoterDetail = {
   name: string;
   vote: Vote;
+  groups?: string[];
 };
 
 export type BondDetail = {

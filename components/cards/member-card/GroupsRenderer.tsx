@@ -80,3 +80,5 @@ export const GroupsRenderer: FC<GroupsRendererProps> = ({ selectedItems }) => {
     </div>
   );
 };
+
+export default GroupsRenderer;

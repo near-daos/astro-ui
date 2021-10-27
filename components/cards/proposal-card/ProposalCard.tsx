@@ -10,11 +10,6 @@ import { DaoDetails, ProposalStatus, ProposalType } from 'types/proposal';
 import ProposalStatusPanel from 'components/cards/proposal-card/components/proposal-status-panel/ProposalStatusPanel';
 import ProposalControlPanel from 'components/cards/proposal-card/components/proposal-control-panel/ProposalControlPanel';
 
-import { useModal } from 'components/modal';
-import {
-  ExpandedProposalCard,
-  ExpandedProposalCardProps
-} from 'components/cards/expanded-proposal-card';
 import { DAO } from 'types/dao';
 import { useGetVotePermissions } from './hooks/useGetVotePermissions';
 
@@ -61,9 +56,6 @@ const ProposalCardComponent: FC<ProposalCardProps> = ({
   onDislike,
   onRemove,
   variant = 'Default',
-  votePeriodEnd,
-  daoDetails,
-  proposalId,
   daoId,
   showExpanded,
   id,
@@ -78,36 +70,11 @@ const ProposalCardComponent: FC<ProposalCardProps> = ({
     [styles.collapsed]: variant === 'SuperCollapsed'
   });
 
-  const [showModal] = useModal<ExpandedProposalCardProps>(
-    ExpandedProposalCard,
-    {
-      status,
-      type,
-      title,
-      children,
-      transaction,
-      likes,
-      dislikes,
-      liked,
-      disliked,
-      onLike,
-      onDislike,
-      onRemove,
-      endsAt: votePeriodEnd,
-      dismisses,
-      dismissed,
-      daoDetails,
-      proposalId,
-      daoId,
-      permissions,
-      id
-    }
-  );
   const router = useRouter();
 
   const handleCardClick = useCallback(async () => {
-    await showModal({ id });
-  }, [id, showModal]);
+    router.push(`/dao/${daoId}/proposals/${id}`);
+  }, [daoId, id, router]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
