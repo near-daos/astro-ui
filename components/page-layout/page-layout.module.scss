@@ -33,8 +33,9 @@
   }
 
   .main {
+    $header-height: 72px;
     grid-area: main;
-    min-height: 100vh;
+    min-height: calc(100vh - #{$header-height});
     overflow: hidden;
     padding: 0 24px 60px;
     width: 100%;

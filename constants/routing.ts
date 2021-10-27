@@ -1,3 +1,5 @@
+export const MAIN_PAGE_URL = '/';
+
 export const MY_DAOS_URL = '/my/daos';
 export const MY_FEED_URL = '/my/feed';
 

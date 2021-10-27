@@ -1,0 +1,69 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+$path1: 'M525.397 155.201C525.707 146.056 519.733 136.949 508.221 128.31C496.734 119.69 479.904 111.672 458.929 104.693C416.989 90.7377 358.676 80.9997 293.938 78.8115C229.201 76.6233 170.363 82.4014 127.577 93.4925C106.178 99.0395 88.8452 105.903 76.8022 113.728C64.7335 121.57 58.1583 130.252 57.8492 139.397C57.5401 148.543 63.5139 157.649 75.0256 166.288C86.5127 174.908 103.343 182.926 124.318 189.906C166.257 203.86 224.571 213.598 289.308 215.787C354.046 217.975 412.884 212.197 455.67 201.106C477.068 195.559 494.401 188.695 506.445 180.87C518.513 173.029 525.088 164.346 525.397 155.201Z';
+$path2: 'M565.413 31.1062C561.276 21.3568 549.872 14.9958 532.288 12.0874C514.754 9.18721 491.347 9.77178 463.678 13.6489C408.351 21.4014 336.183 42.2878 260.304 74.4864C184.426 106.685 119.261 144.075 75.2439 178.479C53.23 195.684 36.5464 212.112 26.4493 226.737C16.3234 241.404 12.9742 254.026 17.1113 263.775C21.2484 273.524 32.6529 279.885 50.2367 282.794C67.7705 285.694 91.177 285.109 118.847 281.232C174.173 273.48 246.341 252.593 322.22 220.395C398.098 188.196 463.263 150.806 507.28 116.403C529.294 99.1968 545.978 82.7694 556.075 68.1442C566.201 53.4773 569.55 40.8556 565.413 31.1062Z';
+
+.root {
+  @include centralize;
+  flex-direction: column;
+  min-height: 86vh;
+}
+
+.subtitle {
+  @extend %paragraph1;
+  text-align: center;
+}
+
+.back {
+  margin-top: 24px;
+}
+
+.logo {
+  overflow: hidden;
+  padding-bottom: 50.6%;
+  position: relative;
+  width: 100%;
+
+  @include tablet-portrait {
+    height: 295px;
+    padding-bottom: 0;
+    width: 583px;
+  }
+
+  svg {
+    left: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+  }
+}
+
+.ellipse1 {
+  animation: revolve 36s infinite;
+  animation-timing-function: linear;
+  offset-path: path($path1);
+}
+
+.ellipse2 {
+  animation: revolve 48s infinite reverse;
+  animation-timing-function: linear;
+  offset-path: path($path1);
+}
+
+.ellipse3 {
+  animation: revolve 60s infinite;
+  animation-timing-function: linear;
+  offset-path: path($path2);
+}
+
+@keyframes revolve {
+  0% {
+    offset-distance: 0;
+  }
+
+  100% {
+    offset-distance: 100%;
+  }
+}
