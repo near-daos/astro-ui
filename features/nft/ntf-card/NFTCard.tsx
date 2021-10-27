@@ -10,6 +10,7 @@ export interface NFTCardProps {
 
 export const NFTCard: VFC<NFTCardProps> = ({ name, image }) => (
   <Image
+    loading="eager"
     width="296px"
     height="424px"
     layout="intrinsic"
