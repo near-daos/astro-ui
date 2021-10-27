@@ -10,6 +10,8 @@ import { IconButton } from 'components/button/IconButton';
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 import { composeProperLinkUrl } from 'helpers/composeProperLinkUrl';
 import { ExplorerLink } from 'components/explorer-link';
+import { DaoAddressLink } from 'components/dao-address';
+import { CopyButton } from 'features/copy-button';
 
 import styles from './dao-details.module.scss';
 
@@ -73,7 +75,10 @@ export const DaoDetails: VFC<DaoDetailsProps> = ({
           {!more && <>{title}</>}
         </h1>
         <div className={styles.row}>
-          <div className={styles.subtitle}>{subtitle}</div>
+          <div className={styles.subtitle}>
+            <DaoAddressLink daoAddress={subtitle} />
+            <CopyButton text={subtitle} className={styles.copyIcon} />
+          </div>
           {sendFunds && (
             <Button variant="secondary" className={styles.send}>
               <Icon name="buttonAdd" width={24} /> Send funds

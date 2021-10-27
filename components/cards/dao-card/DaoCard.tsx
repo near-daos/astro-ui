@@ -14,6 +14,8 @@ import { FormattedNumericValue } from 'components/cards/components/formatted-num
 
 import { formatCurrency } from 'utils/formatCurrency';
 import { ExplorerLink } from 'components/explorer-link';
+import { DaoAddressLink } from 'components/dao-address';
+import { CopyButton } from 'features/copy-button';
 import { useAuthContext } from 'context/AuthContext';
 
 import styles from 'components/cards/dao-card/dao-card.module.scss';
@@ -87,7 +89,10 @@ const DaoCard: React.FC<DaoCardProps> = ({
             </div>
             <div className={styles.headerContent}>
               <h2 className={styles.headerText}>{title}</h2>
-              <div className={styles.urlCaption}>{daoAccountName}</div>
+              <div className={styles.urlCaption}>
+                <DaoAddressLink daoAddress={daoAccountName} />
+                <CopyButton text={daoAccountName} className={styles.copyIcon} />
+              </div>
             </div>
           </div>
           <div className={styles.descriptionCaption}>

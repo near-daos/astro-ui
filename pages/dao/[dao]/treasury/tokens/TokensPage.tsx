@@ -11,6 +11,7 @@ import { formatCurrency } from 'utils/formatCurrency';
 
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
+import { DaoAddressLink } from 'components/dao-address';
 import { CopyButton } from 'features/copy-button';
 
 import { TokenCard } from 'components/cards/token-card';
@@ -93,7 +94,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
       <div className={styles.account}>
         <div className={styles.caption}>DAO account name</div>
         <div className={styles.name}>
-          {daoId}
+          <DaoAddressLink daoAddress={daoId} />
           <CopyButton text={daoId} className={styles.icon} />
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, MouseEvent, useCallback, useState } from 'react';
 
 import { Popup } from 'components/popup/Popup';
 import { IconButton } from 'components/button/IconButton';
@@ -22,14 +22,18 @@ export const CopyButton: FC<CopyButtonProps> = ({
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const [tooltip, setTooltip] = useState(COPY_TEXT);
 
-  const copyAccountName = useCallback(() => {
-    navigator.clipboard.writeText(text);
-    setTooltip('Copied successfully');
+  const copyAccountName = useCallback(
+    (e: MouseEvent) => {
+      e.stopPropagation();
+      navigator.clipboard.writeText(text);
+      setTooltip('Copied successfully');
 
-    setTimeout(() => {
-      setTooltip(COPY_TEXT);
-    }, 3000);
-  }, [text, setTooltip]);
+      setTimeout(() => {
+        setTooltip(COPY_TEXT);
+      }, 3000);
+    },
+    [text, setTooltip]
+  );
 
   return (
     <>
