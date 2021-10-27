@@ -17,7 +17,7 @@ const GroupsRenderer = dynamic(
 );
 
 interface VoterDetailsCardProps {
-  vote: Vote;
+  vote: Vote | null;
   name: string;
   groups?: string[];
 }
@@ -39,7 +39,7 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
       break;
     }
     default: {
-      icon = 'votingDismiss';
+      icon = 'buttonMore';
     }
   }
 
@@ -58,16 +58,22 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
         className={cn(styles.status, {
           [styles.yes]: vote === 'Yes',
           [styles.no]: vote === 'No',
-          [styles.dismiss]: vote === 'Dismiss',
+          [styles.notVoted]: vote === null,
         })}
       >
-        <Icon width={24} name={icon as IconName} />
+        <Icon
+          width={24}
+          name={icon as IconName}
+          className={cn({
+            [styles.rotate]: vote === null,
+          })}
+        />
       </div>
       <div className={styles.name}>{name}</div>
       <div className={styles.groups}>
         <GroupsRenderer selectedItems={selectedItems ?? []} />
       </div>
-      <div className={styles.other}>date here ???</div>
+      <div className={styles.other}>&nbsp;</div>
       <div className={styles.link}>
         <div className={styles.iconWrapper}>
           <Icon name="buttonExternal" width={16} />

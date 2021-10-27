@@ -16,9 +16,15 @@ export type VoteValue = {
   percent: number;
 };
 
+export type VoteStat = {
+  vote: Vote | null;
+  value: number;
+  percent: number;
+};
+
 export type VoterDetail = {
   name: string;
-  vote: Vote;
+  vote: Vote | null;
   groups?: string[];
 };
 

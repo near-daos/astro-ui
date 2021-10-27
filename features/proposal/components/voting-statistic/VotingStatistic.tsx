@@ -2,12 +2,12 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 
 import { Icon, IconName } from 'components/Icon';
-import { VoteValue } from 'features/types';
+import { VoteStat } from 'features/types';
 
 import styles from './voting-statistic.module.scss';
 
 interface VotingStatisticProps {
-  data?: VoteValue[];
+  data?: VoteStat[];
 }
 
 export const VotingStatistic: FC<VotingStatisticProps> = ({ data }) => {
@@ -28,13 +28,13 @@ export const VotingStatistic: FC<VotingStatisticProps> = ({ data }) => {
             break;
           }
           default: {
-            icon = 'votingDismiss';
+            icon = 'buttonMore';
           }
         }
 
         return (
           <div className={styles.row} key={item.vote}>
-            <span>{item.percent.toFixed(0)}%</span>
+            <span>{item.value}</span>
             <span
               className={cn(styles.bar, {
                 [styles.yes]: item.vote === 'Yes',
@@ -43,7 +43,13 @@ export const VotingStatistic: FC<VotingStatisticProps> = ({ data }) => {
               style={{ width: `${item.percent}%` }}
             />
             <span>
-              <Icon name={icon as IconName} width={32} />
+              <Icon
+                name={icon as IconName}
+                width={32}
+                className={cn({
+                  [styles.rotate]: item.vote === null,
+                })}
+              />
             </span>
           </div>
         );

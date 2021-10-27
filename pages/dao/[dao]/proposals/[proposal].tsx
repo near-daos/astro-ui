@@ -17,7 +17,7 @@ import {
   MobileProposalActions,
   ProposalActions,
 } from 'features/proposal/components/proposal-actions';
-import { VoterDetail } from 'features/types';
+import { VoterDetail, VoteStat } from 'features/types';
 import {
   getBadgeVariant,
   getProposalNameByType,
@@ -54,20 +54,33 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
   const scope = getScope(proposal.kind.type);
   const { isTablet } = useDeviceType();
   const { details, votersByGroups } = useMemo(() => {
-    const { details: votingDetails, votersList } = getVoteDetails(
-      dao,
-      scope,
-      proposal
-    );
+    const { votersList } = getVoteDetails(dao, scope, proposal);
 
-    const votersListData = votersList.map(item => {
-      const member = members.find(m => m.name === item.name);
+    const notVotedList = members.reduce((res, item) => {
+      const isVoted = votersList.find(voter => voter.name === item.name);
 
-      return {
-        ...item,
-        groups: member?.groups ?? [],
-      };
-    });
+      if (!isVoted) {
+        res.push({
+          name: item.name,
+          groups: item.groups,
+          vote: null,
+        });
+      }
+
+      return res;
+    }, [] as VoterDetail[]);
+
+    const votersListData = [
+      ...notVotedList,
+      ...votersList.map(item => {
+        const member = members.find(m => m.name === item.name);
+
+        return {
+          ...item,
+          groups: member?.groups ?? [],
+        };
+      }),
+    ];
 
     const votersByGroupsData = availableGroups.reduce((res, group) => {
       if (group === 'All Members') {
@@ -75,14 +88,32 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
       } else {
         res[group] = filterByVote(
           voteStatus,
-          votersListData.filter(item => item.groups.includes(group))
+          votersListData.filter(item => item?.groups?.includes(group))
         );
       }
 
       return res;
     }, {} as Record<string, VoterDetail[]>);
 
-    return { details: votingDetails, votersByGroups: votersByGroupsData };
+    const voteStat: VoteStat[] = [
+      {
+        vote: 'Yes',
+        percent: (proposal.voteYes * 100) / members.length,
+        value: proposal.voteYes,
+      },
+      {
+        vote: 'No',
+        percent: (proposal.voteNo * 100) / members.length,
+        value: proposal.voteNo,
+      },
+      {
+        vote: null,
+        percent: (notVotedList.length * 100) / members.length,
+        value: notVotedList.length,
+      },
+    ];
+
+    return { details: voteStat, votersByGroups: votersByGroupsData };
   }, [dao, scope, proposal, availableGroups, members, voteStatus]);
 
   const tabs = useMemo(() => {
@@ -139,7 +170,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         {proposal.link && <ExternalLink to={proposal.link} />}
       </div>
       <div className={styles.proposalStat}>
-        <VotingStatistic data={details.data} />
+        <VotingStatistic data={details} />
         {!isTablet && <ProposalActions />}
       </div>
       <div className={styles.body}>

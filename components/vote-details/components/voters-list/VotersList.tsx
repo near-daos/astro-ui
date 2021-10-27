@@ -15,7 +15,7 @@ export const VotersList: FC<VotersListProps> = ({ votersList }) => {
 
   const currentVotersList = fullListViewed ? votersList : shortVotersList;
 
-  const voteClassName = (vote: Vote) => {
+  const voteClassName = (vote: Vote | null) => {
     return cn({
       [styles.positive]: vote === 'Yes',
       [styles.negative]: vote === 'No',

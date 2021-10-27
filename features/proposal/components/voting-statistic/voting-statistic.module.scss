@@ -26,6 +26,10 @@
   }
 }
 
+.rotate {
+  transform: rotate(90deg);
+}
+
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .row {
     flex-flow: row-reverse;

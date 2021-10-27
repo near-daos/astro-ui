@@ -230,8 +230,8 @@ export const filterByVote = (
       return item.vote === 'No';
     }
 
-    if (voteStatus === 'Dismiss') {
-      return item.vote === 'Dismiss';
+    if (voteStatus === 'Not voted') {
+      return item.vote === null;
     }
 
     return false;

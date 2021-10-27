@@ -21,8 +21,8 @@ const StatusFilter: VFC = () => {
       component: <div className={styles.failed}>Rejected</div>,
     },
     {
-      label: 'Dismissed',
-      component: <div className={styles.dismissed}>Dismissed</div>,
+      label: 'Not voted',
+      component: <div className={styles.dismissed}>Not voted</div>,
     },
   ];
 
