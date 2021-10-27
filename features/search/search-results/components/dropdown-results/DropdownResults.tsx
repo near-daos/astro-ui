@@ -28,7 +28,7 @@ export const DropdownResults: FC<DropdownResultsProps> = ({
   const [allMembersRes, setAllMembersRes] = useState(false);
 
   return (
-    <div className={styles.root} style={{ width }}>
+    <div className={styles.root} style={{ width: width || '' }}>
       {!!searchResults?.daos.length && (
         <div>
           <Typography.Subtitle size={5} className={styles.label}>
