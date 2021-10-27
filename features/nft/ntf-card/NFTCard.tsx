@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { VFC } from 'react';
 import styles from './ntf-card.module.scss';
 
@@ -9,14 +8,13 @@ export interface NFTCardProps {
 }
 
 export const NFTCard: VFC<NFTCardProps> = ({ name, image }) => (
-  <Image
-    loading="eager"
+  // eslint-disable-next-line @next/next/no-img-element
+  <img
     width="296px"
     height="424px"
-    layout="intrinsic"
-    priority
     alt={name}
-    src={image}
+    src={image.src}
+    loading="lazy"
     className={styles.root}
   />
 );
