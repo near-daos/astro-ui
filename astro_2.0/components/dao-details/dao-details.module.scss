@@ -1,0 +1,83 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-column-gap: 24px;
+  grid-row-gap: 14px;
+  grid-template-areas:
+    'general funds funds'
+    'general members controls'
+    'general proposals proposals';
+  grid-template-columns: 1fr 130px 130px;
+}
+
+.general,
+.funds,
+.members,
+.controls,
+.proposals {
+  background: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.general {
+  grid-area: general;
+}
+
+.funds {
+  grid-area: funds;
+  padding: 21px 22px 13px;
+
+  .value {
+    @extend %subtitle3;
+  }
+
+  .value .bold {
+    @extend %title3;
+  }
+}
+
+.members {
+  grid-area: members;
+  padding: 21px 22px 13px;
+
+  .value {
+    @extend %title3;
+  }
+
+  .value .bold {
+    @extend %title1;
+    font-size: 32px;
+  }
+}
+
+.controls {
+  display: grid;
+  grid-area: controls;
+  grid-template-columns: 1fr 1fr;
+  padding: 14px 22px;
+  place-items: center;
+}
+
+.proposals {
+  grid-area: proposals;
+}
+
+.label {
+  @extend %subtitle6;
+  color: var(--color-neutral-60);
+  margin-bottom: 4px;
+}
+
+.controlIcon {
+  @include centralize;
+  color: var(--color-brand-black);
+  height: 16px;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}

@@ -10,6 +10,7 @@ interface ActionButtonProps {
   className?: string;
   iconName: IconName;
   tooltip?: string;
+  tooltipPlacement?: 'right' | 'top' | 'bottom' | 'left' | 'auto';
   onClick?: () => void;
 }
 
@@ -18,6 +19,7 @@ export const ActionButton: FC<ActionButtonProps> = ({
   iconName,
   onClick,
   tooltip,
+  tooltipPlacement = 'auto',
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
 
@@ -31,7 +33,7 @@ export const ActionButton: FC<ActionButtonProps> = ({
         />
       </div>
       {tooltip && (
-        <Popup anchor={ref} placement="right">
+        <Popup anchor={ref} placement={tooltipPlacement}>
           {tooltip}
         </Popup>
       )}
