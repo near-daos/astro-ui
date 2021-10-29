@@ -1,0 +1,153 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-white);
+  border-radius: 0 8px 8px 0;
+  display: grid;
+  grid-row-gap: 22px;
+  grid-template-areas:
+    'proposalType proposalType countdown'
+    'proposer proposer .'
+    'description description description'
+    'сontent content voteControl';
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 22px 30px;
+  position: relative;
+}
+
+.voteProgress {
+  border-radius: 0 0 8px;
+  bottom: 0;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+}
+
+.actionBar {
+  display: none;
+  position: absolute;
+  right: -50px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100px;
+}
+
+.root:hover .actionBar {
+  display: block;
+}
+
+.voteControlCell {
+  grid-area: voteControl;
+}
+
+.proposalStatusSeal {
+  height: 164px;
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  width: 164px;
+}
+
+.countdownCell {
+  @extend %title4;
+  color: var(--color-brand-purple);
+  grid-area: countdown;
+  justify-self: end;
+}
+
+.proposalCell {
+  display: flex;
+  flex-direction: column;
+  grid-area: proposalType;
+}
+
+.proposalContentCell {
+  grid-area: content;
+}
+
+.proposalTypeAndLink {
+  align-items: center;
+  display: flex;
+}
+
+.proposalValue {
+  @extend %title1;
+}
+
+.proposalWalletLink {
+  padding-left: 15px;
+}
+
+.proposerCell {
+  display: flex;
+  flex-direction: column;
+  grid-area: proposer;
+}
+
+.proposerLabel {
+  @extend %caption1;
+  padding-bottom: 6px;
+}
+
+.text {
+  @extend %title3;
+}
+
+.contentCell {
+  grid-area: content;
+}
+
+.descriptionCell {
+  grid-area: description;
+}
+
+.label {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+  padding-bottom: 4px;
+}
+
+.descriptionValue {
+  @extend %body2;
+  padding-bottom: 10px;
+}
+
+.proposalExternalLink {
+  @extend %body2;
+  align-items: center;
+  color: var(--color-brand-purple);
+  display: flex;
+  transition: text-shadow 0.4s, box-shadow 0.4s;
+  width: fit-content;
+}
+
+.iconWrapper {
+  @include centralize;
+  background-color: var(--color-primary-20);
+  border-radius: 100%;
+  height: 24px;
+  width: 24px;
+}
+
+.externalLink {
+  padding-left: 10px;
+}
+
+.icon {
+  color: var(--color-primary-50);
+  height: 14px;
+  width: 14px;
+}
+
+.proposalExternalLink:hover {
+  cursor: pointer;
+}
+
+.iconWrapper {
+  box-shadow: 3px 2px 12px var(--color-primary-30);
+}
+
+.externalLink {
+  text-shadow: 3px 2px 12px var(--color-primary-30);
+}

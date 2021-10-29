@@ -1,5 +1,4 @@
 import React, { MouseEvent } from 'react';
-import { nearConfig } from 'config';
 import { Icon } from 'components/Icon';
 import cn from 'classnames';
 import { ExplorerLinkType } from 'components/explorer-link/types';
@@ -9,19 +8,21 @@ interface ExplorerLinkProps {
   linkData: string;
   linkType: ExplorerLinkType;
   isAbsolute?: boolean;
+  className?: string;
 }
 
 export const ExplorerLink: React.VFC<ExplorerLinkProps> = ({
   linkData,
   linkType,
   isAbsolute,
+  className,
 }) => {
   function generateExplorerLink(type: ExplorerLinkType) {
     switch (type) {
       case 'transaction':
-        return `${nearConfig.explorerUrl}/transactions/${linkData}`;
+        return `transactions/${linkData}`;
       case 'member':
-        return `${nearConfig.explorerUrl}/accounts/${linkData}`;
+        return `accounts/${linkData}`;
       default:
         return '';
     }
@@ -36,15 +37,19 @@ export const ExplorerLink: React.VFC<ExplorerLinkProps> = ({
   return (
     <>
       {linkData && (
-        <a
-          href={explorerLink}
-          onClick={stopPropagation}
-          className={cn(styles.root, { [styles.absolute]: isAbsolute })}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <Icon name="buttonExternal" className={styles.icon} />
-        </a>
+        <div className={className}>
+          <a
+            href={explorerLink}
+            onClick={stopPropagation}
+            className={cn(styles.root, {
+              [styles.absolute]: isAbsolute,
+            })}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Icon name="buttonExternal" className={styles.icon} />
+          </a>
+        </div>
       )}
     </>
   );

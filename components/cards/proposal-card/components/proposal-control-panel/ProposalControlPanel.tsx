@@ -11,8 +11,8 @@ interface ProposalControlPanelProps {
   liked: boolean;
   dislikes: number;
   disliked: boolean;
-  dismisses: number;
-  dismissed: boolean;
+  dismisses?: number;
+  dismissed?: boolean;
   permissions: ProposalVotingPermissions;
   onLike?: (e?: Partial<Event>) => void;
   onDislike?: (e?: Partial<Event>) => void;
@@ -27,15 +27,13 @@ const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
   liked,
   dislikes,
   disliked,
-  dismisses,
   dismissed,
   onLike,
   onDislike,
-  onRemove,
   permissions,
   className = '',
 }) => {
-  const { canApprove, canReject, canDelete } = permissions;
+  const { canApprove, canReject } = permissions;
   const voted =
     liked || disliked || dismissed || (status && status !== 'InProgress');
 
@@ -66,19 +64,6 @@ const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
         times={dislikes}
         onClick={onDislike}
         disabled={!canReject}
-      />
-      <ProposalControlButton
-        icon={(() => {
-          if (dismissed) {
-            return 'votingDismissChecked';
-          }
-
-          return canDelete ? 'votingDismiss' : 'votingDismissDisabled';
-        })()}
-        voted={voted}
-        times={dismisses}
-        onClick={onRemove}
-        disabled={!canDelete}
       />
     </div>
   );

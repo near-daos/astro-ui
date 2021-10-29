@@ -1,0 +1,30 @@
+.background {
+  background-image: linear-gradient(#201f1f, transparent);
+  background-size: cover;
+  height: 100%;
+  inset: 0;
+  position: absolute;
+  width: 50px;
+  z-index: -1;
+}
+
+.root {
+  background-size: cover;
+  border-radius: 8px 0 0 8px;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  position: relative;
+  width: 50px;
+}
+
+.iconHolder {
+  height: 24px;
+  padding-top: 24px;
+  width: 24px;
+  z-index: 1;
+}
+
+.icon {
+  color: var(--color-white);
+}

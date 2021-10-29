@@ -36,6 +36,8 @@ export enum ProposalType {
   Vote = 'Vote',
 }
 
+export type VoteAction = 'VoteApprove' | 'VoteRemove' | 'VoteReject';
+
 export type AddBountyRequest = {
   description: string;
   token: string;

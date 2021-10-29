@@ -3,15 +3,8 @@
 .item {
   align-items: center;
   display: flex;
+  justify-content: flex-end;
   min-width: 80px;
-
-  @include tablet-landscape {
-    min-width: 90px;
-  }
-
-  &:not(:first-of-type) {
-    margin-left: 16px;
-  }
 }
 
 .value {

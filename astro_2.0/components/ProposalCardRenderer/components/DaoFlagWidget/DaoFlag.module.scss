@@ -1,0 +1,29 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  margin-bottom: 16px;
+  min-height: 48px;
+  width: fit-content;
+}
+
+.flag {
+  padding-right: 17px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+  grid-area: label;
+  padding-bottom: 6px;
+}
+
+.text {
+  @extend %title3;
+}

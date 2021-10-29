@@ -1,0 +1,22 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  border-radius: 0 8px 8px 0;
+  display: grid;
+  grid-template-areas:
+    'daoFlag daoFlag'
+    'letterHead proposal';
+}
+
+.daoFlag {
+  grid-area: daoFlag;
+}
+
+.proposal {
+  grid-area: proposal;
+}
+
+.letterHead {
+  grid-area: letterHead;
+}
