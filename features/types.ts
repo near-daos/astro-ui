@@ -12,7 +12,7 @@ export type VoteDetail = {
 };
 
 export type VoteValue = {
-  vote: Vote;
+  vote: Vote | null;
   percent: number;
 };
 

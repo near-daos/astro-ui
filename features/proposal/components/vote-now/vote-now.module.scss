@@ -1,0 +1,30 @@
+.root {
+  background-color: var(--color-neutral-10);
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  inset: auto 24px 24px;
+  padding: 14px;
+  position: fixed;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+}
+
+.button {
+  align-items: center;
+  background-color: var(--color-white);
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  text-transform: capitalize;
+
+  &.yes {
+    border-color: var(--color-success-50);
+  }
+
+  &.no {
+    border-color: var(--color-error-50);
+  }
+}

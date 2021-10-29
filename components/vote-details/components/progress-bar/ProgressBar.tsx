@@ -15,11 +15,11 @@ export const ProgressBar: FC<ProgressBarProps> = ({ detail }) => {
     ? parseInt(limit.slice(0, -1), 10)
     : limit;
 
-  const voteClassName = (vote: Vote) => {
+  const voteClassName = (vote: Vote | null) => {
     return cn({
       [styles.positive]: vote === 'Yes',
       [styles.negative]: vote === 'No',
-      [styles.trash]: vote === 'Dismiss',
+      [styles.trash]: vote === 'Dismiss' || vote === null,
     });
   };
 

@@ -120,6 +120,13 @@
   grid-area: mobileActions;
 }
 
+.voteNow {
+  background-color: var(--color-neutral-10);
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  inset: auto 24px 24px;
+  position: fixed;
+}
+
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .root {
     grid-template-areas:

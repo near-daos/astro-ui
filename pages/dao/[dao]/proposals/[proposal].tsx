@@ -22,6 +22,7 @@ import {
   getBadgeVariant,
   getProposalNameByType,
 } from 'features/proposal/helpers';
+import { VoteNow } from 'features/proposal/components/vote-now';
 import { useDeviceType } from 'helpers/media';
 
 import Tabs from 'components/tabs/Tabs';
@@ -33,6 +34,7 @@ import { BondInfo } from 'components/bond';
 
 import { SputnikHttpService } from 'services/sputnik';
 import { extractMembersFromDao } from 'services/sputnik/mappers';
+import { useAuthContext } from 'context/AuthContext';
 
 import styles from './proposal.module.scss';
 
@@ -51,15 +53,17 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
 }) => {
   const router = useRouter();
   const voteStatus = (router.query.status ?? 'All') as string;
+  const { accountId } = useAuthContext();
   const scope = getScope(proposal.kind.type);
-  const { isTablet } = useDeviceType();
-  const { details, votersByGroups } = useMemo(() => {
+  const { isTablet, isMobile } = useDeviceType();
+  const { details, votersByGroups, isVoted } = useMemo(() => {
+    let isUserVoted = false;
     const { votersList } = getVoteDetails(dao, scope, proposal);
 
     const notVotedList = members.reduce((res, item) => {
-      const isVoted = votersList.find(voter => voter.name === item.name);
+      const voted = votersList.find(voter => voter.name === item.name);
 
-      if (!isVoted) {
+      if (!voted) {
         res.push({
           name: item.name,
           groups: item.groups,
@@ -71,15 +75,19 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
     }, [] as VoterDetail[]);
 
     const votersListData = [
-      ...notVotedList,
       ...votersList.map(item => {
         const member = members.find(m => m.name === item.name);
+
+        if (item.name === accountId) {
+          isUserVoted = true;
+        }
 
         return {
           ...item,
           groups: member?.groups ?? [],
         };
       }),
+      ...notVotedList,
     ];
 
     const votersByGroupsData = availableGroups.reduce((res, group) => {
@@ -113,8 +121,12 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
       },
     ];
 
-    return { details: voteStat, votersByGroups: votersByGroupsData };
-  }, [dao, scope, proposal, availableGroups, members, voteStatus]);
+    return {
+      details: voteStat,
+      votersByGroups: votersByGroupsData,
+      isVoted: isUserVoted,
+    };
+  }, [dao, scope, proposal, availableGroups, members, accountId, voteStatus]);
 
   const tabs = useMemo(() => {
     return availableGroups.map((item, i) => {
@@ -179,6 +191,10 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
           <StatusFilter />
         </Tabs>
       </div>
+
+      {isMobile && !isVoted && proposal.status === 'InProgress' && (
+        <VoteNow data={details} proposal={proposal} />
+      )}
     </div>
   );
 };
