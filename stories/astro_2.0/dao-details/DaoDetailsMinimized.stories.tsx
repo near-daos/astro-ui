@@ -1,18 +1,21 @@
 import React from 'react';
 
 import { Meta, Story } from '@storybook/react';
-import { DaoDetails, DaoDetailsProps } from 'astro_2.0/components/DaoDetails';
+import {
+  DaoDetailsMinimized,
+  DaoDetailsMinimizedProps,
+} from 'astro_2.0/components/DaoDetails';
 
 export default {
-  title: 'astro_2.0/DaoDetails/DaoDetails',
-  component: DaoDetails,
+  title: 'astro_2.0/DaoDetails/DaoDetailsMinimized',
+  component: DaoDetailsMinimized,
   decorators: [
     story => (
       <div
         style={{
-          padding: '1rem 1rem 1rem 10rem',
+          padding: '3rem 1rem 1rem 1rem',
           background: '#e5e5e5',
-          maxWidth: 1280,
+          maxWidth: 960,
         }}
       >
         {story()}
@@ -21,11 +24,11 @@ export default {
   ],
 } as Meta;
 
-export const Template: Story<DaoDetailsProps> = (args): JSX.Element => (
-  <DaoDetails {...args} />
-);
+export const Template: Story<DaoDetailsMinimizedProps> = (
+  args
+): JSX.Element => <DaoDetailsMinimized {...args} />;
 
-Template.storyName = 'DaoDetails';
+Template.storyName = 'DaoDetailsMinimized';
 
 Template.args = {
   onCreateProposalClick: () => {
@@ -33,8 +36,6 @@ Template.args = {
     console.log('create proposal');
   },
   accountId: 'anima.testnet',
-  activeProposals: 8,
-  totalProposals: 23,
   dao: {
     id: 'saturn.sputnikv2.testnet',
     txHash: '4px581fv2HJ5LuWBUs72qouAJnZ5ka4bEA2ZLmixgjHD',

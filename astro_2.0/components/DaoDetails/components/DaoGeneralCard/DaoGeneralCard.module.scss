@@ -1,0 +1,146 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  padding: 48px 30px;
+}
+
+.flagWrapper {
+  @include centralize;
+  flex: 0 0 241px;
+  height: 272px;
+  margin-left: -140px;
+  margin-right: 28px;
+  position: relative;
+  width: 241px;
+}
+
+.generalInfoWrapper {
+  flex: 1;
+
+  .displayName {
+    @extend %title1;
+    font-size: 32px;
+    margin: 16px 0;
+  }
+
+  .daoId {
+    align-items: center;
+    color: var(--color-neutral-60);
+    display: flex;
+  }
+
+  p {
+    color: var(--color-black);
+  }
+}
+
+.background {
+  background-color: var(--color-white);
+  clip-path: url('#flag-outline');
+  inset: 0;
+  position: absolute;
+  transform: scale(1.04, 1.045);
+}
+
+.cover {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  clip-path: url('#flag');
+  height: 100%;
+  width: 100%;
+}
+
+.logo {
+  background-color: var(--color-white);
+  height: 42px;
+  left: 155px;
+  position: absolute;
+  top: 66px;
+  width: 42px;
+}
+
+.links {
+  display: inline-flex;
+  gap: 14px;
+  list-style: none;
+  padding: 0;
+}
+
+.link {
+  @extend %caption1;
+  color: var(--color-primary-50);
+  display: block;
+  margin-top: 4px;
+
+  @include tablet-landscape {
+    display: inline;
+    margin-top: 0;
+  }
+
+  .linkText,
+  .right {
+    display: inline;
+
+    @include tablet-landscape {
+      display: none;
+    }
+  }
+
+  .external {
+    display: none;
+
+    @include tablet-landscape {
+      display: inline;
+      margin: -2px 0 0 8px;
+    }
+  }
+}
+
+.copyIcon {
+  height: 24px;
+  margin: 0 0 4px 8px;
+  width: 24px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    align-items: center;
+    flex-direction: column;
+    padding: 24px;
+  }
+
+  .flagWrapper {
+    flex: 0 0 272px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: -130px;
+    position: relative;
+    transform: scale(0.8);
+  }
+
+  .generalInfoWrapper {
+    flex: 1;
+    justify-content: center;
+
+    .displayName {
+      text-align: center;
+    }
+
+    .daoId {
+      justify-content: center;
+    }
+
+    p {
+      text-align: center;
+    }
+
+    .links {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+}

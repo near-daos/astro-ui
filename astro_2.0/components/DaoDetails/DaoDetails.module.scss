@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/typography';
 @import 'styles/mixins';
 
@@ -20,7 +21,11 @@
   background: var(--color-white);
   border-radius: 8px;
   box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  transition: box-shadow 0.4s;
+
+  &:hover {
+    box-shadow: 3px 2px 24px var(--color-black-opacity-25);
+  }
 }
 
 .general {
@@ -28,7 +33,10 @@
 }
 
 .funds {
+  display: flex;
+  flex-direction: column;
   grid-area: funds;
+  justify-content: center;
   padding: 21px 22px 13px;
 
   .value {
@@ -41,7 +49,10 @@
 }
 
 .members {
+  display: flex;
+  flex-direction: column;
   grid-area: members;
+  justify-content: center;
   padding: 21px 22px 13px;
 
   .value {
@@ -74,10 +85,30 @@
 
 .controlIcon {
   @include centralize;
-  color: var(--color-brand-black);
   height: 16px;
 
-  &:hover {
-    color: var(--color-primary);
+  > button {
+    color: var(--color-neutral-60);
+  }
+}
+
+.controlIcon:hover {
+  color: var(--color-brand-black);
+
+  > button {
+    color: var(--color-brand-black);
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    grid-column-gap: 12px;
+    grid-row-gap: 12px;
+    grid-template-areas:
+      'general general'
+      'funds funds'
+      'members controls'
+      'proposals proposals';
+    grid-template-columns: 1fr 1fr;
   }
 }
