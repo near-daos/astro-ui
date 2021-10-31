@@ -1,0 +1,58 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  border-bottom: 0.5px solid var(--color-brand-purple);
+  border-left: 0.5px solid var(--color-brand-purple);
+  border-radius: 0 0 7px 7px;
+  border-right: 0.5px solid var(--color-brand-purple);
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  color: var(--color-neutral-10);
+  display: flex;
+  justify-content: flex-end;
+  min-height: 80px;
+  padding-right: 28px;
+  width: 100%;
+}
+
+.label {
+  @extend %subtitle6;
+  color: var(--color-neutral-60);
+}
+
+.infoBlock {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  margin-right: 30px;
+  min-width: 75px;
+}
+
+.nearValue {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.value {
+  color: var(--color-neutral-90);
+  font-family: Inter, serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  letter-spacing: 0;
+  line-height: 28px;
+  text-align: right;
+}
+
+.number {
+  color: var(--color-neutral-90);
+  font-family: Inter, serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 28px;
+  text-align: right;
+}

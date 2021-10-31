@@ -6,7 +6,8 @@
   display: grid;
   grid-template-areas:
     'daoFlag daoFlag'
-    'letterHead proposal';
+    'letterHead proposal'
+    'infoPanel infoPanel';
 }
 
 .daoFlag {
@@ -19,4 +20,10 @@
 
 .letterHead {
   grid-area: letterHead;
+}
+
+.infoPanel {
+  grid-area: infoPanel;
+  padding-left: 19px;
+  padding-right: 19px;
 }

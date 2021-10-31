@@ -1,1 +1,1 @@
-export * from './DaoFlag';
+export * from './DaoFlagWidget';

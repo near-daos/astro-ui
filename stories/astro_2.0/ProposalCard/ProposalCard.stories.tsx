@@ -10,6 +10,7 @@ import { DaoFlagWidget } from 'astro_2.0/components/ProposalCardRenderer/compone
 import { ProposalCard } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard';
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
 import { Vote } from 'features/types';
+import { CreateProposalWidget } from 'astro_2.0/components/ProposalCardRenderer/components/CreateProposalWidget';
 
 export default {
   title: 'astro_2.0/ProposalCard',
@@ -27,11 +28,13 @@ export const Template: Story<ProposalCardRendererProps> = ({
   proposalCardNode,
   daoFlagNode,
   letterHeadNode,
+  infoPanelNode,
 }): JSX.Element => (
   <ProposalCardRenderer
     proposalCardNode={proposalCardNode}
     daoFlagNode={daoFlagNode}
     letterHeadNode={letterHeadNode}
+    infoPanelNode={infoPanelNode}
   />
 );
 
@@ -75,6 +78,15 @@ const cardProps = {
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis eleifend habitant laoreet ornare vitae consequat. Potenti ut urna, ultricies elit nam. Feugiat porta elit ultricies eu mollis. Faucibus mauris faucibus aliquam non. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis eleifend habitant laoreet ornare vitae consequat. Potenti ut urna, ultricies elit nam.',
 };
 
+const createProposalProps = {
+  onCreate: () => {
+    // eslint-disable-next-line no-console
+    console.log('proposal created');
+  },
+  bond: '0.1',
+  gas: '0.2',
+};
+
 Template.args = {
   daoFlagNode: (
     <DaoFlagWidget daoName="Ref.Finance" flagUrl="/dummy-flag.png" />
@@ -83,4 +95,5 @@ Template.args = {
   letterHeadNode: (
     <LetterHeadWidget type={ProposalType.Transfer} coverUrl="/cover.png" />
   ),
+  infoPanelNode: <CreateProposalWidget {...createProposalProps} />,
 };
