@@ -182,8 +182,11 @@ pipelines:
 
       - step:
           <<: *helm-build-deploy
-          <<: *deploy-to-s3
           deployment: development
+
+      - step:
+          <<: *deploy-to-s3
+          deployment: storybook
 
     staging:
       - step:
