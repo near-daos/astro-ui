@@ -98,6 +98,7 @@ definitions:
         caches:
           - node
         script:
+          - source environment.sh
           - yarn install
           - yarn lint
           - yarn typecheck
@@ -175,15 +176,12 @@ pipelines:
 
       - step: *build
 
+      - step: *build-storybook
+
       - step: *docker-build-publish
 
       - step:
           <<: *helm-build-deploy
-          deployment: development
-
-      - step: *build-storybook
-
-      - step:
           <<: *deploy-to-s3
           deployment: development
 
