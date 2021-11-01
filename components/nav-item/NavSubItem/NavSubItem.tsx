@@ -4,8 +4,7 @@ import { ParsedUrlQueryInput } from 'querystring';
 import { UrlObject } from 'url';
 import React, { ReactNode } from 'react';
 
-// eslint-disable-next-line no-restricted-imports
-import { useIsHrefActive } from '../../../hooks/useIsHrefActive';
+import { useIsHrefActive } from 'hooks/useIsHrefActive';
 
 import styles from './NavSubItem.module.scss';
 
