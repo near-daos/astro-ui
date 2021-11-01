@@ -5,7 +5,12 @@ import type { AppContext, AppProps } from 'next/app';
 import { SWRConfig } from 'swr';
 import { useMount } from 'react-use';
 
-import { ALL_DAOS_URL, CREATE_DAO_URL, MY_FEED_URL } from 'constants/routing';
+import {
+  ALL_DAOS_URL,
+  CREATE_DAO_URL,
+  CREATE_DAO_NEW_URL,
+  MY_FEED_URL,
+} from 'constants/routing';
 
 import { AuthWrapper } from 'context/AuthContext';
 import { CustomTokensProvider } from 'context/CustomTokensContext';
@@ -13,6 +18,7 @@ import { CustomTokensProvider } from 'context/CustomTokensContext';
 import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
 import CreateLayout from 'components/create-layout/CreateLayout';
+import CreateLayoutNew from 'astro_2.0/components/CreateLayout/CreateLayout';
 
 import { SputnikNearService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
@@ -23,6 +29,10 @@ import 'styles/globals.scss';
 
 function usePageLayout(): React.FC {
   const router = useRouter();
+
+  if (router.route.match(CREATE_DAO_NEW_URL)) {
+    return CreateLayoutNew;
+  }
 
   if (router.route.match(CREATE_DAO_URL)) {
     return CreateLayout;

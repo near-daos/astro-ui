@@ -1,3 +1,5 @@
+@import 'styles/mixins';
+
 .textarea {
   color: var(--color-neutral-80);
   display: inline-flex;
@@ -9,14 +11,24 @@
     border-radius: 4px;
     box-sizing: border-box;
     flex-basis: 100%;
+    font-family: 'Inter', sans-serif;
     font-size: 1em;
     height: 48px;
     line-height: 24px;
     padding: 10.5px;
+
+    @include placeholder {
+      opacity: 1;
+      transition: opacity 0.2s linear;
+    }
   }
 
   textarea:focus {
     outline: 0;
+
+    @include placeholder {
+      opacity: 0;
+    }
   }
 
   .valid {
@@ -25,6 +37,13 @@
 
   .notValid {
     border-color: var(--color-error-40);
+  }
+}
+
+.borderless {
+  textarea {
+    border: 0;
+    padding-left: 0;
   }
 }
 

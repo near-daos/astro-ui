@@ -1,0 +1,35 @@
+@import 'styles/mixins';
+
+.root {
+  @include font(14px, 16px, 400);
+  align-items: center;
+  border-left: solid 2px var(--color-neutral-40);
+  color: var(--color-neutral-50);
+  cursor: pointer;
+  display: flex;
+  font-family: 'Open Sans', sans-serif;
+  height: 29px;
+  padding-left: 10px;
+  transition: all 0.2s;
+  white-space: nowrap;
+
+  &:not(.custom):hover {
+    border-left: solid 2px var(--color-brand-purple);
+    color: var(--color-neutral-80);
+  }
+}
+
+.custom {
+  cursor: default;
+
+  &.customActive {
+    border-left: solid 2px var(--color-brand-purple);
+    color: var(--color-neutral-80);
+  }
+}
+
+.active {
+  border-left: solid 2px var(--color-brand-purple);
+  color: var(--color-neutral-80);
+  cursor: default;
+}

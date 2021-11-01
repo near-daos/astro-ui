@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import styles from './button.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'black';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'black' | 'transparent';
   size?: 'small' | 'medium' | 'large' | 'block';
   disabled?: boolean | undefined;
 }
@@ -21,6 +21,7 @@ export const Button: React.FC<ButtonProps> = ({
     secondary: styles.secondary,
     tertiary: styles.tertiary,
     black: styles.black,
+    transparent: styles.transparent,
   };
   const sizes = {
     small: styles.sizeSmall,

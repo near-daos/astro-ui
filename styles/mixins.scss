@@ -12,6 +12,12 @@
   white-space: nowrap;
 }
 
+@mixin card-shadow {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+}
+
 @mixin font($size, $height, $weight) {
   font-size: $size;
   font-weight: $weight;
@@ -25,6 +31,7 @@
     color: red;
   }
 */
+
 @mixin placeholder {
   &::placeholder {
     @content;

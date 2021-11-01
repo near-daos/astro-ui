@@ -1,3 +1,4 @@
+@import 'styles/mixins';
 @import 'styles/typography';
 
 .input {
@@ -11,11 +12,17 @@
     border-radius: 4px;
     box-sizing: border-box;
     flex-basis: 100%;
+    font-family: 'Inter', sans-serif;
     font-size: 1em;
     height: 48px;
     line-height: 24px;
     padding: 10.5px;
     width: 100%;
+
+    @include placeholder {
+      opacity: 1;
+      transition: opacity 0.2s linear;
+    }
   }
 
   .success {
@@ -36,6 +43,17 @@
 
   input:focus {
     outline: 0;
+
+    @include placeholder {
+      opacity: 0;
+    }
+  }
+}
+
+.borderless {
+  input {
+    border: 0;
+    padding-left: 0;
   }
 }
 

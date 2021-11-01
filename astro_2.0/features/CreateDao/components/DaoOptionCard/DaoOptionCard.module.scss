@@ -1,0 +1,48 @@
+@import 'styles/mixins';
+
+.root {
+  @include card-shadow;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  gap: 14px;
+  min-height: 80px;
+  padding: 8px 10px;
+  transition: all 0.2s linear;
+  width: 100%;
+
+  &:hover {
+    box-shadow: 3px 2px 24px var(--color-in-progress-opacity-25);
+  }
+}
+
+.active {
+  border-color: var(--color-primary-50);
+  cursor: default;
+
+  &:hover {
+    box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  }
+}
+
+.icon {
+  align-items: center;
+  display: flex;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0;
+}
+
+.title {
+  @include font(1em, 24px, 700);
+  margin: 0 0 6px;
+}
+
+.description {
+  @include font(11px, 16px, 500);
+  margin: 0;
+}

@@ -14,6 +14,7 @@ interface DaoGeneralCardProps {
   id: string;
   description: string;
   links: string[];
+  preview?: boolean;
 }
 
 export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
@@ -23,6 +24,7 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
   id,
   description,
   links,
+  preview = false,
 }) => {
   return (
     <div className={styles.root}>
@@ -43,7 +45,7 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
         <div className={styles.displayName}>{displayName ?? id}</div>
         <div className={styles.daoId}>
           <div>{id}</div>
-          <CopyButton text={id} className={styles.copyIcon} />
+          {!preview && <CopyButton text={id} className={styles.copyIcon} />}
         </div>
         <p>{description}</p>
         {!!links?.length && (

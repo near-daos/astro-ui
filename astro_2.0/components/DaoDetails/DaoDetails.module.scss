@@ -93,10 +93,20 @@
 }
 
 .controlIcon:hover {
-  color: var(--color-brand-black);
-
   > button {
     color: var(--color-brand-black);
+  }
+}
+
+.previewIcon {
+  > button {
+    cursor: default;
+  }
+}
+
+.previewIcon:hover {
+  > button {
+    color: var(--color-neutral-60);
   }
 }
 

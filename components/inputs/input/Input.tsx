@@ -12,6 +12,7 @@ export interface InputProps
   isValid?: boolean | undefined;
   inputSize?: number | undefined;
   size?: 'small' | 'medium' | 'large' | 'block' | 'content';
+  isBorderless?: boolean;
   textAlign?: Property.TextAlign;
 }
 
@@ -37,6 +38,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       description,
       isValid,
       size = 'small',
+      isBorderless,
       inputSize,
       textAlign = 'left',
       type = 'text',
@@ -45,7 +47,12 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     externalRef
   ) => {
     const id = useId(props.id);
-    const className = cn(styles.input, sizeClasses[size], classNameProp);
+    const className = cn(
+      styles.input,
+      sizeClasses[size],
+      { [styles.borderless]: isBorderless },
+      classNameProp
+    );
 
     return (
       <label className={className} htmlFor={id}>

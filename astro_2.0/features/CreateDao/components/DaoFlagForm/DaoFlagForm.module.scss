@@ -1,0 +1,23 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.header {
+  h2 {
+    @include font(1.75em, 38px, 700);
+    font-family: 'Inter', sans-serif;
+    margin: 60px 0 0;
+  }
+
+  p {
+    @extend %body2;
+  }
+}
+
+.content {
+  display: grid;
+}

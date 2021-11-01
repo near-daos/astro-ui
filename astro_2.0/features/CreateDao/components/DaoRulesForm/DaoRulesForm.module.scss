@@ -1,0 +1,62 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  margin-top: 70px;
+  width: 100%;
+}
+
+.header {
+  h2 {
+    @include font(1.75em, 38px, 700);
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 0;
+  }
+
+  p {
+    @extend %body2;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column-reverse;
+  margin-top: 40px;
+
+  @include tablet-portrait {
+    align-items: flex-start;
+    column-gap: 32px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+
+  @include desktop {
+    column-gap: 55px;
+  }
+
+  @include large-desktop {
+    column-gap: 90px;
+  }
+}
+
+.rules {
+  width: 100%;
+}
+
+.nav {
+  margin-bottom: 40px;
+
+  @include tablet-portrait {
+    margin-top: 74px;
+    position: sticky;
+    top: 90px;
+  }
+}
+
+.navHeader {
+  @include font(16px, 24px, 700);
+  font-family: 'Open Sans', sans-serif;
+  margin-bottom: 20px;
+  white-space: nowrap;
+}
