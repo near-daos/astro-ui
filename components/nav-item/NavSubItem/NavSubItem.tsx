@@ -5,7 +5,7 @@ import { UrlObject } from 'url';
 import React, { ReactNode } from 'react';
 
 // eslint-disable-next-line no-restricted-imports
-import { useIsActive } from '../navHooks';
+import { useIsHrefActive } from '../../../hooks/useIsHrefActive';
 
 import styles from './NavSubItem.module.scss';
 
@@ -33,7 +33,7 @@ export const NavSubItem: React.VFC<DAONameProps> = ({
   disabled,
   as,
 }) => {
-  const isActive = useIsActive(href, subHrefs);
+  const isActive = useIsHrefActive(href, subHrefs);
 
   const rootClassName = cn(styles.sub, className, {
     [styles.active]: isActive,

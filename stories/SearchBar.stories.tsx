@@ -1,6 +1,9 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import SearchBar, { SearchBarProps } from 'components/search-bar';
+import {
+  SearchBar,
+  SearchBarProps,
+} from 'astro_2.0/components/AppHeader/components/SearchBar';
 
 export default {
   title: 'Components/SearchBar',

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
+import { AppHeader } from 'astro_2.0/components/AppHeader';
 import { SidebarNavigation } from 'features/sidebar-navigation';
-import { AppHeader } from 'features/app-header';
 import { SearchResults } from 'features/search/search-results';
 import { NotificationContainer } from 'features/notifications';
 
@@ -13,7 +13,7 @@ const PageLayout: FC = ({ children }) => {
       <SidebarNavigation className={styles.sideBar} />
       <SearchResults>
         <div className={styles.content}>
-          <AppHeader isLandingPage={false} />
+          <AppHeader />
           <main className={styles.main}>{children}</main>
           <NotificationContainer />
         </div>

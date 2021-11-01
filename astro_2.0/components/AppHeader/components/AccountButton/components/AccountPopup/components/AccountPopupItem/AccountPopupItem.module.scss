@@ -1,0 +1,17 @@
+.root {
+  align-items: center;
+  border-radius: 6px;
+
+  color: var(--color-brand-black);
+
+  display: flex;
+  height: 40px;
+  padding: 0 8px;
+
+  transition: 0.2s;
+
+  &:hover,
+  &.active {
+    background-color: #f8f8f8;
+  }
+}

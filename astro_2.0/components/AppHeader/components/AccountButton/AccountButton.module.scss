@@ -1,0 +1,24 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+
+.root {
+  .name {
+    color: var(--color-neutral-60);
+    margin-left: 12px;
+  }
+}
+
+.iconLogo {
+  height: 10px;
+}
+
+.loggedUserInfo {
+  cursor: pointer;
+  position: relative;
+}
+
+@media screen and (max-width: breakpoints.$screen-sm - 1px) {
+  .name {
+    display: none;
+  }
+}

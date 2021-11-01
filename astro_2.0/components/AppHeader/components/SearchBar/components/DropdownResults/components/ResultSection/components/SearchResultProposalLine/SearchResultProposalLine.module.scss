@@ -1,0 +1,19 @@
+.root {
+  align-items: center;
+
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+
+  height: 32px;
+  letter-spacing: 0;
+  line-height: 16px;
+  padding-left: 16px;
+  text-align: left;
+
+  &:hover {
+    background-color: rgba(24, 177, 63, 0.05);
+  }
+}

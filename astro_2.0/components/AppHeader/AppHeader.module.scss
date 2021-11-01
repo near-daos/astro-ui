@@ -1,0 +1,21 @@
+.root {
+  background-color: var(--color-white);
+  display: flex;
+  height: 72px;
+  justify-content: space-between;
+  padding: 0 130px 0 120px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.section {
+  align-items: center;
+  display: flex;
+
+  &.search {
+    flex: 1;
+    justify-content: flex-end;
+    margin: 0 30px;
+  }
+}

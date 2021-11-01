@@ -1,0 +1,43 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+
+$transition-time: 0.2;
+
+:export {
+  /* stylelint-disable-next-line */
+  transitionTime: $transition-time;
+}
+
+.root {
+  @extend %body2;
+  align-items: center;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  bottom: -216px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  height: 192px;
+  opacity: 0;
+  padding: 8px;
+  position: absolute;
+  transition: #{$transition-time}s;
+  width: 175px;
+  z-index: 1000;
+
+  &.visible {
+    opacity: 1;
+  }
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.delimiter {
+  background-color: var(--color-neutral-20);
+  height: 1px;
+  margin: 4px 0;
+}
+
+.auth {
+  color: var(--color-brand-coral-red);
+}

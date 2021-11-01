@@ -32,6 +32,7 @@ export interface ProposalCardProps {
   disliked: boolean;
   voteDetails: VoteDetail;
 }
+
 export const ProposalCard: React.FC<ProposalCardProps> = ({
   type,
   proposalTxHash,
