@@ -10,7 +10,7 @@ interface ProgressBarProps {
 
 export const ProgressBar: FC<ProgressBarProps> = ({ detail }) => {
   const { limit, data } = detail;
-  const sortedData = orderBy(data, 'percent', 'desc');
+  const sortedData = orderBy(data, 'vote', 'asc');
   const realLimit = limit.includes('%')
     ? parseInt(limit.slice(0, -1), 10)
     : limit;

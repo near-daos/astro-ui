@@ -1,6 +1,6 @@
 import React from 'react';
 import { UnitSeparator } from 'astro_2.0/features/CreateDao/components/UnitSeparator/UnitSeparator';
-import { CreateProposalWidget } from 'astro_2.0/components/ProposalCardRenderer/components/CreateProposalWidget/CreateProposalWidget';
+import { TransactionDetailsWidget } from 'astro_2.0/components/ProposalCardRenderer/components/TransactionDetailsWidget/TransactionDetailsWidget';
 import styles from './DaoSubmitForm.module.scss';
 
 export function DaoSubmitForm(): JSX.Element {
@@ -8,7 +8,14 @@ export function DaoSubmitForm(): JSX.Element {
     <div className={styles.root}>
       <UnitSeparator />
       <div className={styles.content}>
-        <CreateProposalWidget onCreate={() => 0} bond="5" gas="0.3" />
+        <TransactionDetailsWidget
+          onCreate={() => 0}
+          standAloneMode
+          bond="5"
+          gas="0.3"
+          transaction="Create New DAO"
+          buttonLabel="Create DAO"
+        />
       </div>
     </div>
   );

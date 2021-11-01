@@ -10,7 +10,7 @@ import { DaoFlagWidget } from 'astro_2.0/components/ProposalCardRenderer/compone
 import { ProposalCard } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard';
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
 import { Vote } from 'features/types';
-import { CreateProposalWidget } from 'astro_2.0/components/ProposalCardRenderer/components/CreateProposalWidget';
+import { TransactionDetailsWidget } from 'astro_2.0/components/ProposalCardRenderer/components/TransactionDetailsWidget';
 import { CreateBountyProposalContent } from 'astro_2.0/components/ProposalCardRenderer/components/CreateBountyProposalContent';
 
 export default {
@@ -80,7 +80,7 @@ const cardProps = {
     data: [
       { vote: 'Yes' as Vote, percent: 50 },
       { vote: 'No' as Vote, percent: 25 },
-      { vote: null, percent: 25 },
+      { vote: 'Dismiss' as Vote, percent: 25 },
     ],
   },
   description:
@@ -104,5 +104,5 @@ Template.args = {
   letterHeadNode: (
     <LetterHeadWidget type={ProposalType.Transfer} coverUrl="/cover.png" />
   ),
-  infoPanelNode: <CreateProposalWidget {...createProposalProps} />,
+  infoPanelNode: <TransactionDetailsWidget {...createProposalProps} />,
 };

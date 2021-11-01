@@ -7,6 +7,7 @@ interface InfoBlockWidgetProps {
   value: string;
   valueFontSize?: 'S' | 'L';
   valueNode?: React.ReactNode;
+  className?: string;
 }
 
 export const InfoBlockWidget: React.FC<InfoBlockWidgetProps> = ({
@@ -14,9 +15,10 @@ export const InfoBlockWidget: React.FC<InfoBlockWidgetProps> = ({
   value,
   valueFontSize = 'S',
   valueNode,
+  className,
 }) => {
   return (
-    <div className={styles.infoBlock}>
+    <div className={cn(styles.root, className)}>
       <div className={styles.label}>{label}</div>
       <div className={cn(styles.valueBlock, { [styles.left]: !valueNode })}>
         <div
