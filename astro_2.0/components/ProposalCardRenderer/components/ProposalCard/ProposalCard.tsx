@@ -34,6 +34,7 @@ export interface ProposalCardProps {
   voteDetails: VoteDetail;
   content: ReactNode;
 }
+
 export const ProposalCard: React.FC<ProposalCardProps> = ({
   type,
   proposalTxHash,

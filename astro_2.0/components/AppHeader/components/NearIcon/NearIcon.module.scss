@@ -1,0 +1,28 @@
+.root {
+  transition: 0.4s;
+}
+
+.circle {
+  fill: var(--color-white);
+  stroke: var(--color-brand-black);
+}
+
+.icon {
+  fill: var(--color-brand-black);
+}
+
+/* stylelint-disable-next-line */
+:global(.near-icon-parent):hover {
+  .root {
+    border-radius: 100px;
+    box-shadow: 0 0 40px var(--color-black);
+  }
+
+  .circle {
+    fill: var(--color-brand-black);
+  }
+
+  .icon {
+    fill: var(--color-white);
+  }
+}

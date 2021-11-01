@@ -6,8 +6,7 @@ import React, { FC, HTMLAttributes, ReactNode } from 'react';
 import { Badge } from 'components/badge/Badge';
 import { Icon, IconName } from 'components/Icon';
 
-// eslint-disable-next-line no-restricted-imports
-import { useIsActive } from '../navHooks';
+import { useIsHrefActive } from 'hooks/useIsHrefActive';
 
 import styles from './NavItem.module.scss';
 
@@ -39,7 +38,7 @@ export const NavItem: FC<NavItemProps> = ({
   onClick,
   children,
 }) => {
-  const isActive = useIsActive(href, subHrefs);
+  const isActive = useIsHrefActive(href, subHrefs);
 
   function handleOnClick() {
     onClick?.();
