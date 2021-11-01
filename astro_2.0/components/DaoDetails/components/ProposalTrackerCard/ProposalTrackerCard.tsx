@@ -9,6 +9,7 @@ export interface ProposalTrackerProps {
   totalProposals: number;
   action: JSX.Element | null;
   onClick: React.ButtonHTMLAttributes<HTMLButtonElement>['onClick'];
+  preview?: boolean;
 }
 
 export const ProposalTrackerCard: FC<ProposalTrackerProps> = ({
@@ -16,6 +17,7 @@ export const ProposalTrackerCard: FC<ProposalTrackerProps> = ({
   totalProposals,
   action,
   onClick,
+  preview,
 }) => {
   return (
     <div className={styles.root}>
@@ -36,6 +38,7 @@ export const ProposalTrackerCard: FC<ProposalTrackerProps> = ({
           {action}
         </Button>
       )}
+      {preview && <div className={styles.action}>Create proposal</div>}
     </div>
   );
 };

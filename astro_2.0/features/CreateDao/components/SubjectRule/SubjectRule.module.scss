@@ -1,0 +1,33 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  width: 100%;
+}
+
+.header {
+  h3 {
+    @include font(1em, 24px, 700);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+  }
+
+  p {
+    @extend %caption1;
+    margin-top: 8px;
+  }
+}
+.list {
+  align-items: stretch;
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  gap: 16px;
+  margin: 24px 0 40px;
+  width: 100%;
+
+  @include tablet-landscape {
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+}

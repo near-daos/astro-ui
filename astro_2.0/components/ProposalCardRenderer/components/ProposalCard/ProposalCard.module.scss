@@ -10,7 +10,7 @@
     'proposalType proposalType countdown'
     'proposer proposer .'
     'description description description'
-    'сontent content voteControl';
+    'content content voteControl';
   grid-template-columns: 1fr 1fr 1fr;
   padding: 22px 30px;
   position: relative;
@@ -58,7 +58,6 @@
 
 .proposalCell {
   display: flex;
-  flex-direction: column;
   grid-area: proposalType;
 }
 

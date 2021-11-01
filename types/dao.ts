@@ -42,6 +42,16 @@ export type DAO = {
   votes?: number;
 };
 
+export type DAOPreview = {
+  id: string;
+  name: string;
+  description: string;
+  funds: string;
+  logo: string;
+  links: string[];
+  displayName: string;
+};
+
 export type VotePolicyRequest = {
   // eslint-disable-next-line camelcase
   weight_kind: string;

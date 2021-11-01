@@ -1,0 +1,26 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  width: 100%;
+}
+
+.header {
+  h2 {
+    @include font(1.75em, 38px, 700);
+    font-family: 'Inter', sans-serif;
+    margin: 50px 0 0;
+  }
+
+  p {
+    @extend %body2;
+  }
+}
+
+.content {
+  margin: 100px 0 67px;
+
+  @include tablet-landscape {
+    margin-top: 27px;
+  }
+}

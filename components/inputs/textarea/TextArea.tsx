@@ -10,6 +10,7 @@ export interface TextAreaProps
   extends React.ComponentProps<typeof TextareaAutosize> {
   label?: string | undefined;
   size: 'medium' | 'large' | 'block';
+  isBorderless?: boolean;
   textAlign?: Property.TextAlign;
   resize?: Property.Resize;
   isValid?: boolean | undefined;
@@ -36,6 +37,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
       isValid,
       maxLength,
       size = 'medium',
+      isBorderless,
       resize = 'none',
       minRows = 8,
       maxRows = 8,
@@ -45,7 +47,9 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
     externalRef
   ) => {
     const id = useId(props.id);
-    const className = classNames(styles.textarea, sizeClasses[size]);
+    const className = classNames(styles.textarea, sizeClasses[size], {
+      [styles.borderless]: isBorderless,
+    });
     const [currentLength, setCurrentLength] = useState(0);
 
     return (

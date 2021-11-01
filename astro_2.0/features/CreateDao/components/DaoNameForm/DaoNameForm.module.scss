@@ -1,0 +1,75 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  width: 100%;
+}
+
+.header {
+  h2 {
+    @include font(1.75em, 38px, 700);
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 0;
+  }
+
+  p {
+    @extend %body2;
+  }
+}
+
+.card {
+  @include card-shadow;
+  padding: 24px;
+}
+
+.label {
+  @include font(12px, 18px, 400);
+
+  .warning {
+    color: var(--color-error-70);
+  }
+}
+
+.nameInput input {
+  font-size: 22px;
+
+  @include placeholder {
+    color: var(--color-neutral-60);
+    font-weight: 700;
+  }
+}
+
+.nameError {
+  color: var(--color-error-70);
+  font-size: 14px;
+  padding-bottom: 10px;
+}
+
+.address {
+  .label {
+    margin: 14px 0 8px;
+  }
+}
+
+.addressText {
+  @include font(16px, 24px, 700);
+}
+
+.addressPlaceholder {
+  color: var(--color-neutral-60);
+}
+
+.purpose {
+  .label {
+    margin-top: 24px;
+  }
+}
+
+.purposeText textarea {
+  font-size: 14px;
+
+  @include placeholder {
+    color: var(--color-neutral-60);
+    font-weight: 400;
+  }
+}
