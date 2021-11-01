@@ -91,7 +91,33 @@ definitions:
               KUBECTL_COMMAND: 'apply'
               RESOURCE_PATH: '$APP_NAME-manifest.yml'
               KUBECTL_ARGS:
-                - "--namespace=$DEPLOYMENT_NAMESPACE"
+                - '--namespace=$DEPLOYMENT_NAMESPACE'
+
+    - step: &build-storybook
+        name: Build Storybook
+        caches:
+          - node
+        script:
+          - yarn install
+          - yarn lint
+          - yarn typecheck
+          - yarn build-storybook
+        artifacts:
+          - storybook-static/**
+
+    - step: &deploy-to-s3
+        name: Deploy to S3
+        deployment: development
+        script:
+          - source environment.sh
+          - pipe: atlassian/aws-s3-deploy:0.3.8
+            variables:
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              AWS_DEFAULT_REGION: 'us-east-2'
+              S3_BUCKET: 'astro-storybook'
+              LOCAL_PATH: 'storybook-static'
+              ACL: 'public-read'
 
 pipelines:
   pull-requests:
@@ -155,6 +181,12 @@ pipelines:
           <<: *helm-build-deploy
           deployment: development
 
+      - step: *build-storybook
+
+      - step:
+          <<: *deploy-to-s3
+          deployment: development
+
     staging:
       - step:
           <<: *set-environment
@@ -170,7 +202,7 @@ pipelines:
       - step: *build
 
       - step: *docker-build-publish
-          
+
       - step:
           <<: *helm-build-deploy
           deployment: Staging
