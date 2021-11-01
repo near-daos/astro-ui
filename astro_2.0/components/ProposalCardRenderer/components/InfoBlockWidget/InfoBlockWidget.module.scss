@@ -1,0 +1,49 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.label {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+}
+
+.infoBlock {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-right: 30px;
+}
+
+.valueBlock {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.valueNode {
+  padding-left: 10px;
+}
+
+.left {
+  justify-content: flex-start;
+}
+
+.center {
+  justify-content: space-between;
+}
+
+.valueSmall {
+  @extend %title3;
+  color: var(--color-neutral-90);
+}
+
+.valueLarge {
+  color: var(--color-neutral-90);
+  font-family: Inter, serif;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 28px;
+  text-align: left;
+}

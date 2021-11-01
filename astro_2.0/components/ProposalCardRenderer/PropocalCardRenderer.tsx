@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from 'astro_2.0/components/ProposalCardRenderer/ProposalCardRenderer.module.scss';
+import styles from './ProposalCardRenderer.module.scss';
 
 export interface ProposalCardRendererProps {
   letterHeadNode?: React.ReactNode;

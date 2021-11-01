@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button } from 'components/button/Button';
+import { InfoBlockWidget } from 'astro_2.0/components/ProposalCardRenderer/components/InfoBlockWidget';
+import { TokenWidget } from 'astro_2.0/components/ProposalCardRenderer/components/TokenWidget';
 import styles from './CreateProposalWidget.module.scss';
 
 interface CreateProposalWidgetProps {
@@ -14,20 +16,19 @@ export const CreateProposalWidget: React.FC<CreateProposalWidgetProps> = ({
   gas,
 }) => {
   const infos = [
-    { label: 'BOND', value: bond },
-    { label: 'GAS', value: gas },
+    { label: 'Bond', value: bond },
+    { label: 'Gas', value: gas },
   ];
 
   return (
     <div className={styles.root}>
       {infos.map(info => (
-        <div className={styles.infoBlock} key={info.label}>
-          <div className={styles.label}> {info.label}</div>
-          <div className={styles.nearValue}>
-            <div className={styles.number}>{info.value} </div>
-            <div className={styles.value}>NEAR</div>
-          </div>
-        </div>
+        <InfoBlockWidget
+          label={info.label}
+          value={info.value}
+          valueNode={<TokenWidget icon="" symbol="NEAR" />}
+          key={info.label}
+        />
       ))}
       <div>
         <Button variant="black" size="medium" onClick={onCreate}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import {
   ProposalStatus,
@@ -14,6 +14,7 @@ import { ProposalActions } from 'features/proposal/components/proposal-actions';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
 import { Icon } from 'components/Icon';
 
+import { InfoBlockWidget } from 'astro_2.0/components/ProposalCardRenderer/components/InfoBlockWidget';
 import styles from './ProposalCard.module.scss';
 
 export interface ProposalCardProps {
@@ -31,6 +32,7 @@ export interface ProposalCardProps {
   liked: boolean;
   disliked: boolean;
   voteDetails: VoteDetail;
+  content: ReactNode;
 }
 export const ProposalCard: React.FC<ProposalCardProps> = ({
   type,
@@ -46,6 +48,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   liked,
   disliked,
   voteDetails,
+  content,
 }) => {
   return (
     <div className={styles.root}>
@@ -53,20 +56,22 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         <Icon name={status === 'Approved' ? 'sealApproved' : 'sealFailed'} />
       </div>
       <div className={styles.proposalCell}>
-        <div className={styles.label}>Proposal type</div>
-        <div className={styles.proposalTypeAndLink}>
-          <div className={styles.proposalValue}>{type}</div>
-          <ExplorerLink
-            linkData={proposalTxHash}
-            linkType="transaction"
-            className={styles.proposalWalletLink}
-          />
-        </div>
+        <InfoBlockWidget
+          label="Proposal type"
+          value={type}
+          valueFontSize="L"
+          valueNode={
+            <ExplorerLink
+              linkData={proposalTxHash}
+              linkType="transaction"
+              className={styles.proposalWalletLink}
+            />
+          }
+        />
       </div>
       <div className={styles.countdownCell}>44 min left</div>
       <div className={styles.proposerCell}>
-        <div className={styles.label}>Proposer</div>
-        <div className={styles.text}>{proposer}</div>
+        <InfoBlockWidget label="Proposer" value={proposer} />
       </div>
       <div className={styles.descriptionCell}>
         <div className={styles.label}>Description</div>
@@ -75,6 +80,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           <ExternalLink to={link} />
         </div>
       </div>
+      <div className={styles.contentCell}>{content}</div>
       <div className={styles.voteControlCell}>
         <ProposalControlPanel
           status={status}

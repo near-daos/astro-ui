@@ -11,6 +11,7 @@ import { ProposalCard } from 'astro_2.0/components/ProposalCardRenderer/componen
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
 import { Vote } from 'features/types';
 import { CreateProposalWidget } from 'astro_2.0/components/ProposalCardRenderer/components/CreateProposalWidget';
+import { CreateBountyProposalContent } from 'astro_2.0/components/ProposalCardRenderer/components/CreateBountyProposalContent';
 
 export default {
   title: 'astro_2.0/ProposalCard',
@@ -46,6 +47,14 @@ const cardProps = {
     console.log(action);
   },
   type: ProposalType.Transfer,
+  content: (
+    <CreateBountyProposalContent
+      amount="1.00"
+      token={{ symbol: 'NEAR', icon: '' }}
+      availableClaims="3"
+      daysToComplete="5"
+    />
+  ),
   status: 'Approved' as ProposalStatus,
   daoName: 'Ref.Finance',
   proposer: 'dkarpov.near',

@@ -1,0 +1,23 @@
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  min-height: 24px;
+  min-width: 75px;
+}
+
+.icon {
+  background-position: center;
+  background-size: cover;
+  color: var(--color-black);
+  height: 24px;
+  width: 24px;
+}
+
+.symbol {
+  @extend %body1;
+  color: var(--color-black);
+  padding-left: 10px;
+}
