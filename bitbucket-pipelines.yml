@@ -176,13 +176,13 @@ pipelines:
 
       - step: *build
 
-      - step: *build-storybook
-
       - step: *docker-build-publish
 
       - step:
           <<: *helm-build-deploy
           deployment: development
+
+      - step: *build-storybook
 
       - step:
           <<: *deploy-to-s3
