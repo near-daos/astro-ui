@@ -2,57 +2,30 @@
 @import 'styles/mixins';
 
 .root {
-  background-color: var(--color-white);
-  background-image: url('/assets/illustrations/bg-stars.svg');
-  background-repeat: repeat;
-  display: grid;
-  grid-template-areas:
-    'header'
-    'main';
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr;
-  min-height: 100vh;
+  background-color: var(--color-neutral-30);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.main {
+  $header-height: 72px;
+
+  padding: 0 24px 60px;
+  width: 100%;
 
   @include desktop {
-    grid-template-areas:
-      'aside header'
-      'aside main';
-    grid-template-columns: auto 1fr;
+    padding: 0 48px 60px;
   }
 
-  .sideBar {
-    display: none;
-    grid-area: aside;
-
-    @include desktop {
-      display: block;
-      height: 100vh;
-      position: sticky;
-      top: 0;
-    }
+  @include large-desktop {
+    margin: auto;
+    max-width: 1125px;
+    padding: 0 94px 60px 72px;
   }
+}
 
-  .main {
-    $header-height: 72px;
-    grid-area: main;
-    min-height: calc(100vh - #{$header-height});
-    overflow: hidden;
-    padding: 0 24px 60px;
-    width: 100%;
-
-    @include desktop {
-      padding: 0 48px 60px;
-    }
-
-    @include large-desktop {
-      margin: auto;
-      max-width: 1125px;
-      padding: 0 94px 60px 72px;
-    }
-  }
-
-  .content {
-    background-color: var(--color-neutral-30);
-    position: relative;
-  }
+.content {
+  background-color: var(--color-neutral-30);
+  position: relative;
 }

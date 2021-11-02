@@ -66,7 +66,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       if (tab === '3') {
         const result = await SputnikHttpService.getBounties();
 
-        return result
+        return result.data
           .map(mapBountyResponseToBounty)
           .filter(bounty =>
             bounty.claimedBy.find(claim => claim.accountId === accountId)

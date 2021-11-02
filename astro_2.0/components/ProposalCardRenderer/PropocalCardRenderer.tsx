@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import styles from './ProposalCardRenderer.module.scss';
 
@@ -7,6 +8,7 @@ export interface ProposalCardRendererProps {
   proposalCardNode: React.ReactNode;
   daoFlagNode?: React.ReactNode;
   infoPanelNode?: React.ReactNode;
+  className?: string;
 }
 
 export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
@@ -14,9 +16,10 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
   daoFlagNode,
   proposalCardNode,
   infoPanelNode,
+  className,
 }) => {
   return (
-    <div className={styles.root}>
+    <div className={classNames(styles.root, className)}>
       {letterHeadNode && (
         <div className={styles.letterHead}>{letterHeadNode}</div>
       )}

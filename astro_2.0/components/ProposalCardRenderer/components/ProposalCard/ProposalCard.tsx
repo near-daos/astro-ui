@@ -1,20 +1,17 @@
 import React, { ReactNode } from 'react';
 
-import {
-  ProposalStatus,
-  ProposalType,
-  ProposalVotingPermissions,
-  VoteAction,
-} from 'types/proposal';
+import { ProposalStatus, ProposalType, VoteAction } from 'types/proposal';
 import { ExplorerLink } from 'components/explorer-link';
 import ProposalControlPanel from 'components/cards/proposal-card/components/proposal-control-panel/ProposalControlPanel';
 import { ProgressBar } from 'components/vote-details/components/progress-bar/ProgressBar';
 import { VoteDetail } from 'features/types';
 import { ProposalActions } from 'features/proposal/components/proposal-actions';
+import { DAO } from 'types/dao';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
 import { Icon } from 'components/Icon';
-
+import { useGetVotePermissions } from 'components/cards/proposal-card/hooks/useGetVotePermissions';
 import { InfoBlockWidget } from 'astro_2.0/components/ProposalCardRenderer/components/InfoBlockWidget';
+
 import styles from './ProposalCard.module.scss';
 
 export interface ProposalCardProps {
@@ -26,12 +23,13 @@ export interface ProposalCardProps {
   onVoteClick: (action: VoteAction) => () => void;
   proposalTxHash: string;
   expireTime: string;
-  permissions: ProposalVotingPermissions;
+  dao: DAO;
+  accountId: string;
   likes: number;
   dislikes: number;
   liked: boolean;
   disliked: boolean;
-  voteDetails: VoteDetail;
+  voteDetails?: VoteDetail;
   content: ReactNode;
 }
 
@@ -43,14 +41,17 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   link,
   status,
   onVoteClick,
-  permissions,
   likes,
   dislikes,
   liked,
   disliked,
   voteDetails,
   content,
+  accountId,
+  dao,
 }) => {
+  const permissions = useGetVotePermissions(dao, type, accountId);
+
   return (
     <div className={styles.root}>
       <div className={styles.proposalStatusSeal}>
@@ -95,7 +96,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         />
       </div>
       <div className={styles.voteProgress}>
-        <ProgressBar detail={voteDetails} />
+        {voteDetails && <ProgressBar detail={voteDetails} />}
       </div>
       <div className={styles.actionBar}>
         <ProposalActions />

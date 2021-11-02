@@ -34,6 +34,7 @@ export type ProposalDTO = {
   voteCounts: Record<string, number[]>;
   votes: Record<string, 'Approve' | 'Reject' | 'Remove'>;
   dao: DaoDTO;
+  votePeriodEnd: string;
 };
 
 type VoteState = 'Yes' | 'No' | 'Dismiss';
@@ -128,6 +129,16 @@ export const mapProposalDTOToProposal = (
       logo:
         meta && meta.flag ? getLogoUrl(meta.flag) : getLogoUrl('default.png'),
     },
+  };
+};
+
+export const mapProposalDTOToProposalExt = (
+  proposalDTO: ProposalDTO
+): Proposal => {
+  return {
+    ...mapProposalDTOToProposal(proposalDTO),
+    status: proposalDTO.status,
+    votePeriodEnd: proposalDTO.votePeriodEnd,
   };
 };
 

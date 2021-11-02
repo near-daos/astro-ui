@@ -1,23 +1,18 @@
 import React from 'react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { AppContext, AppProps } from 'next/app';
 
 import { SWRConfig } from 'swr';
 import { useMount } from 'react-use';
 
-import {
-  ALL_DAOS_URL,
-  CREATE_DAO_URL,
-  CREATE_DAO_NEW_URL,
-  MY_FEED_URL,
-} from 'constants/routing';
+import { ALL_DAOS_URL, CREATE_DAO_URL, MY_FEED_URL } from 'constants/routing';
 
 import { AuthWrapper } from 'context/AuthContext';
 import { CustomTokensProvider } from 'context/CustomTokensContext';
 
 import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
-import CreateLayout from 'components/create-layout/CreateLayout';
 import CreateLayoutNew from 'astro_2.0/components/CreateLayout/CreateLayout';
 
 import { SputnikNearService } from 'services/sputnik';
@@ -27,23 +22,18 @@ import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 
 import 'styles/globals.scss';
 
-function usePageLayout(): React.FC {
+const AppUILayout: React.FC = ({ children }) => {
   const router = useRouter();
 
-  if (router.route.match(CREATE_DAO_NEW_URL)) {
-    return CreateLayoutNew;
-  }
+  const Layout = router.route.match(CREATE_DAO_URL)
+    ? CreateLayoutNew
+    : PageLayout;
 
-  if (router.route.match(CREATE_DAO_URL)) {
-    return CreateLayout;
-  }
-
-  return PageLayout;
-}
+  return <Layout>{children}</Layout>;
+};
 
 function App({ Component, pageProps }: AppProps): JSX.Element {
   const router = useRouter();
-  const Layout = usePageLayout();
 
   useMount(async () => {
     SputnikNearService.init();
@@ -61,9 +51,13 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
       <AuthWrapper>
         <CustomTokensProvider>
           <ModalProvider>
-            <Layout>
+            <Head>
+              <title>Astro</title>
+            </Head>
+
+            <AppUILayout>
               <Component {...pageProps} />
-            </Layout>
+            </AppUILayout>
           </ModalProvider>
         </CustomTokensProvider>
       </AuthWrapper>

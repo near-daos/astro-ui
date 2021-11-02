@@ -1,47 +1,56 @@
 import {
-  SFields,
-  SConditionAND,
   RequestQueryBuilder,
+  SConditionAND,
+  SFields,
 } from '@nestjsx/crud-request';
 import omit from 'lodash/omit';
 
 import { nearConfig } from 'config';
 
+import { PaginationResponse } from 'types/api';
 import {
-  Token,
-  NftToken,
-  TokenResponse,
-  NftTokenResponse,
   GetTokensResponse,
+  NftToken,
+  NftTokenResponse,
+  Token,
+  TokenResponse,
 } from 'types/token';
 import { DAO } from 'types/dao';
 import { Receipt } from 'types/transaction';
 import { SearchResultsData } from 'types/search';
 import { Bounty } from 'components/cards/bounty-card/types';
-import { BountiesResponse, BountyResponse } from 'types/bounties';
-import { BountyDoneProposalType, Proposal, ProposalType } from 'types/proposal';
-
+import { BountiesResponse } from 'types/bounties';
 import {
-  DaoDTO,
-  ReceiptDTO,
-  ProposalDTO,
-  SearchResponse,
-  GetDAOsResponse,
-  GetProposalsResponse,
-  mapDaoDTOtoDao,
-  mapReceiptsResponse,
-  mapTokensDTOToTokens,
-  mapDaoDTOListToDaoList,
-  mapProposalDTOToProposal,
-  mapBountyResponseToBounty,
-  mapSearchResultsDTOToDataObject,
-} from 'services/sputnik/mappers';
-import { HttpService, httpService } from 'services/HttpService';
+  BountyDoneProposalType,
+  FeedCategories,
+  Proposal,
+  ProposalStatuses,
+  ProposalType,
+} from 'types/proposal';
 
+import { ProposalsQueries } from 'services/sputnik/types/proposals';
 import {
   ProposalFilterOptions,
   ProposalFilterStatusOptions,
 } from 'features/member-home/types';
+import {
+  DaoDTO,
+  GetDAOsResponse,
+  GetProposalsResponse,
+  mapBountyResponseToBounty,
+  mapDaoDTOListToDaoList,
+  mapDaoDTOtoDao,
+  mapProposalDTOToProposal,
+  mapProposalDTOToProposalExt,
+  mapReceiptsResponse,
+  mapSearchResultsDTOToDataObject,
+  mapTokensDTOToTokens,
+  ProposalDTO,
+  ReceiptDTO,
+  SearchResponse,
+} from 'services/sputnik/mappers';
+import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
+import { HttpService, httpService } from 'services/HttpService';
 
 class SputnikHttpServiceClass {
   private readonly httpService: HttpService = httpService;
@@ -205,6 +214,190 @@ class SputnikHttpServiceClass {
     return response.data.data;
   }
 
+  public async getProposalsList(
+    query: ProposalsQueries & {
+      daoViewFilter?: string | null;
+      daoFilter?: 'All DAOs' | 'My DAOs' | 'Following DAOs' | null;
+      daosIdsFilter?: string[];
+      limit?: number;
+      offset?: number;
+    },
+    accountId?: string
+  ): Promise<PaginationResponse<Proposal[]>> {
+    const queryString = RequestQueryBuilder.create();
+
+    const search: SFields | SConditionAND = {
+      $and: [],
+    };
+
+    // specific DAO
+    if (query.daoViewFilter) {
+      search.$and?.push({
+        daoId: {
+          $eq: `${query.daoViewFilter}.${nearConfig.contractName}`,
+        },
+      });
+    } else if (query.daoFilter === 'My DAOs' && accountId) {
+      const accountDaos = await this.getAccountDaos(accountId);
+
+      if (accountDaos.length) {
+        search.$and?.push({
+          daoId: {
+            $in: accountDaos.map(item => item.id),
+          },
+        });
+      } else {
+        return Promise.resolve({
+          data: [],
+          count: 0,
+          pageCount: 1,
+          page: 1,
+          total: 0,
+        });
+      }
+    }
+
+    // Statuses
+    if (query?.status === ProposalStatuses.Active) {
+      search.$and?.push({
+        status: {
+          $eq: 'InProgress',
+        },
+        votePeriodEnd: {
+          $gt: Date.now() * 1000000,
+        },
+      });
+    }
+
+    if (query?.status === ProposalStatuses.Approved) {
+      search.$and?.push({
+        status: {
+          $eq: 'Approved',
+        },
+      });
+    }
+
+    if (query?.status === ProposalStatuses.Failed) {
+      // Fetch failed including InProgress items and then do additional filtering for Expired
+      search.$and?.push({
+        status: {
+          $in: ['Rejected', 'Expired', 'Moved'],
+        },
+      });
+    }
+
+    // Categories
+    if (query.category === FeedCategories.Polls) {
+      search.$and?.push({
+        kind: {
+          $cont: ProposalType.Vote,
+          $excl: ProposalType.ChangePolicy,
+        },
+      });
+    }
+
+    if (query.category === FeedCategories.Governance) {
+      search.$and?.push({
+        $or: [
+          {
+            kind: {
+              $cont: ProposalType.ChangeConfig,
+            },
+          },
+          {
+            kind: {
+              $cont: ProposalType.ChangePolicy,
+            },
+          },
+        ],
+      });
+    }
+
+    if (query.category === FeedCategories.Bounties) {
+      search.$and?.push({
+        $or: [
+          {
+            kind: {
+              $cont: ProposalType.AddBounty,
+            },
+          },
+          {
+            kind: {
+              $cont: ProposalType.BountyDone,
+            },
+          },
+        ],
+      });
+    }
+
+    if (query.category === FeedCategories.Financial) {
+      search.$and?.push({
+        kind: {
+          $cont: ProposalType.Transfer,
+        },
+      });
+    }
+
+    if (query.category === FeedCategories.Members) {
+      search.$and?.push({
+        $or: [
+          {
+            kind: {
+              $cont: ProposalType.AddMemberToRole,
+            },
+          },
+          {
+            kind: {
+              $cont: ProposalType.RemoveMemberFromRole,
+            },
+          },
+        ],
+      });
+    }
+
+    queryString.search(search);
+
+    // DaosIds
+    if (query.daosIdsFilter) {
+      queryString.setFilter({
+        field: 'daoId',
+        operator: '$in',
+        value: query.daosIdsFilter,
+      });
+    }
+
+    queryString
+      .setLimit(query.limit ?? LIST_LIMIT_DEFAULT)
+      .setOffset(query.offset ?? 0)
+      .sortBy({
+        field: 'createdAt',
+        order: 'DESC',
+      })
+      .query();
+
+    const { data } = await this.httpService.get<
+      PaginationResponse<GetProposalsResponse['data']>
+    >(`/proposals?${queryString.queryString}`);
+
+    return { ...data, data: data.data.map(mapProposalDTOToProposalExt) };
+  }
+
+  public async getProposalById(proposalId: string): Promise<Proposal | null> {
+    try {
+      const { data: proposal } = await this.httpService.get<ProposalDTO>(
+        `/proposals/${proposalId}`
+      );
+
+      return mapProposalDTOToProposal(proposal);
+    } catch (error) {
+      if ([400, 404].includes(error.response.status)) {
+        return null;
+      }
+
+      throw error;
+    }
+  }
+
   public async getFilteredProposals(
     filter: {
       daoViewFilter?: string | null;
@@ -344,22 +537,6 @@ class SputnikHttpServiceClass {
     return proposals.data.map(mapProposalDTOToProposal);
   }
 
-  public async getProposalById(proposalId: string): Promise<Proposal | null> {
-    try {
-      const { data: proposal } = await this.httpService.get<ProposalDTO>(
-        `/proposals/${proposalId}`
-      );
-
-      return mapProposalDTOToProposal(proposal);
-    } catch (error) {
-      if ([400, 404].includes(error.response.status)) {
-        return null;
-      }
-
-      throw error;
-    }
-  }
-
   public async getProposals(
     daoId?: string,
     offset = 0,
@@ -452,12 +629,14 @@ class SputnikHttpServiceClass {
     offset?: number;
     limit?: number;
     sort?: string;
-  }): Promise<BountyResponse[]> {
+  }): Promise<PaginationResponse<BountiesResponse['data']>> {
+    const sort = params?.sort ?? 'createdAt,DESC';
     const offset = params?.offset ?? 0;
     const limit = params?.limit ?? 50;
-    const sort = params?.sort ?? 'createdAt,DESC';
 
-    const { data } = await this.httpService.get<BountiesResponse>('/bounties', {
+    const { data } = await this.httpService.get<
+      PaginationResponse<BountiesResponse['data']>
+    >('/bounties', {
       params: {
         offset,
         limit,
@@ -465,7 +644,7 @@ class SputnikHttpServiceClass {
       },
     });
 
-    return data.data;
+    return data;
   }
 
   public async getBountiesByDaoId(

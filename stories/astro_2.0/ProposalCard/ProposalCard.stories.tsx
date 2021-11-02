@@ -6,6 +6,7 @@ import {
   ProposalCardRendererProps,
 } from 'astro_2.0/components/ProposalCardRenderer';
 import { ProposalStatus, ProposalType, VoteAction } from 'types/proposal';
+import { DAO } from 'types/dao';
 import { DaoFlagWidget } from 'astro_2.0/components/ProposalCardRenderer/components/DaoFlagWidget';
 import { ProposalCard } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard';
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
@@ -87,6 +88,76 @@ const cardProps = {
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis eleifend habitant laoreet ornare vitae consequat. Potenti ut urna, ultricies elit nam. Feugiat porta elit ultricies eu mollis. Faucibus mauris faucibus aliquam non. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis eleifend habitant laoreet ornare vitae consequat. Potenti ut urna, ultricies elit nam.',
 };
 
+const DAO = {
+  id: 'testdao3-near-cli-example.sputnikv2.testnet',
+  txHash: 'GBUmu3jrdmYYHH2bmcs2qVMRpV5snTh5CouEToxo2Viv',
+  name: 'testdao3-near-cli-example',
+  description: '',
+  members: 1,
+  proposals: 11,
+  logo:
+    'https://sputnik-dao.s3.eu-central-1.amazonaws.com/3RFSVcbRRXIGNxq5C1OMI',
+  funds: '6.10334',
+  createdAt: '2021-11-01T08:21:53.955Z',
+  groups: [
+    {
+      members: ['testdao2.testnet'],
+      name: 'Council',
+      permissions: [
+        '*:VoteReject',
+        '*:VoteRemove',
+        '*:VoteApprove',
+        '*:AddProposal',
+        '*:Finalize',
+      ],
+      votePolicy: {},
+      slug: 'Council',
+    },
+  ],
+  policy: {
+    isArchived: false,
+    createdAt: '2021-11-01T08:21:53.955Z',
+    updatedAt: '2021-11-01T08:21:53.955Z',
+    daoId: 'testdao3-near-cli-example.sputnikv2.testnet',
+    proposalBond: '100000000000000000000000',
+    bountyBond: '100000000000000000000000',
+    proposalPeriod: '604800000000000',
+    bountyForgivenessPeriod: '604800000000000',
+    defaultVotePolicy: {
+      weightKind: 'RoleWeight',
+      weight: 'RoleWeight',
+      quorum: '0',
+      kind: 'Ratio',
+      ratio: [1, 2],
+    },
+    roles: [
+      {
+        isArchived: false,
+        createdAt: '2021-11-01T08:21:53.955Z',
+        updatedAt: '2021-11-02T14:02:04.271Z',
+        id: 'testdao3-near-cli-example.sputnikv2.testnet-Council',
+        name: 'Council',
+        kind: 'Group',
+        balance: null,
+        accountIds: ['testdao2.testnet'],
+        permissions: [
+          '*:VoteReject',
+          '*:VoteRemove',
+          '*:VoteApprove',
+          '*:AddProposal',
+          '*:Finalize',
+        ],
+        votePolicy: {},
+        policy: {
+          daoId: 'testdao3-near-cli-example.sputnikv2.testnet',
+        },
+      },
+    ],
+  },
+  links: [],
+  displayName: 'TestDAO3 NEAR CLI example',
+} as DAO;
+
 const createProposalProps = {
   onCreate: () => {
     // eslint-disable-next-line no-console
@@ -100,7 +171,7 @@ Template.args = {
   daoFlagNode: (
     <DaoFlagWidget daoName="Ref.Finance" flagUrl="/dummy-flag.png" />
   ),
-  proposalCardNode: <ProposalCard {...cardProps} />,
+  proposalCardNode: <ProposalCard {...cardProps} accountId="123" dao={DAO} />,
   letterHeadNode: (
     <LetterHeadWidget type={ProposalType.Transfer} coverUrl="/cover.png" />
   ),

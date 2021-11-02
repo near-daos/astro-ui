@@ -8,14 +8,14 @@ export type Tokens = Record<string, Token>;
 
 interface CustomTokensContextInterface {
   tokens: Tokens;
-  fetchAndSetTokens: () => void;
+  fetchAndSetTokens: () => Promise<void>;
   setTokens: (tokens: Token[]) => void;
 }
 
 /* eslint-disable @typescript-eslint/no-empty-function */
 const CustomTokensContext = createContext<CustomTokensContextInterface>({
   tokens: {},
-  fetchAndSetTokens: () => {},
+  fetchAndSetTokens: async () => {},
   setTokens: () => {},
 });
 /* eslint-enable @typescript-eslint/no-empty-function */

@@ -73,6 +73,14 @@
   --color-pastel-orange: #ffebd6;
   --color-pastel-yellow: #fbffda;
 
+  // PASSIVE
+  --color-passive-gray: #d7dadd;
+  --color-passive-text-gray: #a2a4a7;
+
+  // MAIN
+  --color-main-gray: #8e8f91;
+  --color-main-dark: #3e4349;
+
   // SHADOWS
   --color-white-opacity-5: rgba(255, 255, 255, 0.5);
   --color-white-opacity-10: rgba(255, 255, 255, 0.1);
@@ -86,4 +94,10 @@
   --color-rejected-opacity-35: rgba(255, 135, 67, 0.35);
   --color-expired-opacity-25: rgba(140, 140, 140, 0.25);
   --color-removed-opacity-25: rgba(32, 32, 32, 0.25);
+  --color-shadow-thumb: rgba(0, 0, 0, 0.4);
+
+  // FONTS
+  --font-family-primary: 'Inter', sans-serif;
+  --font-family-secondary: 'Open Sans', sans-serif;
+  --font-family-tertiary: 'Lora', serif;
 }

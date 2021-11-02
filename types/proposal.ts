@@ -231,6 +231,20 @@ enum Vote {
   Remove = 0x2,
 }
 
+export enum ProposalStatuses {
+  Active = 'active',
+  Approved = 'approved',
+  Failed = 'failed',
+}
+
+export enum FeedCategories {
+  Governance = 'Governance',
+  Financial = 'Financial',
+  Bounties = 'Bounties',
+  Members = 'Groups',
+  Polls = 'Polls',
+}
+
 export interface Indexed {
   [key: string]: Proposal[];
 }

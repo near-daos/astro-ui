@@ -3,5 +3,5 @@ export type PaginationResponse<T> = {
   total: number;
   page: number;
   pageCount: number;
-  data: T[];
+  data: T;
 };

@@ -1,4 +1,5 @@
 @import '~sanitize.css';
+
 @import 'variables';
 @import 'helpers';
 @import 'typography';
@@ -27,8 +28,12 @@ a {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  background-color: var(--color-neutral-30);
+  display: flex;
+  font-family: var(--font-family-primary);
   font-size: 1em;
+  line-height: 1;
+  min-height: 100%;
 }
 
 input,
@@ -50,7 +55,7 @@ h2,
 h3,
 h4,
 h5 {
-  font-family: 'Lora', serif;
+  font-family: var(--font-family-tertiary);
 }
 
 $headings: 'h1', 'h2', 'h3', 'h4', 'h5';
@@ -100,4 +105,9 @@ $sizes: // Typography sizes
 
 .disabled {
   @extend %disabled;
+}
+
+#__next {
+  display: flex;
+  flex: 1 1 auto;
 }

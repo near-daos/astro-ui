@@ -1,29 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Lora:wght@500&family=Open+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Lora:wght@500&family=Open+Sans:wght@400;600;700&display=swap');
+
 @import 'styles/mixins';
 
 %heading1 {
   @include font(2em, 48px, 500);
-  font-family: 'Lora', serif;
+  font-family: var(--font-family-tertiary);
 }
 
 %heading2 {
   @include font(1.5em, 36px, 500);
-  font-family: 'Lora', serif;
+  font-family: var(--font-family-tertiary);
 }
 
 %heading3 {
   @include font(1.125em, 28px, 500);
-  font-family: 'Lora', serif;
+  font-family: var(--font-family-tertiary);
 }
 
 %heading4 {
   @include font(1em, 16px, 500);
-  font-family: 'Lora', serif;
+  font-family: var(--font-family-tertiary);
 }
 
 %heading5 {
   @include font(0.875em, 24px, 500);
-  font-family: 'Lora', serif;
+  font-family: var(--font-family-tertiary);
 }
 
 %title1 {
