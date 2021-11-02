@@ -3,10 +3,11 @@ import { Button } from 'components/button/Button';
 import { InfoBlockWidget } from 'astro_2.0/components/ProposalCardRenderer/components/InfoBlockWidget';
 import { TokenWidget } from 'astro_2.0/components/ProposalCardRenderer/components/TokenWidget';
 import cn from 'classnames';
+import { formatYoktoValue } from 'helpers/format';
 import styles from './TransactionDetailsWidget.module.scss';
 
 interface CreateProposalWidgetProps {
-  onCreate: () => void;
+  onCreate?: () => void;
   bond: string;
   gas: string;
   transaction?: string;
@@ -23,7 +24,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
   transaction,
 }) => {
   const infos = [
-    { label: 'Bond', value: bond },
+    { label: 'Bond', value: formatYoktoValue(bond) },
     { label: 'Gas', value: gas },
   ];
 
@@ -47,7 +48,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
           />
         ))}
       </div>
-      <Button variant="black" size="medium" onClick={onCreate}>
+      <Button variant="black" size="medium" onClick={onCreate} type="submit">
         {buttonLabel}
       </Button>
     </div>

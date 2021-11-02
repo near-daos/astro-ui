@@ -1,0 +1,84 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.label {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+  margin-bottom: 4px;
+}
+
+.valueSmall {
+  @extend %title3;
+  color: var(--color-neutral-90);
+}
+
+.selectedLabel {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  user-select: none;
+
+  > input {
+    border: 0;
+    color: var(--color-neutral-90);
+    cursor: pointer;
+    font-family: Inter, serif;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 28px;
+    outline: var(--color-neutral-20);
+    text-align: left;
+    user-select: none;
+    width: 100%;
+  }
+}
+
+.menu {
+  background: #fff;
+  box-shadow: 0 8.89583px 30px rgba(0, 0, 0, 0.14);
+  list-style: none;
+  overflow-y: auto;
+  padding: 16px 0;
+  position: absolute;
+  top: 80%;
+  //width: 100%;
+  z-index: 1;
+}
+
+.sectionTitle {
+  @extend %caption1;
+  border-bottom: 1px solid var(--color-neutral-30);
+  color: var(--color-neutral-50);
+  margin: 0 32px 8px;
+  padding-bottom: 4px;
+}
+
+.item {
+  @extend %body2;
+  @include ellipse-text;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  margin: 6px 0;
+  padding: 6px 32px;
+
+  &:hover {
+    background: var(--color-neutral-30);
+  }
+}
+
+.active {
+  background: var(--color-primary-20);
+
+  &:hover {
+    background: var(--color-neutral-30);
+  }
+}

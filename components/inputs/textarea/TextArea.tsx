@@ -73,7 +73,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
             resize,
           }}
         />
-        {maxLength != null && (
+        {maxLength != null && !isBorderless && (
           <span
             className={classNames(styles.length, {
               [styles.error]: currentLength > maxLength,

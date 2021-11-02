@@ -36,6 +36,21 @@ export enum ProposalType {
   Vote = 'Vote',
 }
 
+export enum ProposalVariant {
+  ProposeTransfer = 'ProposeTransfer',
+  ProposeCreateBounty = 'ProposeCreateBounty',
+  ProposeChangeDaoName = 'ProposeChangeDaoName',
+  ProposeChangeDaoPurpose = 'ProposeChangeDaoPurpose',
+  ProposeChangeDaoLinks = 'ProposeChangeDaoLinks',
+  ProposeChangeDaoFlag = 'ProposeChangeDaoFlag',
+  ProposeChangeVotingPolicy = 'ProposeChangeVotingPolicy',
+  ProposeChangeBonds = 'ProposeChangeBonds',
+  ProposeCreateGroup = 'ProposeCreateGroup',
+  ProposeAddMember = 'ProposeAddMember',
+  ProposeRemoveMember = 'ProposeRemoveMember',
+  ProposePoll = 'ProposePoll',
+}
+
 export type VoteAction = 'VoteApprove' | 'VoteRemove' | 'VoteReject';
 
 export type AddBountyRequest = {

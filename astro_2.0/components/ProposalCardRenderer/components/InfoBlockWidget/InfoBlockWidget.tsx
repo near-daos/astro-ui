@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import cn from 'classnames';
 import styles from './InfoBlockWidget.module.scss';
 
 interface InfoBlockWidgetProps {
   label: string;
-  value: string;
+  value: ReactNode;
   valueFontSize?: 'S' | 'L';
   valueNode?: React.ReactNode;
   className?: string;
