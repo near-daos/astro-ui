@@ -1,0 +1,56 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: flex;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.label {
+  @extend %subtitle5;
+  color: var(--color-neutral-60);
+  margin-bottom: 8px;
+}
+
+.icon {
+  color: var(--color-primary);
+  margin-right: 12px;
+  width: 24px;
+}
+
+.delete {
+  color: var(--color-error-70);
+  margin-left: 12px;
+  width: 24px;
+}
+
+.add {
+  @extend %title3;
+  align-items: center;
+  color: var(--color-primary);
+  display: flex;
+  padding: 0;
+  text-transform: capitalize;
+}
+
+.amount {
+  text-align: right;
+  input {
+    padding-right: 0;
+    text-align: right !important;
+  }
+}
+
+.percent {
+  align-items: flex-end;
+  display: flex;
+  height: 100%;
+  padding: 0 0 12px;
+}

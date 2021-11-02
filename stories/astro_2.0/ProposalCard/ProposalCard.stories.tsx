@@ -88,7 +88,7 @@ const cardProps = {
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis eleifend habitant laoreet ornare vitae consequat. Potenti ut urna, ultricies elit nam. Feugiat porta elit ultricies eu mollis. Faucibus mauris faucibus aliquam non. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis eleifend habitant laoreet ornare vitae consequat. Potenti ut urna, ultricies elit nam.',
 };
 
-const DAO = {
+const dao = {
   id: 'testdao3-near-cli-example.sputnikv2.testnet',
   txHash: 'GBUmu3jrdmYYHH2bmcs2qVMRpV5snTh5CouEToxo2Viv',
   name: 'testdao3-near-cli-example',
@@ -171,7 +171,7 @@ Template.args = {
   daoFlagNode: (
     <DaoFlagWidget daoName="Ref.Finance" flagUrl="/dummy-flag.png" />
   ),
-  proposalCardNode: <ProposalCard {...cardProps} accountId="123" dao={DAO} />,
+  proposalCardNode: <ProposalCard {...cardProps} accountId="123" dao={dao} />,
   letterHeadNode: (
     <LetterHeadWidget type={ProposalType.Transfer} coverUrl="/cover.png" />
   ),

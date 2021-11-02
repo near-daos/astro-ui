@@ -7,7 +7,7 @@ import {
   ProposalType,
   ProposalVariant,
 } from 'types/proposal';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { AddBountyContent } from 'astro_2.0/features/CreateProposal/components/AddBountyContent';
 import { TransferContent } from 'astro_2.0/features/CreateProposal/components/TransferContent';
 import { DAO, Member } from 'types/dao';
@@ -21,17 +21,31 @@ import Decimal from 'decimal.js';
 import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
 import { ChangeLinksContent } from 'astro_2.0/features/CreateProposal/components/ChangeLinksContent';
 import { nanoid } from 'nanoid';
-import { getChangeConfigProposal } from 'features/dao-settings/helpers';
+import {
+  BondsAndDeadlinesData,
+  getChangeBondDeadlinesProposal,
+  getChangeConfigProposal,
+} from 'features/dao-settings/helpers';
 import { ChangeDaoNameContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoNameContent';
 import { ChangeDaoPurposeContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoPurposeContent';
 import {
   getAddMemberProposal,
+  getChangePolicyProposal,
   getRemoveMemberProposal,
 } from 'features/groups/helpers';
 import { IGroupForm } from 'features/groups/types';
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/components/RemoveMemberFromGroupContent';
 import { DaoMetadata } from 'services/sputnik/mappers';
 import { LinksFormData } from 'features/dao-settings/components/links-tab';
+import { CreateGroupContent } from 'astro_2.0/features/CreateProposal/components/CreateGroupContent';
+import {
+  getInitialData,
+  getNewProposalObject as getNewVotingPolicyProposalObject,
+  VotingPolicyPageInitialData,
+} from 'features/vote-policy/helpers';
+import { ChangePolicyContent } from 'astro_2.0/features/CreateProposal/components/ChangePolicyContent';
+import { YOKTO_NEAR } from 'services/sputnik/constants';
+import { ChangeBondsContent } from 'astro_2.0/features/CreateProposal/components/ChangeBondsContent';
 
 // import { SputnikNearService } from 'services/sputnik';
 
@@ -235,6 +249,15 @@ export function getFormContentNode(
 
       return <RemoveMemberFromGroupContent groups={availableGroups} />;
     }
+    case ProposalVariant.ProposeCreateGroup: {
+      return <CreateGroupContent daoId={dao.id} />;
+    }
+    case ProposalVariant.ProposeChangeVotingPolicy: {
+      return <ChangePolicyContent />;
+    }
+    case ProposalVariant.ProposeChangeBonds: {
+      return <ChangeBondsContent daoId={dao.id} />;
+    }
     default: {
       return null;
     }
@@ -297,6 +320,7 @@ export function getFormInitialValues(
         externalUrl: '',
       };
     }
+    case ProposalVariant.ProposeCreateGroup:
     case ProposalVariant.ProposeAddMember:
     case ProposalVariant.ProposeRemoveMember: {
       return {
@@ -304,6 +328,33 @@ export function getFormInitialValues(
         externalUrl: '',
         group: '',
         memberName: '',
+      };
+    }
+    case ProposalVariant.ProposeChangeVotingPolicy: {
+      const initialData = getInitialData(dao); // as Record<string, unknown>;
+
+      return {
+        details: '',
+        externalUrl: '',
+        amount: initialData?.policy.amount,
+      };
+    }
+    case ProposalVariant.ProposeChangeBonds: {
+      return {
+        details: '',
+        externalUrl: '',
+        createProposalBond: new Decimal(dao.policy.proposalBond)
+          .div(YOKTO_NEAR)
+          .toNumber(),
+        claimBountyBond: new Decimal(dao.policy.bountyBond)
+          .div(YOKTO_NEAR)
+          .toNumber(),
+        proposalExpireTime: new Decimal(dao.policy.proposalPeriod)
+          .div('3.6e12')
+          .toNumber(),
+        unclaimBountyTime: new Decimal(dao.policy.bountyForgivenessPeriod)
+          .div('3.6e12')
+          .toNumber(),
       };
     }
     default: {
@@ -430,6 +481,50 @@ export async function getNewProposalObject(
     case ProposalVariant.ProposeAddMember: {
       return getAddMemberProposal((data as unknown) as IGroupForm, dao);
     }
+    case ProposalVariant.ProposeCreateGroup: {
+      return getChangePolicyProposal((data as unknown) as IGroupForm, dao);
+    }
+    case ProposalVariant.ProposeChangeVotingPolicy: {
+      const initialData = getInitialData(dao);
+
+      const newData = {
+        daoSettings: {
+          details: data.details,
+          externalLink: data.externalUrl,
+        },
+        policy: {
+          ...initialData?.policy,
+          amount: data.amount,
+        },
+      };
+
+      return getNewVotingPolicyProposalObject(
+        dao,
+        newData as VotingPolicyPageInitialData
+      );
+    }
+    case ProposalVariant.ProposeChangeBonds: {
+      return getChangeBondDeadlinesProposal(
+        dao,
+        (data as unknown) as BondsAndDeadlinesData,
+        {
+          accountName: '',
+          createProposalBond: new Decimal(dao.policy.proposalBond)
+            .div(YOKTO_NEAR)
+            .toNumber(),
+          claimBountyBond: new Decimal(dao.policy.bountyBond)
+            .div(YOKTO_NEAR)
+            .toNumber(),
+          proposalExpireTime: new Decimal(dao.policy.proposalPeriod)
+            .div('3.6e12')
+            .toNumber(),
+          unclaimBountyTime: new Decimal(dao.policy.bountyForgivenessPeriod)
+            .div('3.6e12')
+            .toNumber(),
+        },
+        dao.policy.proposalBond
+      );
+    }
     default: {
       return null;
     }
@@ -538,6 +633,7 @@ export function getValidationSchema(
         externalUrl: yup.string().url(),
       });
     }
+    case ProposalVariant.ProposeCreateGroup:
     case ProposalVariant.ProposeAddMember:
     case ProposalVariant.ProposeRemoveMember: {
       return yup.object().shape({
@@ -547,6 +643,17 @@ export function getValidationSchema(
         externalUrl: yup.string(),
       });
     }
+    case ProposalVariant.ProposeChangeBonds: {
+      return yup.object().shape({
+        details: yup.string().required(),
+        externalUrl: yup.string(),
+        createProposalBond: yup.number().min(0).required(),
+        proposalExpireTime: yup.number().integer().min(1).required(),
+        claimBountyBond: yup.number().min(0).required(),
+        unclaimBountyTime: yup.number().integer().min(1).required(),
+      });
+    }
+    case ProposalVariant.ProposeChangeVotingPolicy:
     default: {
       return yup.object().shape({
         details: yup.string().required(),

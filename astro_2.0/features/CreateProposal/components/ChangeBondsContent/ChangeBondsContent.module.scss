@@ -1,0 +1,73 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+  white-space: nowrap;
+
+  //> div:first-of-type {
+  //
+  //}
+
+  .iconWrapper {
+    background-color: var(--color-neutral-30);
+    border-radius: 50%;
+    height: 24px;
+    margin-right: 8px;
+    width: 24px;
+  }
+}
+
+.title {
+  @extend %title3;
+  flex: 0 0 90px;
+}
+
+.inputWrapper {
+  //max-width: 120px;
+
+  /* stylelint-disable */
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+  /* stylelint-enable */
+}
+
+.wide {
+  flex: 1;
+}
+
+.narrow {
+  max-width: 60px;
+}
+
+.select {
+  flex: 1;
+  max-width: fit-content;
+
+  button {
+    border: 0;
+    overflow: hidden;
+  }
+}
+
+.symbol {
+  @include ellipse-text;
+  max-width: 60px;
+}

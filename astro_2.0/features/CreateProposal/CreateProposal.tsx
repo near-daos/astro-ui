@@ -118,7 +118,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form onSubmit={methods.handleSubmit(onSubmit)} noValidate>
         <ProposalCardRenderer
           daoFlagNode={<DaoFlagWidget daoName={dao.name} flagUrl={dao.logo} />}
           letterHeadNode={
