@@ -1,13 +1,16 @@
 import * as yup from 'yup';
+import { AnySchema } from 'yup';
 import {
   CreateProposalParams,
+  DaoConfig,
+  Proposal,
   ProposalType,
   ProposalVariant,
 } from 'types/proposal';
 import { ReactNode } from 'react';
 import { AddBountyContent } from 'astro_2.0/features/CreateProposal/components/AddBountyContent';
 import { TransferContent } from 'astro_2.0/features/CreateProposal/components/TransferContent';
-import { DAO } from 'types/dao';
+import { DAO, Member } from 'types/dao';
 import { getAddBountyProposal } from 'features/bounty/dialogs/create-bounty-dialog/helpers';
 import { CreateBountyInput } from 'features/bounty/dialogs/create-bounty-dialog/types';
 import { Tokens } from 'context/CustomTokensContext';
@@ -16,7 +19,19 @@ import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import Decimal from 'decimal.js';
 // import { SputnikNearService } from 'services/sputnik';
 import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
-import { AnySchema } from 'yup';
+import { ChangeLinksContent } from 'astro_2.0/features/CreateProposal/components/ChangeLinksContent';
+import { nanoid } from 'nanoid';
+import { getChangeConfigProposal } from 'features/dao-settings/helpers';
+import { ChangeDaoNameContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoNameContent';
+import { ChangeDaoPurposeContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoPurposeContent';
+import {
+  getAddMemberProposal,
+  getRemoveMemberProposal,
+} from 'features/groups/helpers';
+import { IGroupForm } from 'features/groups/types';
+import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/components/RemoveMemberFromGroupContent';
+import { DaoMetadata } from 'services/sputnik/mappers';
+import { LinksFormData } from 'features/dao-settings/components/links-tab';
 
 // import { SputnikNearService } from 'services/sputnik';
 
@@ -127,8 +142,67 @@ export function getInputSize(proposalType: ProposalVariant): number {
   );
 }
 
+export const extractMembersFromDao = (
+  dao: DAO,
+  proposals: Proposal[]
+): Member[] => {
+  const votesPerProposer = proposals.reduce((acc, currentProposal) => {
+    const vote = currentProposal.votes[currentProposal.proposer];
+
+    if (vote) {
+      if (acc[currentProposal.proposer]) {
+        acc[currentProposal.proposer] += 1;
+      } else {
+        acc[currentProposal.proposer] = 1;
+      }
+    }
+
+    return acc;
+  }, {} as Record<string, number>);
+
+  const members = {} as Record<string, Member>;
+
+  dao.groups.forEach(grp => {
+    const users = grp.members;
+
+    users.forEach(user => {
+      if (!members[user]) {
+        members[user] = {
+          id: nanoid(),
+          name: user,
+          groups: [grp.name],
+          // TODO - tokens are now hidden in UI
+          tokens: {
+            type: 'NEAR',
+            value: 18,
+            percent: 14,
+          },
+          votes: votesPerProposer[user] ?? null,
+        };
+      } else {
+        members[user] = {
+          ...members[user],
+          groups: [...members[user].groups, grp.name],
+        };
+      }
+    });
+  });
+
+  return Object.values(members).map(item => {
+    return {
+      ...item,
+      groups: Array.from(new Set(item.groups)),
+    };
+  });
+};
+
+export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
+  return Buffer.from(JSON.stringify(metadata)).toString('base64');
+};
+
 export function getFormContentNode(
-  proposalType: ProposalVariant
+  proposalType: ProposalVariant,
+  dao: DAO
 ): ReactNode | null {
   switch (proposalType) {
     case ProposalVariant.ProposeCreateBounty: {
@@ -137,6 +211,30 @@ export function getFormContentNode(
     case ProposalVariant.ProposeTransfer: {
       return <TransferContent />;
     }
+    case ProposalVariant.ProposeChangeDaoLinks: {
+      return <ChangeLinksContent daoId={dao.id} />;
+    }
+    case ProposalVariant.ProposeChangeDaoName: {
+      return <ChangeDaoNameContent daoId={dao.id} />;
+    }
+    case ProposalVariant.ProposeChangeDaoPurpose: {
+      return <ChangeDaoPurposeContent daoId={dao.id} />;
+    }
+    case ProposalVariant.ProposePoll: {
+      return null;
+    }
+    case ProposalVariant.ProposeAddMember:
+    case ProposalVariant.ProposeRemoveMember: {
+      const members = dao ? extractMembersFromDao(dao, []) : [];
+
+      const availableGroups = members.reduce<string[]>((res, item) => {
+        res.push(...item.groups);
+
+        return res;
+      }, []);
+
+      return <RemoveMemberFromGroupContent groups={availableGroups} />;
+    }
     default: {
       return null;
     }
@@ -144,7 +242,8 @@ export function getFormContentNode(
 }
 
 export function getFormInitialValues(
-  selectedProposalType: ProposalVariant
+  selectedProposalType: ProposalVariant,
+  dao: DAO
 ): Record<string, unknown> {
   switch (selectedProposalType) {
     case ProposalVariant.ProposeCreateBounty: {
@@ -169,10 +268,42 @@ export function getFormInitialValues(
     }
     case ProposalVariant.ProposeChangeDaoName: {
       return {
-        description: '',
-        selectedToken: 'NEAR',
-        amount: 0,
-        target: '',
+        details: '',
+        externalUrl: '',
+        displayName: '',
+      };
+    }
+    case ProposalVariant.ProposeChangeDaoPurpose: {
+      return {
+        details: dao.description,
+        externalUrl: '',
+        purpose: '',
+      };
+    }
+    case ProposalVariant.ProposeChangeDaoLinks: {
+      return {
+        details: '',
+        externalUrl: '',
+        links:
+          dao?.links?.map(url => ({
+            url,
+            id: nanoid(),
+          })) ?? [],
+      };
+    }
+    case ProposalVariant.ProposePoll: {
+      return {
+        details: '',
+        externalUrl: '',
+      };
+    }
+    case ProposalVariant.ProposeAddMember:
+    case ProposalVariant.ProposeRemoveMember: {
+      return {
+        details: '',
+        externalUrl: '',
+        group: '',
+        memberName: '',
       };
     }
     default: {
@@ -219,6 +350,85 @@ export async function getNewProposalObject(
     }
     case ProposalVariant.ProposeTransfer: {
       return getTransferProposal(dao, data as CreateTransferInput, tokens);
+    }
+    case ProposalVariant.ProposeChangeDaoLinks: {
+      const url = dao?.logo?.split('/');
+      const fileName = url[url.length - 1];
+
+      const newDaoConfig: DaoConfig = {
+        name: dao.name,
+        purpose: dao.description,
+        metadata: fromMetadataToBase64({
+          links: ((data as unknown) as LinksFormData).links.map(
+            item => item.url
+          ),
+          flag: fileName,
+          displayName: dao.displayName,
+        }),
+      };
+
+      return getChangeConfigProposal(
+        dao.id,
+        newDaoConfig,
+        'Changing links',
+        dao.policy.proposalBond
+      );
+    }
+    case ProposalVariant.ProposeChangeDaoName: {
+      const url = dao?.logo?.split('/');
+      const fileName = url[url.length - 1];
+
+      const newDaoConfig: DaoConfig = {
+        name: dao.name,
+        purpose: dao.description,
+        metadata: fromMetadataToBase64({
+          links: dao.links,
+          flag: fileName,
+          displayName: data.displayName as string,
+        }),
+      };
+
+      return getChangeConfigProposal(
+        dao.id,
+        newDaoConfig,
+        'Changing name/purpose',
+        dao.policy.proposalBond
+      );
+    }
+    case ProposalVariant.ProposeChangeDaoPurpose: {
+      const url = dao?.logo?.split('/');
+      const fileName = url[url.length - 1];
+
+      const newDaoConfig: DaoConfig = {
+        name: dao.name,
+        purpose: data.purpose as string,
+        metadata: fromMetadataToBase64({
+          links: dao.links,
+          flag: fileName,
+          displayName: dao.displayName,
+        }),
+      };
+
+      return getChangeConfigProposal(
+        dao.id,
+        newDaoConfig,
+        'Changing name/purpose',
+        dao.policy.proposalBond
+      );
+    }
+    case ProposalVariant.ProposePoll: {
+      return {
+        daoId: dao.id,
+        description: `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
+        kind: 'Vote',
+        bond: dao.policy.proposalBond,
+      };
+    }
+    case ProposalVariant.ProposeRemoveMember: {
+      return getRemoveMemberProposal((data as unknown) as IGroupForm, dao);
+    }
+    case ProposalVariant.ProposeAddMember: {
+      return getAddMemberProposal((data as unknown) as IGroupForm, dao);
     }
     default: {
       return null;
@@ -313,6 +523,28 @@ export function getValidationSchema(
           .required(),
         details: yup.string().required(),
         externalUrl: yup.string().url(),
+      });
+    }
+    case ProposalVariant.ProposeChangeDaoName: {
+      return yup.object().shape({
+        displayName: yup.string().min(2).required(),
+        details: yup.string().required(),
+        externalUrl: yup.string().url(),
+      });
+    }
+    case ProposalVariant.ProposeChangeDaoPurpose: {
+      return yup.object().shape({
+        purpose: yup.string().max(500).required(),
+        externalUrl: yup.string().url(),
+      });
+    }
+    case ProposalVariant.ProposeAddMember:
+    case ProposalVariant.ProposeRemoveMember: {
+      return yup.object().shape({
+        group: yup.string().required(),
+        memberName: yup.string().required(),
+        details: yup.string().required(),
+        externalUrl: yup.string(),
       });
     }
     default: {

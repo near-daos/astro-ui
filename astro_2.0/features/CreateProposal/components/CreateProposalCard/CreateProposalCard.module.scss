@@ -17,7 +17,7 @@
 }
 
 .voteControlCell {
-  align-items: center;
+  align-items: flex-end;
   display: flex;
   gap: 24px;
   grid-area: voteControl;

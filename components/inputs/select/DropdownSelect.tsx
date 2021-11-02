@@ -19,6 +19,7 @@ export interface DropdownSelectProps {
   placeholder?: string;
   controlIcon?: ReactNode;
   disabled?: boolean;
+  isBorderless?: boolean;
 }
 
 export const DropdownSelect = React.forwardRef<
@@ -35,6 +36,7 @@ export const DropdownSelect = React.forwardRef<
       placeholder,
       controlIcon,
       disabled = false,
+      isBorderless = false,
     },
     externalRef
   ) => {
@@ -81,7 +83,7 @@ export const DropdownSelect = React.forwardRef<
             disabled={disabled}
             type="button"
             ref={externalRef}
-            className={styles.select}
+            className={cn(styles.select, { [styles.borderless]: isBorderless })}
             {...getToggleButtonProps()}
           >
             <div className={styles.container}>

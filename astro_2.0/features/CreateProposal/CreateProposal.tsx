@@ -62,7 +62,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   });
 
   const methods = useForm({
-    defaultValues: getFormInitialValues(selectedProposalVariant),
+    defaultValues: getFormInitialValues(selectedProposalVariant, dao),
     context: schemaContext,
     mode: 'onSubmit',
     resolver: async (data, context) => {
@@ -114,7 +114,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     [dao, onCreate, selectedProposalVariant]
   );
 
-  const contentNode = getFormContentNode(selectedProposalVariant);
+  const contentNode = getFormContentNode(selectedProposalVariant, dao);
 
   return (
     <FormProvider {...methods}>
@@ -130,7 +130,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           proposalCardNode={
             <CreateProposalCard
               onTypeSelect={v => {
-                const defaults = getFormInitialValues(v);
+                const defaults = getFormInitialValues(v, dao);
 
                 methods.reset({ ...defaults });
 
