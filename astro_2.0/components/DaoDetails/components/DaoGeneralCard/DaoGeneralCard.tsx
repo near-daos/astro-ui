@@ -64,9 +64,6 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
           </ul>
         )}
         <svg className="svg" width="0" height="0">
-          <clipPath id="flag-outline">
-            <path d="M240.01 0L50.4101 67.7595V105.35L0 123.366V272L189.599 204.24V166.65L240.01 148.634V0Z" />
-          </clipPath>
           <clipPath id="flag">
             <path d="M240.01 0L50.4101 67.7595V105.35L0 123.366V272L189.599 204.24V166.65L240.01 148.634V0Z" />
           </clipPath>

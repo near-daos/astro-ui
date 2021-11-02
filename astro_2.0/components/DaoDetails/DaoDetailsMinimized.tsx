@@ -44,9 +44,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
             height="0"
             style={{ position: 'absolute' }}
           >
-            <clipPath id="flag-outline">
-              <path d="M68.8249 0L14.4555 19.4307V30.2124L0 35.3785V78.0007L54.3694 58.57V47.7883L68.8249 42.6222V0Z" />
-            </clipPath>
             <clipPath id="flag">
               <path d="M68.8249 0L14.4555 19.4307V30.2124L0 35.3785V78.0007L54.3694 58.57V47.7883L68.8249 42.6222V0Z" />
             </clipPath>

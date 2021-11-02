@@ -1,0 +1,31 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  @include card-shadow;
+  background-color: var(--color-neutral-10);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  padding: 24px;
+  width: 100%;
+}
+
+.header {
+  h3 {
+    @include font(1em, 24px, 700);
+    font-family: 'Inter', sans-serif;
+    margin: 0 0 8px;
+  }
+
+  p {
+    @extend %caption1;
+    margin-bottom: 12px;
+  }
+}
+
+.content {
+  @extend %caption2;
+  color: var(--color-neutral-60);
+}

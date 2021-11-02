@@ -1,4 +1,6 @@
 import React from 'react';
+import { FlagImage } from 'astro_2.0/features/CreateDao/components/FlagImage/FlagImage';
+import { FlagPreview } from 'astro_2.0/features/CreateDao/components/FlagPreview/FlagPreview';
 import styles from './DaoFlagForm.module.scss';
 
 export function DaoFlagForm(): JSX.Element {
@@ -14,9 +16,15 @@ export function DaoFlagForm(): JSX.Element {
       </div>
 
       <div className={styles.content}>
-        <p>Upload your “Cover”</p>
-        <p>Upload your Logo</p>
-        <p>Preview of your custom DAO assets</p>
+        <div className={styles.cover}>
+          <FlagImage type="cover" />
+        </div>
+        <div className={styles.logo}>
+          <FlagImage type="logo" />
+        </div>
+        <div className={styles.preview}>
+          <FlagPreview />
+        </div>
       </div>
     </div>
   );

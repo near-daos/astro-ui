@@ -7,6 +7,7 @@ export type DAOVotingPowerType = 'democratic' | 'weighted';
 export type DAOProposalsType = 'open' | 'closed';
 export type DAOStructureType = 'flat' | 'groups';
 export type TemplateLinkType = 'custom' | 'predefined';
+export type DaoImageType = 'cover' | 'logo';
 
 export interface DAOTemplate {
   title: string;
@@ -37,4 +38,10 @@ export type DaoSubjectInfo = {
   subject: Subject;
   title: string;
   subTitle: string;
+};
+
+export type DaoImageInfo = {
+  title: string;
+  description: string;
+  requirements: string;
 };

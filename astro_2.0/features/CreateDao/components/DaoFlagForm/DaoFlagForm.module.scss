@@ -15,9 +15,43 @@
 
   p {
     @extend %body2;
+    margin-bottom: 32px;
   }
 }
 
 .content {
   display: grid;
+  grid-gap: 24px;
+  grid-template-areas:
+    'cover'
+    'logo'
+    'preview';
+  grid-template-columns: 1fr;
+
+  @include tablet-portrait {
+    grid-template-areas:
+      'cover logo'
+      'preview preview';
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include desktop {
+    grid-template-areas:
+      'cover preview'
+      'logo preview';
+    grid-template-columns: 4fr 7fr;
+    grid-template-rows: 1fr 1fr;
+  }
+}
+
+.cover {
+  grid-area: cover;
+}
+
+.logo {
+  grid-area: logo;
+}
+
+.preview {
+  grid-area: preview;
 }
