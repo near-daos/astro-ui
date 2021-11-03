@@ -5,7 +5,6 @@ import {
   DAOTemplate,
   DAOVotingPowerType,
   DaoSubjectInfo,
-  DaoImageInfo,
 } from 'astro_2.0/features/CreateDao/components/units/types';
 
 const DAO_PROPOSALS_OPEN: DaoSettingOption<DAOProposalsType> = {
@@ -153,22 +152,3 @@ export const DAO_RULES_INFO: DaoSubjectInfo[] = [
     subTitle: 'Select level of access to vote on proposals.',
   },
 ];
-
-const DAO_IMAGE_INFO_COVER: DaoImageInfo = {
-  title: 'Upload your “Cover”',
-  description:
-    'Cover will be used as a branded letterhead of your proposals, also small icon of your flag won’t include logo on it.',
-  requirements: 'Rectangular image 3x4 proportions',
-};
-
-const DAO_IMAGE_INFO_LOGO: DaoImageInfo = {
-  title: 'Upload your Logo',
-  description:
-    'Logo will be placed on top of your flag and will be visible on your full view DAO details.',
-  requirements: 'Square image, 400x400 pixels',
-};
-
-export const DAO_IMAGE_DATA = {
-  cover: DAO_IMAGE_INFO_COVER,
-  logo: DAO_IMAGE_INFO_LOGO,
-};

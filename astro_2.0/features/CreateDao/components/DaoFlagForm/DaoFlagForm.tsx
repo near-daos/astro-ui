@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { FlagImage } from 'astro_2.0/features/CreateDao/components/FlagImage/FlagImage';
 import { FlagPreview } from 'astro_2.0/features/CreateDao/components/FlagPreview/FlagPreview';
+
 import styles from './DaoFlagForm.module.scss';
 
 export function DaoFlagForm(): JSX.Element {
@@ -17,10 +19,20 @@ export function DaoFlagForm(): JSX.Element {
 
       <div className={styles.content}>
         <div className={styles.cover}>
-          <FlagImage type="cover" />
+          <FlagImage
+            title="Upload your “Cover”"
+            description="Cover will be used as a branded letterhead of your proposals, also small icon of your flag won’t include logo on it."
+            requirements="Rectangular image 3x4 proportions"
+            fieldName="flagCover"
+          />
         </div>
         <div className={styles.logo}>
-          <FlagImage type="logo" />
+          <FlagImage
+            title="Upload your “Logo”"
+            description="Logo will be placed on top of your flag and will be visible on your full view DAO details."
+            requirements="Square image, 400x400 pixels"
+            fieldName="flagLogo"
+          />
         </div>
         <div className={styles.preview}>
           <FlagPreview />

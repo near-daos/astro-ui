@@ -28,6 +28,7 @@
   background-color: var(--color-black-opacity-50);
   bottom: 0;
   color: var(--color-white);
+  cursor: pointer;
   flex-direction: column;
   left: 0;
   opacity: 0;
@@ -40,4 +41,8 @@
   &.show {
     opacity: 1;
   }
+}
+
+.uploadInput {
+  display: none;
 }

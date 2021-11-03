@@ -1,14 +1,19 @@
 import React from 'react';
+import cn from 'classnames';
+import get from 'lodash/get';
+import { useFormContext } from 'react-hook-form';
+
 import { Icon } from 'components/Icon';
-import classNames from 'classnames';
+
+import { getImageFromImageFile } from 'utils/getImageFromImageFile';
+
 import styles from './FlagPreview.module.scss';
 
 export function FlagPreview(): JSX.Element {
-  // todo: replace mocked src with uploaded one
-  const cover =
-    'https://image.freepik.com/free-photo/blue-liquid-marble-background-abstract-flowing-texture-experimental-art_53876-104502.jpg';
-  const logo =
-    'https://s2.coinmarketcap.com/static/img/coins/200x200/11809.png';
+  const { watch } = useFormContext();
+
+  const cover = get(watch('flagCover'), '0');
+  const logo = get(watch('flagLogo'), '0');
 
   return (
     <>
@@ -26,23 +31,29 @@ export function FlagPreview(): JSX.Element {
           <div className={styles.column}>
             <div className={styles.titleIn}>Flag and Icon</div>
             <div className={styles.flags}>
-              <div className={classNames(styles.flag, styles.sm)}>
-                <div className={classNames(styles.background, styles.sm)} />
+              <div className={cn(styles.flag, styles.sm)}>
+                <div className={cn(styles.background, styles.sm)} />
                 <div
-                  className={classNames(styles.cover, styles.sm)}
-                  style={{ backgroundImage: `url(${cover})` }}
+                  className={cn(styles.cover, styles.sm)}
+                  style={{
+                    backgroundImage: `url(${getImageFromImageFile(cover)})`,
+                  }}
                 />
               </div>
               <div className={styles.flag}>
                 <div className={styles.background} />
                 <div
                   className={styles.cover}
-                  style={{ backgroundImage: `url(${cover})` }}
+                  style={{
+                    backgroundImage: `url(${getImageFromImageFile(cover)})`,
+                  }}
                 />
                 {logo && (
                   <div
                     className={styles.logo}
-                    style={{ backgroundImage: `url(${logo})` }}
+                    style={{
+                      backgroundImage: `url(${getImageFromImageFile(logo)})`,
+                    }}
                   />
                 )}
               </div>
@@ -53,7 +64,9 @@ export function FlagPreview(): JSX.Element {
             <div className={styles.dummyCard}>
               <div
                 className={styles.letterhead}
-                style={{ backgroundImage: `url(${cover})` }}
+                style={{
+                  backgroundImage: `url(${getImageFromImageFile(cover)})`,
+                }}
               >
                 <Icon name="proposalBounty" width={24} color="white" />
               </div>

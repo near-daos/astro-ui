@@ -1,15 +1,19 @@
 import React, { FC } from 'react';
-import { ImageUpload } from 'astro_2.0/features/CreateDao/components/ImageUpload/ImageUpload';
-import { DAO_IMAGE_DATA } from 'astro_2.0/features/CreateDao/components/units/data';
+
+import { ImageUpload } from 'astro_2.0/features/CreateDao/components/ImageUpload';
 import { DaoImageType } from 'astro_2.0/features/CreateDao/components/units/types';
+
 import styles from './FlagImage.module.scss';
 
 export interface FlagImageProps {
-  type: DaoImageType;
+  title: string;
+  description: string;
+  requirements: string;
+  fieldName: DaoImageType;
 }
 
-export const FlagImage: FC<FlagImageProps> = ({ type }) => {
-  const { title, description, requirements } = DAO_IMAGE_DATA[type];
+export const FlagImage: FC<FlagImageProps> = props => {
+  const { title, description, requirements, fieldName } = props;
 
   return (
     <div className={styles.root}>
@@ -19,7 +23,7 @@ export const FlagImage: FC<FlagImageProps> = ({ type }) => {
       </div>
 
       <div className={styles.content}>
-        <ImageUpload type={type} />
+        <ImageUpload fieldName={fieldName} />
         <div>{requirements}</div>
       </div>
     </div>

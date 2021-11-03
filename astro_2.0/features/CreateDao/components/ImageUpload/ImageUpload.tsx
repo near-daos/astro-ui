@@ -1,30 +1,30 @@
-import React, { FC } from 'react';
+import uniqid from 'uniqid';
+import get from 'lodash/get';
+import classNames from 'classnames';
 import { useToggle } from 'react-use';
+import { useFormContext } from 'react-hook-form';
+import React, { FC, useState } from 'react';
+
 import { Icon } from 'components/Icon';
 import { DaoImageType } from 'astro_2.0/features/CreateDao/components/units/types';
-import classNames from 'classnames';
+
+import { getImageFromImageFile } from 'utils/getImageFromImageFile';
+
 import styles from './ImageUpload.module.scss';
 
 export interface ImageUploadProps {
-  type: DaoImageType;
+  fieldName: DaoImageType;
 }
 
-// todo: replace mocked src with uploaded one
-const getImageUrl = (imageType: DaoImageType) => {
-  switch (imageType) {
-    case 'cover':
-      return 'https://image.freepik.com/free-photo/blue-liquid-marble-background-abstract-flowing-texture-experimental-art_53876-104502.jpg';
-    case 'logo':
-      return 'https://s2.coinmarketcap.com/static/img/coins/200x200/11809.png';
-    default:
-      return '';
-  }
-};
+export const ImageUpload: FC<ImageUploadProps> = ({ fieldName }) => {
+  const { watch, register } = useFormContext();
 
-export const ImageUpload: FC<ImageUploadProps> = ({ type }) => {
+  const image = get(watch(fieldName), '0');
+
+  const [id] = useState(uniqid());
+
   const [show, toggleShow] = useToggle(false);
-  const imageUrl = getImageUrl(type);
-  const uploadText = imageUrl
+  const uploadText = image
     ? 'Click here to change image'
     : 'Click here to upload image';
 
@@ -34,20 +34,29 @@ export const ImageUpload: FC<ImageUploadProps> = ({ type }) => {
       onMouseEnter={toggleShow}
       onMouseLeave={toggleShow}
     >
-      <div
-        className={classNames(styles.image, {
-          [styles.logo]: type === 'logo',
-        })}
-        style={{ backgroundImage: `url(${imageUrl})` }}
+      <input
+        id={id}
+        type="file"
+        {...register(fieldName)}
+        className={styles.uploadInput}
+        accept="image/gif, image/jpeg, image/png"
       />
       <div
-        className={classNames(styles.overlay, {
-          [styles.show]: show,
+        className={classNames(styles.image, {
+          [styles.logo]: fieldName === 'flagLogo',
         })}
-      >
-        <Icon name="upload" width={24} />
-        {uploadText}
-      </div>
+        style={{ backgroundImage: `url(${getImageFromImageFile(image)})` }}
+      />
+      <label htmlFor={id}>
+        <div
+          className={classNames(styles.overlay, {
+            [styles.show]: show,
+          })}
+        >
+          <Icon name="upload" width={24} />
+          {uploadText}
+        </div>
+      </label>
     </div>
   );
 };

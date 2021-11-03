@@ -21,7 +21,8 @@ const CreateDaoPage: NextPage<{ step: string }> = () => {
       address: undefined,
       purpose: undefined,
       displayName: undefined,
-      flag: undefined,
+      flagCover: undefined,
+      flagLogo: undefined,
       flagPreview: undefined,
     },
   });

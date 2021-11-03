@@ -20,7 +20,8 @@ export interface IDaoCreateForm {
   displayName: string;
   purpose: string;
   websites: string[];
-  flag: File;
+  flagCover: File;
+  flagLogo: File;
   flagPreview: string;
 }
 
