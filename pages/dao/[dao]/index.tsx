@@ -1,36 +1,43 @@
-import React, { useCallback, useEffect } from 'react';
-import isEmpty from 'lodash/isEmpty';
-
-import { DaoInfoCard } from 'components/cards/dao-info-card/DaoInfoCard';
-import { ProposalTrackerCard } from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
-import { useModal } from 'components/modal';
-import { CreateProposalPopup } from 'features/dao-home/components/create-proposal-popup/CreateProposalPopup';
-import { ProposalCollapsableSection } from 'features/dao-home/components/proposals-collapsable-section';
-import { DaoDetails } from 'features/dao-home/components/dao-details/DaoDetails';
-import { ProposalsTabsFilter } from 'components/proposals-tabs-filter';
-
-import {
-  filterProposalsByStatus,
-  getDaoDetailsFromDao,
-  getFundAndMembersNum,
-  getProposalStats,
-} from 'features/dao-home/helpers';
-import { NoResultsView } from 'features/no-results-view';
-import { isProposalsByEndTimeEmpty } from 'helpers/isProposalsByEndTimeEmpty';
-import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
+import React, { useCallback, useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { useToggle } from 'react-use';
+import Link from 'next/link';
+
+import { Icon } from 'components/Icon';
+import StatusFilters from 'astro_2.0/components/Feed/StatusFilters';
+import { DaoDetails } from 'astro_2.0/components/DaoDetails';
+import { CreateProposal } from 'astro_2.0/features/CreateProposal';
+import {
+  LetterHeadWidget,
+  ProposalCard,
+  ProposalCardRenderer,
+} from 'astro_2.0/components/ProposalCardRenderer';
+import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
+import CategoriesList from 'astro_2.0/components/Feed/CategoriesList';
+import { NoResultsView } from 'features/no-results-view';
+
+import { getVoteDetails } from 'features/vote-policy/helpers';
+import { getScope } from 'components/cards/expanded-proposal-card/helpers';
+
+import { getActiveProposalsCountByDao } from 'hooks/useAllProposals';
 
 import { SputnikHttpService } from 'services/sputnik';
-import { VOTE_BY_PERIOD } from 'constants/votingConstants';
-import { Proposal } from 'types/proposal';
+import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
+import { ProposalsQueries } from 'services/sputnik/types/proposals';
+
+import {
+  FeedCategories,
+  Proposal,
+  ProposalStatuses,
+  ProposalVariant,
+} from 'types/proposal';
+import { DAO } from 'types/dao';
+import { Token } from 'types/token';
 
 import { useAuthContext } from 'context/AuthContext';
 import { useCustomTokensContext } from 'context/CustomTokensContext';
-import { useNearPrice } from 'hooks/useNearPrice';
-
-import { DAO } from 'types/dao';
-import { Token } from 'types/token';
 
 import styles from './dao-home-page.module.scss';
 
@@ -38,148 +45,213 @@ interface DaoHomeProps {
   dao: DAO;
   proposals: Proposal[];
   tokens: Token[];
+  proposalsTotal: number;
 }
 
-const DAOHome: NextPage<DaoHomeProps> = ({ dao, proposals, tokens }) => {
+const DAOHome: NextPage<DaoHomeProps> = ({
+  dao,
+  proposals,
+  tokens,
+  proposalsTotal,
+}) => {
   const router = useRouter();
-  const { proposal: proposalId } = router.query;
+  const { category, status } = router.query as ProposalsQueries;
 
   const { accountId } = useAuthContext();
-  const nearPrice = useNearPrice();
-
-  const [showCreateProposalModal] = useModal(CreateProposalPopup);
-
   const { setTokens } = useCustomTokensContext();
+
+  const [timelineView, toggleTimelineView] = useToggle(true);
+  const [showCreateProposal, setShowCreateProposal] = useState(false);
+  const [data, setData] = useState(proposals);
+  const [hasMore, setHasMore] = useState(proposals.length !== proposalsTotal);
 
   useEffect(() => {
     setTokens(tokens);
   }, [tokens, setTokens]);
 
+  const getMoreData = async () => {
+    const res = await SputnikHttpService.getProposalsList({
+      offset: data.length || 0,
+      limit: LIST_LIMIT_DEFAULT,
+      daoViewFilter: dao.name,
+      category,
+      status,
+    });
+
+    if (data.length + res.data.length === res.total) {
+      setHasMore(false);
+    }
+
+    setData(existingData => [...existingData, ...res.data]);
+  };
+
   const refreshData = useCallback(() => {
     router.replace(router.asPath);
   }, [router]);
 
-  const handleClick = useCallback(async () => {
-    const [isCreated] = await showCreateProposalModal();
+  const onProposalFilterChange = async (value?: ProposalStatuses) => {
+    const nextQuery = {
+      ...router.query,
+      status: value,
+    } as ProposalsQueries;
 
-    if (isCreated) {
-      refreshData();
+    if (!value) {
+      delete nextQuery.status;
     }
-  }, [refreshData, showCreateProposalModal]);
+
+    await router.replace(
+      {
+        query: nextQuery,
+      },
+      undefined,
+      { shallow: true, scroll: false }
+    );
+  };
+
+  useEffect(() => {
+    async function refreshPageData() {
+      const res = await SputnikHttpService.getProposalsList({
+        offset: 0,
+        limit: LIST_LIMIT_DEFAULT,
+        daoViewFilter: dao.name,
+        category: router.query.category as FeedCategories,
+        status: router.query.status as ProposalStatuses,
+      });
+
+      setHasMore(res.data.length !== res.total);
+      setData(res.data);
+    }
+    refreshPageData();
+  }, [dao.name, router.query]);
 
   function renderDaoDetails() {
-    const daoDetails = getDaoDetailsFromDao(dao);
-    const {
-      title,
-      description,
-      flag,
-      txHash,
-      subtitle,
-      createdAt,
-      links,
-    } = daoDetails;
+    const { active, total } = getActiveProposalsCountByDao(proposals);
 
     return (
       <div className={styles.daoDetails}>
         <DaoDetails
-          title={title}
-          description={description}
-          flag={flag}
-          subtitle={subtitle}
-          createdAt={createdAt}
-          links={links}
-          transaction={txHash}
+          dao={dao}
+          accountId={accountId}
+          onCreateProposalClick={() => setShowCreateProposal(true)}
+          activeProposals={active[dao.id] || 0}
+          totalProposals={total[dao.id] || 0}
         />
-      </div>
-    );
-  }
-
-  function renderProposalTracker() {
-    const { activeVotes, totalProposals } = getProposalStats(proposals);
-
-    const action = isEmpty(accountId) ? null : <>Create proposal</>;
-
-    return (
-      <div className={styles.proposals}>
-        <ProposalTrackerCard
-          activeVotes={activeVotes}
-          totalProposals={totalProposals}
-          onClick={handleClick}
-          action={action}
-        />
-      </div>
-    );
-  }
-
-  function renderDaoMembersFundInfo() {
-    const { members, fund } = getFundAndMembersNum(dao, nearPrice);
-
-    const info = [
-      {
-        label: 'DAO funds',
-        value: `${fund}`,
-        valueType: `USD`,
-        link: accountId ? `/dao/${dao.id}/treasury/tokens` : null,
-      },
-      {
-        label: 'Members',
-        value: `${members}`,
-        link: accountId ? `/dao/${dao.id}/groups/all-members` : null,
-      },
-    ];
-
-    return (
-      <div className={styles.daoInfo}>
-        <DaoInfoCard items={info} />
       </div>
     );
   }
 
   return (
     <div className={styles.root}>
+      <div className={styles.breadcrumb}>
+        <Link passHref href="/all/daos">
+          <a href="*" className={styles.link}>
+            <span className={styles.daoName}>All DAOs</span>
+          </a>
+        </Link>
+        <span>
+          <Icon name="buttonArrowRight" width={16} />
+        </span>
+        <span className={styles.activeLink}>{dao.name || dao.id}</span>
+      </div>
+
       {renderDaoDetails()}
-      {renderProposalTracker()}
-      {renderDaoMembersFundInfo()}
-      <div className={styles.proposalList}>
-        <ProposalsTabsFilter
-          proposals={proposals}
-          filter={filterProposalsByStatus}
-          tabsConfig={[
-            {
-              label: 'Active proposals',
-              className: styles.activeProposalsTab,
-            },
-            {
-              label: 'Approved',
-              className: styles.approvedProposalsTab,
-            },
-            {
-              label: 'Failed',
-              className: styles.failedProposalsTab,
-            },
-          ]}
-          tabContentRenderer={(tabProposals: Proposal[]) => {
-            const filteredData = splitProposalsByVotingPeriod(tabProposals);
 
-            if (isProposalsByEndTimeEmpty(filteredData)) {
-              return <NoResultsView title="No proposals here" />;
+      {showCreateProposal && (
+        <CreateProposal
+          dao={dao}
+          proposalVariant={ProposalVariant.ProposePoll}
+          onCreate={isSuccess => {
+            if (isSuccess) {
+              refreshData();
+              setShowCreateProposal(false);
             }
-
-            return (
-              <>
-                {VOTE_BY_PERIOD.map(period => (
-                  <ProposalCollapsableSection
-                    key={period.key}
-                    proposals={filteredData[period.key]}
-                    title={period.title}
-                    view={period.key}
-                    expandedProposalId={(proposalId ?? '') as string}
-                  />
-                ))}
-              </>
-            );
+          }}
+          onClose={() => {
+            setShowCreateProposal(false);
           }}
         />
+      )}
+
+      <div className={styles.statusFilterWrapper}>
+        <h2>Proposals</h2>
+        <StatusFilters
+          proposal={status}
+          timelineView={timelineView}
+          onChange={onProposalFilterChange}
+          onTimelineChange={toggleTimelineView}
+        />
+      </div>
+      <div className={styles.proposalList}>
+        <div className={styles.categoriesListWrapper}>
+          <CategoriesList
+            query={router.query as ProposalsQueries}
+            queryName="category"
+            className={styles.categoriesListRoot}
+          />
+        </div>
+
+        <InfiniteScroll
+          dataLength={data.length}
+          next={getMoreData}
+          hasMore={hasMore}
+          loader={<h4 className={styles.loading}>Loading...</h4>}
+          style={{ overflow: 'initial' }}
+          endMessage={
+            <div className={styles.loading}>
+              <NoResultsView title="No more results" />
+            </div>
+          }
+        >
+          {data.map(item => {
+            return (
+              <ProposalCardRenderer
+                key={item.id}
+                proposalCardNode={
+                  <ProposalCard
+                    type={item.kind.type}
+                    status={item.status}
+                    proposer={item.proposer}
+                    description={item.description}
+                    link={item.link}
+                    onVoteClick={() => () => 0}
+                    proposalTxHash={item.txHash}
+                    expireTime=""
+                    accountId={accountId}
+                    dao={item.dao}
+                    likes={item.voteYes}
+                    dislikes={item.voteNo}
+                    liked={item.votes[accountId] === 'Yes'}
+                    disliked={item.votes[accountId] === 'No'}
+                    voteDetails={
+                      item.dao.policy.defaultVotePolicy.ratio
+                        ? getVoteDetails(
+                            item.dao,
+                            getScope(item.kind.type),
+                            item
+                          ).details
+                        : undefined
+                    }
+                    content={null}
+                  />
+                }
+                daoFlagNode={
+                  <DaoFlagWidget
+                    daoName={item.dao.displayName}
+                    flagUrl={item.daoDetails.logo}
+                  />
+                }
+                letterHeadNode={
+                  <LetterHeadWidget
+                    type={item.kind.type}
+                    // TODO replace the link with supposed one
+                    coverUrl="/cover.png"
+                  />
+                }
+                className={styles.proposalCardWrapper}
+              />
+            );
+          })}
+        </InfiniteScroll>
       </div>
     </div>
   );
@@ -188,9 +260,9 @@ const DAOHome: NextPage<DaoHomeProps> = ({ dao, proposals, tokens }) => {
 export default DAOHome;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const daoId = query.dao as string;
+  const { status, category, dao: daoId } = query;
 
-  const dao = await SputnikHttpService.getDaoById(daoId);
+  const dao = await SputnikHttpService.getDaoById(daoId as string);
 
   if (!dao) {
     return {
@@ -198,15 +270,22 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
   }
 
-  const [tokens, proposals] = await Promise.all([
-    SputnikHttpService.getAccountTokens(daoId),
-    SputnikHttpService.getProposals(daoId),
+  const [tokens, proposalsData] = await Promise.all([
+    SputnikHttpService.getAccountTokens(daoId as string),
+    SputnikHttpService.getProposalsList({
+      offset: 0,
+      limit: LIST_LIMIT_DEFAULT,
+      daoViewFilter: dao.name,
+      category: category as FeedCategories,
+      status: status as ProposalStatuses,
+    }),
   ]);
 
   return {
     props: {
       dao,
-      proposals,
+      proposals: proposalsData.data,
+      proposalsTotal: proposalsData.total,
       tokens,
     },
   };

@@ -5,77 +5,67 @@
   display: grid;
   grid-column-gap: 24px;
   grid-row-gap: 24px;
-  grid-template-areas:
-    'daoDetails'
-    'daoInfo'
-    'proposals'
-    'proposalList';
   grid-template-columns: 1fr;
   padding-top: 80px;
 
   @include tablet-landscape {
-    grid-template-areas:
-      'daoDetails daoDetails daoInfo'
-      'daoDetails daoDetails proposals'
-      'proposalList proposalList proposalList';
-    grid-template-columns: 1fr 1fr 1fr;
     padding-top: 56px;
   }
 }
 
-.daoDetails {
-  grid-area: daoDetails;
+.statusFilterWrapper {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 32px 0 24px;
 }
 
 .onTop {
   z-index: 9;
 }
 
-.proposalsDetails {
-  grid-area: proposalsDetails;
-}
-
-.daoInfo {
-  grid-area: daoInfo;
+.proposalCardWrapper {
+  margin-bottom: 24px;
 }
 
 .proposalList {
-  grid-area: proposalList;
+  position: relative;
 }
 
-.votingEnds {
-  @extend %body1;
-  align-self: center;
-  cursor: pointer;
+.categoriesListWrapper {
+  margin-bottom: -210px;
+  margin-left: -180px;
+  position: sticky;
+  top: 160px;
+  width: 120px;
+  z-index: 1;
+}
+
+.breadcrumb {
+  @extend %caption1;
+  align-items: center;
+  color: var(--color-neutral-70);
   display: flex;
-  margin: 12px 0;
+  gap: 8px;
+  margin-bottom: 42px;
+  position: relative;
 
-  .bold {
-    @extend %title3;
-    margin-right: 4px;
+  .link {
+    align-items: center;
+    display: flex;
   }
 
-  .icon {
-    transition: transform 0.5s;
+  .activeLink {
+    color: var(--color-primary-50);
   }
 
-  .rotate {
-    transform: rotate(90deg);
+  .daoFlag {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 42px;
+    left: -42px;
+    position: absolute;
+    width: 42px;
   }
-
-  &:focus {
-    outline: none;
-  }
-}
-
-.activeProposalsTab {
-  color: var(--color-primary-50);
-}
-
-.approvedProposalsTab {
-  color: var(--color-brand-green);
-}
-
-.failedProposalsTab {
-  color: var(--color-brand-coral-red);
 }

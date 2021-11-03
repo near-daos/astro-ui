@@ -16,10 +16,15 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   const [accountDaos, proposals] = await Promise.all([
     accountDaosPromise,
-    SputnikHttpService.getProposals(undefined, 0, 500),
+    SputnikHttpService.getFilteredProposals(
+      {
+        daoFilter: 'My DAOs',
+      },
+      account
+    ),
   ]);
 
-  const { active: activeProposalsByDao } = getActiveProposalsCountByDao(
+  const { active: activeProposalsByDao, total } = getActiveProposalsCountByDao(
     proposals
   );
 
@@ -28,6 +33,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       accountDaos: accountDaos.map(item => ({
         ...item,
         proposals: activeProposalsByDao[item.id] ?? 0,
+        totalProposals: total[item.id] ?? 0,
       })),
     },
   };

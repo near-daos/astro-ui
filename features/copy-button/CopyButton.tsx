@@ -25,6 +25,7 @@ export const CopyButton: FC<CopyButtonProps> = ({
   const copyAccountName = useCallback(
     (e: MouseEvent) => {
       e.stopPropagation();
+      e.preventDefault();
       navigator.clipboard.writeText(text);
       setTooltip('Copied successfully');
 

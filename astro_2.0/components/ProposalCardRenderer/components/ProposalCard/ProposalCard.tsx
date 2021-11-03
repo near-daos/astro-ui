@@ -8,7 +8,7 @@ import { VoteDetail } from 'features/types';
 import { ProposalActions } from 'features/proposal/components/proposal-actions';
 import { DAO } from 'types/dao';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
-import { Icon } from 'components/Icon';
+import { Icon, IconName } from 'components/Icon';
 import { useGetVotePermissions } from 'components/cards/proposal-card/hooks/useGetVotePermissions';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import styles from './ProposalCard.module.scss';
@@ -51,11 +51,33 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 }) => {
   const permissions = useGetVotePermissions(dao, type, accountId);
 
+  let sealIcon;
+
+  switch (status) {
+    case 'Approved': {
+      sealIcon = 'sealApproved';
+      break;
+    }
+    case 'Expired':
+    case 'Moved':
+    case 'Rejected':
+    case 'Removed': {
+      sealIcon = 'sealFailed';
+      break;
+    }
+    case 'InProgress':
+    default: {
+      sealIcon = null;
+    }
+  }
+
   return (
     <div className={styles.root}>
-      <div className={styles.proposalStatusSeal}>
-        <Icon name={status === 'Approved' ? 'sealApproved' : 'sealFailed'} />
-      </div>
+      {sealIcon && (
+        <div className={styles.proposalStatusSeal}>
+          <Icon name={sealIcon as IconName} />
+        </div>
+      )}
       <div className={styles.proposalCell}>
         <InfoBlockWidget
           label="Proposal type"

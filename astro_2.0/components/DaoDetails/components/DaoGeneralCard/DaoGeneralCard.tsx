@@ -29,19 +29,23 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
 }) => {
   return (
     <div className={styles.root}>
-      <div className={styles.flagWrapper}>
-        <div className={styles.background} />
-        <div
-          className={styles.cover}
-          style={{ backgroundImage: `url(${cover})` }}
-        />
-        {logo && (
-          <div
-            className={styles.logo}
-            style={{ backgroundImage: `url(${logo})` }}
-          />
-        )}
-      </div>
+      <Link href={`/dao/${id}`}>
+        <a>
+          <div className={styles.flagWrapper}>
+            <div className={styles.background} />
+            <div
+              className={styles.cover}
+              style={{ backgroundImage: `url(${cover})` }}
+            />
+            {logo && (
+              <div
+                className={styles.logo}
+                style={{ backgroundImage: `url(${logo})` }}
+              />
+            )}
+          </div>
+        </a>
+      </Link>
       <div className={styles.generalInfoWrapper}>
         <Link href={`/dao/${id}`}>
           <a>
