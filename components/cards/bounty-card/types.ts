@@ -5,7 +5,7 @@ export type ClaimedBy = {
 };
 
 export type BountyType = 'Passed' | 'Expired';
-export type BountyStatus = 'Open' | 'In progress' | 'Completed';
+export type BountyStatus = 'Available' | 'In progress' | 'Completed';
 export type DeadlineUnit = 'day' | 'week' | 'month';
 
 export type Bounty = {

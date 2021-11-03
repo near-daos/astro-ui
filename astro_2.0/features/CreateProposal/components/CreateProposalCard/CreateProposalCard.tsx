@@ -4,7 +4,6 @@ import { useFormContext } from 'react-hook-form';
 import { TextArea } from 'components/inputs/textarea/TextArea';
 import { Input } from 'components/inputs/input/Input';
 import { Icon } from 'components/Icon';
-import { InfoBlockWidget } from 'astro_2.0/components/ProposalCardRenderer/components/InfoBlockWidget';
 import { GroupedSelect } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
 
 import { ProposalVariant } from 'types/proposal';
@@ -16,6 +15,7 @@ import {
   getProposalTypesOptions,
 } from 'astro_2.0/features/CreateProposal/helpers';
 
+import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import styles from './CreateProposalCard.module.scss';
 
 const proposalTypesOptions = getProposalTypesOptions();

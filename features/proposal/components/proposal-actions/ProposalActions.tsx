@@ -26,11 +26,6 @@ export const ProposalActions: FC = () => {
         />
       </a>
       <ActionButton
-        tooltip="Share"
-        iconName="buttonShare"
-        className={styles.icon}
-      />
-      <ActionButton
         tooltip="Tweet"
         iconName="socialTwitter"
         className={styles.icon}

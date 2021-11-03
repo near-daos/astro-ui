@@ -1,0 +1,22 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.label {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+  padding-bottom: 4px;
+}
+
+.description {
+  @extend %body2;
+  padding-bottom: 10px;
+}
+
+.link {
+  @extend %body2;
+  align-items: center;
+  color: var(--color-brand-purple);
+  display: flex;
+  transition: text-shadow 0.4s, box-shadow 0.4s;
+  width: fit-content;
+}

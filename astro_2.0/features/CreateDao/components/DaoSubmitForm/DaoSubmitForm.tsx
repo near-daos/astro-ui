@@ -1,6 +1,6 @@
 import React from 'react';
 import { UnitSeparator } from 'astro_2.0/features/CreateDao/components/UnitSeparator/UnitSeparator';
-import { TransactionDetailsWidget } from 'astro_2.0/components/ProposalCardRenderer/components/TransactionDetailsWidget/TransactionDetailsWidget';
+import { TransactionDetailsWidget } from 'astro_2.0/components/TransactionDetailsWidget/TransactionDetailsWidget';
 import styles from './DaoSubmitForm.module.scss';
 
 export function DaoSubmitForm(): JSX.Element {

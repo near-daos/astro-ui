@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { InfoBlockWidget } from 'astro_2.0/components/ProposalCardRenderer/components/InfoBlockWidget';
 import { TextArea } from 'components/inputs/textarea/TextArea';
 
 import { LOREN_IPSUM } from 'constants/common';
 
+import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import styles from './ChangeDaoPurposeContent.module.scss';
 
 interface ChangeDaoPurposeContentProps {

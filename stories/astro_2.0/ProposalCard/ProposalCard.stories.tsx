@@ -6,12 +6,12 @@ import {
   ProposalCardRendererProps,
 } from 'astro_2.0/components/ProposalCardRenderer';
 import { ProposalStatus, ProposalType, VoteAction } from 'types/proposal';
+import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import { DAO } from 'types/dao';
-import { DaoFlagWidget } from 'astro_2.0/components/ProposalCardRenderer/components/DaoFlagWidget';
 import { ProposalCard } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard';
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
 import { Vote } from 'features/types';
-import { TransactionDetailsWidget } from 'astro_2.0/components/ProposalCardRenderer/components/TransactionDetailsWidget';
+import { TransactionDetailsWidget } from 'astro_2.0/components/TransactionDetailsWidget';
 import { CreateBountyProposalContent } from 'astro_2.0/components/ProposalCardRenderer/components/CreateBountyProposalContent';
 
 export default {

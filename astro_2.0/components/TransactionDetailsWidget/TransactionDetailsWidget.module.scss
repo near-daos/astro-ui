@@ -1,0 +1,30 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  background: var(--color-neutral-10);
+  border-bottom: 0.5px solid var(--color-brand-purple);
+  border-left: 0.5px solid var(--color-brand-purple);
+  border-radius: 0 0 7px 7px;
+  border-right: 0.5px solid var(--color-brand-purple);
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  color: var(--color-neutral-10);
+  display: flex;
+  justify-content: flex-end;
+  min-height: 80px;
+  padding-left: 28px;
+  padding-right: 28px;
+}
+
+.topBorder {
+  border-radius: 7px;
+  border-top: 0.5px solid var(--color-brand-purple);
+}
+
+.transactionDetails {
+  display: flex;
+  flex-basis: 30%;
+  justify-content: space-evenly;
+  width: 100%;
+}

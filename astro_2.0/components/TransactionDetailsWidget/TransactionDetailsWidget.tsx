@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button } from 'components/button/Button';
-import { InfoBlockWidget } from 'astro_2.0/components/ProposalCardRenderer/components/InfoBlockWidget';
-import { TokenWidget } from 'astro_2.0/components/ProposalCardRenderer/components/TokenWidget';
+import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import cn from 'classnames';
 import { formatYoktoValue } from 'helpers/format';
+import { InfoValue } from 'astro_2.0/components/InfoBlockWidget/components/InfoValue';
 import styles from './TransactionDetailsWidget.module.scss';
 
 interface CreateProposalWidgetProps {
@@ -41,8 +41,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
         {infos.map(info => (
           <InfoBlockWidget
             label={info.label}
-            value={info.value}
-            valueNode={<TokenWidget icon="" symbol="NEAR" />}
+            value={<InfoValue value={info.value} label="NEAR" />}
             key={info.label}
             className={styles.right}
           />

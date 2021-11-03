@@ -1,6 +1,3 @@
-@import 'styles/mixins';
-@import 'styles/typography';
-
 .root {
   align-items: center;
   background: var(--color-neutral-10);
@@ -9,20 +6,9 @@
   border-radius: 0 0 7px 7px;
   border-right: 0.5px solid var(--color-brand-purple);
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
-  color: var(--color-neutral-10);
   display: flex;
-  min-height: 80px;
-  padding-left: 28px;
-  padding-right: 28px;
-  width: 100%;
-}
-
-.topBorder {
-  border-radius: 7px;
-  border-top: 0.5px solid var(--color-brand-purple);
-}
-
-.transactionDetails {
-  display: flex;
-  margin-left: auto;
+  justify-content: space-between;
+  margin-left: 15px;
+  margin-right: 15px;
+  padding: 22px 30px;
 }

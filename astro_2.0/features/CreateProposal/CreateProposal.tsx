@@ -2,9 +2,7 @@ import React, { FC, useCallback, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import { ProposalCardRenderer } from 'astro_2.0/components/ProposalCardRenderer';
-import { DaoFlagWidget } from 'astro_2.0/components/ProposalCardRenderer/components/DaoFlagWidget';
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
-import { TransactionDetailsWidget } from 'astro_2.0/components/ProposalCardRenderer/components/TransactionDetailsWidget';
 
 import { CreateProposalParams, ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
@@ -18,6 +16,8 @@ import {
   mapProposalVariantToProposalType,
 } from 'astro_2.0/features/CreateProposal/helpers';
 
+import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
+import { TransactionDetailsWidget } from 'astro_2.0/components/TransactionDetailsWidget';
 import { CreateProposalCard } from './components/CreateProposalCard';
 
 export interface CreateProposalProps {

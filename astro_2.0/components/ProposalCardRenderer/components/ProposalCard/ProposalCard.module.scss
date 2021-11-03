@@ -78,6 +78,10 @@
   padding-left: 15px;
 }
 
+.proposalType {
+  display: flex;
+}
+
 .proposerCell {
   display: flex;
   flex-direction: column;
@@ -99,27 +103,6 @@
 
 .descriptionCell {
   grid-area: description;
-}
-
-.label {
-  @extend %caption1;
-  color: var(--color-neutral-60);
-  padding-bottom: 4px;
-}
-
-.descriptionValue {
-  @extend %body2;
-  padding-bottom: 10px;
-}
-
-.proposalExternalLink {
-  @extend %body2;
-  align-items: center;
-  color: var(--color-brand-purple);
-  display: flex;
-  margin-top: 10px;
-  transition: text-shadow 0.4s, box-shadow 0.4s;
-  width: fit-content;
 }
 
 .iconWrapper {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { InfoBlockWidget } from 'astro_2.0/components/ProposalCardRenderer/components/InfoBlockWidget';
-import { TokenWidget } from 'astro_2.0/components/ProposalCardRenderer/components/TokenWidget';
+import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
+import { TokenWidget } from 'astro_2.0/components/TokenWidget';
 import styles from './BountyProposalContent.module.scss';
 
 interface CreateBountyProposalContentProps {
@@ -22,8 +22,9 @@ export const CreateBountyProposalContent: React.FC<CreateBountyProposalContentPr
   const infos = [
     {
       label: 'Amount',
-      value: amount,
-      valueNode: <TokenWidget icon={token.icon} symbol={token.symbol} />,
+      value: (
+        <TokenWidget icon={token.icon} symbol={token.symbol} amount={amount} />
+      ),
     },
     { label: 'Available claims', value: availableClaims },
     { label: 'Days to complete', value: daysToComplete },

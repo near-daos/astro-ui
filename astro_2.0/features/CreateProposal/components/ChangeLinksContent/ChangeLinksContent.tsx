@@ -8,8 +8,8 @@ import { Icon } from 'components/Icon';
 import { Input } from 'components/inputs/input/Input';
 import { IconButton } from 'components/button/IconButton';
 import { Button } from 'components/button/Button';
-import { InfoBlockWidget } from 'astro_2.0/components/ProposalCardRenderer/components/InfoBlockWidget';
 
+import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import styles from './ChangeLinks.module.scss';
 
 interface ChangeLinksContentProps {

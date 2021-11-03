@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Input } from 'components/inputs/input/Input';
-import { InfoBlockWidget } from 'astro_2.0/components/ProposalCardRenderer/components/InfoBlockWidget';
 
+import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import styles from './ChangeDaoNameContent.module.scss';
 
 interface ChangeDaoNameContentProps {

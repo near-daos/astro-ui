@@ -5,13 +5,9 @@ import { Bounty, BountyStatus } from 'components/cards/bounty-card/types';
 
 import { useModal } from 'components/modal';
 import { useBountyPageContext } from 'features/bounty/helpers';
-import { ClaimBountyDialog } from 'features/bounty/dialogs/claim-bounty-dialog/ClaimBountyDialog';
 import { UnclaimBountyDialog } from 'features/bounty/dialogs/unclaim-bounty-dialog/UnclaimBountyDialog';
 import { CompleteBountyDialog } from 'features/bounty/dialogs/complete-bounty-dialog/CompleteBountyDialog';
-import {
-  InProgressCells,
-  OpenCells,
-} from 'components/cards/bounty-card/components/cells';
+import { InProgressCells } from 'components/cards/bounty-card/components/cells';
 import { format, parseISO } from 'date-fns';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
 import { useRouter } from 'next/router';
@@ -24,7 +20,7 @@ export interface BountyCardProps {
 }
 
 export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
-  const { tokenId, amount, description, claimedBy, slots, externalUrl } = data;
+  const { tokenId, amount, description, claimedBy, externalUrl } = data;
   const { dao, tokens } = useBountyPageContext();
   const router = useRouter();
 
@@ -34,12 +30,6 @@ export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
 
   const token =
     tokenIndex === -1 ? tokens.NEAR : Object.values(tokens)[tokenIndex];
-
-  const [showClaimBountyDialog] = useModal(ClaimBountyDialog, {
-    data,
-    dao,
-    token,
-  });
 
   const [showUnclaimBountyDialog] = useModal(UnclaimBountyDialog, {
     data,
@@ -53,9 +43,6 @@ export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
     token,
   });
 
-  const handleClaimClick = useCallback(() => showClaimBountyDialog(), [
-    showClaimBountyDialog,
-  ]);
   const handleUnclaimClick = useCallback(() => showUnclaimBountyDialog(), [
     showUnclaimBountyDialog,
   ]);
@@ -69,14 +56,6 @@ export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
 
   const renderStatusBasedInfo = () => {
     switch (status) {
-      case 'Open':
-        return (
-          <OpenCells
-            claimed={claimedBy.length}
-            slots={slots}
-            onClaim={handleClaimClick}
-          />
-        );
       case 'In progress':
         return (
           <InProgressCells

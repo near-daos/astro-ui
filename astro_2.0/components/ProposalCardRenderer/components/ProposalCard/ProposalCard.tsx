@@ -10,8 +10,7 @@ import { DAO } from 'types/dao';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
 import { Icon } from 'components/Icon';
 import { useGetVotePermissions } from 'components/cards/proposal-card/hooks/useGetVotePermissions';
-import { InfoBlockWidget } from 'astro_2.0/components/ProposalCardRenderer/components/InfoBlockWidget';
-
+import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import styles from './ProposalCard.module.scss';
 
 export interface ProposalCardProps {
@@ -60,14 +59,16 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       <div className={styles.proposalCell}>
         <InfoBlockWidget
           label="Proposal type"
-          value={type}
           valueFontSize="L"
-          valueNode={
-            <ExplorerLink
-              linkData={proposalTxHash}
-              linkType="transaction"
-              className={styles.proposalWalletLink}
-            />
+          value={
+            <div className={styles.proposalType}>
+              {type}
+              <ExplorerLink
+                linkData={proposalTxHash}
+                linkType="transaction"
+                className={styles.proposalWalletLink}
+              />
+            </div>
           }
         />
       </div>

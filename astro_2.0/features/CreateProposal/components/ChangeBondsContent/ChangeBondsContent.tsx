@@ -5,10 +5,10 @@ import { useFormContext } from 'react-hook-form';
 import { Input } from 'components/inputs/input/Input';
 import { DropdownSelect } from 'components/inputs/select/DropdownSelect';
 import { Icon } from 'components/Icon';
-import { InfoBlockWidget } from 'astro_2.0/components/ProposalCardRenderer';
 
 import { Token } from 'types/token';
 
+import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import styles from './ChangeBondsContent.module.scss';
 
 interface ChangeBondsContentProps {

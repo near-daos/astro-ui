@@ -21,9 +21,9 @@ import {
   LetterHeadWidget,
   ProposalCard,
   // InfoBlockWidget,
-  DaoFlagWidget,
 } from 'astro_2.0/components/ProposalCardRenderer';
 
+import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import CategoriesList from './CategoriesList';
 import StatusFilters from './StatusFilters';
 

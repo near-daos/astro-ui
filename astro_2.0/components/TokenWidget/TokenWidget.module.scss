@@ -3,9 +3,15 @@
 .root {
   align-items: center;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-around;
   min-height: 24px;
   min-width: 75px;
+}
+
+.amount {
+  @extend %title3;
+  color: var(--color-black);
+  padding-right: 10px;
 }
 
 .icon {

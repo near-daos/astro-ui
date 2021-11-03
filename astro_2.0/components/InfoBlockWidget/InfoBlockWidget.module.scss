@@ -10,26 +10,29 @@
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  margin-right: 30px;
 }
 
-.valueBlock {
+.block {
   align-items: center;
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
-.valueNode {
-  padding-left: 10px;
+.iconHolder {
+  padding-left: 14px;
 }
 
-.left {
-  justify-content: flex-start;
+.infoIcon {
+  color: var(--color-brand-purple);
+  height: 14px;
+  width: 14px;
 }
 
-.center {
-  justify-content: space-between;
+.tooltip {
+  background: var(--color-neutral-80);
+  border-radius: 4px;
+  color: var(--color-white);
 }
 
 .valueSmall {

@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 import { Input } from 'components/inputs/input/Input';
-import { InfoBlockWidget } from 'astro_2.0/components/ProposalCardRenderer';
 
+import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import styles from './CreateGroupContent.module.scss';
 
 interface CreateGroupContentProps {

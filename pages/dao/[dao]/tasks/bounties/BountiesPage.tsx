@@ -70,7 +70,7 @@ const BountiesPage: FC<BountiesPageProps> = ({
   const tabOpen = {
     id: 1,
     label: `Open (${numberOpenBounties})`,
-    content: <BountiesList bountiesList={openBounties} status="Open" />,
+    content: <BountiesList bountiesList={openBounties} status="In progress" />,
   };
   const tabInProgress = {
     id: 2,
