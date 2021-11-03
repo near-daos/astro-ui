@@ -14,7 +14,7 @@ import styles from './AppHeader.module.scss';
 export const AppHeader: FC = () => {
   return (
     <header className={styles.root}>
-      <Icon width={151} name="appLogo" className={styles.logo} />
+      <Icon width={100} name="appLogo" className={styles.logo} />
       <div className={styles.section}>
         <NavButton icon="stateCommunities" href={ALL_DAOS_URL}>
           All DAOs
