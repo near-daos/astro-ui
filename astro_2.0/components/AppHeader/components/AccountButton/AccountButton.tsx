@@ -2,7 +2,6 @@ import cn from 'classnames';
 import { useClickAway } from 'react-use';
 import React, { FC, useRef, useState } from 'react';
 
-import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { NearIcon } from 'astro_2.0/components/AppHeader/components/NearIcon';
 
@@ -57,12 +56,7 @@ export const AccountButton: FC = () => {
           className={styles.auth}
           size={isMobile ? 'small' : 'medium'}
         >
-          <span>Sign in </span>
-          {!isMobile && (
-            <span>
-              with&nbsp; <Icon name="logoNear" className={styles.iconLogo} />
-            </span>
-          )}
+          Connect Wallet
         </Button>
       )}
     </div>

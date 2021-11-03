@@ -1,3 +1,5 @@
+@use 'styles/breakpoints';
+
 .root {
   background-color: var(--color-white);
   display: flex;
@@ -21,5 +23,11 @@
     flex: 1;
     justify-content: flex-end;
     margin: 0 30px;
+  }
+}
+
+@media (max-width: #{breakpoints.$screen-lg - 1}px) {
+  .root {
+    padding: 0 40px;
   }
 }

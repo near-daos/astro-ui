@@ -48,13 +48,10 @@
 .primary {
   background: var(--color-neutral-90);
   color: var(--color-white);
+  transition: 0.2s;
 
   &:hover {
-    background: var(--color-primary-70);
-  }
-
-  &:active {
-    background: var(--color-primary-60);
+    box-shadow: 0 0 40px var(--color-black);
   }
 
   &:disabled {
