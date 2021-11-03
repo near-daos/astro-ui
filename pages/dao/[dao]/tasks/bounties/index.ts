@@ -10,10 +10,9 @@ export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async (
   query,
 }) => {
   const daoId = query.dao as string;
-  const [dao, tokens, bountiesDone, bounties] = await Promise.all([
+  const [dao, tokens, bounties] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
     SputnikHttpService.getAccountTokens(daoId),
-    SputnikHttpService.getBountiesDone(daoId),
     SputnikHttpService.getBountiesByDaoId(daoId),
   ]);
 
@@ -26,7 +25,6 @@ export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async (
   return {
     props: {
       dao,
-      bountiesDone,
       bounties,
       // todo refactor
       tokens: reduce(

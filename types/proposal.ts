@@ -39,6 +39,7 @@ export enum ProposalType {
 export enum ProposalVariant {
   ProposeTransfer = 'ProposeTransfer',
   ProposeCreateBounty = 'ProposeCreateBounty',
+  ProposeDoneBounty = 'ProposeDoneBounty',
   ProposeChangeDaoName = 'ProposeChangeDaoName',
   ProposeChangeDaoPurpose = 'ProposeChangeDaoPurpose',
   ProposeChangeDaoLinks = 'ProposeChangeDaoLinks',

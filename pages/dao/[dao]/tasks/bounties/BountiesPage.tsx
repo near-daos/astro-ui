@@ -1,135 +1,89 @@
-import { Button } from 'components/button/Button';
-import { Bounty, DeadlineUnit } from 'components/cards/bounty-card/types';
-import { useModal } from 'components/modal/hooks';
-import Tabs from 'components/tabs/Tabs';
-import { BountiesList } from 'features/bounties-list';
-import { CreateBountyDialog } from 'features/bounty/dialogs/create-bounty-dialog/CreateBountyDialog';
+import { Bounty } from 'components/cards/bounty-card/types';
 import styles from 'pages/dao/[dao]/tasks/bounties/bounties.module.scss';
-import React, { FC, useCallback } from 'react';
-import { SputnikNearService } from 'services/sputnik';
-import { BountyDoneProposalType } from 'types/proposal';
+import React, { FC, useCallback, useState } from 'react';
 import { DAO } from 'types/dao';
-import { BountyPageContext } from 'features/bounty/helpers';
 import { useAuthContext } from 'context/AuthContext';
-import { useRouter } from 'next/router';
 import { Tokens } from 'context/CustomTokensContext';
-
-const CREATE_BOUNTY_INITIAL = {
-  token: 'NEAR',
-  slots: 3,
-  amount: 0,
-  deadlineThreshold: 3,
-  deadlineUnit: 'day' as DeadlineUnit,
-  externalUrl: '',
-  details: '',
-};
+import { BountyCard } from 'astro_2.0/components/BountyCard';
+import { CreateProposal } from 'astro_2.0/features/CreateProposal';
+import { ProposalVariant } from 'types/proposal';
+import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 
 export interface BountiesPageProps {
   dao: DAO;
-  bountiesDone: BountyDoneProposalType[];
   bounties: Bounty[];
   tokens: Tokens;
 }
 
-const BountiesPage: FC<BountiesPageProps> = ({
-  dao,
-  bountiesDone,
-  bounties,
-  tokens,
-}) => {
-  const { accountId, login } = useAuthContext();
-  const router = useRouter();
+const BountiesPage: FC<BountiesPageProps> = ({ dao, bounties, tokens }) => {
+  const { accountId } = useAuthContext();
+  const [bountyData, setBountyData] = useState<{
+    bountyId: string;
+    variant: ProposalVariant;
+  } | null>(null);
 
-  const inProgressBounties = bounties.filter(bounty =>
-    bounty.claimedBy.find(
-      claim => claim.accountId === SputnikNearService.getAccountId()
-    )
+  const handleCreateProposal = useCallback(
+    (bountyId: string, variant: ProposalVariant) => {
+      setBountyData({ bountyId, variant });
+    },
+    []
   );
 
-  const openBounties = bounties.filter(bounty => bounty.slots !== 0);
-
-  const completedBounties = bountiesDone
-    .map(bountyDoneProposal => {
-      const completedBounty = bounties.find(
-        bounty => bounty.id === bountyDoneProposal.bountyId
-      );
-
-      return completedBounty
-        ? {
-            ...completedBounty,
-            completionDate: bountyDoneProposal.completedDate,
+  const renderCreateProposal = () =>
+    bountyData !== null ? (
+      <CreateProposal
+        dao={dao}
+        showFlag={false}
+        bountyId={bountyData.bountyId}
+        proposalVariant={bountyData.variant}
+        onCreate={isSuccess => {
+          if (isSuccess) {
+            setBountyData(null);
           }
-        : undefined;
-    })
-    .filter(completedBounty => !!completedBounty) as Bounty[];
-
-  const numberOpenBounties = openBounties.length;
-  const numberInProgressBounties = inProgressBounties.length;
-  const numberCompletedBounties = completedBounties.length;
-
-  const tabOpen = {
-    id: 1,
-    label: `Open (${numberOpenBounties})`,
-    content: <BountiesList bountiesList={openBounties} status="In progress" />,
-  };
-  const tabInProgress = {
-    id: 2,
-    label: `In Progress (${numberInProgressBounties})`,
-    content: (
-      <BountiesList bountiesList={inProgressBounties} status="In progress" />
-    ),
-  };
-  const tabCompleted = {
-    id: 3,
-    label: `Completed (${numberCompletedBounties})`,
-    content: (
-      <BountiesList bountiesList={completedBounties} status="Completed" />
-    ),
-  };
-
-  const tabs = [tabOpen, tabInProgress, tabCompleted];
-
-  const [showCreateBountyDialog] = useModal(CreateBountyDialog, {
-    initialValues: {
-      ...CREATE_BOUNTY_INITIAL,
-    },
-    dao,
-    tokens,
-  });
-
-  const handleCreateClick = useCallback(async () => {
-    if (!accountId) {
-      login();
-    } else {
-      const result = await showCreateBountyDialog();
-
-      if (result.includes('submitted')) {
-        await router.push(`/dao/${dao?.id}`);
-      }
-    }
-  }, [accountId, login, showCreateBountyDialog, router, dao?.id]);
-
-  const getContextValue = useCallback(() => {
-    return { dao, tokens };
-  }, [dao, tokens]);
+        }}
+        onClose={() => {
+          setBountyData(null);
+        }}
+      />
+    ) : null;
 
   return (
-    <BountyPageContext.Provider value={getContextValue()}>
-      <div className={styles.root}>
-        <div className={styles.header}>
-          <h1>Bounties</h1>
-          <Button variant="black" size="small" onClick={handleCreateClick}>
-            New bounty proposal
-          </Button>
-        </div>
-        <div className={styles.description}>
-          Projects, tasks and other work the DAO wants done.
-        </div>
-        <div className={styles.bounties}>
-          <Tabs tabs={tabs} />
-        </div>
-      </div>
-    </BountyPageContext.Provider>
+    <div className={styles.root}>
+      <DaoDetailsMinimized
+        dao={dao}
+        accountId={accountId}
+        onCreateProposalClick={() => {
+          handleCreateProposal('', ProposalVariant.ProposeCreateBounty);
+        }}
+      />
+      <div className={styles.newProposal}>{renderCreateProposal()}</div>
+      <div className={styles.grid}>
+        {bounties.map(bounty => {
+          return (
+            <BountyCard
+              key={bounty.id}
+              id={bounty.id}
+              daoId={dao.id}
+              daoName={dao.displayName}
+              token={
+                bounty.tokenId === '' ? tokens.NEAR : tokens[bounty.tokenId]
+              }
+              daoFlag={dao.logo}
+              amount={bounty.amount}
+              description={bounty.description}
+              forgivenessPeriod={bounty.forgivenessPeriod}
+              externalUrl={bounty.externalUrl}
+              slots={bounty.slots}
+              claimedBy={bounty.claimedBy}
+              deadlineThreshold={bounty.deadlineThreshold}
+              currentUser={accountId}
+              bountyBond={dao.policy.bountyBond}
+              setBountyData={handleCreateProposal}
+            />
+          );
+        })}
+      </div>{' '}
+    </div>
   );
 };
 

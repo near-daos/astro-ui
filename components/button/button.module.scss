@@ -79,7 +79,7 @@
   color: var(--color-neutral-90);
 
   &:hover {
-    border-color: var(--color-primary-70);
+    box-shadow: 0 0 40px var(--color-approved-opacity-35);
   }
 
   &:active {

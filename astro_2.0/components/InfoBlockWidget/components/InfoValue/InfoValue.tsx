@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './InfoValue.module.scss';
 
 interface NearValueProps {
-  value: string;
+  value: string | number;
   label: string;
 }
 

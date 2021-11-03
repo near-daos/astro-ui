@@ -6,11 +6,9 @@ import { Bounty, BountyStatus } from 'components/cards/bounty-card/types';
 import { useModal } from 'components/modal';
 import { useBountyPageContext } from 'features/bounty/helpers';
 import { UnclaimBountyDialog } from 'features/bounty/dialogs/unclaim-bounty-dialog/UnclaimBountyDialog';
-import { CompleteBountyDialog } from 'features/bounty/dialogs/complete-bounty-dialog/CompleteBountyDialog';
 import { InProgressCells } from 'components/cards/bounty-card/components/cells';
 import { format, parseISO } from 'date-fns';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
-import { useRouter } from 'next/router';
 import { TokenWidget } from 'components/token';
 import styles from './bounty-card.module.scss';
 
@@ -22,7 +20,6 @@ export interface BountyCardProps {
 export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
   const { tokenId, amount, description, claimedBy, externalUrl } = data;
   const { dao, tokens } = useBountyPageContext();
-  const router = useRouter();
 
   const tokenIndex = Object.values(tokens).findIndex(
     daoToken => daoToken.tokenId === tokenId
@@ -37,22 +34,11 @@ export const BountyCard: FC<BountyCardProps> = ({ data, status }) => {
     token,
   });
 
-  const [showCompleteBountyDialog] = useModal(CompleteBountyDialog, {
-    data,
-    dao,
-    token,
-  });
-
   const handleUnclaimClick = useCallback(() => showUnclaimBountyDialog(), [
     showUnclaimBountyDialog,
   ]);
-  const handleCompleteClick = useCallback(async () => {
-    const result = await showCompleteBountyDialog();
-
-    if (result.includes('submitted')) {
-      router.push(`/dao/${dao?.id}`);
-    }
-  }, [dao?.id, router, showCompleteBountyDialog]);
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const handleCompleteClick = useCallback(async () => {}, []);
 
   const renderStatusBasedInfo = () => {
     switch (status) {

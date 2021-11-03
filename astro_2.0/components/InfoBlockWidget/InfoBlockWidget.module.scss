@@ -29,10 +29,34 @@
   width: 14px;
 }
 
+.positiveIcon {
+  color: var(--color-success-70);
+  height: 16px;
+  width: 16px;
+}
+
+.warningIcon {
+  color: var(--color-error-80);
+  height: 16px;
+  width: 16px;
+}
+
 .tooltip {
   background: var(--color-neutral-80);
   border-radius: 4px;
   color: var(--color-white);
+}
+
+.infoTooltip {
+  background: var(--color-neutral-80);
+}
+
+.positiveTooltip {
+  background: var(--color-success-70);
+}
+
+.warningTooltip {
+  background: var(--color-error-80);
 }
 
 .valueSmall {

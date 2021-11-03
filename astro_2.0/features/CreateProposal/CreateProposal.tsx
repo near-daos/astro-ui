@@ -22,11 +22,14 @@ import {
 } from 'astro_2.0/features/CreateProposal/helpers';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
+import { useAuthContext } from 'context/AuthContext';
 import { CreateProposalCard } from './components/CreateProposalCard';
 
 export interface CreateProposalProps {
   dao: DAO;
   proposalVariant: ProposalVariant;
+  showFlag?: boolean;
+  bountyId?: string;
   onCreate: (result: boolean) => void;
   onClose: () => void;
 }
@@ -34,10 +37,12 @@ export interface CreateProposalProps {
 export const CreateProposal: FC<CreateProposalProps> = ({
   dao,
   proposalVariant,
+  showFlag = true,
+  bountyId,
   onCreate,
   onClose,
 }) => {
-  const accountId = 'me';
+  const { accountId } = useAuthContext();
   const [selectedProposalVariant, setSelectedProposalVariant] = useState(
     proposalVariant
   );
@@ -57,7 +62,11 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   });
 
   const methods = useForm({
-    defaultValues: getFormInitialValues(selectedProposalVariant, dao),
+    defaultValues: getFormInitialValues(
+      selectedProposalVariant,
+      dao,
+      accountId
+    ),
     context: schemaContext,
     mode: 'onSubmit',
     resolver: async (data, context) => {
@@ -100,7 +109,9 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           dao,
           selectedProposalVariant,
           data,
-          tokens
+          tokens,
+          accountId,
+          bountyId
         );
 
         if (newProposal) {
@@ -124,7 +135,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         onCreate(false);
       }
     },
-    [dao, onCreate, selectedProposalVariant, tokens]
+    [dao, onCreate, selectedProposalVariant, tokens, bountyId, accountId]
   );
 
   const contentNode = getFormContentNode(selectedProposalVariant, dao);
@@ -133,7 +144,15 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} noValidate ref={formRef}>
         <ProposalCardRenderer
-          daoFlagNode={<DaoFlagWidget daoName={dao.name} flagUrl={dao.logo} />}
+          daoFlagNode={
+            showFlag && (
+              <DaoFlagWidget
+                daoName={dao.name}
+                flagUrl={dao.logo}
+                daoId={dao.id}
+              />
+            )
+          }
           letterHeadNode={
             <LetterHeadWidget
               type={mapProposalVariantToProposalType(selectedProposalVariant)}
@@ -144,7 +163,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             <CreateProposalCard
               onClose={onClose}
               onTypeSelect={v => {
-                const defaults = getFormInitialValues(v, dao);
+                const defaults = getFormInitialValues(v, dao, accountId);
 
                 methods.reset({ ...defaults });
 

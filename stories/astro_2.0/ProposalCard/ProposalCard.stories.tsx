@@ -51,7 +51,13 @@ const cardProps = {
   content: (
     <CreateBountyProposalContent
       amount="1.00"
-      token={{ symbol: 'NEAR', icon: '' }}
+      token={{
+        tokenId: '',
+        symbol: 'NEAR',
+        balance: '5603284827495119399999994',
+        icon: '',
+        decimals: 24,
+      }}
       availableClaims="3"
       daysToComplete="5"
     />
@@ -170,7 +176,7 @@ const createProposalProps = {
 
 Template.args = {
   daoFlagNode: (
-    <DaoFlagWidget daoName="Ref.Finance" flagUrl="/dummy-flag.png" />
+    <DaoFlagWidget daoName="Ref.Finance" flagUrl="/dummy-flag.png" daoId="" />
   ),
   proposalCardNode: <ProposalCard {...cardProps} accountId="123" dao={dao} />,
   letterHeadNode: (

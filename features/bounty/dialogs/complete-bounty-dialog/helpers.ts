@@ -1,21 +1,23 @@
 import { CreateProposalParams } from 'types/proposal';
-import { CompleteBountyFormInput } from 'features/bounty/dialogs/complete-bounty-dialog/complete-bounty-form/CompleteBountyForm';
+
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 export function getCompleteBountyProposal(
   daoId: string,
-  bountyId: string,
-  data: CompleteBountyFormInput,
-  bond: string
+  details: string,
+  externalUrl: string,
+  target: string,
+  bond: string,
+  bountyId?: string
 ): CreateProposalParams {
-  const proposalDescription = `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`;
+  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 
   return {
     daoId,
     description: proposalDescription,
     kind: 'BountyDone',
     data: {
-      receiver_id: data.recipient,
+      receiver_id: target,
       bounty_id: Number(bountyId),
     },
     bond,

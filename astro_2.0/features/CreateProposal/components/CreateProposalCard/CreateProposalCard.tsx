@@ -45,13 +45,20 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.proposalCell}>
-        <GroupedSelect
-          key={type}
-          inputSize={getInputSize(type)}
-          defaultValue={type}
-          options={proposalTypesOptions}
-          onChange={v => onTypeSelect(v as ProposalVariant)}
-        />
+        {type === ProposalVariant.ProposeDoneBounty ? (
+          <InfoBlockWidget
+            label="Proposal type: Transfer/Bounty Done"
+            value="Complete Bounty"
+          />
+        ) : (
+          <GroupedSelect
+            key={type}
+            inputSize={getInputSize(type)}
+            defaultValue={type}
+            options={proposalTypesOptions}
+            onChange={v => onTypeSelect(v as ProposalVariant)}
+          />
+        )}
       </div>
 
       <div className={styles.countdownCell}>Countdown will be here</div>

@@ -46,6 +46,32 @@ import {
 import { ChangePolicyContent } from 'astro_2.0/features/CreateProposal/components/ChangePolicyContent';
 import { YOKTO_NEAR } from 'services/sputnik/constants';
 import { ChangeBondsContent } from 'astro_2.0/features/CreateProposal/components/ChangeBondsContent';
+import { getCompleteBountyProposal } from 'features/bounty/dialogs/complete-bounty-dialog/helpers';
+import { BountyDoneContent } from 'astro_2.0/features/CreateProposal/components/DoneBountyContent';
+
+async function getTransferProposal(
+  dao: DAO,
+  data: CreateTransferInput,
+  tokens: Tokens
+): Promise<CreateProposalParams> {
+  const token = tokens[data.token];
+
+  if (token?.tokenId) {
+    await SputnikNearService.registerUserToToken(token.tokenId);
+  }
+
+  return {
+    daoId: dao.id,
+    description: `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
+    kind: 'Transfer',
+    bond: dao.policy.proposalBond,
+    data: {
+      token_id: token.tokenId,
+      receiver_id: data.target,
+      amount: new Decimal(data.amount).mul(10 ** token.decimals).toFixed(),
+    },
+  };
+}
 
 export function getProposalTypesOptions(): {
   title: string;
@@ -220,6 +246,9 @@ export function getFormContentNode(
     case ProposalVariant.ProposeCreateBounty: {
       return <AddBountyContent />;
     }
+    case ProposalVariant.ProposeDoneBounty: {
+      return <BountyDoneContent />;
+    }
     case ProposalVariant.ProposeTransfer: {
       return <TransferContent />;
     }
@@ -264,7 +293,8 @@ export function getFormContentNode(
 
 export function getFormInitialValues(
   selectedProposalType: ProposalVariant,
-  dao: DAO
+  dao: DAO,
+  accountId: string
 ): Record<string, unknown> {
   switch (selectedProposalType) {
     case ProposalVariant.ProposeCreateBounty: {
@@ -276,6 +306,13 @@ export function getFormInitialValues(
         slots: 3,
         deadlineThreshold: 14,
         deadlineUnits: 'days',
+      };
+    }
+    case ProposalVariant.ProposeDoneBounty: {
+      return {
+        details: '',
+        externalUrl: '',
+        target: accountId,
       };
     }
     case ProposalVariant.ProposeTransfer: {
@@ -361,35 +398,13 @@ export function getFormInitialValues(
   }
 }
 
-async function getTransferProposal(
-  dao: DAO,
-  data: CreateTransferInput,
-  tokens: Tokens
-): Promise<CreateProposalParams> {
-  const token = tokens[data.token];
-
-  if (token?.tokenId) {
-    await SputnikNearService.registerUserToToken(token.tokenId);
-  }
-
-  return {
-    daoId: dao.id,
-    description: `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
-    kind: 'Transfer',
-    bond: dao.policy.proposalBond,
-    data: {
-      token_id: token.tokenId,
-      receiver_id: data.target,
-      amount: new Decimal(data.amount).mul(10 ** token.decimals).toFixed(),
-    },
-  };
-}
-
 export async function getNewProposalObject(
   dao: DAO,
   proposalType: ProposalVariant,
   data: Record<string, unknown>,
-  tokens: Tokens
+  tokens: Tokens,
+  accountId: string,
+  bountyId?: string
 ): Promise<CreateProposalParams | null> {
   switch (proposalType) {
     case ProposalVariant.ProposeCreateBounty: {
@@ -399,6 +414,18 @@ export async function getNewProposalObject(
     }
     case ProposalVariant.ProposeTransfer: {
       return getTransferProposal(dao, data as CreateTransferInput, tokens);
+    }
+    case ProposalVariant.ProposeDoneBounty: {
+      const { externalUrl, details } = data;
+
+      return getCompleteBountyProposal(
+        dao.id,
+        details as string,
+        externalUrl as string,
+        accountId,
+        dao.policy.proposalBond,
+        bountyId
+      );
     }
     case ProposalVariant.ProposeChangeDaoLinks: {
       const url = dao?.logo?.split('/');
@@ -652,6 +679,7 @@ export function getValidationSchema(
       });
     }
     case ProposalVariant.ProposeChangeVotingPolicy:
+    case ProposalVariant.ProposeDoneBounty:
     default: {
       return yup.object().shape({
         details: yup.string().required(),

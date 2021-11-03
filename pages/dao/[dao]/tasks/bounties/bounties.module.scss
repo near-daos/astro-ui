@@ -2,13 +2,18 @@
 @import 'styles/mixins';
 
 .root {
+  padding-top: 32px;
+}
+
+.newProposal {
+  padding-top: 32px;
+}
+
+.grid {
   display: grid;
+  grid-column-gap: 24px;
   grid-row-gap: 24px;
-  grid-template-areas:
-    'header'
-    'description'
-    'bounties';
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   padding-top: 56px;
 }
 

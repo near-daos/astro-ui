@@ -196,6 +196,7 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
                     <DaoFlagWidget
                       daoName={item.dao.displayName}
                       flagUrl={item.daoDetails.logo}
+                      daoId={item.daoId}
                     />
                   }
                   letterHeadNode={

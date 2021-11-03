@@ -6,6 +6,10 @@
   margin-bottom: 16px;
   min-height: 48px;
   width: fit-content;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .flag {

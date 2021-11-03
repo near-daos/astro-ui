@@ -1,13 +1,13 @@
 import React, { ReactNode, useState } from 'react';
 import cn from 'classnames';
-import styles from 'astro_2.0/components/InfoBlockWidget/InfoBlockWidget.module.scss';
 import { Icon } from 'components/Icon';
 import { Popup } from 'components/popup/Popup';
+import { TooltipMessageSeverity } from 'astro_2.0/components/InfoBlockWidget/types';
+import styles from './InfoBlockWidget.module.scss';
 
-type TooltipMessageSeverity = 'Info' | 'Positive' | 'Warning';
 interface InfoBlockWidgetProps {
   label: string;
-  tooltipText?: string;
+  tooltip?: ReactNode;
   messageSeverity?: TooltipMessageSeverity;
   value: ReactNode;
   valueFontSize?: 'S' | 'L';
@@ -17,8 +17,9 @@ interface InfoBlockWidgetProps {
 export const InfoBlockWidget: React.FC<InfoBlockWidgetProps> = ({
   label,
   value,
-  tooltipText,
+  tooltip,
   valueFontSize = 'S',
+  messageSeverity,
   className,
 }) => {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
@@ -27,11 +28,32 @@ export const InfoBlockWidget: React.FC<InfoBlockWidgetProps> = ({
     <div className={cn(styles.root, className)}>
       <div className={styles.block}>
         <div className={styles.label}>{label}</div>
-        {tooltipText && (
+        {tooltip && (
           <div ref={setRef} className={styles.iconHolder}>
-            <Icon name="buttonAlert" className={styles.infoIcon} />
-            <Popup anchor={ref} placement="bottom" className={styles.tooltip}>
-              {tooltipText}
+            <Icon
+              name="buttonAlert"
+              className={cn({
+                [styles.infoIcon]:
+                  messageSeverity === TooltipMessageSeverity.Info,
+                [styles.positiveIcon]:
+                  messageSeverity === TooltipMessageSeverity.Positive,
+                [styles.warningIcon]:
+                  messageSeverity === TooltipMessageSeverity.Warning,
+              })}
+            />
+            <Popup
+              anchor={ref}
+              placement="bottom"
+              className={cn(styles.tooltip, {
+                [styles.infoTooltip]:
+                  messageSeverity === TooltipMessageSeverity.Info,
+                [styles.positiveTooltip]:
+                  messageSeverity === TooltipMessageSeverity.Positive,
+                [styles.warningTooltip]:
+                  messageSeverity === TooltipMessageSeverity.Warning,
+              })}
+            >
+              {tooltip}
             </Popup>
           </div>
         )}
