@@ -25,11 +25,15 @@ export async function getDaosList({
   const proposals = await SputnikHttpService.getFilteredProposals({
     daosIdsFilter: daoIds,
   });
-  const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
+  const {
+    active: activeProposals,
+    total: totalProposals,
+  } = getActiveProposalsCountByDao(proposals);
 
   const newData = daoList.map(item => ({
     ...item,
-    proposals: activeProposalsByDao[item.id] ?? 0,
+    proposals: activeProposals[item.id] ?? 0,
+    totalProposals: totalProposals[item.id] ?? 0,
   }));
 
   return {

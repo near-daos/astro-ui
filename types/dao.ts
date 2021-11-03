@@ -33,6 +33,7 @@ export type DAO = {
   members: number;
   funds: string;
   proposals: number;
+  totalProposals: number;
   createdAt: string;
   logo: string;
   groups: TGroup[];

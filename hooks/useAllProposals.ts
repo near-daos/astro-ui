@@ -16,18 +16,33 @@ export function useAllProposals(): Proposal[] | null {
 
 export function getActiveProposalsCountByDao(
   proposals: Proposal[] | null
-): Record<string, number> {
-  const result = {} as Record<string, number>;
+): {
+  active: Record<string, number>;
+  total: Record<string, number>;
+} {
+  const active = {} as Record<string, number>;
+  const total = {} as Record<string, number>;
+
+  const result = {
+    active,
+    total,
+  };
 
   if (!proposals) return result;
 
   proposals.forEach(proposal => {
     if (proposal.status === 'InProgress') {
-      if (result[proposal.daoId]) {
-        result[proposal.daoId] += 1;
+      if (active[proposal.daoId]) {
+        active[proposal.daoId] += 1;
       } else {
-        result[proposal.daoId] = 1;
+        active[proposal.daoId] = 1;
       }
+    }
+
+    if (total[proposal.daoId]) {
+      total[proposal.daoId] += 1;
+    } else {
+      total[proposal.daoId] = 1;
     }
   });
 

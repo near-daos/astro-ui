@@ -19,7 +19,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
     SputnikHttpService.getProposals(undefined, 0, 500),
   ]);
 
-  const activeProposalsByDao = getActiveProposalsCountByDao(proposals);
+  const { active: activeProposalsByDao } = getActiveProposalsCountByDao(
+    proposals
+  );
 
   return {
     props: {

@@ -78,9 +78,14 @@ export const Dropdown = <T,>(
 
   return (
     <div className={className}>
-      <Title size={3} {...getToggleButtonProps()}>
+      <Title size={3} {...getToggleButtonProps()} className={styles.control}>
         {selectedItem?.label || placeholder}
-        <IconButton size="medium" icon="buttonArrowDown" />
+        <IconButton
+          icon="buttonArrowDown"
+          className={classNames(styles.controlIcon, {
+            [styles.open]: isOpen,
+          })}
+        />
       </Title>
       <ul className={styles.menu} {...getMenuProps()}>
         {isOpen &&

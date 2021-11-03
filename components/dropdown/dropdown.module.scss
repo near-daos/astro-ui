@@ -1,5 +1,5 @@
 .dropdown {
-  color: var(--color-primary-50);
+  color: var(--color-brand-black);
   cursor: default;
   display: inline-flex;
   min-width: 60px;
@@ -28,6 +28,21 @@
   height: 40px;
   padding: 7px 23px;
   white-space: nowrap;
+}
+
+.control {
+  align-items: center;
+  display: flex;
+}
+
+.controlIcon {
+  color: var(--color-brand-black);
+  margin-left: 8px;
+  width: 16px;
+
+  &.open {
+    transform: rotate(180deg);
+  }
 }
 
 .active {

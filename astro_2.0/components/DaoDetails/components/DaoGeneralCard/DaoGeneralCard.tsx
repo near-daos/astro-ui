@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import Link from 'next/link';
 
 import { composeProperLinkUrl } from 'helpers/composeProperLinkUrl';
 import { IconButton } from 'components/button/IconButton';
@@ -42,7 +43,11 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
         )}
       </div>
       <div className={styles.generalInfoWrapper}>
-        <div className={styles.displayName}>{displayName ?? id}</div>
+        <Link href={`/dao/${id}`}>
+          <a>
+            <div className={styles.displayName}>{displayName ?? id}</div>
+          </a>
+        </Link>
         <div className={styles.daoId}>
           <div>{id}</div>
           {!preview && <CopyButton text={id} className={styles.copyIcon} />}

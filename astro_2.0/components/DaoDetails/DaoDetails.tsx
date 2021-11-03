@@ -14,7 +14,7 @@ import styles from './DaoDetails.module.scss';
 export interface DaoDetailsProps {
   dao: DAO;
   accountId: string | null;
-  onCreateProposalClick: () => void;
+  onCreateProposalClick: (dao: DAO) => void;
   activeProposals: number;
   totalProposals: number;
 }
@@ -43,7 +43,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
       </section>
 
       <section className={styles.funds}>
-        <Link href={`/dao/${dao.id}/treasure/tokens`}>
+        <Link href={`/dao/${dao.id}/treasury/tokens`}>
           <a>
             <div className={styles.label}>DAO funds</div>
             <div className={styles.value}>
@@ -109,7 +109,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
           activeVotes={activeProposals}
           totalProposals={totalProposals}
           action={action}
-          onClick={onCreateProposalClick}
+          onClick={() => onCreateProposalClick(dao)}
         />
       </section>
     </div>

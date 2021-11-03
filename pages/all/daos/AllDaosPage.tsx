@@ -1,19 +1,21 @@
 import React, { FC, useCallback, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { DAO } from 'types/dao';
+import { useRouter } from 'next/router';
 
-import DaoCard from 'components/cards/dao-card';
+import { DAO } from 'types/dao';
+import { ProposalVariant } from 'types/proposal';
+
 import { Button } from 'components/button/Button';
 import { CREATE_DAO_URL } from 'constants/routing';
 import { Dropdown } from 'components/dropdown/Dropdown';
 import { getDaosList } from 'features/daos/helpers';
+import { DaoDetails } from 'astro_2.0/components/DaoDetails';
 
-import { useNearPrice } from 'hooks/useNearPrice';
-
-import { useRouter } from 'next/router';
 import { useAuthContext } from 'context/AuthContext';
 import { useRouterLoading } from 'hooks/useRouterLoading';
 import { Loader } from 'components/loader';
+
+import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 
 import styles from './AllDaosPage.module.scss';
 
@@ -50,8 +52,10 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
   total: totalItemsAvailable,
 }) => {
   const router = useRouter();
-  const nearPrice = useNearPrice();
   const { accountId, login } = useAuthContext();
+  const [createProposalForDao, setCreateProposalForDao] = useState<DAO | null>(
+    null
+  );
 
   const activeSort = (router.query.sort as string) ?? sortOptions[1].value;
 
@@ -108,6 +112,11 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
     [login, router, accountId]
   );
 
+  const handleCreateProposal = useCallback(
+    id => (accountId ? setCreateProposalForDao(id) : login()),
+    [accountId, login]
+  );
+
   const isLoading = useRouterLoading();
 
   if (isLoading) {
@@ -117,11 +126,28 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h1>All Communities</h1>
+        <h1>All DAOs</h1>
         <Button variant="black" size="small" onClick={handleCreateDao}>
           Create new DAO
         </Button>
       </div>
+
+      {createProposalForDao && (
+        <CreateProposal
+          key={createProposalForDao?.id}
+          dao={createProposalForDao}
+          proposalVariant={ProposalVariant.ProposePoll}
+          onCreate={isSuccess => {
+            if (isSuccess) {
+              setCreateProposalForDao(null);
+            }
+          }}
+          onClose={() => {
+            setCreateProposalForDao(null);
+          }}
+        />
+      )}
+
       <div className={styles.filter}>
         <Dropdown
           options={sortOptions}
@@ -145,16 +171,13 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
         <div className={styles.content}>
           {data.map(item => {
             return (
-              <DaoCard
-                dao={item}
+              <DaoDetails
                 key={item.id}
-                flag={item.logo}
-                name={item.name}
-                displayName={item.displayName}
-                nearPrice={nearPrice}
-                daoAccountName={item.id}
-                description={item.description}
-                members={item.members}
+                dao={item}
+                accountId={accountId}
+                onCreateProposalClick={handleCreateProposal}
+                activeProposals={item.proposals}
+                totalProposals={item.totalProposals}
               />
             );
           })}

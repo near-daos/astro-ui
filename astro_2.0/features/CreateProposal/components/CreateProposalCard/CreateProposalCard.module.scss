@@ -170,3 +170,16 @@
     }
   }
 }
+
+.actionBar {
+  @include centralize;
+  height: 36px;
+  position: absolute;
+  right: -40px;
+  top: 8px;
+  width: 36px;
+}
+
+.action {
+  color: var(--color-neutral-50);
+}

@@ -95,6 +95,7 @@ const dao = {
   description: '',
   members: 1,
   proposals: 11,
+  totalProposals: 15,
   logo:
     'https://sputnik-dao.s3.eu-central-1.amazonaws.com/3RFSVcbRRXIGNxq5C1OMI',
   funds: '6.10334',

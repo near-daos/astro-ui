@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { TextArea } from 'components/inputs/textarea/TextArea';
 import { Input } from 'components/inputs/input/Input';
 import { Icon } from 'components/Icon';
+import { IconButton } from 'components/button/IconButton';
 import { GroupedSelect } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
 
 import { ProposalVariant } from 'types/proposal';
@@ -16,6 +17,7 @@ import {
 } from 'astro_2.0/features/CreateProposal/helpers';
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
+
 import styles from './CreateProposalCard.module.scss';
 
 const proposalTypesOptions = getProposalTypesOptions();
@@ -25,6 +27,7 @@ export interface CreateProposalCardProps {
   proposer: string;
   content: ReactNode;
   onTypeSelect: (newType: ProposalVariant) => void;
+  onClose: () => void;
 }
 
 export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
@@ -32,6 +35,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   proposer,
   content,
   onTypeSelect,
+  onClose,
 }) => {
   const {
     register,
@@ -90,6 +94,10 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       <div className={styles.voteControlCell}>
         <Icon name="votingYesChecked" className={styles.voteIcon} />
         <Icon name="votingNoChecked" className={styles.voteIcon} />
+      </div>
+
+      <div className={styles.actionBar}>
+        <IconButton icon="close" className={styles.action} onClick={onClose} />
       </div>
     </div>
   );

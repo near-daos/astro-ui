@@ -17,7 +17,7 @@ import { Tokens } from 'context/CustomTokensContext';
 import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import Decimal from 'decimal.js';
-// import { SputnikNearService } from 'services/sputnik';
+import { SputnikNearService } from 'services/sputnik';
 import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
 import { ChangeLinksContent } from 'astro_2.0/features/CreateProposal/components/ChangeLinksContent';
 import { nanoid } from 'nanoid';
@@ -46,8 +46,6 @@ import {
 import { ChangePolicyContent } from 'astro_2.0/features/CreateProposal/components/ChangePolicyContent';
 import { YOKTO_NEAR } from 'services/sputnik/constants';
 import { ChangeBondsContent } from 'astro_2.0/features/CreateProposal/components/ChangeBondsContent';
-
-// import { SputnikNearService } from 'services/sputnik';
 
 export function getProposalTypesOptions(): {
   title: string;
@@ -370,8 +368,8 @@ async function getTransferProposal(
 ): Promise<CreateProposalParams> {
   const token = tokens[data.token];
 
-  if (token.tokenId) {
-    // await SputnikNearService.registerUserToToken(token.tokenId);
+  if (token?.tokenId) {
+    await SputnikNearService.registerUserToToken(token.tokenId);
   }
 
   return {
@@ -582,13 +580,13 @@ export function getValidationSchema(
             'Only numbers with one optional decimal place please',
             value => /^\d*(?:\.\d)?$/.test(`${value}`)
           ),
-        // target: yup
-        //   .string()
-        //   .test(
-        //     'notValidNearAccount',
-        //     'Only valid near accounts are allowed',
-        //     value => SputnikNearService.nearAccountExist(value || '')
-        //   ),
+        target: yup
+          .string()
+          .test(
+            'notValidNearAccount',
+            'Only valid near accounts are allowed',
+            value => SputnikNearService.nearAccountExist(value || '')
+          ),
         details: yup.string().required(),
         externalUrl: yup.string().url(),
       });
