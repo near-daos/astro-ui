@@ -238,6 +238,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
                   <DaoFlagWidget
                     daoName={item.dao.displayName}
                     flagUrl={item.daoDetails.logo}
+                    daoId={item.daoId}
                   />
                 }
                 letterHeadNode={
