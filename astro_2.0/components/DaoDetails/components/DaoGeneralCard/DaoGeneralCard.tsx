@@ -45,7 +45,7 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
       <div className={styles.generalInfoWrapper}>
         <Link href={`/dao/${id}`}>
           <a>
-            <div className={styles.displayName}>{displayName ?? id}</div>
+            <div className={styles.displayName}>{displayName || id}</div>
           </a>
         </Link>
         <div className={styles.daoId}>

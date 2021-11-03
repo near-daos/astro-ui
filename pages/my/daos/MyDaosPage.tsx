@@ -1,18 +1,20 @@
 import Link from 'next/link';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 
-import { useNearPrice } from 'hooks/useNearPrice';
-
-import DaoCard from 'components/cards/dao-card';
+import { DaoDetails } from 'astro_2.0/components/DaoDetails';
 import { Button } from 'components/button/Button';
+
 import { CREATE_DAO_URL } from 'constants/routing';
 
 import { useAuthContext } from 'context/AuthContext';
 
 import { NoResultsView } from 'features/no-results-view';
 
+import { CreateProposal } from 'astro_2.0/features/CreateProposal';
+
+import { ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
 
 import styles from './MyDaosPage.module.scss';
@@ -23,8 +25,16 @@ interface MyDaosPageProps {
 
 const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
   const router = useRouter();
-  const nearPrice = useNearPrice();
   const { accountId, login } = useAuthContext();
+
+  const [createProposalForDao, setCreateProposalForDao] = useState<DAO | null>(
+    null
+  );
+
+  const handleCreateProposal = useCallback(
+    id => (accountId ? setCreateProposalForDao(id) : login()),
+    [accountId, login]
+  );
 
   function renderDaos() {
     if (isEmpty(accountDaos)) {
@@ -44,24 +54,21 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
     }
 
     const daoEls = accountDaos.map(dao => {
-      const { id, logo, name, displayName, description, members } = dao;
+      const { id, proposals, totalProposals } = dao;
 
       return (
-        <DaoCard
-          dao={dao}
+        <DaoDetails
           key={id}
-          flag={logo}
-          name={name}
-          displayName={displayName}
-          daoAccountName={id}
-          nearPrice={nearPrice}
-          description={description}
-          members={members}
+          dao={dao}
+          accountId={accountId}
+          onCreateProposalClick={handleCreateProposal}
+          activeProposals={proposals}
+          totalProposals={totalProposals}
         />
       );
     });
 
-    return <div className={styles.content}>{daoEls}</div>;
+    return <>{daoEls}</>;
   }
 
   const handleCreateDao = useCallback(
@@ -72,12 +79,30 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h1>My DAOs</h1>
+        <h1>MY DAOs</h1>
         <Button variant="black" size="small" onClick={handleCreateDao}>
           Create new DAO
         </Button>
       </div>
-      {renderDaos()}
+      <div className={styles.content}>
+        {createProposalForDao && (
+          <CreateProposal
+            key={createProposalForDao?.id}
+            dao={createProposalForDao}
+            proposalVariant={ProposalVariant.ProposePoll}
+            onCreate={isSuccess => {
+              if (isSuccess) {
+                setCreateProposalForDao(null);
+              }
+            }}
+            onClose={() => {
+              setCreateProposalForDao(null);
+            }}
+          />
+        )}
+        {renderDaos()}
+      </div>
+      ;
     </div>
   );
 };
