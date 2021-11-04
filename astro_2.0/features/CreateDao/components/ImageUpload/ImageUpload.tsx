@@ -1,5 +1,4 @@
 import uniqid from 'uniqid';
-import get from 'lodash/get';
 import classNames from 'classnames';
 import { useToggle } from 'react-use';
 import { useFormContext } from 'react-hook-form';
@@ -8,7 +7,7 @@ import React, { FC, useState } from 'react';
 import { Icon } from 'components/Icon';
 import { DaoImageType } from 'astro_2.0/features/CreateDao/components/types';
 
-import { getImageFromImageFile } from 'utils/getImageFromImageFile';
+import { getImageFromImageFileList } from 'utils/getImageFromImageFileList';
 
 import styles from './ImageUpload.module.scss';
 
@@ -19,14 +18,14 @@ export interface ImageUploadProps {
 export const ImageUpload: FC<ImageUploadProps> = ({ fieldName }) => {
   const { watch, register } = useFormContext();
 
-  const image = get(watch(fieldName), '0');
+  const imageFileList = watch(fieldName);
 
   const [id] = useState(uniqid());
 
   const [show, toggleShow] = useToggle(false);
-  const uploadText = image
-    ? 'Click here to change image'
-    : 'Click here to upload image';
+  const uploadText = imageFileList?.length
+    ? 'Click here to upload image'
+    : 'Click here to change image';
 
   return (
     <div
@@ -45,7 +44,9 @@ export const ImageUpload: FC<ImageUploadProps> = ({ fieldName }) => {
         className={classNames(styles.image, {
           [styles.logo]: fieldName === 'flagLogo',
         })}
-        style={{ backgroundImage: `url(${getImageFromImageFile(image)})` }}
+        style={{
+          backgroundImage: `url(${getImageFromImageFileList(imageFileList)})`,
+        }}
       />
       <label htmlFor={id}>
         <div

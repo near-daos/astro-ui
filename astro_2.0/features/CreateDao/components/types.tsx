@@ -32,8 +32,8 @@ export interface IDaoCreateForm {
   displayName: string;
   purpose: string;
   websites: string[];
-  flagCover: File;
-  flagLogo: File;
+  flagCover: FileList;
+  flagLogo: FileList;
 }
 
 export interface DAOFormValues extends IDaoCreateForm {

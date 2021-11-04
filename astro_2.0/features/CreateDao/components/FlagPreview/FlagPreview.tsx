@@ -1,19 +1,21 @@
 import React from 'react';
 import cn from 'classnames';
-import get from 'lodash/get';
 import { useFormContext } from 'react-hook-form';
 
 import { Icon } from 'components/Icon';
 
-import { getImageFromImageFile } from 'utils/getImageFromImageFile';
+import { getImageFromImageFileList } from 'utils/getImageFromImageFileList';
 
 import styles from './FlagPreview.module.scss';
 
 export function FlagPreview(): JSX.Element {
   const { watch } = useFormContext();
 
-  const cover = get(watch('flagCover'), '0');
-  const logo = get(watch('flagLogo'), '0');
+  const coverFileList = watch('flagCover');
+  const logoFileList = watch('flagLogo');
+
+  const coverImg = getImageFromImageFileList(coverFileList);
+  const logoImg = getImageFromImageFileList(logoFileList);
 
   return (
     <>
@@ -36,7 +38,7 @@ export function FlagPreview(): JSX.Element {
                 <div
                   className={cn(styles.cover, styles.sm)}
                   style={{
-                    backgroundImage: `url(${getImageFromImageFile(cover)})`,
+                    backgroundImage: `url(${coverImg})`,
                   }}
                 />
               </div>
@@ -45,14 +47,14 @@ export function FlagPreview(): JSX.Element {
                 <div
                   className={styles.cover}
                   style={{
-                    backgroundImage: `url(${getImageFromImageFile(cover)})`,
+                    backgroundImage: `url(${coverImg})`,
                   }}
                 />
-                {logo && (
+                {logoFileList && (
                   <div
                     className={styles.logo}
                     style={{
-                      backgroundImage: `url(${getImageFromImageFile(logo)})`,
+                      backgroundImage: `url(${logoImg})`,
                     }}
                   />
                 )}
@@ -65,7 +67,7 @@ export function FlagPreview(): JSX.Element {
               <div
                 className={styles.letterhead}
                 style={{
-                  backgroundImage: `url(${getImageFromImageFile(cover)})`,
+                  backgroundImage: `url(${coverImg})`,
                 }}
               >
                 <Icon name="proposalBounty" width={24} color="white" />
