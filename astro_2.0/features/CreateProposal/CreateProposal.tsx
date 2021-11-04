@@ -178,7 +178,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           }
           infoPanelNode={
             <TransactionDetailsWidget
-              onCreate={() => 0}
+              onSubmit={() => Promise.resolve()}
               bond={dao.policy.proposalBond}
               gas="0.2"
               buttonLabel="Propose"

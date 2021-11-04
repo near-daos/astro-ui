@@ -37,11 +37,6 @@
   }
 }
 
-.socialIcon {
-  color: var(--color-primary-60);
-  flex-shrink: 0;
-}
-
 .socialText {
   @extend %body1;
   align-items: center;
@@ -61,10 +56,5 @@
 
 .addBtn {
   color: var(--color-brand-purple);
-  flex-shrink: 0;
-}
-
-.deleteBtn {
-  color: var(--color-error-70);
   flex-shrink: 0;
 }

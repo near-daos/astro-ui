@@ -18,17 +18,25 @@ const schema = yup.object().shape({
   displayName: yup
     .string()
     .trim()
-    .min(3, 'tooShortAddress')
-    .matches(validWebsiteName, 'incorrectAddress')
+    .min(3, 'Incorrect DAO name - at least 3 characters expected.')
+    .matches(
+      validWebsiteName,
+      'Incorrect DAO name - you can use letters and numbers only with hyphens and spaces in the middle.'
+    )
     .required(),
   purpose: yup.string().max(500),
   websites: yup
     .array()
     .of(yup.string().matches(validUrlRegexp, 'Enter correct url!').required()),
+  proposals: yup.string().required(),
+  structure: yup.string().required(),
+  voting: yup.string().required(),
 });
 
 export const CreateDao: VFC = () => {
   const methods = useForm<DAOFormValues>({
+    mode: 'all',
+    reValidateMode: 'onChange',
     defaultValues: {
       proposals: undefined,
       structure: undefined,

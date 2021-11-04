@@ -1,23 +1,26 @@
 import cn from 'classnames';
-import React, { FC } from 'react';
+import get from 'lodash/get';
+import { createPortal } from 'react-dom';
 import { FieldError } from 'react-hook-form';
+import React, { RefObject, PropsWithRef } from 'react';
 
 import styles from './InputFormWrapper.module.scss';
 
-interface InputFormWrapperProps {
+interface InputFormWrapperProps<T extends Element> {
   component: JSX.Element;
   className?: string;
   errors: Record<string, FieldError>;
+  errorElRef?: RefObject<T>;
 }
 
-export const InputFormWrapper: FC<InputFormWrapperProps> = ({
-  errors,
-  className,
-  component,
-}) => {
+export const InputFormWrapper = <T extends Element>(
+  props: PropsWithRef<InputFormWrapperProps<T>>
+): JSX.Element => {
+  const { errors, className, component, errorElRef } = props;
+
   function getError() {
     const name = component?.props?.name;
-    const error = errors[name];
+    const error = get(errors, name);
 
     return error;
   }
@@ -27,8 +30,9 @@ export const InputFormWrapper: FC<InputFormWrapperProps> = ({
 
     if (error) {
       const { message } = error;
+      const el = <div className={styles.error}>{message}</div>;
 
-      return <div className={styles.error}>{message}</div>;
+      return errorElRef?.current ? createPortal(el, errorElRef.current) : el;
     }
 
     return null;

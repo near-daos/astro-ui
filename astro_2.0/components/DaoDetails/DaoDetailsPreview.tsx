@@ -20,8 +20,8 @@ export const DaoDetailsPreview: FC<DaoDetailsPreviewProps> = ({ dao }) => {
           id={dao.id}
           description={dao.description}
           links={dao.links}
-          cover={dao.logo}
-          logo={dao.logo}
+          cover={dao.flagCover}
+          logo={dao.flagLogo}
           preview
         />
       </section>

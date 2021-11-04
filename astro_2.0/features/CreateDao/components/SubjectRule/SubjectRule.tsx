@@ -1,9 +1,14 @@
-import React, { FC } from 'react';
-import { Icon } from 'components/Icon';
-import { DaoOptionCard } from 'astro_2.0/features/CreateDao/components/DaoOptionCard/DaoOptionCard';
+import React, { FC, useRef } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+
 import { Subject } from 'astro_2.0/features/CreateDao/components/types';
+
 import { DAO_SUBJECT_OPTIONS } from 'astro_2.0/features/CreateDao/components/data';
-import { useDaoFormState } from 'astro_2.0/features/CreateDao/components/hooks';
+
+import { Icon } from 'components/Icon';
+import { DaoOptionCard } from 'astro_2.0/features/CreateDao/components/DaoOptionCard';
+import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
+
 import styles from './SubjectRule.module.scss';
 
 export interface SubjectRuleProps {
@@ -17,8 +22,12 @@ export const SubjectRule: FC<SubjectRuleProps> = ({
   subTitle,
   subject,
 }) => {
+  const errorElRef = useRef<HTMLDivElement>(null);
+
+  const { formState } = useFormContext();
+  const { errors } = formState;
+
   const options = DAO_SUBJECT_OPTIONS[subject];
-  const { getValues, setValue } = useDaoFormState();
 
   return (
     <div className={styles.root}>
@@ -27,18 +36,55 @@ export const SubjectRule: FC<SubjectRuleProps> = ({
         <p>{subTitle}</p>
       </div>
 
-      <div className={styles.list}>
-        {options.map(({ value, icon, title: optionTitle, description }) => (
-          <DaoOptionCard
-            active={value === getValues(subject)}
-            key={value}
-            onClick={() => setValue(subject, value)}
-            iconNode={<Icon width={56} name={icon} />}
-            title={optionTitle}
-            description={description}
+      <InputFormWrapper
+        errors={errors}
+        errorElRef={errorElRef}
+        component={
+          <Controller
+            name={subject}
+            render={renderProps => {
+              const { field } = renderProps;
+
+              const { value: actualValue, onChange } = field;
+
+              return (
+                <div className={styles.listContainer}>
+                  <div className={styles.list}>
+                    {options.map(opt => {
+                      const {
+                        value,
+                        icon,
+                        title: optionTitle,
+                        description,
+                      } = opt;
+
+                      function onOptSelect() {
+                        onChange({
+                          target: {
+                            value,
+                          },
+                        });
+                      }
+
+                      return (
+                        <DaoOptionCard
+                          key={value}
+                          title={optionTitle}
+                          onSelect={onOptSelect}
+                          description={description}
+                          active={value === actualValue}
+                          iconNode={<Icon width={56} name={icon} />}
+                        />
+                      );
+                    })}
+                  </div>
+                  <div ref={errorElRef} />
+                </div>
+              );
+            }}
           />
-        ))}
-      </div>
+        }
+      />
     </div>
   );
 };
