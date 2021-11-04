@@ -7,8 +7,6 @@ import styles from './StatusFilters.module.scss';
 
 const StatusFilters = ({
   proposal,
-  timelineView,
-  onTimelineChange,
   disabled,
   onChange,
 }: Props): JSX.Element => {
@@ -56,20 +54,20 @@ const StatusFilters = ({
         classes={{ root: styles.filterStatusProposalCheckboxRoot }}
       />
 
-      <Checkbox
-        input={{
-          name: 'timeline',
-          checked: timelineView,
-          onChange: onTimelineChange,
-          disabled,
-        }}
-        as="switch"
-        label="Timeline View:"
-        classes={{
-          root: styles.timelineSwitch,
-          label: styles.timelineSwitchLabel,
-        }}
-      />
+      {/* <Checkbox */}
+      {/*  input={{ */}
+      {/*    name: 'timeline', */}
+      {/*    checked: timelineView, */}
+      {/*    onChange: onTimelineChange, */}
+      {/*    disabled, */}
+      {/*  }} */}
+      {/*  as="switch" */}
+      {/*  label="Timeline View:" */}
+      {/*  classes={{ */}
+      {/*    root: styles.timelineSwitch, */}
+      {/*    label: styles.timelineSwitchLabel, */}
+      {/*  }} */}
+      {/* /> */}
     </div>
   );
 };
@@ -77,9 +75,7 @@ const StatusFilters = ({
 type Props = {
   proposal?: ProposalStatuses;
   disabled?: boolean;
-  timelineView: boolean;
   onChange?: (proposal?: ProposalStatuses) => void;
-  onTimelineChange?: React.InputHTMLAttributes<HTMLInputElement>['onChange'];
 };
 
 StatusFilters.defaultProps = {

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { useAsync, useAsyncFn, useToggle } from 'react-use';
+import { useAsync, useAsyncFn } from 'react-use';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { PaginationResponse } from 'types/api';
@@ -36,8 +36,6 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
 
   const queries = query as ProposalsQueries;
 
-  const [timelineView, toggleTimelineView] = useToggle(true);
-
   const queryBeignFetched = useRef(queries);
 
   const { accountId } = useAuthContext();
@@ -67,7 +65,7 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
 
       return accumulatedListData;
     },
-    [proposalsData?.data.length, queries.status, queries.category, timelineView]
+    [proposalsData?.data.length, queries.status, queries.category]
   );
 
   useDebounceUpdateEffect(
@@ -123,9 +121,7 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
       <div className={styles.statusFilterWrapper}>
         <StatusFilters
           proposal={queries.status}
-          timelineView={timelineView}
           onChange={onProposalFilterChange}
-          onTimelineChange={toggleTimelineView}
           disabled={proposalsDataIsLoading}
         />
       </div>

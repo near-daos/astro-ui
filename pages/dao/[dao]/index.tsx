@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useToggle } from 'react-use';
 import Link from 'next/link';
 
 import { Icon } from 'components/Icon';
@@ -60,7 +59,6 @@ const DAOHome: NextPage<DaoHomeProps> = ({
   const { accountId } = useAuthContext();
   const { setTokens } = useCustomTokensContext();
 
-  const [timelineView, toggleTimelineView] = useToggle(true);
   const [showCreateProposal, setShowCreateProposal] = useState(false);
   const [data, setData] = useState(proposals);
   const [hasMore, setHasMore] = useState(proposals.length !== proposalsTotal);
@@ -173,13 +171,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
       )}
 
       <div className={styles.statusFilterWrapper}>
-        <h2>Proposals</h2>
-        <StatusFilters
-          proposal={status}
-          timelineView={timelineView}
-          onChange={onProposalFilterChange}
-          onTimelineChange={toggleTimelineView}
-        />
+        <StatusFilters proposal={status} onChange={onProposalFilterChange} />
       </div>
       <div className={styles.proposalList}>
         <div className={styles.categoriesListWrapper}>

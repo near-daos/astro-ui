@@ -4,7 +4,8 @@
 
 .statusFilterWrapper {
   background-color: var(--color-neutral-30);
-  margin-left: auto;
+  display: flex;
+  justify-content: center;
   max-width: 960px;
   padding: 67px 0 30px;
   position: sticky;
