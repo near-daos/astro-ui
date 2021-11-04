@@ -4,8 +4,8 @@ import isNil from 'lodash/isNil';
 import {
   DAOTemplate,
   TemplateLinkType,
-} from 'astro_2.0/features/CreateDao/components/units/types';
-import { useDaoFormState } from 'astro_2.0/features/CreateDao/components/units/hooks';
+} from 'astro_2.0/features/CreateDao/components/types';
+import { useDaoFormState } from 'astro_2.0/features/CreateDao/components/hooks';
 import styles from './TemplateLink.module.scss';
 
 export interface TemplateLinkProps {

@@ -16,7 +16,7 @@ export interface BountyCardProps {
   id: string;
   daoId: string;
   token: Token;
-  daoFlag: string;
+  daoFlag?: string;
   daoName: string;
   amount: string;
   description: string;

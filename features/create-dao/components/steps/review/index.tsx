@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import { useFormContext } from 'react-hook-form';
 
 import {
@@ -9,28 +9,28 @@ import {
   DAO_VOTING_POWER_OPTIONS,
 } from 'features/create-dao/components/steps/data';
 
-import { CreateDaoInput } from 'types/dao';
-import { nearConfig } from 'config';
+// import { CreateDaoInput } from 'types/dao';
+// import { nearConfig } from 'config';
 
-import { SputnikWalletError } from 'errors/SputnikWalletError';
+// import { SputnikWalletError } from 'errors/SputnikWalletError';
 
 import { Icon } from 'components/Icon';
 import { Title } from 'components/Typography';
 import { Button } from 'components/button/Button';
-import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+// import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { DAOFormValues } from 'features/create-dao/components/steps/types';
 import { DaoDetails } from 'features/dao-home/components/dao-details/DaoDetails';
 import { DaoOptionCard } from 'features/create-dao/components/option-card/DaoOptionCard';
-import { getRolesVotingPolicy } from 'features/create-dao/components/steps/review/helpers';
+// import { getRolesVotingPolicy } from 'features/create-dao/components/steps/review/helpers';
 
-import { SputnikNearService } from 'services/sputnik';
-import awsUploader from 'services/AwsUploader/AwsUploader';
+// import { SputnikNearService } from 'services/sputnik';
+// import awsUploader from 'services/AwsUploader/AwsUploader';
 
 import styles from 'features/create-dao/components/steps/form/form.module.scss';
 
 export function ReviewView(): JSX.Element {
   const { getValues, handleSubmit } = useFormContext<DAOFormValues>();
-  const router = useRouter();
+  // const router = useRouter();
 
   const dao = getValues();
 
@@ -41,46 +41,52 @@ export function ReviewView(): JSX.Element {
   ];
 
   async function onSubmit(data: DAOFormValues) {
-    const { Key: fileName } = await awsUploader.uploadToBucket(data.flag);
+    // eslint-disable-next-line no-console
+    console.log(
+      'We should create DAO with following data, but now we use new approach:',
+      data
+    );
 
-    try {
-      await SputnikNearService.createDao({
-        name: data.address,
-        purpose: data.purpose,
-        links: data.websites as CreateDaoInput['links'],
-        flag: fileName,
-        bond: '0.1',
-        votePeriod: '168',
-        gracePeriod: '24',
-        amountToTransfer: '5',
-        displayName: data.displayName,
-        policy: {
-          ...getRolesVotingPolicy(data, SputnikNearService.getAccountId()),
-          proposalBond: '0.1',
-          proposalPeriod: '168',
-          bountyBond: '0.1',
-          bountyForgivenessPeriod: '168',
-        },
-      });
-
-      showNotification({
-        type: NOTIFICATION_TYPES.INFO,
-        description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
-        lifetime: 20000,
-      });
-
-      await router.push(`/dao/${data.address}.${nearConfig.contractName}`);
-    } catch (error) {
-      console.warn(error);
-
-      if (error instanceof SputnikWalletError) {
-        showNotification({
-          type: NOTIFICATION_TYPES.ERROR,
-          description: error.message,
-          lifetime: 20000,
-        });
-      }
-    }
+    // const { Key: fileName } = await awsUploader.uploadToBucket(data.flag);
+    //
+    // try {
+    //   await SputnikNearService.createDao({
+    //     name: data.address,
+    //     purpose: data.purpose,
+    //     links: data.websites as CreateDaoInput['links'],
+    //     flag: fileName,
+    //     bond: '0.1',
+    //     votePeriod: '168',
+    //     gracePeriod: '24',
+    //     amountToTransfer: '5',
+    //     displayName: data.displayName,
+    //     policy: {
+    //       ...getRolesVotingPolicy(data, SputnikNearService.getAccountId()),
+    //       proposalBond: '0.1',
+    //       proposalPeriod: '168',
+    //       bountyBond: '0.1',
+    //       bountyForgivenessPeriod: '168',
+    //     },
+    //   });
+    //
+    //   showNotification({
+    //     type: NOTIFICATION_TYPES.INFO,
+    //     description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+    //     lifetime: 20000,
+    //   });
+    //
+    //   await router.push(`/dao/${data.address}.${nearConfig.contractName}`);
+    // } catch (error) {
+    //   console.warn(error);
+    //
+    //   if (error instanceof SputnikWalletError) {
+    //     showNotification({
+    //       type: NOTIFICATION_TYPES.ERROR,
+    //       description: error.message,
+    //       lifetime: 20000,
+    //     });
+    //   }
+    // }
   }
 
   return (

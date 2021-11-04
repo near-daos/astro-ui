@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import cn from 'classnames';
+import last from 'lodash/last';
 import { useToggle } from 'react-use';
 import { useRouter } from 'next/router';
 import React, { useCallback, VFC } from 'react';
@@ -80,8 +81,8 @@ export const NameAndPurposeTab: VFC<NameAndPurposeTabProps> = ({
 
         const { links, flag } = currentDaoMetadata;
 
-        const url = flag.split('/');
-        const fileName = url[url.length - 1];
+        const url = flag?.split('/');
+        const fileName = last(url);
 
         const newDaoConfig: DaoConfig = {
           name,

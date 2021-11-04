@@ -1,3 +1,4 @@
+import last from 'lodash/last';
 import * as yup from 'yup';
 import { AnySchema } from 'yup';
 import {
@@ -429,7 +430,7 @@ export async function getNewProposalObject(
     }
     case ProposalVariant.ProposeChangeDaoLinks: {
       const url = dao?.logo?.split('/');
-      const fileName = url[url.length - 1];
+      const fileName = last(url);
 
       const newDaoConfig: DaoConfig = {
         name: dao.name,
@@ -452,7 +453,7 @@ export async function getNewProposalObject(
     }
     case ProposalVariant.ProposeChangeDaoName: {
       const url = dao?.logo?.split('/');
-      const fileName = url[url.length - 1];
+      const fileName = last(url);
 
       const newDaoConfig: DaoConfig = {
         name: dao.name,
@@ -473,7 +474,7 @@ export async function getNewProposalObject(
     }
     case ProposalVariant.ProposeChangeDaoPurpose: {
       const url = dao?.logo?.split('/');
-      const fileName = url[url.length - 1];
+      const fileName = last(url);
 
       const newDaoConfig: DaoConfig = {
         name: dao.name,

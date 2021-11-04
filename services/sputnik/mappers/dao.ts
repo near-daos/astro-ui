@@ -3,10 +3,10 @@ import get from 'lodash/get';
 import { DAO, DaoVotePolicy } from 'types/dao';
 import { DaoRole } from 'types/role';
 import { formatYoktoValue } from 'helpers/format';
-import { awsConfig } from 'config';
 import Decimal from 'decimal.js';
 import { CreateDaoParams } from 'services/sputnik/types';
 import { YOKTO_NEAR } from 'services/sputnik/constants';
+import { getAwsImageUrl } from './utils/getAwsImageUrl';
 
 export type DaoPolicy = {
   createdAt: string;
@@ -55,7 +55,9 @@ export type DaoDTO = {
 
 export type DaoMetadata = {
   links: string[];
-  flag: string;
+  flagCover?: string;
+  flagLogo?: string;
+  flag?: string;
   displayName: string;
 };
 
@@ -66,9 +68,6 @@ export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
 export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
   return JSON.parse(Buffer.from(metaAsBase64, 'base64').toString('ascii'));
 };
-
-export const getLogoUrl = (flag: string): string =>
-  `https://${awsConfig.bucket}.s3.${awsConfig.region}.amazonaws.com/${flag}`;
 
 export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
   const roles = get(daoDTO, 'policy.roles', []);
@@ -113,7 +112,11 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     members: numberOfMembers,
     proposals: numberOfProposals,
     totalProposals: numberOfProposals,
-    logo: meta && meta.flag ? getLogoUrl(meta.flag) : getLogoUrl('default.png'),
+    logo: meta?.flag
+      ? getAwsImageUrl(meta.flag)
+      : getAwsImageUrl('default.png'),
+    flagCover: getAwsImageUrl(meta?.flagCover),
+    flagLogo: getAwsImageUrl(meta?.flagLogo),
     funds,
     createdAt: daoDTO.createdAt,
     groups: daoGroups,
@@ -160,7 +163,8 @@ export const mapCreateDaoParamsToContractArgs = (
       purpose: params.purpose,
       metadata: fromMetadataToBase64({
         links: params.links,
-        flag: params.flag,
+        flagCover: params.flagCover,
+        flagLogo: params.flagLogo,
         displayName: params.displayName,
       }),
     },

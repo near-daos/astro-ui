@@ -35,12 +35,14 @@ export type DAO = {
   proposals: number;
   totalProposals: number;
   createdAt: string;
-  logo: string;
   groups: TGroup[];
   policy: PolicyType;
   links: string[];
   displayName: string;
   votes?: number;
+  logo?: string;
+  flagCover?: string;
+  flagLogo?: string;
 };
 
 export type DAOPreview = {
@@ -84,7 +86,8 @@ export interface CreateDaoInput {
   votePeriod: string;
   gracePeriod: string;
   links: [];
-  flag: string;
+  flagCover: string;
+  flagLogo: string;
   amountToTransfer: string;
   displayName: string;
   policy: PolicyTypeRequest;

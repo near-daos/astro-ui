@@ -9,13 +9,13 @@ import {
   DaoSettingOption,
   DAOStructureType,
   DAOVotingPowerType,
-} from 'astro_2.0/features/CreateDao/components/units/types';
+} from 'astro_2.0/features/CreateDao/components/types';
 import { useEffect, useState } from 'react';
 import {
   DAO_PROPOSALS_OPTIONS,
   DAO_STRUCTURE_OPTIONS,
   DAO_VOTING_POWER_OPTIONS,
-} from 'astro_2.0/features/CreateDao/components/units/data';
+} from 'astro_2.0/features/CreateDao/components/data';
 
 type DaoFormStateReturn = {
   options: DaoSettingOption<

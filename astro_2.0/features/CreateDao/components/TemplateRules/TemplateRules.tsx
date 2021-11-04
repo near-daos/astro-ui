@@ -4,7 +4,7 @@ import { TemplateLink } from 'astro_2.0/features/CreateDao/components/TemplateLi
 import {
   DAOTemplate,
   DAOFormValues,
-} from 'astro_2.0/features/CreateDao/components/units/types';
+} from 'astro_2.0/features/CreateDao/components/types';
 import styles from './TemplateRules.module.scss';
 
 export interface TemplateRulesProps {

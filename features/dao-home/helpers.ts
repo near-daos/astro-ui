@@ -13,7 +13,7 @@ type DaoDetailsType = {
   title: string;
   subtitle: string;
   description: string;
-  flag: string;
+  flag?: string;
   createdAt: string;
   links: string[];
   txHash: string;

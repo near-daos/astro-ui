@@ -4,7 +4,7 @@ import { TemplateRules } from 'astro_2.0/features/CreateDao/components/TemplateR
 import {
   DAO_RULES_INFO,
   DAO_TEMPLATES,
-} from 'astro_2.0/features/CreateDao/components/units/data';
+} from 'astro_2.0/features/CreateDao/components/data';
 import styles from './DaoRulesForm.module.scss';
 
 export function DaoRulesForm(): JSX.Element {

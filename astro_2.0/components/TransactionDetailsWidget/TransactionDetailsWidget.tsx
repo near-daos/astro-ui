@@ -1,13 +1,16 @@
 import React from 'react';
+import cn from 'classnames';
+
 import { Button } from 'components/button/Button';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
-import cn from 'classnames';
-import { formatYoktoValue } from 'helpers/format';
 import { InfoValue } from 'astro_2.0/components/InfoBlockWidget/components/InfoValue';
+
+import { formatYoktoValue } from 'helpers/format';
+
 import styles from './TransactionDetailsWidget.module.scss';
 
 interface CreateProposalWidgetProps {
-  onCreate?: () => void;
+  onCreate: () => void;
   bond: string;
   gas: string;
   transaction?: string;

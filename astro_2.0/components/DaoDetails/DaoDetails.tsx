@@ -37,8 +37,9 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
           id={dao.id}
           description={dao.description}
           links={dao.links}
-          cover={dao.logo}
-          logo={dao.logo}
+          flag={dao.logo}
+          cover={dao.flagCover}
+          logo={dao.flagLogo}
         />
       </section>
 

@@ -1,5 +1,4 @@
 import { IconName } from 'components/Icon';
-import { IDaoCreateForm } from 'astro_2.0/features/CreateDao/components/DaoNameForm/DaoNameForm';
 
 export type DAOType = 'club' | 'cooperative' | 'corporation' | 'foundation';
 export type Subject = 'proposals' | 'structure' | 'voting';
@@ -27,6 +26,16 @@ export type DaoSettingOption<T> = {
   description: string;
   disabled?: boolean;
 };
+
+export interface IDaoCreateForm {
+  address: string;
+  displayName: string;
+  purpose: string;
+  websites: string[];
+  flagCover: File;
+  flagLogo: File;
+  flagPreview: string;
+}
 
 export interface DAOFormValues extends IDaoCreateForm {
   proposals: DAOProposalsType;

@@ -1,57 +1,28 @@
-import React, { FC, HTMLProps } from 'react';
-import * as yup from 'yup';
+import React, { useEffect, VFC } from 'react';
+import { useFormContext } from 'react-hook-form';
+
 import { nearConfig } from 'config';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { SubmitHandler, useForm } from 'react-hook-form';
+
 import { Input } from 'components/inputs/input/Input';
 import { TextArea } from 'components/inputs/textarea/TextArea';
-import { validWebsiteName } from 'utils/regexp';
+
 import { formatDaoAddress } from './helpers';
+
 import styles from './DaoNameForm.module.scss';
 
-interface DaoNameFormProps
-  extends Omit<HTMLProps<HTMLFormElement>, 'onSubmit'> {
-  initialValues?: Partial<IDaoCreateForm>;
-  onSubmit: SubmitHandler<IDaoCreateForm>;
-}
-
-export interface IDaoCreateForm {
-  address: string;
-  displayName: string;
-  purpose: string;
-  websites: string[];
-  flagCover: File;
-  flagLogo: File;
-  flagPreview: string;
-}
-
-const schema = yup.object().shape({
-  displayName: yup
-    .string()
-    .trim()
-    .min(3, 'tooShortAddress')
-    .matches(validWebsiteName, 'incorrectAddress')
-    .required(),
-  purpose: yup.string().max(500),
-});
-
-export const DaoNameForm: FC<DaoNameFormProps> = ({
-  onSubmit,
-  initialValues = { websites: [''] },
-  ...props
-}) => {
+export const DaoNameForm: VFC = () => {
   const {
-    register,
-    handleSubmit,
     watch,
+    register,
+    setValue,
     formState: { errors, touchedFields },
-  } = useForm<IDaoCreateForm>({
-    mode: 'onChange',
-    resolver: yupResolver(schema),
-    defaultValues: initialValues,
-  });
+  } = useFormContext();
 
   const displayName = watch('displayName');
+
+  useEffect(() => {
+    setValue('address', formatDaoAddress(displayName));
+  }, [setValue, displayName]);
 
   const showDaoNameErrorMessage = (message: string) => {
     switch (message) {
@@ -66,7 +37,7 @@ export const DaoNameForm: FC<DaoNameFormProps> = ({
   };
 
   return (
-    <form {...props} onSubmit={handleSubmit(onSubmit)} className={styles.root}>
+    <div className={styles.root}>
       <div className={styles.header}>
         <h2>DAO name and purpose</h2>
         <p>All fields bellow, unless otherwise noted are required.</p>
@@ -124,6 +95,6 @@ export const DaoNameForm: FC<DaoNameFormProps> = ({
           </div>
         </section>
       </div>
-    </form>
+    </div>
   );
 };

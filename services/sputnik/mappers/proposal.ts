@@ -1,4 +1,6 @@
 import get from 'lodash/get';
+import { parseISO } from 'date-fns';
+
 import {
   CreateProposalParams,
   Proposal,
@@ -9,11 +11,11 @@ import {
 import {
   DaoDTO,
   fromBase64ToMetadata,
-  getLogoUrl,
   mapDaoDTOtoDao,
 } from 'services/sputnik/mappers/dao';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
-import { parseISO } from 'date-fns';
+
+import { getAwsImageUrl } from './utils/getAwsImageUrl';
 
 export type ProposalDTO = {
   createTimestamp: string;
@@ -126,8 +128,9 @@ export const mapProposalDTOToProposal = (
     daoDetails: {
       name: proposalDTO.dao.config.name,
       displayName: meta?.displayName || '',
-      logo:
-        meta && meta.flag ? getLogoUrl(meta.flag) : getLogoUrl('default.png'),
+      logo: meta?.flag
+        ? getAwsImageUrl(meta.flag)
+        : getAwsImageUrl('default.png'),
     },
   };
 };

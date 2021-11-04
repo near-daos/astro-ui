@@ -1,54 +1,25 @@
-import React, { FC, HTMLProps, useState } from 'react';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import React, { VFC, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+
 import { Icon } from 'components/Icon';
 import { Input } from 'components/inputs/input/Input';
 import { Button } from 'components/button/Button';
 import { IconButton } from 'components/button/IconButton';
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
-import { validUrlRegexp } from 'utils/regexp';
+
 import styles from './DaoLinksForm.module.scss';
 
-interface DaoLinksFormProps
-  extends Omit<HTMLProps<HTMLFormElement>, 'onSubmit'> {
-  initialValues?: Partial<IDaoCreateForm>;
-  onSubmit: SubmitHandler<IDaoCreateForm>;
-}
-
-export interface IDaoCreateForm {
-  address: string;
-  displayName: string;
-  purpose: string;
-  websites: string[];
-  flag: File;
-  flagPreview: string;
-}
-
-const schema = yup.object().shape({
-  websites: yup
-    .array()
-    .of(yup.string().matches(validUrlRegexp, 'Enter correct url!').required()),
-});
-
-export const DaoLinksForm: FC<DaoLinksFormProps> = ({
-  onSubmit,
-  initialValues = { websites: [''] },
-  ...props
-}) => {
+export const DaoLinksForm: VFC = () => {
   const {
     register,
-    handleSubmit,
-    getValues,
     setValue,
+    getValues,
     formState: { errors, touchedFields },
-  } = useForm<IDaoCreateForm>({
-    mode: 'onChange',
-    resolver: yupResolver(schema),
-    defaultValues: initialValues,
-  });
+  } = useFormContext();
 
-  const [linksCount, setLinksCount] = useState(
+  const initialValues = getValues();
+
+  const [linksCount, setLinksCount] = useState<number>(
     initialValues?.websites?.length ?? 0
   );
 
@@ -66,7 +37,7 @@ export const DaoLinksForm: FC<DaoLinksFormProps> = ({
   }
 
   return (
-    <form {...props} onSubmit={handleSubmit(onSubmit)} className={styles.root}>
+    <div className={styles.root}>
       <div className={styles.header}>
         <h2>Links and socials</h2>
         <p>
@@ -114,6 +85,6 @@ export const DaoLinksForm: FC<DaoLinksFormProps> = ({
           <Icon className={styles.addBtn} name="buttonAdd" width={24} />
         </Button>
       </section>
-    </form>
+    </div>
   );
 };

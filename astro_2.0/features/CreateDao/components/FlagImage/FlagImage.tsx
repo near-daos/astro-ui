@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import { ImageUpload } from 'astro_2.0/features/CreateDao/components/ImageUpload';
-import { DaoImageType } from 'astro_2.0/features/CreateDao/components/units/types';
+import { DaoImageType } from 'astro_2.0/features/CreateDao/components/types';
 
 import styles from './FlagImage.module.scss';
 

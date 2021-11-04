@@ -1,3 +1,4 @@
+import last from 'lodash/last';
 import { useRouter } from 'next/router';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -115,8 +116,8 @@ const LinksTab: FC<LinksTabProps> = ({
   const onSubmit = useCallback(
     async (data: LinksFormData) => {
       try {
-        const url = currentDaoMetadata.flag.split('/');
-        const fileName = url[url.length - 1];
+        const url = currentDaoMetadata.flag?.split('/');
+        const fileName = last(url);
 
         const newDaoConfig: DaoConfig = {
           name,

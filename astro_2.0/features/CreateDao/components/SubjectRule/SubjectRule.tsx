@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { Icon } from 'components/Icon';
 import { DaoOptionCard } from 'astro_2.0/features/CreateDao/components/DaoOptionCard/DaoOptionCard';
-import { Subject } from 'astro_2.0/features/CreateDao/components/units/types';
-import { DAO_SUBJECT_OPTIONS } from 'astro_2.0/features/CreateDao/components/units/data';
-import { useDaoFormState } from 'astro_2.0/features/CreateDao/components/units/hooks';
+import { Subject } from 'astro_2.0/features/CreateDao/components/types';
+import { DAO_SUBJECT_OPTIONS } from 'astro_2.0/features/CreateDao/components/data';
+import { useDaoFormState } from 'astro_2.0/features/CreateDao/components/hooks';
 import styles from './SubjectRule.module.scss';
 
 export interface SubjectRuleProps {

@@ -7,7 +7,7 @@ import styles from './DaoFlag.module.scss';
 interface DaoFlagProps {
   daoId: string;
   daoName: string;
-  flagUrl: string;
+  flagUrl?: string;
   className?: string;
 }
 

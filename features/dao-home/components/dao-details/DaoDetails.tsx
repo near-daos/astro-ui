@@ -18,7 +18,7 @@ import styles from './dao-details.module.scss';
 export interface DaoDetailsProps {
   title: string;
   description: string;
-  flag: ImageProps['src'];
+  flag?: ImageProps['src'];
   subtitle: string;
   createdAt: string;
   links: string[];

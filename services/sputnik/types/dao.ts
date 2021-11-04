@@ -7,7 +7,8 @@ export interface CreateDaoParams {
   votePeriod: string;
   gracePeriod: string;
   links: [];
-  flag: string;
+  flagCover: string;
+  flagLogo: string;
   amountToTransfer: string;
   displayName: string;
   policy: PolicyTypeRequest;

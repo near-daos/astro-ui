@@ -9,8 +9,9 @@ import { CopyButton } from 'features/copy-button';
 import styles from './DaoGeneralCard.module.scss';
 
 interface DaoGeneralCardProps {
-  cover: string;
-  logo: string;
+  cover?: string;
+  logo?: string;
+  flag?: string;
   displayName: string;
   id: string;
   description: string;
@@ -19,6 +20,7 @@ interface DaoGeneralCardProps {
 }
 
 export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
+  flag,
   cover,
   logo,
   displayName,
@@ -27,6 +29,8 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
   links,
   preview = false,
 }) => {
+  const daoFlag = cover || flag;
+
   return (
     <div className={styles.root}>
       <Link href={`/dao/${id}`}>
@@ -35,7 +39,7 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
             <div className={styles.background} />
             <div
               className={styles.cover}
-              style={{ backgroundImage: `url(${cover})` }}
+              style={{ backgroundImage: `url(${daoFlag})` }}
             />
             {logo && (
               <div

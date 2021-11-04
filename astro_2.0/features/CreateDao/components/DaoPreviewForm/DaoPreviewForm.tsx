@@ -2,7 +2,7 @@ import React from 'react';
 import { nearConfig } from 'config';
 import { UnitSeparator } from 'astro_2.0/features/CreateDao/components/UnitSeparator/UnitSeparator';
 import { DaoDetailsPreview } from 'astro_2.0/components/DaoDetails/DaoDetailsPreview';
-import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/units/types';
+import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
 import { useFormContext } from 'react-hook-form';
 import styles from './DaoPreviewForm.module.scss';
 

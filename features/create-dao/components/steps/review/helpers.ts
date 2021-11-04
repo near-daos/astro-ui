@@ -1,5 +1,5 @@
 import { RolesRequest, VotePolicyRequest } from 'types/dao';
-import { DAOFormValues } from 'features/create-dao/components/steps/types';
+import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
 
 const EveryoneCanDoEverything = (accountId: string) => ({
   name: 'Everyone',

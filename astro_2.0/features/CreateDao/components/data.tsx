@@ -5,7 +5,7 @@ import {
   DAOTemplate,
   DAOVotingPowerType,
   DaoSubjectInfo,
-} from 'astro_2.0/features/CreateDao/components/units/types';
+} from 'astro_2.0/features/CreateDao/components/types';
 
 const DAO_PROPOSALS_OPEN: DaoSettingOption<DAOProposalsType> = {
   value: 'open',

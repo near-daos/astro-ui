@@ -18,7 +18,7 @@ import styles from './nav-dao.module.scss';
 
 interface DaoItemProps extends Omit<HTMLProps<HTMLDivElement>, 'href'> {
   label: string;
-  logo: string;
+  logo?: string;
   count?: number;
   active?: boolean;
   selected: boolean;

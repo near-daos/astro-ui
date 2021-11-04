@@ -1,8 +1,5 @@
 import { Meta, Story } from '@storybook/react';
-import {
-  DaoLinksForm,
-  IDaoCreateForm,
-} from 'astro_2.0/features/CreateDao/components/DaoLinksForm/DaoLinksForm';
+import { DaoLinksForm } from 'astro_2.0/features/CreateDao/components/DaoLinksForm/DaoLinksForm';
 import React from 'react';
 
 export default {
@@ -24,8 +21,8 @@ export default {
   ],
 } as Meta;
 
-export const Template: Story<IDaoCreateForm> = (args): JSX.Element => (
-  <DaoLinksForm onSubmit={() => 1} {...args} />
+export const Template: Story = (args): JSX.Element => (
+  <DaoLinksForm {...args} />
 );
 
 Template.storyName = 'Dao Links Form';

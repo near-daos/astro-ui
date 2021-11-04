@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import React, { FC, useState } from 'react';
 
 import { Icon } from 'components/Icon';
-import { DaoImageType } from 'astro_2.0/features/CreateDao/components/units/types';
+import { DaoImageType } from 'astro_2.0/features/CreateDao/components/types';
 
 import { getImageFromImageFile } from 'utils/getImageFromImageFile';
 

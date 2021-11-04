@@ -3,7 +3,7 @@ import React, { useState, VFC } from 'react';
 
 interface ImageWithFallbackProps {
   fallbackSrc: string;
-  src: string;
+  src?: string;
   width: number;
   height: number;
   alt: string;
@@ -18,7 +18,7 @@ export const ImageWithFallback: VFC<ImageWithFallbackProps> = ({
   src,
   width,
 }) => {
-  const [imgSrc, setImgSrc] = useState<string>(src);
+  const [imgSrc, setImgSrc] = useState<string>(src || '');
 
   return (
     <Image
