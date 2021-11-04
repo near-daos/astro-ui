@@ -64,11 +64,9 @@ const BountiesPage: FC<BountiesPageProps> = ({ dao, bounties, tokens }) => {
               key={bounty.id}
               id={bounty.id}
               daoId={dao.id}
-              daoName={dao.displayName}
               token={
                 bounty.tokenId === '' ? tokens.NEAR : tokens[bounty.tokenId]
               }
-              daoFlag={dao.logo}
               amount={bounty.amount}
               description={bounty.description}
               forgivenessPeriod={bounty.forgivenessPeriod}

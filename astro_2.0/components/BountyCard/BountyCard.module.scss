@@ -6,10 +6,6 @@
   position: relative;
 }
 
-.flag {
-  padding-left: 24px;
-}
-
 .cover {
   @extend %title3;
   background-image: linear-gradient(#201f1f, transparent);
