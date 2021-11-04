@@ -1,6 +1,10 @@
 @import 'styles/mixins';
 @import 'styles/typography';
 
+@mixin label-font() {
+  @include font(12px, 18px, 400);
+}
+
 .root {
   width: 100%;
 }
@@ -22,11 +26,28 @@
   padding: 24px;
 }
 
-.label {
-  @include font(12px, 18px, 400);
+.address {
+  margin-top: 14px;
 
-  .warning {
-    color: var(--color-error-70);
+  .addressLabel {
+    margin-bottom: 8px;
+  }
+}
+
+.warning {
+  color: var(--color-error-70);
+}
+
+.purpose {
+  margin-top: 24px;
+}
+
+.root .purposeInput {
+  font-size: 14px;
+
+  @include placeholder {
+    color: var(--color-neutral-60);
+    font-weight: 400;
   }
 }
 
@@ -36,34 +57,5 @@
   @include placeholder {
     color: var(--color-neutral-60);
     font-weight: 700;
-  }
-}
-
-.address {
-  .label {
-    margin: 14px 0 8px;
-  }
-}
-
-.addressText {
-  @include font(16px, 24px, 700);
-}
-
-.addressPlaceholder {
-  color: var(--color-neutral-60);
-}
-
-.purpose {
-  .label {
-    margin-top: 24px;
-  }
-}
-
-.purposeText textarea {
-  font-size: 14px;
-
-  @include placeholder {
-    color: var(--color-neutral-60);
-    font-weight: 400;
   }
 }

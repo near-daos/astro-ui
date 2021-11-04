@@ -1,6 +1,7 @@
 import get from 'lodash/get';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { nearConfig } from 'config';
 
@@ -22,6 +23,7 @@ import styles from './DaoSubmitForm.module.scss';
 
 export function DaoSubmitForm(): JSX.Element {
   const router = useRouter();
+  const { setError } = useFormContext();
 
   const uploadImg = useCallback(async (img: File) => {
     if (img) {
@@ -35,6 +37,18 @@ export function DaoSubmitForm(): JSX.Element {
 
   const createDao = useCallback(
     async (data: DAOFormValues) => {
+      const daoAddressExists = await SputnikNearService.nearAccountExist(
+        `${data.address}.${nearConfig.contractName}`
+      );
+
+      if (daoAddressExists) {
+        setError('address', {
+          message: 'Dao with such address already exists.',
+        });
+
+        return;
+      }
+
       const flagCover = get(data.flagCover, '0');
       const flagLogo = get(data.flagLogo, '0');
 
@@ -83,7 +97,7 @@ export function DaoSubmitForm(): JSX.Element {
         }
       }
     },
-    [router, uploadImg]
+    [router, setError, uploadImg]
   );
 
   return (

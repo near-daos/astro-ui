@@ -1,0 +1,9 @@
+@import 'styles/mixins';
+
+.addressText {
+  @include font(16px, 24px, 700);
+}
+
+.addressPlaceholder {
+  color: var(--color-neutral-60);
+}
