@@ -1,0 +1,19 @@
+@import '../../DaoLinksForm.module';
+
+.socialIcon {
+  color: var(--color-primary-60);
+  flex-shrink: 0;
+}
+
+.deleteBtn {
+  color: var(--color-error-70);
+  flex-shrink: 0;
+}
+
+.validationWrapper {
+  width: 100%;
+}
+
+.errorEl {
+  padding-left: 40px;
+}

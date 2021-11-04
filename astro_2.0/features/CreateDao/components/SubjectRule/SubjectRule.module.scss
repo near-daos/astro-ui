@@ -17,13 +17,17 @@
     margin-top: 8px;
   }
 }
+
+.listContainer {
+  margin: 24px 0 40px;
+}
+
 .list {
   align-items: stretch;
   display: flex;
   flex-basis: 100%;
   flex-direction: column;
   gap: 16px;
-  margin: 24px 0 40px;
   width: 100%;
 
   @include tablet-landscape {

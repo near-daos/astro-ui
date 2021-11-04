@@ -1,35 +1,37 @@
-import cn from 'classnames';
 import React from 'react';
+import cn from 'classnames';
+
 import styles from './DaoOptionCard.module.scss';
 
-export interface DaoOptionCardProps
-  extends React.HTMLAttributes<HTMLDivElement> {
-  active?: boolean;
-  className?: string;
-  iconNode?: JSX.Element;
+export interface DaoOptionCardProps {
   title: string;
+  active: boolean;
+  className?: string;
   description: string;
-  onClick?: () => void | undefined;
+  iconNode?: JSX.Element;
+  onSelect: () => void;
 }
 
 export const DaoOptionCard: React.VFC<DaoOptionCardProps> = ({
-  active,
-  className: classNameProp,
-  iconNode,
   title,
+  active,
+  className,
+  iconNode,
   description,
-  ...props
+  onSelect,
 }) => {
-  const className = cn(
-    styles.root,
-    {
-      [styles.active]: active,
-    },
-    classNameProp
-  );
+  const rootClassName = cn(styles.root, className, {
+    [styles.active]: active,
+  });
 
   return (
-    <div {...props} className={className}>
+    <div
+      tabIndex={0}
+      role="button"
+      onClick={onSelect}
+      onKeyPress={onSelect}
+      className={rootClassName}
+    >
       <div className={styles.icon}>{iconNode}</div>
       <div className={styles.content}>
         <p className={styles.title}>{title}</p>

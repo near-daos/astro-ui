@@ -5,6 +5,7 @@ import { nearConfig } from 'config';
 
 import { Input } from 'components/inputs/input/Input';
 import { TextArea } from 'components/inputs/textarea/TextArea';
+import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
 
 import { formatDaoAddress } from './helpers';
 
@@ -24,18 +25,6 @@ export const DaoNameForm: VFC = () => {
     setValue('address', formatDaoAddress(displayName));
   }, [setValue, displayName]);
 
-  const showDaoNameErrorMessage = (message: string) => {
-    switch (message) {
-      case 'tooShortAddress':
-        return 'at least 3 characters expected.';
-      case 'incorrectAddress':
-        return 'you can use letters and numbers only with hyphens and spaces in the middle.';
-      default:
-      case '':
-        return '';
-    }
-  };
-
   return (
     <div className={styles.root}>
       <div className={styles.header}>
@@ -46,24 +35,22 @@ export const DaoNameForm: VFC = () => {
       <div className={styles.card}>
         <section className={styles.name}>
           <div className={styles.label}>DAO Name</div>
-          <div className={styles.nameInput}>
-            <Input
-              isValid={
-                touchedFields.displayName && !errors.displayName?.message
-              }
-              placeholder="Sample DAO Name"
-              size="block"
-              isBorderless
-              {...register('displayName')}
-            />
-          </div>
 
-          {errors.displayName?.message && (
-            <div className={styles.nameError}>
-              Incorrect DAO name&nbsp;&mdash;{' '}
-              {showDaoNameErrorMessage(errors.displayName?.message)}
-            </div>
-          )}
+          <InputFormWrapper
+            errors={errors}
+            className={styles.nameInput}
+            component={
+              <Input
+                isValid={
+                  touchedFields.displayName && !errors.displayName?.message
+                }
+                placeholder="Sample DAO Name"
+                size="block"
+                isBorderless
+                {...register('displayName')}
+              />
+            }
+          />
         </section>
 
         <section className={styles.address}>
@@ -82,17 +69,21 @@ export const DaoNameForm: VFC = () => {
 
         <section className={styles.purpose}>
           <div className={styles.label}>Puprose</div>
-          <div className={styles.purposeText}>
-            <TextArea
-              size="block"
-              minRows={1}
-              maxRows={5}
-              placeholder="Sample text. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient."
-              maxLength={500}
-              isBorderless
-              {...register('purpose')}
-            />
-          </div>
+          <InputFormWrapper
+            errors={errors}
+            className={styles.purposeText}
+            component={
+              <TextArea
+                size="block"
+                minRows={1}
+                maxRows={5}
+                placeholder="Sample text. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient."
+                maxLength={500}
+                isBorderless
+                {...register('purpose')}
+              />
+            }
+          />
         </section>
       </div>
     </div>

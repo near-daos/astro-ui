@@ -166,6 +166,7 @@ const createProposalProps = {
     // eslint-disable-next-line no-console
     console.log('proposal created');
   },
+  onSubmit: () => Promise.resolve(),
   bond: '0.1',
   gas: '0.2',
 };

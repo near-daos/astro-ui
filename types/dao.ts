@@ -50,7 +50,8 @@ export type DAOPreview = {
   name: string;
   description: string;
   funds: string;
-  logo: string;
+  flagCover?: string;
+  flagLogo?: string;
   links: string[];
   displayName: string;
 };
