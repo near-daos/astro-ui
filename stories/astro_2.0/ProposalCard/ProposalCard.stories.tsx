@@ -96,6 +96,8 @@ const dao = {
   name: 'testdao3-near-cli-example',
   description: '',
   members: 1,
+  activeProposalsCount: 11,
+  totalProposalsCount: 15,
   proposals: 11,
   totalProposals: 15,
   logo:

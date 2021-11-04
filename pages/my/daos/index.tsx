@@ -1,7 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { CookieService } from 'services/CookieService';
 import { SputnikHttpService } from 'services/sputnik';
-import { getActiveProposalsCountByDao } from 'hooks/useAllProposals';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
@@ -10,31 +9,19 @@ import MyDaosPage from './MyDaosPage';
 export const getServerSideProps: GetServerSideProps = async () => {
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
-  const accountDaosPromise = account
-    ? SputnikHttpService.getAccountDaos(account)
-    : Promise.resolve([]);
+  // Todo - ask Oleg if we can include active and total count to this endpoint too
+  const accountDaos = account
+    ? await SputnikHttpService.getAccountDaos(account)
+    : [];
+  const accountDaosIds = accountDaos.map(item => item.id);
 
-  const [accountDaos, proposals] = await Promise.all([
-    accountDaosPromise,
-    SputnikHttpService.getFilteredProposals(
-      {
-        daoFilter: 'My DAOs',
-      },
-      account
-    ),
-  ]);
-
-  const { active: activeProposalsByDao, total } = getActiveProposalsCountByDao(
-    proposals
-  );
+  const { data } = await SputnikHttpService.getDaosFeed({
+    filter: `id||$in||${accountDaosIds.join(',')}`,
+  });
 
   return {
     props: {
-      accountDaos: accountDaos.map(item => ({
-        ...item,
-        proposals: activeProposalsByDao[item.id] ?? 0,
-        totalProposals: total[item.id] ?? 0,
-      })),
+      accountDaos: data,
     },
   };
 };

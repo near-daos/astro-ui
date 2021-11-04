@@ -82,6 +82,33 @@ class SputnikHttpServiceClass {
     };
   }
 
+  public async getDaosFeed(params?: {
+    offset?: number;
+    limit?: number;
+    sort?: string;
+    filter?: string;
+    createdBy?: string;
+  }): Promise<{ data: DAO[]; total: number }> {
+    const offset = params?.offset ?? 0;
+    const limit = params?.limit ?? 500;
+    const sort = params?.sort ?? 'createdAt,DESC';
+
+    const { data } = await this.httpService.get<GetDAOsResponse>('/daos/feed', {
+      params: {
+        filter: params?.filter,
+        offset,
+        limit,
+        sort,
+        createdBy: params?.createdBy,
+      },
+    });
+
+    return {
+      data: mapDaoDTOListToDaoList(data.data),
+      total: data.total,
+    };
+  }
+
   public async getDaoById(daoId: string): Promise<DAO | null> {
     try {
       const { data: dao } = await this.httpService.get<DaoDTO>(

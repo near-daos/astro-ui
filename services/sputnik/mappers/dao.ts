@@ -51,6 +51,8 @@ export type DaoDTO = {
   description: string | null;
   status: 'Success';
   policy: DaoPolicy;
+  activeProposalCount: number;
+  totalProposalCount: number;
 };
 
 export type DaoMetadata = {
@@ -71,7 +73,7 @@ export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
 
 export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
   const roles = get(daoDTO, 'policy.roles', []);
-  const numberOfProposals = get(daoDTO, 'lastProposalId', 0);
+  const numberOfProposals = get(daoDTO, 'totalProposalCount', 0);
 
   // Transform amount
   const funds = formatYoktoValue(daoDTO.amount);
@@ -111,6 +113,8 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     description: config?.purpose ?? '',
     members: numberOfMembers,
     proposals: numberOfProposals,
+    activeProposalsCount: daoDTO.activeProposalCount ?? 0,
+    totalProposalsCount: daoDTO.totalProposalCount ?? 0,
     totalProposals: numberOfProposals,
     logo: meta?.flag
       ? getAwsImageUrl(meta.flag)

@@ -176,8 +176,8 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
                 dao={item}
                 accountId={accountId}
                 onCreateProposalClick={handleCreateProposal}
-                activeProposals={item.proposals}
-                totalProposals={item.totalProposals}
+                activeProposals={item.activeProposalsCount}
+                totalProposals={item.totalProposalsCount}
               />
             );
           })}

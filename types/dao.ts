@@ -34,6 +34,8 @@ export type DAO = {
   funds: string;
   proposals: number;
   totalProposals: number;
+  activeProposalsCount: number;
+  totalProposalsCount: number;
   createdAt: string;
   groups: TGroup[];
   policy: PolicyType;

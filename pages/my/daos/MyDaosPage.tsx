@@ -54,7 +54,7 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
     }
 
     const daoEls = accountDaos.map(dao => {
-      const { id, proposals, totalProposals } = dao;
+      const { id, activeProposalsCount, totalProposalsCount } = dao;
 
       return (
         <DaoDetails
@@ -62,8 +62,8 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
           dao={dao}
           accountId={accountId}
           onCreateProposalClick={handleCreateProposal}
-          activeProposals={proposals}
-          totalProposals={totalProposals}
+          activeProposals={activeProposalsCount}
+          totalProposals={totalProposalsCount}
         />
       );
     });
