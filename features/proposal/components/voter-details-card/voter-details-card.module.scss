@@ -5,6 +5,7 @@
 .root {
   background-color: var(--color-neutral-10);
   border-radius: 8px;
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
   display: grid;
   grid-template-areas: 'status name groups other link';
   grid-template-columns: 44px 1fr 1fr 1fr 44px;

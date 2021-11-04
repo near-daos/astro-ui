@@ -4,10 +4,13 @@
 .root {
   display: grid;
   grid-template-areas:
-    'breadcrumb breadcrumb'
-    'proposalInfo proposalStat'
-    'body body';
-  grid-template-columns: 3fr 2fr;
+    'breadcrumb'
+    'dao'
+    'proposalInfo'
+    'policy'
+    'filters'
+    'body';
+  grid-template-columns: 1fr;
   margin-top: 56px;
 }
 
@@ -41,6 +44,19 @@
   }
 }
 
+.dao {
+  grid-area: dao;
+  margin-top: 24px;
+}
+
+.policy {
+  background-color: var(--color-brand-black);
+  border-radius: 8px;
+  grid-area: policy;
+  margin-top: 56px;
+  padding: 14px 60px;
+}
+
 .header {
   align-items: flex-start;
   display: flex;
@@ -52,6 +68,7 @@
 .proposalInfo {
   flex: 3;
   grid-area: proposalInfo;
+  margin-top: 40px;
 
   .title {
     @extend %heading1;
@@ -64,6 +81,14 @@
 
 .proposalStat {
   grid-area: proposalStat;
+}
+
+.filters {
+  align-items: center;
+  display: flex;
+  grid-area: filters;
+  justify-content: flex-end;
+  margin-top: 77px;
 }
 
 .label {
@@ -112,7 +137,7 @@
 
 .body {
   grid-area: body;
-  margin-top: 24px;
+  margin-top: 42px;
 }
 
 .mobileActions {

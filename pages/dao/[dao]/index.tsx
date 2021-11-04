@@ -220,6 +220,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
                 key={item.id}
                 proposalCardNode={
                   <ProposalCard
+                    id={item.id}
                     proposalId={item.proposalId}
                     type={item.kind.type}
                     status={item.status}

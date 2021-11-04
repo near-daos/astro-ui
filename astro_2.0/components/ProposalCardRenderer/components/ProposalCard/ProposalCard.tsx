@@ -1,5 +1,7 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 import { useAsyncFn } from 'react-use';
+import { useRouter } from 'next/router';
+import cn from 'classnames';
 
 import { ProposalStatus, ProposalType, VoteAction } from 'types/proposal';
 import { ExplorerLink } from 'components/explorer-link';
@@ -16,6 +18,7 @@ import { SputnikNearService } from 'services/sputnik';
 import styles from './ProposalCard.module.scss';
 
 export interface ProposalCardProps {
+  id?: string;
   type: ProposalType;
   status: ProposalStatus;
   proposer: string;
@@ -34,6 +37,7 @@ export interface ProposalCardProps {
 }
 
 export const ProposalCard: React.FC<ProposalCardProps> = ({
+  id,
   type,
   proposalTxHash,
   proposer,
@@ -50,6 +54,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   accountId,
   dao,
 }) => {
+  const router = useRouter();
   const permissions = useGetVotePermissions(dao, type, accountId);
 
   let sealIcon;
@@ -60,6 +65,12 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     },
     [dao, proposalId]
   );
+
+  const handleCardClick = useCallback(() => {
+    if (id) {
+      router.push(`/dao/${dao.id}/proposals/${id}`);
+    }
+  }, [dao.id, id, router]);
 
   switch (status) {
     case 'Approved': {
@@ -80,7 +91,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   }
 
   return (
-    <div className={styles.root}>
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
+    <div
+      className={cn(styles.root, {
+        [styles.clickable]: !!id,
+      })}
+      onClick={handleCardClick}
+    >
       {sealIcon && (
         <div className={styles.proposalStatusSeal}>
           <Icon name={sealIcon as IconName} />

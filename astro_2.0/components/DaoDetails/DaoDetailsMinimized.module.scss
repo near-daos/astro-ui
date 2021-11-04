@@ -10,7 +10,7 @@
   grid-column-gap: 24px;
   grid-row-gap: 14px;
   grid-template-areas: 'general controls proposals';
-  grid-template-columns: 2fr 1fr 87px;
+  grid-template-columns: 2fr 1fr auto;
 
   transition: box-shadow 0.4s;
 

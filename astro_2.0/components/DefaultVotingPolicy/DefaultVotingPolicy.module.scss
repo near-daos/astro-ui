@@ -1,0 +1,25 @@
+@import 'styles/typography';
+
+.title {
+  @extend %title5;
+}
+
+.policyWrapper {
+  .policyLabel {
+    @extend %subtitle6;
+    color: var(--color-neutral-60);
+    margin: 0 0 12px;
+  }
+
+  .policy {
+    align-items: center;
+    color: var(--color-white);
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+  }
+
+  .bold {
+    font-weight: bold;
+  }
+}

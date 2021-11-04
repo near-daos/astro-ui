@@ -14,7 +14,7 @@ import styles from './DaoDetailsMinimized.module.scss';
 export interface DaoDetailsMinimizedProps {
   dao: DAO;
   accountId: string | null;
-  onCreateProposalClick: () => void;
+  onCreateProposalClick?: () => void;
 }
 
 export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
@@ -133,7 +133,9 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
         />
       </section>
 
-      <section className={styles.proposals}>{action}</section>
+      {onCreateProposalClick && (
+        <section className={styles.proposals}>{action}</section>
+      )}
     </div>
   );
 };
