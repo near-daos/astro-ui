@@ -9,6 +9,7 @@ import styles from './InputFormWrapper.module.scss';
 interface InputFormWrapperProps<T extends Element> {
   component: JSX.Element;
   className?: string;
+  errorClassName?: string;
   errors: Record<string, FieldError>;
   errorElRef?: RefObject<T>;
 }
@@ -16,7 +17,7 @@ interface InputFormWrapperProps<T extends Element> {
 export const InputFormWrapper = <T extends Element>(
   props: PropsWithRef<InputFormWrapperProps<T>>
 ): JSX.Element => {
-  const { errors, className, component, errorElRef } = props;
+  const { errors, className, component, errorElRef, errorClassName } = props;
 
   function getError() {
     const name = component?.props?.name;
@@ -30,7 +31,9 @@ export const InputFormWrapper = <T extends Element>(
 
     if (error) {
       const { message } = error;
-      const el = <div className={styles.error}>{message}</div>;
+      const el = (
+        <div className={cn(styles.error, errorClassName)}>{message}</div>
+      );
 
       return errorElRef?.current ? createPortal(el, errorElRef.current) : el;
     }

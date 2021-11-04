@@ -1,29 +1,18 @@
-import React, { useEffect, VFC } from 'react';
-import { useFormContext } from 'react-hook-form';
-
-import { nearConfig } from 'config';
+import React, { VFC } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import { Input } from 'components/inputs/input/Input';
 import { TextArea } from 'components/inputs/textarea/TextArea';
-import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
 
-import { formatDaoAddress } from './helpers';
+import { DaoAddress } from './components/DaoAddress';
+import { DaoNameInputSection } from './components/DaoNameInputSection';
 
 import styles from './DaoNameForm.module.scss';
 
 export const DaoNameForm: VFC = () => {
-  const {
-    watch,
-    register,
-    setValue,
-    formState: { errors, touchedFields },
-  } = useFormContext();
+  const { watch, register } = useFormContext();
 
   const displayName = watch('displayName');
-
-  useEffect(() => {
-    setValue('address', formatDaoAddress(displayName));
-  }, [setValue, displayName]);
 
   return (
     <div className={styles.root}>
@@ -33,58 +22,59 @@ export const DaoNameForm: VFC = () => {
       </div>
 
       <div className={styles.card}>
-        <section className={styles.name}>
-          <div className={styles.label}>DAO Name</div>
+        <DaoNameInputSection
+          className={styles.nameInput}
+          label="DAO Name"
+          component={
+            <Input
+              placeholder="Sample DAO Name"
+              size="block"
+              isBorderless
+              {...register('displayName')}
+            />
+          }
+        />
 
-          <InputFormWrapper
-            errors={errors}
-            className={styles.nameInput}
-            component={
-              <Input
-                isValid={
-                  touchedFields.displayName && !errors.displayName?.message
-                }
-                placeholder="Sample DAO Name"
-                size="block"
-                isBorderless
-                {...register('displayName')}
-              />
-            }
-          />
-        </section>
+        <DaoNameInputSection
+          className={styles.address}
+          label={
+            <div>
+              DAO Address <span className={styles.warning}>(auto filled)</span>
+            </div>
+          }
+          labelClassName={styles.addressLabel}
+          component={
+            <Controller
+              name="address"
+              render={renderProps => {
+                const {
+                  field: { onChange },
+                } = renderProps;
 
-        <section className={styles.address}>
-          <div className={styles.label}>
-            DAO Address <span className={styles.warning}>(auto filled)</span>
-          </div>
-          <div className={styles.addressText}>
-            {displayName ? (
-              formatDaoAddress(displayName)
-            ) : (
-              <span className={styles.addressPlaceholder}>sampledaoname</span>
-            )}
-            .{nearConfig.contractName}
-          </div>
-        </section>
+                return (
+                  <DaoAddress displayName={displayName} onChange={onChange} />
+                );
+              }}
+            />
+          }
+        />
 
-        <section className={styles.purpose}>
-          <div className={styles.label}>Puprose</div>
-          <InputFormWrapper
-            errors={errors}
-            className={styles.purposeText}
-            component={
-              <TextArea
-                size="block"
-                minRows={1}
-                maxRows={5}
-                placeholder="Sample text. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient."
-                maxLength={500}
-                isBorderless
-                {...register('purpose')}
-              />
-            }
-          />
-        </section>
+        <DaoNameInputSection
+          className={styles.purpose}
+          label="Purpose"
+          component={
+            <TextArea
+              className={styles.purposeInput}
+              size="block"
+              minRows={1}
+              maxRows={5}
+              placeholder="Sample text. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient."
+              maxLength={500}
+              isBorderless
+              {...register('purpose')}
+            />
+          }
+        />
       </div>
     </div>
   );

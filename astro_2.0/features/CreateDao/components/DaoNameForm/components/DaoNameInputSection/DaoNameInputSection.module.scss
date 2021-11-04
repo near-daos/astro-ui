@@ -1,0 +1,24 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+@mixin label-font() {
+  @include font(12px, 18px, 400);
+}
+
+.labelContainer {
+  display: flex;
+}
+
+.label {
+  @include label-font;
+  display: flex;
+
+  &.hasError {
+    color: var(--color-error-70);
+  }
+}
+
+.error {
+  @include label-font;
+  margin: 0;
+}
