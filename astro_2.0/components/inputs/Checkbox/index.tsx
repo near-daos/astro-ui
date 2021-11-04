@@ -92,7 +92,6 @@ type Props = {
   classes?: Partial<
     Record<'root' | 'label' | 'inputWrapper' | 'checkedIcon', string>
   >;
-  icon?: React.ReactNode;
   inputRef?: React.MutableRefObject<HTMLInputElement>;
   label?: React.ReactNode;
 };

@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { useAsync, useAsyncFn } from 'react-use';
+import { useAsync, useAsyncFn, useUpdateEffect } from 'react-use';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { PaginationResponse } from 'types/api';
-import { FeedCategories, Proposal, ProposalStatuses } from 'types/proposal';
+import { Proposal, ProposalStatuses } from 'types/proposal';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
 import { SputnikHttpService } from 'services/sputnik';
@@ -30,11 +30,13 @@ import StatusFilters from './StatusFilters';
 import styles from './Feed.module.scss';
 
 const Feed = ({ initialProposals }: Props): JSX.Element => {
-  const { query, replace } = useRouter();
+  const { query, replace, pathname } = useRouter();
 
   const { fetchAndSetTokens } = useCustomTokensContext();
 
   const queries = query as ProposalsQueries;
+
+  const isMyFeed = pathname.startsWith('/my/feed');
 
   const queryBeignFetched = useRef(queries);
 
@@ -46,17 +48,18 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
 
   const [{ loading: proposalsDataIsLoading }, fetchProposalsData] = useAsyncFn(
     async (initialData?: typeof proposalsData) => {
-      window.scroll(0, 0);
-
       let accumulatedListData = initialData || null;
 
-      const res = await SputnikHttpService.getProposalsList({
-        offset: accumulatedListData?.data.length || 0,
-        limit: LIST_LIMIT_DEFAULT,
-        category: queries.category,
-        status: queries.status,
-        daoFilter: 'All DAOs',
-      });
+      const res = await SputnikHttpService.getProposalsList(
+        {
+          offset: accumulatedListData?.data.length || 0,
+          limit: LIST_LIMIT_DEFAULT,
+          category: queries.category,
+          status: queries.status,
+          daoFilter: 'All DAOs',
+        },
+        isMyFeed && accountId ? accountId : undefined
+      );
 
       accumulatedListData = {
         ...res,
@@ -65,8 +68,24 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
 
       return accumulatedListData;
     },
-    [proposalsData?.data.length, queries.status, queries.category]
+    [
+      proposalsData?.data.length,
+      queries.status,
+      queries.category,
+      accountId,
+      isMyFeed,
+    ]
   );
+
+  useUpdateEffect(() => {
+    Promise.resolve().then(async () => {
+      queryBeignFetched.current = queries;
+
+      setProposalsData(await fetchProposalsData());
+
+      window.scroll(0, 0);
+    });
+  }, [isMyFeed]);
 
   useDebounceUpdateEffect(
     async () => {
@@ -80,6 +99,8 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
       queryBeignFetched.current = queries;
 
       setProposalsData(await fetchProposalsData());
+
+      window.scroll(0, 0);
     },
     1000,
     [queries.category, queries.status]
@@ -93,10 +114,10 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
     setProposalsData(await fetchProposalsData(proposalsData));
   };
 
-  const onProposalFilterChange = async (value?: ProposalStatuses) => {
+  const onProposalFilterChange = (value?: string) => async () => {
     const nextQuery = {
       ...queries,
-      status: value,
+      status: value as ProposalStatuses,
     } as ProposalsQueries;
 
     if (!value) {
@@ -112,9 +133,7 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
     );
   };
 
-  const isEmptyList =
-    queryBeignFetched.current.category !== FeedCategories.Bounties &&
-    (proposalsData?.data || []).length === 0;
+  const isEmptyList = (proposalsData?.data || []).length === 0;
 
   return (
     <main className={styles.root}>
@@ -123,6 +142,25 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
           proposal={queries.status}
           onChange={onProposalFilterChange}
           disabled={proposalsDataIsLoading}
+          list={[
+            { value: undefined, label: 'All', name: 'All' },
+            {
+              value: ProposalStatuses.Active,
+              label: 'Active',
+              name: ProposalStatuses.Active,
+            },
+            {
+              value: ProposalStatuses.Approved,
+              label: 'Approved',
+              name: ProposalStatuses.Approved,
+            },
+            {
+              value: ProposalStatuses.Failed,
+              label: 'Failed',
+              name: ProposalStatuses.Failed,
+            },
+          ]}
+          className={styles.categoriesListRoot}
         />
       </div>
 
@@ -140,8 +178,7 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
           dataLength={proposalsData?.data.length || 0}
           next={loadMore}
           hasMore={
-            (proposalsData?.data.length || 0) < (proposalsData?.total || 0) ||
-            false
+            (proposalsData?.data.length || 0) < (proposalsData?.total || 0)
           }
           loader={<h4 className={styles.loading}>Loading...</h4>}
           style={{ overflow: 'initial' }}
@@ -153,59 +190,58 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
             )
           }
         >
-          {queryBeignFetched.current.category !== FeedCategories.Bounties &&
-            (proposalsData?.data || []).map(item => {
-              return (
-                <ProposalCardRenderer
-                  key={item.id}
-                  proposalCardNode={
-                    <ProposalCard
-                      type={item.kind.type}
-                      status={item.status}
-                      proposer={item.proposer}
-                      proposalId={item.proposalId}
-                      description={item.description}
-                      link={item.link}
-                      proposalTxHash={item.txHash}
-                      accountId={accountId}
-                      dao={item.dao}
-                      likes={item.voteYes}
-                      dislikes={item.voteNo}
-                      liked={item.votes[accountId] === 'Yes'}
-                      disliked={item.votes[accountId] === 'No'}
-                      voteDetails={
-                        item.dao.policy.defaultVotePolicy.ratio
-                          ? getVoteDetails(
-                              item.dao,
-                              getScope(item.kind.type),
-                              item
-                            ).details
-                          : undefined
-                      }
-                      content={null}
-                    />
-                  }
-                  daoFlagNode={
-                    <DaoFlagWidget
-                      daoName={item.dao.displayName}
-                      flagUrl={item.daoDetails.logo}
-                      daoId={item.daoId}
-                    />
-                  }
-                  letterHeadNode={
-                    <LetterHeadWidget
-                      type={item.kind.type}
-                      // TODO replace the link with supposed one
-                      coverUrl="/cover.png"
-                    />
-                  }
-                  // infoPanelNode={
-                  //   <InfoBlockWidget label="Proposer" value={item.proposer} />
-                  // }
-                  className={styles.itemRoot}
-                />
-              );
-            })}
+          {(proposalsData?.data || []).map(item => {
+            return (
+              <ProposalCardRenderer
+                key={`${item.id}${item.proposalId}`}
+                proposalCardNode={
+                  <ProposalCard
+                    type={item.kind.type}
+                    status={item.status}
+                    proposer={item.proposer}
+                    description={item.description}
+                    link={item.link}
+                    proposalId={item.proposalId}
+                    proposalTxHash={item.txHash}
+                    accountId={accountId}
+                    dao={item.dao}
+                    likes={item.voteYes}
+                    dislikes={item.voteNo}
+                    liked={item.votes[accountId] === 'Yes'}
+                    disliked={item.votes[accountId] === 'No'}
+                    voteDetails={
+                      item.dao.policy.defaultVotePolicy.ratio
+                        ? getVoteDetails(
+                            item.dao,
+                            getScope(item.kind.type),
+                            item
+                          ).details
+                        : undefined
+                    }
+                    content={null}
+                  />
+                }
+                daoFlagNode={
+                  <DaoFlagWidget
+                    daoName={item.dao.displayName}
+                    flagUrl={item.daoDetails.logo}
+                    daoId={item.daoId}
+                  />
+                }
+                letterHeadNode={
+                  <LetterHeadWidget
+                    type={item.kind.type}
+                    // TODO replace the link with supposed one
+                    coverUrl="/cover.png"
+                  />
+                }
+                // infoPanelNode={
+                //   <InfoBlockWidget label="Proposer" value={item.proposer} />
+                // }
+                className={styles.itemRoot}
+              />
+            );
+          })}
 
           {isEmptyList && proposalsDataIsLoading && <Loader />}
 

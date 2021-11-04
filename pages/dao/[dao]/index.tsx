@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { GetServerSideProps, NextPage } from 'next';
+import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
@@ -87,7 +88,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
     router.replace(router.asPath);
   }, [router]);
 
-  const onProposalFilterChange = async (value?: ProposalStatuses) => {
+  const onProposalFilterChange = (value?: string) => async () => {
     const nextQuery = {
       ...router.query,
       status: value,
@@ -106,20 +107,17 @@ const DAOHome: NextPage<DaoHomeProps> = ({
     );
   };
 
-  useEffect(() => {
-    async function refreshPageData() {
-      const res = await SputnikHttpService.getProposalsList({
-        offset: 0,
-        limit: LIST_LIMIT_DEFAULT,
-        daoViewFilter: dao.name,
-        category: router.query.category as FeedCategories,
-        status: router.query.status as ProposalStatuses,
-      });
+  useAsync(async () => {
+    const res = await SputnikHttpService.getProposalsList({
+      offset: 0,
+      limit: LIST_LIMIT_DEFAULT,
+      daoViewFilter: dao.name,
+      category: router.query.category as FeedCategories,
+      status: router.query.status as ProposalStatuses,
+    });
 
-      setHasMore(res.data.length !== res.total);
-      setData(res.data);
-    }
-    refreshPageData();
+    setHasMore(res.data.length !== res.total);
+    setData(res.data);
   }, [dao.name, router.query]);
 
   function renderDaoDetails() {
@@ -171,7 +169,29 @@ const DAOHome: NextPage<DaoHomeProps> = ({
       )}
 
       <div className={styles.statusFilterWrapper}>
-        <StatusFilters proposal={status} onChange={onProposalFilterChange} />
+        <StatusFilters
+          proposal={status}
+          onChange={onProposalFilterChange}
+          list={[
+            { value: undefined, label: 'All', name: 'All' },
+            {
+              value: ProposalStatuses.Active,
+              label: 'Active',
+              name: ProposalStatuses.Active,
+            },
+            {
+              value: ProposalStatuses.Approved,
+              label: 'Approved',
+              name: ProposalStatuses.Approved,
+            },
+            {
+              value: ProposalStatuses.Failed,
+              label: 'Failed',
+              name: ProposalStatuses.Failed,
+            },
+          ]}
+          className={styles.statusFilterRoot}
+        />
       </div>
       <div className={styles.proposalList}>
         <div className={styles.categoriesListWrapper}>

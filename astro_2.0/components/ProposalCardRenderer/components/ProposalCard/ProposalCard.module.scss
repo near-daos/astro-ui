@@ -123,8 +123,12 @@
   width: 14px;
 }
 
-.proposalExternalLink:hover {
-  cursor: pointer;
+.proposalExternalLink {
+  margin-top: 10px;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .iconWrapper {

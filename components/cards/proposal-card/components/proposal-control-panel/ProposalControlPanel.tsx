@@ -14,9 +14,10 @@ interface ProposalControlPanelProps {
   dismisses?: number;
   dismissed?: boolean;
   permissions: ProposalVotingPermissions;
-  onLike?: (e?: Partial<Event>) => void;
-  onDislike?: (e?: Partial<Event>) => void;
-  onRemove?: (e?: Partial<Event>) => void;
+  onLike?: React.MouseEventHandler<HTMLButtonElement>;
+  onDislike?: React.MouseEventHandler<HTMLButtonElement>;
+  onRemove?: React.MouseEventHandler<HTMLButtonElement>;
+  disableControls?: boolean;
   className?: string;
   status?: ProposalStatus;
 }
@@ -32,38 +33,30 @@ const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
   onDislike,
   permissions,
   className = '',
+  disableControls,
 }) => {
   const { canApprove, canReject } = permissions;
   const voted =
     liked || disliked || dismissed || (status && status !== 'InProgress');
 
+  const yesIconName = canApprove ? 'votingYes' : 'votingYesDisabled';
+  const noIconName = canReject ? 'votingNo' : 'votingNoDisabled';
+
   return (
     <div className={cn(styles.root, className)}>
       <ProposalControlButton
-        icon={(() => {
-          if (liked) {
-            return 'votingYesChecked';
-          }
-
-          return canApprove ? 'votingYes' : 'votingYesDisabled';
-        })()}
+        icon={liked ? 'votingYesChecked' : yesIconName}
         voted={voted}
         times={likes}
         onClick={onLike}
-        disabled={!canApprove}
+        disabled={Boolean(!canApprove || disableControls)}
       />
       <ProposalControlButton
-        icon={(() => {
-          if (disliked) {
-            return 'votingNoChecked';
-          }
-
-          return canReject ? 'votingNo' : 'votingNoDisabled';
-        })()}
+        icon={disliked ? 'votingNoChecked' : noIconName}
         voted={voted}
         times={dislikes}
         onClick={onDislike}
-        disabled={!canReject}
+        disabled={Boolean(!canReject || disableControls)}
       />
     </div>
   );

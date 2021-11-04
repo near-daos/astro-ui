@@ -20,23 +20,34 @@ const CategoriesList = ({
   disabled,
   className,
 }: Props): JSX.Element => {
+  const { [queryName]: value, ...otherQuery } = query;
+
   return (
     <div className={classNames(styles.categoriesListRoot, className)}>
       <p className={styles.categoriesListTitle}>Choose a filter</p>
       <ul
         className={classNames(styles.categoriesList, {
-          [styles.categoriesListActive1]:
-            query[queryName] === FeedCategories.Governance,
-          [styles.categoriesListActive2]:
-            query[queryName] === FeedCategories.Financial,
-          [styles.categoriesListActive3]:
-            query[queryName] === FeedCategories.Bounties,
-          [styles.categoriesListActive4]:
-            query[queryName] === FeedCategories.Members,
-          [styles.categoriesListActive5]:
-            query[queryName] === FeedCategories.Polls,
+          [styles.categoriesListActive1]: value === FeedCategories.Governance,
+          [styles.categoriesListActive2]: value === FeedCategories.Financial,
+          [styles.categoriesListActive3]: value === FeedCategories.Bounties,
+          [styles.categoriesListActive4]: value === FeedCategories.Members,
+          [styles.categoriesListActive5]: value === FeedCategories.Polls,
         })}
       >
+        <li>
+          <Link href={{ query: otherQuery }} replace shallow scroll={false}>
+            <a
+              className={classNames(styles.categoriesListItem, {
+                [styles.categoriesListItemSelected]: !value,
+                '.disabled': disabled,
+              })}
+              tabIndex={disabled ? -1 : 0}
+            >
+              All
+            </a>
+          </Link>
+        </li>
+
         {FEED_CATEGORIES.map(item => {
           const href = {
             query: {

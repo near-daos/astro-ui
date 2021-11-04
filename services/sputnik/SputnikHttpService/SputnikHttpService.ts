@@ -375,6 +375,14 @@ class SputnikHttpServiceClass {
       })
       .query();
 
+    if (accountId) {
+      const { data } = await this.httpService.get<
+        PaginationResponse<GetProposalsResponse['data']>
+      >(`/proposals/account-proposals/${accountId}?${queryString.queryString}`);
+
+      return { ...data, data: data.data.map(mapProposalDTOToProposalExt) };
+    }
+
     const { data } = await this.httpService.get<
       PaginationResponse<GetProposalsResponse['data']>
     >(`/proposals?${queryString.queryString}`);

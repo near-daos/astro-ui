@@ -17,6 +17,10 @@
   transition: box-shadow 0.4s;
   width: unset;
 
+  &:disabled {
+    cursor: default;
+  }
+
   &.voted {
     cursor: default;
   }

@@ -3,9 +3,10 @@
 }
 
 .statusFilterWrapper {
-  background-color: var(--color-neutral-30);
+  background-color: var(--color-neutral-10);
   display: flex;
   justify-content: center;
+  margin-left: auto;
   max-width: 960px;
   padding: 67px 0 30px;
   position: sticky;
@@ -13,8 +14,12 @@
   width: 100%;
   z-index: 2;
 
+  .categoriesListRoot {
+    margin-left: auto;
+  }
+
   &::after {
-    background-color: var(--color-neutral-30);
+    background-color: var(--color-neutral-10);
     content: '';
     height: 100%;
     position: absolute;

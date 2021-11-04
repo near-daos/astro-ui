@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { FC } from 'react';
+import React from 'react';
 
 import { IconName } from 'components/Icon';
 import { IconButton } from 'components/button/IconButton';
@@ -11,10 +11,10 @@ interface ProposalControlButtonProps {
   icon: IconName;
   voted?: boolean;
   disabled: boolean;
-  onClick?: (e?: Partial<Event>) => void;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const ProposalControlButton: FC<ProposalControlButtonProps> = ({
+const ProposalControlButton: React.FC<ProposalControlButtonProps> = ({
   icon,
   voted,
   times,
@@ -35,6 +35,7 @@ const ProposalControlButton: FC<ProposalControlButtonProps> = ({
           [styles.voted]: voted,
         })}
         size="large"
+        disabled={disabled || voted}
         onClick={!voted && !disabled ? onClick : undefined}
       />
       <span className={cn(styles.value, 'title3')}>{times}</span>

@@ -8,7 +8,7 @@
   font-size: 14px;
   justify-content: center;
   line-height: 19px;
-  max-width: 762px;
+  max-width: 580px;
   min-height: 40px;
   padding: 0 27px 0 20px;
 }
@@ -16,22 +16,24 @@
 .filterStatusText {
   display: inline-block;
   font-size: 14px;
-  margin: 0 18px 0 0;
-  min-width: 165px;
+  margin: 0 18px 0 auto;
 }
 
-.filterStatusProposalCheckboxRoot {
+.checkboxRoot {
   margin: 0 8px;
+
+  &:first-of-type {
+    margin-right: 40px;
+  }
 }
 
-.timelineSwitch {
-  align-self: stretch;
-  border-left: 1px solid var(--color-passive-gray);
-  flex-direction: row-reverse;
-  margin-left: auto;
-  padding-left: 35px;
+.checkboxInputWrapper {
+  border-radius: 50%;
 }
-.timelineSwitchLabel {
-  margin-left: 0;
-  margin-right: 15px;
+
+.checkboxIconChecked {
+  background: var(--color-white);
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
 }

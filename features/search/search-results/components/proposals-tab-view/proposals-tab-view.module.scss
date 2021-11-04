@@ -5,7 +5,13 @@
 .root {
   display: flex;
   flex-direction: column;
-  padding-top: 56px;
+  padding-top: 6px;
+
+  .statusFilterRoot {
+    border: 0;
+    margin-left: auto;
+    max-width: 800px;
+  }
 }
 
 .votingEnds {
@@ -107,5 +113,38 @@
     &:first-child {
       margin-top: 20px;
     }
+  }
+}
+
+.typeRoot {
+  align-items: center;
+  color: var(--color-main-gray);
+  display: flex;
+  font-family: var(--font-family-secondary);
+  font-size: 14px;
+  line-height: 19px;
+  margin-left: auto;
+  max-width: 800px;
+  min-height: 40px;
+  padding: 0 27px 0 20px;
+}
+
+.typeLabel {
+  display: inline-block;
+  font-size: 14px;
+  margin: 0 148px 0 18px;
+}
+
+.checkboxRoot {
+  margin: 0 8px;
+
+  &:nth-of-type(1) {
+    margin-right: 18px;
+  }
+  &:nth-of-type(2) {
+    margin-right: 0;
+  }
+  &:nth-of-type(3) {
+    margin-right: 16px;
   }
 }

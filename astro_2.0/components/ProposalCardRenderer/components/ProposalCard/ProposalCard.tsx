@@ -1,4 +1,5 @@
-import React, { ReactNode, useCallback } from 'react';
+import React, { ReactNode } from 'react';
+import { useAsyncFn } from 'react-use';
 
 import { ProposalStatus, ProposalType, VoteAction } from 'types/proposal';
 import { ExplorerLink } from 'components/explorer-link';
@@ -53,9 +54,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   let sealIcon;
 
-  const voteClickHandler = useCallback(
-    (vote: VoteAction) => () => {
-      SputnikNearService.vote(dao.id, proposalId, vote);
+  const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
+    async (vote: VoteAction) => {
+      return SputnikNearService.vote(dao.id, proposalId, vote);
     },
     [dao, proposalId]
   );
@@ -116,8 +117,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       <div className={styles.voteControlCell}>
         <ProposalControlPanel
           status={status}
-          onLike={voteClickHandler('VoteApprove')}
-          onDislike={voteClickHandler('VoteReject')}
+          onLike={() => voteClickHandler('VoteApprove')}
+          onDislike={() => voteClickHandler('VoteReject')}
+          disableControls={voteLoading}
           likes={likes}
           liked={liked}
           dislikes={dislikes}
