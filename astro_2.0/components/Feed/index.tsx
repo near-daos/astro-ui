@@ -163,13 +163,10 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
                       type={item.kind.type}
                       status={item.status}
                       proposer={item.proposer}
+                      proposalId={item.proposalId}
                       description={item.description}
                       link={item.link}
-                      onVoteClick={() => () => 0}
                       proposalTxHash={item.txHash}
-                      expireTime={new Date(
-                        Number(item.votePeriodEnd) / 1000000
-                      ).toISOString()}
                       accountId={accountId}
                       dao={item.dao}
                       likes={item.voteYes}

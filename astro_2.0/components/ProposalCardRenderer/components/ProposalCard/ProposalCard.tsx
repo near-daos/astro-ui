@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 
 import { ProposalStatus, ProposalType, VoteAction } from 'types/proposal';
 import { ExplorerLink } from 'components/explorer-link';
@@ -11,6 +11,7 @@ import ExternalLink from 'components/cards/components/external-link/ExternalLink
 import { Icon, IconName } from 'components/Icon';
 import { useGetVotePermissions } from 'components/cards/proposal-card/hooks/useGetVotePermissions';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
+import { SputnikNearService } from 'services/sputnik';
 import styles from './ProposalCard.module.scss';
 
 export interface ProposalCardProps {
@@ -19,10 +20,9 @@ export interface ProposalCardProps {
   proposer: string;
   description: string;
   link: string;
-  onVoteClick: (action: VoteAction) => () => void;
   proposalTxHash: string;
-  expireTime: string;
   dao: DAO;
+  proposalId: number;
   accountId: string;
   likes: number;
   dislikes: number;
@@ -39,7 +39,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   description,
   link,
   status,
-  onVoteClick,
+  proposalId,
   likes,
   dislikes,
   liked,
@@ -52,6 +52,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const permissions = useGetVotePermissions(dao, type, accountId);
 
   let sealIcon;
+
+  const voteClickHandler = useCallback(
+    (vote: VoteAction) => () => {
+      SputnikNearService.vote(dao.id, proposalId, vote);
+    },
+    [dao, proposalId]
+  );
 
   switch (status) {
     case 'Approved': {
@@ -109,8 +116,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       <div className={styles.voteControlCell}>
         <ProposalControlPanel
           status={status}
-          onLike={onVoteClick('VoteApprove')}
-          onDislike={onVoteClick('VoteReject')}
+          onLike={voteClickHandler('VoteApprove')}
+          onDislike={voteClickHandler('VoteReject')}
           likes={likes}
           liked={liked}
           dislikes={dislikes}

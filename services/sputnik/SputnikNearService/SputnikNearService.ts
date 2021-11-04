@@ -8,7 +8,7 @@ import { NearConfig, nearConfig } from 'config';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import { CreateDaoInput } from 'types/dao';
-import { CreateProposalParams } from 'types/proposal';
+import { CreateProposalParams, VoteAction } from 'types/proposal';
 import { CreateTokenParams, SputnikTokenService } from 'types/token';
 
 import { CookieService } from 'services/CookieService';
@@ -181,7 +181,7 @@ class SputnikNearServiceClass {
   public async vote(
     daoId: string,
     proposalId: number,
-    action: 'VoteApprove' | 'VoteRemove' | 'VoteReject'
+    action: VoteAction
   ): Promise<FinalExecutionOutcome> {
     return this.sputnikDaoService.vote(daoId, proposalId, action);
   }

@@ -200,14 +200,13 @@ const DAOHome: NextPage<DaoHomeProps> = ({
                 key={item.id}
                 proposalCardNode={
                   <ProposalCard
+                    proposalId={item.proposalId}
                     type={item.kind.type}
                     status={item.status}
                     proposer={item.proposer}
                     description={item.description}
                     link={item.link}
-                    onVoteClick={() => () => 0}
                     proposalTxHash={item.txHash}
-                    expireTime=""
                     accountId={accountId}
                     dao={item.dao}
                     likes={item.voteYes}

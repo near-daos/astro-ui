@@ -5,7 +5,7 @@ import {
   ProposalCardRenderer,
   ProposalCardRendererProps,
 } from 'astro_2.0/components/ProposalCardRenderer';
-import { ProposalStatus, ProposalType, VoteAction } from 'types/proposal';
+import { ProposalStatus, ProposalType } from 'types/proposal';
 import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import { DAO } from 'types/dao';
 import { ProposalCard } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard';
@@ -43,10 +43,6 @@ export const Template: Story<ProposalCardRendererProps> = ({
 Template.storyName = 'ProposalCard';
 
 const cardProps = {
-  onVoteClick: (action: VoteAction) => () => {
-    // eslint-disable-next-line no-console
-    console.log(action);
-  },
   type: ProposalType.Transfer,
   content: (
     <CreateBountyProposalContent
@@ -64,12 +60,12 @@ const cardProps = {
   ),
   status: 'Approved' as ProposalStatus,
   daoName: 'Ref.Finance',
+  proposalId: 0,
   proposer: 'dkarpov.near',
   proposalTxHash: 'hash',
   flagUrl: '/dummy-flag.png',
   coverUrl: '/cover.png',
   link: 'http://google.com',
-  expireTime: '3213213131',
   permissions: {
     canApprove: true,
     canReject: true,
