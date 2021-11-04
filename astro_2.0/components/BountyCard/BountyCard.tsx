@@ -4,7 +4,6 @@ import { ProposalDescription } from 'astro_2.0/components/ProposalDescription';
 import { TokenWidget } from 'astro_2.0/components/TokenWidget';
 import { BountyActionsBar } from 'astro_2.0/components/BountyCard/components';
 import { ClaimedBy } from 'components/cards/bounty-card/types';
-import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import { Token } from 'types/token';
 import cn from 'classnames';
 import { getDistance } from 'astro_2.0/components/BountyCard/helpers';
@@ -16,8 +15,6 @@ export interface BountyCardProps {
   id: string;
   daoId: string;
   token: Token;
-  daoFlag?: string;
-  daoName: string;
   amount: string;
   description: string;
   forgivenessPeriod: string;
@@ -34,8 +31,6 @@ export interface BountyCardProps {
 export const BountyCard: React.FC<BountyCardProps> = ({
   id,
   daoId,
-  daoName,
-  daoFlag,
   amount,
   description,
   token,
@@ -59,12 +54,6 @@ export const BountyCard: React.FC<BountyCardProps> = ({
 
   return (
     <div className={styles.root}>
-      <DaoFlagWidget
-        daoName={daoName}
-        flagUrl={daoFlag}
-        className={styles.flag}
-        daoId={daoId}
-      />
       <div className={styles.bountyGrid}>
         <InfoBlockWidget
           label="Type"

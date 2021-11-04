@@ -69,21 +69,18 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
 
       <div className={styles.descriptionCell}>
         <div className={styles.label}>Description</div>
-        <div className={styles.proposalDescription}>
-          <TextArea
-            isValid={touchedFields.description && !errors.description?.message}
-            size="block"
-            textAlign="left"
-            resize="none"
-            placeholder={LOREN_IPSUM}
-            className={styles.textArea}
-            isBorderless
-            maxLength={500}
-            maxRows={4}
-            minRows={1}
-            {...register('details')}
-          />
-        </div>
+        <TextArea
+          isValid={touchedFields.description && !errors.description?.message}
+          size="block"
+          textAlign="left"
+          resize="none"
+          placeholder={LOREN_IPSUM}
+          className={styles.textArea}
+          isBorderless
+          maxLength={500}
+          minRows={4}
+          {...register('details')}
+        />
         <div className={styles.proposalExternalLink}>
           <Icon name="buttonExternal" width={14} />
           <Input

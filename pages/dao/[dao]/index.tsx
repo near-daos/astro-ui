@@ -14,7 +14,6 @@ import {
   ProposalCard,
   ProposalCardRenderer,
 } from 'astro_2.0/components/ProposalCardRenderer';
-import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import CategoriesList from 'astro_2.0/components/Feed/CategoriesList';
 import { NoResultsView } from 'features/no-results-view';
 
@@ -244,13 +243,6 @@ const DAOHome: NextPage<DaoHomeProps> = ({
                         : undefined
                     }
                     content={null}
-                  />
-                }
-                daoFlagNode={
-                  <DaoFlagWidget
-                    daoName={item.dao.displayName}
-                    flagUrl={item.daoDetails.logo}
-                    daoId={item.daoId}
                   />
                 }
                 letterHeadNode={

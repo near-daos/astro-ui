@@ -22,7 +22,6 @@ export const Template: Story<BountyCardProps> = (args): JSX.Element => (
 Template.storyName = 'BountyCard';
 
 Template.args = {
-  daoFlag: '/dummy-flag.png',
   slots: 3,
   bountyBond: '0.1',
   amount: '1000',
