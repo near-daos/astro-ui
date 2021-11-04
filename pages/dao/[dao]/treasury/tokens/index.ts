@@ -32,6 +32,7 @@ export const getServerSideProps = async ({
         daoTokens,
         totalValue: dao?.funds ?? '0',
         receipts,
+        dao,
       },
     },
   };

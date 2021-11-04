@@ -9,6 +9,8 @@ import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { ActionButton } from 'features/proposal/components/action-button';
 
+import { useAuthContext } from 'context/AuthContext';
+
 import styles from './DaoDetailsMinimized.module.scss';
 
 export interface DaoDetailsMinimizedProps {
@@ -19,14 +21,20 @@ export interface DaoDetailsMinimizedProps {
 
 export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   dao,
-  accountId,
   onCreateProposalClick,
 }) => {
   const router = useRouter();
-  const action = isEmpty(accountId) ? null : (
+  const { accountId, login } = useAuthContext();
+  const action = (
     <Button
       size="block"
-      onClick={onCreateProposalClick}
+      onClick={() => {
+        if (isEmpty(accountId)) {
+          login();
+        } else if (onCreateProposalClick) {
+          onCreateProposalClick();
+        }
+      }}
       className={styles.addProposalButton}
       variant="tertiary"
     >

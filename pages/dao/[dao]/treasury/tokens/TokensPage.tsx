@@ -1,12 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import classNames from 'classnames';
 
 import { useAuthContext } from 'context/AuthContext';
 import { useNearPrice } from 'hooks/useNearPrice';
-import { useModal } from 'components/modal';
-import { RequestPayoutPopup } from 'features/treasury/request-payout-popup';
 import { formatCurrency } from 'utils/formatCurrency';
 
 import { Icon } from 'components/Icon';
@@ -25,7 +24,10 @@ import { Receipt } from 'types/transaction';
 import { Pagination } from 'components/pagination';
 
 import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
-import { useCustomTokensContext } from 'context/CustomTokensContext';
+import { DAO } from 'types/dao';
+import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
+import { CreateProposal } from 'astro_2.0/features/CreateProposal';
+import { ProposalVariant } from 'types/proposal';
 
 export interface TokensPageProps {
   data: {
@@ -33,29 +35,31 @@ export interface TokensPageProps {
     daoTokens: Token[];
     totalValue: string;
     receipts: Receipt[];
+    dao: DAO | null;
   };
 }
 
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
 
 const TokensPage: React.FC<TokensPageProps> = ({
-  data: { chartData, daoTokens, totalValue, receipts },
+  data: { chartData, daoTokens, totalValue, receipts, dao },
 }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
   const nearPrice = useNearPrice();
   const { accountId, login } = useAuthContext();
   const TRANSACTIONS_PER_PAGE = 10;
-  const { setTokens } = useCustomTokensContext();
 
-  const [showRequestPayoutPopup] = useModal(RequestPayoutPopup, {
-    type: 'send',
-  });
+  const [showCreateProposal, setShowCreateProposal] = useState(false);
 
   const handleClick = useCallback(
-    () => (accountId ? showRequestPayoutPopup() : login()),
-    [login, showRequestPayoutPopup, accountId]
+    () => (accountId ? setShowCreateProposal(true) : login()),
+    [login, accountId]
   );
+
+  const handleCreateProposal = useCallback(() => {
+    setShowCreateProposal(true);
+  }, []);
 
   const captions = useMemo(
     () => [
@@ -68,10 +72,6 @@ const TokensPage: React.FC<TokensPageProps> = ({
     [nearPrice, totalValue]
   );
 
-  useEffect(() => {
-    setTokens(daoTokens);
-  }, [setTokens, daoTokens]);
-
   // TODO - existing receipts endpoint doesn't support pagination yet
   const pageCount = Math.round(receipts.length / TRANSACTIONS_PER_PAGE);
   const [activePage, setActivePage] = useState(0);
@@ -83,8 +83,59 @@ const TokensPage: React.FC<TokensPageProps> = ({
     setActivePage(selected);
   }, []);
 
+  const refreshData = useCallback(() => {
+    router.replace(router.asPath);
+  }, [router]);
+
   return (
     <div className={styles.root}>
+      <div className={styles.breadcrumb}>
+        <Link passHref href="/all/daos">
+          <a href="*" className={styles.link}>
+            <span className={styles.daoName}>All DAOs</span>
+          </a>
+        </Link>
+        <span>
+          <Icon name="buttonArrowRight" width={16} />
+        </span>
+        <Link passHref href={`/dao/${daoId}`}>
+          <a href="*" className={styles.link}>
+            <span className={styles.daoName}>
+              {dao?.displayName || dao?.id}
+            </span>
+          </a>
+        </Link>
+        <span>
+          <Icon name="buttonArrowRight" width={16} />
+        </span>
+        <span className={styles.activeLink}>Treasury</span>
+      </div>
+      <div className={styles.dao}>
+        {dao && (
+          <DaoDetailsMinimized
+            dao={dao}
+            accountId={accountId}
+            onCreateProposalClick={handleCreateProposal}
+          />
+        )}
+        {showCreateProposal && dao && (
+          <div className={styles.newProposalWrapper}>
+            <CreateProposal
+              dao={dao}
+              proposalVariant={ProposalVariant.ProposeTransfer}
+              onCreate={isSuccess => {
+                if (isSuccess) {
+                  refreshData();
+                  setShowCreateProposal(false);
+                }
+              }}
+              onClose={() => {
+                setShowCreateProposal(false);
+              }}
+            />
+          </div>
+        )}
+      </div>
       <div className={styles.header}>
         <h1>Tokens</h1>
         <Button variant="black" size="small" onClick={handleClick}>

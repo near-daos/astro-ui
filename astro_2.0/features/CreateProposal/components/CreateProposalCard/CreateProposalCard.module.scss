@@ -4,6 +4,7 @@
 .root {
   background-color: var(--color-white);
   border-radius: 0 8px 8px 0;
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
   display: grid;
   grid-row-gap: 22px;
   grid-template-areas:

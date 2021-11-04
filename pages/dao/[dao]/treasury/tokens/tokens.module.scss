@@ -5,6 +5,8 @@
   display: grid;
   grid-row-gap: 14px;
   grid-template-areas:
+    'breadcrumb breadcrumb'
+    'dao dao'
     'header header'
     'account account'
     'total total'
@@ -15,6 +17,45 @@
     'pagination pagination';
   grid-template-columns: 2fr 1fr;
   padding-top: 56px;
+}
+
+.breadcrumb {
+  @extend %caption1;
+  align-items: center;
+  color: var(--color-neutral-70);
+  display: flex;
+  gap: 8px;
+  grid-area: breadcrumb;
+  margin-bottom: 42px;
+  position: relative;
+
+  .link {
+    align-items: center;
+    display: flex;
+  }
+
+  .activeLink {
+    color: var(--color-primary-50);
+  }
+
+  .daoFlag {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 42px;
+    left: -42px;
+    position: absolute;
+    width: 42px;
+  }
+}
+
+.dao {
+  grid-area: dao;
+  margin: 16px 0 44px;
+
+  .newProposalWrapper {
+    margin-top: 24px;
+  }
 }
 
 .header {
