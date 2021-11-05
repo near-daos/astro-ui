@@ -4,7 +4,7 @@
 .root {
   background-color: var(--color-white);
   border-radius: 0 8px 8px 0;
-  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 3px 2px 24px var(--color-black-opacity-14);
   display: grid;
   grid-row-gap: 22px;
   grid-template-areas:
@@ -18,6 +18,10 @@
 
   &.clickable {
     cursor: pointer;
+  }
+
+  &:hover {
+    box-shadow: 0 16px 54px var(--color-black-opacity-25);
   }
 }
 

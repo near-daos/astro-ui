@@ -19,6 +19,7 @@
 .bountyGrid {
   background-color: var(--color-white);
   border-radius: 8px;
+  box-shadow: 0 8.89583px 30px var(--color-black-opacity-14);
   display: grid;
   grid-row-gap: 22px;
   grid-template-areas:
@@ -30,6 +31,10 @@
   grid-template-columns: 1fr 1fr 1fr;
   padding: 22px 24px 0;
   position: relative;
+
+  &:hover {
+    box-shadow: 0 16px 54px var(--color-black-opacity-25);
+  }
 }
 
 .completeDate {
