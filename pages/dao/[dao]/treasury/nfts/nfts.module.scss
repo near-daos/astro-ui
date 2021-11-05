@@ -2,8 +2,10 @@
 
 .root {
   display: grid;
-  grid-row-gap: 24px;
+  grid-row-gap: 14px;
   grid-template-areas:
+    'breadcrumb'
+    'dao'
     'header'
     'content';
   grid-template-columns: 1fr;
@@ -15,6 +17,20 @@
 
   h1 {
     margin: 0;
+  }
+}
+
+.breadcrumbs {
+  grid-area: breadcrumb;
+  margin-bottom: 42px;
+}
+
+.dao {
+  grid-area: dao;
+  margin: 16px 0 44px;
+
+  .newProposalWrapper {
+    margin-top: 24px;
   }
 }
 

@@ -1,0 +1,31 @@
+@import 'styles/typography';
+
+.root {
+  @extend %caption1;
+  color: var(--color-neutral-70);
+  display: flex;
+  position: relative;
+}
+
+.list {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  &::before {
+    content: none;
+  }
+}
+
+.link {
+  align-items: center;
+  display: flex;
+}
+
+.activeLink {
+  color: var(--color-primary-50);
+}
