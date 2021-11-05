@@ -51,6 +51,10 @@
   clip-path: url('#flag');
   height: 100%;
   width: 100%;
+
+  &.scaled {
+    transform: scale(1.45);
+  }
 }
 
 .logo {

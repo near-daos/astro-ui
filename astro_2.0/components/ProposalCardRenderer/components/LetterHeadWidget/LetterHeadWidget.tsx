@@ -1,4 +1,5 @@
 import { ProposalType } from 'types/proposal';
+import cn from 'classnames';
 
 import React from 'react';
 
@@ -8,7 +9,8 @@ import styles from './LetterheadWidget.module.scss';
 
 interface LetterHeadWidgetProps {
   type: ProposalType;
-  coverUrl: string;
+  coverUrl?: string;
+  status?: string;
 }
 
 const getIconName = (type: ProposalType) => {
@@ -37,10 +39,15 @@ const getIconName = (type: ProposalType) => {
 export const LetterHeadWidget: React.FC<LetterHeadWidgetProps> = ({
   type,
   coverUrl,
+  status,
 }) => {
   return (
     <div
-      className={styles.root}
+      className={cn(styles.root, {
+        [styles.active]: status === 'InProgress',
+        [styles.approved]: status === 'Approved',
+        [styles.rejected]: status === 'Rejected',
+      })}
       style={{
         backgroundImage: `url(${coverUrl})`,
       }}

@@ -148,7 +148,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             showFlag && (
               <DaoFlagWidget
                 daoName={dao.name}
-                flagUrl={dao.logo}
+                flagUrl={dao.flagCover || dao.logo}
                 daoId={dao.id}
               />
             )
@@ -156,7 +156,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           letterHeadNode={
             <LetterHeadWidget
               type={mapProposalVariantToProposalType(selectedProposalVariant)}
-              coverUrl="/cover.png"
+              coverUrl={dao.flagCover}
             />
           }
           proposalCardNode={
