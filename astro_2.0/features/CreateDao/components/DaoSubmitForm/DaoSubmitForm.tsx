@@ -109,7 +109,7 @@ export function DaoSubmitForm(): JSX.Element {
           standAloneMode
           bond="5"
           gas="0.3"
-          warning="Create New DAO"
+          warning="DAOs can not be deleted!"
           buttonLabel="Create DAO"
         />
       </div>
