@@ -102,7 +102,6 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
         )}
         {renderDaos()}
       </div>
-      ;
     </div>
   );
 };

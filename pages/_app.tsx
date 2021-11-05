@@ -14,6 +14,7 @@ import { CustomTokensProvider } from 'context/CustomTokensContext';
 import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
 import CreateLayoutNew from 'astro_2.0/components/CreateLayout/CreateLayout';
+import { MobileNav } from 'astro_2.0/components/navigation/MobileNav';
 
 import { SputnikNearService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
@@ -58,6 +59,8 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
             <AppUILayout>
               <Component {...pageProps} />
             </AppUILayout>
+
+            <MobileNav />
           </ModalProvider>
         </CustomTokensProvider>
       </AuthWrapper>

@@ -12,15 +12,13 @@ import styles from './NavButton.module.scss';
 interface NavButtonProps {
   href: string;
   icon: IconName;
+  mobile?: boolean;
   hoverIcon: IconName;
 }
 
-export const NavButton: FC<NavButtonProps> = ({
-  icon,
-  href,
-  children,
-  hoverIcon,
-}) => {
+export const NavButton: FC<NavButtonProps> = props => {
+  const { icon, href, mobile, children, hoverIcon } = props;
+
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -28,6 +26,7 @@ export const NavButton: FC<NavButtonProps> = ({
 
   const rootClassName = cn(styles.root, {
     [styles.active]: isActive,
+    [styles.mobile]: mobile,
   });
 
   const onMouseOver = useCallback(() => {

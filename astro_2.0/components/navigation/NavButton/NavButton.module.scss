@@ -8,9 +8,12 @@
   font-weight: 500;
   height: 100%;
   line-height: 24px;
-  margin-right: 16px;
   position: relative;
   transition: 0.2s;
+
+  &:not(:last-of-type) {
+    margin-right: 16px;
+  }
 
   &:hover,
   &.active {
@@ -80,4 +83,40 @@
 
 .tooltip {
   white-space: nowrap;
+}
+
+.mobile {
+  &.root {
+    align-items: center;
+    font-size: 10px;
+    letter-spacing: 0;
+    line-height: 16px;
+    margin: 0 8px;
+  }
+
+  .tooltip {
+    display: none;
+  }
+
+  .description {
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .iconHolder {
+    margin: 0;
+  }
+
+  &.active .iconHolder::after {
+    background-color: var(--color-neutral-20);
+  }
+
+  .label {
+    display: block;
+    margin-top: 4px;
+  }
+
+  .underline {
+    bottom: 8px;
+  }
 }

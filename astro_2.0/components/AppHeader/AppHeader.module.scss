@@ -1,4 +1,5 @@
 @use 'styles/breakpoints';
+@import 'astro_2.0/components/constants.module';
 
 .root {
   align-items: center;
@@ -15,6 +16,10 @@
 .logo {
   display: flex;
   margin-right: 42px;
+}
+
+.mobileLogo {
+  display: none;
 }
 
 .centralPart {
@@ -48,8 +53,24 @@
   right: 0;
 }
 
-@media (max-width: #{breakpoints.$screen-lg - 1}px) {
+@media screen and (max-width: #{breakpoints.$screen-lg - 1}px) {
   .root {
     padding: 0 40px;
+  }
+}
+
+@media screen and (max-width: #{$nav-mobile-width}) {
+  .root {
+    height: 64px;
+    padding: 0 24px;
+  }
+
+  .nav,
+  .logo {
+    display: none;
+  }
+
+  .mobileLogo {
+    display: block;
   }
 }
