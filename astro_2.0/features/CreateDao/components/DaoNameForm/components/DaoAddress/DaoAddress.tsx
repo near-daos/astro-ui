@@ -18,7 +18,7 @@ export const DaoAddress: VFC<DaoAddressProps> = ({ displayName, onChange }) => {
     () => {
       onChange({
         target: {
-          value: displayName,
+          value: formatDaoAddress(displayName),
         },
       });
     },
