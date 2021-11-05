@@ -1,0 +1,37 @@
+@import 'styles/typography';
+
+.header {
+  display: grid;
+  margin-top: 36px;
+}
+
+.title {
+  @extend %subtitle5;
+  color: var(--color-neutral-60);
+}
+
+.add {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding: 0;
+  width: 64px;
+
+  .icon {
+    color: var(--color-primary-50);
+    height: 24px;
+    width: 24px;
+  }
+
+  .caption {
+    @extend %title3;
+    color: var(--color-primary-50);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .header.title {
+    display: none;
+  }
+}

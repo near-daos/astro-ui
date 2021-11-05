@@ -1,0 +1,123 @@
+// Button sizes
+@mixin size(
+  $padding-vertical,
+  $padding-horizontal,
+  $font-size,
+  $line-height,
+  $border-radius
+) {
+  border-radius: $border-radius;
+  font-size: $font-size;
+  line-height: $line-height;
+  padding: $padding-vertical $padding-horizontal;
+}
+
+.btn {
+  @include size(0, 24px, 14px, 24px, 4px);
+  border: 2px solid transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  height: 40px;
+  min-height: 40px;
+  text-transform: uppercase;
+
+  > img,
+  svg {
+    vertical-align: baseline;
+  }
+}
+
+.sizeSmall {
+  min-width: 80px;
+}
+
+.sizeMedium {
+  min-width: 180px;
+}
+
+.sizeLarge {
+  min-width: 260px;
+}
+
+.sizeBlock {
+  display: block;
+  width: 100%;
+}
+
+.primary {
+  background: var(--color-neutral-90);
+  color: var(--color-white);
+
+  &:hover {
+    background: var(--color-primary-70);
+  }
+
+  &:active {
+    background: var(--color-primary-60);
+  }
+
+  &:disabled {
+    background: var(--color-neutral-50);
+    cursor: default;
+  }
+}
+
+.secondary {
+  background: transparent;
+  border: 2px solid var(--color-neutral-90);
+  color: var(--color-neutral-90);
+
+  &:hover {
+    border-color: var(--color-primary-70);
+  }
+
+  &:active {
+    border-color: var(--color-primary-60);
+  }
+
+  &:disabled {
+    border-color: var(--color-neutral-50);
+    color: var(--color-neutral-60);
+    cursor: default;
+  }
+
+  :global(.darkMode) & {
+    background: transparent;
+    border: 2px solid var(--color-white);
+    color: var(--color-white);
+  }
+}
+
+.tertiary {
+  background: transparent;
+  color: var(--color-neutral-90);
+
+  :global(.darkMode) & {
+    color: var(--color-white);
+  }
+}
+
+.black {
+  background: var(--color-neutral-90);
+  color: var(--color-white);
+  text-transform: none;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 0 40px var(--color-black);
+  }
+}
+
+.auth {
+  background: var(--color-neutral-90);
+  color: var(--color-white);
+}
+
+:global(.darkMode) .auth {
+  background: var(--color-brand-neon-yellow);
+  color: var(--color-neutral-90);
+
+  path {
+    fill: var(--color-neutral-90);
+  }
+}

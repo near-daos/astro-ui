@@ -1,0 +1,38 @@
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'header'
+    'content';
+  grid-template-columns: 1fr;
+  padding-top: 56px;
+}
+
+.header {
+  grid-area: header;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  grid-area: content;
+  justify-content: center;
+  padding-top: 48px;
+
+  @include tablet-landscape {
+    justify-content: flex-start;
+  }
+}
+
+.card {
+  height: 424px;
+  padding-bottom: 24px;
+  padding-right: 24px;
+  width: 296px;
+}

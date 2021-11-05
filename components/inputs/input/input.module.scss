@@ -1,0 +1,100 @@
+@import 'styles/typography';
+
+.input {
+  color: var(--color-neutral-80);
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.5em;
+
+  input {
+    border: 1.5px solid var(--color-neutral-60);
+    border-radius: 4px;
+    box-sizing: border-box;
+    flex-basis: 100%;
+    font-size: 1em;
+    height: 48px;
+    line-height: 24px;
+    padding: 10.5px;
+    width: 100%;
+  }
+
+  .success {
+    border-color: var(--color-success);
+  }
+
+  .error {
+    border-color: var(--color-error-40);
+  }
+
+  input::-webkit-datetime-edit {
+    color: var(--color-neutral-40);
+  }
+
+  input::placeholder {
+    color: var(--color-neutral-60);
+  }
+
+  input:focus {
+    outline: 0;
+  }
+}
+
+.sizeSmall {
+  width: 8em;
+
+  input {
+    width: 8em;
+  }
+}
+
+.sizeMedium {
+  width: 16em;
+
+  input {
+    width: 16em;
+  }
+}
+
+.sizeLarge {
+  width: 25em;
+
+  input {
+    width: 16em;
+  }
+}
+
+.sizeXl {
+  width: 42px;
+
+  input {
+    padding: 6.5px;
+    text-align: center;
+    width: 42px;
+  }
+}
+
+.sizeContent {
+  width: fit-content;
+}
+
+.sizeBlock {
+  width: 100%;
+}
+
+.label {
+  @extend %title5;
+  //text-transform: uppercase;
+  color: var(--color-neutral-60);
+  //line-height: 1.125em;
+  margin: 0;
+}
+
+.suffix {
+  align-self: flex-end;
+}
+
+.description {
+  font-size: 0.75em;
+  font-weight: 400;
+  line-height: 1.125em;
+}

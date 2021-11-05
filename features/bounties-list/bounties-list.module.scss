@@ -1,0 +1,32 @@
+@import 'styles/mixins';
+
+.root {
+  margin-top: 32px;
+}
+
+.top {
+  margin-bottom: 40px;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.card {
+  margin-bottom: 16px;
+}
+
+.reset {
+  bottom: 10px;
+  position: fixed;
+  right: 10px;
+
+  @include tablet-portrait {
+    bottom: 40px;
+    right: 40px;
+  }
+}
+
+.tooltip {
+  max-width: 400px;
+}

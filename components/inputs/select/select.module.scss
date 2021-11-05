@@ -1,0 +1,66 @@
+@import 'styles/typography';
+
+.select {
+  cursor: default;
+  min-width: 60px;
+  position: relative;
+  user-select: none;
+
+  input {
+    cursor: default;
+  }
+
+  ul {
+    padding-inline-start: 0;
+  }
+}
+
+.icon {
+  bottom: 18px;
+  color: var(--color-neutral-80);
+  cursor: pointer;
+  position: absolute;
+  right: 14px;
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu {
+  background: #fff;
+  box-shadow: 0 8.89583px 30px rgba(0, 0, 0, 0.14);
+  list-style: none;
+  overflow-y: auto;
+  position: absolute;
+  top: 80%;
+  width: 100%;
+  z-index: 1;
+}
+
+.item {
+  border: 1px solid var(--color-neutral-20);
+  height: 40px;
+  padding: 7px 23px;
+}
+
+.active {
+  background: var(--color-primary-20);
+
+  &:hover {
+    background: var(--color-neutral-30);
+  }
+}
+
+.disabled {
+  cursor: default;
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+}

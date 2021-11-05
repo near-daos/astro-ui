@@ -1,0 +1,75 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+
+.root {
+  align-items: center;
+  background-color: var(--color-neutral-10);
+  display: flex;
+  gap: 24px;
+  grid-area: header;
+  height: 72px;
+  justify-content: space-between;
+  padding: 0 32px 0 0;
+  width: 100%;
+
+  &.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+}
+
+.mobileMenu {
+  display: none;
+
+  .hamburgerIcon {
+    cursor: pointer;
+    height: 24px;
+    width: 24px;
+  }
+}
+
+.flag {
+  display: block;
+  padding: 18px;
+
+  .logo {
+    height: 34px;
+    width: 34px;
+  }
+}
+
+.search {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  padding-left: 24px;
+}
+
+.signIn {
+  justify-self: flex-end;
+
+  .iconLogo {
+    color: var(--color-white);
+    height: 11px;
+  }
+}
+
+@media screen and (max-width: breakpoints.$screen-md - 1px) {
+  .root {
+    height: 56px;
+    padding: 0 24px;
+  }
+
+  .mobileMenu {
+    display: block;
+  }
+
+  .flag {
+    display: none;
+  }
+
+  .desktopOnly {
+    display: none;
+  }
+}

@@ -1,0 +1,65 @@
+@import 'styles/typography';
+
+.root {
+  margin-top: 34px;
+}
+
+.title {
+  @extend %title1;
+}
+
+.desc {
+  @extend %body1;
+  margin-top: 12px;
+}
+
+.label {
+  @extend %title5;
+  margin: 28px 0 4px;
+}
+
+.wrapper {
+  border: 1.5px solid var(--color-neutral-60);
+  border-radius: 4px;
+  display: flex;
+
+  padding: 12px;
+}
+
+.editor {
+  max-height: 400px;
+  min-height: 200px;
+  //padding: 12px;
+  width: 100%;
+}
+
+.mr8 {
+  margin-right: 8px;
+}
+
+.ml8 {
+  margin-left: 8px;
+}
+
+.link {
+  @extend %title4;
+  color: var(--color-primary-50);
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  text-decoration: underline;
+}
+
+.footer {
+  display: flex;
+  grid-area: footer;
+  justify-content: flex-end;
+  margin-top: 40px;
+}
+
+@media screen and (max-width: 768px) {
+  .footer {
+    justify-content: space-around;
+  }
+}

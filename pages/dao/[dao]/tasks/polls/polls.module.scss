@@ -1,0 +1,73 @@
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-column-gap: 8px;
+  grid-row-gap: 32px;
+  grid-template-areas:
+    'header'
+    'polls';
+  grid-template-columns: 1fr;
+  padding-top: 56px;
+
+  @include tablet-landscape {
+    grid-row-gap: 48px;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  grid-area: header;
+
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
+    gap: 35px;
+  }
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.polls {
+  grid-area: polls;
+  margin-top: 16px;
+
+  @include tablet-landscape {
+    margin-top: 0;
+  }
+}
+
+.reset {
+  bottom: 10px;
+  position: fixed;
+  right: 10px;
+
+  @include tablet-portrait {
+    bottom: 40px;
+    right: 40px;
+  }
+}
+
+.proposalsView {
+  margin-top: 32px;
+}
+
+.proposalCardWrapper {
+  margin-bottom: 16px;
+}
+
+.activeProposalsTab {
+  color: var(--color-primary-50);
+}
+
+.approvedProposalsTab {
+  color: var(--color-brand-green);
+}
+
+.failedProposalsTab {
+  color: var(--color-brand-coral-red);
+}

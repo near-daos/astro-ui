@@ -1,0 +1,107 @@
+@use 'styles/breakpoints';
+
+.root {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  max-width: 100%;
+  min-width: 200px;
+  overflow: auto;
+  padding: 48px;
+  position: relative;
+  width: 640px;
+  z-index: 10002;
+
+  &.sm {
+    width: 480px;
+  }
+
+  &.md {
+    width: 640px;
+  }
+
+  &.lg {
+    width: 768px;
+  }
+
+  &.xl {
+    width: 944px;
+  }
+
+  &.xxl {
+    width: 1024px;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.modalOpen {
+  overflow: hidden;
+}
+
+.overlay {
+  align-items: flex-start;
+  background: rgba(#201f1f, 0.5);
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  opacity: 0;
+  overflow-y: auto;
+  padding: 60px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  transition: opacity 300ms ease-in-out;
+  z-index: 10000000;
+}
+
+.overlayAfterOpen {
+  opacity: 1;
+}
+
+.overlayBeforeClose {
+  opacity: 0;
+}
+
+.closeWrapper {
+  position: absolute;
+  right: 36px;
+  top: 36px;
+  transform: rotate(45deg);
+  z-index: 1;
+}
+
+.close {
+  color: var(--color-neutral-90);
+  cursor: pointer;
+  transform: rotate(45deg);
+  width: 24px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-xs}px) {
+  .closeWrapper {
+    right: 28px;
+    top: 28px;
+  }
+  .overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .root {
+    border-radius: 8px 8px 0 0;
+    max-height: 100vh;
+    padding: 48px 24px 24px;
+    transform: translateY(100%);
+    transition: all 300ms ease-out;
+  }
+
+  .contentAfterOpen {
+    transform: translateY(0);
+  }
+  .contentBeforeClose {
+    transform: translateY(100%);
+  }
+}

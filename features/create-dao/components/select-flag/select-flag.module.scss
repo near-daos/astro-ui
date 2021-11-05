@@ -1,0 +1,18 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: center;
+}
+
+.actions {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}

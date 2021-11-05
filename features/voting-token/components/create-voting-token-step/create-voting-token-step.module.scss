@@ -1,0 +1,102 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.header {
+  text-align: center;
+}
+
+.form {
+  display: grid;
+  grid-column-gap: 8px;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'name name name n'
+    'symbol symbol symbol symbol'
+    'total total t t'
+    'avatar avatar avatar avatar'
+    'target target target target'
+    'footer footer footer footer';
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  margin-top: 20px;
+}
+
+.name {
+  grid-area: name;
+}
+
+.symbol {
+  grid-area: symbol;
+}
+
+.total {
+  grid-area: total;
+}
+
+.avatar {
+  grid-area: avatar;
+}
+
+.target {
+  grid-area: target;
+}
+
+.footer {
+  align-items: center;
+  display: flex;
+  grid-area: footer;
+  justify-content: flex-end;
+  margin-top: 32px;
+}
+
+.row {
+  align-items: flex-end;
+  display: flex;
+  justify-content: flex-start;
+
+  > span:first-of-type {
+    flex: 2;
+  }
+
+  > span:last-of-type {
+    flex: 1;
+    margin-left: 8px;
+    transform: translateY(-8px);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .form {
+    grid-template-areas:
+      'name'
+      'symbol'
+      'total'
+      'avatar'
+      'target'
+      'footer';
+    grid-template-columns: 1fr;
+  }
+
+  .row {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    > span:first-of-type {
+      width: 100%;
+    }
+
+    > span:last-of-type {
+      flex: 1;
+      margin-left: 0;
+      transform: translateY(0);
+    }
+  }
+
+  .footer {
+    justify-content: space-around;
+  }
+}

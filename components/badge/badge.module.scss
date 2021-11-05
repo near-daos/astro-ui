@@ -1,0 +1,51 @@
+$colors: 'violet', 'blurple', 'blue', 'turqoise', 'green', 'red', 'orange',
+  'yellow';
+.badge {
+  align-items: center;
+  border-radius: 100px;
+  display: inline-flex;
+  font-weight: 700;
+  height: 24px;
+  justify-content: center;
+  line-height: 15px;
+  max-height: 24px;
+  min-width: 91px;
+  padding: 4px 8px;
+  text-align: center;
+  white-space: nowrap;
+  width: fit-content;
+
+  &.small {
+    min-width: 40px;
+  }
+
+  &.medium {
+    min-width: 91px;
+  }
+
+  &.large {
+    min-width: 195px;
+    padding: 5px 18px;
+  }
+
+  &.block {
+    display: block;
+    width: 100%;
+  }
+
+  @each $color in $colors {
+    &.#{$color} {
+      background: var(--color-pastel-#{$color});
+    }
+  }
+
+  &.primary {
+    background: var(--color-primary-20);
+    color: var(--color-primary-80);
+  }
+
+  &.neonYellow {
+    background: var(--color-brand-neon-yellow);
+    color: var(--color-brand-black);
+  }
+}

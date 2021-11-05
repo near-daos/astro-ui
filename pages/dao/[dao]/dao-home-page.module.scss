@@ -1,0 +1,81 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'daoDetails'
+    'daoInfo'
+    'proposals'
+    'proposalList';
+  grid-template-columns: 1fr;
+  padding-top: 80px;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'daoDetails daoDetails daoInfo'
+      'daoDetails daoDetails proposals'
+      'proposalList proposalList proposalList';
+    grid-template-columns: 1fr 1fr 1fr;
+    padding-top: 56px;
+  }
+}
+
+.daoDetails {
+  grid-area: daoDetails;
+}
+
+.onTop {
+  z-index: 9;
+}
+
+.proposalsDetails {
+  grid-area: proposalsDetails;
+}
+
+.daoInfo {
+  grid-area: daoInfo;
+}
+
+.proposalList {
+  grid-area: proposalList;
+}
+
+.votingEnds {
+  @extend %body1;
+  align-self: center;
+  cursor: pointer;
+  display: flex;
+  margin: 12px 0;
+
+  .bold {
+    @extend %title3;
+    margin-right: 4px;
+  }
+
+  .icon {
+    transition: transform 0.5s;
+  }
+
+  .rotate {
+    transform: rotate(90deg);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.activeProposalsTab {
+  color: var(--color-primary-50);
+}
+
+.approvedProposalsTab {
+  color: var(--color-brand-green);
+}
+
+.failedProposalsTab {
+  color: var(--color-brand-coral-red);
+}

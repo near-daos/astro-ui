@@ -1,0 +1,38 @@
+@use 'styles/breakpoints';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.circle {
+  border-radius: 50%;
+  height: 56px;
+  width: 56px;
+}
+
+.green {
+  background-color: var(--color-brand-green-dark);
+}
+
+.purple {
+  background-color: var(--color-primary-20);
+}
+
+.footer {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-xs}px) {
+  .footer {
+    justify-content: space-around;
+  }
+}

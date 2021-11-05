@@ -1,0 +1,36 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+
+.content {
+  margin: 0 -48px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+
+  @media screen and (max-width: #{breakpoints.$screen-xs}px) {
+    margin: 0 -24px;
+  }
+}
+
+.opened {
+  max-height: 500px;
+}
+
+.label {
+  @extend %title5;
+  align-items: center;
+  display: flex;
+  padding: 0;
+  text-transform: capitalize;
+  transform: translateX(-8px);
+}
+
+.icon {
+  min-width: 24px;
+  transition: transform 0.3s;
+  width: 24px;
+}
+
+.rotate {
+  transform: rotate(90deg);
+}

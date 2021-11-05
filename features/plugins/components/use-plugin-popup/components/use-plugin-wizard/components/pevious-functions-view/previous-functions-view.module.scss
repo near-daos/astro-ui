@@ -1,0 +1,24 @@
+.root {
+  margin-top: 32px;
+}
+
+.mr8 {
+  margin-right: 8px;
+}
+
+.ml8 {
+  margin-left: 8px;
+}
+
+.footer {
+  display: flex;
+  grid-area: footer;
+  justify-content: flex-end;
+  margin-top: 40px;
+}
+
+@media screen and (max-width: 768px) {
+  .footer {
+    justify-content: space-around;
+  }
+}

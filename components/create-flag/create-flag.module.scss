@@ -1,0 +1,31 @@
+@import 'styles/mixins';
+
+// stylelint-disable
+.root {
+  @include mobile-only {
+    position: absolute;
+    width: 1100px;
+    height: 600px;
+    left: -400px;
+    top: -150px;
+  }
+
+  :global .cropper-face.cropper-move {
+    background: url('/flag-mask.svg');
+    background-size: contain;
+    opacity: 1;
+  }
+
+  :global .cropper-view-box {
+    outline: 0;
+  }
+}
+
+.wrapper {
+  @include mobile-only {
+    overflow: hidden;
+    position: relative;
+    width: 300px;
+    height: 300px;
+  }
+}

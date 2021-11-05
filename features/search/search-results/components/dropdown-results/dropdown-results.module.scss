@@ -1,0 +1,74 @@
+@import 'styles/typography';
+
+.root {
+  background: var(--color-neutral-10);
+  border-radius: 8px;
+  box-shadow: 0 8.89583px 30px rgba(0, 0, 0, 0.14);
+  max-height: calc(100vh - 140px);
+  overflow: auto;
+  padding: 24px;
+  width: 100%;
+
+  button {
+    font-size: unset;
+    margin: 4px 0;
+    padding: 0;
+    text-transform: none;
+  }
+}
+
+.label {
+  color: var(--color-neutral-60);
+  margin: 16px 0;
+  text-transform: unset;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: flex-start;
+  margin: 16px 0;
+  width: 100%;
+  > div {
+    align-items: center;
+    display: flex;
+  }
+}
+
+.summary {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: flex-start;
+}
+
+.secondaryLabel {
+  @extend %subtitle5;
+  color: var(--color-neutral-60);
+  margin-left: auto;
+}
+
+.flag {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 40px;
+  width: 40px;
+}
+
+.toggle {
+  color: var(--color-brand-purple);
+  padding: 0;
+  text-transform: unset;
+}
+
+.name {
+  @extend %heading5;
+}
+
+.daoId {
+  @extend %subtitle5;
+  color: var(--color-neutral-60);
+  line-height: 1.3;
+}

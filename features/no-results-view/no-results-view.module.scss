@@ -1,0 +1,41 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  @include centralize;
+  flex-direction: column;
+  gap: 16px;
+  padding: 100px 0;
+}
+
+.image {
+  background-image: url('/assets/illustrations/search.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  min-height: 200px;
+  text-align: center;
+  width: 400px;
+}
+
+.title {
+  @extend %title3;
+  color: var(--color-brand-black);
+  text-align: center;
+}
+
+.desc {
+  @extend %body2;
+  color: var(--color-brand-black);
+  text-align: center;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    padding-top: 30px;
+  }
+  .image {
+    min-height: 140px;
+    width: 240px;
+  }
+}

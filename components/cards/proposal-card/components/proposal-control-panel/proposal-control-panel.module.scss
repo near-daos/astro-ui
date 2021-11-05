@@ -1,0 +1,11 @@
+@import 'styles/mixins';
+
+.root {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+
+  @include tablet-landscape {
+    justify-content: flex-end;
+  }
+}

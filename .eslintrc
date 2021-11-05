@@ -4,6 +4,19 @@
     "next/core-web-vitals",
     "airbnb-typescript-prettier"
   ],
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [
+        ".ts",
+        ".tsx"
+      ]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    }
+  },
   "rules": {
     "no-console": [
       "warn",
@@ -30,6 +43,12 @@
         ]
       }
     ],
+    // Using next/link component that passes href attribute down to wrapped <a /> tag so we dont need this warning
+    "jsx-a11y/anchor-is-valid": [ "error", {
+      "components": [ "Link" ],
+      "specialLink": [ "hrefLeft", "hrefRight" ],
+      "aspects": [ "invalidHref", "preferButton" ]
+    }],
     // Named exports are preferable
     // https://blog.piotrnalepa.pl/2020/06/26/default-exports-vs-named-exports/
     "import/prefer-default-export": "off",
@@ -39,17 +58,7 @@
     // Disable checking for missing 'import React'
     // https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#whats-different-in-the-new-transform
     "react/react-in-jsx-scope": "off",
-    "react/jsx-props-no-spreading": [
-      "warn",
-      {
-        "html": "ignore",
-        "custom": "enforce",
-        "explicitSpread": "ignore",
-        "exceptions": [
-          "Component"
-        ]
-      }
-    ],
+    "react/jsx-props-no-spreading": "off",
     "import/no-extraneous-dependencies": [
       "error",
       {

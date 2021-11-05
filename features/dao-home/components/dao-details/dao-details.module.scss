@@ -1,0 +1,204 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  background: var(--color-neutral-10);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 170px;
+  padding: 80px 24px 40px;
+  position: relative;
+  text-align: center;
+
+  @include tablet-portrait {
+    margin-top: 80px;
+    padding: 80px 48px 40px;
+  }
+
+  @include tablet-landscape {
+    height: 100%;
+    margin-top: 0;
+    padding: 36px 24px 36px 186px;
+    text-align: left;
+  }
+
+  @include desktop {
+    padding: 32px 24px 32px 160px;
+  }
+
+  @include large-desktop {
+    padding: 48px 30px 48px 140px;
+  }
+
+  @include mobile-only {
+    margin-top: 80px;
+  }
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.subtitle {
+  @extend %subtitle3;
+  color: var(--color-neutral-60);
+}
+
+.flag {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  height: 204px;
+  left: 50%;
+  position: absolute;
+  top: -140px;
+  transform: translateX(-50%);
+  width: 180px;
+  z-index: 1;
+
+  @include tablet-landscape {
+    left: -24px;
+    top: 50px;
+    transform: none;
+
+    &.centered {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  @include desktop {
+    left: -38px;
+  }
+
+  @include large-desktop {
+    left: -62px;
+  }
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  @include tablet-landscape {
+    align-items: flex-start;
+  }
+
+  @include large-desktop {
+    align-items: center;
+    flex-direction: row;
+  }
+}
+
+.send {
+  @extend %title4;
+  align-items: center;
+  border: 0;
+  color: var(--color-primary-50);
+  display: flex;
+  margin-top: 12px;
+  min-width: initial;
+  padding: 0;
+  text-transform: none;
+
+  @include large-desktop {
+    flex-direction: row;
+    height: 30px;
+    margin: 0 0 0 10px;
+    min-height: initial;
+  }
+}
+
+.content {
+  font-size: 16px;
+}
+
+.created {
+  @extend %subtitle6;
+  align-self: flex-start;
+  color: var(--color-neutral-60);
+}
+
+.row.bottom {
+  @include large-desktop {
+    justify-content: space-between;
+  }
+}
+
+.links {
+  display: inline-flex;
+  gap: 14px;
+  list-style: none;
+  padding: 0;
+}
+
+.link {
+  @extend %caption1;
+  color: var(--color-primary-50);
+  display: block;
+  margin-top: 4px;
+
+  @include tablet-landscape {
+    display: inline;
+    margin-top: 0;
+  }
+
+  .linkText,
+  .right {
+    display: inline;
+
+    @include tablet-landscape {
+      display: none;
+    }
+  }
+
+  .external {
+    display: none;
+
+    @include tablet-landscape {
+      display: inline;
+      margin: -2px 0 0 8px;
+    }
+  }
+}
+
+.follow {
+  @extend %title2;
+  align-items: center;
+  border: 0;
+  color: var(--color-primary-50);
+  display: flex;
+  margin: 12px auto 0;
+  min-width: initial;
+  padding: 0;
+  text-transform: none;
+  width: auto;
+
+  @include tablet-landscape {
+    margin: 12px 0 0;
+  }
+
+  @include large-desktop {
+    margin: 0;
+  }
+
+  .icon {
+    color: var(--color-neutral-60);
+    margin-right: 10px;
+  }
+}
+
+.followed {
+  .icon {
+    color: var(--color-primary-50);
+  }
+}
+
+.followCell {
+  @include large-desktop {
+    margin-left: auto;
+  }
+}

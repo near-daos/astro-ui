@@ -1,0 +1,138 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  min-width: 60px;
+  position: relative;
+  width: 100%;
+}
+
+.dropdown {
+  align-items: center;
+  display: flex;
+  height: 40px;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+
+.label {
+  @extend %title5;
+  color: var(--color-neutral-90);
+  padding-bottom: 8px;
+}
+
+.select {
+  background-color: var(--color-white);
+  border: 1.5px solid var(--color-neutral-50);
+  border-radius: 4px;
+  cursor: pointer;
+  flex: 1 0 40%;
+  padding: 6.5px 10px;
+  user-select: none;
+
+  .container {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .selected,
+  .selectedMeasure {
+    display: flex;
+    flex: 1;
+  }
+
+  .selected .selectedWrapper {
+    margin-right: 4px;
+  }
+
+  .selectedMeasure .selectedWrapper {
+    margin-right: 4px;
+  }
+
+  .selectedMeasure {
+    height: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+  }
+  .selectedMeasure > div {
+    visibility: hidden;
+  }
+
+  .collapsedLabel {
+    visibility: hidden;
+  }
+
+  .collapsedLabel.visible {
+    visibility: visible;
+  }
+
+  .placeholder {
+    @extend %body1;
+    color: var(--color-neutral-60);
+    font-size: 16px;
+  }
+}
+
+.selectedFullList {
+  border-bottom: 1px solid var(--color-neutral-40);
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4px 8px;
+
+  .selectedWrapper {
+    display: inline-block;
+    margin: 4px;
+  }
+}
+
+.icon {
+  color: var(--color-neutral-80);
+  cursor: pointer;
+  transition: transform 0.5s;
+  width: 18px;
+}
+
+.menu {
+  background: #fff;
+  box-shadow: 0 8.89583px 30px rgba(0, 0, 0, 0.14);
+  list-style: none;
+  overflow-y: auto;
+  padding-inline-start: 0;
+  position: absolute;
+  top: 80%;
+  z-index: 1;
+
+  &.hover {
+    background-color: var(--color-neutral-30);
+  }
+}
+
+.item {
+  display: flex;
+  justify-content: flex-start;
+  min-height: 40px;
+  padding: 11px 18px;
+
+  &:hover {
+    background-color: var(--color-neutral-30);
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.rotate {
+  transform: rotate(180deg);
+}
+
+.checkbox {
+  margin-right: 8px;
+  pointer-events: none;
+}

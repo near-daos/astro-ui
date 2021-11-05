@@ -1,0 +1,197 @@
+image: node:14.16.0
+
+options:
+  size: 2x
+
+definitions:
+  caches:
+    docker-cache: docker-cache
+
+  services:
+    docker:
+      memory: 7128
+
+  steps:
+    - step: &set-environment
+        name: Set Environment
+        artifacts:
+          - environment.sh
+
+    - step: &build
+        name: Installing & Build artifact
+        caches:
+          - node
+        script:
+          - source environment.sh
+          - yarn install
+          - yarn generate-assets
+          - yarn lint
+          - yarn typecheck
+          - yarn build
+        artifacts:
+          - .next/**
+
+    - step: &docker-build-publish
+        name: Docker - Build and Publish
+        services:
+          - docker
+        caches:
+          - docker-cache
+        script:
+          - source environment.sh
+          - >-
+            if [[ -f "docker-cache/cache.tar" ]]; then
+              docker load < docker-cache/cache.tar;
+            fi
+          - >-
+            docker build
+            -f Dockerfile_pipelines
+            -t $APP_NAME:latest
+            -t $APP_NAME:develop-latest
+            -t $APP_NAME:$DOCKER_ENV_TAG
+            .
+          - >-
+            docker save $(docker images -qa) > docker-cache/cache.tar;
+
+          - pipe: atlassian/aws-ecr-push-image:1.4.2
+            variables:
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+              IMAGE_NAME: $APP_NAME
+              TAGS: >-
+                latest
+                develop-latest
+                $DOCKER_ENV_TAG
+
+    - step: &helm-build-deploy
+        name: Helm - Build and Deploy
+        image: alpine/helm:3.6.3
+        script:
+          - source environment.sh
+          - export CHART_FOLDER=deployment/app-chart
+          - helm lint $CHART_FOLDER
+          - >-
+            helm template $APP_NAME $CHART_FOLDER
+            --set image.tag=$DOCKER_ENV_TAG
+            --set environment.near_env=$NEAR_ENV
+            --set environment.near_contract_name=$NEAR_CONTRACT_NAME
+            --set environment.next_public_api_url=$NEXT_PUBLIC_API_URL
+            --set environment.next_public_google_analytics_key=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY
+            --set environment.next_public_near_env=$NEXT_PUBLIC_NEAR_ENV
+            --set ingress.host=$K8S_INGRESS_HOST
+            > $APP_NAME-manifest.yml
+
+          - pipe: atlassian/aws-eks-kubectl-run:1.4.2
+            variables:
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+              CLUSTER_NAME: $EKS_CLUSTER_NAME
+              KUBECTL_COMMAND: 'apply'
+              RESOURCE_PATH: '$APP_NAME-manifest.yml'
+              KUBECTL_ARGS:
+                - "--namespace=$DEPLOYMENT_NAMESPACE"
+
+pipelines:
+  pull-requests:
+    '**':
+      - step:
+          <<: *set-environment
+
+          script:
+            - >-
+              echo export DOCKER_ENV_TAG=qa-$BITBUCKET_COMMIT >> environment.sh
+
+      - step: *build
+
+  custom:
+    qa:
+      - step:
+          <<: *set-environment
+
+          script:
+            - >-
+              echo export DOCKER_ENV_TAG=qa-$BITBUCKET_COMMIT >> environment.sh
+
+      - step: *build
+
+      - step: *docker-build-publish
+
+      - step:
+          <<: *helm-build-deploy
+          deployment: qa
+
+    test:
+      - step:
+          <<: *set-environment
+
+          script:
+            - >-
+              echo export DOCKER_ENV_TAG=test-$BITBUCKET_COMMIT >> environment.sh
+
+      - step: *build
+
+      - step: *docker-build-publish
+
+      - step:
+          <<: *helm-build-deploy
+          deployment: test
+
+  branches:
+    develop:
+      - step:
+          <<: *set-environment
+
+          script:
+            - >-
+              echo export DOCKER_ENV_TAG=develop-$BITBUCKET_COMMIT >> environment.sh
+
+      - step: *build
+
+      - step: *docker-build-publish
+
+      - step:
+          <<: *helm-build-deploy
+          deployment: development
+
+    staging:
+      - step:
+          <<: *set-environment
+
+          script:
+            - >-
+              echo export DOCKER_ENV_TAG=staging-$BITBUCKET_COMMIT >> environment.sh
+            - echo export NEAR_ENV=$NEAR_ENV_STAGING >> environment.sh
+            - echo export NEXT_PUBLIC_NEAR_ENV=$NEXT_PUBLIC_NEAR_ENV_STAGING >> environment.sh
+            - echo export NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_STAGING >> environment.sh
+            - echo export NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY_STAGING >> environment.sh
+
+      - step: *build
+
+      - step: *docker-build-publish
+          
+      - step:
+          <<: *helm-build-deploy
+          deployment: Staging
+
+  tags:
+    '*':
+      - step:
+          <<: *set-environment
+
+          script:
+            - >-
+              echo export DOCKER_ENV_TAG=$BITBUCKET_TAG >> environment.sh
+            - echo export NEAR_ENV=$NEAR_ENV_PROD >> environment.sh
+            - echo export NEXT_PUBLIC_NEAR_ENV=$NEXT_PUBLIC_NEAR_ENV_PROD >> environment.sh
+            - echo export NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_PROD >> environment.sh
+            - echo export NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY_PROD >> environment.sh
+
+      - step: *build
+
+      - step: *docker-build-publish
+
+      - step:
+          <<: *helm-build-deploy
+          deployment: Production

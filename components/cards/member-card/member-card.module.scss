@@ -1,0 +1,142 @@
+@import 'styles/mixins';
+
+.root {
+  align-items: center;
+  background: var(--color-neutral-10);
+  border: 0;
+  border-radius: 8px;
+  display: grid;
+  flex-direction: column;
+  grid-template-areas:
+    'body body'
+    'tags tags'
+    'votes votes'
+    'cardFooter cardFooter';
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  max-width: 328px;
+  overflow: hidden;
+  padding: 24px;
+  position: relative;
+  width: 100%;
+}
+
+.body {
+  grid-area: body;
+}
+
+.tags {
+  grid-area: tags;
+}
+
+.tokens {
+  grid-area: tokens;
+}
+
+.votes {
+  grid-area: votes;
+  margin-top: 32px;
+}
+
+.cardFooter {
+  align-items: center;
+  background-color: var(--color-brand-purple-light);
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  grid-area: cardFooter;
+  height: 40px;
+  justify-content: center;
+  margin: 32px -24px -24px;
+  width: calc(100% + 48px);
+}
+
+.clickable {
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  cursor: pointer;
+  transition: box-shadow 0.4s;
+
+  &:hover {
+    box-shadow: 3px 2px 24px var(--color-black-opacity-25);
+  }
+}
+
+.personIcon {
+  svg {
+    color: var(--color-primary-70);
+  }
+}
+
+.body {
+  @include centralize;
+  gap: 12px;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.title.title {
+  text-transform: lowercase;
+  &::first-letter {
+    text-transform: lowercase;
+  }
+}
+
+.tags {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  height: 64px;
+  justify-content: flex-start;
+
+  margin-top: 24px;
+  overflow: hidden;
+  width: 100%;
+
+  > div {
+    margin: 0 4px 8px;
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 45px;
+  width: 100%;
+}
+
+.footerItem {
+  @include centralize;
+  align-items: flex-start;
+  flex: 1;
+  flex-direction: column;
+  white-space: nowrap;
+
+  .label {
+    color: var(--color-neutral-60);
+  }
+
+  .value {
+    margin: 4px 0 0;
+    text-transform: uppercase;
+  }
+}
+
+.inline {
+  align-items: baseline;
+  display: flex;
+
+  > span:not(:last-of-type) {
+    margin-right: 8px;
+  }
+}
+
+.root.expanded {
+  background: transparent;
+  max-width: 100%;
+  padding: 0;
+  width: 100%;
+
+  .body {
+    margin-top: 0;
+  }
+}

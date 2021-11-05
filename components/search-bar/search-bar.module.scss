@@ -1,0 +1,68 @@
+@import 'styles/mixins';
+
+.root {
+  align-items: center;
+  background: var(--color-neutral-30);
+  border-radius: 40px;
+  display: flex;
+  height: 40px;
+  justify-content: flex-start;
+  overflow: hidden;
+  position: relative;
+  transform: translateZ(0);
+  transition: all 0.2s ease-out;
+  width: 40px;
+}
+
+.anchor {
+  height: 0;
+  left: 0;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+}
+
+.submitIcon,
+.inputIcon {
+  @include centralize;
+  border-radius: 50%;
+  cursor: pointer;
+  flex: 0 0 40px;
+  height: 40px;
+  width: 40px;
+
+  svg {
+    color: var(--color-primary);
+  }
+}
+
+.submitIcon {
+  background: transparent;
+}
+
+.inputIcon {
+  background: var(--color-white);
+}
+
+.input {
+  @include ellipse-text;
+
+  background: transparent;
+  border-width: 0;
+  color: var(--color-brand-black);
+  flex: 1;
+  font-family: 'Inter', sans-serif;
+  margin: 8px 12px;
+  outline: none;
+
+  @include placeholder {
+    color: var(--color-neutral-60);
+  }
+}
+
+.root.expanded {
+  width: 100%;
+  .inputIcon {
+    background: var(--color-brand-purple-light);
+  }
+}

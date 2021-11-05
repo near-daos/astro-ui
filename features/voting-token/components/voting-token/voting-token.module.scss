@@ -1,0 +1,73 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+
+.root {
+  @extend %body1;
+  align-items: center;
+  display: grid;
+  grid-template-areas: 'token symbol total control';
+  grid-template-columns: 1fr 1fr 1fr minmax(160px, 1fr);
+  width: 100%;
+}
+
+.token {
+  grid-area: token;
+}
+
+.symbol {
+  grid-area: symbol;
+}
+
+.total {
+  grid-area: total;
+}
+
+.control {
+  grid-area: control;
+  justify-self: flex-end;
+}
+
+.icon {
+  background-color: var(--color-brand-green-dark);
+  border-radius: 50%;
+  height: 32px;
+  margin-right: 12px;
+  overflow: hidden;
+  width: 32px;
+
+  .selected {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.label {
+  @extend %subtitle5;
+  color: var(--color-neutral-60);
+  margin-bottom: 8px;
+}
+
+.value {
+  @extend %subtitle3;
+  align-items: center;
+  color: var(--color-neutral-90);
+  display: flex;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-xs}px) {
+  .root {
+    grid-row-gap: 24px;
+    grid-template-areas:
+      'token symbol'
+      'total total'
+      'control control';
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .control {
+    justify-self: unset;
+  }
+}

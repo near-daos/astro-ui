@@ -1,0 +1,33 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  @extend %body1;
+  width: 100%;
+
+  .header {
+    @extend %body1;
+  }
+
+  .cropper {
+    display: block;
+    margin-top: 2rem;
+  }
+
+  .btn {
+    margin-top: 24px;
+  }
+
+  .edit {
+    @include centralize;
+    flex-direction: column;
+    margin-top: 42px;
+  }
+
+  .subtitle {
+    @extend %heading2;
+    align-items: center;
+    display: flex;
+    margin: 34px 0 24px;
+  }
+}

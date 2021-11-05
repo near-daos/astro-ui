@@ -1,0 +1,19 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: block;
+}
+
+.header {
+  @include centralize;
+
+  h2 {
+    margin: 0 14px;
+  }
+}
+
+.content {
+  color: var(--color-neutral-90);
+  margin-top: 40px;
+}

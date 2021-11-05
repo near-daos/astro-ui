@@ -1,0 +1,32 @@
+@import 'styles/mixins';
+
+.root {
+  @include centralize;
+  background-color: var(--color-neutral-20);
+  height: 100%;
+
+  position: relative;
+
+  .icon {
+    color: var(--color-primary-50);
+    width: 24px;
+  }
+
+  .input {
+    height: 0;
+    position: absolute;
+    width: 0;
+  }
+
+  .btn {
+    @include centralize;
+    border-radius: 50%;
+    height: 100%;
+    left: 0;
+    min-width: unset;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+}

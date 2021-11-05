@@ -1,0 +1,31 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.header {
+  @include centralize;
+
+  h2 {
+    margin: 0 14px;
+  }
+}
+
+.policyWrapper {
+  margin-top: 24px;
+
+  > div {
+    margin: 0 -48px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .footer {
+    justify-content: space-between;
+  }
+
+  .policyWrapper {
+    > div {
+      margin: 0 -24px;
+      padding: 24px;
+    }
+  }
+}

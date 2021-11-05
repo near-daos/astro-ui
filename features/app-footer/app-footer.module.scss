@@ -1,0 +1,264 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-brand-black);
+  color: var(--color-white);
+  grid-area: footer;
+  width: 100%;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: auto;
+  width: 100%;
+}
+
+.invitation {
+  @extend %heading2;
+  column-gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  grid-area: invitation;
+  justify-content: center;
+  margin-bottom: 16px;
+  text-align: center;
+
+  @include tablet-landscape {
+    margin-bottom: 0;
+  }
+
+  i {
+    display: block;
+    margin-bottom: 16px;
+    width: 100%;
+  }
+
+  span {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+.register {
+  color: var(--color-success-20);
+
+  &:hover {
+    color: var(--color-success);
+  }
+}
+
+.social {
+  align-items: center;
+  column-gap: 24px;
+  display: flex;
+  grid-area: social;
+  margin-bottom: 14px;
+}
+
+.icon {
+  &:hover {
+    color: var(--color-success);
+  }
+}
+
+.report {
+  grid-area: report;
+  margin-top: 8px;
+}
+
+.progress {
+  display: none;
+  grid-area: progress;
+  margin-top: 8px;
+
+  @include tablet-landscape {
+    text-align: right;
+  }
+}
+
+.version {
+  grid-area: version;
+  margin-top: 8px;
+}
+
+.devLink {
+  @include font(12px, 18px, 500);
+  color: var(--color-white);
+
+  &:hover {
+    color: var(--color-success);
+  }
+}
+
+.links {
+  @include font(0.75em, 18px, 400);
+  color: var(--color-neutral-60);
+  column-gap: 24px;
+  display: flex;
+  flex-direction: column;
+  grid-area: links;
+  margin-top: 16px;
+}
+
+.link {
+  @extend %subtitle5;
+  flex-shrink: 0;
+  transition: color 0.4s;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--color-primary-30);
+  }
+}
+
+.copyright {
+  @include font(0.75em, 18px, 400);
+  color: var(--color-neutral-60);
+  grid-area: copyright;
+  margin-top: 16px;
+}
+
+.powered {
+  @extend %caption1;
+  align-items: center;
+  column-gap: 12px;
+  display: flex;
+  grid-area: powered;
+  margin-top: 16px;
+
+  span {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+.bottom {
+  padding: 24px;
+  width: 100%;
+
+  @include desktop {
+    padding: 46px 48px 30px;
+  }
+
+  @include large-desktop {
+    padding: 54px 120px 36px;
+  }
+
+  .wrapper {
+    grid-template-areas:
+      'invitation'
+      'social'
+      'report'
+      'version'
+      'progress'
+      'copyright'
+      'links'
+      'powered';
+
+    max-width: 1130px;
+
+    @include tablet-landscape {
+      grid-gap: 32px;
+      grid-template-areas:
+        'invitation invitation invitation'
+        'social social powered'
+        'links report copyright'
+        'version . progress';
+      grid-template-columns: 2fr 1fr 3fr;
+    }
+
+    @include desktop {
+      grid-template-columns: 3fr 1fr 3fr;
+    }
+  }
+
+  .links {
+    @include tablet-landscape {
+      margin-top: 0;
+    }
+  }
+
+  .link {
+    color: var(--color-primary-30);
+  }
+
+  .link:hover {
+    color: var(--color-primary-40);
+  }
+
+  .social {
+    @include tablet-landscape {
+      margin-bottom: 0;
+    }
+
+    @include desktop {
+      margin-bottom: 20px;
+    }
+  }
+
+  .report {
+    @include tablet-landscape {
+      line-height: 1;
+    }
+  }
+
+  .powered {
+    @include tablet-landscape {
+      @include font(1em, 24px, 400);
+      justify-self: end;
+      margin-top: 0;
+
+      @include desktop {
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  .logo {
+    @include tablet-landscape {
+      width: 135px;
+    }
+  }
+
+  .copyright {
+    @include tablet-landscape {
+      justify-self: end;
+      margin-top: 0;
+      text-align: right;
+    }
+  }
+
+  .report,
+  .version,
+  .progress {
+    @include tablet-landscape {
+      margin-top: 0;
+    }
+  }
+}
+
+.side {
+  bottom: 0;
+  left: 0;
+  padding: 16px 24px;
+  position: absolute;
+  width: 100%;
+
+  .wrapper {
+    grid-template-areas:
+      'social'
+      'report'
+      'version'
+      'progress'
+      'copyright'
+      'links'
+      'powered';
+  }
+
+  .progress {
+    display: block;
+    text-align: left;
+  }
+}

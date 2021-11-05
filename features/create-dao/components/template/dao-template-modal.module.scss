@@ -1,0 +1,43 @@
+@import 'styles/mixins';
+
+.root {
+  @include centralize;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: flex-start;
+  padding: 48px;
+  text-align: center;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.modal {
+  padding: 0;
+
+  @include tablet-portrait {
+    max-height: none;
+    overflow: hidden;
+  }
+}
+
+.title {
+  color: var(--color-primary-50);
+}
+
+.button {
+  margin-top: 32px;
+}
+
+.target {
+  text-transform: capitalize;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  width: 100%;
+}

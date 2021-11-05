@@ -1,0 +1,56 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'header'
+    'description'
+    'bounties';
+  grid-template-columns: 1fr;
+  padding-top: 56px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  grid-area: header;
+
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
+    gap: 35px;
+  }
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.description {
+  @extend %body1;
+  grid-area: description;
+  width: 100%;
+}
+
+.bounties {
+  grid-area: bounties;
+
+  @include tablet-landscape {
+    margin-top: 0.5em;
+    width: auto;
+  }
+}
+
+.reset {
+  bottom: 10px;
+  position: fixed;
+  right: 10px;
+
+  @include tablet-portrait {
+    bottom: 40px;
+    right: 40px;
+  }
+}

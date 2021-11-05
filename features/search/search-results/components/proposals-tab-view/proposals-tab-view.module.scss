@@ -1,0 +1,111 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  padding-top: 56px;
+}
+
+.votingEnds {
+  @extend %body1;
+  align-self: center;
+  display: flex;
+  padding: 0;
+  text-transform: unset;
+
+  &:first-child {
+    margin-top: 40px;
+  }
+
+  .bold {
+    @extend %title3;
+  }
+
+  .icon {
+    transition: transform 0.5s;
+  }
+
+  .rotate {
+    transform: rotate(90deg);
+  }
+}
+
+.daoDivider {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+  margin: 0 0 12px;
+  padding-left: 46px;
+  position: relative;
+
+  .daoLink {
+    align-items: center;
+    display: flex;
+  }
+
+  .flag {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 100px;
+    left: -44px;
+    position: absolute;
+    width: 100px;
+  }
+
+  h3 {
+    width: fit-content;
+    word-break: normal;
+  }
+
+  .divider {
+    background: var(--color-primary-20);
+    flex: 1;
+    height: 1.5px;
+  }
+
+  button {
+    min-width: unset;
+    padding: 0;
+  }
+}
+
+.cardWrapper {
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 40px;
+  }
+}
+
+.collapseControl {
+  margin-bottom: 12px;
+}
+
+.toggle {
+  @extend %title5;
+  color: var(--color-primary);
+  text-align: right;
+  text-transform: capitalize;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .daoDivider {
+    gap: 12px;
+    margin: 12px 0;
+    h3 {
+      @include ellipse-text;
+    }
+    button {
+      min-width: unset;
+    }
+  }
+
+  .votingEnds {
+    &:first-child {
+      margin-top: 20px;
+    }
+  }
+}

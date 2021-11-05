@@ -1,0 +1,57 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-column-gap: 16px;
+  grid-template-areas:
+    'avatar label'
+    'avatar button';
+  grid-template-columns: 66px 1fr;
+}
+
+.avatar {
+  border-radius: 50%;
+  grid-area: avatar;
+  height: 66px;
+  overflow: hidden;
+
+  .selected {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.label {
+  @extend %subtitle5;
+  color: var(--color-neutral-60);
+  grid-area: label;
+}
+
+.button {
+  grid-area: button;
+}
+
+.remove {
+  grid-area: remove;
+}
+
+.empty {
+  @include centralize;
+  background-color: var(--color-neutral-20);
+  height: 100%;
+
+  .icon {
+    color: var(--color-primary-50);
+    width: 24px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .root {
+    grid-row-gap: 4px;
+  }
+}

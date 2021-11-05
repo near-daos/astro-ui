@@ -1,0 +1,39 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+
+.content {
+  margin-top: 44px;
+}
+
+.header {
+  @extend %subtitle5;
+  align-items: center;
+  border-bottom: 1px solid var(--color-neutral-40);
+  color: var(--color-neutral-60);
+  display: grid;
+  grid-template-areas: 'amount delegated';
+  grid-template-columns: 1fr 2fr 1fr;
+  padding-bottom: 12px;
+  width: 100%;
+}
+
+.amount {
+  grid-area: amount;
+}
+
+.delegated {
+  grid-area: delegated;
+}
+
+.control {
+  display: flex;
+  grid-area: control;
+  justify-content: flex-end;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-xs}px) {
+  .header {
+    grid-template-areas: 'amount delegated';
+    grid-template-columns: 1fr 1fr;
+  }
+}

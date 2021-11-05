@@ -1,0 +1,79 @@
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-column-gap: 16px;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'info info'
+    'token amount'
+    'recipient recipient'
+    'vote vote'
+    'none footer';
+  grid-template-columns: 1fr 1fr;
+}
+
+.info {
+  align-items: center;
+  display: flex;
+  grid-area: info;
+
+  .label {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+  }
+
+  .value {
+    @extend %title3;
+  }
+
+  > div:first-child {
+    margin-right: 64px;
+  }
+}
+
+.token {
+  grid-area: token;
+}
+
+.amount {
+  grid-area: amount;
+}
+
+.recipient {
+  grid-area: recipient;
+}
+
+.vote {
+  grid-area: vote;
+}
+
+.footer {
+  display: flex;
+  grid-area: footer;
+}
+
+.mr8 {
+  margin-right: 8px;
+}
+
+.ml8 {
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .root {
+    grid-template-areas:
+      'info'
+      'token'
+      'amount'
+      'recipient'
+      'vote'
+      'footer';
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    justify-content: space-around;
+  }
+}

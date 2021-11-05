@@ -1,0 +1,31 @@
+@import 'styles/typography';
+
+.root {
+  @include centralize;
+  background: var(--color-neutral-10);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  flex-direction: column;
+  gap: 22px;
+  height: 100%;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.title {
+  color: var(--color-neutral-60);
+  margin: 0 0 4px;
+}
+
+.subtitle {
+  margin: 0;
+
+  &.members {
+    font-size: 2em;
+    line-height: 32px;
+  }
+
+  .type {
+    font-weight: 500;
+  }
+}

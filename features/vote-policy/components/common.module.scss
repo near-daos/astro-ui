@@ -1,0 +1,107 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.row {
+  border-bottom: 1.5px solid var(--color-neutral-60);
+  display: grid;
+  grid-column-gap: 8px;
+  grid-row-gap: 24px;
+  grid-template-areas: 'whoCanVote voteBy amount threshold toPass';
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  padding-bottom: 16px;
+  padding-top: 16px;
+
+  input {
+    border-color: var(--color-neutral-60);
+    height: 48px;
+    width: 100%;
+
+    @include placeholder {
+      color: var(--color-neutral-60);
+      opacity: 1;
+    }
+  }
+}
+
+.whoCanVote {
+  grid-area: whoCanVote;
+  > label:first-of-type {
+    display: none;
+  }
+}
+
+.amount {
+  grid-area: amount;
+  > span:first-of-type {
+    display: none;
+  }
+}
+
+.toPass {
+  @extend %body1;
+  align-items: center;
+  display: flex;
+  grid-area: toPass;
+  justify-content: space-evenly;
+}
+
+.voteBy {
+  grid-area: voteBy;
+  > span:first-of-type {
+    display: none;
+  }
+}
+
+.threshold {
+  grid-area: threshold;
+  > span:first-of-type {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .row {
+    border-bottom: 1px solid var(--color-neutral-60);
+    grid-column-gap: 8px;
+    grid-template-areas:
+      'whoCanVote whoCanVote'
+      'voteBy amount'
+      'threshold toPass';
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .voteBy {
+    grid-area: voteBy;
+    > span:first-of-type {
+      display: block;
+      text-transform: none;
+    }
+  }
+
+  .whoCanVote {
+    grid-area: whoCanVote;
+    margin-top: 16px;
+    > label:first-of-type {
+      display: block;
+    }
+  }
+
+  .amount {
+    grid-area: amount;
+    > span:first-of-type {
+      display: block;
+    }
+  }
+
+  .threshold {
+    grid-area: threshold;
+    > span:first-of-type {
+      display: block;
+      text-transform: none;
+    }
+  }
+
+  .toPass {
+    margin-top: 16px;
+  }
+}

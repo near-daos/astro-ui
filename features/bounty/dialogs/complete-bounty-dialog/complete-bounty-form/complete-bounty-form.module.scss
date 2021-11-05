@@ -1,0 +1,106 @@
+.root {
+  display: grid;
+  grid-column-gap: 8px;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'recipient recipient'
+    'group group'
+    'externalUrl externalUrl'
+    'voteDetails voteDetails'
+    'footer footer';
+  grid-template-columns: 1fr 1fr;
+  margin-top: 40px;
+}
+
+.recipient {
+  align-items: flex-end;
+  display: flex;
+  grid-area: recipient;
+  white-space: nowrap;
+
+  .inputInline {
+    transform: translateY(-12px);
+  }
+}
+
+.token {
+  grid-area: token;
+}
+
+.amount {
+  grid-area: amount;
+}
+
+.group {
+  grid-area: group;
+}
+
+.externalUrl {
+  grid-area: externalUrl;
+}
+
+.slot {
+  grid-area: slot;
+}
+
+.deadline {
+  grid-area: deadline;
+}
+
+.vote {
+  grid-area: voteDetails;
+}
+
+.footer {
+  display: flex;
+  grid-area: footer;
+  justify-content: flex-end;
+}
+
+.textArea {
+  &textarea {
+    width: 100%;
+  }
+}
+
+.input {
+  input {
+    flex-basis: unset;
+    padding: 12.5px;
+  }
+}
+
+.inlineInput {
+  height: 48px;
+  margin: 0 8px;
+}
+
+.deadlineUnit {
+  input {
+    max-width: 120px;
+  }
+}
+
+.mr8 {
+  margin-right: 8px;
+}
+
+.ml8 {
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .root {
+    grid-template-areas:
+      'recipient'
+      'group'
+      'externalUrl'
+      'voteDetails'
+      'footer';
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    justify-content: space-between;
+  }
+}

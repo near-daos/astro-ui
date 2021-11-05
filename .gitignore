@@ -11,6 +11,8 @@
 # next.js
 /.next/
 /out/
+# generated at launch
+next-env.d.ts
 
 # production
 /build
@@ -33,5 +35,13 @@ yarn-error.log*
 # vercel
 .vercel
 
-#Intellij
+# Intellij
 .idea/
+
+# Storybook
+storybook-static
+
+# tsc-files
+tsconfig.*.json
+
+.history

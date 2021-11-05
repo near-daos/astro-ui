@@ -1,0 +1,55 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-column-gap: 8px;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'header'
+    'description'
+    'plugins';
+  grid-template-columns: 1fr;
+  padding-top: 56px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  grid-area: header;
+
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
+    gap: 35px;
+  }
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.description {
+  @extend %body1;
+  grid-area: description;
+}
+
+.plugins {
+  grid-area: plugins;
+
+  @include tablet-landscape {
+    margin-top: 24px;
+  }
+}
+
+.reset {
+  bottom: 10px;
+  position: fixed;
+  right: 10px;
+
+  @include tablet-portrait {
+    bottom: 40px;
+    right: 40px;
+  }
+}
