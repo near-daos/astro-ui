@@ -1,8 +1,6 @@
 import cn from 'classnames';
 import React, { FC, useEffect, useState } from 'react';
 
-import { CREATE_DAO_URL, MY_DAOS_URL, MY_FEED_URL } from 'constants/routing';
-
 import { useAuthContext } from 'context/AuthContext';
 
 import { AccountPopupItem } from './components/AccountPopupItem';
@@ -40,13 +38,6 @@ export const AccountPopup: FC<AccountPopupProps> = ({ show }) => {
   if (canRender) {
     return (
       <div className={rootClassName}>
-        <AccountPopupItem href={MY_DAOS_URL}>My DAOs</AccountPopupItem>
-        <AccountPopupItem href={MY_FEED_URL}>My Feed</AccountPopupItem>
-        <div className={styles.delimiter} />
-        <AccountPopupItem href={CREATE_DAO_URL}>
-          Create New DAO
-        </AccountPopupItem>
-        <div className={styles.delimiter} />
         <AccountPopupItem className={styles.auth} onClick={logout}>
           Disconnect
         </AccountPopupItem>
