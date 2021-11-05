@@ -1,13 +1,16 @@
 .root {
   color: var(--color-neutral-60);
   cursor: pointer;
+  display: flex;
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
+  height: 100%;
   line-height: 24px;
-  margin-right: 6px;
+  margin-right: 16px;
   position: relative;
+  transition: 0.2s;
 
   &:hover,
   &.active {
@@ -18,22 +21,63 @@
 .description {
   align-items: center;
   display: flex;
-  padding: 0 4px;
+  padding: 0 8px;
+}
+
+.iconHolder {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-right: 4px;
+  overflow: visible;
+  position: relative;
+
+  &::after {
+    background-color: transparent;
+    border-radius: 4px;
+    content: '';
+    display: block;
+    height: 30px;
+    position: absolute;
+    width: 30px;
+    z-index: -1;
+  }
 
   .icon {
-    color: var(--color-brand-purple);
-    margin-right: 8px;
+    min-height: 20px;
+    min-width: 20px;
   }
+}
+
+.root:hover {
+  .iconHolder::after {
+    background-color: var(--color-neutral-20);
+  }
+}
+
+.label {
+  display: none;
+  white-space: nowrap;
 }
 
 .underline {
   background-color: transparent;
-  bottom: -8px;
-  height: 2px;
+  bottom: 16px;
+  height: 1px;
   position: absolute;
   width: 100%;
 }
 
-.active .underline {
-  background-color: var(--color-primary);
+.active {
+  .label {
+    display: block;
+  }
+
+  .underline {
+    background-color: var(--color-primary);
+  }
+}
+
+.tooltip {
+  white-space: nowrap;
 }

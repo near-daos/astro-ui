@@ -21,10 +21,16 @@ import { IconButton } from 'components/button/IconButton';
 import styles from './SearchBar.module.scss';
 
 export interface SearchBarProps {
+  className?: string;
   placeholder?: string;
+  onSearchToggle: (state: boolean) => void;
 }
 
-export const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
+export const SearchBar: FC<SearchBarProps> = ({
+  className,
+  placeholder,
+  onSearchToggle,
+}) => {
   const router = useRouter();
   const ref = useRef(null);
 
@@ -36,6 +42,7 @@ export const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
     referenceElement,
     popperElement,
     {
+      placement: 'bottom-start',
       modifiers: [
         {
           name: 'offset',
@@ -60,6 +67,14 @@ export const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
     setSearchResults,
   } = useSearchResults();
 
+  const onSearchStateToggle = useCallback(
+    state => {
+      setExpanded(state);
+      onSearchToggle(state);
+    },
+    [onSearchToggle]
+  );
+
   useDebounce(
     () => {
       const query = value?.trim() ?? '';
@@ -76,7 +91,7 @@ export const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
 
   useClickAway(ref, e => {
     if (!searchResults) {
-      setExpanded(false);
+      onSearchStateToggle(false);
     }
 
     const searchResElement = (e.target as HTMLElement).closest(
@@ -91,8 +106,8 @@ export const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
   const handleCancel = useCallback(() => {
     handleClose();
     setValue('');
-    setExpanded(false);
-  }, [handleClose]);
+    onSearchStateToggle(false);
+  }, [handleClose, onSearchStateToggle]);
 
   const handleSubmit = useCallback(() => {
     if (value.trim()) {
@@ -119,9 +134,9 @@ export const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
   };
 
   const openSearch = useCallback(() => {
-    setExpanded(true);
+    onSearchStateToggle(true);
     inputRef?.current?.focus();
-  }, []);
+  }, [onSearchStateToggle]);
 
   function getDropdownWidth() {
     return document?.body?.offsetWidth < 768
@@ -151,7 +166,10 @@ export const SearchBar: FC<SearchBarProps> = ({ placeholder }) => {
   }
 
   return (
-    <div className={cn(styles.root, { [styles.expanded]: expanded })} ref={ref}>
+    <div
+      className={cn(styles.root, className, { [styles.expanded]: expanded })}
+      ref={ref}
+    >
       <div className={styles.iconHolder}>
         <IconButton
           size="medium"
