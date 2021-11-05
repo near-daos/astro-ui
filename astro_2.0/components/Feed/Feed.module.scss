@@ -2,12 +2,19 @@
   width: 100%;
 }
 
+.title {
+  align-items: center;
+  display: inline-flex;
+  line-height: 1;
+  margin: 0;
+}
+
 .statusFilterWrapper {
   background-color: var(--color-neutral-10);
   display: flex;
   justify-content: center;
   margin-left: auto;
-  max-width: 960px;
+  max-width: calc(100% - 152px);
   padding: 67px 0 30px;
   position: sticky;
   top: 20px;
@@ -16,6 +23,16 @@
 
   .categoriesListRoot {
     margin-left: auto;
+  }
+
+  .categoriesListApprovedInputWrapperChecked {
+    background-color: var(--color-success-50);
+    border-color: var(--color-success-50);
+  }
+
+  .categoriesListFailedInputWrapperChecked {
+    background-color: var(--color-error-60);
+    border-color: var(--color-error-60);
   }
 
   &::after {
@@ -39,7 +56,7 @@
 /* stylelint-disable-next-line */
 .container :global(.infinite-scroll-component__outerdiv) {
   flex-grow: 1;
-  max-width: 960px;
+  max-width: calc(100% - 152px);
 }
 
 .categoriesListWrapper {

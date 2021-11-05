@@ -6,4 +6,5 @@ export interface TabItem<T = string> {
   content?: ReactNode;
   onClick?: (tab: TabItem) => void;
   className?: string;
+  activeClassName?: string;
 }

@@ -13,6 +13,7 @@ import { useAuthContext } from 'context/AuthContext';
 import { useCustomTokensContext } from 'context/CustomTokensContext';
 import { NoResultsView } from 'features/no-results-view';
 import { getVoteDetails } from 'features/vote-policy/helpers';
+import * as Typography from 'components/Typography';
 import { getScope } from 'components/cards/expanded-proposal-card/helpers';
 
 import { Loader } from 'components/loader';
@@ -138,6 +139,10 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
   return (
     <main className={styles.root}>
       <div className={styles.statusFilterWrapper}>
+        <Typography.Title className={styles.title} size={2}>
+          {isMyFeed ? 'My ' : 'Astro '}proposals feed
+        </Typography.Title>
+
         <StatusFilters
           proposal={queries.status}
           onChange={onProposalFilterChange}
@@ -153,11 +158,19 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
               value: ProposalStatuses.Approved,
               label: 'Approved',
               name: ProposalStatuses.Approved,
+              classes: {
+                inputWrapperChecked:
+                  styles.categoriesListApprovedInputWrapperChecked,
+              },
             },
             {
               value: ProposalStatuses.Failed,
               label: 'Failed',
               name: ProposalStatuses.Failed,
+              classes: {
+                inputWrapperChecked:
+                  styles.categoriesListFailedInputWrapperChecked,
+              },
             },
           ]}
           className={styles.categoriesListRoot}

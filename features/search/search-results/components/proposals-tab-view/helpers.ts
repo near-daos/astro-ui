@@ -3,10 +3,10 @@ import { useCallback, useState } from 'react';
 
 import { Proposal } from 'types/proposal';
 
-import { arrangeByDao } from 'features/member-home';
+// import { arrangeByDao } from 'features/member-home';
 import { FilterName } from 'features/search/search-filters';
 import { Indexed, ProposalByDao } from 'features/member-home/types';
-import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
+// import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
 
 import {
   isGovernanceProposal,
@@ -44,6 +44,7 @@ interface SearchFilter {
 
 export interface FilteredProposalsData {
   filteredProposalsData: FilteredData;
+  filteredProposals: Proposal[];
   filter: SearchFilter;
   onFilterChange: (
     name: FilterName,
@@ -165,22 +166,30 @@ export const useFilteredProposalsData = (
     return matched;
   });
 
-  const {
-    lessThanHourProposals,
-    lessThanDayProposals,
-    lessThanWeekProposals,
-    moreThanWeekProposals,
-    otherProposals,
-  } = splitProposalsByVotingPeriod(filteredProposals);
+  // const {
+  //   lessThanHourProposals,
+  //   lessThanDayProposals,
+  //   lessThanWeekProposals,
+  //   moreThanWeekProposals,
+  //   otherProposals,
+  // } = splitProposalsByVotingPeriod(filteredProposals);
 
   return {
+    // filteredProposalsData: {
+    //   lessThanHourProposals: arrangeByDao(lessThanHourProposals),
+    //   lessThanDayProposals: arrangeByDao(lessThanDayProposals),
+    //   lessThanWeekProposals: arrangeByDao(lessThanWeekProposals),
+    //   moreThanWeekProposals: arrangeByDao(moreThanWeekProposals),
+    //   otherProposals: arrangeByDao(otherProposals),
+    // },
     filteredProposalsData: {
-      lessThanHourProposals: arrangeByDao(lessThanHourProposals),
-      lessThanDayProposals: arrangeByDao(lessThanDayProposals),
-      lessThanWeekProposals: arrangeByDao(lessThanWeekProposals),
-      moreThanWeekProposals: arrangeByDao(moreThanWeekProposals),
-      otherProposals: arrangeByDao(otherProposals),
+      lessThanHourProposals: {},
+      lessThanDayProposals: {},
+      lessThanWeekProposals: {},
+      moreThanWeekProposals: {},
+      otherProposals: {},
     },
+    filteredProposals,
     filter,
     onFilterChange,
   };

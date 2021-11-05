@@ -18,16 +18,19 @@ export const SearchResultsRenderer: FC = () => {
       id: 0,
       label: `DAOs (${searchResults?.daos.length ?? 0})`,
       content: <DaosTabView />,
+      className: styles.tabsListItem,
     },
     {
       id: 1,
       label: `Proposals (${searchResults?.proposals.length ?? 0})`,
       content: <ProposalsTabView />,
+      className: styles.tabsListItem,
     },
     {
       id: 2,
       label: `Members (${searchResults?.members.length ?? 0})`,
       content: <MembersTabView />,
+      className: styles.tabsListItem,
     },
   ];
 
@@ -38,7 +41,11 @@ export const SearchResultsRenderer: FC = () => {
         <span>&nbsp;&lsquo;{searchResults?.query}&rsquo;</span>
       </div>
       <div className={styles.content}>
-        <Tabs tabs={TABS} />
+        <Tabs
+          tabs={TABS}
+          tabsWrapperClassName={styles.tabsRoot}
+          tabsListRootClassName={styles.tabsListRoot}
+        />
       </div>
     </div>
   );

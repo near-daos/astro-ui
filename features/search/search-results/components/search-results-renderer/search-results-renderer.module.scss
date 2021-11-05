@@ -9,4 +9,28 @@
     color: var(--color-neutral-60);
     text-transform: lowercase;
   }
+
+  .tabsRoot {
+    display: block;
+    margin-left: auto;
+  }
+
+  .tabsListRoot {
+    border: 0;
+    justify-content: flex-end;
+    margin: 0;
+  }
+
+  .tabsListItem {
+    border-bottom: 1px solid var(--color-neutral-40);
+    color: var(--color-neutral-50);
+    font-weight: 400;
+  }
+
+  .tabsListItem::after {
+    border-bottom: 1px solid var(--color-brand-purple);
+    color: var(--color-neutral-80);
+    font-weight: 400;
+    padding: 0 14px 3px;
+  }
 }

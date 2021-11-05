@@ -6,20 +6,6 @@
   padding-top: 56px;
 }
 
-.card {
-  display: grid;
-  grid-column-gap: 24px;
-  grid-row-gap: 24px;
-  grid-template-areas:
-    'daoDetails daoDetails daoInfo'
-    'daoDetails daoDetails proposals';
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-.daoDetails {
-  grid-area: daoDetails;
-}
-
 .proposals {
   grid-area: proposals;
 }

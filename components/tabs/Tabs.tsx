@@ -19,13 +19,15 @@ import styles from './tabs.module.scss';
 import { TabItem } from './types';
 
 export interface TabsProps<T> {
-  className?: string;
   tabs: TabItem<T>[];
   fitContent?: boolean;
   isControlled?: boolean;
   renderTabHeader?: (id: string, label?: string | undefined) => void;
   onTabSelect?: (name: T) => void;
   skipShallow?: boolean;
+  className?: string;
+  tabsWrapperClassName?: string;
+  tabsListRootClassName?: string;
 }
 
 resetIdCounter();
@@ -41,6 +43,8 @@ const Tabs = <T,>(
     onTabSelect,
     skipShallow = false,
     children,
+    tabsWrapperClassName,
+    tabsListRootClassName,
   } = props;
   const router = useRouter();
 
@@ -104,8 +108,8 @@ const Tabs = <T,>(
   return (
     <div className={rootClassName}>
       <ReactTabs {...tabsProps}>
-        <div className={styles.tabsWrapper}>
-          <TabList className={styles.tabs}>
+        <div className={cn(styles.tabsWrapper, tabsWrapperClassName)}>
+          <TabList className={cn(styles.tabs, tabsListRootClassName)}>
             {tabs.map(item => {
               if (typeof item.label === 'string') {
                 return (

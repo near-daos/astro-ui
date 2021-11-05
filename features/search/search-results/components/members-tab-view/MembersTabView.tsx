@@ -1,8 +1,8 @@
 import React, { FC, useCallback } from 'react';
 
+import { NoResultsView } from 'features/no-results-view';
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
-import { NoSearchResultsView } from 'features/search/search-results/components/no-search-results-view';
 
 import MemberCard, { MemberCardPopup } from 'components/cards/member-card';
 import { Badge, Variant } from 'components/badge/Badge';
@@ -22,8 +22,19 @@ export const MembersTabView: FC = () => {
     [showCardModal]
   );
 
-  if (!searchResults?.members?.length)
-    return <NoSearchResultsView query={searchResults?.query} />;
+  if ((searchResults?.members || []).length === 0) {
+    return (
+      <NoResultsView
+        title={
+          searchResults?.query
+            ? `No results for ${searchResults.query}`
+            : 'No results'
+        }
+        subTitle="We couldn't find anything matching your search. Try again with a
+        different term."
+      />
+    );
+  }
 
   return (
     <div className={styles.root}>

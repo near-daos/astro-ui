@@ -5,12 +5,22 @@
 .root {
   display: flex;
   flex-direction: column;
-  padding-top: 6px;
+  padding-top: 44px;
 
   .statusFilterRoot {
     border: 0;
     margin-left: auto;
     max-width: 800px;
+  }
+
+  .categoriesListApprovedInputWrapperChecked {
+    background-color: var(--color-success-50);
+    border-color: var(--color-success-50);
+  }
+
+  .categoriesListFailedInputWrapperChecked {
+    background-color: var(--color-error-60);
+    border-color: var(--color-error-60);
   }
 }
 

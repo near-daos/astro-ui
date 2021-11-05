@@ -28,8 +28,12 @@ const StatusFilters = ({
           checkedIcon={<div className={styles.checkboxIconChecked} />}
           label={item.label}
           classes={{
-            root: styles.checkboxRoot,
-            inputWrapper: styles.checkboxInputWrapper,
+            ...item.classes,
+            root: classNames(styles.checkboxRoot, item.classes?.root),
+            inputWrapper: classNames(
+              styles.checkboxInputWrapper,
+              item.classes?.inputWrapper
+            ),
           }}
         />
       ))}
@@ -41,7 +45,12 @@ type Props = {
   proposal?: string;
   disabled?: boolean;
   onChange: (proposal?: string) => React.ChangeEventHandler<HTMLInputElement>;
-  list: { label: React.ReactNode; value?: string; name: string }[];
+  list: {
+    label: React.ReactNode;
+    value?: string;
+    name: string;
+    classes?: React.ComponentProps<typeof Checkbox>['classes'];
+  }[];
   className?: string;
 };
 

@@ -1,77 +1,43 @@
-import React, { FC } from 'react';
+import React from 'react';
+
+import { NoResultsView } from 'features/no-results-view';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
-import { DaoDetails } from 'features/dao-home/components/dao-details/DaoDetails';
-import { ProposalTrackerCard } from 'components/cards/proposal-tracker-card/ProposalTrackerCard';
-import { DaoInfoCard } from 'components/cards/dao-info-card/DaoInfoCard';
 import { Highlighter } from 'features/search/search-results/components/highlighter';
-import { NoSearchResultsView } from 'features/search/search-results/components/no-search-results-view';
+import { DaoDetails } from 'astro_2.0/components/DaoDetails';
 
 import styles from './dao-tab-view.module.scss';
 
-export const DaosTabView: FC = () => {
+export const DaosTabView = (): JSX.Element => {
   const { searchResults } = useSearchResults();
 
-  if (!searchResults?.daos?.length) {
-    return <NoSearchResultsView query={searchResults?.query} />;
+  if ((searchResults?.daos || []).length === 0) {
+    return (
+      <NoResultsView
+        title={
+          searchResults?.query
+            ? `No results for ${searchResults.query}`
+            : 'No results'
+        }
+        subTitle="We couldn't find anything matching your search. Try again with a
+        different term."
+      />
+    );
   }
 
   return (
     <div className={styles.root}>
       <Highlighter>
-        {searchResults?.daos.map(item => {
-          const title = item.displayName || item.name;
-          const daoDetails = {
-            title,
-            subtitle: item.id,
-            description: item.description,
-            links: [],
-            transaction: item.txHash,
-            createdAt: item.createdAt,
-            more: {
-              label: 'Show more',
-              link: `/dao/${item.id}`,
-            },
-          };
-          const flag = item.logo;
-          const proposalTrackerInfo = {
-            activeVotes: 14,
-            totalProposals: 3,
-          };
-          const daoInfo = {
-            items: [
-              {
-                label: 'DAO funds',
-                value: `${item.funds}`,
-                valueType: `USD`,
-              },
-              {
-                label: 'Members',
-                value: `${item.members}`,
-              },
-            ],
-          };
-
-          return (
-            <React.Fragment key={item.id}>
-              <div className={styles.card}>
-                <div className={styles.daoDetails}>
-                  <DaoDetails {...daoDetails} flag={flag} />
-                </div>
-                <div className={styles.proposals}>
-                  <ProposalTrackerCard
-                    {...proposalTrackerInfo}
-                    onClick={undefined}
-                    action={null}
-                  />
-                </div>
-                <div className={styles.daoInfo}>
-                  <DaoInfoCard {...daoInfo} />
-                </div>
-              </div>
-              <div className={styles.divider} />
-            </React.Fragment>
-          );
-        })}
+        {searchResults?.daos.map(item => (
+          <React.Fragment key={item.id}>
+            <DaoDetails
+              key={item.id}
+              dao={item}
+              activeProposals={item.activeProposalsCount}
+              totalProposals={item.totalProposalsCount}
+            />
+            <div className={styles.divider} />
+          </React.Fragment>
+        ))}
       </Highlighter>
     </div>
   );

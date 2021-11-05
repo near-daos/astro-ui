@@ -13,8 +13,8 @@ import styles from './DaoDetails.module.scss';
 
 export interface DaoDetailsProps {
   dao: DAO;
-  accountId: string | null;
-  onCreateProposalClick: (dao: DAO) => void;
+  accountId?: string | null;
+  onCreateProposalClick?: (dao: DAO) => void;
   activeProposals: number;
   totalProposals: number;
 }
@@ -110,7 +110,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
           activeVotes={activeProposals}
           totalProposals={totalProposals}
           action={action}
-          onClick={() => onCreateProposalClick(dao)}
+          onClick={() => onCreateProposalClick?.(dao)}
         />
       </section>
     </div>

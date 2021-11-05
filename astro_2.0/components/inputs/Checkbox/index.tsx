@@ -24,7 +24,10 @@ const Checkbox = React.forwardRef<HTMLLabelElement, Props>(
           className={classNames(
             styles.inputWrapper,
             {
-              [styles.inputWrapperChecked]: input.checked && !isSwitch,
+              [classNames(
+                styles.inputWrapperChecked,
+                classes?.inputWrapperChecked
+              )]: input.checked && !isSwitch,
               [styles.switchInputWrapper]: isSwitch,
             },
             classes?.inputWrapper
@@ -90,7 +93,10 @@ type Props = {
   checkedIcon?: React.ReactElement;
   as?: 'checkbox' | 'switch';
   classes?: Partial<
-    Record<'root' | 'label' | 'inputWrapper' | 'checkedIcon', string>
+    Record<
+      'root' | 'label' | 'inputWrapper' | 'inputWrapperChecked' | 'checkedIcon',
+      string
+    >
   >;
   inputRef?: React.MutableRefObject<HTMLInputElement>;
   label?: React.ReactNode;

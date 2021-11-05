@@ -182,11 +182,19 @@ const DAOHome: NextPage<DaoHomeProps> = ({
               value: ProposalStatuses.Approved,
               label: 'Approved',
               name: ProposalStatuses.Approved,
+              classes: {
+                inputWrapperChecked:
+                  styles.categoriesListApprovedInputWrapperChecked,
+              },
             },
             {
               value: ProposalStatuses.Failed,
               label: 'Failed',
               name: ProposalStatuses.Failed,
+              classes: {
+                inputWrapperChecked:
+                  styles.categoriesListFailedInputWrapperChecked,
+              },
             },
           ]}
           className={styles.statusFilterRoot}
@@ -197,7 +205,6 @@ const DAOHome: NextPage<DaoHomeProps> = ({
           <CategoriesList
             query={router.query as ProposalsQueries}
             queryName="category"
-            className={styles.categoriesListRoot}
           />
         </div>
 

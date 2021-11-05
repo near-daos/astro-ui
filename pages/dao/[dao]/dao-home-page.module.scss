@@ -17,6 +17,16 @@
   display: flex;
   justify-content: center;
   margin: 32px 72px 24px;
+
+  .categoriesListApprovedInputWrapperChecked {
+    background-color: var(--color-success-50);
+    border-color: var(--color-success-50);
+  }
+
+  .categoriesListFailedInputWrapperChecked {
+    background-color: var(--color-error-60);
+    border-color: var(--color-error-60);
+  }
 }
 
 .onTop {
