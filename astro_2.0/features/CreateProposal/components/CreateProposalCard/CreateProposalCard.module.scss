@@ -88,6 +88,10 @@
   padding-bottom: 4px;
 }
 
+.error {
+  color: var(--color-error);
+}
+
 .descriptionValue {
   @extend %body2;
   padding-bottom: 10px;
@@ -168,6 +172,7 @@
 
     @include placeholder {
       color: var(--color-primary-50);
+      opacity: 0.4;
     }
   }
 }

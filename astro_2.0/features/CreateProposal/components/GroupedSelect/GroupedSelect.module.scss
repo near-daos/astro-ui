@@ -41,6 +41,17 @@
   }
 }
 
+.measureNode {
+  font-size: 22px;
+  font-weight: 700;
+  height: 0;
+  overflow: hidden;
+  position: absolute;
+  top: -30;
+  white-space: nowrap;
+  width: fit-content;
+}
+
 .menu {
   background: #fff;
   box-shadow: 0 8.89583px 30px rgba(0, 0, 0, 0.14);
@@ -49,7 +60,6 @@
   padding: 16px 0;
   position: absolute;
   top: 80%;
-  //width: 100%;
   z-index: 1;
 }
 
@@ -65,13 +75,14 @@
   @extend %body2;
   @include ellipse-text;
   align-items: center;
+  border-radius: 6px;
   cursor: pointer;
   display: flex;
-  margin: 6px 0;
-  padding: 6px 32px;
+  margin: 4px;
+  padding: 6px 28px;
 
   &:hover {
-    background: var(--color-neutral-30);
+    background: var(--color-neutral-10);
   }
 }
 

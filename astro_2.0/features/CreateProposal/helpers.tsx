@@ -49,6 +49,7 @@ import { YOKTO_NEAR } from 'services/sputnik/constants';
 import { ChangeBondsContent } from 'astro_2.0/features/CreateProposal/components/ChangeBondsContent';
 import { getCompleteBountyProposal } from 'features/bounty/dialogs/complete-bounty-dialog/helpers';
 import { BountyDoneContent } from 'astro_2.0/features/CreateProposal/components/DoneBountyContent';
+import { AddMemberToGroupContent } from 'astro_2.0/features/CreateProposal/components/AddMemberToGroupContent';
 
 async function getTransferProposal(
   dao: DAO,
@@ -265,7 +266,17 @@ export function getFormContentNode(
     case ProposalVariant.ProposePoll: {
       return null;
     }
-    case ProposalVariant.ProposeAddMember:
+    case ProposalVariant.ProposeAddMember: {
+      const members = dao ? extractMembersFromDao(dao, []) : [];
+
+      const availableGroups = members.reduce<string[]>((res, item) => {
+        res.push(...item.groups);
+
+        return res;
+      }, []);
+
+      return <AddMemberToGroupContent groups={availableGroups} />;
+    }
     case ProposalVariant.ProposeRemoveMember: {
       const members = dao ? extractMembersFromDao(dao, []) : [];
 
@@ -284,7 +295,7 @@ export function getFormContentNode(
       return <ChangePolicyContent />;
     }
     case ProposalVariant.ProposeChangeBonds: {
-      return <ChangeBondsContent daoId={dao.id} />;
+      return <ChangeBondsContent dao={dao} />;
     }
     default: {
       return null;
@@ -303,9 +314,9 @@ export function getFormInitialValues(
         details: '',
         externalUrl: '',
         token: 'NEAR',
-        amount: 0,
-        slots: 3,
-        deadlineThreshold: 14,
+        amount: '',
+        slots: '',
+        deadlineThreshold: '',
         deadlineUnits: 'days',
       };
     }
@@ -321,7 +332,7 @@ export function getFormInitialValues(
         details: '',
         externalUrl: '',
         token: 'NEAR',
-        amount: 0,
+        amount: '',
         target: '',
       };
     }
@@ -334,7 +345,7 @@ export function getFormInitialValues(
     }
     case ProposalVariant.ProposeChangeDaoPurpose: {
       return {
-        details: dao.description,
+        details: '',
         externalUrl: '',
         purpose: '',
       };
@@ -367,30 +378,22 @@ export function getFormInitialValues(
       };
     }
     case ProposalVariant.ProposeChangeVotingPolicy: {
-      const initialData = getInitialData(dao); // as Record<string, unknown>;
+      // const initialData = getInitialData(dao); // as Record<string, unknown>;
 
       return {
         details: '',
         externalUrl: '',
-        amount: initialData?.policy.amount,
+        amount: '', // initialData?.policy.amount,
       };
     }
     case ProposalVariant.ProposeChangeBonds: {
       return {
         details: '',
         externalUrl: '',
-        createProposalBond: new Decimal(dao.policy.proposalBond)
-          .div(YOKTO_NEAR)
-          .toNumber(),
-        claimBountyBond: new Decimal(dao.policy.bountyBond)
-          .div(YOKTO_NEAR)
-          .toNumber(),
-        proposalExpireTime: new Decimal(dao.policy.proposalPeriod)
-          .div('3.6e12')
-          .toNumber(),
-        unclaimBountyTime: new Decimal(dao.policy.bountyForgivenessPeriod)
-          .div('3.6e12')
-          .toNumber(),
+        createProposalBond: '',
+        claimBountyBond: '',
+        proposalExpireTime: '',
+        unclaimBountyTime: '',
       };
     }
     default: {
@@ -597,12 +600,12 @@ export function getValidationSchema(
   switch (proposalVariant) {
     case ProposalVariant.ProposeTransfer: {
       return yup.object().shape({
-        token: yup.string().required(),
+        token: yup.string().required('Required'),
         amount: yup
           .number()
           .typeError('Must be a valid number.')
           .positive()
-          .required()
+          .required('Required')
           .test(
             'onlyOneDecimal',
             'Only numbers with one optional decimal place please',
@@ -615,18 +618,18 @@ export function getValidationSchema(
             'Only valid near accounts are allowed',
             value => SputnikNearService.nearAccountExist(value || '')
           ),
-        details: yup.string().required(),
+        details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
       });
     }
     case ProposalVariant.ProposeCreateBounty: {
       return yup.object().shape({
-        token: yup.string().required(),
+        token: yup.string().required('Required'),
         amount: yup
           .number()
           .typeError('Must be a valid number.')
           .positive()
-          .required()
+          .required('Required')
           .test(
             'onlyOneDecimal',
             'Only numbers with one optional decimal place please',
@@ -636,26 +639,27 @@ export function getValidationSchema(
           .number()
           .typeError('Must be a valid number.')
           .positive()
-          .required(),
+          .required('Required'),
         deadlineThreshold: yup
           .number()
           .typeError('Must be a valid number.')
           .positive()
-          .required(),
-        details: yup.string().required(),
+          .required('Required'),
+        details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
       });
     }
     case ProposalVariant.ProposeChangeDaoName: {
       return yup.object().shape({
-        displayName: yup.string().min(2).required(),
-        details: yup.string().required(),
+        displayName: yup.string().min(2).required('Required'),
+        details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
       });
     }
     case ProposalVariant.ProposeChangeDaoPurpose: {
       return yup.object().shape({
-        purpose: yup.string().max(500).required(),
+        purpose: yup.string().max(500).required('Required'),
+        details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
       });
     }
@@ -663,28 +667,41 @@ export function getValidationSchema(
     case ProposalVariant.ProposeAddMember:
     case ProposalVariant.ProposeRemoveMember: {
       return yup.object().shape({
-        group: yup.string().required(),
-        memberName: yup.string().required(),
-        details: yup.string().required(),
-        externalUrl: yup.string(),
+        group: yup.string().required('Required'),
+        memberName: yup
+          .string()
+          .test(
+            'notValidNearAccount',
+            'Only valid near accounts are allowed',
+            value => SputnikNearService.nearAccountExist(value || '')
+          )
+          .required('Required'),
+        details: yup.string().required('Required'),
+        externalUrl: yup.string().url(),
       });
     }
     case ProposalVariant.ProposeChangeBonds: {
       return yup.object().shape({
-        details: yup.string().required(),
-        externalUrl: yup.string(),
-        createProposalBond: yup.number().min(0).required(),
-        proposalExpireTime: yup.number().integer().min(1).required(),
-        claimBountyBond: yup.number().min(0).required(),
-        unclaimBountyTime: yup.number().integer().min(1).required(),
+        details: yup.string().required('Required'),
+        externalUrl: yup.string().url(),
+        createProposalBond: yup.string().required('Required'),
+        proposalExpireTime: yup.string().required('Required'),
+        claimBountyBond: yup.string().required('Required'),
+        unclaimBountyTime: yup.string().required('Required'),
       });
     }
-    case ProposalVariant.ProposeChangeVotingPolicy:
+    case ProposalVariant.ProposeChangeVotingPolicy: {
+      return yup.object().shape({
+        details: yup.string().required('Required'),
+        externalUrl: yup.string().url(),
+        amount: yup.string().required('Required'),
+      });
+    }
     case ProposalVariant.ProposeDoneBounty:
     default: {
       return yup.object().shape({
-        details: yup.string().required(),
-        externalUrl: yup.string(),
+        details: yup.string().required('Required'),
+        externalUrl: yup.string().url(),
       });
     }
   }

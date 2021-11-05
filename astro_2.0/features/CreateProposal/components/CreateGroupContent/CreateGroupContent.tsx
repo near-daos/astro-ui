@@ -4,6 +4,8 @@ import { useFormContext } from 'react-hook-form';
 import { Input } from 'components/inputs/input/Input';
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
+import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
+
 import styles from './CreateGroupContent.module.scss';
 
 interface CreateGroupContentProps {
@@ -16,22 +18,24 @@ export const CreateGroupContent: FC<CreateGroupContentProps> = ({ daoId }) => {
   return (
     <div className={styles.root}>
       <div className={styles.row}>
-        <Input
-          label="New Group Name"
-          className={cn(styles.inputWrapper, styles.wide)}
-          placeholder="group-name-here"
-          isBorderless
-          size="block"
-          {...register('group')}
-        />
-        <Input
-          label="Member Name"
-          className={cn(styles.inputWrapper, styles.wide)}
-          placeholder="member-name-here"
-          isBorderless
-          size="block"
-          {...register('memberName')}
-        />
+        <InputWrapper fieldName="group" label="New Group Name">
+          <Input
+            className={cn(styles.inputWrapper, styles.wide)}
+            placeholder="group-name-here"
+            isBorderless
+            size="block"
+            {...register('group')}
+          />
+        </InputWrapper>
+        <InputWrapper fieldName="memberName" label="Initial Member Name">
+          <Input
+            className={cn(styles.inputWrapper, styles.wide)}
+            placeholder="member-name-here"
+            isBorderless
+            size="block"
+            {...register('memberName')}
+          />
+        </InputWrapper>
       </div>
 
       <div className={styles.row}>

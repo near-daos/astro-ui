@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { nanoid } from 'nanoid';
+import cn from 'classnames';
 
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 
@@ -79,7 +80,7 @@ export const ChangeLinksContent: FC<ChangeLinksContentProps> = ({ daoId }) => {
         </Button>
       </div>
 
-      <div className={styles.row}>
+      <div className={cn(styles.row, styles.target)}>
         <InfoBlockWidget label="Target" value={daoId} valueFontSize="S" />
       </div>
     </div>

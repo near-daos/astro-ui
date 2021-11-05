@@ -1,4 +1,6 @@
 import React, { ReactNode } from 'react';
+
+import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 
 import { TextArea } from 'components/inputs/textarea/TextArea';
@@ -17,6 +19,7 @@ import {
 } from 'astro_2.0/features/CreateProposal/helpers';
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
+import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 
 import styles from './CreateProposalCard.module.scss';
 
@@ -39,7 +42,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
 }) => {
   const {
     register,
-    formState: { touchedFields, errors },
+    formState: { errors },
   } = useFormContext();
 
   return (
@@ -68,21 +71,29 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       </div>
 
       <div className={styles.descriptionCell}>
-        <div className={styles.label}>Description</div>
-        <TextArea
-          isValid={touchedFields.description && !errors.description?.message}
-          size="block"
-          textAlign="left"
-          resize="none"
-          placeholder={LOREN_IPSUM}
-          className={styles.textArea}
-          isBorderless
-          maxLength={500}
-          minRows={4}
-          {...register('details')}
-        />
+        <InputWrapper fieldName="details" label="Description" fullWidth>
+          <TextArea
+            size="block"
+            textAlign="left"
+            resize="none"
+            autoFocus
+            placeholder={LOREN_IPSUM}
+            className={styles.textArea}
+            isBorderless
+            maxLength={500}
+            minRows={4}
+            maxRows={4}
+            {...register('details')}
+          />
+        </InputWrapper>
         <div className={styles.proposalExternalLink}>
-          <Icon name="buttonExternal" width={14} />
+          <Icon
+            name="buttonExternal"
+            width={14}
+            className={cn({
+              [styles.error]: errors.externalUrl,
+            })}
+          />
           <Input
             isBorderless
             size="block"

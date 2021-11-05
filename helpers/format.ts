@@ -17,7 +17,7 @@ export function formatYoktoValue(value: string, divider?: number): string {
 
   const amountYokto = new Decimal(value);
 
-  return Number(amountYokto.div(dividerValue).toFixed(5)).toString();
+  return Number(amountYokto.div(dividerValue).toFixed(4)).toString();
 }
 
 export const toHoursAndFormat = (

@@ -6,11 +6,21 @@
 }
 
 .row {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   flex: 1;
-  gap: 12px;
   margin-bottom: 8px;
+
+  > div:first-of-type {
+    margin-right: 24px;
+  }
+}
+
+.value {
+  align-items: center;
+  display: flex;
+  font-weight: 700;
+  height: 40px;
 }
 
 .label {
@@ -43,8 +53,14 @@
 .amount {
   text-align: right;
   input {
+    font-weight: 700;
     padding-right: 0;
     text-align: right !important;
+    @include placeholder {
+      font-weight: 700;
+      opacity: 1;
+      transition: opacity 0.2s linear;
+    }
   }
 }
 
