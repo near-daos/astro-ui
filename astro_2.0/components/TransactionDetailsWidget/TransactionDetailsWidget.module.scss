@@ -22,9 +22,20 @@
   border-top: 0.5px solid var(--color-brand-purple);
 }
 
+.mainContent {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}
+
 .transactionDetails {
   display: flex;
   flex-basis: 30%;
   justify-content: space-evenly;
   width: 100%;
+}
+
+.warning {
+  color: var(--color-error-70);
 }
