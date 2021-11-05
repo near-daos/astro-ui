@@ -109,7 +109,7 @@ export function DaoSubmitForm(): JSX.Element {
           standAloneMode
           bond="5"
           gas="0.3"
-          transaction="Create New DAO"
+          warning="Create New DAO"
           buttonLabel="Create DAO"
         />
       </div>

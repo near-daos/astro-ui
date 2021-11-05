@@ -15,7 +15,7 @@ interface CreateProposalWidgetProps {
   onSubmit: (data: any) => Promise<void>;
   bond: string;
   gas: string;
-  transaction?: string;
+  warning?: string;
   buttonLabel?: string;
   standAloneMode?: boolean;
 }
@@ -26,7 +26,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
   gas,
   standAloneMode = false,
   buttonLabel = 'Purpose',
-  transaction,
+  warning,
 }) => {
   const { handleSubmit } = useFormContext();
 
@@ -35,29 +35,39 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
     { label: 'Gas', value: gas },
   ];
 
+  function renderWarning() {
+    if (warning) {
+      return (
+        <InfoBlockWidget
+          label="Warning"
+          value={warning}
+          valueClassName={styles.warning}
+        />
+      );
+    }
+
+    return null;
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={cn(styles.root, { [styles.topBorder]: standAloneMode })}>
-        {transaction && (
-          <InfoBlockWidget
-            label="Transaction"
-            value={transaction}
-            className={styles.left}
-          />
-        )}
-        <div className={styles.transactionDetails}>
-          {infos.map(info => (
-            <InfoBlockWidget
-              label={info.label}
-              value={<InfoValue value={info.value} label="NEAR" />}
-              key={info.label}
-              className={styles.right}
-            />
-          ))}
+        {renderWarning()}
+        <div className={styles.mainContent}>
+          <div className={styles.transactionDetails}>
+            {infos.map(info => (
+              <InfoBlockWidget
+                label={info.label}
+                value={<InfoValue value={info.value} label="NEAR" />}
+                key={info.label}
+                className={styles.right}
+              />
+            ))}
+          </div>
+          <Button variant="black" size="medium" type="submit">
+            {buttonLabel}
+          </Button>
         </div>
-        <Button variant="black" size="medium" type="submit">
-          {buttonLabel}
-        </Button>
       </div>
     </form>
   );

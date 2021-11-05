@@ -12,6 +12,7 @@ interface InfoBlockWidgetProps {
   value: ReactNode;
   valueFontSize?: 'S' | 'L';
   className?: string;
+  valueClassName?: string;
 }
 
 export const InfoBlockWidget: React.FC<InfoBlockWidgetProps> = ({
@@ -21,6 +22,7 @@ export const InfoBlockWidget: React.FC<InfoBlockWidgetProps> = ({
   valueFontSize = 'S',
   messageSeverity,
   className,
+  valueClassName,
 }) => {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
 
@@ -60,7 +62,7 @@ export const InfoBlockWidget: React.FC<InfoBlockWidgetProps> = ({
       </div>
       <div className={cn(styles.block)}>
         <div
-          className={cn({
+          className={cn(valueClassName, {
             [styles.valueSmall]: valueFontSize === 'S',
             [styles.valueLarge]: valueFontSize === 'L',
           })}
