@@ -1,17 +1,12 @@
 import cn from 'classnames';
 import React, { FC, useState } from 'react';
 
-import {
-  ALL_DAOS_URL,
-  ALL_FEED_URL,
-  CREATE_DAO_URL,
-  MY_DAOS_URL,
-  MY_FEED_URL,
-} from 'constants/routing';
-
 import { Icon } from 'components/Icon';
 
-import { NavButton } from './components/NavButton';
+import { NAV_CONFIG } from 'astro_2.0/components/navigation/navConfig';
+
+import { NavButton } from 'astro_2.0/components/navigation/NavButton';
+
 import { SearchBar } from './components/SearchBar';
 import { AccountButton } from './components/AccountButton';
 
@@ -24,46 +19,39 @@ export const AppHeader: FC = () => {
     [styles.searchExpanded]: searchExpanded,
   });
 
-  return (
-    <header className={rootClassName}>
+  function renderLogo(className?: string) {
+    return (
       <a
         href="https://astrodao.com/"
         target="_blank"
         rel="noreferrer"
-        className={styles.logo}
+        className={cn(styles.logo, className)}
       >
         <Icon width={100} name="appLogo" />
       </a>
+    );
+  }
+
+  function renderNav() {
+    const navItems = NAV_CONFIG.map(conf => {
+      const { icon, href, label, hoverIcon } = conf;
+
+      return (
+        <NavButton icon={icon} hoverIcon={hoverIcon} href={href} key={label}>
+          {label}
+        </NavButton>
+      );
+    });
+
+    return <div className={styles.nav}>{navItems}</div>;
+  }
+
+  return (
+    <header className={rootClassName}>
+      {renderLogo()}
       <div className={styles.centralPart}>
-        <div className={styles.nav}>
-          <NavButton
-            icon="aAllDaos"
-            hoverIcon="aAllDaosHover"
-            href={ALL_DAOS_URL}
-          >
-            All DAOs
-          </NavButton>
-          <NavButton
-            icon="aAstroFeed"
-            hoverIcon="aAstroFeedHover"
-            href={ALL_FEED_URL}
-          >
-            Astro Feed
-          </NavButton>
-          <NavButton icon="aMyDaos" hoverIcon="aMyDaosHover" href={MY_DAOS_URL}>
-            My DAOs
-          </NavButton>
-          <NavButton icon="aMyFeed" hoverIcon="aMyFeedHover" href={MY_FEED_URL}>
-            My Feed
-          </NavButton>
-          <NavButton
-            icon="aCreateDao"
-            hoverIcon="aCreateDaoHover"
-            href={CREATE_DAO_URL}
-          >
-            Create DAO
-          </NavButton>
-        </div>
+        {renderLogo(styles.mobileLogo)}
+        {renderNav()}
         <SearchBar
           placeholder="Search"
           className={styles.search}

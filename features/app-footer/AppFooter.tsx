@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 
 import { Icon, IconName } from 'components/Icon';
 
-import styles from './app-footer.module.scss';
+import styles from './AppFooter.module.scss';
 
 export interface AppFooterProps {
   isLandingPage?: boolean;

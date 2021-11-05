@@ -1,5 +1,5 @@
-@use 'styles/breakpoints';
 @import 'styles/typography';
+@import '../../../constants.module';
 
 .root {
   .name {
@@ -13,7 +13,11 @@
   position: relative;
 }
 
-@media screen and (max-width: breakpoints.$screen-sm - 1px) {
+.auth {
+  text-transform: capitalize;
+}
+
+@media screen and (max-width: $nav-mobile-width) {
   .name {
     display: none;
   }

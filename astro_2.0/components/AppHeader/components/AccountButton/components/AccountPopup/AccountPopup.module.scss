@@ -1,5 +1,6 @@
 @use 'styles/breakpoints';
 @import 'styles/typography';
+@import '../../../../../constants.module';
 
 $transition-time: 0.2;
 
@@ -39,4 +40,10 @@ $transition-time: 0.2;
 
 .auth {
   color: var(--color-brand-coral-red);
+}
+
+@media screen and (max-width: #{$nav-mobile-width}) {
+  .root {
+    left: -130px;
+  }
 }
