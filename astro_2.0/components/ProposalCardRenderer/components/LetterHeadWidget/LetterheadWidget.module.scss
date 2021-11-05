@@ -1,21 +1,33 @@
 .background {
-  background-image: linear-gradient(#201f1f, transparent);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), transparent);
   background-size: cover;
   height: 100%;
   inset: 0;
   position: absolute;
   width: 50px;
-  z-index: -1;
 }
 
 .root {
+  background: var(--color-primary-50);
+  background-position: center;
   background-size: cover;
   border-radius: 8px 0 0 8px;
   display: flex;
   height: 100%;
   justify-content: center;
+  overflow: hidden;
   position: relative;
   width: 50px;
+
+  &.rejected {
+    background: var(--color-error-50);
+  }
+  &.approved {
+    background: var(--color-success-50);
+  }
+  &.active {
+    background: var(--color-primary-50);
+  }
 }
 
 .iconHolder {

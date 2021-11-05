@@ -1,0 +1,25 @@
+.root {
+  flex: 0 0 69px;
+  height: 78px;
+  margin-right: 24px;
+  //margin-top: -42px;
+  position: relative;
+  width: 69px;
+
+  .background {
+    background-color: var(--color-white);
+    clip-path: url('#flag');
+    inset: 0;
+    position: absolute;
+    transform: scale(1.04, 1.045);
+  }
+
+  .cover {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto;
+    clip-path: url('#flagMinimized');
+    height: 100%;
+    width: 100%;
+  }
+}

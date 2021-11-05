@@ -2,7 +2,10 @@
 
 .root {
   display: flex;
-  gap: 8px;
+
+  > div:last-of-type {
+    margin-left: 80px;
+  }
 }
 
 .row {
@@ -11,7 +14,7 @@
   white-space: nowrap;
 
   .iconWrapper {
-    background-color: var(--color-neutral-30);
+    //background-color: var(--color-brand-black);
     border-radius: 50%;
     height: 24px;
     margin-right: 8px;
@@ -20,7 +23,7 @@
 }
 
 .inputWrapper {
-  //max-width: 120px;
+  max-width: 160px;
 
   /* stylelint-disable */
   /* Chrome, Safari, Edge, Opera */
@@ -35,14 +38,23 @@
     -moz-appearance: textfield;
   }
   /* stylelint-enable */
+
+  input {
+    font-weight: 700;
+    @include placeholder {
+      color: var(--color-neutral-40);
+      transition: opacity 0.2s linear;
+    }
+  }
 }
 
 .wide {
   flex: 1;
+  max-width: unset;
 }
 
 .narrow {
-  max-width: 60px;
+  max-width: 80px;
 }
 
 .select {
@@ -53,6 +65,28 @@
     border: 0;
     overflow: hidden;
   }
+
+  .balance {
+    display: none;
+    margin-left: auto;
+  }
+
+  .row {
+    font-family: Inter, 'sans-serif';
+    font-size: 14px;
+    width: 100%;
+  }
+}
+
+.select ul {
+  min-width: 260px;
+  .balance {
+    display: flex;
+  }
+}
+
+.divider {
+  min-width: 80px;
 }
 
 .symbol {

@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { Input } from 'components/inputs/input/Input';
 import { DropdownSelect } from 'components/inputs/select/DropdownSelect';
 import { Icon } from 'components/Icon';
+import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 
 import { useCustomTokensContext } from 'context/CustomTokensContext';
 
@@ -12,7 +13,6 @@ import styles from './TransferContent.module.scss';
 
 export const TransferContent: FC = () => {
   const { register, setValue, getValues } = useFormContext();
-
   const { tokens } = useCustomTokensContext();
 
   const tokenOptions = Object.values(tokens).map(token => ({
@@ -24,12 +24,16 @@ export const TransferContent: FC = () => {
             <Icon name="tokenNearBig" />
           ) : (
             <div
-              style={{ backgroundImage: `url(${token.icon})` }}
+              style={{
+                background: 'black',
+                backgroundImage: `url(${token.icon})`,
+              }}
               className={styles.icon}
             />
           )}
         </div>
         <div className={styles.symbol}>{token.symbol}</div>
+        <div className={styles.balance}>{token.balance}</div>
       </div>
     ),
   }));
@@ -38,15 +42,17 @@ export const TransferContent: FC = () => {
 
   return (
     <div className={styles.root}>
-      <Input
-        label="Amount"
-        className={cn(styles.inputWrapper, styles.narrow)}
-        type="number"
-        placeholder="00.00"
-        isBorderless
-        size="block"
-        {...register('amount')}
-      />
+      <InputWrapper fieldName="amount" label="Amount">
+        <Input
+          className={cn(styles.inputWrapper, styles.narrow)}
+          type="number"
+          min={0}
+          placeholder="00.0000"
+          isBorderless
+          size="block"
+          {...register('amount')}
+        />
+      </InputWrapper>
       <DropdownSelect
         className={styles.select}
         options={tokenOptions}
@@ -59,14 +65,15 @@ export const TransferContent: FC = () => {
         }}
         defaultValue={selectedTokenData?.symbol ?? 'NEAR'}
       />
-      <Input
-        label="Target"
-        className={cn(styles.inputWrapper, styles.wide)}
-        placeholder="currentdao.sputnik-dao.near"
-        isBorderless
-        size="block"
-        {...register('target')}
-      />
+      <InputWrapper fieldName="target" label="Target">
+        <Input
+          className={cn(styles.inputWrapper, styles.wide)}
+          placeholder="Specify target account"
+          isBorderless
+          size="block"
+          {...register('target')}
+        />
+      </InputWrapper>
     </div>
   );
 };

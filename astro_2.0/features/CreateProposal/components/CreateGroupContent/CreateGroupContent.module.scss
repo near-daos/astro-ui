@@ -39,3 +39,13 @@
   padding: 0;
   text-transform: capitalize;
 }
+
+.inputWrapper {
+  input {
+    font-weight: 700;
+    @include placeholder {
+      color: var(--color-neutral-40);
+      transition: opacity 0.2s linear;
+    }
+  }
+}

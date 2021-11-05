@@ -35,6 +35,14 @@
     -moz-appearance: textfield;
   }
   /* stylelint-enable */
+
+  input {
+    font-weight: 700;
+    @include placeholder {
+      opacity: 1;
+      transition: opacity 0.2s linear;
+    }
+  }
 }
 
 .wide {

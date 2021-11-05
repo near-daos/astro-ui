@@ -8,14 +8,11 @@
 }
 
 .row {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
+  flex-direction: column;
   gap: 24px;
   white-space: nowrap;
-
-  //> div:first-of-type {
-  //
-  //}
 
   .iconWrapper {
     background-color: var(--color-neutral-30);
@@ -26,9 +23,15 @@
   }
 }
 
+.inline {
+  display: grid;
+  grid-column-gap: 24px;
+  grid-template-columns: 200px 1fr;
+}
+
 .title {
   @extend %title3;
-  flex: 0 0 90px;
+  //flex: 0 0 90px;
 }
 
 .inputWrapper {
@@ -47,6 +50,14 @@
     -moz-appearance: textfield;
   }
   /* stylelint-enable */
+
+  input {
+    font-weight: 700;
+    @include placeholder {
+      color: var(--color-neutral-40);
+      transition: opacity 0.2s linear;
+    }
+  }
 }
 
 .wide {
@@ -65,8 +76,23 @@
     border: 0;
     overflow: hidden;
   }
+
+  .balance {
+    display: none;
+    margin-left: auto;
+  }
+
+  .row {
+    width: 100%;
+  }
 }
 
+.select ul {
+  min-width: 260px;
+  .balance {
+    display: flex;
+  }
+}
 .symbol {
   @include ellipse-text;
   max-width: 60px;

@@ -30,6 +30,10 @@ const ExternalLink: FC<ExternalLinkProps> = ({ to }) => {
     e.stopPropagation();
   }
 
+  if (!to) {
+    return null;
+  }
+
   return (
     <a
       href={link}

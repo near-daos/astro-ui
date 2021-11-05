@@ -2,7 +2,6 @@
 
 .root {
   display: flex;
-  gap: 8px;
 }
 
 .row {
@@ -20,7 +19,7 @@
 }
 
 .inputWrapper {
-  max-width: 120px;
+  max-width: 160px;
 
   /* stylelint-disable */
   /* Chrome, Safari, Edge, Opera */
@@ -35,10 +34,18 @@
     -moz-appearance: textfield;
   }
   /* stylelint-enable */
+
+  input {
+    font-weight: 700;
+    @include placeholder {
+      color: var(--color-neutral-40);
+      transition: opacity 0.2s linear;
+    }
+  }
 }
 
 .narrow {
-  max-width: 60px;
+  max-width: 80px;
 }
 
 .select {
@@ -49,9 +56,31 @@
     border: 0;
     overflow: hidden;
   }
+
+  .balance {
+    display: none;
+    margin-left: auto;
+  }
+
+  .row {
+    font-family: Inter, 'sans-serif';
+    font-size: 14px;
+    width: 100%;
+  }
+}
+
+.select ul {
+  min-width: 260px;
+  .balance {
+    display: flex;
+  }
 }
 
 .symbol {
   @include ellipse-text;
   max-width: 60px;
+}
+
+.divider {
+  margin-left: 24px;
 }

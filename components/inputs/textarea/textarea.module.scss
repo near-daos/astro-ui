@@ -18,7 +18,7 @@
     //padding: 10.5px;
 
     @include placeholder {
-      opacity: 0.5;
+      color: var(--color-neutral-40);
       transition: opacity 0.2s linear;
     }
   }

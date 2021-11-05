@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
+import cn from 'classnames';
 
 import { composeProperLinkUrl } from 'helpers/composeProperLinkUrl';
 import { IconButton } from 'components/button/IconButton';
@@ -38,7 +39,9 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
           <div className={styles.flagWrapper}>
             <div className={styles.background} />
             <div
-              className={styles.cover}
+              className={cn(styles.cover, {
+                [styles.scaled]: flag && !cover,
+              })}
               style={{ backgroundImage: `url(${daoFlag})` }}
             />
             {logo && (

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useId } from '@reach/auto-id';
+import { useMeasure } from 'react-use';
 
 import Downshift from 'downshift';
 import { IconButton } from 'components/button/IconButton';
@@ -26,11 +27,12 @@ interface GroupedSelectProps {
 export const GroupedSelect = React.forwardRef<
   HTMLInputElement,
   GroupedSelectProps
->(({ options, onChange, defaultValue, inputSize, ...rest }, externalRef) => {
+>(({ options, onChange, defaultValue, ...rest }, externalRef) => {
   const id = useId(rest.id);
   const handleChange = (selectedItem: Option | null) => {
     onChange(selectedItem?.value ?? null);
   };
+  const [measureRef, { width }] = useMeasure();
 
   function itemToString(i: Option | null) {
     return i ? i.label : '';
@@ -68,13 +70,30 @@ export const GroupedSelect = React.forwardRef<
             htmlFor={id}
             className={styles.selectedLabel}
           >
+            <div
+              ref={measureRef as React.LegacyRef<HTMLDivElement>}
+              className={styles.measureNode}
+              style={{
+                background: 'tomato',
+                position: 'absolute',
+                top: -30,
+                overflow: 'hidden',
+                height: 0,
+                width: 'fit-content',
+                fontSize: 22,
+                fontWeight: 700,
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {selectedItem?.label}
+            </div>
             <input
               {...getInputProps({
                 id,
                 ref: externalRef,
                 readOnly: true,
               })}
-              size={inputSize}
+              style={{ width: width + 8 }}
               type="text"
             />
             <IconButton icon="buttonArrowDown" className={styles.icon} />

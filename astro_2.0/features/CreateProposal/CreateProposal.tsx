@@ -49,7 +49,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   const [schemaContext, setSchemaContext] = useState({
     selectedProposalVariant: proposalVariant,
   });
-  const formRef = useRef<HTMLFormElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
 
   useMount(() => {
     formRef?.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -142,13 +142,13 @@ export const CreateProposal: FC<CreateProposalProps> = ({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} noValidate ref={formRef}>
+      <div ref={formRef}>
         <ProposalCardRenderer
           daoFlagNode={
             showFlag && (
               <DaoFlagWidget
                 daoName={dao.name}
-                flagUrl={dao.logo}
+                flagUrl={dao.flagCover || dao.logo}
                 daoId={dao.id}
               />
             )
@@ -156,11 +156,12 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           letterHeadNode={
             <LetterHeadWidget
               type={mapProposalVariantToProposalType(selectedProposalVariant)}
-              coverUrl="/cover.png"
+              coverUrl={dao.flagCover}
             />
           }
           proposalCardNode={
             <CreateProposalCard
+              key={selectedProposalVariant}
               onClose={onClose}
               onTypeSelect={v => {
                 const defaults = getFormInitialValues(v, dao, accountId);
@@ -178,14 +179,14 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           }
           infoPanelNode={
             <TransactionDetailsWidget
-              onSubmit={() => Promise.resolve()}
+              onSubmit={onSubmit}
               bond={dao.policy.proposalBond}
               gas="0.2"
               buttonLabel="Propose"
             />
           }
         />
-      </form>
+      </div>
     </FormProvider>
   );
 };
