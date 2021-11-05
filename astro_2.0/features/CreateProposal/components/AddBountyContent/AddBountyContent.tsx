@@ -12,8 +12,18 @@ import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/Input
 import styles from './AddBountyContent.module.scss';
 
 export const AddBountyContent: FC = () => {
-  const { register, setValue, getValues } = useFormContext();
+  const { register, setValue, getValues, watch } = useFormContext();
   const { tokens } = useCustomTokensContext();
+  const amount = watch('amount');
+  let amountWidth;
+
+  if (amount.length <= 6) {
+    amountWidth = 7;
+  } else if (amount.length >= 15) {
+    amountWidth = 15;
+  } else {
+    amountWidth = amount.length;
+  }
 
   const tokenOptions = Object.values(tokens).map(token => ({
     label: token.symbol,
@@ -43,6 +53,7 @@ export const AddBountyContent: FC = () => {
         <Input
           className={cn(styles.inputWrapper, styles.narrow)}
           type="number"
+          inputStyles={{ width: `${amountWidth}ch`, paddingRight: 4 }}
           placeholder="00.0000"
           min={0}
           isBorderless

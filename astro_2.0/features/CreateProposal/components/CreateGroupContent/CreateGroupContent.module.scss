@@ -11,6 +11,10 @@
   display: flex;
   flex: 1;
   margin-bottom: 8px;
+
+  > div:first-of-type {
+    margin-right: 24px;
+  }
 }
 
 .label {

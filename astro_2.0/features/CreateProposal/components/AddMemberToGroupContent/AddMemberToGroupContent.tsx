@@ -38,7 +38,7 @@ export const AddMemberToGroupContent: FC<AddMemberToGroupContentProps> = ({
         </InputWrapper>
       </div>
       <div className={styles.row}>
-        <InputWrapper fieldName="memberName" label="Target">
+        <InputWrapper fieldName="memberName" label="Target" flex>
           <Input
             className={cn(styles.inputWrapper, styles.wide)}
             placeholder="someverylonglongname.near"

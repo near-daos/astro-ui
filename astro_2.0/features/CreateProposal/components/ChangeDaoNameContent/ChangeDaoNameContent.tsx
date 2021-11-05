@@ -25,7 +25,7 @@ export const ChangeDaoNameContent: FC<ChangeDaoNameContentProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.row}>
-        <InputWrapper fieldName="displayName" label="New DAO name">
+        <InputWrapper fieldName="displayName" label="New DAO name" fullWidth>
           <Input
             {...register('displayName')}
             isValid={touchedFields.displayName && !errors.displayName?.message}

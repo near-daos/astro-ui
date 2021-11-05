@@ -45,6 +45,7 @@ export type DAO = {
   logo?: string;
   flagCover?: string;
   flagLogo?: string;
+  lastProposalId: number;
 };
 
 export type DAOPreview = {

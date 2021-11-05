@@ -154,7 +154,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
       {showCreateProposal && (
         <CreateProposal
           dao={dao}
-          proposalVariant={ProposalVariant.ProposePoll}
+          proposalVariant={ProposalVariant.ProposeTransfer}
           onCreate={isSuccess => {
             if (isSuccess) {
               refreshData();

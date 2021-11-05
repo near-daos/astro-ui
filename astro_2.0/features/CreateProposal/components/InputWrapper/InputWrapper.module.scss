@@ -8,6 +8,10 @@
   &.fullWidth {
     width: 100%;
   }
+
+  &.flex {
+    flex: 1;
+  }
 }
 
 .root.alignRight {

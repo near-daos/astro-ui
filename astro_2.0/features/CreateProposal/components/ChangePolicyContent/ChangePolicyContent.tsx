@@ -6,7 +6,13 @@ import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/Input
 
 import styles from './ChangePolicyContent.module.scss';
 
-export const ChangePolicyContent: FC = () => {
+interface ChangePolicyContentProps {
+  amount?: number;
+}
+
+export const ChangePolicyContent: FC<ChangePolicyContentProps> = ({
+  amount,
+}) => {
   const { register } = useFormContext();
 
   return (
@@ -23,7 +29,7 @@ export const ChangePolicyContent: FC = () => {
         <InputWrapper fieldName="amount" label="Consensus" alignRight>
           <Input
             {...register('amount')}
-            placeholder="0"
+            placeholder={`${amount ?? 0}`}
             isBorderless
             textAlign="left"
             type="number"

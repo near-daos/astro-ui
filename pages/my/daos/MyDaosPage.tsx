@@ -89,7 +89,7 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
           <CreateProposal
             key={createProposalForDao?.id}
             dao={createProposalForDao}
-            proposalVariant={ProposalVariant.ProposePoll}
+            proposalVariant={ProposalVariant.ProposeTransfer}
             onCreate={isSuccess => {
               if (isSuccess) {
                 setCreateProposalForDao(null);

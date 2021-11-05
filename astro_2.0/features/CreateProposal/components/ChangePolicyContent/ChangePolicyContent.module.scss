@@ -57,8 +57,8 @@
     padding-right: 0;
     text-align: right !important;
     @include placeholder {
+      color: var(--color-neutral-40);
       font-weight: 700;
-      opacity: 1;
       transition: opacity 0.2s linear;
     }
   }
@@ -68,5 +68,6 @@
   align-items: flex-end;
   display: flex;
   height: 100%;
+  margin-left: 4px;
   padding: 0 0 12px;
 }

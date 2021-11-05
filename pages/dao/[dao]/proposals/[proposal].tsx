@@ -47,7 +47,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
   members,
 }) => {
   const { accountId } = useAuthContext();
-  const scope = getScope(proposal.kind.type);
+  const scope = getScope(proposal?.kind.type);
   const [activeFilter, setActiveFilter] = useState<string | undefined>(
     undefined
   );

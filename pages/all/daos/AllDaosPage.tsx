@@ -136,7 +136,7 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
         <CreateProposal
           key={createProposalForDao?.id}
           dao={createProposalForDao}
-          proposalVariant={ProposalVariant.ProposePoll}
+          proposalVariant={ProposalVariant.ProposeTransfer}
           onCreate={isSuccess => {
             if (isSuccess) {
               setCreateProposalForDao(null);

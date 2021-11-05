@@ -38,6 +38,7 @@ Template.args = {
     totalProposalsCount: 15,
     proposals: 13,
     totalProposals: 15,
+    lastProposalId: 12,
     logo:
       'https://image.freepik.com/free-photo/blue-liquid-marble-background-abstract-flowing-texture-experimental-art_53876-104502.jpg',
     funds: '17043.60259',

@@ -12,8 +12,18 @@ import { useCustomTokensContext } from 'context/CustomTokensContext';
 import styles from './TransferContent.module.scss';
 
 export const TransferContent: FC = () => {
-  const { register, setValue, getValues } = useFormContext();
+  const { register, setValue, getValues, watch } = useFormContext();
   const { tokens } = useCustomTokensContext();
+  const amount = watch('amount');
+  let amountWidth;
+
+  if (amount.length <= 6) {
+    amountWidth = 7;
+  } else if (amount.length >= 15) {
+    amountWidth = 15;
+  } else {
+    amountWidth = amount.length;
+  }
 
   const tokenOptions = Object.values(tokens).map(token => ({
     label: token.symbol,
@@ -45,6 +55,7 @@ export const TransferContent: FC = () => {
       <InputWrapper fieldName="amount" label="Amount">
         <Input
           className={cn(styles.inputWrapper, styles.narrow)}
+          inputStyles={{ width: `${amountWidth}ch`, paddingRight: 4 }}
           type="number"
           min={0}
           placeholder="00.0000"
@@ -65,7 +76,7 @@ export const TransferContent: FC = () => {
         }}
         defaultValue={selectedTokenData?.symbol ?? 'NEAR'}
       />
-      <InputWrapper fieldName="target" label="Target">
+      <InputWrapper fieldName="target" label="Target" flex>
         <Input
           className={cn(styles.inputWrapper, styles.wide)}
           placeholder="Specify target account"

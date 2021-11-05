@@ -100,6 +100,7 @@ const dao = {
   totalProposalsCount: 15,
   proposals: 11,
   totalProposals: 15,
+  lastProposalId: 12,
   logo:
     'https://sputnik-dao.s3.eu-central-1.amazonaws.com/3RFSVcbRRXIGNxq5C1OMI',
   funds: '6.10334',

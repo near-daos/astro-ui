@@ -11,6 +11,7 @@ interface InputWrapperProps {
   label: string;
   fullWidth?: boolean;
   alignRight?: boolean;
+  flex?: boolean;
 }
 
 export const InputWrapper: FC<InputWrapperProps> = ({
@@ -18,6 +19,7 @@ export const InputWrapper: FC<InputWrapperProps> = ({
   fieldName,
   label,
   fullWidth = false,
+  flex,
   alignRight,
 }) => {
   const {
@@ -31,6 +33,7 @@ export const InputWrapper: FC<InputWrapperProps> = ({
     <div
       className={cn(styles.root, {
         [styles.fullWidth]: fullWidth,
+        [styles.flex]: flex,
         [styles.alignRight]: alignRight,
       })}
     >

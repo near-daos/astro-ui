@@ -18,7 +18,7 @@ export const CreateGroupContent: FC<CreateGroupContentProps> = ({ daoId }) => {
   return (
     <div className={styles.root}>
       <div className={styles.row}>
-        <InputWrapper fieldName="group" label="New Group Name">
+        <InputWrapper fieldName="group" label="New Group Name" flex>
           <Input
             className={cn(styles.inputWrapper, styles.wide)}
             placeholder="group-name-here"
@@ -27,7 +27,7 @@ export const CreateGroupContent: FC<CreateGroupContentProps> = ({ daoId }) => {
             {...register('group')}
           />
         </InputWrapper>
-        <InputWrapper fieldName="memberName" label="Initial Member Name">
+        <InputWrapper fieldName="memberName" label="Initial Member Name" flex>
           <Input
             className={cn(styles.inputWrapper, styles.wide)}
             placeholder="member-name-here"

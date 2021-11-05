@@ -1,7 +1,7 @@
 import { useId } from '@reach/auto-id';
 import cn from 'classnames';
 import { Property } from 'csstype';
-import React, { ReactNode } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 
 import styles from './input.module.scss';
 
@@ -11,6 +11,7 @@ export interface InputProps
   description?: string | undefined;
   isValid?: boolean | undefined;
   inputSize?: number | undefined;
+  inputStyles?: CSSProperties;
   size?: 'small' | 'medium' | 'large' | 'block' | 'content';
   isBorderless?: boolean;
   textAlign?: Property.TextAlign;
@@ -40,6 +41,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       size = 'small',
       isBorderless,
       inputSize,
+      inputStyles = {},
       textAlign = 'left',
       type = 'text',
       ...props
@@ -64,7 +66,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ref={externalRef}
           type={type}
           size={inputSize}
-          style={{ textAlign }}
+          style={{ textAlign, ...inputStyles }}
         />
         {description && description.length > 0 && (
           <span className={styles.description}>{description}</span>

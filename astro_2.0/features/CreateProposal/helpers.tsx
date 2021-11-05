@@ -50,6 +50,9 @@ import { ChangeBondsContent } from 'astro_2.0/features/CreateProposal/components
 import { getCompleteBountyProposal } from 'features/bounty/dialogs/complete-bounty-dialog/helpers';
 import { BountyDoneContent } from 'astro_2.0/features/CreateProposal/components/DoneBountyContent';
 import { AddMemberToGroupContent } from 'astro_2.0/features/CreateProposal/components/AddMemberToGroupContent';
+import awsUploader from 'services/AwsUploader/AwsUploader';
+import get from 'lodash/get';
+import { ChangeDaoFlagContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoFlagContent';
 
 async function getTransferProposal(
   dao: DAO,
@@ -260,6 +263,9 @@ export function getFormContentNode(
     case ProposalVariant.ProposeChangeDaoName: {
       return <ChangeDaoNameContent daoId={dao.id} />;
     }
+    case ProposalVariant.ProposeChangeDaoFlag: {
+      return <ChangeDaoFlagContent daoId={dao.id} />;
+    }
     case ProposalVariant.ProposeChangeDaoPurpose: {
       return <ChangeDaoPurposeContent daoId={dao.id} />;
     }
@@ -292,7 +298,9 @@ export function getFormContentNode(
       return <CreateGroupContent daoId={dao.id} />;
     }
     case ProposalVariant.ProposeChangeVotingPolicy: {
-      return <ChangePolicyContent />;
+      const initialData = getInitialData(dao); // as Record<string, unknown>;
+
+      return <ChangePolicyContent amount={initialData?.policy.amount} />;
     }
     case ProposalVariant.ProposeChangeBonds: {
       return <ChangeBondsContent dao={dao} />;
@@ -394,6 +402,14 @@ export function getFormInitialValues(
         claimBountyBond: '',
         proposalExpireTime: '',
         unclaimBountyTime: '',
+      };
+    }
+    case ProposalVariant.ProposeChangeDaoFlag: {
+      return {
+        details: '',
+        externalUrl: '',
+        flagCover: '',
+        flagLogo: '',
       };
     }
     default: {
@@ -554,6 +570,44 @@ export async function getNewProposalObject(
         dao.policy.proposalBond
       );
     }
+    case ProposalVariant.ProposeChangeDaoFlag: {
+      const uploadImg = async (img: File) => {
+        if (img) {
+          const { Key } = await awsUploader.uploadToBucket(img);
+
+          return Key;
+        }
+
+        return '';
+      };
+
+      const flagCover = get(data.flagCover, '0');
+      const flagLogo = get(data.flagLogo, '0');
+
+      const [flagCoverFileName, flagLogoFileName] = await Promise.all([
+        uploadImg(flagCover),
+        uploadImg(flagLogo),
+      ]);
+
+      const newDaoConfig: DaoConfig = {
+        name: dao.name,
+        purpose: dao.description,
+        metadata: fromMetadataToBase64({
+          links: dao.links,
+          flag: dao.logo,
+          displayName: dao.displayName,
+          flagCover: flagCoverFileName,
+          flagLogo: flagLogoFileName,
+        }),
+      };
+
+      return getChangeConfigProposal(
+        dao.id,
+        newDaoConfig,
+        'Changing flag',
+        dao.policy.proposalBond
+      );
+    }
     default: {
       return null;
     }
@@ -695,6 +749,14 @@ export function getValidationSchema(
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
         amount: yup.string().required('Required'),
+      });
+    }
+    case ProposalVariant.ProposeChangeDaoFlag: {
+      return yup.object().shape({
+        details: yup.string().required('Required'),
+        externalUrl: yup.string().url(),
+        flagCover: yup.string().required('Required'),
+        flagLogo: yup.string().required('Required'),
       });
     }
     case ProposalVariant.ProposeDoneBounty:

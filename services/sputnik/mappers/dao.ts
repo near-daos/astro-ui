@@ -127,6 +127,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     policy: daoDTO.policy,
     links: meta && meta.links ? meta.links : [],
     displayName: meta?.displayName || '',
+    lastProposalId: daoDTO.lastProposalId,
   };
 };
 

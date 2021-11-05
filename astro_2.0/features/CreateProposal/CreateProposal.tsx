@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useMount } from 'react-use';
+import { useRouter } from 'next/router';
 
 import { SputnikHttpService, SputnikNearService } from 'services/sputnik';
 import { useCustomTokensContext } from 'context/CustomTokensContext';
@@ -43,6 +44,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   onClose,
 }) => {
   const { accountId } = useAuthContext();
+  const router = useRouter();
   const [selectedProposalVariant, setSelectedProposalVariant] = useState(
     proposalVariant
   );
@@ -123,6 +125,10 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             lifetime: 20000,
           });
 
+          router.push(
+            `/dao/${dao.id}/proposals/${dao.id}-${dao.lastProposalId - 1}`
+          );
+
           onCreate(true);
         }
       } catch (err) {
@@ -135,7 +141,15 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         onCreate(false);
       }
     },
-    [dao, onCreate, selectedProposalVariant, tokens, bountyId, accountId]
+    [
+      dao,
+      selectedProposalVariant,
+      tokens,
+      accountId,
+      bountyId,
+      router,
+      onCreate,
+    ]
   );
 
   const contentNode = getFormContentNode(selectedProposalVariant, dao);

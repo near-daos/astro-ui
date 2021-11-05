@@ -44,6 +44,7 @@ Template.args = {
     members: 3,
     activeProposalsCount: 11,
     totalProposalsCount: 15,
+    lastProposalId: 12,
     proposals: 13,
     totalProposals: 15,
     logo:
