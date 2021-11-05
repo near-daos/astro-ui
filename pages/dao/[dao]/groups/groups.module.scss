@@ -1,10 +1,14 @@
 @import 'styles/mixins';
+@import 'styles/typography';
 
 .root {
   display: grid;
-  grid-row-gap: 24px;
+  grid-row-gap: 14px;
   grid-template-areas:
+    'breadcrumb'
+    'dao'
     'header'
+    'groups'
     'filter'
     'content';
   grid-template-columns: 1fr;
@@ -25,6 +29,45 @@
 
   h1 {
     margin: 0;
+  }
+}
+
+.groups {
+  grid-area: groups;
+  margin-top: 32px;
+}
+
+.groupsTitle {
+  @extend %heading3;
+  line-height: 48px;
+  margin: 0 0 8px;
+}
+
+.groupsList {
+  align-items: center;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 16px;
+  height: 77px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding: 16px;
+}
+
+.breadcrumbs {
+  grid-area: breadcrumb;
+  margin-bottom: 42px;
+}
+
+.dao {
+  grid-area: dao;
+  margin: 16px 0 44px;
+
+  .newProposalWrapper {
+    margin-top: 24px;
   }
 }
 

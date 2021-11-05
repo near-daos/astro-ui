@@ -1,3 +1,4 @@
+import React, { FC, useCallback, useState } from 'react';
 import uniq from 'lodash/uniq';
 import { Badge } from 'components/badge/Badge';
 import { Button } from 'components/button/Button';
@@ -14,14 +15,18 @@ import { GroupFormType } from 'features/groups/types';
 import get from 'lodash/get';
 import { useRouter } from 'next/router';
 
-import styles from 'pages/dao/[dao]/groups/groups.module.scss';
-import React, { FC, useCallback, useState } from 'react';
-
 import { DAO, Member } from 'types/dao';
 import { GetServerSideProps } from 'next';
 import { SputnikHttpService } from 'services/sputnik';
 import { extractMembersFromDao } from 'services/sputnik/mappers';
 import { useAuthContext } from 'context/AuthContext';
+import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
+import NavLink from 'astro_2.0/components/NavLink';
+import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
+import { ProposalVariant } from 'types/proposal';
+import { CreateProposal } from 'astro_2.0/features/CreateProposal';
+
+import styles from './groups.module.scss';
 
 const sortOptions = [
   {
@@ -40,8 +45,9 @@ interface GroupPageProps {
   availableGroups: string[];
 }
 
-const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
+const GroupPage: FC<GroupPageProps> = ({ dao, members, availableGroups }) => {
   const router = useRouter();
+  const daoId = router.query.dao as string;
   const paramGroup = router.query.group as string;
   const { accountId, login } = useAuthContext();
 
@@ -50,6 +56,7 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
   const [showGroupModal] = useModal(GroupPopup);
 
   const [activeSort, setActiveSort] = useState<string>(sortOptions[0].value);
+  const [showCreateProposal, setShowCreateProposal] = useState(false);
 
   const showCreateGroupDialog = useCallback(async () => {
     await showGroupModal({
@@ -106,6 +113,10 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
     [showCardModal]
   );
 
+  const handleCreateProposal = useCallback(() => {
+    setShowCreateProposal(true);
+  }, []);
+
   const sortedData = members
     .filter(
       item =>
@@ -141,17 +152,59 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
 
   return (
     <div className={styles.root}>
+      <BreadCrumbs className={styles.breadcrumbs}>
+        <NavLink href="/all/daos">All DAOs</NavLink>
+        <NavLink href={`/dao/${daoId}`}>{dao?.displayName || dao?.id}</NavLink>
+        <NavLink href={`/dao/${daoId}/groups/all-members`}>Groups</NavLink>
+        <span>{pageTitle === 'all' ? 'All Members' : pageTitle}</span>
+      </BreadCrumbs>
+
+      <div className={styles.dao}>
+        <DaoDetailsMinimized
+          dao={dao}
+          accountId={accountId}
+          onCreateProposalClick={handleCreateProposal}
+        />
+        {showCreateProposal && (
+          <div className={styles.newProposalWrapper}>
+            <CreateProposal
+              dao={dao}
+              proposalVariant={ProposalVariant.ProposeTransfer}
+              onCreate={isSuccess => {
+                if (isSuccess) {
+                  setShowCreateProposal(false);
+                }
+              }}
+              onClose={() => {
+                setShowCreateProposal(false);
+              }}
+            />
+          </div>
+        )}
+      </div>
+
       <div className={styles.header}>
         <h1>{pageTitle === 'all' ? 'All Members' : <>{pageTitle}</>}</h1>
-        {pageTitle === 'all' ? (
-          <Button variant="black" size="small" onClick={handleCreateGroup}>
-            Create new group
-          </Button>
-        ) : (
-          <Button variant="black" size="small" onClick={handleAddClick}>
-            Add member to this group
-          </Button>
-        )}
+        <Button variant="black" size="small" onClick={handleCreateGroup}>
+          Create new group
+        </Button>
+        <Button variant="black" size="small" onClick={handleAddClick}>
+          Add member to this group
+        </Button>
+      </div>
+      <div className={styles.groups}>
+        <h5 className={styles.groupsTitle}>Groups</h5>
+        <ul className={styles.groupsList}>
+          {availableGroups.map(item => (
+            <li className={styles.groupsItem}>
+              <NavLink href={`/dao/${daoId}/groups/${item}`}>
+                <Badge key={item} size="small" variant="turqoise">
+                  {item}
+                </Badge>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
       </div>
       <div className={styles.filter}>
         <Dropdown
@@ -194,17 +247,22 @@ const GroupPage: FC<GroupPageProps> = ({ members, availableGroups }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({
+export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
   query,
-}): Promise<{
-  props: { dao: DAO | null; members: Member[]; availableGroups: string[] };
-}> => {
+}) => {
   const daoId = query.dao as string;
 
   const [dao, proposals] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
     SputnikHttpService.getProposals(daoId),
   ]);
+
+  if (!dao) {
+    return {
+      notFound: true,
+    };
+  }
+
   const members = dao ? extractMembersFromDao(dao, proposals) : [];
 
   const availableGroups = members.reduce<string[]>((res, item) => {
