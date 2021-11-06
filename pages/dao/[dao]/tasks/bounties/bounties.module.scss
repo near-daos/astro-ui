@@ -2,11 +2,40 @@
 @import 'styles/mixins';
 
 .root {
-  padding-top: 32px;
+  display: grid;
+  grid-row-gap: 14px;
+  grid-template-areas:
+    'breadcrumb'
+    'dao'
+    'header'
+    'filters'
+    'content';
+  grid-template-columns: 1fr;
+  padding-top: 56px;
+}
+
+.breadcrumbs {
+  grid-area: breadcrumb;
+  margin-bottom: 42px;
+}
+
+.dao {
+  grid-area: dao;
+  margin: 16px 0 44px;
 }
 
 .newProposal {
   padding-top: 32px;
+}
+
+.createBounty {
+  align-items: center;
+  display: flex;
+  gap: 35px;
+
+  h1 {
+    margin: 0;
+  }
 }
 
 .grid {
@@ -58,4 +87,12 @@
     bottom: 40px;
     right: 40px;
   }
+}
+
+.filters {
+  align-items: center;
+  display: flex;
+  grid-area: filters;
+  justify-content: flex-end;
+  margin-top: 77px;
 }

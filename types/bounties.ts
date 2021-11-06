@@ -26,3 +26,9 @@ export interface BountyClaimResponse {
 export interface BountiesResponse {
   data: BountyResponse[];
 }
+
+export enum BountyStatuses {
+  Available = 'available',
+  Inprogress = 'in-progress',
+  Completed = 'completed',
+}
