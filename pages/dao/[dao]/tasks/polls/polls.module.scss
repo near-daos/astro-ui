@@ -2,16 +2,28 @@
 
 .root {
   display: grid;
-  grid-column-gap: 8px;
-  grid-row-gap: 32px;
+  grid-row-gap: 14px;
   grid-template-areas:
+    'breadcrumb'
+    'dao'
     'header'
+    'filter'
     'polls';
   grid-template-columns: 1fr;
   padding-top: 56px;
 
-  @include tablet-landscape {
-    grid-row-gap: 48px;
+  .breadcrumbs {
+    grid-area: breadcrumb;
+    margin-bottom: 42px;
+  }
+}
+
+.dao {
+  grid-area: dao;
+  margin: 16px 0 44px;
+
+  .newProposalWrapper {
+    margin-top: 24px;
   }
 }
 
@@ -57,7 +69,7 @@
 }
 
 .proposalCardWrapper {
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .activeProposalsTab {
@@ -70,4 +82,16 @@
 
 .failedProposalsTab {
   color: var(--color-brand-coral-red);
+}
+
+.statusFilterWrapper {
+  display: flex;
+  grid-area: filter;
+  justify-content: flex-end;
+  margin: 56px 0 40px;
+}
+
+.loading {
+  margin: 32px 0;
+  text-align: center;
 }
