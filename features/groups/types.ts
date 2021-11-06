@@ -16,7 +16,7 @@ export interface GroupFormInput {
 export interface IGroupForm {
   group: string;
   memberName: string;
-  detail: string;
+  details: string;
   externalUrl: string;
   voteDetails: string;
 }

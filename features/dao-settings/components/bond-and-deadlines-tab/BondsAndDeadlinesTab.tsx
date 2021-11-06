@@ -97,7 +97,8 @@ export const BondsAndDeadlines: FC<BondsAndDeadlinesTabProps> = props => {
           dao,
           data,
           props,
-          proposalBond
+          proposalBond,
+          dao.description
         );
 
         await SputnikNearService.createProposal(proposal);

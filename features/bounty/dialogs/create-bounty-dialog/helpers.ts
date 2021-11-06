@@ -52,7 +52,7 @@ export function getAddBountyProposal(
         token: tokenId,
         amount: new Decimal(amount).mul(tokenDecimal).toFixed(),
         times: slots,
-        max_deadline: getDeadline(deadlineThreshold, deadlineUnit),
+        maxDeadline: getDeadline(deadlineThreshold, deadlineUnit),
       },
     },
     bond: dao.policy.proposalBond,

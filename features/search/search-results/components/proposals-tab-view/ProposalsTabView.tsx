@@ -1,22 +1,14 @@
 import React, { FC } from 'react';
 import isEmpty from 'lodash/isEmpty';
 
-import { useAuthContext } from 'context/AuthContext';
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useFilteredProposalsData } from 'features/search/search-results/components/proposals-tab-view/helpers';
 import { statusFilterOptions } from 'features/search/search-filters/helpers';
 import { NoResultsView } from 'features/no-results-view';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
-import {
-  ProposalCardRenderer,
-  LetterHeadWidget,
-  ProposalCard,
-} from 'astro_2.0/components/ProposalCardRenderer';
-import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import ProposalStatusFilters from 'astro_2.0/components/Feed/StatusFilters';
 import Checkbox from 'astro_2.0/components/inputs/Checkbox';
-import { getVoteDetails } from 'features/vote-policy/helpers';
-import { getScope } from 'components/cards/expanded-proposal-card/helpers';
+import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 
 import styles from './proposals-tab-view.module.scss';
 
@@ -29,8 +21,6 @@ export const ProposalsTabView: FC = () => {
     filter,
     onFilterChange,
   } = useFilteredProposalsData(proposals || []);
-
-  const { accountId } = useAuthContext();
 
   if (isEmpty(proposals)) {
     return (
@@ -142,54 +132,7 @@ export const ProposalsTabView: FC = () => {
         {filteredProposals.map(item => {
           return (
             <div className={styles.cardWrapper} key={item.id}>
-              <ProposalCardRenderer
-                key={`${item.id}${item.proposalId}`}
-                proposalCardNode={
-                  <ProposalCard
-                    type={item.kind.type}
-                    status={item.status}
-                    proposer={item.proposer}
-                    description={item.description}
-                    link={item.link}
-                    proposalId={item.proposalId}
-                    proposalTxHash={item.txHash}
-                    accountId={accountId}
-                    dao={item.dao}
-                    likes={item.voteYes}
-                    dislikes={item.voteNo}
-                    liked={item.votes[accountId] === 'Yes'}
-                    disliked={item.votes[accountId] === 'No'}
-                    voteDetails={
-                      item.dao.policy.defaultVotePolicy.ratio
-                        ? getVoteDetails(
-                            item.dao,
-                            getScope(item.kind.type),
-                            item
-                          ).details
-                        : undefined
-                    }
-                    content={null}
-                  />
-                }
-                daoFlagNode={
-                  <DaoFlagWidget
-                    daoName={item.dao.displayName}
-                    flagUrl={item.daoDetails.logo}
-                    daoId={item.daoId}
-                  />
-                }
-                letterHeadNode={
-                  <LetterHeadWidget
-                    type={item.kind.type}
-                    // TODO replace the link with supposed one
-                    coverUrl="/cover.png"
-                  />
-                }
-                // infoPanelNode={
-                //   <InfoBlockWidget label="Proposer" value={item.proposer} />
-                // }
-                className={styles.itemRoot}
-              />
+              <ViewProposal dao={item.dao} proposal={item} showFlag />
             </div>
           );
         })}

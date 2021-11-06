@@ -1,11 +1,7 @@
 import Decimal from 'decimal.js';
 import { NextRouter } from 'next/router';
 
-import {
-  DaoConfig,
-  ConfigChangeReason,
-  CreateProposalParams,
-} from 'types/proposal';
+import { DaoConfig, CreateProposalParams } from 'types/proposal';
 import { DAO } from 'types/dao';
 
 import { SINGLE_DAO_PAGE } from 'constants/routing';
@@ -21,7 +17,7 @@ export interface NameAndPurposeData {
 export function getChangeConfigProposal(
   daoId: string,
   { name, purpose, metadata }: DaoConfig,
-  reason: ConfigChangeReason,
+  reason: string,
   proposalBond: string
 ): CreateProposalParams {
   return {
@@ -34,7 +30,7 @@ export function getChangeConfigProposal(
         purpose,
       },
     },
-    description: `${reason} for ${daoId}`,
+    description: reason,
     bond: proposalBond,
   };
 }
@@ -63,7 +59,8 @@ export function getChangeBondDeadlinesProposal(
     claimBountyBond: number;
     unclaimBountyTime: number;
   },
-  proposalBond: string
+  proposalBond: string,
+  description: string
 ): CreateProposalParams {
   const { id, policy } = dao;
 
@@ -71,31 +68,9 @@ export function getChangeBondDeadlinesProposal(
 
   const { ratio, quorum, weightKind } = defaultVotePolicy;
 
-  const generateDescription = () => {
-    const description = [];
-
-    if (createProposalBond !== initialValues.createProposalBond) {
-      description.push(`new proposal bond is ${createProposalBond}`);
-    }
-
-    if (proposalExpireTime !== initialValues.proposalExpireTime) {
-      description.push(`new proposal expire time is ${proposalExpireTime}`);
-    }
-
-    if (claimBountyBond !== initialValues.claimBountyBond) {
-      description.push(`new bounty claim bond: ${claimBountyBond}`);
-    }
-
-    if (unclaimBountyTime !== initialValues.unclaimBountyTime) {
-      description.push(`new bounty forgiveness period: ${unclaimBountyTime}`);
-    }
-
-    return description.join(', ');
-  };
-
   return {
     daoId: id,
-    description: generateDescription(),
+    description,
     kind: 'ChangePolicy',
     data: {
       policy: {

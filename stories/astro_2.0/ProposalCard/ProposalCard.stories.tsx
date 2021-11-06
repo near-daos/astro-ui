@@ -5,7 +5,7 @@ import {
   ProposalCardRenderer,
   ProposalCardRendererProps,
 } from 'astro_2.0/components/ProposalCardRenderer';
-import { ProposalStatus, ProposalType } from 'types/proposal';
+import { ProposalStatus, ProposalType, ProposalVariant } from 'types/proposal';
 import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import { DAO } from 'types/dao';
 import { ProposalCard } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard';
@@ -59,6 +59,8 @@ const cardProps = {
     />
   ),
   status: 'Approved' as ProposalStatus,
+  variant: ProposalVariant.ProposeTransfer,
+  votePeriodEnd: '',
   daoName: 'Ref.Finance',
   proposalId: 0,
   proposer: 'dkarpov.near',

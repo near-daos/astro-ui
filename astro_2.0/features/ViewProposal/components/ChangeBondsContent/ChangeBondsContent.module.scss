@@ -1,0 +1,47 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.row {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  white-space: nowrap;
+
+  .iconWrapper {
+    background-color: var(--color-neutral-30);
+    border-radius: 50%;
+    height: 24px;
+    margin-right: 8px;
+    width: 24px;
+  }
+}
+
+.inline {
+  display: grid;
+  grid-column-gap: 24px;
+  grid-template-columns: 200px 1fr;
+}
+
+.title {
+  @extend %title3;
+}
+
+.wide {
+  flex: 1;
+}
+
+.narrow {
+  max-width: 60px;
+}
+
+.symbol {
+  @include ellipse-text;
+  max-width: 60px;
+}

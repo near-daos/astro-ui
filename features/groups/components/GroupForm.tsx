@@ -108,14 +108,14 @@ export const GroupForm: React.FC<GroupFormProps> = ({
       <div className={styles.detail}>
         <TextArea
           size="block"
-          isValid={touchedFields.detail && !errors.detail?.message}
+          isValid={touchedFields.details && !errors.details?.message}
           defaultValue={initialValues?.detail}
           textAlign="left"
           maxLength={500}
           resize="none"
           placeholder="Sample text"
           label="Details"
-          {...register('detail')}
+          {...register('details')}
         />
       </div>
       <Input

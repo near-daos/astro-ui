@@ -11,7 +11,7 @@ import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/comp
 import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import { TransactionDetailsWidget } from 'astro_2.0/components/TransactionDetailsWidget';
 
-import { ProposalVariant } from 'types/proposal';
+import { CreateProposalParams, ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
 
 import {
@@ -22,6 +22,7 @@ import {
   mapProposalVariantToProposalType,
 } from 'astro_2.0/features/CreateProposal/helpers';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 import { useAuthContext } from 'context/AuthContext';
 import { CreateProposalCard } from './components/CreateProposalCard';
@@ -107,7 +108,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   const onSubmit = useCallback(
     async data => {
       try {
-        const newProposal = await getNewProposalObject(
+        let newProposal = await getNewProposalObject(
           dao,
           selectedProposalVariant,
           data,
@@ -115,6 +116,12 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           accountId,
           bountyId
         );
+
+        // Add proposal variant
+        newProposal = {
+          ...newProposal,
+          description: `${newProposal?.description}${EXTERNAL_LINK_SEPARATOR}${selectedProposalVariant}`,
+        } as CreateProposalParams;
 
         if (newProposal) {
           await SputnikNearService.createProposal(newProposal);
@@ -126,7 +133,9 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           });
 
           router.push(
-            `/dao/${dao.id}/proposals/${dao.id}-${dao.lastProposalId - 1}`
+            `/dao/${dao.id}/proposals/${dao.id}-${
+              dao.lastProposalId > 0 ? dao.lastProposalId - 1 : 0
+            }`
           );
 
           onCreate(true);

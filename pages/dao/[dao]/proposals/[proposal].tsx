@@ -6,12 +6,6 @@ import { DAO, Member } from 'types/dao';
 import { Proposal } from 'types/proposal';
 import { VoterDetail } from 'features/types';
 
-import {
-  LetterHeadWidget,
-  ProposalCard,
-  ProposalCardRenderer,
-} from 'astro_2.0/components/ProposalCardRenderer';
-import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import StatusFilters from 'astro_2.0/components/Feed/StatusFilters';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { DefaultVotingPolicy } from 'astro_2.0/components/DefaultVotingPolicy';
@@ -19,6 +13,7 @@ import { VotersList } from 'features/proposal/components/voters-list';
 import { MobileProposalActions } from 'features/proposal/components/proposal-actions';
 import { getScope } from 'components/cards/expanded-proposal-card/helpers';
 import { Icon } from 'components/Icon';
+import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 
 import { getVoteDetails } from 'features/vote-policy/helpers';
 
@@ -144,51 +139,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         <DaoDetailsMinimized dao={dao} accountId={accountId} />
       </div>
       <div className={styles.proposalInfo}>
-        <ProposalCardRenderer
-          key={proposal.id}
-          proposalCardNode={
-            <ProposalCard
-              proposalId={proposal.proposalId}
-              type={proposal.kind.type}
-              status={proposal.status}
-              proposer={proposal.proposer}
-              description={proposal.description}
-              link={proposal.link}
-              proposalTxHash={proposal.txHash}
-              accountId={accountId}
-              dao={proposal.dao}
-              likes={proposal.voteYes}
-              dislikes={proposal.voteNo}
-              liked={proposal.votes[accountId] === 'Yes'}
-              disliked={proposal.votes[accountId] === 'No'}
-              voteDetails={
-                proposal.dao.policy.defaultVotePolicy.ratio
-                  ? getVoteDetails(
-                      proposal.dao,
-                      getScope(proposal.kind.type),
-                      proposal
-                    ).details
-                  : undefined
-              }
-              content={null}
-            />
-          }
-          daoFlagNode={
-            <DaoFlagWidget
-              daoName={proposal.dao.displayName}
-              flagUrl={proposal.daoDetails.logo}
-              daoId={proposal.daoId}
-            />
-          }
-          letterHeadNode={
-            <LetterHeadWidget
-              type={proposal.kind.type}
-              // TODO replace the link with supposed one
-              coverUrl="/cover.png"
-            />
-          }
-          className={styles.proposalCardWrapper}
-        />
+        <ViewProposal dao={dao} proposal={proposal} showFlag />
       </div>
       <div className={styles.policy}>
         <DefaultVotingPolicy policy={dao.policy.defaultVotePolicy} />

@@ -50,6 +50,7 @@ export enum ProposalVariant {
   ProposeAddMember = 'ProposeAddMember',
   ProposeRemoveMember = 'ProposeRemoveMember',
   ProposePoll = 'ProposePoll',
+  ProposeDefault = 'ProposeDefault',
 }
 
 export type VoteAction = 'VoteApprove' | 'VoteRemove' | 'VoteReject';
@@ -59,7 +60,7 @@ export type AddBountyRequest = {
   token: string;
   amount: string;
   times: number;
-  max_deadline: string;
+  maxDeadline: string;
 };
 
 export type BountyDoneProposalType = {
@@ -111,7 +112,7 @@ export type ProposalKind =
   | { type: ProposalType.ChangePolicy; policy: PolicyType }
   | {
       type: ProposalType.ChangeConfig;
-      config: { metadata: string; name: string };
+      config: { metadata: string; name: string; purpose: string };
     }
   | { type: ProposalType.Vote };
 
@@ -132,6 +133,7 @@ export type Proposal = {
   status: ProposalStatus;
   kind: ProposalKind;
   votePeriodEnd: string;
+  votePeriodEndDate: string;
   voteYes: number;
   voteNo: number;
   voteRemove: number;
@@ -144,6 +146,7 @@ export type Proposal = {
   daoDetails: DaoDetails;
   link: string;
   dao: DAO;
+  proposalVariant: ProposalVariant;
 };
 
 export interface CreateProposalParams {

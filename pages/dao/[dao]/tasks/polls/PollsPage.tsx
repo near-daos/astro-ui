@@ -16,19 +16,15 @@ import NavLink from 'astro_2.0/components/NavLink';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { ProposalCard } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard';
-import { getVoteDetails } from 'features/vote-policy/helpers';
-import { getScope } from 'components/cards/expanded-proposal-card/helpers';
-import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
 import { DAO } from 'types/dao';
 import { PaginationResponse } from 'types/api';
 import { Loader } from 'components/loader';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { SputnikHttpService } from 'services/sputnik/SputnikHttpService';
 import { useAsyncFn, useUpdateEffect } from 'react-use';
-import { ProposalCardRenderer } from 'astro_2.0/components/ProposalCardRenderer';
 import StatusFilters from 'astro_2.0/components/Feed/StatusFilters';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
+import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 
 export interface PollsPageProps {
   dao: DAO;
@@ -191,44 +187,9 @@ const PollsPage: FC<PollsPageProps> = ({ dao, initialPollsData }) => {
         >
           {(pollsData?.data || []).map(item => {
             return (
-              <ProposalCardRenderer
-                key={`${item.id}${item.proposalId}`}
-                proposalCardNode={
-                  <ProposalCard
-                    type={item.kind.type}
-                    status={item.status}
-                    proposer={item.proposer}
-                    description={item.description}
-                    link={item.link}
-                    proposalId={item.proposalId}
-                    proposalTxHash={item.txHash}
-                    accountId={accountId}
-                    dao={item.dao}
-                    likes={item.voteYes}
-                    dislikes={item.voteNo}
-                    liked={item.votes[accountId] === 'Yes'}
-                    disliked={item.votes[accountId] === 'No'}
-                    voteDetails={
-                      item.dao.policy.defaultVotePolicy.ratio
-                        ? getVoteDetails(
-                            item.dao,
-                            getScope(item.kind.type),
-                            item
-                          ).details
-                        : undefined
-                    }
-                    content={null}
-                  />
-                }
-                letterHeadNode={
-                  <LetterHeadWidget
-                    type={item.kind.type}
-                    // TODO replace the link with supposed one
-                    coverUrl="/cover.png"
-                  />
-                }
-                className={styles.proposalCardWrapper}
-              />
+              <div className={styles.proposalCardWrapper}>
+                <ViewProposal dao={item.dao} proposal={item} showFlag />
+              </div>
             );
           })}
 

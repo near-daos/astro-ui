@@ -47,15 +47,18 @@
 }
 
 .voteControlCell {
+  align-items: flex-end;
+  display: flex;
   grid-area: voteControl;
+  justify-content: flex-end;
 }
 
 .proposalStatusSeal {
-  height: 164px;
+  height: 124px;
   position: absolute;
   right: 24px;
   top: 24px;
-  width: 164px;
+  width: 124px;
 }
 
 .countdownCell {
@@ -88,6 +91,7 @@
 }
 
 .proposalType {
+  align-items: center;
   display: flex;
 }
 

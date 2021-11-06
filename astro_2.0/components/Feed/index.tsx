@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useAsync, useAsyncFn, useUpdateEffect } from 'react-use';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
+import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { PaginationResponse } from 'types/api';
 import { Proposal, ProposalStatuses } from 'types/proposal';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
@@ -12,19 +13,9 @@ import { useDebounceUpdateEffect } from 'hooks/useDebounceUpdateEffect';
 import { useAuthContext } from 'context/AuthContext';
 import { useCustomTokensContext } from 'context/CustomTokensContext';
 import { NoResultsView } from 'features/no-results-view';
-import { getVoteDetails } from 'features/vote-policy/helpers';
 import * as Typography from 'components/Typography';
-import { getScope } from 'components/cards/expanded-proposal-card/helpers';
 
 import { Loader } from 'components/loader';
-import {
-  ProposalCardRenderer,
-  LetterHeadWidget,
-  ProposalCard,
-  // InfoBlockWidget,
-} from 'astro_2.0/components/ProposalCardRenderer';
-
-import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import CategoriesList from './CategoriesList';
 import StatusFilters from './StatusFilters';
 
@@ -205,54 +196,9 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
         >
           {(proposalsData?.data || []).map(item => {
             return (
-              <ProposalCardRenderer
-                key={`${item.id}${item.proposalId}`}
-                proposalCardNode={
-                  <ProposalCard
-                    type={item.kind.type}
-                    status={item.status}
-                    proposer={item.proposer}
-                    description={item.description}
-                    link={item.link}
-                    proposalId={item.proposalId}
-                    proposalTxHash={item.txHash}
-                    accountId={accountId}
-                    dao={item.dao}
-                    likes={item.voteYes}
-                    dislikes={item.voteNo}
-                    liked={item.votes[accountId] === 'Yes'}
-                    disliked={item.votes[accountId] === 'No'}
-                    voteDetails={
-                      item.dao.policy.defaultVotePolicy.ratio
-                        ? getVoteDetails(
-                            item.dao,
-                            getScope(item.kind.type),
-                            item
-                          ).details
-                        : undefined
-                    }
-                    content={null}
-                  />
-                }
-                daoFlagNode={
-                  <DaoFlagWidget
-                    daoName={item.dao.displayName}
-                    flagUrl={item.daoDetails.logo}
-                    daoId={item.daoId}
-                  />
-                }
-                letterHeadNode={
-                  <LetterHeadWidget
-                    type={item.kind.type}
-                    // TODO replace the link with supposed one
-                    coverUrl="/cover.png"
-                  />
-                }
-                // infoPanelNode={
-                //   <InfoBlockWidget label="Proposer" value={item.proposer} />
-                // }
-                className={styles.itemRoot}
-              />
+              <div key={item.id} className={styles.itemRoot}>
+                <ViewProposal dao={item.dao} proposal={item} showFlag />
+              </div>
             );
           })}
 

@@ -7,6 +7,7 @@ import {
   ProposalKind,
   ProposalStatus,
   ProposalType,
+  ProposalVariant,
 } from 'types/proposal';
 import {
   DaoDTO,
@@ -99,9 +100,11 @@ function getProposalStatus(
 export const mapProposalDTOToProposal = (
   proposalDTO: ProposalDTO
 ): Proposal => {
-  const [description, link] = proposalDTO.description.split(
-    EXTERNAL_LINK_SEPARATOR
-  );
+  const [
+    description,
+    link,
+    proposalVariant = ProposalVariant.ProposeDefault,
+  ] = proposalDTO.description.split(EXTERNAL_LINK_SEPARATOR);
 
   const config = get(proposalDTO.dao, 'config');
   const meta = config.metadata ? fromBase64ToMetadata(config.metadata) : null;
@@ -122,6 +125,7 @@ export const mapProposalDTOToProposal = (
     status: getProposalStatus(proposalDTO.status, votePeriodEnd),
     kind: proposalDTO.kind,
     votePeriodEnd,
+    votePeriodEndDate: votePeriodEnd,
     txHash: proposalDTO.transactionHash,
     createdAt: proposalDTO.createdAt,
     dao: mapDaoDTOtoDao(proposalDTO.dao),
@@ -132,6 +136,7 @@ export const mapProposalDTOToProposal = (
         ? getAwsImageUrl(meta.flag)
         : getAwsImageUrl('default.png'),
     },
+    proposalVariant: proposalVariant as ProposalVariant,
   };
 };
 
@@ -165,7 +170,7 @@ export const mapCreateParamsToPropsalKind = (
           token: 'string',
           amount: 'string',
           times: 0,
-          max_deadline: 'string',
+          maxDeadline: 'string',
         },
       };
     case 'AddMemberToRole':
@@ -184,7 +189,7 @@ export const mapCreateParamsToPropsalKind = (
     case 'ChangeConfig':
       return {
         type: ProposalType.ChangeConfig,
-        config: { metadata: 'string', name: 'string' },
+        config: { metadata: 'string', name: 'string', purpose: 'string' },
       };
     case 'ChangePolicy':
       return {

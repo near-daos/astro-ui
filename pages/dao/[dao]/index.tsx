@@ -6,20 +6,12 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { Icon } from 'components/Icon';
+import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import StatusFilters from 'astro_2.0/components/Feed/StatusFilters';
 import { DaoDetails } from 'astro_2.0/components/DaoDetails';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
-import {
-  LetterHeadWidget,
-  ProposalCard,
-  ProposalCardRenderer,
-} from 'astro_2.0/components/ProposalCardRenderer';
 import CategoriesList from 'astro_2.0/components/Feed/CategoriesList';
 import { NoResultsView } from 'features/no-results-view';
-
-import { getVoteDetails } from 'features/vote-policy/helpers';
-import { getScope } from 'components/cards/expanded-proposal-card/helpers';
-
 import { getActiveProposalsCountByDao } from 'hooks/useAllProposals';
 
 import { SputnikHttpService } from 'services/sputnik';
@@ -222,45 +214,9 @@ const DAOHome: NextPage<DaoHomeProps> = ({
         >
           {data.map(item => {
             return (
-              <ProposalCardRenderer
-                key={item.id}
-                proposalCardNode={
-                  <ProposalCard
-                    id={item.id}
-                    proposalId={item.proposalId}
-                    type={item.kind.type}
-                    status={item.status}
-                    proposer={item.proposer}
-                    description={item.description}
-                    link={item.link}
-                    proposalTxHash={item.txHash}
-                    accountId={accountId}
-                    dao={item.dao}
-                    likes={item.voteYes}
-                    dislikes={item.voteNo}
-                    liked={item.votes[accountId] === 'Yes'}
-                    disliked={item.votes[accountId] === 'No'}
-                    voteDetails={
-                      item.dao.policy.defaultVotePolicy.ratio
-                        ? getVoteDetails(
-                            item.dao,
-                            getScope(item.kind.type),
-                            item
-                          ).details
-                        : undefined
-                    }
-                    content={null}
-                  />
-                }
-                letterHeadNode={
-                  <LetterHeadWidget
-                    type={item.kind.type}
-                    // TODO replace the link with supposed one
-                    coverUrl="/cover.png"
-                  />
-                }
-                className={styles.proposalCardWrapper}
-              />
+              <div key={item.id} className={styles.proposalCardWrapper}>
+                <ViewProposal dao={dao} proposal={item} showFlag={false} />
+              </div>
             );
           })}
         </InfiniteScroll>

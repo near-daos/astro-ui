@@ -30,6 +30,9 @@
 
 .general {
   grid-area: general;
+  @include tablet-portrait {
+    margin-left: 100px;
+  }
 }
 
 .funds {

@@ -52,11 +52,11 @@ function getAddRemoveMemberProposal(
   isRemove?: boolean
 ): CreateProposalParams {
   const { id } = dao;
-  const { detail, group, memberName, externalUrl } = formData;
+  const { details, group, memberName, externalUrl } = formData;
 
   return {
     daoId: id,
-    description: `${detail}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
+    description: `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
     kind: isRemove ? 'RemoveMemberFromRole' : 'AddMemberToRole',
     data: {
       member_id: memberName,
@@ -134,7 +134,7 @@ export function getChangePolicyProposal(
   dao: DAO
 ): CreateProposalParams {
   const { id, policy } = dao;
-  const { detail, group, memberName, externalUrl } = formData;
+  const { details, group, memberName, externalUrl } = formData;
 
   const members = memberName.split(', ');
 
@@ -150,7 +150,7 @@ export function getChangePolicyProposal(
 
   return {
     daoId: id,
-    description: `${detail}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
+    description: `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
     kind: 'ChangePolicy',
     data: {
       policy: {

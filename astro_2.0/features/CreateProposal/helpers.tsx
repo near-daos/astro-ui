@@ -362,11 +362,7 @@ export function getFormInitialValues(
       return {
         details: '',
         externalUrl: '',
-        links:
-          dao?.links?.map(url => ({
-            url,
-            id: nanoid(),
-          })) ?? [],
+        links: [],
       };
     }
     case ProposalVariant.ProposePoll: {
@@ -466,7 +462,7 @@ export async function getNewProposalObject(
       return getChangeConfigProposal(
         dao.id,
         newDaoConfig,
-        'Changing links',
+        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
         dao.policy.proposalBond
       );
     }
@@ -487,7 +483,7 @@ export async function getNewProposalObject(
       return getChangeConfigProposal(
         dao.id,
         newDaoConfig,
-        'Changing name/purpose',
+        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
         dao.policy.proposalBond
       );
     }
@@ -508,7 +504,7 @@ export async function getNewProposalObject(
       return getChangeConfigProposal(
         dao.id,
         newDaoConfig,
-        'Changing name/purpose',
+        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
         dao.policy.proposalBond
       );
     }
@@ -567,7 +563,8 @@ export async function getNewProposalObject(
             .div('3.6e12')
             .toNumber(),
         },
-        dao.policy.proposalBond
+        dao.policy.proposalBond,
+        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`
       );
     }
     case ProposalVariant.ProposeChangeDaoFlag: {
@@ -604,7 +601,7 @@ export async function getNewProposalObject(
       return getChangeConfigProposal(
         dao.id,
         newDaoConfig,
-        'Changing flag',
+        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
         dao.policy.proposalBond
       );
     }
