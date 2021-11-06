@@ -15,6 +15,14 @@ export const getServerSideProps: GetServerSideProps = async () => {
     : [];
   const accountDaosIds = accountDaos.map(item => item.id);
 
+  if (!accountDaosIds.length) {
+    return {
+      props: {
+        accountDaos: [],
+      },
+    };
+  }
+
   const { data } = await SputnikHttpService.getDaosFeed({
     filter: `id||$in||${accountDaosIds.join(',')}`,
   });
