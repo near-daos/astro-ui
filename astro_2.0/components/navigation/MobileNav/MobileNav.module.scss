@@ -1,10 +1,12 @@
+@import '../../constants.module';
+
 .root {
   align-items: center;
   background-color: var(--color-white);
   border-radius: 8px 8px 0 0;
   bottom: 0;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
-  display: flex;
+  display: none;
   height: 64px;
   justify-content: space-between;
   padding: 0 36px;
@@ -15,5 +17,11 @@
 @media screen and (max-width: 500px) {
   .root {
     padding: 0 18px;
+  }
+}
+
+@media screen and (max-width: $nav-mobile-width) {
+  .root {
+    display: flex;
   }
 }
