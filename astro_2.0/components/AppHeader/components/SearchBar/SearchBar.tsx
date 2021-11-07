@@ -4,12 +4,13 @@ import React, {
   useState,
   useCallback,
   KeyboardEventHandler,
+  useEffect,
 } from 'react';
 import cn from 'classnames';
 import ReactDOM from 'react-dom';
 import { useRouter } from 'next/router';
 import { usePopper } from 'react-popper';
-import { useClickAway, useDebounce } from 'react-use';
+import { useClickAway, useDebounce, useMount } from 'react-use';
 
 import { SEARCH_PAGE_URL } from 'constants/routing';
 
@@ -17,6 +18,8 @@ import { useSearchResults } from 'features/search/search-results';
 import { DropdownResults } from 'astro_2.0/components/AppHeader/components/SearchBar/components/DropdownResults';
 
 import { IconButton } from 'components/button/IconButton';
+
+import styleConst from 'astro_2.0/components/constants.module.scss';
 
 import styles from './SearchBar.module.scss';
 
@@ -33,6 +36,16 @@ export const SearchBar: FC<SearchBarProps> = ({
 }) => {
   const router = useRouter();
   const ref = useRef(null);
+
+  function isDesktopResolution() {
+    if (document) {
+      return (
+        document?.body?.offsetWidth > parseInt(styleConst.navMobileWidth, 10)
+      );
+    }
+
+    return true;
+  }
 
   const isSearchPage = router.pathname.includes(SEARCH_PAGE_URL);
 
@@ -54,12 +67,6 @@ export const SearchBar: FC<SearchBarProps> = ({
     }
   );
 
-  const [value, setValue] = useState('');
-  const [expanded, setExpanded] = useState(false);
-  const [focused, setFocused] = useState(false);
-
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
   const {
     handleSearch,
     handleClose,
@@ -67,10 +74,34 @@ export const SearchBar: FC<SearchBarProps> = ({
     setSearchResults,
   } = useSearchResults();
 
+  const [value, setValue] = useState(searchResults?.query || '');
+  const [expanded, setExpanded] = useState(false);
+  const [focused, setFocused] = useState(false);
+
+  useMount(() => {
+    setExpanded(isDesktopResolution() || !!searchResults?.query);
+  });
+
+  useEffect(() => {
+    function onResize() {
+      if (isDesktopResolution() && !expanded) {
+        setExpanded(true);
+      }
+    }
+
+    window.addEventListener('resize', onResize);
+
+    return () => window.removeEventListener('resize', onResize);
+  }, [expanded]);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   const onSearchStateToggle = useCallback(
     state => {
-      setExpanded(state);
-      onSearchToggle(state);
+      if (!isDesktopResolution()) {
+        setExpanded(state);
+        onSearchToggle(state);
+      }
     },
     [onSearchToggle]
   );

@@ -1,1 +1,7 @@
-$nav-mobile-width: 920px;
+$mobile-width: 920;
+$nav-mobile-width: #{$mobile-width}px;
+
+:export {
+  /* stylelint-disable-next-line */
+  navMobileWidth: $mobile-width;
+}

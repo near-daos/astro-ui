@@ -8,36 +8,46 @@ import {
 
 import { NavItemProps } from './types';
 
+export const ALL_DAOS_NAV_CONFIG: NavItemProps = {
+  icon: 'aAllDaos',
+  hoverIcon: 'aAllDaosHover',
+  href: ALL_DAOS_URL,
+  label: 'All DAOs',
+};
+
+export const ASTRO_FEED_NAV_CONFIG: NavItemProps = {
+  icon: 'aAstroFeed',
+  hoverIcon: 'aAstroFeedHover',
+  href: ALL_FEED_URL,
+  label: 'Astro Feed',
+};
+
+export const MY_DAOS_NAV_CONFIG: NavItemProps = {
+  icon: 'aMyDaos',
+  hoverIcon: 'aMyDaosHover',
+  href: MY_DAOS_URL,
+  label: '  My DAOs',
+};
+
+export const MY_FEED_NAV_CONFIG: NavItemProps = {
+  icon: 'aMyFeed',
+  hoverIcon: 'aMyFeedHover',
+  href: MY_FEED_URL,
+  label: 'My Feed',
+};
+
+export const CREATE_DAO_NAV_CONFIG: NavItemProps = {
+  icon: 'aCreateDao',
+  hoverIcon: 'aCreateDaoHover',
+  href: CREATE_DAO_URL,
+  label: 'Create DAO',
+  authRequired: true,
+};
+
 export const NAV_CONFIG: NavItemProps[] = [
-  {
-    icon: 'aAllDaos',
-    hoverIcon: 'aAllDaosHover',
-    href: ALL_DAOS_URL,
-    label: 'All DAOs',
-  },
-  {
-    icon: 'aAstroFeed',
-    hoverIcon: 'aAstroFeedHover',
-    href: ALL_FEED_URL,
-    label: 'Astro Feed',
-  },
-  {
-    icon: 'aMyDaos',
-    hoverIcon: 'aMyDaosHover',
-    href: MY_DAOS_URL,
-    label: '  My DAOs',
-  },
-  {
-    icon: 'aMyFeed',
-    hoverIcon: 'aMyFeedHover',
-    href: MY_FEED_URL,
-    label: 'My Feed',
-  },
-  {
-    icon: 'aCreateDao',
-    hoverIcon: 'aCreateDaoHover',
-    href: CREATE_DAO_URL,
-    label: 'Create DAO',
-    authRequired: true,
-  },
+  ALL_DAOS_NAV_CONFIG,
+  ASTRO_FEED_NAV_CONFIG,
+  MY_DAOS_NAV_CONFIG,
+  MY_FEED_NAV_CONFIG,
+  CREATE_DAO_NAV_CONFIG,
 ];
