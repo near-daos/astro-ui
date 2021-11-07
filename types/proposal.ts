@@ -60,7 +60,7 @@ export type AddBountyRequest = {
   token: string;
   amount: string;
   times: number;
-  maxDeadline: string;
+  max_deadline: string;
 };
 
 export type BountyDoneProposalType = {
@@ -134,6 +134,7 @@ export type Proposal = {
   kind: ProposalKind;
   votePeriodEnd: string;
   votePeriodEndDate: string;
+  updatedAt: string;
   voteYes: number;
   voteNo: number;
   voteRemove: number;

@@ -2,6 +2,7 @@ import React, { ReactNode, useCallback } from 'react';
 import { useAsyncFn } from 'react-use';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
+import { format, parseISO } from 'date-fns';
 
 import {
   ProposalStatus,
@@ -45,6 +46,27 @@ export interface ProposalCardProps {
   voteDetails?: VoteDetail;
   content: ReactNode;
   votePeriodEnd: string;
+  updatedAt?: string;
+}
+
+function getTimestampLabel(
+  timeLeft: string | null,
+  status: ProposalStatus,
+  updatedAt?: string | null
+) {
+  if (timeLeft) return `${timeLeft} left`;
+
+  if (
+    (status === 'Approved' || (status === 'Rejected' && updatedAt)) &&
+    updatedAt
+  ) {
+    return `${status} at ${format(
+      parseISO(updatedAt as string),
+      'dd MMMM yyyy'
+    )}`;
+  }
+
+  return 'Voting ended';
 }
 
 export const ProposalCard: React.FC<ProposalCardProps> = ({
@@ -66,6 +88,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   content,
   accountId,
   dao,
+  updatedAt,
 }) => {
   const router = useRouter();
   const permissions = useGetVotePermissions(dao, type, accountId);
@@ -124,7 +147,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           label={`Proposal type: ${type}`}
           value={
             <div className={styles.proposalType}>
-              {getProposalVariantLabel(variant)}
+              {getProposalVariantLabel(variant, type)}
               <ExplorerLink
                 linkData={proposalTxHash}
                 linkType="transaction"
@@ -135,7 +158,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         />
       </div>
       <div className={styles.countdownCell}>
-        {timeLeft ? `${timeLeft} left` : 'Voting ended'}
+        {getTimestampLabel(timeLeft, status, updatedAt)}
       </div>
       <div className={styles.proposerCell}>
         <InfoBlockWidget label="Proposer" value={proposer} />

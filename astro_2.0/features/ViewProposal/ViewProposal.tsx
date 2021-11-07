@@ -40,6 +40,10 @@ export const ViewProposal: FC<CreateProposalProps> = ({
 
   const contentNode = getContentNode(proposal, dao);
 
+  if (!proposal) {
+    return null;
+  }
+
   return (
     <ProposalCardRenderer
       daoFlagNode={
@@ -72,6 +76,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
           dislikes={proposal.voteNo}
           liked={proposal.votes[accountId] === 'Yes'}
           disliked={proposal.votes[accountId] === 'No'}
+          updatedAt={proposal.updatedAt}
           voteDetails={
             proposal.dao.policy.defaultVotePolicy.ratio
               ? getVoteDetails(

@@ -26,7 +26,7 @@ import { RemoveMemberFromGroupContent } from 'astro_2.0/features/ViewProposal/co
 import { DaoRole } from 'types/role';
 
 export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
-  switch (proposal.proposalVariant) {
+  switch (proposal?.proposalVariant) {
     case ProposalVariant.ProposeTransfer: {
       if (proposal.kind.type === ProposalType.Transfer) {
         return (
@@ -44,6 +44,8 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
       if (proposal.kind.type === ProposalType.AddBounty) {
         const bountyData = proposal.kind.bounty;
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const [, value] = getDistance(bountyData.maxDeadline);
 
         return (
@@ -114,9 +116,26 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
       return null;
     }
     case ProposalVariant.ProposeChangeVotingPolicy: {
-      const initialData = getInitialData(dao); // as Record<string, unknown>;
+      if (proposal.kind.type === ProposalType.ChangePolicy) {
+        const dvp = proposal.kind.policy.defaultVotePolicy;
 
-      return <ChangePolicyContent amount={initialData?.policy.amount} />;
+        const initialData = getInitialData({
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          policy: {
+            defaultVotePolicy: {
+              ...dvp,
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              ratio: dvp.threshold,
+            },
+          },
+        }); // as Record<string, unknown>;
+
+        return <ChangePolicyContent amount={initialData?.policy.amount} />;
+      }
+
+      return null;
     }
     case ProposalVariant.ProposeChangeBonds: {
       if (proposal.kind.type === ProposalType.ChangePolicy) {
@@ -149,6 +168,9 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
         const proposalGroups = proposal.kind.policy.roles;
 
         let newGroup;
+
+        // TODO - how can we understand what was the new group?
+        // once it is approved groups in dao and proposal are the same
 
         proposalGroups.forEach(group => {
           if (!daoGroups.includes(group.name)) {
@@ -205,7 +227,10 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
   }
 }
 
-export function getProposalVariantLabel(variant: ProposalVariant): string {
+export function getProposalVariantLabel(
+  variant: ProposalVariant,
+  type: ProposalType
+): string {
   switch (variant) {
     case ProposalVariant.ProposeCreateBounty: {
       return 'Create a Bounty';
@@ -247,7 +272,7 @@ export function getProposalVariantLabel(variant: ProposalVariant): string {
       return 'Change DAO flag';
     }
     default: {
-      return '';
+      return type;
     }
   }
 }

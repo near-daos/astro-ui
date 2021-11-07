@@ -658,9 +658,9 @@ export function getValidationSchema(
           .positive()
           .required('Required')
           .test(
-            'onlyOneDecimal',
-            'Only numbers with one optional decimal place please',
-            value => /^\d*(?:\.\d)?$/.test(`${value}`)
+            'onlyFiveDecimal',
+            'Only numbers with five optional decimal place please',
+            value => /^\d*(?:\.\d{0,5})?$/.test(`${value}`)
           ),
         target: yup
           .string()
@@ -682,9 +682,9 @@ export function getValidationSchema(
           .positive()
           .required('Required')
           .test(
-            'onlyOneDecimal',
-            'Only numbers with one optional decimal place please',
-            value => /^\d*(?:\.\d)?$/.test(`${value}`)
+            'onlyFiveDecimal',
+            'Only numbers with five optional decimal place please',
+            value => /^\d*(?:\.\d{0,5})?$/.test(`${value}`)
           ),
         slots: yup
           .number()

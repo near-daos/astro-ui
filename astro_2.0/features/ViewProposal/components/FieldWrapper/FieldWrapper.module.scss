@@ -42,4 +42,8 @@
   display: flex;
   font-weight: 700;
   height: 41px;
+
+  &.normal {
+    font-weight: 400;
+  }
 }

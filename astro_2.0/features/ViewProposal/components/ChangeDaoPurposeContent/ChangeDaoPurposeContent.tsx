@@ -22,7 +22,7 @@ export const ChangeDaoPurposeContent: FC<ChangeDaoPurposeContentProps> = ({
     <div className={styles.root}>
       <div className={styles.row}>
         <FieldWrapper label="New Purpose">
-          <FieldValue value={purpose} />
+          <FieldValue value={purpose} normal />
         </FieldWrapper>
       </div>
       <div className={cn(styles.row, styles.target)}>

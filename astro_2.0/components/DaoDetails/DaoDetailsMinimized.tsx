@@ -59,7 +59,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           <div className={styles.background} />
           <div
             className={styles.cover}
-            style={{ backgroundImage: `url(${dao.logo})` }}
+            style={{ backgroundImage: `url(${dao.flagCover ?? dao.logo})` }}
           />
         </div>
         <div>

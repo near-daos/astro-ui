@@ -152,7 +152,9 @@ class SputnikNearServiceClass {
     await this.sputnikDaoService.create(params);
   }
 
-  public async createProposal(params: CreateProposalParams) {
+  public async createProposal(
+    params: CreateProposalParams
+  ): Promise<FinalExecutionOutcome> {
     return this.sputnikDaoService.addProposal(params);
   }
 

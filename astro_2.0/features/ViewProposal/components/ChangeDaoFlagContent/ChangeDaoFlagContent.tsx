@@ -42,6 +42,11 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
           )}
         </FieldWrapper>
       </div>
+      <svg className="svg" width="0" height="0">
+        <clipPath id="__DAO__flag-preview">
+          <path d="M240.01 0L50.4101 67.7595V105.35L0 123.366V272L189.599 204.24V166.65L240.01 148.634V0Z" />
+        </clipPath>
+      </svg>
       <div className={cn(styles.row, styles.target)}>
         <InfoBlockWidget label="Target" value={daoId} valueFontSize="S" />
       </div>

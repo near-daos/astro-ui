@@ -76,9 +76,20 @@ export const CreateProposal: FC<CreateProposalProps> = ({
       const schema = getValidationSchema(context?.selectedProposalVariant);
 
       try {
-        const values = await schema.validate(data, {
+        let values = await schema.validate(data, {
           abortEarly: false,
         });
+
+        if (
+          context?.selectedProposalVariant ===
+          ProposalVariant.ProposeChangeDaoFlag
+        ) {
+          values = {
+            ...values,
+            flagCover: data.flagCover,
+            flagLogo: data.flagLogo,
+          };
+        }
 
         return {
           values,
@@ -105,6 +116,8 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     },
   });
 
+  // console.log(methods.getValues().flagCover);
+
   const onSubmit = useCallback(
     async data => {
       try {
@@ -124,7 +137,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         } as CreateProposalParams;
 
         if (newProposal) {
-          await SputnikNearService.createProposal(newProposal);
+          const resp = await SputnikNearService.createProposal(newProposal);
 
           showNotification({
             type: NOTIFICATION_TYPES.INFO,
@@ -132,10 +145,17 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             lifetime: 20000,
           });
 
-          router.push(
-            `/dao/${dao.id}/proposals/${dao.id}-${
-              dao.lastProposalId > 0 ? dao.lastProposalId - 1 : 0
-            }`
+          const newProposalId = JSON.parse(
+            // todo - Oleg: fix this!
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            Buffer.from(resp.status.SuccessValue as string, 'base64').toString(
+              'ascii'
+            )
+          );
+
+          await router.push(
+            `/dao/${dao.id}/proposals/${dao.id}-${newProposalId}`
           );
 
           onCreate(true);

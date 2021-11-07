@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { GetServerSideProps, NextPage } from 'next';
 import { useAsync } from 'react-use';
@@ -75,10 +75,6 @@ const DAOHome: NextPage<DaoHomeProps> = ({
     setData(existingData => [...existingData, ...res.data]);
   };
 
-  const refreshData = useCallback(() => {
-    router.replace(router.asPath);
-  }, [router]);
-
   const onProposalFilterChange = (value?: string) => async () => {
     const nextQuery = {
       ...router.query,
@@ -149,7 +145,6 @@ const DAOHome: NextPage<DaoHomeProps> = ({
           proposalVariant={ProposalVariant.ProposeTransfer}
           onCreate={isSuccess => {
             if (isSuccess) {
-              refreshData();
               setShowCreateProposal(false);
             }
           }}

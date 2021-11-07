@@ -137,6 +137,7 @@ export const mapProposalDTOToProposal = (
         : getAwsImageUrl('default.png'),
     },
     proposalVariant: proposalVariant as ProposalVariant,
+    updatedAt: proposalDTO.updatedAt ?? null,
   };
 };
 
@@ -170,7 +171,7 @@ export const mapCreateParamsToPropsalKind = (
           token: 'string',
           amount: 'string',
           times: 0,
-          maxDeadline: 'string',
+          max_deadline: 'string',
         },
       };
     case 'AddMemberToRole':
