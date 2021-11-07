@@ -203,9 +203,9 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           infoPanelNode={
             <TransactionDetailsWidget
               onSubmit={onSubmit}
-              bond={dao.policy.proposalBond}
-              gas="0.2"
               buttonLabel="Propose"
+              gas={{ value: '0.2' }}
+              bond={{ value: dao.policy.proposalBond }}
             />
           }
         />

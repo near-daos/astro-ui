@@ -10,11 +10,16 @@ import { formatYoktoValue } from 'helpers/format';
 
 import styles from './TransactionDetailsWidget.module.scss';
 
+interface InfoWidgetProps {
+  label?: string;
+  value: string;
+}
+
 interface CreateProposalWidgetProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (data: any) => Promise<void>;
-  bond: string;
-  gas: string;
+  bond: InfoWidgetProps;
+  gas: InfoWidgetProps;
   warning?: string;
   buttonLabel?: string;
   standAloneMode?: boolean;
@@ -31,8 +36,14 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
   const { handleSubmit } = useFormContext();
 
   const infos = [
-    { label: 'Bond', value: formatYoktoValue(bond) },
-    { label: 'Gas', value: gas },
+    {
+      label: bond.label || 'Bond',
+      value: formatYoktoValue(bond.value),
+    },
+    {
+      label: gas.label || 'Gas',
+      value: gas.value,
+    },
   ];
 
   function renderWarning() {
@@ -41,6 +52,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
         <InfoBlockWidget
           label="Warning"
           value={warning}
+          className={styles.warningContainer}
           valueClassName={styles.warning}
         />
       );
@@ -60,11 +72,16 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
                 label={info.label}
                 value={<InfoValue value={info.value} label="NEAR" />}
                 key={info.label}
-                className={styles.right}
+                className={styles.infoBlock}
               />
             ))}
           </div>
-          <Button variant="black" size="medium" type="submit">
+          <Button
+            type="submit"
+            size="medium"
+            variant="black"
+            className={styles.createDao}
+          >
             {buttonLabel}
           </Button>
         </div>

@@ -4,18 +4,27 @@ import { VFC } from 'react';
 import styles from './NearIcon.module.scss';
 
 interface NearIconProps {
+  black?: boolean;
   className?: string;
+  onClick?: () => void;
 }
 
-export const NearIcon: VFC<NearIconProps> = ({ className }) => {
+export const NearIcon: VFC<NearIconProps> = props => {
+  const { black, className, onClick } = props;
+
+  const rootClassName = cn(styles.root, className, {
+    [styles.black]: black,
+  });
+
   return (
     <svg
       width="38"
       height="38"
-      viewBox="0 0 38 38"
       fill="none"
+      viewBox="0 0 38 38"
       xmlns="http://www.w3.org/2000/svg"
-      className={cn(styles.root, className)}
+      onClick={onClick}
+      className={rootClassName}
     >
       <circle cx="19" cy="19" r="18.5" className={styles.circle} />
       <path

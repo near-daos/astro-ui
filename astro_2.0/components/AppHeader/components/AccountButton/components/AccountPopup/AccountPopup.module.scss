@@ -1,6 +1,5 @@
 @use 'styles/breakpoints';
 @import 'styles/typography';
-@import '../../../../../constants.module';
 
 $transition-time: 0.2;
 
@@ -14,8 +13,9 @@ $transition-time: 0.2;
   align-items: center;
   background-color: var(--color-white);
   border-radius: 8px;
-  bottom: -80px;
+  bottom: -104px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  left: -130px;
   opacity: 0;
   padding: 8px;
   position: absolute;
@@ -42,8 +42,10 @@ $transition-time: 0.2;
   color: var(--color-brand-coral-red);
 }
 
-@media screen and (max-width: #{$nav-mobile-width}) {
-  .root {
-    left: -130px;
-  }
+.name {
+  color: var(--color-neutral-60);
+  overflow: hidden;
+  padding-left: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

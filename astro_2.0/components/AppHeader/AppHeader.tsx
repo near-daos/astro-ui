@@ -34,13 +34,7 @@ export const AppHeader: FC = () => {
 
   function renderNav() {
     const navItems = NAV_CONFIG.map(conf => {
-      const { icon, href, label, hoverIcon } = conf;
-
-      return (
-        <NavButton icon={icon} hoverIcon={hoverIcon} href={href} key={label}>
-          {label}
-        </NavButton>
-      );
+      return <NavButton {...conf} key={conf.label} />;
     });
 
     return <div className={styles.nav}>{navItems}</div>;

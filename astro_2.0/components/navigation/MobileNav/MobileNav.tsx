@@ -6,23 +6,9 @@ import { NavButton } from 'astro_2.0/components/navigation/NavButton';
 import styles from './MobileNav.module.scss';
 
 export const MobileNav: VFC = () => {
-  function renderNavItems() {
-    return NAV_CONFIG.map(conf => {
-      const { icon, hoverIcon, href, label } = conf;
+  const navItems = NAV_CONFIG.map(conf => {
+    return <NavButton {...conf} mobile key={conf.label} />;
+  });
 
-      return (
-        <NavButton
-          mobile
-          icon={icon}
-          href={href}
-          key={label}
-          hoverIcon={hoverIcon}
-        >
-          {label}
-        </NavButton>
-      );
-    });
-  }
-
-  return <div className={styles.root}>{renderNavItems()}</div>;
+  return <div className={styles.root}>{navItems}</div>;
 };

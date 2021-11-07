@@ -1,11 +1,8 @@
-import cn from 'classnames';
 import { useClickAway } from 'react-use';
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useCallback, useRef, useState } from 'react';
 
-import { Button } from 'components/button/Button';
 import { NearIcon } from 'astro_2.0/components/AppHeader/components/NearIcon';
 
-import { useDeviceType } from 'helpers/media';
 import { useAuthContext } from 'context/AuthContext';
 
 import { AccountPopup } from './components/AccountPopup';
@@ -14,51 +11,30 @@ import styles from './AccountButton.module.scss';
 
 export const AccountButton: FC = () => {
   const { login, accountId } = useAuthContext();
-  const { isMobile } = useDeviceType();
 
   const ref = useRef(null);
   const [showPopup, setShowPopup] = useState(false);
 
-  useClickAway(ref, () => {
+  const closePopup = useCallback(() => {
     setShowPopup(false);
+  }, []);
+
+  useClickAway(ref, () => {
+    closePopup();
   });
 
-  function toggleShowPopup() {
-    setShowPopup(!showPopup);
-  }
-
-  function renderLoggedUserInfo() {
-    return (
-      <div
-        ref={ref}
-        tabIndex={0}
-        role="button"
-        onClick={toggleShowPopup}
-        onKeyPress={toggleShowPopup}
-        className={styles.loggedUserInfo}
-      >
-        <span>
-          <NearIcon />
-        </span>
-        <span className={styles.name}>{accountId}</span>
-        <AccountPopup show={showPopup} />
-      </div>
-    );
-  }
+  const onNearClick = useCallback(() => {
+    if (accountId) {
+      setShowPopup(!showPopup);
+    } else {
+      login();
+    }
+  }, [login, showPopup, accountId]);
 
   return (
-    <div className={cn('near-icon-parent', styles.root)}>
-      {accountId ? (
-        renderLoggedUserInfo()
-      ) : (
-        <Button
-          onClick={login}
-          className={styles.auth}
-          size={isMobile ? 'small' : 'medium'}
-        >
-          Connect Wallet
-        </Button>
-      )}
+    <div className={styles.root} ref={ref}>
+      <NearIcon black={!!accountId} onClick={onNearClick} />
+      <AccountPopup show={showPopup} closePopup={closePopup} />
     </div>
   );
 };

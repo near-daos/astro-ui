@@ -1,4 +1,3 @@
-import { IconName } from 'components/Icon';
 import {
   ALL_DAOS_URL,
   ALL_FEED_URL,
@@ -7,14 +6,9 @@ import {
   MY_FEED_URL,
 } from 'constants/routing';
 
-type NavItem = {
-  icon: IconName;
-  hoverIcon: IconName;
-  href: string;
-  label: string;
-};
+import { NavItemProps } from './types';
 
-export const NAV_CONFIG: NavItem[] = [
+export const NAV_CONFIG: NavItemProps[] = [
   {
     icon: 'aAllDaos',
     hoverIcon: 'aAllDaosHover',
@@ -44,5 +38,6 @@ export const NAV_CONFIG: NavItem[] = [
     hoverIcon: 'aCreateDaoHover',
     href: CREATE_DAO_URL,
     label: 'Create DAO',
+    authRequired: true,
   },
 ];
