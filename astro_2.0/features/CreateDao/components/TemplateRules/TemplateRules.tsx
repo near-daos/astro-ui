@@ -12,15 +12,16 @@ export interface TemplateRulesProps {
 }
 
 export const TemplateRules: FC<TemplateRulesProps> = ({ templates }) => {
-  const { setValue } = useFormContext<DAOFormValues>();
+  const { setValue, trigger } = useFormContext<DAOFormValues>();
 
   const handleClick = useCallback(
     async (template: DAOTemplate) => {
       setValue('voting', template.voting);
       setValue('proposals', template.proposals);
       setValue('structure', template.structure);
+      trigger();
     },
-    [setValue]
+    [trigger, setValue]
   );
 
   return (
