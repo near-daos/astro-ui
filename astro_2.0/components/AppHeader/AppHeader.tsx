@@ -1,9 +1,17 @@
 import cn from 'classnames';
 import React, { FC, useState } from 'react';
 
-import { Icon } from 'components/Icon';
+import { NavItemProps } from 'astro_2.0/components/navigation/types';
 
-import { NAV_CONFIG } from 'astro_2.0/components/navigation/navConfig';
+import {
+  MY_DAOS_NAV_CONFIG,
+  MY_FEED_NAV_CONFIG,
+  ALL_DAOS_NAV_CONFIG,
+  ASTRO_FEED_NAV_CONFIG,
+  CREATE_DAO_NAV_CONFIG,
+} from 'astro_2.0/components/navigation/navConfig';
+
+import { Icon } from 'components/Icon';
 
 import { NavButton } from 'astro_2.0/components/navigation/NavButton';
 
@@ -32,12 +40,8 @@ export const AppHeader: FC = () => {
     );
   }
 
-  function renderNav() {
-    const navItems = NAV_CONFIG.map(conf => {
-      return <NavButton {...conf} key={conf.label} />;
-    });
-
-    return <div className={styles.nav}>{navItems}</div>;
+  function renderNavItem(conf: NavItemProps) {
+    return <NavButton {...conf} key={conf.label} className={styles.navItem} />;
   }
 
   return (
@@ -45,12 +49,20 @@ export const AppHeader: FC = () => {
       {renderLogo()}
       <div className={styles.centralPart}>
         {renderLogo(styles.mobileLogo)}
-        {renderNav()}
+        <div className={styles.nav}>
+          {renderNavItem(ALL_DAOS_NAV_CONFIG)}
+          {renderNavItem(ASTRO_FEED_NAV_CONFIG)}
+        </div>
         <SearchBar
           placeholder="Search"
           className={styles.search}
           onSearchToggle={setSearchExpanded}
         />
+        <div className={styles.nav}>
+          {renderNavItem(MY_DAOS_NAV_CONFIG)}
+          {renderNavItem(MY_FEED_NAV_CONFIG)}
+          {renderNavItem(CREATE_DAO_NAV_CONFIG)}
+        </div>
       </div>
       <AccountButton />
     </header>

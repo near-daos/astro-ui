@@ -15,21 +15,30 @@ import styles from './NavButton.module.scss';
 
 interface NavButtonProps extends NavItemProps {
   mobile?: boolean;
+  className?: string;
 }
 
 export const NavButton: VFC<NavButtonProps> = props => {
+  const {
+    label,
+    icon,
+    href,
+    mobile,
+    hoverIcon,
+    className,
+    authRequired,
+  } = props;
+
   const router = useRouter();
 
   const { login, accountId } = useAuthContext();
-
-  const { label, icon, href, mobile, hoverIcon, authRequired } = props;
 
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
   const isActive = useIsHrefActive(href);
 
-  const rootClassName = cn(styles.root, {
+  const rootClassName = cn(styles.root, className, {
     [styles.active]: isActive,
     [styles.mobile]: mobile,
   });

@@ -1,12 +1,15 @@
 @import 'styles/mixins';
 @import 'styles/typography';
 
+@import 'astro_2.0/components/constants.module';
+
 .root {
   align-items: center;
   border-radius: 8px;
   display: flex;
   height: 40px;
   justify-content: flex-start;
+  max-width: 768px;
   overflow: hidden;
   position: relative;
   transform: translateZ(0);
@@ -74,5 +77,17 @@
 
   .iconHolder .icon {
     color: var(--color-brand-purple);
+  }
+}
+
+@media screen and (min-width: $mobile-width + 1px) {
+  .root {
+    margin: 0 24px;
+  }
+}
+
+@media screen and (max-width: $nav-mobile-width) {
+  .root {
+    max-width: none;
   }
 }

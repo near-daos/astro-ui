@@ -39,20 +39,6 @@
   position: relative;
 }
 
-.searchExpanded .nav::after {
-  bottom: 0;
-  content: '';
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
-.search {
-  position: absolute;
-  right: 0;
-}
-
 @media screen and (max-width: #{breakpoints.$screen-lg - 1}px) {
   .root {
     padding: 0 40px;
@@ -68,6 +54,11 @@
   .nav,
   .logo {
     display: none;
+  }
+
+  .search {
+    position: absolute;
+    right: 0;
   }
 
   .mobileLogo {
