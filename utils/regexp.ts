@@ -1,2 +1,3 @@
-export const validUrlRegexp = /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
+// eslint-disable-next-line no-useless-escape
+export const validUrlRegexp = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
 export const validWebsiteName = /^[a-zA-Z0-9][a-zA-Z0-9- ]+[a-zA-Z0-9]$/g;
