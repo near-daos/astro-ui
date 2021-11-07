@@ -107,7 +107,7 @@ export function DaoSubmitForm(): JSX.Element {
         <TransactionDetailsWidget
           onSubmit={createDao}
           standAloneMode
-          bond={{ label: 'Cost', value: '5' }}
+          bond={{ label: 'Cost', value: '5000000000000000000000000' }}
           gas={{ value: '0.3' }}
           warning="DAOs can not be deleted!"
           buttonLabel="Create DAO"
