@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import { useAuthContext } from 'context/AuthContext';
 
@@ -9,13 +9,19 @@ import styles from './AccountPopup.module.scss';
 
 interface AccountPopupProps {
   show: boolean;
+  closePopup: () => void;
 }
 
-export const AccountPopup: FC<AccountPopupProps> = ({ show }) => {
-  const { logout } = useAuthContext();
+export const AccountPopup: FC<AccountPopupProps> = ({ show, closePopup }) => {
+  const { logout, accountId } = useAuthContext();
 
   const [visible, setVisible] = useState(false);
   const [canRender, setCanRender] = useState(false);
+
+  const disconnect = useCallback(() => {
+    closePopup();
+    logout();
+  }, [logout, closePopup]);
 
   useEffect(() => {
     if (show) {
@@ -38,7 +44,8 @@ export const AccountPopup: FC<AccountPopupProps> = ({ show }) => {
   if (canRender) {
     return (
       <div className={rootClassName}>
-        <AccountPopupItem className={styles.auth} onClick={logout}>
+        <div className={styles.name}>{accountId}</div>
+        <AccountPopupItem className={styles.auth} onClick={disconnect}>
           Disconnect
         </AccountPopupItem>
       </div>

@@ -172,8 +172,8 @@ const createProposalProps = {
     console.log('proposal created');
   },
   onSubmit: () => Promise.resolve(),
-  bond: '0.1',
-  gas: '0.2',
+  bond: { value: '0.1' },
+  gas: { value: '0.2' },
 };
 
 Template.args = {

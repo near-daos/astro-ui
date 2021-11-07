@@ -1,5 +1,11 @@
 .root {
+  border-radius: 100px;
+  cursor: pointer;
   transition: 0.4s;
+
+  &:hover {
+    box-shadow: 0 0 40px var(--color-black);
+  }
 }
 
 .circle {
@@ -11,13 +17,7 @@
   fill: var(--color-brand-black);
 }
 
-/* stylelint-disable-next-line */
-:global(.near-icon-parent):hover {
-  .root {
-    border-radius: 100px;
-    box-shadow: 0 0 40px var(--color-black);
-  }
-
+.black {
   .circle {
     fill: var(--color-brand-black);
   }

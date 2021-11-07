@@ -1,3 +1,5 @@
+@use 'styles/breakpoints';
+
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -36,6 +38,50 @@
   width: 100%;
 }
 
+.infoBlock {
+  margin-top: 8px;
+
+  &:first-of-type {
+    margin-right: 32px;
+  }
+}
+
+.warningContainer {
+  margin: 8px 0;
+}
+
 .warning {
   color: var(--color-error-60);
+}
+
+.createDao {
+  margin: 8px 0 8px 32px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .mainContent {
+    flex-direction: column;
+  }
+
+  .transactionDetails {
+    justify-content: center;
+  }
+
+  .createDao {
+    margin-left: 0;
+  }
+
+  .warningContainer ~ .mainContent {
+    align-items: flex-end;
+  }
+
+  .warningContainer ~ .mainContent .transactionDetails {
+    justify-content: flex-end;
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-xs}px) {
+  .root {
+    flex-direction: column;
+  }
 }

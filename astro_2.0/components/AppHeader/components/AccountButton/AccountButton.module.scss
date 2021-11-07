@@ -1,24 +1,4 @@
-@import 'styles/typography';
-@import '../../../constants.module';
-
 .root {
-  .name {
-    color: var(--color-neutral-60);
-    margin-left: 12px;
-  }
-}
-
-.loggedUserInfo {
   cursor: pointer;
   position: relative;
-}
-
-.auth {
-  text-transform: capitalize;
-}
-
-@media screen and (max-width: $nav-mobile-width) {
-  .name {
-    display: none;
-  }
 }
