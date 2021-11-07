@@ -1,4 +1,5 @@
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -23,7 +24,10 @@ import styles from './DaoSubmitForm.module.scss';
 
 export function DaoSubmitForm(): JSX.Element {
   const router = useRouter();
-  const { setError } = useFormContext();
+  const {
+    setError,
+    formState: { errors },
+  } = useFormContext();
 
   const uploadImg = useCallback(async (img: File) => {
     if (img) {
@@ -100,6 +104,15 @@ export function DaoSubmitForm(): JSX.Element {
     [router, setError, uploadImg]
   );
 
+  function renderErrorMessage() {
+    return isEmpty(errors) ? null : (
+      <div className={styles.error}>
+        There are errors in your form. Please, check validation messages on the
+        page.
+      </div>
+    );
+  }
+
   return (
     <div className={styles.root}>
       <UnitSeparator />
@@ -113,6 +126,7 @@ export function DaoSubmitForm(): JSX.Element {
           buttonLabel="Create DAO"
         />
       </div>
+      {renderErrorMessage()}
     </div>
   );
 }
