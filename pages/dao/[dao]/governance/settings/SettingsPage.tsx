@@ -15,13 +15,14 @@ import { DefaultVotingPolicy } from 'astro_2.0/components/DefaultVotingPolicy';
 import { formatYoktoValue } from 'helpers/format';
 import { FlagPreview } from 'astro_2.0/features/CreateDao/components/FlagPreview/FlagPreview';
 import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
+import { NextPage } from 'next';
 import styles from './SettingsPage.module.scss';
 
 export interface SettingsPageProps {
   dao: DAO;
 }
 
-export const SettingsPage: React.FC<SettingsPageProps> = ({ dao }) => {
+const SettingsPage: NextPage<SettingsPageProps> = ({ dao }) => {
   const [
     proposalVariant,
     setProposalVariant,
@@ -176,3 +177,5 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ dao }) => {
     </>
   );
 };
+
+export default SettingsPage;

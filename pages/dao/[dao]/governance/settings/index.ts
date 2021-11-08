@@ -1,9 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { SputnikHttpService } from 'services/sputnik';
-import {
-  SettingsPage,
-  SettingsPageProps,
-} from 'pages/dao/[dao]/governance/settings/SettingsPage';
+import { SettingsPageProps } from './SettingsPage';
 
 export const getServerSideProps: GetServerSideProps<SettingsPageProps> = async ({
   query,
@@ -23,4 +20,4 @@ export const getServerSideProps: GetServerSideProps<SettingsPageProps> = async (
   };
 };
 
-export default SettingsPage;
+export { default } from './SettingsPage';
