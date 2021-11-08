@@ -30,7 +30,7 @@ export interface CreateProposalCardProps {
   proposer: string;
   content: ReactNode;
   onTypeSelect: (newType: ProposalVariant) => void;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({

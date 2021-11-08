@@ -142,7 +142,10 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         <ViewProposal dao={dao} proposal={proposal} showFlag />
       </div>
       <div className={styles.policy}>
-        <DefaultVotingPolicy policy={dao.policy.defaultVotePolicy} />
+        <DefaultVotingPolicy
+          policy={dao.policy.defaultVotePolicy}
+          groups={dao.groups}
+        />
       </div>
       <div className={styles.filters}>
         <StatusFilters

@@ -1,0 +1,95 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-template-areas:
+    'breadcrumbs . .'
+    'title . .'
+    'links links links'
+    'bondAndDeadline bondAndDeadline bondAndDeadline'
+    'votingPolicy votingPoligy votingPoligy'
+    'flagAndLogo flagAndLogo flagAndLogo';
+  padding-top: 56px;
+  row-gap: 24px;
+}
+
+.newProposal {
+  padding-top: 56px;
+}
+
+.flagAndLogoRow {
+  grid-area: flagAndLogo;
+  margin-bottom: 42px;
+}
+
+.bondAndDeadlineRow {
+  grid-area: bondAndDeadline;
+  margin-bottom: 42px;
+}
+
+.votingPolicyRow {
+  grid-area: votingPolicy;
+  grid-column: span 3;
+  margin-bottom: 42px;
+  width: 100%;
+}
+
+.breadcrumbsRow {
+  grid-area: breadcrumbs;
+  margin-bottom: 42px;
+}
+
+.titleRow {
+  @extend %heading1;
+  grid-area: title;
+  margin-bottom: 42px;
+}
+
+.linksRow {
+  grid-area: links;
+  margin-bottom: 42px;
+}
+
+.settingsContainer {
+  display: flex;
+
+  > div:first-of-type {
+    margin-right: 24px;
+  }
+}
+
+.link {
+  align-items: center;
+  color: var(--color-brand-purple);
+}
+
+.linkIcon {
+  height: 24px;
+  margin-right: 24px;
+  width: 24px;
+}
+
+.rowSeparator {
+  border: 1px solid var(--color-neutral-40);
+  height: 1px;
+  margin-top: 56px;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.groupsWrapper {
+  background: var(--color-neutral-10);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 20px 16px;
+}

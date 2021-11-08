@@ -1,0 +1,19 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  background: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  min-width: 324px;
+  padding: 23px 32px;
+}
+
+.settingName {
+  @extend %heading2;
+  padding-bottom: 23px;
+}
+
+.padding {
+  padding-bottom: 16px;
+}

@@ -1,0 +1,14 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: flex;
+  justify-content: space-between;
+  max-width: 450px;
+  padding-bottom: 48px;
+}
+
+.label {
+  @extend %heading2;
+  padding-right: 35px;
+}

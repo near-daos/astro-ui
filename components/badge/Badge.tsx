@@ -4,6 +4,7 @@ import { Property } from 'csstype';
 import styles from './badge.module.scss';
 
 export type Variant =
+  | 'white'
   | 'violet'
   | 'blurple'
   | 'blue'

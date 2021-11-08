@@ -5,6 +5,11 @@
 }
 
 .policyWrapper {
+  background-color: var(--color-brand-black);
+  border-radius: 8px;
+  margin-top: 56px;
+  padding: 14px 60px;
+
   .policyLabel {
     @extend %subtitle6;
     color: var(--color-neutral-60);

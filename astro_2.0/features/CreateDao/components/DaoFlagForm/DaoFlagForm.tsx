@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { FlagImage } from 'astro_2.0/features/CreateDao/components/FlagImage/FlagImage';
-import { FlagPreview } from 'astro_2.0/features/CreateDao/components/FlagPreview/FlagPreview';
 
+import { FlagPreviewRenderer } from 'astro_2.0/features/CreateDao/components/FlagPreview/FlagPreviewRenderer';
 import styles from './DaoFlagForm.module.scss';
 
 export function DaoFlagForm(): JSX.Element {
@@ -35,7 +35,7 @@ export function DaoFlagForm(): JSX.Element {
           />
         </div>
         <div className={styles.preview}>
-          <FlagPreview />
+          <FlagPreviewRenderer />
         </div>
       </div>
     </div>

@@ -1,20 +1,26 @@
 import { GetServerSideProps } from 'next';
 import { SputnikHttpService } from 'services/sputnik';
-import { DaoSettingsView } from 'features/dao-settings';
-import { DAO } from 'types/dao';
+import {
+  SettingsPage,
+  SettingsPageProps,
+} from 'pages/dao/[dao]/governance/settings/SettingsPage';
 
-export const getServerSideProps: GetServerSideProps = async ({
+export const getServerSideProps: GetServerSideProps<SettingsPageProps> = async ({
   query,
-}): Promise<{
-  props: { data: DAO | null };
-}> => {
-  const data = await SputnikHttpService.getDaoById(query.dao as string);
+}) => {
+  const dao = await SputnikHttpService.getDaoById(query.dao as string);
+
+  if (!dao) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {
-      data,
+      dao,
     },
   };
 };
 
-export default DaoSettingsView;
+export default SettingsPage;

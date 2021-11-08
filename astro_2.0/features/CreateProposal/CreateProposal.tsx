@@ -32,7 +32,7 @@ export interface CreateProposalProps {
   proposalVariant: ProposalVariant;
   showFlag?: boolean;
   bountyId?: string;
-  onCreate: (result: boolean) => void;
+  onCreate?: (result: boolean) => void;
   onClose: () => void;
 }
 
@@ -158,7 +158,9 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             `/dao/${dao.id}/proposals/${dao.id}-${newProposalId}`
           );
 
-          onCreate(true);
+          if (onCreate) {
+            onCreate(true);
+          }
         }
       } catch (err) {
         showNotification({
@@ -167,7 +169,9 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           lifetime: 20000,
         });
 
-        onCreate(false);
+        if (onCreate) {
+          onCreate(false);
+        }
       }
     },
     [

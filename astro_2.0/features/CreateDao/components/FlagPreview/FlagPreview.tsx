@@ -1,22 +1,17 @@
 import React from 'react';
 import cn from 'classnames';
-import { useFormContext } from 'react-hook-form';
-
 import { Icon } from 'components/Icon';
-
-import { getImageFromImageFileList } from 'utils/getImageFromImageFileList';
-
 import styles from './FlagPreview.module.scss';
 
-export function FlagPreview(): JSX.Element {
-  const { watch } = useFormContext();
+interface FlagPreviewProps {
+  coverFile: string;
+  logoFile: string;
+}
 
-  const coverFileList = watch('flagCover');
-  const logoFileList = watch('flagLogo');
-
-  const coverImg = getImageFromImageFileList(coverFileList);
-  const logoImg = getImageFromImageFileList(logoFileList);
-
+export const FlagPreview: React.FC<FlagPreviewProps> = ({
+  coverFile,
+  logoFile,
+}) => {
   return (
     <>
       <div className={styles.root}>
@@ -38,7 +33,7 @@ export function FlagPreview(): JSX.Element {
                 <div
                   className={cn(styles.cover, styles.sm)}
                   style={{
-                    backgroundImage: `url(${coverImg})`,
+                    backgroundImage: `url(${coverFile})`,
                   }}
                 />
               </div>
@@ -47,14 +42,14 @@ export function FlagPreview(): JSX.Element {
                 <div
                   className={styles.cover}
                   style={{
-                    backgroundImage: `url(${coverImg})`,
+                    backgroundImage: `url(${coverFile})`,
                   }}
                 />
-                {logoFileList && (
+                {logoFile && (
                   <div
                     className={styles.logo}
                     style={{
-                      backgroundImage: `url(${logoImg})`,
+                      backgroundImage: `url(${logoFile})`,
                     }}
                   />
                 )}
@@ -67,7 +62,7 @@ export function FlagPreview(): JSX.Element {
               <div
                 className={styles.letterhead}
                 style={{
-                  backgroundImage: `url(${coverImg})`,
+                  backgroundImage: `url(${logoFile})`,
                 }}
               >
                 <Icon name="proposalBounty" width={24} color="white" />
@@ -86,4 +81,4 @@ export function FlagPreview(): JSX.Element {
       </svg>
     </>
   );
-}
+};
