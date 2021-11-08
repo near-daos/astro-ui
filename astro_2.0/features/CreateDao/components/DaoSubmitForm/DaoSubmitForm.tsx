@@ -25,7 +25,6 @@ import styles from './DaoSubmitForm.module.scss';
 export function DaoSubmitForm(): JSX.Element {
   const router = useRouter();
   const {
-    setError,
     formState: { errors },
   } = useFormContext();
 
@@ -41,18 +40,6 @@ export function DaoSubmitForm(): JSX.Element {
 
   const createDao = useCallback(
     async (data: DAOFormValues) => {
-      const daoAddressExists = await SputnikNearService.nearAccountExist(
-        `${data.address}.${nearConfig.contractName}`
-      );
-
-      if (daoAddressExists) {
-        setError('address', {
-          message: 'Dao with such address already exists.',
-        });
-
-        return;
-      }
-
       const flagCover = get(data.flagCover, '0');
       const flagLogo = get(data.flagLogo, '0');
 
@@ -101,7 +88,7 @@ export function DaoSubmitForm(): JSX.Element {
         }
       }
     },
-    [router, setError, uploadImg]
+    [router, uploadImg]
   );
 
   function renderErrorMessage() {
