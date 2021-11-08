@@ -1,5 +1,10 @@
 @import 'styles/mixins';
 
+@mixin active-state {
+  border-left: solid 2px var(--color-brand-purple);
+  color: var(--color-neutral-80);
+}
+
 .root {
   @include font(14px, 16px, 400);
   align-items: center;
@@ -14,8 +19,7 @@
   white-space: nowrap;
 
   &:not(.custom):hover {
-    border-left: solid 2px var(--color-brand-purple);
-    color: var(--color-neutral-80);
+    @include active-state;
   }
 }
 
@@ -23,13 +27,11 @@
   cursor: default;
 
   &.customActive {
-    border-left: solid 2px var(--color-brand-purple);
-    color: var(--color-neutral-80);
+    @include active-state;
   }
 }
 
 .active {
-  border-left: solid 2px var(--color-brand-purple);
-  color: var(--color-neutral-80);
+  @include active-state;
   cursor: default;
 }
