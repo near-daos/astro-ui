@@ -20,8 +20,8 @@ jobs:
          echo DOCKER_ENV_TAG=${GITHUB_REF##*/}-$GITHUB_SHA >> $GITHUB_ENV
     - name: load env
       run: |
-          cat ".github/env.${GITHUB_REF##*/}" >>$GITHUB_ENV
           cat ".github/env.common" >>$GITHUB_ENV
+          cat ".github/env.${GITHUB_REF##*/}" >>$GITHUB_ENV
 
     - name: Build
       uses: ./.github/actions/build

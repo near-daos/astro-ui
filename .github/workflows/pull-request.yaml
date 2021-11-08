@@ -14,6 +14,9 @@ jobs:
     - name: Set Environment
       run: |
          echo DOCKER_ENV_TAG=qa-$GITHUB_SHA >> $GITHUB_ENV
+    - name: load env
+      run: |
+          cat ".github/env.common" >>$GITHUB_ENV
 
     - name: Build
       uses: ./.github/actions/build
