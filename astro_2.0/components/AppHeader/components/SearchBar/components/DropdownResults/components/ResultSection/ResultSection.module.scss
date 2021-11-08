@@ -33,5 +33,6 @@
 
 .content {
   display: flex;
-  padding: 0 24px 0 16px;
+  flex-wrap: wrap;
+  padding: 0 16px;
 }

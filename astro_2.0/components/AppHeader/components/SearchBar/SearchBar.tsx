@@ -171,7 +171,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 
   function getDropdownWidth() {
     return document?.body?.offsetWidth < 768
-      ? document?.body?.offsetWidth
+      ? document?.body?.offsetWidth - 20
       : 768;
   }
 
