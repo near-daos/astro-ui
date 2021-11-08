@@ -33,5 +33,9 @@ jobs:
 
   build-deploy-storybook:
     if: github.ref == 'refs/heads/develop'
+    environment:
+      name: ${GITHUB_REF##*/}
+      url: https://${K8S_INGRESS_HOST}
+    steps:
     - name: Build Deploy Storybook
       uses: ./.github/actions/build-deploy-storybook
