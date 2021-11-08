@@ -5,7 +5,6 @@ export type Subject = 'proposals' | 'structure' | 'voting';
 export type DAOVotingPowerType = 'democratic' | 'weighted';
 export type DAOProposalsType = 'open' | 'closed';
 export type DAOStructureType = 'flat' | 'groups';
-export type TemplateLinkType = 'custom' | 'predefined';
 export type DaoImageType = 'flagCover' | 'flagLogo';
 
 export interface DAOTemplate {

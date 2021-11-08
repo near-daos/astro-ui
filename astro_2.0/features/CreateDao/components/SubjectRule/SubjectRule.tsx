@@ -6,8 +6,8 @@ import { Subject } from 'astro_2.0/features/CreateDao/components/types';
 import { DAO_SUBJECT_OPTIONS } from 'astro_2.0/features/CreateDao/components/data';
 
 import { Icon } from 'components/Icon';
-import { DaoOptionCard } from 'astro_2.0/features/CreateDao/components/DaoOptionCard';
 import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
+import { DaoOptionCard } from 'astro_2.0/features/CreateDao/components/SubjectRule/components/DaoOptionCard';
 
 import styles from './SubjectRule.module.scss';
 
@@ -24,7 +24,7 @@ export const SubjectRule: FC<SubjectRuleProps> = ({
 }) => {
   const errorElRef = useRef<HTMLDivElement>(null);
 
-  const { formState } = useFormContext();
+  const { formState, trigger } = useFormContext();
   const { errors } = formState;
 
   const options = DAO_SUBJECT_OPTIONS[subject];
@@ -64,6 +64,7 @@ export const SubjectRule: FC<SubjectRuleProps> = ({
                             value,
                           },
                         });
+                        trigger(subject);
                       }
 
                       return (

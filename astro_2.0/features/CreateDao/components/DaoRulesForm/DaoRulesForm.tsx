@@ -1,10 +1,9 @@
 import React from 'react';
-import { SubjectRule } from 'astro_2.0/features/CreateDao/components/SubjectRule/SubjectRule';
+
+import { SubjectRule } from 'astro_2.0/features/CreateDao/components/SubjectRule';
 import { TemplateRules } from 'astro_2.0/features/CreateDao/components/TemplateRules/TemplateRules';
-import {
-  DAO_RULES_INFO,
-  DAO_TEMPLATES,
-} from 'astro_2.0/features/CreateDao/components/data';
+import { DAO_RULES_INFO } from 'astro_2.0/features/CreateDao/components/data';
+
 import styles from './DaoRulesForm.module.scss';
 
 export function DaoRulesForm(): JSX.Element {
@@ -28,7 +27,7 @@ export function DaoRulesForm(): JSX.Element {
         </div>
         <div className={styles.nav}>
           <div className={styles.navHeader}>Choose a template</div>
-          <TemplateRules templates={DAO_TEMPLATES} />
+          <TemplateRules />
         </div>
       </div>
     </div>
