@@ -40,7 +40,10 @@ export const RequestPayoutPopup: React.FC<RequestPayoutPopupProps> = ({
         const token = tokens[data.tokenSymbol];
 
         if (token.tokenId) {
-          await SputnikService.registerUserToToken(token.tokenId);
+          await SputnikService.registerUserToToken(
+            token.tokenId,
+            data.recipient
+          );
         }
 
         await SputnikService.createProposal({
