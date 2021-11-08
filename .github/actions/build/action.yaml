@@ -19,8 +19,8 @@ runs:
     shell: bash
 
   - name: archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          path: |
-            .next/**
+    uses: actions/upload-artifact@v2
+    with:
+      path: |
+        .next/**
 
