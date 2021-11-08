@@ -3,7 +3,7 @@ import React from 'react';
 import { NoResultsView } from 'features/no-results-view';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { Highlighter } from 'features/search/search-results/components/highlighter';
-import { DaoDetails } from 'astro_2.0/components/DaoDetails';
+import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 
 import styles from './dao-tab-view.module.scss';
 
@@ -27,17 +27,18 @@ export const DaosTabView = (): JSX.Element => {
   return (
     <div className={styles.root}>
       <Highlighter>
-        {searchResults?.daos.map(item => (
-          <React.Fragment key={item.id}>
-            <DaoDetails
-              key={item.id}
-              dao={item}
-              activeProposals={item.activeProposalsCount}
-              totalProposals={item.totalProposalsCount}
-            />
-            <div className={styles.divider} />
-          </React.Fragment>
-        ))}
+        <div className={styles.content}>
+          {searchResults?.daos.map(item => (
+            <React.Fragment key={item.id}>
+              <DaoDetailsGrid
+                key={item.id}
+                dao={item}
+                activeProposals={item.activeProposalsCount}
+                totalProposals={item.totalProposalsCount}
+              />
+            </React.Fragment>
+          ))}
+        </div>
       </Highlighter>
     </div>
   );

@@ -68,6 +68,7 @@
 
 .links {
   display: inline-flex;
+  flex-wrap: wrap;
   gap: 14px;
   list-style: none;
   padding: 0;
@@ -138,7 +139,8 @@
     }
 
     p {
-      text-align: center;
+      display: flex;
+      justify-content: center;
     }
 
     .links {

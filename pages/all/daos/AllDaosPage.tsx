@@ -9,7 +9,7 @@ import { Button } from 'components/button/Button';
 import { CREATE_DAO_URL } from 'constants/routing';
 import { Dropdown } from 'components/dropdown/Dropdown';
 import { getDaosList } from 'features/daos/helpers';
-import { DaoDetails } from 'astro_2.0/components/DaoDetails';
+import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 
 import { useAuthContext } from 'context/AuthContext';
 import { useRouterLoading } from 'hooks/useRouterLoading';
@@ -171,7 +171,7 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
         <div className={styles.content}>
           {data.map(item => {
             return (
-              <DaoDetails
+              <DaoDetailsGrid
                 key={item.id}
                 dao={item}
                 accountId={accountId}

@@ -64,7 +64,9 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
         )}
       </div>
 
-      <div className={styles.countdownCell}>Countdown will be here</div>
+      <div className={styles.countdownCell}>
+        Countdown will&nbsp;be&nbsp;here
+      </div>
 
       <div className={styles.proposerCell}>
         <InfoBlockWidget label="Proposer" value={proposer} />

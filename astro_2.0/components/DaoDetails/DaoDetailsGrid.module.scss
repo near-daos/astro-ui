@@ -1,0 +1,179 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  @include card-shadow;
+  display: flex;
+  flex-direction: column;
+  height: 458px;
+  justify-content: space-between;
+  max-width: 458px;
+  min-width: 270px;
+  transition: box-shadow 0.4s;
+  width: 100%;
+
+  &:hover {
+    box-shadow: 3px 2px 24px var(--color-black-opacity-25);
+  }
+}
+
+.general {
+  align-items: center;
+  display: flex;
+}
+
+.flag {
+  flex: 0 0 69px;
+  height: 78px;
+  margin: 14px 16px;
+  position: relative;
+  width: 69px;
+
+  @include tablet-portrait {
+    margin: 20px 24px;
+  }
+
+  @include tablet-landscape {
+    margin: 28px 24px;
+  }
+
+  .background {
+    background-color: var(--color-white);
+    clip-path: url('#flag');
+    inset: 0;
+    position: absolute;
+    transform: scale(1.04, 1.045);
+  }
+
+  .cover {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    clip-path: url('#flag');
+    height: 100%;
+    width: 100%;
+  }
+
+  .cover.scaled {
+    transform: scale(1.45);
+  }
+}
+
+.title {
+  padding: 12px 16px 12px 0;
+
+  @include tablet-portrait {
+    padding-right: 24px;
+  }
+}
+
+.name {
+  @include font(28px, 28px, 700);
+  font-family: 'Roboto', 'sans-serif';
+}
+
+.address {
+  @include font(16px, 24px, 500);
+  color: var(--color-neutral-60);
+  word-break: break-all;
+}
+
+.copyIcon {
+  display: inline-block;
+  height: 24px;
+  margin-left: 6px;
+  width: 24px;
+}
+
+.description {
+  @include font(16px, 24px, 400);
+  height: 72px;
+  padding: 0 16px;
+
+  @include tablet-portrait {
+    padding: 0 24px;
+  }
+}
+
+.fundsAndMembers {
+  display: flex;
+  justify-content: space-around;
+  padding: 0 24px;
+}
+
+.controls {
+  @include centralize;
+  justify-content: space-around;
+  padding: 14px;
+}
+
+.controlIcon {
+  @include centralize;
+  border-radius: 4px;
+  height: 42px;
+  width: 42px;
+
+  > button {
+    color: var(--color-neutral-60);
+    height: 100% !important;
+    margin: 0;
+    width: 100% !important;
+  }
+
+  svg {
+    height: 16px;
+    width: 16px;
+  }
+}
+
+.controlIcon:hover {
+  background-color: var(--color-neutral-20);
+  color: var(--color-brand-black);
+
+  > button {
+    color: var(--color-brand-black);
+  }
+}
+
+.proposals {
+  @include centralize;
+  flex-direction: column;
+  padding: 0 16px;
+  width: 100%;
+}
+
+.proposalsTitle {
+  margin-bottom: 8px;
+
+  &.active {
+    font-size: 1.375em;
+    font-weight: 300;
+    line-height: 1.25em;
+  }
+
+  span {
+    font-weight: 700;
+  }
+}
+
+.proposalsSubtitle {
+  color: var(--color-neutral-60);
+  margin: 0 0 16px;
+}
+
+.actionWrapper {
+  height: 40px;
+}
+
+.action {
+  @extend %title3;
+  @include centralize;
+  background-color: var(--color-neutral-30);
+  border-radius: 0 0 8px 8px;
+  color: var(--color-brand-black);
+  flex-shrink: 0;
+  height: 40px;
+  padding: 0;
+  text-transform: none;
+  width: 100%;
+}

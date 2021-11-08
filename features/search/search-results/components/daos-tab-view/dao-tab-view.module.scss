@@ -1,32 +1,27 @@
-@use 'styles/breakpoints';
-
+@import 'styles/mixins';
 .root {
-  display: flex;
-  flex-direction: column;
-  padding-top: 56px;
+  padding-top: 44px;
 }
 
-.proposals {
-  grid-area: proposals;
-}
+.content {
+  display: grid;
+  grid-area: content;
+  grid-gap: 50px;
+  grid-template-columns: 1fr;
+  place-items: start center;
 
-.daoInfo {
-  grid-area: daoInfo;
-}
+  @include tablet-portrait {
+    grid-template-columns: repeat(auto-fit, minmax(444px, 1fr));
+  }
 
-.divider {
-  background: var(--color-neutral-40);
-  height: 1.5px;
-  margin: 32px 0;
-  width: 100%;
-}
+  @include tablet-landscape {
+    grid-gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    place-items: start start;
+  }
 
-@media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .card {
-    grid-template-areas:
-      'daoDetails'
-      'proposals'
-      'daoInfo';
-    grid-template-columns: 1fr;
+  @include desktop {
+    grid-gap: 50px;
+    grid-template-columns: repeat(auto-fit, minmax(367px, 1fr));
   }
 }

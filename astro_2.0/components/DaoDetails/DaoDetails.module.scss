@@ -30,7 +30,8 @@
 
 .general {
   grid-area: general;
-  @include tablet-portrait {
+
+  @include tablet-landscape {
     margin-left: 100px;
   }
 }
