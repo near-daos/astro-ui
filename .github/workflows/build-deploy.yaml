@@ -32,14 +32,6 @@ jobs:
     - name: Helm Deploy
       uses: ./.github/actions/helm-build-deploy
 
-
-  build-deploy-storybook:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
-    environment:
-      name: ${GITHUB_REF##*/}
-      url: https://${K8S_INGRESS_HOST}
-    steps:
-    - uses: actions/checkout@v2
     - name: Build Deploy Storybook
+      if: github.ref == 'refs/heads/develop'
       uses: ./.github/actions/build-deploy-storybook

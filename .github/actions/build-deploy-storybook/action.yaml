@@ -1,5 +1,6 @@
 name: 'Build and Deploy Storybook'
 runs:
+  using: 'composite'
   steps:
   - uses: actions/setup-node@v2
     with:
@@ -7,15 +8,19 @@ runs:
       yarn: 'yarn'
 
   - run: yarn install
+    shell: bash
   - run: yarn lint
+    shell: bash
   - run: yarn typecheck
+    shell: bash
   - run: yarn build-storybook
+    shell: bash
 
   - name: archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          path: |
-            .storybook-static/**
+    uses: actions/upload-artifact@v2
+    with:
+      path: |
+        .storybook-static/**
 
   - uses: shallwefootball/s3-upload-action@1.1.3
     with:

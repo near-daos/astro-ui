@@ -1,5 +1,6 @@
 name: 'Docker Build Publish'
 runs:
+  using: 'composite'
   steps:
   - name: Docker Cache
     uses: actions/cache@v2
@@ -9,6 +10,7 @@ runs:
       key: docker
 
   - name: Load Cache
+    shell: bash
     run: |
       if [[ -f "docker-cache/cache.tar" ]]; then
         docker load < docker-cache/cache.tar;
@@ -50,5 +52,6 @@ runs:
       push: true
 
   - name: Save Cache
+    shell: bash
     run: |
       docker save $(docker images -qa) > docker-cache/cache.tar;

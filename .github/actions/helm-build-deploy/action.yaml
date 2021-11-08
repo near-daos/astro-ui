@@ -3,7 +3,8 @@ runs:
   using: 'docker'
   image: 'alpine/helm:3.6.3'
   steps:
-  - run: |
+  - shell: bash
+    run: |
       export CHART_FOLDER=deployment/app-chart
       helm lint $CHART_FOLDER
   - name: helm deploy
