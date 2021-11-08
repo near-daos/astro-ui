@@ -23,7 +23,7 @@ runs:
     uses: docker/metadata-action@v3
     with:
       images: |
-        ${AWS_ECR_URL}
+        ${{ env.AWS_ECR_URL }}
       tags: |
         type=raw,value=latest
         type=ref,event=branch,suffix=-latest
