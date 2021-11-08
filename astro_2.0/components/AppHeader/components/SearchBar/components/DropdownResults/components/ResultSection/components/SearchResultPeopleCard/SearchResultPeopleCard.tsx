@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { VFC } from 'react';
 
 import { Member } from 'types/dao';
@@ -22,7 +23,7 @@ export const SearchResultPeopleCard: VFC<SearchResultPeopleCard> = ({
       role="button"
       onClick={onClick}
       onKeyPress={onClick}
-      className={styles.root}
+      className={cn(styles.root, 'near-icon-parent')}
     >
       <NearIcon className={styles.icon} />
       {name}

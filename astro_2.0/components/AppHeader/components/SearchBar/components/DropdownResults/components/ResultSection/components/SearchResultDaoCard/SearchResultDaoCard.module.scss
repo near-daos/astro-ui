@@ -11,11 +11,15 @@
   font-weight: normal;
   height: 52px;
   line-height: 24px;
-  margin-right: 16px;
+  margin: 8px 0;
 
   padding: 4px 16px 4px 6px;
   transition: 0.4s;
   white-space: nowrap;
+
+  &:not(:last-of-type) {
+    margin-right: 16px;
+  }
 
   &:hover {
     box-shadow: 0 2px 14px var(--color-black-opacity-3);

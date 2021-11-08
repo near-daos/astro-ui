@@ -1,11 +1,20 @@
+@mixin hover-state() {
+  box-shadow: 0 0 40px var(--color-black);
+}
+
 .root {
   border-radius: 100px;
   cursor: pointer;
   transition: 0.4s;
 
   &:hover {
-    box-shadow: 0 0 40px var(--color-black);
+    @include hover-state;
   }
+}
+
+// stylelint-disable-next-line
+:global(.near-icon-parent):hover .root {
+  @include hover-state;
 }
 
 .circle {
