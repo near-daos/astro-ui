@@ -433,6 +433,61 @@ class SputnikHttpServiceClass {
     }
   }
 
+  public async findPolicyAffectsProposals(daoId: string): Promise<Proposal[]> {
+    const queryString = RequestQueryBuilder.create();
+
+    const search: SFields | SConditionAND = {
+      $and: [
+        {
+          daoId: {
+            $eq: daoId,
+          },
+        },
+      ],
+    };
+
+    search.$and?.push({
+      status: {
+        $eq: 'InProgress',
+      },
+      votePeriodEnd: {
+        $gt: Date.now() * 1000000,
+      },
+    });
+
+    search.$and?.push({
+      $or: [
+        {
+          kind: {
+            $cont: ProposalType.ChangeConfig,
+          },
+        },
+        {
+          kind: {
+            $cont: ProposalType.ChangePolicy,
+          },
+        },
+      ],
+    });
+
+    queryString.search(search);
+
+    queryString
+      .setLimit(1000)
+      .setOffset(0)
+      .sortBy({
+        field: 'createdAt',
+        order: 'DESC',
+      })
+      .query();
+
+    const { data: proposals } = await this.httpService.get<
+      GetProposalsResponse
+    >(`/proposals?${queryString.queryString}`);
+
+    return proposals.data.map(mapProposalDTOToProposal);
+  }
+
   public async getFilteredProposals(
     filter: {
       daoViewFilter?: string | null;

@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/typography';
 
 .root {
@@ -53,4 +54,19 @@
   display: flex;
   gap: 12px;
   text-transform: capitalize;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    flex-direction: row;
+    padding: 0;
+    > div {
+      margin-bottom: 0;
+      margin-left: 24px;
+    }
+  }
+
+  .icon {
+    align-items: center;
+  }
 }

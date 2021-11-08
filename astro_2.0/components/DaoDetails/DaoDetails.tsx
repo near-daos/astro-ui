@@ -17,6 +17,7 @@ export interface DaoDetailsProps {
   onCreateProposalClick?: (dao: DAO) => void;
   activeProposals: number;
   totalProposals: number;
+  restrictCreateProposals?: boolean;
 }
 
 export const DaoDetails: FC<DaoDetailsProps> = ({
@@ -25,9 +26,11 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
   onCreateProposalClick,
   activeProposals,
   totalProposals,
+  restrictCreateProposals = false,
 }) => {
   const router = useRouter();
-  const action = isEmpty(accountId) ? null : <>Create proposal</>;
+  const action =
+    restrictCreateProposals || isEmpty(accountId) ? null : <>Create proposal</>;
 
   return (
     <div className={styles.root}>

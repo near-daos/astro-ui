@@ -16,13 +16,14 @@
   grid-template-columns: 1fr 1fr 1fr;
   padding: 22px 30px;
   position: relative;
+  transition: box-shadow 0.3s ease-out;
 
   &.clickable {
     cursor: pointer;
   }
 
   &:hover {
-    box-shadow: 0 16px 54px var(--color-black-opacity-25);
+    box-shadow: 3px 2px 24px var(--color-black-opacity-25);
   }
 }
 
@@ -216,5 +217,12 @@
   .proposalWalletLink {
     display: flex;
     justify-content: flex-end;
+  }
+
+  .actionBar {
+    display: flex;
+    left: unset;
+    right: 12px;
+    top: -30px;
   }
 }

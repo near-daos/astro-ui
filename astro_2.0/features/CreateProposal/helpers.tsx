@@ -414,6 +414,29 @@ export function getFormInitialValues(
   }
 }
 
+function getFlagsParamsForMetadata(
+  dao: DAO
+): {
+  flag?: string;
+  flagCover?: string;
+  flagLogo?: string;
+} {
+  const flagUrl = dao?.logo?.split('/');
+  const flagFileName = last(flagUrl);
+
+  const coverUrl = dao?.flagCover?.split('/');
+  const coverFileName = last(coverUrl);
+
+  const logoUrl = dao?.flagLogo?.split('/');
+  const logoFileName = last(logoUrl);
+
+  return {
+    flag: flagFileName,
+    flagCover: coverFileName,
+    flagLogo: logoFileName,
+  };
+}
+
 export async function getNewProposalObject(
   dao: DAO,
   proposalType: ProposalVariant,
@@ -444,17 +467,14 @@ export async function getNewProposalObject(
       );
     }
     case ProposalVariant.ProposeChangeDaoLinks: {
-      const url = dao?.logo?.split('/');
-      const fileName = last(url);
-
       const newDaoConfig: DaoConfig = {
         name: dao.name,
         purpose: dao.description,
         metadata: fromMetadataToBase64({
+          ...getFlagsParamsForMetadata(dao),
           links: ((data as unknown) as LinksFormData).links.map(
             item => item.url
           ),
-          flag: fileName,
           displayName: dao.displayName,
         }),
       };
@@ -467,15 +487,12 @@ export async function getNewProposalObject(
       );
     }
     case ProposalVariant.ProposeChangeDaoName: {
-      const url = dao?.logo?.split('/');
-      const fileName = last(url);
-
       const newDaoConfig: DaoConfig = {
         name: dao.name,
         purpose: dao.description,
         metadata: fromMetadataToBase64({
+          ...getFlagsParamsForMetadata(dao),
           links: dao.links,
-          flag: fileName,
           displayName: data.displayName as string,
         }),
       };
@@ -488,15 +505,12 @@ export async function getNewProposalObject(
       );
     }
     case ProposalVariant.ProposeChangeDaoPurpose: {
-      const url = dao?.logo?.split('/');
-      const fileName = last(url);
-
       const newDaoConfig: DaoConfig = {
         name: dao.name,
         purpose: data.purpose as string,
         metadata: fromMetadataToBase64({
+          ...getFlagsParamsForMetadata(dao),
           links: dao.links,
-          flag: fileName,
           displayName: dao.displayName,
         }),
       };
@@ -590,8 +604,8 @@ export async function getNewProposalObject(
         name: dao.name,
         purpose: dao.description,
         metadata: fromMetadataToBase64({
+          ...getFlagsParamsForMetadata(dao),
           links: dao.links,
-          flag: dao.logo,
           displayName: dao.displayName,
           flagCover: flagCoverFileName,
           flagLogo: flagLogoFileName,

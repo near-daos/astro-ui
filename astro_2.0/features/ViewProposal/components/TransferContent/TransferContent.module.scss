@@ -4,6 +4,10 @@
 .root {
   display: flex;
 
+  > div:nth-child(2) {
+    margin-left: 8px;
+  }
+
   > div:last-of-type {
     margin-left: 80px;
   }

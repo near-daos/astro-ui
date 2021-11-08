@@ -9,6 +9,7 @@ import { Icon } from 'components/Icon';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import StatusFilters from 'astro_2.0/components/Feed/StatusFilters';
 import { DaoDetails } from 'astro_2.0/components/DaoDetails';
+import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 import CategoriesList from 'astro_2.0/components/Feed/CategoriesList';
 import { NoResultsView } from 'features/no-results-view';
@@ -37,6 +38,7 @@ interface DaoHomeProps {
   proposals: Proposal[];
   tokens: Token[];
   proposalsTotal: number;
+  policyAffectsProposals: Proposal[];
 }
 
 const DAOHome: NextPage<DaoHomeProps> = ({
@@ -44,6 +46,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
   proposals,
   tokens,
   proposalsTotal,
+  policyAffectsProposals,
 }) => {
   const router = useRouter();
   const { category, status } = router.query as ProposalsQueries;
@@ -115,6 +118,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
         <DaoDetails
           dao={dao}
           accountId={accountId}
+          restrictCreateProposals={policyAffectsProposals.length > 0}
           onCreateProposalClick={() => setShowCreateProposal(true)}
           activeProposals={active[dao.id] || 0}
           totalProposals={total[dao.id] || 0}
@@ -138,6 +142,12 @@ const DAOHome: NextPage<DaoHomeProps> = ({
       </div>
 
       {renderDaoDetails()}
+
+      {!!policyAffectsProposals?.length && (
+        <div className={styles.warningWrapper}>
+          <PolicyAffectedWarning data={policyAffectsProposals} />
+        </div>
+      )}
 
       {showCreateProposal && (
         <CreateProposal
@@ -233,7 +243,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     };
   }
 
-  const [tokens, proposalsData] = await Promise.all([
+  const [tokens, proposalsData, policyAffectsProposals] = await Promise.all([
     SputnikHttpService.getAccountTokens(daoId as string),
     SputnikHttpService.getProposalsList({
       offset: 0,
@@ -242,6 +252,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       category: category as FeedCategories,
       status: status as ProposalStatuses,
     }),
+    SputnikHttpService.findPolicyAffectsProposals(daoId as string),
   ]);
 
   return {
@@ -250,6 +261,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       proposals: proposalsData.data,
       proposalsTotal: proposalsData.total,
       tokens,
+      policyAffectsProposals,
     },
   };
 };
