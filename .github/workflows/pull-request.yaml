@@ -1,0 +1,17 @@
+name: Pull Request
+on:
+  workflow_dispatch:
+  pull-request:
+    branches:
+    - '**'
+
+jobs:
+  build:
+    name: Build
+    steps:
+    - name: Set Environment
+      run: |
+         echo DOCKER_ENV_TAG=qa-$GITHUB_SHA >> $GITHUB_ENV
+
+    - name: Build
+      uses: ./.github/actions/build
