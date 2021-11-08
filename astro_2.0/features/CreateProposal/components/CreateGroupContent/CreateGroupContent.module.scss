@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -51,5 +52,13 @@
       color: var(--color-neutral-40);
       transition: opacity 0.2s linear;
     }
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .row {
+    display: grid;
+    grid-row-gap: 24px;
+    grid-template-columns: 1fr;
   }
 }

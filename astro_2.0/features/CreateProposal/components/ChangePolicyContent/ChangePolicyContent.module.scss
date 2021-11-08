@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -70,4 +71,31 @@
   height: 100%;
   margin-left: 4px;
   padding: 0 0 12px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .row {
+    display: grid;
+    grid-row-gap: 24px;
+    grid-template-columns: 1fr;
+
+    > div {
+      div,
+      label {
+        justify-content: flex-start !important;
+        text-align: left;
+      }
+    }
+
+    .amount {
+      text-align: left;
+      input {
+        text-align: left !important;
+      }
+    }
+  }
+
+  .percent {
+    display: none;
+  }
 }

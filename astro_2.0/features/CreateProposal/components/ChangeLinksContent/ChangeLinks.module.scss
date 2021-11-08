@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -42,4 +43,13 @@
 
 .target {
   margin-top: 24px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .row {
+    label,
+    input {
+      width: 100%;
+    }
+  }
 }

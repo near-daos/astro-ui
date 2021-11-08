@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -31,4 +32,18 @@
 
 .link {
   margin-left: 8px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    > div {
+      > div:not(:first-of-type) {
+        margin-bottom: 12px;
+      }
+    }
+  }
+  .linkWrapper {
+    align-items: flex-start;
+    display: flex;
+  }
 }

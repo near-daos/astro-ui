@@ -1,6 +1,6 @@
 import React from 'react';
 import { useId } from '@reach/auto-id';
-import { useMeasure } from 'react-use';
+import { useMeasure, useMedia } from 'react-use';
 
 import Downshift from 'downshift';
 import { IconButton } from 'components/button/IconButton';
@@ -33,6 +33,7 @@ export const GroupedSelect = React.forwardRef<
     onChange(selectedItem?.value ?? null);
   };
   const [measureRef, { width }] = useMeasure();
+  const isMobileOrTablet = useMedia('(max-width: 767px)');
 
   function itemToString(i: Option | null) {
     return i ? i.label : '';
@@ -87,13 +88,25 @@ export const GroupedSelect = React.forwardRef<
             >
               {selectedItem?.label}
             </div>
+            <div
+              className={styles.input}
+              style={{
+                width: '100%',
+              }}
+            >
+              {selectedItem?.label}
+            </div>
             <input
               {...getInputProps({
                 id,
                 ref: externalRef,
                 readOnly: true,
               })}
-              style={{ width: width + 8 }}
+              style={{
+                position: 'absolute',
+                opacity: 0,
+                width: isMobileOrTablet ? '100%' : width + 8,
+              }}
               type="text"
             />
             <IconButton icon="buttonArrowDown" className={styles.icon} />

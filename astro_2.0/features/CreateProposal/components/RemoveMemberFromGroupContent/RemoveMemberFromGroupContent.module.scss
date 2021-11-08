@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -46,6 +47,18 @@
     @include placeholder {
       color: var(--color-neutral-40);
       transition: opacity 0.2s linear;
+    }
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    display: grid;
+    grid-row-gap: 24px;
+    grid-template-columns: 1fr;
+
+    ul {
+      right: unset;
     }
   }
 }

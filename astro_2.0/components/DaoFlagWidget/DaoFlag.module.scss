@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -31,4 +32,13 @@
 
 .text {
   @extend %title3;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .info {
+    div {
+      @include ellipse-text;
+      max-width: 50vw;
+    }
+  }
 }

@@ -1,9 +1,11 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
 .label {
   @extend %caption1;
   color: var(--color-neutral-60);
+  padding-bottom: 4px;
 }
 
 .root {
@@ -74,4 +76,10 @@
   letter-spacing: 0;
   line-height: 28px;
   text-align: left;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .valueLarge {
+    font-size: 16px;
+  }
 }

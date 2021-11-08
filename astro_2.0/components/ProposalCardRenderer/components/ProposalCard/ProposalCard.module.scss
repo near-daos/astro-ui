@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -115,6 +116,10 @@
 
 .descriptionCell {
   grid-area: description;
+
+  .proposalDescription {
+    line-height: 1.2;
+  }
 }
 
 .iconWrapper {
@@ -162,10 +167,19 @@
 }
 
 .proposalIdCell {
+  align-items: center;
+  display: flex;
   height: 36px;
   position: absolute;
   right: 0;
   top: -36px;
+  white-space: nowrap;
+
+  .proposalIdLabel {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+    font-weight: 400;
+  }
 
   .proposalIdValue {
     @extend %subtitle5;
@@ -173,5 +187,34 @@
     color: var(--color-neutral-60);
     display: flex;
     gap: 12px;
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    grid-template-areas:
+      'countdown'
+      'proposalType'
+      'proposer'
+      'description'
+      'content'
+      'voteControl';
+    grid-template-columns: 1fr;
+  }
+  .proposalIdCell {
+    display: none;
+  }
+  .proposalCell {
+    width: 100%;
+    div {
+      width: 100%;
+    }
+  }
+  .proposalType {
+    width: 100%;
+  }
+  .proposalWalletLink {
+    display: flex;
+    justify-content: flex-end;
   }
 }

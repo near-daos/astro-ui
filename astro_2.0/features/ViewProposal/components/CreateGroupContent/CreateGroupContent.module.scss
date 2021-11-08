@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -27,4 +28,20 @@
   color: var(--color-primary);
   margin-right: 12px;
   width: 24px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .row {
+    flex-wrap: wrap;
+    width: 100%;
+
+    > div {
+      margin-bottom: 24px;
+      width: 100%;
+
+      > div:last-of-type {
+        height: 16px;
+      }
+    }
+  }
 }

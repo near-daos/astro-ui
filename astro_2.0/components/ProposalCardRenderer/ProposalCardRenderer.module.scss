@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -27,4 +28,15 @@
   grid-area: infoPanel;
   padding-left: 19px;
   padding-right: 19px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    grid-template-areas:
+      'daoFlag'
+      'letterHead'
+      'proposal'
+      'infoPanel';
+    grid-template-columns: 1fr;
+  }
 }

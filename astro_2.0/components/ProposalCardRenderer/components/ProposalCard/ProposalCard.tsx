@@ -24,7 +24,6 @@ import { SputnikNearService } from 'services/sputnik';
 import { getProposalVariantLabel } from 'astro_2.0/features/ViewProposal/helpers';
 import { ExplorerLink } from 'components/explorer-link';
 import { useCountdown } from 'components/cards/expanded-proposal-card/helpers';
-import { CopyButton } from 'features/copy-button';
 
 import styles from './ProposalCard.module.scss';
 
@@ -158,10 +157,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         </div>
       )}
       <div className={styles.proposalIdCell}>
-        <span className={styles.proposalIdValue}>
-          {id}
-          <CopyButton text={id ?? ''} />
-        </span>
+        <span className={styles.proposalIdLabel}>Proposal ID:&nbsp;</span>
+        <span className={styles.proposalIdValue}>{proposalId}</span>
       </div>
 
       <div className={styles.proposalCell}>

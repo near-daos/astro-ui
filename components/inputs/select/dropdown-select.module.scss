@@ -147,14 +147,14 @@
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .select {
-    flex: 0 0 40px;
-    width: 40px;
+    //flex: 0 0 40px;
+    //width: 40px;
   }
   .select .selected {
-    display: none;
+    //display: none;
   }
   .menu {
-    right: calc(100% - 48px);
+    right: calc(100% - 80px);
     width: max-content;
   }
 }

@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 
 .root {
@@ -26,4 +27,22 @@
 
 .divider {
   margin-left: 60px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    flex-wrap: wrap;
+
+    > div:nth-child(2) {
+      > div:first-of-type {
+        height: 14px;
+      }
+    }
+
+    > div:nth-child(3),
+    > div:nth-child(5) {
+      height: 24px;
+      width: 100%;
+    }
+  }
 }

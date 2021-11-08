@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -49,6 +50,29 @@
       color: var(--color-neutral-40);
       font-weight: 700;
       transition: opacity 0.2s linear;
+    }
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .row {
+    flex-wrap: wrap;
+    > div {
+      margin-bottom: 12px;
+      width: 100%;
+
+      > div:last-of-type {
+        height: 24px;
+      }
+
+      &:last-of-type {
+        margin-left: 0;
+        text-align: left;
+
+        > div:first-of-type {
+          justify-content: flex-start;
+        }
+      }
     }
   }
 }

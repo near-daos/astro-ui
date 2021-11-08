@@ -1,3 +1,5 @@
+@use 'styles/breakpoints';
+
 .background {
   background-image: linear-gradient(rgba(0, 0, 0, 0.3), transparent);
   background-size: cover;
@@ -39,4 +41,25 @@
 
 .icon {
   color: var(--color-white);
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    align-items: center;
+    border-radius: 8px 8px 0 0;
+    height: 40px;
+    justify-content: flex-start;
+    padding-left: 12px;
+    width: 100%;
+  }
+
+  .iconHolder {
+    padding-top: 0;
+  }
+
+  .background {
+    background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.3), transparent);
+    height: 40px;
+    width: 100%;
+  }
 }

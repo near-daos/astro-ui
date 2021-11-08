@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
+import TextTruncate from 'react-text-truncate';
 
 import {
   FieldValue,
@@ -26,13 +27,24 @@ export const ChangeLinksContent: FC<ChangeLinksContentProps> = ({
             value={
               <a
                 href={link}
+                className={styles.linkWrapper}
                 target="_blank"
                 rel="noreferrer"
                 onClick={e => e.stopPropagation()}
               >
-                <Icon name="socialAnyUrl" width={22} />
+                <div>
+                  <Icon name="socialAnyUrl" width={22} />
+                </div>
                 &nbsp;
-                <span className={cn(styles.link)}>{link}</span>
+                <span className={cn(styles.link)}>
+                  <TextTruncate
+                    line={3}
+                    element="span"
+                    truncateText="…"
+                    text={link}
+                    textTruncateChild={null}
+                  />
+                </span>
               </a>
             }
             key={link}

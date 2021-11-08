@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -109,4 +110,16 @@
   position: absolute;
   top: 66px;
   width: 68px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .row {
+    display: grid;
+    grid-row-gap: 24px;
+    grid-template-columns: 1fr;
+
+    div:last-of-type {
+      margin-left: 0;
+    }
+  }
 }

@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 .root {
   width: 100%;
 }
@@ -86,4 +87,16 @@
 
 .itemRoot {
   margin-bottom: 60px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .statusFilterWrapper {
+    max-width: 100%;
+  }
+
+  /* stylelint-disable-next-line */
+  .container :global(.infinite-scroll-component__outerdiv) {
+    flex-grow: 1;
+    max-width: 100%;
+  }
 }
