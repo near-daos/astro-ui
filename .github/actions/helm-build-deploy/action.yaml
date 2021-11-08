@@ -1,6 +1,6 @@
 name: 'Helm Deploy'
 runs:
-  using: 'docker'
+  using: 'composite'
   steps:
   - name: helm deploy
     uses: koslib/helm-eks-action@v1.8.0

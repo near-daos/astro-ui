@@ -54,4 +54,6 @@ runs:
   - name: Save Cache
     shell: bash
     run: |
-      docker save $(docker images -qa) > docker-cache/cache.tar;
+      if [[ -f "docker-cache/cache.tar" ]]; then
+        docker save $(docker images -qa) > docker-cache/cache.tar;
+      fi
