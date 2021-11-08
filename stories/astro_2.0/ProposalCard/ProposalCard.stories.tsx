@@ -76,6 +76,7 @@ const cardProps = {
   likes: 32,
   dislikes: 32,
   dismisses: 32,
+  voteRemove: 0,
   liked: false,
   disliked: false,
   dismissed: false,

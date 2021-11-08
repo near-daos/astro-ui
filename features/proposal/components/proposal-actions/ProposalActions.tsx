@@ -4,7 +4,15 @@ import { ActionButton } from 'features/proposal/components/action-button';
 
 import styles from './proposal-actions.module.scss';
 
-export const ProposalActions: FC = () => {
+interface ProposalActionsProps {
+  onRemove: () => void;
+  removeCount: number;
+}
+
+export const ProposalActions: FC<ProposalActionsProps> = ({
+  onRemove,
+  removeCount,
+}) => {
   const [location, setLocation] = useState<string>('');
 
   useEffect(() => {
@@ -13,21 +21,19 @@ export const ProposalActions: FC = () => {
 
   return (
     <div className={styles.root}>
-      <a
-        className={styles.link}
-        href="https://airtable.com/shr4ZmQzmTE5cKZm3"
-        target="_blank"
-        rel="noreferrer noopener"
+      <ActionButton
+        tooltip="Report"
+        onClick={() => onRemove()}
+        iconName="buttonReport"
+        className={styles.icon}
+        tooltipPlacement="right"
       >
-        <ActionButton
-          tooltip="Report"
-          iconName="buttonReport"
-          className={styles.icon}
-        />
-      </a>
+        {removeCount}
+      </ActionButton>
       <ActionButton
         tooltip="Tweet"
         iconName="socialTwitter"
+        tooltipPlacement="right"
         className={styles.icon}
       />
       <CopyButton text={location} />

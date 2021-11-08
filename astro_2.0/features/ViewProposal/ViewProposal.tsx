@@ -74,6 +74,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
           dao={proposal.dao}
           likes={proposal.voteYes}
           dislikes={proposal.voteNo}
+          voteRemove={proposal.voteRemove}
           liked={proposal.votes[accountId] === 'Yes'}
           disliked={proposal.votes[accountId] === 'No'}
           updatedAt={proposal.updatedAt}

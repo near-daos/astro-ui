@@ -24,6 +24,7 @@ import { SputnikNearService } from 'services/sputnik';
 import { getProposalVariantLabel } from 'astro_2.0/features/ViewProposal/helpers';
 import { ExplorerLink } from 'components/explorer-link';
 import { useCountdown } from 'components/cards/expanded-proposal-card/helpers';
+import { CopyButton } from 'features/copy-button';
 
 import styles from './ProposalCard.module.scss';
 
@@ -41,6 +42,7 @@ export interface ProposalCardProps {
   accountId: string;
   likes: number;
   dislikes: number;
+  voteRemove: number;
   liked: boolean;
   disliked: boolean;
   voteDetails?: VoteDetail;
@@ -54,16 +56,29 @@ function getTimestampLabel(
   status: ProposalStatus,
   updatedAt?: string | null
 ) {
-  if (timeLeft) return `${timeLeft} left`;
+  if (status === 'InProgress') {
+    if (timeLeft) return `${timeLeft} left`;
 
-  if (
-    (status === 'Approved' || (status === 'Rejected' && updatedAt)) &&
-    updatedAt
-  ) {
-    return `${status} at ${format(
-      parseISO(updatedAt as string),
-      'dd MMMM yyyy'
-    )}`;
+    return 'Voting ended';
+  }
+
+  if ((status === 'Approved' || status === 'Rejected') && updatedAt) {
+    return (
+      <div className={cn(styles.timestampLabel)}>
+        <span
+          className={cn(styles.label, {
+            [styles.approved]: status === 'Approved',
+            [styles.rejected]: status === 'Rejected',
+          })}
+        >
+          {status}
+        </span>{' '}
+        at{' '}
+        <span className={cn(styles.value)}>
+          {format(parseISO(updatedAt as string), 'dd MMMM yyyy')}
+        </span>
+      </div>
+    );
   }
 
   return 'Voting ended';
@@ -84,6 +99,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   dislikes,
   liked,
   disliked,
+  voteRemove,
   voteDetails,
   content,
   accountId,
@@ -141,6 +157,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           <Icon name={sealIcon as IconName} />
         </div>
       )}
+      <div className={styles.proposalIdCell}>
+        <span className={styles.proposalIdValue}>
+          {id}
+          <CopyButton text={id ?? ''} />
+        </span>
+      </div>
+
       <div className={styles.proposalCell}>
         <InfoBlockWidget
           valueFontSize="L"
@@ -190,7 +213,10 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         {voteDetails && <ProgressBar detail={voteDetails} />}
       </div>
       <div className={styles.actionBar}>
-        <ProposalActions />
+        <ProposalActions
+          onRemove={() => voteClickHandler('VoteRemove')}
+          removeCount={voteRemove}
+        />
       </div>
     </div>
   );

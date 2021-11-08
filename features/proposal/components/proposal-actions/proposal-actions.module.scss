@@ -1,10 +1,10 @@
 @import 'styles/typography';
 
 .root {
-  align-items: flex-end;
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
-  padding: 8px;
+  padding: 8px 8px 8px 24px;
 
   > button,
   div {
@@ -13,7 +13,11 @@
 }
 
 .icon {
+  align-items: flex-start;
   color: var(--color-neutral-50);
+  display: flex;
+  justify-content: flex-start;
+  white-space: nowrap;
 
   &:hover {
     color: var(--color-primary-50);

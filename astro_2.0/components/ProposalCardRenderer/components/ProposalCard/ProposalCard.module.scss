@@ -35,11 +35,10 @@
 
 .actionBar {
   display: none;
+  left: 100%;
+  min-width: 100px;
   position: absolute;
-  right: -50px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100px;
+  top: 0;
 }
 
 .root:hover .actionBar {
@@ -150,4 +149,29 @@
 
 .externalLink {
   text-shadow: 3px 2px 12px var(--color-primary-30);
+}
+
+.timestampLabel {
+  color: var(--color-neutral-60);
+  .label.approved {
+    color: var(--color-success-50);
+  }
+  .label.rejected {
+    color: var(--color-error-50);
+  }
+}
+
+.proposalIdCell {
+  height: 36px;
+  position: absolute;
+  right: 0;
+  top: -36px;
+
+  .proposalIdValue {
+    @extend %subtitle5;
+    align-items: center;
+    color: var(--color-neutral-60);
+    display: flex;
+    gap: 12px;
+  }
 }

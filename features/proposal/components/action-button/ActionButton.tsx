@@ -20,6 +20,7 @@ export const ActionButton: FC<ActionButtonProps> = ({
   onClick,
   tooltip,
   tooltipPlacement = 'auto',
+  children,
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
 
@@ -31,6 +32,7 @@ export const ActionButton: FC<ActionButtonProps> = ({
           onClick={onClick}
           className={styles.btn}
         />
+        {children}
       </div>
       {tooltip && (
         <Popup anchor={ref} placement={tooltipPlacement}>
