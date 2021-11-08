@@ -18,7 +18,7 @@ jobs:
     name: Build Deploy
     environment:
       name: ${{ github.ref_name }}
-      url: https://${K8S_INGRESS_HOST}
+      url: https://${{ secrets.K8S_INGRESS_HOST }}
     steps:
     - uses: actions/checkout@v2
     - name: Set Environment
