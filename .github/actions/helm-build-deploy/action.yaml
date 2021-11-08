@@ -1,18 +1,15 @@
 name: 'Helm Deploy'
 runs:
   using: 'docker'
-  image: 'alpine/helm:3.6.3'
   steps:
-  - shell: bash
-    run: |
-      export CHART_FOLDER=deployment/app-chart
-      helm lint $CHART_FOLDER
   - name: helm deploy
     uses: koslib/helm-eks-action@v1.8.0
     env:
       KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
     with:
       command: |
+        export CHART_FOLDER=deployment/app-chart
+        helm lint $CHART_FOLDER
         helm --namespace $DEPLOYMENT_NAMESPACE upgrade --install --create-namespace $APP_NAME $CHART_FOLDER \
           --set image.tag=$DOCKER_ENV_TAG \
           --set environment.near_env=${NEAR_ENV} \
