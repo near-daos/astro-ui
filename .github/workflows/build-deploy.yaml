@@ -8,10 +8,16 @@ on:
 
 jobs:
   build-deploy:
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY }}
+      AWS_ECR_URL: ${{ secrets.AWS_ECR_URL }}
+      EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
     runs-on: ubuntu-latest
     name: Build Deploy
     environment:
-      name: ${GITHUB_REF##*/}
+      name: ${{ github.ref_name }}
       url: https://${K8S_INGRESS_HOST}
     steps:
     - uses: actions/checkout@v2
