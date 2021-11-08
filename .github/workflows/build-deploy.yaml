@@ -8,6 +8,7 @@ on:
 
 jobs:
   build-deploy:
+    runs-on: ubuntu-latest
     name: Build Deploy
     environment:
       name: ${GITHUB_REF##*/}
@@ -32,6 +33,7 @@ jobs:
 
 
   build-deploy-storybook:
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     environment:
       name: ${GITHUB_REF##*/}
