@@ -3,8 +3,10 @@ import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { Button } from 'components/button/Button';
 import { InfoValue } from 'astro_2.0/components/InfoBlockWidget/components/InfoValue';
 import { formatYoktoValue } from 'helpers/format';
-import { getDistance, toMillis } from 'astro_2.0/components/BountyCard/helpers';
-import { isBefore } from 'date-fns';
+import {
+  getDistanceFromNow,
+  getSeverity,
+} from 'astro_2.0/components/BountyCard/helpers';
 import { TooltipMessageSeverity } from 'astro_2.0/components/InfoBlockWidget/types';
 import {
   claimBountyHandler,
@@ -23,26 +25,9 @@ interface BountyActionsBarProps {
   bountyStatus: BountyStatus;
   currentUser: string;
   deadlineThreshold: string;
+  startTime?: string;
   setBountyData: (bountyId: string, variant: ProposalVariant) => void;
 }
-
-const getSeverity = (
-  bountyStatus: BountyStatus,
-  forgivenessPeriod: string
-): TooltipMessageSeverity => {
-  if (bountyStatus === 'Available') {
-    return TooltipMessageSeverity.Info;
-  }
-
-  const withinGracePeriod = isBefore(
-    new Date().getMilliseconds(),
-    toMillis(forgivenessPeriod)
-  );
-
-  return withinGracePeriod
-    ? TooltipMessageSeverity.Positive
-    : TooltipMessageSeverity.Warning;
-};
 
 export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
   daoId,
@@ -51,10 +36,18 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
   bountyBond,
   forgivenessPeriod,
   deadlineThreshold,
+  startTime,
   setBountyData,
 }) => {
-  const [, graceValue, graceTimeUnit] = getDistance(forgivenessPeriod);
-  const tooltipSeverity = getSeverity(bountyStatus, forgivenessPeriod);
+  const [, graceValue, graceTimeUnit] = getDistanceFromNow(
+    forgivenessPeriod
+  ).split(' ');
+
+  const tooltipSeverity = getSeverity(
+    bountyStatus,
+    forgivenessPeriod,
+    startTime
+  );
   const router = useRouter();
 
   const onSuccessHandler = useCallback(() => {
@@ -84,7 +77,7 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
             <span>
               You can unclaim a bounty for the next &nbsp;
               <b>
-                {graceValue} {graceTimeUnit}
+                {graceValue} &nbsp; {graceTimeUnit}
               </b>
               . If you miss your deadline, you will lose your bond.
             </span>

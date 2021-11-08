@@ -24,7 +24,7 @@ const UnclaimBountyContent: FC<UnclaimBountyContentProps> = ({
   onClose,
   onSubmit,
 }) => {
-  const startDate = parseISO(data.claimedBy[0]?.starTime);
+  const startDate = parseISO(data.claimedBy[0]?.startTime);
 
   const status: ActionStatus =
     differenceInCalendarDays(startDate, new Date()) > 2 ? 'error' : 'success';

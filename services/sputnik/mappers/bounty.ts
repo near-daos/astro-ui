@@ -13,7 +13,7 @@ export const mapBountyResponseToBounty = (response: BountyResponse): Bounty => {
     claimedBy: response.bountyClaims.map(claim => ({
       deadline: claim.deadline,
       accountId: claim.accountId,
-      starTime: claim.startTime,
+      startTime: claim.startTime,
     })),
     deadlineThreshold: response.maxDeadline,
     slots: Number(response.times),

@@ -33,7 +33,7 @@ export const InProgressCells: FC<InProgressCellsProps> = ({
     const minutes = millisecondsToMinutes(millis);
     const hours = minutesToHours(minutes);
 
-    const startDateInMillis = Number(claim.starTime) / 1000000;
+    const startDateInMillis = Number(claim.startTime) / 1000000;
     const dueDate = addHours(new Date(startDateInMillis), hours);
 
     return format(dueDate, 'LL.dd.yyyy');

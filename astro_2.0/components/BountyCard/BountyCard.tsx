@@ -6,9 +6,12 @@ import { BountyActionsBar } from 'astro_2.0/components/BountyCard/components';
 import { ClaimedBy } from 'components/cards/bounty-card/types';
 import { Token } from 'types/token';
 import cn from 'classnames';
-import { getDistance } from 'astro_2.0/components/BountyCard/helpers';
 import { BountyStatus } from 'astro_2.0/components/BountyCard/types';
 import { ProposalVariant } from 'types/proposal';
+import {
+  getDistanceFromNow,
+  getTimeTillComplete,
+} from 'astro_2.0/components/BountyCard/helpers';
 import styles from './BountyCard.module.scss';
 
 export interface BountyCardProps {
@@ -50,7 +53,9 @@ export const BountyCard: React.FC<BountyCardProps> = ({
     ? BountyStatus.InProgress
     : BountyStatus.Available;
 
-  const [, value, suffix] = getDistance(deadlineThreshold);
+  const timeToComplete = claimedByUser
+    ? getTimeTillComplete(claimedByUser.startTime, claimedByUser.deadline)
+    : getDistanceFromNow(deadlineThreshold);
 
   return (
     <div className={styles.root}>
@@ -61,9 +66,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
           valueFontSize="L"
           className={styles.proposalType}
         />
-        <div className={styles.completeDate}>
-          {`${value} ${suffix}`} to complete
-        </div>
+        <div className={styles.completeDate}>Complete: {timeToComplete}</div>
         <InfoBlockWidget
           label="Status"
           value={
@@ -105,6 +108,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
         bountyBond={bountyBond}
         forgivenessPeriod={forgivenessPeriod}
         bountyStatus={status}
+        startTime={claimedByUser?.startTime}
         currentUser={currentUser}
         deadlineThreshold={deadlineThreshold}
         setBountyData={setBountyData}

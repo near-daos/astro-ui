@@ -13,7 +13,6 @@ import { YOKTO_NEAR } from 'services/sputnik/constants';
 
 import { TransferContent } from 'astro_2.0/features/ViewProposal/components/TransferContent';
 import { AddBountyContent } from 'astro_2.0/features/ViewProposal/components/AddBountyContent';
-import { getDistance } from 'astro_2.0/components/BountyCard/helpers';
 import { ChangeDaoNameContent } from 'astro_2.0/features/ViewProposal/components/ChangeDaoNameContent';
 import { ChangeDaoPurposeContent } from 'astro_2.0/features/ViewProposal/components/ChangeDaoPurposeContent';
 import { ChangeLinksContent } from 'astro_2.0/features/ViewProposal/components/ChangeLinksContent';
@@ -24,6 +23,7 @@ import { CreateGroupContent } from 'astro_2.0/features/ViewProposal/components/C
 import { AddMemberToGroupContent } from 'astro_2.0/features/ViewProposal/components/AddMemberToGroupContent';
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/ViewProposal/components/RemoveMemberFromGroupContent';
 import { DaoRole } from 'types/role';
+import { getDistanceFromNow } from 'astro_2.0/components/BountyCard/helpers';
 
 export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
   switch (proposal?.proposalVariant) {
@@ -46,7 +46,7 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const [, value] = getDistance(bountyData.maxDeadline);
+        const [, value] = getDistanceFromNow(bountyData.maxDeadline).split(' ');
 
         return (
           <AddBountyContent

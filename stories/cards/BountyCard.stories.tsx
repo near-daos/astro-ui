@@ -84,7 +84,7 @@ Completed.args = {
     claimedBy: [
       {
         accountId: 'vicky.near',
-        starTime: '2021-01-01',
+        startTime: '2021-01-01',
         deadline: '',
       },
     ],

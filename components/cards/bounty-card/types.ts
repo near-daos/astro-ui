@@ -1,7 +1,7 @@
 export type ClaimedBy = {
   accountId: string;
   deadline: string;
-  starTime: string;
+  startTime: string;
 };
 
 export type BountyType = 'Passed' | 'Expired';
