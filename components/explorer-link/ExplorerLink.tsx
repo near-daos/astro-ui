@@ -2,6 +2,7 @@ import React, { MouseEvent } from 'react';
 import { Icon } from 'components/Icon';
 import cn from 'classnames';
 import { ExplorerLinkType } from 'components/explorer-link/types';
+import { nearConfig } from 'config';
 import styles from './explorer-link.module.scss';
 
 interface ExplorerLinkProps {
@@ -11,28 +12,28 @@ interface ExplorerLinkProps {
   className?: string;
 }
 
+function generateExplorerLink(type: ExplorerLinkType, linkData: string) {
+  switch (type) {
+    case 'transaction':
+      return `${nearConfig.explorerUrl}/transactions/${linkData}`;
+    case 'member':
+      return `${nearConfig.explorerUrl}/accounts/${linkData}`;
+    default:
+      return '';
+  }
+}
+
+function stopPropagation(e: MouseEvent) {
+  e.stopPropagation();
+}
+
 export const ExplorerLink: React.VFC<ExplorerLinkProps> = ({
   linkData,
   linkType,
   isAbsolute,
   className,
 }) => {
-  function generateExplorerLink(type: ExplorerLinkType) {
-    switch (type) {
-      case 'transaction':
-        return `transactions/${linkData}`;
-      case 'member':
-        return `accounts/${linkData}`;
-      default:
-        return '';
-    }
-  }
-
-  const explorerLink = generateExplorerLink(linkType);
-
-  function stopPropagation(e: MouseEvent) {
-    e.stopPropagation();
-  }
+  const explorerLink = generateExplorerLink(linkType, linkData);
 
   return (
     <>
