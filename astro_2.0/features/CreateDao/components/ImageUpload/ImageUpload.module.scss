@@ -42,6 +42,17 @@
   &.show {
     opacity: 1;
   }
+
+  &.clear {
+    background-color: transparent;
+    color: var(--color-brand-black);
+    opacity: 1;
+  }
+
+  &.clear.show {
+    background-color: var(--color-black-opacity-50);
+    color: var(--color-white);
+  }
 }
 
 .uploadInput {
