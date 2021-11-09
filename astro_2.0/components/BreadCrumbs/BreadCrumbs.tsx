@@ -1,5 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
+
 import { Icon, IconName } from 'components/Icon';
 
 import styles from './breadcrumbs.module.scss';
@@ -12,7 +13,7 @@ export interface BreadCrumbsProps {
   activeLinkClassName?: string;
 }
 
-export const BreadCrumbs: React.FC<BreadCrumbsProps> = ({
+export const BreadCrumbs: React.VFC<BreadCrumbsProps> = ({
   className,
   children,
   separator = 'buttonArrowRight',

@@ -5,6 +5,7 @@
   display: grid;
   grid-template-areas:
     'breadcrumbs . .'
+    'dao dao dao'
     'title . .'
     'links links links'
     'bondAndDeadline bondAndDeadline bondAndDeadline'
@@ -92,4 +93,13 @@
   flex-wrap: wrap;
   gap: 8px;
   padding: 20px 16px;
+}
+
+.dao {
+  grid-area: dao;
+  margin: 16px 0 44px;
+}
+
+.createProposal {
+  margin-top: 24px;
 }

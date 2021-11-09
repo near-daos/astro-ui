@@ -1,0 +1,13 @@
+.root {
+  .all {
+    margin-right: 40px;
+  }
+
+  .approved {
+    --color-checkmark-active: var(--color-success-50);
+  }
+
+  .failed {
+    --color-checkmark-active: var(--color-error-60);
+  }
+}

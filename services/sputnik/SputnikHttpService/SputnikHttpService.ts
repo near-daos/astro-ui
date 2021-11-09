@@ -5,8 +5,6 @@ import {
 } from '@nestjsx/crud-request';
 import omit from 'lodash/omit';
 
-import { nearConfig } from 'config';
-
 import { PaginationResponse } from 'types/api';
 import {
   GetTokensResponse,
@@ -22,7 +20,7 @@ import { Bounty } from 'components/cards/bounty-card/types';
 import { BountiesResponse } from 'types/bounties';
 import {
   BountyDoneProposalType,
-  FeedCategories,
+  ProposalCategories,
   Proposal,
   ProposalStatuses,
   ProposalType,
@@ -243,7 +241,7 @@ class SputnikHttpServiceClass {
 
   public async getProposalsList(
     query: ProposalsQueries & {
-      daoViewFilter?: string | null;
+      daoId?: string | null;
       daoFilter?: 'All DAOs' | 'My DAOs' | 'Following DAOs' | null;
       daosIdsFilter?: string[];
       limit?: number;
@@ -258,10 +256,10 @@ class SputnikHttpServiceClass {
     };
 
     // specific DAO
-    if (query.daoViewFilter) {
+    if (query.daoId) {
       search.$and?.push({
         daoId: {
-          $eq: `${query.daoViewFilter}.${nearConfig.contractName}`,
+          $eq: query.daoId,
         },
       });
     } else if (query.daoFilter === 'My DAOs' && accountId) {
@@ -314,7 +312,7 @@ class SputnikHttpServiceClass {
     }
 
     // Categories
-    if (query.category === FeedCategories.Polls) {
+    if (query.category === ProposalCategories.Polls) {
       search.$and?.push({
         kind: {
           $cont: ProposalType.Vote,
@@ -323,7 +321,7 @@ class SputnikHttpServiceClass {
       });
     }
 
-    if (query.category === FeedCategories.Governance) {
+    if (query.category === ProposalCategories.Governance) {
       search.$and?.push({
         $or: [
           {
@@ -340,7 +338,7 @@ class SputnikHttpServiceClass {
       });
     }
 
-    if (query.category === FeedCategories.Bounties) {
+    if (query.category === ProposalCategories.Bounties) {
       search.$and?.push({
         $or: [
           {
@@ -357,7 +355,7 @@ class SputnikHttpServiceClass {
       });
     }
 
-    if (query.category === FeedCategories.Financial) {
+    if (query.category === ProposalCategories.Financial) {
       search.$and?.push({
         kind: {
           $cont: ProposalType.Transfer,
@@ -365,7 +363,7 @@ class SputnikHttpServiceClass {
       });
     }
 
-    if (query.category === FeedCategories.Members) {
+    if (query.category === ProposalCategories.Members) {
       search.$and?.push({
         $or: [
           {
@@ -490,7 +488,7 @@ class SputnikHttpServiceClass {
 
   public async getFilteredProposals(
     filter: {
-      daoViewFilter?: string | null;
+      daoId?: string | null;
       daoFilter?: 'All DAOs' | 'My DAOs' | 'Following DAOs' | null;
       proposalFilter?: ProposalFilterOptions;
       status?: ProposalFilterStatusOptions;
@@ -505,10 +503,10 @@ class SputnikHttpServiceClass {
     };
 
     // specific DAO
-    if (filter.daoViewFilter) {
+    if (filter.daoId) {
       search.$and?.push({
         daoId: {
-          $eq: `${filter.daoViewFilter}.${nearConfig.contractName}`,
+          $eq: filter.daoId,
         },
       });
     } else if (filter.daoFilter === 'My DAOs' && accountId) {

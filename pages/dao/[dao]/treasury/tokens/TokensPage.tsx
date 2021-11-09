@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import classNames from 'classnames';
 
@@ -28,6 +27,10 @@ import { DAO } from 'types/dao';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 import { ProposalVariant } from 'types/proposal';
+import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
+import NavLink from 'astro_2.0/components/NavLink';
+import useToggleable from 'hooks/useToggleable';
+import { useAuthCheck } from 'astro_2.0/features/Auth';
 
 export interface TokensPageProps {
   data: {
@@ -35,7 +38,7 @@ export interface TokensPageProps {
     daoTokens: Token[];
     totalValue: string;
     receipts: Receipt[];
-    dao: DAO | null;
+    dao: DAO;
   };
 }
 
@@ -47,19 +50,16 @@ const TokensPage: React.FC<TokensPageProps> = ({
   const router = useRouter();
   const daoId = router.query.dao as string;
   const nearPrice = useNearPrice();
-  const { accountId, login } = useAuthContext();
+  const { accountId } = useAuthContext();
   const TRANSACTIONS_PER_PAGE = 10;
 
-  const [showCreateProposal, setShowCreateProposal] = useState(false);
-
-  const handleClick = useCallback(
-    () => (accountId ? setShowCreateProposal(true) : login()),
-    [login, accountId]
+  const [ToggleableCreateProposal, toggleCreateProposal] = useToggleable(
+    CreateProposal
   );
 
-  const handleCreateProposal = useCallback(() => {
-    setShowCreateProposal(true);
-  }, []);
+  const handleClick = useAuthCheck(() => toggleCreateProposal(), [
+    toggleCreateProposal,
+  ]);
 
   const captions = useMemo(
     () => [
@@ -89,52 +89,28 @@ const TokensPage: React.FC<TokensPageProps> = ({
 
   return (
     <div className={styles.root}>
-      <div className={styles.breadcrumb}>
-        <Link passHref href="/all/daos">
-          <a href="*" className={styles.link}>
-            <span className={styles.daoName}>All DAOs</span>
-          </a>
-        </Link>
-        <span>
-          <Icon name="buttonArrowRight" width={16} />
-        </span>
-        <Link passHref href={`/dao/${daoId}`}>
-          <a href="*" className={styles.link}>
-            <span className={styles.daoName}>
-              {dao?.displayName || dao?.id}
-            </span>
-          </a>
-        </Link>
-        <span>
-          <Icon name="buttonArrowRight" width={16} />
-        </span>
-        <span className={styles.activeLink}>Treasury</span>
-      </div>
+      <BreadCrumbs className={styles.breadcrumbs}>
+        <NavLink href="/all/daos">All DAOs</NavLink>
+        <NavLink href={`/dao/${daoId}`}>{dao?.displayName || dao?.id}</NavLink>
+        <NavLink>Treasury</NavLink>
+      </BreadCrumbs>
       <div className={styles.dao}>
-        {dao && (
-          <DaoDetailsMinimized
-            dao={dao}
-            accountId={accountId}
-            onCreateProposalClick={handleCreateProposal}
-          />
-        )}
-        {showCreateProposal && dao && (
-          <div className={styles.newProposalWrapper}>
-            <CreateProposal
-              dao={dao}
-              proposalVariant={ProposalVariant.ProposeTransfer}
-              onCreate={isSuccess => {
-                if (isSuccess) {
-                  refreshData();
-                  setShowCreateProposal(false);
-                }
-              }}
-              onClose={() => {
-                setShowCreateProposal(false);
-              }}
-            />
-          </div>
-        )}
+        <DaoDetailsMinimized
+          dao={dao}
+          accountId={accountId}
+          onCreateProposalClick={toggleCreateProposal}
+        />
+        <ToggleableCreateProposal
+          dao={dao}
+          proposalVariant={ProposalVariant.ProposeTransfer}
+          onCreate={isSuccess => {
+            if (isSuccess) {
+              refreshData();
+              toggleCreateProposal();
+            }
+          }}
+          onClose={toggleCreateProposal}
+        />
       </div>
       <div className={styles.header}>
         <h1>Tokens</h1>

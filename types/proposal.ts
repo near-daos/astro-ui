@@ -242,7 +242,7 @@ export enum ProposalStatuses {
   Failed = 'failed',
 }
 
-export enum FeedCategories {
+export enum ProposalCategories {
   Governance = 'Governance',
   Financial = 'Financial',
   Bounties = 'Bounties',

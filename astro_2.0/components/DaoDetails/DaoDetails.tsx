@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -12,6 +13,7 @@ import { ActionButton } from 'features/proposal/components/action-button';
 import styles from './DaoDetails.module.scss';
 
 export interface DaoDetailsProps {
+  className?: string;
   dao: DAO;
   accountId?: string | null;
   onCreateProposalClick?: (dao: DAO) => void;
@@ -21,6 +23,7 @@ export interface DaoDetailsProps {
 }
 
 export const DaoDetails: FC<DaoDetailsProps> = ({
+  className,
   dao,
   accountId,
   onCreateProposalClick,
@@ -33,7 +36,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
     restrictCreateProposals || isEmpty(accountId) ? null : <>Create proposal</>;
 
   return (
-    <div className={styles.root}>
+    <div className={cn(styles.root, className)}>
       <section className={styles.general}>
         <DaoGeneralCard
           displayName={dao.displayName}

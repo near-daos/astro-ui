@@ -1,19 +1,32 @@
 import React from 'react';
-import classNames from 'classnames';
+import cn from 'classnames';
 
 import Checkbox from 'astro_2.0/components/inputs/Checkbox';
 
 import styles from './StatusFilters.module.scss';
 
-const StatusFilters = ({
+type StatusFiltersProps = {
+  className?: string;
+  proposal?: string;
+  disabled?: boolean;
+  onChange: (proposal?: string) => React.ChangeEventHandler<HTMLInputElement>;
+  list: {
+    label: React.ReactNode;
+    value?: string;
+    name: string;
+    classes?: React.ComponentProps<typeof Checkbox>['classes'];
+  }[];
+};
+
+const StatusFilters: React.FC<StatusFiltersProps> = ({
   proposal,
-  disabled,
+  disabled = false,
   onChange,
   list,
   className,
-}: Props): JSX.Element => {
+}) => {
   return (
-    <div className={classNames(styles.statusFilter, className)}>
+    <div className={cn(styles.statusFilter, className)}>
       <p className={styles.filterStatusText}>Filter by proposal status:</p>
 
       {list.map(item => (
@@ -29,8 +42,8 @@ const StatusFilters = ({
           label={item.label}
           classes={{
             ...item.classes,
-            root: classNames(styles.checkboxRoot, item.classes?.root),
-            inputWrapper: classNames(
+            root: cn(styles.checkboxRoot, item.classes?.root),
+            inputWrapper: cn(
               styles.checkboxInputWrapper,
               item.classes?.inputWrapper
             ),
@@ -39,25 +52,6 @@ const StatusFilters = ({
       ))}
     </div>
   );
-};
-
-type Props = {
-  proposal?: string;
-  disabled?: boolean;
-  onChange: (proposal?: string) => React.ChangeEventHandler<HTMLInputElement>;
-  list: {
-    label: React.ReactNode;
-    value?: string;
-    name: string;
-    classes?: React.ComponentProps<typeof Checkbox>['classes'];
-  }[];
-  className?: string;
-};
-
-StatusFilters.defaultProps = {
-  disabled: false,
-  proposal: undefined,
-  className: undefined,
 };
 
 export default StatusFilters;
