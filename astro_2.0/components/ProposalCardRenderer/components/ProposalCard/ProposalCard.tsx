@@ -211,7 +211,11 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       </div>
       <div className={styles.actionBar}>
         <ProposalActions
-          onRemove={() => voteClickHandler('VoteRemove')}
+          onRemove={() => {
+            if (permissions.canDelete) {
+              voteClickHandler('VoteRemove');
+            }
+          }}
           removeCount={voteRemove}
         />
       </div>

@@ -1,6 +1,7 @@
 import last from 'lodash/last';
 import * as yup from 'yup';
 import { AnySchema } from 'yup';
+import dynamic from 'next/dynamic';
 import {
   CreateProposalParams,
   DaoConfig,
@@ -53,6 +54,19 @@ import { AddMemberToGroupContent } from 'astro_2.0/features/CreateProposal/compo
 import awsUploader from 'services/AwsUploader/AwsUploader';
 import get from 'lodash/get';
 import { ChangeDaoFlagContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoFlagContent';
+import {
+  CustomFunctionCallInput,
+  getCustomFunctionCallProposal,
+} from 'astro_2.0/features/CreateProposal/proposalObjectHelpers';
+
+const CustomFunctionCallContent = dynamic(
+  import(
+    'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent'
+  ),
+  {
+    ssr: false,
+  }
+);
 
 async function getTransferProposal(
   dao: DAO,
@@ -165,6 +179,16 @@ export function getProposalTypesOptions(): {
           label: 'Propose a Poll',
           value: ProposalVariant.ProposePoll,
           group: 'Vote',
+        },
+      ],
+    },
+    {
+      title: 'Function Call',
+      options: [
+        {
+          label: 'Custom Function Call',
+          value: ProposalVariant.ProposeCustomFunctionCall,
+          group: 'Function Call',
         },
       ],
     },
@@ -305,6 +329,9 @@ export function getFormContentNode(
     case ProposalVariant.ProposeChangeBonds: {
       return <ChangeBondsContent dao={dao} />;
     }
+    case ProposalVariant.ProposeCustomFunctionCall: {
+      return <CustomFunctionCallContent />;
+    }
     default: {
       return null;
     }
@@ -406,6 +433,17 @@ export function getFormInitialValues(
         externalUrl: '',
         flagCover: '',
         flagLogo: '',
+      };
+    }
+    case ProposalVariant.ProposeCustomFunctionCall: {
+      return {
+        details: '',
+        externalUrl: '',
+        smartContractAddress: '',
+        methodName: '',
+        json: '',
+        deposit: '',
+        token: 'NEAR',
       };
     }
     default: {
@@ -619,6 +657,12 @@ export async function getNewProposalObject(
         dao.policy.proposalBond
       );
     }
+    case ProposalVariant.ProposeCustomFunctionCall: {
+      return getCustomFunctionCallProposal(
+        dao,
+        data as CustomFunctionCallInput
+      );
+    }
     default: {
       return null;
     }
@@ -770,6 +814,37 @@ export function getValidationSchema(
         flagLogo: yup.string().required('Required'),
       });
     }
+    case ProposalVariant.ProposeCustomFunctionCall: {
+      return yup.object().shape({
+        smartContractAddress: yup.string().required('Required'),
+        methodName: yup.string().required('Required'),
+        deposit: yup
+          .number()
+          .typeError('Must be a valid number.')
+          .positive()
+          .required('Required')
+          .test(
+            'onlyFiveDecimal',
+            'Only numbers with five optional decimal place please',
+            value => /^\d*(?:\.\d{0,5})?$/.test(`${value}`)
+          ),
+        json: yup
+          .string()
+          .required('Required')
+          .test('validJson', 'Provided JSON is not valid', value => {
+            try {
+              JSON.parse(value ?? '');
+            } catch (e) {
+              return false;
+            }
+
+            return true;
+          }),
+        details: yup.string().required('Required'),
+        externalUrl: yup.string().url(),
+      });
+    }
+
     case ProposalVariant.ProposeDoneBounty:
     default: {
       return yup.object().shape({

@@ -34,11 +34,10 @@ export const TransferContent: FC = () => {
             <Icon name="tokenNearBig" />
           ) : (
             <div
+              className={styles.icon}
               style={{
-                background: 'black',
                 backgroundImage: `url(${token.icon})`,
               }}
-              className={styles.icon}
             />
           )}
         </div>

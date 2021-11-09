@@ -14,6 +14,7 @@ export interface DefaultVotePolicy {
 }
 
 export type DaoPermission =
+  | '*:*'
   | '*:Finalize'
   | '*:AddProposal'
   | '*:VoteApprove'

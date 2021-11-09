@@ -51,6 +51,7 @@ export enum ProposalVariant {
   ProposeRemoveMember = 'ProposeRemoveMember',
   ProposePoll = 'ProposePoll',
   ProposeDefault = 'ProposeDefault',
+  ProposeCustomFunctionCall = 'ProposeCustomFunctionCall',
 }
 
 export type VoteAction = 'VoteApprove' | 'VoteRemove' | 'VoteReject';
@@ -163,7 +164,8 @@ export interface CreateProposalParams {
     | 'Transfer'
     | 'AddBounty'
     | 'BountyDone'
-    | 'Vote';
+    | 'Vote'
+    | 'FunctionCall';
   data?:
     | ChangeConfig
     | ChangePolicy
@@ -173,7 +175,8 @@ export interface CreateProposalParams {
     | Transfer
     | AddBounty
     | BountyDone
-    | Vote;
+    | Vote
+    | FunctionCall;
   bond: string;
 }
 
@@ -200,6 +203,11 @@ interface AddRemoveMemberRole {
   // valid account id
   member_id: string;
   role: string;
+}
+
+interface FunctionCall {
+  receiver_id: string;
+  actions: FunctionCallAction[];
 }
 
 interface Transfer {

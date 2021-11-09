@@ -9,6 +9,7 @@ import { DAO } from 'types/dao';
 import { ProposalTrackerCard } from 'astro_2.0/components/DaoDetails/components/ProposalTrackerCard';
 import { DaoGeneralCard } from 'astro_2.0/components/DaoDetails/components/DaoGeneralCard';
 import { ActionButton } from 'features/proposal/components/action-button';
+import { isUserPermittedToCreateProposal } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 
 import styles from './DaoDetails.module.scss';
 
@@ -32,8 +33,18 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
   restrictCreateProposals = false,
 }) => {
   const router = useRouter();
+
+  const isCreateOptionAvailable = isUserPermittedToCreateProposal(
+    accountId,
+    dao
+  );
+
   const action =
-    restrictCreateProposals || isEmpty(accountId) ? null : <>Create proposal</>;
+    !isCreateOptionAvailable ||
+    restrictCreateProposals ||
+    isEmpty(accountId) ? null : (
+      <>Create proposal</>
+    );
 
   return (
     <div className={cn(styles.root, className)}>

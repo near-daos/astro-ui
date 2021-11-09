@@ -22,14 +22,13 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
   return (
     <div className={styles.root}>
       <ActionButton
-        tooltip="Report"
+        tooltip={`Remove: ${removeCount}`}
         onClick={() => onRemove()}
-        iconName="buttonReport"
+        iconName="buttonDelete"
         className={styles.icon}
         tooltipPlacement="right"
-      >
-        {removeCount}
-      </ActionButton>
+      />
+
       <ActionButton
         tooltip="Tweet"
         iconName="socialTwitter"

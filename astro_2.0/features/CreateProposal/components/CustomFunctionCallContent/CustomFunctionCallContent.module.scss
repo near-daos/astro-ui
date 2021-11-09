@@ -2,11 +2,29 @@
 @import 'styles/mixins';
 
 .root {
-  display: flex;
+  display: grid;
+  grid-gap: 24px;
+  grid-template-areas:
+    'address method'
+    'editor editor'
+    'deposit deposit';
+  grid-template-columns: 1fr 1fr;
+}
 
-  > div:last-of-type {
-    margin-left: 80px;
-  }
+.address {
+  grid-area: address;
+}
+
+.method {
+  grid-area: method;
+}
+
+.editor {
+  grid-area: editor;
+}
+
+.deposit {
+  grid-area: deposit;
 }
 
 .row {
@@ -24,8 +42,6 @@
 }
 
 .inputWrapper {
-  max-width: 160px;
-
   /* stylelint-disable */
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
@@ -91,21 +107,21 @@
   max-width: 120px;
 }
 
-.icon {
-  background-color: var(--color-brand-black);
-  background-position: center;
-  background-size: contain;
-  height: 24px;
-  width: 24px;
+.editorContent {
+  display: flex;
+  padding: 12px;
+  width: 100%;
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .root {
     display: grid;
     grid-template-areas:
-      'amount token'
-      'target target';
-    grid-template-columns: 1fr 1fr;
+      'address'
+      'method'
+      'editor'
+      'deposit';
+    grid-template-columns: 1fr;
 
     > div:last-of-type {
       grid-column: 1 / 3;

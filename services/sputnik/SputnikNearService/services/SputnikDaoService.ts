@@ -12,7 +12,7 @@ import { ClaimBountyParams, CreateDaoParams } from 'services/sputnik/types';
 
 import { SputnikWalletService } from './SputnikWalletService';
 
-const GAS_VALUE = new BN('300000000000000');
+export const GAS_VALUE = new BN('300000000000000');
 
 export class SputnikDaoService {
   private readonly sputnikWalletService: SputnikWalletService;

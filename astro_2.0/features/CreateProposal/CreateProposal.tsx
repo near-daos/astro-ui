@@ -123,8 +123,6 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     },
   });
 
-  // console.log(methods.getValues().flagCover);
-
   const onSubmit = useCallback(
     async data => {
       try {
