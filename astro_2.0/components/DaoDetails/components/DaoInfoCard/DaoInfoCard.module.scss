@@ -14,7 +14,21 @@
 }
 
 .value {
+  @extend %subtitle3;
+}
+
+.bold {
   @extend %title3;
+}
+
+.members {
+  .label {
+    margin-bottom: 6px;
+  }
+
+  .value {
+    @extend %title3;
+  }
 
   .bold {
     @extend %title1;

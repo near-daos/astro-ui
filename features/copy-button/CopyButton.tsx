@@ -4,10 +4,12 @@ import { Popup } from 'components/popup/Popup';
 import { IconButton } from 'components/button/IconButton';
 import { IconName } from 'components/Icon';
 
+import cn from 'classnames';
 import styles from './copy-button.module.scss';
 
 interface CopyButtonProps {
   text: string;
+  title?: string;
   className?: string;
   iconName?: IconName;
 }
@@ -18,6 +20,7 @@ export const CopyButton: FC<CopyButtonProps> = ({
   text,
   className,
   iconName = 'buttonCopy',
+  title,
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const [tooltip, setTooltip] = useState(COPY_TEXT);
@@ -38,12 +41,16 @@ export const CopyButton: FC<CopyButtonProps> = ({
 
   return (
     <>
-      <div ref={setRef} className={className}>
-        <IconButton
-          icon={iconName}
-          onClick={copyAccountName}
-          className={styles.btn}
-        />
+      <div
+        role="button"
+        tabIndex={0}
+        ref={setRef}
+        className={cn(styles.root, className)}
+        onClick={copyAccountName}
+        onKeyPress={() => copyAccountName}
+      >
+        {title && title}
+        <IconButton icon={iconName} className={styles.btn} />
       </div>
       <Popup anchor={ref} placement="right">
         {tooltip}
