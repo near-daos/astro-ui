@@ -16,6 +16,7 @@ import PageLayout from 'components/page-layout/PageLayout';
 import CreateLayoutNew from 'astro_2.0/components/CreateLayout/CreateLayout';
 import { MobileNav } from 'astro_2.0/components/navigation/MobileNav';
 import { SearchResults } from 'features/search/search-results';
+import { AppHeader } from 'astro_2.0/components/AppHeader';
 
 import { SputnikNearService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
@@ -57,6 +58,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
               <Head>
                 <title>Astro</title>
               </Head>
+              <AppHeader />
 
               <AppUILayout>
                 <Component {...pageProps} />

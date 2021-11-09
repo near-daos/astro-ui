@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { FC, useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 
 import { NavItemProps } from 'astro_2.0/components/navigation/types';
 
@@ -21,6 +21,7 @@ import { AccountButton } from './components/AccountButton';
 import styles from './AppHeader.module.scss';
 
 export const AppHeader: FC = () => {
+  const centralEl = useRef(null);
   const [searchExpanded, setSearchExpanded] = useState(false);
 
   const rootClassName = cn(styles.root, {
@@ -47,7 +48,7 @@ export const AppHeader: FC = () => {
   return (
     <header className={rootClassName}>
       {renderLogo()}
-      <div className={styles.centralPart}>
+      <div className={styles.centralPart} ref={centralEl}>
         {renderLogo(styles.mobileLogo)}
         <div className={styles.nav}>
           {renderNavItem(ALL_DAOS_NAV_CONFIG)}
@@ -55,6 +56,7 @@ export const AppHeader: FC = () => {
         </div>
         <SearchBar
           placeholder="Search"
+          prentElRef={centralEl}
           className={styles.search}
           onSearchToggle={setSearchExpanded}
         />
