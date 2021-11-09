@@ -37,14 +37,6 @@
   }
 }
 
-.background {
-  background-color: var(--color-white);
-  clip-path: url('#flag');
-  inset: 0;
-  position: absolute;
-  transform: scale(1.04, 1.045);
-}
-
 .cover {
   background-position: center;
   background-size: cover;

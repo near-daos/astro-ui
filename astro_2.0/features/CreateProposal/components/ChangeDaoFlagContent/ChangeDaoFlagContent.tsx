@@ -6,6 +6,7 @@ import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { ImageUpload } from 'astro_2.0/features/CreateDao/components/ImageUpload';
 import { getImageFromImageFileList } from 'utils/getImageFromImageFileList';
+import { FlagRenderer } from 'astro_2.0/components/Flag';
 
 import styles from './ChangeDaoFlagContent.module.scss';
 
@@ -46,21 +47,7 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
         >
           {coverFileList && (
             <div className={styles.flag}>
-              <div className={styles.background} />
-              <div
-                className={styles.cover}
-                style={{
-                  backgroundImage: `url(${coverImg})`,
-                }}
-              />
-              {logoFileList && (
-                <div
-                  className={styles.logo}
-                  style={{
-                    backgroundImage: `url(${logoImg})`,
-                  }}
-                />
-              )}
+              <FlagRenderer flag={coverImg} size="lg" logo={logoImg} />
             </div>
           )}
         </InputWrapper>

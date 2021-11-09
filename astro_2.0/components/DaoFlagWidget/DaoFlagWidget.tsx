@@ -2,7 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
-import { FlagMinimized } from 'astro_2.0/components/Flag/FlagMinimized';
+import { FlagRenderer } from 'astro_2.0/components/Flag';
 
 import styles from './DaoFlag.module.scss';
 
@@ -22,7 +22,7 @@ export const DaoFlagWidget: React.FC<DaoFlagProps> = ({
   return (
     <Link href={`/dao/${daoId}`} passHref>
       <div className={cn(styles.root, className)}>
-        <FlagMinimized image={flagUrl} />
+        <FlagRenderer flag={flagUrl} size="sm" />
         <InfoBlockWidget
           label="DAO name"
           value={daoName}

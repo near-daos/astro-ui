@@ -8,6 +8,7 @@ import { DAO } from 'types/dao';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { ActionButton } from 'features/proposal/components/action-button';
+import { FlagRenderer } from 'astro_2.0/components/Flag';
 
 import { useAuthContext } from 'context/AuthContext';
 
@@ -46,21 +47,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
     <div className={styles.root}>
       <section className={styles.general}>
         <div className={styles.flagWrapper}>
-          <svg
-            className="svg"
-            width="0"
-            height="0"
-            style={{ position: 'absolute' }}
-          >
-            <clipPath id="flag">
-              <path d="M68.8249 0L14.4555 19.4307V30.2124L0 35.3785V78.0007L54.3694 58.57V47.7883L68.8249 42.6222V0Z" />
-            </clipPath>
-          </svg>
-          <div className={styles.background} />
-          <div
-            className={styles.cover}
-            style={{ backgroundImage: `url(${dao.flagCover ?? dao.logo})` }}
-          />
+          <FlagRenderer flag={dao.flagCover ?? dao.logo} size="sm" />
         </div>
         <div>
           <div className={styles.displayName}>

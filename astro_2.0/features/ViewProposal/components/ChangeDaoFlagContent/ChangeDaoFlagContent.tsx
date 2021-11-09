@@ -3,6 +3,7 @@ import cn from 'classnames';
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
+import { FlagRenderer } from 'astro_2.0/components/Flag';
 
 import styles from './ChangeDaoFlagContent.module.scss';
 
@@ -23,21 +24,7 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
         <FieldWrapper label="Preview" fullWidth>
           {cover && (
             <div className={styles.flag}>
-              <div className={styles.background} />
-              <div
-                className={styles.cover}
-                style={{
-                  backgroundImage: `url(${cover})`,
-                }}
-              />
-              {logo && (
-                <div
-                  className={styles.logo}
-                  style={{
-                    backgroundImage: `url(${logo})`,
-                  }}
-                />
-              )}
+              <FlagRenderer flag={cover} size="lg" logo={logo} />
             </div>
           )}
         </FieldWrapper>

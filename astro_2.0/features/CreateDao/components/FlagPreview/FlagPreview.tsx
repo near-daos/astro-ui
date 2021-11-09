@@ -1,6 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import { Icon } from 'components/Icon';
+import { FlagRenderer } from 'astro_2.0/components/Flag';
 import styles from './FlagPreview.module.scss';
 
 interface FlagPreviewProps {
@@ -29,30 +30,10 @@ export const FlagPreview: React.FC<FlagPreviewProps> = ({
             <div className={styles.titleIn}>Flag and Icon</div>
             <div className={styles.flags}>
               <div className={cn(styles.flag, styles.sm)}>
-                <div className={cn(styles.background, styles.sm)} />
-                <div
-                  className={cn(styles.cover, styles.sm)}
-                  style={{
-                    backgroundImage: `url(${coverFile})`,
-                  }}
-                />
+                <FlagRenderer flag={coverFile} size="sm" />
               </div>
               <div className={styles.flag}>
-                <div className={styles.background} />
-                <div
-                  className={styles.cover}
-                  style={{
-                    backgroundImage: `url(${coverFile})`,
-                  }}
-                />
-                {logoFile && (
-                  <div
-                    className={styles.logo}
-                    style={{
-                      backgroundImage: `url(${logoFile})`,
-                    }}
-                  />
-                )}
+                <FlagRenderer flag={coverFile} size="lg" logo={logoFile} />
               </div>
             </div>
           </div>
@@ -62,7 +43,7 @@ export const FlagPreview: React.FC<FlagPreviewProps> = ({
               <div
                 className={styles.letterhead}
                 style={{
-                  backgroundImage: `url(${logoFile})`,
+                  backgroundImage: `url(${coverFile})`,
                 }}
               >
                 <Icon name="proposalBounty" width={24} color="white" />

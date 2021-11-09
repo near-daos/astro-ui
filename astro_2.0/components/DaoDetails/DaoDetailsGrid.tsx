@@ -9,6 +9,7 @@ import { CopyButton } from 'features/copy-button';
 import { ActionButton } from 'features/proposal/components/action-button';
 import { formatCurrency } from 'utils/formatCurrency';
 import * as Typography from 'components/Typography';
+import { FlagRenderer } from 'astro_2.0/components/Flag';
 
 import cn from 'classnames';
 import styles from './DaoDetailsGrid.module.scss';
@@ -48,23 +49,7 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
           <div>
             <section className={styles.general}>
               <div className={styles.flag}>
-                <svg
-                  className="svg"
-                  width="0"
-                  height="0"
-                  style={{ position: 'absolute' }}
-                >
-                  <clipPath id="flag">
-                    <path d="M68.8249 0L14.4555 19.4307V30.2124L0 35.3785V78.0007L54.3694 58.57V47.7883L68.8249 42.6222V0Z" />
-                  </clipPath>
-                </svg>
-                <div className={styles.background} />
-                <div
-                  className={cn(styles.cover, {
-                    [styles.scaled]: isOldFlag,
-                  })}
-                  style={{ backgroundImage: `url(${flagUrl})` }}
-                />
+                <FlagRenderer flag={flagUrl} size="sm" />
               </div>
               <div className={styles.title}>
                 <div className={styles.name}>

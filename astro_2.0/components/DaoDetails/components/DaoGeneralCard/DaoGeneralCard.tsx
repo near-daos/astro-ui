@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
-import cn from 'classnames';
 
 import { composeProperLinkUrl } from 'helpers/composeProperLinkUrl';
 import { IconButton } from 'components/button/IconButton';
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 import { CopyButton } from 'features/copy-button';
+import { FlagRenderer } from 'astro_2.0/components/Flag';
 
 import styles from './DaoGeneralCard.module.scss';
 
@@ -37,19 +37,7 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
       <Link href={`/dao/${id}`}>
         <a>
           <div className={styles.flagWrapper}>
-            <div className={styles.background} />
-            <div
-              className={cn(styles.cover, {
-                [styles.scaled]: flag && !cover,
-              })}
-              style={{ backgroundImage: `url(${daoFlag})` }}
-            />
-            {logo && (
-              <div
-                className={styles.logo}
-                style={{ backgroundImage: `url(${logo})` }}
-              />
-            )}
+            <FlagRenderer flag={daoFlag} size="lg" logo={logo} />
           </div>
         </a>
       </Link>
