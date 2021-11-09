@@ -1,7 +1,11 @@
-.btn {
-  color: var(--color-neutral-50);
+.root {
+  .btn {
+    color: var(--color-neutral-50);
+  }
+}
 
-  &:hover {
+.root:hover {
+  .btn {
     color: var(--color-primary-50);
   }
 }

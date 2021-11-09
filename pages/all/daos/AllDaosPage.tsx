@@ -13,6 +13,7 @@ import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 
 import { useAuthContext } from 'context/AuthContext';
 import { useRouterLoading } from 'hooks/useRouterLoading';
+import { useNearPrice } from 'hooks/useNearPrice';
 import { Loader } from 'components/loader';
 
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
@@ -56,6 +57,8 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
   const [createProposalForDao, setCreateProposalForDao] = useState<DAO | null>(
     null
   );
+
+  const nearPrice = useNearPrice();
 
   const activeSort = (router.query.sort as string) ?? sortOptions[1].value;
 
@@ -110,11 +113,6 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
   const handleCreateDao = useCallback(
     () => (accountId ? router.push(CREATE_DAO_URL) : login()),
     [login, router, accountId]
-  );
-
-  const handleCreateProposal = useCallback(
-    id => (accountId ? setCreateProposalForDao(id) : login()),
-    [accountId, login]
   );
 
   const isLoading = useRouterLoading();
@@ -174,10 +172,9 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
               <DaoDetailsGrid
                 key={item.id}
                 dao={item}
-                accountId={accountId}
-                onCreateProposalClick={handleCreateProposal}
                 activeProposals={item.activeProposalsCount}
                 totalProposals={item.totalProposalsCount}
+                nearPrice={nearPrice}
               />
             );
           })}

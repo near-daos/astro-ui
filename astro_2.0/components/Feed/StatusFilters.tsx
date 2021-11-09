@@ -1,33 +1,21 @@
 import React from 'react';
-import cn from 'classnames';
+import classNames from 'classnames';
 
 import Checkbox from 'astro_2.0/components/inputs/Checkbox';
 
 import styles from './StatusFilters.module.scss';
 
-type StatusFiltersProps = {
-  className?: string;
-  proposal?: string;
-  disabled?: boolean;
-  onChange: (proposal?: string) => React.ChangeEventHandler<HTMLInputElement>;
-  list: {
-    label: React.ReactNode;
-    value?: string;
-    name: string;
-    classes?: React.ComponentProps<typeof Checkbox>['classes'];
-  }[];
-};
-
-const StatusFilters: React.FC<StatusFiltersProps> = ({
+const StatusFilters = ({
   proposal,
-  disabled = false,
+  disabled,
   onChange,
+  filterName,
   list,
   className,
-}) => {
+}: Props): JSX.Element => {
   return (
-    <div className={cn(styles.statusFilter, className)}>
-      <p className={styles.filterStatusText}>Filter by proposal status:</p>
+    <div className={classNames(styles.statusFilter, className)}>
+      <p className={styles.filterStatusText}>Filter by {filterName} status:</p>
 
       {list.map(item => (
         <Checkbox
@@ -42,8 +30,8 @@ const StatusFilters: React.FC<StatusFiltersProps> = ({
           label={item.label}
           classes={{
             ...item.classes,
-            root: cn(styles.checkboxRoot, item.classes?.root),
-            inputWrapper: cn(
+            root: classNames(styles.checkboxRoot, item.classes?.root),
+            inputWrapper: classNames(
               styles.checkboxInputWrapper,
               item.classes?.inputWrapper
             ),
@@ -52,6 +40,27 @@ const StatusFilters: React.FC<StatusFiltersProps> = ({
       ))}
     </div>
   );
+};
+
+type Props = {
+  proposal?: string;
+  disabled?: boolean;
+  filterName?: string;
+  onChange: (proposal?: string) => React.ChangeEventHandler<HTMLInputElement>;
+  list: {
+    label: React.ReactNode;
+    value?: string;
+    name: string;
+    classes?: React.ComponentProps<typeof Checkbox>['classes'];
+  }[];
+  className?: string;
+};
+
+StatusFilters.defaultProps = {
+  disabled: false,
+  proposal: undefined,
+  className: undefined,
+  filterName: 'proposal',
 };
 
 export default StatusFilters;

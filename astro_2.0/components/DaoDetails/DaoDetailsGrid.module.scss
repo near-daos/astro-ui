@@ -3,10 +3,7 @@
 
 .root {
   @include card-shadow;
-  display: flex;
-  flex-direction: column;
-  height: 458px;
-  justify-content: space-between;
+  height: 440px;
   max-width: 458px;
   min-width: 270px;
   transition: box-shadow 0.4s;
@@ -15,6 +12,15 @@
   &:hover {
     box-shadow: 3px 2px 24px var(--color-black-opacity-25);
   }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  padding-bottom: 32px;
+  width: 100%;
 }
 
 .general {
@@ -78,16 +84,16 @@
   word-break: break-all;
 }
 
-.copyIcon {
-  display: inline-block;
-  height: 24px;
-  margin-left: 6px;
-  width: 24px;
+.copyAddress {
+  > button {
+    margin-left: 6px;
+  }
 }
 
 .description {
   @include font(16px, 24px, 400);
   height: 72px;
+  overflow: hidden;
   padding: 0 16px;
 
   @include tablet-portrait {
@@ -158,22 +164,5 @@
 
 .proposalsSubtitle {
   color: var(--color-neutral-60);
-  margin: 0 0 16px;
-}
-
-.actionWrapper {
-  height: 40px;
-}
-
-.action {
-  @extend %title3;
-  @include centralize;
-  background-color: var(--color-neutral-30);
-  border-radius: 0 0 8px 8px;
-  color: var(--color-brand-black);
-  flex-shrink: 0;
-  height: 40px;
-  padding: 0;
-  text-transform: none;
-  width: 100%;
+  margin: 0;
 }
