@@ -9,12 +9,13 @@ const StatusFilters = ({
   proposal,
   disabled,
   onChange,
+  filterName,
   list,
   className,
 }: Props): JSX.Element => {
   return (
     <div className={classNames(styles.statusFilter, className)}>
-      <p className={styles.filterStatusText}>Filter by proposal status:</p>
+      <p className={styles.filterStatusText}>Filter by {filterName} status:</p>
 
       {list.map(item => (
         <Checkbox
@@ -44,6 +45,7 @@ const StatusFilters = ({
 type Props = {
   proposal?: string;
   disabled?: boolean;
+  filterName?: string;
   onChange: (proposal?: string) => React.ChangeEventHandler<HTMLInputElement>;
   list: {
     label: React.ReactNode;
@@ -58,6 +60,7 @@ StatusFilters.defaultProps = {
   disabled: false,
   proposal: undefined,
   className: undefined,
+  filterName: 'proposal',
 };
 
 export default StatusFilters;

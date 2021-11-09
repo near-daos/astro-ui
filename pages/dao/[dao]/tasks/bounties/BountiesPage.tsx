@@ -116,6 +116,7 @@ const BountiesPage: FC<BountiesPageProps> = ({ dao, bounties, tokens }) => {
       <div className={styles.filters}>
         <StatusFilters
           proposal={status}
+          filterName="bounty"
           onChange={onProposalFilterChange}
           list={[
             { value: undefined, label: 'All', name: 'All' },

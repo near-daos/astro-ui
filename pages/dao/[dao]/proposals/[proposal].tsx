@@ -150,6 +150,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
       <div className={styles.filters}>
         <StatusFilters
           proposal={activeFilter}
+          filterName="vote"
           onChange={handleFilterChange}
           list={[
             { value: undefined, label: 'All', name: 'All' },
