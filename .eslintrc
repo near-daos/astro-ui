@@ -1,15 +1,8 @@
 {
-  "extends": [
-    "next",
-    "next/core-web-vitals",
-    "airbnb-typescript-prettier"
-  ],
+  "extends": ["next", "next/core-web-vitals", "airbnb-typescript-prettier"],
   "settings": {
     "import/parsers": {
-      "@typescript-eslint/parser": [
-        ".ts",
-        ".tsx"
-      ]
+      "@typescript-eslint/parser": [".ts", ".tsx"]
     },
     "import/resolver": {
       "typescript": {
@@ -22,12 +15,7 @@
     "no-console": [
       "warn",
       {
-        "allow": [
-          "error",
-          "warn",
-          "debug",
-          "info"
-        ]
+        "allow": ["error", "warn", "debug", "info"]
       }
     ],
     "no-duplicate-imports": "warn",
@@ -36,29 +24,29 @@
       {
         "patterns": [
           {
-            "group": [
-              "../*"
-            ],
+            "group": ["../*"],
             "message": "\nPlease use absolute paths for imports.\nExample:\n\n  import { Button } from 'components/button' // Good\n  import { Button } from '../components/button' // Bad"
           }
         ]
       }
     ],
     // Using next/link component that passes href attribute down to wrapped <a /> tag so we dont need this warning
-    "jsx-a11y/anchor-is-valid": [ "error", {
-      "components": [ "Link" ],
-      "specialLink": [ "hrefLeft", "hrefRight" ],
-      "aspects": [ "invalidHref", "preferButton" ]
-    }],
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": ["Link"],
+        "specialLink": ["hrefLeft", "hrefRight"],
+        "aspects": ["invalidHref", "preferButton"]
+      }
+    ],
     // Named exports are preferable
     // https://blog.piotrnalepa.pl/2020/06/26/default-exports-vs-named-exports/
     "import/prefer-default-export": "off",
-    "react/prefer-stateless-function": [
-      "warn"
-    ],
+    "react/prefer-stateless-function": ["warn"],
     // Disable checking for missing 'import React'
     // https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#whats-different-in-the-new-transform
     "react/react-in-jsx-scope": "off",
+    "react/require-default-props": "off",
     "react/jsx-props-no-spreading": "off",
     "import/no-extraneous-dependencies": [
       "error",
@@ -94,63 +82,27 @@
       {
         "blankLine": "always",
         "prev": "*",
-        "next": [
-          "const",
-          "let",
-          "var",
-          "export"
-        ]
+        "next": ["const", "let", "var", "export"]
       },
       {
         "blankLine": "always",
-        "prev": [
-          "const",
-          "let",
-          "var",
-          "export"
-        ],
+        "prev": ["const", "let", "var", "export"],
         "next": "*"
       },
       {
         "blankLine": "any",
-        "prev": [
-          "const",
-          "let",
-          "var",
-          "export"
-        ],
-        "next": [
-          "const",
-          "let",
-          "var",
-          "export"
-        ]
+        "prev": ["const", "let", "var", "export"],
+        "next": ["const", "let", "var", "export"]
       },
       // Always require blank lines before and after class declaration, if, do/while, switch, try
       {
         "blankLine": "always",
         "prev": "*",
-        "next": [
-          "if",
-          "class",
-          "for",
-          "do",
-          "while",
-          "switch",
-          "try"
-        ]
+        "next": ["if", "class", "for", "do", "while", "switch", "try"]
       },
       {
         "blankLine": "always",
-        "prev": [
-          "if",
-          "class",
-          "for",
-          "do",
-          "while",
-          "switch",
-          "try"
-        ],
+        "prev": ["if", "class", "for", "do", "while", "switch", "try"],
         "next": "*"
       },
       // Always require blank lines before return statements

@@ -1,22 +1,24 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 import { useRouter } from 'next/router';
 
-import { Bounty } from 'components/cards/bounty-card/types';
-import { DAO } from 'types/dao';
 import { useAuthContext } from 'context/AuthContext';
 import { Tokens } from 'context/CustomTokensContext';
+
 import { BountyCard } from 'astro_2.0/components/BountyCard';
-import { CreateProposal } from 'astro_2.0/features/CreateProposal';
-import { ProposalVariant } from 'types/proposal';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
+import { Radio } from 'astro_2.0/components/inputs/Radio';
 import NavLink from 'astro_2.0/components/NavLink';
-
 import { Button } from 'components/button/Button';
-import StatusFilters from 'astro_2.0/components/Feed/StatusFilters';
+import { FeedFilter } from 'astro_2.0/features/Feed';
 
+import { Bounty } from 'components/cards/bounty-card/types';
+import { ProposalVariant } from 'types/proposal';
 import { BountyStatuses } from 'types/bounties';
-import { ProposalsQueries } from 'services/sputnik/types/proposals';
+import { DAO } from 'types/dao';
+
+import useQuery from 'hooks/useQuery';
+import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import styles from './bounties.module.scss';
 
 export interface BountiesPageProps {
@@ -27,117 +29,67 @@ export interface BountiesPageProps {
 
 const BountiesPage: FC<BountiesPageProps> = ({ dao, bounties, tokens }) => {
   const router = useRouter();
-  const status = router.query.status as string;
-  const { accountId, login } = useAuthContext();
+  const { query, updateQuery } = useQuery<{
+    bountyStatus: BountyStatuses;
+  }>();
+  const { accountId } = useAuthContext();
   const daoId = router.query.dao as string;
 
-  const [bountyData, setBountyData] = useState<{
-    bountyId: string;
-    variant: ProposalVariant;
-  } | null>(null);
+  const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
   const handleCreateProposal = useCallback(
-    (bountyId: string, variant: ProposalVariant) => {
-      setBountyData({ bountyId, variant });
+    (bountyId: string, proposalVariant: ProposalVariant) => {
+      toggleCreateProposal({ bountyId, proposalVariant });
     },
-    []
+    [toggleCreateProposal]
   );
-
-  const renderCreateProposal = () =>
-    bountyData !== null ? (
-      <div className={styles.newProposal}>
-        <CreateProposal
-          dao={dao}
-          showFlag={false}
-          bountyId={bountyData.bountyId}
-          proposalVariant={bountyData.variant}
-          onCreate={isSuccess => {
-            if (isSuccess) {
-              setBountyData(null);
-            }
-          }}
-          onClose={() => {
-            setBountyData(null);
-          }}
-        />
-      </div>
-    ) : null;
 
   const handleClick = useCallback(
-    () =>
-      accountId
-        ? handleCreateProposal('', ProposalVariant.ProposeCreateBounty)
-        : login(),
-    [accountId, handleCreateProposal, login]
+    () => handleCreateProposal('', ProposalVariant.ProposeCreateBounty),
+    [handleCreateProposal]
   );
-
-  const onProposalFilterChange = (value?: string) => async () => {
-    const nextQuery = {
-      ...router.query,
-      status: value,
-    } as ProposalsQueries;
-
-    if (!value) {
-      delete nextQuery.status;
-    }
-
-    await router.replace(
-      {
-        query: nextQuery,
-      },
-      undefined,
-      { shallow: true, scroll: false }
-    );
-  };
 
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
         <NavLink href="/all/daos">All DAOs</NavLink>
         <NavLink href={`/dao/${daoId}`}>{dao?.displayName || dao?.id}</NavLink>
-        <span>Bounties</span>
+        <NavLink>Bounties</NavLink>
       </BreadCrumbs>
+
       <div className={styles.dao}>
         <DaoDetailsMinimized
           dao={dao}
           accountId={accountId}
-          onCreateProposalClick={() => {
-            handleCreateProposal('', ProposalVariant.ProposeCreateBounty);
-          }}
+          onCreateProposalClick={handleClick}
         />
       </div>
+
+      <CreateProposal
+        dao={dao}
+        showFlag={false}
+        proposalVariant={ProposalVariant.ProposeCreateBounty}
+        onCreate={isSuccess => isSuccess && toggleCreateProposal()}
+        onClose={toggleCreateProposal}
+      />
+
       <div className={styles.createBounty}>
         <h1>Bounties</h1>
         <Button variant="black" size="small" onClick={handleClick}>
           Create new Bounty
         </Button>
       </div>
-      {renderCreateProposal()}
       <div className={styles.filters}>
-        <StatusFilters
-          proposal={status}
-          filterName="bounty"
-          onChange={onProposalFilterChange}
-          list={[
-            { value: undefined, label: 'All', name: 'All' },
-            {
-              value: BountyStatuses.Available,
-              label: 'Available',
-              name: BountyStatuses.Available,
-            },
-            {
-              value: BountyStatuses.Inprogress,
-              label: 'In progress',
-              name: BountyStatuses.Inprogress,
-            },
-            {
-              value: BountyStatuses.Completed,
-              label: 'Completed',
-              name: BountyStatuses.Completed,
-            },
-          ]}
-          className={styles.statusFilterRoot}
-        />
+        <FeedFilter
+          title="Test"
+          value={query.bountyStatus}
+          onChange={val => updateQuery('bountyStatus', val)}
+        >
+          <Radio value="" label="All" />
+          <Radio value={BountyStatuses.Available} label="Available" />
+          <Radio value={BountyStatuses.Inprogress} label="In progress" />
+          <Radio value={BountyStatuses.Completed} label="Completed" />
+        </FeedFilter>
       </div>
       <div className={styles.grid}>
         {bounties.map(bounty => {

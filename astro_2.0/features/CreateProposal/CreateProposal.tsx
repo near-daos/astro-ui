@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
@@ -28,8 +28,9 @@ import { useAuthContext } from 'context/AuthContext';
 import { CreateProposalCard } from './components/CreateProposalCard';
 
 export interface CreateProposalProps {
+  className?: string;
   dao: DAO;
-  proposalVariant: ProposalVariant;
+  proposalVariant?: ProposalVariant;
   showFlag?: boolean;
   bountyId?: string;
   onCreate?: (result: boolean) => void;
@@ -37,8 +38,9 @@ export interface CreateProposalProps {
 }
 
 export const CreateProposal: FC<CreateProposalProps> = ({
+  className,
   dao,
-  proposalVariant,
+  proposalVariant = ProposalVariant.ProposeTransfer,
   showFlag = true,
   bountyId,
   onCreate,
@@ -63,6 +65,11 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   useMount(() => {
     SputnikHttpService.getAccountTokens(dao.id).then(res => setTokens(res));
   });
+
+  useEffect(() => {
+    setSelectedProposalVariant(proposalVariant);
+    setSchemaContext({ selectedProposalVariant: proposalVariant });
+  }, [proposalVariant]);
 
   const methods = useForm({
     defaultValues: getFormInitialValues(
@@ -189,7 +196,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
 
   return (
     <FormProvider {...methods}>
-      <div ref={formRef}>
+      <div className={className} ref={formRef}>
         <ProposalCardRenderer
           daoFlagNode={
             showFlag && (

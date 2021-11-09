@@ -2,24 +2,31 @@ import React from 'react';
 import Link from 'next/link';
 import classNames from 'classnames';
 
-import { FeedCategories } from 'types/proposal';
+import { ProposalCategories } from 'types/proposal';
 
 import styles from './CategoriesList.module.scss';
 
 const FEED_CATEGORIES = [
-  { value: FeedCategories.Governance, label: 'Governance' },
-  { value: FeedCategories.Financial, label: 'Financial' },
-  { value: FeedCategories.Bounties, label: 'Bounties' },
-  { value: FeedCategories.Members, label: 'Members' },
-  { value: FeedCategories.Polls, label: 'Polls' },
+  { value: ProposalCategories.Governance, label: 'Governance' },
+  { value: ProposalCategories.Financial, label: 'Financial' },
+  { value: ProposalCategories.Bounties, label: 'Bounties' },
+  { value: ProposalCategories.Members, label: 'Members' },
+  { value: ProposalCategories.Polls, label: 'Polls' },
 ];
 
-const CategoriesList = ({
+type CategoriesListProps = {
+  disabled?: boolean;
+  queryName: 'category';
+  query: Record<string, string | string[]>;
+  className?: string;
+};
+
+const CategoriesList: React.FC<CategoriesListProps> = ({
   query,
   queryName,
   disabled,
   className,
-}: Props): JSX.Element => {
+}) => {
   const { [queryName]: value, ...otherQuery } = query;
 
   return (
@@ -27,11 +34,13 @@ const CategoriesList = ({
       <p className={styles.categoriesListTitle}>Choose a filter</p>
       <ul
         className={classNames(styles.categoriesList, {
-          [styles.categoriesListActive1]: value === FeedCategories.Governance,
-          [styles.categoriesListActive2]: value === FeedCategories.Financial,
-          [styles.categoriesListActive3]: value === FeedCategories.Bounties,
-          [styles.categoriesListActive4]: value === FeedCategories.Members,
-          [styles.categoriesListActive5]: value === FeedCategories.Polls,
+          [styles.categoriesListActive1]:
+            value === ProposalCategories.Governance,
+          [styles.categoriesListActive2]:
+            value === ProposalCategories.Financial,
+          [styles.categoriesListActive3]: value === ProposalCategories.Bounties,
+          [styles.categoriesListActive4]: value === ProposalCategories.Members,
+          [styles.categoriesListActive5]: value === ProposalCategories.Polls,
         })}
       >
         <li>
@@ -81,14 +90,5 @@ const CategoriesList = ({
     </div>
   );
 };
-
-type Props = {
-  disabled?: boolean;
-  queryName: 'category';
-  query: Record<string, string | string[]>;
-  className?: string;
-};
-
-CategoriesList.defaultProps = { disabled: undefined, className: undefined };
 
 export default CategoriesList;

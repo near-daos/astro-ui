@@ -3,21 +3,12 @@ import Tokens, {
 } from 'pages/dao/[dao]/treasury/tokens/TokensPage';
 import { SputnikHttpService } from 'services/sputnik';
 import { getChartData } from 'features/treasury/helpers';
+import { GetServerSideProps } from 'next';
 
-interface GetTokensQuery {
-  dao: string;
-  offset?: number;
-  limit?: number;
-}
-
-export const getServerSideProps = async ({
+export const getServerSideProps: GetServerSideProps<TokensPageProps> = async ({
   query,
-}: {
-  query: GetTokensQuery;
-}): Promise<{
-  props: TokensPageProps;
-}> => {
-  const daoId = query.dao;
+}) => {
+  const daoId = query.dao as string;
 
   const [daoTokens, dao, receipts] = await Promise.all([
     SputnikHttpService.getAccountTokens(daoId),
@@ -25,12 +16,18 @@ export const getServerSideProps = async ({
     SputnikHttpService.getAccountReceipts(daoId),
   ]);
 
+  if (!dao) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {
       data: {
         chartData: getChartData(receipts),
         daoTokens,
-        totalValue: dao?.funds ?? '0',
+        totalValue: dao.funds ?? '0',
         receipts,
         dao,
       },

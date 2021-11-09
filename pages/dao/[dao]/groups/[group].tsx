@@ -9,10 +9,7 @@ import MemberCard, {
 } from 'components/cards/member-card';
 import { Dropdown } from 'components/dropdown/Dropdown';
 import { useModal } from 'components/modal';
-import { GroupPopup } from 'features/groups';
-import { GroupFormType } from 'features/groups/types';
 
-import get from 'lodash/get';
 import { useRouter } from 'next/router';
 
 import { DAO, Member } from 'types/dao';
@@ -26,6 +23,10 @@ import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { ProposalVariant } from 'types/proposal';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 
+import useToggleable from 'hooks/useToggleable';
+import { useAuthCheck } from 'astro_2.0/features/Auth';
+import { GroupsList } from 'astro_2.0/features/Groups/components';
+import useSortMembers from 'astro_2.0/features/Groups/hooks/useSortMembers';
 import styles from './groups.module.scss';
 
 const sortOptions = [
@@ -49,61 +50,37 @@ const GroupPage: FC<GroupPageProps> = ({ dao, members, availableGroups }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
   const paramGroup = router.query.group as string;
-  const { accountId, login } = useAuthContext();
-
   const group = groupMap[paramGroup] || paramGroup;
-  const [showCardModal] = useModal(MemberCardPopup);
-  const [showGroupModal] = useModal(GroupPopup);
 
+  const { accountId } = useAuthContext();
   const [activeSort, setActiveSort] = useState<string>(sortOptions[0].value);
-  const [showCreateProposal, setShowCreateProposal] = useState(false);
+  const sortedData = useSortMembers({ members, activeSort, group });
 
-  const showCreateGroupDialog = useCallback(async () => {
-    await showGroupModal({
-      initialValues: {
-        groupType: GroupFormType.CREATE_GROUP,
-        groups: [],
-      },
-    });
-  }, [showGroupModal]);
+  const [ToggleableCreateProposal, toggleCreateProposal] = useToggleable(
+    CreateProposal
+  );
+  const [showCardModal] = useModal(MemberCardPopup);
+
+  const showCreateProposal = useAuthCheck(
+    (proposalVariant: ProposalVariant) => {
+      toggleCreateProposal({ proposalVariant });
+    },
+    [toggleCreateProposal]
+  );
 
   const handleCreateGroup = useCallback(
-    () => (accountId ? showCreateGroupDialog() : login()),
-    [login, showCreateGroupDialog, accountId]
+    () => showCreateProposal(ProposalVariant.ProposeCreateGroup),
+    [showCreateProposal]
   );
-
-  const showAddMemberDialog = useCallback(async () => {
-    await showGroupModal({
-      initialValues: {
-        groupType: GroupFormType.ADD_TO_GROUP,
-        groups: availableGroups,
-        selectedGroup: group,
-      },
-    });
-  }, [availableGroups, group, showGroupModal]);
 
   const handleAddClick = useCallback(
-    () => (accountId ? showAddMemberDialog() : login()),
-    [login, showAddMemberDialog, accountId]
-  );
-
-  const showRemoveMemberDialog = useCallback(
-    async item => {
-      await showGroupModal({
-        initialValues: {
-          groups: item.groups,
-          name: item.name,
-          groupType: GroupFormType.REMOVE_FROM_GROUP,
-          selectedGroup: group,
-        },
-      });
-    },
-    [group, showGroupModal]
+    () => showCreateProposal(ProposalVariant.ProposeAddMember),
+    [showCreateProposal]
   );
 
   const handleRemoveClick = useCallback(
-    item => (accountId ? showRemoveMemberDialog(item) : login()),
-    [login, showRemoveMemberDialog, accountId]
+    () => showCreateProposal(ProposalVariant.ProposeRemoveMember),
+    [showCreateProposal]
   );
 
   const handleCardClick = useCallback(
@@ -112,40 +89,6 @@ const GroupPage: FC<GroupPageProps> = ({ dao, members, availableGroups }) => {
     },
     [showCardModal]
   );
-
-  const handleCreateProposal = useCallback(() => {
-    setShowCreateProposal(true);
-  }, []);
-
-  const sortedData = members
-    .filter(
-      item =>
-        !group ||
-        group === 'all-members' ||
-        group === 'all' ||
-        item.groups
-          .map(grp => grp.toLowerCase())
-          .includes((group as string).replace('-', ' ').toLowerCase())
-    )
-    .sort((a, b) => {
-      let sortField = '';
-
-      if (activeSort === 'Most active') {
-        sortField = 'votes';
-      } else if (activeSort === '# of tokens') {
-        sortField = 'tokens.value';
-      }
-
-      if (get(a, sortField) > get(b, sortField)) {
-        return -1;
-      }
-
-      if (get(a, sortField) < get(b, sortField)) {
-        return 1;
-      }
-
-      return 0;
-    });
 
   const page = Array.isArray(group) ? group[0] : group;
   const pageTitle = page?.replace('-', ' ');
@@ -156,33 +99,21 @@ const GroupPage: FC<GroupPageProps> = ({ dao, members, availableGroups }) => {
         <NavLink href="/all/daos">All DAOs</NavLink>
         <NavLink href={`/dao/${daoId}`}>{dao?.displayName || dao?.id}</NavLink>
         <NavLink href={`/dao/${daoId}/groups/all-members`}>Groups</NavLink>
-        <span>{pageTitle === 'all' ? 'All Members' : pageTitle}</span>
+        <NavLink>{pageTitle === 'all' ? 'All Members' : pageTitle}</NavLink>
       </BreadCrumbs>
-
       <div className={styles.dao}>
         <DaoDetailsMinimized
           dao={dao}
           accountId={accountId}
-          onCreateProposalClick={handleCreateProposal}
+          onCreateProposalClick={handleCreateGroup}
         />
-        {showCreateProposal && (
-          <div className={styles.newProposalWrapper}>
-            <CreateProposal
-              dao={dao}
-              proposalVariant={ProposalVariant.ProposeTransfer}
-              onCreate={isSuccess => {
-                if (isSuccess) {
-                  setShowCreateProposal(false);
-                }
-              }}
-              onClose={() => {
-                setShowCreateProposal(false);
-              }}
-            />
-          </div>
-        )}
+        <ToggleableCreateProposal
+          dao={dao}
+          showFlag={false}
+          onCreate={isSuccess => isSuccess && toggleCreateProposal()}
+          onClose={toggleCreateProposal}
+        />
       </div>
-
       <div className={styles.header}>
         <h1>{pageTitle === 'all' ? 'All Members' : <>{pageTitle}</>}</h1>
         <Button variant="black" size="small" onClick={handleCreateGroup}>
@@ -192,20 +123,11 @@ const GroupPage: FC<GroupPageProps> = ({ dao, members, availableGroups }) => {
           Add member to this group
         </Button>
       </div>
-      <div className={styles.groups}>
-        <h5 className={styles.groupsTitle}>Groups</h5>
-        <ul className={styles.groupsList}>
-          {availableGroups.map(item => (
-            <li className={styles.groupsItem}>
-              <NavLink href={`/dao/${daoId}/groups/${item}`}>
-                <Badge key={item} size="small" variant="turqoise">
-                  {item}
-                </Badge>
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <GroupsList
+        className={styles.groups}
+        groups={availableGroups}
+        daoId={daoId}
+      />
       <div className={styles.filter}>
         <Dropdown
           options={sortOptions}
@@ -217,9 +139,7 @@ const GroupPage: FC<GroupPageProps> = ({ dao, members, availableGroups }) => {
       <div className={styles.content}>
         {sortedData.map(item => (
           <MemberCard
-            onRemoveClick={async () => {
-              await handleRemoveClick(item);
-            }}
+            onRemoveClick={handleRemoveClick}
             onClick={handleCardClick}
             key={item.name}
             title={item.name}

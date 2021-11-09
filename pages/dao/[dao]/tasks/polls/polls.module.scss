@@ -2,96 +2,41 @@
 
 .root {
   display: grid;
-  grid-row-gap: 14px;
   grid-template-areas:
-    'breadcrumb'
+    'breadcrumbs'
     'dao'
     'header'
-    'filter'
-    'polls';
+    'feed';
   grid-template-columns: 1fr;
   padding-top: 56px;
+}
 
-  .breadcrumbs {
-    grid-area: breadcrumb;
-    margin-bottom: 42px;
-  }
+.warningWrapper {
+  margin-top: 32px;
+}
+
+.breadcrumbs {
+  grid-area: breadcrumbs;
+  margin-bottom: 30px;
 }
 
 .dao {
   grid-area: dao;
   margin: 16px 0 44px;
-
-  .newProposalWrapper {
-    margin-top: 24px;
-  }
 }
 
 .header {
+  align-items: center;
   display: flex;
-  flex-direction: column;
-  gap: 22px;
+  gap: 35px;
   grid-area: header;
-
-  @include tablet-portrait {
-    align-items: center;
-    flex-direction: row;
-    gap: 35px;
-  }
-
-  h1 {
-    margin: 0;
-  }
+  margin-bottom: 70px;
 }
 
-.polls {
-  grid-area: polls;
-  margin-top: 16px;
-
-  @include tablet-landscape {
-    margin-top: 0;
-  }
+.details {
+  margin-left: -100px;
 }
 
-.reset {
-  bottom: 10px;
-  position: fixed;
-  right: 10px;
-
-  @include tablet-portrait {
-    bottom: 40px;
-    right: 40px;
-  }
-}
-
-.proposalsView {
-  margin-top: 32px;
-}
-
-.proposalCardWrapper {
-  margin-bottom: 24px;
-}
-
-.activeProposalsTab {
-  color: var(--color-primary-50);
-}
-
-.approvedProposalsTab {
-  color: var(--color-brand-green);
-}
-
-.failedProposalsTab {
-  color: var(--color-brand-coral-red);
-}
-
-.statusFilterWrapper {
-  display: flex;
-  grid-area: filter;
-  justify-content: flex-end;
-  margin: 56px 0 40px;
-}
-
-.loading {
-  margin: 32px 0;
-  text-align: center;
+.feed {
+  grid-area: feed;
 }

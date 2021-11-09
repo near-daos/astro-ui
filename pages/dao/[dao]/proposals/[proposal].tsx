@@ -1,24 +1,25 @@
 import React, { useMemo, useState } from 'react';
-import Link from 'next/link';
 import { GetServerSideProps, NextPage } from 'next';
 
 import { DAO, Member } from 'types/dao';
 import { Proposal } from 'types/proposal';
 import { VoterDetail } from 'features/types';
 
-import StatusFilters from 'astro_2.0/components/Feed/StatusFilters';
-import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { DefaultVotingPolicy } from 'astro_2.0/components/DefaultVotingPolicy';
-import { VotersList } from 'features/proposal/components/voters-list';
-import { MobileProposalActions } from 'features/proposal/components/proposal-actions';
-import { getScope } from 'components/cards/expanded-proposal-card/helpers';
-import { Icon } from 'components/Icon';
+import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
+import StatusFilters from 'astro_2.0/components/Feed/StatusFilters';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
+import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
+import NavLink from 'astro_2.0/components/NavLink';
 
+import { getScope } from 'components/cards/expanded-proposal-card/helpers';
 import { getVoteDetails } from 'features/vote-policy/helpers';
 
-import { SputnikHttpService } from 'services/sputnik';
+import { MobileProposalActions } from 'features/proposal/components/proposal-actions';
+import { VotersList } from 'features/proposal/components/voters-list';
+
 import { extractMembersFromDao } from 'services/sputnik/mappers';
+import { SputnikHttpService } from 'services/sputnik';
 import { useAuthContext } from 'context/AuthContext';
 
 import styles from './proposal.module.scss';
@@ -113,25 +114,11 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
 
   return (
     <div className={styles.root}>
-      <div className={styles.breadcrumb}>
-        <Link passHref href="/all/daos">
-          <a href="*" className={styles.link}>
-            <span className={styles.daoName}>All DAOs</span>
-          </a>
-        </Link>
-        <span>
-          <Icon name="buttonArrowRight" width={16} />
-        </span>
-        <Link passHref href={`/dao/${dao.id}`}>
-          <a href="*" className={styles.link}>
-            <span className={styles.daoName}>{dao.displayName || dao.id}</span>
-          </a>
-        </Link>
-        <span>
-          <Icon name="buttonArrowRight" width={16} />
-        </span>
-        <span className={styles.activeLink}>Proposal</span>
-      </div>
+      <BreadCrumbs className={styles.breadcrumbs}>
+        <NavLink href="/all/daos">All DAOs</NavLink>
+        <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
+        <NavLink>Proposals</NavLink>
+      </BreadCrumbs>
       <div className={styles.mobileActions}>
         <MobileProposalActions />
       </div>

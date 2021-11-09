@@ -19,8 +19,14 @@
 
   @include large-desktop {
     margin: auto;
+    max-width: 1000px;
+    padding: 0 60px 60px;
+  }
+
+  @include large-x-desktop {
+    margin: auto;
     max-width: 1125px;
-    padding: 0 94px 60px 72px;
+    padding: 0 94px 60px;
   }
 }
 

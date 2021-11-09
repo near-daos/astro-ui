@@ -114,7 +114,11 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       </div>
 
       <div className={styles.actionBar}>
-        <IconButton icon="close" className={styles.action} onClick={onClose} />
+        <IconButton
+          icon="close"
+          className={styles.action}
+          onClick={() => onClose?.()}
+        />
       </div>
     </div>
   );

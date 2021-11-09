@@ -1,10 +1,10 @@
 import { GetServerSideProps } from 'next';
 import { SputnikHttpService } from 'services/sputnik';
-import { NFTsProps } from './NFTs';
+import { NFTsPageProps } from './NFTs';
 
 export { default } from 'pages/dao/[dao]/treasury/nfts/NFTs';
 
-export const getServerSideProps: GetServerSideProps<NFTsProps> = async ({
+export const getServerSideProps: GetServerSideProps<NFTsPageProps> = async ({
   query,
 }) => {
   const daoId = query.dao as string;

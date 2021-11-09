@@ -65,6 +65,12 @@
 
 // breakpoints cascading
 
+@mixin large-x-desktop {
+  @media (min-width: #{breakpoints.$screen-lgx}px) {
+    @content;
+  }
+}
+
 @mixin large-desktop {
   @media (min-width: #{breakpoints.$screen-lg}px) {
     @content;

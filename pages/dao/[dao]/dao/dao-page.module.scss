@@ -1,0 +1,34 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-template-areas:
+    'breadcrumbs'
+    'header'
+    'feed';
+  grid-template-columns: 1fr;
+  padding-top: 56px;
+}
+
+.warningWrapper {
+  margin-top: 32px;
+}
+
+.breadcrumbs {
+  grid-area: breadcrumbs;
+  margin-bottom: 30px;
+}
+
+.header {
+  grid-area: header;
+  margin-bottom: 70px;
+}
+
+.details {
+  margin-left: -100px;
+}
+
+.feed {
+  grid-area: feed;
+}

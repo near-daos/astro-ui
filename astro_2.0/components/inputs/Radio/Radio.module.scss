@@ -1,0 +1,72 @@
+.root {
+  --color-checkmark: var(--color-neutral-40);
+  --color-checkmark-active: var(--color-primary-50);
+  --color-disabled: var(--color-neutral-60);
+  --color-label: var(--color-main-gray);
+  align-items: center;
+  cursor: pointer;
+
+  display: flex;
+  position: relative;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.input {
+  cursor: pointer;
+  height: 0;
+  opacity: 0;
+  position: absolute;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  border: 1px solid var(--color-checkmark);
+  border-radius: 50%;
+  height: 16px;
+  position: relative;
+  width: 16px;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checked ~ .checkmark {
+  --color-checkmark: var(--color-checkmark-active);
+  border-width: 4px;
+}
+
+/* Show the checkmark when checked */
+.checked ~ .checkmark::after {
+  display: block;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark::after {
+  content: '';
+  display: none;
+  position: absolute;
+}
+
+/* Style the checkmark/indicator */
+.checkmark::after {
+  background-color: #fff;
+  border-radius: 50%;
+  height: 8px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+}
+
+.label {
+  color: var(--color-label);
+  display: inline-flex;
+  font-family: var(--font-family-secondary);
+  font-weight: 600;
+  margin-left: 4px;
+  margin-left: 8px;
+}
+
+.disabled .checkmark {
+  --color-checkmark: var(--color-disabled);
+}
