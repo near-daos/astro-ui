@@ -50,3 +50,9 @@
 .proposalCardWrapper {
   margin-bottom: 80px;
 }
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .feedHeader {
+    top: 62px;
+  }
+}

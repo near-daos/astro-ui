@@ -85,17 +85,18 @@ const DAOHome: NextPage<DaoHomeProps> = ({
         <CreateProposal
           className={styles.createProposal}
           dao={dao}
+          showFlag={false}
           proposalVariant={ProposalVariant.ProposeTransfer}
           onCreate={handleCreateProposal}
           onClose={toggleCreateProposal}
         />
-      </div>
 
-      {!!policyAffectsProposals?.length && (
-        <div className={styles.warningWrapper}>
-          <PolicyAffectedWarning data={policyAffectsProposals} />
-        </div>
-      )}
+        {!!policyAffectsProposals?.length && (
+          <div className={styles.warningWrapper}>
+            <PolicyAffectedWarning data={policyAffectsProposals} />
+          </div>
+        )}
+      </div>
 
       <ProposalsFeed
         className={styles.feed}

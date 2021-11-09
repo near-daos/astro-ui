@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -12,7 +13,7 @@
 }
 
 .warningWrapper {
-  margin-top: 32px;
+  margin-top: 64px;
 }
 
 .breadcrumbs {
@@ -29,6 +30,16 @@
   margin-left: -100px;
 }
 
+.createProposal {
+  margin-top: 64px;
+}
+
 .feed {
   grid-area: feed;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .details {
+    margin-left: unset;
+  }
 }
