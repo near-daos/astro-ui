@@ -12,7 +12,7 @@ const PageLayout: FC = ({ children }) => {
         <AppHeader />
         <div className={styles.main}>{children}</div>
       </div>
-      <NotificationContainer />;
+      <NotificationContainer />
     </div>
   );
 };
