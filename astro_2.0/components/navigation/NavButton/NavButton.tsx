@@ -1,6 +1,6 @@
 import cn from 'classnames';
-import { useRouter } from 'next/router';
-import React, { useCallback, useState, VFC } from 'react';
+import { Router, useRouter } from 'next/router';
+import React, { useCallback, useEffect, useState, VFC } from 'react';
 
 import { useAuthContext } from 'context/AuthContext';
 
@@ -10,6 +10,8 @@ import { useIsHrefActive } from 'hooks/useIsHrefActive';
 
 import { Icon } from 'components/Icon';
 import { Popup } from 'components/popup/Popup';
+
+import { NavLoader } from './components/NavLoader';
 
 import styles from './NavButton.module.scss';
 
@@ -36,11 +38,14 @@ export const NavButton: VFC<NavButtonProps> = props => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
+  const [showLoader, setShowLoader] = useState(false);
+
   const isActive = useIsHrefActive(href);
 
   const rootClassName = cn(styles.root, className, {
     [styles.active]: isActive,
     [styles.mobile]: mobile,
+    [styles.withLoader]: showLoader,
   });
 
   const onMouseOver = useCallback(() => {
@@ -51,6 +56,16 @@ export const NavButton: VFC<NavButtonProps> = props => {
     setIsHovered(false);
   }, []);
 
+  useEffect(() => {
+    function onRouteChange() {
+      setShowLoader(false);
+    }
+
+    Router.events.on('routeChangeComplete', onRouteChange);
+
+    return () => Router.events.off('routeChangeComplete', onRouteChange);
+  }, []);
+
   function navigate() {
     if (authRequired && !accountId) {
       login();
@@ -58,7 +73,21 @@ export const NavButton: VFC<NavButtonProps> = props => {
       return;
     }
 
+    setShowLoader(true);
+
     router.push(href);
+  }
+
+  function renderNavIcon() {
+    return showLoader ? (
+      <NavLoader />
+    ) : (
+      <Icon
+        height={16}
+        className={styles.icon}
+        name={isHovered || isActive ? hoverIcon : icon}
+      />
+    );
   }
 
   return (
@@ -74,13 +103,7 @@ export const NavButton: VFC<NavButtonProps> = props => {
       onMouseOver={onMouseOver}
     >
       <div className={styles.description} ref={setRef}>
-        <div className={styles.iconHolder}>
-          <Icon
-            height={16}
-            className={styles.icon}
-            name={isHovered || isActive ? hoverIcon : icon}
-          />
-        </div>
+        <div className={styles.iconHolder}>{renderNavIcon()}</div>
         <div className={styles.label}>{label}</div>
       </div>
       <div className={styles.underline} />

@@ -82,7 +82,8 @@
 
 @media screen and (min-width: $mobile-width + 1px) {
   .root {
-    margin: 0 24px;
+    left: 200px;
+    position: absolute;
   }
 }
 

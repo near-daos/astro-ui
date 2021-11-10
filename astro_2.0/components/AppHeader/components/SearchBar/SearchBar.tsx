@@ -5,6 +5,7 @@ import React, {
   useCallback,
   KeyboardEventHandler,
   useEffect,
+  MutableRefObject,
 } from 'react';
 import cn from 'classnames';
 import ReactDOM from 'react-dom';
@@ -26,16 +27,42 @@ import styles from './SearchBar.module.scss';
 export interface SearchBarProps {
   className?: string;
   placeholder?: string;
+  prentElRef: MutableRefObject<HTMLElement | null>;
   onSearchToggle: (state: boolean) => void;
 }
 
 export const SearchBar: FC<SearchBarProps> = ({
   className,
+  prentElRef,
   placeholder,
   onSearchToggle,
 }) => {
+  const [searchWidth, setSearchWidth] = useState<number | string>(40);
+
   const router = useRouter();
   const ref = useRef(null);
+
+  useEffect(() => {
+    function calculateWidth() {
+      const NEIGHBOURS_WIDTH_AND_PADDINGS = 500;
+      const parentEl = prentElRef.current;
+
+      if (parentEl && document?.body?.offsetWidth > 920) {
+        const width = parentEl.offsetWidth;
+        const possibleWidth = width - NEIGHBOURS_WIDTH_AND_PADDINGS;
+
+        setSearchWidth(possibleWidth);
+      } else {
+        setSearchWidth('');
+      }
+    }
+
+    calculateWidth();
+
+    window.addEventListener('resize', calculateWidth);
+
+    return () => window.removeEventListener('resize', calculateWidth);
+  }, [prentElRef]);
 
   function isDesktopResolution() {
     if (document) {
@@ -55,7 +82,7 @@ export const SearchBar: FC<SearchBarProps> = ({
     referenceElement,
     popperElement,
     {
-      placement: 'bottom-start',
+      placement: 'bottom',
       modifiers: [
         {
           name: 'offset',
@@ -200,6 +227,9 @@ export const SearchBar: FC<SearchBarProps> = ({
     <div
       className={cn(styles.root, className, { [styles.expanded]: expanded })}
       ref={ref}
+      style={{
+        width: searchWidth,
+      }}
     >
       <div className={styles.iconHolder}>
         <IconButton
