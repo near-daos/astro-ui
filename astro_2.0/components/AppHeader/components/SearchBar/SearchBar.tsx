@@ -82,7 +82,7 @@ export const SearchBar: FC<SearchBarProps> = ({
     referenceElement,
     popperElement,
     {
-      placement: 'bottom-start',
+      placement: 'bottom',
       modifiers: [
         {
           name: 'offset',
