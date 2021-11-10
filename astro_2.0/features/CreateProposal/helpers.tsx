@@ -703,6 +703,26 @@ export function mapProposalVariantToProposalType(
   }
 }
 
+function validateUserAccount(value: string | undefined): Promise<boolean> {
+  if (!value) {
+    return Promise.reject();
+  }
+
+  if (
+    navigator &&
+    navigator.userAgent.indexOf('Safari') !== -1 &&
+    navigator.userAgent.indexOf('Chrome') === -1
+  ) {
+    const result = /^(([a-z\d]+[-_])*[a-z\d]+\.)*([a-z\d]+[-_])*[a-z\d]+$/.test(
+      `${value}`
+    );
+
+    return Promise.resolve(result);
+  }
+
+  return SputnikNearService.nearAccountExist(value || '');
+}
+
 export function getValidationSchema(
   proposalVariant?: ProposalVariant
 ): AnySchema {
@@ -725,7 +745,7 @@ export function getValidationSchema(
           .test(
             'notValidNearAccount',
             'Only valid near accounts are allowed',
-            value => SputnikNearService.nearAccountExist(value || '')
+            validateUserAccount
           ),
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
@@ -782,7 +802,7 @@ export function getValidationSchema(
           .test(
             'notValidNearAccount',
             'Only valid near accounts are allowed',
-            value => SputnikNearService.nearAccountExist(value || '')
+            validateUserAccount
           )
           .required('Required'),
         details: yup.string().required('Required'),

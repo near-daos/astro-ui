@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 
 import { Icon, IconName } from 'components/Icon';
 import { Badge } from 'components/badge/Badge';
+import { ExplorerLink } from 'components/explorer-link';
 import { Vote } from 'features/types';
 import { getBadgeVariant } from 'features/proposal/helpers';
 
@@ -75,9 +76,7 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
       </div>
       <div className={styles.other}>&nbsp;</div>
       <div className={styles.link}>
-        <div className={styles.iconWrapper}>
-          <Icon name="buttonExternal" width={16} />
-        </div>
+        {vote && <ExplorerLink linkData="" linkType="transaction" isAbsolute />}
       </div>
     </div>
   );

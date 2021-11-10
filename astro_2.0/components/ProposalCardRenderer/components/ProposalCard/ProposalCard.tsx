@@ -196,8 +196,16 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       <div className={styles.voteControlCell}>
         <ProposalControlPanel
           status={status}
-          onLike={() => voteClickHandler('VoteApprove')}
-          onDislike={() => voteClickHandler('VoteReject')}
+          onLike={e => {
+            e.stopPropagation();
+
+            voteClickHandler('VoteApprove');
+          }}
+          onDislike={e => {
+            e.stopPropagation();
+
+            voteClickHandler('VoteReject');
+          }}
           disableControls={voteLoading}
           likes={likes}
           liked={liked}
@@ -211,7 +219,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       </div>
       <div className={styles.actionBar}>
         <ProposalActions
-          onRemove={() => {
+          onRemove={e => {
+            e.stopPropagation();
+
             if (permissions.canDelete) {
               voteClickHandler('VoteRemove');
             }

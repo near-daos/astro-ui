@@ -123,7 +123,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         <DaoDetailsMinimized dao={dao} accountId={accountId} />
       </div>
       <div className={styles.proposalInfo}>
-        <ViewProposal dao={dao} proposal={proposal} showFlag />
+        <ViewProposal dao={dao} proposal={proposal} showFlag={false} />
       </div>
       <div className={styles.policy}>
         <DefaultVotingPolicy

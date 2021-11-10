@@ -5,7 +5,7 @@ import { ActionButton } from 'features/proposal/components/action-button';
 import styles from './proposal-actions.module.scss';
 
 interface ProposalActionsProps {
-  onRemove: () => void;
+  onRemove: React.MouseEventHandler<HTMLButtonElement>;
   removeCount: number;
 }
 
@@ -23,7 +23,7 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
     <div className={styles.root}>
       <ActionButton
         tooltip={`Remove: ${removeCount}`}
-        onClick={() => onRemove()}
+        onClick={onRemove}
         iconName="buttonDelete"
         className={styles.icon}
         tooltipPlacement="right"

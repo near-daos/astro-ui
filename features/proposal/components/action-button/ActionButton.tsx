@@ -11,7 +11,7 @@ interface ActionButtonProps {
   iconName: IconName;
   tooltip?: string;
   tooltipPlacement?: 'right' | 'top' | 'bottom' | 'left' | 'auto';
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const ActionButton: FC<ActionButtonProps> = ({
