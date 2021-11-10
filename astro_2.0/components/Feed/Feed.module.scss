@@ -1,4 +1,5 @@
 @use 'styles/breakpoints';
+
 .root {
   width: 100%;
 }
@@ -8,43 +9,41 @@
   display: inline-flex;
   line-height: 1;
   margin: 0;
+  padding: 20px 0;
 }
 
 .statusFilterWrapper {
+  align-items: center;
   background-color: var(--color-neutral-10);
   display: flex;
-  justify-content: center;
-  margin-left: auto;
-  max-width: calc(100% - 152px);
-  padding: 67px 0 30px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 100%;
+  padding: 57px 0 20px;
   position: sticky;
   top: 20px;
   width: 100%;
   z-index: 2;
 
-  .categoriesListRoot {
-    margin-left: auto;
-  }
-
   .categoriesListApprovedInputWrapperChecked {
-    background-color: var(--color-success-50);
-    border-color: var(--color-success-50);
+    --color-checkmark-active: var(--color-success-50);
   }
 
   .categoriesListFailedInputWrapperChecked {
-    background-color: var(--color-error-60);
-    border-color: var(--color-error-60);
+    --color-checkmark-active: var(--color-error-60);
   }
 
-  &::after {
+  &::before {
     background-color: var(--color-neutral-10);
     content: '';
     height: 100%;
+    left: 50%;
+    pointer-events: none;
     position: absolute;
-    right: 0;
     top: 0;
-    transform: translateX(100%);
-    width: 70px;
+    transform: translate(-50%);
+    width: 100vw;
+    z-index: -1;
   }
 }
 
@@ -52,6 +51,7 @@
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
+  padding-top: 100px;
 }
 
 /* stylelint-disable-next-line */
@@ -59,24 +59,17 @@
   flex-grow: 1;
 }
 
-.categoriesListWrapper {
-  margin-left: auto;
-  margin-right: 38px;
-  margin-top: 100px;
-  min-width: 115px;
-  z-index: 1;
-}
-
 .categoriesListRoot {
+  margin-left: -170px;
   position: sticky;
   top: 160px;
+  width: 120px;
 }
 
 .listWrapper {
-  display: flex;
-  flex-direction: column;
   flex-grow: 1;
-  max-width: 960px;
+  margin-top: -100px;
+  max-width: 100%;
 }
 
 .loading {
@@ -89,10 +82,6 @@
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .statusFilterWrapper {
-    max-width: 100%;
-  }
-
   /* stylelint-disable-next-line */
   .container :global(.infinite-scroll-component__outerdiv) {
     flex-grow: 1;

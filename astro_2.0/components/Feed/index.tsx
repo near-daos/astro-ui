@@ -11,12 +11,11 @@ import { SputnikHttpService } from 'services/sputnik';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 import { useAuthContext } from 'context/AuthContext';
 import { useCustomTokensContext } from 'context/CustomTokensContext';
-import * as Typography from 'components/Typography';
 import { NoResultsView } from 'features/no-results-view';
 import FeedList from 'astro_2.0/features/Feed';
+import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
 
 import CategoriesList from './CategoriesList';
-import StatusFilters from './StatusFilters';
 
 import styles from './Feed.module.scss';
 
@@ -88,13 +87,13 @@ const FeedPage = ({ initialProposals }: Props): JSX.Element => {
     setProposalsData(await fetchProposalsData(proposalsData));
   };
 
-  const onProposalFilterChange = (value?: string) => async () => {
+  const onProposalFilterChange = async (value: string) => {
     const nextQuery = {
       ...queries,
       status: value as ProposalStatuses,
     } as ProposalsQueries;
 
-    if (!value) {
+    if (value === 'All') {
       delete nextQuery.status;
     }
 
@@ -110,53 +109,41 @@ const FeedPage = ({ initialProposals }: Props): JSX.Element => {
   return (
     <main className={styles.root}>
       <div className={styles.statusFilterWrapper}>
-        <Typography.Title className={styles.title} size={2}>
+        <h1 className={styles.title}>
           {isMyFeed ? 'My ' : 'Astro '}proposals feed
-        </Typography.Title>
+        </h1>
 
-        <StatusFilters
-          proposal={queries.status}
+        <ProposalStatusFilter
+          value={queries.status || 'All'}
           onChange={onProposalFilterChange}
           disabled={proposalsDataIsLoading}
           list={[
-            { value: undefined, label: 'All', name: 'All' },
+            { value: 'All', label: 'All' },
             {
               value: ProposalStatuses.Active,
               label: 'Active',
-              name: ProposalStatuses.Active,
             },
             {
               value: ProposalStatuses.Approved,
               label: 'Approved',
-              name: ProposalStatuses.Approved,
-              classes: {
-                inputWrapperChecked:
-                  styles.categoriesListApprovedInputWrapperChecked,
-              },
+              className: styles.categoriesListApprovedInputWrapperChecked,
             },
             {
               value: ProposalStatuses.Failed,
               label: 'Failed',
-              name: ProposalStatuses.Failed,
-              classes: {
-                inputWrapperChecked:
-                  styles.categoriesListFailedInputWrapperChecked,
-              },
+              className: styles.categoriesListFailedInputWrapperChecked,
             },
           ]}
-          className={styles.categoriesListRoot}
         />
       </div>
 
       <div className={styles.container}>
-        <div className={styles.categoriesListWrapper}>
-          <CategoriesList
-            query={queries}
-            queryName="category"
-            disabled={proposalsDataIsLoading}
-            className={styles.categoriesListRoot}
-          />
-        </div>
+        <CategoriesList
+          query={queries}
+          queryName="category"
+          disabled={proposalsDataIsLoading}
+          className={styles.categoriesListRoot}
+        />
 
         {proposalsData && (
           <FeedList
@@ -173,6 +160,7 @@ const FeedPage = ({ initialProposals }: Props): JSX.Element => {
                 <ViewProposal dao={proposal.dao} proposal={proposal} showFlag />
               </div>
             )}
+            className={styles.listWrapper}
           />
         )}
       </div>

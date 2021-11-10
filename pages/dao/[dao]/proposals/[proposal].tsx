@@ -7,7 +7,7 @@ import { VoterDetail } from 'features/types';
 
 import { DefaultVotingPolicy } from 'astro_2.0/components/DefaultVotingPolicy';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
-import StatusFilters from 'astro_2.0/components/Feed/StatusFilters';
+import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import NavLink from 'astro_2.0/components/NavLink';
@@ -35,6 +35,7 @@ enum VoteStatuses {
   Approved = 'approved',
   Failed = 'failed',
   NotVoted = 'notVoted',
+  All = 'all',
 }
 
 const ProposalPage: NextPage<ProposalPageProps> = ({
@@ -108,10 +109,6 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
     };
   }, [dao, scope, proposal, members]);
 
-  const handleFilterChange = (value?: string) => async () => {
-    setActiveFilter(value);
-  };
-
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
@@ -135,26 +132,25 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         />
       </div>
       <div className={styles.filters}>
-        <StatusFilters
-          proposal={activeFilter}
-          filterName="vote"
-          onChange={handleFilterChange}
+        <ProposalStatusFilter
+          value={activeFilter || VoteStatuses.All}
+          title="Filter by vote status:"
+          onChange={value => {
+            setActiveFilter(value === VoteStatuses.All ? undefined : value);
+          }}
           list={[
-            { value: undefined, label: 'All', name: 'All' },
+            { value: VoteStatuses.All, label: 'All' },
             {
               value: VoteStatuses.Approved,
               label: 'Approved',
-              name: VoteStatuses.Approved,
             },
             {
               value: VoteStatuses.Failed,
               label: 'Failed',
-              name: VoteStatuses.Failed,
             },
             {
               value: VoteStatuses.NotVoted,
               label: 'Not Voted',
-              name: VoteStatuses.NotVoted,
             },
           ]}
           className={styles.statusFilterRoot}

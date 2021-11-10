@@ -23,6 +23,7 @@
 .feedHeader {
   align-items: center;
   display: flex;
+  justify-content: space-between;
   margin-bottom: 60px;
 
   position: sticky;
@@ -43,16 +44,13 @@
   }
 }
 
-.statusFilter {
-  margin-left: auto;
-}
-
 .proposalCardWrapper {
   margin-bottom: 80px;
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .feedHeader {
+    flex-wrap: wrap;
     top: 62px;
   }
 }

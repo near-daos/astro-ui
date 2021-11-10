@@ -4,9 +4,9 @@ const noop = (): void => undefined;
 
 export type RadioContextType = {
   itemClassName?: string;
-  activeItemCalssName?: string;
+  activeItemClassName?: string;
   state: string;
-  onChange: (value: string) => void;
+  onChange: (value: string, e?: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const RadioContext = createContext<RadioContextType>({
@@ -17,16 +17,16 @@ export const RadioContext = createContext<RadioContextType>({
 type RadioGroupProps = {
   className?: string;
   itemClassName?: string;
-  activeItemCalssName?: string;
+  activeItemClassName?: string;
   children: JSX.Element[] | JSX.Element;
   value: string;
-  onChange: (value: string) => void;
+  onChange: RadioContextType['onChange'];
 };
 
 const RadioGroup: React.FC<RadioGroupProps> = ({
   className,
   itemClassName,
-  activeItemCalssName,
+  activeItemClassName,
   children,
   value,
   onChange,
@@ -37,7 +37,7 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
         state: value,
         onChange,
         itemClassName,
-        activeItemCalssName,
+        activeItemClassName,
       }}
     >
       <div className={className} role="radiogroup">

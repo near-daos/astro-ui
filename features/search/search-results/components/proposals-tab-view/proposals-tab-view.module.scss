@@ -8,40 +8,40 @@
   padding-top: 44px;
 
   .statusFilterRoot {
-    border: 0;
     margin-left: auto;
-    max-width: 800px;
-    padding-right: 0;
+    max-width: 815px;
   }
 
-  .categoriesListApprovedInputWrapperChecked {
-    background-color: var(--color-success-50);
-    border-color: var(--color-success-50);
+  .statusFilterRadioRootSuccess {
+    --color-checkmark-active: var(--color-success-50);
   }
 
-  .categoriesListFailedInputWrapperChecked {
-    background-color: var(--color-error-60);
-    border-color: var(--color-error-60);
+  .statusFilterRadioRootError {
+    --color-checkmark-active: var(--color-error-60);
   }
 }
 
 .statusFilterWrapper {
   background: var(--color-neutral-10);
+  display: flex;
+  justify-content: flex-end;
   padding-bottom: 24px;
   padding-top: 24px;
   position: sticky;
   top: 70px;
-  z-index: 1;
+  z-index: 2;
 
-  &::after {
+  &::before {
     background-color: var(--color-neutral-10);
     content: '';
     height: 100%;
+    left: 50%;
+    pointer-events: none;
     position: absolute;
-    right: 0;
     top: 0;
-    transform: translateX(100%);
-    width: 70px;
+    transform: translate(-50%);
+    width: 100vw;
+    z-index: -1;
   }
 }
 
@@ -128,7 +128,29 @@
   text-transform: capitalize;
 }
 
+@media screen and (max-width: #{breakpoints.$screen-md}px) {
+  .statusFilterWrapper {
+    top: 62px;
+  }
+
+  .statusFilterRoot {
+    flex-direction: column;
+    height: initial;
+    min-height: 68px;
+    padding: 0 15px;
+  }
+
+  .statusFilterHeader {
+    margin-bottom: 7px;
+    margin-right: 77%;
+  }
+}
+
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .statusFilterRoot {
+    padding: 0 2px;
+  }
+
   .daoDivider {
     gap: 12px;
     margin: 12px 0;
@@ -144,6 +166,21 @@
     &:first-child {
       margin-top: 20px;
     }
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-xs}px) {
+  .root {
+    padding-top: 20px;
+  }
+
+  .statusFilterRoot {
+    height: 40px;
+    min-height: 40px;
+  }
+
+  .statusFilterHeader {
+    margin: 0;
   }
 }
 
@@ -186,11 +223,10 @@
 }
 
 .categoriesListRoot {
-  margin-right: 40px;
-  margin-top: 100px;
-  min-width: 115px;
+  margin-left: -170px;
   position: sticky;
   top: 160px;
+  width: 120px;
 }
 
 .highlighterRoot {

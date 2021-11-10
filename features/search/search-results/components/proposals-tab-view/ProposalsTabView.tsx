@@ -7,7 +7,7 @@ import { useFilteredProposalsData } from 'features/search/search-results/compone
 import { statusFilterOptions } from 'features/search/search-filters/helpers';
 import { NoResultsView } from 'features/no-results-view';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
-import ProposalStatusFilters from 'astro_2.0/components/Feed/StatusFilters';
+import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
 import ProposalCategoriesList from 'astro_2.0/components/Feed/CategoriesList';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 
@@ -81,61 +81,44 @@ export const ProposalsTabView: React.FC = () => {
   return (
     <div className={styles.root}>
       <div className={styles.statusFilterWrapper}>
-        <ProposalStatusFilters
-          proposal={filter.show}
-          onChange={value => () => {
+        <ProposalStatusFilter
+          value={filter.show}
+          onChange={value => {
             window.scroll(0, 0);
             onFilterChange('show', value || statusFilterOptions[0].value);
           }}
           list={[
             {
               value: statusFilterOptions[0].value,
-              name: statusFilterOptions[0].value,
               label: 'All',
             },
             {
               value: statusFilterOptions[1].value,
-              name: statusFilterOptions[1].value,
               label: 'Active',
             },
             {
               value: statusFilterOptions[2].value,
-              name: statusFilterOptions[2].value,
               label: 'Approved',
-              classes: {
-                inputWrapperChecked:
-                  styles.categoriesListApprovedInputWrapperChecked,
-              },
+              className: styles.statusFilterRadioRootSuccess,
             },
             {
               value: statusFilterOptions[3].value,
-              name: statusFilterOptions[3].value,
               label: 'Inactive',
-              classes: {
-                inputWrapperChecked:
-                  styles.categoriesListFailedInputWrapperChecked,
-              },
+              className: styles.statusFilterRadioRootError,
             },
             {
               value: statusFilterOptions[4].value,
-              name: statusFilterOptions[4].value,
               label: 'Rejected',
-              classes: {
-                inputWrapperChecked:
-                  styles.categoriesListFailedInputWrapperChecked,
-              },
+              className: styles.statusFilterRadioRootError,
             },
             {
               value: statusFilterOptions[5].value,
-              name: statusFilterOptions[5].value,
               label: 'Dismissed',
-              classes: {
-                inputWrapperChecked:
-                  styles.categoriesListFailedInputWrapperChecked,
-              },
+              className: styles.statusFilterRadioRootError,
             },
           ]}
           className={styles.statusFilterRoot}
+          feedFilterHeaderClassName={styles.statusFilterHeader}
         />
       </div>
 

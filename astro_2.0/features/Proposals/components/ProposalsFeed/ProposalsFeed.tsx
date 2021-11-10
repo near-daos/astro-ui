@@ -58,6 +58,10 @@ export const ProposalsFeed: React.FC<ProposalsFeedProps> = ({
     [dao.id, category, filter.proposalCategory, filter.proposalStatus, status]
   );
 
+  const { query, updateQuery } = useQuery<{
+    proposalStatus: ProposalStatuses;
+  }>();
+
   const handleLoadMore = useCallback(async () => {
     const response = await fetchData(proposalsData.data.length);
 
@@ -75,7 +79,31 @@ export const ProposalsFeed: React.FC<ProposalsFeedProps> = ({
     <div className={cn(styles.root, className)}>
       <div className={styles.feedHeader}>
         {title && <h1 className={styles.title}>{title}</h1>}
-        <ProposalStatusFilter className={styles.statusFilter} />
+
+        <ProposalStatusFilter
+          value={query.proposalStatus}
+          onChange={value => {
+            updateQuery('proposalStatus', value as ProposalStatuses);
+          }}
+          list={[
+            {
+              value: '',
+              label: 'All',
+            },
+            {
+              value: ProposalStatuses.Active,
+              label: 'Active',
+            },
+            {
+              value: ProposalStatuses.Approved,
+              label: 'Approved',
+            },
+            {
+              value: ProposalStatuses.Failed,
+              label: 'Failed',
+            },
+          ]}
+        />
       </div>
 
       <div className={styles.content}>

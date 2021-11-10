@@ -1,45 +1,59 @@
 import React from 'react';
-import cn from 'classnames';
-
-import { Radio } from 'astro_2.0/components/inputs/Radio';
+import classNames from 'classnames';
 
 import { ProposalStatuses } from 'types/proposal';
-
+import { Radio } from 'astro_2.0/components/inputs/Radio';
 import { FeedFilter } from 'astro_2.0/features/Feed';
-import useQuery from 'hooks/useQuery';
+
 import styles from './ProposalStatusFilter.module.scss';
 
 type ProposalStatusFilterProps = {
   className?: string;
+  feedFilterHeaderClassName?: string;
+  disabled?: boolean;
+  title?: string;
+  shortTitle?: string;
+  onChange: (value: string, e?: React.ChangeEvent<HTMLInputElement>) => void;
+  list: {
+    label: React.ReactNode;
+    value: string;
+    className?: string;
+  }[];
+  value: string;
 };
 
 export const ProposalStatusFilter: React.FC<ProposalStatusFilterProps> = ({
   className,
+  feedFilterHeaderClassName,
+  onChange,
+  value,
+  list,
+  disabled,
+  title,
+  shortTitle,
 }) => {
-  const { query, updateQuery } = useQuery<{
-    proposalStatus: ProposalStatuses;
-  }>();
-
   return (
     <FeedFilter
-      className={cn(styles.root, className)}
-      title="Filter by proposal status:"
-      shortTitle="Filter by status:"
-      value={query.proposalStatus}
-      onChange={val => updateQuery('proposalStatus', val)}
+      className={classNames(styles.root, className)}
+      headerClassName={feedFilterHeaderClassName}
+      title={title || 'Filter by proposal status:'}
+      shortTitle={shortTitle || 'Filter by status:'}
+      value={value}
+      onChange={onChange}
     >
-      <Radio className={styles.all} value="" label="All" />
-      <Radio value={ProposalStatuses.Active} label="Active" />
-      <Radio
-        className={styles.approved}
-        value={ProposalStatuses.Approved}
-        label="Approved"
-      />
-      <Radio
-        className={styles.failed}
-        value={ProposalStatuses.Failed}
-        label="Failed"
-      />
+      {list.map(item => (
+        <Radio
+          key={item.value}
+          value={item.value}
+          label={item.label}
+          disabled={disabled}
+          className={classNames(item.className, {
+            [styles.all]: item.value === '',
+            [styles.approved]: item.value === ProposalStatuses.Approved,
+            [styles.failed]: item.value === ProposalStatuses.Failed,
+          })}
+        />
+      ))}
     </FeedFilter>
   );
 };

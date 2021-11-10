@@ -11,17 +11,19 @@ import styles from './FeedFilter.module.scss';
 
 type FeedFilterProps<T> = {
   className?: string;
+  headerClassName?: string;
   title: string;
   shortTitle?: string;
   children: React.ReactElement<RadioProps, typeof Radio>[];
   value: T;
-  onChange: (value: T) => void;
+  onChange: (value: T, e?: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const FeedFilter = <T,>({
   title,
   shortTitle,
   className,
+  headerClassName,
   children,
   value,
   onChange,
@@ -29,8 +31,8 @@ export const FeedFilter = <T,>({
   const [isShow, setIsShow] = useState(false);
 
   const handleChange = useCallback(
-    (newValue: string) => {
-      onChange((newValue as unknown) as T);
+    (newValue: string, e?: React.ChangeEvent<HTMLInputElement>) => {
+      onChange((newValue as unknown) as T, e);
 
       if (isShow) {
         setIsShow(false);
@@ -44,7 +46,7 @@ export const FeedFilter = <T,>({
       <div
         role="button"
         tabIndex={0}
-        className={styles.header}
+        className={cn(styles.header, headerClassName)}
         onClick={() => setIsShow(!isShow)}
         onKeyDown={() => setIsShow(!isShow)}
       >
@@ -54,7 +56,7 @@ export const FeedFilter = <T,>({
       <RadioGroup
         className={cn(styles.radioGroup, { [styles.show]: isShow })}
         itemClassName={styles.radio}
-        activeItemCalssName={styles.activeRadio}
+        activeItemClassName={styles.activeRadio}
         value={((value as unknown) as string) || ''}
         onChange={handleChange}
       >
