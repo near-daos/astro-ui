@@ -9,7 +9,7 @@ export type DaoDetails = {
 };
 
 export type FunctionCallAction = {
-  methodName: string;
+  method_name: string;
   args: string;
   deposit: string;
   gas: string;

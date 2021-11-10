@@ -5,7 +5,7 @@ import { GAS_VALUE } from 'services/sputnik/SputnikNearService/services/SputnikD
 import BN from 'bn.js';
 
 export type CustomFunctionCallInput = {
-  smartContactAddress: string;
+  smartContractAddress: string;
   methodName: string;
   json: string;
   deposit: string;
@@ -19,7 +19,7 @@ export function getCustomFunctionCallProposal(
   data: CustomFunctionCallInput
 ): CreateProposalParams {
   const {
-    smartContactAddress,
+    smartContractAddress,
     methodName,
     json,
     deposit,
@@ -34,10 +34,10 @@ export function getCustomFunctionCallProposal(
     description: proposalDescription,
     kind: 'FunctionCall',
     data: {
-      receiver_id: smartContactAddress,
+      receiver_id: smartContractAddress,
       actions: [
         {
-          methodName,
+          method_name: methodName,
           args: Buffer.from(JSON.stringify(json)).toString('base64'),
           deposit: new BN(deposit).toString(),
           gas: GAS_VALUE.toString(),

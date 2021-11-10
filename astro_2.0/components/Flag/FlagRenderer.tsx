@@ -8,6 +8,14 @@ interface FlagRendererProps {
   size: 'sm' | 'lg';
 }
 
+function isSafariBrowser(): boolean {
+  return (
+    navigator &&
+    navigator.userAgent.indexOf('Safari') !== -1 &&
+    navigator.userAgent.indexOf('Chrome') === -1
+  );
+}
+
 export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
   const canvasRef = useRef<HTMLCanvasElement>();
   const wrapperRef = useRef<HTMLDivElement>();
@@ -23,6 +31,10 @@ export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
     if (!flag) return;
 
     const img = new Image();
+
+    if (isSafariBrowser()) {
+      img.crossOrigin = 'Anonymous';
+    }
 
     img.onload = () => {
       setImage(img);

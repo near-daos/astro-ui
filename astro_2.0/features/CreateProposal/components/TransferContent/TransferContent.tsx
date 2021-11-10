@@ -17,12 +17,12 @@ export const TransferContent: FC = () => {
   const amount = watch('amount');
   let amountWidth;
 
-  if (amount.length <= 6) {
+  if (amount?.length <= 6) {
     amountWidth = 7;
-  } else if (amount.length >= 15) {
+  } else if (amount?.length >= 15) {
     amountWidth = 15;
   } else {
-    amountWidth = amount.length;
+    amountWidth = amount?.length ?? 5;
   }
 
   const tokenOptions = Object.values(tokens).map(token => ({
