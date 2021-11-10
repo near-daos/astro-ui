@@ -50,22 +50,26 @@ export interface FilteredProposalsData {
     name: FilterName,
     value: string | boolean | undefined
   ) => void;
+  setFilter: (value: SearchFilter) => void;
 }
 
 export const useFilteredProposalsData = (
-  proposals: Proposal[]
+  proposals: Proposal[],
+  initialFilter?: SearchFilter
 ): FilteredProposalsData => {
   const router = useRouter();
   const daoId = router.query.dao;
 
-  const [filter, setFilter] = useState({
-    show: 'All' as ShowFilterOption,
-    search: 'In all DAOs' as SearchFilterOption,
-    tasks: true,
-    groups: true,
-    treasury: true,
-    governance: true,
-  });
+  const [filter, setFilter] = useState(
+    initialFilter || {
+      show: 'All' as ShowFilterOption,
+      search: 'In all DAOs' as SearchFilterOption,
+      tasks: true,
+      groups: true,
+      treasury: true,
+      governance: true,
+    }
+  );
 
   const onFilterChange = useCallback(
     (name, value) => {
@@ -192,5 +196,6 @@ export const useFilteredProposalsData = (
     filteredProposals,
     filter,
     onFilterChange,
+    setFilter,
   };
 };

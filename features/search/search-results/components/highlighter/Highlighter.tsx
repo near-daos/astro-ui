@@ -2,7 +2,10 @@ import React, { FC, useEffect, useRef } from 'react';
 import Mark from 'mark.js';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 
-export const Highlighter: FC = ({ children }) => {
+export const Highlighter: FC<{ className?: string }> = ({
+  children,
+  className,
+}) => {
   const root = useRef<HTMLDivElement | null>(null);
   const { searchResults } = useSearchResults();
 
@@ -24,5 +27,9 @@ export const Highlighter: FC = ({ children }) => {
     }
   }, [searchResults?.query]);
 
-  return <div ref={root}>{children}</div>;
+  return (
+    <div ref={root} className={className}>
+      {children}
+    </div>
+  );
 };

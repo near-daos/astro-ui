@@ -120,6 +120,10 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 
+const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
+  <Feed {...props} />
+);
+
 export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   typeof Feed
 >> = async ({ query }) => {
@@ -152,4 +156,4 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   };
 };
 
-export default Feed;
+export default MyFeedPage;

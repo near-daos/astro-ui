@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
-import isEmpty from 'lodash/isEmpty';
+import React from 'react';
+import { useRouter } from 'next/router';
+import { useUpdateEffect } from 'react-use';
 
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useFilteredProposalsData } from 'features/search/search-results/components/proposals-tab-view/helpers';
@@ -7,22 +8,67 @@ import { statusFilterOptions } from 'features/search/search-filters/helpers';
 import { NoResultsView } from 'features/no-results-view';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import ProposalStatusFilters from 'astro_2.0/components/Feed/StatusFilters';
-import Checkbox from 'astro_2.0/components/inputs/Checkbox';
+import ProposalCategoriesList from 'astro_2.0/components/Feed/CategoriesList';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 
 import styles from './proposals-tab-view.module.scss';
 
-export const ProposalsTabView: FC = () => {
+const FILTER_DEFAULT_STATE = {
+  show: 'All',
+  search: 'In all DAOs',
+  tasks: false,
+  groups: false,
+  treasury: false,
+  governance: false,
+} as const;
+
+export const ProposalsTabView: React.FC = () => {
+  const { query: queries } = useRouter();
+
   const { searchResults } = useSearchResults();
   const { query, proposals } = searchResults || {};
 
   const {
     filteredProposals,
     filter,
+    setFilter,
     onFilterChange,
-  } = useFilteredProposalsData(proposals || []);
+  } = useFilteredProposalsData(
+    proposals || [],
+    queries.category
+      ? {
+          ...FILTER_DEFAULT_STATE,
+          [queries.category as keyof typeof FILTER_DEFAULT_STATE]: true,
+        }
+      : undefined
+  );
 
-  if (isEmpty(proposals)) {
+  useUpdateEffect(() => {
+    window.scroll(0, 0);
+
+    if (queries.category) {
+      setFilter?.({
+        ...filter,
+        tasks: false,
+        governance: false,
+        groups: false,
+        treasury: false,
+        [queries.category as keyof typeof filter]: true,
+      });
+
+      return;
+    }
+
+    setFilter?.({
+      ...filter,
+      tasks: true,
+      governance: true,
+      groups: true,
+      treasury: true,
+    });
+  }, [queries.category]);
+
+  if ((filteredProposals || []).length === 0) {
     return (
       <NoResultsView
         title={query ? `No results for ${query}` : 'No results'}
@@ -34,46 +80,11 @@ export const ProposalsTabView: FC = () => {
 
   return (
     <div className={styles.root}>
-      <div>
-        <div className={styles.typeRoot}>
-          <p className={styles.typeLabel}>Type:</p>
-
-          {([
-            {
-              label: 'Tasks',
-              field: 'tasks',
-            },
-            {
-              label: 'Groups',
-              field: 'groups',
-            },
-            {
-              label: 'Treasury',
-              field: 'treasury',
-            },
-            {
-              label: 'Governance',
-              field: 'governance',
-            },
-          ] as const).map(item => (
-            <Checkbox
-              key={item.field}
-              input={{
-                name: item.field,
-                checked: filter[item.field],
-                onChange: () => onFilterChange(item.field, !filter[item.field]),
-              }}
-              label={item.label}
-              classes={{
-                root: styles.checkboxRoot,
-              }}
-            />
-          ))}
-        </div>
-
+      <div className={styles.statusFilterWrapper}>
         <ProposalStatusFilters
           proposal={filter.show}
           onChange={value => () => {
+            window.scroll(0, 0);
             onFilterChange('show', value || statusFilterOptions[0].value);
           }}
           list={[
@@ -128,15 +139,42 @@ export const ProposalsTabView: FC = () => {
         />
       </div>
 
-      <Highlighter>
-        {filteredProposals.map(item => {
-          return (
-            <div className={styles.cardWrapper} key={item.id}>
-              <ViewProposal dao={item.dao} proposal={item} showFlag />
-            </div>
-          );
-        })}
-      </Highlighter>
+      <div className={styles.listWrapper}>
+        <ProposalCategoriesList
+          queryName="category"
+          query={queries as Record<string, string>}
+          list={[
+            {
+              label: 'Tasks',
+              value: 'tasks',
+            },
+            {
+              label: 'Groups',
+              value: 'groups',
+            },
+            {
+              label: 'Treasury',
+              value: 'treasury',
+            },
+            {
+              label: 'Governance',
+              value: 'governance',
+            },
+          ]}
+          title="Choose a type"
+          className={styles.categoriesListRoot}
+        />
+
+        <Highlighter className={styles.highlighterRoot}>
+          {filteredProposals.map(item => {
+            return (
+              <div className={styles.cardWrapper} key={item.id}>
+                <ViewProposal dao={item.dao} proposal={item} showFlag />
+              </div>
+            );
+          })}
+        </Highlighter>
+      </div>
     </div>
   );
 };

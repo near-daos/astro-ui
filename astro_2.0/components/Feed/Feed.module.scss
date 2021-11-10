@@ -44,7 +44,7 @@
     right: 0;
     top: 0;
     transform: translateX(100%);
-    width: 50px;
+    width: 70px;
   }
 }
 
@@ -57,7 +57,6 @@
 /* stylelint-disable-next-line */
 .container :global(.infinite-scroll-component__outerdiv) {
   flex-grow: 1;
-  max-width: calc(100% - 152px);
 }
 
 .categoriesListWrapper {

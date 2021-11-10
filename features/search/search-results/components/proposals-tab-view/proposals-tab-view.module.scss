@@ -11,6 +11,7 @@
     border: 0;
     margin-left: auto;
     max-width: 800px;
+    padding-right: 0;
   }
 
   .categoriesListApprovedInputWrapperChecked {
@@ -21,6 +22,26 @@
   .categoriesListFailedInputWrapperChecked {
     background-color: var(--color-error-60);
     border-color: var(--color-error-60);
+  }
+}
+
+.statusFilterWrapper {
+  background: var(--color-neutral-10);
+  padding-bottom: 24px;
+  padding-top: 24px;
+  position: sticky;
+  top: 70px;
+  z-index: 1;
+
+  &::after {
+    background-color: var(--color-neutral-10);
+    content: '';
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateX(100%);
+    width: 70px;
   }
 }
 
@@ -157,4 +178,21 @@
   &:nth-of-type(3) {
     margin-right: 16px;
   }
+}
+
+.listWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.categoriesListRoot {
+  margin-right: 40px;
+  margin-top: 100px;
+  min-width: 115px;
+  position: sticky;
+  top: 160px;
+}
+
+.highlighterRoot {
+  width: 100%;
 }

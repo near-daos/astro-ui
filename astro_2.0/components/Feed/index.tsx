@@ -1,7 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAsync, useAsyncFn, useUpdateEffect } from 'react-use';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import { useAsync, useAsyncFn } from 'react-use';
 
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { PaginationResponse } from 'types/api';
@@ -9,19 +8,19 @@ import { Proposal, ProposalStatuses } from 'types/proposal';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
 import { SputnikHttpService } from 'services/sputnik';
-import { useDebounceUpdateEffect } from 'hooks/useDebounceUpdateEffect';
+import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 import { useAuthContext } from 'context/AuthContext';
 import { useCustomTokensContext } from 'context/CustomTokensContext';
-import { NoResultsView } from 'features/no-results-view';
 import * as Typography from 'components/Typography';
+import { NoResultsView } from 'features/no-results-view';
+import FeedList from 'astro_2.0/features/Feed';
 
-import { Loader } from 'components/loader';
 import CategoriesList from './CategoriesList';
 import StatusFilters from './StatusFilters';
 
 import styles from './Feed.module.scss';
 
-const Feed = ({ initialProposals }: Props): JSX.Element => {
+const FeedPage = ({ initialProposals }: Props): JSX.Element => {
   const { query, replace, pathname } = useRouter();
 
   const { fetchAndSetTokens } = useCustomTokensContext();
@@ -29,8 +28,6 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
   const queries = query as ProposalsQueries;
 
   const isMyFeed = pathname.startsWith('/my/feed');
-
-  const queryBeignFetched = useRef(queries);
 
   const { accountId } = useAuthContext();
 
@@ -69,26 +66,11 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
     ]
   );
 
-  useUpdateEffect(() => {
-    Promise.resolve().then(async () => {
-      queryBeignFetched.current = queries;
-
-      setProposalsData(await fetchProposalsData());
-
-      window.scroll(0, 0);
-    });
-  }, [isMyFeed]);
-
-  useDebounceUpdateEffect(
-    async () => {
-      if (
-        queryBeignFetched.current.category === queries.category &&
-        queryBeignFetched.current.status === queries.status
-      ) {
+  useDebounceEffect(
+    async ({ isInitialCall, depsHaveChanged }) => {
+      if (isInitialCall || !depsHaveChanged) {
         return;
       }
-
-      queryBeignFetched.current = queries;
 
       setProposalsData(await fetchProposalsData());
 
@@ -124,8 +106,6 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
       { shallow: true, scroll: false }
     );
   };
-
-  const isEmptyList = (proposalsData?.data || []).length === 0;
 
   return (
     <main className={styles.root}>
@@ -178,36 +158,23 @@ const Feed = ({ initialProposals }: Props): JSX.Element => {
           />
         </div>
 
-        <InfiniteScroll
-          dataLength={proposalsData?.data.length || 0}
-          next={loadMore}
-          hasMore={
-            (proposalsData?.data.length || 0) < (proposalsData?.total || 0)
-          }
-          loader={<h4 className={styles.loading}>Loading...</h4>}
-          style={{ overflow: 'initial' }}
-          endMessage={
-            !isEmptyList && (
-              <p className={styles.loading}>
-                <b>You have seen it all</b>
-              </p>
-            )
-          }
-        >
-          {(proposalsData?.data || []).map(item => {
-            return (
-              <div key={item.id} className={styles.itemRoot}>
-                <ViewProposal dao={item.dao} proposal={item} showFlag />
+        {proposalsData && (
+          <FeedList
+            data={proposalsData}
+            loadMore={loadMore}
+            loader={<p className={styles.loading}>Loading...</p>}
+            noResults={
+              <div className={styles.loading}>
+                <NoResultsView title="No more results" />
               </div>
-            );
-          })}
-
-          {isEmptyList && proposalsDataIsLoading && <Loader />}
-
-          {isEmptyList && !proposalsDataIsLoading && (
-            <NoResultsView title="No proposals here" />
-          )}
-        </InfiniteScroll>
+            }
+            renderItem={proposal => (
+              <div key={proposal.id} className={styles.proposalCardWrapper}>
+                <ViewProposal dao={proposal.dao} proposal={proposal} showFlag />
+              </div>
+            )}
+          />
+        )}
       </div>
     </main>
   );
@@ -217,4 +184,4 @@ type Props = {
   initialProposals: PaginationResponse<Proposal[]> | null;
 };
 
-export default Feed;
+export default FeedPage;

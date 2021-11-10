@@ -14,33 +14,31 @@ const FEED_CATEGORIES = [
   { value: ProposalCategories.Polls, label: 'Polls' },
 ];
 
-type CategoriesListProps = {
-  disabled?: boolean;
-  queryName: 'category';
-  query: Record<string, string | string[]>;
-  className?: string;
-};
-
-const CategoriesList: React.FC<CategoriesListProps> = ({
+const CategoriesList = ({
   query,
   queryName,
   disabled,
   className,
-}) => {
+  title,
+  list,
+}: Props): JSX.Element => {
   const { [queryName]: value, ...otherQuery } = query;
 
   return (
     <div className={classNames(styles.categoriesListRoot, className)}>
-      <p className={styles.categoriesListTitle}>Choose a filter</p>
+      <p className={styles.categoriesListTitle}>{title || 'Choose a filter'}</p>
       <ul
         className={classNames(styles.categoriesList, {
           [styles.categoriesListActive1]:
-            value === ProposalCategories.Governance,
+            list?.[0] && value === list?.[0]?.value,
           [styles.categoriesListActive2]:
-            value === ProposalCategories.Financial,
-          [styles.categoriesListActive3]: value === ProposalCategories.Bounties,
-          [styles.categoriesListActive4]: value === ProposalCategories.Members,
-          [styles.categoriesListActive5]: value === ProposalCategories.Polls,
+            list?.[1] && value === list?.[1]?.value,
+          [styles.categoriesListActive3]:
+            list?.[2] && value === list?.[2]?.value,
+          [styles.categoriesListActive4]:
+            list?.[3] && value === list?.[3]?.value,
+          [styles.categoriesListActive5]:
+            list?.[4] && value === list?.[4]?.value,
         })}
       >
         <li>
@@ -57,7 +55,7 @@ const CategoriesList: React.FC<CategoriesListProps> = ({
           </Link>
         </li>
 
-        {FEED_CATEGORIES.map(item => {
+        {list?.map(item => {
           const href = {
             query: {
               ...query,
@@ -89,6 +87,22 @@ const CategoriesList: React.FC<CategoriesListProps> = ({
       </ul>
     </div>
   );
+};
+
+type Props = {
+  title?: string;
+  disabled?: boolean;
+  queryName: string;
+  query: Record<string, string | string[]>;
+  className?: string;
+  list?: { value: string; label: string }[];
+};
+
+CategoriesList.defaultProps = {
+  disabled: undefined,
+  className: undefined,
+  title: undefined,
+  list: FEED_CATEGORIES,
 };
 
 export default CategoriesList;
