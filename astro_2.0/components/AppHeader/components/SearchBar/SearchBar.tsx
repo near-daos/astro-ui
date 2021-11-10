@@ -2,13 +2,14 @@ import React, {
   FC,
   useRef,
   useState,
-  useCallback,
-  KeyboardEventHandler,
   useEffect,
+  useCallback,
   MutableRefObject,
+  KeyboardEventHandler,
 } from 'react';
 import cn from 'classnames';
 import ReactDOM from 'react-dom';
+import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 import { usePopper } from 'react-popper';
 import { useClickAway, useDebounce, useMount } from 'react-use';
@@ -42,12 +43,22 @@ export const SearchBar: FC<SearchBarProps> = ({
   const router = useRouter();
   const ref = useRef(null);
 
+  function isDesktopResolution() {
+    try {
+      return (
+        document?.body?.offsetWidth > parseInt(styleConst.navMobileWidth, 10)
+      );
+    } catch (e) {
+      return true;
+    }
+  }
+
   useEffect(() => {
     function calculateWidth() {
       const NEIGHBOURS_WIDTH_AND_PADDINGS = 500;
       const parentEl = prentElRef.current;
 
-      if (parentEl && document?.body?.offsetWidth > 920) {
+      if (parentEl && isDesktopResolution()) {
         const width = parentEl.offsetWidth;
         const possibleWidth = width - NEIGHBOURS_WIDTH_AND_PADDINGS;
 
@@ -63,16 +74,6 @@ export const SearchBar: FC<SearchBarProps> = ({
 
     return () => window.removeEventListener('resize', calculateWidth);
   }, [prentElRef]);
-
-  function isDesktopResolution() {
-    if (document) {
-      return (
-        document?.body?.offsetWidth > parseInt(styleConst.navMobileWidth, 10)
-      );
-    }
-
-    return true;
-  }
 
   const isSearchPage = router.pathname.includes(SEARCH_PAGE_URL);
 
@@ -223,6 +224,23 @@ export const SearchBar: FC<SearchBarProps> = ({
     return null;
   }
 
+  function renderCloseButton() {
+    if (!isEmpty(value) || !isDesktopResolution()) {
+      return (
+        <div className={styles.closeIconHolder}>
+          <IconButton
+            size="medium"
+            icon="closeCircle"
+            className={styles.icon}
+            onClick={handleCancel}
+          />
+        </div>
+      );
+    }
+
+    return null;
+  }
+
   return (
     <div
       className={cn(styles.root, className, { [styles.expanded]: expanded })}
@@ -252,14 +270,7 @@ export const SearchBar: FC<SearchBarProps> = ({
         onKeyUp={handleKeys}
       />
 
-      <div className={styles.closeIconHolder}>
-        <IconButton
-          size="medium"
-          icon="closeCircle"
-          className={styles.icon}
-          onClick={handleCancel}
-        />
-      </div>
+      {renderCloseButton()}
       <div
         className={styles.anchor}
         ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
