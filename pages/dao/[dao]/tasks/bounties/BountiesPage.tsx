@@ -15,6 +15,11 @@ import { FeedFilter } from 'astro_2.0/features/Feed';
 import { Bounty } from 'components/cards/bounty-card/types';
 import { ProposalVariant } from 'types/proposal';
 import { BountyStatuses } from 'types/bounties';
+import {
+  mapBountyToCardContent,
+  showActionBar,
+} from 'astro_2.0/components/BountyCard/helpers';
+import { SputnikNearService } from 'services/sputnik';
 import { DAO } from 'types/dao';
 
 import useQuery from 'hooks/useQuery';
@@ -38,7 +43,7 @@ const BountiesPage: FC<BountiesPageProps> = ({ dao, bounties, tokens }) => {
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
   const handleCreateProposal = useCallback(
-    (bountyId: string, proposalVariant: ProposalVariant) => {
+    (bountyId: string, proposalVariant: ProposalVariant) => () => {
       toggleCreateProposal({ bountyId, proposalVariant });
     },
     [toggleCreateProposal]
@@ -47,6 +52,30 @@ const BountiesPage: FC<BountiesPageProps> = ({ dao, bounties, tokens }) => {
   const handleClick = useCallback(
     () => handleCreateProposal('', ProposalVariant.ProposeCreateBounty),
     [handleCreateProposal]
+  );
+
+  const onSuccessHandler = useCallback(() => {
+    router.replace(router.asPath);
+  }, [router]);
+
+  const handleClaim = useCallback(
+    (bountyId, deadline) => async () => {
+      await SputnikNearService.claimBounty(daoId, {
+        bountyId: Number(bountyId),
+        deadline,
+        bountyBond: dao.policy.bountyBond,
+      });
+
+      onSuccessHandler();
+    },
+    [dao.policy.bountyBond, daoId, onSuccessHandler]
+  );
+
+  const handleUnclaim = useCallback(
+    bountyId => async () => {
+      await SputnikNearService.unclaimBounty(daoId, bountyId);
+    },
+    [daoId]
   );
 
   return (
@@ -61,7 +90,7 @@ const BountiesPage: FC<BountiesPageProps> = ({ dao, bounties, tokens }) => {
         <DaoDetailsMinimized
           dao={dao}
           accountId={accountId}
-          onCreateProposalClick={handleClick}
+          onCreateProposalClick={handleClick()}
         />
       </div>
 
@@ -75,13 +104,13 @@ const BountiesPage: FC<BountiesPageProps> = ({ dao, bounties, tokens }) => {
 
       <div className={styles.createBounty}>
         <h1>Bounties</h1>
-        <Button variant="black" size="small" onClick={handleClick}>
+        <Button variant="black" size="small" onClick={handleClick()}>
           Create new Bounty
         </Button>
       </div>
       <div className={styles.filters}>
         <FeedFilter
-          title="Test"
+          title="Bounties"
           value={query.bountyStatus}
           onChange={val => updateQuery('bountyStatus', val)}
         >
@@ -92,27 +121,27 @@ const BountiesPage: FC<BountiesPageProps> = ({ dao, bounties, tokens }) => {
         </FeedFilter>
       </div>
       <div className={styles.grid}>
-        {bounties.map(bounty => {
-          return (
+        {bounties.flatMap(bounty => {
+          const content = mapBountyToCardContent(
+            dao,
+            bounty,
+            tokens,
+            accountId
+          );
+
+          return content.map(cardContent => (
             <BountyCard
               key={bounty.id}
-              id={bounty.id}
-              daoId={dao.id}
-              token={
-                bounty.tokenId === '' ? tokens.NEAR : tokens[bounty.tokenId]
-              }
-              amount={bounty.amount}
-              description={bounty.description}
-              forgivenessPeriod={bounty.forgivenessPeriod}
-              externalUrl={bounty.externalUrl}
-              slots={bounty.slots}
-              claimedBy={bounty.claimedBy}
-              deadlineThreshold={bounty.deadlineThreshold}
-              currentUser={accountId}
-              bountyBond={dao.policy.bountyBond}
-              setBountyData={handleCreateProposal}
+              content={cardContent}
+              claimHandler={handleClaim(bounty.id, bounty.deadlineThreshold)}
+              showActionBar={showActionBar(cardContent, accountId)}
+              unclaimHandler={handleUnclaim(bounty.id)}
+              completeHandler={handleCreateProposal(
+                bounty.id,
+                ProposalVariant.ProposeDoneBounty
+              )}
             />
-          );
+          ));
         })}
       </div>
     </div>

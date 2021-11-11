@@ -48,6 +48,10 @@
   color: var(--color-success-60);
 }
 
+.statusExpired {
+  color: var(--color-error-80);
+}
+
 .statusInProgress {
   color: var(--color-primary-50);
 }

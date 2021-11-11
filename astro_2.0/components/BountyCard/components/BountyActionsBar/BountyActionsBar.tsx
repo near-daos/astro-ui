@@ -1,58 +1,39 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { Button } from 'components/button/Button';
 import { InfoValue } from 'astro_2.0/components/InfoBlockWidget/components/InfoValue';
 import { formatYoktoValue } from 'helpers/format';
-import {
-  getDistanceFromNow,
-  getSeverity,
-} from 'astro_2.0/components/BountyCard/helpers';
+import { getDistanceFromNow } from 'astro_2.0/components/BountyCard/helpers';
 import { TooltipMessageSeverity } from 'astro_2.0/components/InfoBlockWidget/types';
-import {
-  claimBountyHandler,
-  unclaimBountyHandler,
-} from 'astro_2.0/components/BountyCard/components/handlers';
 import { BountyStatus } from 'astro_2.0/components/BountyCard/types';
-import { useRouter } from 'next/router';
-import { ProposalVariant } from 'types/proposal';
 import styles from './BountyActionsBar.module.scss';
 
 interface BountyActionsBarProps {
-  daoId: string;
-  bountyId: string;
   bountyBond: string;
   forgivenessPeriod: string;
   bountyStatus: BountyStatus;
-  currentUser: string;
-  deadlineThreshold: string;
-  startTime?: string;
-  setBountyData: (bountyId: string, variant: ProposalVariant) => void;
+  claimHandler: () => void;
+  unclaimHandler: () => void;
+  completeHandler: () => void;
 }
 
 export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
-  daoId,
-  bountyId,
   bountyStatus,
   bountyBond,
   forgivenessPeriod,
-  deadlineThreshold,
-  startTime,
-  setBountyData,
+  claimHandler,
+  unclaimHandler,
+  completeHandler,
 }) => {
   const [, graceValue, graceTimeUnit] = getDistanceFromNow(
     forgivenessPeriod
   ).split(' ');
 
-  const tooltipSeverity = getSeverity(
-    bountyStatus,
-    forgivenessPeriod,
-    startTime
-  );
-  const router = useRouter();
-
-  const onSuccessHandler = useCallback(() => {
-    router.replace(router.asPath);
-  }, [router]);
+  const tooltipSeverity = {
+    [BountyStatus.Available]: TooltipMessageSeverity.Info,
+    [BountyStatus.InProgress]: TooltipMessageSeverity.Positive,
+    [BountyStatus.Expired]: TooltipMessageSeverity.Warning,
+  };
 
   return (
     <div className={styles.root}>
@@ -62,12 +43,19 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
           <InfoValue value={formatYoktoValue(bountyBond, 24)} label="NEAR" />
         }
         tooltip={
-          <span>
-            To prevent spam, you must pay a bond. The bond will be returned when
-            you complete the bounty before your deadline.
-          </span>
+          bountyStatus !== BountyStatus.Expired ? (
+            <span>
+              To prevent spam, you must pay a bond. The bond will be returned
+              when you complete the bounty before your deadline.
+            </span>
+          ) : (
+            <span>
+              Your breached deadline period. The bond will not be reimbursed by
+              DAO
+            </span>
+          )
         }
-        messageSeverity={tooltipSeverity}
+        messageSeverity={tooltipSeverity[bountyStatus]}
       />
       {bountyStatus === 'Available' && (
         <InfoBlockWidget
@@ -86,37 +74,17 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
         />
       )}
       {bountyStatus === 'Available' ? (
-        <Button
-          variant="black"
-          size="medium"
-          onClick={claimBountyHandler(
-            daoId,
-            bountyId,
-            deadlineThreshold,
-            bountyBond,
-            onSuccessHandler
-          )}
-        >
+        <Button variant="black" size="medium" onClick={claimHandler}>
           Claim
         </Button>
       ) : (
         <>
-          <Button
-            variant="secondary"
-            size="small"
-            onClick={unclaimBountyHandler(daoId, bountyId, onSuccessHandler)}
-          >
+          <Button variant="secondary" size="small" onClick={unclaimHandler}>
             Unclaim
           </Button>
 
-          <Button
-            variant="black"
-            size="small"
-            onClick={() =>
-              setBountyData(bountyId, ProposalVariant.ProposeDoneBounty)
-            }
-          >
-            Propose
+          <Button variant="black" size="small" onClick={completeHandler}>
+            Complete
           </Button>
         </>
       )}

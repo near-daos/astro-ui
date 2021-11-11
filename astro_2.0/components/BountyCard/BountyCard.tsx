@@ -2,60 +2,39 @@ import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import React from 'react';
 import { ProposalDescription } from 'astro_2.0/components/ProposalDescription';
 import { TokenWidget } from 'astro_2.0/components/TokenWidget';
-import { BountyActionsBar } from 'astro_2.0/components/BountyCard/components';
-import { ClaimedBy } from 'components/cards/bounty-card/types';
-import { Token } from 'types/token';
 import cn from 'classnames';
-import { BountyStatus } from 'astro_2.0/components/BountyCard/types';
-import { ProposalVariant } from 'types/proposal';
 import {
-  getDistanceFromNow,
-  getTimeTillComplete,
-} from 'astro_2.0/components/BountyCard/helpers';
+  BountyCardContent,
+  BountyStatus,
+} from 'astro_2.0/components/BountyCard/types';
+import { BountyActionsBar } from 'astro_2.0/components/BountyCard/components/BountyActionsBar';
 import styles from './BountyCard.module.scss';
 
 export interface BountyCardProps {
-  id: string;
-  daoId: string;
-  token: Token;
-  amount: string;
-  description: string;
-  forgivenessPeriod: string;
-  externalUrl?: string;
-  slots: number;
-  claimedBy: ClaimedBy[];
-  deadlineThreshold: string;
-  completionDate?: string;
-  currentUser: string;
-  bountyBond: string;
-  setBountyData: (bountyId: string, variant: ProposalVariant) => void;
+  content: BountyCardContent;
+  showActionBar: boolean;
+  claimHandler: () => void;
+  unclaimHandler: () => void;
+  completeHandler: () => void;
 }
 
 export const BountyCard: React.FC<BountyCardProps> = ({
-  id,
-  daoId,
-  amount,
-  description,
-  token,
-  forgivenessPeriod,
-  externalUrl,
-  slots,
-  claimedBy = [],
-  deadlineThreshold,
-  currentUser,
-  bountyBond,
-  setBountyData,
+  content,
+  showActionBar,
+  claimHandler,
+  unclaimHandler,
+  completeHandler,
 }) => {
-  const claimedByUser = claimedBy.find(
-    claim => claim.accountId === currentUser
-  );
-  const status = claimedByUser
-    ? BountyStatus.InProgress
-    : BountyStatus.Available;
-
-  const timeToComplete = claimedByUser
-    ? getTimeTillComplete(claimedByUser.startTime, claimedByUser.deadline)
-    : getDistanceFromNow(deadlineThreshold);
+  const {
+    status,
+    description,
+    timeToComplete,
+    forgivenessPeriod,
+    externalUrl,
+    token,
+    amount,
+    bountyBond,
+  } = content;
 
   return (
     <div className={styles.root}>
@@ -74,6 +53,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
               className={cn({
                 [styles.statusAvailable]: status === BountyStatus.Available,
                 [styles.statusInProgress]: status === BountyStatus.InProgress,
+                [styles.statusExpired]: status === BountyStatus.Expired,
               })}
             >
               {status}
@@ -99,20 +79,24 @@ export const BountyCard: React.FC<BountyCardProps> = ({
               />
             }
           />
-          <InfoBlockWidget label="Available claims" value={slots} />
+          {status === BountyStatus.InProgress ||
+          status === BountyStatus.Expired ? (
+            <InfoBlockWidget label="Claimed by" value={content.accountId} />
+          ) : (
+            <InfoBlockWidget label="Available claims" value={content.slots} />
+          )}
         </div>
       </div>
-      <BountyActionsBar
-        daoId={daoId}
-        bountyId={id}
-        bountyBond={bountyBond}
-        forgivenessPeriod={forgivenessPeriod}
-        bountyStatus={status}
-        startTime={claimedByUser?.startTime}
-        currentUser={currentUser}
-        deadlineThreshold={deadlineThreshold}
-        setBountyData={setBountyData}
-      />
+      {showActionBar && (
+        <BountyActionsBar
+          bountyBond={bountyBond}
+          forgivenessPeriod={forgivenessPeriod}
+          bountyStatus={status}
+          claimHandler={claimHandler}
+          unclaimHandler={unclaimHandler}
+          completeHandler={completeHandler}
+        />
+      )}
     </div>
   );
 };
