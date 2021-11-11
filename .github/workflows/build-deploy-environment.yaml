@@ -26,11 +26,11 @@ jobs:
     - uses: actions/checkout@v2
     - name: Set Environment
       run: |
-         echo DOCKER_ENV_TAG=${ENVIRONMENT_NAME}-$GITHUB_SHA >> $GITHUB_ENV
+         echo DOCKER_ENV_TAG=${{ inputs.environment }}-$GITHUB_SHA >> $GITHUB_ENV
     - name: load env
       run: |
           cat ".github/env.common" >>$GITHUB_ENV
-          cat ".github/env.${ENVIRONMENT_NAME}" >>$GITHUB_ENV
+          cat ".github/env.${{ inputs.environment }}" >>$GITHUB_ENV
 
     - name: Build
       uses: ./.github/actions/build
