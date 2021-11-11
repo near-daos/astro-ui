@@ -3,13 +3,20 @@
 
 @import 'astro_2.0/components/constants.module';
 
+$search-max-width: 768;
+
+:export {
+  /* stylelint-disable-next-line */
+  searchMaxWidth: $search-max-width;
+}
+
 .root {
   align-items: center;
   border-radius: 8px;
   display: flex;
   height: 40px;
   justify-content: flex-start;
-  max-width: 768px;
+  max-width: $search-max-width + 1px;
   overflow: hidden;
   position: relative;
   transform: translateZ(0);

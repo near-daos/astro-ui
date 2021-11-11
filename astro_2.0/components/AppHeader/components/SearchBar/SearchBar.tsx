@@ -38,6 +38,9 @@ export const SearchBar: FC<SearchBarProps> = ({
   placeholder,
   onSearchToggle,
 }) => {
+  const POPUP_LEFT_MARGIN = 20;
+  const POPUP_RIGHT_MARGIN = 20;
+
   const [searchWidth, setSearchWidth] = useState<number | string>(40);
 
   const router = useRouter();
@@ -89,6 +92,12 @@ export const SearchBar: FC<SearchBarProps> = ({
           name: 'offset',
           options: {
             offset: [0, 23],
+          },
+        },
+        {
+          name: 'preventOverflow',
+          options: {
+            padding: { left: POPUP_LEFT_MARGIN, right: POPUP_RIGHT_MARGIN },
           },
         },
       ],
@@ -198,9 +207,12 @@ export const SearchBar: FC<SearchBarProps> = ({
   }, [onSearchStateToggle]);
 
   function getDropdownWidth() {
-    return document?.body?.offsetWidth < 768
-      ? document?.body?.offsetWidth - 20
-      : 768;
+    const searchMaxWidth = parseInt(styles.searchMaxWidth, 10);
+
+    return document?.body?.offsetWidth <
+      searchMaxWidth + POPUP_LEFT_MARGIN + POPUP_RIGHT_MARGIN
+      ? document?.body?.offsetWidth - (POPUP_LEFT_MARGIN + POPUP_RIGHT_MARGIN)
+      : searchMaxWidth;
   }
 
   function renderResultsDropdown() {
