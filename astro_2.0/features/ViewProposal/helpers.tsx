@@ -24,6 +24,7 @@ import { AddMemberToGroupContent } from 'astro_2.0/features/ViewProposal/compone
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/ViewProposal/components/RemoveMemberFromGroupContent';
 import { DaoRole } from 'types/role';
 import { getDistanceFromNow } from 'astro_2.0/components/BountyCard/helpers';
+import CustomFunctionCallContent from 'astro_2.0/features/ViewProposal/components/CustomFunctionCallContent';
 
 export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
   switch (proposal?.proposalVariant) {
@@ -217,6 +218,34 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
             memberName={proposal.kind.memberId}
           />
         );
+      }
+
+      return null;
+    }
+    case ProposalVariant.ProposeCustomFunctionCall: {
+      if (proposal.kind.type === ProposalType.FunctionCall) {
+        try {
+          const { kind } = proposal;
+          const data = kind.actions[0];
+
+          const json = JSON.parse(
+            Buffer.from(data.args, 'base64').toString('ascii')
+          );
+
+          return (
+            <CustomFunctionCallContent
+              token="NEAR"
+              smartContractAddress={kind.receiverId}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              methodName={data.methodName}
+              json={json}
+              deposit={data.deposit}
+            />
+          );
+        } catch (e) {
+          return null;
+        }
       }
 
       return null;

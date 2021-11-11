@@ -841,7 +841,6 @@ export function getValidationSchema(
         deposit: yup
           .number()
           .typeError('Must be a valid number.')
-          .positive()
           .required('Required')
           .test(
             'onlyFiveDecimal',
