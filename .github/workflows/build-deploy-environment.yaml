@@ -56,7 +56,7 @@ jobs:
             --set image.tag=$DOCKER_ENV_TAG \
             --set environment.near_env=${NEAR_ENV} \
             --set environment.near_contract_name=${NEAR_CONTRACT_NAME} \
-            --set environment.next_public_api_url=${NEXT_PUBLIC_API_URL}
-            --set environment.next_public_google_analytics_key=${NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY}
-            --set environment.next_public_near_env=${NEXT_PUBLIC_NEAR_ENV}
+            --set environment.next_public_api_url=${NEXT_PUBLIC_API_URL} \
+            --set environment.next_public_google_analytics_key=${NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY} \
+            --set environment.next_public_near_env=${NEXT_PUBLIC_NEAR_ENV} \
             --set ingress.host=${K8S_INGRESS_HOST}
