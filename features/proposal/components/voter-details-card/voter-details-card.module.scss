@@ -59,8 +59,22 @@
 }
 
 .link {
+  align-items: center;
+  display: flex;
   grid-area: link;
-  padding: 24px 0;
+  position: relative;
+}
+
+.linkItem.linkItem {
+  align-items: center;
+  display: flex;
+  height: 24px;
+  position: relative;
+  width: 24px;
+  > a {
+    right: 0;
+    top: 0;
+  }
 }
 
 .iconWrapper {

@@ -21,12 +21,14 @@ interface VoterDetailsCardProps {
   vote: Vote | null;
   name: string;
   groups?: string[];
+  transactionHash: string | undefined;
 }
 
 export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
   vote,
   name,
   groups,
+  transactionHash,
 }) => {
   let icon;
 
@@ -76,7 +78,14 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
       </div>
       <div className={styles.other}>&nbsp;</div>
       <div className={styles.link}>
-        {vote && <ExplorerLink linkData="" linkType="transaction" isAbsolute />}
+        {vote && (
+          <ExplorerLink
+            linkData={transactionHash ?? ''}
+            linkType="transaction"
+            isAbsolute
+            className={styles.linkItem}
+          />
+        )}
       </div>
     </div>
   );

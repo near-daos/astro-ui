@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import { DAO } from 'types/dao';
 import { PolicyType } from 'types/policy';
+import { ProposalAction } from 'types/role';
 
 export type DaoDetails = {
   name: string;
@@ -149,6 +150,7 @@ export type Proposal = {
   link: string;
   dao: DAO;
   proposalVariant: ProposalVariant;
+  actions: ProposalActionData[];
 };
 
 export interface CreateProposalParams {
@@ -268,4 +270,13 @@ export interface ProposalsByEndTime extends Indexed {
   lessThanWeekProposals: Proposal[];
   moreThanWeekProposals: Proposal[];
   otherProposals: Proposal[];
+}
+
+export interface ProposalActionData {
+  id: string;
+  proposalId: string;
+  accountId: string;
+  action: ProposalAction;
+  transactionHash: string;
+  timestamp: string;
 }

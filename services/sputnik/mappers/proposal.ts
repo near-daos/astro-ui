@@ -8,6 +8,7 @@ import {
   ProposalStatus,
   ProposalType,
   ProposalVariant,
+  ProposalActionData,
 } from 'types/proposal';
 import {
   DaoDTO,
@@ -38,6 +39,7 @@ export type ProposalDTO = {
   votes: Record<string, 'Approve' | 'Reject' | 'Remove'>;
   dao: DaoDTO;
   votePeriodEnd: string;
+  actions: ProposalActionData[];
 };
 
 type VoteState = 'Yes' | 'No' | 'Dismiss';
@@ -138,6 +140,7 @@ export const mapProposalDTOToProposal = (
     },
     proposalVariant: proposalVariant as ProposalVariant,
     updatedAt: proposalDTO.updatedAt ?? null,
+    actions: proposalDTO.actions,
   };
 };
 

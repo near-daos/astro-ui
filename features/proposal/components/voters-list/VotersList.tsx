@@ -19,6 +19,7 @@ export const VotersList: FC<VotersListProps> = ({ data }) => {
       {data.map(item => (
         <li key={item.name}>
           <VoterDetailsCard
+            transactionHash={item.transactionHash}
             vote={item.vote}
             name={item.name}
             groups={item.groups}

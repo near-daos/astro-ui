@@ -48,8 +48,19 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
   const [activeFilter, setActiveFilter] = useState<string | undefined>(
     undefined
   );
+
   const { fullVotersList, votersByStatus } = useMemo(() => {
     const { votersList } = getVoteDetails(dao, scope, proposal);
+
+    const voteActions = proposal.actions
+      .filter(
+        item => item.action === 'VoteApprove' || item.action === 'VoteReject'
+      )
+      .reduce((res, item) => {
+        res[item.accountId] = item.transactionHash;
+
+        return res;
+      }, {} as Record<string, string>);
 
     const notVotedList = members.reduce((res, item) => {
       const voted = votersList.find(voter => voter.name === item.name);
@@ -72,6 +83,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         return {
           ...item,
           groups: member?.groups ?? [],
+          transactionHash: voteActions[item.name],
         };
       }),
       ...notVotedList,

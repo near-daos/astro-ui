@@ -26,6 +26,7 @@ export type VoterDetail = {
   name: string;
   vote: Vote | null;
   groups?: string[];
+  transactionHash?: string | undefined;
 };
 
 export type BondDetail = {
