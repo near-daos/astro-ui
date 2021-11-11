@@ -25,7 +25,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set Environment
-      if: inputs.environment == 'test'
       env:
         ENVIRONMENT_NAME: 'test'
       run: |
