@@ -94,3 +94,9 @@
     @content;
   }
 }
+
+@mixin non-touch-devices {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}

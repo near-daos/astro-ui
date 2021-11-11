@@ -1,3 +1,5 @@
+@import 'styles/mixins';
+
 // Button sizes
 @mixin size(
   $padding-vertical,
@@ -50,10 +52,6 @@
   color: var(--color-white);
   transition: 0.2s;
 
-  &:hover {
-    box-shadow: 0 0 40px var(--color-black);
-  }
-
   &:disabled {
     background: var(--color-neutral-50);
     cursor: default;
@@ -75,10 +73,6 @@
   background: transparent;
   border: 2px solid var(--color-neutral-90);
   color: var(--color-neutral-90);
-
-  &:hover {
-    box-shadow: 0 0 40px var(--color-approved-opacity-35);
-  }
 
   &:active {
     border-color: var(--color-primary-60);
@@ -111,10 +105,6 @@
   color: var(--color-white);
   text-transform: none;
   transition: box-shadow 0.2s;
-
-  &:hover {
-    box-shadow: 0 0 40px var(--color-black);
-  }
 }
 
 .auth {
@@ -128,5 +118,19 @@
 
   path {
     fill: var(--color-neutral-90);
+  }
+}
+
+@include non-touch-devices {
+  .primary:hover {
+    box-shadow: 0 0 40px var(--color-black);
+  }
+
+  .secondary:hover {
+    box-shadow: 0 0 40px var(--color-approved-opacity-35);
+  }
+
+  .black:hover {
+    box-shadow: 0 0 40px var(--color-black);
   }
 }
