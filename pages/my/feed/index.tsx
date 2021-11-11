@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next';
+import isEmpty from 'lodash/isEmpty';
 
 import { Proposal } from 'types/proposal';
 
@@ -85,6 +86,16 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
 
   const apiTokens = (await SputnikService.getAllTokens()) || [];
+
+  // If no proposals found and it is not because of filter -> redirect to all communities
+  if (isEmpty(query) && proposals.length === 0) {
+    return {
+      redirect: {
+        destination: '/all/feed',
+        permanent: true
+      }
+    };
+  }
 
   return {
     props: {
