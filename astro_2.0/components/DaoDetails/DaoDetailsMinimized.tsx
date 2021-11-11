@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import Link from 'next/link';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 import TextTruncate from 'react-text-truncate';
@@ -12,6 +13,7 @@ import { FlagRenderer } from 'astro_2.0/components/Flag';
 
 import { useAuthContext } from 'context/AuthContext';
 
+import cn from 'classnames';
 import styles from './DaoDetailsMinimized.module.scss';
 
 export interface DaoDetailsMinimizedProps {
@@ -25,6 +27,30 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   onCreateProposalClick,
 }) => {
   const router = useRouter();
+
+  const currentPath = router.asPath;
+
+  const url = {
+    funds: `/dao/${dao.id}/treasury/tokens`,
+    members: `/dao/${dao.id}/groups/all-members`,
+    settings: `/dao/${dao.id}/governance/settings`,
+    nfts: `/dao/${dao.id}/treasury/nfts`,
+    bounties: `/dao/${dao.id}/tasks/bounties`,
+    polls: `/dao/${dao.id}/tasks/polls`,
+  };
+
+  const handleChapterClick = (newUrl: string) => {
+    if (newUrl !== currentPath) {
+      router.push(newUrl);
+    }
+  };
+
+  const generateChapterStyle = (chapterUrl: string) => {
+    return cn(styles.controlIcon, {
+      [styles.active]: currentPath === chapterUrl,
+    });
+  };
+
   const { accountId, login } = useAuthContext();
   const action = (
     <Button
@@ -45,86 +71,78 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
 
   return (
     <div className={styles.root}>
-      <section className={styles.general}>
-        <div className={styles.flagWrapper}>
-          <FlagRenderer flag={dao.flagCover ?? dao.logo} size="sm" />
-        </div>
-        <div>
-          <div className={styles.displayName}>
-            <TextTruncate
-              line={1}
-              element="div"
-              truncateText="…"
-              text={dao.displayName}
-              textTruncateChild={null}
-            />
-          </div>
-          <div className={styles.daoId}>
-            <TextTruncate
-              line={1}
-              element="div"
-              truncateText="…"
-              text={dao.id}
-              textTruncateChild={null}
-            />
-          </div>
-        </div>
-      </section>
+      <Link href={`/dao/${dao.id}`}>
+        <a>
+          <section className={styles.general}>
+            <div className={styles.flagWrapper}>
+              <FlagRenderer flag={dao.flagCover ?? dao.logo} size="xs" />
+            </div>
+            <div>
+              <div className={styles.displayName}>
+                <TextTruncate
+                  line={1}
+                  element="div"
+                  truncateText="…"
+                  text={dao.displayName}
+                  textTruncateChild={null}
+                />
+              </div>
+              <div className={styles.daoId}>
+                <TextTruncate
+                  line={1}
+                  element="div"
+                  truncateText="…"
+                  text={dao.id}
+                  textTruncateChild={null}
+                />
+              </div>
+            </div>
+          </section>
+        </a>
+      </Link>
 
       <section className={styles.controls}>
         <ActionButton
           tooltip="DAO funds"
           tooltipPlacement="top"
           iconName="funds"
-          onClick={() => {
-            router.push(`/dao/${dao.id}/treasury/tokens`);
-          }}
-          className={styles.controlIcon}
+          onClick={() => handleChapterClick(url.funds)}
+          className={generateChapterStyle(url.funds)}
         />
         <ActionButton
           tooltip="DAO members"
           tooltipPlacement="top"
           iconName="groups"
-          onClick={() => {
-            router.push(`/dao/${dao.id}/groups/all-members`);
-          }}
-          className={styles.controlIcon}
+          onClick={() => handleChapterClick(url.members)}
+          className={generateChapterStyle(url.members)}
         />
         <ActionButton
           tooltip="DAO Settings"
           tooltipPlacement="top"
           iconName="settings"
-          onClick={() => {
-            router.push(`/dao/${dao.id}/governance/settings`);
-          }}
-          className={styles.controlIcon}
+          onClick={() => handleChapterClick(url.settings)}
+          className={generateChapterStyle(url.settings)}
         />
         <ActionButton
           tooltip="NFTs"
           tooltipPlacement="top"
           iconName="nfts"
-          onClick={() => {
-            router.push(`/dao/${dao.id}/treasury/nfts`);
-          }}
-          className={styles.controlIcon}
+          onClick={() => handleChapterClick(url.nfts)}
+          className={generateChapterStyle(url.nfts)}
         />
         <ActionButton
           tooltip="Bounties"
           tooltipPlacement="top"
           iconName="proposalBounty"
-          onClick={() => {
-            router.push(`/dao/${dao.id}/tasks/bounties`);
-          }}
-          className={styles.controlIcon}
+          onClick={() => handleChapterClick(url.bounties)}
+          className={generateChapterStyle(url.bounties)}
         />
         <ActionButton
           tooltip="Polls"
           tooltipPlacement="top"
           iconName="proposalPoll"
-          onClick={() => {
-            router.push(`/dao/${dao.id}/tasks/polls`);
-          }}
-          className={styles.controlIcon}
+          onClick={() => handleChapterClick(url.polls)}
+          className={generateChapterStyle(url.polls)}
         />
       </section>
 

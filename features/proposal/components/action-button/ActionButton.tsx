@@ -9,6 +9,7 @@ import styles from './action-button.module.scss';
 interface ActionButtonProps {
   className?: string;
   iconName: IconName;
+  size?: 'small' | 'medium' | 'large';
   tooltip?: string;
   tooltipPlacement?: 'right' | 'top' | 'bottom' | 'left' | 'auto';
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -17,6 +18,7 @@ interface ActionButtonProps {
 export const ActionButton: FC<ActionButtonProps> = ({
   className,
   iconName,
+  size = 'large',
   onClick,
   tooltip,
   tooltipPlacement = 'auto',
@@ -31,6 +33,7 @@ export const ActionButton: FC<ActionButtonProps> = ({
           icon={iconName as IconName}
           onClick={onClick}
           className={styles.btn}
+          size={size}
         />
         {children}
       </div>

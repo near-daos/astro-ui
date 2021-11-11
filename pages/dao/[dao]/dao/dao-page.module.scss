@@ -27,7 +27,9 @@
 }
 
 .details {
-  margin-left: -100px;
+  @include tablet-landscape {
+    margin-left: -100px;
+  }
 }
 
 .createProposal {
@@ -36,10 +38,4 @@
 
 .feed {
   grid-area: feed;
-}
-
-@media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .details {
-    margin-left: unset;
-  }
 }

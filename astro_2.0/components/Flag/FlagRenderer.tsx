@@ -5,7 +5,7 @@ import styles from './FlagRenderer.module.scss';
 interface FlagRendererProps {
   flag: string | undefined;
   logo?: string | undefined;
-  size: 'sm' | 'lg';
+  size: 'xs' | 'sm' | 'lg';
 }
 
 function isSafariBrowser(): boolean {
@@ -20,10 +20,41 @@ export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
   const canvasRef = useRef<HTMLCanvasElement>();
   const wrapperRef = useRef<HTMLDivElement>();
 
-  const imageDimensions = useMemo(
-    () => (size === 'lg' ? [238, 272] : [68, 78]),
-    [size]
-  );
+  function getImageDimensions(flagSize: string) {
+    switch (flagSize) {
+      case 'lg': {
+        return [238, 272];
+      }
+      case 'sm': {
+        return [68, 78];
+      }
+      case 'xs': {
+        return [47, 53];
+      }
+      default: {
+        return [238, 272];
+      }
+    }
+  }
+
+  function getImagePathId(flagSize: string) {
+    switch (flagSize) {
+      case 'lg': {
+        return '_ASTRO_flag';
+      }
+      case 'sm': {
+        return '_ASTRO_flagMinimized';
+      }
+      case 'xs': {
+        return '_ASTRO_flagXS';
+      }
+      default: {
+        return '_ASTRO_flag';
+      }
+    }
+  }
+
+  const imageDimensions = useMemo(() => getImageDimensions(size), [size]);
 
   const [image, setImage] = useState<HTMLImageElement>();
 
@@ -86,15 +117,17 @@ export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
         <clipPath id="_ASTRO_flagMinimized">
           <path d="M68.8249 0L14.4555 19.4307V30.2124L0 35.3785V78.0007L54.3694 58.57V47.7883L68.8249 42.6222V0Z" />
         </clipPath>
+        <clipPath id="_ASTRO_flagXS">
+          <path d="M46.4118 0L9.74793 13.103V20.3722L0 23.856V52.5981L36.6639 39.4951V32.2259L46.4118 28.7421V0Z" />
+        </clipPath>
       </svg>
       {size === 'lg' && <div className={styles.background} />}
       {size === 'sm' && <div className={styles.backgroundSmall} />}
+      {size === 'xs' && <div className={styles.backgroundXS} />}
       <canvas
         ref={canvasRef as React.LegacyRef<HTMLCanvasElement>}
         style={{
-          clipPath: `url(#${
-            size === 'lg' ? '_ASTRO_flag' : '_ASTRO_flagMinimized'
-          })`,
+          clipPath: `url(#${getImagePathId(size)})`,
         }}
       />
       {logo && size === 'lg' && (

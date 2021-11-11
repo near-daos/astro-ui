@@ -25,6 +25,7 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
         tooltip={`Remove: ${removeCount}`}
         onClick={onRemove}
         iconName="buttonDelete"
+        size="small"
         className={styles.icon}
         tooltipPlacement="right"
       />
@@ -32,6 +33,7 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
       <ActionButton
         tooltip="Tweet"
         iconName="socialTwitter"
+        size="small"
         tooltipPlacement="right"
         className={styles.icon}
       />

@@ -18,7 +18,10 @@
 }
 
 .generalInfoWrapper {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
 
   .displayName {
     @extend %title1;
@@ -63,6 +66,7 @@
   flex-wrap: wrap;
   gap: 14px;
   list-style: none;
+  margin-bottom: 0;
   padding: 0;
 }
 
@@ -100,6 +104,12 @@
   height: 24px;
   margin: 0 0 4px 8px;
   width: 24px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-md}px) {
+  .flagWrapper {
+    margin-right: 16px;
+  }
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {

@@ -32,3 +32,11 @@
   position: absolute;
   transform: scale(1.04, 1.045);
 }
+
+.backgroundXS {
+  background-color: var(--color-white);
+  clip-path: url('#_ASTRO_flagXS');
+  inset: 0;
+  position: absolute;
+  transform: scale(1.04, 1.045);
+}

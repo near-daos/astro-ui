@@ -20,11 +20,10 @@
 }
 
 .general {
-  align-items: flex-start;
+  align-items: center;
   display: flex;
   grid-area: general;
-  justify-content: flex-start;
-  padding: 12px 0 12px 24px;
+  padding: 8px 0 8px 36px;
 
   > div:last-of-type {
     flex: 1 1 100%;
@@ -34,6 +33,7 @@
 .controls {
   align-items: center;
   display: flex;
+  gap: 4px;
   justify-content: flex-end;
   padding: 12px 0;
 }
@@ -43,29 +43,10 @@
 }
 
 .flagWrapper {
-  flex: 0 0 69px;
-  height: 78px;
-  margin-right: 24px;
-  margin-top: -42px;
-  position: relative;
-  width: 69px;
-
-  .background {
-    background-color: var(--color-white);
-    clip-path: url('#flag');
-    inset: 0;
-    position: absolute;
-    transform: scale(1.04, 1.045);
-  }
-
-  .cover {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: auto;
-    clip-path: url('#flag');
-    height: 100%;
-    width: 100%;
-  }
+  flex: 0 0 47px;
+  height: 53px;
+  margin-right: 22px;
+  width: 47px;
 }
 
 .displayName {
@@ -89,11 +70,13 @@
 .controlIcon {
   @include centralize;
   border-radius: 4px;
-  height: 42px;
-  width: 42px;
 
   > button {
     color: var(--color-neutral-60);
+  }
+
+  svg {
+    width: 16px;
   }
 }
 
@@ -103,6 +86,17 @@
 
   > button {
     color: var(--color-brand-black);
+  }
+}
+
+.controlIcon.active {
+  > button {
+    color: var(--color-brand-black);
+    cursor: default;
+  }
+
+  &:hover {
+    background-color: transparent;
   }
 }
 
@@ -118,13 +112,12 @@
   }
 
   .general {
-    justify-content: flex-start;
     padding: 12px 12px 0;
   }
 
   .controls {
     justify-content: space-around;
-    padding: 0;
+    padding: 0 32px;
   }
 
   .displayName {
@@ -133,5 +126,11 @@
 
   .addProposalButton {
     border-radius: 0 0 8px 8px;
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-xs}px) {
+  .controls {
+    padding: 0 16px;
   }
 }

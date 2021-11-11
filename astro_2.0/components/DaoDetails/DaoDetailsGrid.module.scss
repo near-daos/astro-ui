@@ -116,18 +116,12 @@
 .controlIcon {
   @include centralize;
   border-radius: 4px;
-  height: 42px;
-  width: 42px;
 
   > button {
     color: var(--color-neutral-60);
-    height: 100% !important;
-    margin: 0;
-    width: 100% !important;
   }
 
   svg {
-    height: 16px;
     width: 16px;
   }
 }
