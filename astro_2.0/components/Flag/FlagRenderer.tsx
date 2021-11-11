@@ -16,6 +16,13 @@ function isSafariBrowser(): boolean {
   );
 }
 
+const LARGE_FLAG_PATH =
+  'M240.01 0L50.4101 67.7595V105.35L0 123.366V272L189.599 204.24V166.65L240.01 148.634V0Z';
+const SMALL_FLAG_PATH =
+  'M68.8249 0L14.4555 19.4307V30.2124L0 35.3785V78.0007L54.3694 58.57V47.7883L68.8249 42.6222V0Z';
+const EXTRA_SMALL_FLAG_PATH =
+  'M46.4118 0L9.74793 13.103V20.3722L0 23.856V52.5981L36.6639 39.4951V32.2259L46.4118 28.7421V0Z';
+
 export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
   const canvasRef = useRef<HTMLCanvasElement>();
   const wrapperRef = useRef<HTMLDivElement>();
@@ -37,19 +44,19 @@ export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
     }
   }
 
-  function getImagePathId(flagSize: string) {
+  function getPath(flagSize: string) {
     switch (flagSize) {
       case 'lg': {
-        return '_ASTRO_flag';
+        return LARGE_FLAG_PATH;
       }
       case 'sm': {
-        return '_ASTRO_flagMinimized';
+        return SMALL_FLAG_PATH;
       }
       case 'xs': {
-        return '_ASTRO_flagXS';
+        return EXTRA_SMALL_FLAG_PATH;
       }
       default: {
-        return '_ASTRO_flag';
+        return LARGE_FLAG_PATH;
       }
     }
   }
@@ -112,13 +119,13 @@ export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
     >
       <svg className="svg" width="0" height="0">
         <clipPath id="_ASTRO_flag">
-          <path d="M240.01 0L50.4101 67.7595V105.35L0 123.366V272L189.599 204.24V166.65L240.01 148.634V0Z" />
+          <path d={LARGE_FLAG_PATH} />
         </clipPath>
         <clipPath id="_ASTRO_flagMinimized">
-          <path d="M68.8249 0L14.4555 19.4307V30.2124L0 35.3785V78.0007L54.3694 58.57V47.7883L68.8249 42.6222V0Z" />
+          <path d={SMALL_FLAG_PATH} />
         </clipPath>
         <clipPath id="_ASTRO_flagXS">
-          <path d="M46.4118 0L9.74793 13.103V20.3722L0 23.856V52.5981L36.6639 39.4951V32.2259L46.4118 28.7421V0Z" />
+          <path d={EXTRA_SMALL_FLAG_PATH} />
         </clipPath>
       </svg>
       {size === 'lg' && <div className={styles.background} />}
@@ -127,7 +134,7 @@ export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
       <canvas
         ref={canvasRef as React.LegacyRef<HTMLCanvasElement>}
         style={{
-          clipPath: `url(#${getImagePathId(size)})`,
+          clipPath: `path('${getPath(size)}')`,
         }}
       />
       {logo && size === 'lg' && (
