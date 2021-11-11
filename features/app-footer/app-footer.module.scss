@@ -78,6 +78,16 @@
   }
 }
 
+.repo {
+  display: none;
+  grid-area: repo;
+  margin-top: 8px;
+
+  @include tablet-landscape {
+    text-align: right;
+  }
+}
+
 .version {
   grid-area: version;
   margin-top: 8px;
@@ -153,6 +163,7 @@
       'report'
       'version'
       'progress'
+      'repo'
       'copyright'
       'links'
       'powered';
@@ -165,7 +176,7 @@
         'invitation invitation invitation'
         'social social powered'
         'links report copyright'
-        'version . progress';
+        'version progress repo';
       grid-template-columns: 2fr 1fr 3fr;
     }
 
@@ -232,6 +243,7 @@
 
   .report,
   .version,
+  .repo,
   .progress {
     @include tablet-landscape {
       margin-top: 0;
@@ -252,12 +264,14 @@
       'report'
       'version'
       'progress'
+      'repo'
       'copyright'
       'links'
       'powered';
   }
 
-  .progress {
+  .progress,
+  .repo {
     display: block;
     text-align: left;
   }
