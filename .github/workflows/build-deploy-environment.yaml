@@ -25,8 +25,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set Environment
+      if: inputs.environment == 'test'
       env:
-        ENVIRONMENT_NAME: ${{ inputs.environment }}
+        ENVIRONMENT_NAME: 'test'
+      run: |
+        echo DOCKER_ENV_TAG=${ENVIRONMENT_NAME}-$GITHUB_SHA >> $GITHUB_ENV
+        cat ".github/env.common" >>$GITHUB_ENV
+        cat ".github/env.${ENVIRONMENT_NAME}" >>$GITHUB_ENV
+    - name: Set Environment
+      if: inputs.environment == 'qa'
+      env:
+        ENVIRONMENT_NAME: 'qa'
       run: |
         echo DOCKER_ENV_TAG=${ENVIRONMENT_NAME}-$GITHUB_SHA >> $GITHUB_ENV
         cat ".github/env.common" >>$GITHUB_ENV
