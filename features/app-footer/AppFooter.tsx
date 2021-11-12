@@ -22,21 +22,6 @@ export const AppFooter: FC<AppFooterProps> = ({
     );
   }
 
-  function renderPrivacyAndPolicySection() {
-    // <Link passHref href="/policy">
-    //   <a href="*" className={styles.link}>
-    //     Privacy Policy
-    //   </a>
-    // </Link>
-    // <Link passHref href="/terms">
-    //   <a href="*" className={styles.link}>
-    //     Terms of Use
-    //   </a>
-    // </Link>
-
-    return 'Community developed. Not audited. Use at your own risk.';
-  }
-
   return (
     <footer className={styles.root}>
       <div
@@ -61,20 +46,8 @@ export const AppFooter: FC<AppFooterProps> = ({
             </div>
           )}
           <div className={styles.social}>
-            {/* {renderSocialIcon('https://discord.com/', 'socialDiscord')} */}
             {renderSocialIcon('https://twitter.com/AstroDao', 'socialTwitter')}
-            {/* {renderSocialIcon('https://github.com/', 'socialGithub')} */}
             {renderSocialIcon('https://t.me/astro_near', 'socialTelegram')}
-          </div>
-          <div className={styles.report}>
-            <a
-              className={styles.devLink}
-              href="https://airtable.com/shr4ZmQzmTE5cKZm3"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Report an issue
-            </a>
           </div>
           <div className={styles.version}>
             <a
@@ -83,29 +56,22 @@ export const AppFooter: FC<AppFooterProps> = ({
               target="_blank"
               rel="noreferrer noopener"
             >
-              Build number: 21.5
+              Build 21.5
             </a>
-          </div>
-          <div className={styles.progress}>
+            <span className={styles.divider}>|</span>
             <a
               className={styles.devLink}
-              href="https://app.clickup.com/4703550/v/b/li/150305945"
+              href="https://airtable.com/shr4ZmQzmTE5cKZm3"
               target="_blank"
               rel="noreferrer noopener"
             >
-              Dev Progress
+              Report issue
             </a>
           </div>
-          <div className={styles.links}>{renderPrivacyAndPolicySection()}</div>
           <div className={styles.copyright}>
-            SputnikDAO 2021. The software is an&nbsp;open source and provided
-            “as&nbsp;is”, without warranty of&nbsp;any kind.
-          </div>
-          <div className={styles.powered}>
-            <span>powered by</span>
-            <i>
-              <Icon name="logoNearFull" width={77} className={styles.logo} />
-            </i>
+            SputnikDAO 2021. The software is an open source and provided “as
+            is”, without warranty of any kind. Community developed. Not audited.
+            Use at your own risk.
           </div>
         </div>
       </div>

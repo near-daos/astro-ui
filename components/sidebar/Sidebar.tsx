@@ -181,6 +181,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <Icon name="appLogo" width={92} />
         </div>
         <Logo className={styles.mainLogo} />
+        <div className={styles.powered}>
+          <a
+            className={styles.devLink}
+            href="https://near.org"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            <span>powered by</span>
+            <i>
+              <Icon name="logoNearFull" width={77} className={styles.logo} />
+            </i>
+          </a>
+        </div>
         <div className={styles.scrolling}>
           {renderHomeNavItem()}
           {renderAllCommunities()}
