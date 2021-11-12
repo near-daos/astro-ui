@@ -8,8 +8,12 @@
 .row {
   align-items: center;
   display: flex;
-  height: 41px;
+  height: 39px;
   white-space: nowrap;
+
+  @include tablet-landscape {
+    height: 41px;
+  }
 
   .iconWrapper {
     background-color: var(--color-neutral-30);
@@ -41,7 +45,7 @@
 
     > div:nth-child(3),
     > div:nth-child(5) {
-      height: 24px;
+      height: 22px;
       width: 100%;
     }
   }

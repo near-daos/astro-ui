@@ -1,9 +1,14 @@
+@import 'styles/mixins';
 @import 'styles/typography';
 
 .root {
   display: flex;
   flex-direction: column;
   width: fit-content;
+
+  @include tablet-landscape {
+    justify-content: space-between;
+  }
 
   &.fullWidth {
     width: 100%;
@@ -26,6 +31,7 @@
   color: var(--color-neutral-60);
   display: flex;
   padding-bottom: 8px;
+  word-break: initial;
 }
 
 .icon {
@@ -41,7 +47,10 @@
   align-items: center;
   display: flex;
   font-weight: 700;
-  height: 41px;
+
+  @include tablet-landscape {
+    height: 41px;
+  }
 
   &.normal {
     font-weight: 400;
