@@ -130,23 +130,25 @@ export function useProposals(): UseProposalsResult {
 export function filterProposalsByStatus(proposals: Proposal[]): Proposal[][] {
   return proposals.reduce(
     (res, item) => {
+      res[0].push(item);
+
       switch (item.status) {
         case 'InProgress': {
-          res[0].push(item);
-          break;
-        }
-        case 'Approved': {
           res[1].push(item);
           break;
         }
-        default: {
+        case 'Approved': {
           res[2].push(item);
+          break;
+        }
+        default: {
+          res[3].push(item);
         }
       }
 
       return res;
     },
-    [[] as Proposal[], [] as Proposal[], [] as Proposal[]]
+    [[] as Proposal[], [] as Proposal[], [] as Proposal[], [] as Proposal[]]
   );
 }
 

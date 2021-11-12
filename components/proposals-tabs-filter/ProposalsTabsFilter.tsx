@@ -18,7 +18,8 @@ export const ProposalsTabsFilter: FC<ProposalsTabsFilterProps<Proposal>> = ({
   proposals,
   tabContentRenderer,
   tabsConfig,
-  filter
+  filter,
+  children
 }) => {
   const filteredData = filter(proposals);
 
@@ -30,7 +31,9 @@ export const ProposalsTabsFilter: FC<ProposalsTabsFilterProps<Proposal>> = ({
 
   return (
     <div>
-      <Tabs tabs={tabs} />
+      <Tabs tabs={tabs} skipShallow>
+        {children}
+      </Tabs>
     </div>
   );
 };
