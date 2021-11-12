@@ -129,6 +129,14 @@
 }
 
 @media screen and (max-width: #{breakpoints.$screen-md}px) {
+  .statusFilterRoot {
+    margin: 0;
+    position: initial;
+    top: initial;
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-md}px) {
   .statusFilterWrapper {
     top: 62px;
   }
@@ -220,6 +228,17 @@
 .listWrapper {
   display: flex;
   justify-content: space-between;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    flex-direction: column;
+    padding: 0;
+  }
+}
+
+.categoriesListTitle {
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    display: none;
+  }
 }
 
 .categoriesListRoot {
@@ -227,6 +246,13 @@
   position: sticky;
   top: 160px;
   width: 120px;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    margin: 0;
+    padding: 15px 0;
+    position: static;
+    width: auto;
+  }
 }
 
 .highlighterRoot {

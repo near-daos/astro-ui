@@ -14,8 +14,7 @@ import { useCustomTokensContext } from 'context/CustomTokensContext';
 import { NoResultsView } from 'features/no-results-view';
 import FeedList from 'astro_2.0/features/Feed';
 import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
-
-import CategoriesList from './CategoriesList';
+import { ProposalCategoryFilter } from 'astro_2.0/features/Proposals/components/ProposalCategoryFilter';
 
 import styles from './Feed.module.scss';
 
@@ -138,11 +137,13 @@ const FeedPage = ({ initialProposals }: Props): JSX.Element => {
       </div>
 
       <div className={styles.container}>
-        <CategoriesList
+        <ProposalCategoryFilter
           query={queries}
           queryName="category"
+          title="Choose a filter"
           disabled={proposalsDataIsLoading}
           className={styles.categoriesListRoot}
+          titleClassName={styles.categoriesListTitle}
         />
 
         {proposalsData && (

@@ -18,14 +18,20 @@
   top: 160px;
   width: 120px;
   z-index: 1;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    margin: 0 0 30px;
+    padding: 15px 0;
+    position: static;
+    width: auto;
+  }
 }
 
 .feedHeader {
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 60px;
-
+  padding: 20px 0;
   position: sticky;
   top: 70px;
   z-index: 2;
@@ -42,6 +48,15 @@
     width: 100vw;
     z-index: -1;
   }
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    padding: 10px 0;
+    top: 64px;
+  }
+}
+
+.container {
+  margin-top: 26px;
 }
 
 .proposalCardWrapper {

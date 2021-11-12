@@ -106,9 +106,13 @@ export const ProposalsFeed: React.FC<ProposalsFeedProps> = ({
         />
       </div>
 
-      <div className={styles.content}>
+      <div className={styles.container}>
         {!category && (
-          <ProposalCategoryFilter className={styles.categoryFilter} />
+          <ProposalCategoryFilter
+            className={styles.categoryFilter}
+            query={query}
+            queryName="proposalCategory"
+          />
         )}
         <Feed
           className={styles.feed}

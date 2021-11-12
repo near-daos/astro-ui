@@ -1,10 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import cn from 'classnames';
+import classNames from 'classnames';
 
 import { ProposalCategories } from 'types/proposal';
 
-import useQuery from 'hooks/useQuery';
 import styles from './ProposalCategoryFilter.module.scss';
 
 const FEED_CATEGORIES = [
@@ -15,48 +14,44 @@ const FEED_CATEGORIES = [
   { value: ProposalCategories.Polls, label: 'Polls' },
 ];
 
-const ACTIVE_CLASSES_MAP = {
-  [ProposalCategories.Governance]: styles.categoriesListActive1,
-  [ProposalCategories.Financial]: styles.categoriesListActive2,
-  [ProposalCategories.Bounties]: styles.categoriesListActive3,
-  [ProposalCategories.Members]: styles.categoriesListActive4,
-  [ProposalCategories.Polls]: styles.categoriesListActive5,
-};
-
-type ProposalCategoryFiltertProps = {
-  className?: string;
-  disabled?: boolean;
-};
-
-export const ProposalCategoryFilter: React.FC<ProposalCategoryFiltertProps> = ({
+export const ProposalCategoryFilter = ({
+  query,
+  queryName,
   disabled,
   className,
-}) => {
-  const { query } = useQuery<{
-    proposalCategory: ProposalCategories;
-  }>();
+  titleClassName,
+  title,
+  list,
+}: Props): JSX.Element => {
+  const { [queryName]: value, ...otherQuery } = query;
 
   return (
-    <nav className={cn(styles.categoriesListRoot, className)}>
-      <p className={styles.categoriesListTitle}>Choose a filter</p>
+    <div className={classNames(styles.categoriesListRoot, className)}>
+      {title && (
+        <p className={classNames(styles.categoriesListTitle, titleClassName)}>
+          {title}
+        </p>
+      )}
+
       <ul
-        className={cn(
-          styles.categoriesList,
-          ACTIVE_CLASSES_MAP[query.proposalCategory]
-        )}
+        className={classNames(styles.categoriesList, {
+          [styles.categoriesListActive1]:
+            list?.[0] && value === list?.[0]?.value,
+          [styles.categoriesListActive2]:
+            list?.[1] && value === list?.[1]?.value,
+          [styles.categoriesListActive3]:
+            list?.[2] && value === list?.[2]?.value,
+          [styles.categoriesListActive4]:
+            list?.[3] && value === list?.[3]?.value,
+          [styles.categoriesListActive5]:
+            list?.[4] && value === list?.[4]?.value,
+        })}
       >
-        <li>
-          <Link
-            href={{
-              query: { ...query, proposalCategory: query.proposalCategory },
-            }}
-            replace
-            shallow
-            scroll={false}
-          >
+        <li className={styles.categoriesListItemWrapper}>
+          <Link href={{ query: otherQuery }} replace shallow scroll={false}>
             <a
-              className={cn(styles.categoriesListItem, {
-                [styles.categoriesListItemSelected]: !query.proposalCategory,
+              className={classNames(styles.categoriesListItem, {
+                [styles.categoriesListItemSelected]: !value,
                 '.disabled': disabled,
               })}
               tabIndex={disabled ? -1 : 0}
@@ -66,24 +61,25 @@ export const ProposalCategoryFilter: React.FC<ProposalCategoryFiltertProps> = ({
           </Link>
         </li>
 
-        {FEED_CATEGORIES.map(item => {
+        {list?.map(item => {
+          const href = {
+            query: {
+              ...query,
+              [queryName]: item.value,
+            },
+          };
+
+          if (query[queryName] === item.value) {
+            delete (href.query as Partial<typeof href.query>).category;
+          }
+
           return (
-            <li key={item.value}>
-              <Link
-                href={{
-                  query: {
-                    ...query,
-                    proposalCategory: item.value,
-                  },
-                }}
-                replace
-                shallow
-                scroll={false}
-              >
+            <li key={item.value} className={styles.categoriesListItemWrapper}>
+              <Link href={href} replace shallow scroll={false}>
                 <a
-                  className={cn(styles.categoriesListItem, {
+                  className={classNames(styles.categoriesListItem, {
                     [styles.categoriesListItemSelected]:
-                      query.proposalCategory === item.value,
+                      query[queryName] === item.value,
                     '.disabled': disabled,
                   })}
                   tabIndex={disabled ? -1 : 0}
@@ -95,6 +91,25 @@ export const ProposalCategoryFilter: React.FC<ProposalCategoryFiltertProps> = ({
           );
         })}
       </ul>
-    </nav>
+    </div>
   );
 };
+
+type Props = {
+  title?: string;
+  disabled?: boolean;
+  queryName: string;
+  query: Record<string, string | string[]>;
+  className?: string;
+  titleClassName?: string;
+  list?: { value: string; label: string }[];
+};
+
+ProposalCategoryFilter.defaultProps = {
+  disabled: undefined,
+  className: undefined,
+  title: undefined,
+  list: FEED_CATEGORIES,
+};
+
+export default ProposalCategoryFilter;

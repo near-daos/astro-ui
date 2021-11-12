@@ -8,7 +8,7 @@ import { statusFilterOptions } from 'features/search/search-filters/helpers';
 import { NoResultsView } from 'features/no-results-view';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
-import ProposalCategoriesList from 'astro_2.0/components/Feed/CategoriesList';
+import { ProposalCategoryFilter } from 'astro_2.0/features/Proposals/components/ProposalCategoryFilter';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 
 import styles from './proposals-tab-view.module.scss';
@@ -123,7 +123,7 @@ export const ProposalsTabView: React.FC = () => {
       </div>
 
       <div className={styles.listWrapper}>
-        <ProposalCategoriesList
+        <ProposalCategoryFilter
           queryName="category"
           query={queries as Record<string, string>}
           list={[
@@ -146,6 +146,7 @@ export const ProposalsTabView: React.FC = () => {
           ]}
           title="Choose a type"
           className={styles.categoriesListRoot}
+          titleClassName={styles.categoriesListTitle}
         />
 
         <Highlighter className={styles.highlighterRoot}>

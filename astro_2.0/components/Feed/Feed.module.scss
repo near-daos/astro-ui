@@ -45,6 +45,10 @@
     width: 100vw;
     z-index: -1;
   }
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    padding-bottom: 12px;
+  }
 }
 
 .container {
@@ -52,24 +56,46 @@
   justify-content: space-between;
   margin: 0 auto;
   padding-top: 100px;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    flex-direction: column;
+    padding: 0;
+  }
 }
 
 /* stylelint-disable-next-line */
 .container :global(.infinite-scroll-component__outerdiv) {
   flex-grow: 1;
+
+  @media screen and (max-width: #{breakpoints.$screen-sm}px) {
+    flex-grow: 1;
+    max-width: 100%;
+  }
 }
 
 .categoriesListRoot {
+  background: var(--color-neutral-10);
   margin-left: -170px;
   position: sticky;
   top: 160px;
   width: 120px;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    margin: 0;
+    padding: 15px 0;
+    position: static;
+    width: auto;
+  }
 }
 
 .listWrapper {
   flex-grow: 1;
   margin-top: -100px;
   max-width: 100%;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    margin: 0;
+  }
 }
 
 .loading {
@@ -85,10 +111,8 @@
   margin-top: 32px;
 }
 
-@media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  /* stylelint-disable-next-line */
-  .container :global(.infinite-scroll-component__outerdiv) {
-    flex-grow: 1;
-    max-width: 100%;
+.categoriesListTitle {
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    display: none;
   }
 }

@@ -1,13 +1,19 @@
+@use 'styles/breakpoints';
+
 .categoriesListRoot {
   max-height: 220px;
+  width: 100%;
 }
 
 .categoriesList {
   list-style: none;
   margin: 0;
   overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
   padding: 0;
   position: relative;
+  scrollbar-width: none;
 
   &::before,
   &::after {
@@ -30,6 +36,21 @@
     transition: transform 0.15s ease-in-out;
     z-index: 1;
   }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 2px;
+
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
 }
 
 .categoriesListActive1::after {
@@ -48,16 +69,57 @@
   transform: translateY(500%);
 }
 
+.categoriesListItemWrapper {
+  min-width: fit-content;
+}
+
 .categoriesListItem {
   color: var(--color-passive-text-gray);
+  display: flex;
   font-family: var(--font-family-secondary);
   font-size: 14px;
   line-height: 30px;
   padding-left: 12px;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    font-family: var(--font-family-primary);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 32px;
+    padding: 0 14px;
+    position: relative;
+
+    &::before {
+      background-color: var(--color-passive-gray);
+      bottom: -2px;
+      content: '';
+      height: 2px;
+      left: 0;
+      position: absolute;
+      width: 100%;
+      z-index: 1;
+    }
+  }
 }
 
 .categoriesListItemSelected {
   color: var(--color-main-dark);
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    position: relative;
+
+    &::after {
+      background-color: var(--color-brand-purple);
+      bottom: -2px;
+      content: '';
+      height: 2px;
+      left: 0;
+      position: absolute;
+      width: 100%;
+      z-index: 1;
+    }
+  }
 }
 
 .categoriesListTitle {
