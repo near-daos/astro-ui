@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
+import { useMedia } from 'react-use';
 
 import { TextArea } from 'components/inputs/textarea/TextArea';
 import { Input } from 'components/inputs/input/Input';
@@ -44,6 +45,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     register,
     formState: { errors },
   } = useFormContext();
+  const isMobile = useMedia('(max-width: 767px)');
 
   return (
     <div className={styles.root}>
@@ -56,7 +58,17 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
         ) : (
           <GroupedSelect
             key={type}
-            inputSize={getInputSize(type)}
+            inputStyles={
+              isMobile
+                ? {
+                    width: `${getInputSize(type, 26) - 2}ch`,
+                    paddingRight: 0,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    paddingLeft: 0,
+                  }
+                : {}
+            }
             defaultValue={type}
             options={proposalTypesOptions}
             onChange={v => onTypeSelect(v as ProposalVariant)}

@@ -195,18 +195,22 @@ export function getProposalTypesOptions(): {
   ];
 }
 
-export function getInputSize(proposalType: ProposalVariant): number {
+export function getInputSize(
+  proposalType: ProposalVariant,
+  max: number
+): number {
   const options = getProposalTypesOptions();
 
-  return (
+  const length =
     options
       .reduce((r, k) => {
         r.push(...k.options);
 
         return r;
       }, [] as Option[])
-      .find(item => item.value === proposalType)?.label?.length ?? 120
-  );
+      .find(item => item.value === proposalType)?.label?.length ?? max;
+
+  return length >= max ? max : length;
 }
 
 export const extractMembersFromDao = (
