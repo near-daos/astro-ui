@@ -21,11 +21,13 @@ export interface DaoDetailsProps {
   activeProposals: number;
   totalProposals: number;
   restrictCreateProposals?: boolean;
+  nearPrice: number;
 }
 
 export const DaoDetails: FC<DaoDetailsProps> = ({
-  className,
   dao,
+  className,
+  nearPrice,
   accountId,
   onCreateProposalClick,
   activeProposals,
@@ -46,6 +48,12 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
       <>Create proposal</>
     );
 
+  function getFundsInUsdFromNear() {
+    const funds = nearPrice * parseFloat(dao.funds);
+
+    return funds.toFixed(2);
+  }
+
   return (
     <div className={cn(styles.root, className)}>
       <section className={styles.general}>
@@ -65,7 +73,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
           <a>
             <div className={styles.label}>DAO funds</div>
             <div className={styles.value}>
-              <span className={styles.bold}>{dao.funds}</span> USD
+              <span className={styles.bold}>{getFundsInUsdFromNear()}</span> USD
             </div>
           </a>
         </Link>

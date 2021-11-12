@@ -17,6 +17,8 @@ import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 import { ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
 
+import { useNearPrice } from 'hooks/useNearPrice';
+
 import styles from './MyDaosPage.module.scss';
 
 interface MyDaosPageProps {
@@ -26,6 +28,7 @@ interface MyDaosPageProps {
 const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
   const router = useRouter();
   const { accountId, login } = useAuthContext();
+  const nearPrice = useNearPrice();
 
   const [createProposalForDao, setCreateProposalForDao] = useState<DAO | null>(
     null
@@ -58,6 +61,7 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
 
       return (
         <DaoDetails
+          nearPrice={nearPrice}
           key={id}
           dao={dao}
           accountId={accountId}
