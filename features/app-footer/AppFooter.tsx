@@ -68,6 +68,16 @@ export const AppFooter: FC<AppFooterProps> = ({
               Report issue
             </a>
           </div>
+          <div className={styles.repo}>
+            <a
+              className={styles.devLink}
+              href="https://github.com/near-daos/astro-ui"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Github repo
+            </a>
+          </div>
           <div className={styles.copyright}>
             SputnikDAO 2021. The software is an open source and provided “as
             is”, without warranty of any kind. Community developed. Not audited.

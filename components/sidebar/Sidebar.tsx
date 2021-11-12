@@ -16,11 +16,7 @@ import { useAuthContext } from 'context/AuthContext';
 import { Logo } from 'components/Logo';
 import { Icon } from 'components/Icon';
 import { NavItem } from 'components/nav-item/NavItem';
-import { NavSubItem } from 'components/nav-item/NavSubItem';
-import { Collapsable } from 'components/collapsable/Collapsable';
-
 import { AppFooter } from 'features/app-footer';
-
 import { DaoNavMenu } from './components/DaoNavMenu';
 
 import styles from './Sidebar.module.scss';
@@ -30,13 +26,6 @@ interface SidebarProps {
   fullscreen?: boolean;
   closeSideBar?: () => void;
 }
-
-const NOT_COLLAPSABLE_MENU_ITEMS = [
-  MY_DAOS_URL,
-  MY_FEED_URL,
-  ALL_DAOS_URL,
-  ALL_FEED_URL
-];
 
 export const Sidebar: React.FC<SidebarProps> = ({
   className,
@@ -66,39 +55,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
     [login, router, accountId]
   );
 
-  function isSectionExpanded(hrefs: string[]): boolean {
-    const { pathname } = router;
-
-    return hrefs.includes(pathname);
-  }
-
   function renderHomeNavItem() {
     if (accountId) {
-      const subHrefs = [MY_DAOS_URL, MY_FEED_URL];
-      const { route } = router;
-
-      const isExpanded = isSectionExpanded(subHrefs);
-      const notCollapsable =
-        NOT_COLLAPSABLE_MENU_ITEMS.includes(route) && isExpanded;
-
       return (
-        <Collapsable
-          initialOpenState={notCollapsable || isExpanded}
-          renderHeading={toggle => {
-            return (
-              <NavItem
-                label="Home"
-                icon="stateHome"
-                onClick={notCollapsable ? undefined : toggle}
-                className={styles.item}
-                subHrefs={subHrefs}
-              />
-            );
-          }}
-        >
-          <NavSubItem label="My Daos" href={MY_DAOS_URL} />
-          <NavSubItem label="My Feed" href={MY_FEED_URL} />
-        </Collapsable>
+        <>
+          <NavItem
+            label="My feed"
+            icon="stateHome"
+            href={MY_FEED_URL}
+            className={styles.item}
+          />
+          <NavItem
+            label="Global feed"
+            icon="stateHome"
+            href={ALL_FEED_URL}
+            className={styles.item}
+          />
+        </>
       );
     }
 
@@ -120,33 +93,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
     return null;
   }
 
-  function renderAllCommunities() {
-    const subHrefs = [ALL_DAOS_URL, ALL_FEED_URL];
-    const { route } = router;
-
-    const isExpanded = isSectionExpanded(subHrefs);
-    const notCollapsable =
-      NOT_COLLAPSABLE_MENU_ITEMS.includes(route) && isExpanded;
-
+  function renderCommunities() {
     return (
       <nav className={styles.bottom}>
-        <Collapsable
-          initialOpenState={notCollapsable || isExpanded}
-          renderHeading={toggle => {
-            return (
-              <NavItem
-                onClick={notCollapsable ? undefined : toggle}
-                subHrefs={subHrefs}
-                label="All Communities"
-                icon="stateCommunities"
-                className={styles.item}
-              />
-            );
-          }}
-        >
-          <NavSubItem label="Explore Daos" href={ALL_DAOS_URL} />
-          <NavSubItem label="Astro Feed" href={ALL_FEED_URL} />
-        </Collapsable>
+        <>
+          <NavItem
+            label="My Communities"
+            href={MY_DAOS_URL}
+            icon="stateCommunities"
+            className={styles.item}
+          />
+          <NavItem
+            label="All Communities"
+            href={ALL_DAOS_URL}
+            icon="stateCommunities"
+            className={styles.item}
+          />
+        </>
       </nav>
     );
   }
@@ -196,7 +159,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
         <div className={styles.scrolling}>
           {renderHomeNavItem()}
-          {renderAllCommunities()}
+          {renderCommunities()}
           {renderDaoNavItems()}
           {renderCreateDaoNavItem()}
         </div>
