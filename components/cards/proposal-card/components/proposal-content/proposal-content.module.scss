@@ -3,6 +3,18 @@
 
 .row {
   display: flex;
+  margin-bottom: 12px;
+}
+
+.column {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  @extend %caption1;
+  color: var(--color-neutral-60);
 }
 
 .subRow {

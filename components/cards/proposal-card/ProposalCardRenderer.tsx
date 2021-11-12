@@ -133,6 +133,7 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
       content = (
         <FunctionCall
           recipient={proposal.kind.receiverId}
+          description={proposal.description}
           link={proposal.link}
         />
       );
