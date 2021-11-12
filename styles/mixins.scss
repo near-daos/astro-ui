@@ -84,7 +84,7 @@
 }
 
 @mixin tablet-landscape {
-  @media (min-width: #{breakpoints.$screen-sm}px) and (orientation: landscape) {
+  @media (min-width: #{breakpoints.$screen-sm}px) {
     @content;
   }
 }

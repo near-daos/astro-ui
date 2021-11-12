@@ -74,16 +74,31 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
         />
       )}
       {bountyStatus === 'Available' ? (
-        <Button variant="black" size="medium" onClick={claimHandler}>
+        <Button
+          variant="black"
+          size="small"
+          onClick={claimHandler}
+          className={styles.claim}
+        >
           Claim
         </Button>
       ) : (
         <>
-          <Button variant="secondary" size="small" onClick={unclaimHandler}>
+          <Button
+            variant="secondary"
+            size="small"
+            onClick={unclaimHandler}
+            className={styles.unclaim}
+          >
             Unclaim
           </Button>
 
-          <Button variant="black" size="small" onClick={completeHandler}>
+          <Button
+            variant="black"
+            size="small"
+            onClick={completeHandler}
+            className={styles.complete}
+          >
             Complete
           </Button>
         </>

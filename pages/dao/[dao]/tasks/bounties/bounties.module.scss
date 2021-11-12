@@ -11,7 +11,11 @@
     'filters'
     'content';
   grid-template-columns: 1fr;
-  padding-top: 56px;
+  padding-top: 40px;
+
+  @include desktop {
+    padding-top: 56px;
+  }
 }
 
 .breadcrumbs {
@@ -42,8 +46,13 @@
   display: grid;
   grid-column-gap: 24px;
   grid-row-gap: 24px;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   padding-top: 56px;
+  place-items: start center;
+
+  @include tablet-landscape {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .header {
@@ -94,5 +103,5 @@
   display: flex;
   grid-area: filters;
   justify-content: flex-end;
-  margin-top: 77px;
+  margin-top: 40px;
 }

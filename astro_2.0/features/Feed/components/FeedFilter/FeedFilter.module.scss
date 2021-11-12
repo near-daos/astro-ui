@@ -26,6 +26,7 @@
 
 .radio {
   margin: 0 8px;
+  white-space: nowrap;
 }
 
 .header {
@@ -71,21 +72,21 @@
     border-radius: 8px;
     box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
     flex-direction: column;
-    left: 0;
     margin-top: 6px;
+    min-width: 100%;
     opacity: 0;
     padding: 8px;
     pointer-events: none;
     position: absolute;
+    right: 0;
     top: 100%;
     top: calc(100% - 10px);
-    width: 100%;
   }
 
   .radio {
     height: 40px;
     margin: 0 !important;
-    padding: 0 10px;
+    padding: 0 15px 0 10px;
     width: 100%;
   }
 

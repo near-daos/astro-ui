@@ -11,6 +11,7 @@
   align-items: flex-start;
   display: flex;
   flex-direction: column;
+  margin-right: 10px;
   white-space: nowrap;
 }
 
@@ -22,7 +23,8 @@
 }
 
 .iconHolder {
-  padding-left: 14px;
+  padding-bottom: 2px;
+  padding-left: 10px;
 }
 
 .infoIcon {
@@ -38,7 +40,7 @@
 }
 
 .warningIcon {
-  color: var(--color-error-80);
+  color: var(--color-error-70);
   height: 16px;
   width: 16px;
 }
