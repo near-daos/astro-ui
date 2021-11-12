@@ -182,12 +182,23 @@ TextWithLink.defaultProps = {
 
 interface FunctionCallProps extends ProposalContentProps {
   recipient: string;
+  description: string;
 }
 
-export const FunctionCall: FC<FunctionCallProps> = ({ recipient, link }) => (
+export const FunctionCall: FC<FunctionCallProps> = ({
+  recipient,
+  link,
+  description
+}) => (
   <>
     <div className={styles.row}>
       <span className={styles.text}>{recipient}</span>
+    </div>
+    <div className={styles.row}>
+      <div className={styles.column}>
+        <div className={styles.label}>Description</div>
+        <div>{description}</div>
+      </div>
     </div>
     {link && (
       <div className={styles.sub}>

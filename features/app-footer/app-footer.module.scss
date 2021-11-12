@@ -78,6 +78,21 @@
   }
 }
 
+.divider {
+  font-size: 14px;
+  margin: 0 4px;
+}
+
+.repo {
+  display: none;
+  grid-area: repo;
+  margin-top: 8px;
+
+  @include tablet-landscape {
+    text-align: right;
+  }
+}
+
 .version {
   grid-area: version;
   margin-top: 8px;
@@ -120,20 +135,6 @@
   margin-top: 16px;
 }
 
-.powered {
-  @extend %caption1;
-  align-items: center;
-  column-gap: 12px;
-  display: flex;
-  grid-area: powered;
-  margin-top: 16px;
-
-  span {
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
-}
-
 .bottom {
   padding: 24px;
   width: 100%;
@@ -150,12 +151,8 @@
     grid-template-areas:
       'invitation'
       'social'
-      'report'
       'version'
-      'progress'
-      'copyright'
-      'links'
-      'powered';
+      'copyright';
 
     max-width: 1130px;
 
@@ -163,9 +160,9 @@
       grid-gap: 32px;
       grid-template-areas:
         'invitation invitation invitation'
-        'social social powered'
-        'links report copyright'
-        'version . progress';
+        'social social social'
+        'copyright copyright copyright'
+        'version . .';
       grid-template-columns: 2fr 1fr 3fr;
     }
 
@@ -232,6 +229,7 @@
 
   .report,
   .version,
+  .repo,
   .progress {
     @include tablet-landscape {
       margin-top: 0;
@@ -240,6 +238,8 @@
 }
 
 .side {
+  background-color: var(--color-brand-black);
+  border-top: 1px solid var(--color-neutral-60);
   bottom: 0;
   left: 0;
   padding: 16px 24px;
@@ -249,15 +249,13 @@
   .wrapper {
     grid-template-areas:
       'social'
-      'report'
       'version'
-      'progress'
-      'copyright'
-      'links'
-      'powered';
+      'repo'
+      'copyright';
   }
 
-  .progress {
+  .progress,
+  .repo {
     display: block;
     text-align: left;
   }

@@ -40,7 +40,7 @@
 }
 
 .scrolling {
-  $logo-bottom-part-height: 453px;
+  $logo-bottom-part-height: 310px;
   height: calc(100vh - #{$logo-bottom-part-height});
   overflow-y: scroll;
 }
@@ -77,7 +77,6 @@
 
 .mainLogo {
   display: inline;
-  margin-bottom: 38px;
   width: fit-content;
 }
 
@@ -96,5 +95,40 @@
 
   .mobileHeader {
     display: flex;
+  }
+}
+
+.powered {
+  @extend %caption1;
+  align-items: center;
+  color: var(--color-neutral-10);
+  column-gap: 12px;
+  display: flex;
+  grid-area: powered;
+  margin-bottom: 15px;
+  padding: 0 30px;
+
+  @include mobile-only {
+    margin-left: auto;
+  }
+
+  span {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+.devLink {
+  @include font(12px, 18px, 500);
+  align-items: center;
+  color: var(--color-white);
+  display: flex;
+
+  &:hover {
+    color: var(--color-success);
+  }
+
+  > i {
+    margin-left: 12px;
   }
 }

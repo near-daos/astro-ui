@@ -44,13 +44,13 @@ export const useGetDaoNavItems = (): MenuItem[] => {
             id: 'polls',
             label: 'Polls',
             href: `/dao/[dao]/${TASKS_SECTION_ID}/polls`
-          },
-          {
-            id: 'plugins',
-            label: 'Plugins',
-            href: `/dao/[dao]/${TASKS_SECTION_ID}/plugins`,
-            disabled: true
           }
+          // {
+          //   id: 'plugins',
+          //   label: 'Plugins',
+          //   href: `/dao/[dao]/${TASKS_SECTION_ID}/plugins`,
+          //   disabled: true
+          // }
         ]
       },
       {
@@ -89,26 +89,26 @@ export const useGetDaoNavItems = (): MenuItem[] => {
         subItems: [
           {
             id: 'daoSettings',
-            label: 'DAO settings',
+            label: 'DAO Settings',
             href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/settings`
           },
           {
             id: 'votingPolicy',
             label: 'Voting Policy',
             href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/voting-policy`
-          },
-          {
-            id: 'votingToken',
-            label: 'Voting Token',
-            href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/voting-token`,
-            disabled: true
-          },
-          {
-            id: 'upgradeSoftware',
-            label: 'Upgrade software',
-            href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/upgrade-software`,
-            disabled: true
           }
+          // {
+          //   id: 'votingToken',
+          //   label: 'Voting Token',
+          //   href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/voting-token`,
+          //   disabled: true
+          // },
+          // {
+          //   id: 'upgradeSoftware',
+          //   label: 'Upgrade software',
+          //   href: `/dao/[dao]/${GOVERNANCE_SECTION_ID}/upgrade-software`,
+          //   disabled: true
+          // }
         ]
       }
     ];

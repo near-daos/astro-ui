@@ -6,7 +6,7 @@ import { ProposalsFilter } from 'features/member-home/types';
 import { Feed } from 'features/feed/feed';
 import { Token } from 'types/token';
 
-interface HomeProps {
+export interface HomeProps {
   proposals: Proposal[];
   bounties: Bounty[];
   filter: ProposalsFilter;
