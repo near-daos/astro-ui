@@ -59,6 +59,7 @@ export const DaoNavMenu: FC = () => {
           return (
             <Collapsable
               {...getItemProps(item.id)}
+              isOpen
               key={item.id}
               duration={250}
               renderHeading={toggle => (

@@ -102,7 +102,7 @@ export const DaoSettingsView: FC<DaoSettingsPageProps> = ({ data: dao }) => {
   return (
     <>
       <div className={styles.header}>
-        <h1>DAO settings</h1>
+        <h1>DAO Settings</h1>
       </div>
       <div className={styles.content}>
         <Tabs tabs={tabs} />
