@@ -1,8 +1,10 @@
+import cn from 'classnames';
+import React, { FC } from 'react';
+
 import { Button } from 'components/button/Button';
 import * as Typography from 'components/Typography';
-import React, { FC } from 'react';
-import cn from 'classnames';
-import styles from './ProposalTracker.module.scss';
+
+import styles from './ProposalTrackerCard.module.scss';
 
 export interface ProposalTrackerProps {
   activeVotes: number;
