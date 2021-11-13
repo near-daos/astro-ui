@@ -26,11 +26,12 @@ import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
 import { DAO } from 'types/dao';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
-import { ProposalVariant } from 'types/proposal';
+import { Proposal, ProposalVariant } from 'types/proposal';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import NavLink from 'astro_2.0/components/NavLink';
 import useToggleable from 'hooks/useToggleable';
 import { useAuthCheck } from 'astro_2.0/features/Auth';
+import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 
 export interface TokensPageProps {
   data: {
@@ -39,13 +40,21 @@ export interface TokensPageProps {
     totalValue: string;
     receipts: Receipt[];
     dao: DAO;
+    policyAffectsProposals: Proposal[];
   };
 }
 
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
 
 const TokensPage: React.FC<TokensPageProps> = ({
-  data: { chartData, daoTokens, totalValue, receipts, dao },
+  data: {
+    chartData,
+    daoTokens,
+    totalValue,
+    receipts,
+    dao,
+    policyAffectsProposals,
+  },
 }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
@@ -98,6 +107,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
         <DaoDetailsMinimized
           dao={dao}
           accountId={accountId}
+          disableNewProposal={!!policyAffectsProposals.length}
           onCreateProposalClick={toggleCreateProposal}
         />
         <ToggleableCreateProposal
@@ -111,10 +121,19 @@ const TokensPage: React.FC<TokensPageProps> = ({
           }}
           onClose={toggleCreateProposal}
         />
+        <PolicyAffectedWarning
+          data={policyAffectsProposals}
+          className={styles.warningWrapper}
+        />
       </div>
       <div className={styles.header}>
         <h1>Tokens</h1>
-        <Button variant="black" size="small" onClick={handleClick}>
+        <Button
+          variant="black"
+          size="small"
+          onClick={handleClick}
+          disabled={!!policyAffectsProposals.length}
+        >
           Propose Payout
         </Button>
       </div>

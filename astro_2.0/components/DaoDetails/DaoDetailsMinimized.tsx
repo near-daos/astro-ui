@@ -20,11 +20,13 @@ export interface DaoDetailsMinimizedProps {
   dao: DAO;
   accountId: string | null;
   onCreateProposalClick?: () => void;
+  disableNewProposal?: boolean;
 }
 
 export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   dao,
   onCreateProposalClick,
+  disableNewProposal = false,
 }) => {
   const router = useRouter();
 
@@ -146,7 +148,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
         />
       </section>
 
-      {onCreateProposalClick && (
+      {onCreateProposalClick && !disableNewProposal && (
         <section className={styles.proposals}>{action}</section>
       )}
     </div>

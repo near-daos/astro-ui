@@ -4,6 +4,7 @@ import React, { FC, useCallback } from 'react';
 import { Button } from 'components/button/Button';
 import NavLink from 'astro_2.0/components/NavLink';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
+import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 
 import { Proposal, ProposalCategories, ProposalVariant } from 'types/proposal';
 import { PaginationResponse } from 'types/api';
@@ -19,9 +20,14 @@ import styles from './polls.module.scss';
 export interface PollsPageProps {
   dao: DAO;
   initialPollsData: PaginationResponse<Proposal[]>;
+  policyAffectsProposals: Proposal[];
 }
 
-const PollsPage: FC<PollsPageProps> = ({ dao, initialPollsData }) => {
+const PollsPage: FC<PollsPageProps> = ({
+  dao,
+  initialPollsData,
+  policyAffectsProposals,
+}) => {
   const router = useRouter();
   const { accountId } = useAuthContext();
 
@@ -53,6 +59,7 @@ const PollsPage: FC<PollsPageProps> = ({ dao, initialPollsData }) => {
         <DaoDetailsMinimized
           dao={dao}
           accountId={accountId}
+          disableNewProposal={!!policyAffectsProposals.length}
           onCreateProposalClick={toggleCreateProposal}
         />
 
@@ -63,6 +70,11 @@ const PollsPage: FC<PollsPageProps> = ({ dao, initialPollsData }) => {
           onCreate={handleCreateProposal}
           onClose={toggleCreateProposal}
         />
+
+        <PolicyAffectedWarning
+          data={policyAffectsProposals}
+          className={styles.warningWrapper}
+        />
       </div>
 
       <div className={styles.header}>
@@ -70,6 +82,7 @@ const PollsPage: FC<PollsPageProps> = ({ dao, initialPollsData }) => {
         <Button
           variant="black"
           size="small"
+          disabled={!!policyAffectsProposals.length}
           onClick={() => toggleCreateProposal()}
         >
           Create new poll

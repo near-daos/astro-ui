@@ -5,7 +5,10 @@ import { SettingsPageProps } from './SettingsPage';
 export const getServerSideProps: GetServerSideProps<SettingsPageProps> = async ({
   query,
 }) => {
-  const dao = await SputnikHttpService.getDaoById(query.dao as string);
+  const [dao, policyAffectsProposals] = await Promise.all([
+    SputnikHttpService.getDaoById(query.dao as string),
+    SputnikHttpService.findPolicyAffectsProposals(query.dao as string),
+  ]);
 
   if (!dao) {
     return {
@@ -16,6 +19,7 @@ export const getServerSideProps: GetServerSideProps<SettingsPageProps> = async (
   return {
     props: {
       dao,
+      policyAffectsProposals,
     },
   };
 };

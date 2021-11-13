@@ -6,6 +6,7 @@ interface DaoSettingProps {
   settingsName: string;
   className?: string;
   settingsChangeHandler: () => void;
+  disableNewProposal?: boolean;
 }
 
 export const DaoSetting: React.FC<DaoSettingProps> = ({
@@ -13,12 +14,17 @@ export const DaoSetting: React.FC<DaoSettingProps> = ({
   className,
   settingsChangeHandler,
   children,
+  disableNewProposal,
 }) => {
   return (
     <div className={className}>
       <div className={styles.root}>
         <div className={styles.label}>{settingsName}</div>
-        <Button variant="black" onClick={() => settingsChangeHandler()}>
+        <Button
+          disabled={disableNewProposal}
+          variant="black"
+          onClick={() => settingsChangeHandler()}
+        >
           Propose Changes
         </Button>
       </div>

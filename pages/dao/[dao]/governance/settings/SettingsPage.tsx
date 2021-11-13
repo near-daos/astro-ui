@@ -10,6 +10,7 @@ import { DaoSetting } from 'astro_2.0/features/DaoGovernance/components/DaoSetti
 import { SettingsCard } from 'astro_2.0/features/DaoGovernance/components/SettingsCard';
 import { InfoValue } from 'astro_2.0/components/InfoBlockWidget/components/InfoValue';
 import { DefaultVotingPolicy } from 'astro_2.0/components/DefaultVotingPolicy';
+import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { FlagPreview } from 'astro_2.0/features/CreateDao/components/FlagPreview/FlagPreview';
@@ -19,7 +20,7 @@ import { formatYoktoValue } from 'helpers/format';
 import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
 
 import { DAO } from 'types/dao';
-import { ProposalVariant } from 'types/proposal';
+import { Proposal, ProposalVariant } from 'types/proposal';
 
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { useAuthContext } from 'context/AuthContext';
@@ -27,9 +28,13 @@ import styles from './SettingsPage.module.scss';
 
 export interface SettingsPageProps {
   dao: DAO;
+  policyAffectsProposals: Proposal[];
 }
 
-const SettingsPage: NextPage<SettingsPageProps> = ({ dao }) => {
+const SettingsPage: NextPage<SettingsPageProps> = ({
+  dao,
+  policyAffectsProposals,
+}) => {
   const { accountId } = useAuthContext();
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
@@ -61,6 +66,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({ dao }) => {
         <DaoDetailsMinimized
           dao={dao}
           accountId={accountId}
+          disableNewProposal={!!policyAffectsProposals.length}
           onCreateProposalClick={() =>
             toggleCreateProposal({
               proposalVariant: ProposalVariant.ProposeChangeBonds,
@@ -74,12 +80,17 @@ const SettingsPage: NextPage<SettingsPageProps> = ({ dao }) => {
           onCreate={isSuccess => isSuccess && toggleCreateProposal()}
           onClose={toggleCreateProposal}
         />
+        <PolicyAffectedWarning
+          data={policyAffectsProposals}
+          className={styles.warningWrapper}
+        />
       </div>
 
       <div className={styles.titleRow}>DAO settings</div>
       <DaoSetting
         settingsName="Links"
         className={styles.linksRow}
+        disableNewProposal={!!policyAffectsProposals.length}
         settingsChangeHandler={createProposalHandler(
           ProposalVariant.ProposeChangeDaoLinks
         )}
@@ -96,6 +107,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({ dao }) => {
       <DaoSetting
         settingsName="Bond and deadlines"
         className={styles.bondAndDeadlineRow}
+        disableNewProposal={!!policyAffectsProposals.length}
         settingsChangeHandler={createProposalHandler(
           ProposalVariant.ProposeChangeBonds
         )}
@@ -150,6 +162,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({ dao }) => {
       <DaoSetting
         settingsName="Voting policy"
         className={styles.votingPolicyRow}
+        disableNewProposal={!!policyAffectsProposals.length}
         settingsChangeHandler={createProposalHandler(
           ProposalVariant.ProposeChangeVotingPolicy
         )}
@@ -176,6 +189,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({ dao }) => {
       <DaoSetting
         settingsName="Your Flag and Logo"
         className={styles.flagAndLogoRow}
+        disableNewProposal={!!policyAffectsProposals.length}
         settingsChangeHandler={createProposalHandler(
           ProposalVariant.ProposeChangeDaoFlag
         )}

@@ -20,8 +20,9 @@ import { useAuthContext } from 'context/AuthContext';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import NavLink from 'astro_2.0/components/NavLink';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
-import { ProposalVariant } from 'types/proposal';
+import { Proposal, ProposalVariant } from 'types/proposal';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
+import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 
 import useToggleable from 'hooks/useToggleable';
 import { useAuthCheck } from 'astro_2.0/features/Auth';
@@ -44,9 +45,15 @@ interface GroupPageProps {
   dao: DAO;
   members: Member[];
   availableGroups: string[];
+  policyAffectsProposals: Proposal[];
 }
 
-const GroupPage: FC<GroupPageProps> = ({ dao, members, availableGroups }) => {
+const GroupPage: FC<GroupPageProps> = ({
+  dao,
+  members,
+  availableGroups,
+  policyAffectsProposals,
+}) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
   const paramGroup = router.query.group as string;
@@ -105,6 +112,7 @@ const GroupPage: FC<GroupPageProps> = ({ dao, members, availableGroups }) => {
         <DaoDetailsMinimized
           dao={dao}
           accountId={accountId}
+          disableNewProposal={!!policyAffectsProposals.length}
           onCreateProposalClick={handleCreateGroup}
         />
         <ToggleableCreateProposal
@@ -113,13 +121,27 @@ const GroupPage: FC<GroupPageProps> = ({ dao, members, availableGroups }) => {
           onCreate={isSuccess => isSuccess && toggleCreateProposal()}
           onClose={toggleCreateProposal}
         />
+        <PolicyAffectedWarning
+          data={policyAffectsProposals}
+          className={styles.warningWrapper}
+        />
       </div>
       <div className={styles.header}>
         <h1>{pageTitle === 'all' ? 'All Members' : <>{pageTitle}</>}</h1>
-        <Button variant="black" size="small" onClick={handleCreateGroup}>
+        <Button
+          variant="black"
+          size="small"
+          onClick={handleCreateGroup}
+          disabled={!!policyAffectsProposals.length}
+        >
           Create new group
         </Button>
-        <Button variant="black" size="small" onClick={handleAddClick}>
+        <Button
+          variant="black"
+          size="small"
+          onClick={handleAddClick}
+          disabled={!!policyAffectsProposals.length}
+        >
           Add member to this group
         </Button>
       </div>
@@ -172,9 +194,10 @@ export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
 }) => {
   const daoId = query.dao as string;
 
-  const [dao, proposals] = await Promise.all([
+  const [dao, proposals, policyAffectsProposals] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
     SputnikHttpService.getProposals(daoId),
+    SputnikHttpService.findPolicyAffectsProposals(daoId),
   ]);
 
   if (!dao) {
@@ -196,6 +219,7 @@ export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
       dao,
       members,
       availableGroups: uniq(availableGroups),
+      policyAffectsProposals,
     },
   };
 };

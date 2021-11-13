@@ -11,9 +11,10 @@ import { Radio } from 'astro_2.0/components/inputs/Radio';
 import NavLink from 'astro_2.0/components/NavLink';
 import { Button } from 'components/button/Button';
 import { FeedFilter } from 'astro_2.0/features/Feed';
+import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 
 import { Bounty } from 'components/cards/bounty-card/types';
-import { ProposalVariant } from 'types/proposal';
+import { Proposal, ProposalVariant } from 'types/proposal';
 import { BountyStatuses } from 'types/bounties';
 import {
   mapBountyToCardContent,
@@ -30,9 +31,15 @@ export interface BountiesPageProps {
   dao: DAO;
   bounties: Bounty[];
   tokens: Tokens;
+  policyAffectsProposals: Proposal[];
 }
 
-const BountiesPage: FC<BountiesPageProps> = ({ dao, bounties, tokens }) => {
+const BountiesPage: FC<BountiesPageProps> = ({
+  dao,
+  bounties,
+  tokens,
+  policyAffectsProposals,
+}) => {
   const router = useRouter();
   const { query, updateQuery } = useQuery<{
     bountyStatus: BountyStatuses;
@@ -90,6 +97,7 @@ const BountiesPage: FC<BountiesPageProps> = ({ dao, bounties, tokens }) => {
         <DaoDetailsMinimized
           dao={dao}
           accountId={accountId}
+          disableNewProposal={!!policyAffectsProposals.length}
           onCreateProposalClick={handleClick()}
         />
       </div>
@@ -102,9 +110,19 @@ const BountiesPage: FC<BountiesPageProps> = ({ dao, bounties, tokens }) => {
         onClose={toggleCreateProposal}
       />
 
+      <PolicyAffectedWarning
+        data={policyAffectsProposals}
+        className={styles.warningWrapper}
+      />
+
       <div className={styles.createBounty}>
         <h1>Bounties</h1>
-        <Button variant="black" size="small" onClick={handleClick()}>
+        <Button
+          variant="black"
+          size="small"
+          onClick={handleClick()}
+          disabled={!!policyAffectsProposals.length}
+        >
           Create new Bounty
         </Button>
       </div>

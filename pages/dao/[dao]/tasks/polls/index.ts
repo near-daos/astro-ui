@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps<PollsPageProps> = async ({
   const daoId = query.dao as string;
   const status = query.status as ProposalStatuses;
 
-  const [dao, initialPollsData] = await Promise.all([
+  const [dao, initialPollsData, policyAffectsProposals] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
     SputnikHttpService.getProposalsList({
       category: ProposalCategories.Polls,
@@ -22,6 +22,7 @@ export const getServerSideProps: GetServerSideProps<PollsPageProps> = async ({
       limit: LIST_LIMIT_DEFAULT,
       daoFilter: 'All DAOs',
     }),
+    SputnikHttpService.findPolicyAffectsProposals(daoId),
   ]);
 
   if (!dao) {
@@ -34,6 +35,7 @@ export const getServerSideProps: GetServerSideProps<PollsPageProps> = async ({
     props: {
       dao,
       initialPollsData,
+      policyAffectsProposals,
     },
   };
 };

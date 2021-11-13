@@ -94,11 +94,10 @@ const DAOHome: NextPage<DaoHomeProps> = ({
           onClose={toggleCreateProposal}
         />
 
-        {!!policyAffectsProposals?.length && (
-          <div className={styles.warningWrapper}>
-            <PolicyAffectedWarning data={policyAffectsProposals} />
-          </div>
-        )}
+        <PolicyAffectedWarning
+          data={policyAffectsProposals}
+          className={styles.warningWrapper}
+        />
       </div>
 
       <ProposalsFeed

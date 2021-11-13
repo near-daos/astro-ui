@@ -105,6 +105,12 @@
   color: var(--color-white);
   text-transform: none;
   transition: box-shadow 0.2s;
+
+  &:disabled {
+    background: var(--color-neutral-50);
+    cursor: default;
+    pointer-events: none;
+  }
 }
 
 .auth {
