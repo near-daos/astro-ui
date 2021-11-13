@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { CopyButton } from 'features/copy-button';
 import { ActionButton } from 'features/proposal/components/action-button';
+import { useMedia } from 'react-use';
 
 import styles from './proposal-actions.module.scss';
 
@@ -19,6 +20,10 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
     setLocation(document.location.href);
   }, []);
 
+  const isLargeDesktop = useMedia('(min-width: 1280px)');
+
+  const tooltipPlacement = isLargeDesktop ? 'right' : 'left';
+
   return (
     <div className={styles.root}>
       <ActionButton
@@ -27,17 +32,21 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
         iconName="buttonDelete"
         size="small"
         className={styles.icon}
-        tooltipPlacement="right"
+        tooltipPlacement={tooltipPlacement}
       />
 
       <ActionButton
         tooltip="Tweet"
-        iconName="socialTwitter"
+        iconName="socialTwitterAlt"
         size="small"
-        tooltipPlacement="right"
         className={styles.icon}
+        tooltipPlacement={tooltipPlacement}
       />
-      <CopyButton text={location} />
+      <CopyButton
+        text={location}
+        tooltipPlacement={tooltipPlacement}
+        className={styles.copyBtn}
+      />
     </div>
   );
 };

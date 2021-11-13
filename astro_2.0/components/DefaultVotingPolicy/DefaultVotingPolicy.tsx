@@ -18,16 +18,15 @@ export const DefaultVotingPolicy: FC<DefaultVotingPolicyProps> = ({
     policy?.ratio && Array.isArray(policy?.ratio)
       ? (policy.ratio[0] / policy.ratio[1]) * 100
       : '';
-  const threshold = '% of group';
+  const threshold = 'of group';
 
   return (
     <div className={styles.policyWrapper}>
       <div className={styles.policyLabel}>Voting policy</div>
       <div className={styles.policy}>
         {/* <div>{voteBy}</div> */}
-        <div className={styles.bold}>{amount}</div>
-        <div>{threshold}</div>
-        <div>to pass of</div>
+        <div className={styles.bold}>{amount}%</div>
+        <div>{threshold} to pass of</div>
         <Badge size="small" variant="primary">
           ALL GROUPS ({groups.length})
         </Badge>

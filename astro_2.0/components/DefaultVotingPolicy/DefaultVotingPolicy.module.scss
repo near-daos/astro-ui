@@ -1,3 +1,4 @@
+@import 'styles/mixins';
 @import 'styles/typography';
 
 .title {
@@ -8,11 +9,15 @@
   background-color: var(--color-brand-black);
   border-radius: 8px;
   margin-top: 56px;
-  padding: 14px 60px;
+  padding: 14px;
+
+  @include tablet-portrait {
+    padding: 14px 60px;
+  }
 
   .policyLabel {
-    @extend %subtitle6;
-    color: var(--color-neutral-60);
+    @extend %title5;
+    color: var(--color-white);
     margin: 0 0 12px;
   }
 
@@ -20,11 +25,12 @@
     align-items: center;
     color: var(--color-white);
     display: flex;
-    gap: 12px;
+    gap: 6px;
     justify-content: flex-start;
   }
 
   .bold {
+    flex-shrink: 0;
     font-weight: bold;
   }
 }

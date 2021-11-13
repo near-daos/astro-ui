@@ -9,14 +9,25 @@
   display: grid;
   grid-row-gap: 22px;
   grid-template-areas:
-    'proposalType proposalType countdown'
-    'proposer proposer .'
-    'description description description'
-    'content content voteControl';
-  grid-template-columns: 1fr 1fr 1fr;
+    'countdown'
+    'proposalType'
+    'proposer'
+    'description'
+    'content'
+    'voteControl';
+  grid-template-columns: 1fr;
   padding: 22px 30px;
   position: relative;
   transition: box-shadow 0.3s ease-out;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'proposalType proposalType countdown'
+      'proposer proposer .'
+      'description description description'
+      'content content voteControl';
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 
   &.clickable {
     cursor: pointer;
@@ -36,11 +47,18 @@
 }
 
 .actionBar {
-  display: none;
-  left: 100%;
-  min-width: 100px;
+  display: flex;
+  left: unset;
   position: absolute;
-  top: 0;
+  right: 12px;
+  top: -30px;
+
+  @include tablet-landscape {
+    display: none;
+    left: 100%;
+    right: auto;
+    top: 0;
+  }
 }
 
 .root:hover .actionBar {
@@ -173,8 +191,12 @@
   height: 36px;
   position: absolute;
   right: 0;
-  top: -36px;
+  top: -75px;
   white-space: nowrap;
+
+  @include tablet-landscape {
+    top: -36px;
+  }
 
   .proposalIdLabel {
     @extend %subtitle5;
@@ -192,36 +214,19 @@
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .root {
-    grid-template-areas:
-      'countdown'
-      'proposalType'
-      'proposer'
-      'description'
-      'content'
-      'voteControl';
-    grid-template-columns: 1fr;
-  }
-  .proposalIdCell {
-    display: none;
-  }
   .proposalCell {
     width: 100%;
+
     div {
       width: 100%;
     }
   }
+
   .proposalType {
     width: 100%;
   }
+
   .proposalWalletLink {
     display: flex;
-  }
-
-  .actionBar {
-    display: flex;
-    left: unset;
-    right: 12px;
-    top: -30px;
   }
 }

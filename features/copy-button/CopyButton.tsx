@@ -12,6 +12,7 @@ interface CopyButtonProps {
   title?: string;
   className?: string;
   iconName?: IconName;
+  tooltipPlacement?: 'right' | 'top' | 'bottom' | 'left' | 'auto';
 }
 
 const COPY_TEXT = 'Copy';
@@ -21,6 +22,7 @@ export const CopyButton: FC<CopyButtonProps> = ({
   className,
   iconName = 'buttonCopy',
   title,
+  tooltipPlacement = 'right',
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const [tooltip, setTooltip] = useState(COPY_TEXT);
@@ -52,7 +54,7 @@ export const CopyButton: FC<CopyButtonProps> = ({
         {title && title}
         <IconButton icon={iconName} className={styles.btn} />
       </div>
-      <Popup anchor={ref} placement="right">
+      <Popup anchor={ref} placement={tooltipPlacement}>
         {tooltip}
       </Popup>
     </>

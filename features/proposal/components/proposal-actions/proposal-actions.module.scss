@@ -1,27 +1,57 @@
 @use 'styles/breakpoints';
+@import 'styles/mixins';
 @import 'styles/typography';
 
 .root {
   align-items: flex-start;
   display: flex;
-  flex-direction: column;
-  padding: 8px 8px 8px 24px;
+  flex-direction: row;
+  padding: 0;
 
-  > button,
-  div {
-    margin-bottom: 12px;
+  @include tablet-landscape {
+    flex-direction: column;
+    padding: 8px 0 8px 6px;
+  }
+
+  @include desktop {
+    padding: 8px 8px 8px 10px;
+  }
+
+  > div {
+    margin-left: 24px;
+
+    @include tablet-landscape {
+      margin-bottom: 12px;
+      margin-left: 0;
+    }
   }
 }
 
 .icon {
-  align-items: flex-start;
+  align-items: center;
   color: var(--color-neutral-50);
   display: flex;
   justify-content: flex-start;
   white-space: nowrap;
 
-  &:hover {
-    color: var(--color-primary-50);
+  @include tablet-landscape {
+    align-items: flex-start;
+  }
+
+  button:hover {
+    color: var(--color-white);
+
+    @include tablet-landscape {
+      color: var(--color-primary-50);
+    }
+  }
+}
+
+.copyBtn {
+  button:hover {
+    @media screen and (max-width: #{breakpoints.$screen-sm + 1}px) {
+      color: var(--color-white) !important;
+    }
   }
 }
 
@@ -38,9 +68,8 @@
 }
 
 .options {
+  @include card-shadow;
   background-color: var(--color-neutral-10);
-  border-radius: 4px;
-  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
   padding: 12px 0;
   position: absolute;
   right: 0;
@@ -55,19 +84,4 @@
   display: flex;
   gap: 12px;
   text-transform: capitalize;
-}
-
-@media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .root {
-    flex-direction: row;
-    padding: 0;
-    > div {
-      margin-bottom: 0;
-      margin-left: 24px;
-    }
-  }
-
-  .icon {
-    align-items: center;
-  }
 }

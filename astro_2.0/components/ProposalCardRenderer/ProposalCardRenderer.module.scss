@@ -1,15 +1,22 @@
-@use 'styles/breakpoints';
 @import 'styles/mixins';
-@import 'styles/typography';
 
 .root {
   border-radius: 0 8px 8px 0;
   display: grid;
   grid-template-areas:
-    'daoFlag daoFlag'
-    'letterHead proposal'
-    'infoPanel infoPanel';
-  grid-template-columns: 50px 1fr;
+    'daoFlag'
+    'letterHead'
+    'proposal'
+    'infoPanel';
+  grid-template-columns: 1fr;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'daoFlag daoFlag'
+      'letterHead proposal'
+      'infoPanel infoPanel';
+    grid-template-columns: 50px 1fr;
+  }
 }
 
 .daoFlag {
@@ -28,15 +35,4 @@
   grid-area: infoPanel;
   padding-left: 19px;
   padding-right: 19px;
-}
-
-@media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .root {
-    grid-template-areas:
-      'daoFlag'
-      'letterHead'
-      'proposal'
-      'infoPanel';
-    grid-template-columns: 1fr;
-  }
 }

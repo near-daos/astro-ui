@@ -1,52 +1,55 @@
-@use 'styles/breakpoints';
+@import 'styles/mixins';
 @import 'styles/typography';
 
 .root {
   display: grid;
   grid-template-areas:
-    'breadcrumb'
-    'dao'
-    'proposalInfo'
-    'policy'
-    'filters'
-    'body';
-  grid-template-columns: 1fr;
+    'breadcrumbs mobileActions'
+    'dao dao'
+    'proposalInfo proposalInfo'
+    'policy policy'
+    'filters filters'
+    'body body';
+  grid-template-columns: 1fr 24px;
   margin-top: 56px;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'breadcrumbs'
+      'dao'
+      'proposalInfo'
+      'policy'
+      'filters'
+      'body';
+    grid-template-columns: 1fr;
+  }
 }
 
-.breadcrumb {
-  @extend %caption1;
+.breadcrumbs {
   align-items: center;
-  color: var(--color-neutral-70);
+  grid-area: breadcrumbs;
+}
+
+.mobileActions {
+  align-items: center;
   display: flex;
-  gap: 8px;
-  grid-area: breadcrumb;
-  margin-bottom: 42px;
-  position: relative;
+  grid-area: mobileActions;
+  height: 34px;
+  justify-content: center;
+  width: 24px;
 
-  .link {
-    align-items: center;
-    display: flex;
-  }
-
-  .activeLink {
-    color: var(--color-primary-50);
-  }
-
-  .daoFlag {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    height: 42px;
-    left: -42px;
-    position: absolute;
-    width: 42px;
+  @include tablet-landscape {
+    display: none;
   }
 }
 
 .dao {
   grid-area: dao;
-  margin-top: 24px;
+  margin-top: 34px;
+
+  @include tablet-landscape {
+    margin-top: 40px;
+  }
 }
 
 .policy {
@@ -64,12 +67,8 @@
 .proposalInfo {
   flex: 3;
   grid-area: proposalInfo;
-  margin-top: 40px;
+  margin-top: 60px;
 
-  .title {
-    @extend %heading1;
-    margin: 0;
-  }
   > div {
     width: auto;
   }
@@ -84,7 +83,7 @@
   display: flex;
   grid-area: filters;
   justify-content: flex-end;
-  margin-top: 77px;
+  margin-top: 60px;
 }
 
 .label {
@@ -133,12 +132,7 @@
 
 .body {
   grid-area: body;
-  margin-top: 42px;
-}
-
-.mobileActions {
-  display: none;
-  grid-area: mobileActions;
+  margin-top: 36px;
 }
 
 .voteNow {
@@ -146,40 +140,4 @@
   box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
   inset: auto 24px 24px;
   position: fixed;
-}
-
-@media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .root {
-    grid-template-areas:
-      'breadcrumb mobileActions'
-      'proposalInfo proposalInfo'
-      'proposalStat proposalStat'
-      'body body';
-    grid-template-columns: 1fr 34px;
-  }
-
-  .breadcrumb {
-    margin-bottom: 24px;
-    .daoFlag {
-      left: 0;
-      position: relative;
-    }
-  }
-
-  .mobileActions {
-    align-items: center;
-    display: flex;
-    height: 42px;
-    justify-content: center;
-  }
-
-  .proposalInfo {
-    .title {
-      @include font(1.5em, 36px, 500);
-    }
-  }
-
-  .proposalStat {
-    margin-top: 42px;
-  }
 }

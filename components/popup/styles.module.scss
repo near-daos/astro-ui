@@ -12,11 +12,10 @@
   display: flex;
   flex-direction: column;
   font-size: 12px;
-  max-width: 185px;
   padding: 12px 18px;
   text-align: center;
   transition: opacity 0.3s;
-  white-space: initial;
+  white-space: nowrap;
   z-index: 9999;
 }
 
