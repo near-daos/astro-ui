@@ -41,6 +41,7 @@ export const SearchBar: FC<SearchBarProps> = ({
   const POPUP_LEFT_MARGIN = 20;
   const POPUP_RIGHT_MARGIN = 20;
 
+  const [mounted, setMounted] = useState(false);
   const [searchWidth, setSearchWidth] = useState<number | string>(40);
 
   const router = useRouter();
@@ -52,9 +53,13 @@ export const SearchBar: FC<SearchBarProps> = ({
         document?.body?.offsetWidth > parseInt(styleConst.navMobileWidth, 10)
       );
     } catch (e) {
-      return true;
+      return false;
     }
   }
+
+  useMount(() => {
+    setMounted(true);
+  });
 
   useEffect(() => {
     function calculateWidth() {
@@ -237,7 +242,7 @@ export const SearchBar: FC<SearchBarProps> = ({
   }
 
   function renderCloseButton() {
-    if (!isEmpty(value) || !isDesktopResolution()) {
+    if (mounted && (!isEmpty(value) || !isDesktopResolution())) {
       return (
         <div className={styles.closeIconHolder}>
           <IconButton
@@ -281,7 +286,6 @@ export const SearchBar: FC<SearchBarProps> = ({
         placeholder={placeholder}
         onKeyUp={handleKeys}
       />
-
       {renderCloseButton()}
       <div
         className={styles.anchor}
