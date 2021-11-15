@@ -6,16 +6,14 @@ runs:
     uses: actions/cache@v2
     with:
       path: |
-        docker-cache/**
+        docker-cache.tar
       key: docker
 
   - name: Load Cache
     shell: bash
     run: |
-      if [[ -f "docker-cache/cache.tar" ]]; then
-        docker load < docker-cache/cache.tar;
-      else
-        mkdir docker-cache
+      if [[ -f "docker-cache.tar" ]]; then
+        docker load < docker-cache.tar;
       fi
 
   - name: Docker meta
@@ -55,6 +53,6 @@ runs:
   - name: Save Cache
     shell: bash
     run: |
-      if [[ -f "docker-cache/cache.tar" ]]; then
-        docker save $(docker images -qa) > docker-cache/cache.tar;
+      if [[ ! -f "docker-cache.tar" ]]; then
+        docker save $(docker images -qa) > docker-cache.tar;
       fi
