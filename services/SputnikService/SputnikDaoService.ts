@@ -54,7 +54,7 @@ export class SputnikDaoService {
           name: params.name,
           args
         },
-        gas: new BN('300000000000000'),
+        gas: GAS_VALUE,
         attachedDeposit: amount
       });
     } catch (err) {
@@ -110,7 +110,8 @@ export class SputnikDaoService {
       args: {
         id: proposalId,
         action
-      }
+      },
+      gas: GAS_VALUE
     });
   }
 
@@ -120,7 +121,8 @@ export class SputnikDaoService {
       contractId: daoId,
       args: {
         id: proposalId
-      }
+      },
+      gas: GAS_VALUE
     });
   }
 
