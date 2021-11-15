@@ -3,7 +3,7 @@
 
 .root {
   display: grid;
-  grid-row-gap: 14px;
+  grid-row-gap: 24px;
   grid-template-areas:
     'breadcrumb'
     'dao'
@@ -39,7 +39,7 @@
 
 .breadcrumbs {
   grid-area: breadcrumb;
-  margin-bottom: 42px;
+  margin-bottom: 18px;
 }
 
 .dao {

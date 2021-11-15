@@ -2,10 +2,10 @@
 
 .root {
   display: grid;
+  grid-row-gap: 24px;
   grid-template-areas:
     'breadcrumbs'
     'dao'
-    'header'
     'feed';
   grid-template-columns: 1fr;
   padding-top: 56px;
@@ -13,7 +13,7 @@
 
 .breadcrumbs {
   grid-area: breadcrumbs;
-  margin-bottom: 30px;
+  margin-bottom: 18px;
 }
 
 .dao {

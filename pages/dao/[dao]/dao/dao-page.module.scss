@@ -2,6 +2,7 @@
 
 .root {
   display: grid;
+  grid-row-gap: 24px;
   grid-template-areas:
     'breadcrumbs'
     'header'
@@ -16,12 +17,13 @@
 
 .breadcrumbs {
   grid-area: breadcrumbs;
-  margin-bottom: 30px;
+  margin-bottom: 18px;
 }
 
 .header {
   grid-area: header;
   margin-bottom: 70px;
+  margin-top: 16px;
 }
 
 .title {
