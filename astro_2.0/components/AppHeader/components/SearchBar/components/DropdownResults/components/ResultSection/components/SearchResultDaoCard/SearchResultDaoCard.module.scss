@@ -5,7 +5,7 @@
   cursor: pointer;
   display: flex;
 
-  font-family: Inter;
+  font-family: var(--font-family-primary);
   font-size: 10px;
   font-style: normal;
   font-weight: normal;
@@ -34,7 +34,7 @@
 
 .header {
   color: var(--color-brand-black);
-  font-family: Inter;
+  font-family: var(--font-family-primary);
   font-size: 16px;
   font-style: normal;
   font-weight: 700;

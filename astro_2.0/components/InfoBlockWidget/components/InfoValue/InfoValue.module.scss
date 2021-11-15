@@ -5,7 +5,7 @@
 }
 
 .label {
-  font-family: Inter, serif;
+  font-family: var(--font-family-primary);
   font-size: 16px;
   font-style: normal;
   font-weight: 300;
@@ -16,7 +16,7 @@
 }
 
 .value {
-  font-family: Inter, serif;
+  font-family: var(--font-family-primary);
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
