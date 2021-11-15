@@ -27,11 +27,7 @@ const schema = yup.object().shape({
     .typeError('Must be a valid number.')
     .positive()
     .required()
-    .test(
-      'onlyOneDecimal',
-      'Only numbers with one optional decimal place please',
-      value => /^\d*(?:\.\d)?$/.test(`${value}`)
-    ),
+    .min(0.00001, 'Minimal value is 0.00001.'),
   recipient: yup
     .string()
     .test(

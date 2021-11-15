@@ -93,8 +93,8 @@ export const TokenInput: FC<TokenInputProps> = ({
             name={name}
             type="number"
             lang="en-US"
-            step="0.1"
-            min="0.1"
+            step="0.00001"
+            min="0.00001"
             {...inputProps}
             ref={inputRef}
           />

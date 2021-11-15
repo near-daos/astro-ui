@@ -7,11 +7,7 @@ export const schema = yup.object().shape({
     .number()
     .positive()
     .required()
-    .test(
-      'onlyOneDecimal',
-      'Only numbers with one optional decimal place please',
-      value => /^\d*(?:\.\d)?$/.test(`${value}`)
-    ),
+    .min(0.00001, 'Minimal value is 0.00001.'),
   details: yup.string().required(),
   slots: yup.number().positive().integer().required(),
   deadlineThreshold: yup.number().positive().integer().required()
