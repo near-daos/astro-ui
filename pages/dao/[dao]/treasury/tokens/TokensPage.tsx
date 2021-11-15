@@ -25,13 +25,12 @@ import { Pagination } from 'components/pagination';
 import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
 import { DAO } from 'types/dao';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
-import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 import { Proposal, ProposalVariant } from 'types/proposal';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import NavLink from 'astro_2.0/components/NavLink';
-import useToggleable from 'hooks/useToggleable';
 import { useAuthCheck } from 'astro_2.0/features/Auth';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
+import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 
 export interface TokensPageProps {
   data: {
@@ -62,9 +61,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
   const { accountId } = useAuthContext();
   const TRANSACTIONS_PER_PAGE = 10;
 
-  const [ToggleableCreateProposal, toggleCreateProposal] = useToggleable(
-    CreateProposal
-  );
+  const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
   const handleClick = useAuthCheck(() => toggleCreateProposal(), [
     toggleCreateProposal,
@@ -110,9 +107,11 @@ const TokensPage: React.FC<TokensPageProps> = ({
           disableNewProposal={!!policyAffectsProposals.length}
           onCreateProposalClick={toggleCreateProposal}
         />
-        <ToggleableCreateProposal
+        <CreateProposal
+          className={styles.createProposal}
           dao={dao}
           proposalVariant={ProposalVariant.ProposeTransfer}
+          showFlag={false}
           onCreate={isSuccess => {
             if (isSuccess) {
               refreshData();

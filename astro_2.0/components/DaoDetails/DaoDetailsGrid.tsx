@@ -59,6 +59,7 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                   <CopyButton
                     title={id}
                     text={id}
+                    tooltipPlacement="auto"
                     className={styles.copyAddress}
                   />
                 </div>

@@ -67,6 +67,7 @@ const PollsPage: FC<PollsPageProps> = ({
           className={styles.createProposal}
           dao={dao}
           proposalVariant={ProposalVariant.ProposePoll}
+          showFlag={false}
           onCreate={handleCreateProposal}
           onClose={toggleCreateProposal}
         />

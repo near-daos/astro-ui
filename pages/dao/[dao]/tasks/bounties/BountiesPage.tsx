@@ -101,20 +101,19 @@ const BountiesPage: FC<BountiesPageProps> = ({
           disableNewProposal={!!policyAffectsProposals.length}
           onCreateProposalClick={handleClick()}
         />
+        <CreateProposal
+          dao={dao}
+          showFlag={false}
+          className={styles.createProposal}
+          proposalVariant={ProposalVariant.ProposeCreateBounty}
+          onCreate={isSuccess => isSuccess && toggleCreateProposal()}
+          onClose={toggleCreateProposal}
+        />
+        <PolicyAffectedWarning
+          data={policyAffectsProposals}
+          className={styles.warningWrapper}
+        />
       </div>
-
-      <CreateProposal
-        dao={dao}
-        showFlag={false}
-        proposalVariant={ProposalVariant.ProposeCreateBounty}
-        onCreate={isSuccess => isSuccess && toggleCreateProposal()}
-        onClose={toggleCreateProposal}
-      />
-
-      <PolicyAffectedWarning
-        data={policyAffectsProposals}
-        className={styles.warningWrapper}
-      />
 
       <HeaderWithFilter
         title={

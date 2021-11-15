@@ -21,10 +21,8 @@ import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import NavLink from 'astro_2.0/components/NavLink';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { Proposal, ProposalVariant } from 'types/proposal';
-import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
-
-import useToggleable from 'hooks/useToggleable';
+import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useAuthCheck } from 'astro_2.0/features/Auth';
 import { GroupsList } from 'astro_2.0/features/Groups/components';
 import useSortMembers from 'astro_2.0/features/Groups/hooks/useSortMembers';
@@ -63,9 +61,7 @@ const GroupPage: FC<GroupPageProps> = ({
   const [activeSort, setActiveSort] = useState<string>(sortOptions[0].value);
   const sortedData = useSortMembers({ members, activeSort, group });
 
-  const [ToggleableCreateProposal, toggleCreateProposal] = useToggleable(
-    CreateProposal
-  );
+  const [CreateProposal, toggleCreateProposal] = useCreateProposal();
   const [showCardModal] = useModal(MemberCardPopup);
 
   const showCreateProposal = useAuthCheck(
@@ -74,6 +70,10 @@ const GroupPage: FC<GroupPageProps> = ({
     },
     [toggleCreateProposal]
   );
+
+  const refreshData = useCallback(() => {
+    router.replace(router.asPath);
+  }, [router]);
 
   const handleCreateGroup = useCallback(
     () => showCreateProposal(ProposalVariant.ProposeCreateGroup),
@@ -115,10 +115,17 @@ const GroupPage: FC<GroupPageProps> = ({
           disableNewProposal={!!policyAffectsProposals.length}
           onCreateProposalClick={handleCreateGroup}
         />
-        <ToggleableCreateProposal
+        <CreateProposal
+          className={styles.createProposal}
           dao={dao}
+          proposalVariant={ProposalVariant.ProposeCreateGroup}
           showFlag={false}
-          onCreate={isSuccess => isSuccess && toggleCreateProposal()}
+          onCreate={isSuccess => {
+            if (isSuccess) {
+              refreshData();
+              toggleCreateProposal();
+            }
+          }}
           onClose={toggleCreateProposal}
         />
         <PolicyAffectedWarning

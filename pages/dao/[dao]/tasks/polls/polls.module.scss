@@ -11,10 +11,6 @@
   padding-top: 56px;
 }
 
-.warningWrapper {
-  margin-top: 32px;
-}
-
 .breadcrumbs {
   grid-area: breadcrumbs;
   margin-bottom: 30px;
@@ -44,4 +40,9 @@
 
 .feed {
   grid-area: feed;
+}
+
+.createProposal,
+.warningWrapper {
+  margin-top: 24px;
 }
