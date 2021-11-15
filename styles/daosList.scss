@@ -1,0 +1,23 @@
+@import 'styles/mixins';
+
+@mixin daos-list {
+  display: grid;
+  grid-gap: 50px;
+  grid-template-columns: 1fr;
+  place-items: start center;
+
+  @include tablet-portrait {
+    grid-template-columns: repeat(auto-fit, minmax(444px, 1fr));
+  }
+
+  @include tablet-landscape {
+    grid-gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    place-items: start start;
+  }
+
+  @include desktop {
+    grid-gap: 50px;
+    grid-template-columns: repeat(auto-fit, minmax(367px, 1fr));
+  }
+}

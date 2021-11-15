@@ -1,4 +1,5 @@
 @import 'styles/mixins';
+@import 'styles/daosList';
 @import 'styles/typography';
 
 .root {
@@ -29,7 +30,7 @@
   }
 
   h1 {
-    font-family: var(--font-family-primary);
+    font-family: var(--font-family-tertiary);
     margin: 0;
   }
 }
@@ -52,4 +53,8 @@
   @include large-desktop {
     grid-row-gap: 50px;
   }
+}
+
+.daosList {
+  @include daos-list;
 }
