@@ -17,7 +17,6 @@ jobs:
     name: Build Deploy
     environment:
       name: productions
-      url: https://${{ secrets.K8S_INGRESS_HOST }}
     steps:
     - uses: actions/checkout@v2
     - name: Set Environment
