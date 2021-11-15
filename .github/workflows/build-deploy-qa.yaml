@@ -1,12 +1,6 @@
-name: Build Deploy on Environment
+name: Build Deploy on QA Environment
 on:
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment to deploy to. One of [qa, test]'
-        default: 'test'
-        required: true
-        type: string
 
 jobs:
   build-deploy:
@@ -17,28 +11,17 @@ jobs:
       AWS_ECR_URL: ${{ secrets.AWS_ECR_URL }}
       EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
       KUBE_CONFIG_DATA:  ${{ secrets.KUBE_CONFIG_DATA }}
-      ENVIRONMENT_NAME: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     name: Build Deploy
     environment:
-      name: ${{ inputs.environment }}
+      name: qa
     steps:
     - uses: actions/checkout@v2
     - name: Set Environment
-      env:
-        ENVIRONMENT_NAME: 'test'
       run: |
-        echo DOCKER_ENV_TAG=${ENVIRONMENT_NAME}-$GITHUB_SHA >> $GITHUB_ENV
+        echo DOCKER_ENV_TAG=qa-$GITHUB_SHA >> $GITHUB_ENV
         cat ".github/env.common" >>$GITHUB_ENV
-        cat ".github/env.${ENVIRONMENT_NAME}" >>$GITHUB_ENV
-    - name: Set Environment
-      if: inputs.environment == 'qa'
-      env:
-        ENVIRONMENT_NAME: 'qa'
-      run: |
-        echo DOCKER_ENV_TAG=${ENVIRONMENT_NAME}-$GITHUB_SHA >> $GITHUB_ENV
-        cat ".github/env.common" >>$GITHUB_ENV
-        cat ".github/env.${ENVIRONMENT_NAME}" >>$GITHUB_ENV
+        cat ".github/env.qa" >>$GITHUB_ENV
 
     - name: Build
       uses: ./.github/actions/build

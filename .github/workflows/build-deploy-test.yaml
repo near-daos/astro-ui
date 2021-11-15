@@ -1,4 +1,4 @@
-name: Build Deploy on Environment
+name: Build Deploy on Test Environment
 on:
   workflow_dispatch:
   pull_request:

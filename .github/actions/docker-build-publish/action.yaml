@@ -26,8 +26,9 @@ runs:
         ${{ env.AWS_ECR_URL }}
       tags: |
         type=raw,value=latest
+        type=raw,value=${{ env.DOCKER_ENV_TAG }}
         type=ref,event=branch,suffix=-latest
-        type=sha
+        type=sha,prefix=,format=long
 
   - name: Set up Docker Buildx
     uses: docker/setup-buildx-action@v1
