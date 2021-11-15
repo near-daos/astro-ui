@@ -13,12 +13,6 @@
 }
 
 .statusFilterWrapper {
-  align-items: center;
-  background-color: var(--color-neutral-10);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  max-width: 100%;
   padding: 57px 0 20px;
   position: sticky;
   top: 20px;
@@ -79,6 +73,7 @@
   position: sticky;
   top: 160px;
   width: 120px;
+  z-index: 2;
 
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
     margin: 0;

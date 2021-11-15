@@ -25,12 +25,17 @@
   margin: 16px 0 44px;
 }
 
-.header {
+.headerContainer {
   align-items: center;
   display: flex;
+  font-size: 32px;
   gap: 35px;
   grid-area: header;
-  margin-bottom: 70px;
+
+  .header {
+    font-size: 32px;
+    margin: 0;
+  }
 }
 
 .details {

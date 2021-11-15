@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from 'react';
-import { useUpdateEffect } from 'react-use';
 import cn from 'classnames';
+import { useUpdateEffect } from 'react-use';
+import React, { ReactNode, useCallback, useState } from 'react';
 
 import Feed from 'astro_2.0/features/Feed';
 import { NoResultsView } from 'features/no-results-view';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
+import { HeaderWithFilter } from 'astro_2.0/features/dao/HeaderWithFilter';
 import { ProposalCategoryFilter } from 'astro_2.0/features/Proposals/components/ProposalCategoryFilter';
 import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
 
@@ -21,7 +22,7 @@ import styles from './ProposalsFeed.module.scss';
 type ProposalsFeedProps = {
   className?: string;
   dao: DAO;
-  title?: string;
+  title?: ReactNode;
   status?: ProposalStatuses;
   category?: ProposalCategories;
   showFlag?: boolean;
@@ -77,9 +78,7 @@ export const ProposalsFeed: React.FC<ProposalsFeedProps> = ({
 
   return (
     <div className={cn(styles.root, className)}>
-      <div className={styles.feedHeader}>
-        {title && <h1 className={styles.title}>{title}</h1>}
-
+      <HeaderWithFilter title={title}>
         <ProposalStatusFilter
           value={query.proposalStatus}
           onChange={value => {
@@ -104,7 +103,7 @@ export const ProposalsFeed: React.FC<ProposalsFeedProps> = ({
             },
           ]}
         />
-      </div>
+      </HeaderWithFilter>
 
       <div className={styles.container}>
         {!category && (

@@ -12,6 +12,7 @@ import NavLink from 'astro_2.0/components/NavLink';
 import { Button } from 'components/button/Button';
 import { FeedFilter } from 'astro_2.0/features/Feed';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
+import { HeaderWithFilter } from 'astro_2.0/features/dao/HeaderWithFilter';
 
 import { Bounty } from 'components/cards/bounty-card/types';
 import { Proposal, ProposalVariant } from 'types/proposal';
@@ -115,18 +116,21 @@ const BountiesPage: FC<BountiesPageProps> = ({
         className={styles.warningWrapper}
       />
 
-      <div className={styles.createBounty}>
-        <h1>Bounties</h1>
-        <Button
-          variant="black"
-          size="small"
-          onClick={handleClick()}
-          disabled={!!policyAffectsProposals.length}
-        >
-          Create new Bounty
-        </Button>
-      </div>
-      <div className={styles.filters}>
+      <HeaderWithFilter
+        title={
+          <>
+            <h1 className={styles.header}>Bounties</h1>
+            <Button
+              variant="black"
+              size="small"
+              onClick={handleClick()}
+              disabled={!!policyAffectsProposals.length}
+            >
+              Create new Bounty
+            </Button>
+          </>
+        }
+      >
         <FeedFilter
           title="Bounties"
           value={query.bountyStatus}
@@ -137,7 +141,8 @@ const BountiesPage: FC<BountiesPageProps> = ({
           <Radio value={BountyStatuses.Inprogress} label="In progress" />
           <Radio value={BountyStatuses.Completed} label="Completed" />
         </FeedFilter>
-      </div>
+      </HeaderWithFilter>
+
       <div className={styles.grid}>
         {bounties.flatMap(bounty => {
           const content = mapBountyToCardContent(

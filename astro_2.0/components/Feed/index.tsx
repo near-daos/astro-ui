@@ -15,6 +15,7 @@ import { NoResultsView } from 'features/no-results-view';
 import FeedList from 'astro_2.0/features/Feed';
 import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
 import { ProposalCategoryFilter } from 'astro_2.0/features/Proposals/components/ProposalCategoryFilter';
+import { HeaderWithFilter } from 'astro_2.0/features/dao/HeaderWithFilter';
 
 import styles from './Feed.module.scss';
 
@@ -107,11 +108,14 @@ const FeedPage = ({ initialProposals }: Props): JSX.Element => {
 
   return (
     <main className={styles.root}>
-      <div className={styles.statusFilterWrapper}>
-        <h1 className={styles.title}>
-          {isMyFeed ? 'My ' : 'Astro '}proposals feed
-        </h1>
-
+      <HeaderWithFilter
+        className={styles.statusFilterWrapper}
+        title={
+          <h1 className={styles.title}>
+            {isMyFeed ? 'My ' : 'Astro '}proposals feed
+          </h1>
+        }
+      >
         <ProposalStatusFilter
           value={queries.status || 'All'}
           onChange={onProposalFilterChange}
@@ -134,7 +138,7 @@ const FeedPage = ({ initialProposals }: Props): JSX.Element => {
             },
           ]}
         />
-      </div>
+      </HeaderWithFilter>
 
       <div className={styles.container}>
         <ProposalCategoryFilter

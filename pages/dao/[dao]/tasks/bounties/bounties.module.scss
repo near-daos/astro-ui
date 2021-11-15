@@ -8,7 +8,6 @@
     'breadcrumb'
     'dao'
     'header'
-    'filters'
     'content';
   grid-template-columns: 1fr;
   padding-top: 40px;
@@ -32,14 +31,9 @@
   padding-top: 32px;
 }
 
-.createBounty {
-  align-items: center;
-  display: flex;
-  gap: 35px;
-
-  h1 {
-    margin: 0;
-  }
+.header {
+  font-size: 32px;
+  margin: 0;
 }
 
 .grid {
@@ -52,23 +46,6 @@
 
   @include tablet-landscape {
     grid-template-columns: 1fr 1fr;
-  }
-}
-
-.header {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  grid-area: header;
-
-  @include tablet-portrait {
-    align-items: center;
-    flex-direction: row;
-    gap: 35px;
-  }
-
-  h1 {
-    margin: 0;
   }
 }
 
@@ -96,12 +73,4 @@
     bottom: 40px;
     right: 40px;
   }
-}
-
-.filters {
-  align-items: center;
-  display: flex;
-  grid-area: filters;
-  justify-content: flex-end;
-  margin-top: 40px;
 }

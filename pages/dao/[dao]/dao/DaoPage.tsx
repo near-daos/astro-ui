@@ -102,7 +102,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
 
       <ProposalsFeed
         className={styles.feed}
-        title="Proposals"
+        title={<h1 className={styles.title}>Proposals</h1>}
         dao={dao}
         initialProposalsData={initialProposalsData}
       />

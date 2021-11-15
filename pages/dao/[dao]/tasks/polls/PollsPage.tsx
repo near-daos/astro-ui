@@ -77,19 +77,20 @@ const PollsPage: FC<PollsPageProps> = ({
         />
       </div>
 
-      <div className={styles.header}>
-        <h1>Polls</h1>
-        <Button
-          variant="black"
-          size="small"
-          disabled={!!policyAffectsProposals.length}
-          onClick={() => toggleCreateProposal()}
-        >
-          Create new poll
-        </Button>
-      </div>
-
       <ProposalsFeed
+        title={
+          <div className={styles.headerContainer}>
+            <h1 className={styles.header}>Polls</h1>
+            <Button
+              variant="black"
+              size="small"
+              disabled={!!policyAffectsProposals.length}
+              onClick={() => toggleCreateProposal()}
+            >
+              Create new poll
+            </Button>
+          </div>
+        }
         className={styles.feed}
         dao={dao}
         category={ProposalCategories.Polls}

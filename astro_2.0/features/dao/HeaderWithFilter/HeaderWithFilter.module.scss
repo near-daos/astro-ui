@@ -1,0 +1,20 @@
+.root {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 35px;
+  justify-content: space-between;
+  white-space: nowrap;
+}
+
+.headerContainer {
+  align-items: center;
+  display: flex;
+  grid-gap: 35px;
+}
+
+.filtersContainer {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}

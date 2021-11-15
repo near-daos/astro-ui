@@ -24,6 +24,11 @@
   margin-bottom: 70px;
 }
 
+.title {
+  font-size: 32px;
+  margin: 0;
+}
+
 .details {
   @include tablet-landscape {
     margin-left: -100px;
