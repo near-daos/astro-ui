@@ -3,7 +3,6 @@ import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback, useState } from 'react';
 
-import { DaoDetails } from 'astro_2.0/components/DaoDetails';
 import { Button } from 'components/button/Button';
 
 import { CREATE_DAO_URL } from 'constants/routing';
@@ -12,6 +11,7 @@ import { useAuthContext } from 'context/AuthContext';
 
 import { NoResultsView } from 'features/no-results-view';
 
+import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 
 import { ProposalVariant } from 'types/proposal';
@@ -32,11 +32,6 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
 
   const [createProposalForDao, setCreateProposalForDao] = useState<DAO | null>(
     null
-  );
-
-  const handleCreateProposal = useCallback(
-    id => (accountId ? setCreateProposalForDao(id) : login()),
-    [accountId, login]
   );
 
   function renderDaos() {
@@ -60,19 +55,17 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
       const { id, activeProposalsCount, totalProposalsCount } = dao;
 
       return (
-        <DaoDetails
-          nearPrice={nearPrice}
+        <DaoDetailsGrid
           key={id}
           dao={dao}
-          accountId={accountId}
-          onCreateProposalClick={handleCreateProposal}
+          nearPrice={nearPrice}
           activeProposals={activeProposalsCount}
           totalProposals={totalProposalsCount}
         />
       );
     });
 
-    return <>{daoEls}</>;
+    return <div className={styles.daosList}>{daoEls}</div>;
   }
 
   const handleCreateDao = useCallback(
