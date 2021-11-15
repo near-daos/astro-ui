@@ -12,7 +12,7 @@
 .header {
   h2 {
     @include font(1.75em, 38px, 700);
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-family-primary);
     margin-bottom: 0;
   }
 

@@ -97,6 +97,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
       >
         {dao.links.map(link => (
           <div
+            key={link}
             className={classNames(styles.container, styles.row, styles.link)}
           >
             <Icon name="socialAnyUrl" className={styles.linkIcon} /> {link}

@@ -8,7 +8,7 @@
 .header {
   h3 {
     @include font(1em, 24px, 700);
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-family-primary);
     margin: 0;
   }
 

@@ -19,7 +19,7 @@
   border: 2px solid transparent;
   cursor: pointer;
   flex-shrink: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-family-primary);
   height: 40px;
   min-height: 40px;
   text-transform: uppercase;

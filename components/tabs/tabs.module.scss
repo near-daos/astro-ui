@@ -75,7 +75,7 @@
     content: attr(data-name);
     cursor: pointer;
     display: flex;
-    font-family: Inter, 'sans-serif';
+    font-family: var(--font-family-primary);
     font-size: 1em;
     font-weight: 700;
     justify-content: center;
@@ -109,7 +109,7 @@
     content: '';
     cursor: pointer;
     display: flex;
-    font-family: Inter, 'sans-serif';
+    font-family: var(--font-family-primary);
     font-size: 1em;
     font-weight: 700;
     height: 100%;
