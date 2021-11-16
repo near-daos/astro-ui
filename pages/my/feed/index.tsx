@@ -21,35 +21,52 @@ import { ALL_FEED_URL } from 'constants/routing';
 import MyFeedPage from './MyFeedPage';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { tab, daoViewFilter, status } = query;
+  const { type, tab, daoViewFilter } = query;
   const accountId = CookieService.get(ACCOUNT_COOKIE);
 
   let proposals: Proposal[] = [];
   let bounties: Bounty[] = [];
 
+  function getStatus(): ProposalFilterStatusOptions {
+    switch (tab) {
+      case '1': {
+        return 'Active proposals';
+      }
+      case '2': {
+        return 'Approved';
+      }
+      case '3': {
+        return 'Failed';
+      }
+      default: {
+        return null;
+      }
+    }
+  }
+
   const filter = {
     daoFilter: 'My DAOs' as DaoFilterValues,
     proposalFilter: 'Active proposals' as ProposalFilterOptions,
     daoViewFilter: daoViewFilter ? (daoViewFilter as string) : null,
-    status: status ? (status as ProposalFilterStatusOptions) : null
+    status: getStatus()
   };
 
   let proposalFilter;
 
-  switch (tab) {
-    case '1': {
+  switch (type) {
+    case 'Governance': {
       proposalFilter = 'Governance' as ProposalFilterOptions;
       break;
     }
-    case '2': {
+    case 'Financial': {
       proposalFilter = 'Financial' as ProposalFilterOptions;
       break;
     }
-    case '4': {
+    case 'Polls': {
       proposalFilter = 'Polls' as ProposalFilterOptions;
       break;
     }
-    case '5': {
+    case 'Groups': {
       proposalFilter = 'Groups' as ProposalFilterOptions;
       break;
     }
@@ -59,7 +76,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     }
   }
 
-  if (tab === '3') {
+  if (type === 'Bounties') {
     bounties = await SputnikService.getBounties().then(result => {
       return result
         .map(mapBountyResponseToBounty)

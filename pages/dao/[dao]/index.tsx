@@ -146,6 +146,10 @@ const DAOHome: NextPage<DaoHomeProps> = ({ dao, proposals, tokens }) => {
           filter={filterProposalsByStatus}
           tabsConfig={[
             {
+              label: 'All',
+              className: styles.activeProposalsTab
+            },
+            {
               label: 'Active proposals',
               className: styles.activeProposalsTab
             },
