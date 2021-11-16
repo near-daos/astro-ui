@@ -13,10 +13,11 @@
 }
 
 .statusFilterWrapper {
+  margin-left: -172px;
   padding: 57px 0 20px;
   position: sticky;
   top: 20px;
-  width: 100%;
+  width: calc(100% + 172px);
   z-index: 2;
 
   .categoriesListApprovedInputWrapperChecked {
@@ -36,12 +37,14 @@
     position: absolute;
     top: 0;
     transform: translate(-50%);
-    width: 100vw;
+    width: calc(100% + 48px);
     z-index: -1;
   }
 
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    margin-left: 0;
     padding-bottom: 12px;
+    width: 100%;
   }
 }
 

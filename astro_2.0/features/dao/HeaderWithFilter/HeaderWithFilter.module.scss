@@ -1,3 +1,5 @@
+@import 'styles/mixins';
+
 .root {
   align-items: center;
   display: flex;
@@ -10,7 +12,11 @@
 .headerContainer {
   align-items: center;
   display: flex;
-  grid-gap: 35px;
+  grid-gap: 20px;
+
+  @include tablet-portrait {
+    grid-gap: 35px;
+  }
 }
 
 .filtersContainer {

@@ -91,8 +91,9 @@
 }
 
 .label {
-  @extend %heading3;
+  @include font(1.25em, 28px, 500);
   align-self: center;
+  font-family: var(--font-family-tertiary);
   grid-area: label;
 
   @include tablet-landscape {
@@ -139,7 +140,14 @@
   justify-self: center;
 }
 
-.createProposal,
 .warningWrapper {
-  margin-top: 24px;
+  margin-top: 32px;
+}
+
+.createProposal {
+  margin-top: 56px;
+
+  @include tablet-landscape {
+    margin-top: 32px;
+  }
 }

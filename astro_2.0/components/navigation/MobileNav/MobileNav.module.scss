@@ -8,17 +8,10 @@
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   display: none;
   height: 64px;
-  justify-content: space-between;
-  padding: 0 36px;
+  justify-content: space-around;
   position: fixed;
   width: 100%;
   z-index: 1000;
-}
-
-@media screen and (max-width: 500px) {
-  .root {
-    padding: 0 18px;
-  }
 }
 
 @media screen and (max-width: $nav-mobile-width) {

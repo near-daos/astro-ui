@@ -2,6 +2,7 @@
 @import 'styles/mixins';
 
 .root {
+  align-items: center;
   display: flex;
   justify-content: space-between;
   max-width: 450px;
@@ -10,5 +11,6 @@
 
 .label {
   @extend %heading2;
+  line-height: 24px;
   padding-right: 35px;
 }

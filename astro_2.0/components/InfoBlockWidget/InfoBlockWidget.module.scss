@@ -66,6 +66,7 @@
 .valueSmall {
   @extend %title3;
   color: var(--color-neutral-90);
+  white-space: initial;
 }
 
 .valueLarge {

@@ -4,13 +4,14 @@
 .root {
   display: grid;
   grid-template-areas:
-    'breadcrumbs . .'
-    'dao dao dao'
-    'title . .'
-    'links links links'
-    'bondAndDeadline bondAndDeadline bondAndDeadline'
-    'votingPolicy votingPoligy votingPoligy'
-    'flagAndLogo flagAndLogo flagAndLogo';
+    'breadcrumbs'
+    'dao'
+    'title'
+    'links'
+    'bondAndDeadline'
+    'votingPolicy'
+    'flagAndLogo';
+  grid-template-columns: 1fr;
   padding-top: 56px;
   row-gap: 24px;
 }
@@ -54,9 +55,11 @@
 
 .settingsContainer {
   display: flex;
+  flex-direction: column;
+  gap: 24px;
 
-  > div:first-of-type {
-    margin-right: 24px;
+  @include tablet-portrait {
+    flex-direction: row;
   }
 }
 
@@ -100,7 +103,14 @@
   margin: 16px 0 44px;
 }
 
-.createProposal,
 .warningWrapper {
-  margin-top: 24px;
+  margin-top: 32px;
+}
+
+.createProposal {
+  margin-top: 56px;
+
+  @include tablet-landscape {
+    margin-top: 32px;
+  }
 }

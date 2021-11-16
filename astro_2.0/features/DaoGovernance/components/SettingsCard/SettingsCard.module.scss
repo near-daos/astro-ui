@@ -2,11 +2,23 @@
 @import 'styles/mixins';
 
 .root {
-  background: var(--color-white);
-  border-radius: 8px;
-  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
-  min-width: 324px;
+  @include card-shadow;
   padding: 23px 32px;
+  width: 100%;
+
+  @include tablet-portrait {
+    padding: 23px 22px;
+  }
+
+  @include tablet-landscape {
+    min-width: 348px;
+    padding: 23px 32px;
+    width: auto;
+  }
+
+  @include large-desktop {
+    width: 100%;
+  }
 }
 
 .settingName {
