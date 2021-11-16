@@ -6,11 +6,11 @@
   display: none;
   flex-direction: column;
   height: 100vh;
+  max-width: 315px;
   min-height: 100vh;
   overflow-y: hidden;
   position: sticky;
   top: 0;
-  width: 315px;
   z-index: 10;
 
   /* Turn on custom 4px wide scrollbar */
