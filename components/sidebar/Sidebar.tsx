@@ -56,26 +56,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
   );
 
   function renderHomeNavItem() {
+    const content = [];
+
     if (accountId) {
-      return (
-        <>
-          <NavItem
-            label="My feed"
-            icon="stateHome"
-            href={MY_FEED_URL}
-            className={styles.item}
-          />
-          <NavItem
-            label="Global feed"
-            icon="stateHome"
-            href={ALL_FEED_URL}
-            className={styles.item}
-          />
-        </>
+      content.push(
+        <NavItem
+          label="My feed"
+          key={MY_FEED_URL}
+          icon="stateHome"
+          href={MY_FEED_URL}
+          className={styles.item}
+        />
       );
     }
 
-    return null;
+    content.push(
+      <NavItem
+        label="Global feed"
+        icon="stateHome"
+        key={ALL_FEED_URL}
+        href={ALL_FEED_URL}
+        className={styles.item}
+      />
+    );
+
+    return content;
   }
 
   function renderCreateDaoNavItem() {
@@ -94,24 +99,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
   }
 
   function renderCommunities() {
-    return (
-      <nav className={styles.bottom}>
-        <>
-          <NavItem
-            label="My Communities"
-            href={MY_DAOS_URL}
-            icon="stateCommunities"
-            className={styles.item}
-          />
-          <NavItem
-            label="All Communities"
-            href={ALL_DAOS_URL}
-            icon="stateCommunities"
-            className={styles.item}
-          />
-        </>
-      </nav>
+    const content = [];
+
+    if (accountId) {
+      content.push(
+        <NavItem
+          key={MY_DAOS_URL}
+          label="My Communities"
+          href={MY_DAOS_URL}
+          icon="stateCommunities"
+          className={styles.item}
+        />
+      );
+    }
+
+    content.push(
+      <NavItem
+        label="All Communities"
+        key={ALL_DAOS_URL}
+        href={ALL_DAOS_URL}
+        icon="stateCommunities"
+        className={styles.item}
+      />
     );
+
+    return <nav className={styles.bottom}>{content}</nav>;
   }
 
   function renderDaoNavItems() {

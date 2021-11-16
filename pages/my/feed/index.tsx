@@ -17,6 +17,7 @@ import { mapBountyResponseToBounty } from 'services/sputnik/mappers';
 import { filterProposalsByStatus } from 'features/feed/helpers';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { ALL_FEED_URL } from 'constants/routing';
 import MyFeedPage from './MyFeedPage';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
@@ -91,7 +92,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   if (isEmpty(query) && proposals.length === 0) {
     return {
       redirect: {
-        destination: '/all/feed',
+        destination: ALL_FEED_URL,
         permanent: true
       }
     };

@@ -5,7 +5,7 @@ import type { AppContext, AppProps } from 'next/app';
 import { SWRConfig } from 'swr';
 import { useMount } from 'react-use';
 
-import { ALL_DAOS_URL, CREATE_DAO_URL, MY_FEED_URL } from 'constants/routing';
+import { CREATE_DAO_URL, MY_FEED_URL, ALL_FEED_URL } from 'constants/routing';
 
 import { AuthWrapper } from 'context/AuthContext';
 import { CustomTokensProvider } from 'context/CustomTokensContext';
@@ -76,7 +76,7 @@ App.getInitialProps = async ({ ctx, router }: AppContext) => {
   }
 
   if (router.pathname === '/' && res != null && !account) {
-    res.writeHead(302, { location: ALL_DAOS_URL });
+    res.writeHead(302, { location: ALL_FEED_URL });
     res.end();
 
     return {
