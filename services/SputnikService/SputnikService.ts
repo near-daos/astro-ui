@@ -405,9 +405,18 @@ class SputnikService {
 
       if (accountDaos.length) {
         search.$and?.push({
-          daoId: {
-            $in: accountDaos.map(item => item.id)
-          }
+          $or: [
+            {
+              daoId: {
+                $in: accountDaos.map(item => item.id)
+              }
+            },
+            {
+              proposer: {
+                $eq: accountId
+              }
+            }
+          ]
         });
       } else {
         return Promise.resolve([]);
