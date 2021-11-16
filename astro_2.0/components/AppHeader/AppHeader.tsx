@@ -21,9 +21,12 @@ import { AccountButton } from './components/AccountButton';
 import styles from './AppHeader.module.scss';
 
 export const AppHeader: FC = () => {
+  const withSideBar = true;
   const centralEl = useRef(null);
 
-  const rootClassName = cn(styles.root);
+  const rootClassName = cn(styles.root, {
+    [styles.withSideBar]: withSideBar,
+  });
 
   function renderLogo(className?: string) {
     return (
@@ -52,6 +55,7 @@ export const AppHeader: FC = () => {
           {renderNavItem(ASTRO_FEED_NAV_CONFIG)}
         </div>
         <SearchBar
+          withSideBar
           placeholder="Search"
           prentElRef={centralEl}
           className={styles.search}

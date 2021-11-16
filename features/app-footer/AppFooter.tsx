@@ -83,7 +83,7 @@ export const AppFooter: FC<AppFooterProps> = ({
               target="_blank"
               rel="noreferrer noopener"
             >
-              Build number: 21.5
+              Build number: 22.0
             </a>
           </div>
           <div className={styles.progress}>

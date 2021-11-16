@@ -69,17 +69,17 @@
 
 .categoriesListRoot {
   background: var(--color-neutral-10);
-  margin-left: -170px;
+  margin-left: -150 px;
+  max-width: 120px;
   position: sticky;
-  top: 160px;
-  width: 120px;
-  z-index: 2;
+  top: 170px;
+  z-index: 1;
 
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
     margin: 0;
+    max-width: initial;
     padding: 15px 0;
     position: static;
-    width: auto;
   }
 }
 
