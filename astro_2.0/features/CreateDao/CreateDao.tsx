@@ -5,6 +5,11 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { validUrlRegexp, validWebsiteName } from 'utils/regexp';
 
+import {
+  validateImgSize,
+  getImgValidationError,
+} from 'helpers/imageValidators';
+
 import { DAOFormValues } from './components/types';
 
 import { DaoNameForm } from './components/DaoNameForm';
@@ -31,6 +36,12 @@ const schema = yup.object().shape({
   proposals: yup.string().required(),
   structure: yup.string().required(),
   voting: yup.string().required(),
+  flagCover: yup
+    .mixed()
+    .test('fileSize', getImgValidationError, validateImgSize),
+  flagLogo: yup
+    .mixed()
+    .test('fileSize', getImgValidationError, validateImgSize),
 });
 
 export const CreateDao: VFC = () => {

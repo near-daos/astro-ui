@@ -59,6 +59,12 @@ import {
   getCustomFunctionCallProposal,
 } from 'astro_2.0/features/CreateProposal/proposalObjectHelpers';
 
+import {
+  requiredImg,
+  validateImgSize,
+  getImgValidationError,
+} from 'helpers/imageValidators';
+
 const CustomFunctionCallContent = dynamic(
   import(
     'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent'
@@ -834,8 +840,14 @@ export function getValidationSchema(
       return yup.object().shape({
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
-        flagCover: yup.string().required('Required'),
-        flagLogo: yup.string().required('Required'),
+        flagCover: yup
+          .mixed()
+          .test('Required', 'Required', requiredImg)
+          .test('fileSize', getImgValidationError, validateImgSize),
+        flagLogo: yup
+          .mixed()
+          .test('Required', 'Required', requiredImg)
+          .test('fileSize', getImgValidationError, validateImgSize),
       });
     }
     case ProposalVariant.ProposeCustomFunctionCall: {

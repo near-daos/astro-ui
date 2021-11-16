@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useRef } from 'react';
 
 import { ImageUpload } from 'astro_2.0/features/CreateDao/components/ImageUpload';
 import { DaoImageType } from 'astro_2.0/features/CreateDao/components/types';
@@ -15,6 +15,8 @@ export interface FlagImageProps {
 export const FlagImage: FC<FlagImageProps> = props => {
   const { title, description, requirements, fieldName } = props;
 
+  const errorElRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className={styles.root}>
       <div className={styles.header}>
@@ -23,8 +25,9 @@ export const FlagImage: FC<FlagImageProps> = props => {
       </div>
 
       <div className={styles.content}>
-        <ImageUpload fieldName={fieldName} />
+        <ImageUpload fieldName={fieldName} errorElRef={errorElRef} />
         <div>{requirements}</div>
+        <div ref={errorElRef} />
       </div>
     </div>
   );

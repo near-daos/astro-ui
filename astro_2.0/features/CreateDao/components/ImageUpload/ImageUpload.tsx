@@ -1,21 +1,33 @@
-import React, { FC, useState } from 'react';
+import uniqid from 'uniqid';
+import classNames from 'classnames';
 import { useToggle } from 'react-use';
 import { useFormContext } from 'react-hook-form';
-import classNames from 'classnames';
-import uniqid from 'uniqid';
+import React, { PropsWithRef, RefObject, useState } from 'react';
 
 import { DaoImageType } from 'astro_2.0/features/CreateDao/components/types';
+
 import { Icon } from 'components/Icon';
+import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
+
 import { getImageFromImageFileList } from 'utils/getImageFromImageFileList';
 
 import styles from './ImageUpload.module.scss';
 
-export interface ImageUploadProps {
+export interface ImageUploadProps<T extends Element> {
   fieldName: DaoImageType;
+  errorElRef?: RefObject<T>;
 }
 
-export const ImageUpload: FC<ImageUploadProps> = ({ fieldName }) => {
-  const { watch, register } = useFormContext();
+export const ImageUpload = <T extends Element>(
+  props: PropsWithRef<ImageUploadProps<T>>
+): JSX.Element => {
+  const { fieldName, errorElRef } = props;
+
+  const {
+    watch,
+    register,
+    formState: { errors },
+  } = useFormContext();
 
   const imageFileList = watch(fieldName);
   const isImageUploaded = imageFileList?.length;
@@ -27,12 +39,8 @@ export const ImageUpload: FC<ImageUploadProps> = ({ fieldName }) => {
     ? 'Click here to change image'
     : 'Click here to upload image';
 
-  return (
-    <div
-      className={styles.root}
-      onMouseEnter={toggleShow}
-      onMouseLeave={toggleShow}
-    >
+  function renderInput() {
+    const inputEl = (
       <input
         id={id}
         type="file"
@@ -40,6 +48,28 @@ export const ImageUpload: FC<ImageUploadProps> = ({ fieldName }) => {
         className={styles.uploadInput}
         accept="image/gif, image/jpeg, image/png"
       />
+    );
+
+    if (errorElRef?.current) {
+      return (
+        <InputFormWrapper
+          errors={errors}
+          errorElRef={errorElRef}
+          component={inputEl}
+        />
+      );
+    }
+
+    return inputEl;
+  }
+
+  return (
+    <div
+      className={styles.root}
+      onMouseEnter={toggleShow}
+      onMouseLeave={toggleShow}
+    >
+      {renderInput()}
       <div
         className={classNames(styles.image, {
           [styles.logo]: fieldName === 'flagLogo',
