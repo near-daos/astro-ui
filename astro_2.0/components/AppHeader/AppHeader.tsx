@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useRef } from 'react';
 
 import { NavItemProps } from 'astro_2.0/components/navigation/types';
 
@@ -22,11 +22,8 @@ import styles from './AppHeader.module.scss';
 
 export const AppHeader: FC = () => {
   const centralEl = useRef(null);
-  const [searchExpanded, setSearchExpanded] = useState(false);
 
-  const rootClassName = cn(styles.root, {
-    [styles.searchExpanded]: searchExpanded,
-  });
+  const rootClassName = cn(styles.root);
 
   function renderLogo(className?: string) {
     return (
@@ -58,7 +55,6 @@ export const AppHeader: FC = () => {
           placeholder="Search"
           prentElRef={centralEl}
           className={styles.search}
-          onSearchToggle={setSearchExpanded}
         />
         <div className={styles.nav}>
           {renderNavItem(MY_DAOS_NAV_CONFIG)}

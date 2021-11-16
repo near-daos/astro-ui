@@ -29,14 +29,12 @@ export interface SearchBarProps {
   className?: string;
   placeholder?: string;
   prentElRef: MutableRefObject<HTMLElement | null>;
-  onSearchToggle: (state: boolean) => void;
 }
 
 export const SearchBar: FC<SearchBarProps> = ({
   className,
   prentElRef,
   placeholder,
-  onSearchToggle,
 }) => {
   const POPUP_LEFT_MARGIN = 20;
   const POPUP_RIGHT_MARGIN = 20;
@@ -138,15 +136,11 @@ export const SearchBar: FC<SearchBarProps> = ({
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const onSearchStateToggle = useCallback(
-    state => {
-      if (!isDesktopResolution()) {
-        setExpanded(state);
-        onSearchToggle(state);
-      }
-    },
-    [onSearchToggle]
-  );
+  const onSearchStateToggle = useCallback(state => {
+    if (!isDesktopResolution()) {
+      setExpanded(state);
+    }
+  }, []);
 
   useDebounce(
     () => {
