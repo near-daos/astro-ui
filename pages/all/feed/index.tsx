@@ -6,8 +6,6 @@ import {
   ProposalFilterStatusOptions
 } from 'features/member-home/types';
 import { Proposal } from 'types/proposal';
-import { Bounty } from 'components/cards/bounty-card/types';
-import { mapBountyResponseToBounty } from 'services/sputnik/mappers';
 import { filterProposalsByStatus } from 'features/feed/helpers';
 import { CookieService } from 'services/CookieService';
 import { SputnikService } from 'services/SputnikService';
@@ -21,7 +19,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const accountId = CookieService.get(ACCOUNT_COOKIE);
 
   let proposals: Proposal[] = [];
-  let bounties: Bounty[] = [];
 
   function getStatus(): ProposalFilterStatusOptions {
     switch (tab) {
@@ -66,29 +63,23 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       proposalFilter = 'Groups' as ProposalFilterOptions;
       break;
     }
+    case 'Bounties': {
+      proposalFilter = 'Bounties' as ProposalFilterOptions;
+      break;
+    }
     case '0':
     default: {
       proposalFilter = null;
     }
   }
 
-  if (type === 'Bounties') {
-    bounties = await SputnikService.getBounties().then(result => {
-      return result
-        .map(mapBountyResponseToBounty)
-        .filter(bounty =>
-          bounty.claimedBy.find(claim => claim.accountId === accountId)
-        );
-    });
-  } else {
-    proposals = await SputnikService.getFilteredProposals(
-      {
-        ...filter,
-        proposalFilter
-      },
-      accountId
-    );
-  }
+  proposals = await SputnikService.getFilteredProposals(
+    {
+      ...filter,
+      proposalFilter
+    },
+    accountId
+  );
 
   // Additional filtering for expired proposals
   if (filter.status === 'Active proposals') {
@@ -104,7 +95,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   return {
     props: {
       proposals: filterProposalsByStatus(filter.status, proposals),
-      bounties,
       filter,
       apiTokens
     }

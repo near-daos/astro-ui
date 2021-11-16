@@ -40,7 +40,7 @@ export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
           'Bounty proposal can not be created. No dao id specified'
         );
       } else {
-        const proposal = getAddBountyProposal(daoId, data, dao);
+        const proposal = getAddBountyProposal(daoId, data, dao, tokens);
 
         SputnikService.createProposal(proposal).then(() => {
           showNotification({
@@ -52,7 +52,7 @@ export const CreateBountyDialog: FC<CreateBountyDialogProps> = ({
         });
       }
     },
-    [dao, daoId, onClose]
+    [dao, daoId, onClose, tokens]
   );
 
   return (
