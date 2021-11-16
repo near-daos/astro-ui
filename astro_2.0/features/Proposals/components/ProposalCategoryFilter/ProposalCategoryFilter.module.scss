@@ -1,8 +1,22 @@
 @use 'styles/breakpoints';
 
 .categoriesListRoot {
+  $el-width: 120px;
+
+  margin-right: 32px;
   max-height: 220px;
-  width: 100%;
+  max-width: $el-width;
+  min-width: $el-width;
+  position: sticky;
+  top: 170px;
+  z-index: 1;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    margin: 0;
+    max-width: initial;
+    padding: 15px 0;
+    position: static;
+  }
 }
 
 .categoriesList {

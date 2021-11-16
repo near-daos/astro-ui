@@ -11,7 +11,7 @@ import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/Pr
 import { ProposalCategoryFilter } from 'astro_2.0/features/Proposals/components/ProposalCategoryFilter';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 
-import styles from './proposals-tab-view.module.scss';
+import styles from './ProposalsTabView.module.scss';
 
 const FILTER_DEFAULT_STATE = {
   show: 'All',
@@ -145,7 +145,6 @@ export const ProposalsTabView: React.FC = () => {
             },
           ]}
           title="Choose a type"
-          className={styles.categoriesListRoot}
           titleClassName={styles.categoriesListTitle}
         />
 

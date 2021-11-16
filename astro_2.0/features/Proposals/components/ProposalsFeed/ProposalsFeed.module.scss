@@ -8,23 +8,17 @@
 }
 
 .categoryFilter {
-  margin-bottom: -220px;
-  margin-left: -170px;
-  position: sticky;
-  top: 160px;
-  width: 120px;
-  z-index: 1;
-
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
     margin: 0 0 30px;
-    padding: 15px 0;
-    position: static;
-    width: auto;
   }
 }
 
 .container {
   margin-top: 70px;
+
+  @media screen and (min-width: #{breakpoints.$screen-lg + 1}px) {
+    display: flex;
+  }
 }
 
 .proposalCardWrapper {

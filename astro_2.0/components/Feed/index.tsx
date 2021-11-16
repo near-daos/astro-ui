@@ -146,7 +146,6 @@ const FeedPage = ({ initialProposals }: Props): JSX.Element => {
           queryName="category"
           title="Choose a filter"
           disabled={proposalsDataIsLoading}
-          className={styles.categoriesListRoot}
           titleClassName={styles.categoriesListTitle}
         />
 
