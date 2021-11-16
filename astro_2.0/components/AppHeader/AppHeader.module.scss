@@ -66,3 +66,16 @@
     display: block;
   }
 }
+
+@media screen and (min-width: $mobile-width + 1px) {
+  .withSideBar {
+    .nav,
+    .logo:not(.mobileLogo) {
+      display: none;
+    }
+
+    .search {
+      position: initial;
+    }
+  }
+}

@@ -1,16 +1,16 @@
 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g opacity="0.8">
-    <path d="M8 1.3335V4.00016" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
-    <path d="M8 12V14.6667" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
-    <path d="M3.28662 3.28662L5.17329 5.17329" stroke="white" stroke-width="2" stroke-linecap="square"
+    <path d="M8 1.3335V4.00016" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+    <path d="M8 12V14.6667" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+    <path d="M3.28662 3.28662L5.17329 5.17329" stroke="currentColor" stroke-width="2" stroke-linecap="square"
           stroke-linejoin="round"/>
-    <path d="M10.8267 10.8267L12.7133 12.7133" stroke="white" stroke-width="2" stroke-linecap="square"
+    <path d="M10.8267 10.8267L12.7133 12.7133" stroke="currentColor" stroke-width="2" stroke-linecap="square"
           stroke-linejoin="round"/>
-    <path d="M1.3335 8H4.00016" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
-    <path d="M12 8H14.6667" stroke="white" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
-    <path d="M3.28662 12.7133L5.17329 10.8267" stroke="white" stroke-width="2" stroke-linecap="square"
+    <path d="M1.3335 8H4.00016" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+    <path d="M12 8H14.6667" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+    <path d="M3.28662 12.7133L5.17329 10.8267" stroke="currentColor" stroke-width="2" stroke-linecap="square"
           stroke-linejoin="round"/>
-    <path d="M10.8267 5.17329L12.7133 3.28662" stroke="white" stroke-width="2" stroke-linecap="square"
+    <path d="M10.8267 5.17329L12.7133 3.28662" stroke="currentColor" stroke-width="2" stroke-linecap="square"
           stroke-linejoin="round"/>
   </g>
 </svg>

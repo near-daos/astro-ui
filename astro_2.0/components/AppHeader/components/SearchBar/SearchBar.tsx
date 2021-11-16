@@ -26,6 +26,7 @@ import styleConst from 'astro_2.0/components/constants.module.scss';
 import styles from './SearchBar.module.scss';
 
 export interface SearchBarProps {
+  withSideBar: boolean;
   className?: string;
   placeholder?: string;
   prentElRef: MutableRefObject<HTMLElement | null>;
@@ -35,6 +36,7 @@ export const SearchBar: FC<SearchBarProps> = ({
   className,
   prentElRef,
   placeholder,
+  withSideBar,
 }) => {
   const POPUP_LEFT_MARGIN = 20;
   const POPUP_RIGHT_MARGIN = 20;
@@ -61,16 +63,20 @@ export const SearchBar: FC<SearchBarProps> = ({
 
   useEffect(() => {
     function calculateWidth() {
-      const NEIGHBOURS_WIDTH_AND_PADDINGS = 500;
-      const parentEl = prentElRef.current;
-
-      if (parentEl && isDesktopResolution()) {
-        const width = parentEl.offsetWidth;
-        const possibleWidth = width - NEIGHBOURS_WIDTH_AND_PADDINGS;
-
-        setSearchWidth(possibleWidth);
+      if (withSideBar) {
+        setSearchWidth(isDesktopResolution() ? 420 : '');
       } else {
-        setSearchWidth('');
+        const NEIGHBOURS_WIDTH_AND_PADDINGS = 500;
+        const parentEl = prentElRef.current;
+
+        if (parentEl && isDesktopResolution()) {
+          const width = parentEl.offsetWidth;
+          const possibleWidth = width - NEIGHBOURS_WIDTH_AND_PADDINGS;
+
+          setSearchWidth(possibleWidth);
+        } else {
+          setSearchWidth('');
+        }
       }
     }
 
@@ -79,7 +85,7 @@ export const SearchBar: FC<SearchBarProps> = ({
     window.addEventListener('resize', calculateWidth);
 
     return () => window.removeEventListener('resize', calculateWidth);
-  }, [prentElRef]);
+  }, [withSideBar, prentElRef]);
 
   const isSearchPage = router.pathname.includes(SEARCH_PAGE_URL);
 
@@ -89,7 +95,7 @@ export const SearchBar: FC<SearchBarProps> = ({
     referenceElement,
     popperElement,
     {
-      placement: 'bottom',
+      placement: 'bottom-start',
       modifiers: [
         {
           name: 'offset',
