@@ -44,6 +44,11 @@ export const mapBountyToCardContent = (
   tokens: Tokens,
   currentUser: string
 ): BountyCardContent[] => {
+  const tokenData =
+    bounty.tokenId === '' ? tokens.NEAR : tokens[bounty.tokenId];
+
+  // console.log(Object.keys(tokens), bounty.tokenId);
+
   const commonProps = {
     id: bounty.id,
     daoId: dao.id,
@@ -51,7 +56,7 @@ export const mapBountyToCardContent = (
     description: bounty.description,
     externalUrl: bounty.externalUrl,
     forgivenessPeriod: bounty.forgivenessPeriod,
-    token: bounty.tokenId === '' ? tokens.NEAR : tokens[bounty.tokenId],
+    token: tokenData,
     bountyBond: dao.policy.bountyBond,
   };
 

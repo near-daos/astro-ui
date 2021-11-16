@@ -72,8 +72,8 @@ export const BountyCard: React.FC<BountyCardProps> = ({
             label="Amount"
             value={
               <TokenWidget
-                icon={token.icon}
-                symbol={token.symbol}
+                icon={token?.icon}
+                symbol={token?.symbol}
                 amount={amount}
                 decimals={24}
               />

@@ -27,9 +27,9 @@ export const CustomTokensProvider: FC = ({ children }) => {
     const resToken = reduce(
       tkns,
       (acc, token) => {
-        const { symbol } = token;
+        const { tokenId, symbol } = token;
 
-        acc[symbol] = token;
+        acc[tokenId || symbol] = token;
 
         return acc;
       },

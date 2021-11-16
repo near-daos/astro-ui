@@ -31,9 +31,9 @@ export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async (
       tokens: reduce(
         tokens,
         (acc, token) => {
-          const { symbol } = token;
+          const { tokenId, symbol } = token;
 
-          acc[symbol] = token;
+          acc[tokenId || symbol] = token;
 
           return acc;
         },

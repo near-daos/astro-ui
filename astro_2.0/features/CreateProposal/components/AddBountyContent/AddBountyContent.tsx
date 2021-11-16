@@ -22,7 +22,7 @@ export const AddBountyContent: FC = () => {
   } else if (amount.length >= 15) {
     amountWidth = 15;
   } else {
-    amountWidth = amount.length;
+    amountWidth = amount.length ?? 5;
   }
 
   const tokenOptions = Object.values(tokens).map(token => ({

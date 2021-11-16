@@ -75,7 +75,15 @@
 
 .symbol {
   @include ellipse-text;
-  max-width: 60px;
+  max-width: 120px;
+}
+
+.icon {
+  background-color: var(--color-brand-black);
+  background-position: center;
+  background-size: contain;
+  height: 24px;
+  width: 24px;
 }
 
 .divider {
