@@ -18,7 +18,7 @@ import {
   ProposalsFilter,
 } from 'features/member-home/types';
 
-import styles from 'features/search/search-results/components/proposals-tab-view/proposals-tab-view.module.scss';
+import styles from 'features/search/search-results/components/proposals-tab-view/ProposalsTabView.module.scss';
 
 interface ProposalsByDaoRendererProps {
   title: string;

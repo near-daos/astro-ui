@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import { ProposalCardRenderer } from 'components/cards/proposal-card';
 
-import styles from 'features/search/search-results/components/proposals-tab-view/proposals-tab-view.module.scss';
+import styles from 'features/search/search-results/components/proposals-tab-view/ProposalsTabView.module.scss';
 import { Proposal } from 'types/proposal';
 import { Button } from 'components/button/Button';
 import Link from 'next/link';

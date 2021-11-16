@@ -69,22 +69,6 @@
   }
 }
 
-.categoriesListRoot {
-  background: var(--color-neutral-10);
-  margin-left: -150 px;
-  max-width: 120px;
-  position: sticky;
-  top: 170px;
-  z-index: 1;
-
-  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
-    margin: 0;
-    max-width: initial;
-    padding: 15px 0;
-    position: static;
-  }
-}
-
 .listWrapper {
   flex-grow: 1;
   margin-top: -100px;

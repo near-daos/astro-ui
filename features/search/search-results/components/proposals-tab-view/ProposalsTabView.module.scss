@@ -241,20 +241,6 @@
   }
 }
 
-.categoriesListRoot {
-  margin-left: -170px;
-  position: sticky;
-  top: 160px;
-  width: 120px;
-
-  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
-    margin: 0;
-    padding: 15px 0;
-    position: static;
-    width: auto;
-  }
-}
-
 .highlighterRoot {
   width: 100%;
 }
