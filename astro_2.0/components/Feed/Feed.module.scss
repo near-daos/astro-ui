@@ -13,11 +13,10 @@
 }
 
 .statusFilterWrapper {
-  margin-left: -172px;
   padding: 57px 0 20px;
   position: sticky;
   top: 20px;
-  width: calc(100% + 172px);
+  width: 100%;
   z-index: 2;
 
   .categoriesListApprovedInputWrapperChecked {
