@@ -77,7 +77,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
         <a>
           <section className={styles.general}>
             <div className={styles.flagWrapper}>
-              <FlagRenderer flag={dao.flagCover ?? dao.logo} size="xs" />
+              <FlagRenderer flag={dao.flagCover || dao.logo} size="xs" />
             </div>
             <div>
               <div className={styles.displayName}>

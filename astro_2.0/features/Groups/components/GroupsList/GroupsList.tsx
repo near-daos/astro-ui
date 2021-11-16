@@ -21,7 +21,7 @@ export const GroupsList: React.FC<GroupsListProps> = ({
       <h5 className={styles.title}>Groups</h5>
       <ul className={styles.list}>
         {groups.map(group => (
-          <li className={styles.item}>
+          <li className={styles.item} key={group}>
             <NavLink
               className={styles.link}
               href={`/dao/${daoId}/groups/${group}`}
