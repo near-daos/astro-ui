@@ -43,6 +43,7 @@
 
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
     display: flex;
+    justify-content: flex-end;
     overflow-x: auto;
     padding-bottom: 2px;
 
