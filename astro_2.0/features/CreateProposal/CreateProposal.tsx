@@ -200,8 +200,9 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             showFlag && (
               <DaoFlagWidget
                 daoName={dao.name}
-                flagUrl={dao.flagCover || dao.logo}
+                flagUrl={dao.flagCover}
                 daoId={dao.id}
+                fallBack={dao.logo}
               />
             )
           }

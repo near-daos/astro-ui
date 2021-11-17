@@ -10,6 +10,7 @@ interface DaoFlagProps {
   daoId: string;
   daoName: string;
   flagUrl?: string;
+  fallBack?: string;
   className?: string;
 }
 
@@ -18,11 +19,12 @@ export const DaoFlagWidget: React.FC<DaoFlagProps> = ({
   daoName,
   flagUrl,
   className,
+  fallBack,
 }) => {
   return (
     <Link href={`/dao/${daoId}`} passHref>
       <div className={cn(styles.root, className)}>
-        <FlagRenderer flag={flagUrl} size="sm" />
+        <FlagRenderer flag={flagUrl} size="sm" fallBack={fallBack} />
         <InfoBlockWidget
           label="DAO name"
           value={daoName}

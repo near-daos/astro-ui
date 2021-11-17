@@ -30,14 +30,12 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
   links,
   preview = false,
 }) => {
-  const daoFlag = cover || flag;
-
   return (
     <div className={styles.root}>
       <Link href={`/dao/${id}`}>
         <a>
           <div className={styles.flagWrapper}>
-            <FlagRenderer flag={daoFlag} size="lg" logo={logo} />
+            <FlagRenderer flag={cover} size="lg" logo={logo} fallBack={flag} />
           </div>
         </a>
       </Link>

@@ -37,9 +37,6 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
     groups,
     funds,
   } = dao;
-
-  const isOldFlag = !flagCover?.length;
-  const flagUrl = isOldFlag ? oldFlag : flagCover;
   const fundsUSD = formatCurrency(parseFloat(funds) * nearPrice);
 
   return (
@@ -49,7 +46,7 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
           <div>
             <section className={styles.general}>
               <div className={styles.flag}>
-                <FlagRenderer flag={flagUrl} size="sm" />
+                <FlagRenderer flag={flagCover} size="sm" fallBack={oldFlag} />
               </div>
               <div className={styles.title}>
                 <div className={styles.name}>

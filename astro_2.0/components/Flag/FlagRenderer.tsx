@@ -1,4 +1,11 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import styles from './FlagRenderer.module.scss';
 
@@ -6,6 +13,7 @@ interface FlagRendererProps {
   flag: string | undefined;
   logo?: string | undefined;
   size: 'xs' | 'sm' | 'lg';
+  fallBack?: string | undefined;
 }
 
 function isSafariBrowser(): boolean {
@@ -23,9 +31,15 @@ const SMALL_FLAG_PATH =
 const EXTRA_SMALL_FLAG_PATH =
   'M46.4118 0L9.74793 13.103V20.3722L0 23.856V52.5981L36.6639 39.4951V32.2259L46.4118 28.7421V0Z';
 
-export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
+export const FlagRenderer: FC<FlagRendererProps> = ({
+  flag,
+  logo,
+  size,
+  fallBack,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>();
   const wrapperRef = useRef<HTMLDivElement>();
+  const [fallBackMode, setFallbackMode] = useState(false);
 
   function getImageDimensions(flagSize: string) {
     switch (flagSize) {
@@ -78,12 +92,39 @@ export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
     }
   }
 
+  function getTransformStyles() {
+    if (!fallBackMode) {
+      return 'none';
+    }
+
+    let translateX;
+
+    switch (size) {
+      case 'lg': {
+        translateX = '-16px';
+        break;
+      }
+      case 'sm': {
+        translateX = '-5px';
+        break;
+      }
+      case 'xs':
+      default: {
+        translateX = '-3px';
+      }
+    }
+
+    return `scale(1.45) translateX(${translateX})`;
+  }
+
+  const isNoFlag = useCallback(() => !flag && !fallBack, [fallBack, flag]);
+
   const imageDimensions = useMemo(() => getImageDimensions(size), [size]);
 
   const [image, setImage] = useState<HTMLImageElement>();
 
   useEffect(() => {
-    if (!flag) return;
+    if (isNoFlag()) return;
 
     const img = new Image();
 
@@ -95,8 +136,13 @@ export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
       setImage(img);
     };
 
-    img.src = flag;
-  }, [flag]);
+    if (flag) {
+      img.src = flag;
+    } else if (fallBack) {
+      setFallbackMode(true);
+      img.src = fallBack;
+    }
+  }, [fallBack, flag, isNoFlag]);
 
   useEffect(() => {
     if (image && canvasRef.current) {
@@ -127,7 +173,7 @@ export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
     }
   }, [image, imageDimensions]);
 
-  if (!flag) return null;
+  if (isNoFlag()) return null;
 
   return (
     <div
@@ -153,6 +199,7 @@ export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
         style={{
           clipPath: `path('${getPath(size)}')`,
           maxWidth: getMaxWidth(size),
+          transform: getTransformStyles(),
         }}
       />
       {logo && size === 'lg' && (
