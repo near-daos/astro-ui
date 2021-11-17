@@ -3,10 +3,8 @@ import { useCallback, useState } from 'react';
 
 import { Proposal } from 'types/proposal';
 
-// import { arrangeByDao } from 'features/member-home';
 import { FilterName } from 'features/search/search-filters';
 import { Indexed, ProposalByDao } from 'features/member-home/types';
-// import { splitProposalsByVotingPeriod } from 'helpers/splitProposalsByVotingPeriod';
 
 import {
   isGovernanceProposal,
