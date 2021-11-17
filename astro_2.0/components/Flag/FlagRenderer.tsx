@@ -61,6 +61,23 @@ export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
     }
   }
 
+  function getMaxWidth(flagSize: string) {
+    switch (flagSize) {
+      case 'lg': {
+        return 238;
+      }
+      case 'sm': {
+        return 68;
+      }
+      case 'xs': {
+        return 47;
+      }
+      default: {
+        return 238;
+      }
+    }
+  }
+
   const imageDimensions = useMemo(() => getImageDimensions(size), [size]);
 
   const [image, setImage] = useState<HTMLImageElement>();
@@ -135,6 +152,7 @@ export const FlagRenderer: FC<FlagRendererProps> = ({ flag, logo, size }) => {
         ref={canvasRef as React.LegacyRef<HTMLCanvasElement>}
         style={{
           clipPath: `path('${getPath(size)}')`,
+          maxWidth: getMaxWidth(size),
         }}
       />
       {logo && size === 'lg' && (

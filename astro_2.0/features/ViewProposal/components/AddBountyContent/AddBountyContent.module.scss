@@ -3,6 +3,11 @@
 
 .root {
   display: flex;
+  gap: 12px;
+
+  > div:not(.divider) {
+    margin-bottom: 24px;
+  }
 }
 
 .row {
@@ -45,8 +50,13 @@
 
     > div:nth-child(3),
     > div:nth-child(5) {
-      height: 22px;
+      height: 32px;
       width: 100%;
+    }
+
+    .divider.divider {
+      height: 0;
+      margin: 0;
     }
   }
 }

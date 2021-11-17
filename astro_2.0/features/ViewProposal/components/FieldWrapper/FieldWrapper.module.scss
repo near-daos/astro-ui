@@ -47,6 +47,7 @@
   align-items: center;
   display: flex;
   font-weight: 700;
+  height: 100%;
 
   @include tablet-landscape {
     height: 41px;
