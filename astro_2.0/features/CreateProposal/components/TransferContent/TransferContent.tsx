@@ -8,6 +8,8 @@ import { Icon } from 'components/Icon';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 
 import { useCustomTokensContext } from 'context/CustomTokensContext';
+import { useNearPrice } from 'hooks/useNearPrice';
+import { formatCurrency } from 'utils/formatCurrency';
 
 import styles from './TransferContent.module.scss';
 
@@ -24,6 +26,12 @@ export const TransferContent: FC = () => {
   } else {
     amountWidth = amount?.length ?? 5;
   }
+
+  const nearPrice = useNearPrice();
+
+  const nearToUsd = (tokenBalance: string) => {
+    return formatCurrency(parseFloat(tokenBalance) * nearPrice);
+  };
 
   const tokenOptions = Object.values(tokens).map(token => ({
     label: token.symbol,
@@ -42,7 +50,20 @@ export const TransferContent: FC = () => {
           )}
         </div>
         <div className={styles.symbol}>{token.symbol}</div>
-        <div className={styles.balance}>{token.balance}</div>
+        <div className={styles.balance}>
+          <span
+            className={cn({
+              [styles.balanceNear]: token.symbol === 'NEAR',
+            })}
+          >
+            {token.balance}
+          </span>
+          {token.symbol === 'NEAR' && (
+            <span className={styles.balanceUsd}>
+              &#8776;&nbsp;{nearToUsd(token.balance)}&nbsp;USD
+            </span>
+          )}
+        </div>
       </div>
     ),
   }));
