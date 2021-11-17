@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import isEmpty from 'lodash/isEmpty';
 import { useUpdateEffect } from 'react-use';
 import React, { ReactNode, useCallback, useState } from 'react';
 
@@ -114,14 +115,17 @@ export const ProposalsFeed: React.FC<ProposalsFeedProps> = ({
           />
         )}
         <Feed
-          className={styles.feed}
           data={proposalsData}
           loadMore={handleLoadMore}
           loader={<p className={styles.loading}>Loading...</p>}
           noResults={
-            <div className={styles.loading}>
-              <NoResultsView title="No more results" />
-            </div>
+            <NoResultsView
+              title={
+                isEmpty(proposalsData?.data)
+                  ? 'No proposals here'
+                  : 'No more results'
+              }
+            />
           }
           renderItem={proposal => (
             <div key={proposal.id} className={styles.proposalCardWrapper}>

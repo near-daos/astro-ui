@@ -1,6 +1,10 @@
 import React from 'react';
+import cn from 'classnames';
 import InfiniteScroll from 'react-infinite-scroll-component';
+
 import { PaginationResponse } from 'types/api';
+
+import styles from './Feed.module.scss';
 
 type FeedProps<T> = {
   className?: string;
@@ -20,7 +24,7 @@ const Feed = <T,>({
   loadMore,
 }: FeedProps<T>): React.ReactElement => {
   return (
-    <div className={className}>
+    <div className={cn(styles.root, className)}>
       <InfiniteScroll
         dataLength={data.data.length}
         next={loadMore}
