@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Link from 'next/link';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
@@ -10,8 +10,10 @@ import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { ActionButton } from 'features/proposal/components/action-button';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
+import { Popup } from 'components/popup/Popup';
 
 import { useAuthContext } from 'context/AuthContext';
+import { useMedia } from 'react-use';
 
 import cn from 'classnames';
 import styles from './DaoDetailsMinimized.module.scss';
@@ -28,6 +30,10 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   onCreateProposalClick,
   disableNewProposal = false,
 }) => {
+  const [ref, setRef] = useState<HTMLElement | null>(null);
+  const isMobile = useMedia('(max-width: 768px)');
+  const tooltipPlacement = isMobile ? 'bottom' : 'top-end';
+
   const router = useRouter();
 
   const currentPath = router.asPath;
@@ -55,20 +61,33 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
 
   const { accountId, login } = useAuthContext();
   const action = (
-    <Button
-      size="block"
-      onClick={() => {
-        if (isEmpty(accountId)) {
-          login();
-        } else if (onCreateProposalClick) {
-          onCreateProposalClick();
-        }
-      }}
-      className={styles.addProposalButton}
-      variant="tertiary"
-    >
-      <Icon width={24} name="buttonAdd" />
-    </Button>
+    <>
+      <div className={styles.addProposalWrapper} ref={setRef}>
+        <Button
+          size="block"
+          onClick={() => {
+            if (isEmpty(accountId)) {
+              login();
+            } else if (onCreateProposalClick) {
+              onCreateProposalClick();
+            }
+          }}
+          className={styles.addProposalButton}
+          variant="tertiary"
+        >
+          <Icon width={24} name="buttonAdd" className={styles.createIcon} />
+          <span className={styles.createText}>Create proposal</span>
+        </Button>
+      </div>
+      <Popup
+        offset={[0, 10]}
+        anchor={ref}
+        placement={tooltipPlacement}
+        className={styles.createPopup}
+      >
+        Create proposal
+      </Popup>
+    </>
   );
 
   return (

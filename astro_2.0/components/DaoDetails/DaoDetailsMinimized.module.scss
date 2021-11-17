@@ -1,4 +1,3 @@
-@use 'styles/breakpoints';
 @import 'styles/typography';
 @import 'styles/mixins';
 
@@ -7,12 +6,19 @@
   border-radius: 8px;
   box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
   display: grid;
-  grid-column-gap: 24px;
-  grid-row-gap: 14px;
-  grid-template-areas: 'general controls proposals';
-  grid-template-columns: 2fr 1fr auto;
-
+  grid-gap: 12px;
+  grid-template-areas:
+    'general'
+    'controls'
+    'proposals';
+  grid-template-columns: 1fr;
   transition: box-shadow 0.4s;
+
+  @include tablet-landscape {
+    grid-gap: 24px;
+    grid-template-areas: 'general controls proposals';
+    grid-template-columns: 2fr 1fr auto;
+  }
 
   &:hover {
     box-shadow: 3px 2px 24px var(--color-black-opacity-25);
@@ -23,7 +29,11 @@
   align-items: center;
   display: flex;
   grid-area: general;
-  padding: 8px 0 8px 36px;
+  padding: 12px 12px 0;
+
+  @include tablet-landscape {
+    padding: 8px 0 8px 36px;
+  }
 
   > div:last-of-type {
     flex: 1 1 100%;
@@ -34,8 +44,17 @@
   align-items: center;
   display: flex;
   gap: 4px;
-  justify-content: flex-end;
-  padding: 12px 0;
+  justify-content: space-around;
+  padding: 0 16px;
+
+  @include tablet-portrait {
+    padding: 0 32px;
+  }
+
+  @include tablet-landscape {
+    justify-content: flex-end;
+    padding: 12px 0;
+  }
 }
 
 .proposals {
@@ -60,11 +79,45 @@
   color: var(--color-neutral-60);
 }
 
+.addProposalWrapper {
+  height: 100%;
+}
+
 .addProposalButton {
   @include centralize;
   background-color: var(--color-brand-green);
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 0 8px 8px;
   height: 100%;
+
+  @include tablet-landscape {
+    border-radius: 0 8px 8px 0;
+  }
+}
+
+.createPopup {
+  display: none;
+
+  @include non-touch-devices {
+    display: block;
+  }
+}
+
+.createIcon {
+  display: none;
+
+  @include tablet-landscape {
+    display: block;
+  }
+}
+
+.createText {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: initial;
+
+  @include tablet-landscape {
+    display: none;
+  }
 }
 
 .controlIcon {
@@ -97,40 +150,5 @@
 
   &:hover {
     background-color: transparent;
-  }
-}
-
-@media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .root {
-    grid-column-gap: 12px;
-    grid-row-gap: 12px;
-    grid-template-areas:
-      'general'
-      'controls'
-      'proposals';
-    grid-template-columns: 1fr;
-  }
-
-  .general {
-    padding: 12px 12px 0;
-  }
-
-  .controls {
-    justify-content: space-around;
-    padding: 0 32px;
-  }
-
-  .displayName {
-    line-height: 1.1;
-  }
-
-  .addProposalButton {
-    border-radius: 0 0 8px 8px;
-  }
-}
-
-@media screen and (max-width: #{breakpoints.$screen-xs}px) {
-  .controls {
-    padding: 0 16px;
   }
 }
