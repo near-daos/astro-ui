@@ -6,7 +6,7 @@ import { Input } from 'components/inputs/input/Input';
 import { DropdownSelect } from 'components/inputs/select/DropdownSelect';
 import { Icon } from 'components/Icon';
 
-import { useCustomTokensContext } from 'context/CustomTokensContext';
+import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 
 import styles from './AddBountyContent.module.scss';

@@ -3,8 +3,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
 
-import { SputnikHttpService, SputnikNearService } from 'services/sputnik';
-import { useCustomTokensContext } from 'context/CustomTokensContext';
+import { SputnikNearService } from 'services/sputnik';
 
 import { ProposalCardRenderer } from 'astro_2.0/components/ProposalCardRenderer';
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
@@ -25,6 +24,8 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 import { useAuthContext } from 'context/AuthContext';
+import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { CreateProposalCard } from './components/CreateProposalCard';
 
 export interface CreateProposalProps {
@@ -55,15 +56,10 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     selectedProposalVariant: proposalVariant,
   });
   const formRef = useRef<HTMLDivElement>(null);
+  const { tokens } = useDaoCustomTokens();
 
   useMount(() => {
     formRef?.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
-  });
-
-  const { tokens, setTokens } = useCustomTokensContext();
-
-  useMount(() => {
-    SputnikHttpService.getAccountTokens(dao.id).then(res => setTokens(res));
   });
 
   useEffect(() => {
@@ -226,7 +222,11 @@ export const CreateProposal: FC<CreateProposalProps> = ({
                 setSelectedProposalVariant(v);
               }}
               type={selectedProposalVariant}
-              content={contentNode}
+              content={
+                <CustomTokensContext.Provider value={{ tokens }}>
+                  {contentNode}
+                </CustomTokensContext.Provider>
+              }
               proposer={accountId}
             />
           }

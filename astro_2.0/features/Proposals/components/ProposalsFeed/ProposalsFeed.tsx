@@ -13,6 +13,7 @@ import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/Pr
 import { DAO } from 'types/dao';
 import { PaginationResponse } from 'types/api';
 import { Proposal, ProposalCategories, ProposalStatuses } from 'types/proposal';
+import { Token } from 'types/token';
 
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { SputnikHttpService } from 'services/sputnik/SputnikHttpService';
@@ -28,6 +29,7 @@ type ProposalsFeedProps = {
   category?: ProposalCategories;
   showFlag?: boolean;
   initialProposalsData: PaginationResponse<Proposal[]>;
+  tokens: Record<string, Token>;
 };
 
 type ProposalsFeedFilters = {
@@ -43,6 +45,7 @@ export const ProposalsFeed: React.FC<ProposalsFeedProps> = ({
   category,
   showFlag = false,
   initialProposalsData,
+  tokens,
 }) => {
   const [proposalsData, setProposalsData] = useState(initialProposalsData);
   const { query: filter } = useQuery<ProposalsFeedFilters>();
@@ -129,7 +132,12 @@ export const ProposalsFeed: React.FC<ProposalsFeedProps> = ({
           }
           renderItem={proposal => (
             <div key={proposal.id} className={styles.proposalCardWrapper}>
-              <ViewProposal dao={dao} proposal={proposal} showFlag={showFlag} />
+              <ViewProposal
+                dao={dao}
+                proposal={proposal}
+                showFlag={showFlag}
+                tokens={tokens}
+              />
             </div>
           )}
         />

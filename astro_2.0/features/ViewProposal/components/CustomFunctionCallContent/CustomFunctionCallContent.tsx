@@ -6,7 +6,7 @@ import {
   FieldWrapper,
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 
-import { useCustomTokensContext } from 'context/CustomTokensContext';
+import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
 import styles from './CustomFunctionCallContent.module.scss';
 

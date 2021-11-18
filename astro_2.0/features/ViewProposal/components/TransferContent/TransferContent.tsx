@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Icon } from 'components/Icon';
 
-import { useCustomTokensContext } from 'context/CustomTokensContext';
+import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import {
   FieldValue,
   FieldWrapper,

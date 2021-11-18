@@ -5,7 +5,7 @@ import {
   BountyStatus,
 } from 'astro_2.0/components/BountyCard/types';
 import { Bounty, ClaimedBy } from 'components/cards/bounty-card/types';
-import { Tokens } from 'context/CustomTokensContext';
+import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { DAO } from 'types/dao';
 
 export const toMillis = (timePeriod: string): number =>

@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { useMountedState } from 'react-use';
 
 import styles from './FlagRenderer.module.scss';
 
@@ -40,6 +41,7 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>();
   const wrapperRef = useRef<HTMLDivElement>();
   const [fallBackMode, setFallbackMode] = useState(false);
+  const isMounted = useMountedState();
 
   function getImageDimensions(flagSize: string) {
     switch (flagSize) {
@@ -133,7 +135,9 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
     }
 
     img.onload = () => {
-      setImage(img);
+      if (isMounted()) {
+        setImage(img);
+      }
     };
 
     if (flag) {
@@ -142,7 +146,7 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
       setFallbackMode(true);
       img.src = fallBack;
     }
-  }, [fallBack, flag, isNoFlag]);
+  }, [fallBack, flag, isMounted, isNoFlag]);
 
   useEffect(() => {
     if (image && canvasRef.current) {

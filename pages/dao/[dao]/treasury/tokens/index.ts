@@ -10,8 +10,7 @@ export const getServerSideProps: GetServerSideProps<TokensPageProps> = async ({
 }) => {
   const daoId = query.dao as string;
 
-  const [daoTokens, dao, receipts, policyAffectsProposals] = await Promise.all([
-    SputnikHttpService.getAccountTokens(daoId),
+  const [dao, receipts, policyAffectsProposals] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
     SputnikHttpService.getAccountReceipts(daoId),
     SputnikHttpService.findPolicyAffectsProposals(daoId),
@@ -27,7 +26,6 @@ export const getServerSideProps: GetServerSideProps<TokensPageProps> = async ({
     props: {
       data: {
         chartData: getChartData(receipts),
-        daoTokens,
         totalValue: dao.funds ?? '0',
         receipts,
         dao,

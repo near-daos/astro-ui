@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
@@ -15,10 +15,10 @@ import { Token } from 'types/token';
 import { PaginationResponse } from 'types/api';
 
 import { useAuthContext } from 'context/AuthContext';
-import { useCustomTokensContext } from 'context/CustomTokensContext';
 
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useNearPrice } from 'hooks/useNearPrice';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import styles from './dao-page.module.scss';
 
@@ -31,7 +31,6 @@ interface DaoHomeProps {
 
 const DAOHome: NextPage<DaoHomeProps> = ({
   dao,
-  tokens,
   initialProposalsData,
   policyAffectsProposals,
 }) => {
@@ -39,13 +38,9 @@ const DAOHome: NextPage<DaoHomeProps> = ({
   const nearPrice = useNearPrice();
 
   const { accountId } = useAuthContext();
-  const { setTokens } = useCustomTokensContext();
+  const { tokens } = useDaoCustomTokens();
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
-
-  useEffect(() => {
-    setTokens(tokens);
-  }, [tokens, setTokens]);
 
   const refreshData = useCallback(() => {
     router.replace(router.asPath);
@@ -99,6 +94,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
         className={styles.feed}
         title={<h1 className={styles.title}>Proposals</h1>}
         dao={dao}
+        tokens={tokens}
         initialProposalsData={initialProposalsData}
       />
     </div>

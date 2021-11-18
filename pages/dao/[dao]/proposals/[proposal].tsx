@@ -21,6 +21,7 @@ import { VotersList } from 'features/proposal/components/voters-list';
 import { extractMembersFromDao } from 'services/sputnik/mappers';
 import { SputnikHttpService } from 'services/sputnik';
 import { useAuthContext } from 'context/AuthContext';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import styles from './proposal.module.scss';
 
@@ -48,6 +49,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
   const [activeFilter, setActiveFilter] = useState<string | undefined>(
     undefined
   );
+  const { tokens } = useDaoCustomTokens();
 
   const { fullVotersList, votersByStatus } = useMemo(() => {
     const { votersList } = getVoteDetails(dao, scope, proposal);
@@ -135,7 +137,12 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         <DaoDetailsMinimized dao={dao} accountId={accountId} />
       </div>
       <div className={styles.proposalInfo}>
-        <ViewProposal dao={dao} proposal={proposal} showFlag={false} />
+        <ViewProposal
+          dao={dao}
+          proposal={proposal}
+          showFlag={false}
+          tokens={tokens}
+        />
       </div>
       <div className={styles.policy}>
         <DefaultVotingPolicy

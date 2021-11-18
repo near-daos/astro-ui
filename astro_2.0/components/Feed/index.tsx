@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAsync, useAsyncFn } from 'react-use';
+import { useAsyncFn } from 'react-use';
 
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { PaginationResponse } from 'types/api';
@@ -10,7 +10,7 @@ import { ProposalsQueries } from 'services/sputnik/types/proposals';
 import { SputnikHttpService } from 'services/sputnik';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 import { useAuthContext } from 'context/AuthContext';
-import { useCustomTokensContext } from 'context/CustomTokensContext';
+import { useAllCustomTokens } from 'hooks/useCustomTokens';
 import { NoResultsView } from 'features/no-results-view';
 import FeedList from 'astro_2.0/features/Feed';
 import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
@@ -22,7 +22,7 @@ import styles from './Feed.module.scss';
 const FeedPage = ({ initialProposals }: Props): JSX.Element => {
   const { query, replace, pathname } = useRouter();
 
-  const { fetchAndSetTokens } = useCustomTokensContext();
+  const { tokens } = useAllCustomTokens();
 
   const queries = query as ProposalsQueries;
 
@@ -31,8 +31,6 @@ const FeedPage = ({ initialProposals }: Props): JSX.Element => {
   const { accountId } = useAuthContext();
 
   const [proposalsData, setProposalsData] = useState(initialProposals);
-
-  useAsync(fetchAndSetTokens, []);
 
   const [{ loading: proposalsDataIsLoading }, fetchProposalsData] = useAsyncFn(
     async (initialData?: typeof proposalsData) => {
@@ -161,7 +159,12 @@ const FeedPage = ({ initialProposals }: Props): JSX.Element => {
             }
             renderItem={proposal => (
               <div key={proposal.id} className={styles.proposalCardWrapper}>
-                <ViewProposal dao={proposal.dao} proposal={proposal} showFlag />
+                <ViewProposal
+                  dao={proposal.dao}
+                  proposal={proposal}
+                  showFlag
+                  tokens={tokens}
+                />
               </div>
             )}
             className={styles.listWrapper}

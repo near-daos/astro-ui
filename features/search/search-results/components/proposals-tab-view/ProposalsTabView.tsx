@@ -10,6 +10,7 @@ import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
 import { ProposalCategoryFilter } from 'astro_2.0/features/Proposals/components/ProposalCategoryFilter';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
+import { useAllCustomTokens } from 'hooks/useCustomTokens';
 
 import styles from './ProposalsTabView.module.scss';
 
@@ -27,6 +28,7 @@ export const ProposalsTabView: React.FC = () => {
 
   const { searchResults } = useSearchResults();
   const { query, proposals } = searchResults || {};
+  const { tokens } = useAllCustomTokens();
 
   const {
     filteredProposals,
@@ -152,7 +154,12 @@ export const ProposalsTabView: React.FC = () => {
           {filteredProposals.map(item => {
             return (
               <div className={styles.cardWrapper} key={item.id}>
-                <ViewProposal dao={item.dao} proposal={item} showFlag />
+                <ViewProposal
+                  dao={item.dao}
+                  proposal={item}
+                  showFlag
+                  tokens={tokens}
+                />
               </div>
             );
           })}

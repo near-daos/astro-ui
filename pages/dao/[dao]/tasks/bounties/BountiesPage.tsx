@@ -2,7 +2,6 @@ import React, { FC, useCallback } from 'react';
 import { useRouter } from 'next/router';
 
 import { useAuthContext } from 'context/AuthContext';
-import { Tokens } from 'context/CustomTokensContext';
 
 import { BountyCard } from 'astro_2.0/components/BountyCard';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
@@ -26,19 +25,18 @@ import { DAO } from 'types/dao';
 
 import useQuery from 'hooks/useQuery';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import styles from './bounties.module.scss';
 
 export interface BountiesPageProps {
   dao: DAO;
   bounties: Bounty[];
-  tokens: Tokens;
   policyAffectsProposals: Proposal[];
 }
 
 const BountiesPage: FC<BountiesPageProps> = ({
   dao,
   bounties,
-  tokens,
   policyAffectsProposals,
 }) => {
   const router = useRouter();
@@ -49,6 +47,7 @@ const BountiesPage: FC<BountiesPageProps> = ({
   const daoId = router.query.dao as string;
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
+  const { tokens } = useDaoCustomTokens();
 
   const handleCreateProposal = useCallback(
     (bountyId: string, proposalVariant: ProposalVariant) => () => {

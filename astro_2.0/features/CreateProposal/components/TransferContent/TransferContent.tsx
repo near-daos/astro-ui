@@ -7,9 +7,9 @@ import { DropdownSelect } from 'components/inputs/select/DropdownSelect';
 import { Icon } from 'components/Icon';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 
-import { useCustomTokensContext } from 'context/CustomTokensContext';
 import { useNearPrice } from 'hooks/useNearPrice';
 import { formatCurrency } from 'utils/formatCurrency';
+import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
 import styles from './TransferContent.module.scss';
 

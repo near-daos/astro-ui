@@ -14,6 +14,7 @@ import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { ProposalsFeed } from 'astro_2.0/features/Proposals/components';
 import { useAuthContext } from 'context/AuthContext';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import styles from './polls.module.scss';
 
@@ -30,6 +31,7 @@ const PollsPage: FC<PollsPageProps> = ({
 }) => {
   const router = useRouter();
   const { accountId } = useAuthContext();
+  const { tokens } = useDaoCustomTokens();
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
@@ -96,6 +98,7 @@ const PollsPage: FC<PollsPageProps> = ({
         dao={dao}
         category={ProposalCategories.Polls}
         initialProposalsData={initialPollsData}
+        tokens={tokens}
       />
     </div>
   );

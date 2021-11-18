@@ -26,7 +26,7 @@ import { YOKTO_NEAR } from 'services/sputnik/constants';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 // Context
-import { Tokens } from 'context/CustomTokensContext';
+import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
 // Components
 import { TransferContent } from 'astro_2.0/features/CreateProposal/components/TransferContent';

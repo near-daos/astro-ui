@@ -13,7 +13,7 @@ import { DaoAddressLink } from 'components/dao-address';
 import { CopyButton } from 'features/copy-button';
 
 import { TokenCard } from 'components/cards/token-card';
-import { Token, TokenDeprecated } from 'types/token';
+import { TokenDeprecated } from 'types/token';
 
 import { ChartCaption } from 'components/area-chart/components/chart-caption';
 import { ChartData } from 'lib/types/treasury';
@@ -31,11 +31,11 @@ import NavLink from 'astro_2.0/components/NavLink';
 import { useAuthCheck } from 'astro_2.0/features/Auth';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 export interface TokensPageProps {
   data: {
     chartData: ChartData[];
-    daoTokens: Token[];
     totalValue: string;
     receipts: Receipt[];
     dao: DAO;
@@ -46,20 +46,14 @@ export interface TokensPageProps {
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
 
 const TokensPage: React.FC<TokensPageProps> = ({
-  data: {
-    chartData,
-    daoTokens,
-    totalValue,
-    receipts,
-    dao,
-    policyAffectsProposals,
-  },
+  data: { chartData, totalValue, receipts, dao, policyAffectsProposals },
 }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
   const nearPrice = useNearPrice();
   const { accountId } = useAuthContext();
   const TRANSACTIONS_PER_PAGE = 10;
+  const { tokens } = useDaoCustomTokens();
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
@@ -150,7 +144,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
         <AreaChart data={chartData} />
       </div>
       <div className={styles.tokens}>
-        {daoTokens.map(({ tokenId, icon, symbol, balance }) => (
+        {Object.values(tokens).map(({ tokenId, icon, symbol, balance }) => (
           <TokenCard
             key={`${tokenId}-${symbol}`}
             symbol={symbol}

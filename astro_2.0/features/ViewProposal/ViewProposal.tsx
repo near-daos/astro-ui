@@ -1,8 +1,4 @@
 import React, { FC } from 'react';
-import { useMount } from 'react-use';
-
-import { SputnikHttpService } from 'services/sputnik';
-import { useCustomTokensContext } from 'context/CustomTokensContext';
 
 import {
   ProposalCard,
@@ -18,25 +14,23 @@ import { useAuthContext } from 'context/AuthContext';
 import { getVoteDetails } from 'features/vote-policy/helpers';
 import { getScope } from 'components/cards/expanded-proposal-card/helpers';
 import { getContentNode } from 'astro_2.0/features/ViewProposal/helpers';
+import { Token } from 'types/token';
+import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
 export interface CreateProposalProps {
   dao: DAO;
   proposal: Proposal;
   showFlag: boolean;
+  tokens: Record<string, Token>;
 }
 
 export const ViewProposal: FC<CreateProposalProps> = ({
   dao,
   proposal,
   showFlag,
+  tokens,
 }) => {
   const { accountId } = useAuthContext();
-
-  const { setTokens } = useCustomTokensContext();
-
-  useMount(() => {
-    SputnikHttpService.getAccountTokens(dao.id).then(res => setTokens(res));
-  });
 
   const contentNode = getContentNode(proposal, dao);
 
@@ -88,7 +82,11 @@ export const ViewProposal: FC<CreateProposalProps> = ({
                 ).details
               : undefined
           }
-          content={contentNode}
+          content={
+            <CustomTokensContext.Provider value={{ tokens }}>
+              {contentNode}
+            </CustomTokensContext.Provider>
+          }
         />
       }
       infoPanelNode={null}

@@ -9,7 +9,6 @@ import { useMount } from 'react-use';
 import { ALL_DAOS_URL, MY_FEED_URL } from 'constants/routing';
 
 import { AuthWrapper } from 'context/AuthContext';
-import { CustomTokensProvider } from 'context/CustomTokensContext';
 
 import { ModalProvider } from 'components/modal';
 import PageLayout from 'components/page-layout/PageLayout';
@@ -40,21 +39,19 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
   return (
     <SWRConfig value={{ fallback: pageProps?.fallback || {} }}>
       <AuthWrapper>
-        <CustomTokensProvider>
-          <ModalProvider>
-            <SearchResults>
-              <Head>
-                <title>Astro</title>
-              </Head>
+        <ModalProvider>
+          <SearchResults>
+            <Head>
+              <title>Astro</title>
+            </Head>
 
-              <PageLayout>
-                <Component {...pageProps} />
-              </PageLayout>
+            <PageLayout>
+              <Component {...pageProps} />
+            </PageLayout>
 
-              <MobileNav />
-            </SearchResults>
-          </ModalProvider>
-        </CustomTokensProvider>
+            <MobileNav />
+          </SearchResults>
+        </ModalProvider>
       </AuthWrapper>
     </SWRConfig>
   );
