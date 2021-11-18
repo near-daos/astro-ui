@@ -134,7 +134,7 @@
 }
 
 .controlIcon:hover {
-  background-color: var(--color-neutral-20);
+  background-color: var(--color-neutral-30);
   color: var(--color-brand-black);
 
   > button {
@@ -143,12 +143,18 @@
 }
 
 .controlIcon.active {
+  background-color: var(--color-neutral-30);
+
   > button {
     color: var(--color-brand-black);
     cursor: default;
   }
+}
 
-  &:hover {
-    background-color: transparent;
+.controlIcon.noActiveLink {
+  color: var(--color-brand-black);
+
+  > button {
+    color: var(--color-brand-black);
   }
 }

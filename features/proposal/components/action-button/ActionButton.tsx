@@ -38,7 +38,11 @@ export const ActionButton: FC<ActionButtonProps> = ({
         {children}
       </div>
       {tooltip && (
-        <Popup anchor={ref} placement={tooltipPlacement}>
+        <Popup
+          anchor={ref}
+          placement={tooltipPlacement}
+          className={styles.popup}
+        >
           {tooltip}
         </Popup>
       )}

@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import Link from 'next/link';
 import isEmpty from 'lodash/isEmpty';
+import includes from 'lodash/includes';
 import { useRouter } from 'next/router';
 import TextTruncate from 'react-text-truncate';
 
@@ -47,6 +48,8 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
     polls: `/dao/${dao.id}/tasks/polls`,
   };
 
+  const activeLinkPresent = includes(url, currentPath);
+
   const handleChapterClick = (newUrl: string) => {
     if (newUrl !== currentPath) {
       router.push(newUrl);
@@ -56,6 +59,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   const generateChapterStyle = (chapterUrl: string) => {
     return cn(styles.controlIcon, {
       [styles.active]: currentPath === chapterUrl,
+      [styles.noActiveLink]: !activeLinkPresent,
     });
   };
 
