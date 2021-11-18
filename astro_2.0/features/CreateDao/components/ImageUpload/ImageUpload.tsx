@@ -1,6 +1,6 @@
 import uniqid from 'uniqid';
 import classNames from 'classnames';
-import { useToggle } from 'react-use';
+import { useMount, useToggle } from 'react-use';
 import { useFormContext } from 'react-hook-form';
 import React, { PropsWithRef, RefObject, useState } from 'react';
 
@@ -32,7 +32,11 @@ export const ImageUpload = <T extends Element>(
   const imageFileList = watch(fieldName);
   const isImageUploaded = imageFileList?.length;
 
-  const [id] = useState(uniqid());
+  const [id, setId] = useState('');
+
+  useMount(() => {
+    setId(uniqid());
+  });
 
   const [show, toggleShow] = useToggle(false);
   const uploadText = isImageUploaded
