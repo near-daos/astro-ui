@@ -160,10 +160,14 @@ async function getTransferProposal(
   data: CreateTransferInput,
   tokens: Tokens
 ): Promise<CreateProposalParams> {
-  const token = tokens[data.token];
+  const token = Object.values(tokens).find(item => item.symbol === data.token);
 
   if (token?.tokenId) {
     await SputnikNearService.registerUserToToken(token.tokenId);
+  }
+
+  if (!token) {
+    throw new Error('No tokens data found');
   }
 
   return {
@@ -172,7 +176,7 @@ async function getTransferProposal(
     kind: 'Transfer',
     bond: dao.policy.proposalBond,
     data: {
-      token_id: token.tokenId,
+      token_id: token?.tokenId,
       receiver_id: data.target,
       amount: new Decimal(data.amount).mul(10 ** token.decimals).toFixed(),
     },

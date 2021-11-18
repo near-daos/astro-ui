@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { Input } from 'components/inputs/input/Input';
 import { DropdownSelect } from 'components/inputs/select/DropdownSelect';
 import { Icon } from 'components/Icon';
-
+import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 
@@ -61,18 +61,24 @@ export const AddBountyContent: FC = () => {
           {...register('amount')}
         />
       </InputWrapper>
-      <DropdownSelect
-        className={styles.select}
-        options={tokenOptions}
-        label="&nbsp;"
-        {...register('token')}
-        onChange={v => {
-          setValue('token', v, {
-            shouldDirty: true,
-          });
-        }}
-        defaultValue={selectedTokenData?.symbol ?? 'NEAR'}
-      />
+      {Object.values(tokens).length ? (
+        <DropdownSelect
+          className={styles.select}
+          options={tokenOptions}
+          label="&nbsp;"
+          {...register('token')}
+          onChange={v => {
+            setValue('token', v, {
+              shouldDirty: true,
+            });
+          }}
+          defaultValue={selectedTokenData?.symbol ?? 'NEAR'}
+        />
+      ) : (
+        <div className={styles.loaderWrapper}>
+          <LoadingIndicator />
+        </div>
+      )}
       <div className={styles.divider} />
       <InputWrapper fieldName="slots" label="Available Claims">
         <Input

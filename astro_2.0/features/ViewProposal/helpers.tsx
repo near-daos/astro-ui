@@ -4,7 +4,6 @@ import Decimal from 'decimal.js';
 import { Proposal, ProposalType, ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
 
-import { formatYoktoValue } from 'helpers/format';
 import { getInitialData } from 'features/vote-policy/helpers';
 
 import { fromBase64ToMetadata } from 'services/sputnik/mappers';
@@ -32,7 +31,7 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
       if (proposal.kind.type === ProposalType.Transfer) {
         return (
           <TransferContent
-            amount={formatYoktoValue(proposal.kind.amount)}
+            amount={proposal.kind.amount}
             token={proposal.kind.tokenId}
             target={proposal.kind.receiverId}
           />
@@ -54,7 +53,7 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
             slots={bountyData.times}
             deadlineThreshold={value}
             token={bountyData.token}
-            amount={formatYoktoValue(bountyData.amount)}
+            amount={bountyData.amount}
           />
         );
       }

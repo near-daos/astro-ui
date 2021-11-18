@@ -1,0 +1,26 @@
+.root {
+  //background-color: var(--color-neutral-30);
+  border-radius: 50%;
+  height: 24px;
+  margin-right: 8px;
+  width: 24px;
+}
+
+.icon {
+  animation: rotate;
+  animation-delay: 0s;
+  animation-duration: 3s;
+  animation-fill-mode: none;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

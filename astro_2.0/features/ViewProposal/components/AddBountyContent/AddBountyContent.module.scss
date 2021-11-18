@@ -38,6 +38,13 @@
   width: 24px;
 }
 
+.loaderWrapper {
+  align-items: flex-end;
+  display: flex;
+  height: 100%;
+  padding: 8px;
+}
+
 .symbol {
   @include ellipse-text;
   max-width: 60px;

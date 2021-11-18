@@ -6,7 +6,7 @@ import { Input } from 'components/inputs/input/Input';
 import { DropdownSelect } from 'components/inputs/select/DropdownSelect';
 import { Icon } from 'components/Icon';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
-
+import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { useNearPrice } from 'hooks/useNearPrice';
 import { formatCurrency } from 'utils/formatCurrency';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
@@ -84,18 +84,24 @@ export const TransferContent: FC = () => {
           {...register('amount')}
         />
       </InputWrapper>
-      <DropdownSelect
-        className={styles.select}
-        options={tokenOptions}
-        label="&nbsp;"
-        {...register('token')}
-        onChange={v => {
-          setValue('token', v, {
-            shouldDirty: true,
-          });
-        }}
-        defaultValue={selectedTokenData?.symbol ?? 'NEAR'}
-      />
+      {Object.values(tokens).length ? (
+        <DropdownSelect
+          className={styles.select}
+          options={tokenOptions}
+          label="&nbsp;"
+          {...register('token')}
+          onChange={v => {
+            setValue('token', v, {
+              shouldDirty: true,
+            });
+          }}
+          defaultValue={selectedTokenData?.symbol ?? 'NEAR'}
+        />
+      ) : (
+        <div className={styles.loaderWrapper}>
+          <LoadingIndicator />
+        </div>
+      )}
       <InputWrapper fieldName="target" label="Target" flex>
         <Input
           className={cn(styles.inputWrapper, styles.wide)}

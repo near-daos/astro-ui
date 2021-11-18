@@ -28,6 +28,15 @@
   }
 }
 
+.icon {
+  background-color: var(--color-brand-black);
+  background-position: center;
+  background-size: contain;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+}
+
 .inputWrapper {
   max-width: 160px;
 

@@ -111,6 +111,12 @@
   width: 24px;
 }
 
+.loaderWrapper {
+  align-items: flex-end;
+  display: flex;
+  padding: 8px;
+}
+
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .root {
     display: grid;

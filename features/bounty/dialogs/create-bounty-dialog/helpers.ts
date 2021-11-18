@@ -37,10 +37,15 @@ export function getAddBountyProposal(
     externalUrl,
     token,
   } = data;
+  const tokenData = Object.values(tokens).find(item => item.symbol === token);
+
+  if (!tokenData) {
+    throw new Error('No tokens data found');
+  }
 
   const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
-  const tokenDecimal = 10 ** tokens[token].decimals;
-  const { tokenId } = tokens[token];
+  const { tokenId, decimals } = tokenData;
+  const tokenDecimal = 10 ** decimals;
 
   return {
     daoId: dao.id,

@@ -1,17 +1,31 @@
 import axios from 'axios';
 import get from 'lodash/get';
-import { useState } from 'react';
-import { useMount } from 'react-use';
+import { useEffect, useState } from 'react';
 
 export function useNearPrice(): number {
   const [nearPrice, setNearPrice] = useState(0);
 
-  useMount(async () => {
-    const nearPriceData = await axios.get('/api/nearPrice');
-    const price = get(nearPriceData, 'data.near.usd');
+  useEffect(() => {
+    const { CancelToken } = axios;
+    const source = CancelToken.source();
 
-    setNearPrice(price);
-  });
+    axios
+      .get('/api/nearPrice', { cancelToken: source.token })
+      .then(nearPriceData => {
+        const price = get(nearPriceData, 'data.near.usd');
+
+        setNearPrice(price);
+      })
+      .catch(thrown => {
+        if (axios.isCancel(thrown)) {
+          // do nothing - we cancel request on mount
+        }
+      });
+
+    return () => {
+      source.cancel('Cancelled on unmount');
+    };
+  }, []);
 
   return nearPrice;
 }

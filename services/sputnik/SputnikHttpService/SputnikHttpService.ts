@@ -781,9 +781,19 @@ class SputnikHttpServiceClass {
   }
 
   public async getAllTokens(): Promise<Token[]> {
-    const { data } = await this.httpService.get<TokenResponse[]>('/tokens');
+    const offset = 0;
+    const limit = 1000;
+    const sort = 'createdAt,DESC';
 
-    return mapTokensDTOToTokens(data);
+    const { data } = await this.httpService.get<GetTokensResponse>('/tokens', {
+      params: {
+        offset,
+        limit,
+        sort,
+      },
+    });
+
+    return mapTokensDTOToTokens(data.data);
   }
 
   public async getTokens(params: {

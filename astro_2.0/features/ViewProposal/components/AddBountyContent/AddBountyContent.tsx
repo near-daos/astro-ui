@@ -5,8 +5,9 @@ import {
   FieldValue,
   FieldWrapper,
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
-
+import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { formatYoktoValue } from 'helpers/format';
 
 import styles from './AddBountyContent.module.scss';
 
@@ -30,27 +31,35 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
   return (
     <div className={styles.root}>
       <FieldWrapper label="Amount">
-        <FieldValue value={amount} />
-      </FieldWrapper>
-      {tokenData && (
-        <FieldWrapper label="">
-          <div className={styles.row}>
-            <div className={styles.iconWrapper}>
-              {tokenData.symbol === 'NEAR' ? (
-                <Icon name="tokenNearBig" />
-              ) : (
-                <div
-                  style={{
-                    backgroundImage: `url(${tokenData.icon})`,
-                  }}
-                  className={styles.icon}
-                />
-              )}
-            </div>
-            <div className={styles.symbol}>{tokenData.symbol}</div>
+        {tokenData ? (
+          <FieldValue value={formatYoktoValue(amount, tokenData.decimals)} />
+        ) : (
+          <div className={styles.loaderWrapper}>
+            <LoadingIndicator />
           </div>
-        </FieldWrapper>
-      )}
+        )}
+      </FieldWrapper>
+      <FieldWrapper label="">
+        <div className={styles.row}>
+          {tokenData && (
+            <>
+              <div className={styles.iconWrapper}>
+                {tokenData.symbol === 'NEAR' ? (
+                  <Icon name="tokenNearBig" />
+                ) : (
+                  <div
+                    style={{
+                      backgroundImage: `url(${tokenData.icon})`,
+                    }}
+                    className={styles.icon}
+                  />
+                )}
+              </div>
+              <div className={styles.symbol}>{tokenData.symbol}</div>
+            </>
+          )}
+        </div>
+      </FieldWrapper>
 
       <div className={styles.divider} />
       <FieldWrapper label="Available Claims">

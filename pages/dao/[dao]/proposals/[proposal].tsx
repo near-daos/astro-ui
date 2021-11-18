@@ -52,9 +52,16 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
   const { tokens } = useDaoCustomTokens();
 
   const { fullVotersList, votersByStatus } = useMemo(() => {
+    if (!proposal) {
+      return {
+        votersByStatus: {},
+        fullVotersList: [],
+      };
+    }
+
     const { votersList } = getVoteDetails(dao, scope, proposal);
 
-    const voteActions = proposal.actions
+    const voteActions = proposal?.actions
       .filter(
         item => item.action === 'VoteApprove' || item.action === 'VoteReject'
       )
