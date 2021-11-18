@@ -35,6 +35,18 @@
   @include tablet-landscape {
     margin-left: -100px;
   }
+
+  @include astro-desktop {
+    margin-left: 0;
+  }
+
+  @include large-desktop {
+    margin-left: -30px;
+  }
+
+  @include large-x-desktop {
+    margin-left: -60px;
+  }
 }
 
 .createProposal {

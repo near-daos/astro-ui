@@ -1,6 +1,4 @@
-@use 'styles/breakpoints';
 @import 'styles/mixins';
-@import 'astro_2.0/components/constants.module';
 
 .root {
   background-color: var(--color-neutral-10);
@@ -37,6 +35,12 @@
 }
 
 .createDao.root {
+  padding-bottom: 80px;
+
+  @include astro-desktop {
+    padding-bottom: 0;
+  }
+
   .main {
     padding: 24px 24px 60px;
 
@@ -49,11 +53,5 @@
       max-width: 1180px;
       padding: 50px 72px 60px;
     }
-  }
-}
-
-@media screen and (max-width: #{$nav-mobile-width}) {
-  .createDao.root {
-    padding-bottom: 80px;
   }
 }

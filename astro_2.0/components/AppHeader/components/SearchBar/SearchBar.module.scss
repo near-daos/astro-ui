@@ -1,14 +1,15 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
-@import 'astro_2.0/components/constants.module';
-
 $search-max-width: 768;
 
+/* stylelint-disable */
 :export {
-  /* stylelint-disable-next-line */
   searchMaxWidth: $search-max-width;
+  navMobileWidth: #{breakpoints.$screen-mobile};
 }
+/* stylelint-enable */
 
 .root {
   align-items: center;
@@ -16,12 +17,18 @@ $search-max-width: 768;
   display: flex;
   height: 40px;
   justify-content: flex-start;
-  max-width: $search-max-width + 1px;
+  max-width: none;
   overflow: hidden;
   position: relative;
   transform: translateZ(0);
   transition: all 0.2s ease-out;
   width: 40px;
+
+  @include astro-desktop {
+    left: 200px;
+    max-width: $search-max-width + 1px;
+    position: absolute;
+  }
 }
 
 .anchor {
@@ -84,18 +91,5 @@ $search-max-width: 768;
 
   .iconHolder .icon {
     color: var(--color-brand-purple);
-  }
-}
-
-@media screen and (min-width: $mobile-width + 1px) {
-  .root {
-    left: 200px;
-    position: absolute;
-  }
-}
-
-@media screen and (max-width: $nav-mobile-width) {
-  .root {
-    max-width: none;
   }
 }

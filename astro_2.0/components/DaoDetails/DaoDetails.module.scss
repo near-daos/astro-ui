@@ -1,16 +1,51 @@
-@use 'styles/breakpoints';
 @import 'styles/typography';
 @import 'styles/mixins';
 
 .root {
   display: grid;
-  grid-column-gap: 24px;
-  grid-row-gap: 14px;
+  grid-gap: 12px;
   grid-template-areas:
-    'general funds funds'
-    'general members controls'
-    'general proposals proposals';
-  grid-template-columns: 1fr 130px 130px;
+    'general general'
+    'funds funds'
+    'members controls'
+    'proposals proposals';
+  grid-template-columns: 1fr 1fr;
+
+  @include tablet-portrait {
+    grid-gap: 14px;
+    grid-template-areas:
+      'general general general general'
+      'funds funds proposals proposals'
+      'members controls proposals proposals';
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  @include tablet-landscape {
+    grid-column-gap: 24px;
+    grid-template-areas:
+      'general funds funds'
+      'general members controls'
+      'general proposals proposals';
+    grid-template-columns: 1fr 130px 130px;
+  }
+
+  @include astro-desktop {
+    grid-gap: 14px;
+    grid-template-areas:
+      'general general general general'
+      'funds funds proposals proposals'
+      'members controls proposals proposals';
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+
+  @include large-desktop {
+    grid-column-gap: 24px;
+    grid-template-areas:
+      'general funds funds'
+      'general members controls'
+      'general proposals proposals';
+    grid-template-columns: 1fr 130px 130px;
+  }
 }
 
 .general,
@@ -30,7 +65,10 @@
 
 .general {
   grid-area: general;
-  margin-left: 100px;
+
+  @include tablet-landscape {
+    margin-left: 100px;
+  }
 }
 
 .funds {
@@ -117,22 +155,5 @@
 
   > button {
     color: var(--color-neutral-60);
-  }
-}
-
-@media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .root {
-    grid-column-gap: 12px;
-    grid-row-gap: 12px;
-    grid-template-areas:
-      'general general'
-      'funds funds'
-      'members controls'
-      'proposals proposals';
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .general {
-    margin-left: 0;
   }
 }

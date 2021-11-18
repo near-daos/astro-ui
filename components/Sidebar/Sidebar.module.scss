@@ -1,5 +1,5 @@
+@import 'styles/mixins';
 @import 'styles/typography';
-@import 'astro_2.0/components/constants.module';
 
 .sidebar {
   background: var(--color-brand-black);
@@ -12,6 +12,10 @@
   position: sticky;
   top: 0;
   z-index: 10;
+
+  @include astro-desktop {
+    display: flex;
+  }
 
   /* Turn on custom 4px wide scrollbar */
   ::-webkit-scrollbar {
@@ -99,12 +103,6 @@
   }
 
   .mobileHeader {
-    display: flex;
-  }
-}
-
-@media screen and (min-width: $mobile-width + 1px) {
-  .sidebar {
     display: flex;
   }
 }

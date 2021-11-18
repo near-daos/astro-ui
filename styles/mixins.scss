@@ -63,6 +63,12 @@
   }
 }
 
+@mixin astro-mobile {
+  @media (max-width: #{breakpoints.$screen-mobile}px) {
+    @content;
+  }
+}
+
 // breakpoints cascading
 
 @mixin large-x-desktop {
@@ -79,6 +85,12 @@
 
 @mixin desktop {
   @media (min-width: #{breakpoints.$screen-md}px) {
+    @content;
+  }
+}
+
+@mixin astro-desktop {
+  @media (min-width: #{breakpoints.$screen-mobile + 1}px) {
     @content;
   }
 }

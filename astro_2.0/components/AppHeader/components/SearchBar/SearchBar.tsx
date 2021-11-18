@@ -21,8 +21,6 @@ import { DropdownResults } from 'astro_2.0/components/AppHeader/components/Searc
 
 import { IconButton } from 'components/button/IconButton';
 
-import styleConst from 'astro_2.0/components/constants.module.scss';
-
 import styles from './SearchBar.module.scss';
 
 export interface SearchBarProps {
@@ -49,9 +47,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 
   function isDesktopResolution() {
     try {
-      return (
-        document?.body?.offsetWidth > parseInt(styleConst.navMobileWidth, 10)
-      );
+      return document?.body?.offsetWidth > parseInt(styles.navMobileWidth, 10);
     } catch (e) {
       return false;
     }

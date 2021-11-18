@@ -1,8 +1,6 @@
 @import 'styles/mixins';
 @import 'styles/typography';
 
-@import 'astro_2.0/components/constants.module';
-
 .root {
   background-color: var(--color-brand-black);
   color: var(--color-white);
@@ -261,11 +259,5 @@
   .progress {
     display: block;
     text-align: left;
-  }
-}
-
-@media screen and (max-width: $nav-mobile-width) {
-  .root {
-    padding-bottom: 80px;
   }
 }

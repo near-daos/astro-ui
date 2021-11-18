@@ -1,25 +1,46 @@
-@use 'styles/breakpoints';
-@import 'astro_2.0/components/constants.module';
+@import 'styles/mixins';
 
 .root {
   align-items: center;
   background-color: var(--color-white);
   display: flex;
-  height: 72px;
+  height: 64px;
   justify-content: space-between;
-  padding: 0 130px 0 120px;
+  padding: 0 24px;
   position: sticky;
   top: 0;
   z-index: 1000;
+
+  @include astro-desktop {
+    height: 72px;
+  }
+
+  @include desktop {
+    padding: 0 48px;
+  }
+
+  @include large-desktop {
+    margin: auto;
+    max-width: 1000px;
+    padding: 0 60px;
+  }
+
+  @include large-x-desktop {
+    max-width: 1125px;
+    padding: 0 94px;
+  }
 }
 
 .logo {
-  display: flex;
-  margin-right: 42px;
-}
-
-.mobileLogo {
   display: none;
+
+  &.mobileLogo {
+    display: block;
+
+    @include astro-desktop {
+      display: none;
+    }
+  }
 }
 
 .centralPart {
@@ -30,52 +51,25 @@
   justify-content: space-between;
   margin-right: 30px;
   position: relative;
-  position: relative;
 }
 
 .nav {
   align-items: center;
-  display: flex;
+  display: none;
   height: 100%;
   position: relative;
 }
 
-@media screen and (max-width: #{breakpoints.$screen-lg - 1}px) {
-  .root {
-    padding: 0 40px;
-  }
+.search {
+  position: absolute;
+  right: 0;
 }
 
-@media screen and (max-width: #{$nav-mobile-width}) {
-  .root {
-    height: 64px;
-    padding: 0 24px;
-  }
-
-  .nav,
-  .logo {
-    display: none;
-  }
-
+.withSideBar {
   .search {
-    position: absolute;
-    right: 0;
-  }
-
-  .mobileLogo {
-    display: block;
-  }
-}
-
-@media screen and (min-width: $mobile-width + 1px) {
-  .withSideBar {
-    .nav,
-    .logo:not(.mobileLogo) {
-      display: none;
-    }
-
-    .search {
+    @include astro-desktop {
       position: initial;
+      right: auto;
     }
   }
 }
