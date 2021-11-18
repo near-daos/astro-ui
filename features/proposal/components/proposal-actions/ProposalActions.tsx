@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { CopyButton } from 'features/copy-button';
+import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ActionButton } from 'features/proposal/components/action-button';
 import { useMedia } from 'react-use';
 

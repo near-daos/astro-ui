@@ -10,7 +10,7 @@ import { formatCurrency } from 'utils/formatCurrency';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { DaoAddressLink } from 'components/dao-address';
-import { CopyButton } from 'features/copy-button';
+import { CopyButton } from 'astro_2.0/components/CopyButton';
 
 import { TokenCard } from 'components/cards/token-card';
 import { TokenDeprecated } from 'types/token';

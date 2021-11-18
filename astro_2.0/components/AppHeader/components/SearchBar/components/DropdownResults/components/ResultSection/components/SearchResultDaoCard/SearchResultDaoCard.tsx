@@ -7,7 +7,7 @@ import { DAO } from 'types/dao';
 
 import { nearConfig } from 'config';
 
-import defaultFlag from 'stories/dao-home/assets/flag.png';
+import defaultFlag from 'assets/flag.png';
 import { ImageWithFallback } from 'components/image-with-fallback';
 
 import styles from './SearchResultDaoCard.module.scss';

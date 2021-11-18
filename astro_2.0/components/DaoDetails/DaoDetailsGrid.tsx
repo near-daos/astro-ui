@@ -5,7 +5,7 @@ import TextTruncate from 'react-text-truncate';
 import { DAO } from 'types/dao';
 
 import { DaoInfoCard } from 'astro_2.0/components/DaoDetails/components/DaoInfoCard';
-import { CopyButton } from 'features/copy-button';
+import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ActionButton } from 'features/proposal/components/action-button';
 import { formatCurrency } from 'utils/formatCurrency';
 import * as Typography from 'components/Typography';

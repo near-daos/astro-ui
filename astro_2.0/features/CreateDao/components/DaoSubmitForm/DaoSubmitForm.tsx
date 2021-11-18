@@ -15,10 +15,11 @@ import { UnitSeparator } from 'astro_2.0/features/CreateDao/components/UnitSepar
 import { TransactionDetailsWidget } from 'astro_2.0/components/TransactionDetailsWidget/TransactionDetailsWidget';
 
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-import { getRolesVotingPolicy } from 'features/create-dao/components/steps/review/helpers';
 
 import { SputnikNearService } from 'services/sputnik';
 import awsUploader from 'services/AwsUploader/AwsUploader';
+
+import { getRolesVotingPolicy } from './helpers';
 
 import styles from './DaoSubmitForm.module.scss';
 
