@@ -713,9 +713,11 @@ export function mapProposalVariantToProposalType(
   }
 }
 
-function validateUserAccount(value: string | undefined): Promise<boolean> {
+function validateUserAccount(
+  value: string | undefined
+): Promise<boolean> | boolean {
   if (!value) {
-    return Promise.reject();
+    return false;
   }
 
   if (
