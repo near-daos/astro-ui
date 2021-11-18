@@ -1,6 +1,5 @@
 @use 'styles/breakpoints';
 @import 'styles/mixins';
-@import 'styles/typography';
 
 .root {
   display: flex;
@@ -8,8 +7,11 @@
 }
 
 .categoryFilter {
-  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
-    margin: 0 0 30px;
+  flex-shrink: 0;
+  margin-bottom: 30px;
+
+  @include large-desktop {
+    margin: 0;
   }
 }
 
