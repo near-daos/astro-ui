@@ -1,7 +1,12 @@
-import last from 'lodash/last';
 import * as yup from 'yup';
-import { AnySchema } from 'yup';
+import get from 'lodash/get';
+import last from 'lodash/last';
+import { nanoid } from 'nanoid';
+import Decimal from 'decimal.js';
 import dynamic from 'next/dynamic';
+import React, { ReactNode } from 'react';
+
+// Types
 import {
   CreateProposalParams,
   DaoConfig,
@@ -9,61 +14,64 @@ import {
   ProposalType,
   ProposalVariant,
 } from 'types/proposal';
-import React, { ReactNode } from 'react';
-import { AddBountyContent } from 'astro_2.0/features/CreateProposal/components/AddBountyContent';
-import { TransferContent } from 'astro_2.0/features/CreateProposal/components/TransferContent';
 import { DAO, Member } from 'types/dao';
-import { getAddBountyProposal } from 'features/bounty/dialogs/create-bounty-dialog/helpers';
-import { CreateBountyInput } from 'features/bounty/dialogs/create-bounty-dialog/types';
-import { Tokens } from 'context/CustomTokensContext';
-import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
-import Decimal from 'decimal.js';
-import { SputnikNearService } from 'services/sputnik';
-import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
-import { ChangeLinksContent } from 'astro_2.0/features/CreateProposal/components/ChangeLinksContent';
-import { nanoid } from 'nanoid';
-import {
-  BondsAndDeadlinesData,
-  getChangeBondDeadlinesProposal,
-  getChangeConfigProposal,
-} from 'features/dao-settings/helpers';
-import { ChangeDaoNameContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoNameContent';
-import { ChangeDaoPurposeContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoPurposeContent';
-import {
-  getAddMemberProposal,
-  getChangePolicyProposal,
-  getRemoveMemberProposal,
-} from 'features/groups/helpers';
 import { IGroupForm } from 'features/groups/types';
-import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/components/RemoveMemberFromGroupContent';
 import { DaoMetadata } from 'services/sputnik/mappers';
-import { LinksFormData } from 'features/dao-settings/components/links-tab';
+import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
+import { CreateBountyInput } from 'features/bounty/dialogs/create-bounty-dialog/types';
+import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
+
+// Constants
+import { YOKTO_NEAR } from 'services/sputnik/constants';
+import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+
+// Context
+import { Tokens } from 'context/CustomTokensContext';
+
+// Components
+import { TransferContent } from 'astro_2.0/features/CreateProposal/components/TransferContent';
+import { AddBountyContent } from 'astro_2.0/features/CreateProposal/components/AddBountyContent';
+import { BountyDoneContent } from 'astro_2.0/features/CreateProposal/components/DoneBountyContent';
+import { ChangeLinksContent } from 'astro_2.0/features/CreateProposal/components/ChangeLinksContent';
 import { CreateGroupContent } from 'astro_2.0/features/CreateProposal/components/CreateGroupContent';
+import { ChangeBondsContent } from 'astro_2.0/features/CreateProposal/components/ChangeBondsContent';
+import { ChangePolicyContent } from 'astro_2.0/features/CreateProposal/components/ChangePolicyContent';
+import { ChangeDaoNameContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoNameContent';
+import { ChangeDaoFlagContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoFlagContent';
+import { ChangeDaoPurposeContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoPurposeContent';
+import { AddMemberToGroupContent } from 'astro_2.0/features/CreateProposal/components/AddMemberToGroupContent';
+import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/components/RemoveMemberFromGroupContent';
+
+// Helpers & Utils
 import {
   getInitialData,
   getNewProposalObject as getNewVotingPolicyProposalObject,
   VotingPolicyPageInitialData,
 } from 'features/vote-policy/helpers';
-import { ChangePolicyContent } from 'astro_2.0/features/CreateProposal/components/ChangePolicyContent';
-import { YOKTO_NEAR } from 'services/sputnik/constants';
-import { ChangeBondsContent } from 'astro_2.0/features/CreateProposal/components/ChangeBondsContent';
-import { getCompleteBountyProposal } from 'features/bounty/dialogs/complete-bounty-dialog/helpers';
-import { BountyDoneContent } from 'astro_2.0/features/CreateProposal/components/DoneBountyContent';
-import { AddMemberToGroupContent } from 'astro_2.0/features/CreateProposal/components/AddMemberToGroupContent';
-import awsUploader from 'services/AwsUploader/AwsUploader';
-import get from 'lodash/get';
-import { ChangeDaoFlagContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoFlagContent';
+import {
+  dataRoleToContractRole,
+  getAddMemberProposal,
+  getChangePolicyProposal,
+  getRemoveMemberProposal,
+} from 'features/groups/helpers';
 import {
   CustomFunctionCallInput,
   getCustomFunctionCallProposal,
 } from 'astro_2.0/features/CreateProposal/proposalObjectHelpers';
-
 import {
   requiredImg,
   validateImgSize,
   getImgValidationError,
 } from 'helpers/imageValidators';
+import { keysToSnakeCase } from 'utils/keysToSnakeCase';
+import { getAddBountyProposal } from 'features/bounty/dialogs/create-bounty-dialog/helpers';
+import { getCompleteBountyProposal } from 'features/bounty/dialogs/complete-bounty-dialog/helpers';
+
+// Services
+import { SputnikNearService } from 'services/sputnik';
+import awsUploader from 'services/AwsUploader/AwsUploader';
+
+import { LinksFormData, BondsAndDeadlinesData } from './types';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -73,6 +81,79 @@ const CustomFunctionCallContent = dynamic(
     ssr: false,
   }
 );
+
+function getChangeConfigProposal(
+  daoId: string,
+  { name, purpose, metadata }: DaoConfig,
+  reason: string,
+  proposalBond: string
+): CreateProposalParams {
+  return {
+    kind: 'ChangeConfig',
+    daoId,
+    data: {
+      config: {
+        metadata,
+        name,
+        purpose,
+      },
+    },
+    description: reason,
+    bond: proposalBond,
+  };
+}
+
+function getChangeBondDeadlinesProposal(
+  dao: DAO,
+  {
+    createProposalBond,
+    proposalExpireTime,
+    claimBountyBond,
+    unclaimBountyTime,
+  }: BondsAndDeadlinesData,
+  initialValues: {
+    accountName: string;
+    createProposalBond: number;
+    proposalExpireTime: number;
+    claimBountyBond: number;
+    unclaimBountyTime: number;
+  },
+  proposalBond: string,
+  description: string
+): CreateProposalParams {
+  const { id, policy } = dao;
+
+  const { defaultVotePolicy } = policy;
+
+  const { ratio, quorum, weightKind } = defaultVotePolicy;
+
+  return {
+    daoId: id,
+    description,
+    kind: 'ChangePolicy',
+    data: {
+      policy: {
+        roles: dao.policy.roles.map(daoRole => dataRoleToContractRole(daoRole)),
+        default_vote_policy: keysToSnakeCase({
+          quorum,
+          threshold: ratio,
+          weightKind,
+        }),
+        proposal_bond: new Decimal(createProposalBond)
+          .mul(YOKTO_NEAR)
+          .toFixed(),
+        proposal_period: new Decimal(proposalExpireTime)
+          .mul('3.6e12')
+          .toFixed(),
+        bounty_bond: new Decimal(claimBountyBond).mul(YOKTO_NEAR).toFixed(),
+        bounty_forgiveness_period: new Decimal(unclaimBountyTime)
+          .mul('3.6e12')
+          .toFixed(),
+      },
+    },
+    bond: proposalBond,
+  };
+}
 
 async function getTransferProposal(
   dao: DAO,
@@ -737,7 +818,7 @@ function validateUserAccount(
 
 export function getValidationSchema(
   proposalVariant?: ProposalVariant
-): AnySchema {
+): yup.AnySchema {
   switch (proposalVariant) {
     case ProposalVariant.ProposeTransfer: {
       return yup.object().shape({
