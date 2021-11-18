@@ -18,7 +18,6 @@ import { useAuthContext } from 'context/AuthContext';
 import { useCustomTokensContext } from 'context/CustomTokensContext';
 
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
-import { getActiveProposalsCountByDao } from 'hooks/useAllProposals';
 import { useNearPrice } from 'hooks/useNearPrice';
 
 import styles from './dao-page.module.scss';
@@ -41,10 +40,6 @@ const DAOHome: NextPage<DaoHomeProps> = ({
 
   const { accountId } = useAuthContext();
   const { setTokens } = useCustomTokensContext();
-
-  const { active, total } = getActiveProposalsCountByDao(
-    initialProposalsData.data
-  );
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
@@ -81,8 +76,8 @@ const DAOHome: NextPage<DaoHomeProps> = ({
           accountId={accountId}
           restrictCreateProposals={policyAffectsProposals.length > 0}
           onCreateProposalClick={() => toggleCreateProposal()}
-          activeProposals={active[dao.id] || 0}
-          totalProposals={total[dao.id] || 0}
+          activeProposals={dao.activeProposalsCount}
+          totalProposals={dao.totalProposalsCount}
         />
 
         <CreateProposal

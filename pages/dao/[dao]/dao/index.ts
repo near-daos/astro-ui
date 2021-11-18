@@ -14,7 +14,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     initialProposalsData,
     policyAffectsProposals,
   ] = await Promise.all([
-    SputnikHttpService.getDaoById(daoId as string),
+    SputnikHttpService.getDaoFromFeedById(daoId as string),
     SputnikHttpService.getAccountTokens(daoId as string),
     SputnikHttpService.getProposalsList({
       offset: 0,
