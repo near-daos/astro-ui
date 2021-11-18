@@ -1,0 +1,33 @@
+@import 'styles/mixins';
+
+.root {
+  bottom: 80px;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  right: 24px;
+  transition: opacity 0.2s;
+  z-index: 9999;
+
+  @include desktop {
+    bottom: 40px;
+    right: 40px;
+  }
+
+  &.visible {
+    opacity: 0.5;
+    pointer-events: auto;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.icon {
+  color: var(--color-brand-black);
+
+  &:active {
+    color: var(--color-brand-black);
+  }
+}

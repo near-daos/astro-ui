@@ -6,6 +6,7 @@ import { CREATE_DAO_URL } from 'constants/routing';
 
 import { Sidebar } from 'components/Sidebar';
 import { AppHeader } from 'astro_2.0/components/AppHeader';
+import { LinkToTop } from 'astro_2.0/components/LinkToTop';
 import { NotificationContainer } from 'features/notifications';
 
 import styles from './PageLayout.module.scss';
@@ -25,6 +26,7 @@ const PageLayout: FC = ({ children }) => {
       <div className={styles.content}>
         <AppHeader />
         <div className={styles.main}>{children}</div>
+        <LinkToTop />
       </div>
       <NotificationContainer />
     </div>
