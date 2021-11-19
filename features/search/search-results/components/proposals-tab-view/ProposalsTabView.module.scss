@@ -30,19 +30,6 @@
   position: sticky;
   top: 70px;
   z-index: 2;
-
-  &::before {
-    background-color: var(--color-neutral-10);
-    content: '';
-    height: 100%;
-    left: 50%;
-    pointer-events: none;
-    position: absolute;
-    top: 0;
-    transform: translate(-50%);
-    width: 100vw;
-    z-index: -1;
-  }
 }
 
 .votingEnds {

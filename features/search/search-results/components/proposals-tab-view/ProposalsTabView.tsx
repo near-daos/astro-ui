@@ -70,16 +70,6 @@ export const ProposalsTabView: React.FC = () => {
     });
   }, [queries.category]);
 
-  if ((filteredProposals || []).length === 0) {
-    return (
-      <NoResultsView
-        title={query ? `No results for ${query}` : 'No results'}
-        subTitle="We couldn't find anything matching your search. Try again with a
-        different term."
-      />
-    );
-  }
-
   return (
     <div className={styles.root}>
       <div className={styles.statusFilterWrapper}>
@@ -150,20 +140,28 @@ export const ProposalsTabView: React.FC = () => {
           titleClassName={styles.categoriesListTitle}
         />
 
-        <Highlighter className={styles.highlighterRoot}>
-          {filteredProposals.map(item => {
-            return (
-              <div className={styles.cardWrapper} key={item.id}>
-                <ViewProposal
-                  dao={item.dao}
-                  proposal={item}
-                  showFlag
-                  tokens={tokens}
-                />
-              </div>
-            );
-          })}
-        </Highlighter>
+        {filteredProposals?.length ? (
+          <Highlighter className={styles.highlighterRoot}>
+            {filteredProposals.map(item => {
+              return (
+                <div className={styles.cardWrapper} key={item.id}>
+                  <ViewProposal
+                    dao={item.dao}
+                    proposal={item}
+                    showFlag
+                    tokens={tokens}
+                  />
+                </div>
+              );
+            })}
+          </Highlighter>
+        ) : (
+          <NoResultsView
+            title={query ? `No results for ${query}` : 'No results'}
+            subTitle="We couldn't find anything matching your search. Try again with a
+        different term."
+          />
+        )}
       </div>
     </div>
   );
