@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { composeProperLinkUrl } from 'helpers/composeProperLinkUrl';
 import { IconButton } from 'components/button/IconButton';
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
-import { CopyButton } from 'features/copy-button';
+import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 
 import styles from './DaoGeneralCard.module.scss';

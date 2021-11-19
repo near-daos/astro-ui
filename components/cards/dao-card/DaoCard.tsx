@@ -7,7 +7,7 @@ import { SINGLE_DAO_PAGE } from 'constants/routing';
 
 import { DAO } from 'types/dao';
 
-import defaultFlag from 'stories/dao-home/assets/flag.png';
+import defaultFlag from 'assets/flag.png';
 
 import { ImageWithFallback } from 'components/image-with-fallback';
 import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value/FormattedNumericValue';
@@ -15,7 +15,7 @@ import { FormattedNumericValue } from 'components/cards/components/formatted-num
 import { formatCurrency } from 'utils/formatCurrency';
 import { ExplorerLink } from 'components/explorer-link';
 import { DaoAddressLink } from 'components/dao-address';
-import { CopyButton } from 'features/copy-button';
+import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { useAuthContext } from 'context/AuthContext';
 
 import styles from 'components/cards/dao-card/dao-card.module.scss';

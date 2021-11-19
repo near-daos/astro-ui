@@ -14,7 +14,7 @@ import { VoteDetails } from 'components/vote-details';
 import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card/components/proposed-changes-renderer';
 import { DAO } from 'types/dao';
 import { getScope } from 'components/cards/expanded-proposal-card/helpers';
-import { CopyButton } from 'features/copy-button';
+import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ExplorerLink } from 'components/explorer-link';
 
 import styles from './content-panel.module.scss';

@@ -4,7 +4,7 @@ import TextTruncate from 'react-text-truncate';
 import { Icon } from 'components/Icon';
 import { ExplorerLink } from 'components/explorer-link';
 
-import { SMILE } from 'features/dao-home/components/follow-illustration/FollowIllustration';
+import { SmileSvg } from './components/SmileSvg';
 
 import styles from './member-card.module.scss';
 
@@ -88,7 +88,7 @@ const MemberCard: FC<MemberCardProps> = ({
     >
       <ExplorerLink linkData={title} linkType="member" isAbsolute />
       <div className={styles.body}>
-        {SMILE}
+        <SmileSvg />
         <div className={cn(styles.title, 'title2')}>
           <TextTruncate
             line={expandedView ? 10 : 2}

@@ -5,7 +5,7 @@ import { IconButton } from 'components/button/IconButton';
 import { IconName } from 'components/Icon';
 
 import cn from 'classnames';
-import styles from './copy-button.module.scss';
+import styles from './CopyButton.module.scss';
 
 interface CopyButtonProps {
   text: string;

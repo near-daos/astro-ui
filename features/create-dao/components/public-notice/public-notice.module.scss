@@ -1,9 +1,0 @@
-@import 'styles/mixins';
-
-.root {
-  @include centralize;
-  flex-direction: column;
-  gap: 46px;
-  text-align: center;
-  width: 60%;
-}
