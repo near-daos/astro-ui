@@ -1,5 +1,5 @@
 import { Receipt } from 'types/transaction';
-import { ChartData } from 'lib/types/treasury';
+import { ChartData } from 'types/chart';
 
 export function getChartData(receipts: Receipt[]): ChartData[] {
   let value = 0;

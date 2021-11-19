@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { ProposalType } from 'types/proposal';
 import StatusPanel from 'components/cards/proposal-card/components/proposal-status-panel/ProposalStatusPanel';
 
-import styles from './plugin-card.module.scss';
+import styles from './PluginCard.module.scss';
 
 export interface PluginCardProps {
   tokenName: string;

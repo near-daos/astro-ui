@@ -3,7 +3,7 @@ import React, { VFC } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { validUrlRegexp, validWebsiteName } from 'utils/regexp';
+import { VALID_URL_REGEXP, VALID_WEBSITE_NAME_REGEXP } from 'constants/regexp';
 
 import {
   validateImgSize,
@@ -25,14 +25,16 @@ const schema = yup.object().shape({
     .trim()
     .min(3, 'Incorrect DAO name - at least 3 characters expected.')
     .matches(
-      validWebsiteName,
+      VALID_WEBSITE_NAME_REGEXP,
       'Incorrect DAO name - you can use letters and numbers only with hyphens and spaces in the middle.'
     )
     .required(),
   purpose: yup.string().max(500),
   websites: yup
     .array()
-    .of(yup.string().matches(validUrlRegexp, 'Enter correct url!').required()),
+    .of(
+      yup.string().matches(VALID_URL_REGEXP, 'Enter correct url!').required()
+    ),
   proposals: yup.string().required(),
   structure: yup.string().required(),
   voting: yup.string().required(),

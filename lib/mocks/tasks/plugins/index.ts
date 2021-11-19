@@ -1,4 +1,4 @@
-import { PluginCardProps } from 'features/plugins/components/plugin-card/PluginCard';
+import { PluginCardProps } from 'features/plugins/components/PluginCard/PluginCard';
 import { IWizardInitialData } from 'features/plugins/components/use-plugin-popup/types';
 
 const generatePlugin = (tokenName: string, created: string) => ({

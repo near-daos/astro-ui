@@ -7,7 +7,8 @@ import { useSearchResults } from 'features/search/search-results/SearchResults';
 import MemberCard, { MemberCardPopup } from 'components/cards/member-card';
 import { Badge, Variant } from 'components/badge/Badge';
 import { useModal } from 'components/modal';
-import { groupColor } from 'lib/mocks/groups';
+
+import { GROUP_COLOR } from './constants';
 
 import styles from './members-tab-view.module.scss';
 
@@ -52,7 +53,7 @@ export const MembersTabView: FC = () => {
                 <Badge
                   key={grp}
                   size="small"
-                  variant={groupColor[grp] as Variant}
+                  variant={GROUP_COLOR[grp] as Variant}
                 >
                   {grp}
                 </Badge>
