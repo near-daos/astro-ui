@@ -40,6 +40,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
 
   return (
     <ProposalCardRenderer
+      proposalId={proposal.proposalId}
       daoFlagNode={
         showFlag && (
           <DaoFlagWidget
