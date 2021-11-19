@@ -4,7 +4,7 @@ import ReactModal from 'react-modal';
 
 import { IconButton } from 'components/button/IconButton';
 
-import styles from './modal.module.scss';
+import styles from './Modal.module.scss';
 
 export interface ModalProps {
   isOpen: boolean;

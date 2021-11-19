@@ -5,7 +5,7 @@ import {
 } from 'features/plugins/components/plugin-card/PluginCard';
 import { UsePluginPopup } from 'features/plugins/components/use-plugin-popup';
 import { useModal } from 'components/modal/hooks';
-import ScrollList from 'components/scroll-list/ScrollList';
+import { ScrollList } from 'astro_2.0/components/ScrollList';
 import { Button } from 'components/button/Button';
 import { IconButton } from 'components/button/IconButton';
 import { PLUGINS_DATA, PLUGIN_INITIAL_DATA } from 'lib/mocks/tasks/plugins';

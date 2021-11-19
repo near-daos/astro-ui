@@ -11,7 +11,7 @@ import { ALL_DAOS_URL, MY_FEED_URL } from 'constants/routing';
 import { AuthWrapper } from 'context/AuthContext';
 
 import { ModalProvider } from 'components/modal';
-import PageLayout from 'components/page-layout/PageLayout';
+import { PageLayout } from 'astro_2.0/components/PageLayout';
 import { MobileNav } from 'astro_2.0/components/navigation/MobileNav';
 import { SearchResults } from 'features/search/search-results';
 

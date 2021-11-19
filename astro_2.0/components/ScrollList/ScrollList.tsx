@@ -15,7 +15,7 @@ export interface ScrollListProps {
   }) => JSX.Element;
 }
 
-const ScrollList = React.forwardRef<VariableSizeList, ScrollListProps>(
+export const ScrollList = React.forwardRef<VariableSizeList, ScrollListProps>(
   ({ height, itemSize, itemCount, onScroll, renderItem }, ref) => {
     return (
       <VariableSizeList
@@ -31,5 +31,3 @@ const ScrollList = React.forwardRef<VariableSizeList, ScrollListProps>(
     );
   }
 );
-
-export default ScrollList;

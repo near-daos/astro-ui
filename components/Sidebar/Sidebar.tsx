@@ -15,10 +15,11 @@ import { useAuthContext } from 'context/AuthContext';
 
 import { Logo } from 'components/Logo';
 import { Icon } from 'components/Icon';
-import { NavItem } from 'components/nav-item/NavItem';
-import { NavSubItem } from 'components/nav-item/NavSubItem';
 
 import { AppFooter } from 'features/app-footer';
+
+import { NavItem } from './components/NavItem';
+import { NavSubItem } from './components/NavSubItem';
 
 import styles from './Sidebar.module.scss';
 

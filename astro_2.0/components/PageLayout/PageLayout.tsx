@@ -11,7 +11,7 @@ import { NotificationContainer } from 'features/notifications';
 
 import styles from './PageLayout.module.scss';
 
-const PageLayout: FC = ({ children }) => {
+export const PageLayout: FC = ({ children }) => {
   const router = useRouter();
 
   const isCreateDaoPage = router.route.match(CREATE_DAO_URL);
@@ -32,5 +32,3 @@ const PageLayout: FC = ({ children }) => {
     </div>
   );
 };
-
-export default PageLayout;

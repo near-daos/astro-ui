@@ -1,3 +1,5 @@
+// TODO refactor the helper. It's too big now.
+
 import * as yup from 'yup';
 import get from 'lodash/get';
 import last from 'lodash/last';
@@ -14,11 +16,15 @@ import {
   ProposalType,
   ProposalVariant,
 } from 'types/proposal';
+import {
+  LinksFormData,
+  CreateBountyInput,
+  BondsAndDeadlinesData,
+} from 'astro_2.0/features/CreateProposal/types';
 import { DAO, Member } from 'types/dao';
 import { IGroupForm } from 'features/groups/types';
 import { DaoMetadata } from 'services/sputnik/mappers';
 import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
-import { CreateBountyInput } from 'features/bounty/dialogs/create-bounty-dialog/types';
 import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
 
 // Constants
@@ -49,7 +55,6 @@ import {
   VotingPolicyPageInitialData,
 } from 'features/vote-policy/helpers';
 import {
-  dataRoleToContractRole,
   getAddMemberProposal,
   getChangePolicyProposal,
   getRemoveMemberProposal,
@@ -63,15 +68,17 @@ import {
   validateImgSize,
   getImgValidationError,
 } from 'helpers/imageValidators';
-import { keysToSnakeCase } from 'utils/keysToSnakeCase';
-import { getAddBountyProposal } from 'features/bounty/dialogs/create-bounty-dialog/helpers';
-import { getCompleteBountyProposal } from 'features/bounty/dialogs/complete-bounty-dialog/helpers';
 
 // Services
 import { SputnikNearService } from 'services/sputnik';
 import awsUploader from 'services/AwsUploader/AwsUploader';
 
-import { LinksFormData, BondsAndDeadlinesData } from './types';
+// Local helpers
+import {
+  getAddBountyProposal,
+  getCompleteBountyProposal,
+  getChangeBondDeadlinesProposal,
+} from './bountiesHelpers';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -99,58 +106,6 @@ function getChangeConfigProposal(
       },
     },
     description: reason,
-    bond: proposalBond,
-  };
-}
-
-function getChangeBondDeadlinesProposal(
-  dao: DAO,
-  {
-    createProposalBond,
-    proposalExpireTime,
-    claimBountyBond,
-    unclaimBountyTime,
-  }: BondsAndDeadlinesData,
-  initialValues: {
-    accountName: string;
-    createProposalBond: number;
-    proposalExpireTime: number;
-    claimBountyBond: number;
-    unclaimBountyTime: number;
-  },
-  proposalBond: string,
-  description: string
-): CreateProposalParams {
-  const { id, policy } = dao;
-
-  const { defaultVotePolicy } = policy;
-
-  const { ratio, quorum, weightKind } = defaultVotePolicy;
-
-  return {
-    daoId: id,
-    description,
-    kind: 'ChangePolicy',
-    data: {
-      policy: {
-        roles: dao.policy.roles.map(daoRole => dataRoleToContractRole(daoRole)),
-        default_vote_policy: keysToSnakeCase({
-          quorum,
-          threshold: ratio,
-          weightKind,
-        }),
-        proposal_bond: new Decimal(createProposalBond)
-          .mul(YOKTO_NEAR)
-          .toFixed(),
-        proposal_period: new Decimal(proposalExpireTime)
-          .mul('3.6e12')
-          .toFixed(),
-        bounty_bond: new Decimal(claimBountyBond).mul(YOKTO_NEAR).toFixed(),
-        bounty_forgiveness_period: new Decimal(unclaimBountyTime)
-          .mul('3.6e12')
-          .toFixed(),
-      },
-    },
     bond: proposalBond,
   };
 }

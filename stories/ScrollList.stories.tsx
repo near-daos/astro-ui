@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import ScrollList, { ScrollListProps } from 'components/scroll-list/ScrollList';
+import { ScrollList, ScrollListProps } from 'astro_2.0/components/ScrollList';
 import { TokenCard } from 'components/cards/token-card';
 
 export default {
