@@ -14,6 +14,16 @@ const FEED_CATEGORIES = [
   { value: ProposalCategories.Polls, label: 'Polls' },
 ];
 
+interface ProposalCategoryFilterProps {
+  title?: string;
+  disabled?: boolean;
+  queryName: string;
+  query: Record<string, string | string[]>;
+  className?: string;
+  titleClassName?: string;
+  list?: { value: string; label: string }[];
+}
+
 export const ProposalCategoryFilter = ({
   query,
   queryName,
@@ -22,7 +32,7 @@ export const ProposalCategoryFilter = ({
   titleClassName,
   title,
   list,
-}: Props): JSX.Element => {
+}: ProposalCategoryFilterProps): JSX.Element => {
   const { [queryName]: value, ...otherQuery } = query;
 
   return (
@@ -95,21 +105,9 @@ export const ProposalCategoryFilter = ({
   );
 };
 
-type Props = {
-  title?: string;
-  disabled?: boolean;
-  queryName: string;
-  query: Record<string, string | string[]>;
-  className?: string;
-  titleClassName?: string;
-  list?: { value: string; label: string }[];
-};
-
 ProposalCategoryFilter.defaultProps = {
   disabled: undefined,
   className: undefined,
   title: undefined,
   list: FEED_CATEGORIES,
 };
-
-export default ProposalCategoryFilter;
