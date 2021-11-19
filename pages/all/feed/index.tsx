@@ -6,7 +6,7 @@ import { ProposalsQueries } from 'services/sputnik/types/proposals';
 import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 
-import Feed from 'astro_2.0/components/Feed';
+import { Feed } from 'astro_2.0/components/Feed';
 
 const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
   <Feed {...props} />

@@ -19,7 +19,11 @@ import { HeaderWithFilter } from 'astro_2.0/features/dao/HeaderWithFilter';
 
 import styles from './Feed.module.scss';
 
-const FeedPage = ({ initialProposals }: Props): JSX.Element => {
+interface FeedProps {
+  initialProposals: PaginationResponse<Proposal[]> | null;
+}
+
+export const Feed = ({ initialProposals }: FeedProps): JSX.Element => {
   const { query, replace, pathname } = useRouter();
 
   const { tokens } = useAllCustomTokens();
@@ -174,9 +178,3 @@ const FeedPage = ({ initialProposals }: Props): JSX.Element => {
     </main>
   );
 };
-
-type Props = {
-  initialProposals: PaginationResponse<Proposal[]> | null;
-};
-
-export default FeedPage;
