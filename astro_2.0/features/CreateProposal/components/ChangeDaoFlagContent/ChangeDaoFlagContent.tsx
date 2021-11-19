@@ -45,11 +45,9 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
           label={coverFileList ? 'Preview' : ''}
           fullWidth
         >
-          {coverFileList && (
-            <div className={styles.flag}>
-              <FlagRenderer flag={coverImg} size="lg" logo={logoImg} />
-            </div>
-          )}
+          <div className={styles.flag}>
+            <FlagRenderer flag={coverImg} size="lg" logo={logoImg} />
+          </div>
         </InputWrapper>
       </div>
       <div className={cn(styles.row, styles.target)}>

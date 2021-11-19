@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import cn from 'classnames';
 import { Icon } from 'components/Icon';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
@@ -13,6 +13,28 @@ export const FlagPreview: React.FC<FlagPreviewProps> = ({
   coverFile,
   logoFile,
 }) => {
+  function getRandomInt(minNum: number, maxNum: number) {
+    const min = Math.ceil(minNum);
+    const max = Math.floor(maxNum);
+
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  const getDefaultFlag = useCallback(() => {
+    const flags = [
+      '/flags/flag-1.svg',
+      '/flags/flag-2.svg',
+      '/flags/flag-3.svg',
+      '/flags/flag-4.svg',
+      '/flags/flag-5.svg',
+      '/flags/flag-6.svg',
+    ];
+
+    return flags[getRandomInt(0, flags.length - 1)];
+  }, []);
+
+  const defaultFlag = useMemo(() => getDefaultFlag(), [getDefaultFlag]);
+
   return (
     <>
       <div className={styles.root}>
@@ -30,10 +52,14 @@ export const FlagPreview: React.FC<FlagPreviewProps> = ({
             <div className={styles.titleIn}>Flag and Icon</div>
             <div className={styles.flags}>
               <div className={cn(styles.flag, styles.sm)}>
-                <FlagRenderer flag={coverFile} size="sm" />
+                <FlagRenderer flag={coverFile || defaultFlag} size="sm" />
               </div>
               <div className={styles.flag}>
-                <FlagRenderer flag={coverFile} size="lg" logo={logoFile} />
+                <FlagRenderer
+                  flag={coverFile || defaultFlag}
+                  size="lg"
+                  logo={logoFile}
+                />
               </div>
             </div>
           </div>
@@ -52,14 +78,6 @@ export const FlagPreview: React.FC<FlagPreviewProps> = ({
           </div>
         </div>
       </div>
-      <svg className="svg" width="0" height="0">
-        <clipPath id="flag">
-          <path d="M240.01 0L50.4101 67.7595V105.35L0 123.366V272L189.599 204.24V166.65L240.01 148.634V0Z" />
-        </clipPath>
-        <clipPath id="small-flag">
-          <path d="M42.0004 0L8.8218 11.4593V17.8164L0 20.8633V45.9999L33.1786 34.5406V28.1835L42.0004 25.1366V0Z" />
-        </clipPath>
-      </svg>
     </>
   );
 };

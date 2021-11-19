@@ -2,6 +2,18 @@
   margin-right: 24px;
   position: relative;
   width: fit-content;
+
+  &.lg {
+    height: 272px;
+  }
+
+  &.sm {
+    height: 78px;
+  }
+
+  &.xs {
+    height: 53px;
+  }
 }
 
 .logo {
@@ -40,4 +52,12 @@
   inset: 0;
   position: absolute;
   transform: scale(1.04, 1.045);
+}
+
+.defaultBackground {
+  .background,
+  .backgroundSmall,
+  .backgroundXS {
+    background-color: var(--color-neutral-20);
+  }
 }

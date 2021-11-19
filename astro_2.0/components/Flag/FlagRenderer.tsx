@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import cn from 'classnames';
 import { useMountedState } from 'react-use';
 
 import styles from './FlagRenderer.module.scss';
@@ -177,11 +178,14 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
     }
   }, [image, imageDimensions]);
 
-  if (isNoFlag()) return null;
-
   return (
     <div
-      className={styles.root}
+      className={cn(styles.root, {
+        [styles.lg]: size === 'lg',
+        [styles.sm]: size === 'sm',
+        [styles.xs]: size === 'xs',
+        [styles.defaultBackground]: isNoFlag(),
+      })}
       ref={wrapperRef as React.LegacyRef<HTMLDivElement>}
     >
       <svg className="svg" width="0" height="0">
