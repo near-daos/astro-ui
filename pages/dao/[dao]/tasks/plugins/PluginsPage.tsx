@@ -8,11 +8,12 @@ import { useModal } from 'components/modal/hooks';
 import { ScrollList } from 'astro_2.0/components/ScrollList';
 import { Button } from 'components/button/Button';
 import { IconButton } from 'components/button/IconButton';
-import { PLUGINS_DATA, PLUGIN_INITIAL_DATA } from 'lib/mocks/tasks/plugins';
 import { ListOnScrollProps, VariableSizeList } from 'react-window';
 import { useMedia } from 'react-use';
 import styles from 'pages/dao/[dao]/tasks/plugins/plugins.module.scss';
 import { useAuthContext } from 'context/AuthContext';
+
+import { PLUGINS_DATA, PLUGIN_INITIAL_DATA } from './mocks';
 
 interface PluginPageProps {
   plugins: PluginCardProps[];
