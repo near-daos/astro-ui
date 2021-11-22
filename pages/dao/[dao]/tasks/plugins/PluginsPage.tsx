@@ -13,7 +13,7 @@ import { useMedia } from 'react-use';
 import styles from 'pages/dao/[dao]/tasks/plugins/plugins.module.scss';
 import { useAuthContext } from 'context/AuthContext';
 
-import { PLUGINS_DATA, PLUGIN_INITIAL_DATA } from './mocks';
+import { PLUGINS_DATA, PLUGIN_INITIAL_DATA } from 'mocks/pluginsPageData';
 
 interface PluginPageProps {
   plugins: PluginCardProps[];
