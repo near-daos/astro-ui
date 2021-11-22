@@ -1,3 +1,5 @@
+@import 'styles/mixins';
+
 .root {
   .btn {
     color: var(--color-neutral-50);
@@ -7,5 +9,13 @@
 .root:hover {
   .btn {
     color: var(--color-primary-50);
+  }
+}
+
+.popup {
+  display: none;
+
+  @include non-touch-devices {
+    display: block;
   }
 }
