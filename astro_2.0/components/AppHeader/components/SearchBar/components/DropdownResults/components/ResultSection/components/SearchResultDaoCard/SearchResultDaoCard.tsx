@@ -2,13 +2,11 @@ import React, { VFC } from 'react';
 import { useRouter } from 'next/router';
 
 import { SINGLE_DAO_PAGE } from 'constants/routing';
+import { FlagRenderer } from 'astro_2.0/components/Flag';
 
 import { DAO } from 'types/dao';
 
 import { nearConfig } from 'config';
-
-import defaultFlag from 'assets/flag.png';
-import { ImageWithFallback } from 'components/image-with-fallback';
 
 import styles from './SearchResultDaoCard.module.scss';
 
@@ -22,7 +20,7 @@ export const SearchResultDaoCard: VFC<SearchResultDaoCardProps> = ({
   onClick,
 }) => {
   const router = useRouter();
-  const { id, logo, displayName } = data;
+  const { id, logo, flagCover, displayName } = data;
 
   const header = displayName || id.replace(nearConfig.contractName, '');
 
@@ -45,13 +43,7 @@ export const SearchResultDaoCard: VFC<SearchResultDaoCardProps> = ({
       className={styles.root}
     >
       <div className={styles.flagHolder}>
-        <ImageWithFallback
-          src={logo}
-          width={60}
-          height={60}
-          alt="Dao Logo"
-          fallbackSrc={defaultFlag.src}
-        />
+        <FlagRenderer flag={flagCover} size="xs" fallBack={logo} />
       </div>
       <div>
         <div className={styles.header}>{header}</div>
