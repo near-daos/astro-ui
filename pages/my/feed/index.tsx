@@ -1,7 +1,7 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
 
-import { Feed } from 'astro_2.0/components/Feed';
+import { Feed } from 'astro_2.0/features/Feed';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
@@ -9,7 +9,7 @@ import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 
 const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
-  <Feed {...props} />
+  <Feed {...props} title="My proposals feed" />
 );
 
 export const getServerSideProps: GetServerSideProps<React.ComponentProps<

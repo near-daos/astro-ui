@@ -1,42 +1,231 @@
-import React from 'react';
 import cn from 'classnames';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import isEmpty from 'lodash/isEmpty';
+import isString from 'lodash/isString';
+import { useAsyncFn } from 'react-use';
+import { useRouter } from 'next/router';
+import React, { ReactNode, useState } from 'react';
 
+// Types
+import { DAO } from 'types/dao';
+import { Token } from 'types/token';
 import { PaginationResponse } from 'types/api';
+import { ProposalsQueries } from 'services/sputnik/types/proposals';
+import { Proposal, ProposalCategories, ProposalStatuses } from 'types/proposal';
+
+// Constants
+import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
+
+// Components
+import { NoResultsView } from 'features/no-results-view';
+import { Feed as FeedList } from 'astro_2.0/components/Feed';
+import { ViewProposal } from 'astro_2.0/features/ViewProposal';
+import { HeaderWithFilter } from 'astro_2.0/features/dao/HeaderWithFilter';
+import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
+import { ProposalCategoryFilter } from 'astro_2.0/features/Proposals/components/ProposalCategoryFilter';
+
+// Hooks
+import { useAuthContext } from 'context/AuthContext';
+import { useAllCustomTokens } from 'hooks/useCustomTokens';
+import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
+
+// Services
+import { SputnikHttpService } from 'services/sputnik';
 
 import styles from './Feed.module.scss';
 
-type FeedProps<T> = {
+interface FeedProps {
+  dao?: DAO;
+  showFlag?: boolean;
   className?: string;
-  data: PaginationResponse<T[]>;
-  loader: React.ReactElement;
-  noResults: React.ReactElement;
-  renderItem: (item: T) => React.ReactElement;
-  loadMore: () => void;
-};
+  status?: ProposalStatuses;
+  title?: ReactNode | string;
+  category?: ProposalCategories;
+  // TODO temporary solution till tokens API fixed
+  daoTokens?: Record<string, Token>;
+  initialProposals: PaginationResponse<Proposal[]> | null;
+}
 
-const Feed = <T,>({
+export const Feed = ({
+  dao,
+  title,
+  status,
+  category,
   className,
-  data,
-  loader,
-  noResults,
-  renderItem,
-  loadMore,
-}: FeedProps<T>): React.ReactElement => {
+  daoTokens,
+  showFlag = true,
+  initialProposals,
+}: FeedProps): JSX.Element => {
+  const { query, replace, pathname } = useRouter();
+
+  const { tokens } = useAllCustomTokens();
+
+  const queries = query as ProposalsQueries;
+
+  const isMyFeed = pathname.startsWith('/my/feed');
+
+  const { accountId } = useAuthContext();
+
+  const [proposalsData, setProposalsData] = useState(initialProposals);
+
+  const [{ loading: proposalsDataIsLoading }, fetchProposalsData] = useAsyncFn(
+    async (initialData?: typeof proposalsData) => {
+      let accumulatedListData = initialData || null;
+
+      const res = dao
+        ? await SputnikHttpService.getProposalsList({
+            offset: accumulatedListData?.data.length || 0,
+            limit: LIST_LIMIT_DEFAULT,
+            daoId: dao?.id,
+            category: category || queries.category,
+            status: status || queries.status,
+          })
+        : await SputnikHttpService.getProposalsList(
+            {
+              offset: accumulatedListData?.data.length || 0,
+              limit: LIST_LIMIT_DEFAULT,
+              category: queries.category,
+              status: queries.status,
+              daoFilter: 'All DAOs',
+            },
+            isMyFeed && accountId ? accountId : undefined
+          );
+
+      accumulatedListData = {
+        ...res,
+        data: [...(accumulatedListData?.data || []), ...res.data],
+      };
+
+      return accumulatedListData;
+    },
+    [
+      proposalsData?.data.length,
+      queries.status,
+      queries.category,
+      accountId,
+      isMyFeed,
+    ]
+  );
+
+  useDebounceEffect(
+    async ({ isInitialCall, depsHaveChanged }) => {
+      if (isInitialCall || !depsHaveChanged) {
+        return;
+      }
+
+      setProposalsData(await fetchProposalsData());
+
+      window.scroll(0, 0);
+    },
+    1000,
+    [queries.category, queries.status]
+  );
+
+  const loadMore = async () => {
+    if (proposalsDataIsLoading) {
+      return;
+    }
+
+    setProposalsData(await fetchProposalsData(proposalsData));
+  };
+
+  const onProposalFilterChange = async (value: string) => {
+    const nextQuery = {
+      ...queries,
+      status: value as ProposalStatuses,
+    } as ProposalsQueries;
+
+    if (value === 'All') {
+      delete nextQuery.status;
+    }
+
+    await replace(
+      {
+        query: nextQuery,
+      },
+      undefined,
+      { shallow: true, scroll: false }
+    );
+  };
+
+  function renderTitle() {
+    if (isString(title)) {
+      return <h1 className={styles.title}>{title}</h1>;
+    }
+
+    return title;
+  }
+
   return (
-    <div className={cn(styles.root, className)}>
-      <InfiniteScroll
-        dataLength={data.data.length}
-        next={loadMore}
-        hasMore={data.data.length < data.total}
-        loader={loader}
-        style={{ overflow: 'initial' }}
-        endMessage={noResults}
+    <main className={cn(styles.root, className)}>
+      <HeaderWithFilter
+        className={styles.statusFilterWrapper}
+        title={renderTitle()}
       >
-        {data.data.map(renderItem)}
-      </InfiniteScroll>
-    </div>
+        <ProposalStatusFilter
+          value={queries.status || 'All'}
+          onChange={onProposalFilterChange}
+          disabled={proposalsDataIsLoading}
+          list={[
+            { value: 'All', label: 'All' },
+            {
+              value: ProposalStatuses.Active,
+              label: 'Active',
+            },
+            {
+              value: ProposalStatuses.Approved,
+              label: 'Approved',
+              className: styles.categoriesListApprovedInputWrapperChecked,
+            },
+            {
+              value: ProposalStatuses.Failed,
+              label: 'Failed',
+              className: styles.categoriesListFailedInputWrapperChecked,
+            },
+          ]}
+        />
+      </HeaderWithFilter>
+
+      <div className={styles.container}>
+        {!category && (
+          <ProposalCategoryFilter
+            query={queries}
+            queryName="category"
+            title="Choose a filter"
+            disabled={proposalsDataIsLoading}
+            titleClassName={styles.categoriesListTitle}
+          />
+        )}
+
+        {proposalsData && (
+          <FeedList
+            data={proposalsData}
+            loadMore={loadMore}
+            loader={<p className={styles.loading}>Loading...</p>}
+            noResults={
+              <div className={styles.loading}>
+                <NoResultsView
+                  title={
+                    isEmpty(proposalsData?.data)
+                      ? 'No proposals here'
+                      : 'No more results'
+                  }
+                />
+              </div>
+            }
+            renderItem={proposal => (
+              <div key={proposal.id} className={styles.proposalCardWrapper}>
+                <ViewProposal
+                  dao={proposal.dao}
+                  proposal={proposal}
+                  showFlag={showFlag}
+                  tokens={daoTokens || tokens}
+                />
+              </div>
+            )}
+            className={styles.listWrapper}
+          />
+        )}
+      </div>
+    </main>
   );
 };
-
-export default Feed;

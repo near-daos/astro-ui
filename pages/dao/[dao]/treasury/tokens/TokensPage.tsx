@@ -27,7 +27,7 @@ import { DAO } from 'types/dao';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { Proposal, ProposalVariant } from 'types/proposal';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
-import NavLink from 'astro_2.0/components/NavLink';
+import { NavLink } from 'astro_2.0/components/NavLink';
 import { useAuthCheck } from 'astro_2.0/features/Auth';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';

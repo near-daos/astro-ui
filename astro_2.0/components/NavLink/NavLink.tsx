@@ -1,7 +1,7 @@
 import React from 'react';
+import cn from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import cn from 'classnames';
 
 export interface NavLinkProps {
   className?: string;
@@ -10,7 +10,7 @@ export interface NavLinkProps {
   activeClassName?: string;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({
+export const NavLink: React.FC<NavLinkProps> = ({
   className,
   activeClassName = '',
   href,
@@ -32,5 +32,3 @@ const NavLink: React.FC<NavLinkProps> = ({
     content
   );
 };
-
-export default NavLink;

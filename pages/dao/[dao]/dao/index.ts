@@ -6,7 +6,7 @@ import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import DaoPage from './DaoPage';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { proposalStatus, proposalCagegory, dao: daoId } = query;
+  const { status, category, dao: daoId } = query;
 
   const [dao, initialProposalsData, policyAffectsProposals] = await Promise.all(
     [
@@ -15,8 +15,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         offset: 0,
         limit: LIST_LIMIT_DEFAULT,
         daoId: daoId as string,
-        category: proposalCagegory as ProposalCategories,
-        status: proposalStatus as ProposalStatuses,
+        category: category as ProposalCategories,
+        status: status as ProposalStatuses,
       }),
       SputnikHttpService.findPolicyAffectsProposals(daoId as string),
     ]
