@@ -10,16 +10,16 @@
   background-repeat: repeat-x;
   background-size: 12px 3px;
   height: 3px;
-  margin: 10px -24px;
-  width: calc(100% + 48px);
+  margin: 10px -16px;
+  width: calc(100% + 32px);
 
   @include desktop {
-    margin: 10px -40px;
-    width: calc(100% + 80px);
+    margin: 10px -32px;
+    width: calc(100% + 64px);
   }
 
   @include large-desktop {
-    margin: 10px -111px;
-    width: calc(100% + 222px);
+    margin: 10px -48px;
+    width: calc(100% + 96px);
   }
 }

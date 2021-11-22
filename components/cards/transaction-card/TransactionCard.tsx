@@ -26,7 +26,12 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
 }) => {
   return (
     <div className={s.root}>
-      <ExplorerLink linkData={txHash} linkType="transaction" isAbsolute />
+      <ExplorerLink
+        linkData={txHash}
+        linkType="transaction"
+        className={s.explorerLink}
+        isAbsolute
+      />
       <div
         className={classNames(s.icon, {
           [s.deposit]: type === 'Deposit',

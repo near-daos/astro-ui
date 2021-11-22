@@ -29,17 +29,13 @@
   button {
     max-width: 120px;
     min-width: auto;
-    padding: 0 16px;
+    padding: 0;
     white-space: nowrap;
-
-    @include desktop {
-      padding: 0 24px;
-    }
   }
 
   .complete {
     margin-left: 5px;
-    width: 37%;
+    width: 33%;
 
     @include tablet-portrait {
       margin-left: 10px;
@@ -48,7 +44,7 @@
 
   .unclaim {
     text-transform: none;
-    width: 35%;
+    width: 30%;
   }
 
   .claim {

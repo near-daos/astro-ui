@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 
 .root {
@@ -20,14 +21,11 @@
   }
 
   @include large-desktop {
-    margin: auto;
-    max-width: 1000px;
-    padding: 0 60px;
+    padding: 0 72px;
   }
 
-  @include large-x-desktop {
-    max-width: 1125px;
-    padding: 0 94px;
+  @media (min-width: 1600px) {
+    padding: 0 120px;
   }
 }
 
