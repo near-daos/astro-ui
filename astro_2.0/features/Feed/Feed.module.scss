@@ -88,7 +88,10 @@
 
 .proposalCardWrapper {
   margin-bottom: 60px;
-  margin-top: 32px;
+
+  &:not(:first-of-type) {
+    margin-top: 32px;
+  }
 }
 
 .categoriesListTitle {
