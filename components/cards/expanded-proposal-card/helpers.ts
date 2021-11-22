@@ -8,6 +8,7 @@ function formatCountdown(seconds: number) {
   const d = Math.floor(seconds / (24 * 3600));
   const h = Math.floor((seconds - d * 24 * 3600) / 3600);
   const m = Math.floor((seconds - d * 24 * 3600 - h * 3600) / 60);
+  const s = Math.floor(seconds - d * 24 * 3600 - h * 3600 - m * 60);
 
   let res = '';
 
@@ -23,6 +24,10 @@ function formatCountdown(seconds: number) {
     res += `${m}m `;
   }
 
+  if (!res && s > 0 && s < 60) {
+    res = 'less than a minute';
+  }
+
   return res;
 }
 
@@ -32,7 +37,7 @@ export function useCountdown(endsAt: string): string | null {
 
   const diff = differenceInMilliseconds(end, start);
 
-  const [timeLeft, actions] = useCountDown(diff, 1000 * 60);
+  const [timeLeft, actions] = useCountDown(diff, 1000 * 15);
 
   useEffect(() => {
     actions.start();
