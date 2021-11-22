@@ -1,10 +1,11 @@
 @import 'styles/mixins';
+@import 'styles/typography';
 
 .root {
   border-radius: 0 8px 8px 0;
   display: grid;
   grid-template-areas:
-    'daoFlag'
+    'header'
     'letterHead'
     'proposal'
     'infoPanel';
@@ -12,15 +13,18 @@
 
   @include tablet-landscape {
     grid-template-areas:
-      'daoFlag daoFlag'
+      'header header'
       'letterHead proposal'
       'infoPanel infoPanel';
     grid-template-columns: 50px 1fr;
   }
 }
 
-.daoFlag {
-  grid-area: daoFlag;
+.header {
+  align-items: flex-end;
+  display: flex;
+  grid-area: header;
+  justify-content: space-between;
 }
 
 .proposal {
@@ -35,4 +39,25 @@
   grid-area: infoPanel;
   padding-left: 19px;
   padding-right: 19px;
+}
+
+.proposalIdCell {
+  align-items: center;
+  display: flex;
+  height: 36px;
+  white-space: nowrap;
+
+  .proposalIdLabel {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+    font-weight: 400;
+  }
+
+  .proposalIdValue {
+    @extend %subtitle5;
+    align-items: center;
+    color: var(--color-neutral-60);
+    display: flex;
+    gap: 12px;
+  }
 }

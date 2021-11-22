@@ -156,11 +156,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           <Icon name={sealIcon as IconName} />
         </div>
       )}
-      <div className={styles.proposalIdCell}>
-        <span className={styles.proposalIdLabel}>Proposal ID:&nbsp;</span>
-        <span className={styles.proposalIdValue}>{proposalId}</span>
-      </div>
-
       <div className={styles.proposalCell}>
         <InfoBlockWidget
           valueFontSize="L"
