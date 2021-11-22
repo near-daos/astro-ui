@@ -13,19 +13,21 @@ import { TransactionDetailsWidget } from 'astro_2.0/components/TransactionDetail
 import { CreateProposalParams, ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
 
-import {
-  getFormContentNode,
-  getFormInitialValues,
-  getNewProposalObject,
-  getValidationSchema,
-  mapProposalVariantToProposalType,
-} from 'astro_2.0/features/CreateProposal/helpers';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 import { useAuthContext } from 'context/AuthContext';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+
+import {
+  getFormContentNode,
+  getFormInitialValues,
+  getNewProposalObject,
+  getValidationSchema,
+  mapProposalVariantToProposalType,
+} from './helpers';
+
 import { CreateProposalCard } from './components/CreateProposalCard';
 
 export interface CreateProposalProps {

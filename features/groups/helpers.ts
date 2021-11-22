@@ -9,43 +9,6 @@ import { keysToSnakeCase } from 'utils/keysToSnakeCase';
 
 import { IGroupForm } from './types';
 
-// Correct policy sample
-// {
-//   policy: {
-//     roles: [
-//       {
-//         name: 'all',
-//         kind: 'Everyone',
-//         permissions: ['*:AddProposal'],
-//         vote_policy: {}
-//       },
-//       {
-//         name: 'council',
-//         kind: {
-//           Group: ['test']
-//         },
-//         permissions: [
-//           '*:AddProposal',
-//           '*:VoteReject',
-//           '*:VoteApprove',
-//           '*:VoteRemove',
-//           '*:Finalize'
-//         ],
-//         vote_policy: {}
-//       }
-//     ],
-//     default_vote_policy: {
-//       quorum: '0',
-//       threshold: [1, 2],
-//       weight_kind: 'RoleWeight'
-//     },
-//     proposal_bond: '1000000000000000000000000',
-//     proposal_period: '604800000000000',
-//     bounty_bond: '1000000000000000000000000',
-//     bounty_forgiveness_period: '86400000000000'
-//   }
-// }
-
 function getAddRemoveMemberProposal(
   formData: IGroupForm,
   dao: DAO,

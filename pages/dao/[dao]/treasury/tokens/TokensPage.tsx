@@ -16,7 +16,7 @@ import { TokenCard } from 'components/cards/token-card';
 import { TokenDeprecated } from 'types/token';
 
 import { ChartCaption } from 'components/area-chart/components/chart-caption';
-import { ChartData } from 'lib/types/treasury';
+import { ChartData } from 'types/chart';
 
 import { TransactionCard } from 'components/cards/transaction-card';
 import { Receipt } from 'types/transaction';

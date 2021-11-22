@@ -1,0 +1,43 @@
+@use '../../../../styles/breakpoints';
+@import '../../../../styles/typography';
+
+.nav {
+  align-items: center;
+  color: var(--color-white-opacity-5);
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 700;
+  gap: 9px;
+  line-height: 24px;
+  width: 100%;
+
+  &.active {
+    color: var(--color-white);
+  }
+
+  &:hover {
+    color: var(--color-white);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.active {
+  &:hover {
+    color: var(--color-success);
+  }
+
+  .icon {
+    color: var(--color-success);
+  }
+}
+
+.label {
+  margin-left: 4px;
+}
+
+.badge {
+  margin-left: auto;
+}

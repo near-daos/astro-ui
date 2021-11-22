@@ -1,3 +1,5 @@
+import { DeadlineUnit } from 'components/cards/bounty-card/types';
+
 type ExternalLink = {
   id: string;
   url: string;
@@ -17,3 +19,13 @@ export interface BondsAndDeadlinesData {
   details: string;
   externalUrl: string;
 }
+
+export type CreateBountyInput = {
+  token: string;
+  amount: number;
+  details: string;
+  externalUrl: string;
+  slots: number;
+  deadlineThreshold: number;
+  deadlineUnit: DeadlineUnit;
+};
