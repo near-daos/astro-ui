@@ -7,9 +7,9 @@ import { BountyCard } from 'astro_2.0/components/BountyCard';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { Radio } from 'astro_2.0/components/inputs/Radio';
-import NavLink from 'astro_2.0/components/NavLink';
+import { NavLink } from 'astro_2.0/components/NavLink';
 import { Button } from 'components/button/Button';
-import { FeedFilter } from 'astro_2.0/features/Feed';
+import { FeedFilter } from 'astro_2.0/components/Feed';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 import { HeaderWithFilter } from 'astro_2.0/features/dao/HeaderWithFilter';
 

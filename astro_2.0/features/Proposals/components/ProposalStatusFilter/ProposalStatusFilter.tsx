@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { ProposalStatuses } from 'types/proposal';
+import { FeedFilter } from 'astro_2.0/components/Feed';
 import { Radio } from 'astro_2.0/components/inputs/Radio';
-import { FeedFilter } from 'astro_2.0/features/Feed';
 
 import styles from './ProposalStatusFilter.module.scss';
 

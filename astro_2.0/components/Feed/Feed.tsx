@@ -1,180 +1,40 @@
-import React, { useState } from 'react';
-import { useRouter } from 'next/router';
-import { useAsyncFn } from 'react-use';
+import React from 'react';
+import cn from 'classnames';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { PaginationResponse } from 'types/api';
-import { Proposal, ProposalStatuses } from 'types/proposal';
-import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
-import { ProposalsQueries } from 'services/sputnik/types/proposals';
-import { SputnikHttpService } from 'services/sputnik';
-import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
-import { useAuthContext } from 'context/AuthContext';
-import { useAllCustomTokens } from 'hooks/useCustomTokens';
-import { NoResultsView } from 'features/no-results-view';
-import FeedList from 'astro_2.0/features/Feed';
-import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
-import { ProposalCategoryFilter } from 'astro_2.0/features/Proposals/components/ProposalCategoryFilter';
-import { HeaderWithFilter } from 'astro_2.0/features/dao/HeaderWithFilter';
 
 import styles from './Feed.module.scss';
 
-interface FeedProps {
-  initialProposals: PaginationResponse<Proposal[]> | null;
-}
+type FeedProps<T> = {
+  className?: string;
+  data: PaginationResponse<T[]>;
+  loader: React.ReactElement;
+  noResults: React.ReactElement;
+  renderItem: (item: T) => React.ReactElement;
+  loadMore: () => void;
+};
 
-export const Feed = ({ initialProposals }: FeedProps): JSX.Element => {
-  const { query, replace, pathname } = useRouter();
-
-  const { tokens } = useAllCustomTokens();
-
-  const queries = query as ProposalsQueries;
-
-  const isMyFeed = pathname.startsWith('/my/feed');
-
-  const { accountId } = useAuthContext();
-
-  const [proposalsData, setProposalsData] = useState(initialProposals);
-
-  const [{ loading: proposalsDataIsLoading }, fetchProposalsData] = useAsyncFn(
-    async (initialData?: typeof proposalsData) => {
-      let accumulatedListData = initialData || null;
-
-      const res = await SputnikHttpService.getProposalsList(
-        {
-          offset: accumulatedListData?.data.length || 0,
-          limit: LIST_LIMIT_DEFAULT,
-          category: queries.category,
-          status: queries.status,
-          daoFilter: 'All DAOs',
-        },
-        isMyFeed && accountId ? accountId : undefined
-      );
-
-      accumulatedListData = {
-        ...res,
-        data: [...(accumulatedListData?.data || []), ...res.data],
-      };
-
-      return accumulatedListData;
-    },
-    [
-      proposalsData?.data.length,
-      queries.status,
-      queries.category,
-      accountId,
-      isMyFeed,
-    ]
-  );
-
-  useDebounceEffect(
-    async ({ isInitialCall, depsHaveChanged }) => {
-      if (isInitialCall || !depsHaveChanged) {
-        return;
-      }
-
-      setProposalsData(await fetchProposalsData());
-
-      window.scroll(0, 0);
-    },
-    1000,
-    [queries.category, queries.status]
-  );
-
-  const loadMore = async () => {
-    if (proposalsDataIsLoading) {
-      return;
-    }
-
-    setProposalsData(await fetchProposalsData(proposalsData));
-  };
-
-  const onProposalFilterChange = async (value: string) => {
-    const nextQuery = {
-      ...queries,
-      status: value as ProposalStatuses,
-    } as ProposalsQueries;
-
-    if (value === 'All') {
-      delete nextQuery.status;
-    }
-
-    await replace(
-      {
-        query: nextQuery,
-      },
-      undefined,
-      { shallow: true, scroll: false }
-    );
-  };
-
+export const Feed = <T,>({
+  className,
+  data,
+  loader,
+  noResults,
+  renderItem,
+  loadMore,
+}: FeedProps<T>): React.ReactElement => {
   return (
-    <main className={styles.root}>
-      <HeaderWithFilter
-        className={styles.statusFilterWrapper}
-        title={
-          <h1 className={styles.title}>
-            {isMyFeed ? 'My ' : 'Astro '}proposals feed
-          </h1>
-        }
+    <div className={cn(styles.root, className)}>
+      <InfiniteScroll
+        dataLength={data.data.length}
+        next={loadMore}
+        hasMore={data.data.length < data.total}
+        loader={loader}
+        style={{ overflow: 'initial' }}
+        endMessage={noResults}
       >
-        <ProposalStatusFilter
-          value={queries.status || 'All'}
-          onChange={onProposalFilterChange}
-          disabled={proposalsDataIsLoading}
-          list={[
-            { value: 'All', label: 'All' },
-            {
-              value: ProposalStatuses.Active,
-              label: 'Active',
-            },
-            {
-              value: ProposalStatuses.Approved,
-              label: 'Approved',
-              className: styles.categoriesListApprovedInputWrapperChecked,
-            },
-            {
-              value: ProposalStatuses.Failed,
-              label: 'Failed',
-              className: styles.categoriesListFailedInputWrapperChecked,
-            },
-          ]}
-        />
-      </HeaderWithFilter>
-
-      <div className={styles.container}>
-        <ProposalCategoryFilter
-          query={queries}
-          queryName="category"
-          title="Choose a filter"
-          disabled={proposalsDataIsLoading}
-          titleClassName={styles.categoriesListTitle}
-        />
-
-        {proposalsData && (
-          <FeedList
-            data={proposalsData}
-            loadMore={loadMore}
-            loader={<p className={styles.loading}>Loading...</p>}
-            noResults={
-              <div className={styles.loading}>
-                <NoResultsView title="No more results" />
-              </div>
-            }
-            renderItem={proposal => (
-              <div key={proposal.id} className={styles.proposalCardWrapper}>
-                <ViewProposal
-                  dao={proposal.dao}
-                  proposal={proposal}
-                  showFlag
-                  tokens={tokens}
-                />
-              </div>
-            )}
-            className={styles.listWrapper}
-          />
-        )}
-      </div>
-    </main>
+        {data.data.map(renderItem)}
+      </InfiniteScroll>
+    </div>
   );
 };

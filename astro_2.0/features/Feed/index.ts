@@ -1,2 +1,1 @@
-export { default } from './Feed';
-export * from './components/FeedFilter';
+export * from './Feed';

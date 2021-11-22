@@ -1,24 +1,23 @@
-import React, { useCallback } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import React, { useCallback } from 'react';
 
+import { Feed } from 'astro_2.0/features/Feed';
+import { NavLink } from 'astro_2.0/components/NavLink';
 import { DaoDetails } from 'astro_2.0/components/DaoDetails';
-import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
-import NavLink from 'astro_2.0/components/NavLink';
+import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 
-import { ProposalsFeed } from 'astro_2.0/features/Proposals/components';
-
-import { Proposal, ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
 import { Token } from 'types/token';
 import { PaginationResponse } from 'types/api';
+import { Proposal, ProposalVariant } from 'types/proposal';
 
 import { useAuthContext } from 'context/AuthContext';
 
-import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useNearPrice } from 'hooks/useNearPrice';
 import { useAllCustomTokens } from 'hooks/useCustomTokens';
+import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 
 import styles from './dao-page.module.scss';
 
@@ -90,12 +89,13 @@ const DAOHome: NextPage<DaoHomeProps> = ({
         />
       </div>
 
-      <ProposalsFeed
-        className={styles.feed}
-        title={<h1 className={styles.title}>Proposals</h1>}
+      <Feed
         dao={dao}
-        tokens={tokens}
-        initialProposalsData={initialProposalsData}
+        showFlag={false}
+        title="Proposals"
+        daoTokens={tokens}
+        className={styles.feed}
+        initialProposals={initialProposalsData}
       />
     </div>
   );

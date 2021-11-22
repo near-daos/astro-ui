@@ -10,7 +10,7 @@ import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
-import NavLink from 'astro_2.0/components/NavLink';
+import { NavLink } from 'astro_2.0/components/NavLink';
 
 import { getScope } from 'components/cards/expanded-proposal-card/helpers';
 import { getVoteDetails } from 'features/vote-policy/helpers';

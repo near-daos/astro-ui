@@ -18,7 +18,7 @@ import { SputnikHttpService } from 'services/sputnik';
 import { extractMembersFromDao } from 'services/sputnik/mappers';
 import { useAuthContext } from 'context/AuthContext';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
-import NavLink from 'astro_2.0/components/NavLink';
+import { NavLink } from 'astro_2.0/components/NavLink';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { Proposal, ProposalVariant } from 'types/proposal';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';

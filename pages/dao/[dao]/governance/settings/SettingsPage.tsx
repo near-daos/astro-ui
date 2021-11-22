@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import { Icon } from 'components/Icon';
 import { Badge } from 'components/badge/Badge';
-import NavLink from 'astro_2.0/components/NavLink';
+import { NavLink } from 'astro_2.0/components/NavLink';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { DaoSetting } from 'astro_2.0/features/DaoGovernance/components/DaoSetting';
 import { SettingsCard } from 'astro_2.0/features/DaoGovernance/components/SettingsCard';

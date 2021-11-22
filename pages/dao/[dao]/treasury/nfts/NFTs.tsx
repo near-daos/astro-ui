@@ -10,7 +10,7 @@ import { NFTCard } from 'features/nft/ntf-card/NFTCard';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
-import NavLink from 'astro_2.0/components/NavLink';
+import { NavLink } from 'astro_2.0/components/NavLink';
 
 import { ProposalVariant } from 'types/proposal';
 import { NftToken } from 'types/token';
