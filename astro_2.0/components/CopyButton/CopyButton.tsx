@@ -54,7 +54,7 @@ export const CopyButton: FC<CopyButtonProps> = ({
         {title && title}
         <IconButton icon={iconName} className={styles.btn} />
       </div>
-      <Popup anchor={ref} placement={tooltipPlacement}>
+      <Popup anchor={ref} placement={tooltipPlacement} className={styles.popup}>
         {tooltip}
       </Popup>
     </>

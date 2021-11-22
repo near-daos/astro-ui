@@ -162,7 +162,7 @@ export function getProposalTypesOptions(): {
       title: 'Change Config',
       options: [
         {
-          label: 'Propose to Change DAO name',
+          label: 'Propose to Change DAO Name',
           value: ProposalVariant.ProposeChangeDaoName,
           group: 'Change Config',
         },
@@ -204,17 +204,17 @@ export function getProposalTypesOptions(): {
       ],
     },
     {
-      title: 'Add/Remove member to Role',
+      title: 'Change Members of DAO',
       options: [
         {
-          label: 'Propose to Add member to Group',
+          label: 'Propose to Add Member to Group',
           value: ProposalVariant.ProposeAddMember,
-          group: 'Add/Remove member to Role',
+          group: 'Change Members of DAO',
         },
         {
-          label: 'Propose to Remove member from Group',
+          label: 'Propose to Remove Member from Group',
           value: ProposalVariant.ProposeRemoveMember,
-          group: 'Add/Remove member to Role',
+          group: 'Change Members of DAO',
         },
       ],
     },
