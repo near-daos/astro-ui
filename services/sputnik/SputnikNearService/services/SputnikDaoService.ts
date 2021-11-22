@@ -82,11 +82,15 @@ export class SputnikDaoService {
     });
   }
 
-  async registerToToken(tokenId: string): Promise<FinalExecutionOutcome> {
+  async registerToToken(
+    tokenId: string,
+    recipient: string
+  ): Promise<FinalExecutionOutcome> {
     return this.functionCall({
       methodName: 'storage_deposit',
       contractId: tokenId,
       args: {
+        account_id: recipient,
         registration_only: true,
       },
       gas: GAS_VALUE,

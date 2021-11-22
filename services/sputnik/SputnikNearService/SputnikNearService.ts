@@ -158,8 +158,8 @@ class SputnikNearServiceClass {
     return this.sputnikDaoService.addProposal(params);
   }
 
-  public async registerUserToToken(tokenId: string) {
-    return this.sputnikDaoService.registerToToken(tokenId);
+  public async registerUserToToken(tokenId: string, recipient: string) {
+    return this.sputnikDaoService.registerToToken(tokenId, recipient);
   }
 
   public async claimBounty(
