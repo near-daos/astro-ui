@@ -1,0 +1,48 @@
+.root {
+  display: grid;
+  grid-column-gap: 12px;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'description description description'
+    'link link link'
+    'amount claims deadline';
+  grid-template-columns: 1fr 2fr 4fr;
+
+  margin-bottom: 24px;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  height: 41px;
+  white-space: nowrap;
+
+  .iconWrapper {
+    //background-color: var(--color-brand-black);
+    border-radius: 50%;
+    height: 24px;
+    margin-right: 8px;
+    width: 24px;
+  }
+}
+
+.description {
+  grid-area: description;
+}
+
+.link {
+  grid-area: link;
+}
+
+.amount {
+  display: flex;
+  grid-area: amount;
+}
+
+.claims {
+  grid-area: claims;
+}
+
+.deadline {
+  grid-area: deadline;
+}

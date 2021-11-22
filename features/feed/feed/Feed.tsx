@@ -2,8 +2,6 @@ import React, { FC, useCallback, useEffect } from 'react';
 import omit from 'lodash/omit';
 import { Proposal } from 'types/proposal';
 import { useRouter } from 'next/router';
-import { BountiesList } from 'features/bounties-list';
-import { Bounty } from 'components/cards/bounty-card/types';
 import { ProposalsFilter } from 'features/member-home/types';
 import { Button } from 'components/button/Button';
 import dynamic from 'next/dynamic';
@@ -25,7 +23,6 @@ const TypeFilter = dynamic(import('features/feed/type-filter'), {
 
 interface FeedProps {
   proposals: Proposal[];
-  bounties: Bounty[];
   filter: ProposalsFilter;
   title: string;
   apiTokens: Token[];
@@ -33,7 +30,6 @@ interface FeedProps {
 
 export const Feed: FC<FeedProps> = ({
   proposals,
-  bounties,
   filter,
   title,
   apiTokens
@@ -105,16 +101,6 @@ export const Feed: FC<FeedProps> = ({
             const filteredData = splitProposalsByVotingPeriod(tabProposals);
 
             if (isProposalsByEndTimeEmpty(filteredData)) {
-              return <NoResultsView title="No proposals here" />;
-            }
-
-            if (router.query.type === 'Bounties') {
-              if (!router.query.tab || router.query.tab === '0') {
-                return (
-                  <BountiesList bountiesList={bounties} status="In progress" />
-                );
-              }
-
               return <NoResultsView title="No proposals here" />;
             }
 

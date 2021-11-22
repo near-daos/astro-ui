@@ -498,6 +498,23 @@ class SputnikService {
       });
     }
 
+    if (filter.proposalFilter === 'Bounties') {
+      search.$and?.push({
+        $or: [
+          {
+            kind: {
+              $cont: ProposalType.AddBounty
+            }
+          },
+          {
+            kind: {
+              $cont: ProposalType.BountyDone
+            }
+          }
+        ]
+      });
+    }
+
     queryString.search(search);
 
     // DaosIds

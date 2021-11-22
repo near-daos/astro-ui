@@ -61,7 +61,7 @@ export const CreateBountyForm: FC<CreateBountyFormProps> = ({
         className={styles.token}
         component={
           <TokenInput
-            disableTokensSelect
+            // disableTokensSelect
             tokens={tokens}
             onTokenSelect={v =>
               setValue('token', v as string, {

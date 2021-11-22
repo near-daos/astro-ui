@@ -1,3 +1,4 @@
+import { formatDistance } from 'date-fns';
 import React, { FC, useCallback } from 'react';
 import { Proposal, ProposalType } from 'types/proposal';
 import {
@@ -8,12 +9,14 @@ import {
   TextWithLink
 } from 'components/cards/proposal-card/components/proposal-content/proposal-content';
 import { ProposalCard } from 'components/cards/proposal-card/ProposalCard';
+import { formatYoktoValue } from 'helpers/format';
 
 import { SputnikService } from 'services/SputnikService';
 import { useAuthContext } from 'context/AuthContext';
 import { useRouter } from 'next/router';
 import { ProposedChangesRenderer } from 'components/cards/expanded-proposal-card/components/proposed-changes-renderer';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { NewBountyProposalContent } from './components/new-bounty-proposal-content';
 
 interface ProposalCardRendererProps {
   proposal: Proposal;
@@ -152,8 +155,35 @@ const ProposalCardRendererComponent: FC<ProposalCardRendererProps> = ({
       );
       break;
     }
+    case ProposalType.AddBounty: {
+      const data = proposal.kind.bounty;
+
+      const toMillis = (timePeriod: string): number =>
+        Math.round(Number(timePeriod) / 1000000);
+
+      const [, value] = formatDistance(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        new Date(toMillis(data.maxDeadline)),
+        0,
+        {
+          addSuffix: true
+        }
+      ).split(' ');
+
+      content = (
+        <NewBountyProposalContent
+          description={proposal.description}
+          link={proposal.link}
+          amount={formatYoktoValue(data.amount)}
+          token={data.token}
+          availableClaims={data.times}
+          maxDeadline={value}
+        />
+      );
+      break;
+    }
     case ProposalType.Vote:
-    case ProposalType.AddBounty:
     default: {
       content = (
         <TextWithLink text={proposal.description} link={proposal.link} />
