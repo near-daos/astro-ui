@@ -18,7 +18,7 @@ import { useAuthContext } from 'context/AuthContext';
 
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useNearPrice } from 'hooks/useNearPrice';
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import { useAllCustomTokens } from 'hooks/useCustomTokens';
 
 import styles from './dao-page.module.scss';
 
@@ -38,7 +38,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
   const nearPrice = useNearPrice();
 
   const { accountId } = useAuthContext();
-  const { tokens } = useDaoCustomTokens();
+  const { tokens } = useAllCustomTokens();
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 

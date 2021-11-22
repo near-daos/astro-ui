@@ -83,6 +83,33 @@ function getTimestampLabel(
   return 'Voting ended';
 }
 
+function getSealIcon(
+  status: ProposalStatus,
+  timeLeft: string | null
+): string | null {
+  let sealIcon;
+
+  switch (status) {
+    case 'Approved': {
+      sealIcon = 'sealApproved';
+      break;
+    }
+    case 'Expired':
+    case 'Moved':
+    case 'Rejected':
+    case 'Removed': {
+      sealIcon = 'sealFailed';
+      break;
+    }
+    case 'InProgress':
+    default: {
+      sealIcon = null;
+    }
+  }
+
+  return !timeLeft && !sealIcon ? 'sealFailed' : sealIcon;
+}
+
 export const ProposalCard: React.FC<ProposalCardProps> = ({
   id,
   type,
@@ -108,8 +135,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const router = useRouter();
   const permissions = useGetVotePermissions(dao, type, accountId);
 
-  let sealIcon;
-
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
     async (vote: VoteAction) => {
       return SputnikNearService.vote(dao.id, proposalId, vote);
@@ -123,25 +148,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     }
   }, [dao.id, id, router]);
 
-  switch (status) {
-    case 'Approved': {
-      sealIcon = 'sealApproved';
-      break;
-    }
-    case 'Expired':
-    case 'Moved':
-    case 'Rejected':
-    case 'Removed': {
-      sealIcon = 'sealFailed';
-      break;
-    }
-    case 'InProgress':
-    default: {
-      sealIcon = null;
-    }
-  }
-
   const timeLeft = useCountdown(votePeriodEnd);
+
+  const sealIcon = getSealIcon(status, timeLeft);
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
@@ -201,7 +210,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
             voteClickHandler('VoteReject');
           }}
-          disableControls={voteLoading}
+          disableControls={voteLoading || !timeLeft}
           likes={likes}
           liked={liked}
           dislikes={dislikes}

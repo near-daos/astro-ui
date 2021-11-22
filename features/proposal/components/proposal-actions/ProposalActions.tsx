@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ActionButton } from 'features/proposal/components/action-button';
-import { useMedia } from 'react-use';
 
 import styles from './proposal-actions.module.scss';
 
@@ -20,9 +19,7 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
     setLocation(document.location.href);
   }, []);
 
-  const isLargeDesktop = useMedia('(min-width: 1280px)');
-
-  const tooltipPlacement = isLargeDesktop ? 'right' : 'left';
+  const tooltipPlacement = 'auto';
 
   return (
     <div className={styles.root}>
