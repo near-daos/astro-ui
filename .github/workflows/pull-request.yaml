@@ -1,0 +1,22 @@
+name: Pull Request
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+    - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set Environment
+      run: |
+         echo DOCKER_ENV_TAG=qa-$GITHUB_SHA >> $GITHUB_ENV
+    - name: load env
+      run: |
+          cat ".github/env.common" >>$GITHUB_ENV
+
+    - name: Build
+      uses: ./.github/actions/build
