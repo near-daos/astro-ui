@@ -24,7 +24,7 @@ runs:
 
   - uses: shallwefootball/s3-upload-action@v1.1.3
     with:
-      aws_key_id: ${AWS_ACCESS_KEY_ID}
-      aws_secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+      aws_key_id: ${{ env.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ env.AWS_SECRET_ACCESS_KEY }}
       aws_bucket: "astro-storybook"
       source_dir: 'storybook-static'

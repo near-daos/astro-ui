@@ -27,9 +27,6 @@ jobs:
           cat ".github/env.common" >>$GITHUB_ENV
           cat ".github/env.production" >>$GITHUB_ENV
 
-    - name: Build
-      uses: ./.github/actions/build
-
     - name: Docker Build Publish
       uses: ./.github/actions/docker-build-publish
 
