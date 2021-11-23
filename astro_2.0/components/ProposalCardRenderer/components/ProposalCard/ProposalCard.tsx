@@ -61,7 +61,10 @@ function getTimestampLabel(
     return 'Voting ended';
   }
 
-  if ((status === 'Approved' || status === 'Rejected') && updatedAt) {
+  if (
+    (status === 'Approved' || status === 'Rejected' || status === 'Expired') &&
+    updatedAt
+  ) {
     return (
       <div className={cn(styles.timestampLabel)}>
         <span
