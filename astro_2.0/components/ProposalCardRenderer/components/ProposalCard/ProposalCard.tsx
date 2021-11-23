@@ -231,6 +231,11 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
             }
           }}
           removeCount={voteRemove}
+          proposalVariant={variant}
+          proposalType={type}
+          proposalDescription={description}
+          daoId={dao.id}
+          proposalId={id}
         />
       </div>
     </div>
