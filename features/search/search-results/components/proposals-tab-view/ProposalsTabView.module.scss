@@ -22,11 +22,11 @@
 }
 
 .statusFilterWrapper {
+  @include wide-background;
   background: var(--color-neutral-10);
   display: flex;
   justify-content: flex-end;
-  padding-bottom: 24px;
-  padding-top: 24px;
+  padding: 32px 0;
   position: sticky;
   top: 70px;
   z-index: 2;

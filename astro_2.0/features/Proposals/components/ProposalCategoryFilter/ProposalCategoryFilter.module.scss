@@ -1,22 +1,26 @@
 @use 'styles/breakpoints';
+@import 'styles/mixins';
 
 .categoriesListRoot {
   $el-width: 120px;
 
+  background-color: var(--color-neutral-10);
   margin-right: 32px;
   max-height: 220px;
   max-width: $el-width;
   min-width: $el-width;
   position: sticky;
-  top: 170px;
-  z-index: 1;
+  top: 210px;
+  z-index: 10;
 
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    @include wide-background;
     display: flex;
     justify-content: flex-end;
     margin: 0;
+    margin-bottom: 32px;
     max-width: initial;
-    position: static;
+    top: 168px;
   }
 }
 

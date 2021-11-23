@@ -116,3 +116,18 @@
 @mixin button-hover-state($color: --color-black) {
   box-shadow: 0 0 20px var($color);
 }
+
+@mixin wide-background {
+  &::before {
+    background-color: var(--color-neutral-10);
+    content: '';
+    height: 100%;
+    left: 50%;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    transform: translate(-50%);
+    width: calc(100% + 48px);
+    z-index: -1;
+  }
+}

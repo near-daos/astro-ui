@@ -52,17 +52,16 @@
   }
 
   .header {
-    padding: 0 14px;
+    padding: 0 8px;
     pointer-events: auto;
     width: 100%;
   }
 
   .controlIcon {
-    color: var(--color-primary-50);
+    color: var(--color-black);
     cursor: pointer;
     display: inline-block;
     height: 24px;
-    margin-left: 12px;
     width: 24px;
   }
 
@@ -103,6 +102,6 @@
   }
 
   .title {
-    margin: 0;
+    display: none;
   }
 }
