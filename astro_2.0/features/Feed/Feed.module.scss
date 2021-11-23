@@ -1,4 +1,4 @@
-@use '../../../styles/breakpoints';
+@use 'styles/breakpoints';
 
 .root {
   width: 100%;
@@ -13,7 +13,7 @@
 }
 
 .statusFilterWrapper {
-  padding: 57px 0 20px;
+  margin: 57px 0 20px;
   position: sticky;
   top: 20px;
   width: 100%;

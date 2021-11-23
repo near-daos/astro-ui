@@ -40,6 +40,7 @@ interface FeedProps {
   status?: ProposalStatuses;
   title?: ReactNode | string;
   category?: ProposalCategories;
+  headerClassName?: string;
   // TODO temporary solution till tokens API fixed
   daoTokens?: Record<string, Token>;
   initialProposals: PaginationResponse<Proposal[]> | null;
@@ -53,6 +54,7 @@ export const Feed = ({
   className,
   daoTokens,
   showFlag = true,
+  headerClassName,
   initialProposals,
 }: FeedProps): JSX.Element => {
   const { query, replace, pathname } = useRouter();
@@ -158,7 +160,7 @@ export const Feed = ({
   return (
     <main className={cn(styles.root, className)}>
       <HeaderWithFilter
-        className={styles.statusFilterWrapper}
+        className={cn(styles.statusFilterWrapper, headerClassName)}
         title={renderTitle()}
       >
         <ProposalStatusFilter

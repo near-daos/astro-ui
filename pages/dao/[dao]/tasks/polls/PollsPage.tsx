@@ -19,7 +19,7 @@ import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useAuthContext } from 'context/AuthContext';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
-import styles from './polls.module.scss';
+import styles from './Polls.module.scss';
 
 export interface PollsPageProps {
   dao: DAO;
@@ -103,6 +103,7 @@ const PollsPage: FC<PollsPageProps> = ({
         className={styles.feed}
         category={ProposalCategories.Polls}
         initialProposals={initialPollsData}
+        headerClassName={styles.feedHeader}
       />
     </div>
   );
