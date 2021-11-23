@@ -59,7 +59,7 @@ export const AppFooter: FC<AppFooterProps> = ({
             >
               Build: 22.0
             </a>
-            <span className={styles.divider}>|</span>
+            <span className={styles.divider}> | </span>
             <a
               className={styles.devLink}
               href="https://airtable.com/shr4ZmQzmTE5cKZm3"
