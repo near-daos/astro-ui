@@ -129,14 +129,14 @@
 
 @include non-touch-devices {
   .primary:hover {
-    box-shadow: 0 0 40px var(--color-black);
+    @include button-hover-state;
   }
 
   .secondary:hover {
-    box-shadow: 0 0 40px var(--color-approved-opacity-35);
+    @include button-hover-state(--color-approved-opacity-35);
   }
 
   .black:hover {
-    box-shadow: 0 0 40px var(--color-black);
+    @include button-hover-state;
   }
 }

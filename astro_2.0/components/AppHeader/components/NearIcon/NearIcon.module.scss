@@ -1,9 +1,5 @@
 @import 'styles/mixins';
 
-@mixin hover-state() {
-  box-shadow: 0 0 40px var(--color-black);
-}
-
 .root {
   border-radius: 100px;
   cursor: pointer;
@@ -31,11 +27,11 @@
 
 @include non-touch-devices {
   .root:hover {
-    @include hover-state;
+    @include button-hover-state;
   }
 
   // stylelint-disable-next-line
   :global(.near-icon-parent):hover .root {
-    @include hover-state;
+    @include button-hover-state;
   }
 }
