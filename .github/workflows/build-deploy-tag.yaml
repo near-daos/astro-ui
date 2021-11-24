@@ -1,7 +1,7 @@
 name: Build Deploy on Production
 on:
   workflow_dispatch:
-  create:
+  push:
     tags:
     - '**'
     branches-ignore:
