@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
@@ -6,13 +7,15 @@ import { Icon, IconName } from 'components/Icon';
 import styles from './AppFooter.module.scss';
 
 export interface AppFooterProps {
-  isLandingPage?: boolean;
-  isLoggedIn?: boolean;
+  mobile?: boolean;
+  className?: string;
+  onClick?: () => void;
 }
 
 export const AppFooter: FC<AppFooterProps> = ({
-  isLandingPage,
-  isLoggedIn,
+  mobile,
+  className,
+  onClick,
 }) => {
   function renderSocialIcon(href: string, icon: IconName) {
     return (
@@ -22,30 +25,20 @@ export const AppFooter: FC<AppFooterProps> = ({
     );
   }
 
-  return (
-    <footer className={styles.root}>
-      <div
-        className={isLandingPage || !isLoggedIn ? styles.bottom : styles.side}
-      >
-        <div className={styles.wrapper}>
-          {(isLandingPage || !isLoggedIn) && (
-            <div className={styles.invitation}>
-              <i>
-                <Icon name="buttonBookmark" width={32} />
-              </i>
-              <span>Need a NEAR account?</span>
-              <span>
-                Create one{' '}
-                <Link passHref href="/register">
-                  <a href="*" className={styles.register}>
-                    here
-                  </a>
-                </Link>
-                .
-              </span>
-            </div>
-          )}
+  const rootClassName = cn(styles.root, className, {
+    [styles.mobile]: mobile,
+  });
 
+  return (
+    <div
+      tabIndex={0}
+      role="button"
+      onClick={onClick}
+      onKeyPress={onClick}
+      className={rootClassName}
+    >
+      <div className={styles.side}>
+        <div className={styles.wrapper}>
           <div className={styles.social}>
             {renderSocialIcon('https://twitter.com/AstroDao', 'socialTwitter')}
             {renderSocialIcon('https://t.me/astro_near', 'socialTelegram')}
@@ -103,6 +96,6 @@ export const AppFooter: FC<AppFooterProps> = ({
           </div>
         </div>
       </div>
-    </footer>
+    </div>
   );
 };
