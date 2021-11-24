@@ -3,7 +3,9 @@ on:
   workflow_dispatch:
   create:
     tags:
-    - '*'
+    - '**'
+    branches-ignore:
+    - '**'
 
 jobs:
   build-deploy:
