@@ -2,9 +2,12 @@
 @import 'styles/typography';
 
 .root {
+  align-items: flex-end;
   background-color: var(--color-brand-black);
   color: var(--color-white);
+  display: flex;
   grid-area: footer;
+  height: 100%;
   width: 100%;
 }
 
@@ -78,6 +81,11 @@
   }
 }
 
+.repo {
+  grid-area: repo;
+  margin-top: 8px;
+}
+
 .version {
   grid-area: version;
   margin-top: 8px;
@@ -90,6 +98,11 @@
   &:hover {
     color: var(--color-success);
   }
+}
+
+.divider {
+  font-size: 14px;
+  margin: 0 4px;
 }
 
 .links {
@@ -152,7 +165,7 @@
       'social'
       'report'
       'version'
-      'progress'
+      'repo'
       'copyright'
       'links'
       'powered';
@@ -250,7 +263,7 @@
       'social'
       'report'
       'version'
-      'progress'
+      'repo'
       'copyright'
       'links'
       'powered';
