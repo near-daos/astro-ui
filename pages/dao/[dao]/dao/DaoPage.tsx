@@ -8,8 +8,6 @@ import { DaoDetails } from 'astro_2.0/components/DaoDetails';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 
-import { DAO } from 'types/dao';
-import { Token } from 'types/token';
 import { PaginationResponse } from 'types/api';
 import { Proposal, ProposalVariant } from 'types/proposal';
 
@@ -19,19 +17,21 @@ import { useNearPrice } from 'hooks/useNearPrice';
 import { useAllCustomTokens } from 'hooks/useCustomTokens';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 
+import { DaoContext } from 'types/context';
 import styles from './DaoPage.module.scss';
 
 interface DaoHomeProps {
-  dao: DAO;
-  tokens: Token[];
-  policyAffectsProposals: Proposal[];
+  daoContext: DaoContext;
   initialProposalsData: PaginationResponse<Proposal[]>;
 }
 
 const DAOHome: NextPage<DaoHomeProps> = ({
-  dao,
+  daoContext: {
+    dao,
+    userPermissions: { isCanCreateProposals },
+    policyAffectsProposals,
+  },
   initialProposalsData,
-  policyAffectsProposals,
 }) => {
   const router = useRouter();
   const nearPrice = useNearPrice();
@@ -68,7 +68,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
           className={styles.details}
           dao={dao}
           accountId={accountId}
-          restrictCreateProposals={policyAffectsProposals.length > 0}
+          restrictCreateProposals={!isCanCreateProposals}
           onCreateProposalClick={() => toggleCreateProposal()}
           activeProposals={dao.activeProposalsCount}
           totalProposals={dao.totalProposalsCount}

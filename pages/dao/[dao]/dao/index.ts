@@ -3,26 +3,32 @@ import { SputnikHttpService } from 'services/sputnik';
 import { ProposalCategories, ProposalStatuses } from 'types/proposal';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 
+import { CookieService } from 'services/CookieService';
+import { ACCOUNT_COOKIE } from 'constants/cookies';
 import DaoPage from './DaoPage';
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  query,
+}) => {
   const { status, category, dao: daoId } = query;
 
-  const [dao, initialProposalsData, policyAffectsProposals] = await Promise.all(
-    [
-      SputnikHttpService.getDaoFromFeedById(daoId as string),
-      SputnikHttpService.getProposalsList({
-        offset: 0,
-        limit: LIST_LIMIT_DEFAULT,
-        daoId: daoId as string,
-        category: category as ProposalCategories,
-        status: status as ProposalStatuses,
-      }),
-      SputnikHttpService.findPolicyAffectsProposals(daoId as string),
-    ]
-  );
+  CookieService.initServerSideCookies(req?.headers.cookie || null);
 
-  if (!dao) {
+  const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
+
+  const [daoContext, initialProposalsData] = await Promise.all([
+    SputnikHttpService.getDaoContext(account, daoId as string),
+    SputnikHttpService.getProposalsList({
+      offset: 0,
+      limit: LIST_LIMIT_DEFAULT,
+      daoId: daoId as string,
+      category: category as ProposalCategories,
+      status: status as ProposalStatuses,
+    }),
+  ]);
+
+  if (!daoContext) {
     return {
       notFound: true,
     };
@@ -30,9 +36,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   return {
     props: {
-      dao,
+      daoContext,
       initialProposalsData,
-      policyAffectsProposals,
     },
   };
 };

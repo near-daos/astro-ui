@@ -2,21 +2,26 @@ import Tokens, {
   TokensPageProps,
 } from 'pages/dao/[dao]/treasury/tokens/TokensPage';
 import { SputnikHttpService } from 'services/sputnik';
-import { getChartData } from 'features/treasury/helpers';
 import { GetServerSideProps } from 'next';
+import { CookieService } from 'services/CookieService';
+import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 export const getServerSideProps: GetServerSideProps<TokensPageProps> = async ({
+  req,
   query,
 }) => {
   const daoId = query.dao as string;
 
-  const [dao, receipts, policyAffectsProposals] = await Promise.all([
-    SputnikHttpService.getDaoById(daoId),
+  CookieService.initServerSideCookies(req?.headers.cookie || null);
+
+  const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
+
+  const [daoContext, receipts] = await Promise.all([
+    SputnikHttpService.getDaoContext(account, daoId),
     SputnikHttpService.getAccountReceipts(daoId),
-    SputnikHttpService.findPolicyAffectsProposals(daoId),
   ]);
 
-  if (!dao) {
+  if (!daoContext) {
     return {
       notFound: true,
     };
@@ -24,13 +29,8 @@ export const getServerSideProps: GetServerSideProps<TokensPageProps> = async ({
 
   return {
     props: {
-      data: {
-        chartData: getChartData(receipts.NEAR),
-        totalValue: dao.funds ?? '0',
-        receipts,
-        dao,
-        policyAffectsProposals,
-      },
+      receipts,
+      daoContext,
     },
   };
 };

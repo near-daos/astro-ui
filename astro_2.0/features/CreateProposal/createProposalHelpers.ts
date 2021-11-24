@@ -2,9 +2,9 @@ import { DAO } from 'types/dao';
 
 export function isUserPermittedToCreateProposal(
   accountId: string | null | undefined,
-  dao: DAO
+  dao: DAO | null
 ): boolean {
-  if (!accountId) {
+  if (!accountId || !dao) {
     return false;
   }
 
