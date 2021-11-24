@@ -47,7 +47,7 @@ export interface ProposalCardProps {
   voteDetails?: VoteDetail;
   content: ReactNode;
   votePeriodEnd: string;
-  updatedAt?: string;
+  updatedAt?: string | null;
 }
 
 function getTimestampLabel(

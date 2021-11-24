@@ -90,6 +90,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
       </div>
 
       <Feed
+        key={dao.id}
         dao={dao}
         showFlag={false}
         title="Proposals"
