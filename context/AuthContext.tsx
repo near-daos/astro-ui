@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { createContext, FC, useContext, useState } from 'react';
 
-import { ALL_DAOS_URL } from 'constants/routing';
+import { ALL_FEED_URL } from 'constants/routing';
 import { ACCOUNT_COOKIE, DAO_COOKIE } from 'constants/cookies';
 
 import { SputnikWalletError } from 'errors/SputnikWalletError';
@@ -57,7 +57,7 @@ export const AuthWrapper: FC = ({ children }) => {
     CookieService.remove(ACCOUNT_COOKIE);
     CookieService.remove(DAO_COOKIE);
 
-    router.push(ALL_DAOS_URL);
+    router.push(ALL_FEED_URL);
   }
 
   const data = {
