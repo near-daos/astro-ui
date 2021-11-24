@@ -83,7 +83,6 @@
 
 .repo {
   grid-area: repo;
-  margin-top: 8px;
 }
 
 .version {
@@ -94,6 +93,8 @@
 .devLink {
   @include font(12px, 18px, 500);
   color: var(--color-white);
+  display: block;
+  margin-top: 16px;
 
   &:hover {
     color: var(--color-success);
@@ -131,6 +132,7 @@
   color: var(--color-neutral-60);
   grid-area: copyright;
   margin-top: 16px;
+  white-space: break-spaces;
 }
 
 .powered {

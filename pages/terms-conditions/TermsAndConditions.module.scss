@@ -1,0 +1,26 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  padding-top: 56px;
+
+  @include astro-mobile {
+    padding: 42px 0 56px;
+  }
+}
+
+.pageHeader {
+  @extend %title1;
+  margin-bottom: 24px;
+}
+
+.subHeader {
+  @extend %title2;
+  margin-top: 46px;
+}
+
+.textBlock {
+  @extend %body1;
+  margin-top: 12px;
+  white-space: break-spaces;
+}

@@ -51,23 +51,33 @@ export const AppFooter: FC<AppFooterProps> = ({
             {renderSocialIcon('https://t.me/astro_near', 'socialTelegram')}
           </div>
           <div className={styles.version}>
-            <a
-              className={styles.devLink}
-              href="https://doc.clickup.com/p/h/4fh9y-341/f6e2cb99c0b9ce3"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Build: 22.0
-            </a>
-            <span className={styles.divider}> | </span>
-            <a
-              className={styles.devLink}
-              href="https://airtable.com/shr4ZmQzmTE5cKZm3"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Report issue
-            </a>
+            <div>
+              <a
+                className={styles.devLink}
+                href="https://doc.clickup.com/p/h/4fh9y-341/f6e2cb99c0b9ce3"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Build number: 22.0
+              </a>
+            </div>
+            <div>
+              <a
+                className={styles.devLink}
+                href="https://airtable.com/shr4ZmQzmTE5cKZm3"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Report an issue
+              </a>
+            </div>
+            <div>
+              <Link passHref href="/terms-conditions">
+                <a href="*" className={styles.devLink}>
+                  Terms and Conditions
+                </a>
+              </Link>
+            </div>
           </div>
           <div className={styles.repo}>
             <a
@@ -80,9 +90,9 @@ export const AppFooter: FC<AppFooterProps> = ({
             </a>
           </div>
           <div className={styles.copyright}>
-            SputnikDAO 2021. The software is an open source and provided “as
-            is”, without warranty of any kind. Community developed. Not audited.
-            Use at your own risk.
+            {'SputnikDAO 2021. The software is an open source and provided “as' +
+              'is”, without warranty of any kind.\n\n' +
+              'Community developed. Not audited. Use at your own risk.'}
           </div>
 
           <div className={styles.powered}>
