@@ -48,3 +48,11 @@
   padding-right: 24px;
   width: 296px;
 }
+
+.createProposal {
+  margin-top: 56px;
+
+  @include tablet-landscape {
+    margin-top: 32px;
+  }
+}
