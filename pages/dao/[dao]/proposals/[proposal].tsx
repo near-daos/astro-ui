@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 import { DAO, Member } from 'types/dao';
 import { Proposal } from 'types/proposal';
@@ -45,6 +47,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
   members,
 }) => {
   const { accountId } = useAuthContext();
+  const router = useRouter();
   const scope = getScope(proposal?.kind.type);
   const [activeFilter, setActiveFilter] = useState<string | undefined>(
     undefined
@@ -132,13 +135,27 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
 
   return (
     <div className={styles.root}>
+      <Head>
+        <title>Astro</title>
+        <meta property="og:url" content={router.asPath} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Astro" />
+        <meta property="og:description" content="" />
+        <meta property="og:image" content={dao.flagCover} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={router.asPath} />
+        <meta name="twitter:title" content="Astro" />
+        <meta name="twitter:description" content={proposal.description} />
+        <meta name="twitter:image" content={dao.flagCover} />
+      </Head>
       <BreadCrumbs className={styles.breadcrumbs}>
         <NavLink href="/all/daos">All DAOs</NavLink>
         <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
         <NavLink>Proposals</NavLink>
       </BreadCrumbs>
       <div className={styles.mobileActions}>
-        <MobileProposalActions />
+        <MobileProposalActions proposal={proposal} />
       </div>
       <div className={styles.dao}>
         <DaoDetailsMinimized dao={dao} accountId={accountId} />
