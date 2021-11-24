@@ -427,7 +427,7 @@ class SputnikHttpServiceClass {
         `/proposals/${proposalId}`
       );
 
-      return mapProposalDTOToProposal(proposal);
+      return mapProposalDTOToProposalExt(proposal);
     } catch (error) {
       if ([400, 404].includes(error.response.status)) {
         return null;

@@ -139,9 +139,9 @@ export const mapProposalDTOToProposal = (
         : getAwsImageUrl('default.png'),
     },
     proposalVariant: proposalVariant as ProposalVariant,
-    updatedAt:
-      new Date(Number(proposalDTO.updateTimestamp) / 1000000).toISOString() ??
-      null,
+    updatedAt: proposalDTO.updateTimestamp
+      ? new Date(Number(proposalDTO.updateTimestamp) / 1000000).toISOString()
+      : null,
     actions: proposalDTO.actions,
   };
 };

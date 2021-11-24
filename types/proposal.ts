@@ -136,7 +136,7 @@ export type Proposal = {
   kind: ProposalKind;
   votePeriodEnd: string;
   votePeriodEndDate: string;
-  updatedAt: string;
+  updatedAt: string | null;
   voteYes: number;
   voteNo: number;
   voteRemove: number;
