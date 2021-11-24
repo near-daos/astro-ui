@@ -1,9 +1,11 @@
 name: Build Deploy on Production
 on:
   workflow_dispatch:
-  create:
+  push:
     tags:
-    - '*'
+    - '**'
+    branches-ignore:
+    - '**'
 
 jobs:
   build-deploy:
@@ -13,10 +15,11 @@ jobs:
       NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY }}
       AWS_ECR_URL: ${{ secrets.AWS_ECR_URL }}
       EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
+      KUBE_CONFIG_DATA:  ${{ secrets.KUBE_CONFIG_DATA }}
     runs-on: ubuntu-latest
     name: Build Deploy
     environment:
-      name: productions
+      name: production
     steps:
     - uses: actions/checkout@v2
     - name: Set Environment
