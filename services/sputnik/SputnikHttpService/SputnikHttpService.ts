@@ -651,7 +651,9 @@ class SputnikHttpServiceClass {
     return proposals.data.map(mapProposalDTOToProposal);
   }
 
-  public async getAccountReceipts(accountId: string): Promise<Receipt[]> {
+  public async getAccountReceipts(
+    accountId: string
+  ): Promise<Record<string, Receipt[]>> {
     const { data } = await this.httpService.get<ReceiptDTO[]>(
       `/transactions/receipts/account-receipts/${accountId}`
     );

@@ -44,7 +44,14 @@ Template.args = {
   renderItem: ({ index, style }) => {
     return (
       <div style={{ ...style, marginTop: '8px', marginBottom: '8px' }}>
-        <TokenCard {...tokenCards[index]} />
+        <TokenCard
+          {...tokenCards[index]}
+          onClick={() => {
+            // eslint-disable-next-line no-console
+            console.log('clicked');
+          }}
+          isActive={false}
+        />
       </div>
     );
   },

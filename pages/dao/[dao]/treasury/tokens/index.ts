@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps<TokensPageProps> = async ({
   return {
     props: {
       data: {
-        chartData: getChartData(receipts),
+        chartData: getChartData(receipts.NEAR),
         totalValue: dao.funds ?? '0',
         receipts,
         dao,

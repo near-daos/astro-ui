@@ -2,13 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { Icon } from 'components/Icon';
 import { format, parseISO } from 'date-fns';
-import { TokenDeprecated } from 'types/token';
 import { ExplorerLink } from 'components/explorer-link';
 import s from './transaction-card.module.scss';
 
 export interface TransactionCardProps {
   type: 'Deposit' | 'Withdraw';
-  tokenName: TokenDeprecated;
+  tokenName: string;
   deposit: string;
   date: string;
   accountName: string;
