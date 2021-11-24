@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { FormattedNumericValue } from 'components/cards/components/formatted-numeric-value';
 import { Icon } from 'components/Icon';
+import { Button } from 'components/button/Button';
 import styles from './token-card.module.scss';
 
 export interface TokenCardProps {
@@ -9,6 +10,8 @@ export interface TokenCardProps {
   icon: string;
   balance: number;
   totalValue: string | null;
+  onClick: () => void;
+  isActive: boolean;
 }
 
 export const TokenCard: React.FC<TokenCardProps> = ({
@@ -16,6 +19,8 @@ export const TokenCard: React.FC<TokenCardProps> = ({
   icon,
   balance,
   totalValue,
+  onClick,
+  isActive,
 }) => {
   function getTokenIconName(iconName: string) {
     switch (iconName) {
@@ -29,7 +34,13 @@ export const TokenCard: React.FC<TokenCardProps> = ({
   const tokenIconName = getTokenIconName(icon);
 
   return (
-    <div className={classNames(styles.root, styles.grid)}>
+    <Button
+      variant="transparent"
+      className={classNames(styles.root, styles.grid, {
+        [styles.active]: isActive,
+      })}
+      onClick={onClick}
+    >
       <div className={styles.iconContainer}>
         <div className={styles.iconWrapper}>
           {tokenIconName !== '' ? (
@@ -50,6 +61,6 @@ export const TokenCard: React.FC<TokenCardProps> = ({
           <FormattedNumericValue value={totalValue} suffix="usd" />
         )}
       </div>
-    </div>
+    </Button>
   );
 };

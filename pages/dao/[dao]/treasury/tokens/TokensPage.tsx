@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import classNames from 'classnames';
+import get from 'lodash/get';
 
 import { useAuthContext } from 'context/AuthContext';
 import { useNearPrice } from 'hooks/useNearPrice';
@@ -32,12 +33,13 @@ import { useAuthCheck } from 'astro_2.0/features/Auth';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import { formatYoktoValue } from 'helpers/format';
 
 export interface TokensPageProps {
   data: {
     chartData: ChartData[];
     totalValue: string;
-    receipts: Receipt[];
+    receipts: Record<string, Receipt[]>;
     dao: DAO;
     policyAffectsProposals: Proposal[];
   };
@@ -54,6 +56,8 @@ const TokensPage: React.FC<TokensPageProps> = ({
   const { accountId } = useAuthContext();
   const TRANSACTIONS_PER_PAGE = 10;
   const { tokens } = useDaoCustomTokens();
+  const [viewToken, setViewToken] = useState('NEAR');
+  const receiptsData = receipts[viewToken] ?? [];
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
@@ -73,7 +77,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
   );
 
   // TODO - existing receipts endpoint doesn't support pagination yet
-  const pageCount = Math.round(receipts.length / TRANSACTIONS_PER_PAGE);
+  const pageCount = Math.round(receiptsData.length / TRANSACTIONS_PER_PAGE);
   const [activePage, setActivePage] = useState(0);
   const [sortAsc, setSortAsc] = useState(false);
   const filterClickHandler = useCallback(() => {
@@ -141,13 +145,17 @@ const TokensPage: React.FC<TokensPageProps> = ({
         <ChartCaption captions={captions} />
       </div>
       <div className={styles.chart}>
-        <AreaChart data={chartData} />
+        {viewToken === 'NEAR' && <AreaChart data={chartData} />}
       </div>
       <div className={styles.tokens}>
         {Object.values(tokens).map(({ tokenId, icon, symbol, balance }) => (
           <TokenCard
             key={`${tokenId}-${symbol}`}
+            isActive={
+              symbol === 'NEAR' ? viewToken === 'NEAR' : viewToken === tokenId
+            }
             symbol={symbol}
+            onClick={() => setViewToken(symbol === 'NEAR' ? 'NEAR' : tokenId)}
             icon={symbol === 'NEAR' ? 'NEAR' : icon}
             balance={Number(balance)}
             totalValue={
@@ -173,7 +181,7 @@ const TokensPage: React.FC<TokensPageProps> = ({
         />
       </Button>
       <div className={styles.transactions}>
-        {receipts
+        {receiptsData
           .sort((a, b) =>
             sortAsc ? a.timestamp - b.timestamp : b.timestamp - a.timestamp
           )
@@ -190,21 +198,28 @@ const TokensPage: React.FC<TokensPageProps> = ({
               predecessorAccountId,
               receiptId,
               txHash,
-            }) => (
-              <div
-                className={styles.row}
-                key={`${type}_${timestamp}_${deposit}_${receiptId}`}
-              >
-                <TransactionCard
-                  tokenName={TokenDeprecated.NEAR}
-                  type={type}
-                  deposit={deposit}
-                  date={date}
-                  txHash={txHash}
-                  accountName={predecessorAccountId}
-                />
-              </div>
-            )
+              token,
+            }) => {
+              const tokenData = get(tokens, token);
+
+              if (!tokenData) return null;
+
+              return (
+                <div
+                  className={styles.row}
+                  key={`${type}_${timestamp}_${deposit}_${receiptId}`}
+                >
+                  <TransactionCard
+                    tokenName={tokenData.symbol}
+                    type={type}
+                    deposit={formatYoktoValue(deposit, tokenData.decimals)}
+                    date={date}
+                    txHash={txHash}
+                    accountName={predecessorAccountId}
+                  />
+                </div>
+              );
+            }
           )}
       </div>
       {pageCount > 0 ? (

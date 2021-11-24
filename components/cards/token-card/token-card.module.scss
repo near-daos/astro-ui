@@ -12,8 +12,15 @@
 
 .root {
   background-color: var(--color-neutral-10);
+  border: 1px solid transparent;
   border-radius: 8px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  cursor: pointer;
+}
+
+.active {
+  border-color: var(--color-neutral-40);
+  box-shadow: 3px 2px 24px var(--color-black-opacity-25);
 }
 
 .iconContainer {

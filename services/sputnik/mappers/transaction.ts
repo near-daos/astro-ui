@@ -1,6 +1,6 @@
-import { formatYoktoValue } from 'helpers/format';
 import { Receipt, TransactionType } from 'types/transaction';
 
+/* eslint-disable camelcase */
 type ReceiptAction = {
   receiptId: string;
   receiptPredecessorAccountId: string;
@@ -8,10 +8,15 @@ type ReceiptAction = {
   actionKind: 'TRANSFER';
   args: {
     deposit: string;
-    // eslint-disable-next-line camelcase
     method_name?: string;
+    args_json?: {
+      memo: string;
+      amount: string;
+      receiver_id: string;
+    };
   };
 };
+/* eslint-enable camelcase */
 
 export type ReceiptDTO = {
   receiptId: string;
@@ -68,20 +73,20 @@ const EXCLUDE_METHODS = [
 export const mapReceiptsResponse = (
   accountId: string,
   data: ReceiptDTO[]
-): Receipt[] => {
-  return data.reduce((res, item) => {
+): Record<string, Receipt[]> => {
+  const nearReceipts = data.reduce((res, item) => {
     let deposit = '';
     let type = 'Deposit' as TransactionType;
 
     if (item) {
+      if (!item.receiptActions || !item.receiptActions.length) {
+        return res;
+      }
+
       const timestamp = Number(item.includedInBlockTimestamp) / 1000000;
       const date = new Date(
         Number(item.includedInBlockTimestamp) / 1000000
       ).toISOString();
-
-      if (!item.receiptActions || !item.receiptActions.length) {
-        return res;
-      }
 
       const actions = item.receiptActions.reduce((acc, k) => {
         if (
@@ -96,13 +101,13 @@ export const mapReceiptsResponse = (
 
         if (k.args.method_name === 'add_proposal') {
           type = 'Deposit';
-          deposit = formatYoktoValue(k.args.deposit);
+          deposit = k.args.deposit;
         } else if (item.predecessorAccountId === accountId && k.args.deposit) {
           type = 'Withdraw';
-          deposit = formatYoktoValue(k.args.deposit);
+          deposit = k.args.deposit;
         } else if (item.receiverAccountId === accountId && k.args?.deposit) {
           type = 'Deposit';
-          deposit = formatYoktoValue(k.args.deposit);
+          deposit = k.args.deposit;
         }
 
         if (deposit) {
@@ -115,6 +120,7 @@ export const mapReceiptsResponse = (
             type,
             txHash: item.originatedFromTransactionHash,
             date,
+            token: 'NEAR',
           });
         }
 
@@ -126,4 +132,75 @@ export const mapReceiptsResponse = (
 
     return res;
   }, [] as Receipt[]);
+
+  const ftReceipts = data
+    .reduce((res, item) => {
+      let deposit = '';
+      let type = 'Deposit' as TransactionType;
+
+      if (item) {
+        if (!item.receiptActions || !item.receiptActions.length) {
+          return res;
+        }
+
+        const timestamp = Number(item.includedInBlockTimestamp) / 1000000;
+        const date = new Date(
+          Number(item.includedInBlockTimestamp) / 1000000
+        ).toISOString();
+
+        const actions = item.receiptActions.reduce((acc, k) => {
+          if (
+            !k ||
+            !k.args ||
+            !k.args.deposit ||
+            k.receiptPredecessorAccountId === 'system' ||
+            k.args.method_name !== 'ft_transfer'
+          ) {
+            return acc;
+          }
+
+          if (item.predecessorAccountId === accountId && k.args.deposit) {
+            type = 'Withdraw';
+            deposit = k.args.args_json?.amount ?? '';
+          } else if (item.receiverAccountId === accountId && k.args?.deposit) {
+            type = 'Deposit';
+            deposit = k.args.args_json?.amount ?? '';
+          }
+
+          if (deposit) {
+            acc.push({
+              date,
+              timestamp,
+              type,
+              deposit,
+              receiptId: item.receiptId,
+              receiverAccountId: item.receiverAccountId,
+              predecessorAccountId: item.predecessorAccountId,
+              txHash: item.originatedFromTransactionHash,
+              token: item.receiverAccountId,
+            });
+          }
+
+          return acc;
+        }, [] as Receipt[]);
+
+        res.push(...actions);
+      }
+
+      return res;
+    }, [] as Receipt[])
+    .reduce((res, item) => {
+      if (res[item.token]) {
+        res[item.token].push(item);
+      } else {
+        res[item.token] = [item];
+      }
+
+      return res;
+    }, {} as Record<string, Receipt[]>);
+
+  return {
+    ...ftReceipts,
+    NEAR: nearReceipts,
+  };
 };

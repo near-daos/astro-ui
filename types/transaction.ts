@@ -19,4 +19,5 @@ export type Receipt = {
   type: TransactionType;
   txHash: string;
   date: string;
+  token: string;
 };
