@@ -37,7 +37,8 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
 
   const router = useRouter();
 
-  const currentPath = router.asPath;
+  const { asPath } = router;
+  const currentPath = asPath.split('?')[0];
 
   const url = {
     funds: `/dao/${dao.id}/treasury/tokens`,
