@@ -16,7 +16,7 @@ export const mapBountyResponseToBounty = (response: BountyResponse): Bounty => {
       startTime: claim.startTime,
     })),
     deadlineThreshold: response.maxDeadline,
-    slots: Number(response.times),
+    slots: Number(response.times) - Number(response.numberOfClaims),
     id: response.bountyId,
     tokenId: response.token,
     description,
