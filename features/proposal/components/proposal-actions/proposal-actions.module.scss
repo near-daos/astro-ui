@@ -21,7 +21,8 @@
     white-space: nowrap;
   }
 
-  > div {
+  > div,
+  > a {
     margin-left: 24px;
 
     @include tablet-landscape {
