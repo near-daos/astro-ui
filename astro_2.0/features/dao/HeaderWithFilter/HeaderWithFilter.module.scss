@@ -4,7 +4,7 @@
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 35px;
+  gap: 32px;
   justify-content: space-between;
   white-space: nowrap;
 }
@@ -15,7 +15,7 @@
   grid-gap: 20px;
 
   @include tablet-portrait {
-    grid-gap: 35px;
+    grid-gap: 32px;
   }
 }
 

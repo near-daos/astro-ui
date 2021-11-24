@@ -19,7 +19,7 @@ import { useNearPrice } from 'hooks/useNearPrice';
 import { useAllCustomTokens } from 'hooks/useCustomTokens';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 
-import styles from './dao-page.module.scss';
+import styles from './DaoPage.module.scss';
 
 interface DaoHomeProps {
   dao: DAO;

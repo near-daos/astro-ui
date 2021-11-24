@@ -1,4 +1,5 @@
 @use 'styles/breakpoints';
+@import 'styles/mixins';
 
 .root {
   width: 100%;
@@ -9,15 +10,19 @@
   display: inline-flex;
   line-height: 1;
   margin: 0;
-  padding: 20px 0;
 }
 
 .statusFilterWrapper {
-  margin: 57px 0 20px;
+  @include wide-background;
+  padding: 56px 0 24px;
   position: sticky;
-  top: 20px;
+  top: 72px;
   width: 100%;
-  z-index: 2;
+  z-index: 20;
+
+  @include astro-mobile {
+    top: 64px;
+  }
 
   .categoriesListApprovedInputWrapperChecked {
     --color-checkmark-active: var(--color-success-50);
@@ -27,22 +32,8 @@
     --color-checkmark-active: var(--color-error-60);
   }
 
-  &::before {
-    background-color: var(--color-neutral-10);
-    content: '';
-    height: 100%;
-    left: 50%;
-    pointer-events: none;
-    position: absolute;
-    top: 0;
-    transform: translate(-50%);
-    width: calc(100% + 48px);
-    z-index: -1;
-  }
-
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
-    margin-left: 0;
-    padding-bottom: 12px;
+    padding: 40px 0 32px;
     width: 100%;
   }
 }
