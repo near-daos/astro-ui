@@ -9,9 +9,10 @@ export const getServerSideProps: GetServerSideProps<NFTsPageProps> = async ({
 }) => {
   const daoId = query.dao as string;
 
-  const [dao, nfts] = await Promise.all([
+  const [dao, nfts, policyAffectsProposals] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
     SputnikHttpService.getAccountNFTs(daoId),
+    SputnikHttpService.findPolicyAffectsProposals(daoId),
   ]);
 
   if (!dao) {
@@ -24,6 +25,7 @@ export const getServerSideProps: GetServerSideProps<NFTsPageProps> = async ({
     props: {
       nfts,
       dao,
+      policyAffectsProposals,
     },
   };
 };

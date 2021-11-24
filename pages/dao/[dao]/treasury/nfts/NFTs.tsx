@@ -3,16 +3,15 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
 import { useAuthContext } from 'context/AuthContext';
-import useToggleable from 'hooks/useToggleable';
 
 import { NFTCard } from 'features/nft/ntf-card/NFTCard';
 
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
-import { CreateProposal } from 'astro_2.0/features/CreateProposal';
+import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { NavLink } from 'astro_2.0/components/NavLink';
 
-import { ProposalVariant } from 'types/proposal';
+import { Proposal, ProposalVariant } from 'types/proposal';
 import { NftToken } from 'types/token';
 import { DAO } from 'types/dao';
 
@@ -21,16 +20,18 @@ import styles from './nfts.module.scss';
 export interface NFTsPageProps {
   nfts: NftToken[];
   dao: DAO;
+  policyAffectsProposals: Proposal[];
 }
 
-const NFTs: NextPage<NFTsPageProps> = ({ nfts = [], dao }) => {
+const NFTs: NextPage<NFTsPageProps> = ({
+  nfts = [],
+  dao,
+  policyAffectsProposals,
+}) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
   const { accountId } = useAuthContext();
-
-  const [ToggleableCreateProposal, toggleCreateProposal] = useToggleable(
-    CreateProposal
-  );
+  const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
   return (
     <div className={styles.root}>
@@ -43,9 +44,11 @@ const NFTs: NextPage<NFTsPageProps> = ({ nfts = [], dao }) => {
         <DaoDetailsMinimized
           dao={dao}
           accountId={accountId}
+          disableNewProposal={!!policyAffectsProposals.length}
           onCreateProposalClick={toggleCreateProposal}
         />
-        <ToggleableCreateProposal
+        <CreateProposal
+          className={styles.createProposal}
           dao={dao}
           showFlag={false}
           proposalVariant={ProposalVariant.ProposeTransfer}
