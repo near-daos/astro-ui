@@ -9,18 +9,18 @@ export const allStatusFilterOption: Option = {
 };
 
 export const activeProposalsStatusFilterOption: Option = {
-  label: 'Active proposals',
-  value: 'Active proposals',
+  label: 'Active Proposals',
+  value: 'Active Proposals',
 };
 
 export const acceptedProposalsStatusFilterOption: Option = {
-  label: 'Accepted proposals',
-  value: 'Accepted proposals',
+  label: 'Accepted Proposals',
+  value: 'Accepted Proposals',
 };
 
 export const inactiveProposalsStatusFilterOption: Option = {
-  label: 'Inactive proposals',
-  value: 'Inactive proposals',
+  label: 'Inactive Proposals',
+  value: 'Inactive Proposals',
 };
 
 export const rejectedProposalsStatusFilterOption: Option = {
