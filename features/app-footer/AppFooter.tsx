@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import Link from 'next/link';
 import React, { FC } from 'react';
 
@@ -6,13 +7,15 @@ import { Icon, IconName } from 'components/Icon';
 import styles from './AppFooter.module.scss';
 
 export interface AppFooterProps {
-  isLandingPage?: boolean;
-  isLoggedIn?: boolean;
+  mobile?: boolean;
+  className?: string;
+  onClick?: () => void;
 }
 
 export const AppFooter: FC<AppFooterProps> = ({
-  isLandingPage,
-  isLoggedIn,
+  mobile,
+  className,
+  onClick,
 }) => {
   function renderSocialIcon(href: string, icon: IconName) {
     return (
@@ -22,52 +25,52 @@ export const AppFooter: FC<AppFooterProps> = ({
     );
   }
 
-  return (
-    <footer className={styles.root}>
-      <div
-        className={isLandingPage || !isLoggedIn ? styles.bottom : styles.side}
-      >
-        <div className={styles.wrapper}>
-          {(isLandingPage || !isLoggedIn) && (
-            <div className={styles.invitation}>
-              <i>
-                <Icon name="buttonBookmark" width={32} />
-              </i>
-              <span>Need a NEAR account?</span>
-              <span>
-                Create one{' '}
-                <Link passHref href="/register">
-                  <a href="*" className={styles.register}>
-                    here
-                  </a>
-                </Link>
-                .
-              </span>
-            </div>
-          )}
+  const rootClassName = cn(styles.root, className, {
+    [styles.mobile]: mobile,
+  });
 
+  return (
+    <div
+      tabIndex={0}
+      role="button"
+      onClick={onClick}
+      onKeyPress={onClick}
+      className={rootClassName}
+    >
+      <div className={styles.side}>
+        <div className={styles.wrapper}>
           <div className={styles.social}>
             {renderSocialIcon('https://twitter.com/AstroDao', 'socialTwitter')}
             {renderSocialIcon('https://t.me/astro_near', 'socialTelegram')}
           </div>
           <div className={styles.version}>
-            <a
-              className={styles.devLink}
-              href="https://doc.clickup.com/p/h/4fh9y-341/f6e2cb99c0b9ce3"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Build: 22.0
-            </a>
-            <span className={styles.divider}> | </span>
-            <a
-              className={styles.devLink}
-              href="https://airtable.com/shr4ZmQzmTE5cKZm3"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Report issue
-            </a>
+            <div>
+              <a
+                className={styles.devLink}
+                href="https://doc.clickup.com/p/h/4fh9y-341/f6e2cb99c0b9ce3"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Build number: 22.0
+              </a>
+            </div>
+            <div>
+              <a
+                className={styles.devLink}
+                href="https://airtable.com/shr4ZmQzmTE5cKZm3"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Report an issue
+              </a>
+            </div>
+            <div>
+              <Link passHref href="/terms-conditions">
+                <a href="*" className={styles.devLink}>
+                  Terms and Conditions
+                </a>
+              </Link>
+            </div>
           </div>
           <div className={styles.repo}>
             <a
@@ -80,9 +83,9 @@ export const AppFooter: FC<AppFooterProps> = ({
             </a>
           </div>
           <div className={styles.copyright}>
-            SputnikDAO 2021. The software is an open source and provided “as
-            is”, without warranty of any kind. Community developed. Not audited.
-            Use at your own risk.
+            {'SputnikDAO 2021. The software is an open source and provided “as' +
+              'is”, without warranty of any kind.\n\n' +
+              'Community developed. Not audited. Use at your own risk.'}
           </div>
 
           <div className={styles.powered}>
@@ -93,6 +96,6 @@ export const AppFooter: FC<AppFooterProps> = ({
           </div>
         </div>
       </div>
-    </footer>
+    </div>
   );
 };

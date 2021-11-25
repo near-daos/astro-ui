@@ -13,6 +13,5 @@ export const Template: Story<AppFooterProps> = (args): JSX.Element => (
 
 Template.storyName = 'AppFooter';
 Template.args = {
-  isLandingPage: true,
-  isLoggedIn: false,
+  mobile: true,
 };

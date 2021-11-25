@@ -1,40 +1,63 @@
-import { useClickAway } from 'react-use';
 import React, { FC, useCallback, useRef, useState } from 'react';
-
-import { NearIcon } from 'astro_2.0/components/AppHeader/components/NearIcon';
 
 import { useAuthContext } from 'context/AuthContext';
 
-import { AccountPopup } from './components/AccountPopup';
+import { AppFooter } from 'features/app-footer';
+import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
+import { NearIcon } from 'astro_2.0/components/AppHeader/components/NearIcon';
+
+import { AccountPopupItem } from './components/AccountPopupItem';
 
 import styles from './AccountButton.module.scss';
 
 export const AccountButton: FC = () => {
-  const { login, accountId } = useAuthContext();
+  const [open, setOpen] = useState(false);
+  const { login, logout, accountId } = useAuthContext();
 
   const ref = useRef(null);
-  const [showPopup, setShowPopup] = useState(false);
 
   const closePopup = useCallback(() => {
-    setShowPopup(false);
-  }, []);
+    setOpen(false);
+  }, [setOpen]);
 
-  useClickAway(ref, () => {
-    closePopup();
-  });
-
-  const onNearClick = useCallback(() => {
+  function renderNearIcon() {
     if (accountId) {
-      setShowPopup(!showPopup);
-    } else {
-      login();
+      return (
+        <GenericDropdown
+          isOpen={open}
+          onOpenUpdate={setOpen}
+          parent={<NearIcon black />}
+          options={{
+            placement: 'bottom-end',
+            modifiers: [
+              {
+                name: 'offset',
+                options: {
+                  offset: [0, 24],
+                },
+              },
+            ],
+          }}
+        >
+          <div>
+            <div className={styles.dropdown}>
+              <div className={styles.name}>{accountId}</div>
+              <AccountPopupItem className={styles.auth} onClick={logout}>
+                Disconnect
+              </AccountPopupItem>
+            </div>
+            <AppFooter mobile className={styles.footer} onClick={closePopup} />
+          </div>
+        </GenericDropdown>
+      );
     }
-  }, [login, showPopup, accountId]);
+
+    return <NearIcon onClick={login} />;
+  }
 
   return (
     <div className={styles.root} ref={ref}>
-      <NearIcon black={!!accountId} onClick={onNearClick} />
-      <AccountPopup show={showPopup} closePopup={closePopup} />
+      {renderNearIcon()}
     </div>
   );
 };

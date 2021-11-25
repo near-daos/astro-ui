@@ -1,0 +1,48 @@
+.dropdown {
+  z-index: 99;
+
+  .arrow {
+    border-bottom-color: inherit;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-style: solid;
+    border-top-color: transparent;
+    border-width: 0 6px 6px;
+    height: 0;
+    width: 0;
+  }
+
+  &[data-popper-placement^='bottom'] > .arrow {
+    top: -6px;
+  }
+
+  &[data-popper-placement^='top'] > .arrow {
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+
+    border-top-color: inherit;
+    border-width: 6px 6px 0;
+    bottom: -6px;
+  }
+
+  &[data-popper-placement^='left'] > .arrow {
+    border-bottom-color: transparent;
+    border-left-color: inherit;
+    border-right-color: transparent;
+
+    border-top-color: transparent;
+    border-width: 6px 0 6px 6px;
+    right: -6px;
+  }
+
+  &[data-popper-placement^='right'] > .arrow {
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-right-color: inherit;
+
+    border-top-color: transparent;
+    border-width: 6px 6px 6px 0;
+    left: -6px;
+  }
+}
