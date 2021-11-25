@@ -49,13 +49,16 @@
 }
 
 .wide {
-  flex: 1;
   max-width: unset;
 }
 
 .select {
   flex: 1;
   max-width: fit-content;
+
+  label {
+    padding-bottom: 4px;
+  }
 
   button {
     border: 0;

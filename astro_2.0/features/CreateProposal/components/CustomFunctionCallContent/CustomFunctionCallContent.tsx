@@ -34,28 +34,30 @@ const CustomFunctionCallContent: FC = () => {
     depositWidth = deposit.length;
   }
 
-  const tokenOptions = Object.values(tokens).map(token => ({
-    label: token.symbol,
-    component: (
-      <div className={styles.row}>
-        <div className={styles.iconWrapper}>
-          {token.symbol === 'NEAR' ? (
-            <Icon name="tokenNearBig" />
-          ) : (
-            <div
-              style={{
-                background: 'black',
-                backgroundImage: `url(${token.icon})`,
-              }}
-              className={styles.icon}
-            />
-          )}
+  const tokenOptions = Object.values(tokens)
+    .map(token => ({
+      label: token.symbol,
+      component: (
+        <div className={styles.row}>
+          <div className={styles.iconWrapper}>
+            {token.symbol === 'NEAR' ? (
+              <Icon name="tokenNearBig" />
+            ) : (
+              <div
+                style={{
+                  background: 'black',
+                  backgroundImage: `url(${token.icon})`,
+                }}
+                className={styles.icon}
+              />
+            )}
+          </div>
+          <div className={styles.symbol}>{token.symbol}</div>
+          <div className={styles.balance}>{token.balance}</div>
         </div>
-        <div className={styles.symbol}>{token.symbol}</div>
-        <div className={styles.balance}>{token.balance}</div>
-      </div>
-    ),
-  }));
+      ),
+    }))
+    .filter(token => token.label === 'NEAR');
 
   watch('token');
 

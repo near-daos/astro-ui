@@ -49,6 +49,10 @@
   flex: 1;
   max-width: fit-content;
 
+  label {
+    padding-bottom: 4px;
+  }
+
   button {
     border: 0;
     overflow: hidden;
@@ -93,7 +97,29 @@
 }
 
 .divider {
-  margin-left: 60px;
+  margin-left: 12px;
+
+  @include large-desktop {
+    margin-left: 60px;
+  }
+}
+
+.inline {
+  display: flex;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-md}px) {
+  .root {
+    flex-wrap: wrap;
+  }
+
+  .inline {
+    width: 100%;
+  }
+
+  .inline:last-of-type {
+    margin-top: 24px;
+  }
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {

@@ -10,7 +10,6 @@
   align-items: flex-start;
   display: flex;
   flex: 1;
-  margin-bottom: 8px;
 
   > div:first-of-type {
     margin-right: 24px;
@@ -36,25 +35,11 @@
   width: 24px;
 }
 
-.delete {
-  color: var(--color-error-70);
-  margin-left: 12px;
-  width: 24px;
-}
-
-.add {
-  @extend %title3;
-  align-items: center;
-  color: var(--color-primary);
-  display: flex;
-  padding: 0;
-  text-transform: capitalize;
-}
-
 .amount {
   text-align: right;
   input {
     font-weight: 700;
+    height: 40px;
     padding-right: 0;
     text-align: right !important;
     @include placeholder {

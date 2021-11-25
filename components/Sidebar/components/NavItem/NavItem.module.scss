@@ -34,6 +34,10 @@
   }
 }
 
+.nonClickable {
+  pointer-events: none;
+}
+
 .label {
   margin-left: 4px;
 }

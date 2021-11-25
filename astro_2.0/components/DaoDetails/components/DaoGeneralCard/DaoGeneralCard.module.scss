@@ -62,9 +62,9 @@
 }
 
 .links {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  gap: 14px;
   list-style: none;
   margin-bottom: 0;
   padding: 0;
@@ -74,7 +74,7 @@
   @extend %caption1;
   color: var(--color-primary-50);
   display: block;
-  margin-top: 4px;
+  margin-bottom: 12px;
 
   @include tablet-landscape {
     display: inline;

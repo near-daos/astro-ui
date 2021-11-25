@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import Link from 'next/link';
 
 import { composeProperLinkUrl } from 'helpers/composeProperLinkUrl';
-import { IconButton } from 'components/button/IconButton';
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
+import ExternalLink from 'components/cards/components/external-link/ExternalLink';
 
 import styles from './DaoGeneralCard.module.scss';
 
@@ -55,17 +55,19 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
         <section>
           {!!links?.length && (
             <ul className={styles.links}>
-              {links.map(link => (
-                <li className={styles.link} key={link}>
-                  <a
-                    href={composeProperLinkUrl(link)}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <IconButton size="medium" icon={getSocialLinkIcon(link)} />
-                  </a>
-                </li>
-              ))}
+              {links
+                .filter(link => link)
+                .map(link => (
+                  <li className={styles.link} key={link}>
+                    <a
+                      href={composeProperLinkUrl(link)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <ExternalLink to={link} icon={getSocialLinkIcon(link)} />
+                    </a>
+                  </li>
+                ))}
             </ul>
           )}
           <svg className="svg" width="0" height="0">

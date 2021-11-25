@@ -56,10 +56,13 @@
 .settingsContainer {
   display: flex;
   flex-direction: column;
-  gap: 24px;
 
   @include tablet-portrait {
     flex-direction: row;
+  }
+
+  > div:not(:last-of-type) {
+    margin-right: 24px;
   }
 }
 
@@ -94,8 +97,11 @@
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
   padding: 20px 16px;
+
+  > div {
+    margin-right: 8px;
+  }
 }
 
 .dao {
