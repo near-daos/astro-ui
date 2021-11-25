@@ -25,18 +25,25 @@
 
   @include tablet-portrait {
     align-items: flex-start;
-    column-gap: 32px;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
+
+    > div:not(:last-of-type) {
+      margin-right: 32px;
+    }
   }
 
   @include desktop {
-    column-gap: 55px;
+    > div:not(:last-of-type) {
+      margin-right: 55px;
+    }
   }
 
   @include large-desktop {
-    column-gap: 90px;
+    > div:not(:last-of-type) {
+      margin-right: 90px;
+    }
   }
 }
 

@@ -42,7 +42,6 @@
 .preview {
   display: flex;
   flex-direction: column;
-  gap: 30px;
 
   @include tablet-portrait {
     align-items: flex-start;
@@ -60,7 +59,13 @@
   text-align: center;
 
   @include tablet-portrait {
-    width: 50%;
+    &:last-of-type {
+      width: 15%;
+    }
+  }
+
+  &:first-of-type {
+    margin-right: 24px;
   }
 }
 
