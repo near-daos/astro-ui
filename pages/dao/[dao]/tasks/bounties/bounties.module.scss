@@ -33,7 +33,7 @@
 
 .header {
   font-size: 32px;
-  margin: 0;
+  margin: 0 24px 0 0;
 }
 
 .grid {
@@ -44,7 +44,7 @@
   padding-top: 56px;
   place-items: start center;
 
-  @include tablet-landscape {
+  @include large-desktop {
     grid-template-columns: 1fr 1fr;
   }
 }

@@ -25,12 +25,11 @@
   align-items: center;
   display: flex;
   font-size: 32px;
-  gap: 35px;
   grid-area: header;
 
   .header {
     font-size: 32px;
-    margin: 0;
+    margin: 0 24px 0 0;
   }
 }
 

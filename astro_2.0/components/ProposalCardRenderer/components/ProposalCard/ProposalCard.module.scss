@@ -177,6 +177,11 @@
 
 .timestampLabel {
   color: var(--color-neutral-60);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  text-align: right;
+
   .label.approved {
     color: var(--color-success-50);
   }

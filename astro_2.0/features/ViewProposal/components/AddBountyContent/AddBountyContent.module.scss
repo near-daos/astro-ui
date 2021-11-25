@@ -4,10 +4,6 @@
 .root {
   display: flex;
   gap: 12px;
-
-  > div:not(.divider) {
-    margin-bottom: 24px;
-  }
 }
 
 .row {
@@ -51,7 +47,25 @@
 }
 
 .divider {
-  margin-left: 60px;
+  margin-left: 24px;
+}
+
+.inline {
+  display: flex;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-md}px) {
+  .root {
+    flex-wrap: wrap;
+  }
+
+  .inline {
+    width: 100%;
+  }
+
+  .inline:last-of-type {
+    margin-top: 24px;
+  }
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {

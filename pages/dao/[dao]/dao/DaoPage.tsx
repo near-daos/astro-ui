@@ -64,6 +64,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
 
       <div className={styles.header}>
         <DaoDetails
+          key={dao.id}
           nearPrice={nearPrice}
           className={styles.details}
           dao={dao}

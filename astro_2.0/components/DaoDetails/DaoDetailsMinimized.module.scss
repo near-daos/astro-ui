@@ -43,7 +43,6 @@
 .controls {
   align-items: center;
   display: flex;
-  gap: 4px;
   justify-content: space-around;
   padding: 0 16px;
 
@@ -54,6 +53,10 @@
   @include tablet-landscape {
     justify-content: flex-end;
     padding: 12px 0;
+  }
+
+  > div {
+    margin-right: 4px;
   }
 }
 

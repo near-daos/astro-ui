@@ -3,9 +3,7 @@
 .grid {
   display: grid;
   flex-shrink: 1;
-  grid-template-areas:
-    'icon tokenBalance'
-    'icon totalValue';
+  grid-template-areas: 'icon token';
   grid-template-columns: 52px auto;
   padding: 20px;
 }
@@ -46,9 +44,16 @@
   }
 }
 
+.token {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  grid-area: token;
+  justify-content: center;
+}
+
 .tokenBalance {
   @include font(18px, 24px, 700);
-  grid-area: tokenBalance;
 
   .tokenName {
     font-weight: 300;
@@ -60,6 +65,5 @@
   @include font(12px, 18px, 500);
   align-items: center;
   color: var(--color-neutral-50);
-  grid-area: totalValue;
-  height: 18px;
+  //height: 18px;
 }

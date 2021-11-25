@@ -83,9 +83,9 @@ export const AppFooter: FC<AppFooterProps> = ({
             </a>
           </div>
           <div className={styles.copyright}>
-            {'SputnikDAO 2021. The software is an open source and provided “as' +
-              'is”, without warranty of any kind.\n\n' +
-              'Community developed. Not audited. Use at your own risk.'}
+            SputnikDAO 2021. The software is an open source and provided “as
+            is”, without warranty of any kind. Community developed. Not audited.
+            Use at your own risk.
           </div>
 
           <div className={styles.powered}>
