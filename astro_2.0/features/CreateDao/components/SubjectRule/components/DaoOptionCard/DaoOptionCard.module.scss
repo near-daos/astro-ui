@@ -6,7 +6,6 @@
   box-sizing: border-box;
   cursor: pointer;
   display: flex;
-  gap: 14px;
   min-height: 80px;
   padding: 8px 10px;
   transition: all 0.2s linear;
@@ -29,6 +28,7 @@
 .icon {
   align-items: center;
   display: flex;
+  margin-right: 14px;
 }
 
 .content {

@@ -27,11 +27,14 @@
   display: flex;
   flex-basis: 100%;
   flex-direction: column;
-  gap: 16px;
   width: 100%;
 
   @include tablet-landscape {
     flex-direction: row;
     flex-wrap: nowrap;
+  }
+
+  > div:not(:last-of-type) {
+    margin-right: 16px;
   }
 }

@@ -49,7 +49,7 @@ export const NavItem: FC<NavItemProps> = ({
       [styles.active]: active || isActive,
       [styles.topDelimiter]: topDelimiter,
       [styles.bottomDelimiter]: bottomDelimiter,
-      [styles.nonClickable]: !href,
+      [styles.nonClickable]: !href && !onClick,
     });
 
     const props = {

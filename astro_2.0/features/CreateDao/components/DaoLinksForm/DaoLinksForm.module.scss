@@ -29,11 +29,14 @@
 .link {
   align-items: center;
   display: inline-flex;
-  gap: 16px;
   width: 100%;
 
   input {
     background-color: transparent;
+  }
+
+  .socialIcon {
+    margin-right: 16px;
   }
 }
 
@@ -57,4 +60,5 @@
 .addBtn {
   color: var(--color-brand-purple);
   flex-shrink: 0;
+  margin-left: 16px;
 }
