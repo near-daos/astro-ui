@@ -93,7 +93,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
 
   const config = get(daoDTO, 'config');
 
-  const meta = config.metadata ? fromBase64ToMetadata(config.metadata) : null;
+  const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
 
   const numberOfMembers = daoGroups
     .map(({ members }: { members: string[] }) => members)

@@ -139,13 +139,13 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Astro" />
         <meta property="og:description" content="" />
-        <meta property="og:image" content={dao.flagCover} />
+        <meta property="og:image" content={dao?.flagCover} />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content={router.asPath} />
         <meta name="twitter:title" content="Astro" />
-        <meta name="twitter:description" content={proposal.description} />
-        <meta name="twitter:image" content={dao.flagCover} />
+        <meta name="twitter:description" content={proposal?.description} />
+        <meta name="twitter:image" content={dao?.flagCover} />
       </Head>
       <BreadCrumbs className={styles.breadcrumbs}>
         <NavLink href="/all/daos">All DAOs</NavLink>

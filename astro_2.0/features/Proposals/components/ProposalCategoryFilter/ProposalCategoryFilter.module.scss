@@ -129,6 +129,7 @@
 
 .categoriesListItemSelected {
   color: var(--color-main-dark);
+  outline: 0;
 
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
     position: relative;

@@ -139,9 +139,10 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
     async (vote: VoteAction) => {
-      return SputnikNearService.vote(dao.id, proposalId, vote);
+      await SputnikNearService.vote(dao.id, proposalId, vote);
+      await router.replace(router.asPath);
     },
-    [dao, proposalId]
+    [dao, proposalId, router]
   );
 
   const handleCardClick = useCallback(() => {
