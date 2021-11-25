@@ -1,11 +1,12 @@
 import React, { VFC } from 'react';
 
-import { TERMS_CONDITIONS } from './config';
-
+import {
+  Paragraph,
+  TERMS_CONDITIONS,
+} from 'astro_2.0/features/TermsAndConditions';
 import styles from './TermsAndConditions.module.scss';
-import { Paragraph } from './types';
 
-export const TermsAndConditions: VFC = () => {
+const TermsAndConditions: VFC = () => {
   function renderBlock({ title, body }: Paragraph) {
     return (
       <>
@@ -29,3 +30,5 @@ export const TermsAndConditions: VFC = () => {
     </div>
   );
 };
+
+export default TermsAndConditions;
