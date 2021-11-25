@@ -49,6 +49,8 @@ import {
 } from 'services/sputnik/mappers';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { HttpService, httpService } from 'services/HttpService';
+import { DaoContext } from 'types/context';
+import { isUserPermittedToCreateProposal } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 
 class SputnikHttpServiceClass {
   private readonly httpService: HttpService = httpService;
@@ -107,26 +109,10 @@ class SputnikHttpServiceClass {
     };
   }
 
-  public async getDaoFromFeedById(id: string): Promise<DAO | null> {
+  public async getDaoById(id: string): Promise<DAO | null> {
     const { data } = await this.httpService.get<DaoDTO>(`/daos/feed/${id}`);
 
     return mapDaoDTOtoDao(data);
-  }
-
-  public async getDaoById(daoId: string): Promise<DAO | null> {
-    try {
-      const { data: dao } = await this.httpService.get<DaoDTO>(
-        `/daos/${daoId}`
-      );
-
-      return mapDaoDTOtoDao(dao);
-    } catch (error) {
-      if ([400, 404].includes(error.response.status)) {
-        return null;
-      }
-
-      throw error;
-    }
   }
 
   public async search(params: {
@@ -243,6 +229,30 @@ class SputnikHttpServiceClass {
     );
 
     return response.data.data;
+  }
+
+  public async getDaoContext(
+    accountId: string | undefined,
+    daoId: string
+  ): Promise<DaoContext | undefined> {
+    const [dao, policyAffectsProposals] = await Promise.all([
+      this.getDaoById(daoId),
+      this.findPolicyAffectsProposals(daoId),
+    ]);
+
+    if (!dao) {
+      return undefined;
+    }
+
+    return {
+      dao,
+      userPermissions: {
+        isCanCreateProposals:
+          isUserPermittedToCreateProposal(accountId, dao) ||
+          !!policyAffectsProposals.length,
+      },
+      policyAffectsProposals,
+    };
   }
 
   public async getProposalsList(

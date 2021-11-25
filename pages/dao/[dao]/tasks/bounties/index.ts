@@ -3,18 +3,25 @@ import Bounties, {
 } from 'pages/dao/[dao]/tasks/bounties/BountiesPage';
 import { GetServerSideProps } from 'next';
 import { SputnikHttpService } from 'services/sputnik';
+import { CookieService } from 'services/CookieService';
+import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async ({
+  req,
   query,
 }) => {
   const daoId = query.dao as string;
-  const [dao, bounties, policyAffectsProposals] = await Promise.all([
-    SputnikHttpService.getDaoById(daoId),
+
+  CookieService.initServerSideCookies(req?.headers.cookie || null);
+
+  const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
+
+  const [daoContext, bounties] = await Promise.all([
+    SputnikHttpService.getDaoContext(account, daoId),
     SputnikHttpService.getBountiesByDaoId(daoId),
-    SputnikHttpService.findPolicyAffectsProposals(daoId),
   ]);
 
-  if (!dao) {
+  if (!daoContext) {
     return {
       notFound: true,
     };
@@ -22,9 +29,8 @@ export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async (
 
   return {
     props: {
-      dao,
+      daoContext,
       bounties,
-      policyAffectsProposals,
     },
   };
 };

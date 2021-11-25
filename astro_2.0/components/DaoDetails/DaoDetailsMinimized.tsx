@@ -21,7 +21,6 @@ import styles from './DaoDetailsMinimized.module.scss';
 
 export interface DaoDetailsMinimizedProps {
   dao: DAO;
-  accountId: string | null;
   onCreateProposalClick?: () => void;
   disableNewProposal?: boolean;
 }

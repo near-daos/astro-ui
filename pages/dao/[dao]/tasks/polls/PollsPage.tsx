@@ -2,13 +2,11 @@ import { useRouter } from 'next/router';
 import React, { FC, useCallback } from 'react';
 
 // Types
-import { DAO } from 'types/dao';
 import { PaginationResponse } from 'types/api';
 import { Proposal, ProposalCategories, ProposalVariant } from 'types/proposal';
 
 // Components
 import { Feed } from 'astro_2.0/features/Feed';
-import { Button } from 'components/button/Button';
 import { NavLink } from 'astro_2.0/components/NavLink';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
@@ -16,24 +14,26 @@ import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 
 // Hooks
-import { useAuthContext } from 'context/AuthContext';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
+import { DaoContext } from 'types/context';
+import { NoResultsView } from 'features/no-results-view';
 import styles from './Polls.module.scss';
 
 export interface PollsPageProps {
-  dao: DAO;
+  daoContext: DaoContext;
   initialPollsData: PaginationResponse<Proposal[]>;
-  policyAffectsProposals: Proposal[];
 }
 
 const PollsPage: FC<PollsPageProps> = ({
-  dao,
+  daoContext: {
+    dao,
+    policyAffectsProposals,
+    userPermissions: { isCanCreateProposals },
+  },
   initialPollsData,
-  policyAffectsProposals,
 }) => {
   const router = useRouter();
-  const { accountId } = useAuthContext();
   const { tokens } = useDaoCustomTokens();
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
@@ -63,8 +63,7 @@ const PollsPage: FC<PollsPageProps> = ({
       <div className={styles.dao}>
         <DaoDetailsMinimized
           dao={dao}
-          accountId={accountId}
-          disableNewProposal={!!policyAffectsProposals.length}
+          disableNewProposal={!isCanCreateProposals}
           onCreateProposalClick={toggleCreateProposal}
         />
 
@@ -83,28 +82,24 @@ const PollsPage: FC<PollsPageProps> = ({
         />
       </div>
 
-      <Feed
-        title={
-          <div className={styles.headerContainer}>
-            <h1 className={styles.header}>Polls</h1>
-            <Button
-              variant="black"
-              size="small"
-              disabled={!!policyAffectsProposals.length}
-              onClick={() => toggleCreateProposal()}
-            >
-              Create new poll
-            </Button>
-          </div>
-        }
-        dao={dao}
-        showFlag={false}
-        daoTokens={tokens}
-        className={styles.feed}
-        category={ProposalCategories.Polls}
-        initialProposals={initialPollsData}
-        headerClassName={styles.feedHeader}
-      />
+      {initialPollsData.count === 0 ? (
+        <NoResultsView title="No polls available" />
+      ) : (
+        <Feed
+          title={
+            <div className={styles.headerContainer}>
+              <h1 className={styles.header}>Polls</h1>
+            </div>
+          }
+          dao={dao}
+          showFlag={false}
+          daoTokens={tokens}
+          className={styles.feed}
+          category={ProposalCategories.Polls}
+          initialProposals={initialPollsData}
+          headerClassName={styles.feedHeader}
+        />
+      )}
     </div>
   );
 };

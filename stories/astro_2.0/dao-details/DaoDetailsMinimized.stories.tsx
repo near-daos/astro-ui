@@ -35,7 +35,6 @@ Template.args = {
     // eslint-disable-next-line no-console
     console.log('create proposal');
   },
-  accountId: 'anima.testnet',
   dao: {
     id: 'saturn.sputnikv2.testnet',
     txHash: '4px581fv2HJ5LuWBUs72qouAJnZ5ka4bEA2ZLmixgjHD',

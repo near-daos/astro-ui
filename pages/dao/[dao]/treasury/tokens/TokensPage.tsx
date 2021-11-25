@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic';
 import classNames from 'classnames';
 import get from 'lodash/get';
 
-import { useAuthContext } from 'context/AuthContext';
 import { useNearPrice } from 'hooks/useNearPrice';
 import { formatCurrency } from 'utils/formatCurrency';
 
@@ -17,53 +16,48 @@ import { TokenCard } from 'components/cards/token-card';
 import { TokenDeprecated } from 'types/token';
 
 import { ChartCaption } from 'components/area-chart/components/chart-caption';
-import { ChartData } from 'types/chart';
-
 import { TransactionCard } from 'components/cards/transaction-card';
 import { Receipt } from 'types/transaction';
 import { Pagination } from 'components/pagination';
 
 import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
-import { DAO } from 'types/dao';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
-import { Proposal, ProposalVariant } from 'types/proposal';
+import { ProposalVariant } from 'types/proposal';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { NavLink } from 'astro_2.0/components/NavLink';
-import { useAuthCheck } from 'astro_2.0/features/Auth';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import { DaoContext } from 'types/context';
+import { NextPage } from 'next';
+import { getChartData } from 'features/treasury/helpers';
 import { formatYoktoValue } from 'helpers/format';
 
 export interface TokensPageProps {
-  data: {
-    chartData: ChartData[];
-    totalValue: string;
-    receipts: Record<string, Receipt[]>;
-    dao: DAO;
-    policyAffectsProposals: Proposal[];
-  };
+  daoContext: DaoContext;
+  receipts: Record<string, Receipt[]>;
 }
 
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
 
-const TokensPage: React.FC<TokensPageProps> = ({
-  data: { chartData, totalValue, receipts, dao, policyAffectsProposals },
+const TokensPage: NextPage<TokensPageProps> = ({
+  daoContext: {
+    dao,
+    userPermissions: { isCanCreateProposals },
+    policyAffectsProposals,
+  },
+  receipts,
 }) => {
+  const chartData = getChartData(receipts.NEAR);
+  const totalValue = dao.funds ?? '0';
   const router = useRouter();
-  const daoId = router.query.dao as string;
   const nearPrice = useNearPrice();
-  const { accountId } = useAuthContext();
   const TRANSACTIONS_PER_PAGE = 10;
   const { tokens } = useDaoCustomTokens();
   const [viewToken, setViewToken] = useState('NEAR');
   const receiptsData = receipts[viewToken] ?? [];
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
-
-  const handleClick = useAuthCheck(() => toggleCreateProposal(), [
-    toggleCreateProposal,
-  ]);
 
   const captions = useMemo(
     () => [
@@ -95,14 +89,13 @@ const TokensPage: React.FC<TokensPageProps> = ({
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
         <NavLink href="/all/daos">All DAOs</NavLink>
-        <NavLink href={`/dao/${daoId}`}>{dao?.displayName || dao?.id}</NavLink>
+        <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
         <NavLink>Treasury</NavLink>
       </BreadCrumbs>
       <div className={styles.dao}>
         <DaoDetailsMinimized
           dao={dao}
-          accountId={accountId}
-          disableNewProposal={!!policyAffectsProposals.length}
+          disableNewProposal={!isCanCreateProposals}
           onCreateProposalClick={toggleCreateProposal}
         />
         <CreateProposal
@@ -125,20 +118,12 @@ const TokensPage: React.FC<TokensPageProps> = ({
       </div>
       <div className={styles.header}>
         <h1>Tokens</h1>
-        <Button
-          variant="black"
-          size="small"
-          onClick={handleClick}
-          disabled={!!policyAffectsProposals.length}
-        >
-          Propose Payout
-        </Button>
       </div>
       <div className={styles.account}>
         <div className={styles.caption}>DAO account name</div>
         <div className={styles.name}>
-          <DaoAddressLink daoAddress={daoId} />
-          <CopyButton text={daoId} className={styles.icon} />
+          <DaoAddressLink daoAddress={dao.id} />
+          <CopyButton text={dao.id} className={styles.icon} />
         </div>
       </div>
       <div className={styles.total}>

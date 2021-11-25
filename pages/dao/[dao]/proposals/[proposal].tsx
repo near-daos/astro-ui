@@ -22,7 +22,6 @@ import { VotersList } from 'features/proposal/components/voters-list';
 
 import { extractMembersFromDao } from 'services/sputnik/mappers';
 import { SputnikHttpService } from 'services/sputnik';
-import { useAuthContext } from 'context/AuthContext';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import styles from './proposal.module.scss';
@@ -46,7 +45,6 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
   proposal,
   members,
 }) => {
-  const { accountId } = useAuthContext();
   const router = useRouter();
   const scope = getScope(proposal?.kind.type);
   const [activeFilter, setActiveFilter] = useState<string | undefined>(
@@ -158,7 +156,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         <MobileProposalActions proposal={proposal} />
       </div>
       <div className={styles.dao}>
-        <DaoDetailsMinimized dao={dao} accountId={accountId} />
+        <DaoDetailsMinimized dao={dao} />
       </div>
       <div className={styles.proposalInfo}>
         <ViewProposal

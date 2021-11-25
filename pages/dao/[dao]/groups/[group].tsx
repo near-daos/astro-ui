@@ -1,7 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
-import uniq from 'lodash/uniq';
 import { Badge } from 'components/badge/Badge';
-import { Button } from 'components/button/Button';
 
 import MemberCard, {
   GroupsRenderer,
@@ -12,11 +10,9 @@ import { useModal } from 'components/modal';
 
 import { useRouter } from 'next/router';
 
-import { DAO, Member } from 'types/dao';
 import { GetServerSideProps } from 'next';
 import { SputnikHttpService } from 'services/sputnik';
 import { extractMembersFromDao } from 'services/sputnik/mappers';
-import { useAuthContext } from 'context/AuthContext';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { NavLink } from 'astro_2.0/components/NavLink';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
@@ -26,6 +22,10 @@ import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useAuthCheck } from 'astro_2.0/features/Auth';
 import { GroupsList } from 'astro_2.0/features/Groups/components';
 import useSortMembers from 'astro_2.0/features/Groups/hooks/useSortMembers';
+import { DaoContext } from 'types/context';
+import { CookieService } from 'services/CookieService';
+import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { uniq } from 'lodash';
 import styles from './groups.module.scss';
 
 const sortOptions = [
@@ -40,24 +40,31 @@ const groupMap: { [key: string]: string } = {
 };
 
 interface GroupPageProps {
-  dao: DAO;
-  members: Member[];
-  availableGroups: string[];
-  policyAffectsProposals: Proposal[];
+  daoContext: DaoContext;
+  proposals: Proposal[];
 }
 
 const GroupPage: FC<GroupPageProps> = ({
-  dao,
-  members,
-  availableGroups,
-  policyAffectsProposals,
+  daoContext: {
+    dao,
+    policyAffectsProposals,
+    userPermissions: { isCanCreateProposals },
+  },
+  proposals,
 }) => {
+  const members = dao ? extractMembersFromDao(dao, proposals) : [];
+
+  const availableGroups = uniq(
+    members.reduce<string[]>((res, item) => {
+      res.push(...item.groups);
+
+      return res;
+    }, [])
+  );
   const router = useRouter();
-  const daoId = router.query.dao as string;
   const paramGroup = router.query.group as string;
   const group = groupMap[paramGroup] || paramGroup;
 
-  const { accountId } = useAuthContext();
   const [activeSort, setActiveSort] = useState<string>(sortOptions[0].value);
   const sortedData = useSortMembers({ members, activeSort, group });
 
@@ -80,11 +87,6 @@ const GroupPage: FC<GroupPageProps> = ({
     [showCreateProposal]
   );
 
-  const handleAddClick = useCallback(
-    () => showCreateProposal(ProposalVariant.ProposeAddMember),
-    [showCreateProposal]
-  );
-
   const handleRemoveClick = useCallback(
     () => showCreateProposal(ProposalVariant.ProposeRemoveMember),
     [showCreateProposal]
@@ -104,15 +106,14 @@ const GroupPage: FC<GroupPageProps> = ({
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
         <NavLink href="/all/daos">All DAOs</NavLink>
-        <NavLink href={`/dao/${daoId}`}>{dao?.displayName || dao?.id}</NavLink>
-        <NavLink href={`/dao/${daoId}/groups/all-members`}>Groups</NavLink>
+        <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
+        <NavLink href={`/dao/${dao.id}/groups/all-members`}>Groups</NavLink>
         <NavLink>{pageTitle === 'all' ? 'All Members' : pageTitle}</NavLink>
       </BreadCrumbs>
       <div className={styles.dao}>
         <DaoDetailsMinimized
           dao={dao}
-          accountId={accountId}
-          disableNewProposal={!!policyAffectsProposals.length}
+          disableNewProposal={!isCanCreateProposals}
           onCreateProposalClick={handleCreateGroup}
         />
         <CreateProposal
@@ -135,27 +136,11 @@ const GroupPage: FC<GroupPageProps> = ({
       </div>
       <div className={styles.header}>
         <h1>{pageTitle === 'all' ? 'All Members' : <>{pageTitle}</>}</h1>
-        <Button
-          variant="black"
-          size="small"
-          onClick={handleCreateGroup}
-          disabled={!!policyAffectsProposals.length}
-        >
-          Create new group
-        </Button>
-        <Button
-          variant="black"
-          size="small"
-          onClick={handleAddClick}
-          disabled={!!policyAffectsProposals.length}
-        >
-          Add member to this group
-        </Button>
       </div>
       <GroupsList
         className={styles.groups}
         groups={availableGroups}
-        daoId={daoId}
+        daoId={dao.id}
       />
       <div className={styles.filter}>
         <Dropdown
@@ -197,36 +182,30 @@ const GroupPage: FC<GroupPageProps> = ({
 };
 
 export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
+  req,
   query,
 }) => {
   const daoId = query.dao as string;
 
-  const [dao, proposals, policyAffectsProposals] = await Promise.all([
-    SputnikHttpService.getDaoById(daoId),
+  CookieService.initServerSideCookies(req?.headers.cookie || null);
+
+  const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
+
+  const [daoContext, proposals] = await Promise.all([
+    SputnikHttpService.getDaoContext(account, daoId),
     SputnikHttpService.getProposals(daoId),
-    SputnikHttpService.findPolicyAffectsProposals(daoId),
   ]);
 
-  if (!dao) {
+  if (!daoContext) {
     return {
       notFound: true,
     };
   }
 
-  const members = dao ? extractMembersFromDao(dao, proposals) : [];
-
-  const availableGroups = members.reduce<string[]>((res, item) => {
-    res.push(...item.groups);
-
-    return res;
-  }, []);
-
   return {
     props: {
-      dao,
-      members,
-      availableGroups: uniq(availableGroups),
-      policyAffectsProposals,
+      daoContext,
+      proposals,
     },
   };
 };
