@@ -36,30 +36,34 @@ export const TokenCard: React.FC<TokenCardProps> = ({
   return (
     <Button
       variant="transparent"
-      className={classNames(styles.root, styles.grid, {
+      className={classNames(styles.root, {
         [styles.active]: isActive,
       })}
       onClick={onClick}
     >
-      <div className={styles.iconContainer}>
-        <div className={styles.iconWrapper}>
-          {tokenIconName !== '' ? (
-            <Icon name={tokenIconName} width={32} />
-          ) : (
-            <div
-              className={styles.icon}
-              style={{ backgroundImage: `url(${icon})` }}
-            />
-          )}
+      <div className={styles.grid}>
+        <div className={styles.iconContainer}>
+          <div className={styles.iconWrapper}>
+            {tokenIconName !== '' ? (
+              <Icon name={tokenIconName} width={32} />
+            ) : (
+              <div
+                className={styles.icon}
+                style={{ backgroundImage: `url(${icon})` }}
+              />
+            )}
+          </div>
         </div>
-      </div>
-      <div className={styles.tokenBalance}>
-        {balance} <span className={styles.tokenName}>{symbol}</span>
-      </div>
-      <div className={styles.totalValue}>
-        {totalValue && (
-          <FormattedNumericValue value={totalValue} suffix="usd" />
-        )}
+        <div className={styles.token}>
+          <div className={styles.tokenBalance}>
+            {balance} <span className={styles.tokenName}>{symbol}</span>
+          </div>
+          <div className={styles.totalValue}>
+            {totalValue && (
+              <FormattedNumericValue value={totalValue} suffix="usd" />
+            )}
+          </div>
+        </div>
       </div>
     </Button>
   );

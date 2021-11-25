@@ -20,7 +20,6 @@
 .header {
   display: flex;
   flex-direction: column;
-  gap: 22px;
   grid-area: header;
 
   @include tablet-portrait {
@@ -31,7 +30,7 @@
 
   h1 {
     font-family: var(--font-family-tertiary);
-    margin: 0;
+    margin: 0 24px 0 0;
   }
 }
 

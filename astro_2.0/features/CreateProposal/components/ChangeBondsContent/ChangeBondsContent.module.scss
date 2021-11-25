@@ -5,15 +5,17 @@
 .root {
   display: flex;
   flex-direction: column;
-  gap: 24px;
 }
 
 .row {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  gap: 24px;
   white-space: nowrap;
+
+  &:not(:last-of-type) {
+    margin-bottom: 24px;
+  }
 
   .iconWrapper {
     background-color: var(--color-neutral-30);
@@ -32,12 +34,10 @@
 
 .title {
   @extend %title3;
-  //flex: 0 0 90px;
+  margin-bottom: 24px;
 }
 
 .inputWrapper {
-  //max-width: 120px;
-
   /* stylelint-disable */
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,

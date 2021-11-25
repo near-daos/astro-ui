@@ -25,8 +25,11 @@
     align-items: center;
     color: var(--color-white);
     display: flex;
-    gap: 6px;
     justify-content: flex-start;
+  }
+
+  .policy > div {
+    margin-right: 6px;
   }
 
   .bold {

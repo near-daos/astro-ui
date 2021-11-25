@@ -14,7 +14,7 @@
 
 .statusFilterWrapper {
   @include wide-background;
-  padding: 56px 0 24px;
+  padding: 56px 0 0;
   position: sticky;
   top: 72px;
   width: 100%;
@@ -33,7 +33,7 @@
   }
 
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
-    padding: 40px 0 32px;
+    padding: 40px 0 0;
     width: 100%;
   }
 }

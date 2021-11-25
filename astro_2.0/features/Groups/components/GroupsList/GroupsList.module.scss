@@ -13,10 +13,14 @@
   border-radius: 8px;
   box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
   display: flex;
-  gap: 16px;
   height: 77px;
   list-style: none;
   margin: 0;
-  padding: 0;
   padding: 16px;
+}
+
+.item {
+  &:not(:last-of-type) {
+    margin-right: 16px;
+  }
 }

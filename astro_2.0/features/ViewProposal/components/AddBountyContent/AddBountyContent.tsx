@@ -30,45 +30,48 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
 
   return (
     <div className={styles.root}>
-      <FieldWrapper label="Amount">
-        {tokenData ? (
-          <FieldValue value={formatYoktoValue(amount, tokenData.decimals)} />
-        ) : (
-          <div className={styles.loaderWrapper}>
-            <LoadingIndicator />
-          </div>
-        )}
-      </FieldWrapper>
-      <FieldWrapper label="">
-        <div className={styles.row}>
-          {tokenData && (
-            <>
-              <div className={styles.iconWrapper}>
-                {tokenData.symbol === 'NEAR' ? (
-                  <Icon name="tokenNearBig" />
-                ) : (
-                  <div
-                    style={{
-                      backgroundImage: `url(${tokenData.icon})`,
-                    }}
-                    className={styles.icon}
-                  />
-                )}
-              </div>
-              <div className={styles.symbol}>{tokenData.symbol}</div>
-            </>
+      <div className={styles.inline}>
+        <FieldWrapper label="Amount">
+          {tokenData ? (
+            <FieldValue value={formatYoktoValue(amount, tokenData.decimals)} />
+          ) : (
+            <div className={styles.loaderWrapper}>
+              <LoadingIndicator />
+            </div>
           )}
-        </div>
-      </FieldWrapper>
-
+        </FieldWrapper>
+        <FieldWrapper label="">
+          <div className={styles.row}>
+            {tokenData && (
+              <>
+                <div className={styles.iconWrapper}>
+                  {tokenData.symbol === 'NEAR' ? (
+                    <Icon name="tokenNearBig" />
+                  ) : (
+                    <div
+                      style={{
+                        backgroundImage: `url(${tokenData.icon})`,
+                      }}
+                      className={styles.icon}
+                    />
+                  )}
+                </div>
+                <div className={styles.symbol}>{tokenData.symbol}</div>
+              </>
+            )}
+          </div>
+        </FieldWrapper>
+      </div>
       <div className={styles.divider} />
-      <FieldWrapper label="Available Claims">
-        <FieldValue value={slots} />
-      </FieldWrapper>
-      <div className={styles.divider} />
-      <FieldWrapper label="Days to Complete">
-        <FieldValue value={deadlineThreshold} />
-      </FieldWrapper>
+      <div className={styles.inline}>
+        <FieldWrapper label="Available Claims">
+          <FieldValue value={slots} />
+        </FieldWrapper>
+        <div className={styles.divider} />
+        <FieldWrapper label="Days to Complete">
+          <FieldValue value={deadlineThreshold} />
+        </FieldWrapper>
+      </div>
     </div>
   );
 };

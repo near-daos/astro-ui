@@ -112,6 +112,15 @@
   width: 68px;
 }
 
+@media screen and (max-width: #{breakpoints.$screen-md}px) {
+  .row {
+    flex-wrap: wrap;
+    > div {
+      margin-bottom: 24px;
+    }
+  }
+}
+
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .row {
     display: grid;

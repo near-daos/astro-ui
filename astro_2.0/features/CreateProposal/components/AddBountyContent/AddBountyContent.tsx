@@ -49,60 +49,64 @@ export const AddBountyContent: FC = () => {
 
   return (
     <div className={styles.root}>
-      <InputWrapper fieldName="amount" label="Amount">
-        <Input
-          className={cn(styles.inputWrapper, styles.narrow)}
-          type="number"
-          inputStyles={{ width: `${amountWidth}ch`, paddingRight: 4 }}
-          placeholder="00.0000"
-          min={0}
-          isBorderless
-          size="block"
-          {...register('amount')}
-        />
-      </InputWrapper>
-      {Object.values(tokens).length ? (
-        <DropdownSelect
-          className={styles.select}
-          options={tokenOptions}
-          label="&nbsp;"
-          {...register('token')}
-          onChange={v => {
-            setValue('token', v, {
-              shouldDirty: true,
-            });
-          }}
-          defaultValue={selectedTokenData?.symbol ?? 'NEAR'}
-        />
-      ) : (
-        <div className={styles.loaderWrapper}>
-          <LoadingIndicator />
-        </div>
-      )}
+      <div className={styles.inline}>
+        <InputWrapper fieldName="amount" label="Amount">
+          <Input
+            className={cn(styles.inputWrapper, styles.narrow)}
+            type="number"
+            inputStyles={{ width: `${amountWidth}ch`, paddingRight: 4 }}
+            placeholder="00.0000"
+            min={0}
+            isBorderless
+            size="block"
+            {...register('amount')}
+          />
+        </InputWrapper>
+        {Object.values(tokens).length ? (
+          <DropdownSelect
+            className={styles.select}
+            options={tokenOptions}
+            label="&nbsp;"
+            {...register('token')}
+            onChange={v => {
+              setValue('token', v, {
+                shouldDirty: true,
+              });
+            }}
+            defaultValue={selectedTokenData?.symbol ?? 'NEAR'}
+          />
+        ) : (
+          <div className={styles.loaderWrapper}>
+            <LoadingIndicator />
+          </div>
+        )}
+      </div>
       <div className={styles.divider} />
-      <InputWrapper fieldName="slots" label="Available Claims">
-        <Input
-          type="number"
-          className={styles.inputWrapper}
-          placeholder="0"
-          min={1}
-          isBorderless
-          size="small"
-          {...register('slots')}
-        />
-      </InputWrapper>
-      <div className={styles.divider} />
-      <InputWrapper fieldName="deadlineThreshold" label="Days to Complete">
-        <Input
-          type="number"
-          className={styles.inputWrapper}
-          placeholder="0"
-          min={1}
-          isBorderless
-          size="small"
-          {...register('deadlineThreshold')}
-        />
-      </InputWrapper>
+      <div className={styles.inline}>
+        <InputWrapper fieldName="slots" label="Available Claims">
+          <Input
+            type="number"
+            className={styles.inputWrapper}
+            placeholder="0"
+            min={1}
+            isBorderless
+            size="small"
+            {...register('slots')}
+          />
+        </InputWrapper>
+        <div className={styles.divider} />
+        <InputWrapper fieldName="deadlineThreshold" label="Days to Complete">
+          <Input
+            type="number"
+            className={styles.inputWrapper}
+            placeholder="0"
+            min={1}
+            isBorderless
+            size="small"
+            {...register('deadlineThreshold')}
+          />
+        </InputWrapper>
+      </div>
     </div>
   );
 };

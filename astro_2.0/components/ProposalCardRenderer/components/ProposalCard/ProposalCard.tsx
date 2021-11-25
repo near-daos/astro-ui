@@ -73,9 +73,8 @@ function getTimestampLabel(
             [styles.rejected]: status === 'Rejected',
           })}
         >
-          {status}
-        </span>{' '}
-        at{' '}
+          {status} at&nbsp;
+        </span>
         <span className={cn(styles.value)}>
           {format(parseISO(updatedAt as string), 'dd MMMM yyyy')}
         </span>
