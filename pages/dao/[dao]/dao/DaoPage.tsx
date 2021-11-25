@@ -1,6 +1,5 @@
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import { Feed } from 'astro_2.0/features/Feed';
 import { NavLink } from 'astro_2.0/components/NavLink';
@@ -33,27 +32,12 @@ const DAOHome: NextPage<DaoHomeProps> = ({
   },
   initialProposalsData,
 }) => {
-  const router = useRouter();
   const nearPrice = useNearPrice();
 
   const { accountId } = useAuthContext();
   const { tokens } = useAllCustomTokens();
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
-
-  const refreshData = useCallback(() => {
-    router.replace(router.asPath);
-  }, [router]);
-
-  const handleCreateProposal = useCallback(
-    (isSuccess: boolean) => {
-      if (isSuccess) {
-        refreshData();
-        toggleCreateProposal();
-      }
-    },
-    [refreshData, toggleCreateProposal]
-  );
 
   return (
     <div className={styles.root}>
@@ -80,7 +64,6 @@ const DAOHome: NextPage<DaoHomeProps> = ({
           dao={dao}
           showFlag={false}
           proposalVariant={ProposalVariant.ProposeTransfer}
-          onCreate={handleCreateProposal}
           onClose={toggleCreateProposal}
         />
 

@@ -8,6 +8,7 @@ import {
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { formatYoktoValue } from 'helpers/format';
+import { useIsValidImage } from 'hooks/useIsValidImage';
 
 import styles from './AddBountyContent.module.scss';
 
@@ -28,6 +29,27 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
 
   const tokenData = token ? tokens[token] : tokens.NEAR;
 
+  const isValid = useIsValidImage(tokenData?.icon);
+
+  function renderIcon() {
+    if (tokenData?.symbol === 'NEAR') {
+      return <Icon name="tokenNearBig" />;
+    }
+
+    if (isValid) {
+      return (
+        <div
+          style={{
+            backgroundImage: `url(${tokenData.icon})`,
+          }}
+          className={styles.icon}
+        />
+      );
+    }
+
+    return <div className={styles.icon} />;
+  }
+
   return (
     <div className={styles.root}>
       <div className={styles.inline}>
@@ -41,25 +63,7 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
           )}
         </FieldWrapper>
         <FieldWrapper label="">
-          <div className={styles.row}>
-            {tokenData && (
-              <>
-                <div className={styles.iconWrapper}>
-                  {tokenData.symbol === 'NEAR' ? (
-                    <Icon name="tokenNearBig" />
-                  ) : (
-                    <div
-                      style={{
-                        backgroundImage: `url(${tokenData.icon})`,
-                      }}
-                      className={styles.icon}
-                    />
-                  )}
-                </div>
-                <div className={styles.symbol}>{tokenData.symbol}</div>
-              </>
-            )}
-          </div>
+          <div className={styles.row}>{renderIcon()}</div>
         </FieldWrapper>
       </div>
       <div className={styles.divider} />
