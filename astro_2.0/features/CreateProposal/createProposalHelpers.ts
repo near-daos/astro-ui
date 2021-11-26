@@ -8,7 +8,11 @@ export function isUserPermittedToCreateProposal(
     return false;
   }
 
-  const daoRoles = dao.policy.roles;
+  const daoRoles = dao.policy?.roles;
+
+  if (!daoRoles) {
+    return false;
+  }
 
   let matched = false;
 
