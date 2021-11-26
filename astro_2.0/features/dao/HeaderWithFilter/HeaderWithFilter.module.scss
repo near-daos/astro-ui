@@ -4,7 +4,6 @@
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  //gap: 32px;
   justify-content: space-between;
   white-space: nowrap;
 }
@@ -12,13 +11,8 @@
 .headerContainer {
   align-items: center;
   display: flex;
-  grid-gap: 20px;
   margin-bottom: 32px;
   margin-right: 32px;
-
-  @include tablet-portrait {
-    grid-gap: 32px;
-  }
 }
 
 .filtersContainer {

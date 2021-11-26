@@ -118,13 +118,7 @@ const BountiesPage: FC<BountiesPageProps> = ({
         <NoResultsView title="No bounties available" />
       ) : (
         <>
-          <HeaderWithFilter
-            title={
-              <>
-                <h1 className={styles.header}>Bounties</h1>
-              </>
-            }
-          >
+          <HeaderWithFilter title={<h1 className={styles.header}>Bounties</h1>}>
             <FeedFilter
               title="Bounties"
               value={query.bountyStatus}

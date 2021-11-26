@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
 import cn from 'classnames';
+import React, { useCallback, useState } from 'react';
 
 import { Icon } from 'components/Icon';
 import RadioGroup, {

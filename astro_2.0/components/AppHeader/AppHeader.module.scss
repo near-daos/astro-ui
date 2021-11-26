@@ -5,16 +5,12 @@
   align-items: center;
   background-color: var(--color-white);
   display: flex;
-  height: 64px;
+  height: 72px;
   justify-content: space-between;
   padding: 0 24px;
   position: sticky;
   top: 0;
   z-index: 1000;
-
-  @include astro-desktop {
-    height: 72px;
-  }
 
   @include desktop {
     padding: 0 48px;
