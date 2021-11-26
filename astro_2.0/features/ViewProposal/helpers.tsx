@@ -26,19 +26,22 @@ import { getDistanceFromNow } from 'astro_2.0/components/BountyCard/helpers';
 import CustomFunctionCallContent from 'astro_2.0/features/ViewProposal/components/CustomFunctionCallContent';
 
 export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
+  let content;
+
   switch (proposal?.proposalVariant) {
     case ProposalVariant.ProposeTransfer: {
       if (proposal.kind.type === ProposalType.Transfer) {
-        return (
+        content = (
           <TransferContent
             amount={proposal.kind.amount}
             token={proposal.kind.tokenId}
             target={proposal.kind.receiverId}
           />
         );
+        break;
       }
 
-      return null;
+      break;
     }
     case ProposalVariant.ProposeCreateBounty: {
       if (proposal.kind.type === ProposalType.AddBounty) {
@@ -48,7 +51,7 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
         // @ts-ignore
         const [, value] = getDistanceFromNow(bountyData.maxDeadline).split(' ');
 
-        return (
+        content = (
           <AddBountyContent
             slots={bountyData.times}
             deadlineThreshold={value}
@@ -56,9 +59,10 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
             amount={bountyData.amount}
           />
         );
+        break;
       }
 
-      return null;
+      break;
     }
     case ProposalVariant.ProposeChangeDaoName: {
       if (proposal.kind.type === ProposalType.ChangeConfig) {
@@ -66,27 +70,29 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
           ? fromBase64ToMetadata(proposal.kind.config.metadata)
           : null;
 
-        return (
+        content = (
           <ChangeDaoNameContent
             daoId={dao.id}
             displayName={meta?.displayName ?? ''}
           />
         );
+        break;
       }
 
-      return null;
+      break;
     }
     case ProposalVariant.ProposeChangeDaoPurpose: {
       if (proposal.kind.type === ProposalType.ChangeConfig) {
-        return (
+        content = (
           <ChangeDaoPurposeContent
             daoId={dao.id}
             purpose={proposal.kind.config.purpose}
           />
         );
+        break;
       }
 
-      return null;
+      break;
     }
     case ProposalVariant.ProposeChangeDaoLinks: {
       if (proposal.kind.type === ProposalType.ChangeConfig) {
@@ -94,10 +100,13 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
           ? fromBase64ToMetadata(proposal.kind.config.metadata)
           : null;
 
-        return <ChangeLinksContent daoId={dao.id} links={meta?.links ?? []} />;
+        content = (
+          <ChangeLinksContent daoId={dao.id} links={meta?.links ?? []} />
+        );
+        break;
       }
 
-      return null;
+      break;
     }
     case ProposalVariant.ProposeChangeDaoFlag: {
       if (proposal.kind.type === ProposalType.ChangeConfig) {
@@ -108,12 +117,13 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
         const cover = getAwsImageUrl(meta?.flagCover);
         const logo = getAwsImageUrl(meta?.flagLogo);
 
-        return (
+        content = (
           <ChangeDaoFlagContent daoId={dao.id} cover={cover} logo={logo} />
         );
+        break;
       }
 
-      return null;
+      break;
     }
     case ProposalVariant.ProposeChangeVotingPolicy: {
       if (proposal.kind.type === ProposalType.ChangePolicy) {
@@ -132,16 +142,17 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
           },
         }); // as Record<string, unknown>;
 
-        return <ChangePolicyContent amount={initialData?.policy.amount} />;
+        content = <ChangePolicyContent amount={initialData?.policy.amount} />;
+        break;
       }
 
-      return null;
+      break;
     }
     case ProposalVariant.ProposeChangeBonds: {
       if (proposal.kind.type === ProposalType.ChangePolicy) {
         const { policy } = proposal.kind;
 
-        return (
+        content = (
           <ChangeBondsContent
             dao={dao}
             createProposalBond={new Decimal(policy.proposalBond)
@@ -158,9 +169,10 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
               .toNumber()}
           />
         );
+        break;
       }
 
-      return null;
+      break;
     }
     case ProposalVariant.ProposeCreateGroup: {
       if (proposal.kind.type === ProposalType.ChangePolicy) {
@@ -183,43 +195,46 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
           // @ts-ignore
           const memberName = newGroup?.kind?.group[0] ?? '';
 
-          return (
+          content = (
             <CreateGroupContent
               daoId={dao.id}
               group={(newGroup as DaoRole).name}
               memberName={memberName}
             />
           );
+          break;
         }
 
-        return null;
+        break;
       }
 
-      return null;
+      break;
     }
     case ProposalVariant.ProposeAddMember: {
       if (proposal.kind.type === ProposalType.AddMemberToRole) {
-        return (
+        content = (
           <AddMemberToGroupContent
             group={proposal.kind.role}
             memberName={proposal.kind.memberId}
           />
         );
+        break;
       }
 
-      return null;
+      break;
     }
     case ProposalVariant.ProposeRemoveMember: {
       if (proposal.kind.type === ProposalType.RemoveMemberFromRole) {
-        return (
+        content = (
           <RemoveMemberFromGroupContent
             group={proposal.kind.role}
             memberName={proposal.kind.memberId}
           />
         );
+        break;
       }
 
-      return null;
+      break;
     }
     case ProposalVariant.ProposeCustomFunctionCall: {
       if (proposal.kind.type === ProposalType.FunctionCall) {
@@ -231,7 +246,7 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
             Buffer.from(data.args, 'base64').toString('ascii')
           );
 
-          return (
+          content = (
             <CustomFunctionCallContent
               token="NEAR"
               smartContractAddress={kind.receiverId}
@@ -242,17 +257,99 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
               deposit={data.deposit}
             />
           );
+          break;
         } catch (e) {
-          return null;
+          break;
         }
       }
 
-      return null;
+      break;
     }
     default: {
-      return null;
+      break;
     }
   }
+
+  // Fallback for proposals made via CLI
+  if (!content) {
+    switch (proposal.kind.type) {
+      case ProposalType.AddBounty: {
+        const bountyData = proposal.kind.bounty;
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const [, value] = getDistanceFromNow(bountyData.maxDeadline).split(' ');
+
+        content = (
+          <AddBountyContent
+            slots={bountyData.times}
+            deadlineThreshold={value}
+            token={bountyData.token}
+            amount={bountyData.amount}
+          />
+        );
+        break;
+      }
+      case ProposalType.AddMemberToRole: {
+        content = (
+          <AddMemberToGroupContent
+            group={proposal.kind.role}
+            memberName={proposal.kind.memberId}
+          />
+        );
+        break;
+      }
+      case ProposalType.RemoveMemberFromRole: {
+        content = (
+          <RemoveMemberFromGroupContent
+            group={proposal.kind.role}
+            memberName={proposal.kind.memberId}
+          />
+        );
+        break;
+      }
+      case ProposalType.Transfer: {
+        content = (
+          <TransferContent
+            amount={proposal.kind.amount}
+            token={proposal.kind.tokenId}
+            target={proposal.kind.receiverId}
+          />
+        );
+        break;
+      }
+      case ProposalType.FunctionCall: {
+        try {
+          const { kind } = proposal;
+          const data = kind.actions[0];
+
+          const json = JSON.parse(
+            Buffer.from(data.args, 'base64').toString('ascii')
+          );
+
+          content = (
+            <CustomFunctionCallContent
+              token="NEAR"
+              smartContractAddress={kind.receiverId}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              methodName={data.methodName}
+              json={json}
+              deposit={data.deposit}
+            />
+          );
+          break;
+        } catch (e) {
+          break;
+        }
+      }
+      default: {
+        content = null;
+      }
+    }
+  }
+
+  return content;
 }
 
 export function getProposalVariantLabel(

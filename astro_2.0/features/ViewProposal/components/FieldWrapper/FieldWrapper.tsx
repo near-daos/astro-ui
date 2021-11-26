@@ -36,13 +36,15 @@ export const FieldWrapper: FC<InputWrapperProps> = ({
 interface FieldValueProps {
   value: string | number | ReactNode;
   normal?: boolean;
+  noWrap?: boolean;
 }
 
-export const FieldValue: FC<FieldValueProps> = ({ value, normal }) => {
+export const FieldValue: FC<FieldValueProps> = ({ value, normal, noWrap }) => {
   return (
     <div
       className={cn(styles.value, {
         [styles.normal]: normal,
+        [styles.noWrap]: noWrap,
       })}
     >
       {value}

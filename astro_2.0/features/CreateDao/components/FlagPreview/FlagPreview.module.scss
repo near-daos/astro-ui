@@ -59,8 +59,16 @@
   text-align: center;
 
   @include tablet-portrait {
+    width: 70%;
     &:last-of-type {
       width: 15%;
+    }
+  }
+
+  @include large-desktop {
+    width: 50%;
+    &:last-of-type {
+      width: 50%;
     }
   }
 

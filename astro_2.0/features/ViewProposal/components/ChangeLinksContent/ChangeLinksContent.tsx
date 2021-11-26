@@ -22,7 +22,7 @@ export const ChangeLinksContent: FC<ChangeLinksContentProps> = ({
   return (
     <div className={styles.root}>
       <FieldWrapper label="New DAO links">
-        {links.map(link => (
+        {links.map((link, i) => (
           <FieldValue
             value={
               <a
@@ -47,7 +47,8 @@ export const ChangeLinksContent: FC<ChangeLinksContentProps> = ({
                 </span>
               </a>
             }
-            key={link}
+            /* eslint-disable-next-line react/no-array-index-key */
+            key={`${i}__${link}link`}
           />
         ))}
       </FieldWrapper>

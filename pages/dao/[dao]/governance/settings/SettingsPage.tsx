@@ -76,7 +76,6 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
           className={styles.createProposal}
           dao={dao}
           showFlag={false}
-          onCreate={isSuccess => isSuccess && toggleCreateProposal()}
           onClose={toggleCreateProposal}
         />
         <PolicyAffectedWarning
