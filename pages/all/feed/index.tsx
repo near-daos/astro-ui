@@ -9,7 +9,7 @@ import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { Feed } from 'astro_2.0/features/Feed';
 
 const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
-  <Feed {...props} title="Astro proposals feed" />
+  <Feed {...props} title="Astro feed" />
 );
 
 export const getServerSideProps: GetServerSideProps<React.ComponentProps<

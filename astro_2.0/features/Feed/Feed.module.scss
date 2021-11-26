@@ -16,13 +16,9 @@
   @include wide-background;
   padding: 56px 0 0;
   position: sticky;
-  top: 72px;
+  top: 64px;
   width: 100%;
   z-index: 20;
-
-  @include astro-mobile {
-    top: 64px;
-  }
 
   .categoriesListApprovedInputWrapperChecked {
     --color-checkmark-active: var(--color-success-50);
