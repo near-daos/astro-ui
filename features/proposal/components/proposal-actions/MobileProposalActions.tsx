@@ -29,6 +29,10 @@ export const MobileProposalActions: FC<MobileProposalActionsProps> = ({
     setOpen(false);
   });
 
+  if (!proposal) {
+    return null;
+  }
+
   const shareContent = encodeURIComponent(
     `${proposal.proposalVariant} \n ${proposal.description}`
   );
