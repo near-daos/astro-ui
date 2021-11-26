@@ -9,28 +9,18 @@ export const allStatusFilterOption: Option = {
 };
 
 export const activeProposalsStatusFilterOption: Option = {
-  label: 'Active Proposals',
-  value: 'Active Proposals',
+  label: 'Active',
+  value: 'Active',
 };
 
 export const acceptedProposalsStatusFilterOption: Option = {
-  label: 'Accepted Proposals',
-  value: 'Accepted Proposals',
+  label: 'Approved',
+  value: 'Approved',
 };
 
 export const inactiveProposalsStatusFilterOption: Option = {
-  label: 'Inactive Proposals',
-  value: 'Inactive Proposals',
-};
-
-export const rejectedProposalsStatusFilterOption: Option = {
-  label: 'Rejected / Expired Proposals',
-  value: 'Rejected / Expired Proposals',
-};
-
-export const spamDismissedProposalsStatusFilterOption: Option = {
-  label: 'Spam / Dismissed Proposals',
-  value: 'Spam / Dismissed Proposals',
+  label: 'Failed',
+  value: 'Failed',
 };
 
 export const statusFilterOptions: Option[] = [
@@ -38,8 +28,6 @@ export const statusFilterOptions: Option[] = [
   activeProposalsStatusFilterOption,
   acceptedProposalsStatusFilterOption,
   inactiveProposalsStatusFilterOption,
-  rejectedProposalsStatusFilterOption,
-  spamDismissedProposalsStatusFilterOption,
 ];
 
 export const daoFilterOptions = [
