@@ -24,6 +24,10 @@
 
   h1 {
     margin: 0 24px 0 0;
+
+    @include astro-mobile {
+      margin-bottom: 20px;
+    }
   }
 }
 

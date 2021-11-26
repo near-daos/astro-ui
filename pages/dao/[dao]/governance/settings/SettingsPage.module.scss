@@ -61,6 +61,10 @@
     flex-direction: row;
   }
 
+  > div {
+    margin-bottom: 24px;
+  }
+
   > div:not(:last-of-type) {
     margin-right: 24px;
   }

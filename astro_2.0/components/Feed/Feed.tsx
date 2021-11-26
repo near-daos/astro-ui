@@ -1,5 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
+import Head from 'next/head';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { PaginationResponse } from 'types/api';
@@ -25,6 +26,10 @@ export const Feed = <T,>({
 }: FeedProps<T>): React.ReactElement => {
   return (
     <div className={cn(styles.root, className)}>
+      <Head>
+        <title>Astro</title>
+        <meta name="viewport" content="width=device-width, minimum-scale=1" />
+      </Head>
       <InfiniteScroll
         dataLength={data.data.length}
         next={loadMore}

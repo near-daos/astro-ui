@@ -31,6 +31,10 @@
   h1 {
     font-family: var(--font-family-tertiary);
     margin: 0 24px 0 0;
+
+    @include astro-mobile {
+      margin-bottom: 20px;
+    }
   }
 }
 

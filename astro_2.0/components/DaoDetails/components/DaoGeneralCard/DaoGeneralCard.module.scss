@@ -133,6 +133,8 @@
     justify-content: center;
 
     .displayName {
+      @include ellipse-text;
+      line-height: 1.2;
       text-align: center;
     }
 
