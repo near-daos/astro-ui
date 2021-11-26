@@ -106,7 +106,6 @@ const BountiesPage: FC<BountiesPageProps> = ({
           showFlag={false}
           className={styles.createProposal}
           proposalVariant={ProposalVariant.ProposeCreateBounty}
-          onCreate={isSuccess => isSuccess && toggleCreateProposal()}
           onClose={toggleCreateProposal}
         />
         <PolicyAffectedWarning

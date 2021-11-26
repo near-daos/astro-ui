@@ -51,7 +51,10 @@ export const TransferContent: FC<TransferContentProps> = ({
     <div className={styles.root}>
       <FieldWrapper label="Amount">
         {tokenData ? (
-          <FieldValue value={formatYoktoValue(amount, tokenData.decimals)} />
+          <FieldValue
+            value={formatYoktoValue(amount, tokenData.decimals)}
+            noWrap
+          />
         ) : (
           <div className={styles.loaderWrapper}>
             <LoadingIndicator />

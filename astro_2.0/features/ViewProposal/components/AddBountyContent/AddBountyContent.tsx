@@ -63,7 +63,14 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
           )}
         </FieldWrapper>
         <FieldWrapper label="">
-          <div className={styles.row}>{renderIcon()}</div>
+          <div className={styles.row}>
+            {tokenData && (
+              <>
+                <div className={styles.iconWrapper}>{renderIcon()}</div>
+                <div className={styles.symbol}>{tokenData.symbol}</div>
+              </>
+            )}
+          </div>
         </FieldWrapper>
       </div>
       <div className={styles.divider} />

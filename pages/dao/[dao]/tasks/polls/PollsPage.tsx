@@ -1,5 +1,4 @@
-import { useRouter } from 'next/router';
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 
 // Types
 import { PaginationResponse } from 'types/api';
@@ -33,24 +32,9 @@ const PollsPage: FC<PollsPageProps> = ({
   },
   initialPollsData,
 }) => {
-  const router = useRouter();
   const { tokens } = useDaoCustomTokens();
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
-
-  const refreshData = useCallback(() => {
-    router.replace(router.asPath);
-  }, [router]);
-
-  const handleCreateProposal = useCallback(
-    (isSuccess: boolean) => {
-      if (isSuccess) {
-        refreshData();
-        toggleCreateProposal();
-      }
-    },
-    [refreshData, toggleCreateProposal]
-  );
 
   return (
     <div className={styles.root}>
@@ -72,7 +56,6 @@ const PollsPage: FC<PollsPageProps> = ({
           dao={dao}
           proposalVariant={ProposalVariant.ProposePoll}
           showFlag={false}
-          onCreate={handleCreateProposal}
           onClose={toggleCreateProposal}
         />
 

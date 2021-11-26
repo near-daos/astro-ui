@@ -78,10 +78,6 @@ const GroupPage: FC<GroupPageProps> = ({
     [toggleCreateProposal]
   );
 
-  const refreshData = useCallback(() => {
-    router.replace(router.asPath);
-  }, [router]);
-
   const handleCreateGroup = useCallback(
     () => showCreateProposal(ProposalVariant.ProposeCreateGroup),
     [showCreateProposal]
@@ -121,12 +117,6 @@ const GroupPage: FC<GroupPageProps> = ({
           dao={dao}
           proposalVariant={ProposalVariant.ProposeCreateGroup}
           showFlag={false}
-          onCreate={isSuccess => {
-            if (isSuccess) {
-              refreshData();
-              toggleCreateProposal();
-            }
-          }}
           onClose={toggleCreateProposal}
         />
         <PolicyAffectedWarning

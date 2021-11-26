@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import classNames from 'classnames';
 import get from 'lodash/get';
@@ -50,7 +49,6 @@ const TokensPage: NextPage<TokensPageProps> = ({
 }) => {
   const chartData = getChartData(receipts.NEAR);
   const totalValue = dao.funds ?? '0';
-  const router = useRouter();
   const nearPrice = useNearPrice();
   const TRANSACTIONS_PER_PAGE = 10;
   const { tokens } = useDaoCustomTokens();
@@ -81,10 +79,6 @@ const TokensPage: NextPage<TokensPageProps> = ({
     setActivePage(selected);
   }, []);
 
-  const refreshData = useCallback(() => {
-    router.replace(router.asPath);
-  }, [router]);
-
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
@@ -103,12 +97,6 @@ const TokensPage: NextPage<TokensPageProps> = ({
           dao={dao}
           proposalVariant={ProposalVariant.ProposeTransfer}
           showFlag={false}
-          onCreate={isSuccess => {
-            if (isSuccess) {
-              refreshData();
-              toggleCreateProposal();
-            }
-          }}
           onClose={toggleCreateProposal}
         />
         <PolicyAffectedWarning
