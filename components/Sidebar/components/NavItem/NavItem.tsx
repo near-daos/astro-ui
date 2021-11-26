@@ -60,7 +60,7 @@ export const NavItem: FC<NavItemProps> = ({
 
     const content = (
       <>
-        <Icon height={16} name={icon} className={styles.icon} />
+        <Icon height={24} name={icon} className={styles.icon} />
         <span className={styles.label}> {label} </span>
         {Number.isFinite(count) && (
           <Badge className={styles.badge} variant="primary" size="small">

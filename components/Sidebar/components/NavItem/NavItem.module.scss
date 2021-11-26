@@ -2,11 +2,11 @@
 @import '../../../../styles/typography';
 
 .nav {
+  @extend %caption1;
   align-items: center;
   color: var(--color-white-opacity-5);
   cursor: pointer;
   display: inline-flex;
-  font-weight: 700;
   gap: 9px;
   line-height: 24px;
   width: 100%;
@@ -19,9 +19,17 @@
     color: var(--color-white);
   }
 
+  &:hover .icon {
+    filter: brightness(120%);
+  }
+
   &:focus {
     outline: none;
   }
+}
+
+.icon {
+  color: var(--color-success);
 }
 
 .active {

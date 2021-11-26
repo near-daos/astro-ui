@@ -1,8 +1,6 @@
 @import 'styles/mixins';
 @import 'styles/typography';
 
-// TODO cleanup from extra media styles as footer is being used in sidebar and popup only
-
 .root {
   align-items: flex-end;
   background-color: var(--color-brand-black);
@@ -10,7 +8,7 @@
   display: flex;
   grid-area: footer;
   height: 100%;
-  padding-bottom: 40px;
+  padding-bottom: 60px;
   width: 100%;
 }
 
@@ -25,7 +23,7 @@
   align-items: center;
   display: flex;
   grid-area: social;
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 
   > a {
     margin-right: 24px;
@@ -40,7 +38,6 @@
 
 .report {
   grid-area: report;
-  margin-top: 8px;
 }
 
 .progress {
@@ -55,18 +52,17 @@
 
 .repo {
   grid-area: repo;
+  margin-top: 12px;
 }
 
 .version {
   grid-area: version;
-  margin-top: 8px;
 }
 
 .devLink {
   @include font(12px, 18px, 500);
   color: var(--color-white);
   display: block;
-  margin-top: 16px;
 
   &:hover {
     color: var(--color-success);
@@ -100,15 +96,19 @@
 }
 
 .copyright {
-  @include font(0.75em, 18px, 400);
+  @extend %caption3;
   color: var(--color-neutral-60);
   grid-area: copyright;
-  margin-top: 16px;
+  margin: 24px 0 16px;
   white-space: break-spaces;
 }
 
+.terms {
+  grid-area: terms;
+}
+
 .powered {
-  @extend %caption1;
+  @extend %caption3;
   align-items: center;
   display: flex;
   grid-area: powered;
@@ -116,7 +116,7 @@
 
   span {
     flex-shrink: 0;
-    margin-right: 12px;
+    margin-right: 6px;
     white-space: nowrap;
   }
 }
@@ -141,6 +141,7 @@
       'version'
       'repo'
       'copyright'
+      'terms'
       'links'
       'powered';
 
@@ -229,7 +230,7 @@
 .side {
   bottom: 0;
   left: 0;
-  padding: 16px 24px;
+  padding: 16px 32px;
   width: 100%;
 
   .wrapper {
@@ -239,6 +240,7 @@
       'version'
       'repo'
       'copyright'
+      'terms'
       'links'
       'powered';
   }
@@ -251,6 +253,7 @@
 
 .mobile {
   color: var(--color-brand-black);
+  padding-bottom: 0;
 
   .devLink,
   .copyright {
