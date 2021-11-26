@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
 
-import { composeProperLinkUrl } from 'helpers/composeProperLinkUrl';
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
@@ -59,13 +58,7 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
                 .filter(link => link)
                 .map(link => (
                   <li className={styles.link} key={link}>
-                    <a
-                      href={composeProperLinkUrl(link)}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <ExternalLink to={link} icon={getSocialLinkIcon(link)} />
-                    </a>
+                    <ExternalLink to={link} icon={getSocialLinkIcon(link)} />
                   </li>
                 ))}
             </ul>

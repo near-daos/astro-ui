@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useMedia } from 'react-use';
+import { useMedia, useMountedState } from 'react-use';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ActionButton } from 'features/proposal/components/action-button';
 import { ProposalType, ProposalVariant } from 'types/proposal';
@@ -26,10 +26,13 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
   proposalId,
 }) => {
   const [location, setLocation] = useState<Location | null>(null);
+  const isMounted = useMountedState();
 
   useEffect(() => {
-    setLocation(document.location);
-  }, []);
+    if (isMounted()) {
+      setLocation(document.location);
+    }
+  }, [isMounted]);
 
   const isLargeDesktop = useMedia('(min-width: 1280px)');
 
