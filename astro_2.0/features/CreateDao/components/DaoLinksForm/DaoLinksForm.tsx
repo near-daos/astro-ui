@@ -54,7 +54,7 @@ export const DaoLinksForm: VFC = () => {
           <Icon
             className={styles.socialIcon}
             name="socialPlaceholder"
-            width={24}
+            width={32}
           />
           <span className={styles.socialText}>https://</span>
           <Icon className={styles.addBtn} name="buttonAdd" width={24} />

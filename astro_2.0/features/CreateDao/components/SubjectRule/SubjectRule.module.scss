@@ -34,7 +34,11 @@
     flex-wrap: nowrap;
   }
 
-  > div:not(:last-of-type) {
+  > .optionCard {
+    margin-bottom: 16px;
+  }
+
+  > .optionCard:not(:last-of-type) {
     margin-right: 16px;
   }
 }
