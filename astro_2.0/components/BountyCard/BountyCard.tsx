@@ -8,6 +8,7 @@ import {
   BountyStatus,
 } from 'astro_2.0/components/BountyCard/types';
 import { BountyActionsBar } from 'astro_2.0/components/BountyCard/components/BountyActionsBar';
+import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import styles from './BountyCard.module.scss';
 
 export interface BountyCardProps {
@@ -68,17 +69,23 @@ export const BountyCard: React.FC<BountyCardProps> = ({
           className={styles.description}
         />
         <div className={styles.content}>
-          <InfoBlockWidget
-            label="Amount"
-            value={
-              <TokenWidget
-                icon={token?.icon}
-                symbol={token?.symbol}
-                amount={amount}
-                decimals={24}
-              />
-            }
-          />
+          {token ? (
+            <InfoBlockWidget
+              label="Amount"
+              value={
+                <TokenWidget
+                  icon={token.icon}
+                  symbol={token.symbol}
+                  amount={amount}
+                  decimals={token.decimals}
+                />
+              }
+            />
+          ) : (
+            <div className={styles.loaderWrapper}>
+              <LoadingIndicator />
+            </div>
+          )}
           {status === BountyStatus.InProgress ||
           status === BountyStatus.Expired ? (
             <InfoBlockWidget label="Claimed by" value={content.accountId} />
