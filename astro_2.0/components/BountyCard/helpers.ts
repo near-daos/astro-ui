@@ -47,8 +47,6 @@ export const mapBountyToCardContent = (
   const tokenData =
     bounty.tokenId === '' ? tokens.NEAR : tokens[bounty.tokenId];
 
-  // console.log(Object.keys(tokens), bounty.tokenId);
-
   const commonProps = {
     id: bounty.id,
     daoId: dao.id,

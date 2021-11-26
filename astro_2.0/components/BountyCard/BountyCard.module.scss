@@ -78,3 +78,9 @@
   grid-area: content;
   justify-content: space-between;
 }
+
+.loaderWrapper {
+  align-items: flex-end;
+  display: flex;
+  padding: 8px;
+}
