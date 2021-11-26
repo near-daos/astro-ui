@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { ProposalAction } from 'types/role';
 import { ProposalType, ProposalVotingPermissions } from 'types/proposal';
 import { DAO } from 'types/dao';
+import { useMountedState } from 'react-use';
 
 const APP_TO_CONTRACT_PROPOSAL_TYPE = {
   [ProposalType.ChangeConfig]: 'config',
@@ -29,6 +30,7 @@ export function useGetVotePermissions(
     canReject: false,
     canDelete: false,
   });
+  const isMounted = useMountedState();
 
   useEffect(() => {
     function checkPermissions(
@@ -74,9 +76,11 @@ export function useGetVotePermissions(
         }
       );
 
-      setPermissions(perms);
+      if (isMounted()) {
+        setPermissions(perms);
+      }
     }
-  }, [dao, accountId, proposalType]);
+  }, [dao, accountId, proposalType, isMounted]);
 
   return permissions;
 }

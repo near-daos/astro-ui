@@ -1,7 +1,9 @@
-import React, { FC, useState } from 'react';
-import Link from 'next/link';
+import React, { FC, useCallback, useState } from 'react';
 import { Popup } from 'components/popup/Popup';
 import cn from 'classnames';
+import { Button } from 'components/button/Button';
+import { useRouter } from 'next/router';
+
 import styles from './DaoInfoCard.module.scss';
 
 interface DaoMembersProps {
@@ -23,10 +25,15 @@ export const DaoInfoCard: FC<DaoMembersProps> = ({
   members,
   tooltip,
 }) => {
+  const router = useRouter();
   const [ref, setRef] = useState<HTMLElement | null>(null);
 
   const boldText = infoType === 'members' ? members : daoFunds;
   const lightText = infoType === 'members' ? `/${groups}` : ' USD';
+
+  const handleClick = useCallback(() => {
+    router.push(url);
+  }, [router, url]);
 
   return (
     <div
@@ -35,15 +42,13 @@ export const DaoInfoCard: FC<DaoMembersProps> = ({
       })}
       ref={setRef}
     >
-      <Link href={url}>
-        <a>
-          <div className={styles.label}>{title}</div>
-          <div className={styles.value}>
-            <span className={styles.bold}>{boldText}</span>
-            {lightText}
-          </div>
-        </a>
-      </Link>
+      <Button variant="transparent" onClick={handleClick}>
+        <div className={styles.label}>{title}</div>
+        <div className={styles.value}>
+          <span className={styles.bold}>{boldText}</span>
+          {lightText}
+        </div>
+      </Button>
       <Popup anchor={ref} offset={[0, -10]} placement="top">
         {tooltip}
       </Popup>
