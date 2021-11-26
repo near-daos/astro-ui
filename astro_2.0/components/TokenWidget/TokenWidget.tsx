@@ -2,6 +2,7 @@ import React from 'react';
 import { Icon } from 'components/Icon';
 import styles from 'astro_2.0/components/TokenWidget/TokenWidget.module.scss';
 import { formatYoktoValue } from 'helpers/format';
+import { useIsValidImage } from 'hooks/useIsValidImage';
 
 interface TokenWidgetProps {
   amount: string;
@@ -16,19 +17,35 @@ export const TokenWidget: React.FC<TokenWidgetProps> = ({
   symbol,
   decimals,
 }) => {
-  return (
-    <div className={styles.root}>
-      <div className={styles.amount}>{formatYoktoValue(amount, decimals)}</div>
-      {symbol === 'NEAR' ? (
+  const isValid = useIsValidImage(icon);
+
+  function renderIcon() {
+    if (symbol === 'NEAR') {
+      return (
         <div className={styles.icon}>
           <Icon name="iconNear" width={24} />
         </div>
-      ) : (
+      );
+    }
+
+    if (isValid) {
+      return (
         <div
-          style={{ backgroundImage: `url(${icon})` }}
+          style={{
+            backgroundImage: `url(${icon})`,
+          }}
           className={styles.icon}
         />
-      )}
+      );
+    }
+
+    return <div className={styles.icon} />;
+  }
+
+  return (
+    <div className={styles.root}>
+      <div className={styles.amount}>{formatYoktoValue(amount, decimals)}</div>
+      {renderIcon()}
       <div className={styles.symbol}>{symbol}</div>
     </div>
   );
