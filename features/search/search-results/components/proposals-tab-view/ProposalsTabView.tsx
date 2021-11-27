@@ -95,17 +95,7 @@ export const ProposalsTabView: React.FC = () => {
             },
             {
               value: statusFilterOptions[3].value,
-              label: 'Inactive',
-              className: styles.statusFilterRadioRootError,
-            },
-            {
-              value: statusFilterOptions[4].value,
-              label: 'Rejected',
-              className: styles.statusFilterRadioRootError,
-            },
-            {
-              value: statusFilterOptions[5].value,
-              label: 'Dismissed',
+              label: 'Failed',
               className: styles.statusFilterRadioRootError,
             },
           ]}
