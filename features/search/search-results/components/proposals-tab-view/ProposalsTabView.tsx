@@ -99,8 +99,6 @@ export const ProposalsTabView: React.FC = () => {
               className: styles.statusFilterRadioRootError,
             },
           ]}
-          className={styles.statusFilterRoot}
-          feedFilterHeaderClassName={styles.statusFilterHeader}
         />
       </div>
 
