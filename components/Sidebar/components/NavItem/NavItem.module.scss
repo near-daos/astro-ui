@@ -1,5 +1,5 @@
-@use '../../../../styles/breakpoints';
-@import '../../../../styles/typography';
+@use 'styles/breakpoints';
+@import 'styles/typography';
 
 .nav {
   @extend %caption1;
@@ -52,4 +52,8 @@
 
 .badge {
   margin-left: auto;
+}
+
+.loaderDot {
+  background-color: var(--color-success);
 }
