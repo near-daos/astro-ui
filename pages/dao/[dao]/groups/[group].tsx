@@ -5,7 +5,7 @@ import MemberCard, {
   GroupsRenderer,
   MemberCardPopup,
 } from 'components/cards/member-card';
-import { Dropdown } from 'components/dropdown/Dropdown';
+import { Dropdown } from 'components/Dropdown';
 import { useModal } from 'components/modal';
 
 import { useRouter } from 'next/router';

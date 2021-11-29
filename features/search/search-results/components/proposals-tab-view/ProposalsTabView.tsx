@@ -4,7 +4,7 @@ import { useUpdateEffect } from 'react-use';
 
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useFilteredProposalsData } from 'features/search/search-results/components/proposals-tab-view/helpers';
-import { statusFilterOptions } from 'features/search/search-filters/helpers';
+import { statusFilterOptions } from 'features/search/search-results/components/proposals-tab-view/constants';
 import { NoResultsView } from 'features/no-results-view';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';

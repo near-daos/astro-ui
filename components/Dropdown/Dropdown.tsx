@@ -1,11 +1,11 @@
-import classNames from 'classnames';
+import cn from 'classnames';
 import { useSelect } from 'downshift';
 import React, { PropsWithChildren, useEffect } from 'react';
 
 import { IconButton } from 'components/button/IconButton';
 import { Title } from 'components/Typography';
 
-import styles from './dropdown.module.scss';
+import styles from './Dropdown.module.scss';
 
 export interface Option<T> {
   value: T;
@@ -40,10 +40,9 @@ export const Dropdown = <T,>(
     getMenuProps,
     selectedItem,
     selectItem,
-    highlightedIndex,
     getItemProps,
   } = useSelect({
-    id: 'dropdown',
+    id: 'Dropdown',
     items: options,
     itemToString: item => (item != null ? item.label : ''),
     selectedItem: value
@@ -61,7 +60,7 @@ export const Dropdown = <T,>(
       : undefined,
   });
 
-  const className = classNames(styles.dropdown, classNameProp);
+  const className = cn(styles.dropdown, classNameProp);
 
   /* Making sure that default value would cause onChange call */
   useEffect(() => {
@@ -76,36 +75,46 @@ export const Dropdown = <T,>(
     }
   }, [selectedItem, options, value, selectItem, defaultValue]);
 
+  function renderList() {
+    if (isOpen) {
+      const itemEls = options.map((item, index) => {
+        const { value: iValue, label, disabled } = item;
+
+        const itemProps = getItemProps({ item, index, disabled });
+
+        const itemClassName = cn(styles.item, {
+          [styles.selected]: selectedItem?.value === iValue,
+        });
+
+        return (
+          <li key={iValue} className={itemClassName} {...itemProps}>
+            {label}
+          </li>
+        );
+      });
+
+      return (
+        <ul className={styles.menu} {...getMenuProps()}>
+          {itemEls}
+        </ul>
+      );
+    }
+
+    return null;
+  }
+
   return (
     <div className={className}>
       <Title size={3} {...getToggleButtonProps()} className={styles.control}>
         {selectedItem?.label || placeholder}
         <IconButton
           icon="buttonArrowDown"
-          className={classNames(styles.controlIcon, {
+          className={cn(styles.controlIcon, {
             [styles.open]: isOpen,
           })}
         />
       </Title>
-      <ul className={styles.menu} {...getMenuProps()}>
-        {isOpen &&
-          options.map((item, index) => (
-            <li
-              key={item.value}
-              className={classNames(
-                styles.item,
-                highlightedIndex === index ? styles.active : undefined
-              )}
-              {...getItemProps({
-                disabled: item.disabled,
-                item,
-                index,
-              })}
-            >
-              {item.label}
-            </li>
-          ))}
-      </ul>
+      {renderList()}
     </div>
   );
 };
