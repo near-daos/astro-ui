@@ -7,10 +7,9 @@ import reduce from 'lodash/reduce';
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
 function normalizeTokens(tkns: Token[]): Tokens {
-  // TODO - remove fake near token when /tokens will be fixed on BE
-  const near = tkns.find(item => item.symbol === 'NEAR');
+  const hasNear = tkns.find(item => !item.tokenId);
 
-  const input = near
+  const input = hasNear
     ? tkns
     : [
         ...tkns,
