@@ -21,7 +21,6 @@
 .links {
   display: flex;
   flex-direction: column;
-  gap: 16px;
   max-width: 550px;
   width: 100%;
 }
@@ -29,6 +28,7 @@
 .link {
   align-items: center;
   display: inline-flex;
+  margin-bottom: 16px;
   width: 100%;
 
   input {

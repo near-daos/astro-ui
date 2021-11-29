@@ -145,6 +145,10 @@
 
 .textArea.textArea {
   margin-top: 2px;
+
+  &::-webkit-scrollbar {
+    display: none !important;
+  }
 }
 
 .dropdown {
