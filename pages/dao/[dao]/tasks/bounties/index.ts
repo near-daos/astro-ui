@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async (
   return {
     props: {
       daoContext,
-      bounties,
+      initialBounties: bounties,
     },
   };
 };

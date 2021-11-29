@@ -5,7 +5,7 @@ import { InfoValue } from 'astro_2.0/components/InfoBlockWidget/components/InfoV
 import { formatYoktoValue } from 'helpers/format';
 import { getDistanceFromNow } from 'astro_2.0/components/BountyCard/helpers';
 import { TooltipMessageSeverity } from 'astro_2.0/components/InfoBlockWidget/types';
-import { BountyStatus } from 'astro_2.0/components/BountyCard/types';
+import { BountyStatus } from 'types/bounties';
 import styles from './BountyActionsBar.module.scss';
 
 interface BountyActionsBarProps {
@@ -32,6 +32,7 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
   const tooltipSeverity = {
     [BountyStatus.Available]: TooltipMessageSeverity.Info,
     [BountyStatus.InProgress]: TooltipMessageSeverity.Positive,
+    [BountyStatus.InProgressByMe]: TooltipMessageSeverity.Positive,
     [BountyStatus.Expired]: TooltipMessageSeverity.Warning,
   };
 

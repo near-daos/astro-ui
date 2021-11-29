@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 
-import { ClaimedBy } from 'components/cards/bounty-card/types';
 import { Button } from 'components/button/Button';
 
 import styles from 'components/cards/bounty-card/bounty-card.module.scss';
@@ -12,6 +11,7 @@ import {
   minutesToHours,
 } from 'date-fns';
 import cn from 'classnames';
+import { ClaimedBy } from 'types/bounties';
 
 interface InProgressCellsProps {
   claimedBy: ClaimedBy[];

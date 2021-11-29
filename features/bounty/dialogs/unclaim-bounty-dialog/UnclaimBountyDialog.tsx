@@ -1,7 +1,6 @@
 import React, { FC, useCallback } from 'react';
 
 import { SputnikWalletError } from 'errors/SputnikWalletError';
-import { Bounty } from 'components/cards/bounty-card/types';
 import { Modal } from 'components/modal';
 import UnclaimBountyContent from 'features/bounty/dialogs/unclaim-bounty-dialog/components/UnclaimBountyContent';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
@@ -10,6 +9,7 @@ import { DAO } from 'types/dao';
 import { Token } from 'types/token';
 
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
+import { Bounty } from 'types/bounties';
 
 export interface UnclaimBountyDialogProps {
   isOpen: boolean;

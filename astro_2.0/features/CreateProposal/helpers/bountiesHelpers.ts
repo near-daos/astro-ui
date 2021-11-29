@@ -11,13 +11,12 @@ import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
-import { DeadlineUnit } from 'components/cards/bounty-card/types';
-
 // Helpers & Utils
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
 import { dataRoleToContractRole } from 'features/groups/helpers';
 
 import { YOKTO_NEAR } from 'services/sputnik/constants';
+import { DeadlineUnit } from 'types/bounties';
 
 export function getCompleteBountyProposal(
   daoId: string,

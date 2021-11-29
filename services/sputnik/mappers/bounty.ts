@@ -1,5 +1,4 @@
-import { BountyResponse } from 'types/bounties';
-import { Bounty } from 'components/cards/bounty-card/types';
+import { Bounty, BountyResponse } from 'types/bounties';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 export const mapBountyResponseToBounty = (response: BountyResponse): Bounty => {
@@ -14,6 +13,7 @@ export const mapBountyResponseToBounty = (response: BountyResponse): Bounty => {
       deadline: claim.deadline,
       accountId: claim.accountId,
       startTime: claim.startTime,
+      endTime: claim.endTime,
     })),
     deadlineThreshold: response.maxDeadline,
     slots: Number(response.times) - Number(response.numberOfClaims),

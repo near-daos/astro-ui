@@ -2,7 +2,8 @@ import React from 'react';
 
 import { Meta, Story } from '@storybook/react';
 import { BountyCard, BountyCardProps } from 'astro_2.0/components/BountyCard';
-import { BountyStatus } from 'astro_2.0/components/BountyCard/types';
+import { CardType } from 'astro_2.0/components/BountyCard/types';
+import { BountyStatus } from 'types/bounties';
 
 export default {
   title: 'astro_2.0/BountyCard',
@@ -39,6 +40,7 @@ Template.args = {
   content: {
     id: '',
     daoId: '',
+    type: CardType.Claim,
     status: BountyStatus.Expired,
     claimedByCurrentUser: false,
     timeToComplete: '',

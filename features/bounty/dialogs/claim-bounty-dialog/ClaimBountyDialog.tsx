@@ -1,6 +1,5 @@
 import React, { FC, useCallback } from 'react';
 
-import { Bounty } from 'components/cards/bounty-card/types';
 import { Modal } from 'components/modal';
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import { SputnikNearService } from 'services/sputnik';
@@ -9,6 +8,7 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { DAO } from 'types/dao';
 import { Token } from 'types/token';
 
+import { Bounty } from 'types/bounties';
 import ClaimBountyContent from './components/ClaimBountyContent';
 
 export interface ClaimBountyDialogProps {

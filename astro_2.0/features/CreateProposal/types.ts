@@ -1,4 +1,4 @@
-import { DeadlineUnit } from 'components/cards/bounty-card/types';
+import { DeadlineUnit } from 'types/bounties';
 
 type ExternalLink = {
   id: string;
