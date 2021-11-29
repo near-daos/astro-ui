@@ -1,12 +1,20 @@
+import React, {
+  FC,
+  useState,
+  ReactNode,
+  useCallback,
+  HTMLAttributes,
+} from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
 import { ParsedUrlQueryInput } from 'querystring';
-import React, { FC, HTMLAttributes, ReactNode } from 'react';
 
 import { Badge } from 'components/badge/Badge';
 import { Icon, IconName } from 'components/Icon';
+import { DotsLoader } from 'astro_2.0/components/DotsLoader';
 
 import { useIsHrefActive } from 'hooks/useIsHrefActive';
+import { useOnRouterChange } from 'hooks/useOnRouterChange';
 
 import styles from './NavItem.module.scss';
 
@@ -39,9 +47,25 @@ export const NavItem: FC<NavItemProps> = ({
   children,
 }) => {
   const isActive = useIsHrefActive(href, subHrefs);
+  const [showLoader, setShowLoader] = useState(false);
+
+  const onRouteChange = useCallback(() => {
+    setShowLoader(false);
+  }, []);
+
+  useOnRouterChange(onRouteChange);
 
   function handleOnClick() {
+    setShowLoader(true);
     onClick?.();
+  }
+
+  function renderIcon() {
+    return showLoader ? (
+      <DotsLoader dotClassName={styles.loaderDot} />
+    ) : (
+      <Icon height={24} name={icon} className={styles.icon} />
+    );
   }
 
   function renderContent() {
@@ -60,7 +84,7 @@ export const NavItem: FC<NavItemProps> = ({
 
     const content = (
       <>
-        <Icon height={24} name={icon} className={styles.icon} />
+        {renderIcon()}
         <span className={styles.label}> {label} </span>
         {Number.isFinite(count) && (
           <Badge className={styles.badge} variant="primary" size="small">
