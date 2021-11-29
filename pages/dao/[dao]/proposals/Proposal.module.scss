@@ -4,44 +4,20 @@
 .root {
   display: grid;
   grid-template-areas:
-    'breadcrumbs mobileActions'
-    'dao dao'
-    'proposalInfo proposalInfo'
-    'policy policy'
-    'filters filters'
-    'body body';
-  grid-template-columns: 1fr 24px;
+    'breadcrumbs'
+    'dao'
+    'proposalInfo'
+    'policy'
+    'filters'
+    'body';
+  grid-template-columns: 1fr;
   margin-top: 56px;
-
-  @include tablet-landscape {
-    grid-template-areas:
-      'breadcrumbs'
-      'dao'
-      'proposalInfo'
-      'policy'
-      'filters'
-      'body';
-    grid-template-columns: 1fr;
-  }
 }
 
 .breadcrumbs {
   align-items: center;
   grid-area: breadcrumbs;
   margin-bottom: 18px;
-}
-
-.mobileActions {
-  align-items: center;
-  display: flex;
-  grid-area: mobileActions;
-  height: 34px;
-  justify-content: center;
-  width: 24px;
-
-  @include tablet-landscape {
-    display: none;
-  }
 }
 
 .dao {
