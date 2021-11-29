@@ -61,11 +61,11 @@
     flex-direction: row;
   }
 
-  > div {
+  > .settingsCard {
     margin-bottom: 24px;
   }
 
-  > div:not(:last-of-type) {
+  > .settingsCard:not(:last-of-type) {
     margin-right: 24px;
   }
 }

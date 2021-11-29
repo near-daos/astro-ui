@@ -96,7 +96,8 @@
 
   @include astro-mobile {
     font-size: 14px;
-    > div {
+    > .addressId,
+    > .copyAddress {
       @include ellipse-text;
       max-width: 180px;
     }

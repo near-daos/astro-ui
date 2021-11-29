@@ -1,5 +1,5 @@
-import React from 'react';
-import classNames from 'classnames';
+import cn from 'classnames';
+import React, { MutableRefObject } from 'react';
 
 import { ProposalStatuses } from 'types/proposal';
 import { FeedFilter } from 'astro_2.0/components/Feed';
@@ -20,6 +20,7 @@ type ProposalStatusFilterProps = {
     className?: string;
   }[];
   value: string;
+  neighbourRef?: MutableRefObject<HTMLElement | null>;
 };
 
 export const ProposalStatusFilter: React.FC<ProposalStatusFilterProps> = ({
@@ -31,10 +32,12 @@ export const ProposalStatusFilter: React.FC<ProposalStatusFilterProps> = ({
   disabled,
   title,
   shortTitle,
+  neighbourRef,
 }) => {
   return (
     <FeedFilter
-      className={classNames(styles.root, className)}
+      neighbourRef={neighbourRef}
+      className={cn(styles.root, className)}
       headerClassName={feedFilterHeaderClassName}
       title={title || 'Filter by proposal status:'}
       shortTitle={shortTitle || 'Filter by status:'}
@@ -47,7 +50,7 @@ export const ProposalStatusFilter: React.FC<ProposalStatusFilterProps> = ({
           value={item.value}
           label={item.label}
           disabled={disabled}
-          className={classNames(item.className, {
+          className={cn(item.className, {
             [styles.all]: item.value === '',
             [styles.approved]: item.value === ProposalStatuses.Approved,
             [styles.failed]: item.value === ProposalStatuses.Failed,

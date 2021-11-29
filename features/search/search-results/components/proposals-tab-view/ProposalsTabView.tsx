@@ -4,7 +4,7 @@ import { useUpdateEffect } from 'react-use';
 
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useFilteredProposalsData } from 'features/search/search-results/components/proposals-tab-view/helpers';
-import { statusFilterOptions } from 'features/search/search-filters/helpers';
+import { statusFilterOptions } from 'features/search/search-results/components/proposals-tab-view/constants';
 import { NoResultsView } from 'features/no-results-view';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
@@ -95,22 +95,10 @@ export const ProposalsTabView: React.FC = () => {
             },
             {
               value: statusFilterOptions[3].value,
-              label: 'Inactive',
-              className: styles.statusFilterRadioRootError,
-            },
-            {
-              value: statusFilterOptions[4].value,
-              label: 'Rejected',
-              className: styles.statusFilterRadioRootError,
-            },
-            {
-              value: statusFilterOptions[5].value,
-              label: 'Dismissed',
+              label: 'Failed',
               className: styles.statusFilterRadioRootError,
             },
           ]}
-          className={styles.statusFilterRoot}
-          feedFilterHeaderClassName={styles.statusFilterHeader}
         />
       </div>
 

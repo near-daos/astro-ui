@@ -70,6 +70,7 @@ export const SubjectRule: FC<SubjectRuleProps> = ({
                       return (
                         <DaoOptionCard
                           key={value}
+                          className={styles.optionCard}
                           title={optionTitle}
                           onSelect={onOptSelect}
                           description={description}

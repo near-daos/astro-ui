@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
-import React, { useCallback } from 'react';
+import React, { forwardRef, useCallback } from 'react';
 
 import {
   MY_DAOS_URL,
@@ -26,11 +26,9 @@ interface SidebarProps {
   closeSideBar?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({
-  className,
-  fullscreen,
-  closeSideBar,
-}) => {
+export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
+  const { className, fullscreen, closeSideBar } = props;
+
   const router = useRouter();
 
   const { accountId, login } = useAuthContext();
@@ -99,7 +97,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   }
 
   return (
-    <aside className={rootClassName}>
+    <aside className={rootClassName} ref={ref}>
       <div className={styles.wrapper}>
         <div className={styles.mobileHeader}>
           <Icon
@@ -135,7 +133,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <AppFooter />
     </aside>
   );
-};
+});
 
 Sidebar.defaultProps = {
   className: '',

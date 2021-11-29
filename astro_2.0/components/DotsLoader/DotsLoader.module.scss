@@ -1,0 +1,66 @@
+.root {
+  display: inline-block;
+  height: 20px;
+  position: relative;
+  width: 20px;
+}
+
+.p1,
+.p2,
+.p3,
+.p4 {
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+  background: var(--color-brand-purple);
+  border-radius: 50%;
+  height: 6px;
+  position: absolute;
+  top: 8px;
+  width: 6px;
+}
+
+.p1 {
+  animation: lds-ellipsis1 0.6s infinite;
+  left: 0;
+}
+
+.p2 {
+  animation: lds-ellipsis2 0.6s infinite;
+  left: 0;
+}
+
+.p3 {
+  animation: lds-ellipsis2 0.6s infinite;
+  left: 8px;
+}
+
+.p4 {
+  animation: lds-ellipsis3 0.6s infinite;
+  left: 16px;
+}
+
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(8px, 0);
+  }
+}

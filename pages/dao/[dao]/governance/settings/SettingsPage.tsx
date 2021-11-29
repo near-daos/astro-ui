@@ -113,6 +113,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
       >
         <div className={styles.settingsContainer}>
           <SettingsCard
+            className={styles.settingsCard}
             settingName="Proposals"
             settings={[
               {
@@ -133,6 +134,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
             ]}
           />
           <SettingsCard
+            className={styles.settingsCard}
             settingName="Bounties"
             settings={[
               {

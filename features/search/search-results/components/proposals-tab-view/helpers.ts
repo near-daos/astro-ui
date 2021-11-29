@@ -3,7 +3,6 @@ import { useCallback, useState } from 'react';
 
 import { Proposal } from 'types/proposal';
 
-import { FilterName } from 'features/search/search-filters';
 import { Indexed, ProposalByDao } from 'features/member-home/types';
 
 import {
@@ -13,6 +12,8 @@ import {
   isTreasuryProposal,
 } from 'utils/proposalFilters';
 
+import { FilterName } from './types';
+
 export interface FilteredData extends Indexed {
   lessThanHourProposals: ProposalByDao;
   lessThanDayProposals: ProposalByDao;
@@ -21,13 +22,7 @@ export interface FilteredData extends Indexed {
   otherProposals: ProposalByDao;
 }
 
-type ShowFilterOption =
-  | 'All'
-  | 'Active Proposals'
-  | 'Accepted Proposals'
-  | 'Inactive Proposals'
-  | 'Rejected / Expired Proposals'
-  | 'Spam / Dismissed Proposals';
+type ShowFilterOption = 'All' | 'Active' | 'Approved' | 'Failed';
 
 type SearchFilterOption = 'In this DAO' | 'In all DAOs';
 
@@ -84,36 +79,26 @@ export const useFilteredProposalsData = (
 
     // Filter 'show'
     switch (filter.show) {
-      case 'Accepted Proposals': {
+      case 'Approved': {
         if (item.status !== 'Approved') {
           matched = false;
         }
 
         break;
       }
-      case 'Active Proposals': {
+      case 'Active': {
         if (item.status !== 'InProgress') {
           matched = false;
         }
 
         break;
       }
-      case 'Inactive Proposals': {
-        if (item.status !== 'Removed') {
-          matched = false;
-        }
-
-        break;
-      }
-      case 'Rejected / Expired Proposals': {
-        if (item.status !== 'Rejected' && item.status !== 'Expired') {
-          matched = false;
-        }
-
-        break;
-      }
-      case 'Spam / Dismissed Proposals': {
-        if (item.status !== 'Moved') {
+      case 'Failed': {
+        if (
+          item.status !== 'Removed' &&
+          item.status !== 'Rejected' &&
+          item.status !== 'Expired'
+        ) {
           matched = false;
         }
 

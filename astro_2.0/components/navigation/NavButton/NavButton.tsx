@@ -1,17 +1,17 @@
 import cn from 'classnames';
-import { Router, useRouter } from 'next/router';
-import React, { useCallback, useEffect, useState, VFC } from 'react';
+import { useRouter } from 'next/router';
+import React, { useCallback, useState, VFC } from 'react';
 
 import { useAuthContext } from 'context/AuthContext';
 
+import { DotsLoader } from 'astro_2.0/components/DotsLoader';
 import { NavItemProps } from 'astro_2.0/components/navigation/types';
 
 import { useIsHrefActive } from 'hooks/useIsHrefActive';
+import { useOnRouterChange } from 'hooks/useOnRouterChange';
 
 import { Icon } from 'components/Icon';
 import { Popup } from 'components/popup/Popup';
-
-import { NavLoader } from './components/NavLoader';
 
 import styles from './NavButton.module.scss';
 
@@ -45,7 +45,6 @@ export const NavButton: VFC<NavButtonProps> = props => {
   const rootClassName = cn(styles.root, className, {
     [styles.active]: isActive,
     [styles.mobile]: mobile,
-    [styles.withLoader]: showLoader,
   });
 
   const onMouseOver = useCallback(() => {
@@ -56,15 +55,11 @@ export const NavButton: VFC<NavButtonProps> = props => {
     setIsHovered(false);
   }, []);
 
-  useEffect(() => {
-    function onRouteChange() {
-      setShowLoader(false);
-    }
-
-    Router.events.on('routeChangeComplete', onRouteChange);
-
-    return () => Router.events.off('routeChangeComplete', onRouteChange);
+  const onRouteChange = useCallback(() => {
+    setShowLoader(false);
   }, []);
+
+  useOnRouterChange(onRouteChange);
 
   function navigate() {
     if (authRequired && !accountId) {
@@ -80,7 +75,7 @@ export const NavButton: VFC<NavButtonProps> = props => {
 
   function renderNavIcon() {
     return showLoader ? (
-      <NavLoader />
+      <DotsLoader />
     ) : (
       <Icon
         height={16}

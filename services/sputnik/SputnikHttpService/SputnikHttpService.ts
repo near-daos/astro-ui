@@ -319,11 +319,22 @@ class SputnikHttpServiceClass {
     }
 
     if (query?.status === ProposalStatuses.Failed) {
-      // Fetch failed including InProgress items and then do additional filtering for Expired
       search.$and?.push({
-        status: {
-          $in: ['Rejected', 'Expired', 'Moved'],
-        },
+        $or: [
+          {
+            status: {
+              $in: ['Rejected', 'Expired', 'Moved', 'Removed'],
+            },
+          },
+          {
+            status: {
+              $ne: 'Approved',
+            },
+            votePeriodEnd: {
+              $lt: Date.now() * 1000000,
+            },
+          },
+        ],
       });
     }
 

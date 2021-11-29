@@ -1,5 +1,5 @@
-import React, { FC, useCallback } from 'react';
 import { useRouter } from 'next/router';
+import React, { FC, useCallback, useRef } from 'react';
 
 import { useAuthContext } from 'context/AuthContext';
 
@@ -26,7 +26,8 @@ import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { DaoContext } from 'types/context';
 import { NoResultsView } from 'features/no-results-view';
-import styles from './bounties.module.scss';
+
+import styles from './Bounties.module.scss';
 
 export interface BountiesPageProps {
   daoContext: DaoContext;
@@ -41,6 +42,8 @@ const BountiesPage: FC<BountiesPageProps> = ({
   },
   bounties,
 }) => {
+  const neighbourRef = useRef(null);
+
   const router = useRouter();
   const { query, updateQuery } = useQuery<{
     bountyStatus: BountyStatuses;
@@ -118,10 +121,14 @@ const BountiesPage: FC<BountiesPageProps> = ({
         <NoResultsView title="No bounties available" />
       ) : (
         <>
-          <HeaderWithFilter title={<h1 className={styles.header}>Bounties</h1>}>
+          <HeaderWithFilter
+            titleRef={neighbourRef}
+            title={<h1 className={styles.header}>Bounties</h1>}
+          >
             <FeedFilter
               title="Bounties"
               value={query.bountyStatus}
+              neighbourRef={neighbourRef}
               onChange={val => updateQuery('bountyStatus', val)}
             >
               <Radio value="" label="All" />
