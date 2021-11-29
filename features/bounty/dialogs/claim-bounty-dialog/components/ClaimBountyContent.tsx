@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 
-import { Bounty } from 'components/cards/bounty-card/types';
 import { BountyInfoCard } from 'components/cards/bounty-info-card';
 import styles from 'features/bounty/dialogs/bounty-dialogs.module.scss';
 import { Button } from 'components/button/Button';
 import { formatDeadlineDate, formatForgivenessDuration } from 'helpers/format';
 import { Token } from 'types/token';
+import { Bounty } from 'types/bounties';
 
 interface ClaimBountyContentProps {
   onClose: (...args: unknown[]) => void;

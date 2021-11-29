@@ -1,5 +1,5 @@
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import React, { FC, useCallback, useRef } from 'react';
 
 import { useAuthContext } from 'context/AuthContext';
 
@@ -12,14 +12,12 @@ import { FeedFilter } from 'astro_2.0/components/Feed';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 import { HeaderWithFilter } from 'astro_2.0/features/dao/HeaderWithFilter';
 
-import { Bounty } from 'components/cards/bounty-card/types';
 import { ProposalVariant } from 'types/proposal';
-import { BountyStatuses } from 'types/bounties';
 import {
   mapBountyToCardContent,
   showActionBar,
 } from 'astro_2.0/components/BountyCard/helpers';
-import { SputnikNearService } from 'services/sputnik';
+import { SputnikHttpService, SputnikNearService } from 'services/sputnik';
 
 import useQuery from 'hooks/useQuery';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
@@ -27,11 +25,12 @@ import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { DaoContext } from 'types/context';
 import { NoResultsView } from 'features/no-results-view';
 
+import { Bounty, BountyStatus } from 'types/bounties';
 import styles from './Bounties.module.scss';
 
 export interface BountiesPageProps {
   daoContext: DaoContext;
-  bounties: Bounty[];
+  initialBounties: Bounty[];
 }
 
 const BountiesPage: FC<BountiesPageProps> = ({
@@ -40,19 +39,27 @@ const BountiesPage: FC<BountiesPageProps> = ({
     userPermissions: { isCanCreateProposals },
     policyAffectsProposals,
   },
-  bounties,
+  initialBounties,
 }) => {
   const neighbourRef = useRef(null);
 
   const router = useRouter();
   const { query, updateQuery } = useQuery<{
-    bountyStatus: BountyStatuses;
+    bountyStatus: BountyStatus;
   }>();
   const { accountId } = useAuthContext();
   const daoId = router.query.dao as string;
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
   const { tokens } = useDaoCustomTokens();
+  const [bounties, setBounties] = useState<Bounty[]>(initialBounties);
+
+  useEffect(() => {
+    SputnikHttpService.getBountiesByDaoId(
+      daoId,
+      query.bountyStatus
+    ).then(data => setBounties(data));
+  }, [daoId, query.bountyStatus]);
 
   const handleCreateProposal = useCallback(
     (bountyId: string, proposalVariant: ProposalVariant) => () => {
@@ -116,56 +123,51 @@ const BountiesPage: FC<BountiesPageProps> = ({
           className={styles.warningWrapper}
         />
       </div>
+      <HeaderWithFilter
+        titleRef={neighbourRef}
+        title={<h1 className={styles.header}>Bounties</h1>}
+      >
+        <FeedFilter
+          neighbourRef={neighbourRef}
+          title="Bounties and Claims"
+          value={query.bountyStatus}
+          onChange={val => updateQuery('bountyStatus', val)}
+        >
+          <Radio value="" label="All" />
+          <Radio value={BountyStatus.Available} label="Available bounties" />
+          <Radio value={BountyStatus.InProgress} label="Claims in progress" />
+          <Radio value={BountyStatus.Expired} label="Expired Claims" />
+        </FeedFilter>
+      </HeaderWithFilter>
 
       {bounties.length === 0 ? (
         <NoResultsView title="No bounties available" />
       ) : (
-        <>
-          <HeaderWithFilter
-            titleRef={neighbourRef}
-            title={<h1 className={styles.header}>Bounties</h1>}
-          >
-            <FeedFilter
-              title="Bounties"
-              value={query.bountyStatus}
-              neighbourRef={neighbourRef}
-              onChange={val => updateQuery('bountyStatus', val)}
-            >
-              <Radio value="" label="All" />
-              <Radio value={BountyStatuses.Available} label="Available" />
-              <Radio value={BountyStatuses.Inprogress} label="In progress" />
-              <Radio value={BountyStatuses.Completed} label="Completed" />
-            </FeedFilter>
-          </HeaderWithFilter>
+        <div className={styles.grid}>
+          {bounties.flatMap(bounty => {
+            const content = mapBountyToCardContent(
+              dao,
+              bounty,
+              tokens,
+              accountId,
+              query.bountyStatus
+            );
 
-          <div className={styles.grid}>
-            {bounties.flatMap(bounty => {
-              const content = mapBountyToCardContent(
-                dao,
-                bounty,
-                tokens,
-                accountId
-              );
-
-              return content.map(cardContent => (
-                <BountyCard
-                  key={bounty.id}
-                  content={cardContent}
-                  claimHandler={handleClaim(
-                    bounty.id,
-                    bounty.deadlineThreshold
-                  )}
-                  showActionBar={showActionBar(cardContent, accountId)}
-                  unclaimHandler={handleUnclaim(bounty.id)}
-                  completeHandler={handleCreateProposal(
-                    bounty.id,
-                    ProposalVariant.ProposeDoneBounty
-                  )}
-                />
-              ));
-            })}
-          </div>
-        </>
+            return content.map(cardContent => (
+              <BountyCard
+                key={Math.floor(Math.random() * 10000)}
+                content={cardContent}
+                claimHandler={handleClaim(bounty.id, bounty.deadlineThreshold)}
+                showActionBar={showActionBar(cardContent, accountId)}
+                unclaimHandler={handleUnclaim(bounty.id)}
+                completeHandler={handleCreateProposal(
+                  bounty.id,
+                  ProposalVariant.ProposeDoneBounty
+                )}
+              />
+            ));
+          })}
+        </div>
       )}
     </div>
   );

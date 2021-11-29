@@ -3,12 +3,10 @@ import React from 'react';
 import { ProposalDescription } from 'astro_2.0/components/ProposalDescription';
 import { TokenWidget } from 'astro_2.0/components/TokenWidget';
 import cn from 'classnames';
-import {
-  BountyCardContent,
-  BountyStatus,
-} from 'astro_2.0/components/BountyCard/types';
+import { BountyCardContent } from 'astro_2.0/components/BountyCard/types';
 import { BountyActionsBar } from 'astro_2.0/components/BountyCard/components/BountyActionsBar';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
+import { BountyStatus } from 'types/bounties';
 import styles from './BountyCard.module.scss';
 
 export interface BountyCardProps {
@@ -35,6 +33,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
     token,
     amount,
     bountyBond,
+    type,
   } = content;
 
   return (
@@ -42,11 +41,15 @@ export const BountyCard: React.FC<BountyCardProps> = ({
       <div className={styles.bountyGrid}>
         <InfoBlockWidget
           label="Type"
-          value="Bounty"
+          value={type}
           valueFontSize="L"
           className={styles.proposalType}
         />
-        <div className={styles.completeDate}>Complete: {timeToComplete}</div>
+        <div className={styles.completeDate}>
+          {status === BountyStatus.Available
+            ? `Complete in ${timeToComplete}`
+            : timeToComplete}
+        </div>
         <InfoBlockWidget
           label="Status"
           value={

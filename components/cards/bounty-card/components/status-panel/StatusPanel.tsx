@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import { Icon } from 'components/Icon';
-import { BountyType } from 'components/cards/bounty-card/types';
 import styles from 'components/cards/bounty-card/bounty-card.module.scss';
+import { BountyType } from 'types/bounties';
 
 interface StatusPanelProps {
   type: BountyType;

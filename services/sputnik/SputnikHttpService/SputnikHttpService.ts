@@ -1,4 +1,5 @@
 import {
+  QueryFilter,
   RequestQueryBuilder,
   SConditionAND,
   SFields,
@@ -16,8 +17,7 @@ import {
 import { DAO } from 'types/dao';
 import { Receipt } from 'types/transaction';
 import { SearchResultsData } from 'types/search';
-import { Bounty } from 'components/cards/bounty-card/types';
-import { BountiesResponse } from 'types/bounties';
+import { BountiesResponse, Bounty, BountyStatus } from 'types/bounties';
 import {
   BountyDoneProposalType,
   ProposalCategories,
@@ -766,24 +766,50 @@ class SputnikHttpServiceClass {
 
   public async getBountiesByDaoId(
     daoId: string,
-    params?: {
-      offset?: number;
-      limit?: number;
-      sort?: string;
-    }
+    bountyStatus?: BountyStatus
   ): Promise<Bounty[]> {
-    const offset = params?.offset ?? 0;
-    const limit = params?.limit ?? 50;
-    const sort = params?.sort ?? 'createdAt,DESC';
+    const buildFilter = (): QueryFilter[] => {
+      const filter: QueryFilter[] = [
+        { field: 'daoId', operator: '$eq', value: daoId },
+      ];
 
-    const { data } = await this.httpService.get<BountiesResponse>('/bounties', {
-      params: {
-        filter: `daoId||$eq||${daoId}`,
-        offset,
-        limit,
-        sort,
-      },
-    });
+      switch (bountyStatus) {
+        case BountyStatus.Available:
+          filter.push({ field: 'times', operator: '$ne', value: 0 });
+          break;
+        case BountyStatus.InProgress:
+          filter.push(
+            { field: 'numberOfClaims', operator: '$gt', value: 0 },
+            {
+              field: 'bountyClaims.endTime',
+              operator: '$gt',
+              value: Date.now() * 1000000,
+            }
+          );
+          break;
+        case BountyStatus.InProgressByMe:
+          break;
+        case BountyStatus.Expired:
+          filter.push({
+            field: 'bountyClaims.endTime',
+            operator: '$lt',
+            value: Date.now() * 1000000,
+          });
+          break;
+        default:
+          break;
+      }
+
+      return filter;
+    };
+
+    const queryString = RequestQueryBuilder.create()
+      .setFilter(buildFilter())
+      .query();
+
+    const { data } = await this.httpService.get<BountiesResponse>(
+      `/bounties?${queryString}`
+    );
 
     return data.data.map(mapBountyResponseToBounty);
   }

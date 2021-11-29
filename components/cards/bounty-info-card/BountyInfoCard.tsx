@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import TextTruncate from 'react-text-truncate';
-import { Bounty } from 'components/cards/bounty-card/types';
 import { Icon } from 'components/Icon';
 import cn from 'classnames';
 import styles from 'components/cards/bounty-card/bounty-card.module.scss';
 import { Token } from 'types/token';
 import { TokenWidget } from 'components/token';
+import { Bounty } from 'types/bounties';
 
 export interface BountyInfoCardProps {
   data: Bounty;

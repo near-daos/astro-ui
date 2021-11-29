@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 
-import { ClaimedBy } from 'components/cards/bounty-card/types';
-
 import styles from 'components/cards/bounty-card/bounty-card.module.scss';
+import { ClaimedBy } from 'types/bounties';
 
 interface CompletedCellsProps {
   claimedBy: ClaimedBy[];

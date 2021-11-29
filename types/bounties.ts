@@ -21,14 +21,39 @@ export interface BountyClaimResponse {
   startTime: string;
   deadline: string;
   completed: boolean;
+  endTime: string;
 }
 
 export interface BountiesResponse {
   data: BountyResponse[];
 }
 
-export enum BountyStatuses {
-  Available = 'available',
-  Inprogress = 'in-progress',
-  Completed = 'completed',
+export enum BountyStatus {
+  Available = 'Available',
+  InProgress = 'InProgress',
+  InProgressByMe = 'InProgressByMe',
+  Expired = 'Expired',
 }
+
+export type ClaimedBy = {
+  accountId: string;
+  deadline: string;
+  startTime: string;
+  endTime: string;
+};
+
+export type BountyType = 'Passed' | 'Expired';
+export type DeadlineUnit = 'day' | 'week' | 'month';
+
+export type Bounty = {
+  id: string;
+  tokenId: string;
+  amount: string;
+  description: string;
+  forgivenessPeriod: string;
+  externalUrl?: string;
+  slots: number;
+  claimedBy: ClaimedBy[];
+  deadlineThreshold: string;
+  completionDate?: string;
+};
