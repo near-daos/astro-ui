@@ -7,6 +7,7 @@ import {
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { formatYoktoValue } from 'helpers/format';
 
 import styles from './CustomFunctionCallContent.module.scss';
 
@@ -52,7 +53,13 @@ const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
       <div className={styles.deposit}>
         <div className={styles.row}>
           <FieldWrapper label="Deposit">
-            <FieldValue value={deposit} />
+            <FieldValue
+              value={
+                tokenData
+                  ? formatYoktoValue(deposit, tokenData.decimals)
+                  : deposit
+              }
+            />
           </FieldWrapper>
           {tokenData && (
             <FieldWrapper label="">
