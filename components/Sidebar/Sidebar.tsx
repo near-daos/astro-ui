@@ -20,6 +20,8 @@ import { NavItem } from './components/NavItem';
 
 import styles from './Sidebar.module.scss';
 
+const RELEASE_NOTES = process.env.NEXT_PUBLIC_RELEASE_NOTES;
+
 interface SidebarProps {
   className?: string;
   fullscreen?: boolean;
@@ -111,11 +113,11 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
         <div className={styles.subheader}>
           <a
             className={styles.devLink}
-            href="https://doc.clickup.com/p/h/4fh9y-341/f6e2cb99c0b9ce3"
+            href={RELEASE_NOTES}
             target="_blank"
             rel="noreferrer noopener"
           >
-            Build number: 22.0
+            Release notes
           </a>
         </div>
         <div className={styles.scrolling}>
