@@ -41,6 +41,16 @@
     background: rgba(232, 224, 255, 0.61);
     border-radius: 0;
   }
+
+  &::after {
+    background: var(--color-brand-black);
+    bottom: -4px;
+    content: '';
+    height: 6px;
+    left: 0;
+    position: absolute;
+    right: 0;
+  }
 }
 
 .wrapper {

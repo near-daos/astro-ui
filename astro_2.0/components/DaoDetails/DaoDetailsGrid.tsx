@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
 import TextTruncate from 'react-text-truncate';
+import { useRouter } from 'next/router';
 
 import { DAO } from 'types/dao';
 
@@ -27,6 +28,7 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
   totalProposals,
   nearPrice,
 }) => {
+  const router = useRouter();
   const {
     id,
     displayName,
@@ -93,46 +95,50 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
             </section>
 
             <section className={styles.controls}>
-              <Link href={`/dao/${id}/governance/settings`}>
-                <a>
-                  <ActionButton
-                    className={styles.controlIcon}
-                    iconName="settings"
-                    tooltip="DAO Settings"
-                    tooltipPlacement="top"
-                  />
-                </a>
-              </Link>
-              <Link href={`/dao/${id}/treasury/nfts`}>
-                <a>
-                  <ActionButton
-                    className={styles.controlIcon}
-                    iconName="nfts"
-                    tooltip="NFTs"
-                    tooltipPlacement="top"
-                  />
-                </a>
-              </Link>
-              <Link href={`/dao/${id}/tasks/bounties`}>
-                <a>
-                  <ActionButton
-                    className={styles.controlIcon}
-                    iconName="proposalBounty"
-                    tooltip="Bounties"
-                    tooltipPlacement="top"
-                  />
-                </a>
-              </Link>
-              <Link href={`/dao/${id}/tasks/polls`}>
-                <a>
-                  <ActionButton
-                    className={styles.controlIcon}
-                    iconName="proposalPoll"
-                    tooltip="Polls"
-                    tooltipPlacement="top"
-                  />
-                </a>
-              </Link>
+              <ActionButton
+                onClick={e => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  router.push(`/dao/${id}/governance/settings`);
+                }}
+                className={styles.controlIcon}
+                iconName="settings"
+                tooltip="DAO Settings"
+                tooltipPlacement="top"
+              />
+              <ActionButton
+                onClick={e => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  router.push(`/dao/${id}/treasury/nfts`);
+                }}
+                className={styles.controlIcon}
+                iconName="nfts"
+                tooltip="NFTs"
+                tooltipPlacement="top"
+              />
+              <ActionButton
+                onClick={e => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  router.push(`/dao/${id}/tasks/bounties`);
+                }}
+                className={styles.controlIcon}
+                iconName="proposalBounty"
+                tooltip="Bounties"
+                tooltipPlacement="top"
+              />
+              <ActionButton
+                onClick={e => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  router.push(`/dao/${id}/tasks/polls`);
+                }}
+                className={styles.controlIcon}
+                iconName="proposalPoll"
+                tooltip="Polls"
+                tooltipPlacement="top"
+              />
             </section>
 
             <section className={styles.proposals}>
