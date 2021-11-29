@@ -97,20 +97,6 @@
   }
 }
 
-.mobileHeader {
-  align-items: center;
-  color: #fff;
-  display: none;
-  justify-content: space-between;
-  padding: 24px;
-
-  .closeIcon {
-    cursor: pointer;
-    height: 16px;
-    width: 16px;
-  }
-}
-
 .mainLogo {
   display: inline;
   width: fit-content;
@@ -118,22 +104,4 @@
 
 .devLink {
   cursor: pointer;
-}
-
-.fullscreen {
-  bottom: 0;
-  left: 0;
-  position: fixed;
-  right: 0;
-  top: 0;
-  width: 100vw;
-  z-index: 10;
-
-  .mainLogo {
-    display: none;
-  }
-
-  .mobileHeader {
-    display: flex;
-  }
 }

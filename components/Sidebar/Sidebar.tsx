@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
 import React, { forwardRef, useCallback } from 'react';
 
@@ -14,7 +13,6 @@ import {
 import { useAuthContext } from 'context/AuthContext';
 
 import { Logo } from 'components/Logo';
-import { Icon } from 'components/Icon';
 import { AppFooter } from 'features/app-footer';
 import { NavItem } from './components/NavItem';
 
@@ -24,30 +22,14 @@ const RELEASE_NOTES = process.env.NEXT_PUBLIC_RELEASE_NOTES;
 
 interface SidebarProps {
   className?: string;
-  fullscreen?: boolean;
-  closeSideBar?: () => void;
 }
 
 export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
-  const { className, fullscreen, closeSideBar } = props;
+  const { className } = props;
 
   const router = useRouter();
 
   const { accountId, login } = useAuthContext();
-
-  const rootClassName = cn(styles.sidebar, className, {
-    [styles.fullscreen]: fullscreen,
-  });
-
-  useMount(() => {
-    function close() {
-      closeSideBar?.();
-    }
-
-    router.events.on('routeChangeComplete', close);
-
-    return () => router.events.off('routeChangeComplete', close);
-  });
 
   const createDao = useCallback(
     () => (accountId ? router.push(CREATE_DAO_URL) : login()),
@@ -99,16 +81,8 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
   }
 
   return (
-    <aside className={rootClassName} ref={ref}>
+    <aside className={cn(styles.sidebar, className)} ref={ref}>
       <div className={styles.wrapper}>
-        <div className={styles.mobileHeader}>
-          <Icon
-            name="close"
-            className={styles.closeIcon}
-            onClick={closeSideBar}
-          />
-          <Icon name="appLogo" width={92} />
-        </div>
         <Logo className={styles.mainLogo} />
         <div className={styles.subheader}>
           <a
@@ -139,6 +113,4 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
 
 Sidebar.defaultProps = {
   className: '',
-  fullscreen: false,
-  closeSideBar: undefined,
 };
