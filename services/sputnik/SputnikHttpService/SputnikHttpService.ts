@@ -248,8 +248,8 @@ class SputnikHttpServiceClass {
       dao,
       userPermissions: {
         isCanCreateProposals:
-          isUserPermittedToCreateProposal(accountId, dao) ||
-          !!policyAffectsProposals.length,
+          isUserPermittedToCreateProposal(accountId, dao) &&
+          !policyAffectsProposals.length,
       },
       policyAffectsProposals,
     };
