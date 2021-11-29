@@ -1,3 +1,5 @@
+export const PAGE_LAYOUT_ID = 'PAGE_LAYOUT_ID';
+
 export const EXTERNAL_LINK_SEPARATOR = '$$$$';
 
 export const SHOW_NOTIFICATION_EVENT = 'SHOW_NOTIFICATION_EVENT';

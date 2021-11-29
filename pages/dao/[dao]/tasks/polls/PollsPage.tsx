@@ -69,11 +69,7 @@ const PollsPage: FC<PollsPageProps> = ({
         <NoResultsView title="No polls available" />
       ) : (
         <Feed
-          title={
-            <div className={styles.headerContainer}>
-              <h1 className={styles.header}>Polls</h1>
-            </div>
-          }
+          title={<h1 className={styles.header}>Polls</h1>}
           dao={dao}
           showFlag={false}
           daoTokens={tokens}

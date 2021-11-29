@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
 import { useAsyncFn } from 'react-use';
 import { useRouter } from 'next/router';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 
 // Types
 import { DAO } from 'types/dao';
@@ -57,6 +57,7 @@ export const Feed = ({
   headerClassName,
   initialProposals,
 }: FeedProps): JSX.Element => {
+  const neighbourRef = useRef(null);
   const { query, replace, pathname } = useRouter();
 
   const { tokens } = useAllCustomTokens();
@@ -160,10 +161,12 @@ export const Feed = ({
   return (
     <main className={cn(styles.root, className)}>
       <HeaderWithFilter
-        className={cn(styles.statusFilterWrapper, headerClassName)}
         title={renderTitle()}
+        titleRef={neighbourRef}
+        className={cn(styles.statusFilterWrapper, headerClassName)}
       >
         <ProposalStatusFilter
+          neighbourRef={neighbourRef}
           value={queries.status || 'All'}
           onChange={onProposalFilterChange}
           disabled={proposalsDataIsLoading}

@@ -45,8 +45,8 @@
   margin-left: 15px;
 }
 
-@include mobile-only {
-  .root {
+.collapsed {
+  &.root {
     align-items: stretch;
     padding: 0;
     position: relative;

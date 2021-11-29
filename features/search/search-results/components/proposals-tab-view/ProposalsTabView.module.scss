@@ -7,11 +7,6 @@
   flex-direction: column;
   padding-top: 44px;
 
-  .statusFilterRoot {
-    margin-left: auto;
-    max-width: 815px;
-  }
-
   .statusFilterRadioRootSuccess {
     --color-checkmark-active: var(--color-success-50);
   }
@@ -115,37 +110,7 @@
   text-transform: capitalize;
 }
 
-@media screen and (max-width: #{breakpoints.$screen-md}px) {
-  .statusFilterRoot {
-    margin: 0;
-    position: initial;
-    top: initial;
-  }
-}
-
-@media screen and (max-width: #{breakpoints.$screen-md}px) {
-  .statusFilterWrapper {
-    top: 62px;
-  }
-
-  .statusFilterRoot {
-    flex-direction: column;
-    height: initial;
-    min-height: 68px;
-    padding: 0 15px;
-  }
-
-  .statusFilterHeader {
-    margin-bottom: 7px;
-    margin-right: 77%;
-  }
-}
-
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .statusFilterRoot {
-    padding: 0 2px;
-  }
-
   .daoDivider {
     gap: 12px;
     margin: 12px 0;
@@ -167,15 +132,6 @@
 @media screen and (max-width: #{breakpoints.$screen-xs}px) {
   .root {
     padding-top: 20px;
-  }
-
-  .statusFilterRoot {
-    height: 40px;
-    min-height: 40px;
-  }
-
-  .statusFilterHeader {
-    margin: 0;
   }
 }
 
