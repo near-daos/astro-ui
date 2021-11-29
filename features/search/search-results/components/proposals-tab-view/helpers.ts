@@ -3,7 +3,6 @@ import { useCallback, useState } from 'react';
 
 import { Proposal } from 'types/proposal';
 
-import { FilterName } from 'features/search/search-filters';
 import { Indexed, ProposalByDao } from 'features/member-home/types';
 
 import {
@@ -12,6 +11,8 @@ import {
   isTaskProposal,
   isTreasuryProposal,
 } from 'utils/proposalFilters';
+
+import { FilterName } from './types';
 
 export interface FilteredData extends Indexed {
   lessThanHourProposals: ProposalByDao;

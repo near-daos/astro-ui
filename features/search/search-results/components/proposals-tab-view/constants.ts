@@ -1,7 +1,4 @@
-export type Option = {
-  label: string;
-  value: string;
-};
+import { Option } from './types';
 
 export const allStatusFilterOption: Option = {
   label: 'All',

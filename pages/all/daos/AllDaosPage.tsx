@@ -7,7 +7,7 @@ import { ProposalVariant } from 'types/proposal';
 
 import { Button } from 'components/button/Button';
 import { CREATE_DAO_URL } from 'constants/routing';
-import { Dropdown } from 'components/dropdown/Dropdown';
+import { Dropdown } from 'components/Dropdown';
 import { getDaosList } from 'features/daos/helpers';
 import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 
