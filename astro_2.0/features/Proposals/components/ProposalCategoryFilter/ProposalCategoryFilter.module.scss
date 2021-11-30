@@ -15,6 +15,7 @@
 
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
     @include wide-background;
+    box-shadow: 0 7px 10px var(--color-black-opacity-1);
     display: flex;
     justify-content: flex-end;
     margin: 0;
