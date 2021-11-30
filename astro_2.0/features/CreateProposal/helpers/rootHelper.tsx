@@ -3,6 +3,7 @@
 import * as yup from 'yup';
 import get from 'lodash/get';
 import last from 'lodash/last';
+import uniq from 'lodash/uniq';
 import { nanoid } from 'nanoid';
 import Decimal from 'decimal.js';
 import dynamic from 'next/dynamic';
@@ -349,11 +350,13 @@ export function getFormContentNode(
     case ProposalVariant.ProposeAddMember: {
       const members = dao ? extractMembersFromDao(dao, []) : [];
 
-      const availableGroups = members.reduce<string[]>((res, item) => {
+      let availableGroups = members.reduce<string[]>((res, item) => {
         res.push(...item.groups);
 
         return res;
       }, []);
+
+      availableGroups = uniq(availableGroups);
 
       return <AddMemberToGroupContent groups={availableGroups} />;
     }
