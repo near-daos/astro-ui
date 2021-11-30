@@ -13,12 +13,11 @@ import {
 import { useAuthContext } from 'context/AuthContext';
 
 import { Logo } from 'components/Logo';
+import { Icon } from 'components/Icon';
 import { AppFooter } from 'features/app-footer';
 import { NavItem } from './components/NavItem';
 
 import styles from './Sidebar.module.scss';
-
-const RELEASE_NOTES = process.env.NEXT_PUBLIC_RELEASE_NOTES;
 
 interface SidebarProps {
   className?: string;
@@ -85,14 +84,10 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
       <div className={styles.wrapper}>
         <Logo className={styles.mainLogo} />
         <div className={styles.subheader}>
-          <a
-            className={styles.devLink}
-            href={RELEASE_NOTES}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            Release notes
-          </a>
+          <span>powered by</span>
+          <i>
+            <Icon name="logoNearFull" width={44} className={styles.logo} />
+          </i>
         </div>
         <div className={styles.scrolling}>
           {renderHomeNavItem()}
