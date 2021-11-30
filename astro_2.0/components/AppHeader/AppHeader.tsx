@@ -57,7 +57,7 @@ export const AppHeader: FC = () => {
         <SearchBar
           withSideBar
           placeholder="Search"
-          prentElRef={centralEl}
+          parentElRef={centralEl}
           className={styles.search}
         />
         <div className={styles.nav}>

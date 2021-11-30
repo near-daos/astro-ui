@@ -2,7 +2,6 @@ import React, {
   FC,
   useRef,
   useState,
-  useEffect,
   useCallback,
   MutableRefObject,
   KeyboardEventHandler,
@@ -16,10 +15,11 @@ import { useClickAway, useDebounce, useMount } from 'react-use';
 
 import { SEARCH_PAGE_URL } from 'constants/routing';
 
+import { useWindowResize } from 'hooks/useWindowResize';
 import { useSearchResults } from 'features/search/search-results';
-import { DropdownResults } from 'astro_2.0/components/AppHeader/components/SearchBar/components/DropdownResults';
 
 import { IconButton } from 'components/button/IconButton';
+import { DropdownResults } from 'astro_2.0/components/AppHeader/components/SearchBar/components/DropdownResults';
 
 import styles from './SearchBar.module.scss';
 
@@ -27,23 +27,28 @@ export interface SearchBarProps {
   withSideBar: boolean;
   className?: string;
   placeholder?: string;
-  prentElRef: MutableRefObject<HTMLElement | null>;
+  parentElRef: MutableRefObject<HTMLElement | null>;
 }
 
 export const SearchBar: FC<SearchBarProps> = ({
   className,
-  prentElRef,
+  parentElRef,
   placeholder,
   withSideBar,
 }) => {
   const POPUP_LEFT_MARGIN = 20;
   const POPUP_RIGHT_MARGIN = 20;
 
+  const [focused, setFocused] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
   const [mounted, setMounted] = useState(false);
   const [searchWidth, setSearchWidth] = useState<number | string>(40);
 
   const router = useRouter();
+
   const ref = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   function isDesktopResolution() {
     try {
@@ -57,31 +62,36 @@ export const SearchBar: FC<SearchBarProps> = ({
     setMounted(true);
   });
 
-  useEffect(() => {
-    function calculateWidth() {
-      if (withSideBar) {
-        setSearchWidth(isDesktopResolution() ? 420 : '');
+  const calculateWidth = useCallback(() => {
+    if (withSideBar) {
+      setSearchWidth(isDesktopResolution() ? 420 : '');
+    } else {
+      const NEIGHBOURS_WIDTH_AND_PADDINGS = 500;
+      const parentEl = parentElRef.current;
+
+      if (parentEl && isDesktopResolution()) {
+        const width = parentEl.offsetWidth;
+        const possibleWidth = width - NEIGHBOURS_WIDTH_AND_PADDINGS;
+
+        setSearchWidth(possibleWidth);
       } else {
-        const NEIGHBOURS_WIDTH_AND_PADDINGS = 500;
-        const parentEl = prentElRef.current;
-
-        if (parentEl && isDesktopResolution()) {
-          const width = parentEl.offsetWidth;
-          const possibleWidth = width - NEIGHBOURS_WIDTH_AND_PADDINGS;
-
-          setSearchWidth(possibleWidth);
-        } else {
-          setSearchWidth('');
-        }
+        setSearchWidth('');
       }
     }
+  }, [withSideBar, parentElRef]);
 
+  const calculateExpanded = useCallback(() => {
+    if (isDesktopResolution() && !expanded) {
+      setExpanded(true);
+    }
+  }, [expanded]);
+
+  const onWindowResize = useCallback(() => {
     calculateWidth();
+    calculateExpanded();
+  }, [calculateWidth, calculateExpanded]);
 
-    window.addEventListener('resize', calculateWidth);
-
-    return () => window.removeEventListener('resize', calculateWidth);
-  }, [withSideBar, prentElRef]);
+  useWindowResize(onWindowResize);
 
   const isSearchPage = router.pathname.includes(SEARCH_PAGE_URL);
 
@@ -117,26 +127,10 @@ export const SearchBar: FC<SearchBarProps> = ({
   } = useSearchResults();
 
   const [value, setValue] = useState(searchResults?.query || '');
-  const [expanded, setExpanded] = useState(false);
-  const [focused, setFocused] = useState(false);
 
   useMount(() => {
     setExpanded(isDesktopResolution() || !!searchResults?.query);
   });
-
-  useEffect(() => {
-    function onResize() {
-      if (isDesktopResolution() && !expanded) {
-        setExpanded(true);
-      }
-    }
-
-    window.addEventListener('resize', onResize);
-
-    return () => window.removeEventListener('resize', onResize);
-  }, [expanded]);
-
-  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const onSearchStateToggle = useCallback(state => {
     if (!isDesktopResolution()) {
