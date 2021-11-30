@@ -323,9 +323,7 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
           const { kind } = proposal;
           const data = kind.actions[0];
 
-          const json = JSON.parse(
-            Buffer.from(data.args, 'base64').toString('ascii')
-          );
+          const json = Buffer.from(data.args, 'base64').toString('ascii');
 
           content = (
             <CustomFunctionCallContent
