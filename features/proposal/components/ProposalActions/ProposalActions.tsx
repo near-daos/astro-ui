@@ -4,7 +4,7 @@ import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ActionButton } from 'features/proposal/components/action-button';
 import { ProposalType, ProposalVariant } from 'types/proposal';
 
-import styles from './proposal-actions.module.scss';
+import styles from './ProposalActions.module.scss';
 
 interface ProposalActionsProps {
   onRemove: React.MouseEventHandler<HTMLButtonElement>;

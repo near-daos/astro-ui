@@ -17,14 +17,13 @@ import { NavLink } from 'astro_2.0/components/NavLink';
 import { getScope } from 'components/cards/expanded-proposal-card/helpers';
 import { getVoteDetails } from 'features/vote-policy/helpers';
 
-import { MobileProposalActions } from 'features/proposal/components/proposal-actions';
 import { VotersList } from 'features/proposal/components/voters-list';
 
 import { extractMembersFromDao } from 'services/sputnik/mappers';
 import { SputnikHttpService } from 'services/sputnik';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
-import styles from './proposal.module.scss';
+import styles from './Proposal.module.scss';
 
 interface ProposalPageProps {
   dao: DAO;
@@ -152,9 +151,6 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
         <NavLink>Proposals</NavLink>
       </BreadCrumbs>
-      <div className={styles.mobileActions}>
-        <MobileProposalActions proposal={proposal} />
-      </div>
       <div className={styles.dao}>
         <DaoDetailsMinimized dao={dao} />
       </div>
