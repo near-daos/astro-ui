@@ -12,6 +12,8 @@ export interface AppFooterProps {
   onClick?: () => void;
 }
 
+const RELEASE_NOTES = process.env.NEXT_PUBLIC_RELEASE_NOTES;
+
 export const AppFooter: FC<AppFooterProps> = ({
   mobile,
   className,
@@ -76,11 +78,15 @@ export const AppFooter: FC<AppFooterProps> = ({
               </a>
             </Link>
           </div>
-          <div className={styles.powered}>
-            <span>powered by</span>
-            <i>
-              <Icon name="logoNearFull" width={44} className={styles.logo} />
-            </i>
+          <div className={styles.release}>
+            <a
+              className={styles.devLink}
+              href={RELEASE_NOTES}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Release notes
+            </a>
           </div>
         </div>
       </div>

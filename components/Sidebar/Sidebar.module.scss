@@ -88,9 +88,14 @@
 
 .subheader {
   @extend %caption3;
+  align-items: center;
   color: var(--color-white);
-  display: block;
+  display: flex;
   margin: 0 32px 38px;
+
+  .logo {
+    margin-left: 4px;
+  }
 
   &:hover {
     color: var(--color-success);

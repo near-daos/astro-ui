@@ -144,7 +144,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         <meta property="twitter:url" content={router.asPath} />
         <meta name="twitter:title" content="Astro" />
         <meta name="twitter:description" content={proposal?.description} />
-        <meta name="twitter:image" content={dao?.flagCover} />
+        <meta name="twitter:image" content={dao?.flagCover || dao?.logo} />
       </Head>
       <BreadCrumbs className={styles.breadcrumbs}>
         <NavLink href="/all/daos">All DAOs</NavLink>

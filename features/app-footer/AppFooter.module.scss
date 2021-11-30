@@ -107,11 +107,11 @@
   grid-area: terms;
 }
 
-.powered {
+.release {
   @extend %caption3;
   align-items: center;
   display: flex;
-  grid-area: powered;
+  grid-area: release;
   margin-top: 16px;
 
   span {
@@ -143,7 +143,7 @@
       'copyright'
       'terms'
       'links'
-      'powered';
+      'release';
 
     max-width: 1130px;
 
@@ -151,7 +151,7 @@
       grid-gap: 32px;
       grid-template-areas:
         'invitation invitation invitation'
-        'social social powered'
+        'social social release'
         'links report copyright'
         'version . progress';
       grid-template-columns: 2fr 1fr 3fr;
@@ -192,7 +192,7 @@
     }
   }
 
-  .powered {
+  .release {
     @include tablet-landscape {
       @include font(1em, 24px, 400);
       justify-self: end;
@@ -242,7 +242,7 @@
       'copyright'
       'terms'
       'links'
-      'powered';
+      'release';
   }
 
   .progress {
