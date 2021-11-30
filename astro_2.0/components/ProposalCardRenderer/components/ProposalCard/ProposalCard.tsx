@@ -14,7 +14,7 @@ import ProposalControlPanel from 'components/cards/proposal-card/components/prop
 import { ProgressBar } from 'components/vote-details/components/progress-bar/ProgressBar';
 import { VoteDetail } from 'features/types';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
-import { ProposalActions } from 'features/proposal/components/proposal-actions';
+import { ProposalActions } from 'features/proposal/components/ProposalActions';
 import { DAO } from 'types/dao';
 import ExternalLink from 'components/cards/components/external-link/ExternalLink';
 import { Icon, IconName } from 'components/Icon';
