@@ -1,11 +1,12 @@
 import React, { FC, useCallback, useRef, useState } from 'react';
+import cn from 'classnames';
 
 import { useAuthContext } from 'context/AuthContext';
 
 import { AppFooter } from 'features/app-footer';
 import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 import { NearIcon } from 'astro_2.0/components/AppHeader/components/NearIcon';
-
+import { Icon } from 'components/Icon';
 import { AccountPopupItem } from './components/AccountPopupItem';
 
 import styles from './AccountButton.module.scss';
@@ -26,7 +27,16 @@ export const AccountButton: FC = () => {
         <GenericDropdown
           isOpen={open}
           onOpenUpdate={setOpen}
-          parent={<NearIcon black />}
+          parent={
+            <div className={styles.accountButton}>
+              <NearIcon />
+              <span className={styles.accountId}>{accountId}</span>
+              <Icon
+                name="buttonArrowDown"
+                className={cn(styles.controlIcon, { [styles.open]: open })}
+              />
+            </div>
+          }
           options={{
             placement: 'bottom-end',
             modifiers: [

@@ -253,7 +253,7 @@ export const SearchBar: FC<SearchBarProps> = ({
       className={cn(styles.root, className, { [styles.expanded]: expanded })}
       ref={ref}
       style={{
-        width: searchWidth,
+        maxWidth: searchWidth,
       }}
     >
       <div className={styles.iconHolder}>

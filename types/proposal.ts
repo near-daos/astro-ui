@@ -247,6 +247,7 @@ enum Vote {
 }
 
 export enum ProposalStatuses {
+  All = 'all',
   Active = 'active',
   Approved = 'approved',
   Failed = 'failed',

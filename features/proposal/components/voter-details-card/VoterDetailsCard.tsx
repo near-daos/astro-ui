@@ -7,6 +7,7 @@ import { Badge } from 'components/badge/Badge';
 import { ExplorerLink } from 'components/explorer-link';
 import { Vote } from 'features/types';
 import { getBadgeVariant } from 'features/proposal/helpers';
+import { formatTimestampAsDate } from 'helpers/format';
 
 import styles from './voter-details-card.module.scss';
 
@@ -22,6 +23,7 @@ interface VoterDetailsCardProps {
   name: string;
   groups?: string[];
   transactionHash: string | undefined;
+  timestamp: string | null | undefined;
 }
 
 export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
@@ -29,6 +31,7 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
   name,
   groups,
   transactionHash,
+  timestamp,
 }) => {
   let icon;
 
@@ -76,7 +79,10 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
       <div className={styles.groups}>
         <GroupsRenderer selectedItems={selectedItems ?? []} />
       </div>
-      <div className={styles.other}>&nbsp;</div>
+      <div className={styles.other}>
+        &nbsp;
+        {timestamp ? formatTimestampAsDate(timestamp) : null}
+      </div>
       <div className={styles.link}>
         {vote && (
           <ExplorerLink
