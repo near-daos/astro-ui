@@ -47,11 +47,11 @@ const TokensPage: NextPage<TokensPageProps> = ({
   },
   receipts,
 }) => {
-  const chartData = getChartData(receipts.NEAR);
   const totalValue = dao.funds ?? '0';
   const nearPrice = useNearPrice();
   const TRANSACTIONS_PER_PAGE = 10;
   const { tokens } = useDaoCustomTokens();
+  const chartData = getChartData(receipts.NEAR, tokens?.NEAR);
   const [viewToken, setViewToken] = useState('NEAR');
   const receiptsData = receipts[viewToken] ?? [];
 

@@ -1,9 +1,15 @@
 import { Receipt } from 'types/transaction';
 import { ChartData } from 'types/chart';
+import { formatYoktoValue } from 'helpers/format';
+import { Token } from 'types/token';
 
-export function getChartData(receipts: Receipt[]): ChartData[] {
+export function getChartData(receipts: Receipt[], token: Token): ChartData[] {
   let value = 0;
   const result: ChartData[] = [];
+
+  if (!receipts || !token) {
+    return result;
+  }
 
   receipts
     .sort((a, b) => {
@@ -17,7 +23,7 @@ export function getChartData(receipts: Receipt[]): ChartData[] {
       const income = item.type === 'Deposit';
       let balance;
 
-      const deposit = Number(item.deposit);
+      const deposit = Number(formatYoktoValue(item.deposit, token.decimals));
 
       if (income) {
         balance = value + deposit;
