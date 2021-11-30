@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
 import cn from 'classnames';
+import React, { FC } from 'react';
 
 import { DOMAIN_RANGES } from 'components/area-chart/helpers';
 
 import { Button } from 'components/button/Button';
-import s from './RangeToggle.module.scss';
+
+import styles from './RangeToggle.module.scss';
 
 const TOGGLE_SET = [
   {
@@ -35,13 +36,13 @@ interface RangeToggleProps {
 }
 
 const RangeToggle: FC<RangeToggleProps> = ({ onClick, activeRange }) => (
-  <div className={s.root}>
+  <div className={styles.root}>
     {TOGGLE_SET.map(({ label, type }) => (
       <Button
         key={type}
         size="small"
-        className={cn(s.toggle, {
-          [s.active]: activeRange === type,
+        className={cn(styles.toggle, {
+          [styles.active]: activeRange === type,
         })}
         onClick={() => onClick(type)}
       >
