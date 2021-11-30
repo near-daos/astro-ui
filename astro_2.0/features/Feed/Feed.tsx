@@ -137,9 +137,9 @@ export const Feed = ({
       status: value as ProposalStatuses,
     } as ProposalsQueries;
 
-    if (value === 'All') {
-      delete nextQuery.status;
-    }
+    // if (value === 'All') {
+    //   delete nextQuery.status;
+    // }
 
     await replace(
       {
@@ -167,11 +167,11 @@ export const Feed = ({
       >
         <ProposalStatusFilter
           neighbourRef={neighbourRef}
-          value={queries.status || 'All'}
+          value={queries.status || ProposalStatuses.Active}
           onChange={onProposalFilterChange}
           disabled={proposalsDataIsLoading}
           list={[
-            { value: 'All', label: 'All' },
+            { value: ProposalStatuses.All, label: 'All' },
             {
               value: ProposalStatuses.Active,
               label: 'Active',
