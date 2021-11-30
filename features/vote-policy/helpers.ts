@@ -125,20 +125,6 @@ export type VotingPolicyPageInitialData = {
   policy: VotePolicy;
 } & Indexed;
 
-// const POLICIES_VIEWS = [
-//   'addBounty',
-//   'bountyDone',
-//   'setVoteToken', // todo - is this a Create poll action?
-//   'call',
-//   'addMemberToRole',
-//   'removeMemberFromRole',
-//   'transfer',
-//   'upgradeSelf',
-//   'upgradeRemote',
-//   'config',
-//   'policy'
-// ];
-
 export const getInitialData = (
   dao?: DAO
 ): VotingPolicyPageInitialData | null => {
@@ -204,11 +190,34 @@ export function getVoteDetails(
     data: votesData,
   };
 
-  const votersList = proposal?.votes
-    ? Object.keys(proposal.votes).map(key => {
-        return { name: key, vote: proposal.votes[key] };
-      })
-    : [];
+  const list =
+    proposal?.actions.reduce<Record<string, VoterDetail>>((res, item) => {
+      const vote = proposal.votes[item.accountId];
+
+      if (res[item.accountId] && vote) {
+        res[item.accountId] = {
+          name: item.accountId,
+          vote,
+          timestamp: item.timestamp,
+        };
+      } else if (vote) {
+        res[item.accountId] = {
+          name: item.accountId,
+          vote,
+          timestamp: item.timestamp,
+        };
+      } else {
+        res[item.accountId] = {
+          name: item.accountId,
+          vote: null,
+          timestamp: null,
+        };
+      }
+
+      return res;
+    }, {}) ?? {};
+
+  const votersList = Object.values(list);
 
   return { details, votersList };
 }
