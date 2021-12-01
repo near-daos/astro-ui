@@ -4,9 +4,11 @@
   @extend %caption1;
   color: var(--color-neutral-70);
   display: flex;
+  overflow: hidden;
 }
 
 .list {
+  display: flex;
   list-style: none;
   margin: 0;
 }
@@ -14,6 +16,9 @@
 .item {
   display: inline-block;
   margin-right: 6px;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 
   &:last-child {
