@@ -22,8 +22,16 @@ const TermsAndConditions: VFC = () => {
       <div className={styles.textBlock}>
         These “Terms and Conditions” last material update was made on: 12th
         November, 2021. The Astro DAO allows you to participate, by creating,
-        displaying and operating DAOs and is made available to you by
-        _________________ (“Company”).
+        displaying and operating DAOs and is made available to you by&nbsp;
+        <a
+          className={styles.link}
+          href="https://astrodao.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          AstroDAO.com
+        </a>
+        &nbsp;(“Company”).
       </div>
 
       {TERMS_CONDITIONS.map(renderBlock)}
