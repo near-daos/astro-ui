@@ -1,6 +1,7 @@
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import React, { useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -104,6 +105,14 @@ export function DaoSubmitForm(): JSX.Element {
   return (
     <div className={styles.root}>
       <UnitSeparator />
+      <div className={styles.terms}>
+        <span>Creating a DAO is a liability </span>
+        <Link passHref href="/terms-conditions">
+          <a href="*" className={styles.link} target="_blank">
+            Terms and Conditions
+          </a>
+        </Link>
+      </div>
       <div className={styles.content}>
         <TransactionDetailsWidget
           onSubmit={createDao}
