@@ -79,7 +79,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           className={styles.addProposalButton}
           variant="tertiary"
         >
-          <Icon width={24} name="buttonAdd" className={styles.createIcon} />
+          <Icon width={44} name="buttonAdd" className={styles.createIcon} />
           <span className={styles.createText}>Create proposal</span>
         </Button>
       </div>
@@ -132,47 +132,47 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
 
       <section className={styles.controls}>
         <ActionButton
-          tooltip="DAO funds"
-          tooltipPlacement="top"
           iconName="funds"
           onClick={() => handleChapterClick(url.funds)}
           className={generateChapterStyle(url.funds)}
-        />
+        >
+          Funds
+        </ActionButton>
         <ActionButton
-          tooltip="DAO members"
-          tooltipPlacement="top"
           iconName="groups"
           onClick={() => handleChapterClick(url.members)}
           className={generateChapterStyle(url.members)}
-        />
+        >
+          Members
+        </ActionButton>
         <ActionButton
-          tooltip="DAO Settings"
-          tooltipPlacement="top"
           iconName="settings"
           onClick={() => handleChapterClick(url.settings)}
           className={generateChapterStyle(url.settings)}
-        />
+        >
+          Settings
+        </ActionButton>
         <ActionButton
-          tooltip="NFTs"
-          tooltipPlacement="top"
           iconName="nfts"
           onClick={() => handleChapterClick(url.nfts)}
           className={generateChapterStyle(url.nfts)}
-        />
+        >
+          NFTs
+        </ActionButton>
         <ActionButton
-          tooltip="Bounties"
-          tooltipPlacement="top"
           iconName="proposalBounty"
           onClick={() => handleChapterClick(url.bounties)}
           className={generateChapterStyle(url.bounties)}
-        />
+        >
+          Bounties
+        </ActionButton>
         <ActionButton
-          tooltip="Polls"
-          tooltipPlacement="top"
           iconName="proposalPoll"
           onClick={() => handleChapterClick(url.polls)}
           className={generateChapterStyle(url.polls)}
-        />
+        >
+          Polls
+        </ActionButton>
       </section>
 
       {onCreateProposalClick && !disableNewProposal && (

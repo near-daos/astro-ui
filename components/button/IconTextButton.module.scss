@@ -1,0 +1,29 @@
+@import 'styles/mixins';
+
+.iconTextButton {
+  @include centralize;
+  @include font(8px, 12px, 400);
+  background: transparent center / contain no-repeat;
+  border: 0;
+  color: var(--color-primary-50);
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 42px;
+  outline: 0;
+  padding: 0;
+}
+
+.icon {
+  margin: 0 0 4px;
+}
+
+.iconTextButton:active {
+  color: var(--color-primary-60);
+}
+
+.iconTextButton:disabled,
+.iconTextButton[disabled] {
+  color: var(--color-neutral-80);
+}
