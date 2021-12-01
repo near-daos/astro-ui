@@ -16,17 +16,17 @@
     'transactions transactions'
     'pagination pagination';
   grid-template-columns: 2fr 1fr;
+  margin-bottom: 20px;
   padding-top: 56px;
 
   .breadcrumbs {
     grid-area: breadcrumb;
-    margin-bottom: 18px;
   }
 }
 
 .dao {
   grid-area: dao;
-  margin: 16px 0 44px;
+  margin: 0 0 44px;
 
   .newProposalWrapper {
     margin-top: 24px;

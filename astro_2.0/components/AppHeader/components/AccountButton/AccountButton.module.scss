@@ -1,5 +1,6 @@
 @use 'styles/breakpoints';
 @import 'styles/typography';
+@import 'styles/mixins';
 
 .root {
   cursor: pointer;
@@ -12,6 +13,7 @@
   background-color: var(--color-white);
   border-radius: 8px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  cursor: default;
   padding: 8px;
   width: 328px;
   z-index: 1000;
@@ -28,6 +30,7 @@
 
   .auth {
     color: var(--color-brand-coral-red);
+    cursor: pointer;
   }
 
   .name {
@@ -37,6 +40,44 @@
     padding-left: 8px;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+
+.accountButton {
+  align-items: center;
+  background-color: var(--color-neutral-30);
+  border-radius: 22px;
+  cursor: pointer;
+  display: flex;
+  height: 38px;
+  white-space: nowrap;
+
+  @include mobile-only {
+    .accountId,
+    .controlIcon {
+      display: none;
+    }
+  }
+
+  &:hover .accountId {
+    color: var(--color-neutral-90);
+  }
+
+  .accountId {
+    @extend %subtitle4;
+    @include ellipse-text;
+    color: var(--color-neutral-70);
+    margin: 0 4px 0 8px;
+    max-width: 220px;
+  }
+
+  .controlIcon {
+    margin: 0 8px 0 4px;
+    width: 20px;
+  }
+
+  .controlIcon.open {
+    transform: rotate(180deg);
   }
 }
 

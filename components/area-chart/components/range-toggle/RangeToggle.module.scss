@@ -10,33 +10,36 @@
     justify-content: flex-end;
     width: auto;
   }
-
-  .toggle {
-    background-color: var(--color-neutral-10);
-    border: 0;
-    border-radius: 2px;
-    color: var(--color-brand-black);
-    min-width: auto;
-    padding: 0 8px;
-    text-transform: none;
-  }
 }
 
 .toggle {
+  $state-color: #e2def2;
+
   @include centralize;
+  background-color: var(--color-neutral-10);
+  border: 0;
+  border-radius: 2px;
+  color: var(--color-brand-black);
   font-family: 'Manrope', sans-serif;
   font-size: 10px;
   font-weight: 600;
   height: 20px;
   margin-left: 4px;
   min-height: auto;
+  min-width: auto;
   opacity: 1;
+  padding: 0 8px;
+  text-transform: none;
 
   &:first-of-type {
     margin-left: 0;
   }
 
+  &:hover {
+    box-shadow: 0 0 $state-color inset, 0 0 0 1px $state-color inset;
+  }
+
   &.active {
-    background-color: var(--color-brand-purple-light);
+    background-color: $state-color;
   }
 }

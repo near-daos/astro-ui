@@ -6,11 +6,12 @@
   pointer-events: none;
   position: fixed;
   right: 24px;
+  transform: translateY(50%);
   transition: opacity 0.2s;
   z-index: 9999;
 
   @include desktop {
-    bottom: 40px;
+    bottom: 140px;
     right: 40px;
   }
 

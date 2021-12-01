@@ -19,7 +19,6 @@ import { TransactionCard } from 'components/cards/transaction-card';
 import { Receipt } from 'types/transaction';
 import { Pagination } from 'components/pagination';
 
-import styles from 'pages/dao/[dao]/treasury/tokens/tokens.module.scss';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { ProposalVariant } from 'types/proposal';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
@@ -31,6 +30,8 @@ import { DaoContext } from 'types/context';
 import { NextPage } from 'next';
 import { getChartData } from 'features/treasury/helpers';
 import { formatYoktoValue } from 'helpers/format';
+
+import styles from './Tokens.module.scss';
 
 export interface TokensPageProps {
   daoContext: DaoContext;
@@ -47,11 +48,11 @@ const TokensPage: NextPage<TokensPageProps> = ({
   },
   receipts,
 }) => {
-  const chartData = getChartData(receipts.NEAR);
   const totalValue = dao.funds ?? '0';
   const nearPrice = useNearPrice();
   const TRANSACTIONS_PER_PAGE = 10;
   const { tokens } = useDaoCustomTokens();
+  const chartData = getChartData(receipts.NEAR, tokens?.NEAR);
   const [viewToken, setViewToken] = useState('NEAR');
   const receiptsData = receipts[viewToken] ?? [];
 

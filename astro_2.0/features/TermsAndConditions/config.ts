@@ -170,7 +170,7 @@ export const TERMS_CONDITIONS = [
   {
     title: 'Governing Law and Jurisdiction',
     body:
-      "These Terms are governed by and shall be construed in accordance with the laws of  __________ without regard to any choice or conflict of laws rules. Any dispute, controversy, or claim, whether contractual or non-contractual, arising out of or in connection with these Terms, or the breach, termination or invalidity thereof, or any other issue which shall arise in virtue of these Terms, shall be referred to and finally settled by the Swiss Rules of International Arbitration of the Swiss Chambers' Arbitration Institution in force on the date on which the Notice of Arbitration is submitted in accordance with these Rules.\n" +
+      "These Terms are governed by and shall be construed in accordance with the laws of _____ without regard to any choice or conflict of laws rules. Any dispute, controversy, or claim, whether contractual or non-contractual, arising out of or in connection with these Terms, or the breach, termination or invalidity thereof, or any other issue which shall arise in virtue of these Terms, shall be referred to and finally settled by the Swiss Rules of International Arbitration of the Swiss Chambers' Arbitration Institution in force on the date on which the Notice of Arbitration is submitted in accordance with these Rules.\n" +
       'The law of this arbitration clause shall be Swiss law. The seat of arbitration shall be in Zug. The number of arbitrators shall be one. The arbitration proceedings shall be conducted in the English language.',
   },
 ];

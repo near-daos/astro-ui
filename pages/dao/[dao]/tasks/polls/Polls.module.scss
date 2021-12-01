@@ -18,12 +18,11 @@
 
 .breadcrumbs {
   grid-area: breadcrumbs;
-  margin-bottom: 18px;
 }
 
 .dao {
   grid-area: dao;
-  margin: 16px 0 44px;
+  margin: 0 0 44px;
 }
 
 .header {
@@ -44,7 +43,7 @@
 }
 
 .feedHeader {
-  padding-top: 0;
+  padding-top: 24px;
 }
 
 .createProposal {

@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
 import React, { forwardRef, useCallback } from 'react';
 
@@ -20,34 +19,16 @@ import { NavItem } from './components/NavItem';
 
 import styles from './Sidebar.module.scss';
 
-const RELEASE_NOTES = process.env.NEXT_PUBLIC_RELEASE_NOTES;
-
 interface SidebarProps {
   className?: string;
-  fullscreen?: boolean;
-  closeSideBar?: () => void;
 }
 
 export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
-  const { className, fullscreen, closeSideBar } = props;
+  const { className } = props;
 
   const router = useRouter();
 
   const { accountId, login } = useAuthContext();
-
-  const rootClassName = cn(styles.sidebar, className, {
-    [styles.fullscreen]: fullscreen,
-  });
-
-  useMount(() => {
-    function close() {
-      closeSideBar?.();
-    }
-
-    router.events.on('routeChangeComplete', close);
-
-    return () => router.events.off('routeChangeComplete', close);
-  });
 
   const createDao = useCallback(
     () => (accountId ? router.push(CREATE_DAO_URL) : login()),
@@ -99,26 +80,14 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
   }
 
   return (
-    <aside className={rootClassName} ref={ref}>
+    <aside className={cn(styles.sidebar, className)} ref={ref}>
       <div className={styles.wrapper}>
-        <div className={styles.mobileHeader}>
-          <Icon
-            name="close"
-            className={styles.closeIcon}
-            onClick={closeSideBar}
-          />
-          <Icon name="appLogo" width={92} />
-        </div>
         <Logo className={styles.mainLogo} />
         <div className={styles.subheader}>
-          <a
-            className={styles.devLink}
-            href={RELEASE_NOTES}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            Release notes
-          </a>
+          <span>powered by</span>
+          <i>
+            <Icon name="logoNearFull" width={44} className={styles.logo} />
+          </i>
         </div>
         <div className={styles.scrolling}>
           {renderHomeNavItem()}
@@ -139,6 +108,4 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
 
 Sidebar.defaultProps = {
   className: '',
-  fullscreen: false,
-  closeSideBar: undefined,
 };

@@ -49,3 +49,9 @@ export const formatDeadlineDate = (deadlineDuration: string): string => {
     )}`;
   });
 };
+
+export const formatTimestampAsDate = (time: string): string => {
+  const date = new Date(Number(time) / 1000000);
+
+  return format(date, 'dd LLL yyyy hh:mm:ss');
+};

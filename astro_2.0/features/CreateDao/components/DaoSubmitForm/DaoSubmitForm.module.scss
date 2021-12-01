@@ -6,7 +6,7 @@
 }
 
 .content {
-  margin-top: 40px;
+  //margin-top: 40px;
 }
 
 .error {
@@ -15,4 +15,18 @@
   font-weight: 700;
   line-height: 24px;
   margin-top: 16px;
+}
+
+.terms {
+  @extend %subtitle5;
+  color: var(--color-neutral-60);
+  margin: 40px 0 16px 40px;
+}
+
+.link {
+  color: var(--color-primary-60);
+
+  &:hover {
+    filter: brightness(150%);
+  }
 }

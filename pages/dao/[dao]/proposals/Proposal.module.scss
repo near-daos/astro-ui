@@ -17,15 +17,14 @@
 .breadcrumbs {
   align-items: center;
   grid-area: breadcrumbs;
-  margin-bottom: 18px;
 }
 
 .dao {
   grid-area: dao;
-  margin-top: 34px;
+  margin-top: 24px;
 
   @include tablet-landscape {
-    margin-top: 40px;
+    margin-top: 24px;
   }
 }
 
