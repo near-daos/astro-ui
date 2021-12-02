@@ -5,27 +5,40 @@ export function mapNftTokenResponseToNftToken(
 ): NftToken[] {
   return data
     .reduce<NftToken[]>((res, item) => {
-      const { id, baseUri, metadata } = item;
+      const { id, baseUri, metadata, contract } = item;
+
+      if (!metadata) return res;
+
+      const { media, reference } = metadata;
+
+      const isMediaContainsUrl = media?.indexOf('http') === 0;
 
       let uri;
       let isExternalImage = false;
+      let isExternalReference = false;
 
-      if (baseUri) {
-        uri = `${baseUri}/${metadata.media}`;
-      } else if (metadata.media.indexOf('http') === 0) {
-        uri = metadata.media;
+      if (baseUri && media && !isMediaContainsUrl) {
+        uri = `${baseUri}/${media}`;
+      } else if (isMediaContainsUrl) {
+        uri = media;
         isExternalImage = true;
-      } else {
-        uri = `https://cloudflare-ipfs.com/ipfs/${metadata.media}`;
+      } else if (contract.baseUri && !media && reference) {
+        uri = `${contract.baseUri}/${reference}`;
+        isExternalReference = true;
+      } else if (media) {
+        uri = `https://cloudflare-ipfs.com/ipfs/${media}`;
       }
 
-      res.push({
-        id,
-        uri,
-        description: metadata.description ?? null,
-        title: metadata.title ?? null,
-        isExternalImage,
-      });
+      if (uri) {
+        res.push({
+          id,
+          uri,
+          description: metadata.description ?? null,
+          title: metadata.title ?? null,
+          isExternalImage,
+          isExternalReference,
+        });
+      }
 
       return res;
     }, [])

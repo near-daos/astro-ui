@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import React, { useEffect, useRef, useState, VFC } from 'react';
+import axios from 'axios';
 import styles from './ntf-card.module.scss';
 
 export interface NFTCardProps {
@@ -7,12 +7,14 @@ export interface NFTCardProps {
   image: StaticImageData;
   description?: string;
   isExternalImage?: boolean;
+  isExternalReference?: boolean;
 }
 
 export const NFTCard: VFC<NFTCardProps> = ({
   name,
   image,
   isExternalImage,
+  isExternalReference,
 }) => {
   const imgRef = useRef<HTMLImageElement>(null);
   const [showPlaceholder, setShowPlaceholder] = useState(true);
@@ -21,40 +23,50 @@ export const NFTCard: VFC<NFTCardProps> = ({
   // We add src property to image element here because of Chrome/Safari bug
   // when onLoad callback is not triggered is it is attached to element before src
   useEffect(() => {
+    const { CancelToken } = axios;
+    const source = CancelToken.source();
+
     if (isExternalImage && imgRef?.current) {
       imgRef.current.src = image.src;
+    } else if (isExternalReference) {
+      axios
+        .get(image.src, { cancelToken: source.token })
+        .then(({ data }) => {
+          const media = data?.media;
+
+          if (media?.indexOf('http') === 0 && imgRef?.current) {
+            imgRef.current.src = media;
+          } else {
+            setShowError(true);
+          }
+        })
+        .catch(thrown => {
+          setShowError(true);
+
+          if (axios.isCancel(thrown)) {
+            // do nothing - we cancel request on unmount
+          }
+        });
     }
-  }, [image.src, isExternalImage]);
+
+    return () => {
+      source.cancel('Cancelled on unmount');
+    };
+  }, [image.src, isExternalImage, isExternalReference]);
 
   return (
     <div className={styles.root}>
       <div>
-        {isExternalImage ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            ref={imgRef}
-            width="296px"
-            height="424px"
-            alt={name}
-            onLoad={() => setShowPlaceholder(false)}
-            src=""
-            className={styles.image}
-          />
-        ) : (
-          <Image
-            width="296px"
-            height="424px"
-            layout="intrinsic"
-            alt={name}
-            onError={() => {
-              setShowPlaceholder(false);
-              setShowError(true);
-            }}
-            onLoad={() => setShowPlaceholder(false)}
-            src={image.src}
-            className={styles.image}
-          />
-        )}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          ref={imgRef}
+          width="296px"
+          height="424px"
+          alt={name}
+          onLoad={() => setShowPlaceholder(false)}
+          src=""
+          className={styles.image}
+        />
       </div>
       {showPlaceholder && (
         <div className={styles.preloader}>

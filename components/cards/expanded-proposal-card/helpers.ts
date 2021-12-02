@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import useCountDown from 'react-countdown-hook';
 import { ProposalType } from 'types/proposal';
 import { Scope } from 'features/vote-policy/helpers';
+import { useMountedState } from 'react-use';
 
 function formatCountdown(seconds: number) {
   const d = Math.floor(seconds / (24 * 3600));
@@ -34,14 +35,17 @@ function formatCountdown(seconds: number) {
 export function useCountdown(endsAt: string): string | null {
   const start = new Date();
   const end = parseISO(endsAt);
+  const isMounted = useMountedState();
 
   const diff = differenceInMilliseconds(end, start);
 
   const [timeLeft, actions] = useCountDown(diff, 1000 * 15);
 
   useEffect(() => {
-    actions.start();
-  }, [actions]);
+    if (isMounted()) {
+      actions.start();
+    }
+  }, [actions, isMounted]);
 
   return timeLeft > 0 ? formatCountdown(timeLeft / 1000) : null;
 }

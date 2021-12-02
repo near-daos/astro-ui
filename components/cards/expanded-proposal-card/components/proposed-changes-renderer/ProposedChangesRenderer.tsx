@@ -6,7 +6,7 @@ import { getInitialData } from 'features/vote-policy/helpers';
 import styles from './proposed-changes-renderer.module.scss';
 
 interface ProposedChangesRendererProps {
-  dao: DAO;
+  dao: DAO | null;
   proposal: Proposal;
   inline?: boolean;
 }

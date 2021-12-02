@@ -148,7 +148,7 @@ export type Proposal = {
   createdAt: string;
   daoDetails: DaoDetails;
   link: string;
-  dao: DAO;
+  dao: DAO | null;
   proposalVariant: ProposalVariant;
   actions: ProposalActionData[];
 };

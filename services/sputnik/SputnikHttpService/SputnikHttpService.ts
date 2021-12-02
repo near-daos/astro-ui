@@ -8,9 +8,9 @@ import omit from 'lodash/omit';
 
 import { PaginationResponse } from 'types/api';
 import {
+  GetNFTTokensResponse,
   GetTokensResponse,
   NftToken,
-  NftTokenResponse,
   Token,
   TokenResponse,
 } from 'types/token';
@@ -816,11 +816,19 @@ class SputnikHttpServiceClass {
   }
 
   public async getAccountNFTs(accountId: string): Promise<NftToken[]> {
-    const { data } = await this.httpService.get<NftTokenResponse[]>(
-      `/tokens/nfts/account-nfts/${accountId}`
+    const { data } = await this.httpService.get<GetNFTTokensResponse>(
+      `/tokens/nfts`,
+      {
+        params: {
+          filter: `ownerId||$eq||${accountId}`,
+          sort: 'createdAt,DESC',
+          offset: 0,
+          limit: 1000,
+        },
+      }
     );
 
-    return mapNftTokenResponseToNftToken(data);
+    return mapNftTokenResponseToNftToken(data.data);
   }
 
   public async getAllTokens(): Promise<Token[]> {
