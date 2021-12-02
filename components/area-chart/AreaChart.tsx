@@ -38,7 +38,6 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [] }) => {
     toggleDomain,
     activeRange,
     verticalDomain,
-    onZoomDataChange,
   } = useDomainControl(preparedData || []);
 
   if (!preparedData.length) {
@@ -64,8 +63,12 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [] }) => {
           <svg style={{ height: 0 }}>
             <defs>
               <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#6038D0" stopOpacity="0.3" />
-                <stop offset="100%" stopColor="#6038D0" stopOpacity="0" />
+                <stop offset="0%" stopColor="#6038D0" stopOpacity="0.4" />
+                <stop offset="15%" stopColor="#6038D0" stopOpacity="0.35" />
+                <stop offset="70%" stopColor="#6038D0" stopOpacity="0.1" />
+                <stop offset="90%" stopColor="#6038D0" stopOpacity="0.05" />
+                <stop offset="9%" stopColor="#6038D0" stopOpacity="0.05" />
+                <stop offset="100%" stopColor="#6038D0" stopOpacity="0.025" />
               </linearGradient>
             </defs>
           </svg>
@@ -79,13 +82,13 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [] }) => {
               containerComponent={
                 <VictoryZoomVoronoiContainer
                   allowZoom={false}
+                  allowPan={false}
                   constrainToVisibleArea
                   responsive={false}
                   zoomDimension="x"
                   labels={() => ' '}
                   labelComponent={<CustomPoint />}
                   zoomDomain={domain}
-                  onZoomDomainChange={onZoomDataChange}
                 />
               }
             >
