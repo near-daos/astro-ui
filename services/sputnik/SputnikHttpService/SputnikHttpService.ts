@@ -51,6 +51,7 @@ import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { HttpService, httpService } from 'services/HttpService';
 import { DaoContext } from 'types/context';
 import { isUserPermittedToCreateProposal } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
+import { mapNftTokenResponseToNftToken } from 'services/sputnik/mappers/nfts';
 
 class SputnikHttpServiceClass {
   private readonly httpService: HttpService = httpService;
@@ -819,14 +820,7 @@ class SputnikHttpServiceClass {
       `/tokens/nfts/account-nfts/${accountId}`
     );
 
-    return data.map(response => ({
-      id: response.id,
-      uri: response.baseUri
-        ? `${response.baseUri}/${response.metadata.media}`
-        : `https://cloudflare-ipfs.com/ipfs/${response.metadata.media}`,
-      description: response.metadata.description,
-      title: response.metadata.title,
-    }));
+    return mapNftTokenResponseToNftToken(data);
   }
 
   public async getAllTokens(): Promise<Token[]> {

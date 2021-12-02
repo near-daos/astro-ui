@@ -16,9 +16,8 @@ export const getServerSideProps: GetServerSideProps<NFTsPageProps> = async ({
 
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
-  const [daoContext, nfts] = await Promise.all([
+  const [daoContext] = await Promise.all([
     SputnikHttpService.getDaoContext(account, daoId),
-    SputnikHttpService.getAccountNFTs(daoId),
   ]);
 
   if (!daoContext) {
@@ -29,7 +28,6 @@ export const getServerSideProps: GetServerSideProps<NFTsPageProps> = async ({
 
   return {
     props: {
-      nfts,
       daoContext,
     },
   };

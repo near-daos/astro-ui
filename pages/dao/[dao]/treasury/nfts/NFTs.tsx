@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
@@ -16,16 +16,15 @@ import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarnin
 import { NoResultsView } from 'features/no-results-view';
 
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
+import { SputnikHttpService } from 'services/sputnik';
 
 import styles from './nfts.module.scss';
 
 export interface NFTsPageProps {
-  nfts: NftToken[];
   daoContext: DaoContext;
 }
 
 const NFTs: NextPage<NFTsPageProps> = ({
-  nfts = [],
   daoContext: {
     dao,
     userPermissions: { isCanCreateProposals },
@@ -35,7 +34,12 @@ const NFTs: NextPage<NFTsPageProps> = ({
   const router = useRouter();
   const daoId = router.query.dao as string;
 
+  const [nfts, setNfts] = useState<NftToken[]>([]);
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
+
+  useEffect(() => {
+    SputnikHttpService.getAccountNFTs(daoId).then(data => setNfts(data));
+  }, [daoId]);
 
   return (
     <div className={styles.root}>
