@@ -80,6 +80,7 @@ const NFTs: NextPage<NFTsPageProps> = ({
                     width: 296,
                     height: 424,
                   }}
+                  isExternalImage={nft.isExternalImage}
                 />
               </div>
             ))}

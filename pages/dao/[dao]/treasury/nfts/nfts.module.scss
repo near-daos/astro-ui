@@ -34,21 +34,16 @@
 }
 
 .content {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   grid-area: content;
-  justify-content: center;
+  grid-auto-flow: dense;
+  grid-gap: 24px;
+  grid-template-columns: repeat(auto-fill, 296px);
   padding-top: 48px;
-
-  @include tablet-landscape {
-    justify-content: flex-start;
-  }
 }
 
 .card {
   height: 424px;
-  padding-bottom: 24px;
-  padding-right: 24px;
   width: 296px;
 }
 
