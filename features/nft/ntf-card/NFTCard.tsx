@@ -1,6 +1,5 @@
 import Image from 'next/image';
-import React, { useState, VFC } from 'react';
-import { DotsLoader } from 'astro_2.0/components/DotsLoader';
+import React, { useEffect, useRef, useState, VFC } from 'react';
 import styles from './ntf-card.module.scss';
 
 export interface NFTCardProps {
@@ -15,8 +14,17 @@ export const NFTCard: VFC<NFTCardProps> = ({
   image,
   isExternalImage,
 }) => {
+  const imgRef = useRef<HTMLImageElement>(null);
   const [showPlaceholder, setShowPlaceholder] = useState(true);
   const [showError, setShowError] = useState(false);
+
+  // We add src property to image element here because of Chrome/Safari bug
+  // when onLoad callback is not triggered is it is attached to element before src
+  useEffect(() => {
+    if (isExternalImage && imgRef?.current) {
+      imgRef.current.src = image.src;
+    }
+  }, [image.src, isExternalImage]);
 
   return (
     <div className={styles.root}>
@@ -24,11 +32,12 @@ export const NFTCard: VFC<NFTCardProps> = ({
         {isExternalImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
+            ref={imgRef}
             width="296px"
             height="424px"
-            src={image.src}
             alt={name}
             onLoad={() => setShowPlaceholder(false)}
+            src=""
             className={styles.image}
           />
         ) : (
@@ -49,10 +58,14 @@ export const NFTCard: VFC<NFTCardProps> = ({
       </div>
       {showPlaceholder && (
         <div className={styles.preloader}>
-          <DotsLoader dotClassName={styles.dot} className={styles.dots} />
+          <div className={styles.preloaderIcon}>
+            <div />
+            <div />
+            <div />
+          </div>
         </div>
       )}
-      {showError && <div className={styles.error}>Cannot display an image</div>}
+      {showError && <div className={styles.error}>Failed to load image</div>}
     </div>
   );
 };
