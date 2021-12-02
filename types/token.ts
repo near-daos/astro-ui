@@ -57,7 +57,6 @@ export type NftToken = {
   uri: string;
   description: string;
   title: string;
-  isExternalImage: boolean;
   isExternalReference: boolean;
 };
 

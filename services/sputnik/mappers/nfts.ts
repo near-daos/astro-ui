@@ -14,16 +14,14 @@ export function mapNftTokenResponseToNftToken(
       const isMediaContainsUrl = media?.indexOf('http') === 0;
 
       let uri;
-      let isExternalImage = false;
       let isExternalReference = false;
 
       if (baseUri && media && !isMediaContainsUrl) {
         uri = `${baseUri}/${media}`;
       } else if (isMediaContainsUrl) {
         uri = media;
-        isExternalImage = true;
-      } else if (contract.baseUri && !media && reference) {
-        uri = `${contract.baseUri}/${reference}`;
+      } else if (contract?.baseUri && !media && reference) {
+        uri = `${contract?.baseUri}/${reference}`;
         isExternalReference = true;
       } else if (media) {
         uri = `https://cloudflare-ipfs.com/ipfs/${media}`;
@@ -35,7 +33,6 @@ export function mapNftTokenResponseToNftToken(
           uri,
           description: metadata.description ?? null,
           title: metadata.title ?? null,
-          isExternalImage,
           isExternalReference,
         });
       }

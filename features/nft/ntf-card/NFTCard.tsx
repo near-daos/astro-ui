@@ -6,14 +6,12 @@ export interface NFTCardProps {
   name: string;
   image: StaticImageData;
   description?: string;
-  isExternalImage?: boolean;
   isExternalReference?: boolean;
 }
 
 export const NFTCard: VFC<NFTCardProps> = ({
   name,
   image,
-  isExternalImage,
   isExternalReference,
 }) => {
   const imgRef = useRef<HTMLImageElement>(null);
@@ -26,9 +24,7 @@ export const NFTCard: VFC<NFTCardProps> = ({
     const { CancelToken } = axios;
     const source = CancelToken.source();
 
-    if (isExternalImage && imgRef?.current) {
-      imgRef.current.src = image.src;
-    } else if (isExternalReference) {
+    if (isExternalReference) {
       axios
         .get(image.src, { cancelToken: source.token })
         .then(({ data }) => {
@@ -47,12 +43,14 @@ export const NFTCard: VFC<NFTCardProps> = ({
             // do nothing - we cancel request on unmount
           }
         });
+    } else if (imgRef?.current) {
+      imgRef.current.src = image.src;
     }
 
     return () => {
       source.cancel('Cancelled on unmount');
     };
-  }, [image.src, isExternalImage, isExternalReference]);
+  }, [image.src, isExternalReference]);
 
   return (
     <div className={styles.root}>
