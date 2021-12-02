@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
 import Link from 'next/link';
+import React, { FC } from 'react';
 
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { ExternalLink } from 'components/ExternalLink';
+import { Icon } from 'components/Icon';
 
 import styles from './DaoGeneralCard.module.scss';
 
@@ -17,6 +18,10 @@ interface DaoGeneralCardProps {
   description: string;
   links: string[];
   preview?: boolean;
+  legal?: {
+    legalStatus?: string;
+    legalLink?: string;
+  };
 }
 
 export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
@@ -28,7 +33,34 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
   description,
   links,
   preview = false,
+  legal = {},
 }) => {
+  function renderLegalInfo() {
+    const { legalLink, legalStatus } = legal;
+
+    if (legalLink) {
+      return (
+        <div>
+          <a
+            href={legalLink}
+            target="_blank"
+            rel="noreferrer"
+            className={styles.legalLink}
+          >
+            {legalStatus || 'Public Limited Company'}
+            <Icon
+              name="buttonExternal"
+              width={14}
+              className={styles.legalIcon}
+            />
+          </a>
+        </div>
+      );
+    }
+
+    return null;
+  }
+
   return (
     <div className={styles.root}>
       <Link href={`/dao/${id}`}>
@@ -51,6 +83,7 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
           </div>
           <p>{description}</p>
         </section>
+        <section>{renderLegalInfo()}</section>
         <section>
           {!!links?.length && (
             <ul className={styles.links}>

@@ -106,6 +106,16 @@
   width: 24px;
 }
 
+.legalLink {
+  @extend %body2;
+  color: var(--color-primary);
+  display: flex;
+}
+
+.legalIcon {
+  margin-left: 4px;
+}
+
 @media screen and (max-width: #{breakpoints.$screen-md}px) {
   .flagWrapper {
     margin-right: 16px;

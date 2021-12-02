@@ -1,0 +1,23 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  margin-top: 72px;
+}
+
+.header {
+  @include font(1.75em, 38px, 700);
+  font-family: var(--font-family-primary);
+}
+
+.description {
+  @extend %body2;
+}
+
+.inputWrapper {
+  max-width: 500px;
+
+  .inputEl {
+    background-color: transparent;
+  }
+}

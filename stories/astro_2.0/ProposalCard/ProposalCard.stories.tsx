@@ -94,6 +94,7 @@ const cardProps = {
 };
 
 const dao = {
+  legal: {},
   id: 'testdao3-near-cli-example.sputnikv2.testnet',
   txHash: 'GBUmu3jrdmYYHH2bmcs2qVMRpV5snTh5CouEToxo2Viv',
   name: 'testdao3-near-cli-example',
