@@ -11,7 +11,7 @@ import { useIsHrefActive } from 'hooks/useIsHrefActive';
 import { useOnRouterChange } from 'hooks/useOnRouterChange';
 
 import { Icon } from 'components/Icon';
-import { Popup } from 'components/popup/Popup';
+import { Popup } from 'components/Popup';
 
 import styles from './NavButton.module.scss';
 

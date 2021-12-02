@@ -2,7 +2,7 @@ import { Button } from 'components/button/Button';
 import { Input } from 'components/inputs/input/Input';
 import { TextArea } from 'components/inputs/textarea/TextArea';
 
-import { VoteDetails } from 'components/vote-details';
+import { VoteDetails } from 'components/VoteDetails';
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 
 import styles from 'features/vote-policy/components/banner/dao-setting-banner.module.scss';

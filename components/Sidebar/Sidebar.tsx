@@ -14,7 +14,7 @@ import { useAuthContext } from 'context/AuthContext';
 
 import { Logo } from 'components/Logo';
 import { Icon } from 'components/Icon';
-import { AppFooter } from 'features/app-footer';
+import { AppFooter } from 'features/AppFooter';
 import { NavItem } from './components/NavItem';
 
 import styles from './Sidebar.module.scss';

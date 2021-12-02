@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 import cn from 'classnames';
 import { Icon } from 'components/Icon';
-import { Popup } from 'components/popup/Popup';
+import { Popup } from 'components/Popup';
 import { TooltipMessageSeverity } from 'astro_2.0/components/InfoBlockWidget/types';
 import styles from './InfoBlockWidget.module.scss';
 

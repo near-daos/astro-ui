@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import { Bond, BondProps } from 'components/bond/Bond';
+import { Bond, BondProps } from 'components/Bond';
 
 export default {
   title: 'components/Bond',

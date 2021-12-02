@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 import { Icon } from 'components/Icon';
-import { Popup } from 'components/popup/Popup';
+import { Popup } from 'components/Popup';
 
 import styles from './InputWrapper.module.scss';
 

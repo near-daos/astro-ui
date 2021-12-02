@@ -1,8 +1,9 @@
 import React from 'react';
 import { Icon } from 'components/Icon';
-import styles from 'astro_2.0/components/TokenWidget/TokenWidget.module.scss';
 import { formatYoktoValue } from 'helpers/format';
 import { useIsValidImage } from 'hooks/useIsValidImage';
+
+import styles from './TokenWidget.module.scss';
 
 interface TokenWidgetProps {
   amount: string;
