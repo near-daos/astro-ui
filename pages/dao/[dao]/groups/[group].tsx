@@ -143,7 +143,7 @@ const GroupPage: FC<GroupPageProps> = ({
       <div className={styles.content}>
         {sortedData.map(item => (
           <MemberCard
-            onRemoveClick={handleRemoveClick}
+            onRemoveClick={isCanCreateProposals ? handleRemoveClick : undefined}
             onClick={handleCardClick}
             key={item.name}
             title={item.name}
