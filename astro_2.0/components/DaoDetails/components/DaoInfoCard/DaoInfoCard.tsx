@@ -42,7 +42,7 @@ export const DaoInfoCard: FC<DaoMembersProps> = ({
       })}
       ref={setRef}
     >
-      <Button variant="transparent" onClick={handleClick}>
+      <Button variant="transparent" onClick={handleClick} size="block">
         <div className={styles.label}>{title}</div>
         <div className={styles.value}>
           <span className={styles.bold}>{boldText}</span>
