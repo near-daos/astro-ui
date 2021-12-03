@@ -1,4 +1,4 @@
-import React, { FC, useLayoutEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import cn from 'classnames';
 import { Badge } from 'components/badge/Badge';
 import { useMeasure } from 'react-use';
@@ -19,7 +19,7 @@ export const GroupsRenderer: FC<GroupsRendererProps> = ({ selectedItems }) => {
   const [wrapperRef, { width }] = useMeasure();
   const [contentRef, { width: contentWidth }] = useMeasure();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (contentWidth > width && !showPlaceholder) {
       setShowPlaceholder(true);
     } else if (contentWidth <= width && showPlaceholder) {
