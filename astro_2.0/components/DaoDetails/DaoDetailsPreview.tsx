@@ -22,6 +22,7 @@ export const DaoDetailsPreview: FC<DaoDetailsPreviewProps> = ({ dao }) => {
           links={dao.links}
           cover={dao.flagCover}
           logo={dao.flagLogo}
+          legal={dao.legal}
           preview
         />
       </section>

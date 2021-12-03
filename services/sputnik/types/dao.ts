@@ -12,6 +12,10 @@ export interface CreateDaoParams {
   amountToTransfer: string;
   displayName: string;
   policy: PolicyTypeRequest;
+  legal?: {
+    legalStatus?: string;
+    legalLink?: string;
+  };
 }
 
 export interface ClaimBountyParams {

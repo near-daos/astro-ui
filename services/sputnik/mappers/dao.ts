@@ -61,6 +61,10 @@ export type DaoMetadata = {
   flagLogo?: string;
   flag?: string;
   displayName: string;
+  legal?: {
+    legalStatus?: string;
+    legalLink?: string;
+  };
 };
 
 export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
@@ -125,9 +129,10 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     createdAt: daoDTO.createdAt,
     groups: daoGroups,
     policy: daoDTO.policy,
-    links: meta && meta.links ? meta.links : [],
+    links: meta?.links || [],
     displayName: meta?.displayName || '',
     lastProposalId: daoDTO.lastProposalId,
+    legal: meta?.legal || {},
   };
 };
 
@@ -171,6 +176,7 @@ export const mapCreateDaoParamsToContractArgs = (
         flagCover: params.flagCover,
         flagLogo: params.flagLogo,
         displayName: params.displayName,
+        legal: params.legal,
       }),
     },
   };

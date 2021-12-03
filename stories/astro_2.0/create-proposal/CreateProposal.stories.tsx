@@ -28,6 +28,7 @@ Template.storyName = 'CreateProposal';
 
 Template.args = {
   dao: {
+    legal: {},
     id: 'saturn.sputnikv2.testnet',
     txHash: '4px581fv2HJ5LuWBUs72qouAJnZ5ka4bEA2ZLmixgjHD',
     name: 'saturn',

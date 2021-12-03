@@ -18,6 +18,7 @@ import { DaoLinksForm } from './components/DaoLinksForm';
 import { DaoRulesForm } from './components/DaoRulesForm';
 import { DaoFlagForm } from './components/DaoFlagForm';
 import { DaoPreviewForm } from './components/DaoPreviewForm';
+import { DaoLegalStatus } from './components/DaoLegalStatus';
 
 const schema = yup.object().shape({
   displayName: yup
@@ -44,6 +45,11 @@ const schema = yup.object().shape({
   flagLogo: yup
     .mixed()
     .test('fileSize', getImgValidationError, validateImgSize),
+  legalStatus: yup.string().max(50),
+  legalLink: yup.string().matches(VALID_URL_REGEXP, {
+    message: 'Enter correct url!',
+    excludeEmptyString: true,
+  }),
 });
 
 export const CreateDao: VFC = () => {
@@ -60,6 +66,8 @@ export const CreateDao: VFC = () => {
       displayName: undefined,
       flagCover: undefined,
       flagLogo: undefined,
+      legalStatus: undefined,
+      legalLink: undefined,
     },
     resolver: yupResolver(schema),
   });
@@ -67,6 +75,7 @@ export const CreateDao: VFC = () => {
   return (
     <FormProvider {...methods}>
       <DaoNameForm />
+      <DaoLegalStatus />
       <DaoLinksForm />
       <DaoRulesForm />
       <DaoFlagForm />

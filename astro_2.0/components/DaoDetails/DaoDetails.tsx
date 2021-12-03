@@ -65,6 +65,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
           flag={dao.logo}
           cover={dao.flagCover}
           logo={dao.flagLogo}
+          legal={dao.legal}
         />
       </section>
 

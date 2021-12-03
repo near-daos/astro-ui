@@ -46,6 +46,10 @@ export type DAO = {
   flagCover?: string;
   flagLogo?: string;
   lastProposalId: number;
+  legal: {
+    legalStatus?: string;
+    legalLink?: string;
+  };
 };
 
 export type DAOPreview = {
@@ -57,6 +61,10 @@ export type DAOPreview = {
   flagLogo?: string;
   links: string[];
   displayName: string;
+  legal?: {
+    legalStatus?: string;
+    legalLink?: string;
+  };
 };
 
 export type VotePolicyRequest = {
@@ -95,4 +103,8 @@ export interface CreateDaoInput {
   amountToTransfer: string;
   displayName: string;
   policy: PolicyTypeRequest;
+  legal?: {
+    legalStatus?: string;
+    legalLink?: string;
+  };
 }
