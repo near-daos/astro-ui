@@ -1,0 +1,207 @@
+@import 'styles/mixins';
+
+.root {
+  background: var(--color-neutral-20);
+  border-bottom: solid 1px var(--color-neutral-30);
+  cursor: pointer;
+  display: grid;
+  grid-gap: 6px;
+  grid-template-areas:
+    'flag text control'
+    'flag text time';
+  grid-template-columns: 62px auto 43px;
+  max-width: 320px;
+  min-height: 74px;
+  padding: 2px 6px 0;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.flagContainer {
+  grid-area: flag;
+}
+
+.flagWrapper {
+  height: 62px;
+  padding: 5px 0 0 8px;
+  position: relative;
+}
+
+.flag {
+  flex: 0 0 47px;
+  height: 53px;
+  width: 47px;
+}
+
+.type {
+  bottom: 8px;
+  position: absolute;
+  right: 0;
+}
+
+.status {
+  bottom: 0;
+  position: absolute;
+  right: 0;
+}
+
+.text {
+  @include font(12px, 18px, 400);
+  grid-area: text;
+  margin: 10px 0;
+  min-height: 54px;
+}
+
+.time {
+  @include font(10px, 10px, 400);
+  align-items: flex-end;
+  color: var(--color-neutral-60);
+  display: flex;
+  grid-area: time;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+  white-space: nowrap;
+}
+
+.control {
+  display: flex;
+  grid-area: control;
+  justify-content: flex-end;
+  margin: 5px 6px 0 0;
+}
+
+.markRead {
+  display: none;
+}
+
+.markReadButton {
+  align-items: center;
+  color: var(--color-neutral-60);
+  display: flex;
+  font-size: 10px;
+  padding: 0 6px 0 2px;
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--color-primary-60);
+  }
+}
+
+.markReadIcon {
+  margin-right: 2px;
+}
+
+.delete {
+  display: none;
+}
+
+.deleteIcon {
+  height: 24px;
+}
+
+.muteIcon {
+  height: 24px;
+
+  button {
+    color: var(--color-primary-80);
+    transition: color 0.2s;
+  }
+
+  button:hover {
+    color: var(--color-primary-60);
+  }
+
+  button:disabled {
+    color: var(--color-neutral-50);
+  }
+
+  button:disabled:hover {
+    color: var(--color-neutral-50);
+  }
+}
+
+.muteIcon.muted {
+  button {
+    color: var(--color-neutral-60);
+  }
+
+  button:hover {
+    color: var(--color-neutral-80);
+  }
+}
+
+.new {
+  background: var(--color-white);
+}
+
+.hub {
+  max-width: none;
+  transition: box-shadow 0.4s;
+
+  @include tablet-portrait {
+    border-radius: 8px;
+    grid-template-areas:
+      'flag text control'
+      'flag time control';
+    grid-template-columns: 62px auto auto;
+    grid-template-rows: auto 22px;
+    margin-bottom: 2px;
+    padding: 2px 12px 0 6px;
+
+    &:hover {
+      box-shadow: 0 9px 30px var(--color-black-opacity-14);
+      z-index: 2;
+    }
+  }
+
+  .text {
+    @include tablet-portrait {
+      align-items: center;
+      display: flex;
+      margin: 8px 0 0;
+      min-height: auto;
+    }
+
+    @include tablet-landscape {
+      @include font(14px, 21px, 400);
+      margin: 10px 0 2px;
+    }
+  }
+
+  .time {
+    justify-content: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .control {
+    align-items: center;
+    margin: 0;
+  }
+
+  .markRead {
+    @include tablet-portrait {
+      display: block;
+      flex-shrink: 0;
+      margin-right: 14px;
+      width: 75px;
+    }
+  }
+
+  .delete {
+    @include tablet-portrait {
+      display: block;
+      margin-right: 14px;
+    }
+  }
+}
+
+.hub.new {
+  @include tablet-portrait {
+    box-shadow: 0 4px 14px var(--color-black-opacity-1);
+
+    &:hover {
+      box-shadow: 0 9px 30px var(--color-black-opacity-14);
+    }
+  }
+}
