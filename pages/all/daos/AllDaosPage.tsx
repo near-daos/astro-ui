@@ -124,7 +124,7 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h1>All DAOs</h1>
+        <h1>All Communities</h1>
         <Button variant="black" size="small" onClick={handleCreateDao}>
           Create new DAO
         </Button>
