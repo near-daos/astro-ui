@@ -1,0 +1,19 @@
+@import '../common.module';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  max-width: 640px;
+}
+
+.inputsHolder {
+  column-gap: 128px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 190px);
+  margin-bottom: 8px;
+  row-gap: 35px;
+}
+
+.target {
+  margin-top: 24px;
+}

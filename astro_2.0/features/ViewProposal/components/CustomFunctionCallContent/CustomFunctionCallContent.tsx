@@ -19,7 +19,7 @@ interface CustomFunctionCallContentProps {
   deposit: string;
 }
 
-const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
+export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
   token,
   smartContractAddress,
   methodName,
@@ -86,5 +86,3 @@ const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
     </div>
   );
 };
-
-export default CustomFunctionCallContent;
