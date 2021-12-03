@@ -3,7 +3,7 @@ import {
   PluginCard,
   PluginCardProps,
 } from 'features/plugins/components/PluginCard/PluginCard';
-import { UsePluginPopup } from 'features/plugins/components/use-plugin-popup';
+import { UsePluginPopup } from 'features/plugins/components/UsePluginPopup';
 import { useModal } from 'components/modal/hooks';
 import { ScrollList } from 'astro_2.0/components/ScrollList';
 import { Button } from 'components/button/Button';

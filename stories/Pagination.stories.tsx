@@ -1,10 +1,10 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import PaginationComponent, { PaginationProps } from 'components/pagination';
+import { Pagination, PaginationProps } from 'components/Pagination';
 
 export default {
   title: 'Components/Pagination',
-  component: PaginationComponent,
+  component: Pagination,
   argTypes: {
     onPageChange: {
       action: 'changes',
@@ -22,7 +22,7 @@ export default {
 } as Meta;
 
 const Template: Story<PaginationProps> = (args): JSX.Element => (
-  <PaginationComponent {...args} />
+  <Pagination {...args} />
 );
 
 export const Default = Template.bind({});

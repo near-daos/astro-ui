@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import { VoteDetails, VoteDetailsProps } from 'components/vote-details';
+import { VoteDetails, VoteDetailsProps } from 'components/VoteDetails';
 
 export default {
   title: 'components/VoteDetails',

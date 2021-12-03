@@ -15,7 +15,7 @@
   transition: box-shadow 0.4s;
 
   @include tablet-landscape {
-    grid-gap: 24px;
+    grid-gap: 16px;
     grid-template-areas: 'general controls proposals';
     grid-template-columns: 2fr 1fr auto;
   }
@@ -32,7 +32,7 @@
   padding: 12px 12px 0;
 
   @include tablet-landscape {
-    padding: 8px 0 8px 36px;
+    padding: 8px 0 8px 16px;
   }
 
   > div:last-of-type {
@@ -44,7 +44,11 @@
   align-items: center;
   display: flex;
   justify-content: space-around;
-  padding: 0 16px;
+  padding: 0 5px;
+
+  @media (min-width: 375px) {
+    padding: 0 16px;
+  }
 
   @include tablet-portrait {
     padding: 0 32px;
@@ -56,7 +60,21 @@
   }
 
   > div {
-    margin-right: 4px;
+    @include tablet-landscape {
+      margin-right: 4px;
+    }
+
+    @include desktop {
+      margin-right: 6px;
+    }
+
+    @include large-desktop {
+      margin-right: 8px;
+    }
+  }
+
+  > div:last-child {
+    margin-right: 0;
   }
 }
 
@@ -94,6 +112,11 @@
 
   @include tablet-landscape {
     border-radius: 0 8px 8px 0;
+    padding: 0 12px;
+  }
+
+  @include large-desktop {
+    padding: 0 17px;
   }
 }
 
@@ -125,10 +148,13 @@
 
 .controlIcon {
   @include centralize;
-  border-radius: 4px;
+  border-radius: 6px;
+  width: 42px;
 
   > button {
     color: var(--color-neutral-60);
+    transition: 0.2s linear;
+    width: 100%;
   }
 
   svg {

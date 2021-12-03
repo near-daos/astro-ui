@@ -191,7 +191,7 @@ export function getVoteDetails(
   };
 
   const list =
-    proposal?.actions.reduce<Record<string, VoterDetail>>((res, item) => {
+    proposal?.actions?.reduce<Record<string, VoterDetail>>((res, item) => {
       const vote = proposal.votes[item.accountId];
 
       if (res[item.accountId] && vote) {

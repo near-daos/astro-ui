@@ -1,4 +1,4 @@
-import ExternalLink from 'components/cards/components/external-link/ExternalLink';
+import { ExternalLink } from 'components/ExternalLink';
 import React from 'react';
 import styles from './ProposalDescription.module.scss';
 

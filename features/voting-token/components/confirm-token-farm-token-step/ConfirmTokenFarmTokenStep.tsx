@@ -4,7 +4,7 @@ import { useWizardContext } from 'features/voting-token/components/voting-token-
 import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
-import { VoteDetails } from 'components/vote-details';
+import { VoteDetails } from 'components/VoteDetails';
 
 import styles from './confirm-token-farm-token-step.module.scss';
 

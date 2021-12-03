@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
-import { Popup } from 'components/popup/Popup';
+import { Popup } from 'components/Popup';
 import cn from 'classnames';
 import { Button } from 'components/button/Button';
 import { useRouter } from 'next/router';
@@ -42,7 +42,7 @@ export const DaoInfoCard: FC<DaoMembersProps> = ({
       })}
       ref={setRef}
     >
-      <Button variant="transparent" onClick={handleClick}>
+      <Button variant="transparent" onClick={handleClick} size="block">
         <div className={styles.label}>{title}</div>
         <div className={styles.value}>
           <span className={styles.bold}>{boldText}</span>

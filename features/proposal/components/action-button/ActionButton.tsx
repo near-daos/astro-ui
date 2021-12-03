@@ -1,7 +1,8 @@
 import React, { FC, useState } from 'react';
 
-import { Popup } from 'components/popup/Popup';
+import { Popup } from 'components/Popup';
 import { IconButton } from 'components/button/IconButton';
+import { IconTextButton } from 'components/button/IconTextButton';
 import { IconName } from 'components/Icon';
 
 import styles from './action-button.module.scss';
@@ -29,13 +30,18 @@ export const ActionButton: FC<ActionButtonProps> = ({
   return (
     <>
       <div ref={setRef} className={className}>
-        <IconButton
-          icon={iconName as IconName}
-          onClick={onClick}
-          className={styles.btn}
-          size={size}
-        />
-        {children}
+        {children ? (
+          <IconTextButton icon={iconName as IconName} onClick={onClick}>
+            {children}
+          </IconTextButton>
+        ) : (
+          <IconButton
+            icon={iconName as IconName}
+            onClick={onClick}
+            className={styles.btn}
+            size={size}
+          />
+        )}
       </div>
       {tooltip && (
         <Popup

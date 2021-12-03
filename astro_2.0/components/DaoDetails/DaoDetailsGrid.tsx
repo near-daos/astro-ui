@@ -41,6 +41,12 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
   } = dao;
   const fundsUSD = formatCurrency(parseFloat(funds) * nearPrice);
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>, url: string) => {
+    e.stopPropagation();
+    e.preventDefault();
+    router.push(url);
+  };
+
   return (
     <div className={styles.root}>
       <Link href={`/dao/${id}`}>
@@ -96,49 +102,33 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
 
             <section className={styles.controls}>
               <ActionButton
-                onClick={e => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  router.push(`/dao/${id}/governance/settings`);
-                }}
-                className={styles.controlIcon}
                 iconName="settings"
-                tooltip="DAO Settings"
-                tooltipPlacement="top"
-              />
-              <ActionButton
-                onClick={e => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  router.push(`/dao/${id}/treasury/nfts`);
-                }}
+                onClick={e => handleClick(e, `/dao/${id}/governance/settings`)}
                 className={styles.controlIcon}
+              >
+                Settings
+              </ActionButton>
+              <ActionButton
                 iconName="nfts"
-                tooltip="NFTs"
-                tooltipPlacement="top"
-              />
-              <ActionButton
-                onClick={e => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  router.push(`/dao/${id}/tasks/bounties`);
-                }}
+                onClick={e => handleClick(e, `/dao/${id}/treasury/nfts`)}
                 className={styles.controlIcon}
+              >
+                NFTs
+              </ActionButton>
+              <ActionButton
                 iconName="proposalBounty"
-                tooltip="Bounties"
-                tooltipPlacement="top"
-              />
-              <ActionButton
-                onClick={e => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  router.push(`/dao/${id}/tasks/polls`);
-                }}
+                onClick={e => handleClick(e, `/dao/${id}/tasks/bounties`)}
                 className={styles.controlIcon}
+              >
+                Bounties
+              </ActionButton>
+              <ActionButton
                 iconName="proposalPoll"
-                tooltip="Polls"
-                tooltipPlacement="top"
-              />
+                onClick={e => handleClick(e, `/dao/${id}/tasks/polls`)}
+                className={styles.controlIcon}
+              >
+                Polls
+              </ActionButton>
             </section>
 
             <section className={styles.proposals}>

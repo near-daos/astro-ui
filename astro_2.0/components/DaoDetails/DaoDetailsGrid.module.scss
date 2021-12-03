@@ -127,23 +127,94 @@
   @include centralize;
   justify-content: space-around;
   padding: 14px;
+
+  @media (min-width: 480px) {
+    justify-content: space-between;
+    padding: 14px 28px;
+  }
+
+  @include tablet-landscape {
+    justify-content: space-around;
+    padding: 14px;
+  }
+
+  @include astro-desktop {
+    justify-content: space-between;
+    padding: 14px 28px;
+  }
+
+  @media (min-width: 1150px) {
+    padding: 14px 20px;
+  }
+
+  @include large-desktop {
+    padding: 14px 28px;
+  }
 }
 
 .controlIcon {
   @include centralize;
-  border-radius: 4px;
+  border-radius: 6px;
+  transition: 0.2s linear;
+  width: 42px;
+
+  @media (min-width: 480px) {
+    border-radius: 8px;
+    width: auto;
+  }
+
+  @include tablet-landscape {
+    border-radius: 6px;
+    width: 42px;
+  }
+
+  @include astro-desktop {
+    border-radius: 8px;
+    width: auto;
+  }
 
   > button {
-    color: var(--color-neutral-60);
+    color: var(--color-neutral-70);
+    width: 100%;
+
+    @media (min-width: 480px) {
+      @include font(10px, 15px, 500);
+      flex-direction: row;
+      padding: 0 14px;
+    }
+
+    @include tablet-landscape {
+      @include font(8px, 12px, 400);
+      flex-direction: column;
+      padding: 0;
+    }
+
+    @include astro-desktop {
+      @include font(10px, 15px, 500);
+      flex-direction: row;
+      padding: 0 14px;
+    }
   }
 
   svg {
     width: 16px;
+
+    @media (min-width: 480px) {
+      margin: 0 6px 0 0;
+    }
+
+    @include tablet-landscape {
+      margin: 0 0 4px;
+    }
+
+    @include astro-desktop {
+      margin: 0 6px 0 0;
+    }
   }
 }
 
 .controlIcon:hover {
-  background-color: var(--color-neutral-20);
+  background-color: var(--color-neutral-30);
   color: var(--color-brand-black);
 
   > button {

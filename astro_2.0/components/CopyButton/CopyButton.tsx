@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent, useCallback, useState } from 'react';
 
-import { Popup } from 'components/popup/Popup';
+import { Popup } from 'components/Popup';
 import { IconButton } from 'components/button/IconButton';
 import { IconName } from 'components/Icon';
 

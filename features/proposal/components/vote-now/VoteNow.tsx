@@ -7,7 +7,7 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
-import { ProgressBar } from 'components/vote-details/components/progress-bar/ProgressBar';
+import { ProgressBar } from 'components/VoteDetails/components/progress-bar/ProgressBar';
 
 import { SputnikNearService } from 'services/sputnik';
 import { SputnikWalletError } from 'errors/SputnikWalletError';
