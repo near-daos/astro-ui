@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 import { useAuthContext } from 'context/AuthContext';
 
-import { AppFooter } from 'features/app-footer';
+import { AppFooter } from 'features/AppFooter';
 import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 import { NearIcon } from 'astro_2.0/components/AppHeader/components/NearIcon';
 import { Icon } from 'components/Icon';

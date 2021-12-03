@@ -2,7 +2,8 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 
 import { ProposalType } from 'types/proposal';
-import StatusPanel from 'components/cards/proposal-card/components/proposal-status-panel/ProposalStatusPanel';
+
+import { ProposalStatusPanel } from './components/ProposalStatusPanel';
 
 import styles from './PluginCard.module.scss';
 
@@ -19,7 +20,7 @@ export const PluginCard: FC<PluginCardProps> = ({
 }) => {
   return (
     <div className={cn(styles.root)}>
-      <StatusPanel type={ProposalType.FunctionCall} status="Approved" />
+      <ProposalStatusPanel type={ProposalType.FunctionCall} status="Approved" />
       <div className={styles.content}>
         <div className={styles.token}>{tokenName}</div>
         <div className={styles.created}>{created}</div>

@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 
-import { Popup } from 'components/popup/Popup';
+import { Popup } from 'components/Popup';
 import { IconButton } from 'components/button/IconButton';
 import { IconTextButton } from 'components/button/IconTextButton';
 import { IconName } from 'components/Icon';

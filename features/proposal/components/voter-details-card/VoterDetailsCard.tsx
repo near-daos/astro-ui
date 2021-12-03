@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 import { Icon, IconName } from 'components/Icon';
 import { Badge } from 'components/badge/Badge';
-import { ExplorerLink } from 'components/explorer-link';
+import { ExplorerLink } from 'components/ExplorerLink';
 import { Vote } from 'features/types';
 import { getBadgeVariant } from 'features/proposal/helpers';
 import { formatTimestampAsDate } from 'helpers/format';

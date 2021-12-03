@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/react';
 import {
   TransactionCard,
   TransactionCardProps,
-} from 'components/cards/transaction-card';
+} from 'components/cards/TransactionCard';
 import { TokenDeprecated } from 'types/token';
 
 export default {

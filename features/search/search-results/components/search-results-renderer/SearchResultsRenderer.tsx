@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import Tabs from 'components/tabs/Tabs';
+import { Tabs } from 'components/Tabs';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { DaosTabView } from 'features/search/search-results/components/daos-tab-view';
 import { ProposalsTabView } from 'features/search/search-results/components/proposals-tab-view';

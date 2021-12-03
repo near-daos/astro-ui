@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Meta } from '@storybook/react';
-import { Popup } from 'components/popup/Popup';
+import { Popup } from 'components/Popup';
 
 export default {
   title: 'Components/Popup',

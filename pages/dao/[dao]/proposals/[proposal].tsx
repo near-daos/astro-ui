@@ -14,7 +14,7 @@ import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { NavLink } from 'astro_2.0/components/NavLink';
 
-import { getScope } from 'components/cards/expanded-proposal-card/helpers';
+import { getProposalScope } from 'utils/getProposalScope';
 import { getVoteDetails } from 'features/vote-policy/helpers';
 
 import { VotersList } from 'features/proposal/components/voters-list';
@@ -45,7 +45,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
   members,
 }) => {
   const router = useRouter();
-  const scope = getScope(proposal?.kind.type);
+  const scope = getProposalScope(proposal?.kind.type);
   const [activeFilter, setActiveFilter] = useState<string | undefined>(
     undefined
   );
