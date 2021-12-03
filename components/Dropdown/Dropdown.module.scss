@@ -21,8 +21,13 @@
   padding: 8px !important;
   position: absolute;
   top: 34px;
+  visibility: hidden;
   width: 200px;
   z-index: 100;
+
+  &.open {
+    visibility: visible;
+  }
 }
 
 .item {
@@ -45,6 +50,7 @@
 
 .control {
   align-items: center;
+  cursor: pointer;
   display: flex;
 }
 
