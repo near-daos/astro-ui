@@ -15,7 +15,7 @@ function getDomain(data: ChartDataElement[]): [Date, Date] {
     return [new Date(), new Date()];
   }
 
-  const start = subHours(data[data.length - 1].x, 24);
+  const start = data[0].x;
   const end = data[data.length - 1].x;
 
   return [start, end];
@@ -25,6 +25,7 @@ export const useDomainControl = (data: ChartDataElement[]): DomainControl => {
   const [domain, setDomain] = useState<{ x?: Domain; y?: Domain }>({
     x: getDomain(data),
   });
+
   const [activeRange, setActiveRange] = useState(DOMAIN_RANGES.DAY);
   const [maxDomainValue, setMaxDomainValue] = useState(0);
 
@@ -41,26 +42,38 @@ export const useDomainControl = (data: ChartDataElement[]): DomainControl => {
 
       switch (range) {
         case DOMAIN_RANGES.DAY: {
+          const startDate = subHours(data[data.length - 1].x, 24);
+          const closestElement = data.find(item => item.x >= startDate);
+
           setDomain({
-            x: [subHours(data[data.length - 1].x, 24), data[data.length - 1].x],
+            x: [closestElement?.x ?? startDate, data[data.length - 1].x],
           });
           break;
         }
         case DOMAIN_RANGES.WEEK: {
+          const startDate = subDays(data[data.length - 1].x, 7);
+          const closestElement = data.find(item => item.x >= startDate);
+
           setDomain({
-            x: [subDays(data[data.length - 1].x, 7), data[data.length - 1].x],
+            x: [closestElement?.x ?? startDate, data[data.length - 1].x],
           });
           break;
         }
         case DOMAIN_RANGES.MONTH: {
+          const startDate = subMonths(data[data.length - 1].x, 1);
+          const closestElement = data.find(item => item.x >= startDate);
+
           setDomain({
-            x: [subMonths(data[data.length - 1].x, 1), data[data.length - 1].x],
+            x: [closestElement?.x ?? startDate, data[data.length - 1].x],
           });
           break;
         }
         case DOMAIN_RANGES.YEAR: {
+          const startDate = subYears(data[data.length - 1].x, 1);
+          const closestElement = data.find(item => item.x >= startDate);
+
           setDomain({
-            x: [subYears(data[data.length - 1].x, 1), data[data.length - 1].x],
+            x: [closestElement?.x ?? startDate, data[data.length - 1].x],
           });
           break;
         }
@@ -87,6 +100,10 @@ export const useDomainControl = (data: ChartDataElement[]): DomainControl => {
       setMaxDomainValue(filteredData[filteredData.length - 1].y);
     }
   }, [domain, data]);
+
+  useEffect(() => {
+    toggleDomain(DOMAIN_RANGES.DAY);
+  }, [toggleDomain]);
 
   useEffect(() => {
     onZoomDataChange();

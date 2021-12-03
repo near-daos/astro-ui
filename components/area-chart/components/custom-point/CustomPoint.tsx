@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
 import { usePopper } from 'react-popper';
 import { VictoryLabelProps } from 'victory';
@@ -18,18 +18,10 @@ interface CustomPointProps extends VictoryLabelProps {
 const CustomPoint: FC<CustomPointProps> = ({ x, y = 0, datum }) => {
   const [referenceElement, setReferenceElement] = React.useState(null);
   const [popperElement, setPopperElement] = React.useState(null);
-  const [show, setShow] = useState(false);
   const { styles, attributes } = usePopper(referenceElement, popperElement);
 
   return (
-    <g
-      onMouseEnter={() => {
-        if (!show) {
-          setShow(true);
-        }
-      }}
-      onMouseLeave={() => setShow(false)}
-    >
+    <g>
       <line
         x1={x}
         x2={x}
@@ -64,8 +56,7 @@ const CustomPoint: FC<CustomPointProps> = ({ x, y = 0, datum }) => {
         fill={CHART_MAIN_COLOR}
         ref={setReferenceElement as React.LegacyRef<SVGCircleElement>}
       />
-      {show &&
-        datum &&
+      {datum &&
         ReactDOM.createPortal(
           <div
             ref={setPopperElement as React.LegacyRef<HTMLDivElement>}
