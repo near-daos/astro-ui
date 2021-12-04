@@ -293,7 +293,7 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
 
   // Fallback for proposals made via CLI
   if (!content) {
-    switch (proposal.kind.type) {
+    switch (proposal?.kind?.type) {
       case ProposalType.AddBounty: {
         const bountyData = proposal.kind.bounty;
 
