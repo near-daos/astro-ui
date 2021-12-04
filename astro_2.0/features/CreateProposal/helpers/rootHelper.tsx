@@ -822,7 +822,7 @@ export function getValidationSchema(
           .typeError('Must be a valid number.')
           .positive()
           .min(0.01)
-          .max(0.25)
+          .max(0.3)
           .required('Required'),
       });
     }
@@ -856,7 +856,7 @@ export function getValidationSchema(
           .typeError('Must be a valid number.')
           .positive()
           .min(0.01)
-          .max(0.25)
+          .max(0.3)
           .required('Required'),
       });
     }
@@ -870,7 +870,7 @@ export function getValidationSchema(
           .typeError('Must be a valid number.')
           .positive()
           .min(0.01)
-          .max(0.25)
+          .max(0.3)
           .required('Required'),
       });
     }
@@ -884,7 +884,7 @@ export function getValidationSchema(
           .typeError('Must be a valid number.')
           .positive()
           .min(0.01)
-          .max(0.25)
+          .max(0.3)
           .required('Required'),
       });
     }
@@ -908,7 +908,7 @@ export function getValidationSchema(
           .typeError('Must be a valid number.')
           .positive()
           .min(0.01)
-          .max(0.25)
+          .max(0.3)
           .required('Required'),
       });
     }
@@ -925,7 +925,7 @@ export function getValidationSchema(
           .typeError('Must be a valid number.')
           .positive()
           .min(0.01)
-          .max(0.25)
+          .max(0.3)
           .required('Required'),
       });
     }
@@ -939,7 +939,7 @@ export function getValidationSchema(
           .typeError('Must be a valid number.')
           .positive()
           .min(0.01)
-          .max(0.25)
+          .max(0.3)
           .required('Required'),
       });
     }
@@ -960,7 +960,7 @@ export function getValidationSchema(
           .typeError('Must be a valid number.')
           .positive()
           .min(0.01)
-          .max(0.25)
+          .max(0.3)
           .required('Required'),
       });
     }
@@ -1002,7 +1002,7 @@ export function getValidationSchema(
           .typeError('Must be a valid number.')
           .positive()
           .min(0.01)
-          .max(0.25)
+          .max(0.3)
           .required('Required'),
       });
     }
@@ -1017,7 +1017,7 @@ export function getValidationSchema(
           .typeError('Must be a valid number.')
           .positive()
           .min(0.01)
-          .max(0.25)
+          .max(0.3)
           .required('Required'),
       });
     }
