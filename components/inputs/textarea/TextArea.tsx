@@ -1,6 +1,6 @@
 import { useId } from '@reach/auto-id';
 import classNames from 'classnames';
-import inputStyles from 'components/inputs/input/input.module.scss';
+import inputStyles from 'components/inputs/input/Input.module.scss';
 import { Property } from 'csstype';
 import React, { useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';

@@ -3,7 +3,7 @@ import { Property } from 'csstype';
 import { useId } from '@reach/auto-id';
 import React, { CSSProperties, ReactNode } from 'react';
 
-import styles from './input.module.scss';
+import styles from './Input.module.scss';
 
 export interface InputProps
   extends Omit<React.HTMLProps<HTMLInputElement>, 'size' | 'label'> {

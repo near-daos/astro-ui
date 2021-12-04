@@ -1,3 +1,1 @@
-import CustomFunctionCallContent from './CustomFunctionCallContent';
-
-export default CustomFunctionCallContent;
+export * from './CustomFunctionCallContent';

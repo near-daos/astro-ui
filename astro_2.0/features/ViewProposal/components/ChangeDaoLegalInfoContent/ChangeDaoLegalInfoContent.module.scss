@@ -1,0 +1,25 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  max-width: 640px;
+}
+
+.dataHolder {
+  $column-width: 190px;
+
+  column-gap: 128px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, $column-width);
+  margin-bottom: 8px;
+  row-gap: 35px;
+
+  .legalLink {
+    max-width: $column-width;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.target {
+  margin-top: 24px;
+}

@@ -45,6 +45,7 @@ export enum ProposalVariant {
   ProposeChangeDaoPurpose = 'ProposeChangeDaoPurpose',
   ProposeChangeDaoLinks = 'ProposeChangeDaoLinks',
   ProposeChangeDaoFlag = 'ProposeChangeDaoFlag',
+  ProposeChangeDaoLegalInfo = 'ProposeChangeDaoLegalInfo',
   ProposeChangeVotingPolicy = 'ProposeChangeVotingPolicy',
   ProposeChangeBonds = 'ProposeChangeBonds',
   ProposeCreateGroup = 'ProposeCreateGroup',
