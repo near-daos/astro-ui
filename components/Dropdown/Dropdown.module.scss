@@ -16,6 +16,7 @@
   border-radius: 8px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   color: var(--color-neutral-80);
+  display: none;
   list-style: none;
   overflow-y: auto;
   padding: 8px !important;
@@ -23,6 +24,10 @@
   top: 34px;
   width: 200px;
   z-index: 100;
+
+  &.open {
+    display: block;
+  }
 }
 
 .item {
@@ -45,6 +50,7 @@
 
 .control {
   align-items: center;
+  cursor: pointer;
   display: flex;
 }
 
