@@ -461,6 +461,13 @@ export function getFormInitialValues(
         gas: DEFAULT_PROPOSAL_GAS,
       };
     }
+    case ProposalVariant.ProposeChangeDaoLegalInfo: {
+      return {
+        details: '',
+        externalUrl: '',
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
     case ProposalVariant.ProposePoll: {
       return {
         details: '',
@@ -829,7 +836,7 @@ const gasValidation = yup
   .typeError('Must be a valid number.')
   .positive()
   .min(0.01)
-  .max(0.25)
+  .max(0.3)
   .required('Required');
 
 export function getValidationSchema(
@@ -964,6 +971,7 @@ export function getValidationSchema(
         legalLink: yup.string().matches(VALID_URL_REGEXP, {
           message: 'Enter correct url!',
         }),
+        gas: gasValidation,
       });
     }
     case ProposalVariant.ProposeCustomFunctionCall: {

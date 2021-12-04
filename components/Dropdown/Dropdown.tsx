@@ -77,7 +77,7 @@ export const Dropdown = <T,>(
 
   function renderList() {
     if (isOpen) {
-      const itemEls = options.map((item, index) => {
+      return options.map((item, index) => {
         const { value: iValue, label, disabled } = item;
 
         const itemProps = getItemProps({ item, index, disabled });
@@ -92,12 +92,6 @@ export const Dropdown = <T,>(
           </li>
         );
       });
-
-      return (
-        <ul className={styles.menu} {...getMenuProps()}>
-          {itemEls}
-        </ul>
-      );
     }
 
     return null;
@@ -114,7 +108,12 @@ export const Dropdown = <T,>(
           })}
         />
       </Title>
-      {renderList()}
+      <ul
+        className={cn(styles.menu, { [styles.open]: isOpen })}
+        {...getMenuProps()}
+      >
+        {renderList()}
+      </ul>
     </div>
   );
 };
