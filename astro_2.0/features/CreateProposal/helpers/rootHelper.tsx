@@ -791,6 +791,14 @@ function validateUserAccount(
   return SputnikNearService.nearAccountExist(value || '');
 }
 
+const validateGas = yup
+  .number()
+  .typeError('Must be a valid number.')
+  .positive()
+  .min(0.01)
+  .max(0.3)
+  .required('Required');
+
 export function getValidationSchema(
   proposalVariant?: ProposalVariant
 ): yup.AnySchema {
@@ -817,13 +825,7 @@ export function getValidationSchema(
           ),
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
-        gas: yup
-          .number()
-          .typeError('Must be a valid number.')
-          .positive()
-          .min(0.01)
-          .max(0.25)
-          .required('Required'),
+        gas: validateGas,
       });
     }
     case ProposalVariant.ProposeCreateBounty: {
@@ -851,13 +853,7 @@ export function getValidationSchema(
           .required('Required'),
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
-        gas: yup
-          .number()
-          .typeError('Must be a valid number.')
-          .positive()
-          .min(0.01)
-          .max(0.25)
-          .required('Required'),
+        gas: validateGas,
       });
     }
     case ProposalVariant.ProposeChangeDaoName: {
@@ -865,13 +861,7 @@ export function getValidationSchema(
         displayName: yup.string().min(2).required('Required'),
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
-        gas: yup
-          .number()
-          .typeError('Must be a valid number.')
-          .positive()
-          .min(0.01)
-          .max(0.25)
-          .required('Required'),
+        gas: validateGas,
       });
     }
     case ProposalVariant.ProposeChangeDaoPurpose: {
@@ -879,13 +869,7 @@ export function getValidationSchema(
         purpose: yup.string().max(500).required('Required'),
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
-        gas: yup
-          .number()
-          .typeError('Must be a valid number.')
-          .positive()
-          .min(0.01)
-          .max(0.25)
-          .required('Required'),
+        gas: validateGas,
       });
     }
     case ProposalVariant.ProposeCreateGroup:
@@ -903,13 +887,7 @@ export function getValidationSchema(
           .required('Required'),
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
-        gas: yup
-          .number()
-          .typeError('Must be a valid number.')
-          .positive()
-          .min(0.01)
-          .max(0.25)
-          .required('Required'),
+        gas: validateGas,
       });
     }
     case ProposalVariant.ProposeChangeBonds: {
@@ -920,13 +898,7 @@ export function getValidationSchema(
         proposalExpireTime: yup.string().required('Required'),
         claimBountyBond: yup.string().required('Required'),
         unclaimBountyTime: yup.string().required('Required'),
-        gas: yup
-          .number()
-          .typeError('Must be a valid number.')
-          .positive()
-          .min(0.01)
-          .max(0.25)
-          .required('Required'),
+        gas: validateGas,
       });
     }
     case ProposalVariant.ProposeChangeVotingPolicy: {
@@ -934,13 +906,7 @@ export function getValidationSchema(
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
         amount: yup.string().required('Required'),
-        gas: yup
-          .number()
-          .typeError('Must be a valid number.')
-          .positive()
-          .min(0.01)
-          .max(0.25)
-          .required('Required'),
+        gas: validateGas,
       });
     }
     case ProposalVariant.ProposeChangeDaoFlag: {
@@ -955,13 +921,7 @@ export function getValidationSchema(
           .mixed()
           .test('Required', 'Required', requiredImg)
           .test('fileSize', getImgValidationError, validateImgSize),
-        gas: yup
-          .number()
-          .typeError('Must be a valid number.')
-          .positive()
-          .min(0.01)
-          .max(0.25)
-          .required('Required'),
+        gas: validateGas,
       });
     }
     case ProposalVariant.ProposeCustomFunctionCall: {
@@ -997,13 +957,7 @@ export function getValidationSchema(
           .max(0.3)
           .min(0.01)
           .required('Required'),
-        gas: yup
-          .number()
-          .typeError('Must be a valid number.')
-          .positive()
-          .min(0.01)
-          .max(0.25)
-          .required('Required'),
+        gas: validateGas,
       });
     }
 
@@ -1012,13 +966,7 @@ export function getValidationSchema(
       return yup.object().shape({
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
-        gas: yup
-          .number()
-          .typeError('Must be a valid number.')
-          .positive()
-          .min(0.01)
-          .max(0.25)
-          .required('Required'),
+        gas: validateGas,
       });
     }
   }
