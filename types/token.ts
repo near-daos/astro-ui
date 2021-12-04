@@ -36,6 +36,20 @@ export type NftTokenResponse = {
     updatedAt: string;
     approvedAccountIds: [string];
   };
+  contract: {
+    id: string;
+    spec: string;
+    name: string;
+    symbol: string;
+    icon: string;
+    baseUri: string;
+    reference: string;
+    referenceHash: string;
+  };
+};
+
+export type GetNFTTokensResponse = {
+  data: NftTokenResponse[];
 };
 
 export type NftToken = {
@@ -43,6 +57,7 @@ export type NftToken = {
   uri: string;
   description: string;
   title: string;
+  isExternalReference: boolean;
 };
 
 export type TokenResponse = {

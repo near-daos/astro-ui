@@ -1,6 +1,8 @@
 @import 'styles/mixins';
 
 .navLabel {
+  white-space: nowrap;
+
   @media screen and (max-width: 375px) {
     display: none;
   }

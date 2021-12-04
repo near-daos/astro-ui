@@ -1,8 +1,9 @@
 import React, { ReactNode } from 'react';
 import Decimal from 'decimal.js';
 
-import { Proposal, ProposalType, ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
+import { DaoRole } from 'types/role';
+import { Proposal, ProposalType, ProposalVariant } from 'types/proposal';
 
 import { getInitialData } from 'features/vote-policy/helpers';
 
@@ -21,9 +22,10 @@ import { ChangeBondsContent } from 'astro_2.0/features/ViewProposal/components/C
 import { CreateGroupContent } from 'astro_2.0/features/ViewProposal/components/CreateGroupContent';
 import { AddMemberToGroupContent } from 'astro_2.0/features/ViewProposal/components/AddMemberToGroupContent';
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/ViewProposal/components/RemoveMemberFromGroupContent';
-import { DaoRole } from 'types/role';
+import { CustomFunctionCallContent } from 'astro_2.0/features/ViewProposal/components/CustomFunctionCallContent';
+import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/ViewProposal//components/ChangeDaoLegalInfoContent';
+
 import { getDistanceFromNow } from 'astro_2.0/components/BountyCard/helpers';
-import CustomFunctionCallContent from 'astro_2.0/features/ViewProposal/components/CustomFunctionCallContent';
 
 export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
   let content;
@@ -121,6 +123,25 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
           <ChangeDaoFlagContent daoId={dao.id} cover={cover} logo={logo} />
         );
         break;
+      }
+
+      break;
+    }
+    case ProposalVariant.ProposeChangeDaoLegalInfo: {
+      if (proposal.kind.type === ProposalType.ChangeConfig) {
+        const meta = proposal.kind.config.metadata
+          ? fromBase64ToMetadata(proposal.kind.config.metadata)
+          : null;
+
+        const { legalLink, legalStatus } = meta?.legal || {};
+
+        content = (
+          <ChangeDaoLegalInfoContent
+            daoId={dao.id}
+            legalLink={legalLink}
+            legalStatus={legalStatus}
+          />
+        );
       }
 
       break;

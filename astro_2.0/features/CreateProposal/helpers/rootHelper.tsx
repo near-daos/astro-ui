@@ -18,9 +18,9 @@ import {
   ProposalVariant,
 } from 'types/proposal';
 import {
-  LinksFormData,
-  CreateBountyInput,
   BondsAndDeadlinesData,
+  CreateBountyInput,
+  LinksFormData,
 } from 'astro_2.0/features/CreateProposal/types';
 import { DAO, Member } from 'types/dao';
 import { IGroupForm } from 'features/groups/types';
@@ -29,6 +29,7 @@ import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSele
 import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
 
 // Constants
+import { VALID_URL_REGEXP } from 'constants/regexp';
 import { DEFAULT_PROPOSAL_GAS, YOKTO_NEAR } from 'services/sputnik/constants';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
@@ -47,6 +48,7 @@ import { ChangeDaoNameContent } from 'astro_2.0/features/CreateProposal/componen
 import { ChangeDaoFlagContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoFlagContent';
 import { ChangeDaoPurposeContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoPurposeContent';
 import { AddMemberToGroupContent } from 'astro_2.0/features/CreateProposal/components/AddMemberToGroupContent';
+import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoLegalInfoContent';
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/components/RemoveMemberFromGroupContent';
 
 // Helpers & Utils
@@ -65,9 +67,9 @@ import {
   getCustomFunctionCallProposal,
 } from 'astro_2.0/features/CreateProposal/proposalObjectHelpers';
 import {
+  getImgValidationError,
   requiredImg,
   validateImgSize,
-  getImgValidationError,
 } from 'helpers/imageValidators';
 
 // Services
@@ -77,8 +79,8 @@ import awsUploader from 'services/AwsUploader/AwsUploader';
 // Local helpers
 import {
   getAddBountyProposal,
-  getCompleteBountyProposal,
   getChangeBondDeadlinesProposal,
+  getCompleteBountyProposal,
 } from './bountiesHelpers';
 
 const CustomFunctionCallContent = dynamic(
@@ -180,6 +182,11 @@ export function getProposalTypesOptions(): {
         {
           label: 'Propose to Change DAO Flag and Logo',
           value: ProposalVariant.ProposeChangeDaoFlag,
+          group: 'Change Config',
+        },
+        {
+          label: 'Change DAO Legal Status and Doc',
+          value: ProposalVariant.ProposeChangeDaoLegalInfo,
           group: 'Change Config',
         },
       ],
@@ -343,6 +350,9 @@ export function getFormContentNode(
     }
     case ProposalVariant.ProposeChangeDaoPurpose: {
       return <ChangeDaoPurposeContent daoId={dao.id} />;
+    }
+    case ProposalVariant.ProposeChangeDaoLegalInfo: {
+      return <ChangeDaoLegalInfoContent daoId={dao.id} />;
     }
     case ProposalVariant.ProposePoll: {
       return null;
@@ -723,6 +733,28 @@ export async function getNewProposalObject(
         dao.policy.proposalBond
       );
     }
+    case ProposalVariant.ProposeChangeDaoLegalInfo: {
+      const newDaoConfig: DaoConfig = {
+        name: dao.name,
+        purpose: dao.description,
+        metadata: fromMetadataToBase64({
+          ...getFlagsParamsForMetadata(dao),
+          links: dao.links,
+          displayName: dao.displayName,
+          legal: {
+            legalStatus: data.legalStatus as string,
+            legalLink: data.legalLink as string,
+          },
+        }),
+      };
+
+      return getChangeConfigProposal(
+        dao.id,
+        newDaoConfig,
+        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
+        dao.policy.proposalBond
+      );
+    }
     case ProposalVariant.ProposeCustomFunctionCall: {
       return getCustomFunctionCallProposal(
         dao,
@@ -748,7 +780,8 @@ export function mapProposalVariantToProposalType(
     case ProposalVariant.ProposeChangeDaoName:
     case ProposalVariant.ProposeChangeDaoPurpose:
     case ProposalVariant.ProposeChangeDaoLinks:
-    case ProposalVariant.ProposeChangeDaoFlag: {
+    case ProposalVariant.ProposeChangeDaoFlag:
+    case ProposalVariant.ProposeChangeDaoLegalInfo: {
       return ProposalType.ChangeConfig;
     }
     case ProposalVariant.ProposeChangeVotingPolicy:
@@ -922,6 +955,15 @@ export function getValidationSchema(
           .test('Required', 'Required', requiredImg)
           .test('fileSize', getImgValidationError, validateImgSize),
         gas: gasValidation,
+      });
+    }
+    case ProposalVariant.ProposeChangeDaoLegalInfo: {
+      return yup.object().shape({
+        details: yup.string().required('Required'),
+        legalStatus: yup.string().max(50),
+        legalLink: yup.string().matches(VALID_URL_REGEXP, {
+          message: 'Enter correct url!',
+        }),
       });
     }
     case ProposalVariant.ProposeCustomFunctionCall: {

@@ -45,6 +45,7 @@ export enum ProposalVariant {
   ProposeChangeDaoPurpose = 'ProposeChangeDaoPurpose',
   ProposeChangeDaoLinks = 'ProposeChangeDaoLinks',
   ProposeChangeDaoFlag = 'ProposeChangeDaoFlag',
+  ProposeChangeDaoLegalInfo = 'ProposeChangeDaoLegalInfo',
   ProposeChangeVotingPolicy = 'ProposeChangeVotingPolicy',
   ProposeChangeBonds = 'ProposeChangeBonds',
   ProposeCreateGroup = 'ProposeCreateGroup',
@@ -148,7 +149,7 @@ export type Proposal = {
   createdAt: string;
   daoDetails: DaoDetails;
   link: string;
-  dao: DAO;
+  dao: DAO | null;
   proposalVariant: ProposalVariant;
   actions: ProposalActionData[];
 };

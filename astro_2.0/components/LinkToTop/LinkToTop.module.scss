@@ -1,7 +1,7 @@
 @import 'styles/mixins';
 
 .root {
-  bottom: 80px;
+  bottom: 140px;
   opacity: 0;
   pointer-events: none;
   position: fixed;
@@ -11,7 +11,6 @@
   z-index: 9999;
 
   @include desktop {
-    bottom: 140px;
     right: 40px;
   }
 
