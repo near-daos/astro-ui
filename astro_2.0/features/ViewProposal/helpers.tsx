@@ -253,7 +253,7 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               methodName={data.methodName}
-              json={json}
+              json={JSON.stringify(json, null, 2)}
               deposit={data.deposit}
             />
           );
@@ -272,7 +272,7 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
 
   // Fallback for proposals made via CLI
   if (!content) {
-    switch (proposal.kind.type) {
+    switch (proposal?.kind?.type) {
       case ProposalType.AddBounty: {
         const bountyData = proposal.kind.bounty;
 

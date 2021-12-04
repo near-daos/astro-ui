@@ -1,7 +1,6 @@
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { CreateProposalParams } from 'types/proposal';
 import { DAO } from 'types/dao';
-import { GAS_VALUE } from 'services/sputnik/SputnikNearService/services/SputnikDaoService';
 import BN from 'bn.js';
 
 export type CustomFunctionCallInput = {
@@ -12,6 +11,7 @@ export type CustomFunctionCallInput = {
   details: string;
   externalUrl: string;
   token: string;
+  actionsGas: number;
 };
 
 export function getCustomFunctionCallProposal(
@@ -25,9 +25,11 @@ export function getCustomFunctionCallProposal(
     deposit,
     details,
     externalUrl,
+    actionsGas,
   } = data;
 
   const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const args = Buffer.from(json).toString('base64');
 
   return {
     daoId: dao.id,
@@ -38,9 +40,9 @@ export function getCustomFunctionCallProposal(
       actions: [
         {
           method_name: methodName,
-          args: Buffer.from(JSON.stringify(json)).toString('base64'),
+          args,
           deposit: new BN(deposit).toString(),
-          gas: GAS_VALUE.toString(),
+          gas: new BN(actionsGas * 10 ** 15).toString(),
         },
       ],
     },
