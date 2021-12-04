@@ -180,6 +180,7 @@ export interface CreateProposalParams {
     | Vote
     | FunctionCall;
   bond: string;
+  gas?: number;
 }
 
 interface AddBounty {

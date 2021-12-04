@@ -41,6 +41,7 @@ export interface DAOFormValues extends IDaoCreateForm {
   voting: DAOVotingPowerType;
   legalStatus?: string;
   legalLink?: string;
+  gas: number;
 }
 
 export type DaoSubjectInfo = {
