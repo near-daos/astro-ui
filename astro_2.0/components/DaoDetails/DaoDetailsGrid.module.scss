@@ -75,15 +75,18 @@
 
 .name {
   @include font(28px, 28px, 700);
+  @include ellipse-text;
   font-family: 'Roboto', 'sans-serif';
 
   @include astro-mobile {
     font-size: 20px;
-    > div {
-      @include ellipse-text;
-      max-width: 180px;
-    }
   }
+}
+
+.nameTooltip {
+  display: block;
+  max-width: 200px;
+  white-space: normal;
 }
 
 .address {

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import Link from 'next/link';
 import TextTruncate from 'react-text-truncate';
 import { useRouter } from 'next/router';
+import { useMeasure } from 'react-use';
 
 import { DAO } from 'types/dao';
 
@@ -11,6 +12,7 @@ import { ActionButton } from 'features/proposal/components/action-button';
 import { formatCurrency } from 'utils/formatCurrency';
 import * as Typography from 'components/Typography';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
 
 import cn from 'classnames';
 import styles from './DaoDetailsGrid.module.scss';
@@ -47,8 +49,10 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
     router.push(url);
   };
 
+  const [measureRef, { width }] = useMeasure<HTMLDivElement>();
+
   return (
-    <div className={styles.root}>
+    <div className={styles.root} ref={measureRef}>
       <Link href={`/dao/${id}`}>
         <a className={styles.content}>
           <div>
@@ -57,9 +61,23 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                 <FlagRenderer flag={flagCover} size="sm" fallBack={oldFlag} />
               </div>
               <div className={styles.title}>
-                <div className={styles.name}>
-                  <div className={styles.displayName}>{displayName || id}</div>
-                </div>
+                <Tooltip
+                  placement="top"
+                  overlay={
+                    <span className={styles.nameTooltip}>
+                      {displayName || id}
+                    </span>
+                  }
+                >
+                  <div
+                    className={styles.name}
+                    style={{
+                      maxWidth: width - 142,
+                    }}
+                  >
+                    {displayName || id}
+                  </div>
+                </Tooltip>
                 <div className={styles.address}>
                   <div className={styles.addressId}>{id}</div>
                   <CopyButton
