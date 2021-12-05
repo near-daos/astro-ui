@@ -78,7 +78,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
                   type="number"
                   min={0.01}
                   step={0.01}
-                  max={0.25}
+                  max={0.3}
                   isBorderless
                   size="block"
                   {...gasInputProps}
