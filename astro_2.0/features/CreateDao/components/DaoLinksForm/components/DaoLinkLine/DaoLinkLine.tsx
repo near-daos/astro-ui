@@ -4,9 +4,9 @@ import { useFormContext } from 'react-hook-form';
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 
 import { Icon } from 'components/Icon';
-import { Input } from 'components/inputs/input/Input';
+import { Input } from 'components/inputs/Input';
 import { IconButton } from 'components/button/IconButton';
-import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
+import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 
 import styles from './DaoLinkLine.module.scss';
 

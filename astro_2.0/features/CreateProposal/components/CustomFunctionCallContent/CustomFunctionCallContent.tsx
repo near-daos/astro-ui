@@ -6,8 +6,8 @@ import ace from 'ace-builds';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
 
-import { Input } from 'components/inputs/input/Input';
-import { DropdownSelect } from 'components/inputs/select/DropdownSelect';
+import { Input } from 'components/inputs/Input';
+import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
 import { Icon } from 'components/Icon';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 

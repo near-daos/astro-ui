@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Input } from 'components/inputs/input/Input';
-import { Group } from 'features/vote-policy/components/group';
+import { Input } from 'components/inputs/Input';
+import { Group } from 'features/vote-policy/components/Group';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 
 import styles from './ChangePolicyContent.module.scss';

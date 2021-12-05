@@ -16,7 +16,7 @@ import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import { DaoContext } from 'types/context';
-import { NoResultsView } from 'features/no-results-view';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import styles from './Polls.module.scss';
 
 export interface PollsPageProps {

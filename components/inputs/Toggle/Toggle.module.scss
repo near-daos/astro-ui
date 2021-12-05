@@ -1,0 +1,19 @@
+.root {
+  align-items: center;
+  display: flex;
+
+  input[type='checkbox'] {
+    display: none;
+    position: absolute;
+  }
+
+  label {
+    color: var(--color-primary-60);
+    display: inline-flex;
+    font-size: 1em;
+    font-weight: 500;
+    gap: 16px;
+    line-height: 22px;
+    white-space: nowrap;
+  }
+}

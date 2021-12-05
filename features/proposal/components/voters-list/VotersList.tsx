@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { VoterDetail } from 'features/types';
 import { VoterDetailsCard } from 'features/proposal/components/voter-details-card';
-import { NoResultsView } from 'features/no-results-view';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import styles from './voters-list.module.scss';
 

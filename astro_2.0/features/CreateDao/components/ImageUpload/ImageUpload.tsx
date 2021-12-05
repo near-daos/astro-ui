@@ -7,7 +7,7 @@ import React, { PropsWithRef, RefObject, useState } from 'react';
 import { DaoImageType } from 'astro_2.0/features/CreateDao/components/types';
 
 import { Icon } from 'components/Icon';
-import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
+import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 
 import { getImageFromImageFileList } from 'utils/getImageFromImageFileList';
 

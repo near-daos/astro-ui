@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/react';
 import {
   PluginCard,
   PluginCardProps,
-} from 'features/plugins/components/PluginCard';
+} from 'astro_2.0/features/pages/plugins/PluginCard';
 
 export default {
   title: 'Features/Plugins/Cards/PluginCard',

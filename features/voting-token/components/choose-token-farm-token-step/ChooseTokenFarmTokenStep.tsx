@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 import { useWizardContext } from 'features/voting-token/components/voting-token-wizard/helpers';
 import { Button } from 'components/button/Button';
-import { Select } from 'components/inputs/select/Select';
+import { Select } from 'components/inputs/selects/Select';
 
 import styles from './choose-token-farm-token-step.module.scss';
 

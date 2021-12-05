@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox } from 'components/inputs/checkbox/Checkbox';
+import { Checkbox } from 'components/inputs/Checkbox';
 import { Meta } from '@storybook/react';
 
 export default {

@@ -1,8 +1,8 @@
 import React, { VFC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { Input } from 'components/inputs/input/Input';
-import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
+import { Input } from 'components/inputs/Input';
+import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 
 import styles from './DaoLegalStatus.module.scss';
 

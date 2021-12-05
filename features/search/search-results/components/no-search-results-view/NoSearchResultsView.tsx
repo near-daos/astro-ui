@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { NoResultsView } from 'features/no-results-view';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 interface NoSearchResultsViewProps {
   query?: string;

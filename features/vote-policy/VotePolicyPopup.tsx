@@ -1,13 +1,18 @@
-import React, { useCallback, useState } from 'react';
-import { Modal } from 'components/modal';
 import { useList } from 'react-use';
-import { Policies } from 'features/vote-policy/components/policies';
-import styles from 'features/vote-policy/vote-policy-popup.module.scss';
-import { Button } from 'components/button/Button';
+import React, { useCallback, useState } from 'react';
+
 import { TGroup } from 'types/dao';
+
+import { Modal } from 'components/modal';
+import { Button } from 'components/button/Button';
+import { Policies } from 'features/vote-policy/components/policies';
+import { DropdownMultiSelect } from 'components/inputs/selects/DropdownMultiSelect';
+
 import { getNextGroup, PolicyProps } from 'features/vote-policy/helpers';
-import { DropdownMultiSelect } from 'components/inputs/select/DropdownMultiSelect';
-import { Group } from './components/group/Group';
+
+import { Group } from './components/Group';
+
+import styles from './VotePolicyPopup.module.scss';
 
 export interface VotePolicyPopupProps {
   isOpen: boolean;

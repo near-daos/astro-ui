@@ -16,7 +16,7 @@ import { Proposal, ProposalCategories, ProposalStatuses } from 'types/proposal';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 
 // Components
-import { NoResultsView } from 'features/no-results-view';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Feed as FeedList } from 'astro_2.0/components/Feed';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { HeaderWithFilter } from 'astro_2.0/features/dao/HeaderWithFilter';

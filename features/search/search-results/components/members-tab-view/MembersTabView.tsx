@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 
-import { NoResultsView } from 'features/no-results-view';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 

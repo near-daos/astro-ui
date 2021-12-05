@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import { AppFooter, AppFooterProps } from 'features/AppFooter';
+import { AppFooter, AppFooterProps } from 'astro_2.0/components/AppFooter';
 
 export default {
   title: 'features/AppFooter',

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 import { useWizardContext } from 'features/voting-token/components/voting-token-wizard/helpers';
-import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
+import { ExpandableDetails } from 'astro_2.0/components/ExpandableDetails';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { VoteDetails } from 'components/VoteDetails';

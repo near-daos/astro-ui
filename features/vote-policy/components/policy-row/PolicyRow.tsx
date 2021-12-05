@@ -1,9 +1,9 @@
 import styles from 'features/vote-policy/components/common.module.scss';
-import { DropdownSelect } from 'components/inputs/select/DropdownSelect';
-import { Group } from 'features/vote-policy/components/group';
-import { Select } from 'components/inputs/select/Select';
+import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
+import { Group } from 'features/vote-policy/components/Group';
+import { Select } from 'components/inputs/selects/Select';
 import classNames from 'classnames';
-import { Input } from 'components/inputs/input/Input';
+import { Input } from 'components/inputs/Input';
 import { IconButton } from 'components/button/IconButton';
 import React, { useCallback, useState } from 'react';
 

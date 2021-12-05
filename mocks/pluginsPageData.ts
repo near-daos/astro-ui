@@ -1,5 +1,5 @@
-import { PluginCardProps } from 'features/plugins/components/PluginCard/PluginCard';
-import { IWizardInitialData } from 'features/plugins/components/UsePluginPopup/types';
+import { PluginCardProps } from 'astro_2.0/features/pages/plugins/PluginCard/PluginCard';
+import { IWizardInitialData } from 'astro_2.0/features/pages/plugins/UsePluginPopup/types';
 
 const generatePlugin = (tokenName: string, created: string) => ({
   tokenName,

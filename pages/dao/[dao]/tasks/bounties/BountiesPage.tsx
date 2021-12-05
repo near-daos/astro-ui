@@ -23,7 +23,7 @@ import useQuery from 'hooks/useQuery';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { DaoContext } from 'types/context';
-import { NoResultsView } from 'features/no-results-view';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import { Bounty, BountyStatus } from 'types/bounties';
 import styles from './Bounties.module.scss';

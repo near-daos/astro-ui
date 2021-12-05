@@ -2,8 +2,8 @@ import React, { CSSProperties, FC, useCallback, useRef, useState } from 'react';
 import {
   PluginCard,
   PluginCardProps,
-} from 'features/plugins/components/PluginCard/PluginCard';
-import { UsePluginPopup } from 'features/plugins/components/UsePluginPopup';
+} from 'astro_2.0/features/pages/plugins/PluginCard/PluginCard';
+import { UsePluginPopup } from 'astro_2.0/features/pages/plugins/UsePluginPopup';
 import { useModal } from 'components/modal/hooks';
 import { ScrollList } from 'astro_2.0/components/ScrollList';
 import { Button } from 'components/button/Button';

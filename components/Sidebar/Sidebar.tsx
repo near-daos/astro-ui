@@ -14,7 +14,7 @@ import { useAuthContext } from 'context/AuthContext';
 
 import { Logo } from 'components/Logo';
 import { Icon } from 'components/Icon';
-import { AppFooter } from 'features/AppFooter';
+import { AppFooter } from 'astro_2.0/components/AppFooter';
 import { NavItem } from './components/NavItem';
 
 import styles from './Sidebar.module.scss';

@@ -4,12 +4,12 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
+import { ExpandableDetails } from 'astro_2.0/components/ExpandableDetails';
 
-import { Input } from 'components/inputs/input/Input';
+import { Input } from 'components/inputs/Input';
 import { Button } from 'components/button/Button';
-import { TextArea } from 'components/inputs/textarea/TextArea';
-import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
+import { TextArea } from 'components/inputs/TextArea';
+import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 
 import { VoteDetails } from 'components/VoteDetails';
 
