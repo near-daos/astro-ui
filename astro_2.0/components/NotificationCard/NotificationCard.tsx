@@ -56,7 +56,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   const iconType: IconName =
     status !== 'Default' ? `noteType${type}` : `noteType${type}Default`;
 
-  const [isNotificationRead, setNotificationRead] = useToggle(isRead);
+  const [isNotificationRead, setNotificationRead] = useState(isRead);
 
   const handleMarkReadClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -132,52 +132,55 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
             </Button>
           )}
         </div>
-        <div
-          className={styles.delete}
-          onMouseOver={onDeleteMouseOver}
-          onMouseOut={onDeleteMouseOut}
-          onFocus={onDeleteMouseOver}
-          onBlur={onDeleteMouseOut}
-        >
-          {isDeleteAvailable ? (
-            <ActionButton
-              size="medium"
-              iconName={
-                isDeleteHovered ? 'noteDeleteHover' : 'noteDeleteDefault'
-              }
-              tooltip="Delete"
-              onClick={e => handleDeleteClick(e)}
-              className={styles.deleteIcon}
-            />
-          ) : (
-            <ActionButton
-              size="medium"
-              iconName="noteDeleteDisabled"
-              className={styles.deleteIcon}
-              disabled
-            />
-          )}
-        </div>
-        <div className={styles.mute}>
-          {isMuteAvailable ? (
-            <ActionButton
-              size="medium"
-              iconName={isSoundMuted ? 'noteSoundMute' : 'noteSoundUnmute'}
-              tooltip={isSoundMuted ? 'Unmute' : 'Mute'}
-              onClick={e => handleSoundClick(e)}
-              className={cn(styles.muteIcon, {
-                [styles.muted]: isSoundMuted,
-              })}
-            />
-          ) : (
-            <ActionButton
-              size="medium"
-              iconName="noteSoundDisabled"
-              className={styles.muteIcon}
-              disabled
-            />
-          )}
-        </div>
+        {isNotificationRead && (
+          <div
+            onMouseOver={onDeleteMouseOver}
+            onMouseOut={onDeleteMouseOut}
+            onFocus={onDeleteMouseOver}
+            onBlur={onDeleteMouseOut}
+          >
+            {isDeleteAvailable ? (
+              <ActionButton
+                size="medium"
+                iconName={
+                  isDeleteHovered ? 'noteDeleteHover' : 'noteDeleteDefault'
+                }
+                tooltip="Delete"
+                onClick={e => handleDeleteClick(e)}
+                className={styles.deleteIcon}
+              />
+            ) : (
+              <ActionButton
+                size="medium"
+                iconName="noteDeleteDisabled"
+                className={styles.deleteIcon}
+                disabled
+              />
+            )}
+          </div>
+        )}
+        {!isNotificationRead && (
+          <div>
+            {isMuteAvailable ? (
+              <ActionButton
+                size="medium"
+                iconName={isSoundMuted ? 'noteSoundMute' : 'noteSoundUnmute'}
+                tooltip={isSoundMuted ? 'Unmute' : 'Mute'}
+                onClick={e => handleSoundClick(e)}
+                className={cn(styles.muteIcon, {
+                  [styles.muted]: isSoundMuted,
+                })}
+              />
+            ) : (
+              <ActionButton
+                size="medium"
+                iconName="noteSoundDisabled"
+                className={styles.muteIcon}
+                disabled
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

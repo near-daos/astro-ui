@@ -92,10 +92,6 @@
   margin-right: 2px;
 }
 
-.delete {
-  display: none;
-}
-
 .deleteIcon {
   height: 24px;
 }
@@ -185,13 +181,6 @@
       flex-shrink: 0;
       margin-right: 14px;
       width: 75px;
-    }
-  }
-
-  .delete {
-    @include tablet-portrait {
-      display: block;
-      margin-right: 14px;
     }
   }
 }
