@@ -1,52 +1,114 @@
+@import 'styles/mixins';
+
 .root {
-  align-items: center;
+  align-items: flex-start;
+  cursor: pointer;
   display: flex;
 
   input[type='checkbox'] {
     display: none;
-    position: absolute;
+  }
+}
+
+.labelText {
+  @include font(14px, 24px, 400);
+  color: var(--color-neutral-60);
+  margin: 0 0 0 6px;
+  transition: color 0.1s;
+
+  &:hover {
+    color: var(--color-neutral-70);
+  }
+}
+
+.labelText.on {
+  color: var(--color-neutral-80);
+
+  &:hover {
+    color: var(--color-neutral-80);
+  }
+}
+
+.mobileList {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+
+  @include tablet-portrait {
+    flex-direction: row;
+    justify-content: flex-start;
   }
 
-  label {
-    color: var(--color-primary-60);
-    display: inline-flex;
-    font-size: 1em;
-    font-weight: 500;
-    gap: 16px;
-    line-height: 22px;
-    white-space: nowrap;
+  .labelText {
+    margin: 0 6px 0 0;
+
+    @include tablet-portrait {
+      margin: 0 0 0 6px;
+    }
+  }
+}
+
+.groupSwitch {
+  flex-direction: row-reverse;
+
+  .labelText {
+    @include font(12px, 18px, 400);
+    margin: 0 3px 0 0;
+  }
+
+  .switch {
+    margin: 2px;
   }
 }
 
 .switch {
   align-items: center;
   background: var(--color-neutral-40);
-  border-radius: 34px;
-  display: inline-block;
-  height: 24px;
-  margin-right: 12px;
-  padding: 3px;
+  border-radius: 25px;
+  flex-shrink: 0;
+  height: 14px;
+  margin: 5px 2px 2px;
   position: relative;
-  transition: background;
-  transition-duration: 0.1s;
-  width: 40px;
-}
-
-.switch.on {
-  background: var(--color-primary-60);
-
-  .slider {
-    left: 19px;
-  }
+  transition: background 0.1s;
+  width: 25px;
 }
 
 .slider {
   background: var(--color-white);
   border-radius: 50%;
-  height: 18px;
-  left: 3px;
+  box-shadow: 0 0 3px var(--color-black-opacity-14);
+  height: 14px;
+  left: 0;
   position: absolute;
-  transition: left;
-  transition-duration: 0.2s;
-  width: 18px;
+  transition: left 0.2s;
+  width: 14px;
+
+  &::after {
+    background: linear-gradient(
+      148.3deg,
+      var(--color-primary-40) 5.4%,
+      #5d3cb8 97%
+    );
+    border-radius: 50%;
+    bottom: 0;
+    content: '';
+    display: block;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: opacity 0.1s;
+  }
+}
+
+.switch.on {
+  background: var(--color-neutral-50);
+
+  .slider {
+    left: 11px;
+  }
+
+  .slider::after {
+    opacity: 1;
+  }
 }
