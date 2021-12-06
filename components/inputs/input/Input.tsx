@@ -1,9 +1,9 @@
-import { useId } from '@reach/auto-id';
 import cn from 'classnames';
 import { Property } from 'csstype';
+import { useId } from '@reach/auto-id';
 import React, { CSSProperties, ReactNode } from 'react';
 
-import styles from './input.module.scss';
+import styles from './Input.module.scss';
 
 export interface InputProps
   extends Omit<React.HTMLProps<HTMLInputElement>, 'size' | 'label'> {
@@ -15,6 +15,7 @@ export interface InputProps
   size?: 'small' | 'medium' | 'large' | 'block' | 'content';
   isBorderless?: boolean;
   textAlign?: Property.TextAlign;
+  inputClassName?: string;
 }
 
 function getStateClass(isValid: boolean | undefined) {
@@ -44,6 +45,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       inputStyles = {},
       textAlign = 'left',
       type = 'text',
+      inputClassName,
       ...props
     },
     externalRef
@@ -60,7 +62,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <label className={className} htmlFor={id}>
         {label && <span className={styles.label}>{label}</span>}
         <input
-          className={getStateClass(isValid)}
+          className={cn(getStateClass(isValid), inputClassName)}
           {...props}
           id={id}
           ref={externalRef}

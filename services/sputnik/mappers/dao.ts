@@ -61,6 +61,10 @@ export type DaoMetadata = {
   flagLogo?: string;
   flag?: string;
   displayName: string;
+  legal?: {
+    legalStatus?: string;
+    legalLink?: string;
+  };
 };
 
 export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
@@ -71,7 +75,9 @@ export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
   return JSON.parse(Buffer.from(metaAsBase64, 'base64').toString('ascii'));
 };
 
-export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
+export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
+  if (!daoDTO.id) return null;
+
   const roles = get(daoDTO, 'policy.roles', []);
   const numberOfProposals = get(daoDTO, 'totalProposalCount', 0);
 
@@ -125,16 +131,23 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
     createdAt: daoDTO.createdAt,
     groups: daoGroups,
     policy: daoDTO.policy,
-    links: meta && meta.links ? meta.links : [],
+    links: meta?.links || [],
     displayName: meta?.displayName || '',
     lastProposalId: daoDTO.lastProposalId,
+    legal: meta?.legal || {},
   };
 };
 
 export const mapDaoDTOListToDaoList = (daoList: DaoDTO[]): DAO[] => {
-  return daoList.map(daoItem => {
-    return mapDaoDTOtoDao(daoItem);
-  });
+  return daoList.reduce<DAO[]>((res, daoItem) => {
+    const dao = mapDaoDTOtoDao(daoItem);
+
+    if (dao) {
+      res.push(dao);
+    }
+
+    return res;
+  }, []);
 };
 
 export const mapCreateDaoParamsToContractArgs = (
@@ -171,6 +184,7 @@ export const mapCreateDaoParamsToContractArgs = (
         flagCover: params.flagCover,
         flagLogo: params.flagLogo,
         displayName: params.displayName,
+        legal: params.legal,
       }),
     },
   };

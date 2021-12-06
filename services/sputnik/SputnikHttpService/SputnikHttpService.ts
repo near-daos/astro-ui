@@ -8,9 +8,9 @@ import omit from 'lodash/omit';
 
 import { PaginationResponse } from 'types/api';
 import {
+  GetNFTTokensResponse,
   GetTokensResponse,
   NftToken,
-  NftTokenResponse,
   Token,
   TokenResponse,
 } from 'types/token';
@@ -51,6 +51,7 @@ import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { HttpService, httpService } from 'services/HttpService';
 import { DaoContext } from 'types/context';
 import { isUserPermittedToCreateProposal } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
+import { mapNftTokenResponseToNftToken } from 'services/sputnik/mappers/nfts';
 
 class SputnikHttpServiceClass {
   private readonly httpService: HttpService = httpService;
@@ -815,18 +816,19 @@ class SputnikHttpServiceClass {
   }
 
   public async getAccountNFTs(accountId: string): Promise<NftToken[]> {
-    const { data } = await this.httpService.get<NftTokenResponse[]>(
-      `/tokens/nfts/account-nfts/${accountId}`
+    const { data } = await this.httpService.get<GetNFTTokensResponse>(
+      `/tokens/nfts`,
+      {
+        params: {
+          filter: `ownerId||$eq||${accountId}`,
+          sort: 'createdAt,DESC',
+          offset: 0,
+          limit: 1000,
+        },
+      }
     );
 
-    return data.map(response => ({
-      id: response.id,
-      uri: response.baseUri
-        ? `${response.baseUri}/${response.metadata.media}`
-        : `https://cloudflare-ipfs.com/ipfs/${response.metadata.media}`,
-      description: response.metadata.description,
-      title: response.metadata.title,
-    }));
+    return mapNftTokenResponseToNftToken(data.data);
   }
 
   public async getAllTokens(): Promise<Token[]> {

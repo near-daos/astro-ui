@@ -12,13 +12,13 @@ import { DAO } from 'types/dao';
 
 import { useAuthContext } from 'context/AuthContext';
 import { getVoteDetails } from 'features/vote-policy/helpers';
-import { getScope } from 'components/cards/expanded-proposal-card/helpers';
+import { getProposalScope } from 'utils/getProposalScope';
 import { getContentNode } from 'astro_2.0/features/ViewProposal/helpers';
 import { Token } from 'types/token';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
 export interface CreateProposalProps {
-  dao: DAO;
+  dao: DAO | null;
   proposal: Proposal;
   showFlag: boolean;
   tokens: Record<string, Token>;
@@ -32,11 +32,11 @@ export const ViewProposal: FC<CreateProposalProps> = ({
 }) => {
   const { accountId } = useAuthContext();
 
-  const contentNode = getContentNode(proposal, dao);
-
-  if (!proposal) {
+  if (!proposal || !dao || !proposal.dao) {
     return null;
   }
+
+  const contentNode = getContentNode(proposal, dao);
 
   return (
     <ProposalCardRenderer
@@ -78,7 +78,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
             proposal.dao.policy.defaultVotePolicy.ratio
               ? getVoteDetails(
                   proposal.dao,
-                  getScope(proposal.kind.type),
+                  getProposalScope(proposal.kind.type),
                   proposal
                 ).details
               : undefined

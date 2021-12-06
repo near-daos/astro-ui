@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import { AppFooter, AppFooterProps } from 'features/app-footer';
+import { AppFooter, AppFooterProps } from 'features/AppFooter';
 
 export default {
   title: 'features/AppFooter',

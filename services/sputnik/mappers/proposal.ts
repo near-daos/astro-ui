@@ -160,7 +160,7 @@ export const mapProposalDTOListToProposalList = (
   proposalList: ProposalDTO[]
 ): Proposal[] => {
   return proposalList.map(proposalItem => {
-    return mapProposalDTOToProposal(proposalItem);
+    return mapProposalDTOToProposalExt(proposalItem);
   });
 };
 

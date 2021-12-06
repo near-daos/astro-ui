@@ -11,7 +11,7 @@ import { Button } from 'components/button/Button';
 import { TextArea } from 'components/inputs/textarea/TextArea';
 import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
 
-import { VoteDetails } from 'components/vote-details';
+import { VoteDetails } from 'components/VoteDetails';
 
 import styles from './create-poll-form.module.scss';
 

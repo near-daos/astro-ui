@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent, useCallback, useState } from 'react';
 
-import { Popup } from 'components/popup/Popup';
+import { Popup } from 'components/Popup';
 import { IconButton } from 'components/button/IconButton';
 import { IconName } from 'components/Icon';
 
@@ -54,7 +54,12 @@ export const CopyButton: FC<CopyButtonProps> = ({
         {title && title}
         <IconButton icon={iconName} className={styles.btn} />
       </div>
-      <Popup anchor={ref} placement={tooltipPlacement} className={styles.popup}>
+      <Popup
+        anchor={ref}
+        delayShow={500}
+        placement={tooltipPlacement}
+        className={styles.popup}
+      >
         {tooltip}
       </Popup>
     </>

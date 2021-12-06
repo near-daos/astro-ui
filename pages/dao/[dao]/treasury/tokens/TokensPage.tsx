@@ -8,16 +8,16 @@ import { formatCurrency } from 'utils/formatCurrency';
 
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
-import { DaoAddressLink } from 'components/dao-address';
+import { DaoAddressLink } from 'components/DaoAddressLink';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 
-import { TokenCard } from 'components/cards/token-card';
+import { TokenCard } from 'components/cards/TokenCard';
 import { TokenDeprecated } from 'types/token';
 
 import { ChartCaption } from 'components/area-chart/components/chart-caption';
-import { TransactionCard } from 'components/cards/transaction-card';
+import { TransactionCard } from 'components/cards/TransactionCard';
 import { Receipt } from 'types/transaction';
-import { Pagination } from 'components/pagination';
+import { Pagination } from 'components/Pagination';
 
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { ProposalVariant } from 'types/proposal';
@@ -69,7 +69,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
     [nearPrice, totalValue]
   );
 
-  // TODO - existing receipts endpoint doesn't support pagination yet
+  // TODO - existing receipts endpoint doesn't support Pagination yet
   const pageCount = Math.round(receiptsData.length / TRANSACTIONS_PER_PAGE);
   const [activePage, setActivePage] = useState(0);
   const [sortAsc, setSortAsc] = useState(false);

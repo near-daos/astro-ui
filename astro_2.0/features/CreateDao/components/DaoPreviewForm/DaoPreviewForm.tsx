@@ -12,7 +12,11 @@ import { getImageFromImageFileList } from 'utils/getImageFromImageFileList';
 import styles from './DaoPreviewForm.module.scss';
 
 export const DaoPreviewForm: VFC = () => {
-  const { getValues } = useFormContext<DAOFormValues>();
+  const { watch, getValues } = useFormContext<DAOFormValues>();
+
+  // Need to watch values otherwise value can get stuck
+  const legalLink = watch('legalLink');
+  const legalStatus = watch('legalStatus');
 
   const {
     address,
@@ -44,6 +48,10 @@ export const DaoPreviewForm: VFC = () => {
     funds: '62.45',
     flagCover: getImageFromImageFileList(flagCover),
     flagLogo: getImageFromImageFileList(flagLogo),
+    legal: {
+      legalLink,
+      legalStatus,
+    },
   };
 
   return (

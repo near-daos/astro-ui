@@ -14,7 +14,7 @@ import { useAuthContext } from 'context/AuthContext';
 
 import { Logo } from 'components/Logo';
 import { Icon } from 'components/Icon';
-import { AppFooter } from 'features/app-footer';
+import { AppFooter } from 'features/AppFooter';
 import { NavItem } from './components/NavItem';
 
 import styles from './Sidebar.module.scss';
@@ -61,7 +61,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
 
   function renderAllCommunities() {
     return (
-      <nav className={styles.bottom}>
+      <div className={styles.bottom}>
         <NavItem
           label="Global Feed"
           icon="globalFeed"
@@ -75,7 +75,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
           href={ALL_DAOS_URL}
         />
         <div className={styles.divider} />
-      </nav>
+      </div>
     );
   }
 

@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 import { Icon } from 'components/Icon';
-import { Popup } from 'components/popup/Popup';
+import { Popup } from 'components/Popup';
 
 import styles from './InputWrapper.module.scss';
 
@@ -12,6 +12,7 @@ interface InputWrapperProps {
   fullWidth?: boolean;
   alignRight?: boolean;
   flex?: boolean;
+  className?: string;
 }
 
 export const InputWrapper: FC<InputWrapperProps> = ({
@@ -21,6 +22,7 @@ export const InputWrapper: FC<InputWrapperProps> = ({
   fullWidth = false,
   flex,
   alignRight,
+  className = '',
 }) => {
   const {
     formState: { errors },
@@ -31,7 +33,7 @@ export const InputWrapper: FC<InputWrapperProps> = ({
 
   return (
     <div
-      className={cn(styles.root, {
+      className={cn(styles.root, className, {
         [styles.fullWidth]: fullWidth,
         [styles.flex]: flex,
         [styles.alignRight]: alignRight,

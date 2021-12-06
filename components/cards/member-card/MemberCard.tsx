@@ -2,7 +2,7 @@ import React, { FC, ReactNode, useCallback } from 'react';
 import cn from 'classnames';
 import TextTruncate from 'react-text-truncate';
 import { Icon } from 'components/Icon';
-import { ExplorerLink } from 'components/explorer-link';
+import { ExplorerLink } from 'components/ExplorerLink';
 
 import { SmileSvg } from './components/SmileSvg';
 

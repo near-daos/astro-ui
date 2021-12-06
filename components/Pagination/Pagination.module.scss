@@ -1,0 +1,75 @@
+@import 'styles/mixins';
+
+.root {
+  color: var(--color-primary);
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.prevLink,
+.nextLink {
+  outline: none;
+}
+
+.prev,
+.next,
+.page,
+.break {
+  height: 26px;
+}
+
+.next,
+.prev {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  text-transform: capitalize;
+  user-select: none;
+}
+
+.prev {
+  margin-right: 20px;
+}
+
+.next {
+  margin-left: 20px;
+}
+
+.page {
+  @include centralize;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  position: relative;
+  width: 32px;
+
+  .pageLink {
+    @include centralize;
+    height: 26px;
+    user-select: none;
+    width: 32px;
+  }
+}
+
+.active {
+  background-color: rgba(96, 56, 208, 0.15);
+  border-radius: 4px;
+}
+
+.disabled {
+  color: var(--color-neutral-60);
+}
+
+.break {
+  min-height: 26px;
+
+  .breakLink {
+    @include centralize;
+    color: var(--color-neutral-60);
+    height: 26px;
+    user-select: none;
+    width: 32px;
+  }
+}

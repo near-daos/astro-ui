@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
-import { Popup } from 'components/popup/Popup';
+import { Popup } from 'components/Popup';
 import cn from 'classnames';
 import { Button } from 'components/button/Button';
 import { useRouter } from 'next/router';

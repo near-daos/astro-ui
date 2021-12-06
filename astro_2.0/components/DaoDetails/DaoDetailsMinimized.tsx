@@ -11,7 +11,7 @@ import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { ActionButton } from 'features/proposal/components/action-button';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
-import { Popup } from 'components/popup/Popup';
+import { Popup } from 'components/Popup';
 
 import { useAuthContext } from 'context/AuthContext';
 import { useMedia } from 'react-use';

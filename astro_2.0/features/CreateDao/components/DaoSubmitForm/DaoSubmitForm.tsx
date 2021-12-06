@@ -50,24 +50,37 @@ export function DaoSubmitForm(): JSX.Element {
         uploadImg(flagLogo),
       ]);
 
+      const {
+        address,
+        purpose,
+        websites,
+        displayName,
+        legalStatus,
+        legalLink,
+      } = data;
+
       try {
         await SputnikNearService.createDao({
-          name: data.address,
-          purpose: data.purpose,
-          links: data.websites as CreateDaoInput['links'],
+          name: address,
+          purpose,
+          links: websites as CreateDaoInput['links'],
           flagCover: flagCoverFileName,
           flagLogo: flagLogoFileName,
           bond: '0.1',
           votePeriod: '168',
           gracePeriod: '24',
           amountToTransfer: '5',
-          displayName: data.displayName,
+          displayName,
           policy: {
             ...getRolesVotingPolicy(data, SputnikNearService.getAccountId()),
             proposalBond: '0.1',
             proposalPeriod: '168',
             bountyBond: '0.1',
             bountyForgivenessPeriod: '168',
+          },
+          legal: {
+            legalStatus,
+            legalLink,
           },
         });
 

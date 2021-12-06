@@ -133,10 +133,11 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           bountyId
         );
 
-        // Add proposal variant
+        // Add proposal variant and gas
         newProposal = {
           ...newProposal,
           description: `${newProposal?.description}${EXTERNAL_LINK_SEPARATOR}${selectedProposalVariant}`,
+          gas: data.gas,
         } as CreateProposalParams;
 
         if (newProposal) {
@@ -236,7 +237,6 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             <TransactionDetailsWidget
               onSubmit={onSubmit}
               buttonLabel="Propose"
-              gas={{ value: '0.2' }}
               bond={{ value: dao.policy.proposalBond }}
             />
           }

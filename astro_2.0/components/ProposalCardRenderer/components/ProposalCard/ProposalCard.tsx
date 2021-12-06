@@ -10,20 +10,21 @@ import {
   ProposalVariant,
   VoteAction,
 } from 'types/proposal';
-import ProposalControlPanel from 'components/cards/proposal-card/components/proposal-control-panel/ProposalControlPanel';
-import { ProgressBar } from 'components/vote-details/components/progress-bar/ProgressBar';
+import { ProgressBar } from 'components/VoteDetails/components/progress-bar/ProgressBar';
 import { VoteDetail } from 'features/types';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { ProposalActions } from 'features/proposal/components/ProposalActions';
 import { DAO } from 'types/dao';
-import ExternalLink from 'components/cards/components/external-link/ExternalLink';
+import { ExternalLink } from 'components/ExternalLink';
 import { Icon, IconName } from 'components/Icon';
-import { useGetVotePermissions } from 'components/cards/proposal-card/hooks/useGetVotePermissions';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { SputnikNearService } from 'services/sputnik';
 import { getProposalVariantLabel } from 'astro_2.0/features/ViewProposal/helpers';
-import { ExplorerLink } from 'components/explorer-link';
-import { useCountdown } from 'components/cards/expanded-proposal-card/helpers';
+import { ExplorerLink } from 'components/ExplorerLink';
+import { useCountdown } from 'hooks/useCountdown';
+
+import { useGetVotePermissions } from './hooks/useGetVotePermissions';
+import { ProposalControlPanel } from './components/ProposalControlPanel';
 
 import styles from './ProposalCard.module.scss';
 
