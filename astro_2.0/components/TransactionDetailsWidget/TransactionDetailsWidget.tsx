@@ -83,7 +83,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
                   size="block"
                   {...gasInputProps}
                 />
-                <div>NEAR</div>
+                <div className={styles.tokenLabel}>NEAR</div>
               </div>
             </InputWrapper>
 
