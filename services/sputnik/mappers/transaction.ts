@@ -63,6 +63,11 @@ export type GetAccountReceiptsResponse = {
   data: ReceiptDTO[];
 };
 
+export type FTTokenReceipts = {
+  tokenId: string;
+  data: Receipt[];
+};
+
 const EXCLUDE_METHODS = [
   'act_proposal',
   'ft_transfer',
@@ -133,74 +138,74 @@ export const mapReceiptsResponse = (
     return res;
   }, [] as Receipt[]);
 
-  const ftReceipts = data
-    .reduce((res, item) => {
-      let deposit = '';
-      let type = 'Deposit' as TransactionType;
+  return {
+    NEAR: nearReceipts,
+  };
+};
 
-      if (item) {
-        if (!item.receiptActions || !item.receiptActions.length) {
-          return res;
+export const mapReceiptsByTokenResponse = (
+  accountId: string,
+  tokenId: string,
+  data: ReceiptDTO[]
+): FTTokenReceipts => {
+  const receipts = data.reduce((res, item) => {
+    let deposit = '';
+    let type = 'Deposit' as TransactionType;
+
+    if (item) {
+      if (!item.receiptActions || !item.receiptActions.length) {
+        return res;
+      }
+
+      const timestamp = Number(item.includedInBlockTimestamp) / 1000000;
+      const date = new Date(
+        Number(item.includedInBlockTimestamp) / 1000000
+      ).toISOString();
+
+      const actions = item.receiptActions.reduce((acc, k) => {
+        if (
+          !k ||
+          !k.args ||
+          !k.args.deposit ||
+          k.receiptPredecessorAccountId === 'system' ||
+          k.args.method_name !== 'ft_transfer'
+        ) {
+          return acc;
         }
 
-        const timestamp = Number(item.includedInBlockTimestamp) / 1000000;
-        const date = new Date(
-          Number(item.includedInBlockTimestamp) / 1000000
-        ).toISOString();
+        if (k.args.args_json?.receiver_id === accountId) {
+          type = 'Deposit';
+          deposit = k.args.args_json?.amount ?? '';
+        } else if (k.args.args_json?.receiver_id) {
+          type = 'Withdraw';
+          deposit = k.args.args_json?.amount ?? '';
+        }
 
-        const actions = item.receiptActions.reduce((acc, k) => {
-          if (
-            !k ||
-            !k.args ||
-            !k.args.deposit ||
-            k.receiptPredecessorAccountId === 'system' ||
-            k.args.method_name !== 'ft_transfer'
-          ) {
-            return acc;
-          }
+        if (deposit) {
+          acc.push({
+            date,
+            timestamp,
+            type,
+            deposit,
+            receiptId: item.receiptId,
+            receiverAccountId: item.receiverAccountId,
+            predecessorAccountId: item.predecessorAccountId,
+            txHash: item.originatedFromTransactionHash,
+            token: item.receiverAccountId,
+          });
+        }
 
-          if (item.predecessorAccountId === accountId && k.args.deposit) {
-            type = 'Withdraw';
-            deposit = k.args.args_json?.amount ?? '';
-          } else if (item.receiverAccountId === accountId && k.args?.deposit) {
-            type = 'Deposit';
-            deposit = k.args.args_json?.amount ?? '';
-          }
+        return acc;
+      }, [] as Receipt[]);
 
-          if (deposit) {
-            acc.push({
-              date,
-              timestamp,
-              type,
-              deposit,
-              receiptId: item.receiptId,
-              receiverAccountId: item.receiverAccountId,
-              predecessorAccountId: item.predecessorAccountId,
-              txHash: item.originatedFromTransactionHash,
-              token: item.receiverAccountId,
-            });
-          }
+      res.push(...actions);
+    }
 
-          return acc;
-        }, [] as Receipt[]);
-
-        res.push(...actions);
-      }
-
-      return res;
-    }, [] as Receipt[])
-    .reduce((res, item) => {
-      if (res[item.token]) {
-        res[item.token].push(item);
-      } else {
-        res[item.token] = [item];
-      }
-
-      return res;
-    }, {} as Record<string, Receipt[]>);
+    return res;
+  }, [] as Receipt[]);
 
   return {
-    ...ftReceipts,
-    NEAR: nearReceipts,
+    tokenId,
+    data: receipts,
   };
 };

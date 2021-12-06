@@ -10,9 +10,10 @@ type TooltipProps = {
 
 interface ChartTooltipProps {
   data: TooltipProps;
+  symbol: string;
 }
 
-const ChartTooltip: FC<ChartTooltipProps> = ({ data }) => {
+const ChartTooltip: FC<ChartTooltipProps> = ({ data, symbol }) => {
   const date = data?.x ?? null;
   const value = data?.y ?? null;
 
@@ -33,7 +34,7 @@ const ChartTooltip: FC<ChartTooltipProps> = ({ data }) => {
           <span className={styles.label}>Total value:</span>
           <span className={styles.value}>{`${value.toLocaleString()}`}</span>
           <span>&nbsp;</span>
-          <span className={styles.value}>NEAR</span>
+          <span className={styles.value}>{symbol || 'NEAR'}</span>
         </div>
       )}
     </div>

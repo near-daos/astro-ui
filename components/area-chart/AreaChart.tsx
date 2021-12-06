@@ -17,12 +17,13 @@ import {
 
 export interface AreaChartProps {
   data: { timestamp: number; balance: number }[] | undefined;
+  symbol: string;
 }
 
 // eslint-disable-next-line
 const VictoryZoomVoronoiContainer: any = createContainer('zoom', 'voronoi');
 
-export const AreaChart: FC<AreaChartProps> = ({ data = [] }) => {
+export const AreaChart: FC<AreaChartProps> = ({ symbol, data = [] }) => {
   const preparedData = useMemo(
     () =>
       data.map(item => ({
@@ -74,7 +75,7 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [] }) => {
           </svg>
           <div className={styles.chartWrapper}>
             <VictoryChart
-              padding={{ top: 24, bottom: 24, left: 38, right: 0 }}
+              padding={{ top: 24, bottom: 24, left: 64, right: 12 }}
               width={width}
               height={284}
               domainPadding={{ x: 100 }}
@@ -87,7 +88,7 @@ export const AreaChart: FC<AreaChartProps> = ({ data = [] }) => {
                   responsive={false}
                   zoomDimension="x"
                   labels={() => ' '}
-                  labelComponent={<CustomPoint />}
+                  labelComponent={<CustomPoint symbol={symbol} />}
                   zoomDomain={domain}
                 />
               }

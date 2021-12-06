@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { FormattedNumericValue } from 'components/cards/TokenCard/components/FormattedNumericValue';
+import { useIsValidImage } from 'hooks/useIsValidImage';
 
 import styles from './TokenCard.module.scss';
 
@@ -24,16 +25,26 @@ export const TokenCard: React.FC<TokenCardProps> = ({
   onClick,
   isActive,
 }) => {
-  function getTokenIconName(iconName: string) {
-    switch (iconName) {
-      case 'NEAR':
-        return 'tokenNear';
-      default:
-        return '';
-    }
-  }
+  const isValid = useIsValidImage(symbol !== 'NEAR' ? icon : '');
 
-  const tokenIconName = getTokenIconName(icon);
+  function renderIcon() {
+    if (symbol === 'NEAR') {
+      return <Icon name="tokenNearBig" />;
+    }
+
+    if (isValid) {
+      return (
+        <div
+          style={{
+            backgroundImage: `url(${icon})`,
+          }}
+          className={styles.icon}
+        />
+      );
+    }
+
+    return <div className={styles.icon} />;
+  }
 
   return (
     <Button
@@ -45,16 +56,7 @@ export const TokenCard: React.FC<TokenCardProps> = ({
     >
       <div className={styles.grid}>
         <div className={styles.iconContainer}>
-          <div className={styles.iconWrapper}>
-            {tokenIconName !== '' ? (
-              <Icon name={tokenIconName} width={32} />
-            ) : (
-              <div
-                className={styles.icon}
-                style={{ backgroundImage: `url(${icon})` }}
-              />
-            )}
-          </div>
+          <div className={styles.iconWrapper}>{renderIcon()}</div>
         </div>
         <div className={styles.token}>
           <div className={styles.tokenBalance}>
