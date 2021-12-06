@@ -523,7 +523,7 @@ export function getFormInitialValues(
         smartContractAddress: '',
         methodName: '',
         json: '',
-        deposit: '',
+        deposit: '0',
         token: 'NEAR',
         actionsGas: 0.15,
         gas: DEFAULT_PROPOSAL_GAS,

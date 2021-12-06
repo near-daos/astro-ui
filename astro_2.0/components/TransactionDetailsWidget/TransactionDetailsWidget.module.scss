@@ -56,6 +56,11 @@
 
   .detailsItem {
     margin-left: 32px;
+    max-width: 88px;
+  }
+
+  .tokenLabel {
+    margin-left: 4px;
   }
 }
 
@@ -112,8 +117,10 @@
   input {
     background-color: var(--color-neutral-10);
     font-weight: 700;
-    height: 16px !important;
+    height: 24px !important;
     padding: 0 !important;
+    white-space: nowrap;
+    word-break: normal;
     @include placeholder {
       color: var(--color-neutral-40);
       transition: opacity 0.2s linear;
