@@ -765,7 +765,8 @@ export async function getNewProposalObject(
     case ProposalVariant.ProposeCustomFunctionCall: {
       return getCustomFunctionCallProposal(
         dao,
-        data as CustomFunctionCallInput
+        data as CustomFunctionCallInput,
+        tokens
       );
     }
     default: {
