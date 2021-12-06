@@ -18,7 +18,7 @@ import { Token } from 'types/token';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
 export interface CreateProposalProps {
-  dao: DAO;
+  dao: DAO | null;
   proposal: Proposal;
   showFlag: boolean;
   tokens: Record<string, Token>;
@@ -32,11 +32,11 @@ export const ViewProposal: FC<CreateProposalProps> = ({
 }) => {
   const { accountId } = useAuthContext();
 
-  const contentNode = getContentNode(proposal, dao);
-
-  if (!proposal) {
+  if (!proposal || !dao || !proposal.dao) {
     return null;
   }
+
+  const contentNode = getContentNode(proposal, dao);
 
   return (
     <ProposalCardRenderer

@@ -9,6 +9,7 @@ import { CreateProposalParams } from 'types/proposal';
 
 import { mapCreateDaoParamsToContractArgs } from 'services/sputnik/mappers';
 import { ClaimBountyParams, CreateDaoParams } from 'services/sputnik/types';
+import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 
 import { SputnikWalletService } from './SputnikWalletService';
 
@@ -60,7 +61,7 @@ export class SputnikDaoService {
   async addProposal(
     params: CreateProposalParams
   ): Promise<FinalExecutionOutcome> {
-    const { daoId, description, kind, data, bond } = params;
+    const { daoId, description, kind, data, bond, gas } = params;
 
     const kindData = data
       ? {
@@ -77,7 +78,7 @@ export class SputnikDaoService {
           kind: kindData,
         },
       },
-      gas: GAS_VALUE,
+      gas: new BN((gas ?? DEFAULT_PROPOSAL_GAS) * 10 ** 15),
       attachedDeposit: new BN(bond),
     });
   }

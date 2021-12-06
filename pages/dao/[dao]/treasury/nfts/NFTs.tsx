@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
@@ -11,6 +11,8 @@ import { NavLink } from 'astro_2.0/components/NavLink';
 import { ProposalVariant } from 'types/proposal';
 import { NftToken } from 'types/token';
 
+import { SputnikHttpService } from 'services/sputnik';
+
 import { DaoContext } from 'types/context';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
@@ -20,12 +22,10 @@ import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import styles from './nfts.module.scss';
 
 export interface NFTsPageProps {
-  nfts: NftToken[];
   daoContext: DaoContext;
 }
 
 const NFTs: NextPage<NFTsPageProps> = ({
-  nfts = [],
   daoContext: {
     dao,
     userPermissions: { isCanCreateProposals },
@@ -34,8 +34,15 @@ const NFTs: NextPage<NFTsPageProps> = ({
 }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
+  const [nfts, setNfts] = useState<NftToken[]>([]);
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
+
+  useEffect(() => {
+    SputnikHttpService.getAccountNFTs(daoId).then(data => {
+      setNfts(data);
+    });
+  }, [daoId]);
 
   return (
     <div className={styles.root}>
@@ -71,8 +78,9 @@ const NFTs: NextPage<NFTsPageProps> = ({
             <h1>All NFTs</h1>
           </div>
           <div className={styles.content}>
-            {nfts.map(nft => (
-              <div className={styles.card} key={nft.uri}>
+            {nfts.map((nft, i) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <div className={styles.card} key={`${nft.uri}_${i}`}>
                 <NFTCard
                   name={nft.title}
                   image={{
@@ -80,6 +88,7 @@ const NFTs: NextPage<NFTsPageProps> = ({
                     width: 296,
                     height: 424,
                   }}
+                  isExternalReference={nft.isExternalReference}
                 />
               </div>
             ))}

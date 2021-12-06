@@ -1,0 +1,25 @@
+@import 'styles/mixins';
+
+// TODO refactor all proposals to use this styles
+.input {
+  font-weight: 700 !important;
+
+  @include placeholder {
+    color: var(--color-neutral-40) !important;
+    transition: opacity 0.2s linear !important;
+  }
+
+  /* stylelint-disable */
+  /* Chrome, Safari, Edge, Opera */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  &[type='number'] {
+    -moz-appearance: textfield;
+  }
+  /* stylelint-enable */
+}

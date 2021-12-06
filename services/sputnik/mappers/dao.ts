@@ -75,7 +75,9 @@ export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
   return JSON.parse(Buffer.from(metaAsBase64, 'base64').toString('ascii'));
 };
 
-export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
+export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
+  if (!daoDTO.id) return null;
+
   const roles = get(daoDTO, 'policy.roles', []);
   const numberOfProposals = get(daoDTO, 'totalProposalCount', 0);
 
@@ -137,9 +139,15 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO => {
 };
 
 export const mapDaoDTOListToDaoList = (daoList: DaoDTO[]): DAO[] => {
-  return daoList.map(daoItem => {
-    return mapDaoDTOtoDao(daoItem);
-  });
+  return daoList.reduce<DAO[]>((res, daoItem) => {
+    const dao = mapDaoDTOtoDao(daoItem);
+
+    if (dao) {
+      res.push(dao);
+    }
+
+    return res;
+  }, []);
 };
 
 export const mapCreateDaoParamsToContractArgs = (

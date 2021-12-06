@@ -1,8 +1,9 @@
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { CreateProposalParams } from 'types/proposal';
 import { DAO } from 'types/dao';
-import { GAS_VALUE } from 'services/sputnik/SputnikNearService/services/SputnikDaoService';
 import BN from 'bn.js';
+import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import Decimal from 'decimal.js';
 
 export type CustomFunctionCallInput = {
   smartContractAddress: string;
@@ -12,12 +13,14 @@ export type CustomFunctionCallInput = {
   details: string;
   externalUrl: string;
   token: string;
+  actionsGas: number;
 };
 
-export function getCustomFunctionCallProposal(
+export async function getCustomFunctionCallProposal(
   dao: DAO,
-  data: CustomFunctionCallInput
-): CreateProposalParams {
+  data: CustomFunctionCallInput,
+  tokens: Tokens
+): Promise<CreateProposalParams> {
   const {
     smartContractAddress,
     methodName,
@@ -25,9 +28,16 @@ export function getCustomFunctionCallProposal(
     deposit,
     details,
     externalUrl,
+    actionsGas,
   } = data;
+  const token = Object.values(tokens).find(item => item.symbol === data.token);
+
+  if (!token) {
+    throw new Error('No tokens data found');
+  }
 
   const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const args = Buffer.from(json).toString('base64');
 
   return {
     daoId: dao.id,
@@ -38,9 +48,9 @@ export function getCustomFunctionCallProposal(
       actions: [
         {
           method_name: methodName,
-          args: Buffer.from(JSON.stringify(json)).toString('base64'),
-          deposit: new BN(deposit).toString(),
-          gas: GAS_VALUE.toString(),
+          args,
+          deposit: new Decimal(deposit).mul(10 ** token.decimals).toFixed(),
+          gas: new BN(actionsGas * 10 ** 15).toString(),
         },
       ],
     },

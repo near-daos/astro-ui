@@ -43,15 +43,25 @@
   align-items: center;
   display: flex;
   flex: 1;
-  justify-content: flex-end;
+  justify-content: space-between;
   width: 100%;
 }
 
 .transactionDetails {
+  align-items: flex-end;
   display: flex;
   flex-basis: 42%;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   width: 100%;
+
+  .detailsItem {
+    margin-left: 32px;
+    max-width: 88px;
+  }
+
+  .tokenLabel {
+    margin-left: 4px;
+  }
 }
 
 .infoBlock {
@@ -74,13 +84,67 @@
   margin: 8px 0 8px 32px;
 }
 
+.row {
+  align-items: center;
+  color: var(--color-black);
+  display: flex;
+  white-space: nowrap;
+
+  .iconWrapper {
+    //background-color: var(--color-brand-black);
+    border-radius: 50%;
+    height: 24px;
+    margin-right: 8px;
+    width: 24px;
+  }
+}
+
+.inputWrapper {
+  /* stylelint-disable */
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+  /* stylelint-enable */
+
+  input {
+    background-color: var(--color-neutral-10);
+    font-weight: 700;
+    height: 24px !important;
+    padding: 0 !important;
+    white-space: nowrap;
+    word-break: normal;
+    @include placeholder {
+      color: var(--color-neutral-40);
+      transition: opacity 0.2s linear;
+    }
+  }
+}
+
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    padding: 12px;
+  }
+
   .mainContent {
     flex-direction: column;
   }
 
   .transactionDetails {
-    justify-content: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding: 0 24px;
+
+    .detailsItem {
+      margin: 0;
+    }
   }
 
   .createDao {

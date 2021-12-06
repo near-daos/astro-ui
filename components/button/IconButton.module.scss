@@ -31,4 +31,5 @@
 .iconButton:disabled,
 .iconButton[disabled] {
   color: var(--color-neutral-80);
+  cursor: not-allowed;
 }
