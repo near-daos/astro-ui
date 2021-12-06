@@ -16,26 +16,28 @@ import { TokenDeprecated } from 'types/token';
 
 import { ChartCaption } from 'components/area-chart/components/chart-caption';
 import { TransactionCard } from 'components/cards/TransactionCard';
-import { Receipt } from 'types/transaction';
 import { Pagination } from 'components/Pagination';
 
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { ProposalVariant } from 'types/proposal';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { NavLink } from 'astro_2.0/components/NavLink';
+import { Loader } from 'components/loader';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { DaoContext } from 'types/context';
 import { NextPage } from 'next';
-import { getChartData } from 'features/treasury/helpers';
+import {
+  useTokenFilteredData,
+  useTokensTransactions,
+} from 'features/treasury/helpers';
 import { formatYoktoValue } from 'helpers/format';
 
 import styles from './Tokens.module.scss';
 
 export interface TokensPageProps {
   daoContext: DaoContext;
-  receipts: Record<string, Receipt[]>;
 }
 
 const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
@@ -46,15 +48,23 @@ const TokensPage: NextPage<TokensPageProps> = ({
     userPermissions: { isCanCreateProposals },
     policyAffectsProposals,
   },
-  receipts,
 }) => {
   const totalValue = dao.funds ?? '0';
   const nearPrice = useNearPrice();
   const TRANSACTIONS_PER_PAGE = 10;
   const { tokens } = useDaoCustomTokens();
-  const chartData = getChartData(receipts.NEAR, tokens?.NEAR);
-  const [viewToken, setViewToken] = useState('NEAR');
-  const receiptsData = receipts[viewToken] ?? [];
+
+  const { data: receiptsByToken, loading } = useTokensTransactions(
+    dao.id,
+    tokens
+  );
+
+  const {
+    chartData,
+    transactionsData,
+    onFilterChange,
+    viewToken,
+  } = useTokenFilteredData(receiptsByToken, tokens);
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
@@ -69,8 +79,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
     [nearPrice, totalValue]
   );
 
-  // TODO - existing receipts endpoint doesn't support Pagination yet
-  const pageCount = Math.round(receiptsData.length / TRANSACTIONS_PER_PAGE);
+  const pageCount = Math.ceil(transactionsData.length / TRANSACTIONS_PER_PAGE);
   const [activePage, setActivePage] = useState(0);
   const [sortAsc, setSortAsc] = useState(false);
   const filterClickHandler = useCallback(() => {
@@ -119,7 +128,13 @@ const TokensPage: NextPage<TokensPageProps> = ({
         <ChartCaption captions={captions} />
       </div>
       <div className={styles.chart}>
-        {viewToken === 'NEAR' && <AreaChart data={chartData} />}
+        {!!chartData.length && (
+          <AreaChart
+            key={viewToken}
+            data={chartData}
+            symbol={tokens[viewToken]?.symbol ?? ''}
+          />
+        )}
       </div>
       <div className={styles.tokens}>
         {Object.values(tokens).map(({ tokenId, icon, symbol, balance }) => (
@@ -129,7 +144,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
               symbol === 'NEAR' ? viewToken === 'NEAR' : viewToken === tokenId
             }
             symbol={symbol}
-            onClick={() => setViewToken(symbol === 'NEAR' ? 'NEAR' : tokenId)}
+            onClick={() => onFilterChange(symbol === 'NEAR' ? 'NEAR' : tokenId)}
             icon={symbol === 'NEAR' ? 'NEAR' : icon}
             balance={Number(balance)}
             totalValue={
@@ -155,46 +170,52 @@ const TokensPage: NextPage<TokensPageProps> = ({
         />
       </Button>
       <div className={styles.transactions}>
-        {receiptsData
-          .sort((a, b) =>
-            sortAsc ? a.timestamp - b.timestamp : b.timestamp - a.timestamp
-          )
-          .slice(
-            activePage * TRANSACTIONS_PER_PAGE,
-            (activePage + 1) * TRANSACTIONS_PER_PAGE
-          )
-          .map(
-            ({
-              type,
-              timestamp,
-              deposit,
-              date,
-              predecessorAccountId,
-              receiptId,
-              txHash,
-              token,
-            }) => {
-              const tokenData = get(tokens, token);
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            {transactionsData
+              .sort((a, b) =>
+                sortAsc ? a.timestamp - b.timestamp : b.timestamp - a.timestamp
+              )
+              .slice(
+                activePage * TRANSACTIONS_PER_PAGE,
+                (activePage + 1) * TRANSACTIONS_PER_PAGE
+              )
+              .map(
+                ({
+                  type,
+                  timestamp,
+                  deposit,
+                  date,
+                  predecessorAccountId,
+                  receiptId,
+                  txHash,
+                  token,
+                }) => {
+                  const tokenData = get(tokens, token);
 
-              if (!tokenData) return null;
+                  if (!tokenData) return null;
 
-              return (
-                <div
-                  className={styles.row}
-                  key={`${type}_${timestamp}_${deposit}_${receiptId}`}
-                >
-                  <TransactionCard
-                    tokenName={tokenData.symbol}
-                    type={type}
-                    deposit={formatYoktoValue(deposit, tokenData.decimals)}
-                    date={date}
-                    txHash={txHash}
-                    accountName={predecessorAccountId}
-                  />
-                </div>
-              );
-            }
-          )}
+                  return (
+                    <div
+                      className={styles.row}
+                      key={`${type}_${timestamp}_${deposit}_${receiptId}`}
+                    >
+                      <TransactionCard
+                        tokenName={tokenData.symbol}
+                        type={type}
+                        deposit={formatYoktoValue(deposit, tokenData.decimals)}
+                        date={date}
+                        txHash={txHash}
+                        accountName={predecessorAccountId}
+                      />
+                    </div>
+                  );
+                }
+              )}
+          </>
+        )}
       </div>
       {pageCount > 0 ? (
         <div className={styles.pagination}>

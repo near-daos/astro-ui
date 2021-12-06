@@ -13,9 +13,10 @@ import ChartTooltip from 'components/area-chart/components/chart-tooltip';
 interface CustomPointProps extends VictoryLabelProps {
   x?: number;
   y?: number;
+  symbol: string;
 }
 
-const CustomPoint: FC<CustomPointProps> = ({ x, y = 0, datum }) => {
+const CustomPoint: FC<CustomPointProps> = ({ x, y = 0, datum, symbol }) => {
   const [referenceElement, setReferenceElement] = React.useState(null);
   const [popperElement, setPopperElement] = React.useState(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement);
@@ -63,7 +64,7 @@ const CustomPoint: FC<CustomPointProps> = ({ x, y = 0, datum }) => {
             style={styles.popper}
             {...attributes.popper}
           >
-            <ChartTooltip data={datum} />
+            <ChartTooltip data={datum} symbol={symbol} />
           </div>,
           document.body
         )}

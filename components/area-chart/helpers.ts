@@ -10,24 +10,74 @@ export const DOMAIN_RANGES = {
   ALL: 'ALL',
 };
 
-function getDomain(data: ChartDataElement[]): [Date, Date] {
+function getDomain(
+  data: ChartDataElement[],
+  activeRange: string
+): [Date, Date] {
   if (!data.length) {
     return [new Date(), new Date()];
   }
 
-  const start = data[0].x;
-  const end = data[data.length - 1].x;
+  let start;
+  let end;
+
+  if (data.length === 1) {
+    end = data[data.length - 1].x;
+
+    switch (activeRange) {
+      case DOMAIN_RANGES.DAY: {
+        start = subHours(end, 24);
+        break;
+      }
+      case DOMAIN_RANGES.WEEK: {
+        start = subDays(end, 7);
+        break;
+      }
+      case DOMAIN_RANGES.MONTH: {
+        start = subMonths(end, 1);
+        break;
+      }
+      case DOMAIN_RANGES.YEAR: {
+        start = subYears(end, 1);
+        break;
+      }
+      case DOMAIN_RANGES.ALL:
+      default: {
+        start = subYears(end, 1);
+        break;
+      }
+    }
+  } else {
+    start = data[0].x;
+    end = data[data.length - 1].x;
+  }
+
+  return [start, end];
+}
+
+function getPreparedStartEndDates(
+  startDate: Date,
+  endDate: Date,
+  data: ChartDataElement[]
+) {
+  let start = startDate;
+  const end = endDate;
+  const closestElement = data.find(item => item.x >= start);
+
+  if (closestElement?.x && closestElement?.x !== end) {
+    start = closestElement?.x;
+  }
 
   return [start, end];
 }
 
 export const useDomainControl = (data: ChartDataElement[]): DomainControl => {
-  const [domain, setDomain] = useState<{ x?: Domain; y?: Domain }>({
-    x: getDomain(data),
-  });
-
   const [activeRange, setActiveRange] = useState(DOMAIN_RANGES.DAY);
   const [maxDomainValue, setMaxDomainValue] = useState(0);
+
+  const [domain, setDomain] = useState<{ x?: Domain; y?: Domain }>({
+    x: getDomain(data, activeRange),
+  });
 
   const yValues = data.map(item => item.y);
   const maxValue = Math.max(...yValues);
@@ -36,44 +86,64 @@ export const useDomainControl = (data: ChartDataElement[]): DomainControl => {
 
   const toggleDomain = useCallback(
     (range: string) => {
-      if (!data.length) return;
+      if (!data.length || data.length === 1) return;
 
       setActiveRange(range);
 
       switch (range) {
         case DOMAIN_RANGES.DAY: {
-          const startDate = subHours(data[data.length - 1].x, 24);
-          const closestElement = data.find(item => item.x >= startDate);
+          const endDate = data[data.length - 1].x;
+          const startDate = subHours(endDate, 24);
+          const [start, end] = getPreparedStartEndDates(
+            startDate,
+            endDate,
+            data
+          );
 
           setDomain({
-            x: [closestElement?.x ?? startDate, data[data.length - 1].x],
+            x: [start, end],
           });
           break;
         }
         case DOMAIN_RANGES.WEEK: {
-          const startDate = subDays(data[data.length - 1].x, 7);
-          const closestElement = data.find(item => item.x >= startDate);
+          const endDate = data[data.length - 1].x;
+          const startDate = subDays(endDate, 7);
+          const [start, end] = getPreparedStartEndDates(
+            startDate,
+            endDate,
+            data
+          );
 
           setDomain({
-            x: [closestElement?.x ?? startDate, data[data.length - 1].x],
+            x: [start, end],
           });
           break;
         }
         case DOMAIN_RANGES.MONTH: {
-          const startDate = subMonths(data[data.length - 1].x, 1);
-          const closestElement = data.find(item => item.x >= startDate);
+          const endDate = data[data.length - 1].x;
+          const startDate = subMonths(endDate, 1);
+          const [start, end] = getPreparedStartEndDates(
+            startDate,
+            endDate,
+            data
+          );
 
           setDomain({
-            x: [closestElement?.x ?? startDate, data[data.length - 1].x],
+            x: [start, end],
           });
           break;
         }
         case DOMAIN_RANGES.YEAR: {
-          const startDate = subYears(data[data.length - 1].x, 1);
-          const closestElement = data.find(item => item.x >= startDate);
+          const endDate = data[data.length - 1].x;
+          const startDate = subYears(endDate, 1);
+          const [start, end] = getPreparedStartEndDates(
+            startDate,
+            endDate,
+            data
+          );
 
           setDomain({
-            x: [closestElement?.x ?? startDate, data[data.length - 1].x],
+            x: [start, end],
           });
           break;
         }

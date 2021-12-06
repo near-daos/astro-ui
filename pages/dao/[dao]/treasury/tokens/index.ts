@@ -16,10 +16,7 @@ export const getServerSideProps: GetServerSideProps<TokensPageProps> = async ({
 
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
-  const [daoContext, receipts] = await Promise.all([
-    SputnikHttpService.getDaoContext(account, daoId),
-    SputnikHttpService.getAccountReceipts(daoId),
-  ]);
+  const daoContext = await SputnikHttpService.getDaoContext(account, daoId);
 
   if (!daoContext) {
     return {
@@ -29,7 +26,6 @@ export const getServerSideProps: GetServerSideProps<TokensPageProps> = async ({
 
   return {
     props: {
-      receipts,
       daoContext,
     },
   };
