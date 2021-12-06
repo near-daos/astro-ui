@@ -39,6 +39,9 @@ export interface DAOFormValues extends IDaoCreateForm {
   proposals: DAOProposalsType;
   structure: DAOStructureType;
   voting: DAOVotingPowerType;
+  legalStatus?: string;
+  legalLink?: string;
+  gas: number;
 }
 
 export type DaoSubjectInfo = {

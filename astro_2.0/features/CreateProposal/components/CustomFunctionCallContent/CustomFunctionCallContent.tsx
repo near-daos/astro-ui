@@ -177,6 +177,25 @@ const CustomFunctionCallContent: FC = () => {
           />
         </div>
       </div>
+
+      <div className={styles.gas}>
+        <InputWrapper fieldName="actionsGas" label="Gas">
+          <div className={styles.row}>
+            <Input
+              className={cn(styles.inputWrapper, styles.narrow)}
+              type="number"
+              min={0.01}
+              step={0.01}
+              max={0.3}
+              placeholder="0.15"
+              isBorderless
+              size="block"
+              {...register('actionsGas')}
+            />
+            <div>NEAR</div>
+          </div>
+        </InputWrapper>
+      </div>
     </div>
   );
 };

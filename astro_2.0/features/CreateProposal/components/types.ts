@@ -4,4 +4,5 @@ export type CreateTransferInput = {
   details: string;
   externalUrl: string;
   target: string;
+  gas: number;
 };
