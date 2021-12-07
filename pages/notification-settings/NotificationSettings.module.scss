@@ -1,0 +1,84 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-template-areas:
+    'breadcrumbs'
+    'title'
+    'settings';
+  grid-template-columns: 1fr;
+  padding-top: 56px;
+  row-gap: 24px;
+}
+
+.breadcrumbs {
+  grid-area: breadcrumbs;
+}
+
+.title {
+  @extend %heading1;
+  grid-area: title;
+}
+
+.settings {
+  grid-area: settings;
+  max-width: 600px;
+}
+
+.card {
+  @include card-shadow;
+  border-radius: 5px;
+  margin-bottom: 40px;
+  margin-left: -24px;
+  padding: 20px 24px 24px;
+  width: calc(100% + 48px);
+
+  @include tablet-portrait {
+    margin-left: 0;
+    padding: 20px 32px 32px;
+    width: 100%;
+  }
+}
+
+.cardHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  position: relative;
+
+  &::after {
+    background-color: var(--color-neutral-30);
+    bottom: 0;
+    content: '';
+    height: 1px;
+    left: -24px;
+    position: absolute;
+    width: calc(100% + 48px);
+
+    @include tablet-portrait {
+      left: -32px;
+      width: calc(100% + 64px);
+    }
+  }
+}
+
+.cardTitle {
+  @include font(16px, 24px, 500);
+}
+
+.subType {
+  @include font(12px, 18px, 400);
+  color: var(--color-neutral-50);
+  margin: 40px 0 20px;
+
+  @include tablet-portrait {
+    margin: 30px 0 14px;
+  }
+}
+
+.settingsItem:not(:last-child) {
+  margin-bottom: 24px;
+}
