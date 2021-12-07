@@ -2,7 +2,7 @@ import cn from 'classnames';
 import { VFC } from 'react';
 
 import { Member } from 'types/dao';
-import { NearIcon } from 'astro_2.0/components/AppHeader/components/NearIcon';
+import { NearIcon } from 'astro_2.0/components/NearIcon';
 
 import styles from './SearchResultPeopleCard.module.scss';
 

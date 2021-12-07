@@ -1,0 +1,39 @@
+@import 'styles/typography';
+
+.root {
+  @extend %caption2;
+  background: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  width: 320px;
+}
+
+.header,
+.footer {
+  align-items: center;
+  display: flex;
+  height: 30px;
+}
+
+.header {
+  color: var(--color-neutral-60);
+  justify-content: space-between;
+  padding: 0 8px 0 12px;
+}
+
+.noties {
+  max-height: 308px;
+  overflow-y: auto;
+}
+
+.divider {
+  background-color: var(--color-neutral-30);
+  height: 1px;
+  width: 100%;
+}
+
+.footer {
+  color: var(--color-primary-60);
+  cursor: pointer;
+  justify-content: center;
+}

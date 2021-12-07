@@ -1,12 +1,13 @@
-import React, { FC, useCallback, useRef, useState } from 'react';
 import cn from 'classnames';
+import React, { FC, useCallback, useRef, useState } from 'react';
 
 import { useAuthContext } from 'context/AuthContext';
 
+import { Icon } from 'components/Icon';
+import { NearIcon } from 'astro_2.0/components/NearIcon';
 import { AppFooter } from 'astro_2.0/components/AppFooter';
 import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
-import { NearIcon } from 'astro_2.0/components/AppHeader/components/NearIcon';
-import { Icon } from 'components/Icon';
+
 import { AccountPopupItem } from './components/AccountPopupItem';
 
 import styles from './AccountButton.module.scss';

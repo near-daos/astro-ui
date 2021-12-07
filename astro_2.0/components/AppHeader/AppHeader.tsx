@@ -1,32 +1,16 @@
 import cn from 'classnames';
 import React, { FC, useRef } from 'react';
 
-import { NavItemProps } from 'astro_2.0/components/navigation/types';
-
-import {
-  MY_DAOS_NAV_CONFIG,
-  MY_FEED_NAV_CONFIG,
-  ALL_DAOS_NAV_CONFIG,
-  ASTRO_FEED_NAV_CONFIG,
-  CREATE_DAO_NAV_CONFIG,
-} from 'astro_2.0/components/navigation/navConfig';
-
 import { Icon } from 'components/Icon';
-
-import { NavButton } from 'astro_2.0/components/navigation/NavButton';
 
 import { SearchBar } from './components/SearchBar';
 import { AccountButton } from './components/AccountButton';
+import { NotificationsBell } from './components/NotificationsBell';
 
 import styles from './AppHeader.module.scss';
 
 export const AppHeader: FC = () => {
-  const withSideBar = true;
   const centralEl = useRef(null);
-
-  const rootClassName = cn(styles.root, {
-    [styles.withSideBar]: withSideBar,
-  });
 
   function renderLogo(className?: string) {
     return (
@@ -41,31 +25,19 @@ export const AppHeader: FC = () => {
     );
   }
 
-  function renderNavItem(conf: NavItemProps) {
-    return <NavButton {...conf} key={conf.label} className={styles.navItem} />;
-  }
-
   return (
-    <header className={rootClassName}>
+    <header className={styles.root}>
       {renderLogo()}
       <div className={styles.centralPart} ref={centralEl}>
         {renderLogo(styles.mobileLogo)}
-        <div className={styles.nav}>
-          {renderNavItem(ALL_DAOS_NAV_CONFIG)}
-          {renderNavItem(ASTRO_FEED_NAV_CONFIG)}
-        </div>
         <SearchBar
           withSideBar
           placeholder="Search"
           parentElRef={centralEl}
           className={styles.search}
         />
-        <div className={styles.nav}>
-          {renderNavItem(MY_DAOS_NAV_CONFIG)}
-          {renderNavItem(MY_FEED_NAV_CONFIG)}
-          {renderNavItem(CREATE_DAO_NAV_CONFIG)}
-        </div>
       </div>
+      <NotificationsBell className={styles.bell} notifications={[1, 2, 3]} />
       <AccountButton />
     </header>
   );
