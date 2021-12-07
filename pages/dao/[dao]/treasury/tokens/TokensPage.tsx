@@ -145,7 +145,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
             }
             symbol={symbol}
             onClick={() => onFilterChange(symbol === 'NEAR' ? 'NEAR' : tokenId)}
-            icon={symbol === 'NEAR' ? 'NEAR' : icon}
+            icon={icon}
             balance={Number(balance)}
             totalValue={
               symbol === TokenDeprecated.NEAR && balance
