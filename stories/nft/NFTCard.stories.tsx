@@ -1,5 +1,5 @@
 import { Meta, Story } from '@storybook/react';
-import { NFTCard } from 'features/nft/ntf-card/NFTCard';
+import { NFTCard } from 'astro_2.0/features/pages/nft/NtfCard';
 import React, { FC } from 'react';
 import example1 from './assets/example-1.png';
 import example2 from './assets/example-2.png';

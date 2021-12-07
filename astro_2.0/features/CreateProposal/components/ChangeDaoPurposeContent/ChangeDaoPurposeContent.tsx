@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import cn from 'classnames';
 
-import { TextArea } from 'components/inputs/textarea/TextArea';
+import { TextArea } from 'components/inputs/TextArea';
 
 import { LOREN_IPSUM } from 'constants/common';
 

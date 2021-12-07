@@ -4,8 +4,8 @@ import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 import { useMedia } from 'react-use';
 
-import { TextArea } from 'components/inputs/textarea/TextArea';
-import { Input } from 'components/inputs/input/Input';
+import { TextArea } from 'components/inputs/TextArea';
+import { Input } from 'components/inputs/Input';
 import { Icon } from 'components/Icon';
 import { IconButton } from 'components/button/IconButton';
 import { GroupedSelect } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';

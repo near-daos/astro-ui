@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import { App404 } from 'features/app-404';
+import { App404 } from 'astro_2.0/features/App404';
 import { NextPage } from 'next';
 
 const Custom404Page: NextPage = () => {

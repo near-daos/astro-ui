@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { useWizardContext } from 'features/voting-token/components/voting-token-wizard/helpers';
-import { ExpandableDetails } from 'features/bounty/dialogs/expandable-details';
+import { ExpandableDetails } from 'astro_2.0/components/ExpandableDetails';
 import { VoteDetails } from 'components/VoteDetails';
 
 import styles from './confirm-near-step.module.scss';

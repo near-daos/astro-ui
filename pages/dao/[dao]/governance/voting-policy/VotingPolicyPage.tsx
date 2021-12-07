@@ -17,8 +17,8 @@ import {
   VotingPolicyPageInitialData,
 } from 'features/vote-policy/helpers';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-import { DaoSettingsBanner } from 'features/vote-policy/components/banner';
-import EditDefaultPolicy from 'features/vote-policy/components/edit-default-policy/EditDefaultPolicy';
+import { DaoSettingsBanner } from 'features/vote-policy/components/DaoSettingsBanner';
+import { EditDefaultPolicy } from 'features/vote-policy/components/EditDefaultPolicy';
 
 import { SputnikNearService } from 'services/sputnik';
 

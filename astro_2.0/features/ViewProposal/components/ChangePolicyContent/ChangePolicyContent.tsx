@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Group } from 'features/vote-policy/components/group';
+import { Group } from 'features/vote-policy/components/Group';
 import {
   FieldValue,
   FieldWrapper,

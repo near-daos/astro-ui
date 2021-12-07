@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { NoResultsView } from 'features/no-results-view';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { useNearPrice } from 'hooks/useNearPrice';
 import { Highlighter } from 'features/search/search-results/components/highlighter';

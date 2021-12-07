@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
-import { NFTCard } from 'features/nft/ntf-card/NFTCard';
+import { NFTCard } from 'astro_2.0/features/pages/nft/NtfCard';
 
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
@@ -15,7 +15,7 @@ import { SputnikHttpService } from 'services/sputnik';
 
 import { DaoContext } from 'types/context';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
-import { NoResultsView } from 'features/no-results-view';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 

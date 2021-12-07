@@ -1,7 +1,7 @@
 import React, { FC, FormEvent } from 'react';
 import cn from 'classnames';
 
-import { Input } from 'components/inputs/input/Input';
+import { Input } from 'components/inputs/Input';
 import { Button } from 'components/button/Button';
 
 import styles from './amount-input.module.scss';

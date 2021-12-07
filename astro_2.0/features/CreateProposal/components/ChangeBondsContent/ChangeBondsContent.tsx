@@ -3,7 +3,7 @@ import cn from 'classnames';
 import Decimal from 'decimal.js';
 import { useFormContext } from 'react-hook-form';
 
-import { Input } from 'components/inputs/input/Input';
+import { Input } from 'components/inputs/Input';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 
 import { DAO } from 'types/dao';

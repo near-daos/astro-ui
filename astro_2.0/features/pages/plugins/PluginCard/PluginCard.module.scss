@@ -1,0 +1,72 @@
+@import '../../../../../styles/mixins';
+@import '../../../../../styles/typography';
+
+.root {
+  align-items: stretch;
+  background: var(--color-neutral-10);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 80px;
+  overflow: hidden;
+
+  @include tablet-landscape {
+    flex-direction: row;
+  }
+}
+
+.content {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding: 20px 24px;
+
+  @include tablet-landscape {
+    align-items: center;
+    flex-direction: row;
+  }
+}
+
+.token {
+  @extend %title3;
+  @include ellipse-text;
+  flex: 1;
+  margin-bottom: 16px;
+  margin-right: 8px;
+  white-space: nowrap;
+
+  @include tablet-landscape {
+    flex: 3;
+    margin-bottom: 0;
+  }
+}
+
+.created {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  margin-bottom: 16px;
+  white-space: nowrap;
+
+  @include tablet-landscape {
+    flex: 2;
+    margin-bottom: 0;
+  }
+}
+
+.function {
+  @extend %body1;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+
+  @include tablet-landscape {
+    flex: 3;
+  }
+}

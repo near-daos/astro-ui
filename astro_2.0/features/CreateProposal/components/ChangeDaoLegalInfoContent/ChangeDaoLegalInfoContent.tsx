@@ -2,7 +2,7 @@ import cn from 'classnames';
 import React, { VFC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { Input } from 'components/inputs/input/Input';
+import { Input } from 'components/inputs/Input';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 

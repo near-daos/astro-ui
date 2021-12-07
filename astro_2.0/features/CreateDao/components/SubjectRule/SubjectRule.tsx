@@ -6,7 +6,7 @@ import { Subject } from 'astro_2.0/features/CreateDao/components/types';
 import { DAO_SUBJECT_OPTIONS } from 'astro_2.0/features/CreateDao/components/data';
 
 import { Icon } from 'components/Icon';
-import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
+import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 import { DaoOptionCard } from 'astro_2.0/features/CreateDao/components/SubjectRule/components/DaoOptionCard';
 
 import styles from './SubjectRule.module.scss';

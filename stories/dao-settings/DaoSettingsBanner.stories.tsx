@@ -2,7 +2,7 @@ import { Meta, Story } from '@storybook/react';
 import {
   DaoSettingsBanner,
   DaoSettingsBannerProps,
-} from 'features/vote-policy/components/banner';
+} from 'features/vote-policy/components/DaoSettingsBanner';
 import React from 'react';
 
 export default {

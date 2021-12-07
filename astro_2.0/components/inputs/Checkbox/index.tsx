@@ -91,7 +91,7 @@ type Props = {
     name: string;
   };
   checkedIcon?: React.ReactElement;
-  as?: 'checkbox' | 'switch';
+  as?: 'Checkbox' | 'switch';
   classes?: Partial<
     Record<
       'root' | 'label' | 'inputWrapper' | 'inputWrapperChecked' | 'checkedIcon',
@@ -104,7 +104,7 @@ type Props = {
 
 Checkbox.defaultProps = {
   checkedIcon: <Icon name="check" className={styles.defaultIcon} />,
-  as: 'checkbox',
+  as: 'Checkbox',
 };
 
 export default Checkbox;

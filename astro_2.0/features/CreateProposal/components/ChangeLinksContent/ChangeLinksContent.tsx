@@ -6,7 +6,7 @@ import cn from 'classnames';
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
 
 import { Icon } from 'components/Icon';
-import { Input } from 'components/inputs/input/Input';
+import { Input } from 'components/inputs/Input';
 import { IconButton } from 'components/button/IconButton';
 import { Button } from 'components/button/Button';
 

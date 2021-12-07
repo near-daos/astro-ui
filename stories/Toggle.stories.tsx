@@ -1,5 +1,5 @@
 import React from 'react';
-import { Toggle } from 'components/inputs/toggle/Toggle';
+import { Toggle } from 'components/inputs/Toggle';
 import { Meta } from '@storybook/react';
 
 export default {

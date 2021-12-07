@@ -3,7 +3,7 @@ import { Meta, Story } from '@storybook/react';
 import {
   UsePluginPopup,
   UsePluginPopupProps,
-} from 'features/plugins/components/UsePluginPopup/UsePluginPopup';
+} from 'astro_2.0/features/pages/plugins/UsePluginPopup/UsePluginPopup';
 
 export default {
   title: 'Features/Plugins/Popups/UsePluginPopup',

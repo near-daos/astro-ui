@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import { useFormContext } from 'react-hook-form';
 import React, { VFC, useRef, ReactNode } from 'react';
 
-import { InputFormWrapper } from 'components/inputs/input-form-wrapper/InputFormWrapper';
+import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 
 import styles from './DaoNameInputSection.module.scss';
 

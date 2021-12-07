@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 
-import { Input } from 'components/inputs/input/Input';
+import { Input } from 'components/inputs/Input';
 
 import styles from './BountyDoneContent.module.scss';
 

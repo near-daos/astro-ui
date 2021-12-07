@@ -9,7 +9,7 @@ import { CREATE_DAO_URL } from 'constants/routing';
 
 import { useAuthContext } from 'context/AuthContext';
 
-import { NoResultsView } from 'features/no-results-view';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';

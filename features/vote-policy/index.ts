@@ -1,1 +1,1 @@
-export * from 'features/vote-policy/VotePolicyPopup';
+export * from './VotePolicyPopup';

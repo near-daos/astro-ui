@@ -1,8 +1,8 @@
 import React, { VFC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { Input } from 'components/inputs/input/Input';
-import { TextArea } from 'components/inputs/textarea/TextArea';
+import { Input } from 'components/inputs/Input';
+import { TextArea } from 'components/inputs/TextArea';
 
 import { DaoAddress } from './components/DaoAddress';
 import { DaoNameInputSection } from './components/DaoNameInputSection';

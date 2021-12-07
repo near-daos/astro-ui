@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
-import { Input } from 'components/inputs/input/Input';
-import { DropdownSelect } from 'components/inputs/select/DropdownSelect';
-import { Group } from 'features/vote-policy/components/group';
+import { Input } from 'components/inputs/Input';
+import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
+import { Group } from 'features/vote-policy/components/Group';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 
 import styles from './RemoveMemberFromGroupContent.module.scss';
