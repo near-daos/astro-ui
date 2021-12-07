@@ -78,7 +78,7 @@ const EXCLUDE_METHODS = [
 export const mapReceiptsResponse = (
   accountId: string,
   data: ReceiptDTO[]
-): Record<string, Receipt[]> => {
+): Receipt[] => {
   const nearReceipts = data.reduce((res, item) => {
     let deposit = '';
     let type = 'Deposit' as TransactionType;
@@ -138,16 +138,14 @@ export const mapReceiptsResponse = (
     return res;
   }, [] as Receipt[]);
 
-  return {
-    NEAR: nearReceipts,
-  };
+  return nearReceipts;
 };
 
 export const mapReceiptsByTokenResponse = (
   accountId: string,
   tokenId: string,
   data: ReceiptDTO[]
-): FTTokenReceipts => {
+): Receipt[] => {
   const receipts = data.reduce((res, item) => {
     let deposit = '';
     let type = 'Deposit' as TransactionType;
@@ -204,8 +202,5 @@ export const mapReceiptsByTokenResponse = (
     return res;
   }, [] as Receipt[]);
 
-  return {
-    tokenId,
-    data: receipts,
-  };
+  return receipts;
 };

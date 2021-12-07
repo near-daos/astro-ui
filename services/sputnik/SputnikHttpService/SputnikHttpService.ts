@@ -33,7 +33,6 @@ import {
 } from 'features/member-home/types';
 import {
   DaoDTO,
-  FTTokenReceipts,
   GetDAOsResponse,
   GetProposalsResponse,
   mapBountyResponseToBounty,
@@ -678,7 +677,7 @@ class SputnikHttpServiceClass {
   public async getAccountReceiptsByTokens(
     accountId: string,
     tokenId: string
-  ): Promise<FTTokenReceipts> {
+  ): Promise<Receipt[]> {
     const { data } = await this.httpService.get<ReceiptDTO[]>(
       `/transactions/receipts/account-receipts/${accountId}/tokens/${tokenId}`
     );
@@ -686,9 +685,7 @@ class SputnikHttpServiceClass {
     return mapReceiptsByTokenResponse(accountId, tokenId, data);
   }
 
-  public async getAccountReceipts(
-    accountId: string
-  ): Promise<Record<string, Receipt[]>> {
+  public async getAccountReceipts(accountId: string): Promise<Receipt[]> {
     const { data } = await this.httpService.get<ReceiptDTO[]>(
       `/transactions/receipts/account-receipts/${accountId}`
     );

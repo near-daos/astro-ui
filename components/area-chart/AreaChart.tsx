@@ -3,6 +3,8 @@ import Measure from 'react-measure';
 import { VictoryChart, VictoryAxis, createContainer } from 'victory';
 import { VictoryArea } from 'victory-area';
 
+import { kFormatter } from 'helpers/format';
+
 import styles from './AreaChart.module.scss';
 import RangeToggle from './components/range-toggle/RangeToggle';
 
@@ -18,12 +20,13 @@ import {
 export interface AreaChartProps {
   data: { timestamp: number; balance: number }[] | undefined;
   symbol: string;
+  range?: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR' | 'ALL';
 }
 
 // eslint-disable-next-line
 const VictoryZoomVoronoiContainer: any = createContainer('zoom', 'voronoi');
 
-export const AreaChart: FC<AreaChartProps> = ({ symbol, data = [] }) => {
+export const AreaChart: FC<AreaChartProps> = ({ symbol, range, data = [] }) => {
   const preparedData = useMemo(
     () =>
       data.map(item => ({
@@ -39,7 +42,7 @@ export const AreaChart: FC<AreaChartProps> = ({ symbol, data = [] }) => {
     toggleDomain,
     activeRange,
     verticalDomain,
-  } = useDomainControl(preparedData || []);
+  } = useDomainControl(preparedData || [], range);
 
   if (!preparedData.length) {
     return null;
@@ -59,7 +62,9 @@ export const AreaChart: FC<AreaChartProps> = ({ symbol, data = [] }) => {
         <div className={styles.root} ref={measureRef}>
           <div className={styles.header}>
             <div className={styles.title}>TVL Over Time</div>
-            <RangeToggle onClick={toggleDomain} activeRange={activeRange} />
+            {!range && (
+              <RangeToggle onClick={toggleDomain} activeRange={activeRange} />
+            )}
           </div>
           <svg style={{ height: 0 }}>
             <defs>
@@ -102,9 +107,8 @@ export const AreaChart: FC<AreaChartProps> = ({ symbol, data = [] }) => {
                 dependentAxis
                 domain={{ y: verticalDomain }}
                 orientation="left"
-                // offsetX={60}
                 style={LEFT_AXIS_STYLES}
-                tickFormat={d => `${d.toLocaleString()}`}
+                tickFormat={d => kFormatter(Number(d))}
               />
               <VictoryArea
                 style={LINE_STYLES}

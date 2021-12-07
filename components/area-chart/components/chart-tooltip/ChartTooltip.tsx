@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import format from 'date-fns/format';
+import { kFormatter } from 'helpers/format';
 
 import styles from './ChartTooltip.module.scss';
 
@@ -29,10 +30,10 @@ const ChartTooltip: FC<ChartTooltipProps> = ({ data, symbol }) => {
           {formattedDate} {formattedTime}
         </div>
       </div>
-      {value && (
+      {!!value && (
         <div className={styles.group}>
           <span className={styles.label}>Total value:</span>
-          <span className={styles.value}>{`${value.toLocaleString()}`}</span>
+          <span className={styles.value}>{kFormatter(value)}</span>
           <span>&nbsp;</span>
           <span className={styles.value}>{symbol || 'NEAR'}</span>
         </div>
