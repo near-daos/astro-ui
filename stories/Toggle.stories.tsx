@@ -21,5 +21,6 @@ export const Template = (
 
 Template.storyName = 'Toggle';
 Template.args = {
-  label: 'Toggle',
+  id: 'note01',
+  label: 'Notify me about the creation of a DAO with a Cooperative Structure',
 };
