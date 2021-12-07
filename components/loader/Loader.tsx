@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 
 import styles from './loader.module.scss';
 
@@ -84,13 +85,15 @@ const PRELOADER = (
 
 interface LoaderProps {
   title?: string;
+  className?: string;
 }
 
 export const Loader: FC<LoaderProps> = ({
   title = 'Receiving data from the contract',
+  className = '',
 }) => {
   return (
-    <div className={styles.root}>
+    <div className={cn(styles.root, className)}>
       <div className={styles.logo}>{PRELOADER}</div>
       <h2 className={styles.title}>{title}</h2>
       <div className={styles.subtitle}>This may take some time</div>

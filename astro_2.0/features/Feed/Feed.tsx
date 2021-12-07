@@ -22,6 +22,7 @@ import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { HeaderWithFilter } from 'astro_2.0/features/dao/HeaderWithFilter';
 import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
 import { ProposalCategoryFilter } from 'astro_2.0/features/Proposals/components/ProposalCategoryFilter';
+import { Loader } from 'components/loader';
 
 // Hooks
 import { useAuthContext } from 'context/AuthContext';
@@ -70,6 +71,8 @@ export const Feed = ({
 
   const [proposalsData, setProposalsData] = useState(initialProposals);
 
+  const [loading, setLoading] = useState(false);
+
   const [{ loading: proposalsDataIsLoading }, fetchProposalsData] = useAsyncFn(
     async (initialData?: typeof proposalsData) => {
       let accumulatedListData = initialData || null;
@@ -97,6 +100,9 @@ export const Feed = ({
         ...res,
         data: [...(accumulatedListData?.data || []), ...res.data],
       };
+
+      // Reset custom loading state
+      setLoading(false);
 
       return accumulatedListData;
     },
@@ -137,9 +143,10 @@ export const Feed = ({
       status: value as ProposalStatuses,
     } as ProposalsQueries;
 
-    // if (value === 'All') {
-    //   delete nextQuery.status;
-    // }
+    // We use custom loading flag here and not the existing proposalsDataIsLoading because
+    // we want loader to be visible immediately once we click on radio button
+    // which is not possible using existing proposalsDataIsLoading flag
+    setLoading(true);
 
     await replace(
       {
@@ -201,34 +208,40 @@ export const Feed = ({
           />
         )}
 
-        {proposalsData && (
-          <FeedList
-            data={proposalsData}
-            loadMore={loadMore}
-            loader={<p className={styles.loading}>Loading...</p>}
-            noResults={
-              <div className={styles.loading}>
-                <NoResultsView
-                  title={
-                    isEmpty(proposalsData?.data)
-                      ? 'No proposals here'
-                      : 'No more results'
-                  }
-                />
-              </div>
-            }
-            renderItem={proposal => (
-              <div key={proposal.id} className={styles.proposalCardWrapper}>
-                <ViewProposal
-                  dao={proposal.dao}
-                  proposal={proposal}
-                  showFlag={showFlag}
-                  tokens={daoTokens || tokens}
-                />
-              </div>
+        {loading ? (
+          <Loader className={styles.loader} />
+        ) : (
+          <>
+            {proposalsData && (
+              <FeedList
+                data={proposalsData}
+                loadMore={loadMore}
+                loader={<p className={styles.loading}>Loading...</p>}
+                noResults={
+                  <div className={styles.loading}>
+                    <NoResultsView
+                      title={
+                        isEmpty(proposalsData?.data)
+                          ? 'No proposals here'
+                          : 'No more results'
+                      }
+                    />
+                  </div>
+                }
+                renderItem={proposal => (
+                  <div key={proposal.id} className={styles.proposalCardWrapper}>
+                    <ViewProposal
+                      dao={proposal.dao}
+                      proposal={proposal}
+                      showFlag={showFlag}
+                      tokens={daoTokens || tokens}
+                    />
+                  </div>
+                )}
+                className={styles.listWrapper}
+              />
             )}
-            className={styles.listWrapper}
-          />
+          </>
         )}
       </div>
     </main>
