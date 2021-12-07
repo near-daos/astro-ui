@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import React, { FC } from 'react';
 
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
@@ -63,20 +62,12 @@ export const DaoGeneralCard: FC<DaoGeneralCardProps> = ({
 
   return (
     <div className={styles.root}>
-      <Link href={`/dao/${id}`}>
-        <a>
-          <div className={styles.flagWrapper}>
-            <FlagRenderer flag={cover} size="lg" logo={logo} fallBack={flag} />
-          </div>
-        </a>
-      </Link>
+      <div className={styles.flagWrapper}>
+        <FlagRenderer flag={cover} size="lg" logo={logo} fallBack={flag} />
+      </div>
       <div className={styles.generalInfoWrapper}>
         <section>
-          <Link href={`/dao/${id}`}>
-            <a>
-              <div className={styles.displayName}>{displayName || id}</div>
-            </a>
-          </Link>
+          <div className={styles.displayName}>{displayName || id}</div>
           <div className={styles.daoId}>
             <div>{id}</div>
             {!preview && <CopyButton text={id} className={styles.copyIcon} />}
