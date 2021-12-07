@@ -12,6 +12,8 @@ on:
   create:
     tags:
     - "**"
+    branches-ignore:
+    - '**'
   pull_request:
     branches:
     - 'develop'
@@ -37,6 +39,7 @@ jobs:
       id: get-environment
       shell: bash
       run: |
+        set -x
         if [[ "${{ github.ref }}" =~ ^refs/tags.* ]]
         then
           echo "::set-output name=environment::production"
