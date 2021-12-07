@@ -185,7 +185,7 @@ export function getProposalTypesOptions(): {
           group: 'Change Config',
         },
         {
-          label: 'Change DAO Legal Status and Doc',
+          label: 'Propose to change DAO Legal Status and Doc',
           value: ProposalVariant.ProposeChangeDaoLegalInfo,
           group: 'Change Config',
         },

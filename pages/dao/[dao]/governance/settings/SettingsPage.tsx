@@ -86,6 +86,25 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
 
       <div className={styles.titleRow}>DAO settings</div>
       <DaoSetting
+        settingsName="KYC"
+        className={styles.kyc}
+        disableNewProposal={!isCanCreateProposals}
+        settingsChangeHandler={createProposalHandler(
+          ProposalVariant.ProposeChangeDaoLegalInfo
+        )}
+      >
+        <a
+          href={dao.legal.legalLink}
+          target="_blank"
+          rel="noreferrer"
+          className={styles.legalLink}
+        >
+          {dao.legal.legalStatus || 'Public Limited Company'}
+          <Icon name="buttonExternal" width={14} className={styles.legalIcon} />
+        </a>
+        <div className={classNames(styles.rowSeparator)} />
+      </DaoSetting>
+      <DaoSetting
         settingsName="Links"
         className={styles.linksRow}
         disableNewProposal={!isCanCreateProposals}

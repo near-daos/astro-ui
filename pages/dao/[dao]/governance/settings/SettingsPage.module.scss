@@ -7,6 +7,7 @@
     'breadcrumbs'
     'dao'
     'title'
+    'kyc'
     'links'
     'bondAndDeadline'
     'votingPolicy'
@@ -23,6 +24,22 @@
 .flagAndLogoRow {
   grid-area: flagAndLogo;
   margin-bottom: 42px;
+}
+
+.kyc {
+  grid-area: kyc;
+  margin-bottom: 42px;
+
+  .legalLink,
+  .legalIcon {
+    align-items: center;
+    color: var(--color-brand-purple);
+    display: flex;
+  }
+
+  .legalIcon {
+    margin-left: 8px;
+  }
 }
 
 .bondAndDeadlineRow {
