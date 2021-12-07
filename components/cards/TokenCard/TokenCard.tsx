@@ -1,10 +1,9 @@
 import React from 'react';
 import cn from 'classnames';
 
-import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { FormattedNumericValue } from 'components/cards/TokenCard/components/FormattedNumericValue';
-import { useIsValidImage } from 'hooks/useIsValidImage';
+import { TokenIcon } from 'astro_2.0/components/TokenIcon';
 
 import styles from './TokenCard.module.scss';
 
@@ -25,27 +24,6 @@ export const TokenCard: React.FC<TokenCardProps> = ({
   onClick,
   isActive,
 }) => {
-  const isValid = useIsValidImage(symbol !== 'NEAR' ? icon : '');
-
-  function renderIcon() {
-    if (symbol === 'NEAR') {
-      return <Icon name="tokenNearBig" />;
-    }
-
-    if (isValid) {
-      return (
-        <div
-          style={{
-            backgroundImage: `url(${icon})`,
-          }}
-          className={styles.icon}
-        />
-      );
-    }
-
-    return <div className={styles.icon} />;
-  }
-
   return (
     <Button
       variant="transparent"
@@ -55,9 +33,7 @@ export const TokenCard: React.FC<TokenCardProps> = ({
       onClick={onClick}
     >
       <div className={styles.grid}>
-        <div className={styles.iconContainer}>
-          <div className={styles.iconWrapper}>{renderIcon()}</div>
-        </div>
+        <TokenIcon symbol={symbol} icon={icon} />
         <div className={styles.token}>
           <div className={styles.tokenBalance}>
             {balance} <span className={styles.tokenName}>{symbol}</span>
