@@ -178,12 +178,6 @@
   }
 }
 
-.categoriesListTitle {
-  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
-    display: none;
-  }
-}
-
 .highlighterRoot {
   width: 100%;
 }
