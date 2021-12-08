@@ -1,0 +1,22 @@
+.root {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.bell {
+  color: var(--color-neutral-60);
+  height: 24px;
+  width: 24px;
+
+  &:hover {
+    color: var(--color-black);
+  }
+}
+
+.arrow {
+  color: var(--color-white);
+}

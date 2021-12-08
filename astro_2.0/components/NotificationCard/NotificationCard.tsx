@@ -14,7 +14,7 @@ import styles from './NotificationCard.module.scss';
 
 export interface NotificationCardProps {
   content: NotificationCardContent;
-  variant?: 'regular' | 'hub';
+  regular?: boolean;
   isNew: boolean;
   isRead: boolean;
   isMuted: boolean;
@@ -28,7 +28,7 @@ export interface NotificationCardProps {
 
 export const NotificationCard: React.FC<NotificationCardProps> = ({
   content,
-  variant,
+  regular = true,
   isNew,
   isRead,
   isMuted,
@@ -50,7 +50,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
 
   const rootClassName = cn(styles.root, {
     [styles.new]: isNew,
-    [styles.hub]: variant === 'hub',
+    [styles.hub]: !regular,
   });
 
   const iconType: IconName =
@@ -111,9 +111,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
         </div>
       </div>
       <div className={styles.text}>{text}</div>
-      <div className={styles.time}>
-        {format(parseISO(time as string), 'h:mm aaa')}
-      </div>
+      <div className={styles.time}>{format(parseISO(time), 'h:mm aaa')}</div>
       <div className={styles.control}>
         <div className={styles.markRead}>
           {isMarkReadAvailable && !isNotificationRead && (
