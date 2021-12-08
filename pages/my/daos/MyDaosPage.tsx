@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import { Button } from 'components/button/Button';
 
@@ -12,9 +12,7 @@ import { useAuthContext } from 'context/AuthContext';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
-import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 
-import { ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
 
 import { useNearPrice } from 'hooks/useNearPrice';
@@ -29,10 +27,6 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
   const router = useRouter();
   const { accountId, login } = useAuthContext();
   const nearPrice = useNearPrice();
-
-  const [createProposalForDao, setCreateProposalForDao] = useState<DAO | null>(
-    null
-  );
 
   function renderDaos() {
     if (isEmpty(accountDaos)) {
@@ -81,24 +75,7 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
           Create new DAO
         </Button>
       </div>
-      <div className={styles.content}>
-        {createProposalForDao && (
-          <CreateProposal
-            key={createProposalForDao?.id}
-            dao={createProposalForDao}
-            proposalVariant={ProposalVariant.ProposeTransfer}
-            onCreate={isSuccess => {
-              if (isSuccess) {
-                setCreateProposalForDao(null);
-              }
-            }}
-            onClose={() => {
-              setCreateProposalForDao(null);
-            }}
-          />
-        )}
-        {renderDaos()}
-      </div>
+      <div className={styles.content}>{renderDaos()}</div>
     </div>
   );
 };

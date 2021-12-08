@@ -114,6 +114,8 @@ const BountiesPage: FC<BountiesPageProps> = ({
         <CreateProposal
           dao={dao}
           showFlag={false}
+          key={Object.keys(tokens).length}
+          daoTokens={tokens}
           className={styles.createProposal}
           proposalVariant={ProposalVariant.ProposeCreateBounty}
           onClose={toggleCreateProposal}

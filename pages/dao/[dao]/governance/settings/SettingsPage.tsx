@@ -18,6 +18,7 @@ import { FlagPreview } from 'astro_2.0/features/CreateDao/components/FlagPreview
 import { getBadgeVariant } from 'features/proposal/helpers';
 import { formatYoktoValue } from 'helpers/format';
 import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import { ProposalVariant } from 'types/proposal';
 
@@ -36,6 +37,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
     userPermissions: { isCanCreateProposals },
   },
 }) => {
+  const { tokens } = useDaoCustomTokens();
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
   const createProposalHandler = useCallback(
@@ -75,6 +77,8 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
         <CreateProposal
           className={styles.createProposal}
           dao={dao}
+          key={Object.keys(tokens).length}
+          daoTokens={tokens}
           showFlag={false}
           onClose={toggleCreateProposal}
         />

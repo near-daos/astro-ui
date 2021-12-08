@@ -12,8 +12,7 @@ import { Proposal, ProposalVariant } from 'types/proposal';
 
 import { useAuthContext } from 'context/AuthContext';
 
-import { useNearPrice } from 'hooks/useNearPrice';
-import { useAllCustomTokens } from 'hooks/useCustomTokens';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 
 import { DaoContext } from 'types/context';
@@ -32,10 +31,8 @@ const DAOHome: NextPage<DaoHomeProps> = ({
   },
   initialProposalsData,
 }) => {
-  const nearPrice = useNearPrice();
-
   const { accountId } = useAuthContext();
-  const { tokens } = useAllCustomTokens();
+  const { tokens: daoTokens } = useDaoCustomTokens();
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
@@ -49,9 +46,9 @@ const DAOHome: NextPage<DaoHomeProps> = ({
       <div className={styles.header}>
         <DaoDetails
           key={dao.id}
-          nearPrice={nearPrice}
           className={styles.details}
           dao={dao}
+          daoTokens={daoTokens}
           accountId={accountId}
           restrictCreateProposals={!isCanCreateProposals}
           onCreateProposalClick={() => toggleCreateProposal()}
@@ -62,6 +59,8 @@ const DAOHome: NextPage<DaoHomeProps> = ({
         <CreateProposal
           className={styles.createProposal}
           dao={dao}
+          key={Object.keys(daoTokens).length}
+          daoTokens={daoTokens}
           showFlag={false}
           proposalVariant={ProposalVariant.ProposeTransfer}
           onClose={toggleCreateProposal}
@@ -78,7 +77,6 @@ const DAOHome: NextPage<DaoHomeProps> = ({
         dao={dao}
         showFlag={false}
         title="Proposals"
-        daoTokens={tokens}
         className={styles.feed}
         initialProposals={initialProposalsData}
       />

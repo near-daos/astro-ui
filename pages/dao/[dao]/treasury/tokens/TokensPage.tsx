@@ -218,6 +218,8 @@ const TokensPage: NextPage<TokensPageProps> = ({
         <CreateProposal
           className={styles.createProposal}
           dao={dao}
+          key={Object.keys(tokens).length}
+          daoTokens={tokens}
           proposalVariant={ProposalVariant.ProposeTransfer}
           showFlag={false}
           onClose={toggleCreateProposal}

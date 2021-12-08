@@ -18,6 +18,7 @@ import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarnin
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import styles from './nfts.module.scss';
 
@@ -32,6 +33,7 @@ const NFTs: NextPage<NFTsPageProps> = ({
     policyAffectsProposals,
   },
 }) => {
+  const { tokens } = useDaoCustomTokens();
   const router = useRouter();
   const daoId = router.query.dao as string;
   const [nfts, setNfts] = useState<NftToken[]>([]);
@@ -61,6 +63,8 @@ const NFTs: NextPage<NFTsPageProps> = ({
           className={styles.createProposal}
           proposalVariant={ProposalVariant.ProposeTransfer}
           dao={dao}
+          key={Object.keys(tokens).length}
+          daoTokens={tokens}
           showFlag={false}
           onClose={toggleCreateProposal}
         />

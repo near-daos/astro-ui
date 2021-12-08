@@ -54,6 +54,8 @@ const PollsPage: FC<PollsPageProps> = ({
         <CreateProposal
           className={styles.createProposal}
           dao={dao}
+          key={Object.keys(tokens).length}
+          daoTokens={tokens}
           proposalVariant={ProposalVariant.ProposePoll}
           showFlag={false}
           onClose={toggleCreateProposal}
@@ -72,7 +74,6 @@ const PollsPage: FC<PollsPageProps> = ({
           title={<h1 className={styles.header}>Polls</h1>}
           dao={dao}
           showFlag={false}
-          daoTokens={tokens}
           className={styles.feed}
           category={ProposalCategories.Polls}
           initialProposals={initialPollsData}

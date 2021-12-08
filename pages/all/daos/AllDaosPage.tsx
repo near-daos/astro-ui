@@ -3,7 +3,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useRouter } from 'next/router';
 
 import { DAO } from 'types/dao';
-import { ProposalVariant } from 'types/proposal';
 
 import { Button } from 'components/button/Button';
 import { CREATE_DAO_URL } from 'constants/routing';
@@ -15,8 +14,6 @@ import { useAuthContext } from 'context/AuthContext';
 import { useRouterLoading } from 'hooks/useRouterLoading';
 import { useNearPrice } from 'hooks/useNearPrice';
 import { Loader } from 'components/loader';
-
-import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 
 import styles from './AllDaosPage.module.scss';
 
@@ -54,9 +51,6 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
 }) => {
   const router = useRouter();
   const { accountId, login } = useAuthContext();
-  const [createProposalForDao, setCreateProposalForDao] = useState<DAO | null>(
-    null
-  );
 
   const nearPrice = useNearPrice();
 
@@ -129,22 +123,6 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
           Create new DAO
         </Button>
       </div>
-
-      {createProposalForDao && (
-        <CreateProposal
-          key={createProposalForDao?.id}
-          dao={createProposalForDao}
-          proposalVariant={ProposalVariant.ProposeTransfer}
-          onCreate={isSuccess => {
-            if (isSuccess) {
-              setCreateProposalForDao(null);
-            }
-          }}
-          onClose={() => {
-            setCreateProposalForDao(null);
-          }}
-        />
-      )}
 
       <div className={styles.filter}>
         <Dropdown

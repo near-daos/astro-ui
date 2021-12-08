@@ -26,6 +26,7 @@ import { DaoContext } from 'types/context';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { uniq } from 'lodash';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import styles from './groups.module.scss';
 
 const sortOptions = [
@@ -52,6 +53,7 @@ const GroupPage: FC<GroupPageProps> = ({
   },
   proposals,
 }) => {
+  const { tokens } = useDaoCustomTokens();
   const members = dao ? extractMembersFromDao(dao, proposals) : [];
 
   const availableGroups = uniq(
@@ -115,6 +117,8 @@ const GroupPage: FC<GroupPageProps> = ({
         <CreateProposal
           className={styles.createProposal}
           dao={dao}
+          key={Object.keys(tokens).length}
+          daoTokens={tokens}
           proposalVariant={ProposalVariant.ProposeCreateGroup}
           showFlag={false}
           onClose={toggleCreateProposal}

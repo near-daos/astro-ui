@@ -12,13 +12,13 @@ import { TransactionDetailsWidget } from 'astro_2.0/components/TransactionDetail
 
 import { CreateProposalParams, ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
+import { Token } from 'types/token';
 
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 import { useAuthContext } from 'context/AuthContext';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import {
   getFormContentNode,
@@ -34,6 +34,7 @@ export interface CreateProposalProps {
   className?: string;
   dao: DAO;
   proposalVariant?: ProposalVariant;
+  daoTokens: Record<string, Token>;
   showFlag?: boolean;
   bountyId?: string;
   onCreate?: (result: boolean) => void;
@@ -43,6 +44,7 @@ export interface CreateProposalProps {
 export const CreateProposal: FC<CreateProposalProps> = ({
   className,
   dao,
+  daoTokens,
   proposalVariant = ProposalVariant.ProposeTransfer,
   showFlag = true,
   bountyId,
@@ -58,7 +60,6 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     selectedProposalVariant: proposalVariant,
   });
   const formRef = useRef<HTMLDivElement>(null);
-  const { tokens } = useDaoCustomTokens();
 
   useMount(() => {
     formRef?.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -128,7 +129,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           dao,
           selectedProposalVariant,
           data,
-          tokens,
+          daoTokens,
           accountId,
           bountyId
         );
@@ -181,7 +182,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     [
       dao,
       selectedProposalVariant,
-      tokens,
+      daoTokens,
       accountId,
       bountyId,
       router,
@@ -226,7 +227,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
               }}
               type={selectedProposalVariant}
               content={
-                <CustomTokensContext.Provider value={{ tokens }}>
+                <CustomTokensContext.Provider value={{ tokens: daoTokens }}>
                   {contentNode}
                 </CustomTokensContext.Provider>
               }
