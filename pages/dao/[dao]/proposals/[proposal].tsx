@@ -150,8 +150,8 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         <NavLink href="/all/daos">All DAOs</NavLink>
         <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
         <NavLink>Proposals</NavLink>
-        <NavLink href={`/dao/${dao.id}/proposals/${proposal.id}`}>
-          {proposal.id}
+        <NavLink href={`/dao/${dao.id}/proposals/${proposal?.id}`}>
+          {proposal?.id}
         </NavLink>
       </BreadCrumbs>
       <div className={styles.dao}>
