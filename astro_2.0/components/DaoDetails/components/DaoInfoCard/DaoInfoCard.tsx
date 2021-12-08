@@ -31,9 +31,14 @@ export const DaoInfoCard: FC<DaoMembersProps> = ({
   const boldText = infoType === 'members' ? members : daoFunds;
   const lightText = infoType === 'members' ? `/${groups}` : ' USD';
 
-  const handleClick = useCallback(() => {
-    router.push(url);
-  }, [router, url]);
+  const handleClick = useCallback(
+    e => {
+      e.preventDefault();
+
+      router.push(url);
+    },
+    [router, url]
+  );
 
   return (
     <div

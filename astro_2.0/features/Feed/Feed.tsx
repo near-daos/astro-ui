@@ -7,7 +7,6 @@ import React, { ReactNode, useRef, useState } from 'react';
 
 // Types
 import { DAO } from 'types/dao';
-import { Token } from 'types/token';
 import { PaginationResponse } from 'types/api';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
 import { Proposal, ProposalCategories, ProposalStatuses } from 'types/proposal';
@@ -42,8 +41,6 @@ interface FeedProps {
   title?: ReactNode | string;
   category?: ProposalCategories;
   headerClassName?: string;
-  // TODO temporary solution till tokens API fixed
-  daoTokens?: Record<string, Token>;
   initialProposals: PaginationResponse<Proposal[]> | null;
 }
 
@@ -53,15 +50,13 @@ export const Feed = ({
   status,
   category,
   className,
-  daoTokens,
   showFlag = true,
   headerClassName,
   initialProposals,
 }: FeedProps): JSX.Element => {
   const neighbourRef = useRef(null);
   const { query, replace, pathname } = useRouter();
-
-  const { tokens } = useAllCustomTokens();
+  const { tokens: allTokens } = useAllCustomTokens();
 
   const queries = query as ProposalsQueries;
 
@@ -234,7 +229,7 @@ export const Feed = ({
                       dao={proposal.dao}
                       proposal={proposal}
                       showFlag={showFlag}
-                      tokens={daoTokens || tokens}
+                      tokens={allTokens}
                     />
                   </div>
                 )}

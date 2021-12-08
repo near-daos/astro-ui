@@ -7,7 +7,6 @@ import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
 import { Icon } from 'components/Icon';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
-import { useNearPrice } from 'hooks/useNearPrice';
 import { formatCurrency } from 'utils/formatCurrency';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
@@ -27,10 +26,14 @@ export const TransferContent: FC = () => {
     amountWidth = amount?.length ?? 5;
   }
 
-  const nearPrice = useNearPrice();
-
   const nearToUsd = (tokenBalance: string) => {
-    return formatCurrency(parseFloat(tokenBalance) * nearPrice);
+    const nearPrice = tokens?.NEAR?.price;
+
+    if (nearPrice) {
+      return formatCurrency(parseFloat(tokenBalance) * parseFloat(nearPrice));
+    }
+
+    return '';
   };
 
   const tokenOptions = Object.values(tokens).map(token => ({

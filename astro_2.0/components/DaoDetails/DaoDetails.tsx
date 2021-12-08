@@ -10,6 +10,8 @@ import { ProposalTrackerCard } from 'astro_2.0/components/DaoDetails/components/
 import { DaoGeneralCard } from 'astro_2.0/components/DaoDetails/components/DaoGeneralCard';
 import { ActionButton } from 'features/proposal/components/action-button';
 import { isUserPermittedToCreateProposal } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
+import { getAccumulatedTokenValue } from 'features/treasury/helpers';
+import { Token } from 'types/token';
 
 import styles from './DaoDetails.module.scss';
 
@@ -21,13 +23,13 @@ export interface DaoDetailsProps {
   activeProposals: number;
   totalProposals: number;
   restrictCreateProposals?: boolean;
-  nearPrice: number;
+  daoTokens: Record<string, Token>;
 }
 
 export const DaoDetails: FC<DaoDetailsProps> = ({
   dao,
   className,
-  nearPrice,
+  daoTokens,
   accountId,
   onCreateProposalClick,
   activeProposals,
@@ -49,9 +51,9 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
     );
 
   function getFundsInUsdFromNear() {
-    const funds = nearPrice * parseFloat(dao.funds);
+    const total = getAccumulatedTokenValue(daoTokens);
 
-    return funds.toFixed(2);
+    return total.toFixed(2);
   }
 
   return (
