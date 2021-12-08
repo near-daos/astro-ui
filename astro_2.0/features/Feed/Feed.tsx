@@ -198,7 +198,6 @@ export const Feed = ({
       <div className={styles.container}>
         {!category && (
           <SideFilter
-            query={queries}
             queryName="category"
             list={FEED_CATEGORIES}
             title="Choose a filter"

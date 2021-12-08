@@ -1,17 +1,18 @@
 import cn from 'classnames';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import findIndex from 'lodash/findIndex';
 import React, { CSSProperties } from 'react';
 
 import styles from './SideFilter.module.scss';
 
 const ITEM_ALL = {
-  value: '',
+  value: undefined,
   label: 'All',
 };
 
 type ListItem = {
-  value: string;
+  value?: string;
   label: string;
 };
 
@@ -19,7 +20,6 @@ interface SideFilterProps {
   title: string;
   disabled?: boolean;
   queryName: string;
-  query: Record<string, string | string[]>;
   className?: string;
   titleClassName?: string;
   list?: ListItem[];
@@ -27,13 +27,13 @@ interface SideFilterProps {
 
 export const SideFilter = ({
   list,
-  query,
   title,
   disabled,
   queryName,
   className,
   titleClassName,
 }: SideFilterProps): JSX.Element => {
+  const { query } = useRouter();
   const { [queryName]: value } = query;
 
   function getActiveMarkTransformValue() {

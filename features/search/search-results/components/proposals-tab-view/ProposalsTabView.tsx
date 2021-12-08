@@ -105,7 +105,6 @@ export const ProposalsTabView: React.FC = () => {
       <div className={styles.listWrapper}>
         <SideFilter
           queryName="category"
-          query={queries as Record<string, string>}
           list={[
             {
               label: 'Tasks',
