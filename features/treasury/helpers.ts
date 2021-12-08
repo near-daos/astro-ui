@@ -2,22 +2,32 @@ import { Receipt } from 'types/transaction';
 import { ChartData } from 'types/chart';
 import { formatYoktoValue } from 'helpers/format';
 import { Token } from 'types/token';
-import { useCallback, useEffect, useState } from 'react';
 import { SputnikHttpService } from 'services/sputnik';
+import { useRouter } from 'next/router';
+import { useAsyncFn } from 'react-use';
+import { useEffect } from 'react';
 
 export function getChartData(receipts: Receipt[], token: Token): ChartData[] {
-  let value = 0;
   const result: ChartData[] = [];
 
   if (!receipts || !token) {
     return result;
   }
 
-  receipts
-    .sort((a, b) => {
-      if (a.timestamp > b.timestamp) return 1;
+  const { balance: currentBalance, decimals } = token;
+  let value = Number(currentBalance);
 
-      if (a.timestamp < b.timestamp) return -1;
+  result.push({
+    balance: value,
+    timestamp: new Date().getTime(),
+  });
+
+  receipts
+    // sort DESC so we will start from today
+    .sort((a, b) => {
+      if (a.timestamp > b.timestamp) return -1;
+
+      if (a.timestamp < b.timestamp) return 1;
 
       return 0;
     })
@@ -25,12 +35,12 @@ export function getChartData(receipts: Receipt[], token: Token): ChartData[] {
       const income = item.type === 'Deposit';
       let balance;
 
-      const deposit = Number(formatYoktoValue(item.deposit, token.decimals));
+      const deposit = Number(formatYoktoValue(item.deposit, decimals));
 
       if (income) {
-        balance = value + deposit;
-      } else {
         balance = value - deposit;
+      } else {
+        balance = value + deposit;
       }
 
       value = balance;
@@ -41,87 +51,94 @@ export function getChartData(receipts: Receipt[], token: Token): ChartData[] {
       });
     });
 
-  return result;
-}
+  return result.sort((a, b) => {
+    if (a.timestamp > b.timestamp) return 1;
 
-export function useTokensTransactions(
-  daoId: string,
-  tokens: Record<string, Token>
-): {
-  loading: boolean;
-  data: Record<string, Receipt[]>;
-} {
-  const [loading, setLoading] = useState(true);
-  const [receiptsByToken, setReceiptsByToken] = useState({});
+    if (a.timestamp < b.timestamp) return -1;
 
-  useEffect(() => {
-    async function getReceiptsData() {
-      const daoFtTokens = Object.values(tokens)
-        .filter(item => item.symbol !== 'NEAR')
-        .map(item => item.tokenId);
-
-      // Fetch FT tokens transactions data
-      const ftReceipts = await Promise.all(
-        daoFtTokens.map(tokenId =>
-          SputnikHttpService.getAccountReceiptsByTokens(daoId, tokenId)
-        )
-      );
-
-      const ftReceiptsData = ftReceipts.reduce((res, item) => {
-        res[item.tokenId] = item.data;
-
-        return res;
-      }, {} as Record<string, Receipt[]>);
-
-      // Fetch NEAR transactions data
-      const receipts = await SputnikHttpService.getAccountReceipts(daoId);
-
-      // Merge transactions data together
-      const result = Object.keys(tokens).reduce<Record<string, Receipt[]>>(
-        (res, key) => {
-          if (key === 'NEAR') {
-            res[key] = receipts[key] ?? [];
-          } else {
-            res[key] = ftReceiptsData[key] ?? [];
-          }
-
-          return res;
-        },
-        {}
-      );
-
-      setReceiptsByToken(result);
-      setLoading(false);
-    }
-
-    getReceiptsData();
-  }, [daoId, tokens]);
-
-  return { data: receiptsByToken, loading };
+    return 0;
+  });
 }
 
 export function useTokenFilteredData(
-  receipts: Record<string, Receipt[]>,
   tokens: Record<string, Token>
 ): {
+  loading: boolean;
+  error: boolean;
   chartData: ChartData[];
   transactionsData: Receipt[];
   onFilterChange: (val: string) => void;
   viewToken: string;
 } {
-  const [viewToken, setViewToken] = useState('NEAR');
+  const { query } = useRouter();
+  const daoId = query.dao as string;
 
-  const transactionsData = receipts[viewToken] ?? [];
-  const chartData = getChartData(transactionsData, tokens[viewToken]);
+  const [{ loading, error, value }, fetchData] = useAsyncFn(
+    async viewToken => {
+      let data;
 
-  const onFilterChange = useCallback(val => {
-    setViewToken(val);
-  }, []);
+      if (viewToken === 'NEAR') {
+        data = await SputnikHttpService.getAccountReceipts(daoId);
+      } else {
+        data = await SputnikHttpService.getAccountReceiptsByTokens(
+          daoId,
+          viewToken
+        );
+      }
+
+      if (data) {
+        const chartData = getChartData(data, tokens[viewToken]);
+
+        return {
+          transactions: data,
+          chartData,
+          viewToken,
+        };
+      }
+
+      return {
+        transactions: [],
+        chartData: [],
+        viewToken,
+      };
+    },
+    [tokens]
+  );
+
+  useEffect(() => {
+    fetchData('NEAR');
+  }, [fetchData, tokens]);
 
   return {
-    chartData,
-    transactionsData,
-    onFilterChange,
-    viewToken,
+    loading,
+    error: !!error,
+    chartData: value?.chartData ?? [],
+    transactionsData: value?.transactions ?? [],
+    onFilterChange: fetchData,
+    viewToken: value?.viewToken,
   };
 }
+
+export const sorter = (a: Token, b: Token): number => {
+  if (b.symbol === 'NEAR') return 1;
+
+  if (a.symbol > b.symbol) return 1;
+
+  if (a.symbol < b.symbol) return -1;
+
+  return 0;
+};
+
+export const getAccumulatedTokenValue = (
+  tokens: Record<string, Token>
+): number => {
+  return Object.values(tokens).reduce((res, token) => {
+    if (token.price && token.balance) {
+      const tokenValue = parseFloat(token.balance) * parseFloat(token.price);
+
+      return res + tokenValue;
+    }
+
+    return res;
+  }, 0);
+};

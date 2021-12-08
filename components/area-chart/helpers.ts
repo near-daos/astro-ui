@@ -71,8 +71,13 @@ function getPreparedStartEndDates(
   return [start, end];
 }
 
-export const useDomainControl = (data: ChartDataElement[]): DomainControl => {
-  const [activeRange, setActiveRange] = useState(DOMAIN_RANGES.DAY);
+export const useDomainControl = (
+  data: ChartDataElement[],
+  initialRange?: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR' | 'ALL'
+): DomainControl => {
+  const [activeRange, setActiveRange] = useState(
+    initialRange || DOMAIN_RANGES.DAY
+  );
   const [maxDomainValue, setMaxDomainValue] = useState(0);
 
   const [domain, setDomain] = useState<{ x?: Domain; y?: Domain }>({

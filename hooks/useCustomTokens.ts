@@ -19,6 +19,8 @@ function normalizeTokens(tkns: Token[]): Tokens {
           decimals: 24,
           tokenId: '',
           icon: '',
+          id: 'NEAR',
+          price: null,
         },
       ];
 

@@ -53,6 +53,8 @@ const cardProps = {
         balance: '5603284827495119399999994',
         icon: '',
         decimals: 24,
+        price: null,
+        id: 'NEAR',
       }}
       availableClaims="3"
       daysToComplete="5"

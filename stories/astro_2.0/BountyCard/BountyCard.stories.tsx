@@ -54,6 +54,8 @@ Template.args = {
       balance: '5603284827495119399999994',
       icon: '',
       decimals: 24,
+      price: null,
+      id: 'NEAR',
     },
     description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis eleifend habitant laoreet ornare vitae consequat. Potenti ut urna, ultricies elit nam. Feugiat porta elit ultricies eu mollis. Faucibus mauris faucibus aliquam non. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',

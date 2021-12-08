@@ -72,15 +72,18 @@ export type TokenResponse = {
   spec: string;
   symbol: string;
   balance: string;
+  price: string | null;
 };
 
 export type Token = {
+  id: string;
   tokenId: string;
   decimals: number;
   symbol: string;
   icon: string;
   totalSupply?: string;
   balance: string;
+  price: string | null;
 };
 
 export type GetTokensResponse = {
