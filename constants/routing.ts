@@ -11,3 +11,5 @@ export const CREATE_DAO_URL = '/create-dao-new';
 export const SINGLE_DAO_PAGE = '/dao/[dao]';
 
 export const SEARCH_PAGE_URL = '/search-results';
+
+export const NOTIFICATIONS_PAGE_URL = '/notifications';

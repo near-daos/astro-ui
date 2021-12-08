@@ -3,6 +3,8 @@ import isEmpty from 'lodash/isEmpty';
 import { useHoverDirty } from 'react-use';
 import { useRef, useState, VFC } from 'react';
 
+import { FEATURE_FLAGS } from 'constants/featureFlags';
+
 import { useAuthContext } from 'context/AuthContext';
 
 import { Icon } from 'components/Icon';
@@ -38,7 +40,7 @@ export const NotificationsBell: VFC<NotificationsBellProps> = props => {
     );
   }
 
-  return accountId ? (
+  return accountId && FEATURE_FLAGS.NOTIFICATIONS ? (
     <GenericDropdown
       arrow
       arrowClassName={styles.arrow}

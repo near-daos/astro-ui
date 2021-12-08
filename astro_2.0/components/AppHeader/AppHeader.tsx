@@ -1,6 +1,8 @@
 import cn from 'classnames';
 import React, { FC, useRef } from 'react';
 
+import { FEATURE_FLAGS } from 'constants/featureFlags';
+
 import { Icon } from 'components/Icon';
 
 import { SearchBar } from './components/SearchBar';
@@ -25,10 +27,14 @@ export const AppHeader: FC = () => {
     );
   }
 
+  const centralPartClassName = cn(styles.centralPart, {
+    [styles.withoutNoties]: !FEATURE_FLAGS.NOTIFICATIONS,
+  });
+
   return (
     <header className={styles.root}>
       {renderLogo()}
-      <div className={styles.centralPart} ref={centralEl}>
+      <div className={centralPartClassName} ref={centralEl}>
         {renderLogo(styles.mobileLogo)}
         <SearchBar
           withSideBar
