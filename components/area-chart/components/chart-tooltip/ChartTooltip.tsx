@@ -8,6 +8,7 @@ import styles from './ChartTooltip.module.scss';
 type TooltipProps = {
   x?: Date;
   y?: number;
+  tooltip?: string;
 };
 
 interface ChartTooltipProps {
@@ -18,6 +19,7 @@ interface ChartTooltipProps {
 const ChartTooltip: FC<ChartTooltipProps> = ({ data, symbol }) => {
   const date = data?.x ?? null;
   const value = data?.y ?? null;
+  const tooltip = data?.tooltip ?? null;
 
   if (!date) return null;
 
@@ -28,7 +30,11 @@ const ChartTooltip: FC<ChartTooltipProps> = ({ data, symbol }) => {
     <div className={styles.root}>
       <div className={styles.group}>
         <div className={styles.date}>
-          {formattedDate} {formattedTime}
+          {tooltip || (
+            <>
+              {formattedDate} {formattedTime}
+            </>
+          )}
         </div>
       </div>
       {!!value && (

@@ -36,3 +36,11 @@
   @extend %title3;
   white-space: nowrap;
 }
+
+.rangePlaceholder {
+  color: var(--color-brand-black);
+  font-family: 'Manrope', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: capitalize;
+}

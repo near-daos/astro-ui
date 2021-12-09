@@ -196,6 +196,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
         {pageCount > 0 ? (
           <div className={styles.pagination}>
             <Pagination
+              key={viewToken}
               pageCount={pageCount}
               onPageActive={pageChangeHandler}
               onPageChange={pageChangeHandler}
@@ -254,7 +255,10 @@ const TokensPage: NextPage<TokensPageProps> = ({
               key={`${id}-${symbol}`}
               isActive={viewToken === id}
               symbol={symbol}
-              onClick={() => onFilterChange(id)}
+              onClick={() => {
+                setActivePage(0);
+                onFilterChange(id);
+              }}
               icon={icon}
               balance={Number(balance)}
               totalValue={

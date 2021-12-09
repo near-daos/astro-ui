@@ -4,4 +4,4 @@ export const HOURS_IN_WEEK = 168;
 
 export const DATE_TIME_FORMAT = 'dd LLL yyyy hh:mm:ss';
 export const DATE_FORMAT = 'dd LLL yyyy';
-export const TIME_FORMAT = 'hh:mm:ss';
+export const TIME_FORMAT = 'HH:mm:ss';
