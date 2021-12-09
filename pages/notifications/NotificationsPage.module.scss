@@ -1,0 +1,100 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.header {
+  margin: 0;
+}
+
+.headerContainer {
+  @include wide-background;
+
+  align-items: center;
+  background-color: var(--color-neutral-10);
+  display: flex;
+  justify-content: space-between;
+  padding: 56px 0 24px;
+  position: sticky;
+  top: var(--header-height);
+  z-index: 3;
+}
+
+.settingButton {
+  align-items: center;
+  display: flex;
+  min-width: 0;
+  padding: 14px;
+  text-transform: none;
+
+  .buttonLabel {
+    @include astro-mobile {
+      display: none;
+    }
+  }
+
+  .gearIcon {
+    color: var(--color-black);
+    height: 18px;
+    margin-right: 8px;
+    width: 18px;
+
+    @include astro-mobile {
+      margin-right: 0;
+    }
+  }
+}
+
+.pageContent {
+  display: flex;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    flex-direction: column;
+  }
+}
+
+.sideFilter {
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    top: 200px;
+  }
+}
+
+.notifications {
+  width: 100%;
+}
+
+.delimiter {
+  @extend %caption2;
+  align-items: center;
+  color: var(--color-neutral-60);
+  display: flex;
+  margin: 24px 0;
+
+  &:first-of-type {
+    margin-top: 10px;
+  }
+
+  .line {
+    background-color: #e9edec;
+    flex: 1;
+    height: 1px;
+    margin: 0 4px;
+  }
+}
+
+.noNotiesContainer {
+  @extend %title3;
+  align-items: center;
+
+  color: var(--color-neutral-50);
+  display: flex;
+  flex-direction: column;
+}
+
+.noNotiesIcon {
+  margin-bottom: 12px;
+  width: 104px;
+
+  &.big {
+    width: 168px;
+  }
+}

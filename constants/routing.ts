@@ -13,3 +13,4 @@ export const SINGLE_DAO_PAGE = '/dao/[dao]';
 export const SEARCH_PAGE_URL = '/search-results';
 
 export const NOTIFICATIONS_PAGE_URL = '/notifications';
+export const NOTIFICATIONS_SETTINGS_PAGE_URL = '/notification-settings';
