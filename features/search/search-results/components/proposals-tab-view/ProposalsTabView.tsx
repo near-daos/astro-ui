@@ -8,7 +8,7 @@ import { statusFilterOptions } from 'features/search/search-results/components/p
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
-import { ProposalCategoryFilter } from 'astro_2.0/features/Proposals/components/ProposalCategoryFilter';
+import { SideFilter } from 'astro_2.0/components/SideFilter';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { useAllCustomTokens } from 'hooks/useCustomTokens';
 
@@ -103,7 +103,7 @@ export const ProposalsTabView: React.FC = () => {
       </div>
 
       <div className={styles.listWrapper}>
-        <ProposalCategoryFilter
+        <SideFilter
           queryName="category"
           query={queries as Record<string, string>}
           list={[
@@ -125,7 +125,6 @@ export const ProposalsTabView: React.FC = () => {
             },
           ]}
           title="Choose a type"
-          titleClassName={styles.categoriesListTitle}
         />
 
         {filteredProposals?.length ? (

@@ -20,7 +20,7 @@ import { Feed as FeedList } from 'astro_2.0/components/Feed';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { HeaderWithFilter } from 'astro_2.0/features/dao/HeaderWithFilter';
 import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
-import { ProposalCategoryFilter } from 'astro_2.0/features/Proposals/components/ProposalCategoryFilter';
+import { SideFilter } from 'astro_2.0/components/SideFilter';
 import { Loader } from 'components/loader';
 
 // Hooks
@@ -30,6 +30,9 @@ import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 
 // Services
 import { SputnikHttpService } from 'services/sputnik';
+
+// Local Constants
+import { FEED_CATEGORIES } from './constants';
 
 import styles from './Feed.module.scss';
 
@@ -194,9 +197,10 @@ export const Feed = ({
 
       <div className={styles.container}>
         {!category && (
-          <ProposalCategoryFilter
+          <SideFilter
             query={queries}
             queryName="category"
+            list={FEED_CATEGORIES}
             title="Choose a filter"
             disabled={proposalsDataIsLoading}
             titleClassName={styles.categoriesListTitle}
