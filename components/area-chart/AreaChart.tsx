@@ -18,7 +18,7 @@ import {
 } from './chart-styles';
 
 export interface AreaChartProps {
-  data: { timestamp: number; balance: number }[] | undefined;
+  data: { timestamp: number; balance: number; tooltip?: string }[] | undefined;
   symbol: string;
   range?: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR' | 'ALL';
 }
@@ -32,6 +32,7 @@ export const AreaChart: FC<AreaChartProps> = ({ symbol, range, data = [] }) => {
       data.map(item => ({
         x: new Date(item.timestamp),
         y: item.balance,
+        tooltip: item.tooltip,
       })),
     [data]
   );
@@ -62,8 +63,12 @@ export const AreaChart: FC<AreaChartProps> = ({ symbol, range, data = [] }) => {
         <div className={styles.root} ref={measureRef}>
           <div className={styles.header}>
             <div className={styles.title}>TVL Over Time</div>
-            {!range && (
+            {!range ? (
               <RangeToggle onClick={toggleDomain} activeRange={activeRange} />
+            ) : (
+              <div className={styles.rangePlaceholder}>
+                Last {range.toLowerCase()}
+              </div>
             )}
           </div>
           <svg style={{ height: 0 }}>

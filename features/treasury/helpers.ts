@@ -14,42 +14,79 @@ export function getChartData(receipts: Receipt[], token: Token): ChartData[] {
     return result;
   }
 
-  const { balance: currentBalance, decimals } = token;
-  let value = Number(currentBalance);
+  const { balance: currentBalance, decimals, id } = token;
 
   result.push({
-    balance: value,
+    balance: Number(currentBalance),
     timestamp: new Date().getTime(),
+    tooltip: 'Now',
   });
 
-  receipts
-    // sort DESC so we will start from today
-    .sort((a, b) => {
-      if (a.timestamp > b.timestamp) return -1;
+  if (id === 'NEAR') {
+    let value = 0;
 
-      if (a.timestamp < b.timestamp) return 1;
+    receipts
+      // sort ASC so we will start from today
+      .sort((a, b) => {
+        if (a.timestamp > b.timestamp) return 1;
 
-      return 0;
-    })
-    .forEach((item: Receipt) => {
-      const income = item.type === 'Deposit';
-      let balance;
+        if (a.timestamp < b.timestamp) return -1;
 
-      const deposit = Number(formatYoktoValue(item.deposit, decimals));
+        return 0;
+      })
+      .forEach((item: Receipt) => {
+        const income = item.type === 'Deposit';
+        let balance;
 
-      if (income) {
-        balance = value - deposit;
-      } else {
-        balance = value + deposit;
-      }
+        const deposit = Number(formatYoktoValue(item.deposit, decimals));
 
-      value = balance;
+        if (income) {
+          balance = value + deposit;
+        } else {
+          balance = value - deposit;
+        }
 
-      result.push({
-        balance,
-        timestamp: item.timestamp,
+        value = balance;
+
+        result.push({
+          balance,
+          timestamp: item.timestamp,
+        });
       });
-    });
+  } else {
+    let value = Number(currentBalance);
+
+    receipts
+      // sort DESC so we will start from today
+      .sort((a, b) => {
+        if (a.timestamp > b.timestamp) return -1;
+
+        if (a.timestamp < b.timestamp) return 1;
+
+        return 0;
+      })
+      .forEach((item: Receipt, i) => {
+        const income = item.type === 'Deposit';
+        let balance;
+
+        const deposit = Number(formatYoktoValue(item.deposit, decimals));
+
+        if (i === 0) {
+          balance = value;
+        } else if (income) {
+          balance = value - deposit;
+        } else {
+          balance = value + deposit;
+        }
+
+        value = balance;
+
+        result.push({
+          balance,
+          timestamp: item.timestamp,
+        });
+      });
+  }
 
   return result.sort((a, b) => {
     if (a.timestamp > b.timestamp) return 1;
