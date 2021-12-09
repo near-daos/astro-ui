@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Icon } from 'components/Icon';
 import { format, parseISO } from 'date-fns';
 import { ExplorerLink } from 'components/ExplorerLink';
+import { DATE_TIME_FORMAT } from 'constants/timeConstants';
 import s from './TransactionCard.module.scss';
 
 export interface TransactionCardProps {
@@ -51,7 +52,7 @@ export const TransactionCard: React.FC<TransactionCardProps> = ({
         <span className={s.name}>{tokenName}</span>
       </div>
       <div className={s.account}>{accountName}</div>
-      <div className={s.date}>{format(parseISO(date), 'dd.LL.yyyy hh:mm')}</div>
+      <div className={s.date}>{format(parseISO(date), DATE_TIME_FORMAT)}</div>
     </div>
   );
 };
