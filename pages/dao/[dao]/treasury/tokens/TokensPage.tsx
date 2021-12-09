@@ -105,7 +105,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
       return (
         <NoResultsView
           className={styles.requestStatus}
-          title="No transactions data found"
+          title="No transactions data found for last 24 hours"
         />
       );
     }
@@ -117,7 +117,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
             <AreaChart
               key={viewToken}
               data={chartData}
-              range={viewToken !== 'NEAR' ? 'WEEK' : undefined}
+              range={viewToken !== 'NEAR' ? 'DAY' : undefined}
               symbol={tokens[viewToken]?.symbol ?? ''}
             />
           )}
