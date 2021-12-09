@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import format from 'date-fns/format';
 import { kFormatter } from 'helpers/format';
+import { DATE_FORMAT, TIME_FORMAT } from 'constants/timeConstants';
 
 import styles from './ChartTooltip.module.scss';
 
@@ -20,8 +21,8 @@ const ChartTooltip: FC<ChartTooltipProps> = ({ data, symbol }) => {
 
   if (!date) return null;
 
-  const formattedDate = format(date, 'EEEE, d.MM.yyyy');
-  const formattedTime = format(date, 'HH:mm');
+  const formattedDate = format(date, DATE_FORMAT);
+  const formattedTime = format(date, TIME_FORMAT);
 
   return (
     <div className={styles.root}>

@@ -105,7 +105,11 @@ const TokensPage: NextPage<TokensPageProps> = ({
       return (
         <NoResultsView
           className={styles.requestStatus}
-          title="No transactions data found for last 24 hours"
+          title={
+            viewToken === 'NEAR'
+              ? 'No transactions data found'
+              : 'No transactions data found for last 24 hours'
+          }
         />
       );
     }

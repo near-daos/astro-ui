@@ -1,5 +1,6 @@
 import Decimal from 'decimal.js';
 import { YOKTO_NEAR } from 'services/sputnik/constants';
+import { DATE_TIME_FORMAT } from 'constants/timeConstants';
 import {
   addHours,
   format,
@@ -53,7 +54,7 @@ export const formatDeadlineDate = (deadlineDuration: string): string => {
 export const formatTimestampAsDate = (time: string): string => {
   const date = new Date(Number(time) / 1000000);
 
-  return format(date, 'dd LLL yyyy hh:mm:ss');
+  return format(date, DATE_TIME_FORMAT);
 };
 
 export function kFormatter(n: number): string {
