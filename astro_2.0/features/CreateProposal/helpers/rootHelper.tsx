@@ -325,6 +325,18 @@ export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
   return Buffer.from(JSON.stringify(metadata)).toString('base64');
 };
 
+function getUniqueGroups(dao: DAO) {
+  const members = dao ? extractMembersFromDao(dao, []) : [];
+
+  const availableGroups = members.reduce<string[]>((res, item) => {
+    res.push(...item.groups);
+
+    return res;
+  }, []);
+
+  return uniq(availableGroups);
+}
+
 export function getFormContentNode(
   proposalType: ProposalVariant,
   dao: DAO
@@ -358,26 +370,12 @@ export function getFormContentNode(
       return null;
     }
     case ProposalVariant.ProposeAddMember: {
-      const members = dao ? extractMembersFromDao(dao, []) : [];
-
-      let availableGroups = members.reduce<string[]>((res, item) => {
-        res.push(...item.groups);
-
-        return res;
-      }, []);
-
-      availableGroups = uniq(availableGroups);
+      const availableGroups = getUniqueGroups(dao);
 
       return <AddMemberToGroupContent groups={availableGroups} />;
     }
     case ProposalVariant.ProposeRemoveMember: {
-      const members = dao ? extractMembersFromDao(dao, []) : [];
-
-      const availableGroups = members.reduce<string[]>((res, item) => {
-        res.push(...item.groups);
-
-        return res;
-      }, []);
+      const availableGroups = getUniqueGroups(dao);
 
       return <RemoveMemberFromGroupContent groups={availableGroups} />;
     }
