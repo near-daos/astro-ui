@@ -1,26 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped
-with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Astro DAO
 
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+Astro is a platform for launching Decentralized Autonomous Organizations. DAOs are self-organized groups that form around common purposes. Membership, decision making, and funding are coordinated in public on a tamper-proof blockchain.
+
+#### Technology stack
+
+- Blockchain: **[NEAR](https://near.org/)**
+- Smart Contracts: **[Sputnik DAO Factory V2](https://github.com/near-daos/sputnik-dao-contract/tree/main/sputnikdao-factory2), [Sputnik DAO V2](https://github.com/near-daos/sputnik-dao-contract/tree/main/sputnikdao2)**
+- Package manager: **[Yarn](https://yarnpkg.com/)**
+- Core programming language: **[TypeScript](https://www.typescriptlang.org/)**
+- Application framework: **[NextJS](https://nextjs.org/)**
+- Code quality: **[Eslint](https://eslint.org/), [Prettier](https://prettier.io/)**
+- Build: **[Docker](https://www.docker.com/))**
+
+#### Status
+
+[Change Log](https://github.com/near-daos/astro-ui/releases/latest)
+
+#### Links
+
+Production: [app.astrodao.com](https://app.astrodao.com/all/daos)
+
+![img.png](img.png)
 
 ## Getting Started
 
-First, run the development server:
+###### Clone the repo
+
+```
+git clone git@github.com:near-daos/astro-ui.git
+```
+
+###### Install dependencies
 
 ```bash
-npm run dev
-# or
+yarn install
+```
+
+###### Prepare local configuration
+
+Rename `.env.example` file in project folder to `.env.local`. It should have following content:
+
+```bash
+NEXT_PUBLIC_API_URL=https://api.dev.app.astrodao.com
+NEXT_PUBLIC_LOCAL_WALLET_REDIRECT=true
+```
+
+###### Run development server
+
+```bash
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:8080](http://localhost:8080) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+##### Known issues
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed
-on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited
-in `pages/api/hello.tsx`.
+The application can fail loading icons when running locally, in this case just build an application locally before starting development server using this command:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated
-as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```
+yarn build
+```
+
+#### Getting involved
+
+All change requests commits should follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
+Proposed changes should be small and isolated.
