@@ -16,3 +16,22 @@ export enum NotificationStatus {
   Alert = 'Alert',
   EndingSoon = 'EndingSoon',
 }
+
+export interface NotificationSettingsItem {
+  id: string;
+  title: string;
+  checked: boolean;
+  type: string;
+  subType: string;
+}
+
+export interface NotificationSettingsSubType {
+  subType: string;
+  subTypeName?: string;
+}
+
+export interface NotificationSettingsGroup {
+  type: string;
+  typeName: string;
+  subtypes: NotificationSettingsSubType[];
+}
