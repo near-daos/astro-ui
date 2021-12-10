@@ -33,7 +33,7 @@ const filterOptions = [
   },
 ];
 
-export const NotificationsPage: VFC = () => {
+const NotificationsPage: VFC = () => {
   const router = useRouter();
 
   const newNotifications = getNotifications(10, true, false, true);
@@ -121,3 +121,5 @@ export const NotificationsPage: VFC = () => {
     </div>
   );
 };
+
+export default NotificationsPage;
