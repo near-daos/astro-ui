@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 import { NotificationCard } from 'astro_2.0/components/NotificationCard';
 
-import { getNotifications } from './mockData';
+import { getNotifications } from 'mocks/notificationsMock';
 
 import styles from './NotificationsDropdown.module.scss';
 
