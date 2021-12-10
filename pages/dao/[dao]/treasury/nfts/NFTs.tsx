@@ -84,16 +84,8 @@ const NFTs: NextPage<NFTsPageProps> = ({
           <div className={styles.content}>
             {nfts.map((nft, i) => (
               // eslint-disable-next-line react/no-array-index-key
-              <div className={styles.card} key={`${nft.uri}_${i}`}>
-                <NFTCard
-                  name={nft.title}
-                  image={{
-                    src: `${nft.uri}`,
-                    width: 296,
-                    height: 424,
-                  }}
-                  isExternalReference={nft.isExternalReference}
-                />
+              <div className={styles.card} key={`${i}`}>
+                <NFTCard name={nft.title} image={nft.uri} />
               </div>
             ))}
           </div>

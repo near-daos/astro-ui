@@ -13,18 +13,36 @@ export function mapNftTokenResponseToNftToken(
 
       const isMediaContainsUrl = media?.indexOf('http') === 0;
 
-      let uri;
-      let isExternalReference = false;
+      const uri = [];
+      const isExternalReference = false;
 
       if (baseUri && media && !isMediaContainsUrl) {
-        uri = `${baseUri}/${media}`;
-      } else if (isMediaContainsUrl) {
-        uri = media;
-      } else if (contract?.baseUri && !media && reference) {
-        uri = `${contract?.baseUri}/${reference}`;
-        isExternalReference = true;
-      } else if (media) {
-        uri = `https://cloudflare-ipfs.com/ipfs/${media}`;
+        uri.push({ uri: `${baseUri}/${media}`, isExternalReference: false });
+      }
+
+      if (isMediaContainsUrl) {
+        uri.push({ uri: media, isExternalReference: false });
+      }
+
+      if (contract?.baseUri && !media && reference) {
+        uri.push({
+          uri: `${contract?.baseUri}/${reference}`,
+          isExternalReference: true,
+        });
+      }
+
+      if (contract.baseUri && media && !isMediaContainsUrl) {
+        uri.push({
+          uri: `${contract?.baseUri}/${media}`,
+          isExternalReference: false,
+        });
+      }
+
+      if (media) {
+        uri.push({
+          uri: `https://cloudflare-ipfs.com/ipfs/${media}`,
+          isExternalReference: false,
+        });
       }
 
       if (uri) {

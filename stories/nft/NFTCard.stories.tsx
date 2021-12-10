@@ -24,7 +24,13 @@ const Demo: FC<{ cards: StaticImageData[] }> = ({ cards }) => {
         }
       `}</style>
       {cards.map(img => {
-        return <NFTCard key={img.src} name={img.src} image={img} />;
+        return (
+          <NFTCard
+            key={img.src}
+            name={img.src}
+            image={[{ uri: img.src, isExternalReference: false }]}
+          />
+        );
       })}
     </div>
   );
