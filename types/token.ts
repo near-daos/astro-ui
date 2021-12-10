@@ -52,9 +52,14 @@ export type GetNFTTokensResponse = {
   data: NftTokenResponse[];
 };
 
+export type NFTUri = {
+  uri: string;
+  isExternalReference: boolean;
+};
+
 export type NftToken = {
   id: string;
-  uri: string;
+  uri: NFTUri[];
   description: string;
   title: string;
   isExternalReference: boolean;
