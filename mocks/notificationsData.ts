@@ -1,12 +1,16 @@
 import {
   NotificationSettingsItem,
   NotificationSettingsGroup,
+  NotificationsGroupStatus,
 } from 'types/notification';
 
 export const NOTIFICATION_SETTINGS_GROUPS_DATA: NotificationSettingsGroup[] = [
   {
     type: 'platform',
     typeName: 'Platform-wide notifications',
+    typeText:
+      'Choose for how long you would like to disable global notifications.',
+    typeStatus: NotificationsGroupStatus.Enabled,
     subtypes: [
       {
         subType: 'root',
@@ -16,6 +20,9 @@ export const NOTIFICATION_SETTINGS_GROUPS_DATA: NotificationSettingsGroup[] = [
   {
     type: 'my',
     typeName: 'My DAOs and My Activity',
+    typeText:
+      'Choose for how long you would like to disable notifications from your DAOs and DAOs you are a member.',
+    typeStatus: NotificationsGroupStatus.Enabled,
     subtypes: [
       {
         subType: 'root',

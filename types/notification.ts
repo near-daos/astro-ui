@@ -17,6 +17,14 @@ export enum NotificationStatus {
   EndingSoon = 'EndingSoon',
 }
 
+export enum NotificationsGroupStatus {
+  Enabled = 'Enabled',
+  OneHour = '1 hour',
+  EightHours = '8 hours',
+  OneDay = '24 hours',
+  Disable = 'Disable',
+}
+
 export interface NotificationSettingsItem {
   id: string;
   title: string;
@@ -33,5 +41,7 @@ export interface NotificationSettingsSubType {
 export interface NotificationSettingsGroup {
   type: string;
   typeName: string;
+  typeText: string;
+  typeStatus: NotificationsGroupStatus;
   subtypes: NotificationSettingsSubType[];
 }

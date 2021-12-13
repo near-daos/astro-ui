@@ -1,0 +1,10 @@
+@import 'styles/mixins';
+
+.title {
+  @include font(20px, 28px, 500);
+}
+
+.text {
+  @include font(16px, 24px, 400);
+  margin-top: 14px;
+}

@@ -2,11 +2,11 @@
 
 .root {
   background-color: var(--color-white);
-  border-radius: 8px;
+  border-radius: 6px;
   max-width: 100%;
   min-width: 200px;
   overflow: auto;
-  padding: 48px;
+  padding: 32px;
   position: relative;
   width: 640px;
   z-index: 10002;
@@ -41,7 +41,7 @@
 }
 
 .overlay {
-  align-items: flex-start;
+  align-items: center;
   background: rgba(#201f1f, 0.5);
   bottom: 0;
   display: flex;
@@ -66,34 +66,32 @@
 }
 
 .closeWrapper {
+  color: var(--color-neutral-50);
   position: absolute;
-  right: 36px;
-  top: 36px;
-  transform: rotate(45deg);
+  right: 4px;
+  top: 4px;
+  transition: color 0.2s;
   z-index: 1;
-}
 
-.close {
-  color: var(--color-neutral-90);
-  cursor: pointer;
-  transform: rotate(45deg);
-  width: 24px;
+  &:hover {
+    color: var(--color-neutral-70);
+  }
+
+  svg {
+    width: 16px;
+  }
 }
 
 @media screen and (max-width: #{breakpoints.$screen-xs}px) {
-  .closeWrapper {
-    right: 28px;
-    top: 28px;
-  }
   .overlay {
     align-items: flex-end;
     padding: 0;
   }
 
   .root {
-    border-radius: 8px 8px 0 0;
+    border-radius: 6px 6px 0 0;
     max-height: 100vh;
-    padding: 48px 24px 24px;
+    padding: 24px 24px 36px;
     transform: translateY(100%);
     transition: all 300ms ease-out;
   }

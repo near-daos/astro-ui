@@ -58,8 +58,8 @@ export const Modal: FC<ModalProps> = memo(
       >
         {!hideCloseIcon && (
           <IconButton
-            icon="buttonAdd"
-            size="medium"
+            icon="close"
+            size="large"
             onClick={() => setOpen(false)}
             className={styles.closeWrapper}
           />
