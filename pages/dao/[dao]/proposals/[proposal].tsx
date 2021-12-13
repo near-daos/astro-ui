@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { DAO, Member } from 'types/dao';
 import { Proposal } from 'types/proposal';
@@ -209,6 +210,7 @@ export default ProposalPage;
 
 export const getServerSideProps: GetServerSideProps = async ({
   query,
+  locale = 'en',
 }): Promise<{
   props: {
     dao: DAO | null;
@@ -228,6 +230,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ['common'])),
       dao,
       proposal,
       members,

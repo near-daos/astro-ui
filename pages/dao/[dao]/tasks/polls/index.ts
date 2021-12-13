@@ -5,12 +5,14 @@ import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { ProposalCategories, ProposalStatuses } from 'types/proposal';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default Polls;
 
 export const getServerSideProps: GetServerSideProps<PollsPageProps> = async ({
   query,
   req,
+  locale = 'en',
 }) => {
   const daoId = query.dao as string;
   const status = query.status as ProposalStatuses;
@@ -39,6 +41,7 @@ export const getServerSideProps: GetServerSideProps<PollsPageProps> = async ({
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ['common'])),
       daoContext,
       initialPollsData,
     },

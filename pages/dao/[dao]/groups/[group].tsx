@@ -9,6 +9,7 @@ import { Dropdown } from 'components/Dropdown';
 import { useModal } from 'components/modal';
 
 import { useRouter } from 'next/router';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { GetServerSideProps } from 'next';
 import { SputnikHttpService } from 'services/sputnik';
@@ -178,6 +179,7 @@ const GroupPage: FC<GroupPageProps> = ({
 export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
   req,
   query,
+  locale = 'en',
 }) => {
   const daoId = query.dao as string;
 
@@ -198,6 +200,7 @@ export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ['common'])),
       daoContext,
       proposals,
     },

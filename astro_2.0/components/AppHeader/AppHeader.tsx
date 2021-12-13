@@ -4,7 +4,7 @@ import React, { FC, useRef } from 'react';
 import { FEATURE_FLAGS } from 'constants/featureFlags';
 
 import { Icon } from 'components/Icon';
-
+import { LocaleSelector } from 'astro_2.0/components/LocaleSelector';
 import { SearchBar } from './components/SearchBar';
 import { AccountButton } from './components/AccountButton';
 import { NotificationsBell } from './components/NotificationsBell';
@@ -42,6 +42,9 @@ export const AppHeader: FC = () => {
           parentElRef={centralEl}
           className={styles.search}
         />
+      </div>
+      <div>
+        <LocaleSelector />
       </div>
       <NotificationsBell className={styles.bell} notifications={[1, 2, 3]} />
       <AccountButton />

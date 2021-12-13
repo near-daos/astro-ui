@@ -1,6 +1,7 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useRouter } from 'next/router';
+import { TFunction, useTranslation } from 'next-i18next';
 
 import { DAO } from 'types/dao';
 
@@ -17,28 +18,30 @@ import { Loader } from 'components/loader';
 
 import styles from './AllDaosPage.module.scss';
 
-const sortOptions = [
-  {
-    label: 'Most active',
-    value: 'lastProposalId,DESC',
-  },
-  {
-    label: 'Newest',
-    value: 'createdAt,DESC',
-  },
-  {
-    label: 'Oldest',
-    value: 'createdAt,ASC',
-  },
-  {
-    label: 'Biggest funds',
-    value: 'amount,DESC',
-  },
-  {
-    label: 'Number of members',
-    value: 'numberOfMembers,DESC',
-  },
-];
+function getSortOptions(t: TFunction) {
+  return [
+    {
+      label: t('mostActive'),
+      value: 'lastProposalId,DESC',
+    },
+    {
+      label: 'Newest',
+      value: 'createdAt,DESC',
+    },
+    {
+      label: 'Oldest',
+      value: 'createdAt,ASC',
+    },
+    {
+      label: 'Biggest funds',
+      value: 'amount,DESC',
+    },
+    {
+      label: 'Number of members',
+      value: 'numberOfMembers,DESC',
+    },
+  ];
+}
 
 interface BrowseAllDaosProps {
   data: DAO[];
@@ -49,8 +52,10 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
   data: initialData = [],
   total: totalItemsAvailable,
 }) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { accountId, login } = useAuthContext();
+  const sortOptions = useMemo(() => getSortOptions(t), [t]);
 
   const nearPrice = useNearPrice();
 

@@ -3,6 +3,7 @@ import cn from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 import { DAO } from 'types/dao';
 
@@ -37,6 +38,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
   restrictCreateProposals = false,
 }) => {
   const router = useRouter();
+  const { t } = useTranslation('common');
 
   const isCreateOptionAvailable = isUserPermittedToCreateProposal(
     accountId,
@@ -74,7 +76,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
       <section className={styles.funds}>
         <Link href={`/dao/${dao.id}/treasury/tokens`}>
           <a>
-            <div className={styles.label}>DAO funds</div>
+            <div className={styles.label}>{t('daoFunds')}</div>
             <div className={styles.value}>
               <span className={styles.bold}>{getFundsInUsdFromNear()}</span> USD
             </div>

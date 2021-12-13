@@ -1,5 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { SputnikHttpService } from 'services/sputnik';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SettingsPageProps } from './SettingsPage';
@@ -7,6 +8,7 @@ import { SettingsPageProps } from './SettingsPage';
 export const getServerSideProps: GetServerSideProps<SettingsPageProps> = async ({
   req,
   query,
+  locale = 'en',
 }) => {
   const { dao: daoId } = query;
 
@@ -27,6 +29,7 @@ export const getServerSideProps: GetServerSideProps<SettingsPageProps> = async (
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ['common'])),
       daoContext,
     },
   };
