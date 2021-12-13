@@ -3,7 +3,8 @@ import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
 import { useAsyncFn } from 'react-use';
 import { useRouter } from 'next/router';
-import React, { ReactNode, useRef, useState } from 'react';
+import React, { ReactNode, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'next-i18next';
 
 // Types
 import { DAO } from 'types/dao';
@@ -60,6 +61,7 @@ export const Feed = ({
   const neighbourRef = useRef(null);
   const { query, replace, pathname } = useRouter();
   const { tokens: allTokens } = useAllCustomTokens();
+  const { t } = useTranslation();
 
   const queries = query as ProposalsQueries;
 
@@ -70,6 +72,15 @@ export const Feed = ({
   const [proposalsData, setProposalsData] = useState(initialProposals);
 
   const [loading, setLoading] = useState(false);
+
+  const feedCategoriesOptions = useMemo(
+    () =>
+      FEED_CATEGORIES.map(item => ({
+        ...item,
+        label: t(item.label.toLowerCase()),
+      })),
+    [t]
+  );
 
   const [{ loading: proposalsDataIsLoading }, fetchProposalsData] = useAsyncFn(
     async (initialData?: typeof proposalsData) => {
@@ -176,19 +187,19 @@ export const Feed = ({
           onChange={onProposalFilterChange}
           disabled={proposalsDataIsLoading}
           list={[
-            { value: ProposalStatuses.All, label: 'All' },
+            { value: ProposalStatuses.All, label: t('all') },
             {
               value: ProposalStatuses.Active,
-              label: 'Active',
+              label: t('active'),
             },
             {
               value: ProposalStatuses.Approved,
-              label: 'Approved',
+              label: t('approved'),
               className: styles.categoriesListApprovedInputWrapperChecked,
             },
             {
               value: ProposalStatuses.Failed,
-              label: 'Failed',
+              label: t('failed'),
               className: styles.categoriesListFailedInputWrapperChecked,
             },
           ]}
@@ -199,8 +210,8 @@ export const Feed = ({
         {!category && (
           <SideFilter
             queryName="category"
-            list={FEED_CATEGORIES}
-            title="Choose a filter"
+            list={feedCategoriesOptions}
+            title={t('chooseAFilter')}
             disabled={proposalsDataIsLoading}
             titleClassName={styles.categoriesListTitle}
           />
@@ -214,14 +225,14 @@ export const Feed = ({
               <FeedList
                 data={proposalsData}
                 loadMore={loadMore}
-                loader={<p className={styles.loading}>Loading...</p>}
+                loader={<p className={styles.loading}>{t('loading')}...</p>}
                 noResults={
                   <div className={styles.loading}>
                     <NoResultsView
                       title={
                         isEmpty(proposalsData?.data)
-                          ? 'No proposals here'
-                          : 'No more results'
+                          ? t('noProposalsHere')
+                          : t('noMoreResults')
                       }
                     />
                   </div>

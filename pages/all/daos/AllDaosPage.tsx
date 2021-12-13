@@ -25,19 +25,19 @@ function getSortOptions(t: TFunction) {
       value: 'lastProposalId,DESC',
     },
     {
-      label: 'Newest',
+      label: t('newest'),
       value: 'createdAt,DESC',
     },
     {
-      label: 'Oldest',
+      label: t('oldest'),
       value: 'createdAt,ASC',
     },
     {
-      label: 'Biggest funds',
+      label: t('biggestFunds'),
       value: 'amount,DESC',
     },
     {
-      label: 'Number of members',
+      label: t('numberOfMembers'),
       value: 'numberOfMembers,DESC',
     },
   ];
@@ -123,9 +123,9 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h1>All Communities</h1>
+        <h1>{t('allCommunities')}</h1>
         <Button variant="black" size="small" onClick={handleCreateDao}>
-          Create new DAO
+          {t('createNewDao')}
         </Button>
       </div>
 
@@ -141,11 +141,11 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
         dataLength={data.length}
         next={getMoreDaos}
         hasMore={hasMore}
-        loader={<h4 className={styles.loading}>Loading...</h4>}
+        loader={<h4 className={styles.loading}>{t('loading')}...</h4>}
         style={{ overflow: 'initial' }}
         endMessage={
           <p className={styles.loading}>
-            <b>You have seen it all</b>
+            <b>{t('youHaveSeenItAll')}</b>
           </p>
         }
       >

@@ -3,6 +3,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 import { DAO, Member } from 'types/dao';
 import { Proposal } from 'types/proposal';
@@ -45,6 +46,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
   proposal,
   members,
 }) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const scope = getProposalScope(proposal?.kind.type);
   const [activeFilter, setActiveFilter] = useState<string | undefined>(
@@ -148,9 +150,9 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         <meta name="twitter:image" content={dao?.flagCover || dao?.logo} />
       </Head>
       <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href="/all/daos">All DAOs</NavLink>
+        <NavLink href="/all/daos">{t('allDais')}</NavLink>
         <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
-        <NavLink>Proposals</NavLink>
+        <NavLink>{t('proposals')}</NavLink>
         <NavLink href={`/dao/${dao.id}/proposals/${proposal?.id}`}>
           {proposal?.id}
         </NavLink>

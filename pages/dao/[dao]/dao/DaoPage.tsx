@@ -34,7 +34,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
 }) => {
   const { accountId } = useAuthContext();
   const { tokens: daoTokens } = useDaoCustomTokens();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
@@ -78,7 +78,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
         key={dao.id}
         dao={dao}
         showFlag={false}
-        title="Proposals"
+        title={t('proposals')}
         className={styles.feed}
         initialProposals={initialProposalsData}
       />

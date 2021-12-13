@@ -38,7 +38,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
   restrictCreateProposals = false,
 }) => {
   const router = useRouter();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   const isCreateOptionAvailable = isUserPermittedToCreateProposal(
     accountId,
@@ -87,7 +87,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
       <section className={styles.members}>
         <Link href={`/dao/${dao.id}/groups/all-members`}>
           <a>
-            <div className={styles.label}>Members/Groups</div>
+            <div className={styles.label}>{t('membersGroups')}</div>
             <div className={styles.value}>
               <span className={styles.bold}>{dao.members}</span>/
               {dao.groups.length}
@@ -98,7 +98,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
 
       <section className={styles.controls}>
         <ActionButton
-          tooltip="DAO Settings"
+          tooltip={t('daoSettings')}
           tooltipPlacement="top"
           iconName="settings"
           onClick={() => {
@@ -107,7 +107,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
           className={styles.controlIcon}
         />
         <ActionButton
-          tooltip="NFTs"
+          tooltip={t('nfts')}
           tooltipPlacement="top"
           iconName="nfts"
           onClick={() => {
@@ -116,7 +116,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
           className={styles.controlIcon}
         />
         <ActionButton
-          tooltip="Bounties"
+          tooltip={t('bounties')}
           tooltipPlacement="top"
           iconName="proposalBounty"
           onClick={() => {
@@ -125,7 +125,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
           className={styles.controlIcon}
         />
         <ActionButton
-          tooltip="Polls"
+          tooltip={t('polls')}
           tooltipPlacement="top"
           iconName="proposalPoll"
           onClick={() => {

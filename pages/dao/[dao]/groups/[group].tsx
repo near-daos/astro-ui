@@ -10,6 +10,7 @@ import { useModal } from 'components/modal';
 
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 import { GetServerSideProps } from 'next';
 import { SputnikHttpService } from 'services/sputnik';
@@ -54,6 +55,7 @@ const GroupPage: FC<GroupPageProps> = ({
   },
   proposals,
 }) => {
+  const { t } = useTranslation();
   const { tokens } = useDaoCustomTokens();
   const members = dao ? extractMembersFromDao(dao, proposals) : [];
 
@@ -104,10 +106,12 @@ const GroupPage: FC<GroupPageProps> = ({
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href="/all/daos">All DAOs</NavLink>
+        <NavLink href="/all/daos">{t('allDaos')}</NavLink>
         <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
-        <NavLink href={`/dao/${dao.id}/groups/all-members`}>Groups</NavLink>
-        <NavLink>{pageTitle === 'all' ? 'All Members' : pageTitle}</NavLink>
+        <NavLink href={`/dao/${dao.id}/groups/all-members`}>
+          {t('groups')}
+        </NavLink>
+        <NavLink>{pageTitle === 'all' ? t('allMembers') : pageTitle}</NavLink>
       </BreadCrumbs>
       <div className={styles.dao}>
         <DaoDetailsMinimized
@@ -130,7 +134,7 @@ const GroupPage: FC<GroupPageProps> = ({
         />
       </div>
       <div className={styles.header}>
-        <h1>{pageTitle === 'all' ? 'All Members' : <>{pageTitle}</>}</h1>
+        <h1>{pageTitle === 'all' ? t('allMembers') : <>{pageTitle}</>}</h1>
       </div>
       <GroupsList
         className={styles.groups}

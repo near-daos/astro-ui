@@ -2,6 +2,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 import { SputnikNearService } from 'services/sputnik';
 
@@ -51,6 +52,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   onCreate,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const { accountId } = useAuthContext();
   const router = useRouter();
   const [selectedProposalVariant, setSelectedProposalVariant] = useState(
@@ -146,7 +148,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
 
           showNotification({
             type: NOTIFICATION_TYPES.INFO,
-            description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+            description: t('successProposalNotification'),
             lifetime: 20000,
           });
 
@@ -187,6 +189,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
       bountyId,
       router,
       onCreate,
+      t,
     ]
   );
 
@@ -237,7 +240,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           infoPanelNode={
             <TransactionDetailsWidget
               onSubmit={onSubmit}
-              buttonLabel="Propose"
+              buttonLabel={t('propose')}
               bond={{ value: dao.policy.proposalBond }}
             />
           }
