@@ -111,6 +111,11 @@ module.exports = {
 
     config.plugins.push(new SpriteLoaderPlugin());
 
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'next-i18next': 'react-i18next',
+    };
+
     // Return the altered config
     return config;
   },
