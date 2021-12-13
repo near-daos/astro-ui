@@ -7,7 +7,7 @@ import styles from './AreaChart.module.scss';
 
 import RangeToggle from './components/range-toggle/RangeToggle';
 
-import { useDomainControl } from './helpers';
+import { useDomainControl } from './hooks';
 import { Range } from './types';
 
 export interface AreaChartProps {

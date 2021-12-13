@@ -1,6 +1,5 @@
-import { useCallback, useState } from 'react';
 import { subDays, format, subHours } from 'date-fns';
-import { ChartDataElement, DomainControl, LineDataPoint, Range } from './types';
+import { LineDataPoint, Range } from './types';
 
 export const DOMAIN_RANGES: Record<string, Range> = {
   DAY: 'DAY',
@@ -22,7 +21,10 @@ function buildDataMap(data: LineDataPoint[], keyFormat: string) {
   }, {});
 }
 
-function prepareDataByRange(range: Range, rawData: LineDataPoint[]) {
+export function prepareDataByRange(
+  range: Range,
+  rawData: LineDataPoint[]
+): LineDataPoint[] {
   // first data point
   const start = rawData[0];
 
@@ -104,37 +106,6 @@ function prepareDataByRange(range: Range, rawData: LineDataPoint[]) {
     .reverse()
     .filter(item => item.x >= start.x);
 }
-
-export const useDomainControl = (
-  data: ChartDataElement[],
-  initialRange?: Range
-): DomainControl => {
-  const [dataByRange, setDataByRange] = useState(() => {
-    return prepareDataByRange(DOMAIN_RANGES.DAY, data);
-  });
-
-  const [activeRange, setActiveRange] = useState<Range>(
-    initialRange || DOMAIN_RANGES.DAY
-  );
-
-  const toggleDomain = useCallback(
-    (range: Range) => {
-      if (!data.length || data.length === 1) return;
-
-      const newData = prepareDataByRange(range, data);
-
-      setActiveRange(range);
-      setDataByRange(newData);
-    },
-    [data]
-  );
-
-  return {
-    activeRange,
-    toggleDomain,
-    data: dataByRange,
-  };
-};
 
 export const valueFormatter = (value: number): string => {
   if (value === 0) {
