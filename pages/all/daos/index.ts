@@ -1,4 +1,5 @@
 import { DAO } from 'types/dao';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getDaosList } from 'features/daos/helpers';
 import AllDaosPage from './AllDaosPage';
 
@@ -10,8 +11,10 @@ interface GetDaoListQuery {
 
 export async function getServerSideProps({
   query,
+  locale = 'en',
 }: {
   query: GetDaoListQuery;
+  locale: string;
 }): Promise<{
   props: { data: DAO[]; total: number };
 }> {
@@ -23,6 +26,7 @@ export async function getServerSideProps({
 
   return {
     props: {
+      ...(await serverSideTranslations(locale)),
       data,
       total,
     },

@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { SputnikHttpService } from 'services/sputnik';
 import { ProposalCategories, ProposalStatuses } from 'types/proposal';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
@@ -10,6 +11,7 @@ import DaoPage from './DaoPage';
 export const getServerSideProps: GetServerSideProps = async ({
   req,
   query,
+  locale = 'en',
 }) => {
   const { status = ProposalStatuses.Active, category, dao: daoId } = query;
 
@@ -36,6 +38,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
+      ...(await serverSideTranslations(locale)),
       daoContext,
       initialProposalsData,
     },

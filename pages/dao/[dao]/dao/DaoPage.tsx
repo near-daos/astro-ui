@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import React from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { Feed } from 'astro_2.0/features/Feed';
 import { NavLink } from 'astro_2.0/components/NavLink';
@@ -33,13 +34,14 @@ const DAOHome: NextPage<DaoHomeProps> = ({
 }) => {
   const { accountId } = useAuthContext();
   const { tokens: daoTokens } = useDaoCustomTokens();
+  const { t } = useTranslation();
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href="/all/daos">All DAOs</NavLink>
+        <NavLink href="/all/daos">{t('allDaos')}</NavLink>
         <NavLink>{dao.displayName || dao.id}</NavLink>
       </BreadCrumbs>
 
@@ -76,7 +78,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
         key={dao.id}
         dao={dao}
         showFlag={false}
-        title="Proposals"
+        title={t('proposals')}
         className={styles.feed}
         initialProposals={initialProposalsData}
       />

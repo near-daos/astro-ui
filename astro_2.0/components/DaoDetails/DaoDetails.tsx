@@ -3,6 +3,7 @@ import cn from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 import { DAO } from 'types/dao';
 
@@ -37,6 +38,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
   restrictCreateProposals = false,
 }) => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const isCreateOptionAvailable = isUserPermittedToCreateProposal(
     accountId,
@@ -74,7 +76,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
       <section className={styles.funds}>
         <Link href={`/dao/${dao.id}/treasury/tokens`}>
           <a>
-            <div className={styles.label}>DAO funds</div>
+            <div className={styles.label}>{t('daoFunds')}</div>
             <div className={styles.value}>
               <span className={styles.bold}>{getFundsInUsdFromNear()}</span> USD
             </div>
@@ -85,7 +87,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
       <section className={styles.members}>
         <Link href={`/dao/${dao.id}/groups/all-members`}>
           <a>
-            <div className={styles.label}>Members/Groups</div>
+            <div className={styles.label}>{t('membersGroups')}</div>
             <div className={styles.value}>
               <span className={styles.bold}>{dao.members}</span>/
               {dao.groups.length}
@@ -96,7 +98,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
 
       <section className={styles.controls}>
         <ActionButton
-          tooltip="DAO Settings"
+          tooltip={t('daoSettings')}
           tooltipPlacement="top"
           iconName="settings"
           onClick={() => {
@@ -105,7 +107,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
           className={styles.controlIcon}
         />
         <ActionButton
-          tooltip="NFTs"
+          tooltip={t('nfts')}
           tooltipPlacement="top"
           iconName="nfts"
           onClick={() => {
@@ -114,7 +116,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
           className={styles.controlIcon}
         />
         <ActionButton
-          tooltip="Bounties"
+          tooltip={t('bounties')}
           tooltipPlacement="top"
           iconName="proposalBounty"
           onClick={() => {
@@ -123,7 +125,7 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
           className={styles.controlIcon}
         />
         <ActionButton
-          tooltip="Polls"
+          tooltip={t('polls')}
           tooltipPlacement="top"
           iconName="proposalPoll"
           onClick={() => {

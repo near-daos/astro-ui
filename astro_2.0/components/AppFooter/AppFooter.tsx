@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import Link from 'next/link';
 import React, { FC } from 'react';
-
+import { useTranslation } from 'next-i18next';
 import { Icon, IconName } from 'components/Icon';
 
 import styles from './AppFooter.module.scss';
@@ -19,6 +19,8 @@ export const AppFooter: FC<AppFooterProps> = ({
   className,
   onClick,
 }) => {
+  const { t } = useTranslation();
+
   function renderSocialIcon(href: string, icon: IconName) {
     return (
       <a href={href} rel="noopener noreferrer" target="_blank">
@@ -52,7 +54,7 @@ export const AppFooter: FC<AppFooterProps> = ({
               target="_blank"
               rel="noreferrer noopener"
             >
-              Report an issue
+              {t('reportAnIssue')}
             </a>
           </div>
           <div className={styles.repo}>
@@ -74,7 +76,7 @@ export const AppFooter: FC<AppFooterProps> = ({
           <div className={styles.terms}>
             <Link passHref href="/terms-conditions">
               <a href="*" className={styles.devLink}>
-                Terms and Conditions
+                {t('termsAndConditions')}
               </a>
             </Link>
           </div>
@@ -85,7 +87,7 @@ export const AppFooter: FC<AppFooterProps> = ({
               target="_blank"
               rel="noreferrer noopener"
             >
-              Release notes
+              {t('releaseNotes')}
             </a>
           </div>
         </div>

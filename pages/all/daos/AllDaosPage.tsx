@@ -1,6 +1,7 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useRouter } from 'next/router';
+import { TFunction, useTranslation } from 'next-i18next';
 
 import { DAO } from 'types/dao';
 
@@ -17,28 +18,30 @@ import { Loader } from 'components/loader';
 
 import styles from './AllDaosPage.module.scss';
 
-const sortOptions = [
-  {
-    label: 'Most active',
-    value: 'lastProposalId,DESC',
-  },
-  {
-    label: 'Newest',
-    value: 'createdAt,DESC',
-  },
-  {
-    label: 'Oldest',
-    value: 'createdAt,ASC',
-  },
-  {
-    label: 'Biggest funds',
-    value: 'amount,DESC',
-  },
-  {
-    label: 'Number of members',
-    value: 'numberOfMembers,DESC',
-  },
-];
+function getSortOptions(t: TFunction) {
+  return [
+    {
+      label: t('mostActive'),
+      value: 'lastProposalId,DESC',
+    },
+    {
+      label: t('newest'),
+      value: 'createdAt,DESC',
+    },
+    {
+      label: t('oldest'),
+      value: 'createdAt,ASC',
+    },
+    {
+      label: t('biggestFunds'),
+      value: 'amount,DESC',
+    },
+    {
+      label: t('numberOfMembers'),
+      value: 'numberOfMembers,DESC',
+    },
+  ];
+}
 
 interface BrowseAllDaosProps {
   data: DAO[];
@@ -49,8 +52,10 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
   data: initialData = [],
   total: totalItemsAvailable,
 }) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { accountId, login } = useAuthContext();
+  const sortOptions = useMemo(() => getSortOptions(t), [t]);
 
   const nearPrice = useNearPrice();
 
@@ -118,9 +123,9 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h1>All Communities</h1>
+        <h1>{t('allCommunities')}</h1>
         <Button variant="black" size="small" onClick={handleCreateDao}>
-          Create new DAO
+          {t('createNewDao')}
         </Button>
       </div>
 
@@ -136,11 +141,11 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
         dataLength={data.length}
         next={getMoreDaos}
         hasMore={hasMore}
-        loader={<h4 className={styles.loading}>Loading...</h4>}
+        loader={<h4 className={styles.loading}>{t('loading')}...</h4>}
         style={{ overflow: 'initial' }}
         endMessage={
           <p className={styles.loading}>
-            <b>You have seen it all</b>
+            <b>{t('youHaveSeenItAll')}</b>
           </p>
         }
       >

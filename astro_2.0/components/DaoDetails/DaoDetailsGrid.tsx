@@ -3,6 +3,7 @@ import Link from 'next/link';
 import TextTruncate from 'react-text-truncate';
 import { useRouter } from 'next/router';
 import { useMeasure } from 'react-use';
+import { useTranslation } from 'next-i18next';
 
 import { DAO } from 'types/dao';
 
@@ -30,6 +31,7 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
   totalProposals,
   nearPrice,
 }) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const {
     id,
@@ -104,17 +106,17 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
               <DaoInfoCard
                 infoType="funds"
                 url={`/dao/${id}/treasury/tokens`}
-                title="DAO funds"
+                title={t('daoFunds')}
                 daoFunds={fundsUSD}
-                tooltip="DAO funds"
+                tooltip={t('daoFunds')}
               />
               <DaoInfoCard
                 infoType="members"
                 url={`/dao/${id}/groups/all-members`}
-                title="Members/Groups"
+                title={t('membersGroups')}
                 members={members}
                 groups={groups.length}
-                tooltip="DAO members"
+                tooltip={t('daoMembers')}
               />
             </section>
 
@@ -124,28 +126,28 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                 onClick={e => handleClick(e, `/dao/${id}/governance/settings`)}
                 className={styles.controlIcon}
               >
-                Settings
+                {t('settings')}
               </ActionButton>
               <ActionButton
                 iconName="nfts"
                 onClick={e => handleClick(e, `/dao/${id}/treasury/nfts`)}
                 className={styles.controlIcon}
               >
-                NFTs
+                {t('nfts')}
               </ActionButton>
               <ActionButton
                 iconName="proposalBounty"
                 onClick={e => handleClick(e, `/dao/${id}/tasks/bounties`)}
                 className={styles.controlIcon}
               >
-                Bounties
+                {t('bounties')}
               </ActionButton>
               <ActionButton
                 iconName="proposalPoll"
                 onClick={e => handleClick(e, `/dao/${id}/tasks/polls`)}
                 className={styles.controlIcon}
               >
-                Polls
+                {t('polls')}
               </ActionButton>
             </section>
 
@@ -154,14 +156,14 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                 className={cn(styles.proposalsTitle, styles.active)}
                 size={2}
               >
-                <span>{activeProposals}</span> active{' '}
-                {activeProposals === 1 ? 'proposal' : 'proposals'}
+                <span>{activeProposals}</span> {t('active')}{' '}
+                {activeProposals === 1 ? t('proposal') : t('proposals')}
               </Typography.Subtitle>
               <Typography.Subtitle
                 className={styles.proposalsSubtitle}
                 size={6}
               >
-                {`${totalProposals} proposals in total`}
+                {`${totalProposals} ${t('proposalsInTotal')}`}
               </Typography.Subtitle>
             </section>
           </div>

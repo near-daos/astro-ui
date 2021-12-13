@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { Token } from 'types/token';
 import reduce from 'lodash/reduce';
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 function normalizeTokens(tkns: Token[]): Tokens {
   const hasNear = tkns.find(item => !item.tokenId);
@@ -46,11 +47,17 @@ export function useDaoCustomTokens(): { tokens: Record<string, Token> } {
   }, []);
 
   useMount(() => {
-    SputnikHttpService.getAccountTokens(router.query.dao as string).then(
-      data => {
+    SputnikHttpService.getAccountTokens(router.query.dao as string)
+      .then(data => {
         prepareTokens(data);
-      }
-    );
+      })
+      .catch(err => {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          lifetime: 20000,
+          description: err.message,
+        });
+      });
   });
 
   return { tokens };

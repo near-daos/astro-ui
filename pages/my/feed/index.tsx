@@ -9,6 +9,7 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { ALL_FEED_URL } from 'constants/routing';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
   <Feed {...props} title="My proposals feed" />
@@ -16,7 +17,7 @@ const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
 
 export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   typeof Feed
->> = async ({ query }) => {
+>> = async ({ query, locale = 'en' }) => {
   const { category, status } = query as ProposalsQueries;
   const accountId = CookieService.get(ACCOUNT_COOKIE);
 
@@ -51,6 +52,7 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ['common'])),
       initialProposals: res,
     },
   };
