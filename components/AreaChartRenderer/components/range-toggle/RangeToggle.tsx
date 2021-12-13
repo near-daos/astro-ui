@@ -1,8 +1,8 @@
 import cn from 'classnames';
 import React, { FC } from 'react';
 
-import { DOMAIN_RANGES } from 'components/area-chart/helpers';
-
+import { DOMAIN_RANGES } from 'components/AreaChartRenderer/helpers';
+import { Range } from 'components/AreaChartRenderer/types';
 import { Button } from 'components/button/Button';
 
 import styles from './RangeToggle.module.scss';
@@ -31,7 +31,7 @@ const TOGGLE_SET = [
 ];
 
 interface RangeToggleProps {
-  onClick: (type: string) => void;
+  onClick: (type: Range) => void;
   activeRange: string;
 }
 

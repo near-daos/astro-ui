@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React, { FC } from 'react';
 
-import { ChartCaptionInterface } from 'components/area-chart/types';
+import { ChartCaptionInterface } from 'components/AreaChartRenderer/types';
 
 import styles from './chart-caption.module.scss';
 
