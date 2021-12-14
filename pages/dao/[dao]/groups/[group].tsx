@@ -11,6 +11,7 @@ import { useModal } from 'components/modal';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
+import nextI18NextConfig from 'next-i18next.config';
 
 import { GetServerSideProps } from 'next';
 import { SputnikHttpService } from 'services/sputnik';
@@ -204,7 +205,7 @@ export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'])),
+      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
       daoContext,
       proposals,
     },

@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import type { AppContext, AppProps } from 'next/app';
 import { appWithTranslation } from 'next-i18next';
+import nextI18NextConfig from 'next-i18next.config';
 
 import { SWRConfig } from 'swr';
 import { useMount } from 'react-use';
@@ -84,4 +85,4 @@ App.getInitialProps = async ({ ctx, router }: AppContext) => {
   return {};
 };
 
-export default appWithTranslation(App);
+export default appWithTranslation(App, nextI18NextConfig);
