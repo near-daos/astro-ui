@@ -19,6 +19,7 @@ RUN adduser -S nextjs -u 1001
 COPY --from=deps /app/node_modules ./node_modules
 COPY package.json ./package.json
 COPY next.config.js ./
+COPY next-i18next.config.js ./
 COPY public ./public
 COPY plugins ./plugins
 
