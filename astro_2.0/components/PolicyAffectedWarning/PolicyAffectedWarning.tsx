@@ -1,6 +1,7 @@
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 import React, { FC, useCallback } from 'react';
+import { useTranslation, Trans } from 'next-i18next';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
@@ -21,6 +22,7 @@ export const PolicyAffectedWarning: FC<PolicyAffectedWarningProps> = ({
   className = '',
 }) => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const goToProposalPage = useCallback(() => {
     router.push({
@@ -36,10 +38,10 @@ export const PolicyAffectedWarning: FC<PolicyAffectedWarningProps> = ({
     return null;
   }
 
-  let title = 'DAO Config';
+  let title = t('daoConfig');
 
   if (data[0].kind.type === ProposalType.ChangePolicy) {
-    title = 'Voting Policy';
+    title = t('votingPolicy');
   }
 
   return (
@@ -49,17 +51,17 @@ export const PolicyAffectedWarning: FC<PolicyAffectedWarningProps> = ({
           <Icon name="info" className={styles.icon} />
         </div>
         <div className={styles.content}>
-          <div className={styles.title}>Change {title} Snapshot</div>
+          <div className={styles.title}>
+            <Trans i18nKey="policyAffectedProposalsTitle" values={{ title }} />
+          </div>
           <div className={styles.text}>
-            The proposed changes in {title} will affect the other proposals.
-            Further updates might get rewritten if the current proposal
-            won&apos;t get resolved before.
+            <Trans i18nKey="policyAffectedProposalsText" values={{ title }} />
           </div>
         </div>
         <div className={styles.control}>
           {data.length === 1 && (
             <Button variant="primary" onClick={goToProposalPage}>
-              View Proposal
+              {t('viewProposal')}
             </Button>
           )}
         </div>

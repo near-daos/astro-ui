@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import React, { FC } from 'react';
-
+import { useTranslation } from 'next-i18next';
 import { Button } from 'components/button/Button';
 import * as Typography from 'components/Typography';
 
@@ -21,6 +21,8 @@ export const ProposalTrackerCard: FC<ProposalTrackerProps> = ({
   onClick,
   preview,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
       <div className={styles.content}>
@@ -28,11 +30,11 @@ export const ProposalTrackerCard: FC<ProposalTrackerProps> = ({
           className={cn(styles.title, styles.active)}
           size={2}
         >
-          <span>{activeVotes}</span> active{' '}
-          {activeVotes === 1 ? 'proposal' : 'proposals'}
+          <span>{activeVotes}</span> {t('active')}{' '}
+          {activeVotes === 1 ? t('proposal') : t('proposals')}
         </Typography.Subtitle>
         <Typography.Subtitle className={styles.subtitle} size={6}>
-          {`${totalProposals} proposals in total`}
+          {`${totalProposals} ${t('proposalsInTotal')}`}
         </Typography.Subtitle>
       </div>
       {action && (
@@ -40,7 +42,7 @@ export const ProposalTrackerCard: FC<ProposalTrackerProps> = ({
           {action}
         </Button>
       )}
-      {preview && <div className={styles.action}>Create proposal</div>}
+      {preview && <div className={styles.action}>{t('createProposal')}</div>}
     </div>
   );
 };

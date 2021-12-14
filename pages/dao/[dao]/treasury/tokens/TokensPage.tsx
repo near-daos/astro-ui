@@ -11,7 +11,7 @@ import { Button } from 'components/button/Button';
 import { DaoAddressLink } from 'components/DaoAddressLink';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { TokenCard } from 'components/cards/TokenCard';
-import { ChartCaption } from 'components/area-chart/components/chart-caption';
+import { ChartCaption } from 'components/AreaChartRenderer/components/chart-caption';
 import { TransactionCard } from 'components/cards/TransactionCard';
 import { Pagination } from 'components/Pagination';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
@@ -40,7 +40,9 @@ export interface TokensPageProps {
   daoContext: DaoContext;
 }
 
-const AreaChart = dynamic(import('components/area-chart'), { ssr: false });
+const AreaChart = dynamic(import('components/AreaChartRenderer'), {
+  ssr: false,
+});
 const TRANSACTIONS_PER_PAGE = 10;
 
 const TokensPage: NextPage<TokensPageProps> = ({
@@ -124,7 +126,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
               key={viewToken}
               data={chartData}
               range={viewToken !== 'NEAR' ? 'DAY' : undefined}
-              symbol={tokens[viewToken]?.symbol ?? ''}
+              tokenName={tokens[viewToken]?.symbol ?? ''}
             />
           )}
         </div>

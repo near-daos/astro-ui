@@ -1,4 +1,6 @@
 import { GetServerSideProps } from 'next';
+import nextI18NextConfig from 'next-i18next.config';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { DAO, Member } from 'types/dao';
 import { Proposal } from 'types/proposal';
@@ -8,6 +10,7 @@ import { extractMembersFromDao } from 'services/sputnik/mappers';
 
 export const getServerSideProps: GetServerSideProps = async ({
   query,
+  locale = 'en',
 }): Promise<{
   props: {
     dao: DAO | null;
@@ -27,6 +30,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
       dao,
       proposal,
       members,

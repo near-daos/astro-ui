@@ -11,6 +11,7 @@ export type RadioProps = {
   value: string;
   label: React.ReactNode;
   disabled?: boolean;
+  type?: string;
 };
 
 const Radio: React.FC<RadioProps> = ({
@@ -19,6 +20,7 @@ const Radio: React.FC<RadioProps> = ({
   label,
   disabled = false,
   id,
+  type,
 }: RadioProps) => {
   const {
     itemClassName,
@@ -36,6 +38,7 @@ const Radio: React.FC<RadioProps> = ({
       className={cn(styles.root, className, itemClassName, {
         [styles.disabled]: disabled,
         [activeItemClassName]: checked,
+        [styles.notifications]: type === 'notifications',
       })}
     >
       <input

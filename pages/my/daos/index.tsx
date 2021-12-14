@@ -1,15 +1,18 @@
 import { GetServerSideProps } from 'next';
 import { CookieService } from 'services/CookieService';
 import { SputnikHttpService } from 'services/sputnik';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18NextConfig from 'next-i18next.config';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import MyDaosPage from './MyDaosPage';
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({
+  locale = 'en',
+}) => {
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
-  // Todo - ask Oleg if we can include active and total count to this endpoint too
   const accountDaos = account
     ? await SputnikHttpService.getAccountDaos(account)
     : [];
@@ -29,6 +32,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
       accountDaos: data,
     },
   };

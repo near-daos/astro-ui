@@ -1,8 +1,11 @@
 import uniq from 'lodash/uniq';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
+import { useTranslation } from 'next-i18next';
 import { Badge } from 'components/badge/Badge';
+import nextI18NextConfig from 'next-i18next.config';
 import React, { FC, useCallback, useState } from 'react';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import MemberCard, {
   GroupsRenderer,
@@ -58,6 +61,7 @@ const GroupPage: FC<GroupPageProps> = ({
   },
   proposals,
 }) => {
+  const { t } = useTranslation();
   const { tokens } = useDaoCustomTokens();
   const members = dao ? extractMembersFromDao(dao, proposals) : [];
 
@@ -108,10 +112,12 @@ const GroupPage: FC<GroupPageProps> = ({
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href={ALL_DAOS_URL}>All DAOs</NavLink>
+        <NavLink href={ALL_DAOS_URL}>{t('allDaos')}</NavLink>
         <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
-        <NavLink href={`/dao/${dao.id}/groups/all-members`}>Groups</NavLink>
-        <NavLink>{pageTitle === 'all' ? 'All Members' : pageTitle}</NavLink>
+        <NavLink href={`/dao/${dao.id}/groups/all-members`}>
+          {t('groups')}
+        </NavLink>
+        <NavLink>{pageTitle === 'all' ? t('allMembers') : pageTitle}</NavLink>
       </BreadCrumbs>
       <div className={styles.dao}>
         <DaoDetailsMinimized
@@ -134,7 +140,7 @@ const GroupPage: FC<GroupPageProps> = ({
         />
       </div>
       <div className={styles.header}>
-        <h1>{pageTitle === 'all' ? 'All Members' : <>{pageTitle}</>}</h1>
+        <h1>{pageTitle === 'all' ? t('allMembers') : <>{pageTitle}</>}</h1>
       </div>
       <GroupsList
         className={styles.groups}
@@ -183,6 +189,7 @@ const GroupPage: FC<GroupPageProps> = ({
 export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
   req,
   query,
+  locale = 'en',
 }) => {
   const daoId = query.dao as string;
 
@@ -203,6 +210,7 @@ export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
       daoContext,
       proposals,
     },

@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import React, { useMemo, useState } from 'react';
 
 import {
@@ -48,6 +49,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
   proposal,
   members,
 }) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const scope = getProposalScope(proposal?.kind.type);
   const [activeFilter, setActiveFilter] = useState<string | undefined>(
@@ -151,7 +153,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         <meta name="twitter:image" content={dao?.flagCover || dao?.logo} />
       </Head>
       <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href={ALL_DAOS_URL}>All DAOs</NavLink>
+        <NavLink href={ALL_DAOS_URL}>{t('allDaos')}</NavLink>
         <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
         <NavLink
           href={{
@@ -160,8 +162,9 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
               dao: dao.id,
             },
           }}
+          className={styles.capitalize}
         >
-          Proposals
+          {t('proposals')}
         </NavLink>
         <NavLink
           href={{

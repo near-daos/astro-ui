@@ -19,6 +19,10 @@
   grid-area: breadcrumbs;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 .dao {
   grid-area: dao;
   margin-top: 24px;

@@ -1,4 +1,6 @@
 import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18NextConfig from 'next-i18next.config';
 import { SputnikHttpService } from 'services/sputnik';
 
 import { CookieService } from 'services/CookieService';
@@ -8,6 +10,7 @@ import DaoPage from './DaoPage';
 export const getServerSideProps: GetServerSideProps = async ({
   req,
   query,
+  locale = 'en',
 }) => {
   const { dao: daoId } = query;
 
@@ -28,6 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
+      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
       daoContext,
     },
   };

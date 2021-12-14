@@ -1,6 +1,7 @@
 const path = require('path');
 const svgSprite = require('./plugins/next-svg-sprites');
 const cssLoaderConfig = require('./plugins/css-loader-config');
+const { i18n } = require('./next-i18next.config');
 
 module.exports = (phase, { defaultConfig }) => {
   const plugins = [svgSprite, cssLoaderConfig];
@@ -42,6 +43,8 @@ module.exports = (phase, { defaultConfig }) => {
           },
         ];
       },
+      target: 'experimental-serverless-trace',
+      i18n,
     }
   );
 

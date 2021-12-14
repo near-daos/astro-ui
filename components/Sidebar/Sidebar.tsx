@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import { useRouter } from 'next/router';
 import React, { forwardRef, useCallback } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import {
   MY_DAOS_URL,
@@ -27,6 +28,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
   const { className } = props;
 
   const router = useRouter();
+  const { t } = useTranslation();
 
   const { accountId, login } = useAuthContext();
 
@@ -40,13 +42,13 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
       return (
         <div>
           <NavItem
-            label="My DAOs"
+            label={t('myDaos')}
             icon="myDaos"
             className={styles.item}
             href={MY_DAOS_URL}
           />
           <NavItem
-            label="My Feed"
+            label={t('myFeed')}
             icon="myFeed"
             className={styles.item}
             href={MY_FEED_URL}
@@ -63,13 +65,13 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
     return (
       <div className={styles.bottom}>
         <NavItem
-          label="Global Feed"
+          label={t('globalFeed')}
           icon="globalFeed"
           className={styles.item}
           href={ALL_FEED_URL}
         />
         <NavItem
-          label="All Communities"
+          label={t('allCommunities')}
           icon="allCommunity"
           className={styles.item}
           href={ALL_DAOS_URL}
@@ -96,7 +98,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
             href={CREATE_DAO_URL}
             className={styles.item}
             onClick={createDao}
-            label="Create New DAO"
+            label={t('createNewDao')}
             icon="createNewDao"
           />
         </div>

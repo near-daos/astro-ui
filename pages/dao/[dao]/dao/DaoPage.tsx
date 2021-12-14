@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import React from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { ALL_DAOS_URL } from 'constants/routing';
 
@@ -33,13 +34,14 @@ const DAOHome: NextPage<DaoHomeProps> = ({
 }) => {
   const { accountId } = useAuthContext();
   const { tokens: daoTokens } = useDaoCustomTokens();
+  const { t } = useTranslation();
 
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href={ALL_DAOS_URL}>All DAOs</NavLink>
+        <NavLink href={ALL_DAOS_URL}>{t('allDaos')}</NavLink>
         <NavLink>{dao.displayName || dao.id}</NavLink>
       </BreadCrumbs>
 
