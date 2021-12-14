@@ -45,3 +45,8 @@ export interface NotificationSettingsGroup {
   typeStatus: NotificationsGroupStatus;
   subtypes: NotificationSettingsSubType[];
 }
+
+export interface NotificationDisableOption {
+  value: string;
+  label: NotificationsGroupStatus;
+}
