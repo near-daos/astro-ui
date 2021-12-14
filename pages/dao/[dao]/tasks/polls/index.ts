@@ -6,6 +6,7 @@ import { ProposalCategories, ProposalStatuses } from 'types/proposal';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18NextConfig from 'next-i18next.config';
 
 export default Polls;
 
@@ -41,7 +42,7 @@ export const getServerSideProps: GetServerSideProps<PollsPageProps> = async ({
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'])),
+      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
       daoContext,
       initialPollsData,
     },

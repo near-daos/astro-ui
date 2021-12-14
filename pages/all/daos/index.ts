@@ -1,6 +1,8 @@
 import { DAO } from 'types/dao';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getDaosList } from 'features/daos/helpers';
+import nextI18NextConfig from 'next-i18next.config.js';
+
 import AllDaosPage from './AllDaosPage';
 
 interface GetDaoListQuery {
@@ -26,7 +28,7 @@ export async function getServerSideProps({
 
   return {
     props: {
-      ...(await serverSideTranslations(locale)),
+      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
       data,
       total,
     },

@@ -8,6 +8,7 @@ import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 
 import { Feed } from 'astro_2.0/features/Feed';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18NextConfig from 'next-i18next.config';
 
 const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
   <Feed {...props} title="Global Feed" />
@@ -26,7 +27,7 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'])),
+      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
       initialProposals: res,
     },
   };
