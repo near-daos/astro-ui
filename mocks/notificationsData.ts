@@ -22,7 +22,7 @@ export const NOTIFICATION_SETTINGS_GROUPS_DATA: NotificationSettingsGroup[] = [
     typeName: 'My DAOs and My Activity',
     typeText:
       'Choose for how long you would like to disable notifications from your DAOs and DAOs you are a member.',
-    typeStatus: NotificationsGroupStatus.Enabled,
+    typeStatus: NotificationsGroupStatus.Disable,
     subtypes: [
       {
         subType: 'root',
@@ -48,6 +48,25 @@ export const NOTIFICATION_SETTINGS_GROUPS_DATA: NotificationSettingsGroup[] = [
         subTypeName: 'Vote',
       },
     ],
+  },
+];
+
+export const NOTIFICATION_SETTINGS_DISABLE_OPTIONS = [
+  {
+    value: 'OneHour',
+    label: NotificationsGroupStatus.OneHour,
+  },
+  {
+    value: 'EightHours',
+    label: NotificationsGroupStatus.EightHours,
+  },
+  {
+    value: 'OneDay',
+    label: NotificationsGroupStatus.OneDay,
+  },
+  {
+    value: 'Disable',
+    label: NotificationsGroupStatus.Disable,
   },
 ];
 

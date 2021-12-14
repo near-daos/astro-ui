@@ -7,6 +7,7 @@ import { Toggle } from 'components/inputs/Toggle';
 import {
   NotificationSettingsGroup,
   NotificationSettingsItem,
+  NotificationsGroupStatus,
 } from 'types/notification';
 import {
   NOTIFICATION_SETTINGS_GROUPS_DATA,
@@ -25,6 +26,10 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
 }) => {
   const [settingsState, setSettingsState] = useState({
     settings: settingsData,
+  });
+
+  const [settingsGroupState, setSettingsGroupState] = useState({
+    groups: settingGroups,
   });
 
   // Switch one Group Notifications
@@ -52,16 +57,47 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
     text: 'Choose for how long you would like to disable global notifications.',
   });
 
-  const toggleGroupSwitch = useCallback(
+  const openGroupSettingsModal = useCallback(
     async type => {
       await showModal(type);
     },
     [showModal]
   );
 
+  const toggleGroupSwitch = (
+    type: string,
+    typeStatus: NotificationsGroupStatus
+  ) => {
+    if (typeStatus === NotificationsGroupStatus.Enabled) {
+      openGroupSettingsModal(type);
+    } else {
+      setSettingsGroupState({
+        groups: settingsGroupState.groups.map(group =>
+          group.type === type
+            ? {
+                ...group,
+                typeStatus: NotificationsGroupStatus.Enabled,
+              }
+            : group
+        ),
+      });
+    }
+  };
+
   /*
+  const toggleGroupSwitchModal = useCallback(
+    async (type, typeStatus) => {
+      if (typeStatus === 'Enabled') {
+        await showModal(type);
+      } else {
+        console.log('enable notifications');
+      }
+    },
+    [showModal]
+  );
+
   // Switch all Group Notifications
-  const toggleGroupSwitchOrig = (type: string) => {
+  const toggleGroupSwitchAll = (type: string) => {
     const currentGroupValue =
       settingsState.settings.filter(item => !item.checked && item.type === type)
         .length === 0;
@@ -87,48 +123,50 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
       </BreadCrumbs>
       <div className={styles.title}>Notification settings</div>
       <div className={styles.settings}>
-        {settingGroups.map(({ type, typeName, typeStatus, subtypes }) => (
-          <div key={type} className={styles.card}>
-            <div className={styles.cardHeader}>
-              <div className={styles.cardTitle}>{typeName}</div>
-              <Toggle
-                id={type}
-                checked={typeStatus === 'Enabled'}
-                /*
+        {settingsGroupState.groups.map(
+          ({ type, typeName, typeStatus, subtypes }) => (
+            <div key={type} className={styles.card}>
+              <div className={styles.cardHeader}>
+                <div className={styles.cardTitle}>{typeName}</div>
+                <Toggle
+                  id={type}
+                  checked={typeStatus === 'Enabled'}
+                  /*
                 checked={
                   settingsState.settings.filter(
                     item => !item.checked && item.type === type
                   ).length === 0
                 }
                 */
-                groupSwitch
-                onClick={() => toggleGroupSwitch(type)}
-              />
-            </div>
-            {subtypes.map(({ subType, subTypeName }) => (
-              <div key={subType}>
-                {subTypeName && (
-                  <div className={styles.subType}>{subTypeName}</div>
-                )}
-                {settingsState.settings
-                  .filter(
-                    item => item.type === type && item.subType === subType
-                  )
-                  .map(({ id, title, checked }) => (
-                    <div key={id} className={styles.settingsItem}>
-                      <Toggle
-                        id={id}
-                        label={title}
-                        checked={checked}
-                        mobileListView
-                        onClick={() => toggleSettingsSwitch(id)}
-                      />
-                    </div>
-                  ))}
+                  groupSwitch
+                  onClick={() => toggleGroupSwitch(type, typeStatus)}
+                />
               </div>
-            ))}
-          </div>
-        ))}
+              {subtypes.map(({ subType, subTypeName }) => (
+                <div key={subType}>
+                  {subTypeName && (
+                    <div className={styles.subType}>{subTypeName}</div>
+                  )}
+                  {settingsState.settings
+                    .filter(
+                      item => item.type === type && item.subType === subType
+                    )
+                    .map(({ id, title, checked }) => (
+                      <div key={id} className={styles.settingsItem}>
+                        <Toggle
+                          id={id}
+                          label={title}
+                          checked={checked}
+                          mobileListView
+                          onClick={() => toggleSettingsSwitch(id)}
+                        />
+                      </div>
+                    ))}
+                </div>
+              ))}
+            </div>
+          )
+        )}
       </div>
     </div>
   );
