@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 
+import { ALL_DAOS_URL } from 'constants/routing';
+
 import { NFTCard } from 'astro_2.0/features/pages/nft/NtfCard';
 
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
@@ -49,7 +51,7 @@ const NFTs: NextPage<NFTsPageProps> = ({
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href="/all/daos">All DAOs</NavLink>
+        <NavLink href={ALL_DAOS_URL}>All DAOs</NavLink>
         <NavLink href={`/dao/${daoId}`}>{dao?.displayName || dao?.id}</NavLink>
         <NavLink>NFTs</NavLink>
       </BreadCrumbs>

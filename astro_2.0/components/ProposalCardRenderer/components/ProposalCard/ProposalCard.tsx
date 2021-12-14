@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { format, parseISO } from 'date-fns';
 
+import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
+
 import {
   ProposalStatus,
   ProposalType,
@@ -148,7 +150,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const handleCardClick = useCallback(() => {
     if (id) {
-      router.push(`/dao/${dao.id}/proposals/${id}`);
+      router.push({
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: dao.id,
+          proposal: id,
+        },
+      });
     }
   }, [dao.id, id, router]);
 

@@ -1,20 +1,21 @@
 import { NextPage } from 'next';
 import React from 'react';
 
-import { Feed } from 'astro_2.0/features/Feed';
+import { ALL_DAOS_URL } from 'constants/routing';
+
 import { NavLink } from 'astro_2.0/components/NavLink';
 import { DaoDetails } from 'astro_2.0/components/DaoDetails';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
-import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 
+import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 import { PaginationResponse } from 'types/api';
+
 import { Proposal, ProposalVariant } from 'types/proposal';
 
 import { useAuthContext } from 'context/AuthContext';
-
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
-import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 
+import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { DaoContext } from 'types/context';
 import styles from './DaoPage.module.scss';
 
@@ -29,7 +30,6 @@ const DAOHome: NextPage<DaoHomeProps> = ({
     userPermissions: { isCanCreateProposals },
     policyAffectsProposals,
   },
-  initialProposalsData,
 }) => {
   const { accountId } = useAuthContext();
   const { tokens: daoTokens } = useDaoCustomTokens();
@@ -39,7 +39,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href="/all/daos">All DAOs</NavLink>
+        <NavLink href={ALL_DAOS_URL}>All DAOs</NavLink>
         <NavLink>{dao.displayName || dao.id}</NavLink>
       </BreadCrumbs>
 
@@ -71,15 +71,6 @@ const DAOHome: NextPage<DaoHomeProps> = ({
           className={styles.warningWrapper}
         />
       </div>
-
-      <Feed
-        key={dao.id}
-        dao={dao}
-        showFlag={false}
-        title="Proposals"
-        className={styles.feed}
-        initialProposals={initialProposalsData}
-      />
     </div>
   );
 };
