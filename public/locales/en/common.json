@@ -46,5 +46,8 @@
   "members": "Members",
   "reportAnIssue": "Report an issue",
   "termsAndConditions": "Terms and Conditions",
-  "releaseNotes": "Release notes"
+  "releaseNotes": "Release notes",
+  "numberOfVotes": "Number of votes",
+  "numberOfTransactions": "Number of transactions",
+  "activity": "Activity"
 }

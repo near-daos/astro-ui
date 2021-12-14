@@ -2,7 +2,7 @@
 @import 'styles/typography';
 
 .root {
-  background-color: var(--color-neutral-10);
+  background-color: var(--color-white);
   flex: 1;
   margin: 0 -24px;
   padding: 24px 24px 24px 12px;
@@ -35,6 +35,12 @@
 .title {
   @extend %title3;
   white-space: nowrap;
+}
+
+.controls {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
 }
 
 .rangePlaceholder {

@@ -1,0 +1,50 @@
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-template-areas:
+    'title trend'
+    'value value';
+  grid-template-columns: 1fr 1fr;
+
+  &:not(:last-of-type) {
+    margin-bottom: 16px;
+  }
+}
+
+.title {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+  grid-area: title;
+  margin-bottom: 6px;
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
+}
+
+.trend {
+  @extend %title5;
+  @include centralize;
+  grid-area: trend;
+  justify-content: flex-end;
+  text-align: right;
+
+  &.positive {
+    color: var(--color-brand-green);
+  }
+
+  &.negative {
+    color: var(--color-brand-coral-red);
+  }
+}
+
+.trendIcon {
+  width: 12px;
+}
+
+.value {
+  @extend %heading3;
+  color: var(--color-neutral-90);
+  grid-area: value;
+}

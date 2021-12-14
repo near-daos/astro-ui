@@ -12,6 +12,15 @@
   }
 }
 
+.select {
+  p {
+    margin: 0;
+  }
+  ul {
+    max-width: 60px;
+  }
+}
+
 .toggle {
   $state-color: #e2def2;
 

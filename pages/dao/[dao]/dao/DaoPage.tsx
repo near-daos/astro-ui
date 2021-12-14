@@ -7,6 +7,7 @@ import { NavLink } from 'astro_2.0/components/NavLink';
 import { DaoDetails } from 'astro_2.0/components/DaoDetails';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
+import { DaoDashboard } from 'astro_2.0/features/DaoDashboard';
 
 import { PaginationResponse } from 'types/api';
 import { Proposal, ProposalVariant } from 'types/proposal';
@@ -71,6 +72,15 @@ const DAOHome: NextPage<DaoHomeProps> = ({
         <PolicyAffectedWarning
           data={policyAffectsProposals}
           className={styles.warningWrapper}
+        />
+
+        <DaoDashboard
+          className={styles.dashboard}
+          proposalsInTotal={{ count: 135, growth: 10 }}
+          nfts={{ count: 4, growth: 2 }}
+          bounties={{ count: 14, growth: -7 }}
+          funds={{ count: 1235633, growth: 10 }}
+          activeProposals={{ count: 8, growth: 10 }}
         />
       </div>
 

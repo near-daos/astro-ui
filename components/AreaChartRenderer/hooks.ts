@@ -14,7 +14,7 @@ export const useDomainControl = (
   initialRange?: Range
 ): DomainControl => {
   const [dataByRange, setDataByRange] = useState(() => {
-    return prepareDataByRange(DOMAIN_RANGES.DAY, data);
+    return prepareDataByRange(initialRange || DOMAIN_RANGES.DAY, data);
   });
 
   const [activeRange, setActiveRange] = useState<Range>(
