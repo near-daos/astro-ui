@@ -3,6 +3,7 @@ import 'firebase/messaging';
 import firebase from 'firebase/app';
 import { firebaseConfig } from 'config';
 import { httpService, HttpService } from 'services/HttpService';
+import { SputnikNearService } from 'services/sputnik';
 
 export class FirebaseService {
   private config: Record<string, string | undefined>;
@@ -20,8 +21,10 @@ export class FirebaseService {
       firebase.initializeApp(firebaseConfig);
     }
 
-    this.messaging = firebase.messaging();
-    this.messaging.onMessage(this.handleMessage);
+    if (firebase.messaging.isSupported()) {
+      this.messaging = firebase.messaging();
+      this.messaging.onMessage(this.handleMessage);
+    }
   }
 
   public requestPermission(): void {
@@ -31,11 +34,23 @@ export class FirebaseService {
 
     Notification.requestPermission(async permission => {
       if (permission === 'granted') {
-        const token = this.getToken();
+        const token = await this.getToken();
+        const accountId = SputnikNearService.getAccountId();
+        const publicKey = await SputnikNearService.getPublicKey();
+        const signature = await SputnikNearService.signMessage(
+          'notification token'
+        );
 
-        // eslint-disable-next-line no-console
-        console.log('token: ', token);
-        // this.httpService.post('/api/add-token');
+        if (!signature || !publicKey) {
+          return;
+        }
+
+        this.httpService.post('/accounts', {
+          token,
+          accountId,
+          publicKey,
+          signature,
+        });
       }
     });
   }

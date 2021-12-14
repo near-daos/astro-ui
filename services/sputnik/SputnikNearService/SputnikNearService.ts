@@ -2,6 +2,7 @@ import Big from 'big.js';
 import PromisePool from '@supercharge/promise-pool';
 import { Contract, keyStores, Near } from 'near-api-js';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
+import { BrowserLocalStorageKeyStore } from 'near-api-js/lib/key_stores';
 
 import { NearConfig, nearConfig } from 'config';
 
@@ -27,16 +28,18 @@ class SputnikNearServiceClass {
 
   private near!: Near;
 
+  private keyStore?: BrowserLocalStorageKeyStore;
+
   constructor(config: NearConfig) {
     this.config = config;
   }
 
   public init(): void {
-    const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+    this.keyStore = new keyStores.BrowserLocalStorageKeyStore();
 
     this.near = new Near({
       ...this.config,
-      keyStore,
+      keyStore: this.keyStore,
     });
 
     this.sputnikWalletService = new SputnikWalletService(this.near);
@@ -198,6 +201,36 @@ class SputnikNearServiceClass {
     } catch (e) {
       return false;
     }
+  }
+
+  async getPublicKey(): Promise<string | null> {
+    const keyPair = await this.keyStore?.getKey(
+      this.config.networkId,
+      this.getAccountId()
+    );
+
+    const publicKey = keyPair?.getPublicKey();
+
+    if (!publicKey) {
+      return null;
+    }
+
+    return publicKey.toString();
+  }
+
+  async signMessage(message: string): Promise<string | null> {
+    const keyPair = await this.keyStore?.getKey(
+      this.config.networkId,
+      this.getAccountId()
+    );
+    const buffer = new TextEncoder().encode(message);
+    const signature = keyPair?.sign(buffer);
+
+    if (!signature) {
+      return null;
+    }
+
+    return btoa(String.fromCharCode(...signature.signature));
   }
 }
 
