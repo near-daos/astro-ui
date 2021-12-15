@@ -8,6 +8,7 @@ import { StatData } from 'astro_2.0/features/DaoDashboard/types';
 import { StatChart } from 'astro_2.0/features/DaoDashboard/components/StatChart';
 import { DashboardChart } from 'astro_2.0/features/DaoDashboard/components/DashboardChart';
 import { getFundsInUsdFromTokens } from 'astro_2.0/features/DaoDashboard/helpers';
+import { Loader } from 'components/loader';
 
 import { useDaoDashboardData } from 'astro_2.0/features/DaoDashboard/hooks';
 
@@ -43,7 +44,11 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
   return (
     <div className={cn(styles.root, className)}>
       <div className={styles.chart}>
-        {chartData && <DashboardChart key={activeView} data={chartData} />}
+        {chartData ? (
+          <DashboardChart key={activeView} data={chartData} />
+        ) : (
+          <Loader />
+        )}
       </div>
       <StatCard
         className={styles.funds}

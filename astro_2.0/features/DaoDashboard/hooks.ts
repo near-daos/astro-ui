@@ -1,12 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
 import {
   DaoDashboardData,
   DashboardView,
 } from 'astro_2.0/features/DaoDashboard/types';
+
 import { SputnikStatsService } from 'services/sputnik';
-import { mapMetricsToChartData } from 'astro_2.0/features/DaoDashboard/helpers';
-import { useRouter } from 'next/router';
+
+import {
+  mapMetricsToChartData,
+  mapOvertimeToChartData,
+} from 'astro_2.0/features/DaoDashboard/helpers';
 
 type DaoDasboardFilteredData = {
   chartData: ChartDataElement[] | null;
@@ -32,10 +38,7 @@ export function useDaoDashboardData(): DaoDasboardFilteredData {
       const newDashboardData: DaoDashboardData = {};
 
       if (daoFundsOverTime.status === 'fulfilled') {
-        // todo - prepare data for chart
-        const newChartData = mapMetricsToChartData(
-          daoFundsOverTime.value.incoming
-        );
+        const newChartData = mapOvertimeToChartData(daoFundsOverTime.value);
 
         newDashboardData.daoFundsOverTime = [...newChartData];
         setChartData(newChartData);
@@ -63,31 +66,31 @@ export function useDaoDashboardData(): DaoDasboardFilteredData {
             daoId
           );
 
-          data = res.metrics;
+          data = mapMetricsToChartData(res);
           break;
         }
         case 'NFTS': {
           const res = await SputnikStatsService.getNFTsOverTime(daoId);
 
-          data = res.metrics;
+          data = mapMetricsToChartData(res);
           break;
         }
         case 'BOUNTIES': {
           const res = await SputnikStatsService.getBountiesOverTime(daoId);
 
-          data = res.metrics;
+          data = mapMetricsToChartData(res);
           break;
         }
         case 'DAO_FUNDS':
         default: {
           const res = await SputnikStatsService.getDaoFundsOverTime(daoId);
 
-          data = res.incoming;
+          data = mapOvertimeToChartData(res);
         }
       }
 
       if (data) {
-        setChartData(mapMetricsToChartData(data));
+        setChartData(data);
         setActiveView(view);
       }
     },

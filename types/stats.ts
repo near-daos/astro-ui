@@ -3,9 +3,10 @@ export type Metric = {
   count: string;
 };
 
-export type FundsOverTime = {
-  incoming: Metric[];
-  outgoing: Metric[];
+export type FundMetric = {
+  timestamp: number;
+  incoming: string;
+  outgoing: string;
 };
 
 export type Stats = {
@@ -31,4 +32,8 @@ export type DaoTokensStat = {
 
 export type CommonOverTime = {
   metrics: Metric[];
+};
+
+export type FundsOverTime = {
+  metrics: FundMetric[];
 };

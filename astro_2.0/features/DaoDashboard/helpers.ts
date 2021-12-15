@@ -1,7 +1,8 @@
 import { Token } from 'types/token';
 import { getAccumulatedTokenValue } from 'features/treasury/helpers';
-import { Metric } from 'types/stats';
+import { CommonOverTime, FundsOverTime } from 'types/stats';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
+import { formatYoktoValue } from 'helpers/format';
 
 export function getFundsInUsdFromTokens(tokens: Record<string, Token>): string {
   const total = getAccumulatedTokenValue(tokens);
@@ -9,9 +10,41 @@ export function getFundsInUsdFromTokens(tokens: Record<string, Token>): string {
   return `${total.toFixed(2)} USD`;
 }
 
-export function mapMetricsToChartData(data: Metric[]): ChartDataElement[] {
-  return data.map(item => ({
-    x: new Date(item.timestamp),
-    y: Number(item.count),
-  }));
+export function mapOvertimeToChartData(
+  data: FundsOverTime
+): ChartDataElement[] {
+  let prevBalance = 0;
+
+  return (
+    data?.metrics?.map(item => {
+      const x = new Date(item.timestamp);
+      const income = Number(formatYoktoValue(item.incoming));
+      const outcome = Number(formatYoktoValue(item.outgoing));
+
+      const balance = prevBalance + income - outcome;
+
+      prevBalance = balance;
+
+      return {
+        x,
+        y: balance,
+      };
+    }) ?? []
+  );
+}
+
+export function mapMetricsToChartData(
+  data: CommonOverTime
+): ChartDataElement[] {
+  return (
+    data?.metrics?.map(item => {
+      const x = new Date(item.timestamp);
+      const count = Number(item.count);
+
+      return {
+        x,
+        y: count,
+      };
+    }) ?? []
+  );
 }

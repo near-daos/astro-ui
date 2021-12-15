@@ -19,6 +19,7 @@ import {
   Range,
 } from 'components/AreaChartRenderer/types';
 import { useMedia } from 'react-use';
+import { kFormatter } from 'helpers/format';
 
 type LineItem = {
   name: string;
@@ -114,6 +115,7 @@ export const Chart: React.FC<ChartProps> = ({
         tickMargin={1}
         interval={0}
         tickLine={false}
+        tickFormatter={value => kFormatter(value)}
         style={tickStyles}
       />
       <XAxis
