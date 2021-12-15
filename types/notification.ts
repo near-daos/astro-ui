@@ -50,3 +50,25 @@ export interface NotificationDisableOption {
   value: string;
   label: NotificationsGroupStatus;
 }
+
+export type NotificationDTO = {
+  isArchived: boolean;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+  notificationId: string;
+  accountId: string;
+  isMuted: boolean;
+  isRead: boolean;
+  notification: {
+    isArchived: boolean;
+    createdAt: string;
+    updatedAt: string;
+    id: string;
+    daoId: string;
+    targetId: string;
+    type: 'PollProposalCreation'; // what types are available
+    metadata: unknown; // should we have proper description of the metadata
+    timestamp: string;
+  };
+};

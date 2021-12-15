@@ -3,13 +3,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import findIndex from 'lodash/findIndex';
 import React, { CSSProperties } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import styles from './SideFilter.module.scss';
-
-const ITEM_ALL = {
-  value: undefined,
-  label: 'All',
-};
 
 type ListItem = {
   value?: string;
@@ -33,6 +29,13 @@ export const SideFilter = ({
   className,
   titleClassName,
 }: SideFilterProps): JSX.Element => {
+  const { t } = useTranslation();
+
+  const ITEM_ALL = {
+    value: undefined,
+    label: t('all'),
+  };
+
   const { query } = useRouter();
   const { [queryName]: value } = query;
 

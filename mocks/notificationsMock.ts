@@ -1,10 +1,15 @@
+import map from 'lodash/map';
 import times from 'lodash/times';
 
 import { NotificationCardContent } from 'astro_2.0/components/NotificationCard/types';
 
 import { NotificationCardProps } from 'astro_2.0/components/NotificationCard';
 
-import { NotificationStatus, NotificationType } from 'types/notification';
+import {
+  NotificationDTO,
+  NotificationType,
+  NotificationStatus,
+} from 'types/notification';
 
 function getFromArray<T>(array: T[], index: number): T {
   const { length } = array;
@@ -42,6 +47,44 @@ export function getNotifications(
       isMuteAvailable,
       isMarkReadAvailable: isNew,
       isDeleteAvailable: true,
+      markReadHandler: () => {
+        // eslint-disable-next-line no-console
+        console.log('>>> markReadHandler');
+      },
+      toggleMuteHandler: () => {
+        // eslint-disable-next-line no-console
+        console.log('>>> toggleMuteHandler');
+      },
+      deleteHandler: () => {
+        // eslint-disable-next-line no-console
+        console.log('>>> deleteHandler');
+      },
+    };
+  });
+}
+
+export function notificationDtoToNotificationCardProps(
+  notifications: NotificationDTO[],
+  regular = true
+): NotificationCardProps[] {
+  return map(notifications, noty => {
+    const { isRead, isMuted, id, createdAt } = noty;
+
+    return {
+      isNew: isRead,
+      isRead,
+      isMuted,
+      regular,
+      content: {
+        id,
+        type: NotificationType.DaoConfig,
+        status: NotificationStatus.Default,
+        text: id,
+        time: new Date(createdAt).toISOString(),
+      },
+      isMuteAvailable: false,
+      isMarkReadAvailable: false,
+      isDeleteAvailable: false,
       markReadHandler: () => {
         // eslint-disable-next-line no-console
         console.log('>>> markReadHandler');
