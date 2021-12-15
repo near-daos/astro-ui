@@ -15,6 +15,11 @@
 
 .chart {
   grid-area: chart;
+  margin: 0 -24px;
+
+  @include tablet-landscape {
+    margin: 0;
+  }
 }
 
 .funds {

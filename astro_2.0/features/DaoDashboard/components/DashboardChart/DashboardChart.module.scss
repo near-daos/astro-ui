@@ -79,6 +79,10 @@
   border-radius: 100px;
   color: var(--color-neutral-90);
   cursor: pointer;
+
+  // todo - temp disable control buttons
+  display: none;
+
   padding: 7px 12px;
   transition: all 0.2s ease-out;
   white-space: nowrap;
@@ -103,9 +107,18 @@
   text-transform: capitalize;
 }
 
+.chartWrapper {
+  min-height: 340px;
+  width: 100%;
+}
+
+.noResults {
+  padding: 0;
+}
+
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .root {
-    max-width: calc(100vw - 48px);
+    max-width: 100vw;
   }
 
   //.header {

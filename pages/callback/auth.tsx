@@ -1,6 +1,8 @@
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { GetServerSideProps, NextPage } from 'next';
 import { useEffect } from 'react';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18NextConfig from 'next-i18next.config';
 
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 
@@ -33,6 +35,7 @@ const Callback: NextPage = () => {
 export const getServerSideProps: GetServerSideProps = async ({
   res,
   query,
+  locale = 'en',
 }) => {
   const accountId = query.account_id;
 
@@ -41,7 +44,11 @@ export const getServerSideProps: GetServerSideProps = async ({
     `${ACCOUNT_COOKIE}=${accountId}; path=/; Max-Age=${Number.MAX_SAFE_INTEGER}`
   );
 
-  return { props: {} };
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
+    },
+  };
 };
 
 export default Callback;

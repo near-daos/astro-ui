@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
+import { Button } from 'components/button/Button';
 
 import styles from './StatCard.module.scss';
 
@@ -14,11 +15,13 @@ export const StatCard: FC<StatCardProps> = ({
   className,
 }) => {
   return (
-    <div
+    <Button
+      onClick={onClick}
+      variant="transparent"
       className={cn(styles.root, className, { [styles.clickable]: !!onClick })}
     >
       {children}
-    </div>
+    </Button>
   );
 };
 

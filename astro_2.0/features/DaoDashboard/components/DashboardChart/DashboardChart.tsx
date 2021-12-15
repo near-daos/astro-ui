@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import Measure from 'react-measure';
 import cn from 'classnames';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { useDomainControl } from 'components/AreaChartRenderer/hooks';
 import RangeToggle from 'components/AreaChartRenderer/components/range-toggle/RangeToggle';
@@ -8,6 +9,7 @@ import { Chart } from 'components/AreaChartRenderer/components/Chart';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
 import { useTranslation } from 'next-i18next';
 import { Button } from 'components/button/Button';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import styles from './DashboardChart.module.scss';
 
@@ -20,6 +22,11 @@ enum DATASET {
   NUMBER_OF_TRANSACTIONS,
 }
 
+const variants = {
+  visible: { opacity: 1 },
+  hidden: { opacity: 0 },
+};
+
 export const DashboardChart: FC<DashboardChartProps> = ({ data }) => {
   const { t } = useTranslation();
   const [activeDataSet, setActiveDataSet] = useState(
@@ -30,7 +37,7 @@ export const DashboardChart: FC<DashboardChartProps> = ({ data }) => {
     data || []
   );
 
-  if (!data.length) {
+  if (!chartData) {
     return null;
   }
 
@@ -39,7 +46,10 @@ export const DashboardChart: FC<DashboardChartProps> = ({ data }) => {
       onResize={contentRect => {
         const newWidth = contentRect?.entry?.width;
 
-        if (width !== newWidth) {
+        if (
+          (newWidth && width === 0) ||
+          (newWidth && width && newWidth !== width)
+        ) {
           setWidth(newWidth);
         }
       }}
@@ -76,19 +86,45 @@ export const DashboardChart: FC<DashboardChartProps> = ({ data }) => {
             />
           </div>
           <div className={styles.chartWrapper}>
-            <Chart
-              tokenName=""
-              width={width}
-              data={chartData}
-              period={activeRange}
-              lines={[
-                {
-                  name: 'activity',
-                  color: '#6038d0',
-                  dataKey: 'y',
-                },
-              ]}
-            />
+            <AnimatePresence>
+              {chartData.length ? (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  variants={variants}
+                  transition={{
+                    duration: 0.7,
+                  }}
+                >
+                  <Chart
+                    width={width}
+                    data={chartData}
+                    period={activeRange}
+                    lines={[
+                      {
+                        name: 'activity',
+                        color: '#6038d0',
+                        dataKey: 'y',
+                      },
+                    ]}
+                  />
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  variants={variants}
+                  transition={{
+                    duration: 0.7,
+                  }}
+                >
+                  <NoResultsView
+                    title={t('noResultsFound')}
+                    className={styles.noResults}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       )}

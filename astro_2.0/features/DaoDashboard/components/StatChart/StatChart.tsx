@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import Measure from 'react-measure';
-import { LineChart, Line } from 'recharts';
+import { LineChart, Line, YAxis } from 'recharts';
 
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
 import { useDomainControl } from 'components/AreaChartRenderer/hooks';
@@ -15,11 +15,25 @@ interface StatChartProps {
 export const StatChart: FC<StatChartProps> = ({ data }) => {
   const [width, setWidth] = useState(0);
 
-  const { data: chartData } = useDomainControl(data || [], DOMAIN_RANGES.ALL);
+  const { data: chartData } = useDomainControl(
+    data.sort((a, b) => {
+      if (a.x > b.x) return 1;
+
+      if (a.x < b.x) return -1;
+
+      return 0;
+    }) || [],
+    DOMAIN_RANGES.ALL
+  );
 
   if (!chartData.length) {
     return null;
   }
+
+  const max = Math.max.apply(
+    null,
+    chartData.map(entry => entry.y)
+  );
 
   return (
     <Measure
@@ -34,6 +48,16 @@ export const StatChart: FC<StatChartProps> = ({ data }) => {
       {({ measureRef }) => (
         <div className={styles.root} ref={measureRef}>
           <LineChart width={width} height={34} data={chartData}>
+            <YAxis
+              width={0}
+              type="number"
+              stroke="#ddd"
+              domain={[0, max + max * 0.1]}
+              tickMargin={1}
+              interval={0}
+              tickCount={0}
+              tickLine={false}
+            />
             <Line
               strokeWidth={2}
               dot={false}

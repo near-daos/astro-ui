@@ -32,7 +32,7 @@ interface ChartProps {
   lines?: LineItem[];
   data: LineDataPoint[] | undefined;
   period: Range;
-  tokenName: string;
+  tokenName?: string;
 }
 
 const tickStyles = {

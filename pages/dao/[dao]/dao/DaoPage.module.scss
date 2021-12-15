@@ -8,7 +8,11 @@
     'header'
     'feed';
   grid-template-columns: 1fr;
-  padding-top: 56px;
+  padding-top: 16px;
+
+  @include tablet-landscape {
+    padding-top: 56px;
+  }
 }
 
 .warningWrapper {
@@ -16,7 +20,12 @@
 }
 
 .breadcrumbs {
+  display: none;
   grid-area: breadcrumbs;
+
+  @include tablet-landscape {
+    display: block;
+  }
 }
 
 .header {
@@ -45,6 +54,10 @@
   @include large-x-desktop {
     margin-left: -60px;
   }
+}
+
+.dashboardHeader {
+  margin-top: 10px;
 }
 
 .createProposal {

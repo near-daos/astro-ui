@@ -7,7 +7,7 @@ import styles from './StatPanel.module.scss';
 
 interface StatPanelProps {
   title: string;
-  value: string | number;
+  value: string | number | undefined;
   trend: number;
 }
 
@@ -21,10 +21,12 @@ export const StatPanel: FC<StatPanelProps> = ({ title, value, trend }) => {
           [styles.negative]: trend < 0,
         })}
       >
-        <Icon
-          name={trend >= 0 ? 'buttonArrowUp' : 'buttonArrowDown'}
-          className={styles.trendIcon}
-        />
+        {!!trend && (
+          <Icon
+            name={trend > 0 ? 'buttonArrowUp' : 'buttonArrowDown'}
+            className={styles.trendIcon}
+          />
+        )}
         {Math.abs(trend)}%
       </div>
       <div className={styles.value}>{value}</div>
