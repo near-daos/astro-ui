@@ -1,9 +1,14 @@
-import React, { FC } from 'react';
+import isEmpty from 'lodash/isEmpty';
+import { useRouter } from 'next/router';
+import React, { FC, useCallback } from 'react';
 import { useTranslation, Trans } from 'next-i18next';
+
+import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
+
 import { Proposal, ProposalType } from 'types/proposal';
+
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
-import { useRouter } from 'next/router';
 
 import styles from './PolicyAffectedWarning.module.scss';
 
@@ -19,7 +24,17 @@ export const PolicyAffectedWarning: FC<PolicyAffectedWarningProps> = ({
   const router = useRouter();
   const { t } = useTranslation();
 
-  if (!data?.length) {
+  const goToProposalPage = useCallback(() => {
+    router.push({
+      pathname: SINGLE_PROPOSAL_PAGE_URL,
+      query: {
+        dao: data[0].daoId,
+        proposal: data[0].id,
+      },
+    });
+  }, [data, router]);
+
+  if (isEmpty(data)) {
     return null;
   }
 
@@ -45,12 +60,7 @@ export const PolicyAffectedWarning: FC<PolicyAffectedWarningProps> = ({
         </div>
         <div className={styles.control}>
           {data.length === 1 && (
-            <Button
-              variant="primary"
-              onClick={() =>
-                router.push(`/dao/${data[0].daoId}/proposals/${data[0].id}`)
-              }
-            >
+            <Button variant="primary" onClick={goToProposalPage}>
               {t('viewProposal')}
             </Button>
           )}

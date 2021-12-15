@@ -2,10 +2,11 @@ import React from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { UrlObject } from 'url';
 
 export interface NavLinkProps {
   className?: string;
-  href?: string;
+  href?: string | UrlObject;
   children: React.ReactNode;
   activeClassName?: string;
 }
