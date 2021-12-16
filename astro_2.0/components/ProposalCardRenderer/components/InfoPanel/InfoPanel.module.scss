@@ -1,0 +1,32 @@
+@import 'styles/typography';
+
+.root {
+  @extend %subtitle5;
+  align-items: center;
+  background-color: var(--color-brand-purple-light);
+  border-radius: 8px 8px 0;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+  //grid-area: info;
+  padding: 8px;
+
+  transition: width 0.7s linear;
+}
+
+.message {
+  display: none;
+  line-height: 0.98;
+  margin-left: 12px;
+}
+
+.infoIcon {
+  color: var(--color-brand-purple);
+  width: 24px;
+}
+
+.open {
+  .message {
+    display: block;
+  }
+}
