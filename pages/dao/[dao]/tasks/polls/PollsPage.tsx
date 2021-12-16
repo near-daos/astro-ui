@@ -1,5 +1,8 @@
 import React, { FC } from 'react';
 
+// Constants
+import { ALL_DAOS_URL } from 'constants/routing';
+
 // Types
 import { PaginationResponse } from 'types/api';
 import { Proposal, ProposalCategories, ProposalVariant } from 'types/proposal';
@@ -39,7 +42,7 @@ const PollsPage: FC<PollsPageProps> = ({
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href="/all/daos">All DAOs</NavLink>
+        <NavLink href={ALL_DAOS_URL}>All DAOs</NavLink>
         <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
         <span>Polls</span>
       </BreadCrumbs>

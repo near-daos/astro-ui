@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import get from 'lodash/get';
 import { NextPage } from 'next';
 
+import { ALL_DAOS_URL } from 'constants/routing';
+
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { DaoAddressLink } from 'components/DaoAddressLink';
@@ -212,7 +214,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href="/all/daos">All DAOs</NavLink>
+        <NavLink href={ALL_DAOS_URL}>All DAOs</NavLink>
         <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
         <NavLink>Treasury</NavLink>
       </BreadCrumbs>

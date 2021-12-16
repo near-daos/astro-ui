@@ -1,6 +1,8 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 
+import { ALL_DAOS_URL } from 'constants/routing';
+
 import { useAuthContext } from 'context/AuthContext';
 
 import { BountyCard } from 'astro_2.0/components/BountyCard';
@@ -100,7 +102,7 @@ const BountiesPage: FC<BountiesPageProps> = ({
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href="/all/daos">All DAOs</NavLink>
+        <NavLink href={ALL_DAOS_URL}>All DAOs</NavLink>
         <NavLink href={`/dao/${daoId}`}>{dao?.displayName || dao?.id}</NavLink>
         <NavLink>Bounties</NavLink>
       </BreadCrumbs>

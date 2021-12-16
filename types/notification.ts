@@ -50,3 +50,49 @@ export interface NotificationDisableOption {
   value: string;
   label: NotificationsGroupStatus;
 }
+export enum NotifiedActionType {
+  CustomDaoCreation = 'CustomDaoCreation',
+  ClubDaoCreation = 'ClubDaoCreation',
+  FoundationDaoCreation = 'FoundationDaoCreation',
+  CorporationDaoCreation = 'CorporationDaoCreation',
+  CooperativeDaoCreation = 'CooperativeDaoCreation',
+  TransferProposalCreation = 'TransferProposalCreation',
+  BountyProposalCreation = 'BountyProposalCreation',
+  BountyDoneProposalCreation = 'BountyDoneProposalCreation',
+  PollProposalCreation = 'PollProposalCreation',
+  DaoNameUpdated = 'DaoNameUpdated',
+  DaoPurposeUpdated = 'DaoPurposeUpdated',
+  DaoLegalUpdated = 'DaoLegalUpdated',
+  DaoLinksUpdated = 'DaoLinksUpdated',
+  DaoFlagUpdated = 'DaoFlagUpdated',
+  DaoDeadlinesUpdated = 'DaoDeadlinesUpdated',
+  DaoRulesUpdated = 'DaoRulesUpdated',
+  DaoGroupAdded = 'DaoGroupAdded',
+  DaoGroupUpdated = 'DaoGroupUpdated',
+  DaoGroupRemoved = 'DaoGroupRemoved',
+  DaoMembersAdded = 'DaoMembersAdded',
+  DaoMemberRemoved = 'DaoMemberRemoved',
+}
+
+export type NotificationDTO = {
+  isArchived: boolean;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+  notificationId: string;
+  accountId: string;
+  isMuted: boolean;
+  isRead: boolean;
+  notification: {
+    proposerId: string;
+    isArchived: boolean;
+    createdAt: string;
+    updatedAt: string;
+    id: string;
+    daoId: string;
+    targetId: string;
+    type: NotifiedActionType;
+    metadata: unknown; // should we have proper description of the metadata
+    timestamp: string;
+  };
+};

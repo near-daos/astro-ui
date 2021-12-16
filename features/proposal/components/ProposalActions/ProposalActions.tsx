@@ -1,8 +1,12 @@
-import React, { FC, useEffect, useState } from 'react';
 import { useMedia, useMountedState } from 'react-use';
+import React, { FC, useEffect, useState } from 'react';
+
+import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
+
+import { ProposalType, ProposalVariant } from 'types/proposal';
+
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ActionButton } from 'features/proposal/components/action-button';
-import { ProposalType, ProposalVariant } from 'types/proposal';
 
 import styles from './ProposalActions.module.scss';
 
@@ -39,7 +43,12 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
   const tooltipPlacement = isLargeDesktop ? 'right' : 'left';
 
   const shareContent = `${proposalType}:${proposalVariant} \n ${proposalDescription}`;
-  const shareUrl = `${location?.origin}/dao/${daoId}/proposals/${proposalId}`;
+
+  const url = SINGLE_PROPOSAL_PAGE_URL.replace('[dao]', daoId).replace(
+    '[proposal]',
+    proposalId || ''
+  );
+  const shareUrl = `${location?.origin}${url}`;
 
   return (
     <div className={styles.root}>

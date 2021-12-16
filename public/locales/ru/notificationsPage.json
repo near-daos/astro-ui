@@ -1,0 +1,13 @@
+{
+  "settings": "Настройки",
+  "notificationsHub": "Нотификации",
+  "chooseAType": "Выберите тип",
+  "noNotifications": "Нет нотификаций",
+  "noNotificationsYet": "Пока нет нотификаций",
+  "newNotifications": "Новые",
+  "oldNotifications": "Старые",
+  "all": "Все",
+  "yourDaos": "Ваши ДАО",
+  "platform": "Платформа",
+  "muted": "Отключенные"
+}
