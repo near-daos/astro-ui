@@ -18,6 +18,8 @@ import {
   Payload,
   Range,
 } from 'components/AreaChartRenderer/types';
+import { useMedia } from 'react-use';
+import { kFormatter } from 'helpers/format';
 
 type LineItem = {
   name: string;
@@ -31,7 +33,7 @@ interface ChartProps {
   lines?: LineItem[];
   data: LineDataPoint[] | undefined;
   period: Range;
-  tokenName: string;
+  tokenName?: string;
 }
 
 const tickStyles = {
@@ -52,10 +54,11 @@ export const Chart: React.FC<ChartProps> = ({
   lines = [],
   data = [],
   width = 685,
-  height = 500,
+  height = 340,
   period,
   tokenName,
 }) => {
+  const isMobile = useMedia('(max-width: 768px)');
   const renderActiveDot = ({
     cx,
     cy,
@@ -87,6 +90,11 @@ export const Chart: React.FC<ChartProps> = ({
     </g>
   );
 
+  const max = Math.max.apply(
+    null,
+    data.map(entry => entry.y)
+  );
+
   return (
     <AreaChart width={width} height={height} data={data}>
       <defs>
@@ -103,13 +111,15 @@ export const Chart: React.FC<ChartProps> = ({
       <YAxis
         type="number"
         stroke={COLORS.AXIS}
+        domain={[0, max + max * 0.1]}
         tickMargin={1}
         interval={0}
         tickLine={false}
+        tickFormatter={value => kFormatter(value)}
         style={tickStyles}
       />
       <XAxis
-        interval={getXInterval(data || [], period)}
+        interval={isMobile ? 3 : getXInterval(data || [], period)}
         stroke={COLORS.AXIS}
         dataKey="x"
         tickMargin={12}

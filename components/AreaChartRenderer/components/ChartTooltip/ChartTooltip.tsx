@@ -12,7 +12,7 @@ import styles from './ChartTooltip.module.scss';
 
 export interface ChartTooltipProps extends TooltipProps<number, string> {
   showArrow?: boolean;
-  dataType: string;
+  dataType?: string;
   payload: Payload[] | undefined;
 }
 
@@ -35,7 +35,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
         <div key={`item-${element.dataKey}-${element.value}`}>
           <Dot color={element.color || ''} className={styles.dot} />
           <span className={styles.value}>
-            {kFormatter(Number(element.value?.toFixed(4)))} {dataType || 'NEAR'}
+            {kFormatter(Number(element.value?.toFixed(4)))} {dataType}
           </span>
         </div>
       ))}

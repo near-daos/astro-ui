@@ -5,19 +5,21 @@ import { useTranslation } from 'next-i18next';
 import { ALL_DAOS_URL } from 'constants/routing';
 
 import { NavLink } from 'astro_2.0/components/NavLink';
-import { DaoDetails } from 'astro_2.0/components/DaoDetails';
+import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
+import { DaoDashboard } from 'astro_2.0/features/DaoDashboard';
+
 import { PaginationResponse } from 'types/api';
 
 import { Proposal, ProposalVariant } from 'types/proposal';
 
-import { useAuthContext } from 'context/AuthContext';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { DaoContext } from 'types/context';
+import { DaoDashboardHeader } from 'astro_2.0/features/DaoDashboardHeader';
 import styles from './DaoPage.module.scss';
 
 interface DaoHomeProps {
@@ -32,7 +34,6 @@ const DAOHome: NextPage<DaoHomeProps> = ({
     policyAffectsProposals,
   },
 }) => {
-  const { accountId } = useAuthContext();
   const { tokens: daoTokens } = useDaoCustomTokens();
   const { t } = useTranslation();
 
@@ -46,16 +47,11 @@ const DAOHome: NextPage<DaoHomeProps> = ({
       </BreadCrumbs>
 
       <div className={styles.header}>
-        <DaoDetails
-          key={dao.id}
-          className={styles.details}
+        <DaoDetailsMinimized
+          key={`details_${dao.id}`}
           dao={dao}
-          daoTokens={daoTokens}
-          accountId={accountId}
-          restrictCreateProposals={!isCanCreateProposals}
+          disableNewProposal={!isCanCreateProposals}
           onCreateProposalClick={() => toggleCreateProposal()}
-          activeProposals={dao.activeProposalsCount}
-          totalProposals={dao.totalProposalsCount}
         />
 
         <CreateProposal
@@ -71,6 +67,20 @@ const DAOHome: NextPage<DaoHomeProps> = ({
         <PolicyAffectedWarning
           data={policyAffectsProposals}
           className={styles.warningWrapper}
+        />
+
+        <DaoDashboardHeader dao={dao} className={styles.dashboardHeader} />
+
+        <DaoDashboard
+          key={`dashboard_${dao.id}`}
+          dao={dao}
+          daoTokens={daoTokens}
+          className={styles.dashboard}
+          proposalsInTotal={{ count: 135, growth: 10 }}
+          nfts={{ count: 4, growth: 2 }}
+          bounties={{ count: 14, growth: -7 }}
+          funds={{ count: 1235633, growth: 10 }}
+          activeProposals={{ count: 8, growth: 10 }}
         />
       </div>
     </div>

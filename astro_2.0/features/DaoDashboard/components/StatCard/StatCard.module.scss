@@ -1,0 +1,13 @@
+.root {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  display: block;
+  padding: 16px;
+  text-align: left;
+  width: 100%;
+
+  &.clickable {
+    cursor: pointer;
+  }
+}
