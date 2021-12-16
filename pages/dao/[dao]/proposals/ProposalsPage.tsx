@@ -1,4 +1,5 @@
 import React, { VFC } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import {
   ALL_DAOS_URL,
@@ -28,10 +29,12 @@ const ProposalsPage: VFC<ProposalsPageProps> = props => {
     initialProposalsData,
   } = props;
 
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href={ALL_DAOS_URL}>All DAOs</NavLink>
+        <NavLink href={ALL_DAOS_URL}>{t('allDaos')}</NavLink>
         <NavLink
           href={{
             pathname: SINGLE_DAO_PAGE,
@@ -50,7 +53,7 @@ const ProposalsPage: VFC<ProposalsPageProps> = props => {
             },
           }}
         >
-          Proposals
+          {t('proposals')}
         </NavLink>
       </BreadCrumbs>
 
@@ -60,7 +63,7 @@ const ProposalsPage: VFC<ProposalsPageProps> = props => {
         dao={dao}
         key={dao.id}
         showFlag={false}
-        title="Proposals"
+        title={t('proposals')}
         initialProposals={initialProposalsData}
       />
     </div>
