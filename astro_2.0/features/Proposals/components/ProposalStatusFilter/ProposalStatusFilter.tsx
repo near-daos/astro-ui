@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import { useTranslation } from 'next-i18next';
 import React, { MutableRefObject } from 'react';
 
 import { ProposalStatuses } from 'types/proposal';
@@ -34,13 +35,15 @@ export const ProposalStatusFilter: React.FC<ProposalStatusFilterProps> = ({
   shortTitle,
   neighbourRef,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <FeedFilter
       neighbourRef={neighbourRef}
       className={cn(styles.root, className)}
       headerClassName={feedFilterHeaderClassName}
-      title={title || 'Filter by proposal status:'}
-      shortTitle={shortTitle || 'Filter by status:'}
+      title={title || `${t('filterByProposalStatus')}:`}
+      shortTitle={shortTitle || `${t('filterByStatus')}:`}
       value={value}
       onChange={onChange}
     >

@@ -46,5 +46,7 @@
   "members": "Members",
   "reportAnIssue": "Report an issue",
   "termsAndConditions": "Terms and Conditions",
-  "releaseNotes": "Release notes"
+  "releaseNotes": "Release notes",
+  "filterByStatus": "Filter by status",
+  "filterByProposalStatus": "Filter by proposal status"
 }
