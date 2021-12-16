@@ -2,9 +2,13 @@ import cn from 'classnames';
 import map from 'lodash/map';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
-import { VFC, ReactNode, useCallback } from 'react';
+import { useTranslation } from 'next-i18next';
+import { VFC, ReactNode, useCallback, useMemo } from 'react';
 
 import { NOTIFICATIONS_SETTINGS_PAGE_URL } from 'constants/routing';
+
+import { PaginationResponse } from 'types/api';
+import { NotificationDTO } from 'types/notification';
 
 import {
   NotificationCard,
@@ -14,34 +18,37 @@ import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 
-import { getNotifications } from 'mocks/notificationsMock';
+import { notificationDtoToNotificationCardProps } from 'mocks/notificationsMock';
 
 import styles from './NotificationsPage.module.scss';
 
-const filterOptions = [
-  {
-    label: 'Your DAOs',
-    value: 'yourDaos',
-  },
-  {
-    label: 'Platform',
-    value: 'platform',
-  },
-  {
-    label: 'Muted',
-    value: 'muted',
-  },
-];
+interface NotificationsPageProps {
+  notifications: PaginationResponse<NotificationDTO[]>;
+}
 
-const NotificationsPage: VFC = () => {
+const NotificationsPage: VFC<NotificationsPageProps> = ({ notifications }) => {
   const router = useRouter();
 
-  const newNotifications = getNotifications(10, true, false, true);
-  const oldNotifications = getNotifications(10, false, false, false);
+  const { t } = useTranslation('notificationsPage');
+
+  const newNotifications = notificationDtoToNotificationCardProps(
+    notifications.data,
+    false
+  );
+  const oldNotifications: NotificationCardProps[] = [];
 
   const gotToSettingsPage = useCallback(() => {
     router.push(NOTIFICATIONS_SETTINGS_PAGE_URL);
   }, [router]);
+
+  const filterOptions = useMemo(() => {
+    const keys = ['yourDaos', 'platform', 'muted'];
+
+    return keys.map(key => ({
+      label: t(key),
+      value: key,
+    }));
+  }, [t]);
 
   function renderDelimiter(title: string, tail?: ReactNode) {
     return (
@@ -66,15 +73,15 @@ const NotificationsPage: VFC = () => {
     );
   }
 
-  function renderNotifications(notifications?: NotificationCardProps[]) {
-    if (isEmpty(notifications)) {
-      return renderNoNotifications('No notifications');
+  function renderNotifications(noties?: NotificationCardProps[]) {
+    if (isEmpty(noties)) {
+      return renderNoNotifications(t('noNotifications'));
     }
 
     return (
       <div>
-        {map(notifications, item => (
-          <NotificationCard {...item} />
+        {map(noties, item => (
+          <NotificationCard key={item.content.id} {...item} />
         ))}
       </div>
     );
@@ -82,14 +89,14 @@ const NotificationsPage: VFC = () => {
 
   function renderAllNotifications() {
     if (isEmpty(newNotifications) && isEmpty(oldNotifications)) {
-      return renderNoNotifications('No notifications yet!', true);
+      return renderNoNotifications(t('noNotificationsYet'), true);
     }
 
     return (
       <>
-        {renderDelimiter('New')}
+        {renderDelimiter(t('newNotifications'))}
         {renderNotifications(newNotifications)}
-        {renderDelimiter('Old')}
+        {renderDelimiter(t('oldNotifications'))}
         {renderNotifications(oldNotifications)}
       </>
     );
@@ -98,7 +105,7 @@ const NotificationsPage: VFC = () => {
   return (
     <div className={styles.root}>
       <div className={styles.headerContainer}>
-        <h1 className={styles.header}>Notifications Hub</h1>
+        <h1 className={styles.header}>{t('notificationsHub')}</h1>
         <Button
           size="small"
           variant="secondary"
@@ -106,14 +113,14 @@ const NotificationsPage: VFC = () => {
           className={styles.settingButton}
         >
           <Icon name="stateGear" className={styles.gearIcon} />
-          <div className={styles.buttonLabel}>Settings</div>
+          <div className={styles.buttonLabel}>{t('settings')}</div>
         </Button>
       </div>
       <div className={styles.pageContent}>
         <SideFilter
           queryName="notyType"
           list={filterOptions}
-          title="Choose a type"
+          title={t('chooseAType')}
           className={styles.sideFilter}
         />
         <div className={styles.notifications}>{renderAllNotifications()}</div>
