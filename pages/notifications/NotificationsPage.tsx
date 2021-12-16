@@ -10,6 +10,8 @@ import { NOTIFICATIONS_SETTINGS_PAGE_URL } from 'constants/routing';
 import { PaginationResponse } from 'types/api';
 import { NotificationDTO } from 'types/notification';
 
+import { useAuthContext } from 'context/AuthContext';
+
 import {
   NotificationCard,
   NotificationCardProps,
@@ -18,7 +20,7 @@ import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 
-import { notificationDtoToNotificationCardProps } from 'mocks/notificationsMock';
+import { notificationDtoToNotificationCardProps } from 'astro_2.0/features/Notifications';
 
 import styles from './NotificationsPage.module.scss';
 
@@ -28,12 +30,15 @@ interface NotificationsPageProps {
 
 const NotificationsPage: VFC<NotificationsPageProps> = ({ notifications }) => {
   const router = useRouter();
+  const { accountId } = useAuthContext();
 
   const { t } = useTranslation('notificationsPage');
 
   const newNotifications = notificationDtoToNotificationCardProps(
     notifications.data,
-    false
+    false,
+    accountId,
+    t
   );
   const oldNotifications: NotificationCardProps[] = [];
 
