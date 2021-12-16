@@ -1,8 +1,10 @@
-import React, { FC, useState } from 'react';
+import cn from 'classnames';
 import Link from 'next/link';
 import isEmpty from 'lodash/isEmpty';
+import { useMedia } from 'react-use';
 import includes from 'lodash/includes';
 import { useRouter } from 'next/router';
+import React, { FC, useState } from 'react';
 import TextTruncate from 'react-text-truncate';
 
 import { DAO } from 'types/dao';
@@ -14,19 +16,19 @@ import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { Popup } from 'components/Popup';
 
 import { useAuthContext } from 'context/AuthContext';
-import { useMedia } from 'react-use';
 
-import cn from 'classnames';
 import styles from './DaoDetailsMinimized.module.scss';
 
 export interface DaoDetailsMinimizedProps {
   dao: DAO;
+  className?: string;
   onCreateProposalClick?: () => void;
   disableNewProposal?: boolean;
 }
 
 export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   dao,
+  className,
   onCreateProposalClick,
   disableNewProposal = false,
 }) => {
@@ -40,6 +42,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   const currentPath = asPath.split('?')[0];
 
   const url = {
+    proposals: `/dao/${dao.id}/proposals`,
     funds: `/dao/${dao.id}/treasury/tokens`,
     members: `/dao/${dao.id}/groups/all-members`,
     settings: `/dao/${dao.id}/governance/settings`,
@@ -95,7 +98,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   );
 
   return (
-    <div className={styles.root}>
+    <div className={cn(styles.root, className)}>
       <Link href={`/dao/${dao.id}`}>
         <a>
           <section className={styles.general}>
@@ -131,6 +134,13 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
       </Link>
 
       <section className={styles.controls}>
+        <ActionButton
+          iconName="pencil"
+          onClick={() => handleChapterClick(url.proposals)}
+          className={generateChapterStyle(url.proposals)}
+        >
+          Proposals
+        </ActionButton>
         <ActionButton
           iconName="funds"
           onClick={() => handleChapterClick(url.funds)}

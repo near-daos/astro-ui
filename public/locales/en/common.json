@@ -47,6 +47,8 @@
   "reportAnIssue": "Report an issue",
   "termsAndConditions": "Terms and Conditions",
   "releaseNotes": "Release notes",
+  "filterByStatus": "Filter by status",
+  "filterByProposalStatus": "Filter by proposal status",
   "numberOfVotes": "Number of votes",
   "numberOfTransactions": "Number of transactions",
   "activity": "Activity",

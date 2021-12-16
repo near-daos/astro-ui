@@ -2,6 +2,8 @@ import React, { useCallback } from 'react';
 import { NextPage } from 'next';
 import classNames from 'classnames';
 
+import { ALL_DAOS_URL } from 'constants/routing';
+
 import { Icon } from 'components/Icon';
 import { Badge } from 'components/badge/Badge';
 import { NavLink } from 'astro_2.0/components/NavLink';
@@ -57,7 +59,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbsRow}>
-        <NavLink href="/all/daos">All DAOs</NavLink>
+        <NavLink href={ALL_DAOS_URL}>All DAOs</NavLink>
         <NavLink href={`/dao/${dao?.id}`}>
           {dao?.displayName || dao?.id}
         </NavLink>

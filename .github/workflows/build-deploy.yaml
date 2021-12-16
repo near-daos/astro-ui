@@ -9,11 +9,8 @@ on:
     branches:
     - develop
     - staging
-  create:
     tags:
     - "**"
-    branches-ignore:
-    - '**'
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

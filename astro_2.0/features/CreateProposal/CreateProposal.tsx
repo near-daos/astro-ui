@@ -4,6 +4,8 @@ import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
+import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
+
 import { SputnikNearService } from 'services/sputnik';
 
 import { ProposalCardRenderer } from 'astro_2.0/components/ProposalCardRenderer';
@@ -161,9 +163,13 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             )
           );
 
-          await router.push(
-            `/dao/${dao.id}/proposals/${dao.id}-${newProposalId}`
-          );
+          await router.push({
+            pathname: SINGLE_PROPOSAL_PAGE_URL,
+            query: {
+              dao: dao.id,
+              proposal: `${dao.id}-${newProposalId}`,
+            },
+          });
 
           if (onCreate) {
             onCreate(true);

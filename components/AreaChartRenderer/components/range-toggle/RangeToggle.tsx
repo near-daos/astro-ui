@@ -43,13 +43,15 @@ const RangeToggle: FC<RangeToggleProps> = ({
   activeRange,
   className,
 }) => {
-  const isMobile = useMedia('(max-width: 768px)');
+  const isMobile = useMedia('(max-width: 920px)');
 
   return (
     <div className={cn(styles.root, className)}>
       {isMobile ? (
         <Dropdown
           className={styles.select}
+          controlClassName={styles.selectControl}
+          menuClassName={styles.selectMenu}
           value={activeRange}
           onChange={v => {
             onClick(v as Range);
@@ -60,20 +62,18 @@ const RangeToggle: FC<RangeToggleProps> = ({
           }))}
         />
       ) : (
-        <>
-          {TOGGLE_SET.map(({ label, type }) => (
-            <Button
-              key={type}
-              size="small"
-              className={cn(styles.toggle, {
-                [styles.active]: activeRange === type,
-              })}
-              onClick={() => onClick(type)}
-            >
-              {label}
-            </Button>
-          ))}
-        </>
+        TOGGLE_SET.map(({ label, type }) => (
+          <Button
+            key={type}
+            size="small"
+            className={cn(styles.toggle, {
+              [styles.active]: activeRange === type,
+            })}
+            onClick={() => onClick(type)}
+          >
+            {label}
+          </Button>
+        ))
       )}
     </div>
   );

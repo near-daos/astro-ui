@@ -1,35 +1,40 @@
-import React, { FC, useCallback, useState } from 'react';
+import uniq from 'lodash/uniq';
+import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
+import { useTranslation } from 'next-i18next';
 import { Badge } from 'components/badge/Badge';
+import nextI18NextConfig from 'next-i18next.config';
+import React, { FC, useCallback, useState } from 'react';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import MemberCard, {
   GroupsRenderer,
   MemberCardPopup,
 } from 'components/cards/member-card';
 import { Dropdown } from 'components/Dropdown';
-import { useModal } from 'components/modal';
-
-import { useRouter } from 'next/router';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
-import nextI18NextConfig from 'next-i18next.config';
-
-import { GetServerSideProps } from 'next';
-import { SputnikHttpService } from 'services/sputnik';
-import { extractMembersFromDao } from 'services/sputnik/mappers';
-import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { NavLink } from 'astro_2.0/components/NavLink';
-import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
-import { Proposal, ProposalVariant } from 'types/proposal';
-import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
-import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
-import { useAuthCheck } from 'astro_2.0/features/Auth';
+import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { GroupsList } from 'astro_2.0/features/Groups/components';
-import useSortMembers from 'astro_2.0/features/Groups/hooks/useSortMembers';
-import { DaoContext } from 'types/context';
-import { CookieService } from 'services/CookieService';
+import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
+import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
+
+import { ALL_DAOS_URL } from 'constants/routing';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
-import { uniq } from 'lodash';
+
+import { DaoContext } from 'types/context';
+import { Proposal, ProposalVariant } from 'types/proposal';
+
+import { extractMembersFromDao } from 'services/sputnik/mappers';
+
+import { useModal } from 'components/modal';
+import { useAuthCheck } from 'astro_2.0/features/Auth';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import useSortMembers from 'astro_2.0/features/Groups/hooks/useSortMembers';
+import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
+
+import { CookieService } from 'services/CookieService';
+import { SputnikHttpService } from 'services/sputnik';
+
 import styles from './groups.module.scss';
 
 const sortOptions = [
@@ -107,7 +112,7 @@ const GroupPage: FC<GroupPageProps> = ({
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href="/all/daos">{t('allDaos')}</NavLink>
+        <NavLink href={ALL_DAOS_URL}>{t('allDaos')}</NavLink>
         <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
         <NavLink href={`/dao/${dao.id}/groups/all-members`}>
           {t('groups')}

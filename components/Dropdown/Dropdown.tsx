@@ -16,6 +16,8 @@ export interface Option<T> {
 export interface DropdownProps<T> {
   value: T;
   className?: string;
+  controlClassName?: string;
+  menuClassName?: string;
   onChange: (value: T) => void;
   options: Option<T>[];
   defaultValue?: T;
@@ -32,6 +34,8 @@ export const Dropdown = <T,>(
     value,
     defaultValue,
     placeholder,
+    controlClassName,
+    menuClassName,
   } = props;
 
   const {
@@ -99,7 +103,11 @@ export const Dropdown = <T,>(
 
   return (
     <div className={className}>
-      <Title size={3} {...getToggleButtonProps()} className={styles.control}>
+      <Title
+        size={3}
+        {...getToggleButtonProps()}
+        className={cn(styles.control, controlClassName)}
+      >
         {selectedItem?.label || placeholder}
         <IconButton
           icon="buttonArrowDown"
@@ -109,7 +117,7 @@ export const Dropdown = <T,>(
         />
       </Title>
       <ul
-        className={cn(styles.menu, { [styles.open]: isOpen })}
+        className={cn(styles.menu, menuClassName, { [styles.open]: isOpen })}
         {...getMenuProps()}
       >
         {renderList()}
