@@ -15,7 +15,7 @@ runs:
     shell: bash
   - run: yarn typecheck
     shell: bash
-  - run: NODE_OPTIONS="--max-old-space-size=7168" yarn build
+  - run: yarn build
     shell: bash
 
   - name: archive artifacts
