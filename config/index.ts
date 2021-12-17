@@ -19,4 +19,5 @@ export const appConfig = {
     JSON.parse(process.env.NEXT_PUBLIC_AWS_USE_LOCAL_CONF || 'false')
   ),
   statsApiUrl: `${process.env.NEXT_PUBLIC_STATS_API_URL}/api/v1/`,
+  socketUrl: process.env.NEXT_PUBLIC_API_URL,
 };

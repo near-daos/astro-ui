@@ -40,7 +40,11 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
+      ...(await serverSideTranslations(
+        locale,
+        ['common', 'notificationsPage'],
+        nextI18NextConfig
+      )),
       daoContext,
       initialProposalsData,
     },
