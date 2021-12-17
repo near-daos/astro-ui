@@ -1,3 +1,6 @@
+import { DAO } from 'types/dao';
+import { DaoDTO } from 'services/sputnik/mappers';
+
 export enum NotificationType {
   DaoConfig = 'DaoConfig',
   Bounty = 'Bounty',
@@ -88,6 +91,8 @@ export type NotificationDTO = {
     isArchived: boolean;
     createdAt: string;
     updatedAt: string;
+    signerId: string | null;
+    dao: DaoDTO;
     id: string;
     daoId: string;
     targetId: string;
@@ -95,4 +100,24 @@ export type NotificationDTO = {
     metadata: unknown; // should we have proper description of the metadata
     timestamp: string;
   };
+};
+
+export type Notification = {
+  id: string;
+  accountId: string;
+  isNew: boolean;
+  isRead: boolean;
+  isMuted: boolean;
+  isArchived: boolean;
+  dao: DAO | null;
+  daoId: string;
+  signerId: string | null;
+  targetId: string;
+  type: NotifiedActionType;
+  metadata: unknown;
+  createdAt: string;
+  isMuteAvailable: boolean;
+  isMarkReadAvailable: boolean;
+  isDeleteAvailable: boolean;
+  status: NotificationStatus;
 };
