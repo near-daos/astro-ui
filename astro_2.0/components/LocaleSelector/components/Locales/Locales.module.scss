@@ -1,0 +1,41 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  background-color: var(--color-neutral-85);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+
+  @include astro-mobile {
+    background-color: var(--color-neutral-40);
+  }
+}
+
+.locale {
+  @extend %body2;
+  align-items: center;
+  color: var(--color-white);
+  display: flex;
+  text-transform: uppercase;
+
+  @include astro-mobile {
+    color: var(--color-black);
+  }
+
+  &:hover {
+    background-color: var(--color-neutral-70);
+  }
+
+  &:not(:last-of-type) {
+    margin-bottom: 2px;
+  }
+}
+
+.flag {
+  height: 24px;
+  margin-right: 8px;
+  width: 24px;
+}
