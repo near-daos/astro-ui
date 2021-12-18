@@ -5,8 +5,6 @@
   display: grid;
   grid-row-gap: 24px;
   grid-template-areas:
-    'breadcrumb'
-    'dao'
     'header'
     'content';
   grid-template-columns: 1fr;
@@ -15,15 +13,6 @@
   @include desktop {
     padding-top: 56px;
   }
-}
-
-.breadcrumbs {
-  grid-area: breadcrumb;
-}
-
-.dao {
-  grid-area: dao;
-  margin: 0 0 44px;
 }
 
 .newProposal {
@@ -71,17 +60,5 @@
   @include tablet-portrait {
     bottom: 40px;
     right: 40px;
-  }
-}
-
-.warningWrapper {
-  margin-top: 32px;
-}
-
-.createProposal {
-  margin-top: 56px;
-
-  @include tablet-landscape {
-    margin-top: 32px;
   }
 }

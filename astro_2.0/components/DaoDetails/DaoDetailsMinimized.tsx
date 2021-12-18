@@ -44,7 +44,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   const url = {
     proposals: `/dao/${dao.id}/proposals`,
     funds: `/dao/${dao.id}/treasury/tokens`,
-    members: `/dao/${dao.id}/groups/all-members`,
+    members: `/dao/${dao.id}/groups/all`,
     settings: `/dao/${dao.id}/governance/settings`,
     nfts: `/dao/${dao.id}/treasury/nfts`,
     bounties: `/dao/${dao.id}/tasks/bounties`,
