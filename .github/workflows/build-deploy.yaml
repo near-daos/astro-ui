@@ -19,6 +19,7 @@ env:
   AWS_ECR_URL: ${{ secrets.AWS_ECR_URL }}
   EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
   KUBE_CONFIG_DATA:  ${{ secrets.KUBE_CONFIG_DATA }}
+  NODE_OPTIONS: "--max-old-space-size=7168"
 
 jobs:
   get-environment:

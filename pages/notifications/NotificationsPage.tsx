@@ -8,39 +8,30 @@ import { VFC, ReactNode, useCallback, useMemo } from 'react';
 import { NOTIFICATIONS_SETTINGS_PAGE_URL } from 'constants/routing';
 
 import { PaginationResponse } from 'types/api';
-import { NotificationDTO } from 'types/notification';
+import { Notification } from 'types/notification';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useNotifications } from 'astro_2.0/features/Notifications';
 
-import {
-  NotificationCard,
-  NotificationCardProps,
-} from 'astro_2.0/components/NotificationCard';
+import { NotificationCard } from 'astro_2.0/components/NotificationCard';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 
-import { notificationDtoToNotificationCardProps } from 'astro_2.0/features/Notifications';
-
 import styles from './NotificationsPage.module.scss';
 
 interface NotificationsPageProps {
-  notifications: PaginationResponse<NotificationDTO[]>;
+  notifications: PaginationResponse<Notification[]>;
 }
 
-const NotificationsPage: VFC<NotificationsPageProps> = ({ notifications }) => {
+const NotificationsPage: VFC<NotificationsPageProps> = () => {
   const router = useRouter();
-  const { accountId } = useAuthContext();
+  const { notifications } = useNotifications();
 
   const { t } = useTranslation('notificationsPage');
 
-  const newNotifications = notificationDtoToNotificationCardProps(
-    notifications.data,
-    false,
-    accountId,
-    t
-  );
-  const oldNotifications: NotificationCardProps[] = [];
+  // TODO - how to split them???
+  const newNotifications = notifications;
+  const oldNotifications: Notification[] = [];
 
   const gotToSettingsPage = useCallback(() => {
     router.push(NOTIFICATIONS_SETTINGS_PAGE_URL);
@@ -78,7 +69,7 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({ notifications }) => {
     );
   }
 
-  function renderNotifications(noties?: NotificationCardProps[]) {
+  function renderNotifications(noties?: Notification[]) {
     if (isEmpty(noties)) {
       return renderNoNotifications(t('noNotifications'));
     }
@@ -86,7 +77,7 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({ notifications }) => {
     return (
       <div>
         {map(noties, item => (
-          <NotificationCard key={item.content.id} {...item} />
+          <NotificationCard key={item.id} regular={false} {...item} />
         ))}
       </div>
     );

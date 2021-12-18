@@ -6,6 +6,7 @@ import { useRef, useState, VFC } from 'react';
 import { FEATURE_FLAGS } from 'constants/featureFlags';
 
 import { useAuthContext } from 'context/AuthContext';
+import { useNotifications } from 'astro_2.0/features/Notifications';
 
 import { Icon } from 'components/Icon';
 import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
@@ -15,17 +16,17 @@ import styles from './NotificationsBell.module.scss';
 
 interface NotificationsBellProps {
   className?: string;
-  notifications?: unknown[];
 }
 
-export const NotificationsBell: VFC<NotificationsBellProps> = props => {
-  const { className, notifications } = props;
-
+export const NotificationsBell: VFC<NotificationsBellProps> = ({
+  className,
+}) => {
   const rootRef = useRef(null);
   const [open, setOpen] = useState(false);
   const isHovered = useHoverDirty(rootRef);
 
   const { accountId } = useAuthContext();
+  const { notifications } = useNotifications();
 
   function renderBellIcon() {
     if (isEmpty(notifications)) {
@@ -64,7 +65,7 @@ export const NotificationsBell: VFC<NotificationsBellProps> = props => {
         </div>
       }
     >
-      <NotificationsDropdown notifications={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} />
+      <NotificationsDropdown notifications={notifications} />
     </GenericDropdown>
   ) : null;
 };

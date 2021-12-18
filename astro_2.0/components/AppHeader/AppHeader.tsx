@@ -46,7 +46,7 @@ export const AppHeader: FC = () => {
       <div>
         <LocaleSelector />
       </div>
-      <NotificationsBell className={styles.bell} notifications={[1, 2, 3]} />
+      <NotificationsBell className={styles.bell} />
       <AccountButton />
     </header>
   );

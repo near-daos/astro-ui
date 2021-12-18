@@ -24,7 +24,11 @@ export default Custom404Page;
 export const getStaticProps: GetStaticProps = async ({ locale = 'en' }) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
+      ...(await serverSideTranslations(
+        locale,
+        ['common', 'notificationsPage'],
+        nextI18NextConfig
+      )),
     },
   };
 };
