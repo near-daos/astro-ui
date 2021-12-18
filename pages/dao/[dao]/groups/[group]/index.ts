@@ -33,7 +33,11 @@ export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
+      ...(await serverSideTranslations(
+        locale,
+        ['common', 'notificationsPage'],
+        nextI18NextConfig
+      )),
       daoContext,
       proposals,
     },
