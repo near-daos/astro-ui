@@ -7,7 +7,7 @@ import {
   SINGLE_DAO_PAGE,
 } from 'constants/routing';
 
-import { Proposal } from 'types/proposal';
+import { Proposal, ProposalVariant } from 'types/proposal';
 import { DaoContext } from 'types/context';
 import { PaginationResponse } from 'types/api';
 
@@ -15,6 +15,9 @@ import { Feed } from 'astro_2.0/features/Feed';
 import { NavLink } from 'astro_2.0/components/NavLink';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
+import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
+
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import styles from './ProposalsPage.module.scss';
 
@@ -25,11 +28,17 @@ interface ProposalsPageProps {
 
 const ProposalsPage: VFC<ProposalsPageProps> = props => {
   const {
-    daoContext: { dao },
+    daoContext: {
+      dao,
+      userPermissions: { isCanCreateProposals },
+    },
     initialProposalsData,
   } = props;
 
+  const { tokens: daoTokens } = useDaoCustomTokens();
   const { t } = useTranslation();
+
+  const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
   return (
     <div className={styles.root}>
@@ -57,7 +66,22 @@ const ProposalsPage: VFC<ProposalsPageProps> = props => {
         </NavLink>
       </BreadCrumbs>
 
-      <DaoDetailsMinimized dao={dao} className={styles.dao} />
+      <DaoDetailsMinimized
+        dao={dao}
+        className={styles.dao}
+        disableNewProposal={!isCanCreateProposals}
+        onCreateProposalClick={() => toggleCreateProposal()}
+      />
+
+      <CreateProposal
+        className={styles.createProposal}
+        dao={dao}
+        key={Object.keys(daoTokens).length}
+        daoTokens={daoTokens}
+        showFlag={false}
+        proposalVariant={ProposalVariant.ProposeTransfer}
+        onClose={toggleCreateProposal}
+      />
 
       <Feed
         dao={dao}

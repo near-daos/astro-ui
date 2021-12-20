@@ -48,8 +48,11 @@ module.exports = (phase, { defaultConfig }) => {
     }
   );
 
-  nextConfig.webpack = (config, options) =>
-    transformers.reduce((acc, next) => next(acc, options), config);
+  nextConfig.webpack = (config, options) => {
+    config.externals = [...config.externals, 'bufferutil', 'utf-8-validate'];
+
+    return transformers.reduce((acc, next) => next(acc, options), config);
+  };
 
   return nextConfig;
 };

@@ -4,43 +4,52 @@ import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { format, parseISO } from 'date-fns';
 
-import { NotificationCardContent } from 'astro_2.0/components/NotificationCard/types';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { ActionButton } from 'features/proposal/components/action-button';
 import { Button } from 'components/button/Button';
-import { Icon, IconName } from 'components/Icon';
+import { Icon } from 'components/Icon';
+import {
+  getNotificationParamsByType,
+  useNotifications,
+  NotificationText,
+} from 'astro_2.0/features/Notifications';
+
+import { Notification } from 'types/notification';
 
 import styles from './NotificationCard.module.scss';
 
-export interface NotificationCardProps {
-  content: NotificationCardContent;
+export type NotificationCardProps = {
   regular?: boolean;
-  isNew: boolean;
-  isRead: boolean;
-  isMuted: boolean;
-  isMuteAvailable: boolean;
-  isMarkReadAvailable: boolean;
-  isDeleteAvailable: boolean;
-  markReadHandler: () => void;
-  toggleMuteHandler: () => void;
-  deleteHandler: () => void;
-}
+} & Notification;
 
 export const NotificationCard: React.FC<NotificationCardProps> = ({
-  content,
   regular = true,
+  type,
+  dao,
   isNew,
-  isRead,
   isMuted,
-  isMuteAvailable,
-  isMarkReadAvailable,
+  isRead,
+  // isArchived,
+  metadata,
+  accountId,
+  targetId,
+  createdAt,
   isDeleteAvailable,
-  markReadHandler,
-  toggleMuteHandler,
-  deleteHandler,
+  isMarkReadAvailable,
+  isMuteAvailable,
+  signerId,
+  // id,
+  status,
 }) => {
-  const { type, status, text, time, flagCover, logo, url } = content;
   const router = useRouter();
+  const { handleRead, handleMute, handleDelete } = useNotifications();
+
+  const [isNotificationRead, setNotificationRead] = useState(isRead);
+  const [isDeleteHovered, setDeleteHovered] = useState(false);
+  const [isSoundMuted, toggleSoundState] = useToggle(isMuted);
+
+  const { flagCover, logo, id = '' } = dao ?? {};
+  const { iconType, url } = getNotificationParamsByType(type, id, targetId);
 
   const handleNotificationClick = () => {
     if (url) {
@@ -53,18 +62,11 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     [styles.hub]: !regular,
   });
 
-  const iconType: IconName =
-    status !== 'Default' ? `noteType${type}` : `noteType${type}Default`;
-
-  const [isNotificationRead, setNotificationRead] = useState(isRead);
-
   const handleMarkReadClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setNotificationRead(true);
-    markReadHandler();
+    handleRead();
   };
-
-  const [isDeleteHovered, setDeleteHovered] = useState(false);
 
   const onDeleteMouseOver = useCallback(() => {
     setDeleteHovered(true);
@@ -76,15 +78,13 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
 
   const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    deleteHandler();
+    handleDelete();
   };
-
-  const [isSoundMuted, toggleSoundState] = useToggle(isMuted);
 
   const handleSoundClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     toggleSoundState();
-    toggleMuteHandler();
+    handleMute();
   };
 
   return (
@@ -110,8 +110,18 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
           </div>
         </div>
       </div>
-      <div className={styles.text}>{text}</div>
-      <div className={styles.time}>{format(parseISO(time), 'h:mm aaa')}</div>
+      <div className={styles.text}>
+        <NotificationText
+          type={type}
+          accountId={accountId}
+          dao={dao}
+          metadata={metadata}
+          proposerId={signerId ?? ''}
+        />
+      </div>
+      <div className={styles.time}>
+        {format(parseISO(createdAt), 'h:mm aaa')}
+      </div>
       <div className={styles.control}>
         <div className={styles.markRead}>
           {isMarkReadAvailable && !isNotificationRead && (

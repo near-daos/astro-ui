@@ -42,7 +42,7 @@ export const AppHeader: FC = () => {
           className={styles.search}
         />
       </div>
-      <NotificationsBell className={styles.bell} notifications={[1, 2, 3]} />
+      <NotificationsBell className={styles.bell} />
       <AccountButton />
     </header>
   );
