@@ -28,31 +28,48 @@ export enum NotificationsGroupStatus {
   Disable = 'Disable',
 }
 
+export interface NotificationSettingsType {
+  typeId: string;
+  typeName?: string;
+}
+
 export interface NotificationSettingsItem {
   id: string;
   title: string;
   checked: boolean;
-  type: string;
-  subType: string;
+  type?: string;
 }
 
-export interface NotificationSettingsSubType {
-  subType: string;
-  subTypeName?: string;
+export interface NotificationSettingsDao {
+  daoId: string;
+  daoName: string;
+  daoAddress: string;
+  flagCover?: string;
+  flagBack?: string;
+  settings: NotificationSettingsItem[];
 }
 
 export interface NotificationSettingsGroup {
-  type: string;
-  typeName: string;
-  typeText: string;
-  typeStatus: NotificationsGroupStatus;
-  subtypes: NotificationSettingsSubType[];
+  groupId: string;
+  groupName: string;
+  text: string;
+  status: NotificationsGroupStatus;
+  daos?: NotificationSettingsDao[];
+}
+
+export interface NotificationSettingsPlatform {
+  id: string;
+  name: string;
+  text: string;
+  status: NotificationsGroupStatus;
+  settings: NotificationSettingsItem[];
 }
 
 export interface NotificationDisableOption {
   value: string;
   label: NotificationsGroupStatus;
 }
+
 export enum NotifiedActionType {
   CustomDaoCreation = 'CustomDaoCreation',
   ClubDaoCreation = 'ClubDaoCreation',
