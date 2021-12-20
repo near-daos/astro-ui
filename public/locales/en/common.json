@@ -54,6 +54,7 @@
   "activity": "Activity",
   "noResultsFound": "No results found",
   "users": "Users",
+  "archived": "Archived",
 
   "createDAONew": {
     "createNewDAO": "Create new DAO",
