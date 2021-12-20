@@ -35,6 +35,7 @@ Template.args = {
     description:
       'We’re a community grant for artists who want to build projects on our platform. Join our Discord channel to stay up to date with latest info!',
     members: 3,
+    daoMembersList: ['jason.born'],
     activeProposalsCount: 11,
     totalProposalsCount: 15,
     proposals: 13,

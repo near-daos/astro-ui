@@ -14,7 +14,12 @@ import {
   Token,
   TokenResponse,
 } from 'types/token';
-import { DAO } from 'types/dao';
+import {
+  DAO,
+  DaoSubscription,
+  DaoSubscriptionInput,
+  UpdateDaoSubscription,
+} from 'types/dao';
 import { Receipt } from 'types/transaction';
 import { SearchResultsData } from 'types/search';
 import { BountiesResponse, Bounty, BountyStatus } from 'types/bounties';
@@ -33,6 +38,7 @@ import {
 } from 'features/member-home/types';
 import {
   DaoDTO,
+  DaoSubscriptionDTO,
   GetDAOsResponse,
   GetProposalsResponse,
   mapBountyResponseToBounty,
@@ -43,6 +49,7 @@ import {
   mapReceiptsByTokenResponse,
   mapReceiptsResponse,
   mapSearchResultsDTOToDataObject,
+  mapSubscriptionsDTOsToDaoSubscriptions,
   mapTokensDTOToTokens,
   ProposalDTO,
   ReceiptDTO,
@@ -885,6 +892,39 @@ class SputnikHttpServiceClass {
     );
 
     return mapTokensDTOToTokens(data);
+  }
+
+  public async getAccountDaoSubscriptions(
+    accountId: string
+  ): Promise<DaoSubscription[]> {
+    const { data } = await this.httpService.get<DaoSubscriptionDTO[]>(
+      `/subscriptions/account-subscriptions/${accountId}`
+    );
+
+    return mapSubscriptionsDTOsToDaoSubscriptions(data);
+  }
+
+  public async updateAccountSubscription(
+    params: UpdateDaoSubscription
+  ): Promise<string> {
+    const response = await this.httpService.post<
+      UpdateDaoSubscription,
+      { data: { accountId: string } }
+    >(`/subscriptions`, params);
+
+    return response.data.accountId;
+  }
+
+  public async deleteAccountSubscription(
+    subscriptionId: string,
+    params: DaoSubscriptionInput
+  ): Promise<string> {
+    const response = await this.httpService.delete<
+      DaoSubscriptionInput,
+      { data: { accountId: string } }
+    >(`/subscriptions/${subscriptionId}`, params);
+
+    return response.data.accountId;
   }
 }
 

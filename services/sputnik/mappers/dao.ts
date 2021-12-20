@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-import { DAO, DaoVotePolicy } from 'types/dao';
+import { DAO, DaoSubscription, DaoVotePolicy } from 'types/dao';
 import { DaoRole } from 'types/role';
 import { formatYoktoValue } from 'helpers/format';
 import Decimal from 'decimal.js';
@@ -67,6 +67,8 @@ export type DaoMetadata = {
   };
 };
 
+export type DaoSubscriptionDTO = { id: string; dao: DaoDTO };
+
 export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
   return Buffer.from(JSON.stringify(metadata)).toString('base64');
 };
@@ -101,7 +103,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
 
   const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
 
-  const numberOfMembers = daoGroups
+  const daoMembersList = daoGroups
     .map(({ members }: { members: string[] }) => members)
     .flat()
     .reduce((acc: string[], member: string) => {
@@ -110,7 +112,8 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
       }
 
       return acc;
-    }, []).length;
+    }, []);
+  const numberOfMembers = daoMembersList.length;
 
   return {
     id: daoDTO.id,
@@ -118,6 +121,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
     name: config?.name ?? '',
     description: config?.purpose ?? '',
     members: numberOfMembers,
+    daoMembersList,
     proposals: numberOfProposals,
     activeProposalsCount: daoDTO.activeProposalCount ?? 0,
     totalProposalsCount: daoDTO.totalProposalCount ?? 0,
@@ -191,3 +195,20 @@ export const mapCreateDaoParamsToContractArgs = (
 
   return Buffer.from(JSON.stringify(argsList)).toString('base64');
 };
+
+export function mapSubscriptionsDTOsToDaoSubscriptions(
+  data: DaoSubscriptionDTO[]
+): DaoSubscription[] {
+  return data.reduce<DaoSubscription[]>((res, item) => {
+    const daoObj = mapDaoDTOtoDao(item.dao);
+
+    if (daoObj) {
+      res.push({
+        ...item,
+        dao: daoObj,
+      });
+    }
+
+    return res;
+  }, []);
+}

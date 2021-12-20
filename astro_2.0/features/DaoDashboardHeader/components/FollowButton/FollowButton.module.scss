@@ -1,0 +1,30 @@
+@import 'styles/mixins';
+
+.root {
+  @include ellipse-text;
+  margin-top: 24px;
+  padding: 0 8px;
+  text-transform: capitalize;
+}
+
+.subscribed {
+  display: block;
+}
+
+.subscribedHovered {
+  display: none;
+}
+
+.root:hover {
+  .subscribed {
+    display: none;
+  }
+  .subscribedHovered {
+    display: block;
+  }
+}
+
+.followIcon {
+  margin-right: 4px;
+  width: 12px;
+}
