@@ -26,7 +26,7 @@
   max-width: 600px;
 }
 
-.card {
+.group {
   @include card-shadow;
   border-radius: 5px;
   margin-bottom: 40px;
@@ -41,7 +41,7 @@
   }
 }
 
-.cardHeader {
+.groupHeader {
   align-items: center;
   display: flex;
   justify-content: space-between;
@@ -65,11 +65,11 @@
   }
 }
 
-.cardTitle {
+.groupTitle {
   @include font(16px, 24px, 500);
 }
 
-.subType {
+.type {
   @include font(12px, 18px, 400);
   color: var(--color-neutral-50);
   margin: 40px 0 20px;

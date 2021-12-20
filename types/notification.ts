@@ -58,6 +58,7 @@ export interface NotificationSettingsGroup {
 }
 
 export interface NotificationSettingsPlatform {
+  id: string;
   name: string;
   text: string;
   status: NotificationsGroupStatus;
@@ -68,29 +69,6 @@ export interface NotificationDisableOption {
   value: string;
   label: NotificationsGroupStatus;
 }
-
-/* Old Types */
-export interface NotificationSettingsItemOld {
-  id: string;
-  title: string;
-  checked: boolean;
-  type: string;
-  subType: string;
-}
-
-export interface NotificationSettingsSubType {
-  subType: string;
-  subTypeName?: string;
-}
-
-export interface NotificationSettingsGroupOld {
-  type: string;
-  typeName: string;
-  typeText: string;
-  typeStatus: NotificationsGroupStatus;
-  subtypes: NotificationSettingsSubType[];
-}
-/* End of Old Types */
 
 export enum NotifiedActionType {
   CustomDaoCreation = 'CustomDaoCreation',
