@@ -121,6 +121,11 @@
   }
 }
 
+.locale {
+  grid-area: locale;
+  margin: 16px 0 32px;
+}
+
 .bottom {
   padding: 24px;
   width: 100%;
@@ -143,7 +148,8 @@
       'copyright'
       'terms'
       'links'
-      'release';
+      'release'
+      'locale';
 
     max-width: 1130px;
 
@@ -233,6 +239,11 @@
   padding: 16px 32px;
   width: 100%;
 
+  @include astro-mobile {
+    box-shadow: 2px 3px 24px var(--color-black-opacity-1);
+    height: fit-content;
+  }
+
   .wrapper {
     grid-template-areas:
       'social'
@@ -242,7 +253,8 @@
       'copyright'
       'terms'
       'links'
-      'release';
+      'release'
+      'locale';
   }
 
   .progress {

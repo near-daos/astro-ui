@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Icon, IconName } from 'components/Icon';
+import { LocaleSelector } from 'astro_2.0/components/LocaleSelector';
 
 import styles from './AppFooter.module.scss';
 
@@ -89,6 +90,10 @@ export const AppFooter: FC<AppFooterProps> = ({
             >
               {t('releaseNotes')}
             </a>
+          </div>
+
+          <div className={styles.locale}>
+            <LocaleSelector />
           </div>
         </div>
       </div>
