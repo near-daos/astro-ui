@@ -4,26 +4,28 @@ import {
   NotificationStatus,
 } from 'types/notification';
 import { mapDaoDTOtoDao } from 'services/sputnik/mappers';
+import { isToday } from 'date-fns';
 
 export function mapNotificationDtoToNotification(
   notifications: NotificationDTO[]
 ): Notification[] {
   return notifications.map(
-    ({ accountId, isRead, isMuted, isArchived, createdAt, notification }) => {
-      const {
-        id,
-        type,
-        signerId,
-        metadata,
-        targetId,
-        dao,
-        daoId,
-      } = notification;
+    ({
+      accountId,
+      isRead,
+      isMuted,
+      isArchived,
+      createdAt,
+      notification,
+      id,
+    }) => {
+      const { type, signerId, metadata, targetId, dao, daoId } = notification;
+      const date = new Date(createdAt);
 
       return {
         id,
         accountId,
-        isNew: isRead,
+        isNew: isToday(date),
         isRead,
         isMuted,
         isArchived,
@@ -34,7 +36,7 @@ export function mapNotificationDtoToNotification(
         targetId,
         type,
         metadata,
-        createdAt: new Date(createdAt).toISOString(),
+        createdAt: date.toISOString(),
         isMuteAvailable: false,
         isMarkReadAvailable: true,
         isDeleteAvailable: false,

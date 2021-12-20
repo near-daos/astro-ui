@@ -1,7 +1,11 @@
 import { RequestQueryBuilder } from '@nestjsx/crud-request';
 
 import { PaginationResponse } from 'types/api';
-import { Notification, NotificationDTO } from 'types/notification';
+import {
+  Notification,
+  NotificationDTO,
+  UpdateNotificationParams,
+} from 'types/notification';
 
 import { httpService } from 'services/HttpService';
 import { SputnikNearService } from 'services/sputnik';
@@ -12,7 +16,9 @@ class NotificationsServiceClass {
 
   private readonly sputnikNearService = SputnikNearService;
 
-  public async getNotifications(): Promise<Notification[]> {
+  public async getNotifications(
+    showArchived: boolean
+  ): Promise<Notification[]> {
     // use vhorin-dev.testnet account id to 100% get data
     // const accountId = 'vhorin-dev.testnet';
     const accountId = this.sputnikNearService.getAccountId();
@@ -30,7 +36,7 @@ class NotificationsServiceClass {
       .setFilter({
         field: 'isArchived',
         operator: '$eq',
-        value: false,
+        value: showArchived,
       })
       .query();
 
@@ -39,6 +45,18 @@ class NotificationsServiceClass {
     >(`/account-notifications?${queryString}`);
 
     return mapNotificationDtoToNotification(response.data.data);
+  }
+
+  public async updateNotification(
+    id: string,
+    params: UpdateNotificationParams
+  ): Promise<NotificationDTO> {
+    const response = await this.httpService.patch<
+      UpdateNotificationParams,
+      NotificationDTO
+    >(`/account-notifications/${id}`, params);
+
+    return response;
   }
 }
 

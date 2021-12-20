@@ -1,14 +1,15 @@
 import cn from 'classnames';
 import map from 'lodash/map';
+import { isToday, parseISO } from 'date-fns';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { VFC, ReactNode, useCallback, useMemo } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { NOTIFICATIONS_SETTINGS_PAGE_URL } from 'constants/routing';
 
-import { PaginationResponse } from 'types/api';
-import { Notification } from 'types/notification';
+import { Notification, NotifiedActionType } from 'types/notification';
 
 import { useNotifications } from 'astro_2.0/features/Notifications';
 
@@ -20,25 +21,37 @@ import { SideFilter } from 'astro_2.0/components/SideFilter';
 import styles from './NotificationsPage.module.scss';
 
 interface NotificationsPageProps {
-  notifications: PaginationResponse<Notification[]>;
+  accountDaosIds: string[];
 }
 
-const NotificationsPage: VFC<NotificationsPageProps> = () => {
+const NotificationsPage: VFC<NotificationsPageProps> = ({ accountDaosIds }) => {
   const router = useRouter();
-  const { notifications } = useNotifications();
+  const showArchived = router.query.notyType === 'archived';
+  const { notifications, archivedNotifications } = useNotifications();
 
   const { t } = useTranslation('notificationsPage');
 
-  // TODO - how to split them???
-  const newNotifications = notifications;
-  const oldNotifications: Notification[] = [];
+  const [newNotifications, oldNotifications] = notifications.reduce<
+    [Notification[], Notification[]]
+  >(
+    (res, item) => {
+      if (isToday(parseISO(item.createdAt))) {
+        res[0].push(item);
+      } else {
+        res[1].push(item);
+      }
+
+      return res;
+    },
+    [[], []]
+  );
 
   const gotToSettingsPage = useCallback(() => {
     router.push(NOTIFICATIONS_SETTINGS_PAGE_URL);
   }, [router]);
 
   const filterOptions = useMemo(() => {
-    const keys = ['yourDaos', 'platform', 'muted'];
+    const keys = ['yourDaos', 'platform', 'archived'];
 
     return keys.map(key => ({
       label: t(key),
@@ -46,10 +59,10 @@ const NotificationsPage: VFC<NotificationsPageProps> = () => {
     }));
   }, [t]);
 
-  function renderDelimiter(title: string, tail?: ReactNode) {
+  function renderDelimiter(title: string, count: number, tail?: ReactNode) {
     return (
       <div className={styles.delimiter}>
-        {title}
+        {title} ({count})
         <div className={styles.line} />
         {tail}
       </div>
@@ -69,18 +82,63 @@ const NotificationsPage: VFC<NotificationsPageProps> = () => {
     );
   }
 
-  function renderNotifications(noties?: Notification[]) {
-    if (isEmpty(noties)) {
+  function renderNotifications(title: string | null, noties?: Notification[]) {
+    if (isEmpty(noties) || !noties) {
       return renderNoNotifications(t('noNotifications'));
     }
 
+    const filter = router.query.notyType;
+
+    let resultList: Notification[];
+
+    if (filter === 'platform') {
+      const platformTypes = [
+        NotifiedActionType.CustomDaoCreation,
+        NotifiedActionType.ClubDaoCreation,
+        NotifiedActionType.FoundationDaoCreation,
+        NotifiedActionType.CorporationDaoCreation,
+        NotifiedActionType.CooperativeDaoCreation,
+      ];
+
+      resultList = noties?.filter(item => platformTypes.includes(item.type));
+    } else if (filter === 'archived') {
+      resultList = noties?.filter(item => item.isArchived);
+    } else if (filter === 'yourDaos') {
+      resultList = noties?.filter(item => accountDaosIds.includes(item.daoId));
+    } else {
+      resultList = noties;
+    }
+
     return (
-      <div>
-        {map(noties, item => (
-          <NotificationCard key={item.id} regular={false} {...item} />
-        ))}
-      </div>
+      <>
+        {title && renderDelimiter(title, resultList.length)}
+        <div>
+          {resultList.length ? (
+            <AnimatePresence>
+              {map(resultList, item => (
+                <motion.div
+                  key={item.id}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, height: 0 }}
+                >
+                  <NotificationCard key={item.id} regular={false} {...item} />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          ) : (
+            renderNoNotifications(t('noNotifications'))
+          )}
+        </div>
+      </>
     );
+  }
+
+  function renderArchivedNotifications() {
+    if (isEmpty(archivedNotifications)) {
+      return renderNoNotifications(t('noArchivedNotificationsYet'), true);
+    }
+
+    return renderNotifications(null, archivedNotifications);
   }
 
   function renderAllNotifications() {
@@ -90,10 +148,8 @@ const NotificationsPage: VFC<NotificationsPageProps> = () => {
 
     return (
       <>
-        {renderDelimiter(t('newNotifications'))}
-        {renderNotifications(newNotifications)}
-        {renderDelimiter(t('oldNotifications'))}
-        {renderNotifications(oldNotifications)}
+        {renderNotifications(t('newNotifications'), newNotifications)}
+        {renderNotifications(t('oldNotifications'), oldNotifications)}
       </>
     );
   }
@@ -119,7 +175,11 @@ const NotificationsPage: VFC<NotificationsPageProps> = () => {
           title={t('chooseAType')}
           className={styles.sideFilter}
         />
-        <div className={styles.notifications}>{renderAllNotifications()}</div>
+        <div className={styles.notifications}>
+          {showArchived
+            ? renderArchivedNotifications()
+            : renderAllNotifications()}
+        </div>
       </div>
     </div>
   );

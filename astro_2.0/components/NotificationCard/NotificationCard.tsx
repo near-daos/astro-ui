@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { useToggle } from 'react-use';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { format, parseISO } from 'date-fns';
@@ -27,65 +26,56 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   type,
   dao,
   isNew,
-  isMuted,
   isRead,
-  // isArchived,
+  isArchived,
+  isMuted,
   metadata,
   accountId,
   targetId,
   createdAt,
-  isDeleteAvailable,
-  isMarkReadAvailable,
-  isMuteAvailable,
   signerId,
-  // id,
+  id,
   status,
 }) => {
   const router = useRouter();
-  const { handleRead, handleMute, handleDelete } = useNotifications();
+  const { handleUpdate } = useNotifications();
 
   const [isNotificationRead, setNotificationRead] = useState(isRead);
-  const [isDeleteHovered, setDeleteHovered] = useState(false);
-  const [isSoundMuted, toggleSoundState] = useToggle(isMuted);
 
-  const { flagCover, logo, id = '' } = dao ?? {};
-  const { iconType, url } = getNotificationParamsByType(type, id, targetId);
-
-  const handleNotificationClick = () => {
-    if (url) {
-      router.push(url);
-    }
-  };
+  const { flagCover, logo, id: daoId = '' } = dao ?? {};
+  const { iconType, url } = getNotificationParamsByType(type, daoId, targetId);
 
   const rootClassName = cn(styles.root, {
     [styles.new]: isNew,
     [styles.hub]: !regular,
   });
 
-  const handleMarkReadClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    setNotificationRead(true);
-    handleRead();
-  };
+  const handleMarkReadClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      setNotificationRead(true);
+      handleUpdate(id, { isMuted, isArchived, isRead: true });
+    },
+    [handleUpdate, id, isArchived, isMuted]
+  );
 
-  const onDeleteMouseOver = useCallback(() => {
-    setDeleteHovered(true);
-  }, []);
+  const handleDeleteClick = useCallback(
+    archived => {
+      handleUpdate(id, { isMuted, isArchived: archived, isRead });
+    },
+    [handleUpdate, id, isMuted, isRead]
+  );
 
-  const onDeleteMouseOut = useCallback(() => {
-    setDeleteHovered(false);
-  }, []);
+  const handleNotificationClick = useCallback(
+    e => {
+      handleMarkReadClick(e);
 
-  const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    handleDelete();
-  };
-
-  const handleSoundClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    toggleSoundState();
-    handleMute();
-  };
+      if (url) {
+        router.push(url);
+      }
+    },
+    [handleMarkReadClick, router, url]
+  );
 
   return (
     <div
@@ -124,70 +114,31 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
       </div>
       <div className={styles.control}>
         <div className={styles.markRead}>
-          {isMarkReadAvailable && !isNotificationRead && (
-            <Button
-              variant="transparent"
-              size="block"
-              onClick={e => handleMarkReadClick(e)}
-              className={styles.markReadButton}
-            >
-              <Icon
-                name="noteCheck"
-                width={16}
-                className={styles.markReadIcon}
-              />
-              Mark read
-            </Button>
-          )}
-        </div>
-        {isNotificationRead && (
-          <div
-            onMouseOver={onDeleteMouseOver}
-            onMouseOut={onDeleteMouseOut}
-            onFocus={onDeleteMouseOver}
-            onBlur={onDeleteMouseOut}
+          <Button
+            variant="transparent"
+            size="block"
+            onClick={e => handleMarkReadClick(e)}
+            className={cn(styles.markReadButton, { [styles.read]: isRead })}
           >
-            {isDeleteAvailable ? (
-              <ActionButton
-                size="medium"
-                iconName={
-                  isDeleteHovered ? 'noteDeleteHover' : 'noteDeleteDefault'
-                }
-                tooltip="Delete"
-                onClick={e => handleDeleteClick(e)}
-                className={styles.deleteIcon}
-              />
-            ) : (
-              <ActionButton
-                size="medium"
-                iconName="noteDeleteDisabled"
-                className={styles.deleteIcon}
-                disabled
-              />
-            )}
-          </div>
-        )}
-        {!isNotificationRead && (
-          <div>
-            {isMuteAvailable ? (
-              <ActionButton
-                size="medium"
-                iconName={isSoundMuted ? 'noteSoundMute' : 'noteSoundUnmute'}
-                tooltip={isSoundMuted ? 'Unmute' : 'Mute'}
-                onClick={e => handleSoundClick(e)}
-                className={cn(styles.muteIcon, {
-                  [styles.muted]: isSoundMuted,
-                })}
-              />
-            ) : (
-              <ActionButton
-                size="medium"
-                iconName="noteSoundDisabled"
-                className={styles.muteIcon}
-                disabled
-              />
-            )}
-          </div>
+            <Icon
+              name={isNotificationRead ? 'noteCheckDouble' : 'noteCheck'}
+              width={16}
+              className={styles.markReadIcon}
+            />
+            <div className={styles.markReadTitle}>Mark read</div>
+          </Button>
+        </div>
+        {!regular && (
+          <ActionButton
+            size="medium"
+            iconName={isArchived ? 'noteRestore' : 'noteArchive'}
+            tooltip={isArchived ? 'Restore' : 'Archive'}
+            onClick={e => {
+              e.stopPropagation();
+              handleDeleteClick(!isArchived);
+            }}
+            iconClassName={styles.deleteIcon}
+          />
         )}
       </div>
     </div>

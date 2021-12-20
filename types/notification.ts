@@ -138,3 +138,12 @@ export type Notification = {
   isDeleteAvailable: boolean;
   status: NotificationStatus;
 };
+
+export type UpdateNotificationParams = {
+  accountId: string;
+  publicKey: string;
+  signature: string;
+  isMuted: boolean;
+  isRead: boolean;
+  isArchived: boolean;
+};

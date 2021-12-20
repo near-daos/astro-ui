@@ -4,6 +4,7 @@
   "chooseAType": "Choose a type",
   "noNotifications": "No notifications",
   "noNotificationsYet": "No notifications yet",
+  "noArchivedNotificationsYet": "No archived notifications yet",
   "newNotifications": "New",
   "oldNotifications": "Old",
   "all": "All",
@@ -14,5 +15,6 @@
   "newDaoCreated": "New DAO {{newDaoName}} has been successfully created by {{accountId}}",
   "submittedNewProposal": "submitted a new proposal to {{dao}}",
   "proposalChangeNameSuccess": "proposal Change DAO Name has been approved",
-  "createdNewPoll": "created a new poll for {{dao}}. Check out now to cast your vote."
+  "createdNewPoll": "created a new poll for {{dao}}. Check out now to cast your vote.",
+  "archived": "Archived"
 }

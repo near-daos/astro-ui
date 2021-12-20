@@ -43,7 +43,7 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
   }
 
   function renderInfoPanel() {
-    if (!proposalId) {
+    if (proposalId === undefined) {
       return <InfoPanel />;
     }
 

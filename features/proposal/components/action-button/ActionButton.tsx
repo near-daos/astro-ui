@@ -10,6 +10,7 @@ import styles from './action-button.module.scss';
 interface ActionButtonProps {
   className?: string;
   iconName: IconName;
+  iconClassName?: string;
   disabled?: boolean;
   size?: 'small' | 'medium' | 'large';
   tooltip?: string;
@@ -20,6 +21,7 @@ interface ActionButtonProps {
 export const ActionButton: FC<ActionButtonProps> = ({
   className,
   iconName,
+  iconClassName = '',
   disabled,
   size = 'large',
   onClick,
@@ -43,6 +45,9 @@ export const ActionButton: FC<ActionButtonProps> = ({
             onClick={onClick}
             className={styles.btn}
             size={size}
+            iconProps={{
+              className: iconClassName,
+            }}
           />
         )}
       </div>
