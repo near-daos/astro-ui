@@ -53,7 +53,11 @@
   grid-area: usersSection;
   justify-content: flex-start;
   min-height: 120px;
-  padding: 74px 32px 0;
+  padding: 74px 0 0;
+
+  @include tablet-landscape {
+    padding: 74px 32px 0;
+  }
 
   .followButton {
     @include ellipse-text;

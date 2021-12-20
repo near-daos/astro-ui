@@ -23,6 +23,7 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
   className,
   dao: {
     id,
+    displayName,
     legal,
     daoMembersList,
     flagCover,
@@ -47,7 +48,9 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
       <section className={styles.usersSection}>
         <div className={styles.label}>{t('users')}</div>
         <div className={styles.value}>{members}</div>
-        {!daoMembersList.includes(accountId) && <FollowButton daoId={id} />}
+        {!daoMembersList.includes(accountId) && (
+          <FollowButton daoId={id} daoName={displayName} />
+        )}
       </section>
 
       <section className={styles.descriptionSection}>
