@@ -31,12 +31,12 @@
   border-radius: 5px;
   margin-bottom: 40px;
   margin-left: -24px;
-  padding: 20px 24px 24px;
+  padding: 20px 14px 24px;
   width: calc(100% + 48px);
 
   @include tablet-portrait {
     margin-left: 0;
-    padding: 20px 32px 32px;
+    padding: 20px 14px 14px;
     width: 100%;
   }
 }
@@ -45,8 +45,8 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 24px;
   padding-bottom: 14px;
+  padding-left: 14px;
   position: relative;
 
   &::after {
@@ -69,6 +69,73 @@
   @include font(16px, 24px, 500);
 }
 
+.groupSection {
+  align-items: center;
+  display: grid;
+  grid-gap: 16px;
+  grid-template-areas:
+    'flag details control'
+    'toggle toggle .';
+  grid-template-columns: 1fr 2fr 24px;
+  padding: 24px 0;
+
+  @include tablet-landscape {
+    grid-template-areas: 'flag details toggle control';
+    grid-template-columns: 64px 2fr 1fr 24px;
+  }
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid var(--color-neutral-30);
+  }
+}
+
+.flagWrapper {
+  display: flex;
+  grid-area: flag;
+  justify-content: center;
+}
+
+.flag {
+  margin-right: 0;
+}
+
+.daoDetails {
+  display: flex;
+  flex-direction: column;
+  grid-area: details;
+
+  .inline {
+    @include ellipse-text;
+    display: flex;
+  }
+
+  .sub {
+    @extend %subtitle4;
+    color: var(--color-neutral-60);
+  }
+}
+
+.toggle {
+  color: var(--color-neutral-80);
+  display: flex;
+  grid-area: toggle;
+  justify-content: flex-start;
+  padding-left: 12px;
+  position: relative;
+  z-index: 1;
+
+  @include tablet-landscape {
+    justify-content: flex-end;
+    padding-left: 0;
+  }
+}
+
+.collapseControl {
+  display: flex;
+  grid-area: control;
+  justify-content: center;
+}
+
 .type {
   @include font(12px, 18px, 400);
   color: var(--color-neutral-50);
@@ -77,6 +144,26 @@
   @include tablet-portrait {
     margin: 30px 0 14px;
   }
+}
+
+.collapsableListItem {
+  padding-left: 0;
+
+  @include tablet-landscape {
+    padding-left: 68px;
+  }
+
+  &:first-of-type {
+    margin-top: 24px;
+  }
+}
+
+.platformSettings {
+  margin-bottom: 24px;
+}
+
+.settingsItem {
+  padding-left: 12px;
 }
 
 .settingsItem:not(:last-child) {

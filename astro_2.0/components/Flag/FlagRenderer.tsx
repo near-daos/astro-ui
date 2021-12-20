@@ -16,6 +16,7 @@ interface FlagRendererProps {
   logo?: string | undefined;
   size: 'xs' | 'sm' | 'lg';
   fallBack?: string | undefined;
+  className?: string;
 }
 
 function isSafariBrowser(): boolean {
@@ -38,6 +39,7 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
   logo,
   size,
   fallBack,
+  className,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>();
   const wrapperRef = useRef<HTMLDivElement>();
@@ -180,7 +182,7 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
 
   return (
     <div
-      className={cn(styles.root, {
+      className={cn(styles.root, className, {
         [styles.lg]: size === 'lg',
         [styles.sm]: size === 'sm',
         [styles.xs]: size === 'xs',

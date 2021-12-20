@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
+import cn from 'classnames';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { NavLink } from 'astro_2.0/components/NavLink';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
@@ -19,6 +20,9 @@ import {
   NOTIFICATION_SETTINGS_PLATFORM_DATA,
   NOTIFICATION_SETTINGS_TYPES,
 } from 'mocks/notificationsData';
+
+import { shortenString } from 'helpers/format';
+
 import styles from './NotificationSettings.module.scss';
 
 interface NotificationSettingsProps {
@@ -183,26 +187,31 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
                         <section
                           tabIndex={-1}
                           role="button"
-                          onClick={() => toggle()}
+                          className={styles.groupSection}
                           onKeyDown={e => e.key === 'Spacebar' && toggle()}
                         >
-                          <div>
-                            <b>{daoName}</b>
-                          </div>
-                          <div>
-                            {daoAddress}
-                            <CopyButton
-                              text={daoAddress}
-                              tooltipPlacement="auto"
-                              className={styles.copyAddress}
+                          <div className={styles.flagWrapper}>
+                            <FlagRenderer
+                              className={styles.flag}
+                              flag={flagCover}
+                              size="xs"
+                              fallBack={flagBack}
                             />
                           </div>
-                          <FlagRenderer
-                            flag={flagCover}
-                            size="xs"
-                            fallBack={flagBack}
-                          />
-                          <div>
+                          <div className={styles.daoDetails}>
+                            <div className={cn(styles.inline)}>
+                              <b>{daoName}</b>
+                            </div>
+                            <div className={cn(styles.inline, styles.sub)}>
+                              {shortenString(daoAddress, 36)}
+                              <CopyButton
+                                text={daoAddress}
+                                tooltipPlacement="auto"
+                                className={styles.copyAddress}
+                              />
+                            </div>
+                          </div>
+                          <div className={styles.toggle}>
                             <Toggle
                               id={`${daoId}-${groupId}`}
                               checked={
@@ -219,6 +228,8 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
                             />
                           </div>
                           <IconButton
+                            onClick={() => toggle()}
+                            className={styles.collapseControl}
                             iconProps={{
                               style: {
                                 transform: isOpen
@@ -234,7 +245,10 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
                       )}
                     >
                       {settingsTypes.map(({ typeId, typeName }) => (
-                        <div key={typeId}>
+                        <div
+                          key={typeId}
+                          className={styles.collapsableListItem}
+                        >
                           {typeName && (
                             <div className={styles.type}>{typeName}</div>
                           )}
@@ -263,7 +277,7 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
         ))}
 
         <div className={styles.group}>
-          <div className={styles.groupHeader}>
+          <div className={cn(styles.groupHeader, styles.platformSettings)}>
             <div className={styles.groupTitle}>
               {settingsState.platform.name}
             </div>
@@ -280,7 +294,7 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
             />
           </div>
           {settingsState.platform.settings.map(({ id, checked, title }) => (
-            <div key={id} className={styles.settingsItem}>
+            <div key={id} className={cn(styles.settingsItem)}>
               <Toggle
                 id={id}
                 label={title}

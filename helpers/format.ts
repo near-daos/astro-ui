@@ -62,3 +62,15 @@ export function kFormatter(n: number): string {
 
   return `${n.toFixed(1)}`;
 }
+
+export function shortenString(value: string, maxLength: number): string {
+  if (!value) return '';
+
+  if (value.length <= maxLength || value.length < 20) return value;
+
+  const suffix = value.substring(value.length - 5, value.length);
+
+  const prefix = value.substring(0, maxLength - 4);
+
+  return `${prefix}...${suffix}`;
+}
