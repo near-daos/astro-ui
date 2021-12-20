@@ -23,16 +23,6 @@ export const NotificationsDropdown = forwardRef<
     ));
   }
 
-  function renderShowAll() {
-    const { length } = notifications;
-
-    return length > 4 ? (
-      <Link href="/notifications" passHref>
-        <a>Show all ({length})</a>
-      </Link>
-    ) : null;
-  }
-
   return (
     <div ref={ref} className={styles.root}>
       <div className={styles.header}>
@@ -40,7 +30,11 @@ export const NotificationsDropdown = forwardRef<
       </div>
       <div className={styles.noties}>{renderNoties()}</div>
       <div className={styles.divider} />
-      <div className={styles.footer}>{renderShowAll()}</div>
+      <div className={styles.footer}>
+        <Link href="/notifications" passHref>
+          <a>Show all ({notifications?.length || ''})</a>
+        </Link>
+      </div>
     </div>
   );
 });
