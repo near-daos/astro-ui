@@ -28,7 +28,11 @@ export async function getServerSideProps({
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
+      ...(await serverSideTranslations(
+        locale,
+        ['common', 'notificationsPage'],
+        nextI18NextConfig
+      )),
       data,
       total,
     },

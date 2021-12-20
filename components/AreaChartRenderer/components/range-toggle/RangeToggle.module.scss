@@ -12,6 +12,15 @@
   }
 }
 
+.select {
+  .selectControl {
+    margin: 0;
+  }
+  .selectMenu {
+    max-width: 60px;
+  }
+}
+
 .toggle {
   $state-color: #e2def2;
 

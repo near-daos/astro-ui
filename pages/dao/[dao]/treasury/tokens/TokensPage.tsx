@@ -13,12 +13,8 @@ import { ChartCaption } from 'components/AreaChartRenderer/components/chart-capt
 import { TransactionCard } from 'components/cards/TransactionCard';
 import { Pagination } from 'components/Pagination';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
-import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
-import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
-import { NavLink } from 'astro_2.0/components/NavLink';
 import { Loader } from 'components/loader';
-import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
-import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
+import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 
 import { ProposalVariant } from 'types/proposal';
 import { DaoContext } from 'types/context';
@@ -31,6 +27,7 @@ import {
 import { formatYoktoValue } from 'helpers/format';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { formatCurrency } from 'utils/formatCurrency';
+import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 
 import styles from './Tokens.module.scss';
 
@@ -44,13 +41,11 @@ const AreaChart = dynamic(import('components/AreaChartRenderer'), {
 const TRANSACTIONS_PER_PAGE = 10;
 
 const TokensPage: NextPage<TokensPageProps> = ({
-  daoContext: {
-    dao,
-    userPermissions: { isCanCreateProposals },
-    policyAffectsProposals,
-  },
+  daoContext,
+  daoContext: { dao },
 }) => {
   const { tokens } = useDaoCustomTokens();
+  const breadcrumbsConfig = useGetBreadcrumbsConfig(dao);
 
   const {
     chartData,
@@ -60,8 +55,6 @@ const TokensPage: NextPage<TokensPageProps> = ({
     loading,
     error,
   } = useTokenFilteredData(tokens);
-
-  const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
   const captions = useMemo(() => {
     const total = getAccumulatedTokenValue(tokens);
@@ -146,53 +139,46 @@ const TokensPage: NextPage<TokensPageProps> = ({
           {loading ? (
             <Loader />
           ) : (
-            <>
-              {transactionsData
-                .sort((a, b) =>
-                  sortAsc
-                    ? a.timestamp - b.timestamp
-                    : b.timestamp - a.timestamp
-                )
-                .slice(
-                  activePage * TRANSACTIONS_PER_PAGE,
-                  (activePage + 1) * TRANSACTIONS_PER_PAGE
-                )
-                .map(
-                  ({
-                    type,
-                    timestamp,
-                    deposit,
-                    date,
-                    predecessorAccountId,
-                    receiptId,
-                    txHash,
-                    token,
-                  }) => {
-                    const tokenData = get(tokens, token);
+            transactionsData
+              .sort((a, b) =>
+                sortAsc ? a.timestamp - b.timestamp : b.timestamp - a.timestamp
+              )
+              .slice(
+                activePage * TRANSACTIONS_PER_PAGE,
+                (activePage + 1) * TRANSACTIONS_PER_PAGE
+              )
+              .map(
+                ({
+                  type,
+                  timestamp,
+                  deposit,
+                  date,
+                  predecessorAccountId,
+                  receiptId,
+                  txHash,
+                  token,
+                }) => {
+                  const tokenData = get(tokens, token);
 
-                    if (!tokenData) return null;
+                  if (!tokenData) return null;
 
-                    return (
-                      <div
-                        className={styles.row}
-                        key={`${type}_${timestamp}_${deposit}_${receiptId}`}
-                      >
-                        <TransactionCard
-                          tokenName={tokenData.symbol}
-                          type={type}
-                          deposit={formatYoktoValue(
-                            deposit,
-                            tokenData.decimals
-                          )}
-                          date={date}
-                          txHash={txHash}
-                          accountName={predecessorAccountId}
-                        />
-                      </div>
-                    );
-                  }
-                )}
-            </>
+                  return (
+                    <div
+                      className={styles.row}
+                      key={`${type}_${timestamp}_${deposit}_${receiptId}`}
+                    >
+                      <TransactionCard
+                        tokenName={tokenData.symbol}
+                        type={type}
+                        deposit={formatYoktoValue(deposit, tokenData.decimals)}
+                        date={date}
+                        txHash={txHash}
+                        accountName={predecessorAccountId}
+                      />
+                    </div>
+                  );
+                }
+              )
           )}
         </div>
         {pageCount > 0 ? (
@@ -209,70 +195,59 @@ const TokensPage: NextPage<TokensPageProps> = ({
     );
   }
 
+  const breadcrumbs = useMemo(() => {
+    return [
+      breadcrumbsConfig.ALL_DAOS_URL,
+      breadcrumbsConfig.SINGLE_DAO_PAGE,
+      breadcrumbsConfig.TREASURY,
+    ];
+  }, [breadcrumbsConfig]);
+
   return (
-    <div className={styles.root}>
-      <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href="/all/daos">All DAOs</NavLink>
-        <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
-        <NavLink>Treasury</NavLink>
-      </BreadCrumbs>
-      <div className={styles.dao}>
-        <DaoDetailsMinimized
-          dao={dao}
-          disableNewProposal={!isCanCreateProposals}
-          onCreateProposalClick={toggleCreateProposal}
-        />
-        <CreateProposal
-          className={styles.createProposal}
-          dao={dao}
-          key={Object.keys(tokens).length}
-          daoTokens={tokens}
-          proposalVariant={ProposalVariant.ProposeTransfer}
-          showFlag={false}
-          onClose={toggleCreateProposal}
-        />
-        <PolicyAffectedWarning
-          data={policyAffectsProposals}
-          className={styles.warningWrapper}
-        />
-      </div>
-      <div className={styles.header}>
-        <h1>Tokens</h1>
-      </div>
-      <div className={styles.account}>
-        <div className={styles.caption}>DAO account name</div>
-        <div className={styles.name}>
-          <DaoAddressLink daoAddress={dao.id} />
-          <CopyButton text={dao.id} className={styles.icon} />
+    <NestedDaoPageWrapper
+      daoContext={daoContext}
+      breadcrumbs={breadcrumbs}
+      defaultProposalType={ProposalVariant.ProposeTransfer}
+    >
+      <div className={styles.root}>
+        <div className={styles.header}>
+          <h1>Tokens</h1>
         </div>
+        <div className={styles.account}>
+          <div className={styles.caption}>DAO account name</div>
+          <div className={styles.name}>
+            <DaoAddressLink daoAddress={dao.id} />
+            <CopyButton text={dao.id} className={styles.icon} />
+          </div>
+        </div>
+        <div className={styles.total}>
+          <ChartCaption captions={captions} />
+        </div>
+        <div className={styles.tokens}>
+          {Object.values(tokens)
+            .sort(sorter)
+            .map(({ icon, symbol, balance, id, price }) => (
+              <TokenCard
+                key={`${id}-${symbol}`}
+                isActive={viewToken === id}
+                symbol={symbol}
+                onClick={() => {
+                  setActivePage(0);
+                  onFilterChange(id);
+                }}
+                icon={icon}
+                balance={Number(balance)}
+                totalValue={
+                  price
+                    ? formatCurrency(parseFloat(balance) * Number(price))
+                    : null
+                }
+              />
+            ))}
+        </div>
+        {renderContent()}
       </div>
-      <div className={styles.total}>
-        <ChartCaption captions={captions} />
-      </div>
-      <div className={styles.tokens}>
-        {Object.values(tokens)
-          .sort(sorter)
-          .map(({ icon, symbol, balance, id, price }) => (
-            <TokenCard
-              key={`${id}-${symbol}`}
-              isActive={viewToken === id}
-              symbol={symbol}
-              onClick={() => {
-                setActivePage(0);
-                onFilterChange(id);
-              }}
-              icon={icon}
-              balance={Number(balance)}
-              totalValue={
-                price
-                  ? formatCurrency(parseFloat(balance) * Number(price))
-                  : null
-              }
-            />
-          ))}
-      </div>
-      {renderContent()}
-    </div>
+    </NestedDaoPageWrapper>
   );
 };
 

@@ -1,3 +1,4 @@
+import { UrlObject } from 'url';
 import React, { FC, useCallback, useState } from 'react';
 import { Popup } from 'components/Popup';
 import cn from 'classnames';
@@ -9,7 +10,7 @@ import styles from './DaoInfoCard.module.scss';
 interface DaoMembersProps {
   infoType: 'members' | 'funds';
   title: string;
-  url: string;
+  url: string | UrlObject;
   daoFunds?: string;
   groups?: number;
   members?: number;

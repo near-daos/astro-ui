@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
+import { GROUPS_PAGE_URL } from 'constants/routing';
+
 import { DAO } from 'types/dao';
 
 import { ProposalTrackerCard } from 'astro_2.0/components/DaoDetails/components/ProposalTrackerCard';
@@ -85,7 +87,15 @@ export const DaoDetails: FC<DaoDetailsProps> = ({
       </section>
 
       <section className={styles.members}>
-        <Link href={`/dao/${dao.id}/groups/all-members`}>
+        <Link
+          href={{
+            pathname: GROUPS_PAGE_URL,
+            query: {
+              dao: dao.id,
+              group: 'all',
+            },
+          }}
+        >
           <a>
             <div className={styles.label}>{t('membersGroups')}</div>
             <div className={styles.value}>

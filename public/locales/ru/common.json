@@ -46,5 +46,7 @@
   "members": "Участники",
   "reportAnIssue": "Сообщить о проблеме",
   "termsAndConditions": "Пользовательское соглашение",
-  "releaseNotes": "Заметки о релизе"
+  "releaseNotes": "Заметки о релизе",
+  "filterByStatus": "Отфильтровать по статусу",
+  "filterByProposalStatus": "Отфильтровать по статусу предложения"
 }

@@ -1,13 +1,14 @@
 import { forwardRef } from 'react';
+import Link from 'next/link';
 
 import { NotificationCard } from 'astro_2.0/components/NotificationCard';
 
-import { getNotifications } from 'mocks/notificationsMock';
+import { Notification } from 'types/notification';
 
 import styles from './NotificationsDropdown.module.scss';
 
 interface NotificationsDropdownProps {
-  notifications: unknown[];
+  notifications: Notification[];
 }
 
 export const NotificationsDropdown = forwardRef<
@@ -16,18 +17,10 @@ export const NotificationsDropdown = forwardRef<
 >((props, ref) => {
   const { notifications } = props;
 
-  function renderNoties(isNew: boolean) {
-    const noties = getNotifications(notifications.length, isNew);
-
-    return noties.map(noty => (
-      <NotificationCard {...noty} key={noty.content.id} />
+  function renderNoties() {
+    return notifications.map(noty => (
+      <NotificationCard {...noty} key={noty.id} />
     ));
-  }
-
-  function renderShowAll() {
-    const { length } = notifications;
-
-    return length > 4 ? `Show all (${length})` : null;
   }
 
   return (
@@ -35,9 +28,13 @@ export const NotificationsDropdown = forwardRef<
       <div className={styles.header}>
         <div>New</div>
       </div>
-      <div className={styles.noties}>{renderNoties(true)}</div>
+      <div className={styles.noties}>{renderNoties()}</div>
       <div className={styles.divider} />
-      <div className={styles.footer}>{renderShowAll()}</div>
+      <div className={styles.footer}>
+        <Link href="/notifications" passHref>
+          <a>Show all ({notifications?.length || ''})</a>
+        </Link>
+      </div>
     </div>
   );
 });

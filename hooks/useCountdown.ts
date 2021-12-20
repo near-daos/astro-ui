@@ -39,6 +39,10 @@ export function useCountdown(endsAt: string): string | null {
 
   useEffect(() => {
     actions.start();
+
+    return () => {
+      actions.pause();
+    };
   }, [actions]);
 
   return timeLeft > 0 ? formatCountdown(timeLeft / 1000) : null;

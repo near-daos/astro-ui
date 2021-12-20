@@ -1,0 +1,18 @@
+{
+  "settings": "Settings",
+  "notificationsHub": "Notifications Hub",
+  "chooseAType": "Choose a type",
+  "noNotifications": "No notifications",
+  "noNotificationsYet": "No notifications yet",
+  "newNotifications": "New",
+  "oldNotifications": "Old",
+  "all": "All",
+  "yourDaos": "Your DAOs",
+  "platform": "Platform",
+  "muted": "Muted",
+  "yourNewDaoCreated": "Your New DAO {{newDaoName}} has been successfully created.",
+  "newDaoCreated": "New DAO {{newDaoName}} has been successfully created by {{accountId}}",
+  "submittedNewProposal": "submitted a new proposal to {{dao}}",
+  "proposalChangeNameSuccess": "proposal Change DAO Name has been approved",
+  "createdNewPoll": "created a new poll for {{dao}}. Check out now to cast your vote."
+}

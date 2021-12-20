@@ -5,8 +5,6 @@
   display: grid;
   grid-row-gap: 24px;
   grid-template-areas:
-    'breadcrumb breadcrumb'
-    'dao dao'
     'header header'
     'account account'
     'total total'
@@ -18,19 +16,6 @@
   grid-template-columns: 2fr 1fr;
   margin-bottom: 20px;
   padding-top: 56px;
-
-  .breadcrumbs {
-    grid-area: breadcrumb;
-  }
-}
-
-.dao {
-  grid-area: dao;
-  margin: 0 0 44px;
-
-  .newProposalWrapper {
-    margin-top: 24px;
-  }
 }
 
 .header {
@@ -148,16 +133,4 @@
 .pagination {
   grid-area: pagination;
   justify-self: center;
-}
-
-.warningWrapper {
-  margin-top: 32px;
-}
-
-.createProposal {
-  margin-top: 56px;
-
-  @include tablet-landscape {
-    margin-top: 32px;
-  }
 }

@@ -1,12 +1,11 @@
-import Bounties, {
-  BountiesPageProps,
-} from 'pages/dao/[dao]/tasks/bounties/BountiesPage';
 import { GetServerSideProps } from 'next';
 import { SputnikHttpService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from 'next-i18next.config';
+
+import { BountiesPageProps } from './BountiesPage';
 
 export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async ({
   req,
@@ -32,11 +31,15 @@ export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async (
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
+      ...(await serverSideTranslations(
+        locale,
+        ['common', 'notificationsPage'],
+        nextI18NextConfig
+      )),
       daoContext,
       initialBounties: bounties,
     },
   };
 };
 
-export default Bounties;
+export { default } from './BountiesPage';

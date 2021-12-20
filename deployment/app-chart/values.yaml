@@ -92,3 +92,4 @@ environment:
   next_public_aws_bucket: "sputnik-dao"
   next_public_aws_region: "eu-central-1"
   next_public_aws_identity_pool_id: "eu-central-1:5887fd21-7b40-4871-a6cb-21097fe079a2"
+  next_public_stats_api_url: "https://testnet.api.daostats.io"

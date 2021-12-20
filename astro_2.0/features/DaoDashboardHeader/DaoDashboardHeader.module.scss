@@ -1,0 +1,159 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-gap: 17px 0;
+  grid-template-areas:
+    'letterHeadSection'
+    'usersSection'
+    'descriptionSection'
+    'linksSection'
+    'followSection';
+  grid-template-columns: 1fr;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'letterHeadSection letterHeadSection letterHeadSection'
+      'usersSection descriptionSection descriptionSection'
+      'usersSection linksSection followSection';
+    grid-template-columns: 216px 1fr 165px;
+  }
+}
+
+.letterHeadSection {
+  background: var(--color-primary-50);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 8px;
+  grid-area: letterHeadSection;
+  height: 134px;
+  margin: 0 -24px;
+  position: relative;
+
+  @include tablet-landscape {
+    margin: 0;
+  }
+
+  .logo {
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, 60px);
+
+    @include tablet-landscape {
+      left: 0;
+      transform: translate(36px, 60px);
+    }
+  }
+}
+
+.usersSection {
+  @include centralize;
+  flex-direction: column;
+  grid-area: usersSection;
+  justify-content: flex-start;
+  min-height: 120px;
+  padding-top: 74px;
+}
+
+.label {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
+}
+
+.value {
+  @extend %heading3;
+}
+
+.descriptionSection p {
+  margin: 0;
+  text-align: center;
+}
+
+.descriptionSection {
+  @extend %body1;
+  align-items: center;
+  color: var(--color-black);
+  display: flex;
+  flex-direction: column;
+  grid-area: descriptionSection;
+  justify-content: flex-start;
+
+  @include tablet-landscape {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 0 36px 0 0;
+    p {
+      text-align: left;
+    }
+  }
+}
+
+.followSection {
+  grid-area: followSection;
+}
+
+.linksSection {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  grid-area: linksSection;
+
+  @include tablet-landscape {
+    align-items: flex-start;
+  }
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  list-style: none;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.link {
+  @extend %caption1;
+  color: var(--color-primary-50);
+  display: block;
+  margin-bottom: 12px;
+
+  @include tablet-landscape {
+    display: inline;
+    margin-top: 0;
+  }
+
+  .linkText,
+  .right {
+    display: inline;
+
+    @include tablet-landscape {
+      display: none;
+    }
+  }
+
+  .external {
+    display: none;
+
+    @include tablet-landscape {
+      display: inline;
+      margin: -2px 0 0 8px;
+    }
+  }
+}
+
+.legalLink {
+  @extend %body2;
+  color: var(--color-primary);
+  display: flex;
+}
+
+.legalIcon {
+  margin-left: 4px;
+}

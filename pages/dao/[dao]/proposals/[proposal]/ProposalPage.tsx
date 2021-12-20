@@ -1,10 +1,14 @@
-import React, { useMemo, useState } from 'react';
-import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
+import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import nextI18NextConfig from 'next-i18next.config';
+import React, { useMemo, useState } from 'react';
+
+import {
+  ALL_DAOS_URL,
+  ALL_PROPOSALS_PAGE_URL,
+  SINGLE_PROPOSAL_PAGE_URL,
+} from 'constants/routing';
 
 import { DAO, Member } from 'types/dao';
 import { Proposal } from 'types/proposal';
@@ -22,8 +26,6 @@ import { getVoteDetails } from 'features/vote-policy/helpers';
 
 import { VotersList } from 'features/proposal/components/voters-list';
 
-import { extractMembersFromDao } from 'services/sputnik/mappers';
-import { SputnikHttpService } from 'services/sputnik';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import styles from './Proposal.module.scss';
@@ -151,10 +153,28 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         <meta name="twitter:image" content={dao?.flagCover || dao?.logo} />
       </Head>
       <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href="/all/daos">{t('allDais')}</NavLink>
+        <NavLink href={ALL_DAOS_URL}>{t('allDaos')}</NavLink>
         <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
-        <NavLink>{t('proposals')}</NavLink>
-        <NavLink href={`/dao/${dao.id}/proposals/${proposal?.id}`}>
+        <NavLink
+          href={{
+            pathname: ALL_PROPOSALS_PAGE_URL,
+            query: {
+              dao: dao.id,
+            },
+          }}
+          className={styles.capitalize}
+        >
+          {t('proposals')}
+        </NavLink>
+        <NavLink
+          href={{
+            pathname: SINGLE_PROPOSAL_PAGE_URL,
+            query: {
+              dao: dao.id,
+              proposal: proposal?.id,
+            },
+          }}
+        >
           {proposal?.id}
         </NavLink>
       </BreadCrumbs>
@@ -210,33 +230,3 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
 };
 
 export default ProposalPage;
-
-export const getServerSideProps: GetServerSideProps = async ({
-  query,
-  locale = 'en',
-}): Promise<{
-  props: {
-    dao: DAO | null;
-    proposal: Proposal | null;
-    members: Member[];
-  };
-}> => {
-  const daoId = query.dao as string;
-  const proposalId = query.proposal as string;
-
-  const [dao, proposal] = await Promise.all([
-    SputnikHttpService.getDaoById(daoId),
-    SputnikHttpService.getProposalById(proposalId),
-  ]);
-
-  const members = dao && proposal ? extractMembersFromDao(dao, [proposal]) : [];
-
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
-      dao,
-      proposal,
-      members,
-    },
-  };
-};

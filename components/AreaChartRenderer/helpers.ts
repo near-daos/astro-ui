@@ -25,6 +25,10 @@ export function prepareDataByRange(
   range: Range,
   rawData: LineDataPoint[]
 ): LineDataPoint[] {
+  if (!rawData || !rawData.length) {
+    return [];
+  }
+
   // first data point
   const start = rawData[0];
 

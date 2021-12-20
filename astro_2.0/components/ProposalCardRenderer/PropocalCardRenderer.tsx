@@ -2,6 +2,8 @@ import React from 'react';
 import cn from 'classnames';
 import isNumber from 'lodash/isNumber';
 
+import { InfoPanel } from 'astro_2.0/components/ProposalCardRenderer/components/InfoPanel';
+
 import styles from './ProposalCardRenderer.module.scss';
 
 export interface ProposalCardRendererProps {
@@ -40,10 +42,19 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
     return null;
   }
 
+  function renderInfoPanel() {
+    if (!proposalId) {
+      return <InfoPanel />;
+    }
+
+    return null;
+  }
+
   return (
     <div className={cn(styles.root, className)}>
       <div className={styles.header}>
         <div>{renderFlag()}</div>
+        {renderInfoPanel()}
         {renderProposalId()}
       </div>
       {letterHeadNode && (
