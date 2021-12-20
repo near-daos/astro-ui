@@ -60,6 +60,7 @@ export const mapBountyToCardContent = (
       type: CardType.Bounty,
       timeToComplete: getDistanceFromNow(bounty.deadlineThreshold),
       slots: bounty.slots,
+      slotsTotal: bounty.slotsTotal,
       claimedByCurrentUser: false,
     });
   }
@@ -86,17 +87,18 @@ export const showActionBar = (
   bountyCardContent: BountyCardContent,
   account: string | undefined
 ): boolean => {
+  const { status, accountId: bountyAccountId } = bountyCardContent;
+  const { Expired, Available, InProgress, PendingApproval } = BountyStatus;
+
   if (!account) {
     return false;
   }
 
-  if (bountyCardContent.status === BountyStatus.Available) {
+  if (status === Available || status === PendingApproval) {
     return true;
   }
 
   return (
-    (bountyCardContent.status === BountyStatus.InProgress ||
-      bountyCardContent.status === BountyStatus.Expired) &&
-    bountyCardContent.accountId === account
+    (status === InProgress || status === Expired) && bountyAccountId === account
   );
 };

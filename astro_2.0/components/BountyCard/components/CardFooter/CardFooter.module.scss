@@ -1,0 +1,28 @@
+@import 'styles/mixins';
+
+.root {
+  align-items: center;
+  background: var(--color-neutral-10);
+  border-bottom: 0.5px solid var(--color-brand-purple);
+  border-left: 0.5px solid var(--color-brand-purple);
+  border-radius: 0 0 7px 7px;
+  border-right: 0.5px solid var(--color-brand-purple);
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  display: flex;
+  justify-content: space-between;
+  margin-left: 15px;
+  margin-right: 15px;
+  padding: 20px 16px;
+
+  @include tablet-portrait {
+    padding: 22px 30px;
+  }
+
+  @include tablet-landscape {
+    padding: 22px 18px;
+  }
+
+  @include desktop {
+    padding: 22px 30px;
+  }
+}

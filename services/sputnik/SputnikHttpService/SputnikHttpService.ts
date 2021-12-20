@@ -825,6 +825,32 @@ class SputnikHttpServiceClass {
     return data.data.map(mapBountyResponseToBounty);
   }
 
+  public async getActiveBountyDoneProposalsByDaoId(daoId: string) {
+    const queryString = RequestQueryBuilder.create()
+      .setFilter({
+        field: 'daoId',
+        operator: '$eq',
+        value: daoId,
+      })
+      .setFilter({
+        field: 'type',
+        operator: '$eq',
+        value: 'BountyDone',
+      })
+      .setFilter({
+        field: 'voteStatus',
+        operator: '$eq',
+        value: 'Active',
+      })
+      .query();
+
+    const { data } = await this.httpService.get<GetProposalsResponse>(
+      `/proposals?${queryString}`
+    );
+
+    return data.data.map(mapProposalDTOToProposal);
+  }
+
   public async getAccountNFTs(accountId: string): Promise<NftToken[]> {
     const { data } = await this.httpService.get<GetNFTTokensResponse>(
       `/tokens/nfts`,

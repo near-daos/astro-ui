@@ -16,8 +16,10 @@ export interface BountyCardContent {
   status: BountyStatus;
   bountyBond: string;
   slots?: number;
+  slotsTotal?: number;
   claimedByCurrentUser: boolean;
   accountId?: string;
   timeToComplete: string;
   forgivenessPeriod: string;
+  relatedProposalHash?: string;
 }

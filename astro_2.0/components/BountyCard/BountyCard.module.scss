@@ -46,7 +46,7 @@
 }
 
 .statusAvailable {
-  color: var(--color-success-60);
+  color: var(--color-primary-50);
 }
 
 .statusExpired {
@@ -54,7 +54,11 @@
 }
 
 .statusInProgress {
-  color: var(--color-primary-50);
+  color: var(--color-success-60);
+}
+
+.pendingApproval {
+  color: var(--color-blue-50);
 }
 
 .proposalType {
@@ -83,4 +87,24 @@
   align-items: flex-end;
   display: flex;
   padding: 8px;
+}
+
+.footerLabel {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+}
+
+.proposalLink {
+  @extend %body2;
+
+  align-items: center;
+  color: var(--color-brand-purple);
+  display: flex;
+  margin-top: 8px;
+
+  .icon {
+    height: 16px;
+    margin-right: 8px;
+    width: 16px;
+  }
 }
