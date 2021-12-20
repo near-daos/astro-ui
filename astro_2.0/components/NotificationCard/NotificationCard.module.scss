@@ -1,4 +1,5 @@
 @import 'styles/mixins';
+@import 'styles/typography';
 
 .root {
   background: var(--color-neutral-20);
@@ -72,6 +73,12 @@
 }
 
 .markRead {
+  //display: none;
+}
+
+.markReadTitle {
+  @extend %caption2;
+  color: var(--color-primary-60);
   display: none;
 }
 
@@ -82,10 +89,6 @@
   font-size: 10px;
   padding: 0 6px 0 2px;
   transition: color 0.2s;
-
-  &:hover {
-    color: var(--color-primary-60);
-  }
 }
 
 .markReadIcon {
@@ -93,7 +96,12 @@
 }
 
 .deleteIcon {
-  height: 24px;
+  color: var(--color-error-40);
+  width: 16px;
+
+  &:hover {
+    filter: brightness(120%);
+  }
 }
 
 .muteIcon {
@@ -180,8 +188,20 @@
       display: block;
       flex-shrink: 0;
       margin-right: 14px;
-      width: 75px;
+      //width: 75px;
     }
+  }
+
+  .markReadButton:hover {
+    color: var(--color-primary-60);
+  }
+
+  .markReadButton:hover .markReadTitle {
+    display: block;
+  }
+
+  .markReadButton.read .markReadTitle {
+    display: none;
   }
 }
 

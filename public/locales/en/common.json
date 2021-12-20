@@ -53,5 +53,6 @@
   "numberOfTransactions": "Number of transactions",
   "activity": "Activity",
   "noResultsFound": "No results found",
-  "users": "Users"
+  "users": "Users",
+  "archived": "Archived"
 }
