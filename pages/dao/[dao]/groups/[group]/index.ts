@@ -1,13 +1,15 @@
 import { GetServerSideProps } from 'next';
-import { SputnikHttpService } from 'services/sputnik';
-import { CookieService } from 'services/CookieService';
-import { ACCOUNT_COOKIE } from 'constants/cookies';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from 'next-i18next.config';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import { BountiesPageProps } from './BountiesPage';
+import { ACCOUNT_COOKIE } from 'constants/cookies';
 
-export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async ({
+import { CookieService } from 'services/CookieService';
+import { SputnikHttpService } from 'services/sputnik';
+
+import { GroupPageProps } from './GroupPage';
+
+export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
   req,
   query,
   locale = 'en',
@@ -18,9 +20,9 @@ export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async (
 
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
-  const [daoContext, bounties] = await Promise.all([
+  const [daoContext, proposals] = await Promise.all([
     SputnikHttpService.getDaoContext(account, daoId),
-    SputnikHttpService.getBountiesByDaoId(daoId),
+    SputnikHttpService.getProposals(daoId),
   ]);
 
   if (!daoContext) {
@@ -37,9 +39,9 @@ export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async (
         nextI18NextConfig
       )),
       daoContext,
-      initialBounties: bounties,
+      proposals,
     },
   };
 };
 
-export { default } from './BountiesPage';
+export { default } from './GroupPage';

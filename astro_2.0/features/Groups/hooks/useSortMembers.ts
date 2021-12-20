@@ -8,7 +8,7 @@ type UseSortMembersParams = {
   activeSort: string;
 };
 
-const useSortMembers = ({
+export const useSortMembers = ({
   members,
   group,
   activeSort,
@@ -18,7 +18,6 @@ const useSortMembers = ({
       .filter(
         item =>
           !group ||
-          group === 'all-members' ||
           group === 'all' ||
           item.groups
             .map(grp => grp.toLowerCase())
@@ -45,5 +44,3 @@ const useSortMembers = ({
       });
   }, [activeSort, group, members]);
 };
-
-export default useSortMembers;

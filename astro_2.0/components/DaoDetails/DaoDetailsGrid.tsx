@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import { useMeasure } from 'react-use';
 import { useTranslation } from 'next-i18next';
 
+import { GROUPS_PAGE_URL } from 'constants/routing';
+
 import { DAO } from 'types/dao';
 
 import { DaoInfoCard } from 'astro_2.0/components/DaoDetails/components/DaoInfoCard';
@@ -112,7 +114,13 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
               />
               <DaoInfoCard
                 infoType="members"
-                url={`/dao/${id}/groups/all-members`}
+                url={{
+                  pathname: GROUPS_PAGE_URL,
+                  query: {
+                    dao: dao.id,
+                    group: 'all',
+                  },
+                }}
                 title={t('membersGroups')}
                 members={members}
                 groups={groups.length}
