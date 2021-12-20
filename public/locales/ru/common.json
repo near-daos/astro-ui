@@ -48,5 +48,18 @@
   "termsAndConditions": "Пользовательское соглашение",
   "releaseNotes": "Заметки о релизе",
   "filterByStatus": "Отфильтровать по статусу",
-  "filterByProposalStatus": "Отфильтровать по статусу предложения"
+  "filterByProposalStatus": "Отфильтровать по статусу предложения",
+
+  "createDAONew": {
+    "createNewDAO": "Создать новое ДАО",
+    "createNewDAOWay": "ДАО - это новый способ организации людей и их работы",
+    "daoNameForm": {
+      "daoNameAndPurpose": "Название и назначение ДАО",
+      "daoFieldsDescription": "Все нижепреведенные поля обязательны для заполнения, если не указанно иное.",
+      "daoName": "Название ДАО",
+      "daoSampleName": "Sample DAO Name",
+      "daoPurpose": "Назначение",
+      "daoSampleText": "Образец текста. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient."
+    }
+  }
 }

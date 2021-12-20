@@ -48,5 +48,23 @@
   "termsAndConditions": "Terms and Conditions",
   "releaseNotes": "Release notes",
   "filterByStatus": "Filter by status",
-  "filterByProposalStatus": "Filter by proposal status"
+  "filterByProposalStatus": "Filter by proposal status",
+  "numberOfVotes": "Number of votes",
+  "numberOfTransactions": "Number of transactions",
+  "activity": "Activity",
+  "noResultsFound": "No results found",
+  "users": "Users",
+
+  "createDAONew": {
+    "createNewDAO": "Create new DAO",
+    "createNewDAOWay": "A DAO is a new way for people to organize and work together",
+    "daoNameForm": {
+      "daoNameAndPurpose": "DAO name and purpose",
+      "daoFieldsDescription": "All fields bellow, unless otherwise noted are required.",
+      "daoName": "DAO Name",
+      "daoSampleName": "Sample DAO Name",
+      "daoPurpose": "Purpose",
+      "daoSampleText": "Sample text. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient."
+    }
+  }
 }

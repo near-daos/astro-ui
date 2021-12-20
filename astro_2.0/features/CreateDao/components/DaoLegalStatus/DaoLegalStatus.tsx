@@ -1,5 +1,6 @@
 import React, { VFC } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 
 import { Input } from 'components/inputs/Input';
 import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
@@ -12,11 +13,13 @@ export const DaoLegalStatus: VFC = () => {
     formState: { errors },
   } = useFormContext();
 
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
-      <div className={styles.header}>KYC</div>
+      <div className={styles.header}>{t('createDAONew.daoKYC.daoKYC')}</div>
       <p className={styles.description}>
-        Please explain your DAO`s Legal Status and Jurisdiction. (if known)
+        {t('createDAONew.daoKYC.daoKYCLegalStatus')}
       </p>
       <InputFormWrapper
         errors={errors}
@@ -25,14 +28,14 @@ export const DaoLegalStatus: VFC = () => {
             size="block"
             className={styles.inputWrapper}
             inputClassName={styles.inputEl}
-            placeholder="Legal Status"
+            placeholder={t('createDAONew.daoKYC.daoKYCLegalPlaceholder')}
             {...register('legalStatus')}
           />
         }
       />
 
       <p className={styles.description}>
-        Please attach a link to the relevant document as proof of legal status.
+        {t('createDAONew.daoKYC.daoKYCLink')}
       </p>
       <InputFormWrapper
         errors={errors}
@@ -41,7 +44,7 @@ export const DaoLegalStatus: VFC = () => {
             size="block"
             className={styles.inputWrapper}
             inputClassName={styles.inputEl}
-            placeholder="https://Legal_Document"
+            placeholder={t('createDAONew.daoKYC.daoKYCLinkPlaceholder')}
             {...register('legalLink')}
           />
         }

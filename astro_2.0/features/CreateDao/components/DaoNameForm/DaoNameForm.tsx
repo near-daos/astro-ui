@@ -1,5 +1,6 @@
 import React, { VFC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 
 import { Input } from 'components/inputs/Input';
 import { TextArea } from 'components/inputs/TextArea';
@@ -11,23 +12,23 @@ import styles from './DaoNameForm.module.scss';
 
 export const DaoNameForm: VFC = () => {
   const { watch, register } = useFormContext();
-
+  const { t } = useTranslation();
   const displayName = watch('displayName');
 
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h2>DAO name and purpose</h2>
-        <p>All fields bellow, unless otherwise noted are required.</p>
+        <h2>{t('createDAONew.daoNameForm.daoNameAndPurpose')}</h2>
+        <p>{t('createDAONew.daoNameForm.daoFieldsDescription')}</p>
       </div>
 
       <div className={styles.card}>
         <DaoNameInputSection
           className={styles.nameInput}
-          label="DAO Name"
+          label={t('createDAONew.daoNameForm.daoName')}
           component={
             <Input
-              placeholder="Sample DAO Name"
+              placeholder={t('createDAONew.daoNameForm.daoSampleName')}
               size="block"
               isBorderless
               {...register('displayName')}
@@ -61,14 +62,14 @@ export const DaoNameForm: VFC = () => {
 
         <DaoNameInputSection
           className={styles.purpose}
-          label="Purpose"
+          label={t('createDAONew.daoNameForm.daoPurpose')}
           component={
             <TextArea
               className={styles.purposeInput}
               size="block"
               minRows={1}
               maxRows={5}
-              placeholder="Sample text. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient."
+              placeholder={t('createDAONew.daoNameForm.daoSampleText')}
               maxLength={500}
               isBorderless
               {...register('purpose')}
