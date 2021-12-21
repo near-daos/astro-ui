@@ -16,6 +16,7 @@ import { getProposalScope } from 'utils/getProposalScope';
 import { getContentNode } from 'astro_2.0/features/ViewProposal/helpers';
 import { Token } from 'types/token';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 
 export interface CreateProposalProps {
   dao: DAO | null;
@@ -85,7 +86,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
           }
           content={
             <CustomTokensContext.Provider value={{ tokens }}>
-              {contentNode}
+              <ErrorBoundary>{contentNode}</ErrorBoundary>
             </CustomTokensContext.Provider>
           }
         />
