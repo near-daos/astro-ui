@@ -1,0 +1,11 @@
+@import 'styles/mixins';
+
+.message {
+  @include centralize;
+  border: 1px solid var(--color-error-50);
+  color: var(--color-error-50);
+  height: calc(92% - 20px);
+  margin: 10px;
+  min-height: 45px;
+  width: calc(100% - 20px);
+}
