@@ -2,6 +2,7 @@ import uniqid from 'uniqid';
 import classNames from 'classnames';
 import { useMount, useToggle } from 'react-use';
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 import React, { PropsWithRef, RefObject, useState } from 'react';
 
 import { DaoImageType } from 'astro_2.0/features/CreateDao/components/types';
@@ -23,6 +24,8 @@ export const ImageUpload = <T extends Element>(
 ): JSX.Element => {
   const { fieldName, errorElRef } = props;
 
+  const { t } = useTranslation();
+
   const {
     watch,
     register,
@@ -40,8 +43,8 @@ export const ImageUpload = <T extends Element>(
 
   const [show, toggleShow] = useToggle(false);
   const uploadText = isImageUploaded
-    ? 'Click here to change image'
-    : 'Click here to upload image';
+    ? t('common.clickToChangeImage')
+    : t('common.clickToUploadImage');
 
   function renderInput() {
     const inputEl = (

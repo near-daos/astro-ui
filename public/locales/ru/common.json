@@ -50,7 +50,7 @@
   "filterByStatus": "Отфильтровать по статусу",
   "filterByProposalStatus": "Отфильтровать по статусу предложения",
 
-  "createDAONew": {
+  "createDAO": {
     "createNewDAO": "Создать новое ДАО",
     "createNewDAOWay": "ДАО - это новый способ организации людей и их работы",
     "daoNameForm": {

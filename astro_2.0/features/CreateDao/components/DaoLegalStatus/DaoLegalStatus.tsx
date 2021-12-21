@@ -17,9 +17,11 @@ export const DaoLegalStatus: VFC = () => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.header}>{t('createDAONew.daoKYC.daoKYC')}</div>
+      <div className={styles.header}>
+        {t('createDAO.daoLegalStatus.daoKYC')}
+      </div>
       <p className={styles.description}>
-        {t('createDAONew.daoKYC.daoKYCLegalStatus')}
+        {t('createDAO.daoLegalStatus.daoKYCDescription')}
       </p>
       <InputFormWrapper
         errors={errors}
@@ -28,14 +30,16 @@ export const DaoLegalStatus: VFC = () => {
             size="block"
             className={styles.inputWrapper}
             inputClassName={styles.inputEl}
-            placeholder={t('createDAONew.daoKYC.daoKYCLegalPlaceholder')}
+            placeholder={t(
+              'createDAO.daoLegalStatus.daoKYCDescriptionPlaceholder'
+            )}
             {...register('legalStatus')}
           />
         }
       />
 
       <p className={styles.description}>
-        {t('createDAONew.daoKYC.daoKYCLink')}
+        {t('createDAO.daoLegalStatus.daoKYCLink')}
       </p>
       <InputFormWrapper
         errors={errors}
@@ -44,7 +48,7 @@ export const DaoLegalStatus: VFC = () => {
             size="block"
             className={styles.inputWrapper}
             inputClassName={styles.inputEl}
-            placeholder={t('createDAONew.daoKYC.daoKYCLinkPlaceholder')}
+            placeholder={t('createDAO.daoLegalStatus.daoKYCLinkPlaceholder')}
             {...register('legalLink')}
           />
         }

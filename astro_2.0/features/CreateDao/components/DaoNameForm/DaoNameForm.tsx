@@ -18,17 +18,17 @@ export const DaoNameForm: VFC = () => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h2>{t('createDAONew.daoNameForm.daoNameAndPurpose')}</h2>
-        <p>{t('createDAONew.daoNameForm.daoFieldsDescription')}</p>
+        <h2>{t('createDAO.daoNameForm.daoNameAndPurpose')}</h2>
+        <p>{t('createDAO.daoNameForm.daoFieldsDescription')}</p>
       </div>
 
       <div className={styles.card}>
         <DaoNameInputSection
           className={styles.nameInput}
-          label={t('createDAONew.daoNameForm.daoName')}
+          label={t('createDAO.daoNameForm.daoName')}
           component={
             <Input
-              placeholder={t('createDAONew.daoNameForm.daoSampleName')}
+              placeholder={t('createDAO.daoNameForm.daoSampleName')}
               size="block"
               isBorderless
               {...register('displayName')}
@@ -62,14 +62,14 @@ export const DaoNameForm: VFC = () => {
 
         <DaoNameInputSection
           className={styles.purpose}
-          label={t('createDAONew.daoNameForm.daoPurpose')}
+          label={t('createDAO.daoNameForm.daoPurpose')}
           component={
             <TextArea
               className={styles.purposeInput}
               size="block"
               minRows={1}
               maxRows={5}
-              placeholder={t('createDAONew.daoNameForm.daoSampleText')}
+              placeholder={t('createDAO.daoNameForm.daoSampleText')}
               maxLength={500}
               isBorderless
               {...register('purpose')}

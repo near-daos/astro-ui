@@ -55,7 +55,7 @@
   "noResultsFound": "No results found",
   "users": "Users",
 
-  "createDAONew": {
+  "createDAO": {
     "createNewDAO": "Create new DAO",
     "createNewDAOWay": "A DAO is a new way for people to organize and work together",
     "daoNameForm": {

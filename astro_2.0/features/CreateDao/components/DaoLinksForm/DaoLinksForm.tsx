@@ -43,8 +43,8 @@ export const DaoLinksForm: VFC = () => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h2>{t('createDAONew.daoKYC.daoLinksAndSocials')}</h2>
-        <p>{t('createDAONew.daoKYC.daoLinksDescription')}</p>
+        <h2>{t('createDAO.daoLinksForm.daoLinks')}</h2>
+        <p>{t('createDAO.daoLinksForm.daoLinksDescription')}</p>
       </div>
 
       <section className={styles.links}>

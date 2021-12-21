@@ -12,11 +12,9 @@ const CreateDaoPage: NextPage<{ step: string }> = () => {
   return (
     <div className={styles.root}>
       <div className={styles.content}>
-        <div className={styles.breadcrumbs}>
-          {t('createDAONew.createNewDAO')}
-        </div>
+        <div className={styles.breadcrumbs}>{t('createDAO.createNewDAO')}</div>
         <div className={styles.header}>
-          <h1>{t('createDAONew.createNewDAOWay')}</h1>
+          <h1>{t('createDAO.createNewDAOWay')}</h1>
         </div>
         <CreateDao />
       </div>

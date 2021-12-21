@@ -13,8 +13,8 @@ export function DaoRulesForm(): JSX.Element {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h2>{t('createDAONew.daoRules.daoSetRules')}</h2>
-        <p>{t('createDAONew.daoRules.daoSetRulesDescription')}</p>
+        <h2>{t('createDAO.daoRulesForm.daoSetRules')}</h2>
+        <p>{t('createDAO.daoRulesForm.daoSetRulesDescription')}</p>
       </div>
 
       <div className={styles.content}>
@@ -30,7 +30,7 @@ export function DaoRulesForm(): JSX.Element {
         </div>
         <div className={styles.nav}>
           <div className={styles.navHeader}>
-            {t('createDAONew.daoRules.daoSetRulesChooseATemplate')}
+            {t('createDAO.daoRulesForm.daoSetRulesChooseATemplate')}
           </div>
           <TemplateRules />
         </div>
