@@ -1,27 +1,26 @@
 import React, { FC, useCallback, useState } from 'react';
-import cn from 'classnames';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { NavLink } from 'astro_2.0/components/NavLink';
-import { FlagRenderer } from 'astro_2.0/components/Flag';
-import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { NotificationsDisableModal } from 'astro_2.0/components/NotificationsDisableModal';
 import { useModal } from 'components/modal';
 import { Toggle } from 'components/inputs/Toggle';
-import { Collapsable } from 'components/collapsable/Collapsable';
-import { IconButton } from 'components/button/IconButton';
+import { NotificationCollapsableSettings } from 'astro_2.0/features/Notifications/components/NotificationCollapsableSettings';
+import { PlatformNotificationSettings } from 'astro_2.0/features/Notifications/components/PlatformNotificationSettings';
 import {
   NotificationSettingsGroup,
   NotificationSettingsPlatform,
   NotificationSettingsType,
   NotificationsGroupStatus,
 } from 'types/notification';
+import { NOTIFICATION_SETTINGS_TYPES } from 'mocks/notificationsData';
+import { NotificationSettingDTO } from 'services/NotificationsService/types';
 import {
-  NOTIFICATION_SETTINGS_GROUPS_DATA,
-  NOTIFICATION_SETTINGS_PLATFORM_DATA,
-  NOTIFICATION_SETTINGS_TYPES,
-} from 'mocks/notificationsData';
-
-import { shortenString } from 'helpers/format';
+  extractTypes,
+  prepareSettingsGroups,
+  prepareSettingsPlatform,
+} from 'astro_2.0/features/Notifications';
+import { useNotificationsSettings } from 'astro_2.0/features/Notifications/hooks';
+import { DaoSettings } from 'astro_2.0/features/Notifications/types';
 
 import styles from './NotificationSettings.module.scss';
 
@@ -29,20 +28,27 @@ interface NotificationSettingsProps {
   settingsGroupsData: NotificationSettingsGroup[];
   settingsPlatformData: NotificationSettingsPlatform;
   settingsTypes: NotificationSettingsType[];
+  myDaos: DaoSettings[];
+  subscribedDaos: DaoSettings[];
+  platformSettings: NotificationSettingDTO[];
 }
 
 const NotificationSettings: FC<NotificationSettingsProps> = ({
-  settingsGroupsData = NOTIFICATION_SETTINGS_GROUPS_DATA,
-  settingsPlatformData = NOTIFICATION_SETTINGS_PLATFORM_DATA,
   settingsTypes = NOTIFICATION_SETTINGS_TYPES,
+  myDaos,
+  subscribedDaos,
+  platformSettings,
 }) => {
+  const settingsGroups = prepareSettingsGroups(myDaos, subscribedDaos);
+  const settingsPlatform = prepareSettingsPlatform(platformSettings);
+  const { updateSettings } = useNotificationsSettings();
   const [settingsState, setSettingsState] = useState({
-    groups: settingsGroupsData,
-    platform: settingsPlatformData,
+    groups: settingsGroups,
+    platform: settingsPlatform,
   });
 
   const toggleSettingsSwitch = (id: string, daoId: string, groupId: string) => {
-    setSettingsState({
+    const newSettingsState = {
       ...settingsState,
       groups: settingsState.groups.map(group =>
         group.groupId === groupId
@@ -63,11 +69,24 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
             }
           : group
       ),
-    });
+    };
+
+    setSettingsState(newSettingsState);
+
+    const groupData = newSettingsState.groups.find(
+      item => item.groupId === groupId
+    );
+    const daoData = groupData?.daos?.find(item => item.daoId === daoId);
+
+    if (daoData) {
+      const types = extractTypes(daoData?.settings);
+
+      updateSettings(daoId, types ?? []);
+    }
   };
 
   const togglePlatformSwitch = (id: string) => {
-    setSettingsState({
+    const newSettingsState = {
       ...settingsState,
       platform: {
         ...settingsState.platform,
@@ -75,7 +94,13 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
           item.id === id ? { ...item, checked: !item.checked } : item
         ),
       },
-    });
+    };
+
+    setSettingsState(newSettingsState);
+
+    const types = extractTypes(newSettingsState.platform.settings);
+
+    updateSettings(null, types);
   };
 
   const toggleDaoSwitch = (daoId: string, groupId: string) => {
@@ -86,7 +111,7 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
     const currentDaoChecked =
       currentDao?.settings.filter(item => item.checked).length !== 0;
 
-    setSettingsState({
+    const newSettingsState = {
       ...settingsState,
       groups: settingsState.groups.map(group =>
         group.groupId === groupId
@@ -105,7 +130,20 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
             }
           : group
       ),
-    });
+    };
+
+    setSettingsState(newSettingsState);
+
+    const groupData = newSettingsState.groups.find(
+      item => item.groupId === groupId
+    );
+    const daoData = groupData?.daos?.find(item => item.daoId === daoId);
+
+    if (daoData) {
+      const types = extractTypes(daoData?.settings);
+
+      updateSettings(daoId, types ?? []);
+    }
   };
 
   const [showModal] = useModal(NotificationsDisableModal, {
@@ -114,25 +152,45 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
 
   const openGroupSettingsModal = useCallback(
     async type => {
-      await showModal(type);
+      return showModal(type);
     },
     [showModal]
   );
 
-  const toggleGroupSwitch = (
+  const toggleGroupSwitch = async (
     type: string,
     typeStatus: NotificationsGroupStatus
   ) => {
+    let delay = 0;
+
     if (typeStatus === NotificationsGroupStatus.Enabled) {
-      openGroupSettingsModal(type);
-    } else if (type === 'platform') {
+      const res = await openGroupSettingsModal(type);
+
+      if (res && res[0]) {
+        delay = res[0] as number;
+      }
+    }
+
+    if (type === 'platform') {
+      const newStatus =
+        typeStatus === NotificationsGroupStatus.Enabled
+          ? NotificationsGroupStatus.Disable
+          : NotificationsGroupStatus.Enabled;
+
       setSettingsState({
         ...settingsState,
         platform: {
           ...settingsState.platform,
-          status: NotificationsGroupStatus.Enabled,
+          status: newStatus,
         },
       });
+
+      updateSettings(
+        null,
+        extractTypes(settingsState.platform.settings),
+        newStatus === NotificationsGroupStatus.Disable,
+        `${delay}`
+      );
     } else {
       setSettingsState({
         ...settingsState,
@@ -181,94 +239,18 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
                     flagBack,
                     settings,
                   }) => (
-                    <Collapsable
-                      key={daoId}
-                      renderHeading={(toggle, isOpen) => (
-                        <section
-                          tabIndex={-1}
-                          role="button"
-                          className={styles.groupSection}
-                          onKeyDown={e => e.key === 'Spacebar' && toggle()}
-                        >
-                          <div className={styles.flagWrapper}>
-                            <FlagRenderer
-                              className={styles.flag}
-                              flag={flagCover}
-                              size="xs"
-                              fallBack={flagBack}
-                            />
-                          </div>
-                          <div className={styles.daoDetails}>
-                            <div className={cn(styles.inline)}>
-                              <b>{daoName}</b>
-                            </div>
-                            <div className={cn(styles.inline, styles.sub)}>
-                              {shortenString(daoAddress, 36)}
-                              <CopyButton
-                                text={daoAddress}
-                                tooltipPlacement="auto"
-                                className={styles.copyAddress}
-                              />
-                            </div>
-                          </div>
-                          <div className={styles.toggle}>
-                            <Toggle
-                              id={`${daoId}-${groupId}`}
-                              checked={
-                                settings.filter(item => item.checked).length !==
-                                0
-                              }
-                              label={
-                                settings.filter(item => item.checked).length !==
-                                0
-                                  ? 'Disable all'
-                                  : 'Enable all'
-                              }
-                              onClick={() => toggleDaoSwitch(daoId, groupId)}
-                            />
-                          </div>
-                          <IconButton
-                            onClick={() => toggle()}
-                            className={styles.collapseControl}
-                            iconProps={{
-                              style: {
-                                transform: isOpen
-                                  ? 'rotate(-180deg)'
-                                  : undefined,
-                                transition: 'all 100ms',
-                              },
-                            }}
-                            icon="buttonArrowDown"
-                            size="small"
-                          />
-                        </section>
-                      )}
-                    >
-                      {settingsTypes.map(({ typeId, typeName }) => (
-                        <div
-                          key={typeId}
-                          className={styles.collapsableListItem}
-                        >
-                          {typeName && (
-                            <div className={styles.type}>{typeName}</div>
-                          )}
-                          {settings
-                            .filter(item => item.type === typeId)
-                            .map(({ id, checked, title }) => (
-                              <div key={id} className={styles.settingsItem}>
-                                <Toggle
-                                  id={id}
-                                  label={title}
-                                  checked={checked}
-                                  onClick={() =>
-                                    toggleSettingsSwitch(id, daoId, groupId)
-                                  }
-                                />
-                              </div>
-                            ))}
-                        </div>
-                      ))}
-                    </Collapsable>
+                    <NotificationCollapsableSettings
+                      daoId={daoId}
+                      flagCover={flagCover}
+                      flagBack={flagBack}
+                      daoName={daoName}
+                      daoAddress={daoAddress}
+                      settings={settings}
+                      groupId={groupId}
+                      onToggleDao={toggleDaoSwitch}
+                      settingsTypes={settingsTypes}
+                      onToggleSettings={toggleSettingsSwitch}
+                    />
                   )
                 )}
               </>
@@ -276,34 +258,11 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
           </div>
         ))}
 
-        <div className={styles.group}>
-          <div className={cn(styles.groupHeader, styles.platformSettings)}>
-            <div className={styles.groupTitle}>
-              {settingsState.platform.name}
-            </div>
-            <Toggle
-              id={settingsState.platform.id}
-              checked={settingsState.platform.status === 'Enabled'}
-              groupSwitch
-              onClick={() =>
-                toggleGroupSwitch(
-                  settingsState.platform.id,
-                  settingsState.platform.status
-                )
-              }
-            />
-          </div>
-          {settingsState.platform.settings.map(({ id, checked, title }) => (
-            <div key={id} className={cn(styles.settingsItem)}>
-              <Toggle
-                id={id}
-                label={title}
-                checked={checked}
-                onClick={() => togglePlatformSwitch(id)}
-              />
-            </div>
-          ))}
-        </div>
+        <PlatformNotificationSettings
+          onToggleGroup={toggleGroupSwitch}
+          onTogglePlatform={togglePlatformSwitch}
+          settingsState={settingsState}
+        />
       </div>
     </div>
   );

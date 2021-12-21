@@ -1,31 +1,6 @@
 @import 'styles/typography';
 @import 'styles/mixins';
 
-.root {
-  display: grid;
-  grid-template-areas:
-    'breadcrumbs'
-    'title'
-    'settings';
-  grid-template-columns: 1fr;
-  padding-top: 56px;
-  row-gap: 24px;
-}
-
-.breadcrumbs {
-  grid-area: breadcrumbs;
-}
-
-.title {
-  @extend %heading1;
-  grid-area: title;
-}
-
-.settings {
-  grid-area: settings;
-  max-width: 600px;
-}
-
 .group {
   @include card-shadow;
   border-radius: 5px;
@@ -61,4 +36,13 @@
 
 .groupTitle {
   @include font(16px, 24px, 500);
+}
+
+.platformSettings {
+  margin-bottom: 24px;
+}
+
+.settingsItem {
+  padding-bottom: 24px;
+  padding-left: 12px;
 }

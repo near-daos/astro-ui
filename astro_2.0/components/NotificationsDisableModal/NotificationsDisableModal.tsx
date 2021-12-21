@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Modal } from 'components/modal';
 import RadioGroup, { Radio } from 'astro_2.0/components/inputs/Radio';
 import { NotificationDisableOption } from 'types/notification';
 import { NOTIFICATION_SETTINGS_DISABLE_OPTIONS } from 'mocks/notificationsData';
+import { mapDelayToTime } from 'astro_2.0/features/Notifications';
 import styles from './NotificationsDisableModal.module.scss';
 
 export interface NotificationsDisableModalProps<T> {
@@ -10,7 +11,6 @@ export interface NotificationsDisableModalProps<T> {
   onClose: (...args: unknown[]) => void;
   text: string;
   value: T;
-  // onChange: (value: T, e?: React.ChangeEvent<HTMLInputElement>) => void;
   options: NotificationDisableOption[];
 }
 
@@ -19,17 +19,16 @@ export const NotificationsDisableModal = <T,>({
   onClose,
   text,
   value,
-  // onChange,
   options = NOTIFICATION_SETTINGS_DISABLE_OPTIONS,
 }: NotificationsDisableModalProps<T>): JSX.Element => {
-  /*
   const handleChange = useCallback(
-    (newValue: string, e?: React.ChangeEvent<HTMLInputElement>) => {
-      onChange((newValue as unknown) as T, e);
+    (newValue: string) => {
+      const time = mapDelayToTime(newValue);
+
+      onClose(time);
     },
-    [onChange]
+    [onClose]
   );
-*/
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -41,9 +40,7 @@ export const NotificationsDisableModal = <T,>({
           itemClassName={styles.radio}
           activeItemClassName={styles.activeRadio}
           value={((value as unknown) as string) || ''}
-          // onChange={handleChange}
-          // eslint-disable-next-line no-console
-          onChange={val => console.log(val)}
+          onChange={handleChange}
         >
           {options.map(option => (
             <Radio
