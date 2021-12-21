@@ -1,0 +1,52 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  @include ellipse-text;
+  margin-top: 24px;
+  padding: 0 8px;
+  text-transform: capitalize;
+}
+
+.subscribed {
+  display: block;
+}
+
+.subscribedHovered {
+  display: none;
+}
+
+.root:hover {
+  .subscribed {
+    display: none;
+  }
+  .subscribedHovered {
+    display: block;
+  }
+}
+
+.followIcon {
+  margin-right: 4px;
+  width: 12px;
+}
+
+.confirmRoot {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.confirmText {
+  @extend %subtitle1;
+  margin-bottom: 24px;
+  padding: 12px;
+
+  .highlighted {
+    color: var(--color-primary-50);
+  }
+}
+
+.confirmButton {
+  text-transform: capitalize;
+}

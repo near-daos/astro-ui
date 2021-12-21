@@ -33,6 +33,18 @@ export class HttpService {
   ): Promise<R> {
     return this.client.patch<T, R>(url, data, config);
   }
+
+  delete<T, R>(
+    url: string,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<R> {
+    return this.client.delete<T, R>(url, {
+      ...config,
+      data,
+    });
+  }
 }
 
 export const httpService = new HttpService();

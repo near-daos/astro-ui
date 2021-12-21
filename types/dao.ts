@@ -31,6 +31,7 @@ export type DAO = {
   name: string;
   description: string;
   members: number;
+  daoMembersList: string[];
   funds: string;
   proposals: number;
   totalProposals: number;
@@ -108,3 +109,18 @@ export interface CreateDaoInput {
     legalLink?: string;
   };
 }
+
+export type DaoSubscription = {
+  id: string;
+  dao: DAO;
+};
+
+export type DaoSubscriptionInput = {
+  accountId: string;
+  publicKey: string;
+  signature: string;
+};
+
+export type UpdateDaoSubscription = {
+  daoId: string;
+} & DaoSubscriptionInput;

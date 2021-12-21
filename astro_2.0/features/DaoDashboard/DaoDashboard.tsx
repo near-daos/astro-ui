@@ -4,7 +4,6 @@ import { useTranslation } from 'next-i18next';
 
 import { StatCard } from 'astro_2.0/features/DaoDashboard/components/StatCard';
 import { StatPanel } from 'astro_2.0/features/DaoDashboard/components/StatPanel';
-import { StatData } from 'astro_2.0/features/DaoDashboard/types';
 import { StatChart } from 'astro_2.0/features/DaoDashboard/components/StatChart';
 import { DashboardChart } from 'astro_2.0/features/DaoDashboard/components/DashboardChart';
 import { getFundsInUsdFromTokens } from 'astro_2.0/features/DaoDashboard/helpers';
@@ -21,11 +20,6 @@ interface DaoDashboardProps {
   dao: DAO;
   daoTokens: Record<string, Token>;
   className?: string;
-  funds: StatData;
-  bounties: StatData;
-  nfts: StatData;
-  activeProposals: StatData;
-  proposalsInTotal: StatData;
 }
 
 export const DaoDashboard: FC<DaoDashboardProps> = ({

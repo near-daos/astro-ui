@@ -102,6 +102,7 @@ const dao = {
   name: 'testdao3-near-cli-example',
   description: '',
   members: 1,
+  daoMembersList: ['jason.born'],
   activeProposalsCount: 11,
   totalProposalsCount: 15,
   proposals: 11,
