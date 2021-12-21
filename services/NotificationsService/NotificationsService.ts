@@ -5,11 +5,13 @@ import {
   Notification,
   NotificationDTO,
   UpdateNotificationParams,
+  UpdateNotificationSettingsParams,
 } from 'types/notification';
 
 import { httpService } from 'services/HttpService';
 import { SputnikNearService } from 'services/sputnik';
 import { mapNotificationDtoToNotification } from 'services/NotificationsService/mappers/notification';
+import { NotificationSettingDTO } from 'services/NotificationsService/types';
 
 class NotificationsServiceClass {
   private readonly httpService = httpService;
@@ -57,6 +59,48 @@ class NotificationsServiceClass {
     >(`/account-notifications/${id}`, params);
 
     return response;
+  }
+
+  public async getNotificationsSettings(
+    daosIds?: string[]
+  ): Promise<NotificationSettingDTO[]> {
+    const accountId = this.sputnikNearService.getAccountId();
+
+    const query = RequestQueryBuilder.create().setFilter({
+      field: 'accountId',
+      operator: '$eq',
+      value: accountId,
+    });
+
+    if (daosIds) {
+      query.setFilter({
+        field: 'daoId',
+        operator: '$in',
+        value: daosIds,
+      });
+    } else {
+      query.setFilter({
+        field: 'daoId',
+        operator: '$isnull',
+      });
+    }
+
+    const queryString = query.query();
+
+    const response = await this.httpService.get<
+      PaginationResponse<NotificationSettingDTO[]>
+    >(`/notification-settings?${queryString}`);
+
+    return response.data.data;
+  }
+
+  public async updateNotificationSettings(
+    params: UpdateNotificationSettingsParams
+  ): Promise<NotificationSettingDTO> {
+    return this.httpService.post<
+      UpdateNotificationSettingsParams,
+      NotificationSettingDTO
+    >(`/notification-settings`, params);
   }
 }
 

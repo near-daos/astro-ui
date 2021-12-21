@@ -50,7 +50,7 @@ export const Collapsable: React.FC<CollapsableProps> = ({
         height={isOpen ? height : 0}
         className={className}
       >
-        {children}
+        {typeof children === 'function' ? children(isOpen) : children}
       </AnimateHeight>
     </>
   );

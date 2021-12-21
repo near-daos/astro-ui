@@ -38,6 +38,7 @@ export interface NotificationSettingsItem {
   title: string;
   checked: boolean;
   type?: string;
+  notificationType: NotifiedActionType;
 }
 
 export interface NotificationSettingsDao {
@@ -76,6 +77,7 @@ export enum NotifiedActionType {
   FoundationDaoCreation = 'FoundationDaoCreation',
   CorporationDaoCreation = 'CorporationDaoCreation',
   CooperativeDaoCreation = 'CooperativeDaoCreation',
+
   TransferProposalCreation = 'TransferProposalCreation',
   BountyProposalCreation = 'BountyProposalCreation',
   BountyDoneProposalCreation = 'BountyDoneProposalCreation',
@@ -146,4 +148,14 @@ export type UpdateNotificationParams = {
   isMuted: boolean;
   isRead: boolean;
   isArchived: boolean;
+};
+
+export type UpdateNotificationSettingsParams = {
+  accountId: string;
+  publicKey: string;
+  signature: string;
+  daoId: string | null;
+  types: string[];
+  mutedUntilTimestamp: string;
+  isAllMuted: boolean;
 };
