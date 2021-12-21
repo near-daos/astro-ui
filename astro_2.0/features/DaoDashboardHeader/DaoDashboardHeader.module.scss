@@ -8,15 +8,14 @@
     'letterHeadSection'
     'usersSection'
     'descriptionSection'
-    'linksSection'
-    'followSection';
+    'linksSection';
   grid-template-columns: 1fr;
 
   @include tablet-landscape {
     grid-template-areas:
       'letterHeadSection letterHeadSection letterHeadSection'
       'usersSection descriptionSection descriptionSection'
-      'usersSection linksSection followSection';
+      'usersSection linksSection linksSection';
     grid-template-columns: 216px 1fr 165px;
   }
 }
@@ -54,7 +53,22 @@
   grid-area: usersSection;
   justify-content: flex-start;
   min-height: 120px;
-  padding-top: 74px;
+  padding: 74px 0 0;
+
+  @include tablet-landscape {
+    padding: 74px 32px 0;
+  }
+
+  .followButton {
+    @include ellipse-text;
+    margin-top: 24px;
+    text-transform: capitalize;
+  }
+
+  .followIcon {
+    margin-right: 4px;
+    width: 12px;
+  }
 }
 
 .label {
@@ -92,10 +106,6 @@
       text-align: left;
     }
   }
-}
-
-.followSection {
-  grid-area: followSection;
 }
 
 .linksSection {

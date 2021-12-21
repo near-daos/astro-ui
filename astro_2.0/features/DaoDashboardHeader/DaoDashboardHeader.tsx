@@ -4,12 +4,13 @@ import cn from 'classnames';
 
 import { DAO } from 'types/dao';
 
+import { FollowButton } from 'astro_2.0/features/DaoDashboardHeader/components/FollowButton';
 import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 import { ExternalLink } from 'components/ExternalLink';
 import { Icon } from 'components/Icon';
-import { Button } from 'components/button/Button';
 
 import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
+import { useAuthContext } from 'context/AuthContext';
 
 import styles from './DaoDashboardHeader.module.scss';
 
@@ -20,8 +21,19 @@ interface DaoDashboardHeaderProps {
 
 export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
   className,
-  dao: { legal, flagCover, flagLogo, members, description, links },
+  dao: {
+    id,
+    displayName,
+    legal,
+    daoMembersList,
+    flagCover,
+    flagLogo,
+    members,
+    description,
+    links,
+  },
 }) => {
+  const { accountId } = useAuthContext();
   const { t } = useTranslation();
 
   return (
@@ -36,6 +48,9 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
       <section className={styles.usersSection}>
         <div className={styles.label}>{t('users')}</div>
         <div className={styles.value}>{members}</div>
+        {!daoMembersList.includes(accountId) && (
+          <FollowButton daoId={id} daoName={displayName} />
+        )}
       </section>
 
       <section className={styles.descriptionSection}>
@@ -71,10 +86,6 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
               ))}
           </ul>
         )}
-      </section>
-
-      <section className={styles.followSection}>
-        <Button size="block">{t('follow')}</Button>
       </section>
     </div>
   );
