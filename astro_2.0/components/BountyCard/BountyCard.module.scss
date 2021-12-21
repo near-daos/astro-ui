@@ -108,3 +108,9 @@
     width: 16px;
   }
 }
+
+.slotsTotal {
+  @extend %subtitle5;
+
+  color: var(--color-neutral-60);
+}

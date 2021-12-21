@@ -15,6 +15,7 @@ import { formatYoktoValue } from 'helpers/format';
 import styles from './BountyActionsBar.module.scss';
 
 interface BountyActionsBarProps {
+  canClaim: boolean;
   bountyBond: string;
   forgivenessPeriod: string;
   bountyStatus: BountyStatus;
@@ -30,6 +31,7 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
   claimHandler,
   unclaimHandler,
   completeHandler,
+  canClaim,
 }) => {
   const [, graceValue, graceTimeUnit] = getDistanceFromNow(
     forgivenessPeriod
@@ -42,6 +44,47 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
     [BountyStatus.Expired]: TooltipMessageSeverity.Warning,
     [BountyStatus.PendingApproval]: TooltipMessageSeverity.Info,
   };
+
+  function renderButtons() {
+    if (bountyStatus === 'Available') {
+      if (canClaim) {
+        return (
+          <Button
+            variant="black"
+            size="small"
+            onClick={claimHandler}
+            className={cn(styles.claim, styles.button)}
+          >
+            Claim
+          </Button>
+        );
+      }
+
+      return <div className={styles.stub} />;
+    }
+
+    return (
+      <>
+        <Button
+          variant="secondary"
+          size="small"
+          onClick={unclaimHandler}
+          className={cn(styles.unclaim, styles.button)}
+        >
+          Unclaim
+        </Button>
+
+        <Button
+          variant="black"
+          size="small"
+          onClick={completeHandler}
+          className={cn(styles.complete, styles.button)}
+        >
+          Complete
+        </Button>
+      </>
+    );
+  }
 
   return (
     <CardFooter>
@@ -81,36 +124,7 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
           messageSeverity={TooltipMessageSeverity.Info}
         />
       )}
-      {bountyStatus === 'Available' ? (
-        <Button
-          variant="black"
-          size="small"
-          onClick={claimHandler}
-          className={cn(styles.claim, styles.button)}
-        >
-          Claim
-        </Button>
-      ) : (
-        <>
-          <Button
-            variant="secondary"
-            size="small"
-            onClick={unclaimHandler}
-            className={cn(styles.unclaim, styles.button)}
-          >
-            Unclaim
-          </Button>
-
-          <Button
-            variant="black"
-            size="small"
-            onClick={completeHandler}
-            className={cn(styles.complete, styles.button)}
-          >
-            Complete
-          </Button>
-        </>
-      )}
+      {renderButtons()}
     </CardFooter>
   );
 };

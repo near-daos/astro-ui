@@ -21,6 +21,7 @@ import styles from './BountyCard.module.scss';
 export interface BountyCardProps {
   content: BountyCardContent;
   showActionBar: boolean;
+  canClaim: boolean;
   relatedProposal?: Proposal;
   claimHandler: () => void;
   unclaimHandler: () => void;
@@ -30,6 +31,7 @@ export interface BountyCardProps {
 export const BountyCard: React.FC<BountyCardProps> = ({
   content,
   showActionBar,
+  canClaim,
   claimHandler,
   unclaimHandler,
   completeHandler,
@@ -79,6 +81,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
 
       return (
         <BountyActionsBar
+          canClaim={canClaim}
           bountyBond={bountyBond}
           forgivenessPeriod={forgivenessPeriod}
           bountyStatus={status}
@@ -153,8 +156,15 @@ export const BountyCard: React.FC<BountyCardProps> = ({
             <InfoBlockWidget label="Claimed by" value={content.accountId} />
           ) : (
             <InfoBlockWidget
-              label="Available claims"
-              value={`${content.slots}/${content.slotsTotal}`}
+              label="Claims"
+              value={
+                <div>
+                  <span>{content.slots}</span>
+                  <span className={styles.slotsTotal}>
+                    /{content.slotsTotal}
+                  </span>
+                </div>
+              }
             />
           )}
         </div>
