@@ -1,11 +1,17 @@
 import React from 'react';
-import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
-import { Button } from 'components/button/Button';
-import { InfoValue } from 'astro_2.0/components/InfoBlockWidget/components/InfoValue';
-import { formatYoktoValue } from 'helpers/format';
-import { getDistanceFromNow } from 'astro_2.0/components/BountyCard/helpers';
-import { TooltipMessageSeverity } from 'astro_2.0/components/InfoBlockWidget/types';
+import cn from 'classnames';
+
 import { BountyStatus } from 'types/bounties';
+import { TooltipMessageSeverity } from 'astro_2.0/components/InfoBlockWidget/types';
+
+import { Button } from 'components/button/Button';
+import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
+import { getDistanceFromNow } from 'astro_2.0/components/BountyCard/helpers';
+import { CardFooter } from 'astro_2.0/components/BountyCard/components/CardFooter';
+import { InfoValue } from 'astro_2.0/components/InfoBlockWidget/components/InfoValue';
+
+import { formatYoktoValue } from 'helpers/format';
+
 import styles from './BountyActionsBar.module.scss';
 
 interface BountyActionsBarProps {
@@ -34,10 +40,11 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
     [BountyStatus.InProgress]: TooltipMessageSeverity.Positive,
     [BountyStatus.InProgressByMe]: TooltipMessageSeverity.Positive,
     [BountyStatus.Expired]: TooltipMessageSeverity.Warning,
+    [BountyStatus.PendingApproval]: TooltipMessageSeverity.Info,
   };
 
   return (
-    <div className={styles.root}>
+    <CardFooter>
       <InfoBlockWidget
         label="Bond"
         value={
@@ -79,7 +86,7 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
           variant="black"
           size="small"
           onClick={claimHandler}
-          className={styles.claim}
+          className={cn(styles.claim, styles.button)}
         >
           Claim
         </Button>
@@ -89,7 +96,7 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
             variant="secondary"
             size="small"
             onClick={unclaimHandler}
-            className={styles.unclaim}
+            className={cn(styles.unclaim, styles.button)}
           >
             Unclaim
           </Button>
@@ -98,12 +105,12 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
             variant="black"
             size="small"
             onClick={completeHandler}
-            className={styles.complete}
+            className={cn(styles.complete, styles.button)}
           >
             Complete
           </Button>
         </>
       )}
-    </div>
+    </CardFooter>
   );
 };
