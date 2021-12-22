@@ -1,5 +1,8 @@
-import React, { FC } from 'react';
 import cn from 'classnames';
+import React, { FC } from 'react';
+
+import { Icon } from 'components/Icon';
+
 import styles from './DaoLogo.module.scss';
 
 interface DaoLogoProps {
@@ -8,14 +11,18 @@ interface DaoLogoProps {
 }
 
 export const DaoLogo: FC<DaoLogoProps> = ({ src, className }) => {
-  return (
-    <div className={cn(styles.root, className)}>
-      {src && (
+  function renderLogo() {
+    if (src) {
+      return (
         <div
           className={styles.logo}
           style={{ backgroundImage: `url(${src})` }}
         />
-      )}
-    </div>
-  );
+      );
+    }
+
+    return <Icon name="defaultDaoLogo" className={styles.defaultLogo} />;
+  }
+
+  return <div className={cn(styles.root, className)}>{renderLogo()}</div>;
 };

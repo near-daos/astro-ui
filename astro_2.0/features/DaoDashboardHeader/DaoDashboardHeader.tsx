@@ -40,7 +40,9 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
     <div className={cn(styles.root, className)}>
       <section
         className={styles.letterHeadSection}
-        style={{ backgroundImage: `url(${flagCover})` }}
+        style={{
+          backgroundImage: `url(${flagCover || '/flags/defaultDaoFlag.png'})`,
+        }}
       >
         <DaoLogo src={flagLogo} className={styles.logo} />
       </section>
