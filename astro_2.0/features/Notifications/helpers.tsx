@@ -123,7 +123,7 @@ export function prepareSettingsPlatform(
     name: 'Platform-wide notifications',
     text:
       'Choose for how long you would like to disable notifications from your DAOs and DAOs you are a member.',
-    status: settings[0].isAllMuted
+    status: settings[0]?.isAllMuted
       ? NotificationsGroupStatus.Disable
       : NotificationsGroupStatus.Enabled,
     settings: [

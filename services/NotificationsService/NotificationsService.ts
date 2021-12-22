@@ -64,6 +64,10 @@ class NotificationsServiceClass {
   public async getNotificationsSettings(
     daosIds?: string[]
   ): Promise<NotificationSettingDTO[]> {
+    if (daosIds && daosIds.length === 0) {
+      return [];
+    }
+
     const accountId = this.sputnikNearService.getAccountId();
 
     const query = RequestQueryBuilder.create().setFilter({
