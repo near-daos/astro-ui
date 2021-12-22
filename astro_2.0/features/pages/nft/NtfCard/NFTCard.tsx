@@ -1,21 +1,35 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState, VFC } from 'react';
-
+import { ExplorerLink } from 'components/ExplorerLink';
+import { Popup } from 'components/Popup';
 import { NFTUri } from 'types/token';
+import { shortenString } from 'helpers/format';
 
 import styles from './NtfCard.module.scss';
 
 export interface NFTCardProps {
-  name: string;
   image: NFTUri[];
+  name: string;
   description?: string;
+  collection?: string;
+  contractId: string;
+  txHash?: string;
 }
 
-export const NFTCard: VFC<NFTCardProps> = ({ name, image }) => {
+export const NFTCard: VFC<NFTCardProps> = ({
+  name,
+  image,
+  collection,
+  contractId,
+  txHash,
+}) => {
   const imgRef = useRef<HTMLImageElement>(null);
   const linkRef = useRef<HTMLAnchorElement>(null);
   const [showPlaceholder, setShowPlaceholder] = useState(true);
   const [showError, setShowError] = useState(false);
+  const [contractIdPopup, setContractIdPopup] = useState<HTMLElement | null>(
+    null
+  );
 
   // We get image as src array because NFTs response comes in very different format
   // Here we try to load an image using all possible ways and once we found any working image source we
@@ -92,31 +106,54 @@ export const NFTCard: VFC<NFTCardProps> = ({ name, image }) => {
   }, [image]);
 
   return (
-    <div className={styles.root}>
-      <div>
-        <a href="*" rel="noopener noreferrer" target="_blank" ref={linkRef}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            ref={imgRef}
-            width="296px"
-            height="424px"
-            alt={name}
-            onLoad={() => setShowPlaceholder(false)}
-            src=""
-            className={styles.image}
-          />
-        </a>
+    <>
+      <div className={styles.imageWrapper}>
+        <div>
+          <a href="*" rel="noopener noreferrer" target="_blank" ref={linkRef}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              ref={imgRef}
+              width="296px"
+              height="424px"
+              alt={name}
+              onLoad={() => setShowPlaceholder(false)}
+              src=""
+              className={styles.image}
+            />
+          </a>
+        </div>
+        {showPlaceholder && (
+          <div className={styles.preloader}>
+            <div className={styles.preloaderIcon}>
+              <div />
+              <div />
+              <div />
+            </div>
+          </div>
+        )}
+        {showError && <div className={styles.error}>Failed to load image</div>}
       </div>
-      {showPlaceholder && (
-        <div className={styles.preloader}>
-          <div className={styles.preloaderIcon}>
-            <div />
-            <div />
-            <div />
+      <div className={styles.description}>
+        <div className={styles.name}>{name || 'NFT Name'}</div>
+        <div className={styles.collection}>
+          {collection || 'Collection Name'}
+        </div>
+        <div className={styles.info}>
+          <div className={styles.contract} ref={setContractIdPopup}>
+            {shortenString(contractId, 19)}
+          </div>
+          {contractId.length > 19 && (
+            <Popup anchor={contractIdPopup}>{contractId}</Popup>
+          )}
+          <div>
+            <ExplorerLink
+              linkData={txHash || 'temporary-transaction-hash-link'}
+              linkType="transaction"
+              textLabel="To the explorer"
+            />
           </div>
         </div>
-      )}
-      {showError && <div className={styles.error}>Failed to load image</div>}
-    </div>
+      </div>
+    </>
   );
 };

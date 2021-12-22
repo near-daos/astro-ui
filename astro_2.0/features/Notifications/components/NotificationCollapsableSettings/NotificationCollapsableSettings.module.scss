@@ -1,0 +1,111 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.groupSection {
+  align-items: center;
+  display: grid;
+  grid-gap: 16px;
+  grid-template-areas:
+    'flag details control'
+    'toggle toggle .';
+  grid-template-columns: 1fr 2fr 24px;
+  padding: 24px 12px;
+
+  @include tablet-landscape {
+    grid-template-areas: 'flag details toggle control';
+    grid-template-columns: 64px 2fr 1fr 24px;
+  }
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid var(--color-neutral-30);
+  }
+}
+
+.open {
+  background-color: var(--color-neutral-20);
+}
+
+.flagWrapper {
+  display: flex;
+  grid-area: flag;
+  justify-content: center;
+}
+
+.flag {
+  margin-right: 0;
+}
+
+.daoDetails {
+  display: flex;
+  flex-direction: column;
+  grid-area: details;
+
+  .inline {
+    @include ellipse-text;
+    display: block;
+    width: 270px;
+  }
+
+  .sub {
+    @extend %subtitle4;
+    @include ellipse-text;
+    color: var(--color-neutral-60);
+    display: flex;
+  }
+}
+
+.toggle {
+  color: var(--color-neutral-80);
+  display: flex;
+  grid-area: toggle;
+  justify-content: flex-start;
+  padding-left: 12px;
+  position: relative;
+  z-index: 1;
+
+  @include tablet-landscape {
+    justify-content: flex-end;
+    padding-left: 0;
+  }
+}
+
+.collapseControl {
+  display: flex;
+  grid-area: control;
+  justify-content: center;
+}
+
+.type {
+  @include font(12px, 18px, 400);
+  color: var(--color-neutral-70);
+  padding: 40px 0 20px;
+
+  @include tablet-portrait {
+    padding: 30px 0 14px;
+  }
+}
+
+.collapsableListItem {
+  padding-left: 0;
+
+  @include tablet-landscape {
+    padding-left: 68px;
+  }
+
+  &:first-of-type {
+    padding-top: 24px;
+  }
+
+  &:last-of-type {
+    padding-bottom: 24px;
+  }
+}
+
+.platformSettings {
+  margin-bottom: 24px;
+}
+
+.settingsItem {
+  padding-bottom: 24px;
+  padding-left: 12px;
+}

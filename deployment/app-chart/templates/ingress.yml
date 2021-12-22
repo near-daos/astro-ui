@@ -1,12 +1,12 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "astro-ui.fullname" . }}-ingress
   annotations:
-    kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/rewrite-target: /
     cert-manager.io/cluster-issuer: "letsencrypt-development"
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
     - {{ .Values.ingress.host }}
@@ -17,5 +17,8 @@ spec:
       paths:
         - path: /
           backend:
-            serviceName: {{ include "astro-ui.fullname" . }}
-            servicePort: 80
+            service:
+              name: {{ include "astro-ui.fullname" . }}
+              port:
+                number: 80
+          pathType: ImplementationSpecific

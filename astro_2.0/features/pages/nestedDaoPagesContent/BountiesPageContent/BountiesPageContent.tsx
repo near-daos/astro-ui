@@ -1,13 +1,15 @@
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
-import React, { VFC, useRef, useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'next-i18next';
+import React, { useCallback, useEffect, useRef, useState, VFC } from 'react';
 
 import { useAuthContext } from 'context/AuthContext';
 
 import { DaoContext } from 'types/context';
-import { ProposalVariant } from 'types/proposal';
 import { Bounty, BountyStatus } from 'types/bounties';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
+import { Proposal, ProposalType, ProposalVariant } from 'types/proposal';
+import { BountyCardContent } from 'astro_2.0/components/BountyCard/types';
 
 import { FeedFilter } from 'astro_2.0/components/Feed';
 import { Radio } from 'astro_2.0/components/inputs/Radio';
@@ -23,6 +25,8 @@ import {
 import useQuery from 'hooks/useQuery';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+
 import { SputnikHttpService, SputnikNearService } from 'services/sputnik';
 
 import styles from './BountiesPageContent.module.scss';
@@ -30,12 +34,14 @@ import styles from './BountiesPageContent.module.scss';
 export interface BountiesPageContentProps {
   daoContext: DaoContext;
   initialBounties: Bounty[];
+  bountyDoneProposals: Proposal[];
   toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
 }
 
 export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
   daoContext,
   initialBounties,
+  bountyDoneProposals,
   toggleCreateProposal,
 }) => {
   const { dao } = daoContext;
@@ -43,6 +49,7 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
   const router = useRouter();
   const { accountId } = useAuthContext();
   const { tokens } = useDaoCustomTokens();
+  const { t } = useTranslation();
 
   const neighbourRef = useRef(null);
 
@@ -71,9 +78,14 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
     };
   }
 
-  const onSuccessHandler = useCallback(() => {
-    router.replace(router.asPath);
-  }, [router]);
+  const onSuccessHandler = useCallback(async () => {
+    await router.replace(router.asPath);
+    showNotification({
+      type: NOTIFICATION_TYPES.INFO,
+      lifetime: 20000,
+      description: t('bountiesPage.successClaimBountyNotification'),
+    });
+  }, [t, router]);
 
   const handleClaim = useCallback(
     (bountyId, deadline) => async () => {
@@ -94,6 +106,28 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
     },
     [daoId]
   );
+
+  function getBountyDoneProposal(
+    bountyContent: BountyCardContent
+  ): Proposal | undefined {
+    const { id, status, accountId: bountyAccountId } = bountyContent;
+
+    if (status !== BountyStatus.InProgress) {
+      return undefined;
+    }
+
+    return bountyDoneProposals.find(proposal => {
+      const { kind } = proposal;
+
+      if (kind.type === ProposalType.BountyDone) {
+        const { bountyId, receiverId } = kind;
+
+        return id === bountyId && receiverId === bountyAccountId;
+      }
+
+      return false;
+    });
+  }
 
   return (
     <div className={styles.root}>
@@ -119,6 +153,10 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
       ) : (
         <div className={styles.grid}>
           {bounties.flatMap(bounty => {
+            const claimedBy = bounty.claimedBy.map(
+              ({ accountId: claimedAccount }) => claimedAccount
+            );
+
             const content = mapBountyToCardContent(
               dao,
               bounty,
@@ -127,19 +165,36 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
               query.bountyStatus
             );
 
-            return content.map(cardContent => (
-              <BountyCard
-                key={Math.floor(Math.random() * 10000)}
-                content={cardContent}
-                claimHandler={handleClaim(bounty.id, bounty.deadlineThreshold)}
-                showActionBar={showActionBar(cardContent, accountId)}
-                unclaimHandler={handleUnclaim(bounty.id)}
-                completeHandler={handleCreateProposal(
-                  bounty.id,
-                  ProposalVariant.ProposeDoneBounty
-                )}
-              />
-            ));
+            return content.map(singleContent => {
+              const cardContent = {
+                ...singleContent,
+              };
+
+              const bountyDoneProposal = getBountyDoneProposal(cardContent);
+
+              if (bountyDoneProposal) {
+                cardContent.status = BountyStatus.PendingApproval;
+              }
+
+              return (
+                <BountyCard
+                  key={Math.floor(Math.random() * 10000)}
+                  content={cardContent}
+                  claimHandler={handleClaim(
+                    bounty.id,
+                    bounty.deadlineThreshold
+                  )}
+                  canClaim={!claimedBy.includes(accountId)}
+                  showActionBar={showActionBar(cardContent, accountId)}
+                  unclaimHandler={handleUnclaim(bounty.id)}
+                  completeHandler={handleCreateProposal(
+                    bounty.id,
+                    ProposalVariant.ProposeDoneBounty
+                  )}
+                  relatedProposal={bountyDoneProposal}
+                />
+              );
+            });
           })}
         </div>
       )}

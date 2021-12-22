@@ -33,6 +33,7 @@ export enum BountyStatus {
   InProgress = 'InProgress',
   InProgressByMe = 'InProgressByMe',
   Expired = 'Expired',
+  PendingApproval = 'PendingApproval',
 }
 
 export type ClaimedBy = {
@@ -53,6 +54,7 @@ export type Bounty = {
   forgivenessPeriod: string;
   externalUrl?: string;
   slots: number;
+  slotsTotal: number;
   claimedBy: ClaimedBy[];
   deadlineThreshold: string;
   completionDate?: string;

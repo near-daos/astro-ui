@@ -29,7 +29,10 @@ export const NotificationsBell: VFC<NotificationsBellProps> = ({
   const { notifications } = useNotifications();
 
   function renderBellIcon() {
-    if (isEmpty(notifications)) {
+    if (
+      isEmpty(notifications) ||
+      !notifications.filter(item => !item.isRead).length
+    ) {
       return <Icon name="noteBell" className={styles.bell} />;
     }
 

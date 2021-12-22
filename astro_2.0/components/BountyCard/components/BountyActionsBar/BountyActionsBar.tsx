@@ -1,14 +1,21 @@
 import React from 'react';
-import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
-import { Button } from 'components/button/Button';
-import { InfoValue } from 'astro_2.0/components/InfoBlockWidget/components/InfoValue';
-import { formatYoktoValue } from 'helpers/format';
-import { getDistanceFromNow } from 'astro_2.0/components/BountyCard/helpers';
-import { TooltipMessageSeverity } from 'astro_2.0/components/InfoBlockWidget/types';
+import cn from 'classnames';
+
 import { BountyStatus } from 'types/bounties';
+import { TooltipMessageSeverity } from 'astro_2.0/components/InfoBlockWidget/types';
+
+import { Button } from 'components/button/Button';
+import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
+import { getDistanceFromNow } from 'astro_2.0/components/BountyCard/helpers';
+import { CardFooter } from 'astro_2.0/components/BountyCard/components/CardFooter';
+import { InfoValue } from 'astro_2.0/components/InfoBlockWidget/components/InfoValue';
+
+import { formatYoktoValue } from 'helpers/format';
+
 import styles from './BountyActionsBar.module.scss';
 
 interface BountyActionsBarProps {
+  canClaim: boolean;
   bountyBond: string;
   forgivenessPeriod: string;
   bountyStatus: BountyStatus;
@@ -24,6 +31,7 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
   claimHandler,
   unclaimHandler,
   completeHandler,
+  canClaim,
 }) => {
   const [, graceValue, graceTimeUnit] = getDistanceFromNow(
     forgivenessPeriod
@@ -34,10 +42,52 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
     [BountyStatus.InProgress]: TooltipMessageSeverity.Positive,
     [BountyStatus.InProgressByMe]: TooltipMessageSeverity.Positive,
     [BountyStatus.Expired]: TooltipMessageSeverity.Warning,
+    [BountyStatus.PendingApproval]: TooltipMessageSeverity.Info,
   };
 
+  function renderButtons() {
+    if (bountyStatus === 'Available') {
+      if (canClaim) {
+        return (
+          <Button
+            variant="black"
+            size="small"
+            onClick={claimHandler}
+            className={cn(styles.claim, styles.button)}
+          >
+            Claim
+          </Button>
+        );
+      }
+
+      return <div className={styles.stub} />;
+    }
+
+    return (
+      <>
+        <Button
+          variant="secondary"
+          size="small"
+          onClick={unclaimHandler}
+          className={cn(styles.unclaim, styles.button)}
+        >
+          Unclaim
+        </Button>
+
+        <Button
+          variant="black"
+          size="small"
+          onClick={completeHandler}
+          className={cn(styles.complete, styles.button)}
+        >
+          Complete
+        </Button>
+      </>
+    );
+  }
+
   return (
-    <div className={styles.root}>
+    <CardFooter>
       <InfoBlockWidget
         label="Bond"
         value={
@@ -74,36 +124,7 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
           messageSeverity={TooltipMessageSeverity.Info}
         />
       )}
-      {bountyStatus === 'Available' ? (
-        <Button
-          variant="black"
-          size="small"
-          onClick={claimHandler}
-          className={styles.claim}
-        >
-          Claim
-        </Button>
-      ) : (
-        <>
-          <Button
-            variant="secondary"
-            size="small"
-            onClick={unclaimHandler}
-            className={styles.unclaim}
-          >
-            Unclaim
-          </Button>
-
-          <Button
-            variant="black"
-            size="small"
-            onClick={completeHandler}
-            className={styles.complete}
-          >
-            Complete
-          </Button>
-        </>
-      )}
-    </div>
+      {renderButtons()}
+    </CardFooter>
   );
 };
