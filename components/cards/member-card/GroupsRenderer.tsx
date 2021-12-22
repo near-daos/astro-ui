@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import cn from 'classnames';
 import { Badge } from 'components/badge/Badge';
+import { BadgeList } from 'components/BadgeList';
 import { useMeasure } from 'react-use';
 
 import styles from './groups-renderer.module.scss';
@@ -53,30 +54,10 @@ export const GroupsRenderer: FC<GroupsRendererProps> = ({ selectedItems }) => {
           </Badge>
         </div>
       </div>
-      <div className={styles.selected}>
-        {selectedItems
-          .filter((k, i) => {
-            if (i === 0) return true;
-
-            return !showPlaceholder;
-          })
-          .map(sel => {
-            return (
-              <div key={sel.label} className={styles.selectedWrapper}>
-                {sel.component}
-              </div>
-            );
-          })}
-        <div
-          className={cn(styles.collapsedLabel, styles.selectedWrapper, {
-            [styles.visible]: showPlaceholder,
-          })}
-        >
-          <Badge size="small" variant="turqoise">
-            +{selectedItems.length - 1}
-          </Badge>
-        </div>
-      </div>
+      <BadgeList
+        selectedItems={selectedItems}
+        showPlaceholder={showPlaceholder}
+      />
     </div>
   );
 };

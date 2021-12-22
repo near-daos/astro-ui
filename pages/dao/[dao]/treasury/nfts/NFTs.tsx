@@ -18,9 +18,14 @@ import { SputnikHttpService } from 'services/sputnik';
 import { DaoContext } from 'types/context';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
+import { DropdownMultiSelect } from 'components/inputs/selects/DropdownMultiSelect';
+import uniqBy from 'lodash/uniqBy';
+import isEmpty from 'lodash/isEmpty';
 
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+
+import { NFT_COLLECTIONS_DATA } from 'mocks/nftData';
 
 import styles from './nfts.module.scss';
 
@@ -47,6 +52,40 @@ const NFTs: NextPage<NFTsPageProps> = ({
       setNfts(data);
     });
   }, [daoId]);
+
+  const [currentContractIds, setCurrentContractIds] = useState<string[]>([]);
+  const nftsByUniqueContractId = uniqBy(nfts, 'contractId');
+
+  const uniqueContracts = nftsByUniqueContractId.map(nft => {
+    const { contractId } = nft;
+    const contractNameComponent = <div>{nft.contractName}</div>;
+
+    return {
+      label: contractId,
+      component: contractNameComponent,
+    };
+  });
+
+  function renderNfts() {
+    const nftsToRender = isEmpty(currentContractIds)
+      ? nfts
+      : nfts.filter(nft => currentContractIds.includes(nft.contractId));
+
+    return nftsToRender.map(nft => {
+      const { uri, title, contractId, transactionHash } = nft;
+
+      return (
+        <div className={styles.card} key={transactionHash}>
+          <NFTCard
+            name={title}
+            image={uri}
+            txHash={transactionHash}
+            contractId={contractId}
+          />
+        </div>
+      );
+    });
+  }
 
   return (
     <div className={styles.root}>
@@ -81,21 +120,28 @@ const NFTs: NextPage<NFTsPageProps> = ({
       ) : (
         <>
           <div className={styles.header}>
-            <h1>All NFTs</h1>
-          </div>
-          <div className={styles.content}>
-            {nfts.map((nft, i) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <div className={styles.card} key={`${i}`}>
-                <NFTCard
-                  name={nft.title}
-                  image={nft.uri}
-                  txHash={nft.transactionHash}
-                  contractId={nft.contractId}
+            <h1>NFTs</h1>
+            <div className={styles.selectors}>
+              <div className={styles.collections}>
+                <DropdownMultiSelect
+                  onChange={() => true}
+                  label="Collection"
+                  options={NFT_COLLECTIONS_DATA}
+                  simple
                 />
               </div>
-            ))}
+              <div className={styles.contracts}>
+                <DropdownMultiSelect
+                  onChange={v => setCurrentContractIds(v)}
+                  defaultValue={currentContractIds}
+                  label="Smart contract"
+                  options={uniqueContracts}
+                  simple
+                />
+              </div>
+            </div>
           </div>
+          <div className={styles.content}>{renderNfts()}</div>
         </>
       )}
     </div>

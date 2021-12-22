@@ -40,14 +40,9 @@
     justify-content: space-between;
   }
 
-  .selected,
   .selectedMeasure {
     display: flex;
     flex: 1;
-  }
-
-  .selected .selectedWrapper {
-    margin-right: 4px;
   }
 
   .selectedMeasure .selectedWrapper {
@@ -70,12 +65,6 @@
 
   .collapsedLabel.visible {
     visibility: visible;
-  }
-
-  .placeholder {
-    @extend %body1;
-    color: var(--color-neutral-60);
-    font-size: 16px;
   }
 
   &.borderless {
@@ -105,7 +94,7 @@
 }
 
 .menu {
-  background: #fff;
+  background: var(--color-white);
   border-radius: 8px;
   box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
   list-style: none;
@@ -146,15 +135,84 @@
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .select {
-    //flex: 0 0 40px;
-    //width: 40px;
-  }
-  .select .selected {
-    //display: none;
-  }
   .menu {
     right: calc(100% - 80px);
     width: max-content;
+  }
+}
+
+.simple {
+  .dropdown {
+    height: 40px;
+  }
+
+  .select {
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid var(--color-neutral-40);
+    border-radius: 5px;
+    height: 40px;
+    padding: 0 12px 0 20px;
+  }
+
+  .label {
+    @include font(14px, 24px, 700);
+    color: var(--color-neutral-70);
+    padding: 0;
+  }
+
+  .icon {
+    color: var(--color-neutral-60);
+    margin: 0;
+    transition: transform 0.4s;
+    width: 24px;
+  }
+
+  .menu {
+    margin: 0;
+    right: auto;
+    top: 40px;
+    width: 100%;
+  }
+
+  .item {
+    @include font(14px, 24px, 500);
+    align-items: flex-start;
+    border-radius: 0;
+    color: var(--color-neutral-60);
+    cursor: pointer;
+    margin: 4px;
+    min-height: 40px;
+  }
+
+  .item:first-child {
+    margin-top: 8px;
+  }
+
+  .item:last-child {
+    margin-bottom: 4px;
+  }
+
+  .item:hover {
+    background-color: transparent;
+    color: var(--color-neutral-70);
+  }
+
+  .item.checked {
+    color: var(--color-neutral-70);
+  }
+
+  .checkbox {
+    color: var(--color-neutral-40);
+    margin: 4px 6px 0 0;
+    transition: color 0.2s;
+  }
+
+  .item:hover .checkbox {
+    color: var(--color-primary-50);
+  }
+
+  .item.checked .checkbox {
+    color: var(--color-primary-50);
   }
 }

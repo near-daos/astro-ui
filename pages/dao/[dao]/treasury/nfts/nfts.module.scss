@@ -13,10 +13,48 @@
 }
 
 .header {
+  display: flex;
+  flex-direction: column;
   grid-area: header;
 
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
   h1 {
-    margin: 0;
+    margin: 0 0 28px;
+
+    @include tablet-portrait {
+      margin: 0;
+    }
+  }
+}
+
+.selectors {
+  display: flex;
+  flex-direction: column-reverse;
+
+  @include tablet-portrait {
+    flex-direction: row;
+  }
+}
+
+.collections,
+.contracts {
+  width: 100%;
+
+  @include tablet-portrait {
+    width: 232px;
+  }
+}
+
+.collections {
+  margin-top: 12px;
+
+  @include tablet-portrait {
+    margin: 0 24px 0 0;
   }
 }
 
@@ -39,7 +77,7 @@
   grid-auto-flow: dense;
   grid-gap: 24px;
   grid-template-columns: repeat(auto-fill, 296px);
-  padding-top: 48px;
+  padding: 48px 0;
 }
 
 .createProposal {
