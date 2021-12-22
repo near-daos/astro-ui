@@ -132,6 +132,7 @@ export type Proposal = {
   proposalId: number;
   daoId: string;
   proposer: string;
+  commentsCount: number;
   description: string;
   status: ProposalStatus;
   kind: ProposalKind;
@@ -283,3 +284,49 @@ export interface ProposalActionData {
   transactionHash: string;
   timestamp: string;
 }
+
+export type ProposalCommentReport = {
+  isArchived: boolean;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+  commentId: number;
+  accountId: string;
+  reason: string;
+};
+
+export interface ProposalComment {
+  isArchived: boolean;
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  daoId: string;
+  proposalId: string;
+  accountId: string;
+  message: string;
+  reports: ProposalCommentReport[];
+}
+
+type AuthorizedRequest = {
+  accountId: string;
+  publicKey: string;
+  signature: string;
+};
+
+export type SendCommentsInput = {
+  proposalId: string;
+  message: string;
+};
+
+export type ReportCommentsInput = {
+  commentId: string;
+  reason: string;
+};
+
+export type DeleteCommentsInput = {
+  reason: string;
+};
+
+export type SendProposalComment = AuthorizedRequest & SendCommentsInput;
+export type ReportProposalComment = AuthorizedRequest & ReportCommentsInput;
+export type DeleteProposalComment = AuthorizedRequest & DeleteCommentsInput;

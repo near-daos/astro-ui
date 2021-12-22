@@ -9,3 +9,12 @@
     justify-content: flex-end;
   }
 }
+
+.toggleCommentsButton {
+  border-radius: 50%;
+  transition: box-shadow 0.4s;
+  width: 27px;
+  &:hover {
+    box-shadow: 3px 2px 16px var(--color-removed-opacity-25);
+  }
+}

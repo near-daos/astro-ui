@@ -29,6 +29,10 @@ import {
   Proposal,
   ProposalStatuses,
   ProposalType,
+  ProposalComment,
+  SendProposalComment,
+  ReportProposalComment,
+  DeleteProposalComment,
 } from 'types/proposal';
 
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
@@ -949,6 +953,87 @@ class SputnikHttpServiceClass {
       DaoSubscriptionInput,
       { data: { accountId: string } }
     >(`/subscriptions/${subscriptionId}`, params);
+
+    return response.data.accountId;
+  }
+
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  // eslint-disable-next-line class-methods-use-this
+  public async getProposalComments(
+    proposalId: string
+  ): Promise<ProposalComment[]> {
+    // const { data } = await this.httpService.get<ProposalComment[]>(
+    //   `/proposal/${proposalId}/comments/`
+    // );
+
+    return [
+      {
+        id: 1,
+        proposalId: '1',
+        accountId: 'jason',
+        createdAt: '2021-12-22T11:07:58.584Z',
+        message: 'A caelo usque ad centrum',
+        daoId: '',
+        isArchived: false,
+        reports: [],
+        updatedAt: '2021-12-22T11:07:58.584Z',
+      },
+      {
+        id: 2,
+        proposalId: '1',
+        accountId: 'anima.testnet',
+        createdAt: '2021-12-22T11:08:58.584Z',
+        message:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        daoId: '',
+        isArchived: false,
+        reports: [],
+        updatedAt: '2021-12-22T11:07:58.584Z',
+      },
+      {
+        id: 3,
+        proposalId: '1',
+        accountId: 'james',
+        createdAt: '2021-12-22T11:08:58.584Z',
+        message: 'Ad cogitandum et agendum homo natus est',
+        daoId: '',
+        isArchived: false,
+        reports: [],
+        updatedAt: '2021-12-22T11:07:58.584Z',
+      },
+    ];
+  }
+
+  public async sendProposalComment(
+    params: SendProposalComment
+  ): Promise<string> {
+    const response = await this.httpService.post<
+      SendProposalComment,
+      { data: { accountId: string } }
+    >(`/comments`, params);
+
+    return response.data.accountId;
+  }
+
+  public async reportProposalComment(
+    params: ReportProposalComment
+  ): Promise<string> {
+    const response = await this.httpService.post<
+      ReportProposalComment,
+      { data: { accountId: string } }
+    >(`/comments/report`, params);
+
+    return response.data.accountId;
+  }
+
+  public async deleteProposalComment(
+    commentId: number,
+    params: DeleteProposalComment
+  ): Promise<string> {
+    const response = await this.httpService.delete<
+      DeleteProposalComment,
+      { data: { accountId: string } }
+    >(`/comments/${commentId}`, params);
 
     return response.data.accountId;
   }
