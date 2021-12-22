@@ -1,6 +1,7 @@
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
-import React, { VFC, useRef, useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'next-i18next';
+import React, { useCallback, useEffect, useRef, useState, VFC } from 'react';
 
 import { useAuthContext } from 'context/AuthContext';
 
@@ -24,6 +25,8 @@ import {
 import useQuery from 'hooks/useQuery';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+
 import { SputnikHttpService, SputnikNearService } from 'services/sputnik';
 
 import styles from './BountiesPageContent.module.scss';
@@ -46,6 +49,7 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
   const router = useRouter();
   const { accountId } = useAuthContext();
   const { tokens } = useDaoCustomTokens();
+  const { t } = useTranslation();
 
   const neighbourRef = useRef(null);
 
@@ -74,9 +78,14 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
     };
   }
 
-  const onSuccessHandler = useCallback(() => {
-    router.replace(router.asPath);
-  }, [router]);
+  const onSuccessHandler = useCallback(async () => {
+    await router.replace(router.asPath);
+    showNotification({
+      type: NOTIFICATION_TYPES.INFO,
+      lifetime: 20000,
+      description: t('bountiesPage.successClaimBountyNotification'),
+    });
+  }, [t, router]);
 
   const handleClaim = useCallback(
     (bountyId, deadline) => async () => {
@@ -144,6 +153,10 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
       ) : (
         <div className={styles.grid}>
           {bounties.flatMap(bounty => {
+            const claimedBy = bounty.claimedBy.map(
+              ({ accountId: claimedAccount }) => claimedAccount
+            );
+
             const content = mapBountyToCardContent(
               dao,
               bounty,
@@ -171,6 +184,7 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
                     bounty.id,
                     bounty.deadlineThreshold
                   )}
+                  canClaim={!claimedBy.includes(accountId)}
                   showActionBar={showActionBar(cardContent, accountId)}
                   unclaimHandler={handleUnclaim(bounty.id)}
                   completeHandler={handleCreateProposal(

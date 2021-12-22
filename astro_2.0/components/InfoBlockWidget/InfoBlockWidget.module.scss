@@ -5,7 +5,6 @@
 .label {
   @extend %caption1;
   color: var(--color-neutral-60);
-  margin-bottom: 4px;
 }
 
 .root {
@@ -21,6 +20,10 @@
   display: flex;
   justify-content: flex-start;
   width: 100%;
+
+  &:first-of-type {
+    margin-bottom: 4px;
+  }
 }
 
 .iconHolder {

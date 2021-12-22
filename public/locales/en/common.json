@@ -56,5 +56,8 @@
   "users": "Users",
   "archived": "Archived",
   "youFollowed": "You Followed",
-  "confirmUnsubscribe": "Are you sure you want to unsubscribe from"
+  "confirmUnsubscribe": "Are you sure you want to unsubscribe from",
+  "bountiesPage": {
+    "successClaimBountyNotification": "The blockchain transactions might take some time to perform, please visit the page in few seconds"
+  }
 }
