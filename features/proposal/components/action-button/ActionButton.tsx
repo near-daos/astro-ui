@@ -54,6 +54,7 @@ export const ActionButton: FC<ActionButtonProps> = ({
       {tooltip && !disabled && (
         <Popup
           anchor={ref}
+          delayShow={0.7}
           placement={tooltipPlacement}
           className={styles.popup}
         >

@@ -85,7 +85,7 @@ export const NotificationsProvider: FC = ({ children }) => {
   const handleUpdate = useCallback(
     async (id, { isRead, isMuted, isArchived }) => {
       const publicKey = await SputnikNearService.getPublicKey();
-      const signature = await SputnikNearService.signMessage(accountId);
+      const signature = await SputnikNearService.getSignature();
 
       if (accountId && publicKey && signature) {
         if (showArchived) {

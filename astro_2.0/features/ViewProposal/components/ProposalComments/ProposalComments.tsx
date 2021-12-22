@@ -1,17 +1,15 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { format, parseISO } from 'date-fns';
-import cn from 'classnames';
+import { useMedia } from 'react-use';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { useAuthContext } from 'context/AuthContext';
-import {
-  TICK_LEFT,
-  TICK_RIGHT,
-} from 'astro_2.0/features/ViewProposal/components/ProposalComments/helpers';
 import { useProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments/hooks';
 
+import { Comment } from 'astro_2.0/features/ViewProposal/components/ProposalComments/components/Comment';
 import { Input } from 'components/inputs/Input';
 import { Button } from 'components/button/Button';
-import { Loader } from 'components/loader';
+import { IconButton } from 'components/button/IconButton';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import styles from './ProposalComments.module.scss';
 
@@ -20,13 +18,14 @@ interface ProposalCommentsProps {
 }
 
 export const ProposalComments: FC<ProposalCommentsProps> = ({ proposalId }) => {
+  const isMobile = useMedia('(max-width: 920px)');
   const { accountId: loggedInAccountId } = useAuthContext();
   const commentsRef = useRef<HTMLUListElement>(null);
   const inputRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState('');
   const [focused, setFocused] = useState(false);
 
-  const { comments, loading, sendComment } = useProposalComments(proposalId);
+  const { comments, sendComment } = useProposalComments(proposalId);
 
   const handleCommentInput = useCallback(e => {
     setValue(e.target.value);
@@ -57,7 +56,7 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({ proposalId }) => {
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.scrollIntoView({
-        block: 'center',
+        block: 'end',
         behavior: 'smooth',
       });
     }
@@ -98,24 +97,30 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({ proposalId }) => {
             const isMyComment = accountId === loggedInAccountId;
 
             return (
-              <li
-                className={cn(styles.comment, {
-                  [styles.myComment]: isMyComment,
-                })}
+              <Comment
                 key={id}
-              >
-                {isMyComment ? TICK_RIGHT : TICK_LEFT}
-                {!isMyComment && (
-                  <div className={styles.commentAuthor}>{accountId}</div>
-                )}
-                <p>{message}</p>
-                <div className={styles.time}>
-                  {format(parseISO(createdAt), 'hh:mm a')}
-                </div>
-              </li>
+                accountId={accountId}
+                createdAt={createdAt}
+                isMyComment={isMyComment}
+                message={message}
+              />
             );
           })}
-        {loading && <Loader />}
+        <AnimatePresence>
+          <motion.div
+            key="noResults"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {!comments?.length && (
+              <NoResultsView
+                title="No comments yet"
+                className={styles.loader}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </ul>
       <div className={styles.addCommentSection} ref={inputRef}>
         <Input
@@ -128,13 +133,21 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({ proposalId }) => {
           isBorderless
           placeholder="Start typing..."
         />
-        <Button
-          variant="primary"
-          className={styles.submitButton}
-          onClick={handleSubmit}
-        >
-          Send
-        </Button>
+        {isMobile ? (
+          <IconButton
+            icon="paperAirplane"
+            onClick={handleSubmit}
+            className={styles.mobileSubmitButton}
+          />
+        ) : (
+          <Button
+            variant="primary"
+            className={styles.submitButton}
+            onClick={handleSubmit}
+          >
+            Send
+          </Button>
+        )}
       </div>
     </div>
   );

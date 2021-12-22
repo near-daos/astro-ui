@@ -68,7 +68,7 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
         voted={false}
         times={kFormatter(commentsCount)}
         onClick={toggleInfoPanel}
-        disabled={!!disableControls}
+        disabled={false}
       />
     </div>
   );

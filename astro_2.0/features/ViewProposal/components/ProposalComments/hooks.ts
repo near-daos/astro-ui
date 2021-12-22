@@ -42,7 +42,7 @@ export function useProposalComments(
     async params => {
       try {
         const publicKey = await SputnikNearService.getPublicKey();
-        const signature = await SputnikNearService.signMessage(accountId);
+        const signature = await SputnikNearService.getSignature();
 
         if (publicKey && signature && accountId) {
           await SputnikHttpService.sendProposalComment({
@@ -67,7 +67,7 @@ export function useProposalComments(
     async params => {
       try {
         const publicKey = await SputnikNearService.getPublicKey();
-        const signature = await SputnikNearService.signMessage(accountId);
+        const signature = await SputnikNearService.getSignature();
 
         if (publicKey && signature && accountId) {
           await SputnikHttpService.reportProposalComment({
@@ -92,7 +92,7 @@ export function useProposalComments(
     async (commentId, reason) => {
       try {
         const publicKey = await SputnikNearService.getPublicKey();
-        const signature = await SputnikNearService.signMessage(accountId);
+        const signature = await SputnikNearService.getSignature();
 
         if (publicKey && signature && accountId) {
           await SputnikHttpService.deleteProposalComment(commentId, {
@@ -115,7 +115,7 @@ export function useProposalComments(
 
   useEffect(() => {
     if (socket) {
-      socket.on('comments', (newComment: ProposalComment) => {
+      socket.on('comment', (newComment: ProposalComment) => {
         if (newComment.proposalId === proposalId) {
           setComments(prev => {
             if (prev) {

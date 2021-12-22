@@ -73,7 +73,7 @@
   input {
     background-color: var(--color-white);
     flex: 1;
-    //height: 40px !important;
+    height: 40px !important;
     padding: 8px !important;
     white-space: nowrap;
     word-break: normal;
@@ -86,58 +86,16 @@
 }
 
 .comments {
+  display: flex;
   flex: 1;
+  flex-direction: column;
   list-style: none;
   margin: 0;
   max-height: 300px;
+  min-height: 300px;
   overflow: auto;
   padding: 20px 16px 0;
   width: 100%;
-}
-
-.comment {
-  @extend %body2;
-  background-color: var(--color-neutral-20);
-  border-radius: 0 4px 4px;
-  color: var(--color-black);
-  margin-bottom: 12px;
-  max-width: 60%;
-  padding: 12px;
-  position: relative;
-  width: fit-content;
-
-  p {
-    margin: 2px 0;
-  }
-
-  .time {
-    @extend %caption1;
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  &.myComment {
-    background-color: var(--color-neutral-30);
-    border-radius: 4px 0 4px 4px;
-    margin-left: auto;
-  }
-}
-
-.tickMark {
-  position: absolute;
-  top: 0;
-}
-
-.tickRight {
-  right: -8px;
-}
-
-.tickLeft {
-  left: -10px;
-}
-
-.commentAuthor {
-  @extend %subtitle3;
 }
 
 .addCommentSection {
@@ -158,6 +116,30 @@
 
   &:hover {
     box-shadow: 2px 3px 4px var(--color-black-opacity-1);
+  }
+}
+
+.mobileSubmitButton {
+  margin: 0 8px;
+}
+
+.loader.loader {
+  color: var(--color-black);
+  min-height: 0;
+  padding: 0;
+
+  svg {
+    height: 100px;
+    width: 100px;
+  }
+  h2 {
+    color: currentColor;
+    font-size: 12px !important;
+    margin: 0;
+  }
+  p {
+    color: currentColor;
+    font-size: 10px !important;
   }
 }
 

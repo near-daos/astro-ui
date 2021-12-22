@@ -957,51 +957,25 @@ class SputnikHttpServiceClass {
     return response.data.accountId;
   }
 
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  // eslint-disable-next-line class-methods-use-this
   public async getProposalComments(
     proposalId: string
   ): Promise<ProposalComment[]> {
-    // const { data } = await this.httpService.get<ProposalComment[]>(
-    //   `/proposal/${proposalId}/comments/`
-    // );
+    const offset = 0;
+    const limit = 3000;
+    const sort = 'createdAt,DESC';
 
-    return [
-      {
-        id: 1,
-        proposalId: '1',
-        accountId: 'jason',
-        createdAt: '2021-12-22T11:07:58.584Z',
-        message: 'A caelo usque ad centrum',
-        daoId: '',
-        isArchived: false,
-        reports: [],
-        updatedAt: '2021-12-22T11:07:58.584Z',
+    const { data } = await this.httpService.get<
+      PaginationResponse<ProposalComment[]>
+    >(`/comments`, {
+      params: {
+        offset,
+        limit,
+        sort,
+        filter: `proposalId||$eq||${proposalId}`,
       },
-      {
-        id: 2,
-        proposalId: '1',
-        accountId: 'anima.testnet',
-        createdAt: '2021-12-22T11:08:58.584Z',
-        message:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-        daoId: '',
-        isArchived: false,
-        reports: [],
-        updatedAt: '2021-12-22T11:07:58.584Z',
-      },
-      {
-        id: 3,
-        proposalId: '1',
-        accountId: 'james',
-        createdAt: '2021-12-22T11:08:58.584Z',
-        message: 'Ad cogitandum et agendum homo natus est',
-        daoId: '',
-        isArchived: false,
-        reports: [],
-        updatedAt: '2021-12-22T11:07:58.584Z',
-      },
-    ];
+    });
+
+    return data.data;
   }
 
   public async sendProposalComment(

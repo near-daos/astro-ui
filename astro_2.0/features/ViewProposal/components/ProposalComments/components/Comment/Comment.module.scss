@@ -1,0 +1,91 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  @extend %body2;
+  background-color: var(--color-neutral-20);
+  border-radius: 0 4px 4px;
+  color: var(--color-black);
+  height: fit-content;
+  margin-bottom: 42px;
+  //margin-top: auto;
+  max-width: 60%;
+  padding: 12px;
+  position: relative;
+  width: fit-content;
+
+  &:first-of-type {
+    margin-top: auto;
+  }
+
+  p {
+    margin: 2px 0;
+  }
+
+  .time {
+    @extend %caption1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &.myComment {
+    background-color: var(--color-neutral-30);
+    border-radius: 4px 0 4px 4px;
+    margin-left: auto;
+  }
+}
+
+.tickMark {
+  position: absolute;
+  top: 0;
+}
+
+.tickRight {
+  right: -8px;
+}
+
+.tickLeft {
+  left: -10px;
+}
+
+.commentAuthor {
+  @extend %subtitle3;
+}
+
+.commentControls {
+  display: flex;
+  left: 0;
+  position: absolute;
+  top: 100%;
+  visibility: hidden;
+  width: 100%;
+}
+
+.commentControlButtonWrapper {
+  @include centralize;
+  background-color: var(--color-primary-20);
+  border-radius: 50%;
+  height: 24px;
+  transform: translateY(4px);
+  width: 24px;
+
+  &:not(:first-of-type) {
+    margin-left: 8px;
+  }
+}
+
+.commentControlButton + div {
+  white-space: nowrap;
+}
+
+.commentControlIcon {
+  height: 16px;
+  transform: translateY(-1px);
+  width: 16px;
+}
+
+.root:hover {
+  .commentControls {
+    visibility: visible;
+  }
+}

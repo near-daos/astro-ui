@@ -110,7 +110,6 @@ export const ViewProposal: FC<CreateProposalProps> = ({
               initial="hidden"
               animate="visible"
               variants={variants}
-              exit={{ opacity: 0, transform: 'translateY(-100px)' }}
               transition={{
                 duration: 0.3,
               }}

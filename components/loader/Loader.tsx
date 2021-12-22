@@ -96,7 +96,7 @@ export const Loader: FC<LoaderProps> = ({
     <div className={cn(styles.root, className)}>
       <div className={styles.logo}>{PRELOADER}</div>
       <h2 className={styles.title}>{title}</h2>
-      <div className={styles.subtitle}>This may take some time</div>
+      <p className={styles.subtitle}>This may take some time</p>
     </div>
   );
 };
