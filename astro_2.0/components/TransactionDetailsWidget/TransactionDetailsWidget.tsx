@@ -1,6 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 
 import { Button } from 'components/button/Button';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
@@ -35,12 +36,13 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
   warning,
 }) => {
   const { handleSubmit, register } = useFormContext();
+  const { t } = useTranslation();
 
   function renderWarning() {
     if (warning) {
       return (
         <InfoBlockWidget
-          label="Warning"
+          label={t('components.transactionDetailsWidget.warning')}
           value={warning}
           className={styles.warningContainer}
           valueClassName={styles.warning}
@@ -70,7 +72,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
             <InputWrapper
               className={styles.detailsItem}
               fieldName="gas"
-              label="Gas"
+              label={t('components.transactionDetailsWidget.gas')}
             >
               <div className={styles.row}>
                 <Input
@@ -90,7 +92,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
             <InputWrapper
               className={styles.detailsItem}
               fieldName="bond"
-              label="Bond"
+              label={t('components.transactionDetailsWidget.bond')}
             >
               <div className={styles.row}>
                 <Input

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import React, { useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 
 import { nearConfig } from 'config';
 
@@ -26,6 +27,9 @@ import styles from './DaoSubmitForm.module.scss';
 
 export function DaoSubmitForm(): JSX.Element {
   const router = useRouter();
+
+  const { t } = useTranslation();
+
   const {
     formState: { errors },
   } = useFormContext();
@@ -86,7 +90,7 @@ export function DaoSubmitForm(): JSX.Element {
 
         showNotification({
           type: NOTIFICATION_TYPES.INFO,
-          description: `The blockchain transactions might take some time to perform, please visit DAO details page in few seconds`,
+          description: t('notifications.transactionDelay'),
           lifetime: 20000,
         });
 
@@ -103,14 +107,14 @@ export function DaoSubmitForm(): JSX.Element {
         }
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [router, uploadImg]
   );
 
   function renderErrorMessage() {
     return isEmpty(errors) ? null : (
       <div className={styles.error}>
-        There are errors in your form. Please, check validation messages on the
-        page.
+        {t('createDAO.daoSubmitForm.daoSubmitError')}
       </div>
     );
   }
@@ -119,10 +123,10 @@ export function DaoSubmitForm(): JSX.Element {
     <div className={styles.root}>
       <UnitSeparator />
       <div className={styles.terms}>
-        <span>Creating a DAO is a liability </span>
+        <span>{t('createDAO.daoSubmitForm.daoSubmitLiability')}</span>
         <Link passHref href="/terms-conditions">
           <a href="*" className={styles.link} target="_blank">
-            Terms and Conditions
+            {t('createDAO.daoSubmitForm.daoTermsAndConditionsLink')}
           </a>
         </Link>
       </div>
@@ -132,8 +136,8 @@ export function DaoSubmitForm(): JSX.Element {
           standAloneMode
           bond={{ label: 'Cost', value: '5000000000000000000000000' }}
           gas={{ value: '0.3' }}
-          warning="DAOs can not be deleted!"
-          buttonLabel="Create DAO"
+          warning={t('createDAO.daoSubmitForm.daoCannotBeDeleted')}
+          buttonLabel={t('createDAO.daoSubmitForm.daoCreateButton')}
         />
       </div>
       {renderErrorMessage()}
