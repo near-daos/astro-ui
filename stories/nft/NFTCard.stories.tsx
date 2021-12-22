@@ -29,6 +29,7 @@ const Demo: FC<{ cards: StaticImageData[] }> = ({ cards }) => {
             key={img.src}
             name={img.src}
             image={[{ uri: img.src, isExternalReference: false }]}
+            contractId="vhorin.sputnikv2.testnet"
           />
         );
       })}
