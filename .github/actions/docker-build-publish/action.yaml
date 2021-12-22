@@ -2,20 +2,6 @@ name: 'Docker Build Publish'
 runs:
   using: 'composite'
   steps:
-  - name: Docker Cache
-    uses: actions/cache@v2
-    with:
-      path: |
-        docker-cache.tar
-      key: docker
-
-  - name: Load Cache
-    shell: bash
-    run: |
-      if [[ -f "docker-cache.tar" ]]; then
-        docker load < docker-cache.tar;
-      fi
-
   - name: Docker meta
     id: meta
     uses: docker/metadata-action@v3
@@ -49,10 +35,3 @@ runs:
       platforms: linux/amd64
       tags: ${{ steps.meta.outputs.tags }}
       push: true
-
-  - name: Save Cache
-    shell: bash
-    run: |
-      if [[ ! -f "docker-cache.tar" ]]; then
-        docker save $(docker images -qa) > docker-cache.tar;
-      fi
