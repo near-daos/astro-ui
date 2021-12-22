@@ -74,7 +74,7 @@ export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
 };
 
 export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
-  return JSON.parse(Buffer.from(metaAsBase64, 'base64').toString('ascii'));
+  return JSON.parse(Buffer.from(metaAsBase64, 'base64').toString('utf-8'));
 };
 
 export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
