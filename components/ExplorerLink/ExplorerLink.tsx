@@ -8,6 +8,7 @@ import styles from './ExplorerLink.module.scss';
 interface ExplorerLinkProps {
   linkData: string;
   linkType: ExplorerLinkType;
+  textLabel?: string;
   isAbsolute?: boolean;
   className?: string;
 }
@@ -30,6 +31,7 @@ function stopPropagation(e: MouseEvent) {
 export const ExplorerLink: React.VFC<ExplorerLinkProps> = ({
   linkData,
   linkType,
+  textLabel,
   isAbsolute,
   className,
 }) => {
@@ -44,11 +46,15 @@ export const ExplorerLink: React.VFC<ExplorerLinkProps> = ({
             onClick={stopPropagation}
             className={cn(styles.root, {
               [styles.absolute]: isAbsolute,
+              [styles.labeled]: textLabel,
             })}
             target="_blank"
             rel="noreferrer"
           >
-            <Icon name="buttonExternal" className={styles.icon} />
+            {textLabel && <span className={styles.label}>{textLabel}</span>}
+            <span className={styles.iconWrapper}>
+              <Icon name="buttonExternal" className={styles.icon} />
+            </span>
           </a>
         </div>
       )}
