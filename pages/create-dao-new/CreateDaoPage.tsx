@@ -1,20 +1,20 @@
 import React from 'react';
 import { NextPage } from 'next';
+import { useTranslation } from 'next-i18next';
 
 import { CreateDao } from 'astro_2.0/features/CreateDao';
 
 import styles from './CreateDaoPage.module.scss';
 
 const CreateDaoPage: NextPage<{ step: string }> = () => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
       <div className={styles.content}>
-        <div className={styles.breadcrumbs}>Create new DAO</div>
+        <div className={styles.breadcrumbs}>{t('createDAO.createNewDAO')}</div>
         <div className={styles.header}>
-          <h1>
-            A&nbsp;DAO is&nbsp;a&nbsp;new way for people to&nbsp;organize and
-            work together.
-          </h1>
+          <h1>{t('createDAO.createNewDAOWay')}</h1>
         </div>
         <CreateDao />
       </div>

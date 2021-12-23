@@ -88,13 +88,13 @@ export const DAO_RULES_INFO: DaoSubjectInfo[] = [
   {
     subject: 'proposals',
     title: 'Proposals',
-    subTitle: 'Who can submit proposals to your DAO? (submit not = vote)',
+    subTitle: 'Who can submit proposals to your DAO? (submit is not vote)',
   },
   {
     subject: 'voting',
     title: 'Voting Power',
     subTitle:
-      'Carefuly pick to not let people who own the token but not part of the DAO overtake you!',
+      'Carefully pick to not let people who own the token but not part of the DAO overtake you!',
   },
   {
     subject: 'structure',
