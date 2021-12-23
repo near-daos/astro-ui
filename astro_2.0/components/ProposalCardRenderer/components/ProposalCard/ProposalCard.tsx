@@ -51,6 +51,8 @@ export interface ProposalCardProps {
   content: ReactNode;
   votePeriodEnd: string;
   updatedAt?: string | null;
+  toggleInfoPanel?: () => void;
+  commentsCount: number;
 }
 
 function getTimestampLabel(
@@ -136,6 +138,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   accountId,
   dao,
   updatedAt,
+  toggleInfoPanel,
+  commentsCount,
 }) => {
   const router = useRouter();
   const permissions = useGetVotePermissions(dao, type, accountId);
@@ -228,6 +232,14 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           dislikes={dislikes}
           disliked={disliked}
           permissions={permissions}
+          commentsCount={commentsCount}
+          toggleInfoPanel={e => {
+            e.stopPropagation();
+
+            if (toggleInfoPanel) {
+              toggleInfoPanel();
+            }
+          }}
         />
       </div>
       <div className={styles.voteProgress}>

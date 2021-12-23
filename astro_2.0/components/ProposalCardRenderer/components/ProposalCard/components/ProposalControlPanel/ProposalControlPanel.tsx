@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React, { FC } from 'react';
 import { ProposalStatus, ProposalVotingPermissions } from 'types/proposal';
-
+import { kFormatter } from 'helpers/format';
 import { ProposalControlButton } from './components/ProposalControlButton';
 
 import styles from './ProposalControlPanel.module.scss';
@@ -20,6 +20,8 @@ interface ProposalControlPanelProps {
   disableControls?: boolean;
   className?: string;
   status?: ProposalStatus;
+  toggleInfoPanel?: React.MouseEventHandler<HTMLButtonElement>;
+  commentsCount: number;
 }
 
 export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
@@ -34,6 +36,8 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
   permissions,
   className = '',
   disableControls,
+  toggleInfoPanel,
+  commentsCount,
 }) => {
   const { canApprove, canReject } = permissions;
   const voted =
@@ -57,6 +61,14 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
         times={dislikes}
         onClick={onDislike}
         disabled={Boolean(!canReject || disableControls)}
+      />
+      <ProposalControlButton
+        icon="chat"
+        iconClassName={styles.toggleCommentsButton}
+        voted={false}
+        times={kFormatter(commentsCount)}
+        onClick={toggleInfoPanel}
+        disabled={false}
       />
     </div>
   );

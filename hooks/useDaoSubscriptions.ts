@@ -35,11 +35,13 @@ export function useDaoSubscriptions(): {
 
   const getSubscriptions = useCallback(async () => {
     try {
-      const data = await SputnikHttpService.getAccountDaoSubscriptions(
-        accountId
-      );
+      if (accountId) {
+        const data = await SputnikHttpService.getAccountDaoSubscriptions(
+          accountId
+        );
 
-      setSubscriptions(normalizeSubscriptions(data));
+        setSubscriptions(normalizeSubscriptions(data));
+      }
     } catch (err) {
       showNotification({
         type: NOTIFICATION_TYPES.ERROR,
@@ -51,7 +53,7 @@ export function useDaoSubscriptions(): {
 
   const [{ loading }, handleFollow] = useAsyncFn(async daoId => {
     const publicKey = await SputnikNearService.getPublicKey();
-    const signature = await SputnikNearService.signMessage(accountId);
+    const signature = await SputnikNearService.getSignature();
 
     if (publicKey && signature && accountId) {
       const result = await SputnikHttpService.updateAccountSubscription({
@@ -70,7 +72,7 @@ export function useDaoSubscriptions(): {
   const [{ loading: loadingUnfollow }, handleUnfollow] = useAsyncFn(
     async subscriptionId => {
       const publicKey = await SputnikNearService.getPublicKey();
-      const signature = await SputnikNearService.signMessage(accountId);
+      const signature = await SputnikNearService.getSignature();
 
       if (publicKey && signature && accountId) {
         await SputnikHttpService.deleteAccountSubscription(subscriptionId, {

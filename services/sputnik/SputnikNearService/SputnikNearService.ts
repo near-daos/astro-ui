@@ -111,19 +111,42 @@ class SputnikNearServiceClass {
     return publicKey.toString();
   }
 
-  async signMessage(message: string): Promise<string | null> {
-    const keyPair = await this.keyStore?.getKey(
-      this.config.networkId,
-      this.getAccountId()
-    );
-    const buffer = new TextEncoder().encode(message);
-    const signature = keyPair?.sign(buffer);
+  async getSignature(): Promise<string | null> {
+    try {
+      const keyPair = await this.keyStore?.getKey(
+        this.config.networkId,
+        this.getAccountId()
+      );
 
-    if (!signature) {
+      if (!keyPair) {
+        // eslint-disable-next-line no-console
+        console.log('Failed to get keyPair');
+
+        return null;
+      }
+
+      const publicKey = keyPair.getPublicKey();
+      const msg = Buffer.from(publicKey.toString());
+
+      const { signature } = keyPair.sign(msg);
+      const signatureBase64 = Buffer.from(signature).toString('base64');
+
+      const isValid = keyPair.verify(msg, signature);
+
+      if (!isValid) {
+        // eslint-disable-next-line no-console
+        console.log('Failed to create valid signature');
+
+        return null;
+      }
+
+      return signatureBase64;
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log('Failed to generate signature', err);
+
       return null;
     }
-
-    return btoa(String.fromCharCode(...signature.signature));
   }
 
   async computeRequiredDeposit(args: unknown) {

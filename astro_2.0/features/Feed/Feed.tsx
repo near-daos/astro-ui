@@ -162,7 +162,7 @@ export const Feed = ({
         query: nextQuery,
       },
       undefined,
-      { shallow: true, scroll: false }
+      { shallow: false, scroll: false }
     );
   };
 

@@ -60,7 +60,7 @@ export const formatTimestampAsDate = (time: string): string => {
 export function kFormatter(n: number): string {
   if (n >= 1e3) return `${Number(n / 1e3).toFixed(1)}k`;
 
-  return `${n.toFixed(1)}`;
+  return `${n.toFixed(0)}`;
 }
 
 export function shortenString(value: string, maxLength: number): string {

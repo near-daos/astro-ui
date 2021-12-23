@@ -23,6 +23,7 @@ export type ProposalDTO = {
   createTimestamp: string;
   createdAt: string;
   daoId: string;
+  commentsCount: number;
   description: string;
   id: string;
   isArchived: boolean;
@@ -122,6 +123,7 @@ export const mapProposalDTOToProposal = (
     proposalId: proposalDTO.proposalId,
     daoId: proposalDTO.daoId,
     proposer: proposalDTO.proposer,
+    commentsCount: proposalDTO.commentsCount ?? 0,
     description,
     link: link ?? '',
     status: getProposalStatus(proposalDTO.status, votePeriodEnd),

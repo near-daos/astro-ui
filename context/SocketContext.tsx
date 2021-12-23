@@ -25,7 +25,7 @@ export const SocketProvider: FC = ({ children }) => {
 
     (async () => {
       const publicKey = await SputnikNearService.getPublicKey();
-      const signature = await SputnikNearService.signMessage(accountId);
+      const signature = await SputnikNearService.getSignature();
 
       if (accountId && publicKey) {
         socketIo = io(appConfig.socketUrl, {

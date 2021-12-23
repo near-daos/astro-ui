@@ -29,6 +29,10 @@ import {
   Proposal,
   ProposalStatuses,
   ProposalType,
+  ProposalComment,
+  SendProposalComment,
+  ReportProposalComment,
+  DeleteProposalComment,
 } from 'types/proposal';
 
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
@@ -949,6 +953,61 @@ class SputnikHttpServiceClass {
       DaoSubscriptionInput,
       { data: { accountId: string } }
     >(`/subscriptions/${subscriptionId}`, params);
+
+    return response.data.accountId;
+  }
+
+  public async getProposalComments(
+    proposalId: string
+  ): Promise<ProposalComment[]> {
+    const offset = 0;
+    const limit = 3000;
+    const sort = 'createdAt,DESC';
+
+    const { data } = await this.httpService.get<
+      PaginationResponse<ProposalComment[]>
+    >(`/comments`, {
+      params: {
+        offset,
+        limit,
+        sort,
+        filter: `proposalId||$eq||${proposalId}`,
+      },
+    });
+
+    return data.data;
+  }
+
+  public async sendProposalComment(
+    params: SendProposalComment
+  ): Promise<string> {
+    const response = await this.httpService.post<
+      SendProposalComment,
+      { data: { accountId: string } }
+    >(`/comments`, params);
+
+    return response.data.accountId;
+  }
+
+  public async reportProposalComment(
+    params: ReportProposalComment
+  ): Promise<string> {
+    const response = await this.httpService.post<
+      ReportProposalComment,
+      { data: { accountId: string } }
+    >(`/comments/report`, params);
+
+    return response.data.accountId;
+  }
+
+  public async deleteProposalComment(
+    commentId: number,
+    params: DeleteProposalComment
+  ): Promise<string> {
+    const response = await this.httpService.delete<
+      DeleteProposalComment,
+      { data: { accountId: string } }
+    >(`/comments/${commentId}`, params);
 
     return response.data.accountId;
   }

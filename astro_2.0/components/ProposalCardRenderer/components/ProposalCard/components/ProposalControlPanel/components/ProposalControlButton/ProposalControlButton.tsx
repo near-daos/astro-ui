@@ -7,11 +7,12 @@ import { IconButton } from 'components/button/IconButton';
 import styles from './ProposalControlButton.module.scss';
 
 interface ProposalControlButtonProps {
-  times: number;
+  times: number | string;
   icon: IconName;
   voted?: boolean;
   disabled: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  iconClassName?: string;
 }
 
 export const ProposalControlButton: React.FC<ProposalControlButtonProps> = ({
@@ -20,6 +21,7 @@ export const ProposalControlButton: React.FC<ProposalControlButtonProps> = ({
   times,
   disabled,
   onClick,
+  iconClassName = '',
 }) => {
   const statusClassName = cn({
     [styles.yesAvailable]: icon === 'votingYes' && !voted && !disabled,
@@ -31,6 +33,9 @@ export const ProposalControlButton: React.FC<ProposalControlButtonProps> = ({
     <span className={styles.item}>
       <IconButton
         icon={icon}
+        iconProps={{
+          className: iconClassName,
+        }}
         className={cn(styles.icon, statusClassName, {
           [styles.voted]: voted,
         })}

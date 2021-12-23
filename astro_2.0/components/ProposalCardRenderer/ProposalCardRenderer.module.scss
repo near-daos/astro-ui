@@ -29,6 +29,7 @@
 
 .proposal {
   grid-area: proposal;
+  z-index: 1;
 }
 
 .letterHead {
@@ -37,8 +38,13 @@
 
 .infoPanel {
   grid-area: infoPanel;
-  padding-left: 19px;
-  padding-right: 19px;
+  padding-left: 8px;
+  padding-right: 8px;
+
+  @include tablet-landscape {
+    padding-left: 19px;
+    padding-right: 19px;
+  }
 }
 
 .proposalIdCell {

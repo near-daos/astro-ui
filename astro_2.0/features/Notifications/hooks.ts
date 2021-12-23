@@ -22,7 +22,7 @@ export function useNotificationsSettings(): {
     ) => {
       try {
         const publicKey = await SputnikNearService.getPublicKey();
-        const signature = await SputnikNearService.signMessage(accountId);
+        const signature = await SputnikNearService.getSignature();
 
         if (publicKey && signature) {
           await NotificationsService.updateNotificationSettings({

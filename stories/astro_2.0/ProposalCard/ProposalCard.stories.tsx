@@ -79,6 +79,7 @@ const cardProps = {
   dislikes: 32,
   dismisses: 32,
   voteRemove: 0,
+  commentsCount: 3,
   liked: false,
   disliked: false,
   dismissed: false,

@@ -13,6 +13,7 @@
   padding-left: 12px;
   position: relative;
   width: 100%;
+  z-index: 1;
 
   @include tablet-landscape {
     align-items: flex-start;
