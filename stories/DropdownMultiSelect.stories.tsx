@@ -11,21 +11,20 @@ export default {
   component: DropdownMultiSelect,
   decorators: [
     story => (
-      <div
-        style={{ padding: '1rem', background: 'lightsalmon', maxWidth: 300 }}
-      >
+      <div style={{ padding: '1rem', background: '#FAFAFA', maxWidth: 300 }}>
         {story()}
       </div>
     ),
   ],
 } as Meta;
 
-export const Template: Story<DropdownMultiSelectProps> = (
-  args
-): JSX.Element => <DropdownMultiSelect {...args} />;
+const Template: Story<DropdownMultiSelectProps> = (args): JSX.Element => (
+  <DropdownMultiSelect {...args} />
+);
 
-Template.storyName = 'DropdownMultiSelect';
-Template.args = {
+export const Default = Template.bind({});
+
+Default.args = {
   options: [
     {
       label: 'Jason Born',
@@ -44,4 +43,25 @@ Template.args = {
     },
   ],
   label: 'Who can propose',
+};
+
+export const Simple = Template.bind({});
+
+Simple.args = {
+  options: [
+    {
+      label: 'mintbase',
+      component: <div>Mintbase</div>,
+    },
+    {
+      label: 'paras',
+      component: <div>Paras</div>,
+    },
+    {
+      label: 'berryclub',
+      component: <div>Berry Club</div>,
+    },
+  ],
+  label: 'Smart contract',
+  simple: true,
 };

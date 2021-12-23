@@ -10,14 +10,9 @@
   width: 100%;
 }
 
-.selected,
 .selectedMeasure {
   display: flex;
   flex: 1;
-}
-
-.selected .selectedWrapper {
-  margin-right: 4px;
 }
 
 .selectedMeasure .selectedWrapper {
@@ -40,10 +35,4 @@
 
 .collapsedLabel.visible {
   visibility: visible;
-}
-
-.placeholder {
-  @extend %body1;
-  color: var(--color-neutral-60);
-  font-size: 16px;
 }

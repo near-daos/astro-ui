@@ -67,6 +67,7 @@ export type NftToken = {
   isExternalReference: boolean;
   transactionHash: string;
   contractId: string;
+  contractName: string;
 };
 
 export type TokenResponse = {

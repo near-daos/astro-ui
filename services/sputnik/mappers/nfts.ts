@@ -61,6 +61,7 @@ export function mapNftTokenResponseToNftToken(
           isExternalReference,
           transactionHash,
           contractId,
+          contractName: contract.name,
         });
       }
 

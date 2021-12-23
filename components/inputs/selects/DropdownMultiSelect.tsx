@@ -1,15 +1,20 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
+import Downshift, {
+  DownshiftState,
+  GetItemPropsOptions,
+  StateChangeOptions,
+} from 'downshift';
 import cn from 'classnames';
 import { useMeasure } from 'react-use';
 
 import { Checkbox } from 'components/inputs/Checkbox';
 import { Icon } from 'components/Icon';
 import { Badge } from 'components/badge/Badge';
+import { BadgeList } from 'components/BadgeList';
 
 import styles from './DropdownSelect.module.scss';
 
-interface Option {
+export interface Option {
   label: string;
   component: JSX.Element;
   disabled?: boolean;
@@ -20,6 +25,7 @@ export interface DropdownMultiSelectProps {
   className?: string;
   label?: string;
   defaultValue?: string[];
+  simple?: boolean;
   onChange: (value: string[]) => void;
 }
 
@@ -37,6 +43,7 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
   className,
   label,
   defaultValue,
+  simple,
   onChange,
 }) => {
   const [selectedItems, setSelectedItems] = useState<Option[]>(() =>
@@ -89,6 +96,84 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
     }
   }, [contentWidth, showPlaceholder, width]);
 
+  const rootClassName = cn(styles.root, className, {
+    [styles.simple]: simple,
+  });
+
+  function renderSelectContainer() {
+    if (simple) {
+      return <div className={styles.label}>{label}</div>;
+    }
+
+    return (
+      <>
+        <div
+          className={styles.selectedMeasure}
+          ref={contentRef as React.LegacyRef<HTMLDivElement>}
+        >
+          {selectedItems.map(sel => {
+            return (
+              <div key={sel.label} className={styles.selectedWrapper}>
+                {sel.component}
+              </div>
+            );
+          })}
+          <div
+            className={cn(styles.collapsedLabel, styles.selectedWrapper, {
+              [styles.visible]: showPlaceholder,
+            })}
+          >
+            <Badge size="small" variant="turqoise">
+              +{selectedItems.length - 1}
+            </Badge>
+          </div>
+        </div>
+        <BadgeList
+          selectedItems={selectedItems}
+          showPlaceholder={showPlaceholder}
+        />
+      </>
+    );
+  }
+
+  function renderDropdownSelectedList() {
+    return (
+      <div className={styles.selectedFullList}>
+        {selectedItems.map(sel => {
+          return (
+            <div key={sel.label} className={styles.selectedWrapper}>
+              {sel.component}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  function renderDropdownOptionsList(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    getItemProps: (options: GetItemPropsOptions<unknown>) => any
+  ) {
+    return options.map((item, index) => {
+      const props = !item.disabled ? { ...getItemProps({ item, index }) } : {};
+      const checked = selectedItems.map(k => k.label).includes(item.label);
+
+      return (
+        <li
+          className={cn(styles.item, {
+            [styles.disabled]: item.disabled,
+            [styles.checked]: checked,
+          })}
+          {...props}
+          key={item.label}
+        >
+          <Checkbox label="" className={styles.checkbox} checked={checked} />
+          {item.component}
+        </li>
+      );
+    });
+  }
+
   return (
     <Downshift
       onSelect={handleSelect}
@@ -103,8 +188,8 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
         isOpen,
       }) => {
         return (
-          <div className={cn(styles.root, className)}>
-            {label && (
+          <div className={rootClassName}>
+            {label && !simple && (
               // eslint-disable-next-line jsx-a11y/label-has-associated-control
               <label className={styles.label} {...getLabelProps()}>
                 {label}
@@ -120,62 +205,7 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
                 {...getToggleButtonProps()}
               >
                 <div className={styles.container}>
-                  <div
-                    className={styles.selectedMeasure}
-                    ref={contentRef as React.LegacyRef<HTMLDivElement>}
-                  >
-                    {selectedItems.map(sel => {
-                      return (
-                        <div key={sel.label} className={styles.selectedWrapper}>
-                          {sel.component}
-                        </div>
-                      );
-                    })}
-                    <div
-                      className={cn(
-                        styles.collapsedLabel,
-                        styles.selectedWrapper,
-                        {
-                          [styles.visible]: showPlaceholder,
-                        }
-                      )}
-                    >
-                      <Badge size="small" variant="turqoise">
-                        +{selectedItems.length - 1}
-                      </Badge>
-                    </div>
-                  </div>
-                  <div className={styles.selected}>
-                    {selectedItems
-                      .filter((k, i) => {
-                        if (i === 0) return true;
-
-                        return !showPlaceholder;
-                      })
-                      .map(sel => {
-                        return (
-                          <div
-                            key={sel.label}
-                            className={styles.selectedWrapper}
-                          >
-                            {sel.component}
-                          </div>
-                        );
-                      })}
-                    <div
-                      className={cn(
-                        styles.collapsedLabel,
-                        styles.selectedWrapper,
-                        {
-                          [styles.visible]: showPlaceholder,
-                        }
-                      )}
-                    >
-                      <Badge size="small" variant="turqoise">
-                        +{selectedItems.length - 1}
-                      </Badge>
-                    </div>
-                  </div>
+                  {renderSelectContainer()}
                   <Icon
                     name="buttonArrowDown"
                     className={cn(styles.icon, { [styles.rotate]: isOpen })}
@@ -184,41 +214,11 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
               </button>
               <ul className={styles.menu} {...getMenuProps()}>
                 {isOpen && (
-                  <div className={styles.selectedFullList}>
-                    {selectedItems.map(sel => {
-                      return (
-                        <div key={sel.label} className={styles.selectedWrapper}>
-                          {sel.component}
-                        </div>
-                      );
-                    })}
-                  </div>
+                  <>
+                    {!simple && renderDropdownSelectedList()}
+                    {renderDropdownOptionsList(getItemProps)}
+                  </>
                 )}
-                {isOpen &&
-                  options.map((item, index) => {
-                    const props = !item.disabled
-                      ? { ...getItemProps({ item, index }) }
-                      : {};
-
-                    return (
-                      <li
-                        className={cn(styles.item, {
-                          [styles.disabled]: item.disabled,
-                        })}
-                        {...props}
-                        key={item.label}
-                      >
-                        <Checkbox
-                          label=""
-                          className={styles.checkbox}
-                          checked={selectedItems
-                            .map(k => k.label)
-                            .includes(item.label)}
-                        />
-                        {item.component}
-                      </li>
-                    );
-                  })}
               </ul>
             </div>
           </div>
