@@ -1,0 +1,42 @@
+@import 'styles/mixins';
+
+.title {
+  @include font(20px, 28px, 500);
+}
+
+.text {
+  @include font(16px, 24px, 400);
+  margin-top: 14px;
+}
+
+.radioGroup {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-top: 6px;
+
+  @include tablet-portrait {
+    margin-top: 18px;
+  }
+}
+
+.radio {
+  height: 40px;
+  padding: 0 15px 0 10px;
+  width: 100%;
+}
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px;
+}
+
+.btn {
+  &:hover {
+    box-shadow: 3px 2px 4px 0 var(--color-black-opacity-1);
+  }
+  &:not(:last-of-type) {
+    margin-right: 16px;
+  }
+}

@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from 'react';
 import { SputnikHttpService, SputnikNearService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-import { useAsyncFn } from 'react-use';
+import { useAsyncFn, useMountedState } from 'react-use';
 import { useSocket } from 'context/SocketContext';
 import { useAuthContext } from 'context/AuthContext';
 
@@ -22,13 +22,16 @@ export function useProposalComments(
 } {
   const { accountId } = useAuthContext();
   const { socket } = useSocket();
+  const isMounted = useMountedState();
   const [comments, setComments] = useState<ProposalComment[] | null>(null);
 
   const [{ loading }, getComments] = useAsyncFn(async () => {
     try {
       const data = await SputnikHttpService.getProposalComments(proposalId);
 
-      setComments(data);
+      if (isMounted()) {
+        setComments(data);
+      }
     } catch (err) {
       showNotification({
         type: NOTIFICATION_TYPES.ERROR,
@@ -117,19 +120,35 @@ export function useProposalComments(
     if (socket) {
       socket.on('comment', (newComment: ProposalComment) => {
         if (newComment.proposalId === proposalId) {
-          setComments(prev => {
-            if (prev) {
-              return uniqBy([...prev, newComment], val => val.id);
-            }
+          if (isMounted()) {
+            setComments(prev => {
+              if (prev) {
+                return uniqBy([...prev, newComment], val => val.id);
+              }
 
-            return [newComment];
-          });
+              return [newComment];
+            });
+          }
+        }
+      });
+
+      socket.on('comment-removed', (removedComment: ProposalComment) => {
+        if (removedComment.proposalId === proposalId) {
+          if (isMounted()) {
+            setComments(prev => {
+              if (prev) {
+                return prev.filter(item => item.id !== removedComment.id);
+              }
+
+              return [];
+            });
+          }
         }
       });
     }
 
     getComments();
-  }, [getComments, proposalId, socket]);
+  }, [getComments, isMounted, proposalId, socket]);
 
   return {
     comments,

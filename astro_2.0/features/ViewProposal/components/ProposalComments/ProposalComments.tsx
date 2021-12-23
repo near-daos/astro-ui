@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { useMedia } from 'react-use';
+import { useMedia, useMountedState } from 'react-use';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { useAuthContext } from 'context/AuthContext';
@@ -15,20 +15,38 @@ import styles from './ProposalComments.module.scss';
 
 interface ProposalCommentsProps {
   proposalId: string;
+  isCouncilUser: boolean;
+  isCommentsAllowed: boolean;
+  updateCommentsCount: (val: number) => void;
 }
 
-export const ProposalComments: FC<ProposalCommentsProps> = ({ proposalId }) => {
+export const ProposalComments: FC<ProposalCommentsProps> = ({
+  proposalId,
+  isCouncilUser,
+  isCommentsAllowed,
+  updateCommentsCount,
+}) => {
   const isMobile = useMedia('(max-width: 920px)');
   const { accountId: loggedInAccountId } = useAuthContext();
   const commentsRef = useRef<HTMLUListElement>(null);
   const inputRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState('');
   const [focused, setFocused] = useState(false);
+  const isMounted = useMountedState();
 
-  const { comments, sendComment } = useProposalComments(proposalId);
+  const {
+    comments,
+    sendComment,
+    reportComment,
+    deleteComment,
+  } = useProposalComments(proposalId);
 
   const handleCommentInput = useCallback(e => {
-    setValue(e.target.value);
+    const { value: newValue } = e.target;
+
+    if (newValue.length <= 500) {
+      setValue(newValue);
+    }
   }, []);
 
   const handleSubmit = useCallback(() => {
@@ -56,7 +74,7 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({ proposalId }) => {
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.scrollIntoView({
-        block: 'end',
+        block: 'center',
         behavior: 'smooth',
       });
     }
@@ -75,12 +93,16 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({ proposalId }) => {
       if (commentsRef.current) {
         commentsRef.current.scrollTop = commentsRef.current.scrollHeight;
       }
-    }, 1000);
+    }, 50);
+
+    if (comments) {
+      updateCommentsCount(comments?.length);
+    }
 
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [comments]);
+  }, [comments, updateCommentsCount]);
 
   return (
     <div className={styles.root}>
@@ -99,10 +121,14 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({ proposalId }) => {
             return (
               <Comment
                 key={id}
+                commentId={id}
                 accountId={accountId}
                 createdAt={createdAt}
                 isMyComment={isMyComment}
+                isCouncilUser={isCouncilUser}
                 message={message}
+                onReport={reportComment}
+                onDelete={deleteComment}
               />
             );
           })}
@@ -122,33 +148,36 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({ proposalId }) => {
           </motion.div>
         </AnimatePresence>
       </ul>
-      <div className={styles.addCommentSection} ref={inputRef}>
-        <Input
-          value={value}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          onChange={handleCommentInput}
-          className={styles.inputWrapper}
-          size="block"
-          isBorderless
-          placeholder="Start typing..."
-        />
-        {isMobile ? (
-          <IconButton
-            icon="paperAirplane"
-            onClick={handleSubmit}
-            className={styles.mobileSubmitButton}
+      <div ref={inputRef} />
+      {isCommentsAllowed && (
+        <div className={styles.addCommentSection}>
+          <Input
+            value={value}
+            onFocus={() => isMounted() && setFocused(true)}
+            onBlur={() => isMounted() && setFocused(false)}
+            onChange={handleCommentInput}
+            className={styles.inputWrapper}
+            size="block"
+            isBorderless
+            placeholder="Start typing..."
           />
-        ) : (
-          <Button
-            variant="primary"
-            className={styles.submitButton}
-            onClick={handleSubmit}
-          >
-            Send
-          </Button>
-        )}
-      </div>
+          {isMobile ? (
+            <IconButton
+              icon="paperAirplane"
+              onClick={handleSubmit}
+              className={styles.mobileSubmitButton}
+            />
+          ) : (
+            <Button
+              variant="primary"
+              className={styles.submitButton}
+              onClick={handleSubmit}
+            >
+              Send
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 };
