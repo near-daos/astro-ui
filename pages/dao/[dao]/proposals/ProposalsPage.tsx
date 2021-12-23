@@ -1,7 +1,7 @@
 import React, { useMemo, VFC } from 'react';
 import { useTranslation } from 'next-i18next';
 
-import { Proposal } from 'types/proposal';
+import { Proposal, ProposalStatuses } from 'types/proposal';
 import { DaoContext } from 'types/context';
 import { PaginationResponse } from 'types/api';
 
@@ -12,6 +12,7 @@ import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 interface ProposalsPageProps {
   daoContext: DaoContext;
   initialProposalsData: PaginationResponse<Proposal[]>;
+  initialProposalsStatusFilterValue: ProposalStatuses | undefined;
 }
 
 const ProposalsPage: VFC<ProposalsPageProps> = props => {
@@ -19,6 +20,7 @@ const ProposalsPage: VFC<ProposalsPageProps> = props => {
     daoContext,
     daoContext: { dao },
     initialProposalsData,
+    initialProposalsStatusFilterValue,
   } = props;
 
   const { t } = useTranslation();
@@ -40,6 +42,7 @@ const ProposalsPage: VFC<ProposalsPageProps> = props => {
         showFlag={false}
         title={t('proposals')}
         initialProposals={initialProposalsData}
+        initialProposalsStatusFilterValue={initialProposalsStatusFilterValue}
       />
     </NestedDaoPageWrapper>
   );

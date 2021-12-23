@@ -5,7 +5,12 @@ import { ALL_DAOS_URL } from 'constants/routing';
 
 // Types
 import { PaginationResponse } from 'types/api';
-import { Proposal, ProposalCategories, ProposalVariant } from 'types/proposal';
+import {
+  Proposal,
+  ProposalVariant,
+  ProposalStatuses,
+  ProposalCategories,
+} from 'types/proposal';
 
 // Components
 import { Feed } from 'astro_2.0/features/Feed';
@@ -25,6 +30,7 @@ import styles from './Polls.module.scss';
 export interface PollsPageProps {
   daoContext: DaoContext;
   initialPollsData: PaginationResponse<Proposal[]>;
+  initialProposalsStatusFilterValue: ProposalStatuses | undefined;
 }
 
 const PollsPage: FC<PollsPageProps> = ({
@@ -34,6 +40,7 @@ const PollsPage: FC<PollsPageProps> = ({
     userPermissions: { isCanCreateProposals },
   },
   initialPollsData,
+  initialProposalsStatusFilterValue,
 }) => {
   const { tokens } = useDaoCustomTokens();
 
@@ -81,6 +88,7 @@ const PollsPage: FC<PollsPageProps> = ({
           category={ProposalCategories.Polls}
           initialProposals={initialPollsData}
           headerClassName={styles.feedHeader}
+          initialProposalsStatusFilterValue={initialProposalsStatusFilterValue}
         />
       )}
     </div>

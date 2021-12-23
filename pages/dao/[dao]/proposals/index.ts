@@ -47,6 +47,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       )),
       daoContext,
       initialProposalsData,
+      initialProposalsStatusFilterValue: status,
     },
   };
 };

@@ -49,6 +49,7 @@ export const getServerSideProps: GetServerSideProps<PollsPageProps> = async ({
       )),
       daoContext,
       initialPollsData,
+      initialProposalsStatusFilterValue: status,
     },
   };
 };
