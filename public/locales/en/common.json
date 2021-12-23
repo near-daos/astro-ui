@@ -57,7 +57,123 @@
   "archived": "Archived",
   "youFollowed": "You Followed",
   "confirmUnsubscribe": "Are you sure you want to unsubscribe from",
+
   "bountiesPage": {
     "successClaimBountyNotification": "The blockchain transactions might take some time to perform, please visit the page in few seconds"
+  },
+
+  "common": {
+    "clickToUploadImage": "Click here to upload image",
+    "clickToChangeImage": "Click here to change image"
+  },
+
+  "notifications": {
+    "transactionDelay": "The blockchain transactions might take some time to perform, please visit DAO details page in few seconds."
+  },
+
+  "components": {
+    "transactionDetailsWidget": {
+      "warning": "Warning",
+      "gas": "Gas",
+      "bond": "Bond"
+    }
+  },
+
+  "createDAO": {
+    "createNewDAO": "Create new DAO",
+    "createNewDAOWay": "A DAO is a new way for people to organize and work together",
+
+    "daoIncorrectLengthError": "Incorrect DAO name - at least 3 characters expected.",
+    "daoIncorrectCharactersError": "Incorrect DAO name - you can use letters and numbers only with hyphens and spaces in the middle.",
+    "daoIncorrectURLError": "Enter correct URL!",
+
+    "daoNameForm": {
+      "daoNameAndPurpose": "DAO name and purpose",
+      "daoFieldsDescription": "All fields bellow, unless otherwise noted are required.",
+      "daoName": "DAO Name",
+      "daoSampleName": "Sample DAO Name",
+      "daoPurpose": "Purpose",
+      "daoSampleText": "Sample text. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient."
+    },
+
+    "daoLegalStatus": {
+      "daoKYC": "KYC",
+      "daoKYCDescription": "Please explain your DAO`s Legal Status and Jurisdiction (if known).",
+      "daoKYCDescriptionPlaceholder": "Legal Status",
+      "daoKYCLink": "Please attach a link to the relevant document as proof of legal status.",
+      "daoKYCLinkPlaceholder": "https://Legal_Document"
+    },
+
+    "daoLinksForm": {
+      "daoLinks": "Links and socials",
+      "daoLinksDescription": "Looking to grow the DAO members? Add links to allow people to learn more about your DAO."
+    },
+
+    "daoRulesForm": {
+      "daoSetRules": "Set rules for your DAO",
+      "daoSetRulesDescription": "All fields bellow, unless otherwise noted are required.",
+      "daoSetRulesChooseATemplate": "Choose a template",
+
+      "daoRulesTemplate": {
+        "daoRulesTemplateCustom": "Custom",
+        "daoRulesTemplateClub": "Club",
+        "daoRulesTemplateClubDescription": "A small circle of friends\nA group of fans\nA social club",
+        "daoRulesTemplateFoundation": "Foundation",
+        "daoRulesTemplateFoundationDescription": "A group giving donations\nAn organization funding community projects\nA fund for open-source projects",
+        "daoRulesTemplateCorporation": "Corporation",
+        "daoRulesTemplateCorporationDescription": "A business with shareholders\nA startup or company",
+        "daoRulesTemplateCooperative": "Cooperative",
+        "daoRulesTemplateCooperativeDescription": "A business with members\nA creative collective"
+      },
+
+      "daoRules": {
+        "daoRulesAll": "All",
+        "daoRulesAllDescription": "Anyone with a NEAR wallet.",
+        "daoRulesMembers": "Members",
+        "daoRulesMembersDescription": "Only members of your DAO",
+        "daoRulesDemocratic": "Democratic",
+        "daoRulesDemocraticDescription": "Every member gets 1 vote.",
+        "daoRulesTokenWeighted": "Token weighted",
+        "daoRulesTokenWeightedDescription": "More tokens more voting power!",
+        "daoRulesFlat": "Flat",
+        "daoRulesFlatDescription": "No groups; all members have equal access.",
+        "daoRulesGroups": "Groups and Committees",
+        "daoRulesGroupsDescription": "Specific groups can vote on specific proposals."
+      },
+
+      "daoRulesSections": {
+        "daoRulesProposals": "Proposals",
+        "daoRulesProposalsDescription": "Who can submit proposals to your DAO? (submit is vote)",
+        "daoRulesVoting": "Voting Power",
+        "daoRulesVotingDescription": "Carefully pick to not let people who own the token but not part of the DAO overtake you!",
+        "daoRulesStructure": "Structure",
+        "daoRulesStructureDescription": "Select level of access to vote on proposals."
+      }
+    },
+
+    "daoFlagForm": {
+      "daoFlagCreate": "Lets create your flag!",
+      "daoFlagCreateDescription": "Both fields are optional. If you skip, default image will be used instead. An image and a logo together form a flag of your DAO!",
+      "daoFlagCoverUpload": "Upload your “Cover”",
+      "daoFlagCoverUploadDescription": "Cover will be used as a branded letterhead of your proposals, also small icon of your flag won’t include logo on it.",
+      "daoFlagCoverUploadRequirements": "Rectangular image 3x4 proportions",
+      "daoFlagLogoUpload": "Upload your “Logo”",
+      "daoFlagLogoUploadDescription": "Logo will be placed on top of your flag and will be visible on your full view DAO details.",
+      "daoFlagLogoUploadRequirements": "Square image, 400x400 pixels"
+    },
+
+    "daoPreviewForm": {
+      "daoPreviewHeader": "Preview of your custom DAO assets",
+      "daoPreviewFlagAndIcon": "Flag and Icon",
+      "daoPreviewLetterhead": "Letterhead"
+    },
+
+    "daoSubmitForm": {
+      "daoSubmitError": "There are errors in your form. Please, check validation messages on the page.",
+      "daoSubmitLiability": "Creating a DAO is a liability ",
+      "daoTermsAndConditionsLink": "Terms and Conditions",
+      "daoCannotBeDeleted": "DAOs can not be deleted!",
+      "daoCreateButton": "Create DAO"
+    }
   }
 }

@@ -1,6 +1,7 @@
 import times from 'lodash/times';
 import React, { VFC, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
@@ -11,6 +12,8 @@ import styles from './DaoLinksForm.module.scss';
 
 export const DaoLinksForm: VFC = () => {
   const { setValue, getValues } = useFormContext();
+
+  const { t } = useTranslation();
 
   const initialValues = getValues();
 
@@ -40,11 +43,8 @@ export const DaoLinksForm: VFC = () => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h2>Links and socials</h2>
-        <p>
-          Looking to&nbsp;grow the DAO members? Add links to&nbsp;allow people
-          to&nbsp;learn more about your DAO.
-        </p>
+        <h2>{t('createDAO.daoLinksForm.daoLinks')}</h2>
+        <p>{t('createDAO.daoLinksForm.daoLinksDescription')}</p>
       </div>
 
       <section className={styles.links}>

@@ -48,5 +48,132 @@
   "termsAndConditions": "Пользовательское соглашение",
   "releaseNotes": "Заметки о релизе",
   "filterByStatus": "Отфильтровать по статусу",
-  "filterByProposalStatus": "Отфильтровать по статусу предложения"
+  "filterByProposalStatus": "Отфильтровать по статусу предложения",
+  "numberOfVotes": "Number of votes",
+  "numberOfTransactions": "Number of transactions",
+  "activity": "Activity",
+  "noResultsFound": "No results found",
+  "users": "Users",
+  "archived": "Archived",
+  "youFollowed": "You Followed",
+  "confirmUnsubscribe": "Are you sure you want to unsubscribe from",
+
+  "bountiesPage": {
+    "successClaimBountyNotification": "Транзакции в блокчейне могут занимать некоторе время, пожалуйста, обновите страницу ДАО через несколько секунд."
+  },
+
+  "common": {
+    "clickToUploadImage": "Нажмите сюда чтобы загрузить изображение",
+    "clickToChangeImage": "Нажмите сюда чтобы изменить изображение"
+  },
+
+  "notifications": {
+    "transactionDelay": "Транзакции в блокчейне могут занимать некоторе время, пожалуйста, обновите страницу ДАО через несколько секунд."
+  },
+
+  "components": {
+    "transactionDetailsWidget": {
+      "warning": "Внимание",
+      "gas": "Газ",
+      "bond": "Залог"
+    }
+  },
+
+  "createDAO": {
+    "createNewDAO": "Создать новое ДАО",
+    "createNewDAOWay": "ДАО - это новый способ организации людей и их работы",
+
+    "daoIncorrectLengthError": "Некорректное название ДАО - не менее 3-х символов.",
+    "daoIncorrectCharactersError": "Некорректное название ДАО - вы можете использовать английские буквы и цифры вместе с тире и пробелами внутри.",
+    "daoIncorrectURLError": "Введите корректный URL!",
+
+    "daoNameForm": {
+      "daoNameAndPurpose": "Название и назначение ДАО",
+      "daoFieldsDescription": "Все нижепреведенные поля обязательны для заполнения, если не указанно иное.",
+      "daoName": "Название ДАО",
+      "daoSampleName": "Sample DAO Name",
+      "daoPurpose": "Назначение",
+      "daoSampleText": "Образец текста. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient."
+    },
+
+    "daoLegalStatus": {
+      "daoKYC": "Правовой статус",
+      "daoKYCDescription": "Пожалуйста, опишите правовой статус и юрисдикцию вашего ДАО (если известно).",
+      "daoKYCDescriptionPlaceholder": "Правовой статус",
+      "daoKYCLink": "Пожалуйста, прикрепите ссылку на актуальный документ подтверждающий правовой статус.",
+      "daoKYCLinkPlaceholder": "https://Legal_Document"
+    },
+
+    "daoLinksForm": {
+      "daoLinks": "Ссылки и соцсети",
+      "daoLinksDescription": "Хотите привлечь новых участников в ваш ДАО? Добавьте ресурсы, чтобы люди могли узнать больше о вашем ДАО."
+    },
+
+    "daoRulesForm": {
+      "daoSetRules": "Установите правила для вашего ДАО",
+      "daoSetRulesDescription": "Все нижепреведенные поля обязательны для заполнения, если не указанно иное.",
+      "daoSetRulesChooseATemplate": "Выберите шаблон",
+
+      "daoRulesTemplate": {
+        "daoRulesTemplateCustom": "Индивидуальный",
+        "daoRulesTemplateClub": "Клуб",
+        "daoRulesTemplateClubDescription": "Узкий круг друзей\nГруппа поклонников\nСоциальный кружок",
+        "daoRulesTemplateFoundation": "Учреждение",
+        "daoRulesTemplateFoundationDescription": "Группа распределяющая дотации\nОрганизация, финансирующая общественные проекты\nФонд проектов с открытым исходным кодом",
+        "daoRulesTemplateCorporation": "Corporation",
+        "daoRulesTemplateCorporationDescription": "Акционерное общество\nСтартап или компания",
+        "daoRulesTemplateCooperative": "Кооператив",
+        "daoRulesTemplateCooperativeDescription": "Совладельческая компания\nКоллективное предприятие"
+      },
+
+      "daoRules": {
+        "daoRulesAll": "Все",
+        "daoRulesAllDescription": "Любой владелец NEAR-кошелька.",
+        "daoRulesMembers": "Участники",
+        "daoRulesMembersDescription": "Только члены вашего ДАО",
+        "daoRulesDemocratic": "Демократический",
+        "daoRulesDemocraticDescription": "Каждый член имеет 1 голос.",
+        "daoRulesTokenWeighted": "Токен зависимое",
+        "daoRulesTokenWeightedDescription": "Чем больше токенов, тем больше вес голоса!",
+        "daoRulesFlat": "Горизонтальная",
+        "daoRulesFlatDescription": "Никакой иерархии; Все участники имеют равный доступ.",
+        "daoRulesGroups": "Группы и комитеты",
+        "daoRulesGroupsDescription": "Определенные группы могут голосовать по специфическим предложениям."
+      },
+
+      "daoRulesSections": {
+        "daoRulesProposals": "Предложения",
+        "daoRulesProposalsDescription": "Кто может делать заявки на предложения в вашем ДАО (заявка не есть голос)?",
+        "daoRulesVoting": "Право голоса",
+        "daoRulesVotingDescription": "Выбирайте с осторожностью, чтобы не дать людям у кого больше токенов перехватить контроль над вашим ДАО!",
+        "daoRulesStructure": "Структура",
+        "daoRulesStructureDescription": "Выберите уровень доступа к голосованиям по предложениям."
+      }
+    },
+
+    "daoFlagForm": {
+      "daoFlagCreate": "Давайте создадим ваш флаг!",
+      "daoFlagCreateDescription": "Оба поля необязательны. Изображение по умолчанию будет использовано если вы пропустите этот шаг. Комбинация изображения и логотипа будет флагом вашего ДАО!",
+      "daoFlagCoverUpload": "Загрузите вашу “Обложку”",
+      "daoFlagCoverUploadDescription": "Обложка будет использоваться как фирменный бланк в ваших предложениях, также, в маленькой иконке вашего флага не будет логотипа.",
+      "daoFlagCoverUploadRequirements": "Прямоугольное изображение с пропорциями 3x4",
+      "daoFlagLogoUpload": "Загрузите ваш “Логотип”",
+      "daoFlagLogoUploadDescription": "Логотип будет изображен вверху вашего флага и будет отображаться на странице вашего ДАО.",
+      "daoFlagLogoUploadRequirements": "Квадратное изображение, 400x400 пикселей"
+    },
+
+    "daoPreviewForm": {
+      "daoPreviewHeader": "Предварительный просмотр вашего ДАО",
+      "daoPreviewFlagAndIcon": "Флаг и иконка",
+      "daoPreviewLetterhead": "Фирменный бланк"
+    },
+
+    "daoSubmitForm": {
+      "daoSubmitError": "Некорректно введенные данные. Пожалуйста, проверьте сообщения об ошибках на странице.",
+      "daoSubmitLiability": "Создание вашего ДАО регулируется ",
+      "daoTermsAndConditionsLink": "пользовательским соглашением",
+      "daoCannotBeDeleted": "ДАО удалить невозможно!",
+      "daoCreateButton": "Создать ДАО"
+    }
+  }
 }

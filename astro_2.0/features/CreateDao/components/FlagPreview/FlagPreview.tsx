@@ -1,4 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
+import { useTranslation } from 'next-i18next';
+
 import cn from 'classnames';
 import { Icon } from 'components/Icon';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
@@ -20,6 +22,8 @@ export const FlagPreview: React.FC<FlagPreviewProps> = ({
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  const { t } = useTranslation();
+
   const getDefaultFlag = useCallback(() => {
     const flags = [
       '/flags/flag-1.svg',
@@ -39,17 +43,23 @@ export const FlagPreview: React.FC<FlagPreviewProps> = ({
     <>
       <div className={styles.root}>
         <div className={styles.header}>
-          <h3>Preview of your custom DAO assets</h3>
+          <h3>{t('createDAO.daoPreviewForm.daoPreviewHeader')}</h3>
         </div>
 
         <div className={styles.titles}>
-          <div className={styles.titleOut}>Flag and Icon</div>
-          <div className={styles.titleOut}>Letterhead</div>
+          <div className={styles.titleOut}>
+            {t('createDAO.daoPreviewForm.daoPreviewFlagAndIcon')}
+          </div>
+          <div className={styles.titleOut}>
+            {t('createDAO.daoPreviewForm.daoPreviewLetterhead')}
+          </div>
         </div>
 
         <div className={styles.preview}>
           <div className={styles.column}>
-            <div className={styles.titleIn}>Flag and Icon</div>
+            <div className={styles.titleIn}>
+              {t('createDAO.daoPreviewForm.daoPreviewFlagAndIcon')}
+            </div>
             <div className={styles.flags}>
               <div className={cn(styles.flag, styles.sm)}>
                 <FlagRenderer flag={coverFile || defaultFlag} size="sm" />
@@ -64,7 +74,9 @@ export const FlagPreview: React.FC<FlagPreviewProps> = ({
             </div>
           </div>
           <div className={styles.column}>
-            <div className={styles.titleIn}>Letterhead</div>
+            <div className={styles.titleIn}>
+              {t('createDAO.daoPreviewForm.daoPreviewLetterhead')}
+            </div>
             <div className={styles.dummyCard}>
               <div
                 className={styles.letterhead}
