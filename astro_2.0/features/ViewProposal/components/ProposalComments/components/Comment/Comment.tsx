@@ -1,8 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import cn from 'classnames';
 import { format, parseISO } from 'date-fns';
+import { motion } from 'framer-motion';
 
 import { ActionButton } from 'features/proposal/components/action-button';
+import { ConfirmCommentActionModal } from 'astro_2.0/features/ViewProposal/components/ProposalComments/components/ConfirmCommentActionModal';
+
+import { ReportCommentsInput } from 'types/proposal';
+
+import { useModal } from 'components/modal';
 
 import styles from './Comment.module.scss';
 
@@ -10,7 +16,11 @@ interface CommentProps {
   isMyComment: boolean;
   accountId: string;
   message: string;
+  isCouncilUser: boolean;
   createdAt: string;
+  onReport: (params: ReportCommentsInput) => void;
+  onDelete: (commentId: number, reason: string) => void;
+  commentId: number;
 }
 
 const TICK_RIGHT = (
@@ -45,14 +55,70 @@ const TICK_LEFT = (
   </svg>
 );
 
+const REASON_OPTIONS = [
+  {
+    value: 'Language',
+    label: 'Language',
+  },
+  {
+    value: 'Offensive behaviour',
+    label: 'Offensive behaviour',
+  },
+  {
+    value: 'Spam',
+    label: 'Spam',
+  },
+  {
+    value: 'Fraud',
+    label: 'Fraud',
+  },
+];
+
 export const Comment: FC<CommentProps> = ({
   isMyComment,
   accountId,
   message,
+  isCouncilUser,
   createdAt,
+  onReport,
+  onDelete,
+  commentId,
 }) => {
+  const [showReportModal] = useModal(ConfirmCommentActionModal);
+
+  const handleReportAction = useCallback(async () => {
+    const res = await showReportModal({
+      title: 'Report on',
+      text:
+        'Choose the reason for deleting the message ( 4 votes minimum for deletion)',
+      options: REASON_OPTIONS,
+    });
+
+    if (res[0]) {
+      onReport({ commentId, reason: res[0] as string });
+    }
+  }, [commentId, onReport, showReportModal]);
+
+  const handleRemoveAction = useCallback(async () => {
+    const res = await showReportModal({
+      title: 'Delete message',
+      text:
+        'Are you sure you want to delete the message from the chat? It will be deleted permanently. Choose the reason for deleting the message',
+      options: REASON_OPTIONS,
+    });
+
+    if (res[0]) {
+      onDelete(commentId, res[0] as string);
+    }
+  }, [commentId, onDelete, showReportModal]);
+
   return (
-    <li
+    <motion.li
+      key={commentId}
+      layout
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
       className={cn(styles.root, {
         [styles.myComment]: isMyComment,
       })}
@@ -64,25 +130,29 @@ export const Comment: FC<CommentProps> = ({
         {format(parseISO(createdAt), 'hh:mm a')}
       </div>
       <div className={styles.commentControls}>
-        <div className={styles.commentControlButtonWrapper}>
-          <ActionButton
-            className={styles.commentControlButton}
-            tooltipPlacement="top"
-            iconClassName={styles.commentControlIcon}
-            iconName="buttonDelete"
-            tooltip="Remove"
-          />
-        </div>
+        {(isCouncilUser || isMyComment) && (
+          <div className={styles.commentControlButtonWrapper}>
+            <ActionButton
+              className={styles.commentControlButton}
+              tooltipPlacement="top"
+              iconClassName={styles.commentControlIcon}
+              iconName="buttonDelete"
+              onClick={handleRemoveAction}
+              tooltip="Remove"
+            />
+          </div>
+        )}
         <div className={styles.commentControlButtonWrapper}>
           <ActionButton
             className={styles.commentControlButton}
             tooltipPlacement="top"
             iconClassName={styles.commentControlIcon}
             iconName="buttonReport"
+            onClick={handleReportAction}
             tooltip="Report"
           />
         </div>
       </div>
-    </li>
+    </motion.li>
   );
 };

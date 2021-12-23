@@ -431,3 +431,16 @@ export function getProposalVariantLabel(
     }
   }
 }
+
+export function checkIsCouncilUser(
+  accountId: string,
+  dao: DAO | null
+): boolean {
+  if (!accountId || !dao) return false;
+
+  const councilGroup = dao.groups.find(item => item.name === 'Council');
+
+  if (!councilGroup) return false;
+
+  return councilGroup.members.includes(accountId);
+}

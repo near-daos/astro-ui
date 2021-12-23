@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 
 import {
   ProposalCard,
@@ -13,13 +13,17 @@ import { DAO } from 'types/dao';
 import { useAuthContext } from 'context/AuthContext';
 import { getVoteDetails } from 'features/vote-policy/helpers';
 import { getProposalScope } from 'utils/getProposalScope';
-import { getContentNode } from 'astro_2.0/features/ViewProposal/helpers';
+import {
+  checkIsCouncilUser,
+  getContentNode,
+} from 'astro_2.0/features/ViewProposal/helpers';
 import { Token } from 'types/token';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 import { useToggle } from 'react-use';
 import { ProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments';
 import { AnimatePresence, motion } from 'framer-motion';
+import { isUserPermittedToCreateProposal } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 
 export interface CreateProposalProps {
   dao: DAO | null;
@@ -41,6 +45,9 @@ export const ViewProposal: FC<CreateProposalProps> = ({
 }) => {
   const { accountId } = useAuthContext();
   const [showInfoPanel, toggleInfoPanel] = useToggle(false);
+  const [commentsCount, setCommentsCount] = useState(proposal.commentsCount);
+  const isCouncilUser = checkIsCouncilUser(accountId, dao);
+  const isCommentsAllowed = isUserPermittedToCreateProposal(accountId, dao);
 
   if (!proposal || !dao || !proposal.dao) {
     return null;
@@ -85,7 +92,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
           disliked={proposal.votes[accountId] === 'No'}
           updatedAt={proposal.updatedAt}
           toggleInfoPanel={toggleInfoPanel}
-          commentsCount={proposal.commentsCount}
+          commentsCount={commentsCount}
           voteDetails={
             proposal.dao.policy.defaultVotePolicy.ratio
               ? getVoteDetails(
@@ -107,14 +114,19 @@ export const ViewProposal: FC<CreateProposalProps> = ({
           {showInfoPanel && (
             <motion.div
               key={proposal.proposalId}
-              initial="hidden"
-              animate="visible"
-              variants={variants}
+              initial={variants.initial}
+              animate={variants.visible}
+              exit={variants.initial}
               transition={{
                 duration: 0.3,
               }}
             >
-              <ProposalComments proposalId={proposal.id} />
+              <ProposalComments
+                proposalId={proposal.id}
+                isCouncilUser={isCouncilUser}
+                isCommentsAllowed={isCommentsAllowed}
+                updateCommentsCount={setCommentsCount}
+              />
             </motion.div>
           )}
         </AnimatePresence>

@@ -319,7 +319,7 @@ export type SendCommentsInput = {
 };
 
 export type ReportCommentsInput = {
-  commentId: string;
+  commentId: number;
   reason: string;
 };
 
