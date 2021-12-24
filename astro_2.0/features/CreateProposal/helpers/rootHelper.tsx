@@ -7,6 +7,7 @@ import uniq from 'lodash/uniq';
 import { nanoid } from 'nanoid';
 import Decimal from 'decimal.js';
 import dynamic from 'next/dynamic';
+import endsWith from 'lodash/endsWith';
 import React, { ReactNode } from 'react';
 
 // Types
@@ -35,6 +36,9 @@ import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 // Context
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+
+// Config
+import { nearConfig } from 'config';
 
 // Components
 import { TransferContent } from 'astro_2.0/features/CreateProposal/components/TransferContent';
@@ -922,6 +926,13 @@ export function getValidationSchema(
             'notValidNearAccount',
             'Only valid near accounts are allowed',
             validateUserAccount
+          )
+          .test(
+            'daoMember',
+            'DAO can not be specified in this field',
+            value => {
+              return !endsWith(value, nearConfig.contractName);
+            }
           )
           .required('Required'),
         details: yup.string().required('Required'),
