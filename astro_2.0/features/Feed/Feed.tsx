@@ -46,6 +46,7 @@ interface FeedProps {
   category?: ProposalCategories;
   headerClassName?: string;
   initialProposals: PaginationResponse<Proposal[]> | null;
+  initialProposalsStatusFilterValue: ProposalStatuses;
 }
 
 export const Feed = ({
@@ -57,6 +58,7 @@ export const Feed = ({
   showFlag = true,
   headerClassName,
   initialProposals,
+  initialProposalsStatusFilterValue,
 }: FeedProps): JSX.Element => {
   const neighbourRef = useRef(null);
   const { query, replace, pathname } = useRouter();
@@ -183,7 +185,11 @@ export const Feed = ({
       >
         <ProposalStatusFilter
           neighbourRef={neighbourRef}
-          value={queries.status || ProposalStatuses.Active}
+          value={
+            queries.status ||
+            initialProposalsStatusFilterValue ||
+            ProposalStatuses.All
+          }
           onChange={onProposalFilterChange}
           disabled={proposalsDataIsLoading}
           list={[

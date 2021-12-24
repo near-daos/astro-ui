@@ -2,6 +2,7 @@ import React from 'react';
 import isEmpty from 'lodash/isEmpty';
 import { GetServerSideProps } from 'next';
 
+import { ProposalStatuses } from 'types/proposal';
 import { Feed } from 'astro_2.0/features/Feed';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
 import { CookieService } from 'services/CookieService';
@@ -19,7 +20,10 @@ const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
 export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   typeof Feed
 >> = async ({ query, locale = 'en' }) => {
-  const { category, status } = query as ProposalsQueries;
+  const {
+    category,
+    status = ProposalStatuses.Active,
+  } = query as ProposalsQueries;
   const accountId = CookieService.get(ACCOUNT_COOKIE);
 
   if (!accountId) {
@@ -59,6 +63,7 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
         nextI18NextConfig
       )),
       initialProposals: res,
+      initialProposalsStatusFilterValue: status,
     },
   };
 };
