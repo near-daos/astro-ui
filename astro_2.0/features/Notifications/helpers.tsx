@@ -1,4 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
+import { UrlObject } from 'url';
 import { IconName } from 'components/Icon';
 import {
   NotificationSettingsDao,
@@ -15,6 +16,7 @@ import uniqid from 'uniqid';
 import { DaoSettings } from 'astro_2.0/features/Notifications/types';
 import { DAO } from 'types/dao';
 import { TFunction } from 'next-i18next';
+import { SINGLE_DAO_PAGE, SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
 export function getNotificationParamsByType(
   type: NotifiedActionType,
@@ -23,7 +25,7 @@ export function getNotificationParamsByType(
   status: NotificationStatus
 ): {
   iconType: IconName;
-  url: string;
+  url: string | UrlObject;
   statusIcon: IconName | null;
 } {
   let noteType;
@@ -37,7 +39,12 @@ export function getNotificationParamsByType(
     case NotifiedActionType.CorporationDao:
     case NotifiedActionType.CooperativeDao: {
       noteType = NotificationType.DaoConfig;
-      url = `/dao/${targetId}`;
+      url = {
+        pathname: SINGLE_DAO_PAGE,
+        query: {
+          dao: daoId,
+        },
+      };
 
       break;
     }
@@ -45,46 +52,88 @@ export function getNotificationParamsByType(
     case NotifiedActionType.ChangePolicy:
     case NotifiedActionType.ChangeConfig: {
       noteType = NotificationType.DaoConfig;
-      url = `/dao/${daoId}/proposals/${targetId}`;
+      url = {
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: daoId,
+          proposal: targetId,
+        },
+      };
 
       break;
     }
     case NotifiedActionType.AddMemberToRole: {
       noteType = NotificationType.AddMember;
-      url = `/dao/${daoId}/proposals/${targetId}`;
+      url = {
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: daoId,
+          proposal: targetId,
+        },
+      };
 
       break;
     }
     case NotifiedActionType.RemoveMemberFromRole: {
       noteType = NotificationType.RemoveMember;
-      url = `/dao/${daoId}/proposals/${targetId}`;
+      url = {
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: daoId,
+          proposal: targetId,
+        },
+      };
 
       break;
     }
     case NotifiedActionType.AddBounty:
     case NotifiedActionType.BountyDone: {
       noteType = NotificationType.Bounty;
-      url = `/dao/${daoId}/proposals/${targetId}`;
+      url = {
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: daoId,
+          proposal: targetId,
+        },
+      };
 
       break;
     }
 
     case NotifiedActionType.Transfer: {
       noteType = NotificationType.Transfer;
-      url = `/dao/${daoId}/proposals/${targetId}`;
+      url = {
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: daoId,
+          proposal: targetId,
+        },
+      };
 
       break;
     }
     case NotifiedActionType.FunctionCall: {
       noteType = NotificationType.Transfer;
-      url = `/dao/${daoId}/proposals/${targetId}`;
+      url = {
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: daoId,
+          proposal: targetId,
+        },
+      };
 
       break;
     }
 
     case NotifiedActionType.Vote: {
       noteType = NotificationType.Polls;
-      url = `/dao/${daoId}/proposals/${targetId}`;
+      url = {
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: daoId,
+          proposal: targetId,
+        },
+      };
 
       break;
     }
@@ -146,16 +195,6 @@ const PLATFORM_RELATED_SETTINGS = [
   NotifiedActionType.CooperativeDao,
   NotifiedActionType.CorporationDao,
 ];
-
-// AddMemberToRole = 'AddMemberToRole',
-//   RemoveMemberFromRole = 'RemoveMemberFromRole',
-//   FunctionCall = 'FunctionCall',
-//   Transfer = 'Transfer',
-//   ChangePolicy = 'ChangePolicy',
-//   ChangeConfig = 'ChangeConfig',
-//   AddBounty = 'AddBounty',
-//   BountyDone = 'BountyDone',
-//   Vote = 'Vote',
 
 export const DAO_RELATED_SETTINGS = [
   NotifiedActionType.AddMemberToRole,
@@ -415,7 +454,7 @@ export function generateProposalNotificationText(
   switch (status) {
     case NotificationStatus.Created: {
       const actioner =
-        accountId === proposerId ? 'You' : extractPrefix(proposerId);
+        accountId === proposerId ? t('you') : extractPrefix(proposerId);
 
       return `${actioner} ${t('submittedNewProposal', {
         type,
@@ -424,7 +463,7 @@ export function generateProposalNotificationText(
     }
     case NotificationStatus.Rejected: {
       const actioner =
-        accountId === proposerId ? 'Your' : extractPrefix(proposerId);
+        accountId === proposerId ? t('your') : extractPrefix(proposerId);
 
       return `${actioner}'s ${type} ${t('proposalWasRejected', {
         dao: dao.displayName || extractPrefix(dao.id),
@@ -432,7 +471,7 @@ export function generateProposalNotificationText(
     }
     case NotificationStatus.Approved: {
       const actioner =
-        accountId === proposerId ? 'Your' : extractPrefix(proposerId);
+        accountId === proposerId ? t('your') : extractPrefix(proposerId);
 
       return `${actioner}'s ${type} ${t('proposalWasApproved', {
         dao: dao.displayName || extractPrefix(dao.id),

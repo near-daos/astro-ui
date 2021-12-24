@@ -28,6 +28,9 @@
   "functionCall": "Function call",
   "poll": "Poll",
 
+  "you": "You",
+  "your": "Your",
+
   "proposalChangeNameSuccess": "proposal Change DAO Name has been approved",
   "createdNewPoll": "created a new poll for {{dao}}. Check out now to cast your vote.",
   "archived": "Archived"

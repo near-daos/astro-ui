@@ -60,7 +60,10 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
         onClick={removed ? undefined : onRemove}
         iconName="buttonDelete"
         size="small"
-        className={cn(styles.icon, { [styles.inactive]: removed })}
+        buttonClassName={cn({
+          [styles.inactive]: removed,
+        })}
+        className={styles.icon}
         tooltipPlacement={tooltipPlacement}
       />
       <a
