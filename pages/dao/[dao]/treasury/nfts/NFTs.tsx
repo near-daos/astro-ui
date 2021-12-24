@@ -25,8 +25,6 @@ import isEmpty from 'lodash/isEmpty';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
-import { NFT_COLLECTIONS_DATA } from 'mocks/nftData';
-
 import styles from './nfts.module.scss';
 
 export interface NFTsPageProps {
@@ -72,16 +70,11 @@ const NFTs: NextPage<NFTsPageProps> = ({
       : nfts.filter(nft => currentContractIds.includes(nft.contractId));
 
     return nftsToRender.map(nft => {
-      const { uri, title, contractId, transactionHash } = nft;
+      const { uri, contractId } = nft;
 
       return (
-        <div className={styles.card} key={transactionHash}>
-          <NFTCard
-            name={title}
-            image={uri}
-            txHash={transactionHash}
-            contractId={contractId}
-          />
+        <div className={styles.card} key={uri.toString()}>
+          <NFTCard image={uri} contractId={contractId} />
         </div>
       );
     });
@@ -122,14 +115,6 @@ const NFTs: NextPage<NFTsPageProps> = ({
           <div className={styles.header}>
             <h1>NFTs</h1>
             <div className={styles.selectors}>
-              <div className={styles.collections}>
-                <DropdownMultiSelect
-                  onChange={() => true}
-                  label="Collection"
-                  options={NFT_COLLECTIONS_DATA}
-                  simple
-                />
-              </div>
               <div className={styles.contracts}>
                 <DropdownMultiSelect
                   onChange={v => setCurrentContractIds(v)}
