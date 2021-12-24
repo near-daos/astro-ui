@@ -76,6 +76,10 @@ class NotificationsServiceClass {
       return [];
     }
 
+    const offset = 0;
+    const limit = 1000;
+    const sort = 'createdAt,DESC';
+
     const accountId = this.sputnikNearService.getAccountId();
 
     const query = RequestQueryBuilder.create().setFilter({
@@ -84,13 +88,7 @@ class NotificationsServiceClass {
       value: accountId,
     });
 
-    if (daosIds) {
-      query.setFilter({
-        field: 'daoId',
-        operator: '$in',
-        value: daosIds,
-      });
-    } else {
+    if (!daosIds) {
       query.setFilter({
         field: 'daoId',
         operator: '$isnull',
@@ -101,7 +99,13 @@ class NotificationsServiceClass {
 
     const response = await this.httpService.get<
       PaginationResponse<NotificationSettingDTO[]>
-    >(`/notification-settings?${queryString}`);
+    >(`/notification-settings?${queryString}`, {
+      params: {
+        offset,
+        limit,
+        sort,
+      },
+    });
 
     return response.data.data;
   }

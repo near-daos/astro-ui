@@ -237,6 +237,7 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
                     settings,
                   }) => (
                     <NotificationCollapsableSettings
+                      key={daoId}
                       daoId={daoId}
                       flagCover={flagCover}
                       flagBack={flagBack}

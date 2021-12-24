@@ -27,15 +27,9 @@ export const getServerSideProps: GetServerSideProps = async ({
   ]);
 
   const accountDaosIds = accountDaos.map(item => item.id);
-  const subscriptionsDaosIds = subscriptions.map(item => item.dao.id);
 
-  const [
-    myDaosSettings,
-    subscribedDaosSettings,
-    platformSettings,
-  ] = await Promise.all([
+  const [daosSettings, platformSettings] = await Promise.all([
     NotificationsService.getNotificationsSettings(accountDaosIds),
-    NotificationsService.getNotificationsSettings(subscriptionsDaosIds),
     NotificationsService.getNotificationsSettings(),
   ]);
 
@@ -50,7 +44,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         return {
           dao: item,
           settings:
-            myDaosSettings.find(daoSetting => daoSetting.daoId === item.id) ??
+            daosSettings.find(daoSetting => daoSetting.daoId === item.id) ??
             null,
         };
       }),
@@ -58,9 +52,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         return {
           dao: item.dao,
           settings:
-            subscribedDaosSettings.find(
-              daoSetting => daoSetting.daoId === item.dao.id
-            ) ?? null,
+            daosSettings.find(daoSetting => daoSetting.daoId === item.dao.id) ??
+            null,
         };
       }),
       platformSettings,
