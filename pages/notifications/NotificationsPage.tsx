@@ -84,7 +84,12 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({ accountDaosIds }) => {
 
   function renderNotifications(title: string | null, noties?: Notification[]) {
     if (isEmpty(noties) || !noties) {
-      return renderNoNotifications(t('noNotifications'));
+      return (
+        <>
+          {title && renderDelimiter(title, noties?.length ?? 0)}
+          {renderNoNotifications(t('noNotifications'))}
+        </>
+      );
     }
 
     const filter = router.query.notyType;
@@ -93,11 +98,11 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({ accountDaosIds }) => {
 
     if (filter === 'platform') {
       const platformTypes = [
-        NotifiedActionType.CustomDaoCreation,
-        NotifiedActionType.ClubDaoCreation,
-        NotifiedActionType.FoundationDaoCreation,
-        NotifiedActionType.CorporationDaoCreation,
-        NotifiedActionType.CooperativeDaoCreation,
+        NotifiedActionType.CustomDao,
+        NotifiedActionType.ClubDao,
+        NotifiedActionType.FoundationDao,
+        NotifiedActionType.CorporationDao,
+        NotifiedActionType.CooperativeDao,
       ];
 
       resultList = noties?.filter(item => platformTypes.includes(item.type));

@@ -49,6 +49,8 @@
 
 .text {
   @include font(12px, 18px, 400);
+  align-items: center;
+  display: flex;
   grid-area: text;
   margin: 10px 0;
   min-height: 54px;

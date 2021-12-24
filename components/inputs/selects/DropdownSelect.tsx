@@ -22,6 +22,7 @@ export interface DropdownSelectProps {
   controlIcon?: ReactNode;
   disabled?: boolean;
   isBorderless?: boolean;
+  reverseMenu?: boolean;
 }
 
 export const DropdownSelect = React.forwardRef<
@@ -39,6 +40,7 @@ export const DropdownSelect = React.forwardRef<
       controlIcon,
       disabled = false,
       isBorderless = false,
+      reverseMenu = false,
     },
     externalRef
   ) => {
@@ -104,7 +106,10 @@ export const DropdownSelect = React.forwardRef<
               )}
             </div>
           </button>
-          <ul className={styles.menu} {...getMenuProps()}>
+          <ul
+            className={cn(styles.menu, { [styles.reverse]: reverseMenu })}
+            {...getMenuProps()}
+          >
             {isOpen &&
               options.map((item, index) => {
                 const props = !item.disabled

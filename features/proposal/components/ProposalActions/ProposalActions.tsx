@@ -1,5 +1,6 @@
 import { useMedia, useMountedState } from 'react-use';
 import React, { FC, useEffect, useState } from 'react';
+import cn from 'classnames';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
@@ -13,6 +14,7 @@ import styles from './ProposalActions.module.scss';
 interface ProposalActionsProps {
   onRemove: React.MouseEventHandler<HTMLButtonElement>;
   removeCount: number;
+  removed: boolean;
   proposalVariant: ProposalVariant;
   proposalType: ProposalType;
   proposalDescription: string;
@@ -23,6 +25,7 @@ interface ProposalActionsProps {
 export const ProposalActions: FC<ProposalActionsProps> = ({
   onRemove,
   removeCount,
+  removed,
   proposalVariant,
   proposalType,
   proposalDescription,
@@ -54,10 +57,10 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
     <div className={styles.root}>
       <ActionButton
         tooltip={`Remove: ${removeCount}`}
-        onClick={onRemove}
+        onClick={removed ? undefined : onRemove}
         iconName="buttonDelete"
         size="small"
-        className={styles.icon}
+        className={cn(styles.icon, { [styles.inactive]: removed })}
         tooltipPlacement={tooltipPlacement}
       />
       <a

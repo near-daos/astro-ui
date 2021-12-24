@@ -58,6 +58,8 @@ export const formatTimestampAsDate = (time: string): string => {
 };
 
 export function kFormatter(n: number): string {
+  if (n === undefined) return '0';
+
   if (n >= 1e3) return `${Number(n / 1e3).toFixed(1)}k`;
 
   return `${n.toFixed(0)}`;

@@ -52,6 +52,10 @@
   }
 }
 
+.inactive button {
+  cursor: default !important;
+}
+
 .copyBtn {
   button:hover {
     @media screen and (max-width: #{breakpoints.$screen-sm + 1}px) {

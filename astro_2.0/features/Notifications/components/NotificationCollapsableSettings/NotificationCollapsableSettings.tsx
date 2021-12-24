@@ -6,10 +6,7 @@ import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { Toggle } from 'components/inputs/Toggle';
 import { IconButton } from 'components/button/IconButton';
 import { Collapsable } from 'components/collapsable/Collapsable';
-import {
-  NotificationSettingsItem,
-  NotificationSettingsType,
-} from 'types/notification';
+import { NotificationSettingsItem } from 'types/notification';
 
 import styles from './NotificationCollapsableSettings.module.scss';
 
@@ -22,7 +19,6 @@ interface NotificationCollapsableSettingsProps {
   settings: NotificationSettingsItem[];
   groupId: string;
   onToggleDao: (daoId: string, groupId: string) => void;
-  settingsTypes: NotificationSettingsType[];
   onToggleSettings: (id: string, daoId: string, groupId: string) => void;
 }
 
@@ -35,7 +31,6 @@ export const NotificationCollapsableSettings: FC<NotificationCollapsableSettings
   settings,
   groupId,
   onToggleDao,
-  settingsTypes,
   onToggleSettings,
 }) => {
   return (
@@ -97,28 +92,24 @@ export const NotificationCollapsableSettings: FC<NotificationCollapsableSettings
       )}
     >
       {(isOpen: boolean) => {
-        return settingsTypes.map(({ typeId, typeName }) => (
+        return (
           <div
-            key={typeId}
             className={cn(styles.collapsableListItem, {
               [styles.open]: isOpen,
             })}
           >
-            {typeName && <div className={styles.type}>{typeName}</div>}
-            {settings
-              .filter(item => item.type === typeId)
-              .map(({ id, checked, title }) => (
-                <div key={id} className={styles.settingsItem}>
-                  <Toggle
-                    id={id}
-                    label={title}
-                    checked={checked}
-                    onClick={() => onToggleSettings(id, daoId, groupId)}
-                  />
-                </div>
-              ))}
+            {settings.map(({ id, checked, title }) => (
+              <div key={id} className={styles.settingsItem}>
+                <Toggle
+                  id={id}
+                  label={title}
+                  checked={checked}
+                  onClick={() => onToggleSettings(id, daoId, groupId)}
+                />
+              </div>
+            ))}
           </div>
-        ));
+        );
       }}
     </Collapsable>
   );

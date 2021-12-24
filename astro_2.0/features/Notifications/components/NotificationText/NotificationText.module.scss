@@ -1,3 +1,8 @@
-.actioner {
-  text-transform: capitalize;
+.root {
+  align-items: center;
+  display: block;
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
 }

@@ -9,12 +9,11 @@ import { PlatformNotificationSettings } from 'astro_2.0/features/Notifications/c
 import {
   NotificationSettingsGroup,
   NotificationSettingsPlatform,
-  NotificationSettingsType,
   NotificationsGroupStatus,
 } from 'types/notification';
-import { NOTIFICATION_SETTINGS_TYPES } from 'mocks/notificationsData';
 import { NotificationSettingDTO } from 'services/NotificationsService/types';
 import {
+  DAO_RELATED_SETTINGS,
   extractTypes,
   prepareSettingsGroups,
   prepareSettingsPlatform,
@@ -27,14 +26,12 @@ import styles from './NotificationSettings.module.scss';
 interface NotificationSettingsProps {
   settingsGroupsData: NotificationSettingsGroup[];
   settingsPlatformData: NotificationSettingsPlatform;
-  settingsTypes: NotificationSettingsType[];
   myDaos: DaoSettings[];
   subscribedDaos: DaoSettings[];
   platformSettings: NotificationSettingDTO[];
 }
 
 const NotificationSettings: FC<NotificationSettingsProps> = ({
-  settingsTypes = NOTIFICATION_SETTINGS_TYPES,
   myDaos,
   subscribedDaos,
   platformSettings,
@@ -100,7 +97,7 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
 
     const types = extractTypes(newSettingsState.platform.settings);
 
-    updateSettings(null, types);
+    updateSettings(null, [...types, ...DAO_RELATED_SETTINGS]);
   };
 
   const toggleDaoSwitch = (daoId: string, groupId: string) => {
@@ -248,7 +245,6 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
                       settings={settings}
                       groupId={groupId}
                       onToggleDao={toggleDaoSwitch}
-                      settingsTypes={settingsTypes}
                       onToggleSettings={toggleSettingsSwitch}
                     />
                   )

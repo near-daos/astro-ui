@@ -45,7 +45,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
 }) => {
   const { accountId } = useAuthContext();
   const [showInfoPanel, toggleInfoPanel] = useToggle(false);
-  const [commentsCount, setCommentsCount] = useState(proposal.commentsCount);
+  const [commentsCount, setCommentsCount] = useState(proposal?.commentsCount);
   const isCouncilUser = checkIsCouncilUser(accountId, dao);
   const isCommentsAllowed = isUserPermittedToCreateProposal(accountId, dao);
 
@@ -90,6 +90,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
           voteRemove={proposal.voteRemove}
           liked={proposal.votes[accountId] === 'Yes'}
           disliked={proposal.votes[accountId] === 'No'}
+          dismissed={proposal.votes[accountId] === 'Dismiss'}
           updatedAt={proposal.updatedAt}
           toggleInfoPanel={toggleInfoPanel}
           commentsCount={commentsCount}

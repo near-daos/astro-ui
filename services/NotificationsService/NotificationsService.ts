@@ -21,8 +21,10 @@ class NotificationsServiceClass {
   public async getNotifications(
     showArchived: boolean
   ): Promise<Notification[]> {
-    // use vhorin-dev.testnet account id to 100% get data
-    // const accountId = 'vhorin-dev.testnet';
+    const offset = 0;
+    const limit = 3000;
+    const sort = 'createdAt,DESC';
+
     const accountId = this.sputnikNearService.getAccountId();
 
     if (!accountId) {
@@ -44,7 +46,13 @@ class NotificationsServiceClass {
 
     const response = await this.httpService.get<
       PaginationResponse<NotificationDTO[]>
-    >(`/account-notifications?${queryString}`);
+    >(`/account-notifications?${queryString}`, {
+      params: {
+        offset,
+        limit,
+        sort,
+      },
+    });
 
     return mapNotificationDtoToNotification(response.data.data);
   }
