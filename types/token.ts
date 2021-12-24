@@ -13,7 +13,6 @@ export enum TokenDeprecated {
 
 export type NftTokenResponse = {
   id: string;
-  transactionHash: string;
   tokenId: string;
   ownerId: string;
   contractId: string;
@@ -63,9 +62,7 @@ export type NftToken = {
   id: string;
   uri: NFTUri[];
   description: string;
-  title: string;
   isExternalReference: boolean;
-  transactionHash: string;
   contractId: string;
   contractName: string;
 };

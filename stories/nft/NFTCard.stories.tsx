@@ -27,7 +27,6 @@ const Demo: FC<{ cards: StaticImageData[] }> = ({ cards }) => {
         return (
           <NFTCard
             key={img.src}
-            name={img.src}
             image={[{ uri: img.src, isExternalReference: false }]}
             contractId="vhorin.sputnikv2.testnet"
           />

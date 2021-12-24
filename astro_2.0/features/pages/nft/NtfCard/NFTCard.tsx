@@ -2,29 +2,21 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState, VFC } from 'react';
 import { ExplorerLink } from 'components/ExplorerLink';
 import { Popup } from 'components/Popup';
-import { NFTUri } from 'types/token';
+import { Icon } from 'components/Icon';
 import { shortenString } from 'helpers/format';
+import { NFTUri } from 'types/token';
 
 import styles from './NtfCard.module.scss';
 
 export interface NFTCardProps {
   image: NFTUri[];
-  name: string;
-  description?: string;
-  collection?: string;
   contractId: string;
-  txHash?: string;
 }
 
-export const NFTCard: VFC<NFTCardProps> = ({
-  name,
-  image,
-  collection,
-  contractId,
-  txHash,
-}) => {
+export const NFTCard: VFC<NFTCardProps> = ({ image, contractId }) => {
   const imgRef = useRef<HTMLImageElement>(null);
   const linkRef = useRef<HTMLAnchorElement>(null);
+  const nameRef = useRef('');
   const [showPlaceholder, setShowPlaceholder] = useState(true);
   const [showError, setShowError] = useState(false);
   const [contractIdPopup, setContractIdPopup] = useState<HTMLElement | null>(
@@ -48,6 +40,8 @@ export const NFTCard: VFC<NFTCardProps> = ({
               .get(uri, { cancelToken: source.token })
               .then(({ data }) => {
                 const media = data?.media;
+
+                nameRef.current = data?.title;
 
                 if (media?.indexOf('http') === 0) {
                   const img = new Image();
@@ -105,39 +99,54 @@ export const NFTCard: VFC<NFTCardProps> = ({
     };
   }, [image]);
 
-  return (
-    <>
-      <div className={styles.imageWrapper}>
-        <div>
-          <a href="*" rel="noopener noreferrer" target="_blank" ref={linkRef}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              ref={imgRef}
-              width="296px"
-              height="424px"
-              alt={name}
-              onLoad={() => setShowPlaceholder(false)}
-              src=""
-              className={styles.image}
-            />
-          </a>
+  function renderPlaceholder() {
+    return (
+      <div className={styles.preloader}>
+        <div className={styles.preloaderIcon}>
+          <div />
+          <div />
+          <div />
         </div>
-        {showPlaceholder && (
-          <div className={styles.preloader}>
-            <div className={styles.preloaderIcon}>
-              <div />
-              <div />
-              <div />
-            </div>
-          </div>
-        )}
-        {showError && <div className={styles.error}>Failed to load image</div>}
+      </div>
+    );
+  }
+
+  function renderNtfImage() {
+    if (showError) {
+      return (
+        <div className={styles.error}>
+          <Icon name="imageNotFound" width={58} className={styles.errorIcon} />
+          Failed to load image
+        </div>
+      );
+    }
+
+    return (
+      <div>
+        <a href="*" rel="noopener noreferrer" target="_blank" ref={linkRef}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            ref={imgRef}
+            width="296px"
+            height="424px"
+            alt={nameRef.current}
+            onLoad={() => setShowPlaceholder(false)}
+            src=""
+            className={styles.image}
+          />
+        </a>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.root}>
+      <div className={styles.imageWrapper}>
+        {showPlaceholder && renderPlaceholder()}
+        {renderNtfImage()}
       </div>
       <div className={styles.description}>
-        <div className={styles.name}>{name || 'NFT Name'}</div>
-        <div className={styles.collection}>
-          {collection || 'Collection Name'}
-        </div>
+        <div className={styles.name}>{nameRef.current}</div>
         <div className={styles.info}>
           <div className={styles.contract} ref={setContractIdPopup}>
             {shortenString(contractId, 19)}
@@ -147,13 +156,13 @@ export const NFTCard: VFC<NFTCardProps> = ({
           )}
           <div>
             <ExplorerLink
-              linkData={txHash || 'temporary-transaction-hash-link'}
-              linkType="transaction"
+              linkData={contractId}
+              linkType="member"
               textLabel="To the explorer"
             />
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

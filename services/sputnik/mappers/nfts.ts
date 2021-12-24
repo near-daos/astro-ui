@@ -5,16 +5,11 @@ export function mapNftTokenResponseToNftToken(
 ): NftToken[] {
   return data
     .reduce<NftToken[]>((res, item) => {
-      const {
-        id,
-        transactionHash,
-        contractId,
-        baseUri,
-        metadata,
-        contract,
-      } = item;
+      const { id, contractId, baseUri, metadata, contract } = item;
 
-      if (!metadata) return res;
+      if (!metadata) {
+        return res;
+      }
 
       const { media, reference } = metadata;
 
@@ -57,9 +52,7 @@ export function mapNftTokenResponseToNftToken(
           id,
           uri,
           description: metadata.description ?? null,
-          title: metadata.title ?? null,
           isExternalReference,
-          transactionHash,
           contractId,
           contractName: contract.name,
         });
@@ -68,9 +61,13 @@ export function mapNftTokenResponseToNftToken(
       return res;
     }, [])
     .sort((a, b) => {
-      if (a.uri > b.uri) return 1;
+      if (a.uri > b.uri) {
+        return 1;
+      }
 
-      if (a.uri < b.uri) return -1;
+      if (a.uri < b.uri) {
+        return -1;
+      }
 
       return 0;
     });

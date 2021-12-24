@@ -1,5 +1,10 @@
 @import 'styles/typography';
 
+.root {
+  background-color: var(--color-white);
+  border-radius: 8px;
+}
+
 .imageWrapper {
   height: 424px;
   overflow: hidden;
@@ -23,14 +28,6 @@
   text-align: center;
 }
 
-.collection {
-  @include font(14px, 24px, 400);
-  @include ellipse-text;
-  height: 24px;
-  margin-top: 4px;
-  text-align: center;
-}
-
 .info {
   @include centralize;
   height: 24px;
@@ -47,7 +44,7 @@
 .preloader,
 .error {
   align-items: center;
-  background-color: var(--color-primary-10);
+  background-color: var(--color-neutral-10);
   border: 1px solid var(--color-neutral-50);
   border-radius: 8px;
   display: flex;
@@ -60,14 +57,16 @@
   width: 100%;
 }
 
-.preloader {
-  background-color: var(--color-primary-10);
+.error {
+  @include font(12px, 18px, 400);
+  color: var(--color-neutral-60);
+  display: flex;
+  flex-direction: column;
 }
 
-.error {
-  @extend %subtitle5;
-  border-color: var(--color-error-50);
-  color: var(--color-error-50);
+.errorIcon {
+  color: var(--color-brand-blurple-light);
+  margin-bottom: 8px;
 }
 
 .preloaderIcon {
@@ -79,7 +78,7 @@
 
 .preloaderIcon div {
   animation: preloader 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
-  background: var(--color-brand-purple-light);
+  background: var(--color-brand-blurple-light);
   display: inline-block;
   left: 8px;
   position: absolute;
