@@ -50,7 +50,9 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
   }, []);
 
   const handleSubmit = useCallback(() => {
-    if (!value || !value.trim()) return;
+    if (!value || !value.trim()) {
+      return;
+    }
 
     sendComment({ proposalId, message: value.trim() });
     setValue('');
@@ -58,7 +60,9 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
 
   const handleKeyUp = useCallback(
     e => {
-      if (!focused) return;
+      if (!focused) {
+        return;
+      }
 
       if (e.key === 'Enter') {
         handleSubmit();
@@ -109,14 +113,22 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
       <ul className={styles.comments} ref={commentsRef}>
         {comments
           ?.sort((a, b) => {
-            if (a.id > b.id) return 1;
+            if (a.id > b.id) {
+              return 1;
+            }
 
-            if (a.id < b.id) return -1;
+            if (a.id < b.id) {
+              return -1;
+            }
 
             return 0;
           })
-          .map(({ id, message, createdAt, accountId }) => {
+          .map(({ id, message, createdAt, accountId, reports }) => {
             const isMyComment = accountId === loggedInAccountId;
+
+            const isReported = !!reports?.find(
+              item => item.accountId === loggedInAccountId
+            );
 
             return (
               <Comment
@@ -126,6 +138,8 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
                 createdAt={createdAt}
                 isMyComment={isMyComment}
                 isCouncilUser={isCouncilUser}
+                isReported={isReported}
+                reportsCount={reports?.length}
                 message={message}
                 onReport={reportComment}
                 onDelete={deleteComment}

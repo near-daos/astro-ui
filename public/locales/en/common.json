@@ -79,6 +79,12 @@
     }
   },
 
+  "comments": {
+    "youReportedThisMessage": "You have reported this message",
+    "thisMessageWasReported": "This message was reported",
+    "commentsSpamProtection": "Due to spam protection no more than 5 messages per minute are allowed."
+  },
+
   "createDAO": {
     "createNewDAO": "Create new DAO",
     "createNewDAOWay": "A DAO is a new way for people to organize and work together",
