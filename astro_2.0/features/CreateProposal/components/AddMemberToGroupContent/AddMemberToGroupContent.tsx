@@ -30,6 +30,7 @@ export const AddMemberToGroupContent: FC<AddMemberToGroupContentProps> = ({
                 shouldValidate: true,
               });
             }}
+            reverseMenu
             isBorderless
             options={groups.map(group => ({
               label: group,

@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import cn from 'classnames';
 
 import { Popup } from 'components/Popup';
 import { IconButton } from 'components/button/IconButton';
@@ -10,6 +11,7 @@ import styles from './action-button.module.scss';
 interface ActionButtonProps {
   className?: string;
   iconName: IconName;
+  buttonClassName?: string;
   iconClassName?: string;
   disabled?: boolean;
   size?: 'small' | 'medium' | 'large';
@@ -20,6 +22,7 @@ interface ActionButtonProps {
 
 export const ActionButton: FC<ActionButtonProps> = ({
   className,
+  buttonClassName = '',
   iconName,
   iconClassName = '',
   disabled,
@@ -43,7 +46,7 @@ export const ActionButton: FC<ActionButtonProps> = ({
             disabled={disabled}
             icon={iconName as IconName}
             onClick={onClick}
-            className={styles.btn}
+            className={cn(styles.btn, buttonClassName)}
             size={size}
             iconProps={{
               className: iconClassName,

@@ -12,12 +12,10 @@ export enum NotificationType {
 }
 
 export enum NotificationStatus {
-  Default = 'Default',
+  Created = 'Created',
   Approved = 'Approved',
   Rejected = 'Rejected',
-  Success = 'Success',
-  Alert = 'Alert',
-  EndingSoon = 'EndingSoon',
+  Removed = 'Removed',
 }
 
 export enum NotificationsGroupStatus {
@@ -72,28 +70,38 @@ export interface NotificationDisableOption {
 }
 
 export enum NotifiedActionType {
-  CustomDaoCreation = 'CustomDaoCreation',
-  ClubDaoCreation = 'ClubDaoCreation',
-  FoundationDaoCreation = 'FoundationDaoCreation',
-  CorporationDaoCreation = 'CorporationDaoCreation',
-  CooperativeDaoCreation = 'CooperativeDaoCreation',
+  CustomDao = 'CustomDao',
+  ClubDao = 'ClubDao',
+  FoundationDao = 'FoundationDao',
+  CorporationDao = 'CorporationDao',
+  CooperativeDao = 'CooperativeDao',
 
-  TransferProposalCreation = 'TransferProposalCreation',
-  BountyProposalCreation = 'BountyProposalCreation',
-  BountyDoneProposalCreation = 'BountyDoneProposalCreation',
-  PollProposalCreation = 'PollProposalCreation',
-  DaoNameUpdated = 'DaoNameUpdated',
-  DaoPurposeUpdated = 'DaoPurposeUpdated',
-  DaoLegalUpdated = 'DaoLegalUpdated',
-  DaoLinksUpdated = 'DaoLinksUpdated',
-  DaoFlagUpdated = 'DaoFlagUpdated',
-  DaoDeadlinesUpdated = 'DaoDeadlinesUpdated',
-  DaoRulesUpdated = 'DaoRulesUpdated',
-  DaoGroupAdded = 'DaoGroupAdded',
-  DaoGroupUpdated = 'DaoGroupUpdated',
-  DaoGroupRemoved = 'DaoGroupRemoved',
-  DaoMembersAdded = 'DaoMembersAdded',
-  DaoMemberRemoved = 'DaoMemberRemoved',
+  AddMemberToRole = 'AddMemberToRole',
+  RemoveMemberFromRole = 'RemoveMemberFromRole',
+  FunctionCall = 'FunctionCall',
+  Transfer = 'Transfer',
+  ChangePolicy = 'ChangePolicy',
+  ChangeConfig = 'ChangeConfig',
+  AddBounty = 'AddBounty',
+  BountyDone = 'BountyDone',
+  Vote = 'Vote',
+
+  // TransferProposalCreation = 'TransferProposalCreation',
+  // BountyProposalCreation = 'BountyProposalCreation',
+  // BountyDoneProposalCreation = 'BountyDoneProposalCreation',
+  // PollProposalCreation = 'PollProposalCreation',
+  // DaoNameUpdated = 'DaoNameUpdated',
+  // DaoPurposeUpdated = 'DaoPurposeUpdated',
+  // DaoLegalUpdated = 'DaoLegalUpdated',
+  // DaoLinksUpdated = 'DaoLinksUpdated',
+  // DaoFlagUpdated = 'DaoFlagUpdated',
+  // DaoDeadlinesUpdated = 'DaoDeadlinesUpdated',
+  // DaoRulesUpdated = 'DaoRulesUpdated',
+  // DaoGroupAdded = 'DaoGroupAdded',
+  // DaoGroupUpdated = 'DaoGroupUpdated',
+  // DaoGroupRemoved = 'DaoGroupRemoved',
+  // DaoMembersAdded = 'DaoMembersAdded',
+  // DaoMemberRemoved = 'DaoMemberRemoved',
 }
 
 export type NotificationDTO = {
@@ -118,6 +126,7 @@ export type NotificationDTO = {
     type: NotifiedActionType;
     metadata: unknown; // should we have proper description of the metadata
     timestamp: string;
+    status: NotificationStatus;
   };
 };
 

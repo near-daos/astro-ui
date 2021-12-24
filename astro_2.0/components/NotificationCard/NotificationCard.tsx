@@ -43,7 +43,12 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   const [isNotificationRead, setNotificationRead] = useState(isRead);
 
   const { flagCover, logo, id: daoId = '' } = dao ?? {};
-  const { iconType, url } = getNotificationParamsByType(type, daoId, targetId);
+  const { iconType, url, statusIcon } = getNotificationParamsByType(
+    type,
+    daoId,
+    targetId,
+    status
+  );
 
   const rootClassName = cn(styles.root, {
     [styles.new]: isNew,
@@ -91,10 +96,10 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
             <FlagRenderer flag={flagCover} size="xs" fallBack={logo} />
           </div>
           <div className={styles.type}>
-            <Icon name={iconType} width={24} />
-            {status !== 'Default' && (
+            {!!iconType && <Icon name={iconType} width={24} />}
+            {statusIcon && (
               <div className={styles.status}>
-                <Icon name={`noteStatus${status}`} width={12} />
+                <Icon name={statusIcon} width={12} />
               </div>
             )}
           </div>
@@ -105,6 +110,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
           type={type}
           accountId={accountId}
           dao={dao}
+          status={status}
           metadata={metadata}
           proposerId={signerId ?? ''}
         />

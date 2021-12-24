@@ -9,6 +9,7 @@ import { FEATURE_FLAGS } from 'constants/featureFlags';
 import { useAuthContext } from 'context/AuthContext';
 import { useNotifications } from 'astro_2.0/features/Notifications';
 
+import { NotificationsToastsContainer } from 'astro_2.0/components/AppHeader/components/NotificationsBell/components/NotificationsToastsContainer';
 import { Icon } from 'components/Icon';
 
 import styles from './NotificationsBell.module.scss';
@@ -43,10 +44,13 @@ export const NotificationsBell: VFC<NotificationsBellProps> = ({
   }
 
   return accountId && FEATURE_FLAGS.NOTIFICATIONS ? (
-    <Link href="/notifications" passHref>
-      <div className={cn(styles.root, className)} ref={rootRef}>
-        {renderBellIcon()}
-      </div>
-    </Link>
+    <>
+      <Link href="/notifications" passHref>
+        <div className={cn(styles.root, className)} ref={rootRef}>
+          {renderBellIcon()}
+        </div>
+      </Link>
+      <NotificationsToastsContainer />
+    </>
   ) : null;
 };

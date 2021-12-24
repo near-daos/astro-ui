@@ -13,7 +13,24 @@
   "muted": "Muted",
   "yourNewDaoCreated": "Your New DAO {{newDaoName}} has been successfully created.",
   "newDaoCreated": "New DAO {{newDaoName}} has been successfully created by {{accountId}}",
-  "submittedNewProposal": "submitted a new proposal to {{dao}}",
+
+  "submittedNewProposal": "submitted new {{type}} proposal on {{dao}}",
+  "proposalWasRejected": "proposal was rejected on {{dao}}",
+  "proposalWasApproved": "proposal was approved on {{dao}}",
+
+  "addMemberToGroup": "Add member to group",
+  "removeMemberFromGroup": "Remove member from group",
+  "createBounty": "Create a bounty",
+  "bountyDone": "Bounty done",
+  "changeConfig": "Change Config",
+  "changePolicy": "Change Policy",
+  "transfer": "Transfer",
+  "functionCall": "Function call",
+  "poll": "Poll",
+
+  "you": "You",
+  "your": "Your",
+
   "proposalChangeNameSuccess": "proposal Change DAO Name has been approved",
   "createdNewPoll": "created a new poll for {{dao}}. Check out now to cast your vote.",
   "archived": "Archived"

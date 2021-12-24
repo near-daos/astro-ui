@@ -70,11 +70,11 @@ export const NotificationsProvider: FC = ({ children }) => {
     if (showArchived) {
       getNotifications('archived');
     }
+
+    getNotifications('active');
   }, [getNotifications, showArchived]);
 
   useEffect(() => {
-    getNotifications('active');
-
     if (socket) {
       socket.on('account-notification', () => {
         getNotifications('active');

@@ -1,4 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
+import { UrlObject } from 'url';
 import { IconName } from 'components/Icon';
 import {
   NotificationSettingsDao,
@@ -6,53 +7,133 @@ import {
   NotificationSettingsItem,
   NotificationSettingsPlatform,
   NotificationsGroupStatus,
+  NotificationStatus,
   NotificationType,
   NotifiedActionType,
 } from 'types/notification';
 import { NotificationSettingDTO } from 'services/NotificationsService/types';
 import uniqid from 'uniqid';
 import { DaoSettings } from 'astro_2.0/features/Notifications/types';
+import { DAO } from 'types/dao';
+import { TFunction } from 'next-i18next';
+import { SINGLE_DAO_PAGE, SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
 export function getNotificationParamsByType(
   type: NotifiedActionType,
   daoId: string,
-  targetId: string
+  targetId: string,
+  status: NotificationStatus
 ): {
   iconType: IconName;
-  url: string;
+  url: string | UrlObject;
+  statusIcon: IconName | null;
 } {
   let noteType;
   let url;
+  let statusIcon: IconName | null;
 
   switch (type) {
-    case NotifiedActionType.CustomDaoCreation:
-    case NotifiedActionType.ClubDaoCreation:
-    case NotifiedActionType.FoundationDaoCreation:
-    case NotifiedActionType.CorporationDaoCreation:
-    case NotifiedActionType.CooperativeDaoCreation:
-    case NotifiedActionType.DaoNameUpdated: {
+    case NotifiedActionType.CustomDao:
+    case NotifiedActionType.ClubDao:
+    case NotifiedActionType.FoundationDao:
+    case NotifiedActionType.CorporationDao:
+    case NotifiedActionType.CooperativeDao: {
       noteType = NotificationType.DaoConfig;
-      url = `/dao/${targetId}`;
+      url = {
+        pathname: SINGLE_DAO_PAGE,
+        query: {
+          dao: daoId,
+        },
+      };
 
       break;
     }
-    case NotifiedActionType.BountyDoneProposalCreation:
-    case NotifiedActionType.BountyProposalCreation: {
+
+    case NotifiedActionType.ChangePolicy:
+    case NotifiedActionType.ChangeConfig: {
+      noteType = NotificationType.DaoConfig;
+      url = {
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: daoId,
+          proposal: targetId,
+        },
+      };
+
+      break;
+    }
+    case NotifiedActionType.AddMemberToRole: {
+      noteType = NotificationType.AddMember;
+      url = {
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: daoId,
+          proposal: targetId,
+        },
+      };
+
+      break;
+    }
+    case NotifiedActionType.RemoveMemberFromRole: {
+      noteType = NotificationType.RemoveMember;
+      url = {
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: daoId,
+          proposal: targetId,
+        },
+      };
+
+      break;
+    }
+    case NotifiedActionType.AddBounty:
+    case NotifiedActionType.BountyDone: {
       noteType = NotificationType.Bounty;
-      url = `/dao/${daoId}/proposals/${targetId}`;
+      url = {
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: daoId,
+          proposal: targetId,
+        },
+      };
 
       break;
     }
 
-    case NotifiedActionType.TransferProposalCreation: {
+    case NotifiedActionType.Transfer: {
       noteType = NotificationType.Transfer;
-      url = `/dao/${daoId}/proposals/${targetId}`;
+      url = {
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: daoId,
+          proposal: targetId,
+        },
+      };
 
       break;
     }
-    case NotifiedActionType.PollProposalCreation: {
+    case NotifiedActionType.FunctionCall: {
+      noteType = NotificationType.Transfer;
+      url = {
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: daoId,
+          proposal: targetId,
+        },
+      };
+
+      break;
+    }
+
+    case NotifiedActionType.Vote: {
       noteType = NotificationType.Polls;
-      url = `/dao/${daoId}/proposals/${targetId}`;
+      url = {
+        pathname: SINGLE_PROPOSAL_PAGE_URL,
+        query: {
+          dao: daoId,
+          proposal: targetId,
+        },
+      };
 
       break;
     }
@@ -63,6 +144,32 @@ export function getNotificationParamsByType(
     }
   }
 
+  switch (status) {
+    case NotificationStatus.Approved: {
+      statusIcon = 'votingYesChecked';
+      break;
+    }
+    case NotificationStatus.Rejected: {
+      statusIcon = 'votingNoChecked';
+      break;
+    }
+    case NotificationStatus.Removed: {
+      statusIcon = 'votingDismissChecked';
+      break;
+    }
+    default: {
+      statusIcon = null;
+    }
+  }
+
+  if (!noteType) {
+    return {
+      iconType: 'tokenDefaultIcon',
+      url,
+      statusIcon,
+    };
+  }
+
   const iconType =
     noteType !== 'Default'
       ? (`noteType${noteType}` as IconName)
@@ -71,6 +178,7 @@ export function getNotificationParamsByType(
   return {
     iconType,
     url,
+    statusIcon,
   };
 }
 
@@ -81,33 +189,23 @@ export function extractPrefix(value: string, delimiter?: string): string {
 }
 
 const PLATFORM_RELATED_SETTINGS = [
-  NotifiedActionType.CustomDaoCreation,
-  NotifiedActionType.ClubDaoCreation,
-  NotifiedActionType.FoundationDaoCreation,
-  NotifiedActionType.CooperativeDaoCreation,
-  NotifiedActionType.CorporationDaoCreation,
+  NotifiedActionType.CustomDao,
+  NotifiedActionType.ClubDao,
+  NotifiedActionType.FoundationDao,
+  NotifiedActionType.CooperativeDao,
+  NotifiedActionType.CorporationDao,
 ];
 
-const DAO_RELATED_SETTINGS = [
-  NotifiedActionType.TransferProposalCreation,
-
-  NotifiedActionType.BountyProposalCreation,
-  NotifiedActionType.BountyDoneProposalCreation,
-
-  NotifiedActionType.PollProposalCreation,
-
-  NotifiedActionType.DaoNameUpdated,
-  NotifiedActionType.DaoPurposeUpdated,
-  NotifiedActionType.DaoLegalUpdated,
-  NotifiedActionType.DaoLinksUpdated,
-  NotifiedActionType.DaoFlagUpdated,
-  NotifiedActionType.DaoDeadlinesUpdated,
-  NotifiedActionType.DaoRulesUpdated,
-  NotifiedActionType.DaoGroupAdded,
-  NotifiedActionType.DaoGroupUpdated,
-  NotifiedActionType.DaoGroupRemoved,
-  NotifiedActionType.DaoMembersAdded,
-  NotifiedActionType.DaoMemberRemoved,
+export const DAO_RELATED_SETTINGS = [
+  NotifiedActionType.AddMemberToRole,
+  NotifiedActionType.RemoveMemberFromRole,
+  NotifiedActionType.FunctionCall,
+  NotifiedActionType.Transfer,
+  NotifiedActionType.ChangePolicy,
+  NotifiedActionType.ChangeConfig,
+  NotifiedActionType.AddBounty,
+  NotifiedActionType.BountyDone,
+  NotifiedActionType.Vote,
 ];
 
 export function prepareSettingsPlatform(
@@ -129,34 +227,34 @@ export function prepareSettingsPlatform(
     settings: [
       {
         id: uniqid(),
-        notificationType: NotifiedActionType.CustomDaoCreation,
-        checked: enabledTypes.has(NotifiedActionType.CustomDaoCreation),
+        notificationType: NotifiedActionType.CustomDao,
+        checked: enabledTypes.has(NotifiedActionType.CustomDao),
         title: 'Notify me about the creation of a DAO',
       },
       {
         id: uniqid(),
-        notificationType: NotifiedActionType.ClubDaoCreation,
-        checked: enabledTypes.has(NotifiedActionType.ClubDaoCreation),
+        notificationType: NotifiedActionType.ClubDao,
+        checked: enabledTypes.has(NotifiedActionType.ClubDao),
         title: 'Notify me about the creation of a DAO with a Club Structure',
       },
       {
         id: uniqid(),
-        notificationType: NotifiedActionType.FoundationDaoCreation,
-        checked: enabledTypes.has(NotifiedActionType.FoundationDaoCreation),
+        notificationType: NotifiedActionType.FoundationDao,
+        checked: enabledTypes.has(NotifiedActionType.FoundationDao),
         title:
           'Notify me about the creation of a DAO with a Foundation Structure',
       },
       {
         id: uniqid(),
-        notificationType: NotifiedActionType.CorporationDaoCreation,
-        checked: enabledTypes.has(NotifiedActionType.CorporationDaoCreation),
+        notificationType: NotifiedActionType.CorporationDao,
+        checked: enabledTypes.has(NotifiedActionType.CorporationDao),
         title:
           'Notify me about the creation of a DAO with a Corporation Structure',
       },
       {
         id: uniqid(),
-        notificationType: NotifiedActionType.CooperativeDaoCreation,
-        checked: enabledTypes.has(NotifiedActionType.CooperativeDaoCreation),
+        notificationType: NotifiedActionType.CooperativeDao,
+        checked: enabledTypes.has(NotifiedActionType.CooperativeDao),
         title:
           'Notify me about the creation of a DAO with a Cooperative Structure',
       },
@@ -173,133 +271,68 @@ const generateSettings = (
       : new Set(settings.types);
 
   return [
-    // {
-    //   id: uniqid(),
-    //   checked: true,
-    //   type: 'root',
-    //   title: 'Notify me about new proposals',
-    // },
-    // {
-    //   id: uniqid(),
-    //   checked: false,
-    //   type: 'root',
-    //   title: 'Notify me about approved/rejected proposals',
-    // },
     {
       id: uniqid(),
-      checked: enabledTypes.has(NotifiedActionType.BountyProposalCreation),
-      notificationType: NotifiedActionType.BountyProposalCreation,
-      type: 'bounty',
-      title: 'Notify me about bounties proposed',
-    },
-    {
-      id: uniqid(),
-      checked: enabledTypes.has(NotifiedActionType.BountyDoneProposalCreation),
-      type: 'bounty',
-      notificationType: NotifiedActionType.BountyDoneProposalCreation,
-      title: 'Notify me about new payout initiations',
-    },
-    {
-      id: uniqid(),
-      checked: enabledTypes.has(NotifiedActionType.TransferProposalCreation),
-      type: 'bounty',
-      notificationType: NotifiedActionType.TransferProposalCreation,
-      title: 'Notify me about raised funds for transfer/creation of a bounty',
-    },
-    {
-      id: uniqid(),
-      checked: enabledTypes.has(NotifiedActionType.DaoNameUpdated),
-      type: 'config',
-      notificationType: NotifiedActionType.DaoNameUpdated,
-      title: 'Notify me about updated DAO name',
-    },
-    {
-      id: uniqid(),
-      checked: enabledTypes.has(NotifiedActionType.DaoPurposeUpdated),
-      type: 'config',
-      notificationType: NotifiedActionType.DaoPurposeUpdated,
-      title: 'Notify me about updated DAO purpose',
-    },
-    {
-      id: uniqid(),
-      checked: enabledTypes.has(NotifiedActionType.DaoLegalUpdated),
-      type: 'config',
-      notificationType: NotifiedActionType.DaoLegalUpdated,
-      title: 'Notify me about updated DAO legal status and document',
-    },
-    {
-      id: uniqid(),
-      checked: enabledTypes.has(NotifiedActionType.DaoLinksUpdated),
-      type: 'config',
-      notificationType: NotifiedActionType.DaoLinksUpdated,
-      title: 'Notify me about updated DAO links',
-    },
-    {
-      id: uniqid(),
-      checked: enabledTypes.has(NotifiedActionType.DaoFlagUpdated),
-      type: 'config',
-      notificationType: NotifiedActionType.DaoFlagUpdated,
-      title: 'Notify me about updated flag and logo',
-    },
-    // {
-    //   id: uniqid(),
-    //   checked: true,
-    //   type: 'config',
-    //   title: 'Notify me about updated Group name',
-    // },
-    // {
-    //   id: uniqid(),
-    //   checked: enabledTypes.has(NotifiedActionType.DaoRulesUpdated),
-    //   type: 'policy',
-    //   title: 'Notify me about updated voting policy settings',
-    // },
-    {
-      id: uniqid(),
-      checked: enabledTypes.has(NotifiedActionType.DaoDeadlinesUpdated),
-      notificationType: NotifiedActionType.DaoDeadlinesUpdated,
-      type: 'policy',
-      title: 'Notify me about updated bonds and deadlines',
-    },
-    {
-      id: uniqid(),
-      checked: enabledTypes.has(NotifiedActionType.DaoGroupAdded),
-      type: 'policy',
-      notificationType: NotifiedActionType.DaoGroupAdded,
-      title: 'Notify me about new groups',
-    },
-    // {
-    //   id: uniqid(),
-    //   checked: true,
-    //   type: 'policy',
-    //   title: 'Notify me about a group being removed',
-    // },
-    {
-      id: uniqid(),
-      checked: enabledTypes.has(NotifiedActionType.DaoRulesUpdated),
-      type: 'policy',
-      notificationType: NotifiedActionType.DaoRulesUpdated,
-      title: 'Notify me about updated DAO rules (structure)',
-    },
-    {
-      id: uniqid(),
-      checked: enabledTypes.has(NotifiedActionType.DaoMembersAdded),
+      checked: enabledTypes.has(NotifiedActionType.AddMemberToRole),
+      notificationType: NotifiedActionType.AddMemberToRole,
       type: 'member',
-      notificationType: NotifiedActionType.DaoMembersAdded,
-      title: 'Notify me about new members of a DAO',
+      title: 'Notify me about Add member to role',
     },
     {
       id: uniqid(),
-      checked: enabledTypes.has(NotifiedActionType.DaoMemberRemoved),
+      checked: enabledTypes.has(NotifiedActionType.RemoveMemberFromRole),
       type: 'member',
-      notificationType: NotifiedActionType.DaoMemberRemoved,
-      title: 'Notify me about being removed from a group',
+      notificationType: NotifiedActionType.RemoveMemberFromRole,
+      title: 'Notify me about Remove member from role',
     },
     {
       id: uniqid(),
-      checked: enabledTypes.has(NotifiedActionType.PollProposalCreation),
-      type: 'vote',
-      notificationType: NotifiedActionType.PollProposalCreation,
-      title: 'Notify me about new polls created',
+      checked: enabledTypes.has(NotifiedActionType.FunctionCall),
+      type: 'transfer',
+      notificationType: NotifiedActionType.FunctionCall,
+      title: 'Notify me about Function call',
+    },
+    {
+      id: uniqid(),
+      checked: enabledTypes.has(NotifiedActionType.Transfer),
+      type: 'transfer',
+      notificationType: NotifiedActionType.Transfer,
+      title: 'Notify me about Transfer',
+    },
+    {
+      id: uniqid(),
+      checked: enabledTypes.has(NotifiedActionType.ChangePolicy),
+      type: 'config',
+      notificationType: NotifiedActionType.ChangePolicy,
+      title: 'Notify me about Change Policy',
+    },
+    {
+      id: uniqid(),
+      checked: enabledTypes.has(NotifiedActionType.ChangeConfig),
+      type: 'config',
+      notificationType: NotifiedActionType.ChangeConfig,
+      title: 'Notify me about Change Config',
+    },
+    {
+      id: uniqid(),
+      checked: enabledTypes.has(NotifiedActionType.AddBounty),
+      type: 'bounty',
+      notificationType: NotifiedActionType.AddBounty,
+      title: 'Notify me about Add Bounty',
+    },
+    {
+      id: uniqid(),
+      checked: enabledTypes.has(NotifiedActionType.BountyDone),
+      type: 'bounty',
+      notificationType: NotifiedActionType.BountyDone,
+      title: 'Notify me about Bounty Done',
+    },
+    {
+      id: uniqid(),
+      checked: enabledTypes.has(NotifiedActionType.Vote),
+      notificationType: NotifiedActionType.Vote,
+      type: 'poll',
+      title: 'Notify me about Poll',
     },
   ];
 };
@@ -366,6 +399,88 @@ export function mapDelayToTime(delay: string): number {
     }
     default: {
       return 0;
+    }
+  }
+}
+
+const mapNotificationTypeToMessage = (
+  type: NotifiedActionType,
+  t: TFunction
+) => {
+  switch (type) {
+    case NotifiedActionType.AddMemberToRole: {
+      return t('addMemberToGroup');
+    }
+    case NotifiedActionType.RemoveMemberFromRole: {
+      return t('removeMemberFromGroup');
+    }
+    case NotifiedActionType.AddBounty: {
+      return t('createBounty');
+    }
+    case NotifiedActionType.BountyDone: {
+      return t('bountyDone');
+    }
+    case NotifiedActionType.ChangeConfig: {
+      return t('changeConfig');
+    }
+    case NotifiedActionType.ChangePolicy: {
+      return t('changePolicy');
+    }
+    case NotifiedActionType.Transfer: {
+      return t('transfer');
+    }
+    case NotifiedActionType.FunctionCall: {
+      return t('functionCall');
+    }
+    case NotifiedActionType.Vote: {
+      return t('poll');
+    }
+    default: {
+      return '';
+    }
+  }
+};
+
+export function generateProposalNotificationText(
+  accountId: string,
+  proposerId: string,
+  status: NotificationStatus,
+  notificationType: NotifiedActionType,
+  dao: DAO,
+  t: TFunction
+): string {
+  const type = mapNotificationTypeToMessage(notificationType, t);
+
+  switch (status) {
+    case NotificationStatus.Created: {
+      const actioner =
+        accountId === proposerId ? t('you') : extractPrefix(proposerId);
+
+      return `${actioner} ${t('submittedNewProposal', {
+        type,
+        dao: dao.displayName || extractPrefix(dao.id),
+      })}`;
+    }
+    case NotificationStatus.Rejected: {
+      const actioner =
+        accountId === proposerId ? t('your') : extractPrefix(proposerId);
+
+      return `${actioner}'s ${type} ${t('proposalWasRejected', {
+        dao: dao.displayName || extractPrefix(dao.id),
+      })}`;
+    }
+    case NotificationStatus.Approved: {
+      const actioner =
+        accountId === proposerId ? t('your') : extractPrefix(proposerId);
+
+      return `${actioner}'s ${type} ${t('proposalWasApproved', {
+        dao: dao.displayName || extractPrefix(dao.id),
+      })}`;
+    }
+    default: {
+      return `Change Config proposal updated on ${
+        dao.displayName || extractPrefix(dao.id)
+      }`;
     }
   }
 }

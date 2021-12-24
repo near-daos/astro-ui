@@ -25,7 +25,7 @@ Template.storyName = 'NotificationCard';
 
 Template.args = {
   id: '',
-  type: NotifiedActionType.PollProposalCreation,
+  type: NotifiedActionType.Vote,
   status: NotificationStatus.Rejected,
   createdAt: '2021-12-03T10:39:53.955Z',
   dao: {

@@ -1,11 +1,14 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 
-import { NotifiedActionType } from 'types/notification';
+import { NotificationStatus, NotifiedActionType } from 'types/notification';
 import { DAO } from 'types/dao';
 import { DaoCreateNotificationMetadata } from 'astro_2.0/features/Notifications/types';
 
-import { extractPrefix } from 'astro_2.0/features/Notifications/helpers';
+import {
+  extractPrefix,
+  generateProposalNotificationText,
+} from 'astro_2.0/features/Notifications/helpers';
 
 import styles from './NotificationText.module.scss';
 
@@ -15,6 +18,7 @@ interface NotificationTextProps {
   type: NotifiedActionType;
   metadata: unknown;
   dao: DAO | null;
+  status: NotificationStatus;
 }
 
 export const NotificationText: FC<NotificationTextProps> = ({
@@ -22,6 +26,7 @@ export const NotificationText: FC<NotificationTextProps> = ({
   proposerId,
   type,
   metadata,
+  status,
   dao,
 }) => {
   const { t } = useTranslation('notificationsPage');
@@ -31,11 +36,11 @@ export const NotificationText: FC<NotificationTextProps> = ({
   if (!dao) return null;
 
   switch (type) {
-    case NotifiedActionType.CustomDaoCreation:
-    case NotifiedActionType.ClubDaoCreation:
-    case NotifiedActionType.FoundationDaoCreation:
-    case NotifiedActionType.CorporationDaoCreation:
-    case NotifiedActionType.CooperativeDaoCreation: {
+    case NotifiedActionType.CustomDao:
+    case NotifiedActionType.ClubDao:
+    case NotifiedActionType.FoundationDao:
+    case NotifiedActionType.CorporationDao:
+    case NotifiedActionType.CooperativeDao: {
       const newDaoName =
         (metadata as DaoCreateNotificationMetadata)?.args?.name ?? '';
 
@@ -50,57 +55,23 @@ export const NotificationText: FC<NotificationTextProps> = ({
 
       break;
     }
-    case NotifiedActionType.BountyProposalCreation: {
-      const actioner =
-        accountId === proposerId ? 'You' : extractPrefix(accountId);
-
-      action = (
-        <>
-          <span className={styles.actioner}>{actioner}</span> proposed a new
-          bounty to {dao.displayName || extractPrefix(dao.id)}
-        </>
-      );
-      break;
-    }
-    case NotifiedActionType.BountyDoneProposalCreation:
-    case NotifiedActionType.TransferProposalCreation: {
-      const actioner =
-        accountId === proposerId ? 'You' : extractPrefix(accountId);
-
-      action = (
-        <>
-          <span className={styles.actioner}>{actioner}</span>{' '}
-          {t('submittedNewProposal', {
-            dao: dao.displayName || extractPrefix(dao.id),
-          })}
-        </>
-      );
-      break;
-    }
-    case NotifiedActionType.PollProposalCreation: {
-      const actioner =
-        accountId === proposerId ? 'You' : extractPrefix(accountId);
-
-      action = (
-        <>
-          <span className={styles.actioner}>{actioner}</span>{' '}
-          {t('createdNewPoll', {
-            dao: dao.displayName || extractPrefix(dao.id),
-          })}
-        </>
+    case NotifiedActionType.AddBounty:
+    case NotifiedActionType.BountyDone:
+    case NotifiedActionType.Transfer:
+    case NotifiedActionType.Vote:
+    case NotifiedActionType.AddMemberToRole:
+    case NotifiedActionType.RemoveMemberFromRole:
+    case NotifiedActionType.ChangePolicy:
+    case NotifiedActionType.ChangeConfig: {
+      action = generateProposalNotificationText(
+        accountId,
+        proposerId,
+        status,
+        type,
+        dao,
+        t
       );
 
-      break;
-    }
-    case NotifiedActionType.DaoNameUpdated: {
-      const actioner = accountId === proposerId ? 'Your' : accountId;
-
-      action = (
-        <>
-          <span className={styles.actioner}>{actioner}</span>
-          {t('proposalChangeNameSuccess')}
-        </>
-      );
       break;
     }
 

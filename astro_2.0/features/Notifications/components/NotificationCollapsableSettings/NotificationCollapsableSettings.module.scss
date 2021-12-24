@@ -43,6 +43,7 @@
   .inline {
     @include ellipse-text;
     display: block;
+    line-height: 1.2;
     width: 270px;
   }
 
@@ -70,7 +71,7 @@
 }
 
 .collapseControl {
-  display: flex;
+  display: block;
   grid-area: control;
   justify-content: center;
 }

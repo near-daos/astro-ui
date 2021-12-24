@@ -13,6 +13,7 @@ export const Locales: FC = () => {
       {router?.locales?.map(locale => {
         return (
           <Button
+            key={locale}
             size="small"
             variant="tertiary"
             className={styles.locale}

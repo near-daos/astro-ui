@@ -47,6 +47,7 @@ export interface ProposalCardProps {
   voteRemove: number;
   liked: boolean;
   disliked: boolean;
+  dismissed: boolean;
   voteDetails?: VoteDetail;
   content: ReactNode;
   votePeriodEnd: string;
@@ -132,6 +133,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   dislikes,
   liked,
   disliked,
+  dismissed,
   voteRemove,
   voteDetails,
   content,
@@ -254,6 +256,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
               voteClickHandler('VoteRemove');
             }
           }}
+          removed={dismissed}
           removeCount={voteRemove}
           proposalVariant={variant}
           proposalType={type}

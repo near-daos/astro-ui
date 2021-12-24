@@ -1,0 +1,18 @@
+.root {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-height: 100vh;
+  overflow-y: auto;
+  position: fixed;
+  right: 0;
+  top: 60px;
+  transform: translateX(-40px);
+  width: 320px;
+  z-index: 10000001;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

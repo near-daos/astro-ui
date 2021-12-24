@@ -1,8 +1,4 @@
-import {
-  NotificationDTO,
-  Notification,
-  NotificationStatus,
-} from 'types/notification';
+import { NotificationDTO, Notification } from 'types/notification';
 import { mapDaoDTOtoDao } from 'services/sputnik/mappers';
 import { isToday } from 'date-fns';
 
@@ -19,7 +15,15 @@ export function mapNotificationDtoToNotification(
       notification,
       id,
     }) => {
-      const { type, signerId, metadata, targetId, dao, daoId } = notification;
+      const {
+        type,
+        signerId,
+        metadata,
+        targetId,
+        dao,
+        daoId,
+        status,
+      } = notification;
       const date = new Date(createdAt);
 
       return {
@@ -30,7 +34,7 @@ export function mapNotificationDtoToNotification(
         isMuted,
         isArchived,
         dao: mapDaoDTOtoDao(dao),
-        status: NotificationStatus.Default,
+        status,
         daoId,
         signerId,
         targetId,
