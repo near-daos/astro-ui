@@ -21,7 +21,9 @@ export const BadgeList: FC<BadgeListProps> = ({
     <div className={styles.selected}>
       {selectedItems
         .filter((k, i) => {
-          if (i === 0) return true;
+          if (i === 0) {
+            return true;
+          }
 
           return !showPlaceholder;
         })

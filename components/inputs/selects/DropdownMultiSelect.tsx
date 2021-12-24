@@ -30,7 +30,9 @@ export interface DropdownMultiSelectProps {
 }
 
 function getInitialValues(values?: string[]): Option[] {
-  if (!values) return [];
+  if (!values) {
+    return [];
+  }
 
   return values.map(item => ({
     label: item,

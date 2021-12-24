@@ -27,7 +27,9 @@ export const Popup: React.FC<PopupProps & Config> = ({
     setTriggerRef(anchor);
   }, [anchor, setTriggerRef]);
 
-  if (!visible) return null;
+  if (!visible) {
+    return null;
+  }
 
   return (
     <div
