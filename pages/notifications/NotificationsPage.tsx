@@ -140,7 +140,7 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({ accountDaosIds }) => {
 
   function renderArchivedNotifications() {
     if (isEmpty(archivedNotifications)) {
-      return renderNoNotifications(t('noArchivedNotificationsYet'), true);
+      return renderNoNotifications(t('noNotifications'));
     }
 
     return renderNotifications(null, archivedNotifications);
@@ -148,7 +148,7 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({ accountDaosIds }) => {
 
   function renderAllNotifications() {
     if (isEmpty(newNotifications) && isEmpty(oldNotifications)) {
-      return renderNoNotifications(t('noNotificationsYet'), true);
+      return renderNoNotifications(t('noNotifications'));
     }
 
     return (

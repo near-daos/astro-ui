@@ -64,7 +64,8 @@ export const SideFilter = ({
     };
 
     const hrefClassName = cn(styles.categoriesListItem, {
-      [styles.categoriesListItemSelected]: value === itemVal,
+      [styles.categoriesListItemSelected]:
+        value === itemVal || (!itemVal && !value),
       [styles.disabled]: disabled,
     });
 
