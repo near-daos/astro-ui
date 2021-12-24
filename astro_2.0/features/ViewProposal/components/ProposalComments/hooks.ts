@@ -10,6 +10,7 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { useAsyncFn, useMountedState } from 'react-use';
 import { useSocket } from 'context/SocketContext';
 import { useAuthContext } from 'context/AuthContext';
+import { useTranslation } from 'next-i18next';
 
 export function useProposalComments(
   proposalId: string
@@ -21,6 +22,7 @@ export function useProposalComments(
   deleteComment: (commentId: number, reason: string) => void;
 } {
   const { accountId } = useAuthContext();
+  const { t } = useTranslation();
   const { socket } = useSocket();
   const isMounted = useMountedState();
   const [comments, setComments] = useState<ProposalComment[] | null>(null);
@@ -59,7 +61,7 @@ export function useProposalComments(
         let { message } = err;
 
         if (err.response.status === 429) {
-          message = 'No more than 5 messages per minute is allowed';
+          message = t('commentsSpamProtection');
         }
 
         showNotification({

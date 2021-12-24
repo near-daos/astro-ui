@@ -3,7 +3,7 @@ import cn from 'classnames';
 import { format, parseISO } from 'date-fns';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'next-i18next';
-
+import { IconName } from 'components/Icon';
 import { ActionButton } from 'features/proposal/components/action-button';
 import { ConfirmCommentActionModal } from 'astro_2.0/features/ViewProposal/components/ProposalComments/components/ConfirmCommentActionModal';
 
@@ -123,11 +123,32 @@ export const Comment: FC<CommentProps> = ({
       return null;
     }
 
+    const counter = `${reportsCount}/4`;
+
     return (
       <div className={styles.reportedInfo}>
         {isReported
-          ? `${t('comments.youReportedThisMessage')} ${reportsCount}/4`
-          : `${t('comments.thisMessageWasReported')} ${reportsCount}/4`}
+          ? `${t('comments.youReportedThisMessage')} ${counter}`
+          : `${t('comments.thisMessageWasReported')} ${counter}`}
+      </div>
+    );
+  }
+
+  function renderActionButton(
+    icon: IconName,
+    action: () => void,
+    tooltip: string
+  ) {
+    return (
+      <div className={styles.commentControlButtonWrapper}>
+        <ActionButton
+          className={styles.commentControlButton}
+          tooltipPlacement="top"
+          iconClassName={styles.commentControlIcon}
+          iconName={icon}
+          onClick={action}
+          tooltip={tooltip}
+        />
       </div>
     );
   }
@@ -154,29 +175,9 @@ export const Comment: FC<CommentProps> = ({
           [styles.reported]: isReported,
         })}
       >
-        {isCouncilUser || isMyComment ? (
-          <div className={styles.commentControlButtonWrapper}>
-            <ActionButton
-              className={styles.commentControlButton}
-              tooltipPlacement="top"
-              iconClassName={styles.commentControlIcon}
-              iconName="buttonDelete"
-              onClick={handleRemoveAction}
-              tooltip="Remove"
-            />
-          </div>
-        ) : (
-          <div className={styles.commentControlButtonWrapper}>
-            <ActionButton
-              className={styles.commentControlButton}
-              tooltipPlacement="top"
-              iconClassName={styles.commentControlIcon}
-              iconName="commentBlock"
-              onClick={handleReportAction}
-              tooltip="Report"
-            />
-          </div>
-        )}
+        {isCouncilUser || isMyComment
+          ? renderActionButton('buttonDelete', handleRemoveAction, 'Remove')
+          : renderActionButton('commentBlock', handleReportAction, 'Report')}
         {renderReportedMessage()}
       </div>
     </motion.li>

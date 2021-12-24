@@ -81,7 +81,8 @@
 
   "comments": {
     "youReportedThisMessage": "You have reported this message",
-    "thisMessageWasReported": "This message was reported"
+    "thisMessageWasReported": "This message was reported",
+    "commentsSpamProtection": "Due to spam protection no more than 5 messages per minute are allowed."
   },
 
   "createDAO": {
