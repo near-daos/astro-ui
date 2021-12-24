@@ -10,7 +10,7 @@ import { useTranslation } from 'next-i18next';
 import { DAO } from 'types/dao';
 import { PaginationResponse } from 'types/api';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
-import { Proposal, ProposalCategories, ProposalStatuses } from 'types/proposal';
+import { Proposal, ProposalStatuses, ProposalCategories } from 'types/proposal';
 
 // Constants
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
@@ -41,7 +41,6 @@ interface FeedProps {
   dao?: DAO;
   showFlag?: boolean;
   className?: string;
-  status?: ProposalStatuses;
   title?: ReactNode | string;
   category?: ProposalCategories;
   headerClassName?: string;
@@ -52,7 +51,6 @@ interface FeedProps {
 export const Feed = ({
   dao,
   title,
-  status,
   category,
   className,
   showFlag = true,
@@ -66,6 +64,11 @@ export const Feed = ({
   const { t } = useTranslation();
 
   const queries = query as ProposalsQueries;
+
+  const status =
+    (query.status as ProposalStatuses) ||
+    initialProposalsStatusFilterValue ||
+    ProposalStatuses.All;
 
   const isMyFeed = pathname.startsWith('/my/feed');
 
@@ -94,14 +97,14 @@ export const Feed = ({
             limit: LIST_LIMIT_DEFAULT,
             daoId: dao?.id,
             category: category || queries.category,
-            status: status || queries.status,
+            status,
           })
         : await SputnikHttpService.getProposalsList(
             {
               offset: accumulatedListData?.data.length || 0,
               limit: LIST_LIMIT_DEFAULT,
               category: queries.category,
-              status: queries.status,
+              status,
               daoFilter: 'All DAOs',
             },
             isMyFeed && accountId ? accountId : undefined
@@ -117,13 +120,7 @@ export const Feed = ({
 
       return accumulatedListData;
     },
-    [
-      proposalsData?.data.length,
-      queries.status,
-      queries.category,
-      accountId,
-      isMyFeed,
-    ]
+    [proposalsData?.data.length, status, queries.category, accountId, isMyFeed]
   );
 
   useDebounceEffect(
@@ -137,7 +134,7 @@ export const Feed = ({
       window.scroll(0, 0);
     },
     1000,
-    [queries.category, queries.status]
+    [queries.category, status]
   );
 
   const loadMore = async () => {
@@ -185,11 +182,7 @@ export const Feed = ({
       >
         <ProposalStatusFilter
           neighbourRef={neighbourRef}
-          value={
-            queries.status ||
-            initialProposalsStatusFilterValue ||
-            ProposalStatuses.All
-          }
+          value={status}
           onChange={onProposalFilterChange}
           disabled={proposalsDataIsLoading}
           list={[
