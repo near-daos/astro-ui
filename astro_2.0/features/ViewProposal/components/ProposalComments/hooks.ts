@@ -56,10 +56,16 @@ export function useProposalComments(
           });
         }
       } catch (err) {
+        let { message } = err;
+
+        if (err.response.status === 429) {
+          message = 'No more than 5 messages per minute is allowed';
+        }
+
         showNotification({
           type: NOTIFICATION_TYPES.ERROR,
           lifetime: 20000,
-          description: err.message,
+          description: message,
         });
       }
     },
@@ -79,6 +85,7 @@ export function useProposalComments(
             publicKey,
             signature,
           });
+          await getComments();
         }
       } catch (err) {
         showNotification({

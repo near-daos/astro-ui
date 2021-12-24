@@ -2,6 +2,7 @@ import React, { FC, useCallback } from 'react';
 import cn from 'classnames';
 import { format, parseISO } from 'date-fns';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'next-i18next';
 
 import { ActionButton } from 'features/proposal/components/action-button';
 import { ConfirmCommentActionModal } from 'astro_2.0/features/ViewProposal/components/ProposalComments/components/ConfirmCommentActionModal';
@@ -17,6 +18,8 @@ interface CommentProps {
   accountId: string;
   message: string;
   isCouncilUser: boolean;
+  isReported: boolean;
+  reportsCount: number;
   createdAt: string;
   onReport: (params: ReportCommentsInput) => void;
   onDelete: (commentId: number, reason: string) => void;
@@ -79,11 +82,14 @@ export const Comment: FC<CommentProps> = ({
   accountId,
   message,
   isCouncilUser,
+  isReported,
+  reportsCount,
   createdAt,
   onReport,
   onDelete,
   commentId,
 }) => {
+  const { t } = useTranslation();
   const [showReportModal] = useModal(ConfirmCommentActionModal);
 
   const handleReportAction = useCallback(async () => {
@@ -112,6 +118,20 @@ export const Comment: FC<CommentProps> = ({
     }
   }, [commentId, onDelete, showReportModal]);
 
+  function renderReportedMessage() {
+    if (!reportsCount) {
+      return null;
+    }
+
+    return (
+      <div className={styles.reportedInfo}>
+        {isReported
+          ? `${t('comments.youReportedThisMessage')} ${reportsCount}/4`
+          : `${t('comments.thisMessageWasReported')} ${reportsCount}/4`}
+      </div>
+    );
+  }
+
   return (
     <motion.li
       key={commentId}
@@ -129,8 +149,12 @@ export const Comment: FC<CommentProps> = ({
       <div className={styles.time}>
         {format(parseISO(createdAt), 'hh:mm a')}
       </div>
-      <div className={styles.commentControls}>
-        {(isCouncilUser || isMyComment) && (
+      <div
+        className={cn(styles.commentControls, {
+          [styles.reported]: isReported,
+        })}
+      >
+        {isCouncilUser || isMyComment ? (
           <div className={styles.commentControlButtonWrapper}>
             <ActionButton
               className={styles.commentControlButton}
@@ -141,17 +165,19 @@ export const Comment: FC<CommentProps> = ({
               tooltip="Remove"
             />
           </div>
+        ) : (
+          <div className={styles.commentControlButtonWrapper}>
+            <ActionButton
+              className={styles.commentControlButton}
+              tooltipPlacement="top"
+              iconClassName={styles.commentControlIcon}
+              iconName="commentBlock"
+              onClick={handleReportAction}
+              tooltip="Report"
+            />
+          </div>
         )}
-        <div className={styles.commentControlButtonWrapper}>
-          <ActionButton
-            className={styles.commentControlButton}
-            tooltipPlacement="top"
-            iconClassName={styles.commentControlIcon}
-            iconName="buttonReport"
-            onClick={handleReportAction}
-            tooltip="Report"
-          />
-        </div>
+        {renderReportedMessage()}
       </div>
     </motion.li>
   );
