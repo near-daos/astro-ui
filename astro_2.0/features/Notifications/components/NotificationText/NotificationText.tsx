@@ -33,7 +33,9 @@ export const NotificationText: FC<NotificationTextProps> = ({
   let action;
 
   // todo -add fallback?
-  if (!dao) return null;
+  if (!dao) {
+    return null;
+  }
 
   switch (type) {
     case NotifiedActionType.CustomDao:
@@ -61,6 +63,7 @@ export const NotificationText: FC<NotificationTextProps> = ({
     case NotifiedActionType.Vote:
     case NotifiedActionType.AddMemberToRole:
     case NotifiedActionType.RemoveMemberFromRole:
+    case NotifiedActionType.FunctionCall:
     case NotifiedActionType.ChangePolicy:
     case NotifiedActionType.ChangeConfig: {
       action = generateProposalNotificationText(
