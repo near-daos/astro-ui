@@ -46,7 +46,7 @@ interface FeedProps {
   category?: ProposalCategories;
   headerClassName?: string;
   initialProposals: PaginationResponse<Proposal[]> | null;
-  initialProposalsStatusFilterValue: ProposalStatuses | undefined;
+  initialProposalsStatusFilterValue: ProposalStatuses;
 }
 
 export const Feed = ({

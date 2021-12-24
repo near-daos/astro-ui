@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps<PollsPageProps> = async ({
   locale = 'en',
 }) => {
   const daoId = query.dao as string;
-  const status = query.status as ProposalStatuses;
+  const status = (query.status as ProposalStatuses) || ProposalStatuses.All;
 
   CookieService.initServerSideCookies(req?.headers.cookie || null);
 

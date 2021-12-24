@@ -30,7 +30,7 @@ import styles from './Polls.module.scss';
 export interface PollsPageProps {
   daoContext: DaoContext;
   initialPollsData: PaginationResponse<Proposal[]>;
-  initialProposalsStatusFilterValue: ProposalStatuses | undefined;
+  initialProposalsStatusFilterValue: ProposalStatuses;
 }
 
 const PollsPage: FC<PollsPageProps> = ({

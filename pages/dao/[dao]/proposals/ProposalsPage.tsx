@@ -12,7 +12,7 @@ import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 interface ProposalsPageProps {
   daoContext: DaoContext;
   initialProposalsData: PaginationResponse<Proposal[]>;
-  initialProposalsStatusFilterValue: ProposalStatuses | undefined;
+  initialProposalsStatusFilterValue: ProposalStatuses;
 }
 
 const ProposalsPage: VFC<ProposalsPageProps> = props => {
