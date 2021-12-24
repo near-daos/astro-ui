@@ -87,9 +87,13 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
       if (value === 'lastProposalId,DESC') {
         // todo - this is not working , we have to decide how to get most active
         const sorted = data.sort((a, b) => {
-          if (a.proposals > b.proposals) return -1;
+          if (a.proposals > b.proposals) {
+            return -1;
+          }
 
-          if (a.proposals < b.proposals) return 1;
+          if (a.proposals < b.proposals) {
+            return 1;
+          }
 
           return 0;
         });

@@ -19,7 +19,9 @@ interface InputProps
 }
 
 function getStateClass(isValid: boolean | undefined) {
-  if (isValid === undefined) return undefined;
+  if (isValid === undefined) {
+    return undefined;
+  }
 
   return isValid ? styles.success : styles.error;
 }

@@ -160,7 +160,9 @@ const TokensPage: NextPage<TokensPageProps> = ({
                 }) => {
                   const tokenData = get(tokens, token);
 
-                  if (!tokenData) return null;
+                  if (!tokenData) {
+                    return null;
+                  }
 
                   return (
                     <div

@@ -23,7 +23,9 @@ export const useDomainControl = (
 
   const toggleDomain = useCallback(
     (range: Range) => {
-      if (!data.length || data.length === 1) return;
+      if (!data.length || data.length === 1) {
+        return;
+      }
 
       const newData = prepareDataByRange(range, data);
 

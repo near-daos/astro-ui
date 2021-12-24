@@ -40,7 +40,9 @@ interface TokensProps {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Tokens: FC<TokensProps> = ({ data }) => {
-  if (!data) return null;
+  if (!data) {
+    return null;
+  }
 
   const { value, type, percent } = data;
 

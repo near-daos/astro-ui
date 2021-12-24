@@ -50,7 +50,9 @@ const VotingPolicyPage: FC = () => {
   const [data, setData] = useState<VotingPolicyPageInitialData | null>(null);
 
   useEffect(() => {
-    if (dao && !data) setData(getInitialData(dao));
+    if (dao && !data) {
+      setData(getInitialData(dao));
+    }
   }, [dao, data]);
 
   const [viewMode, setViewMode] = useState(true);
