@@ -155,7 +155,9 @@ class SputnikNearServiceClass {
       account_id: this.getAccountId(),
     });
 
-    if (!bigSource) return undefined;
+    if (!bigSource) {
+      return undefined;
+    }
 
     return Big(bigSource);
   }
@@ -164,7 +166,9 @@ class SputnikNearServiceClass {
   public async listTokens(): Promise<void> {
     const tokensCount = await this.factoryTokenContract.get_number_of_tokens?.();
 
-    if (typeof tokensCount === 'undefined') return;
+    if (typeof tokensCount === 'undefined') {
+      return;
+    }
 
     const chunkSize = 5;
     const chunkCount =
@@ -223,11 +227,11 @@ class SputnikNearServiceClass {
     daoId: string,
     args: { bountyId: number; deadline: string; bountyBond: string }
   ) {
-    await this.sputnikDaoService.claimBounty({ daoId, ...args });
+    return this.sputnikDaoService.claimBounty({ daoId, ...args });
   }
 
   public async unclaimBounty(daoId: string, bountyId: string) {
-    await this.sputnikDaoService.unclaimBounty(daoId, bountyId);
+    return this.sputnikDaoService.unclaimBounty(daoId, bountyId);
   }
 
   public async finalize(

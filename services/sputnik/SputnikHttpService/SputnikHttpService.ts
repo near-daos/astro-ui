@@ -853,6 +853,11 @@ class SputnikHttpServiceClass {
         operator: '$eq',
         value: 'Active',
       })
+      .setFilter({
+        field: 'status',
+        operator: '$eq',
+        value: 'InProgress',
+      })
       .query();
 
     const { data } = await this.httpService.get<GetProposalsResponse>(
