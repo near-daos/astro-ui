@@ -53,7 +53,7 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
 
   const neighbourRef = useRef(null);
 
-  const [bounties, setBounties] = useState<Bounty[]>(initialBounties);
+  const [bounties, setBounties] = useState<Bounty[]>();
 
   const { query, updateQuery } = useQuery<{
     bountyStatus: BountyStatus;
@@ -66,6 +66,10 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
       query.bountyStatus
     ).then(data => setBounties(data));
   }, [daoId, query.bountyStatus]);
+
+  useEffect(() => {
+    setBounties(initialBounties);
+  }, [initialBounties]);
 
   function handleCreateProposal(
     bountyId: string,
@@ -103,8 +107,9 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
   const handleUnclaim = useCallback(
     bountyId => async () => {
       await SputnikNearService.unclaimBounty(daoId, bountyId);
+      onSuccessHandler();
     },
-    [daoId]
+    [daoId, onSuccessHandler]
   );
 
   function getBountyDoneProposal(
@@ -152,7 +157,7 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
         <NoResultsView title="No bounties available" />
       ) : (
         <div className={styles.grid}>
-          {bounties.flatMap(bounty => {
+          {bounties?.flatMap(bounty => {
             const claimedBy = bounty.claimedBy.map(
               ({ accountId: claimedAccount }) => claimedAccount
             );
