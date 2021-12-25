@@ -20,10 +20,7 @@ const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
 export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   typeof Feed
 >> = async ({ query, locale = 'en' }) => {
-  const {
-    category,
-    status = ProposalStatuses.Active,
-  } = query as ProposalsQueries;
+  const { category, status = ProposalStatuses.All } = query as ProposalsQueries;
   const accountId = CookieService.get(ACCOUNT_COOKIE);
 
   if (!accountId) {
