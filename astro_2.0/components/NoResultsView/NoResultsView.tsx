@@ -7,16 +7,18 @@ interface NoResultsViewProps {
   title: ReactNode;
   subTitle?: string;
   className?: string;
+  imgClassName?: string;
 }
 
 export const NoResultsView: FC<NoResultsViewProps> = ({
   title,
   subTitle,
   className,
+  imgClassName,
 }) => {
   return (
     <div className={cn(styles.root, className)}>
-      <div className={styles.image} />
+      <div className={cn(styles.image, imgClassName)} />
       <div className={styles.title}>{title}</div>
       <div className={styles.desc}>{subTitle}</div>
     </div>
