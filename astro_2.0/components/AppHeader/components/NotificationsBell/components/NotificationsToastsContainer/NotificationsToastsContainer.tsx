@@ -1,5 +1,7 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import uniqBy from 'lodash/uniqBy';
+import { useSwipeable } from 'react-swipeable';
 
 import { useSocket } from 'context/SocketContext';
 import { mapNotificationDtoToNotification } from 'services/NotificationsService/mappers/notification';
@@ -19,13 +21,16 @@ export const NotificationsToastsContainer: FC = () => {
   useEffect(() => {
     if (socket) {
       socket.on('account-notification', (notification: NotificationDTO) => {
-        noties.current = [
-          ...noties.current,
-          {
-            timestamp: new Date().getTime(),
-            notification: mapNotificationDtoToNotification([notification])[0],
-          },
-        ];
+        noties.current = uniqBy(
+          [
+            ...noties.current,
+            {
+              timestamp: new Date().getTime(),
+              notification: mapNotificationDtoToNotification([notification])[0],
+            },
+          ],
+          item => item.notification.id
+        );
       });
     }
   }, [socket]);
@@ -35,13 +40,45 @@ export const NotificationsToastsContainer: FC = () => {
       noties.current = noties.current.filter(noty => {
         const { timestamp } = noty;
 
-        return new Date().getTime() - timestamp < 20000;
+        return new Date().getTime() - timestamp < 2000000;
       });
-      setNotifications(noties.current.map(item => item.notification));
+      setNotifications(
+        noties.current
+          .map(item => item.notification)
+          .filter(item => !item.isRead)
+      );
     }, 1000);
 
     return () => clearInterval(intervalId);
   }, []);
+
+  const handleMarkRead = useCallback((id: string) => {
+    noties.current = noties.current.filter(noty => noty.notification.id !== id);
+  }, []);
+
+  const handlers = useSwipeable({
+    onSwiped: eventData => {
+      if (eventData.dir !== 'Right' && eventData.dir !== 'Left') {
+        return;
+      }
+
+      const { target } = eventData.event;
+
+      if (target) {
+        const wrapper = (target as HTMLElement)?.closest(
+          `.${styles.notificationCardWrapper}`
+        );
+
+        if (wrapper && wrapper.getAttribute) {
+          const notificationId = wrapper?.getAttribute('id');
+
+          if (notificationId) {
+            handleMarkRead(notificationId);
+          }
+        }
+      }
+    },
+  });
 
   function renderNotifications() {
     return notifications.map(props => {
@@ -49,18 +86,20 @@ export const NotificationsToastsContainer: FC = () => {
         <motion.div
           key={props.id}
           layout
+          id={props.id}
+          className={styles.notificationCardWrapper}
           initial={{ opacity: 0, transform: 'translateX(150px)' }}
           animate={{ opacity: 1, transform: 'translateX(0px)' }}
           exit={{ opacity: 0 }}
         >
-          <NotificationCard {...props} />
+          <NotificationCard {...props} onMarkRead={handleMarkRead} />
         </motion.div>
       );
     });
   }
 
   return (
-    <div className={styles.root}>
+    <div className={styles.root} {...handlers}>
       <AnimatePresence>{renderNotifications()}</AnimatePresence>
     </div>
   );

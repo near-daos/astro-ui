@@ -8,11 +8,15 @@
   position: fixed;
   right: 0;
   top: 60px;
-  transform: translateX(-40px);
+  transform: translateX(-24px);
   width: 320px;
   z-index: 10000001;
 
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+.notificationCardWrapper {
+  display: block;
 }

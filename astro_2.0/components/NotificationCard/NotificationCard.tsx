@@ -19,6 +19,7 @@ import styles from './NotificationCard.module.scss';
 
 export type NotificationCardProps = {
   regular?: boolean;
+  onMarkRead?: (id: string) => void;
 } & Notification;
 
 export const NotificationCard: React.FC<NotificationCardProps> = ({
@@ -36,6 +37,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   signerId,
   id,
   status,
+  onMarkRead,
 }) => {
   const router = useRouter();
   const { handleUpdate } = useNotifications();
@@ -59,9 +61,14 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       setNotificationRead(true);
+
+      if (onMarkRead) {
+        onMarkRead(id);
+      }
+
       handleUpdate(id, { isMuted, isArchived, isRead: true });
     },
-    [handleUpdate, id, isArchived, isMuted]
+    [handleUpdate, id, isArchived, isMuted, onMarkRead]
   );
 
   const handleDeleteClick = useCallback(
@@ -128,7 +135,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
           >
             <Icon
               name={isNotificationRead ? 'noteCheckDouble' : 'noteCheck'}
-              width={16}
+              width={24}
               className={styles.markReadIcon}
             />
             <div className={styles.markReadTitle}>Mark read</div>

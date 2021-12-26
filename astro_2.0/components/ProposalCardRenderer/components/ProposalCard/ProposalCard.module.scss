@@ -54,7 +54,7 @@
   top: -30px;
 
   @include tablet-landscape {
-    display: flex;
+    display: none;
     left: 100%;
     right: auto;
     top: 0;

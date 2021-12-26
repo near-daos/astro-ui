@@ -84,12 +84,7 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({ accountDaosIds }) => {
 
   function renderNotifications(title: string | null, noties?: Notification[]) {
     if (isEmpty(noties) || !noties) {
-      return (
-        <>
-          {title && renderDelimiter(title, noties?.length ?? 0)}
-          {renderNoNotifications(t('noNotifications'))}
-        </>
-      );
+      return null;
     }
 
     const filter = router.query.notyType;

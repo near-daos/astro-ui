@@ -4,6 +4,7 @@
 .root {
   background: var(--color-neutral-20);
   border-bottom: solid 1px var(--color-neutral-30);
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   cursor: pointer;
   display: grid;
   grid-gap: 6px;
@@ -68,18 +69,14 @@
 }
 
 .control {
+  align-items: center;
   display: flex;
   grid-area: control;
   justify-content: flex-end;
-  margin: 5px 6px 0 0;
-}
-
-.markRead {
-  //display: none;
 }
 
 .markReadTitle {
-  @extend %caption2;
+  @extend %caption1;
   color: var(--color-primary-60);
   display: none;
 }
