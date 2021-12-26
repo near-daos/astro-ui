@@ -39,7 +39,7 @@ interface ChartProps {
 const tickStyles = {
   fill: '#969696',
   fontWeight: 400,
-  fontSize: '12px',
+  fontSize: '10px',
   lineHeight: '20px',
 };
 
@@ -96,11 +96,17 @@ export const Chart: React.FC<ChartProps> = ({
   );
 
   return (
-    <AreaChart width={width} height={height} data={data}>
+    <AreaChart
+      width={width}
+      height={height}
+      data={data}
+      margin={{ top: 5, left: -28, right: 8, bottom: 5 }}
+    >
       <defs>
         <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
           <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-          <stop offset="130%" stopColor="#8884d8" stopOpacity={0} />
+          <stop offset="40%" stopColor="#8884d8" stopOpacity={0.45} />
+          <stop offset="100%" stopColor="#8884d8" stopOpacity={0.085} />
         </linearGradient>
         <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
           <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
@@ -119,11 +125,11 @@ export const Chart: React.FC<ChartProps> = ({
         style={tickStyles}
       />
       <XAxis
-        interval={isMobile ? 3 : getXInterval(data || [], period)}
+        interval={getXInterval(data || [], period, isMobile)}
         stroke={COLORS.AXIS}
         dataKey="x"
         tickMargin={12}
-        tickCount={6}
+        tickCount={2}
         tickLine={false}
         tickFormatter={value => tickXFormatter(value, period)}
         style={tickStyles}

@@ -123,7 +123,15 @@ export const valueFormatter = (value: number): string => {
   return `${value}K`;
 };
 
-export const getXInterval = (data: LineDataPoint[], period: Range): number => {
+export const getXInterval = (
+  data: LineDataPoint[],
+  period: Range,
+  isMobile: boolean
+): number | undefined => {
+  if (isMobile) {
+    return undefined;
+  }
+
   const timestamps = data.map(item => item.x);
 
   switch (period) {
