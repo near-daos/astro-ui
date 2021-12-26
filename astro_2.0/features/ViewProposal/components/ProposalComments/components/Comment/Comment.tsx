@@ -3,6 +3,8 @@ import cn from 'classnames';
 import { format, parseISO } from 'date-fns';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'next-i18next';
+import Linkify from 'react-linkify';
+
 import { IconName } from 'components/Icon';
 import { ActionButton } from 'features/proposal/components/action-button';
 import { ConfirmCommentActionModal } from 'astro_2.0/features/ViewProposal/components/ProposalComments/components/ConfirmCommentActionModal';
@@ -166,7 +168,20 @@ export const Comment: FC<CommentProps> = ({
     >
       {isMyComment ? TICK_RIGHT : TICK_LEFT}
       {!isMyComment && <div className={styles.commentAuthor}>{accountId}</div>}
-      <p>{message}</p>
+      <Linkify
+        componentDecorator={decoratedHref => (
+          <a
+            className={styles.link}
+            href={decoratedHref}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {decoratedHref}
+          </a>
+        )}
+      >
+        <p>{message}</p>
+      </Linkify>
       <div className={styles.time}>
         {format(parseISO(createdAt), 'hh:mm a')}
       </div>
