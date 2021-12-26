@@ -61,7 +61,7 @@ export function useProposalComments(
         let { message } = err;
 
         if (err.response.status === 429) {
-          message = t('commentsSpamProtection');
+          message = t('comments.commentsSpamProtection');
         }
 
         showNotification({
