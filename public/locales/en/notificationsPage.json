@@ -13,6 +13,8 @@
   "muted": "Muted",
   "yourNewDaoCreated": "Your New DAO {{newDaoName}} has been successfully created.",
   "newDaoCreated": "New DAO {{newDaoName}} has been successfully created by {{accountId}}",
+  "platformWideNotifications": "Platform-wide notifications",
+  "howLongDisable": "Choose for how long you would like to disable notifications from your DAOs and DAOs you are a member.",
 
   "submittedNewProposal": "submitted new {{type}} proposal on {{dao}}",
   "proposalWasRejected": "proposal was rejected on {{dao}}",
@@ -33,5 +35,11 @@
 
   "proposalChangeNameSuccess": "proposal Change DAO Name has been approved",
   "createdNewPoll": "created a new poll for {{dao}}. Check out now to cast your vote.",
-  "archived": "Archived"
+  "archived": "Archived",
+
+  "customDaoCreate": "Notify me about the creation of a DAO with a Custom structure",
+  "clubDaoCreate": "Notify me about the creation of a DAO with a Club structure",
+  "foundationDaoCreate": "Notify me about the creation of a DAO with a Foundation structure",
+  "corporationDaoCreate": "Notify me about the creation of a DAO with a Corporation structure",
+  "cooperativeDaoCreate": "Notify me about the creation of a DAO with a Cooperative structure"
 }

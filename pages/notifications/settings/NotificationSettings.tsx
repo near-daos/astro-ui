@@ -3,6 +3,7 @@ import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { NavLink } from 'astro_2.0/components/NavLink';
 import { NotificationsDisableModal } from 'astro_2.0/components/NotificationsDisableModal';
 import { useModal } from 'components/modal';
+import { useTranslation } from 'next-i18next';
 import { Toggle } from 'components/inputs/Toggle';
 import { NotificationCollapsableSettings } from 'astro_2.0/features/Notifications/components/NotificationCollapsableSettings';
 import { PlatformNotificationSettings } from 'astro_2.0/features/Notifications/components/PlatformNotificationSettings';
@@ -10,6 +11,7 @@ import {
   NotificationSettingsGroup,
   NotificationSettingsPlatform,
   NotificationsGroupStatus,
+  NotifiedActionType,
 } from 'types/notification';
 import { NotificationSettingDTO } from 'services/NotificationsService/types';
 import {
@@ -36,8 +38,9 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
   subscribedDaos,
   platformSettings,
 }) => {
+  const { t } = useTranslation('notificationsPage');
   const settingsGroups = prepareSettingsGroups(myDaos, subscribedDaos);
-  const settingsPlatform = prepareSettingsPlatform(platformSettings);
+  const settingsPlatform = prepareSettingsPlatform(platformSettings, t);
   const { updateSettings } = useNotificationsSettings();
   const [settingsState, setSettingsState] = useState({
     groups: settingsGroups,
@@ -174,32 +177,80 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
           ? NotificationsGroupStatus.Disable
           : NotificationsGroupStatus.Enabled;
 
+      const types = extractTypes(settingsState.platform.settings);
+      const isMuted = newStatus === NotificationsGroupStatus.Disable;
+
+      const newSettings = settingsState.platform.settings.map(item => {
+        if (isMuted && delay === 0) {
+          return { ...item, checked: false };
+        }
+
+        if (!isMuted && !types.length) {
+          return { ...item, checked: true };
+        }
+
+        return item;
+      });
+
       setSettingsState({
         ...settingsState,
         platform: {
           ...settingsState.platform,
           status: newStatus,
+          settings: newSettings,
         },
       });
 
+      const newTypes = newSettings.reduce<NotifiedActionType[]>((res, item) => {
+        if (item.checked) {
+          res.push(item.notificationType);
+        }
+
+        return res;
+      }, []);
+
       updateSettings(
         null,
-        extractTypes(settingsState.platform.settings),
-        newStatus === NotificationsGroupStatus.Disable,
+        isMuted && delay === 0
+          ? DAO_RELATED_SETTINGS
+          : [...newTypes, ...DAO_RELATED_SETTINGS],
+        isMuted,
         `${delay}`
       );
     } else {
+      const newStatus =
+        typeStatus === NotificationsGroupStatus.Enabled
+          ? NotificationsGroupStatus.Disable
+          : NotificationsGroupStatus.Enabled;
+
       setSettingsState({
         ...settingsState,
         groups: settingsState.groups.map(group =>
           group.groupId === type
             ? {
                 ...group,
-                status: NotificationsGroupStatus.Enabled,
+                status: newStatus,
               }
             : group
         ),
       });
+
+      const selectedGroup = settingsState.groups.find(
+        group => group.groupId === type
+      );
+
+      await Promise.all(
+        selectedGroup?.daos?.map(dao => {
+          const types = extractTypes(dao.settings);
+
+          return updateSettings(
+            dao.daoId,
+            types,
+            newStatus === NotificationsGroupStatus.Disable,
+            `${delay}`
+          );
+        }) ?? []
+      );
     }
   };
 
@@ -222,7 +273,7 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
                   </div>
                   <Toggle
                     id={groupId}
-                    checked={status === 'Enabled'}
+                    checked={status === NotificationsGroupStatus.Enabled}
                     groupSwitch
                     onClick={() => toggleGroupSwitch(groupId, status)}
                   />
@@ -245,6 +296,7 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
                       daoAddress={daoAddress}
                       settings={settings}
                       groupId={groupId}
+                      isMuted={status === NotificationsGroupStatus.Disable}
                       onToggleDao={toggleDaoSwitch}
                       onToggleSettings={toggleSettingsSwitch}
                     />

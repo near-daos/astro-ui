@@ -29,7 +29,9 @@ export const PlatformNotificationSettings: FC<PlatformNotificationSettingsProps>
         <div className={styles.groupTitle}>{settingsState.platform.name}</div>
         <Toggle
           id={settingsState.platform.id}
-          checked={settingsState.platform.status === 'Enabled'}
+          checked={
+            settingsState.platform.status === NotificationsGroupStatus.Enabled
+          }
           groupSwitch
           onClick={() =>
             onToggleGroup(
@@ -40,7 +42,14 @@ export const PlatformNotificationSettings: FC<PlatformNotificationSettingsProps>
         />
       </div>
       {settingsState.platform.settings.map(({ id, checked, title }) => (
-        <div key={id} className={cn(styles.settingsItem)}>
+        <div
+          key={id}
+          className={cn(styles.settingsItem, {
+            [styles.muted]:
+              settingsState.platform.status ===
+              NotificationsGroupStatus.Disable,
+          })}
+        >
           <Toggle
             id={id}
             label={title}

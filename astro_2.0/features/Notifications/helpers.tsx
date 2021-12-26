@@ -183,7 +183,9 @@ export function getNotificationParamsByType(
 }
 
 export function extractPrefix(value: string, delimiter?: string): string {
-  if (!value) return '';
+  if (!value) {
+    return '';
+  }
 
   return value.substring(0, value.indexOf(delimiter ?? '.'));
 }
@@ -209,7 +211,8 @@ export const DAO_RELATED_SETTINGS = [
 ];
 
 export function prepareSettingsPlatform(
-  settings: NotificationSettingDTO[]
+  settings: NotificationSettingDTO[],
+  t: TFunction
 ): NotificationSettingsPlatform {
   const enabledTypes =
     !settings || isEmpty(settings)
@@ -218,9 +221,8 @@ export function prepareSettingsPlatform(
 
   return {
     id: 'platform',
-    name: 'Platform-wide notifications',
-    text:
-      'Choose for how long you would like to disable notifications from your DAOs and DAOs you are a member.',
+    name: t('platformWideNotifications'),
+    text: t('howLongDisable'),
     status: settings[0]?.isAllMuted
       ? NotificationsGroupStatus.Disable
       : NotificationsGroupStatus.Enabled,
@@ -229,34 +231,31 @@ export function prepareSettingsPlatform(
         id: uniqid(),
         notificationType: NotifiedActionType.CustomDao,
         checked: enabledTypes.has(NotifiedActionType.CustomDao),
-        title: 'Notify me about the creation of a DAO',
+        title: t('customDaoCreate'),
       },
       {
         id: uniqid(),
         notificationType: NotifiedActionType.ClubDao,
         checked: enabledTypes.has(NotifiedActionType.ClubDao),
-        title: 'Notify me about the creation of a DAO with a Club Structure',
+        title: t('clubDaoCreate'),
       },
       {
         id: uniqid(),
         notificationType: NotifiedActionType.FoundationDao,
         checked: enabledTypes.has(NotifiedActionType.FoundationDao),
-        title:
-          'Notify me about the creation of a DAO with a Foundation Structure',
+        title: t('foundationDaoCreate'),
       },
       {
         id: uniqid(),
         notificationType: NotifiedActionType.CorporationDao,
         checked: enabledTypes.has(NotifiedActionType.CorporationDao),
-        title:
-          'Notify me about the creation of a DAO with a Corporation Structure',
+        title: t('corporationDaoCreate'),
       },
       {
         id: uniqid(),
         notificationType: NotifiedActionType.CooperativeDao,
         checked: enabledTypes.has(NotifiedActionType.CooperativeDao),
-        title:
-          'Notify me about the creation of a DAO with a Cooperative Structure',
+        title: t('cooperativeDaoCreate'),
       },
     ],
   };

@@ -45,4 +45,8 @@
 .settingsItem {
   padding-bottom: 24px;
   padding-left: 12px;
+
+  &.muted {
+    opacity: 0.5;
+  }
 }
