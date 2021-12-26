@@ -25,6 +25,10 @@
   background-color: var(--color-neutral-20);
 }
 
+.muted {
+  opacity: 0.5;
+}
+
 .flagWrapper {
   display: flex;
   grid-area: flag;

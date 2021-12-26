@@ -20,6 +20,7 @@ interface NotificationCollapsableSettingsProps {
   groupId: string;
   onToggleDao: (daoId: string, groupId: string) => void;
   onToggleSettings: (id: string, daoId: string, groupId: string) => void;
+  isMuted: boolean;
 }
 
 export const NotificationCollapsableSettings: FC<NotificationCollapsableSettingsProps> = ({
@@ -32,6 +33,7 @@ export const NotificationCollapsableSettings: FC<NotificationCollapsableSettings
   groupId,
   onToggleDao,
   onToggleSettings,
+  isMuted,
 }) => {
   return (
     <Collapsable
@@ -42,6 +44,7 @@ export const NotificationCollapsableSettings: FC<NotificationCollapsableSettings
           role="button"
           className={cn(styles.groupSection, {
             [styles.open]: isOpen,
+            [styles.muted]: isMuted,
           })}
           onKeyDown={e => e.key === 'Spacebar' && toggle()}
         >
