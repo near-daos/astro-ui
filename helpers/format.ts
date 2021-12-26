@@ -58,17 +58,33 @@ export const formatTimestampAsDate = (time: string): string => {
 };
 
 export function kFormatter(n: number): string {
-  if (n === undefined) return '0';
+  if (n === undefined) {
+    return '0';
+  }
 
-  if (n >= 1e3) return `${Number(n / 1e3).toFixed(1)}k`;
+  if (n >= 1000000000) {
+    return `${(n / 1000000000).toFixed(1).replace(/\.0$/, '')}G`;
+  }
+
+  if (n >= 1000000) {
+    return `${(n / 1000000).toFixed(1).replace(/\.0$/, '')}M`;
+  }
+
+  if (n >= 1000) {
+    return `${(n / 1000).toFixed(1).replace(/\.0$/, '')}K`;
+  }
 
   return `${n.toFixed(0)}`;
 }
 
 export function shortenString(value: string, maxLength: number): string {
-  if (!value) return '';
+  if (!value) {
+    return '';
+  }
 
-  if (value.length <= maxLength || value.length < 20) return value;
+  if (value.length <= maxLength || value.length < 20) {
+    return value;
+  }
 
   const suffix = value.substring(value.length - 5, value.length);
 
