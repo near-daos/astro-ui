@@ -48,7 +48,11 @@
     @include ellipse-text;
     display: block;
     line-height: 1.2;
-    width: 270px;
+    max-width: 120px;
+
+    @include tablet-landscape {
+      max-width: 210px;
+    }
   }
 
   .sub {

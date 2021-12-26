@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
+import { useMedia } from 'react-use';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { shortenString } from 'helpers/format';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
@@ -35,6 +36,8 @@ export const NotificationCollapsableSettings: FC<NotificationCollapsableSettings
   onToggleSettings,
   isMuted,
 }) => {
+  const isMobile = useMedia('(max-width: 920px)');
+
   return (
     <Collapsable
       key={daoId}
@@ -59,7 +62,7 @@ export const NotificationCollapsableSettings: FC<NotificationCollapsableSettings
           <div className={styles.daoDetails}>
             <div className={cn(styles.inline)}>{daoName}</div>
             <div className={cn(styles.sub)}>
-              {shortenString(daoAddress, 36)}
+              {shortenString(daoAddress, isMobile ? 20 : 36)}
               <CopyButton
                 text={daoAddress}
                 tooltipPlacement="auto"
