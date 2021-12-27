@@ -20,4 +20,6 @@ export const appConfig = {
   ),
   statsApiUrl: `${process.env.NEXT_PUBLIC_STATS_API_URL}/api/v1/`,
   socketUrl: process.env.NEXT_PUBLIC_API_URL,
+  toastsNotificationsTimeout:
+    process.env.NEXT_PUBLIC_TOASTS_NOTIFICATIONS_TIMEOUT,
 };

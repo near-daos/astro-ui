@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import uniqBy from 'lodash/uniqBy';
+import { appConfig } from 'config';
 import { useSwipeable } from 'react-swipeable';
 
 import { useSocket } from 'context/SocketContext';
@@ -40,7 +41,12 @@ export const NotificationsToastsContainer: FC = () => {
       noties.current = noties.current.filter(noty => {
         const { timestamp } = noty;
 
-        return new Date().getTime() - timestamp < 2000000;
+        return (
+          new Date().getTime() - timestamp <
+          (appConfig.toastsNotificationsTimeout
+            ? Number(appConfig.toastsNotificationsTimeout)
+            : 20000)
+        );
       });
       setNotifications(
         noties.current
