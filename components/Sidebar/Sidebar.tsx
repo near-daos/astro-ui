@@ -65,16 +65,16 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
     return (
       <div className={styles.bottom}>
         <NavItem
+          label={t('allDaos')}
+          icon="allCommunity"
+          className={styles.item}
+          href={ALL_DAOS_URL}
+        />
+        <NavItem
           label={t('globalFeed')}
           icon="globalFeed"
           className={styles.item}
           href={ALL_FEED_URL}
-        />
-        <NavItem
-          label={t('allCommunities')}
-          icon="allCommunity"
-          className={styles.item}
-          href={ALL_DAOS_URL}
         />
         <div className={styles.divider} />
       </div>
