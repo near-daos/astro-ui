@@ -47,7 +47,7 @@ export const SearchResultDaoCard: VFC<SearchResultDaoCardProps> = ({
       </div>
       <div>
         <div className={styles.header}>{header}</div>
-        <div>{id}</div>
+        <div className={styles.sub}>{id}</div>
       </div>
     </div>
   );

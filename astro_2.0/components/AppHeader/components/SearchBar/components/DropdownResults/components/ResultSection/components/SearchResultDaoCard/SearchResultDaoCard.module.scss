@@ -1,3 +1,5 @@
+@import 'styles/mixins';
+
 .root {
   border-radius: 6px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
@@ -32,6 +34,7 @@
 }
 
 .header {
+  @include ellipse-text;
   color: var(--color-brand-black);
   font-family: var(--font-family-primary);
   font-size: 16px;
@@ -39,4 +42,18 @@
   font-weight: 700;
   letter-spacing: 0;
   line-height: 24px;
+  max-width: 140px;
+
+  @include tablet-landscape {
+    max-width: 180px;
+  }
+}
+
+.sub {
+  @include ellipse-text;
+  max-width: 140px;
+
+  @include tablet-landscape {
+    max-width: 180px;
+  }
 }
