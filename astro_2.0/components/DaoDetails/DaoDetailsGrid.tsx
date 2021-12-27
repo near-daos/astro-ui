@@ -2,8 +2,9 @@ import React, { FC } from 'react';
 import Link from 'next/link';
 import TextTruncate from 'react-text-truncate';
 import { useRouter } from 'next/router';
-import { useMeasure } from 'react-use';
+import { useMeasure, useMedia } from 'react-use';
 import { useTranslation } from 'next-i18next';
+import cn from 'classnames';
 
 import { GROUPS_PAGE_URL } from 'constants/routing';
 
@@ -17,7 +18,8 @@ import * as Typography from 'components/Typography';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 
-import cn from 'classnames';
+import { shortenString } from 'helpers/format';
+
 import styles from './DaoDetailsGrid.module.scss';
 
 export interface DaoDetailsGridProps {
@@ -45,6 +47,7 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
     groups,
     funds,
   } = dao;
+  const isMobile = useMedia('(max-width: 920px)');
   const fundsUSD = formatCurrency(parseFloat(funds) * nearPrice);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>, url: string) => {
@@ -83,7 +86,9 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                   </div>
                 </Tooltip>
                 <div className={styles.address}>
-                  <div className={styles.addressId}>{id}</div>
+                  <div className={styles.addressId}>
+                    {shortenString(id, isMobile ? 20 : 36)}
+                  </div>
                   <CopyButton
                     text={id}
                     tooltipPlacement="auto"
