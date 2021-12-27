@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import React, { VFC } from 'react';
+import React, { useMemo, VFC } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -52,7 +52,21 @@ const schema = yup.object().shape({
   }),
 });
 
-export const CreateDao: VFC = () => {
+interface CreateDaoProps {
+  defaultFlag: File;
+}
+
+export const CreateDao: VFC<CreateDaoProps> = ({ defaultFlag }) => {
+  const defaultFlagCoverFileList = useMemo(() => {
+    const dt = new DataTransfer();
+
+    dt.items.add(defaultFlag);
+
+    const fileList = dt.files;
+
+    return fileList;
+  }, [defaultFlag]);
+
   const methods = useForm<DAOFormValues>({
     mode: 'all',
     reValidateMode: 'onChange',
@@ -64,7 +78,7 @@ export const CreateDao: VFC = () => {
       address: undefined,
       purpose: undefined,
       displayName: undefined,
-      flagCover: undefined,
+      flagCover: defaultFlagCoverFileList,
       flagLogo: undefined,
       legalStatus: undefined,
       legalLink: undefined,
