@@ -42,6 +42,7 @@ export const SearchResultsRenderer: FC = () => {
       </div>
       <div className={styles.content}>
         <Tabs
+          skipShallow
           tabs={TABS}
           tabsWrapperClassName={styles.tabsRoot}
           tabsListRootClassName={styles.tabsListRoot}

@@ -5,7 +5,6 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import { useRouter } from 'next/router';
 
 import { SputnikHttpService } from 'services/sputnik';
 
@@ -32,34 +31,15 @@ export const useSearchResults = (): SearchResultsContextProps =>
   useContext(SearchResultsContext);
 
 export const SearchResults: FC = ({ children }) => {
-  const router = useRouter();
-
   const [searchResults, setSearchResults] = useState<null | SearchResultsData>(
     null
   );
 
-  const handleSearch = useCallback(
-    query => {
-      router.replace(
-        {
-          query: {
-            ...router.query,
-            search: query,
-          },
-        },
-        undefined,
-        {
-          scroll: false,
-          shallow: true,
-        }
-      );
-
-      SputnikHttpService.search({ query }).then(result => {
-        setSearchResults(result);
-      });
-    },
-    [router]
-  );
+  const handleSearch = useCallback(query => {
+    SputnikHttpService.search({ query }).then(result => {
+      setSearchResults(result);
+    });
+  }, []);
 
   const handleClose = useCallback(() => {
     setSearchResults(null);
