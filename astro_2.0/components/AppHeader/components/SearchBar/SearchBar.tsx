@@ -11,7 +11,12 @@ import ReactDOM from 'react-dom';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 import { usePopper } from 'react-popper';
-import { useClickAway, useDebounce, useMount } from 'react-use';
+import {
+  useClickAway,
+  useDebounce,
+  useMount,
+  useMountedState,
+} from 'react-use';
 
 import { SEARCH_PAGE_URL } from 'constants/routing';
 
@@ -38,11 +43,10 @@ export const SearchBar: FC<SearchBarProps> = ({
 }) => {
   const POPUP_LEFT_MARGIN = 20;
   const POPUP_RIGHT_MARGIN = 20;
+  const isMounted = useMountedState();
 
   const [focused, setFocused] = useState(false);
   const [expanded, setExpanded] = useState(false);
-
-  const [mounted, setMounted] = useState(false);
   const [searchWidth, setSearchWidth] = useState<number | string>(40);
 
   const router = useRouter();
@@ -57,30 +61,6 @@ export const SearchBar: FC<SearchBarProps> = ({
       return false;
     }
   }
-
-  useMount(() => {
-    setMounted(true);
-
-    // The code is needed to add "search" query param on app initialisation.
-    // Otherwise page is reloaded when "search" param is added for the first
-    // time. It makes "search results" popup disappear which is not something
-    // we want. Update of the query param doesn't cause reload.
-    if (!router.query.search) {
-      router.push(
-        {
-          query: {
-            ...router.query,
-            search: '',
-          },
-        },
-        undefined,
-        {
-          scroll: false,
-          shallow: true,
-        }
-      );
-    }
-  });
 
   const calculateWidth = useCallback(() => {
     if (withSideBar) {
@@ -255,7 +235,7 @@ export const SearchBar: FC<SearchBarProps> = ({
   }
 
   function renderCloseButton() {
-    if (mounted && (!isEmpty(value) || !isDesktopResolution())) {
+    if (isMounted() && (!isEmpty(value) || !isDesktopResolution())) {
       return (
         <div className={styles.closeIconHolder}>
           <IconButton
