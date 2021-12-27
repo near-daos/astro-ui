@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import isString from 'lodash/isString';
-import { useAsyncFn } from 'react-use';
+import { useAsyncFn, useMountedState } from 'react-use';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'next-i18next';
@@ -62,6 +62,7 @@ export const Feed = ({
   const { query, replace, pathname } = useRouter();
   const { tokens: allTokens } = useAllCustomTokens();
   const { t } = useTranslation();
+  const isMounted = useMountedState();
 
   const queries = query as ProposalsQueries;
 
@@ -116,7 +117,9 @@ export const Feed = ({
       };
 
       // Reset custom loading state
-      setLoading(false);
+      if (isMounted()) {
+        setLoading(false);
+      }
 
       return accumulatedListData;
     },
@@ -129,7 +132,11 @@ export const Feed = ({
         return;
       }
 
-      setProposalsData(await fetchProposalsData());
+      const newProposalsData = await fetchProposalsData();
+
+      if (isMounted()) {
+        setProposalsData(newProposalsData);
+      }
 
       window.scroll(0, 0);
     },
@@ -142,7 +149,11 @@ export const Feed = ({
       return;
     }
 
-    setProposalsData(await fetchProposalsData(proposalsData));
+    const newProposalsData = await fetchProposalsData();
+
+    if (isMounted()) {
+      setProposalsData(newProposalsData);
+    }
   };
 
   const onProposalFilterChange = async (value: string) => {
@@ -154,7 +165,9 @@ export const Feed = ({
     // We use custom loading flag here and not the existing proposalsDataIsLoading because
     // we want loader to be visible immediately once we click on radio button
     // which is not possible using existing proposalsDataIsLoading flag
-    setLoading(true);
+    if (isMounted()) {
+      setLoading(true);
+    }
 
     await replace(
       {

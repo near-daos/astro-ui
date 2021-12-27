@@ -57,12 +57,14 @@ export interface ProposalCardProps {
 }
 
 function getTimestampLabel(
-  timeLeft: string | null,
+  timeLeft: string | null | undefined,
   status: ProposalStatus,
   updatedAt?: string | null
 ) {
   if (status === 'InProgress') {
-    if (timeLeft) return `${timeLeft} left`;
+    if (timeLeft) {
+      return `${timeLeft} left`;
+    }
 
     return 'Voting ended';
   }
@@ -168,7 +170,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const timeLeft = useCountdown(votePeriodEnd);
 
-  const sealIcon = getSealIcon(status, timeLeft);
+  const sealIcon =
+    timeLeft !== undefined ? getSealIcon(status, timeLeft) : null;
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
