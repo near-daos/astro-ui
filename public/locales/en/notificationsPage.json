@@ -33,6 +33,10 @@
   "you": "You",
   "your": "Your",
 
+  "votedToApprove": "{{actioner}} voted to approve {{proposalAuthor}}'s {{type}} proposal on {{dao}}",
+  "votedToReject": "{{actioner}} voted to reject {{proposalAuthor}}'s {{type}} proposal on {{dao}}",
+  "votedToRemove": "{{actioner}} voted to approve {{proposalAuthor}}'s {{type}} proposal on {{dao}}",
+
   "proposalChangeNameSuccess": "proposal Change DAO Name has been approved",
   "createdNewPoll": "created a new poll for {{dao}}. Check out now to cast your vote.",
   "archived": "Archived",

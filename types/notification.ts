@@ -16,6 +16,9 @@ export enum NotificationStatus {
   Approved = 'Approved',
   Rejected = 'Rejected',
   Removed = 'Removed',
+  VoteApprove = 'VoteApprove',
+  VoteReject = 'VoteReject',
+  VoteRemove = 'VoteRemove',
 }
 
 export enum NotificationsGroupStatus {
