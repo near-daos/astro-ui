@@ -19,7 +19,7 @@ export const ASTRO_FEED_NAV_CONFIG: NavItemProps = {
   icon: 'aAstroFeed',
   hoverIcon: 'aAstroFeedHover',
   href: ALL_FEED_URL,
-  label: 'Astro Feed',
+  label: 'Global Feed',
 };
 
 export const MY_DAOS_NAV_CONFIG: NavItemProps = {
@@ -43,11 +43,3 @@ export const CREATE_DAO_NAV_CONFIG: NavItemProps = {
   label: 'Create DAO',
   authRequired: true,
 };
-
-export const NAV_CONFIG: NavItemProps[] = [
-  ALL_DAOS_NAV_CONFIG,
-  ASTRO_FEED_NAV_CONFIG,
-  MY_DAOS_NAV_CONFIG,
-  MY_FEED_NAV_CONFIG,
-  CREATE_DAO_NAV_CONFIG,
-];
