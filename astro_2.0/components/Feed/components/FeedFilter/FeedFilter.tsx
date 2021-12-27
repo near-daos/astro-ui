@@ -38,7 +38,7 @@ export const FeedFilter = <T,>({
   const rootRef = useRef(null);
 
   const [maxWidth, setMaxWidth] = useState(0);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState<boolean | null>(null);
 
   const collapseFilterIfNecessary = useCallback(() => {
     const pageLayoutEl = document.getElementById(PAGE_LAYOUT_ID);
@@ -85,25 +85,29 @@ export const FeedFilter = <T,>({
 
   return (
     <div className={rootClassName} ref={rootRef}>
-      <div
-        role="button"
-        tabIndex={0}
-        className={cn(styles.header, headerClassName)}
-        onClick={() => setIsShow(!isShow)}
-        onKeyDown={() => setIsShow(!isShow)}
-      >
-        <p className={styles.title}>{shortTitle || title}</p>
-        <Icon className={styles.controlIcon} name="listFilter" />
-      </div>
-      <RadioGroup
-        className={cn(styles.radioGroup, { [styles.show]: isShow })}
-        itemClassName={styles.radio}
-        activeItemClassName={styles.activeRadio}
-        value={((value as unknown) as string) || ''}
-        onChange={handleChange}
-      >
-        {children}
-      </RadioGroup>
+      {collapsed !== null && (
+        <>
+          <div
+            role="button"
+            tabIndex={0}
+            className={cn(styles.header, headerClassName)}
+            onClick={() => setIsShow(!isShow)}
+            onKeyDown={() => setIsShow(!isShow)}
+          >
+            <p className={styles.title}>{shortTitle || title}</p>
+            <Icon className={styles.controlIcon} name="listFilter" />
+          </div>
+          <RadioGroup
+            className={cn(styles.radioGroup, { [styles.show]: isShow })}
+            itemClassName={styles.radio}
+            activeItemClassName={styles.activeRadio}
+            value={((value as unknown) as string) || ''}
+            onChange={handleChange}
+          >
+            {children}
+          </RadioGroup>
+        </>
+      )}
     </div>
   );
 };
