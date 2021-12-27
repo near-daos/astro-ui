@@ -157,6 +157,18 @@ export function getNotificationParamsByType(
       statusIcon = 'votingDismissChecked';
       break;
     }
+    case NotificationStatus.VoteApprove: {
+      statusIcon = 'votingYes';
+      break;
+    }
+    case NotificationStatus.VoteReject: {
+      statusIcon = 'votingNo';
+      break;
+    }
+    case NotificationStatus.VoteRemove: {
+      statusIcon = 'votingDismiss';
+      break;
+    }
     default: {
       statusIcon = null;
     }
@@ -476,10 +488,50 @@ export function generateProposalNotificationText(
         dao: dao.displayName || extractPrefix(dao.id),
       })}`;
     }
+    case NotificationStatus.VoteApprove: {
+      const actioner =
+        accountId === proposerId ? t('you') : extractPrefix(proposerId);
+
+      const proposalAuthor =
+        accountId === proposerId ? t('your') : extractPrefix(proposerId);
+
+      return t('votedToApprove', {
+        actioner,
+        proposalAuthor,
+        type,
+        dao: dao.displayName || extractPrefix(dao.id),
+      });
+    }
+    case NotificationStatus.VoteReject: {
+      const actioner =
+        accountId === proposerId ? t('you') : extractPrefix(proposerId);
+
+      const proposalAuthor =
+        accountId === proposerId ? t('your') : extractPrefix(proposerId);
+
+      return t('votedToReject', {
+        actioner,
+        proposalAuthor,
+        type,
+        dao: dao.displayName || extractPrefix(dao.id),
+      });
+    }
+    case NotificationStatus.VoteRemove: {
+      const actioner =
+        accountId === proposerId ? t('you') : extractPrefix(proposerId);
+
+      const proposalAuthor =
+        accountId === proposerId ? t('your') : extractPrefix(proposerId);
+
+      return t('votedToRemove', {
+        actioner,
+        proposalAuthor,
+        type,
+        dao: dao.displayName || extractPrefix(dao.id),
+      });
+    }
     default: {
-      return `Change Config proposal updated on ${
-        dao.displayName || extractPrefix(dao.id)
-      }`;
+      return `Proposal updated on ${dao.displayName || extractPrefix(dao.id)}`;
     }
   }
 }
