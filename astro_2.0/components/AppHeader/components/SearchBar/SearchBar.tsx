@@ -60,6 +60,26 @@ export const SearchBar: FC<SearchBarProps> = ({
 
   useMount(() => {
     setMounted(true);
+
+    // The code is needed to add "search" query param on app initialisation.
+    // Otherwise page is reloaded when "search" param is added for the first
+    // time. It makes "search results" popup disappear which is not something
+    // we want. Update of the query param doesn't cause reload.
+    if (!router.query.search) {
+      router.push(
+        {
+          query: {
+            ...router.query,
+            search: '',
+          },
+        },
+        undefined,
+        {
+          scroll: false,
+          shallow: true,
+        }
+      );
+    }
   });
 
   const calculateWidth = useCallback(() => {
@@ -119,14 +139,11 @@ export const SearchBar: FC<SearchBarProps> = ({
     }
   );
 
-  const {
-    handleSearch,
-    handleClose,
-    searchResults,
-    setSearchResults,
-  } = useSearchResults();
+  const { handleSearch, handleClose, searchResults } = useSearchResults();
 
-  const [value, setValue] = useState(searchResults?.query || '');
+  const [value, setValue] = useState(
+    searchResults?.query || (router.query.search as string) || ''
+  );
 
   useMount(() => {
     setExpanded(isDesktopResolution() || !!searchResults?.query);
@@ -145,11 +162,11 @@ export const SearchBar: FC<SearchBarProps> = ({
       if (expanded && query.length > 0) {
         handleSearch(query);
       } else if (expanded) {
-        setSearchResults(null);
+        handleClose();
       }
     },
     500,
-    [value]
+    [value, handleClose]
   );
 
   useClickAway(ref, e => {

@@ -36,12 +36,19 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
 
   const goToSearchPage = useCallback(
     (tabIndex: number) => {
-      router.push({
-        pathname: SEARCH_PAGE_URL,
-        query: {
-          tab: tabIndex,
+      router.push(
+        {
+          pathname: SEARCH_PAGE_URL,
+          query: {
+            ...router.query,
+            tab: tabIndex,
+          },
         },
-      });
+        undefined,
+        {
+          shallow: true,
+        }
+      );
     },
     [router]
   );
