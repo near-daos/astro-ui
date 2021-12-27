@@ -191,7 +191,13 @@ export const SearchBar: FC<SearchBarProps> = ({
 
   const handleSubmit = useCallback(() => {
     if (value.trim()) {
-      router.push(SEARCH_PAGE_URL);
+      router.push(
+        { pathname: SEARCH_PAGE_URL, query: router.query },
+        undefined,
+        {
+          shallow: true,
+        }
+      );
     } else {
       handleCancel();
     }
