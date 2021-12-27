@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useCountDown from 'react-countdown-hook';
 import { differenceInMilliseconds, parseISO } from 'date-fns';
+import { useMountedState } from 'react-use';
 
 function formatCountdown(seconds: number) {
   const d = Math.floor(seconds / (24 * 3600));
@@ -29,21 +30,30 @@ function formatCountdown(seconds: number) {
   return res;
 }
 
-export function useCountdown(endsAt: string): string | null {
+export function useCountdown(endsAt: string): string | null | undefined {
   const start = new Date();
   const end = parseISO(endsAt);
+  const [started, setStarted] = useState(false);
+  const isMounted = useMountedState();
 
   const diff = differenceInMilliseconds(end, start);
 
   const [timeLeft, actions] = useCountDown(diff, 1000 * 15);
 
   useEffect(() => {
-    actions.start();
+    if (isMounted()) {
+      actions.start();
+      setStarted(true);
+    }
 
     return () => {
       actions.pause();
     };
-  }, [actions]);
+  }, [actions, isMounted]);
+
+  if (!started) {
+    return undefined;
+  }
 
   return timeLeft > 0 ? formatCountdown(timeLeft / 1000) : null;
 }

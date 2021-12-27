@@ -12,6 +12,7 @@ import { useSocket } from 'context/SocketContext';
 import { useAuthContext } from 'context/AuthContext';
 import { SputnikNearService } from 'services/sputnik';
 import { useRouter } from 'next/router';
+import { useMountedState } from 'react-use';
 
 interface INotificationContext {
   archivedNotifications: Notification[];
@@ -46,6 +47,7 @@ export const NotificationsProvider: FC = ({ children }) => {
   const showArchived = router.query.notyType === 'archived';
   const { socket } = useSocket();
   const { accountId } = useAuthContext();
+  const isMounted = useMountedState();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [archivedNotifications, setArchivedNotifications] = useState<
     Notification[]
@@ -56,14 +58,18 @@ export const NotificationsProvider: FC = ({ children }) => {
       if (status === 'archived') {
         const response = await NotificationsService.getNotifications(true);
 
-        setArchivedNotifications(response);
+        if (isMounted()) {
+          setArchivedNotifications(response);
+        }
       } else {
         const response = await NotificationsService.getNotifications(false);
 
-        setNotifications(response);
+        if (isMounted()) {
+          setNotifications(response);
+        }
       }
     },
-    []
+    [isMounted]
   );
 
   useEffect(() => {
@@ -87,7 +93,7 @@ export const NotificationsProvider: FC = ({ children }) => {
       const publicKey = await SputnikNearService.getPublicKey();
       const signature = await SputnikNearService.getSignature();
 
-      if (accountId && publicKey && signature) {
+      if (accountId && publicKey && signature && isMounted()) {
         if (showArchived) {
           setArchivedNotifications(
             archivedNotifications.map(item => {
@@ -140,6 +146,7 @@ export const NotificationsProvider: FC = ({ children }) => {
       accountId,
       archivedNotifications,
       getNotifications,
+      isMounted,
       notifications,
       showArchived,
     ]
