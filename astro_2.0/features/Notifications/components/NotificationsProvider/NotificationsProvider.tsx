@@ -27,12 +27,14 @@ interface INotificationContext {
       isArchived: boolean;
     }
   ) => void;
+  handleUpdateAll: (action: 'READ' | 'ARCHIVE') => void;
 }
 
 /* eslint-disable @typescript-eslint/no-empty-function */
 const NotificationsContext = createContext<INotificationContext>({
   notifications: [],
   handleUpdate: () => {},
+  handleUpdateAll: () => {},
 });
 
 export const useNotifications = (): INotificationContext =>
@@ -105,11 +107,38 @@ export const NotificationsProvider: FC = ({ children }) => {
     [accountId, getNotifications, isMounted, notifications]
   );
 
+  const handleUpdateAll = useCallback(
+    async (action: 'READ' | 'ARCHIVE') => {
+      const publicKey = await SputnikNearService.getPublicKey();
+      const signature = await SputnikNearService.getSignature();
+
+      if (accountId && publicKey && signature && isMounted()) {
+        if (action === 'READ') {
+          await NotificationsService.readAllNotifications({
+            accountId,
+            publicKey,
+            signature,
+          });
+        } else if (action === 'ARCHIVE') {
+          await NotificationsService.archiveAllNotifications({
+            accountId,
+            publicKey,
+            signature,
+          });
+        }
+
+        await getNotifications();
+      }
+    },
+    [accountId, getNotifications, isMounted]
+  );
+
   return (
     <NotificationsContext.Provider
       value={{
         notifications,
         handleUpdate,
+        handleUpdateAll,
       }}
     >
       {children}

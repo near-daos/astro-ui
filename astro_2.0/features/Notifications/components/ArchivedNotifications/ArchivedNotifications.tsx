@@ -85,6 +85,10 @@ export const ArchivedNotifications: FC = () => {
 
   return (
     <div className={styles.root}>
+      <div className={styles.delimiter}>
+        Total ({notifications.total})
+        <div className={styles.line} />
+      </div>
       <InfiniteScroll
         dataLength={notifications.data.length}
         next={loadMore}

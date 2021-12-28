@@ -41,6 +41,8 @@
   "proposalChangeNameSuccess": "proposal Change DAO Name has been approved",
   "createdNewPoll": "created a new poll for {{dao}}. Check out now to cast your vote.",
   "archived": "Archived",
+  "markReadAll": "Mark read all",
+  "archiveAll": "Archive all",
 
   "customDaoCreate": "Notify me about the creation of a DAO with a Custom structure",
   "clubDaoCreate": "Notify me about the creation of a DAO with a Club structure",

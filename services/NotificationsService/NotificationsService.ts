@@ -6,6 +6,7 @@ import {
   NotificationDTO,
   UpdateNotificationParams,
   UpdateNotificationSettingsParams,
+  UpdateNotificationsParams,
 } from 'types/notification';
 
 import { httpService } from 'services/HttpService';
@@ -84,6 +85,24 @@ class NotificationsServiceClass {
     >(`/account-notifications/${id}`, params);
 
     return response;
+  }
+
+  public async readAllNotifications(
+    params: UpdateNotificationsParams
+  ): Promise<string> {
+    return this.httpService.patch<UpdateNotificationsParams, string>(
+      '/account-notifications/read-all',
+      params
+    );
+  }
+
+  public async archiveAllNotifications(
+    params: UpdateNotificationsParams
+  ): Promise<string> {
+    return this.httpService.patch<UpdateNotificationsParams, string>(
+      '/account-notifications/archive-all',
+      params
+    );
   }
 
   public async getNotificationsSettings(

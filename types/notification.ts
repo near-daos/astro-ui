@@ -153,21 +153,21 @@ export type Notification = {
   status: NotificationStatus;
 };
 
-export type UpdateNotificationParams = {
+export type UpdateNotificationsParams = {
   accountId: string;
   publicKey: string;
   signature: string;
+};
+
+export type UpdateNotificationParams = {
   isMuted: boolean;
   isRead: boolean;
   isArchived: boolean;
-};
+} & UpdateNotificationsParams;
 
 export type UpdateNotificationSettingsParams = {
-  accountId: string;
-  publicKey: string;
-  signature: string;
   daoId: string | null;
   types: string[];
   mutedUntilTimestamp: string;
   isAllMuted: boolean;
-};
+} & UpdateNotificationsParams;

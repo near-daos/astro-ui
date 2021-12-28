@@ -34,7 +34,7 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({
   const showSubscribed = router.query.notyType === 'subscribed';
   const showYourDaos = router.query.notyType === 'yourDaos';
   const showAll = !router.query.notyType;
-  const { notifications } = useNotifications();
+  const { notifications, handleUpdateAll } = useNotifications();
 
   const { t } = useTranslation('notificationsPage');
 
@@ -166,6 +166,30 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({
           className={styles.sideFilter}
         />
         <div className={styles.notifications}>
+          <div className={styles.controls}>
+            <Button
+              onClick={() => handleUpdateAll('READ')}
+              variant="tertiary"
+              className={styles.controlButton}
+              size="small"
+            >
+              <Icon name="noteCheck" className={styles.buttonIcon} />
+              {t('markReadAll')}
+            </Button>
+            <Button
+              disabled={showArchived}
+              onClick={() => handleUpdateAll('ARCHIVE')}
+              variant="tertiary"
+              className={styles.controlButton}
+              size="small"
+            >
+              {t('archiveAll')}
+              <Icon
+                name="noteArchive"
+                className={cn(styles.buttonIcon, styles.archiveIcon)}
+              />
+            </Button>
+          </div>
           {showAll && renderNotificationsList()}
           {showYourDaos && renderNotificationsList(accountDaosIds)}
           {showSubscribed && renderNotificationsList(subscribedDaosIds)}

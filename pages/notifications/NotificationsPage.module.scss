@@ -13,10 +13,14 @@
   background-color: var(--color-neutral-10);
   display: flex;
   justify-content: space-between;
-  padding: 56px 0 24px;
+  padding: 24px 0;
   position: sticky;
   top: var(--header-height);
   z-index: 3;
+
+  @include tablet-landscape {
+    padding: 56px 0 24px;
+  }
 }
 
 .settingButton {
@@ -53,6 +57,7 @@
 }
 
 .sideFilter {
+  top: 167px;
   @include tablet-landscape {
     top: 200px;
   }
@@ -69,8 +74,8 @@
   display: flex;
   margin: 24px 0;
 
-  &:first-of-type {
-    margin-top: 10px;
+  &:nth-child(2) {
+    margin-top: 0;
   }
 
   .line {
@@ -98,5 +103,51 @@
 
   &.big {
     width: 168px;
+  }
+}
+
+.controls {
+  align-items: center;
+
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 32px;
+
+  @include tablet-landscape {
+    justify-content: flex-end;
+    margin-bottom: 0;
+  }
+}
+
+.controlButton {
+  @extend %subtitle4;
+  align-items: center;
+  color: var(--color-neutral-60);
+  display: flex;
+  height: 24px;
+  min-height: 24px;
+  padding: 0 6px 0 12px;
+  text-transform: capitalize;
+
+  @include tablet-landscape {
+    font-size: 11px;
+  }
+
+  &:hover {
+    filter: brightness(120%);
+  }
+}
+
+.buttonIcon {
+  margin: 0 8px;
+  width: 24px;
+}
+
+.archiveIcon {
+  color: var(--color-error-40);
+  width: 16px;
+
+  &:hover {
+    filter: brightness(120%);
   }
 }
