@@ -3,18 +3,32 @@
 .root {
   background-color: var(--color-white);
   border-radius: 8px;
-}
-
-.imageWrapper {
-  height: 424px;
-  overflow: hidden;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  height: 392px;
   position: relative;
   width: 296px;
 }
 
+.link {
+  display: block;
+  height: 100%;
+  transition: box-shadow 0.4s;
+  width: 100%;
+
+  &:hover {
+    box-shadow: 0 16px 54px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.imageWrapper {
+  height: 296px;
+  width: 296px;
+}
+
 .image {
-  border-radius: 8px 8px 0 0;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
 }
 
 .description {
@@ -44,17 +58,16 @@
 .preloader,
 .error {
   align-items: center;
-  background-color: var(--color-neutral-10);
-  border: 1px solid var(--color-neutral-50);
+  background-color: var(--color-white);
   border-radius: 8px;
   display: flex;
   height: 100%;
   justify-content: center;
   left: 0;
-  overflow: hidden;
   position: absolute;
   top: 0;
   width: 100%;
+  z-index: 2;
 }
 
 .error {
@@ -76,7 +89,7 @@
   width: 80px;
 }
 
-.preloaderIcon div {
+.preloaderIcon span {
   animation: preloader 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
   background: var(--color-brand-blurple-light);
   display: inline-block;
@@ -85,17 +98,17 @@
   width: 16px;
 }
 
-.preloaderIcon div:nth-child(1) {
+.preloaderIcon span:nth-child(1) {
   animation-delay: -0.24s;
   left: 8px;
 }
 
-.preloaderIcon div:nth-child(2) {
+.preloaderIcon span:nth-child(2) {
   animation-delay: -0.12s;
   left: 32px;
 }
 
-.preloaderIcon div:nth-child(3) {
+.preloaderIcon span:nth-child(3) {
   left: 56px;
 }
 
