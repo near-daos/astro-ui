@@ -9,10 +9,10 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { NOTIFICATIONS_SETTINGS_PAGE_URL } from 'constants/routing';
 
-import { Notification, NotifiedActionType } from 'types/notification';
+import { Notification } from 'types/notification';
 
 import { useNotifications } from 'astro_2.0/features/Notifications';
-
+import { ArchivedNotifications } from 'astro_2.0/features/Notifications/components/ArchivedNotifications';
 import { NotificationCard } from 'astro_2.0/components/NotificationCard';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
@@ -22,12 +22,19 @@ import styles from './NotificationsPage.module.scss';
 
 interface NotificationsPageProps {
   accountDaosIds: string[];
+  subscribedDaosIds: string[];
 }
 
-const NotificationsPage: VFC<NotificationsPageProps> = ({ accountDaosIds }) => {
+const NotificationsPage: VFC<NotificationsPageProps> = ({
+  accountDaosIds,
+  subscribedDaosIds,
+}) => {
   const router = useRouter();
   const showArchived = router.query.notyType === 'archived';
-  const { notifications, archivedNotifications } = useNotifications();
+  const showSubscribed = router.query.notyType === 'subscribed';
+  const showYourDaos = router.query.notyType === 'yourDaos';
+  const showAll = !router.query.notyType;
+  const { notifications, handleUpdateAll } = useNotifications();
 
   const { t } = useTranslation('notificationsPage');
 
@@ -51,7 +58,7 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({ accountDaosIds }) => {
   }, [router]);
 
   const filterOptions = useMemo(() => {
-    const keys = ['yourDaos', 'platform', 'archived'];
+    const keys = ['yourDaos', 'subscribed', 'archived'];
 
     return keys.map(key => ({
       label: t(key),
@@ -87,69 +94,52 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({ accountDaosIds }) => {
       return null;
     }
 
-    const filter = router.query.notyType;
-
-    let resultList: Notification[];
-
-    if (filter === 'platform') {
-      const platformTypes = [
-        NotifiedActionType.CustomDao,
-        NotifiedActionType.ClubDao,
-        NotifiedActionType.FoundationDao,
-        NotifiedActionType.CorporationDao,
-        NotifiedActionType.CooperativeDao,
-      ];
-
-      resultList = noties?.filter(item => platformTypes.includes(item.type));
-    } else if (filter === 'archived') {
-      resultList = noties?.filter(item => item.isArchived);
-    } else if (filter === 'yourDaos') {
-      resultList = noties?.filter(item => accountDaosIds.includes(item.daoId));
-    } else {
-      resultList = noties;
-    }
-
     return (
       <>
-        {title && renderDelimiter(title, resultList.length)}
+        {title && renderDelimiter(title, noties.length)}
         <div>
-          {resultList.length ? (
-            <AnimatePresence>
-              {map(resultList, item => (
-                <motion.div
-                  key={item.id}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0, height: 0 }}
-                >
-                  <NotificationCard key={item.id} regular={false} {...item} />
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          ) : (
-            renderNoNotifications(t('noNotifications'))
-          )}
+          <AnimatePresence>
+            {map(noties, item => (
+              <motion.div
+                key={item.id}
+                layout
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <NotificationCard key={item.id} regular={false} {...item} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </>
     );
   }
 
-  function renderArchivedNotifications() {
-    if (isEmpty(archivedNotifications)) {
-      return renderNoNotifications(t('noNotifications'));
+  function renderNotificationsList(daosIds?: string[]) {
+    let newNoties;
+    let oldNoties;
+
+    if (!daosIds) {
+      newNoties = newNotifications;
+      oldNoties = oldNotifications;
+    } else {
+      newNoties = newNotifications?.filter(item =>
+        daosIds.includes(item.daoId)
+      );
+
+      oldNoties = oldNotifications?.filter(item =>
+        daosIds.includes(item.daoId)
+      );
     }
 
-    return renderNotifications(null, archivedNotifications);
-  }
-
-  function renderAllNotifications() {
-    if (isEmpty(newNotifications) && isEmpty(oldNotifications)) {
+    if (!newNoties.length && !oldNoties.length) {
       return renderNoNotifications(t('noNotifications'));
     }
 
     return (
       <>
-        {renderNotifications(t('newNotifications'), newNotifications)}
-        {renderNotifications(t('oldNotifications'), oldNotifications)}
+        {renderNotifications(t('newNotifications'), newNoties)}
+        {renderNotifications(t('oldNotifications'), oldNoties)}
       </>
     );
   }
@@ -176,9 +166,34 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({ accountDaosIds }) => {
           className={styles.sideFilter}
         />
         <div className={styles.notifications}>
-          {showArchived
-            ? renderArchivedNotifications()
-            : renderAllNotifications()}
+          <div className={styles.controls}>
+            <Button
+              onClick={() => handleUpdateAll('READ')}
+              variant="tertiary"
+              className={styles.controlButton}
+              size="small"
+            >
+              <Icon name="noteCheck" className={styles.buttonIcon} />
+              {t('markReadAll')}
+            </Button>
+            <Button
+              disabled={showArchived}
+              onClick={() => handleUpdateAll('ARCHIVE')}
+              variant="tertiary"
+              className={styles.controlButton}
+              size="small"
+            >
+              {t('archiveAll')}
+              <Icon
+                name="noteArchive"
+                className={cn(styles.buttonIcon, styles.archiveIcon)}
+              />
+            </Button>
+          </div>
+          {showAll && renderNotificationsList()}
+          {showYourDaos && renderNotificationsList(accountDaosIds)}
+          {showSubscribed && renderNotificationsList(subscribedDaosIds)}
+          {showArchived && <ArchivedNotifications />}
         </div>
       </div>
     </div>

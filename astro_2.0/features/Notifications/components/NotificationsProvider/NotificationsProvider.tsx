@@ -11,11 +11,9 @@ import { NotificationsService } from 'services/NotificationsService';
 import { useSocket } from 'context/SocketContext';
 import { useAuthContext } from 'context/AuthContext';
 import { SputnikNearService } from 'services/sputnik';
-import { useRouter } from 'next/router';
 import { useMountedState } from 'react-use';
 
 interface INotificationContext {
-  archivedNotifications: Notification[];
   notifications: Notification[];
   handleUpdate: (
     id: string,
@@ -29,61 +27,46 @@ interface INotificationContext {
       isArchived: boolean;
     }
   ) => void;
+  handleUpdateAll: (action: 'READ' | 'ARCHIVE') => void;
 }
 
 /* eslint-disable @typescript-eslint/no-empty-function */
-
 const NotificationsContext = createContext<INotificationContext>({
-  archivedNotifications: [],
   notifications: [],
   handleUpdate: () => {},
+  handleUpdateAll: () => {},
 });
 
 export const useNotifications = (): INotificationContext =>
   useContext(NotificationsContext);
 
 export const NotificationsProvider: FC = ({ children }) => {
-  const router = useRouter();
-  const showArchived = router.query.notyType === 'archived';
   const { socket } = useSocket();
   const { accountId } = useAuthContext();
   const isMounted = useMountedState();
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [archivedNotifications, setArchivedNotifications] = useState<
-    Notification[]
-  >([]);
 
-  const getNotifications = useCallback(
-    async (status: 'archived' | 'active') => {
-      if (status === 'archived') {
-        const response = await NotificationsService.getNotifications(true);
+  const getNotifications = useCallback(async () => {
+    const response = await NotificationsService.getNotifications(false, {
+      offset: 0,
+      limit: 3000,
+      sort: 'createdAt,DESC',
+    });
 
-        if (isMounted()) {
-          setArchivedNotifications(response);
-        }
-      } else {
-        const response = await NotificationsService.getNotifications(false);
-
-        if (isMounted()) {
-          setNotifications(response);
-        }
-      }
-    },
-    [isMounted]
-  );
+    if (isMounted()) {
+      setNotifications(response.data);
+    }
+  }, [isMounted]);
 
   useEffect(() => {
-    if (showArchived) {
-      getNotifications('archived');
-    }
-
-    getNotifications('active');
-  }, [getNotifications, showArchived]);
+    getNotifications();
+  }, [getNotifications]);
 
   useEffect(() => {
     if (socket) {
       socket.on('account-notification', () => {
-        getNotifications('active');
+        // todo - optimize
+        getNotifications();
       });
     }
   }, [getNotifications, socket]);
@@ -94,37 +77,20 @@ export const NotificationsProvider: FC = ({ children }) => {
       const signature = await SputnikNearService.getSignature();
 
       if (accountId && publicKey && signature && isMounted()) {
-        if (showArchived) {
-          setArchivedNotifications(
-            archivedNotifications.map(item => {
-              if (item.id === id) {
-                return {
-                  ...item,
-                  isRead,
-                  isMuted,
-                  isArchived,
-                };
-              }
+        setNotifications(
+          notifications.map(item => {
+            if (item.id === id) {
+              return {
+                ...item,
+                isRead,
+                isMuted,
+                isArchived,
+              };
+            }
 
-              return item;
-            })
-          );
-        } else {
-          setNotifications(
-            notifications.map(item => {
-              if (item.id === id) {
-                return {
-                  ...item,
-                  isRead,
-                  isMuted,
-                  isArchived,
-                };
-              }
-
-              return item;
-            })
-          );
-        }
+            return item;
+          })
+        );
 
         await NotificationsService.updateNotification(id, {
           accountId,
@@ -135,29 +101,44 @@ export const NotificationsProvider: FC = ({ children }) => {
           isArchived,
         });
 
-        await getNotifications('active');
-
-        if (showArchived) {
-          await getNotifications('archived');
-        }
+        await getNotifications();
       }
     },
-    [
-      accountId,
-      archivedNotifications,
-      getNotifications,
-      isMounted,
-      notifications,
-      showArchived,
-    ]
+    [accountId, getNotifications, isMounted, notifications]
+  );
+
+  const handleUpdateAll = useCallback(
+    async (action: 'READ' | 'ARCHIVE') => {
+      const publicKey = await SputnikNearService.getPublicKey();
+      const signature = await SputnikNearService.getSignature();
+
+      if (accountId && publicKey && signature && isMounted()) {
+        if (action === 'READ') {
+          await NotificationsService.readAllNotifications({
+            accountId,
+            publicKey,
+            signature,
+          });
+        } else if (action === 'ARCHIVE') {
+          await NotificationsService.archiveAllNotifications({
+            accountId,
+            publicKey,
+            signature,
+          });
+        }
+
+        await getNotifications();
+      }
+    },
+    [accountId, getNotifications, isMounted]
   );
 
   return (
     <NotificationsContext.Provider
       value={{
-        archivedNotifications,
         notifications,
         handleUpdate,
+        handleUpdateAll,
       }}
     >
       {children}

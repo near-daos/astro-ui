@@ -21,10 +21,20 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  const [accountDaos, subscriptions] = await Promise.all([
+  const [
+    accountDaosResponse,
+    subscribedDaosResponse,
+  ] = await Promise.allSettled([
     SputnikHttpService.getAccountDaos(accountId),
     SputnikHttpService.getAccountDaoSubscriptions(accountId),
   ]);
+
+  const accountDaos =
+    accountDaosResponse.status === 'fulfilled' ? accountDaosResponse.value : [];
+  const subscriptions =
+    subscribedDaosResponse.status === 'fulfilled'
+      ? subscribedDaosResponse.value
+      : [];
 
   const accountDaosIds = accountDaos.map(item => item.id);
 

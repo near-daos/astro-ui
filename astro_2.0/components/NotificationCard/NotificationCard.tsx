@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { format, parseISO } from 'date-fns';
@@ -20,6 +20,7 @@ import styles from './NotificationCard.module.scss';
 export type NotificationCardProps = {
   regular?: boolean;
   onMarkRead?: (id: string) => void;
+  onRemove?: (id: string) => void;
 } & Notification;
 
 export const NotificationCard: React.FC<NotificationCardProps> = ({
@@ -38,11 +39,12 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   id,
   status,
   onMarkRead,
+  onRemove,
 }) => {
   const router = useRouter();
   const { handleUpdate } = useNotifications();
 
-  const [isNotificationRead, setNotificationRead] = useState(isRead);
+  // const [isNotificationRead, setNotificationRead] = useState(isRead);
 
   const { flagCover, logo, id: daoId = '' } = dao ?? {};
   const { iconType, url, statusIcon } = getNotificationParamsByType(
@@ -60,7 +62,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   const handleMarkReadClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
-      setNotificationRead(true);
+      // setNotificationRead(true);
 
       if (onMarkRead) {
         onMarkRead(id);
@@ -72,10 +74,14 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   );
 
   const handleDeleteClick = useCallback(
-    archived => {
-      handleUpdate(id, { isMuted, isArchived: archived, isRead });
+    async archived => {
+      if (onRemove) {
+        onRemove(id);
+      }
+
+      await handleUpdate(id, { isMuted, isArchived: archived, isRead });
     },
-    [handleUpdate, id, isMuted, isRead]
+    [handleUpdate, id, isMuted, isRead, onRemove]
   );
 
   const handleNotificationClick = useCallback(
@@ -134,7 +140,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
             className={cn(styles.markReadButton, { [styles.read]: isRead })}
           >
             <Icon
-              name={isNotificationRead ? 'noteCheckDouble' : 'noteCheck'}
+              name={isRead ? 'noteCheckDouble' : 'noteCheck'}
               width={24}
               className={styles.markReadIcon}
             />
