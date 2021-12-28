@@ -53,7 +53,7 @@
 }
 
 .sideFilter {
-  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+  @include tablet-landscape {
     top: 200px;
   }
 }

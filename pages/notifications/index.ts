@@ -8,13 +8,32 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 export const getServerSideProps: GetServerSideProps = async ({
   locale = 'en',
 }) => {
-  const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
+  const accountId = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
-  const accountDaos = account
-    ? await SputnikHttpService.getAccountDaos(account)
-    : [];
+  let accountDaosIds: string[];
+  let subscribedDaosIds: string[];
 
-  const accountDaosIds = accountDaos.map(item => item.id);
+  if (accountId) {
+    const [
+      accountDaosResponse,
+      subscribedDaosResponse,
+    ] = await Promise.allSettled([
+      SputnikHttpService.getAccountDaos(accountId),
+      SputnikHttpService.getAccountDaoSubscriptions(accountId),
+    ]);
+
+    accountDaosIds =
+      accountDaosResponse.status === 'fulfilled'
+        ? accountDaosResponse.value.map(item => item.id)
+        : [];
+    subscribedDaosIds =
+      subscribedDaosResponse.status === 'fulfilled'
+        ? subscribedDaosResponse.value.map(item => item.dao.id)
+        : [];
+  } else {
+    accountDaosIds = [];
+    subscribedDaosIds = [];
+  }
 
   return {
     props: {
@@ -24,6 +43,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         nextI18NextConfig
       )),
       accountDaosIds,
+      subscribedDaosIds,
     },
   };
 };

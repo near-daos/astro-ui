@@ -19,16 +19,27 @@ class NotificationsServiceClass {
   private readonly sputnikNearService = SputnikNearService;
 
   public async getNotifications(
-    showArchived: boolean
-  ): Promise<Notification[]> {
-    const offset = 0;
-    const limit = 3000;
-    const sort = 'createdAt,DESC';
-
+    showArchived: boolean,
+    {
+      offset = 0,
+      limit = 3000,
+      sort = 'createdAt,DESC',
+    }: {
+      offset: number;
+      limit: number;
+      sort: string;
+    }
+  ): Promise<PaginationResponse<Notification[]>> {
     const accountId = this.sputnikNearService.getAccountId();
 
     if (!accountId) {
-      return Promise.resolve([]);
+      return Promise.resolve({
+        data: [],
+        page: 0,
+        count: 0,
+        pageCount: 0,
+        total: 0,
+      });
     }
 
     const queryString = RequestQueryBuilder.create()
@@ -54,7 +65,13 @@ class NotificationsServiceClass {
       },
     });
 
-    return mapNotificationDtoToNotification(response.data.data);
+    return {
+      page: response.data.page,
+      count: response.data.count,
+      pageCount: response.data.pageCount,
+      total: response.data.total,
+      data: mapNotificationDtoToNotification(response.data.data),
+    };
   }
 
   public async updateNotification(

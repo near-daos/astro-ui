@@ -20,6 +20,7 @@ import styles from './NotificationCard.module.scss';
 export type NotificationCardProps = {
   regular?: boolean;
   onMarkRead?: (id: string) => void;
+  onRemove?: (id: string) => void;
 } & Notification;
 
 export const NotificationCard: React.FC<NotificationCardProps> = ({
@@ -38,6 +39,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   id,
   status,
   onMarkRead,
+  onRemove,
 }) => {
   const router = useRouter();
   const { handleUpdate } = useNotifications();
@@ -72,10 +74,14 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   );
 
   const handleDeleteClick = useCallback(
-    archived => {
-      handleUpdate(id, { isMuted, isArchived: archived, isRead });
+    async archived => {
+      if (onRemove) {
+        onRemove(id);
+      }
+
+      await handleUpdate(id, { isMuted, isArchived: archived, isRead });
     },
-    [handleUpdate, id, isMuted, isRead]
+    [handleUpdate, id, isMuted, isRead, onRemove]
   );
 
   const handleNotificationClick = useCallback(

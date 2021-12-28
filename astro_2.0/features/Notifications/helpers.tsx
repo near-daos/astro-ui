@@ -369,7 +369,10 @@ export function prepareSettingsGroups(
     groupName: 'My DAOs Notification',
     text:
       'Choose for how long you would like to disable notifications from your DAOs and DAOs you are a member.',
-    status: NotificationsGroupStatus.Enabled,
+    status:
+      myDaosSettings.filter(item => !item.settings?.isAllMuted).length > 0
+        ? NotificationsGroupStatus.Enabled
+        : NotificationsGroupStatus.Disable,
     daos: myDaosSettings.map(daoSettings => generateDaoNode(daoSettings)),
   };
 
@@ -378,7 +381,11 @@ export function prepareSettingsGroups(
     groupName: 'Subscribed DAOs',
     text:
       'Choose for how long you would like to disable notifications from your subscribed DAOs.',
-    status: NotificationsGroupStatus.Disable,
+    status:
+      subscribedDaosSettings.filter(item => !item.settings?.isAllMuted).length >
+      0
+        ? NotificationsGroupStatus.Enabled
+        : NotificationsGroupStatus.Disable,
     daos: subscribedDaosSettings.map(daoSettings =>
       generateDaoNode(daoSettings)
     ),
