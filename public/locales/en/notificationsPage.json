@@ -33,6 +33,8 @@
 
   "you": "You",
   "your": "Your",
+  "notificationsSettings": "Notifications settings",
+  "platformWide": "Platform-wide notifications",
 
   "votedToApprove": "{{actioner}} voted to approve {{proposalAuthor}}'s {{type}} proposal on {{dao}}",
   "votedToReject": "{{actioner}} voted to reject {{proposalAuthor}}'s {{type}} proposal on {{dao}}",

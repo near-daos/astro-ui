@@ -1,4 +1,5 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { NavLink } from 'astro_2.0/components/NavLink';
 import { NotificationsDisableModal } from 'astro_2.0/components/NotificationsDisableModal';
@@ -22,6 +23,7 @@ import {
 } from 'astro_2.0/features/Notifications';
 import { useNotificationsSettings } from 'astro_2.0/features/Notifications/hooks';
 import { DaoSettings } from 'astro_2.0/features/Notifications/types';
+import { SideFilter } from 'astro_2.0/components/SideFilter';
 
 import styles from './NotificationSettings.module.scss';
 
@@ -38,6 +40,11 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
   subscribedDaos,
   platformSettings,
 }) => {
+  const router = useRouter();
+  const showPlatform = router.query.notyType === 'platformWide';
+  const showSubscribed = router.query.notyType === 'subscribed';
+  const showYourDaos =
+    !router.query.notyType || router.query.notyType === 'yourDaos';
   const { t } = useTranslation('notificationsPage');
   const settingsGroups = prepareSettingsGroups(myDaos, subscribedDaos);
   const settingsPlatform = prepareSettingsPlatform(platformSettings, t);
@@ -254,6 +261,15 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
     }
   };
 
+  const filterOptions = useMemo(() => {
+    const keys = ['yourDaos', 'subscribed', 'platformWide'];
+
+    return keys.map(key => ({
+      label: t(key),
+      value: key,
+    }));
+  }, [t]);
+
   return (
     <div className={styles.root}>
       <BreadCrumbs className={styles.breadcrumbs}>
@@ -262,56 +278,74 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
       </BreadCrumbs>
       <div className={styles.title}>Notification settings</div>
 
-      <div className={styles.settings}>
-        {settingsState.groups.map(({ groupId, groupName, status, daos }) => (
-          <div key={groupId} className={styles.group}>
-            {daos && daos.length > 0 && (
-              <>
-                <div className={styles.groupHeader}>
-                  <div className={styles.groupTitle}>
-                    {groupName} ({daos.length})
-                  </div>
-                  <Toggle
-                    id={groupId}
-                    checked={status === NotificationsGroupStatus.Enabled}
-                    groupSwitch
-                    onClick={() => toggleGroupSwitch(groupId, status)}
-                  />
-                </div>
-                {daos?.map(
-                  ({
-                    daoId,
-                    daoName,
-                    daoAddress,
-                    flagCover,
-                    flagBack,
-                    settings,
-                  }) => (
-                    <NotificationCollapsableSettings
-                      key={daoId}
-                      daoId={daoId}
-                      flagCover={flagCover}
-                      flagBack={flagBack}
-                      daoName={daoName}
-                      daoAddress={daoAddress}
-                      settings={settings}
-                      groupId={groupId}
-                      isMuted={status === NotificationsGroupStatus.Disable}
-                      onToggleDao={toggleDaoSwitch}
-                      onToggleSettings={toggleSettingsSwitch}
-                    />
-                  )
-                )}
-              </>
-            )}
-          </div>
-        ))}
+      <SideFilter
+        hideAllOption
+        queryName="notyType"
+        list={filterOptions}
+        title={t('notificationsSettings')}
+        className={styles.sideFilter}
+      />
 
-        <PlatformNotificationSettings
-          onToggleGroup={toggleGroupSwitch}
-          onTogglePlatform={togglePlatformSwitch}
-          settingsState={settingsState}
-        />
+      <div className={styles.settings}>
+        {settingsState.groups
+          .filter(item => {
+            if (showYourDaos && item.groupId === 'my') {
+              return true;
+            }
+
+            return showSubscribed && item.groupId === 'subscribed';
+          })
+          .map(({ groupId, groupName, status, daos }) => (
+            <div key={groupId} className={styles.group}>
+              {daos && daos.length > 0 && (
+                <>
+                  <div className={styles.groupHeader}>
+                    <div className={styles.groupTitle}>
+                      {groupName} ({daos.length})
+                    </div>
+                    <Toggle
+                      id={groupId}
+                      checked={status === NotificationsGroupStatus.Enabled}
+                      groupSwitch
+                      onClick={() => toggleGroupSwitch(groupId, status)}
+                    />
+                  </div>
+                  {daos?.map(
+                    ({
+                      daoId,
+                      daoName,
+                      daoAddress,
+                      flagCover,
+                      flagBack,
+                      settings,
+                    }) => (
+                      <NotificationCollapsableSettings
+                        key={daoId}
+                        daoId={daoId}
+                        flagCover={flagCover}
+                        flagBack={flagBack}
+                        daoName={daoName}
+                        daoAddress={daoAddress}
+                        settings={settings}
+                        groupId={groupId}
+                        isMuted={status === NotificationsGroupStatus.Disable}
+                        onToggleDao={toggleDaoSwitch}
+                        onToggleSettings={toggleSettingsSwitch}
+                      />
+                    )
+                  )}
+                </>
+              )}
+            </div>
+          ))}
+
+        {showPlatform && (
+          <PlatformNotificationSettings
+            onToggleGroup={toggleGroupSwitch}
+            onTogglePlatform={togglePlatformSwitch}
+            settingsState={settingsState}
+          />
+        )}
       </div>
     </div>
   );

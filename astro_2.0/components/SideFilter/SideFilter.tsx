@@ -19,6 +19,7 @@ interface SideFilterProps {
   className?: string;
   titleClassName?: string;
   list?: ListItem[];
+  hideAllOption?: boolean;
 }
 
 export const SideFilter = ({
@@ -28,6 +29,7 @@ export const SideFilter = ({
   queryName,
   className,
   titleClassName,
+  hideAllOption = false,
 }: SideFilterProps): JSX.Element => {
   const { t } = useTranslation();
 
@@ -46,7 +48,9 @@ export const SideFilter = ({
     const index = findIndex(list, { value: selectedValue });
 
     const transformVal =
-      index === -1 ? 0 : index * HUNDRED_PERCENT + HUNDRED_PERCENT;
+      index === -1
+        ? 0
+        : index * HUNDRED_PERCENT + (hideAllOption ? 0 : HUNDRED_PERCENT);
 
     return {
       '--filter-active-transform': `${transformVal}%`,
@@ -88,7 +92,7 @@ export const SideFilter = ({
         className={styles.categoriesList}
         style={getActiveMarkTransformValue()}
       >
-        {renderFilterItem(ITEM_ALL)}
+        {!hideAllOption && renderFilterItem(ITEM_ALL)}
         {list?.map(renderFilterItem)}
       </ul>
     </div>

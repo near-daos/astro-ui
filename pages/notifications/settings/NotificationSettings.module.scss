@@ -6,10 +6,19 @@
   grid-template-areas:
     'breadcrumbs'
     'title'
+    'filter'
     'settings';
   grid-template-columns: 1fr;
   padding-top: 56px;
   row-gap: 24px;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'breadcrumbs breadcrumbs'
+      'title title'
+      'filter settings';
+    grid-template-columns: 1fr 3fr;
+  }
 }
 
 .breadcrumbs {
@@ -19,6 +28,15 @@
 .title {
   @extend %heading1;
   grid-area: title;
+}
+
+.sideFilter {
+  grid-area: filter;
+  top: 72px;
+  @include tablet-landscape {
+    max-width: 240px;
+    top: 102px;
+  }
 }
 
 .settings {
