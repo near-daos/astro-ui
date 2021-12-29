@@ -199,19 +199,19 @@ export const Feed = ({
           onChange={onProposalFilterChange}
           disabled={proposalsDataIsLoading}
           list={[
-            { value: ProposalStatuses.All, label: t('all') },
+            { value: ProposalStatuses.All, label: t('feed.filters.all') },
             {
               value: ProposalStatuses.Active,
-              label: t('active'),
+              label: t('feed.filters.active'),
             },
             {
               value: ProposalStatuses.Approved,
-              label: t('approved'),
+              label: t('feed.filters.approved'),
               className: styles.categoriesListApprovedInputWrapperChecked,
             },
             {
               value: ProposalStatuses.Failed,
-              label: t('failed'),
+              label: t('feed.filters.failed'),
               className: styles.categoriesListFailedInputWrapperChecked,
             },
           ]}
@@ -223,7 +223,7 @@ export const Feed = ({
           <SideFilter
             queryName="category"
             list={feedCategoriesOptions}
-            title={t('chooseAFilter')}
+            title={t('feed.filters.chooseAFilter')}
             disabled={proposalsDataIsLoading}
             titleClassName={styles.categoriesListTitle}
           />

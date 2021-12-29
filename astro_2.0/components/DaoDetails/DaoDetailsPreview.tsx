@@ -4,6 +4,8 @@ import { ProposalTrackerCard } from 'astro_2.0/components/DaoDetails/components/
 import { DaoGeneralCard } from 'astro_2.0/components/DaoDetails/components/DaoGeneralCard';
 import { ActionButton } from 'features/proposal/components/action-button';
 
+import { useTranslation } from 'next-i18next';
+
 import classNames from 'classnames';
 import styles from './DaoDetails.module.scss';
 
@@ -12,6 +14,8 @@ export interface DaoDetailsPreviewProps {
 }
 
 export const DaoDetailsPreview: FC<DaoDetailsPreviewProps> = ({ dao }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
       <section className={styles.general}>
@@ -28,14 +32,18 @@ export const DaoDetailsPreview: FC<DaoDetailsPreviewProps> = ({ dao }) => {
       </section>
 
       <section className={styles.funds}>
-        <div className={styles.label}>DAO funds</div>
+        <div className={styles.label}>
+          {t('components.daoDetailsPreview.daoFunds')}
+        </div>
         <div className={styles.value}>
           <span className={styles.bold}>{dao.funds}</span> USD
         </div>
       </section>
 
       <section className={styles.members}>
-        <div className={styles.label}>Members/Groups</div>
+        <div className={styles.label}>
+          {t('components.daoDetailsPreview.daoMembersAndGroups')}
+        </div>
         <div className={styles.value}>
           <span className={styles.bold}>1</span>/0
         </div>

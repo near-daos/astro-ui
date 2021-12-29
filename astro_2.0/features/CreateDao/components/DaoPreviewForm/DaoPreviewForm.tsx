@@ -1,5 +1,6 @@
 import React, { VFC } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 
 import { nearConfig } from 'config';
 
@@ -13,6 +14,7 @@ import styles from './DaoPreviewForm.module.scss';
 
 export const DaoPreviewForm: VFC = () => {
   const { watch, getValues } = useFormContext<DAOFormValues>();
+  const { t } = useTranslation();
 
   // Need to watch values otherwise value can get stuck
   const legalLink = watch('legalLink');
@@ -58,11 +60,8 @@ export const DaoPreviewForm: VFC = () => {
     <div className={styles.root}>
       <UnitSeparator />
       <div className={styles.header}>
-        <h2>Preview of&nbsp;your future DAO</h2>
-        <p>
-          Make sure everything right and clear, this is&nbsp;how users will see
-          your DAO on&nbsp;the platform!
-        </p>
+        <h2>{t('createDAO.daoPreviewFutureForm.daoPreviewFuture')}</h2>
+        <p>{t('createDAO.daoPreviewFutureForm.daoMakeSureDescription')}</p>
       </div>
       <div className={styles.content}>
         <DaoDetailsPreview dao={daoData} />

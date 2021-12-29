@@ -49,7 +49,7 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
         onClick={() => toggleView('DAO_FUNDS')}
       >
         <StatPanel
-          title={t('daoFunds')}
+          title={t('daoDashboard.daoFunds')}
           value={getFundsInUsdFromTokens(daoTokens)}
           trend={0}
         />
@@ -62,14 +62,14 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
         onClick={() => toggleView('BOUNTIES')}
       >
         <StatPanel
-          title={t('bounties')}
+          title={t('daoDashboard.bounties')}
           value={dashboardData.daoTvl?.bounties.number.count}
           trend={dashboardData.daoTvl?.bounties.number.growth ?? 0}
         />
       </StatCard>
       <StatCard className={styles.nfts} onClick={() => toggleView('NFTS')}>
         <StatPanel
-          title={t('nfts')}
+          title={t('daoDashboard.nfts')}
           value={dashboardData.daoTokens?.nfts.count}
           trend={dashboardData.daoTokens?.nfts.growth ?? 0}
         />
@@ -79,12 +79,12 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
         onClick={() => toggleView('PROPOSALS')}
       >
         <StatPanel
-          title={t('activeProposals')}
+          title={t('daoDashboard.activeProposals')}
           value={dao.activeProposalsCount}
           trend={0}
         />
         <StatPanel
-          title={t('proposalsInTotal')}
+          title={t('daoDashboard.proposalsInTotal')}
           value={dao.totalProposalsCount}
           trend={0}
         />

@@ -5,11 +5,6 @@
   "myFeed": "My Feed",
   "globalFeed": "Global Feed",
   "daoFunds": "DAO funds",
-  "mostActive": "Most Active",
-  "newest": "Newest",
-  "oldest": "Oldest",
-  "biggestFunds": "Biggest funds",
-  "numberOfMembers": "Number of members",
   "createNewDao": "Create new DAO",
   "loading": "Loading",
   "youHaveSeenItAll": "You have seen it all",
@@ -22,11 +17,7 @@
   "groups": "Groups",
   "activeProposals": "active proposals",
   "proposalsInTotal": "proposals in total",
-  "active": "Active",
-  "proposal": "proposal",
-  "proposals": "proposals",
   "propose": "Propose",
-  "createProposal": "Create proposal",
   "viewProposal": "View Proposal",
   "daoSettings": "DAO Settings",
   "successProposalNotification": "The blockchain transactions might take some time to perform, please visit DAO details page in few seconds",
@@ -35,10 +26,6 @@
   "policyAffectedProposalsTitle": "Change {{title}} Snapshot",
   "policyAffectedProposalsText": "The proposed changes in {{title}} will affect the other proposals. Further updates might get rewritten if the current proposal won't get resolved before.",
   "allMembers": "All Members",
-  "all": "All",
-  "approved": "Approved",
-  "failed": "Failed",
-  "chooseAFilter": "Choose a filter",
   "noProposalsHere": "No proposals here",
   "noMoreResults": "No more results",
   "governance": "Governance",
@@ -72,6 +59,29 @@
   },
 
   "components": {
+    "appFooter": {
+      "reportAnIssue": "Report an issue",
+      "githubRepo": " Github repo",
+      "opensourceAsIs": "SputnikDAO 2021. The software is an open source and provided “as is”, without warranty of any kind.",
+      "communityDeveloped": "Community developed. Not audited. Use at your own risk."
+    },
+
+    "daoDetails": {
+      "proposalTrackerCard": {
+        "active": "active",
+        "activePlural": "active",
+        "proposal": "proposal",
+        "proposals": "proposals",
+        "proposalsInTotal": "proposals in total",
+        "createProposal": "Create proposal"
+      }
+    },
+
+    "daoDetailsPreview": {
+      "daoFunds": "DAO Funds",
+      "daoMembersAndGroups": "Members/Groups"
+    },
+
     "transactionDetailsWidget": {
       "warning": "Warning",
       "gas": "Gas",
@@ -174,6 +184,11 @@
       "daoPreviewLetterhead": "Letterhead"
     },
 
+    "daoPreviewFutureForm": {
+      "daoPreviewFuture": "Preview of your future DAO",
+      "daoMakeSureDescription": "Make sure everything right and clear, this is how users will see your DAO on the platform!"
+    },
+
     "daoSubmitForm": {
       "daoSubmitError": "There are errors in your form. Please, check validation messages on the page.",
       "daoSubmitLiability": "Creating a DAO is a liability ",
@@ -181,5 +196,55 @@
       "daoCannotBeDeleted": "DAOs can not be deleted!",
       "daoCreateButton": "Create DAO"
     }
+  },
+
+  "myDAOsPage": {
+    "noDAOs": "You have no DAOs, but you can",
+    "createDAOLink": "create",
+    "noDAOsEnd": "one",
+    "myDAOs": "My DAOs",
+    "createNewDAO": "Create new DAO"
+  },
+
+  "daoDashboard": {
+    "daoFunds": "DAO funds",
+    "bounties": "Bounties",
+    "nfts": "NFTs",
+    "activeProposals": "active proposals",
+    "proposalsInTotal": "proposals in total"
+  },
+
+  "daoDetailsMinimized": {
+    "proposals": "Proposals",
+    "funds": "Funds",
+    "members": "Members",
+    "settings": "Settings",
+    "nfts": "NFTs",
+    "bounties": "Bounties",
+    "polls": "Polls",
+    "createProposal": "Create Proposal"
+  },
+
+  "feed": {
+    "filters": {
+      "chooseAFilter": "Choose a filter",
+      "all": "All",
+      "active": "Active",
+      "approved": "Approved",
+      "failed": "Failed"
+    }
+  },
+
+  "allDAOsFilter": {
+    "mostActive": "Most Active",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "biggestFunds": "Biggest funds",
+    "numberOfMembers": "Number of members"
+  },
+
+  "loader": {
+    "title": "Receiving data from the contract",
+    "waitSomeTime": "This may take some time"
   }
 }

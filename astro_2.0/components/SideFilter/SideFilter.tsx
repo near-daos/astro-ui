@@ -33,7 +33,7 @@ export const SideFilter = ({
 
   const ITEM_ALL = {
     value: undefined,
-    label: t('all'),
+    label: t('feed.filters.all'),
   };
 
   const { query } = useRouter();

@@ -169,14 +169,23 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                 className={cn(styles.proposalsTitle, styles.active)}
                 size={2}
               >
-                <span>{activeProposals}</span> {t('active')}{' '}
-                {activeProposals === 1 ? t('proposal') : t('proposals')}
+                <span>{activeProposals}</span>{' '}
+                {activeProposals === 1
+                  ? t('components.daoDetails.proposalTrackerCard.active')
+                  : t(
+                      'components.daoDetails.proposalTrackerCard.activePlural'
+                    )}{' '}
+                {activeProposals === 1
+                  ? t('components.daoDetails.proposalTrackerCard.proposal')
+                  : t('components.daoDetails.proposalTrackerCard.proposals')}
               </Typography.Subtitle>
               <Typography.Subtitle
                 className={styles.proposalsSubtitle}
                 size={6}
               >
-                {`${totalProposals} ${t('proposalsInTotal')}`}
+                {`${totalProposals} ${t(
+                  'components.daoDetails.proposalTrackerCard.proposalsInTotal'
+                )}`}
               </Typography.Subtitle>
             </section>
           </div>
