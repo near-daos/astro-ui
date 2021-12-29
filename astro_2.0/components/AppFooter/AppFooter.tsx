@@ -65,14 +65,13 @@ export const AppFooter: FC<AppFooterProps> = ({
               target="_blank"
               rel="noreferrer noopener"
             >
-              Github repo
+              {t('components.appFooter.githubRepo')}
             </a>
           </div>
           <div className={styles.copyright}>
-            SputnikDAO 2021. The software is an open source and provided “as
-            is”, without warranty of any kind.
+            {t('components.appFooter.opensourceAsIs')}
             <br />
-            Community developed. Not audited. Use at your own risk.
+            {t('components.appFooter.communityDeveloped')}
           </div>
           <div className={styles.terms}>
             <Link passHref href="/terms-conditions">

@@ -6,6 +6,7 @@ import includes from 'lodash/includes';
 import { useRouter } from 'next/router';
 import React, { FC, useState } from 'react';
 import TextTruncate from 'react-text-truncate';
+import { useTranslation } from 'next-i18next';
 
 import { DAO } from 'types/dao';
 
@@ -37,7 +38,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   const tooltipPlacement = isMobile ? 'bottom' : 'top-end';
 
   const router = useRouter();
-
+  const { t } = useTranslation();
   const { asPath } = router;
   const currentPath = asPath.split('?')[0];
 
@@ -83,7 +84,9 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           variant="tertiary"
         >
           <Icon width={44} name="buttonAdd" className={styles.createIcon} />
-          <span className={styles.createText}>Create proposal</span>
+          <span className={styles.createText}>
+            {t('daoDetailsMinimized.createProposal')}
+          </span>
         </Button>
       </div>
       <Popup
@@ -92,7 +95,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
         placement={tooltipPlacement}
         className={styles.createPopup}
       >
-        Create proposal
+        {t('daoDetailsMinimized.createProposal')}
       </Popup>
     </>
   );
@@ -139,49 +142,49 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           onClick={() => handleChapterClick(url.proposals)}
           className={generateChapterStyle(url.proposals)}
         >
-          Proposals
+          {t('daoDetailsMinimized.proposals')}
         </ActionButton>
         <ActionButton
           iconName="funds"
           onClick={() => handleChapterClick(url.funds)}
           className={generateChapterStyle(url.funds)}
         >
-          Funds
+          {t('daoDetailsMinimized.funds')}
         </ActionButton>
         <ActionButton
           iconName="groups"
           onClick={() => handleChapterClick(url.members)}
           className={generateChapterStyle(url.members)}
         >
-          Members
+          {t('daoDetailsMinimized.members')}
         </ActionButton>
         <ActionButton
           iconName="settings"
           onClick={() => handleChapterClick(url.settings)}
           className={generateChapterStyle(url.settings)}
         >
-          Settings
+          {t('daoDetailsMinimized.settings')}
         </ActionButton>
         <ActionButton
           iconName="nfts"
           onClick={() => handleChapterClick(url.nfts)}
           className={generateChapterStyle(url.nfts)}
         >
-          NFTs
+          {t('daoDetailsMinimized.nfts')}
         </ActionButton>
         <ActionButton
           iconName="proposalBounty"
           onClick={() => handleChapterClick(url.bounties)}
           className={generateChapterStyle(url.bounties)}
         >
-          Bounties
+          {t('daoDetailsMinimized.bounties')}
         </ActionButton>
         <ActionButton
           iconName="proposalPoll"
           onClick={() => handleChapterClick(url.polls)}
           className={generateChapterStyle(url.polls)}
         >
-          Polls
+          {t('daoDetailsMinimized.polls')}
         </ActionButton>
       </section>
 

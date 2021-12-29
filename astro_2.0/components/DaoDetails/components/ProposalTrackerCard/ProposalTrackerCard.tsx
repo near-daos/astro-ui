@@ -30,11 +30,18 @@ export const ProposalTrackerCard: FC<ProposalTrackerProps> = ({
           className={cn(styles.title, styles.active)}
           size={2}
         >
-          <span>{activeVotes}</span> {t('active')}{' '}
-          {activeVotes === 1 ? t('proposal') : t('proposals')}
+          <span>{activeVotes}</span>{' '}
+          {activeVotes === 1
+            ? t('components.daoDetails.proposalTrackerCard.active')
+            : t('components.daoDetails.proposalTrackerCard.activePlural')}{' '}
+          {activeVotes === 1
+            ? t('components.daoDetails.proposalTrackerCard.proposal')
+            : t('components.daoDetails.proposalTrackerCard.proposals')}
         </Typography.Subtitle>
         <Typography.Subtitle className={styles.subtitle} size={6}>
-          {`${totalProposals} ${t('proposalsInTotal')}`}
+          {`${totalProposals} ${t(
+            'components.daoDetails.proposalTrackerCard.proposalsInTotal'
+          )}`}
         </Typography.Subtitle>
       </div>
       {action && (

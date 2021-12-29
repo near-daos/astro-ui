@@ -21,23 +21,23 @@ import styles from './AllDaosPage.module.scss';
 function getSortOptions(t: TFunction) {
   return [
     {
-      label: t('mostActive'),
+      label: t('allDAOsFilter.mostActive'),
       value: 'lastProposalId,DESC',
     },
     {
-      label: t('newest'),
+      label: t('allDAOsFilter.newest'),
       value: 'createdAt,DESC',
     },
     {
-      label: t('oldest'),
+      label: t('allDAOsFilter.oldest'),
       value: 'createdAt,ASC',
     },
     {
-      label: t('biggestFunds'),
+      label: t('allDAOsFilter.biggestFunds'),
       value: 'amount,DESC',
     },
     {
-      label: t('numberOfMembers'),
+      label: t('allDAOsFilter.numberOfMembers'),
       value: 'numberOfMembers,DESC',
     },
   ];

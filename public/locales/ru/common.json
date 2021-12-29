@@ -5,11 +5,6 @@
   "myFeed": "Моя лента",
   "globalFeed": "Глобальная лента",
   "daoFunds": "Фонд ДАО",
-  "mostActive": "Самые активные",
-  "newest": "Самые новые",
-  "oldest": "Самые старые",
-  "biggestFunds": "Наибольший фонд",
-  "numberOfMembers": "количество участников",
   "createNewDao": "Создать новое ДАО",
   "loading": "Загрузка",
   "youHaveSeenItAll": "Ничего нового",
@@ -22,11 +17,7 @@
   "groups": "Группы",
   "activeProposals": "активные предложения",
   "proposalsInTotal": "предложений всего",
-  "active": "Активные",
-  "proposal": "Предложение",
-  "proposals": "Предложения",
   "propose": "Предложить",
-  "createProposal": "Создать предложение",
   "viewProposal": "Просмотреть предложение",
   "daoSettings": "Настройки ДАО",
   "successProposalNotification": "Транзакции в блокчейне могут занимать некоторе время, пожалуйста, обновите страницу ДАО через несколько секунд.",
@@ -35,10 +26,6 @@
   "policyAffectedProposalsTitle": "Изменить {{title}} снепшот",
   "policyAffectedProposalsText": "Предложенные изменения в {{title}} могут повлиять на другие предложения. Последующие обновления могут быть утеряны, если текущее предложение не будет принято раньше других.",
   "allMembers": "Все участники",
-  "all": "Все",
-  "approved": "Согласовано",
-  "failed": "Отклонено",
-  "chooseAFilter": "Выберите фильтр",
   "noProposalsHere": "Предложения отсутствуют",
   "noMoreResults": "Данные отсутсвтуют",
   "governance": "Управление",
@@ -72,11 +59,40 @@
   },
 
   "components": {
+    "appFooter": {
+      "reportAnIssue": "Сообщить о проблеме",
+      "githubRepo": " Github репозиторий",
+      "opensourceAsIs": "SputnikDAO 2021. Данное ПО с открытым исходным кодом предоставляется “как есть”, без каких-либо гарантий.",
+      "communityDeveloped": "Разработано свободным сообществом. Аудит не проводился. Используйсте это ПО на свой собственный страх и риск."
+    },
+
+    "daoDetails": {
+      "proposalTrackerCard": {
+        "active": "активное",
+        "activePlural": "активных",
+        "proposal": "предложение",
+        "proposals": "предложений",
+        "proposalsInTotal": "предложений всего",
+        "createProposal": "Создать предложение"
+      }
+    },
+
+    "daoDetailsPreview": {
+      "daoFunds": "Фонд ДАО",
+      "daoMembersAndGroups": "Участники/Группы"
+    },
+
     "transactionDetailsWidget": {
       "warning": "Внимание",
       "gas": "Газ",
       "bond": "Залог"
     }
+  },
+
+  "comments": {
+    "youReportedThisMessage": "You have reported this message",
+    "thisMessageWasReported": "This message was reported",
+    "commentsSpamProtection": "Due to spam protection no more than 5 messages per minute are allowed."
   },
 
   "createDAO": {
@@ -168,6 +184,11 @@
       "daoPreviewLetterhead": "Фирменный бланк"
     },
 
+    "daoPreviewFutureForm": {
+      "daoPreviewFuture": "Предпросмотр вашего будущего ДАО",
+      "daoMakeSureDescription": "Убедитесь, что все правильно и понятно, это то как пользователи будут воспринимать ваше ДАО на платформе!"
+    },
+
     "daoSubmitForm": {
       "daoSubmitError": "Некорректно введенные данные. Пожалуйста, проверьте сообщения об ошибках на странице.",
       "daoSubmitLiability": "Создание вашего ДАО регулируется ",
@@ -175,5 +196,55 @@
       "daoCannotBeDeleted": "ДАО удалить невозможно!",
       "daoCreateButton": "Создать ДАО"
     }
+  },
+
+  "myDAOsPage": {
+    "noDAOs": "У вас нет ДАО, но вы можете",
+    "createDAOLink": "создать",
+    "noDAOsEnd": "её",
+    "myDAOs": "Мои ДАО",
+    "createNewDAO": "Создать новое ДАО"
+  },
+
+  "daoDashboard": {
+    "daoFunds": "Средства ДАО",
+    "bounties": "Работа",
+    "nfts": "NFT-токены",
+    "activeProposals": "активных предложений",
+    "proposalsInTotal": "предложений всего"
+  },
+
+  "daoDetailsMinimized": {
+    "proposals": "Предложения",
+    "funds": "Фонд",
+    "members": "Участники",
+    "settings": "Настройки",
+    "nfts": "NFT-токены",
+    "bounties": "Работа",
+    "polls": "Опросы",
+    "createProposal": "Создать предложение"
+  },
+
+  "feed": {
+    "filters": {
+      "chooseAFilter": "Выберите фильтр",
+      "all": "Все",
+      "active": "Активные",
+      "approved": "Согласовано",
+      "failed": "Отклонено"
+    }
+  },
+
+  "allDAOsFilter": {
+    "mostActive": "Самые активные",
+    "newest": "Самые новые",
+    "oldest": "Самые старые",
+    "biggestFunds": "Наибольший фонд",
+    "numberOfMembers": "Количество участников"
+  },
+
+  "loader": {
+    "title": "Receiving data from the contract",
+    "waitSomeTime": "This may take some time"
   }
 }
