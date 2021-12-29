@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { format, parseISO } from 'date-fns';
+import { useSwipeable } from 'react-swipeable';
 
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { ActionButton } from 'features/proposal/components/action-button';
@@ -16,6 +17,8 @@ import {
 import { Notification } from 'types/notification';
 
 import styles from './NotificationCard.module.scss';
+
+const EMPTY_OBJECT = {};
 
 export type NotificationCardProps = {
   regular?: boolean;
@@ -43,8 +46,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
 }) => {
   const router = useRouter();
   const { handleUpdate } = useNotifications();
-
-  // const [isNotificationRead, setNotificationRead] = useState(isRead);
+  const [swipedLeft, setSwipedLeft] = useState(false);
 
   const { flagCover, logo, id: daoId = '' } = dao ?? {};
   const { iconType, url, statusIcon } = getNotificationParamsByType(
@@ -54,15 +56,15 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     status
   );
 
-  const rootClassName = cn(styles.root, {
+  const rootClassName = cn(styles.content, {
     [styles.new]: isNew,
     [styles.hub]: !regular,
+    [styles.swipedLeft]: swipedLeft,
   });
 
   const handleMarkReadClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
-      // setNotificationRead(true);
 
       if (onMarkRead) {
         onMarkRead(id);
@@ -95,43 +97,9 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     [handleMarkReadClick, router, url]
   );
 
-  return (
-    <div
-      className={rootClassName}
-      role="button"
-      tabIndex={0}
-      onClick={handleNotificationClick}
-      onKeyPress={handleNotificationClick}
-    >
-      <div className={styles.flagContainer}>
-        <div className={styles.flagWrapper}>
-          <div className={styles.flag}>
-            <FlagRenderer flag={flagCover} size="xs" fallBack={logo} />
-          </div>
-          <div className={styles.type}>
-            {!!iconType && <Icon name={iconType} width={24} />}
-            {statusIcon && (
-              <div className={styles.status}>
-                <Icon name={statusIcon} width={12} />
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-      <div className={styles.text}>
-        <NotificationText
-          type={type}
-          accountId={accountId}
-          dao={dao}
-          status={status}
-          metadata={metadata}
-          proposerId={signerId ?? ''}
-        />
-      </div>
-      <div className={styles.time}>
-        {format(parseISO(createdAt), 'h:mm aaa')}
-      </div>
-      <div className={styles.control}>
+  function renderControls() {
+    return (
+      <>
         <div className={styles.markRead}>
           <Button
             variant="transparent"
@@ -149,6 +117,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
         </div>
         {!regular && (
           <ActionButton
+            className={styles.deleteButton}
             size="medium"
             iconName={isArchived ? 'noteRestore' : 'noteArchive'}
             tooltip={isArchived ? 'Restore' : 'Archive'}
@@ -159,6 +128,65 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
             iconClassName={styles.deleteIcon}
           />
         )}
+      </>
+    );
+  }
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      setSwipedLeft(true);
+    },
+    onSwipedRight: () => {
+      setSwipedLeft(false);
+    },
+  });
+
+  const swipeProps = !regular ? handlers : EMPTY_OBJECT;
+
+  return (
+    <div className={styles.root}>
+      <div
+        className={rootClassName}
+        role="button"
+        tabIndex={0}
+        onClick={handleNotificationClick}
+        onKeyPress={handleNotificationClick}
+        {...swipeProps}
+      >
+        <div className={styles.flagContainer}>
+          <div className={styles.flagWrapper}>
+            <div className={styles.flag}>
+              <FlagRenderer flag={flagCover} size="xs" fallBack={logo} />
+            </div>
+            <div className={styles.type}>
+              {!!iconType && <Icon name={iconType} width={24} />}
+              {statusIcon && (
+                <div className={styles.status}>
+                  <Icon name={statusIcon} width={12} />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className={styles.text}>
+          <NotificationText
+            type={type}
+            accountId={accountId}
+            dao={dao}
+            status={status}
+            metadata={metadata}
+            proposerId={signerId ?? ''}
+          />
+        </div>
+        <div className={styles.time}>
+          {format(parseISO(createdAt), 'h:mm aaa')}
+        </div>
+        <div className={styles.control}>{renderControls()}</div>
+      </div>
+      <div
+        className={cn(styles.mobileActionsPanel, { [styles.open]: swipedLeft })}
+      >
+        {renderControls()}
       </div>
     </div>
   );
