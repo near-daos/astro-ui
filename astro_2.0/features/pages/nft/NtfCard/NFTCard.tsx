@@ -103,66 +103,68 @@ export const NFTCard: VFC<NFTCardProps> = ({ image, contractId }) => {
     return (
       <div className={styles.preloader}>
         <div className={styles.preloaderIcon}>
-          <div />
-          <div />
-          <div />
+          <span />
+          <span />
+          <span />
         </div>
       </div>
     );
   }
 
-  function renderNtfImage() {
+  function renderNtfCard() {
     if (showError) {
       return (
         <div className={styles.error}>
           <Icon name="imageNotFound" width={58} className={styles.errorIcon} />
-          Failed to load image
+          Failed to load NFT
         </div>
       );
     }
 
     return (
-      <div>
-        <a href="*" rel="noopener noreferrer" target="_blank" ref={linkRef}>
+      <a
+        href="*"
+        rel="noopener noreferrer"
+        target="_blank"
+        ref={linkRef}
+        className={styles.link}
+      >
+        <div className={styles.imageWrapper}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             ref={imgRef}
-            width="296px"
-            height="424px"
             alt={nameRef.current}
             onLoad={() => setShowPlaceholder(false)}
             src=""
             className={styles.image}
           />
-        </a>
-      </div>
+        </div>
+        <div className={styles.description}>
+          <div className={styles.name}>{nameRef.current}</div>
+          <div className={styles.info}>
+            <div className={styles.contract} ref={setContractIdPopup}>
+              {shortenString(contractId, 19)}
+            </div>
+            {contractId.length > 19 && (
+              <Popup anchor={contractIdPopup}>{contractId}</Popup>
+            )}
+            <div>
+              <ExplorerLink
+                linkData={contractId}
+                linkType="member"
+                textLabel="To the explorer"
+              />
+            </div>
+          </div>
+        </div>
+      </a>
     );
   }
 
   return (
     <div className={styles.root}>
-      <div className={styles.imageWrapper}>
-        {showPlaceholder && renderPlaceholder()}
-        {renderNtfImage()}
-      </div>
-      <div className={styles.description}>
-        <div className={styles.name}>{nameRef.current}</div>
-        <div className={styles.info}>
-          <div className={styles.contract} ref={setContractIdPopup}>
-            {shortenString(contractId, 19)}
-          </div>
-          {contractId.length > 19 && (
-            <Popup anchor={contractIdPopup}>{contractId}</Popup>
-          )}
-          <div>
-            <ExplorerLink
-              linkData={contractId}
-              linkType="member"
-              textLabel="To the explorer"
-            />
-          </div>
-        </div>
-      </div>
+      {showPlaceholder && !showError && renderPlaceholder()}
+      {renderNtfCard()}
     </div>
   );
 };

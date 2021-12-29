@@ -73,9 +73,7 @@ const NFTs: NextPage<NFTsPageProps> = ({
       const { uri, contractId } = nft;
 
       return (
-        <div className={styles.card} key={uri.toString()}>
-          <NFTCard image={uri} contractId={contractId} />
-        </div>
+        <NFTCard image={uri} contractId={contractId} key={uri.toString()} />
       );
     });
   }
