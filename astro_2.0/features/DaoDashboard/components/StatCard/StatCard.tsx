@@ -7,9 +7,11 @@ import styles from './StatCard.module.scss';
 interface StatCardProps {
   onClick?: () => void;
   className?: string;
+  selected: boolean;
 }
 
 export const StatCard: FC<StatCardProps> = ({
+  selected,
   onClick,
   children,
   className,
@@ -18,7 +20,10 @@ export const StatCard: FC<StatCardProps> = ({
     <Button
       onClick={onClick}
       variant="transparent"
-      className={cn(styles.root, className, { [styles.clickable]: !!onClick })}
+      className={cn(styles.root, className, {
+        [styles.clickable]: !!onClick,
+        [styles.selected]: selected,
+      })}
     >
       {children}
     </Button>

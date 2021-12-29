@@ -45,6 +45,7 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
         )}
       </div>
       <StatCard
+        selected={activeView === 'DAO_FUNDS'}
         className={styles.funds}
         onClick={() => toggleView('DAO_FUNDS')}
       >
@@ -58,6 +59,7 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
         )}
       </StatCard>
       <StatCard
+        selected={activeView === 'BOUNTIES'}
         className={styles.bounties}
         onClick={() => toggleView('BOUNTIES')}
       >
@@ -67,7 +69,11 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
           trend={dashboardData.daoTvl?.bounties.number.growth ?? 0}
         />
       </StatCard>
-      <StatCard className={styles.nfts} onClick={() => toggleView('NFTS')}>
+      <StatCard
+        selected={activeView === 'NFTS'}
+        className={styles.nfts}
+        onClick={() => toggleView('NFTS')}
+      >
         <StatPanel
           title={t('nfts')}
           value={dashboardData.daoTokens?.nfts.count}
@@ -75,6 +81,7 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
         />
       </StatCard>
       <StatCard
+        selected={activeView === 'PROPOSALS'}
         className={styles.proposals}
         onClick={() => toggleView('PROPOSALS')}
       >
