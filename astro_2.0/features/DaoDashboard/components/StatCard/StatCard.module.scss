@@ -1,5 +1,6 @@
 .root {
   background-color: var(--color-white);
+  border: 1px solid transparent;
   border-radius: 8px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   display: block;
@@ -9,5 +10,9 @@
 
   &.clickable {
     cursor: pointer;
+  }
+
+  &.selected {
+    border-color: var(--color-primary-50);
   }
 }

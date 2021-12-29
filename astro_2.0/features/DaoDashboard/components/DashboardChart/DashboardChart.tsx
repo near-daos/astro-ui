@@ -11,6 +11,8 @@ import { useTranslation } from 'next-i18next';
 import { Button } from 'components/button/Button';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
+import { DOMAIN_RANGES } from 'components/AreaChartRenderer/helpers';
+
 import styles from './DashboardChart.module.scss';
 
 interface DashboardChartProps {
@@ -34,7 +36,8 @@ export const DashboardChart: FC<DashboardChartProps> = ({ data }) => {
   );
   const [width, setWidth] = useState(0);
   const { data: chartData, toggleDomain, activeRange } = useDomainControl(
-    data || []
+    data || [],
+    DOMAIN_RANGES.ALL
   );
 
   if (!chartData) {
