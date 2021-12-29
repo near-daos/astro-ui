@@ -54,7 +54,12 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({
   );
 
   const gotToSettingsPage = useCallback(() => {
-    router.push(NOTIFICATIONS_SETTINGS_PAGE_URL);
+    router.push({
+      pathname: NOTIFICATIONS_SETTINGS_PAGE_URL,
+      query: {
+        notyType: 'yourDaos',
+      },
+    });
   }, [router]);
 
   const filterOptions = useMemo(() => {
