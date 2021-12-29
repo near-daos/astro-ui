@@ -77,7 +77,16 @@
   grid-auto-flow: dense;
   grid-gap: 24px;
   grid-template-columns: repeat(auto-fill, 296px);
+  justify-content: center;
   padding: 48px 0;
+
+  @include tablet-portrait {
+    justify-content: space-around;
+  }
+
+  @include tablet-landscape {
+    justify-content: start;
+  }
 }
 
 .createProposal {
