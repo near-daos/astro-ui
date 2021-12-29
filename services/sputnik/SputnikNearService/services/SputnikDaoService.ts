@@ -13,7 +13,7 @@ import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 
 import { SputnikWalletService } from './SputnikWalletService';
 
-export const GAS_VALUE = new BN('300000000000000');
+export const GAS_VALUE = new BN('100000000000000');
 
 export class SputnikDaoService {
   private readonly sputnikWalletService: SputnikWalletService;
