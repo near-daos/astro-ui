@@ -3,7 +3,6 @@
 
 .root {
   background: var(--color-white);
-  border-radius: 8px;
   box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
   display: grid;
   grid-gap: 12px;
@@ -16,6 +15,7 @@
   transition: box-shadow 0.4s;
 
   @include tablet-landscape {
+    border-radius: 8px;
     grid-gap: 16px;
     grid-template-areas: 'general controls proposals';
     grid-template-columns: 2fr 1fr auto;
@@ -109,7 +109,7 @@
 .addProposalButton {
   @include centralize;
   background-color: var(--color-brand-green);
-  border-radius: 0 0 8px 8px;
+  border-radius: 0;
   height: 100%;
 
   @include tablet-landscape {

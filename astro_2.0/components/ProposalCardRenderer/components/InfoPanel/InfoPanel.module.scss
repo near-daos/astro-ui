@@ -1,3 +1,4 @@
+@import 'styles/mixins';
 @import 'styles/typography';
 
 .root {
@@ -8,24 +9,32 @@
   display: flex;
   justify-content: flex-start;
   margin-bottom: 8px;
-  //grid-area: info;
-  padding: 8px;
-
+  padding: 0 8px;
   transition: width 0.7s linear;
 }
 
 .message {
   display: none;
-  line-height: 0.98;
+  line-height: 1.1;
   margin-left: 12px;
+  padding: 6px 0;
 }
 
 .infoIcon {
   color: var(--color-brand-purple);
+  padding: 8px 0;
   width: 24px;
 }
 
 .open {
+  @include tablet-portrait {
+    max-width: 62%;
+  }
+
+  @include tablet-landscape {
+    max-width: 43%;
+  }
+
   .message {
     display: block;
   }

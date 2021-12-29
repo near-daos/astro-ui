@@ -32,7 +32,6 @@ export const InfoPanel: FC = () => {
       </div>
       <div className={styles.message}>
         Please make sure pop-ups and redirects are allowed on this page,
-        <br />
         otherwise proposal may fail to be created
       </div>
     </div>

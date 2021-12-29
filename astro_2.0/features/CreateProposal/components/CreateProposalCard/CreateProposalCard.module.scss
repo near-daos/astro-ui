@@ -1,4 +1,3 @@
-@use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/typography';
 
@@ -9,13 +8,23 @@
   display: grid;
   grid-row-gap: 22px;
   grid-template-areas:
-    'proposalType proposalType countdown'
-    'proposer proposer .'
-    'description description description'
-    'content content voteControl';
-  grid-template-columns: 5fr 3fr 2fr;
+    'proposalType'
+    'proposer'
+    'description'
+    'content'
+    'voteControl';
+  grid-template-columns: 1fr;
   padding: 22px 30px;
   position: relative;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'proposalType proposalType countdown'
+      'proposer proposer .'
+      'description description description'
+      'content content voteControl';
+    grid-template-columns: 5fr 3fr 2fr;
+  }
 }
 
 .voteControlCell {
@@ -36,10 +45,14 @@
 
 .countdownCell {
   @extend %title4;
-  color: var(--color-brand-purple);
-  grid-area: countdown;
-  justify-self: end;
-  text-align: right;
+  display: none;
+
+  @include tablet-landscape {
+    color: var(--color-brand-purple);
+    grid-area: countdown;
+    justify-self: end;
+    text-align: right;
+  }
 }
 
 .proposalCell {
@@ -107,7 +120,6 @@
   align-items: center;
   color: var(--color-brand-purple);
   display: flex;
-  //margin-top: 12px;
   gap: 4px;
   transition: text-shadow 0.4s, box-shadow 0.4s;
   width: 100%;
@@ -190,32 +202,20 @@
   @include centralize;
   height: 36px;
   position: absolute;
-  right: -40px;
-  top: 8px;
+  right: 4px;
+  top: -38px;
   width: 36px;
+
+  @include tablet-landscape {
+    right: -40px;
+    top: 8px;
+  }
 }
 
 .action {
-  color: var(--color-neutral-50);
-}
+  color: var(--color-white);
 
-@media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .actionBar {
-    right: 0;
-    top: -84px;
-  }
-
-  .countdownCell {
-    display: none;
-  }
-
-  .root {
-    grid-template-areas:
-      'proposalType'
-      'proposer'
-      'description'
-      'content'
-      'voteControl';
-    grid-template-columns: 1fr;
+  @include tablet-landscape {
+    color: var(--color-neutral-50);
   }
 }
