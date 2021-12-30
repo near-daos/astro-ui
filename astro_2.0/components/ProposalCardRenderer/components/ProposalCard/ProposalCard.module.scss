@@ -19,6 +19,7 @@
   padding: 22px 30px;
   position: relative;
   transition: box-shadow 0.3s ease-out;
+  z-index: 1;
 
   @include tablet-landscape {
     grid-template-areas:

@@ -33,6 +33,7 @@
   transform: translateY(-1px);
 }
 
-.error {
+.error.error {
   color: var(--color-error);
+  white-space: nowrap;
 }
