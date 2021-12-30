@@ -11,11 +11,3 @@
     color: var(--color-primary-50);
   }
 }
-
-.popup {
-  display: none;
-
-  @include non-touch-devices {
-    display: block;
-  }
-}
