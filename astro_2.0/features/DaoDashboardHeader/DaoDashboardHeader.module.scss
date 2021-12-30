@@ -3,7 +3,6 @@
 
 .root {
   display: grid;
-  grid-gap: 17px 0;
   grid-template-areas:
     'letterHeadSection'
     'usersSection'
@@ -12,6 +11,7 @@
   grid-template-columns: 1fr;
 
   @include tablet-landscape {
+    grid-gap: 17px 0;
     grid-template-areas:
       'letterHeadSection letterHeadSection letterHeadSection'
       'usersSection descriptionSection descriptionSection'
@@ -25,13 +25,13 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  border-radius: 8px;
   grid-area: letterHeadSection;
   height: 134px;
   margin: 0 -24px;
   position: relative;
 
   @include tablet-landscape {
+    border-radius: 8px;
     margin: 0;
   }
 
@@ -97,11 +97,14 @@
   flex-direction: column;
   grid-area: descriptionSection;
   justify-content: flex-start;
+  margin-top: 17px;
 
   @include tablet-landscape {
     align-items: flex-start;
     flex-direction: column;
+    margin-top: 0;
     padding: 0 36px 0 0;
+
     p {
       text-align: left;
     }
@@ -113,9 +116,11 @@
   display: flex;
   flex-direction: column;
   grid-area: linksSection;
+  margin-top: 17px;
 
   @include tablet-landscape {
     align-items: flex-start;
+    margin-top: 0;
   }
 }
 

@@ -47,7 +47,9 @@ const DAOHome: NextPage<DaoHomeProps> = ({
         <NavLink>{dao.displayName || dao.id}</NavLink>
       </BreadCrumbs>
 
-      <div className={styles.header}>
+      <DaoDashboardHeader dao={dao} className={styles.header} />
+
+      <div className={styles.navigation}>
         <DaoDetailsMinimized
           key={`details_${dao.id}`}
           dao={dao}
@@ -69,16 +71,14 @@ const DAOHome: NextPage<DaoHomeProps> = ({
           data={policyAffectsProposals}
           className={styles.warningWrapper}
         />
-
-        <DaoDashboardHeader dao={dao} className={styles.dashboardHeader} />
-
-        <DaoDashboard
-          key={`dashboard_${dao.id}`}
-          dao={dao}
-          daoTokens={daoTokens}
-          className={styles.dashboard}
-        />
       </div>
+
+      <DaoDashboard
+        key={`dashboard_${dao.id}`}
+        dao={dao}
+        daoTokens={daoTokens}
+        className={styles.dashboard}
+      />
     </div>
   );
 };
