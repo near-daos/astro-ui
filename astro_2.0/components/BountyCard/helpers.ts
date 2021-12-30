@@ -19,7 +19,7 @@ const calculateBountyStatus = (claim: ClaimedBy): BountyStatus => {
 
 export const getDistanceFromNow = (timePeriod: string): string => {
   return formatDistance(new Date(toMillis(timePeriod)), 0, {
-    addSuffix: true,
+    addSuffix: false,
   });
 };
 
