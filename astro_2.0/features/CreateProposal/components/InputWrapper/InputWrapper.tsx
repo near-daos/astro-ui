@@ -13,6 +13,7 @@ interface InputWrapperProps {
   alignRight?: boolean;
   flex?: boolean;
   className?: string;
+  labelClassName?: string;
 }
 
 export const InputWrapper: FC<InputWrapperProps> = ({
@@ -23,6 +24,7 @@ export const InputWrapper: FC<InputWrapperProps> = ({
   flex,
   alignRight,
   className = '',
+  labelClassName = '',
 }) => {
   const {
     formState: { errors },
@@ -40,7 +42,7 @@ export const InputWrapper: FC<InputWrapperProps> = ({
       })}
     >
       <div
-        className={cn(styles.label, {
+        className={cn(styles.label, labelClassName, {
           [styles.error]: !!error,
         })}
       >
@@ -50,7 +52,7 @@ export const InputWrapper: FC<InputWrapperProps> = ({
             <div ref={setRef} className="">
               <Icon name="info" width={12} className={styles.icon} />
             </div>
-            <Popup anchor={ref} offset={[0, 10]} placement="top">
+            <Popup anchor={ref} offset={[0, 10]} placement="auto">
               <span className={styles.error}>{error.message}</span>
             </Popup>
           </>

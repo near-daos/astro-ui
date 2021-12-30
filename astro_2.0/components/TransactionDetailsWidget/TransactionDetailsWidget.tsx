@@ -35,7 +35,12 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
   buttonLabel = 'Purpose',
   warning,
 }) => {
-  const { handleSubmit, register } = useFormContext();
+  const {
+    handleSubmit,
+    register,
+    watch,
+    formState: { errors },
+  } = useFormContext();
   const { t } = useTranslation();
 
   function renderWarning() {
@@ -63,6 +68,20 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
         ...register('gas'),
       };
 
+  const currentGasValue = watch('gas');
+
+  function getInputWidth() {
+    if (currentGasValue?.length > 6 && currentGasValue?.length <= 10) {
+      return `${currentGasValue?.length}ch`;
+    }
+
+    if (currentGasValue?.length > 10) {
+      return '10ch';
+    }
+
+    return '6ch';
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={cn(styles.root, { [styles.topBorder]: standAloneMode })}>
@@ -71,12 +90,19 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
           <div className={styles.transactionDetails}>
             <InputWrapper
               className={styles.detailsItem}
+              labelClassName={styles.inputLabel}
               fieldName="gas"
               label={t('components.transactionDetailsWidget.gas')}
             >
               <div className={styles.row}>
                 <Input
-                  className={cn(styles.inputWrapper, styles.narrow)}
+                  className={cn(styles.inputWrapper, styles.detailsInput, {
+                    [styles.readOnly]: gas,
+                    [styles.error]: errors?.gas,
+                  })}
+                  inputStyles={{
+                    width: getInputWidth(),
+                  }}
                   type="number"
                   min={0.01}
                   step={0.01}
@@ -91,13 +117,21 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
 
             <InputWrapper
               className={styles.detailsItem}
+              labelClassName={styles.inputLabel}
               fieldName="bond"
               label={t('components.transactionDetailsWidget.bond')}
             >
               <div className={styles.row}>
                 <Input
-                  className={cn(styles.inputWrapper, styles.narrow)}
+                  className={cn(
+                    styles.inputWrapper,
+                    styles.detailsInput,
+                    styles.readOnly
+                  )}
                   readOnly
+                  inputStyles={{
+                    width: '5ch',
+                  }}
                   type="number"
                   min={0.01}
                   step={0.01}
