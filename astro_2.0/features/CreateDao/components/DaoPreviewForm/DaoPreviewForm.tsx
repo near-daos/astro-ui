@@ -30,6 +30,7 @@ export const DaoPreviewForm: VFC = () => {
     structure,
     flagCover,
     flagLogo,
+    defaultFlag,
   } = getValues();
 
   const daoDataReady =
@@ -48,7 +49,7 @@ export const DaoPreviewForm: VFC = () => {
     links: websites,
     // todo: what funds should be shown on DAO preview?
     funds: '62.45',
-    flagCover: getImageFromImageFileList(flagCover),
+    flagCover: getImageFromImageFileList(flagCover) || defaultFlag,
     flagLogo: getImageFromImageFileList(flagLogo),
     legal: {
       legalLink,
