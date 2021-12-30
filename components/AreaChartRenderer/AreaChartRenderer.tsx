@@ -56,7 +56,11 @@ export const AreaChartRenderer: FC<AreaChartProps> = ({
           <div className={styles.header}>
             <div className={styles.title}>TVL Over Time</div>
             {!range ? (
-              <RangeToggle onClick={toggleDomain} activeRange={activeRange} />
+              <RangeToggle
+                onClick={toggleDomain}
+                activeRange={activeRange}
+                className={styles.range}
+              />
             ) : (
               <div className={styles.rangePlaceholder}>
                 Last {range.toLowerCase()}
