@@ -76,8 +76,8 @@ export const NotificationCollapsableSettings: FC<NotificationCollapsableSettings
               checked={settings.filter(item => item.checked).length !== 0}
               label={
                 settings.filter(item => item.checked).length !== 0
-                  ? 'Disable all'
-                  : 'Enable all'
+                  ? 'Enabled'
+                  : 'Disabled'
               }
               onClick={() => onToggleDao(daoId, groupId)}
             />
