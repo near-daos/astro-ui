@@ -98,20 +98,27 @@
   margin-top: 8px;
   word-break: break-all;
 
+  @include tablet-portrait {
+    display: block;
+  }
+
   @include astro-mobile {
     font-size: 14px;
-    > .addressId,
-    > .copyAddress {
+
+    .addressId {
       @include ellipse-text;
-      max-width: calc(70%);
+      max-width: 78%;
     }
   }
 }
 
+.addressId {
+  display: inline;
+}
+
 .copyAddress {
-  > button {
-    margin-left: 6px;
-  }
+  display: inline-block;
+  margin-left: 6px;
 }
 
 .description {
