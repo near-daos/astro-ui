@@ -33,6 +33,7 @@ export interface IDaoCreateForm {
   websites: string[];
   flagCover: FileList;
   flagLogo: FileList;
+  defaultFlag: string;
 }
 
 export interface DAOFormValues extends IDaoCreateForm {

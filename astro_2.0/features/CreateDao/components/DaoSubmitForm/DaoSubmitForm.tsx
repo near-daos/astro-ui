@@ -44,9 +44,18 @@ export function DaoSubmitForm(): JSX.Element {
     return '';
   }, []);
 
+  async function loadImage(defaultFlag: string) {
+    const response = await fetch(defaultFlag);
+    const blob = await response.blob();
+
+    return new File([blob], 'image.png', { type: 'image/png' });
+  }
+
   const createDao = useCallback(
     async (data: DAOFormValues) => {
-      const flagCover = get(data.flagCover, '0');
+      const defaultFlagFile = await loadImage(data.defaultFlag);
+
+      const flagCover = get(data.flagCover, '0') || defaultFlagFile;
       const flagLogo = get(data.flagLogo, '0');
 
       const [flagCoverFileName, flagLogoFileName] = await Promise.all([
