@@ -3,18 +3,22 @@ import React, {
   FC,
   useCallback,
   useContext,
+  useRef,
   useState,
 } from 'react';
 
 import { SputnikHttpService } from 'services/sputnik';
 
 import { SearchResultsData } from 'types/search';
+import { useAsyncFn } from 'react-use';
+import axios, { CancelTokenSource } from 'axios';
 
 interface SearchResultsContextProps {
   searchResults: SearchResultsData | null;
   handleSearch: (query: string) => void;
   handleClose: () => void;
   setSearchResults: (res: null) => void;
+  loading: boolean;
 }
 
 const SearchResultsContext = createContext<SearchResultsContextProps>({
@@ -25,6 +29,7 @@ const SearchResultsContext = createContext<SearchResultsContextProps>({
   handleClose: () => {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setSearchResults: () => {},
+  loading: false,
 });
 
 export const useSearchResults = (): SearchResultsContextProps =>
@@ -34,11 +39,24 @@ export const SearchResults: FC = ({ children }) => {
   const [searchResults, setSearchResults] = useState<null | SearchResultsData>(
     null
   );
+  const cancelTokenRef = useRef<CancelTokenSource | null>(null);
 
-  const handleSearch = useCallback(query => {
-    SputnikHttpService.search({ query }).then(result => {
-      setSearchResults(result);
+  const [{ loading }, handleSearch] = useAsyncFn(async query => {
+    if (cancelTokenRef.current) {
+      cancelTokenRef.current?.cancel('Cancelled by new req');
+    }
+
+    const { CancelToken } = axios;
+    const source = CancelToken.source();
+
+    cancelTokenRef.current = source;
+
+    const res = await SputnikHttpService.search({
+      query,
+      cancelToken: source.token,
     });
+
+    setSearchResults(res);
   }, []);
 
   const handleClose = useCallback(() => {
@@ -47,7 +65,13 @@ export const SearchResults: FC = ({ children }) => {
 
   return (
     <SearchResultsContext.Provider
-      value={{ searchResults, handleSearch, handleClose, setSearchResults }}
+      value={{
+        searchResults,
+        handleSearch,
+        handleClose,
+        setSearchResults,
+        loading,
+      }}
     >
       {children}
     </SearchResultsContext.Provider>

@@ -64,6 +64,7 @@ import { HttpService, httpService } from 'services/HttpService';
 import { DaoContext } from 'types/context';
 import { isUserPermittedToCreateProposal } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 import { mapNftTokenResponseToNftToken } from 'services/sputnik/mappers/nfts';
+import { CancelToken } from 'axios';
 
 class SputnikHttpServiceClass {
   private readonly httpService: HttpService = httpService;
@@ -133,11 +134,13 @@ class SputnikHttpServiceClass {
     limit?: number;
     sort?: string;
     query: string;
+    cancelToken: CancelToken;
   }): Promise<SearchResultsData | null> {
     const result = await this.httpService.get<SearchResponse>('/search', {
       params: {
         query: params.query,
       },
+      cancelToken: params.cancelToken,
     });
 
     return mapSearchResultsDTOToDataObject(params.query, {
