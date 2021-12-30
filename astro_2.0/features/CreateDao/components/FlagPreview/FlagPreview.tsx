@@ -40,10 +40,15 @@ export const FlagPreview: React.FC<FlagPreviewProps> = ({
             </div>
             <div className={styles.flags}>
               <div className={cn(styles.flag, styles.sm)}>
-                <FlagRenderer flag={coverFile} size="sm" />
+                <FlagRenderer key={coverFile} flag={coverFile} size="sm" />
               </div>
               <div className={styles.flag}>
-                <FlagRenderer flag={coverFile} size="lg" logo={logoFile} />
+                <FlagRenderer
+                  key={coverFile}
+                  flag={coverFile}
+                  size="lg"
+                  logo={logoFile}
+                />
               </div>
             </div>
           </div>
@@ -53,6 +58,7 @@ export const FlagPreview: React.FC<FlagPreviewProps> = ({
             </div>
             <div className={styles.dummyCard}>
               <div
+                key={coverFile}
                 className={styles.letterhead}
                 style={{
                   backgroundImage: `url(${coverFile})`,

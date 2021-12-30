@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { useTranslation } from 'next-i18next';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
 import { CreateDao } from 'astro_2.0/features/CreateDao';
 
@@ -10,8 +10,6 @@ import styles from './CreateDaoPage.module.scss';
 
 const CreateDaoPage: NextPage<{ step: string }> = () => {
   const { t } = useTranslation();
-
-  const [defaultFlagFile, setDefaultFlagFile] = useState<File>();
 
   const defaultFlag = useMemo(() => {
     const flags = [
@@ -26,26 +24,14 @@ const CreateDaoPage: NextPage<{ step: string }> = () => {
     return flags[getRandomInt(0, flags.length - 1)];
   }, []);
 
-  useEffect(() => {
-    async function loadImage() {
-      const response = await fetch(defaultFlag);
-      const blob = await response.blob();
-      const file = new File([blob], 'image.png', { type: 'image/png' });
-
-      setDefaultFlagFile(file);
-    }
-
-    loadImage();
-  }, [defaultFlag]);
-
-  return defaultFlagFile ? (
+  return defaultFlag ? (
     <div className={styles.root}>
       <div className={styles.content}>
         <div className={styles.breadcrumbs}>{t('createDAO.createNewDAO')}</div>
         <div className={styles.header}>
           <h1>{t('createDAO.createNewDAOWay')}</h1>
         </div>
-        <CreateDao defaultFlag={defaultFlagFile} />
+        <CreateDao defaultFlag={defaultFlag} />
       </div>
     </div>
   ) : null;
