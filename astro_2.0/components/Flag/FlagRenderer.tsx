@@ -17,6 +17,7 @@ interface FlagRendererProps {
   size: 'xs' | 'sm' | 'lg';
   fallBack?: string | undefined;
   className?: string;
+  backgroundClassName?: string;
 }
 
 function isSafariBrowser(): boolean {
@@ -40,6 +41,7 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
   size,
   fallBack,
   className,
+  backgroundClassName,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>();
   const wrapperRef = useRef<HTMLDivElement>();
@@ -129,7 +131,9 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
   const [image, setImage] = useState<HTMLImageElement>();
 
   useEffect(() => {
-    if (isNoFlag()) return;
+    if (isNoFlag()) {
+      return;
+    }
 
     const img = new Image();
 
@@ -155,7 +159,9 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
     if (image && canvasRef.current) {
       const canvas: HTMLCanvasElement = canvasRef.current;
 
-      if (!canvas) return;
+      if (!canvas) {
+        return;
+      }
 
       const [width, height] = imageDimensions;
 
@@ -201,9 +207,15 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
           <path d={EXTRA_SMALL_FLAG_PATH} />
         </clipPath>
       </svg>
-      {size === 'lg' && <div className={styles.background} />}
-      {size === 'sm' && <div className={styles.backgroundSmall} />}
-      {size === 'xs' && <div className={styles.backgroundXS} />}
+      {size === 'lg' && (
+        <div className={cn(styles.background, backgroundClassName)} />
+      )}
+      {size === 'sm' && (
+        <div className={cn(styles.backgroundSmall, backgroundClassName)} />
+      )}
+      {size === 'xs' && (
+        <div className={cn(styles.backgroundXS, backgroundClassName)} />
+      )}
       <canvas
         ref={canvasRef as React.LegacyRef<HTMLCanvasElement>}
         style={{
