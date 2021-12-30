@@ -6,8 +6,9 @@ import React, {
   MutableRefObject,
   KeyboardEventHandler,
 } from 'react';
-import cn from 'classnames';
 import ReactDOM from 'react-dom';
+import cn from 'classnames';
+import { AnimatePresence, motion } from 'framer-motion';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 import { usePopper } from 'react-popper';
@@ -16,15 +17,17 @@ import {
   useDebounce,
   useMount,
   useMountedState,
+  useToggle,
 } from 'react-use';
 
 import { SEARCH_PAGE_URL } from 'constants/routing';
 
 import { useWindowResize } from 'hooks/useWindowResize';
-import { useSearchResults } from 'features/search/search-results';
 
+import { useSearchResults } from 'features/search/search-results';
 import { IconButton } from 'components/button/IconButton';
 import { DropdownResults } from 'astro_2.0/components/AppHeader/components/SearchBar/components/DropdownResults';
+import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 
 import styles from './SearchBar.module.scss';
 
@@ -41,18 +44,33 @@ export const SearchBar: FC<SearchBarProps> = ({
   placeholder,
   withSideBar,
 }) => {
+  const router = useRouter();
+  const isMounted = useMountedState();
   const POPUP_LEFT_MARGIN = 20;
   const POPUP_RIGHT_MARGIN = 20;
-  const isMounted = useMountedState();
+  const isSearchPage = router.pathname.includes(SEARCH_PAGE_URL);
+
+  const {
+    handleSearch,
+    handleClose,
+    searchResults,
+    loading,
+  } = useSearchResults();
+
+  const ref = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [focused, setFocused] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [searchWidth, setSearchWidth] = useState<number | string>(40);
-
-  const router = useRouter();
-
-  const ref = useRef(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [referenceElement, setReferenceElement] = useState(null);
+  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
+    null
+  );
+  const [value, setValue] = useState(
+    searchResults?.query || (router.query.search as string) || ''
+  );
+  const [showHint, toggleShowHint] = useToggle(false);
 
   function isDesktopResolution() {
     try {
@@ -91,12 +109,12 @@ export const SearchBar: FC<SearchBarProps> = ({
     calculateExpanded();
   }, [calculateWidth, calculateExpanded]);
 
-  useWindowResize(onWindowResize);
+  const onSearchStateToggle = useCallback(state => {
+    if (!isDesktopResolution()) {
+      setExpanded(state);
+    }
+  }, []);
 
-  const isSearchPage = router.pathname.includes(SEARCH_PAGE_URL);
-
-  const [referenceElement, setReferenceElement] = React.useState(null);
-  const [popperElement, setPopperElement] = React.useState(null);
   const { styles: popperStyles, attributes } = usePopper(
     referenceElement,
     popperElement,
@@ -119,33 +137,27 @@ export const SearchBar: FC<SearchBarProps> = ({
     }
   );
 
-  const { handleSearch, handleClose, searchResults } = useSearchResults();
-
-  const [value, setValue] = useState(
-    searchResults?.query || (router.query.search as string) || ''
-  );
+  useWindowResize(onWindowResize);
 
   useMount(() => {
     setExpanded(isDesktopResolution() || !!searchResults?.query);
   });
 
-  const onSearchStateToggle = useCallback(state => {
-    if (!isDesktopResolution()) {
-      setExpanded(state);
-    }
-  }, []);
-
   useDebounce(
     () => {
       const query = value?.trim() ?? '';
 
-      if (expanded && query.length > 0) {
+      if (expanded && query.length >= 3) {
+        toggleShowHint(false);
         handleSearch(query);
+      } else if (expanded && query.length > 0 && query.length < 3) {
+        toggleShowHint(true);
       } else if (expanded) {
+        toggleShowHint(false);
         handleClose();
       }
     },
-    500,
+    750,
     [value, handleClose]
   );
 
@@ -214,24 +226,45 @@ export const SearchBar: FC<SearchBarProps> = ({
   }
 
   function renderResultsDropdown() {
-    if (!!searchResults && expanded && focused && !isSearchPage) {
-      return ReactDOM.createPortal(
-        <div
-          id="astro_search-results"
-          ref={setPopperElement as React.LegacyRef<HTMLDivElement>}
-          style={{ ...popperStyles.popper, zIndex: 100 }}
-          {...attributes.popper}
-        >
-          <DropdownResults
-            width={getDropdownWidth()}
-            closeSearch={handleCancel}
-          />
-        </div>,
-        document.body
-      );
+    const showResults =
+      !!searchResults && expanded && focused && !isSearchPage && !showHint;
+
+    if (typeof document === 'undefined') {
+      return null;
     }
 
-    return null;
+    return ReactDOM.createPortal(
+      <AnimatePresence>
+        {(showHint || showResults) && (
+          <div
+            id="astro_search-results"
+            ref={setPopperElement}
+            style={{ ...popperStyles.popper, zIndex: 100 }}
+            {...attributes.popper}
+          >
+            <motion.div
+              initial={{ opacity: 0, transform: 'translateY(40px)' }}
+              animate={{ opacity: 1, transform: 'translateY(0px)' }}
+              exit={{ opacity: 0 }}
+            >
+              {showHint && (
+                <div className={styles.hint}>
+                  Please enter at least 3 characters to search
+                </div>
+              )}
+              {showResults && (
+                <DropdownResults
+                  query={value}
+                  width={getDropdownWidth()}
+                  closeSearch={handleCancel}
+                />
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>,
+      document.body
+    );
   }
 
   function renderCloseButton() {
@@ -260,12 +293,24 @@ export const SearchBar: FC<SearchBarProps> = ({
       }}
     >
       <div className={styles.iconHolder}>
-        <IconButton
-          size="medium"
-          icon="buttonSearch"
-          className={styles.icon}
-          onClick={openSearch}
-        />
+        <AnimatePresence>
+          {loading ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <LoadingIndicator className={styles.loader} />
+            </motion.div>
+          ) : (
+            <IconButton
+              size="medium"
+              icon="buttonSearch"
+              className={styles.icon}
+              onClick={openSearch}
+            />
+          )}
+        </AnimatePresence>
       </div>
 
       <input

@@ -19,11 +19,13 @@ import styles from './DropdownResults.module.scss';
 interface DropdownResultsProps {
   width: number;
   closeSearch: () => void;
+  query: string;
 }
 
 export const DropdownResults: VFC<DropdownResultsProps> = ({
   width,
   closeSearch,
+  query,
 }) => {
   const DAOS_TAB_IDNEX = 0;
   const PROPOSAL_TAB_INDEX = 1;
@@ -66,8 +68,13 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
   }, [goToSearchPage]);
 
   function renderNoResults() {
-    if (isEmpty(daos) && isEmpty(proposals) && isEmpty(members)) {
-      return <NoSearchResultsView />;
+    if (
+      isEmpty(daos) &&
+      isEmpty(proposals) &&
+      isEmpty(members) &&
+      query !== ''
+    ) {
+      return <NoSearchResultsView query={query} />;
     }
 
     return null;

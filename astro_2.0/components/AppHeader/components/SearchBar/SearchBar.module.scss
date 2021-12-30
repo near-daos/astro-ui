@@ -48,6 +48,7 @@ $search-max-width: 768;
 
   .icon {
     color: var(--color-neutral-60);
+    width: 24px;
   }
 }
 
@@ -92,4 +93,21 @@ $search-max-width: 768;
   .iconHolder .icon {
     color: var(--color-brand-purple);
   }
+}
+
+.hint {
+  @extend %caption2;
+  background: var(--color-neutral-10);
+  border-radius: 8px;
+  box-shadow: 0 8.89583px 30px rgba(0, 0, 0, 0.14);
+  color: var(--color-neutral-60);
+  max-height: 50vh;
+  overflow: auto;
+  padding: 12px 24px;
+  width: 100%;
+}
+
+.loader {
+  color: var(--color-primary-50);
+  margin: 0;
 }
