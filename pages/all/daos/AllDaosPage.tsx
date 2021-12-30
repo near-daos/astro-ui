@@ -14,7 +14,6 @@ import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 import { useAuthContext } from 'context/AuthContext';
 import { useRouterLoading } from 'hooks/useRouterLoading';
 import { useNearPrice } from 'hooks/useNearPrice';
-import { Loader } from 'components/loader';
 
 import styles from './AllDaosPage.module.scss';
 
@@ -82,7 +81,7 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
 
   const handleSort = useCallback(
     async value => {
-      router.push(`?sort=${value}`, undefined, { shallow: true });
+      router.push(`?sort=${value}`);
 
       if (value === 'lastProposalId,DESC') {
         // todo - this is not working , we have to decide how to get most active
@@ -120,10 +119,6 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
 
   const isLoading = useRouterLoading();
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   return (
     <div className={styles.root}>
       <div className={styles.header}>
@@ -157,6 +152,7 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
           {data.map(item => {
             return (
               <DaoDetailsGrid
+                loading={isLoading}
                 key={item.id}
                 dao={item}
                 activeProposals={item.activeProposalsCount}
