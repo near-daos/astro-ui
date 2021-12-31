@@ -1,7 +1,8 @@
 import cn from 'classnames';
 import { useRouter } from 'next/router';
-import React, { forwardRef, useCallback } from 'react';
+import React, { forwardRef, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
+import { SputnikHttpService } from 'services/sputnik';
 
 import {
   MY_DAOS_URL,
@@ -25,6 +26,7 @@ interface SidebarProps {
 }
 
 export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
+  const [myDaosIds, setMyDaosIds] = useState<string[]>([]);
   const { className } = props;
 
   const router = useRouter();
@@ -37,6 +39,19 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
     [login, router, accountId]
   );
 
+  useEffect(() => {
+    async function getMyDaosIds() {
+      if (accountId) {
+        const data = await SputnikHttpService.getAccountDaos(accountId);
+        const accountDaosIds = data.map(item => item.id);
+
+        setMyDaosIds(accountDaosIds);
+      }
+    }
+
+    getMyDaosIds();
+  }, [accountId]);
+
   function renderHomeNavItem() {
     if (accountId) {
       return (
@@ -45,12 +60,14 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
             label={t('myDaos')}
             icon="myDaos"
             className={styles.item}
+            myDaosIds={myDaosIds}
             href={MY_DAOS_URL}
           />
           <NavItem
             label={t('myFeed')}
             icon="myFeed"
             className={styles.item}
+            myDaosIds={myDaosIds}
             href={MY_FEED_URL}
           />
           <div className={styles.divider} />
@@ -68,12 +85,14 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
           label={t('allDaos')}
           icon="allCommunity"
           className={styles.item}
+          myDaosIds={myDaosIds}
           href={ALL_DAOS_URL}
         />
         <NavItem
           label={t('globalFeed')}
           icon="globalFeed"
           className={styles.item}
+          myDaosIds={myDaosIds}
           href={ALL_FEED_URL}
         />
         <div className={styles.divider} />
@@ -97,6 +116,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
           <NavItem
             href={CREATE_DAO_URL}
             className={styles.item}
+            myDaosIds={myDaosIds}
             onClick={createDao}
             label={t('createNewDao')}
             icon="createNewDao"

@@ -13,11 +13,14 @@ import { useOnRouterChange } from 'hooks/useOnRouterChange';
 import { Icon } from 'components/Icon';
 import { Popup } from 'components/Popup';
 
+import { ALL_DAOS_URL, MY_DAOS_URL } from 'constants/routing';
+
 import styles from './NavButton.module.scss';
 
 interface NavButtonProps extends NavItemProps {
   mobile?: boolean;
   className?: string;
+  myDaosIds: string[];
 }
 
 export const NavButton: VFC<NavButtonProps> = props => {
@@ -29,6 +32,7 @@ export const NavButton: VFC<NavButtonProps> = props => {
     hoverIcon,
     className,
     authRequired,
+    myDaosIds,
   } = props;
 
   const router = useRouter();
@@ -40,7 +44,13 @@ export const NavButton: VFC<NavButtonProps> = props => {
 
   const [showLoader, setShowLoader] = useState(false);
 
-  const isActive = useIsHrefActive(href);
+  const daoId = router.query.dao as string;
+  const daoIsMine = myDaosIds.indexOf(daoId) >= 0;
+
+  const isActive =
+    useIsHrefActive(href) ||
+    (daoIsMine && href === MY_DAOS_URL) ||
+    (daoId && !daoIsMine && href === ALL_DAOS_URL);
 
   const rootClassName = cn(styles.root, className, {
     [styles.active]: isActive,
