@@ -78,7 +78,9 @@ export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
 };
 
 export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
-  if (!daoDTO.id) return null;
+  if (!daoDTO.id) {
+    return null;
+  }
 
   const roles = get(daoDTO, 'policy.roles', []);
   const numberOfProposals = get(daoDTO, 'totalProposalCount', 0);

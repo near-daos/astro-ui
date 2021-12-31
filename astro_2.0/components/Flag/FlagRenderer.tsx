@@ -147,6 +147,10 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
       }
     };
 
+    img.onerror = () => {
+      console.error(flag, fallBack);
+    };
+
     if (flag) {
       img.src = flag;
     } else if (fallBack) {
@@ -156,7 +160,7 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
   }, [fallBack, flag, isMounted, isNoFlag]);
 
   useEffect(() => {
-    if (image && canvasRef.current) {
+    if (image && image.complete && canvasRef.current) {
       const canvas: HTMLCanvasElement = canvasRef.current;
 
       if (!canvas) {
