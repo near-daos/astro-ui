@@ -149,7 +149,7 @@ export const Feed = ({
       return;
     }
 
-    const newProposalsData = await fetchProposalsData();
+    const newProposalsData = await fetchProposalsData(proposalsData);
 
     if (isMounted()) {
       setProposalsData(newProposalsData);
