@@ -3,6 +3,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import cn from 'classnames';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
@@ -32,6 +33,8 @@ import {
 } from './helpers';
 
 import { CreateProposalCard } from './components/CreateProposalCard';
+
+import styles from './CreateProposal.module.scss';
 
 export interface CreateProposalProps {
   className?: string;
@@ -203,7 +206,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
 
   return (
     <FormProvider {...methods}>
-      <div className={className} ref={formRef}>
+      <div className={cn(styles.root, className)} ref={formRef}>
         <ProposalCardRenderer
           daoFlagNode={
             showFlag && (
