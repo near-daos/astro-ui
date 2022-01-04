@@ -26,6 +26,7 @@ import { CustomFunctionCallContent } from 'astro_2.0/features/ViewProposal/compo
 import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/ViewProposal//components/ChangeDaoLegalInfoContent';
 
 import { getDistanceFromNow } from 'astro_2.0/components/BountyCard/helpers';
+import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
 
 export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
   let content;
@@ -52,14 +53,12 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
 
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          const [, value] = getDistanceFromNow(bountyData.maxDeadline).split(
-            ' '
-          );
+          const deadline = nanosToDays(bountyData.maxDeadline);
 
           content = (
             <AddBountyContent
               slots={bountyData.times}
-              deadlineThreshold={value}
+              deadlineThreshold={deadline[0]}
               token={bountyData.token}
               amount={bountyData.amount}
             />
@@ -436,11 +435,15 @@ export function checkIsCouncilUser(
   accountId: string,
   dao: DAO | null
 ): boolean {
-  if (!accountId || !dao) return false;
+  if (!accountId || !dao) {
+    return false;
+  }
 
   const councilGroup = dao.groups.find(item => item.name === 'Council');
 
-  if (!councilGroup) return false;
+  if (!councilGroup) {
+    return false;
+  }
 
   return councilGroup.members.includes(accountId);
 }
