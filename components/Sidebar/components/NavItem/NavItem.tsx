@@ -5,6 +5,7 @@ import React, {
   useCallback,
   HTMLAttributes,
 } from 'react';
+import { useRouter } from 'next/router';
 import cn from 'classnames';
 import Link from 'next/link';
 import { ParsedUrlQueryInput } from 'querystring';
@@ -15,6 +16,8 @@ import { DotsLoader } from 'astro_2.0/components/DotsLoader';
 
 import { useIsHrefActive } from 'hooks/useIsHrefActive';
 import { useOnRouterChange } from 'hooks/useOnRouterChange';
+
+import { ALL_DAOS_URL, MY_DAOS_URL } from 'constants/routing';
 
 import styles from './NavItem.module.scss';
 
@@ -29,6 +32,7 @@ interface NavItemProps extends HTMLAttributes<HTMLAnchorElement> {
   topDelimiter?: boolean;
   bottomDelimiter?: boolean;
   subHrefs?: string[];
+  myDaosIds: string[];
   onClick?: () => void;
 }
 
@@ -43,10 +47,19 @@ export const NavItem: FC<NavItemProps> = ({
   topDelimiter,
   bottomDelimiter,
   subHrefs = [],
+  myDaosIds,
   onClick,
   children,
 }) => {
-  const isActive = useIsHrefActive(href, subHrefs);
+  const router = useRouter();
+  const daoId = router.query.dao as string;
+  const daoIsMine = myDaosIds.indexOf(daoId) >= 0;
+
+  const isActive =
+    useIsHrefActive(href, subHrefs) ||
+    (daoIsMine && href === MY_DAOS_URL) ||
+    (daoId && !daoIsMine && href === ALL_DAOS_URL);
+
   const [showLoader, setShowLoader] = useState(false);
 
   const onRouteChange = useCallback(() => {

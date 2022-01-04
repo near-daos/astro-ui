@@ -1,4 +1,5 @@
-import React, { VFC } from 'react';
+import React, { useEffect, useState, VFC } from 'react';
+import { SputnikHttpService } from 'services/sputnik';
 
 import { useAuthContext } from 'context/AuthContext';
 
@@ -14,7 +15,21 @@ import { NavButton } from 'astro_2.0/components/navigation/NavButton';
 import styles from './MobileNav.module.scss';
 
 export const MobileNav: VFC = () => {
+  const [myDaosIds, setMyDaosIds] = useState<string[]>([]);
   const { accountId } = useAuthContext();
+
+  useEffect(() => {
+    async function getMyDaosIds() {
+      if (accountId) {
+        const data = await SputnikHttpService.getAccountDaos(accountId);
+        const accountDaosIds = data.map(item => item.id);
+
+        setMyDaosIds(accountDaosIds);
+      }
+    }
+
+    getMyDaosIds();
+  }, [accountId]);
 
   const navConfig = accountId
     ? [
@@ -27,7 +42,9 @@ export const MobileNav: VFC = () => {
     : [ALL_DAOS_NAV_CONFIG, ASTRO_FEED_NAV_CONFIG, CREATE_DAO_NAV_CONFIG];
 
   const navItems = navConfig.map(conf => {
-    return <NavButton {...conf} mobile key={conf.label} />;
+    return (
+      <NavButton {...conf} mobile myDaosIds={myDaosIds} key={conf.label} />
+    );
   });
 
   return <div className={styles.root}>{navItems}</div>;
