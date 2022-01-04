@@ -23,7 +23,11 @@ export const Feed = <T,>({
   noResults,
   renderItem,
   loadMore,
-}: FeedProps<T>): React.ReactElement => {
+}: FeedProps<T>): React.ReactElement | null => {
+  if (!data.data) {
+    return null;
+  }
+
   return (
     <div className={cn(styles.root, className)}>
       <Head>

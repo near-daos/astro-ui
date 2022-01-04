@@ -96,6 +96,7 @@ class SputnikHttpServiceClass {
     };
   }
 
+  /* not used now */
   public async getDaosFeed(params?: {
     offset?: number;
     limit?: number;
@@ -124,7 +125,7 @@ class SputnikHttpServiceClass {
   }
 
   public async getDaoById(id: string): Promise<DAO | null> {
-    const { data } = await this.httpService.get<DaoDTO>(`/daos/feed/${id}`);
+    const { data } = await this.httpService.get<DaoDTO>(`/daos/${id}`);
 
     return mapDaoDTOtoDao(data);
   }
