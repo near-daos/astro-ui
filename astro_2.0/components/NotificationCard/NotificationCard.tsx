@@ -38,7 +38,6 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   accountId,
   targetId,
   createdAt,
-  signerId,
   id,
   status,
   onMarkRead,
@@ -175,7 +174,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
             dao={dao}
             status={status}
             metadata={metadata}
-            proposerId={signerId ?? ''}
+            proposerId={metadata?.proposal?.proposer ?? ''}
           />
         </div>
         <div className={styles.time}>

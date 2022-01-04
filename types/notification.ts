@@ -1,5 +1,5 @@
 import { DAO } from 'types/dao';
-import { DaoDTO } from 'services/sputnik/mappers';
+import { DaoDTO, ProposalDTO } from 'services/sputnik/mappers';
 
 export enum NotificationType {
   DaoConfig = 'DaoConfig',
@@ -107,6 +107,15 @@ export enum NotifiedActionType {
   // DaoMemberRemoved = 'DaoMemberRemoved',
 }
 
+export type NotificationMetadata = {
+  methodName: 'act_proposal' | 'add_proposal';
+  args: unknown;
+  proposal: Pick<
+    ProposalDTO,
+    'id' | 'proposer' | 'description' | 'kind' | 'votes'
+  >;
+};
+
 export type NotificationDTO = {
   isArchived: boolean;
   createdAt: string;
@@ -127,7 +136,7 @@ export type NotificationDTO = {
     daoId: string;
     targetId: string;
     type: NotifiedActionType;
-    metadata: unknown; // should we have proper description of the metadata
+    metadata: NotificationMetadata;
     timestamp: string;
     status: NotificationStatus;
   };
@@ -145,7 +154,7 @@ export type Notification = {
   signerId: string | null;
   targetId: string;
   type: NotifiedActionType;
-  metadata: unknown;
+  metadata: NotificationMetadata;
   createdAt: string;
   isMuteAvailable: boolean;
   isMarkReadAvailable: boolean;
