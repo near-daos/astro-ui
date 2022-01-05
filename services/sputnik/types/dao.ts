@@ -16,6 +16,7 @@ export interface CreateDaoParams {
     legalStatus?: string;
     legalLink?: string;
   };
+  gas: string | number;
 }
 
 export interface ClaimBountyParams {

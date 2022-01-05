@@ -13,6 +13,7 @@ interface ProposalControlButtonProps {
   disabled: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   iconClassName?: string;
+  type: 'submit' | 'button';
 }
 
 export const ProposalControlButton: React.FC<ProposalControlButtonProps> = ({
@@ -20,6 +21,7 @@ export const ProposalControlButton: React.FC<ProposalControlButtonProps> = ({
   voted,
   times,
   disabled,
+  type,
   onClick,
   iconClassName = '',
 }) => {
@@ -33,6 +35,7 @@ export const ProposalControlButton: React.FC<ProposalControlButtonProps> = ({
     <span className={styles.item}>
       <IconButton
         icon={icon}
+        type={type}
         iconProps={{
           className: iconClassName,
         }}

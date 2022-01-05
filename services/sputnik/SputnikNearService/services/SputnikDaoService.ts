@@ -53,7 +53,7 @@ export class SputnikDaoService {
         name: params.name,
         args,
       },
-      gas: GAS_VALUE,
+      gas: new BN(Number(params.gas) * 10 ** 15),
       attachedDeposit: amount,
     });
   }
@@ -103,7 +103,8 @@ export class SputnikDaoService {
   public async vote(
     daoId: string,
     proposalId: number,
-    action: 'VoteApprove' | 'VoteRemove' | 'VoteReject'
+    action: 'VoteApprove' | 'VoteRemove' | 'VoteReject',
+    gas?: string | number
   ): Promise<FinalExecutionOutcome> {
     return this.functionCall({
       methodName: 'act_proposal',
@@ -112,7 +113,7 @@ export class SputnikDaoService {
         id: proposalId,
         action,
       },
-      gas: GAS_VALUE,
+      gas: gas ? new BN(Number(gas) * 10 ** 15) : GAS_VALUE,
     });
   }
 

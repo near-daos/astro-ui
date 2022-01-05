@@ -3,6 +3,9 @@ import { useAsyncFn } from 'react-use';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { format, parseISO } from 'date-fns';
+import { FormProvider, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
@@ -24,6 +27,10 @@ import { SputnikNearService } from 'services/sputnik';
 import { getProposalVariantLabel } from 'astro_2.0/features/ViewProposal/helpers';
 import { ExplorerLink } from 'components/ExplorerLink';
 import { useCountdown } from 'hooks/useCountdown';
+
+import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
+import { DEFAULT_CREATE_DAO_GAS } from 'services/sputnik/constants';
+import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 
 import { useGetVotePermissions } from './hooks/useGetVotePermissions';
 import { ProposalControlPanel } from './components/ProposalControlPanel';
@@ -120,6 +127,10 @@ function getSealIcon(
   return !timeLeft && !sealIcon ? 'sealFailed' : sealIcon;
 }
 
+const schema = yup.object().shape({
+  gas: gasValidation,
+});
+
 export const ProposalCard: React.FC<ProposalCardProps> = ({
   id,
   type,
@@ -149,15 +160,15 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const permissions = useGetVotePermissions(dao, type, accountId);
 
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
-    async (vote: VoteAction) => {
-      await SputnikNearService.vote(dao.id, proposalId, vote);
+    async (vote: VoteAction, gas?: string | number) => {
+      await SputnikNearService.vote(dao.id, proposalId, vote, gas);
       await router.replace(router.asPath);
     },
     [dao, proposalId, router]
   );
 
   const handleCardClick = useCallback(() => {
-    if (id) {
+    if (id && router.pathname !== SINGLE_PROPOSAL_PAGE_URL) {
       router.push({
         pathname: SINGLE_PROPOSAL_PAGE_URL,
         query: {
@@ -172,6 +183,15 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const sealIcon =
     timeLeft !== undefined ? getSealIcon(status, timeLeft) : null;
+
+  const methods = useForm<DAOFormValues>({
+    mode: 'all',
+    reValidateMode: 'onChange',
+    defaultValues: {
+      gas: DEFAULT_CREATE_DAO_GAS,
+    },
+    resolver: yupResolver(schema),
+  });
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
@@ -219,33 +239,35 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       </div>
       <div className={styles.contentCell}>{content}</div>
       <div className={styles.voteControlCell}>
-        <ProposalControlPanel
-          status={status}
-          onLike={e => {
-            e.stopPropagation();
+        <FormProvider {...methods}>
+          <ProposalControlPanel
+            status={status}
+            onLike={(data, e) => {
+              e?.stopPropagation();
 
-            voteClickHandler('VoteApprove');
-          }}
-          onDislike={e => {
-            e.stopPropagation();
+              return voteClickHandler('VoteApprove', data.gas);
+            }}
+            onDislike={(data, e) => {
+              e?.stopPropagation();
 
-            voteClickHandler('VoteReject');
-          }}
-          disableControls={voteLoading || !timeLeft}
-          likes={likes}
-          liked={liked}
-          dislikes={dislikes}
-          disliked={disliked}
-          permissions={permissions}
-          commentsCount={commentsCount}
-          toggleInfoPanel={e => {
-            e.stopPropagation();
+              return voteClickHandler('VoteReject', data.gas);
+            }}
+            disableControls={voteLoading || !timeLeft}
+            likes={likes}
+            liked={liked}
+            dislikes={dislikes}
+            disliked={disliked}
+            permissions={permissions}
+            commentsCount={commentsCount}
+            toggleInfoPanel={e => {
+              e.stopPropagation();
 
-            if (toggleInfoPanel) {
-              toggleInfoPanel();
-            }
-          }}
-        />
+              if (toggleInfoPanel) {
+                toggleInfoPanel();
+              }
+            }}
+          />
+        </FormProvider>
       </div>
       <div className={styles.voteProgress}>
         {voteDetails && <ProgressBar detail={voteDetails} />}
