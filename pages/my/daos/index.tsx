@@ -5,6 +5,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from 'next-i18next.config';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { getDaosList } from 'features/daos/helpers';
 
 import MyDaosPage from './MyDaosPage';
 
@@ -26,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  const { data } = await SputnikHttpService.getDaosFeed({
+  const { daos } = await getDaosList({
     filter: `id||$in||${accountDaosIds.join(',')}`,
   });
 
@@ -37,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         ['common', 'notificationsPage'],
         nextI18NextConfig
       )),
-      accountDaos: data,
+      accountDaos: daos,
     },
   };
 };

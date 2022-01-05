@@ -113,7 +113,7 @@ export const Feed = ({
 
       accumulatedListData = {
         ...res,
-        data: [...(accumulatedListData?.data || []), ...res.data],
+        data: [...(accumulatedListData?.data || []), ...(res.data || [])],
       };
 
       // Reset custom loading state
@@ -123,7 +123,7 @@ export const Feed = ({
 
       return accumulatedListData;
     },
-    [proposalsData?.data.length, status, queries.category, accountId, isMyFeed]
+    [proposalsData?.data?.length, status, queries.category, accountId, isMyFeed]
   );
 
   useDebounceEffect(
