@@ -4,7 +4,7 @@ import { DAO, Member } from 'types/dao';
 import { Proposal } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
 
-import { DaoDTO, mapDaoDTOListToDaoList } from './dao';
+import { DaoDTO, mapDaoDTOListToDaoList, MemberStats } from './dao';
 import { mapProposalDTOListToProposalList, ProposalDTO } from './proposal';
 
 type MemberDTO = {
@@ -96,21 +96,16 @@ export const extractMembersFromDaosList = (
 
 export const extractMembersFromDao = (
   dao: DAO,
-  proposals: Proposal[]
+  membersStats: MemberStats[]
 ): Member[] => {
-  const votesPerProposer = proposals.reduce((acc, currentProposal) => {
-    const vote = currentProposal.votes[currentProposal.proposer];
+  const votesPerProposer = membersStats.reduce<Record<string, number>>(
+    (res, item) => {
+      res[item.accountId] = item.voteCount;
 
-    if (vote) {
-      if (acc[currentProposal.proposer]) {
-        acc[currentProposal.proposer] += 1;
-      } else {
-        acc[currentProposal.proposer] = 1;
-      }
-    }
-
-    return acc;
-  }, {} as Record<string, number>);
+      return res;
+    },
+    {}
+  );
 
   const members = {} as Record<string, Member>;
 

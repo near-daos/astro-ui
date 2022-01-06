@@ -55,6 +55,7 @@ import {
   mapSearchResultsDTOToDataObject,
   mapSubscriptionsDTOsToDaoSubscriptions,
   mapTokensDTOToTokens,
+  MemberStats,
   ProposalDTO,
   ReceiptDTO,
   SearchResponse,
@@ -687,6 +688,14 @@ class SputnikHttpServiceClass {
     });
 
     return proposals.data.map(mapProposalDTOToProposal);
+  }
+
+  public async getDaoMembersStats(daoId: string): Promise<MemberStats[]> {
+    const { data } = await this.httpService.get<MemberStats[]>(
+      `/daos/${daoId}/members`
+    );
+
+    return data;
   }
 
   public async getAccountReceiptsByTokens(

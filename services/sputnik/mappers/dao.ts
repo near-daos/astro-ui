@@ -67,6 +67,11 @@ export type DaoMetadata = {
   };
 };
 
+export type MemberStats = {
+  accountId: string;
+  voteCount: number;
+};
+
 export type DaoSubscriptionDTO = { id: string; dao: DaoDTO };
 
 export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
