@@ -141,7 +141,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
                   isBorderless
                   size="block"
                 />
-                <div>NEAR</div>
+                <div className={styles.tokenLabel}>NEAR</div>
               </div>
             </InputWrapper>
           </div>

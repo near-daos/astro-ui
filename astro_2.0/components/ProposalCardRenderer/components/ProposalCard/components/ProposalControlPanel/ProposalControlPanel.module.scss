@@ -52,7 +52,6 @@
   /* stylelint-enable */
 
   input {
-    background-color: var(--color-neutral-10);
     font-weight: 700;
     height: 24px !important;
     padding: 0 !important;
@@ -63,12 +62,19 @@
       transition: opacity 0.2s linear;
     }
   }
+
+  input[disabled] {
+    background-color: var(--color-white);
+  }
+}
+
+.detailsItem {
+  margin-left: 12px;
 }
 
 .detailsInput {
   input {
-    background-color: var(--color-neutral-30);
-    border: 1px solid transparent;
+    border: 1px solid var(--color-neutral-40);
     border-radius: 8px;
     height: 39px !important;
     padding: 10.5px 4px 10.5px 8px !important;
@@ -77,7 +83,7 @@
 
 .readOnly {
   input {
-    background-color: var(--color-neutral-10);
+    border-color: transparent;
   }
 }
 
@@ -89,12 +95,12 @@
 
 .inputLabel {
   @extend %subtitle6;
-  background-color: var(--color-neutral-10);
+  background-color: var(--color-white);
   color: var(--color-neutral-60);
   left: 6px;
   padding: 2px 4px;
   position: relative;
-  top: 6px;
+  top: 10px;
   //transform: translate(6px, 6px);
   width: fit-content;
 }

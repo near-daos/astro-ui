@@ -60,6 +60,8 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
 
   const currentGasValue = watch('gas');
 
+  const showTGas = !(voted || (!canApprove && !canReject) || disableControls);
+
   function getInputWidth() {
     if (currentGasValue?.length > 6 && currentGasValue?.length <= 10) {
       return `${currentGasValue?.length}ch`;
@@ -77,33 +79,37 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
       onSubmit={handleSubmit(onLike)}
       className={cn(styles.root, className)}
     >
-      <InputWrapper
-        className={styles.detailsItem}
-        labelClassName={styles.inputLabel}
-        fieldName="gas"
-        label="TGas"
-      >
-        <div className={styles.row}>
-          <Input
-            className={cn(styles.inputWrapper, styles.detailsInput, {
-              [styles.error]: errors?.gas,
-            })}
-            inputStyles={{
-              width: getInputWidth(),
-            }}
-            onClick={e => e.stopPropagation()}
-            type="number"
-            min={0.01}
-            step={0.01}
-            max={0.3}
-            isBorderless
-            size="block"
-            disabled={voted || (!canApprove && !canReject) || disableControls}
-            placeholder={`${DEFAULT_PROPOSAL_GAS}`}
-            {...register('gas')}
-          />
-        </div>
-      </InputWrapper>
+      {showTGas && (
+        <InputWrapper
+          className={styles.detailsItem}
+          labelClassName={styles.inputLabel}
+          fieldName="gas"
+          label="TGas"
+        >
+          <div className={styles.row}>
+            <Input
+              className={cn(styles.inputWrapper, styles.detailsInput, {
+                [styles.error]: errors?.gas,
+                [styles.readOnly]:
+                  voted || (!canApprove && !canReject) || disableControls,
+              })}
+              inputStyles={{
+                width: getInputWidth(),
+              }}
+              onClick={e => e.stopPropagation()}
+              type="number"
+              min={0.01}
+              step={0.01}
+              max={0.3}
+              isBorderless
+              size="block"
+              disabled={voted || (!canApprove && !canReject) || disableControls}
+              placeholder={`${DEFAULT_PROPOSAL_GAS}`}
+              {...register('gas')}
+            />
+          </div>
+        </InputWrapper>
+      )}
 
       <ProposalControlButton
         icon={liked ? 'votingYesChecked' : yesIconName}
