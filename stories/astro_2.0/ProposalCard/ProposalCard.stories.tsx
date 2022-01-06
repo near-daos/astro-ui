@@ -106,6 +106,7 @@ const dao = {
   daoMembersList: ['jason.born'],
   activeProposalsCount: 11,
   totalProposalsCount: 15,
+  totalDaoFunds: 77,
   proposals: 11,
   totalProposals: 15,
   lastProposalId: 12,

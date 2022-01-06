@@ -46,6 +46,7 @@ Template.args = {
     daoMembersList: ['jason.born'],
     activeProposalsCount: 11,
     totalProposalsCount: 15,
+    totalDaoFunds: 77,
     lastProposalId: 12,
     proposals: 13,
     totalProposals: 15,

@@ -15,8 +15,6 @@ import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 
 import { DAO } from 'types/dao';
 
-import { useNearPrice } from 'hooks/useNearPrice';
-
 import styles from './MyDaosPage.module.scss';
 
 interface MyDaosPageProps {
@@ -26,7 +24,6 @@ interface MyDaosPageProps {
 const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
   const router = useRouter();
   const { accountId, login } = useAuthContext();
-  const nearPrice = useNearPrice();
 
   function renderDaos() {
     if (isEmpty(accountDaos)) {
@@ -52,7 +49,6 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
         <DaoDetailsGrid
           key={id}
           dao={dao}
-          nearPrice={nearPrice}
           activeProposals={activeProposalsCount}
           totalProposals={totalProposalsCount}
         />

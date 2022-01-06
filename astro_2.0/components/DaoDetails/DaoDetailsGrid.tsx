@@ -13,7 +13,6 @@ import { DAO } from 'types/dao';
 import { DaoInfoCard } from 'astro_2.0/components/DaoDetails/components/DaoInfoCard';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ActionButton } from 'features/proposal/components/action-button';
-import { formatCurrency } from 'utils/formatCurrency';
 import * as Typography from 'components/Typography';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
@@ -27,7 +26,6 @@ export interface DaoDetailsGridProps {
   dao: DAO;
   activeProposals: number;
   totalProposals: number;
-  nearPrice: number;
   loading?: boolean;
 }
 
@@ -35,7 +33,6 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
   dao,
   activeProposals,
   totalProposals,
-  nearPrice,
   loading,
 }) => {
   const { t } = useTranslation();
@@ -51,7 +48,6 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
     funds,
   } = dao;
   const isMobile = useMedia('(max-width: 920px)');
-  const fundsUSD = formatCurrency(parseFloat(funds) * nearPrice);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>, url: string) => {
     e.stopPropagation();
@@ -120,7 +116,7 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                   infoType="funds"
                   url={`/dao/${id}/treasury/tokens`}
                   title={t('daoFunds')}
-                  daoFunds={fundsUSD}
+                  daoFunds={funds}
                   tooltip={t('daoFunds')}
                 />
                 <DaoInfoCard
