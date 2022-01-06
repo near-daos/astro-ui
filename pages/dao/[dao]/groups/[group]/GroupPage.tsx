@@ -3,7 +3,8 @@ import React, { useMemo, VFC } from 'react';
 import { useTranslation } from 'next-i18next';
 
 import { DaoContext } from 'types/context';
-import { Proposal, ProposalVariant } from 'types/proposal';
+import { ProposalVariant } from 'types/proposal';
+import { MemberStats } from 'services/sputnik/mappers';
 
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 
@@ -12,10 +13,10 @@ import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesCon
 
 export interface GroupPageProps {
   daoContext: DaoContext;
-  proposals: Proposal[];
+  membersStats: MemberStats[];
 }
 
-const GroupPage: VFC<GroupPageProps> = ({ daoContext, proposals }) => {
+const GroupPage: VFC<GroupPageProps> = ({ daoContext, membersStats }) => {
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -47,7 +48,7 @@ const GroupPage: VFC<GroupPageProps> = ({ daoContext, proposals }) => {
     >
       <GroupsPageContent
         daoContext={daoContext}
-        proposals={proposals}
+        membersStats={membersStats}
         pageTitle={groupName}
       />
     </NestedDaoPageWrapper>
