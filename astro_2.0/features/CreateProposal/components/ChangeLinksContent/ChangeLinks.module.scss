@@ -12,6 +12,7 @@
   align-items: center;
   display: flex;
   margin-bottom: 8px;
+  position: relative;
 }
 
 .label {
@@ -24,6 +25,10 @@
   color: var(--color-primary);
   margin-right: 12px;
   width: 24px;
+
+  &.error {
+    color: var(--color-error);
+  }
 }
 
 .delete {
