@@ -16,6 +16,7 @@
   grid-template-columns: 1fr;
   padding: 22px 30px;
   position: relative;
+  z-index: 20;
 
   @include tablet-landscape {
     grid-template-areas:
