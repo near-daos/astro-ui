@@ -52,7 +52,7 @@
   height: 0;
   overflow: hidden;
   position: absolute;
-  top: -30;
+  top: -30px;
   white-space: nowrap;
   width: fit-content;
 }
@@ -62,11 +62,16 @@
   box-shadow: 0 8.89583px 30px rgba(0, 0, 0, 0.14);
   list-style: none;
   max-height: 420px;
+  min-width: 210px;
   overflow-y: auto;
   padding: 16px 0;
   position: absolute;
   top: 80%;
   z-index: 1;
+
+  @include tablet-landscape {
+    min-width: 360px;
+  }
 }
 
 .sectionTitle {
@@ -86,6 +91,8 @@
   display: flex;
   margin: 4px;
   padding: 6px 28px;
+
+  white-space: normal;
 
   &:hover {
     background: var(--color-neutral-10);
