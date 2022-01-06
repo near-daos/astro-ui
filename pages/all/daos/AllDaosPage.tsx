@@ -13,7 +13,6 @@ import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 
 import { useAuthContext } from 'context/AuthContext';
 import { useRouterLoading } from 'hooks/useRouterLoading';
-import { useNearPrice } from 'hooks/useNearPrice';
 
 import styles from './AllDaosPage.module.scss';
 
@@ -21,7 +20,7 @@ function getSortOptions(t: TFunction) {
   return [
     {
       label: t('allDAOsFilter.mostActive'),
-      value: 'lastProposalId,DESC',
+      value: 'totalProposalCount,DESC',
     },
     {
       label: t('allDAOsFilter.newest'),
@@ -33,7 +32,7 @@ function getSortOptions(t: TFunction) {
     },
     {
       label: t('allDAOsFilter.biggestFunds'),
-      value: 'amount,DESC',
+      value: 'totalDaoFunds,DESC',
     },
     {
       label: t('allDAOsFilter.numberOfMembers'),
@@ -55,8 +54,6 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
   const router = useRouter();
   const { accountId, login } = useAuthContext();
   const sortOptions = useMemo(() => getSortOptions(t), [t]);
-
-  const nearPrice = useNearPrice();
 
   const activeSort = (router.query.sort as string) ?? sortOptions[1].value;
 
@@ -157,7 +154,6 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
                 dao={item}
                 activeProposals={item.activeProposalsCount}
                 totalProposals={item.totalProposalsCount}
-                nearPrice={nearPrice}
               />
             );
           })}

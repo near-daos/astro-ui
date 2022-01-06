@@ -2,7 +2,6 @@ import React from 'react';
 
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
-import { useNearPrice } from 'hooks/useNearPrice';
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 
@@ -10,7 +9,6 @@ import styles from './dao-tab-view.module.scss';
 
 export const DaosTabView = (): JSX.Element => {
   const { searchResults } = useSearchResults();
-  const nearPrice = useNearPrice();
 
   if ((searchResults?.daos || []).length === 0) {
     return (
@@ -37,7 +35,6 @@ export const DaosTabView = (): JSX.Element => {
                 dao={item}
                 activeProposals={item.activeProposalsCount}
                 totalProposals={item.totalProposalsCount}
-                nearPrice={nearPrice}
               />
             </React.Fragment>
           ))}

@@ -2,7 +2,6 @@ import get from 'lodash/get';
 
 import { DAO, DaoSubscription, DaoVotePolicy } from 'types/dao';
 import { DaoRole } from 'types/role';
-import { formatYoktoValue } from 'helpers/format';
 import Decimal from 'decimal.js';
 import { CreateDaoParams } from 'services/sputnik/types';
 import { YOKTO_NEAR } from 'services/sputnik/constants';
@@ -53,6 +52,7 @@ export type DaoDTO = {
   policy: DaoPolicy;
   activeProposalCount: number;
   totalProposalCount: number;
+  totalDaoFunds: number;
 };
 
 export type DaoMetadata = {
@@ -84,9 +84,6 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
 
   const roles = get(daoDTO, 'policy.roles', []);
   const numberOfProposals = get(daoDTO, 'totalProposalCount', 0);
-
-  // Transform amount
-  const funds = formatYoktoValue(daoDTO.amount);
 
   // Get DAO groups
   const daoGroups = roles
@@ -133,7 +130,8 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
       : getAwsImageUrl('default.png'),
     flagCover: getAwsImageUrl(meta?.flagCover),
     flagLogo: getAwsImageUrl(meta?.flagLogo),
-    funds,
+    funds: (daoDTO.totalDaoFunds ?? 0).toFixed(2),
+    totalDaoFunds: daoDTO.totalDaoFunds ?? 0,
     createdAt: daoDTO.createdAt,
     groups: daoGroups,
     policy: daoDTO.policy,
