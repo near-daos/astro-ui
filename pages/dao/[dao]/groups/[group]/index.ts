@@ -20,9 +20,9 @@ export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
 
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
-  const [daoContext, proposals] = await Promise.all([
+  const [daoContext, membersStats] = await Promise.all([
     SputnikHttpService.getDaoContext(account, daoId),
-    SputnikHttpService.getProposals(daoId),
+    SputnikHttpService.getDaoMembersStats(daoId),
   ]);
 
   if (!daoContext) {
@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
         nextI18NextConfig
       )),
       daoContext,
-      proposals,
+      membersStats,
     },
   };
 };
