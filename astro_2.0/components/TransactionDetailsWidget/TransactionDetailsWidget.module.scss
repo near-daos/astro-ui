@@ -71,9 +71,7 @@
   }
 
   .detailsItem {
-    @include tablet-landscape {
-      margin-left: 32px;
-    }
+    margin-left: 32px;
   }
 
   .tokenLabel {
@@ -144,9 +142,65 @@
   }
 }
 
-.warningContainer ~ .mainContent {
-  @include tablet-landscape {
-    justify-content: flex-end;
+.detailsInput {
+  input {
+    background-color: var(--color-neutral-30);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    height: 39px !important;
+    padding: 10.5px 4px 10.5px 8px !important;
+  }
+}
+
+.readOnly {
+  input {
+    background-color: var(--color-neutral-10);
+  }
+}
+
+.error {
+  input {
+    border-color: var(--color-error-50);
+  }
+}
+
+.inputLabel {
+  @extend %subtitle6;
+  background-color: var(--color-neutral-10);
+  color: var(--color-neutral-60);
+  left: 6px;
+  padding: 2px 4px;
+  position: relative;
+  top: 6px;
+  //transform: translate(6px, 6px);
+  width: fit-content;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    padding: 12px;
+  }
+
+  .mainContent {
+    flex-direction: column;
+  }
+
+  .transactionDetails {
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding: 0 24px;
+
+    .detailsItem {
+      margin: 0;
+    }
+  }
+
+  .createDao {
+    margin-left: 0;
+  }
+
+  .warningContainer ~ .mainContent {
+    align-items: flex-end;
   }
 }
 

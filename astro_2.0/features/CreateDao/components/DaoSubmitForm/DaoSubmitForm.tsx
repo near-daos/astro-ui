@@ -53,26 +53,27 @@ export function DaoSubmitForm(): JSX.Element {
 
   const createDao = useCallback(
     async (data: DAOFormValues) => {
-      const defaultFlagFile = await loadImage(data.defaultFlag);
-
-      const flagCover = get(data.flagCover, '0') || defaultFlagFile;
-      const flagLogo = get(data.flagLogo, '0');
-
-      const [flagCoverFileName, flagLogoFileName] = await Promise.all([
-        uploadImg(flagCover),
-        uploadImg(flagLogo),
-      ]);
-
-      const {
-        address,
-        purpose,
-        websites,
-        displayName,
-        legalStatus,
-        legalLink,
-      } = data;
-
       try {
+        const defaultFlagFile = await loadImage(data.defaultFlag);
+
+        const flagCover = get(data.flagCover, '0') || defaultFlagFile;
+        const flagLogo = get(data.flagLogo, '0');
+
+        const [flagCoverFileName, flagLogoFileName] = await Promise.all([
+          uploadImg(flagCover),
+          uploadImg(flagLogo),
+        ]);
+
+        const {
+          address,
+          purpose,
+          websites,
+          displayName,
+          legalStatus,
+          legalLink,
+          gas,
+        } = data;
+
         await SputnikNearService.createDao({
           name: address,
           purpose,
@@ -95,6 +96,7 @@ export function DaoSubmitForm(): JSX.Element {
             legalStatus,
             legalLink,
           },
+          gas,
         });
 
         showNotification({
@@ -144,7 +146,6 @@ export function DaoSubmitForm(): JSX.Element {
           onSubmit={createDao}
           standAloneMode
           bond={{ label: 'Cost', value: '5000000000000000000000000' }}
-          gas={{ value: '0.3' }}
           warning={t('createDAO.daoSubmitForm.daoCannotBeDeleted')}
           buttonLabel={t('createDAO.daoSubmitForm.daoCreateButton')}
         />

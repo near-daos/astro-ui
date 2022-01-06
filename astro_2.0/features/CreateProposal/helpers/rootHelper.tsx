@@ -834,7 +834,7 @@ function validateUserAccount(
   return SputnikNearService.nearAccountExist(value || '');
 }
 
-const gasValidation = yup
+export const gasValidation = yup
   .number()
   .typeError('Must be a valid number.')
   .positive()

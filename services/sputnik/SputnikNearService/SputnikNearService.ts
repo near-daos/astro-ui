@@ -244,9 +244,10 @@ class SputnikNearServiceClass {
   public async vote(
     daoId: string,
     proposalId: number,
-    action: VoteAction
+    action: VoteAction,
+    gas?: string | number
   ): Promise<FinalExecutionOutcome> {
-    return this.sputnikDaoService.vote(daoId, proposalId, action);
+    return this.sputnikDaoService.vote(daoId, proposalId, action, gas);
   }
 
   public async nearAccountExist(accountId: string): Promise<boolean> {

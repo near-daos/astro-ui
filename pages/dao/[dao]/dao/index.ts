@@ -12,33 +12,39 @@ export const getServerSideProps: GetServerSideProps = async ({
   query,
   locale = 'en',
 }) => {
-  const { dao: daoId } = query;
+  try {
+    const { dao: daoId } = query;
 
-  CookieService.initServerSideCookies(req?.headers.cookie || null);
+    CookieService.initServerSideCookies(req?.headers.cookie || null);
 
-  const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
+    const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
-  const daoContext = await SputnikHttpService.getDaoContext(
-    account,
-    daoId as string
-  );
+    const daoContext = await SputnikHttpService.getDaoContext(
+      account,
+      daoId as string
+    );
 
-  if (!daoContext) {
+    if (!daoContext) {
+      return {
+        notFound: true,
+      };
+    }
+
+    return {
+      props: {
+        ...(await serverSideTranslations(
+          locale,
+          ['common', 'notificationsPage'],
+          nextI18NextConfig
+        )),
+        daoContext,
+      },
+    };
+  } catch (e) {
     return {
       notFound: true,
     };
   }
-
-  return {
-    props: {
-      ...(await serverSideTranslations(
-        locale,
-        ['common', 'notificationsPage'],
-        nextI18NextConfig
-      )),
-      daoContext,
-    },
-  };
 };
 
 export default DaoPage;

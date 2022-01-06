@@ -4,11 +4,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { VALID_URL_REGEXP, VALID_WEBSITE_NAME_REGEXP } from 'constants/regexp';
+import { DEFAULT_CREATE_DAO_GAS } from 'services/sputnik/constants';
 
 import {
   validateImgSize,
   getImgValidationError,
 } from 'helpers/imageValidators';
+import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 
 import { DAOFormValues } from './components/types';
 
@@ -50,6 +52,7 @@ const schema = yup.object().shape({
     message: 'Enter correct url!',
     excludeEmptyString: true,
   }),
+  gas: gasValidation,
 });
 
 interface CreateDaoProps {
@@ -73,6 +76,7 @@ export const CreateDao: VFC<CreateDaoProps> = ({ defaultFlag }) => {
       flagLogo: undefined,
       legalStatus: undefined,
       legalLink: undefined,
+      gas: DEFAULT_CREATE_DAO_GAS,
     },
     resolver: yupResolver(schema),
   });

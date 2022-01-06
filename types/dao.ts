@@ -108,6 +108,7 @@ export interface CreateDaoInput {
     legalStatus?: string;
     legalLink?: string;
   };
+  gas: string | number;
 }
 
 export type DaoSubscription = {

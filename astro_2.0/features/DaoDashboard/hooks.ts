@@ -19,6 +19,7 @@ type DaoDasboardFilteredData = {
   dashboardData: DaoDashboardData;
   toggleView: (val: DashboardView) => void;
   activeView: DashboardView;
+  loading: boolean;
 };
 
 export function useDaoDashboardData(): DaoDasboardFilteredData {
@@ -27,37 +28,46 @@ export function useDaoDashboardData(): DaoDasboardFilteredData {
   const [activeView, setActiveView] = useState<DashboardView>('DAO_FUNDS');
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
   const [dashboardData, setDashboardData] = useState<DaoDashboardData>({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     Promise.allSettled([
       SputnikStatsService.getDaoFundsOverTime(daoId),
       SputnikStatsService.getDaoTvl(daoId),
       SputnikStatsService.getDaoTokensStat(daoId),
-    ]).then(res => {
-      const [daoFundsOverTime, daoTvl, daoTokensStat] = res;
-      const newDashboardData: DaoDashboardData = {};
+    ])
+      .then(res => {
+        const [daoFundsOverTime, daoTvl, daoTokensStat] = res;
+        const newDashboardData: DaoDashboardData = {};
 
-      if (daoFundsOverTime.status === 'fulfilled') {
-        const newChartData = mapOvertimeToChartData(daoFundsOverTime.value);
+        if (daoFundsOverTime.status === 'fulfilled') {
+          const newChartData = mapOvertimeToChartData(daoFundsOverTime.value);
 
-        newDashboardData.daoFundsOverTime = [...newChartData];
-        setChartData(newChartData);
-      }
+          newDashboardData.daoFundsOverTime = [...newChartData];
+          setChartData(newChartData);
+        }
 
-      if (daoTvl.status === 'fulfilled') {
-        newDashboardData.daoTvl = daoTvl.value;
-      }
+        if (daoTvl.status === 'fulfilled') {
+          newDashboardData.daoTvl = daoTvl.value;
+        }
 
-      if (daoTokensStat.status === 'fulfilled') {
-        newDashboardData.daoTokens = daoTokensStat.value;
-      }
+        if (daoTokensStat.status === 'fulfilled') {
+          newDashboardData.daoTokens = daoTokensStat.value;
+        }
 
-      setDashboardData(newDashboardData);
-    });
+        setDashboardData(newDashboardData);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   }, [daoId]);
 
   const toggleView = useCallback(
     async view => {
+      setLoading(true);
+
       let data;
 
       switch (view) {
@@ -93,6 +103,8 @@ export function useDaoDashboardData(): DaoDasboardFilteredData {
         setChartData(data);
         setActiveView(view);
       }
+
+      setLoading(false);
     },
     [daoId]
   );
@@ -102,5 +114,6 @@ export function useDaoDashboardData(): DaoDasboardFilteredData {
     dashboardData,
     toggleView,
     activeView,
+    loading,
   };
 }

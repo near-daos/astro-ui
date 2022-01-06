@@ -8,6 +8,7 @@ import { StatChart } from 'astro_2.0/features/DaoDashboard/components/StatChart'
 import { DashboardChart } from 'astro_2.0/features/DaoDashboard/components/DashboardChart';
 import { getFundsInUsdFromTokens } from 'astro_2.0/features/DaoDashboard/helpers';
 import { Loader } from 'components/loader';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import { useDaoDashboardData } from 'astro_2.0/features/DaoDashboard/hooks';
 
@@ -33,17 +34,24 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
     dashboardData,
     toggleView,
     activeView,
+    loading,
   } = useDaoDashboardData();
+
+  function renderChart() {
+    if (chartData) {
+      return <DashboardChart key={activeView} data={chartData} />;
+    }
+
+    if (loading) {
+      return <Loader />;
+    }
+
+    return <NoResultsView title="No data available" />;
+  }
 
   return (
     <div className={cn(styles.root, className)}>
-      <div className={styles.chart}>
-        {chartData ? (
-          <DashboardChart key={activeView} data={chartData} />
-        ) : (
-          <Loader />
-        )}
-      </div>
+      <div className={styles.chart}>{renderChart()}</div>
       <StatCard
         selected={activeView === 'DAO_FUNDS'}
         className={styles.funds}
