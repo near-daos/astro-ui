@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState, VFC } from 'react';
 import { ExplorerLink } from 'components/ExplorerLink';
 import { Popup } from 'components/Popup';
 import { Icon } from 'components/Icon';
-import { shortenString } from 'helpers/format';
+import { shortenString } from 'utils/format';
 import { NFTUri } from 'types/token';
 
 import styles from './NtfCard.module.scss';

@@ -11,7 +11,9 @@ const dict: Partial<Record<IconName, string[]>> = {
 };
 
 export function getSocialLinkIcon(link?: string): IconName {
-  if (link == null || link?.length === 0) return 'socialAnyUrl';
+  if (link == null || link?.length === 0) {
+    return 'socialAnyUrl';
+  }
 
   const entries = Object.entries(dict) as [IconName, string[]][];
 

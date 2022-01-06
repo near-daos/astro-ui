@@ -6,7 +6,7 @@ import {
   FieldValue,
   FieldWrapper,
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
-import { formatYoktoValue } from 'helpers/format';
+import { formatYoktoValue } from 'utils/format';
 import { useIsValidImage } from 'hooks/useIsValidImage';
 
 import styles from './TransferContent.module.scss';

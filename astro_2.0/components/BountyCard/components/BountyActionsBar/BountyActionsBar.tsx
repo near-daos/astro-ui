@@ -10,7 +10,7 @@ import { getDistanceFromNow } from 'astro_2.0/components/BountyCard/helpers';
 import { CardFooter } from 'astro_2.0/components/BountyCard/components/CardFooter';
 import { InfoValue } from 'astro_2.0/components/InfoBlockWidget/components/InfoValue';
 
-import { formatYoktoValue } from 'helpers/format';
+import { formatYoktoValue } from 'utils/format';
 
 import styles from './BountyActionsBar.module.scss';
 

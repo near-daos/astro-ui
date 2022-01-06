@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { useMount } from 'react-use';
 import React, { FC, MouseEvent, useState } from 'react';
-import { composeProperLinkUrl } from 'helpers/composeProperLinkUrl';
+import { composeProperLinkUrl } from 'utils/composeProperLinkUrl';
 
 import { Icon, IconName } from 'components/Icon';
 

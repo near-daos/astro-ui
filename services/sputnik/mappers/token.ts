@@ -1,4 +1,4 @@
-import { formatYoktoValue } from 'helpers/format';
+import { formatYoktoValue } from 'utils/format';
 import { Token, TokenResponse } from 'types/token';
 
 export function mapTokensDTOToTokens(data: TokenResponse[]): Token[] {

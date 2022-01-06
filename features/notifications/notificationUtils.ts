@@ -1,4 +1,4 @@
-import { dispatchCustomEvent } from 'helpers/events';
+import { dispatchCustomEvent } from 'utils/dispatchCustomEvent';
 
 import {
   SHOW_NOTIFICATION_EVENT,

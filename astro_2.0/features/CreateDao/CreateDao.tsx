@@ -6,10 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { VALID_URL_REGEXP, VALID_WEBSITE_NAME_REGEXP } from 'constants/regexp';
 import { DEFAULT_CREATE_DAO_GAS } from 'services/sputnik/constants';
 
-import {
-  validateImgSize,
-  getImgValidationError,
-} from 'helpers/imageValidators';
+import { validateImgSize, getImgValidationError } from 'utils/imageValidators';
 import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 
 import { DAOFormValues } from './components/types';

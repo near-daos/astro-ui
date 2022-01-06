@@ -19,7 +19,7 @@ import {
   Range,
 } from 'components/AreaChartRenderer/types';
 import { useMedia } from 'react-use';
-import { kFormatter } from 'helpers/format';
+import { kFormatter } from 'utils/format';
 
 type LineItem = {
   name: string;

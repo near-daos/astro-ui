@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from 'components/Icon';
-import { formatYoktoValue } from 'helpers/format';
+import { formatYoktoValue } from 'utils/format';
 import { useIsValidImage } from 'hooks/useIsValidImage';
 
 import styles from './TokenWidget.module.scss';

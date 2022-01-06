@@ -1,6 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
-import { dispatchCustomEvent } from 'helpers/events';
+import { dispatchCustomEvent } from 'utils/dispatchCustomEvent';
 import { Icon, IconName } from 'components/Icon';
 
 import { HIDE_NOTIFICATION_EVENT } from 'constants/common';

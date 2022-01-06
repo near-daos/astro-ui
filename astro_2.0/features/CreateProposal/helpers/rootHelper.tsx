@@ -74,7 +74,7 @@ import {
   getImgValidationError,
   requiredImg,
   validateImgSize,
-} from 'helpers/imageValidators';
+} from 'utils/imageValidators';
 
 // Services
 import { SputnikNearService } from 'services/sputnik';
