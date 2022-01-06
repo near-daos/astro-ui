@@ -4,7 +4,7 @@ import React, { VFC, useState, useCallback } from 'react';
 
 // Types
 import { DaoContext } from 'types/context';
-import { Proposal, ProposalVariant } from 'types/proposal';
+import { ProposalVariant } from 'types/proposal';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 
 // Hooks
@@ -22,7 +22,7 @@ import { Badge } from 'components/badge/Badge';
 import { GroupsList } from 'astro_2.0/features/Groups/components';
 
 // Helpers
-import { extractMembersFromDao } from 'services/sputnik/mappers';
+import { extractMembersFromDao, MemberStats } from 'services/sputnik/mappers';
 
 import styles from './GroupsPageContent.module.scss';
 
@@ -36,14 +36,14 @@ const sortOptions = [
 interface GroupsPageContentProps {
   pageTitle: string;
   daoContext: DaoContext;
-  proposals: Proposal[];
+  membersStats: MemberStats[];
   toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
 }
 
 export const GroupsPageContent: VFC<GroupsPageContentProps> = ({
   pageTitle,
   daoContext,
-  proposals,
+  membersStats,
   toggleCreateProposal,
 }) => {
   const {
@@ -51,7 +51,7 @@ export const GroupsPageContent: VFC<GroupsPageContentProps> = ({
     userPermissions: { isCanCreateProposals },
   } = daoContext;
 
-  const members = dao ? extractMembersFromDao(dao, proposals) : [];
+  const members = dao ? extractMembersFromDao(dao, membersStats) : [];
 
   const availableGroups = uniq(
     members.reduce<string[]>((res, item) => {
