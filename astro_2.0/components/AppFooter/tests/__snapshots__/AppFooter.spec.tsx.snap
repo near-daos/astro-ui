@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App Footer Should render AppFooter component 1`] = `
+<div>
+  <div
+    class=""
+    role="button"
+    tabindex="0"
+  >
+    <div>
+      <div>
+        <div>
+          <a
+            href="https://twitter.com/AstroDao"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <svg
+              width="24"
+            >
+              <use
+                href="/_next/undefined"
+              />
+            </svg>
+          </a>
+          <a
+            href="https://t.me/astro_near"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <svg
+              width="24"
+            >
+              <use
+                href="/_next/undefined"
+              />
+            </svg>
+          </a>
+        </div>
+        <div>
+          <a
+            href="https://airtable.com/shr4ZmQzmTE5cKZm3"
+            rel="noreferrer noopener"
+            target="_blank"
+          >
+            reportAnIssue
+          </a>
+        </div>
+        <div>
+          <a
+            href="https://github.com/near-daos/astro-ui"
+            rel="noreferrer noopener"
+            target="_blank"
+          >
+            components.appFooter.githubRepo
+          </a>
+        </div>
+        <div>
+          components.appFooter.opensourceAsIs
+          <br />
+          components.appFooter.communityDeveloped
+        </div>
+        <div>
+          <a
+            href="/terms-conditions"
+          >
+            termsAndConditions
+          </a>
+        </div>
+        <div>
+          <a
+            rel="noreferrer noopener"
+            target="_blank"
+          >
+            releaseNotes
+          </a>
+        </div>
+        <div>
+          <div>
+            <div>
+              <div
+                class=""
+              >
+                <img
+                  data-testid="circle-country-flag"
+                  height="100"
+                  src="https://hatscripts.github.io/circle-flags/flags/us.svg"
+                  title="us"
+                />
+                 
+                en
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

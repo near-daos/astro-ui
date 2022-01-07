@@ -1,9 +1,29 @@
 {
   "name": "astro",
   "jest": {
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/jest/__mocks__/fileMock.js",
+      "\\.(css|scss)$": "<rootDir>/jest/__mocks__/styleMock.js"
+    },
     "testEnvironment": "jsdom",
     "setupFilesAfterEnv": [
       "./setupTests.ts"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "."
+    ],
+    "collectCoverageFrom": [
+      "astro_2.0/**/*.{ts,tsx}",
+      "components/**/*.{ts,tsx}",
+      "context/**/*.{ts,tsx}",
+      "errors/**/*.{ts,tsx}",
+      "features/**/*.{ts,tsx}",
+      "helpers/**/*.{ts,tsx}",
+      "hooks/**/*.{ts,tsx}",
+      "pages/**/*.{ts,tsx}",
+      "services/**/*.{ts,tsx}",
+      "utils/**/*.{ts,tsx}"
     ]
   },
   "version": "0.1.0",
@@ -20,7 +40,9 @@
     "storybook": "yarn generate-assets-index && start-storybook -s public -p 6006",
     "build-storybook": "build-storybook -s public",
     "stylelint-check": "stylelint-config-prettier-check",
-    "test": "jest",
+    "test": "jest --silent",
+    "test:loud": "jest",
+    "test:coverage": "jest --coverage",
     "generate-assets": "patch-package && yarn generate-assets-index",
     "prebuild": "yarn generate-assets",
     "postinstall": "[ ! -d \"./scripts\" ] || yarn generate-assets",
@@ -49,6 +71,7 @@
     "downshift": "^6.1.3",
     "firebase": "^8.10.0",
     "framer-motion": "^5.5.3",
+    "i18next": "^21.6.5",
     "imagemin-svgo": "^9.0.0",
     "lodash": "^4.17.21",
     "mark.js": "^8.11.1",
