@@ -11,6 +11,8 @@ import { IconButton } from 'components/button/IconButton';
 import { Button } from 'components/button/Button';
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
+import { ErrorIndicator } from 'astro_2.0/features/CreateProposal/components/ErrorIndicator';
+
 import styles from './ChangeLinks.module.scss';
 
 interface ChangeLinksContentProps {
@@ -21,8 +23,7 @@ export const ChangeLinksContent: FC<ChangeLinksContentProps> = ({ daoId }) => {
   const {
     register,
     watch,
-    // setValue,
-    // getValues,
+    trigger,
     formState: { errors, touchedFields },
   } = useFormContext();
 
@@ -40,13 +41,23 @@ export const ChangeLinksContent: FC<ChangeLinksContentProps> = ({ daoId }) => {
             const currentUrl = watch(`links.${index}.url`);
             const icon = getSocialLinkIcon(currentUrl);
 
+            const error = errors[`links[${index}].url`];
+
             return (
               <div className={styles.row} key={field.id}>
-                <Icon name={icon} className={styles.icon} />
+                <Icon
+                  name={icon}
+                  className={cn(styles.icon, {
+                    [styles.error]: !!error,
+                  })}
+                />
 
                 <Input
                   isBorderless
                   {...register(`links.${index}.url`)}
+                  onKeyUp={async () => {
+                    await trigger();
+                  }}
                   isValid={
                     touchedFields?.links?.[index]?.url &&
                     !errors?.links?.[index]?.url?.message
@@ -59,6 +70,7 @@ export const ChangeLinksContent: FC<ChangeLinksContentProps> = ({ daoId }) => {
                   icon="buttonDelete"
                   className={styles.delete}
                 />
+                {error && <ErrorIndicator message={error.message} />}
               </div>
             );
           })}

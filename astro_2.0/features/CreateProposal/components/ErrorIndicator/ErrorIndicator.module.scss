@@ -1,0 +1,15 @@
+.root {
+  left: 12px;
+  position: absolute;
+  top: -2px;
+}
+.icon {
+  color: var(--color-error);
+  margin-left: 8px;
+  transform: translateY(-1px);
+}
+
+.error.error {
+  color: var(--color-error);
+  white-space: nowrap;
+}

@@ -589,9 +589,9 @@ export async function getNewProposalObject(
         purpose: dao.description,
         metadata: fromMetadataToBase64({
           ...getFlagsParamsForMetadata(dao),
-          links: ((data as unknown) as LinksFormData).links.map(
-            item => item.url
-          ),
+          links: ((data as unknown) as LinksFormData).links
+            .map(item => item.url)
+            .filter(item => item.length > 0),
           displayName: dao.displayName,
         }),
       };
@@ -907,6 +907,21 @@ export function getValidationSchema(
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
         gas: gasValidation,
+      });
+    }
+    case ProposalVariant.ProposeChangeDaoLinks: {
+      return yup.object().shape({
+        details: yup.string().required('Required'),
+        externalUrl: yup.string().url(),
+        links: yup.array().of(
+          yup.object().shape({
+            id: yup.string().required(),
+            url: yup
+              .string()
+              .url('Must be a valid URL')
+              .required('Cannot be empty'),
+          })
+        ),
       });
     }
     case ProposalVariant.ProposeCreateGroup:
