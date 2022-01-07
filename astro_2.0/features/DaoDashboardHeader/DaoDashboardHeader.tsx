@@ -9,7 +9,7 @@ import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLog
 import { ExternalLink } from 'components/ExternalLink';
 import { Icon } from 'components/Icon';
 
-import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
+import { getSocialLinkIcon } from 'utils/getSocialLinkIcon';
 import { useAuthContext } from 'context/AuthContext';
 
 import styles from './DaoDashboardHeader.module.scss';

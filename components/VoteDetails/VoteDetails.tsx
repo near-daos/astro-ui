@@ -2,7 +2,7 @@ import cn from 'classnames';
 import { Bond } from 'components/Bond';
 import { VoteDetail } from 'features/types';
 import { getVoteDetails, Scope } from 'features/vote-policy/helpers';
-import { formatYoktoValue } from 'helpers/format';
+import { formatYoktoValue } from 'utils/format';
 import { useDao } from 'hooks/useDao';
 import { useProposal } from 'hooks/useProposal';
 import { useRouter } from 'next/router';

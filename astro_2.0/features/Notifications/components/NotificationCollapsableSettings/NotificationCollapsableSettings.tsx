@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 import { useMedia } from 'react-use';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
-import { shortenString } from 'helpers/format';
+import { shortenString } from 'utils/format';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { Toggle } from 'components/inputs/Toggle';
 import { IconButton } from 'components/button/IconButton';

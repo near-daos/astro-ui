@@ -1,6 +1,6 @@
 import { Receipt } from 'types/transaction';
 import { ChartData } from 'types/chart';
-import { formatYoktoValue } from 'helpers/format';
+import { formatYoktoValue } from 'utils/format';
 import { Token } from 'types/token';
 import { SputnikHttpService } from 'services/sputnik';
 import { useRouter } from 'next/router';
@@ -28,9 +28,13 @@ export function getChartData(receipts: Receipt[], token: Token): ChartData[] {
     receipts
       // sort ASC so we will start from today
       .sort((a, b) => {
-        if (a.timestamp > b.timestamp) return 1;
+        if (a.timestamp > b.timestamp) {
+          return 1;
+        }
 
-        if (a.timestamp < b.timestamp) return -1;
+        if (a.timestamp < b.timestamp) {
+          return -1;
+        }
 
         return 0;
       })
@@ -59,9 +63,13 @@ export function getChartData(receipts: Receipt[], token: Token): ChartData[] {
     receipts
       // sort DESC so we will start from today
       .sort((a, b) => {
-        if (a.timestamp > b.timestamp) return -1;
+        if (a.timestamp > b.timestamp) {
+          return -1;
+        }
 
-        if (a.timestamp < b.timestamp) return 1;
+        if (a.timestamp < b.timestamp) {
+          return 1;
+        }
 
         return 0;
       })
@@ -89,9 +97,13 @@ export function getChartData(receipts: Receipt[], token: Token): ChartData[] {
   }
 
   return result.sort((a, b) => {
-    if (a.timestamp > b.timestamp) return 1;
+    if (a.timestamp > b.timestamp) {
+      return 1;
+    }
 
-    if (a.timestamp < b.timestamp) return -1;
+    if (a.timestamp < b.timestamp) {
+      return -1;
+    }
 
     return 0;
   });
@@ -157,11 +169,17 @@ export function useTokenFilteredData(
 }
 
 export const sorter = (a: Token, b: Token): number => {
-  if (b.symbol === 'NEAR') return 1;
+  if (b.symbol === 'NEAR') {
+    return 1;
+  }
 
-  if (a.symbol > b.symbol) return 1;
+  if (a.symbol > b.symbol) {
+    return 1;
+  }
 
-  if (a.symbol < b.symbol) return -1;
+  if (a.symbol < b.symbol) {
+    return -1;
+  }
 
   return 0;
 };

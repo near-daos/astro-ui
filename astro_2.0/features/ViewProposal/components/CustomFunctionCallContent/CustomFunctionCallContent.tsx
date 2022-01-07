@@ -7,7 +7,7 @@ import {
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
-import { formatYoktoValue } from 'helpers/format';
+import { formatYoktoValue } from 'utils/format';
 
 import styles from './CustomFunctionCallContent.module.scss';
 

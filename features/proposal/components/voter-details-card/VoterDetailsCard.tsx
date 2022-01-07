@@ -7,7 +7,7 @@ import { Badge } from 'components/badge/Badge';
 import { ExplorerLink } from 'components/ExplorerLink';
 import { Vote } from 'features/types';
 import { getBadgeVariant } from 'features/proposal/helpers';
-import { formatTimestampAsDate } from 'helpers/format';
+import { formatTimestampAsDate } from 'utils/format';
 
 import styles from './voter-details-card.module.scss';
 

@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import { TooltipProps } from 'recharts';
 import { format } from 'date-fns';
 import { DATE_FORMAT } from 'constants/timeConstants';
-import { kFormatter } from 'helpers/format';
+import { kFormatter } from 'utils/format';
 import { Payload } from 'components/AreaChartRenderer/types';
 
 import { Dot } from './dot';

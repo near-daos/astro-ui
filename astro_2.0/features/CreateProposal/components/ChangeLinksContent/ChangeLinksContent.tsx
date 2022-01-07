@@ -3,7 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { nanoid } from 'nanoid';
 import cn from 'classnames';
 
-import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
+import { getSocialLinkIcon } from 'utils/getSocialLinkIcon';
 
 import { Icon } from 'components/Icon';
 import { Input } from 'components/inputs/Input';

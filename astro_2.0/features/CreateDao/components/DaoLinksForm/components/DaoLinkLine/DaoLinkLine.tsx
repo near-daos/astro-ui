@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, VFC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
+import { getSocialLinkIcon } from 'utils/getSocialLinkIcon';
 
 import { Icon } from 'components/Icon';
 import { Input } from 'components/inputs/Input';

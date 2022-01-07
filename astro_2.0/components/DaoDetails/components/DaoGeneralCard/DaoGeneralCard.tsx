@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { getSocialLinkIcon } from 'helpers/getSocialLinkIcon';
+import { getSocialLinkIcon } from 'utils/getSocialLinkIcon';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { ExternalLink } from 'components/ExternalLink';

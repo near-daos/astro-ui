@@ -18,7 +18,7 @@ import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { FlagPreview } from 'astro_2.0/features/CreateDao/components/FlagPreview/FlagPreview';
 
 import { getBadgeVariant } from 'features/proposal/helpers';
-import { formatYoktoValue } from 'helpers/format';
+import { formatYoktoValue } from 'utils/format';
 import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 

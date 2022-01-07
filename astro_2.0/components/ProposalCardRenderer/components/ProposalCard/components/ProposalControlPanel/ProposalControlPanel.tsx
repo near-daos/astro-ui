@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { ProposalStatus, ProposalVotingPermissions } from 'types/proposal';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
-import { kFormatter } from 'helpers/format';
+import { kFormatter } from 'utils/format';
 import { Input } from 'components/inputs/Input';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 

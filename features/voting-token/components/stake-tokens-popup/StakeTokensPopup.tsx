@@ -7,7 +7,7 @@ import { Input } from 'components/inputs/Input';
 import { Button } from 'components/button/Button';
 import { Icon, IconName } from 'components/Icon';
 
-import { useDeviceType } from 'helpers/media';
+import { useDeviceType } from 'hooks/useDeviceType';
 
 import styles from './stake-tokens-popup.module.scss';
 

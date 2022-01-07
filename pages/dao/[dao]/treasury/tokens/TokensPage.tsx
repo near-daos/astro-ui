@@ -24,7 +24,7 @@ import {
   sorter,
   useTokenFilteredData,
 } from 'features/treasury/helpers';
-import { formatYoktoValue } from 'helpers/format';
+import { formatYoktoValue } from 'utils/format';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { formatCurrency } from 'utils/formatCurrency';
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';

@@ -7,7 +7,7 @@ import {
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
-import { formatYoktoValue } from 'helpers/format';
+import { formatYoktoValue } from 'utils/format';
 import { useIsValidImage } from 'hooks/useIsValidImage';
 
 import styles from './AddBountyContent.module.scss';

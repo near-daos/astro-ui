@@ -18,7 +18,7 @@ import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { DaoDetailsSceleton } from 'astro_2.0/components/DaoDetails/components/DaoDetailsSceleton';
 
-import { shortenString } from 'helpers/format';
+import { shortenString } from 'utils/format';
 
 import styles from './DaoDetailsGrid.module.scss';
 

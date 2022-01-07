@@ -7,7 +7,7 @@ import { Button } from 'components/button/Button';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { Input } from 'components/inputs/Input';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
-import { formatYoktoValue } from 'helpers/format';
+import { formatYoktoValue } from 'utils/format';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 
 import styles from './TransactionDetailsWidget.module.scss';

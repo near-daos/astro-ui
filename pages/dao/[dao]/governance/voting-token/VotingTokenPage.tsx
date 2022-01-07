@@ -13,7 +13,7 @@ import {
   RecentlyUnstaked,
   Stake,
 } from 'features/voting-token/components/recently-unstaked';
-import { useDeviceType } from 'helpers/media';
+import { useDeviceType } from 'hooks/useDeviceType';
 
 import styles from 'pages/dao/[dao]/governance/voting-token/voting-token-page.module.scss';
 
