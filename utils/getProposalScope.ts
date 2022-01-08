@@ -3,7 +3,7 @@ import { Scope } from 'features/vote-policy/helpers';
 
 export function getProposalScope(proposalType: ProposalType): Scope {
   switch (proposalType) {
-    case 'ChangePolicy':
+    case ProposalType.ChangePolicy:
       return 'policy';
     case ProposalType.AddBounty:
       return 'addBounty';
