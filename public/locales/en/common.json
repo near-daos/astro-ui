@@ -246,5 +246,21 @@
   "loader": {
     "title": "Receiving data from the contract",
     "waitSomeTime": "This may take some time"
+  },
+
+  "settingsPage": {
+    "daoPolicy": "DAO Policy",
+    "nameAndPurpose": "Name and Purpose",
+    "legalStatusAndDoc": "Legal Status and doc",
+    "links": "Links",
+    "flagAndLogo": "Flag and Logo",
+    "groupNames": "Group names",
+    "proposalCreation": "Proposal Creation",
+    "votingPolicy": "Voting Policy",
+    "votingPermissions": "Voting Permissions",
+    "bondAndDeadlines": "Bond and Deadlines",
+    "groups": "Groups",
+    "members": "Members",
+    "daoRules": "DAO Rules"
   }
 }
