@@ -161,17 +161,17 @@ export const Comment: FC<CommentProps> = ({
   }
 
   useEffect(() => {
-    if (rootRef.current) {
-      const links = rootRef.current?.querySelectorAll(`.${styles.link}`);
-
-      if (links) {
-        getImagesFromLinks(links).then(images => {
-          if (images.length && isMounted()) {
-            setImagesUrls(images);
-          }
-        });
-      }
+    if (!rootRef.current) {
+      return;
     }
+
+    const links = rootRef.current?.querySelectorAll(`.${styles.link}`);
+
+    getImagesFromLinks(links).then(images => {
+      if (images.length && isMounted()) {
+        setImagesUrls(images);
+      }
+    });
   }, [isMounted]);
 
   return (
