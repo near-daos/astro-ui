@@ -128,7 +128,9 @@ export type VotingPolicyPageInitialData = {
 export const getInitialData = (
   dao?: DAO
 ): VotingPolicyPageInitialData | null => {
-  if (!dao) return null;
+  if (!dao) {
+    return null;
+  }
 
   const defaulPolicy = dao.policy.defaultVotePolicy;
 
@@ -137,7 +139,9 @@ export const getInitialData = (
       voteBy: defaulPolicy.weightKind === 'RoleWeight' ? 'Person' : 'Token',
       amount:
         defaulPolicy?.ratio && defaulPolicy.ratio.length
-          ? (defaulPolicy.ratio[0] / defaulPolicy.ratio[1]) * 100
+          ? Number(
+              ((defaulPolicy.ratio[0] / defaulPolicy.ratio[1]) * 100).toFixed(2)
+            )
           : 0,
       threshold: defaulPolicy.kind === 'Ratio' ? '% of group' : 'persons',
     },
@@ -250,7 +254,9 @@ export const filterByVote = (
 function getThreshold(value: number): [number, number] {
   const fraction = value / 100;
   const gcd = (a: number, b: number): number => {
-    if (b < 0.0000001) return a; // Since there is a limited precision we need to limit the value.
+    if (b < 0.0000001) {
+      return a;
+    } // Since there is a limited precision we need to limit the value.
 
     return gcd(b, Math.floor(a % b)); // Discard any fractions due to limitations in precision.
   };
