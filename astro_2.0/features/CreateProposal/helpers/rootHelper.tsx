@@ -144,13 +144,17 @@ async function getTransferProposal(
   };
 }
 
-export function getProposalTypesOptions(): {
+export function getProposalTypesOptions(
+  isCanCreatePolicyProposals: boolean
+): {
   title: string;
   options: Option[];
+  disabled: boolean;
 }[] {
   return [
     {
       title: 'Transfer/Add bounty',
+      disabled: false,
       options: [
         {
           label: 'Propose a Transfer',
@@ -166,6 +170,7 @@ export function getProposalTypesOptions(): {
     },
     {
       title: 'Change Config',
+      disabled: !isCanCreatePolicyProposals,
       options: [
         {
           label: 'Propose to Change DAO Name',
@@ -196,6 +201,7 @@ export function getProposalTypesOptions(): {
     },
     {
       title: 'Change Policy',
+      disabled: !isCanCreatePolicyProposals,
       options: [
         {
           label: 'Propose to Change Voting Policy',
@@ -216,6 +222,7 @@ export function getProposalTypesOptions(): {
     },
     {
       title: 'Change Members of DAO',
+      disabled: !isCanCreatePolicyProposals,
       options: [
         {
           label: 'Propose to Add Member to Group',
@@ -231,6 +238,7 @@ export function getProposalTypesOptions(): {
     },
     {
       title: 'Vote',
+      disabled: false,
       options: [
         {
           label: 'Propose a Poll',
@@ -241,6 +249,7 @@ export function getProposalTypesOptions(): {
     },
     {
       title: 'Function Call',
+      disabled: false,
       options: [
         {
           label: 'Custom Function Call',
@@ -256,7 +265,7 @@ export function getInputSize(
   proposalType: ProposalVariant,
   max: number
 ): number {
-  const options = getProposalTypesOptions();
+  const options = getProposalTypesOptions(true);
 
   const length =
     options

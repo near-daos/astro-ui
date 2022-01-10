@@ -23,6 +23,8 @@ import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 import { useAuthContext } from 'context/AuthContext';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { getInitialProposalVariant } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
+import { UserPermissions } from 'types/context';
 
 import {
   getFormContentNode,
@@ -45,6 +47,7 @@ export interface CreateProposalProps {
   bountyId?: string;
   onCreate?: (result: boolean) => void;
   onClose: () => void;
+  userPermissions: UserPermissions;
 }
 
 export const CreateProposal: FC<CreateProposalProps> = ({
@@ -56,15 +59,20 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   bountyId,
   onCreate,
   onClose,
+  userPermissions,
 }) => {
   const { t } = useTranslation();
   const { accountId } = useAuthContext();
   const router = useRouter();
+  const initialProposalVariant = getInitialProposalVariant(
+    proposalVariant,
+    userPermissions.isCanCreatePolicyProposals
+  );
   const [selectedProposalVariant, setSelectedProposalVariant] = useState(
-    proposalVariant
+    initialProposalVariant
   );
   const [schemaContext, setSchemaContext] = useState({
-    selectedProposalVariant: proposalVariant,
+    selectedProposalVariant: initialProposalVariant,
   });
   const formRef = useRef<HTMLDivElement>(null);
 
@@ -73,9 +81,9 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   });
 
   useEffect(() => {
-    setSelectedProposalVariant(proposalVariant);
-    setSchemaContext({ selectedProposalVariant: proposalVariant });
-  }, [proposalVariant]);
+    setSelectedProposalVariant(initialProposalVariant);
+    setSchemaContext({ selectedProposalVariant: initialProposalVariant });
+  }, [initialProposalVariant]);
 
   const methods = useForm({
     defaultValues: getFormInitialValues(
@@ -227,6 +235,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           proposalCardNode={
             <CreateProposalCard
               key={selectedProposalVariant}
+              userPermissions={userPermissions}
               onClose={onClose}
               onTypeSelect={v => {
                 const defaults = getFormInitialValues(v, dao, accountId);

@@ -1,31 +1,22 @@
 import Head from 'next/head';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
 import React, { useMemo, useState } from 'react';
-
-import {
-  ALL_DAOS_URL,
-  ALL_PROPOSALS_PAGE_URL,
-  SINGLE_PROPOSAL_PAGE_URL,
-} from 'constants/routing';
 
 import { DAO, Member } from 'types/dao';
 import { Proposal } from 'types/proposal';
 import { VoterDetail } from 'features/types';
+import { DaoContext } from 'types/context';
 
 import { DefaultVotingPolicy } from 'astro_2.0/components/DefaultVotingPolicy';
-import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
-import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
-import { NavLink } from 'astro_2.0/components/NavLink';
-
 import { getProposalScope } from 'utils/getProposalScope';
 import { getVoteDetails } from 'features/vote-policy/helpers';
+import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 
 import { VotersList } from 'features/proposal/components/voters-list';
-
+import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import styles from './Proposal.module.scss';
@@ -35,6 +26,7 @@ interface ProposalPageProps {
   proposal: Proposal;
   availableGroups: string[];
   members: Member[];
+  daoContext: DaoContext;
 }
 
 enum VoteStatuses {
@@ -48,8 +40,8 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
   dao,
   proposal,
   members,
+  daoContext,
 }) => {
-  const { t } = useTranslation();
   const router = useRouter();
   const scope = getProposalScope(proposal?.kind.type);
   const [activeFilter, setActiveFilter] = useState<string | undefined>(
@@ -136,6 +128,16 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
     };
   }, [dao, scope, proposal, members]);
 
+  const breadcrumbsConfig = useGetBreadcrumbsConfig(dao, undefined, proposal);
+  const breadcrumbs = useMemo(() => {
+    return [
+      breadcrumbsConfig.ALL_DAOS_URL,
+      breadcrumbsConfig.SINGLE_DAO_PAGE,
+      breadcrumbsConfig.ALL_PROPOSALS_PAGE_URL,
+      breadcrumbsConfig.SINGLE_PROPOSAL_PAGE_URL,
+    ];
+  }, [breadcrumbsConfig]);
+
   return (
     <div className={styles.root}>
       <Head>
@@ -152,79 +154,56 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         <meta name="twitter:description" content={proposal?.description} />
         <meta name="twitter:image" content={dao?.flagCover || dao?.logo} />
       </Head>
-      <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href={ALL_DAOS_URL}>{t('allDaos')}</NavLink>
-        <NavLink href={`/dao/${dao.id}`}>{dao?.displayName || dao?.id}</NavLink>
-        <NavLink
-          href={{
-            pathname: ALL_PROPOSALS_PAGE_URL,
-            query: {
-              dao: dao.id,
-            },
-          }}
-          className={styles.capitalize}
-        >
-          {t('proposals')}
-        </NavLink>
-        <NavLink
-          href={{
-            pathname: SINGLE_PROPOSAL_PAGE_URL,
-            query: {
-              dao: dao.id,
-              proposal: proposal?.id,
-            },
-          }}
-        >
-          {proposal?.id}
-        </NavLink>
-      </BreadCrumbs>
-      <div className={styles.dao}>
-        <DaoDetailsMinimized dao={dao} />
-      </div>
-      <div className={styles.proposalInfo}>
-        <ViewProposal
-          dao={dao}
-          proposal={proposal}
-          showFlag={false}
-          tokens={tokens}
-        />
-      </div>
-      <div className={styles.policy}>
-        <DefaultVotingPolicy
-          policy={dao.policy.defaultVotePolicy}
-          groups={dao.groups}
-        />
-      </div>
-      <div className={styles.filters}>
-        <ProposalStatusFilter
-          value={activeFilter || VoteStatuses.All}
-          title="Filter by vote status:"
-          onChange={value => {
-            setActiveFilter(value === VoteStatuses.All ? undefined : value);
-          }}
-          list={[
-            { value: VoteStatuses.All, label: 'All' },
-            {
-              value: VoteStatuses.Approved,
-              label: 'Approved',
-            },
-            {
-              value: VoteStatuses.Failed,
-              label: 'Failed',
-            },
-            {
-              value: VoteStatuses.NotVoted,
-              label: 'Not Voted',
-            },
-          ]}
-          className={styles.statusFilterRoot}
-        />
-      </div>
-      <div className={styles.body}>
-        <VotersList
-          data={!activeFilter ? fullVotersList : votersByStatus[activeFilter]}
-        />
-      </div>
+      <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
+        <>
+          <div className={styles.proposalInfo}>
+            <ViewProposal
+              dao={dao}
+              proposal={proposal}
+              showFlag={false}
+              tokens={tokens}
+            />
+          </div>
+          <div className={styles.policy}>
+            <DefaultVotingPolicy
+              policy={dao.policy.defaultVotePolicy}
+              groups={dao.groups}
+            />
+          </div>
+          <div className={styles.filters}>
+            <ProposalStatusFilter
+              value={activeFilter || VoteStatuses.All}
+              title="Filter by vote status:"
+              onChange={value => {
+                setActiveFilter(value === VoteStatuses.All ? undefined : value);
+              }}
+              list={[
+                { value: VoteStatuses.All, label: 'All' },
+                {
+                  value: VoteStatuses.Approved,
+                  label: 'Approved',
+                },
+                {
+                  value: VoteStatuses.Failed,
+                  label: 'Failed',
+                },
+                {
+                  value: VoteStatuses.NotVoted,
+                  label: 'Not Voted',
+                },
+              ]}
+              className={styles.statusFilterRoot}
+            />
+          </div>
+          <div className={styles.body}>
+            <VotersList
+              data={
+                !activeFilter ? fullVotersList : votersByStatus[activeFilter]
+              }
+            />
+          </div>
+        </>
+      </NestedDaoPageWrapper>
     </div>
   );
 };
