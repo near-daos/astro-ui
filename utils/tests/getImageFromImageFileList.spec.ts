@@ -22,7 +22,7 @@ describe('get image from image file list', () => {
   afterAll(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    window.URL.createObjectURL.mockReset();
+    window.URL.createObjectURL.mockRestore();
   });
 
   it('Should return empty string if file list is empty', () => {

@@ -17,7 +17,7 @@ describe('get element size', () => {
   afterAll(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    window.getComputedStyle.mockReset();
+    window.getComputedStyle.mockRestore();
   });
 
   it('Should properly calculate sizes', () => {

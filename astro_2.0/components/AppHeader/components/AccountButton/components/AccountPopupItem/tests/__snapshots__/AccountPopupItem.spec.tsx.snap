@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`account popup item Should render component 1`] = `
+<div>
+  <div
+    class=""
+    role="button"
+    tabindex="0"
+  >
+    Hey
+  </div>
+</div>
+`;

@@ -147,6 +147,7 @@
     "@storybook/builder-webpack5": "6.3.4",
     "@storybook/manager-webpack5": "6.3.4",
     "@storybook/react": "^6.4.0-alpha.26",
+    "@testing-library/dom": "^8.11.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@types/big.js": "^6.1.2",
