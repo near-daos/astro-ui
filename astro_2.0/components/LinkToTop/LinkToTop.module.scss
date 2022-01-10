@@ -1,11 +1,11 @@
 @import 'styles/mixins';
 
 .root {
-  bottom: 140px;
+  bottom: 170px;
   opacity: 0;
   pointer-events: none;
   position: fixed;
-  right: 24px;
+  right: 30px;
   transform: translateY(50%);
   transition: opacity 0.2s;
   z-index: 9999;
