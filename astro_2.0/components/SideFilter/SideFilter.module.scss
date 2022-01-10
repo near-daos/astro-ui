@@ -89,6 +89,7 @@
 
   &.disabled {
     @extend %disabled;
+    opacity: 0.4;
   }
 
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {

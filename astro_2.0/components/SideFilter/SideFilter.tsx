@@ -2,7 +2,7 @@ import cn from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import findIndex from 'lodash/findIndex';
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 
 import styles from './SideFilter.module.scss';
@@ -10,6 +10,7 @@ import styles from './SideFilter.module.scss';
 type ListItem = {
   value?: string;
   label: string;
+  disabled?: boolean;
 };
 
 interface SideFilterProps {
@@ -49,7 +50,7 @@ export const SideFilter = ({
 
     const transformVal =
       index === -1
-        ? 0
+        ? -100
         : index * HUNDRED_PERCENT + (hideAllOption ? 0 : HUNDRED_PERCENT);
 
     return {
@@ -58,7 +59,7 @@ export const SideFilter = ({
   }
 
   function renderFilterItem(item: ListItem) {
-    const { value: itemVal, label } = item;
+    const { value: itemVal, label, disabled: disabledItem } = item;
 
     const href = {
       query: {
@@ -70,7 +71,7 @@ export const SideFilter = ({
     const hrefClassName = cn(styles.categoriesListItem, {
       [styles.categoriesListItemSelected]:
         value === itemVal || (!itemVal && !value),
-      [styles.disabled]: disabled,
+      [styles.disabled]: disabled || disabledItem,
     });
 
     return (
@@ -83,6 +84,20 @@ export const SideFilter = ({
       </li>
     );
   }
+
+  useEffect(() => {
+    const selectedItem = document.querySelector(
+      `.${styles.categoriesListItemSelected}`
+    );
+
+    if (selectedItem) {
+      selectedItem.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  }, [value]);
 
   return (
     <div className={cn(styles.categoriesListRoot, className)}>

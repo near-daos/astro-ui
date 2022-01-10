@@ -36,6 +36,7 @@ export const SocketProvider: FC = ({ children }) => {
             publicKey,
             signature,
           },
+          transports: ['websocket'],
         });
 
         setSocket(socketIo);

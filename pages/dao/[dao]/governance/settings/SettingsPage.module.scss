@@ -7,14 +7,46 @@
     'breadcrumbs'
     'dao'
     'title'
-    'kyc'
-    'links'
-    'bondAndDeadline'
-    'votingPolicy'
-    'flagAndLogo';
+    'filter'
+    'content';
   grid-template-columns: 1fr;
   padding-top: 56px;
   row-gap: 24px;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'breadcrumbs breadcrumbs'
+      'dao dao'
+      'title title'
+      'filter content';
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+.sideFilter {
+  grid-area: filter;
+}
+
+.content {
+  grid-area: content;
+  width: 100%;
+}
+
+.contentRow {
+  margin-bottom: 48px;
+}
+
+.daoConfigFilter {
+  margin-bottom: 24px;
+  max-width: 300px;
+  position: relative;
+  top: 0;
+}
+
+.daoPolicyFilter {
+  max-width: 300px;
+  position: relative;
+  top: 0;
 }
 
 .newProposal {
@@ -22,34 +54,41 @@
 }
 
 .flagAndLogoRow {
-  grid-area: flagAndLogo;
-  margin-bottom: 42px;
+  //grid-area: flagAndLogo;
+  //margin-bottom: 42px;
 }
 
-.kyc {
-  grid-area: kyc;
-  margin-bottom: 42px;
-
-  .legalLink,
-  .legalIcon {
-    align-items: center;
-    color: var(--color-brand-purple);
-    display: flex;
-  }
-
-  .legalIcon {
-    margin-left: 8px;
-  }
+.legalLink,
+.legalIcon {
+  align-items: center;
+  color: var(--color-brand-purple);
+  display: flex;
 }
 
-.bondAndDeadlineRow {
-  grid-area: bondAndDeadline;
-  margin-bottom: 42px;
+.legalIcon {
+  margin-left: 8px;
 }
+
+.label {
+  @extend %subtitle5;
+}
+
+.daoName {
+  @extend %title3;
+}
+
+.daoPurpose {
+  @extend %body1;
+}
+
+//.bondAndDeadlineRow {
+//  grid-area: bondAndDeadline;
+//  margin-bottom: 42px;
+//}
 
 .votingPolicyRow {
-  grid-area: votingPolicy;
-  grid-column: span 3;
+  //grid-area: votingPolicy;
+  //grid-column: span 3;
   margin-bottom: 42px;
   width: 100%;
 }
@@ -62,13 +101,16 @@
 .titleRow {
   @extend %heading1;
   grid-area: title;
-  margin-bottom: 42px;
+
+  @include tablet-portrait {
+    margin-bottom: 16px;
+  }
 }
 
-.linksRow {
-  grid-area: links;
-  margin-bottom: 42px;
-}
+//.linksRow {
+//  grid-area: links;
+//  margin-bottom: 42px;
+//}
 
 .settingsContainer {
   display: flex;
@@ -90,6 +132,17 @@
 .link {
   align-items: center;
   color: var(--color-brand-purple);
+  display: flex;
+  width: 100%;
+
+  @include tablet-portrait {
+    max-width: unset;
+    white-space: normal;
+  }
+}
+
+.linkText {
+  flex: 1;
 }
 
 .linkIcon {
@@ -106,7 +159,7 @@
 
 .row {
   flex-direction: row;
-  margin-bottom: 4px;
+  margin-bottom: 12px;
 }
 
 .column {
@@ -128,7 +181,11 @@
 
 .dao {
   grid-area: dao;
-  margin: 0 0 44px;
+  margin: 0;
+
+  @include tablet-portrait {
+    margin: 0 0 44px;
+  }
 }
 
 .warningWrapper {
