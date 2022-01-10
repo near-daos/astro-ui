@@ -17,6 +17,7 @@ import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { Popup } from 'components/Popup';
 
 import { useAuthContext } from 'context/AuthContext';
+import { UserPermissions } from 'types/context';
 
 import styles from './DaoDetailsMinimized.module.scss';
 
@@ -25,13 +26,14 @@ export interface DaoDetailsMinimizedProps {
   className?: string;
   onCreateProposalClick?: () => void;
   disableNewProposal?: boolean;
+  userPermissions: UserPermissions;
 }
 
 export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   dao,
   className,
   onCreateProposalClick,
-  disableNewProposal = false,
+  userPermissions,
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const isMobile = useMedia('(max-width: 768px)');
@@ -46,7 +48,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
     proposals: `/dao/${dao.id}/proposals`,
     funds: `/dao/${dao.id}/treasury/tokens`,
     members: `/dao/${dao.id}/groups/all`,
-    settings: `/dao/${dao.id}/governance/settings`,
+    settings: `/dao/${dao.id}/governance/settings?daoFilter=nameAndPurpose`,
     nfts: `/dao/${dao.id}/treasury/nfts`,
     bounties: `/dao/${dao.id}/tasks/bounties`,
     polls: `/dao/${dao.id}/tasks/polls`,
@@ -188,7 +190,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
         </ActionButton>
       </section>
 
-      {onCreateProposalClick && !disableNewProposal && (
+      {onCreateProposalClick && userPermissions.isCanCreateProposals && (
         <section className={styles.proposals}>{action}</section>
       )}
     </div>

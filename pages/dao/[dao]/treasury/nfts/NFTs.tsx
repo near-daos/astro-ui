@@ -32,11 +32,7 @@ export interface NFTsPageProps {
 }
 
 const NFTs: NextPage<NFTsPageProps> = ({
-  daoContext: {
-    dao,
-    userPermissions: { isCanCreateProposals },
-    policyAffectsProposals,
-  },
+  daoContext: { dao, userPermissions, policyAffectsProposals },
 }) => {
   const { tokens } = useDaoCustomTokens();
   const router = useRouter();
@@ -89,12 +85,13 @@ const NFTs: NextPage<NFTsPageProps> = ({
         <DaoDetailsMinimized
           dao={dao}
           onCreateProposalClick={toggleCreateProposal}
-          disableNewProposal={!isCanCreateProposals}
+          userPermissions={userPermissions}
         />
         <CreateProposal
           className={styles.createProposal}
           proposalVariant={ProposalVariant.ProposeTransfer}
           dao={dao}
+          userPermissions={userPermissions}
           key={Object.keys(tokens).length}
           daoTokens={tokens}
           showFlag={false}

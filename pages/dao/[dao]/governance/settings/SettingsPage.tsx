@@ -34,11 +34,7 @@ export interface SettingsPageProps {
 }
 
 const SettingsPage: NextPage<SettingsPageProps> = ({
-  daoContext: {
-    dao,
-    policyAffectsProposals,
-    userPermissions: { isCanCreateProposals },
-  },
+  daoContext: { dao, policyAffectsProposals, userPermissions },
 }) => {
   const router = useRouter();
   const { daoFilter } = router.query;
@@ -72,7 +68,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
       <div className={styles.dao}>
         <DaoDetailsMinimized
           dao={dao}
-          disableNewProposal={!isCanCreateProposals}
+          userPermissions={userPermissions}
           onCreateProposalClick={() =>
             toggleCreateProposal({
               proposalVariant: ProposalVariant.ProposeChangeBonds,
@@ -82,6 +78,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
         <CreateProposal
           className={styles.createProposal}
           dao={dao}
+          userPermissions={userPermissions}
           key={Object.keys(tokens).length}
           daoTokens={tokens}
           showFlag={false}
@@ -104,7 +101,10 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
           <DaoSetting
             settingsName="Name and Purpose"
             className={styles.contentRow}
-            disableNewProposal={!isCanCreateProposals}
+            disableNewProposal={
+              !userPermissions.isCanCreateProposals ||
+              !userPermissions.isCanCreatePolicyProposals
+            }
             settingsChangeHandler={createProposalHandler(
               ProposalVariant.ProposeChangeDaoLegalInfo
             )}
@@ -123,7 +123,10 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
           <DaoSetting
             settingsName="Legal Status and doc"
             className={styles.contentRow}
-            disableNewProposal={!isCanCreateProposals}
+            disableNewProposal={
+              !userPermissions.isCanCreateProposals ||
+              !userPermissions.isCanCreatePolicyProposals
+            }
             settingsChangeHandler={createProposalHandler(
               ProposalVariant.ProposeChangeDaoLegalInfo
             )}
@@ -147,7 +150,10 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
           <DaoSetting
             settingsName="Links"
             className={styles.contentRow}
-            disableNewProposal={!isCanCreateProposals}
+            disableNewProposal={
+              !userPermissions.isCanCreateProposals ||
+              !userPermissions.isCanCreatePolicyProposals
+            }
             settingsChangeHandler={createProposalHandler(
               ProposalVariant.ProposeChangeDaoLinks
             )}
@@ -178,7 +184,10 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
           <DaoSetting
             settingsName="Your Flag and Logo"
             className={styles.contentRow}
-            disableNewProposal={!isCanCreateProposals}
+            disableNewProposal={
+              !userPermissions.isCanCreateProposals ||
+              !userPermissions.isCanCreatePolicyProposals
+            }
             settingsChangeHandler={createProposalHandler(
               ProposalVariant.ProposeChangeDaoFlag
             )}
@@ -192,7 +201,10 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
           <DaoSetting
             settingsName="Bond and deadlines"
             className={styles.contentRow}
-            disableNewProposal={!isCanCreateProposals}
+            disableNewProposal={
+              !userPermissions.isCanCreateProposals ||
+              !userPermissions.isCanCreatePolicyProposals
+            }
             settingsChangeHandler={createProposalHandler(
               ProposalVariant.ProposeChangeBonds
             )}
@@ -253,7 +265,10 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
           <DaoSetting
             settingsName="Voting policy"
             className={styles.contentRow}
-            disableNewProposal={!isCanCreateProposals}
+            disableNewProposal={
+              !userPermissions.isCanCreateProposals ||
+              !userPermissions.isCanCreatePolicyProposals
+            }
             settingsChangeHandler={createProposalHandler(
               ProposalVariant.ProposeChangeVotingPolicy
             )}

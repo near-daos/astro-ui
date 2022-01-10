@@ -1,4 +1,5 @@
 import { DAO } from 'types/dao';
+import { ProposalVariant } from 'types/proposal';
 
 export function isUserPermittedToCreateProposal(
   accountId: string | null | undefined,
@@ -34,4 +35,31 @@ export function isUserPermittedToCreateProposal(
   });
 
   return matched;
+}
+
+const policyAffectsProposalVariants = [
+  ProposalVariant.ProposeChangeDaoLinks,
+  ProposalVariant.ProposeAddMember,
+  ProposalVariant.ProposeChangeBonds,
+  ProposalVariant.ProposeChangeDaoFlag,
+  ProposalVariant.ProposeChangeDaoLegalInfo,
+  ProposalVariant.ProposeChangeDaoName,
+  ProposalVariant.ProposeChangeDaoPurpose,
+  ProposalVariant.ProposeChangeVotingPolicy,
+  ProposalVariant.ProposeCreateGroup,
+  ProposalVariant.ProposeRemoveMember,
+];
+
+export function getInitialProposalVariant(
+  defaultProposalVariant: ProposalVariant,
+  isCanCreatePolicyProposals: boolean
+): ProposalVariant {
+  if (
+    !isCanCreatePolicyProposals &&
+    policyAffectsProposalVariants.includes(defaultProposalVariant)
+  ) {
+    return ProposalVariant.ProposeTransfer;
+  }
+
+  return defaultProposalVariant;
 }

@@ -31,11 +31,7 @@ interface NestedDaoPageWrapperProps {
 
 export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
   const {
-    daoContext: {
-      dao,
-      userPermissions: { isCanCreateProposals },
-      policyAffectsProposals,
-    },
+    daoContext: { dao, userPermissions, policyAffectsProposals },
     defaultProposalType = ProposalVariant.ProposeTransfer,
     breadcrumbs,
     children,
@@ -78,7 +74,7 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
       <DaoDetailsMinimized
         dao={dao}
         className={styles.dao}
-        disableNewProposal={!isCanCreateProposals}
+        userPermissions={userPermissions}
         onCreateProposalClick={onCreateProposal}
       />
       <CreateProposal
@@ -86,6 +82,7 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
         dao={dao}
         key={Object.keys(tokens).length}
         daoTokens={tokens}
+        userPermissions={userPermissions}
         proposalVariant={defaultProposalType}
         showFlag={false}
         onClose={toggleCreateProposal}

@@ -8,8 +8,10 @@ import {
   SINGLE_DAO_PAGE,
   GROUPS_PAGE_URL,
   ALL_PROPOSALS_PAGE_URL,
+  SINGLE_PROPOSAL_PAGE_URL,
 } from 'constants/routing';
 import { UrlObject } from 'url';
+import { Proposal } from 'types/proposal';
 
 type GroupConfig = {
   id: string;
@@ -26,7 +28,8 @@ type Breadcrumbs = Record<
 
 export function useGetBreadcrumbsConfig(
   dao?: DAO,
-  group?: GroupConfig
+  group?: GroupConfig,
+  proposal?: Proposal
 ): Breadcrumbs {
   const { t } = useTranslation();
 
@@ -56,6 +59,16 @@ export function useGetBreadcrumbsConfig(
         },
         label: t('proposals'),
       },
+      SINGLE_PROPOSAL_PAGE_URL: {
+        href: {
+          pathname: SINGLE_PROPOSAL_PAGE_URL,
+          query: {
+            dao: id,
+            proposal: proposal?.id,
+          },
+        },
+        label: proposal?.id ?? '',
+      },
       TREASURY: {
         label: 'Treasury',
       },
@@ -83,7 +96,7 @@ export function useGetBreadcrumbsConfig(
         label: group?.label || '',
       },
     };
-  }, [t, dao, group]);
+  }, [dao, t, proposal?.id, group?.id, group?.label]);
 
   return breadcrumbs;
 }

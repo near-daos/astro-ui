@@ -3,6 +3,7 @@ import { DAO } from 'types/dao';
 
 export type UserPermissions = {
   isCanCreateProposals: boolean;
+  isCanCreatePolicyProposals: boolean;
 };
 
 export type DaoContext = {

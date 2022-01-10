@@ -29,11 +29,7 @@ interface DaoHomeProps {
 }
 
 const DAOHome: NextPage<DaoHomeProps> = ({
-  daoContext: {
-    dao,
-    userPermissions: { isCanCreateProposals },
-    policyAffectsProposals,
-  },
+  daoContext: { dao, userPermissions, policyAffectsProposals },
 }) => {
   const { tokens: daoTokens } = useDaoCustomTokens();
   const { t } = useTranslation();
@@ -53,13 +49,14 @@ const DAOHome: NextPage<DaoHomeProps> = ({
         <DaoDetailsMinimized
           key={`details_${dao.id}`}
           dao={dao}
-          disableNewProposal={!isCanCreateProposals}
+          userPermissions={userPermissions}
           onCreateProposalClick={() => toggleCreateProposal()}
         />
 
         <CreateProposal
           className={styles.createProposal}
           dao={dao}
+          userPermissions={userPermissions}
           key={Object.keys(daoTokens).length}
           daoTokens={daoTokens}
           showFlag={false}

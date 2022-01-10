@@ -2,32 +2,37 @@ import { GetServerSideProps } from 'next';
 import nextI18NextConfig from 'next-i18next.config';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import { DAO, Member } from 'types/dao';
-import { Proposal } from 'types/proposal';
-
 import { SputnikHttpService } from 'services/sputnik';
 import { extractMembersFromDao } from 'services/sputnik/mappers';
+import { CookieService } from 'services/CookieService';
+import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 export const getServerSideProps: GetServerSideProps = async ({
+  req,
   query,
   locale = 'en',
-}): Promise<{
-  props: {
-    dao: DAO | null;
-    proposal: Proposal | null;
-    members: Member[];
-  };
-}> => {
+}) => {
+  CookieService.initServerSideCookies(req?.headers.cookie || null);
+
+  const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
+
   const daoId = query.dao as string;
   const proposalId = query.proposal as string;
 
-  const [dao, proposal, membersStats] = await Promise.all([
+  const [dao, proposal, membersStats, daoContext] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
     SputnikHttpService.getProposalById(proposalId),
     SputnikHttpService.getDaoMembersStats(daoId),
+    SputnikHttpService.getDaoContext(account, daoId as string),
   ]);
 
   const members = dao ? extractMembersFromDao(dao, membersStats) : [];
+
+  if (!daoContext) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {
@@ -39,6 +44,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       dao,
       proposal,
       members,
+      daoContext,
     },
   };
 };

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
@@ -11,7 +11,7 @@ import { IconButton } from 'components/button/IconButton';
 import { GroupedSelect } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
 
 import { ProposalVariant } from 'types/proposal';
-
+import { UserPermissions } from 'types/context';
 import { LOREN_IPSUM } from 'constants/common';
 
 import {
@@ -24,14 +24,13 @@ import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/Input
 
 import styles from './CreateProposalCard.module.scss';
 
-const proposalTypesOptions = getProposalTypesOptions();
-
 export interface CreateProposalCardProps {
   type: ProposalVariant;
   proposer: string;
   content: ReactNode;
   onTypeSelect: (newType: ProposalVariant) => void;
   onClose?: () => void;
+  userPermissions: UserPermissions;
 }
 
 export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
@@ -40,12 +39,18 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   content,
   onTypeSelect,
   onClose,
+  userPermissions,
 }) => {
   const {
     register,
     formState: { errors },
   } = useFormContext();
   const isMobile = useMedia('(max-width: 767px)');
+
+  const proposalTypesOptions = useMemo(
+    () => getProposalTypesOptions(userPermissions.isCanCreatePolicyProposals),
+    [userPermissions]
+  );
 
   return (
     <div className={styles.root}>

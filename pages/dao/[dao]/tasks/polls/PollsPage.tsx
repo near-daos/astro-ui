@@ -34,11 +34,7 @@ export interface PollsPageProps {
 }
 
 const PollsPage: FC<PollsPageProps> = ({
-  daoContext: {
-    dao,
-    policyAffectsProposals,
-    userPermissions: { isCanCreateProposals },
-  },
+  daoContext: { dao, policyAffectsProposals, userPermissions },
   initialPollsData,
   initialProposalsStatusFilterValue,
 }) => {
@@ -57,13 +53,14 @@ const PollsPage: FC<PollsPageProps> = ({
       <div className={styles.dao}>
         <DaoDetailsMinimized
           dao={dao}
-          disableNewProposal={!isCanCreateProposals}
+          userPermissions={userPermissions}
           onCreateProposalClick={toggleCreateProposal}
         />
 
         <CreateProposal
           className={styles.createProposal}
           dao={dao}
+          userPermissions={userPermissions}
           key={Object.keys(tokens).length}
           daoTokens={tokens}
           proposalVariant={ProposalVariant.ProposePoll}
