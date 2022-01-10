@@ -5,7 +5,7 @@ import snakeCase from 'lodash/snakeCase';
 import { Vote, VoteDetail, VoterDetail } from 'features/types';
 import difference from 'lodash/difference';
 import isEmpty from 'lodash/isEmpty';
-import { ProposalAction } from 'types/role';
+import { DefaultVotePolicy, ProposalAction } from 'types/role';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { dataRoleToContractRole } from 'features/groups/helpers';
 
@@ -125,6 +125,16 @@ export type VotingPolicyPageInitialData = {
   policy: VotePolicy;
 } & Indexed;
 
+export function formatPolicyRatio(defaultPolicy: DefaultVotePolicy): number {
+  if (!(defaultPolicy?.ratio && defaultPolicy.ratio.length)) {
+    return 0;
+  }
+
+  const ratio = (defaultPolicy.ratio[0] / defaultPolicy.ratio[1]) * 100;
+
+  return Number(ratio.toFixed(2));
+}
+
 export const getInitialData = (
   dao?: DAO
 ): VotingPolicyPageInitialData | null => {
@@ -132,18 +142,13 @@ export const getInitialData = (
     return null;
   }
 
-  const defaulPolicy = dao.policy.defaultVotePolicy;
+  const defaultPolicy = dao.policy.defaultVotePolicy;
 
   return {
     policy: {
-      voteBy: defaulPolicy.weightKind === 'RoleWeight' ? 'Person' : 'Token',
-      amount:
-        defaulPolicy?.ratio && defaulPolicy.ratio.length
-          ? Number(
-              ((defaulPolicy.ratio[0] / defaulPolicy.ratio[1]) * 100).toFixed(2)
-            )
-          : 0,
-      threshold: defaulPolicy.kind === 'Ratio' ? '% of group' : 'persons',
+      voteBy: defaultPolicy.weightKind === 'RoleWeight' ? 'Person' : 'Token',
+      amount: formatPolicyRatio(defaultPolicy),
+      threshold: defaultPolicy.kind === 'Ratio' ? '% of group' : 'persons',
     },
     daoSettings: {
       externalLink: '',

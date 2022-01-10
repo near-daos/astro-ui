@@ -42,6 +42,7 @@
     "stylelint-check": "stylelint-config-prettier-check",
     "test": "jest --silent",
     "test:loud": "jest",
+    "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "generate-assets": "patch-package && yarn generate-assets-index",
     "prebuild": "yarn generate-assets",
