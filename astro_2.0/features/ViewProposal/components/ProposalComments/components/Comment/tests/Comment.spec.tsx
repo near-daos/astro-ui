@@ -5,7 +5,7 @@ import { Comment } from 'astro_2.0/features/ViewProposal/components/ProposalComm
 const onDelete = jest.fn();
 const onReport = jest.fn();
 
-describe('App Footer', () => {
+describe('Comment', () => {
   it('Should render Comment component', () => {
     const { container } = render(
       <Comment
