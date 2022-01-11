@@ -4,9 +4,9 @@ import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { ActionButton } from 'features/proposal/components/action-button';
 import { Icon } from 'components/Icon';
 
-import styles from './DaoDetailsSceleton.module.scss';
+import styles from './DaoDetailsSkeleton.module.scss';
 
-export const DaoDetailsSceleton: FC = () => {
+export const DaoDetailsSkeleton: FC = () => {
   const { t } = useTranslation();
 
   return (
