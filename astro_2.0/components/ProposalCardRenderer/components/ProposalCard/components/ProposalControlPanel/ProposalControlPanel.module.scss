@@ -6,7 +6,8 @@
 .root {
   align-items: flex-end;
   display: flex;
-  justify-content: flex-start;
+  flex: 1;
+  justify-content: space-between;
 
   @include tablet-landscape {
     justify-content: flex-end;
@@ -69,7 +70,9 @@
 }
 
 .detailsItem {
-  margin-left: 12px;
+  @include tablet-landscape {
+    margin-left: 12px;
+  }
 }
 
 .detailsInput {
