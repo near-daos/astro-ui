@@ -4,6 +4,8 @@ import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
+import last from 'lodash/last';
+import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
@@ -139,25 +141,38 @@ export const CreateProposal: FC<CreateProposalProps> = ({
 
   const onSubmit = useCallback(
     async data => {
-      try {
-        let newProposal = await getNewProposalObject(
-          dao,
-          selectedProposalVariant,
-          data,
-          daoTokens,
-          accountId,
-          bountyId
-        );
+      let newProposal = await getNewProposalObject(
+        dao,
+        selectedProposalVariant,
+        data,
+        daoTokens,
+        accountId,
+        bountyId
+      );
 
-        // Add proposal variant and gas
-        newProposal = {
-          ...newProposal,
-          description: `${newProposal?.description}${EXTERNAL_LINK_SEPARATOR}${selectedProposalVariant}`,
-          gas: data.gas,
-        } as CreateProposalParams;
+      try {
+        if (selectedProposalVariant !== ProposalVariant.ProposeTransfer) {
+          // Add proposal variant and gas
+          newProposal = {
+            ...newProposal,
+            description: `${newProposal?.description}${EXTERNAL_LINK_SEPARATOR}${selectedProposalVariant}`,
+            gas: data.gas,
+          } as CreateProposalParams;
+        }
 
         if (newProposal) {
-          const resp = await SputnikNearService.createProposal(newProposal);
+          let resp;
+
+          if (selectedProposalVariant === ProposalVariant.ProposeTransfer) {
+            resp = await SputnikNearService.createTokenTransferProposal(
+              dao,
+              newProposal
+            );
+
+            resp = last(resp as FinalExecutionOutcome[]);
+          } else {
+            resp = await SputnikNearService.createProposal(newProposal);
+          }
 
           showNotification({
             type: NOTIFICATION_TYPES.INFO,
@@ -166,12 +181,13 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           });
 
           const newProposalId = JSON.parse(
-            // todo - Oleg: fix this!
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            Buffer.from(resp.status.SuccessValue as string, 'base64').toString(
-              'ascii'
-            )
+            Buffer.from(
+              // todo - Oleg: fix this!
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              resp.status.SuccessValue as string,
+              'base64'
+            ).toString('ascii')
           );
 
           await router.push({
