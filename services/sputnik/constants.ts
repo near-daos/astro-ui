@@ -2,5 +2,6 @@ export const YOKTO_NEAR = 1000000000000000000000000;
 
 export const LIST_LIMIT_DEFAULT = 20;
 
-export const DEFAULT_PROPOSAL_GAS = 0.25;
-export const DEFAULT_CREATE_DAO_GAS = 0.3;
+export const DEFAULT_PROPOSAL_GAS = 0.1;
+export const DEFAULT_CREATE_DAO_GAS = 0.1;
+export const DEFAULT_VOTE_GAS = 0.1;

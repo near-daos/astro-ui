@@ -2,6 +2,15 @@ import { render } from 'jest/testUtils';
 
 import { Comment } from 'astro_2.0/features/ViewProposal/components/ProposalComments/components/Comment';
 
+jest.mock('next-i18next', () => ({
+  // this mock makes sure any components using the translate hook can use it without a warning being shown
+  useTranslation: () => {
+    return {
+      t: (str: string): string => str,
+    };
+  },
+}));
+
 const onDelete = jest.fn();
 const onReport = jest.fn();
 

@@ -85,6 +85,7 @@
     "transactionDetailsWidget": {
       "warning": "Warning",
       "gas": "Gas",
+      "tGas": "TGas",
       "bond": "Bond"
     }
   },

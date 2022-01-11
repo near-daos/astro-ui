@@ -15,6 +15,7 @@ import { Pagination } from 'components/Pagination';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Loader } from 'components/loader';
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
+import { DashboardChart } from 'astro_2.0/features/DaoDashboard/components/DashboardChart';
 
 import { ProposalVariant } from 'types/proposal';
 import { DaoContext } from 'types/context';
@@ -28,6 +29,7 @@ import { formatYoktoValue } from 'utils/format';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { formatCurrency } from 'utils/formatCurrency';
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
+import { useDaoDashboardData } from 'astro_2.0/features/DaoDashboard/hooks';
 
 import styles from './Tokens.module.scss';
 
@@ -55,6 +57,8 @@ const TokensPage: NextPage<TokensPageProps> = ({
     loading,
     error,
   } = useTokenFilteredData(tokens);
+
+  const { chartData: nearChartData } = useDaoDashboardData();
 
   const captions = useMemo(() => {
     const total = getAccumulatedTokenValue(tokens);
@@ -112,13 +116,16 @@ const TokensPage: NextPage<TokensPageProps> = ({
     return (
       <>
         <div className={styles.chart}>
-          {!!chartData.length && !loading && (
+          {viewToken !== 'NEAR' && !!chartData.length && !loading && (
             <AreaChart
               key={viewToken}
               data={chartData}
               range={viewToken !== 'NEAR' ? 'DAY' : undefined}
               tokenName={tokens[viewToken]?.symbol ?? ''}
             />
+          )}
+          {viewToken === 'NEAR' && nearChartData && (
+            <DashboardChart data={nearChartData} />
           )}
         </div>
         <div className={styles.label}>Transactions</div>
@@ -211,44 +218,46 @@ const TokensPage: NextPage<TokensPageProps> = ({
       breadcrumbs={breadcrumbs}
       defaultProposalType={ProposalVariant.ProposeTransfer}
     >
-      <div className={styles.root}>
-        <div className={styles.header}>
-          <h1>Tokens</h1>
-        </div>
-        <div className={styles.account}>
-          <div className={styles.caption}>DAO account name</div>
-          <div className={styles.name}>
-            <DaoAddressLink daoAddress={dao.id} />
-            <CopyButton text={dao.id} className={styles.icon} />
+      <>
+        <div className={styles.root}>
+          <div className={styles.header}>
+            <h1>Tokens</h1>
           </div>
+          <div className={styles.account}>
+            <div className={styles.caption}>DAO account name</div>
+            <div className={styles.name}>
+              <DaoAddressLink daoAddress={dao.id} />
+              <CopyButton text={dao.id} className={styles.icon} />
+            </div>
+          </div>
+          <div className={styles.total}>
+            <ChartCaption captions={captions} />
+          </div>
+          <div className={styles.tokens}>
+            {Object.values(tokens)
+              .sort(sorter)
+              .map(({ icon, symbol, balance, id, price }) => (
+                <TokenCard
+                  key={`${id}-${symbol}`}
+                  isActive={viewToken === id}
+                  symbol={symbol}
+                  onClick={() => {
+                    setActivePage(0);
+                    onFilterChange(id);
+                  }}
+                  icon={icon}
+                  balance={Number(balance)}
+                  totalValue={
+                    price
+                      ? formatCurrency(parseFloat(balance) * Number(price))
+                      : null
+                  }
+                />
+              ))}
+          </div>
+          {renderContent()}
         </div>
-        <div className={styles.total}>
-          <ChartCaption captions={captions} />
-        </div>
-        <div className={styles.tokens}>
-          {Object.values(tokens)
-            .sort(sorter)
-            .map(({ icon, symbol, balance, id, price }) => (
-              <TokenCard
-                key={`${id}-${symbol}`}
-                isActive={viewToken === id}
-                symbol={symbol}
-                onClick={() => {
-                  setActivePage(0);
-                  onFilterChange(id);
-                }}
-                icon={icon}
-                balance={Number(balance)}
-                totalValue={
-                  price
-                    ? formatCurrency(parseFloat(balance) * Number(price))
-                    : null
-                }
-              />
-            ))}
-        </div>
-        {renderContent()}
-      </div>
+      </>
     </NestedDaoPageWrapper>
   );
 };
