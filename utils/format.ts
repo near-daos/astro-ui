@@ -39,7 +39,7 @@ export function kFormatter(n: number): string {
     return `${(n / 1000).toFixed(1).replace(/\.0$/, '')}K`;
   }
 
-  return `${n.toFixed(0)}`;
+  return `${n.toFixed(1)}`;
 }
 
 export function shortenString(value: string, maxLength: number): string {

@@ -92,7 +92,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
               className={styles.detailsItem}
               labelClassName={styles.inputLabel}
               fieldName="gas"
-              label={t('components.transactionDetailsWidget.gas')}
+              label={t('components.transactionDetailsWidget.tGas')}
             >
               <div className={styles.row}>
                 <Input
@@ -104,14 +104,13 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
                     width: getInputWidth(),
                   }}
                   type="number"
-                  min={0.01}
+                  min={0.1}
                   step={0.01}
                   max={0.3}
                   isBorderless
                   size="block"
                   {...gasInputProps}
                 />
-                <div className={styles.tokenLabel}>TGas</div>
               </div>
             </InputWrapper>
 

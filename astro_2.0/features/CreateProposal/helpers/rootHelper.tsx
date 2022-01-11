@@ -841,7 +841,7 @@ export const gasValidation = yup
   .number()
   .typeError('Must be a valid number.')
   .positive()
-  .min(0.01)
+  .min(0.1)
   .max(0.3)
   .required('Required');
 
