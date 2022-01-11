@@ -115,3 +115,11 @@
   transform: translateY(4px);
   white-space: nowrap;
 }
+
+.inlineImage {
+  display: block;
+  margin: 8px 0;
+  max-height: 200px;
+  max-width: 300px;
+  object-fit: contain;
+}

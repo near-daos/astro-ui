@@ -1,13 +1,15 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import { format, parseISO } from 'date-fns';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'next-i18next';
 import Linkify from 'react-linkify';
+import { useMountedState } from 'react-use';
 
 import { IconName } from 'components/Icon';
 import { ActionButton } from 'features/proposal/components/action-button';
 import { ConfirmCommentActionModal } from 'astro_2.0/features/ViewProposal/components/ProposalComments/components/ConfirmCommentActionModal';
+import { getImagesFromLinks } from 'astro_2.0/features/ViewProposal/components/ProposalComments/components/Comment/helpers';
 
 import { ReportCommentsInput } from 'types/proposal';
 
@@ -91,8 +93,11 @@ export const Comment: FC<CommentProps> = ({
   onDelete,
   commentId,
 }) => {
+  const rootRef = useRef<HTMLLIElement>(null);
   const { t } = useTranslation();
+  const isMounted = useMountedState();
   const [showReportModal] = useModal(ConfirmCommentActionModal);
+  const [imagesUrls, setImagesUrls] = useState<string[]>([]);
 
   const handleReportAction = useCallback(async () => {
     const res = await showReportModal({
@@ -155,6 +160,20 @@ export const Comment: FC<CommentProps> = ({
     );
   }
 
+  useEffect(() => {
+    if (!rootRef.current) {
+      return;
+    }
+
+    const links = rootRef.current?.querySelectorAll(`.${styles.link}`);
+
+    getImagesFromLinks(links).then(images => {
+      if (images.length && isMounted()) {
+        setImagesUrls(images);
+      }
+    });
+  }, [isMounted]);
+
   return (
     <motion.li
       key={commentId}
@@ -165,20 +184,33 @@ export const Comment: FC<CommentProps> = ({
       className={cn(styles.root, {
         [styles.myComment]: isMyComment,
       })}
+      ref={rootRef}
     >
       {isMyComment ? TICK_RIGHT : TICK_LEFT}
       {!isMyComment && <div className={styles.commentAuthor}>{accountId}</div>}
       <Linkify
-        componentDecorator={decoratedHref => (
-          <a
-            className={styles.link}
-            href={decoratedHref}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {decoratedHref}
-          </a>
-        )}
+        componentDecorator={decoratedHref => {
+          return (
+            <a
+              key={decoratedHref}
+              className={styles.link}
+              href={decoratedHref}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {imagesUrls.includes(decoratedHref) ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={decoratedHref}
+                  alt={decoratedHref}
+                  className={styles.inlineImage}
+                />
+              ) : (
+                decoratedHref
+              )}
+            </a>
+          );
+        }}
       >
         <p>{message}</p>
       </Linkify>
