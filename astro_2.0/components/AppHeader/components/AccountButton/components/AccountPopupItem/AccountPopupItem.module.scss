@@ -10,8 +10,7 @@
 
   transition: 0.2s;
 
-  &:hover,
-  &.active {
+  &:hover {
     background-color: var(--color-neutral-20);
   }
 }

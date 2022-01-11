@@ -35,7 +35,7 @@ export const BreadCrumbs: React.VFC<BreadCrumbsProps> = ({
   const rootRef = useRef<HTMLElement>(null);
 
   const [maxWidth, setMaxWidth] = useState(0);
-  const [showLastTwo, setShowLastTwo] = useState(false);
+  const [showLastThree, setShowLastThree] = useState(false);
 
   const onResize = useCallback(() => {
     // We assume that breadcrumbs have all available width of the page content.
@@ -56,7 +56,7 @@ export const BreadCrumbs: React.VFC<BreadCrumbsProps> = ({
         setMaxWidth(breadcrumbsWidth);
       }
 
-      setShowLastTwo(maxWidth > pageContentWidth);
+      setShowLastThree(maxWidth > pageContentWidth);
     }
   }, [maxWidth, rootRef]);
 
@@ -64,7 +64,7 @@ export const BreadCrumbs: React.VFC<BreadCrumbsProps> = ({
 
   function getChildrenToRender() {
     const childrenArr = Children.toArray(children);
-    const childrenToRender = showLastTwo
+    const childrenToRender = showLastThree
       ? takeRight(childrenArr, 3)
       : childrenArr;
 
