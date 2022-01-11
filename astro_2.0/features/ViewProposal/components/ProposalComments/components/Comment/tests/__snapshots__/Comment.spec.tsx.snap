@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`App Footer Should render Comment component 1`] = `
+exports[`Comment Should render Comment component 1`] = `
 <div>
   <li
     class="undefined"
