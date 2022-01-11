@@ -22,7 +22,7 @@ export const formatTimestampAsDate = (time: string): string => {
   return format(date, DATE_TIME_FORMAT);
 };
 
-export function kFormatter(n: number): string {
+export function kFormatter(n: number, toFixed = 0): string {
   if (n === undefined) {
     return '0';
   }
@@ -39,7 +39,7 @@ export function kFormatter(n: number): string {
     return `${(n / 1000).toFixed(1).replace(/\.0$/, '')}K`;
   }
 
-  return `${n.toFixed(1)}`;
+  return `${n.toFixed(toFixed)}`;
 }
 
 export function shortenString(value: string, maxLength: number): string {
