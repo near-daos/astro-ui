@@ -29,7 +29,7 @@ import { ExplorerLink } from 'components/ExplorerLink';
 import { useCountdown } from 'hooks/useCountdown';
 
 import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
-import { DEFAULT_CREATE_DAO_GAS } from 'services/sputnik/constants';
+import { DEFAULT_VOTE_GAS } from 'services/sputnik/constants';
 import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 
 import { useGetVotePermissions } from './hooks/useGetVotePermissions';
@@ -188,7 +188,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     mode: 'all',
     reValidateMode: 'onChange',
     defaultValues: {
-      gas: DEFAULT_CREATE_DAO_GAS,
+      gas: DEFAULT_VOTE_GAS,
     },
     resolver: yupResolver(schema),
   });
