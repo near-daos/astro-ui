@@ -134,7 +134,7 @@ export class SputnikDaoService {
   public async claimBounty(
     params: ClaimBountyParams
   ): Promise<FinalExecutionOutcome> {
-    const { daoId, bountyId: id, deadline, bountyBond } = params;
+    const { daoId, bountyId: id, deadline, bountyBond, gas } = params;
 
     return this.functionCall({
       methodName: 'bounty_claim',
@@ -143,14 +143,15 @@ export class SputnikDaoService {
         id,
         deadline,
       },
-      gas: GAS_VALUE,
+      gas: gas ? new BN(Number(gas) * 10 ** 15) : GAS_VALUE,
       attachedDeposit: new BN(bountyBond),
     });
   }
 
   public unclaimBounty(
     daoId: string,
-    bountyId: string
+    bountyId: string,
+    gas: string | number
   ): Promise<FinalExecutionOutcome> {
     return this.functionCall({
       methodName: 'bounty_giveup',
@@ -158,7 +159,7 @@ export class SputnikDaoService {
       args: {
         id: bountyId,
       },
-      gas: GAS_VALUE,
+      gas: gas ? new BN(Number(gas) * 10 ** 15) : GAS_VALUE,
     });
   }
 }

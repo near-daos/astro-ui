@@ -13,6 +13,7 @@ interface InfoBlockWidgetProps {
   valueFontSize?: 'S' | 'L';
   className?: string;
   valueClassName?: string;
+  labelClassName?: string;
 }
 
 export const InfoBlockWidget: React.FC<InfoBlockWidgetProps> = ({
@@ -23,13 +24,14 @@ export const InfoBlockWidget: React.FC<InfoBlockWidgetProps> = ({
   messageSeverity,
   className,
   valueClassName,
+  labelClassName,
 }) => {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
 
   return (
     <div className={cn(styles.root, className)}>
       <div className={styles.block}>
-        <div className={styles.label}>{label}</div>
+        <div className={cn(styles.label, labelClassName)}>{label}</div>
         {tooltip && (
           <div ref={setRef} className={styles.iconHolder}>
             <Icon
