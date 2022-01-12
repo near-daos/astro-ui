@@ -211,6 +211,7 @@
     "daoFunds": "DAO funds",
     "bounties": "Bounties",
     "nfts": "NFTs",
+    "proposals": "Proposals",
     "activeProposals": "active proposals",
     "proposalsInTotal": "proposals in total"
   },

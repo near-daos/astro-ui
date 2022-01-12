@@ -8,10 +8,10 @@ import styles from './StatPanel.module.scss';
 interface StatPanelProps {
   title: string;
   value: string | number | undefined;
-  trend: number;
+  trend: number | undefined;
 }
 
-export const StatPanel: FC<StatPanelProps> = ({ title, value, trend }) => {
+export const StatPanel: FC<StatPanelProps> = ({ title, value, trend = 0 }) => {
   return (
     <div className={styles.root}>
       <div className={styles.title}>{title}</div>

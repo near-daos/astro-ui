@@ -87,6 +87,7 @@ export function prepareDataByRange(
 
   // Temp variable to keep last known value
   let prev = rawData[rawData.length - 1].y;
+  let prev2 = rawData[rawData.length - 1].y2;
 
   return result
     .map((item, i) => {
@@ -95,16 +96,19 @@ export function prepareDataByRange(
 
       if (dataMap[key]) {
         prev = dataMap[key].y;
+        prev2 = dataMap[key].y2;
 
         return {
           x: date,
           y: dataMap[key].y,
+          y2: dataMap[key].y2,
         };
       }
 
       return {
         x: date,
         y: prev,
+        y2: prev2,
       };
     })
     .reverse()

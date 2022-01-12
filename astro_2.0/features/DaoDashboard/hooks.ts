@@ -7,11 +7,11 @@ import {
   DashboardView,
 } from 'astro_2.0/features/DaoDashboard/types';
 
-import { SputnikStatsService } from 'services/sputnik';
+import { SputnikHttpService } from 'services/sputnik';
 
 import {
-  mapMetricsToChartData,
   mapOvertimeToChartData,
+  mapProposalsOvertimeToChartData,
 } from 'astro_2.0/features/DaoDashboard/helpers';
 
 type DaoDasboardFilteredData = {
@@ -33,27 +33,22 @@ export function useDaoDashboardData(): DaoDasboardFilteredData {
   useEffect(() => {
     setLoading(true);
     Promise.allSettled([
-      SputnikStatsService.getDaoFundsOverTime(daoId),
-      SputnikStatsService.getDaoTvl(daoId),
-      SputnikStatsService.getDaoTokensStat(daoId),
+      SputnikHttpService.getDaoStatsState(daoId),
+      SputnikHttpService.getDaoStatsFunds(daoId),
     ])
       .then(res => {
-        const [daoFundsOverTime, daoTvl, daoTokensStat] = res;
+        const [state, funds] = res;
         const newDashboardData: DaoDashboardData = {};
 
-        if (daoFundsOverTime.status === 'fulfilled') {
-          const newChartData = mapOvertimeToChartData(daoFundsOverTime.value);
+        if (state.status === 'fulfilled') {
+          newDashboardData.state = state.value;
+        }
 
-          newDashboardData.daoFundsOverTime = [...newChartData];
+        if (funds.status === 'fulfilled') {
+          const newChartData = mapOvertimeToChartData(funds.value);
+
+          newDashboardData.funds = mapOvertimeToChartData(funds.value);
           setChartData(newChartData);
-        }
-
-        if (daoTvl.status === 'fulfilled') {
-          newDashboardData.daoTvl = daoTvl.value;
-        }
-
-        if (daoTokensStat.status === 'fulfilled') {
-          newDashboardData.daoTokens = daoTokensStat.value;
         }
 
         setDashboardData(newDashboardData);
@@ -72,28 +67,26 @@ export function useDaoDashboardData(): DaoDasboardFilteredData {
 
       switch (view) {
         case 'PROPOSALS': {
-          const res = await SputnikStatsService.getDaoUsersInteractionsOverTime(
-            daoId
-          );
+          const res = await SputnikHttpService.getDaoStatsProposals(daoId);
 
-          data = mapMetricsToChartData(res);
+          data = mapProposalsOvertimeToChartData(res);
           break;
         }
         case 'NFTS': {
-          const res = await SputnikStatsService.getNFTsOverTime(daoId);
+          const res = await SputnikHttpService.getDaoStatsNfts(daoId);
 
-          data = mapMetricsToChartData(res);
+          data = mapOvertimeToChartData(res);
           break;
         }
         case 'BOUNTIES': {
-          const res = await SputnikStatsService.getBountiesOverTime(daoId);
+          const res = await SputnikHttpService.getDaoStatsBounties(daoId);
 
-          data = mapMetricsToChartData(res);
+          data = mapOvertimeToChartData(res);
           break;
         }
         case 'DAO_FUNDS':
         default: {
-          const res = await SputnikStatsService.getDaoFundsOverTime(daoId);
+          const res = await SputnikHttpService.getDaoStatsFunds(daoId);
 
           data = mapOvertimeToChartData(res);
         }

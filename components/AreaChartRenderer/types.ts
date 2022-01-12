@@ -1,6 +1,7 @@
 export type ChartDataElement = {
   x: Date;
   y: number;
+  y2?: number;
 };
 
 export type Range = 'DAY' | 'WEEK' | 'MONTH' | 'YEAR' | 'ALL';
@@ -8,6 +9,7 @@ export type Range = 'DAY' | 'WEEK' | 'MONTH' | 'YEAR' | 'ALL';
 export type LineDataPoint = {
   x: Date;
   y: number;
+  y2?: number;
 };
 
 export type DomainControl = {
