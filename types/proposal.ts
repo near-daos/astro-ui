@@ -215,7 +215,7 @@ interface FunctionCall {
   actions: FunctionCallAction[];
 }
 
-interface Transfer {
+export interface Transfer {
   token_id: string;
   // valid account id
   receiver_id: string;
