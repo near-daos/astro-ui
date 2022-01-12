@@ -8,12 +8,14 @@ import styles from './TokenWidget.module.scss';
 interface TokenWidgetProps {
   amount: string;
   icon: string;
+  noIcon?: boolean;
   symbol: string;
   decimals: number;
 }
 
 export const TokenWidget: React.FC<TokenWidgetProps> = ({
   amount,
+  noIcon = false,
   icon,
   symbol,
   decimals,
@@ -21,6 +23,10 @@ export const TokenWidget: React.FC<TokenWidgetProps> = ({
   const isValid = useIsValidImage(icon);
 
   function renderIcon() {
+    if (noIcon) {
+      return null;
+    }
+
     if (symbol === 'NEAR') {
       return (
         <div className={styles.icon}>

@@ -1,7 +1,7 @@
 @import 'styles/mixins';
 
 .root {
-  align-items: center;
+  align-items: flex-start;
   background: var(--color-neutral-10);
   border-bottom: 0.5px solid var(--color-brand-purple);
   border-left: 0.5px solid var(--color-brand-purple);
@@ -9,6 +9,7 @@
   border-right: 0.5px solid var(--color-brand-purple);
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   margin-left: 15px;
   margin-right: 15px;
@@ -19,6 +20,8 @@
   }
 
   @include tablet-landscape {
+    align-items: center;
+    flex-direction: row;
     padding: 22px 18px;
   }
 

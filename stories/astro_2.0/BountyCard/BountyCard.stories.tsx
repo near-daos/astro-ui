@@ -25,14 +25,6 @@ Template.storyName = 'BountyCard';
 
 Template.args = {
   showActionBar: true,
-  claimHandler: () => {
-    // eslint-disable-next-line no-console
-    console.log('test');
-  },
-  unclaimHandler: () => {
-    // eslint-disable-next-line no-console
-    console.log('test');
-  },
   completeHandler: () => {
     // eslint-disable-next-line no-console
     console.log('test');

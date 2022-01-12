@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 
 import { YOKTO_NEAR } from 'services/sputnik/constants';
 import { DATE_TIME_FORMAT } from 'constants/timeConstants';
+import BN from 'bn.js';
 
 export function formatYoktoValue(value: string, divider?: number): string {
   if (!value) {
@@ -56,4 +57,8 @@ export function shortenString(value: string, maxLength: number): string {
   const prefix = value.substring(0, maxLength - 4);
 
   return `${prefix}...${suffix}`;
+}
+
+export function formatGasValue(gas: string | number): BN {
+  return new BN(Number(gas) * 10 ** 15);
 }
