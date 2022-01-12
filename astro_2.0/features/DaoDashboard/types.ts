@@ -1,5 +1,5 @@
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
-import { DaoTokensStat, DaoTvl } from 'types/stats';
+import { DaoStatsState } from 'types/daoStats';
 
 export type StatData = {
   count: number;
@@ -7,9 +7,11 @@ export type StatData = {
 };
 
 export type DaoDashboardData = {
-  daoFundsOverTime?: ChartDataElement[];
-  daoTvl?: DaoTvl;
-  daoTokens?: DaoTokensStat;
+  state?: DaoStatsState;
+  funds?: ChartDataElement[];
+  bounties?: ChartDataElement[];
+  nfts?: ChartDataElement[];
+  proposals?: ChartDataElement[];
 };
 
 export type DashboardView = 'DAO_FUNDS' | 'BOUNTIES' | 'NFTS' | 'PROPOSALS';

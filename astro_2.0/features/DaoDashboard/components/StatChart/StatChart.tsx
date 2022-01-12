@@ -17,9 +17,13 @@ export const StatChart: FC<StatChartProps> = ({ data }) => {
 
   const { data: chartData } = useDomainControl(
     data.sort((a, b) => {
-      if (a.x > b.x) return 1;
+      if (a.x > b.x) {
+        return 1;
+      }
 
-      if (a.x < b.x) return -1;
+      if (a.x < b.x) {
+        return -1;
+      }
 
       return 0;
     }) || [],

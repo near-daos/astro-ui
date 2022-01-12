@@ -10,10 +10,10 @@ import { Dropdown } from 'components/Dropdown';
 import styles from './RangeToggle.module.scss';
 
 const TOGGLE_SET = [
-  {
-    label: '24H',
-    type: DOMAIN_RANGES.DAY,
-  },
+  // {
+  //   label: '24H',
+  //   type: DOMAIN_RANGES.DAY,
+  // },
   {
     label: '1W',
     type: DOMAIN_RANGES.WEEK,

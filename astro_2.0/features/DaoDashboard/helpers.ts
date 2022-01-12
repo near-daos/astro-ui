@@ -1,7 +1,8 @@
 import { Token } from 'types/token';
 import { getAccumulatedTokenValue } from 'features/treasury/helpers';
-import { CommonOverTime, FundsOverTime } from 'types/stats';
+import { CommonOverTime } from 'types/stats';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
+import { DaoStatsOvertime, DaoStatsProposalsOvertime } from 'types/daoStats';
 
 export function getFundsInUsdFromTokens(tokens: Record<string, Token>): string {
   const total = getAccumulatedTokenValue(tokens);
@@ -10,25 +11,37 @@ export function getFundsInUsdFromTokens(tokens: Record<string, Token>): string {
 }
 
 export function mapOvertimeToChartData(
-  data: FundsOverTime
+  data: DaoStatsOvertime[]
 ): ChartDataElement[] {
-  let prevBalance = 0;
-
   return (
-    data?.metrics?.map(item => {
+    data.map(item => {
       const x = new Date(item.timestamp);
-      const income = Number(item.incoming);
-      const outcome = Number(item.outgoing);
-
-      const balance = prevBalance + income - outcome;
-
-      prevBalance = balance;
+      const y = item.value;
 
       return {
         x,
-        y: balance,
+        y,
       };
     }) ?? []
+  );
+}
+
+export function mapProposalsOvertimeToChartData(
+  data: DaoStatsProposalsOvertime[]
+): ChartDataElement[] {
+  return (
+    data.reduce<ChartDataElement[]>((res, item) => {
+      const x = new Date(item.timestamp);
+      const { active, total } = item;
+
+      res.push({
+        x,
+        y: active,
+        y2: total,
+      });
+
+      return res;
+    }, []) ?? []
   );
 }
 

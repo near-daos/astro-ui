@@ -6,28 +6,19 @@ import { StatCard } from 'astro_2.0/features/DaoDashboard/components/StatCard';
 import { StatPanel } from 'astro_2.0/features/DaoDashboard/components/StatPanel';
 import { StatChart } from 'astro_2.0/features/DaoDashboard/components/StatChart';
 import { DashboardChart } from 'astro_2.0/features/DaoDashboard/components/DashboardChart';
-import { getFundsInUsdFromTokens } from 'astro_2.0/features/DaoDashboard/helpers';
 import { Loader } from 'components/loader';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import { useDaoDashboardData } from 'astro_2.0/features/DaoDashboard/hooks';
-
-import { DAO } from 'types/dao';
-import { Token } from 'types/token';
+import { formatCurrency } from 'utils/formatCurrency';
 
 import styles from './DaoDashboard.module.scss';
 
 interface DaoDashboardProps {
-  dao: DAO;
-  daoTokens: Record<string, Token>;
   className?: string;
 }
 
-export const DaoDashboard: FC<DaoDashboardProps> = ({
-  dao,
-  daoTokens,
-  className,
-}) => {
+export const DaoDashboard: FC<DaoDashboardProps> = ({ className }) => {
   const { t } = useTranslation();
   const {
     chartData,
@@ -39,7 +30,13 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
 
   function renderChart() {
     if (chartData) {
-      return <DashboardChart key={activeView} data={chartData} />;
+      return (
+        <DashboardChart
+          key={activeView}
+          activeView={activeView}
+          data={chartData}
+        />
+      );
     }
 
     if (loading) {
@@ -59,11 +56,13 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
       >
         <StatPanel
           title={t('daoDashboard.daoFunds')}
-          value={getFundsInUsdFromTokens(daoTokens)}
-          trend={0}
+          value={`${formatCurrency(
+            dashboardData.state?.totalDaoFunds.value ?? 0
+          )} USD`}
+          trend={dashboardData.state?.totalDaoFunds.growth}
         />
-        {!!dashboardData.daoFundsOverTime?.length && (
-          <StatChart data={dashboardData.daoFundsOverTime} />
+        {!!dashboardData.funds && dashboardData.funds.length && (
+          <StatChart data={dashboardData.funds} />
         )}
       </StatCard>
       <StatCard
@@ -73,8 +72,8 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
       >
         <StatPanel
           title={t('daoDashboard.bounties')}
-          value={dashboardData.daoTvl?.bounties.number.count}
-          trend={dashboardData.daoTvl?.bounties.number.growth ?? 0}
+          value={dashboardData.state?.bountyCount.value}
+          trend={dashboardData.state?.bountyCount.growth}
         />
       </StatCard>
       <StatCard
@@ -84,8 +83,8 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
       >
         <StatPanel
           title={t('daoDashboard.nfts')}
-          value={dashboardData.daoTokens?.nfts.count}
-          trend={dashboardData.daoTokens?.nfts.growth ?? 0}
+          value={dashboardData.state?.nftCount.value}
+          trend={dashboardData.state?.nftCount.growth}
         />
       </StatCard>
       <StatCard
@@ -95,13 +94,13 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({
       >
         <StatPanel
           title={t('daoDashboard.activeProposals')}
-          value={dao.activeProposalsCount}
-          trend={0}
+          value={dashboardData.state?.activeProposalCount.value}
+          trend={dashboardData.state?.activeProposalCount.growth}
         />
         <StatPanel
           title={t('daoDashboard.proposalsInTotal')}
-          value={dao.totalProposalsCount}
-          trend={0}
+          value={dashboardData.state?.totalProposalCount.value}
+          trend={dashboardData.state?.totalProposalCount.growth}
         />
       </StatCard>
     </div>
