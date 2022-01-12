@@ -4,7 +4,11 @@
   align-items: center;
   display: flex;
   justify-content: flex-end;
-  min-width: 80px;
+  min-width: 64px;
+
+  @include tablet-landscape {
+    min-width: 80px;
+  }
 }
 
 .value {

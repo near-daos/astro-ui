@@ -16,7 +16,7 @@
     'content'
     'voteControl';
   grid-template-columns: 1fr;
-  padding: 22px 30px;
+  padding: 22px 20px;
   position: relative;
   transition: box-shadow 0.3s ease-out;
   z-index: 1;
@@ -28,6 +28,7 @@
       'description description description'
       'content content voteControl';
     grid-template-columns: 1fr 1fr 1fr;
+    padding: 22px 30px;
   }
 
   &.clickable {
@@ -70,7 +71,11 @@
   align-items: flex-end;
   display: flex;
   grid-area: voteControl;
-  justify-content: flex-end;
+  justify-content: space-between;
+
+  @include tablet-landscape {
+    justify-content: flex-end;
+  }
 }
 
 .proposalStatusSeal {

@@ -8,6 +8,14 @@ $path2: 'M382.266 47.8082C381.167 45.2197 378.909 43.1154 375.47 41.5225C372.025
   @include centralize;
   flex-direction: column;
   min-height: 70vh;
+
+  svg {
+    width: 300px;
+  }
+}
+
+.title {
+  text-align: center;
 }
 
 .subtitle {
