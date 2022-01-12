@@ -123,10 +123,6 @@ async function getTransferProposal(
 ): Promise<CreateProposalParams> {
   const token = Object.values(tokens).find(item => item.symbol === data.token);
 
-  if (token?.tokenId) {
-    await SputnikNearService.registerUserToToken(token.tokenId, data.target);
-  }
-
   if (!token) {
     throw new Error('No tokens data found');
   }
