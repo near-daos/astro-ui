@@ -32,13 +32,20 @@ export const NotificationsBell: VFC<NotificationsBellProps> = ({
       isEmpty(notifications) ||
       !notifications.filter(item => !item.isRead).length
     ) {
-      return <Icon name="noteBell" className={styles.bell} />;
+      return (
+        <Icon
+          name="noteBell"
+          className={styles.bell}
+          data-testid="no-notifications-icon"
+        />
+      );
     }
 
     return (
       <Icon
-        name={isHovered ? 'noteBellActiveHover' : 'noteBellActive'}
         className={styles.bell}
+        data-testid="notifications-icon"
+        name={isHovered ? 'noteBellActiveHover' : 'noteBellActive'}
       />
     );
   }

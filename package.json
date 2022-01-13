@@ -23,7 +23,9 @@
       "hooks/**/*.{ts,tsx}",
       "pages/**/*.{ts,tsx}",
       "services/**/*.{ts,tsx}",
-      "utils/**/*.{ts,tsx}"
+      "utils/**/*.{ts,tsx}",
+      "!**/index.ts",
+      "!**/types/*.ts"
     ]
   },
   "version": "0.1.0",
