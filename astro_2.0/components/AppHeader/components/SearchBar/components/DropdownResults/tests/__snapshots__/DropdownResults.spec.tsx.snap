@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`search results dropdown Should render component 1`] = `
+<div>
+  <div
+    style="width: 100px;"
+  >
+    <div
+      class=""
+    >
+      <div
+        class=""
+      />
+      <div>
+        No results
+      </div>
+      <div>
+        We couldn't find anything matching your search. Try again with a different term.
+      </div>
+    </div>
+  </div>
+</div>
+`;
