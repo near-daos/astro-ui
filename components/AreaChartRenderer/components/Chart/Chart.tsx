@@ -106,13 +106,13 @@ export const Chart: React.FC<ChartProps> = ({
     >
       <defs>
         <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="5%" stopColor="#6038d0" stopOpacity={0.8} />
-          <stop offset="40%" stopColor="#6038d0" stopOpacity={0.45} />
+          <stop offset="5%" stopColor="#6038d0" stopOpacity={0.45} />
+          <stop offset="40%" stopColor="#6038d0" stopOpacity={0.25} />
           <stop offset="100%" stopColor="#8884d8" stopOpacity={0.085} />
         </linearGradient>
         <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="5%" stopColor="#19D992" stopOpacity={0.8} />
-          <stop offset="40%" stopColor="#19D992" stopOpacity={0.45} />
+          <stop offset="5%" stopColor="#19D992" stopOpacity={0.45} />
+          <stop offset="40%" stopColor="#19D992" stopOpacity={0.25} />
           <stop offset="100%" stopColor="#19D992" stopOpacity={0.085} />
         </linearGradient>
       </defs>

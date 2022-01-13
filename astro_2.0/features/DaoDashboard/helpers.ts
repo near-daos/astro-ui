@@ -16,6 +16,10 @@ export function mapOvertimeToChartData(
   return (
     data.map(item => {
       const x = new Date(item.timestamp);
+      const utcDay = x.getUTCDate();
+
+      x.setDate(utcDay);
+
       const y = item.value;
 
       return {
@@ -32,6 +36,10 @@ export function mapProposalsOvertimeToChartData(
   return (
     data.reduce<ChartDataElement[]>((res, item) => {
       const x = new Date(item.timestamp);
+      const utcDay = x.getUTCDate();
+
+      x.setDate(utcDay);
+
       const { active, total } = item;
 
       res.push({
