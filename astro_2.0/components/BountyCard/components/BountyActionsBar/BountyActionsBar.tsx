@@ -1,5 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
+import { SubmitHandler, useFormContext } from 'react-hook-form';
 
 import { BountyStatus } from 'types/bounties';
 import { TooltipMessageSeverity } from 'astro_2.0/components/InfoBlockWidget/types';
@@ -19,21 +20,21 @@ interface BountyActionsBarProps {
   bountyBond: string;
   forgivenessPeriod: string;
   bountyStatus: BountyStatus;
-  claimHandler: () => void;
-  unclaimHandler: () => void;
-  completeHandler: () => void;
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  unclaimHandler: SubmitHandler<any>;
+  completeHandler: SubmitHandler<any>;
 }
 
 export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
   bountyStatus,
   bountyBond,
   forgivenessPeriod,
-  claimHandler,
   unclaimHandler,
   completeHandler,
   canClaim,
 }) => {
-  const [, graceValue, graceTimeUnit] = getDistanceFromNow(
+  const { handleSubmit } = useFormContext();
+  const [graceValue, graceTimeUnit] = getDistanceFromNow(
     forgivenessPeriod
   ).split(' ');
 
@@ -49,14 +50,16 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
     if (bountyStatus === 'Available') {
       if (canClaim) {
         return (
-          <Button
-            variant="black"
-            size="small"
-            onClick={claimHandler}
-            className={cn(styles.claim, styles.button)}
-          >
-            Claim
-          </Button>
+          <div className={styles.buttonsWrapper}>
+            <Button
+              variant="black"
+              size="small"
+              type="submit"
+              className={cn(styles.claim, styles.button)}
+            >
+              Claim
+            </Button>
+          </div>
         );
       }
 
@@ -64,11 +67,12 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
     }
 
     return (
-      <>
+      <div className={styles.buttonsWrapper}>
         <Button
           variant="secondary"
           size="small"
-          onClick={unclaimHandler}
+          type="submit"
+          onClick={handleSubmit(unclaimHandler)}
           className={cn(styles.unclaim, styles.button)}
         >
           Unclaim
@@ -77,18 +81,19 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
         <Button
           variant="black"
           size="small"
-          onClick={completeHandler}
+          onClick={handleSubmit(completeHandler)}
           className={cn(styles.complete, styles.button)}
         >
           Complete
         </Button>
-      </>
+      </div>
     );
   }
 
   return (
     <CardFooter>
       <InfoBlockWidget
+        className={styles.actionBarItem}
         label="Bond"
         value={
           <InfoValue value={formatYoktoValue(bountyBond, 24)} label="NEAR" />
@@ -108,8 +113,10 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
         }
         messageSeverity={tooltipSeverity[bountyStatus]}
       />
+
       {bountyStatus === 'Available' && (
         <InfoBlockWidget
+          className={styles.actionBarItem}
           label="Grace"
           value={<InfoValue value={graceValue} label={graceTimeUnit} />}
           tooltip={
@@ -124,6 +131,7 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
           messageSeverity={TooltipMessageSeverity.Info}
         />
       )}
+
       {renderButtons()}
     </CardFooter>
   );

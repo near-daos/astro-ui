@@ -4,6 +4,7 @@ import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 
 import { appConfig } from 'config';
+import { formatGasValue } from 'utils/format';
 
 import { CreateProposalParams } from 'types/proposal';
 
@@ -53,7 +54,7 @@ export class SputnikDaoService {
         name: params.name,
         args,
       },
-      gas: new BN(Number(params.gas) * 10 ** 15),
+      gas: formatGasValue(params.gas),
       attachedDeposit: amount,
     });
   }
@@ -78,7 +79,7 @@ export class SputnikDaoService {
           kind: kindData,
         },
       },
-      gas: new BN((gas ?? DEFAULT_PROPOSAL_GAS) * 10 ** 15),
+      gas: formatGasValue(gas ?? DEFAULT_PROPOSAL_GAS),
       attachedDeposit: new BN(bond),
     });
   }
@@ -113,7 +114,7 @@ export class SputnikDaoService {
         id: proposalId,
         action,
       },
-      gas: gas ? new BN(Number(gas) * 10 ** 15) : GAS_VALUE,
+      gas: gas ? formatGasValue(gas) : GAS_VALUE,
     });
   }
 
@@ -134,7 +135,7 @@ export class SputnikDaoService {
   public async claimBounty(
     params: ClaimBountyParams
   ): Promise<FinalExecutionOutcome> {
-    const { daoId, bountyId: id, deadline, bountyBond } = params;
+    const { daoId, bountyId: id, deadline, bountyBond, gas } = params;
 
     return this.functionCall({
       methodName: 'bounty_claim',
@@ -143,14 +144,15 @@ export class SputnikDaoService {
         id,
         deadline,
       },
-      gas: GAS_VALUE,
+      gas: gas ? formatGasValue(gas) : GAS_VALUE,
       attachedDeposit: new BN(bountyBond),
     });
   }
 
   public unclaimBounty(
     daoId: string,
-    bountyId: string
+    bountyId: string,
+    gas: string | number
   ): Promise<FinalExecutionOutcome> {
     return this.functionCall({
       methodName: 'bounty_giveup',
@@ -158,7 +160,7 @@ export class SputnikDaoService {
       args: {
         id: bountyId,
       },
-      gas: GAS_VALUE,
+      gas: gas ? formatGasValue(gas) : GAS_VALUE,
     });
   }
 }
