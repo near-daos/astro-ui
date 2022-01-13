@@ -17,10 +17,6 @@
   padding: 0 20px 16px;
   width: 100%;
 
-  @include tablet-portrait {
-    flex-direction: row;
-  }
-
   @include astro-desktop {
     align-items: flex-start;
     flex-direction: column;

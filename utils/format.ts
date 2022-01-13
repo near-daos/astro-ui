@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 
 import { YOKTO_NEAR } from 'services/sputnik/constants';
 import { DATE_TIME_FORMAT } from 'constants/timeConstants';
+import BN from 'bn.js';
 
 export function formatYoktoValue(value: string, divider?: number): string {
   if (!value) {
@@ -22,7 +23,7 @@ export const formatTimestampAsDate = (time: string): string => {
   return format(date, DATE_TIME_FORMAT);
 };
 
-export function kFormatter(n: number): string {
+export function kFormatter(n: number, toFixed = 0): string {
   if (n === undefined) {
     return '0';
   }
@@ -39,7 +40,7 @@ export function kFormatter(n: number): string {
     return `${(n / 1000).toFixed(1).replace(/\.0$/, '')}K`;
   }
 
-  return `${n.toFixed(1)}`;
+  return `${n.toFixed(toFixed)}`;
 }
 
 export function shortenString(value: string, maxLength: number): string {
@@ -56,4 +57,8 @@ export function shortenString(value: string, maxLength: number): string {
   const prefix = value.substring(0, maxLength - 4);
 
   return `${prefix}...${suffix}`;
+}
+
+export function formatGasValue(gas: string | number): BN {
+  return new BN(Number(gas) * 10 ** 15);
 }

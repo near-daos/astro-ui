@@ -35,7 +35,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
         <div key={`item-${element.dataKey}-${element.value}`}>
           <Dot color={element.color || ''} className={styles.dot} />
           <span className={styles.value}>
-            {kFormatter(Number(element.value?.toFixed(4)))} {dataType}
+            {kFormatter(Number(element.value?.toFixed(4)), 1)} {dataType}
           </span>
         </div>
       ))}

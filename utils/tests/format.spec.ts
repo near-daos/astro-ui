@@ -45,9 +45,13 @@ describe('format', () => {
     });
 
     it('Should not shorten numbers that are less than 1000', () => {
-      expect(kFormatter(999)).toStrictEqual('999.0');
-      expect(kFormatter(1)).toStrictEqual('1.0');
-      expect(kFormatter(777.777)).toStrictEqual('777.8');
+      expect(kFormatter(999)).toStrictEqual('999');
+      expect(kFormatter(1)).toStrictEqual('1');
+      expect(kFormatter(777.777)).toStrictEqual('778');
+    });
+
+    it('Should format numbers as defined in params', () => {
+      expect(kFormatter(777.777, 1)).toStrictEqual('777.8');
     });
   });
 

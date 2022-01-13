@@ -70,12 +70,7 @@ const DAOHome: NextPage<DaoHomeProps> = ({
         />
       </div>
 
-      <DaoDashboard
-        key={`dashboard_${dao.id}`}
-        dao={dao}
-        daoTokens={daoTokens}
-        className={styles.dashboard}
-      />
+      <DaoDashboard key={`dashboard_${dao.id}`} className={styles.dashboard} />
     </div>
   );
 };

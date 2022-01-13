@@ -1,10 +1,7 @@
 import React, { VFC } from 'react';
 import { useDebounce } from 'react-use';
-import { useFormContext } from 'react-hook-form';
 
 import { nearConfig } from 'config';
-
-import { SputnikNearService } from 'services/sputnik';
 
 import { formatDaoAddress } from 'astro_2.0/features/CreateDao/components/DaoNameForm/helpers';
 
@@ -17,20 +14,6 @@ interface DaoAddressProps {
 }
 
 export const DaoAddress: VFC<DaoAddressProps> = ({ displayName, onChange }) => {
-  const { setError } = useFormContext();
-
-  async function validateAddress(address: string) {
-    const daoAddressExists = await SputnikNearService.nearAccountExist(
-      `${address}.${nearConfig.contractName}`
-    );
-
-    if (daoAddressExists) {
-      setError('address', {
-        message: 'Dao with such address already exists.',
-      });
-    }
-  }
-
   useDebounce(
     () => {
       const address = formatDaoAddress(displayName);
@@ -40,8 +23,6 @@ export const DaoAddress: VFC<DaoAddressProps> = ({ displayName, onChange }) => {
           value: address,
         },
       });
-
-      validateAddress(address);
     },
     300,
     [displayName]

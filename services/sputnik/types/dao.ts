@@ -24,4 +24,5 @@ export interface ClaimBountyParams {
   bountyId: number;
   deadline: string;
   bountyBond: string;
+  gas?: string | number;
 }

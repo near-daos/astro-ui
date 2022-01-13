@@ -25,6 +25,7 @@ type LineItem = {
   name: string;
   color: string;
   dataKey: string;
+  gradient: string;
 };
 
 interface ChartProps {
@@ -47,6 +48,7 @@ const COLORS = {
   GRID: '#d9d9d9',
   AXIS: '#281f1f',
   AREA: '#6038d0',
+  AREA2: '#6038d0',
   TOOLTIP: '#c1b0f1',
 };
 
@@ -90,10 +92,10 @@ export const Chart: React.FC<ChartProps> = ({
     </g>
   );
 
-  const max = Math.max.apply(
-    null,
-    data.map(entry => entry.y)
-  );
+  const max = Math.max.apply(null, [
+    ...data.map(entry => entry.y),
+    ...data.map(entry => entry.y2 ?? 0),
+  ]);
 
   return (
     <AreaChart
@@ -104,24 +106,25 @@ export const Chart: React.FC<ChartProps> = ({
     >
       <defs>
         <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-          <stop offset="40%" stopColor="#8884d8" stopOpacity={0.45} />
+          <stop offset="5%" stopColor="#6038d0" stopOpacity={0.45} />
+          <stop offset="40%" stopColor="#6038d0" stopOpacity={0.25} />
           <stop offset="100%" stopColor="#8884d8" stopOpacity={0.085} />
         </linearGradient>
         <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-          <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+          <stop offset="5%" stopColor="#19D992" stopOpacity={0.45} />
+          <stop offset="40%" stopColor="#19D992" stopOpacity={0.25} />
+          <stop offset="100%" stopColor="#19D992" stopOpacity={0.085} />
         </linearGradient>
       </defs>
       <CartesianGrid stroke={COLORS.GRID} vertical={false} />
       <YAxis
         type="number"
         stroke={COLORS.AXIS}
-        domain={[0, max + max * 0.1]}
+        domain={[0, max !== 0 ? max + max * 0.1 : 4]}
         tickMargin={1}
         interval={0}
         tickLine={false}
-        tickFormatter={value => kFormatter(value)}
+        tickFormatter={value => kFormatter(value, 1)}
         style={tickStyles}
       />
       <XAxis
@@ -141,9 +144,9 @@ export const Chart: React.FC<ChartProps> = ({
           dot={false}
           dataKey={filterLine.dataKey}
           type="monotone"
-          stroke={COLORS.AREA}
+          stroke={filterLine.color}
           fillOpacity={1}
-          fill="url(#colorUv)"
+          fill={`url(#${filterLine.gradient})`}
           key={filterLine.name}
           activeDot={renderActiveDot}
         />

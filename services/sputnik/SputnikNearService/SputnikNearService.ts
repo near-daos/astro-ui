@@ -230,13 +230,22 @@ class SputnikNearServiceClass {
 
   public async claimBounty(
     daoId: string,
-    args: { bountyId: number; deadline: string; bountyBond: string }
+    args: {
+      bountyId: number;
+      deadline: string;
+      bountyBond: string;
+      gas?: string | number;
+    }
   ) {
     return this.sputnikDaoService.claimBounty({ daoId, ...args });
   }
 
-  public async unclaimBounty(daoId: string, bountyId: string) {
-    return this.sputnikDaoService.unclaimBounty(daoId, bountyId);
+  public async unclaimBounty(
+    daoId: string,
+    bountyId: string,
+    gas: string | number
+  ) {
+    return this.sputnikDaoService.unclaimBounty(daoId, bountyId, gas);
   }
 
   public async finalize(

@@ -78,6 +78,7 @@ export const AreaChartRenderer: FC<AreaChartProps> = ({
                   name: 'tvl',
                   color: 'red',
                   dataKey: 'y',
+                  gradient: 'colorUv',
                 },
               ]}
             />

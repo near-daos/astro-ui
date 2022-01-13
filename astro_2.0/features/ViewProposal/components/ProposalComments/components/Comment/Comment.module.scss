@@ -9,10 +9,14 @@
   height: fit-content;
   margin-bottom: 42px;
   //margin-top: auto;
-  max-width: 60%;
+  max-width: 100%;
   padding: 12px;
   position: relative;
   width: fit-content;
+
+  @include tablet-landscape {
+    max-width: 60%;
+  }
 
   &:first-of-type {
     margin-top: auto;
@@ -119,7 +123,12 @@
 .inlineImage {
   display: block;
   margin: 8px 0;
-  max-height: 200px;
-  max-width: 300px;
+  max-height: 140px;
+  max-width: 200px;
   object-fit: contain;
+
+  @include tablet-landscape {
+    max-height: 200px;
+    max-width: 300px;
+  }
 }
