@@ -35,7 +35,7 @@ export const TokenWidget: React.FC<TokenWidgetProps> = ({
       );
     }
 
-    if (isValid) {
+    if (isValid && !noIcon) {
       return (
         <div
           style={{
@@ -52,7 +52,7 @@ export const TokenWidget: React.FC<TokenWidgetProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.amount}>{formatYoktoValue(amount, decimals)}</div>
-      {renderIcon()}
+      {!noIcon && renderIcon()}
       <div className={styles.symbol}>{symbol}</div>
     </div>
   );
