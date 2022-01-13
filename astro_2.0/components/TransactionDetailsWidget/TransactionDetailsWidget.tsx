@@ -84,7 +84,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={cn(styles.root, { [styles.topBorder]: standAloneMode })}>
+      <div className={cn(styles.root, { [styles.wholeCard]: standAloneMode })}>
         {renderWarning()}
         <div className={styles.mainContent}>
           <div className={styles.transactionDetails}>
@@ -138,7 +138,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
                   placeholder="0.25"
                   defaultValue={formatYoktoValue(bond.value)}
                   isBorderless
-                  size="block"
+                  size="content"
                 />
                 <div className={styles.tokenLabel}>NEAR</div>
               </div>
@@ -148,7 +148,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
             type="submit"
             size="medium"
             variant="black"
-            className={styles.createDao}
+            className={styles.createButton}
           >
             {buttonLabel}
           </Button>
