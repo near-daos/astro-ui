@@ -74,7 +74,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   } = content;
   const router = useRouter();
   const { t } = useTranslation();
-  const daoId = router.query.dao as string;
+  const daoId = dao.id;
   const methods = useForm<DAOFormValues>({
     mode: 'all',
     reValidateMode: 'onChange',

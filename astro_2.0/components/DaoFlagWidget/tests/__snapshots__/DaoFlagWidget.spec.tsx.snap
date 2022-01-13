@@ -47,7 +47,9 @@ exports[`dao flag widget Should render component 1`] = `
       class=""
     >
       <div>
-        <div>
+        <div
+          class=""
+        >
           DAO name
         </div>
       </div>
