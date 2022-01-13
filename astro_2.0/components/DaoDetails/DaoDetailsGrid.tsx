@@ -16,7 +16,7 @@ import { ActionButton } from 'features/proposal/components/action-button';
 import * as Typography from 'components/Typography';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
-import { DaoDetailsSceleton } from 'astro_2.0/components/DaoDetails/components/DaoDetailsSceleton';
+import { DaoDetailsSkeleton } from 'astro_2.0/components/DaoDetails/components/DaoDetailsSkeleton';
 
 import { shortenString } from 'utils/format';
 
@@ -60,7 +60,7 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
   return (
     <div className={styles.root} ref={measureRef}>
       {loading ? (
-        <DaoDetailsSceleton />
+        <DaoDetailsSkeleton />
       ) : (
         <Link href={`/dao/${id}`}>
           <a className={styles.content}>
