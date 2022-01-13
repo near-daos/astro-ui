@@ -4,8 +4,12 @@
 .root {
   @include card-shadow;
   background-color: var(--color-neutral-10);
-  padding: 24px;
+  padding: 24px 0;
   width: 100%;
+
+  @include tablet-portrait {
+    padding: 24px;
+  }
 
   @include desktop {
     height: 100%;
@@ -17,9 +21,11 @@
     @include font(1em, 24px, 700);
     font-family: var(--font-family-primary);
     margin: 0 0 24px;
+    padding: 0 24px;
 
     @include tablet-portrait {
       margin: 0 0 36px;
+      padding: 0;
     }
   }
 }
@@ -60,20 +66,36 @@
 
   @include tablet-portrait {
     width: 70%;
+
     &:last-of-type {
-      width: 15%;
+      width: 30%;
     }
   }
 
   @include large-desktop {
     width: 50%;
+
     &:last-of-type {
       width: 50%;
     }
   }
 
   &:first-of-type {
-    margin-right: 24px;
+    @include tablet-portrait {
+      margin-right: 24px;
+    }
+  }
+
+  &:first-of-type div {
+    margin-right: 0;
+  }
+
+  &:last-of-type {
+    padding: 0 24px;
+
+    @include tablet-portrait {
+      padding: 0;
+    }
   }
 }
 
