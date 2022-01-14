@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Comment Should render Comment component 1`] = `
+<div>
+  <div>
+    <span
+      class="indicatorClassName"
+    />
+    <span>
+      DAO funds
+    </span>
+  </div>
+</div>
+`;

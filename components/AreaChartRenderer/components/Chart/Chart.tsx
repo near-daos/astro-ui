@@ -35,6 +35,7 @@ interface ChartProps {
   data: LineDataPoint[] | undefined;
   period: Range;
   tokenName?: string;
+  isIntegerDataset?: boolean;
 }
 
 const tickStyles = {
@@ -59,6 +60,7 @@ export const Chart: React.FC<ChartProps> = ({
   height = 340,
   period,
   tokenName,
+  isIntegerDataset = false,
 }) => {
   const isMobile = useMedia('(max-width: 768px)');
   const renderActiveDot = ({
@@ -124,7 +126,7 @@ export const Chart: React.FC<ChartProps> = ({
         tickMargin={1}
         interval={0}
         tickLine={false}
-        tickFormatter={value => kFormatter(value, 1)}
+        tickFormatter={value => kFormatter(value, isIntegerDataset ? 0 : 1)}
         style={tickStyles}
       />
       <XAxis
@@ -161,6 +163,7 @@ export const Chart: React.FC<ChartProps> = ({
             viewBox={viewBox}
             coordinate={coordinate}
             offset={offset}
+            isIntegerDataset={isIntegerDataset}
           />
         )}
         cursor={{
