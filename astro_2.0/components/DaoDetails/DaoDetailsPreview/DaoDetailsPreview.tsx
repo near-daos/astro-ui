@@ -1,13 +1,15 @@
 import React, { FC } from 'react';
-import { DAOPreview } from 'types/dao';
-import { ProposalTrackerCard } from 'astro_2.0/components/DaoDetails/components/ProposalTrackerCard';
-import { DaoGeneralCard } from 'astro_2.0/components/DaoDetails/components/DaoGeneralCard';
-import { ActionButton } from 'features/proposal/components/action-button';
-
+import classNames from 'classnames';
 import { useTranslation } from 'next-i18next';
 
-import classNames from 'classnames';
-import styles from './DaoDetails.module.scss';
+import { DAOPreview } from 'types/dao';
+
+import { ActionButton } from 'features/proposal/components/action-button';
+
+import { DaoGeneralCard } from './components/DaoGeneralCard';
+import { ProposalTrackerCard } from './components/ProposalTrackerCard';
+
+import styles from './DaoDetailsPreview.module.scss';
 
 export interface DaoDetailsPreviewProps {
   dao: DAOPreview;

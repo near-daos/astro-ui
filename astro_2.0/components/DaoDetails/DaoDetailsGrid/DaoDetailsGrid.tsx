@@ -10,15 +10,16 @@ import { GROUPS_PAGE_URL } from 'constants/routing';
 
 import { DAO } from 'types/dao';
 
-import { DaoInfoCard } from 'astro_2.0/components/DaoDetails/components/DaoInfoCard';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ActionButton } from 'features/proposal/components/action-button';
 import * as Typography from 'components/Typography';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
-import { DaoDetailsSkeleton } from 'astro_2.0/components/DaoDetails/components/DaoDetailsSkeleton';
 
 import { shortenString } from 'utils/format';
+
+import { DaoInfoCard } from './components/DaoInfoCard';
+import { DaoDetailsSkeleton } from './components/DaoDetailsSkeleton';
 
 import styles from './DaoDetailsGrid.module.scss';
 

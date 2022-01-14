@@ -25,7 +25,8 @@
       "services/**/*.{ts,tsx}",
       "utils/**/*.{ts,tsx}",
       "!**/index.ts",
-      "!**/types/*.ts"
+      "!**/types/*.ts",
+      "!**/tests/*.{ts,tsx}"
     ]
   },
   "version": "0.1.0",
