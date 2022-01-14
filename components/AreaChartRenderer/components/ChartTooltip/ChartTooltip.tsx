@@ -14,6 +14,7 @@ export interface ChartTooltipProps extends TooltipProps<number, string> {
   showArrow?: boolean;
   dataType?: string;
   payload: Payload[] | undefined;
+  isIntegerDataset?: boolean;
 }
 
 export const ChartTooltip: React.FC<ChartTooltipProps> = ({
@@ -21,6 +22,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
   payload,
   label,
   dataType,
+  isIntegerDataset = false,
 }) => {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -35,7 +37,11 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
         <div key={`item-${element.dataKey}-${element.value}`}>
           <Dot color={element.color || ''} className={styles.dot} />
           <span className={styles.value}>
-            {kFormatter(Number(element.value?.toFixed(4)), 1)} {dataType}
+            {kFormatter(
+              Number(element.value?.toFixed(4)),
+              isIntegerDataset ? 0 : 1
+            )}{' '}
+            {dataType}
           </span>
         </div>
       ))}
