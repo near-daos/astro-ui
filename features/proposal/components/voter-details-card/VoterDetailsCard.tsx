@@ -45,7 +45,7 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
       break;
     }
     default: {
-      icon = 'buttonMore';
+      icon = 'notVoted';
     }
   }
 
@@ -67,13 +67,7 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
           [styles.notVoted]: vote === null,
         })}
       >
-        <Icon
-          width={24}
-          name={icon as IconName}
-          className={cn({
-            [styles.rotate]: vote === null,
-          })}
-        />
+        <Icon width={24} name={icon as IconName} />
       </div>
       <div className={styles.name}>{name}</div>
       <div className={styles.groups}>
