@@ -55,7 +55,8 @@
   },
 
   "notifications": {
-    "transactionDelay": "The blockchain transactions might take some time to perform, please visit DAO details page in few seconds."
+    "transactionDelay": "The blockchain transactions might take some time to perform, please visit DAO details page in few seconds.",
+    "noArchivedNotifications": "There are no archived notifications yet"
   },
 
   "components": {
