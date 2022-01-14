@@ -100,7 +100,7 @@ export const ArchivedNotifications: FC = () => {
             <NoResultsView
               title={
                 isEmpty(notifications?.data)
-                  ? t('noProposalsHere')
+                  ? t('notifications.noArchivedNotifications')
                   : t('noMoreResults')
               }
             />
