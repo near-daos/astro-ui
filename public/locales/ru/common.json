@@ -324,5 +324,21 @@
       "groupFunctionCall": "Вызов функций",
       "proposeCustomCall": "Вызов собственной функции"
     }
+  },
+
+  "settingsPage": {
+    "daoPolicy": "Политика ДАО",
+    "nameAndPurpose": "Название и назначение",
+    "legalStatusAndDoc": "Правовой статус и документы",
+    "links": "Ссылки",
+    "flagAndLogo": "Флаг и логотип",
+    "groupNames": "Имена групп",
+    "proposalCreation": "Создание предложения",
+    "votingPolicy": "Политика голосования",
+    "votingPermissions": "Право голоса",
+    "bondAndDeadlines": "Залог и дедлайн",
+    "groups": "Группы",
+    "members": "Участники",
+    "daoRules": "Правила ДАО"
   }
 }
