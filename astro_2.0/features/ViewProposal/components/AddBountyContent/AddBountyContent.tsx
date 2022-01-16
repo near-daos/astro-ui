@@ -9,6 +9,7 @@ import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { formatYoktoValue } from 'utils/format';
 import { useIsValidImage } from 'hooks/useIsValidImage';
+import { useTranslation } from 'next-i18next';
 
 import styles from './AddBountyContent.module.scss';
 
@@ -25,6 +26,8 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
   deadlineThreshold,
   token,
 }) => {
+  const { t } = useTranslation();
+
   const { tokens } = useCustomTokensContext();
 
   const tokenData = token ? tokens[token] : tokens.NEAR;
@@ -53,7 +56,7 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.inline}>
-        <FieldWrapper label="Amount">
+        <FieldWrapper label={t('proposalCard.proposalAmount')}>
           {tokenData ? (
             <FieldValue value={formatYoktoValue(amount, tokenData.decimals)} />
           ) : (
@@ -75,11 +78,11 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
       </div>
       <div className={styles.divider} />
       <div className={styles.inline}>
-        <FieldWrapper label="Available Claims">
+        <FieldWrapper label={t('proposalCard.bountyAvailableClaims')}>
           <FieldValue value={slots} />
         </FieldWrapper>
         <div className={styles.divider} />
-        <FieldWrapper label="Days to Complete">
+        <FieldWrapper label={t('proposalCard.bountyDaysToComplete')}>
           <FieldValue value={deadlineThreshold} />
         </FieldWrapper>
       </div>

@@ -8,6 +8,7 @@ import {
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { formatYoktoValue } from 'utils/format';
 import { useIsValidImage } from 'hooks/useIsValidImage';
+import { useTranslation } from 'next-i18next';
 
 import styles from './TransferContent.module.scss';
 
@@ -22,6 +23,8 @@ export const TransferContent: FC<TransferContentProps> = ({
   target,
   token,
 }) => {
+  const { t } = useTranslation();
+
   const { tokens } = useCustomTokensContext();
 
   const tokenData = token ? tokens[token] : tokens.NEAR;
@@ -49,7 +52,7 @@ export const TransferContent: FC<TransferContentProps> = ({
 
   return (
     <div className={styles.root}>
-      <FieldWrapper label="Amount">
+      <FieldWrapper label={t('proposalCard.proposalAmount')}>
         {tokenData ? (
           <FieldValue
             value={formatYoktoValue(amount, tokenData.decimals)}
@@ -71,7 +74,7 @@ export const TransferContent: FC<TransferContentProps> = ({
           )}
         </div>
       </FieldWrapper>
-      <FieldWrapper label="Target">
+      <FieldWrapper label={t('proposalCard.proposalTarget')}>
         <FieldValue value={target} />
       </FieldWrapper>
     </div>

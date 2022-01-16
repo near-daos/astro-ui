@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import TextTruncate from 'react-text-truncate';
+import { useTranslation } from 'next-i18next';
 
 import {
   FieldValue,
@@ -19,9 +20,11 @@ export const ChangeLinksContent: FC<ChangeLinksContentProps> = ({
   daoId,
   links,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
-      <FieldWrapper label="New DAO links">
+      <FieldWrapper label={t('proposalCard.newDAOLinks')}>
         {links.map((link, i) => (
           <FieldValue
             value={
@@ -54,7 +57,11 @@ export const ChangeLinksContent: FC<ChangeLinksContentProps> = ({
       </FieldWrapper>
 
       <div className={cn(styles.row, styles.target)}>
-        <InfoBlockWidget label="Target" value={daoId} valueFontSize="S" />
+        <InfoBlockWidget
+          label={t('proposalCard.proposalTarget')}
+          value={daoId}
+          valueFontSize="S"
+        />
       </div>
     </div>
   );

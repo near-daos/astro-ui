@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'next-i18next';
+
 import {
   FieldValue,
   FieldWrapper,
@@ -15,15 +17,17 @@ export const AddMemberToGroupContent: FC<AddMemberToGroupContentProps> = ({
   group,
   memberName,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
       <div className={styles.row}>
-        <FieldWrapper label="Group">
+        <FieldWrapper label={t('proposalCard.group')}>
           <FieldValue value={group} />
         </FieldWrapper>
       </div>
       <div className={styles.row}>
-        <FieldWrapper label="Target">
+        <FieldWrapper label={t('proposalCard.proposalTarget')}>
           <FieldValue value={memberName} />
         </FieldWrapper>
       </div>

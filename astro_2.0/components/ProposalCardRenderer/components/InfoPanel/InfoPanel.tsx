@@ -2,12 +2,14 @@ import React, { FC, useEffect, useState } from 'react';
 import cn from 'classnames';
 import { useMountedState } from 'react-use';
 import { Icon } from 'components/Icon';
+import { useTranslation } from 'next-i18next';
 
 import styles from './InfoPanel.module.scss';
 
 export const InfoPanel: FC = () => {
   const [open, setOpen] = useState(true);
   const isMounted = useMountedState();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -30,10 +32,7 @@ export const InfoPanel: FC = () => {
       <div>
         <Icon name="info" className={styles.infoIcon} />
       </div>
-      <div className={styles.message}>
-        Please make sure pop-ups and redirects are allowed on this page,
-        otherwise proposal may fail to be created
-      </div>
+      <div className={styles.message}>{t('popupsInfoWarning')}</div>
     </div>
   );
 };

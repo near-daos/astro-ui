@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import cn from 'classnames';
+import { useTranslation } from 'next-i18next';
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
@@ -18,6 +19,7 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
   daoId,
 }) => {
   const { watch } = useFormContext();
+  const { t } = useTranslation();
 
   const coverFileList = watch('flagCover');
   const logoFileList = watch('flagLogo');
@@ -28,13 +30,21 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.row}>
-        <InputWrapper fieldName="flagCover" label="New Cover" fullWidth>
+        <InputWrapper
+          fieldName="flagCover"
+          label={t('proposalCard.newDAOCover')}
+          fullWidth
+        >
           <div className={styles.coverPlaceholder}>
             <ImageUpload fieldName="flagCover" />
           </div>
         </InputWrapper>
 
-        <InputWrapper fieldName="flagLogo" label="New Logo" fullWidth>
+        <InputWrapper
+          fieldName="flagLogo"
+          label={t('proposalCard.newDAOLogo')}
+          fullWidth
+        >
           <div className={styles.logoPlaceholder}>
             <ImageUpload fieldName="flagLogo" />
           </div>
@@ -51,7 +61,11 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
         </InputWrapper>
       </div>
       <div className={cn(styles.row, styles.target)}>
-        <InfoBlockWidget label="Target" value={daoId} valueFontSize="S" />
+        <InfoBlockWidget
+          label={t('proposalCard.proposalTarget')}
+          value={daoId}
+          valueFontSize="S"
+        />
       </div>
     </div>
   );

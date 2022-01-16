@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
+import { useTranslation } from 'next-i18next';
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
@@ -18,10 +19,12 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
   cover,
   logo,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
       <div className={styles.row}>
-        <FieldWrapper label="Preview" fullWidth>
+        <FieldWrapper label={t('proposalCard.preview')} fullWidth>
           {cover && (
             <div className={styles.flag}>
               <FlagRenderer flag={cover} size="lg" logo={logo} />
@@ -35,7 +38,11 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
         </clipPath>
       </svg>
       <div className={cn(styles.row, styles.target)}>
-        <InfoBlockWidget label="Target" value={daoId} valueFontSize="S" />
+        <InfoBlockWidget
+          label={t('proposalCard.proposalTarget')}
+          value={daoId}
+          valueFontSize="S"
+        />
       </div>
     </div>
   );

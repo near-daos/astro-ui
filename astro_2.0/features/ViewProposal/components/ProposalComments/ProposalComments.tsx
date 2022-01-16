@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useMedia, useMountedState } from 'react-use';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTranslation } from 'next-i18next';
 
 import { useAuthContext } from 'context/AuthContext';
 import { useProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments/hooks';
@@ -33,6 +34,7 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
   const [value, setValue] = useState('');
   const [focused, setFocused] = useState(false);
   const isMounted = useMountedState();
+  const { t } = useTranslation();
 
   const {
     comments,
@@ -155,7 +157,7 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
           >
             {!comments?.length && (
               <NoResultsView
-                title="No comments yet"
+                title={t('comments.noComments')}
                 className={styles.loader}
               />
             )}
@@ -173,7 +175,7 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
             className={styles.inputWrapper}
             size="block"
             isBorderless
-            placeholder="Start typing..."
+            placeholder={t('comments.startTyping')}
           />
           {isMobile ? (
             <IconButton
@@ -187,7 +189,7 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
               className={styles.submitButton}
               onClick={handleSubmit}
             >
-              Send
+              {t('comments.sendButton')}
             </Button>
           )}
         </div>

@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'next-i18next';
+
 import { Group } from 'features/vote-policy/components/Group';
 import {
   FieldValue,
@@ -14,16 +16,18 @@ interface ChangePolicyContentProps {
 export const ChangePolicyContent: FC<ChangePolicyContentProps> = ({
   amount,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
       <div className={styles.row}>
-        <FieldWrapper label="Group">
+        <FieldWrapper label={t('proposalCard.daoGroup')}>
           <FieldValue value={<Group name="All groups" />} />
         </FieldWrapper>
-        <FieldWrapper label="Who votes">
-          <FieldValue value="Person" />
+        <FieldWrapper label={t('proposalCard.whoVotes')}>
+          <FieldValue value={t('proposalCard.person')} />
         </FieldWrapper>
-        <FieldWrapper label="Consensus" alignRight>
+        <FieldWrapper label={t('proposalCard.consensus')} alignRight>
           <FieldValue value={`${amount}%`} />
         </FieldWrapper>
       </div>

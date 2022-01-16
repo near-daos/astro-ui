@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 import Decimal from 'decimal.js';
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 
 import { Input } from 'components/inputs/Input';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
@@ -20,14 +21,16 @@ interface ChangeBondsContentProps {
 export const ChangeBondsContent: FC<ChangeBondsContentProps> = ({ dao }) => {
   const { register } = useFormContext();
 
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
       <div className={styles.row}>
-        <div className={styles.title}>Proposals</div>
+        <div className={styles.title}>{t('proposalCard.proposals')}</div>
         <div className={styles.inline}>
           <InputWrapper
             fieldName="createProposalBond"
-            label="Bonds to create proposals"
+            label={t('proposalCard.proposalBonds')}
           >
             <Input
               className={cn(styles.inputWrapper, styles.narrow)}
@@ -43,7 +46,7 @@ export const ChangeBondsContent: FC<ChangeBondsContentProps> = ({ dao }) => {
           </InputWrapper>
           <InputWrapper
             fieldName="proposalExpireTime"
-            label="Time before proposals expire"
+            label={t('proposalCard.proposalBondExpirationTime')}
           >
             <Input
               className={cn(styles.inputWrapper, styles.narrow)}
@@ -60,11 +63,11 @@ export const ChangeBondsContent: FC<ChangeBondsContentProps> = ({ dao }) => {
         </div>
       </div>
       <div className={styles.row}>
-        <div className={styles.title}>Bounties</div>
+        <div className={styles.title}>{t('proposalCard.proposalBounties')}</div>
         <div className={styles.inline}>
           <InputWrapper
             fieldName="claimBountyBond"
-            label="Bonds to claim bounty"
+            label={t('proposalCard.proposalClaimBounty')}
           >
             <Input
               className={cn(styles.inputWrapper, styles.narrow)}
@@ -81,7 +84,7 @@ export const ChangeBondsContent: FC<ChangeBondsContentProps> = ({ dao }) => {
 
           <InputWrapper
             fieldName="unclaimBountyTime"
-            label="Time to unclaim a bounty without penalty"
+            label={t('proposalCard.proposalBountyUnclaimTime')}
           >
             <Input
               className={cn(styles.inputWrapper, styles.narrow)}
@@ -99,7 +102,11 @@ export const ChangeBondsContent: FC<ChangeBondsContentProps> = ({ dao }) => {
       </div>
 
       <div className={styles.row}>
-        <InfoBlockWidget label="Target" value={dao.id} valueFontSize="S" />
+        <InfoBlockWidget
+          label={t('proposalCard.proposalTarget')}
+          value={dao.id}
+          valueFontSize="S"
+        />
       </div>
     </div>
   );

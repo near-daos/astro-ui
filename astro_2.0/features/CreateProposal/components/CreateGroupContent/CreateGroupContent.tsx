@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 import { Input } from 'components/inputs/Input';
+import { useTranslation } from 'next-i18next';
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
@@ -14,11 +15,16 @@ interface CreateGroupContentProps {
 
 export const CreateGroupContent: FC<CreateGroupContentProps> = ({ daoId }) => {
   const { register } = useFormContext();
+  const { t } = useTranslation();
 
   return (
     <div className={styles.root}>
       <div className={styles.row}>
-        <InputWrapper fieldName="group" label="New Group Name" flex>
+        <InputWrapper
+          fieldName="group"
+          label={t('proposalCard.newGroupName')}
+          flex
+        >
           <Input
             className={cn(styles.inputWrapper, styles.wide)}
             placeholder="group-name-here"
@@ -27,7 +33,11 @@ export const CreateGroupContent: FC<CreateGroupContentProps> = ({ daoId }) => {
             {...register('group')}
           />
         </InputWrapper>
-        <InputWrapper fieldName="memberName" label="Initial Member Name" flex>
+        <InputWrapper
+          fieldName="memberName"
+          label={t('proposalCard.initialMemberName')}
+          flex
+        >
           <Input
             className={cn(styles.inputWrapper, styles.wide)}
             placeholder="member-name-here"
@@ -39,7 +49,11 @@ export const CreateGroupContent: FC<CreateGroupContentProps> = ({ daoId }) => {
       </div>
 
       <div className={styles.row}>
-        <InfoBlockWidget label="Target" value={daoId} valueFontSize="S" />
+        <InfoBlockWidget
+          label={t('proposalCard.proposalTarget')}
+          value={daoId}
+          valueFontSize="S"
+        />
       </div>
     </div>
   );

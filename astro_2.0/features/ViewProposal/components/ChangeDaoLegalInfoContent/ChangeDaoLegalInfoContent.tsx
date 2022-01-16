@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import React, { VFC } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import {
   FieldValue,
@@ -20,14 +21,16 @@ export const ChangeDaoLegalInfoContent: VFC<ChangeDaoLegalInfoProps> = ({
   legalLink,
   legalStatus,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
       <div className={styles.dataHolder}>
-        <FieldWrapper label="DAO’s Legal Status">
+        <FieldWrapper label={t('proposalCard.newDAOLegalStatus')}>
           <FieldValue value={legalStatus} />
         </FieldWrapper>
 
-        <FieldWrapper label="Legal Document">
+        <FieldWrapper label={t('proposalCard.newDAOLegalDoc')}>
           <FieldValue
             noWrap
             normal
@@ -46,7 +49,11 @@ export const ChangeDaoLegalInfoContent: VFC<ChangeDaoLegalInfoProps> = ({
         </FieldWrapper>
       </div>
       <div className={cn(styles.row, styles.target)}>
-        <InfoBlockWidget label="Target" value={daoId} valueFontSize="S" />
+        <InfoBlockWidget
+          label={t('proposalCard.proposalTarget')}
+          value={daoId}
+          valueFontSize="S"
+        />
       </div>
     </div>
   );
