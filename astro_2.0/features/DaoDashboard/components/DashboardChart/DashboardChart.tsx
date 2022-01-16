@@ -7,9 +7,10 @@ import { useDomainControl } from 'components/AreaChartRenderer/hooks';
 import RangeToggle from 'components/AreaChartRenderer/components/range-toggle/RangeToggle';
 import { Chart } from 'components/AreaChartRenderer/components/Chart';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
-import { useTranslation } from 'next-i18next';
+import { TFunction, useTranslation } from 'next-i18next';
 import { Button } from 'components/button/Button';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
+import { DashboardView } from 'astro_2.0/features/DaoDashboard/types';
 
 import { DOMAIN_RANGES } from 'components/AreaChartRenderer/helpers';
 
@@ -17,6 +18,7 @@ import styles from './DashboardChart.module.scss';
 
 interface DashboardChartProps {
   data: ChartDataElement[];
+  activeView?: DashboardView;
 }
 
 enum DATASET {
@@ -29,7 +31,30 @@ const variants = {
   hidden: { opacity: 0 },
 };
 
-export const DashboardChart: FC<DashboardChartProps> = ({ data }) => {
+function getChartTitle(activeView: DashboardView | undefined, t: TFunction) {
+  switch (activeView) {
+    case 'BOUNTIES': {
+      return t('daoDashboard.bounties');
+    }
+    case 'DAO_FUNDS': {
+      return t('daoDashboard.daoFunds');
+    }
+    case 'NFTS': {
+      return t('daoDashboard.nfts');
+    }
+    case 'PROPOSALS': {
+      return t('daoDashboard.proposals');
+    }
+    default: {
+      return t('activity');
+    }
+  }
+}
+
+export const DashboardChart: FC<DashboardChartProps> = ({
+  data,
+  activeView,
+}) => {
   const { t } = useTranslation();
   const [activeDataSet, setActiveDataSet] = useState(
     DATASET.NUMBER_OF_TRANSACTIONS
@@ -39,6 +64,24 @@ export const DashboardChart: FC<DashboardChartProps> = ({ data }) => {
     data || [],
     DOMAIN_RANGES.ALL
   );
+
+  const lines = [
+    {
+      name: 'activity',
+      color: '#6038d0',
+      dataKey: 'y',
+      gradient: 'colorUv',
+    },
+  ];
+
+  if (activeView === 'PROPOSALS') {
+    lines.push({
+      name: 'total',
+      color: '#19D992',
+      dataKey: 'y2',
+      gradient: 'colorPv',
+    });
+  }
 
   if (!chartData) {
     return null;
@@ -60,7 +103,7 @@ export const DashboardChart: FC<DashboardChartProps> = ({ data }) => {
       {({ measureRef }) => (
         <div className={styles.root} ref={measureRef}>
           <div className={styles.header}>
-            <div className={styles.title}>{t('activity')}</div>
+            <div className={styles.title}>{getChartTitle(activeView, t)}</div>
             <Button
               onClick={() => setActiveDataSet(DATASET.NUMBER_OF_VOTES)}
               variant="transparent"
@@ -103,13 +146,7 @@ export const DashboardChart: FC<DashboardChartProps> = ({ data }) => {
                     width={width}
                     data={chartData}
                     period={activeRange}
-                    lines={[
-                      {
-                        name: 'activity',
-                        color: '#6038d0',
-                        dataKey: 'y',
-                      },
-                    ]}
+                    lines={lines}
                   />
                 </motion.div>
               ) : (

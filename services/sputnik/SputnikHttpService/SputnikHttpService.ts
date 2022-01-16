@@ -66,6 +66,11 @@ import { DaoContext } from 'types/context';
 import { isUserPermittedToCreateProposal } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 import { mapNftTokenResponseToNftToken } from 'services/sputnik/mappers/nfts';
 import { CancelToken } from 'axios';
+import {
+  DaoStatsOvertime,
+  DaoStatsProposalsOvertime,
+  DaoStatsState,
+} from 'types/daoStats';
 
 class SputnikHttpServiceClass {
   private readonly httpService: HttpService = httpService;
@@ -265,9 +270,8 @@ class SputnikHttpServiceClass {
     return {
       dao,
       userPermissions: {
-        isCanCreateProposals:
-          isUserPermittedToCreateProposal(accountId, dao) &&
-          !policyAffectsProposals.length,
+        isCanCreateProposals: isUserPermittedToCreateProposal(accountId, dao),
+        isCanCreatePolicyProposals: !policyAffectsProposals.length,
       },
       policyAffectsProposals,
     };
@@ -1028,6 +1032,49 @@ class SputnikHttpServiceClass {
     >(`/comments/${commentId}`, params);
 
     return response.data.accountId;
+  }
+
+  /* Dao Stats API */
+  public async getDaoStatsState(daoId: string): Promise<DaoStatsState> {
+    const { data } = await this.httpService.get<DaoStatsState>(
+      `/stats/dao/${daoId}/state`
+    );
+
+    return data;
+  }
+
+  public async getDaoStatsFunds(daoId: string): Promise<DaoStatsOvertime[]> {
+    const { data } = await this.httpService.get<DaoStatsOvertime[]>(
+      `/stats/dao/${daoId}/funds`
+    );
+
+    return data;
+  }
+
+  public async getDaoStatsBounties(daoId: string): Promise<DaoStatsOvertime[]> {
+    const { data } = await this.httpService.get<DaoStatsOvertime[]>(
+      `/stats/dao/${daoId}/bounties`
+    );
+
+    return data;
+  }
+
+  public async getDaoStatsNfts(daoId: string): Promise<DaoStatsOvertime[]> {
+    const { data } = await this.httpService.get<DaoStatsOvertime[]>(
+      `/stats/dao/${daoId}/nfts`
+    );
+
+    return data;
+  }
+
+  public async getDaoStatsProposals(
+    daoId: string
+  ): Promise<DaoStatsProposalsOvertime[]> {
+    const { data } = await this.httpService.get<DaoStatsProposalsOvertime[]>(
+      `/stats/dao/${daoId}/proposals`
+    );
+
+    return data;
   }
 }
 

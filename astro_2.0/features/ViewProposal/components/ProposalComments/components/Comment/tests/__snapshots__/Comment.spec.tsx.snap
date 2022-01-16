@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Comment Should render Comment component 1`] = `
+<div>
+  <li
+    class="undefined"
+    style="opacity: 0;"
+  >
+    <svg
+      class=""
+      fill="none"
+      height="12"
+      viewBox="0 0 10 12"
+      width="12"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1.00034 0C1.00034 0 6.73828 0 8.20033 0C9.66239 0 10.0003 1.5 8.65031 3C7.30031 4.5 1.4997 9.5 1.00034 11C0.500977 12.5 1.00034 0 1.00034 0Z"
+        fill="#F0F0F0"
+      />
+    </svg>
+    <p>
+      My name is Bond. James bond.
+    </p>
+    <div>
+      08:39 PM
+    </div>
+    <div
+      class=""
+    >
+      <div>
+        <div>
+          <button
+            class=""
+            type="button"
+          >
+            <svg
+              class=""
+            >
+              <use
+                href="/_next/undefined"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div>
+        comments.thisMessageWasReported 1/4
+      </div>
+    </div>
+  </li>
+</div>
+`;

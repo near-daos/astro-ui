@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`copy button Should render component 1`] = `
+<div>
+  <div
+    class=""
+    role="button"
+    tabindex="0"
+  >
+    My Title
+    <button
+      class=""
+      type="button"
+    >
+      <svg>
+        <use
+          href="/_next/undefined"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+`;

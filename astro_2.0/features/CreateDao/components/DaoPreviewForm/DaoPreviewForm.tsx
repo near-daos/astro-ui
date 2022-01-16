@@ -5,8 +5,9 @@ import { useTranslation } from 'next-i18next';
 import { nearConfig } from 'config';
 
 import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
-import { DaoDetailsPreview } from 'astro_2.0/components/DaoDetails/DaoDetailsPreview';
-import { UnitSeparator } from 'astro_2.0/features/CreateDao/components/UnitSeparator/UnitSeparator';
+
+import { DaoDetailsPreview } from 'astro_2.0/components/DaoDetails';
+import { UnitSeparator } from 'astro_2.0/features/CreateDao/components/UnitSeparator';
 
 import { getImageFromImageFileList } from 'utils/getImageFromImageFileList';
 

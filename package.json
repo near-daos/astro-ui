@@ -23,7 +23,10 @@
       "hooks/**/*.{ts,tsx}",
       "pages/**/*.{ts,tsx}",
       "services/**/*.{ts,tsx}",
-      "utils/**/*.{ts,tsx}"
+      "utils/**/*.{ts,tsx}",
+      "!**/index.ts",
+      "!**/types/*.ts",
+      "!**/tests/*.{ts,tsx}"
     ]
   },
   "version": "0.1.0",
@@ -42,6 +45,7 @@
     "stylelint-check": "stylelint-config-prettier-check",
     "test": "jest --silent",
     "test:loud": "jest",
+    "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "generate-assets": "patch-package && yarn generate-assets-index",
     "prebuild": "yarn generate-assets",
@@ -147,6 +151,7 @@
     "@storybook/builder-webpack5": "6.3.4",
     "@storybook/manager-webpack5": "6.3.4",
     "@storybook/react": "^6.4.0-alpha.26",
+    "@testing-library/dom": "^8.11.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@types/big.js": "^6.1.2",

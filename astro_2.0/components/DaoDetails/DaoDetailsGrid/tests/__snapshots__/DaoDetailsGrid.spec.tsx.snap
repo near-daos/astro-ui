@@ -1,0 +1,212 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`dao details grid Should render component 1`] = `
+<div>
+  <div>
+    <a
+      href="/dao/default-flag-test.sputnikv2.testnet"
+    >
+      <div>
+        <section>
+          <div>
+            <div
+              class=""
+            >
+              <svg
+                class="svg"
+                height="0"
+                width="0"
+              >
+                <clippath
+                  id="_ASTRO_flag"
+                >
+                  <path
+                    d="M240.01 0L50.4101 67.7595V105.35L0 123.366V272L189.599 204.24V166.65L240.01 148.634V0Z"
+                  />
+                </clippath>
+                <clippath
+                  id="_ASTRO_flagMinimized"
+                >
+                  <path
+                    d="M68.8249 0L14.4555 19.4307V30.2124L0 35.3785V78.0007L54.3694 58.57V47.7883L68.8249 42.6222V0Z"
+                  />
+                </clippath>
+                <clippath
+                  id="_ASTRO_flagXS"
+                >
+                  <path
+                    d="M46.4118 0L9.74793 13.103V20.3722L0 23.856V52.5981L36.6639 39.4951V32.2259L46.4118 28.7421V0Z"
+                  />
+                </clippath>
+              </svg>
+              <div
+                class=""
+              />
+              <canvas
+                style="clip-path: path('M68.8249 0L14.4555 19.4307V30.2124L0 35.3785V78.0007L54.3694 58.57V47.7883L68.8249 42.6222V0Z'); max-width: 68px; transform: none;"
+              />
+            </div>
+          </div>
+          <div>
+            <div
+              class=""
+            >
+              <div
+                style="max-width: -132px;"
+              >
+                Default Flag Test
+              </div>
+            </div>
+            <div>
+              <div>
+                default-flag-test.sputnikv2.testnet
+              </div>
+              <div
+                class=""
+                role="button"
+                tabindex="0"
+              >
+                <button
+                  class=""
+                  type="button"
+                >
+                  <svg>
+                    <use
+                      href="/_next/undefined"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div />
+        </section>
+      </div>
+      <div>
+        <section>
+          <div
+            class=""
+          >
+            <button
+              class=""
+              type="button"
+            >
+              <div>
+                daoFunds
+              </div>
+              <div>
+                <span>
+                  97.30
+                </span>
+                 USD
+              </div>
+            </button>
+          </div>
+          <div
+            class="undefined"
+          >
+            <button
+              class=""
+              type="button"
+            >
+              <div>
+                membersGroups
+              </div>
+              <div>
+                <span>
+                  1
+                </span>
+                /1
+              </div>
+            </button>
+          </div>
+        </section>
+        <section>
+          <div>
+            <button
+              class=""
+              type="button"
+            >
+              <svg>
+                <use
+                  href="/_next/undefined"
+                />
+              </svg>
+              settings
+            </button>
+          </div>
+          <div>
+            <button
+              class=""
+              type="button"
+            >
+              <svg>
+                <use
+                  href="/_next/undefined"
+                />
+              </svg>
+              nfts
+            </button>
+          </div>
+          <div>
+            <button
+              class=""
+              type="button"
+            >
+              <svg>
+                <use
+                  href="/_next/undefined"
+                />
+              </svg>
+              bounties
+            </button>
+          </div>
+          <div>
+            <button
+              class=""
+              type="button"
+            >
+              <svg>
+                <use
+                  href="/_next/undefined"
+                />
+              </svg>
+              polls
+            </button>
+          </div>
+        </section>
+        <section>
+          <p
+            class="subtitle2"
+          >
+            <span>
+              12
+            </span>
+             
+            components.daoDetails.proposalTrackerCard.activePlural
+             
+            components.daoDetails.proposalTrackerCard.proposals
+          </p>
+          <p
+            class="subtitle6"
+          >
+            12 components.daoDetails.proposalTrackerCard.proposalsInTotal
+          </p>
+        </section>
+      </div>
+    </a>
+  </div>
+</div>
+`;
+
+exports[`dao details grid Should render skeleton if data is loading 1`] = `
+<div>
+  <div>
+    <div>
+      Skeleton
+    </div>
+  </div>
+</div>
+`;

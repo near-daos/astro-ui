@@ -37,11 +37,6 @@
   }
 }
 
-.topBorder {
-  border-radius: 7px;
-  border-top: 0.5px solid var(--color-brand-purple);
-}
-
 .mainContent {
   align-items: center;
   display: flex;
@@ -88,14 +83,31 @@
 }
 
 .warningContainer {
-  margin: 8px 0;
+  margin: 0;
+
+  @include tablet-portrait {
+    width: 50%;
+  }
+
+  @include tablet-landscape {
+    width: auto;
+  }
+
+  @include astro-desktop {
+    width: 50%;
+  }
+
+  @include large-desktop {
+    width: auto;
+  }
 }
 
 .warning {
+  @include font(16px, 28px, 700);
   color: var(--color-error-60);
 }
 
-.createDao {
+.createButton {
   margin: 8px 0;
 }
 
@@ -179,10 +191,6 @@
     padding: 12px;
   }
 
-  .mainContent {
-    flex-direction: column;
-  }
-
   .transactionDetails {
     justify-content: space-between;
     margin-bottom: 12px;
@@ -193,28 +201,99 @@
     }
   }
 
-  .createDao {
+  .createButton {
     margin-left: 0;
   }
+}
 
-  .warningContainer ~ .mainContent {
-    align-items: flex-end;
+.warningContainer ~ .mainContent {
+  align-items: flex-end;
+
+  @include tablet-portrait {
+    margin-top: -5px;
+  }
+
+  @include tablet-landscape {
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  @include astro-desktop {
+    flex-direction: column;
+    width: 50%;
+  }
+
+  @include large-desktop {
+    flex-direction: row;
   }
 }
 
 .warningContainer ~ .mainContent .transactionDetails {
   @include astro-mobile {
-    justify-content: space-around;
+    justify-content: space-between;
+    margin-bottom: 16px;
     padding: 0;
+  }
+
+  @include tablet-landscape {
+    margin-bottom: 0;
   }
 
   @include astro-desktop {
     justify-content: flex-end;
+    margin-bottom: 16px;
+  }
+
+  @include large-desktop {
+    margin-bottom: 0;
   }
 }
 
 .warningContainer ~ .mainContent .detailsItem {
+  width: 50%;
+
   @include tablet-landscape {
     margin: 0 32px 0 0;
+  }
+}
+
+.wholeCard {
+  align-items: flex-start;
+  border-radius: 7px;
+  border-top: 0.5px solid var(--color-brand-purple);
+  padding: 24px;
+
+  @include tablet-landscape {
+    align-items: center;
+  }
+
+  @include astro-desktop {
+    align-items: flex-start;
+    flex-direction: row;
+  }
+
+  @include large-desktop {
+    align-items: center;
+    padding: 12px 32px 16px;
+  }
+
+  .createButton {
+    margin: 0;
+    width: 100%;
+
+    @include tablet-landscape {
+      margin-top: 10px;
+      width: 180px;
+    }
+
+    @include astro-desktop {
+      margin: 0;
+      width: 100%;
+    }
+
+    @include large-desktop {
+      margin-top: 10px;
+      width: 180px;
+    }
   }
 }

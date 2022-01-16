@@ -1,21 +1,26 @@
+import BN from 'bn.js';
 import Big from 'big.js';
+import compact from 'lodash/compact';
 import PromisePool from '@supercharge/promise-pool';
-import { Contract, keyStores, Near } from 'near-api-js';
+import { AccessKey } from 'near-api-js/lib/transaction';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { BrowserLocalStorageKeyStore } from 'near-api-js/lib/key_stores';
+import { utils, transactions, Contract, keyStores, Near } from 'near-api-js';
 
 import { NearConfig, nearConfig } from 'config';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
-import { CreateDaoInput } from 'types/dao';
-import { CreateProposalParams, VoteAction } from 'types/proposal';
+import { CreateDaoInput, DAO } from 'types/dao';
 import { CreateTokenParams, SputnikTokenService } from 'types/token';
+import { Transfer, VoteAction, CreateProposalParams } from 'types/proposal';
 
 import { CookieService } from 'services/CookieService';
 
-import { SputnikDaoService } from './services/SputnikDaoService';
+import { GAS_VALUE, SputnikDaoService } from './services/SputnikDaoService';
 import { SputnikWalletService } from './services/SputnikWalletService';
+
+import { SputnikConnectedWalletAccount } from './overrides/SputnikConnectedWalletAccount';
 
 class SputnikNearServiceClass {
   private readonly config: NearConfig;
@@ -225,13 +230,22 @@ class SputnikNearServiceClass {
 
   public async claimBounty(
     daoId: string,
-    args: { bountyId: number; deadline: string; bountyBond: string }
+    args: {
+      bountyId: number;
+      deadline: string;
+      bountyBond: string;
+      gas?: string | number;
+    }
   ) {
     return this.sputnikDaoService.claimBounty({ daoId, ...args });
   }
 
-  public async unclaimBounty(daoId: string, bountyId: string) {
-    return this.sputnikDaoService.unclaimBounty(daoId, bountyId);
+  public async unclaimBounty(
+    daoId: string,
+    bountyId: string,
+    gas: string | number
+  ) {
+    return this.sputnikDaoService.unclaimBounty(daoId, bountyId, gas);
   }
 
   public async finalize(
@@ -260,6 +274,144 @@ class SputnikNearServiceClass {
     } catch (e) {
       return false;
     }
+  }
+
+  private async buildTransaction(
+    contractId: string,
+    nonce: number,
+    actions: transactions.Action[],
+    blockHash: Uint8Array
+  ) {
+    const accountId = this.getAccountId();
+
+    const keyPair = await this.keyStore?.getKey(
+      this.config.networkId,
+      this.getAccountId()
+    );
+
+    const publicKey = keyPair?.getPublicKey();
+
+    if (!publicKey) {
+      return null;
+    }
+
+    const transaction = transactions.createTransaction(
+      accountId,
+      publicKey,
+      contractId,
+      nonce,
+      actions,
+      blockHash
+    );
+
+    return transaction;
+  }
+
+  private getTransferStorageDepositTransaction(
+    nonce: number,
+    blockHash: Uint8Array,
+    tokenContract: string,
+    recipient: string
+  ) {
+    return this.buildTransaction(
+      tokenContract,
+      nonce,
+      [
+        transactions.functionCall(
+          'storage_deposit',
+          {
+            account_id: recipient,
+            registration_only: true,
+          },
+          GAS_VALUE,
+          // 0.1 NEAR, minimal value
+          new BN('100000000000000000000000')
+        ),
+      ],
+      blockHash
+    );
+  }
+
+  private getCreateTransferProposalTransaction(
+    nonce: number,
+    blockHash: Uint8Array,
+    proposal: CreateProposalParams
+  ) {
+    const { bond, daoId, description, kind, data } = proposal;
+
+    return this.buildTransaction(
+      daoId,
+      nonce,
+      [
+        transactions.functionCall(
+          'add_proposal',
+          {
+            proposal: {
+              description,
+              kind: {
+                [kind]: data,
+              },
+            },
+          },
+          GAS_VALUE,
+          new BN(bond)
+        ),
+      ],
+      blockHash
+    );
+  }
+
+  public async createTokenTransferProposal(
+    dao: DAO,
+    proposal: CreateProposalParams | null
+  ) {
+    if (!proposal) {
+      return Promise.resolve();
+    }
+
+    const proposalData = proposal.data as Transfer;
+    const { token_id: tokenContract, receiver_id: recipient } = proposalData;
+
+    const accountId = this.getAccountId();
+    const publicKey = await this.getPublicKey();
+
+    const accessKey = ((await this.near.connection.provider.query(
+      `access_key/${accountId}/${publicKey}`,
+      ''
+    )) as unknown) as AccessKey;
+
+    if (!accessKey) {
+      throw new Error(`Cannot find matching key for transaction`);
+    }
+
+    const block = await this.near.connection.provider.block({
+      finality: 'final',
+    });
+    const blockHash = utils.serialize.base_decode(block.header.hash);
+
+    const nonce1 = accessKey.nonce + 1;
+    const nonce2 = accessKey.nonce + 2;
+
+    const account = (this.sputnikWalletService.getAccount() as unknown) as SputnikConnectedWalletAccount;
+
+    const storageDepositTransaction = await this.getTransferStorageDepositTransaction(
+      nonce1,
+      blockHash,
+      tokenContract,
+      recipient
+    );
+
+    const transferTransaction = await this.getCreateTransferProposalTransaction(
+      nonce2,
+      blockHash,
+      proposal
+    );
+
+    const trx = tokenContract
+      ? [storageDepositTransaction, transferTransaction]
+      : [transferTransaction];
+
+    return account.sendTransactions(compact(trx));
   }
 }
 

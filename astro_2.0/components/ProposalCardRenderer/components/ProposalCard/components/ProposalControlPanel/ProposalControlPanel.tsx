@@ -98,7 +98,7 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
               }}
               onClick={e => e.stopPropagation()}
               type="number"
-              min={0.01}
+              min={0.1}
               step={0.01}
               max={0.3}
               isBorderless

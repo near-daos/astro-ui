@@ -97,6 +97,12 @@
   &:hover {
     background: var(--color-neutral-10);
   }
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+    pointer-events: none;
+  }
 }
 
 .active {

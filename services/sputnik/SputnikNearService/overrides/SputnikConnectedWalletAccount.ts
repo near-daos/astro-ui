@@ -5,8 +5,10 @@ import {
 } from 'near-api-js';
 import { PublicKey } from 'near-api-js/lib/utils';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
+import { Action, Transaction } from 'near-api-js/lib/transaction';
 import { SignAndSendTransactionOptions } from 'near-api-js/lib/account';
-import { Action } from 'near-api-js/lib/transaction';
+
+import { appConfig } from 'config';
 
 import {
   SputnikWalletError,
@@ -108,6 +110,56 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
           const result = await this.connection.provider.txStatus(
             transactionHashes,
             this.accountId
+          );
+
+          resolve(result);
+        }
+
+        reject(
+          new SputnikWalletError({
+            errorCode: errorCode || SputnikWalletErrorCodes.unknownError,
+          })
+        );
+      };
+    });
+  }
+
+  public async sendTransactions(
+    transactions: Transaction[]
+  ): Promise<FinalExecutionOutcome[]> {
+    const win = window.open(`${window.origin}/callback/pending`, '_blank');
+
+    const walletConnection = this.walletConnection as SputnikWalletConnection;
+
+    const walletCallbackUrl = appConfig.walledUseLocalRedirect
+      ? `${window.origin}/callback/transaction`
+      : `${window.origin}/api-server/v1/transactions/wallet/callback/${this.accountId}`;
+
+    await walletConnection.sputnikRequestSignTransactions({
+      transactions,
+      callbackUrl: walletCallbackUrl,
+    });
+
+    await new Promise(resolve => {
+      setTimeout(resolve, 2000);
+    });
+
+    if (win?.location && walletConnection.signTransactionUrl) {
+      win.location.href = walletConnection.signTransactionUrl;
+    }
+
+    return new Promise((resolve, reject) => {
+      window.sputnikRequestSignTransactionCompleted = async ({
+        transactionHashes,
+        errorCode,
+      }) => {
+        if (typeof transactionHashes !== 'undefined') {
+          const hashes = transactionHashes.split(',');
+
+          const result = await Promise.all(
+            hashes.map(hash =>
+              this.connection.provider.txStatus(hash, this.accountId)
+            )
           );
 
           resolve(result);

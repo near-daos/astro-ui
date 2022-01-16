@@ -56,7 +56,8 @@
   },
 
   "notifications": {
-    "transactionDelay": "The blockchain transactions might take some time to perform, please visit DAO details page in few seconds."
+    "transactionDelay": "The blockchain transactions might take some time to perform, please visit DAO details page in few seconds.",
+    "noArchivedNotifications": "There are no archived notifications yet"
   },
 
   "components": {
@@ -86,6 +87,7 @@
     "transactionDetailsWidget": {
       "warning": "Warning",
       "gas": "Gas",
+      "tGas": "TGas",
       "bond": "Bond"
     }
   },
@@ -215,6 +217,7 @@
     "daoFunds": "DAO funds",
     "bounties": "Bounties",
     "nfts": "NFTs",
+    "proposals": "Proposals",
     "activeProposals": "active proposals",
     "proposalsInTotal": "proposals in total"
   },
@@ -324,5 +327,21 @@
       "groupFunctionCall": "Function Call",
       "proposeCustomCall": "Custom Function Call"
     }
+  }
+
+  "settingsPage": {
+    "daoPolicy": "DAO Policy",
+    "nameAndPurpose": "Name and Purpose",
+    "legalStatusAndDoc": "Legal Status and doc",
+    "links": "Links",
+    "flagAndLogo": "Flag and Logo",
+    "groupNames": "Group names",
+    "proposalCreation": "Proposal Creation",
+    "votingPolicy": "Voting Policy",
+    "votingPermissions": "Voting Permissions",
+    "bondAndDeadlines": "Bond and Deadlines",
+    "groups": "Groups",
+    "members": "Members",
+    "daoRules": "DAO Rules"
   }
 }

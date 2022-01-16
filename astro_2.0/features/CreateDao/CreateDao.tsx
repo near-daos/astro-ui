@@ -8,6 +8,7 @@ import { DEFAULT_CREATE_DAO_GAS } from 'services/sputnik/constants';
 
 import { validateImgSize, getImgValidationError } from 'utils/imageValidators';
 import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
+import { validateDaoAddress } from 'astro_2.0/features/CreateDao/helpers';
 
 import { DAOFormValues } from './components/types';
 
@@ -29,6 +30,13 @@ const schema = yup.object().shape({
       'Incorrect DAO name - you can use letters and numbers only with hyphens and spaces in the middle.'
     )
     .required(),
+  address: yup
+    .string()
+    .test(
+      'exists',
+      'Dao with such address already exists.',
+      validateDaoAddress
+    ),
   purpose: yup.string().max(500),
   websites: yup
     .array()

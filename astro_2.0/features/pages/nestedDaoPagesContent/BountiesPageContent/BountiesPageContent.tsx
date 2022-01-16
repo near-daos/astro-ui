@@ -1,7 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
-import React, { useCallback, useEffect, useRef, useState, VFC } from 'react';
+import React, { useEffect, useRef, useState, VFC } from 'react';
 
 import { useAuthContext } from 'context/AuthContext';
 
@@ -25,9 +24,7 @@ import {
 import useQuery from 'hooks/useQuery';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
-import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-
-import { SputnikHttpService, SputnikNearService } from 'services/sputnik';
+import { SputnikHttpService } from 'services/sputnik';
 
 import styles from './BountiesPageContent.module.scss';
 
@@ -49,7 +46,6 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
   const router = useRouter();
   const { accountId } = useAuthContext();
   const { tokens } = useDaoCustomTokens();
-  const { t } = useTranslation();
 
   const neighbourRef = useRef(null);
 
@@ -81,36 +77,6 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
       }
     };
   }
-
-  const onSuccessHandler = useCallback(async () => {
-    await router.replace(router.asPath);
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      lifetime: 20000,
-      description: t('bountiesPage.successClaimBountyNotification'),
-    });
-  }, [t, router]);
-
-  const handleClaim = useCallback(
-    (bountyId, deadline) => async () => {
-      await SputnikNearService.claimBounty(daoId, {
-        bountyId: Number(bountyId),
-        deadline,
-        bountyBond: dao.policy.bountyBond,
-      });
-
-      onSuccessHandler();
-    },
-    [dao.policy.bountyBond, daoId, onSuccessHandler]
-  );
-
-  const handleUnclaim = useCallback(
-    bountyId => async () => {
-      await SputnikNearService.unclaimBounty(daoId, bountyId);
-      onSuccessHandler();
-    },
-    [daoId, onSuccessHandler]
-  );
 
   function getBountyDoneProposal(
     bountyContent: BountyCardContent
@@ -185,13 +151,11 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
                 <BountyCard
                   key={Math.floor(Math.random() * 10000)}
                   content={cardContent}
-                  claimHandler={handleClaim(
-                    bounty.id,
-                    bounty.deadlineThreshold
-                  )}
+                  dao={dao}
+                  bountyId={bounty.id}
+                  deadlineThreshold={bounty.deadlineThreshold}
                   canClaim={!claimedBy.includes(accountId)}
                   showActionBar={showActionBar(cardContent, accountId)}
-                  unclaimHandler={handleUnclaim(bounty.id)}
                   completeHandler={handleCreateProposal(
                     bounty.id,
                     ProposalVariant.ProposeDoneBounty

@@ -4,6 +4,8 @@ import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
+import last from 'lodash/last';
+import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
@@ -23,6 +25,8 @@ import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 import { useAuthContext } from 'context/AuthContext';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { getInitialProposalVariant } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
+import { UserPermissions } from 'types/context';
 
 import {
   getFormContentNode,
@@ -45,6 +49,7 @@ export interface CreateProposalProps {
   bountyId?: string;
   onCreate?: (result: boolean) => void;
   onClose: () => void;
+  userPermissions: UserPermissions;
 }
 
 export const CreateProposal: FC<CreateProposalProps> = ({
@@ -56,15 +61,20 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   bountyId,
   onCreate,
   onClose,
+  userPermissions,
 }) => {
   const { t } = useTranslation();
   const { accountId } = useAuthContext();
   const router = useRouter();
+  const initialProposalVariant = getInitialProposalVariant(
+    proposalVariant,
+    userPermissions.isCanCreatePolicyProposals
+  );
   const [selectedProposalVariant, setSelectedProposalVariant] = useState(
-    proposalVariant
+    initialProposalVariant
   );
   const [schemaContext, setSchemaContext] = useState({
-    selectedProposalVariant: proposalVariant,
+    selectedProposalVariant: initialProposalVariant,
   });
   const formRef = useRef<HTMLDivElement>(null);
 
@@ -73,9 +83,9 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   });
 
   useEffect(() => {
-    setSelectedProposalVariant(proposalVariant);
-    setSchemaContext({ selectedProposalVariant: proposalVariant });
-  }, [proposalVariant]);
+    setSelectedProposalVariant(initialProposalVariant);
+    setSchemaContext({ selectedProposalVariant: initialProposalVariant });
+  }, [initialProposalVariant]);
 
   const methods = useForm({
     defaultValues: getFormInitialValues(
@@ -131,25 +141,38 @@ export const CreateProposal: FC<CreateProposalProps> = ({
 
   const onSubmit = useCallback(
     async data => {
-      try {
-        let newProposal = await getNewProposalObject(
-          dao,
-          selectedProposalVariant,
-          data,
-          daoTokens,
-          accountId,
-          bountyId
-        );
+      let newProposal = await getNewProposalObject(
+        dao,
+        selectedProposalVariant,
+        data,
+        daoTokens,
+        accountId,
+        bountyId
+      );
 
-        // Add proposal variant and gas
-        newProposal = {
-          ...newProposal,
-          description: `${newProposal?.description}${EXTERNAL_LINK_SEPARATOR}${selectedProposalVariant}`,
-          gas: data.gas,
-        } as CreateProposalParams;
+      try {
+        if (selectedProposalVariant !== ProposalVariant.ProposeTransfer) {
+          // Add proposal variant and gas
+          newProposal = {
+            ...newProposal,
+            description: `${newProposal?.description}${EXTERNAL_LINK_SEPARATOR}${selectedProposalVariant}`,
+            gas: data.gas,
+          } as CreateProposalParams;
+        }
 
         if (newProposal) {
-          const resp = await SputnikNearService.createProposal(newProposal);
+          let resp;
+
+          if (selectedProposalVariant === ProposalVariant.ProposeTransfer) {
+            resp = await SputnikNearService.createTokenTransferProposal(
+              dao,
+              newProposal
+            );
+
+            resp = last(resp as FinalExecutionOutcome[]);
+          } else {
+            resp = await SputnikNearService.createProposal(newProposal);
+          }
 
           showNotification({
             type: NOTIFICATION_TYPES.INFO,
@@ -158,12 +181,13 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           });
 
           const newProposalId = JSON.parse(
-            // todo - Oleg: fix this!
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            Buffer.from(resp.status.SuccessValue as string, 'base64').toString(
-              'ascii'
-            )
+            Buffer.from(
+              // todo - Oleg: fix this!
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              resp.status.SuccessValue as string,
+              'base64'
+            ).toString('ascii')
           );
 
           await router.push({
@@ -227,6 +251,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           proposalCardNode={
             <CreateProposalCard
               key={selectedProposalVariant}
+              userPermissions={userPermissions}
               onClose={onClose}
               onTypeSelect={v => {
                 const defaults = getFormInitialValues(v, dao, accountId);

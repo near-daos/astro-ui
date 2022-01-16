@@ -1,4 +1,10 @@
-import React, { FC, MouseEvent, useCallback, useState } from 'react';
+import React, {
+  FC,
+  useState,
+  MouseEvent,
+  useCallback,
+  KeyboardEvent,
+} from 'react';
 
 import { Popup } from 'components/Popup';
 import { IconButton } from 'components/button/IconButton';
@@ -28,7 +34,7 @@ export const CopyButton: FC<CopyButtonProps> = ({
   const [tooltip, setTooltip] = useState(COPY_TEXT);
 
   const copyAccountName = useCallback(
-    (e: MouseEvent) => {
+    (e: MouseEvent | KeyboardEvent) => {
       e.stopPropagation();
       e.preventDefault();
       navigator.clipboard.writeText(text);
@@ -49,7 +55,7 @@ export const CopyButton: FC<CopyButtonProps> = ({
         ref={setRef}
         className={cn(styles.root, className)}
         onClick={copyAccountName}
-        onKeyPress={() => copyAccountName}
+        onKeyPress={copyAccountName}
       >
         {title && title}
         <IconButton icon={iconName} className={styles.btn} />

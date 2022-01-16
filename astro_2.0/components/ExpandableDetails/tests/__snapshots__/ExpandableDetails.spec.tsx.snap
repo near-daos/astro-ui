@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`expandable details Should render component 1`] = `
+<div>
+  <button
+    class=""
+    type="button"
+  >
+    <svg
+      class=""
+    >
+      <use
+        href="/_next/undefined"
+      />
+    </svg>
+    <span>
+      Label
+    </span>
+  </button>
+  <div
+    class=""
+  >
+    Hello World
+  </div>
+</div>
+`;

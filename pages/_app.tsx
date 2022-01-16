@@ -38,6 +38,15 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
       DEFAULT_OPTIONS
     );
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
+
+    // workaround to align intercom button
+    const intercom: HTMLElement | null = document.querySelector(
+      '.intercom-launcher'
+    );
+
+    if (intercom) {
+      intercom.style.bottom = '75px';
+    }
   });
 
   return (

@@ -5,7 +5,7 @@ import snakeCase from 'lodash/snakeCase';
 import { Vote, VoteDetail, VoterDetail } from 'features/types';
 import difference from 'lodash/difference';
 import isEmpty from 'lodash/isEmpty';
-import { ProposalAction } from 'types/role';
+import { DefaultVotePolicy, ProposalAction } from 'types/role';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { dataRoleToContractRole } from 'features/groups/helpers';
 
@@ -125,21 +125,30 @@ export type VotingPolicyPageInitialData = {
   policy: VotePolicy;
 } & Indexed;
 
+export function formatPolicyRatio(defaultPolicy: DefaultVotePolicy): number {
+  if (!(defaultPolicy?.ratio && defaultPolicy.ratio.length)) {
+    return 0;
+  }
+
+  const ratio = (defaultPolicy.ratio[0] / defaultPolicy.ratio[1]) * 100;
+
+  return Number(ratio.toFixed(2));
+}
+
 export const getInitialData = (
   dao?: DAO
 ): VotingPolicyPageInitialData | null => {
-  if (!dao) return null;
+  if (!dao) {
+    return null;
+  }
 
-  const defaulPolicy = dao.policy.defaultVotePolicy;
+  const defaultPolicy = dao.policy.defaultVotePolicy;
 
   return {
     policy: {
-      voteBy: defaulPolicy.weightKind === 'RoleWeight' ? 'Person' : 'Token',
-      amount:
-        defaulPolicy?.ratio && defaulPolicy.ratio.length
-          ? (defaulPolicy.ratio[0] / defaulPolicy.ratio[1]) * 100
-          : 0,
-      threshold: defaulPolicy.kind === 'Ratio' ? '% of group' : 'persons',
+      voteBy: defaultPolicy.weightKind === 'RoleWeight' ? 'Person' : 'Token',
+      amount: formatPolicyRatio(defaultPolicy),
+      threshold: defaultPolicy.kind === 'Ratio' ? '% of group' : 'persons',
     },
     daoSettings: {
       externalLink: '',
@@ -250,7 +259,9 @@ export const filterByVote = (
 function getThreshold(value: number): [number, number] {
   const fraction = value / 100;
   const gcd = (a: number, b: number): number => {
-    if (b < 0.0000001) return a; // Since there is a limited precision we need to limit the value.
+    if (b < 0.0000001) {
+      return a;
+    } // Since there is a limited precision we need to limit the value.
 
     return gcd(b, Math.floor(a % b)); // Discard any fractions due to limitations in precision.
   };

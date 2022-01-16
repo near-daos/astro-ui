@@ -2,6 +2,7 @@ import React, { CSSProperties } from 'react';
 import { useId } from '@reach/auto-id';
 import { useMeasure, useMedia } from 'react-use';
 import { useTranslation } from 'next-i18next';
+import cn from 'classnames';
 
 import Downshift from 'downshift';
 import { IconButton } from 'components/button/IconButton';
@@ -18,6 +19,7 @@ interface GroupedSelectProps {
   options: {
     title: string;
     options: Option[];
+    disabled: boolean;
   }[];
   onChange: (value: string | null) => void;
   id?: string;
@@ -126,7 +128,9 @@ export const GroupedSelect = React.forwardRef<
                             return (
                               <div
                                 key={option.value}
-                                className={styles.item}
+                                className={cn(styles.item, {
+                                  [styles.disabled]: section.disabled,
+                                })}
                                 {...getItemProps({
                                   item: option,
                                   index,
