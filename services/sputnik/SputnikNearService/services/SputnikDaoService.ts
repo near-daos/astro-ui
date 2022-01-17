@@ -123,10 +123,11 @@ export class SputnikDaoService {
     proposalId: number
   ): Promise<FinalExecutionOutcome> {
     return this.functionCall({
-      methodName: 'finalize',
+      methodName: 'act_proposal',
       contractId: daoId,
       args: {
         id: proposalId,
+        action: 'Finalize',
       },
       gas: GAS_VALUE,
     });
