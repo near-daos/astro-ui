@@ -11,6 +11,13 @@ jest.mock('next-i18next', () => ({
   },
 }));
 
+jest.mock('date-fns', () => {
+  return {
+    parseISO: () => 0,
+    format: () => 'format mock',
+  };
+});
+
 const onDelete = jest.fn();
 const onReport = jest.fn();
 

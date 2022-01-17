@@ -25,7 +25,9 @@ describe('format', () => {
     it('Should properly format timestamp in kiloseconds to "dd LLL yyyy HH:mm:ss"', () => {
       const date = formatTimestampAsDate('1641680883161000000');
 
-      expect(date).toStrictEqual('09 Jan 2022 00:28:03');
+      expect(date).toMatch(
+        /^0[0-9] Jan 2022 [0-9][0-9]:[0-9][0-9]:[0-9][0-9]$/
+      );
     });
   });
 
