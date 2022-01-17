@@ -26,12 +26,13 @@ import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { SputnikNearService } from 'services/sputnik';
 import { getProposalVariantLabel } from 'astro_2.0/features/ViewProposal/helpers';
 import { ExplorerLink } from 'components/ExplorerLink';
-import { useCountdown } from 'hooks/useCountdown';
+
+import { Button } from 'components/button/Button';
 
 import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
 import { DEFAULT_VOTE_GAS } from 'services/sputnik/constants';
 import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
-
+import { useCountdown } from 'hooks/useCountdown';
 import { useGetVotePermissions } from './hooks/useGetVotePermissions';
 import { ProposalControlPanel } from './components/ProposalControlPanel';
 
@@ -66,20 +67,29 @@ export interface ProposalCardProps {
 function getTimestampLabel(
   timeLeft: string | null | undefined,
   status: ProposalStatus,
-  updatedAt?: string | null
+  updatedAt?: string | null,
+  votingEndDate?: string | null
 ) {
   if (status === 'InProgress') {
     if (timeLeft) {
       return `${timeLeft} left`;
     }
 
-    return 'Voting ended';
+    return <span className={styles.errorLabel}>Time expired</span>;
   }
 
-  if (
-    (status === 'Approved' || status === 'Rejected' || status === 'Expired') &&
-    updatedAt
-  ) {
+  if (status === 'Expired' && votingEndDate) {
+    return (
+      <div className={cn(styles.timestampLabel)}>
+        <span className={cn(styles.label)}>{status} at&nbsp;</span>
+        <span className={cn(styles.value)}>
+          {format(parseISO(votingEndDate as string), 'dd MMMM yyyy')}
+        </span>
+      </div>
+    );
+  }
+
+  if ((status === 'Approved' || status === 'Rejected') && updatedAt) {
     return (
       <div className={cn(styles.timestampLabel)}>
         <span
@@ -101,8 +111,8 @@ function getTimestampLabel(
 }
 
 function getSealIcon(
-  status: ProposalStatus,
-  timeLeft: string | null
+  status: ProposalStatus
+  // timeLeft: string | null
 ): string | null {
   let sealIcon;
 
@@ -124,7 +134,9 @@ function getSealIcon(
     }
   }
 
-  return !timeLeft && !sealIcon ? 'sealFailed' : sealIcon;
+  return sealIcon;
+
+  // return !timeLeft && !sealIcon ? 'sealFailed' : sealIcon;
 }
 
 const schema = yup.object().shape({
@@ -162,10 +174,18 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
     async (vote: VoteAction, gas?: string | number) => {
       await SputnikNearService.vote(dao.id, proposalId, vote, gas);
-      await router.replace(router.asPath);
+      await router.reload();
     },
     [dao, proposalId, router]
   );
+
+  const [
+    { loading: finalizeLoading },
+    finalizeClickHandler,
+  ] = useAsyncFn(async () => {
+    await SputnikNearService.finalize(dao.id, proposalId);
+    await router.reload();
+  }, [dao, proposalId, router]);
 
   const handleCardClick = useCallback(() => {
     if (id && router.pathname !== SINGLE_PROPOSAL_PAGE_URL) {
@@ -181,8 +201,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const timeLeft = useCountdown(votePeriodEnd);
 
-  const sealIcon =
-    timeLeft !== undefined ? getSealIcon(status, timeLeft) : null;
+  const sealIcon = timeLeft !== undefined ? getSealIcon(status) : null;
 
   const methods = useForm<DAOFormValues>({
     mode: 'all',
@@ -223,7 +242,21 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         />
       </div>
       <div className={styles.countdownCell}>
-        {getTimestampLabel(timeLeft, status, updatedAt)}
+        {getTimestampLabel(timeLeft, status, updatedAt, votePeriodEnd)}
+        {!timeLeft && status === 'InProgress' && (
+          <Button
+            size="small"
+            disabled={finalizeLoading}
+            className={styles.finalizeButton}
+            onClick={e => {
+              e.stopPropagation();
+
+              return finalizeClickHandler();
+            }}
+          >
+            Finalize
+          </Button>
+        )}
       </div>
       <div className={styles.proposerCell}>
         <InfoBlockWidget label="Proposer" value={proposer} />
@@ -252,7 +285,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
               return voteClickHandler('VoteReject', data.gas);
             }}
-            disableControls={voteLoading || !timeLeft}
+            disableControls={voteLoading || !timeLeft || finalizeLoading}
             likes={likes}
             liked={liked}
             dislikes={dislikes}
