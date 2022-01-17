@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { nanoid } from 'nanoid';
 import cn from 'classnames';
+import { useTranslation } from 'next-i18next';
 
 import { getSocialLinkIcon } from 'utils/getSocialLinkIcon';
 
@@ -32,9 +33,11 @@ export const ChangeLinksContent: FC<ChangeLinksContentProps> = ({ daoId }) => {
     keyName: 'id',
   });
 
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
-      <div className={styles.label}>New DAO links</div>
+      <div className={styles.label}>{t('proposalCard.newDAOLinks')}</div>
       <div className={styles.row}>
         <div>
           {fields.map((field, index) => {
@@ -93,7 +96,11 @@ export const ChangeLinksContent: FC<ChangeLinksContentProps> = ({ daoId }) => {
       </div>
 
       <div className={cn(styles.row, styles.target)}>
-        <InfoBlockWidget label="Target" value={daoId} valueFontSize="S" />
+        <InfoBlockWidget
+          label={t('proposalCard.proposalTarget')}
+          value={daoId}
+          valueFontSize="S"
+        />
       </div>
     </div>
   );

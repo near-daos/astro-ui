@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import cn from 'classnames';
+import { useTranslation } from 'next-i18next';
 
 import { TextArea } from 'components/inputs/TextArea';
 
@@ -25,10 +26,16 @@ export const ChangeDaoPurposeContent: FC<ChangeDaoPurposeContentProps> = ({
     formState: { errors, touchedFields },
   } = useFormContext();
 
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
       <div className={styles.row}>
-        <InputWrapper fieldName="purpose" label="New Purpose" fullWidth>
+        <InputWrapper
+          fieldName="purpose"
+          label={t('proposalCard.newDAOPurpose')}
+          fullWidth
+        >
           <TextArea
             isValid={touchedFields.purpose && !errors.purpose?.message}
             size="block"
@@ -45,7 +52,11 @@ export const ChangeDaoPurposeContent: FC<ChangeDaoPurposeContentProps> = ({
         </InputWrapper>
       </div>
       <div className={cn(styles.row, styles.target)}>
-        <InfoBlockWidget label="Target" value={daoId} valueFontSize="S" />
+        <InfoBlockWidget
+          label={t('proposalCard.proposalTarget')}
+          value={daoId}
+          valueFontSize="S"
+        />
       </div>
     </div>
   );

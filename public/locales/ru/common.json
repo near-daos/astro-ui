@@ -20,6 +20,7 @@
   "propose": "Предложить",
   "viewProposal": "Просмотреть предложение",
   "daoSettings": "Настройки ДАО",
+  "popupsInfoWarning": "Пожалуйста, убедтесь в том, что всплывающие окна и перенаправления разрешены на этой странице, в противном случае создание предложения может не сработать.",
   "successProposalNotification": "Транзакции в блокчейне могут занимать некоторе время, пожалуйста, обновите страницу ДАО через несколько секунд.",
   "daoConfig": "Конфигурация ДАО",
   "votingPolicy": "Првила голосования",
@@ -90,6 +91,10 @@
   },
 
   "comments": {
+    "sendButton": "Послать",
+    "noComments": "Комментариев еще нет",
+    "startTyping": "Напишите что-то...",
+
     "youReportedThisMessage": "You have reported this message",
     "thisMessageWasReported": "This message was reported",
     "commentsSpamProtection": "Due to spam protection no more than 5 messages per minute are allowed."
@@ -246,5 +251,94 @@
   "loader": {
     "title": "Receiving data from the contract",
     "waitSomeTime": "This may take some time"
+  },
+
+  "proposalCard": {
+    "proposalID": "ID предложения:",
+    "proposalType": "Тип предложения: ",
+    "proposalOwner": "Инициатор",
+    "proposalDescription": "Описание",
+
+    "proposalAmount": "Количество",
+    "proposalTarget": "Назначение",
+    "proposalTargetPlaceholder": "Укажите целевой кошелёк",
+    "bountyAvailableClaims": "Доступно заявок",
+    "bountyDaysToComplete": "Дней до завершения",
+    "newDAOName": "Новое имя ДАО",
+    "newDAOPurpose": "Новое назначение",
+    "newDAOLinks": "Новые ссылки ДАО",
+    "newDAOCover": "Новая обложка",
+    "newDAOLogo": "Новый логотип",
+    "newDAOLegalStatus": "Правовой статус ДАО",
+    "newDAOLegalDoc": "Юридический документ",
+    "newDAOLegalStatusHint": "ОАО",
+    "newDAOLegalDocHint": "Ссылка",
+    "daoGroup": "Группа",
+    "whoVotes": "Кто голосует",
+    "consensus": "Консенсус",
+    "person": "Участник",
+
+    "proposals": "Предложения",
+    "proposalBonds": "Залог для создания предложения",
+    "proposalBondExpirationTime": "Время до истечения срока",
+    "proposalBounties": "Работа",
+    "proposalClaimBounty": "Залог для истребования работы",
+    "proposalBountyUnclaimTime": "Время для возврата залога при отказе от работы",
+
+    "newGroupName": "Имя новой группы",
+    "initialMemberName": "Имя первого участника",
+    "group": "Группа",
+    "chooseGroup": "Выберите группу",
+
+    "smartContractAddress": "Адрес смарт-контракта",
+    "methodName": "Имя метода",
+    "json": "JSON",
+    "deposit": "Депозит",
+
+    "preview": "Предпросмотр",
+
+    "proposalTypes": {
+      "groupTransferAddBounty": "Трансфер/Работа",
+      "proposeTransfer": "Предложить трансфер",
+      "proposeBounty": "Предложить работу по найму",
+
+      "groupChangeConfig": "Изменение конфигурации",
+      "proposeDAOName": "Предложить изменение имени ДАО",
+      "proposeDAOPurpose": "Предложить изменение назначения ДАО",
+      "proposeDAOLinks": "Предложить изменение ссылок ДАО",
+      "proposeDAOFlagAndLogo": "Предложить изменение флага и лого ДАО",
+      "proposeLegalStatusAndDoc": "Предложить изменение правового статуса и документов ДАО",
+
+      "groupChangePolicy": "Изменение политики",
+      "proposeChangePolicy": "Предложить изменение политики голосования",
+      "proposeBondsAndDeadlines": "Предложить изменение залога и сроков исполнения",
+      "proposeGroup": "Предложить создание группы",
+
+      "groupChangeMembers": "Изменение участников ДАО",
+      "proposeAddMember": "Предложить добавление участника к группе",
+      "proposeRemoveMember": "Предложить удаление участника из группы",
+
+      "groupVote": "Голосование",
+      "proposePoll": "Предложить опрос",
+
+      "groupFunctionCall": "Вызов функций",
+      "proposeCustomCall": "Вызов собственной функции"
+    }
+  },
+
+  "settingsPage": {
+    "daoPolicy": "Политика ДАО",
+    "nameAndPurpose": "Название и назначение",
+    "legalStatusAndDoc": "Правовой статус и документы",
+    "links": "Ссылки",
+    "flagAndLogo": "Флаг и логотип",
+    "groupNames": "Имена групп",
+    "proposalCreation": "Создание предложения",
+    "votingPolicy": "Политика голосования",
+    "votingPermissions": "Право голоса",
+    "bondAndDeadlines": "Залог и дедлайн",
+    "groups": "Группы",
+    "members": "Участники",
+    "daoRules": "Правила ДАО"
   }
 }

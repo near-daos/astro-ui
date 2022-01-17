@@ -1,6 +1,7 @@
 import React, { CSSProperties } from 'react';
 import { useId } from '@reach/auto-id';
 import { useMeasure, useMedia } from 'react-use';
+import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 
 import Downshift from 'downshift';
@@ -35,6 +36,7 @@ export const GroupedSelect = React.forwardRef<
     { options, onChange, defaultValue, inputStyles = {}, ...rest },
     externalRef
   ) => {
+    const { t } = useTranslation();
     const id = useId(rest.id);
     const handleChange = (selectedItem: Option | null) => {
       onChange(selectedItem?.value ?? null);
@@ -71,7 +73,7 @@ export const GroupedSelect = React.forwardRef<
         }) => (
           <div className={styles.root}>
             <label {...getLabelProps()} className={styles.label} htmlFor={id}>
-              Proposal type: {selectedItem?.group}
+              {t('proposalCard.proposalType')} {selectedItem?.group}
             </label>
             <label
               {...getToggleButtonProps()}

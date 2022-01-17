@@ -20,6 +20,7 @@
   "propose": "Propose",
   "viewProposal": "View Proposal",
   "daoSettings": "DAO Settings",
+  "popupsInfoWarning": "Please make sure pop-ups and redirects are allowed on this page, otherwise proposal may fail to be created.",
   "successProposalNotification": "The blockchain transactions might take some time to perform, please visit DAO details page in few seconds",
   "daoConfig": "DAO Config",
   "votingPolicy": "Voting Policy",
@@ -55,7 +56,8 @@
   },
 
   "notifications": {
-    "transactionDelay": "The blockchain transactions might take some time to perform, please visit DAO details page in few seconds."
+    "transactionDelay": "The blockchain transactions might take some time to perform, please visit DAO details page in few seconds.",
+    "noArchivedNotifications": "There are no archived notifications yet"
   },
 
   "components": {
@@ -85,11 +87,16 @@
     "transactionDetailsWidget": {
       "warning": "Warning",
       "gas": "Gas",
+      "tGas": "TGas",
       "bond": "Bond"
     }
   },
 
   "comments": {
+    "sendButton": "Send",
+    "noComments": "No comments yet",
+    "startTyping": "Start typing...",
+
     "youReportedThisMessage": "You have reported this message",
     "thisMessageWasReported": "This message was reported",
     "commentsSpamProtection": "Due to spam protection no more than 5 messages per minute are allowed."
@@ -210,6 +217,7 @@
     "daoFunds": "DAO funds",
     "bounties": "Bounties",
     "nfts": "NFTs",
+    "proposals": "Proposals",
     "activeProposals": "active proposals",
     "proposalsInTotal": "proposals in total"
   },
@@ -246,5 +254,94 @@
   "loader": {
     "title": "Receiving data from the contract",
     "waitSomeTime": "This may take some time"
+  },
+
+  "proposalCard": {
+    "proposalID": "Proposal ID:",
+    "proposalType": "Proposal type: ",
+    "proposalOwner": "Proposer",
+    "proposalDescription": "Description",
+
+    "proposalAmount": "Amount",
+    "proposalTarget": "Target",
+    "proposalTargetPlaceholder": "Specify target account",
+    "bountyAvailableClaims": "Available Claims",
+    "bountyDaysToComplete": "Days to Complete",
+    "newDAOName": "New DAO name",
+    "newDAOPurpose": "New Purpose",
+    "newDAOLinks": "New DAO links",
+    "newDAOCover": "New Cover",
+    "newDAOLogo": "New Logo",
+    "newDAOLegalStatus": "DAO’s Legal Status",
+    "newDAOLegalDoc": "Legal Document",
+    "newDAOLegalStatusHint": "Public Limited Company",
+    "newDAOLegalDocHint": "Link",
+    "daoGroup": "Group",
+    "whoVotes": "Who votes",
+    "consensus": "Consensus",
+    "person": "Person",
+
+    "proposals": "Proposals",
+    "proposalBonds": "Bonds to create proposals",
+    "proposalBondExpirationTime": "Time before proposals expire",
+    "proposalBounties": "Bounties",
+    "proposalClaimBounty": "Bonds to claim bounty",
+    "proposalBountyUnclaimTime": "Time to unclaim a bounty without penalty",
+
+    "newGroupName": "New Group Name",
+    "initialMemberName": "Initial Member Name",
+    "group": "Group",
+    "chooseGroup": "Choose Group",
+
+    "smartContractAddress": "Smart Contract Address",
+    "methodName": "Method Name",
+    "json": "JSON",
+    "deposit": "Deposit",
+
+    "preview": "Preview",
+
+    "proposalTypes": {
+      "groupTransferAddBounty": "Transfer/Add bounty",
+      "proposeTransfer": "Propose a Transfer",
+      "proposeBounty": "Propose to Create a Bounty",
+
+      "groupChangeConfig": "Change Config",
+      "proposeDAOName": "Propose to Change DAO Name",
+      "proposeDAOPurpose": "Propose to Change DAO Purpose",
+      "proposeDAOLinks": "Propose to Change DAO Links",
+      "proposeDAOFlagAndLogo": "Propose to Change DAO Flag and Logo",
+      "proposeLegalStatusAndDoc": "Propose to change DAO Legal Status and Doc",
+
+      "groupChangePolicy": "Change Policy",
+      "proposeChangePolicy": "Propose to Change Voting Policy",
+      "proposeBondsAndDeadlines": "Propose to Change Bonds and Deadlines",
+      "proposeGroup": "Propose to Create a Group",
+
+      "groupChangeMembers": "Change Members of DAO",
+      "proposeAddMember": "Propose to Add Member to Group",
+      "proposeRemoveMember": "Propose to Remove Member from Group",
+
+      "groupVote": "Vote",
+      "proposePoll": "Propose a Poll",
+
+      "groupFunctionCall": "Function Call",
+      "proposeCustomCall": "Custom Function Call"
+    }
+  },
+
+  "settingsPage": {
+    "daoPolicy": "DAO Policy",
+    "nameAndPurpose": "Name and Purpose",
+    "legalStatusAndDoc": "Legal Status and doc",
+    "links": "Links",
+    "flagAndLogo": "Flag and Logo",
+    "groupNames": "Group names",
+    "proposalCreation": "Proposal Creation",
+    "votingPolicy": "Voting Policy",
+    "votingPermissions": "Voting Permissions",
+    "bondAndDeadlines": "Bond and Deadlines",
+    "groups": "Groups",
+    "members": "Members",
+    "daoRules": "DAO Rules"
   }
 }

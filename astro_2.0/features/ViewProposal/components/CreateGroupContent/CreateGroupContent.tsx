@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import {
@@ -19,20 +20,26 @@ export const CreateGroupContent: FC<CreateGroupContentProps> = ({
   group,
   memberName,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
       <div className={styles.row}>
-        <FieldWrapper label="New Group Name">
+        <FieldWrapper label={t('proposalCard.newGroupName')}>
           <FieldValue value={group} />
         </FieldWrapper>
 
-        <FieldWrapper label="Initial Member Name">
+        <FieldWrapper label={t('proposalCard.initialMemberName')}>
           <FieldValue value={memberName} />
         </FieldWrapper>
       </div>
 
       <div className={styles.row}>
-        <InfoBlockWidget label="Target" value={daoId} valueFontSize="S" />
+        <InfoBlockWidget
+          label={t('proposalCard.proposalTarget')}
+          value={daoId}
+          valueFontSize="S"
+        />
       </div>
     </div>
   );

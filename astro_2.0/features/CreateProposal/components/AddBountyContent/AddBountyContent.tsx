@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 
 import { Input } from 'components/inputs/Input';
 import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
@@ -12,6 +13,7 @@ import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/Input
 import styles from './AddBountyContent.module.scss';
 
 export const AddBountyContent: FC = () => {
+  const { t } = useTranslation();
   const { register, setValue, getValues, watch } = useFormContext();
   const { tokens } = useCustomTokensContext();
   const amount = watch('amount');
@@ -50,7 +52,10 @@ export const AddBountyContent: FC = () => {
   return (
     <div className={styles.root}>
       <div className={styles.inline}>
-        <InputWrapper fieldName="amount" label="Amount">
+        <InputWrapper
+          fieldName="amount"
+          label={t('proposalCard.proposalAmount')}
+        >
           <Input
             className={cn(styles.inputWrapper, styles.narrow)}
             type="number"
@@ -83,7 +88,10 @@ export const AddBountyContent: FC = () => {
       </div>
       <div className={styles.divider} />
       <div className={styles.inline}>
-        <InputWrapper fieldName="slots" label="Available Claims">
+        <InputWrapper
+          fieldName="slots"
+          label={t('proposalCard.bountyAvailableClaims')}
+        >
           <Input
             type="number"
             className={styles.inputWrapper}
@@ -95,7 +103,10 @@ export const AddBountyContent: FC = () => {
           />
         </InputWrapper>
         <div className={styles.divider} />
-        <InputWrapper fieldName="deadlineThreshold" label="Days to Complete">
+        <InputWrapper
+          fieldName="deadlineThreshold"
+          label={t('proposalCard.bountyDaysToComplete')}
+        >
           <Input
             type="number"
             className={styles.inputWrapper}

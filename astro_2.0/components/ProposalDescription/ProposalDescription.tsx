@@ -1,3 +1,4 @@
+import { useTranslation } from 'next-i18next';
 import { ExternalLink } from 'components/ExternalLink';
 import React from 'react';
 import styles from './ProposalDescription.module.scss';
@@ -13,9 +14,13 @@ export const ProposalDescription: React.FC<ProposalDescriptionProps> = ({
   link,
   className,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={className}>
-      <div className={styles.label}>Description</div>
+      <div className={styles.label}>
+        {t(`proposalCard.proposalDescription`)}
+      </div>
       <div className={styles.description}>{description}</div>
       {link && (
         <div className={styles.link}>

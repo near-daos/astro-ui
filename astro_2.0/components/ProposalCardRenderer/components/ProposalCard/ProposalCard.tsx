@@ -6,6 +6,7 @@ import { format, parseISO } from 'date-fns';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useTranslation } from 'next-i18next';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
@@ -156,6 +157,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   toggleInfoPanel,
   commentsCount,
 }) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const permissions = useGetVotePermissions(dao, type, accountId);
 
@@ -209,7 +211,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       <div className={styles.proposalCell}>
         <InfoBlockWidget
           valueFontSize="L"
-          label={`Proposal type: ${type}`}
+          label={`${t(`proposalCard.proposalType`)}\${type}`}
           value={
             <div className={styles.proposalType}>
               {getProposalVariantLabel(variant, type)}
@@ -226,10 +228,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         {getTimestampLabel(timeLeft, status, updatedAt)}
       </div>
       <div className={styles.proposerCell}>
-        <InfoBlockWidget label="Proposer" value={proposer} />
+        <InfoBlockWidget
+          label={t(`proposalCard.proposalOwner`)}
+          value={proposer}
+        />
       </div>
       <div className={styles.descriptionCell}>
-        <FieldWrapper label="Description" fullWidth>
+        <FieldWrapper label={t(`proposalCard.proposalDescription`)} fullWidth>
           <div className={styles.proposalDescription}>{description}</div>
         </FieldWrapper>
 

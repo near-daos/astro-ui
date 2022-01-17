@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { DAO } from 'types/dao';
 
@@ -25,35 +26,41 @@ export const ChangeBondsContent: FC<ChangeBondsContentProps> = ({
   claimBountyBond,
   unclaimBountyTime,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.root}>
       <div className={styles.row}>
-        <div className={styles.title}>Proposals</div>
+        <div className={styles.title}>{t('proposalCard.proposals')}</div>
         <div className={styles.inline}>
-          <FieldWrapper label="Bonds to create proposals">
+          <FieldWrapper label={t('proposalCard.proposalBonds')}>
             <FieldValue value={createProposalBond} />
           </FieldWrapper>
 
-          <FieldWrapper label="Time before proposals expire">
+          <FieldWrapper label={t('proposalCard.proposalBondExpirationTime')}>
             <FieldValue value={proposalExpireTime} />
           </FieldWrapper>
         </div>
       </div>
       <div className={styles.row}>
-        <div className={styles.title}>Bounties</div>
+        <div className={styles.title}>{t('proposalCard.proposalBounties')}</div>
         <div className={styles.inline}>
-          <FieldWrapper label="Bonds to claim bounty">
+          <FieldWrapper label={t('proposalCard.proposalClaimBounty')}>
             <FieldValue value={claimBountyBond} />
           </FieldWrapper>
 
-          <FieldWrapper label="Time to unclaim a bounty without penalty">
+          <FieldWrapper label={t('proposalCard.proposalBountyUnclaimTime')}>
             <FieldValue value={unclaimBountyTime} />
           </FieldWrapper>
         </div>
       </div>
 
       <div className={styles.row}>
-        <InfoBlockWidget label="Target" value={dao.id} valueFontSize="S" />
+        <InfoBlockWidget
+          label={t('proposalCard.proposalTarget')}
+          value={dao.id}
+          valueFontSize="S"
+        />
       </div>
     </div>
   );

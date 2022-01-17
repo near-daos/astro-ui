@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 
 import { Input } from 'components/inputs/Input';
 import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
@@ -13,6 +14,7 @@ import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTo
 import styles from './TransferContent.module.scss';
 
 export const TransferContent: FC = () => {
+  const { t } = useTranslation();
   const { register, setValue, getValues, watch } = useFormContext();
   const { tokens } = useCustomTokensContext();
   const amount = watch('amount');
@@ -75,7 +77,7 @@ export const TransferContent: FC = () => {
 
   return (
     <div className={styles.root}>
-      <InputWrapper fieldName="amount" label="Amount">
+      <InputWrapper fieldName="amount" label={t('proposalCard.proposalAmount')}>
         <Input
           className={cn(styles.inputWrapper, styles.narrow)}
           inputStyles={{ width: `${amountWidth}ch`, paddingRight: 4 }}
@@ -105,10 +107,14 @@ export const TransferContent: FC = () => {
           <LoadingIndicator />
         </div>
       )}
-      <InputWrapper fieldName="target" label="Target" flex>
+      <InputWrapper
+        fieldName="target"
+        label={t('proposalCard.proposalTarget')}
+        flex
+      >
         <Input
           className={cn(styles.inputWrapper, styles.wide)}
-          placeholder="Specify target account"
+          placeholder={t('proposalCard.proposalTargetPlaceholder')}
           isBorderless
           size="block"
           {...register('target')}

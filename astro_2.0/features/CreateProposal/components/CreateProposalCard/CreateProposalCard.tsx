@@ -1,4 +1,5 @@
 import React, { ReactNode, useMemo } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
@@ -46,6 +47,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     formState: { errors },
   } = useFormContext();
   const isMobile = useMedia('(max-width: 767px)');
+  const { t } = useTranslation();
 
   const proposalTypesOptions = useMemo(
     () => getProposalTypesOptions(userPermissions.isCanCreatePolicyProposals),
@@ -86,11 +88,18 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       </div>
 
       <div className={styles.proposerCell}>
-        <InfoBlockWidget label="Proposer" value={proposer} />
+        <InfoBlockWidget
+          label={t('proposalCard.proposalOwner')}
+          value={proposer}
+        />
       </div>
 
       <div className={styles.descriptionCell}>
-        <InputWrapper fieldName="details" label="Description" fullWidth>
+        <InputWrapper
+          fieldName="details"
+          label={t('proposalCard.proposalDescription')}
+          fullWidth
+        >
           <TextArea
             size="block"
             textAlign="left"

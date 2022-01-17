@@ -1,6 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import isNumber from 'lodash/isNumber';
+import { useTranslation } from 'next-i18next';
 
 import { InfoPanel } from 'astro_2.0/components/ProposalCardRenderer/components/InfoPanel';
 
@@ -23,6 +24,8 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
   className,
   proposalId,
 }) => {
+  const { t } = useTranslation();
+
   function renderFlag() {
     return daoFlagNode ? (
       <div className={styles.daoFlag}>{daoFlagNode}</div>
@@ -33,7 +36,9 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
     if (isNumber(proposalId)) {
       return (
         <div className={styles.proposalIdCell}>
-          <span className={styles.proposalIdLabel}>Proposal ID:&nbsp;</span>
+          <span className={styles.proposalIdLabel}>
+            {t('proposalCard.proposalID')}
+          </span>
           <span className={styles.proposalIdValue}>{proposalId}</span>
         </div>
       );
