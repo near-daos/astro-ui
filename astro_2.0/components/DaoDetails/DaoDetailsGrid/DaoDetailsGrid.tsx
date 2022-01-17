@@ -17,6 +17,7 @@ import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 
 import { shortenString } from 'utils/format';
+import { formatCurrency } from 'utils/formatCurrency';
 
 import { DaoInfoCard } from './components/DaoInfoCard';
 import { DaoDetailsSkeleton } from './components/DaoDetailsSkeleton';
@@ -117,7 +118,7 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                   infoType="funds"
                   url={`/dao/${id}/treasury/tokens`}
                   title={t('daoFunds')}
-                  daoFunds={funds}
+                  daoFunds={formatCurrency(Number(funds ?? 0))}
                   tooltip={t('daoFunds')}
                 />
                 <DaoInfoCard
