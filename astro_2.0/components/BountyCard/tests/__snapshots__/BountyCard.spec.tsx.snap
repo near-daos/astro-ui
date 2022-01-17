@@ -53,7 +53,7 @@ exports[`bounty card Should render component 1`] = `
       </div>
       <div>
         <div>
-          Description
+          proposalCard.proposalDescription
         </div>
         <div>
           DIY
