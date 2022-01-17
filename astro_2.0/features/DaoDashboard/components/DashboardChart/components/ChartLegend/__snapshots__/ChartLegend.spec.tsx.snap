@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Comment Should render Comment component 1`] = `
+exports[`ChartLegend Should render Chart legend component 1`] = `
 <div>
   <div>
     <span
