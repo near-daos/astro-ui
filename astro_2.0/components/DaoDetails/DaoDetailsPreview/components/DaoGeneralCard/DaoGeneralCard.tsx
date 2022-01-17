@@ -12,7 +12,7 @@ interface DaoGeneralCardProps {
   cover?: string;
   logo?: string;
   flag?: string;
-  displayName: string;
+  displayName?: string;
   id: string;
   description: string;
   links: string[];
