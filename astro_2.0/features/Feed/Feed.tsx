@@ -250,7 +250,10 @@ export const Feed = ({
                   </div>
                 }
                 renderItem={proposal => (
-                  <div key={proposal.id} className={styles.proposalCardWrapper}>
+                  <div
+                    key={`${proposal.id}_${proposal.updatedAt}`}
+                    className={styles.proposalCardWrapper}
+                  >
                     <ViewProposal
                       dao={proposal.dao}
                       proposal={proposal}

@@ -88,9 +88,17 @@
 
 .countdownCell {
   @extend %title4;
+  align-items: flex-end;
   color: var(--color-brand-purple);
+  display: flex;
+  flex-direction: column;
   grid-area: countdown;
   justify-self: end;
+
+  .finalizeButton {
+    margin-top: 8px;
+    text-transform: capitalize;
+  }
 }
 
 .proposalCell {
@@ -194,6 +202,10 @@
   .label.rejected {
     color: var(--color-error-50);
   }
+}
+
+.errorLabel {
+  color: var(--color-error-70);
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
