@@ -23,7 +23,7 @@ exports[`Comment Should render Comment component 1`] = `
       My name is Bond. James bond.
     </p>
     <div>
-      08:39 PM
+      format mock
     </div>
     <div
       class=""

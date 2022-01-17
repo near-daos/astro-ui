@@ -11,6 +11,7 @@ import { TFunction, useTranslation } from 'next-i18next';
 import { Button } from 'components/button/Button';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { DashboardView } from 'astro_2.0/features/DaoDashboard/types';
+import { ChartLegend } from 'astro_2.0/features/DaoDashboard/components/DashboardChart/components/ChartLegend';
 
 import { DOMAIN_RANGES } from 'components/AreaChartRenderer/helpers';
 
@@ -31,22 +32,25 @@ const variants = {
   hidden: { opacity: 0 },
 };
 
-function getChartTitle(activeView: DashboardView | undefined, t: TFunction) {
+function getChartTitles(activeView: DashboardView | undefined, t: TFunction) {
   switch (activeView) {
     case 'BOUNTIES': {
-      return t('daoDashboard.bounties');
+      return [t('daoDashboard.bounties')];
     }
     case 'DAO_FUNDS': {
-      return t('daoDashboard.daoFunds');
+      return [t('daoDashboard.daoFunds')];
     }
     case 'NFTS': {
-      return t('daoDashboard.nfts');
+      return [t('daoDashboard.nfts')];
     }
     case 'PROPOSALS': {
-      return t('daoDashboard.proposals');
+      return [
+        t('daoDashboard.activeProposals'),
+        t('daoDashboard.proposalsInTotal'),
+      ];
     }
     default: {
-      return t('activity');
+      return [t('activity')];
     }
   }
 }
@@ -83,6 +87,8 @@ export const DashboardChart: FC<DashboardChartProps> = ({
     });
   }
 
+  const [firstDataSet, secondDataSet] = getChartTitles(activeView, t);
+
   if (!chartData) {
     return null;
   }
@@ -103,7 +109,18 @@ export const DashboardChart: FC<DashboardChartProps> = ({
       {({ measureRef }) => (
         <div className={styles.root} ref={measureRef}>
           <div className={styles.header}>
-            <div className={styles.title}>{getChartTitle(activeView, t)}</div>
+            <div className={styles.title}>
+              <ChartLegend
+                label={firstDataSet}
+                className={styles.firstDataSet}
+              />
+              {activeView === 'PROPOSALS' && (
+                <ChartLegend
+                  label={secondDataSet}
+                  className={styles.secondDataSet}
+                />
+              )}
+            </div>
             <Button
               onClick={() => setActiveDataSet(DATASET.NUMBER_OF_VOTES)}
               variant="transparent"
@@ -147,6 +164,7 @@ export const DashboardChart: FC<DashboardChartProps> = ({
                     data={chartData}
                     period={activeRange}
                     lines={lines}
+                    isIntegerDataset={activeView !== 'DAO_FUNDS'}
                   />
                 </motion.div>
               ) : (

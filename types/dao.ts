@@ -33,7 +33,6 @@ export type DAO = {
   members: number;
   daoMembersList: string[];
   funds: string;
-  proposals: number;
   totalProposals: number;
   activeProposalsCount: number;
   totalProposalsCount: number;

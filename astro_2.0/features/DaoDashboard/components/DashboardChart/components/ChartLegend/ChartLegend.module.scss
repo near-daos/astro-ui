@@ -1,0 +1,24 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  display: flex;
+  margin-right: 24px;
+}
+
+.legendIndicator {
+  background-color: var(--color-neutral-50);
+  border-radius: 50%;
+  height: 8px;
+  margin-right: 6px;
+  width: 8px;
+}
+
+.legendLabel {
+  @extend %title4;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}

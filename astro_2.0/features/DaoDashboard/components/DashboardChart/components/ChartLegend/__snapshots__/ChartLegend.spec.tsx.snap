@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChartLegend Should render Chart legend component 1`] = `
+<div>
+  <div>
+    <span
+      class="indicatorClassName"
+    />
+    <span>
+      DAO funds
+    </span>
+  </div>
+</div>
+`;

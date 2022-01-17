@@ -39,7 +39,6 @@ Template.args = {
     activeProposalsCount: 11,
     totalProposalsCount: 15,
     totalDaoFunds: 77,
-    proposals: 13,
     totalProposals: 15,
     lastProposalId: 12,
     logo:
