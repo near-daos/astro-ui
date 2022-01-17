@@ -32,23 +32,10 @@ export interface GetDAOsResponse {
 export type DaoDTO = {
   createdAt: string;
   transactionHash: string;
-  updateTransactionHash: string;
-  createTimestamp: string;
   updateTimestamp: string;
   id: string;
   config: DaoConfig;
-  amount: string;
-  totalSupply: string;
-  lastBountyId: number;
   lastProposalId: number;
-  numberOfProposals: number;
-  stakingContract: string;
-  numberOfAssociates: number;
-  council: string[];
-  councilSeats: number;
-  link: unknown | null;
-  description: string | null;
-  status: 'Success';
   policy: DaoPolicy;
   activeProposalCount: number;
   totalProposalCount: number;
@@ -126,7 +113,6 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
     description: config?.purpose ?? '',
     members: numberOfMembers,
     daoMembersList,
-    proposals: numberOfProposals,
     activeProposalsCount: daoDTO.activeProposalCount ?? 0,
     totalProposalsCount: daoDTO.totalProposalCount ?? 0,
     totalProposals: numberOfProposals,
