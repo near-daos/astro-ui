@@ -225,7 +225,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       <div className={styles.proposalCell}>
         <InfoBlockWidget
           valueFontSize="L"
-          label={`${t(`proposalCard.proposalType`)}\${type}`}
+          label={`${t(`proposalCard.proposalType`)}${type}`}
           value={
             <div className={styles.proposalType}>
               {getProposalVariantLabel(variant, type)}
