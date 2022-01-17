@@ -80,33 +80,16 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
     async value => {
       router.push(`?sort=${value}`);
 
-      if (value === 'lastProposalId,DESC') {
-        // todo - this is not working , we have to decide how to get most active
-        const sorted = data.sort((a, b) => {
-          if (a.proposals > b.proposals) {
-            return -1;
-          }
+      const res = await getDaosList({
+        sort: `${value}`,
+        offset: 0,
+        limit: 20,
+      });
 
-          if (a.proposals < b.proposals) {
-            return 1;
-          }
-
-          return 0;
-        });
-
-        setData(sorted);
-      } else {
-        const res = await getDaosList({
-          sort: `${value}`,
-          offset: 0,
-          limit: 20,
-        });
-
-        setHasMore(res.daos.length !== res.total);
-        setData(res.daos);
-      }
+      setHasMore(res.daos.length !== res.total);
+      setData(res.daos);
     },
-    [data, router]
+    [router]
   );
 
   const handleCreateDao = useCallback(
