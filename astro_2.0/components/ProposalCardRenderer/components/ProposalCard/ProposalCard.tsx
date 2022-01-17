@@ -111,10 +111,7 @@ function getTimestampLabel(
   return 'Voting ended';
 }
 
-function getSealIcon(
-  status: ProposalStatus
-  // timeLeft: string | null
-): string | null {
+function getSealIcon(status: ProposalStatus): string | null {
   let sealIcon;
 
   switch (status) {
@@ -136,8 +133,6 @@ function getSealIcon(
   }
 
   return sealIcon;
-
-  // return !timeLeft && !sealIcon ? 'sealFailed' : sealIcon;
 }
 
 const schema = yup.object().shape({
