@@ -71,13 +71,7 @@ export const DaoDetailsPreview: FC<DaoDetailsPreviewProps> = ({ dao }) => {
       </section>
 
       <section className={styles.proposals}>
-        <ProposalTrackerCard
-          activeVotes={0}
-          totalProposals={0}
-          action={null}
-          onClick={() => 0}
-          preview
-        />
+        <ProposalTrackerCard activeVotes={0} totalProposals={0} preview />
       </section>
     </div>
   );
