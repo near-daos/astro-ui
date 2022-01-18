@@ -23,8 +23,11 @@ import { CookieService } from 'services/CookieService';
 
 import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 
-import 'styles/globals.scss';
 import { SocketProvider } from 'context/SocketContext';
+
+import { appConfig } from 'config';
+
+import 'styles/globals.scss';
 
 function App({ Component, pageProps }: AppProps): JSX.Element {
   const router = useRouter();
@@ -32,10 +35,14 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
   useMount(async () => {
     SputnikNearService.init();
 
+    const accountCookieOptions = appConfig.appDomain
+      ? { ...DEFAULT_OPTIONS, domain: appConfig.appDomain }
+      : DEFAULT_OPTIONS;
+
     CookieService.set(
       ACCOUNT_COOKIE,
       SputnikNearService.getAccountId(),
-      DEFAULT_OPTIONS
+      accountCookieOptions
     );
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
 

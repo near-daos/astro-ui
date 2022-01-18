@@ -22,4 +22,5 @@ export const appConfig = {
   socketUrl: process.env.NEXT_PUBLIC_API_URL,
   toastsNotificationsTimeout:
     process.env.NEXT_PUBLIC_TOASTS_NOTIFICATIONS_TIMEOUT,
+  appDomain: process.env.NEXT_PUBLIC_APP_DOMAIN,
 };
