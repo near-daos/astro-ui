@@ -1,0 +1,46 @@
+import React, { FC } from 'react';
+import cn from 'classnames';
+import { Button } from 'components/button/Button';
+import { Icon } from 'components/Icon';
+
+import styles from './ViewToggle.module.scss';
+
+export type ViewToggleOption = 'list' | 'timeline';
+
+interface ViewToggleProps {
+  selected: ViewToggleOption;
+  onSelect: (val: ViewToggleOption) => void;
+}
+
+export const ViewToggle: FC<ViewToggleProps> = ({ selected, onSelect }) => {
+  return (
+    <div className={styles.root}>
+      <Button
+        size="small"
+        variant="tertiary"
+        onClick={() => onSelect('list')}
+        className={cn(styles.buttonWrapper, styles.first)}
+      >
+        <Icon
+          name="list"
+          className={cn(styles.button, {
+            [styles.active]: selected === 'list',
+          })}
+        />
+      </Button>
+      <Button
+        size="small"
+        onClick={() => onSelect('timeline')}
+        variant="tertiary"
+        className={styles.buttonWrapper}
+      >
+        <Icon
+          name="timeline"
+          className={cn(styles.button, {
+            [styles.active]: selected === 'timeline',
+          })}
+        />
+      </Button>
+    </div>
+  );
+};

@@ -20,8 +20,36 @@
 }
 
 .header {
+  align-items: center;
+  display: flex;
+}
+
+.title {
   font-size: 32px;
   margin: 0;
+}
+
+.newProposalButton {
+  font-size: 14px;
+  margin-left: 24px;
+  text-transform: capitalize;
+}
+
+.filters {
+  @extend %subtitle4;
+  align-items: center;
+  color: var(--color-neutral-60);
+  display: flex;
+  font-weight: 400;
+  margin-left: auto;
+
+  .filter {
+    margin-right: 12px;
+  }
+
+  .filterLabel {
+    margin-right: 6px;
+  }
 }
 
 .grid {
