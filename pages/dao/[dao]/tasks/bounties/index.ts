@@ -18,9 +18,9 @@ export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async (
 
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
-  const [daoContext, bounties, bountyDoneProposals] = await Promise.all([
+  const [daoContext, bountyDoneProposals] = await Promise.all([
     SputnikHttpService.getDaoContext(account, daoId),
-    SputnikHttpService.getBountiesByDaoId(daoId),
+    // SputnikHttpService.getBountiesByDaoId(daoId),
     SputnikHttpService.getActiveBountyDoneProposalsByDaoId(daoId),
   ]);
 
@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async (
         nextI18NextConfig
       )),
       daoContext,
-      initialBounties: bounties,
+      initialBounties: [],
       bountyDoneProposals,
     },
   };

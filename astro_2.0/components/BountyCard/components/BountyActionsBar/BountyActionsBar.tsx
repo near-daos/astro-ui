@@ -39,11 +39,13 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
   ).split(' ');
 
   const tooltipSeverity = {
+    [BountyStatus.Proposed]: TooltipMessageSeverity.Info,
     [BountyStatus.Available]: TooltipMessageSeverity.Info,
     [BountyStatus.InProgress]: TooltipMessageSeverity.Positive,
     [BountyStatus.InProgressByMe]: TooltipMessageSeverity.Positive,
     [BountyStatus.Expired]: TooltipMessageSeverity.Warning,
     [BountyStatus.PendingApproval]: TooltipMessageSeverity.Info,
+    [BountyStatus.Completed]: TooltipMessageSeverity.Positive,
   };
 
   function renderButtons() {

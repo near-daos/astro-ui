@@ -9,9 +9,11 @@ import {
   GROUPS_PAGE_URL,
   ALL_PROPOSALS_PAGE_URL,
   SINGLE_PROPOSAL_PAGE_URL,
+  SINGLE_BOUNTY_PAGE_URL,
 } from 'constants/routing';
 import { UrlObject } from 'url';
 import { Proposal } from 'types/proposal';
+import { Bounty } from 'types/bounties';
 
 type GroupConfig = {
   id: string;
@@ -29,7 +31,8 @@ type Breadcrumbs = Record<
 export function useGetBreadcrumbsConfig(
   dao?: DAO,
   group?: GroupConfig,
-  proposal?: Proposal
+  proposal?: Proposal,
+  bounty?: Bounty
 ): Breadcrumbs {
   const { t } = useTranslation();
 
@@ -75,6 +78,16 @@ export function useGetBreadcrumbsConfig(
       BOUNTIES: {
         label: 'Bounties',
       },
+      SINGLE_BOUNTY_PAGE_URL: {
+        href: {
+          pathname: SINGLE_BOUNTY_PAGE_URL,
+          query: {
+            dao: id,
+            bounty: bounty?.id,
+          },
+        },
+        label: bounty?.id ?? '',
+      },
       GROUPS: {
         href: {
           pathname: GROUPS_PAGE_URL,
@@ -96,7 +109,7 @@ export function useGetBreadcrumbsConfig(
         label: group?.label || '',
       },
     };
-  }, [dao, t, proposal?.id, group?.id, group?.label]);
+  }, [dao, t, proposal?.id, bounty?.id, group?.id, group?.label]);
 
   return breadcrumbs;
 }

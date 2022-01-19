@@ -110,7 +110,7 @@ export const mapProposalDTOToProposal = (
   ] = proposalDTO.description.split(EXTERNAL_LINK_SEPARATOR);
 
   const config = get(proposalDTO.dao, 'config');
-  const meta = config.metadata ? fromBase64ToMetadata(config.metadata) : null;
+  const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
 
   const votePeriodEnd = getProposalVotingEndDate(
     get(proposalDTO, 'submissionTime'),

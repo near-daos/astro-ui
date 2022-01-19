@@ -1,0 +1,92 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+
+.root {
+  display: flex;
+  gap: 12px;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  height: 39px;
+  white-space: nowrap;
+
+  @include tablet-landscape {
+    height: 41px;
+  }
+
+  .iconWrapper {
+    background-color: var(--color-neutral-30);
+    border-radius: 50%;
+    height: 24px;
+    margin-right: 8px;
+    width: 24px;
+  }
+}
+
+.icon {
+  background-color: var(--color-brand-black);
+  background-position: center;
+  background-size: contain;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+}
+
+.loaderWrapper {
+  align-items: flex-end;
+  display: flex;
+  height: 100%;
+  padding: 8px;
+}
+
+.symbol {
+  @include ellipse-text;
+  max-width: 60px;
+}
+
+.divider {
+  margin-left: 24px;
+}
+
+.inline {
+  display: flex;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-md}px) {
+  .root {
+    flex-wrap: wrap;
+  }
+
+  .inline {
+    width: 100%;
+  }
+
+  .inline:last-of-type {
+    margin-top: 24px;
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    flex-wrap: wrap;
+
+    > div:nth-child(2) {
+      > div:first-of-type {
+        height: 14px;
+      }
+    }
+
+    > div:nth-child(3),
+    > div:nth-child(5) {
+      height: 32px;
+      width: 100%;
+    }
+
+    .divider.divider {
+      height: 0;
+      margin: 0;
+    }
+  }
+}

@@ -1,5 +1,3 @@
-import isEmpty from 'lodash/isEmpty';
-import { useRouter } from 'next/router';
 import React, { useEffect, useState, VFC } from 'react';
 
 import { useAuthContext } from 'context/AuthContext';
@@ -7,22 +5,14 @@ import { useAuthContext } from 'context/AuthContext';
 import { DaoContext } from 'types/context';
 import { Bounty, BountyStatus } from 'types/bounties';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
-import { Proposal, ProposalType, ProposalVariant } from 'types/proposal';
-import { BountyCardContent } from 'astro_2.0/components/BountyCard/types';
+import { Proposal, ProposalVariant } from 'types/proposal';
 import {
   ViewToggle,
   ViewToggleOption,
 } from 'astro_2.0/features/Bounties/components/ViewToggle';
 import { BountiesListView } from 'astro_2.0/features/Bounties/components/BountiesListView';
-import { BountyCard } from 'astro_2.0/components/BountyCard';
-import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Button } from 'components/button/Button';
 import { Dropdown } from 'components/Dropdown';
-
-import {
-  mapBountyToCardContent,
-  showActionBar,
-} from 'astro_2.0/components/BountyCard/helpers';
 
 import useQuery from 'hooks/useQuery';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
@@ -30,8 +20,6 @@ import {
   BOUNTIES_PAGE_FILTER_OPTIONS,
   BOUNTIES_PAGE_SORT_OPTIONS,
 } from 'astro_2.0/features/Bounties/helpers';
-
-import { SputnikHttpService } from 'services/sputnik';
 
 import styles from './BountiesPageContent.module.scss';
 
@@ -50,7 +38,7 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
 }) => {
   const { dao } = daoContext;
 
-  const router = useRouter();
+  // const router = useRouter();
   const { accountId } = useAuthContext();
   const { tokens } = useDaoCustomTokens();
   const [activeView, setActiveView] = useState<ViewToggleOption>('list');
@@ -61,14 +49,14 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
     bountyStatus: BountyStatus;
     bountySort: string;
   }>();
-  const daoId = router.query.dao as string;
+  // const daoId = router.query.dao as string;
 
-  useEffect(() => {
-    SputnikHttpService.getBountiesByDaoId(
-      daoId,
-      query.bountyStatus
-    ).then(data => setBounties(data));
-  }, [daoId, query.bountyStatus]);
+  // useEffect(() => {
+  //   SputnikHttpService.getBountiesByDaoId(
+  //     daoId,
+  //     query.bountyStatus
+  //   ).then(data => setBounties(data));
+  // }, [daoId, query.bountyStatus]);
 
   useEffect(() => {
     setBounties(initialBounties);
@@ -85,27 +73,27 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
     };
   }
 
-  function getBountyDoneProposal(
-    bountyContent: BountyCardContent
-  ): Proposal | undefined {
-    const { id, status, accountId: bountyAccountId } = bountyContent;
-
-    if (status !== BountyStatus.InProgress) {
-      return undefined;
-    }
-
-    return bountyDoneProposals.find(proposal => {
-      const { kind } = proposal;
-
-      if (kind.type === ProposalType.BountyDone) {
-        const { bountyId, receiverId } = kind;
-
-        return id === bountyId && receiverId === bountyAccountId;
-      }
-
-      return false;
-    });
-  }
+  // function getBountyDoneProposal(
+  //   bountyContent: BountyCardContent
+  // ): Proposal | undefined {
+  //   const { id, status, accountId: bountyAccountId } = bountyContent;
+  //
+  //   if (status !== BountyStatus.InProgress) {
+  //     return undefined;
+  //   }
+  //
+  //   return bountyDoneProposals.find(proposal => {
+  //     const { kind } = proposal;
+  //
+  //     if (kind.type === ProposalType.BountyDone) {
+  //       const { bountyId, receiverId } = kind;
+  //
+  //       return id === bountyId && receiverId === bountyAccountId;
+  //     }
+  //
+  //     return false;
+  //   });
+  // }
 
   return (
     <div className={styles.root}>
@@ -154,60 +142,12 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
           tokens={tokens}
           bounties={bounties}
           dao={dao}
+          completeHandler={handleCreateProposal}
           bountyDoneProposals={bountyDoneProposals}
         />
       )}
 
       {activeView === 'timeline' && <div>timeline view here</div>}
-
-      {isEmpty(bounties) ? (
-        <NoResultsView title="No bounties available" />
-      ) : (
-        <div className={styles.grid}>
-          {bounties?.flatMap(bounty => {
-            const claimedBy = bounty.claimedBy.map(
-              ({ accountId: claimedAccount }) => claimedAccount
-            );
-
-            const content = mapBountyToCardContent(
-              dao,
-              bounty,
-              tokens,
-              accountId,
-              query.bountyStatus
-            );
-
-            return content.map(singleContent => {
-              const cardContent = {
-                ...singleContent,
-              };
-
-              const bountyDoneProposal = getBountyDoneProposal(cardContent);
-
-              if (bountyDoneProposal) {
-                cardContent.status = BountyStatus.PendingApproval;
-              }
-
-              return (
-                <BountyCard
-                  key={Math.floor(Math.random() * 10000)}
-                  content={cardContent}
-                  dao={dao}
-                  bountyId={bounty.id}
-                  deadlineThreshold={bounty.deadlineThreshold}
-                  canClaim={!claimedBy.includes(accountId)}
-                  showActionBar={showActionBar(cardContent, accountId)}
-                  completeHandler={handleCreateProposal(
-                    bounty.id,
-                    ProposalVariant.ProposeDoneBounty
-                  )}
-                  relatedProposal={bountyDoneProposal}
-                />
-              );
-            });
-          })}
-        </div>
-      )}
     </div>
   );
 };

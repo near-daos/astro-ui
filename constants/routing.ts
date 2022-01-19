@@ -19,3 +19,6 @@ export const ALL_PROPOSALS_PAGE_URL = '/dao/[dao]/proposals';
 export const SINGLE_PROPOSAL_PAGE_URL = `${ALL_PROPOSALS_PAGE_URL}/[proposal]`;
 
 export const GROUPS_PAGE_URL = '/dao/[dao]/groups/[group]';
+
+export const ALL_BOUNTIES_PAGE_URL = '/dao/[dao]/tasks/bounties';
+export const SINGLE_BOUNTY_PAGE_URL = `${ALL_BOUNTIES_PAGE_URL}/[bounty]`;

@@ -1,0 +1,48 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-template-areas:
+    'breadcrumbs'
+    'dao'
+    'bountyInfo';
+  grid-template-columns: 1fr;
+  margin-top: 56px;
+}
+
+.breadcrumbs {
+  align-items: center;
+  grid-area: breadcrumbs;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.dao {
+  grid-area: dao;
+  margin-top: 24px;
+
+  @include tablet-landscape {
+    margin-top: 24px;
+  }
+}
+
+.header {
+  align-items: flex-start;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin-top: 42px;
+}
+
+.bountyInfo {
+  flex: 3;
+  grid-area: proposalInfo;
+  margin-top: 60px;
+
+  > div {
+    width: auto;
+  }
+}
