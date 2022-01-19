@@ -1,0 +1,71 @@
+@import 'styles/typography';
+
+.listElement {
+  display: grid;
+  grid-column-gap: 12px;
+  grid-template-columns: 32px 1fr 1fr 120px 200px;
+  margin-bottom: 12px;
+}
+
+.headerItem {
+  @extend %body2;
+  color: var(--color-neutral-60);
+}
+
+.listItem {
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  height: 56px;
+  overflow: hidden;
+}
+
+.nameCell,
+.proposerCell,
+.linkCell,
+.claimsCell {
+  align-items: center;
+  display: flex;
+}
+
+.nameCell {
+  @extend %title4;
+}
+
+.proposerCell {
+  @extend %body2;
+}
+
+.proposalLink {
+  @extend %body2;
+
+  align-items: center;
+  background-color: var(--color-primary-20);
+  border-radius: 50%;
+  color: var(--color-brand-purple);
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+
+  .icon {
+    height: 16px;
+    width: 16px;
+  }
+}
+
+.claimsCell {
+  .slot {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+  }
+
+  .slotActive {
+    @extend %body1;
+    font-weight: 500;
+  }
+}
+
+.claimsButton {
+  margin-left: 24px;
+  text-transform: capitalize;
+}

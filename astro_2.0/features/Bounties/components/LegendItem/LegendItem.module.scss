@@ -1,0 +1,32 @@
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  display: flex;
+  margin-right: 24px;
+  white-space: nowrap;
+}
+
+.indicator {
+  background-color: var(--color-neutral-60);
+  border-radius: 50%;
+  height: 8px;
+  margin-right: 4px;
+  width: 8px;
+
+  &.available {
+    background-color: var(--color-blue-20);
+  }
+
+  &.inProgress {
+    background-color: var(--color-primary-50);
+  }
+
+  &.completed {
+    background-color: var(--color-success-50);
+  }
+}
+
+.label {
+  @extend %caption1;
+}

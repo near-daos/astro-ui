@@ -28,6 +28,13 @@ export interface BountiesResponse {
   data: BountyResponse[];
 }
 
+export enum BountiesPhase {
+  ComingSoon = 'ComingSoon',
+  Available = 'Available',
+  InProgress = 'InProgress',
+  Completed = 'Completed',
+}
+
 export enum BountyStatus {
   Available = 'Available',
   InProgress = 'InProgress',

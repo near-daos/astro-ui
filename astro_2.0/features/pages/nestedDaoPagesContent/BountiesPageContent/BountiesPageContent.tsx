@@ -1,6 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
-import React, { useEffect, useRef, useState, VFC } from 'react';
+import React, { useEffect, useState, VFC } from 'react';
 
 import { useAuthContext } from 'context/AuthContext';
 
@@ -9,20 +9,27 @@ import { Bounty, BountyStatus } from 'types/bounties';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { Proposal, ProposalType, ProposalVariant } from 'types/proposal';
 import { BountyCardContent } from 'astro_2.0/components/BountyCard/types';
-
-import { FeedFilter } from 'astro_2.0/components/Feed';
-import { Radio } from 'astro_2.0/components/inputs/Radio';
+import {
+  ViewToggle,
+  ViewToggleOption,
+} from 'astro_2.0/features/Bounties/components/ViewToggle';
+import { BountiesListView } from 'astro_2.0/features/Bounties/components/BountiesListView';
 import { BountyCard } from 'astro_2.0/components/BountyCard';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
-import { HeaderWithFilter } from 'astro_2.0/features/dao/HeaderWithFilter';
+import { Button } from 'components/button/Button';
+import { Dropdown } from 'components/Dropdown';
 
 import {
-  showActionBar,
   mapBountyToCardContent,
+  showActionBar,
 } from 'astro_2.0/components/BountyCard/helpers';
 
 import useQuery from 'hooks/useQuery';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import {
+  BOUNTIES_PAGE_FILTER_OPTIONS,
+  BOUNTIES_PAGE_SORT_OPTIONS,
+} from 'astro_2.0/features/Bounties/helpers';
 
 import { SputnikHttpService } from 'services/sputnik';
 
@@ -46,13 +53,13 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
   const router = useRouter();
   const { accountId } = useAuthContext();
   const { tokens } = useDaoCustomTokens();
-
-  const neighbourRef = useRef(null);
+  const [activeView, setActiveView] = useState<ViewToggleOption>('list');
 
   const [bounties, setBounties] = useState<Bounty[]>();
 
   const { query, updateQuery } = useQuery<{
     bountyStatus: BountyStatus;
+    bountySort: string;
   }>();
   const daoId = router.query.dao as string;
 
@@ -102,22 +109,56 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
 
   return (
     <div className={styles.root}>
-      <HeaderWithFilter
-        titleRef={neighbourRef}
-        title={<h1 className={styles.header}>Bounties</h1>}
-      >
-        <FeedFilter
-          neighbourRef={neighbourRef}
-          title="Bounties and Claims"
-          value={query.bountyStatus}
-          onChange={val => updateQuery('bountyStatus', val)}
+      <div className={styles.header}>
+        <h1 className={styles.title}>Bounties</h1>
+        <Button
+          size="small"
+          className={styles.newProposalButton}
+          onClick={() => {
+            if (toggleCreateProposal) {
+              toggleCreateProposal({
+                proposalVariant: ProposalVariant.ProposeCreateBounty,
+              });
+            }
+          }}
         >
-          <Radio value="" label="All" />
-          <Radio value={BountyStatus.Available} label="Available bounties" />
-          <Radio value={BountyStatus.InProgress} label="Claims in progress" />
-          <Radio value={BountyStatus.Expired} label="Expired Claims" />
-        </FeedFilter>
-      </HeaderWithFilter>
+          Create new
+        </Button>
+
+        <div className={styles.filters}>
+          <div className={styles.filter}>
+            <span className={styles.filterLabel}>Sorting by:</span>
+            <Dropdown
+              value={query.bountySort}
+              onChange={val => updateQuery('bountySort', val)}
+              options={BOUNTIES_PAGE_SORT_OPTIONS}
+            />
+          </div>
+
+          <div className={styles.filter}>
+            <span className={styles.filterLabel}>Filter by status:</span>
+            <Dropdown
+              value={query.bountyStatus}
+              onChange={val => updateQuery('bountyStatus', val as BountyStatus)}
+              options={BOUNTIES_PAGE_FILTER_OPTIONS}
+            />
+          </div>
+        </div>
+
+        <ViewToggle onSelect={setActiveView} selected={activeView} />
+      </div>
+
+      {activeView === 'list' && (
+        <BountiesListView
+          accountId={accountId}
+          tokens={tokens}
+          bounties={bounties}
+          dao={dao}
+          bountyDoneProposals={bountyDoneProposals}
+        />
+      )}
+
+      {activeView === 'timeline' && <div>timeline view here</div>}
 
       {isEmpty(bounties) ? (
         <NoResultsView title="No bounties available" />
