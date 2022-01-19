@@ -1,5 +1,9 @@
 # Astro DAO
 
+[![Release version](https://img.shields.io/github/v/release/near-daos/astro-ui)](https://github.com/near-daos/astro-ui/releases/)
+[![Build](https://github.com/near-daos/astro-ui/actions/workflows/build-deploy.yaml/badge.svg)](https://github.com/near-daos/astro-ui/actions/workflows/build-deploy.yaml)
+[![Telegram group](https://img.shields.io/badge/-Telegram%20group-blue)](https://t.me/astro_near)
+
 Astro is a platform for launching Decentralized Autonomous Organizations. DAOs are self-organized groups that form around common purposes. Membership, decision making, and funding are coordinated in public on a tamper-proof blockchain.
 
 #### Technology stack
