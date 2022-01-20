@@ -34,6 +34,7 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
   timestamp,
 }) => {
   let icon;
+  let iconSize = 40;
 
   switch (vote) {
     case 'Yes': {
@@ -44,7 +45,13 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
       icon = 'votingNo';
       break;
     }
+    case 'Dismiss': {
+      icon = 'votingDismissAlt';
+      iconSize = 24;
+      break;
+    }
     default: {
+      iconSize = 32;
       icon = 'notVoted';
     }
   }
@@ -64,10 +71,11 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
         className={cn(styles.status, {
           [styles.yes]: vote === 'Yes',
           [styles.no]: vote === 'No',
+          [styles.dismiss]: vote === 'Dismiss',
           [styles.notVoted]: vote === null,
         })}
       >
-        <Icon width={24} name={icon as IconName} />
+        <Icon width={iconSize} name={icon as IconName} />
       </div>
       <div className={styles.name}>{name}</div>
       <div className={styles.groups}>
