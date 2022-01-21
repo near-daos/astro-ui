@@ -74,6 +74,7 @@ import {
   requiredImg,
   validateImgSize,
 } from 'utils/imageValidators';
+import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 
 // Services
 import { SputnikNearService } from 'services/sputnik';
@@ -325,7 +326,7 @@ export const extractMembersFromDao = (
 };
 
 export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
-  return Buffer.from(JSON.stringify(metadata)).toString('base64');
+  return jsonToBase64Str(metadata);
 };
 
 function getUniqueGroups(dao: DAO) {
