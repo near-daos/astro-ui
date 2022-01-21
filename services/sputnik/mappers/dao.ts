@@ -3,6 +3,7 @@ import get from 'lodash/get';
 import { DAO, DaoSubscription, DaoVotePolicy } from 'types/dao';
 import { DaoRole } from 'types/role';
 import Decimal from 'decimal.js';
+import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 import { CreateDaoParams } from 'services/sputnik/types';
 import { YOKTO_NEAR } from 'services/sputnik/constants';
 import { getAwsImageUrl } from './utils/getAwsImageUrl';
@@ -62,7 +63,7 @@ export type MemberStats = {
 export type DaoSubscriptionDTO = { id: string; dao: DaoDTO };
 
 export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
-  return Buffer.from(JSON.stringify(metadata)).toString('base64');
+  return jsonToBase64Str(metadata);
 };
 
 export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
@@ -184,7 +185,7 @@ export const mapCreateDaoParamsToContractArgs = (
     },
   };
 
-  return Buffer.from(JSON.stringify(argsList)).toString('base64');
+  return jsonToBase64Str(argsList);
 };
 
 export function mapSubscriptionsDTOsToDaoSubscriptions(
