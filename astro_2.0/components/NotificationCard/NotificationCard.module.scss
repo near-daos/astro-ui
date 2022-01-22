@@ -4,7 +4,7 @@
 .root {
   margin-bottom: 2px;
   min-height: 78px;
-  min-width: 320px;
+  min-width: 272px;
   position: relative;
 }
 
@@ -13,14 +13,15 @@
   border-radius: 8px;
   cursor: pointer;
   display: grid;
-  grid-gap: 6px;
+  grid-column-gap: 6px;
   grid-template-areas:
     'flag text control'
-    'flag text time';
+    'flag description description'
+    'flag time .';
   grid-template-columns: 62px auto 43px;
-  height: 100%;
   left: 0;
   max-width: 320px;
+  min-height: 78px;
   padding: 2px 6px 0;
   position: absolute;
   top: 0;
@@ -79,11 +80,25 @@
 
 .text {
   @include font(12px, 18px, 400);
-  align-items: center;
-  display: flex;
   grid-area: text;
   margin: 10px 0;
-  min-height: 54px;
+}
+
+.description {
+  @include font(12px, 18px, 400);
+  grid-area: description;
+  margin-bottom: 8px;
+  padding-right: 16px;
+
+  @include tablet-landscape {
+    @include font(14px, 21px, 400);
+  }
+}
+
+.descriptionHeader {
+  @include font(12px, 18px, 400);
+  color: var(--color-neutral-60);
+  margin-bottom: 4px;
 }
 
 .time {
@@ -98,10 +113,10 @@
 }
 
 .control {
-  align-items: center;
   display: flex;
   grid-area: control;
   justify-content: flex-end;
+  margin-top: 9px;
 }
 
 .markReadTitle {
@@ -183,9 +198,10 @@
     border-radius: 8px;
     grid-template-areas:
       'flag text control'
-      'flag time control';
+      'flag description description'
+      'flag time .';
     grid-template-columns: 62px auto auto;
-    grid-template-rows: auto 22px;
+    grid-template-rows: auto auto 22px;
     margin-bottom: 2px;
     padding: 2px 12px 0 6px;
 
@@ -197,15 +213,12 @@
 
   .text {
     @include tablet-portrait {
-      align-items: center;
-      display: flex;
-      margin: 8px 0 0;
-      min-height: auto;
+      margin: 8px 0;
     }
 
     @include tablet-landscape {
       @include font(14px, 21px, 400);
-      margin: 10px 0 2px;
+      margin: 10px 0;
     }
   }
 
@@ -214,17 +227,11 @@
     margin-bottom: 12px;
   }
 
-  .control {
-    align-items: center;
-    margin: 0;
-  }
-
   .markRead {
     @include tablet-portrait {
       display: block;
       flex-shrink: 0;
       margin-right: 14px;
-      //width: 75px;
     }
   }
 
