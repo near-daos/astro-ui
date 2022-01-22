@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import Link from 'next/link';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
@@ -55,7 +56,11 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
       );
     });
 
-    return <div className={styles.daosList}>{daoEls}</div>;
+    const daosListClassList = cn(styles.daosList, {
+      [styles.singleDao]: accountDaos.length === 1,
+    });
+
+    return <div className={daosListClassList}>{daoEls}</div>;
   }
 
   const handleCreateDao = useCallback(
