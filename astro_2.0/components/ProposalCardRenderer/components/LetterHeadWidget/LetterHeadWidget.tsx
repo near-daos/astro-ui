@@ -22,16 +22,15 @@ const getIconName = (type: ProposalType) => {
     case 'BountyDone':
     case 'AddBounty':
       return 'proposalBounty';
-    // case 'Create group':
-    //   return 'proposalCreateGroup';
     case 'Transfer':
       return 'proposalSendFunds';
     case 'Vote':
       return 'proposalPoll';
     case 'ChangePolicy':
       return 'proposalGovernance';
-    default:
     case 'FunctionCall':
+      return 'proposalNearFunctionCall';
+    default:
       return 'proposalNearFunctionCall';
   }
 };

@@ -1,1 +1,1 @@
-export * from './BountyProposalContent';
+export * from './CreateBountyProposalContent';

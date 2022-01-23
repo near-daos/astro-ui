@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`policy affected warning Should render component 1`] = `
+<div>
+  <div>
+    <div>
+      <div>
+        <svg>
+          <use
+            href="/_next/undefined"
+          />
+        </svg>
+      </div>
+      <div>
+        <div>
+          <div>
+            policyAffectedProposalsTitle daoConfig
+          </div>
+        </div>
+        <div>
+          <div>
+            policyAffectedProposalsText daoConfig
+          </div>
+        </div>
+      </div>
+      <div>
+        <button
+          class=""
+          type="button"
+        >
+          viewProposal
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`policy affected warning Should render nothing if data is empty 1`] = `<div />`;
