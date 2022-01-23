@@ -62,10 +62,6 @@ export type MemberStats = {
 
 export type DaoSubscriptionDTO = { id: string; dao: DaoDTO };
 
-export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
-  return jsonToBase64Str(metadata);
-};
-
 export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
   return JSON.parse(Buffer.from(metaAsBase64, 'base64').toString('utf-8'));
 };
@@ -175,7 +171,7 @@ export const mapCreateDaoParamsToContractArgs = (
     config: {
       name: params.name,
       purpose: params.purpose,
-      metadata: fromMetadataToBase64({
+      metadata: jsonToBase64Str({
         links: params.links,
         flagCover: params.flagCover,
         flagLogo: params.flagLogo,
