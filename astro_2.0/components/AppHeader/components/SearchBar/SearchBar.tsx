@@ -190,7 +190,11 @@ export const SearchBar: FC<SearchBarProps> = ({
     handleClose();
     setValue('');
     onSearchStateToggle(false);
-  }, [handleClose, onSearchStateToggle]);
+
+    if (isSearchPage) {
+      router.back();
+    }
+  }, [handleClose, router, isSearchPage, onSearchStateToggle]);
 
   const handleSubmit = useCallback(() => {
     if (value.trim()) {
