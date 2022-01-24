@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { format, parseISO } from 'date-fns';
 import { useSwipeable } from 'react-swipeable';
+import { useTranslation } from 'next-i18next';
 
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { ActionButton } from 'features/proposal/components/action-button';
@@ -15,6 +16,7 @@ import {
 } from 'astro_2.0/features/Notifications';
 
 import { Notification } from 'types/notification';
+import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 import styles from './NotificationCard.module.scss';
 
@@ -46,6 +48,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   const router = useRouter();
   const { handleUpdate } = useNotifications();
   const [swipedLeft, setSwipedLeft] = useState(false);
+  const { t } = useTranslation('notificationsPage');
 
   const { flagCover, logo, id: daoId = '' } = dao ?? {};
   const { iconType, url, statusIcon } = getNotificationParamsByType(
@@ -95,6 +98,10 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     },
     [handleMarkReadClick, router, url]
   );
+
+  const description = metadata?.proposal?.description.split(
+    EXTERNAL_LINK_SEPARATOR
+  )[0];
 
   function renderControls() {
     return (
@@ -177,6 +184,12 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
             proposerId={metadata?.proposal?.proposer ?? ''}
           />
         </div>
+        {description && (
+          <div className={styles.description}>
+            <div className={styles.descriptionHeader}>{t('description')}:</div>
+            <span>{description}</span>
+          </div>
+        )}
         <div className={styles.time}>
           {format(parseISO(createdAt), 'h:mm aaa')}
         </div>
