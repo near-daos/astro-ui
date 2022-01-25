@@ -1,18 +1,21 @@
-import isEmpty from 'lodash/isEmpty';
-import { useRouter } from 'next/router';
 import React, { useState, VFC } from 'react';
+
+import { useAuthContext } from 'context/AuthContext';
 
 import { DaoContext } from 'types/context';
 import { BountyContext, BountyStatus } from 'types/bounties';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { ProposalVariant } from 'types/proposal';
-
-import { ViewToggleOption } from 'astro_2.0/features/Bounties/components/ViewToggle';
-import { NoResultsView } from 'astro_2.0/components/NoResultsView';
+import {
+  ViewToggle,
+  ViewToggleOption,
+} from 'astro_2.0/features/Bounties/components/ViewToggle';
+import { BountiesListView } from 'astro_2.0/features/Bounties/components/BountiesListView';
 import { Button } from 'components/button/Button';
 import { Dropdown } from 'components/Dropdown';
 
 import useQuery from 'hooks/useQuery';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import {
   BOUNTIES_PAGE_FILTER_OPTIONS,
   BOUNTIES_PAGE_SORT_OPTIONS,
@@ -28,30 +31,32 @@ export interface BountiesPageContentProps {
 }
 
 export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
+  daoContext,
   bountiesContext,
   toggleCreateProposal,
 }) => {
-  const router = useRouter();
-  const [activeView] = useState<ViewToggleOption>('list');
+  const { dao } = daoContext;
+
+  // const router = useRouter();
+  const { accountId } = useAuthContext();
+  const { tokens } = useDaoCustomTokens();
+  const [activeView, setActiveView] = useState<ViewToggleOption>('list');
 
   const { query, updateQuery } = useQuery<{
     bountyStatus: BountyStatus;
     bountySort: string;
   }>();
 
-  const daoId = router.query.dao as string;
-
-  //
-  // useEffect(() => {
-  //   SputnikHttpService.getBountiesByDaoId(
-  //     daoId,
-  //     query.bountyStatus
-  //   ).then(data => setBounties(data));
-  // }, [daoId, query.bountyStatus]);
-
-  // useEffect(() => {
-  //   setBounties(initialBounties);
-  // }, [initialBounties]);
+  function handleCreateProposal(
+    bountyId: string,
+    proposalVariant: ProposalVariant
+  ) {
+    return () => {
+      if (toggleCreateProposal) {
+        toggleCreateProposal({ bountyId, proposalVariant });
+      }
+    };
+  }
 
   return (
     <div className={styles.root}>
@@ -91,25 +96,24 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
           </div>
         </div>
 
-        {/* <ViewToggle onSelect={setActiveView} selected={activeView} /> */}
+        <ViewToggle onSelect={setActiveView} selected={activeView} />
       </div>
 
-      {/* {activeView === 'list' && ( */}
-      {/*  <BountiesListView */}
-      {/*    bounties={initialBounties} */}
-      {/*    accountId={accountId} */}
-      {/*    tokens={tokens} */}
-      {/*    dao={dao} */}
-      {/*    bountyProposals={bountiesProposals} */}
-      {/*  /> */}
-      {/* )} */}
+      {activeView === 'list' && (
+        <BountiesListView
+          accountId={accountId}
+          tokens={tokens}
+          dao={dao}
+          completeHandler={handleCreateProposal}
+          bountiesContext={bountiesContext}
+        />
+      )}
 
-      {activeView === 'timeline' && <div>timeline view here</div>}
-
-      {isEmpty(bountiesContext) ? (
-        <NoResultsView title="No bounties available" />
-      ) : (
-        <BountiesTimelineView bountiesContext={bountiesContext} daoId={daoId} />
+      {activeView === 'timeline' && (
+        <BountiesTimelineView
+          daoId={dao.id}
+          bountiesContext={bountiesContext}
+        />
       )}
     </div>
   );

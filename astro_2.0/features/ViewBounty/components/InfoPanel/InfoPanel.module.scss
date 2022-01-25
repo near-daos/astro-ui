@@ -1,0 +1,150 @@
+@use 'styles/breakpoints';
+
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  background: var(--color-white);
+  border-bottom: 0.5px solid var(--color-brand-purple);
+  border-left: 0.5px solid var(--color-brand-purple);
+  border-radius: 0 0 7px 7px;
+  border-right: 0.5px solid var(--color-brand-purple);
+  box-shadow: 3px 2px 24px rgba(123, 97, 255, 0.25);
+  color: var(--color-neutral-10);
+  display: flex;
+  flex-direction: column;
+  min-height: 80px;
+  padding: 16px 20px;
+  width: 100%;
+
+  @include astro-desktop {
+    align-items: flex-start;
+    //flex-direction: column;
+  }
+
+  @include large-desktop {
+    //align-items: center;
+  }
+
+  /* Turn on custom 4px wide scrollbar */
+  ::-webkit-scrollbar {
+    background: transparent;
+    border-radius: 0;
+    width: 4px;
+  }
+
+  /* hover effect for both scrollbar area, and scrollbar 'thumb' */
+  ::-webkit-scrollbar:hover {
+    background-color: rgba(232, 224, 255, 0.09);
+  }
+
+  /* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
+  ::-webkit-scrollbar-thumb:vertical {
+    background-color: rgba(232, 224, 255, 1);
+    border-radius: 0;
+  }
+
+  ::-webkit-scrollbar-thumb:vertical:active {
+    /* Some darker color when you click it */
+    background: rgba(232, 224, 255, 0.61);
+    border-radius: 0;
+  }
+}
+
+.inputWrapper {
+  /* stylelint-disable */
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+  /* stylelint-enable */
+
+  input {
+    background-color: var(--color-white);
+    flex: 1;
+    height: 40px !important;
+    padding: 8px !important;
+    white-space: nowrap;
+    word-break: normal;
+    @include placeholder {
+      @extend %body2;
+      color: var(--color-neutral-40);
+      transition: opacity 0.2s linear;
+    }
+  }
+}
+
+.comments {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  max-height: 300px;
+  min-height: 300px;
+  overflow: auto;
+  padding: 20px 16px 0;
+  width: 100%;
+}
+
+.addCommentSection {
+  align-items: center;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-neutral-40);
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding: 6px;
+  width: 100%;
+}
+
+.submitButton {
+  background-color: var(--color-neutral-60);
+  margin-left: 8px;
+
+  &:hover {
+    box-shadow: 2px 3px 4px var(--color-black-opacity-1);
+  }
+}
+
+.mobileSubmitButton {
+  margin: 0 8px;
+}
+
+.loader.loader {
+  color: var(--color-black);
+  min-height: 0;
+  padding: 0;
+
+  svg {
+    height: 100px;
+    width: 100px;
+  }
+  h2 {
+    color: currentColor;
+    font-size: 12px !important;
+    margin: 0;
+  }
+  p {
+    color: currentColor;
+    font-size: 10px !important;
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    padding: 12px;
+  }
+
+  .comment {
+    max-width: 100%;
+  }
+}

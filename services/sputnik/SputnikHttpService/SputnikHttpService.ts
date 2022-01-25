@@ -765,6 +765,21 @@ class SputnikHttpServiceClass {
     return data;
   }
 
+  public async getBountyContextById(bountyId: string): Promise<BountyContext> {
+    const queryString = RequestQueryBuilder.create()
+      .setFilter({
+        field: 'id',
+        operator: '$eq',
+        value: bountyId,
+      })
+      .query();
+    const { data } = await this.httpService.get<BountiesContextResponse>(
+      `/bounty-contexts?${queryString}`
+    );
+
+    return data.data[0];
+  }
+
   public async getBountiesContext(daoId: string): Promise<BountyContext[]> {
     const queryString = RequestQueryBuilder.create()
       .setFilter({

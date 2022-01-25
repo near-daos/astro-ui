@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { IconName } from 'components/Icon';
 import { IconButton } from 'components/button/IconButton';
@@ -7,7 +7,7 @@ import { IconButton } from 'components/button/IconButton';
 import styles from './ProposalControlButton.module.scss';
 
 interface ProposalControlButtonProps {
-  times: number | string;
+  times: number | string | ReactNode;
   icon: IconName;
   voted?: boolean;
   disabled: boolean;

@@ -1,0 +1,151 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 32px;
+}
+
+.header {
+  color: var(--color-neutral-60);
+}
+
+.header,
+.row {
+  display: grid;
+  grid-column-gap: 12px;
+  grid-template-columns: 1fr 48px 1fr 200px;
+}
+
+.title,
+.link,
+.proposer,
+.content {
+  font-size: 14px;
+  padding: 4px 8px;
+}
+
+.control {
+  left: -24px;
+  position: absolute;
+  top: 2px;
+}
+
+.title {
+  @extend %subtitle4;
+  background-color: var(--color-neutral-40);
+  border-radius: 8px 8px 0 0;
+  color: var(--color-brand-black);
+
+  position: relative;
+  width: fit-content;
+
+  &.inProgress {
+    background-color: var(--color-brand-pink);
+  }
+
+  &.completed {
+    background-color: var(--color-success-20);
+  }
+}
+
+.title.pending .controlIcon {
+  color: var(--color-neutral-60);
+}
+
+.title.inProgress .controlIcon {
+  color: var(--color-brand-coral-red);
+}
+
+.title.completed .controlIcon {
+  color: var(--color-success-50);
+}
+
+.controlIcon {
+  width: 16px;
+
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+.row {
+  border-radius: 4px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  height: 56px;
+  margin-bottom: 12px;
+  overflow: hidden;
+
+  &.firstRow {
+    border-radius: 0 4px 4px;
+  }
+}
+
+.rowTitle,
+.rowProposer,
+.rowLink,
+.rowContent {
+  align-items: center;
+  display: flex;
+  overflow: hidden;
+  padding: 16px 8px;
+}
+
+.rowTitle {
+  @extend %title4;
+  border-left: 12px solid var(--color-neutral-40);
+
+  &.inProgress {
+    border-color: var(--color-brand-pink);
+  }
+
+  &.completed {
+    border-color: var(--color-success-20);
+  }
+}
+
+.rowProposer {
+  @extend %body2;
+}
+
+.singleLine {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.proposalLink {
+  @extend %body2;
+
+  align-items: center;
+  background-color: var(--color-primary-20);
+  border-radius: 50%;
+  color: var(--color-brand-purple);
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+
+  .icon {
+    height: 16px;
+    width: 16px;
+  }
+}
+
+.claimsCell {
+  .slot {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+  }
+
+  .slotActive {
+    @extend %body1;
+    font-weight: 500;
+  }
+}
+
+.claimsButton {
+  margin-left: 24px;
+  text-transform: capitalize;
+}

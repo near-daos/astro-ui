@@ -1,5 +1,4 @@
 import { ProposalKind } from 'types/proposal';
-import { ProposalDTO } from 'services/sputnik/mappers';
 
 export interface BountyResponse {
   bountyId: string;
@@ -36,13 +35,6 @@ export interface BountiesResponse {
   data: BountyResponse[];
 }
 
-export enum BountiesPhase {
-  ComingSoon = 'ComingSoon',
-  Available = 'Available',
-  InProgress = 'InProgress',
-  Completed = 'Completed',
-}
-
 export enum BountyStatus {
   Proposed = 'Proposed',
   Available = 'Available',
@@ -51,6 +43,7 @@ export enum BountyStatus {
   Expired = 'Expired',
   PendingApproval = 'Pending Approval',
   Unknown = 'Unknown',
+  Completed = 'Completed',
 }
 
 export type ClaimedBy = {
@@ -65,6 +58,7 @@ export type DeadlineUnit = 'day' | 'week' | 'month';
 
 export type Bounty = {
   bountyId: number;
+  createdAt: string;
   proposalId: string;
   daoId: string;
   token: string;
@@ -87,21 +81,18 @@ export type BountyClaim = {
   endTime: string;
 };
 
+export type BountyContext = {
+  id: string;
+  daoId: string;
+  proposal: BountyProposal;
+  bounty: Bounty;
+};
+
 export type BountyProposal = {
   id: string;
+  daoId: string;
   proposer: string;
   status: string;
   voteStatus: string;
   kind: ProposalKind;
-};
-
-export type BountyContextResponse = {
-  proposal: ProposalDTO;
-  bounty: BountyResponse | null;
-  completedClaimProposals: ProposalDTO[];
-};
-
-export type BountyContext = {
-  proposal: BountyProposal;
-  bounty: Bounty;
 };

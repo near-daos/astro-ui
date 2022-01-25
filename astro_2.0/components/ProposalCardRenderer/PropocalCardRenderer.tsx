@@ -8,7 +8,7 @@ import { InfoPanel } from 'astro_2.0/components/ProposalCardRenderer/components/
 import styles from './ProposalCardRenderer.module.scss';
 
 export interface ProposalCardRendererProps {
-  proposalId?: number;
+  proposalId?: number | null;
   letterHeadNode?: React.ReactNode;
   proposalCardNode: React.ReactNode;
   daoFlagNode?: React.ReactNode;
