@@ -6,13 +6,13 @@ import { Button } from 'components/button/Button';
 import cn from 'classnames';
 import styles from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/AvailableBountyView/AvailableBountyView.module.scss';
 
-interface AvailabilityBountyStateRendererProps {
+interface AvailabilityBountyViewProps {
   bountyName: string;
   claimsOccupied: number;
   claimsAvailable: number;
 }
 
-export const AvailabilityBountyStateRenderer: React.FC<AvailabilityBountyStateRendererProps> = ({
+export const AvailabilityBountyView: React.FC<AvailabilityBountyViewProps> = ({
   bountyName,
   claimsOccupied,
   claimsAvailable,

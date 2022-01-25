@@ -7,7 +7,8 @@ import cn from 'classnames';
 import { TimelineRow } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/TimelineRow';
 import { TimelineProgress } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/TimelineProgress';
 import { ComingSoonStateRenderer } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/ComingSoonView';
-import { AvailabilityBountyStateRenderer } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/AvailableBountyView';
+import { AvailabilityBountyView } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/AvailableBountyView';
+import { InProgressBountyView } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/InProgressBountyView';
 import styles from './BountyTimeline.module.scss';
 
 interface BountyTimelineProps {
@@ -57,7 +58,7 @@ export const BountyTimeline: React.FC<BountyTimelineProps> = ({
                 indicator={bountyStatus === BountyStatus.Available}
                 className={cn(styles.padding, progressStyle)}
               />
-              <AvailabilityBountyStateRenderer
+              <AvailabilityBountyView
                 bountyName="name name"
                 claimsOccupied={3}
                 claimsAvailable={5}
@@ -68,11 +69,14 @@ export const BountyTimeline: React.FC<BountyTimelineProps> = ({
       }
       inProgressCell={
         bountyStatus === BountyStatus.InProgress && (
-          <TimelineProgress
-            dashedView={bountyStatus === BountyStatus.InProgress}
-            indicator={bountyStatus === BountyStatus.InProgress}
-            className={cn(progressStyle)}
-          />
+          <>
+            <TimelineProgress
+              dashedView={bountyStatus === BountyStatus.InProgress}
+              indicator={bountyStatus === BountyStatus.InProgress}
+              className={cn(progressStyle)}
+            />
+            <InProgressBountyView bounty={bounty} />
+          </>
         )
       }
     />
