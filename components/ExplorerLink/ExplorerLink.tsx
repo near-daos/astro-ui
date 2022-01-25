@@ -24,8 +24,14 @@ function generateExplorerLink(type: ExplorerLinkType, linkData: string) {
   }
 }
 
-function stopPropagation(e: MouseEvent) {
+function handleClick(e: MouseEvent, link: string) {
   e.stopPropagation();
+  e.preventDefault();
+  window.open(link, '_blank');
+}
+
+function handleKeyPress(link: string) {
+  window.open(link, '_blank');
 }
 
 export const ExplorerLink: React.VFC<ExplorerLinkProps> = ({
@@ -41,21 +47,21 @@ export const ExplorerLink: React.VFC<ExplorerLinkProps> = ({
     <>
       {linkData && (
         <div className={className}>
-          <a
-            href={explorerLink}
-            onClick={stopPropagation}
+          <div
+            tabIndex={0}
+            role="button"
+            onKeyPress={() => handleKeyPress(explorerLink)}
+            onClick={e => handleClick(e, explorerLink)}
             className={cn(styles.root, {
               [styles.absolute]: isAbsolute,
               [styles.labeled]: textLabel,
             })}
-            target="_blank"
-            rel="noreferrer"
           >
             {textLabel && <span className={styles.label}>{textLabel}</span>}
             <span className={styles.iconWrapper}>
               <Icon name="buttonExternal" className={styles.icon} />
             </span>
-          </a>
+          </div>
         </div>
       )}
     </>

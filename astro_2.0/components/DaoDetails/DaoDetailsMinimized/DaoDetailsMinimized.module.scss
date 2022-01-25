@@ -93,13 +93,26 @@
 
 .displayName {
   @extend %title1;
+  align-items: flex-end;
+  display: flex;
   font-size: 18px;
   line-height: 1.1;
+  white-space: nowrap;
+}
+
+.explorerLink {
+  margin-left: 12px;
 }
 
 .daoId {
   @extend %body2;
   color: var(--color-neutral-60);
+  display: flex;
+  white-space: nowrap;
+}
+
+.copyAddress {
+  margin-left: 4px;
 }
 
 .addProposalWrapper {

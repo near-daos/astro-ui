@@ -5,7 +5,6 @@ import { useMedia } from 'react-use';
 import includes from 'lodash/includes';
 import { useRouter } from 'next/router';
 import React, { FC, useState } from 'react';
-import TextTruncate from 'react-text-truncate';
 import { useTranslation } from 'next-i18next';
 
 import { DAO } from 'types/dao';
@@ -18,6 +17,9 @@ import { Popup } from 'components/Popup';
 
 import { useAuthContext } from 'context/AuthContext';
 import { UserPermissions } from 'types/context';
+import { shortenString } from 'utils/format';
+import { CopyButton } from 'astro_2.0/components/CopyButton';
+import { ExplorerLink } from 'components/ExplorerLink';
 
 import styles from './DaoDetailsMinimized.module.scss';
 
@@ -37,6 +39,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const isMobile = useMedia('(max-width: 768px)');
+  const isXsMobile = useMedia('(max-width: 600px)');
   const tooltipPlacement = isMobile ? 'bottom' : 'top-end';
 
   const router = useRouter();
@@ -116,21 +119,19 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
             </div>
             <div>
               <div className={styles.displayName}>
-                <TextTruncate
-                  line={1}
-                  element="div"
-                  truncateText="…"
-                  text={dao.displayName}
-                  textTruncateChild={null}
+                {shortenString(dao.displayName, isXsMobile ? 25 : 40)}
+                <ExplorerLink
+                  linkData={dao.id}
+                  linkType="member"
+                  className={styles.explorerLink}
                 />
               </div>
               <div className={styles.daoId}>
-                <TextTruncate
-                  line={1}
-                  element="div"
-                  truncateText="…"
+                {shortenString(dao.id, isXsMobile ? 32 : 45)}
+                <CopyButton
                   text={dao.id}
-                  textTruncateChild={null}
+                  tooltipPlacement="auto"
+                  className={styles.copyAddress}
                 />
               </div>
             </div>
