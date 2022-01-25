@@ -6,17 +6,23 @@ import { Button } from 'components/button/Button';
 import cn from 'classnames';
 import styles from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/AvailableBountyView/AvailableBountyView.module.scss';
 import { BountyStatus } from 'types/bounties';
+import { TokenWidget } from 'astro_2.0/components/TokenWidget';
+import { Token } from 'types/token';
 
 interface AvailabilityBountyViewProps {
   bountyName: string;
+  amount: string;
+  token: Token;
   claimsOccupied: number;
   claimsAvailable: string;
 }
 
 export const AvailabilityBountyView: React.FC<AvailabilityBountyViewProps> = ({
   bountyName,
+  amount,
   claimsOccupied,
   claimsAvailable,
+  token,
 }) => {
   return (
     <TimelineCardView status={BountyStatus.Available}>
@@ -24,6 +30,19 @@ export const AvailabilityBountyView: React.FC<AvailabilityBountyViewProps> = ({
         label="Bounty name"
         labelClassName={styles.label}
         value={bountyName}
+        valueClassName={styles.value}
+      />
+      <InfoBlockWidget
+        label="Amount"
+        labelClassName={styles.label}
+        value={
+          <TokenWidget
+            amount={amount}
+            decimals={token.decimals}
+            icon={token.icon}
+            symbol={token.symbol}
+          />
+        }
         valueClassName={styles.value}
       />
       <div className={styles.spaceBetween}>

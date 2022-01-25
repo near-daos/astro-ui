@@ -111,6 +111,7 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
         <BountiesTimelineView
           daoId={dao.id}
           bountiesContext={bountiesContext}
+          tokens={tokens}
         />
       )}
     </div>

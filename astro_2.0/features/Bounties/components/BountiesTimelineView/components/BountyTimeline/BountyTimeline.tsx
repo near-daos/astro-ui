@@ -9,16 +9,19 @@ import { TimelineProgress } from 'astro_2.0/features/Bounties/components/Bountie
 import { ComingSoonStateRenderer } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/ComingSoonView';
 import { AvailabilityBountyView } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/AvailableBountyView';
 import { InProgressBountyView } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/InProgressBountyView';
+import { Token } from 'types/token';
 import styles from './BountyTimeline.module.scss';
 
 interface BountyTimelineProps {
   daoId: string;
   bountyContext: BountyContext;
+  tokens: Record<string, Token>;
 }
 
 export const BountyTimeline: React.FC<BountyTimelineProps> = ({
   daoId,
   bountyContext,
+  tokens,
 }) => {
   const { proposal, bounty } = bountyContext;
 
@@ -60,6 +63,8 @@ export const BountyTimeline: React.FC<BountyTimelineProps> = ({
               />
               <AvailabilityBountyView
                 bountyName="name name"
+                token={bounty.token === '' ? tokens.NEAR : tokens[bounty.token]}
+                amount={bounty.amount}
                 claimsOccupied={bounty.numberOfClaims}
                 claimsAvailable={bounty.times}
               />
