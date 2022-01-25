@@ -1,9 +1,10 @@
 import { BountyContext } from 'types/bounties';
 
 import React from 'react';
-import { BountyTimeline } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/BountyTimeline/BountyTimeline';
-import { TimelineRow } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/TimelineRow/TimelineRow';
-import { TimelineHeaderCell } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/TimelineHeaderCell/TimelineHeaderCell';
+
+import { TimelineRow } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/TimelineRow';
+import { TimelineHeaderCell } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/TimelineHeaderCell';
+import { BountyTimeline } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/BountyTimeline';
 
 import styles from './BountiesTimelineView.module.scss';
 

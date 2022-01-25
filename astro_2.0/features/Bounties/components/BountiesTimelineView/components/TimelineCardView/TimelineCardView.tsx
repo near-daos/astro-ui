@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 
-import styles from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/TimelineCardView/TimelineCardView.module.scss';
+import styles from './TimelineCardView.module.scss';
 
 export interface TimelineStateContainerProps {
   className?: string;

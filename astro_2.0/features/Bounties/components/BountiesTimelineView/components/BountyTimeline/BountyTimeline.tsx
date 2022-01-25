@@ -1,14 +1,13 @@
 import { BountyContext, BountyStatus } from 'types/bounties';
 import React from 'react';
 
-import { ComingSoonStateRenderer } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/ComingSoonView/ComingSoonView';
-import { AvailabilityBountyStateRenderer } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/AvailableBountyView/AvailableBountyView';
-import { TimelineProgress } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/TimelineProgress/TimelineProgress';
-import { TimelineRow } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/TimelineRow/TimelineRow';
-
 import { getBountyStatus } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/helpers';
 import cn from 'classnames';
 
+import { TimelineRow } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/TimelineRow';
+import { TimelineProgress } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/TimelineProgress';
+import { ComingSoonStateRenderer } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/ComingSoonView';
+import { AvailabilityBountyStateRenderer } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/AvailableBountyView';
 import styles from './BountyTimeline.module.scss';
 
 interface BountyTimelineProps {
