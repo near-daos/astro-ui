@@ -3,28 +3,45 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 import cn from 'classnames';
 
-import { BountyClaim, BountyProposal } from 'types/bounties';
+import { Bounty, BountyClaim, BountyProposal } from 'types/bounties';
+import { DAO } from 'types/dao';
+import { ProposalVariant } from 'types/proposal';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
 import { Icon } from 'components/Icon';
+import { UnclaimCompleteContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/UnclaimCompleteContent';
+import { VotingContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/VotingContent';
+import { getClaimProgress } from 'astro_2.0/features/Bounties/helpers';
 
 import { toMillis } from 'utils/format';
 
-import styles from './ClaimCard.module.scss';
-
-interface ClaimCardProps {
-  data: BountyClaim;
-  doneProposals: BountyProposal[];
-  maxDeadline: string;
-}
+import styles from './ClaimRow.module.scss';
 
 const FORMAT = 'dd MMM, yyyy';
 
-export const ClaimCard: FC<ClaimCardProps> = ({
+interface ClaimRowProps {
+  data: BountyClaim;
+  dao: DAO;
+  bounty: Bounty;
+  doneProposals: BountyProposal[];
+  maxDeadline: string;
+  hasAvailableClaims: boolean;
+  claimedByMe: boolean;
+  completeHandler?: (
+    id: number,
+    variant: ProposalVariant.ProposeDoneBounty
+  ) => void;
+}
+
+export const ClaimRow: FC<ClaimRowProps> = ({
   data,
   doneProposals,
   maxDeadline,
+  dao,
+  bounty,
+  claimedByMe,
+  completeHandler,
 }) => {
   const { accountId, startTime } = data;
 
@@ -35,6 +52,8 @@ export const ClaimCard: FC<ClaimCardProps> = ({
   const claimStart = new Date(claimStartTime);
   const claimEnd = new Date(claimStartTime + deadline);
 
+  let showControls = false;
+  let showVoting = false;
   let status;
   let statusLabel;
   let link;
@@ -42,6 +61,7 @@ export const ClaimCard: FC<ClaimCardProps> = ({
   if (!proposal) {
     statusLabel = 'In progress';
     status = 'InProgress';
+    showControls = claimedByMe;
   } else {
     const proposalStatus = proposal.status;
 
@@ -54,6 +74,7 @@ export const ClaimCard: FC<ClaimCardProps> = ({
       case 'InProgress': {
         statusLabel = 'Pending Approval';
         status = 'Pending';
+        showVoting = true;
         link = {
           pathname: SINGLE_PROPOSAL_PAGE_URL,
           query: {
@@ -70,6 +91,8 @@ export const ClaimCard: FC<ClaimCardProps> = ({
     }
   }
 
+  const claimProgress = getClaimProgress(claimStart, claimEnd, status);
+
   return (
     <div
       className={cn(styles.root, {
@@ -84,24 +107,40 @@ export const ClaimCard: FC<ClaimCardProps> = ({
         <div className={styles.value}>{data.accountId}</div>
       </div>
       <div className={styles.details}>
-        <div className={styles.status}>
-          {statusLabel}
-          {link && (
-            <Link href={link} passHref>
-              <a className={styles.proposalLink}>
-                <Icon name="buttonExternal" className={styles.icon} />
-              </a>
-            </Link>
-          )}
-        </div>
         <div className={styles.progress}>
-          <div className={styles.bar} />
+          <div className={styles.bar} style={{ width: `${claimProgress}%` }} />
         </div>
         <div className={styles.dates}>
           <span>{format(claimStart, FORMAT)}</span>
           <span>{format(claimEnd, FORMAT)}</span>
         </div>
       </div>
+      <div className={styles.status}>
+        {statusLabel}
+        {link && (
+          <Link href={link} passHref>
+            <a className={styles.proposalLink}>
+              <Icon name="buttonExternal" className={styles.icon} />
+            </a>
+          </Link>
+        )}
+      </div>
+      {showControls && (
+        <UnclaimCompleteContent
+          dao={dao}
+          bounty={bounty}
+          className={styles.controls}
+          completeHandler={completeHandler}
+        />
+      )}
+      {showVoting && !!proposal && (
+        <VotingContent
+          proposal={proposal}
+          accountId={accountId}
+          dao={dao}
+          className={styles.controls}
+        />
+      )}
     </div>
   );
 };

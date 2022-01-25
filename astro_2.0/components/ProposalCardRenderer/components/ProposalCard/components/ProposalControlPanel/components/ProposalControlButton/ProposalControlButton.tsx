@@ -14,6 +14,7 @@ interface ProposalControlButtonProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   iconClassName?: string;
   type: 'submit' | 'button';
+  className?: string;
 }
 
 export const ProposalControlButton: React.FC<ProposalControlButtonProps> = ({
@@ -24,6 +25,7 @@ export const ProposalControlButton: React.FC<ProposalControlButtonProps> = ({
   type,
   onClick,
   iconClassName = '',
+  className = '',
 }) => {
   const statusClassName = cn({
     [styles.yesAvailable]: icon === 'votingYes' && !voted && !disabled,
@@ -32,7 +34,7 @@ export const ProposalControlButton: React.FC<ProposalControlButtonProps> = ({
   });
 
   return (
-    <span className={styles.item}>
+    <span className={cn(styles.item, className)}>
       <IconButton
         icon={icon}
         type={type}

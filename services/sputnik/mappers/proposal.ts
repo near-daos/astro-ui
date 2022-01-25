@@ -58,7 +58,14 @@ function getProposalVotingEndDate(
   return new Date(endsAt).toISOString();
 }
 
-function getVotesStatistic(proposal: ProposalDTO) {
+export function getVotesStatistic(proposal: {
+  votes: Record<string, string>;
+}): {
+  voteYes: number;
+  voteNo: number;
+  voteRemove: number;
+  votes: Record<string, VoteState>;
+} {
   const result = {
     voteYes: 0,
     voteNo: 0,

@@ -10,6 +10,7 @@ import {
   ALL_PROPOSALS_PAGE_URL,
   SINGLE_PROPOSAL_PAGE_URL,
   SINGLE_BOUNTY_PAGE_URL,
+  ALL_BOUNTIES_PAGE_URL,
 } from 'constants/routing';
 import { UrlObject } from 'url';
 import { Proposal } from 'types/proposal';
@@ -77,6 +78,15 @@ export function useGetBreadcrumbsConfig(
       },
       BOUNTIES: {
         label: 'Bounties',
+      },
+      ALL_BOUNTIES_PAGE_URL: {
+        href: {
+          pathname: ALL_BOUNTIES_PAGE_URL,
+          query: {
+            dao: id,
+          },
+        },
+        label: t('bounties'),
       },
       SINGLE_BOUNTY_PAGE_URL: {
         href: {

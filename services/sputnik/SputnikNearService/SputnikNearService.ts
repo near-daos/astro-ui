@@ -242,7 +242,7 @@ class SputnikNearServiceClass {
 
   public async unclaimBounty(
     daoId: string,
-    bountyId: string,
+    bountyId: number,
     gas?: string | number
   ) {
     return this.sputnikDaoService.unclaimBounty(daoId, bountyId, gas);

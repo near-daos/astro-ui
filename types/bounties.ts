@@ -91,6 +91,14 @@ export type BountyContext = {
 export type BountyProposal = {
   id: string;
   daoId: string;
+  proposalId: number;
+  description: string;
+  votes: {
+    [key: string]: 'Yes' | 'No' | 'Dismiss';
+  };
+  voteYes: number;
+  voteNo: number;
+  voteRemove: number;
   proposer: string;
   status: string;
   voteStatus: string;

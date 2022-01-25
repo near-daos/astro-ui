@@ -1,66 +1,68 @@
 import React, { FC } from 'react';
-import { useAsyncFn } from 'react-use';
-import { useRouter } from 'next/router';
+import cn from 'classnames';
 
 import { DAO } from 'types/dao';
-import { Proposal, VoteAction } from 'types/proposal';
-
-import { SputnikNearService } from 'services/sputnik';
+import { BountyProposal } from 'types/bounties';
 
 import { ProposalControlButton } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/ProposalControlPanel/components/ProposalControlButton';
 import { useGetVotePermissions } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/hooks/useGetVotePermissions';
 
+import { getVotesStatistic } from 'services/sputnik/mappers';
+
+import { useBountyVoting } from 'astro_2.0/features/Bounties/components/hooks';
+
+import styles from './VotingContent.module.scss';
+
 interface VotingContentProps {
-  proposal: Proposal;
+  proposal: BountyProposal;
   accountId: string;
   dao: DAO;
+  className?: string;
 }
 
 export const VotingContent: FC<VotingContentProps> = ({
   proposal,
   accountId,
   dao,
+  className = '',
 }) => {
-  const router = useRouter();
-  const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
-    async (vote: VoteAction, gas?: string | number) => {
-      await SputnikNearService.vote(dao.id, proposal.proposalId, vote, gas);
-      await router.reload();
-    },
-    [dao, proposal, router]
-  );
+  const { handleVote, loading } = useBountyVoting(dao, proposal);
+
+  const votesStat = getVotesStatistic(proposal);
+
   const permissions = useGetVotePermissions(dao, proposal.kind.type, accountId);
-  const liked = proposal.votes[accountId] === 'Yes';
-  const disliked = proposal.votes[accountId] === 'No';
-  const dismissed = proposal.votes[accountId] === 'Dismiss';
-  const disableControls = voteLoading;
+  const liked = votesStat.votes[accountId] === 'Yes';
+  const disliked = votesStat.votes[accountId] === 'No';
+  const dismissed = votesStat.votes[accountId] === 'Dismiss';
 
   const { canApprove, canReject } = permissions;
-  const voted =
+  const voted: boolean =
     liked ||
     disliked ||
     dismissed ||
-    (proposal.status && proposal.status !== 'InProgress');
+    !!(proposal.status && proposal.status !== 'InProgress');
   const yesIconName = canApprove ? 'votingYes' : 'votingYesDisabled';
   const noIconName = canReject ? 'votingNo' : 'votingNoDisabled';
 
   return (
-    <div>
+    <div className={cn(styles.root, className)}>
       <ProposalControlButton
         icon={liked ? 'votingYesChecked' : yesIconName}
         voted={voted}
         type="submit"
-        times={proposal.voteYes}
-        onClick={() => voteClickHandler('VoteApprove')}
-        disabled={Boolean(!canApprove || disableControls)}
+        className={styles.controlButton}
+        times={votesStat.voteYes}
+        onClick={() => handleVote('VoteApprove')}
+        disabled={Boolean(!canApprove || loading)}
       />
       <ProposalControlButton
         icon={disliked ? 'votingNoChecked' : noIconName}
         voted={voted}
         type="submit"
-        times={proposal.voteNo}
-        onClick={() => voteClickHandler('VoteReject')}
-        disabled={Boolean(!canReject || disableControls)}
+        className={styles.controlButton}
+        times={votesStat.voteNo}
+        onClick={() => handleVote('VoteReject')}
+        disabled={Boolean(!canReject || loading)}
       />
     </div>
   );

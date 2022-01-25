@@ -14,7 +14,7 @@
 .row {
   display: grid;
   grid-column-gap: 12px;
-  grid-template-columns: 1fr 48px 1fr 200px;
+  grid-template-columns: 1fr minmax(48px, 120px) 160px 1fr;
 }
 
 .title,
@@ -125,6 +125,7 @@
   display: flex;
   height: 24px;
   justify-content: center;
+  margin-right: 8px;
   width: 24px;
 
   .icon {
@@ -148,4 +149,43 @@
 .claimsButton {
   margin-left: 24px;
   text-transform: capitalize;
+}
+
+.toggleClaims {
+  align-items: center;
+  border: 1px solid var(--color-neutral-60);
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: flex;
+  min-width: 32px;
+  padding: 2px 8px;
+  white-space: nowrap;
+
+  &.active {
+    border-color: var(--color-primary-50);
+  }
+
+  .icon {
+    margin-right: 8px;
+    width: 14px;
+  }
+
+  .slotsWrapper {
+    display: inline-block;
+    min-width: 28px;
+  }
+
+  .slot {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+  }
+
+  .slotActive {
+    @extend %body1;
+    font-weight: 500;
+  }
+}
+
+.claimsContainer {
+  margin: 4px 24px;
 }

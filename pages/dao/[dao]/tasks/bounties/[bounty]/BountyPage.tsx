@@ -43,8 +43,8 @@ const BountyPage: NextPage<BountyPageProps> = ({
     return [
       breadcrumbsConfig.ALL_DAOS_URL,
       breadcrumbsConfig.SINGLE_DAO_PAGE,
-      breadcrumbsConfig.ALL_PROPOSALS_PAGE_URL,
-      breadcrumbsConfig.SINGLE_PROPOSAL_PAGE_URL,
+      breadcrumbsConfig.ALL_BOUNTIES_PAGE_URL,
+      breadcrumbsConfig.SINGLE_BOUNTY_PAGE_URL,
     ];
   }, [breadcrumbsConfig]);
 
