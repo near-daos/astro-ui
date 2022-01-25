@@ -60,8 +60,8 @@ export const BountyTimeline: React.FC<BountyTimelineProps> = ({
               />
               <AvailabilityBountyView
                 bountyName="name name"
-                claimsOccupied={3}
-                claimsAvailable={5}
+                claimsOccupied={bounty.numberOfClaims}
+                claimsAvailable={bounty.times}
               />
             </>
           )}

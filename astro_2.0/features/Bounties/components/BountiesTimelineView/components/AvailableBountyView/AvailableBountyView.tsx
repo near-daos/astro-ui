@@ -5,11 +5,12 @@ import React from 'react';
 import { Button } from 'components/button/Button';
 import cn from 'classnames';
 import styles from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/AvailableBountyView/AvailableBountyView.module.scss';
+import { BountyStatus } from 'types/bounties';
 
 interface AvailabilityBountyViewProps {
   bountyName: string;
   claimsOccupied: number;
-  claimsAvailable: number;
+  claimsAvailable: string;
 }
 
 export const AvailabilityBountyView: React.FC<AvailabilityBountyViewProps> = ({
@@ -18,7 +19,7 @@ export const AvailabilityBountyView: React.FC<AvailabilityBountyViewProps> = ({
   claimsAvailable,
 }) => {
   return (
-    <TimelineCardView>
+    <TimelineCardView status={BountyStatus.Available}>
       <InfoBlockWidget
         label="Bounty name"
         labelClassName={styles.label}

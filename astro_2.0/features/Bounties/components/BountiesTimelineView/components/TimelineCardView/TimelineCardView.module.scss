@@ -6,10 +6,17 @@
   width: 100%;
 
   .status {
-    background-color: var(--color-black);
     border-radius: 8px 0 0 8px;
     height: auto;
     width: 8px;
+  }
+
+  .comingSoon {
+    background-color: var(--color-neutral-40);
+  }
+
+  .available {
+    background-color: var(--color-pastel-lightorange);
   }
 
   .body {

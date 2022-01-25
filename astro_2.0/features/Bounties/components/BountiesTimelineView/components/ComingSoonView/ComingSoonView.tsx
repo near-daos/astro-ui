@@ -5,6 +5,7 @@ import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 import { Icon } from 'components/Icon';
 import React from 'react';
 import styles from 'astro_2.0/features/Bounties/components/BountiesTimelineView/components/ComingSoonView/ComingSoonView.module.scss';
+import { BountyStatus } from 'types/bounties';
 
 interface ComingSoonView {
   proposer: string;
@@ -19,7 +20,7 @@ export const ComingSoonStateRenderer: React.FC<ComingSoonView> = ({
 }) => {
   return (
     <div className={styles.proposed}>
-      <TimelineCardView>
+      <TimelineCardView status={BountyStatus.Proposed}>
         <InfoBlockWidget
           label="Proposer"
           labelClassName={styles.label}
