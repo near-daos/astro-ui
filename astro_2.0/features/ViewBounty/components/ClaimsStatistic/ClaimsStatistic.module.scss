@@ -1,0 +1,56 @@
+@import 'styles/typography';
+
+.root {
+  background: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  display: flex;
+  width: 100%;
+}
+
+.chart {
+  padding: 24px 32px;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+}
+
+.legendItem {
+  align-items: center;
+  display: flex;
+
+  &:not(:last-of-type) {
+    margin-bottom: 16px;
+  }
+}
+
+.legendIndicator {
+  border-radius: 50%;
+  height: 8px;
+  margin-right: 4px;
+  width: 8px;
+
+  &.approved {
+    background-color: var(--color-success-50);
+  }
+
+  &.pending {
+    background-color: var(--color-brand-coral-red);
+  }
+
+  &.inProgress {
+    background-color: var(--color-primary-50);
+  }
+
+  &.rejected {
+    background-color: var(--color-error-70);
+  }
+}
+
+.label {
+  @extend %caption1;
+  color: var(--color-brand-black);
+}

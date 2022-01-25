@@ -14,7 +14,7 @@ import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { InfoPanel } from 'astro_2.0/features/ViewBounty/components/InfoPanel/InfoPanel';
-import { ClaimCard } from 'astro_2.0/features/ViewBounty/components/ClaimCard';
+import { ClaimsInfo } from 'astro_2.0/features/ViewBounty/components/ClaimsInfo';
 
 export interface ViewBountyProps {
   dao: DAO | null;
@@ -94,14 +94,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
                 }}
               >
                 <InfoPanel>
-                  {bounty.bountyClaims.map(item => (
-                    <ClaimCard
-                      key={item.id}
-                      data={item}
-                      doneProposals={bounty.bountyDoneProposals}
-                      maxDeadline={bounty.maxDeadline}
-                    />
-                  ))}
+                  <ClaimsInfo bounty={bounty} />
                 </InfoPanel>
               </motion.div>
             )}
