@@ -48,14 +48,12 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
   }>();
 
   function handleCreateProposal(
-    bountyId: string,
+    bountyId: number,
     proposalVariant: ProposalVariant
   ) {
-    return () => {
-      if (toggleCreateProposal) {
-        toggleCreateProposal({ bountyId, proposalVariant });
-      }
-    };
+    if (toggleCreateProposal) {
+      toggleCreateProposal({ bountyId, proposalVariant });
+    }
   }
 
   return (

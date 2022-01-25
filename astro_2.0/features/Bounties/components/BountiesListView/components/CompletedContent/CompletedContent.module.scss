@@ -1,9 +1,6 @@
 @import 'styles/typography';
 
 .root {
-  align-items: center;
-  display: flex;
-
   .slotsWrapper {
     display: inline-block;
     width: 40px;
@@ -20,12 +17,7 @@
   }
 }
 
-.button {
-  margin-left: 12px;
+.claimsButton {
+  margin-left: 24px;
   text-transform: capitalize;
-}
-
-.buttonsWrapper {
-  align-items: center;
-  display: flex;
 }

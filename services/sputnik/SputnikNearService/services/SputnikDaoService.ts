@@ -152,7 +152,7 @@ export class SputnikDaoService {
 
   public unclaimBounty(
     daoId: string,
-    bountyId: string,
+    bountyId: number,
     gas?: string | number
   ): Promise<FinalExecutionOutcome> {
     return this.functionCall({

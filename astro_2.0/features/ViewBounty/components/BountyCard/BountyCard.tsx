@@ -82,9 +82,9 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   }, [bounty, dao.policy.bountyBond, dao.id, onSuccessHandler]);
 
   const handleUnclaim = useCallback(async () => {
-    await SputnikNearService.unclaimBounty(dao.id, bounty.id);
+    await SputnikNearService.unclaimBounty(dao.id, bounty.bountyId);
     onSuccessHandler();
-  }, [bounty.id, dao.id, onSuccessHandler]);
+  }, [bounty.bountyId, dao.id, onSuccessHandler]);
 
   function renderButtons() {
     if (proposal.status === 'Approved') {

@@ -1,35 +1,32 @@
-import React, { FC, ReactNode, useState } from 'react';
-import Link from 'next/link';
+import React, { FC, useState } from 'react';
 import cn from 'classnames';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
-import { Icon } from 'components/Icon';
+import { SectionItem } from 'astro_2.0/features/Bounties/components/BountiesListView/types';
+
+import { SectionRow } from 'astro_2.0/features/Bounties/components/BountiesListView/components/SectionRow';
 import { IconButton } from 'components/button/IconButton';
-import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
+
+import { DAO } from 'types/dao';
 
 import styles from './CollpasableSection.module.scss';
-
-type SectionItem = {
-  title: string;
-  proposer: string;
-  proposalId: string;
-  content: ReactNode;
-};
 
 interface CollapsableSectionProps {
   title: string;
   contentTitle: string;
-  daoId: string;
+  dao: DAO;
   data: SectionItem[];
   status: 'Pending' | 'InProgress' | 'Completed';
+  accountId: string;
 }
 
 export const CollapsableSection: FC<CollapsableSectionProps> = ({
   title,
   contentTitle,
-  daoId,
+  dao,
   data,
   status,
+  accountId,
 }) => {
   const [open, setOpen] = useState(true);
 
@@ -64,44 +61,15 @@ export const CollapsableSection: FC<CollapsableSectionProps> = ({
         {open &&
           data.map((item, i) => {
             return (
-              <motion.div
-                layout
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className={cn(styles.row, {
-                  [styles.firstRow]: i === 0,
-                })}
-              >
-                <div
-                  className={cn(styles.rowTitle, {
-                    [styles.pending]: status === 'Pending',
-                    [styles.inProgress]: status === 'InProgress',
-                    [styles.completed]: status === 'Completed',
-                  })}
-                >
-                  <div className={styles.singleLine}>{item.title}</div>
-                </div>
-                <div className={styles.rowLink}>
-                  <Link
-                    href={{
-                      pathname: SINGLE_PROPOSAL_PAGE_URL,
-                      query: {
-                        dao: daoId,
-                        proposal: item.proposalId,
-                      },
-                    }}
-                  >
-                    <a className={styles.proposalLink}>
-                      <Icon name="buttonExternal" className={styles.icon} />
-                    </a>
-                  </Link>
-                </div>
-                <div className={styles.rowProposer}>
-                  <div className={styles.singleLine}>{item.proposer}</div>
-                </div>
-                <div className={styles.rowContent}>{item.content}</div>
-              </motion.div>
+              <SectionRow
+                id={item.id}
+                key={item.title}
+                accountId={accountId}
+                dao={dao}
+                isFirstRow={i === 0}
+                item={item}
+                status={status}
+              />
             );
           })}
       </AnimatePresence>

@@ -46,7 +46,7 @@ export interface CreateProposalProps {
   proposalVariant?: ProposalVariant;
   daoTokens: Record<string, Token>;
   showFlag?: boolean;
-  bountyId?: string;
+  bountyId?: number;
   onCreate?: (result: boolean) => void;
   onClose: () => void;
   userPermissions: UserPermissions;

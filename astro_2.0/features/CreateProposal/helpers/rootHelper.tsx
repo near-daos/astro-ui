@@ -565,7 +565,7 @@ export async function getNewProposalObject(
   data: Record<string, unknown>,
   tokens: Tokens,
   accountId: string,
-  bountyId?: string
+  bountyId?: number
 ): Promise<CreateProposalParams | null> {
   switch (proposalType) {
     case ProposalVariant.ProposeCreateBounty: {

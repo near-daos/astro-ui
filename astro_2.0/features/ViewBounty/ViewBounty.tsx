@@ -66,7 +66,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
             completeHandler={() => {
               if (toggleCreateProposal) {
                 toggleCreateProposal({
-                  bountyId: bounty.id,
+                  bountyId: bounty.bountyId,
                   proposalVariant: ProposalVariant.ProposeDoneBounty,
                 });
               }
