@@ -63,7 +63,7 @@
 }
 
 .singleDao {
-  @include desktop {
+  @include astro-desktop {
     place-items: start;
   }
 }
