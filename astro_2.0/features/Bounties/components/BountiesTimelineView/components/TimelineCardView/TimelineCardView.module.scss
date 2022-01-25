@@ -1,0 +1,30 @@
+.root {
+  box-shadow: 3px 2px 24px var(----color-black-opacity-1);
+  display: flex;
+  height: auto;
+  min-height: 122px;
+  width: 100%;
+
+  .status {
+    background-color: var(--color-black);
+    border-radius: 8px 0 0 8px;
+    height: auto;
+    width: 8px;
+  }
+
+  .body {
+    background-color: var(--color-white);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 20px;
+    width: 100%;
+  }
+
+  .content {
+    margin-bottom: 12px;
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: row;
+  }
+}

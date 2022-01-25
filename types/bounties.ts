@@ -1,3 +1,6 @@
+import { ProposalKind } from 'types/proposal';
+import { ProposalDTO } from 'services/sputnik/mappers';
+
 export interface BountyResponse {
   bountyId: string;
   description: string;
@@ -10,10 +13,15 @@ export interface BountyResponse {
     };
   };
   bountyClaims: BountyClaimResponse[];
+  proposalId: string;
   token: string;
   amount: string;
   maxDeadline: string;
   numberOfClaims: number;
+}
+
+export interface BountiesContextResponse {
+  data: BountyContext[];
 }
 
 export interface BountyClaimResponse {
@@ -36,11 +44,13 @@ export enum BountiesPhase {
 }
 
 export enum BountyStatus {
+  Proposed = 'Proposed',
   Available = 'Available',
-  InProgress = 'InProgress',
-  InProgressByMe = 'InProgressByMe',
+  InProgress = 'In Progress',
+  InProgressByMe = 'In Progress By Me',
   Expired = 'Expired',
-  PendingApproval = 'PendingApproval',
+  PendingApproval = 'Pending Approval',
+  Unknown = 'Unknown',
 }
 
 export type ClaimedBy = {
@@ -54,15 +64,44 @@ export type BountyType = 'Passed' | 'Expired';
 export type DeadlineUnit = 'day' | 'week' | 'month';
 
 export type Bounty = {
+  bountyId: number;
+  proposalId: string;
+  daoId: string;
+  token: string;
+  times: string;
+  maxDeadline: string;
+  numberOfClaims: number;
+  bountyClaims: BountyClaim[];
+  bountyDoneProposals: BountyProposal[];
   id: string;
-  tokenId: string;
   amount: string;
   description: string;
-  forgivenessPeriod: string;
-  externalUrl?: string;
-  slots: number;
-  slotsTotal: number;
-  claimedBy: ClaimedBy[];
-  deadlineThreshold: string;
-  completionDate?: string;
+};
+
+export type BountyClaim = {
+  id: string;
+  accountId: string;
+  startTime: string;
+  deadline: string;
+  completed: boolean;
+  endTime: string;
+};
+
+export type BountyProposal = {
+  id: string;
+  proposer: string;
+  status: string;
+  voteStatus: string;
+  kind: ProposalKind;
+};
+
+export type BountyContextResponse = {
+  proposal: ProposalDTO;
+  bounty: BountyResponse | null;
+  completedClaimProposals: ProposalDTO[];
+};
+
+export type BountyContext = {
+  proposal: BountyProposal;
+  bounty: Bounty;
 };

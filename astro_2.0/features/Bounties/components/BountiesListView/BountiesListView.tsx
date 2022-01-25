@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import { BountiesPhase, Bounty } from 'types/bounties';
+import { BountiesPhase, Bounty, BountyProposal } from 'types/bounties';
 
 import { LegendItem } from 'astro_2.0/features/Bounties/components/LegendItem';
 import { List } from 'astro_2.0/features/Bounties/components/BountiesListView/components/List';
@@ -8,16 +8,14 @@ import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import { DAO } from 'types/dao';
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
-import { Proposal } from 'types/proposal';
-
 import styles from './BountiesListView.module.scss';
 
 interface BountiesListViewProps {
-  bounties?: Bounty[];
+  bounties: Bounty[];
   dao: DAO;
   tokens: Tokens;
   accountId: string;
-  bountyDoneProposals: Proposal[];
+  bountyProposals: BountyProposal[];
 }
 
 export const BountiesListView: FC<BountiesListViewProps> = ({
@@ -25,7 +23,7 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
   dao,
   tokens,
   accountId,
-  bountyDoneProposals,
+  bountyProposals,
 }) => {
   return (
     <div className={styles.root}>
@@ -47,7 +45,7 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
             dao={dao}
             tokens={tokens}
             accountId={accountId}
-            bountyDoneProposals={bountyDoneProposals}
+            bountyProposals={bountyProposals}
           />
         )}
       </div>

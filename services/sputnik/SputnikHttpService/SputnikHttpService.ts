@@ -1,5 +1,4 @@
 import {
-  QueryFilter,
   RequestQueryBuilder,
   SConditionAND,
   SFields,
@@ -22,9 +21,12 @@ import {
 } from 'types/dao';
 import { Receipt } from 'types/transaction';
 import { SearchResultsData } from 'types/search';
-import { BountiesResponse, Bounty, BountyStatus } from 'types/bounties';
 import {
-  BountyDoneProposalType,
+  BountiesContextResponse,
+  BountiesResponse,
+  BountyContext,
+} from 'types/bounties';
+import {
   ProposalCategories,
   Proposal,
   ProposalStatuses,
@@ -45,7 +47,6 @@ import {
   DaoSubscriptionDTO,
   GetDAOsResponse,
   GetProposalsResponse,
-  mapBountyResponseToBounty,
   mapDaoDTOListToDaoList,
   mapDaoDTOtoDao,
   mapProposalDTOToProposal,
@@ -164,45 +165,6 @@ class SputnikHttpServiceClass {
     );
 
     return mapDaoDTOListToDaoList(data);
-  }
-
-  public async getBountiesDone(
-    daoId: string
-  ): Promise<BountyDoneProposalType[]> {
-    const queryString = RequestQueryBuilder.create()
-      .setFilter({
-        field: 'daoId',
-        operator: '$eq',
-        value: daoId,
-      })
-      .setFilter({
-        field: 'kind',
-        operator: '$cont',
-        value: ProposalType.BountyDone,
-      })
-      .setFilter({
-        field: 'status',
-        operator: '$eq',
-        value: 'Approved',
-      })
-      .setLimit(500)
-      .setOffset(0)
-      .sortBy({
-        field: 'createdAt',
-        order: 'DESC',
-      })
-      .query();
-
-    const { data: bounties } = await this.httpService.get<GetProposalsResponse>(
-      `/proposals?${queryString}`
-    );
-
-    return bounties.data
-      .map(mapProposalDTOToProposal)
-      .map(bountyDoneProposal => ({
-        ...(bountyDoneProposal.kind as BountyDoneProposalType),
-        completedDate: bountyDoneProposal.createdAt,
-      }));
   }
 
   public async getActiveProposals(
@@ -803,85 +765,20 @@ class SputnikHttpServiceClass {
     return data;
   }
 
-  public async getBountiesByDaoId(
-    daoId: string,
-    bountyStatus?: BountyStatus
-  ): Promise<Bounty[]> {
-    const buildFilter = (): QueryFilter[] => {
-      const filter: QueryFilter[] = [
-        { field: 'daoId', operator: '$eq', value: daoId },
-      ];
-
-      switch (bountyStatus) {
-        case BountyStatus.Available:
-          filter.push({ field: 'times', operator: '$ne', value: 0 });
-          break;
-        case BountyStatus.InProgress:
-          filter.push(
-            { field: 'numberOfClaims', operator: '$gt', value: 0 },
-            {
-              field: 'bountyClaims.endTime',
-              operator: '$gt',
-              value: Date.now() * 1000000,
-            }
-          );
-          break;
-        case BountyStatus.InProgressByMe:
-          break;
-        case BountyStatus.Expired:
-          filter.push({
-            field: 'bountyClaims.endTime',
-            operator: '$lt',
-            value: Date.now() * 1000000,
-          });
-          break;
-        default:
-          break;
-      }
-
-      return filter;
-    };
-
-    const queryString = RequestQueryBuilder.create()
-      .setFilter(buildFilter())
-      .query();
-
-    const { data } = await this.httpService.get<BountiesResponse>(
-      `/bounties?${queryString}`
-    );
-
-    return data.data.map(mapBountyResponseToBounty);
-  }
-
-  public async getActiveBountyDoneProposalsByDaoId(daoId: string) {
+  public async getBountiesContext(daoId: string): Promise<BountyContext[]> {
     const queryString = RequestQueryBuilder.create()
       .setFilter({
         field: 'daoId',
         operator: '$eq',
         value: daoId,
       })
-      .setFilter({
-        field: 'type',
-        operator: '$eq',
-        value: 'BountyDone',
-      })
-      .setFilter({
-        field: 'voteStatus',
-        operator: '$eq',
-        value: 'Active',
-      })
-      .setFilter({
-        field: 'status',
-        operator: '$eq',
-        value: 'InProgress',
-      })
       .query();
 
-    const { data } = await this.httpService.get<GetProposalsResponse>(
-      `/proposals?${queryString}`
+    const { data } = await this.httpService.get<BountiesContextResponse>(
+      `/bounty-contexts?${queryString}`
     );
 
-    return data.data.map(mapProposalDTOToProposal);
+    return data.data;
   }
 
   public async getAccountNFTs(accountId: string): Promise<NftToken[]> {

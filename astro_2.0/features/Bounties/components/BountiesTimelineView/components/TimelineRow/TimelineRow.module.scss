@@ -1,0 +1,20 @@
+.row {
+  display: flex;
+  width: 100%;
+}
+
+.available,
+.comingSoon {
+  flex: 1 0 30%;
+  margin: 12px;
+  min-width: 240px;
+}
+
+.separator {
+  border-right: 1px dashed var(--color-black);
+}
+
+.inProgress {
+  flex: 1 0 40%;
+  margin: 12px;
+}

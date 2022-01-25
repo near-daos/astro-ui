@@ -73,6 +73,12 @@ export type BountyDoneProposalType = {
   completedDate?: string;
 };
 
+export type BountyAddProposalType = {
+  type: ProposalType.AddBounty;
+  status: 'InProgress' | 'Approved';
+  bountyId?: string;
+};
+
 export type ProposalKind =
   | {
       type: ProposalType.AddMemberToRole;

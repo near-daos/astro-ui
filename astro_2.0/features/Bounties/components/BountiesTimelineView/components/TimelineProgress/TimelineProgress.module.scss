@@ -1,0 +1,27 @@
+.root {
+  height: 1px;
+  margin-left: -12px;
+  margin-right: -13px;
+  position: relative;
+}
+
+.currentPhase::after {
+  border-radius: 50%;
+  content: '';
+  height: 10px;
+  position: absolute;
+  right: -8px;
+  top: -5px;
+  width: 10px;
+  z-index: 1;
+}
+
+.finished {
+  border-style: solid;
+  z-index: 1;
+}
+
+.inProgress {
+  border-style: dashed;
+  z-index: 1;
+}

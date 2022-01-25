@@ -1,0 +1,28 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.label {
+  @extend %subtitle6;
+}
+
+.value {
+  @extend %body2;
+  align-items: flex-end;
+}
+
+.spaceBetween {
+  align-items: flex-end;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.claimsMargin {
+  margin-right: 74px;
+}
+
+.claimsAvailable {
+  @extend %subtitle5;
+
+  color: var(--color-neutral-60);
+}
