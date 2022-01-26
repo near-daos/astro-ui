@@ -7,27 +7,21 @@ import {
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
 import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 
-import { Proposal } from 'types/proposal';
-import { DAO } from 'types/dao';
+import { ProposalFeedItem } from 'types/proposal';
 
 import { useAuthContext } from 'context/AuthContext';
 import { getVoteDetails } from 'features/vote-policy/helpers';
 import { getProposalScope } from 'utils/getProposalScope';
-import {
-  checkIsCouncilUser,
-  getContentNode,
-} from 'astro_2.0/features/ViewProposal/helpers';
+import { getContentNode } from 'astro_2.0/features/ViewProposal/helpers';
 import { Token } from 'types/token';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 import { useToggle } from 'react-use';
 import { ProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments';
 import { AnimatePresence, motion } from 'framer-motion';
-import { isUserPermittedToCreateProposal } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 
 export interface CreateProposalProps {
-  dao: DAO | null;
-  proposal: Proposal;
+  proposal: ProposalFeedItem;
   showFlag: boolean;
   tokens: Record<string, Token>;
 }
@@ -38,7 +32,6 @@ const variants = {
 };
 
 export const ViewProposal: FC<CreateProposalProps> = ({
-  dao,
   proposal,
   showFlag,
   tokens,
@@ -46,14 +39,13 @@ export const ViewProposal: FC<CreateProposalProps> = ({
   const { accountId } = useAuthContext();
   const [showInfoPanel, toggleInfoPanel] = useToggle(false);
   const [commentsCount, setCommentsCount] = useState(proposal?.commentsCount);
-  const isCouncilUser = checkIsCouncilUser(accountId, dao);
-  const isCommentsAllowed = isUserPermittedToCreateProposal(accountId, dao);
+  const isCouncilUser = proposal?.permissions?.isCouncil ?? false;
 
-  if (!proposal || !dao || !proposal.dao) {
+  if (!proposal || !proposal.dao) {
     return null;
   }
 
-  const contentNode = getContentNode(proposal, dao);
+  const contentNode = getContentNode(proposal);
 
   return (
     <ProposalCardRenderer
@@ -61,15 +53,18 @@ export const ViewProposal: FC<CreateProposalProps> = ({
       daoFlagNode={
         showFlag && (
           <DaoFlagWidget
-            daoName={dao.name}
-            flagUrl={dao.flagCover}
-            daoId={dao.id}
-            fallBack={dao.logo}
+            daoName={proposal.dao.name}
+            flagUrl={proposal.dao.flagCover}
+            daoId={proposal.dao.id}
+            fallBack={proposal.dao.logo}
           />
         )
       }
       letterHeadNode={
-        <LetterHeadWidget type={proposal.kind.type} coverUrl={dao.flagCover} />
+        <LetterHeadWidget
+          type={proposal.kind.type}
+          coverUrl={proposal.dao.flagCover}
+        />
       }
       proposalCardNode={
         <ProposalCard
@@ -84,7 +79,8 @@ export const ViewProposal: FC<CreateProposalProps> = ({
           proposalTxHash={proposal.txHash}
           votePeriodEnd={proposal.votePeriodEndDate}
           accountId={accountId}
-          dao={proposal.dao}
+          daoId={proposal.daoId}
+          permissions={proposal.permissions}
           likes={proposal.voteYes}
           dislikes={proposal.voteNo}
           voteRemove={proposal.voteRemove}
@@ -97,7 +93,8 @@ export const ViewProposal: FC<CreateProposalProps> = ({
           voteDetails={
             proposal.dao.policy.defaultVotePolicy.ratio
               ? getVoteDetails(
-                  proposal.dao,
+                  proposal.dao.numberOfMembers,
+                  proposal.dao.policy.defaultVotePolicy,
                   getProposalScope(proposal.kind.type),
                   proposal
                 ).details
@@ -125,7 +122,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
               <ProposalComments
                 proposalId={proposal.id}
                 isCouncilUser={isCouncilUser}
-                isCommentsAllowed={isCommentsAllowed}
+                isCommentsAllowed
                 updateCommentsCount={setCommentsCount}
               />
             </motion.div>

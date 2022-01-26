@@ -158,11 +158,20 @@ export const getInitialData = (
 };
 
 export function getVoteDetails(
-  dao: DAO | null,
+  numberOfMembers: number,
+  defaultVotePolicy: {
+    weightKind: string;
+    kind: string;
+    ratio: number[];
+    quorum: string;
+  },
   scope: Scope,
-  proposal?: Proposal | null
+  proposal?: Pick<
+    Proposal,
+    'voteYes' | 'voteNo' | 'voteRemove' | 'votes' | 'actions'
+  > | null
 ): { details: VoteDetail; votersList: VoterDetail[] } {
-  if (!dao) {
+  if (!defaultVotePolicy) {
     return {
       details: {
         limit: '',
@@ -177,19 +186,19 @@ export function getVoteDetails(
     : [
         {
           vote: 'Yes' as Vote,
-          percent: (proposal.voteYes * 100) / dao.members,
+          percent: (proposal.voteYes * 100) / numberOfMembers,
         },
         {
           vote: 'No' as Vote,
-          percent: (proposal.voteNo * 100) / dao.members,
+          percent: (proposal.voteNo * 100) / numberOfMembers,
         },
         {
           vote: 'Dismiss' as Vote,
-          percent: (proposal.voteRemove * 100) / dao.members,
+          percent: (proposal.voteRemove * 100) / numberOfMembers,
         },
       ];
 
-  const defaulPolicy = dao.policy.defaultVotePolicy;
+  const defaulPolicy = defaultVotePolicy;
 
   const amount = (defaulPolicy.ratio[0] / defaulPolicy.ratio[1]) * 100;
 

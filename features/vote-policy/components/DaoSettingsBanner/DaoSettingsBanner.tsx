@@ -3,7 +3,6 @@ import React, { FC } from 'react';
 import { Input } from 'components/inputs/Input';
 import { Button } from 'components/button/Button';
 import { TextArea } from 'components/inputs/TextArea';
-import { VoteDetails } from 'components/VoteDetails';
 import { ExpandableDetails } from 'astro_2.0/components/ExpandableDetails';
 
 import { DaoSettingsProps, Scope } from 'features/vote-policy/helpers';
@@ -29,10 +28,11 @@ export const DaoSettingsBanner: FC<DaoSettingsBannerProps> = ({
   onSubmit,
   onCancel,
   viewMode = true,
-  scope,
   data,
 }) => {
-  if (viewMode) return null;
+  if (viewMode) {
+    return null;
+  }
 
   return (
     <div className={styles.root}>
@@ -81,11 +81,7 @@ export const DaoSettingsBanner: FC<DaoSettingsBannerProps> = ({
           </div>
         </ExpandableDetails>
       </div>
-      <div className={styles.details}>
-        <ExpandableDetails label="Vote details" className={styles.wrapper}>
-          <VoteDetails className={styles.expanded} scope={scope} />
-        </ExpandableDetails>
-      </div>
+      <div className={styles.details} />
     </div>
   );
 };

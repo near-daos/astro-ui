@@ -8,7 +8,7 @@ import cn from 'classnames';
 
 import { GROUPS_PAGE_URL } from 'constants/routing';
 
-import { DAO } from 'types/dao';
+import { DaoFeedItem } from 'types/dao';
 
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ActionButton } from 'features/proposal/components/action-button';
@@ -26,7 +26,7 @@ import { DaoDetailsSkeleton } from './components/DaoDetailsSkeleton';
 import styles from './DaoDetailsGrid.module.scss';
 
 export interface DaoDetailsGridProps {
-  dao: DAO;
+  dao: DaoFeedItem;
   activeProposals: number;
   totalProposals: number;
   loading?: boolean;
@@ -46,9 +46,9 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
     description,
     flagCover,
     logo: oldFlag,
-    members,
-    groups,
-    funds,
+    numberOfMembers,
+    numberOfGroups,
+    totalDaoFunds,
   } = dao;
   const isMobile = useMedia('(max-width: 920px)');
 
@@ -124,7 +124,7 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                   infoType="funds"
                   url={`/dao/${id}/treasury/tokens`}
                   title={t('daoFunds')}
-                  daoFunds={formatCurrency(Number(funds ?? 0))}
+                  daoFunds={formatCurrency(Number(totalDaoFunds ?? 0))}
                   tooltip={t('daoFunds')}
                 />
                 <DaoInfoCard
@@ -137,8 +137,8 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                     },
                   }}
                   title={t('membersGroups')}
-                  members={members}
-                  groups={groups.length}
+                  members={numberOfMembers}
+                  groups={numberOfGroups}
                   tooltip={t('daoMembers')}
                 />
               </section>

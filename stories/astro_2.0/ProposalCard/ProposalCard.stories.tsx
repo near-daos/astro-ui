@@ -74,6 +74,7 @@ const cardProps = {
     canApprove: true,
     canReject: true,
     canDelete: true,
+    isCouncil: true,
   },
   likes: 32,
   dislikes: 32,
@@ -96,6 +97,7 @@ const cardProps = {
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis eleifend habitant laoreet ornare vitae consequat. Potenti ut urna, ultricies elit nam. Feugiat porta elit ultricies eu mollis. Faucibus mauris faucibus aliquam non. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis eleifend habitant laoreet ornare vitae consequat. Potenti ut urna, ultricies elit nam.',
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dao = {
   legal: {},
   id: 'testdao3-near-cli-example.sputnikv2.testnet',
@@ -187,7 +189,7 @@ Template.args = {
   daoFlagNode: (
     <DaoFlagWidget daoName="Ref.Finance" flagUrl="/dummy-flag.png" daoId="" />
   ),
-  proposalCardNode: <ProposalCard {...cardProps} accountId="123" dao={dao} />,
+  proposalCardNode: <ProposalCard {...cardProps} accountId="123" daoId="" />,
   letterHeadNode: (
     <LetterHeadWidget type={ProposalType.Transfer} coverUrl="/cover.png" />
   ),

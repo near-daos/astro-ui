@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
 
 import { DAO, Member } from 'types/dao';
-import { Proposal } from 'types/proposal';
+import { ProposalFeedItem } from 'types/proposal';
 import { VoterDetail } from 'features/types';
 import { DaoContext } from 'types/context';
 
@@ -23,7 +23,7 @@ import styles from './Proposal.module.scss';
 
 interface ProposalPageProps {
   dao: DAO;
-  proposal: Proposal;
+  proposal: ProposalFeedItem;
   availableGroups: string[];
   members: Member[];
   daoContext: DaoContext;
@@ -57,7 +57,12 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
       };
     }
 
-    const { votersList } = getVoteDetails(dao, scope, proposal);
+    const { votersList } = getVoteDetails(
+      proposal.dao.numberOfMembers,
+      proposal.dao.policy.defaultVotePolicy,
+      scope,
+      proposal
+    );
 
     const voteActions = proposal?.actions
       .filter(
@@ -126,9 +131,14 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
       votersByStatus: votersByStatusData,
       fullVotersList: votersListData,
     };
-  }, [dao, scope, proposal, members]);
+  }, [proposal, scope, members]);
 
-  const breadcrumbsConfig = useGetBreadcrumbsConfig(dao, undefined, proposal);
+  const breadcrumbsConfig = useGetBreadcrumbsConfig(
+    dao.id,
+    dao.displayName,
+    undefined,
+    proposal
+  );
   const breadcrumbs = useMemo(() => {
     return [
       breadcrumbsConfig.ALL_DAOS_URL,
@@ -158,7 +168,6 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
         <>
           <div className={styles.proposalInfo}>
             <ViewProposal
-              dao={dao}
               proposal={proposal}
               showFlag={false}
               tokens={tokens}
@@ -166,8 +175,8 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
           </div>
           <div className={styles.policy}>
             <DefaultVotingPolicy
-              policy={dao.policy.defaultVotePolicy}
-              groups={dao.groups}
+              ratio={proposal.dao.policy.defaultVotePolicy.ratio}
+              numberOfGroups={dao.groups.length}
             />
           </div>
           <div className={styles.filters}>

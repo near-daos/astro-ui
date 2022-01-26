@@ -1,4 +1,4 @@
-import { DAO } from 'types/dao';
+import { DaoFeedItem } from 'types/dao';
 
 export const daoMock = ({
   id: 'default-flag-test.sputnikv2.testnet',
@@ -88,4 +88,4 @@ export const daoMock = ({
     legalStatus: '',
     legalLink: '',
   },
-} as unknown) as DAO;
+} as unknown) as DaoFeedItem;

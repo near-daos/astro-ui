@@ -10,6 +10,8 @@ import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 
 import { Feed } from 'astro_2.0/features/Feed';
+import { CookieService } from 'services/CookieService';
+import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
   <Feed {...props} title="Global Feed" />
@@ -18,6 +20,7 @@ const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
 export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   typeof Feed
 >> = async ({ query, locale = 'en' }) => {
+  const accountId = CookieService.get(ACCOUNT_COOKIE);
   const {
     category,
     status = ProposalStatuses.Active,
@@ -27,6 +30,7 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
     status,
     limit: LIST_LIMIT_DEFAULT,
     daoFilter: 'All DAOs',
+    accountId,
   });
 
   return {

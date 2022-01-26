@@ -25,11 +25,22 @@ export type Member = {
   votes: number;
 } & { [key: string]: string | string[] | Token | number };
 
-export type DAO = {
+type DaoProperties = {
   id: string;
-  txHash: string;
   name: string;
   description: string;
+  flagCover?: string;
+  flagLogo?: string;
+  links: string[];
+  displayName: string;
+  legal?: {
+    legalStatus?: string;
+    legalLink?: string;
+  };
+};
+
+export type DAO = {
+  txHash: string;
   members: number;
   daoMembersList: string[];
   funds: string;
@@ -40,33 +51,14 @@ export type DAO = {
   createdAt: string;
   groups: TGroup[];
   policy: PolicyType;
-  links: string[];
-  displayName: string;
   votes?: number;
   logo?: string;
-  flagCover?: string;
-  flagLogo?: string;
   lastProposalId: number;
-  legal: {
-    legalStatus?: string;
-    legalLink?: string;
-  };
-};
+} & DaoProperties;
 
 export type DAOPreview = {
-  id: string;
-  name: string;
-  description: string;
   funds: string;
-  flagCover?: string;
-  flagLogo?: string;
-  links: string[];
-  displayName: string;
-  legal?: {
-    legalStatus?: string;
-    legalLink?: string;
-  };
-};
+} & DaoProperties;
 
 export type VotePolicyRequest = {
   // eslint-disable-next-line camelcase
@@ -125,3 +117,22 @@ export type DaoSubscriptionInput = {
 export type UpdateDaoSubscription = {
   daoId: string;
 } & DaoSubscriptionInput;
+
+export type DaoFeedItem = {
+  createdAt: string;
+  numberOfMembers: number;
+  numberOfGroups: number;
+  accountIds: string[];
+  activeProposalCount: number;
+  totalProposalCount: number;
+  totalDaoFunds: number;
+  txHash: string;
+  logo?: string;
+  policy: {
+    daoId: string;
+    roles: {
+      name: string;
+      accountIds: string[];
+    }[];
+  };
+} & DaoProperties;

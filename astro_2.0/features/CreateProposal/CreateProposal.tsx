@@ -88,11 +88,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   }, [initialProposalVariant]);
 
   const methods = useForm({
-    defaultValues: getFormInitialValues(
-      selectedProposalVariant,
-      dao,
-      accountId
-    ),
+    defaultValues: getFormInitialValues(selectedProposalVariant, accountId),
     context: schemaContext,
     mode: 'onSubmit',
     resolver: async (data, context) => {
@@ -165,7 +161,6 @@ export const CreateProposal: FC<CreateProposalProps> = ({
 
           if (selectedProposalVariant === ProposalVariant.ProposeTransfer) {
             resp = await SputnikNearService.createTokenTransferProposal(
-              dao,
               newProposal
             );
 
@@ -254,7 +249,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
               userPermissions={userPermissions}
               onClose={onClose}
               onTypeSelect={v => {
-                const defaults = getFormInitialValues(v, dao, accountId);
+                const defaults = getFormInitialValues(v, accountId);
 
                 methods.reset({ ...defaults });
 

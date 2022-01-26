@@ -1,4 +1,4 @@
-import { DAO } from 'types/dao';
+import { DaoFeedItem } from 'types/dao';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { getDaosList } from 'features/daos/helpers';
 import nextI18NextConfig from 'next-i18next.config.js';
@@ -18,7 +18,7 @@ export async function getServerSideProps({
   query: GetDaoListQuery;
   locale: string;
 }): Promise<{
-  props: { data: DAO[]; total: number };
+  props: { data: DaoFeedItem[]; total: number };
 }> {
   const { daos: data, total } = await getDaosList({
     offset: 0,

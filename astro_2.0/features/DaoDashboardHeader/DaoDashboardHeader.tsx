@@ -60,7 +60,7 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
       </section>
 
       <section className={styles.linksSection}>
-        {legal.legalLink && (
+        {legal?.legalLink && (
           <div>
             <a
               href={legal.legalLink}

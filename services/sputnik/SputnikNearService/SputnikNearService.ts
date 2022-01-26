@@ -11,7 +11,7 @@ import { NearConfig, nearConfig } from 'config';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
-import { CreateDaoInput, DAO } from 'types/dao';
+import { CreateDaoInput } from 'types/dao';
 import { CreateTokenParams, SputnikTokenService } from 'types/token';
 import { Transfer, VoteAction, CreateProposalParams } from 'types/proposal';
 
@@ -362,7 +362,6 @@ class SputnikNearServiceClass {
   }
 
   public async createTokenTransferProposal(
-    dao: DAO,
     proposal: CreateProposalParams | null
   ) {
     if (!proposal) {

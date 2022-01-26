@@ -48,6 +48,21 @@ exports[`dao details grid Should render component 1`] = `
             </div>
           </div>
           <div>
+            <div>
+              <div
+                class=""
+                role="button"
+                tabindex="0"
+              >
+                <span>
+                  <svg>
+                    <use
+                      href="/_next/undefined"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </div>
             <div
               class=""
             >
@@ -115,10 +130,8 @@ exports[`dao details grid Should render component 1`] = `
                 membersGroups
               </div>
               <div>
-                <span>
-                  1
-                </span>
-                /1
+                <span />
+                /undefined
               </div>
             </button>
           </div>

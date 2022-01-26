@@ -19,7 +19,7 @@ exports[`default voting policy Should render component 1`] = `
         class=""
       >
         ALL GROUPS (
-        1
+        2
         )
       </div>
     </div>

@@ -401,7 +401,6 @@ export function getFormContentNode(
 
 export function getFormInitialValues(
   selectedProposalType: ProposalVariant,
-  dao: DAO,
   accountId: string
 ): Record<string, unknown> {
   switch (selectedProposalType) {
@@ -485,12 +484,10 @@ export function getFormInitialValues(
       };
     }
     case ProposalVariant.ProposeChangeVotingPolicy: {
-      // const initialData = getInitialData(dao); // as Record<string, unknown>;
-
       return {
         details: '',
         externalUrl: '',
-        amount: '', // initialData?.policy.amount,
+        amount: '',
         gas: DEFAULT_PROPOSAL_GAS,
       };
     }

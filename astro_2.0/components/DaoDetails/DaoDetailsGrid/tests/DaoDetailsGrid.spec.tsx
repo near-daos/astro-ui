@@ -4,7 +4,7 @@ import { render } from 'jest/testUtils';
 import { useRouter } from 'next/router';
 import { fireEvent } from '@testing-library/dom';
 
-import { DAO } from 'types/dao';
+import { DaoFeedItem } from 'types/dao';
 
 import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails/DaoDetailsGrid';
 
@@ -65,7 +65,7 @@ describe('dao details grid', () => {
       displayName: undefined,
       description: undefined,
       id,
-    } as unknown) as DAO;
+    } as unknown) as DaoFeedItem;
 
     const component = render(
       <DaoDetailsGrid dao={dao} activeProposals={12} totalProposals={12} />
