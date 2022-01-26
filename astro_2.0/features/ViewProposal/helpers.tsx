@@ -2,8 +2,11 @@ import React, { ReactNode } from 'react';
 import Decimal from 'decimal.js';
 
 import { DAO } from 'types/dao';
-import { DaoRole } from 'types/role';
-import { Proposal, ProposalType, ProposalVariant } from 'types/proposal';
+import {
+  ProposalFeedItem,
+  ProposalType,
+  ProposalVariant,
+} from 'types/proposal';
 
 import { getInitialData } from 'features/vote-policy/helpers';
 
@@ -27,8 +30,10 @@ import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/ViewProposal//comp
 
 import { getDistanceFromNow } from 'astro_2.0/components/BountyCard/helpers';
 import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
+import { parseISO } from 'date-fns';
 
-export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
+export function getContentNode(proposal: ProposalFeedItem): ReactNode {
+  const { dao } = proposal;
   let content;
 
   try {
@@ -177,7 +182,7 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
 
           content = (
             <ChangeBondsContent
-              dao={dao}
+              daoId={dao.id}
               createProposalBond={new Decimal(policy.proposalBond)
                 .div(YOKTO_NEAR)
                 .toNumber()}
@@ -199,19 +204,24 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
       }
       case ProposalVariant.ProposeCreateGroup: {
         if (proposal.kind.type === ProposalType.ChangePolicy) {
-          const daoGroups = dao.policy.roles.map(item => item.name);
-          const proposalGroups = proposal.kind.policy.roles;
+          const proposalGroups = proposal.kind.policy.roles
+            .map(item => ({
+              ...item,
+              createdAt: parseISO(item.createdAt),
+            }))
+            .sort((a, b) => {
+              if (a.createdAt > b.createdAt) {
+                return 1;
+              }
 
-          let newGroup;
+              if (a.createdAt < b.createdAt) {
+                return -1;
+              }
 
-          // TODO - how can we understand what was the new group?
-          // once it is approved groups in dao and proposal are the same
+              return 0;
+            });
 
-          proposalGroups.forEach(group => {
-            if (!daoGroups.includes(group.name)) {
-              newGroup = group as DaoRole;
-            }
-          });
+          const newGroup = proposalGroups[proposalGroups.length - 1];
 
           if (newGroup) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -221,7 +231,7 @@ export function getContentNode(proposal: Proposal, dao: DAO): ReactNode {
             content = (
               <CreateGroupContent
                 daoId={dao.id}
-                group={(newGroup as DaoRole).name}
+                group={newGroup.name}
                 memberName={memberName}
               />
             );

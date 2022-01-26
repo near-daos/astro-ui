@@ -31,6 +31,7 @@ export const getServerSideProps: GetServerSideProps<PollsPageProps> = async ({
       offset: 0,
       limit: LIST_LIMIT_DEFAULT,
       daoFilter: 'All DAOs',
+      accountId: account,
     }),
   ]);
 

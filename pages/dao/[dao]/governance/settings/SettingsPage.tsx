@@ -132,12 +132,12 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
             )}
           >
             <a
-              href={dao.legal.legalLink}
+              href={dao.legal?.legalLink ?? ''}
               target="_blank"
               rel="noreferrer"
               className={styles.legalLink}
             >
-              {dao.legal.legalStatus || 'Public Limited Company'}
+              {dao.legal?.legalStatus || 'Public Limited Company'}
               <Icon
                 name="buttonExternal"
                 width={14}
@@ -287,8 +287,8 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
               })}
             </div>
             <DefaultVotingPolicy
-              policy={dao.policy.defaultVotePolicy}
-              groups={dao.groups}
+              ratio={dao.policy.defaultVotePolicy.ratio}
+              numberOfGroups={dao.groups.length}
             />
           </DaoSetting>
         )}

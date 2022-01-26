@@ -1,11 +1,18 @@
 import { nanoid } from 'nanoid';
 
-import { DAO, Member } from 'types/dao';
-import { Proposal } from 'types/proposal';
+import { DAO, DaoFeedItem, Member } from 'types/dao';
+import { ProposalFeedItem } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
 
-import { DaoDTO, mapDaoDTOListToDaoList, MemberStats } from './dao';
-import { mapProposalDTOListToProposalList, ProposalDTO } from './proposal';
+import {
+  DaoFeedItemResponse,
+  mapDaoFeedItemResponseToDaoFeedItemList,
+  MemberStats,
+} from './dao';
+import {
+  mapProposalFeedItemResponseToProposalFeedItem,
+  ProposalFeedItemResponse,
+} from './proposal';
 
 type MemberDTO = {
   id: string;
@@ -20,23 +27,23 @@ type MemberDTO = {
 };
 
 export interface SearchResultsDTO {
-  daos: DaoDTO[];
-  proposals: ProposalDTO[];
+  daos: DaoFeedItemResponse[];
+  proposals: ProposalFeedItemResponse[];
   members: MemberDTO[];
 }
 
 export interface SearchResponse {
   daos: {
-    data: DaoDTO[];
+    data: DaoFeedItemResponse[];
   };
   proposals: {
-    data: ProposalDTO[];
+    data: ProposalFeedItemResponse[];
   };
 }
 
 export const extractMembersFromDaosList = (
-  daos: DAO[],
-  proposals: Proposal[],
+  daos: DaoFeedItem[],
+  proposals: ProposalFeedItem[],
   query: string
 ): Member[] => {
   const members = {} as Record<string, Member>;
@@ -56,8 +63,12 @@ export const extractMembersFromDaosList = (
   }, {} as Record<string, number>);
 
   daos.forEach(dao => {
-    dao.groups.forEach(grp => {
-      const users = grp.members;
+    dao.policy.roles.forEach(grp => {
+      const users = grp.accountIds;
+
+      if (!users) {
+        return;
+      }
 
       users.forEach(user => {
         if (!members[user]) {
@@ -151,8 +162,13 @@ export const mapSearchResultsDTOToDataObject = (
     return null;
   }
 
-  const daos = mapDaoDTOListToDaoList(data.daos ?? []);
-  const proposals = mapProposalDTOListToProposalList(data.proposals ?? []);
+  const proposalsResults = data.proposals ?? [];
+
+  const daos = mapDaoFeedItemResponseToDaoFeedItemList(data.daos ?? []);
+  const proposals = proposalsResults.map(
+    mapProposalFeedItemResponseToProposalFeedItem
+  );
+
   const members = extractMembersFromDaosList(daos, proposals, query);
 
   return {

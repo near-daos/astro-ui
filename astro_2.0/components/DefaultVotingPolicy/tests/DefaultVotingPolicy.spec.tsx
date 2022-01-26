@@ -2,18 +2,12 @@ import { render } from 'jest/testUtils';
 
 import { DefaultVotingPolicy } from 'astro_2.0/components/DefaultVotingPolicy';
 
-import { policyMock, groupsMock } from './mocks';
+import { policyMock } from './mocks';
 
 describe('default voting policy', () => {
   it('Should render component', () => {
     const { container } = render(
-      <DefaultVotingPolicy
-        policy={{
-          ...policyMock,
-          ratio: [],
-        }}
-        groups={groupsMock}
-      />
+      <DefaultVotingPolicy ratio={[]} numberOfGroups={2} />
     );
 
     expect(container).toMatchSnapshot();
@@ -21,7 +15,7 @@ describe('default voting policy', () => {
 
   it('Should render ration if ration info presented', () => {
     const { queryAllByText } = render(
-      <DefaultVotingPolicy policy={policyMock} groups={groupsMock} />
+      <DefaultVotingPolicy ratio={policyMock.ratio} numberOfGroups={2} />
     );
 
     expect(queryAllByText('50%', { exact: false })).toHaveLength(1);

@@ -24,7 +24,7 @@ import { ExplorerLink } from 'components/ExplorerLink';
 import styles from './DaoDetailsMinimized.module.scss';
 
 export interface DaoDetailsMinimizedProps {
-  dao: DAO;
+  dao: Pick<DAO, 'id' | 'flagCover' | 'logo' | 'displayName'>;
   className?: string;
   onCreateProposalClick?: () => void;
   disableNewProposal?: boolean;

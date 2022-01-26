@@ -4,14 +4,14 @@ import { useRouter } from 'next/router';
 import { SINGLE_DAO_PAGE } from 'constants/routing';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 
-import { DAO } from 'types/dao';
+import { DaoFeedItem } from 'types/dao';
 
 import { nearConfig } from 'config';
 
 import styles from './SearchResultDaoCard.module.scss';
 
 interface SearchResultDaoCardProps {
-  data: DAO;
+  data: DaoFeedItem;
   onClick: () => void;
 }
 

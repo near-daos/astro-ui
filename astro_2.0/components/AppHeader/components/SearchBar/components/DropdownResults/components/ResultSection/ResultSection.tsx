@@ -2,14 +2,14 @@ import { FC } from 'react';
 import cn from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 
-import { DAO, Member } from 'types/dao';
-import { Proposal } from 'types/proposal';
+import { DaoFeedItem, Member } from 'types/dao';
+import { ProposalFeedItem } from 'types/proposal';
 
 import styles from './ResultSection.module.scss';
 
 interface ResultSectionProps {
   title: string;
-  data: DAO[] | Proposal[] | Member[] | undefined;
+  data: DaoFeedItem[] | ProposalFeedItem[] | Member[] | undefined;
   onSeeAll: () => void;
   contentClassName?: string;
 }

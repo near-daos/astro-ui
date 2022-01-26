@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 
-import { DAO } from 'types/dao';
-
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import {
   FieldValue,
@@ -12,7 +10,7 @@ import {
 import styles from './ChangeBondsContent.module.scss';
 
 interface ChangeBondsContentProps {
-  dao: DAO;
+  daoId: string;
   createProposalBond: number;
   proposalExpireTime: number;
   claimBountyBond: number;
@@ -20,7 +18,7 @@ interface ChangeBondsContentProps {
 }
 
 export const ChangeBondsContent: FC<ChangeBondsContentProps> = ({
-  dao,
+  daoId,
   createProposalBond,
   proposalExpireTime,
   claimBountyBond,
@@ -58,7 +56,7 @@ export const ChangeBondsContent: FC<ChangeBondsContentProps> = ({
       <div className={styles.row}>
         <InfoBlockWidget
           label={t('proposalCard.proposalTarget')}
-          value={dao.id}
+          value={daoId}
           valueFontSize="S"
         />
       </div>

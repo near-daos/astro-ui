@@ -29,6 +29,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       daoId: daoId as string,
       category: category as ProposalCategories,
       status: status as ProposalStatuses,
+      accountId: account,
     }),
   ]);
 

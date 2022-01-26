@@ -47,7 +47,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
   daoContext: { dao },
 }) => {
   const { tokens } = useDaoCustomTokens();
-  const breadcrumbsConfig = useGetBreadcrumbsConfig(dao);
+  const breadcrumbsConfig = useGetBreadcrumbsConfig(dao.id, dao.displayName);
 
   const {
     chartData,
