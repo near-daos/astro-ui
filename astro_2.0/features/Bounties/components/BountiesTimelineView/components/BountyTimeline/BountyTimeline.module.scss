@@ -1,24 +1,3 @@
-.comingSoon {
-  border-color: var(--color-black);
-  &::after {
-    background-color: var(--color-black);
-  }
-}
-
-.available {
-  border-color: var(--color-brand-coral-red);
-  &::after {
-    background-color: var(--color-brand-coral-red);
-  }
-}
-
-.inProgress {
-  border-color: var(--color-brand-purple);
-  &::after {
-    background-color: var(--color-brand-purple);
-  }
-}
-
 .padding {
   margin-bottom: 12px;
 }

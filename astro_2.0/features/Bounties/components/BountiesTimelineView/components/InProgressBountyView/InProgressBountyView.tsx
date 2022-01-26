@@ -20,6 +20,7 @@ export const InProgressBountyView: React.FC<InProgressBountyViewProps> = ({
           data={claim}
           doneProposals={bountyDoneProposals}
           maxDeadline={maxDeadline}
+          key={claim.id}
         />
       ))}
     </div>

@@ -16,10 +16,7 @@ import { Dropdown } from 'components/Dropdown';
 
 import useQuery from 'hooks/useQuery';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
-import {
-  BOUNTIES_PAGE_FILTER_OPTIONS,
-  BOUNTIES_PAGE_SORT_OPTIONS,
-} from 'astro_2.0/features/Bounties/helpers';
+import { BOUNTIES_PAGE_SORT_OPTIONS } from 'astro_2.0/features/Bounties/helpers';
 
 import { BountiesTimelineView } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/BountiesTimelineView';
 import styles from './BountiesPageContent.module.scss';
@@ -86,11 +83,6 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
 
           <div className={styles.filter}>
             <span className={styles.filterLabel}>Filter by status:</span>
-            <Dropdown
-              value={query.bountyStatus}
-              onChange={val => updateQuery('bountyStatus', val as BountyStatus)}
-              options={BOUNTIES_PAGE_FILTER_OPTIONS}
-            />
           </div>
         </div>
 

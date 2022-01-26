@@ -36,14 +36,13 @@ export interface BountiesResponse {
 }
 
 export enum BountyStatus {
-  Proposed = 'Proposed',
-  Available = 'Available',
-  InProgress = 'In Progress',
-  InProgressByMe = 'In Progress By Me',
-  Expired = 'Expired',
-  PendingApproval = 'Pending Approval',
-  Unknown = 'Unknown',
-  Completed = 'Completed',
+  Proposed,
+  Available,
+  InProgress,
+  Expired,
+  PendingApproval,
+  Completed,
+  Unknown,
 }
 
 export type ClaimedBy = {

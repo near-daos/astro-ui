@@ -27,22 +27,15 @@ export const BountyTimeline: React.FC<BountyTimelineProps> = ({
 
   const bountyStatus = getBountyStatus(bountyContext);
 
-  const progressStyle = cn({
-    [styles.available]: bountyStatus === BountyStatus.Available,
-    [styles.comingSoon]: bountyStatus === BountyStatus.Proposed,
-    [styles.inProgress]: bountyStatus === BountyStatus.InProgress,
-  });
-
   return (
     <TimelineRow
       comingSoonCell={
-        <div className={styles.cell}>
+        <>
           <TimelineProgress
-            dashedView={bountyStatus === BountyStatus.Proposed}
-            indicator={bountyStatus === BountyStatus.Proposed}
-            className={cn(styles.padding, progressStyle)}
+            progressCell={BountyStatus.Proposed}
+            bountyStatus={bountyStatus}
+            className={styles.padding}
           />
-
           {!bounty && (
             <ComingSoonStateRenderer
               daoId={daoId}
@@ -50,39 +43,36 @@ export const BountyTimeline: React.FC<BountyTimelineProps> = ({
               proposalId={proposal.id}
             />
           )}
-        </div>
+        </>
       }
       availableCell={
-        <div className={styles.cell}>
+        <>
+          <TimelineProgress
+            progressCell={BountyStatus.Available}
+            bountyStatus={bountyStatus}
+            className={cn(styles.padding)}
+          />
           {bounty && (
-            <>
-              <TimelineProgress
-                dashedView={bountyStatus === BountyStatus.Available}
-                indicator={bountyStatus === BountyStatus.Available}
-                className={cn(styles.padding, progressStyle)}
-              />
-              <AvailabilityBountyView
-                bountyName="name name"
-                token={bounty.token === '' ? tokens.NEAR : tokens[bounty.token]}
-                amount={bounty.amount}
-                claimsOccupied={bounty.numberOfClaims}
-                claimsAvailable={bounty.times}
-              />
-            </>
+            <AvailabilityBountyView
+              bountyName="name name"
+              token={bounty.token === '' ? tokens.NEAR : tokens[bounty.token]}
+              amount={bounty.amount}
+              claimsOccupied={bounty.numberOfClaims}
+              claimsAvailable={bounty.times}
+            />
           )}
-        </div>
+        </>
       }
       inProgressCell={
-        bountyStatus === BountyStatus.InProgress && (
-          <>
-            <TimelineProgress
-              dashedView={bountyStatus === BountyStatus.InProgress}
-              indicator={bountyStatus === BountyStatus.InProgress}
-              className={cn(progressStyle)}
-            />
+        <>
+          <TimelineProgress
+            bountyStatus={bountyStatus}
+            progressCell={BountyStatus.InProgress}
+          />
+          {bountyStatus === BountyStatus.InProgress && (
             <InProgressBountyView bounty={bounty} />
-          </>
-        )
+          )}
+        </>
       }
     />
   );

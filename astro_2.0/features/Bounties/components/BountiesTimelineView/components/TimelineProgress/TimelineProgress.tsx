@@ -1,25 +1,32 @@
 import React from 'react';
 
 import cn from 'classnames';
+import { BountyStatus } from 'types/bounties';
 import styles from './TimelineProgress.module.scss';
 
 interface TimelineProgressProps {
-  dashedView: boolean;
-  indicator: boolean;
-  className: string;
+  progressCell: BountyStatus;
+  bountyStatus: BountyStatus;
+  className?: string;
 }
 
 export const TimelineProgress: React.FC<TimelineProgressProps> = ({
   className,
-  dashedView,
-  indicator,
+  progressCell,
+  bountyStatus,
 }) => {
+  const isPending =
+    progressCell === bountyStatus || bountyStatus < progressCell;
+
   return (
     <div
       className={cn(styles.root, className, {
-        [styles.finished]: !dashedView,
-        [styles.inProgress]: dashedView,
-        [styles.currentPhase]: indicator,
+        [styles.solid]: !isPending,
+        [styles.dashed]: isPending,
+        [styles.indicator]: progressCell < bountyStatus,
+        [styles.comingSoon]: bountyStatus === BountyStatus.Proposed,
+        [styles.inProgress]: bountyStatus === BountyStatus.InProgress,
+        [styles.available]: bountyStatus === BountyStatus.Available,
       })}
     />
   );
