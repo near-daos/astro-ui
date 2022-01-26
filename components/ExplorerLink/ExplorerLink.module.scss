@@ -1,6 +1,8 @@
 @import 'styles/mixins';
 
 .root {
+  cursor: pointer;
+
   &.absolute {
     position: absolute;
     right: 16px;

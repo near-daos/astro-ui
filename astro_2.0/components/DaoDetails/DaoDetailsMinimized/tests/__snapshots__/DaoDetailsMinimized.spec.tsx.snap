@@ -50,10 +50,41 @@ exports[`dao details minimized Should render component 1`] = `
         </div>
         <div>
           <div>
-            <div />
+            Default Flag Test
+            <div>
+              <div
+                class=""
+                role="button"
+                tabindex="0"
+              >
+                <span>
+                  <svg>
+                    <use
+                      href="/_next/undefined"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </div>
           </div>
           <div>
-            <div />
+            default-flag-test.sputnikv2.testnet
+            <div
+              class=""
+              role="button"
+              tabindex="0"
+            >
+              <button
+                class=""
+                type="button"
+              >
+                <svg>
+                  <use
+                    href="/_next/undefined"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </section>

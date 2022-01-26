@@ -19,6 +19,7 @@ import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { shortenString } from 'utils/format';
 import { formatCurrency } from 'utils/formatCurrency';
 
+import { ExplorerLink } from 'components/ExplorerLink';
 import { DaoInfoCard } from './components/DaoInfoCard';
 import { DaoDetailsSkeleton } from './components/DaoDetailsSkeleton';
 
@@ -72,6 +73,11 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                   <FlagRenderer flag={flagCover} size="sm" fallBack={oldFlag} />
                 </div>
                 <div className={styles.title}>
+                  <ExplorerLink
+                    linkData={dao.id}
+                    linkType="member"
+                    className={styles.explorerLink}
+                  />
                   <Tooltip
                     placement="top"
                     overlay={
