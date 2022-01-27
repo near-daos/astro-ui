@@ -52,15 +52,6 @@ export interface GetProposalsResponse {
   data: ProposalDTO[];
 }
 
-// function getProposalVotingEndDate(
-//   submissionTime: string,
-//   proposalPeriod: string
-// ): string {
-//   const endsAt = (Number(submissionTime) + Number(proposalPeriod)) / 1000000;
-//
-//   return new Date(endsAt).toISOString();
-// }
-
 function getVotesStatistic(proposal: Pick<ProposalDTO, 'votes'>) {
   const result = {
     voteYes: 0,
@@ -201,9 +192,7 @@ export const mapProposalFeedItemResponseToProposalFeedItem = (
         : getAwsImageUrl('default.png'),
     },
     proposalVariant: proposalVariant as ProposalVariant,
-    updatedAt: proposalDTO.updateTimestamp
-      ? new Date(Number(proposalDTO.updateTimestamp) / 1000000).toISOString()
-      : null,
+    updatedAt: proposalDTO.updatedAt ?? '',
     actions: proposalDTO.actions,
     permissions: proposalDTO.permissions ?? {
       canApprove: false,
@@ -318,6 +307,7 @@ export const mapCreateParamsToPropsalKind = (
 
 export type ProposalFeedItemResponse = {
   createdAt: string;
+  updatedAt: string;
   id: string;
   proposalId: number;
   updateTimestamp: number;
