@@ -12,6 +12,7 @@ import { SputnikHttpService } from 'services/sputnik';
 import { SearchResultsData } from 'types/search';
 import { useAsyncFn } from 'react-use';
 import axios, { CancelTokenSource } from 'axios';
+import { useAuthContext } from 'context/AuthContext';
 
 interface SearchResultsContextProps {
   searchResults: SearchResultsData | null;
@@ -36,6 +37,7 @@ export const useSearchResults = (): SearchResultsContextProps =>
   useContext(SearchResultsContext);
 
 export const SearchResults: FC = ({ children }) => {
+  const { accountId } = useAuthContext();
   const [searchResults, setSearchResults] = useState<null | SearchResultsData>(
     null
   );
@@ -54,6 +56,7 @@ export const SearchResults: FC = ({ children }) => {
     const res = await SputnikHttpService.search({
       query,
       cancelToken: source.token,
+      accountId: accountId ?? '',
     });
 
     setSearchResults(res);

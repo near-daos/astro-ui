@@ -24,7 +24,7 @@ import {
 } from 'astro_2.0/features/CreateProposal/types';
 import { DAO, Member } from 'types/dao';
 import { IGroupForm } from 'features/groups/types';
-import { DaoMetadata, MemberStats } from 'services/sputnik/mappers';
+import { MemberStats } from 'services/sputnik/mappers';
 import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
 import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
 
@@ -74,6 +74,7 @@ import {
   requiredImg,
   validateImgSize,
 } from 'utils/imageValidators';
+import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 
 // Services
 import { SputnikNearService } from 'services/sputnik';
@@ -324,10 +325,6 @@ export const extractMembersFromDao = (
   });
 };
 
-export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
-  return Buffer.from(JSON.stringify(metadata)).toString('base64');
-};
-
 function getUniqueGroups(dao: DAO) {
   const members = dao ? extractMembersFromDao(dao, []) : [];
 
@@ -404,7 +401,6 @@ export function getFormContentNode(
 
 export function getFormInitialValues(
   selectedProposalType: ProposalVariant,
-  dao: DAO,
   accountId: string
 ): Record<string, unknown> {
   switch (selectedProposalType) {
@@ -488,12 +484,10 @@ export function getFormInitialValues(
       };
     }
     case ProposalVariant.ProposeChangeVotingPolicy: {
-      // const initialData = getInitialData(dao); // as Record<string, unknown>;
-
       return {
         details: '',
         externalUrl: '',
-        amount: '', // initialData?.policy.amount,
+        amount: '',
         gas: DEFAULT_PROPOSAL_GAS,
       };
     }
@@ -592,7 +586,7 @@ export async function getNewProposalObject(
       const newDaoConfig: DaoConfig = {
         name: dao.name,
         purpose: dao.description,
-        metadata: fromMetadataToBase64({
+        metadata: jsonToBase64Str({
           ...getFlagsParamsForMetadata(dao),
           links: ((data as unknown) as LinksFormData).links
             .map(item => item.url)
@@ -612,7 +606,7 @@ export async function getNewProposalObject(
       const newDaoConfig: DaoConfig = {
         name: dao.name,
         purpose: dao.description,
-        metadata: fromMetadataToBase64({
+        metadata: jsonToBase64Str({
           ...getFlagsParamsForMetadata(dao),
           links: dao.links,
           displayName: data.displayName as string,
@@ -630,7 +624,7 @@ export async function getNewProposalObject(
       const newDaoConfig: DaoConfig = {
         name: dao.name,
         purpose: data.purpose as string,
-        metadata: fromMetadataToBase64({
+        metadata: jsonToBase64Str({
           ...getFlagsParamsForMetadata(dao),
           links: dao.links,
           displayName: dao.displayName,
@@ -725,7 +719,7 @@ export async function getNewProposalObject(
       const newDaoConfig: DaoConfig = {
         name: dao.name,
         purpose: dao.description,
-        metadata: fromMetadataToBase64({
+        metadata: jsonToBase64Str({
           ...getFlagsParamsForMetadata(dao),
           links: dao.links,
           displayName: dao.displayName,
@@ -745,7 +739,7 @@ export async function getNewProposalObject(
       const newDaoConfig: DaoConfig = {
         name: dao.name,
         purpose: dao.description,
-        metadata: fromMetadataToBase64({
+        metadata: jsonToBase64Str({
           ...getFlagsParamsForMetadata(dao),
           links: dao.links,
           displayName: dao.displayName,
@@ -837,8 +831,8 @@ export const gasValidation = yup
   .number()
   .typeError('Must be a valid number.')
   .positive()
-  .min(0.1)
-  .max(0.3)
+  .min(100)
+  .max(300)
   .required('Required');
 
 export function getValidationSchema(

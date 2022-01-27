@@ -34,7 +34,8 @@ const BountyPage: NextPage<BountyPageProps> = ({
   const { bounty } = bountyContext;
 
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
-    dao,
+    dao.id,
+    dao.displayName,
     undefined,
     undefined,
     bounty

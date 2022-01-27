@@ -26,10 +26,14 @@ const GroupPage: VFC<GroupPageProps> = ({ daoContext, membersStats }) => {
       ? t('allMembers')
       : groupQueryName.replace('-', ' ');
 
-  const breadcrumbsConfig = useGetBreadcrumbsConfig(daoContext.dao, {
-    id: groupQueryName,
-    label: groupName,
-  });
+  const breadcrumbsConfig = useGetBreadcrumbsConfig(
+    daoContext.dao.id,
+    daoContext.dao.displayName,
+    {
+      id: groupQueryName,
+      label: groupName,
+    }
+  );
 
   const breadcrumbs = useMemo(() => {
     return [

@@ -3,7 +3,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useRouter } from 'next/router';
 import { TFunction, useTranslation } from 'next-i18next';
 
-import { DAO } from 'types/dao';
+import { DaoFeedItem } from 'types/dao';
 
 import { Button } from 'components/button/Button';
 import { CREATE_DAO_URL } from 'constants/routing';
@@ -42,7 +42,7 @@ function getSortOptions(t: TFunction) {
 }
 
 interface BrowseAllDaosProps {
-  data: DAO[];
+  data: DaoFeedItem[];
   total: number;
 }
 
@@ -135,8 +135,8 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
                 loading={isLoading}
                 key={item.id}
                 dao={item}
-                activeProposals={item.activeProposalsCount}
-                totalProposals={item.totalProposalsCount}
+                activeProposals={item.activeProposalCount}
+                totalProposals={item.totalProposalCount}
               />
             );
           })}

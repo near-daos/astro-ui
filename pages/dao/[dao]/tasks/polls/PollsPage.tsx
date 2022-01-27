@@ -6,10 +6,10 @@ import { ALL_DAOS_URL } from 'constants/routing';
 // Types
 import { PaginationResponse } from 'types/api';
 import {
-  Proposal,
   ProposalVariant,
   ProposalStatuses,
   ProposalCategories,
+  ProposalFeedItem,
 } from 'types/proposal';
 
 // Components
@@ -29,7 +29,7 @@ import styles from './Polls.module.scss';
 
 export interface PollsPageProps {
   daoContext: DaoContext;
-  initialPollsData: PaginationResponse<Proposal[]>;
+  initialPollsData: PaginationResponse<ProposalFeedItem[]>;
   initialProposalsStatusFilterValue: ProposalStatuses;
 }
 

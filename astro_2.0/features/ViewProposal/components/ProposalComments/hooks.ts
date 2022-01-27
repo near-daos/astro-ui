@@ -128,7 +128,10 @@ export function useProposalComments(
   useEffect(() => {
     if (socket) {
       socket.on('comment', (newComment: ProposalComment) => {
-        if (newComment.proposalId === proposalId) {
+        if (
+          newComment.contextId === proposalId &&
+          newComment.contextType === 'Proposal'
+        ) {
           if (isMounted()) {
             setComments(prev => {
               if (prev) {
@@ -142,7 +145,10 @@ export function useProposalComments(
       });
 
       socket.on('comment-removed', (removedComment: ProposalComment) => {
-        if (removedComment.proposalId === proposalId) {
+        if (
+          removedComment.contextId === proposalId &&
+          removedComment.contextType === 'Proposal'
+        ) {
           if (isMounted()) {
             setComments(prev => {
               if (prev) {

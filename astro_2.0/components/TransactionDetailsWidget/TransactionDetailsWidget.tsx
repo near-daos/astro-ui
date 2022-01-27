@@ -104,9 +104,9 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
                     width: getInputWidth(),
                   }}
                   type="number"
-                  min={0.1}
-                  step={0.01}
-                  max={0.3}
+                  min={100}
+                  step={1}
+                  max={300}
                   isBorderless
                   size="block"
                   {...gasInputProps}

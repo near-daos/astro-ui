@@ -9,6 +9,8 @@ import {
   ProposalType,
   ProposalVariant,
   ProposalActionData,
+  DaoConfig,
+  ProposalFeedItem,
 } from 'types/proposal';
 import {
   DaoDTO,
@@ -16,6 +18,7 @@ import {
   mapDaoDTOtoDao,
 } from 'services/sputnik/mappers/dao';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { toMillis } from 'utils/format';
 
 import { getAwsImageUrl } from './utils/getAwsImageUrl';
 
@@ -30,7 +33,8 @@ export type ProposalDTO = {
   kind: ProposalKind;
   proposalId: number;
   proposer: string;
-  status: 'Approved';
+  status: ProposalStatus;
+  voteStatus: string;
   submissionTime: string;
   transactionHash: string;
   updateTimestamp: string;
@@ -49,18 +53,9 @@ export interface GetProposalsResponse {
   data: ProposalDTO[];
 }
 
-function getProposalVotingEndDate(
-  submissionTime: string,
-  proposalPeriod: string
-): string {
-  const endsAt = (Number(submissionTime) + Number(proposalPeriod)) / 1000000;
-
-  return new Date(endsAt).toISOString();
-}
-
-export function getVotesStatistic(proposal: {
-  votes: Record<string, string>;
-}): {
+export function getVotesStatistic(
+  proposal: Pick<ProposalDTO, 'votes'>
+): {
   voteYes: number;
   voteNo: number;
   voteRemove: number;
@@ -119,15 +114,14 @@ export const mapProposalDTOToProposal = (
   const config = get(proposalDTO.dao, 'config');
   const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
 
-  const votePeriodEnd = getProposalVotingEndDate(
-    get(proposalDTO, 'submissionTime'),
-    get(proposalDTO, 'dao.policy.proposalPeriod')
-  );
+  const votePeriodEnd = new Date(
+    toMillis(proposalDTO.votePeriodEnd)
+  ).toISOString();
 
   return {
     ...getVotesStatistic(proposalDTO),
     id: proposalDTO.id,
-    proposalId: proposalDTO.proposalId,
+    proposalId: proposalDTO.proposalId ?? 0,
     daoId: proposalDTO.daoId,
     proposer: proposalDTO.proposer,
     commentsCount: proposalDTO.commentsCount ?? 0,
@@ -137,7 +131,9 @@ export const mapProposalDTOToProposal = (
     kind: proposalDTO.kind,
     votePeriodEnd,
     votePeriodEndDate: votePeriodEnd,
-    txHash: proposalDTO.transactionHash,
+    voteStatus: proposalDTO.voteStatus,
+    isFinalized: proposalDTO.status === 'Expired',
+    txHash: proposalDTO.transactionHash ?? '',
     createdAt: proposalDTO.createdAt,
     dao: mapDaoDTOtoDao(proposalDTO.dao),
     daoDetails: {
@@ -152,6 +148,70 @@ export const mapProposalDTOToProposal = (
       ? new Date(Number(proposalDTO.updateTimestamp) / 1000000).toISOString()
       : null,
     actions: proposalDTO.actions,
+  };
+};
+
+export const mapProposalFeedItemResponseToProposalFeedItem = (
+  proposalDTO: ProposalFeedItemResponse
+): ProposalFeedItem => {
+  const [
+    description,
+    link,
+    proposalVariant = ProposalVariant.ProposeDefault,
+  ] = proposalDTO.description.split(EXTERNAL_LINK_SEPARATOR);
+
+  const config = get(proposalDTO.dao, 'config');
+  const meta = config.metadata ? fromBase64ToMetadata(config.metadata) : null;
+
+  const votePeriodEnd = new Date(
+    toMillis(proposalDTO.votePeriodEnd)
+  ).toISOString();
+
+  return {
+    ...getVotesStatistic(proposalDTO),
+    id: proposalDTO.id,
+    proposalId: proposalDTO.proposalId ?? 0,
+    daoId: proposalDTO.daoId,
+    proposer: proposalDTO.proposer,
+    commentsCount: proposalDTO.commentsCount ?? 0,
+    description,
+    link: link ?? '',
+    status: getProposalStatus(proposalDTO.status, votePeriodEnd),
+    kind: proposalDTO.kind,
+    votePeriodEnd,
+    votePeriodEndDate: votePeriodEnd,
+    voteStatus: proposalDTO.voteStatus,
+    isFinalized: proposalDTO.status === 'Expired',
+    txHash: proposalDTO.transactionHash ?? '',
+    createdAt: proposalDTO.createdAt,
+    dao: {
+      id: proposalDTO.dao.id,
+      name: proposalDTO.dao.config.name,
+      logo: meta?.flag
+        ? getAwsImageUrl(meta.flag)
+        : getAwsImageUrl('default.png'),
+      flagCover: getAwsImageUrl(meta?.flagCover),
+      flagLogo: getAwsImageUrl(meta?.flagLogo),
+      legal: meta?.legal || {},
+      numberOfMembers: proposalDTO.dao.numberOfMembers,
+      policy: proposalDTO.dao.policy,
+    },
+    daoDetails: {
+      name: proposalDTO.dao.config.name,
+      displayName: meta?.displayName || '',
+      logo: meta?.flag
+        ? getAwsImageUrl(meta.flag)
+        : getAwsImageUrl('default.png'),
+    },
+    proposalVariant: proposalVariant as ProposalVariant,
+    updatedAt: proposalDTO.updatedAt,
+    actions: proposalDTO.actions,
+    permissions: proposalDTO.permissions ?? {
+      canApprove: false,
+      canReject: false,
+      canDelete: false,
+      isCouncil: false,
+    },
   };
 };
 
@@ -255,4 +315,44 @@ export const mapCreateParamsToPropsalKind = (
     default:
       throw new Error();
   }
+};
+
+export type ProposalFeedItemResponse = {
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+  proposalId: number;
+  updateTimestamp: number;
+  transactionHash: string;
+  daoId: string;
+  proposer: string;
+  description: string;
+  status: 'Approved' | 'InProgress' | 'Rejected' | 'Expired';
+  voteStatus: 'Active';
+  kind: ProposalKind;
+  type: string;
+  votes: Record<string, 'Approve' | 'Reject' | 'Remove'>;
+  votePeriodEnd: string;
+  dao: {
+    id: string;
+    config: DaoConfig;
+    numberOfMembers: number;
+    policy: {
+      daoId: string;
+      defaultVotePolicy: {
+        weightKind: string;
+        kind: string;
+        ratio: number[];
+        quorum: string;
+      };
+    };
+  };
+  actions: ProposalActionData[];
+  commentsCount: number;
+  permissions: {
+    canApprove: boolean;
+    canReject: boolean;
+    canDelete: boolean;
+    isCouncil: boolean;
+  };
 };

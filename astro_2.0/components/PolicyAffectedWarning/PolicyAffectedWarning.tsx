@@ -13,7 +13,7 @@ import { Button } from 'components/button/Button';
 import styles from './PolicyAffectedWarning.module.scss';
 
 export interface PolicyAffectedWarningProps {
-  data: Proposal[];
+  data: Pick<Proposal, 'daoId' | 'id' | 'kind'>[];
   className: string;
 }
 

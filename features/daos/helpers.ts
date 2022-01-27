@@ -1,5 +1,5 @@
 import { SputnikHttpService } from 'services/sputnik';
-import { DAO } from 'types/dao';
+import { DaoFeedItem } from 'types/dao';
 
 interface GetDaoListProps {
   sort?: string;
@@ -15,7 +15,7 @@ export async function getDaosList({
   limit,
   filter,
 }: GetDaoListProps): Promise<{
-  daos: DAO[];
+  daos: DaoFeedItem[];
   total: number;
 }> {
   const { data, total } = await SputnikHttpService.getDaoList({

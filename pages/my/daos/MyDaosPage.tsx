@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import Link from 'next/link';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
@@ -13,12 +14,12 @@ import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 
-import { DAO } from 'types/dao';
+import { DaoFeedItem } from 'types/dao';
 
 import styles from './MyDaosPage.module.scss';
 
 interface MyDaosPageProps {
-  accountDaos: DAO[];
+  accountDaos: DaoFeedItem[];
 }
 
 const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
@@ -43,19 +44,23 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
     }
 
     const daoEls = accountDaos.map(dao => {
-      const { id, activeProposalsCount, totalProposalsCount } = dao;
+      const { id, activeProposalCount, totalProposalCount } = dao;
 
       return (
         <DaoDetailsGrid
           key={id}
           dao={dao}
-          activeProposals={activeProposalsCount}
-          totalProposals={totalProposalsCount}
+          activeProposals={activeProposalCount}
+          totalProposals={totalProposalCount}
         />
       );
     });
 
-    return <div className={styles.daosList}>{daoEls}</div>;
+    const daosListClassList = cn(styles.daosList, {
+      [styles.singleDao]: accountDaos.length === 1,
+    });
+
+    return <div className={daosListClassList}>{daoEls}</div>;
   }
 
   const handleCreateDao = useCallback(

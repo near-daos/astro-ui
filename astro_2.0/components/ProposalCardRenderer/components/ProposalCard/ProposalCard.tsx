@@ -20,7 +20,6 @@ import { ProgressBar } from 'components/VoteDetails/components/progress-bar/Prog
 import { VoteDetail } from 'features/types';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { ProposalActions } from 'features/proposal/components/ProposalActions';
-import { DAO } from 'types/dao';
 import { ExternalLink } from 'components/ExternalLink';
 import { Icon, IconName } from 'components/Icon';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
@@ -34,7 +33,6 @@ import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
 import { DEFAULT_VOTE_GAS } from 'services/sputnik/constants';
 import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCountdown } from 'hooks/useCountdown';
-import { useGetVotePermissions } from './hooks/useGetVotePermissions';
 import { ProposalControlPanel } from './components/ProposalControlPanel';
 
 import styles from './ProposalCard.module.scss';
@@ -48,12 +46,14 @@ export interface ProposalCardProps {
   description: string;
   link: string;
   proposalTxHash: string;
-  dao: DAO;
+  daoId: string;
   proposalId: number;
   accountId: string;
   likes: number;
   dislikes: number;
   voteRemove: number;
+  voteStatus: string;
+  isFinalized: boolean;
   liked: boolean;
   disliked: boolean;
   dismissed: boolean;
@@ -63,6 +63,12 @@ export interface ProposalCardProps {
   updatedAt?: string | null;
   toggleInfoPanel?: () => void;
   commentsCount: number;
+  permissions: {
+    canApprove: boolean;
+    canReject: boolean;
+    canDelete: boolean;
+    isCouncil: boolean;
+  };
 }
 
 function getTimestampLabel(
@@ -150,6 +156,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   status,
   proposalId,
   votePeriodEnd,
+  voteStatus,
+  isFinalized,
   likes,
   dislikes,
   liked,
@@ -158,47 +166,49 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   voteRemove,
   voteDetails,
   content,
-  accountId,
-  dao,
+  daoId,
+  permissions,
   updatedAt,
   toggleInfoPanel,
   commentsCount,
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const permissions = useGetVotePermissions(dao, type, accountId);
 
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
     async (vote: VoteAction, gas?: string | number) => {
-      await SputnikNearService.vote(dao.id, proposalId, vote, gas);
+      await SputnikNearService.vote(daoId, proposalId, vote, gas);
       await router.reload();
     },
-    [dao, proposalId, router]
+    [daoId, proposalId, router]
   );
 
   const [
     { loading: finalizeLoading },
     finalizeClickHandler,
   ] = useAsyncFn(async () => {
-    await SputnikNearService.finalize(dao.id, proposalId);
+    await SputnikNearService.finalize(daoId, proposalId);
     await router.reload();
-  }, [dao, proposalId, router]);
+  }, [daoId, proposalId, router]);
 
   const handleCardClick = useCallback(() => {
     if (id && router.pathname !== SINGLE_PROPOSAL_PAGE_URL) {
       router.push({
         pathname: SINGLE_PROPOSAL_PAGE_URL,
         query: {
-          dao: dao.id,
+          dao: daoId,
           proposal: id,
         },
       });
     }
-  }, [dao.id, id, router]);
+  }, [daoId, id, router]);
 
   const timeLeft = useCountdown(votePeriodEnd);
 
   const sealIcon = timeLeft !== undefined ? getSealIcon(status) : null;
+  const showFinalize =
+    (voteStatus === 'Expired' && !isFinalized) ||
+    (voteStatus === 'Active' && timeLeft === null && status === 'InProgress');
 
   const methods = useForm<DAOFormValues>({
     mode: 'all',
@@ -217,7 +227,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       })}
       onClick={handleCardClick}
     >
-      {sealIcon && (
+      {sealIcon && !showFinalize && (
         <div className={styles.proposalStatusSeal}>
           <Icon name={sealIcon as IconName} />
         </div>
@@ -240,7 +250,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       </div>
       <div className={styles.countdownCell}>
         {getTimestampLabel(timeLeft, status, updatedAt, votePeriodEnd)}
-        {!timeLeft && status === 'InProgress' && (
+        {showFinalize && (
           <Button
             size="small"
             disabled={finalizeLoading}
@@ -319,7 +329,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           proposalVariant={variant}
           proposalType={type}
           proposalDescription={description}
-          daoId={dao.id}
+          daoId={daoId}
           proposalId={id}
         />
       </div>

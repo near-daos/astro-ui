@@ -19,7 +19,10 @@ const BountiesPage: VFC<BountiesPageProps> = ({
   daoContext,
   bountiesContext,
 }) => {
-  const breadcrumbsConfig = useGetBreadcrumbsConfig(daoContext.dao);
+  const breadcrumbsConfig = useGetBreadcrumbsConfig(
+    daoContext.dao.id,
+    daoContext.dao.displayName
+  );
 
   const breadcrumbs = useMemo(() => {
     return [

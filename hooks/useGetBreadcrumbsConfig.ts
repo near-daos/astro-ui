@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 
-import { DAO } from 'types/dao';
-
 import {
   ALL_DAOS_URL,
   SINGLE_DAO_PAGE,
@@ -30,16 +28,15 @@ type Breadcrumbs = Record<
 >;
 
 export function useGetBreadcrumbsConfig(
-  dao?: DAO,
+  daoId: string,
+  daoDisplayName: string,
   group?: GroupConfig,
-  proposal?: Proposal,
+  proposal?: Pick<Proposal, 'id'>,
   bounty?: Bounty
 ): Breadcrumbs {
   const { t } = useTranslation();
 
   const breadcrumbs = useMemo(() => {
-    const { id = '', displayName = '' } = dao || {};
-
     return {
       ALL_DAOS_URL: {
         href: ALL_DAOS_URL,
@@ -49,16 +46,16 @@ export function useGetBreadcrumbsConfig(
         href: {
           pathname: SINGLE_DAO_PAGE,
           query: {
-            dao: id,
+            dao: daoId,
           },
         },
-        label: displayName || id,
+        label: daoDisplayName || daoId,
       },
       ALL_PROPOSALS_PAGE_URL: {
         href: {
           pathname: ALL_PROPOSALS_PAGE_URL,
           query: {
-            dao: id,
+            dao: daoId,
           },
         },
         label: t('proposals'),
@@ -67,7 +64,7 @@ export function useGetBreadcrumbsConfig(
         href: {
           pathname: SINGLE_PROPOSAL_PAGE_URL,
           query: {
-            dao: id,
+            dao: daoId,
             proposal: proposal?.id,
           },
         },
@@ -83,7 +80,7 @@ export function useGetBreadcrumbsConfig(
         href: {
           pathname: ALL_BOUNTIES_PAGE_URL,
           query: {
-            dao: id,
+            dao: daoId,
           },
         },
         label: t('bounties'),
@@ -92,7 +89,7 @@ export function useGetBreadcrumbsConfig(
         href: {
           pathname: SINGLE_BOUNTY_PAGE_URL,
           query: {
-            dao: id,
+            dao: daoId,
             bounty: bounty?.id,
           },
         },
@@ -102,7 +99,7 @@ export function useGetBreadcrumbsConfig(
         href: {
           pathname: GROUPS_PAGE_URL,
           query: {
-            dao: id,
+            dao: daoId,
             group: 'all',
           },
         },
@@ -112,14 +109,22 @@ export function useGetBreadcrumbsConfig(
         href: {
           pathname: GROUPS_PAGE_URL,
           query: {
-            dao: id,
+            dao: daoId,
             group: group?.id,
           },
         },
         label: group?.label || '',
       },
     };
-  }, [dao, t, proposal?.id, bounty?.id, group?.id, group?.label]);
+  }, [
+    t,
+    daoId,
+    daoDisplayName,
+    proposal?.id,
+    bounty?.id,
+    group?.id,
+    group?.label,
+  ]);
 
   return breadcrumbs;
 }

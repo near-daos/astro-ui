@@ -93,7 +93,7 @@ export type BountyProposal = {
   proposalId: number;
   description: string;
   votes: {
-    [key: string]: 'Yes' | 'No' | 'Dismiss';
+    [key: string]: 'Approve' | 'Reject' | 'Remove';
   };
   voteYes: number;
   voteNo: number;

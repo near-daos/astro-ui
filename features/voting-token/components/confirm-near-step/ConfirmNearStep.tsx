@@ -3,8 +3,6 @@ import React, { FC } from 'react';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { useWizardContext } from 'features/voting-token/components/voting-token-wizard/helpers';
-import { ExpandableDetails } from 'astro_2.0/components/ExpandableDetails';
-import { VoteDetails } from 'components/VoteDetails';
 
 import styles from './confirm-near-step.module.scss';
 
@@ -29,11 +27,7 @@ export const ConfirmNearStep: FC = () => {
           <strong>meowzers</strong> cannot change to a different voting token.
         </span>
       </div>
-      <div className={styles.vote}>
-        <ExpandableDetails label="Vote details">
-          <VoteDetails scope="setVoteToken" />
-        </ExpandableDetails>
-      </div>
+      <div className={styles.vote} />
       <div className={styles.footer}>
         <Button
           variant="secondary"

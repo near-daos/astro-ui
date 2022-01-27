@@ -98,9 +98,9 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
               }}
               onClick={e => e.stopPropagation()}
               type="number"
-              min={0.1}
-              step={0.01}
-              max={0.3}
+              min={100}
+              step={1}
+              max={300}
               isBorderless
               size="block"
               disabled={voted || (!canApprove && !canReject) || disableControls}

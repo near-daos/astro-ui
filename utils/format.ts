@@ -69,5 +69,5 @@ export function shortenString(value: string, maxLength: number): string {
 }
 
 export function formatGasValue(gas: string | number): BN {
-  return new BN(Number(gas) * 10 ** 15);
+  return new BN(Number(gas) * 10 ** 12);
 }
