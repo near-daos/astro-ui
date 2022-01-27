@@ -1,10 +1,9 @@
 import React, { useState, VFC } from 'react';
+import useQuery from 'hooks/useQuery';
 
 import { useAuthContext } from 'context/AuthContext';
-
 import { DaoContext } from 'types/context';
 import { BountyContext, BountyStatus } from 'types/bounties';
-import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { ProposalVariant } from 'types/proposal';
 import {
   ViewToggle,
@@ -13,12 +12,12 @@ import {
 import { BountiesListView } from 'astro_2.0/features/Bounties/components/BountiesListView';
 import { Button } from 'components/button/Button';
 import { Dropdown } from 'components/Dropdown';
-
-import useQuery from 'hooks/useQuery';
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import { BountiesTimelineView } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/BountiesTimelineView';
+import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { BOUNTIES_PAGE_SORT_OPTIONS } from 'astro_2.0/features/Bounties/helpers';
 
-import { BountiesTimelineView } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/BountiesTimelineView';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+
 import styles from './BountiesPageContent.module.scss';
 
 export interface BountiesPageContentProps {
@@ -79,10 +78,6 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
               onChange={val => updateQuery('bountySort', val)}
               options={BOUNTIES_PAGE_SORT_OPTIONS}
             />
-          </div>
-
-          <div className={styles.filter}>
-            <span className={styles.filterLabel}>Filter by status:</span>
           </div>
         </div>
 

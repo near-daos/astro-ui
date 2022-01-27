@@ -1,6 +1,4 @@
-import React, { ReactNode, useCallback } from 'react';
-import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
+import React, { ReactNode } from 'react';
 import cn from 'classnames';
 import { formatDistance, parseISO } from 'date-fns';
 
@@ -17,9 +15,8 @@ import { ProposalControlButton } from 'astro_2.0/components/ProposalCardRenderer
 import { ExplorerLink } from 'components/ExplorerLink';
 import { ExternalLink } from 'components/ExternalLink';
 import { Button } from 'components/button/Button';
-import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
-import { SputnikNearService } from 'services/sputnik';
+import { useBountyControls } from 'astro_2.0/features/Bounties/components/hooks';
 import { useAuthContext } from 'context/AuthContext';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
@@ -52,43 +49,29 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   activeInfoView,
   completeHandler,
 }) => {
-  const { t } = useTranslation();
-  const router = useRouter();
   const { accountId } = useAuthContext();
-
-  const claimedBy = bounty.bountyClaims.map(
-    ({ accountId: claimedAccount }) => claimedAccount
-  );
 
   const [description, url] = bounty.description.split(EXTERNAL_LINK_SEPARATOR);
 
-  const onSuccessHandler = useCallback(async () => {
-    await router.replace(router.asPath);
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      lifetime: 20000,
-      description: t('bountiesPage.successClaimBountyNotification'),
-    });
-  }, [t, router]);
-
-  const handleClaim = useCallback(async () => {
-    await SputnikNearService.claimBounty(dao.id, {
-      bountyId: Number(bounty.id),
-      deadline: bounty.maxDeadline,
-      bountyBond: dao.policy.bountyBond,
-    });
-
-    onSuccessHandler();
-  }, [bounty, dao.policy.bountyBond, dao.id, onSuccessHandler]);
-
-  const handleUnclaim = useCallback(async () => {
-    await SputnikNearService.unclaimBounty(dao.id, bounty.bountyId);
-    onSuccessHandler();
-  }, [bounty.bountyId, dao.id, onSuccessHandler]);
+  const { handleUnclaim, handleClaim } = useBountyControls(dao, bounty);
 
   function renderButtons() {
     if (proposal.status === 'Approved') {
-      if (!claimedBy.includes(accountId)) {
+      const isClaimedByMe = bounty.bountyClaims.find(
+        claim => claim.accountId === accountId
+      );
+      const hasAvailableClaims =
+        Number(bounty.times) - bounty.numberOfClaims > 0;
+      const hasIncompleteClaim = !!bounty.bountyClaims.find(
+        claim => claim.accountId === accountId && !claim.completed
+      );
+      const doneProposal = bounty.bountyDoneProposals.find(
+        _doneProposal => _doneProposal.proposer === accountId
+      );
+      const hasPendingProposal =
+        doneProposal && doneProposal.status === 'InProgress';
+
+      if (hasAvailableClaims && !hasIncompleteClaim && !isClaimedByMe) {
         return (
           <div className={styles.controlItem}>
             <Button
@@ -106,27 +89,32 @@ export const BountyCard: React.FC<BountyCardProps> = ({
 
       return (
         <>
-          <div className={styles.controlItem}>
-            <Button
-              variant="secondary"
-              size="small"
-              type="submit"
-              onClick={() => handleUnclaim()}
-              className={cn(styles.unclaim, styles.button)}
-            >
-              Unclaim
-            </Button>
-          </div>
-          <div className={styles.controlItem}>
-            <Button
-              variant="black"
-              size="small"
-              onClick={() => completeHandler()}
-              className={cn(styles.complete, styles.button)}
-            >
-              Complete
-            </Button>
-          </div>
+          {hasIncompleteClaim && (
+            <div className={styles.controlItem}>
+              <Button
+                variant="secondary"
+                size="small"
+                type="submit"
+                onClick={() => handleUnclaim()}
+                className={cn(styles.unclaim, styles.button)}
+              >
+                Unclaim
+              </Button>
+            </div>
+          )}
+
+          {hasIncompleteClaim && !hasPendingProposal && (
+            <div className={styles.controlItem}>
+              <Button
+                variant="black"
+                size="small"
+                onClick={() => completeHandler()}
+                className={cn(styles.complete, styles.button)}
+              >
+                Complete
+              </Button>
+            </div>
+          )}
         </>
       );
     }
@@ -202,7 +190,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
             times={
               <div className={styles.controlValue}>
                 <span className={styles.bold}>
-                  {Number(bounty.times) - Number(bounty.numberOfClaims)}
+                  {Number(bounty.numberOfClaims)}
                 </span>
                 /<span>{bounty.times}</span>
               </div>

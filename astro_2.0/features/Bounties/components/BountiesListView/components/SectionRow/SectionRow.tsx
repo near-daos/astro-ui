@@ -63,7 +63,7 @@ export const SectionRow: FC<SectionRowProps> = ({
               },
             }}
           >
-            <a>
+            <a className={styles.singleLine}>
               <div className={styles.singleLine}>{item.title}</div>
             </a>
           </Link>

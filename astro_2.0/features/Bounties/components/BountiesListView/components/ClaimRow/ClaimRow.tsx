@@ -39,7 +39,7 @@ export const ClaimRow: FC<ClaimRowProps> = ({
   maxDeadline,
   dao,
   bounty,
-  claimedByMe,
+  // claimedByMe,
   completeHandler,
 }) => {
   const { accountId, startTime } = data;
@@ -60,7 +60,7 @@ export const ClaimRow: FC<ClaimRowProps> = ({
   if (!proposal) {
     statusLabel = 'In progress';
     status = 'InProgress';
-    showControls = claimedByMe;
+    showControls = false;
   } else {
     const proposalStatus = proposal.status;
 

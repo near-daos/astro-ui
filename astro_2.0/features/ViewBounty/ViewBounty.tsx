@@ -15,8 +15,11 @@ import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomToken
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { InfoPanel } from 'astro_2.0/features/ViewBounty/components/InfoPanel/InfoPanel';
 import { ClaimsInfo } from 'astro_2.0/features/ViewBounty/components/ClaimsInfo';
+import { ProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments';
 
 export interface ViewBountyProps {
+  contextId: string;
+  commentsCount: number;
   dao: DAO | null;
   bounty: Bounty;
   tokens: Record<string, Token>;
@@ -31,6 +34,8 @@ const variants = {
 };
 
 export const ViewBounty: FC<ViewBountyProps> = ({
+  contextId,
+  commentsCount,
   dao,
   bounty,
   tokens,
@@ -39,7 +44,9 @@ export const ViewBounty: FC<ViewBountyProps> = ({
   toggleCreateProposal,
 }) => {
   const [showInfoPanel, setShowInfoPanel] = useState<string | null>('claims');
-  const [commentsCount] = useState(0);
+  // todo - get this from proposal permissions
+  const isCouncilUser = false;
+  const [commentsNum, setCommentsNum] = useState(commentsCount);
 
   if (!bounty || !dao) {
     return null;
@@ -77,7 +84,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
                 <ErrorBoundary>{contentNode}</ErrorBoundary>
               </CustomTokensContext.Provider>
             }
-            commentsCount={commentsCount}
+            commentsCount={commentsNum}
             toggleInfoPanel={setShowInfoPanel}
           />
         }
@@ -93,9 +100,20 @@ export const ViewBounty: FC<ViewBountyProps> = ({
                   duration: 0.3,
                 }}
               >
-                <InfoPanel>
-                  <ClaimsInfo bounty={bounty} />
-                </InfoPanel>
+                {showInfoPanel === 'claims' && (
+                  <InfoPanel>
+                    <ClaimsInfo bounty={bounty} />
+                  </InfoPanel>
+                )}
+                {showInfoPanel === 'comments' && (
+                  <ProposalComments
+                    contextId={contextId}
+                    contextType="BountyContext"
+                    isCouncilUser={isCouncilUser}
+                    isCommentsAllowed
+                    updateCommentsCount={setCommentsNum}
+                  />
+                )}
               </motion.div>
             )}
           </AnimatePresence>

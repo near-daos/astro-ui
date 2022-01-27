@@ -1,5 +1,6 @@
 import uniqBy from 'lodash/uniqBy';
 import {
+  CommentContextType,
   ProposalComment,
   ReportCommentsInput,
   SendCommentsInput,
@@ -13,7 +14,8 @@ import { useAuthContext } from 'context/AuthContext';
 import { useTranslation } from 'next-i18next';
 
 export function useProposalComments(
-  proposalId: string
+  proposalId: string,
+  contextType: CommentContextType
 ): {
   comments: ProposalComment[] | null;
   loading: boolean;
@@ -130,7 +132,7 @@ export function useProposalComments(
       socket.on('comment', (newComment: ProposalComment) => {
         if (
           newComment.contextId === proposalId &&
-          newComment.contextType === 'Proposal'
+          newComment.contextType === contextType
         ) {
           if (isMounted()) {
             setComments(prev => {
@@ -147,7 +149,7 @@ export function useProposalComments(
       socket.on('comment-removed', (removedComment: ProposalComment) => {
         if (
           removedComment.contextId === proposalId &&
-          removedComment.contextType === 'Proposal'
+          removedComment.contextType === contextType
         ) {
           if (isMounted()) {
             setComments(prev => {
@@ -163,7 +165,7 @@ export function useProposalComments(
     }
 
     getComments();
-  }, [getComments, isMounted, proposalId, socket]);
+  }, [contextType, getComments, isMounted, proposalId, socket]);
 
   return {
     comments,

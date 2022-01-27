@@ -1,0 +1,40 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  align-items: center;
+  display: flex;
+}
+
+.item {
+  align-items: center;
+  display: flex;
+  max-width: 100px;
+  padding: 20px 0;
+
+  &:first-of-type {
+    width: 100px;
+  }
+
+  &:not(:last-of-type) {
+    margin-right: 12px;
+  }
+}
+
+.label {
+  @extend %subtitle4;
+  @include ellipse-text;
+  color: var(--color-neutral-90);
+  margin-left: 12px;
+}
+
+.value {
+  @extend %subtitle4;
+  color: var(--color-neutral-80);
+  white-space: nowrap;
+}
+
+.icon {
+  margin-right: 12px;
+  width: 24px;
+}

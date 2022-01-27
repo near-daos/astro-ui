@@ -7,8 +7,8 @@ import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { CollapsableSection } from 'astro_2.0/features/Bounties/components/BountiesListView/components/CollapsableSection';
 import { prepareBountiesPageContent } from 'astro_2.0/features/Bounties/helpers';
 import { VotingContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/VotingContent';
-import { ClaimsContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/ClaimsContent';
 import { CompletedContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/CompletedContent';
+import { AmountContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/AmountContent';
 
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
@@ -33,6 +33,7 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
   bountiesContext,
   accountId,
   completeHandler,
+  tokens,
 }) => {
   const { proposalPhase, bounties, completed } = prepareBountiesPageContent(
     bountiesContext
@@ -71,7 +72,7 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
           status="InProgress"
           accountId={accountId}
           title={`Bounties (${bounties.length})`}
-          contentTitle="Claims (Available / Total)"
+          contentTitle="Amount"
           dao={dao}
           data={bounties.map(item => {
             const [description] = item.bounty.description.split(
@@ -86,12 +87,11 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
               bounty: item.bounty,
               completeHandler,
               content: (
-                <ClaimsContent
-                  slots={item.bounty.numberOfClaims}
-                  slotsTotal={Number(item.bounty.times)}
-                  dao={dao}
-                  bounty={item.bounty}
-                  accountId={accountId}
+                <AmountContent
+                  tokens={tokens}
+                  amount={item.bounty.amount}
+                  token={item.bounty.token}
+                  commentsCount={item.commentsCount}
                 />
               ),
             };
@@ -101,7 +101,7 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
           status="Completed"
           accountId={accountId}
           title={`Completed (${completed.length})`}
-          contentTitle="Claims (Available / Total)"
+          contentTitle="Amount"
           dao={dao}
           data={completed.map(item => {
             const [description] = item.bounty.description.split(

@@ -31,6 +31,37 @@ export const BOUNTIES_PAGE_FILTER_OPTIONS = [
   },
 ];
 
+export function prepareBountyObject(
+  bountyContext: BountyContext
+): BountyContext {
+  if (!bountyContext.bounty) {
+    return bountyContext;
+  }
+
+  // generate claims based on approved/rejected proposals
+  return {
+    ...bountyContext,
+    bounty: {
+      ...bountyContext.bounty,
+      bountyClaims: [
+        ...bountyContext.bounty.bountyClaims,
+        ...bountyContext.bounty.bountyDoneProposals
+          .filter(proposal => {
+            return proposal.status !== 'InProgress';
+          })
+          .map(proposal => ({
+            id: proposal.id,
+            accountId: proposal.proposer,
+            startTime: '',
+            deadline: bountyContext.bounty.maxDeadline,
+            completed: true,
+            endTime: '',
+          })),
+      ],
+    },
+  };
+}
+
 export function prepareBountiesPageContent(
   data: BountyContext[]
 ): {
@@ -51,27 +82,7 @@ export function prepareBountiesPageContent(
       }
 
       // generate claims based on approved/rejected proposals
-      const updatedItem = {
-        ...item,
-        bounty: {
-          ...item.bounty,
-          bountyClaims: [
-            ...item.bounty.bountyClaims,
-            ...item.bounty.bountyDoneProposals
-              .filter(proposal => {
-                return proposal.status !== 'InProgress';
-              })
-              .map(proposal => ({
-                id: proposal.id,
-                accountId: proposal.proposer,
-                startTime: '',
-                deadline: item.bounty.maxDeadline,
-                completed: false,
-                endTime: '',
-              })),
-          ],
-        },
-      };
+      const updatedItem = prepareBountyObject(item);
 
       if (item.bounty && Number(item.bounty.times) === 0) {
         res.completed.push(updatedItem);
