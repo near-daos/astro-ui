@@ -33,7 +33,8 @@ export type ProposalDTO = {
   kind: ProposalKind;
   proposalId: number;
   proposer: string;
-  status: 'Approved';
+  status: ProposalStatus;
+  voteStatus: string;
   submissionTime: string;
   transactionHash: string;
   updateTimestamp: string;
@@ -123,6 +124,8 @@ export const mapProposalDTOToProposal = (
     kind: proposalDTO.kind,
     votePeriodEnd,
     votePeriodEndDate: votePeriodEnd,
+    voteStatus: proposalDTO.voteStatus,
+    isFinalized: proposalDTO.status === 'Expired',
     txHash: proposalDTO.transactionHash ?? '',
     createdAt: proposalDTO.createdAt,
     dao: mapDaoDTOtoDao(proposalDTO.dao),
@@ -170,6 +173,8 @@ export const mapProposalFeedItemResponseToProposalFeedItem = (
     kind: proposalDTO.kind,
     votePeriodEnd,
     votePeriodEndDate: votePeriodEnd,
+    voteStatus: proposalDTO.voteStatus,
+    isFinalized: proposalDTO.status === 'Expired',
     txHash: proposalDTO.transactionHash ?? '',
     createdAt: proposalDTO.createdAt,
     dao: {
@@ -315,7 +320,7 @@ export type ProposalFeedItemResponse = {
   daoId: string;
   proposer: string;
   description: string;
-  status: 'Approved' | 'InProgress' | 'Rejected';
+  status: 'Approved' | 'InProgress' | 'Rejected' | 'Expired';
   voteStatus: 'Active';
   kind: ProposalKind;
   type: string;

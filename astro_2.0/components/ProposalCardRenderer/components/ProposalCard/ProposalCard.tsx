@@ -52,6 +52,8 @@ export interface ProposalCardProps {
   likes: number;
   dislikes: number;
   voteRemove: number;
+  voteStatus: string;
+  isFinalized: boolean;
   liked: boolean;
   disliked: boolean;
   dismissed: boolean;
@@ -154,6 +156,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   status,
   proposalId,
   votePeriodEnd,
+  voteStatus,
+  isFinalized,
   likes,
   dislikes,
   liked,
@@ -202,6 +206,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const timeLeft = useCountdown(votePeriodEnd);
 
   const sealIcon = timeLeft !== undefined ? getSealIcon(status) : null;
+  const showFinalize = voteStatus === 'Expired' && !isFinalized;
 
   const methods = useForm<DAOFormValues>({
     mode: 'all',
@@ -220,7 +225,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       })}
       onClick={handleCardClick}
     >
-      {sealIcon && (
+      {sealIcon && !showFinalize && (
         <div className={styles.proposalStatusSeal}>
           <Icon name={sealIcon as IconName} />
         </div>
@@ -243,7 +248,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       </div>
       <div className={styles.countdownCell}>
         {getTimestampLabel(timeLeft, status, updatedAt, votePeriodEnd)}
-        {!timeLeft && status === 'InProgress' && (
+        {showFinalize && (
           <Button
             size="small"
             disabled={finalizeLoading}

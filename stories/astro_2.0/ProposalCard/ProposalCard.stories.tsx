@@ -63,6 +63,8 @@ const cardProps = {
   status: 'Approved' as ProposalStatus,
   variant: ProposalVariant.ProposeTransfer,
   votePeriodEnd: '',
+  voteStatus: 'Active',
+  isFinalized: false,
   daoName: 'Ref.Finance',
   proposalId: 0,
   proposer: 'dkarpov.near',

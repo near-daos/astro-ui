@@ -142,6 +142,8 @@ type ProposalProperties = {
   voteYes: number;
   voteNo: number;
   voteRemove: number;
+  voteStatus: string;
+  isFinalized: boolean;
   txHash: string;
   votes: {
     [key: string]: 'Yes' | 'No' | 'Dismiss';
