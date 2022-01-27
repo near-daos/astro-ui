@@ -6,7 +6,6 @@ import Link from 'next/link';
 
 import { FEATURE_FLAGS } from 'constants/featureFlags';
 
-import { useAuthContext } from 'context/AuthContext';
 import { useNotifications } from 'astro_2.0/features/Notifications';
 
 import { NotificationsToastsContainer } from 'astro_2.0/components/AppHeader/components/NotificationsBell/components/NotificationsToastsContainer';
@@ -24,7 +23,6 @@ export const NotificationsBell: VFC<NotificationsBellProps> = ({
   const rootRef = useRef(null);
   const isHovered = useHoverDirty(rootRef);
 
-  const { accountId } = useAuthContext();
   const { notifications } = useNotifications();
 
   function renderBellIcon() {
@@ -50,7 +48,7 @@ export const NotificationsBell: VFC<NotificationsBellProps> = ({
     );
   }
 
-  return accountId && FEATURE_FLAGS.NOTIFICATIONS ? (
+  return FEATURE_FLAGS.NOTIFICATIONS ? (
     <>
       <Link href="/notifications" passHref>
         <div className={cn(styles.root, className)} ref={rootRef}>
