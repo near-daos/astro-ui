@@ -1,4 +1,4 @@
-import { Proposal } from 'types/proposal';
+import { ProposalFeedItem } from 'types/proposal';
 import { DAO } from 'types/dao';
 
 export type UserPermissions = {
@@ -9,5 +9,5 @@ export type UserPermissions = {
 export type DaoContext = {
   userPermissions: UserPermissions;
   dao: DAO;
-  policyAffectsProposals: Proposal[];
+  policyAffectsProposals: ProposalFeedItem[];
 };

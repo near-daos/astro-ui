@@ -510,7 +510,9 @@ class SputnikHttpServiceClass {
     }
   }
 
-  public async findPolicyAffectsProposals(daoId: string): Promise<Proposal[]> {
+  public async findPolicyAffectsProposals(
+    daoId: string
+  ): Promise<ProposalFeedItem[]> {
     const queryString = RequestQueryBuilder.create();
 
     const search: SFields | SConditionAND = {
@@ -559,10 +561,10 @@ class SputnikHttpServiceClass {
       .query();
 
     const { data: proposals } = await this.httpService.get<
-      GetProposalsResponse
+      PaginationResponse<ProposalFeedItemResponse[]>
     >(`/proposals?${queryString.queryString}`);
 
-    return proposals.data.map(mapProposalDTOToProposal);
+    return proposals.data.map(mapProposalFeedItemResponseToProposalFeedItem);
   }
 
   public async getFilteredProposals(
