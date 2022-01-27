@@ -90,7 +90,6 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
           <ExplorerLink
             linkData={transactionHash ?? ''}
             linkType="transaction"
-            isAbsolute
             className={styles.linkItem}
           />
         )}
