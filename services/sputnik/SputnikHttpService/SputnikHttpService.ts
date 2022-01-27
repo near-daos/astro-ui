@@ -1023,7 +1023,7 @@ class SputnikHttpServiceClass {
         offset,
         limit,
         sort,
-        filter: `proposalId||$eq||${proposalId}`,
+        filter: `contextId||$eq||${proposalId}`,
       },
     });
 

@@ -297,13 +297,16 @@ export type ProposalCommentReport = {
   reason: string;
 };
 
+export type ProposalContextType = 'Proposal' | 'BountyContext';
+
 export interface ProposalComment {
   isArchived: boolean;
   createdAt: string;
   updatedAt: string;
   id: number;
   daoId: string;
-  proposalId: string;
+  contextId: string;
+  contextType: ProposalContextType;
   accountId: string;
   message: string;
   reports: ProposalCommentReport[];
@@ -316,7 +319,8 @@ type AuthorizedRequest = {
 };
 
 export type SendCommentsInput = {
-  proposalId: string;
+  contextId: string;
+  contextType: ProposalContextType;
   message: string;
 };
 
