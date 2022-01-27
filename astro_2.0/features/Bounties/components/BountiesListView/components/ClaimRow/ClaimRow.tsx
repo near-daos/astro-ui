@@ -26,7 +26,6 @@ interface ClaimRowProps {
   bounty: Bounty;
   doneProposals: BountyProposal[];
   maxDeadline: string;
-  hasAvailableClaims: boolean;
   claimedByMe: boolean;
   completeHandler?: (
     id: number,

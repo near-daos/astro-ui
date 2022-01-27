@@ -118,8 +118,6 @@ export const SectionRow: FC<SectionRowProps> = ({
               return null;
             }
 
-            const hasAvailableClaims =
-              item.bounty.bountyClaims.length < Number(item.bounty.times);
             const claimedByMe = !!item.bounty.bountyClaims.find(
               _claim => _claim.accountId === accountId
             );
@@ -133,7 +131,6 @@ export const SectionRow: FC<SectionRowProps> = ({
                 data={claim}
                 completeHandler={item.completeHandler}
                 doneProposals={item.bounty?.bountyDoneProposals}
-                hasAvailableClaims={hasAvailableClaims}
                 claimedByMe={claimedByMe}
               />
             );

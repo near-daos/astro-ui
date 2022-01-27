@@ -50,20 +50,37 @@ export function prepareBountiesPageContent(
         return res;
       }
 
-      if (
-        item.bounty &&
-        item.bounty.bountyDoneProposals
-          .map(proposal => proposal.status)
-          .filter(status => status === 'Approved').length ===
-          Number(item.bounty.times)
-      ) {
-        res.completed.push(item);
+      // generate claims based on approved/rejected proposals
+      const updatedItem = {
+        ...item,
+        bounty: {
+          ...item.bounty,
+          bountyClaims: [
+            ...item.bounty.bountyClaims,
+            ...item.bounty.bountyDoneProposals
+              .filter(proposal => {
+                return proposal.status !== 'InProgress';
+              })
+              .map(proposal => ({
+                id: proposal.id,
+                accountId: proposal.proposer,
+                startTime: '',
+                deadline: item.bounty.maxDeadline,
+                completed: false,
+                endTime: '',
+              })),
+          ],
+        },
+      };
+
+      if (item.bounty && Number(item.bounty.times) === 0) {
+        res.completed.push(updatedItem);
 
         return res;
       }
 
       if (item.bounty) {
-        res.bounties.push(item);
+        res.bounties.push(updatedItem);
 
         return res;
       }

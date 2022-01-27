@@ -39,7 +39,7 @@ export function useBountyControls(
   const handleClaim = useCallback(async () => {
     const res = await showModal({
       title: 'Confirm Your Claim',
-      message: `To Confirm Your Claim you need to spend minimum ${DEFAULT_PROPOSAL_GAS} NEAR`,
+      message: `To Confirm Your Claim you need to spend minimum ${DEFAULT_PROPOSAL_GAS} TGas`,
     });
 
     if (res?.length) {
@@ -57,7 +57,7 @@ export function useBountyControls(
   const handleUnclaim = useCallback(async () => {
     const res = await showModal({
       title: 'Confirm Your Unclaim',
-      message: `To Confirm Your Unclaim you need to spend minimum ${DEFAULT_PROPOSAL_GAS} NEAR`,
+      message: `To Confirm Your Unclaim you need to spend minimum ${DEFAULT_PROPOSAL_GAS} TGas`,
     });
 
     if (res?.length) {
@@ -86,7 +86,7 @@ export function useBountyVoting(
     async (vote: VoteAction) => {
       const res = await showModal({
         title: 'Confirm Your Vote',
-        message: `To Confirm Your Vote you need to spend minimum ${DEFAULT_PROPOSAL_GAS} NEAR`,
+        message: `To Confirm Your Vote you need to spend minimum ${DEFAULT_PROPOSAL_GAS} TGas`,
       });
 
       if (res?.length) {
