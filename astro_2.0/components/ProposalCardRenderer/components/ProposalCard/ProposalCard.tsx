@@ -207,8 +207,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const sealIcon = timeLeft !== undefined ? getSealIcon(status) : null;
   const showFinalize =
-    (voteStatus === 'Expired' && !isFinalized) ||
-    (voteStatus === 'Active' && timeLeft === null && status === 'InProgress');
+    permissions.canApprove &&
+    permissions.canReject &&
+    permissions.canDelete &&
+    ((voteStatus === 'Expired' && !isFinalized) ||
+      (voteStatus === 'Active' &&
+        timeLeft === null &&
+        status === 'InProgress'));
 
   const methods = useForm<DAOFormValues>({
     mode: 'all',
