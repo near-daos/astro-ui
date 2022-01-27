@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const members = dao ? extractMembersFromDao(dao, membersStats) : [];
 
-  if (!daoContext) {
+  if (!daoContext || !proposal) {
     return {
       notFound: true,
     };

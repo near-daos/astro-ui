@@ -56,7 +56,11 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
       return;
     }
 
-    sendComment({ proposalId, message: value.trim() });
+    sendComment({
+      contextId: proposalId,
+      contextType: 'Proposal',
+      message: value.trim(),
+    });
     setValue('');
   }, [proposalId, sendComment, value]);
 
