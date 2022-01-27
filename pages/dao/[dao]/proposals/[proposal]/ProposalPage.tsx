@@ -66,7 +66,10 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
 
     const voteActions = proposal?.actions
       .filter(
-        item => item.action === 'VoteApprove' || item.action === 'VoteReject'
+        item =>
+          item.action === 'VoteApprove' ||
+          item.action === 'VoteReject' ||
+          item.action === 'VoteRemove'
       )
       .reduce((res, item) => {
         res[item.accountId] = item.transactionHash;
