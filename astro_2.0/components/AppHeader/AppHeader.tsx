@@ -1,8 +1,13 @@
 import cn from 'classnames';
 import React, { FC, useRef } from 'react';
 
-import { FEATURE_FLAGS } from 'constants/featureFlags';
+import { useRouter } from 'next/router';
 import { useAuthContext } from 'context/AuthContext';
+import { FEATURE_FLAGS } from 'constants/featureFlags';
+import {
+  NOTIFICATIONS_PAGE_URL,
+  NOTIFICATIONS_SETTINGS_PAGE_URL,
+} from 'constants/routing';
 
 import { Icon } from 'components/Icon';
 import { SearchBar } from './components/SearchBar';
@@ -12,6 +17,10 @@ import { NotificationsBell } from './components/NotificationsBell';
 import styles from './AppHeader.module.scss';
 
 export const AppHeader: FC = () => {
+  const router = useRouter();
+  const isNotificationsPage =
+    router.pathname.includes(NOTIFICATIONS_PAGE_URL) &&
+    !router.pathname.includes(NOTIFICATIONS_SETTINGS_PAGE_URL);
   const centralEl = useRef(null);
   const { accountId } = useAuthContext();
 
@@ -44,7 +53,9 @@ export const AppHeader: FC = () => {
           className={styles.search}
         />
       </div>
-      {!!accountId && <NotificationsBell className={styles.bell} />}
+      {!!accountId && !isNotificationsPage && (
+        <NotificationsBell className={styles.bell} />
+      )}
       <div>
         <AccountButton />
       </div>
