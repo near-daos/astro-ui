@@ -25,15 +25,14 @@
   @include tablet-portrait {
     align-items: center;
     flex-direction: row;
-    gap: 35px;
   }
 
   h1 {
     font-family: var(--font-family-tertiary);
-    margin: 0 24px 0 0;
+    margin: 0 0 20px;
 
-    @include astro-mobile {
-      margin-bottom: 20px;
+    @include tablet-portrait {
+      margin: 0 48px 0 0;
     }
   }
 }
