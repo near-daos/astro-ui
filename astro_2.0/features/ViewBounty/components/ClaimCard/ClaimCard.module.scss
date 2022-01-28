@@ -66,6 +66,24 @@
   }
 }
 
+.status {
+  @extend %caption1;
+  align-items: center;
+  color: var(--color-brand-black);
+  display: flex;
+
+  margin-left: 48px;
+
+  .proposalLink {
+    margin-left: 8px;
+    transform: translateY(-2px);
+  }
+
+  .proposalLink .icon {
+    width: 16px;
+  }
+}
+
 .details {
   padding: 8px 12px;
   width: 194px;

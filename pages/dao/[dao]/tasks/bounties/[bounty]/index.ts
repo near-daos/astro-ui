@@ -24,15 +24,30 @@ export const getServerSideProps: GetServerSideProps = async ({
     SputnikHttpService.getDaoContext(account, daoId as string),
   ]);
 
-  if (!daoContext) {
+  if (!daoContext || !bountyContext || !dao) {
     return {
       notFound: true,
     };
   }
 
   const proposalId = bountyContext.proposal.id;
+  const proposal = await SputnikHttpService.getProposalById(
+    proposalId,
+    account
+  );
 
-  const proposal = await SputnikHttpService.getProposalById(proposalId);
+  const userBountyDoneProposal = bountyContext.bounty.bountyDoneProposals.find(
+    item => item.proposer === account
+  );
+
+  let bountyDoneProposal = null;
+
+  if (userBountyDoneProposal) {
+    bountyDoneProposal = await SputnikHttpService.getProposalById(
+      userBountyDoneProposal.id,
+      account
+    );
+  }
 
   return {
     props: {
@@ -45,6 +60,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       bountyContext,
       proposal,
       daoContext,
+      bountyDoneProposal,
     },
   };
 };

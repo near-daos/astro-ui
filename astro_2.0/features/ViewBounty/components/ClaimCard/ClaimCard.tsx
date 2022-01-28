@@ -10,6 +10,7 @@ import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 import { Icon } from 'components/Icon';
 
 import { toMillis } from 'utils/format';
+import { getClaimProgress } from 'astro_2.0/features/Bounties/helpers';
 
 import styles from './ClaimCard.module.scss';
 
@@ -70,6 +71,8 @@ export const ClaimCard: FC<ClaimCardProps> = ({
     }
   }
 
+  const claimProgress = getClaimProgress(claimStart, claimEnd, status);
+
   return (
     <div
       className={cn(styles.root, {
@@ -95,7 +98,7 @@ export const ClaimCard: FC<ClaimCardProps> = ({
           )}
         </div>
         <div className={styles.progress}>
-          <div className={styles.bar} />
+          <div className={styles.bar} style={{ width: `${claimProgress}%` }} />
         </div>
         <div className={styles.dates}>
           <span>{format(claimStart, FORMAT)}</span>

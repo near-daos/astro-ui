@@ -6,10 +6,11 @@ import { useRouter } from 'next/router';
 import { DaoContext } from 'types/context';
 import { BountyContext } from 'types/bounties';
 import { DAO } from 'types/dao';
-import { Proposal } from 'types/proposal';
+import { Proposal, ProposalFeedItem } from 'types/proposal';
 
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 import { ViewBounty } from 'astro_2.0/features/ViewBounty/ViewBounty';
+import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
@@ -23,12 +24,14 @@ interface BountyPageProps {
   daoContext: DaoContext;
   bountyContext: BountyContext;
   proposal: Proposal;
+  bountyDoneProposal: ProposalFeedItem;
 }
 
 const BountyPage: NextPage<BountyPageProps> = ({
   daoContext,
   bountyContext,
   proposal,
+  bountyDoneProposal,
   dao,
 }) => {
   const router = useRouter();
@@ -77,6 +80,13 @@ const BountyPage: NextPage<BountyPageProps> = ({
           commentsCount={commentsCount}
           className={styles.bountyInfo}
         />
+        {bountyDoneProposal && (
+          <ViewProposal
+            proposal={bountyDoneProposal}
+            showFlag={false}
+            tokens={tokens}
+          />
+        )}
       </NestedDaoPageWrapper>
     </div>
   );
