@@ -97,6 +97,7 @@ export const AddBountyContent: FC = () => {
             className={styles.inputWrapper}
             placeholder="0"
             min={1}
+            step={1}
             isBorderless
             size="small"
             {...register('slots')}
