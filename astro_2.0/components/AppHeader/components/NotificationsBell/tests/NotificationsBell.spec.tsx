@@ -25,15 +25,6 @@ describe('notifications bell', () => {
     jest.restoreAllMocks();
   });
 
-  it('Should render nothing if user is not logged in', () => {
-    // @ts-ignore
-    useAuthContext.mockImplementation(() => ({}));
-
-    const { container } = render(<NotificationsBell />);
-
-    expect(container).toMatchSnapshot();
-  });
-
   it('Should render nothing if feature flag is false', () => {
     FEATURE_FLAGS.NOTIFICATIONS = false;
 
