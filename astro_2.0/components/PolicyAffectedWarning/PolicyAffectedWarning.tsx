@@ -1,7 +1,8 @@
+import first from 'lodash/first';
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
-import React, { FC, useCallback } from 'react';
 import { useTranslation, Trans } from 'next-i18next';
+import React, { FC, useCallback, useMemo } from 'react';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
@@ -14,25 +15,29 @@ import styles from './PolicyAffectedWarning.module.scss';
 
 export interface PolicyAffectedWarningProps {
   data: Pick<Proposal, 'daoId' | 'id' | 'kind'>[];
-  className: string;
+  className?: string;
 }
 
 export const PolicyAffectedWarning: FC<PolicyAffectedWarningProps> = ({
   data,
-  className = '',
+  className,
 }) => {
   const router = useRouter();
   const { t } = useTranslation();
+
+  const { id, daoId, kind } = useMemo(() => (first(data) || {}) as Proposal, [
+    data,
+  ]);
 
   const goToProposalPage = useCallback(() => {
     router.push({
       pathname: SINGLE_PROPOSAL_PAGE_URL,
       query: {
-        dao: data[0].daoId,
-        proposal: data[0].id,
+        dao: daoId,
+        proposal: id,
       },
     });
-  }, [data, router]);
+  }, [id, daoId, router]);
 
   if (isEmpty(data)) {
     return null;
@@ -40,7 +45,7 @@ export const PolicyAffectedWarning: FC<PolicyAffectedWarningProps> = ({
 
   let title = t('daoConfig');
 
-  if (data[0].kind.type === ProposalType.ChangePolicy) {
+  if (kind?.type === ProposalType.ChangePolicy) {
     title = t('votingPolicy');
   }
 

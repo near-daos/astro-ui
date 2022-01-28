@@ -2,7 +2,7 @@ import React from 'react';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { TokenWidget } from 'astro_2.0/components/TokenWidget';
 import { Token } from 'types/token';
-import styles from './BountyProposalContent.module.scss';
+import styles from './CreateBountyProposalContent.module.scss';
 
 interface CreateBountyProposalContentProps {
   amount: string;
