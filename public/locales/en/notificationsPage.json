@@ -39,7 +39,7 @@
 
   "votedToApprove": "{{actioner}} voted to approve {{proposalAuthor}}'s \"{{type}}\" proposal in the {{dao}} DAO",
   "votedToReject": "{{actioner}} voted to reject {{proposalAuthor}}'s \"{{type}}\" proposal in the {{dao}} DAO",
-  "votedToRemove": "{{actioner}} voted to approve {{proposalAuthor}}'s \"{{type}}\" proposal in the {{dao}} DAO",
+  "votedToRemove": "{{actioner}} voted to remove {{proposalAuthor}}'s \"{{type}}\" proposal in the {{dao}} DAO",
 
   "proposalChangeNameSuccess": "proposal Change DAO Name has been approved",
   "createdNewPoll": "created a new poll for {{dao}}. Check out now to cast your vote.",
