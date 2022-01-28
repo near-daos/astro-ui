@@ -142,10 +142,10 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
     totalDaoFunds: daoDTO.totalDaoFunds ?? 0,
     createdAt: daoDTO.createdAt,
     groups: daoGroups,
-    policy: daoDTO.policy,
+    policy: daoDTO.policy ?? {},
     links: meta?.links || [],
     displayName: meta?.displayName || '',
-    lastProposalId: daoDTO.lastProposalId,
+    lastProposalId: daoDTO.lastProposalId ?? null,
     legal: meta?.legal || {},
   };
 };
