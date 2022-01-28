@@ -21,8 +21,9 @@ export const MobileNav: VFC = () => {
   useEffect(() => {
     async function getMyDaosIds() {
       if (accountId) {
-        const data = await SputnikHttpService.getAccountDaos(accountId);
-        const accountDaosIds = data.map(item => item.id);
+        const accountDaosIds = await SputnikHttpService.getAccountDaosIds(
+          accountId
+        );
 
         setMyDaosIds(accountDaosIds);
       }
