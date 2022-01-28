@@ -46,7 +46,7 @@ exports[`bounty card Should render component 1`] = `
             <div
               class=""
             >
-              Available
+              No claims available
             </div>
           </div>
         </div>
