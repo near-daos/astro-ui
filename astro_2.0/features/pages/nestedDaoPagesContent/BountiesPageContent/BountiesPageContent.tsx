@@ -154,7 +154,10 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
                   dao={dao}
                   bountyId={bounty.id}
                   deadlineThreshold={bounty.deadlineThreshold}
-                  canClaim={!claimedBy.includes(accountId)}
+                  canClaim={
+                    !claimedBy.includes(accountId) &&
+                    bounty.slots !== bounty.slotsTotal
+                  }
                   showActionBar={showActionBar(cardContent, accountId)}
                   completeHandler={handleCreateProposal(
                     bounty.id,

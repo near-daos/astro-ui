@@ -11,7 +11,10 @@ import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
 import { Proposal } from 'types/proposal';
 import { BountyStatus } from 'types/bounties';
-import { BountyCardContent } from 'astro_2.0/components/BountyCard/types';
+import {
+  BountyCardContent,
+  CardType,
+} from 'astro_2.0/components/BountyCard/types';
 import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
 import { DAO } from 'types/dao';
 
@@ -180,6 +183,11 @@ export const BountyCard: React.FC<BountyCardProps> = ({
     return null;
   }
 
+  const adjustedStatus =
+    content.slots === content.slotsTotal && type === CardType.Bounty
+      ? BountyStatus.NotClaimAvailable
+      : status;
+
   return (
     <FormProvider {...methods}>
       <form
@@ -205,12 +213,14 @@ export const BountyCard: React.FC<BountyCardProps> = ({
                 className={cn({
                   [styles.statusAvailable]: status === BountyStatus.Available,
                   [styles.statusInProgress]: status === BountyStatus.InProgress,
-                  [styles.statusExpired]: status === BountyStatus.Expired,
+                  [styles.statusExpired]:
+                    status === BountyStatus.Expired ||
+                    status === BountyStatus.NotClaimAvailable,
                   [styles.pendingApproval]:
                     status === BountyStatus.PendingApproval,
                 })}
               >
-                {status}
+                {adjustedStatus}
               </div>
             }
             valueFontSize="L"

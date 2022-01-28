@@ -34,12 +34,25 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
   canClaim,
 }) => {
   const { handleSubmit } = useFormContext();
-  const [graceValue, graceTimeUnit] = getDistanceFromNow(
-    forgivenessPeriod
-  ).split(' ');
+  const timeDistance = getDistanceFromNow(forgivenessPeriod).split(' ');
+
+  let graceValue;
+  let graceTimeUnit;
+
+  if (timeDistance.length === 2) {
+    // eslint-disable-next-line prefer-destructuring
+    graceValue = timeDistance[0];
+    // eslint-disable-next-line prefer-destructuring
+    graceTimeUnit = timeDistance[1];
+  } else {
+    graceValue = `${timeDistance[0]} ${timeDistance[1]}`;
+    // eslint-disable-next-line prefer-destructuring
+    graceTimeUnit = timeDistance[2];
+  }
 
   const tooltipSeverity = {
     [BountyStatus.Available]: TooltipMessageSeverity.Info,
+    [BountyStatus.NotClaimAvailable]: TooltipMessageSeverity.Info,
     [BountyStatus.InProgress]: TooltipMessageSeverity.Positive,
     [BountyStatus.InProgressByMe]: TooltipMessageSeverity.Positive,
     [BountyStatus.Expired]: TooltipMessageSeverity.Warning,
