@@ -1,0 +1,34 @@
+.root {
+  margin-top: 32px;
+}
+
+.optionsContainer {
+  display: flex;
+  margin-top: 32px;
+}
+
+.option {
+  flex: 1;
+
+  &:not(:last-of-type) {
+    margin-right: 12px;
+  }
+}
+
+.nextStepContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.nextStepButton {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-width: 170px;
+}
+
+.buttonIcon {
+  height: 24px;
+  margin-left: 8px;
+}

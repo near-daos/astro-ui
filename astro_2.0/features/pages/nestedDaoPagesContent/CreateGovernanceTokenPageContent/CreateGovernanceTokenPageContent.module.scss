@@ -1,0 +1,16 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  @extend %body2;
+  padding-top: 40px;
+
+  @include desktop {
+    padding-top: 56px;
+  }
+}
+
+.header {
+  font-size: 32px;
+  margin: 0;
+}

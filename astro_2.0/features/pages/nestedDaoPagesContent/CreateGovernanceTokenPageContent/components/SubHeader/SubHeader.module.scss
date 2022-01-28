@@ -1,0 +1,7 @@
+@import 'styles/typography';
+
+.root {
+  @extend %heading3;
+  font-size: 24px;
+  margin: 0;
+}
