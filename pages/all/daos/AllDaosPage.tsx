@@ -5,13 +5,11 @@ import { TFunction, useTranslation } from 'next-i18next';
 
 import { DaoFeedItem } from 'types/dao';
 
-import { Button } from 'components/button/Button';
-import { CREATE_DAO_URL } from 'constants/routing';
+import { DaosList } from 'astro_2.0/components/DaosList';
 import { Dropdown } from 'components/Dropdown';
 import { getDaosList } from 'features/daos/helpers';
 import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 
-import { useAuthContext } from 'context/AuthContext';
 import { useRouterLoading } from 'hooks/useRouterLoading';
 
 import styles from './AllDaosPage.module.scss';
@@ -52,7 +50,6 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { accountId, login } = useAuthContext();
   const sortOptions = useMemo(() => getSortOptions(t), [t]);
 
   const activeSort = (router.query.sort as string) ?? sortOptions[1].value;
@@ -92,22 +89,10 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
     [router]
   );
 
-  const handleCreateDao = useCallback(
-    () => (accountId ? router.push(CREATE_DAO_URL) : login()),
-    [login, router, accountId]
-  );
-
   const isLoading = useRouterLoading();
 
   return (
-    <div className={styles.root}>
-      <div className={styles.header}>
-        <h1>{t('allDaos')}</h1>
-        <Button variant="black" size="small" onClick={handleCreateDao}>
-          {t('createNewDao')}
-        </Button>
-      </div>
-
+    <DaosList label="allDaos">
       <div className={styles.filter}>
         <Dropdown
           options={sortOptions}
@@ -128,7 +113,7 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
           </p>
         }
       >
-        <div className={styles.content}>
+        <div className={styles.daosList}>
           {data.map(item => {
             return (
               <DaoDetailsGrid
@@ -142,7 +127,7 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
           })}
         </div>
       </InfiniteScroll>
-    </div>
+    </DaosList>
   );
 };
 

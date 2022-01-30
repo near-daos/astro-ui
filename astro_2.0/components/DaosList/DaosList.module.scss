@@ -1,0 +1,34 @@
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-row-gap: 24px;
+  grid-template-areas:
+    'header'
+    'content';
+  grid-template-columns: 1fr;
+  padding-top: 56px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  grid-area: header;
+
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .title {
+    margin: 0 0 20px;
+
+    @include tablet-portrait {
+      margin: 0 48px 0 0;
+    }
+  }
+}
+
+.content {
+  grid-area: content;
+}

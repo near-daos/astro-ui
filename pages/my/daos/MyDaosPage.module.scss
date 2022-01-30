@@ -1,66 +1,19 @@
-@import 'styles/mixins';
 @import 'styles/daosList';
-@import 'styles/typography';
 
-.root {
-  display: grid;
-  grid-row-gap: 24px;
-  grid-template-areas:
-    'header'
-    'content';
-  grid-template-columns: 1fr;
-  padding-top: 56px;
-}
-
-.createDaoLink {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.header {
-  display: flex;
-  flex-direction: column;
-  grid-area: header;
-
-  @include tablet-portrait {
-    align-items: center;
-    flex-direction: row;
-  }
-
-  h1 {
-    font-family: var(--font-family-tertiary);
-    margin: 0 0 20px;
-
-    @include tablet-portrait {
-      margin: 0 48px 0 0;
-    }
-  }
-}
-
-.content {
-  display: grid;
-  grid-area: content;
-  grid-row-gap: 120px;
-  grid-template-columns: 1fr;
+.noResults {
   margin-top: 16px;
 
-  @include tablet-portrait {
-    grid-row-gap: 60px;
-  }
-
-  @include tablet-landscape {
-    grid-row-gap: 50px;
-  }
-
-  @include large-desktop {
-    grid-row-gap: 50px;
+  .createDaoLink {
+    cursor: pointer;
+    text-decoration: underline;
   }
 }
 
 .daosList {
   @include daos-list;
-}
+  margin-top: 16px;
 
-.singleDao {
-  place-items: start;
+  &.singleDao {
+    place-items: start;
+  }
 }

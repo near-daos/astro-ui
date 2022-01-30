@@ -1,20 +1,14 @@
+import React, { FC } from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
 import isEmpty from 'lodash/isEmpty';
-import { useRouter } from 'next/router';
-import React, { FC, useCallback } from 'react';
-
-import { Button } from 'components/button/Button';
-
-import { CREATE_DAO_URL } from 'constants/routing';
-
-import { useAuthContext } from 'context/AuthContext';
-
-import { NoResultsView } from 'astro_2.0/components/NoResultsView';
-
-import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 
 import { DaoFeedItem } from 'types/dao';
+
+import { CREATE_DAO_URL } from 'constants/routing';
+import { DaosList } from 'astro_2.0/components/DaosList';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
+import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
 
 import styles from './MyDaosPage.module.scss';
 
@@ -23,23 +17,22 @@ interface MyDaosPageProps {
 }
 
 const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
-  const router = useRouter();
-  const { accountId, login } = useAuthContext();
-
   function renderDaos() {
     if (isEmpty(accountDaos)) {
       return (
-        <NoResultsView
-          title={
-            <span>
-              You have no DAOs, but you can{' '}
-              <Link passHref href={CREATE_DAO_URL}>
-                <span className={styles.createDaoLink}>create</span>
-              </Link>{' '}
-              one
-            </span>
-          }
-        />
+        <div className={styles.noResults}>
+          <NoResultsView
+            title={
+              <span>
+                You have no DAOs, but you can{' '}
+                <Link passHref href={CREATE_DAO_URL}>
+                  <span className={styles.createDaoLink}>create</span>
+                </Link>{' '}
+                one
+              </span>
+            }
+          />
+        </div>
       );
     }
 
@@ -63,22 +56,7 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
     return <div className={daosListClassList}>{daoEls}</div>;
   }
 
-  const handleCreateDao = useCallback(
-    () => (accountId ? router.push(CREATE_DAO_URL) : login()),
-    [login, router, accountId]
-  );
-
-  return (
-    <div className={styles.root}>
-      <div className={styles.header}>
-        <h1>MY DAOs</h1>
-        <Button variant="black" size="small" onClick={handleCreateDao}>
-          Create new DAO
-        </Button>
-      </div>
-      <div className={styles.content}>{renderDaos()}</div>
-    </div>
-  );
+  return <DaosList label="myDaos">{renderDaos()}</DaosList>;
 };
 
 export default MyDaosPage;
