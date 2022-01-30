@@ -24,7 +24,7 @@ import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import { DaoContext } from 'types/context';
-import { NoResultsView } from 'astro_2.0/components/NoResultsView';
+
 import styles from './Polls.module.scss';
 
 export interface PollsPageProps {
@@ -73,21 +73,16 @@ const PollsPage: FC<PollsPageProps> = ({
           className={styles.warningWrapper}
         />
       </div>
-
-      {initialPollsData.count === 0 ? (
-        <NoResultsView title="No polls available" />
-      ) : (
-        <Feed
-          title={<h1 className={styles.header}>Polls</h1>}
-          dao={dao}
-          showFlag={false}
-          className={styles.feed}
-          category={ProposalCategories.Polls}
-          initialProposals={initialPollsData}
-          headerClassName={styles.feedHeader}
-          initialProposalsStatusFilterValue={initialProposalsStatusFilterValue}
-        />
-      )}
+      <Feed
+        title={<h1 className={styles.header}>Polls</h1>}
+        dao={dao}
+        showFlag={false}
+        className={styles.feed}
+        category={ProposalCategories.Polls}
+        initialProposals={initialPollsData}
+        headerClassName={styles.feedHeader}
+        initialProposalsStatusFilterValue={initialProposalsStatusFilterValue}
+      />
     </div>
   );
 };
