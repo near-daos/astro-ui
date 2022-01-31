@@ -227,6 +227,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div
+      data-testid="proposal-card-root"
       className={cn(styles.root, {
         [styles.clickable]: !!id,
       })}

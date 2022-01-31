@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Nav Link Should render component 1`] = `
+<div>
+  <a
+    class=""
+  >
+    Click Me!
+  </a>
+</div>
+`;
