@@ -140,3 +140,7 @@
     @include button-hover-state;
   }
 }
+
+.capitalize {
+  text-transform: capitalize;
+}

@@ -207,8 +207,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const sealIcon = timeLeft !== undefined ? getSealIcon(status) : null;
   const showFinalize =
-    (voteStatus === 'Expired' && !isFinalized) ||
-    (voteStatus === 'Active' && timeLeft === null && status === 'InProgress');
+    permissions.canApprove &&
+    permissions.canReject &&
+    permissions.canDelete &&
+    ((voteStatus === 'Expired' && !isFinalized) ||
+      (voteStatus === 'Active' &&
+        timeLeft === null &&
+        status === 'InProgress'));
 
   const methods = useForm<DAOFormValues>({
     mode: 'all',
@@ -222,6 +227,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div
+      data-testid="proposal-card-root"
       className={cn(styles.root, {
         [styles.clickable]: !!id,
       })}

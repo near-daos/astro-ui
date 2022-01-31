@@ -3,6 +3,11 @@ import dynamic from 'next/dynamic';
 import classNames from 'classnames';
 import get from 'lodash/get';
 import { NextPage } from 'next';
+import { useTranslation } from 'next-i18next';
+
+import { FEATURE_FLAGS } from 'constants/featureFlags';
+import { CREATE_GOV_TOKEN_PAGE_URL } from 'constants/routing';
+import { STEPS as CREATE_GOV_TOKEN_STEPS } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/constants';
 
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
@@ -46,6 +51,8 @@ const TokensPage: NextPage<TokensPageProps> = ({
   daoContext,
   daoContext: { dao },
 }) => {
+  const { t } = useTranslation();
+
   const { tokens } = useDaoCustomTokens();
   const breadcrumbsConfig = useGetBreadcrumbsConfig(dao.id, dao.displayName);
 
@@ -204,6 +211,28 @@ const TokensPage: NextPage<TokensPageProps> = ({
     );
   }
 
+  function renderCreateGovTokenButton() {
+    if (FEATURE_FLAGS.GOV_TOKEN) {
+      return (
+        <Button
+          capitalize
+          className={styles.createGovToken}
+          href={{
+            pathname: CREATE_GOV_TOKEN_PAGE_URL,
+            query: {
+              dao: dao.id,
+              step: CREATE_GOV_TOKEN_STEPS.INTRO,
+            },
+          }}
+        >
+          {t('tokensPage.createGovernanceToken')}
+        </Button>
+      );
+    }
+
+    return null;
+  }
+
   const breadcrumbs = useMemo(() => {
     return [
       breadcrumbsConfig.ALL_DAOS_URL,
@@ -232,6 +261,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
           </div>
           <div className={styles.total}>
             <ChartCaption captions={captions} />
+            {renderCreateGovTokenButton()}
           </div>
           <div className={styles.tokens}>
             {Object.values(tokens)

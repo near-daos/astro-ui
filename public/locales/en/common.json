@@ -45,21 +45,17 @@
   "archived": "Archived",
   "youFollowed": "You Followed",
   "confirmUnsubscribe": "Are you sure you want to unsubscribe from",
-
   "bountiesPage": {
     "successClaimBountyNotification": "The blockchain transactions might take some time to perform, please visit the page in few seconds"
   },
-
   "common": {
     "clickToUploadImage": "Click here to upload image",
     "clickToChangeImage": "Click here to change image"
   },
-
   "notifications": {
     "transactionDelay": "The blockchain transactions might take some time to perform, please visit DAO details page in few seconds.",
     "noArchivedNotifications": "There are no archived notifications yet"
   },
-
   "components": {
     "appFooter": {
       "reportAnIssue": "Report an issue",
@@ -67,7 +63,6 @@
       "opensourceAsIs": "SputnikDAO 2021-2022. The software is an open source and provided “as is”, without warranty of any kind.",
       "communityDeveloped": "Community developed. Not audited. Use at your own risk."
     },
-
     "daoDetails": {
       "proposalTrackerCard": {
         "active": "active",
@@ -78,12 +73,10 @@
         "createProposal": "Create proposal"
       }
     },
-
     "daoDetailsPreview": {
       "daoFunds": "DAO Funds",
       "daoMembersAndGroups": "Members/Groups"
     },
-
     "transactionDetailsWidget": {
       "warning": "Warning",
       "gas": "Gas",
@@ -91,25 +84,20 @@
       "bond": "Bond"
     }
   },
-
   "comments": {
     "sendButton": "Send",
     "noComments": "No comments yet",
     "startTyping": "Start typing...",
-
     "youReportedThisMessage": "You have reported this message",
     "thisMessageWasReported": "This message was reported",
     "commentsSpamProtection": "Due to spam protection no more than 5 messages per minute are allowed."
   },
-
   "createDAO": {
     "createNewDAO": "Create new DAO",
     "createNewDAOWay": "A DAO is a new way for people to organize and work together",
-
     "daoIncorrectLengthError": "Incorrect DAO name - at least 3 characters expected.",
     "daoIncorrectCharactersError": "Incorrect DAO name - you can use letters and numbers only with hyphens and spaces in the middle.",
     "daoIncorrectURLError": "Enter correct URL!",
-
     "daoNameForm": {
       "daoNameAndPurpose": "DAO name and purpose",
       "daoFieldsDescription": "All fields bellow, unless otherwise noted are required.",
@@ -118,7 +106,6 @@
       "daoPurpose": "Purpose",
       "daoSampleText": "Sample text. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient."
     },
-
     "daoLegalStatus": {
       "daoKYC": "KYC",
       "daoKYCDescription": "Please explain your DAO`s Legal Status and Jurisdiction (if known).",
@@ -126,17 +113,14 @@
       "daoKYCLink": "Please attach a link to the relevant document as proof of legal status.",
       "daoKYCLinkPlaceholder": "https://Legal_Document"
     },
-
     "daoLinksForm": {
       "daoLinks": "Links and socials",
       "daoLinksDescription": "Looking to grow the DAO members? Add links to allow people to learn more about your DAO."
     },
-
     "daoRulesForm": {
       "daoSetRules": "Set rules for your DAO",
       "daoSetRulesDescription": "All fields bellow, unless otherwise noted are required.",
       "daoSetRulesChooseATemplate": "Choose a template",
-
       "daoRulesTemplate": {
         "daoRulesTemplateCustom": "Custom",
         "daoRulesTemplateClub": "Club",
@@ -148,7 +132,6 @@
         "daoRulesTemplateCooperative": "Cooperative",
         "daoRulesTemplateCooperativeDescription": "A business with members\nA creative collective"
       },
-
       "daoRules": {
         "daoRulesAll": "All",
         "daoRulesAllDescription": "Anyone with a NEAR wallet.",
@@ -163,7 +146,6 @@
         "daoRulesGroups": "Groups and Committees",
         "daoRulesGroupsDescription": "Specific groups can vote on specific proposals."
       },
-
       "daoRulesSections": {
         "daoRulesProposals": "Proposals",
         "daoRulesProposalsDescription": "Who can submit proposals to your DAO? (submit is vote)",
@@ -173,7 +155,6 @@
         "daoRulesStructureDescription": "Select level of access to vote on proposals."
       }
     },
-
     "daoFlagForm": {
       "daoFlagCreate": "Lets create your flag!",
       "daoFlagCreateDescription": "Both fields are optional. If you skip, default image will be used instead. An image and a logo together form a flag of your DAO!",
@@ -184,18 +165,15 @@
       "daoFlagLogoUploadDescription": "Logo will be placed on top of your flag and will be visible on your full view DAO details.",
       "daoFlagLogoUploadRequirements": "Square image, 400x400 pixels"
     },
-
     "daoPreviewForm": {
       "daoPreviewHeader": "Preview of your custom DAO assets",
       "daoPreviewFlagAndIcon": "Flag and Icon",
       "daoPreviewLetterhead": "Letterhead"
     },
-
     "daoPreviewFutureForm": {
       "daoPreviewFuture": "Preview of your future DAO",
       "daoMakeSureDescription": "Make sure everything right and clear, this is how users will see your DAO on the platform!"
     },
-
     "daoSubmitForm": {
       "daoSubmitError": "There are errors in your form. Please, check validation messages on the page.",
       "daoSubmitLiability": "Creating a DAO is a liability ",
@@ -204,7 +182,6 @@
       "daoCreateButton": "Create DAO"
     }
   },
-
   "myDAOsPage": {
     "noDAOs": "You have no DAOs, but you can",
     "createDAOLink": "create",
@@ -212,7 +189,6 @@
     "myDAOs": "My DAOs",
     "createNewDAO": "Create new DAO"
   },
-
   "daoDashboard": {
     "daoFunds": "DAO funds",
     "bounties": "Bounties",
@@ -221,7 +197,6 @@
     "activeProposals": "active proposals",
     "proposalsInTotal": "proposals in total"
   },
-
   "daoDetailsMinimized": {
     "proposals": "Proposals",
     "funds": "Funds",
@@ -230,9 +205,10 @@
     "nfts": "NFTs",
     "bounties": "Bounties",
     "polls": "Polls",
-    "createProposal": "Create Proposal"
+    "createProposal": "Create Proposal",
+    "treasury": "Treasury",
+    "createGovernanceToken": "Create Governance Token"
   },
-
   "feed": {
     "filters": {
       "chooseAFilter": "Choose a filter",
@@ -242,7 +218,6 @@
       "failed": "Failed"
     }
   },
-
   "allDAOsFilter": {
     "mostActive": "Most Active",
     "newest": "Newest",
@@ -250,18 +225,15 @@
     "biggestFunds": "Biggest funds",
     "numberOfMembers": "Number of members"
   },
-
   "loader": {
     "title": "Receiving data from the contract",
     "waitSomeTime": "This may take some time"
   },
-
   "proposalCard": {
     "proposalID": "Proposal ID:",
     "proposalType": "Proposal type: ",
     "proposalOwner": "Proposer",
     "proposalDescription": "Description",
-
     "proposalAmount": "Amount",
     "proposalTarget": "Target",
     "proposalTargetPlaceholder": "Specify target account",
@@ -280,55 +252,44 @@
     "whoVotes": "Who votes",
     "consensus": "Consensus",
     "person": "Person",
-
     "proposals": "Proposals",
     "proposalBonds": "Bonds to create proposals",
     "proposalBondExpirationTime": "Time before proposals expire",
     "proposalBounties": "Bounties",
     "proposalClaimBounty": "Bonds to claim bounty",
     "proposalBountyUnclaimTime": "Time to unclaim a bounty without penalty",
-
     "newGroupName": "New Group Name",
     "initialMemberName": "Initial Member Name",
     "group": "Group",
     "chooseGroup": "Choose Group",
-
     "smartContractAddress": "Smart Contract Address",
     "methodName": "Method Name",
     "json": "JSON",
     "deposit": "Deposit",
-
     "preview": "Preview",
-
     "proposalTypes": {
       "groupTransferAddBounty": "Transfer/Add bounty",
       "proposeTransfer": "Propose a Transfer",
       "proposeBounty": "Propose to Create a Bounty",
-
       "groupChangeConfig": "Change Config",
       "proposeDAOName": "Propose to Change DAO Name",
       "proposeDAOPurpose": "Propose to Change DAO Purpose",
       "proposeDAOLinks": "Propose to Change DAO Links",
       "proposeDAOFlagAndLogo": "Propose to Change DAO Flag and Logo",
       "proposeLegalStatusAndDoc": "Propose to change DAO Legal Status and Doc",
-
       "groupChangePolicy": "Change Policy",
       "proposeChangePolicy": "Propose to Change Voting Policy",
       "proposeBondsAndDeadlines": "Propose to Change Bonds and Deadlines",
       "proposeGroup": "Propose to Create a Group",
-
       "groupChangeMembers": "Change Members of DAO",
       "proposeAddMember": "Propose to Add Member to Group",
       "proposeRemoveMember": "Propose to Remove Member from Group",
-
       "groupVote": "Vote",
       "proposePoll": "Propose a Poll",
-
       "groupFunctionCall": "Function Call",
       "proposeCustomCall": "Custom Function Call"
     }
   },
-
   "settingsPage": {
     "daoPolicy": "DAO Policy",
     "nameAndPurpose": "Name and Purpose",
@@ -343,5 +304,39 @@
     "groups": "Groups",
     "members": "Members",
     "daoRules": "DAO Rules"
+  },
+  "tokensPage": {
+    "createGovernanceToken": "Create Governance Token"
+  },
+  "createGovernanceTokenPage": {
+    "createGovernanceToken": "Create Governance Token",
+    "intro": {
+      "description": "Governance tokens are blockchain tokens that grant voting and management power to their users. They are really important in a DeFi environment where there is a requirement for power balance. Through governance tokens, you can vote on proposals that are related to your blockchain.",
+      "advOne": "Governance tokens pave the way for collaboration. They get people involved in the project and help engineers in the decision-making process.",
+      "advTwo": "Founders can distribute these tokens based on distribution of funds or with users' normal income. ",
+      "advThree": "Having a governance token can only give you the right to vote. This does not give you the opportunity to influence the blockchain if the other participants do not support your idea.",
+      "startToCreate": "Start to create",
+      "faq": "FAQ",
+      "accordions": {
+        "first": {
+          "title": "What are the problems with tokens?",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in ultricies nibh dui sed. Semper tortor ultricies sit consequat semper. Massa ultrices ultricies gravida placerat etiam. Donec faucibus at risus morbi ac libero gravida netus. Viverra mi, urna at tempor. Sollicitudin aenean habitant sollicitudin odio. Diam tellus ut justo, odio. Tristique tellus sollicitudin habitant mauris. Velit tortor quam habitant purus tincidunt tempor viverra. Lacinia suspendisse sapien viverra mi arcu pharetra tincidunt neque. Molestie volutpat tempor massa sed amet cras risus."
+        },
+        "second": {
+          "title": "What are the problems with tokens?",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in ultricies nibh dui sed. Semper tortor ultricies sit consequat semper. Massa ultrices ultricies gravida placerat etiam. Donec faucibus at risus morbi ac libero gravida netus. Viverra mi, urna at tempor. Sollicitudin aenean habitant sollicitudin odio. Diam tellus ut justo, odio. Tristique tellus sollicitudin habitant mauris. Velit tortor quam habitant purus tincidunt tempor viverra. Lacinia suspendisse sapien viverra mi arcu pharetra tincidunt neque. Molestie volutpat tempor massa sed amet cras risus."
+        },
+        "third": {
+          "title": "What are the problems with tokens?",
+          "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in ultricies nibh dui sed. Semper tortor ultricies sit consequat semper. Massa ultrices ultricies gravida placerat etiam. Donec faucibus at risus morbi ac libero gravida netus. Viverra mi, urna at tempor. Sollicitudin aenean habitant sollicitudin odio. Diam tellus ut justo, odio. Tristique tellus sollicitudin habitant mauris. Velit tortor quam habitant purus tincidunt tempor viverra. Lacinia suspendisse sapien viverra mi arcu pharetra tincidunt neque. Molestie volutpat tempor massa sed amet cras risus."
+        }
+      }
+    },
+    "selectToken": {
+      "header": "Let`s start! Select Token",
+      "createToken": "Create Token",
+      "chooseExisting": "Choose existing",
+      "nextStep": "Next Step"
+    }
   }
 }

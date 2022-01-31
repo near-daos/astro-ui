@@ -25,6 +25,7 @@ export const InfoPanel: FC = () => {
 
   return (
     <div
+      data-testid="hover-el"
       className={cn(styles.root, { [styles.open]: open })}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}

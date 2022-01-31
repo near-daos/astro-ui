@@ -9,6 +9,7 @@ import { IconName } from 'components/Icon';
 import styles from './action-button.module.scss';
 
 interface ActionButtonProps {
+  testId?: string;
   className?: string;
   iconName: IconName;
   buttonClassName?: string;
@@ -21,6 +22,7 @@ interface ActionButtonProps {
 }
 
 export const ActionButton: FC<ActionButtonProps> = ({
+  testId,
   className,
   buttonClassName = '',
   iconName,
@@ -38,11 +40,16 @@ export const ActionButton: FC<ActionButtonProps> = ({
     <>
       <div ref={setRef} className={className}>
         {children ? (
-          <IconTextButton icon={iconName as IconName} onClick={onClick}>
+          <IconTextButton
+            testId={testId}
+            onClick={onClick}
+            icon={iconName as IconName}
+          >
             {children}
           </IconTextButton>
         ) : (
           <IconButton
+            testId={testId}
             disabled={disabled}
             icon={iconName as IconName}
             onClick={onClick}

@@ -7,6 +7,7 @@ import {
   GROUPS_PAGE_URL,
   ALL_PROPOSALS_PAGE_URL,
   SINGLE_PROPOSAL_PAGE_URL,
+  TREASURY_PAGE_URL,
   SINGLE_BOUNTY_PAGE_URL,
   ALL_BOUNTIES_PAGE_URL,
 } from 'constants/routing';
@@ -58,7 +59,7 @@ export function useGetBreadcrumbsConfig(
             dao: daoId,
           },
         },
-        label: t('proposals'),
+        label: t('daoDetailsMinimized.proposals'),
       },
       SINGLE_PROPOSAL_PAGE_URL: {
         href: {
@@ -71,7 +72,13 @@ export function useGetBreadcrumbsConfig(
         label: proposal?.id ?? '',
       },
       TREASURY: {
-        label: 'Treasury',
+        label: t('daoDetailsMinimized.treasury'),
+        href: {
+          pathname: TREASURY_PAGE_URL,
+          query: {
+            dao: daoId,
+          },
+        },
       },
       BOUNTIES: {
         label: 'Bounties',
@@ -114,6 +121,9 @@ export function useGetBreadcrumbsConfig(
           },
         },
         label: group?.label || '',
+      },
+      CREATE_GOVERNANCE_TOKEN: {
+        label: t('daoDetailsMinimized.createGovernanceToken'),
       },
     };
   }, [

@@ -5,12 +5,14 @@ import buttonStyles from './IconButton.module.scss';
 
 export interface IconButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+  testId?: string;
   icon: IconName;
   size?: 'small' | 'medium' | 'large';
   iconProps?: Omit<IconProps, 'name' | 'width' | 'height'>;
 }
 
 export const IconButton: React.VFC<IconButtonProps> = ({
+  testId,
   className: classNameProp,
   size = 'small',
   icon,
@@ -29,7 +31,7 @@ export const IconButton: React.VFC<IconButtonProps> = ({
   );
 
   return (
-    <button type="button" className={className} {...props}>
+    <button type="button" className={className} {...props} data-testid={testId}>
       <Icon {...iconProps} name={icon} />
     </button>
   );

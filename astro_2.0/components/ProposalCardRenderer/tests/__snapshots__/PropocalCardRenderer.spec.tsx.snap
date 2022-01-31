@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`proposal card renderer Should render component 1`] = `
+<div>
+  <div
+    class=""
+  >
+    <div>
+      <div />
+      <div
+        class="undefined"
+        data-testid="hover-el"
+      >
+        <div>
+          <svg>
+            <use
+              href="/_next/undefined"
+            />
+          </svg>
+        </div>
+        <div>
+          popupsInfoWarning
+        </div>
+      </div>
+    </div>
+    <div>
+      <div>
+        Proposal Node
+      </div>
+    </div>
+  </div>
+</div>
+`;

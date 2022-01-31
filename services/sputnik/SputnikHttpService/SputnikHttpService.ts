@@ -50,7 +50,6 @@ import {
   DaoSubscriptionDTO,
   GetDAOsResponse,
   GetProposalsResponse,
-  mapDaoDTOListToDaoList,
   mapDaoDTOtoDao,
   mapDaoFeedItemResponseToDaoFeedItemList,
   mapProposalDTOToProposal,
@@ -139,12 +138,12 @@ class SputnikHttpServiceClass {
     });
   }
 
-  public async getAccountDaos(accountId: string): Promise<DAO[]> {
-    const { data } = await this.httpService.get<DaoDTO[]>(
+  public async getAccountDaos(accountId: string): Promise<DaoFeedItem[]> {
+    const { data } = await this.httpService.get<DaoFeedItemResponse[]>(
       `/daos/account-daos/${accountId}`
     );
 
-    return mapDaoDTOListToDaoList(data);
+    return mapDaoFeedItemResponseToDaoFeedItemList(data);
   }
 
   public async getAccountDaosIds(accountId: string): Promise<string[]> {

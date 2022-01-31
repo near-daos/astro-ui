@@ -58,7 +58,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     status
   );
 
-  const rootClassName = cn(styles.content, {
+  const contentClassName = cn(styles.content, {
     [styles.new]: isNew,
     [styles.hub]: !regular,
     [styles.swipedLeft]: swipedLeft,
@@ -108,6 +108,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
       <>
         <div className={styles.markRead}>
           <Button
+            data-testid="mark-read"
             variant="transparent"
             size="block"
             onClick={e => handleMarkReadClick(e)}
@@ -123,6 +124,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
         </div>
         {!regular && (
           <ActionButton
+            testId="delete-action-button"
             className={styles.deleteButton}
             size="medium"
             iconName={isArchived ? 'noteRestore' : 'noteArchive'}
@@ -152,7 +154,8 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   return (
     <div className={styles.root}>
       <div
-        className={rootClassName}
+        data-testid="noty-content"
+        className={contentClassName}
         role="button"
         tabIndex={0}
         onClick={handleNotificationClick}
