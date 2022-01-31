@@ -19,5 +19,3 @@ exports[`notifications bell Should render component if feature flag is true and 
 `;
 
 exports[`notifications bell Should render nothing if feature flag is false 1`] = `<div />`;
-
-exports[`notifications bell Should render nothing if user is not logged in 1`] = `<div />`;

@@ -142,10 +142,10 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
     totalDaoFunds: daoDTO.totalDaoFunds ?? 0,
     createdAt: daoDTO.createdAt,
     groups: daoGroups,
-    policy: daoDTO.policy,
+    policy: daoDTO.policy ?? {},
     links: meta?.links || [],
     displayName: meta?.displayName || '',
-    lastProposalId: daoDTO.lastProposalId,
+    lastProposalId: daoDTO.lastProposalId ?? null,
     legal: meta?.legal || {},
   };
 };
@@ -221,38 +221,40 @@ export function mapSubscriptionsDTOsToDaoSubscriptions(
   }, []);
 }
 
+export function mapDaoFeedItemResponseToDaoFeedItem(
+  item: DaoFeedItemResponse
+): DaoFeedItem {
+  const config = get(item, 'config');
+  const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
+
+  return {
+    createdAt: item.createdAt ?? '',
+    id: item.id,
+    numberOfMembers: item.numberOfMembers,
+    numberOfGroups: item.numberOfGroups,
+    accountIds: item.accountIds,
+    activeProposalCount: item.activeProposalCount,
+    totalProposalCount: item.totalProposalCount,
+    totalDaoFunds: item.totalDaoFunds,
+
+    txHash: item.transactionHash ?? '',
+    name: config?.name ?? '',
+    description: config?.purpose ?? '',
+    displayName: meta?.displayName ?? '',
+
+    links: meta?.links || [],
+    logo: meta?.flag
+      ? getAwsImageUrl(meta.flag)
+      : getAwsImageUrl('default.png'),
+    flagCover: getAwsImageUrl(meta?.flagCover),
+    flagLogo: getAwsImageUrl(meta?.flagLogo),
+    legal: meta?.legal || {},
+    policy: item.policy ?? {},
+  };
+}
+
 export function mapDaoFeedItemResponseToDaoFeedItemList(
   data: DaoFeedItemResponse[]
 ): DaoFeedItem[] {
-  return data.map(item => {
-    const config = get(item, 'config');
-    const meta = config?.metadata
-      ? fromBase64ToMetadata(config.metadata)
-      : null;
-
-    return {
-      createdAt: item.createdAt ?? '',
-      id: item.id,
-      numberOfMembers: item.numberOfMembers,
-      numberOfGroups: item.numberOfGroups,
-      accountIds: item.accountIds,
-      activeProposalCount: item.activeProposalCount,
-      totalProposalCount: item.totalProposalCount,
-      totalDaoFunds: item.totalDaoFunds,
-
-      txHash: item.transactionHash ?? '',
-      name: config?.name ?? '',
-      description: config?.purpose ?? '',
-      displayName: meta?.displayName ?? '',
-
-      links: meta?.links || [],
-      logo: meta?.flag
-        ? getAwsImageUrl(meta.flag)
-        : getAwsImageUrl('default.png'),
-      flagCover: getAwsImageUrl(meta?.flagCover),
-      flagLogo: getAwsImageUrl(meta?.flagLogo),
-      legal: meta?.legal || {},
-      policy: item.policy ?? {},
-    };
-  });
+  return data.map(mapDaoFeedItemResponseToDaoFeedItem);
 }

@@ -4,7 +4,6 @@ import {
   SConditionAND,
   SFields,
 } from '@nestjsx/crud-request';
-import omit from 'lodash/omit';
 
 import { PaginationResponse } from 'types/api';
 import {
@@ -38,10 +37,7 @@ import {
 } from 'types/proposal';
 
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
-import {
-  ProposalFilterOptions,
-  ProposalFilterStatusOptions,
-} from 'features/member-home/types';
+
 import {
   DaoDTO,
   DaoFeedItemResponse,
@@ -49,7 +45,6 @@ import {
   GetDAOsResponse,
   GetProposalsResponse,
   mapBountyResponseToBounty,
-  mapDaoDTOListToDaoList,
   mapDaoDTOtoDao,
   mapDaoFeedItemResponseToDaoFeedItemList,
   mapProposalDTOToProposal,
@@ -138,12 +133,12 @@ class SputnikHttpServiceClass {
     });
   }
 
-  public async getAccountDaos(accountId: string): Promise<DAO[]> {
-    const { data } = await this.httpService.get<DaoDTO[]>(
+  public async getAccountDaos(accountId: string): Promise<DaoFeedItem[]> {
+    const { data } = await this.httpService.get<DaoFeedItemResponse[]>(
       `/daos/account-daos/${accountId}`
     );
 
-    return mapDaoDTOListToDaoList(data);
+    return mapDaoFeedItemResponseToDaoFeedItemList(data);
   }
 
   public async getAccountDaosIds(accountId: string): Promise<string[]> {
@@ -191,55 +186,6 @@ class SputnikHttpServiceClass {
         ...(bountyDoneProposal.kind as BountyDoneProposalType),
         completedDate: bountyDoneProposal.createdAt,
       }));
-  }
-
-  public async getActiveProposals(
-    daoIds: string[],
-    offset = 0,
-    limit = 50
-  ): Promise<Proposal[]> {
-    const queryString = RequestQueryBuilder.create()
-      .setFilter({
-        field: 'daoId',
-        operator: '$in',
-        value: daoIds,
-      })
-      .setFilter({
-        field: 'status',
-        operator: '$eq',
-        value: 'InProgress',
-      })
-      .setLimit(limit)
-      .setOffset(offset)
-      .sortBy({
-        field: 'createdAt',
-        order: 'DESC',
-      })
-      .query();
-
-    const { data: proposals } = await this.httpService.get<
-      GetProposalsResponse
-    >(`/proposals?${queryString}`);
-
-    return proposals.data.map(mapProposalDTOToProposal);
-  }
-
-  public async getUserProposals(accountId: string) {
-    const queryString = RequestQueryBuilder.create()
-      .setFilter({
-        field: 'proposer',
-        operator: '$eq',
-        value: accountId,
-      })
-      .setLimit(500)
-      .setOffset(0)
-      .query();
-
-    const response = await this.httpService.get<GetProposalsResponse>(
-      `/proposals?${queryString}`
-    );
-
-    return response.data.data;
   }
 
   public async getDaoContext(
@@ -290,27 +236,7 @@ class SputnikHttpServiceClass {
         },
       });
     }
-    // else if (query.daoFilter === 'My DAOs' && accountId) {
-    //   const accountDaos = await this.getAccountDaos(accountId);
-    //
-    //   if (accountDaos.length) {
-    //     search.$and?.push({
-    //       daoId: {
-    //         $in: accountDaos.map(item => item.id),
-    //       },
-    //     });
-    //   } else {
-    //     return Promise.resolve({
-    //       data: [],
-    //       count: 0,
-    //       pageCount: 1,
-    //       page: 1,
-    //       total: 0,
-    //     });
-    //   }
-    // }
 
-    // Statuses
     if (query?.status === ProposalStatuses.Active) {
       search.$and?.push({
         status: {
@@ -567,165 +493,6 @@ class SputnikHttpServiceClass {
     return proposals.data.map(mapProposalFeedItemResponseToProposalFeedItem);
   }
 
-  public async getFilteredProposals(
-    filter: {
-      daoId?: string | null;
-      daoFilter?: 'All DAOs' | 'My DAOs' | 'Following DAOs' | null;
-      proposalFilter?: ProposalFilterOptions;
-      status?: ProposalFilterStatusOptions;
-      daosIdsFilter?: string[];
-    },
-    accountId?: string
-  ): Promise<Proposal[]> {
-    const queryString = RequestQueryBuilder.create();
-
-    const search: SFields | SConditionAND = {
-      $and: [],
-    };
-
-    // specific DAO
-    if (filter.daoId) {
-      search.$and?.push({
-        daoId: {
-          $eq: filter.daoId,
-        },
-      });
-    } else if (filter.daoFilter === 'My DAOs' && accountId) {
-      const accountDaos = await this.getAccountDaos(accountId);
-
-      if (accountDaos.length) {
-        search.$and?.push({
-          daoId: {
-            $in: accountDaos.map(item => item.id),
-          },
-        });
-      } else {
-        return Promise.resolve([]);
-      }
-    }
-
-    // Statuses
-    if (filter.status && filter.status === 'Active proposals') {
-      // Fetch all InProgress items and then do additional filtering for Expired
-      search.$and?.push({
-        status: {
-          $eq: 'InProgress',
-        },
-      });
-    } else if (filter.status && filter.status === 'Approved') {
-      search.$and?.push({
-        status: {
-          $eq: 'Approved',
-        },
-      });
-    } else if (filter.status && filter.status === 'Failed') {
-      // Fetch failed including InProgress items and then do additional filtering for Expired
-      search.$and?.push({
-        status: {
-          $in: ['Rejected', 'Expired', 'Moved', 'InProgress'],
-        },
-      });
-    }
-
-    // Kinds
-    if (filter.proposalFilter === 'Polls') {
-      search.$and?.push({
-        kind: {
-          $cont: ProposalType.Vote,
-          $excl: ProposalType.ChangePolicy,
-        },
-      });
-    }
-
-    if (filter.proposalFilter === 'Governance') {
-      search.$and?.push({
-        $or: [
-          {
-            kind: {
-              $cont: ProposalType.ChangeConfig,
-            },
-          },
-          {
-            kind: {
-              $cont: ProposalType.ChangePolicy,
-            },
-          },
-        ],
-      });
-    }
-
-    if (filter.proposalFilter === 'Financial') {
-      search.$and?.push({
-        kind: {
-          $cont: ProposalType.Transfer,
-        },
-      });
-    }
-
-    if (filter.proposalFilter === 'Groups') {
-      search.$and?.push({
-        $or: [
-          {
-            kind: {
-              $cont: ProposalType.AddMemberToRole,
-            },
-          },
-          {
-            kind: {
-              $cont: ProposalType.RemoveMemberFromRole,
-            },
-          },
-        ],
-      });
-    }
-
-    queryString.search(search);
-
-    // DaosIds
-    if (filter.daosIdsFilter) {
-      queryString.setFilter({
-        field: 'daoId',
-        operator: '$in',
-        value: filter.daosIdsFilter,
-      });
-    }
-
-    queryString
-      .setLimit(1000)
-      .setOffset(0)
-      .sortBy({
-        field: 'createdAt',
-        order: 'DESC',
-      })
-      .query();
-
-    const { data: proposals } = await this.httpService.get<
-      GetProposalsResponse
-    >(`/proposals?${queryString.queryString}`);
-
-    return proposals.data.map(mapProposalDTOToProposal);
-  }
-
-  public async getProposals(
-    daoId?: string,
-    offset = 0,
-    limit = 50
-  ): Promise<Proposal[]> {
-    const params = {
-      filter: `daoId||$eq||${daoId}`,
-      offset,
-      limit,
-    };
-
-    const { data: proposals } = await this.httpService.get<
-      GetProposalsResponse
-    >('/proposals', {
-      params: daoId ? params : omit(params, 'filter'),
-    });
-
-    return proposals.data.map(mapProposalDTOToProposal);
-  }
-
   public async getDaoMembersStats(daoId: string): Promise<MemberStats[]> {
     const { data } = await this.httpService.get<MemberStats[]>(
       `/daos/${daoId}/members`
@@ -909,11 +676,11 @@ class SputnikHttpServiceClass {
       })
       .query();
 
-    const { data } = await this.httpService.get<GetProposalsResponse>(
-      `/proposals?${queryString}`
-    );
+    const { data } = await this.httpService.get<
+      PaginationResponse<ProposalFeedItemResponse[]>
+    >(`/proposals?${queryString}`);
 
-    return data.data.map(mapProposalDTOToProposal);
+    return data.data.map(mapProposalFeedItemResponseToProposalFeedItem);
   }
 
   public async getAccountNFTs(accountId: string): Promise<NftToken[]> {

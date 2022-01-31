@@ -30,10 +30,11 @@ export interface BountiesResponse {
 
 export enum BountyStatus {
   Available = 'Available',
-  InProgress = 'InProgress',
-  InProgressByMe = 'InProgressByMe',
+  InProgress = 'In Progress',
+  NotClaimAvailable = 'No claims available',
+  InProgressByMe = 'In Progress By Me',
   Expired = 'Expired',
-  PendingApproval = 'PendingApproval',
+  PendingApproval = 'Pending Approval',
 }
 
 export type ClaimedBy = {

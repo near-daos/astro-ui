@@ -16,7 +16,7 @@ import { formatYoktoValue } from 'utils/format';
 import styles from './BountyActionsBar.module.scss';
 
 interface BountyActionsBarProps {
-  canClaim: boolean;
+  claimedByCurrentUser: boolean;
   bountyBond: string;
   forgivenessPeriod: string;
   bountyStatus: BountyStatus;
@@ -26,20 +26,33 @@ interface BountyActionsBarProps {
 }
 
 export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
+  claimedByCurrentUser,
   bountyStatus,
   bountyBond,
   forgivenessPeriod,
   unclaimHandler,
   completeHandler,
-  canClaim,
 }) => {
   const { handleSubmit } = useFormContext();
-  const [graceValue, graceTimeUnit] = getDistanceFromNow(
-    forgivenessPeriod
-  ).split(' ');
+  const timeDistance = getDistanceFromNow(forgivenessPeriod).split(' ');
+
+  let graceValue;
+  let graceTimeUnit;
+
+  if (timeDistance.length === 2) {
+    // eslint-disable-next-line prefer-destructuring
+    graceValue = timeDistance[0];
+    // eslint-disable-next-line prefer-destructuring
+    graceTimeUnit = timeDistance[1];
+  } else {
+    graceValue = `${timeDistance[0]} ${timeDistance[1]}`;
+    // eslint-disable-next-line prefer-destructuring
+    graceTimeUnit = timeDistance[2];
+  }
 
   const tooltipSeverity = {
     [BountyStatus.Available]: TooltipMessageSeverity.Info,
+    [BountyStatus.NotClaimAvailable]: TooltipMessageSeverity.Info,
     [BountyStatus.InProgress]: TooltipMessageSeverity.Positive,
     [BountyStatus.InProgressByMe]: TooltipMessageSeverity.Positive,
     [BountyStatus.Expired]: TooltipMessageSeverity.Warning,
@@ -47,36 +60,34 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
   };
 
   function renderButtons() {
-    if (bountyStatus === 'Available') {
-      if (canClaim) {
-        return (
-          <div className={styles.buttonsWrapper}>
-            <Button
-              variant="black"
-              size="small"
-              type="submit"
-              className={cn(styles.claim, styles.button)}
-            >
-              Claim
-            </Button>
-          </div>
-        );
-      }
-
-      return <div className={styles.stub} />;
+    if (bountyStatus === BountyStatus.Available) {
+      return (
+        <div className={styles.buttonsWrapper}>
+          <Button
+            variant="black"
+            size="small"
+            type="submit"
+            className={cn(styles.claim, styles.button)}
+          >
+            Claim
+          </Button>
+        </div>
+      );
     }
 
     return (
       <div className={styles.buttonsWrapper}>
-        <Button
-          variant="secondary"
-          size="small"
-          type="submit"
-          onClick={handleSubmit(unclaimHandler)}
-          className={cn(styles.unclaim, styles.button)}
-        >
-          Unclaim
-        </Button>
+        {claimedByCurrentUser && (
+          <Button
+            variant="secondary"
+            size="small"
+            type="submit"
+            onClick={handleSubmit(unclaimHandler)}
+            className={cn(styles.unclaim, styles.button)}
+          >
+            Unclaim
+          </Button>
+        )}
 
         <Button
           variant="black"

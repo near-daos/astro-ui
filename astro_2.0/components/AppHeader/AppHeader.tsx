@@ -8,6 +8,7 @@ import {
   NOTIFICATIONS_PAGE_URL,
   NOTIFICATIONS_SETTINGS_PAGE_URL,
 } from 'constants/routing';
+import { useAuthContext } from 'context/AuthContext';
 
 import { Icon } from 'components/Icon';
 import { SearchBar } from './components/SearchBar';
