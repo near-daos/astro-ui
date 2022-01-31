@@ -27,6 +27,7 @@ definitions:
           - yarn generate-assets
           - yarn lint
           - yarn typecheck
+          - yarn test
           - yarn build
         artifacts:
           - .next/**

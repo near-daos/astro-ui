@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router';
 import { createContext, FC, useContext, useState } from 'react';
+import { useCookie } from 'react-use';
 
 import { ALL_FEED_URL } from 'constants/routing';
 import { ACCOUNT_COOKIE, DAO_COOKIE } from 'constants/cookies';
 
 import { SputnikWalletError } from 'errors/SputnikWalletError';
 import { SputnikNearService } from 'services/sputnik';
-import { CookieService } from 'services/CookieService';
 
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
@@ -26,6 +26,8 @@ const AuthContext = createContext<AuthContextInterface>({
 
 export const AuthWrapper: FC = ({ children }) => {
   const router = useRouter();
+  const [, , deleteAccountCookie] = useCookie(ACCOUNT_COOKIE);
+  const [, , deleteDaoCookie] = useCookie(DAO_COOKIE);
   const [accountId, setAccountId] = useState(SputnikNearService.getAccountId());
 
   async function login() {
@@ -54,8 +56,8 @@ export const AuthWrapper: FC = ({ children }) => {
     await SputnikNearService.logout();
 
     setAccountId('');
-    CookieService.remove(ACCOUNT_COOKIE);
-    CookieService.remove(DAO_COOKIE);
+    deleteAccountCookie();
+    deleteDaoCookie();
 
     router.push(ALL_FEED_URL);
   }

@@ -15,6 +15,7 @@ import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 import { SputnikWalletService } from './SputnikWalletService';
 
 export const GAS_VALUE = new BN('300000000000000');
+export const FINALIZE_PROPOSAL_GAS_VALUE = new BN('150000000000000');
 
 export class SputnikDaoService {
   private readonly sputnikWalletService: SputnikWalletService;
@@ -123,12 +124,13 @@ export class SputnikDaoService {
     proposalId: number
   ): Promise<FinalExecutionOutcome> {
     return this.functionCall({
-      methodName: 'finalize',
+      methodName: 'act_proposal',
       contractId: daoId,
       args: {
         id: proposalId,
+        action: 'Finalize',
       },
-      gas: GAS_VALUE,
+      gas: FINALIZE_PROPOSAL_GAS_VALUE,
     });
   }
 

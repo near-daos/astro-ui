@@ -10,7 +10,11 @@ import { useTranslation } from 'next-i18next';
 import { DAO } from 'types/dao';
 import { PaginationResponse } from 'types/api';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
-import { Proposal, ProposalStatuses, ProposalCategories } from 'types/proposal';
+import {
+  ProposalStatuses,
+  ProposalCategories,
+  ProposalFeedItem,
+} from 'types/proposal';
 
 // Constants
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
@@ -44,7 +48,7 @@ interface FeedProps {
   title?: ReactNode | string;
   category?: ProposalCategories;
   headerClassName?: string;
-  initialProposals: PaginationResponse<Proposal[]> | null;
+  initialProposals: PaginationResponse<ProposalFeedItem[]> | null;
   initialProposalsStatusFilterValue: ProposalStatuses;
 }
 
@@ -99,6 +103,7 @@ export const Feed = ({
             daoId: dao?.id,
             category: category || queries.category,
             status,
+            accountId,
           })
         : await SputnikHttpService.getProposalsList(
             {
@@ -107,6 +112,7 @@ export const Feed = ({
               category: queries.category,
               status,
               daoFilter: 'All DAOs',
+              accountId,
             },
             isMyFeed && accountId ? accountId : undefined
           );
@@ -250,9 +256,11 @@ export const Feed = ({
                   </div>
                 }
                 renderItem={proposal => (
-                  <div key={proposal.id} className={styles.proposalCardWrapper}>
+                  <div
+                    key={`${proposal.id}_${proposal.updatedAt}`}
+                    className={styles.proposalCardWrapper}
+                  >
                     <ViewProposal
-                      dao={proposal.dao}
                       proposal={proposal}
                       showFlag={showFlag}
                       tokens={allTokens}

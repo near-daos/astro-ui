@@ -1,7 +1,7 @@
 import React, { VFC, useMemo } from 'react';
 
 import { Bounty } from 'types/bounties';
-import { Proposal, ProposalVariant } from 'types/proposal';
+import { ProposalFeedItem, ProposalVariant } from 'types/proposal';
 
 import { DaoContext } from 'types/context';
 
@@ -13,7 +13,7 @@ import { BountiesPageContent } from 'astro_2.0/features/pages/nestedDaoPagesCont
 export interface BountiesPageProps {
   daoContext: DaoContext;
   initialBounties: Bounty[];
-  bountyDoneProposals: Proposal[];
+  bountyDoneProposals: ProposalFeedItem[];
 }
 
 const BountiesPage: VFC<BountiesPageProps> = ({
@@ -22,7 +22,7 @@ const BountiesPage: VFC<BountiesPageProps> = ({
   initialBounties,
   bountyDoneProposals,
 }) => {
-  const breadcrumbsConfig = useGetBreadcrumbsConfig(dao);
+  const breadcrumbsConfig = useGetBreadcrumbsConfig(dao.id, dao.displayName);
 
   const breadcrumbs = useMemo(() => {
     return [

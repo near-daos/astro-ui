@@ -7,7 +7,11 @@ import { useAuthContext } from 'context/AuthContext';
 import { DaoContext } from 'types/context';
 import { Bounty, BountyStatus } from 'types/bounties';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
-import { Proposal, ProposalType, ProposalVariant } from 'types/proposal';
+import {
+  ProposalFeedItem,
+  ProposalType,
+  ProposalVariant,
+} from 'types/proposal';
 import { BountyCardContent } from 'astro_2.0/components/BountyCard/types';
 
 import { FeedFilter } from 'astro_2.0/components/Feed';
@@ -16,10 +20,7 @@ import { BountyCard } from 'astro_2.0/components/BountyCard';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { HeaderWithFilter } from 'astro_2.0/features/dao/HeaderWithFilter';
 
-import {
-  showActionBar,
-  mapBountyToCardContent,
-} from 'astro_2.0/components/BountyCard/helpers';
+import { mapBountyToCardContent } from 'astro_2.0/components/BountyCard/helpers';
 
 import useQuery from 'hooks/useQuery';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
@@ -31,7 +32,7 @@ import styles from './BountiesPageContent.module.scss';
 export interface BountiesPageContentProps {
   daoContext: DaoContext;
   initialBounties: Bounty[];
-  bountyDoneProposals: Proposal[];
+  bountyDoneProposals: ProposalFeedItem[];
   toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
 }
 
@@ -44,7 +45,7 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
   const { dao } = daoContext;
 
   const router = useRouter();
-  const { accountId } = useAuthContext();
+  const { accountId: currentUser } = useAuthContext();
   const { tokens } = useDaoCustomTokens();
 
   const neighbourRef = useRef(null);
@@ -80,8 +81,8 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
 
   function getBountyDoneProposal(
     bountyContent: BountyCardContent
-  ): Proposal | undefined {
-    const { id, status, accountId: bountyAccountId } = bountyContent;
+  ): ProposalFeedItem | undefined {
+    const { id, status, claimedBy: bountyAccountId } = bountyContent;
 
     if (status !== BountyStatus.InProgress) {
       return undefined;
@@ -124,15 +125,11 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
       ) : (
         <div className={styles.grid}>
           {bounties?.flatMap(bounty => {
-            const claimedBy = bounty.claimedBy.map(
-              ({ accountId: claimedAccount }) => claimedAccount
-            );
-
             const content = mapBountyToCardContent(
               dao,
               bounty,
               tokens,
-              accountId,
+              currentUser,
               query.bountyStatus
             );
 
@@ -151,11 +148,10 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
                 <BountyCard
                   key={Math.floor(Math.random() * 10000)}
                   content={cardContent}
+                  currentUser={currentUser}
                   dao={dao}
                   bountyId={bounty.id}
                   deadlineThreshold={bounty.deadlineThreshold}
-                  canClaim={!claimedBy.includes(accountId)}
-                  showActionBar={showActionBar(cardContent, accountId)}
                   completeHandler={handleCreateProposal(
                     bounty.id,
                     ProposalVariant.ProposeDoneBounty

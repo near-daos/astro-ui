@@ -3,7 +3,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useRouter } from 'next/router';
 import { TFunction, useTranslation } from 'next-i18next';
 
-import { DAO } from 'types/dao';
+import { DaoFeedItem } from 'types/dao';
 
 import { Button } from 'components/button/Button';
 import { CREATE_DAO_URL } from 'constants/routing';
@@ -42,7 +42,7 @@ function getSortOptions(t: TFunction) {
 }
 
 interface BrowseAllDaosProps {
-  data: DAO[];
+  data: DaoFeedItem[];
   total: number;
 }
 
@@ -80,33 +80,16 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
     async value => {
       router.push(`?sort=${value}`);
 
-      if (value === 'lastProposalId,DESC') {
-        // todo - this is not working , we have to decide how to get most active
-        const sorted = data.sort((a, b) => {
-          if (a.proposals > b.proposals) {
-            return -1;
-          }
+      const res = await getDaosList({
+        sort: `${value}`,
+        offset: 0,
+        limit: 20,
+      });
 
-          if (a.proposals < b.proposals) {
-            return 1;
-          }
-
-          return 0;
-        });
-
-        setData(sorted);
-      } else {
-        const res = await getDaosList({
-          sort: `${value}`,
-          offset: 0,
-          limit: 20,
-        });
-
-        setHasMore(res.daos.length !== res.total);
-        setData(res.daos);
-      }
+      setHasMore(res.daos.length !== res.total);
+      setData(res.daos);
     },
-    [data, router]
+    [router]
   );
 
   const handleCreateDao = useCallback(
@@ -152,8 +135,8 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
                 loading={isLoading}
                 key={item.id}
                 dao={item}
-                activeProposals={item.activeProposalsCount}
-                totalProposals={item.totalProposalsCount}
+                activeProposals={item.activeProposalCount}
+                totalProposals={item.totalProposalCount}
               />
             );
           })}

@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import { useRouter } from 'next/router';
 import { fireEvent } from '@testing-library/dom';
 
-import { DAO } from 'types/dao';
+import { DaoFeedItem } from 'types/dao';
 import { render } from 'jest/testUtils';
 import { SINGLE_DAO_PAGE } from 'constants/routing';
 
@@ -17,7 +17,7 @@ jest.mock('next/router', () => {
 
 describe('search result dao card', () => {
   it('Should render component', () => {
-    const dao = { id: 'dao id' } as DAO;
+    const dao = { id: 'dao id' } as DaoFeedItem;
 
     const { container } = render(
       <SearchResultDaoCard data={dao} onClick={() => {}} />
@@ -37,7 +37,7 @@ describe('search result dao card', () => {
     const onClick = jest.fn();
 
     const daoId = 'daoId';
-    const dao = { id: daoId } as DAO;
+    const dao = { id: daoId } as DaoFeedItem;
 
     const component = render(
       <SearchResultDaoCard data={dao} onClick={onClick} />

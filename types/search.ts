@@ -1,9 +1,9 @@
-import { DAO, Member } from 'types/dao';
-import { Proposal } from 'types/proposal';
+import { DaoFeedItem, Member } from 'types/dao';
+import { ProposalFeedItem } from 'types/proposal';
 
 export interface SearchResultsData {
   query: string;
-  daos: DAO[];
-  proposals: Proposal[];
+  daos: DaoFeedItem[];
+  proposals: ProposalFeedItem[];
   members: Member[];
 }

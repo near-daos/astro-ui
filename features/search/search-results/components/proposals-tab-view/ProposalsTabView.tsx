@@ -131,12 +131,7 @@ export const ProposalsTabView: React.FC = () => {
             {filteredProposals.map(item => {
               return (
                 <div className={styles.cardWrapper} key={item.id}>
-                  <ViewProposal
-                    dao={item.dao}
-                    proposal={item}
-                    showFlag
-                    tokens={tokens}
-                  />
+                  <ViewProposal proposal={item} showFlag tokens={tokens} />
                 </div>
               );
             })}

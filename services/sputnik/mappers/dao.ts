@@ -1,8 +1,9 @@
 import get from 'lodash/get';
 
-import { DAO, DaoSubscription, DaoVotePolicy } from 'types/dao';
+import { DAO, DaoFeedItem, DaoSubscription, DaoVotePolicy } from 'types/dao';
 import { DaoRole } from 'types/role';
 import Decimal from 'decimal.js';
+import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 import { CreateDaoParams } from 'services/sputnik/types';
 import { YOKTO_NEAR } from 'services/sputnik/constants';
 import { getAwsImageUrl } from './utils/getAwsImageUrl';
@@ -25,30 +26,37 @@ type DaoConfig = {
 };
 
 export interface GetDAOsResponse {
-  data: DaoDTO[];
+  data: DaoFeedItemResponse[];
   total: number;
 }
+
+export type DaoFeedItemResponse = {
+  createdAt: string;
+  id: string;
+  config: DaoConfig;
+  numberOfMembers: number;
+  numberOfGroups: number;
+  accountIds: string[];
+  activeProposalCount: number;
+  totalProposalCount: number;
+  totalDaoFunds: number;
+  transactionHash: string;
+  policy: {
+    daoId: string;
+    roles: {
+      name: string;
+      accountIds: string[];
+    }[];
+  };
+};
 
 export type DaoDTO = {
   createdAt: string;
   transactionHash: string;
-  updateTransactionHash: string;
-  createTimestamp: string;
   updateTimestamp: string;
   id: string;
   config: DaoConfig;
-  amount: string;
-  totalSupply: string;
-  lastBountyId: number;
   lastProposalId: number;
-  numberOfProposals: number;
-  stakingContract: string;
-  numberOfAssociates: number;
-  council: string[];
-  councilSeats: number;
-  link: unknown | null;
-  description: string | null;
-  status: 'Success';
   policy: DaoPolicy;
   activeProposalCount: number;
   totalProposalCount: number;
@@ -73,10 +81,6 @@ export type MemberStats = {
 };
 
 export type DaoSubscriptionDTO = { id: string; dao: DaoDTO };
-
-export const fromMetadataToBase64 = (metadata: DaoMetadata): string => {
-  return Buffer.from(JSON.stringify(metadata)).toString('base64');
-};
 
 export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
   return JSON.parse(Buffer.from(metaAsBase64, 'base64').toString('utf-8'));
@@ -121,12 +125,11 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
 
   return {
     id: daoDTO.id,
-    txHash: daoDTO.transactionHash,
+    txHash: daoDTO.transactionHash ?? '',
     name: config?.name ?? '',
     description: config?.purpose ?? '',
     members: numberOfMembers,
     daoMembersList,
-    proposals: numberOfProposals,
     activeProposalsCount: daoDTO.activeProposalCount ?? 0,
     totalProposalsCount: daoDTO.totalProposalCount ?? 0,
     totalProposals: numberOfProposals,
@@ -139,10 +142,10 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
     totalDaoFunds: daoDTO.totalDaoFunds ?? 0,
     createdAt: daoDTO.createdAt,
     groups: daoGroups,
-    policy: daoDTO.policy,
+    policy: daoDTO.policy ?? {},
     links: meta?.links || [],
     displayName: meta?.displayName || '',
-    lastProposalId: daoDTO.lastProposalId,
+    lastProposalId: daoDTO.lastProposalId ?? null,
     legal: meta?.legal || {},
   };
 };
@@ -188,7 +191,7 @@ export const mapCreateDaoParamsToContractArgs = (
     config: {
       name: params.name,
       purpose: params.purpose,
-      metadata: fromMetadataToBase64({
+      metadata: jsonToBase64Str({
         links: params.links,
         flagCover: params.flagCover,
         flagLogo: params.flagLogo,
@@ -198,7 +201,7 @@ export const mapCreateDaoParamsToContractArgs = (
     },
   };
 
-  return Buffer.from(JSON.stringify(argsList)).toString('base64');
+  return jsonToBase64Str(argsList);
 };
 
 export function mapSubscriptionsDTOsToDaoSubscriptions(
@@ -216,4 +219,42 @@ export function mapSubscriptionsDTOsToDaoSubscriptions(
 
     return res;
   }, []);
+}
+
+export function mapDaoFeedItemResponseToDaoFeedItem(
+  item: DaoFeedItemResponse
+): DaoFeedItem {
+  const config = get(item, 'config');
+  const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
+
+  return {
+    createdAt: item.createdAt ?? '',
+    id: item.id,
+    numberOfMembers: item.numberOfMembers,
+    numberOfGroups: item.numberOfGroups,
+    accountIds: item.accountIds,
+    activeProposalCount: item.activeProposalCount,
+    totalProposalCount: item.totalProposalCount,
+    totalDaoFunds: item.totalDaoFunds,
+
+    txHash: item.transactionHash ?? '',
+    name: config?.name ?? '',
+    description: config?.purpose ?? '',
+    displayName: meta?.displayName ?? '',
+
+    links: meta?.links || [],
+    logo: meta?.flag
+      ? getAwsImageUrl(meta.flag)
+      : getAwsImageUrl('default.png'),
+    flagCover: getAwsImageUrl(meta?.flagCover),
+    flagLogo: getAwsImageUrl(meta?.flagLogo),
+    legal: meta?.legal || {},
+    policy: item.policy ?? {},
+  };
+}
+
+export function mapDaoFeedItemResponseToDaoFeedItemList(
+  data: DaoFeedItemResponse[]
+): DaoFeedItem[] {
+  return data.map(mapDaoFeedItemResponseToDaoFeedItem);
 }

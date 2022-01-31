@@ -38,6 +38,7 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
       status,
       limit: LIST_LIMIT_DEFAULT,
       daoFilter: 'All DAOs',
+      accountId,
     },
     accountId
   );

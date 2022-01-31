@@ -7,10 +7,8 @@ import {
   getNearFunctionDetails,
   useWizardContext,
 } from 'astro_2.0/features/pages/plugins/UsePluginPopup/components/UsePluginWizard/helpers';
-import { ExpandableDetails } from 'astro_2.0/components/ExpandableDetails';
 import { Input } from 'components/inputs/Input';
 import { Button } from 'components/button/Button';
-import { VoteDetails } from 'components/VoteDetails';
 
 import styles from './CreateTokenView.module.scss';
 
@@ -84,11 +82,7 @@ export const CreateTokenView: FC = () => {
           label="Recipient"
         />
       </div>
-      <div className={styles.vote}>
-        <ExpandableDetails label="Vote details">
-          <VoteDetails scope="call" />
-        </ExpandableDetails>
-      </div>
+      <div className={styles.vote} />
       <div className={styles.footer}>
         <Button
           variant="secondary"

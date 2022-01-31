@@ -1,17 +1,17 @@
 import React, { FC } from 'react';
 
 import { useWizardContext } from 'features/voting-token/components/voting-token-wizard/helpers';
-import { ExpandableDetails } from 'astro_2.0/components/ExpandableDetails';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
-import { VoteDetails } from 'components/VoteDetails';
 
 import styles from './confirm-token-farm-token-step.module.scss';
 
 export const ConfirmTokenFarmTokenStep: FC = () => {
   const { handleBack, handleSubmit, data } = useWizardContext();
 
-  if (!data) return null;
+  if (!data) {
+    return null;
+  }
 
   const { tokenName, tokenSymbol } = data;
 
@@ -38,11 +38,7 @@ export const ConfirmTokenFarmTokenStep: FC = () => {
           <strong>meowzers</strong> cannot change to a different voting token.
         </span>
       </div>
-      <div className={styles.vote}>
-        <ExpandableDetails label="Vote details">
-          <VoteDetails scope="setVoteToken" />
-        </ExpandableDetails>
-      </div>
+      <div className={styles.vote} />
       <div className={styles.footer}>
         <Button
           variant="secondary"

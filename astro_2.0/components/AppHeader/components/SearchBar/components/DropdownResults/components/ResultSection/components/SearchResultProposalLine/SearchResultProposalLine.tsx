@@ -8,7 +8,7 @@ import { useSearchResults } from 'features/search/search-results';
 import styles from './SearchResultProposalLine.module.scss';
 
 interface SearchResultProposalLineProps {
-  data: Proposal;
+  data: Pick<Proposal, 'description'>;
   onClick: () => void;
 }
 

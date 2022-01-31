@@ -2,6 +2,7 @@ import cn from 'classnames';
 import React, { FC, useRef } from 'react';
 
 import { FEATURE_FLAGS } from 'constants/featureFlags';
+import { useAuthContext } from 'context/AuthContext';
 
 import { Icon } from 'components/Icon';
 import { SearchBar } from './components/SearchBar';
@@ -12,6 +13,7 @@ import styles from './AppHeader.module.scss';
 
 export const AppHeader: FC = () => {
   const centralEl = useRef(null);
+  const { accountId } = useAuthContext();
 
   function renderLogo(className?: string) {
     return (
@@ -42,8 +44,10 @@ export const AppHeader: FC = () => {
           className={styles.search}
         />
       </div>
-      <NotificationsBell className={styles.bell} />
-      <AccountButton />
+      {!!accountId && <NotificationsBell className={styles.bell} />}
+      <div>
+        <AccountButton />
+      </div>
     </header>
   );
 };

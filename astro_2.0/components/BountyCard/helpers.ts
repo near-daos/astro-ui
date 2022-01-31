@@ -23,6 +23,14 @@ export const getDistanceFromNow = (timePeriod: string): string => {
   });
 };
 
+const canClaim = (bounty: Bounty, currentUser: string) => {
+  const claimedByMe = bounty.claimedBy
+    .map(({ accountId: claimedAccount }) => claimedAccount)
+    .includes(currentUser);
+
+  return bounty.slots !== 0 && !claimedByMe;
+};
+
 export const formatDate = (date: string): string => {
   return format(toMillis(date), 'd LLLL yyyy');
 };
@@ -32,7 +40,7 @@ export const mapBountyToCardContent = (
   bounty: Bounty,
   tokens: Tokens,
   currentUser: string,
-  bountyStatus: BountyStatus
+  filterStatus: BountyStatus
 ): BountyCardContent[] => {
   const tokenData =
     bounty.tokenId === '' ? tokens.NEAR : tokens[bounty.tokenId];
@@ -53,7 +61,10 @@ export const mapBountyToCardContent = (
   const includeBountyStatuses = [BountyStatus.Available];
   const includeClaimsStatuses = [BountyStatus.InProgress, BountyStatus.Expired];
 
-  if (!bountyStatus || includeBountyStatuses.includes(bountyStatus)) {
+  if (
+    (!filterStatus || includeBountyStatuses.includes(filterStatus)) &&
+    canClaim(bounty, currentUser)
+  ) {
     result.push({
       ...commonProps,
       status: BountyStatus.Available,
@@ -65,14 +76,14 @@ export const mapBountyToCardContent = (
     });
   }
 
-  if (!bountyStatus || includeClaimsStatuses.includes(bountyStatus)) {
+  if (!filterStatus || includeClaimsStatuses.includes(filterStatus)) {
     result.push(
       ...bounty.claimedBy.map(claim => {
         return {
           ...commonProps,
           type: CardType.Claim,
           status: calculateBountyStatus(claim),
-          accountId: claim.accountId,
+          claimedBy: claim.accountId,
           claimedByCurrentUser: claim.accountId === currentUser,
           timeToComplete: formatDate(claim.endTime),
         };
@@ -87,18 +98,5 @@ export const showActionBar = (
   bountyCardContent: BountyCardContent,
   account: string | undefined
 ): boolean => {
-  const { status, accountId: bountyAccountId } = bountyCardContent;
-  const { Expired, Available, InProgress, PendingApproval } = BountyStatus;
-
-  if (!account) {
-    return false;
-  }
-
-  if (status === Available || status === PendingApproval) {
-    return true;
-  }
-
-  return (
-    (status === InProgress || status === Expired) && bountyAccountId === account
-  );
+  return !!account;
 };

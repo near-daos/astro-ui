@@ -47,13 +47,8 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
     [toggleCreateProposal]
   );
 
-  const [proposalExp, proposalExpTimeUnit] = nanosToDays(
-    dao.policy.proposalPeriod
-  );
-
-  const [bountyForgiveness, bountyForgivenessTimeUnit] = nanosToDays(
-    dao.policy.bountyForgivenessPeriod
-  );
+  const proposalPeriod = nanosToDays(dao.policy.proposalPeriod);
+  const bountyPeriod = nanosToDays(dao.policy.bountyForgivenessPeriod);
 
   return (
     <div className={styles.root}>
@@ -132,12 +127,12 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
             )}
           >
             <a
-              href={dao.legal.legalLink}
+              href={dao.legal?.legalLink ?? ''}
               target="_blank"
               rel="noreferrer"
               className={styles.legalLink}
             >
-              {dao.legal.legalStatus || 'Public Limited Company'}
+              {dao.legal?.legalStatus || 'Public Limited Company'}
               <Icon
                 name="buttonExternal"
                 width={14}
@@ -226,10 +221,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
                   {
                     label: 'Time before proposal expires',
                     value: (
-                      <InfoValue
-                        value={proposalExp}
-                        label={proposalExpTimeUnit}
-                      />
+                      <InfoValue value={proposalPeriod.join(' ')} label="" />
                     ),
                   },
                 ]}
@@ -250,10 +242,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
                   {
                     label: 'Time to unclaim a bounty without penalty',
                     value: (
-                      <InfoValue
-                        value={bountyForgiveness}
-                        label={bountyForgivenessTimeUnit}
-                      />
+                      <InfoValue value={bountyPeriod.join(' ')} label="" />
                     ),
                   },
                 ]}
@@ -287,8 +276,8 @@ const SettingsPage: NextPage<SettingsPageProps> = ({
               })}
             </div>
             <DefaultVotingPolicy
-              policy={dao.policy.defaultVotePolicy}
-              groups={dao.groups}
+              ratio={dao.policy.defaultVotePolicy.ratio}
+              numberOfGroups={dao.groups.length}
             />
           </DaoSetting>
         )}

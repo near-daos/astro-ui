@@ -25,40 +25,10 @@ export type Member = {
   votes: number;
 } & { [key: string]: string | string[] | Token | number };
 
-export type DAO = {
-  id: string;
-  txHash: string;
-  name: string;
-  description: string;
-  members: number;
-  daoMembersList: string[];
-  funds: string;
-  proposals: number;
-  totalProposals: number;
-  activeProposalsCount: number;
-  totalProposalsCount: number;
-  totalDaoFunds: number;
-  createdAt: string;
-  groups: TGroup[];
-  policy: PolicyType;
-  links: string[];
-  displayName: string;
-  votes?: number;
-  logo?: string;
-  flagCover?: string;
-  flagLogo?: string;
-  lastProposalId: number;
-  legal: {
-    legalStatus?: string;
-    legalLink?: string;
-  };
-};
-
-export type DAOPreview = {
+type DaoProperties = {
   id: string;
   name: string;
   description: string;
-  funds: string;
   flagCover?: string;
   flagLogo?: string;
   links: string[];
@@ -68,6 +38,27 @@ export type DAOPreview = {
     legalLink?: string;
   };
 };
+
+export type DAO = {
+  txHash: string;
+  members: number;
+  daoMembersList: string[];
+  funds: string;
+  totalProposals: number;
+  activeProposalsCount: number;
+  totalProposalsCount: number;
+  totalDaoFunds: number;
+  createdAt: string;
+  groups: TGroup[];
+  policy: PolicyType;
+  votes?: number;
+  logo?: string;
+  lastProposalId: number;
+} & DaoProperties;
+
+export type DAOPreview = {
+  funds: string;
+} & DaoProperties;
 
 export type VotePolicyRequest = {
   // eslint-disable-next-line camelcase
@@ -126,3 +117,22 @@ export type DaoSubscriptionInput = {
 export type UpdateDaoSubscription = {
   daoId: string;
 } & DaoSubscriptionInput;
+
+export type DaoFeedItem = {
+  createdAt: string;
+  numberOfMembers: number;
+  numberOfGroups: number;
+  accountIds: string[];
+  activeProposalCount: number;
+  totalProposalCount: number;
+  totalDaoFunds: number;
+  txHash: string;
+  logo?: string;
+  policy: {
+    daoId: string;
+    roles: {
+      name: string;
+      accountIds: string[];
+    }[];
+  };
+} & DaoProperties;

@@ -3,9 +3,9 @@ import nextI18NextConfig from 'next-i18next.config';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { SputnikHttpService } from 'services/sputnik';
-import { extractMembersFromDao } from 'services/sputnik/mappers';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { extractMembersFromDao } from 'astro_2.0/features/CreateProposal/helpers';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -21,14 +21,14 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const [dao, proposal, membersStats, daoContext] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
-    SputnikHttpService.getProposalById(proposalId),
+    SputnikHttpService.getProposalById(proposalId, account),
     SputnikHttpService.getDaoMembersStats(daoId),
     SputnikHttpService.getDaoContext(account, daoId as string),
   ]);
 
   const members = dao ? extractMembersFromDao(dao, membersStats) : [];
 
-  if (!daoContext) {
+  if (!daoContext || !proposal) {
     return {
       notFound: true,
     };

@@ -33,8 +33,8 @@ export const DaosTabView = (): JSX.Element => {
               <DaoDetailsGrid
                 key={item.id}
                 dao={item}
-                activeProposals={item.activeProposalsCount}
-                totalProposals={item.totalProposalsCount}
+                activeProposals={item.activeProposalCount}
+                totalProposals={item.totalProposalCount}
               />
             </React.Fragment>
           ))}

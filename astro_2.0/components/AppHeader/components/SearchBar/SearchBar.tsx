@@ -25,6 +25,7 @@ import { SEARCH_PAGE_URL } from 'constants/routing';
 import { useWindowResize } from 'hooks/useWindowResize';
 
 import { useSearchResults } from 'features/search/search-results';
+import { useOnRouterChange } from 'hooks/useOnRouterChange';
 import { IconButton } from 'components/button/IconButton';
 import { DropdownResults } from 'astro_2.0/components/AppHeader/components/SearchBar/components/DropdownResults';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
@@ -71,6 +72,16 @@ export const SearchBar: FC<SearchBarProps> = ({
     searchResults?.query || (router.query.search as string) || ''
   );
   const [showHint, toggleShowHint] = useToggle(false);
+
+  const setValueOnRouterChange = () => {
+    if (isSearchPage) {
+      setValue(searchResults?.query || (router.query.search as string));
+    } else {
+      setValue('');
+    }
+  };
+
+  useOnRouterChange(setValueOnRouterChange);
 
   function isDesktopResolution() {
     try {
@@ -179,7 +190,11 @@ export const SearchBar: FC<SearchBarProps> = ({
     handleClose();
     setValue('');
     onSearchStateToggle(false);
-  }, [handleClose, onSearchStateToggle]);
+
+    if (isSearchPage) {
+      router.back();
+    }
+  }, [handleClose, router, isSearchPage, onSearchStateToggle]);
 
   const handleSubmit = useCallback(() => {
     if (value.trim()) {

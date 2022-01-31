@@ -127,7 +127,7 @@ export type ProposalStatus =
   | 'Expired'
   | 'Moved';
 
-export type Proposal = {
+type ProposalProperties = {
   id: string;
   proposalId: number;
   daoId: string;
@@ -142,18 +142,22 @@ export type Proposal = {
   voteYes: number;
   voteNo: number;
   voteRemove: number;
+  voteStatus: string;
+  isFinalized: boolean;
   txHash: string;
   votes: {
     [key: string]: 'Yes' | 'No' | 'Dismiss';
   };
-  // votePeriodConvertedEndDate: Date;   --- not working with SSR
   createdAt: string;
   daoDetails: DaoDetails;
   link: string;
-  dao: DAO | null;
   proposalVariant: ProposalVariant;
   actions: ProposalActionData[];
 };
+
+export type Proposal = {
+  dao: DAO | null;
+} & ProposalProperties;
 
 export interface CreateProposalParams {
   daoId: string;
@@ -295,13 +299,16 @@ export type ProposalCommentReport = {
   reason: string;
 };
 
+export type CommentContextType = 'Proposal' | 'BountyContext';
+
 export interface ProposalComment {
   isArchived: boolean;
   createdAt: string;
   updatedAt: string;
   id: number;
   daoId: string;
-  proposalId: string;
+  contextId: string;
+  contextType: CommentContextType;
   accountId: string;
   message: string;
   reports: ProposalCommentReport[];
@@ -314,7 +321,8 @@ type AuthorizedRequest = {
 };
 
 export type SendCommentsInput = {
-  proposalId: string;
+  contextId: string;
+  contextType: CommentContextType;
   message: string;
 };
 
@@ -330,3 +338,33 @@ export type DeleteCommentsInput = {
 export type SendProposalComment = AuthorizedRequest & SendCommentsInput;
 export type ReportProposalComment = AuthorizedRequest & ReportCommentsInput;
 export type DeleteProposalComment = AuthorizedRequest & DeleteCommentsInput;
+
+export type ProposalFeedItem = {
+  dao: {
+    id: string;
+    name: string;
+    logo: string;
+    flagCover: string;
+    flagLogo: string;
+    legal: {
+      legalStatus?: string;
+      legalLink?: string;
+    };
+    numberOfMembers: number;
+    policy: {
+      daoId: string;
+      defaultVotePolicy: {
+        weightKind: string;
+        kind: string;
+        ratio: number[];
+        quorum: string;
+      };
+    };
+  };
+  permissions: {
+    canApprove: boolean;
+    canReject: boolean;
+    canDelete: boolean;
+    isCouncil: boolean;
+  };
+} & ProposalProperties;
