@@ -1,43 +1,10 @@
-@import 'styles/mixins';
 @import 'styles/daosList';
 
-.root {
-  display: grid;
-  grid-row-gap: 24px;
-  grid-template-areas:
-    'header'
-    'filter'
-    'content';
-  grid-template-columns: 1fr;
-  padding-top: 56px;
-}
-
-.header {
-  display: flex;
-  flex-direction: column;
-  grid-area: header;
-
-  @include tablet-portrait {
-    align-items: center;
-    flex-direction: row;
-  }
-
-  h1 {
-    margin: 0 0 20px;
-
-    @include tablet-portrait {
-      margin: 0 48px 0 0;
-    }
-  }
-}
-
 .filter {
-  grid-area: filter;
-  position: relative;
-  z-index: 1;
+  margin-bottom: 24px;
 }
 
-.content {
+.daosList {
   @include daos-list;
 }
 
