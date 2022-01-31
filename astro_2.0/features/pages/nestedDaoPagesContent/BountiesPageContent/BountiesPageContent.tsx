@@ -12,7 +12,7 @@ import {
 import { BountiesListView } from 'astro_2.0/features/Bounties/components/BountiesListView';
 import { Button } from 'components/button/Button';
 import { Dropdown } from 'components/Dropdown';
-import { BountiesTimelineView } from 'astro_2.0/features/Bounties/components/BountiesTimelineView/BountiesTimelineView';
+import { BountiesTimeline } from 'astro_2.0/features/Bounties/components/BountiesTimeline';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { BOUNTIES_PAGE_SORT_OPTIONS } from 'astro_2.0/features/Bounties/helpers';
 
@@ -94,13 +94,7 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
         />
       )}
 
-      {activeView === 'timeline' && (
-        <BountiesTimelineView
-          daoId={dao.id}
-          bountiesContext={bountiesContext}
-          tokens={tokens}
-        />
-      )}
+      {activeView === 'timeline' && <BountiesTimeline data={bountiesContext} />}
     </div>
   );
 };

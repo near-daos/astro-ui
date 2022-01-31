@@ -49,8 +49,11 @@ export const BountyProgress: FC<BountyProgressProps> = ({
   const proposalPhase =
     proposal?.status === 'Approved' ? 'completed' : 'pending';
   const bountyPhase = bounty ? 'completed' : 'pending';
-  const inProgressPhase = bounty.bountyClaims.length ? 'completed' : 'pending';
   const completedPhase = Number(bounty.times) === 0 ? 'completed' : 'pending';
+  const inProgressPhase =
+    bounty.bountyClaims.length || completedPhase === 'completed'
+      ? 'completed'
+      : 'pending';
 
   return (
     <div className={styles.root}>

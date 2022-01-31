@@ -1,0 +1,35 @@
+@import 'styles/typography';
+
+.root {
+  position: relative;
+  z-index: 30;
+
+  &.open {
+    z-index: 31;
+  }
+}
+
+.indicator {
+  @extend %caption2;
+  border-radius: 50%;
+  color: var(--color-white);
+  cursor: pointer;
+  font-size: 9px;
+  height: 18px;
+  width: 18px;
+}
+
+.panel {
+  background: var(--color-white);
+  border-radius: 4px;
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  left: -8px;
+  padding: 8px;
+  position: absolute;
+  top: calc(100% + 4px);
+  z-index: 50;
+}
+
+.listItem:not(:last-of-type) {
+  margin-bottom: 8px;
+}

@@ -5,11 +5,13 @@ import { DAO } from 'types/dao';
 import { BountyProposal } from 'types/bounties';
 
 import { ProposalControlButton } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/ProposalControlPanel/components/ProposalControlButton';
-import { useGetVotePermissions } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/hooks/useGetVotePermissions';
 
 import { getVotesStatistic } from 'services/sputnik/mappers';
 
 import { useBountyVoting } from 'astro_2.0/features/Bounties/components/hooks';
+
+import { useCountdown } from 'hooks/useCountdown';
+import { toMillis } from 'utils/format';
 
 import styles from './VotingContent.module.scss';
 
@@ -30,12 +32,16 @@ export const VotingContent: FC<VotingContentProps> = ({
 
   const votesStat = getVotesStatistic(proposal);
 
-  const permissions = useGetVotePermissions(dao, proposal.kind.type, accountId);
   const liked = votesStat.votes[accountId] === 'Yes';
   const disliked = votesStat.votes[accountId] === 'No';
   const dismissed = votesStat.votes[accountId] === 'Dismiss';
 
-  const { canApprove, canReject } = permissions;
+  const { canApprove, canReject } = proposal.permissions;
+  const votePeriodEnd = new Date(
+    toMillis(proposal.votePeriodEnd)
+  ).toISOString();
+  const timeLeft = useCountdown(votePeriodEnd);
+
   const voted: boolean =
     liked ||
     disliked ||
@@ -53,7 +59,7 @@ export const VotingContent: FC<VotingContentProps> = ({
         className={styles.controlButton}
         times={votesStat.voteYes}
         onClick={() => handleVote('VoteApprove')}
-        disabled={Boolean(!canApprove || loading)}
+        disabled={Boolean(!canApprove || loading || !timeLeft)}
       />
       <ProposalControlButton
         icon={disliked ? 'votingNoChecked' : noIconName}
@@ -62,7 +68,7 @@ export const VotingContent: FC<VotingContentProps> = ({
         className={styles.controlButton}
         times={votesStat.voteNo}
         onClick={() => handleVote('VoteReject')}
-        disabled={Boolean(!canReject || loading)}
+        disabled={Boolean(!canReject || loading || !timeLeft)}
       />
     </div>
   );

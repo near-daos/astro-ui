@@ -159,6 +159,12 @@ type ProposalProperties = {
   link: string;
   proposalVariant: ProposalVariant;
   actions: ProposalActionData[];
+  permissions?: {
+    canApprove: boolean;
+    canReject: boolean;
+    canDelete: boolean;
+    isCouncil: boolean;
+  };
 };
 
 export type Proposal = {

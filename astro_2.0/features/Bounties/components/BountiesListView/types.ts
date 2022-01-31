@@ -8,6 +8,14 @@ export type SectionItem = {
   proposer: string;
   proposalId: string;
   bounty?: Bounty;
+  link: {
+    pathname: string;
+    query: {
+      dao: string;
+      bounty?: string;
+      proposal?: string;
+    };
+  };
   completeHandler?: (
     id: number,
     variant: ProposalVariant.ProposeDoneBounty

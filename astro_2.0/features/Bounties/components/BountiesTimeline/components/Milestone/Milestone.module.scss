@@ -1,0 +1,11 @@
+@import 'styles/mixins';
+
+.root {
+  display: flex;
+  position: relative;
+  z-index: 30;
+}
+
+.icon {
+  width: 18px;
+}
