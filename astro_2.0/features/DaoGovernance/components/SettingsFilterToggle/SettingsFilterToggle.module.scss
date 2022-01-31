@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/mixins';
 
 .root {
@@ -16,7 +17,7 @@
   padding: 0 2px;
   width: 100%;
 
-  @include tablet-portrait {
+  @media screen and (min-width: #{breakpoints.$screen-lg + 1}px) {
     display: none;
   }
 }
@@ -42,13 +43,6 @@
   position: relative;
   top: 0;
 
-  @include tablet-portrait {
-    margin-bottom: 24px;
-    max-width: 320px;
-  }
-}
-
-.daoConfigFilter {
   @include tablet-portrait {
     margin-bottom: 24px;
   }

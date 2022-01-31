@@ -35,7 +35,7 @@ export const SettingsFilterToggle: FC = () => {
   const [activeFilter, setActiveFilter] = useState(
     daoFilter && POLICY_OPTIONS.includes(daoFilter) ? 'daoPolicy' : 'daoConfig'
   );
-  const isMobile = useMedia('(max-width: 768px)');
+  const isMobile = useMedia('(max-width: 1280px)');
 
   const daoConfigFilterOptions = useMemo(() => {
     const keys = [
