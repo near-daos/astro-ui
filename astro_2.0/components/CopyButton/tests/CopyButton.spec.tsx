@@ -7,11 +7,15 @@ import { CopyButton } from 'astro_2.0/components/CopyButton';
 
 describe('copy button', () => {
   const originalClipboard = { ...global.navigator.clipboard };
+  const originalSecureContext = global.window.isSecureContext;
 
   beforeAll(() => {
     const mockClipboard = {
       writeText: jest.fn(),
     };
+
+    // @ts-ignore
+    global.window.isSecureContext = true;
 
     // @ts-ignore
     global.navigator.clipboard = mockClipboard;
@@ -24,6 +28,8 @@ describe('copy button', () => {
   afterAll(() => {
     // @ts-ignore
     global.navigator.clipboard = originalClipboard;
+    // @ts-ignore
+    global.window.isSecureContext = originalSecureContext;
   });
 
   it('Should render component', () => {
