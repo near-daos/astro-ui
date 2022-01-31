@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import { render } from 'jest/testUtils';
 
 import { Token } from 'types/token';
-import { Proposal } from 'types/proposal';
+import { ProposalFeedItem } from 'types/proposal';
 import { BountyStatus } from 'types/bounties';
 
 import { BountyCard } from 'astro_2.0/components/BountyCard';
@@ -15,12 +15,11 @@ describe('bounty card', () => {
     const { container } = render(
       <BountyCard
         content={contentMock}
-        showActionBar
-        canClaim
         bountyId="1"
         dao={daoMock}
         deadlineThreshold="1"
         completeHandler={() => {}}
+        currentUser="dkarpov.testnet"
       />
     );
 
@@ -34,12 +33,11 @@ describe('bounty card', () => {
           ...contentMock,
           status: BountyStatus.InProgress,
         }}
-        showActionBar
-        canClaim
         bountyId="1"
         dao={daoMock}
         deadlineThreshold="1"
         completeHandler={() => {}}
+        currentUser="dkarpov.testnet"
       />
     );
 
@@ -57,8 +55,7 @@ describe('bounty card', () => {
             decimals: 1,
           } as unknown) as Token,
         }}
-        showActionBar={false}
-        canClaim
+        currentUser="dkarpov.testnet"
         bountyId="1"
         dao={daoMock}
         deadlineThreshold="1"
@@ -76,14 +73,13 @@ describe('bounty card', () => {
           ...contentMock,
           status: BountyStatus.PendingApproval,
         }}
-        showActionBar
         relatedProposal={
           ({
             id: 'proposalId',
             daoId: 'myDaoId',
-          } as unknown) as Proposal
+          } as unknown) as ProposalFeedItem
         }
-        canClaim
+        currentUser="dkarpov.testnet"
         bountyId="1"
         dao={daoMock}
         deadlineThreshold="1"

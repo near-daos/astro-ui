@@ -9,7 +9,7 @@ import { useTranslation } from 'next-i18next';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
-import { Proposal } from 'types/proposal';
+import { ProposalFeedItem } from 'types/proposal';
 import { BountyStatus } from 'types/bounties';
 import {
   BountyCardContent,
@@ -45,21 +45,19 @@ const schema = yup.object().shape({
 
 export interface BountyCardProps {
   bountyId: string;
+  currentUser: string;
   deadlineThreshold: string;
   content: BountyCardContent;
-  showActionBar: boolean;
-  canClaim: boolean;
   dao: DAO;
-  relatedProposal?: Proposal;
+  relatedProposal?: ProposalFeedItem;
   completeHandler: () => void;
 }
 
 export const BountyCard: React.FC<BountyCardProps> = ({
   bountyId,
+  currentUser,
   deadlineThreshold,
   content,
-  showActionBar,
-  canClaim,
   dao,
   completeHandler,
   relatedProposal,
@@ -74,6 +72,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
     amount,
     bountyBond,
     type,
+    claimedByCurrentUser,
   } = content;
   const router = useRouter();
   const { t } = useTranslation();
@@ -139,54 +138,57 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   }
 
   function renderActionBar() {
-    if (showActionBar) {
-      if (status === BountyStatus.PendingApproval && relatedProposal) {
-        const { id } = relatedProposal;
+    if (!currentUser) {
+      return null;
+    }
 
-        return (
-          <CardFooter>
-            <div>
-              <div className={styles.footerLabel}>Completion Proposal</div>
-              <div>
-                <Link
-                  href={{
-                    pathname: SINGLE_PROPOSAL_PAGE_URL,
-                    query: {
-                      dao: daoId,
-                      proposal: id,
-                    },
-                  }}
-                >
-                  <a className={styles.proposalLink}>
-                    <Icon name="buttonExternal" className={styles.icon} />
-                    Link to Proposal
-                  </a>
-                </Link>
-              </div>
-            </div>
-          </CardFooter>
-        );
-      }
+    if (
+      type === CardType.Claim &&
+      status !== BountyStatus.Expired &&
+      !claimedByCurrentUser
+    ) {
+      return null;
+    }
+
+    if (status === BountyStatus.PendingApproval && relatedProposal) {
+      const { id } = relatedProposal;
 
       return (
-        <BountyActionsBar
-          canClaim={canClaim}
-          bountyBond={bountyBond}
-          forgivenessPeriod={forgivenessPeriod}
-          bountyStatus={status}
-          unclaimHandler={handleUnclaim}
-          completeHandler={completeHandler}
-        />
+        <CardFooter>
+          <div>
+            <div className={styles.footerLabel}>Completion Proposal</div>
+            <div>
+              <Link
+                href={{
+                  pathname: SINGLE_PROPOSAL_PAGE_URL,
+                  query: {
+                    dao: daoId,
+                    proposal: id,
+                  },
+                }}
+              >
+                <a className={styles.proposalLink}>
+                  <Icon name="buttonExternal" className={styles.icon} />
+                  Link to Proposal
+                </a>
+              </Link>
+            </div>
+          </div>
+        </CardFooter>
       );
     }
 
-    return null;
+    return (
+      <BountyActionsBar
+        claimedByCurrentUser={claimedByCurrentUser}
+        bountyBond={bountyBond}
+        forgivenessPeriod={forgivenessPeriod}
+        bountyStatus={status}
+        unclaimHandler={handleUnclaim}
+        completeHandler={completeHandler}
+      />
+    );
   }
-
-  const adjustedStatus =
-    content.slots === content.slotsTotal && type === CardType.Bounty
-      ? BountyStatus.NotClaimAvailable
-      : status;
 
   return (
     <FormProvider {...methods}>
@@ -213,14 +215,12 @@ export const BountyCard: React.FC<BountyCardProps> = ({
                 className={cn({
                   [styles.statusAvailable]: status === BountyStatus.Available,
                   [styles.statusInProgress]: status === BountyStatus.InProgress,
-                  [styles.statusExpired]:
-                    status === BountyStatus.Expired ||
-                    status === BountyStatus.NotClaimAvailable,
+                  [styles.statusExpired]: status === BountyStatus.Expired,
                   [styles.pendingApproval]:
                     status === BountyStatus.PendingApproval,
                 })}
               >
-                {adjustedStatus}
+                {status}
               </div>
             }
             valueFontSize="L"
@@ -285,7 +285,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
               <InfoBlockWidget
                 labelClassName={styles.infoLabel}
                 label="Claimed by"
-                value={content.accountId}
+                value={content.claimedBy}
               />
             ) : (
               <InfoBlockWidget

@@ -16,7 +16,7 @@ import { formatYoktoValue } from 'utils/format';
 import styles from './BountyActionsBar.module.scss';
 
 interface BountyActionsBarProps {
-  canClaim: boolean;
+  claimedByCurrentUser: boolean;
   bountyBond: string;
   forgivenessPeriod: string;
   bountyStatus: BountyStatus;
@@ -26,12 +26,12 @@ interface BountyActionsBarProps {
 }
 
 export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
+  claimedByCurrentUser,
   bountyStatus,
   bountyBond,
   forgivenessPeriod,
   unclaimHandler,
   completeHandler,
-  canClaim,
 }) => {
   const { handleSubmit } = useFormContext();
   const timeDistance = getDistanceFromNow(forgivenessPeriod).split(' ');
@@ -60,36 +60,34 @@ export const BountyActionsBar: React.FC<BountyActionsBarProps> = ({
   };
 
   function renderButtons() {
-    if (bountyStatus === 'Available') {
-      if (canClaim) {
-        return (
-          <div className={styles.buttonsWrapper}>
-            <Button
-              variant="black"
-              size="small"
-              type="submit"
-              className={cn(styles.claim, styles.button)}
-            >
-              Claim
-            </Button>
-          </div>
-        );
-      }
-
-      return <div className={styles.stub} />;
+    if (bountyStatus === BountyStatus.Available) {
+      return (
+        <div className={styles.buttonsWrapper}>
+          <Button
+            variant="black"
+            size="small"
+            type="submit"
+            className={cn(styles.claim, styles.button)}
+          >
+            Claim
+          </Button>
+        </div>
+      );
     }
 
     return (
       <div className={styles.buttonsWrapper}>
-        <Button
-          variant="secondary"
-          size="small"
-          type="submit"
-          onClick={handleSubmit(unclaimHandler)}
-          className={cn(styles.unclaim, styles.button)}
-        >
-          Unclaim
-        </Button>
+        {claimedByCurrentUser && (
+          <Button
+            variant="secondary"
+            size="small"
+            type="submit"
+            onClick={handleSubmit(unclaimHandler)}
+            className={cn(styles.unclaim, styles.button)}
+          >
+            Unclaim
+          </Button>
+        )}
 
         <Button
           variant="black"

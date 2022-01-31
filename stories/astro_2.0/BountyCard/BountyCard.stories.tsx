@@ -24,7 +24,6 @@ export const Template: Story<BountyCardProps> = (args): JSX.Element => (
 Template.storyName = 'BountyCard';
 
 Template.args = {
-  showActionBar: true,
   completeHandler: () => {
     // eslint-disable-next-line no-console
     console.log('test');
