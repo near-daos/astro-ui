@@ -292,6 +292,7 @@
     }
 
     @include large-desktop {
+      // margin-bottom: 0;
       margin-top: 10px;
       width: 180px;
     }
