@@ -36,10 +36,10 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
   const isMounted = useMountedState();
 
   useEffect(() => {
-    if (isMounted()) {
-      setLocation(document.location);
+    if (window && isMounted() && !location) {
+      setLocation(window.location);
     }
-  }, [isMounted]);
+  }, [isMounted, location]);
 
   const isLargeDesktop = useMedia('(min-width: 1280px)');
 
@@ -94,7 +94,7 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
         />
       </a>
       <CopyButton
-        text={location?.href ?? ''}
+        text={shareUrl}
         tooltipPlacement={tooltipPlacement}
         className={styles.copyBtn}
       />
