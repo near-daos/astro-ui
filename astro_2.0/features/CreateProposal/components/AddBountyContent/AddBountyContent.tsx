@@ -98,9 +98,19 @@ export const AddBountyContent: FC = () => {
             placeholder="0"
             min={1}
             step={1}
+            pattern="/d+"
             isBorderless
             size="small"
             {...register('slots')}
+            onKeyDown={event => {
+              const intRx = /\d/;
+
+              if (event.key.length > 1 || intRx.test(event.key)) {
+                return;
+              }
+
+              event.preventDefault();
+            }}
           />
         </InputWrapper>
         <div className={styles.divider} />
