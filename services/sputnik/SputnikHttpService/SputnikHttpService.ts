@@ -777,7 +777,10 @@ class SputnikHttpServiceClass {
     return data;
   }
 
-  public async getBountyContextById(bountyId: string): Promise<BountyContext> {
+  public async getBountyContextById(
+    bountyId: string,
+    accountId?: string
+  ): Promise<BountyContext> {
     const queryString = RequestQueryBuilder.create()
       .setFilter({
         field: 'id',
@@ -786,13 +789,18 @@ class SputnikHttpServiceClass {
       })
       .query();
     const { data } = await this.httpService.get<BountiesContextResponse>(
-      `/bounty-contexts?${queryString}`
+      `/bounty-contexts?${queryString}${
+        accountId ? `&accountId=${accountId}` : ''
+      }`
     );
 
     return data.data[0];
   }
 
-  public async getBountiesContext(daoId: string): Promise<BountyContext[]> {
+  public async getBountiesContext(
+    daoId: string,
+    accountId?: string
+  ): Promise<BountyContext[]> {
     const queryString = RequestQueryBuilder.create()
       .setFilter({
         field: 'daoId',
@@ -802,7 +810,9 @@ class SputnikHttpServiceClass {
       .query();
 
     const { data } = await this.httpService.get<BountiesContextResponse>(
-      `/bounty-contexts?${queryString}`
+      `/bounty-contexts?${queryString}${
+        accountId ? `&accountId=${accountId}` : ''
+      }`
     );
 
     return data.data;

@@ -14,7 +14,7 @@
 .row {
   display: grid;
   grid-column-gap: 12px;
-  grid-template-columns: 2fr minmax(48px, 120px) 2fr 200px;
+  grid-template-columns: 1fr minmax(48px, 120px) 1fr 1fr;
 }
 
 .title,
@@ -187,5 +187,21 @@
 }
 
 .claimsContainer {
+  background: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   margin: 4px 24px;
+  padding: 8px 0;
+  position: relative;
+}
+
+.claimsContainer::before {
+  background-color: transparent;
+  border-left: 1px solid var(--color-neutral-40);
+  content: '';
+  height: calc(100% - 40px);
+  left: -20px;
+  position: absolute;
+  top: -16px;
+  width: 20px;
 }

@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const [dao, bountyContext, daoContext] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
-    SputnikHttpService.getBountyContextById(bountyId),
+    SputnikHttpService.getBountyContextById(bountyId, account),
     SputnikHttpService.getDaoContext(account, daoId as string),
   ]);
 
@@ -36,8 +36,8 @@ export const getServerSideProps: GetServerSideProps = async ({
     account
   );
 
-  const userBountyDoneProposal = bountyContext.bounty.bountyDoneProposals.find(
-    item => item.proposer === account
+  const userBountyDoneProposal = bountyContext.bounty?.bountyDoneProposals.find(
+    item => item.proposer === account && item.status === 'InProgress'
   );
 
   let bountyDoneProposal = null;

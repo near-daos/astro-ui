@@ -5,6 +5,7 @@ import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 
 import { Tokens } from 'context/CustomTokensContext';
 import { formatYoktoValue } from 'utils/format';
+import { useIsValidImage } from 'hooks/useIsValidImage';
 
 import styles from './AmountContent.module.scss';
 
@@ -23,6 +24,27 @@ export const AmountContent: FC<AmountContentProps> = ({
 }) => {
   const tokenData = token ? tokens[token] : tokens.NEAR;
 
+  const isValid = useIsValidImage(tokenData?.icon);
+
+  function renderIcon() {
+    if (tokenData?.symbol === 'NEAR') {
+      return <Icon name="tokenNearBig" />;
+    }
+
+    if (isValid) {
+      return (
+        <div
+          style={{
+            backgroundImage: `url(${tokenData.icon})`,
+          }}
+          className={styles.icon}
+        />
+      );
+    }
+
+    return <div className={styles.icon} />;
+  }
+
   return (
     <div className={styles.root}>
       <span className={styles.item}>
@@ -31,6 +53,7 @@ export const AmountContent: FC<AmountContentProps> = ({
             <span className={styles.value}>
               {formatYoktoValue(amount, tokenData.decimals)}
             </span>
+            <span className={styles.iconWrapper}>{renderIcon()}</span>
             <span className={styles.label}>{token || 'NEAR'}</span>
           </>
         ) : (

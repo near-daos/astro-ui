@@ -44,8 +44,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
   toggleCreateProposal,
 }) => {
   const [showInfoPanel, setShowInfoPanel] = useState<string | null>('claims');
-  // todo - get this from proposal permissions
-  const isCouncilUser = false;
+  const isCouncilUser = proposal.permissions?.isCouncil ?? false;
   const [commentsNum, setCommentsNum] = useState(commentsCount);
 
   if (!bounty || !dao) {

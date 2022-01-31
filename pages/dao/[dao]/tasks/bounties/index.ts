@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async (
 
   const [daoContext, bountiesContext] = await Promise.all([
     SputnikHttpService.getDaoContext(account, daoId),
-    SputnikHttpService.getBountiesContext(daoId),
+    SputnikHttpService.getBountiesContext(daoId, account),
   ]);
 
   if (!daoContext) {

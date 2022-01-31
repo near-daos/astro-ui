@@ -92,6 +92,8 @@ export type BountyProposal = {
   id: string;
   daoId: string;
   proposalId: number;
+  createdAt: string;
+  updatedAt: string;
   description: string;
   votes: {
     [key: string]: 'Approve' | 'Reject' | 'Remove';
@@ -103,4 +105,11 @@ export type BountyProposal = {
   status: string;
   voteStatus: string;
   kind: ProposalKind;
+  votePeriodEnd: string;
+  permissions: {
+    canApprove: boolean;
+    canReject: boolean;
+    canDelete: boolean;
+    isCouncil: boolean;
+  };
 };

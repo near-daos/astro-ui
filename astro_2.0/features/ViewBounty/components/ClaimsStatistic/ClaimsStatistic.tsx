@@ -15,58 +15,69 @@ export const ClaimsStatistic: FC<ClaimsStatisticProps> = ({
   claims,
   doneProposals,
 }) => {
-  const { approved, pending, inProgress, rejected } = claims.reduce<{
-    approved: BountyClaim[];
+  const { pending, inProgress } = claims.reduce<{
     pending: BountyClaim[];
     inProgress: BountyClaim[];
-    rejected: BountyClaim[];
   }>(
     (res, item) => {
       const proposal = doneProposals.find(
-        doneProposal => doneProposal.proposer === item.accountId
+        doneProposal =>
+          doneProposal.proposer === item.accountId &&
+          doneProposal.status === 'InProgress'
       );
 
       if (!proposal) {
         res.inProgress.push(item);
       } else {
-        const proposalStatus = proposal.status;
-
-        switch (proposalStatus) {
-          case 'Approved': {
-            res.approved.push(item);
-            break;
-          }
-          case 'InProgress': {
-            res.pending.push(item);
-            break;
-          }
-          default: {
-            res.rejected.push(item);
-          }
-        }
+        res.pending.push(item);
       }
 
       return res;
     },
-    { approved: [], pending: [], inProgress: [], rejected: [] }
+    { pending: [], inProgress: [] }
   );
+
+  const { approved, rejected } = doneProposals.reduce<{
+    approved: BountyProposal[];
+    rejected: BountyProposal[];
+  }>(
+    (res, item) => {
+      if (item.status === 'Approved') {
+        res.approved.push(item);
+      }
+
+      if (
+        item.status === 'Rejected' ||
+        item.status === 'Expired' ||
+        item.status === 'Removed'
+      ) {
+        res.rejected.push(item);
+      }
+
+      return res;
+    },
+    { approved: [], rejected: [] }
+  );
+
+  const totalLength =
+    approved.length + rejected.length + inProgress.length + pending.length;
 
   const chartData = [
     {
       status: 'approved',
-      value: (approved.length * 100) / claims.length,
+      value: (approved.length * 100) / totalLength,
     },
     {
       status: 'pending',
-      value: (pending.length * 100) / claims.length,
+      value: (pending.length * 100) / totalLength,
     },
     {
       status: 'inProgress',
-      value: (inProgress.length * 100) / claims.length,
+      value: (inProgress.length * 100) / totalLength,
     },
     {
       status: 'rejected',
-      value: (rejected.length * 100) / claims.length,
+      value: (rejected.length * 100) / totalLength,
     },
   ].filter(item => !!item.value);
 

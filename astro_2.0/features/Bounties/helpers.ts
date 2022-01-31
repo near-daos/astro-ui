@@ -81,17 +81,14 @@ export function prepareBountiesPageContent(
         return res;
       }
 
-      // generate claims based on approved/rejected proposals
-      const updatedItem = prepareBountyObject(item);
-
       if (item.bounty && Number(item.bounty.times) === 0) {
-        res.completed.push(updatedItem);
+        res.completed.push(item);
 
         return res;
       }
 
       if (item.bounty) {
-        res.bounties.push(updatedItem);
+        res.bounties.push(item);
 
         return res;
       }

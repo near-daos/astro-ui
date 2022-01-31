@@ -8,11 +8,9 @@ import { SectionItem } from 'astro_2.0/features/Bounties/components/BountiesList
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { ClaimRow } from 'astro_2.0/features/Bounties/components/BountiesListView/components/ClaimRow';
+import { CompleteProposalRow } from 'astro_2.0/features/Bounties/components/BountiesListView/components/CompleteProposalRow';
 
-import {
-  SINGLE_BOUNTY_PAGE_URL,
-  SINGLE_PROPOSAL_PAGE_URL,
-} from 'constants/routing';
+import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
 import { DAO } from 'types/dao';
 
@@ -54,15 +52,7 @@ export const SectionRow: FC<SectionRowProps> = ({
             [styles.completed]: status === 'Completed',
           })}
         >
-          <Link
-            href={{
-              pathname: SINGLE_BOUNTY_PAGE_URL,
-              query: {
-                dao: dao.id,
-                bounty: item.id,
-              },
-            }}
-          >
+          <Link href={item.link}>
             <a className={styles.singleLine}>
               <div className={styles.singleLine}>{item.title}</div>
             </a>
@@ -111,32 +101,41 @@ export const SectionRow: FC<SectionRowProps> = ({
         </div>
         <div className={styles.rowContent}>{item.content}</div>
       </motion.div>
-      {showClaims && !!item.bounty?.bountyClaims.length && (
-        <div className={styles.claimsContainer}>
-          {item.bounty?.bountyClaims.map(claim => {
-            if (!item.bounty) {
-              return null;
-            }
+      {showClaims &&
+        (!!item.bounty?.bountyClaims.length ||
+          !!item.bounty?.bountyDoneProposals.length) && (
+          <div className={styles.claimsContainer}>
+            {item.bounty?.bountyClaims.map(claim => {
+              if (!item.bounty) {
+                return null;
+              }
 
-            const claimedByMe = !!item.bounty.bountyClaims.find(
-              _claim => _claim.accountId === accountId
-            );
+              const claimedByMe = !!item.bounty.bountyClaims.find(
+                _claim => _claim.accountId === accountId
+              );
 
-            return (
-              <ClaimRow
-                maxDeadline={item.bounty.maxDeadline}
-                key={claim.id}
-                dao={dao}
-                bounty={item.bounty}
-                data={claim}
-                completeHandler={item.completeHandler}
-                doneProposals={item.bounty?.bountyDoneProposals}
-                claimedByMe={claimedByMe}
-              />
-            );
-          })}
-        </div>
-      )}
+              return (
+                <ClaimRow
+                  maxDeadline={item.bounty.maxDeadline}
+                  key={claim.id}
+                  dao={dao}
+                  bounty={item.bounty}
+                  data={claim}
+                  completeHandler={item.completeHandler}
+                  doneProposals={item.bounty?.bountyDoneProposals}
+                  claimedByMe={claimedByMe}
+                />
+              );
+            })}
+            {item.bounty?.bountyDoneProposals
+              .filter(proposal => proposal.status !== 'InProgress')
+              .map(proposal => {
+                return (
+                  <CompleteProposalRow key={proposal.id} data={proposal} />
+                );
+              })}
+          </div>
+        )}
     </>
   );
 };

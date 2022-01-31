@@ -3,11 +3,14 @@ import React, { FC } from 'react';
 import { BountyContext } from 'types/bounties';
 
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import {
+  SINGLE_BOUNTY_PAGE_URL,
+  SINGLE_PROPOSAL_PAGE_URL,
+} from 'constants/routing';
 
 import { CollapsableSection } from 'astro_2.0/features/Bounties/components/BountiesListView/components/CollapsableSection';
 import { prepareBountiesPageContent } from 'astro_2.0/features/Bounties/helpers';
 import { VotingContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/VotingContent';
-import { CompletedContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/CompletedContent';
 import { AmountContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/AmountContent';
 
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
@@ -58,6 +61,13 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
               title: description,
               proposer: item.proposal.proposer,
               proposalId: item.proposal.id,
+              link: {
+                pathname: SINGLE_PROPOSAL_PAGE_URL,
+                query: {
+                  dao: dao.id,
+                  proposal: item.proposal.id,
+                },
+              },
               content: (
                 <VotingContent
                   proposal={item.proposal}
@@ -85,6 +95,13 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
               proposer: item.proposal.proposer,
               proposalId: item.proposal.id,
               bounty: item.bounty,
+              link: {
+                pathname: SINGLE_BOUNTY_PAGE_URL,
+                query: {
+                  dao: dao.id,
+                  bounty: item.id,
+                },
+              },
               completeHandler,
               content: (
                 <AmountContent
@@ -113,10 +130,20 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
               title: description,
               proposer: item.proposal.proposer,
               proposalId: item.proposal.id,
+              bounty: item.bounty,
+              link: {
+                pathname: SINGLE_BOUNTY_PAGE_URL,
+                query: {
+                  dao: dao.id,
+                  bounty: item.id,
+                },
+              },
               content: (
-                <CompletedContent
-                  slots={item.bounty.numberOfClaims}
-                  slotsTotal={Number(item.bounty.times)}
+                <AmountContent
+                  tokens={tokens}
+                  amount={item.bounty.amount}
+                  token={item.bounty.token}
+                  commentsCount={item.commentsCount}
                 />
               ),
             };

@@ -64,7 +64,11 @@ export const ConfirmActionModal: FC<ConfirmActionModalProps> = ({
               />
             </div>
           </div>
-          <Button onClick={() => onClose(gas)} className={styles.confirmButton}>
+          <Button
+            capitalize
+            onClick={() => onClose(gas)}
+            className={styles.confirmButton}
+          >
             Confirm
           </Button>
         </div>
