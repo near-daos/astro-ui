@@ -1,0 +1,27 @@
+@import 'styles/typography';
+
+.root {
+  @extend %title3;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 210px;
+  justify-content: space-between;
+  padding: 30px 0;
+
+  &.selected {
+    border-color: var(--color-brand-purple);
+  }
+}
+
+.label {
+  text-align: center;
+}
+
+.icon {
+  width: 150px;
+}
