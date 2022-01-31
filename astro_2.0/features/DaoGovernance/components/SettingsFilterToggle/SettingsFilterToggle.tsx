@@ -18,10 +18,23 @@ const TEMP_DISABLED_OPTIONS = [
   'groupNames',
 ];
 
+const POLICY_OPTIONS = [
+  'proposalCreation',
+  'votingPermissions',
+  'votingPolicy',
+  'bondAndDeadlines',
+  'groups',
+  'members',
+  'daoRules',
+];
+
 export const SettingsFilterToggle: FC = () => {
   const router = useRouter();
+  const daoFilter = router.query.daoFilter as string;
   const { t } = useTranslation();
-  const [activeFilter, setActiveFilter] = useState('daoConfig');
+  const [activeFilter, setActiveFilter] = useState(
+    daoFilter && POLICY_OPTIONS.includes(daoFilter) ? 'daoPolicy' : 'daoConfig'
+  );
   const isMobile = useMedia('(max-width: 768px)');
 
   const daoConfigFilterOptions = useMemo(() => {
@@ -41,17 +54,7 @@ export const SettingsFilterToggle: FC = () => {
   }, [t]);
 
   const daoPolicyFilterOptions = useMemo(() => {
-    const keys = [
-      'proposalCreation',
-      'votingPermissions',
-      'votingPolicy',
-      'bondAndDeadlines',
-      'groups',
-      'members',
-      'daoRules',
-    ];
-
-    return keys.map(key => ({
+    return POLICY_OPTIONS.map(key => ({
       label: t(`settingsPage.${key}`),
       value: key,
       disabled: TEMP_DISABLED_OPTIONS.includes(key),
@@ -71,7 +74,7 @@ export const SettingsFilterToggle: FC = () => {
         },
         undefined,
         {
-          shallow: true,
+          shallow: false,
           scroll: false,
         }
       );
