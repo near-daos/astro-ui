@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Side filter Should render component 1`] = `
+<div>
+  <div
+    class=""
+  >
+    <p
+      class=""
+    >
+      Hello World!
+    </p>
+    <ul
+      style="--filter-active-transform: -100%;"
+    >
+      <li>
+        <a
+          class=""
+          href="/?="
+          tabindex="0"
+        >
+          feed.filters.all
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

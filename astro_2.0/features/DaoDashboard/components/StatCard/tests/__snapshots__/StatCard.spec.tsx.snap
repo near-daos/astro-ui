@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Stat Card Should render component 1`] = `
+<div>
+  <button
+    class="undefined"
+    type="button"
+  />
+</div>
+`;
