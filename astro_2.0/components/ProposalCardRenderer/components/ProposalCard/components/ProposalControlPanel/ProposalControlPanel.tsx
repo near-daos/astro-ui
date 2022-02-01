@@ -2,7 +2,11 @@ import cn from 'classnames';
 import React, { FC } from 'react';
 import { ProposalStatus, ProposalVotingPermissions } from 'types/proposal';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
-import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
+import {
+  DEFAULT_PROPOSAL_GAS,
+  MAX_GAS,
+  MIN_GAS,
+} from 'services/sputnik/constants';
 import { kFormatter } from 'utils/format';
 import { Input } from 'components/inputs/Input';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
@@ -98,9 +102,9 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
               }}
               onClick={e => e.stopPropagation()}
               type="number"
-              min={100}
+              min={MIN_GAS}
               step={1}
-              max={300}
+              max={MAX_GAS}
               isBorderless
               size="block"
               disabled={voted || (!canApprove && !canReject) || disableControls}
