@@ -4,7 +4,11 @@ import cn from 'classnames';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
-import { ProposalType, ProposalVariant } from 'types/proposal';
+import {
+  ProposalType,
+  ProposalVariant,
+  ProposalVotingPermissions,
+} from 'types/proposal';
 
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ActionButton } from 'features/proposal/components/action-button';
@@ -18,6 +22,8 @@ interface ProposalActionsProps {
   proposalVariant: ProposalVariant;
   proposalType: ProposalType;
   proposalDescription: string;
+  permissions: ProposalVotingPermissions;
+  disableControls: boolean;
   daoId: string;
   proposalId: string | undefined;
 }
@@ -29,11 +35,14 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
   proposalVariant,
   proposalType,
   proposalDescription,
+  permissions,
+  disableControls,
   daoId,
   proposalId,
 }) => {
   const [location, setLocation] = useState<Location | null>(null);
   const isMounted = useMountedState();
+  const { canDelete } = permissions;
 
   useEffect(() => {
     if (window && isMounted() && !location) {
@@ -55,17 +64,21 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
 
   return (
     <div className={styles.root}>
-      <ActionButton
-        tooltip={`Remove: ${removeCount}`}
-        onClick={removed ? undefined : onRemove}
-        iconName="buttonDelete"
-        size="small"
-        buttonClassName={cn({
-          [styles.inactive]: removed,
-        })}
-        className={styles.icon}
-        tooltipPlacement={tooltipPlacement}
-      />
+      {canDelete && (
+        <ActionButton
+          tooltip={`Remove: ${removeCount}`}
+          onClick={removed ? undefined : onRemove}
+          iconName="buttonDelete"
+          size="small"
+          buttonClassName={cn({
+            [styles.inactive]: removed,
+            [styles.disabled]: disableControls,
+          })}
+          className={styles.icon}
+          disabled={disableControls}
+          tooltipPlacement={tooltipPlacement}
+        />
+      )}
       <a
         className="twitter-share-button"
         href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
