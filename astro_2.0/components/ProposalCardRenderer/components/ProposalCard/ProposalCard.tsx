@@ -330,10 +330,12 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
               voteClickHandler('VoteRemove');
             }
           }}
+          disableControls={voteLoading || !timeLeft || finalizeLoading}
           removed={dismissed}
           removeCount={voteRemove}
           proposalVariant={variant}
           proposalType={type}
+          permissions={permissions}
           proposalDescription={description}
           daoId={daoId}
           proposalId={id}

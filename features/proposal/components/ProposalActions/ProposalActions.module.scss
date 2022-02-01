@@ -52,8 +52,13 @@
   }
 }
 
-.inactive {
+.inactive,
+.disabled {
   cursor: default !important;
+}
+
+.disabled.disabled {
+  color: var(--color-neutral-50);
 }
 
 .copyBtn {
