@@ -87,7 +87,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} noValidate>
       <div className={cn(styles.root, { [styles.wholeCard]: standAloneMode })}>
         {renderWarning()}
         <div className={styles.mainContent}>
