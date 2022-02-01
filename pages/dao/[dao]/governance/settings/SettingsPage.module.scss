@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/typography';
 @import 'styles/mixins';
 
@@ -13,7 +14,7 @@
   padding-top: 56px;
   row-gap: 24px;
 
-  @include tablet-landscape {
+  @media screen and (min-width: #{breakpoints.$screen-lg + 1}px) {
     grid-template-areas:
       'breadcrumbs breadcrumbs'
       'dao dao'
@@ -53,11 +54,6 @@
   padding-top: 56px;
 }
 
-.flagAndLogoRow {
-  //grid-area: flagAndLogo;
-  //margin-bottom: 42px;
-}
-
 .legalLink,
 .legalIcon {
   align-items: center;
@@ -81,21 +77,13 @@
   @extend %body1;
 }
 
-//.bondAndDeadlineRow {
-//  grid-area: bondAndDeadline;
-//  margin-bottom: 42px;
-//}
-
 .votingPolicyRow {
-  //grid-area: votingPolicy;
-  //grid-column: span 3;
   margin-bottom: 42px;
   width: 100%;
 }
 
 .breadcrumbsRow {
   grid-area: breadcrumbs;
-  //margin-bottom: 18px;
 }
 
 .titleRow {
@@ -106,11 +94,6 @@
     margin-bottom: 16px;
   }
 }
-
-//.linksRow {
-//  grid-area: links;
-//  margin-bottom: 42px;
-//}
 
 .settingsContainer {
   display: flex;
