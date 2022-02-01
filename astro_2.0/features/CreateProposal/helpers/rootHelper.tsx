@@ -30,7 +30,12 @@ import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/component
 
 // Constants
 import { VALID_URL_REGEXP } from 'constants/regexp';
-import { DEFAULT_PROPOSAL_GAS, YOKTO_NEAR } from 'services/sputnik/constants';
+import {
+  DEFAULT_PROPOSAL_GAS,
+  MAX_GAS,
+  MIN_GAS,
+  YOKTO_NEAR,
+} from 'services/sputnik/constants';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 // Context
@@ -831,8 +836,8 @@ export const gasValidation = yup
   .number()
   .typeError('Must be a valid number.')
   .positive()
-  .min(100)
-  .max(300)
+  .min(MIN_GAS)
+  .max(MAX_GAS)
   .required('Required');
 
 export function getValidationSchema(

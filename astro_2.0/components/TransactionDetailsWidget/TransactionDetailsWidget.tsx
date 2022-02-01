@@ -8,7 +8,11 @@ import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { Input } from 'components/inputs/Input';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { formatYoktoValue } from 'utils/format';
-import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
+import {
+  DEFAULT_PROPOSAL_GAS,
+  MAX_GAS,
+  MIN_GAS,
+} from 'services/sputnik/constants';
 
 import styles from './TransactionDetailsWidget.module.scss';
 
@@ -104,9 +108,9 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
                     width: getInputWidth(),
                   }}
                   type="number"
-                  min={100}
+                  min={MIN_GAS}
                   step={1}
-                  max={300}
+                  max={MAX_GAS}
                   isBorderless
                   size="block"
                   {...gasInputProps}
