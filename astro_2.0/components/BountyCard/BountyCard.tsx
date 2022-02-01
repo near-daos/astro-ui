@@ -35,6 +35,8 @@ import { SputnikNearService } from 'services/sputnik';
 import {
   DEFAULT_PROPOSAL_GAS,
   DEFAULT_VOTE_GAS,
+  MAX_GAS,
+  MIN_GAS,
 } from 'services/sputnik/constants';
 
 import styles from './BountyCard.module.scss';
@@ -268,9 +270,9 @@ export const BountyCard: React.FC<BountyCardProps> = ({
                   }}
                   onClick={e => e.stopPropagation()}
                   type="number"
-                  min={100}
+                  min={MIN_GAS}
                   step={1}
-                  max={300}
+                  max={MAX_GAS}
                   isBorderless
                   size="block"
                   placeholder={`${DEFAULT_PROPOSAL_GAS}`}

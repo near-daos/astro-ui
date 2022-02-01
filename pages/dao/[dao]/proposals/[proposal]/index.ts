@@ -30,7 +30,17 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   if (!daoContext || !proposal) {
     return {
-      notFound: true,
+      props: {
+        ...(await serverSideTranslations(
+          locale,
+          ['common', 'notificationsPage'],
+          nextI18NextConfig
+        )),
+      },
+      redirect: {
+        permanent: true,
+        destination: `/dao/${daoId}/proposals`,
+      },
     };
   }
 
