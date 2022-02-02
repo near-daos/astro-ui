@@ -8,7 +8,7 @@ import { Button } from 'components/button/Button';
 import styles from './TimelineLegend.module.scss';
 
 export const TimelineLegend: FC = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   function renderContentItem(icon: IconName, label: string) {
     return (

@@ -23,42 +23,45 @@ interface DataRowProps {
   color?: string;
 }
 
-export const DataRow: FC<DataRowProps> = ({
-  data,
-  rangeColumns,
-  granularity,
-  minDate,
-  maxDate,
-  color,
-}) => {
-  return (
-    <div className={styles.dataColumns}>
-      {rangeColumns.map((columnDate, i) => {
-        const milestones = getMilestonesForDate(data, columnDate, granularity);
-        const isEndOfPeriod = isEndOfGranularityPeriod(columnDate, granularity);
+export const DataRow: FC<DataRowProps> = React.memo(
+  ({ data, rangeColumns, granularity, minDate, maxDate, color }) => {
+    return (
+      <div className={styles.dataColumns}>
+        {rangeColumns.map((columnDate, i) => {
+          const milestones = getMilestonesForDate(
+            data,
+            columnDate,
+            granularity
+          );
+          const isEndOfPeriod = isEndOfGranularityPeriod(
+            columnDate,
+            granularity
+          );
 
-        const showTrack =
-          minDate && maxDate && columnDate > minDate && columnDate < maxDate;
+          const showTrack =
+            minDate && maxDate && columnDate > minDate && columnDate < maxDate;
 
-        return (
-          <div
-            /* eslint-disable-next-line react/no-array-index-key */
-            key={i}
-            style={{ color }}
-            className={cn(styles.column, styles.dataColumn, {
-              [styles.showTrack]: showTrack,
-              [styles.lastColumn]: isEndOfPeriod,
-            })}
-          >
-            {milestones && milestones.length === 1 && (
-              <Milestone data={milestones[0]} color={milestones[0].color} />
-            )}
-            {milestones && milestones.length > 1 && (
-              <StackedMilestones data={milestones} />
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-};
+          return (
+            <div
+              /* eslint-disable-next-line react/no-array-index-key */
+              key={i}
+              data-milestone={milestones?.length > 0}
+              style={{ color }}
+              className={cn(styles.column, styles.dataColumn, {
+                [styles.showTrack]: showTrack,
+                [styles.lastColumn]: isEndOfPeriod,
+              })}
+            >
+              {milestones && milestones.length === 1 && (
+                <Milestone data={milestones[0]} color={milestones[0].color} />
+              )}
+              {milestones && milestones.length > 1 && (
+                <StackedMilestones data={milestones} />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+);

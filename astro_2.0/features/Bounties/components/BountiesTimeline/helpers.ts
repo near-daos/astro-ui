@@ -18,17 +18,44 @@ import {
   format,
   getDaysInMonth,
   isLastDayOfMonth,
+  isSameDay,
+  isSameHour,
   startOfDay,
   startOfHour,
   startOfMinute,
   startOfMonth,
 } from 'date-fns';
 import { toMillis } from 'utils/format';
-import { generateHslaColors } from 'astro_2.0/features/Bounties/components/BountiesTimeline/utils';
 
 const TOOLTIP_DATE_FORMAT = 'dd MMM, yyyy';
 
-const COLORS = generateHslaColors(100, 40, 30, 12);
+const COLORS = [
+  '#DC88F5',
+  '#89B1F9',
+  '#51BAD1',
+  '#EF7F31',
+  '#E43AE3',
+  '#57B99D',
+  '#D32C1F',
+  '#89B1F9',
+  '#A87F3D',
+  '#76140C',
+  '#D65B26',
+  '#B6BCC1',
+  '#EC5281',
+  '#EF87AA',
+  '#925EB1',
+  '#8060D9',
+  '#0038DF',
+  '#4581B2',
+  '#46A8EE',
+  '#65C978',
+  '#697683',
+];
+
+function getColor(index: number) {
+  return COLORS[index % COLORS.length];
+}
 
 function getClaimMilestones(
   claim: BountyClaim,
@@ -79,7 +106,7 @@ function prepareClaims(context: BountyContext) {
           _proposal.proposer === accountId && _proposal.status === 'InProgress'
       );
 
-      const milestones = getClaimMilestones(claim, COLORS[i], proposal);
+      const milestones = getClaimMilestones(claim, getColor(i), proposal);
 
       const sortedMilestones = milestones.slice().sort((a, b) => {
         if (a.date > b.date) {
@@ -100,7 +127,7 @@ function prepareClaims(context: BountyContext) {
         id: claim.id,
         milestones,
         title: claim.accountId,
-        color: COLORS[i],
+        color: getColor(i),
         minDate,
         maxDate,
       });
@@ -117,7 +144,7 @@ function prepareClaims(context: BountyContext) {
       id: proposal.id,
       milestones: [],
       title: proposal.proposer,
-      color: COLORS[claims.length + i],
+      color: getColor(claims.length + i),
     });
   });
 
@@ -354,33 +381,24 @@ export function getMilestonesForDate(
   date: Date,
   granularity: TimelineGranularity
 ): TimelineMilestone[] {
-  let dateFormat: string;
+  let compareFn = isSameDay;
 
   switch (granularity) {
-    case 'hour': {
-      dateFormat = 'dd_MM_yyyy HH:mm';
-
-      break;
-    }
     case 'day': {
-      dateFormat = 'dd_MM_yyyy HH';
+      compareFn = isSameHour;
 
       break;
     }
     default: {
-      dateFormat = 'dd_MM_yyyy';
+      compareFn = isSameDay;
 
       break;
     }
   }
 
-  const formattedDate = format(date, dateFormat);
-
   return (
     milestones?.filter(item => {
-      const formattedItemDate = format(item.date, dateFormat);
-
-      return formattedDate === formattedItemDate;
+      return compareFn(date, item.date);
     }) ?? []
   );
 }
