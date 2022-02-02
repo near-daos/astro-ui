@@ -42,9 +42,9 @@ export const ClaimRow: FC<ClaimRowProps> = ({
   // claimedByMe,
   completeHandler,
 }) => {
-  const { accountId, startTime } = data;
+  const { accountId, startTime, id } = data;
 
-  const proposal = doneProposals.find(item => item.proposer === accountId);
+  const proposal = doneProposals.find(item => item.bountyClaimId === id);
 
   const claimStartTime = toMillis(startTime);
   const deadline = toMillis(maxDeadline);

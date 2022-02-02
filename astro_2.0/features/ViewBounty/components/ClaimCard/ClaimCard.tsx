@@ -27,11 +27,9 @@ export const ClaimCard: FC<ClaimCardProps> = ({
   doneProposals,
   maxDeadline,
 }) => {
-  const { accountId, startTime } = data;
+  const { startTime, id } = data;
 
-  const proposal = doneProposals.find(
-    item => item.proposer === accountId && item.status === 'InProgress'
-  );
+  const proposal = doneProposals.find(item => item.bountyClaimId === id);
 
   const claimStartTime = toMillis(startTime);
   const deadline = toMillis(maxDeadline);

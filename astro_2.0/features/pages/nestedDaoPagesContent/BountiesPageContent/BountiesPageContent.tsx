@@ -3,7 +3,7 @@ import useQuery from 'hooks/useQuery';
 
 import { useAuthContext } from 'context/AuthContext';
 import { DaoContext } from 'types/context';
-import { BountyContext, BountyStatus } from 'types/bounties';
+import { BountyContext } from 'types/bounties';
 import { ProposalVariant } from 'types/proposal';
 import {
   ViewToggle,
@@ -14,7 +14,10 @@ import { Button } from 'components/button/Button';
 import { Dropdown } from 'components/Dropdown';
 import { BountiesTimeline } from 'astro_2.0/features/Bounties/components/BountiesTimeline';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
-import { BOUNTIES_PAGE_SORT_OPTIONS } from 'astro_2.0/features/Bounties/helpers';
+import {
+  BOUNTIES_PAGE_FILTER_OPTIONS,
+  BOUNTIES_PAGE_SORT_OPTIONS,
+} from 'astro_2.0/features/Bounties/helpers';
 
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
@@ -33,15 +36,14 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
 }) => {
   const { dao } = daoContext;
 
-  // const router = useRouter();
   const { accountId } = useAuthContext();
   const { tokens } = useDaoCustomTokens();
   const [activeView, setActiveView] = useState<ViewToggleOption>('list');
 
   const { query, updateQuery } = useQuery<{
-    bountyStatus: BountyStatus;
+    bountyFilter: string;
     bountySort: string;
-  }>();
+  }>({ shallow: false });
 
   function handleCreateProposal(
     bountyId: number,
@@ -74,9 +76,19 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
           <div className={styles.filter}>
             <span className={styles.filterLabel}>Sorting by:</span>
             <Dropdown
-              value={query.bountySort}
+              value={query.bountySort ?? BOUNTIES_PAGE_SORT_OPTIONS[0].value}
               onChange={val => updateQuery('bountySort', val)}
               options={BOUNTIES_PAGE_SORT_OPTIONS}
+            />
+          </div>
+          <div className={styles.filter}>
+            <span className={styles.filterLabel}>Filter:</span>
+            <Dropdown
+              value={
+                query.bountyFilter ?? BOUNTIES_PAGE_FILTER_OPTIONS[0].value
+              }
+              onChange={val => updateQuery('bountyFilter', val)}
+              options={BOUNTIES_PAGE_FILTER_OPTIONS}
             />
           </div>
         </div>

@@ -1,7 +1,9 @@
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 
-const useQuery = <T>(): {
+const useQuery = <T>(opt?: {
+  shallow: boolean;
+}): {
   query: T;
   updateQuery: <K extends keyof T>(key: K, value: T[K]) => void;
 } => {
@@ -18,12 +20,15 @@ const useQuery = <T>(): {
         delete nextQuery[key as string];
       }
 
+      const options = opt || {};
+
       replace({ query: nextQuery }, undefined, {
         shallow: true,
         scroll: false,
+        ...options,
       });
     },
-    [query, replace]
+    [opt, query, replace]
   );
 
   return { query: (query as unknown) as T, updateQuery };

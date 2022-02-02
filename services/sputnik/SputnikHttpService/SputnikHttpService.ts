@@ -799,20 +799,63 @@ class SputnikHttpServiceClass {
 
   public async getBountiesContext(
     daoId: string,
-    accountId?: string
+    accountId?: string,
+    query?: {
+      bountyFilter: string | null;
+      bountySort: string | null;
+    }
   ): Promise<BountyContext[]> {
-    const queryString = RequestQueryBuilder.create()
-      .setFilter({
-        field: 'daoId',
-        operator: '$eq',
-        value: daoId,
-      })
-      .query();
+    const queryBuilder = RequestQueryBuilder.create();
+
+    queryBuilder.setFilter({
+      field: 'daoId',
+      operator: '$eq',
+      value: daoId,
+    });
+
+    if (query?.bountyFilter) {
+      if (query.bountyFilter === 'proposer') {
+        queryBuilder.setFilter({
+          field: 'proposal.proposer',
+          operator: '$eq',
+          value: accountId,
+        });
+      }
+
+      if (query.bountyFilter === 'numberOfClaims') {
+        queryBuilder.setFilter({
+          field: 'bounty.numberOfClaims',
+          operator: '$eq',
+          value: 0,
+        });
+      }
+
+      if (query.bountyFilter === 'times') {
+        queryBuilder.setFilter({
+          field: 'bounty.times',
+          operator: '$eq',
+          value: 0,
+        });
+      }
+    }
+
+    const queryString = queryBuilder.query();
+
+    let sort = 'createdAt,DESC';
+
+    if (query?.bountySort) {
+      sort = query.bountySort;
+    }
 
     const { data } = await this.httpService.get<BountiesContextResponse>(
       `/bounty-contexts?${queryString}${
         accountId ? `&accountId=${accountId}` : ''
-      }`
+      }`,
+      {
+        params: {
+          sort,
+        },
+      }
     );
 
     return data.data;

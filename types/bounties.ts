@@ -91,6 +91,7 @@ export type BountyContext = {
 export type BountyProposal = {
   id: string;
   daoId: string;
+  bountyClaimId?: string;
   proposalId: number;
   createdAt: string;
   updatedAt: string;
