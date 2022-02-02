@@ -1,32 +1,22 @@
 import React, { FC, useCallback, useState } from 'react';
-import cn from 'classnames';
-import { format } from 'date-fns';
 
 import { BountyContext } from 'types/bounties';
 import {
-  formatColumnLabel,
   getGroupDateStart,
   getRangeColumns,
   getTimelineRange,
   getTopColumns,
   getTopColumnsWidth,
-  isEndOfGranularityPeriod,
   prepareTimelineDataset,
 } from 'astro_2.0/features/Bounties/components/BountiesTimeline/helpers';
-import { Icon } from 'components/Icon';
 import { DataRow } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/DataRow';
 import { TimelineLegend } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/TimelineLegend';
 import { TimelineRangeToggle } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/TimelineRangeToggle';
 import { TimelineGranularity } from 'astro_2.0/features/Bounties/components/BountiesTimeline/types';
+import { TimelineGroups } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/TimelineGroups';
+import { TimelineHeader } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/TimelineHeader';
 
 import styles from './BountiesTimeline.module.scss';
-
-// 1. Prepare dataset: TimelineGroup[];
-// 2. Get range: min and max date from all available data
-// 3. Build columns array: from min to max
-// 4. Build header and subheader
-// 5. Iterate groups and build rows using columns array
-// 6. Per each row find relevant milestones and put corresponding icon
 
 interface BountiesTimelineProps {
   data: BountyContext[];
@@ -68,76 +58,28 @@ export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
       </div>
       <div className={styles.root}>
         <div className={styles.content}>
-          <div className={styles.groups}>
-            <div className={styles.groupsHeader}>Name</div>
-            {dataset.map(group => {
-              return (
-                <>
-                  {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
-                  <div
-                    key={group.id}
-                    className={styles.group}
-                    onClick={() => toggleGroup(group.id)}
-                  >
-                    <div>
-                      <Icon
-                        className={styles.groupIcon}
-                        name={
-                          group.isOpen ? 'buttonArrowUp' : 'buttonArrowDown'
-                        }
-                      />
-                    </div>
-                    <div className={styles.groupName}>{group.name}</div>
-                  </div>
-                  {group.isOpen &&
-                    group.claims.length > 0 &&
-                    group.claims.map(claim => (
-                      <div key={claim.id} className={styles.group}>
-                        <div className={cn(styles.groupName, styles.claimName)}>
-                          {claim.title}
-                        </div>
-                      </div>
-                    ))}
-                </>
-              );
-            })}
-          </div>
+          <TimelineGroups dataset={dataset} toggleGroup={toggleGroup} />
           {topColumns.map(item => {
             const width = getTopColumnsWidth(item, granularity);
             const rangeColumns = getRangeColumns(item, granularity);
 
             return (
               <div
+                key={item.toISOString()}
                 className={styles.topColumn}
                 style={{ width, minWidth: width }}
               >
-                <div className={styles.topColumnLabel}>
-                  {format(item, 'dd MMM, yyyy')}
-                </div>
-                <div className={styles.subColumns}>
-                  {rangeColumns.map(columnDate => {
-                    const isEndOfPeriod = isEndOfGranularityPeriod(
-                      columnDate,
-                      granularity
-                    );
-
-                    return (
-                      <div
-                        className={cn(styles.column, styles.subColumn, {
-                          [styles.lastColumn]: isEndOfPeriod,
-                        })}
-                      >
-                        {formatColumnLabel(columnDate, granularity)}
-                      </div>
-                    );
-                  })}
-                </div>
+                <TimelineHeader
+                  item={item}
+                  rangeColumns={rangeColumns}
+                  granularity={granularity}
+                />
                 {dataset.map(group => {
                   const minDate = getGroupDateStart(group.minDate, granularity);
                   const maxDate = getGroupDateStart(group.maxDate, granularity);
 
                   return (
-                    <>
+                    <React.Fragment key={group.id}>
                       <DataRow
                         data={group.milestones}
                         rangeColumns={rangeColumns}
@@ -159,6 +101,7 @@ export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
 
                           return (
                             <DataRow
+                              key={claim.id}
                               color={claim.color}
                               data={claim.milestones}
                               rangeColumns={rangeColumns}
@@ -168,7 +111,7 @@ export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
                             />
                           );
                         })}
-                    </>
+                    </React.Fragment>
                   );
                 })}
               </div>

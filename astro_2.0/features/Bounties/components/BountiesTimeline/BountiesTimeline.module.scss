@@ -63,6 +63,7 @@
 
 .content {
   display: flex;
+  height: 100%;
   margin: 0 0 0 106px;
   overflow: scroll;
 }
@@ -112,7 +113,7 @@
 .subColumn::after {
   border-right: 1px solid var(--color-neutral-20);
   content: '';
-  height: 100%;
+  min-height: 444px;
   position: absolute;
   right: -1px;
   top: 0;
@@ -127,7 +128,7 @@
 .dataColumn::after {
   border-right: 1px solid var(--color-neutral-20);
   content: '';
-  height: 42px;
+  height: 58px;
   position: absolute;
   right: 0;
   top: -16px;
