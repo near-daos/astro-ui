@@ -39,10 +39,15 @@
 .group {
   @extend %caption2;
   align-items: center;
+  cursor: pointer;
   display: flex;
   height: 26px;
   margin: 16px 0;
   padding: 0 4px;
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
 }
 
 .groupIcon {
@@ -57,6 +62,7 @@
 .claimName {
   @extend %caption2;
   color: var(--color-neutral-60);
+  cursor: default;
   font-size: 10px;
   padding: 0 4px;
 }

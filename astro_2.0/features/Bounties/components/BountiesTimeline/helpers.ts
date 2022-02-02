@@ -8,7 +8,6 @@ import {
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import {
   addDays,
-  addMonths,
   eachDayOfInterval,
   eachHourOfInterval,
   eachMinuteOfInterval,
@@ -228,8 +227,8 @@ export function prepareTimelineDataset(data: BountyContext[]): TimelineGroup[] {
 }
 
 export function getTimelineRange(dataset: TimelineGroup[]): [Date, Date] {
-  let min: Date | null = new Date();
-  let max: Date | null = addMonths(min, 2);
+  let min: Date | null = null; // new Date();
+  let max: Date | null = null; // addMonths(min, 1);
 
   dataset.forEach(group => {
     group.milestones.forEach(milestone => {
@@ -248,7 +247,7 @@ export function getTimelineRange(dataset: TimelineGroup[]): [Date, Date] {
   }
 
   if (!max) {
-    max = addDays(min, 1);
+    max = addDays(min, 2);
   }
 
   return [min, max];
