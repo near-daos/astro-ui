@@ -1,8 +1,13 @@
 import React, { FC, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
 import cn from 'classnames';
+import { AnimatePresence, motion } from 'framer-motion';
+import { usePopper } from 'react-popper';
 import { useClickAway } from 'react-use';
+
 import { TimelineMilestone } from 'astro_2.0/features/Bounties/components/BountiesTimeline/types';
 import { Milestone } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/Milestone';
+
 import styles from './StackedMilestones.module.scss';
 
 interface StackedMilestonesProps {
@@ -14,10 +19,50 @@ export const StackedMilestones: FC<StackedMilestonesProps> = ({ data }) => {
   const withColor = data.find(item => item.color);
   const ref = useRef(null);
   const [open, setOpen] = useState(false);
+  const [referenceElement, setReferenceElement] = useState(null);
+  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
+    null
+  );
 
   useClickAway(ref, () => {
     setOpen(false);
   });
+
+  const { styles: popperStyles, attributes } = usePopper(
+    referenceElement,
+    popperElement
+  );
+
+  function renderResultsDropdown() {
+    if (typeof document === 'undefined') {
+      return null;
+    }
+
+    return ReactDOM.createPortal(
+      <AnimatePresence>
+        {open && (
+          <div
+            id="astro_search-results"
+            ref={setPopperElement}
+            style={{ ...popperStyles.popper, zIndex: 100 }}
+            {...attributes.popper}
+          >
+            <motion.div
+              className={styles.panel}
+              initial={{ opacity: 0, transform: 'translateY(40px)' }}
+              animate={{ opacity: 1, transform: 'translateY(0px)' }}
+              exit={{ opacity: 0 }}
+            >
+              {data.map(item => (
+                <Milestone data={item} className={styles.listItem} />
+              ))}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>,
+      document.body
+    );
+  }
 
   return (
     <div
@@ -37,13 +82,11 @@ export const StackedMilestones: FC<StackedMilestonesProps> = ({ data }) => {
       >
         {data.length}
       </div>
-      {open && (
-        <div className={styles.panel}>
-          {data.map(item => (
-            <Milestone data={item} className={styles.listItem} />
-          ))}
-        </div>
-      )}
+      <div
+        className={styles.anchor}
+        ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
+      />
+      {renderResultsDropdown()}
     </div>
   );
 };
