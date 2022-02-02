@@ -1,4 +1,11 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { BountyContext } from 'types/bounties';
 import {
@@ -6,7 +13,6 @@ import {
   getRangeColumns,
   getTimelineRange,
   getTopColumns,
-  getTopColumnsWidth,
   prepareTimelineDataset,
 } from 'astro_2.0/features/Bounties/components/BountiesTimeline/helpers';
 import { DataRow } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/DataRow';
@@ -23,11 +29,15 @@ interface BountiesTimelineProps {
 }
 
 export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
+  const contentRef = useRef<HTMLDivElement>(null);
   const [dataset, setDataset] = useState(() => prepareTimelineDataset(data));
-  const [min, max] = getTimelineRange(dataset);
   const [granularity, setGranularity] = useState<TimelineGranularity>('month');
-
-  const topColumns = getTopColumns(min, max, granularity);
+  const [min, max] = useMemo(() => getTimelineRange(dataset), [dataset]);
+  const topColumns = useMemo(() => getTopColumns(min, max, granularity), [
+    granularity,
+    max,
+    min,
+  ]);
 
   const toggleGroup = useCallback(
     groupId => {
@@ -47,27 +57,41 @@ export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
     [dataset]
   );
 
+  const toggleRange = useCallback(val => {
+    setGranularity(val);
+  }, []);
+
+  useEffect(() => {
+    // We want milestone to be visible on load
+    if (contentRef.current) {
+      const container = contentRef.current;
+      const milestone = document.querySelector(
+        '[data-milestone]'
+      ) as HTMLDivElement;
+
+      if (milestone && container) {
+        container.scrollLeft = milestone.offsetLeft + 64;
+      }
+    }
+  }, []);
+
   return (
     <>
       <div className={styles.timelineControls}>
         <TimelineLegend />
-        <TimelineRangeToggle
-          onChange={val => setGranularity(val)}
-          selected={granularity}
-        />
+        <TimelineRangeToggle onChange={toggleRange} selected={granularity} />
       </div>
       <div className={styles.root}>
-        <div className={styles.content}>
+        <div className={styles.content} ref={contentRef}>
           <TimelineGroups dataset={dataset} toggleGroup={toggleGroup} />
-          {topColumns.map(item => {
-            const width = getTopColumnsWidth(item, granularity);
+          {topColumns.map((item, i) => {
             const rangeColumns = getRangeColumns(item, granularity);
 
             return (
               <div
-                key={item.toISOString()}
+                /* eslint-disable-next-line react/no-array-index-key */
+                key={i}
                 className={styles.topColumn}
-                style={{ width, minWidth: width }}
               >
                 <TimelineHeader
                   item={item}

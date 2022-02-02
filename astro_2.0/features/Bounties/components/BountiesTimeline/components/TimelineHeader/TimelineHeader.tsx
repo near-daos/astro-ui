@@ -28,7 +28,7 @@ export const TimelineHeader: FC<TimelineHeaderProps> = ({
     <React.Fragment key={title}>
       <div className={styles.topColumnLabel}>{title}</div>
       <div className={styles.subColumns}>
-        {rangeColumns.map(columnDate => {
+        {rangeColumns.map((columnDate, i) => {
           const isEndOfPeriod = isEndOfGranularityPeriod(
             columnDate,
             granularity
@@ -38,9 +38,10 @@ export const TimelineHeader: FC<TimelineHeaderProps> = ({
 
           return (
             <div
-              key={columnDate.toISOString()}
+              /* eslint-disable-next-line react/no-array-index-key */
+              key={i}
               className={cn(styles.column, styles.subColumn, {
-                [styles.lastColumn]: isEndOfPeriod,
+                [styles.lastHeaderColumn]: isEndOfPeriod,
               })}
             >
               {columnTitle}

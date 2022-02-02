@@ -42,7 +42,7 @@ export const StackedMilestones: FC<StackedMilestonesProps> = ({ data }) => {
       <AnimatePresence>
         {open && (
           <div
-            id="astro_search-results"
+            id="astro_timeline-popup"
             ref={setPopperElement}
             style={{ ...popperStyles.popper, zIndex: 100 }}
             {...attributes.popper}
