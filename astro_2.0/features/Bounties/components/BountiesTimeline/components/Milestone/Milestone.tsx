@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 import { TimelineMilestone } from 'astro_2.0/features/Bounties/components/BountiesTimeline/types';
 import { Icon, IconName } from 'components/Icon';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
 
 import styles from './Milestone.module.scss';
 
@@ -67,11 +68,17 @@ export const Milestone: FC<MilestoneProps> = ({
   return (
     <div className={cn(styles.root, className)}>
       {icon && (
-        <Icon
-          name={icon}
-          className={styles.icon}
-          style={{ color: iconColor }}
-        />
+        <Tooltip
+          placement="right"
+          popupClassName={styles.popupWrapper}
+          overlay={<div className={styles.tooltip}>{data.tooltip}</div>}
+        >
+          <Icon
+            name={icon}
+            className={styles.icon}
+            style={{ color: iconColor }}
+          />
+        </Tooltip>
       )}
     </div>
   );

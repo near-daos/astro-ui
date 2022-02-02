@@ -20,6 +20,7 @@ interface DataRowProps {
   granularity: TimelineGranularity;
   minDate: Date | null;
   maxDate: Date | null;
+  color?: string;
 }
 
 export const DataRow: FC<DataRowProps> = ({
@@ -28,6 +29,7 @@ export const DataRow: FC<DataRowProps> = ({
   granularity,
   minDate,
   maxDate,
+  color,
 }) => {
   return (
     <div className={styles.dataColumns}>
@@ -42,6 +44,7 @@ export const DataRow: FC<DataRowProps> = ({
           <div
             /* eslint-disable-next-line react/no-array-index-key */
             key={i}
+            style={{ color }}
             className={cn(styles.column, styles.dataColumn, {
               [styles.showTrack]: showTrack,
               [styles.lastColumn]: isEndOfPeriod,

@@ -10,10 +10,14 @@ import {
   getTimelineRange,
   getTopColumns,
   getTopColumnsWidth,
+  isEndOfGranularityPeriod,
   prepareTimelineDataset,
 } from 'astro_2.0/features/Bounties/components/BountiesTimeline/helpers';
 import { Icon } from 'components/Icon';
 import { DataRow } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/DataRow';
+import { TimelineLegend } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/TimelineLegend';
+import { TimelineRangeToggle } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/TimelineRangeToggle';
+import { TimelineGranularity } from 'astro_2.0/features/Bounties/components/BountiesTimeline/types';
 
 import styles from './BountiesTimeline.module.scss';
 
@@ -31,7 +35,7 @@ interface BountiesTimelineProps {
 export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
   const [dataset, setDataset] = useState(() => prepareTimelineDataset(data));
   const [min, max] = getTimelineRange(dataset);
-  const granularity = 'month';
+  const [granularity, setGranularity] = useState<TimelineGranularity>('month');
 
   const topColumns = getTopColumns(min, max, granularity);
 
@@ -54,103 +58,124 @@ export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
   );
 
   return (
-    <div className={styles.root}>
-      <div className={styles.content}>
-        <div className={styles.groups}>
-          <div className={styles.groupsHeader}>Name</div>
-          {dataset.map(group => {
-            return (
-              <>
-                {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
-                <div
-                  key={group.id}
-                  className={styles.group}
-                  onClick={() => toggleGroup(group.id)}
-                >
-                  <div>
-                    <Icon
-                      className={styles.groupIcon}
-                      name={group.isOpen ? 'buttonArrowUp' : 'buttonArrowDown'}
-                    />
+    <>
+      <div className={styles.timelineControls}>
+        <TimelineLegend />
+        <TimelineRangeToggle
+          onChange={val => setGranularity(val)}
+          selected={granularity}
+        />
+      </div>
+      <div className={styles.root}>
+        <div className={styles.content}>
+          <div className={styles.groups}>
+            <div className={styles.groupsHeader}>Name</div>
+            {dataset.map(group => {
+              return (
+                <>
+                  {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
+                  <div
+                    key={group.id}
+                    className={styles.group}
+                    onClick={() => toggleGroup(group.id)}
+                  >
+                    <div>
+                      <Icon
+                        className={styles.groupIcon}
+                        name={
+                          group.isOpen ? 'buttonArrowUp' : 'buttonArrowDown'
+                        }
+                      />
+                    </div>
+                    <div className={styles.groupName}>{group.name}</div>
                   </div>
-                  <div className={styles.groupName}>{group.name}</div>
-                </div>
-                {group.isOpen &&
-                  group.claims.length > 0 &&
-                  group.claims.map(claim => (
-                    <div key={claim.id} className={styles.group}>
-                      <div className={cn(styles.groupName, styles.claimName)}>
-                        {claim.title}
+                  {group.isOpen &&
+                    group.claims.length > 0 &&
+                    group.claims.map(claim => (
+                      <div key={claim.id} className={styles.group}>
+                        <div className={cn(styles.groupName, styles.claimName)}>
+                          {claim.title}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-              </>
-            );
-          })}
-        </div>
-        {topColumns.map(item => {
-          const width = getTopColumnsWidth(item, granularity);
-          const rangeColumns = getRangeColumns(item, granularity);
+                    ))}
+                </>
+              );
+            })}
+          </div>
+          {topColumns.map(item => {
+            const width = getTopColumnsWidth(item, granularity);
+            const rangeColumns = getRangeColumns(item, granularity);
 
-          return (
-            <div
-              className={styles.topColumn}
-              style={{ width, minWidth: width }}
-            >
-              <div className={styles.topColumnLabel}>
-                {format(item, 'dd MMM, yyyy')}
-              </div>
-              <div className={styles.subColumns}>
-                {rangeColumns.map(columnDate => {
+            return (
+              <div
+                className={styles.topColumn}
+                style={{ width, minWidth: width }}
+              >
+                <div className={styles.topColumnLabel}>
+                  {format(item, 'dd MMM, yyyy')}
+                </div>
+                <div className={styles.subColumns}>
+                  {rangeColumns.map(columnDate => {
+                    const isEndOfPeriod = isEndOfGranularityPeriod(
+                      columnDate,
+                      granularity
+                    );
+
+                    return (
+                      <div
+                        className={cn(styles.column, styles.subColumn, {
+                          [styles.lastColumn]: isEndOfPeriod,
+                        })}
+                      >
+                        {formatColumnLabel(columnDate, granularity)}
+                      </div>
+                    );
+                  })}
+                </div>
+                {dataset.map(group => {
+                  const minDate = getGroupDateStart(group.minDate, granularity);
+                  const maxDate = getGroupDateStart(group.maxDate, granularity);
+
                   return (
-                    <div className={cn(styles.column, styles.subColumn)}>
-                      {formatColumnLabel(columnDate, granularity)}
-                    </div>
+                    <>
+                      <DataRow
+                        data={group.milestones}
+                        rangeColumns={rangeColumns}
+                        granularity={granularity}
+                        minDate={minDate}
+                        maxDate={maxDate}
+                      />
+                      {group.isOpen &&
+                        group.claims.length > 0 &&
+                        group.claims.map(claim => {
+                          const claimMinDate = getGroupDateStart(
+                            claim.minDate,
+                            granularity
+                          );
+                          const claimMaxDate = getGroupDateStart(
+                            claim.maxDate,
+                            granularity
+                          );
+
+                          return (
+                            <DataRow
+                              color={claim.color}
+                              data={claim.milestones}
+                              rangeColumns={rangeColumns}
+                              granularity={granularity}
+                              minDate={claimMinDate}
+                              maxDate={claimMaxDate}
+                            />
+                          );
+                        })}
+                    </>
                   );
                 })}
               </div>
-              {dataset.map(group => {
-                const minDate = getGroupDateStart(group.minDate, granularity);
-                const maxDate = getGroupDateStart(group.maxDate, granularity);
-
-                return (
-                  <>
-                    <DataRow
-                      data={group.milestones}
-                      rangeColumns={rangeColumns}
-                      granularity={granularity}
-                      minDate={minDate}
-                      maxDate={maxDate}
-                    />
-                    {group.isOpen &&
-                      group.claims.length > 0 &&
-                      group.claims.map(claim => {
-                        const claimMinDate = getGroupDateStart(
-                          claim.minDate,
-                          granularity
-                        );
-                        const claimMaxDate = getGroupDateStart(
-                          claim.maxDate,
-                          granularity
-                        );
-
-                        return (
-                          <DataRow
-                            data={claim.milestones}
-                            rangeColumns={rangeColumns}
-                            granularity={granularity}
-                            minDate={claimMinDate}
-                            maxDate={claimMaxDate}
-                          />
-                        );
-                      })}
-                  </>
-                );
-              })}
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };

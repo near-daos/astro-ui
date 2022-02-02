@@ -1,0 +1,31 @@
+@import 'styles/mixins';
+
+.root {
+  align-items: center;
+  border: 1px solid var(--color-neutral-40);
+  border-radius: 4px;
+  display: flex;
+  height: 40px;
+  justify-content: space-around;
+  width: 81px;
+}
+
+.btn.btn {
+  @include centralize;
+  width: 40px;
+
+  &[disabled] {
+    opacity: 0.5;
+  }
+}
+
+.divider {
+  border-right: 1px solid var(--color-neutral-40);
+  height: 100%;
+  width: 1px;
+}
+
+.icon {
+  color: var(--color-neutral-80);
+  width: 24px;
+}
