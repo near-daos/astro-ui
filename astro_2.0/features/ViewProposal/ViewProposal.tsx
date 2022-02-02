@@ -122,7 +122,8 @@ export const ViewProposal: FC<CreateProposalProps> = ({
               }}
             >
               <ProposalComments
-                proposalId={proposal.id}
+                contextId={proposal.id}
+                contextType="Proposal"
                 isCouncilUser={isCouncilUser}
                 isCommentsAllowed
                 updateCommentsCount={setCommentsCount}

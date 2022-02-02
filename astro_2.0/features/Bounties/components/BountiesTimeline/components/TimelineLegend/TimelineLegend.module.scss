@@ -1,0 +1,69 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  border-radius: 8px;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.control {
+  @include centralize;
+  border: 1px solid var(--color-neutral-40);
+  border-radius: 8px;
+  color: var(--color-neutral-80);
+
+  cursor: pointer;
+  height: 40px;
+  padding: 9px;
+  width: 40px;
+
+  &.open {
+    border-radius: 8px 0 0 8px;
+  }
+}
+
+.icon {
+  align-items: center;
+  display: flex;
+  height: 16px;
+  transform: rotate(180deg);
+  width: 16px;
+
+  &.open {
+    transform: rotate(0);
+  }
+}
+
+.content {
+  border-bottom: 1px solid var(--color-neutral-40);
+  border-radius: 0 8px 8px 0;
+  border-right: 1px solid var(--color-neutral-40);
+  border-top: 1px solid var(--color-neutral-40);
+  display: flex;
+  height: 40px;
+}
+
+.iconWrapper {
+  align-items: center;
+  display: flex;
+  padding: 8px 0;
+
+  &:first-of-type {
+    padding-left: 14px;
+  }
+
+  &:last-of-type {
+    padding-right: 14px;
+  }
+
+  &:not(:last-of-type) {
+    margin-right: 14px;
+  }
+}
+
+.label {
+  @extend %caption2;
+  margin-left: 6px;
+}

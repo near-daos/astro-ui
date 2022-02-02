@@ -1,9 +1,18 @@
 import Decimal from 'decimal.js';
-import { format } from 'date-fns';
+import { format, formatDistance } from 'date-fns';
 
 import { YOKTO_NEAR } from 'services/sputnik/constants';
 import { DATE_TIME_FORMAT } from 'constants/timeConstants';
 import BN from 'bn.js';
+
+export const toMillis = (timePeriod: string): number =>
+  Math.round(Number(timePeriod) / 1000000);
+
+export const getDistanceFromNow = (timePeriod: string): string => {
+  return formatDistance(new Date(toMillis(timePeriod)), 0, {
+    addSuffix: false,
+  });
+};
 
 export function formatYoktoValue(value: string, divider?: number): string {
   if (!value) {

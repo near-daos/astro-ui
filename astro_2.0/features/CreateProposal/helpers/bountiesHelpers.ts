@@ -24,7 +24,7 @@ export function getCompleteBountyProposal(
   externalUrl: string,
   target: string,
   bond: string,
-  bountyId?: string
+  bountyId?: number
 ): CreateProposalParams {
   const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 

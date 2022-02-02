@@ -153,8 +153,8 @@ export class SputnikDaoService {
 
   public unclaimBounty(
     daoId: string,
-    bountyId: string,
-    gas: string | number
+    bountyId: number,
+    gas?: string | number
   ): Promise<FinalExecutionOutcome> {
     return this.functionCall({
       methodName: 'bounty_giveup',

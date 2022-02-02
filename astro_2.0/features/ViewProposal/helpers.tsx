@@ -28,7 +28,6 @@ import { RemoveMemberFromGroupContent } from 'astro_2.0/features/ViewProposal/co
 import { CustomFunctionCallContent } from 'astro_2.0/features/ViewProposal/components/CustomFunctionCallContent';
 import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/ViewProposal//components/ChangeDaoLegalInfoContent';
 
-import { getDistanceFromNow } from 'astro_2.0/components/BountyCard/helpers';
 import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
 import { parseISO } from 'date-fns';
 

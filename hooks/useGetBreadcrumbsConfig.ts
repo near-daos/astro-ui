@@ -8,9 +8,12 @@ import {
   ALL_PROPOSALS_PAGE_URL,
   SINGLE_PROPOSAL_PAGE_URL,
   TREASURY_PAGE_URL,
+  SINGLE_BOUNTY_PAGE_URL,
+  ALL_BOUNTIES_PAGE_URL,
 } from 'constants/routing';
 import { UrlObject } from 'url';
 import { Proposal } from 'types/proposal';
+import { Bounty } from 'types/bounties';
 
 type GroupConfig = {
   id: string;
@@ -29,7 +32,8 @@ export function useGetBreadcrumbsConfig(
   daoId: string,
   daoDisplayName: string,
   group?: GroupConfig,
-  proposal?: Pick<Proposal, 'id'>
+  proposal?: Pick<Proposal, 'id'>,
+  bounty?: Bounty
 ): Breadcrumbs {
   const { t } = useTranslation();
 
@@ -79,6 +83,25 @@ export function useGetBreadcrumbsConfig(
       BOUNTIES: {
         label: 'Bounties',
       },
+      ALL_BOUNTIES_PAGE_URL: {
+        href: {
+          pathname: ALL_BOUNTIES_PAGE_URL,
+          query: {
+            dao: daoId,
+          },
+        },
+        label: t('bounties'),
+      },
+      SINGLE_BOUNTY_PAGE_URL: {
+        href: {
+          pathname: SINGLE_BOUNTY_PAGE_URL,
+          query: {
+            dao: daoId,
+            bounty: bounty?.id,
+          },
+        },
+        label: bounty?.id ?? '',
+      },
       GROUPS: {
         href: {
           pathname: GROUPS_PAGE_URL,
@@ -103,7 +126,15 @@ export function useGetBreadcrumbsConfig(
         label: t('daoDetailsMinimized.createGovernanceToken'),
       },
     };
-  }, [t, daoId, daoDisplayName, proposal?.id, group?.id, group?.label]);
+  }, [
+    t,
+    daoId,
+    daoDisplayName,
+    proposal?.id,
+    bounty?.id,
+    group?.id,
+    group?.label,
+  ]);
 
   return breadcrumbs;
 }

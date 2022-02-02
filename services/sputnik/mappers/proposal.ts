@@ -12,13 +12,13 @@ import {
   DaoConfig,
   ProposalFeedItem,
 } from 'types/proposal';
-import { toMillis } from 'astro_2.0/components/BountyCard/helpers';
 import {
   DaoDTO,
   fromBase64ToMetadata,
   mapDaoDTOtoDao,
 } from 'services/sputnik/mappers/dao';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { toMillis } from 'utils/format';
 
 import { getAwsImageUrl } from './utils/getAwsImageUrl';
 
@@ -53,7 +53,14 @@ export interface GetProposalsResponse {
   data: ProposalDTO[];
 }
 
-function getVotesStatistic(proposal: Pick<ProposalDTO, 'votes'>) {
+export function getVotesStatistic(
+  proposal: Pick<ProposalDTO, 'votes'>
+): {
+  voteYes: number;
+  voteNo: number;
+  voteRemove: number;
+  votes: Record<string, VoteState>;
+} {
   const result = {
     voteYes: 0,
     voteNo: 0,
@@ -105,7 +112,7 @@ export const mapProposalDTOToProposal = (
   ] = proposalDTO.description.split(EXTERNAL_LINK_SEPARATOR);
 
   const config = get(proposalDTO.dao, 'config');
-  const meta = config.metadata ? fromBase64ToMetadata(config.metadata) : null;
+  const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
 
   const votePeriodEnd = new Date(
     toMillis(proposalDTO.votePeriodEnd)

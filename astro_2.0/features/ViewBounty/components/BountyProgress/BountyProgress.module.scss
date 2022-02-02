@@ -1,0 +1,60 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 48px 24px;
+  position: relative;
+  width: 100%;
+}
+
+.link {
+  flex: 1;
+  height: 4px;
+
+  &.pending {
+    background-image: linear-gradient(
+      to right,
+      var(--color-neutral-60) 50%,
+      rgba(255, 255, 255, 0) 0%
+    );
+    background-position: center;
+    background-repeat: repeat-x;
+    background-size: 16px 1px;
+  }
+
+  &.completed {
+    border-bottom: 4px solid var(--color-success-50);
+    height: 4px;
+  }
+}
+
+.node {
+  @include centralize;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+
+  &.pending {
+    border: 1px solid var(--color-black);
+  }
+
+  &.completed {
+    background-color: var(--color-success-50);
+  }
+}
+
+.nodeLabel {
+  @extend %body2;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 24px;
+  white-space: nowrap;
+}
+
+.icon {
+  width: 16px;
+}

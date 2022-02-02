@@ -1,0 +1,66 @@
+.root {
+  flex: 1;
+  height: 4px;
+  margin-left: -12px;
+  margin-right: -13px;
+  position: relative;
+
+  &.dashed {
+    background-position: center;
+    background-repeat: repeat-x;
+    background-size: 16px 1px;
+  }
+
+  &.solid {
+    border-bottom-style: solid;
+    border-bottom-width: 4px;
+    height: 4px;
+  }
+}
+
+.indicator::after {
+  border-radius: 50%;
+  content: '';
+  height: 10px;
+  position: absolute;
+  right: -5px;
+  top: -3px;
+  width: 10px;
+  z-index: 1;
+}
+
+.comingSoon {
+  background-image: linear-gradient(
+    to right,
+    var(--color-black) 50%,
+    rgba(255, 255, 255, 0) 0%
+  );
+  border-color: var(--color-black);
+  &::after {
+    background-color: var(--color-black);
+  }
+}
+
+.available {
+  background-image: linear-gradient(
+    to right,
+    var(--color-brand-coral-red) 50%,
+    rgba(255, 255, 255, 0) 0%
+  );
+  border-color: var(--color-brand-coral-red);
+  &::after {
+    background-color: var(--color-brand-coral-red);
+  }
+}
+
+.inProgress {
+  background-image: linear-gradient(
+    to right,
+    var(--color-brand-purple) 50%,
+    rgba(255, 255, 255, 0) 0%
+  );
+  border-color: var(--color-brand-purple);
+  &::after {
+    background-color: var(--color-brand-purple);
+  }
+}

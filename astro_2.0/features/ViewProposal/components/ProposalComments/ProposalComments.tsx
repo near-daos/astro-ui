@@ -12,17 +12,21 @@ import { Button } from 'components/button/Button';
 import { IconButton } from 'components/button/IconButton';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
+import { CommentContextType } from 'types/proposal';
+
 import styles from './ProposalComments.module.scss';
 
 interface ProposalCommentsProps {
-  proposalId: string;
+  contextType: CommentContextType;
+  contextId: string;
   isCouncilUser: boolean;
   isCommentsAllowed: boolean;
   updateCommentsCount: (val: number) => void;
 }
 
 export const ProposalComments: FC<ProposalCommentsProps> = ({
-  proposalId,
+  contextType,
+  contextId,
   isCouncilUser,
   isCommentsAllowed,
   updateCommentsCount,
@@ -41,7 +45,7 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
     sendComment,
     reportComment,
     deleteComment,
-  } = useProposalComments(proposalId);
+  } = useProposalComments(contextId, contextType);
 
   const handleCommentInput = useCallback(e => {
     const { value: newValue } = e.target;
@@ -57,12 +61,12 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
     }
 
     sendComment({
-      contextId: proposalId,
-      contextType: 'Proposal',
+      contextId,
+      contextType,
       message: value.trim(),
     });
     setValue('');
-  }, [proposalId, sendComment, value]);
+  }, [contextId, contextType, sendComment, value]);
 
   const handleKeyUp = useCallback(
     e => {

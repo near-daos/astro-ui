@@ -114,7 +114,9 @@ exports[`Proposal Card Should render component 1`] = `
       <form
         class=""
       >
-        <span>
+        <span
+          class=""
+        >
           <button
             class=""
             disabled=""
@@ -130,7 +132,9 @@ exports[`Proposal Card Should render component 1`] = `
             0
           </span>
         </span>
-        <span>
+        <span
+          class=""
+        >
           <button
             class=""
             disabled=""
@@ -146,7 +150,9 @@ exports[`Proposal Card Should render component 1`] = `
             0
           </span>
         </span>
-        <span>
+        <span
+          class=""
+        >
           <button
             class=""
             type="button"

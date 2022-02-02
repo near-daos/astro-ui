@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { IconName } from 'components/Icon';
 import { IconButton } from 'components/button/IconButton';
@@ -7,13 +7,14 @@ import { IconButton } from 'components/button/IconButton';
 import styles from './ProposalControlButton.module.scss';
 
 interface ProposalControlButtonProps {
-  times: number | string;
+  times: number | string | ReactNode;
   icon: IconName;
   voted?: boolean;
   disabled: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   iconClassName?: string;
   type: 'submit' | 'button';
+  className?: string;
 }
 
 export const ProposalControlButton: React.FC<ProposalControlButtonProps> = ({
@@ -24,6 +25,7 @@ export const ProposalControlButton: React.FC<ProposalControlButtonProps> = ({
   type,
   onClick,
   iconClassName = '',
+  className = '',
 }) => {
   const statusClassName = cn({
     [styles.yesAvailable]: icon === 'votingYes' && !voted && !disabled,
@@ -32,7 +34,7 @@ export const ProposalControlButton: React.FC<ProposalControlButtonProps> = ({
   });
 
   return (
-    <span className={styles.item}>
+    <span className={cn(styles.item, className)}>
       <IconButton
         icon={icon}
         type={type}

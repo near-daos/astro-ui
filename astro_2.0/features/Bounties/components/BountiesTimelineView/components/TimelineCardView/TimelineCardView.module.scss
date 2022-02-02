@@ -1,0 +1,40 @@
+.root {
+  box-shadow: 3px 2px 24px var(----color-black-opacity-1);
+  display: flex;
+  height: 100%;
+  min-height: 122px;
+  width: 100%;
+
+  .status {
+    border-radius: 8px 0 0 8px;
+    height: auto;
+    width: 8px;
+  }
+
+  .comingSoon {
+    background-color: var(--color-neutral-40);
+  }
+
+  .available {
+    background-color: var(--color-pastel-lightorange);
+  }
+
+  .body {
+    background-color: var(--color-white);
+    border-radius: 0 8px 8px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 12px 20px;
+    width: 100%;
+  }
+
+  .content {
+    margin-bottom: 12px;
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: row;
+  }
+}

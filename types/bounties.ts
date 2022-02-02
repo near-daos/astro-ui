@@ -1,3 +1,5 @@
+import { ProposalKind } from 'types/proposal';
+
 export interface BountyResponse {
   bountyId: string;
   description: string;
@@ -10,10 +12,15 @@ export interface BountyResponse {
     };
   };
   bountyClaims: BountyClaimResponse[];
+  proposalId: string;
   token: string;
   amount: string;
   maxDeadline: string;
   numberOfClaims: number;
+}
+
+export interface BountiesContextResponse {
+  data: BountyContext[];
 }
 
 export interface BountyClaimResponse {
@@ -29,11 +36,13 @@ export interface BountiesResponse {
 }
 
 export enum BountyStatus {
-  Available = 'Available',
-  InProgress = 'InProgress',
-  InProgressByMe = 'InProgressByMe',
-  Expired = 'Expired',
-  PendingApproval = 'PendingApproval',
+  Proposed,
+  Available,
+  InProgress,
+  Expired,
+  PendingApproval,
+  Completed,
+  Unknown,
 }
 
 export type ClaimedBy = {
@@ -47,15 +56,60 @@ export type BountyType = 'Passed' | 'Expired';
 export type DeadlineUnit = 'day' | 'week' | 'month';
 
 export type Bounty = {
+  bountyId: number;
+  createdAt: string;
+  proposalId: string;
+  daoId: string;
+  token: string;
+  times: string;
+  maxDeadline: string;
+  numberOfClaims: number;
+  bountyClaims: BountyClaim[];
+  bountyDoneProposals: BountyProposal[];
   id: string;
-  tokenId: string;
   amount: string;
   description: string;
-  forgivenessPeriod: string;
-  externalUrl?: string;
-  slots: number;
-  slotsTotal: number;
-  claimedBy: ClaimedBy[];
-  deadlineThreshold: string;
-  completionDate?: string;
+};
+
+export type BountyClaim = {
+  id: string;
+  accountId: string;
+  startTime: string;
+  deadline: string;
+  completed: boolean;
+  endTime: string;
+};
+
+export type BountyContext = {
+  id: string;
+  daoId: string;
+  proposal: BountyProposal;
+  bounty: Bounty;
+  commentsCount: number;
+};
+
+export type BountyProposal = {
+  id: string;
+  daoId: string;
+  proposalId: number;
+  createdAt: string;
+  updatedAt: string;
+  description: string;
+  votes: {
+    [key: string]: 'Approve' | 'Reject' | 'Remove';
+  };
+  voteYes: number;
+  voteNo: number;
+  voteRemove: number;
+  proposer: string;
+  status: string;
+  voteStatus: string;
+  kind: ProposalKind;
+  votePeriodEnd: string;
+  permissions: {
+    canApprove: boolean;
+    canReject: boolean;
+    canDelete: boolean;
+    isCouncil: boolean;
+  };
 };

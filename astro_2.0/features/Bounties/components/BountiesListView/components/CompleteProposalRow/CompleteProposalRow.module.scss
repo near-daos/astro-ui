@@ -1,0 +1,179 @@
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  display: flex;
+  justify-content: flex-start;
+  position: relative;
+  width: 100%;
+
+  &:not(:last-of-type) {
+    margin-bottom: 8px;
+  }
+}
+
+.root::before {
+  background-color: transparent;
+  border-bottom: 1px solid var(--color-neutral-40);
+  border-left: 1px solid var(--color-neutral-40);
+  border-radius: 0 0 0 8px;
+  content: '';
+  height: 24px;
+  left: -20px;
+  position: absolute;
+  top: 4px;
+  width: 20px;
+}
+
+.legend {
+  border-radius: 50%;
+  height: 8px;
+  margin: 24px 12px;
+  width: 8px;
+}
+
+.root.inProgress {
+  .legend {
+    background-color: var(--color-primary-50);
+  }
+
+  .progress .bar {
+    background-color: var(--color-primary-50);
+  }
+
+  .status {
+    color: var(--color-primary-50);
+  }
+}
+
+.root.approved {
+  .legend {
+    background-color: var(--color-success-50);
+  }
+
+  .progress .bar {
+    background-color: var(--color-success-50);
+  }
+
+  .status {
+    color: var(--color-success-50);
+  }
+}
+
+.root.pending {
+  .legend {
+    background-color: var(--color-error-40);
+  }
+
+  .progress .bar {
+    background-color: var(--color-error-40);
+  }
+
+  .icon {
+    color: var(--color-error-40);
+  }
+
+  .status {
+    color: var(--color-error-40);
+  }
+}
+
+.root.rejected {
+  .legend {
+    background-color: var(--color-error-70);
+  }
+
+  .progress .bar {
+    background-color: var(--color-error-70);
+  }
+
+  .status {
+    color: var(--color-error-70);
+  }
+}
+
+.person {
+  overflow: hidden;
+  padding: 8px 12px 8px 0;
+  width: 200px;
+
+  .label {
+    @extend %caption1;
+    color: var(--color-neutral-60);
+    margin-bottom: 4px;
+  }
+
+  .value {
+    @extend %caption1;
+    @include ellipse-text;
+    color: var(--color-black);
+  }
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px 12px;
+  width: 194px;
+
+  .icon {
+    width: 16px;
+  }
+
+  .progress {
+    background-color: var(--color-neutral-40);
+    border-radius: 80px;
+    height: 8px;
+    margin: 4px 0;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .progress .bar {
+    border-radius: 80px;
+    height: 100%;
+
+    width: 60%;
+  }
+
+  .dates {
+    align-items: center;
+    color: var(--color-brand-black);
+    display: flex;
+    font-size: 12px;
+    font-weight: 600;
+    justify-content: space-between;
+    line-height: 18px;
+    white-space: nowrap;
+  }
+
+  .dates > span:last-child {
+    margin-left: 12px;
+    white-space: nowrap;
+  }
+}
+
+.status {
+  @extend %caption1;
+  align-items: center;
+  color: var(--color-brand-black);
+  display: flex;
+
+  margin-left: 48px;
+
+  .proposalLink {
+    margin-left: 8px;
+    transform: translateY(-2px);
+  }
+
+  .proposalLink .icon {
+    width: 16px;
+  }
+}
+
+.controls {
+  margin-left: auto;
+  padding: 8px;
+}

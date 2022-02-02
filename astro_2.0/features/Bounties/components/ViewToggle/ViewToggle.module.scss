@@ -1,0 +1,28 @@
+.root {
+  align-items: center;
+  display: flex;
+}
+
+.buttonWrapper {
+  align-items: center;
+  border: 1px solid var(--color-neutral-50);
+  border-radius: 0 4px 4px 0;
+  display: flex;
+  justify-content: center;
+  min-width: 24px;
+  padding: 7.5px;
+
+  &.first {
+    border-radius: 4px 0 0 4px;
+    border-right-width: 0;
+  }
+}
+
+.button {
+  color: var(--color-primary-30);
+  width: 24px;
+}
+
+.active {
+  color: var(--color-primary-50);
+}

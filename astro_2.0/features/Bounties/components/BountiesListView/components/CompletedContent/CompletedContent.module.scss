@@ -1,0 +1,23 @@
+@import 'styles/typography';
+
+.root {
+  .slotsWrapper {
+    display: inline-block;
+    width: 40px;
+  }
+
+  .slot {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+  }
+
+  .slotActive {
+    @extend %body1;
+    font-weight: 500;
+  }
+}
+
+.claimsButton {
+  margin-left: 24px;
+  text-transform: capitalize;
+}

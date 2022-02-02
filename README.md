@@ -16,7 +16,7 @@ Astro is a platform for launching Decentralized Autonomous Organizations. DAOs a
 - Core programming language: **[TypeScript](https://www.typescriptlang.org/)**
 - Application framework: **[NextJS](https://nextjs.org/)**
 - Code quality: **[Eslint](https://eslint.org/), [Prettier](https://prettier.io/)**
-- Build: **[Docker](https://www.docker.com/))**
+- Build: **[Docker](https://www.docker.com/)**
 
 #### Status
 
@@ -24,11 +24,10 @@ Astro is a platform for launching Decentralized Autonomous Organizations. DAOs a
 
 #### Links
 
-
-Dev: [dev.app.astrodao.com](https://dev.app.astrodao.com/all/daos)**
-Test: [testnet.app.astrodao.com](https://testnet.app.astrodao.com/all/daos)**
-Staging: [staging.app.astrodao.com](https://staging.app.astrodao.com/all/daos)**
-Production: [app.astrodao.com](https://app.astrodao.com/all/daos)**
+- Dev: **[dev.app.astrodao.com](https://dev.app.astrodao.com/all/daos)**
+- Test: **[testnet.app.astrodao.com](https://testnet.app.astrodao.com/all/daos)**
+- Staging: **[staging.app.astrodao.com](https://staging.app.astrodao.com/all/daos)**
+- Production: **[app.astrodao.com](https://app.astrodao.com/all/daos)**
 
 ![img.png](img.png)
 
@@ -75,3 +74,7 @@ yarn build
 
 All change requests commits should follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
 Proposed changes should be small and isolated.
+
+#### Release planning schedule
+
+We are trying to stick to two weeks schedule, the list of issues that are planning for next release can be checked in [Milestones](https://github.com/near-daos/astro-ui/milestones) section

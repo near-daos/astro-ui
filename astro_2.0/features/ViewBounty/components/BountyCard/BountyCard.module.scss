@@ -1,0 +1,262 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-white);
+  border-radius: 0 8px 8px 0;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-14);
+  display: grid;
+  grid-row-gap: 22px;
+  grid-template-areas:
+    'countdown'
+    'proposalType'
+    'proposer'
+    'progress'
+    'description'
+    'content'
+    'voteControl';
+  grid-template-columns: 1fr;
+  padding: 22px 20px;
+  position: relative;
+  transition: box-shadow 0.3s ease-out;
+  z-index: 1;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'proposalType proposalType countdown'
+      'proposer proposer .'
+      'progress progress progress'
+      'description description description'
+      'content content voteControl';
+    grid-template-columns: 1fr 1fr 3fr;
+    padding: 22px 30px;
+  }
+
+  &.clickable {
+    cursor: pointer;
+  }
+
+  &:hover {
+    box-shadow: 3px 2px 24px var(--color-black-opacity-25);
+  }
+}
+
+.controlValue {
+  @extend %title3;
+  font-size: 12px;
+  font-weight: normal;
+  .bold {
+    font-weight: 700;
+  }
+}
+
+.controlItem {
+  &:not(:first-of-type) {
+    margin-left: 12px;
+  }
+}
+
+.toggleCommentsButton {
+  color: var(--color-neutral-60);
+  width: 24px;
+
+  &.active {
+    color: var(--color-primary-50);
+  }
+}
+
+.button {
+  text-transform: capitalize;
+}
+
+.voteProgress {
+  border-radius: 0 0 8px;
+  bottom: 0;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+}
+
+.actionBar {
+  display: flex;
+  left: unset;
+  position: absolute;
+  right: 12px;
+  top: -30px;
+
+  @include tablet-landscape {
+    display: none;
+    left: 100%;
+    right: auto;
+    top: 0;
+  }
+}
+
+.root:hover .actionBar {
+  display: block;
+}
+
+.voteControlCell {
+  align-items: flex-end;
+  display: flex;
+  grid-area: voteControl;
+  justify-content: space-between;
+
+  @include tablet-landscape {
+    justify-content: flex-end;
+  }
+}
+
+.proposalStatusSeal {
+  height: 124px;
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  width: 124px;
+}
+
+.countdownCell {
+  @extend %title4;
+  align-items: flex-end;
+  color: var(--color-brand-purple);
+  display: flex;
+  flex-direction: column;
+  grid-area: countdown;
+  justify-self: end;
+
+  .finalizeButton {
+    margin-top: 8px;
+    text-transform: capitalize;
+  }
+}
+
+.proposalCell {
+  display: flex;
+  grid-area: proposalType;
+}
+
+.proposalContentCell {
+  grid-area: content;
+}
+
+.proposalTypeAndLink {
+  align-items: center;
+  display: flex;
+}
+
+.proposalValue {
+  @extend %title1;
+}
+
+.proposalWalletLink {
+  padding-left: 15px;
+}
+
+.proposalType {
+  align-items: center;
+  display: flex;
+}
+
+.proposerCell {
+  display: flex;
+  flex-direction: column;
+  grid-area: proposer;
+}
+
+.progressCell {
+  display: flex;
+  grid-area: progress;
+}
+
+.proposerLabel {
+  @extend %caption1;
+  padding-bottom: 6px;
+}
+
+.text {
+  @extend %title3;
+}
+
+.contentCell {
+  grid-area: content;
+}
+
+.descriptionCell {
+  grid-area: description;
+
+  .proposalDescription {
+    line-height: 1.2;
+  }
+}
+
+.iconWrapper {
+  @include centralize;
+  background-color: var(--color-primary-20);
+  border-radius: 100%;
+  height: 24px;
+  width: 24px;
+}
+
+.externalLink {
+  padding-left: 10px;
+}
+
+.icon {
+  color: var(--color-primary-50);
+  height: 14px;
+  width: 14px;
+}
+
+.proposalExternalLink {
+  margin-top: 10px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.iconWrapper {
+  box-shadow: 3px 2px 12px var(--color-primary-30);
+}
+
+.externalLink {
+  text-shadow: 3px 2px 12px var(--color-primary-30);
+}
+
+.timestampLabel {
+  color: var(--color-neutral-60);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  text-align: right;
+
+  .label.approved {
+    color: var(--color-success-50);
+  }
+  .label.rejected {
+    color: var(--color-error-50);
+  }
+}
+
+.errorLabel {
+  color: var(--color-error-70);
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .proposalCell {
+    width: 100%;
+
+    div {
+      width: 100%;
+    }
+  }
+
+  .proposalType {
+    width: 100%;
+  }
+
+  .proposalWalletLink {
+    display: flex;
+  }
+}

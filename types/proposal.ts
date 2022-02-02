@@ -73,6 +73,12 @@ export type BountyDoneProposalType = {
   completedDate?: string;
 };
 
+export type BountyAddProposalType = {
+  type: ProposalType.AddBounty;
+  status: 'InProgress' | 'Approved';
+  bountyId?: string;
+};
+
 export type ProposalKind =
   | {
       type: ProposalType.AddMemberToRole;
@@ -153,6 +159,12 @@ type ProposalProperties = {
   link: string;
   proposalVariant: ProposalVariant;
   actions: ProposalActionData[];
+  permissions?: {
+    canApprove: boolean;
+    canReject: boolean;
+    canDelete: boolean;
+    isCouncil: boolean;
+  };
 };
 
 export type Proposal = {

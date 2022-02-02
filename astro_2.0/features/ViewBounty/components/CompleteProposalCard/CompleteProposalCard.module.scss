@@ -1,0 +1,128 @@
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-white);
+  border-left: 8px solid;
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  max-width: 320px;
+  width: 100%;
+}
+
+.root.inProgress {
+  border-color: var(--color-primary-50);
+
+  .progress .bar {
+    background-color: var(--color-primary-50);
+  }
+}
+
+.root.approved {
+  border-color: var(--color-success-50);
+
+  .progress .bar {
+    background-color: var(--color-success-50);
+  }
+}
+
+.root.pending {
+  border-color: var(--color-error-40);
+
+  .progress .bar {
+    background-color: var(--color-error-40);
+  }
+
+  .icon {
+    color: var(--color-error-40);
+  }
+}
+
+.root.rejected {
+  border-color: var(--color-error-70);
+
+  .progress .bar {
+    background-color: var(--color-error-70);
+  }
+}
+
+.person {
+  max-width: 116px;
+  overflow: hidden;
+  padding: 16px 12px;
+
+  .label {
+    @extend %caption1;
+    color: var(--color-neutral-60);
+    margin-bottom: 4px;
+  }
+
+  .value {
+    @extend %caption1;
+    @include ellipse-text;
+    color: var(--color-black);
+  }
+}
+
+.status {
+  @extend %caption1;
+  align-items: center;
+  color: var(--color-brand-black);
+  display: flex;
+
+  margin-left: 48px;
+
+  .proposalLink {
+    margin-left: 8px;
+    transform: translateY(-2px);
+  }
+
+  .proposalLink .icon {
+    width: 16px;
+  }
+}
+
+.details {
+  padding: 8px 12px;
+  width: 194px;
+
+  .status {
+    @extend %caption1;
+    color: var(--color-brand-black);
+  }
+
+  .icon {
+    width: 16px;
+  }
+
+  .progress {
+    background-color: var(--color-neutral-40);
+    border-radius: 80px;
+    height: 8px;
+    margin: 4px 0;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .progress .bar {
+    border-radius: 80px;
+    height: 100%;
+
+    width: 60%;
+  }
+
+  .dates {
+    color: var(--color-brand-black);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 18px;
+    white-space: nowrap;
+  }
+
+  .dates > span:last-child {
+    margin-left: 12px;
+    white-space: nowrap;
+  }
+}
