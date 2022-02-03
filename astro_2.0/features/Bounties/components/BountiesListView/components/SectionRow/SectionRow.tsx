@@ -8,7 +8,6 @@ import { SectionItem } from 'astro_2.0/features/Bounties/components/BountiesList
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { ClaimRow } from 'astro_2.0/features/Bounties/components/BountiesListView/components/ClaimRow';
-import { CompleteProposalRow } from 'astro_2.0/features/Bounties/components/BountiesListView/components/CompleteProposalRow';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
@@ -127,13 +126,6 @@ export const SectionRow: FC<SectionRowProps> = ({
                 />
               );
             })}
-            {item.bounty?.bountyDoneProposals
-              .filter(proposal => proposal.status !== 'InProgress')
-              .map(proposal => {
-                return (
-                  <CompleteProposalRow key={proposal.id} data={proposal} />
-                );
-              })}
           </div>
         )}
     </>

@@ -53,12 +53,9 @@ export const StackedMilestones: FC<StackedMilestonesProps> = ({ data }) => {
               animate={{ opacity: 1, transform: 'translateY(0px)' }}
               exit={{ opacity: 0 }}
             >
-              {data.map(item => (
-                <Milestone
-                  data={item}
-                  className={styles.listItem}
-                  key={`${item.type}_${item.date.toISOString()}`}
-                />
+              {data.map((item, i) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <Milestone data={item} className={styles.listItem} key={i} />
               ))}
             </motion.div>
           </div>

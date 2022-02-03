@@ -15,48 +15,30 @@ export const ClaimsStatistic: FC<ClaimsStatisticProps> = ({
   claims,
   doneProposals,
 }) => {
-  const { pending, inProgress } = claims.reduce<{
+  const { pending, inProgress, approved, rejected } = claims.reduce<{
     pending: BountyClaim[];
     inProgress: BountyClaim[];
+    approved: BountyClaim[];
+    rejected: BountyClaim[];
   }>(
     (res, item) => {
       const proposal = doneProposals.find(
-        doneProposal =>
-          doneProposal.proposer === item.accountId &&
-          doneProposal.status === 'InProgress'
+        doneProposal => doneProposal.bountyClaimId === item.id
       );
 
       if (!proposal) {
         res.inProgress.push(item);
-      } else {
+      } else if (proposal.status === 'InProgress') {
         res.pending.push(item);
-      }
-
-      return res;
-    },
-    { pending: [], inProgress: [] }
-  );
-
-  const { approved, rejected } = doneProposals.reduce<{
-    approved: BountyProposal[];
-    rejected: BountyProposal[];
-  }>(
-    (res, item) => {
-      if (item.status === 'Approved') {
+      } else if (proposal.status === 'Approved') {
         res.approved.push(item);
-      }
-
-      if (
-        item.status === 'Rejected' ||
-        item.status === 'Expired' ||
-        item.status === 'Removed'
-      ) {
+      } else {
         res.rejected.push(item);
       }
 
       return res;
     },
-    { approved: [], rejected: [] }
+    { pending: [], inProgress: [], approved: [], rejected: [] }
   );
 
   const totalLength =

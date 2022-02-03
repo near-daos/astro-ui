@@ -57,21 +57,31 @@ export const BountyCard: React.FC<BountyCardProps> = ({
 
   function renderButtons() {
     if (proposal.status === 'Approved') {
-      const isClaimedByMe = bounty.bountyClaims.find(
+      const myClaims = bounty.bountyClaims.filter(
         claim => claim.accountId === accountId
       );
       const hasAvailableClaims =
         Number(bounty.times) - bounty.numberOfClaims > 0;
-      const hasIncompleteClaim = !!bounty.bountyClaims.find(
-        claim => claim.accountId === accountId && !claim.completed
-      );
-      const doneProposal = bounty.bountyDoneProposals.find(
-        _doneProposal => _doneProposal.proposer === accountId
-      );
-      const hasPendingProposal =
-        doneProposal && doneProposal.status === 'InProgress';
 
-      if (hasAvailableClaims && !hasIncompleteClaim && !isClaimedByMe) {
+      // check if I have inProgress claim
+      let hasInProgressClaims = false;
+      let hasPendingProposals = false;
+
+      myClaims.forEach(claim => {
+        const doneProposal = bounty.bountyDoneProposals.find(
+          _doneProposal => _doneProposal.bountyClaimId === claim.id
+        );
+
+        if (!doneProposal) {
+          hasInProgressClaims = true;
+        }
+
+        if (doneProposal && doneProposal.status === 'InProgress') {
+          hasPendingProposals = true;
+        }
+      });
+
+      if (hasAvailableClaims && !hasInProgressClaims) {
         return (
           <div className={styles.controlItem}>
             <Button
@@ -89,7 +99,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
 
       return (
         <>
-          {hasIncompleteClaim && (
+          {hasInProgressClaims && (
             <div className={styles.controlItem}>
               <Button
                 variant="secondary"
@@ -103,7 +113,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
             </div>
           )}
 
-          {hasIncompleteClaim && !hasPendingProposal && (
+          {hasInProgressClaims && !hasPendingProposals && (
             <div className={styles.controlItem}>
               <Button
                 variant="black"

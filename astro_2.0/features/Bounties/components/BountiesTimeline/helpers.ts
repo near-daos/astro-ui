@@ -65,9 +65,7 @@ function getClaimMilestones(
   const { accountId, startTime } = claim;
   const milestones: TimelineMilestone[] = [];
   const claimStartTime = toMillis(startTime);
-  // const deadline = toMillis(maxDeadline);
   const claimStart = new Date(claimStartTime);
-  // const claimEnd = new Date(claimStartTime + deadline);
 
   if (claimStart) {
     milestones.push({
@@ -88,7 +86,15 @@ function getClaimMilestones(
         tooltip: 'Pending Approval',
         color,
       });
+    } else if (proposalStatus === 'Approved') {
+      milestones.push({
+        type: 'Complete Claim',
+        date: new Date(proposal.createdAt),
+        tooltip: `Claim completed by ${proposal.proposer}`,
+        color,
+      });
     }
+    // todo - how cna we handle rejected/not approved claims?
   }
 
   return milestones;
@@ -100,10 +106,9 @@ function prepareClaims(context: BountyContext) {
   // Bounty claims
   if (context.bounty?.bountyClaims?.length > 0) {
     context.bounty.bountyClaims.forEach((claim, i) => {
-      const { accountId } = claim;
+      const { id } = claim;
       const proposal = context.bounty.bountyDoneProposals.find(
-        _proposal =>
-          _proposal.proposer === accountId && _proposal.status === 'InProgress'
+        _proposal => _proposal.bountyClaimId === id
       );
 
       const milestones = getClaimMilestones(claim, getColor(i), proposal);
@@ -133,20 +138,6 @@ function prepareClaims(context: BountyContext) {
       });
     });
   }
-
-  const completedProposals =
-    context.bounty?.bountyDoneProposals.filter(
-      _item => _item.status !== 'InProgress'
-    ) ?? [];
-
-  completedProposals.forEach((proposal, i) => {
-    claims.push({
-      id: proposal.id,
-      milestones: [],
-      title: proposal.proposer,
-      color: getColor(claims.length + i),
-    });
-  });
 
   return claims;
 }

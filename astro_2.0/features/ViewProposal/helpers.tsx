@@ -30,6 +30,7 @@ import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/ViewProposal//comp
 
 import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
 import { parseISO } from 'date-fns';
+import { getDistanceFromNow } from 'utils/format';
 
 export function getContentNode(proposal: ProposalFeedItem): ReactNode {
   const { dao } = proposal;
