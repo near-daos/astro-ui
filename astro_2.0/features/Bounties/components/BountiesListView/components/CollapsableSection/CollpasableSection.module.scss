@@ -7,34 +7,61 @@
 }
 
 .header {
+  border-left: 12px solid var(--color-neutral-40);
+  border-radius: 8px 0 0;
   color: var(--color-neutral-60);
+  z-index: 0;
+
+  &.inProgress {
+    border-color: var(--color-brand-pink);
+  }
+
+  &.completed {
+    border-color: var(--color-success-20);
+  }
 }
 
 .header,
 .row {
   display: grid;
-  grid-column-gap: 12px;
-  grid-template-columns: 1fr minmax(48px, 120px) 1fr 1fr;
+  grid-column-gap: 4px;
+  grid-template-areas:
+    'title title title link'
+    'proposer proposer proposer proposer'
+    'toggle content content content';
+  grid-template-columns: 2fr 2fr 2fr 1fr;
+
+  @include tablet-landscape {
+    grid-column-gap: 12px;
+    grid-template-areas: unset;
+    grid-template-columns: 1fr 48px 80px 1fr 1fr;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
 }
 
 .title,
 .link,
 .proposer,
 .content {
+  align-items: center;
+  display: flex;
   font-size: 14px;
   padding: 4px 8px;
 }
 
 .control {
-  left: -24px;
+  left: -32px;
   position: absolute;
-  top: 2px;
+  top: 4px;
 }
 
 .title {
   @extend %subtitle4;
   background-color: var(--color-neutral-40);
-  border-radius: 8px 8px 0 0;
+  border-radius: 0 8px 0 0;
   color: var(--color-brand-black);
 
   position: relative;
@@ -70,30 +97,20 @@
 }
 
 .row {
+  border-left: 12px solid var(--color-neutral-40);
   border-radius: 4px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
-  height: 56px;
   margin-bottom: 12px;
   overflow: hidden;
+  padding: 4px;
+
+  @include tablet-landscape {
+    height: 56px;
+  }
 
   &.firstRow {
     border-radius: 0 4px 4px;
   }
-}
-
-.rowTitle,
-.rowProposer,
-.rowLink,
-.rowContent {
-  align-items: center;
-  display: flex;
-  overflow: hidden;
-  padding: 16px 8px;
-}
-
-.rowTitle {
-  @extend %title4;
-  border-left: 12px solid var(--color-neutral-40);
 
   &.inProgress {
     border-color: var(--color-brand-pink);
@@ -104,8 +121,63 @@
   }
 }
 
+.rowTitle,
+.rowProposer,
+.rowLink,
+.toggle,
+.rowContent {
+  align-items: center;
+  display: flex;
+  overflow: hidden;
+  padding: 8px;
+
+  @include tablet-landscape {
+    padding: 16px 8px;
+  }
+}
+
+.rowTitle {
+  @extend %title4;
+
+  grid-area: title;
+
+  @include tablet-landscape {
+    grid-area: unset;
+  }
+
+  //&:hover {
+  //
+  //}
+}
+
 .rowProposer {
   @extend %body2;
+
+  grid-area: proposer;
+
+  @include tablet-landscape {
+    grid-area: unset;
+  }
+}
+
+.rowLink {
+  grid-area: link;
+  justify-content: flex-end;
+
+  @include tablet-landscape {
+    grid-area: unset;
+    justify-content: flex-start;
+  }
+}
+
+.rowContent {
+  grid-area: content;
+  justify-content: flex-end;
+
+  @include tablet-landscape {
+    grid-area: unset;
+    justify-content: flex-start;
+  }
 }
 
 .singleLine {
@@ -151,6 +223,14 @@
   text-transform: capitalize;
 }
 
+.toggle {
+  grid-area: toggle;
+
+  @include tablet-landscape {
+    grid-area: unset;
+  }
+}
+
 .toggleClaims {
   align-items: center;
   border: 1px solid var(--color-neutral-60);
@@ -190,9 +270,13 @@
   background: var(--color-white);
   border-radius: 8px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
-  margin: 4px 24px;
-  padding: 8px 0;
+  margin: 4px 0 12px 24px;
+  padding: 0;
   position: relative;
+
+  @include tablet-landscape {
+    padding: 8px 0;
+  }
 }
 
 .claimsContainer::before {

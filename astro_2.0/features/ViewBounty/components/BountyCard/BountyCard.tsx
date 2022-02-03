@@ -83,10 +83,10 @@ export const BountyCard: React.FC<BountyCardProps> = ({
 
       if (hasAvailableClaims && !hasInProgressClaims) {
         return (
-          <div className={styles.controlItem}>
+          <div className={cn(styles.controlItem, styles.btnWrapper)}>
             <Button
               variant="black"
-              size="small"
+              size="block"
               type="submit"
               onClick={() => handleClaim()}
               className={cn(styles.claim, styles.button)}
@@ -100,10 +100,10 @@ export const BountyCard: React.FC<BountyCardProps> = ({
       return (
         <>
           {hasInProgressClaims && (
-            <div className={styles.controlItem}>
+            <div className={cn(styles.controlItem, styles.btnWrapper)}>
               <Button
                 variant="secondary"
-                size="small"
+                size="block"
                 type="submit"
                 onClick={() => handleUnclaim()}
                 className={cn(styles.unclaim, styles.button)}
@@ -114,10 +114,10 @@ export const BountyCard: React.FC<BountyCardProps> = ({
           )}
 
           {hasInProgressClaims && !hasPendingProposals && (
-            <div className={styles.controlItem}>
+            <div className={cn(styles.controlItem, styles.btnWrapper)}>
               <Button
                 variant="black"
-                size="small"
+                size="block"
                 onClick={() => completeHandler()}
                 className={cn(styles.complete, styles.button)}
               >
@@ -170,9 +170,10 @@ export const BountyCard: React.FC<BountyCardProps> = ({
       </div>
       <div className={styles.contentCell}>{content}</div>
       <div className={styles.voteControlCell}>
-        <div className={styles.controlItem}>
+        <div className={cn(styles.controlItem, styles.comments)}>
           <ProposalControlButton
             icon="chat"
+            className={styles.controlButton}
             iconClassName={cn(styles.toggleCommentsButton, {
               [styles.active]: activeInfoView === 'comments',
             })}
@@ -189,9 +190,10 @@ export const BountyCard: React.FC<BountyCardProps> = ({
             disabled={false}
           />
         </div>
-        <div className={styles.controlItem}>
+        <div className={cn(styles.controlItem, styles.claims)}>
           <ProposalControlButton
-            icon="checkList"
+            icon="claimsLink"
+            className={styles.controlButton}
             iconClassName={cn(styles.toggleCommentsButton, {
               [styles.active]: activeInfoView === 'claims',
             })}

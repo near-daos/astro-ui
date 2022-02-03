@@ -7,10 +7,6 @@
   justify-content: flex-start;
   position: relative;
   width: 100%;
-
-  &:not(:last-of-type) {
-    margin-bottom: 8px;
-  }
 }
 
 .root::before {
@@ -29,8 +25,12 @@
 .legend {
   border-radius: 50%;
   height: 8px;
-  margin: 24px 12px;
+  margin: 14px 12px;
   width: 8px;
+
+  @include tablet-landscape {
+    margin: 24px 12px;
+  }
 }
 
 .root.inProgress {
@@ -94,14 +94,26 @@
 }
 
 .person {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   overflow: hidden;
   padding: 8px 12px 8px 0;
-  width: 200px;
+  width: 130px;
+
+  @include tablet-landscape {
+    width: 200px;
+  }
 
   .label {
     @extend %caption1;
     color: var(--color-neutral-60);
+    display: none;
     margin-bottom: 4px;
+
+    @include tablet-landscape {
+      display: block;
+    }
   }
 
   .value {
@@ -112,11 +124,15 @@
 }
 
 .details {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   padding: 8px 12px;
   width: 194px;
+
+  @include tablet-landscape {
+    display: flex;
+  }
 
   .icon {
     width: 16px;
@@ -161,7 +177,9 @@
   color: var(--color-brand-black);
   display: flex;
 
-  margin-left: 48px;
+  @include tablet-landscape {
+    margin-left: 48px;
+  }
 
   .proposalLink {
     margin-left: 8px;
@@ -174,6 +192,11 @@
 }
 
 .controls {
+  display: none;
   margin-left: auto;
   padding: 8px;
+
+  @include tablet-landscape {
+    display: flex;
+  }
 }

@@ -3,12 +3,17 @@
 
 .root {
   display: grid;
-  grid-row-gap: 24px;
+  grid-row-gap: 0;
   grid-template-areas:
     'header'
     'content';
   grid-template-columns: 1fr;
-  padding-top: 40px;
+  padding-top: 24px;
+
+  @include tablet-landscape {
+    grid-row-gap: 24px;
+    padding-top: 40px;
+  }
 
   @include desktop {
     padding-top: 56px;
@@ -30,9 +35,23 @@
 }
 
 .newProposalButton {
+  bottom: 80px;
   font-size: 14px;
-  margin-left: 24px;
+  left: 24px;
+  position: fixed;
+  right: 24px;
   text-transform: capitalize;
+  width: calc(100% - 48px);
+  z-index: 30;
+
+  @include tablet-landscape {
+    bottom: unset;
+    left: unset;
+    margin-left: 24px;
+    position: relative;
+    right: unset;
+    width: auto;
+  }
 }
 
 .filters {
@@ -44,10 +63,24 @@
   margin-left: auto;
 
   .filter {
+    align-items: center;
     margin-right: 12px;
   }
 
   .filterLabel {
     margin-right: 6px;
+  }
+}
+
+.filterMenu {
+  right: 0;
+  top: 100%;
+  width: 120px;
+}
+
+.desktopOnly {
+  display: none;
+  @include tablet-landscape {
+    display: flex;
   }
 }

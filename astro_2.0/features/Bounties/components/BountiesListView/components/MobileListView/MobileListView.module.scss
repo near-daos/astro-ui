@@ -1,0 +1,18 @@
+@import 'styles/typography';
+
+.tabs {
+  justify-content: flex-start;
+}
+
+.tabsListItem {
+  color: var(--color-neutral-50);
+  font-size: 16px;
+}
+
+.activeTabsListItem {
+  color: var(--color-neutral-80);
+}
+
+.tabContent {
+  margin-bottom: 80px;
+}

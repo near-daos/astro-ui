@@ -21,6 +21,7 @@ import { TimelineRangeToggle } from 'astro_2.0/features/Bounties/components/Boun
 import { TimelineGranularity } from 'astro_2.0/features/Bounties/components/BountiesTimeline/types';
 import { TimelineGroups } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/TimelineGroups';
 import { TimelineHeader } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/TimelineHeader';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import styles from './BountiesTimeline.module.scss';
 
@@ -74,6 +75,10 @@ export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
       }
     }
   }, []);
+
+  if (!dataset.length) {
+    return <NoResultsView title="No results found" />;
+  }
 
   return (
     <>

@@ -115,7 +115,7 @@ export const Tabs = <T,>(
                 return (
                   <Tab
                     key={item.id}
-                    selectedClassName={styles.active}
+                    selectedClassName={cn(styles.active, item.activeClassName)}
                     className={cn(styles.tab, item.className)}
                     data-name={item.label}
                   >

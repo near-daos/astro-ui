@@ -8,7 +8,7 @@
     'dao'
     'bountyInfo';
   grid-template-columns: 1fr;
-  margin-top: 56px;
+  margin-bottom: 80px;
 }
 
 .breadcrumbs {
@@ -40,6 +40,7 @@
 .bountyInfo {
   flex: 3;
   grid-area: proposalInfo;
+  margin-bottom: 24px;
   margin-top: 60px;
 
   > div {
