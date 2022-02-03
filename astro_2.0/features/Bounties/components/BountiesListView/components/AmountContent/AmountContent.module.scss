@@ -9,7 +9,13 @@
 .item {
   align-items: center;
   display: flex;
-  padding: 20px 0;
+  justify-content: flex-end;
+  padding: 0;
+
+  @include tablet-landscape {
+    justify-content: flex-start;
+    padding: 20px 0;
+  }
 
   &:first-of-type {
     width: 130px;
@@ -17,6 +23,13 @@
 
   &:not(:last-of-type) {
     margin-right: 12px;
+  }
+}
+
+.desktopOnly {
+  display: none;
+  @include tablet-landscape {
+    display: flex;
   }
 }
 

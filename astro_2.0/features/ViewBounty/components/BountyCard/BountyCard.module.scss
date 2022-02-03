@@ -52,8 +52,18 @@
 }
 
 .controlItem {
-  &:not(:first-of-type) {
-    margin-left: 12px;
+  @include tablet-landscape {
+    &:not(:first-of-type) {
+      margin-left: 12px;
+    }
+  }
+}
+
+.controlButton {
+  justify-content: flex-start;
+
+  @include tablet-landscape {
+    justify-content: flex-end;
   }
 }
 
@@ -98,14 +108,25 @@
 }
 
 .voteControlCell {
-  align-items: flex-end;
-  display: flex;
-  grid-area: voteControl;
+  display: grid;
+  grid-column-gap: 12px;
+  grid-template-areas:
+    'comments claims'
+    'btnWrapper btnWrapper';
+  grid-template-columns: 1fr 1fr;
   justify-content: space-between;
 
   @include tablet-landscape {
+    align-items: flex-end;
+    display: flex;
+    grid-area: voteControl;
     justify-content: flex-end;
   }
+}
+
+.btnWrapper {
+  //grid-area: btnWrapper;
+  margin-top: 24px;
 }
 
 .proposalStatusSeal {

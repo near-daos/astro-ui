@@ -1,3 +1,5 @@
+@import 'styles/mixins';
+
 .root {
   display: flex;
   flex-wrap: wrap;
@@ -10,6 +12,24 @@
 }
 
 .content {
-  margin-top: 24px;
+  margin-top: 0;
   width: 100%;
+
+  @include tablet-landscape {
+    margin-top: 24px;
+  }
+}
+
+.regular {
+  display: none;
+  @include tablet-landscape {
+    display: block;
+  }
+}
+
+.mobile {
+  display: block;
+  @include tablet-landscape {
+    display: none;
+  }
 }

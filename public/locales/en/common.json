@@ -46,7 +46,10 @@
   "youFollowed": "You Followed",
   "confirmUnsubscribe": "Are you sure you want to unsubscribe from",
   "bountiesPage": {
-    "successClaimBountyNotification": "The blockchain transactions might take some time to perform, please visit the page in few seconds"
+    "successClaimBountyNotification": "The blockchain transactions might take some time to perform, please visit the page in few seconds",
+    "comingSoon": "Coming Soon",
+    "bounty": "Bounty",
+    "completed": "Completed"
   },
   "common": {
     "clickToUploadImage": "Click here to upload image",

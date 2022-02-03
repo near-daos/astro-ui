@@ -1,5 +1,6 @@
 import React, { useState, VFC } from 'react';
 import useQuery from 'hooks/useQuery';
+import cn from 'classnames';
 
 import { useAuthContext } from 'context/AuthContext';
 import { DaoContext } from 'types/context';
@@ -73,9 +74,10 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
         </Button>
 
         <div className={styles.filters}>
-          <div className={styles.filter}>
+          <div className={cn(styles.filter, styles.desktopOnly)}>
             <span className={styles.filterLabel}>Sorting by:</span>
             <Dropdown
+              menuClassName={styles.filterMenu}
               value={query.bountySort ?? BOUNTIES_PAGE_SORT_OPTIONS[0].value}
               onChange={val => updateQuery('bountySort', val)}
               options={BOUNTIES_PAGE_SORT_OPTIONS}
@@ -84,6 +86,7 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
           <div className={styles.filter}>
             <span className={styles.filterLabel}>Filter:</span>
             <Dropdown
+              menuClassName={styles.filterMenu}
               value={
                 query.bountyFilter ?? BOUNTIES_PAGE_FILTER_OPTIONS[0].value
               }
@@ -93,7 +96,11 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
           </div>
         </div>
 
-        <ViewToggle onSelect={setActiveView} selected={activeView} />
+        <ViewToggle
+          onSelect={setActiveView}
+          selected={activeView}
+          className={styles.desktopOnly}
+        />
       </div>
 
       {activeView === 'list' && (

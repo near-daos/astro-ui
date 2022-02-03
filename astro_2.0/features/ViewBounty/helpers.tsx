@@ -9,7 +9,7 @@ export function getContentNode(bounty: Bounty): ReactNode {
   return (
     <CardContent
       amount={bounty.amount}
-      deadlineThreshold={deadline[0]}
+      deadlineThreshold={deadline.join(' ')}
       token={bounty.token}
     />
   );

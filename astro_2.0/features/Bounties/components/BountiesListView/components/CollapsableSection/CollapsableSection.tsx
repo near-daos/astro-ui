@@ -32,7 +32,13 @@ export const CollapsableSection: FC<CollapsableSectionProps> = ({
 
   return (
     <div className={styles.root}>
-      <div className={styles.header}>
+      <div
+        className={cn(styles.header, {
+          [styles.pending]: status === 'Pending',
+          [styles.inProgress]: status === 'InProgress',
+          [styles.completed]: status === 'Completed',
+        })}
+      >
         <div
           className={cn(styles.title, {
             [styles.pending]: status === 'Pending',
@@ -54,6 +60,7 @@ export const CollapsableSection: FC<CollapsableSectionProps> = ({
           {title}
         </div>
         <div className={styles.link} />
+        <div className={styles.toggle} />
         <div className={styles.proposer}>Proposer</div>
         <div className={styles.content}>{contentTitle}</div>
       </div>

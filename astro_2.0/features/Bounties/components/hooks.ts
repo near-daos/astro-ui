@@ -28,7 +28,7 @@ export function useBountyControls(
   const [showModal] = useModal(ConfirmActionModal);
 
   const onSuccessHandler = useCallback(async () => {
-    await router.replace(router.asPath);
+    await router.reload();
     showNotification({
       type: NOTIFICATION_TYPES.INFO,
       lifetime: 20000,

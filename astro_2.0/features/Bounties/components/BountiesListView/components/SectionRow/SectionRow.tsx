@@ -42,15 +42,12 @@ export const SectionRow: FC<SectionRowProps> = ({
         exit={{ opacity: 0 }}
         className={cn(styles.row, {
           [styles.firstRow]: isFirstRow,
+          [styles.pending]: status === 'Pending',
+          [styles.inProgress]: status === 'InProgress',
+          [styles.completed]: status === 'Completed',
         })}
       >
-        <div
-          className={cn(styles.rowTitle, {
-            [styles.pending]: status === 'Pending',
-            [styles.inProgress]: status === 'InProgress',
-            [styles.completed]: status === 'Completed',
-          })}
-        >
+        <div className={cn(styles.rowTitle)}>
           <Link href={item.link}>
             <a className={styles.singleLine}>
               <div className={styles.singleLine}>{item.title}</div>
@@ -71,7 +68,9 @@ export const SectionRow: FC<SectionRowProps> = ({
               <Icon name="buttonExternal" className={styles.icon} />
             </a>
           </Link>
+        </div>
 
+        <div className={styles.toggle}>
           {item.bounty && (
             <Button
               size="small"
@@ -95,6 +94,7 @@ export const SectionRow: FC<SectionRowProps> = ({
             </Button>
           )}
         </div>
+
         <div className={styles.rowProposer}>
           <div className={styles.singleLine}>{item.proposer}</div>
         </div>

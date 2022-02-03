@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 
 import { Icon } from 'components/Icon';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
@@ -62,7 +63,7 @@ export const AmountContent: FC<AmountContentProps> = ({
           </div>
         )}
       </span>
-      <span className={styles.item}>
+      <span className={cn(styles.item, styles.desktopOnly)}>
         <Icon name="chat" className={styles.icon} />
         <span className={styles.value}>{commentsCount}</span>
       </span>

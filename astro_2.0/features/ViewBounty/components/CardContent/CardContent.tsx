@@ -76,7 +76,7 @@ export const CardContent: FC<CardContentProps> = ({
       <div className={styles.divider} />
       <div className={styles.inline}>
         <FieldWrapper label="Grace">
-          <FieldValue value={`${deadlineThreshold} days`} />
+          <FieldValue value={deadlineThreshold} />
         </FieldWrapper>
       </div>
     </div>

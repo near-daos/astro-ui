@@ -10,11 +10,16 @@ export type ViewToggleOption = 'list' | 'timeline';
 interface ViewToggleProps {
   selected: ViewToggleOption;
   onSelect: (val: ViewToggleOption) => void;
+  className?: string;
 }
 
-export const ViewToggle: FC<ViewToggleProps> = ({ selected, onSelect }) => {
+export const ViewToggle: FC<ViewToggleProps> = ({
+  selected,
+  onSelect,
+  className,
+}) => {
   return (
-    <div className={styles.root}>
+    <div className={cn(styles.root, className)}>
       <Button
         size="small"
         variant="tertiary"

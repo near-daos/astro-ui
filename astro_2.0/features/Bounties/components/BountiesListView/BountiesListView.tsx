@@ -1,17 +1,11 @@
 import React, { FC } from 'react';
-
+import cn from 'classnames';
 import { BountyContext } from 'types/bounties';
-
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
-import {
-  SINGLE_BOUNTY_PAGE_URL,
-  SINGLE_PROPOSAL_PAGE_URL,
-} from 'constants/routing';
 
 import { CollapsableSection } from 'astro_2.0/features/Bounties/components/BountiesListView/components/CollapsableSection';
 import { prepareBountiesPageContent } from 'astro_2.0/features/Bounties/helpers';
-import { VotingContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/VotingContent';
-import { AmountContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/AmountContent';
+import { MobileListView } from 'astro_2.0/features/Bounties/components/BountiesListView/components/MobileListView';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
@@ -39,115 +33,58 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
   tokens,
 }) => {
   const { proposalPhase, bounties, completed } = prepareBountiesPageContent(
-    bountiesContext
+    bountiesContext,
+    dao,
+    accountId,
+    completeHandler,
+    tokens
   );
+
+  if (!proposalPhase.length && !bounties.length && !completed.length) {
+    return <NoResultsView title="No results found" />;
+  }
 
   return (
     <div className={styles.root}>
-      <div className={styles.content}>
-        <CollapsableSection
-          status="Pending"
-          accountId={accountId}
-          title={`Coming Soon (Proposal Phase) (${proposalPhase.length})`}
-          contentTitle="Voting"
+      <div className={cn(styles.content, styles.regular)}>
+        {!!proposalPhase.length && (
+          <CollapsableSection
+            status="Pending"
+            accountId={accountId}
+            title={`Coming Soon (Proposal Phase) (${proposalPhase.length})`}
+            contentTitle="Voting"
+            dao={dao}
+            data={proposalPhase}
+          />
+        )}
+        {!!bounties.length && (
+          <CollapsableSection
+            status="InProgress"
+            accountId={accountId}
+            title={`Bounties (${bounties.length})`}
+            contentTitle="Amount"
+            dao={dao}
+            data={bounties}
+          />
+        )}
+        {!!completed.length && (
+          <CollapsableSection
+            status="Completed"
+            accountId={accountId}
+            title={`Completed (${completed.length})`}
+            contentTitle="Amount"
+            dao={dao}
+            data={completed}
+          />
+        )}
+      </div>
+      <div className={cn(styles.content, styles.mobile)}>
+        <MobileListView
+          proposals={proposalPhase}
+          bounties={bounties}
+          completed={completed}
           dao={dao}
-          data={proposalPhase.map(item => {
-            const [description] = item.proposal.description.split(
-              EXTERNAL_LINK_SEPARATOR
-            );
-
-            return {
-              id: item.id,
-              title: description,
-              proposer: item.proposal.proposer,
-              proposalId: item.proposal.id,
-              link: {
-                pathname: SINGLE_PROPOSAL_PAGE_URL,
-                query: {
-                  dao: dao.id,
-                  proposal: item.proposal.id,
-                },
-              },
-              content: (
-                <VotingContent
-                  proposal={item.proposal}
-                  accountId={accountId}
-                  dao={dao}
-                />
-              ),
-            };
-          })}
-        />
-        <CollapsableSection
-          status="InProgress"
           accountId={accountId}
-          title={`Bounties (${bounties.length})`}
-          contentTitle="Amount"
-          dao={dao}
-          data={bounties.map(item => {
-            const [description] = item.bounty.description.split(
-              EXTERNAL_LINK_SEPARATOR
-            );
-
-            return {
-              id: item.id,
-              title: description,
-              proposer: item.proposal.proposer,
-              proposalId: item.proposal.id,
-              bounty: item.bounty,
-              link: {
-                pathname: SINGLE_BOUNTY_PAGE_URL,
-                query: {
-                  dao: dao.id,
-                  bounty: item.id,
-                },
-              },
-              completeHandler,
-              content: (
-                <AmountContent
-                  tokens={tokens}
-                  amount={item.bounty.amount}
-                  token={item.bounty.token}
-                  commentsCount={item.commentsCount}
-                />
-              ),
-            };
-          })}
-        />
-        <CollapsableSection
-          status="Completed"
-          accountId={accountId}
-          title={`Completed (${completed.length})`}
-          contentTitle="Amount"
-          dao={dao}
-          data={completed.map(item => {
-            const [description] = item.bounty.description.split(
-              EXTERNAL_LINK_SEPARATOR
-            );
-
-            return {
-              id: item.id,
-              title: description,
-              proposer: item.proposal.proposer,
-              proposalId: item.proposal.id,
-              bounty: item.bounty,
-              link: {
-                pathname: SINGLE_BOUNTY_PAGE_URL,
-                query: {
-                  dao: dao.id,
-                  bounty: item.id,
-                },
-              },
-              content: (
-                <AmountContent
-                  tokens={tokens}
-                  amount={item.bounty.amount}
-                  token={item.bounty.token}
-                  commentsCount={item.commentsCount}
-                />
-              ),
-            };
-          })}
         />
       </div>
     </div>
