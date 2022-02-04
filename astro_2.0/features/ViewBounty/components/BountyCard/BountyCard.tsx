@@ -15,6 +15,7 @@ import { ExplorerLink } from 'components/ExplorerLink';
 import { ExternalLink } from 'components/ExternalLink';
 import { Button } from 'components/button/Button';
 import { VotingContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/VotingContent';
+import { BountyActions } from 'astro_2.0/features/ViewBounty/components/BountyActions';
 
 import { useBountyControls } from 'astro_2.0/features/Bounties/components/hooks';
 import { useAuthContext } from 'context/AuthContext';
@@ -31,6 +32,7 @@ export interface BountyCardProps {
   activeInfoView: string | null;
   dao: DAO;
   completeHandler: () => void;
+  contextId: string;
 }
 
 function getTimestampLabel(createdAt: string) {
@@ -40,6 +42,7 @@ function getTimestampLabel(createdAt: string) {
 }
 
 export const BountyCard: React.FC<BountyCardProps> = ({
+  contextId,
   dao,
   bounty,
   content,
@@ -92,7 +95,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
         }
       });
 
-      if (hasAvailableClaims && !hasInProgressClaims) {
+      if (hasAvailableClaims && !hasInProgressClaims && !hasPendingProposals) {
         return (
           <div className={cn(styles.controlItem, styles.btnWrapper)}>
             <Button
@@ -227,6 +230,13 @@ export const BountyCard: React.FC<BountyCardProps> = ({
           )}
         </div>
         {renderButtons()}
+      </div>
+      <div className={styles.actionBar}>
+        <BountyActions
+          description={description}
+          contextId={contextId}
+          daoId={dao.id}
+        />
       </div>
     </div>
   );

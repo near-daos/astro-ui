@@ -25,4 +25,4 @@ export const CREATE_GOV_TOKEN_PAGE_URL =
   '/dao/[dao]/treasury/create-governance-token/[step]';
 
 export const ALL_BOUNTIES_PAGE_URL = '/dao/[dao]/tasks/bounties';
-export const SINGLE_BOUNTY_PAGE_URL = `${ALL_BOUNTIES_PAGE_URL}/[bounty]`;
+export const SINGLE_BOUNTY_PAGE_URL = `${ALL_BOUNTIES_PAGE_URL}/[bountyContext]`;

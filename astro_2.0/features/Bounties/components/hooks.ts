@@ -7,8 +7,6 @@ import { SputnikNearService } from 'services/sputnik';
 import { useModal } from 'components/modal';
 import { ConfirmActionModal } from 'astro_2.0/components/ConfirmActionModal';
 
-import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
-
 import { DAO } from 'types/dao';
 import { Bounty, BountyProposal } from 'types/bounties';
 import { VoteAction } from 'types/proposal';
@@ -39,7 +37,6 @@ export function useBountyControls(
   const handleClaim = useCallback(async () => {
     const res = await showModal({
       title: 'Confirm Your Claim',
-      message: `To Confirm Your Claim you need to spend minimum ${DEFAULT_PROPOSAL_GAS} TGas`,
     });
 
     if (res?.length && bounty) {
@@ -57,7 +54,6 @@ export function useBountyControls(
   const handleUnclaim = useCallback(async () => {
     const res = await showModal({
       title: 'Confirm Your Unclaim',
-      message: `To Confirm Your Unclaim you need to spend minimum ${DEFAULT_PROPOSAL_GAS} TGas`,
     });
 
     if (res?.length && bounty) {
@@ -86,7 +82,6 @@ export function useBountyVoting(
     async (vote: VoteAction) => {
       const res = await showModal({
         title: 'Confirm Your Vote',
-        message: `To Confirm Your Vote you need to spend minimum ${DEFAULT_PROPOSAL_GAS} TGas`,
       });
 
       if (res?.length) {
