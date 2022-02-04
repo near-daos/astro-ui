@@ -26,15 +26,15 @@
   display: grid;
   grid-column-gap: 4px;
   grid-template-areas:
-    'title title title link'
+    'title title title title'
     'proposer proposer proposer proposer'
     'toggle content content content';
-  grid-template-columns: 2fr 2fr 2fr 1fr;
+  grid-template-columns: 4fr 2fr 2fr 1fr;
 
   @include tablet-landscape {
     grid-column-gap: 12px;
     grid-template-areas: unset;
-    grid-template-columns: 1fr 48px 80px 1fr 1fr;
+    grid-template-columns: 2fr 80px 2fr 1.3fr;
 
     &:last-of-type {
       margin-bottom: 0;
@@ -43,7 +43,6 @@
 }
 
 .title,
-.link,
 .proposer,
 .content {
   align-items: center;
@@ -123,7 +122,6 @@
 
 .rowTitle,
 .rowProposer,
-.rowLink,
 .toggle,
 .rowContent {
   align-items: center;
@@ -140,14 +138,15 @@
   @extend %title4;
 
   grid-area: title;
+  transition: color 0.2s ease-out;
 
   @include tablet-landscape {
     grid-area: unset;
   }
 
-  //&:hover {
-  //
-  //}
+  &:hover {
+    color: var(--color-primary-50);
+  }
 }
 
 .rowProposer {
@@ -157,16 +156,6 @@
 
   @include tablet-landscape {
     grid-area: unset;
-  }
-}
-
-.rowLink {
-  grid-area: link;
-  justify-content: flex-end;
-
-  @include tablet-landscape {
-    grid-area: unset;
-    justify-content: flex-start;
   }
 }
 
@@ -185,6 +174,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.flex {
+  align-items: center;
+  display: flex;
+}
+
+.drilldownIcon {
+  color: var(--color-primary-50);
+  width: 24px;
 }
 
 .proposalLink {
@@ -283,9 +282,13 @@
   background-color: transparent;
   border-left: 1px solid var(--color-neutral-40);
   content: '';
-  height: calc(100% - 40px);
+  height: calc(100% - 24px);
   left: -20px;
   position: absolute;
   top: -16px;
   width: 20px;
+
+  @include tablet-landscape {
+    height: calc(100% - 40px);
+  }
 }

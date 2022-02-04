@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import cn from 'classnames';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 
 import { SectionItem } from 'astro_2.0/features/Bounties/components/BountiesListView/types';
@@ -8,8 +8,6 @@ import { SectionItem } from 'astro_2.0/features/Bounties/components/BountiesList
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { ClaimRow } from 'astro_2.0/features/Bounties/components/BountiesListView/components/ClaimRow';
-
-import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
 import { DAO } from 'types/dao';
 
@@ -49,23 +47,14 @@ export const SectionRow: FC<SectionRowProps> = ({
       >
         <div className={cn(styles.rowTitle)}>
           <Link href={item.link}>
-            <a className={styles.singleLine}>
+            <a className={cn(styles.singleLine, styles.flex)}>
               <div className={styles.singleLine}>{item.title}</div>
-            </a>
-          </Link>
-        </div>
-        <div className={styles.rowLink}>
-          <Link
-            href={{
-              pathname: SINGLE_PROPOSAL_PAGE_URL,
-              query: {
-                dao: dao.id,
-                proposal: item.proposalId,
-              },
-            }}
-          >
-            <a className={styles.proposalLink}>
-              <Icon name="buttonExternal" className={styles.icon} />
+              <div>
+                <Icon
+                  name="buttonArrowRight"
+                  className={styles.drilldownIcon}
+                />
+              </div>
             </a>
           </Link>
         </div>
@@ -100,34 +89,42 @@ export const SectionRow: FC<SectionRowProps> = ({
         </div>
         <div className={styles.rowContent}>{item.content}</div>
       </motion.div>
-      {showClaims &&
-        (!!item.bounty?.bountyClaims.length ||
-          !!item.bounty?.bountyDoneProposals.length) && (
-          <div className={styles.claimsContainer}>
-            {item.bounty?.bountyClaims.map(claim => {
-              if (!item.bounty) {
-                return null;
-              }
+      <AnimatePresence>
+        {showClaims &&
+          (!!item.bounty?.bountyClaims.length ||
+            !!item.bounty?.bountyDoneProposals.length) && (
+            <motion.div
+              layout
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className={styles.claimsContainer}
+            >
+              {item.bounty?.bountyClaims.map(claim => {
+                if (!item.bounty) {
+                  return null;
+                }
 
-              const claimedByMe = !!item.bounty.bountyClaims.find(
-                _claim => _claim.accountId === accountId
-              );
+                const claimedByMe = !!item.bounty.bountyClaims.find(
+                  _claim => _claim.accountId === accountId
+                );
 
-              return (
-                <ClaimRow
-                  maxDeadline={item.bounty.maxDeadline}
-                  key={claim.id}
-                  dao={dao}
-                  bounty={item.bounty}
-                  data={claim}
-                  completeHandler={item.completeHandler}
-                  doneProposals={item.bounty?.bountyDoneProposals}
-                  claimedByMe={claimedByMe}
-                />
-              );
-            })}
-          </div>
-        )}
+                return (
+                  <ClaimRow
+                    maxDeadline={item.bounty.maxDeadline}
+                    key={claim.id}
+                    dao={dao}
+                    bounty={item.bounty}
+                    data={claim}
+                    completeHandler={item.completeHandler}
+                    doneProposals={item.bounty?.bountyDoneProposals}
+                    claimedByMe={claimedByMe}
+                  />
+                );
+              })}
+            </motion.div>
+          )}
+      </AnimatePresence>
     </>
   );
 };

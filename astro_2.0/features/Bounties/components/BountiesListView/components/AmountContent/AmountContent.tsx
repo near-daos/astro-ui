@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import cn from 'classnames';
 
 import { Icon } from 'components/Icon';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
@@ -13,14 +12,13 @@ import styles from './AmountContent.module.scss';
 interface AmountContentProps {
   amount: string;
   token: string;
-  commentsCount: number;
+  commentsCount?: number;
   tokens: Tokens;
 }
 
 export const AmountContent: FC<AmountContentProps> = ({
   amount,
   token,
-  commentsCount,
   tokens,
 }) => {
   const tokenData = token ? tokens[token] : tokens.NEAR;
@@ -62,10 +60,6 @@ export const AmountContent: FC<AmountContentProps> = ({
             <LoadingIndicator />
           </div>
         )}
-      </span>
-      <span className={cn(styles.item, styles.desktopOnly)}>
-        <Icon name="chat" className={styles.icon} />
-        <span className={styles.value}>{commentsCount}</span>
       </span>
     </div>
   );

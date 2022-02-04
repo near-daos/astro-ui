@@ -77,6 +77,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
     <>
       <div className={styles.addProposalWrapper} ref={setRef}>
         <Button
+          data-testid="createProposal"
           size="block"
           onClick={() => {
             if (isEmpty(accountId)) {
@@ -88,10 +89,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           className={styles.addProposalButton}
           variant="tertiary"
         >
-          <Icon width={44} name="buttonAdd" className={styles.createIcon} />
-          <span className={styles.createText}>
-            {t('daoDetailsMinimized.createProposal')}
-          </span>
+          <Icon width={32} name="buttonAdd" className={styles.createIcon} />
         </Button>
       </div>
       <Popup
@@ -107,93 +105,95 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
 
   return (
     <div className={cn(styles.root, className)}>
-      <Link href={`/dao/${dao.id}`}>
-        <a>
-          <section className={styles.general}>
-            <div className={styles.flagWrapper}>
-              <FlagRenderer
-                flag={dao.flagCover}
-                size="xs"
-                fallBack={dao.logo}
-              />
-            </div>
-            <div>
-              <div className={styles.displayName}>
-                {shortenString(dao.displayName, isXsMobile ? 25 : 40)}
-                <ExplorerLink
-                  linkData={dao.id}
-                  linkType="member"
-                  className={styles.explorerLink}
+      <div className={styles.wrapper}>
+        <Link href={`/dao/${dao.id}`}>
+          <a>
+            <section className={styles.general}>
+              <div className={styles.flagWrapper}>
+                <FlagRenderer
+                  flag={dao.flagCover}
+                  size="xs"
+                  fallBack={dao.logo}
                 />
               </div>
-              <div className={styles.daoId}>
-                {shortenString(dao.id, isXsMobile ? 32 : 45)}
-                <CopyButton
-                  text={dao.id}
-                  tooltipPlacement="auto"
-                  className={styles.copyAddress}
-                />
+              <div>
+                <div className={styles.displayName}>
+                  {shortenString(dao.displayName, isXsMobile ? 25 : 40)}
+                  <ExplorerLink
+                    linkData={dao.id}
+                    linkType="member"
+                    className={styles.explorerLink}
+                  />
+                </div>
+                <div className={styles.daoId}>
+                  {shortenString(dao.id, isXsMobile ? 32 : 45)}
+                  <CopyButton
+                    text={dao.id}
+                    tooltipPlacement="auto"
+                    className={styles.copyAddress}
+                  />
+                </div>
               </div>
-            </div>
-          </section>
-        </a>
-      </Link>
+            </section>
+          </a>
+        </Link>
 
-      <section className={styles.controls}>
-        <ActionButton
-          iconName="pencil"
-          onClick={() => handleChapterClick(url.proposals)}
-          className={generateChapterStyle(url.proposals)}
-        >
-          {t('daoDetailsMinimized.proposals')}
-        </ActionButton>
-        <ActionButton
-          iconName="funds"
-          onClick={() => handleChapterClick(url.funds)}
-          className={generateChapterStyle(url.funds)}
-        >
-          {t('daoDetailsMinimized.funds')}
-        </ActionButton>
-        <ActionButton
-          iconName="groups"
-          onClick={() => handleChapterClick(url.members)}
-          className={generateChapterStyle(url.members)}
-        >
-          {t('daoDetailsMinimized.members')}
-        </ActionButton>
-        <ActionButton
-          iconName="settings"
-          onClick={() => handleChapterClick(url.settings)}
-          className={generateChapterStyle(url.settings)}
-        >
-          {t('daoDetailsMinimized.settings')}
-        </ActionButton>
-        <ActionButton
-          iconName="nfts"
-          onClick={() => handleChapterClick(url.nfts)}
-          className={generateChapterStyle(url.nfts)}
-        >
-          {t('daoDetailsMinimized.nfts')}
-        </ActionButton>
-        <ActionButton
-          iconName="proposalBounty"
-          onClick={() => handleChapterClick(url.bounties)}
-          className={generateChapterStyle(url.bounties)}
-        >
-          {t('daoDetailsMinimized.bounties')}
-        </ActionButton>
-        <ActionButton
-          iconName="proposalPoll"
-          onClick={() => handleChapterClick(url.polls)}
-          className={generateChapterStyle(url.polls)}
-        >
-          {t('daoDetailsMinimized.polls')}
-        </ActionButton>
-      </section>
+        <section className={styles.controls}>
+          <ActionButton
+            iconName="pencil"
+            onClick={() => handleChapterClick(url.proposals)}
+            className={generateChapterStyle(url.proposals)}
+          >
+            {t('daoDetailsMinimized.proposals')}
+          </ActionButton>
+          <ActionButton
+            iconName="funds"
+            onClick={() => handleChapterClick(url.funds)}
+            className={generateChapterStyle(url.funds)}
+          >
+            {t('daoDetailsMinimized.funds')}
+          </ActionButton>
+          <ActionButton
+            iconName="groups"
+            onClick={() => handleChapterClick(url.members)}
+            className={generateChapterStyle(url.members)}
+          >
+            {t('daoDetailsMinimized.members')}
+          </ActionButton>
+          <ActionButton
+            iconName="settings"
+            onClick={() => handleChapterClick(url.settings)}
+            className={generateChapterStyle(url.settings)}
+          >
+            {t('daoDetailsMinimized.settings')}
+          </ActionButton>
+          <ActionButton
+            iconName="nfts"
+            onClick={() => handleChapterClick(url.nfts)}
+            className={generateChapterStyle(url.nfts)}
+          >
+            {t('daoDetailsMinimized.nfts')}
+          </ActionButton>
+          <ActionButton
+            iconName="proposalBounty"
+            onClick={() => handleChapterClick(url.bounties)}
+            className={generateChapterStyle(url.bounties)}
+          >
+            {t('daoDetailsMinimized.bounties')}
+          </ActionButton>
+          <ActionButton
+            iconName="proposalPoll"
+            onClick={() => handleChapterClick(url.polls)}
+            className={generateChapterStyle(url.polls)}
+          >
+            {t('daoDetailsMinimized.polls')}
+          </ActionButton>
+        </section>
 
-      {onCreateProposalClick && userPermissions.isCanCreateProposals && (
-        <section className={styles.proposals}>{action}</section>
-      )}
+        {onCreateProposalClick && userPermissions.isCanCreateProposals && (
+          <section className={styles.proposals}>{action}</section>
+        )}
+      </div>
     </div>
   );
 };
