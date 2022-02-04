@@ -30,11 +30,11 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  const proposalId = bountyContext.proposal.id;
-  const proposal = await SputnikHttpService.getProposalById(
-    proposalId,
-    account
-  );
+  // const proposalId = bountyContext.proposal.id;
+  // const proposal = await SputnikHttpService.getProposalById(
+  //   proposalId,
+  //   account
+  // );
 
   const userBountyDoneProposal = bountyContext.bounty?.bountyDoneProposals.find(
     item => item.proposer === account && item.status === 'InProgress'
@@ -58,7 +58,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       )),
       dao,
       bountyContext,
-      proposal,
+      proposal: bountyContext.proposal,
       daoContext,
       bountyDoneProposal,
     },

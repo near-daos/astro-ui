@@ -96,6 +96,7 @@ export type BountyProposal = {
   createdAt: string;
   updatedAt: string;
   description: string;
+  transactionHash: string;
   votes: {
     [key: string]: 'Approve' | 'Reject' | 'Remove';
   };

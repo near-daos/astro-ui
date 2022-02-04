@@ -4,9 +4,9 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import { DaoContext } from 'types/context';
-import { BountyContext } from 'types/bounties';
+import { BountyContext, BountyProposal } from 'types/bounties';
 import { DAO } from 'types/dao';
-import { Proposal, ProposalFeedItem } from 'types/proposal';
+import { ProposalFeedItem } from 'types/proposal';
 
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 import { ViewBounty } from 'astro_2.0/features/ViewBounty/ViewBounty';
@@ -21,7 +21,7 @@ interface BountyPageProps {
   dao: DAO;
   daoContext: DaoContext;
   bountyContext: BountyContext;
-  proposal: Proposal;
+  proposal: BountyProposal;
   bountyDoneProposal: ProposalFeedItem;
 }
 
@@ -77,6 +77,7 @@ const BountyPage: NextPage<BountyPageProps> = ({
           tokens={tokens}
           commentsCount={commentsCount}
           className={styles.bountyInfo}
+          initialInfoPanelView="claims"
         />
         {bountyDoneProposal && (
           <ViewProposal

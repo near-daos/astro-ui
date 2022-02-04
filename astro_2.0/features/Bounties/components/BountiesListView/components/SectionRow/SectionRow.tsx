@@ -46,29 +46,35 @@ export const SectionRow: FC<SectionRowProps> = ({
         })}
       >
         <div className={cn(styles.rowTitle)}>
-          <Link href={item.link}>
-            <a className={cn(styles.singleLine, styles.flex)}>
+          <Button
+            size="block"
+            variant="transparent"
+            disabled={!item.bounty?.bountyClaims.length}
+            onClick={() =>
+              !!item.bounty?.bountyClaims.length && setShowClaims(prev => !prev)
+            }
+          >
+            <div
+              className={cn(styles.singleLine, styles.flex, styles.toggleLink, {
+                [styles.disabled]: !item.bounty?.bountyClaims.length,
+              })}
+            >
               <div className={styles.singleLine}>{item.title}</div>
-              <div>
-                <Icon
-                  name="buttonArrowRight"
-                  className={styles.drilldownIcon}
-                />
+              <div className={styles.flex}>
+                {!!item.bounty?.bountyClaims.length && (
+                  <Icon
+                    name="buttonArrowRight"
+                    className={styles.drilldownIcon}
+                  />
+                )}
               </div>
-            </a>
-          </Link>
+            </div>
+          </Button>
         </div>
 
         <div className={styles.toggle}>
           {item.bounty && (
-            <Button
-              size="small"
-              variant="transparent"
-              disabled={!item.bounty?.bountyClaims.length}
-              onClick={() =>
-                !!item.bounty?.bountyClaims.length &&
-                setShowClaims(prev => !prev)
-              }
+            <div
               className={cn(styles.toggleClaims, {
                 [styles.active]: showClaims,
               })}
@@ -80,7 +86,7 @@ export const SectionRow: FC<SectionRowProps> = ({
                 </span>
                 /<span className={styles.slot}>{item.bounty.times}</span>
               </span>
-            </Button>
+            </div>
           )}
         </div>
 
@@ -88,6 +94,13 @@ export const SectionRow: FC<SectionRowProps> = ({
           <div className={styles.singleLine}>{item.proposer}</div>
         </div>
         <div className={styles.rowContent}>{item.content}</div>
+        <div className={cn(styles.rowDetails)}>
+          <Link href={item.link}>
+            <a className={cn(styles.singleLine, styles.flex)}>
+              <div className={styles.singleLine}>Details</div>
+            </a>
+          </Link>
+        </div>
       </motion.div>
       <AnimatePresence>
         {showClaims &&

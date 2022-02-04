@@ -2,13 +2,12 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 import { Icon } from 'components/Icon';
 
-import { Proposal } from 'types/proposal';
-import { Bounty } from 'types/bounties';
+import { Bounty, BountyProposal } from 'types/bounties';
 
 import styles from './BountyProgress.module.scss';
 
 interface BountyProgressProps {
-  proposal: Proposal;
+  proposal: BountyProposal;
   bounty: Bounty;
 }
 

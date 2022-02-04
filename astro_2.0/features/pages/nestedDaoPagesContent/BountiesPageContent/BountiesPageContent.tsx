@@ -14,6 +14,7 @@ import { BountiesListView } from 'astro_2.0/features/Bounties/components/Bountie
 import { Button } from 'components/button/Button';
 import { Dropdown } from 'components/Dropdown';
 import { BountiesTimeline } from 'astro_2.0/features/Bounties/components/BountiesTimeline';
+import { BountiesFeed } from 'astro_2.0/features/Bounties/components/BountiesFeed';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import {
   BOUNTIES_PAGE_FILTER_OPTIONS,
@@ -39,7 +40,7 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
 
   const { accountId } = useAuthContext();
   const { tokens } = useDaoCustomTokens();
-  const [activeView, setActiveView] = useState<ViewToggleOption>('list');
+  const [activeView, setActiveView] = useState<ViewToggleOption>('feed');
 
   const { query, updateQuery } = useQuery<{
     bountyFilter: string;
@@ -114,6 +115,10 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
       )}
 
       {activeView === 'timeline' && <BountiesTimeline data={bountiesContext} />}
+
+      {activeView === 'feed' && (
+        <BountiesFeed data={bountiesContext} dao={dao} tokens={tokens} />
+      )}
     </div>
   );
 };
