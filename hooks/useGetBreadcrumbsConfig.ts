@@ -13,7 +13,6 @@ import {
 } from 'constants/routing';
 import { UrlObject } from 'url';
 import { Proposal } from 'types/proposal';
-import { Bounty } from 'types/bounties';
 
 type GroupConfig = {
   id: string;
@@ -33,7 +32,7 @@ export function useGetBreadcrumbsConfig(
   daoDisplayName: string,
   group?: GroupConfig,
   proposal?: Pick<Proposal, 'id'>,
-  bounty?: Bounty
+  bountyContextId?: string
 ): Breadcrumbs {
   const { t } = useTranslation();
 
@@ -97,10 +96,10 @@ export function useGetBreadcrumbsConfig(
           pathname: SINGLE_BOUNTY_PAGE_URL,
           query: {
             dao: daoId,
-            bounty: bounty?.id,
+            bountyContext: bountyContextId,
           },
         },
-        label: bounty?.id ?? '',
+        label: bountyContextId ?? '',
       },
       GROUPS: {
         href: {
@@ -131,7 +130,7 @@ export function useGetBreadcrumbsConfig(
     daoId,
     daoDisplayName,
     proposal?.id,
-    bounty?.id,
+    bountyContextId,
     group?.id,
     group?.label,
   ]);

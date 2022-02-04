@@ -41,7 +41,7 @@ const BountyPage: NextPage<BountyPageProps> = ({
     dao.displayName,
     undefined,
     undefined,
-    bounty
+    bountyContext.id
   );
   const breadcrumbs = useMemo(() => {
     return [

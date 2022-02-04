@@ -66,6 +66,7 @@ export const ViewBounty: FC<ViewBountyProps> = ({
         }
         proposalCardNode={
           <BountyCard
+            contextId={contextId}
             dao={dao}
             bounty={bounty}
             proposal={proposal}

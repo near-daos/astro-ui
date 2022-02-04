@@ -1,0 +1,70 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+
+  @include tablet-landscape {
+    flex-direction: column;
+    padding: 8px 0 8px 6px;
+  }
+
+  @include desktop {
+    padding: 8px 8px 8px 10px;
+  }
+
+  div {
+    white-space: nowrap;
+  }
+
+  > div,
+  > a {
+    margin-left: 24px;
+
+    @include tablet-landscape {
+      margin-bottom: 12px;
+      margin-left: 0;
+    }
+  }
+}
+
+.icon {
+  align-items: center;
+  color: var(--color-neutral-50);
+  display: flex;
+  justify-content: flex-start;
+  white-space: nowrap;
+
+  @include tablet-landscape {
+    align-items: flex-start;
+  }
+
+  button:hover {
+    color: var(--color-white);
+
+    @include tablet-landscape {
+      color: var(--color-primary-50);
+    }
+  }
+}
+
+.inactive,
+.disabled {
+  cursor: default !important;
+}
+
+.disabled.disabled {
+  color: var(--color-neutral-50);
+}
+
+.copyBtn {
+  button:hover {
+    @media screen and (max-width: #{breakpoints.$screen-sm + 1}px) {
+      color: var(--color-white) !important;
+    }
+  }
+}
