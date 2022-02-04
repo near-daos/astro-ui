@@ -8,7 +8,7 @@ import styles from './BountyProgress.module.scss';
 
 interface BountyProgressProps {
   proposal: BountyProposal;
-  bounty: Bounty;
+  bounty?: Bounty;
 }
 
 export const BountyProgress: FC<BountyProgressProps> = ({
@@ -46,11 +46,13 @@ export const BountyProgress: FC<BountyProgressProps> = ({
   }
 
   const proposalPhase =
-    proposal?.status === 'Approved' ? 'completed' : 'pending';
+    proposal?.status === 'Approved' || proposal?.status === 'InProgress'
+      ? 'completed'
+      : 'pending';
   const bountyPhase = bounty ? 'completed' : 'pending';
-  const completedPhase = Number(bounty.times) === 0 ? 'completed' : 'pending';
+  const completedPhase = Number(bounty?.times) === 0 ? 'completed' : 'pending';
   const inProgressPhase =
-    bounty.bountyClaims.length || completedPhase === 'completed'
+    bounty?.bountyClaims.length || completedPhase === 'completed'
       ? 'completed'
       : 'pending';
 

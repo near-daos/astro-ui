@@ -1,16 +1,43 @@
 import { CardContent } from 'astro_2.0/features/ViewBounty/components/CardContent';
-import { Bounty } from 'types/bounties';
-import { ReactNode } from 'react';
+import { Bounty, BountyProposal } from 'types/bounties';
+import React, { ReactNode } from 'react';
 import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
+import { AddBountyContent } from 'astro_2.0/features/ViewProposal/components/AddBountyContent';
+import { ProposalType } from 'types/proposal';
 
-export function getContentNode(bounty: Bounty): ReactNode {
-  const deadline = nanosToDays(bounty.maxDeadline);
+export function getContentNode(
+  bounty?: Bounty,
+  proposal?: BountyProposal
+): ReactNode {
+  if (!bounty && proposal) {
+    if (proposal.kind.type === ProposalType.AddBounty) {
+      const bountyData = proposal.kind.bounty;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const deadline = nanosToDays(bountyData.maxDeadline);
 
-  return (
-    <CardContent
-      amount={bounty.amount}
-      deadlineThreshold={deadline.join(' ')}
-      token={bounty.token}
-    />
-  );
+      return (
+        <AddBountyContent
+          slots={bountyData.times}
+          deadlineThreshold={deadline[0]}
+          token={bountyData.token}
+          amount={bountyData.amount}
+        />
+      );
+    }
+  }
+
+  if (bounty) {
+    const deadline = nanosToDays(bounty.maxDeadline);
+
+    return (
+      <CardContent
+        amount={bounty.amount}
+        deadlineThreshold={deadline.join(' ')}
+        token={bounty.token}
+      />
+    );
+  }
+
+  return null;
 }

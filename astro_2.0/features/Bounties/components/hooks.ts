@@ -15,7 +15,7 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 export function useBountyControls(
   dao: DAO,
-  bounty: Bounty
+  bounty?: Bounty
 ): {
   handleClaim: () => void;
   handleUnclaim: () => void;
@@ -39,10 +39,10 @@ export function useBountyControls(
       title: 'Confirm Your Claim',
     });
 
-    if (res?.length) {
+    if (res?.length && bounty) {
       await SputnikNearService.claimBounty(dao.id, {
-        bountyId: bounty.bountyId,
-        deadline: bounty.maxDeadline,
+        bountyId: bounty?.bountyId,
+        deadline: bounty?.maxDeadline,
         bountyBond: dao.policy.bountyBond,
         gas: res[0],
       });
@@ -56,11 +56,11 @@ export function useBountyControls(
       title: 'Confirm Your Unclaim',
     });
 
-    if (res?.length) {
-      await SputnikNearService.unclaimBounty(dao.id, bounty.bountyId);
+    if (res?.length && bounty) {
+      await SputnikNearService.unclaimBounty(dao.id, bounty?.bountyId);
       onSuccessHandler();
     }
-  }, [bounty.bountyId, dao.id, onSuccessHandler, showModal]);
+  }, [bounty, dao.id, onSuccessHandler, showModal]);
 
   return {
     handleClaim,

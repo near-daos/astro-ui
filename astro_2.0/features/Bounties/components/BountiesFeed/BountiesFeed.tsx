@@ -14,6 +14,7 @@ interface BountiesFeedProps {
   data: BountyContext[];
   dao: DAO;
   tokens: Tokens;
+  accountId: string;
 }
 
 export const BountiesFeed: FC<BountiesFeedProps> = ({ data, dao, tokens }) => {
