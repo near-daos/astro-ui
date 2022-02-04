@@ -5,7 +5,11 @@ import { Modal } from 'components/modal';
 import { Button } from 'components/button/Button';
 import { Input } from 'components/inputs/Input';
 
-import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
+import {
+  DEFAULT_PROPOSAL_GAS,
+  MAX_GAS,
+  MIN_GAS,
+} from 'services/sputnik/constants';
 
 import styles from './ConfirmActionModal.module.scss';
 
@@ -55,9 +59,9 @@ export const ConfirmActionModal: FC<ConfirmActionModalProps> = ({
                 onChange={e => setGas((e.target as HTMLInputElement).value)}
                 type="number"
                 value={gas}
-                min={0.1}
-                step={0.01}
-                max={0.3}
+                min={MIN_GAS}
+                step={1}
+                max={MAX_GAS}
                 isBorderless
                 size="block"
                 placeholder={`${DEFAULT_PROPOSAL_GAS}`}
