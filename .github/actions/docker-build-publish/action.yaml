@@ -2,6 +2,14 @@ name: 'Docker Build Publish'
 runs:
   using: 'composite'
   steps:
+  - name: Cache Docker layers
+    uses: actions/cache@v2
+    with:
+      path: /tmp/.buildx-cache-astro-ui
+      key: ${{ runner.os }}-astro-ui-${{ github.sha }}
+      restore-keys: |
+        ${{ runner.os }}-astro-ui
+
   - name: Docker meta
     id: meta
     uses: docker/metadata-action@v3
@@ -35,3 +43,11 @@ runs:
       platforms: linux/amd64
       tags: ${{ steps.meta.outputs.tags }}
       push: true
+      cache-from: type=local,src=/tmp/.buildx-cache-astro-ui
+      cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-astro-ui-new
+
+  - name: Move cache
+    shell: bash
+    run: |
+      rm -rf /tmp/.buildx-cache-astro-ui
+      mv /tmp/.buildx-cache-astro-ui-new /tmp/.buildx-cache-astro-ui
