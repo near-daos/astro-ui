@@ -13,7 +13,7 @@
   z-index: 0;
 
   &.inProgress {
-    border-color: var(--color-brand-pink);
+    border-color: var(--color-primary-20);
   }
 
   &.completed {
@@ -67,7 +67,7 @@
   width: fit-content;
 
   &.inProgress {
-    background-color: var(--color-brand-pink);
+    background-color: var(--color-primary-20);
   }
 
   &.completed {
@@ -80,7 +80,7 @@
 }
 
 .title.inProgress .controlIcon {
-  color: var(--color-brand-coral-red);
+  color: var(--color-primary-50);
 }
 
 .title.completed .controlIcon {
@@ -112,7 +112,7 @@
   }
 
   &.inProgress {
-    border-color: var(--color-brand-pink);
+    border-color: var(--color-primary-20);
   }
 
   &.completed {
