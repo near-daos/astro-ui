@@ -4,21 +4,14 @@
 .root {
   background: var(--color-white);
   box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
-  display: grid;
-  grid-gap: 12px;
-  grid-template-areas:
-    'general'
-    'controls'
-    'proposals';
-  grid-template-columns: 1fr;
+  display: flex;
+  height: 66px;
   margin: 0 -24px;
   transition: box-shadow 0.4s;
 
   @include tablet-landscape {
     border-radius: 8px;
-    grid-gap: 16px;
-    grid-template-areas: 'general controls proposals';
-    grid-template-columns: 2fr 1fr auto;
+    display: flex;
     margin: 0;
   }
 
@@ -27,11 +20,25 @@
   }
 }
 
+.wrapper {
+  align-items: center;
+  display: flex;
+  -ms-overflow-style: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  width: 100%;
+}
+
+.wrapper::-webkit-scrollbar {
+  display: none;
+}
+
 .general {
   align-items: center;
   display: flex;
   grid-area: general;
-  padding: 12px 12px 0;
+  padding: 0 0 0 70px;
 
   @include tablet-landscape {
     padding: 8px 0 8px 16px;
@@ -58,6 +65,7 @@
 
   @include tablet-landscape {
     justify-content: flex-end;
+    margin-left: auto;
     padding: 12px 0;
   }
 
@@ -81,7 +89,11 @@
 }
 
 .proposals {
-  grid-area: proposals;
+  position: absolute;
+  @include tablet-landscape {
+    height: 100%;
+    position: relative;
+  }
 }
 
 .flagWrapper {
@@ -122,16 +134,19 @@
 .addProposalButton {
   @include centralize;
   background-color: var(--color-brand-green);
-  border-radius: 0;
-  height: 100%;
+  border-radius: 0 8px 8px 0;
+  height: 66px;
+  padding: 0;
+  width: 56px;
 
   @include tablet-landscape {
     border-radius: 0 8px 8px 0;
-    padding: 0 12px;
+    height: 100%;
+    padding: 0;
   }
 
   @include large-desktop {
-    padding: 0 17px;
+    padding: 0;
   }
 }
 
@@ -144,11 +159,7 @@
 }
 
 .createIcon {
-  display: none;
-
-  @include tablet-landscape {
-    display: block;
-  }
+  display: block;
 }
 
 .createText {
@@ -166,6 +177,10 @@
   border-radius: 6px;
   width: 42px;
 
+  &:not(:first-of-type) {
+    margin-left: 24px;
+  }
+
   > button {
     color: var(--color-neutral-60);
     transition: 0.2s linear;
@@ -174,6 +189,12 @@
 
   svg {
     width: 16px;
+  }
+}
+
+.controlIcon.controlIcon {
+  @include tablet-landscape {
+    margin-left: 0;
   }
 }
 

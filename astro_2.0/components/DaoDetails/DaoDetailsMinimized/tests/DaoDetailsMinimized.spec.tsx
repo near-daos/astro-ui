@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import last from 'lodash/last';
-import { render } from 'jest/testUtils';
+import { render, screen } from '@testing-library/react';
 import { useRouter } from 'next/router';
 import { fireEvent } from '@testing-library/dom';
 
@@ -54,7 +54,7 @@ describe('dao details minimized', () => {
   });
 
   it('Should render action section if onCreateProposalClick provided and user has proper permission', () => {
-    const { getAllByText } = render(
+    render(
       <DaoDetailsMinimized
         dao={daoMock}
         userPermissions={permissions}
@@ -62,7 +62,8 @@ describe('dao details minimized', () => {
       />
     );
 
-    expect(getAllByText('daoDetailsMinimized.createProposal')).toHaveLength(1);
+    expect(screen.getByTestId('createProposal')).toBeInTheDocument();
+    expect(screen.getByTestId('createProposal')).toBeVisible();
   });
 
   it.each`
