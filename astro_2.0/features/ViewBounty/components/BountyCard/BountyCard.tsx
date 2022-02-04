@@ -2,8 +2,7 @@ import React, { ReactNode } from 'react';
 import cn from 'classnames';
 import { formatDistance, parseISO } from 'date-fns';
 
-import { Bounty } from 'types/bounties';
-import { Proposal } from 'types/proposal';
+import { Bounty, BountyProposal } from 'types/bounties';
 import { DAO } from 'types/dao';
 
 import { kFormatter } from 'utils/format';
@@ -27,7 +26,7 @@ export interface BountyCardProps {
   content: ReactNode;
   toggleInfoPanel: (val: string | null) => void;
   commentsCount: number;
-  proposal: Proposal;
+  proposal: BountyProposal;
   activeInfoView: string | null;
   dao: DAO;
   completeHandler: () => void;
@@ -142,7 +141,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
             <div className={styles.proposalType}>
               {description}
               <ExplorerLink
-                linkData={proposal.txHash}
+                linkData={proposal.transactionHash}
                 linkType="transaction"
                 className={styles.proposalWalletLink}
               />

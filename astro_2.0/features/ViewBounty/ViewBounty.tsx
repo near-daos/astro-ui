@@ -6,10 +6,10 @@ import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/comp
 import { getContentNode } from 'astro_2.0/features/ViewBounty/helpers';
 import { BountyCard } from 'astro_2.0/features/ViewBounty/components/BountyCard';
 
-import { Proposal, ProposalType, ProposalVariant } from 'types/proposal';
+import { ProposalType, ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
 import { Token } from 'types/token';
-import { Bounty } from 'types/bounties';
+import { Bounty, BountyProposal } from 'types/bounties';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
@@ -23,9 +23,10 @@ export interface ViewBountyProps {
   dao: DAO | null;
   bounty: Bounty;
   tokens: Record<string, Token>;
-  proposal: Proposal;
+  proposal: BountyProposal;
   className?: string;
   toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
+  initialInfoPanelView: string | null;
 }
 
 const variants = {
@@ -42,8 +43,11 @@ export const ViewBounty: FC<ViewBountyProps> = ({
   proposal,
   className,
   toggleCreateProposal,
+  initialInfoPanelView,
 }) => {
-  const [showInfoPanel, setShowInfoPanel] = useState<string | null>('claims');
+  const [showInfoPanel, setShowInfoPanel] = useState<string | null>(
+    initialInfoPanelView
+  );
   const isCouncilUser = proposal.permissions?.isCouncil ?? false;
   const [commentsNum, setCommentsNum] = useState(commentsCount);
 

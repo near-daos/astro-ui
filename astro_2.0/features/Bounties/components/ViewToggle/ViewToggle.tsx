@@ -5,7 +5,7 @@ import { Icon } from 'components/Icon';
 
 import styles from './ViewToggle.module.scss';
 
-export type ViewToggleOption = 'list' | 'timeline';
+export type ViewToggleOption = 'list' | 'timeline' | 'feed';
 
 interface ViewToggleProps {
   selected: ViewToggleOption;
@@ -23,8 +23,21 @@ export const ViewToggle: FC<ViewToggleProps> = ({
       <Button
         size="small"
         variant="tertiary"
-        onClick={() => onSelect('list')}
+        onClick={() => onSelect('feed')}
         className={cn(styles.buttonWrapper, styles.first)}
+      >
+        <Icon
+          name="feed"
+          className={cn(styles.button, {
+            [styles.active]: selected === 'feed',
+          })}
+        />
+      </Button>
+      <Button
+        size="small"
+        variant="tertiary"
+        onClick={() => onSelect('list')}
+        className={cn(styles.buttonWrapper)}
       >
         <Icon
           name="list"

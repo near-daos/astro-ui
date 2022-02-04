@@ -34,7 +34,7 @@
   @include tablet-landscape {
     grid-column-gap: 12px;
     grid-template-areas: unset;
-    grid-template-columns: 2fr 80px 2fr 1.3fr;
+    grid-template-columns: 2fr 80px 2fr 1.3fr 80px;
 
     &:last-of-type {
       margin-bottom: 0;
@@ -44,6 +44,7 @@
 
 .title,
 .proposer,
+.details,
 .content {
   align-items: center;
   display: flex;
@@ -123,6 +124,7 @@
 .rowTitle,
 .rowProposer,
 .toggle,
+.rowDetails,
 .rowContent {
   align-items: center;
   display: flex;
@@ -138,14 +140,22 @@
   @extend %title4;
 
   grid-area: title;
-  transition: color 0.2s ease-out;
 
   @include tablet-landscape {
     grid-area: unset;
   }
+}
+
+.toggleLink {
+  transition: color 0.2s ease-out;
 
   &:hover {
     color: var(--color-primary-50);
+  }
+
+  &.disabled {
+    color: var(--color-neutral-80);
+    cursor: default;
   }
 }
 
@@ -166,6 +176,22 @@
   @include tablet-landscape {
     grid-area: unset;
     justify-content: flex-start;
+  }
+}
+
+.rowDetails {
+  @extend %subtitle4;
+  grid-area: details;
+  justify-content: flex-end;
+  transition: color 0.2s ease-out;
+
+  @include tablet-landscape {
+    grid-area: unset;
+    justify-content: flex-start;
+  }
+
+  &:hover {
+    color: var(--color-primary-50);
   }
 }
 

@@ -22,7 +22,8 @@ export const TimelineHeader: FC<TimelineHeaderProps> = ({
   rangeColumns,
   granularity,
 }) => {
-  const title = format(item, 'dd MMM, yyyy');
+  const titleFormat = granularity === 'month' ? 'MMM, yyyy' : 'dd MMM, yyyy';
+  const title = format(item, titleFormat);
 
   return (
     <React.Fragment key={title}>
