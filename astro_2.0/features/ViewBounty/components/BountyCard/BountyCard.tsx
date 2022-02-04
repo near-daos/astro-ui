@@ -14,6 +14,7 @@ import { ProposalControlButton } from 'astro_2.0/components/ProposalCardRenderer
 import { ExplorerLink } from 'components/ExplorerLink';
 import { ExternalLink } from 'components/ExternalLink';
 import { Button } from 'components/button/Button';
+import { VotingContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/VotingContent';
 
 import { useBountyControls } from 'astro_2.0/features/Bounties/components/hooks';
 import { useAuthContext } from 'context/AuthContext';
@@ -22,7 +23,7 @@ import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import styles from './BountyCard.module.scss';
 
 export interface BountyCardProps {
-  bounty: Bounty;
+  bounty?: Bounty;
   content: ReactNode;
   toggleInfoPanel: (val: string | null) => void;
   commentsCount: number;
@@ -50,11 +51,22 @@ export const BountyCard: React.FC<BountyCardProps> = ({
 }) => {
   const { accountId } = useAuthContext();
 
-  const [description, url] = bounty.description.split(EXTERNAL_LINK_SEPARATOR);
+  const desc = bounty ? bounty.description : proposal.description;
+  const [description, url] = desc.split(EXTERNAL_LINK_SEPARATOR);
 
   const { handleUnclaim, handleClaim } = useBountyControls(dao, bounty);
 
   function renderButtons() {
+    if (!bounty && proposal) {
+      return (
+        <VotingContent proposal={proposal} accountId={accountId} dao={dao} />
+      );
+    }
+
+    if (!bounty) {
+      return null;
+    }
+
     if (proposal.status === 'Approved') {
       const myClaims = bounty.bountyClaims.filter(
         claim => claim.accountId === accountId
@@ -150,7 +162,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
         />
       </div>
       <div className={styles.countdownCell}>
-        {getTimestampLabel(bounty.createdAt)}
+        {getTimestampLabel(bounty ? bounty.createdAt : proposal.createdAt)}
       </div>
       <div className={styles.proposerCell}>
         <InfoBlockWidget label="Proposer" value={proposal.proposer} />
@@ -190,27 +202,29 @@ export const BountyCard: React.FC<BountyCardProps> = ({
           />
         </div>
         <div className={cn(styles.controlItem, styles.claims)}>
-          <ProposalControlButton
-            icon="claimsLink"
-            className={styles.controlButton}
-            iconClassName={cn(styles.toggleCommentsButton, {
-              [styles.active]: activeInfoView === 'claims',
-            })}
-            voted={false}
-            type="button"
-            times={
-              <div className={styles.controlValue}>
-                <span className={styles.bold}>
-                  {Number(bounty.numberOfClaims)}
-                </span>
-                /<span>{bounty.times}</span>
-              </div>
-            }
-            onClick={() =>
-              toggleInfoPanel(activeInfoView === 'claims' ? null : 'claims')
-            }
-            disabled={false}
-          />
+          {bounty && (
+            <ProposalControlButton
+              icon="claimsLink"
+              className={styles.controlButton}
+              iconClassName={cn(styles.toggleCommentsButton, {
+                [styles.active]: activeInfoView === 'claims',
+              })}
+              voted={false}
+              type="button"
+              times={
+                <div className={styles.controlValue}>
+                  <span className={styles.bold}>
+                    {Number(bounty.numberOfClaims)}
+                  </span>
+                  /<span>{bounty.times}</span>
+                </div>
+              }
+              onClick={() =>
+                toggleInfoPanel(activeInfoView === 'claims' ? null : 'claims')
+              }
+              disabled={false}
+            />
+          )}
         </div>
         {renderButtons()}
       </div>

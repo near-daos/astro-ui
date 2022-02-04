@@ -117,7 +117,12 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
       {activeView === 'timeline' && <BountiesTimeline data={bountiesContext} />}
 
       {activeView === 'feed' && (
-        <BountiesFeed data={bountiesContext} dao={dao} tokens={tokens} />
+        <BountiesFeed
+          data={bountiesContext}
+          dao={dao}
+          tokens={tokens}
+          accountId={accountId}
+        />
       )}
     </div>
   );

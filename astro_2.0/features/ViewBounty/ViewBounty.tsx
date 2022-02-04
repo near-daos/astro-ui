@@ -51,11 +51,11 @@ export const ViewBounty: FC<ViewBountyProps> = ({
   const isCouncilUser = proposal.permissions?.isCouncil ?? false;
   const [commentsNum, setCommentsNum] = useState(commentsCount);
 
-  if (!bounty || !dao) {
+  if (!dao || !(bounty || proposal)) {
     return null;
   }
 
-  const contentNode = getContentNode(bounty);
+  const contentNode = getContentNode(bounty, proposal);
 
   return (
     <div className={className}>
@@ -95,7 +95,6 @@ export const ViewBounty: FC<ViewBountyProps> = ({
           <AnimatePresence>
             {showInfoPanel && (
               <motion.div
-                key={bounty.bountyId}
                 initial={variants.initial}
                 animate={variants.visible}
                 exit={variants.initial}
