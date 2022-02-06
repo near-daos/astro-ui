@@ -2,6 +2,8 @@ import AWS from 'aws-sdk';
 import { ManagedUpload } from 'aws-sdk/clients/s3';
 import { awsConfig, appConfig } from 'config';
 import { nanoid } from 'nanoid';
+import FormData from 'form-data';
+import axios from 'axios';
 
 const SECOND = 1000;
 
@@ -61,7 +63,23 @@ export class AwsUploader {
     this.bucketName = bucketName;
   }
 
-  uploadToBucket = async (file: File): Promise<ManagedUpload.SendData> => {
+  uploadToBucket = async (img: File): Promise<string> => {
+    const formData = new FormData();
+
+    formData.append('img', img, img.name);
+
+    const { data } = await axios.post('/api/uploadToS3', formData, {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    });
+
+    return data;
+  };
+
+  uploadToBucketBEOnly = async (
+    file: File | Buffer
+  ): Promise<ManagedUpload.SendData> => {
     const fileName = nanoid();
 
     try {

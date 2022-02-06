@@ -19,7 +19,7 @@ import { TransactionDetailsWidget } from 'astro_2.0/components/TransactionDetail
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import { SputnikNearService } from 'services/sputnik';
-import awsUploader from 'services/AwsUploader/AwsUploader';
+import { AwsUploader } from 'services/AwsUploader';
 
 import { getRolesVotingPolicy } from './helpers';
 
@@ -36,9 +36,9 @@ export function DaoSubmitForm(): JSX.Element {
 
   const uploadImg = useCallback(async (img: File) => {
     if (img) {
-      const { Key } = await awsUploader.uploadToBucket(img);
+      const key = await AwsUploader.uploadToBucket(img);
 
-      return Key;
+      return key;
     }
 
     return '';

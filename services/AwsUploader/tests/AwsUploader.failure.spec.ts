@@ -24,6 +24,6 @@ describe('AWS uploader', () => {
       type: 'text/plain',
     });
 
-    expect(AwsUploader.uploadToBucket(file)).rejects.toBeUndefined();
+    expect(AwsUploader.uploadToBucketBEOnly(file)).rejects.toBeUndefined();
   });
 });

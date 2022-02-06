@@ -18,7 +18,7 @@ jest.mock('aws-sdk', () => {
 
 describe('AWS uploader', () => {
   it('Should return response when upload is successful', async () => {
-    const response = await AwsUploader.uploadToBucket(
+    const response = await AwsUploader.uploadToBucketBEOnly(
       new File(['foo'], 'foo.txt', {
         type: 'text/plain',
       })
