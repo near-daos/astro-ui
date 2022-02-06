@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Token icon Should render component 1`] = `
+<div>
+  <div>
+    <div>
+      <div
+        style="background-image: url(myIcon);"
+      />
+    </div>
+  </div>
+</div>
+`;

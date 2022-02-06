@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Transaction details widget Should render component 1`] = `
+<div>
+  <form
+    novalidate=""
+  >
+    <div
+      class=""
+    >
+      <div>
+        <div>
+          <div
+            class=""
+          >
+            <div
+              class=""
+            >
+              <span>
+                components.transactionDetailsWidget.tGas
+              </span>
+            </div>
+            <div>
+              <label
+                class="undefined"
+                for="1"
+              >
+                <input
+                  class=""
+                  data-testid="gas-input"
+                  id="1"
+                  max="300"
+                  min="10"
+                  placeholder="150"
+                  step="1"
+                  style="text-align: left; width: 6ch;"
+                  type="number"
+                />
+              </label>
+            </div>
+          </div>
+          <div
+            class=""
+          >
+            <div
+              class=""
+            >
+              <span>
+                components.transactionDetailsWidget.bond
+              </span>
+            </div>
+            <div>
+              <label
+                class="undefined"
+                for="2"
+              >
+                <input
+                  class=""
+                  id="2"
+                  max="0.25"
+                  min="0.01"
+                  placeholder="0.25"
+                  readonly=""
+                  step="0.01"
+                  style="text-align: left; width: 5ch;"
+                  type="number"
+                  value="0"
+                />
+              </label>
+              <div>
+                NEAR
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          class=""
+          type="submit"
+        >
+          Purpose
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;
