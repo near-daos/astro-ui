@@ -1,0 +1,144 @@
+/* stylelint-disable max-nesting-depth */
+
+@import 'styles/typography';
+
+$slider-height: 48px;
+
+.root {
+  width: 402px;
+}
+
+.captcha {
+  background-size: cover;
+  border-radius: 4px;
+  height: 220px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.sliderContainer {
+  background-color: var(--color-neutral-30);
+  height: 48px;
+  position: relative;
+}
+
+.rangeInput {
+  appearance: none; /* Hides the slider so that custom slider can be made */
+  background: transparent; /* Otherwise white in Chrome */
+  width: 100%; /* Specific width is required for Firefox. */
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+  }
+
+  &:focus {
+    outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+  }
+
+  &::-ms-track {
+    /* Hides the slider so custom styles can be added */
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    background-image: url('/assets/captcha/slider/regular.svg');
+    cursor: grab;
+    height: $slider-height;
+    width: $slider-height;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  /* All the same stuff for Firefox */
+  &::-moz-range-thumb {
+    background-image: url('/assets/captcha/slider/regular.svg');
+    cursor: grab;
+    height: 36px;
+    width: 16px;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  /* All the same stuff for IE */
+  &::-ms-thumb {
+    background-image: url('/assets/captcha/slider/regular.svg');
+    cursor: grab;
+    height: 36px;
+    width: 16px;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+}
+
+.helperText {
+  @extend %body2;
+  left: 74px;
+
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: 0.2s;
+
+  &.hidden {
+    opacity: 0;
+  }
+}
+
+.hole {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.fill {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.success {
+  .rangeInput::-webkit-slider-thumb {
+    background-image: url('/assets/captcha/slider/success.svg');
+  }
+
+  .rangeInput::-moz-range-thumb {
+    background-image: url('/assets/captcha/slider/success.svg');
+  }
+
+  .rangeInput::-ms-thumb {
+    background-image: url('/assets/captcha/slider/success.svg');
+  }
+}
+
+.failure {
+  .rangeInput::-webkit-slider-thumb {
+    background-image: url('/assets/captcha/slider/failure.svg');
+  }
+
+  .rangeInput::-moz-range-thumb {
+    background-image: url('/assets/captcha/slider/failure.svg');
+  }
+
+  .rangeInput::-ms-thumb {
+    background-image: url('/assets/captcha/slider/failure.svg');
+  }
+}
+
+.resetButton {
+  cursor: pointer;
+  float: right;
+  height: 24px;
+  margin-top: 16px;
+  width: 24px;
+}
