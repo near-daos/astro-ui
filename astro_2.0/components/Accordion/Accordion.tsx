@@ -44,6 +44,7 @@ export const Accordion: FC<AccordionProps> = props => {
         className={styles.header}
         onClick={toggleOpenState}
         onKeyPress={toggleOpenState}
+        data-testid="accordion-header"
       >
         {title}
         <IconButton
@@ -52,7 +53,11 @@ export const Accordion: FC<AccordionProps> = props => {
           className={styles.icon}
         />
       </div>
-      <div ref={contentContainer} className={styles.contentContainer}>
+      <div
+        ref={contentContainer}
+        className={styles.contentContainer}
+        data-testid="accordion-container"
+      >
         <div className={styles.content}>{children}</div>
       </div>
     </div>
