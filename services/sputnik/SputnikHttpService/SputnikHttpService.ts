@@ -6,13 +6,7 @@ import {
 import omit from 'lodash/omit';
 
 import { PaginationResponse } from 'types/api';
-import {
-  GetNFTTokensResponse,
-  GetTokensResponse,
-  NftToken,
-  Token,
-  TokenResponse,
-} from 'types/token';
+import { NftToken, Token } from 'types/token';
 import {
   DAO,
   DaoFeedItem,
@@ -45,37 +39,21 @@ import {
   ProposalFilterStatusOptions,
 } from 'features/member-home/types';
 import {
-  DaoDTO,
   DaoFeedItemResponse,
-  DaoSubscriptionDTO,
-  GetDAOsResponse,
   GetProposalsResponse,
-  mapDaoDTOtoDao,
-  mapDaoFeedItemResponseToDaoFeedItemList,
-  mapProposalDTOToProposal,
-  mapProposalFeedItemResponseToProposalFeedItem,
-  mapReceiptsByTokenResponse,
-  mapReceiptsResponse,
-  mapSearchResultsDTOToDataObject,
-  mapSubscriptionsDTOsToDaoSubscriptions,
-  mapTokensDTOToTokens,
   MemberStats,
-  ProposalDTO,
-  ProposalFeedItemResponse,
-  ReceiptDTO,
-  SearchResponse,
 } from 'services/sputnik/mappers';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { HttpService, httpService } from 'services/HttpService';
 import { DaoContext } from 'types/context';
 import { isUserPermittedToCreateProposal } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
-import { mapNftTokenResponseToNftToken } from 'services/sputnik/mappers/nfts';
 import { CancelToken } from 'axios';
 import {
   DaoStatsOvertime,
   DaoStatsProposalsOvertime,
   DaoStatsState,
 } from 'types/daoStats';
+import { API_MAPPERS } from 'constants/mappers';
 
 class SputnikHttpServiceClass {
   private readonly httpService: HttpService = httpService;
@@ -91,7 +69,13 @@ class SputnikHttpServiceClass {
     const limit = params?.limit ?? 500;
     const sort = params?.sort ?? 'createdAt,DESC';
 
-    const { data } = await this.httpService.get<GetDAOsResponse>('/daos', {
+    const { data } = await this.httpService.get<{
+      data: DaoFeedItem[];
+      total: number;
+    }>('/daos', {
+      responseMapper: {
+        name: API_MAPPERS.MAP_DAO_FEED_ITEM_RESPONSE_TO_DAO_FEED_ITEM_LIST,
+      },
       params: {
         filter: params?.filter,
         offset,
@@ -102,15 +86,17 @@ class SputnikHttpServiceClass {
     });
 
     return {
-      data: mapDaoFeedItemResponseToDaoFeedItemList(data.data),
+      data: data.data,
       total: data.total,
     };
   }
 
   public async getDaoById(id: string): Promise<DAO | null> {
-    const { data } = await this.httpService.get<DaoDTO>(`/daos/${id}`);
+    const { data } = await this.httpService.get<DAO | null>(`/daos/${id}`, {
+      responseMapper: { name: API_MAPPERS.MAP_DAO_DTO_TO_DAO },
+    });
 
-    return mapDaoDTOtoDao(data);
+    return data;
   }
 
   public async search(params: {
@@ -121,29 +107,30 @@ class SputnikHttpServiceClass {
     cancelToken: CancelToken;
     accountId: string;
   }): Promise<SearchResultsData | null> {
-    const result = await this.httpService.get<SearchResponse>('/search', {
-      params: {
-        query: params.query,
-        accountId: params.accountId,
-      },
-      cancelToken: params.cancelToken,
-    });
+    const { data } = await this.httpService.get<SearchResultsData | null>(
+      '/search',
+      {
+        responseMapper: {
+          name: API_MAPPERS.MAP_SEARCH_RESULTS_DTO_TO_DATA_OBJECT,
+        },
+        cancelToken: params.cancelToken,
+      }
+    );
 
-    return mapSearchResultsDTOToDataObject(params.query, {
-      daos: (result.data as SearchResponse)?.daos
-        ?.data as DaoFeedItemResponse[],
-      proposals: (result.data as SearchResponse)?.proposals
-        ?.data as ProposalFeedItemResponse[],
-      members: [],
-    });
+    return data;
   }
 
   public async getAccountDaos(accountId: string): Promise<DaoFeedItem[]> {
-    const { data } = await this.httpService.get<DaoFeedItemResponse[]>(
-      `/daos/account-daos/${accountId}`
+    const { data } = await this.httpService.get<DaoFeedItem[]>(
+      `/daos/account-daos/${accountId}`,
+      {
+        responseMapper: {
+          name: API_MAPPERS.MAP_DAO_FEED_ITEM_RESPONSE_TO_DAO_FEED_ITEM_LIST,
+        },
+      }
     );
 
-    return mapDaoFeedItemResponseToDaoFeedItemList(data);
+    return data;
   }
 
   public async getAccountDaosIds(accountId: string): Promise<string[]> {
@@ -178,11 +165,16 @@ class SputnikHttpServiceClass {
       })
       .query();
 
-    const { data: proposals } = await this.httpService.get<
-      GetProposalsResponse
-    >(`/proposals?${queryString}`);
+    const { data } = await this.httpService.get<Proposal[]>(
+      `/proposals?${queryString}`,
+      {
+        responseMapper: {
+          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL,
+        },
+      }
+    );
 
-    return proposals.data.map(mapProposalDTOToProposal);
+    return data;
   }
 
   public async getUserProposals(accountId: string) {
@@ -385,31 +377,37 @@ class SputnikHttpServiceClass {
 
     if (accountId) {
       const { data } = await this.httpService.get<
-        PaginationResponse<ProposalFeedItemResponse[]>
+        PaginationResponse<ProposalFeedItem[]>
       >(
         `/proposals/account-proposals/${accountId}?${queryString.queryString}${
           query.accountId ? `&accountId=${query.accountId}` : ''
-        }`
+        }`,
+        {
+          responseMapper: {
+            name:
+              API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+          },
+        }
       );
 
-      return {
-        ...data,
-        data: data.data.map(mapProposalFeedItemResponseToProposalFeedItem),
-      };
+      return data;
     }
 
     const { data } = await this.httpService.get<
-      PaginationResponse<ProposalFeedItemResponse[]>
+      PaginationResponse<ProposalFeedItem[]>
     >(
       `/proposals?${queryString.queryString}${
         query.accountId ? `&accountId=${query.accountId}` : ''
-      }`
+      }`,
+      {
+        responseMapper: {
+          name:
+            API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+        },
+      }
     );
 
-    return {
-      ...data,
-      data: data.data.map(mapProposalFeedItemResponseToProposalFeedItem),
-    };
+    return data;
   }
 
   public async getProposalById(
@@ -435,14 +433,20 @@ class SputnikHttpServiceClass {
         .query();
 
       const { data } = await this.httpService.get<
-        PaginationResponse<ProposalFeedItemResponse[]>
+        PaginationResponse<ProposalFeedItem[]>
       >(
         `/proposals?${queryString.queryString}${
           accountId ? `&accountId=${accountId}` : ''
-        }`
+        }`,
+        {
+          responseMapper: {
+            name:
+              API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+          },
+        }
       );
 
-      return data.data.map(mapProposalFeedItemResponseToProposalFeedItem)[0];
+      return data.data[0];
     } catch (error) {
       if ([400, 404].includes(error.response.status)) {
         return null;
@@ -502,11 +506,15 @@ class SputnikHttpServiceClass {
       })
       .query();
 
-    const { data: proposals } = await this.httpService.get<
-      PaginationResponse<ProposalFeedItemResponse[]>
-    >(`/proposals?${queryString.queryString}`);
+    const { data } = await this.httpService.get<
+      PaginationResponse<ProposalFeedItem[]>
+    >(`/proposals?${queryString.queryString}`, {
+      responseMapper: {
+        name: API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+      },
+    });
 
-    return proposals.data.map(mapProposalFeedItemResponseToProposalFeedItem);
+    return data.data;
   }
 
   public async getFilteredProposals(
@@ -641,11 +649,16 @@ class SputnikHttpServiceClass {
       })
       .query();
 
-    const { data: proposals } = await this.httpService.get<
-      GetProposalsResponse
-    >(`/proposals?${queryString.queryString}`);
+    const { data: proposals } = await this.httpService.get<Proposal[]>(
+      `/proposals?${queryString.queryString}`,
+      {
+        responseMapper: {
+          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL,
+        },
+      }
+    );
 
-    return proposals.data.map(mapProposalDTOToProposal);
+    return proposals;
   }
 
   public async getProposals(
@@ -659,13 +672,17 @@ class SputnikHttpServiceClass {
       limit,
     };
 
-    const { data: proposals } = await this.httpService.get<
-      GetProposalsResponse
-    >('/proposals', {
-      params: daoId ? params : omit(params, 'filter'),
-    });
+    const { data: proposals } = await this.httpService.get<Proposal[]>(
+      '/proposals',
+      {
+        responseMapper: {
+          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL,
+        },
+        params: daoId ? params : omit(params, 'filter'),
+      }
+    );
 
-    return proposals.data.map(mapProposalDTOToProposal);
+    return proposals;
   }
 
   public async getDaoMembersStats(daoId: string): Promise<MemberStats[]> {
@@ -680,19 +697,36 @@ class SputnikHttpServiceClass {
     accountId: string,
     tokenId: string
   ): Promise<Receipt[]> {
-    const { data } = await this.httpService.get<ReceiptDTO[]>(
-      `/transactions/receipts/account-receipts/${accountId}/tokens/${tokenId}`
+    const { data } = await this.httpService.get<Receipt[]>(
+      `/transactions/receipts/account-receipts/${accountId}/tokens/${tokenId}`,
+      {
+        responseMapper: {
+          name: API_MAPPERS.MAP_RECEIPTS_BY_TOKEN_RESPONSE,
+          params: {
+            accountId,
+            tokenId,
+          },
+        },
+      }
     );
 
-    return mapReceiptsByTokenResponse(accountId, tokenId, data);
+    return data;
   }
 
   public async getAccountReceipts(accountId: string): Promise<Receipt[]> {
-    const { data } = await this.httpService.get<ReceiptDTO[]>(
-      `/transactions/receipts/account-receipts/${accountId}`
+    const { data } = await this.httpService.get<Receipt[]>(
+      `/transactions/receipts/account-receipts/${accountId}`,
+      {
+        responseMapper: {
+          name: API_MAPPERS.MAP_RECEIPTS_RESPONSE,
+          params: {
+            accountId,
+          },
+        },
+      }
     );
 
-    return mapReceiptsResponse(accountId, data);
+    return data;
   }
 
   public async getPolls(
@@ -729,11 +763,16 @@ class SputnikHttpServiceClass {
       })
       .query();
 
-    const { data: proposals } = await this.httpService.get<
-      GetProposalsResponse
-    >(`/proposals?${queryString.queryString}`);
+    const { data: proposals } = await this.httpService.get<Proposal[]>(
+      `/proposals?${queryString.queryString}`,
+      {
+        responseMapper: {
+          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL,
+        },
+      }
+    );
 
-    return proposals.data.map(mapProposalDTOToProposal);
+    return proposals;
   }
 
   public async getProposal(
@@ -741,11 +780,16 @@ class SputnikHttpServiceClass {
     index: number
   ): Promise<Proposal | null> {
     try {
-      const { data: proposal } = await this.httpService.get<ProposalDTO>(
-        `/proposals/${contractId}-${index}`
+      const { data: proposal } = await this.httpService.get<Proposal | null>(
+        `/proposals/${contractId}-${index}`,
+        {
+          responseMapper: {
+            name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL,
+          },
+        }
       );
 
-      return mapProposalDTOToProposal(proposal);
+      return proposal;
     } catch (error) {
       if ([400, 404].includes(error.response.status)) {
         return null;
@@ -862,19 +906,19 @@ class SputnikHttpServiceClass {
   }
 
   public async getAccountNFTs(accountId: string): Promise<NftToken[]> {
-    const { data } = await this.httpService.get<GetNFTTokensResponse>(
-      `/tokens/nfts`,
-      {
-        params: {
-          filter: `ownerId||$eq||${accountId}`,
-          sort: 'createdAt,DESC',
-          offset: 0,
-          limit: 1000,
-        },
-      }
-    );
+    const { data } = await this.httpService.get<NftToken[]>(`/tokens/nfts`, {
+      responseMapper: {
+        name: API_MAPPERS.MAP_NFT_TOKEN_RESPONSE_TO_NFT_TOKEN,
+      },
+      params: {
+        filter: `ownerId||$eq||${accountId}`,
+        sort: 'createdAt,DESC',
+        offset: 0,
+        limit: 1000,
+      },
+    });
 
-    return mapNftTokenResponseToNftToken(data.data);
+    return data;
   }
 
   public async getAllTokens(): Promise<Token[]> {
@@ -882,7 +926,10 @@ class SputnikHttpServiceClass {
     const limit = 1000;
     const sort = 'createdAt,DESC';
 
-    const { data } = await this.httpService.get<GetTokensResponse>('/tokens', {
+    const { data } = await this.httpService.get<Token[]>('/tokens', {
+      responseMapper: {
+        name: API_MAPPERS.MAP_TOKENS_DTO_TO_TOKENS,
+      },
       params: {
         offset,
         limit,
@@ -890,7 +937,7 @@ class SputnikHttpServiceClass {
       },
     });
 
-    return mapTokensDTOToTokens(data.data);
+    return data;
   }
 
   public async getTokens(params: {
@@ -903,7 +950,10 @@ class SputnikHttpServiceClass {
     const limit = params?.limit ?? 50;
     const sort = params?.sort ?? 'createdAt,DESC';
 
-    const { data } = await this.httpService.get<GetTokensResponse>('/tokens', {
+    const { data } = await this.httpService.get<Token[]>('/tokens', {
+      responseMapper: {
+        name: API_MAPPERS.MAP_TOKENS_DTO_TO_TOKENS,
+      },
       params: {
         filter: `ownerId||$eq||${params.dao}`,
         offset,
@@ -912,25 +962,35 @@ class SputnikHttpServiceClass {
       },
     });
 
-    return mapTokensDTOToTokens(data.data);
+    return data;
   }
 
   public async getAccountTokens(accountId: string): Promise<Token[]> {
-    const { data } = await this.httpService.get<TokenResponse[]>(
-      `/tokens/account-tokens/${accountId}`
+    const { data } = await this.httpService.get<Token[]>(
+      `/tokens/account-tokens/${accountId}`,
+      {
+        responseMapper: {
+          name: API_MAPPERS.MAP_TOKENS_DTO_TO_TOKENS,
+        },
+      }
     );
 
-    return mapTokensDTOToTokens(data);
+    return data;
   }
 
   public async getAccountDaoSubscriptions(
     accountId: string
   ): Promise<DaoSubscription[]> {
-    const { data } = await this.httpService.get<DaoSubscriptionDTO[]>(
-      `/subscriptions/account-subscriptions/${accountId}`
+    const { data } = await this.httpService.get<DaoSubscription[]>(
+      `/subscriptions/account-subscriptions/${accountId}`,
+      {
+        responseMapper: {
+          name: API_MAPPERS.MAP_SUBSCRIPTIONS_DTOS_TO_DAO_SUBSCRIPTIONS,
+        },
+      }
     );
 
-    return mapSubscriptionsDTOsToDaoSubscriptions(data);
+    return data;
   }
 
   public async updateAccountSubscription(
