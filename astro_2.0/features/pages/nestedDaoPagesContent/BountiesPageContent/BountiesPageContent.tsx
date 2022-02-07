@@ -100,7 +100,7 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
         <ViewToggle
           onSelect={setActiveView}
           selected={activeView}
-          className={styles.desktopOnly}
+          className={styles.toggle}
         />
       </div>
 

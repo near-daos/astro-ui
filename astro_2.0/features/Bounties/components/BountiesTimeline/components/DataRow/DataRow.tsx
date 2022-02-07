@@ -21,10 +21,28 @@ interface DataRowProps {
   minDate: Date | null;
   maxDate: Date | null;
   color?: string;
+  isGroupRow: boolean;
 }
 
 export const DataRow: FC<DataRowProps> = React.memo(
-  ({ data, rangeColumns, granularity, minDate, maxDate, color }) => {
+  ({
+    data,
+    rangeColumns,
+    granularity,
+    minDate,
+    maxDate,
+    color,
+    isGroupRow,
+  }) => {
+    // const deadlineClaimMilestone = data.find(
+    //   item => item.type === 'Claim Deadline'
+    // );
+    const approveClaimMilestone = data.find(
+      item => item.type === 'Pending Approval'
+    );
+    const firstMilestone = data[0];
+    const lastMilestone = data[data.length - 1];
+
     return (
       <div className={styles.dataColumns}>
         {rangeColumns.map((columnDate, i) => {
@@ -39,7 +57,25 @@ export const DataRow: FC<DataRowProps> = React.memo(
           );
 
           const showTrack =
-            minDate && maxDate && columnDate > minDate && columnDate < maxDate;
+            minDate &&
+            maxDate &&
+            columnDate >= minDate &&
+            columnDate <= maxDate;
+          const showIncompleteTrack =
+            !isGroupRow &&
+            showTrack &&
+            (!approveClaimMilestone || columnDate > approveClaimMilestone.date);
+
+          const isFirstMilestone =
+            firstMilestone &&
+            showTrack &&
+            milestones.length &&
+            milestones[0].date === firstMilestone.date;
+          const isLastMilestone =
+            showTrack &&
+            lastMilestone &&
+            milestones.length &&
+            milestones[milestones.length - 1].date === lastMilestone.date;
 
           return (
             <div
@@ -48,8 +84,12 @@ export const DataRow: FC<DataRowProps> = React.memo(
               data-milestone={milestones?.length > 0}
               style={{ color }}
               className={cn(styles.column, styles.dataColumn, {
-                [styles.showTrack]: showTrack,
+                [styles.showTrack]: showTrack && !showIncompleteTrack,
+                [styles.showIncompleteTrack]: showIncompleteTrack,
                 [styles.lastColumn]: isEndOfPeriod,
+                [styles.firstMilestone]: isFirstMilestone,
+                [styles.lastMilestone]: isLastMilestone,
+                [styles.singleMilestone]: isLastMilestone && isFirstMilestone,
               })}
             >
               {milestones && milestones.length === 1 && (

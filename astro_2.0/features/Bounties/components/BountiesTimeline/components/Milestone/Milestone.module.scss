@@ -4,10 +4,19 @@
   display: flex;
   position: relative;
   z-index: 30;
+
+  &:hover {
+    z-index: 31;
+  }
 }
 
 .icon {
+  background-color: var(--color-white);
   width: 18px;
+
+  &.rootIcon {
+    width: 22px;
+  }
 }
 
 .popupWrapper {

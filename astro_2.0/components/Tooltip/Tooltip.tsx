@@ -28,7 +28,6 @@ export const Tooltip: FC<TooltipProps> = ({
         anchor={ref}
         placement={placement}
         delayShow={700}
-        delayHide={300}
         className={cn(styles.popup, popupClassName)}
       >
         {overlay}

@@ -97,6 +97,27 @@ function getClaimMilestones(
     // todo - how cna we handle rejected/not approved claims?
   }
 
+  if (claimStart && claim.deadline) {
+    const hasApprovedProposal = !!milestones.find(
+      prp => prp.type === 'Complete Claim'
+    );
+
+    if (!hasApprovedProposal) {
+      const deadline = toMillis(claim.deadline);
+      const claimEnd = new Date(claimStartTime + deadline);
+
+      milestones.push({
+        type: 'Claim Deadline',
+        date: claimEnd,
+        tooltip: `Deadline to complete ${accountId} claim ${format(
+          claimEnd,
+          TOOLTIP_DATE_FORMAT
+        )}`,
+        color,
+      });
+    }
+  }
+
   return milestones;
 }
 

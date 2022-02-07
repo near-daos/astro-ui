@@ -1,6 +1,8 @@
 @import 'styles/typography';
+@import 'styles/mixins';
 
 .root {
+  @include centralize;
   position: relative;
   z-index: 30;
 
@@ -12,24 +14,57 @@
 .indicator {
   @extend %caption2;
   border-radius: 50%;
+  cursor: pointer;
+  height: 18px;
+  width: 18px;
+
+  &.hasGroupMilestones {
+    border-radius: 4px;
+    //height: 20px;
+    transform: rotate(45deg);
+    //width: 20px;
+  }
+}
+
+.count {
   color: var(--color-white);
   cursor: pointer;
   font-size: 9px;
-  height: 18px;
-  width: 18px;
+  pointer-events: none;
+  position: absolute;
 }
 
 .panel {
+  align-items: flex-start;
   background: var(--color-white);
   border-radius: 4px;
   box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
-  left: -18px;
+  display: flex;
+  //flex-direction: column;
+  left: -26px;
   padding: 8px;
   position: absolute;
   top: calc(100% + 4px);
   z-index: 50;
 }
 
+.listItem {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
 .listItem:not(:last-of-type) {
-  margin-bottom: 8px;
+  margin-right: 8px;
+}
+
+.timeLabel {
+  @extend %caption2;
+  color: var(--color-neutral-60);
+  height: 24px;
+  white-space: nowrap;
+}
+
+.milestoneWrapper {
+  height: 22px;
 }

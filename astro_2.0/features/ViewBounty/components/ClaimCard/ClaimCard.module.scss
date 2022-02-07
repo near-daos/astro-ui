@@ -29,14 +29,14 @@
 }
 
 .root.pending {
-  border-color: var(--color-error-40);
+  border-color: var(--color-pending);
 
   .progress .bar {
-    background-color: var(--color-error-40);
+    background-color: var(--color-pending);
   }
 
   .icon {
-    color: var(--color-error-40);
+    color: var(--color-pending);
   }
 }
 

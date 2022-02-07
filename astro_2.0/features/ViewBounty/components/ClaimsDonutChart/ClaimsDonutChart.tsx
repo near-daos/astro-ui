@@ -10,7 +10,7 @@ interface ClaimsDonutChartProps {
 
 const COLORS = {
   approved: '#19d992',
-  pending: '#ff8743',
+  pending: '#4d96d7',
   inProgress: '#6038d0',
   rejected: '#c14600',
 } as Record<string, string>;

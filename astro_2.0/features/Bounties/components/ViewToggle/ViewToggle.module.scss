@@ -1,3 +1,5 @@
+@import 'styles/mixins';
+
 .root {
   align-items: center;
   display: flex;
@@ -25,4 +27,11 @@
 
 .active {
   color: var(--color-primary-50);
+}
+
+.desktopOnly {
+  display: none;
+  @include tablet-landscape {
+    display: block;
+  }
 }

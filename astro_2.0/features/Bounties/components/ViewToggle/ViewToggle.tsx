@@ -50,7 +50,7 @@ export const ViewToggle: FC<ViewToggleProps> = ({
         size="small"
         onClick={() => onSelect('timeline')}
         variant="tertiary"
-        className={styles.buttonWrapper}
+        className={cn(styles.buttonWrapper, styles.desktopOnly)}
       >
         <Icon
           name="timeline"
