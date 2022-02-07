@@ -5,18 +5,15 @@
 .root {
   display: grid;
   grid-template-areas:
-    'breadcrumbs'
     'dao'
     'title'
     'filter'
     'content';
   grid-template-columns: 1fr;
-  padding-top: 56px;
   row-gap: 24px;
 
   @media screen and (min-width: #{breakpoints.$screen-lg + 1}px) {
     grid-template-areas:
-      'breadcrumbs breadcrumbs'
       'dao dao'
       'title title'
       'filter content';
