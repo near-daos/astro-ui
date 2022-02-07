@@ -26,12 +26,23 @@
 
 .header {
   align-items: center;
-  display: flex;
+  display: grid;
+  grid-row-gap: 12px;
+  grid-template-areas:
+    'title title'
+    'viewToggle filters';
+  grid-template-columns: 1fr 1fr;
+
+  @include tablet-landscape {
+    display: flex;
+  }
 }
 
 .title {
   font-size: 32px;
+  grid-area: title;
   margin: 0;
+  word-break: keep-all;
 }
 
 .newProposalButton {
@@ -60,7 +71,10 @@
   color: var(--color-neutral-60);
   display: flex;
   font-weight: 400;
-  margin-left: auto;
+  grid-area: filters;
+  //margin-left: auto;
+  justify-content: flex-end;
+  width: 100%;
 
   .filter {
     align-items: center;
@@ -70,6 +84,10 @@
   .filterLabel {
     margin-right: 6px;
   }
+}
+
+.toggle {
+  grid-area: viewToggle;
 }
 
 .filterMenu {

@@ -59,7 +59,6 @@ export const CollapsableSection: FC<CollapsableSectionProps> = ({
           </div>
           {title}
         </div>
-        <div className={styles.toggle} />
         <div className={styles.proposer}>Proposer</div>
         <div className={styles.content}>{contentTitle}</div>
       </div>

@@ -29,6 +29,7 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({ data, dao, tokens }) => {
 
         return (
           <ViewBounty
+            key={bountyContext.id}
             contextId={bountyContext.id}
             dao={dao}
             bounty={bounty}

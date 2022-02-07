@@ -26,15 +26,15 @@
   display: grid;
   grid-column-gap: 4px;
   grid-template-areas:
-    'title title title title'
-    'proposer proposer proposer proposer'
-    'toggle content content content';
-  grid-template-columns: 4fr 2fr 2fr 1fr;
+    'title title title'
+    'proposer proposer proposer'
+    'content content details';
+  grid-template-columns: 1fr 1fr 1fr;
 
   @include tablet-landscape {
     grid-column-gap: 12px;
     grid-template-areas: unset;
-    grid-template-columns: 2fr 80px 2fr 1.3fr 80px;
+    grid-template-columns: 2fr 2fr 1.4fr 96px;
 
     &:last-of-type {
       margin-bottom: 0;
@@ -137,12 +137,15 @@
 }
 
 .rowTitle {
-  @extend %title4;
-
   grid-area: title;
 
   @include tablet-landscape {
     grid-area: unset;
+  }
+
+  button {
+    @extend %title4;
+    font-size: 14px;
   }
 }
 
@@ -171,7 +174,7 @@
 
 .rowContent {
   grid-area: content;
-  justify-content: flex-end;
+  justify-content: flex-start;
 
   @include tablet-landscape {
     grid-area: unset;
@@ -195,6 +198,15 @@
   }
 }
 
+.detailsButton {
+  padding: 0;
+  text-transform: capitalize;
+
+  &:hover {
+    box-shadow: 1px 1px 8px var(--color-black-opacity-1);
+  }
+}
+
 .singleLine {
   display: block;
   overflow: hidden;
@@ -209,7 +221,12 @@
 
 .drilldownIcon {
   color: var(--color-primary-50);
+  transform: translateY(2px);
   width: 24px;
+
+  &.open {
+    transform: translateY(0);
+  }
 }
 
 .proposalLink {

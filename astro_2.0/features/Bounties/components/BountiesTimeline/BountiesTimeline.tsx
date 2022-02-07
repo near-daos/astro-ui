@@ -18,10 +18,15 @@ import {
 import { DataRow } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/DataRow';
 import { TimelineLegend } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/TimelineLegend';
 import { TimelineRangeToggle } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/TimelineRangeToggle';
-import { TimelineGranularity } from 'astro_2.0/features/Bounties/components/BountiesTimeline/types';
+import {
+  TimelineGranularity,
+  TimelineGroup,
+} from 'astro_2.0/features/Bounties/components/BountiesTimeline/types';
 import { TimelineGroups } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/TimelineGroups';
 import { TimelineHeader } from 'astro_2.0/features/Bounties/components/BountiesTimeline/components/TimelineHeader';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
+
+import useQuery from 'hooks/useQuery';
 
 import styles from './BountiesTimeline.module.scss';
 
@@ -31,7 +36,11 @@ interface BountiesTimelineProps {
 
 export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
   const contentRef = useRef<HTMLDivElement>(null);
-  const [dataset, setDataset] = useState(() => prepareTimelineDataset(data));
+  const { query } = useQuery<{
+    bountyFilter: string;
+    bountySort: string;
+  }>({ shallow: false });
+  const [dataset, setDataset] = useState<TimelineGroup[]>([]);
   const [granularity, setGranularity] = useState<TimelineGranularity>('month');
   const [min, max] = useMemo(() => getTimelineRange(dataset), [dataset]);
   const topColumns = useMemo(() => getTopColumns(min, max, granularity), [
@@ -76,6 +85,10 @@ export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
     }
   }, []);
 
+  useEffect(() => {
+    setDataset(prepareTimelineDataset(data));
+  }, [data, query]);
+
   if (!dataset.length) {
     return <NoResultsView title="No results found" />;
   }
@@ -111,6 +124,7 @@ export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
                     <React.Fragment key={group.id}>
                       <DataRow
                         data={group.milestones}
+                        isGroupRow
                         rangeColumns={rangeColumns}
                         granularity={granularity}
                         minDate={minDate}
@@ -131,6 +145,7 @@ export const BountiesTimeline: FC<BountiesTimelineProps> = ({ data }) => {
                           return (
                             <DataRow
                               key={claim.id}
+                              isGroupRow={false}
                               color={claim.color}
                               data={claim.milestones}
                               rangeColumns={rangeColumns}

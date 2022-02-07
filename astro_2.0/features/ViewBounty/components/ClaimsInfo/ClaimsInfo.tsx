@@ -12,7 +12,7 @@ interface ClaimsInfoProps {
 }
 
 export const ClaimsInfo: FC<ClaimsInfoProps> = ({ bounty }) => {
-  const hasClaims = bounty.bountyClaims.length > 0;
+  const hasClaims = bounty?.bountyClaims.length > 0;
 
   if (!hasClaims) {
     return (

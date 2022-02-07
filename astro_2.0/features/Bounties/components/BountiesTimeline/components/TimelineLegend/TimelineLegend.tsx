@@ -31,7 +31,7 @@ export const TimelineLegend: FC = () => {
       >
         <Icon
           name="arrow"
-          className={cn(styles.icon, {
+          className={cn(styles.controlIcon, {
             [styles.open]: open,
           })}
         />
@@ -51,7 +51,7 @@ export const TimelineLegend: FC = () => {
             {renderContentItem('bountyCreated', 'Bounty Created')}
             {renderContentItem('bountyCreateClaim', 'Claim')}
             {renderContentItem('bountyPendingApproval', 'Pending Approval')}
-            {renderContentItem('bountyApprovedClaim', 'Complete Claim')}
+            {renderContentItem('bountyDeadlineClaim', 'Claim Deadline')}
             {renderContentItem('bountyCompleteBounty', 'Complete Bounty')}
           </motion.div>
         )}

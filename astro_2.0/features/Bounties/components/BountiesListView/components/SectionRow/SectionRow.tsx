@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { SectionItem } from 'astro_2.0/features/Bounties/components/BountiesListView/types';
 
@@ -29,6 +29,7 @@ export const SectionRow: FC<SectionRowProps> = ({
   dao,
   accountId,
 }) => {
+  const router = useRouter();
   const [showClaims, setShowClaims] = useState(false);
 
   return (
@@ -63,8 +64,10 @@ export const SectionRow: FC<SectionRowProps> = ({
               <div className={styles.flex}>
                 {!!item.bounty?.bountyClaims.length && (
                   <Icon
-                    name="buttonArrowRight"
-                    className={styles.drilldownIcon}
+                    name={showClaims ? 'buttonArrowUp' : 'buttonArrowDown'}
+                    className={cn(styles.drilldownIcon, {
+                      [styles.open]: showClaims,
+                    })}
                   />
                 )}
               </div>
@@ -72,34 +75,19 @@ export const SectionRow: FC<SectionRowProps> = ({
           </Button>
         </div>
 
-        <div className={styles.toggle}>
-          {item.bounty && (
-            <div
-              className={cn(styles.toggleClaims, {
-                [styles.active]: showClaims,
-              })}
-            >
-              <Icon name="claimsLink" className={styles.icon} />
-              <span className={styles.slotsWrapper}>
-                <span className={styles.slotActive}>
-                  {item.bounty.numberOfClaims}
-                </span>
-                /<span className={styles.slot}>{item.bounty.times}</span>
-              </span>
-            </div>
-          )}
-        </div>
-
         <div className={styles.rowProposer}>
           <div className={styles.singleLine}>{item.proposer}</div>
         </div>
         <div className={styles.rowContent}>{item.content}</div>
         <div className={cn(styles.rowDetails)}>
-          <Link href={item.link}>
-            <a className={cn(styles.singleLine, styles.flex)}>
-              <div className={styles.singleLine}>Details</div>
-            </a>
-          </Link>
+          <Button
+            size="small"
+            variant="secondary"
+            className={styles.detailsButton}
+            onClick={() => router.push(item.link)}
+          >
+            <div className={styles.singleLine}>Details</div>
+          </Button>
         </div>
       </motion.div>
       <AnimatePresence>

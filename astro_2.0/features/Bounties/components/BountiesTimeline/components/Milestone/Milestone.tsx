@@ -39,7 +39,16 @@ export const Milestone: FC<MilestoneProps> = ({
       break;
     }
     case 'Complete Claim': {
-      icon = 'bountyApprovedClaim';
+      icon = 'bountyCompleteBounty';
+
+      if (color) {
+        iconColor = color;
+      }
+
+      break;
+    }
+    case 'Claim Deadline': {
+      icon = 'bountyDeadlineClaim';
 
       if (color) {
         iconColor = color;
@@ -75,7 +84,9 @@ export const Milestone: FC<MilestoneProps> = ({
         >
           <Icon
             name={icon}
-            className={styles.icon}
+            className={cn(styles.icon, {
+              [styles.rootIcon]: !color,
+            })}
             style={{ color: iconColor }}
           />
         </Tooltip>
