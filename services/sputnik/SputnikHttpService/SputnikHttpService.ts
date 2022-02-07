@@ -74,7 +74,7 @@ class SputnikHttpServiceClass {
       total: number;
     }>('/daos', {
       responseMapper: {
-        name: API_MAPPERS.MAP_DAO_FEED_ITEM_RESPONSE_TO_DAO_FEED_ITEM_LIST,
+        name: API_MAPPERS.MAP_DAO_FEED_ITEM_RESPONSE_TO_DAO_FEEDS,
       },
       params: {
         filter: params?.filter,
@@ -125,7 +125,7 @@ class SputnikHttpServiceClass {
       `/daos/account-daos/${accountId}`,
       {
         responseMapper: {
-          name: API_MAPPERS.MAP_DAO_FEED_ITEM_RESPONSE_TO_DAO_FEED_ITEM_LIST,
+          name: API_MAPPERS.MAP_DAO_FEED_ITEM_RESPONSE_TO_DAO_FEED,
         },
       }
     );
@@ -169,7 +169,7 @@ class SputnikHttpServiceClass {
       `/proposals?${queryString}`,
       {
         responseMapper: {
-          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL,
+          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSALS,
         },
       }
     );
@@ -653,7 +653,7 @@ class SputnikHttpServiceClass {
       `/proposals?${queryString.queryString}`,
       {
         responseMapper: {
-          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL,
+          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSALS,
         },
       }
     );
@@ -676,7 +676,7 @@ class SputnikHttpServiceClass {
       '/proposals',
       {
         responseMapper: {
-          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL,
+          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSALS,
         },
         params: daoId ? params : omit(params, 'filter'),
       }
@@ -767,7 +767,7 @@ class SputnikHttpServiceClass {
       `/proposals?${queryString.queryString}`,
       {
         responseMapper: {
-          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL,
+          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSALS,
         },
       }
     );
@@ -970,7 +970,7 @@ class SputnikHttpServiceClass {
       `/tokens/account-tokens/${accountId}`,
       {
         responseMapper: {
-          name: API_MAPPERS.MAP_TOKENS_DTO_TO_TOKENS,
+          name: API_MAPPERS.MAP_TOKENS_DTO_TO_TOKEN,
         },
       }
     );
