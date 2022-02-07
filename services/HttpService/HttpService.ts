@@ -44,10 +44,10 @@ export class HttpService {
       }
 
       switch (responseConfig.responseMapper.name) {
-        case API_MAPPERS.mapDaoDTOtoDao:
+        case API_MAPPERS.MAP_DAO_DTO_TO_DAO:
           response.data = mapDaoDTOtoDao(response.data);
           break;
-        case API_MAPPERS.mapDaoFeedItemResponseToDaoFeedItemList:
+        case API_MAPPERS.MAP_DAO_FEED_ITEM_RESPONSE_TO_DAO_FEED_ITEM_LIST:
           if (Array.isArray(response.data.data)) {
             response.data = {
               ...response.data,
@@ -60,7 +60,7 @@ export class HttpService {
             response.data
           );
           break;
-        case API_MAPPERS.mapProposalDTOToProposal:
+        case API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL:
           if (Array.isArray(response.data)) {
             response.data = response.data.map(mapProposalDTOToProposal);
             break;
@@ -68,7 +68,7 @@ export class HttpService {
 
           response.data = mapProposalDTOToProposal(response.data);
           break;
-        case API_MAPPERS.mapSearchResultsDTOToDataObject:
+        case API_MAPPERS.MAP_SEARCH_RESULTS_DTO_TO_DATA_OBJECT:
           response.data = mapSearchResultsDTOToDataObject(
             responseConfig.params.query,
             {
@@ -78,7 +78,7 @@ export class HttpService {
             }
           );
           break;
-        case API_MAPPERS.mapProposalFeedItemResponseToProposalFeedItem:
+        case API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM:
           response.data = {
             ...response.data,
             data: response.data.data.map(
@@ -86,10 +86,10 @@ export class HttpService {
             ),
           };
           break;
-        case API_MAPPERS.mapSubscriptionsDTOsToDaoSubscriptions:
+        case API_MAPPERS.MAP_SUBSCRIPTIONS_DTOS_TO_DAO_SUBSCRIPTIONS:
           response.data = mapSubscriptionsDTOsToDaoSubscriptions(response.data);
           break;
-        case API_MAPPERS.mapTokensDTOToTokens:
+        case API_MAPPERS.MAP_TOKENS_DTO_TO_TOKENS:
           if (Array.isArray(response.data.data)) {
             response.data = mapTokensDTOToTokens(response.data.data);
             break;
@@ -97,17 +97,17 @@ export class HttpService {
 
           response.data = mapTokensDTOToTokens(response.data);
           break;
-        case API_MAPPERS.mapNftTokenResponseToNftToken:
+        case API_MAPPERS.MAP_NFT_TOKEN_RESPONSE_TO_NFT_TOKEN:
           response.data = mapNftTokenResponseToNftToken(response.data.data);
           break;
-        case API_MAPPERS.mapReceiptsByTokenResponse:
+        case API_MAPPERS.MAP_RECEIPTS_BY_TOKEN_RESPONSE:
           response.data = mapReceiptsByTokenResponse(
             responseConfig?.responseMapper?.params?.accountId || '',
             responseConfig?.responseMapper?.params?.tokenId || '',
             response.data
           );
           break;
-        case API_MAPPERS.mapReceiptsResponse:
+        case API_MAPPERS.MAP_RECEIPTS_RESPONSE:
           response.data = mapReceiptsResponse(
             responseConfig?.responseMapper?.params?.accountId || '',
             response.data

@@ -74,7 +74,7 @@ class SputnikHttpServiceClass {
       total: number;
     }>('/daos', {
       responseMapper: {
-        name: API_MAPPERS.mapDaoFeedItemResponseToDaoFeedItemList,
+        name: API_MAPPERS.MAP_DAO_FEED_ITEM_RESPONSE_TO_DAO_FEED_ITEM_LIST,
       },
       params: {
         filter: params?.filter,
@@ -93,7 +93,7 @@ class SputnikHttpServiceClass {
 
   public async getDaoById(id: string): Promise<DAO | null> {
     const { data } = await this.httpService.get<DAO | null>(`/daos/${id}`, {
-      responseMapper: { name: API_MAPPERS.mapDaoDTOtoDao },
+      responseMapper: { name: API_MAPPERS.MAP_DAO_DTO_TO_DAO },
     });
 
     return data;
@@ -111,11 +111,7 @@ class SputnikHttpServiceClass {
       '/search',
       {
         responseMapper: {
-          name: API_MAPPERS.mapSearchResultsDTOToDataObject,
-        },
-        params: {
-          query: params.query,
-          accountId: params.accountId,
+          name: API_MAPPERS.MAP_SEARCH_RESULTS_DTO_TO_DATA_OBJECT,
         },
         cancelToken: params.cancelToken,
       }
@@ -129,7 +125,7 @@ class SputnikHttpServiceClass {
       `/daos/account-daos/${accountId}`,
       {
         responseMapper: {
-          name: API_MAPPERS.mapDaoFeedItemResponseToDaoFeedItemList,
+          name: API_MAPPERS.MAP_DAO_FEED_ITEM_RESPONSE_TO_DAO_FEED_ITEM_LIST,
         },
       }
     );
@@ -173,7 +169,7 @@ class SputnikHttpServiceClass {
       `/proposals?${queryString}`,
       {
         responseMapper: {
-          name: API_MAPPERS.mapProposalDTOToProposal,
+          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL,
         },
       }
     );
@@ -388,7 +384,8 @@ class SputnikHttpServiceClass {
         }`,
         {
           responseMapper: {
-            name: API_MAPPERS.mapProposalFeedItemResponseToProposalFeedItem,
+            name:
+              API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
           },
         }
       );
@@ -404,7 +401,8 @@ class SputnikHttpServiceClass {
       }`,
       {
         responseMapper: {
-          name: API_MAPPERS.mapProposalFeedItemResponseToProposalFeedItem,
+          name:
+            API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
         },
       }
     );
@@ -442,7 +440,8 @@ class SputnikHttpServiceClass {
         }`,
         {
           responseMapper: {
-            name: API_MAPPERS.mapProposalFeedItemResponseToProposalFeedItem,
+            name:
+              API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
           },
         }
       );
@@ -511,7 +510,7 @@ class SputnikHttpServiceClass {
       PaginationResponse<ProposalFeedItem[]>
     >(`/proposals?${queryString.queryString}`, {
       responseMapper: {
-        name: API_MAPPERS.mapProposalFeedItemResponseToProposalFeedItem,
+        name: API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
       },
     });
 
@@ -654,7 +653,7 @@ class SputnikHttpServiceClass {
       `/proposals?${queryString.queryString}`,
       {
         responseMapper: {
-          name: API_MAPPERS.mapProposalDTOToProposal,
+          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL,
         },
       }
     );
@@ -677,7 +676,7 @@ class SputnikHttpServiceClass {
       '/proposals',
       {
         responseMapper: {
-          name: API_MAPPERS.mapProposalDTOToProposal,
+          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL,
         },
         params: daoId ? params : omit(params, 'filter'),
       }
@@ -702,7 +701,7 @@ class SputnikHttpServiceClass {
       `/transactions/receipts/account-receipts/${accountId}/tokens/${tokenId}`,
       {
         responseMapper: {
-          name: API_MAPPERS.mapProposalDTOToProposal,
+          name: API_MAPPERS.MAP_RECEIPTS_BY_TOKEN_RESPONSE,
           params: {
             accountId,
             tokenId,
@@ -719,7 +718,7 @@ class SputnikHttpServiceClass {
       `/transactions/receipts/account-receipts/${accountId}`,
       {
         responseMapper: {
-          name: API_MAPPERS.mapReceiptsResponse,
+          name: API_MAPPERS.MAP_RECEIPTS_RESPONSE,
           params: {
             accountId,
           },
@@ -768,7 +767,7 @@ class SputnikHttpServiceClass {
       `/proposals?${queryString.queryString}`,
       {
         responseMapper: {
-          name: API_MAPPERS.mapProposalDTOToProposal,
+          name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL,
         },
       }
     );
@@ -785,7 +784,7 @@ class SputnikHttpServiceClass {
         `/proposals/${contractId}-${index}`,
         {
           responseMapper: {
-            name: API_MAPPERS.mapProposalDTOToProposal,
+            name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL,
           },
         }
       );
@@ -909,7 +908,7 @@ class SputnikHttpServiceClass {
   public async getAccountNFTs(accountId: string): Promise<NftToken[]> {
     const { data } = await this.httpService.get<NftToken[]>(`/tokens/nfts`, {
       responseMapper: {
-        name: API_MAPPERS.mapNftTokenResponseToNftToken,
+        name: API_MAPPERS.MAP_NFT_TOKEN_RESPONSE_TO_NFT_TOKEN,
       },
       params: {
         filter: `ownerId||$eq||${accountId}`,
@@ -929,7 +928,7 @@ class SputnikHttpServiceClass {
 
     const { data } = await this.httpService.get<Token[]>('/tokens', {
       responseMapper: {
-        name: API_MAPPERS.mapTokensDTOToTokens,
+        name: API_MAPPERS.MAP_TOKENS_DTO_TO_TOKENS,
       },
       params: {
         offset,
@@ -953,7 +952,7 @@ class SputnikHttpServiceClass {
 
     const { data } = await this.httpService.get<Token[]>('/tokens', {
       responseMapper: {
-        name: API_MAPPERS.mapTokensDTOToTokens,
+        name: API_MAPPERS.MAP_TOKENS_DTO_TO_TOKENS,
       },
       params: {
         filter: `ownerId||$eq||${params.dao}`,
@@ -971,7 +970,7 @@ class SputnikHttpServiceClass {
       `/tokens/account-tokens/${accountId}`,
       {
         responseMapper: {
-          name: API_MAPPERS.mapTokensDTOToTokens,
+          name: API_MAPPERS.MAP_TOKENS_DTO_TO_TOKENS,
         },
       }
     );
@@ -986,7 +985,7 @@ class SputnikHttpServiceClass {
       `/subscriptions/account-subscriptions/${accountId}`,
       {
         responseMapper: {
-          name: API_MAPPERS.mapSubscriptionsDTOsToDaoSubscriptions,
+          name: API_MAPPERS.MAP_SUBSCRIPTIONS_DTOS_TO_DAO_SUBSCRIPTIONS,
         },
       }
     );
