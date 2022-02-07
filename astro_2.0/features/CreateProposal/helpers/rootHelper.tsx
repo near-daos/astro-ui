@@ -91,6 +91,7 @@ import {
   getChangeBondDeadlinesProposal,
   getCompleteBountyProposal,
 } from './bountiesHelpers';
+import { httpService } from 'services/HttpService';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -705,9 +706,11 @@ export async function getNewProposalObject(
     case ProposalVariant.ProposeChangeDaoFlag: {
       const uploadImg = async (img: File) => {
         if (img) {
-          const key = await AwsUploader.uploadToBucket(img);
+          const { data } = await httpService.post('/api/upload-to-s3', img, {
+            baseURL: '',
+          });
 
-          return key;
+          return data?.key;
         }
 
         return '';
