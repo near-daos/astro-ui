@@ -38,11 +38,7 @@ import {
   ProposalFilterOptions,
   ProposalFilterStatusOptions,
 } from 'features/member-home/types';
-import {
-  DaoFeedItemResponse,
-  GetProposalsResponse,
-  MemberStats,
-} from 'services/sputnik/mappers';
+import { GetProposalsResponse, MemberStats } from 'services/sputnik/mappers';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { HttpService, httpService } from 'services/HttpService';
 import { DaoContext } from 'types/context';
@@ -131,14 +127,6 @@ class SputnikHttpServiceClass {
     );
 
     return data;
-  }
-
-  public async getAccountDaosIds(accountId: string): Promise<string[]> {
-    const { data } = await this.httpService.get<DaoFeedItemResponse[]>(
-      `/daos/account-daos/${accountId}`
-    );
-
-    return data.map(item => item.id);
   }
 
   public async getActiveProposals(
