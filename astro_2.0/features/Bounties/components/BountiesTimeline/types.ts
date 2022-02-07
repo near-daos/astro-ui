@@ -4,6 +4,7 @@ export type TimelineMilestoneType =
   | 'Claim'
   | 'Pending Approval'
   | 'Complete Claim'
+  | 'Claim Deadline'
   | 'Complete Bounty';
 
 export type TimelineMilestone = {

@@ -67,19 +67,19 @@
 
 .root.pending {
   .legend {
-    background-color: var(--color-error-40);
+    background-color: var(--color-pending);
   }
 
   .progress .bar {
-    background-color: var(--color-error-40);
+    background-color: var(--color-pending);
   }
 
   .icon {
-    color: var(--color-error-40);
+    color: var(--color-pending);
   }
 
   .status {
-    color: var(--color-error-40);
+    color: var(--color-pending);
   }
 }
 

@@ -53,7 +53,7 @@ const BountyPage: NextPage<BountyPageProps> = ({
   }, [breadcrumbsConfig]);
 
   return (
-    <div className={styles.root}>
+    <>
       <Head>
         <title>Astro</title>
         <meta property="og:url" content={router.asPath} />
@@ -87,7 +87,7 @@ const BountyPage: NextPage<BountyPageProps> = ({
           />
         )}
       </NestedDaoPageWrapper>
-    </div>
+    </>
   );
 };
 
