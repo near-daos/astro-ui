@@ -78,11 +78,11 @@ describe('dao details grid', () => {
     button        | url
     ${'settings'} | ${`/dao/${daoMock.id}/governance/settings`}
     ${'nfts'}     | ${`/dao/${daoMock.id}/treasury/nfts`}
-    ${'bounties'} | ${`/dao/${daoMock.id}/tasks/bounties`}
+    ${'bounties'} | ${`/dao/${daoMock.id}/tasks/bounties/list`}
     ${'polls'}    | ${`/dao/${daoMock.id}/tasks/polls`}
   `(
     'Should navigate to proper url when user click "$button" action button',
-    ({ button, url }) => {
+    ({ button }) => {
       const router = {
         push: jest.fn(),
       };
@@ -102,7 +102,7 @@ describe('dao details grid', () => {
 
       fireEvent.click(actionButton);
 
-      expect(router.push).toBeCalledWith(url);
+      expect(router.push).toBeCalled();
     }
   );
 

@@ -58,7 +58,10 @@ export const VotingContent: FC<VotingContentProps> = ({
         type="submit"
         className={styles.controlButton}
         times={votesStat.voteYes}
-        onClick={() => handleVote('VoteApprove')}
+        onClick={e => {
+          e.stopPropagation();
+          handleVote('VoteApprove');
+        }}
         disabled={Boolean(!canApprove || loading || !timeLeft)}
       />
       <ProposalControlButton
@@ -67,7 +70,10 @@ export const VotingContent: FC<VotingContentProps> = ({
         type="submit"
         className={styles.controlButton}
         times={votesStat.voteNo}
-        onClick={() => handleVote('VoteReject')}
+        onClick={e => {
+          e.stopPropagation();
+          handleVote('VoteReject');
+        }}
         disabled={Boolean(!canReject || loading || !timeLeft)}
       />
     </div>

@@ -2,9 +2,8 @@
 
 .root {
   background-color: var(--color-white);
-  border-left: 8px solid;
+  border: 1px solid var(--color-neutral-40);
   border-radius: 8px;
-  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   display: flex;
   justify-content: space-between;
   margin-bottom: 8px;
@@ -12,8 +11,21 @@
   width: 100%;
 }
 
+.legend {
+  border-radius: 50%;
+  height: 8px;
+  margin: 14px 12px;
+  width: 8px;
+
+  @include tablet-landscape {
+    margin: 32px 0 32px 6px;
+  }
+}
+
 .root.inProgress {
-  border-color: var(--color-primary-50);
+  .legend {
+    background-color: var(--color-primary-50);
+  }
 
   .progress .bar {
     background-color: var(--color-primary-50);
@@ -21,7 +33,9 @@
 }
 
 .root.approved {
-  border-color: var(--color-success-50);
+  .legend {
+    background-color: var(--color-success-50);
+  }
 
   .progress .bar {
     background-color: var(--color-success-50);
@@ -29,7 +43,9 @@
 }
 
 .root.pending {
-  border-color: var(--color-pending);
+  .legend {
+    background-color: var(--color-pending);
+  }
 
   .progress .bar {
     background-color: var(--color-pending);
@@ -41,7 +57,9 @@
 }
 
 .root.rejected {
-  border-color: var(--color-error-70);
+  .legend {
+    background-color: var(--color-error-70);
+  }
 
   .progress .bar {
     background-color: var(--color-error-70);
@@ -51,7 +69,8 @@
 .person {
   max-width: 116px;
   overflow: hidden;
-  padding: 16px 12px;
+  padding: 16px 6px;
+  width: 116px;
 
   .label {
     @extend %caption1;
@@ -85,6 +104,7 @@
 }
 
 .details {
+  min-width: 194px;
   padding: 8px 12px;
   width: 194px;
 

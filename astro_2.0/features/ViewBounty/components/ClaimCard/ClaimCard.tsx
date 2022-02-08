@@ -82,6 +82,7 @@ export const ClaimCard: FC<ClaimCardProps> = ({
         [styles.rejected]: status === 'Rejected',
       })}
     >
+      <div className={styles.legend} />
       <div className={styles.person}>
         <div className={styles.label}>Claimed by</div>
         <div className={styles.value}>{data.accountId}</div>
