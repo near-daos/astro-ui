@@ -40,7 +40,7 @@ export function DaoSubmitForm(): JSX.Element {
         baseURL: '',
       });
 
-      return data?.key;
+      return data;
     }
 
     return '';

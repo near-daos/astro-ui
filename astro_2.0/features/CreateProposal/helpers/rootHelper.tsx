@@ -710,7 +710,7 @@ export async function getNewProposalObject(
             baseURL: '',
           });
 
-          return data?.key;
+          return data;
         }
 
         return '';
