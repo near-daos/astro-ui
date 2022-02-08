@@ -109,6 +109,10 @@ class SputnikHttpServiceClass {
         responseMapper: {
           name: API_MAPPERS.MAP_SEARCH_RESULTS_DTO_TO_DATA_OBJECT,
         },
+        params: {
+          query: params.query,
+          accountId: params.accountId,
+        },
         cancelToken: params.cancelToken,
       }
     );
