@@ -50,8 +50,8 @@ yarn install
 Rename `.env.example` file in project folder to `.env.local`. It should have following content:
 
 ```bash
-NEXT_PUBLIC_API_URL=https://api.dev.app.astrodao.com
-NEXT_PUBLIC_LOCAL_WALLET_REDIRECT=true
+API_URL=https://api.dev.app.astrodao.com
+LOCAL_WALLET_REDIRECT=true
 ```
 
 ###### Run development server

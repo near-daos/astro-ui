@@ -131,9 +131,9 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
 
     const walletConnection = this.walletConnection as SputnikWalletConnection;
 
-    const walletCallbackUrl = appConfig.walledUseLocalRedirect
+    const walletCallbackUrl = appConfig.walletUseLocalRedirect
       ? `${window.origin}/callback/transaction`
-      : `${window.origin}/api-server/v1/transactions/wallet/callback/${this.accountId}`;
+      : `${window.origin}/api/server/v1/transactions/wallet/callback/${this.accountId}`;
 
     await walletConnection.sputnikRequestSignTransactions({
       transactions,

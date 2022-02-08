@@ -77,9 +77,8 @@ definitions:
             --set image.tag=$DOCKER_ENV_TAG
             --set environment.near_env=$NEAR_ENV
             --set environment.near_contract_name=$NEAR_CONTRACT_NAME
-            --set environment.next_public_api_url=$NEXT_PUBLIC_API_URL
-            --set environment.next_public_google_analytics_key=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY
-            --set environment.next_public_near_env=$NEXT_PUBLIC_NEAR_ENV
+            --set environment.api_url=$API_URL
+            --set environment.google_analytics_key=$GOOGLE_ANALYTICS_KEY
             --set ingress.host=$K8S_INGRESS_HOST
             > $APP_NAME-manifest.yml
 
@@ -197,9 +196,8 @@ pipelines:
             - >-
               echo export DOCKER_ENV_TAG=staging-$BITBUCKET_COMMIT >> environment.sh
             - echo export NEAR_ENV=$NEAR_ENV_STAGING >> environment.sh
-            - echo export NEXT_PUBLIC_NEAR_ENV=$NEXT_PUBLIC_NEAR_ENV_STAGING >> environment.sh
-            - echo export NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_STAGING >> environment.sh
-            - echo export NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY_STAGING >> environment.sh
+            - echo export API_URL=$API_URL_STAGING >> environment.sh
+            - echo export GOOGLE_ANALYTICS_KEY=$GOOGLE_ANALYTICS_KEY_STAGING >> environment.sh
 
       - step: *build
 
@@ -218,9 +216,8 @@ pipelines:
             - >-
               echo export DOCKER_ENV_TAG=$BITBUCKET_TAG >> environment.sh
             - echo export NEAR_ENV=$NEAR_ENV_PROD >> environment.sh
-            - echo export NEXT_PUBLIC_NEAR_ENV=$NEXT_PUBLIC_NEAR_ENV_PROD >> environment.sh
-            - echo export NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL_PROD >> environment.sh
-            - echo export NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY=$NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY_PROD >> environment.sh
+            - echo export API_URL=$API_URL_PROD >> environment.sh
+            - echo export GOOGLE_ANALYTICS_KEY=$GOOGLE_ANALYTICS_KEY_PROD >> environment.sh
 
       - step: *build
 

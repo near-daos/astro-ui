@@ -28,6 +28,7 @@ import { SocketProvider } from 'context/SocketContext';
 import { appConfig } from 'config';
 
 import 'styles/globals.scss';
+import { ConfigContextProvider } from 'context/ConfigContext';
 
 function App({ Component, pageProps }: AppProps): JSX.Element {
   const router = useRouter();
@@ -58,23 +59,25 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
 
   return (
     <SWRConfig value={{ fallback: pageProps?.fallback || {} }}>
-      <AuthWrapper>
-        <SocketProvider>
-          <ModalProvider>
-            <NotificationsProvider>
-              <SearchResults>
-                <Head>
-                  <title>Astro</title>
-                </Head>
-                <PageLayout>
-                  <Component {...pageProps} />
-                </PageLayout>
-                <MobileNav />
-              </SearchResults>
-            </NotificationsProvider>
-          </ModalProvider>
-        </SocketProvider>
-      </AuthWrapper>
+      <ConfigContextProvider>
+        <AuthWrapper>
+          <SocketProvider>
+            <ModalProvider>
+              <NotificationsProvider>
+                <SearchResults>
+                  <Head>
+                    <title>Astro</title>
+                  </Head>
+                  <PageLayout>
+                    <Component {...pageProps} />
+                  </PageLayout>
+                  <MobileNav />
+                </SearchResults>
+              </NotificationsProvider>
+            </ModalProvider>
+          </SocketProvider>
+        </AuthWrapper>
+      </ConfigContextProvider>
     </SWRConfig>
   );
 }
