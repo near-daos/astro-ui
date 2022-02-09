@@ -368,9 +368,54 @@ class SputnikNearServiceClass {
       return Promise.resolve();
     }
 
-    const proposalData = proposal.data as Transfer;
-    const { token_id: tokenContract, receiver_id: recipient } = proposalData;
+    const { bond, daoId, description, kind, data } = proposal;
 
+    const {
+      token_id: tokenContract,
+      receiver_id: recipient,
+    } = data as Transfer;
+
+    const storageDepositTransactionAction = {
+      contract: tokenContract,
+      action: transactions.functionCall(
+        'storage_deposit',
+        {
+          account_id: recipient,
+          registration_only: true,
+        },
+        GAS_VALUE,
+        // 0.1 NEAR, minimal value
+        new BN('100000000000000000000000')
+      ),
+    };
+
+    const transferTransaction = {
+      contract: daoId,
+      action: transactions.functionCall(
+        'add_proposal',
+        {
+          proposal: {
+            description,
+            kind: {
+              [kind]: data,
+            },
+          },
+        },
+        GAS_VALUE,
+        new BN(bond)
+      ),
+    };
+
+    const trx = tokenContract
+      ? [storageDepositTransactionAction, transferTransaction]
+      : [transferTransaction];
+
+    return this.sendTransactions(trx);
+  }
+
+  public async sendTransactions(
+    transactionsConf: { contract: string; action: transactions.Action }[]
+  ) {
     const accountId = this.getAccountId();
     const publicKey = await this.getPublicKey();
 
@@ -388,27 +433,18 @@ class SputnikNearServiceClass {
     });
     const blockHash = utils.serialize.base_decode(block.header.hash);
 
-    const nonce1 = accessKey.nonce + 1;
-    const nonce2 = accessKey.nonce + 2;
-
     const account = (this.sputnikWalletService.getAccount() as unknown) as SputnikConnectedWalletAccount;
 
-    const storageDepositTransaction = await this.getTransferStorageDepositTransaction(
-      nonce1,
-      blockHash,
-      tokenContract,
-      recipient
+    const trx = await Promise.all(
+      transactionsConf.map(({ contract, action }, i) =>
+        this.buildTransaction(
+          contract,
+          accessKey.nonce + i + 1,
+          [action],
+          blockHash
+        )
+      )
     );
-
-    const transferTransaction = await this.getCreateTransferProposalTransaction(
-      nonce2,
-      blockHash,
-      proposal
-    );
-
-    const trx = tokenContract
-      ? [storageDepositTransaction, transferTransaction]
-      : [transferTransaction];
 
     return account.sendTransactions(compact(trx));
   }
