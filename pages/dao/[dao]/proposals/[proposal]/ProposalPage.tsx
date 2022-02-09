@@ -152,7 +152,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
   }, [breadcrumbsConfig]);
 
   return (
-    <div className={styles.root}>
+    <>
       <Head>
         <title>Astro</title>
         <meta property="og:url" content={router.asPath} />
@@ -216,7 +216,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
           </div>
         </>
       </NestedDaoPageWrapper>
-    </div>
+    </>
   );
 };
 

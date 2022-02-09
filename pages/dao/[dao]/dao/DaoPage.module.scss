@@ -33,6 +33,10 @@
   grid-area: navigation;
 }
 
+.pageWrapper {
+  margin-top: 24px;
+}
+
 .createProposal {
   margin-top: 40px;
 }
@@ -43,5 +47,5 @@
 
 .dashboard {
   grid-area: dashboard;
-  margin-bottom: 24px;
+  margin: 24px 0;
 }

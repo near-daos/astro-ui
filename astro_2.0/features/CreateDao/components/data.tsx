@@ -10,48 +10,48 @@ const DAO_PROPOSALS_OPEN: DaoSettingOption<DAOProposalsType> = {
   value: 'open',
   icon: 'illustrationOpenOrganization',
   subject: 'proposals',
-  title: 'All',
-  description: 'Anyone with a NEAR wallet.',
+  title: 'daoRulesAll',
+  description: 'daoRulesAllDescription',
 };
 
 const DAO_PROPOSALS_CLOSED: DaoSettingOption<DAOProposalsType> = {
   value: 'closed',
   icon: 'illustrationMembersOnly',
   subject: 'proposals',
-  title: 'Members',
-  description: 'Only members of your DAO',
+  title: 'daoRulesMembers',
+  description: 'daoRulesMembersDescription',
 };
 
 const DAO_VOTING_POWER_DEMOCRATIC: DaoSettingOption<DAOVotingPowerType> = {
   value: 'democratic',
   icon: 'illustrationVotePerMember',
   subject: 'voting',
-  title: 'Democratic',
-  description: 'Every member gets 1 vote.',
+  title: 'daoRulesDemocratic',
+  description: 'daoRulesDemocraticDescription',
 };
 
 const DAO_VOTING_POWER_TOKEN: DaoSettingOption<DAOVotingPowerType> = {
   value: 'weighted',
   icon: 'illustrationTokenWeighted',
   subject: 'voting',
-  title: 'Token weighted',
-  description: 'More tokens more voting power!',
+  title: 'daoRulesTokenWeighted',
+  description: 'daoRulesTokenWeightedDescription',
 };
 
 const DAO_STRUCTURE_FLAT: DaoSettingOption<DAOStructureType> = {
   value: 'flat',
   icon: 'illustrationFlatOrganization',
   subject: 'structure',
-  title: 'Flat',
-  description: 'No groups; all members have equal access.',
+  title: 'daoRulesFlat',
+  description: 'daoRulesFlatDescription',
 };
 
 const DAO_STRUCTURE_GROUPS: DaoSettingOption<DAOStructureType> = {
   value: 'groups',
   icon: 'illustrationGroupsAndCommitttees',
   subject: 'structure',
-  title: 'Groups and Committees',
-  description: 'Specific groups can vote on specific proposals.',
+  title: 'daoRulesGroups',
+  description: 'daoRulesGroupsDescription',
 };
 
 export const DAO_PROPOSALS_OPTIONS: Record<
@@ -87,18 +87,17 @@ export const DAO_SUBJECT_OPTIONS = {
 export const DAO_RULES_INFO: DaoSubjectInfo[] = [
   {
     subject: 'proposals',
-    title: 'Proposals',
-    subTitle: 'Who can submit proposals to your DAO? (submit is not vote)',
+    title: 'daoRulesProposals',
+    subTitle: 'daoRulesProposalsDescription',
   },
   {
     subject: 'voting',
-    title: 'Voting Power',
-    subTitle:
-      'Carefully pick to not let people who own the token but not part of the DAO overtake you!',
+    title: 'daoRulesVoting',
+    subTitle: 'daoRulesVotingDescription',
   },
   {
     subject: 'structure',
-    title: 'Structure',
-    subTitle: 'Select level of access to vote on proposals.',
+    title: 'daoRulesStructure',
+    subTitle: 'daoRulesStructureDescription',
   },
 ];

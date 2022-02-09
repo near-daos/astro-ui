@@ -2,6 +2,7 @@ import AWS from 'aws-sdk';
 import { ManagedUpload } from 'aws-sdk/clients/s3';
 import { awsConfig, appConfig } from 'config';
 import { nanoid } from 'nanoid';
+import { Readable } from 'form-data';
 
 const SECOND = 1000;
 
@@ -61,27 +62,18 @@ export class AwsUploader {
     this.bucketName = bucketName;
   }
 
-  uploadToBucket = async (file: File): Promise<ManagedUpload.SendData> => {
-    const fileName = nanoid();
-
-    try {
-      const response = await this.awsS3Instance
-        .upload({
-          Bucket: this.bucketName,
-          Key: fileName,
-          Body: file,
-          ACL: 'public-read',
-          ContentType: 'image/png',
-        })
-        .promise();
-
-      return response;
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('Could not upload image to s3', err);
-
-      return Promise.reject();
-    }
+  uploadToBucket = async (
+    file: File | Readable
+  ): Promise<ManagedUpload.SendData> => {
+    return this.awsS3Instance
+      .upload({
+        Bucket: this.bucketName,
+        Key: nanoid(),
+        Body: file,
+        ACL: 'public-read',
+        ContentType: 'image/png',
+      })
+      .promise();
   };
 }
 
