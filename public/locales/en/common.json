@@ -100,6 +100,7 @@
     "createNewDAOWay": "A DAO is a new way for people to organize and work together",
     "daoIncorrectLengthError": "Incorrect DAO name - at least 3 characters expected.",
     "daoIncorrectCharactersError": "Incorrect DAO name - you can use letters and numbers only with hyphens and spaces in the middle.",
+    "daoAlreadyExist": "Dao with such address already exists.",
     "daoIncorrectURLError": "Enter correct URL!",
     "daoNameForm": {
       "daoNameAndPurpose": "DAO name and purpose",

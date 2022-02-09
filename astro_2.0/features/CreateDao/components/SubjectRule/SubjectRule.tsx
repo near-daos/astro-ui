@@ -1,5 +1,6 @@
 import React, { FC, useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 
 import { Subject } from 'astro_2.0/features/CreateDao/components/types';
 
@@ -22,6 +23,7 @@ export const SubjectRule: FC<SubjectRuleProps> = ({
   subTitle,
   subject,
 }) => {
+  const { t } = useTranslation();
   const errorElRef = useRef<HTMLDivElement>(null);
 
   const { formState, trigger } = useFormContext();
@@ -71,9 +73,13 @@ export const SubjectRule: FC<SubjectRuleProps> = ({
                         <DaoOptionCard
                           key={value}
                           className={styles.optionCard}
-                          title={optionTitle}
+                          title={t(
+                            `createDAO.daoRulesForm.daoRules.${optionTitle}`
+                          )}
                           onSelect={onOptSelect}
-                          description={description}
+                          description={t(
+                            `createDAO.daoRulesForm.daoRules.${description}`
+                          )}
                           active={value === actualValue}
                           iconNode={<Icon width={56} name={icon} />}
                         />
