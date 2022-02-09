@@ -6,6 +6,7 @@ import React, {
   isValidElement,
 } from 'react';
 import { UrlObject } from 'url';
+import cn from 'classnames';
 
 import { DaoContext } from 'types/context';
 import { ProposalVariant } from 'types/proposal';
@@ -27,6 +28,7 @@ interface NestedDaoPageWrapperProps {
     href?: string | UrlObject;
     label: string;
   }[];
+  className?: string;
 }
 
 export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
@@ -35,6 +37,7 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
     defaultProposalType = ProposalVariant.ProposeTransfer,
     breadcrumbs,
     children,
+    className,
   } = props;
 
   const { tokens } = useDaoCustomTokens();
@@ -69,7 +72,7 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
   }, [toggleCreateProposal, defaultProposalType]);
 
   return (
-    <div className={styles.root}>
+    <div className={cn(styles.root, className)}>
       {renderBreadcrumbs()}
       <DaoDetailsMinimized
         dao={dao}
