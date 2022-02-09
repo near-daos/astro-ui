@@ -9,6 +9,7 @@ interface GetDaoListQuery {
   sort?: string;
   offset?: number;
   limit?: number;
+  daosView?: string;
 }
 
 export async function getServerSideProps({
@@ -20,10 +21,16 @@ export async function getServerSideProps({
 }): Promise<{
   props: { data: DaoFeedItem[]; total: number };
 }> {
+  const daosView = query.daosView ? (query.daosView as string) : 'active';
+
   const { daos: data, total } = await getDaosList({
     offset: 0,
     limit: 20,
     sort: (query.sort as string) ?? '',
+    filter:
+      daosView === 'active'
+        ? 'status||$eq||Active'
+        : 'status||$in||Active,Inactive',
   });
 
   return {

@@ -1,0 +1,25 @@
+.root {
+  position: relative;
+  width: fit-content;
+}
+
+.controlIcon {
+  height: 24px;
+  margin-left: 8px;
+  width: 24px;
+}
+
+.buttonContent {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  text-transform: capitalize;
+}
+
+.panel {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  padding: 24px;
+  width: 100%;
+}

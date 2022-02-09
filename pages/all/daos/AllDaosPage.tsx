@@ -7,8 +7,12 @@ import { DaoFeedItem } from 'types/dao';
 
 import { DaosList } from 'astro_2.0/components/DaosList';
 import { Dropdown } from 'components/Dropdown';
+import { Checkbox } from 'components/inputs/Checkbox';
 import { getDaosList } from 'features/daos/helpers';
 import { DaoDetailsGrid } from 'astro_2.0/components/DaoDetails';
+import { FiltersPanel } from 'astro_2.0/components/FiltersPanel';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
+import { Icon } from 'components/Icon';
 
 import { useRouterLoading } from 'hooks/useRouterLoading';
 
@@ -53,6 +57,7 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
   const sortOptions = useMemo(() => getSortOptions(t), [t]);
 
   const activeSort = (router.query.sort as string) ?? sortOptions[1].value;
+  const daosView = (router.query.daosView as string) ?? 'active';
 
   const [data, setData] = useState(initialData);
   const [hasMore, setHasMore] = useState(
@@ -64,6 +69,10 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
       offset: data.length,
       limit: 20,
       sort: (router.query.sort as string) ?? '',
+      filter:
+        daosView === 'active'
+          ? 'status||$eq||Active'
+          : 'status||$in||Active,Inactive',
     });
 
     if (data.length + newData.length === total) {
@@ -89,6 +98,21 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
     [router]
   );
 
+  const onDaosViewChange = async (value: string) => {
+    const nextQuery = {
+      ...router.query,
+      daosView: value,
+    };
+
+    await router.replace(
+      {
+        query: nextQuery,
+      },
+      undefined,
+      { shallow: false, scroll: false }
+    );
+  };
+
   const isLoading = useRouterLoading();
 
   return (
@@ -100,6 +124,39 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
           defaultValue={activeSort}
           onChange={handleSort}
         />
+        <FiltersPanel>
+          <div className={styles.filtersWrapper}>
+            <Checkbox
+              onClick={() =>
+                onDaosViewChange(daosView === 'active' ? 'all' : 'active')
+              }
+              label="Show active DAOs only"
+              className={styles.checkbox}
+              checked={daosView === 'active'}
+            />
+            <Tooltip
+              placement="top"
+              className={styles.iconWrapper}
+              popupClassName={styles.popupWrapper}
+              overlay={
+                <div className={styles.tooltip}>
+                  What are the rules for an &lsquo;active DAO&rsquo;?
+                  <br />
+                  <ul>
+                    <li>More than one member</li>
+                    <li>More than one proposal in the last month</li>
+                    <li>
+                      More than one transfer into the DAO wallet (FT or NFT) in
+                      the last month
+                    </li>
+                  </ul>
+                </div>
+              }
+            >
+              <Icon name="info" className={styles.icon} />
+            </Tooltip>
+          </div>
+        </FiltersPanel>
       </div>
       <InfiniteScroll
         dataLength={data.length}
