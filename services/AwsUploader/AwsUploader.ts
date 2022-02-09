@@ -2,8 +2,7 @@ import AWS from 'aws-sdk';
 import { ManagedUpload } from 'aws-sdk/clients/s3';
 import { awsConfig, appConfig } from 'config';
 import { nanoid } from 'nanoid';
-import FormData from 'form-data';
-import axios from 'axios';
+import { Readable } from 'form-data';
 
 const SECOND = 1000;
 
@@ -63,43 +62,18 @@ export class AwsUploader {
     this.bucketName = bucketName;
   }
 
-  uploadToBucket = async (img: File): Promise<string> => {
-    const formData = new FormData();
-
-    formData.append('img', img, img.name);
-
-    const { data } = await axios.post('/api/uploadToS3', formData, {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    });
-
-    return data;
-  };
-
-  uploadToBucketBEOnly = async (
-    file: File | Buffer
+  uploadToBucket = async (
+    file: File | Readable
   ): Promise<ManagedUpload.SendData> => {
-    const fileName = nanoid();
-
-    try {
-      const response = await this.awsS3Instance
-        .upload({
-          Bucket: this.bucketName,
-          Key: fileName,
-          Body: file,
-          ACL: 'public-read',
-          ContentType: 'image/png',
-        })
-        .promise();
-
-      return response;
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('Could not upload image to s3', err);
-
-      return Promise.reject();
-    }
+    return this.awsS3Instance
+      .upload({
+        Bucket: this.bucketName,
+        Key: nanoid(),
+        Body: file,
+        ACL: 'public-read',
+        ContentType: 'image/png',
+      })
+      .promise();
   };
 }
 
