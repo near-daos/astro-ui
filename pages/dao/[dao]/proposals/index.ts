@@ -1,7 +1,11 @@
 import { GetServerSideProps } from 'next';
 import nextI18NextConfig from 'next-i18next.config';
 
-import { ProposalCategories, ProposalStatuses } from 'types/proposal';
+import {
+  ProposalCategories,
+  ProposalsFeedStatuses,
+  ProposalStatuses,
+} from 'types/proposal';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
@@ -28,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       limit: LIST_LIMIT_DEFAULT,
       daoId: daoId as string,
       category: category as ProposalCategories,
-      status: status as ProposalStatuses,
+      status: status as ProposalsFeedStatuses,
       accountId: account,
     }),
   ]);

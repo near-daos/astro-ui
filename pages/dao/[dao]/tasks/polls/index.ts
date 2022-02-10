@@ -2,7 +2,7 @@ import Polls, { PollsPageProps } from 'pages/dao/[dao]/tasks/polls/PollsPage';
 import { GetServerSideProps } from 'next';
 import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
-import { ProposalCategories, ProposalStatuses } from 'types/proposal';
+import { ProposalCategories, ProposalsFeedStatuses } from 'types/proposal';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -16,7 +16,8 @@ export const getServerSideProps: GetServerSideProps<PollsPageProps> = async ({
   locale = 'en',
 }) => {
   const daoId = query.dao as string;
-  const status = (query.status as ProposalStatuses) || ProposalStatuses.All;
+  const status =
+    (query.status as ProposalsFeedStatuses) || ProposalsFeedStatuses.All;
 
   CookieService.initServerSideCookies(req?.headers.cookie || null);
 

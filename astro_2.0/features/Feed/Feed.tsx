@@ -11,9 +11,9 @@ import { DAO } from 'types/dao';
 import { PaginationResponse } from 'types/api';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
 import {
-  ProposalStatuses,
   ProposalCategories,
   ProposalFeedItem,
+  ProposalsFeedStatuses,
 } from 'types/proposal';
 
 // Constants
@@ -32,6 +32,7 @@ import { Loader } from 'components/loader';
 import { useAuthContext } from 'context/AuthContext';
 import { useAllCustomTokens } from 'hooks/useCustomTokens';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
+import { getStatusFilterOptions } from 'astro_2.0/features/Feed/helpers';
 
 // Services
 import { SputnikHttpService } from 'services/sputnik';
@@ -49,7 +50,7 @@ interface FeedProps {
   category?: ProposalCategories;
   headerClassName?: string;
   initialProposals: PaginationResponse<ProposalFeedItem[]> | null;
-  initialProposalsStatusFilterValue: ProposalStatuses;
+  initialProposalsStatusFilterValue: ProposalsFeedStatuses;
 }
 
 export const Feed = ({
@@ -71,17 +72,22 @@ export const Feed = ({
   const queries = query as ProposalsQueries;
 
   const status =
-    (query.status as ProposalStatuses) ||
+    (query.status as ProposalsFeedStatuses) ||
     initialProposalsStatusFilterValue ||
-    ProposalStatuses.All;
+    ProposalsFeedStatuses.All;
 
-  const isMyFeed = pathname.startsWith('/my/feed');
+  const isMyFeed = pathname.startsWith('/my');
 
   const { accountId } = useAuthContext();
 
   const [proposalsData, setProposalsData] = useState(initialProposals);
 
   const [loading, setLoading] = useState(false);
+
+  const statusFilterOptions = useMemo(
+    () => getStatusFilterOptions(isMyFeed, t),
+    [isMyFeed, t]
+  );
 
   const feedCategoriesOptions = useMemo(
     () =>
@@ -165,7 +171,7 @@ export const Feed = ({
   const onProposalFilterChange = async (value: string) => {
     const nextQuery = {
       ...queries,
-      status: value as ProposalStatuses,
+      status: value as ProposalsFeedStatuses,
     } as ProposalsQueries;
 
     // We use custom loading flag here and not the existing proposalsDataIsLoading because
@@ -204,23 +210,7 @@ export const Feed = ({
           value={status}
           onChange={onProposalFilterChange}
           disabled={proposalsDataIsLoading}
-          list={[
-            { value: ProposalStatuses.All, label: t('feed.filters.all') },
-            {
-              value: ProposalStatuses.Active,
-              label: t('feed.filters.active'),
-            },
-            {
-              value: ProposalStatuses.Approved,
-              label: t('feed.filters.approved'),
-              className: styles.categoriesListApprovedInputWrapperChecked,
-            },
-            {
-              value: ProposalStatuses.Failed,
-              label: t('feed.filters.failed'),
-              className: styles.categoriesListFailedInputWrapperChecked,
-            },
-          ]}
+          list={statusFilterOptions}
         />
       </HeaderWithFilter>
 
