@@ -4,6 +4,7 @@ import {
   SFields,
 } from '@nestjsx/crud-request';
 import omit from 'lodash/omit';
+import { CancelToken } from 'axios';
 
 import { PaginationResponse } from 'types/api';
 import { NftToken, Token } from 'types/token';
