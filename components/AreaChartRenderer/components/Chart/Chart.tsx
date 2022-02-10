@@ -74,9 +74,9 @@ export const Chart: React.FC<ChartProps> = ({
   }) => (
     <g>
       <line
-        x1={65}
+        x1={35}
         y1={cy}
-        x2={width}
+        x2={width - 10}
         y2={cy}
         stroke="#686767"
         strokeWidth="0.5"
