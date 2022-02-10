@@ -12,14 +12,15 @@ import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { DAO } from 'types/dao';
 import { ProposalVariant } from 'types/proposal';
 
+import { useAuthContext } from 'context/AuthContext';
+
 import styles from './BountiesListView.module.scss';
 
 interface BountiesListViewProps {
-  dao: DAO;
-  tokens: Tokens;
-  accountId: string;
+  dao?: DAO;
+  tokens?: Tokens;
   bountiesContext: BountyContext[];
-  completeHandler: (
+  handleCreateProposal?: (
     id: number,
     variant: ProposalVariant.ProposeDoneBounty
   ) => void;
@@ -28,15 +29,20 @@ interface BountiesListViewProps {
 export const BountiesListView: FC<BountiesListViewProps> = ({
   dao,
   bountiesContext,
-  accountId,
-  completeHandler,
+  handleCreateProposal,
   tokens,
 }) => {
+  const { accountId } = useAuthContext();
+
+  if (!dao || !tokens || !handleCreateProposal) {
+    return null;
+  }
+
   const { proposalPhase, bounties, completed } = prepareBountiesPageContent(
     bountiesContext,
     dao,
     accountId,
-    completeHandler,
+    handleCreateProposal,
     tokens
   );
 

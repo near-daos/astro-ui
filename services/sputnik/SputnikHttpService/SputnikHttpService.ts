@@ -851,8 +851,11 @@ class SputnikHttpServiceClass {
     query?: {
       bountyFilter: string | null;
       bountySort: string | null;
+      bountyPhase: string | null;
+      limit?: number;
+      offset?: number;
     }
-  ): Promise<BountyContext[]> {
+  ): Promise<PaginationResponse<BountyContext[]>> {
     const queryBuilder = RequestQueryBuilder.create();
 
     queryBuilder.setFilter({
@@ -877,8 +880,43 @@ class SputnikHttpServiceClass {
           value: 0,
         });
       }
+    }
 
-      if (query.bountyFilter === 'times') {
+    if (query?.bountyPhase) {
+      // Proposal Phase
+      if (query.bountyPhase === 'proposalPhase') {
+        queryBuilder.setFilter({
+          field: 'proposal.status',
+          operator: '$eq',
+          value: 'InProgress',
+        });
+      }
+
+      // In progress
+      if (query.bountyPhase === 'inProgress') {
+        queryBuilder.setFilter({
+          field: 'bounty.numberOfClaims',
+          operator: '$ne',
+          value: 0,
+        });
+      }
+
+      // Available bounty
+      if (query.bountyPhase === 'availableBounty') {
+        queryBuilder.setFilter({
+          field: 'bounty.times',
+          operator: '$gte',
+          value: 0,
+        });
+        queryBuilder.setFilter({
+          field: 'bounty.numberOfClaims',
+          operator: '$eq',
+          value: 0,
+        });
+      }
+
+      // Completed
+      if (query.bountyPhase === 'completed') {
         queryBuilder.setFilter({
           field: 'bounty.times',
           operator: '$eq',
@@ -887,7 +925,10 @@ class SputnikHttpServiceClass {
       }
     }
 
-    const queryString = queryBuilder.query();
+    const queryString = queryBuilder
+      .setLimit(query?.limit ?? LIST_LIMIT_DEFAULT)
+      .setOffset(query?.offset ?? 0)
+      .query();
 
     let sort = 'createdAt,DESC';
 
@@ -895,7 +936,9 @@ class SputnikHttpServiceClass {
       sort = query.bountySort;
     }
 
-    const { data } = await this.httpService.get<BountiesContextResponse>(
+    const { data } = await this.httpService.get<
+      PaginationResponse<BountyContext[]>
+    >(
       `/bounty-contexts?${queryString}${
         accountId ? `&accountId=${accountId}` : ''
       }`,
@@ -906,7 +949,53 @@ class SputnikHttpServiceClass {
       }
     );
 
-    return data.data;
+    return data;
+  }
+
+  public async findBountyContext(params: {
+    offset?: number;
+    limit?: number;
+    sort?: string;
+    daoId: string;
+    query: string;
+    cancelToken: CancelToken;
+    accountId: string;
+  }): Promise<PaginationResponse<BountyContext[]>> {
+    const { accountId, daoId, query } = params;
+
+    const queryBuilder = RequestQueryBuilder.create();
+
+    queryBuilder.setFilter({
+      field: 'daoId',
+      operator: '$eq',
+      value: daoId,
+    });
+
+    queryBuilder.setFilter({
+      field: 'proposal.description',
+      operator: '$cont',
+      value: query,
+    });
+
+    const queryString = queryBuilder.setLimit(2000).setOffset(0).query();
+
+    const sort = 'createdAt,DESC';
+
+    const { data } = await this.httpService.get<
+      PaginationResponse<BountyContext[]>
+    >(
+      `/bounty-contexts?${queryString}${
+        accountId ? `&accountId=${accountId}` : ''
+      }`,
+      {
+        params: {
+          sort,
+        },
+        cancelToken: params.cancelToken,
+      }
+    );
+
+    return data;
   }
 
   public async getAccountNFTs(accountId: string): Promise<NftToken[]> {

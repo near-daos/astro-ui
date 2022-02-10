@@ -1,61 +1,61 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import cn from 'classnames';
+import { useRouter } from 'next/router';
+
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 
+import { DAO } from 'types/dao';
+
 import styles from './ViewToggle.module.scss';
 
-export type ViewToggleOption = 'list' | 'timeline' | 'feed';
-
 interface ViewToggleProps {
-  selected: ViewToggleOption;
-  onSelect: (val: ViewToggleOption) => void;
   className?: string;
+  dao: DAO;
 }
 
-export const ViewToggle: FC<ViewToggleProps> = ({
-  selected,
-  onSelect,
-  className,
-}) => {
+export const ViewToggle: FC<ViewToggleProps> = ({ dao, className }) => {
+  const router = useRouter();
+  const { asPath } = router;
+  const currentPath = asPath.split('?')[0];
+
+  const subPages = {
+    feed: `/dao/${dao.id}/tasks/bounties/feed?bountyPhase=inProgress`,
+    list: `/dao/${dao.id}/tasks/bounties/list`,
+  };
+
+  const handleSelectView = useCallback(
+    (view: string) => {
+      router.push(view);
+    },
+    [router]
+  );
+
   return (
     <div className={cn(styles.root, className)}>
       <Button
         size="small"
         variant="tertiary"
-        onClick={() => onSelect('feed')}
+        onClick={() => handleSelectView(subPages.feed)}
         className={cn(styles.buttonWrapper, styles.first)}
       >
         <Icon
           name="feed"
           className={cn(styles.button, {
-            [styles.active]: selected === 'feed',
+            [styles.active]: currentPath === subPages.feed,
           })}
         />
       </Button>
       <Button
         size="small"
         variant="tertiary"
-        onClick={() => onSelect('list')}
+        onClick={() => handleSelectView(subPages.list)}
         className={cn(styles.buttonWrapper)}
       >
         <Icon
           name="list"
           className={cn(styles.button, {
-            [styles.active]: selected === 'list',
-          })}
-        />
-      </Button>
-      <Button
-        size="small"
-        onClick={() => onSelect('timeline')}
-        variant="tertiary"
-        className={cn(styles.buttonWrapper, styles.desktopOnly)}
-      >
-        <Icon
-          name="timeline"
-          className={cn(styles.button, {
-            [styles.active]: selected === 'timeline',
+            [styles.active]: currentPath === subPages.list,
           })}
         />
       </Button>

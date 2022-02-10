@@ -134,7 +134,10 @@ export const BountyCard: React.FC<BountyCardProps> = ({
               variant="black"
               size="block"
               type="submit"
-              onClick={() => handleClaim()}
+              onClick={e => {
+                e.stopPropagation();
+                handleClaim();
+              }}
               className={cn(styles.claim, styles.button)}
             >
               Claim
@@ -151,7 +154,10 @@ export const BountyCard: React.FC<BountyCardProps> = ({
                 variant="secondary"
                 size="block"
                 type="submit"
-                onClick={() => handleUnclaim()}
+                onClick={e => {
+                  e.stopPropagation();
+                  handleUnclaim();
+                }}
                 className={cn(styles.unclaim, styles.button)}
               >
                 Unclaim
@@ -164,7 +170,10 @@ export const BountyCard: React.FC<BountyCardProps> = ({
               <Button
                 variant="black"
                 size="block"
-                onClick={() => completeHandler()}
+                onClick={e => {
+                  e.stopPropagation();
+                  completeHandler();
+                }}
                 className={cn(styles.complete, styles.button)}
               >
                 Complete
@@ -238,9 +247,12 @@ export const BountyCard: React.FC<BountyCardProps> = ({
                 <span className={styles.bold}>{kFormatter(commentsCount)}</span>
               </div>
             }
-            onClick={() =>
-              toggleInfoPanel(activeInfoView === 'comments' ? null : 'comments')
-            }
+            onClick={e => {
+              e.stopPropagation();
+              toggleInfoPanel(
+                activeInfoView === 'comments' ? null : 'comments'
+              );
+            }}
             disabled={false}
           />
         </div>
@@ -261,9 +273,10 @@ export const BountyCard: React.FC<BountyCardProps> = ({
                 /<span>{bounty?.times ?? bountyData.times}</span>
               </div>
             }
-            onClick={() =>
-              toggleInfoPanel(activeInfoView === 'claims' ? null : 'claims')
-            }
+            onClick={e => {
+              e.stopPropagation();
+              toggleInfoPanel(activeInfoView === 'claims' ? null : 'claims');
+            }}
             disabled={false}
           />
         </div>

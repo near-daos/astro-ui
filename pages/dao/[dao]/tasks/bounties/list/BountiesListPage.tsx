@@ -9,13 +9,14 @@ import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesCon
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 
 import { BountiesPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/BountiesPageContent';
+import { BountiesListView } from 'astro_2.0/features/Bounties/components/BountiesListView';
 
-export interface BountiesPageProps {
+export interface BountiesListPageProps {
   daoContext: DaoContext;
   bountiesContext: BountyContext[];
 }
 
-const BountiesPage: VFC<BountiesPageProps> = ({
+const BountiesListPage: VFC<BountiesListPageProps> = ({
   daoContext,
   bountiesContext,
 }) => {
@@ -38,12 +39,11 @@ const BountiesPage: VFC<BountiesPageProps> = ({
       breadcrumbs={breadcrumbs}
       defaultProposalType={ProposalVariant.ProposeCreateBounty}
     >
-      <BountiesPageContent
-        daoContext={daoContext}
-        bountiesContext={bountiesContext}
-      />
+      <BountiesPageContent daoContext={daoContext}>
+        <BountiesListView bountiesContext={bountiesContext} />
+      </BountiesPageContent>
     </NestedDaoPageWrapper>
   );
 };
 
-export default BountiesPage;
+export default BountiesListPage;

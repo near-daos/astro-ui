@@ -5,9 +5,9 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from 'next-i18next.config';
 
-import { BountiesPageProps } from './BountiesPage';
+import { BountiesListPageProps } from './BountiesListPage';
 
-export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async ({
+export const getServerSideProps: GetServerSideProps<BountiesListPageProps> = async ({
   req,
   query,
   locale = 'en',
@@ -23,6 +23,7 @@ export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async (
     SputnikHttpService.getBountiesContext(daoId, account, {
       bountySort: query.bountySort ? (query.bountySort as string) : null,
       bountyFilter: query.bountyFilter ? (query.bountyFilter as string) : null,
+      bountyPhase: null,
     }),
   ]);
 
@@ -40,9 +41,9 @@ export const getServerSideProps: GetServerSideProps<BountiesPageProps> = async (
         nextI18NextConfig
       )),
       daoContext,
-      bountiesContext,
+      bountiesContext: bountiesContext?.data || [],
     },
   };
 };
 
-export { default } from './BountiesPage';
+export { default } from './BountiesListPage';

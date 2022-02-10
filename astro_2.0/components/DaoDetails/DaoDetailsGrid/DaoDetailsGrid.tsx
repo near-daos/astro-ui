@@ -5,8 +5,9 @@ import { useRouter } from 'next/router';
 import { useMeasure, useMedia } from 'react-use';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
+import { UrlObject } from 'url';
 
-import { GROUPS_PAGE_URL } from 'constants/routing';
+import { ALL_BOUNTIES_PAGE_URL, GROUPS_PAGE_URL } from 'constants/routing';
 
 import { DaoFeedItem } from 'types/dao';
 
@@ -52,7 +53,10 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
   } = dao;
   const isMobile = useMedia('(max-width: 920px)');
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>, url: string) => {
+  const handleClick = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    url: string | UrlObject
+  ) => {
     e.stopPropagation();
     e.preventDefault();
     router.push(url);
@@ -162,7 +166,14 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                 </ActionButton>
                 <ActionButton
                   iconName="proposalBounty"
-                  onClick={e => handleClick(e, `/dao/${id}/tasks/bounties`)}
+                  onClick={e =>
+                    handleClick(e, {
+                      pathname: ALL_BOUNTIES_PAGE_URL,
+                      query: {
+                        dao: id,
+                      },
+                    })
+                  }
                   className={styles.controlIcon}
                 >
                   {t('bounties')}

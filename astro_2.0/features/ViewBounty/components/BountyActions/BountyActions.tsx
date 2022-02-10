@@ -40,7 +40,13 @@ export const BountyActions: FC<BountyActionsProps> = ({
   const shareContent = `Bounty: \n${description}`;
 
   return (
-    <div className={styles.root}>
+    <div
+      tabIndex={0}
+      role="menu"
+      onKeyPress={e => e.stopPropagation()}
+      className={styles.root}
+      onClick={e => e.stopPropagation()}
+    >
       <a
         target="_blank"
         rel="noreferrer"
