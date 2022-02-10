@@ -40,7 +40,7 @@ export function useDaoDashboardData(): DaoDasboardFilteredData {
         const [state, funds] = res;
         const newDashboardData: DaoDashboardData = {};
 
-        if (state.status === 'fulfilled') {
+        if (state && state.status === 'fulfilled') {
           newDashboardData.state = state.value;
         }
 
