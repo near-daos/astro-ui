@@ -45,6 +45,7 @@ export const ProposalStatusFilter: React.FC<ProposalStatusFilterProps> = ({
       title={title || `${t('filterByProposalStatus')}:`}
       shortTitle={shortTitle || `${t('filterByStatus')}:`}
       value={value}
+      selectedLabel={list.find(item => item.value === value)?.label ?? ''}
       onChange={onChange}
     >
       {list.map(item => (
