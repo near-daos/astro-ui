@@ -10,13 +10,19 @@
   padding: 0 27px 0 20px;
 }
 
-.title {
+.title,
+.selectedTitle {
   color: var(--color-main-gray);
   display: inline-block;
   font-family: var(--font-family-secondary);
   font-size: 14px;
   line-height: 19px;
   margin: 0 18px 0 auto;
+}
+
+.selectedTitle {
+  color: var(--color-black);
+  display: none;
 }
 
 .radioGroup {
@@ -104,5 +110,9 @@
 
   .title {
     display: none;
+  }
+
+  .selectedTitle {
+    display: inline-block;
   }
 }
