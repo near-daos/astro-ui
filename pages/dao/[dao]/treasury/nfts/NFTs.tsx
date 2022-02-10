@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-
-import { ALL_DAOS_URL } from 'constants/routing';
+import uniqBy from 'lodash/uniqBy';
+import isEmpty from 'lodash/isEmpty';
 
 import { NFTCard } from 'astro_2.0/features/pages/nft/NtfCard';
-
-import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
-import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
-import { NavLink } from 'astro_2.0/components/NavLink';
 
 import { ProposalVariant } from 'types/proposal';
 import { NftToken } from 'types/token';
@@ -16,14 +12,11 @@ import { NftToken } from 'types/token';
 import { SputnikHttpService } from 'services/sputnik';
 
 import { DaoContext } from 'types/context';
-import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { DropdownMultiSelect } from 'components/inputs/selects/DropdownMultiSelect';
-import uniqBy from 'lodash/uniqBy';
-import isEmpty from 'lodash/isEmpty';
+import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 
-import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 
 import styles from './nfts.module.scss';
 
@@ -31,15 +24,10 @@ export interface NFTsPageProps {
   daoContext: DaoContext;
 }
 
-const NFTs: NextPage<NFTsPageProps> = ({
-  daoContext: { dao, userPermissions, policyAffectsProposals },
-}) => {
-  const { tokens } = useDaoCustomTokens();
+const NFTs: NextPage<NFTsPageProps> = ({ daoContext }) => {
   const router = useRouter();
   const daoId = router.query.dao as string;
   const [nfts, setNfts] = useState<NftToken[]>([]);
-
-  const [CreateProposal, toggleCreateProposal] = useCreateProposal();
 
   useEffect(() => {
     SputnikHttpService.getAccountNFTs(daoId).then(data => {
@@ -49,6 +37,19 @@ const NFTs: NextPage<NFTsPageProps> = ({
 
   const [currentContractIds, setCurrentContractIds] = useState<string[]>([]);
   const nftsByUniqueContractId = uniqBy(nfts, 'contractId');
+
+  const breadcrumbsConfig = useGetBreadcrumbsConfig(
+    daoContext.dao.id,
+    daoContext.dao.displayName
+  );
+
+  const breadcrumbs = useMemo(() => {
+    return [
+      breadcrumbsConfig.ALL_DAOS_URL,
+      breadcrumbsConfig.SINGLE_DAO_PAGE,
+      breadcrumbsConfig.NFTS,
+    ];
+  }, [breadcrumbsConfig]);
 
   const uniqueContracts = nftsByUniqueContractId.map(nft => {
     const { contractId } = nft;
@@ -75,34 +76,11 @@ const NFTs: NextPage<NFTsPageProps> = ({
   }
 
   return (
-    <div className={styles.root}>
-      <BreadCrumbs className={styles.breadcrumbs}>
-        <NavLink href={ALL_DAOS_URL}>All DAOs</NavLink>
-        <NavLink href={`/dao/${daoId}`}>{dao?.displayName || dao?.id}</NavLink>
-        <NavLink>NFTs</NavLink>
-      </BreadCrumbs>
-      <div className={styles.dao}>
-        <DaoDetailsMinimized
-          dao={dao}
-          onCreateProposalClick={toggleCreateProposal}
-          userPermissions={userPermissions}
-        />
-        <CreateProposal
-          className={styles.createProposal}
-          proposalVariant={ProposalVariant.ProposeTransfer}
-          dao={dao}
-          userPermissions={userPermissions}
-          key={Object.keys(tokens).length}
-          daoTokens={tokens}
-          showFlag={false}
-          onClose={toggleCreateProposal}
-        />
-        <PolicyAffectedWarning
-          data={policyAffectsProposals}
-          className={styles.warningWrapper}
-        />
-      </div>
-
+    <NestedDaoPageWrapper
+      daoContext={daoContext}
+      breadcrumbs={breadcrumbs}
+      defaultProposalType={ProposalVariant.ProposeCreateBounty}
+    >
       {nfts.length === 0 ? (
         <NoResultsView title="No NFTs available" />
       ) : (
@@ -124,7 +102,7 @@ const NFTs: NextPage<NFTsPageProps> = ({
           <div className={styles.content}>{renderNfts()}</div>
         </>
       )}
-    </div>
+    </NestedDaoPageWrapper>
   );
 };
 

@@ -1,5 +1,11 @@
 import cn from 'classnames';
-import React, { MutableRefObject, useCallback, useRef, useState } from 'react';
+import React, {
+  MutableRefObject,
+  ReactNode,
+  useCallback,
+  useRef,
+  useState,
+} from 'react';
 
 import { PAGE_LAYOUT_ID } from 'constants/common';
 
@@ -23,6 +29,7 @@ type FeedFilterProps<T> = {
   value: T;
   onChange: (value: T, e?: React.ChangeEvent<HTMLInputElement>) => void;
   neighbourRef?: MutableRefObject<HTMLElement | null>;
+  selectedLabel: ReactNode | string;
 };
 
 export const FeedFilter = <T,>({
@@ -34,6 +41,7 @@ export const FeedFilter = <T,>({
   shortTitle,
   neighbourRef,
   headerClassName,
+  selectedLabel,
 }: FeedFilterProps<T>): JSX.Element => {
   const rootRef = useRef(null);
 
@@ -95,6 +103,7 @@ export const FeedFilter = <T,>({
             onKeyDown={() => setIsShow(!isShow)}
           >
             <p className={styles.title}>{shortTitle || title}</p>
+            <p className={styles.selectedTitle}>{selectedLabel}</p>
             <Icon className={styles.controlIcon} name="listFilter" />
           </div>
           <RadioGroup

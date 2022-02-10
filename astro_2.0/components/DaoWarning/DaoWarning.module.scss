@@ -1,0 +1,70 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  background-color: var(--color-error-10);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.status {
+  align-items: center;
+  background-color: var(--color-error-20);
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  position: absolute;
+  width: 60px;
+}
+
+.icon {
+  color: var(--color-error-70);
+  width: 24px;
+}
+
+.content,
+.control {
+  padding: 20px 24px 20px 80px;
+}
+
+.title {
+  @extend %title3;
+  margin-bottom: 4px;
+}
+
+.text {
+  @extend %caption1;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    display: grid;
+    grid-template-areas:
+      'status content'
+      'status control';
+    grid-template-columns: 40px 1fr;
+  }
+
+  .content {
+    grid-area: content;
+  }
+
+  .control {
+    grid-area: control;
+  }
+
+  .content,
+  .control {
+    padding: 12px;
+  }
+
+  .status {
+    grid-area: status;
+    width: 40px;
+  }
+}

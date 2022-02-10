@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 import cn from 'classnames';
+import { useRouter } from 'next/router';
 import { formatDistance, parseISO } from 'date-fns';
 
 import { Bounty, BountyProposal } from 'types/bounties';
@@ -20,6 +21,9 @@ import { BountyActions } from 'astro_2.0/features/ViewBounty/components/BountyAc
 import { useBountyControls } from 'astro_2.0/features/Bounties/components/hooks';
 import { useAuthContext } from 'context/AuthContext';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { SINGLE_BOUNTY_PAGE_URL } from 'constants/routing';
+
+import { AddBountyRequest, ProposalType } from 'types/proposal';
 
 import styles from './BountyCard.module.scss';
 
@@ -52,17 +56,43 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   activeInfoView,
   completeHandler,
 }) => {
+  const router = useRouter();
   const { accountId } = useAuthContext();
+  const canNavigateToBounty = !router.query.bounty;
 
   const desc = bounty ? bounty.description : proposal.description;
   const [description, url] = desc.split(EXTERNAL_LINK_SEPARATOR);
+  const kind = proposal.kind as {
+    type: ProposalType.AddBounty;
+    bounty: AddBountyRequest;
+  };
+  const bountyData = kind.bounty;
 
   const { handleUnclaim, handleClaim } = useBountyControls(dao, bounty);
+
+  const handleCardClick = useCallback(() => {
+    if (canNavigateToBounty) {
+      router.push({
+        pathname: SINGLE_BOUNTY_PAGE_URL,
+        query: {
+          dao: dao.id,
+          bountyContext: contextId,
+        },
+      });
+    }
+  }, [canNavigateToBounty, contextId, dao.id, router]);
 
   function renderButtons() {
     if (!bounty && proposal) {
       return (
-        <VotingContent proposal={proposal} accountId={accountId} dao={dao} />
+        <div className={cn(styles.controlItem, styles.span)}>
+          <VotingContent
+            proposal={proposal}
+            accountId={accountId}
+            dao={dao}
+            className={styles.voting}
+          />
+        </div>
       );
     }
 
@@ -97,12 +127,17 @@ export const BountyCard: React.FC<BountyCardProps> = ({
 
       if (hasAvailableClaims && !hasInProgressClaims && !hasPendingProposals) {
         return (
-          <div className={cn(styles.controlItem, styles.btnWrapper)}>
+          <div
+            className={cn(styles.controlItem, styles.btnWrapper, styles.span)}
+          >
             <Button
               variant="black"
               size="block"
               type="submit"
-              onClick={() => handleClaim()}
+              onClick={e => {
+                e.stopPropagation();
+                handleClaim();
+              }}
               className={cn(styles.claim, styles.button)}
             >
               Claim
@@ -119,7 +154,10 @@ export const BountyCard: React.FC<BountyCardProps> = ({
                 variant="secondary"
                 size="block"
                 type="submit"
-                onClick={() => handleUnclaim()}
+                onClick={e => {
+                  e.stopPropagation();
+                  handleUnclaim();
+                }}
                 className={cn(styles.unclaim, styles.button)}
               >
                 Unclaim
@@ -132,7 +170,10 @@ export const BountyCard: React.FC<BountyCardProps> = ({
               <Button
                 variant="black"
                 size="block"
-                onClick={() => completeHandler()}
+                onClick={e => {
+                  e.stopPropagation();
+                  completeHandler();
+                }}
                 className={cn(styles.complete, styles.button)}
               >
                 Complete
@@ -147,7 +188,15 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   }
 
   return (
-    <div className={cn(styles.root)}>
+    <div
+      tabIndex={0}
+      role="button"
+      onKeyPress={handleCardClick}
+      className={cn(styles.root, {
+        [styles.clickable]: canNavigateToBounty,
+      })}
+      onClick={handleCardClick}
+    >
       <div className={styles.proposalCell}>
         <InfoBlockWidget
           valueFontSize="L"
@@ -198,36 +247,38 @@ export const BountyCard: React.FC<BountyCardProps> = ({
                 <span className={styles.bold}>{kFormatter(commentsCount)}</span>
               </div>
             }
-            onClick={() =>
-              toggleInfoPanel(activeInfoView === 'comments' ? null : 'comments')
-            }
+            onClick={e => {
+              e.stopPropagation();
+              toggleInfoPanel(
+                activeInfoView === 'comments' ? null : 'comments'
+              );
+            }}
             disabled={false}
           />
         </div>
         <div className={cn(styles.controlItem, styles.claims)}>
-          {bounty && (
-            <ProposalControlButton
-              icon="claimsLink"
-              className={styles.controlButton}
-              iconClassName={cn(styles.toggleCommentsButton, {
-                [styles.active]: activeInfoView === 'claims',
-              })}
-              voted={false}
-              type="button"
-              times={
-                <div className={styles.controlValue}>
-                  <span className={styles.bold}>
-                    {Number(bounty.numberOfClaims)}
-                  </span>
-                  /<span>{bounty.times}</span>
-                </div>
-              }
-              onClick={() =>
-                toggleInfoPanel(activeInfoView === 'claims' ? null : 'claims')
-              }
-              disabled={false}
-            />
-          )}
+          <ProposalControlButton
+            icon="claimsLink"
+            className={styles.controlButton}
+            iconClassName={cn(styles.toggleCommentsButton, {
+              [styles.active]: activeInfoView === 'claims',
+            })}
+            voted={false}
+            type="button"
+            times={
+              <div className={styles.controlValue}>
+                <span className={styles.bold}>
+                  {Number(bounty?.numberOfClaims ?? 0)}
+                </span>
+                /<span>{bounty?.times ?? bountyData.times}</span>
+              </div>
+            }
+            onClick={e => {
+              e.stopPropagation();
+              toggleInfoPanel(activeInfoView === 'claims' ? null : 'claims');
+            }}
+            disabled={false}
+          />
         </div>
         {renderButtons()}
       </div>

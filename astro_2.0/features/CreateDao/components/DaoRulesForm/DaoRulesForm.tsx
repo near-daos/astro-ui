@@ -22,8 +22,10 @@ export function DaoRulesForm(): JSX.Element {
           {DAO_RULES_INFO.map(({ subject, title, subTitle }) => (
             <SubjectRule
               key={title}
-              title={title}
-              subTitle={subTitle}
+              title={t(`createDAO.daoRulesForm.daoRulesSections.${title}`)}
+              subTitle={t(
+                `createDAO.daoRulesForm.daoRulesSections.${subTitle}`
+              )}
               subject={subject}
             />
           ))}

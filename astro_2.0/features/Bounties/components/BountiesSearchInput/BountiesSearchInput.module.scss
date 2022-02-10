@@ -1,0 +1,102 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  background: var(--color-white);
+  border: 1px solid var(--color-neutral-30);
+  border-radius: 8px;
+  display: flex;
+  height: 40px;
+  justify-content: flex-start;
+  max-width: 270px;
+  overflow: hidden;
+  padding: 12px 24px 12px 4px;
+  position: relative;
+  transform: translateZ(0);
+  transition: all 0.2s ease-out;
+}
+
+.anchor {
+  height: 0;
+  left: 0;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+}
+
+.iconHolder {
+  @include centralize;
+  cursor: pointer;
+  flex: 0 0 40px;
+  height: 40px;
+  width: 40px;
+
+  .icon {
+    color: var(--color-neutral-60);
+    width: 24px;
+  }
+}
+
+.closeIconHolder {
+  @include centralize;
+  cursor: pointer;
+  flex: 0 0 40px;
+  height: 40px;
+  position: absolute;
+  right: 0;
+  width: 40px;
+
+  .icon {
+    color: var(--color-neutral-50);
+    height: 16px;
+    width: 16px;
+  }
+}
+
+.input {
+  @extend %body2;
+  @include ellipse-text;
+
+  background: transparent;
+  border-width: 0;
+  color: var(--color-brand-black);
+  flex: 1;
+  font-family: var(--font-family-primary);
+  margin: 8px 12px 8px 0;
+  outline: none;
+
+  @include placeholder {
+    color: var(--color-neutral-60);
+  }
+}
+
+.expanded {
+  &.root {
+    background: var(--color-neutral-20);
+    padding-left: 12px;
+    width: 100%;
+  }
+
+  .iconHolder .icon {
+    color: var(--color-brand-purple);
+  }
+}
+
+.hint {
+  @extend %caption2;
+  background: var(--color-neutral-10);
+  border-radius: 8px;
+  box-shadow: 0 8.89583px 30px rgba(0, 0, 0, 0.14);
+  color: var(--color-neutral-60);
+  max-height: 50vh;
+  overflow: auto;
+  padding: 12px 24px;
+  width: 100%;
+}
+
+.loader {
+  color: var(--color-primary-50);
+  margin: 0;
+}

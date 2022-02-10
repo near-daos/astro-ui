@@ -1,4 +1,5 @@
 import { PolicyTypeRequest } from 'types/dao';
+import { BaseParams } from './api';
 
 export interface CreateDaoParams {
   name: string;
@@ -26,3 +27,13 @@ export interface ClaimBountyParams {
   bountyBond: string;
   gas?: string | number;
 }
+
+export type DaosParams = {
+  daoId?: string | null;
+  daoFilter?: 'All DAOs' | 'My DAOs' | 'Following DAOs' | null;
+  daosIdsFilter?: string[];
+};
+
+export type DaoParams = BaseParams & {
+  daoId?: string;
+};

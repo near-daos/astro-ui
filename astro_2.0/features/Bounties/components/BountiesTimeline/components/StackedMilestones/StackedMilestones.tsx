@@ -1,6 +1,7 @@
 import React, { FC, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import cn from 'classnames';
+import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 import { usePopper } from 'react-popper';
 import { useClickAway } from 'react-use';
@@ -30,7 +31,18 @@ export const StackedMilestones: FC<StackedMilestonesProps> = ({ data }) => {
 
   const { styles: popperStyles, attributes } = usePopper(
     referenceElement,
-    popperElement
+    popperElement,
+    {
+      placement: 'right-end',
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: [-32, 32],
+          },
+        },
+      ],
+    }
   );
 
   function renderResultsDropdown() {
@@ -54,8 +66,18 @@ export const StackedMilestones: FC<StackedMilestonesProps> = ({ data }) => {
               exit={{ opacity: 0 }}
             >
               {data.map((item, i) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <Milestone data={item} className={styles.listItem} key={i} />
+                <div className={styles.listItem}>
+                  <div className={styles.timeLabel}>
+                    {format(item.date, 'HH:mm')}
+                  </div>
+                  <Milestone
+                    data={item}
+                    className={styles.milestoneWrapper}
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={i}
+                    color={item.color}
+                  />
+                </div>
               ))}
             </motion.div>
           </div>
@@ -75,14 +97,15 @@ export const StackedMilestones: FC<StackedMilestonesProps> = ({ data }) => {
       <div
         onClick={() => setOpen(!open)}
         ref={ref}
-        className={cn(styles.indicator)}
+        className={cn(styles.indicator, {
+          [styles.hasGroupMilestones]: hasGrouptMilestones,
+        })}
         style={{
           backgroundColor:
             !hasGrouptMilestones && withColor ? withColor.color : '#000',
         }}
-      >
-        {data.length}
-      </div>
+      />
+      <div className={styles.count}>{data.length}</div>
       <div
         className={styles.anchor}
         ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}

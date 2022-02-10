@@ -9,7 +9,7 @@
   @extend %caption1;
   color: var(--color-error-70);
   font-size: 12px;
-  margin-top: 8px;
+  margin: 8px 0;
 
   &::first-letter {
     text-transform: capitalize;

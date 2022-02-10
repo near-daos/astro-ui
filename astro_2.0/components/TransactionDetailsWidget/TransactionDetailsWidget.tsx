@@ -114,6 +114,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
                   isBorderless
                   size="block"
                   {...gasInputProps}
+                  data-testid="gas-input"
                 />
               </div>
             </InputWrapper>

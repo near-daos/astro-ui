@@ -73,7 +73,7 @@ describe('dao details minimized', () => {
     ${'.members'}   | ${`/dao/${daoMock.id}/groups/all`}
     ${'.settings'}  | ${`/dao/${daoMock.id}/governance/settings?daoFilter=nameAndPurpose`}
     ${'.nfts'}      | ${`/dao/${daoMock.id}/treasury/nfts`}
-    ${'.bounties'}  | ${`/dao/${daoMock.id}/tasks/bounties`}
+    ${'.bounties'}  | ${`/dao/${daoMock.id}/tasks/bounties/list`}
     ${'.polls'}     | ${`/dao/${daoMock.id}/tasks/polls`}
   `(
     'Should navigate to proper url when user click "$button" action button',

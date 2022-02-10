@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Accordion Should render component 1`] = `
+<div>
+  <div
+    class=""
+  >
+    <div
+      data-testid="accordion-header"
+      role="button"
+      tabindex="0"
+    >
+      Hello
+      <button
+        class=""
+        type="button"
+      >
+        <svg>
+          <use
+            href="/_next/undefined"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      data-testid="accordion-container"
+      style="height: 0px;"
+    >
+      <div>
+        World
+      </div>
+    </div>
+  </div>
+</div>
+`;

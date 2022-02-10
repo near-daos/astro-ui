@@ -67,19 +67,19 @@
 
 .root.pending {
   .legend {
-    background-color: var(--color-error-40);
+    background-color: var(--color-pending);
   }
 
   .progress .bar {
-    background-color: var(--color-error-40);
+    background-color: var(--color-pending);
   }
 
   .icon {
-    color: var(--color-error-40);
+    color: var(--color-pending);
   }
 
   .status {
-    color: var(--color-error-40);
+    color: var(--color-pending);
   }
 }
 
@@ -102,7 +102,7 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  padding: 8px 12px 8px 0;
+  padding: 8px 0;
   width: 130px;
 
   @include tablet-landscape {

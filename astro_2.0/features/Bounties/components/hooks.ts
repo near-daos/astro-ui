@@ -1,17 +1,21 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useAsyncFn } from 'react-use';
+import axios, { CancelTokenSource } from 'axios';
 
-import { SputnikNearService } from 'services/sputnik';
+import { SputnikHttpService, SputnikNearService } from 'services/sputnik';
 import { useModal } from 'components/modal';
 import { ConfirmActionModal } from 'astro_2.0/components/ConfirmActionModal';
 
 import { DAO } from 'types/dao';
-import { Bounty, BountyProposal } from 'types/bounties';
+import { Bounty, BountyContext, BountyProposal } from 'types/bounties';
 import { VoteAction } from 'types/proposal';
 
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+
+import { useAuthContext } from 'context/AuthContext';
+import { PaginationResponse } from 'types/api';
 
 export function useBountyControls(
   dao: DAO,
@@ -99,6 +103,40 @@ export function useBountyVoting(
 
   return {
     handleVote,
+    loading,
+  };
+}
+
+export function useBountySearch(): {
+  handleSearch: (val: string) => Promise<PaginationResponse<BountyContext[]>>;
+  // searchResults: BountyContext[] | null;
+  loading: boolean;
+} {
+  const router = useRouter();
+  const daoId = router.query.dao as string;
+  const { accountId } = useAuthContext();
+  const cancelTokenRef = useRef<CancelTokenSource | null>(null);
+
+  const [{ loading }, handleSearch] = useAsyncFn(async query => {
+    if (cancelTokenRef.current) {
+      cancelTokenRef.current?.cancel('Cancelled by new req');
+    }
+
+    const { CancelToken } = axios;
+    const source = CancelToken.source();
+
+    cancelTokenRef.current = source;
+
+    return SputnikHttpService.findBountyContext({
+      daoId,
+      accountId,
+      query,
+      cancelToken: source.token,
+    });
+  }, []);
+
+  return {
+    handleSearch,
     loading,
   };
 }

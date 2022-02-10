@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import React, { VFC } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
 
 import { VALID_URL_REGEXP, VALID_WEBSITE_NAME_REGEXP } from 'constants/regexp';
 import { DEFAULT_CREATE_DAO_GAS } from 'services/sputnik/constants';
@@ -20,51 +21,51 @@ import { DaoFlagForm } from './components/DaoFlagForm';
 import { DaoPreviewForm } from './components/DaoPreviewForm';
 import { DaoLegalStatus } from './components/DaoLegalStatus';
 
-const schema = yup.object().shape({
-  displayName: yup
-    .string()
-    .trim()
-    .min(3, 'Incorrect DAO name - at least 3 characters expected.')
-    .matches(
-      VALID_WEBSITE_NAME_REGEXP,
-      'Incorrect DAO name - you can use letters and numbers only with hyphens and spaces in the middle.'
-    )
-    .required(),
-  address: yup
-    .string()
-    .test(
-      'exists',
-      'Dao with such address already exists.',
-      validateDaoAddress
-    ),
-  purpose: yup.string().max(500),
-  websites: yup
-    .array()
-    .of(
-      yup.string().matches(VALID_URL_REGEXP, 'Enter correct url!').required()
-    ),
-  proposals: yup.string().required(),
-  structure: yup.string().required(),
-  voting: yup.string().required(),
-  flagCover: yup
-    .mixed()
-    .test('fileSize', getImgValidationError, validateImgSize),
-  flagLogo: yup
-    .mixed()
-    .test('fileSize', getImgValidationError, validateImgSize),
-  legalStatus: yup.string().max(50),
-  legalLink: yup.string().matches(VALID_URL_REGEXP, {
-    message: 'Enter correct url!',
-    excludeEmptyString: true,
-  }),
-  gas: gasValidation,
-});
-
 interface CreateDaoProps {
   defaultFlag: string;
 }
 
 export const CreateDao: VFC<CreateDaoProps> = ({ defaultFlag }) => {
+  const { t } = useTranslation();
+  const schema = yup.object().shape({
+    displayName: yup
+      .string()
+      .trim()
+      .min(3, t('createDAO.daoIncorrectLengthError'))
+      .matches(
+        VALID_WEBSITE_NAME_REGEXP,
+        t('createDAO.daoIncorrectCharactersError')
+      )
+      .required(),
+    address: yup
+      .string()
+      .test('exists', t('createDAO.daoAlreadyExist'), validateDaoAddress),
+    purpose: yup.string().max(500),
+    websites: yup
+      .array()
+      .of(
+        yup
+          .string()
+          .matches(VALID_URL_REGEXP, t('createDAO.daoIncorrectURLError'))
+          .required()
+      ),
+    proposals: yup.string().required(),
+    structure: yup.string().required(),
+    voting: yup.string().required(),
+    flagCover: yup
+      .mixed()
+      .test('fileSize', getImgValidationError, validateImgSize),
+    flagLogo: yup
+      .mixed()
+      .test('fileSize', getImgValidationError, validateImgSize),
+    legalStatus: yup.string().max(50),
+    legalLink: yup.string().matches(VALID_URL_REGEXP, {
+      message: t('createDAO.daoIncorrectURLError'),
+      excludeEmptyString: true,
+    }),
+    gas: gasValidation,
+  });
+
   const methods = useForm<DAOFormValues>({
     mode: 'all',
     reValidateMode: 'onChange',

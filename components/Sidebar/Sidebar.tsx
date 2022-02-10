@@ -1,8 +1,7 @@
 import cn from 'classnames';
 import { useRouter } from 'next/router';
-import React, { forwardRef, useCallback, useEffect, useState } from 'react';
+import React, { forwardRef, useCallback } from 'react';
 import { useTranslation } from 'next-i18next';
-import { SputnikHttpService } from 'services/sputnik';
 
 import {
   MY_DAOS_URL,
@@ -13,6 +12,7 @@ import {
 } from 'constants/routing';
 
 import { useAuthContext } from 'context/AuthContext';
+import { useDaoIds } from 'hooks/useDaoIds';
 
 import { Logo } from 'components/Logo';
 import { Icon } from 'components/Icon';
@@ -26,32 +26,18 @@ interface SidebarProps {
 }
 
 export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
-  const [myDaosIds, setMyDaosIds] = useState<string[]>([]);
   const { className } = props;
 
   const router = useRouter();
   const { t } = useTranslation();
 
   const { accountId, login } = useAuthContext();
+  const myDaosIds = useDaoIds(accountId);
 
   const createDao = useCallback(
     () => (accountId ? router.push(CREATE_DAO_URL) : login()),
     [login, router, accountId]
   );
-
-  useEffect(() => {
-    async function getMyDaosIds() {
-      if (accountId) {
-        const accountDaosIds = await SputnikHttpService.getAccountDaosIds(
-          accountId
-        );
-
-        setMyDaosIds(accountDaosIds);
-      }
-    }
-
-    getMyDaosIds();
-  }, [accountId]);
 
   function renderHomeNavItem() {
     if (accountId) {

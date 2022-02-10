@@ -21,6 +21,7 @@ interface SideFilterProps {
   titleClassName?: string;
   list?: ListItem[];
   hideAllOption?: boolean;
+  shallowUpdate?: boolean;
 }
 
 export const SideFilter = ({
@@ -31,6 +32,7 @@ export const SideFilter = ({
   className,
   titleClassName,
   hideAllOption = false,
+  shallowUpdate = false,
 }: SideFilterProps): JSX.Element => {
   const { t } = useTranslation();
 
@@ -76,7 +78,7 @@ export const SideFilter = ({
 
     return (
       <li className={styles.categoriesListItemWrapper} key={label}>
-        <Link href={href} replace scroll={false}>
+        <Link href={href} replace scroll={false} shallow={shallowUpdate}>
           <a className={hrefClassName} tabIndex={disabled ? -1 : 0}>
             {label}
           </a>

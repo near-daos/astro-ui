@@ -34,10 +34,6 @@ export const BOUNTIES_PAGE_FILTER_OPTIONS = [
     value: 'proposer',
   },
   {
-    label: 'Complete',
-    value: 'times',
-  },
-  {
     label: 'Empty',
     value: 'numberOfClaims',
   },

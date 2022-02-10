@@ -1,20 +1,12 @@
-import React, { useState, VFC } from 'react';
+import React, { Children, cloneElement, isValidElement, FC } from 'react';
 import useQuery from 'hooks/useQuery';
 import cn from 'classnames';
 
-import { useAuthContext } from 'context/AuthContext';
 import { DaoContext } from 'types/context';
-import { BountyContext } from 'types/bounties';
 import { ProposalVariant } from 'types/proposal';
-import {
-  ViewToggle,
-  ViewToggleOption,
-} from 'astro_2.0/features/Bounties/components/ViewToggle';
-import { BountiesListView } from 'astro_2.0/features/Bounties/components/BountiesListView';
+import { ViewToggle } from 'astro_2.0/features/Bounties/components/ViewToggle';
 import { Button } from 'components/button/Button';
 import { Dropdown } from 'components/Dropdown';
-import { BountiesTimeline } from 'astro_2.0/features/Bounties/components/BountiesTimeline';
-import { BountiesFeed } from 'astro_2.0/features/Bounties/components/BountiesFeed';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import {
   BOUNTIES_PAGE_FILTER_OPTIONS,
@@ -27,20 +19,16 @@ import styles from './BountiesPageContent.module.scss';
 
 export interface BountiesPageContentProps {
   daoContext: DaoContext;
-  bountiesContext: BountyContext[];
   toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
 }
 
-export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
-  daoContext,
-  bountiesContext,
+export const BountiesPageContent: FC<BountiesPageContentProps> = ({
   toggleCreateProposal,
+  daoContext,
+  children,
 }) => {
   const { dao } = daoContext;
-
-  const { accountId } = useAuthContext();
   const { tokens } = useDaoCustomTokens();
-  const [activeView, setActiveView] = useState<ViewToggleOption>('feed');
 
   const { query, updateQuery } = useQuery<{
     bountyFilter: string;
@@ -54,6 +42,20 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
     if (toggleCreateProposal) {
       toggleCreateProposal({ bountyId, proposalVariant });
     }
+  }
+
+  function renderChildren() {
+    return Children.map(children, child => {
+      if (isValidElement(child)) {
+        return cloneElement(child, {
+          tokens,
+          handleCreateProposal,
+          dao,
+        });
+      }
+
+      return null;
+    });
   }
 
   return (
@@ -97,33 +99,9 @@ export const BountiesPageContent: VFC<BountiesPageContentProps> = ({
           </div>
         </div>
 
-        <ViewToggle
-          onSelect={setActiveView}
-          selected={activeView}
-          className={styles.desktopOnly}
-        />
+        <ViewToggle dao={dao} className={styles.toggle} />
       </div>
-
-      {activeView === 'list' && (
-        <BountiesListView
-          accountId={accountId}
-          tokens={tokens}
-          dao={dao}
-          completeHandler={handleCreateProposal}
-          bountiesContext={bountiesContext}
-        />
-      )}
-
-      {activeView === 'timeline' && <BountiesTimeline data={bountiesContext} />}
-
-      {activeView === 'feed' && (
-        <BountiesFeed
-          data={bountiesContext}
-          dao={dao}
-          tokens={tokens}
-          accountId={accountId}
-        />
-      )}
+      {renderChildren()}
     </div>
   );
 };

@@ -124,6 +124,15 @@ export function useGetBreadcrumbsConfig(
       CREATE_GOVERNANCE_TOKEN: {
         label: t('daoDetailsMinimized.createGovernanceToken'),
       },
+      POLLS: {
+        label: t('polls'),
+      },
+      NFTS: {
+        label: 'NFTs',
+      },
+      SETTINGS: {
+        label: t('settings'),
+      },
     };
   }, [
     t,

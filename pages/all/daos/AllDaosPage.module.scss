@@ -1,6 +1,9 @@
 @import 'styles/daosList';
 
 .filter {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 24px;
 }
 
@@ -11,4 +14,34 @@
 .loading {
   margin: 32px 0;
   text-align: center;
+}
+
+.filtersWrapper {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.iconWrapper {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.icon {
+  height: 12px;
+  margin-left: 8px;
+  width: 12px;
+}
+
+.popupWrapper {
+  justify-content: flex-start;
+  max-width: 320px;
+  text-align: left;
+}
+
+.tooltip {
+  max-width: 280px;
+  padding: 0;
+  width: 280px;
 }

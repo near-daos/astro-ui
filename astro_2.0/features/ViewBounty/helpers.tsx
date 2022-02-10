@@ -19,7 +19,7 @@ export function getContentNode(
       return (
         <AddBountyContent
           slots={bountyData.times}
-          deadlineThreshold={deadline[0]}
+          deadlineThreshold={deadline.join(' ')}
           token={bountyData.token}
           amount={bountyData.amount}
         />

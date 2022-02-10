@@ -8,8 +8,8 @@ import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
 import { Proposal, ProposalType } from 'types/proposal';
 
-import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
+import { DaoWarning } from 'astro_2.0/components/DaoWarning';
 
 import styles from './PolicyAffectedWarning.module.scss';
 
@@ -50,27 +50,25 @@ export const PolicyAffectedWarning: FC<PolicyAffectedWarningProps> = ({
   }
 
   return (
-    <div className={className}>
-      <div className={styles.root}>
-        <div className={styles.status}>
-          <Icon name="info" className={styles.icon} />
-        </div>
-        <div className={styles.content}>
+    <DaoWarning
+      content={
+        <>
           <div className={styles.title}>
             <Trans i18nKey="policyAffectedProposalsTitle" values={{ title }} />
           </div>
           <div className={styles.text}>
             <Trans i18nKey="policyAffectedProposalsText" values={{ title }} />
           </div>
-        </div>
-        <div className={styles.control}>
-          {data.length === 1 && (
-            <Button variant="primary" onClick={goToProposalPage}>
-              {t('viewProposal')}
-            </Button>
-          )}
-        </div>
-      </div>
-    </div>
+        </>
+      }
+      control={
+        data.length === 1 ? (
+          <Button variant="primary" onClick={goToProposalPage}>
+            {t('viewProposal')}
+          </Button>
+        ) : null
+      }
+      className={className}
+    />
   );
 };

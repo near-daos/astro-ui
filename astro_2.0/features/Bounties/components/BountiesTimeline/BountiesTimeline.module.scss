@@ -41,7 +41,7 @@
   cursor: pointer;
   display: flex;
   height: 26px;
-  margin: 16px 0;
+  margin: 8px 0;
   padding: 0 4px;
 
   &::first-letter {
@@ -99,7 +99,7 @@
 }
 
 .dataColumns {
-  margin: 16px 0;
+  margin: 8px 0;
 }
 
 .column {
@@ -138,10 +138,10 @@
 .dataColumn::after {
   border-right: 1px solid var(--color-neutral-20);
   content: '';
-  height: 58px;
+  height: 42px;
   position: absolute;
   right: 0;
-  top: -16px;
+  top: -8px;
   width: 32px;
   z-index: 10;
 }
@@ -152,7 +152,17 @@
   height: 1px;
   position: absolute;
   transform: translateY(-0.5px);
-  width: calc(100% + 32px);
+  width: 100%; // calc(100% + 32px);
+  z-index: 20;
+}
+
+.showIncompleteTrack::before {
+  border-bottom: 1px dashed currentColor;
+  content: '';
+  height: 1px;
+  position: absolute;
+  transform: translateY(-0.5px);
+  width: 29px;
   z-index: 20;
 }
 
@@ -166,4 +176,20 @@
 .lastColumn::after {
   background-color: var(--color-primary-10);
   border-right: 1px solid var(--color-neutral-40);
+}
+
+.firstMilestone::before {
+  left: 50%;
+  right: unset;
+  width: 50%;
+}
+
+.lastMilestone::before {
+  left: unset;
+  right: 50%;
+  width: 50%;
+}
+
+.singleMilestone::before {
+  width: 0;
 }
