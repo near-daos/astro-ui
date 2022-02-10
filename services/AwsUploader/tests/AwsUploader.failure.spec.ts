@@ -5,9 +5,7 @@ jest.mock('aws-sdk', () => {
     // eslint-disable-next-line class-methods-use-this
     upload() {
       return {
-        promise: () => {
-          throw new Error('Failure');
-        },
+        promise: () => Promise.reject(),
       };
     }
   }
