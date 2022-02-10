@@ -71,7 +71,9 @@ export function useAllCustomTokens(): { tokens: Record<string, Token> } {
   }, []);
 
   useMount(() => {
-    SputnikHttpService.getAllTokens().then(data => {
+    SputnikHttpService.getTokens({
+      limit: 1000,
+    }).then(data => {
       prepareTokens(data);
     });
   });

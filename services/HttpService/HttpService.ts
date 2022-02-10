@@ -47,25 +47,21 @@ export class HttpService {
         case API_MAPPERS.MAP_DAO_DTO_TO_DAO:
           response.data = mapDaoDTOtoDao(response.data);
           break;
-        case API_MAPPERS.MAP_DAO_FEED_ITEM_RESPONSE_TO_DAO_FEED_ITEM_LIST:
-          if (Array.isArray(response.data.data)) {
-            response.data = {
-              ...response.data,
-              data: mapDaoFeedItemResponseToDaoFeedItemList(response.data.data),
-            };
-            break;
-          }
-
+        case API_MAPPERS.MAP_DAO_FEED_ITEM_RESPONSE_TO_DAO_FEEDS:
+          response.data = {
+            ...response.data,
+            data: mapDaoFeedItemResponseToDaoFeedItemList(response.data.data),
+          };
+          break;
+        case API_MAPPERS.MAP_DAO_FEED_ITEM_RESPONSE_TO_DAO_FEED:
           response.data = mapDaoFeedItemResponseToDaoFeedItemList(
             response.data
           );
           break;
+        case API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSALS:
+          response.data = response.data.map(mapProposalDTOToProposal);
+          break;
         case API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL:
-          if (Array.isArray(response.data)) {
-            response.data = response.data.map(mapProposalDTOToProposal);
-            break;
-          }
-
           response.data = mapProposalDTOToProposal(response.data);
           break;
         case API_MAPPERS.MAP_SEARCH_RESULTS_DTO_TO_DATA_OBJECT:
@@ -90,11 +86,9 @@ export class HttpService {
           response.data = mapSubscriptionsDTOsToDaoSubscriptions(response.data);
           break;
         case API_MAPPERS.MAP_TOKENS_DTO_TO_TOKENS:
-          if (Array.isArray(response.data.data)) {
-            response.data = mapTokensDTOToTokens(response.data.data);
-            break;
-          }
-
+          response.data = mapTokensDTOToTokens(response.data.data);
+          break;
+        case API_MAPPERS.MAP_TOKENS_DTO_TO_TOKEN:
           response.data = mapTokensDTOToTokens(response.data);
           break;
         case API_MAPPERS.MAP_NFT_TOKEN_RESPONSE_TO_NFT_TOKEN:

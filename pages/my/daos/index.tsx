@@ -14,9 +14,11 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
-  const accountDaosIds = account
-    ? await SputnikHttpService.getAccountDaosIds(account)
+  const accountDaos = account
+    ? await SputnikHttpService.getAccountDaos(account)
     : [];
+
+  const accountDaosIds = accountDaos.map(dao => dao.id);
 
   if (!accountDaosIds.length) {
     return {

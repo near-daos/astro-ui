@@ -40,7 +40,9 @@ export const CustomTokensProvider: FC = ({ children }) => {
   }, []);
 
   async function fetchAndSetTokens() {
-    const t = await SputnikHttpService.getAllTokens();
+    const t = await SputnikHttpService.getTokens({
+      limit: 1000,
+    });
 
     setTokens(t);
   }
