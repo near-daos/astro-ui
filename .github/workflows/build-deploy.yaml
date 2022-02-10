@@ -15,7 +15,7 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY }}
+  GOOGLE_ANALYTICS_KEY: ${{ secrets.GOOGLE_ANALYTICS_KEY }}
   AWS_ECR_URL: ${{ secrets.AWS_ECR_URL }}
   EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
   KUBE_CONFIG_DATA:  ${{ secrets.KUBE_CONFIG_DATA }}
@@ -81,10 +81,10 @@ jobs:
             --set image.tag=$DOCKER_ENV_TAG \
             --set environment.near_env=${NEAR_ENV} \
             --set environment.near_contract_name=${NEAR_CONTRACT_NAME} \
-            --set environment.next_public_api_url=${NEXT_PUBLIC_API_URL} \
-            --set environment.next_public_google_analytics_key=${NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY} \
-            --set environment.next_public_near_env=${NEXT_PUBLIC_NEAR_ENV} \
-            --set environment.next_public_stats_api_url=${NEXT_PUBLIC_STATS_API_URL} \
+            --set environment.api_url=${API_URL} \
+            --set environment.google_analytics_key=${GOOGLE_ANALYTICS_KEY} \
+            --set environment.near_env=${NEAR_ENV} \
+            --set environment.stats_api_url=${STATS_API_URL} \
             --set environment.next_public_launchdarkly_id=${NEXT_PUBLIC_LAUNCHDARKLY_ID} \
             --set ingress.host=${K8S_INGRESS_HOST}
 

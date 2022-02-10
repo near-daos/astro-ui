@@ -6,6 +6,7 @@ import { Icon, IconName } from 'components/Icon';
 import { LocaleSelector } from 'astro_2.0/components/LocaleSelector';
 
 import styles from './AppFooter.module.scss';
+import { useConfigContext } from 'context/ConfigContext';
 
 export interface AppFooterProps {
   mobile?: boolean;
@@ -13,14 +14,15 @@ export interface AppFooterProps {
   onClick?: () => void;
 }
 
-const RELEASE_NOTES = process.env.NEXT_PUBLIC_RELEASE_NOTES;
-
 export const AppFooter: FC<AppFooterProps> = ({
   mobile,
   className,
   onClick,
 }) => {
   const { t } = useTranslation();
+
+  const { config } = useConfigContext() || {};
+  const RELEASE_NOTES = config?.RELEASE_NOTES || '';
 
   function renderSocialIcon(href: string, icon: IconName) {
     return (

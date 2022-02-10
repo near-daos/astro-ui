@@ -88,8 +88,8 @@ version:
 environment:
   near_env: "testnet"
   near_contract_name: "sputnikv2.testnet"
-  next_public_api_url: "http://a6f2431dfded249d18fc7a20377342db-2021398035.eu-central-1.elb.amazonaws.com"
+  api_url: "http://a6f2431dfded249d18fc7a20377342db-2021398035.eu-central-1.elb.amazonaws.com"
   aws_bucket: "sputnik-dao"
   aws_region: "eu-central-1"
   aws_identity_pool_id: "eu-central-1:5887fd21-7b40-4871-a6cb-21097fe079a2"
-  next_public_stats_api_url: "https://testnet.api.daostats.io"
+  stats_api_url: "https://testnet.api.daostats.io"

@@ -35,9 +35,9 @@ export class SputnikDaoService {
 
     return this.sputnikWalletService.getAccount().functionCall({
       ...props,
-      walletCallbackUrl: appConfig.walledUseLocalRedirect
+      walletCallbackUrl: appConfig.walletUseLocalRedirect
         ? `${window.origin}/callback/transaction`
-        : `${window.origin}/api-server/v1/transactions/wallet/callback/${accountId}`,
+        : `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
     });
   }
 

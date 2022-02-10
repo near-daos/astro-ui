@@ -1,4 +1,4 @@
-const GOOGLE_ANALYTICS_KEY = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY;
+const GOOGLE_ANALYTICS_KEY = process.env.GOOGLE_ANALYTICS_KEY;
 
 export const GOOGLE_TAG_MANAGER = `
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
