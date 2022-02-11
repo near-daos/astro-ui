@@ -88,7 +88,7 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.scrollIntoView({
-        block: 'center',
+        block: 'end',
         behavior: 'smooth',
       });
     }
@@ -172,11 +172,12 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
           </motion.div>
         </AnimatePresence>
       </ul>
-      <div ref={inputRef} />
       {isCommentsAllowed && (
         <div className={styles.addCommentSection}>
+          <div ref={inputRef} />
           <Input
             value={value}
+            autoFocus
             onFocus={() => isMounted() && setFocused(true)}
             onBlur={() => isMounted() && setFocused(false)}
             onChange={handleCommentInput}
