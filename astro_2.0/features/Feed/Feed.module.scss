@@ -1,5 +1,6 @@
 @use 'styles/breakpoints';
 @import 'styles/mixins';
+@import 'styles/typography';
 
 .root {
   width: 100%;
@@ -8,18 +9,27 @@
 .title {
   align-items: center;
   display: inline-flex;
+  font-size: 18px;
   line-height: 1;
   margin: 0;
   text-transform: capitalize;
+
+  @include tablet-landscape {
+    font-size: 28px;
+  }
 }
 
 .statusFilterWrapper {
   @include wide-background;
   padding: 56px 0 0;
   position: sticky;
-  top: 72px;
+  top: 40px;
   width: 100%;
   z-index: 20;
+
+  @include tablet-landscape {
+    top: 71px;
+  }
 
   .categoriesListApprovedInputWrapperChecked {
     --color-checkmark-active: var(--color-success-50);

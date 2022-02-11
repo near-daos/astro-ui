@@ -21,10 +21,15 @@
   background: var(--color-neutral-10);
   display: flex;
   justify-content: flex-end;
-  padding: 32px 0;
+  padding: 32px 0 12px;
   position: sticky;
-  top: 72px;
+  top: 48px;
   z-index: 11;
+
+  @include tablet-landscape {
+    padding: 32px 0;
+    top: 71px;
+  }
 }
 
 .votingEnds {
