@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Radio Should render component 1`] = `
+<div>
+  <label
+    class=""
+    for="input-radio-Hello"
+  >
+    <input
+      class=""
+      id="input-radio-Hello"
+      type="radio"
+      value="Hello"
+    />
+    <span />
+    <span
+      class=""
+    >
+      World
+    </span>
+  </label>
+</div>
+`;

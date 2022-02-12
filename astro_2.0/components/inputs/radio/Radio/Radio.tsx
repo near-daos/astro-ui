@@ -14,7 +14,7 @@ export type RadioProps = {
   type?: string;
 };
 
-const Radio: React.FC<RadioProps> = ({
+export const Radio: React.FC<RadioProps> = ({
   className,
   value,
   label,
@@ -55,5 +55,3 @@ const Radio: React.FC<RadioProps> = ({
     </label>
   );
 };
-
-export default Radio;

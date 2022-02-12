@@ -1,6 +1,10 @@
 /* eslint-disable import/prefer-default-export */
 import { useContext } from 'react';
-import { RadioContext, RadioContextType } from './RadioGroup';
+
+import {
+  RadioContext,
+  RadioContextType,
+} from 'astro_2.0/components/inputs/radio/RadioGroup';
 
 export const useRadioContext = (): RadioContextType => {
   const context = useContext(RadioContext);

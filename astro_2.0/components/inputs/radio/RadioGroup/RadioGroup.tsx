@@ -23,7 +23,7 @@ type RadioGroupProps = {
   onChange: RadioContextType['onChange'];
 };
 
-const RadioGroup: React.FC<RadioGroupProps> = ({
+export const RadioGroup: React.FC<RadioGroupProps> = ({
   className,
   itemClassName,
   activeItemClassName,
@@ -46,5 +46,3 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
     </RadioContext.Provider>
   );
 };
-
-export default RadioGroup;

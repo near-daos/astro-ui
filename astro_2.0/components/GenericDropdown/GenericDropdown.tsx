@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { merge } from 'lodash';
-import React, { useEffect } from 'react';
 import { usePopper } from 'react-popper';
+import React, { FC, useState, useEffect } from 'react';
 
 import { useOnClickOutside } from 'hooks/useOnClickOutside';
 import { BaseDropdownProps } from './types';
@@ -18,7 +18,7 @@ export interface GenericDropdownProps extends BaseDropdownProps {
   preventOpenThroughParent?: boolean;
 }
 
-export const GenericDropdown: React.FC<GenericDropdownProps> = ({
+export const GenericDropdown: FC<GenericDropdownProps> = ({
   arrow,
   parent,
   isOpen,
@@ -29,9 +29,9 @@ export const GenericDropdown: React.FC<GenericDropdownProps> = ({
   showOnHover,
   preventOpenThroughParent,
 }) => {
-  const [open, setOpen] = React.useState(isOpen);
-  const [popperElement, setPopperElement] = React.useState<HTMLElement>();
-  const [referenceElement, setReferenceElement] = React.useState<HTMLElement>();
+  const [open, setOpen] = useState(isOpen);
+  const [popperElement, setPopperElement] = useState<HTMLElement>();
+  const [referenceElement, setReferenceElement] = useState<HTMLElement>();
 
   function openCloseDropdown(e: unknown, isClickOutside: boolean) {
     if (preventOpenThroughParent && !isClickOutside) {

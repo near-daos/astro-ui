@@ -10,10 +10,8 @@ import React, {
 import { PAGE_LAYOUT_ID } from 'constants/common';
 
 import { Icon } from 'components/Icon';
-import RadioGroup, {
-  Radio,
-  RadioProps,
-} from 'astro_2.0/components/inputs/Radio';
+import { RadioGroup } from 'astro_2.0/components/inputs/radio/RadioGroup';
+import { Radio, RadioProps } from 'astro_2.0/components/inputs/radio/Radio';
 
 import { getElementSize } from 'utils/getElementSize';
 import { useWindowResize } from 'hooks/useWindowResize';

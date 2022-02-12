@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Filters Panel Should render component 1`] = `
+<div>
+  <div>
+    <div>
+      <button
+        class=""
+        type="button"
+      >
+        <span>
+          <span>
+            Filters
+          </span>
+          <svg>
+            <use
+              href="/_next/undefined"
+            />
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

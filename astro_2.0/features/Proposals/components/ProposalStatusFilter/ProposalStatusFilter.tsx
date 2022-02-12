@@ -4,7 +4,7 @@ import React, { MutableRefObject } from 'react';
 
 import { ProposalStatuses } from 'types/proposal';
 import { FeedFilter } from 'astro_2.0/components/Feed';
-import { Radio } from 'astro_2.0/components/inputs/Radio';
+import { Radio } from 'astro_2.0/components/inputs/radio/Radio';
 
 import styles from './ProposalStatusFilter.module.scss';
 
