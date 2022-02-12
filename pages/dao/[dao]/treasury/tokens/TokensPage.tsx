@@ -1,11 +1,11 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import dynamic from 'next/dynamic';
-import classNames from 'classnames';
 import get from 'lodash/get';
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
+import classNames from 'classnames';
 import { useTranslation } from 'next-i18next';
+import { useFlags } from 'launchdarkly-react-client-sdk';
+import React, { useCallback, useMemo, useState } from 'react';
 
-import { FEATURE_FLAGS } from 'constants/featureFlags';
 import { CREATE_GOV_TOKEN_PAGE_URL } from 'constants/routing';
 import { STEPS as CREATE_GOV_TOKEN_STEPS } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/constants';
 
@@ -51,6 +51,8 @@ const TokensPage: NextPage<TokensPageProps> = ({
   daoContext,
   daoContext: { dao },
 }) => {
+  const flags = useFlags();
+
   const { t } = useTranslation();
 
   const { tokens } = useDaoCustomTokens();
@@ -212,7 +214,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
   }
 
   function renderCreateGovTokenButton() {
-    if (FEATURE_FLAGS.GOV_TOKEN) {
+    if (flags.governanceToken) {
       return (
         <Button
           capitalize
