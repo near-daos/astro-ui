@@ -836,6 +836,17 @@ class SputnikHttpServiceClass {
       value: daoId,
     });
 
+    queryBuilder.setFilter({
+      field: 'proposal.status',
+      operator: '$notin',
+      value: ['Rejected', 'Removed', 'Expired'],
+    });
+    queryBuilder.setFilter({
+      field: 'proposal.voteStatus',
+      operator: 'ne',
+      value: 'Expired',
+    });
+
     if (query?.bountyFilter) {
       if (query.bountyFilter === 'proposer') {
         queryBuilder.setFilter({
@@ -883,6 +894,11 @@ class SputnikHttpServiceClass {
         queryBuilder.setFilter({
           field: 'bounty.numberOfClaims',
           operator: '$eq',
+          value: 0,
+        });
+        queryBuilder.setFilter({
+          field: 'bounty.times',
+          operator: '$ne',
           value: 0,
         });
       }

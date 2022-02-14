@@ -188,7 +188,7 @@ export function prepareBountiesPageContent(
           pathname: SINGLE_BOUNTY_PAGE_URL,
           query: {
             dao: dao.id,
-            bounty: item.id,
+            bountyContext: item.id,
           },
         },
         content: (
