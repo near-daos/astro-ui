@@ -107,12 +107,8 @@
 }
 
 .submitButton {
-  background-color: var(--color-neutral-60);
   margin-left: 8px;
-
-  &:hover {
-    box-shadow: 2px 3px 4px var(--color-black-opacity-1);
-  }
+  text-transform: capitalize;
 }
 
 .mobileSubmitButton {
