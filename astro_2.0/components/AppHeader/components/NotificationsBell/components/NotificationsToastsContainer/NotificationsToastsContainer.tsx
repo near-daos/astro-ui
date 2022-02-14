@@ -98,7 +98,7 @@ export const NotificationsToastsContainer: FC = () => {
           animate={{ opacity: 1, transform: 'translateX(0px)' }}
           exit={{ opacity: 0 }}
         >
-          <NotificationCard {...props} onMarkRead={handleMarkRead} />
+          <NotificationCard {...props} onUpdate={handleMarkRead} />
         </motion.div>
       );
     });

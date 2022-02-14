@@ -4,7 +4,7 @@ import { render } from 'jest/testUtils';
 import { FEATURE_FLAGS } from 'constants/featureFlags';
 
 import { useAuthContext } from 'context/AuthContext';
-import { useNotifications } from 'astro_2.0/features/Notifications';
+import { useNotificationsList } from 'astro_2.0/features/Notifications/hooks';
 
 import { NotificationsBell } from 'astro_2.0/components/AppHeader/components/NotificationsBell';
 
@@ -14,9 +14,9 @@ jest.mock('context/AuthContext', () => {
   };
 });
 
-jest.mock('astro_2.0/features/Notifications', () => {
+jest.mock('astro_2.0/features/Notifications/hooks', () => {
   return {
-    useNotifications: jest.fn(() => ({})),
+    useNotificationsList: jest.fn(() => ({})),
   };
 });
 
@@ -53,8 +53,10 @@ describe('notifications bell', () => {
 
   it('Should render "notifications" icon if unread notifications presented', () => {
     // @ts-ignore
-    useNotifications.mockImplementation(() => ({
-      notifications: [{ isRead: false }],
+    useNotificationsList.mockImplementation(() => ({
+      notifications: {
+        data: [{ isRead: false }],
+      },
     }));
 
     // @ts-ignore

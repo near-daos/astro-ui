@@ -13,3 +13,16 @@ export type DaoSettings = {
   dao: DAO;
   settings: NotificationSettingDTO;
 };
+
+export type NotificationAction = (
+  id: string,
+  {
+    isMuted,
+    isRead,
+    isArchived,
+  }: {
+    isMuted: boolean;
+    isRead: boolean;
+    isArchived: boolean;
+  }
+) => void;

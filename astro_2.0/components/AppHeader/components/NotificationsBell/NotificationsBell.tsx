@@ -6,10 +6,10 @@ import Link from 'next/link';
 
 import { FEATURE_FLAGS } from 'constants/featureFlags';
 
-import { useNotifications } from 'astro_2.0/features/Notifications';
-
 import { NotificationsToastsContainer } from 'astro_2.0/components/AppHeader/components/NotificationsBell/components/NotificationsToastsContainer';
 import { Icon } from 'components/Icon';
+
+import { useNotificationsList } from 'astro_2.0/features/Notifications/hooks';
 
 import styles from './NotificationsBell.module.scss';
 
@@ -23,12 +23,12 @@ export const NotificationsBell: VFC<NotificationsBellProps> = ({
   const rootRef = useRef(null);
   const isHovered = useHoverDirty(rootRef);
 
-  const { notifications } = useNotifications();
+  const { notifications } = useNotificationsList();
 
   function renderBellIcon() {
     if (
       isEmpty(notifications) ||
-      !notifications.filter(item => !item.isRead).length
+      !notifications?.data?.filter(item => !item.isRead).length
     ) {
       return (
         <Icon

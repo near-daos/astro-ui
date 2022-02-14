@@ -16,7 +16,6 @@ import { ModalProvider } from 'components/modal';
 import { PageLayout } from 'astro_2.0/components/PageLayout';
 import { MobileNav } from 'astro_2.0/components/navigation/MobileNav';
 import { SearchResults } from 'features/search/search-results';
-import { NotificationsProvider } from 'astro_2.0/features/Notifications/components/NotificationsProvider';
 
 import { SputnikNearService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
@@ -61,17 +60,15 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
       <AuthWrapper>
         <SocketProvider>
           <ModalProvider>
-            <NotificationsProvider>
-              <SearchResults>
-                <Head>
-                  <title>Astro</title>
-                </Head>
-                <PageLayout>
-                  <Component {...pageProps} />
-                </PageLayout>
-                <MobileNav />
-              </SearchResults>
-            </NotificationsProvider>
+            <SearchResults>
+              <Head>
+                <title>Astro</title>
+              </Head>
+              <PageLayout>
+                <Component {...pageProps} />
+              </PageLayout>
+              <MobileNav />
+            </SearchResults>
           </ModalProvider>
         </SocketProvider>
       </AuthWrapper>
