@@ -46,6 +46,7 @@
   @extend %title3;
   font-size: 12px;
   font-weight: normal;
+  white-space: nowrap;
   .bold {
     font-weight: 700;
   }
@@ -75,9 +76,24 @@
   }
 }
 
+.toggleBtn {
+  align-items: center;
+  border-radius: 4px;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  min-width: 60px;
+  padding: 0 8px;
+
+  &:hover {
+    background-color: var(--color-neutral-20);
+  }
+}
+
 .toggleCommentsButton {
   color: var(--color-neutral-60);
-  width: 24px;
+  margin-right: 8px;
+  width: 16px;
 
   &.active {
     color: var(--color-primary-50);
@@ -86,6 +102,7 @@
 
 .button {
   text-transform: capitalize;
+  white-space: nowrap;
 }
 
 .voteProgress {
