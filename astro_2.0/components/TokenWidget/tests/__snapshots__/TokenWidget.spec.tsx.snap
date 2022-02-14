@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Token widget Should render component 1`] = `
+<div>
+  <div>
+    <div>
+      0
+    </div>
+    <div>
+      NEAR
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Token widget Should render valid icon 1`] = `
+<div>
+  <div>
+    <div>
+      0
+    </div>
+    <div
+      style="background-image: url(validIcon);"
+    />
+    <div>
+      HI
+    </div>
+  </div>
+</div>
+`;
