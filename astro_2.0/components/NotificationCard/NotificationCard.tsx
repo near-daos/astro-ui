@@ -191,7 +191,11 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
         {description && (
           <div className={styles.description}>
             <div className={styles.descriptionHeader}>{t('description')}:</div>
-            <span>{description}</span>
+            <span>
+              {regular && description.length > 250
+                ? `${description.substring(0, 250)}...`
+                : description}
+            </span>
           </div>
         )}
         <div className={styles.time}>
