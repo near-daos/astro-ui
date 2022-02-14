@@ -12,7 +12,7 @@ import { ALL_BOUNTIES_PAGE_URL, GROUPS_PAGE_URL } from 'constants/routing';
 import { DaoFeedItem } from 'types/dao';
 
 import { CopyButton } from 'astro_2.0/components/CopyButton';
-import { ActionButton } from 'features/proposal/components/action-button';
+import { ActionButton } from 'astro_2.0/components/ActionButton';
 import * as Typography from 'components/Typography';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { Tooltip } from 'astro_2.0/components/Tooltip';

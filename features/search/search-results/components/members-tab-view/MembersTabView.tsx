@@ -5,7 +5,7 @@ import { Highlighter } from 'features/search/search-results/components/highlight
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 
 import MemberCard, { MemberCardPopup } from 'components/cards/member-card';
-import { Badge, Variant } from 'components/badge/Badge';
+import { Badge, Variant } from 'components/Badge/Badge';
 import { useModal } from 'components/modal';
 
 import { GROUP_COLOR } from './constants';

@@ -6,7 +6,7 @@ import { useSwipeable } from 'react-swipeable';
 import { useTranslation } from 'next-i18next';
 
 import { FlagRenderer } from 'astro_2.0/components/Flag';
-import { ActionButton } from 'features/proposal/components/action-button';
+import { ActionButton } from 'astro_2.0/components/ActionButton';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import {

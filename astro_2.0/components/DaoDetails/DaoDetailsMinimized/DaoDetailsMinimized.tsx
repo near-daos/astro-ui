@@ -11,7 +11,7 @@ import { DAO } from 'types/dao';
 
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
-import { ActionButton } from 'features/proposal/components/action-button';
+import { ActionButton } from 'astro_2.0/components/ActionButton';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { Popup } from 'components/Popup';
 

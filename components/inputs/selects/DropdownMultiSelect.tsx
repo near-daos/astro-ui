@@ -9,7 +9,7 @@ import { useMeasure } from 'react-use';
 
 import { Checkbox } from 'components/inputs/Checkbox';
 import { Icon } from 'components/Icon';
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 import { BadgeList } from 'components/BadgeList';
 
 import styles from './DropdownSelect.module.scss';

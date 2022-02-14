@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import { NavLink } from 'astro_2.0/components/NavLink';
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 import { useTranslation } from 'next-i18next';
 
 import styles from './GroupsList.module.scss';

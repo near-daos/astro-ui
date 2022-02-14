@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 import {
   MemberCardPopup,
   MemberCardPopupProps,

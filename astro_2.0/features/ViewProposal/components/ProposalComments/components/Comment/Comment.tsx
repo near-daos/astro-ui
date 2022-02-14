@@ -7,7 +7,7 @@ import Linkify from 'react-linkify';
 import { useMountedState } from 'react-use';
 
 import { IconName } from 'components/Icon';
-import { ActionButton } from 'features/proposal/components/action-button';
+import { ActionButton } from 'astro_2.0/components/ActionButton';
 import { ConfirmCommentActionModal } from 'astro_2.0/features/ViewProposal/components/ProposalComments/components/ConfirmCommentActionModal';
 import { getImagesFromLinks } from 'astro_2.0/features/ViewProposal/components/ProposalComments/components/Comment/helpers';
 

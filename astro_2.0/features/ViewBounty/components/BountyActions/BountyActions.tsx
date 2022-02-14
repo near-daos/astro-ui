@@ -4,7 +4,7 @@ import { useMedia, useMountedState } from 'react-use';
 import { SINGLE_BOUNTY_PAGE_URL } from 'constants/routing';
 
 import { CopyButton } from 'astro_2.0/components/CopyButton';
-import { ActionButton } from 'features/proposal/components/action-button';
+import { ActionButton } from 'astro_2.0/components/ActionButton';
 
 import styles from './BountyActions.module.scss';
 

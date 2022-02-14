@@ -11,7 +11,7 @@ import {
 } from 'types/proposal';
 
 import { CopyButton } from 'astro_2.0/components/CopyButton';
-import { ActionButton } from 'features/proposal/components/action-button';
+import { ActionButton } from 'astro_2.0/components/ActionButton';
 
 import styles from './ProposalActions.module.scss';
 
