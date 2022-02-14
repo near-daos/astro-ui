@@ -23,6 +23,11 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (!accountDaosIds.length) {
     return {
       props: {
+        ...(await serverSideTranslations(
+          locale,
+          ['common', 'notificationsPage'],
+          nextI18NextConfig
+        )),
         accountDaos: [],
       },
     };
