@@ -203,7 +203,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
           label="Bounty name"
           value={
             <div className={styles.proposalType}>
-              {description}
+              <div className={styles.ellipse}>{description}</div>
               <ExplorerLink
                 linkData={proposal.transactionHash}
                 linkType="transaction"

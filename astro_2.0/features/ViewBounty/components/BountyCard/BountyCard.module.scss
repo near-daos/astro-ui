@@ -164,6 +164,8 @@
 .proposalCell {
   display: flex;
   grid-area: proposalType;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .proposalContentCell {
@@ -184,6 +186,7 @@
 }
 
 .proposalType {
+  @include ellipse-text;
   align-items: center;
   display: flex;
 }
@@ -192,6 +195,12 @@
   display: flex;
   flex-direction: column;
   grid-area: proposer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ellipse {
+  @include ellipse-text;
 }
 
 .progressCell {
