@@ -46,6 +46,10 @@
   margin-left: 12px;
 }
 
+.ellipse {
+  @include ellipse-text;
+}
+
 .value {
   @extend %subtitle4;
   color: var(--color-neutral-80);
