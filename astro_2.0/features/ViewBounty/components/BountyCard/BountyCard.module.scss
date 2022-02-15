@@ -105,6 +105,24 @@
   white-space: nowrap;
 }
 
+.unclaimBtn {
+  border: 1px solid var(--color-error-70);
+  transition: box-shadow 0.2s ease-out;
+
+  &:hover {
+    box-shadow: 0 0 20px var(--color-error-70);
+  }
+}
+
+.completeBtn {
+  background-color: var(--color-success-50);
+  color: var(--color-black);
+
+  &:hover {
+    box-shadow: 0 0 20px var(--color-success-50);
+  }
+}
+
 .voteProgress {
   border-radius: 0 0 8px;
   bottom: 0;

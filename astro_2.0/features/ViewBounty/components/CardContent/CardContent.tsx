@@ -14,15 +14,10 @@ import styles from './CardContent.module.scss';
 
 interface CardContentProps {
   amount: string;
-  deadlineThreshold: string;
   token: string;
 }
 
-export const CardContent: FC<CardContentProps> = ({
-  amount,
-  deadlineThreshold,
-  token,
-}) => {
+export const CardContent: FC<CardContentProps> = ({ amount, token }) => {
   const { t } = useTranslation();
 
   const { tokens } = useCustomTokensContext();
@@ -53,30 +48,25 @@ export const CardContent: FC<CardContentProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.inline}>
-        <FieldWrapper label={t('proposalCard.proposalAmount')}>
+        <FieldWrapper
+          label={t('proposalCard.proposalAmount')}
+          labelClassName={styles.label}
+        >
           {tokenData ? (
-            <FieldValue value={formatYoktoValue(amount, tokenData.decimals)} />
+            <FieldValue
+              value={
+                <>
+                  {formatYoktoValue(amount, tokenData.decimals)}
+                  <div className={styles.iconWrapper}>{renderIcon()}</div>
+                  <div className={styles.symbol}>{tokenData.symbol}</div>
+                </>
+              }
+            />
           ) : (
             <div className={styles.loaderWrapper}>
               <LoadingIndicator />
             </div>
           )}
-        </FieldWrapper>
-        <FieldWrapper label="">
-          <div className={styles.row}>
-            {tokenData && (
-              <>
-                <div className={styles.iconWrapper}>{renderIcon()}</div>
-                <div className={styles.symbol}>{tokenData.symbol}</div>
-              </>
-            )}
-          </div>
-        </FieldWrapper>
-      </div>
-      <div className={styles.divider} />
-      <div className={styles.inline}>
-        <FieldWrapper label="Grace">
-          <FieldValue value={deadlineThreshold} />
         </FieldWrapper>
       </div>
     </div>
