@@ -23,4 +23,5 @@ export const appConfig = {
   toastsNotificationsTimeout:
     process.env.NEXT_PUBLIC_TOASTS_NOTIFICATIONS_TIMEOUT,
   appDomain: process.env.NEXT_PUBLIC_APP_DOMAIN,
+  launchDarklyId: process.env.NEXT_PUBLIC_LAUNCHDARKLY_ID,
 };
