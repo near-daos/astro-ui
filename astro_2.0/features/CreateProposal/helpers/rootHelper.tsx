@@ -83,7 +83,7 @@ import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 
 // Services
 import { SputnikNearService } from 'services/sputnik';
-import { AwsUploader } from 'services/AwsUploader';
+import { httpService } from 'services/HttpService';
 
 // Local helpers
 import {
@@ -91,7 +91,6 @@ import {
   getChangeBondDeadlinesProposal,
   getCompleteBountyProposal,
 } from './bountiesHelpers';
-import { httpService } from 'services/HttpService';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -706,11 +705,15 @@ export async function getNewProposalObject(
     case ProposalVariant.ProposeChangeDaoFlag: {
       const uploadImg = async (img: File) => {
         if (img) {
-          const { data } = await httpService.post('/api/upload-to-s3', img, {
-            baseURL: '',
-          });
+          const { data: uploadData } = await httpService.post(
+            '/api/upload-to-s3',
+            img,
+            {
+              baseURL: '',
+            }
+          );
 
-          return data;
+          return uploadData;
         }
 
         return '';

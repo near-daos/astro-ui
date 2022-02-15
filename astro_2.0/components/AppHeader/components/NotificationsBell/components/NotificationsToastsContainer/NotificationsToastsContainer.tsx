@@ -2,8 +2,9 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import uniqBy from 'lodash/uniqBy';
-import { appConfig } from 'config';
 import { useSwipeable } from 'react-swipeable';
+
+import { configService } from 'services/ConfigService';
 
 import { useSocket } from 'context/SocketContext';
 import { mapNotificationDtoToNotification } from 'services/NotificationsService/mappers/notification';
@@ -24,6 +25,7 @@ export const NotificationsToastsContainer: FC = () => {
   const [showAllButton, setShowAllButton] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const { socket } = useSocket();
+  const config = configService.get();
 
   useEffect(() => {
     if (socket) {
@@ -49,8 +51,8 @@ export const NotificationsToastsContainer: FC = () => {
 
         return (
           new Date().getTime() - timestamp <
-          (appConfig.toastsNotificationsTimeout
-            ? Number(appConfig.toastsNotificationsTimeout)
+          (config?.TOASTS_NOTIFICATIONS_TIMEOUT
+            ? Number(config.TOASTS_NOTIFICATIONS_TIMEOUT)
             : 20000)
         );
       });
@@ -69,7 +71,7 @@ export const NotificationsToastsContainer: FC = () => {
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [config?.TOASTS_NOTIFICATIONS_TIMEOUT]);
 
   const handleMarkRead = useCallback((id: string) => {
     noties.current = noties.current.filter(noty => noty.notification.id !== id);

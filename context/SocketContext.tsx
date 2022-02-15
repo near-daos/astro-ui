@@ -1,9 +1,9 @@
 import io, { Socket as TSocket } from 'socket.io-client';
-import { appConfig } from 'config';
 import { createContext, FC, useContext, useEffect, useState } from 'react';
 import { useAuthContext } from 'context/AuthContext';
 import { SputnikNearService } from 'services/sputnik';
 import { useMountedState } from 'react-use';
+import { configService } from 'services/ConfigService';
 
 type Socket = typeof TSocket;
 
@@ -25,12 +25,14 @@ export const SocketProvider: FC = ({ children }) => {
   useEffect(() => {
     let socketIo: Socket;
 
+    const config = configService.get();
+
     (async () => {
       const publicKey = await SputnikNearService.getPublicKey();
       const signature = await SputnikNearService.getSignature();
 
-      if (accountId && publicKey && isMounted()) {
-        socketIo = io(appConfig.socketUrl, {
+      if (accountId && publicKey && isMounted() && config) {
+        socketIo = io(config.API_URL, {
           query: {
             accountId,
             publicKey,

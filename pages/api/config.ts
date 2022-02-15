@@ -7,6 +7,8 @@ export default function handler(
   res: NextApiResponse<Config>
 ): void {
   const config: Config = {
+    AWS_BUCKET: process.env.AWS_BUCKET,
+    AWS_REGION: process.env.AWS_REGION,
     GOOGLE_ANALYTICS_KEY: process.env.GOOGLE_ANALYTICS_KEY,
     RELEASE_NOTES: process.env.RELEASE_NOTES,
     I18_RELOAD_ON_PRERENDER: process.env.I18_RELOAD_ON_PRERENDER,

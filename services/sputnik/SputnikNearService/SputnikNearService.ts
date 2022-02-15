@@ -17,6 +17,7 @@ import { Transfer, VoteAction, CreateProposalParams } from 'types/proposal';
 
 import { CookieService } from 'services/CookieService';
 
+import { configService } from 'services/ConfigService';
 import { GAS_VALUE, SputnikDaoService } from './services/SputnikDaoService';
 import { SputnikWalletService } from './services/SputnikWalletService';
 
@@ -39,7 +40,7 @@ class SputnikNearServiceClass {
     this.config = config;
   }
 
-  public init(): void {
+  public init(walletUseLocalRedirect: boolean): void {
     const keyStore = new keyStores.BrowserLocalStorageKeyStore();
 
     this.keyStore = keyStore;
@@ -55,7 +56,8 @@ class SputnikNearServiceClass {
 
     this.sputnikDaoService = new SputnikDaoService(
       this.config.contractName,
-      this.sputnikWalletService
+      this.sputnikWalletService,
+      walletUseLocalRedirect ?? false
     );
 
     this.factoryTokenContract = new Contract(
@@ -95,7 +97,11 @@ class SputnikNearServiceClass {
     }
 
     if (!this.sputnikWalletService && process.browser) {
-      this.init();
+      const appConfig = configService.get();
+
+      if (appConfig) {
+        this.init(appConfig.LOCAL_WALLET_REDIRECT);
+      }
     }
 
     return this.sputnikWalletService.getAccountId();

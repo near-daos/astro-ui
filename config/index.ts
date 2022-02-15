@@ -18,7 +18,6 @@ export const appConfig = {
   ),
   statsApiUrl: `${process.env.STATS_API_URL}/api/v1/`,
   socketUrl: process.env.API_URL,
-  toastsNotificationsTimeout:
-    process.env.TOASTS_NOTIFICATIONS_TIMEOUT,
+  toastsNotificationsTimeout: process.env.TOASTS_NOTIFICATIONS_TIMEOUT,
   appDomain: process.env.APP_DOMAIN,
 };

@@ -7,6 +7,7 @@ import nextI18NextConfig from 'next-i18next.config';
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 
 import { SputnikNearService } from 'services/sputnik';
+import { configService } from 'services/ConfigService';
 
 const Callback: NextPage = () => {
   useEffect(() => {
@@ -16,7 +17,9 @@ const Callback: NextPage = () => {
       const errorCode = (searchParams.get('errorCode') ||
         undefined) as SputnikWalletErrorCodes;
 
-      SputnikNearService.init();
+      const appConfig = configService.get();
+
+      SputnikNearService.init(appConfig?.LOCAL_WALLET_REDIRECT ?? false);
 
       window.opener.sputnikRequestSignInCompleted({ accountId, errorCode });
 

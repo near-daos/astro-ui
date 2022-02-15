@@ -1,4 +1,6 @@
 export type Config = {
+  AWS_BUCKET: string;
+  AWS_REGION: string;
   GOOGLE_ANALYTICS_KEY: string;
   RELEASE_NOTES: string;
   I18_RELOAD_ON_PRERENDER: boolean;
