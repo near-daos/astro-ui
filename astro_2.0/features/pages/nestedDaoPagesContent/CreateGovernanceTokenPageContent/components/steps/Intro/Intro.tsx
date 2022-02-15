@@ -25,13 +25,13 @@ export const Intro: VFC = () => {
         {t('createGovernanceTokenPage.intro.description')}
       </div>
       <div className={styles.advantageContainer}>
-        <AdvantageDescription className={styles.advantage}>
+        <AdvantageDescription className={styles.advantage} icon="treasuryOne">
           {t('createGovernanceTokenPage.intro.advOne')}
         </AdvantageDescription>
-        <AdvantageDescription className={styles.advantage}>
+        <AdvantageDescription className={styles.advantage} icon="treasuryTwo">
           {t('createGovernanceTokenPage.intro.advTwo')}
         </AdvantageDescription>
-        <AdvantageDescription className={styles.advantage}>
+        <AdvantageDescription className={styles.advantage} icon="treasuryThree">
           {t('createGovernanceTokenPage.intro.advThree')}
         </AdvantageDescription>
       </div>
