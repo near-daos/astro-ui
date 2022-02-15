@@ -8,6 +8,7 @@ import { STEPS } from './constants';
 
 import { Intro } from './components/steps/Intro';
 import { SelectToken } from './components/steps/SelectToken';
+import { CreateToken } from './components/steps/CreateToken';
 
 import styles from './CreateGovernanceTokenPageContent.module.scss';
 
@@ -15,7 +16,9 @@ interface CreateGovernanceTokenPageContentProps {
   daoContext: DaoContext;
 }
 
-export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageContentProps> = () => {
+export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageContentProps> = props => {
+  const { daoContext } = props;
+
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -27,6 +30,8 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
         return <Intro />;
       case STEPS.SELECT_TOKEN:
         return <SelectToken />;
+      case STEPS.CREATE_TOKEN:
+        return <CreateToken daoContext={daoContext} />;
       default:
         return <Intro />;
     }

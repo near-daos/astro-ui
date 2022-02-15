@@ -342,6 +342,14 @@
       "createToken": "Create Token",
       "chooseExisting": "Choose existing",
       "nextStep": "Next Step"
+    },
+    "createToken": {
+      "progress": {
+        "createToken": "Create Token",
+        "contractAcceptance": "Contract Acceptance",
+        "tokenDistribution": "Token Distribution",
+        "changeDaoPolicy": "Change DAO Policy"
+      }
     }
   }
 }

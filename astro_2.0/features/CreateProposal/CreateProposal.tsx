@@ -50,6 +50,9 @@ export interface CreateProposalProps {
   onCreate?: (result: boolean) => void;
   onClose: () => void;
   userPermissions: UserPermissions;
+  showClose?: boolean;
+  showInfo?: boolean;
+  canCreateTokenProposal?: boolean;
 }
 
 export const CreateProposal: FC<CreateProposalProps> = ({
@@ -62,6 +65,9 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   onCreate,
   onClose,
   userPermissions,
+  showClose = true,
+  showInfo = true,
+  canCreateTokenProposal = false,
 }) => {
   const { t } = useTranslation();
   const { accountId } = useAuthContext();
@@ -227,6 +233,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     <FormProvider {...methods}>
       <div className={cn(styles.root, className)} ref={formRef}>
         <ProposalCardRenderer
+          showInfo={showInfo}
           daoFlagNode={
             showFlag && (
               <DaoFlagWidget
@@ -245,8 +252,10 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           }
           proposalCardNode={
             <CreateProposalCard
+              showClose={showClose}
               key={selectedProposalVariant}
               userPermissions={userPermissions}
+              canCreateTokenProposal={canCreateTokenProposal}
               onClose={onClose}
               onTypeSelect={v => {
                 const defaults = getFormInitialValues(v, accountId);

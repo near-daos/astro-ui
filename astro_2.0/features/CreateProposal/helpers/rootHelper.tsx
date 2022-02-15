@@ -82,8 +82,8 @@ import {
 import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 
 // Services
+import { httpService } from 'services/HttpService';
 import { SputnikNearService } from 'services/sputnik';
-import { AwsUploader } from 'services/AwsUploader';
 
 // Local helpers
 import {
@@ -91,7 +91,6 @@ import {
   getChangeBondDeadlinesProposal,
   getCompleteBountyProposal,
 } from './bountiesHelpers';
-import { httpService } from 'services/HttpService';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -148,13 +147,16 @@ async function getTransferProposal(
 }
 
 export function getProposalTypesOptions(
-  isCanCreatePolicyProposals: boolean
+  isCanCreatePolicyProposals: boolean,
+  canCreateTokenProposal = false
 ): {
   title: string;
   options: Option[];
   disabled: boolean;
 }[] {
-  return [
+  const changeConfigTitle = 'Change Config';
+
+  const config = [
     {
       title: 'Transfer/Add bounty',
       disabled: false,
@@ -172,7 +174,7 @@ export function getProposalTypesOptions(
       ],
     },
     {
-      title: 'Change Config',
+      title: changeConfigTitle,
       disabled: !isCanCreatePolicyProposals,
       options: [
         {
@@ -262,6 +264,20 @@ export function getProposalTypesOptions(
       ],
     },
   ];
+
+  if (canCreateTokenProposal) {
+    const changeConfigGroup = config.find(
+      ({ title }) => title === changeConfigTitle
+    );
+
+    changeConfigGroup?.options.push({
+      label: 'Create Token',
+      value: ProposalVariant.ProposeCreateToken,
+      group: 'Change Config',
+    });
+  }
+
+  return config;
 }
 
 export function getInputSize(
@@ -706,11 +722,15 @@ export async function getNewProposalObject(
     case ProposalVariant.ProposeChangeDaoFlag: {
       const uploadImg = async (img: File) => {
         if (img) {
-          const { data } = await httpService.post('/api/upload-to-s3', img, {
-            baseURL: '',
-          });
+          const { data: key } = await httpService.post(
+            '/api/upload-to-s3',
+            img,
+            {
+              baseURL: '',
+            }
+          );
 
-          return data;
+          return key;
         }
 
         return '';
