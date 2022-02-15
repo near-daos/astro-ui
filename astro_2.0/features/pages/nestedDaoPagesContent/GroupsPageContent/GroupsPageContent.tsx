@@ -18,7 +18,7 @@ import MemberCard, {
   MemberCardPopup,
 } from 'components/cards/member-card';
 import { Dropdown } from 'components/Dropdown';
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 import { GroupsList } from 'astro_2.0/features/Groups/components';
 
 // Helpers

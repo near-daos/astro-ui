@@ -1,5 +1,5 @@
 import styles from 'astro_2.0/components/AppHeader/components/SearchBar/components/DropdownResults/DropdownResults.module.scss';
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 import React, { ReactNode } from 'react';
 import { Proposal, ProposalType } from 'types/proposal';
 import { Button } from 'components/button/Button';

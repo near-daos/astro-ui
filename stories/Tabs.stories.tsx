@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Meta, Story } from '@storybook/react';
 import { Tabs, TabsProps } from 'components/Tabs';
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 
 export default {
   title: 'Components/Tabs',

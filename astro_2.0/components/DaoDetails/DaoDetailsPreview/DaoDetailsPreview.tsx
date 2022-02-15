@@ -4,7 +4,7 @@ import { useTranslation } from 'next-i18next';
 
 import { DAOPreview } from 'types/dao';
 
-import { ActionButton } from 'features/proposal/components/action-button';
+import { ActionButton } from 'astro_2.0/components/ActionButton';
 
 import { DaoGeneralCard } from './components/DaoGeneralCard';
 import { ProposalTrackerCard } from './components/ProposalTrackerCard';

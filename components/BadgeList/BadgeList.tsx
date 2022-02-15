@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 import styles from './BadgeList.module.scss';
 
 type Item = {

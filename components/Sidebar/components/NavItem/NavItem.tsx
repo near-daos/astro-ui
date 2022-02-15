@@ -10,7 +10,7 @@ import cn from 'classnames';
 import Link from 'next/link';
 import { ParsedUrlQueryInput } from 'querystring';
 
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 import { Icon, IconName } from 'components/Icon';
 import { DotsLoader } from 'astro_2.0/components/DotsLoader';
 

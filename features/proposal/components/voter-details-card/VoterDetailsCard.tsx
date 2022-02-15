@@ -3,7 +3,7 @@ import cn from 'classnames';
 import dynamic from 'next/dynamic';
 
 import { Icon, IconName } from 'components/Icon';
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 import { ExplorerLink } from 'components/ExplorerLink';
 import { Vote } from 'features/types';
 import { getBadgeVariant } from 'features/proposal/helpers';

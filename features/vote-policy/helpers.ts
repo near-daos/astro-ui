@@ -1,5 +1,4 @@
 import { DAO, DaoVotePolicy, TGroup } from 'types/dao';
-import { VotePolicy } from 'features/vote-policy/components/policy-row';
 import { CreateProposalParams, Proposal } from 'types/proposal';
 import snakeCase from 'lodash/snakeCase';
 import { Vote, VoteDetail, VoterDetail } from 'features/types';
@@ -8,6 +7,13 @@ import isEmpty from 'lodash/isEmpty';
 import { DefaultVotePolicy, ProposalAction } from 'types/role';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { dataRoleToContractRole } from 'features/groups/helpers';
+
+export interface VotePolicy {
+  whoCanVote?: string;
+  voteBy?: 'Person' | 'Token';
+  amount?: number;
+  threshold?: string;
+}
 
 export type Scope =
   | 'addBounty'
@@ -63,56 +69,9 @@ export const getVotePolicyData = (
   };
 };
 
-export const getPoliciesList = (
-  groups: TGroup[],
-  scope: Scope,
-  action: ProposalAction | ProposalAction[],
-  defaultVotePolicy: DaoVotePolicy
-): VotePolicy[] => {
-  return groups.reduce((res, item) => {
-    const { permissions } = item;
-
-    const expectedScope = snakeCase(scope);
-
-    const isPermitted = permissions.find((permission: string) => {
-      const [_scope, _action] = permission.split(':');
-
-      const actions = Array.isArray(action) ? action : [action];
-
-      let matched = false;
-
-      actions.forEach(act => {
-        if (_action === act || _action === '*') {
-          matched = true;
-        }
-      });
-
-      return (_scope === '*' || _scope === expectedScope) && matched;
-    });
-
-    if (isPermitted) {
-      res.push(
-        getVotePolicyData(
-          item.name,
-          item.votePolicy[expectedScope],
-          defaultVotePolicy
-        )
-      );
-    }
-
-    return res;
-  }, [] as VotePolicy[]);
-};
-
 export type DaoSettingsProps = {
   externalLink: string;
   details: string;
-  isDirty?: boolean;
-};
-
-export type PolicyProps = {
-  whoCanPropose: string[];
-  policies: VotePolicy[];
   isDirty?: boolean;
 };
 
@@ -239,31 +198,6 @@ export function getVoteDetails(
 
   return { details, votersList };
 }
-
-export const filterByVote = (
-  voteStatus: string,
-  votes: VoterDetail[]
-): VoterDetail[] => {
-  return votes.filter(item => {
-    if (voteStatus === 'All') {
-      return true;
-    }
-
-    if (voteStatus === 'Approved') {
-      return item.vote === 'Yes';
-    }
-
-    if (voteStatus === 'Rejected') {
-      return item.vote === 'No';
-    }
-
-    if (voteStatus === 'Not voted') {
-      return item.vote === null;
-    }
-
-    return false;
-  });
-};
 
 function getThreshold(value: number): [number, number] {
   const fraction = value / 100;

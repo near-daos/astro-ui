@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react';
 import MemberCard, { MemberCardProps } from 'components/cards/member-card';
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 
 export default {
   title: 'Components/Cards/MemberCard',
