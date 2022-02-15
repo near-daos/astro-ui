@@ -1,4 +1,5 @@
 import { RequestQueryBuilder } from '@nestjsx/crud-request';
+import { AxiosResponse } from 'axios';
 
 import { PaginationResponse } from 'types/api';
 import {
@@ -25,10 +26,12 @@ class NotificationsServiceClass {
       offset = 0,
       limit = 3000,
       sort = 'createdAt,DESC',
+      daoIds,
     }: {
       offset: number;
       limit: number;
       sort: string;
+      daoIds: string[] | null;
     }
   ): Promise<PaginationResponse<Notification[]>> {
     const accountId = this.sputnikNearService.getAccountId();
@@ -43,7 +46,9 @@ class NotificationsServiceClass {
       });
     }
 
-    const queryString = RequestQueryBuilder.create()
+    const queryBuilder = RequestQueryBuilder.create();
+
+    queryBuilder
       .setFilter({
         field: 'accountId',
         operator: '$eq',
@@ -53,8 +58,17 @@ class NotificationsServiceClass {
         field: 'isArchived',
         operator: '$eq',
         value: showArchived,
-      })
-      .query();
+      });
+
+    if (daoIds) {
+      queryBuilder.setFilter({
+        field: 'notification.daoId',
+        operator: '$in',
+        value: daoIds,
+      });
+    }
+
+    const queryString = queryBuilder.query();
 
     const response = await this.httpService.get<
       PaginationResponse<NotificationDTO[]>
@@ -78,13 +92,13 @@ class NotificationsServiceClass {
   public async updateNotification(
     id: string,
     params: UpdateNotificationParams
-  ): Promise<NotificationDTO> {
+  ): Promise<Notification> {
     const response = await this.httpService.patch<
       UpdateNotificationParams,
-      NotificationDTO
+      AxiosResponse<NotificationDTO>
     >(`/account-notifications/${id}`, params);
 
-    return response;
+    return mapNotificationDtoToNotification([response.data])[0];
   }
 
   public async readAllNotifications(

@@ -11,11 +11,11 @@ import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import {
   getNotificationParamsByType,
-  useNotifications,
   NotificationText,
 } from 'astro_2.0/features/Notifications';
 
 import { Notification } from 'types/notification';
+import { NotificationAction } from 'astro_2.0/features/Notifications/types';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 import styles from './NotificationCard.module.scss';
@@ -24,8 +24,8 @@ const EMPTY_OBJECT = {};
 
 export type NotificationCardProps = {
   regular?: boolean;
-  onMarkRead?: (id: string) => void;
-  onRemove?: (id: string) => void;
+  onRemove?: NotificationAction;
+  onUpdate?: NotificationAction;
 } & Notification;
 
 export const NotificationCard: React.FC<NotificationCardProps> = ({
@@ -43,11 +43,10 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   signerId,
   id,
   status,
-  onMarkRead,
+  onUpdate,
   onRemove,
 }) => {
   const router = useRouter();
-  const { handleUpdate } = useNotifications();
   const [swipedLeft, setSwipedLeft] = useState(false);
   const { t } = useTranslation('notificationsPage');
 
@@ -69,24 +68,20 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
 
-      if (onMarkRead) {
-        onMarkRead(id);
+      if (onUpdate) {
+        onUpdate(id, { isMuted, isArchived, isRead: true });
       }
-
-      handleUpdate(id, { isMuted, isArchived, isRead: true });
     },
-    [handleUpdate, id, isArchived, isMuted, onMarkRead]
+    [id, isArchived, isMuted, onUpdate]
   );
 
   const handleDeleteClick = useCallback(
     async archived => {
       if (onRemove) {
-        onRemove(id);
+        onRemove(id, { isMuted, isArchived: archived, isRead });
       }
-
-      await handleUpdate(id, { isMuted, isArchived: archived, isRead });
     },
-    [handleUpdate, id, isMuted, isRead, onRemove]
+    [id, isMuted, isRead, onRemove]
   );
 
   const handleNotificationClick = useCallback(

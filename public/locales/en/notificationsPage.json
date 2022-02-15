@@ -12,6 +12,7 @@
   "platform": "Platform",
   "subscribed": "Subscribed",
   "muted": "Muted",
+  "noMoreResults": "No more results",
   "yourNewDaoCreated": "Your New DAO \"{{newDaoName}}\" has been successfully created.",
   "newDaoCreated": "New DAO \"{{newDaoName}}\" has been successfully created by {{accountId}}",
   "platformWideNotifications": "Platform-wide notifications",

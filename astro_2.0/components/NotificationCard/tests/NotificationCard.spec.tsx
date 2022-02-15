@@ -7,10 +7,7 @@ import { fireEvent } from '@testing-library/dom';
 import { ProposalType } from 'types/proposal';
 import { NotificationStatus, NotifiedActionType } from 'types/notification';
 
-import {
-  useNotifications,
-  getNotificationParamsByType,
-} from 'astro_2.0/features/Notifications';
+import { getNotificationParamsByType } from 'astro_2.0/features/Notifications';
 
 import {
   NotificationCard,
@@ -41,17 +38,6 @@ jest.mock('astro_2.0/features/Notifications', () => {
 });
 
 describe('Notification Card', () => {
-  function mockHandleUpdate() {
-    const handleUpdate = jest.fn();
-
-    // @ts-ignore
-    useNotifications.mockImplementation(() => ({
-      handleUpdate,
-    }));
-
-    return handleUpdate;
-  }
-
   function getNotificationComponent(props?: Partial<NotificationCardProps>) {
     return render(
       <NotificationCard
@@ -107,21 +93,21 @@ describe('Notification Card', () => {
 
   describe('handleMarkReadClick', () => {
     it('Should call onMarkRead callback', () => {
-      mockHandleUpdate();
-
       const id = '123';
-      const onMarkRead = jest.fn();
+      const onUpdate = jest.fn();
 
-      const { getAllByTestId } = getNotificationComponent({ id, onMarkRead });
+      const { getAllByTestId } = getNotificationComponent({ id, onUpdate });
 
       fireEvent.click(getAllByTestId('mark-read')[0]);
 
-      expect(onMarkRead).toBeCalledWith(id);
+      expect(onUpdate).toBeCalledWith(id, {
+        isArchived: false,
+        isMuted: false,
+        isRead: true,
+      });
     });
 
     it('Should not fail if onMarkRead callback is not provided', () => {
-      mockHandleUpdate();
-
       const { getAllByTestId } = getNotificationComponent();
 
       fireEvent.click(getAllByTestId('mark-read')[0]);
@@ -131,18 +117,18 @@ describe('Notification Card', () => {
       const id = '123';
       const isMuted = true;
       const isArchived = true;
-
-      const handleUpdate = mockHandleUpdate();
+      const onUpdate = jest.fn();
 
       const { getAllByTestId } = getNotificationComponent({
         id,
         isMuted,
         isArchived,
+        onUpdate,
       });
 
       fireEvent.click(getAllByTestId('mark-read')[0]);
 
-      expect(handleUpdate).toBeCalledWith(id, {
+      expect(onUpdate).toBeCalledWith(id, {
         isMuted,
         isArchived,
         isRead: true,
@@ -152,8 +138,6 @@ describe('Notification Card', () => {
 
   describe('handleDeleteClick', () => {
     it('Should call onRemove callback', () => {
-      mockHandleUpdate();
-
       const id = '123';
       const onRemove = jest.fn();
 
@@ -165,12 +149,14 @@ describe('Notification Card', () => {
 
       fireEvent.click(getAllByTestId('delete-action-button')[0]);
 
-      expect(onRemove).toBeCalledWith(id);
+      expect(onRemove).toBeCalledWith(id, {
+        isArchived: true,
+        isMuted: false,
+        isRead: false,
+      });
     });
 
     it('Should not fail if onRemove callback is not provided', () => {
-      mockHandleUpdate();
-
       const { getAllByTestId } = getNotificationComponent({ regular: false });
 
       fireEvent.click(getAllByTestId('delete-action-button')[0]);
@@ -182,7 +168,7 @@ describe('Notification Card', () => {
       const isRead = true;
       const isArchived = false;
 
-      const handleUpdate = mockHandleUpdate();
+      const onRemove = jest.fn();
 
       const { getAllByTestId } = getNotificationComponent({
         id,
@@ -190,11 +176,12 @@ describe('Notification Card', () => {
         isRead,
         isArchived,
         regular: false,
+        onRemove,
       });
 
       fireEvent.click(getAllByTestId('delete-action-button')[0]);
 
-      expect(handleUpdate).toBeCalledWith(id, {
+      expect(onRemove).toBeCalledWith(id, {
         isMuted,
         isRead,
         isArchived: !isArchived,
@@ -204,21 +191,17 @@ describe('Notification Card', () => {
 
   describe('handleNotificationClick', () => {
     it('Should mark noty as read', () => {
-      mockHandleUpdate();
-
       const id = '123';
-      const onMarkRead = jest.fn();
+      const onUpdate = jest.fn();
 
-      const { getByTestId } = getNotificationComponent({ id, onMarkRead });
+      const { getByTestId } = getNotificationComponent({ id, onUpdate });
 
       fireEvent.click(getByTestId('noty-content'));
 
-      expect(onMarkRead).toBeCalled();
+      expect(onUpdate).toBeCalled();
     });
 
     it('Should navigate to url if provided', () => {
-      mockHandleUpdate();
-
       const url = 'HelloWorld';
 
       // @ts-ignore
