@@ -18,15 +18,22 @@ export async function getDaosList({
   daos: DaoFeedItem[];
   total: number;
 }> {
-  const { data, total } = await SputnikHttpService.getDaoList({
+  const dao = await SputnikHttpService.getDaoList({
     sort,
     offset,
     limit,
     filter,
   });
 
+  if (!dao) {
+    return {
+      daos: [],
+      total: 0,
+    };
+  }
+
   return {
-    daos: data,
-    total,
+    daos: dao.data,
+    total: dao.total,
   };
 }

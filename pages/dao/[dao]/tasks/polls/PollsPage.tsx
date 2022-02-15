@@ -21,7 +21,7 @@ import styles from './Polls.module.scss';
 
 export interface PollsPageProps {
   daoContext: DaoContext;
-  initialPollsData: PaginationResponse<ProposalFeedItem[]>;
+  initialPollsData: PaginationResponse<ProposalFeedItem[]> | null;
   initialProposalsStatusFilterValue: ProposalStatuses;
 }
 

@@ -117,6 +117,10 @@ export const Feed = ({
             isMyFeed && accountId ? accountId : undefined
           );
 
+      if (!res) {
+        return null;
+      }
+
       accumulatedListData = {
         ...res,
         data: [...(accumulatedListData?.data || []), ...(res.data || [])],

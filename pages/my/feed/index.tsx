@@ -44,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   );
 
   // If no proposals found and it is not because of filter -> redirect to global feed
-  if (isEmpty(query) && res.data.length === 0) {
+  if (isEmpty(query) && res?.data?.length === 0) {
     return {
       redirect: {
         destination: ALL_FEED_URL,
