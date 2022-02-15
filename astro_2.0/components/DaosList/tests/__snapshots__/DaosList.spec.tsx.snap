@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dao List Should render component 1`] = `
+<div>
+  <div>
+    <div>
+      <h1>
+        Hello World
+      </h1>
+      <button
+        class=""
+        type="button"
+      >
+        createNewDao
+      </button>
+    </div>
+    <div />
+  </div>
+</div>
+`;

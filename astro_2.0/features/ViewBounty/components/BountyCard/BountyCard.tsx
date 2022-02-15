@@ -11,12 +11,12 @@ import { kFormatter } from 'utils/format';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { BountyProgress } from 'astro_2.0/features/ViewBounty/components/BountyProgress';
-import { ProposalControlButton } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/ProposalControlPanel/components/ProposalControlButton';
 import { ExplorerLink } from 'components/ExplorerLink';
 import { ExternalLink } from 'components/ExternalLink';
 import { Button } from 'components/button/Button';
 import { VotingContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/VotingContent';
 import { BountyActions } from 'astro_2.0/features/ViewBounty/components/BountyActions';
+import { Icon } from 'components/Icon';
 
 import { useBountyControls } from 'astro_2.0/features/Bounties/components/hooks';
 import { useAuthContext } from 'context/AuthContext';
@@ -203,7 +203,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
           label="Bounty name"
           value={
             <div className={styles.proposalType}>
-              {description}
+              <div className={styles.ellipse}>{description}</div>
               <ExplorerLink
                 linkData={proposal.transactionHash}
                 linkType="transaction"
@@ -234,19 +234,10 @@ export const BountyCard: React.FC<BountyCardProps> = ({
       <div className={styles.contentCell}>{content}</div>
       <div className={styles.voteControlCell}>
         <div className={cn(styles.controlItem, styles.comments)}>
-          <ProposalControlButton
-            icon="chat"
-            className={styles.controlButton}
-            iconClassName={cn(styles.toggleCommentsButton, {
-              [styles.active]: activeInfoView === 'comments',
-            })}
-            voted={false}
-            type="button"
-            times={
-              <div className={styles.controlValue}>
-                <span className={styles.bold}>{kFormatter(commentsCount)}</span>
-              </div>
-            }
+          <Button
+            variant="transparent"
+            size="small"
+            className={styles.toggleBtn}
             onClick={e => {
               e.stopPropagation();
               toggleInfoPanel(
@@ -254,31 +245,42 @@ export const BountyCard: React.FC<BountyCardProps> = ({
               );
             }}
             disabled={false}
-          />
+          >
+            <Icon
+              name="chat"
+              className={cn(styles.toggleCommentsButton, {
+                [styles.active]: activeInfoView === 'comments',
+              })}
+            />
+            <div className={styles.controlValue}>
+              <span className={styles.bold}>{kFormatter(commentsCount)}</span>
+            </div>
+          </Button>
         </div>
         <div className={cn(styles.controlItem, styles.claims)}>
-          <ProposalControlButton
-            icon="claimsLink"
-            className={styles.controlButton}
-            iconClassName={cn(styles.toggleCommentsButton, {
-              [styles.active]: activeInfoView === 'claims',
-            })}
-            voted={false}
-            type="button"
-            times={
-              <div className={styles.controlValue}>
-                <span className={styles.bold}>
-                  {Number(bounty?.numberOfClaims ?? 0)}
-                </span>
-                /<span>{bounty?.times ?? bountyData.times}</span>
-              </div>
-            }
+          <Button
+            variant="transparent"
+            size="small"
+            className={styles.toggleBtn}
             onClick={e => {
               e.stopPropagation();
               toggleInfoPanel(activeInfoView === 'claims' ? null : 'claims');
             }}
             disabled={false}
-          />
+          >
+            <Icon
+              name="claimsLink"
+              className={cn(styles.toggleCommentsButton, {
+                [styles.active]: activeInfoView === 'claims',
+              })}
+            />
+            <div className={styles.controlValue}>
+              <span className={styles.bold}>
+                {Number(bounty?.numberOfClaims ?? 0)}
+              </span>
+              /<span>{bounty?.times ?? bountyData.times}</span>
+            </div>
+          </Button>
         </div>
         {renderButtons()}
       </div>

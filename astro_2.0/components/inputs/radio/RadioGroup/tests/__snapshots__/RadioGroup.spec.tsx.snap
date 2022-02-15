@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Radio group Should render component 1`] = `
+<div>
+  <div
+    role="radiogroup"
+  >
+    <div>
+      We Are Group
+    </div>
+  </div>
+</div>
+`;

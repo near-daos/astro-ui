@@ -4,9 +4,9 @@ import React, { FC, useMemo } from 'react';
 import { PaginationResponse } from 'types/api';
 import {
   ProposalVariant,
-  ProposalStatuses,
   ProposalCategories,
   ProposalFeedItem,
+  ProposalsFeedStatuses,
 } from 'types/proposal';
 
 // Components
@@ -22,7 +22,7 @@ import styles from './Polls.module.scss';
 export interface PollsPageProps {
   daoContext: DaoContext;
   initialPollsData: PaginationResponse<ProposalFeedItem[]> | null;
-  initialProposalsStatusFilterValue: ProposalStatuses;
+  initialProposalsStatusFilterValue: ProposalsFeedStatuses;
 }
 
 const PollsPage: FC<PollsPageProps> = ({

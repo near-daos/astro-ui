@@ -272,6 +272,14 @@ export enum ProposalStatuses {
   Failed = 'failed',
 }
 
+export enum ProposalsFeedStatuses {
+  All = 'all',
+  Active = 'active',
+  VoteNeeded = 'voteNeeded',
+  Approved = 'approved',
+  Failed = 'failed',
+}
+
 export enum ProposalCategories {
   Governance = 'Governance',
   Financial = 'Financial',
