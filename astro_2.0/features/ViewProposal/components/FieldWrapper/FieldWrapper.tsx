@@ -8,6 +8,7 @@ interface InputWrapperProps {
   fullWidth?: boolean;
   alignRight?: boolean;
   flex?: boolean;
+  labelClassName?: string;
 }
 
 export const FieldWrapper: FC<InputWrapperProps> = ({
@@ -16,6 +17,7 @@ export const FieldWrapper: FC<InputWrapperProps> = ({
   fullWidth = false,
   flex,
   alignRight,
+  labelClassName,
 }) => {
   return (
     <div
@@ -25,7 +27,7 @@ export const FieldWrapper: FC<InputWrapperProps> = ({
         [styles.alignRight]: alignRight,
       })}
     >
-      <div className={cn(styles.label)}>
+      <div className={cn(styles.label, labelClassName)}>
         <span>{label}&nbsp;</span>
       </div>
       {children}
@@ -37,15 +39,25 @@ interface FieldValueProps {
   value: string | number | ReactNode;
   normal?: boolean;
   noWrap?: boolean;
+  className?: string;
 }
 
-export const FieldValue: FC<FieldValueProps> = ({ value, normal, noWrap }) => {
+export const FieldValue: FC<FieldValueProps> = ({
+  value,
+  normal,
+  noWrap,
+  className,
+}) => {
   return (
     <div
-      className={cn(styles.value, {
-        [styles.normal]: normal,
-        [styles.noWrap]: noWrap,
-      })}
+      className={cn(
+        styles.value,
+        {
+          [styles.normal]: normal,
+          [styles.noWrap]: noWrap,
+        },
+        className
+      )}
     >
       {value}
     </div>

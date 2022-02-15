@@ -186,7 +186,7 @@ export const mapProposalFeedItemResponseToProposalFeedItem = (
     createdAt: proposalDTO.createdAt,
     dao: {
       id: proposalDTO.dao.id,
-      name: proposalDTO.dao.config.name,
+      name: proposalDTO.dao.config.name ?? '',
       logo: meta?.flag
         ? getAwsImageUrl(meta.flag)
         : getAwsImageUrl('default.png'),
@@ -197,7 +197,7 @@ export const mapProposalFeedItemResponseToProposalFeedItem = (
       policy: proposalDTO.dao.policy,
     },
     daoDetails: {
-      name: proposalDTO.dao.config.name,
+      name: proposalDTO.dao.config.name ?? '',
       displayName: meta?.displayName || '',
       logo: meta?.flag
         ? getAwsImageUrl(meta.flag)

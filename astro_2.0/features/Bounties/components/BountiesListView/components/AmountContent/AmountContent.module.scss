@@ -4,6 +4,7 @@
 .root {
   align-items: center;
   display: flex;
+  width: 100%;
 }
 
 .item {
@@ -11,14 +12,11 @@
   display: flex;
   justify-content: flex-start;
   padding: 0;
+  width: 100%;
 
   @include tablet-landscape {
     justify-content: flex-start;
     padding: 20px 0;
-  }
-
-  &:first-of-type {
-    width: 130px;
   }
 
   &:not(:last-of-type) {

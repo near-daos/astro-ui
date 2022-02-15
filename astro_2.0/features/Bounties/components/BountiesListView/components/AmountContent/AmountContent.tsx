@@ -4,7 +4,7 @@ import { Icon } from 'components/Icon';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 
 import { Tokens } from 'context/CustomTokensContext';
-import { formatYoktoValue } from 'utils/format';
+import { formatYoktoValue, kFormatter } from 'utils/format';
 import { useIsValidImage } from 'hooks/useIsValidImage';
 
 import { Tooltip } from 'astro_2.0/components/Tooltip';
@@ -52,14 +52,17 @@ export const AmountContent: FC<AmountContentProps> = ({
         {tokenData ? (
           <>
             <span className={styles.value}>
-              {formatYoktoValue(amount, tokenData.decimals)}
+              {kFormatter(
+                Number(formatYoktoValue(amount, tokenData.decimals)),
+                2
+              )}
             </span>
             <span className={styles.iconWrapper}>{renderIcon()}</span>
             <Tooltip
-              overlay={<span>{token || 'NEAR'}</span>}
+              overlay={<span>{tokenData.symbol || 'NEAR'}</span>}
               className={styles.label}
             >
-              <div className={styles.ellipse}>{token || 'NEAR'}</div>
+              <div className={styles.ellipse}>{tokenData.symbol || 'NEAR'}</div>
             </Tooltip>
           </>
         ) : (

@@ -158,7 +158,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
                   e.stopPropagation();
                   handleUnclaim();
                 }}
-                className={cn(styles.unclaim, styles.button)}
+                className={cn(styles.unclaim, styles.button, styles.unclaimBtn)}
               >
                 Unclaim
               </Button>
@@ -174,7 +174,11 @@ export const BountyCard: React.FC<BountyCardProps> = ({
                   e.stopPropagation();
                   completeHandler();
                 }}
-                className={cn(styles.complete, styles.button)}
+                className={cn(
+                  styles.complete,
+                  styles.button,
+                  styles.completeBtn
+                )}
               >
                 Complete
               </Button>
@@ -257,31 +261,33 @@ export const BountyCard: React.FC<BountyCardProps> = ({
             </div>
           </Button>
         </div>
-        <div className={cn(styles.controlItem, styles.claims)}>
-          <Button
-            variant="transparent"
-            size="small"
-            className={styles.toggleBtn}
-            onClick={e => {
-              e.stopPropagation();
-              toggleInfoPanel(activeInfoView === 'claims' ? null : 'claims');
-            }}
-            disabled={false}
-          >
-            <Icon
-              name="claimsLink"
-              className={cn(styles.toggleCommentsButton, {
-                [styles.active]: activeInfoView === 'claims',
-              })}
-            />
-            <div className={styles.controlValue}>
-              <span className={styles.bold}>
-                {Number(bounty?.numberOfClaims ?? 0)}
-              </span>
-              /<span>{bounty?.times ?? bountyData.times}</span>
-            </div>
-          </Button>
-        </div>
+        {bounty && (
+          <div className={cn(styles.controlItem, styles.claims)}>
+            <Button
+              variant="transparent"
+              size="small"
+              className={styles.toggleBtn}
+              onClick={e => {
+                e.stopPropagation();
+                toggleInfoPanel(activeInfoView === 'claims' ? null : 'claims');
+              }}
+              disabled={false}
+            >
+              <Icon
+                name="claimsLink"
+                className={cn(styles.toggleCommentsButton, {
+                  [styles.active]: activeInfoView === 'claims',
+                })}
+              />
+              <div className={styles.controlValue}>
+                <span className={styles.bold}>
+                  {Number(bounty?.numberOfClaims ?? 0)}
+                </span>
+                /<span>{bounty?.times ?? bountyData.times}</span>
+              </div>
+            </Button>
+          </div>
+        )}
         {renderButtons()}
       </div>
       <div className={styles.actionBar}>
