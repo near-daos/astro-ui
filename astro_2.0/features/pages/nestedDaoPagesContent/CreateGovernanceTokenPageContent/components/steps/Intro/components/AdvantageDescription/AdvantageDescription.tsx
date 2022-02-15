@@ -1,17 +1,20 @@
 import { FC } from 'react';
 
+import { Icon, IconName } from 'components/Icon';
+
 import styles from './AdvantageDescription.module.scss';
 
 interface AdvantageDescriptionProps {
   className?: string;
+  icon: IconName;
 }
 
 export const AdvantageDescription: FC<AdvantageDescriptionProps> = props => {
-  const { children, className } = props;
+  const { icon, children, className } = props;
 
   return (
     <div className={className}>
-      <div className={styles.img} />
+      <Icon name={icon} className={styles.img} />
       <div>{children}</div>
     </div>
   );
