@@ -12,4 +12,4 @@ data:
   AWS_IDENTITY_POOL_ID: "{{ .Values.environment.aws_identity_pool_id }}"
   NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY: "{{ .Values.environment.next_public_google_analytics_key }}"
   NEXT_PUBLIC_STATS_API_URL: "{{ .Values.environment.next_public_stats_api_url }}"
-  NEXT_PUBLIC_LAUNCHDARKLY_ID: "{{ .Values.environments.next_public_launchdarkly_id }}"
+  NEXT_PUBLIC_LAUNCHDARKLY_ID: "{{ .Values.environment.next_public_launchdarkly_id }}"
