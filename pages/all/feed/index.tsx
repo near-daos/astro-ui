@@ -3,7 +3,7 @@ import { GetServerSideProps } from 'next';
 import nextI18NextConfig from 'next-i18next.config';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-import { ProposalStatuses } from 'types/proposal';
+import { ProposalsFeedStatuses } from 'types/proposal';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
 
 import { SputnikHttpService } from 'services/sputnik';
@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
   const accountId = CookieService.get(ACCOUNT_COOKIE);
   const {
     category,
-    status = ProposalStatuses.Active,
+    status = ProposalsFeedStatuses.Active,
   } = query as ProposalsQueries;
   const res = await SputnikHttpService.getProposalsList({
     category,

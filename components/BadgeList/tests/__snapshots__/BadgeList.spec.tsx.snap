@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Badge List Should render component 1`] = `
+<div>
+  <div>
+    <div>
+      <div>
+        Hello
+      </div>
+    </div>
+    <div
+      class="undefined"
+    >
+      <div
+        class=""
+      >
+        +
+        1
+      </div>
+    </div>
+  </div>
+</div>
+`;

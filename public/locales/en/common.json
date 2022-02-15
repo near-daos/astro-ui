@@ -219,7 +219,8 @@
       "all": "All",
       "active": "Active",
       "approved": "Approved",
-      "failed": "Failed"
+      "failed": "Failed",
+      "voteNeeded": "Vote Needed"
     }
   },
   "allDAOsFilter": {

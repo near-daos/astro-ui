@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from 'react';
 
 import { Modal } from 'components/modal';
-import RadioGroup, { Radio } from 'astro_2.0/components/inputs/Radio';
 import { Button } from 'components/button/Button';
+import { Radio } from 'astro_2.0/components/inputs/radio/Radio';
+import { RadioGroup } from 'astro_2.0/components/inputs/radio/RadioGroup';
 
 import styles from './ConfirmCommentActionModal.module.scss';
 

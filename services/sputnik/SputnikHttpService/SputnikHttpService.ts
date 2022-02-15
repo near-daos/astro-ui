@@ -25,13 +25,13 @@ import {
 import {
   ProposalCategories,
   Proposal,
-  ProposalStatuses,
   ProposalType,
   ProposalComment,
   SendProposalComment,
   ReportProposalComment,
   DeleteProposalComment,
   ProposalFeedItem,
+  ProposalsFeedStatuses,
 } from 'types/proposal';
 import { DaoContext } from 'types/context';
 import {
@@ -229,7 +229,10 @@ class SputnikHttpServiceClass {
     }
 
     // Statuses
-    if (query?.status === ProposalStatuses.Active) {
+    if (
+      query?.status === ProposalsFeedStatuses.Active ||
+      query?.status === ProposalsFeedStatuses.VoteNeeded
+    ) {
       search.$and?.push({
         status: {
           $eq: 'InProgress',
@@ -237,10 +240,13 @@ class SputnikHttpServiceClass {
         votePeriodEnd: {
           $gt: Date.now() * 1000000,
         },
+        voteStatus: {
+          $eq: 'Active',
+        },
       });
     }
 
-    if (query?.status === ProposalStatuses.Approved) {
+    if (query?.status === ProposalsFeedStatuses.Approved) {
       search.$and?.push({
         status: {
           $eq: 'Approved',
@@ -248,7 +254,7 @@ class SputnikHttpServiceClass {
       });
     }
 
-    if (query?.status === ProposalStatuses.Failed) {
+    if (query?.status === ProposalsFeedStatuses.Failed) {
       search.$and?.push({
         $or: [
           {
@@ -365,6 +371,10 @@ class SputnikHttpServiceClass {
       >(
         `/proposals/account-proposals/${accountId}?${queryString.queryString}${
           query.accountId ? `&accountId=${query.accountId}` : ''
+        }${
+          query?.status === ProposalsFeedStatuses.VoteNeeded
+            ? '&filter=permissions.canApprove||$eq||true&filter=permissions.canReject||$eq||true&voted=false'
+            : ''
         }`,
         {
           responseMapper: {
@@ -826,6 +836,17 @@ class SputnikHttpServiceClass {
       value: daoId,
     });
 
+    queryBuilder.setFilter({
+      field: 'proposal.status',
+      operator: '$notin',
+      value: ['Rejected', 'Removed', 'Expired'],
+    });
+    queryBuilder.setFilter({
+      field: 'proposal.voteStatus',
+      operator: 'ne',
+      value: 'Expired',
+    });
+
     if (query?.bountyFilter) {
       if (query.bountyFilter === 'proposer') {
         queryBuilder.setFilter({
@@ -873,6 +894,11 @@ class SputnikHttpServiceClass {
         queryBuilder.setFilter({
           field: 'bounty.numberOfClaims',
           operator: '$eq',
+          value: 0,
+        });
+        queryBuilder.setFilter({
+          field: 'bounty.times',
+          operator: '$ne',
           value: 0,
         });
       }

@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mobile nav Should render full navigation for logged user 1`] = `
+<div>
+  <div>
+    <div
+      data-testid="nav-item"
+    >
+      All DAOs
+    </div>
+    <div
+      data-testid="nav-item"
+    >
+      Global Feed
+    </div>
+    <div
+      data-testid="nav-item"
+    >
+        My DAOs
+    </div>
+    <div
+      data-testid="nav-item"
+    >
+      My Feed
+    </div>
+    <div
+      data-testid="nav-item"
+    >
+      Create DAO
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Mobile nav Should render partial navigation if user did not log in 1`] = `
+<div>
+  <div>
+    <div
+      data-testid="nav-item"
+    >
+      All DAOs
+    </div>
+    <div
+      data-testid="nav-item"
+    >
+      Global Feed
+    </div>
+    <div
+      data-testid="nav-item"
+    >
+      Create DAO
+    </div>
+  </div>
+</div>
+`;

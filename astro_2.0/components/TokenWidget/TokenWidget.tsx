@@ -23,10 +23,6 @@ export const TokenWidget: React.FC<TokenWidgetProps> = ({
   const isValid = useIsValidImage(icon);
 
   function renderIcon() {
-    if (noIcon) {
-      return null;
-    }
-
     if (symbol === 'NEAR') {
       return (
         <div className={styles.icon}>

@@ -1,9 +1,14 @@
 import React, { useCallback } from 'react';
-import { Modal } from 'components/modal';
-import RadioGroup, { Radio } from 'astro_2.0/components/inputs/Radio';
-import { NotificationDisableOption } from 'types/notification';
+
 import { NOTIFICATION_SETTINGS_DISABLE_OPTIONS } from 'mocks/notificationsData';
+
+import { Modal } from 'components/modal';
+import { NotificationDisableOption } from 'types/notification';
+import { Radio } from 'astro_2.0/components/inputs/radio/Radio';
+import { RadioGroup } from 'astro_2.0/components/inputs/radio/RadioGroup';
+
 import { mapDelayToTime } from 'astro_2.0/features/Notifications';
+
 import styles from './NotificationsDisableModal.module.scss';
 
 export interface NotificationsDisableModalProps<T> {

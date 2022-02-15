@@ -17,7 +17,7 @@ import { ALL_DAOS_URL, MY_DAOS_URL } from 'constants/routing';
 
 import styles from './NavButton.module.scss';
 
-interface NavButtonProps extends NavItemProps {
+export interface NavButtonProps extends NavItemProps {
   mobile?: boolean;
   className?: string;
   myDaosIds: string[];

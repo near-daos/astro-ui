@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 
 import { ProposalFeedItem } from 'types/proposal';
 
-import { Indexed, ProposalByDao } from 'features/member-home/types';
+import { Indexed, ProposalByDao } from 'types/memberHome';
 
 import {
   isGovernanceProposal,

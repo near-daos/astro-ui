@@ -1,5 +1,5 @@
 import React from 'react';
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 import { Meta } from '@storybook/react';
 
 export default {

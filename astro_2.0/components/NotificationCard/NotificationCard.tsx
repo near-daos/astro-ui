@@ -6,7 +6,7 @@ import { useSwipeable } from 'react-swipeable';
 import { useTranslation } from 'next-i18next';
 
 import { FlagRenderer } from 'astro_2.0/components/Flag';
-import { ActionButton } from 'features/proposal/components/action-button';
+import { ActionButton } from 'astro_2.0/components/ActionButton';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import {
@@ -186,7 +186,11 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
         {description && (
           <div className={styles.description}>
             <div className={styles.descriptionHeader}>{t('description')}:</div>
-            <span>{description}</span>
+            <span>
+              {regular && description.length > 250
+                ? `${description.substring(0, 250)}...`
+                : description}
+            </span>
           </div>
         )}
         <div className={styles.time}>

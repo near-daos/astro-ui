@@ -1,4 +1,4 @@
-import { Variant } from 'components/badge/Badge';
+import { Variant } from 'components/Badge';
 import { ProposalType } from 'types/proposal';
 
 export function getBadgeVariant(name: string): Variant {

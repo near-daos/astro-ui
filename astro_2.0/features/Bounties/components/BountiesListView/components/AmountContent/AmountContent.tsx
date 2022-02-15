@@ -7,6 +7,8 @@ import { Tokens } from 'context/CustomTokensContext';
 import { formatYoktoValue } from 'utils/format';
 import { useIsValidImage } from 'hooks/useIsValidImage';
 
+import { Tooltip } from 'astro_2.0/components/Tooltip';
+
 import styles from './AmountContent.module.scss';
 
 interface AmountContentProps {
@@ -53,7 +55,12 @@ export const AmountContent: FC<AmountContentProps> = ({
               {formatYoktoValue(amount, tokenData.decimals)}
             </span>
             <span className={styles.iconWrapper}>{renderIcon()}</span>
-            <span className={styles.label}>{token || 'NEAR'}</span>
+            <Tooltip
+              overlay={<span>{token || 'NEAR'}</span>}
+              className={styles.label}
+            >
+              <div className={styles.ellipse}>{token || 'NEAR'}</div>
+            </Tooltip>
           </>
         ) : (
           <div className={styles.value}>

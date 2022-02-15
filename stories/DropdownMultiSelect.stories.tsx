@@ -4,7 +4,7 @@ import {
   DropdownMultiSelect,
   DropdownMultiSelectProps,
 } from 'components/inputs/selects/DropdownMultiSelect';
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 
 export default {
   title: 'components/DropdownMultiSelect',

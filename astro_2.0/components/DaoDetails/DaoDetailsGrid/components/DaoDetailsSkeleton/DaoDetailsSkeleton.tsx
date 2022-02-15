@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
-import { ActionButton } from 'features/proposal/components/action-button';
+import { ActionButton } from 'astro_2.0/components/ActionButton';
 import { Icon } from 'components/Icon';
 
 import styles from './DaoDetailsSkeleton.module.scss';

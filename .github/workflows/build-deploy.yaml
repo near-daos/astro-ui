@@ -20,6 +20,7 @@ env:
   EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
   KUBE_CONFIG_DATA:  ${{ secrets.KUBE_CONFIG_DATA }}
   NODE_OPTIONS: "--max-old-space-size=7168"
+  NEXT_PUBLIC_LAUNCHDARKLY_ID: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_ID }}
 
 jobs:
   get-environment:
@@ -84,6 +85,7 @@ jobs:
             --set environment.next_public_google_analytics_key=${NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY} \
             --set environment.next_public_near_env=${NEXT_PUBLIC_NEAR_ENV} \
             --set environment.next_public_stats_api_url=${NEXT_PUBLIC_STATS_API_URL} \
+            --set environment.next_public_launchdarkly_id=${NEXT_PUBLIC_LAUNCHDARKLY_ID} \
             --set ingress.host=${K8S_INGRESS_HOST}
 
     - name: Build Deploy Storybook

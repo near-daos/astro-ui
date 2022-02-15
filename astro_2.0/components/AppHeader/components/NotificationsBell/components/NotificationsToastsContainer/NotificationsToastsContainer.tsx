@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import Link from 'next/link';
 import uniqBy from 'lodash/uniqBy';
 import { appConfig } from 'config';
 import { useSwipeable } from 'react-swipeable';
@@ -8,6 +9,10 @@ import { useSocket } from 'context/SocketContext';
 import { mapNotificationDtoToNotification } from 'services/NotificationsService/mappers/notification';
 import { Notification, NotificationDTO } from 'types/notification';
 
+import { NOTIFICATIONS_PAGE_URL } from 'constants/routing';
+
+import { Button } from 'components/button/Button';
+import { Icon } from 'components/Icon';
 import { NotificationCard } from 'astro_2.0/components/NotificationCard';
 
 import styles from './NotificationsToastsContainer.module.scss';
@@ -16,6 +21,7 @@ export const NotificationsToastsContainer: FC = () => {
   const noties = useRef<{ timestamp: number; notification: Notification }[]>(
     []
   );
+  const [showAllButton, setShowAllButton] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const { socket } = useSocket();
 
@@ -24,11 +30,11 @@ export const NotificationsToastsContainer: FC = () => {
       socket.on('account-notification', (notification: NotificationDTO) => {
         noties.current = uniqBy(
           [
-            ...noties.current,
             {
               timestamp: new Date().getTime(),
               notification: mapNotificationDtoToNotification([notification])[0],
             },
+            ...noties.current,
           ],
           item => item.notification.id
         );
@@ -48,11 +54,18 @@ export const NotificationsToastsContainer: FC = () => {
             : 20000)
         );
       });
-      setNotifications(
-        noties.current
-          .map(item => item.notification)
-          .filter(item => !item.isRead)
-      );
+
+      let newList = noties.current
+        .map(item => item.notification)
+        .filter(item => !item.isRead);
+
+      if (newList.length > 2) {
+        setShowAllButton(true);
+
+        newList = newList.slice(0, 2);
+      }
+
+      setNotifications(newList);
     }, 1000);
 
     return () => clearInterval(intervalId);
@@ -98,7 +111,7 @@ export const NotificationsToastsContainer: FC = () => {
           animate={{ opacity: 1, transform: 'translateX(0px)' }}
           exit={{ opacity: 0 }}
         >
-          <NotificationCard {...props} onUpdate={handleMarkRead} />
+          <NotificationCard {...props} onUpdate={handleMarkRead} regular />
         </motion.div>
       );
     });
@@ -107,6 +120,28 @@ export const NotificationsToastsContainer: FC = () => {
   return (
     <div className={styles.root} {...handlers}>
       <AnimatePresence>{renderNotifications()}</AnimatePresence>
+      <AnimatePresence>
+        {showAllButton && (
+          <motion.div
+            layout
+            className={styles.notificationCardWrapper}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <Button
+              className={styles.showAllButton}
+              variant="tertiary"
+              size="block"
+            >
+              <Link href={NOTIFICATIONS_PAGE_URL}>
+                <a>Read all new notifications</a>
+              </Link>
+              <Icon name="buttonArrowRight" className={styles.icon} />
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

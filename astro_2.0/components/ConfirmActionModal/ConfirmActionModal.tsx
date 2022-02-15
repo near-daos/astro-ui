@@ -13,7 +13,7 @@ import {
 
 import styles from './ConfirmActionModal.module.scss';
 
-interface ConfirmActionModalProps {
+export interface ConfirmActionModalProps {
   isOpen: boolean;
   onClose: (val?: string) => void;
   title: string;
@@ -65,11 +65,13 @@ export const ConfirmActionModal: FC<ConfirmActionModalProps> = ({
                 isBorderless
                 size="block"
                 placeholder={`${DEFAULT_PROPOSAL_GAS}`}
+                data-testid="gas-input"
               />
             </div>
           </div>
           <Button
             capitalize
+            data-testid="close-button"
             onClick={() => onClose(gas)}
             className={styles.confirmButton}
           >

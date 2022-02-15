@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import cn from 'classnames';
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 import { BadgeList } from 'components/BadgeList';
 import { useMeasure } from 'react-use';
 

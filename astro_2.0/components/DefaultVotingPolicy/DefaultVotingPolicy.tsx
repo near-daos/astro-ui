@@ -3,7 +3,7 @@ import isArray from 'lodash/isArray';
 import isEmpty from 'lodash/isEmpty';
 import { useTranslation } from 'next-i18next';
 
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 
 import styles from './DefaultVotingPolicy.module.scss';
 

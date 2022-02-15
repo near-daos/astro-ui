@@ -15,7 +15,7 @@ import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { InfoValue } from 'astro_2.0/components/InfoBlockWidget/components/InfoValue';
 import { DefaultVotingPolicy } from 'astro_2.0/components/DefaultVotingPolicy';
-import { Badge } from 'components/badge/Badge';
+import { Badge } from 'components/Badge';
 
 import { getBadgeVariant } from 'features/proposal/helpers';
 

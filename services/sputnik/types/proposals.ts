@@ -1,13 +1,13 @@
-import { ProposalCategories, ProposalStatuses } from 'types/proposal';
+import { ProposalCategories, ProposalsFeedStatuses } from 'types/proposal';
 import {
   ProposalFilterOptions,
   ProposalFilterStatusOptions,
-} from 'features/member-home/types';
+} from 'types/memberHome';
 import { BaseParams } from './api';
 import { DaosParams } from './dao';
 
 export type ProposalsQueries = {
-  status?: ProposalStatuses;
+  status?: ProposalsFeedStatuses;
   category?: ProposalCategories;
 };
 
