@@ -113,6 +113,25 @@
   }
 }
 
+.green {
+  background-color: var(--color-brand-green);
+  color: var(--color-neutral-90);
+
+  &:hover {
+    background-color: var(--color-success-40);
+  }
+
+  &:active {
+    background-color: var(--color-success-50);
+    box-shadow: 0 4px 15px rgba(0, 118, 74, 0.45);
+  }
+
+  &:disabled {
+    background-color: var(--color-neutral-60);
+    color: var(--color-neutral-40);
+  }
+}
+
 .auth {
   background: var(--color-neutral-90);
   color: var(--color-white);

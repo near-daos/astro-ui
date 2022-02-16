@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import buttonStyles from './button.module.scss';
+import buttonStyles from './Button.module.scss';
 import styles from './voting-button.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

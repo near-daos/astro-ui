@@ -3,10 +3,16 @@ import { UrlObject } from 'url';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 
-import styles from './button.module.scss';
+import styles from './Button.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'black' | 'transparent';
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'black'
+    | 'transparent'
+    | 'green';
   size?: 'small' | 'medium' | 'large' | 'block';
   disabled?: boolean | undefined;
   href?: string | UrlObject;
@@ -31,6 +37,7 @@ export const Button: React.FC<ButtonProps> = ({
     tertiary: styles.tertiary,
     black: styles.black,
     transparent: styles.transparent,
+    green: styles.green,
   };
 
   const sizes = {
