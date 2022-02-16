@@ -20,4 +20,5 @@ export const appConfig = {
   socketUrl: process.env.API_URL,
   toastsNotificationsTimeout: process.env.TOASTS_NOTIFICATIONS_TIMEOUT,
   appDomain: process.env.APP_DOMAIN,
+  launchDarklyId: process.env.NEXT_PUBLIC_LAUNCHDARKLY_ID,
 };

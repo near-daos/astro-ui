@@ -56,33 +56,40 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.inline}>
-        <FieldWrapper label={t('proposalCard.proposalAmount')}>
+        <FieldWrapper
+          label={t('proposalCard.proposalAmount')}
+          labelClassName={styles.label}
+        >
           {tokenData ? (
-            <FieldValue value={formatYoktoValue(amount, tokenData.decimals)} />
+            <FieldValue
+              value={
+                <>
+                  {formatYoktoValue(amount, tokenData.decimals)}
+                  <div className={styles.iconWrapper}>{renderIcon()}</div>
+                  <div className={styles.symbol}>{tokenData.symbol}</div>
+                </>
+              }
+            />
           ) : (
             <div className={styles.loaderWrapper}>
               <LoadingIndicator />
             </div>
           )}
         </FieldWrapper>
-        <FieldWrapper label="">
-          <div className={styles.row}>
-            {tokenData && (
-              <>
-                <div className={styles.iconWrapper}>{renderIcon()}</div>
-                <div className={styles.symbol}>{tokenData.symbol}</div>
-              </>
-            )}
-          </div>
-        </FieldWrapper>
       </div>
       <div className={styles.divider} />
       <div className={styles.inline}>
-        <FieldWrapper label={t('proposalCard.bountyAvailableClaims')}>
+        <FieldWrapper
+          label={t('proposalCard.bountyAvailableClaims')}
+          labelClassName={styles.label}
+        >
           <FieldValue value={slots} />
         </FieldWrapper>
         <div className={styles.divider} />
-        <FieldWrapper label={t('proposalCard.bountyDaysToComplete')}>
+        <FieldWrapper
+          label={t('proposalCard.bountyDaysToComplete')}
+          labelClassName={styles.label}
+        >
           <FieldValue value={deadlineThreshold} />
         </FieldWrapper>
       </div>

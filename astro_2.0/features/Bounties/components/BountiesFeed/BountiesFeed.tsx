@@ -82,6 +82,10 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({
         }
       );
 
+      if (!res) {
+        return null;
+      }
+
       accumulatedListData = {
         ...res,
         data: [...(accumulatedListData?.data || []), ...(res.data || [])],

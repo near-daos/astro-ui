@@ -32,9 +32,9 @@
   grid-template-columns: 1fr 1fr 1fr;
 
   @include tablet-landscape {
-    grid-column-gap: 12px;
+    grid-column-gap: 4px;
     grid-template-areas: unset;
-    grid-template-columns: 2fr 2fr 1.4fr 96px;
+    grid-template-columns: 2fr 1.2fr 1.4fr 96px;
 
     &:last-of-type {
       margin-bottom: 0;

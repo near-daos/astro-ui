@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import type { AppContext, AppProps } from 'next/app';
 import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from 'next-i18next.config';
+import type { AppContext, AppProps } from 'next/app';
+import { withLDProvider } from 'launchdarkly-react-client-sdk';
+import { appConfig as applicationConfig } from 'config';
 
 import { ALL_FEED_URL, MY_FEED_URL } from 'constants/routing';
 
@@ -112,4 +114,9 @@ App.getInitialProps = async ({ ctx, router }: AppContext) => {
   return {};
 };
 
-export default appWithTranslation(App, nextI18NextConfig);
+export default withLDProvider({
+  clientSideID: applicationConfig.launchDarklyId as string,
+  reactOptions: {
+    useCamelCaseFlagKeys: true,
+  },
+})(appWithTranslation(App, nextI18NextConfig) as FunctionComponent);

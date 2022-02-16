@@ -28,15 +28,7 @@ export function getContentNode(
   }
 
   if (bounty) {
-    const deadline = nanosToDays(bounty.maxDeadline);
-
-    return (
-      <CardContent
-        amount={bounty.amount}
-        deadlineThreshold={deadline.join(' ')}
-        token={bounty.token}
-      />
-    );
+    return <CardContent amount={bounty.amount} token={bounty.token} />;
   }
 
   return null;

@@ -108,8 +108,9 @@ export function useBountyVoting(
 }
 
 export function useBountySearch(): {
-  handleSearch: (val: string) => Promise<PaginationResponse<BountyContext[]>>;
-  // searchResults: BountyContext[] | null;
+  handleSearch: (
+    val: string
+  ) => Promise<PaginationResponse<BountyContext[]> | null>;
   loading: boolean;
 } {
   const router = useRouter();

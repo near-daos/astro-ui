@@ -1,9 +1,9 @@
 @use 'styles/breakpoints';
 @import 'styles/mixins';
+@import 'styles/typography';
 
 .root {
   display: flex;
-  gap: 12px;
 }
 
 .row {
@@ -15,14 +15,14 @@
   @include tablet-landscape {
     height: 41px;
   }
+}
 
-  .iconWrapper {
-    background-color: var(--color-neutral-30);
-    border-radius: 50%;
-    height: 24px;
-    margin-right: 8px;
-    width: 24px;
-  }
+.iconWrapper {
+  background-color: var(--color-neutral-30);
+  border-radius: 50%;
+  height: 24px;
+  margin: 0 8px;
+  width: 24px;
 }
 
 .icon {
@@ -32,6 +32,14 @@
   border-radius: 50%;
   height: 24px;
   width: 24px;
+}
+
+.label {
+  @extend %subtitle6;
+}
+
+.amountValue {
+  padding-top: 26px;
 }
 
 .loaderWrapper {
@@ -47,7 +55,7 @@
 }
 
 .divider {
-  margin-left: 8px;
+  margin-left: 12px;
 }
 
 .inline {

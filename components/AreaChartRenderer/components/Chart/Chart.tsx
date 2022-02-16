@@ -104,7 +104,7 @@ export const Chart: React.FC<ChartProps> = ({
       width={width}
       height={height}
       data={data}
-      margin={{ top: 5, left: -28, right: 8, bottom: 5 }}
+      margin={{ top: 5, left: -22, right: 8, bottom: 5 }}
     >
       <defs>
         <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">

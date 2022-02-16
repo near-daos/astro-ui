@@ -49,7 +49,7 @@ export function kFormatter(n: number, toFixed = 0): string {
     return `${(n / 1000).toFixed(1).replace(/\.0$/, '')}K`;
   }
 
-  return `${n.toFixed(toFixed)}`;
+  return n % 1 !== 0 ? `${n.toFixed(toFixed)}` : n.toFixed();
 }
 
 export function shortenString(value: string, maxLength: number): string {

@@ -42,7 +42,7 @@ export const ViewToggle: FC<ViewToggleProps> = ({ dao, className }) => {
         <Icon
           name="feed"
           className={cn(styles.button, {
-            [styles.active]: currentPath === subPages.feed,
+            [styles.active]: subPages.feed.indexOf(currentPath) === 0,
           })}
         />
       </Button>
@@ -55,7 +55,7 @@ export const ViewToggle: FC<ViewToggleProps> = ({ dao, className }) => {
         <Icon
           name="list"
           className={cn(styles.button, {
-            [styles.active]: currentPath === subPages.list,
+            [styles.active]: subPages.list.indexOf(currentPath) === 0,
           })}
         />
       </Button>
