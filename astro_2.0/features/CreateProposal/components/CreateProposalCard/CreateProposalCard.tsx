@@ -32,15 +32,19 @@ export interface CreateProposalCardProps {
   onTypeSelect: (newType: ProposalVariant) => void;
   onClose?: () => void;
   userPermissions: UserPermissions;
+  showClose: boolean;
+  canCreateTokenProposal: boolean;
 }
 
 export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   type,
+  showClose,
   proposer,
   content,
   onTypeSelect,
   onClose,
   userPermissions,
+  canCreateTokenProposal,
 }) => {
   const {
     register,
@@ -50,9 +54,90 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   const { t } = useTranslation();
 
   const proposalTypesOptions = useMemo(
-    () => getProposalTypesOptions(userPermissions.isCanCreatePolicyProposals),
-    [userPermissions]
+    () =>
+      getProposalTypesOptions(
+        userPermissions.isCanCreatePolicyProposals,
+        canCreateTokenProposal
+      ),
+    [userPermissions, canCreateTokenProposal]
   );
+
+  function renderCloseButton() {
+    if (showClose) {
+      return (
+        <div className={styles.actionBar}>
+          <IconButton
+            icon="close"
+            className={styles.action}
+            onClick={() => onClose?.()}
+          />
+        </div>
+      );
+    }
+
+    return null;
+  }
+
+  function renderProposer() {
+    if (type !== ProposalVariant.ProposeCreateToken) {
+      return (
+        <div className={styles.proposerCell}>
+          <InfoBlockWidget
+            label={t('proposalCard.proposalOwner')}
+            value={proposer}
+          />
+        </div>
+      );
+    }
+
+    return null;
+  }
+
+  function renderDescription() {
+    if (type !== ProposalVariant.ProposeCreateToken) {
+      return (
+        <div className={styles.descriptionCell}>
+          <InputWrapper
+            fieldName="details"
+            label={t('proposalCard.proposalDescription')}
+            fullWidth
+          >
+            <TextArea
+              size="block"
+              textAlign="left"
+              resize="none"
+              autoFocus
+              placeholder={LOREN_IPSUM}
+              className={styles.textArea}
+              isBorderless
+              maxLength={500}
+              minRows={4}
+              maxRows={4}
+              {...register('details')}
+            />
+          </InputWrapper>
+          <div className={styles.proposalExternalLink}>
+            <Icon
+              name="buttonExternal"
+              width={14}
+              className={cn({
+                [styles.error]: errors.externalUrl,
+              })}
+            />
+            <Input
+              isBorderless
+              size="block"
+              className={styles.linkInput}
+              {...register('externalUrl')}
+              placeholder="example.com/putyourlinkhere"
+            />
+          </div>
+        </div>
+      );
+    }
+
+    return null;
+  }
 
   return (
     <div className={styles.root}>
@@ -87,50 +172,9 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
         Countdown will&nbsp;be&nbsp;here
       </div>
 
-      <div className={styles.proposerCell}>
-        <InfoBlockWidget
-          label={t('proposalCard.proposalOwner')}
-          value={proposer}
-        />
-      </div>
+      {renderProposer()}
 
-      <div className={styles.descriptionCell}>
-        <InputWrapper
-          fieldName="details"
-          label={t('proposalCard.proposalDescription')}
-          fullWidth
-        >
-          <TextArea
-            size="block"
-            textAlign="left"
-            resize="none"
-            autoFocus
-            placeholder={LOREN_IPSUM}
-            className={styles.textArea}
-            isBorderless
-            maxLength={500}
-            minRows={4}
-            maxRows={4}
-            {...register('details')}
-          />
-        </InputWrapper>
-        <div className={styles.proposalExternalLink}>
-          <Icon
-            name="buttonExternal"
-            width={14}
-            className={cn({
-              [styles.error]: errors.externalUrl,
-            })}
-          />
-          <Input
-            isBorderless
-            size="block"
-            className={styles.linkInput}
-            {...register('externalUrl')}
-            placeholder="example.com/putyourlinkhere"
-          />
-        </div>
-      </div>
+      {renderDescription()}
 
       <div className={styles.contentCell}>{content}</div>
 
@@ -139,13 +183,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
         <Icon name="votingNoChecked" className={styles.voteIcon} />
       </div>
 
-      <div className={styles.actionBar}>
-        <IconButton
-          icon="close"
-          className={styles.action}
-          onClick={() => onClose?.()}
-        />
-      </div>
+      {renderCloseButton()}
     </div>
   );
 };

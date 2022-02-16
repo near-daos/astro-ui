@@ -14,6 +14,7 @@ export interface ProposalCardRendererProps {
   daoFlagNode?: React.ReactNode;
   infoPanelNode?: React.ReactNode;
   className?: string;
+  showInfo?: boolean;
 }
 
 export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
@@ -23,6 +24,7 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
   infoPanelNode,
   className,
   proposalId,
+  showInfo,
 }) => {
   const { t } = useTranslation();
 
@@ -48,7 +50,7 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
   }
 
   function renderInfoPanel() {
-    if (proposalId === undefined) {
+    if (proposalId === undefined && showInfo) {
       return <InfoPanel />;
     }
 
