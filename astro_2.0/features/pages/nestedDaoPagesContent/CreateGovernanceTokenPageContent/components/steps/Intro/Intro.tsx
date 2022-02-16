@@ -37,6 +37,7 @@ export const Intro: VFC = () => {
       </div>
       <Button
         capitalize
+        variant="green"
         className={styles.startToCreate}
         href={{
           pathname: CREATE_GOV_TOKEN_PAGE_URL,
