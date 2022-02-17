@@ -13,6 +13,7 @@ import { SputnikHttpService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { getDaoContext } from 'features/daos/helpers';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -26,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
   const [daoContext, initialProposalsData] = await Promise.all([
-    SputnikHttpService.getDaoContext(account, daoId as string),
+    getDaoContext(account, daoId as string),
     SputnikHttpService.getProposalsList({
       offset: 0,
       limit: LIST_LIMIT_DEFAULT,

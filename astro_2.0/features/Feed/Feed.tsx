@@ -111,7 +111,7 @@ export const Feed = ({
             status,
             accountId,
           })
-        : await SputnikHttpService.getProposalsList(
+        : await SputnikHttpService.getProposalsListByAccountId(
             {
               offset: accumulatedListData?.data.length || 0,
               limit: LIST_LIMIT_DEFAULT,

@@ -8,3 +8,39 @@ export const DEFAULT_VOTE_GAS = 150;
 
 export const MIN_GAS = 10;
 export const MAX_GAS = 300;
+
+export const API_MAPPERS = {
+  MAP_DAO_DTO_TO_DAO: 'mapDaoDTOtoDao',
+  MAP_DAO_FEED_ITEM_RESPONSE_TO_DAO_FEED: 'mapDaoFeedItemResponseToDaoFeed',
+  MAP_DAO_FEED_ITEM_RESPONSE_TO_DAO_FEEDS: 'mapDaoFeedItemResponseToDaoFeeds',
+  MAP_PROPOSAL_DTO_TO_PROPOSAL: 'mapProposalDTOToProposal',
+  MAP_PROPOSAL_DTO_TO_PROPOSALS: 'mapProposalDTOToProposals',
+  MAP_TOKENS_DTO_TO_TOKEN: 'mapTokensDTOToToken',
+  MAP_TOKENS_DTO_TO_TOKENS: 'mapTokensDTOToTokens',
+  MAP_SEARCH_RESULTS_DTO_TO_DATA_OBJECT: 'mapSearchResultsDTOToDataObject',
+  MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM:
+    'mapProposalFeedItemResponseToProposalFeedItem',
+  MAP_SUBSCRIPTIONS_DTOS_TO_DAO_SUBSCRIPTIONS:
+    'mapSubscriptionsDTOsToDaoSubscriptions',
+  MAP_NFT_TOKEN_RESPONSE_TO_NFT_TOKEN: 'mapNftTokenResponseToNftToken',
+  MAP_RECEIPTS_BY_TOKEN_RESPONSE: 'mapReceiptsByTokenResponse',
+  MAP_RECEIPTS_RESPONSE: 'mapReceiptsResponse',
+  MAP_PROPOSALS_OVERTIME_TO_CHART_DATA: 'mapProposalsOvertimeToChartData',
+  MAP_OVERTIME_TO_CHART_DATA: 'mapOvertimeToChartData',
+};
+
+export type ApiMappers = keyof typeof API_MAPPERS;
+
+export const API_QUERIES = {
+  GET_BOUNTIES_CONTEXT: 'getBountiesContext',
+  GET_ACTIVE_PROPOSALS: 'getActiveProposals',
+  GET_USER_PROPOSALS: 'getUserProposals',
+  GET_PROPOSAL_BY_ID: 'getProposalById',
+  FIND_POLICY_AFFECTS_PROPOSALS: 'findPolicyAffectsProposals',
+  GET_FILTERED_PROPOSALS: 'getFilteredProposals',
+  GET_POLLS: 'getPolls',
+  GET_BOUNTY_CONTEXT_BY_ID: 'getBountyContextById',
+  FIND_BOUNTY_CONTEXT: 'findBountyContext',
+};
+
+export type ApiQueries = keyof typeof API_QUERIES;

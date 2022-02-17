@@ -4,6 +4,7 @@ import { SputnikHttpService } from 'services/sputnik';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from 'next-i18next.config';
 
+import { getDaoContext } from 'features/daos/helpers';
 import { CookieService } from 'services/CookieService';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
@@ -22,7 +23,7 @@ export const getServerSideProps: GetServerSideProps<BountiesFeedPageProps> = asy
   const { bountySort, bountyFilter, bountyPhase, dao: daoId } = query;
 
   const [daoContext, bountiesContext] = await Promise.all([
-    SputnikHttpService.getDaoContext(account, daoId as string),
+    getDaoContext(account, daoId as string),
     SputnikHttpService.getBountiesContext(daoId as string, account, {
       bountySort: bountySort ? (bountySort as string) : null,
       bountyFilter: bountyFilter ? (bountyFilter as string) : null,

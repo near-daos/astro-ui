@@ -19,6 +19,9 @@ import {
 } from 'services/sputnik/mappers/dao';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { toMillis } from 'utils/format';
+import { DaoStatsOvertime, DaoStatsProposalsOvertime } from 'types/daoStats';
+import { ChartDataElement } from 'components/AreaChartRenderer/types';
+import { CommonOverTime } from 'types/stats';
 
 import { getAwsImageUrl } from './utils/getAwsImageUrl';
 
@@ -356,3 +359,62 @@ export type ProposalFeedItemResponse = {
     isCouncil: boolean;
   };
 };
+
+export function mapOvertimeToChartData(
+  data: DaoStatsOvertime[]
+): ChartDataElement[] {
+  return (
+    data.map(item => {
+      const x = new Date(item.timestamp);
+      const utcDay = x.getUTCDate();
+
+      x.setDate(utcDay);
+
+      const y = item.value;
+
+      return {
+        x,
+        y,
+      };
+    }) ?? []
+  );
+}
+
+export function mapProposalsOvertimeToChartData(
+  data: DaoStatsProposalsOvertime[]
+): ChartDataElement[] {
+  return (
+    data.reduce<ChartDataElement[]>((res, item) => {
+      const x = new Date(item.timestamp);
+      const utcDay = x.getUTCDate();
+
+      x.setDate(utcDay);
+
+      const { active, total } = item;
+
+      res.push({
+        x,
+        y: active,
+        y2: total,
+      });
+
+      return res;
+    }, []) ?? []
+  );
+}
+
+export function mapMetricsToChartData(
+  data: CommonOverTime
+): ChartDataElement[] {
+  return (
+    data?.metrics?.map(item => {
+      const x = new Date(item.timestamp);
+      const count = Number(item.count);
+
+      return {
+        x,
+        y: count,
+      };
+    }) ?? []
+  );
+}

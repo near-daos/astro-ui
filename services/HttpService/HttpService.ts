@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import {
+  RequestQueryBuilder,
+  SConditionAND,
+  SFields,
+} from '@nestjsx/crud-request';
 
 // Mappers
 import {
@@ -12,19 +17,35 @@ import {
   mapSearchResultsDTOToDataObject,
   mapSubscriptionsDTOsToDaoSubscriptions,
   mapTokensDTOToTokens,
+  mapOvertimeToChartData,
+  mapProposalsOvertimeToChartData,
 } from 'services/sputnik/mappers';
 import { mapNftTokenResponseToNftToken } from 'services/sputnik/mappers/nfts';
 
-import { API_MAPPERS, ApiMappers } from 'constants/mappers';
+import {
+  API_MAPPERS,
+  ApiMappers,
+  API_QUERIES,
+  ApiQueries,
+  LIST_LIMIT_DEFAULT,
+} from 'services/sputnik/constants';
 import { appConfig } from 'config';
+import { ProposalType } from 'types/proposal';
+import { DaoFeedItem } from 'types/dao';
 
-export interface Mapper {
+interface Mapper {
   name: ApiMappers | string;
   params?: { [key: string]: string };
 }
 
+interface Query {
+  name: ApiQueries | string;
+  params?: { [key: string]: any };
+}
+
 export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   responseMapper?: Mapper;
+  queryRequest?: Query;
 }
 
 export class HttpService {
@@ -34,6 +55,458 @@ export class HttpService {
     this.client = axios.create({
       baseURL: appConfig.apiUrl,
       ...config,
+    });
+
+    this.client.interceptors.request.use(request => {
+      const requestCustom: CustomAxiosRequestConfig = request;
+
+      switch (requestCustom.queryRequest?.name) {
+        case API_QUERIES.GET_BOUNTIES_CONTEXT:
+          {
+            const { query, accountId, daoId } =
+              requestCustom.queryRequest?.params || {};
+            const queryBuilder = RequestQueryBuilder.create();
+
+            queryBuilder.setFilter({
+              field: 'daoId',
+              operator: '$eq',
+              value: daoId,
+            });
+
+            queryBuilder.setFilter({
+              field: 'proposal.status',
+              operator: '$notin',
+              value: ['Rejected', 'Removed', 'Expired'],
+            });
+            queryBuilder.setFilter({
+              field: 'proposal.voteStatus',
+              operator: 'ne',
+              value: 'Expired',
+            });
+
+            if (query?.bountyFilter) {
+              if (query.bountyFilter === 'proposer') {
+                queryBuilder.setFilter({
+                  field: 'proposal.proposer',
+                  operator: '$eq',
+                  value: accountId,
+                });
+              }
+
+              if (query.bountyFilter === 'numberOfClaims') {
+                queryBuilder.setFilter({
+                  field: 'bounty.numberOfClaims',
+                  operator: '$eq',
+                  value: 0,
+                });
+              }
+            }
+
+            if (query?.bountyPhase) {
+              // Proposal Phase
+              if (query.bountyPhase === 'proposalPhase') {
+                queryBuilder.setFilter({
+                  field: 'proposal.status',
+                  operator: '$eq',
+                  value: 'InProgress',
+                });
+              }
+
+              // In progress
+              if (query.bountyPhase === 'inProgress') {
+                queryBuilder.setFilter({
+                  field: 'bounty.numberOfClaims',
+                  operator: '$ne',
+                  value: 0,
+                });
+              }
+
+              // Available bounty
+              if (query.bountyPhase === 'availableBounty') {
+                queryBuilder.setFilter({
+                  field: 'bounty.times',
+                  operator: '$gte',
+                  value: 0,
+                });
+                queryBuilder.setFilter({
+                  field: 'bounty.numberOfClaims',
+                  operator: '$eq',
+                  value: 0,
+                });
+                queryBuilder.setFilter({
+                  field: 'bounty.times',
+                  operator: '$ne',
+                  value: 0,
+                });
+              }
+
+              // Completed
+              if (query.bountyPhase === 'completed') {
+                queryBuilder.setFilter({
+                  field: 'bounty.times',
+                  operator: '$eq',
+                  value: 0,
+                });
+              }
+            }
+
+            const queryString = queryBuilder
+              .setLimit(query?.limit ?? LIST_LIMIT_DEFAULT)
+              .setOffset(query?.offset ?? 0)
+              .query();
+
+            let sort = 'createdAt,DESC';
+
+            if (query?.bountySort) {
+              sort = query.bountySort;
+            }
+
+            request.url = `/bounty-contexts?${queryString}${
+              accountId ? `&accountId=${accountId}` : ''
+            }`;
+            request.params = { sort };
+          }
+          break;
+        case API_QUERIES.GET_ACTIVE_PROPOSALS:
+          {
+            const { daoIds, limit, offset } =
+              requestCustom.queryRequest?.params || {};
+
+            const queryString = RequestQueryBuilder.create()
+              .setFilter({
+                field: 'daoId',
+                operator: '$in',
+                value: daoIds,
+              })
+              .setFilter({
+                field: 'status',
+                operator: '$eq',
+                value: 'InProgress',
+              })
+              .setLimit(limit)
+              .setOffset(offset)
+              .sortBy({
+                field: 'createdAt',
+                order: 'DESC',
+              })
+              .query();
+
+            request.url = `/proposals?${queryString}`;
+          }
+          break;
+        case API_QUERIES.GET_USER_PROPOSALS:
+          {
+            const { accountId } = requestCustom.queryRequest?.params || {};
+
+            const queryString = RequestQueryBuilder.create()
+              .setFilter({
+                field: 'proposer',
+                operator: '$eq',
+                value: accountId,
+              })
+              .setLimit(500)
+              .setOffset(0)
+              .query();
+
+            request.url = `/proposals?${queryString}`;
+          }
+          break;
+        case API_QUERIES.GET_PROPOSAL_BY_ID:
+          {
+            const { proposalId, accountId } =
+              requestCustom.queryRequest?.params || {};
+
+            const queryString = RequestQueryBuilder.create();
+
+            queryString.setFilter({
+              field: 'id',
+              operator: '$eq',
+              value: proposalId,
+            });
+
+            queryString
+              .setLimit(1)
+              .setOffset(0)
+              .sortBy({
+                field: 'createdAt',
+                order: 'DESC',
+              })
+              .query();
+
+            request.url = `/proposals?${queryString.queryString}${
+              accountId ? `&accountId=${accountId}` : ''
+            }`;
+          }
+          break;
+        case API_QUERIES.FIND_POLICY_AFFECTS_PROPOSALS:
+          {
+            const { daoId } = requestCustom.queryRequest?.params || {};
+
+            const queryString = RequestQueryBuilder.create();
+
+            const search: SFields | SConditionAND = {
+              $and: [
+                {
+                  daoId: {
+                    $eq: daoId,
+                  },
+                },
+              ],
+            };
+
+            search.$and?.push({
+              status: {
+                $eq: 'InProgress',
+              },
+              votePeriodEnd: {
+                $gt: Date.now() * 1000000,
+              },
+            });
+
+            search.$and?.push({
+              $or: [
+                {
+                  kind: {
+                    $cont: ProposalType.ChangeConfig,
+                  },
+                },
+                {
+                  kind: {
+                    $cont: ProposalType.ChangePolicy,
+                  },
+                },
+              ],
+            });
+
+            queryString.search(search);
+
+            queryString
+              .setLimit(1000)
+              .setOffset(0)
+              .sortBy({
+                field: 'createdAt',
+                order: 'DESC',
+              })
+              .query();
+
+            request.url = `/proposals?${queryString.queryString}`;
+          }
+          break;
+        case API_QUERIES.GET_FILTERED_PROPOSALS:
+          {
+            const { filter, accountDaos } =
+              requestCustom.queryRequest?.params || {};
+
+            const queryString = RequestQueryBuilder.create();
+
+            const search: SFields | SConditionAND = {
+              $and: [],
+            };
+
+            // specific DAO
+            if (filter.daoId) {
+              search.$and?.push({
+                daoId: {
+                  $eq: filter.daoId,
+                },
+              });
+            } else if (filter.daoFilter === 'My DAOs') {
+              if (accountDaos.length) {
+                search.$and?.push({
+                  daoId: {
+                    $in: accountDaos.map((item: DaoFeedItem) => item.id),
+                  },
+                });
+              }
+            }
+
+            // Statuses
+            if (filter.status && filter.status === 'Active proposals') {
+              // Fetch all InProgress items and then do additional filtering for Expired
+              search.$and?.push({
+                status: {
+                  $eq: 'InProgress',
+                },
+              });
+            } else if (filter.status && filter.status === 'Approved') {
+              search.$and?.push({
+                status: {
+                  $eq: 'Approved',
+                },
+              });
+            } else if (filter.status && filter.status === 'Failed') {
+              // Fetch failed including InProgress items and then do additional filtering for Expired
+              search.$and?.push({
+                status: {
+                  $in: ['Rejected', 'Expired', 'Moved', 'InProgress'],
+                },
+              });
+            }
+
+            // Kinds
+            if (filter.proposalFilter === 'Polls') {
+              search.$and?.push({
+                kind: {
+                  $cont: ProposalType.Vote,
+                  $excl: ProposalType.ChangePolicy,
+                },
+              });
+            }
+
+            if (filter.proposalFilter === 'Governance') {
+              search.$and?.push({
+                $or: [
+                  {
+                    kind: {
+                      $cont: ProposalType.ChangeConfig,
+                    },
+                  },
+                  {
+                    kind: {
+                      $cont: ProposalType.ChangePolicy,
+                    },
+                  },
+                ],
+              });
+            }
+
+            if (filter.proposalFilter === 'Financial') {
+              search.$and?.push({
+                kind: {
+                  $cont: ProposalType.Transfer,
+                },
+              });
+            }
+
+            if (filter.proposalFilter === 'Groups') {
+              search.$and?.push({
+                $or: [
+                  {
+                    kind: {
+                      $cont: ProposalType.AddMemberToRole,
+                    },
+                  },
+                  {
+                    kind: {
+                      $cont: ProposalType.RemoveMemberFromRole,
+                    },
+                  },
+                ],
+              });
+            }
+
+            queryString.search(search);
+
+            // DaosIds
+            if (filter.daosIdsFilter) {
+              queryString.setFilter({
+                field: 'daoId',
+                operator: '$in',
+                value: filter.daosIdsFilter,
+              });
+            }
+
+            queryString
+              .setLimit(1000)
+              .setOffset(0)
+              .sortBy({
+                field: 'createdAt',
+                order: 'DESC',
+              })
+              .query();
+
+            request.url = `/proposals?${queryString.queryString}`;
+          }
+          break;
+        case API_QUERIES.GET_POLLS:
+          {
+            const { limit, daoId, offset } =
+              requestCustom.queryRequest?.params || {};
+            const queryString = RequestQueryBuilder.create();
+
+            const search: SFields | SConditionAND = {
+              $and: [
+                {
+                  daoId: {
+                    $eq: daoId,
+                  },
+                },
+                {
+                  kind: {
+                    $cont: ProposalType.Vote,
+                    $excl: ProposalType.ChangePolicy,
+                  },
+                },
+              ],
+            };
+
+            queryString.search(search);
+
+            queryString
+              .setLimit(limit ?? 1000)
+              .setOffset(offset ?? 0)
+              .sortBy({
+                field: 'createdAt',
+                order: 'DESC',
+              })
+              .query();
+
+            request.url = `/proposals?${queryString.queryString}`;
+          }
+          break;
+        case API_QUERIES.GET_BOUNTY_CONTEXT_BY_ID:
+          {
+            const { bountyId, accountId } =
+              requestCustom.queryRequest?.params || {};
+
+            const queryString = RequestQueryBuilder.create()
+              .setFilter({
+                field: 'id',
+                operator: '$eq',
+                value: bountyId,
+              })
+              .query();
+
+            request.url = `/bounty-contexts?${queryString}${
+              accountId ? `&accountId=${accountId}` : ''
+            }`;
+          }
+          break;
+        case API_QUERIES.FIND_BOUNTY_CONTEXT:
+          {
+            const { daoId, query, accountId } =
+              requestCustom.queryRequest?.params || {};
+
+            const queryBuilder = RequestQueryBuilder.create();
+
+            queryBuilder.setFilter({
+              field: 'daoId',
+              operator: '$eq',
+              value: daoId,
+            });
+
+            queryBuilder.setFilter({
+              field: 'proposal.description',
+              operator: '$cont',
+              value: query,
+            });
+
+            const queryString = queryBuilder
+              .setLimit(2000)
+              .setOffset(0)
+              .query();
+
+            request.url = `/bounty-contexts?${queryString}${
+              accountId ? `&accountId=${accountId}` : ''
+            }`;
+            request.params = { sort: 'createdAt,DESC' };
+          }
+          break;
+        default:
+          break;
+      }
+
+      return request;
     });
 
     this.client.interceptors.response.use(response => {
@@ -106,6 +579,12 @@ export class HttpService {
             responseConfig?.responseMapper?.params?.accountId || '',
             response.data
           );
+          break;
+        case API_MAPPERS.MAP_PROPOSALS_OVERTIME_TO_CHART_DATA:
+          response.data = mapProposalsOvertimeToChartData(response.data);
+          break;
+        case API_MAPPERS.MAP_OVERTIME_TO_CHART_DATA:
+          response.data = mapOvertimeToChartData(response.data);
           break;
         default:
           break;

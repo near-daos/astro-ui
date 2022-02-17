@@ -7,6 +7,7 @@ import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from 'next-i18next.config';
+import { getDaoContext } from 'features/daos/helpers';
 
 export default Polls;
 
@@ -24,7 +25,7 @@ export const getServerSideProps: GetServerSideProps<PollsPageProps> = async ({
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
   const [daoContext, initialPollsData] = await Promise.all([
-    SputnikHttpService.getDaoContext(account, daoId),
+    getDaoContext(account, daoId),
     SputnikHttpService.getProposalsList({
       category: ProposalCategories.Polls,
       daoId,

@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps<React.ComponentProps<
     };
   }
 
-  const res = await SputnikHttpService.getProposalsList(
+  const res = await SputnikHttpService.getProposalsListByAccountId(
     {
       category,
       status,

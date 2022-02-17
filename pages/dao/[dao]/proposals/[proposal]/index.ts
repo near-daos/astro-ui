@@ -6,6 +6,7 @@ import { SputnikHttpService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { extractMembersFromDao } from 'astro_2.0/features/CreateProposal/helpers';
+import { getDaoContext } from 'features/daos/helpers';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -23,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     SputnikHttpService.getDaoById(daoId),
     SputnikHttpService.getProposalById(proposalId, account),
     SputnikHttpService.getDaoMembersStats(daoId),
-    SputnikHttpService.getDaoContext(account, daoId as string),
+    getDaoContext(account, daoId as string),
   ]);
 
   const members = dao ? extractMembersFromDao(dao, membersStats) : [];
