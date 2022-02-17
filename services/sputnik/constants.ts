@@ -41,6 +41,8 @@ export const API_QUERIES = {
   GET_POLLS: 'getPolls',
   GET_BOUNTY_CONTEXT_BY_ID: 'getBountyContextById',
   FIND_BOUNTY_CONTEXT: 'findBountyContext',
+  GET_PROPOSALS_LIST: 'getProposalsList',
+  GET_PROPOSALS_LIST_BY_ACCOUNT_ID: 'getProposalsListByAccountId',
 };
 
 export type ApiQueries = keyof typeof API_QUERIES;

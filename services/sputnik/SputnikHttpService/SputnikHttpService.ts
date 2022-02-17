@@ -1,8 +1,3 @@
-import {
-  RequestQueryBuilder,
-  SConditionAND,
-  SFields,
-} from '@nestjsx/crud-request';
 import omit from 'lodash/omit';
 import { CancelToken } from 'axios';
 
@@ -23,15 +18,12 @@ import {
   BountyContext,
 } from 'types/bounties';
 import {
-  ProposalCategories,
   Proposal,
-  ProposalType,
   ProposalComment,
   SendProposalComment,
   ReportProposalComment,
   DeleteProposalComment,
   ProposalFeedItem,
-  ProposalsFeedStatuses,
 } from 'types/proposal';
 import { DaoStatsState } from 'types/daoStats';
 
@@ -40,11 +32,7 @@ import {
   MemberStats,
   ProposalDTO,
 } from 'services/sputnik/mappers';
-import {
-  LIST_LIMIT_DEFAULT,
-  API_MAPPERS,
-  API_QUERIES,
-} from 'services/sputnik/constants';
+import { API_MAPPERS, API_QUERIES } from 'services/sputnik/constants';
 import {
   BaseParams,
   ActiveProposalsParams,
@@ -218,172 +206,22 @@ class SputnikHttpServiceClass {
     query: ProposalsListParams,
     accountId?: string
   ): Promise<PaginationResponse<ProposalFeedItem[]> | null> {
-    const queryString = RequestQueryBuilder.create();
-
-    const search: SFields | SConditionAND = {
-      $and: [],
-    };
-
-    // specific DAO
-    if (query.daoId) {
-      search.$and?.push({
-        daoId: {
-          $eq: query.daoId,
-        },
-      });
-    }
-
-    // Statuses
-    if (
-      query?.status === ProposalsFeedStatuses.Active ||
-      query?.status === ProposalsFeedStatuses.VoteNeeded
-    ) {
-      search.$and?.push({
-        status: {
-          $eq: 'InProgress',
-        },
-        votePeriodEnd: {
-          $gt: Date.now() * 1000000,
-        },
-        voteStatus: {
-          $eq: 'Active',
-        },
-      });
-    }
-
-    if (query?.status === ProposalsFeedStatuses.Approved) {
-      search.$and?.push({
-        status: {
-          $eq: 'Approved',
-        },
-      });
-    }
-
-    if (query?.status === ProposalsFeedStatuses.Failed) {
-      search.$and?.push({
-        $or: [
-          {
-            status: {
-              $in: ['Rejected', 'Expired', 'Moved', 'Removed'],
-            },
-          },
-          {
-            status: {
-              $ne: 'Approved',
-            },
-            votePeriodEnd: {
-              $lt: Date.now() * 1000000,
-            },
-          },
-        ],
-      });
-    }
-
-    // Categories
-    if (query.category === ProposalCategories.Polls) {
-      search.$and?.push({
-        kind: {
-          $cont: ProposalType.Vote,
-          $excl: ProposalType.ChangePolicy,
-        },
-      });
-    }
-
-    if (query.category === ProposalCategories.Governance) {
-      search.$and?.push({
-        $or: [
-          {
-            kind: {
-              $cont: ProposalType.ChangeConfig,
-            },
-          },
-          {
-            kind: {
-              $cont: ProposalType.ChangePolicy,
-            },
-          },
-        ],
-      });
-    }
-
-    if (query.category === ProposalCategories.Bounties) {
-      search.$and?.push({
-        $or: [
-          {
-            kind: {
-              $cont: ProposalType.AddBounty,
-            },
-          },
-          {
-            kind: {
-              $cont: ProposalType.BountyDone,
-            },
-          },
-        ],
-      });
-    }
-
-    if (query.category === ProposalCategories.Financial) {
-      search.$and?.push({
-        kind: {
-          $cont: ProposalType.Transfer,
-        },
-      });
-    }
-
-    if (query.category === ProposalCategories.Members) {
-      search.$and?.push({
-        $or: [
-          {
-            kind: {
-              $cont: ProposalType.AddMemberToRole,
-            },
-          },
-          {
-            kind: {
-              $cont: ProposalType.RemoveMemberFromRole,
-            },
-          },
-        ],
-      });
-    }
-
-    if (search.$and?.length) {
-      queryString.search(search);
-    }
-
-    // DaosIds
-    if (query.daosIdsFilter) {
-      queryString.setFilter({
-        field: 'daoId',
-        operator: '$in',
-        value: query.daosIdsFilter,
-      });
-    }
-
-    queryString
-      .setLimit(query.limit ?? LIST_LIMIT_DEFAULT)
-      .setOffset(query.offset ?? 0)
-      .sortBy({
-        field: 'createdAt',
-        order: 'DESC',
-      })
-      .query();
-
     try {
       const { data } = await this.httpService.get<
         PaginationResponse<ProposalFeedItem[]>
-      >(
-        `/proposals/account-proposals/${accountId}?${queryString.queryString}${
-          query.accountId ? `&accountId=${query.accountId}` : ''
-        }`,
-        {
-          responseMapper: {
-            name:
-              API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+      >('/proposals/account-proposals', {
+        responseMapper: {
+          name:
+            API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+        },
+        queryRequest: {
+          name: API_QUERIES.GET_PROPOSALS_LIST_BY_ACCOUNT_ID,
+          params: {
+            query,
+            accountId,
           },
-        }
-      );
+        },
+      });
 
       return data;
     } catch (error) {
@@ -396,176 +234,21 @@ class SputnikHttpServiceClass {
   public async getProposalsList(
     query: ProposalsListParams
   ): Promise<PaginationResponse<ProposalFeedItem[]> | null> {
-    const queryString = RequestQueryBuilder.create();
-
-    const search: SFields | SConditionAND = {
-      $and: [],
-    };
-
-    // specific DAO
-    if (query.daoId) {
-      search.$and?.push({
-        daoId: {
-          $eq: query.daoId,
-        },
-      });
-    }
-
-    // Statuses
-    if (
-      query?.status === ProposalsFeedStatuses.Active ||
-      query?.status === ProposalsFeedStatuses.VoteNeeded
-    ) {
-      search.$and?.push({
-        status: {
-          $eq: 'InProgress',
-        },
-        votePeriodEnd: {
-          $gt: Date.now() * 1000000,
-        },
-        voteStatus: {
-          $eq: 'Active',
-        },
-      });
-    }
-
-    if (query?.status === ProposalsFeedStatuses.Approved) {
-      search.$and?.push({
-        status: {
-          $eq: 'Approved',
-        },
-      });
-    }
-
-    if (query?.status === ProposalsFeedStatuses.Failed) {
-      search.$and?.push({
-        $or: [
-          {
-            status: {
-              $in: ['Rejected', 'Expired', 'Moved', 'Removed'],
-            },
-          },
-          {
-            status: {
-              $ne: 'Approved',
-            },
-            votePeriodEnd: {
-              $lt: Date.now() * 1000000,
-            },
-          },
-        ],
-      });
-    }
-
-    // Categories
-    if (query.category === ProposalCategories.Polls) {
-      search.$and?.push({
-        kind: {
-          $cont: ProposalType.Vote,
-          $excl: ProposalType.ChangePolicy,
-        },
-      });
-    }
-
-    if (query.category === ProposalCategories.Governance) {
-      search.$and?.push({
-        $or: [
-          {
-            kind: {
-              $cont: ProposalType.ChangeConfig,
-            },
-          },
-          {
-            kind: {
-              $cont: ProposalType.ChangePolicy,
-            },
-          },
-        ],
-      });
-    }
-
-    if (query.category === ProposalCategories.Bounties) {
-      search.$and?.push({
-        $or: [
-          {
-            kind: {
-              $cont: ProposalType.AddBounty,
-            },
-          },
-          {
-            kind: {
-              $cont: ProposalType.BountyDone,
-            },
-          },
-        ],
-      });
-    }
-
-    if (query.category === ProposalCategories.Financial) {
-      search.$and?.push({
-        kind: {
-          $cont: ProposalType.Transfer,
-        },
-      });
-    }
-
-    if (query.category === ProposalCategories.Members) {
-      search.$and?.push({
-        $or: [
-          {
-            kind: {
-              $cont: ProposalType.AddMemberToRole,
-            },
-          },
-          {
-            kind: {
-              $cont: ProposalType.RemoveMemberFromRole,
-            },
-          },
-        ],
-      });
-    }
-
-    if (search.$and?.length) {
-      queryString.search(search);
-    }
-
-    // DaosIds
-    if (query.daosIdsFilter) {
-      queryString.setFilter({
-        field: 'daoId',
-        operator: '$in',
-        value: query.daosIdsFilter,
-      });
-    }
-
-    queryString
-      .setLimit(query.limit ?? LIST_LIMIT_DEFAULT)
-      .setOffset(query.offset ?? 0)
-      .sortBy({
-        field: 'createdAt',
-        order: 'DESC',
-      })
-      .query();
-
     try {
       const { data } = await this.httpService.get<
         PaginationResponse<ProposalFeedItem[]>
-      >(
-        `/proposals?${queryString.queryString}${
-          query.accountId ? `&accountId=${query.accountId}` : ''
-        }${
-          query?.status === ProposalsFeedStatuses.VoteNeeded
-            ? '&filter=permissions.canApprove||$eq||true&filter=permissions.canReject||$eq||true&voted=false'
-            : ''
-        }`,
-        {
-          responseMapper: {
-            name:
-              API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+      >('/proposals', {
+        responseMapper: {
+          name:
+            API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+        },
+        queryRequest: {
+          name: API_QUERIES.GET_PROPOSALS_LIST,
+          params: {
+            query,
           },
-        }
-      );
+        },
+      });
 
       return data;
     } catch (error) {
