@@ -21,7 +21,7 @@ export type Member = {
   id: string;
   name: string;
   groups: string[];
-  tokens: Token;
+  tokens?: Token;
   votes: number;
 } & { [key: string]: string | string[] | Token | number };
 

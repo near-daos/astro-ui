@@ -2,6 +2,7 @@ import React, { FC, useCallback, useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useRouter } from 'next/router';
 import { TFunction, useTranslation } from 'next-i18next';
+import { useAsyncFn } from 'react-use';
 
 import { DaoFeedItem } from 'types/dao';
 
@@ -59,43 +60,65 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
   const activeSort = (router.query.sort as string) ?? sortOptions[1].value;
   const daosView = (router.query.daosView as string) ?? 'active';
 
-  const [data, setData] = useState(initialData);
-  const [hasMore, setHasMore] = useState(
-    initialData.length !== totalItemsAvailable
+  const [data, setData] = useState({
+    data: initialData,
+    total: totalItemsAvailable,
+  });
+
+  const [, fetchData] = useAsyncFn(
+    async (
+      view: string,
+      sort: string,
+      initData?: { data: DaoFeedItem[]; total: number }
+    ) => {
+      let accumulatedListData = initData || null;
+
+      const { daos, total } = await getDaosList({
+        offset: initData ? initData.data.length : 0,
+        limit: 20,
+        sort,
+        filter:
+          view === 'active'
+            ? 'status||$eq||Active'
+            : 'status||$in||Active,Inactive',
+      });
+
+      accumulatedListData = {
+        total,
+        data: [...(accumulatedListData?.data || []), ...(daos || [])],
+      };
+
+      return accumulatedListData;
+    },
+    []
   );
 
   const getMoreDaos = async () => {
-    const { daos: newData, total } = await getDaosList({
-      offset: data.length,
-      limit: 20,
-      sort: (router.query.sort as string) ?? '',
-      filter:
-        daosView === 'active'
-          ? 'status||$eq||Active'
-          : 'status||$in||Active,Inactive',
-    });
+    const newData = await fetchData(daosView, activeSort, data);
 
-    if (data.length + newData.length === total) {
-      setHasMore(false);
-    }
-
-    setData(existingData => [...existingData, ...newData]);
+    setData(newData);
   };
 
   const handleSort = useCallback(
     async value => {
-      router.push(`?sort=${value}`);
+      const nextQuery = {
+        ...router.query,
+        sort: value,
+      };
 
-      const res = await getDaosList({
-        sort: `${value}`,
-        offset: 0,
-        limit: 20,
-      });
+      await router.replace(
+        {
+          query: nextQuery,
+        },
+        undefined,
+        { shallow: false, scroll: false }
+      );
 
-      setHasMore(res.daos.length !== res.total);
-      setData(res.daos);
+      const newData = await fetchData(daosView, nextQuery.sort);
+
+      setData(newData);
     },
-    [router]
+    [daosView, fetchData, router]
   );
 
   const onDaosViewChange = async (value: string) => {
@@ -111,6 +134,10 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
       undefined,
       { shallow: false, scroll: false }
     );
+
+    const newData = await fetchData(nextQuery.daosView, activeSort);
+
+    setData(newData);
   };
 
   const isLoading = useRouterLoading();
@@ -159,9 +186,9 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
         </FiltersPanel>
       </div>
       <InfiniteScroll
-        dataLength={data.length}
+        dataLength={data.data.length}
         next={getMoreDaos}
-        hasMore={hasMore}
+        hasMore={data.data.length < data.total}
         loader={<h4 className={styles.loading}>{t('loading')}...</h4>}
         style={{ overflow: 'initial' }}
         endMessage={
@@ -171,7 +198,7 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
         }
       >
         <div className={styles.daosList}>
-          {data.map(item => {
+          {data.data.map(item => {
             return (
               <DaoDetailsGrid
                 loading={isLoading}

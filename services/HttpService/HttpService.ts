@@ -543,7 +543,7 @@ export class HttpService {
             {
               daos: response.data?.daos?.data,
               proposals: response.data?.proposals?.data,
-              members: [],
+              members: response.data?.members?.data,
             }
           );
           break;
