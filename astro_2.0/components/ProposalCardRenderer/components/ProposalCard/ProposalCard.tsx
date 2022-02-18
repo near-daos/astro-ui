@@ -10,6 +10,8 @@ import { useTranslation } from 'next-i18next';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
+import { useAuthContext } from 'context/AuthContext';
+
 import {
   ProposalStatus,
   ProposalType,
@@ -172,6 +174,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   toggleInfoPanel,
   commentsCount,
 }) => {
+  const { accountId } = useAuthContext();
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -213,7 +216,10 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     ((voteStatus === 'Expired' && !isFinalized) ||
       (voteStatus === 'Active' &&
         timeLeft === null &&
-        status === 'InProgress'));
+        status === 'InProgress')) &&
+    (variant !== ProposalVariant.ProposeDoneBounty ||
+      (variant === ProposalVariant.ProposeDoneBounty &&
+        proposer === accountId));
 
   const methods = useForm<DAOFormValues>({
     mode: 'all',
