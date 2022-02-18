@@ -19,7 +19,7 @@ export function formatYoktoValue(value: string, divider?: number): string {
     return '0';
   }
 
-  const dividerValue = divider ? 10 ** divider : YOKTO_NEAR;
+  const dividerValue = divider !== undefined ? 10 ** divider : YOKTO_NEAR;
 
   const amountYokto = new Decimal(value);
 
