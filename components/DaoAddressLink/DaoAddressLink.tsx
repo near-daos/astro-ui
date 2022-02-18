@@ -1,5 +1,5 @@
 import React, { MouseEvent } from 'react';
-import { nearConfig } from 'config';
+import { configService } from 'services/ConfigService';
 
 interface DaoAddressLinkProps {
   daoAddress: string;
@@ -8,7 +8,9 @@ interface DaoAddressLinkProps {
 export const DaoAddressLink: React.VFC<DaoAddressLinkProps> = ({
   daoAddress,
 }) => {
-  const daoAddressLink = `${nearConfig.explorerUrl}/accounts/${daoAddress}`;
+  const { nearConfig } = configService.get();
+
+  const daoAddressLink = `${nearConfig?.explorerUrl}/accounts/${daoAddress}`;
 
   function stopPropagation(e: MouseEvent) {
     e.stopPropagation();

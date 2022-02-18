@@ -25,14 +25,14 @@ export const SocketProvider: FC = ({ children }) => {
   useEffect(() => {
     let socketIo: Socket;
 
-    const config = configService.get();
+    const { appConfig } = configService.get();
 
     (async () => {
       const publicKey = await SputnikNearService.getPublicKey();
       const signature = await SputnikNearService.getSignature();
 
-      if (accountId && publicKey && isMounted() && config) {
-        socketIo = io(config.API_URL, {
+      if (accountId && publicKey && isMounted() && appConfig) {
+        socketIo = io(appConfig.API_URL, {
           query: {
             accountId,
             publicKey,

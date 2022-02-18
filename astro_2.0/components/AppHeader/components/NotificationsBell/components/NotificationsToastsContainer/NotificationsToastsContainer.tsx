@@ -25,7 +25,7 @@ export const NotificationsToastsContainer: FC = () => {
   const [showAllButton, setShowAllButton] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const { socket } = useSocket();
-  const config = configService.get();
+  const { appConfig } = configService.get();
 
   useEffect(() => {
     if (socket) {
@@ -51,8 +51,8 @@ export const NotificationsToastsContainer: FC = () => {
 
         return (
           new Date().getTime() - timestamp <
-          (config?.TOASTS_NOTIFICATIONS_TIMEOUT
-            ? Number(config.TOASTS_NOTIFICATIONS_TIMEOUT)
+          (appConfig?.TOASTS_NOTIFICATIONS_TIMEOUT
+            ? Number(appConfig.TOASTS_NOTIFICATIONS_TIMEOUT)
             : 20000)
         );
       });
@@ -71,7 +71,7 @@ export const NotificationsToastsContainer: FC = () => {
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [config?.TOASTS_NOTIFICATIONS_TIMEOUT]);
+  }, [appConfig?.TOASTS_NOTIFICATIONS_TIMEOUT]);
 
   const handleMarkRead = useCallback((id: string) => {
     noties.current = noties.current.filter(noty => noty.notification.id !== id);

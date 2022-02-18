@@ -7,10 +7,11 @@ import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { BrowserLocalStorageKeyStore } from 'near-api-js/lib/key_stores';
 import { utils, transactions, Contract, keyStores, Near } from 'near-api-js';
 
-import { NearConfig, nearConfig } from 'config';
+import { appConfig as applicationConfig } from 'config';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
+import { Config, NearConfig } from 'types/config';
 import { CreateDaoInput } from 'types/dao';
 import { CreateTokenParams, SputnikTokenService } from 'types/token';
 import { Transfer, VoteAction, CreateProposalParams } from 'types/proposal';
@@ -24,7 +25,7 @@ import { SputnikWalletService } from './services/SputnikWalletService';
 import { SputnikConnectedWalletAccount } from './overrides/SputnikConnectedWalletAccount';
 
 class SputnikNearServiceClass {
-  private readonly config: NearConfig;
+  private config: NearConfig | undefined;
 
   private sputnikWalletService!: SputnikWalletService;
 
@@ -36,16 +37,14 @@ class SputnikNearServiceClass {
 
   private keyStore?: BrowserLocalStorageKeyStore;
 
-  constructor(config: NearConfig) {
-    this.config = config;
-  }
-
-  public init(walletUseLocalRedirect: boolean): void {
+  public init(nearConfig: NearConfig, appConfig: Config): void {
     const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+
+    this.config = nearConfig;
 
     this.keyStore = keyStore;
     this.near = new Near({
-      ...this.config,
+      ...nearConfig,
       keyStore,
     });
 
@@ -57,7 +56,9 @@ class SputnikNearServiceClass {
     this.sputnikDaoService = new SputnikDaoService(
       this.config.contractName,
       this.sputnikWalletService,
-      walletUseLocalRedirect ?? false
+      (appConfig
+        ? appConfig.LOCAL_WALLET_REDIRECT
+        : applicationConfig.walletUseLocalRedirect) ?? false
     );
 
     this.factoryTokenContract = new Contract(
@@ -97,10 +98,10 @@ class SputnikNearServiceClass {
     }
 
     if (!this.sputnikWalletService && process.browser) {
-      const appConfig = configService.get();
+      const { appConfig, nearConfig: appNearConfig } = configService.get();
 
-      if (appConfig) {
-        this.init(appConfig.LOCAL_WALLET_REDIRECT);
+      if (appConfig && appNearConfig) {
+        this.init(appNearConfig, appConfig);
       }
     }
 
@@ -108,10 +109,9 @@ class SputnikNearServiceClass {
   }
 
   public async getPublicKey(): Promise<string | null> {
-    const keyPair = await this.keyStore?.getKey(
-      this.config.networkId,
-      this.getAccountId()
-    );
+    const keyPair = this.config
+      ? await this.keyStore?.getKey(this.config.networkId, this.getAccountId())
+      : null;
 
     const publicKey = keyPair?.getPublicKey();
 
@@ -124,10 +124,12 @@ class SputnikNearServiceClass {
 
   async getSignature(): Promise<string | null> {
     try {
-      const keyPair = await this.keyStore?.getKey(
-        this.config.networkId,
-        this.getAccountId()
-      );
+      const keyPair = this.config
+        ? await this.keyStore?.getKey(
+            this.config.networkId,
+            this.getAccountId()
+          )
+        : null;
 
       if (!keyPair) {
         // eslint-disable-next-line no-console
@@ -290,10 +292,9 @@ class SputnikNearServiceClass {
   ) {
     const accountId = this.getAccountId();
 
-    const keyPair = await this.keyStore?.getKey(
-      this.config.networkId,
-      this.getAccountId()
-    );
+    const keyPair = this.config
+      ? await this.keyStore?.getKey(this.config.networkId, this.getAccountId())
+      : null;
 
     const publicKey = keyPair?.getPublicKey();
 
@@ -456,4 +457,4 @@ class SputnikNearServiceClass {
   }
 }
 
-export const SputnikNearService = new SputnikNearServiceClass(nearConfig);
+export const SputnikNearService = new SputnikNearServiceClass();

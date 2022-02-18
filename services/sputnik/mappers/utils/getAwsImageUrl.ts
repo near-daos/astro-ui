@@ -6,11 +6,11 @@ export function getAwsImageUrl(flag?: string): string {
   let region;
 
   if (process.browser) {
-    const config = configService.get();
+    const { appConfig } = configService.get();
 
-    if (config) {
-      bucket = config.AWS_BUCKET;
-      region = config.AWS_REGION;
+    if (appConfig) {
+      bucket = appConfig.AWS_BUCKET;
+      region = appConfig.AWS_REGION;
     }
   } else {
     const config = awsConfig;

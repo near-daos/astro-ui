@@ -30,17 +30,17 @@ import 'styles/globals.scss';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
-  const appConfig = useAppConfig();
+  const { appConfig, nearConfig } = useAppConfig();
   const [appInitialized, setAppInitialized] = useState(false);
 
   useEffect(() => {
-    if (!appConfig) {
+    if (!appConfig || !nearConfig) {
       return;
     }
 
-    configService.init(appConfig);
+    configService.init(nearConfig, appConfig);
 
-    SputnikNearService.init(appConfig.LOCAL_WALLET_REDIRECT);
+    SputnikNearService.init(nearConfig, appConfig);
 
     const accountCookieOptions = appConfig.APP_DOMAIN
       ? { ...DEFAULT_OPTIONS, domain: appConfig.APP_DOMAIN }
@@ -63,7 +63,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
     }
 
     setAppInitialized(true);
-  }, [appConfig, router.query.dao]);
+  }, [appConfig, nearConfig, router.query.dao]);
 
   if (!appInitialized) {
     return null;

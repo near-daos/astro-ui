@@ -1,9 +1,3 @@
-import { getNearConfig, NEAR_ENV } from './near';
-
-export type { NearConfig } from './near';
-export const nearConfig = getNearConfig(
-  (process.env.NEAR_ENV as NEAR_ENV) || 'development'
-);
 export { awsConfig } from './aws';
 
 export const appConfig = {

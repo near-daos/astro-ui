@@ -1,14 +1,20 @@
-import { Config } from 'types/config';
+import { Config, NearConfig } from 'types/config';
 
 class ConfigService {
-  private config: Config | null = null;
+  private appConfig: Config | null = null;
 
-  public init(appConfig: Config): void {
-    this.config = appConfig;
+  private nearConfig: NearConfig | null = null;
+
+  public init(nearConfig: NearConfig, appConfig: Config): void {
+    this.appConfig = appConfig;
+    this.nearConfig = nearConfig;
   }
 
-  public get(): Config | null {
-    return this.config;
+  public get(): { appConfig: Config | null; nearConfig: NearConfig | null } {
+    return {
+      appConfig: this.appConfig,
+      nearConfig: this.nearConfig,
+    };
   }
 }
 

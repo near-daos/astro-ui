@@ -11,3 +11,16 @@ export type Config = {
   NEAR_ENV: string;
   LOCAL_WALLET_REDIRECT: boolean;
 };
+
+export type NearConfig = {
+  walletFormat?: string;
+  networkId: string;
+  nodeUrl: string;
+  contractName: string;
+  tokenContractName: string;
+  masterAccount?: string;
+  walletUrl?: string;
+  helperUrl?: string;
+  explorerUrl?: string;
+  keyPath?: string;
+};

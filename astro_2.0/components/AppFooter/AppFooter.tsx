@@ -22,8 +22,8 @@ export const AppFooter: FC<AppFooterProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const config = configService.get();
-  const RELEASE_NOTES = config?.RELEASE_NOTES || '';
+  const { appConfig } = configService.get();
+  const RELEASE_NOTES = appConfig?.RELEASE_NOTES || '';
 
   function renderSocialIcon(href: string, icon: IconName) {
     return (

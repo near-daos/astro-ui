@@ -41,9 +41,6 @@ import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 // Context
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
-// Config
-import { nearConfig } from 'config';
-
 // Components
 import { TransferContent } from 'astro_2.0/features/CreateProposal/components/TransferContent';
 import { AddBountyContent } from 'astro_2.0/features/CreateProposal/components/AddBountyContent';
@@ -84,6 +81,7 @@ import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 // Services
 import { SputnikNearService } from 'services/sputnik';
 import { httpService } from 'services/HttpService';
+import { configService } from 'services/ConfigService';
 
 // Local helpers
 import {
@@ -937,6 +935,8 @@ export function getValidationSchema(
     case ProposalVariant.ProposeCreateGroup:
     case ProposalVariant.ProposeAddMember:
     case ProposalVariant.ProposeRemoveMember: {
+      const { nearConfig } = configService.get();
+
       return yup.object().shape({
         group: yup.string().required('Required'),
         memberName: yup
@@ -950,7 +950,7 @@ export function getValidationSchema(
             'daoMember',
             'DAO can not be specified in this field',
             value => {
-              return !endsWith(value, nearConfig.contractName);
+              return !endsWith(value, nearConfig?.contractName);
             }
           )
           .required('Required'),

@@ -17,15 +17,16 @@ const Callback: NextPage = () => {
       const errorCode = (searchParams.get('errorCode') ||
         undefined) as SputnikWalletErrorCodes;
 
-      const appConfig = configService.get();
+      const { appConfig, nearConfig } = configService.get();
 
-      SputnikNearService.init(appConfig?.LOCAL_WALLET_REDIRECT ?? false);
+      if (appConfig && nearConfig) {
+        SputnikNearService.init(nearConfig, appConfig);
+        window.opener.sputnikRequestSignInCompleted({ accountId, errorCode });
 
-      window.opener.sputnikRequestSignInCompleted({ accountId, errorCode });
-
-      setTimeout(() => {
-        window.close();
-      }, 1500);
+        setTimeout(() => {
+          window.close();
+        }, 1500);
+      }
     } else {
       console.error('Unable to find login callback function');
       window.close();

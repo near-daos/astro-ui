@@ -2,7 +2,7 @@ import React, { MouseEvent } from 'react';
 import { Icon } from 'components/Icon';
 import cn from 'classnames';
 import { ExplorerLinkType } from 'components/ExplorerLink/types';
-import { nearConfig } from 'config';
+import { configService } from 'services/ConfigService';
 import styles from './ExplorerLink.module.scss';
 
 interface ExplorerLinkProps {
@@ -14,11 +14,13 @@ interface ExplorerLinkProps {
 }
 
 function generateExplorerLink(type: ExplorerLinkType, linkData: string) {
+  const { nearConfig } = configService.get();
+
   switch (type) {
     case 'transaction':
-      return `${nearConfig.explorerUrl}/transactions/${linkData}`;
+      return `${nearConfig?.explorerUrl}/transactions/${linkData}`;
     case 'member':
-      return `${nearConfig.explorerUrl}/accounts/${linkData}`;
+      return `${nearConfig?.explorerUrl}/accounts/${linkData}`;
     default:
       return '';
   }
