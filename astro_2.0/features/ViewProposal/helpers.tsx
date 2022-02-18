@@ -63,7 +63,7 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
           content = (
             <AddBountyContent
               slots={bountyData.times}
-              deadlineThreshold={deadline[0]}
+              deadlineThreshold={deadline.join(' ')}
               token={bountyData.token}
               amount={bountyData.amount}
             />
