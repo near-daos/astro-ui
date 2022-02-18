@@ -1,6 +1,6 @@
-import { nearConfig } from 'config';
 import { ConnectedWalletAccount, Near } from 'near-api-js';
 import { SputnikWalletConnection } from 'services/sputnik/SputnikNearService/overrides/SputnikWalletConnection';
+import { configService } from 'services/ConfigService';
 
 export class SputnikWalletService {
   private readonly near: Near;
@@ -19,9 +19,13 @@ export class SputnikWalletService {
     this.walletConnection = new SputnikWalletConnection(this.near, 'sputnik');
   }
 
-  public async login(contractId = nearConfig.contractName): Promise<void> {
+  public async login(contractId?: string): Promise<void> {
+    const { nearConfig } = configService.get();
+
+    const contractName = nearConfig?.contractName ?? '';
+
     await this.walletConnection.sputnikRequestSignIn(
-      contractId,
+      contractId || contractName,
       this.successUrl,
       this.failureUrl
     );

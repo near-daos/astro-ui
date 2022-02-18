@@ -3,7 +3,6 @@ import { utils } from 'near-api-js';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 
-import { appConfig } from 'config';
 import { formatGasValue } from 'utils/format';
 
 import { CreateProposalParams } from 'types/proposal';
@@ -22,12 +21,20 @@ export class SputnikDaoService {
 
   private readonly factoryContractId: string;
 
+  private walletUseLocalRedirect: boolean;
+
   constructor(
     factoryContractId: string,
-    sputnikWalletService: SputnikWalletService
+    sputnikWalletService: SputnikWalletService,
+    walletUseLocalRedirect: boolean
   ) {
     this.factoryContractId = factoryContractId;
     this.sputnikWalletService = sputnikWalletService;
+    this.walletUseLocalRedirect = walletUseLocalRedirect;
+  }
+
+  public init(_walletUseLocalRedirect: boolean): void {
+    this.walletUseLocalRedirect = _walletUseLocalRedirect;
   }
 
   private functionCall(props: FunctionCallOptions) {
@@ -35,9 +42,9 @@ export class SputnikDaoService {
 
     return this.sputnikWalletService.getAccount().functionCall({
       ...props,
-      walletCallbackUrl: appConfig.walledUseLocalRedirect
+      walletCallbackUrl: this.walletUseLocalRedirect
         ? `${window.origin}/callback/transaction`
-        : `${window.origin}/api-server/v1/transactions/wallet/callback/${accountId}`,
+        : `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
     });
   }
 

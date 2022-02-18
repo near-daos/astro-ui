@@ -5,6 +5,8 @@ import { useTranslation } from 'next-i18next';
 import { Icon, IconName } from 'components/Icon';
 import { LocaleSelector } from 'astro_2.0/components/LocaleSelector';
 
+import { configService } from 'services/ConfigService';
+
 import styles from './AppFooter.module.scss';
 
 export interface AppFooterProps {
@@ -13,14 +15,15 @@ export interface AppFooterProps {
   onClick?: () => void;
 }
 
-const RELEASE_NOTES = process.env.NEXT_PUBLIC_RELEASE_NOTES;
-
 export const AppFooter: FC<AppFooterProps> = ({
   mobile,
   className,
   onClick,
 }) => {
   const { t } = useTranslation();
+
+  const { appConfig } = configService.get();
+  const RELEASE_NOTES = appConfig?.RELEASE_NOTES || '';
 
   function renderSocialIcon(href: string, icon: IconName) {
     return (

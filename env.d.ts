@@ -2,17 +2,25 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      NEXT_PUBLIC_AWS_BUCKET: string;
-      NEXT_PUBLIC_AWS_REGION: string;
-      NEXT_PUBLIC_AWS_IDENTITY_POOL_ID: string;
-      NEXT_PUBLIC_GOOGLE_ANALYTICS_KEY: string;
+      AWS_BUCKET: string;
+      AWS_REGION: string;
+      AWS_IDENTITY_POOL_ID: string;
+      GOOGLE_ANALYTICS_KEY: string;
 
-      NEXT_PUBLIC_APP_VERSION: string;
-      NEXT_PUBLIC_CHANGELOG_URL: string;
-      NEXT_PUBLIC_DEV_PROGRESS_URL: string;
+      APP_VERSION: string;
+      CHANGELOG_URL: string;
+      DEV_PROGRESS_URL: string;
 
-      NEXT_PUBLIC_API_URL: string;
-      NEXT_PUBLIC_LOCAL_WALLET_REDIRECT: boolean;
+      API_URL: string;
+      STATS_API_URL;
+      APP_DOMAIN: string;
+      LOCAL_WALLET_REDIRECT: boolean;
+
+      RELEASE_NOTES: string;
+      TOASTS_NOTIFICATIONS_TIMEOUT: number;
+      I18_RELOAD_ON_PRERENDER: boolean;
+
+      NEAR_ENV: string;
     }
   }
 }

@@ -6,7 +6,7 @@ import { FlagRenderer } from 'astro_2.0/components/Flag';
 
 import { DaoFeedItem } from 'types/dao';
 
-import { nearConfig } from 'config';
+import { configService } from 'services/ConfigService';
 
 import styles from './SearchResultDaoCard.module.scss';
 
@@ -22,7 +22,9 @@ export const SearchResultDaoCard: VFC<SearchResultDaoCardProps> = ({
   const router = useRouter();
   const { id, logo, flagCover, displayName } = data;
 
-  const header = displayName || id.replace(nearConfig.contractName, '');
+  const { nearConfig } = configService.get();
+
+  const header = displayName || id.replace(nearConfig?.contractName ?? '', '');
 
   function goToDao() {
     onClick();

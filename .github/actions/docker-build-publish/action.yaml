@@ -39,7 +39,7 @@ runs:
     uses: docker/build-push-action@v2
     with:
       context: .
-      file: Dockerfile_pipelines
+      file: Dockerfile
       platforms: linux/amd64
       tags: ${{ steps.meta.outputs.tags }}
       push: true

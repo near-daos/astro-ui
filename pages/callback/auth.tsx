@@ -7,6 +7,7 @@ import nextI18NextConfig from 'next-i18next.config';
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 
 import { SputnikNearService } from 'services/sputnik';
+import { configService } from 'services/ConfigService';
 
 const Callback: NextPage = () => {
   useEffect(() => {
@@ -16,13 +17,16 @@ const Callback: NextPage = () => {
       const errorCode = (searchParams.get('errorCode') ||
         undefined) as SputnikWalletErrorCodes;
 
-      SputnikNearService.init();
+      const { appConfig, nearConfig } = configService.get();
 
-      window.opener.sputnikRequestSignInCompleted({ accountId, errorCode });
+      if (appConfig && nearConfig) {
+        SputnikNearService.init(nearConfig, appConfig);
+        window.opener.sputnikRequestSignInCompleted({ accountId, errorCode });
 
-      setTimeout(() => {
-        window.close();
-      }, 1500);
+        setTimeout(() => {
+          window.close();
+        }, 1500);
+      }
     } else {
       console.error('Unable to find login callback function');
       window.close();

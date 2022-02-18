@@ -16,6 +16,7 @@ docker-compose-*.yml
 # Files not required for production
 .editorconfig
 Dockerfile
+Dockerfile_pipelines
 README.md
 nodemon.json
 
@@ -25,3 +26,6 @@ k8s
 samples
 test
 .storybook
+.github
+.next
+build

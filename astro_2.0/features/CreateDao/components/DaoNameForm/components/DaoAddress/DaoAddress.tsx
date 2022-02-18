@@ -1,9 +1,9 @@
 import React, { VFC } from 'react';
 import { useDebounce } from 'react-use';
 
-import { nearConfig } from 'config';
-
 import { formatDaoAddress } from 'astro_2.0/features/CreateDao/components/DaoNameForm/helpers';
+
+import { configService } from 'services/ConfigService';
 
 import styles from './DaoAddress.module.scss';
 
@@ -14,6 +14,8 @@ interface DaoAddressProps {
 }
 
 export const DaoAddress: VFC<DaoAddressProps> = ({ displayName, onChange }) => {
+  const { nearConfig } = configService.get();
+
   useDebounce(
     () => {
       const address = formatDaoAddress(displayName);
@@ -35,7 +37,7 @@ export const DaoAddress: VFC<DaoAddressProps> = ({ displayName, onChange }) => {
       ) : (
         <span className={styles.addressPlaceholder}>sampledaoname</span>
       )}
-      .{nearConfig.contractName}
+      .{nearConfig?.contractName ?? ''}
     </div>
   );
 };

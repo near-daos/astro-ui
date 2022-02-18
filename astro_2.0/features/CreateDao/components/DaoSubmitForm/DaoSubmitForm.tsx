@@ -6,8 +6,6 @@ import React, { useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 
-import { nearConfig } from 'config';
-
 import { SputnikWalletError } from 'errors/SputnikWalletError';
 
 import { CreateDaoInput } from 'types/dao';
@@ -19,11 +17,12 @@ import { TransactionDetailsWidget } from 'astro_2.0/components/TransactionDetail
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import { SputnikNearService } from 'services/sputnik';
+import { httpService } from 'services/HttpService';
+import { configService } from 'services/ConfigService';
 
 import { getRolesVotingPolicy } from './helpers';
 
 import styles from './DaoSubmitForm.module.scss';
-import { httpService } from 'services/HttpService';
 
 export function DaoSubmitForm(): JSX.Element {
   const router = useRouter();
@@ -107,7 +106,11 @@ export function DaoSubmitForm(): JSX.Element {
           lifetime: 20000,
         });
 
-        await router.push(`/dao/${data.address}.${nearConfig.contractName}`);
+        const { nearConfig } = configService.get();
+
+        await router.push(
+          `/dao/${data.address}.${nearConfig?.contractName ?? ''}`
+        );
       } catch (error) {
         console.warn(error);
 

@@ -1,13 +1,11 @@
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { FunctionComponent } from 'react';
 import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from 'next-i18next.config';
 import type { AppContext, AppProps } from 'next/app';
 import { withLDProvider } from 'launchdarkly-react-client-sdk';
-
-import { SWRConfig } from 'swr';
-import { useMount } from 'react-use';
+import { appConfig as applicationConfig } from 'config';
 
 import { ALL_FEED_URL, MY_FEED_URL } from 'constants/routing';
 
@@ -20,23 +18,32 @@ import { SearchResults } from 'features/search/search-results';
 
 import { SputnikNearService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
+import { configService } from 'services/ConfigService';
 
 import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 
 import { SocketProvider } from 'context/SocketContext';
 
-import { appConfig } from 'config';
+import { useAppConfig } from 'hooks/useAppConfig';
 
 import 'styles/globals.scss';
 
-function App({ Component, pageProps }: AppProps): JSX.Element {
+function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
+  const { appConfig, nearConfig } = useAppConfig();
+  const [appInitialized, setAppInitialized] = useState(false);
 
-  useMount(async () => {
-    SputnikNearService.init();
+  useEffect(() => {
+    if (!appConfig || !nearConfig) {
+      return;
+    }
 
-    const accountCookieOptions = appConfig.appDomain
-      ? { ...DEFAULT_OPTIONS, domain: appConfig.appDomain }
+    configService.init(nearConfig, appConfig);
+
+    SputnikNearService.init(nearConfig, appConfig);
+
+    const accountCookieOptions = appConfig.APP_DOMAIN
+      ? { ...DEFAULT_OPTIONS, domain: appConfig.APP_DOMAIN }
       : DEFAULT_OPTIONS;
 
     CookieService.set(
@@ -54,26 +61,30 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
     if (intercom) {
       intercom.style.bottom = '75px';
     }
-  });
+
+    setAppInitialized(true);
+  }, [appConfig, nearConfig, router.query.dao]);
+
+  if (!appInitialized) {
+    return null;
+  }
 
   return (
-    <SWRConfig value={{ fallback: pageProps?.fallback || {} }}>
-      <AuthWrapper>
-        <SocketProvider>
-          <ModalProvider>
-            <SearchResults>
-              <Head>
-                <title>Astro</title>
-              </Head>
-              <PageLayout>
-                <Component {...pageProps} />
-              </PageLayout>
-              <MobileNav />
-            </SearchResults>
-          </ModalProvider>
-        </SocketProvider>
-      </AuthWrapper>
-    </SWRConfig>
+    <AuthWrapper>
+      <SocketProvider>
+        <ModalProvider>
+          <SearchResults>
+            <Head>
+              <title>Astro</title>
+            </Head>
+            <PageLayout>
+              <Component {...pageProps} />
+            </PageLayout>
+            <MobileNav />
+          </SearchResults>
+        </ModalProvider>
+      </SocketProvider>
+    </AuthWrapper>
   );
 }
 
@@ -104,7 +115,7 @@ App.getInitialProps = async ({ ctx, router }: AppContext) => {
 };
 
 export default withLDProvider({
-  clientSideID: appConfig.launchDarklyId as string,
+  clientSideID: applicationConfig.launchDarklyId as string,
   reactOptions: {
     useCamelCaseFlagKeys: true,
   },

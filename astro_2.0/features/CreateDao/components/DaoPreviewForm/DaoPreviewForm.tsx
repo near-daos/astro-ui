@@ -2,8 +2,6 @@ import React, { VFC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 
-import { nearConfig } from 'config';
-
 import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
 
 import { DaoDetailsPreview } from 'astro_2.0/components/DaoDetails';
@@ -11,9 +9,12 @@ import { UnitSeparator } from 'astro_2.0/features/CreateDao/components/UnitSepar
 
 import { getImageFromImageFileList } from 'utils/getImageFromImageFileList';
 
+import { configService } from 'services/ConfigService';
+
 import styles from './DaoPreviewForm.module.scss';
 
 export const DaoPreviewForm: VFC = () => {
+  const { nearConfig } = configService.get();
   const { watch, getValues } = useFormContext<DAOFormValues>();
   const { t } = useTranslation();
 
@@ -41,7 +42,7 @@ export const DaoPreviewForm: VFC = () => {
     return null;
   }
 
-  const id = `${address}.${nearConfig.contractName}`;
+  const id = `${address}.${nearConfig?.contractName ?? ''}`;
   const daoData = {
     id,
     name: address,
