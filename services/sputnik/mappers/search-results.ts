@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import { DAO, DaoFeedItem, Member } from 'types/dao';
 import { ProposalFeedItem } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
+import { DaoPermission } from 'types/role';
 
 import {
   DaoFeedItemResponse,
@@ -15,15 +16,14 @@ import {
 } from './proposal';
 
 type MemberDTO = {
-  id: string;
-  name: string;
-  groups: string[];
-  tokens: {
-    type: string;
-    value: number;
-    percent: number;
-  };
-  votes: number;
+  accountId: string;
+  roles: {
+    daoId: string;
+    kind: 'Everyone' | 'Group';
+    name: string;
+    permissions: DaoPermission[];
+  }[];
+  voteCount: number;
 };
 
 export interface SearchResultsDTO {
@@ -154,6 +154,15 @@ export const extractMembersFromDao = (
   });
 };
 
+function mapMemberDTOToMember(item: MemberDTO): Member {
+  return {
+    id: item.accountId,
+    name: item.accountId,
+    votes: item.voteCount,
+    groups: item.roles.map(role => role.name),
+  };
+}
+
 export const mapSearchResultsDTOToDataObject = (
   query: string,
   data: SearchResultsDTO
@@ -162,14 +171,15 @@ export const mapSearchResultsDTOToDataObject = (
     return null;
   }
 
+  const daosResults = data.daos ?? [];
   const proposalsResults = data.proposals ?? [];
+  const membersResults = data.members ?? [];
 
-  const daos = mapDaoFeedItemResponseToDaoFeedItemList(data.daos ?? []);
+  const daos = mapDaoFeedItemResponseToDaoFeedItemList(daosResults);
   const proposals = proposalsResults.map(
     mapProposalFeedItemResponseToProposalFeedItem
   );
-
-  const members = extractMembersFromDaosList(daos, proposals, query);
+  const members = membersResults.map(mapMemberDTOToMember);
 
   return {
     query,
