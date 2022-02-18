@@ -16,6 +16,7 @@
   display: flex;
   flex-direction: column;
   grid-area: header;
+  margin-top: 24px;
 
   @include tablet-portrait {
     align-items: center;
@@ -24,11 +25,7 @@
   }
 
   h1 {
-    margin: 0 0 28px;
-
-    @include tablet-portrait {
-      margin: 0;
-    }
+    margin: 0;
   }
 }
 

@@ -67,10 +67,15 @@ const NFTs: NextPage<NFTsPageProps> = ({ daoContext }) => {
       : nfts.filter(nft => currentContractIds.includes(nft.contractId));
 
     return nftsToRender.map(nft => {
-      const { uri, contractId } = nft;
+      const { uri, contractId, tokenId } = nft;
 
       return (
-        <NFTCard image={uri} contractId={contractId} key={uri.toString()} />
+        <NFTCard
+          image={uri}
+          contractId={contractId}
+          key={uri.toString()}
+          tokenId={tokenId}
+        />
       );
     });
   }

@@ -1,8 +1,10 @@
 import axios from 'axios';
+import cn from 'classnames';
 import React, { useEffect, useRef, useState, VFC } from 'react';
 import { ExplorerLink } from 'components/ExplorerLink';
 import { Popup } from 'components/Popup';
 import { Icon } from 'components/Icon';
+import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { shortenString } from 'utils/format';
 import { NFTUri } from 'types/token';
 
@@ -11,9 +13,10 @@ import styles from './NtfCard.module.scss';
 export interface NFTCardProps {
   image: NFTUri[];
   contractId: string;
+  tokenId: string;
 }
 
-export const NFTCard: VFC<NFTCardProps> = ({ image, contractId }) => {
+export const NFTCard: VFC<NFTCardProps> = ({ image, contractId, tokenId }) => {
   const imgRef = useRef<HTMLImageElement>(null);
   const linkRef = useRef<HTMLAnchorElement>(null);
   const nameRef = useRef('');
@@ -154,6 +157,14 @@ export const NFTCard: VFC<NFTCardProps> = ({ image, contractId }) => {
                 linkType="member"
                 textLabel="To the explorer"
               />
+            </div>
+          </div>
+          <div className={styles.info}>
+            <div className={styles.contract}>
+              <div className={styles.label}>Token ID</div>
+            </div>
+            <div className={cn(styles.contract, styles.value)}>
+              <CopyButton text={tokenId}>{tokenId}</CopyButton>
             </div>
           </div>
         </div>
