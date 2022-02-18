@@ -3,6 +3,7 @@ import nextI18NextConfig from 'next-i18next.config';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { getDaoContext } from 'features/daos/helpers';
 
 import { CookieService } from 'services/CookieService';
 import { SputnikHttpService } from 'services/sputnik';
@@ -21,7 +22,7 @@ export const getServerSideProps: GetServerSideProps<GroupPageProps> = async ({
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
   const [daoContext, membersStats] = await Promise.all([
-    SputnikHttpService.getDaoContext(account, daoId),
+    getDaoContext(account, daoId),
     SputnikHttpService.getDaoMembersStats(daoId),
   ]);
 

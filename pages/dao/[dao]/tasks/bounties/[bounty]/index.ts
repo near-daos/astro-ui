@@ -5,6 +5,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { SputnikHttpService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { getDaoContext } from 'features/daos/helpers';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -21,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const [dao, bountyContext, daoContext] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
     SputnikHttpService.getBountyContextById(bountyId, account),
-    SputnikHttpService.getDaoContext(account, daoId as string),
+    getDaoContext(account, daoId as string),
   ]);
 
   if (!daoContext || !bountyContext || !dao) {

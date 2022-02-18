@@ -9,11 +9,6 @@ import {
 
 import { SputnikHttpService } from 'services/sputnik';
 
-import {
-  mapOvertimeToChartData,
-  mapProposalsOvertimeToChartData,
-} from 'astro_2.0/features/DaoDashboard/helpers';
-
 type DaoDasboardFilteredData = {
   chartData: ChartDataElement[] | null;
   dashboardData: DaoDashboardData;
@@ -45,9 +40,9 @@ export function useDaoDashboardData(): DaoDasboardFilteredData {
         }
 
         if (funds.status === 'fulfilled') {
-          const newChartData = mapOvertimeToChartData(funds.value);
+          const newChartData = funds.value;
 
-          newDashboardData.funds = mapOvertimeToChartData(funds.value);
+          newDashboardData.funds = funds.value;
           setChartData(newChartData);
         }
 
@@ -67,28 +62,20 @@ export function useDaoDashboardData(): DaoDasboardFilteredData {
 
       switch (view) {
         case 'PROPOSALS': {
-          const res = await SputnikHttpService.getDaoStatsProposals(daoId);
-
-          data = mapProposalsOvertimeToChartData(res);
+          data = await SputnikHttpService.getDaoStatsProposals(daoId);
           break;
         }
         case 'NFTS': {
-          const res = await SputnikHttpService.getDaoStatsNfts(daoId);
-
-          data = mapOvertimeToChartData(res);
+          data = await SputnikHttpService.getDaoStatsNfts(daoId);
           break;
         }
         case 'BOUNTIES': {
-          const res = await SputnikHttpService.getDaoStatsBounties(daoId);
-
-          data = mapOvertimeToChartData(res);
+          data = await SputnikHttpService.getDaoStatsBounties(daoId);
           break;
         }
         case 'DAO_FUNDS':
         default: {
-          const res = await SputnikHttpService.getDaoStatsFunds(daoId);
-
-          data = mapOvertimeToChartData(res);
+          data = await SputnikHttpService.getDaoStatsFunds(daoId);
         }
       }
 
