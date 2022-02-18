@@ -10,7 +10,6 @@ FROM node:14-alpine AS builder
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-COPY .env.production ./
 ENV NODE_OPTIONS=--max_old_space_size=7168
 RUN yarn build
 
