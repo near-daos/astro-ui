@@ -83,6 +83,10 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   }, [canNavigateToBounty, contextId, dao.id, router]);
 
   function renderButtons() {
+    if (!accountId) {
+      return null;
+    }
+
     if (!bounty && proposal) {
       return (
         <div className={cn(styles.controlItem, styles.span)}>
