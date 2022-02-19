@@ -4,7 +4,7 @@
   background-color: var(--color-white);
   border-radius: 8px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
-  height: 392px;
+  height: 430px;
   position: relative;
   width: 296px;
 }
@@ -49,10 +49,22 @@
   margin-top: 16px;
 }
 
+.label {
+  color: var(--color-neutral-60);
+}
+
 .contract {
   @include font(12px, 18px, 400);
   @include ellipse-text;
-  margin-right: 4px;
+  flex: 1;
+
+  &:not(:last-of-type) {
+    margin-right: 4px;
+  }
+}
+
+.value {
+  text-align: right;
 }
 
 .preloader,

@@ -5,7 +5,7 @@ export function mapNftTokenResponseToNftToken(
 ): NftToken[] {
   return data
     .reduce<NftToken[]>((res, item) => {
-      const { id, contractId, baseUri, metadata, contract } = item;
+      const { id, contractId, baseUri, metadata, contract, tokenId } = item;
 
       if (!metadata) {
         return res;
@@ -55,6 +55,7 @@ export function mapNftTokenResponseToNftToken(
           isExternalReference,
           contractId,
           contractName: contract.name,
+          tokenId,
         });
       }
 

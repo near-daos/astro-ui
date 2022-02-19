@@ -60,6 +60,7 @@ export const CopyButton: FC<CopyButtonProps> = ({
   iconName = 'buttonCopy',
   title,
   tooltipPlacement = 'right',
+  children,
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const [tooltip, setTooltip] = useState(COPY_TEXT);
@@ -91,7 +92,7 @@ export const CopyButton: FC<CopyButtonProps> = ({
         onKeyPress={copyAccountName}
       >
         {title && title}
-        <IconButton icon={iconName} className={styles.btn} />
+        {children || <IconButton icon={iconName} className={styles.btn} />}
       </div>
       <Popup
         anchor={ref}
