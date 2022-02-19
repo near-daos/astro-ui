@@ -507,6 +507,7 @@ export class HttpService {
           }
           break;
         case API_QUERIES.GET_PROPOSALS_LIST:
+        case API_QUERIES.GET_PROPOSALS_LIST_BY_ACCOUNT_ID:
           {
             const { query, accountId } =
               requestCustom.queryRequest?.params || {};
