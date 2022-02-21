@@ -35,6 +35,9 @@ const SMALL_FLAG_PATH =
 const EXTRA_SMALL_FLAG_PATH =
   'M46.4118 0L9.74793 13.103V20.3722L0 23.856V52.5981L36.6639 39.4951V32.2259L46.4118 28.7421V0Z';
 
+const DEFAULT_FLAG = '/flags/defaultDaoFlag.png';
+const brokenFlags = new Set();
+
 export const FlagRenderer: FC<FlagRendererProps> = ({
   flag,
   logo,
@@ -148,14 +151,18 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
     };
 
     img.onerror = () => {
-      console.error(flag, fallBack);
+      brokenFlags.add(img.src);
+      setFallbackMode(false);
+      img.src = DEFAULT_FLAG;
     };
 
-    if (flag) {
+    if (flag && !brokenFlags.has(flag)) {
       img.src = flag;
-    } else if (fallBack) {
+    } else if (fallBack && !brokenFlags.has(fallBack)) {
       setFallbackMode(true);
       img.src = fallBack;
+    } else {
+      img.src = DEFAULT_FLAG;
     }
   }, [fallBack, flag, isMounted, isNoFlag]);
 
