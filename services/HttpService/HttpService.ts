@@ -718,9 +718,9 @@ export class HttpService {
           response.data = mapSearchResultsDTOToDataObject(
             responseConfig.params.query,
             {
-              daos: response.data?.daos?.data,
-              proposals: response.data?.proposals?.data,
-              members: response.data?.members?.data,
+              daos: response.data?.daos,
+              proposals: response.data?.proposals,
+              members: response.data?.members,
             }
           );
           break;

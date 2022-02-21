@@ -3,6 +3,6 @@ import { BaseParams } from './api';
 
 export type SearchParams = {
   query: string;
-  cancelToken: CancelToken;
+  cancelToken?: CancelToken;
   accountId: string;
 } & BaseParams;

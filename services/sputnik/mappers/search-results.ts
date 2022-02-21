@@ -4,6 +4,7 @@ import { DAO, DaoFeedItem, Member } from 'types/dao';
 import { ProposalFeedItem } from 'types/proposal';
 import { SearchResultsData } from 'types/search';
 import { DaoPermission } from 'types/role';
+import { PaginationResponse } from 'types/api';
 
 import {
   DaoFeedItemResponse,
@@ -27,9 +28,9 @@ type MemberDTO = {
 };
 
 export interface SearchResultsDTO {
-  daos: DaoFeedItemResponse[];
-  proposals: ProposalFeedItemResponse[];
-  members: MemberDTO[];
+  daos: PaginationResponse<DaoFeedItemResponse[]>;
+  proposals: PaginationResponse<ProposalFeedItemResponse[]>;
+  members: PaginationResponse<MemberDTO[]>;
 }
 
 export interface SearchResponse {
@@ -171,9 +172,9 @@ export const mapSearchResultsDTOToDataObject = (
     return null;
   }
 
-  const daosResults = data.daos ?? [];
-  const proposalsResults = data.proposals ?? [];
-  const membersResults = data.members ?? [];
+  const daosResults = data.daos?.data ?? [];
+  const proposalsResults = data.proposals?.data ?? [];
+  const membersResults = data.members?.data ?? [];
 
   const daos = mapDaoFeedItemResponseToDaoFeedItemList(daosResults);
   const proposals = proposalsResults.map(
