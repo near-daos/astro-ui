@@ -94,14 +94,29 @@
   }
 }
 
+.errorIcon {
+  margin-left: 4px;
+}
+
+.errorMessage {
+  align-items: flex-start;
+  display: flex;
+  white-space: nowrap;
+}
+
 .inputLabel {
   @extend %subtitle6;
+  align-items: center;
   background-color: var(--color-white);
   color: var(--color-neutral-60);
+  display: flex;
   left: 6px;
   padding: 2px 4px;
   position: relative;
   top: 10px;
-  //transform: translate(6px, 6px);
   width: fit-content;
+}
+
+.labelError {
+  color: var(--color-error-50);
 }
