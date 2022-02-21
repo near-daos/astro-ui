@@ -16,8 +16,9 @@ import { CreateDaoInput } from 'types/dao';
 import { CreateTokenParams, SputnikTokenService } from 'types/token';
 import { Transfer, VoteAction, CreateProposalParams } from 'types/proposal';
 
-import { CookieService } from 'services/CookieService';
+import { formatGasValue } from 'utils/format';
 
+import { CookieService } from 'services/CookieService';
 import { configService } from 'services/ConfigService';
 import { GAS_VALUE, SputnikDaoService } from './services/SputnikDaoService';
 import { SputnikWalletService } from './services/SputnikWalletService';
@@ -243,9 +244,46 @@ class SputnikNearServiceClass {
       deadline: string;
       bountyBond: string;
       gas?: string | number;
+      tokenId?: string;
     }
   ) {
-    return this.sputnikDaoService.claimBounty({ daoId, ...args });
+    const accountId = this.getAccountId();
+    const { bountyId: id, deadline, bountyBond, gas, tokenId } = args;
+
+    const storageDepositTransactionAction = tokenId
+      ? {
+          contract: tokenId,
+          action: transactions.functionCall(
+            'storage_deposit',
+            {
+              account_id: accountId,
+              registration_only: true,
+            },
+            GAS_VALUE,
+            // 0.1 NEAR, minimal value
+            new BN('100000000000000000000000')
+          ),
+        }
+      : null;
+
+    const claimAction = {
+      contract: daoId,
+      action: transactions.functionCall(
+        'bounty_claim',
+        {
+          id,
+          deadline,
+        },
+        gas ? formatGasValue(gas) : GAS_VALUE,
+        new BN(bountyBond)
+      ),
+    };
+
+    const trx = storageDepositTransactionAction
+      ? [storageDepositTransactionAction, claimAction]
+      : [claimAction];
+
+    return this.sendTransactions(trx);
   }
 
   public async unclaimBounty(
