@@ -8,7 +8,7 @@ import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { Action, Transaction } from 'near-api-js/lib/transaction';
 import { SignAndSendTransactionOptions } from 'near-api-js/lib/account';
 
-import { appConfig } from 'config';
+import { configService } from 'services/ConfigService';
 
 import {
   SputnikWalletError,
@@ -131,7 +131,9 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
 
     const walletConnection = this.walletConnection as SputnikWalletConnection;
 
-    const walletCallbackUrl = appConfig.walletUseLocalRedirect
+    const { appConfig } = configService.get();
+
+    const walletCallbackUrl = appConfig?.LOCAL_WALLET_REDIRECT
       ? `${window.origin}/callback/transaction`
       : `${window.origin}/api/server/v1/transactions/wallet/callback/${this.accountId}`;
 

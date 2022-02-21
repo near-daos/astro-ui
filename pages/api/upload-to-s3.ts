@@ -1,8 +1,11 @@
+import extractDomain from 'extract-domain';
 import { AwsUploader } from 'services/AwsUploader';
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ManagedUpload } from 'aws-sdk/clients/s3';
+
+import { appConfig } from 'config';
 
 export const config = {
   api: {
@@ -19,6 +22,14 @@ export default async function handler(
   }
 
   try {
+    const { appDomain } = appConfig;
+    const reqDomain = extractDomain(req.headers.host ?? '');
+
+    // don't forget to add APP_DOMAIN=localhost to your .env.local for localhost development
+    if (!appDomain.endsWith(reqDomain)) {
+      return res.status(403).send('Forbidden');
+    }
+
     const { Key } = await AwsUploader.uploadToBucket(req);
 
     return res.status(200).json(Key);

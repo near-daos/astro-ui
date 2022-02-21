@@ -49,6 +49,7 @@ export function useBountyControls(
         deadline: bounty?.maxDeadline,
         bountyBond: dao.policy.bountyBond,
         gas: res[0],
+        tokenId: bounty?.token,
       });
 
       onSuccessHandler();
