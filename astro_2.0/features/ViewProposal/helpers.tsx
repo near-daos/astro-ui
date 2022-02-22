@@ -31,6 +31,7 @@ import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/ViewProposal//comp
 import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
 import { parseISO } from 'date-fns';
 import { getDistanceFromNow } from 'utils/format';
+import { TokenDistributionContent } from 'astro_2.0/features/ViewProposal/components/TokenDistributionContent';
 
 export function getContentNode(proposal: ProposalFeedItem): ReactNode {
   const { dao } = proposal;
@@ -298,6 +299,36 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
 
         break;
       }
+      case ProposalVariant.ProposeTokenDistribution: {
+        content = (
+          <TokenDistributionContent
+            proposer="anima.testnet"
+            governanceToken={{ name: 'REF', value: 700 }}
+            groups={[
+              {
+                name: 'Mages',
+                groupTotal: '300',
+                isCustom: true,
+                members: [
+                  { name: 'anima.testnet', value: 200 },
+                  { name: 'animatronic.testnet', value: 100 },
+                ],
+              },
+              {
+                name: 'Warriors',
+                groupTotal: '200',
+                isCustom: false,
+                members: [
+                  { name: 'james.testnet', value: 0 },
+                  { name: 'ethan.testnet', value: 0 },
+                ],
+              },
+            ]}
+          />
+        );
+
+        break;
+      }
       default: {
         break;
       }
@@ -434,6 +465,9 @@ export function getProposalVariantLabel(
     }
     case ProposalVariant.ProposeChangeDaoFlag: {
       return 'Change DAO flag';
+    }
+    case ProposalVariant.ProposeTokenDistribution: {
+      return 'Distribution of tokens';
     }
     default: {
       return type;

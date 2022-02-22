@@ -9,6 +9,7 @@ import { STEPS } from './constants';
 import { Intro } from './components/steps/Intro';
 import { SelectToken } from './components/steps/SelectToken';
 import { CreateToken } from './components/steps/CreateToken';
+import { TokenDistribution } from './components/steps/TokenDistribution';
 
 import styles from './CreateGovernanceTokenPageContent.module.scss';
 
@@ -32,6 +33,8 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
         return <SelectToken />;
       case STEPS.CREATE_TOKEN:
         return <CreateToken daoContext={daoContext} />;
+      case STEPS.TOKEN_DISTRIBUTION:
+        return <TokenDistribution daoContext={daoContext} />;
       default:
         return <Intro />;
     }

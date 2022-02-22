@@ -29,3 +29,19 @@ export type CreateBountyInput = {
   deadlineThreshold: number;
   deadlineUnit: DeadlineUnit;
 };
+
+export type Member = {
+  name: string;
+  value: number;
+};
+
+export type TokenDistributionGroup = {
+  name: string;
+  isCustom: boolean;
+  groupTotal: string;
+  members?: Member[];
+};
+
+export interface TokenDistributionInput {
+  groups: TokenDistributionGroup[];
+}

@@ -30,7 +30,7 @@ export const CreationProgress: VFC<CreationProgressProps> = ({
     });
 
     return (
-      <div className={stepClassName}>
+      <div className={stepClassName} key={label}>
         <div className={styles.stepCircle}>
           <Icon name="buttonCheck" className={styles.checkIcon} />
         </div>

@@ -1,25 +1,26 @@
-import React, { VFC } from 'react';
+import React, { FC } from 'react';
+import { DaoContext } from 'types/context';
 import { useTranslation } from 'next-i18next';
 
-import { DaoContext } from 'types/context';
+import styles from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/steps/CreateToken/CreateToken.module.scss';
+import { CreationProgress } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/steps/CreateToken/components/CreationProgress';
+import { Button } from 'components/button/Button';
+import { Icon } from 'components/Icon';
+import { CreateProposal } from 'astro_2.0/features/CreateProposal';
+import { WarningPanel } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/WarningPanel';
+
 import { ProposalVariant } from 'types/proposal';
 
 import { CREATE_GOV_TOKEN_PAGE_URL } from 'constants/routing';
 import { STEPS } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/constants';
 
-import { CreateProposal } from 'astro_2.0/features/CreateProposal';
-
-import { Icon } from 'components/Icon';
-import { Button } from 'components/button/Button';
-import { CreationProgress } from './components/CreationProgress';
-
-import styles from './CreateToken.module.scss';
-
-interface CreateTokenProps {
+interface TokenDistributionProps {
   daoContext: DaoContext;
 }
 
-export const CreateToken: VFC<CreateTokenProps> = ({ daoContext }) => {
+export const TokenDistribution: FC<TokenDistributionProps> = ({
+  daoContext,
+}) => {
   const { dao, userPermissions } = daoContext;
 
   const translationBase = 'createGovernanceTokenPage.createToken';
@@ -28,13 +29,15 @@ export const CreateToken: VFC<CreateTokenProps> = ({ daoContext }) => {
   const steps = [
     {
       label: t(`${translationBase}.progress.createToken`),
-      isCurrent: true,
+      isComplete: true,
     },
     {
       label: t(`${translationBase}.progress.contractAcceptance`),
+      isComplete: true,
     },
     {
       label: t(`${translationBase}.progress.tokenDistribution`),
+      isCurrent: true,
     },
     {
       label: t(`${translationBase}.progress.changeDaoPolicy`),
@@ -45,6 +48,7 @@ export const CreateToken: VFC<CreateTokenProps> = ({ daoContext }) => {
     <div className={styles.root}>
       <div>
         <CreationProgress steps={steps} className={styles.progress} />
+        <WarningPanel className={styles.warning} />
       </div>
       <div>
         <CreateProposal
@@ -53,7 +57,7 @@ export const CreateToken: VFC<CreateTokenProps> = ({ daoContext }) => {
           key={0}
           daoTokens={{}}
           userPermissions={userPermissions}
-          proposalVariant={ProposalVariant.ProposeCreateToken}
+          proposalVariant={ProposalVariant.ProposeTokenDistribution}
           showFlag={false}
           onClose={() => undefined}
           showClose={false}
@@ -69,7 +73,7 @@ export const CreateToken: VFC<CreateTokenProps> = ({ daoContext }) => {
               pathname: CREATE_GOV_TOKEN_PAGE_URL,
               query: {
                 dao: dao.id,
-                step: STEPS.TOKEN_DISTRIBUTION,
+                step: STEPS.CHANGE_VOTING_POLICY,
               },
             }}
           >

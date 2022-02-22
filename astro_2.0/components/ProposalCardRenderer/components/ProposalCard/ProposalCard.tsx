@@ -28,6 +28,7 @@ import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { SputnikNearService } from 'services/sputnik';
 import { getProposalVariantLabel } from 'astro_2.0/features/ViewProposal/helpers';
 import { ExplorerLink } from 'components/ExplorerLink';
+import { AmountBalanceCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/AmountBalanceCard';
 
 import { Button } from 'components/button/Button';
 
@@ -230,6 +231,81 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     resolver: yupResolver(schema),
   });
 
+  function renderProposer() {
+    switch (variant) {
+      case ProposalVariant.ProposeCreateToken: {
+        return null;
+      }
+      case ProposalVariant.ProposeTokenDistribution: {
+        return (
+          <div className={styles.proposerCell}>
+            <InfoBlockWidget
+              label={t('proposalCard.proposalOwner')}
+              value={proposer}
+            />
+            <AmountBalanceCard
+              value={23000}
+              suffix="REF"
+              className={styles.amountBalance}
+            />
+          </div>
+        );
+      }
+      default: {
+        return (
+          <div className={styles.proposerCell}>
+            <InfoBlockWidget
+              label={t(`proposalCard.proposalOwner`)}
+              value={proposer}
+            />
+          </div>
+        );
+      }
+    }
+  }
+
+  function renderDescription() {
+    switch (variant) {
+      case ProposalVariant.ProposeCreateToken:
+      case ProposalVariant.ProposeTokenDistribution: {
+        return null;
+      }
+      default: {
+        return (
+          <div className={styles.descriptionCell}>
+            <FieldWrapper
+              label={t(`proposalCard.proposalDescription`)}
+              fullWidth
+            >
+              <div className={styles.proposalDescription}>{description}</div>
+            </FieldWrapper>
+
+            <div className={styles.proposalExternalLink}>
+              <ExternalLink to={link} />
+            </div>
+          </div>
+        );
+      }
+    }
+  }
+
+  function renderCardContent() {
+    switch (variant) {
+      case ProposalVariant.ProposeTokenDistribution: {
+        return <div className={styles.descriptionCell}>{content}</div>;
+      }
+      default: {
+        return (
+          <>
+            {renderProposer()}
+            {renderDescription()}
+            <div className={styles.contentCell}>{content}</div>
+          </>
+        );
+      }
+    }
+  }
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div
@@ -277,22 +353,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           </Button>
         )}
       </div>
-      <div className={styles.proposerCell}>
-        <InfoBlockWidget
-          label={t(`proposalCard.proposalOwner`)}
-          value={proposer}
-        />
-      </div>
-      <div className={styles.descriptionCell}>
-        <FieldWrapper label={t(`proposalCard.proposalDescription`)} fullWidth>
-          <div className={styles.proposalDescription}>{description}</div>
-        </FieldWrapper>
 
-        <div className={styles.proposalExternalLink}>
-          <ExternalLink to={link} />
-        </div>
-      </div>
-      <div className={styles.contentCell}>{content}</div>
+      {renderCardContent()}
+
       <div className={styles.voteControlCell}>
         <FormProvider {...methods}>
           <ProposalControlPanel
@@ -324,6 +387,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           />
         </FormProvider>
       </div>
+
       <div className={styles.voteProgress}>
         {voteDetails && <ProgressBar detail={voteDetails} />}
       </div>

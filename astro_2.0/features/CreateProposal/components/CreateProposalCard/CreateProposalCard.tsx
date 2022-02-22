@@ -10,6 +10,7 @@ import { Input } from 'components/inputs/Input';
 import { Icon } from 'components/Icon';
 import { IconButton } from 'components/button/IconButton';
 import { GroupedSelect } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
+import { AmountBalanceCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/AmountBalanceCard';
 
 import { ProposalVariant } from 'types/proposal';
 import { UserPermissions } from 'types/context';
@@ -78,76 +79,26 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     return null;
   }
 
-  function renderProposer() {
-    if (type !== ProposalVariant.ProposeCreateToken) {
-      return (
-        <div className={styles.proposerCell}>
-          <InfoBlockWidget
-            label={t('proposalCard.proposalOwner')}
-            value={proposer}
-          />
-        </div>
-      );
-    }
-
-    return null;
-  }
-
-  function renderDescription() {
-    if (type !== ProposalVariant.ProposeCreateToken) {
-      return (
-        <div className={styles.descriptionCell}>
-          <InputWrapper
-            fieldName="details"
-            label={t('proposalCard.proposalDescription')}
-            fullWidth
-          >
-            <TextArea
-              size="block"
-              textAlign="left"
-              resize="none"
-              autoFocus
-              placeholder={LOREN_IPSUM}
-              className={styles.textArea}
-              isBorderless
-              maxLength={500}
-              minRows={4}
-              maxRows={4}
-              {...register('details')}
-            />
-          </InputWrapper>
-          <div className={styles.proposalExternalLink}>
-            <Icon
-              name="buttonExternal"
-              width={14}
-              className={cn({
-                [styles.error]: errors.externalUrl,
-              })}
-            />
-            <Input
-              isBorderless
-              size="block"
-              className={styles.linkInput}
-              {...register('externalUrl')}
-              placeholder="example.com/putyourlinkhere"
-            />
-          </div>
-        </div>
-      );
-    }
-
-    return null;
-  }
-
-  return (
-    <div className={styles.root}>
-      <div className={styles.proposalCell}>
-        {type === ProposalVariant.ProposeDoneBounty ? (
+  function renderProposalCell() {
+    switch (type) {
+      case ProposalVariant.ProposeDoneBounty: {
+        return (
           <InfoBlockWidget
             label="Proposal type: Transfer/Bounty Done"
             value="Complete Bounty"
           />
-        ) : (
+        );
+      }
+      case ProposalVariant.ProposeTokenDistribution: {
+        return (
+          <InfoBlockWidget
+            label="Custom Function"
+            value="Distribution of tokens"
+          />
+        );
+      }
+      default: {
+        return (
           <GroupedSelect
             key={type}
             inputStyles={
@@ -165,18 +116,120 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
             options={proposalTypesOptions}
             onChange={v => onTypeSelect(v as ProposalVariant)}
           />
-        )}
-      </div>
+        );
+      }
+    }
+  }
+
+  function renderProposer() {
+    switch (type) {
+      case ProposalVariant.ProposeCreateToken: {
+        return null;
+      }
+      case ProposalVariant.ProposeTokenDistribution: {
+        return (
+          <div className={styles.proposerCell}>
+            <InfoBlockWidget
+              label={t('proposalCard.proposalOwner')}
+              value={proposer}
+            />
+            <AmountBalanceCard
+              value={23000}
+              suffix="REF"
+              className={styles.amountBalance}
+            />
+          </div>
+        );
+      }
+      default: {
+        return (
+          <div className={styles.proposerCell}>
+            <InfoBlockWidget
+              label={t('proposalCard.proposalOwner')}
+              value={proposer}
+            />
+          </div>
+        );
+      }
+    }
+  }
+
+  function renderDescription() {
+    switch (type) {
+      case ProposalVariant.ProposeCreateToken:
+      case ProposalVariant.ProposeTokenDistribution: {
+        return null;
+      }
+      default: {
+        return (
+          <div className={styles.descriptionCell}>
+            <InputWrapper
+              fieldName="details"
+              label={t('proposalCard.proposalDescription')}
+              fullWidth
+            >
+              <TextArea
+                size="block"
+                textAlign="left"
+                resize="none"
+                autoFocus
+                placeholder={LOREN_IPSUM}
+                className={styles.textArea}
+                isBorderless
+                maxLength={500}
+                minRows={4}
+                maxRows={4}
+                {...register('details')}
+              />
+            </InputWrapper>
+            <div className={styles.proposalExternalLink}>
+              <Icon
+                name="buttonExternal"
+                width={14}
+                className={cn({
+                  [styles.error]: errors.externalUrl,
+                })}
+              />
+              <Input
+                isBorderless
+                size="block"
+                className={styles.linkInput}
+                {...register('externalUrl')}
+                placeholder="example.com/putyourlinkhere"
+              />
+            </div>
+          </div>
+        );
+      }
+    }
+  }
+
+  function renderCardContent() {
+    switch (type) {
+      case ProposalVariant.ProposeTokenDistribution: {
+        return <div className={styles.descriptionCell}>{content}</div>;
+      }
+      default: {
+        return (
+          <>
+            {renderProposer()}
+            {renderDescription()}
+            <div className={styles.contentCell}>{content}</div>
+          </>
+        );
+      }
+    }
+  }
+
+  return (
+    <div className={styles.root}>
+      <div className={styles.proposalCell}>{renderProposalCell()}</div>
 
       <div className={styles.countdownCell}>
         Countdown will&nbsp;be&nbsp;here
       </div>
 
-      {renderProposer()}
-
-      {renderDescription()}
-
-      <div className={styles.contentCell}>{content}</div>
+      {renderCardContent()}
 
       <div className={styles.voteControlCell}>
         <Icon name="votingYesChecked" className={styles.voteIcon} />
