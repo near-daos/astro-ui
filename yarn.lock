@@ -3965,6 +3965,11 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.50.tgz#1e0caa9364d3fccd2931c3ed96fdbeaa5d4cca83"
   integrity sha512-C6N5s2ZFtuZRj54k2/zyRhNDjJwwcViAM3Nbm8zjBpbqAdZ00mr0CFxvSKeO8Y/e03WVFLpQMdHYVfUd6SB+Hw==
 
+"@types/extract-domain@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@types/extract-domain/-/extract-domain-2.3.1.tgz#106cddf94ec6b5e8cfa1ca4bbb09c404f3e3d806"
+  integrity sha512-M6/YwjwRh/Q6wm9l5ieQCO2pG/yrpmV77FlJfeLQDh2SL2clc9Ye1wGUInThQ3gvgiVZHcrBCz3bVun3Kps84w==
+
 "@types/glob-base@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@types/glob-base/-/glob-base-0.3.0.tgz#a581d688347e10e50dd7c17d6f2880a10354319d"
@@ -8622,6 +8627,13 @@ extglob@^2.0.2, extglob@^2.0.4:
     regex-not "^1.0.0"
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
+
+extract-domain@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/extract-domain/-/extract-domain-2.4.1.tgz#f0520fdeebd7f12b145205b7dc6eb0b174a8e473"
+  integrity sha512-dX+kCRLakP2r5DrcVzC14rlRHgFfg4TzYreoe6ht5SirCiYVKNjOyZUSKrLa9If4XULWZ/5dChOyzKs5QwLbzA==
+  optionalDependencies:
+    psl "^1.8.0"
 
 extsprintf@1.3.0:
   version "1.3.0"
@@ -14500,7 +14512,7 @@ prr@~1.0.1:
   resolved "https://registry.yarnpkg.com/prr/-/prr-1.0.1.tgz#d3fc114ba06995a45ec6893f484ceb1d78f5f476"
   integrity sha1-0/wRS6BplaRexok/SEzrHXj19HY=
 
-psl@^1.1.28, psl@^1.1.33:
+psl@^1.1.28, psl@^1.1.33, psl@^1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.8.0.tgz#9326f8bcfb013adcc005fdff056acce020e51c24"
   integrity sha512-RIdOzyoavK+hA18OGGWDqUTsCLhtA7IcZ/6NCs4fFJaHBDab+pDDmDIByWFRQJq2Cd7r1OoQxBGKOaztq+hjIQ==

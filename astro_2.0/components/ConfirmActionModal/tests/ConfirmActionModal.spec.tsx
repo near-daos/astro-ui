@@ -1,5 +1,6 @@
 import { render } from 'jest/testUtils';
 import { fireEvent } from '@testing-library/dom';
+import { act } from '@testing-library/react';
 
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 
@@ -27,25 +28,35 @@ describe('Confirm Action Modal', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('Should call onClose callback', () => {
+  it('Should call onClose callback', async () => {
     const onClose = jest.fn();
 
     const { getByTestId } = renderModal({ onClose });
 
-    fireEvent.click(getByTestId('close-button'));
+    act(() => {
+      fireEvent.click(getByTestId('close-button'));
+    });
+
+    await new Promise(resolve => setTimeout(resolve, 0));
 
     expect(onClose).toBeCalledWith(DEFAULT_PROPOSAL_GAS.toString());
   });
 
-  it('Should update gas value', () => {
+  it('Should update gas value', async () => {
     const onClose = jest.fn();
-    const gasValue = '12345678';
+    const gasValue = '100';
 
     const { getByTestId } = renderModal({ onClose });
 
-    fireEvent.change(getByTestId('gas-input'), { target: { value: gasValue } });
+    act(() => {
+      fireEvent.change(getByTestId('gas-input'), {
+        target: { value: gasValue },
+      });
 
-    fireEvent.click(getByTestId('close-button'));
+      fireEvent.click(getByTestId('close-button'));
+    });
+
+    await new Promise(resolve => setTimeout(resolve, 0));
 
     expect(onClose).toBeCalledWith(gasValue);
   });
