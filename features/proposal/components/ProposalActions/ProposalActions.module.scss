@@ -59,6 +59,9 @@
 
 .disabled.disabled {
   color: var(--color-neutral-50);
+  &:hover {
+    color: currentColor;
+  }
 }
 
 .copyBtn {
