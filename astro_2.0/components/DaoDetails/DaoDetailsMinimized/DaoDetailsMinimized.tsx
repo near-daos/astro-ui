@@ -118,7 +118,9 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
               </div>
               <div>
                 <div className={styles.displayName}>
-                  {shortenString(dao.displayName, isXsMobile ? 25 : 40)}
+                  <div className={styles.name}>
+                    {shortenString(dao.displayName, isXsMobile ? 25 : 40)}
+                  </div>
                   <ExplorerLink
                     linkData={dao.id}
                     linkType="member"

@@ -96,7 +96,7 @@ export const DashboardChart: FC<DashboardChartProps> = ({
   return (
     <Measure
       onResize={contentRect => {
-        const newWidth = contentRect?.entry?.width;
+        const newWidth = contentRect?.entry?.width - 24;
 
         if (
           (newWidth && width === 0) ||
