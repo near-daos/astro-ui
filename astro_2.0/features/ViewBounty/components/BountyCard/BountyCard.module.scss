@@ -101,8 +101,13 @@
 }
 
 .button {
+  padding: 0 8px;
   text-transform: capitalize;
   white-space: nowrap;
+
+  @include tablet-landscape {
+    padding: 0 12px;
+  }
 }
 
 .unclaimBtn {
@@ -165,7 +170,7 @@
 
 .btnWrapper {
   //grid-area: btnWrapper;
-  margin-top: 24px;
+  //margin-top: 24px;
 }
 
 .proposalStatusSeal {
