@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 
 import { Icon } from 'components/Icon';
 import {
@@ -78,8 +79,9 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
         </FieldWrapper>
       </div>
       <div className={styles.divider} />
-      <div className={styles.inline}>
+      <div className={cn(styles.inline, styles.flex1)}>
         <FieldWrapper
+          fullWidth
           label={t('proposalCard.bountyAvailableClaims')}
           labelClassName={styles.label}
         >
@@ -87,6 +89,7 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
         </FieldWrapper>
         <div className={styles.divider} />
         <FieldWrapper
+          fullWidth
           label={t('proposalCard.bountyTimeToComplete')}
           labelClassName={styles.label}
         >
