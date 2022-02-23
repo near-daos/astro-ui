@@ -131,7 +131,7 @@ const CustomFunctionCallContent: FC = () => {
       </div>
 
       <div className={styles.gas}>
-        <InputWrapper fieldName="actionsGas" label="Gas">
+        <InputWrapper fieldName="actionsGas" label="TGas">
           <div className={styles.row}>
             <Input
               className={cn(styles.inputWrapper, styles.narrow)}

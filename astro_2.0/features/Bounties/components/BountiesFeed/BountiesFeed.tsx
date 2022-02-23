@@ -133,6 +133,10 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({
 
   const handleBountyInoutSearch = useCallback(
     async val => {
+      if (!val || !val.trim()) {
+        return;
+      }
+
       const res = await handleSearch(val);
 
       if (isMounted()) {
