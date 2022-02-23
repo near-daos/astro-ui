@@ -87,7 +87,7 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
         </FieldWrapper>
         <div className={styles.divider} />
         <FieldWrapper
-          label={t('proposalCard.bountyDaysToComplete')}
+          label={t('proposalCard.bountyTimeToComplete')}
           labelClassName={styles.label}
         >
           <FieldValue value={deadlineThreshold} />

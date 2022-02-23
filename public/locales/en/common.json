@@ -244,6 +244,7 @@
     "proposalTargetPlaceholder": "Specify target account",
     "bountyAvailableClaims": "Available Claims",
     "bountyDaysToComplete": "Days to Complete",
+    "bountyTimeToComplete": "Time to Complete",
     "newDAOName": "New DAO name",
     "newDAOPurpose": "New Purpose",
     "newDAOLinks": "New DAO links",
