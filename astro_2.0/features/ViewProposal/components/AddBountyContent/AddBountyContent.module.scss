@@ -58,6 +58,10 @@
   display: flex;
 }
 
+.flex1 {
+  flex: 1;
+}
+
 @media screen and (max-width: #{breakpoints.$screen-md}px) {
   .root {
     flex-wrap: wrap;

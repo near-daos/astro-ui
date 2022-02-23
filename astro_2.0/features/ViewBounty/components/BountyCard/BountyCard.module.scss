@@ -151,14 +151,9 @@
 }
 
 .voteControlCell {
-  display: grid;
-  grid-column-gap: 12px;
-  grid-row-gap: 12px;
-  grid-template-areas:
-    'comments claims'
-    'btnWrapper btnWrapper';
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   justify-content: space-between;
+  padding-top: 24px;
 
   @include tablet-landscape {
     align-items: flex-end;
