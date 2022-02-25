@@ -57,6 +57,7 @@ import { AddMemberToGroupContent } from 'astro_2.0/features/CreateProposal/compo
 import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoLegalInfoContent';
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/components/RemoveMemberFromGroupContent';
 import { TokenDistributionContent } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent';
+import { ContractAcceptanceContent } from 'astro_2.0/features/CreateProposal/components/ContractAcceptanceContent';
 
 // Helpers & Utils
 import {
@@ -74,6 +75,7 @@ import {
   getCustomFunctionCallProposal,
 } from 'astro_2.0/features/CreateProposal/proposalObjectHelpers';
 import { getTokenDistributionProposal } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent/helpers';
+
 import {
   getImgValidationError,
   requiredImg,
@@ -428,6 +430,9 @@ export function getFormContentNode(
     case ProposalVariant.ProposeCustomFunctionCall: {
       return <CustomFunctionCallContent />;
     }
+    case ProposalVariant.ProposeContractAcceptance: {
+      return <ContractAcceptanceContent tokenId="someverylonglongname.near" />;
+    }
     case ProposalVariant.ProposeTokenDistribution: {
       const groups = dao.groups.map(group => {
         return {
@@ -506,6 +511,12 @@ export function getFormInitialValues(
         details: '',
         externalUrl: '',
         links: [],
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
+    case ProposalVariant.ProposeContractAcceptance: {
+      return {
+        unstakingPeriod: '345',
         gas: DEFAULT_PROPOSAL_GAS,
       };
     }
@@ -833,6 +844,15 @@ export async function getNewProposalObject(
         (data as unknown) as TokenDistributionInput
       );
     }
+    case ProposalVariant.ProposeContractAcceptance: {
+      // todo - add create function
+      return {
+        daoId: dao.id,
+        description: 'contract acceptance',
+        kind: 'Vote',
+        bond: dao.policy.proposalBond,
+      };
+    }
     default: {
       return null;
     }
@@ -1103,6 +1123,17 @@ export function getValidationSchema(
     // todo - add validation
     case ProposalVariant.ProposeTokenDistribution: {
       return yup.object().shape({});
+    }
+
+    case ProposalVariant.ProposeContractAcceptance: {
+      return yup.object().shape({
+        unstakingPeriod: yup
+          .number()
+          .typeError('Must be a valid number.')
+          .positive()
+          .min(1)
+          .required('Required'),
+      });
     }
 
     case ProposalVariant.ProposeDoneBounty:

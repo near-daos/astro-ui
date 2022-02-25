@@ -97,6 +97,14 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
           />
         );
       }
+      case ProposalVariant.ProposeContractAcceptance: {
+        return (
+          <InfoBlockWidget
+            label="Creating Token"
+            value="Acceptance of contract"
+          />
+        );
+      }
       default: {
         return (
           <GroupedSelect
@@ -123,6 +131,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
 
   function renderProposer() {
     switch (type) {
+      case ProposalVariant.ProposeContractAcceptance:
       case ProposalVariant.ProposeCreateToken: {
         return null;
       }
@@ -157,6 +166,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   function renderDescription() {
     switch (type) {
       case ProposalVariant.ProposeCreateToken:
+      case ProposalVariant.ProposeContractAcceptance:
       case ProposalVariant.ProposeTokenDistribution: {
         return null;
       }
@@ -206,6 +216,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
 
   function renderCardContent() {
     switch (type) {
+      case ProposalVariant.ProposeContractAcceptance:
       case ProposalVariant.ProposeTokenDistribution: {
         return <div className={styles.descriptionCell}>{content}</div>;
       }

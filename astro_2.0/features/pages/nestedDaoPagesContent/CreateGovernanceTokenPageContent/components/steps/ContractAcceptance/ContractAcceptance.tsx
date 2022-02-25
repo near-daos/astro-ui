@@ -1,26 +1,27 @@
-import React, { VFC } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 
-import { DaoContext } from 'types/context';
+import { CreationProgress } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/steps/CreateToken/components/CreationProgress';
+import { WarningPanel } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/WarningPanel';
+import { CreateProposal } from 'astro_2.0/features/CreateProposal';
+import { Button } from 'components/button/Button';
+import { Icon } from 'components/Icon';
+
 import { ProposalVariant } from 'types/proposal';
+import { DaoContext } from 'types/context';
 
 import { CREATE_GOV_TOKEN_PAGE_URL } from 'constants/routing';
 import { STEPS } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/constants';
 
-import { CreateProposal } from 'astro_2.0/features/CreateProposal';
+import styles from './ContractAcceptance.module.scss';
 
-import { WarningPanel } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/WarningPanel';
-import { Icon } from 'components/Icon';
-import { Button } from 'components/button/Button';
-import { CreationProgress } from './components/CreationProgress';
-
-import styles from './CreateToken.module.scss';
-
-interface CreateTokenProps {
+interface ContractAcceptanceProps {
   daoContext: DaoContext;
 }
 
-export const CreateToken: VFC<CreateTokenProps> = ({ daoContext }) => {
+export const ContractAcceptance: FC<ContractAcceptanceProps> = ({
+  daoContext,
+}) => {
   const { dao, userPermissions } = daoContext;
 
   const translationBase = 'createGovernanceTokenPage.createToken';
@@ -29,10 +30,11 @@ export const CreateToken: VFC<CreateTokenProps> = ({ daoContext }) => {
   const steps = [
     {
       label: t(`${translationBase}.progress.createToken`),
-      isCurrent: true,
+      isComplete: true,
     },
     {
       label: t(`${translationBase}.progress.contractAcceptance`),
+      isCurrent: true,
     },
     {
       label: t(`${translationBase}.progress.tokenDistribution`),
@@ -54,7 +56,7 @@ export const CreateToken: VFC<CreateTokenProps> = ({ daoContext }) => {
           key={0}
           daoTokens={{}}
           userPermissions={userPermissions}
-          proposalVariant={ProposalVariant.ProposeCreateToken}
+          proposalVariant={ProposalVariant.ProposeContractAcceptance}
           showFlag={false}
           onClose={() => undefined}
           showClose={false}
@@ -70,7 +72,7 @@ export const CreateToken: VFC<CreateTokenProps> = ({ daoContext }) => {
               pathname: CREATE_GOV_TOKEN_PAGE_URL,
               query: {
                 dao: dao.id,
-                step: STEPS.CONTRACT_ACCEPTANCE,
+                step: STEPS.TOKEN_DISTRIBUTION,
               },
             }}
           >

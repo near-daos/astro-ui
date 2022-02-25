@@ -1,0 +1,22 @@
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.icon {
+  margin-right: 12px;
+  width: 44px;
+}
+
+.label {
+  @extend %caption1;
+  color: var(--color-neutral-50);
+}
+
+.value {
+  white-space: nowrap;
+}

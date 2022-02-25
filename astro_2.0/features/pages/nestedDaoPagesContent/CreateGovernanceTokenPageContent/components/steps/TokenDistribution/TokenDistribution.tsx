@@ -50,9 +50,8 @@ export const TokenDistribution: FC<TokenDistributionProps> = ({
         <CreationProgress steps={steps} className={styles.progress} />
         <WarningPanel className={styles.warning} />
       </div>
-      <div>
+      <div className={styles.createProposal}>
         <CreateProposal
-          className={styles.createProposal}
           dao={dao}
           key={0}
           daoTokens={{}}

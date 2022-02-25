@@ -32,6 +32,7 @@ import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
 import { parseISO } from 'date-fns';
 import { getDistanceFromNow } from 'utils/format';
 import { TokenDistributionContent } from 'astro_2.0/features/ViewProposal/components/TokenDistributionContent';
+import { ContractAcceptanceContent } from 'astro_2.0/features/ViewProposal/components/ContractAcceptanceContent';
 
 export function getContentNode(proposal: ProposalFeedItem): ReactNode {
   const { dao } = proposal;
@@ -296,6 +297,16 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
             break;
           }
         }
+
+        break;
+      }
+      case ProposalVariant.ProposeContractAcceptance: {
+        content = (
+          <ContractAcceptanceContent
+            tokenId="someverylonglongname.near"
+            unstakingPeriod="345"
+          />
+        );
 
         break;
       }

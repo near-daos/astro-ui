@@ -233,6 +233,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   function renderProposer() {
     switch (variant) {
+      case ProposalVariant.ProposeContractAcceptance:
       case ProposalVariant.ProposeCreateToken: {
         return null;
       }
@@ -267,6 +268,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   function renderDescription() {
     switch (variant) {
       case ProposalVariant.ProposeCreateToken:
+      case ProposalVariant.ProposeContractAcceptance:
       case ProposalVariant.ProposeTokenDistribution: {
         return null;
       }
@@ -291,6 +293,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   function renderCardContent() {
     switch (variant) {
+      case ProposalVariant.ProposeContractAcceptance:
       case ProposalVariant.ProposeTokenDistribution: {
         return <div className={styles.descriptionCell}>{content}</div>;
       }
