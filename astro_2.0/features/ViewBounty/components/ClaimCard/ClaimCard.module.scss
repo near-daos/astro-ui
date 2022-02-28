@@ -5,21 +5,24 @@
   border: 1px solid var(--color-neutral-40);
   border-radius: 8px;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   margin-bottom: 8px;
   max-width: 320px;
   width: 100%;
+
+  @include tablet-landscape {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
 }
 
 .legend {
   border-radius: 50%;
   height: 8px;
-  margin: 14px 12px;
+  margin: 32px 8px;
+  min-width: 8px;
   width: 8px;
-
-  @include tablet-landscape {
-    margin: 32px 0 32px 6px;
-  }
 }
 
 .root.inProgress {
@@ -106,7 +109,7 @@
 .details {
   min-width: 194px;
   padding: 8px 12px;
-  width: 194px;
+  width: 100%;
 
   .status {
     @extend %caption1;
@@ -134,9 +137,12 @@
   }
 
   .dates {
+    align-items: center;
     color: var(--color-brand-black);
+    display: flex;
     font-size: 12px;
     font-weight: 600;
+    justify-content: space-between;
     line-height: 18px;
     white-space: nowrap;
   }
