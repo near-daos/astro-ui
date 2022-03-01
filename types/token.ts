@@ -133,3 +133,8 @@ type SputnikTokenServiceMethods = {
 };
 
 export type SputnikTokenService<T = SputnikTokenServiceMethods> = Contract & T;
+
+export type GovernanceToken = {
+  name: string;
+  value: number;
+};

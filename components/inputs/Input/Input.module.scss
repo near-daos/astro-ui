@@ -113,6 +113,14 @@
   width: 100%;
 }
 
+.sizeAuto {
+  width: auto;
+
+  input {
+    width: auto;
+  }
+}
+
 .label {
   @extend %caption1;
   color: var(--color-neutral-60);

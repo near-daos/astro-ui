@@ -55,6 +55,8 @@ export enum ProposalVariant {
   ProposeDefault = 'ProposeDefault',
   ProposeCustomFunctionCall = 'ProposeCustomFunctionCall',
   ProposeCreateToken = 'ProposeCreateToken',
+  ProposeTokenDistribution = 'ProposeTokenDistribution',
+  ProposeContractAcceptance = 'ProposeContractAcceptance',
 }
 
 export type VoteAction = 'VoteApprove' | 'VoteRemove' | 'VoteReject';

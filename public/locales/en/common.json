@@ -351,5 +351,8 @@
         "changeDaoPolicy": "Change DAO Policy"
       }
     }
+  },
+  "captcha": {
+    "dragSliderRight": "Drag the slider to the right"
   }
 }

@@ -1,0 +1,18 @@
+@import 'styles/typography';
+
+.root {
+  align-items: flex-start;
+  color: var(--color-brand-coral-red);
+  display: flex;
+  max-width: 180px;
+}
+
+.icon {
+  margin-right: 12px;
+  width: 18px;
+}
+
+.message {
+  @extend %subtitle5;
+  margin: 4px 0;
+}

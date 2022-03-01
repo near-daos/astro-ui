@@ -21,6 +21,7 @@ import {
   BondsAndDeadlinesData,
   CreateBountyInput,
   LinksFormData,
+  TokenDistributionInput,
 } from 'astro_2.0/features/CreateProposal/types';
 import { DAO, Member } from 'types/dao';
 import { IGroupForm } from 'features/groups/types';
@@ -55,6 +56,8 @@ import { ChangeDaoPurposeContent } from 'astro_2.0/features/CreateProposal/compo
 import { AddMemberToGroupContent } from 'astro_2.0/features/CreateProposal/components/AddMemberToGroupContent';
 import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoLegalInfoContent';
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/components/RemoveMemberFromGroupContent';
+import { TokenDistributionContent } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent';
+import { ContractAcceptanceContent } from 'astro_2.0/features/CreateProposal/components/ContractAcceptanceContent';
 
 // Helpers & Utils
 import {
@@ -71,6 +74,8 @@ import {
   CustomFunctionCallInput,
   getCustomFunctionCallProposal,
 } from 'astro_2.0/features/CreateProposal/proposalObjectHelpers';
+import { getTokenDistributionProposal } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent/helpers';
+
 import {
   getImgValidationError,
   requiredImg,
@@ -273,6 +278,18 @@ export function getProposalTypesOptions(
       value: ProposalVariant.ProposeCreateToken,
       group: 'Change Config',
     });
+
+    config.push({
+      title: 'Custom Function',
+      disabled: false,
+      options: [
+        {
+          label: 'Distribution of tokens',
+          value: ProposalVariant.ProposeTokenDistribution,
+          group: 'Custom Function',
+        },
+      ],
+    });
   }
 
   return config;
@@ -413,6 +430,25 @@ export function getFormContentNode(
     case ProposalVariant.ProposeCustomFunctionCall: {
       return <CustomFunctionCallContent />;
     }
+    case ProposalVariant.ProposeContractAcceptance: {
+      return <ContractAcceptanceContent tokenId="someverylonglongname.near" />;
+    }
+    case ProposalVariant.ProposeTokenDistribution: {
+      const groups = dao.groups.map(group => {
+        return {
+          name: group.name,
+          numberOfMembers: group.members.length,
+          members: group.members,
+        };
+      });
+
+      return (
+        <TokenDistributionContent
+          groups={groups}
+          governanceToken={{ name: 'REF', value: 1000 }}
+        />
+      );
+    }
     default: {
       return null;
     }
@@ -475,6 +511,18 @@ export function getFormInitialValues(
         details: '',
         externalUrl: '',
         links: [],
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
+    case ProposalVariant.ProposeContractAcceptance: {
+      return {
+        unstakingPeriod: '345',
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
+    case ProposalVariant.ProposeTokenDistribution: {
+      return {
+        groups: [],
         gas: DEFAULT_PROPOSAL_GAS,
       };
     }
@@ -790,6 +838,21 @@ export async function getNewProposalObject(
         tokens
       );
     }
+    case ProposalVariant.ProposeTokenDistribution: {
+      return getTokenDistributionProposal(
+        dao,
+        (data as unknown) as TokenDistributionInput
+      );
+    }
+    case ProposalVariant.ProposeContractAcceptance: {
+      // todo - add create function
+      return {
+        daoId: dao.id,
+        description: 'contract acceptance',
+        kind: 'Vote',
+        bond: dao.policy.proposalBond,
+      };
+    }
     default: {
       return null;
     }
@@ -1054,6 +1117,22 @@ export function getValidationSchema(
           .min(0.01)
           .required('Required'),
         gas: gasValidation,
+      });
+    }
+
+    // todo - add validation
+    case ProposalVariant.ProposeTokenDistribution: {
+      return yup.object().shape({});
+    }
+
+    case ProposalVariant.ProposeContractAcceptance: {
+      return yup.object().shape({
+        unstakingPeriod: yup
+          .number()
+          .typeError('Must be a valid number.')
+          .positive()
+          .min(1)
+          .required('Required'),
       });
     }
 

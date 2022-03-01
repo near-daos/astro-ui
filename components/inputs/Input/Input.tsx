@@ -12,7 +12,7 @@ interface InputProps
   isValid?: boolean | undefined;
   inputSize?: number | undefined;
   inputStyles?: CSSProperties;
-  size?: 'small' | 'medium' | 'large' | 'block' | 'content';
+  size?: 'small' | 'medium' | 'large' | 'block' | 'content' | 'auto';
   isBorderless?: boolean;
   textAlign?: Property.TextAlign;
   inputClassName?: string;
@@ -32,6 +32,7 @@ const sizeClasses = {
   medium: styles.sizeMedium,
   large: styles.sizeLarge,
   block: styles.sizeBlock,
+  auto: styles.sizeAuto,
 };
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(

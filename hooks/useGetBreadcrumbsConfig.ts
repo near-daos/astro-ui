@@ -10,6 +10,7 @@ import {
   TREASURY_PAGE_URL,
   SINGLE_BOUNTY_PAGE_URL,
   ALL_BOUNTIES_PAGE_URL,
+  GOVERNANCE_TOKEN_INFO_URL,
 } from 'constants/routing';
 import { UrlObject } from 'url';
 import { Proposal } from 'types/proposal';
@@ -74,6 +75,15 @@ export function useGetBreadcrumbsConfig(
         label: t('daoDetailsMinimized.treasury'),
         href: {
           pathname: TREASURY_PAGE_URL,
+          query: {
+            dao: daoId,
+          },
+        },
+      },
+      GOVERNANCE_TOKEN_INFO: {
+        label: 'Governance Token',
+        href: {
+          pathname: GOVERNANCE_TOKEN_INFO_URL,
           query: {
             dao: daoId,
           },

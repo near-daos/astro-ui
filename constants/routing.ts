@@ -21,6 +21,8 @@ export const SINGLE_PROPOSAL_PAGE_URL = `${ALL_PROPOSALS_PAGE_URL}/[proposal]`;
 export const GROUPS_PAGE_URL = '/dao/[dao]/groups/[group]';
 
 export const TREASURY_PAGE_URL = '/dao/[dao]/treasury/tokens';
+export const GOVERNANCE_TOKEN_INFO_URL =
+  '/dao/[dao]/treasury/governance-token-info';
 export const CREATE_GOV_TOKEN_PAGE_URL =
   '/dao/[dao]/treasury/create-governance-token/[step]';
 

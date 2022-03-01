@@ -1,0 +1,79 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  background: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  display: grid;
+  grid-column-gap: 8px;
+  grid-template-columns: 2fr 110px 120px 1fr;
+
+  margin-bottom: 12px;
+
+  padding: 11px 24px;
+}
+
+.title {
+  @extend %title5;
+}
+
+.groupBadge {
+  align-items: center;
+  display: flex;
+  max-width: 125px;
+}
+
+.groupName {
+  @include ellipse-text;
+  max-width: 100px;
+}
+
+.membersContainer {
+  margin-bottom: 12px;
+}
+
+.member {
+  align-items: center;
+  display: flex;
+
+  &.disabled {
+    color: var(--color-neutral-40);
+  }
+}
+
+.input > input {
+  @extend %title4;
+  text-align: right;
+
+  &:disabled {
+    color: var(--color-neutral-40);
+  }
+}
+
+.tokenSuffix {
+  @extend %title4;
+  margin-left: 4px;
+  max-width: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.control,
+.group {
+  @extend %subtitle4;
+  align-items: center;
+  display: flex;
+
+  .suffix {
+    margin-left: 4px;
+    max-width: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+}
