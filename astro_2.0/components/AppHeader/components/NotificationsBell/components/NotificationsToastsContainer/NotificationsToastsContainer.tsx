@@ -2,7 +2,6 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import uniqBy from 'lodash/uniqBy';
-import { useSwipeable } from 'react-swipeable';
 
 import { configService } from 'services/ConfigService';
 
@@ -14,7 +13,7 @@ import { NOTIFICATIONS_PAGE_URL } from 'constants/routing';
 
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
-import { NotificationCard } from 'astro_2.0/components/NotificationCard';
+import { AnimatedNotification } from 'astro_2.0/components/AppHeader/components/NotificationsBell/components/NotificationsToastsContainer/AnimatedNotification';
 
 import styles from './NotificationsToastsContainer.module.scss';
 
@@ -68,7 +67,7 @@ export const NotificationsToastsContainer: FC = () => {
       }
 
       setNotifications(newList);
-    }, 1000);
+    }, 500);
 
     return () => clearInterval(intervalId);
   }, [appConfig?.TOASTS_NOTIFICATIONS_TIMEOUT]);
@@ -77,50 +76,21 @@ export const NotificationsToastsContainer: FC = () => {
     noties.current = noties.current.filter(noty => noty.notification.id !== id);
   }, []);
 
-  const handlers = useSwipeable({
-    onSwiped: eventData => {
-      if (eventData.dir !== 'Right' && eventData.dir !== 'Left') {
-        return;
-      }
-
-      const { target } = eventData.event;
-
-      if (target) {
-        const wrapper = (target as HTMLElement)?.closest(
-          `.${styles.notificationCardWrapper}`
-        );
-
-        if (wrapper && wrapper.getAttribute) {
-          const notificationId = wrapper?.getAttribute('id');
-
-          if (notificationId) {
-            handleMarkRead(notificationId);
-          }
-        }
-      }
-    },
-  });
-
   function renderNotifications() {
-    return notifications.map(props => {
+    return notifications.map(notification => {
       return (
-        <motion.div
-          key={props.id}
-          layout
-          id={props.id}
+        <AnimatedNotification
+          key={notification.id}
+          notification={notification}
+          onMarkRead={handleMarkRead}
           className={styles.notificationCardWrapper}
-          initial={{ opacity: 0, transform: 'translateX(150px)' }}
-          animate={{ opacity: 1, transform: 'translateX(0px)' }}
-          exit={{ opacity: 0 }}
-        >
-          <NotificationCard {...props} onUpdate={handleMarkRead} regular />
-        </motion.div>
+        />
       );
     });
   }
 
   return (
-    <div className={styles.root} {...handlers}>
+    <div className={styles.root}>
       <AnimatePresence>{renderNotifications()}</AnimatePresence>
       <AnimatePresence>
         {showAllButton && (

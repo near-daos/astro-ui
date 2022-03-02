@@ -25,6 +25,7 @@ import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 import { SocketProvider } from 'context/SocketContext';
 
 import { useAppConfig } from 'hooks/useAppConfig';
+import { useIntercomAdjust } from 'hooks/useIntercomAdjust';
 
 import 'styles/globals.scss';
 
@@ -53,17 +54,10 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
     );
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
 
-    // workaround to align intercom button
-    const intercom: HTMLElement | null = document.querySelector(
-      '.intercom-launcher'
-    );
-
-    if (intercom) {
-      intercom.style.bottom = '75px';
-    }
-
     setAppInitialized(true);
   }, [appConfig, nearConfig, router.query.dao]);
+
+  useIntercomAdjust();
 
   if (!appInitialized) {
     return null;

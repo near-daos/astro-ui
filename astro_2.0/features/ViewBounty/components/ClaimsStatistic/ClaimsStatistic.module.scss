@@ -5,6 +5,7 @@
   border: 1px solid var(--color-neutral-40);
   border-radius: 8px;
   display: none;
+  flex-wrap: wrap;
   width: 100%;
 
   @include tablet-landscape {
@@ -13,13 +14,13 @@
 }
 
 .chart {
-  padding: 24px;
+  padding: 24px 0 24px 24px;
 }
 
 .legend {
   display: flex;
   flex-direction: column;
-  padding: 18px 24px 18px 0;
+  padding: 18px 24px;
 }
 
 .legendItem {

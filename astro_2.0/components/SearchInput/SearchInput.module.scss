@@ -10,12 +10,16 @@
   display: flex;
   height: 40px;
   justify-content: flex-start;
-  max-width: 270px;
   overflow: hidden;
   padding: 12px 24px 12px 4px;
   position: relative;
   transform: translateZ(0);
   transition: all 0.2s ease-out;
+  width: 100%;
+
+  @include tablet-landscape {
+    max-width: 270px;
+  }
 }
 
 .anchor {

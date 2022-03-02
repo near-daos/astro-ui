@@ -51,7 +51,9 @@ exports[`dao details minimized Should render component 1`] = `
           </div>
           <div>
             <div>
-              Default Flag Test
+              <div>
+                Default Flag Test
+              </div>
               <div>
                 <div
                   class=""

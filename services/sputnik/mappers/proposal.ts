@@ -1,5 +1,4 @@
 import get from 'lodash/get';
-import { parseISO } from 'date-fns';
 
 import {
   CreateProposalParams,
@@ -91,20 +90,6 @@ export function getVotesStatistic(
   return result;
 }
 
-function getProposalStatus(
-  status: ProposalStatus,
-  votingEndsAt: string
-): ProposalStatus {
-  if (status !== 'InProgress') {
-    return status;
-  }
-
-  const now = new Date();
-  const endsAt = parseISO(votingEndsAt);
-
-  return now < endsAt ? 'InProgress' : 'Expired';
-}
-
 export const mapProposalDTOToProposal = (
   proposalDTO: ProposalDTO
 ): Proposal => {
@@ -130,7 +115,7 @@ export const mapProposalDTOToProposal = (
     commentsCount: proposalDTO.commentsCount ?? 0,
     description,
     link: link ?? '',
-    status: getProposalStatus(proposalDTO.status, votePeriodEnd),
+    status: proposalDTO.status,
     kind: proposalDTO.kind,
     votePeriodEnd,
     votePeriodEndDate: votePeriodEnd,
@@ -179,7 +164,7 @@ export const mapProposalFeedItemResponseToProposalFeedItem = (
     commentsCount: proposalDTO.commentsCount ?? 0,
     description,
     link: link ?? '',
-    status: getProposalStatus(proposalDTO.status, votePeriodEnd),
+    status: proposalDTO.status,
     kind: proposalDTO.kind,
     votePeriodEnd,
     votePeriodEndDate: votePeriodEnd,
