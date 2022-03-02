@@ -14,10 +14,18 @@
 }
 
 .chart {
+  background-color: var(--color-white);
   grid-area: chart;
   margin: 0 -24px;
+  overflow: hidden;
 
   @include tablet-landscape {
+    margin: 0;
+  }
+
+  @include tablet-portrait {
+    border-radius: 8px;
+    box-shadow: 3px 2px 24px var(--color-black-opacity-1);
     margin: 0;
   }
 }

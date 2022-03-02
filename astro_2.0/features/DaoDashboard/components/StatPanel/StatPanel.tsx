@@ -9,12 +9,18 @@ interface StatPanelProps {
   title: string;
   value: string | number | undefined;
   trend: number | undefined;
+  titleClassName?: string;
 }
 
-export const StatPanel: FC<StatPanelProps> = ({ title, value, trend = 0 }) => {
+export const StatPanel: FC<StatPanelProps> = ({
+  title,
+  value,
+  titleClassName,
+  trend = 0,
+}) => {
   return (
     <div className={styles.root}>
-      <div className={styles.title}>{title}</div>
+      <div className={cn(styles.title, titleClassName)}>{title}</div>
       <div
         className={cn(styles.trend, {
           [styles.positive]: trend >= 0,

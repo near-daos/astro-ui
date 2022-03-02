@@ -1,0 +1,73 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  align-items: center;
+  background-color: var(--color-neutral-10);
+  display: flex;
+  justify-content: flex-start;
+  padding-bottom: 32px;
+  padding-top: 48px;
+  position: sticky;
+  top: 72px;
+  z-index: 10;
+
+  &::before,
+  &::after {
+    background-color: var(--color-neutral-10);
+    content: '';
+    height: 100%;
+    position: absolute;
+    width: 32px;
+  }
+
+  &::before {
+    left: -32px;
+  }
+
+  &::after {
+    right: -32px;
+  }
+}
+
+.title {
+  margin: 0 24px 0 0;
+}
+
+.search {
+  margin-left: auto;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.sideFilterTitle {
+  @extend %subtitle4;
+  margin: 0 0 12px;
+}
+
+.sideFilter {
+  background-color: transparent;
+  margin-bottom: 24px;
+  margin-right: 0;
+  max-width: unset;
+}
+
+.financialFilter {
+  top: 362px;
+}
+
+//.content {
+//
+//}

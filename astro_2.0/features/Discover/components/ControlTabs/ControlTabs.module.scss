@@ -1,0 +1,33 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  align-items: center;
+  display: flex;
+  margin: 0 -32px;
+  -ms-overflow-style: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 24px 0 18px 32px;
+  scrollbar-width: none;
+}
+
+.root::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  margin-right: 12px;
+  max-width: 185px;
+  padding: 12px;
+}
+
+.cardTitle {
+  @extend %caption1;
+  @include ellipse-text;
+  white-space: nowrap;
+}
+
+.active {
+  cursor: default;
+}

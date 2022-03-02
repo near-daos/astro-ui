@@ -1,0 +1,33 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 180px;
+}
+
+.title {
+  @extend %subtitle1;
+  background-color: var(--color-neutral-10);
+  position: sticky;
+  top: 200px;
+  z-index: 10;
+
+  &::before,
+  &::after {
+    background-color: var(--color-neutral-10);
+    content: '';
+    height: 100%;
+    position: absolute;
+    width: 32px;
+  }
+
+  &::before {
+    left: -32px;
+  }
+
+  &::after {
+    right: -32px;
+  }
+}

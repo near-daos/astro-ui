@@ -51,7 +51,7 @@
 
   &::after {
     background-color: var(--color-brand-purple);
-    height: 30px;
+    height: 36px;
     transform: translateY(var(--filter-active-transform));
     transition: transform 0.15s ease-in-out;
     z-index: 1;
@@ -75,6 +75,9 @@
 }
 
 .categoriesListItemWrapper {
+  align-items: center;
+  display: flex;
+  height: 36px;
   min-width: fit-content;
 }
 

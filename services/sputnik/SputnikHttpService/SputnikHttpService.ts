@@ -591,6 +591,36 @@ class SputnikHttpServiceClass {
     }
   }
 
+  public async findDaoByName(params: {
+    offset?: number;
+    limit?: number;
+    sort?: string;
+    query: string;
+    cancelToken: CancelToken;
+  }): Promise<PaginationResponse<DaoFeedItem[]> | null> {
+    const { query } = params;
+
+    try {
+      const { data } = await this.httpService.get<
+        PaginationResponse<DaoFeedItem[]>
+      >('/daos', {
+        cancelToken: params.cancelToken,
+        queryRequest: {
+          name: API_QUERIES.FIND_DAO_BY_NAME,
+          params: {
+            query,
+          },
+        },
+      });
+
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+  }
+
   /* Tokens API */
   public async getAccountNFTs(accountId: string): Promise<NftToken[]> {
     try {

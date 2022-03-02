@@ -1,0 +1,31 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  border-top: 1px solid var(--color-neutral-30);
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+  padding-top: 24px;
+}
+
+.header {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+  display: grid;
+  grid-gap: 12px;
+  grid-template-columns: 32px 2fr 160px 1fr;
+  margin-bottom: 8px;
+
+  white-space: nowrap;
+}
+
+.loading {
+  @extend %subtitle3;
+  @include centralize;
+  display: flex;
+}
+
+.noData {
+  padding: 0 0 48px;
+}

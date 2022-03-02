@@ -16,23 +16,31 @@ import { IconButton } from 'components/button/IconButton';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { Icon } from 'components/Icon';
 
-import styles from './BountiesSearchInput.module.scss';
+import { DaoFeedItem } from 'types/dao';
+import { PaginationResponse } from 'types/api';
+
+import styles from './SearchInput.module.scss';
 
 const POPUP_LEFT_MARGIN = 20;
 const POPUP_RIGHT_MARGIN = 20;
 
-interface BountiesSearchInputProps {
-  onSubmit: (val: string) => void;
+interface SearchInputProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSubmit: (val: string) => Promise<PaginationResponse<any> | null>;
   className?: string;
   loading: boolean;
-  onClose: () => void;
+  onClose?: () => void;
+  placeholder?: string;
+  showResults?: boolean;
 }
 
-export const BountiesSearchInput: FC<BountiesSearchInputProps> = ({
+export const SearchInput: FC<SearchInputProps> = ({
   onSubmit,
   className,
   loading,
   onClose,
+  placeholder,
+  showResults,
 }) => {
   const isMounted = useMountedState();
   const ref = useRef(null);
@@ -43,6 +51,7 @@ export const BountiesSearchInput: FC<BountiesSearchInputProps> = ({
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
   );
+  const [searchResults, setSearchResults] = useState<unknown[] | null>(null);
 
   const { styles: popperStyles, attributes } = usePopper(
     referenceElement,
@@ -68,16 +77,24 @@ export const BountiesSearchInput: FC<BountiesSearchInputProps> = ({
 
   const handleCancel = useCallback(() => {
     setValue('');
-    onClose();
+    setSearchResults(null);
+
+    if (onClose) {
+      onClose();
+    }
   }, [onClose]);
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     if (value.trim()) {
-      onSubmit(value.trim());
+      const res = await onSubmit(value.trim());
+
+      if (showResults && res) {
+        setSearchResults(res.data);
+      }
     } else {
       handleCancel();
     }
-  }, [handleCancel, onSubmit, value]);
+  }, [handleCancel, onSubmit, showResults, value]);
 
   const handleChange = useCallback(e => {
     const newValue = e.target.value;
@@ -96,17 +113,27 @@ export const BountiesSearchInput: FC<BountiesSearchInputProps> = ({
   };
 
   useDebounce(
-    () => {
+    async () => {
       const query = value?.trim() ?? '';
 
       if (query.length >= 3) {
         toggleShowHint(false);
-        onSubmit(query);
+
+        const res = await onSubmit(query);
+
+        if (showResults && res) {
+          setSearchResults(res.data);
+        }
       } else if (query.length > 0 && query.length < 3) {
+        setSearchResults(null);
         toggleShowHint(true);
       } else {
+        setSearchResults(null);
         toggleShowHint(false);
-        onClose();
+
+        if (onClose) {
+          onClose();
+        }
       }
     },
     750,
@@ -120,7 +147,7 @@ export const BountiesSearchInput: FC<BountiesSearchInputProps> = ({
 
     return ReactDOM.createPortal(
       <AnimatePresence>
-        {showHint && (
+        {(showHint || searchResults) && (
           <div
             id="astro_search-results"
             ref={setPopperElement}
@@ -135,6 +162,15 @@ export const BountiesSearchInput: FC<BountiesSearchInputProps> = ({
               {showHint && (
                 <div className={styles.hint}>
                   Please enter at least 3 characters to search
+                </div>
+              )}
+              {showResults && !!searchResults?.length && (
+                <div className={styles.hint}>
+                  {searchResults.map(item => {
+                    const data = item as DaoFeedItem;
+
+                    return <div key={data.id}>{data.id}</div>;
+                  })}
                 </div>
               )}
             </motion.div>
@@ -186,7 +222,7 @@ export const BountiesSearchInput: FC<BountiesSearchInputProps> = ({
         onChange={handleChange}
         className={cn(styles.input, 'body1')}
         type="text"
-        placeholder="Search Bounty Name"
+        placeholder={placeholder || 'Search Bounty Name'}
         onKeyUp={handleKeys}
       />
       {renderCloseButton()}

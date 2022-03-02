@@ -17,7 +17,7 @@ import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 import { Loader } from 'components/loader';
 import { ViewBounty } from 'astro_2.0/features/ViewBounty';
-import { BountiesSearchInput } from 'astro_2.0/features/Bounties/components/BountiesSearchInput';
+import { SearchInput } from 'astro_2.0/components/SearchInput';
 
 import { Tokens } from 'context/CustomTokensContext';
 import { useAuthContext } from 'context/AuthContext';
@@ -138,6 +138,8 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({
       if (isMounted()) {
         setData(res);
       }
+
+      return res;
     },
     [handleSearch, isMounted]
   );
@@ -153,7 +155,7 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({
   return (
     <div className={styles.root}>
       <div className={cn(styles.row, styles.additionalFilters)}>
-        <BountiesSearchInput
+        <SearchInput
           onSubmit={handleBountyInoutSearch}
           loading={searching}
           onClose={handleBountyInputClose}
