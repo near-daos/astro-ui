@@ -45,7 +45,7 @@ export const StatChart: FC<StatChartProps> = ({ data }) => {
         const newWidth = contentRect?.entry?.width;
 
         if (width !== newWidth) {
-          setWidth(newWidth / 2);
+          setWidth(newWidth - newWidth * 0.15);
         }
       }}
     >

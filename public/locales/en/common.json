@@ -354,5 +354,23 @@
   },
   "captcha": {
     "dragSliderRight": "Drag the slider to the right"
+  },
+  "discover": {
+    "title": "Discover",
+    "overview": "Overview",
+    "financial": "Financial",
+    "generalInfo": "General Info",
+    "usersAndActivity": "Users and Activity",
+    "governance": "Governance",
+    "flow": "Flow",
+    "tvl": "TVL",
+    "tokens": "Tokens",
+    "activeDaos": "Active DAOs",
+    "numberOfDaos": "Number of DAOs",
+    "groups": "Groups",
+    "avgGroupDaos": "Avg. Groups/DAO",
+    "daoName": "DAO Name",
+    "numberOfProposals": "Number of Proposals",
+    "lastMonth": "Last Month"
   }
 }

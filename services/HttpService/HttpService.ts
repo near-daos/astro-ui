@@ -506,6 +506,33 @@ export class HttpService {
             request.params = { sort: 'createdAt,DESC' };
           }
           break;
+        case API_QUERIES.FIND_DAO_BY_NAME:
+          {
+            const { query } = requestCustom.queryRequest?.params || {};
+
+            const queryBuilder = RequestQueryBuilder.create();
+
+            queryBuilder.setFilter({
+              field: 'id',
+              operator: '$contL',
+              value: query,
+            });
+            // queryBuilder.setOr({
+            //   field: 'id',
+            //   operator: '$contL',
+            //   value: query,
+            // });
+
+            // todo - use pagination to limit results
+            const queryString = queryBuilder
+              .setLimit(2000)
+              .setOffset(0)
+              .query();
+
+            request.url = `/daos?${queryString}`;
+            request.params = { sort: 'createdAt,DESC' };
+          }
+          break;
         case API_QUERIES.GET_PROPOSALS_LIST:
         case API_QUERIES.GET_PROPOSALS_LIST_BY_ACCOUNT_ID:
           {

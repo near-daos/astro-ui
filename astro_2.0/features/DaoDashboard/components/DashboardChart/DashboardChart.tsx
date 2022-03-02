@@ -10,7 +10,6 @@ import { ChartDataElement } from 'components/AreaChartRenderer/types';
 import { TFunction, useTranslation } from 'next-i18next';
 import { Button } from 'components/button/Button';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
-import { DashboardView } from 'astro_2.0/features/DaoDashboard/types';
 import { ChartLegend } from 'astro_2.0/features/DaoDashboard/components/DashboardChart/components/ChartLegend';
 
 import { DOMAIN_RANGES } from 'components/AreaChartRenderer/helpers';
@@ -19,7 +18,7 @@ import styles from './DashboardChart.module.scss';
 
 interface DashboardChartProps {
   data: ChartDataElement[];
-  activeView?: DashboardView;
+  activeView?: string;
 }
 
 enum DATASET {
@@ -32,7 +31,7 @@ const variants = {
   hidden: { opacity: 0 },
 };
 
-function getChartTitles(activeView: DashboardView | undefined, t: TFunction) {
+function getChartTitles(activeView: string | undefined, t: TFunction) {
   switch (activeView) {
     case 'BOUNTIES': {
       return [t('daoDashboard.bounties')];
@@ -48,6 +47,18 @@ function getChartTitles(activeView: DashboardView | undefined, t: TFunction) {
         t('daoDashboard.activeProposals'),
         t('daoDashboard.proposalsInTotal'),
       ];
+    }
+    case 'activeDaos': {
+      return [t('discover.activeDaos')];
+    }
+    case 'numberOfDaos': {
+      return [t('discover.numberOfDaos')];
+    }
+    case 'groups': {
+      return [t('discover.groups')];
+    }
+    case 'avgGroupsDao': {
+      return [t('discover.avgGroupsDao')];
     }
     default: {
       return [t('activity')];
