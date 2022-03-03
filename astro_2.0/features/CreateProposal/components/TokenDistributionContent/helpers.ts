@@ -4,15 +4,17 @@ import { CreateProposalParams } from 'types/proposal';
 
 export function getInputWidth(
   currentValue?: string,
-  maxWidth?: number
+  maxWidth?: number,
+  minWidth?: number
 ): string {
   const max = maxWidth || 8;
+  const min = minWidth || 4;
 
   if (!currentValue) {
-    return '4ch';
+    return `${min}ch`;
   }
 
-  if (currentValue?.length > 4 && currentValue?.length <= max) {
+  if (currentValue?.length > min && currentValue?.length <= max) {
     return `${currentValue?.length}ch`;
   }
 
@@ -20,7 +22,7 @@ export function getInputWidth(
     return `${max}ch`;
   }
 
-  return '4ch';
+  return `${min}ch`;
 }
 
 export function getTokenDistributionProposal(

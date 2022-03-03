@@ -46,7 +46,7 @@ describe('Transaction details widget', () => {
   it.each`
     gas              | width
     ${'1000000'}     | ${'7ch'}
-    ${'10000000000'} | ${'10ch'}
+    ${'10000000000'} | ${'8ch'}
   `(
     'Should render input of proper width depending on amount of gas',
     ({ gas, width }) => {
