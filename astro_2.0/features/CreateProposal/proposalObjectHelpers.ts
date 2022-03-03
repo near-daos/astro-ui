@@ -1,7 +1,6 @@
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { CreateProposalParams } from 'types/proposal';
 import { DAO } from 'types/dao';
-import BN from 'bn.js';
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import Decimal from 'decimal.js';
 
@@ -50,7 +49,7 @@ export async function getCustomFunctionCallProposal(
           method_name: methodName,
           args,
           deposit: new Decimal(deposit).mul(10 ** token.decimals).toFixed(),
-          gas: new BN(actionsGas * 10 ** 15).toString(),
+          gas: actionsGas.toString(),
         },
       ],
     },
