@@ -17,7 +17,7 @@ exports[`Transaction details widget Should render component 1`] = `
               class=""
             >
               <span>
-                components.transactionDetailsWidget.tGas
+                TGas
               </span>
             </div>
             <div>
@@ -35,6 +35,7 @@ exports[`Transaction details widget Should render component 1`] = `
                   step="1"
                   style="text-align: left; width: 6ch;"
                   type="number"
+                  value=""
                 />
               </label>
             </div>
