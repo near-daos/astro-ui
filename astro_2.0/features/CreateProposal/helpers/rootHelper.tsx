@@ -1090,12 +1090,7 @@ export function getValidationSchema(
         deposit: yup
           .number()
           .typeError('Must be a valid number.')
-          .required('Required')
-          .test(
-            'onlyFiveDecimal',
-            'Only numbers with five optional decimal place please',
-            value => /^\d*(?:\.\d{0,5})?$/.test(`${value}`)
-          ),
+          .required('Required'),
         json: yup
           .string()
           .required('Required')

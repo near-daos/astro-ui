@@ -105,7 +105,16 @@
   display: flex;
   font-size: 18px;
   line-height: 1.1;
+  max-width: 300px;
   white-space: nowrap;
+
+  @include astro-desktop {
+    max-width: 400px;
+  }
+}
+
+.name {
+  @include ellipse-text;
 }
 
 .explorerLink {

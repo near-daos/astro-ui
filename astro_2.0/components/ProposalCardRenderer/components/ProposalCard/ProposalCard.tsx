@@ -210,17 +210,20 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const timeLeft = useCountdown(votePeriodEnd);
 
   const sealIcon = timeLeft !== undefined ? getSealIcon(status) : null;
+  const isProposalExpired =
+    (voteStatus === 'Expired' && !isFinalized) ||
+    (voteStatus === 'Active' && timeLeft === null && status === 'InProgress');
+  const userCanFinalize =
+    variant !== ProposalVariant.ProposeDoneBounty ||
+    (variant === ProposalVariant.ProposeDoneBounty && proposer === accountId);
+  const restrictProposalRemove = variant === ProposalVariant.ProposeDoneBounty;
+  
   const showFinalize =
     permissions.canApprove &&
     permissions.canReject &&
     permissions.canDelete &&
-    ((voteStatus === 'Expired' && !isFinalized) ||
-      (voteStatus === 'Active' &&
-        timeLeft === null &&
-        status === 'InProgress')) &&
-    (variant !== ProposalVariant.ProposeDoneBounty ||
-      (variant === ProposalVariant.ProposeDoneBounty &&
-        proposer === accountId));
+    isProposalExpired &&
+    userCanFinalize;
 
   const methods = useForm<DAOFormValues>({
     mode: 'all',
@@ -403,7 +406,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
               voteClickHandler('VoteRemove');
             }
           }}
-          disableControls={voteLoading || !timeLeft || finalizeLoading}
+          disableControls={
+            voteLoading ||
+            !timeLeft ||
+            finalizeLoading ||
+            !userCanFinalize ||
+            restrictProposalRemove
+          }
           removed={dismissed}
           removeCount={voteRemove}
           proposalVariant={variant}

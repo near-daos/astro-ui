@@ -34,6 +34,7 @@
 .iconWrapper {
   height: 24px;
   margin-left: 8px;
+  min-width: 24px;
   width: 24px;
 }
 
@@ -42,6 +43,11 @@
   @include ellipse-text;
   color: var(--color-neutral-90);
   margin-left: 12px;
+  width: auto;
+
+  @include tablet-landscape {
+    width: 100%;
+  }
 }
 
 .ellipse {
@@ -50,8 +56,17 @@
 
 .value {
   @extend %subtitle4;
+  @include ellipse-text;
   color: var(--color-neutral-80);
+  max-width: 100%;
+  text-align: right;
   white-space: nowrap;
+  width: 100%;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
 }
 
 .icon {

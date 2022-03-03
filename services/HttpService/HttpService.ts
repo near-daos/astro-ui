@@ -491,7 +491,7 @@ export class HttpService {
 
             queryBuilder.setFilter({
               field: 'proposal.description',
-              operator: '$cont',
+              operator: '$contL',
               value: query,
             });
 
