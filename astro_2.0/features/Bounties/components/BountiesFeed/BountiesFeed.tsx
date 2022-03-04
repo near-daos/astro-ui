@@ -21,6 +21,7 @@ import { SearchInput } from 'astro_2.0/components/SearchInput';
 
 import { Tokens } from 'context/CustomTokensContext';
 import { useAuthContext } from 'context/AuthContext';
+import { HideBountyContextProvider } from 'astro_2.0/features/Bounties/components/HideBountyContext';
 
 import { SputnikHttpService } from 'services/sputnik';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
@@ -158,66 +159,68 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({
 
   return (
     <div className={styles.root}>
-      <div className={cn(styles.row, styles.additionalFilters)}>
-        <SearchInput
-          onSubmit={handleBountyInoutSearch}
-          loading={searching}
-          onClose={handleBountyInputClose}
-        />
-      </div>
-      <div className={cn(styles.row, styles.content)}>
-        <SideFilter
-          shallowUpdate
-          hideAllOption
-          queryName="bountyPhase"
-          list={FEED_OPTIONS}
-          title={t('feed.filters.chooseAFilter')}
-          className={styles.filter}
-        />
-        <div className={styles.container}>
-          {loading ? (
-            <Loader className={styles.loader} />
-          ) : (
-            data && (
-              <FeedList
-                data={data}
-                loadMore={loadMore}
-                loader={<p className={styles.loading}>{t('loading')}...</p>}
-                noResults={
-                  <div className={styles.loading}>
-                    <NoResultsView
-                      title={
-                        isEmpty(data?.data)
-                          ? 'No data found'
-                          : t('noMoreResults')
-                      }
-                    />
-                  </div>
-                }
-                renderItem={bountyContext => (
-                  <div
-                    key={bountyContext.id}
-                    className={styles.bountyCardWrapper}
-                  >
-                    {dao && tokens && (
-                      <ViewBounty
-                        contextId={bountyContext.id}
-                        commentsCount={bountyContext.commentsCount}
-                        dao={dao}
-                        bounty={bountyContext.bounty}
-                        tokens={tokens}
-                        proposal={bountyContext.proposal}
-                        initialInfoPanelView={null}
-                      />
-                    )}
-                  </div>
-                )}
-                className={styles.listWrapper}
-              />
-            )
-          )}
+      <HideBountyContextProvider>
+        <div className={cn(styles.row, styles.additionalFilters)}>
+          <SearchInput
+            onSubmit={handleBountyInoutSearch}
+            loading={searching}
+            onClose={handleBountyInputClose}
+          />
         </div>
-      </div>
+        <div className={cn(styles.row, styles.content)}>
+          <SideFilter
+            shallowUpdate
+            hideAllOption
+            queryName="bountyPhase"
+            list={FEED_OPTIONS}
+            title={t('feed.filters.chooseAFilter')}
+            className={styles.filter}
+          />
+          <div className={styles.container}>
+            {loading ? (
+              <Loader className={styles.loader} />
+            ) : (
+              data && (
+                <FeedList
+                  data={data}
+                  loadMore={loadMore}
+                  loader={<p className={styles.loading}>{t('loading')}...</p>}
+                  noResults={
+                    <div className={styles.loading}>
+                      <NoResultsView
+                        title={
+                          isEmpty(data?.data)
+                            ? 'No data found'
+                            : t('noMoreResults')
+                        }
+                      />
+                    </div>
+                  }
+                  renderItem={bountyContext => (
+                    <div
+                      key={bountyContext.id}
+                      className={styles.bountyCardWrapper}
+                    >
+                      {dao && tokens && (
+                        <ViewBounty
+                          contextId={bountyContext.id}
+                          commentsCount={bountyContext.commentsCount}
+                          dao={dao}
+                          bounty={bountyContext.bounty}
+                          tokens={tokens}
+                          proposal={bountyContext.proposal}
+                          initialInfoPanelView={null}
+                        />
+                      )}
+                    </div>
+                  )}
+                  className={styles.listWrapper}
+                />
+              )
+            )}
+          </div>
+        </div>
+      </HideBountyContextProvider>
     </div>
   );
 };

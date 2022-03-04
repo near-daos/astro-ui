@@ -1,0 +1,21 @@
+@import 'styles/mixins';
+
+.hideControlButtonWrapper {
+  bottom: 84px;
+  left: 50%;
+  position: fixed;
+  transform: translateX(-50%);
+  z-index: 10;
+
+  @include tablet-landscape {
+    bottom: 24px;
+  }
+}
+
+.button {
+  text-transform: capitalize;
+}
+
+.tooltip {
+  padding: 0;
+}

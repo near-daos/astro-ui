@@ -8,6 +8,7 @@ import { MobileListView } from 'astro_2.0/features/Bounties/components/BountiesL
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { HideBountyContextProvider } from 'astro_2.0/features/Bounties/components/HideBountyContext/HideBountyContext';
 
 import { DAO } from 'types/dao';
 import { ProposalVariant } from 'types/proposal';
@@ -52,47 +53,49 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
 
   return (
     <div className={styles.root}>
-      <div className={cn(styles.content, styles.regular)}>
-        {!!proposalPhase.length && (
-          <CollapsableSection
-            status="Pending"
-            accountId={accountId}
-            title={`Coming Soon (Proposal Phase) (${proposalPhase.length})`}
-            contentTitle="Voting"
+      <HideBountyContextProvider>
+        <div className={cn(styles.content, styles.regular)}>
+          {!!proposalPhase.length && (
+            <CollapsableSection
+              status="Pending"
+              accountId={accountId}
+              title={`Coming Soon (Proposal Phase) (${proposalPhase.length})`}
+              contentTitle="Voting"
+              dao={dao}
+              data={proposalPhase}
+            />
+          )}
+          {!!bounties.length && (
+            <CollapsableSection
+              status="InProgress"
+              accountId={accountId}
+              title={`Bounties (${bounties.length})`}
+              contentTitle="Amount"
+              dao={dao}
+              data={bounties}
+            />
+          )}
+          {!!completed.length && (
+            <CollapsableSection
+              status="Completed"
+              accountId={accountId}
+              title={`Completed (${completed.length})`}
+              contentTitle="Amount"
+              dao={dao}
+              data={completed}
+            />
+          )}
+        </div>
+        <div className={cn(styles.content, styles.mobile)}>
+          <MobileListView
+            proposals={proposalPhase}
+            bounties={bounties}
+            completed={completed}
             dao={dao}
-            data={proposalPhase}
-          />
-        )}
-        {!!bounties.length && (
-          <CollapsableSection
-            status="InProgress"
             accountId={accountId}
-            title={`Bounties (${bounties.length})`}
-            contentTitle="Amount"
-            dao={dao}
-            data={bounties}
           />
-        )}
-        {!!completed.length && (
-          <CollapsableSection
-            status="Completed"
-            accountId={accountId}
-            title={`Completed (${completed.length})`}
-            contentTitle="Amount"
-            dao={dao}
-            data={completed}
-          />
-        )}
-      </div>
-      <div className={cn(styles.content, styles.mobile)}>
-        <MobileListView
-          proposals={proposalPhase}
-          bounties={bounties}
-          completed={completed}
-          dao={dao}
-          accountId={accountId}
-        />
-      </div>
+        </div>
+      </HideBountyContextProvider>
     </div>
   );
 };

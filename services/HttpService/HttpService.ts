@@ -104,6 +104,26 @@ export class HttpService {
                   value: 0,
                 });
               }
+
+              if (query.bountyFilter === 'hidden') {
+                queryBuilder.setFilter({
+                  field: 'isArchived',
+                  operator: '$eq',
+                  value: true,
+                });
+              } else {
+                queryBuilder.setFilter({
+                  field: 'isArchived',
+                  operator: '$eq',
+                  value: false,
+                });
+              }
+            } else {
+              queryBuilder.setFilter({
+                field: 'isArchived',
+                operator: '$eq',
+                value: false,
+              });
             }
 
             if (query?.bountyPhase) {

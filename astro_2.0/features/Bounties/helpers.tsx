@@ -37,6 +37,10 @@ export const BOUNTIES_PAGE_FILTER_OPTIONS = [
     label: 'Empty',
     value: 'numberOfClaims',
   },
+  {
+    label: 'Hidden',
+    value: 'hidden',
+  },
 ];
 
 export function prepareBountyObject(

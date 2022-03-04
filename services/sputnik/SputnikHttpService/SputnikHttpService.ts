@@ -591,6 +591,48 @@ class SputnikHttpServiceClass {
     }
   }
 
+  public async toggleBountyContexts(params: {
+    accountId: string;
+    publicKey: string;
+    signature: string;
+    ids: string[];
+    daoId: string;
+    isArchived: boolean;
+  }): Promise<string> {
+    const response = await this.httpService.patch<
+      {
+        accountId: string;
+        publicKey: string;
+        signature: string;
+        ids: string[];
+        daoId: string;
+        isArchived: boolean;
+      },
+      { data: string }
+    >(`/bounty-contexts`, params);
+
+    return response.data;
+  }
+
+  public async showBounties(
+    selected: string[],
+    params: {
+      accountId: string;
+      publicKey: string;
+      signature: string;
+      daoId: string;
+    }
+  ): Promise<boolean> {
+    // todo - add service action
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await this.httpService.patch<any, boolean>(
+      `/bounties-contexts`,
+      params
+    );
+
+    return response;
+  }
+
   public async findDaoByName(params: {
     offset?: number;
     limit?: number;
