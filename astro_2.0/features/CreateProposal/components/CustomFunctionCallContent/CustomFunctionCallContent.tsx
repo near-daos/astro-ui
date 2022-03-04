@@ -13,6 +13,12 @@ import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/Input
 
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
+import {
+  DEFAULT_PROPOSAL_GAS,
+  MAX_GAS,
+  MIN_GAS,
+} from 'services/sputnik/constants';
+
 import styles from './CustomFunctionCallContent.module.scss';
 
 ace.config.set(
@@ -136,15 +142,14 @@ const CustomFunctionCallContent: FC = () => {
             <Input
               className={cn(styles.inputWrapper, styles.narrow)}
               type="number"
-              min={0.01}
-              step={0.01}
-              max={0.3}
-              placeholder="0.15"
+              min={MIN_GAS}
+              step={1}
+              max={MAX_GAS}
+              placeholder={`${DEFAULT_PROPOSAL_GAS}`}
               isBorderless
               size="block"
               {...register('actionsGas')}
             />
-            <div>NEAR</div>
           </div>
         </InputWrapper>
       </div>

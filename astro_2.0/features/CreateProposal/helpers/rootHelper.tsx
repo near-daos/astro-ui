@@ -588,7 +588,7 @@ export function getFormInitialValues(
         json: '',
         deposit: '0',
         token: 'NEAR',
-        actionsGas: 0.15,
+        actionsGas: DEFAULT_PROPOSAL_GAS,
         gas: DEFAULT_PROPOSAL_GAS,
       };
     }
@@ -1105,12 +1105,7 @@ export function getValidationSchema(
           }),
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
-        actionsGas: yup
-          .number()
-          .typeError('Must be a valid number.')
-          .max(0.3)
-          .min(0.01)
-          .required('Required'),
+        actionsGas: gasValidation,
         gas: gasValidation,
       });
     }
