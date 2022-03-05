@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { useAsyncFn } from 'react-use';
@@ -139,6 +139,75 @@ export function useBountySearch(): {
 
   return {
     handleSearch,
+    loading,
+  };
+}
+
+export function useHideBounty(): {
+  handleSubmit: () => void;
+  handleSelect: (id: string) => void;
+  selected: string[];
+  loading: boolean;
+} {
+  const router = useRouter();
+  const showHidden = router.query?.bountyFilter === 'hidden';
+  const daoId = router.query.dao as string;
+  const { accountId } = useAuthContext();
+  const [selected, setSelected] = useState<string[]>([]);
+
+  const [{ loading }, handleSubmit] = useAsyncFn(async () => {
+    try {
+      const publicKey = await SputnikNearService.getPublicKey();
+      const signature = await SputnikNearService.getSignature();
+
+      if (publicKey && signature) {
+        await SputnikHttpService.toggleBountyContexts({
+          accountId,
+          publicKey,
+          signature,
+          daoId,
+          ids: selected,
+          isArchived: !showHidden,
+        });
+
+        await router.replace(
+          {
+            query: {
+              ...router.query,
+              t: new Date().getTime(),
+            },
+          },
+          undefined,
+          {
+            shallow: false,
+          }
+        );
+        setSelected([]);
+      }
+    } catch (err) {
+      showNotification({
+        type: NOTIFICATION_TYPES.ERROR,
+        lifetime: 20000,
+        description: err.message,
+      });
+    }
+  }, [selected, daoId, showHidden, accountId, router]);
+
+  const handleSelect = useCallback(
+    (id: string) => {
+      if (selected.includes(id)) {
+        setSelected(selected.filter(item => item !== id));
+      } else {
+        setSelected([...selected, id]);
+      }
+    },
+    [selected]
+  );
+
+  return {
+    handleSubmit,
+    handleSelect,
+    selected,
     loading,
   };
 }
