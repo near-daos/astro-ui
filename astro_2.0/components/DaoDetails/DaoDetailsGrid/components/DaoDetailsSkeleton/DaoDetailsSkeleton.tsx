@@ -15,6 +15,7 @@ export const DaoDetailsSkeleton: FC = () => {
         <section className={styles.general}>
           <div className={styles.flag}>
             <FlagRenderer
+              variant="circle"
               flag={undefined}
               size="sm"
               backgroundClassName={styles.flagRenderer}
