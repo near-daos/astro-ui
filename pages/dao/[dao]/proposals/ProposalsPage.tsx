@@ -8,6 +8,7 @@ import { PaginationResponse } from 'types/api';
 import { Feed } from 'astro_2.0/features/Feed';
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
+import { useBlockchainWarning } from 'hooks/useBlockchainWarning';
 
 interface ProposalsPageProps {
   daoContext: DaoContext;
@@ -33,6 +34,8 @@ const ProposalsPage: VFC<ProposalsPageProps> = props => {
       breadcrumbsConfig.ALL_PROPOSALS_PAGE_URL,
     ];
   }, [breadcrumbsConfig]);
+
+  useBlockchainWarning();
 
   return (
     <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
