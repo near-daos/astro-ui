@@ -12,6 +12,7 @@ import { Icon } from 'components/Icon';
 import { getSocialLinkIcon } from 'utils/getSocialLinkIcon';
 import { useAuthContext } from 'context/AuthContext';
 
+import { DepositToDaoForm } from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm';
 import styles from './DaoDashboardHeader.module.scss';
 
 interface DaoDashboardHeaderProps {
@@ -53,6 +54,10 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
         {!daoMembersList.includes(accountId) && (
           <FollowButton daoId={id} daoName={displayName} />
         )}
+      </section>
+
+      <section className={styles.depositSection}>
+        <DepositToDaoForm daoId={id} />
       </section>
 
       <section className={styles.descriptionSection}>

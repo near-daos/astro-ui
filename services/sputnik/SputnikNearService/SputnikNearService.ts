@@ -2,7 +2,7 @@ import BN from 'bn.js';
 import Big from 'big.js';
 import compact from 'lodash/compact';
 import PromisePool from '@supercharge/promise-pool';
-import { AccessKey } from 'near-api-js/lib/transaction';
+import { AccessKey, transfer } from 'near-api-js/lib/transaction';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { BrowserLocalStorageKeyStore } from 'near-api-js/lib/key_stores';
 import { utils, transactions, Contract, keyStores, Near } from 'near-api-js';
@@ -20,6 +20,8 @@ import { formatGasValue } from 'utils/format';
 
 import { CookieService } from 'services/CookieService';
 import { configService } from 'services/ConfigService';
+
+import { parseNearAmount } from 'near-api-js/lib/utils/format';
 import { GAS_VALUE, SputnikDaoService } from './services/SputnikDaoService';
 import { SputnikWalletService } from './services/SputnikWalletService';
 
@@ -233,10 +235,6 @@ class SputnikNearServiceClass {
     return this.sputnikDaoService.addProposal(params);
   }
 
-  public async registerUserToToken(tokenId: string, recipient: string) {
-    return this.sputnikDaoService.registerToToken(tokenId, recipient);
-  }
-
   public async claimBounty(
     daoId: string,
     args: {
@@ -322,6 +320,15 @@ class SputnikNearServiceClass {
     }
   }
 
+  public async sendMoney(receiverId: string, amount: number) {
+    const parsedNearAmount = parseNearAmount(Number(amount).toString());
+    const deposit = new BN(parsedNearAmount ?? 0);
+
+    await this.sendTransactions([
+      { contract: receiverId, action: transfer(deposit) },
+    ]);
+  }
+
   private async buildTransaction(
     contractId: string,
     nonce: number,
@@ -350,60 +357,6 @@ class SputnikNearServiceClass {
     );
 
     return transaction;
-  }
-
-  private getTransferStorageDepositTransaction(
-    nonce: number,
-    blockHash: Uint8Array,
-    tokenContract: string,
-    recipient: string
-  ) {
-    return this.buildTransaction(
-      tokenContract,
-      nonce,
-      [
-        transactions.functionCall(
-          'storage_deposit',
-          {
-            account_id: recipient,
-            registration_only: true,
-          },
-          GAS_VALUE,
-          // 0.1 NEAR, minimal value
-          new BN('100000000000000000000000')
-        ),
-      ],
-      blockHash
-    );
-  }
-
-  private getCreateTransferProposalTransaction(
-    nonce: number,
-    blockHash: Uint8Array,
-    proposal: CreateProposalParams
-  ) {
-    const { bond, daoId, description, kind, data } = proposal;
-
-    return this.buildTransaction(
-      daoId,
-      nonce,
-      [
-        transactions.functionCall(
-          'add_proposal',
-          {
-            proposal: {
-              description,
-              kind: {
-                [kind]: data,
-              },
-            },
-          },
-          GAS_VALUE,
-          new BN(bond)
-        ),
-      ],
-      blockHash
-    );
   }
 
   public async createTokenTransferProposal(
