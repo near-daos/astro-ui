@@ -1,6 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
 import { useAsyncFn } from 'react-use';
 import axios, { CancelTokenSource } from 'axios';
 
@@ -25,18 +24,12 @@ export function useBountyControls(
   handleUnclaim: () => void;
 } {
   const router = useRouter();
-  const { t } = useTranslation();
 
   const [showModal] = useModal(ConfirmActionModal);
 
   const onSuccessHandler = useCallback(async () => {
     await router.reload();
-    showNotification({
-      type: NOTIFICATION_TYPES.INFO,
-      lifetime: 20000,
-      description: t('bountiesPage.successClaimBountyNotification'),
-    });
-  }, [t, router]);
+  }, [router]);
 
   const handleClaim = useCallback(async () => {
     const res = await showModal({

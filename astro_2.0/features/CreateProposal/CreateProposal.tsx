@@ -189,12 +189,6 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             resp = await SputnikNearService.createProposal(newProposal);
           }
 
-          showNotification({
-            type: NOTIFICATION_TYPES.INFO,
-            description: t('successProposalNotification'),
-            lifetime: 20000,
-          });
-
           const newProposalId = JSON.parse(
             Buffer.from(
               // todo - Oleg: fix this!
@@ -210,6 +204,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             query: {
               dao: dao.id,
               proposal: `${dao.id}-${newProposalId}`,
+              fromCreate: true,
             },
           });
 
@@ -236,7 +231,6 @@ export const CreateProposal: FC<CreateProposalProps> = ({
       accountId,
       bountyId,
       showModal,
-      t,
       router,
       onCreate,
     ]
