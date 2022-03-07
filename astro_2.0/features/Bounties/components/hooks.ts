@@ -170,18 +170,10 @@ export function useHideBounty(): {
           isArchived: !showHidden,
         });
 
-        await router.replace(
-          {
-            query: {
-              ...router.query,
-              t: new Date().getTime(),
-            },
-          },
-          undefined,
-          {
-            shallow: false,
-          }
-        );
+        await router.replace(router.asPath, undefined, {
+          shallow: false,
+        });
+
         setSelected([]);
       }
     } catch (err) {

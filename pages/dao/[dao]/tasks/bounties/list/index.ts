@@ -25,6 +25,7 @@ export const getServerSideProps: GetServerSideProps<BountiesListPageProps> = asy
       bountySort: query.bountySort ? (query.bountySort as string) : null,
       bountyFilter: query.bountyFilter ? (query.bountyFilter as string) : null,
       bountyPhase: null,
+      limit: 1000 + Number((Math.random() * 100).toFixed(0)),
     }),
   ]);
 
