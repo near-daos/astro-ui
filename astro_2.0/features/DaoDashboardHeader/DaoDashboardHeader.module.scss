@@ -4,19 +4,19 @@
 .root {
   display: grid;
   grid-template-areas:
-    'letterHeadSection'
-    'usersSection'
-    'descriptionSection'
-    'linksSection';
-  grid-template-columns: 1fr;
+    'letterHeadSection letterHeadSection'
+    'usersSection usersSection'
+    'descriptionSection depositSection'
+    'linksSection linksSection';
+  grid-template-columns: 2fr 1fr;
 
   @include tablet-landscape {
     grid-gap: 17px 0;
     grid-template-areas:
-      'letterHeadSection letterHeadSection letterHeadSection'
-      'usersSection descriptionSection descriptionSection'
-      'usersSection linksSection linksSection';
-    grid-template-columns: 216px 1fr 165px;
+      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
+      'usersSection descriptionSection descriptionSection depositSection'
+      'usersSection linksSection linksSection linksSection';
+    grid-template-columns: 216px 1fr 1fr 200px;
   }
 }
 
@@ -47,6 +47,13 @@
   }
 }
 
+.depositSection {
+  align-self: start;
+  display: flex;
+  grid-area: depositSection;
+  justify-content: space-between;
+}
+
 .usersSection {
   @include centralize;
   flex-direction: column;
@@ -57,17 +64,6 @@
 
   @include tablet-landscape {
     padding: 74px 32px 0;
-  }
-
-  .followButton {
-    @include ellipse-text;
-    margin-top: 24px;
-    text-transform: capitalize;
-  }
-
-  .followIcon {
-    margin-right: 4px;
-    width: 12px;
   }
 }
 

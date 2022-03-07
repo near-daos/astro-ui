@@ -3,9 +3,9 @@
 
 .root {
   @include ellipse-text;
-  margin-top: 24px;
   padding: 0 8px;
   text-transform: capitalize;
+  width: fit-content;
 }
 
 .subscribed {
