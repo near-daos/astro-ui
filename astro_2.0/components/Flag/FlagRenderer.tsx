@@ -18,6 +18,7 @@ interface FlagRendererProps {
   fallBack?: string | undefined;
   className?: string;
   backgroundClassName?: string;
+  variant?: 'flag' | 'circle';
 }
 
 function isSafariBrowser(): boolean {
@@ -45,6 +46,7 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
   fallBack,
   className,
   backgroundClassName,
+  variant = 'flag',
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>();
   const wrapperRef = useRef<HTMLDivElement>();
@@ -124,7 +126,26 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
       }
     }
 
+    if (variant === 'circle') {
+      return `scale(2.7) translateX(-2px)`;
+    }
+
     return `scale(1.45) translateX(${translateX})`;
+  }
+
+  function getClipStyles() {
+    switch (variant) {
+      case 'circle': {
+        if (fallBackMode) {
+          return 'circle(13px at 37px 37px)';
+        }
+
+        return `circle(34px at 34px 34px)`;
+      }
+      default: {
+        return `path('${getPath(size)}')`;
+      }
+    }
   }
 
   const isNoFlag = useCallback(() => !flag && !fallBack, [fallBack, flag]);
@@ -219,10 +240,18 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
         </clipPath>
       </svg>
       {size === 'lg' && (
-        <div className={cn(styles.background, backgroundClassName)} />
+        <div
+          className={cn(styles.background, backgroundClassName, {
+            [styles.circle]: variant === 'circle',
+          })}
+        />
       )}
       {size === 'sm' && (
-        <div className={cn(styles.backgroundSmall, backgroundClassName)} />
+        <div
+          className={cn(styles.backgroundSmall, backgroundClassName, {
+            [styles.circle]: variant === 'circle',
+          })}
+        />
       )}
       {size === 'xs' && (
         <div className={cn(styles.backgroundXS, backgroundClassName)} />
@@ -230,7 +259,7 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
       <canvas
         ref={canvasRef as React.LegacyRef<HTMLCanvasElement>}
         style={{
-          clipPath: `path('${getPath(size)}')`,
+          clipPath: getClipStyles(),
           maxWidth: getMaxWidth(size),
           transform: getTransformStyles(),
         }}

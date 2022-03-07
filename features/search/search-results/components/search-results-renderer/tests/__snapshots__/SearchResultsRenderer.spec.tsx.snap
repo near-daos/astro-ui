@@ -112,10 +112,10 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                                 </clippath>
                               </svg>
                               <div
-                                class=""
+                                class="undefined"
                               />
                               <canvas
-                                style="clip-path: path('M68.8249 0L14.4555 19.4307V30.2124L0 35.3785V78.0007L54.3694 58.57V47.7883L68.8249 42.6222V0Z'); max-width: 68px; transform: scale(1.45) translateX(-5px);"
+                                style="clip-path: circle(13px at 37px 37px); max-width: 68px; transform: scale(2.7) translateX(-2px);"
                               />
                             </div>
                           </div>
