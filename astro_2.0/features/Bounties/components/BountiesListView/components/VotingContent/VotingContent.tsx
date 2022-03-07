@@ -26,7 +26,7 @@ export const VotingContent: FC<VotingContentProps> = ({
   proposal,
   accountId,
   dao,
-  className = '',
+  className,
 }) => {
   const { handleVote, loading } = useBountyVoting(dao, proposal);
 

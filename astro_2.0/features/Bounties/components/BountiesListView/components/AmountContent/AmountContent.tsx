@@ -40,6 +40,7 @@ export const AmountContent: FC<AmountContentProps> = ({
             backgroundImage: `url(${tokenData.icon})`,
           }}
           className={styles.icon}
+          data-testid="custom-icon"
         />
       );
     }

@@ -24,7 +24,7 @@ interface UnclaimCompleteContentProps {
 export const UnclaimCompleteContent: FC<UnclaimCompleteContentProps> = ({
   dao,
   bounty,
-  className = '',
+  className,
   completeHandler,
 }) => {
   const { handleUnclaim } = useBountyControls(dao, bounty);
@@ -35,6 +35,7 @@ export const UnclaimCompleteContent: FC<UnclaimCompleteContentProps> = ({
         variant="secondary"
         size="small"
         type="submit"
+        data-testid="ucc-unclaim"
         onClick={() => handleUnclaim()}
         className={cn(styles.unclaim, styles.button)}
       >
@@ -44,6 +45,7 @@ export const UnclaimCompleteContent: FC<UnclaimCompleteContentProps> = ({
       <Button
         variant="black"
         size="small"
+        data-testid="ucc-complete"
         onClick={() => {
           if (completeHandler) {
             completeHandler(bounty.bountyId, ProposalVariant.ProposeDoneBounty);
