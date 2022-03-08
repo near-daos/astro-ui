@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ClaimsContent Should render component 1`] = `
+<div>
+  <div>
+    <span>
+      <span>
+        1
+      </span>
+      <span>
+         / 
+        1
+      </span>
+    </span>
+    <div />
+  </div>
+</div>
+`;
