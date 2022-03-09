@@ -8,9 +8,9 @@ interface ContentPanelProps {
 
 export const ContentPanel: FC<ContentPanelProps> = ({ children, title }) => {
   return (
-    <div className={styles.root}>
+    <>
       <div className={styles.title}>{title}</div>
       {children}
-    </div>
+    </>
   );
 };

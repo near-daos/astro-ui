@@ -12,19 +12,25 @@ interface StatPanelProps {
   value: string | number | undefined;
   trend: number | undefined;
   titleClassName?: string;
+  trendClassName?: string;
+  valueClassName?: string;
+  className?: string;
 }
 
 export const StatPanel: FC<StatPanelProps> = ({
   title,
   value,
   titleClassName,
+  className,
+  trendClassName,
+  valueClassName,
   trend = 0,
 }) => {
   return (
-    <div className={styles.root}>
+    <div className={cn(styles.root, className)}>
       <div className={cn(styles.title, titleClassName)}>{title}</div>
       <div
-        className={cn(styles.trend, {
+        className={cn(styles.trend, trendClassName, {
           [styles.positive]: trend >= 0,
           [styles.negative]: trend < 0,
         })}
@@ -37,7 +43,7 @@ export const StatPanel: FC<StatPanelProps> = ({
         )}
         {dFormatter(Math.abs(trend), 2)}%
       </div>
-      <div className={styles.value}>{value}</div>
+      <div className={cn(styles.value, valueClassName)}>{value}</div>
     </div>
   );
 };

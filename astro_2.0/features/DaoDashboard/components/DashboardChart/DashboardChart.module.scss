@@ -5,18 +5,7 @@
 .root {
   background-color: var(--color-white);
   flex: 1;
-  //margin: 0 -24px;
-  padding: 12px;
-
-  //@include tablet-portrait {
-  //  border-radius: 8px;
-  //  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
-  //  margin: 0;
-  //}
-  //
-  //@include tablet-landscape {
-  //  padding: 32px 32px 32px 20px;
-  //}
+  padding: 24px;
 }
 
 .header {
@@ -119,11 +108,4 @@
   .root {
     max-width: 100vw;
   }
-
-  //.header {
-  //  display: flex;
-  //  flex-direction: column;
-  //  margin: 0 12px 24px;
-  //  row-gap: 22px;
-  //}
 }

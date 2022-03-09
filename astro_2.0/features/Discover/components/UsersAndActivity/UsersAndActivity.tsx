@@ -3,10 +3,8 @@ import { useTranslation } from 'next-i18next';
 import { useAsyncFn, useMount } from 'react-use';
 
 import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs';
-import { DashboardChart } from 'astro_2.0/features/DaoDashboard/components/DashboardChart';
-import { NoResultsView } from 'astro_2.0/components/NoResultsView';
+import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
 import { DaosTopList } from 'astro_2.0/features/Discover/components/DaosTopList';
-import { Loader } from 'components/loader';
 
 import {
   LeaderboardData,
@@ -41,31 +39,35 @@ export const UsersAndActivity: FC = () => {
       {
         id: UsersAndActivityTabs.ALL_USERS_ON_PLATFORM,
         label: t('discover.allUsersOnAPlatform'),
-        value: `${data?.users.count ?? 0}`,
+        value: (data?.users.count ?? 0).toLocaleString(),
         trend: data?.users.growth ?? 0,
       },
       {
         id: UsersAndActivityTabs.USERS_MEMBERS_OF_DAO,
         label: t('discover.usersThatAreMembersOfADao'),
-        value: `${data?.members.count ?? 0}`,
+        value: (data?.members.count ?? 0).toLocaleString(),
         trend: data?.members.growth ?? 0,
       },
       {
         id: UsersAndActivityTabs.AVERAGE_NUMBER_OF_USERS_PER_DAO,
         label: t('discover.averageNumberOfUsersPerDao'),
-        value: `${data?.averageUsers.count ?? 0}`,
+        value: (data?.averageUsers.count ?? 0).toLocaleString(),
         trend: data?.averageUsers.growth ?? 0,
       },
       {
         id: UsersAndActivityTabs.NUMBER_OF_INTERACTIONS,
         label: t('discover.numberOfInteractions'),
-        value: dFormatter(data?.interactions.count ?? 0, 2),
+        value: Number(
+          dFormatter(data?.interactions.count ?? 0, 2)
+        ).toLocaleString(),
         trend: data?.interactions.growth ?? 0,
       },
       {
         id: UsersAndActivityTabs.AVERAGE_NUMBER_OF_INTERACTIONS_PER_DAO,
         label: t('discover.averageNumberOfInteractionsPerDao'),
-        value: dFormatter(data?.averageInteractions.count ?? 0, 2),
+        value: Number(
+          dFormatter(data?.averageInteractions.count ?? 0, 2)
+        ).toLocaleString(),
         trend: data?.averageInteractions.growth ?? 0,
       },
     ];
@@ -91,7 +93,7 @@ export const UsersAndActivity: FC = () => {
   }, []);
 
   useMount(async () => {
-    const response = await daoStatsService.getUsers({ contract: CONTRACT });
+    const response = await daoStatsService.getUsers(CONTRACT);
 
     if (response.data) {
       setData(response.data);
@@ -104,39 +106,29 @@ export const UsersAndActivity: FC = () => {
 
     switch (activeView) {
       case UsersAndActivityTabs.USERS_MEMBERS_OF_DAO: {
-        chart = await daoStatsService.getUsersMembers({ contract: CONTRACT });
-        leaders = await daoStatsService.getUsersMembersLeaderboard({
-          contract: CONTRACT,
-        });
+        chart = await daoStatsService.getUsersMembers(CONTRACT);
+        leaders = await daoStatsService.getUsersMembersLeaderboard(CONTRACT);
         break;
       }
       case UsersAndActivityTabs.AVERAGE_NUMBER_OF_USERS_PER_DAO: {
-        chart = await daoStatsService.getUsersAverageUsers({
-          contract: CONTRACT,
-        });
+        chart = await daoStatsService.getUsersAverageUsers(CONTRACT);
         break;
       }
       case UsersAndActivityTabs.NUMBER_OF_INTERACTIONS: {
-        chart = await daoStatsService.getUsersInteractions({
-          contract: CONTRACT,
-        });
-        leaders = await daoStatsService.getUsersInteractionsLeaderboard({
-          contract: CONTRACT,
-        });
+        chart = await daoStatsService.getUsersInteractions(CONTRACT);
+        leaders = await daoStatsService.getUsersInteractionsLeaderboard(
+          CONTRACT
+        );
         break;
       }
       case UsersAndActivityTabs.AVERAGE_NUMBER_OF_INTERACTIONS_PER_DAO: {
-        chart = await daoStatsService.getUsersAverageInteractions({
-          contract: CONTRACT,
-        });
+        chart = await daoStatsService.getUsersAverageInteractions(CONTRACT);
         break;
       }
       case UsersAndActivityTabs.ALL_USERS_ON_PLATFORM:
       default: {
-        chart = await daoStatsService.getUsersUsers({ contract: CONTRACT });
-        leaders = await daoStatsService.getUsersLeaderboard({
-          contract: CONTRACT,
-        });
+        chart = await daoStatsService.getUsersUsers(CONTRACT);
+        leaders = await daoStatsService.getUsersLeaderboard(CONTRACT);
         break;
       }
     }
@@ -171,24 +163,6 @@ export const UsersAndActivity: FC = () => {
     getChartData();
   }, [getChartData]);
 
-  function renderChart() {
-    if (chartData) {
-      return (
-        <DashboardChart
-          key={activeView}
-          activeView={activeView}
-          data={chartData}
-        />
-      );
-    }
-
-    if (loading) {
-      return <Loader />;
-    }
-
-    return <NoResultsView title="No data available" />;
-  }
-
   return (
     <div className={styles.root}>
       <ControlTabs
@@ -198,10 +172,17 @@ export const UsersAndActivity: FC = () => {
         activeView={activeView}
       />
       <div className={styles.body}>
-        {renderChart()}
+        <ChartRenderer
+          data={chartData}
+          loading={loading}
+          activeView={activeView}
+        />
         <DaosTopList
           data={leaderboardData}
-          valueLabel={getValueLabel(DaoStatsTopics.GENERAL_INFO, activeView)}
+          valueLabel={getValueLabel(
+            DaoStatsTopics.USERS_AND_ACTIVITY,
+            activeView
+          )}
         />
       </div>
     </div>

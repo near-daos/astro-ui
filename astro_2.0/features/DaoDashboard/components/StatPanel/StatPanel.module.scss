@@ -5,7 +5,7 @@
   grid-template-areas:
     'title trend'
     'value value';
-  grid-template-columns: 2.5fr 1fr;
+  grid-template-columns: 2.7fr 1fr;
 
   &:not(:last-of-type) {
     margin-bottom: 16px;

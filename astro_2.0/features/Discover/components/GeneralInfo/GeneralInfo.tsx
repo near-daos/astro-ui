@@ -3,10 +3,8 @@ import { useTranslation } from 'next-i18next';
 import { useAsyncFn, useMount } from 'react-use';
 
 import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs';
-import { DashboardChart } from 'astro_2.0/features/DaoDashboard/components/DashboardChart';
-import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { DaosTopList } from 'astro_2.0/features/Discover/components/DaosTopList';
-import { Loader } from 'components/loader';
+import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
 
 import {
   LeaderboardData,
@@ -39,27 +37,29 @@ export const GeneralInfo: FC = () => {
   const items = useMemo<TControlTab[]>(() => {
     return [
       {
-        id: 'activeDaos',
+        id: GeneralInfoTabs.ACTIVE_DAOS,
         label: t('discover.activeDaos'),
-        value: `${generalData?.activity.count ?? 0}`,
+        value: (generalData?.activity.count ?? 0).toLocaleString(),
         trend: generalData?.activity.growth ?? 0,
       },
       {
-        id: 'numberOfDaos',
+        id: GeneralInfoTabs.NUMBER_OF_DAOS,
         label: t('discover.numberOfDaos'),
-        value: `${generalData?.dao.count ?? 0}`,
+        value: (generalData?.dao.count ?? 0).toLocaleString(),
         trend: generalData?.dao.growth ?? 0,
       },
       {
-        id: 'groups',
+        id: GeneralInfoTabs.GROUPS,
         label: t('discover.groups'),
-        value: `${generalData?.groups.count ?? 0}`,
+        value: (generalData?.groups.count ?? 0).toLocaleString(),
         trend: generalData?.groups.growth ?? 0,
       },
       {
-        id: 'avgGroupDaos',
+        id: GeneralInfoTabs.AVERAGE_GROUP_DAOS,
         label: t('discover.avgGroupDaos'),
-        value: dFormatter(generalData?.averageGroups.count ?? 0, 2),
+        value: Number(
+          dFormatter(generalData?.averageGroups.count ?? 0, 2)
+        ).toLocaleString(),
         trend: generalData?.averageGroups.growth ?? 0,
       },
     ];
@@ -83,7 +83,7 @@ export const GeneralInfo: FC = () => {
   }, []);
 
   useMount(async () => {
-    const general = await daoStatsService.getGeneral({ contract: CONTRACT });
+    const general = await daoStatsService.getGeneral(CONTRACT);
 
     if (general.data) {
       setGeneralData(general.data);
@@ -96,30 +96,26 @@ export const GeneralInfo: FC = () => {
 
     switch (activeView) {
       case GeneralInfoTabs.NUMBER_OF_DAOS: {
-        data = await daoStatsService.getGeneralDaos({ contract: CONTRACT });
+        data = await daoStatsService.getGeneralDaos(CONTRACT);
         break;
       }
       case GeneralInfoTabs.GROUPS: {
-        data = await daoStatsService.getGeneralGroups({
-          contract: CONTRACT,
-        });
-        leadersData = await daoStatsService.getGeneralGroupsLeaderboard({
-          contract: CONTRACT,
-        });
+        data = await daoStatsService.getGeneralGroups(CONTRACT);
+        leadersData = await daoStatsService.getGeneralGroupsLeaderboard(
+          CONTRACT
+        );
         break;
       }
       case GeneralInfoTabs.AVERAGE_GROUP_DAOS: {
-        data = await daoStatsService.getGeneralAverageGroups({
-          contract: CONTRACT,
-        });
+        data = await daoStatsService.getGeneralAverageGroups(CONTRACT);
         break;
       }
       case GeneralInfoTabs.ACTIVE_DAOS:
       default: {
-        data = await daoStatsService.getGeneralActive({ contract: CONTRACT });
-        leadersData = await daoStatsService.getGeneralActiveLeaderboard({
-          contract: CONTRACT,
-        });
+        data = await daoStatsService.getGeneralActive(CONTRACT);
+        leadersData = await daoStatsService.getGeneralActiveLeaderboard(
+          CONTRACT
+        );
         break;
       }
     }
@@ -154,26 +150,8 @@ export const GeneralInfo: FC = () => {
     getChartData();
   }, [getChartData]);
 
-  function renderChart() {
-    if (chartData) {
-      return (
-        <DashboardChart
-          key={activeView}
-          activeView={activeView}
-          data={chartData}
-        />
-      );
-    }
-
-    if (loading) {
-      return <Loader />;
-    }
-
-    return <NoResultsView title="No data available" />;
-  }
-
   return (
-    <div className={styles.root}>
+    <>
       <ControlTabs
         className={styles.header}
         items={items}
@@ -181,12 +159,16 @@ export const GeneralInfo: FC = () => {
         activeView={activeView}
       />
       <div className={styles.body}>
-        {renderChart()}
+        <ChartRenderer
+          data={chartData}
+          loading={loading}
+          activeView={activeView}
+        />
         <DaosTopList
           data={leaderboardData}
           valueLabel={getValueLabel(DaoStatsTopics.GENERAL_INFO, activeView)}
         />
       </div>
-    </div>
+    </>
   );
 };

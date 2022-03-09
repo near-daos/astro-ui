@@ -48,7 +48,10 @@ export const ControlTabs: FC<ControlTabsProps> = ({
             title={label}
             value={value}
             trend={trend}
+            className={styles.cardPanel}
             titleClassName={styles.cardTitle}
+            trendClassName={styles.trend}
+            valueClassName={styles.value}
           />
         </StatCard>
       ))}

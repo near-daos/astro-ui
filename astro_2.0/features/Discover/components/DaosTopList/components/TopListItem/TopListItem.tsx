@@ -8,7 +8,7 @@ import { StatChart } from 'astro_2.0/features/DaoDashboard/components/StatChart'
 
 import { LeaderboardData } from 'astro_2.0/features/Discover/types';
 
-import { shortenString } from 'utils/format';
+import { dFormatter, shortenString } from 'utils/format';
 
 import styles from './TopListItem.module.scss';
 
@@ -46,7 +46,9 @@ export const TopListItem: FC<TopListItemProps> = ({ index, data }) => {
         </div>
       </div>
       <div className={styles.proposals}>
-        <div className={styles.value}>{value}</div>
+        <div className={styles.value}>
+          {Number(dFormatter(value, 2)).toLocaleString()}
+        </div>
         <div
           className={cn(styles.trend, {
             [styles.positive]: trend >= 0,

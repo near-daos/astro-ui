@@ -374,6 +374,21 @@
     "avgGroupDaos": "Avg. Groups/DAO",
     "daoName": "DAO Name",
     "numberOfProposals": "Number of Proposals",
-    "lastMonth": "Last Month"
+    "lastMonth": "Last Month",
+    "allUsersOnAPlatform": "All users on a platform",
+    "usersThatAreMembersOfADao": "Users that are members of a DAO",
+    "averageNumberOfUsersPerDao": "Average number of users per DAO",
+    "numberOfInteractions": "Number of interactions",
+    "averageNumberOfInteractionsPerDao": "Average number of interactions per DAO",
+    "voteThroughRate": "Vote through rate",
+    "totalIn": "Total In",
+    "totalOut": "Total Out",
+    "incomingTransactions": "Incoming transactions",
+    "outgoingTransactions": "Outgoing transactions",
+    "platformTvl": "Platform TVL",
+    "vlInBountiesGrants": "VL in Bounties/Grants",
+    "numberOfFts": "Number of FTs",
+    "vlOfFts": "VL of FTs",
+    "numberOfNfts": "Number of NFTs"
   }
 }

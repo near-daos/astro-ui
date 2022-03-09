@@ -44,7 +44,9 @@ class DaoStatsService {
     return this.httpService.get(`${params.contract}/flow`);
   }
 
-  async getFlowHistory(params: HistoryParams): Promise<AxiosResponse<Metrics>> {
+  async getFlowHistory(
+    params: HistoryParams
+  ): Promise<AxiosResponse<FlowMetrics>> {
     return this.httpService.get(`${params.contract}/flow/funds`, {
       params: {
         from: params.from,
