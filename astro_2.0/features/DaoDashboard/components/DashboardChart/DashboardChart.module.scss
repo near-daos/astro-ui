@@ -22,19 +22,10 @@
 .header {
   display: grid;
   grid-gap: 24px 8px;
-  grid-template-areas:
-    'title range'
-    'votes transactions';
+  grid-template-areas: 'title range';
   grid-template-columns: 1fr 1fr;
 
   margin: 0 0 32px;
-
-  @include tablet-landscape {
-    grid-template-areas:
-      'title title . .'
-      'votes transactions . range';
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
 }
 
 .title {

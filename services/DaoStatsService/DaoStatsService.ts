@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { HttpService } from 'services/HttpService';
 import { appConfig } from 'config';
+import { Config } from 'types/config';
 import {
   DaoParams,
   Dao,
@@ -23,9 +24,15 @@ import {
 } from './types';
 
 class DaoStatsService {
-  private readonly httpService = new HttpService({
+  private httpService = new HttpService({
     baseURL: appConfig.statsApiUrl,
   });
+
+  public init(_appConfig: Config): void {
+    this.httpService = new HttpService({
+      baseURL: `${_appConfig.STATS_API_URL}/api/v1/`,
+    });
+  }
 
   // Dao
   public async getDao(params: DaoParams): Promise<AxiosResponse<Dao>> {

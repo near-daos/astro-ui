@@ -3,6 +3,8 @@ import cn from 'classnames';
 
 import { Icon } from 'components/Icon';
 
+import { dFormatter } from 'utils/format';
+
 import styles from './StatPanel.module.scss';
 
 interface StatPanelProps {
@@ -33,7 +35,7 @@ export const StatPanel: FC<StatPanelProps> = ({
             className={styles.trendIcon}
           />
         )}
-        {Math.abs(trend)}%
+        {dFormatter(Math.abs(trend), 2)}%
       </div>
       <div className={styles.value}>{value}</div>
     </div>

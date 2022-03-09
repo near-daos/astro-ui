@@ -19,18 +19,18 @@ import { daoStatsService } from 'services/DaoStatsService';
 import {
   CONTRACT,
   DaoStatsTopics,
-  GeneralInfoTabs,
   getValueLabel,
+  UsersAndActivityTabs,
 } from 'astro_2.0/features/Discover/helpers';
 import { dFormatter } from 'utils/format';
 
-import { General } from 'services/DaoStatsService/types';
+import { Users } from 'services/DaoStatsService/types';
 
-import styles from './GeneralInfo.module.scss';
+import styles from './UsersAndActivity.module.scss';
 
-export const GeneralInfo: FC = () => {
+export const UsersAndActivity: FC = () => {
   const { t } = useTranslation();
-  const [generalData, setGeneralData] = useState<General | null>(null);
+  const [data, setData] = useState<Users | null>(null);
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
   const [leaderboardData, setLeaderboardData] = useState<
     LeaderboardData[] | null
@@ -39,39 +39,47 @@ export const GeneralInfo: FC = () => {
   const items = useMemo<TControlTab[]>(() => {
     return [
       {
-        id: 'activeDaos',
-        label: t('discover.activeDaos'),
-        value: `${generalData?.activity.count ?? 0}`,
-        trend: generalData?.activity.growth ?? 0,
+        id: UsersAndActivityTabs.ALL_USERS_ON_PLATFORM,
+        label: t('discover.allUsersOnAPlatform'),
+        value: `${data?.users.count ?? 0}`,
+        trend: data?.users.growth ?? 0,
       },
       {
-        id: 'numberOfDaos',
-        label: t('discover.numberOfDaos'),
-        value: `${generalData?.dao.count ?? 0}`,
-        trend: generalData?.dao.growth ?? 0,
+        id: UsersAndActivityTabs.USERS_MEMBERS_OF_DAO,
+        label: t('discover.usersThatAreMembersOfADao'),
+        value: `${data?.members.count ?? 0}`,
+        trend: data?.members.growth ?? 0,
       },
       {
-        id: 'groups',
-        label: t('discover.groups'),
-        value: `${generalData?.groups.count ?? 0}`,
-        trend: generalData?.groups.growth ?? 0,
+        id: UsersAndActivityTabs.AVERAGE_NUMBER_OF_USERS_PER_DAO,
+        label: t('discover.averageNumberOfUsersPerDao'),
+        value: `${data?.averageUsers.count ?? 0}`,
+        trend: data?.averageUsers.growth ?? 0,
       },
       {
-        id: 'avgGroupDaos',
-        label: t('discover.avgGroupDaos'),
-        value: dFormatter(generalData?.averageGroups.count ?? 0, 2),
-        trend: generalData?.averageGroups.growth ?? 0,
+        id: UsersAndActivityTabs.NUMBER_OF_INTERACTIONS,
+        label: t('discover.numberOfInteractions'),
+        value: dFormatter(data?.interactions.count ?? 0, 2),
+        trend: data?.interactions.growth ?? 0,
+      },
+      {
+        id: UsersAndActivityTabs.AVERAGE_NUMBER_OF_INTERACTIONS_PER_DAO,
+        label: t('discover.averageNumberOfInteractionsPerDao'),
+        value: dFormatter(data?.averageInteractions.count ?? 0, 2),
+        trend: data?.averageInteractions.growth ?? 0,
       },
     ];
   }, [
-    generalData?.activity.count,
-    generalData?.activity.growth,
-    generalData?.averageGroups.count,
-    generalData?.averageGroups.growth,
-    generalData?.dao.count,
-    generalData?.dao.growth,
-    generalData?.groups.count,
-    generalData?.groups.growth,
+    data?.averageInteractions.count,
+    data?.averageInteractions.growth,
+    data?.averageUsers.count,
+    data?.averageUsers.growth,
+    data?.interactions.count,
+    data?.interactions.growth,
+    data?.members.count,
+    data?.members.growth,
+    data?.users.count,
+    data?.users.growth,
     t,
   ]);
   const [activeView, setActiveView] = useState<string>(items[0].id);
@@ -83,59 +91,68 @@ export const GeneralInfo: FC = () => {
   }, []);
 
   useMount(async () => {
-    const general = await daoStatsService.getGeneral({ contract: CONTRACT });
+    const response = await daoStatsService.getUsers({ contract: CONTRACT });
 
-    if (general.data) {
-      setGeneralData(general.data);
+    if (response.data) {
+      setData(response.data);
     }
   });
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
-    let data;
-    let leadersData;
+    let chart;
+    let leaders;
 
     switch (activeView) {
-      case GeneralInfoTabs.NUMBER_OF_DAOS: {
-        data = await daoStatsService.getGeneralDaos({ contract: CONTRACT });
-        break;
-      }
-      case GeneralInfoTabs.GROUPS: {
-        data = await daoStatsService.getGeneralGroups({
-          contract: CONTRACT,
-        });
-        leadersData = await daoStatsService.getGeneralGroupsLeaderboard({
+      case UsersAndActivityTabs.USERS_MEMBERS_OF_DAO: {
+        chart = await daoStatsService.getUsersMembers({ contract: CONTRACT });
+        leaders = await daoStatsService.getUsersMembersLeaderboard({
           contract: CONTRACT,
         });
         break;
       }
-      case GeneralInfoTabs.AVERAGE_GROUP_DAOS: {
-        data = await daoStatsService.getGeneralAverageGroups({
+      case UsersAndActivityTabs.AVERAGE_NUMBER_OF_USERS_PER_DAO: {
+        chart = await daoStatsService.getUsersAverageUsers({
           contract: CONTRACT,
         });
         break;
       }
-      case GeneralInfoTabs.ACTIVE_DAOS:
+      case UsersAndActivityTabs.NUMBER_OF_INTERACTIONS: {
+        chart = await daoStatsService.getUsersInteractions({
+          contract: CONTRACT,
+        });
+        leaders = await daoStatsService.getUsersInteractionsLeaderboard({
+          contract: CONTRACT,
+        });
+        break;
+      }
+      case UsersAndActivityTabs.AVERAGE_NUMBER_OF_INTERACTIONS_PER_DAO: {
+        chart = await daoStatsService.getUsersAverageInteractions({
+          contract: CONTRACT,
+        });
+        break;
+      }
+      case UsersAndActivityTabs.ALL_USERS_ON_PLATFORM:
       default: {
-        data = await daoStatsService.getGeneralActive({ contract: CONTRACT });
-        leadersData = await daoStatsService.getGeneralActiveLeaderboard({
+        chart = await daoStatsService.getUsersUsers({ contract: CONTRACT });
+        leaders = await daoStatsService.getUsersLeaderboard({
           contract: CONTRACT,
         });
         break;
       }
     }
 
-    if (data) {
+    if (chart) {
       setChartData(
-        data.data.metrics.map(({ timestamp, count }) => ({
+        chart.data.metrics.map(({ timestamp, count }) => ({
           x: new Date(timestamp),
           y: count,
         }))
       );
     }
 
-    if (leadersData?.data?.metrics) {
+    if (leaders?.data?.metrics) {
       const newData =
-        leadersData.data.metrics.map(metric => {
+        leaders.data.metrics.map(metric => {
           return {
             ...metric,
             overview:

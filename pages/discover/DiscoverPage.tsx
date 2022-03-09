@@ -9,11 +9,14 @@ import { SearchInput } from 'astro_2.0/components/SearchInput';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 import { ContentPanel } from 'astro_2.0/features/Discover/components/ContentPanel';
 import { GeneralInfo } from 'astro_2.0/features/Discover/components/GeneralInfo';
+import { UsersAndActivity } from 'astro_2.0/features/Discover/components/UsersAndActivity';
 
 import { useDaoSearch } from 'astro_2.0/features/Discover/hooks';
 import { useAuthContext } from 'context/AuthContext';
 
 import { CREATE_DAO_URL } from 'constants/routing';
+
+import { DaoStatsTopics } from 'astro_2.0/features/Discover/helpers';
 
 import styles from './DiscoverPage.module.scss';
 
@@ -36,11 +39,11 @@ const DiscoverPage: NextPage = () => {
       [
         {
           label: t('discover.generalInfo'),
-          value: 'generalInfo',
+          value: DaoStatsTopics.GENERAL_INFO,
         },
         {
           label: t('discover.usersAndActivity'),
-          value: 'usersAndActivity',
+          value: DaoStatsTopics.USERS_AND_ACTIVITY,
         },
         {
           label: t('discover.governance'),
@@ -85,8 +88,11 @@ const DiscoverPage: NextPage = () => {
 
   function renderContent() {
     switch (topic) {
-      case 'generalInfo': {
+      case DaoStatsTopics.GENERAL_INFO: {
         return <GeneralInfo />;
+      }
+      case DaoStatsTopics.USERS_AND_ACTIVITY: {
+        return <UsersAndActivity />;
       }
       default: {
         return null;
