@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TimelineHeader Should render component 1`] = `
+<div>
+  <div>
+    <button
+      class=""
+      disabled=""
+      type="button"
+    >
+      <svg>
+        <use
+          href="/_next/undefined"
+        />
+      </svg>
+    </button>
+    <div />
+    <button
+      class=""
+      type="button"
+    >
+      <svg>
+        <use
+          href="/_next/undefined"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+`;
