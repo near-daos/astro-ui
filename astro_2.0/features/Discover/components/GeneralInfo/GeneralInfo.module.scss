@@ -1,3 +1,5 @@
+@import 'styles/mixins';
+
 .root {
   display: flex;
   flex-direction: column;
@@ -5,8 +7,8 @@
 
 .header {
   background-color: var(--color-neutral-10);
-  position: sticky;
-  top: 228px;
+  //position: sticky;
+  //top: 228px;
   z-index: 10;
 }
 
@@ -14,6 +16,6 @@
   background-color: var(--color-white);
   border-radius: 8px;
   box-shadow: 3px 12px 24px var(--color-black-opacity-1);
-  margin: 12px 0;
+  margin: 12px 0 32px;
   overflow: hidden;
 }

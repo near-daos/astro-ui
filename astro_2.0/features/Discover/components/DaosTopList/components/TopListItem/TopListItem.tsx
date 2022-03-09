@@ -58,6 +58,7 @@ export const TopListItem: FC<TopListItemProps> = ({ index, data }) => {
       <div className={styles.index}>{index + 1}</div>
       <div className={styles.name}>
         <FlagRenderer
+          className={styles.flag}
           flag={flagCover}
           logo={flagLogo}
           fallBack={logo}

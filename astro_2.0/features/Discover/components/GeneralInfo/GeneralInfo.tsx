@@ -76,7 +76,7 @@ export const GeneralInfo: FC = () => {
   }
 
   return (
-    <div className={styles.root}>
+    <>
       <ControlTabs
         className={styles.header}
         items={items}
@@ -87,6 +87,6 @@ export const GeneralInfo: FC = () => {
         {renderChart()}
         <DaosTopList />
       </div>
-    </div>
+    </>
   );
 };

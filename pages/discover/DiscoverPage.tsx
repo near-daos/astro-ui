@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
+import { useMedia } from 'react-use';
 
 import { Button } from 'components/button/Button';
 import { SearchInput } from 'astro_2.0/components/SearchInput';
@@ -23,6 +24,7 @@ const DiscoverPage: NextPage = () => {
   const router = useRouter();
   const { query } = router;
   const topic = query.topic as string;
+  const isMobile = useMedia('(max-width: 1280px)');
 
   const { loading, handleSearch } = useDaoSearch();
 
@@ -31,39 +33,44 @@ const DiscoverPage: NextPage = () => {
     [login, router, accountId]
   );
 
-  const [overviewOptions, financialOptions] = useMemo(
-    () => [
-      [
-        {
-          label: t('discover.generalInfo'),
-          value: 'generalInfo',
-        },
-        {
-          label: t('discover.usersAndActivity'),
-          value: 'usersAndActivity',
-        },
-        {
-          label: t('discover.governance'),
-          value: 'governance',
-        },
-      ],
-      [
-        {
-          label: t('discover.flow'),
-          value: 'flow',
-        },
-        {
-          label: t('discover.tvl'),
-          value: 'tvl',
-        },
-        {
-          label: t('discover.tokens'),
-          value: 'tokens',
-        },
-      ],
-    ],
-    [t]
-  );
+  const [overviewOptions, financialOptions] = useMemo(() => {
+    let overview = [
+      {
+        label: t('discover.generalInfo'),
+        value: 'generalInfo',
+      },
+      {
+        label: t('discover.usersAndActivity'),
+        value: 'usersAndActivity',
+      },
+      {
+        label: t('discover.governance'),
+        value: 'governance',
+      },
+    ];
+
+    let financial = [
+      {
+        label: t('discover.flow'),
+        value: 'flow',
+      },
+      {
+        label: t('discover.tvl'),
+        value: 'tvl',
+      },
+      {
+        label: t('discover.tokens'),
+        value: 'tokens',
+      },
+    ];
+
+    if (isMobile) {
+      overview = [...overview, ...financial];
+      financial = [];
+    }
+
+    return [overview, financial];
+  }, [isMobile, t]);
 
   useEffect(() => {
     if (!topic) {
@@ -101,10 +108,13 @@ const DiscoverPage: NextPage = () => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <h1 className={styles.title}>{t('discover.title')}</h1>
-        <Button variant="black" size="small" onClick={handleCreateDao}>
-          {t('createNewDao')}
-        </Button>
+        <div className={styles.titleWrapper}>
+          <h1 className={styles.title}>{t('discover.title')}</h1>
+          <Button variant="black" size="small" onClick={handleCreateDao}>
+            {t('createNewDao')}
+          </Button>
+        </div>
+
         <SearchInput
           placeholder="Search DAO name"
           className={styles.search}
@@ -113,17 +123,17 @@ const DiscoverPage: NextPage = () => {
           loading={loading}
         />
       </div>
-      <div className={styles.body}>
-        <div className={styles.sidebar}>
-          <SideFilter
-            shallowUpdate
-            hideAllOption
-            queryName="topic"
-            list={overviewOptions}
-            title={t('discover.overview')}
-            titleClassName={styles.sideFilterTitle}
-            className={styles.sideFilter}
-          />
+      <div className={styles.sidebar}>
+        <SideFilter
+          shallowUpdate
+          hideAllOption
+          queryName="topic"
+          list={overviewOptions}
+          title={t('discover.overview')}
+          titleClassName={styles.sideFilterTitle}
+          className={styles.sideFilter}
+        />
+        {financialOptions.length > 0 && (
           <SideFilter
             shallowUpdate
             hideAllOption
@@ -133,12 +143,12 @@ const DiscoverPage: NextPage = () => {
             titleClassName={styles.sideFilterTitle}
             className={cn(styles.sideFilter, styles.financialFilter)}
           />
-        </div>
-        <div className={styles.content}>
-          <ContentPanel title={t(`discover.${topic}`)}>
-            {renderContent()}
-          </ContentPanel>
-        </div>
+        )}
+      </div>
+      <div className={styles.body}>
+        <ContentPanel title={t(`discover.${topic}`)}>
+          {renderContent()}
+        </ContentPanel>
       </div>
     </div>
   );

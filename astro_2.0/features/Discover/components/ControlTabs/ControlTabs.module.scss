@@ -4,11 +4,11 @@
 .root {
   align-items: center;
   display: flex;
-  margin: 0 -32px;
+  margin: 0;
   -ms-overflow-style: none;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 24px 0 18px 32px;
+  padding: 24px 12px 24px 0;
   scrollbar-width: none;
 }
 
