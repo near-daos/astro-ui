@@ -28,6 +28,7 @@ import { useAppConfig } from 'hooks/useAppConfig';
 import { useIntercomAdjust } from 'hooks/useIntercomAdjust';
 
 import 'styles/globals.scss';
+import { daoStatsService } from 'services/DaoStatsService';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
@@ -40,6 +41,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
     }
 
     configService.init(nearConfig, appConfig);
+    daoStatsService.init(appConfig);
 
     SputnikNearService.init(nearConfig, appConfig);
 

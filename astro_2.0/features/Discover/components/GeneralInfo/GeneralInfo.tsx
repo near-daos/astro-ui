@@ -1,91 +1,218 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
+import { useAsyncFn } from 'react-use';
 
 import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs';
-import { DashboardChart } from 'astro_2.0/features/DaoDashboard/components/DashboardChart';
-import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { DaosTopList } from 'astro_2.0/features/Discover/components/DaosTopList';
-import { Loader } from 'components/loader';
+import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
 
-import { TControlTab } from 'astro_2.0/features/Discover/types';
+import {
+  LeaderboardData,
+  TControlTab,
+} from 'astro_2.0/features/Discover/types';
+import { ChartDataElement } from 'components/AreaChartRenderer/types';
+
+import { daoStatsService } from 'services/DaoStatsService';
+
+import {
+  CONTRACT,
+  DaoStatsTopics,
+  GeneralInfoTabs,
+} from 'astro_2.0/features/Discover/constants';
+import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
+import { dFormatter } from 'utils/format';
+import useQuery from 'hooks/useQuery';
+
+import { General } from 'services/DaoStatsService/types';
 
 import styles from './GeneralInfo.module.scss';
 
-// todo - fetch data from api
-const chartData = [
-  {
-    x: new Date('2022-01-12'),
-    y: 30,
-  },
-  {
-    x: new Date('2022-04-23'),
-    y: 45,
-  },
-];
-
 export const GeneralInfo: FC = () => {
-  const loading = false;
   const { t } = useTranslation();
+  const [generalData, setGeneralData] = useState<General | null>(null);
+  const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
+  const [leaderboardData, setLeaderboardData] = useState<
+    LeaderboardData[] | null
+  >(null);
+
+  const { query } = useQuery<{ dao: string }>();
 
   const items = useMemo<TControlTab[]>(() => {
+    if (query.dao) {
+      return [
+        {
+          id: GeneralInfoTabs.ACTIVITY,
+          label: t('discover.activity'),
+          value: (generalData?.activity.count ?? 0).toLocaleString(),
+          trend: generalData?.activity.growth ?? 0,
+        },
+        {
+          id: GeneralInfoTabs.GROUPS,
+          label: t('discover.groups'),
+          value: (generalData?.groups.count ?? 0).toLocaleString(),
+          trend: generalData?.groups.growth ?? 0,
+        },
+      ];
+    }
+
     return [
       {
-        id: 'activeDaos',
+        id: GeneralInfoTabs.ACTIVE_DAOS,
         label: t('discover.activeDaos'),
-        value: '94',
-        trend: 10,
+        value: (generalData?.activity.count ?? 0).toLocaleString(),
+        trend: generalData?.activity.growth ?? 0,
       },
       {
-        id: 'numberOfDaos',
+        id: GeneralInfoTabs.NUMBER_OF_DAOS,
         label: t('discover.numberOfDaos'),
-        value: '1316',
-        trend: 10,
+        value: (generalData?.dao.count ?? 0).toLocaleString(),
+        trend: generalData?.dao.growth ?? 0,
       },
       {
-        id: 'groups',
+        id: GeneralInfoTabs.GROUPS,
         label: t('discover.groups'),
-        value: '45',
-        trend: 15,
+        value: (generalData?.groups.count ?? 0).toLocaleString(),
+        trend: generalData?.groups.growth ?? 0,
       },
       {
-        id: 'avgGroupDaos',
+        id: GeneralInfoTabs.AVERAGE_GROUP_DAOS,
         label: t('discover.avgGroupDaos'),
-        value: '1.12',
-        trend: -56,
+        value: Number(
+          dFormatter(generalData?.averageGroups.count ?? 0, 2)
+        ).toLocaleString(),
+        trend: generalData?.averageGroups.growth ?? 0,
       },
     ];
-  }, [t]);
+  }, [
+    generalData?.activity.count,
+    generalData?.activity.growth,
+    generalData?.averageGroups.count,
+    generalData?.averageGroups.growth,
+    generalData?.dao.count,
+    generalData?.dao.growth,
+    generalData?.groups.count,
+    generalData?.groups.growth,
+    query.dao,
+    t,
+  ]);
   const [activeView, setActiveView] = useState<string>(items[0].id);
 
-  function renderChart() {
-    if (chartData) {
-      return (
-        <DashboardChart
-          key={activeView}
-          activeView={activeView}
-          data={chartData}
-        />
+  const handleTopicSelect = useCallback(async (id: string) => {
+    setChartData(null);
+    setLeaderboardData(null);
+    setActiveView(id);
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const general = query.dao
+        ? await daoStatsService.getGeneralDao({ ...CONTRACT, dao: query.dao })
+        : await daoStatsService.getGeneral(CONTRACT);
+
+      if (general.data) {
+        setGeneralData(general.data);
+      }
+    })();
+  }, [query.dao]);
+
+  const [{ loading }, getChartData] = useAsyncFn(async () => {
+    let data;
+    let leadersData;
+
+    if (query.dao) {
+      const params = {
+        ...CONTRACT,
+        dao: query.dao,
+      };
+
+      switch (activeView) {
+        case GeneralInfoTabs.GROUPS: {
+          data = await daoStatsService.getGeneralDaoGroups(params);
+          break;
+        }
+        case GeneralInfoTabs.ACTIVITY:
+        default: {
+          data = await daoStatsService.getGeneralDaoActivity(params);
+          break;
+        }
+      }
+    } else {
+      switch (activeView) {
+        case GeneralInfoTabs.NUMBER_OF_DAOS: {
+          data = await daoStatsService.getGeneralDaos(CONTRACT);
+          break;
+        }
+        case GeneralInfoTabs.GROUPS: {
+          data = await daoStatsService.getGeneralGroups(CONTRACT);
+          leadersData = await daoStatsService.getGeneralGroupsLeaderboard(
+            CONTRACT
+          );
+          break;
+        }
+        case GeneralInfoTabs.AVERAGE_GROUP_DAOS: {
+          data = await daoStatsService.getGeneralAverageGroups(CONTRACT);
+          break;
+        }
+        case GeneralInfoTabs.ACTIVE_DAOS:
+        default: {
+          data = await daoStatsService.getGeneralActive(CONTRACT);
+          leadersData = await daoStatsService.getGeneralActiveLeaderboard(
+            CONTRACT
+          );
+          break;
+        }
+      }
+    }
+
+    if (data) {
+      setChartData(
+        data.data.metrics.map(({ timestamp, count }) => ({
+          x: new Date(timestamp),
+          y: count,
+        }))
       );
     }
 
-    if (loading) {
-      return <Loader />;
-    }
+    if (leadersData?.data?.metrics) {
+      const newData =
+        leadersData.data.metrics.map(metric => {
+          return {
+            ...metric,
+            overview:
+              metric.overview?.map(({ timestamp, count }) => ({
+                x: new Date(timestamp),
+                y: count,
+              })) ?? [],
+          };
+        }) ?? null;
 
-    return <NoResultsView title="No data available" />;
-  }
+      setLeaderboardData(newData);
+    }
+  }, [activeView, query.dao]);
+
+  useEffect(() => {
+    getChartData();
+  }, [getChartData]);
 
   return (
     <>
       <ControlTabs
+        loading={loading}
         className={styles.header}
         items={items}
-        onSelect={setActiveView}
+        onSelect={handleTopicSelect}
         activeView={activeView}
       />
       <div className={styles.body}>
-        {renderChart()}
-        <DaosTopList />
+        <ChartRenderer
+          data={chartData}
+          loading={loading}
+          activeView={activeView}
+        />
+        <DaosTopList
+          data={leaderboardData}
+          valueLabel={getValueLabel(DaoStatsTopics.GENERAL_INFO, activeView)}
+        />
       </div>
     </>
   );

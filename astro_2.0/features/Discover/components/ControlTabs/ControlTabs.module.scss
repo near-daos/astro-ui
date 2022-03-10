@@ -8,7 +8,7 @@
   -ms-overflow-style: none;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 24px 12px 24px 0;
+  padding: 24px 12px 24px 24px;
   scrollbar-width: none;
 }
 
@@ -17,15 +17,31 @@
 }
 
 .card {
+  height: 100%;
   margin-right: 12px;
-  max-width: 185px;
+  max-width: 200px;
   padding: 12px;
+}
+
+.cardPanel {
+  height: 100%;
+  width: 100%;
 }
 
 .cardTitle {
   @extend %caption1;
-  @include ellipse-text;
-  white-space: nowrap;
+}
+
+.trend {
+  align-items: flex-start;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.value {
+  align-items: flex-end;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .active {

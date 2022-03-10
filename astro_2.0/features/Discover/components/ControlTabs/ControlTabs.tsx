@@ -13,6 +13,7 @@ interface ControlTabsProps {
   onSelect: (id: string) => void;
   activeView: string;
   className?: string;
+  loading: boolean;
 }
 
 export const ControlTabs: FC<ControlTabsProps> = ({
@@ -20,16 +21,19 @@ export const ControlTabs: FC<ControlTabsProps> = ({
   onSelect,
   activeView,
   className,
+  loading,
 }) => {
   useEffect(() => {
     const selectedItem = document.querySelector(`.${styles.active}`);
 
     if (selectedItem) {
-      selectedItem.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center',
-      });
+      setTimeout(() => {
+        selectedItem.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center',
+        });
+      }, 500);
     }
   }, [activeView]);
 
@@ -42,13 +46,17 @@ export const ControlTabs: FC<ControlTabsProps> = ({
           className={cn(styles.card, {
             [styles.active]: activeView === id,
           })}
+          disabled={loading}
           onClick={() => onSelect(id)}
         >
           <StatPanel
             title={label}
             value={value}
             trend={trend}
+            className={styles.cardPanel}
             titleClassName={styles.cardTitle}
+            trendClassName={styles.trend}
+            valueClassName={styles.value}
           />
         </StatCard>
       ))}

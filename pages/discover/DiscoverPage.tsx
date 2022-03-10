@@ -10,11 +10,20 @@ import { SearchInput } from 'astro_2.0/components/SearchInput';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 import { ContentPanel } from 'astro_2.0/features/Discover/components/ContentPanel';
 import { GeneralInfo } from 'astro_2.0/features/Discover/components/GeneralInfo';
+import { UsersAndActivity } from 'astro_2.0/features/Discover/components/UsersAndActivity';
+import { Governance } from 'astro_2.0/features/Discover/components/Governance';
+import { Flow } from 'astro_2.0/features/Discover/components/Flow';
+import { Tvl } from 'astro_2.0/features/Discover/components/Tvl';
+import { Tokens } from 'astro_2.0/features/Discover/components/Tokens';
+import { SelectedDaoDetails } from 'astro_2.0/features/Discover/components/SelectedDaoDetails';
 
 import { useDaoSearch } from 'astro_2.0/features/Discover/hooks';
 import { useAuthContext } from 'context/AuthContext';
 
 import { CREATE_DAO_URL } from 'constants/routing';
+
+import { DaoStatsTopics } from 'astro_2.0/features/Discover/constants';
+import useQuery from 'hooks/useQuery';
 
 import styles from './DiscoverPage.module.scss';
 
@@ -28,6 +37,10 @@ const DiscoverPage: NextPage = () => {
 
   const { loading, handleSearch } = useDaoSearch();
 
+  const { query: searchQuery, updateQuery } = useQuery<{
+    dao: string;
+  }>({ shallow: false });
+
   const handleCreateDao = useCallback(
     () => (accountId ? router.push(CREATE_DAO_URL) : login()),
     [login, router, accountId]
@@ -37,30 +50,30 @@ const DiscoverPage: NextPage = () => {
     let overview = [
       {
         label: t('discover.generalInfo'),
-        value: 'generalInfo',
+        value: DaoStatsTopics.GENERAL_INFO,
       },
       {
         label: t('discover.usersAndActivity'),
-        value: 'usersAndActivity',
+        value: DaoStatsTopics.USERS_AND_ACTIVITY,
       },
       {
         label: t('discover.governance'),
-        value: 'governance',
+        value: DaoStatsTopics.GOVERNANCE,
       },
     ];
 
     let financial = [
       {
         label: t('discover.flow'),
-        value: 'flow',
+        value: DaoStatsTopics.FLOW,
       },
       {
         label: t('discover.tvl'),
-        value: 'tvl',
+        value: DaoStatsTopics.TVL,
       },
       {
         label: t('discover.tokens'),
-        value: 'tokens',
+        value: DaoStatsTopics.TOKENS,
       },
     ];
 
@@ -92,8 +105,23 @@ const DiscoverPage: NextPage = () => {
 
   function renderContent() {
     switch (topic) {
-      case 'generalInfo': {
+      case DaoStatsTopics.GENERAL_INFO: {
         return <GeneralInfo />;
+      }
+      case DaoStatsTopics.USERS_AND_ACTIVITY: {
+        return <UsersAndActivity />;
+      }
+      case DaoStatsTopics.GOVERNANCE: {
+        return <Governance />;
+      }
+      case DaoStatsTopics.FLOW: {
+        return <Flow />;
+      }
+      case DaoStatsTopics.TVL: {
+        return <Tvl />;
+      }
+      case DaoStatsTopics.TOKENS: {
+        return <Tokens />;
       }
       default: {
         return null;
@@ -108,20 +136,36 @@ const DiscoverPage: NextPage = () => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        <div className={styles.titleWrapper}>
-          <h1 className={styles.title}>{t('discover.title')}</h1>
-          <Button variant="black" size="small" onClick={handleCreateDao}>
-            {t('createNewDao')}
-          </Button>
+        <div className={styles.row}>
+          <div className={styles.titleWrapper}>
+            <h1 className={styles.title}>{t('discover.title')}</h1>
+            <Button variant="black" size="small" onClick={handleCreateDao}>
+              {t('createNewDao')}
+            </Button>
+          </div>
+          <SearchInput
+            key={searchQuery.dao}
+            placeholder="Search DAO name"
+            className={styles.search}
+            onSubmit={handleSearch}
+            showResults
+            loading={loading}
+            renderResult={res => {
+              return (
+                <Button
+                  variant="transparent"
+                  size="block"
+                  onClick={() => updateQuery('dao', res.id)}
+                >
+                  <div className={styles.searchResult}>
+                    {res.name ?? res.id}
+                  </div>
+                </Button>
+              );
+            }}
+          />
         </div>
-
-        <SearchInput
-          placeholder="Search DAO name"
-          className={styles.search}
-          onSubmit={handleSearch}
-          showResults
-          loading={loading}
-        />
+        <SelectedDaoDetails />
       </div>
       <div className={styles.sidebar}>
         <SideFilter

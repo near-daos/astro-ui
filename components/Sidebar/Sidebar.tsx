@@ -69,7 +69,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
     return (
       <div className={styles.bottom}>
         <NavItem
-          label={t('allDaos')}
+          label={t('discover.title')}
           icon="allCommunity"
           className={styles.item}
           myDaosIds={myDaosIds}
