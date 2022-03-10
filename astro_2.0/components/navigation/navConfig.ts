@@ -12,7 +12,7 @@ export const ALL_DAOS_NAV_CONFIG: NavItemProps = {
   icon: 'aAllDaos',
   hoverIcon: 'aAllDaosHover',
   href: ALL_DAOS_URL,
-  label: 'All DAOs',
+  label: 'Discover',
 };
 
 export const ASTRO_FEED_NAV_CONFIG: NavItemProps = {

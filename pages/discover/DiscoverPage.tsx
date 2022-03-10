@@ -153,6 +153,7 @@ const DiscoverPage: NextPage = () => {
             renderResult={res => {
               return (
                 <Button
+                  key={res.id}
                   variant="transparent"
                   size="block"
                   onClick={() => updateQuery('dao', res.id)}

@@ -45,6 +45,7 @@ export const ControlTabs: FC<ControlTabsProps> = ({
           selected={activeView === id}
           className={cn(styles.card, {
             [styles.active]: activeView === id,
+            [styles.disabled]: loading,
           })}
           disabled={loading}
           onClick={() => onSelect(id)}

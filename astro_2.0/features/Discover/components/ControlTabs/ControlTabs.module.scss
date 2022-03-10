@@ -44,6 +44,13 @@
   justify-content: flex-start;
 }
 
+.disabled {
+  cursor: default !important;
+  filter: blur(1px);
+  opacity: 0.5;
+}
+
 .active {
   cursor: default;
+  filter: unset;
 }

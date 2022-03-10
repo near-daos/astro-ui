@@ -20,12 +20,12 @@ export const SelectedDaoDetails: FC = () => {
   }>({ shallow: false });
 
   useEffect(() => {
-    if (query) {
+    if (query.dao) {
       SputnikHttpService.getDaoById(query.dao).then(res => {
         setData(res);
       });
     }
-  }, [query]);
+  }, [query.dao]);
 
   if (!data) {
     return null;
