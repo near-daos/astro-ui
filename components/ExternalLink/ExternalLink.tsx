@@ -43,9 +43,9 @@ export const ExternalLink: FC<ExternalLinkProps> = ({ to, icon }) => {
       onClick={stopPropagation}
       className={cn('caption1', styles.root)}
     >
-      <Icon name={icon || 'buttonExternal'} width={14} />
+      <Icon name={icon || 'buttonExternal'} width={20} />
       &nbsp;
-      <span className={cn('caption1', styles.text)}>{linkTitle}</span>
+      <span className={cn('body2', styles.text)}>{linkTitle}</span>
     </a>
   );
 };

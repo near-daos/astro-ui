@@ -9,7 +9,9 @@ exports[`dao details minimized Should render component 1`] = `
       <a
         href="/dao/default-flag-test.sputnikv2.testnet"
       >
-        <section>
+        <section
+          class="undefined"
+        >
           <div>
             <div
               class=""

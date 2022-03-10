@@ -6,13 +6,11 @@ import { DAO } from 'types/dao';
 
 import { FollowButton } from 'astro_2.0/features/DaoDashboardHeader/components/FollowButton';
 import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
-import { ExternalLink } from 'components/ExternalLink';
-import { Icon } from 'components/Icon';
 
-import { getSocialLinkIcon } from 'utils/getSocialLinkIcon';
 import { useAuthContext } from 'context/AuthContext';
 
 import { DepositToDaoForm } from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm';
+import { DaoLinks } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLinks';
 import styles from './DaoDashboardHeader.module.scss';
 
 interface DaoDashboardHeaderProps {
@@ -49,50 +47,24 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
       </section>
 
       <section className={styles.usersSection}>
-        <div className={styles.label}>{t('users')}</div>
+        <div className={styles.label}>{t('users')}: &nbsp;</div>
         <div className={styles.value}>{members}</div>
-        {!daoMembersList.includes(accountId) && (
-          <FollowButton daoId={id} daoName={displayName} />
-        )}
       </section>
 
       <section className={styles.depositSection}>
         <DepositToDaoForm daoId={id} />
       </section>
 
-      <section className={styles.descriptionSection}>
-        <p>{description}</p>
+      <section className={styles.followSection}>
+        {!daoMembersList.includes(accountId) && (
+          <FollowButton daoId={id} daoName={displayName} />
+        )}
       </section>
 
+      <section className={styles.descriptionSection}>{description}</section>
+
       <section className={styles.linksSection}>
-        {legal?.legalLink && (
-          <div>
-            <a
-              href={legal.legalLink}
-              target="_blank"
-              rel="noreferrer"
-              className={styles.legalLink}
-            >
-              {legal.legalStatus || 'Public Limited Company'}
-              <Icon
-                name="buttonExternal"
-                width={14}
-                className={styles.legalIcon}
-              />
-            </a>
-          </div>
-        )}
-        {!!links?.length && (
-          <ul className={styles.links}>
-            {links
-              .filter(link => link)
-              .map(link => (
-                <li className={styles.link} key={link}>
-                  <ExternalLink to={link} icon={getSocialLinkIcon(link)} />
-                </li>
-              ))}
-          </ul>
-        )}
+        <DaoLinks links={links} legal={legal} />
       </section>
     </div>
   );

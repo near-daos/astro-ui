@@ -1,11 +1,11 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import styles from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm/components/DepositButton/DepositButton.module.scss';
 import React from 'react';
 import { DepositInput } from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm/components/DepositInput';
 import { DepositButton } from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm/components/DepositButton';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SputnikNearService } from 'services/sputnik';
+import styles from './DepositToDaoForm.module.scss';
 
 const schema = yup.object().shape({
   depositAmount: yup

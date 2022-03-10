@@ -1,0 +1,22 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.legalLink {
+  @extend %body2;
+  color: var(--color-primary);
+  display: flex;
+}
+
+.legalIcon {
+  margin-left: 4px;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  list-style: none;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding: 0;
+}

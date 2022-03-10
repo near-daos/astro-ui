@@ -1,4 +1,3 @@
-import styles from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm/components/DepositButton/DepositButton.module.scss';
 import { Input } from 'components/inputs/Input';
 import cn from 'classnames';
 import { kFormatter } from 'utils/format';
@@ -7,6 +6,7 @@ import React, { useCallback, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useTranslation } from 'next-i18next';
+import styles from './DepositInput.module.scss';
 
 export const DepositInput: React.FC = () => {
   const [inputInFocus, setInputInFocus] = useState(false);

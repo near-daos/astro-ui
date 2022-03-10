@@ -108,7 +108,16 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
       <div className={styles.wrapper}>
         <Link href={`/dao/${dao.id}`}>
           <a>
-            <section className={styles.general}>
+            <section
+              className={cn(
+                {
+                  [styles.paddingWithNoProposalButton]: !userPermissions.isCanCreateProposals,
+                  [styles.paddingWithProposalButton]:
+                    userPermissions.isCanCreateProposals,
+                },
+                styles.general
+              )}
+            >
               <div className={styles.flagWrapper}>
                 <FlagRenderer
                   flag={dao.flagCover}

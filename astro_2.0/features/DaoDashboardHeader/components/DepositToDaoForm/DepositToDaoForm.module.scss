@@ -1,0 +1,15 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  width: 100%;
+
+  @include tablet-landscape {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+}

@@ -1,0 +1,8 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.showMore {
+  @extend %title4;
+  color: var(--color-brand-purple);
+  display: flex;
+}

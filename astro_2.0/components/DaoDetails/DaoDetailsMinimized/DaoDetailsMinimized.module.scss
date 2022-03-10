@@ -34,11 +34,18 @@
   display: none;
 }
 
+.paddingWithNoProposalButton {
+  padding: 0 0 0 24px;
+}
+
+.paddingWithProposalButton {
+  padding: 0 0 0 70px;
+}
+
 .general {
   align-items: center;
   display: flex;
   grid-area: general;
-  padding: 0 0 0 70px;
 
   @include tablet-landscape {
     padding: 8px 0 8px 16px;
