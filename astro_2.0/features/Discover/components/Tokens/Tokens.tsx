@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useAsyncFn, useMount } from 'react-use';
+import { useAsyncFn } from 'react-use';
 
 import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs';
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
@@ -14,12 +14,13 @@ import { ChartDataElement } from 'components/AreaChartRenderer/types';
 
 import { daoStatsService } from 'services/DaoStatsService';
 
+import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import {
   CONTRACT,
   DaoStatsTopics,
-  getValueLabel,
   TokensTabs,
-} from 'astro_2.0/features/Discover/helpers';
+} from 'astro_2.0/features/Discover/constants';
+import useQuery from 'hooks/useQuery';
 
 import { Tokens as TTokens } from 'services/DaoStatsService/types';
 
@@ -32,6 +33,8 @@ export const Tokens: FC = () => {
   const [leaderboardData, setLeaderboardData] = useState<
     LeaderboardData[] | null
   >(null);
+
+  const { query } = useQuery<{ dao: string }>();
 
   const items = useMemo<TControlTab[]>(() => {
     return [
@@ -71,34 +74,61 @@ export const Tokens: FC = () => {
     setActiveView(id);
   }, []);
 
-  useMount(async () => {
-    const response = await daoStatsService.getTokens(CONTRACT);
+  useEffect(() => {
+    (async () => {
+      const response = query.dao
+        ? await daoStatsService.getTokensDao({ ...CONTRACT, dao: query.dao })
+        : await daoStatsService.getTokens(CONTRACT);
 
-    if (response.data) {
-      setData(response.data);
-    }
-  });
+      if (response.data) {
+        setData(response.data);
+      }
+    })();
+  }, [query.dao]);
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
     let leaders;
 
-    switch (activeView) {
-      case TokensTabs.VL_OF_FTS: {
-        chart = await daoStatsService.getTokensFtsVl(CONTRACT);
-        leaders = await daoStatsService.getTokensFtsVlLeaderboard(CONTRACT);
-        break;
+    if (query.dao) {
+      const params = {
+        ...CONTRACT,
+        dao: query.dao,
+      };
+
+      switch (activeView) {
+        case TokensTabs.VL_OF_FTS: {
+          chart = await daoStatsService.getTokensDaoFtsVl(params);
+          break;
+        }
+        case TokensTabs.NUMBER_OF_NFTS: {
+          chart = await daoStatsService.getTokensDaoNfts(params);
+          break;
+        }
+        case TokensTabs.NUMBER_OF_FTS:
+        default: {
+          chart = await daoStatsService.getTokensDaoFts(params);
+          break;
+        }
       }
-      case TokensTabs.NUMBER_OF_NFTS: {
-        chart = await daoStatsService.getTokensNfts(CONTRACT);
-        leaders = await daoStatsService.getTokensNftsLeaderboard(CONTRACT);
-        break;
-      }
-      case TokensTabs.NUMBER_OF_FTS:
-      default: {
-        chart = await daoStatsService.getTokensFts(CONTRACT);
-        leaders = await daoStatsService.getTokensFtsLeaderboard(CONTRACT);
-        break;
+    } else {
+      switch (activeView) {
+        case TokensTabs.VL_OF_FTS: {
+          chart = await daoStatsService.getTokensFtsVl(CONTRACT);
+          leaders = await daoStatsService.getTokensFtsVlLeaderboard(CONTRACT);
+          break;
+        }
+        case TokensTabs.NUMBER_OF_NFTS: {
+          chart = await daoStatsService.getTokensNfts(CONTRACT);
+          leaders = await daoStatsService.getTokensNftsLeaderboard(CONTRACT);
+          break;
+        }
+        case TokensTabs.NUMBER_OF_FTS:
+        default: {
+          chart = await daoStatsService.getTokensFts(CONTRACT);
+          leaders = await daoStatsService.getTokensFtsLeaderboard(CONTRACT);
+          break;
+        }
       }
     }
 
@@ -135,6 +165,7 @@ export const Tokens: FC = () => {
   return (
     <div className={styles.root}>
       <ControlTabs
+        loading={loading}
         className={styles.header}
         items={items}
         onSelect={handleTopicSelect}

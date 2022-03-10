@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useAsyncFn, useMount } from 'react-use';
+import { useAsyncFn } from 'react-use';
 
 import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs';
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
@@ -14,13 +14,14 @@ import { ChartDataElement } from 'components/AreaChartRenderer/types';
 
 import { daoStatsService } from 'services/DaoStatsService';
 
+import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import {
   CONTRACT,
   DaoStatsTopics,
   FlowTabs,
-  getValueLabel,
-} from 'astro_2.0/features/Discover/helpers';
+} from 'astro_2.0/features/Discover/constants';
 import { dFormatter } from 'utils/format';
+import useQuery from 'hooks/useQuery';
 
 import { Flow as TFlow, FlowMetricsItem } from 'services/DaoStatsService/types';
 
@@ -33,6 +34,8 @@ export const Flow: FC = () => {
   const [leaderboardData, setLeaderboardData] = useState<
     LeaderboardData[] | null
   >(null);
+
+  const { query } = useQuery<{ dao: string }>();
 
   const items = useMemo<TControlTab[]>(() => {
     return [
@@ -85,33 +88,58 @@ export const Flow: FC = () => {
     setActiveView(id);
   }, []);
 
-  useMount(async () => {
-    const response = await daoStatsService.getFlow(CONTRACT);
+  useEffect(() => {
+    (async () => {
+      const response = query.dao
+        ? await daoStatsService.getFlowDao({ ...CONTRACT, dao: query.dao })
+        : await daoStatsService.getFlow(CONTRACT);
 
-    if (response.data) {
-      setData(response.data);
-    }
-  });
+      if (response.data) {
+        setData(response.data);
+      }
+    })();
+  }, [query.dao]);
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
     let leaders;
 
-    switch (activeView) {
-      case FlowTabs.INCOMING_TRANSACTIONS:
-      case FlowTabs.OUTGOING_TRANSACTIONS: {
-        chart = await daoStatsService.getFlowTransactionsHistory(CONTRACT);
-        leaders = await daoStatsService.getFlowTransactionsLeaderboard(
-          CONTRACT
-        );
-        break;
+    if (query.dao) {
+      const params = {
+        ...CONTRACT,
+        dao: query.dao,
+      };
+
+      switch (activeView) {
+        case FlowTabs.INCOMING_TRANSACTIONS:
+        case FlowTabs.OUTGOING_TRANSACTIONS: {
+          chart = await daoStatsService.getFlowDaoTransactions(params);
+          break;
+        }
+        case FlowTabs.TOTAL_OUT:
+        case FlowTabs.TOTAL_IN:
+        default: {
+          chart = await daoStatsService.getFlowDaoFunds(params);
+          break;
+        }
       }
-      case FlowTabs.TOTAL_OUT:
-      case FlowTabs.TOTAL_IN:
-      default: {
-        chart = await daoStatsService.getFlowHistory(CONTRACT);
-        leaders = await daoStatsService.getFlowLeaderboard(CONTRACT);
-        break;
+    } else {
+      switch (activeView) {
+        case FlowTabs.INCOMING_TRANSACTIONS:
+        case FlowTabs.OUTGOING_TRANSACTIONS: {
+          chart = await daoStatsService.getFlowTransactionsHistory(CONTRACT);
+          leaders = await daoStatsService.getFlowTransactionsLeaderboard(
+            CONTRACT
+          );
+          break;
+        }
+        case FlowTabs.TOTAL_OUT:
+        case FlowTabs.TOTAL_IN:
+        default: {
+          chart = await daoStatsService.getFlowHistory(CONTRACT);
+          leaders = await daoStatsService.getFlowLeaderboard(CONTRACT);
+          break;
+        }
       }
     }
 
@@ -152,7 +180,7 @@ export const Flow: FC = () => {
         setLeaderboardData(newData);
       }
     }
-  }, [activeView]);
+  }, [activeView, query.dao]);
 
   useEffect(() => {
     getChartData();
@@ -161,6 +189,7 @@ export const Flow: FC = () => {
   return (
     <div className={styles.root}>
       <ControlTabs
+        loading={loading}
         className={styles.header}
         items={items}
         onSelect={handleTopicSelect}

@@ -1,51 +1,12 @@
-export const CONTRACT = { contract: 'astro' };
-
-export enum DaoStatsTopics {
-  GENERAL_INFO = 'generalInfo',
-  USERS_AND_ACTIVITY = 'usersAndActivity',
-  GOVERNANCE = 'governance',
-  FLOW = 'flow',
-  TVL = 'tvl',
-  TOKENS = 'tokens',
-}
-
-export enum GeneralInfoTabs {
-  NUMBER_OF_DAOS = 'numberOfDaos',
-  GROUPS = 'groups',
-  AVERAGE_GROUP_DAOS = 'avgGroupDaos',
-  ACTIVE_DAOS = 'activeDaos',
-}
-
-export enum UsersAndActivityTabs {
-  ALL_USERS_ON_PLATFORM = 'allUsersOnPlatform',
-  USERS_MEMBERS_OF_DAO = 'usersMembersOfDao',
-  AVERAGE_NUMBER_OF_USERS_PER_DAO = 'averageNumberOfUsersPerDao',
-  NUMBER_OF_INTERACTIONS = 'numberOfInteractions',
-  AVERAGE_NUMBER_OF_INTERACTIONS_PER_DAO = 'averageNumberOfInteractionsPerDao',
-}
-
-export enum GovernanceTabs {
-  NUMBER_OF_PROPOSALS = 'numberOfProposals',
-  VOTE_THROUGH_RATE = 'voteThroughRate',
-}
-
-export enum FlowTabs {
-  TOTAL_IN = 'totalIn',
-  TOTAL_OUT = 'totalOut',
-  INCOMING_TRANSACTIONS = 'incomingTransactions',
-  OUTGOING_TRANSACTIONS = 'outgoingTransactions',
-}
-
-export enum TvlTabs {
-  PLATFORM_TVL = 'platformTvl',
-  VL_IN_BOUNTIES = 'vlInBounties',
-}
-
-export enum TokensTabs {
-  NUMBER_OF_FTS = 'numberOfFts',
-  VL_OF_FTS = 'vlOfFts',
-  NUMBER_OF_NFTS = 'numberOfNfts',
-}
+import {
+  DaoStatsTopics,
+  FlowTabs,
+  GeneralInfoTabs,
+  GovernanceTabs,
+  TokensTabs,
+  TvlTabs,
+  UsersAndActivityTabs,
+} from 'astro_2.0/features/Discover/constants';
 
 export function getValueLabel(topic: string, view: string): string {
   switch (topic) {

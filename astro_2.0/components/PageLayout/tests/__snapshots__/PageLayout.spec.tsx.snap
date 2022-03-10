@@ -39,7 +39,7 @@ exports[`page layout Should render component 1`] = `
           <div>
             <a
               class=""
-              href="/all/daos"
+              href="/discover"
             >
               <svg
                 height="24"
@@ -50,7 +50,7 @@ exports[`page layout Should render component 1`] = `
               </svg>
               <span>
                  
-                allDaos
+                discover.title
                  
               </span>
             </a>

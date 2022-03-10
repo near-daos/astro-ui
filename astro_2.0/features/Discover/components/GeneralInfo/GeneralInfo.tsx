@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useAsyncFn, useMount } from 'react-use';
+import { useAsyncFn } from 'react-use';
 
 import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs';
 import { DaosTopList } from 'astro_2.0/features/Discover/components/DaosTopList';
@@ -18,9 +18,10 @@ import {
   CONTRACT,
   DaoStatsTopics,
   GeneralInfoTabs,
-  getValueLabel,
-} from 'astro_2.0/features/Discover/helpers';
+} from 'astro_2.0/features/Discover/constants';
+import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import { dFormatter } from 'utils/format';
+import useQuery from 'hooks/useQuery';
 
 import { General } from 'services/DaoStatsService/types';
 
@@ -34,7 +35,26 @@ export const GeneralInfo: FC = () => {
     LeaderboardData[] | null
   >(null);
 
+  const { query } = useQuery<{ dao: string }>();
+
   const items = useMemo<TControlTab[]>(() => {
+    if (query.dao) {
+      return [
+        {
+          id: GeneralInfoTabs.ACTIVITY,
+          label: t('discover.activity'),
+          value: (generalData?.activity.count ?? 0).toLocaleString(),
+          trend: generalData?.activity.growth ?? 0,
+        },
+        {
+          id: GeneralInfoTabs.GROUPS,
+          label: t('discover.groups'),
+          value: (generalData?.groups.count ?? 0).toLocaleString(),
+          trend: generalData?.groups.growth ?? 0,
+        },
+      ];
+    }
+
     return [
       {
         id: GeneralInfoTabs.ACTIVE_DAOS,
@@ -72,6 +92,7 @@ export const GeneralInfo: FC = () => {
     generalData?.dao.growth,
     generalData?.groups.count,
     generalData?.groups.growth,
+    query.dao,
     t,
   ]);
   const [activeView, setActiveView] = useState<string>(items[0].id);
@@ -82,41 +103,64 @@ export const GeneralInfo: FC = () => {
     setActiveView(id);
   }, []);
 
-  useMount(async () => {
-    const general = await daoStatsService.getGeneral(CONTRACT);
+  useEffect(() => {
+    (async () => {
+      const general = query.dao
+        ? await daoStatsService.getGeneralDao({ ...CONTRACT, dao: query.dao })
+        : await daoStatsService.getGeneral(CONTRACT);
 
-    if (general.data) {
-      setGeneralData(general.data);
-    }
-  });
+      if (general.data) {
+        setGeneralData(general.data);
+      }
+    })();
+  }, [query.dao]);
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let data;
     let leadersData;
 
-    switch (activeView) {
-      case GeneralInfoTabs.NUMBER_OF_DAOS: {
-        data = await daoStatsService.getGeneralDaos(CONTRACT);
-        break;
+    if (query.dao) {
+      const params = {
+        ...CONTRACT,
+        dao: query.dao,
+      };
+
+      switch (activeView) {
+        case GeneralInfoTabs.GROUPS: {
+          data = await daoStatsService.getGeneralDaoGroups(params);
+          break;
+        }
+        case GeneralInfoTabs.ACTIVITY:
+        default: {
+          data = await daoStatsService.getGeneralDaoActivity(params);
+          break;
+        }
       }
-      case GeneralInfoTabs.GROUPS: {
-        data = await daoStatsService.getGeneralGroups(CONTRACT);
-        leadersData = await daoStatsService.getGeneralGroupsLeaderboard(
-          CONTRACT
-        );
-        break;
-      }
-      case GeneralInfoTabs.AVERAGE_GROUP_DAOS: {
-        data = await daoStatsService.getGeneralAverageGroups(CONTRACT);
-        break;
-      }
-      case GeneralInfoTabs.ACTIVE_DAOS:
-      default: {
-        data = await daoStatsService.getGeneralActive(CONTRACT);
-        leadersData = await daoStatsService.getGeneralActiveLeaderboard(
-          CONTRACT
-        );
-        break;
+    } else {
+      switch (activeView) {
+        case GeneralInfoTabs.NUMBER_OF_DAOS: {
+          data = await daoStatsService.getGeneralDaos(CONTRACT);
+          break;
+        }
+        case GeneralInfoTabs.GROUPS: {
+          data = await daoStatsService.getGeneralGroups(CONTRACT);
+          leadersData = await daoStatsService.getGeneralGroupsLeaderboard(
+            CONTRACT
+          );
+          break;
+        }
+        case GeneralInfoTabs.AVERAGE_GROUP_DAOS: {
+          data = await daoStatsService.getGeneralAverageGroups(CONTRACT);
+          break;
+        }
+        case GeneralInfoTabs.ACTIVE_DAOS:
+        default: {
+          data = await daoStatsService.getGeneralActive(CONTRACT);
+          leadersData = await daoStatsService.getGeneralActiveLeaderboard(
+            CONTRACT
+          );
+          break;
+        }
       }
     }
 
@@ -144,7 +188,7 @@ export const GeneralInfo: FC = () => {
 
       setLeaderboardData(newData);
     }
-  }, [activeView]);
+  }, [activeView, query.dao]);
 
   useEffect(() => {
     getChartData();
@@ -153,6 +197,7 @@ export const GeneralInfo: FC = () => {
   return (
     <>
       <ControlTabs
+        loading={loading}
         className={styles.header}
         items={items}
         onSelect={handleTopicSelect}

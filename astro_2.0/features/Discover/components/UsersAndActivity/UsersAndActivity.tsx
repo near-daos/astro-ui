@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useAsyncFn, useMount } from 'react-use';
+import { useAsyncFn } from 'react-use';
 
 import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs';
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
@@ -14,13 +14,15 @@ import { ChartDataElement } from 'components/AreaChartRenderer/types';
 
 import { daoStatsService } from 'services/DaoStatsService';
 
+import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import {
   CONTRACT,
   DaoStatsTopics,
-  getValueLabel,
   UsersAndActivityTabs,
-} from 'astro_2.0/features/Discover/helpers';
+} from 'astro_2.0/features/Discover/constants';
+
 import { dFormatter } from 'utils/format';
+import useQuery from 'hooks/useQuery';
 
 import { Users } from 'services/DaoStatsService/types';
 
@@ -34,7 +36,34 @@ export const UsersAndActivity: FC = () => {
     LeaderboardData[] | null
   >(null);
 
+  const { query } = useQuery<{ dao: string }>();
+
   const items = useMemo<TControlTab[]>(() => {
+    if (query.dao) {
+      return [
+        {
+          id: UsersAndActivityTabs.ALL_USERS_PER_DAO,
+          label: t('discover.allUsersPerDao'),
+          value: (data?.users.count ?? 0).toLocaleString(),
+          trend: data?.users.growth ?? 0,
+        },
+        {
+          id: UsersAndActivityTabs.USERS_MEMBERS_OF_DAO,
+          label: t('discover.usersMembersOfDao'),
+          value: (data?.members.count ?? 0).toLocaleString(),
+          trend: data?.members.growth ?? 0,
+        },
+        {
+          id: UsersAndActivityTabs.NUMBER_OF_INTERACTIONS,
+          label: t('discover.numberOfInteractions'),
+          value: Number(
+            dFormatter(data?.interactions.count ?? 0, 2)
+          ).toLocaleString(),
+          trend: data?.interactions.growth ?? 0,
+        },
+      ];
+    }
+
     return [
       {
         id: UsersAndActivityTabs.ALL_USERS_ON_PLATFORM,
@@ -44,7 +73,7 @@ export const UsersAndActivity: FC = () => {
       },
       {
         id: UsersAndActivityTabs.USERS_MEMBERS_OF_DAO,
-        label: t('discover.usersThatAreMembersOfADao'),
+        label: t('discover.usersMembersOfDao'),
         value: (data?.members.count ?? 0).toLocaleString(),
         trend: data?.members.growth ?? 0,
       },
@@ -82,6 +111,7 @@ export const UsersAndActivity: FC = () => {
     data?.members.growth,
     data?.users.count,
     data?.users.growth,
+    query.dao,
     t,
   ]);
   const [activeView, setActiveView] = useState<string>(items[0].id);
@@ -92,44 +122,71 @@ export const UsersAndActivity: FC = () => {
     setActiveView(id);
   }, []);
 
-  useMount(async () => {
-    const response = await daoStatsService.getUsers(CONTRACT);
+  useEffect(() => {
+    (async () => {
+      const response = query.dao
+        ? await daoStatsService.getUsersDao({ ...CONTRACT, dao: query.dao })
+        : await daoStatsService.getUsers(CONTRACT);
 
-    if (response.data) {
-      setData(response.data);
-    }
-  });
+      if (response.data) {
+        setData(response.data);
+      }
+    })();
+  }, [query.dao]);
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
     let leaders;
 
-    switch (activeView) {
-      case UsersAndActivityTabs.USERS_MEMBERS_OF_DAO: {
-        chart = await daoStatsService.getUsersMembers(CONTRACT);
-        leaders = await daoStatsService.getUsersMembersLeaderboard(CONTRACT);
-        break;
+    if (query.dao) {
+      const params = {
+        ...CONTRACT,
+        dao: query.dao,
+      };
+
+      switch (activeView) {
+        case UsersAndActivityTabs.USERS_MEMBERS_OF_DAO: {
+          chart = await daoStatsService.getUsersDaoMembers(params);
+          break;
+        }
+        case UsersAndActivityTabs.NUMBER_OF_INTERACTIONS: {
+          chart = await daoStatsService.getUsersDaoInteractions(params);
+          break;
+        }
+        case UsersAndActivityTabs.ALL_USERS_ON_PLATFORM:
+        default: {
+          chart = await daoStatsService.getUsersDaoUsers(params);
+          break;
+        }
       }
-      case UsersAndActivityTabs.AVERAGE_NUMBER_OF_USERS_PER_DAO: {
-        chart = await daoStatsService.getUsersAverageUsers(CONTRACT);
-        break;
-      }
-      case UsersAndActivityTabs.NUMBER_OF_INTERACTIONS: {
-        chart = await daoStatsService.getUsersInteractions(CONTRACT);
-        leaders = await daoStatsService.getUsersInteractionsLeaderboard(
-          CONTRACT
-        );
-        break;
-      }
-      case UsersAndActivityTabs.AVERAGE_NUMBER_OF_INTERACTIONS_PER_DAO: {
-        chart = await daoStatsService.getUsersAverageInteractions(CONTRACT);
-        break;
-      }
-      case UsersAndActivityTabs.ALL_USERS_ON_PLATFORM:
-      default: {
-        chart = await daoStatsService.getUsersUsers(CONTRACT);
-        leaders = await daoStatsService.getUsersLeaderboard(CONTRACT);
-        break;
+    } else {
+      switch (activeView) {
+        case UsersAndActivityTabs.USERS_MEMBERS_OF_DAO: {
+          chart = await daoStatsService.getUsersMembers(CONTRACT);
+          leaders = await daoStatsService.getUsersMembersLeaderboard(CONTRACT);
+          break;
+        }
+        case UsersAndActivityTabs.AVERAGE_NUMBER_OF_USERS_PER_DAO: {
+          chart = await daoStatsService.getUsersAverageUsers(CONTRACT);
+          break;
+        }
+        case UsersAndActivityTabs.NUMBER_OF_INTERACTIONS: {
+          chart = await daoStatsService.getUsersInteractions(CONTRACT);
+          leaders = await daoStatsService.getUsersInteractionsLeaderboard(
+            CONTRACT
+          );
+          break;
+        }
+        case UsersAndActivityTabs.AVERAGE_NUMBER_OF_INTERACTIONS_PER_DAO: {
+          chart = await daoStatsService.getUsersAverageInteractions(CONTRACT);
+          break;
+        }
+        case UsersAndActivityTabs.ALL_USERS_ON_PLATFORM:
+        default: {
+          chart = await daoStatsService.getUsersUsers(CONTRACT);
+          leaders = await daoStatsService.getUsersLeaderboard(CONTRACT);
+          break;
+        }
       }
     }
 
@@ -157,7 +214,7 @@ export const UsersAndActivity: FC = () => {
 
       setLeaderboardData(newData);
     }
-  }, [activeView]);
+  }, [activeView, query.dao]);
 
   useEffect(() => {
     getChartData();
@@ -170,6 +227,7 @@ export const UsersAndActivity: FC = () => {
         items={items}
         onSelect={handleTopicSelect}
         activeView={activeView}
+        loading={loading}
       />
       <div className={styles.body}>
         <ChartRenderer

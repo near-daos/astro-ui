@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useAsyncFn, useMount } from 'react-use';
+import { useAsyncFn } from 'react-use';
 
 import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs';
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
@@ -14,12 +14,13 @@ import { ChartDataElement } from 'components/AreaChartRenderer/types';
 
 import { daoStatsService } from 'services/DaoStatsService';
 
+import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import {
   CONTRACT,
   DaoStatsTopics,
-  getValueLabel,
   GovernanceTabs,
-} from 'astro_2.0/features/Discover/helpers';
+} from 'astro_2.0/features/Discover/constants';
+import useQuery from 'hooks/useQuery';
 
 import { Governance as TGovernance } from 'services/DaoStatsService/types';
 
@@ -32,6 +33,8 @@ export const Governance: FC = () => {
   const [leaderboardData, setLeaderboardData] = useState<
     LeaderboardData[] | null
   >(null);
+
+  const { query } = useQuery<{ dao: string }>();
 
   const items = useMemo<TControlTab[]>(() => {
     return [
@@ -63,33 +66,59 @@ export const Governance: FC = () => {
     setActiveView(id);
   }, []);
 
-  useMount(async () => {
-    const response = await daoStatsService.getGovernance(CONTRACT);
+  useEffect(() => {
+    (async () => {
+      const response = query.dao
+        ? await daoStatsService.getGovernanceDao({
+            ...CONTRACT,
+            dao: query.dao,
+          })
+        : await daoStatsService.getGovernance(CONTRACT);
 
-    if (response.data) {
-      setData(response.data);
-    }
-  });
+      if (response.data) {
+        setData(response.data);
+      }
+    })();
+  }, [query.dao]);
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
     let leaders;
 
-    switch (activeView) {
-      case GovernanceTabs.VOTE_THROUGH_RATE: {
-        chart = await daoStatsService.getGovernanceVoteRate(CONTRACT);
-        leaders = await daoStatsService.getGovernanceVoteRateLeaderboard(
-          CONTRACT
-        );
-        break;
+    if (query.dao) {
+      const params = {
+        ...CONTRACT,
+        dao: query.dao,
+      };
+
+      switch (activeView) {
+        case GovernanceTabs.VOTE_THROUGH_RATE: {
+          chart = await daoStatsService.getGovernanceDaoVoteRate(params);
+          break;
+        }
+        case GovernanceTabs.NUMBER_OF_PROPOSALS:
+        default: {
+          chart = await daoStatsService.getGovernanceDaoProposals(params);
+          break;
+        }
       }
-      case GovernanceTabs.NUMBER_OF_PROPOSALS:
-      default: {
-        chart = await daoStatsService.getGovernanceProposals(CONTRACT);
-        leaders = await daoStatsService.getGovernanceProposalsLeaderboard(
-          CONTRACT
-        );
-        break;
+    } else {
+      switch (activeView) {
+        case GovernanceTabs.VOTE_THROUGH_RATE: {
+          chart = await daoStatsService.getGovernanceVoteRate(CONTRACT);
+          leaders = await daoStatsService.getGovernanceVoteRateLeaderboard(
+            CONTRACT
+          );
+          break;
+        }
+        case GovernanceTabs.NUMBER_OF_PROPOSALS:
+        default: {
+          chart = await daoStatsService.getGovernanceProposals(CONTRACT);
+          leaders = await daoStatsService.getGovernanceProposalsLeaderboard(
+            CONTRACT
+          );
+          break;
+        }
       }
     }
 
@@ -117,7 +146,7 @@ export const Governance: FC = () => {
 
       setLeaderboardData(newData);
     }
-  }, [activeView]);
+  }, [activeView, query.dao]);
 
   useEffect(() => {
     getChartData();
@@ -126,6 +155,7 @@ export const Governance: FC = () => {
   return (
     <div className={styles.root}>
       <ControlTabs
+        loading={loading}
         className={styles.header}
         items={items}
         onSelect={handleTopicSelect}

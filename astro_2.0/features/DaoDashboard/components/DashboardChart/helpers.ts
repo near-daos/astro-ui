@@ -6,7 +6,7 @@ import {
   TokensTabs,
   TvlTabs,
   UsersAndActivityTabs,
-} from 'astro_2.0/features/Discover/helpers';
+} from 'astro_2.0/features/Discover/constants';
 
 export function getChartTitles(
   activeView: string | undefined,
@@ -49,6 +49,9 @@ export function getChartTitles(
     case UsersAndActivityTabs.ALL_USERS_ON_PLATFORM: {
       return [t('discover.allUsersOnPlatform')];
     }
+    case UsersAndActivityTabs.ALL_USERS_PER_DAO: {
+      return [t('discover.allUsersPerDao')];
+    }
     case UsersAndActivityTabs.AVERAGE_NUMBER_OF_USERS_PER_DAO: {
       return [t('discover.averageNumberOfUsersPerDao')];
     }
@@ -78,6 +81,15 @@ export function getChartTitles(
     }
     case TvlTabs.VL_IN_BOUNTIES: {
       return [t('discover.vlInBounties')];
+    }
+    case TvlTabs.VL_OF_BOUNTIES: {
+      return [t('discover.vlOfBounties')];
+    }
+    case TvlTabs.NUMBER_OF_BOUNTIES: {
+      return [t('discover.numberOfBounties')];
+    }
+    case TvlTabs.TVL: {
+      return [t('discover.tvl')];
     }
     case TokensTabs.NUMBER_OF_FTS: {
       return [t('discover.numberOfFts')];

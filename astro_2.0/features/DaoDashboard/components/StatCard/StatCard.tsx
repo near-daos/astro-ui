@@ -8,6 +8,7 @@ interface StatCardProps {
   onClick?: () => void;
   className?: string;
   selected: boolean;
+  disabled?: boolean;
 }
 
 export const StatCard: FC<StatCardProps> = ({
@@ -15,11 +16,13 @@ export const StatCard: FC<StatCardProps> = ({
   onClick,
   children,
   className,
+  disabled,
 }) => {
   return (
     <Button
       onClick={onClick}
       variant="transparent"
+      disabled={disabled}
       className={cn(styles.root, className, {
         [styles.clickable]: !!onClick,
         [styles.selected]: selected,

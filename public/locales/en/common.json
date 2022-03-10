@@ -375,8 +375,9 @@
     "daoName": "DAO Name",
     "numberOfProposals": "Number of Proposals",
     "lastMonth": "Last Month",
+    "allUsersPerDao": "All users per DAO",
     "allUsersOnAPlatform": "All users on a platform",
-    "usersThatAreMembersOfADao": "Users that are members of a DAO",
+    "usersMembersOfDao": "Users that are members of a DAO",
     "averageNumberOfUsersPerDao": "Average number of users per DAO",
     "numberOfInteractions": "Number of interactions",
     "averageNumberOfInteractionsPerDao": "Average number of interactions per DAO",
@@ -389,6 +390,9 @@
     "vlInBountiesGrants": "VL in Bounties/Grants",
     "numberOfFts": "Number of FTs",
     "vlOfFts": "VL of FTs",
-    "numberOfNfts": "Number of NFTs"
+    "numberOfNfts": "Number of NFTs",
+    "numberOfBounties": "Number of Bounties",
+    "vlOfBounties": "VL of Bounties",
+    "activity": "Activity"
   }
 }

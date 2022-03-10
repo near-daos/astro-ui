@@ -1,6 +1,7 @@
 import React, {
   FC,
   KeyboardEventHandler,
+  ReactNode,
   useCallback,
   useRef,
   useState,
@@ -32,6 +33,7 @@ interface SearchInputProps {
   onClose?: () => void;
   placeholder?: string;
   showResults?: boolean;
+  renderResult?: (item: DaoFeedItem) => ReactNode;
 }
 
 export const SearchInput: FC<SearchInputProps> = ({
@@ -41,6 +43,7 @@ export const SearchInput: FC<SearchInputProps> = ({
   onClose,
   placeholder,
   showResults,
+  renderResult,
 }) => {
   const isMounted = useMountedState();
   const ref = useRef(null);
@@ -164,12 +167,12 @@ export const SearchInput: FC<SearchInputProps> = ({
                   Please enter at least 3 characters to search
                 </div>
               )}
-              {showResults && !!searchResults?.length && (
+              {showResults && !!searchResults?.length && renderResult && (
                 <div className={styles.hint}>
                   {searchResults.map(item => {
                     const data = item as DaoFeedItem;
 
-                    return <div key={data.id}>{data.id}</div>;
+                    return renderResult(data);
                   })}
                 </div>
               )}
