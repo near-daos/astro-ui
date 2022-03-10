@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
+import Link from 'next/link';
 
 // import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
@@ -34,7 +35,9 @@ export const TopListItem: FC<TopListItemProps> = ({ index, data }) => {
           size="xs"
         /> */}
         <div className={styles.details}>
-          <div className={styles.daoName}>{dao}</div>
+          <Link href={`/dao/${dao}`} passHref>
+            <div className={styles.daoName}>{dao}</div>
+          </Link>
           <div className={styles.address}>
             <div className={styles.addressId}>{shortenString(dao, 36)}</div>
             <CopyButton

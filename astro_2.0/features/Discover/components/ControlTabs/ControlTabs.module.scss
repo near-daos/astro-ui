@@ -10,6 +10,12 @@
   overflow-y: hidden;
   padding: 24px 12px 24px 24px;
   scrollbar-width: none;
+
+  &::after {
+    content: '';
+    flex: 0 0 24px;
+    height: 90px;
+  }
 }
 
 .root::-webkit-scrollbar {
@@ -20,11 +26,13 @@
   height: 100%;
   margin-right: 12px;
   max-width: 200px;
+  min-height: 90px;
   padding: 12px;
 }
 
 .cardPanel {
   height: 100%;
+  min-height: 64px;
   width: 100%;
 }
 

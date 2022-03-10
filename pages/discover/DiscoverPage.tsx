@@ -39,7 +39,7 @@ const DiscoverPage: NextPage = () => {
 
   const { query: searchQuery, updateQuery } = useQuery<{
     dao: string;
-  }>({ shallow: false });
+  }>({ shallow: true });
 
   const handleCreateDao = useCallback(
     () => (accountId ? router.push(CREATE_DAO_URL) : login()),

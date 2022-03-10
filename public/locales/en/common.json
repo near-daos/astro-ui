@@ -393,6 +393,7 @@
     "numberOfNfts": "Number of NFTs",
     "numberOfBounties": "Number of Bounties",
     "vlOfBounties": "VL of Bounties",
-    "activity": "Activity"
+    "activity": "Activity",
+    "avgGroupsDao": "Avg. Groups/DAO"
   }
 }
