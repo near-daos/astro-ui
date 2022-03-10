@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
+import { useMedia } from 'react-use';
 
 // import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
@@ -20,6 +21,7 @@ interface TopListItemProps {
 
 export const TopListItem: FC<TopListItemProps> = ({ index, data }) => {
   const { dao, activity, overview } = data;
+  const isMobile = useMedia('(max-width: 640px)');
 
   const trend = activity?.growth ?? 0;
   const value = activity?.count ?? 0;
@@ -39,7 +41,9 @@ export const TopListItem: FC<TopListItemProps> = ({ index, data }) => {
             <div className={styles.daoName}>{dao}</div>
           </Link>
           <div className={styles.address}>
-            <div className={styles.addressId}>{shortenString(dao, 36)}</div>
+            <div className={styles.addressId}>
+              {shortenString(dao, isMobile ? 18 : 36)}
+            </div>
             <CopyButton
               text={dao}
               tooltipPlacement="auto"

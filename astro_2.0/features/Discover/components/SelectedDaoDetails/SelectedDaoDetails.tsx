@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
+import { useMountedState } from 'react-use';
 
 import useQuery from 'hooks/useQuery';
 import { DAO } from 'types/dao';
@@ -14,6 +15,7 @@ import { IconButton } from 'components/button/IconButton';
 import styles from './SelectedDaoDetails.module.scss';
 
 export const SelectedDaoDetails: FC = () => {
+  const isMounted = useMountedState();
   const [data, setData] = useState<DAO | null>(null);
   const { query, updateQuery } = useQuery<{
     dao: string;
@@ -22,10 +24,12 @@ export const SelectedDaoDetails: FC = () => {
   useEffect(() => {
     if (query.dao) {
       SputnikHttpService.getDaoById(query.dao).then(res => {
-        setData(res);
+        if (isMounted()) {
+          setData(res);
+        }
       });
     }
-  }, [query.dao]);
+  }, [isMounted, query.dao]);
 
   if (!data) {
     return null;

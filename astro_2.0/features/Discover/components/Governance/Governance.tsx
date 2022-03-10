@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useAsyncFn } from 'react-use';
+import { useAsyncFn, useMountedState } from 'react-use';
 
 import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs';
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
@@ -27,6 +27,7 @@ import { Governance as TGovernance } from 'services/DaoStatsService/types';
 import styles from './Governance.module.scss';
 
 export const Governance: FC = () => {
+  const isMounted = useMountedState();
   const { t } = useTranslation();
   const [data, setData] = useState<TGovernance | null>(null);
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
@@ -60,11 +61,18 @@ export const Governance: FC = () => {
   ]);
   const [activeView, setActiveView] = useState<string>(items[0].id);
 
-  const handleTopicSelect = useCallback(async (id: string) => {
-    setChartData(null);
-    setLeaderboardData(null);
-    setActiveView(id);
-  }, []);
+  const handleTopicSelect = useCallback(
+    async (id: string) => {
+      if (!isMounted()) {
+        return;
+      }
+
+      setChartData(null);
+      setLeaderboardData(null);
+      setActiveView(id);
+    },
+    [isMounted]
+  );
 
   useEffect(() => {
     (async () => {
@@ -75,11 +83,11 @@ export const Governance: FC = () => {
           })
         : await daoStatsService.getGovernance(CONTRACT);
 
-      if (response.data) {
+      if (response.data && isMounted()) {
         setData(response.data);
       }
     })();
-  }, [query.dao]);
+  }, [query.dao, isMounted]);
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
@@ -122,7 +130,7 @@ export const Governance: FC = () => {
       }
     }
 
-    if (chart) {
+    if (chart && isMounted()) {
       setChartData(
         chart.data.metrics.map(({ timestamp, count }) => ({
           x: new Date(timestamp),
@@ -131,7 +139,7 @@ export const Governance: FC = () => {
       );
     }
 
-    if (leaders?.data?.metrics) {
+    if (leaders?.data?.metrics && isMounted()) {
       const newData =
         leaders.data.metrics.map(metric => {
           return {
@@ -146,7 +154,7 @@ export const Governance: FC = () => {
 
       setLeaderboardData(newData);
     }
-  }, [activeView, query.dao]);
+  }, [activeView, query.dao, isMounted]);
 
   useEffect(() => {
     getChartData();

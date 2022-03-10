@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useAsyncFn } from 'react-use';
+import { useAsyncFn, useMountedState } from 'react-use';
 
 import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs';
 import { DaosTopList } from 'astro_2.0/features/Discover/components/DaosTopList';
@@ -28,6 +28,7 @@ import { General } from 'services/DaoStatsService/types';
 import styles from './GeneralInfo.module.scss';
 
 export const GeneralInfo: FC = () => {
+  const isMounted = useMountedState();
   const { t } = useTranslation();
   const [generalData, setGeneralData] = useState<General | null>(null);
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
@@ -97,11 +98,18 @@ export const GeneralInfo: FC = () => {
   ]);
   const [activeView, setActiveView] = useState<string>(items[0].id);
 
-  const handleTopicSelect = useCallback(async (id: string) => {
-    setChartData(null);
-    setLeaderboardData(null);
-    setActiveView(id);
-  }, []);
+  const handleTopicSelect = useCallback(
+    async (id: string) => {
+      if (!isMounted()) {
+        return;
+      }
+
+      setChartData(null);
+      setLeaderboardData(null);
+      setActiveView(id);
+    },
+    [isMounted]
+  );
 
   useEffect(() => {
     (async () => {
@@ -109,11 +117,11 @@ export const GeneralInfo: FC = () => {
         ? await daoStatsService.getGeneralDao({ ...CONTRACT, dao: query.dao })
         : await daoStatsService.getGeneral(CONTRACT);
 
-      if (general.data) {
+      if (general.data && isMounted()) {
         setGeneralData(general.data);
       }
     })();
-  }, [query.dao]);
+  }, [isMounted, query.dao]);
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let data;
@@ -164,7 +172,7 @@ export const GeneralInfo: FC = () => {
       }
     }
 
-    if (data) {
+    if (data && isMounted()) {
       setChartData(
         data.data.metrics.map(({ timestamp, count }) => ({
           x: new Date(timestamp),
@@ -173,7 +181,7 @@ export const GeneralInfo: FC = () => {
       );
     }
 
-    if (leadersData?.data?.metrics) {
+    if (leadersData?.data?.metrics && isMounted()) {
       const newData =
         leadersData.data.metrics.map(metric => {
           return {
@@ -188,7 +196,7 @@ export const GeneralInfo: FC = () => {
 
       setLeaderboardData(newData);
     }
-  }, [activeView, query.dao]);
+  }, [activeView, query.dao, isMounted]);
 
   useEffect(() => {
     getChartData();

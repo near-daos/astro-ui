@@ -23,7 +23,7 @@ export const DaosTopList: FC<DaosTopListProps> = ({ data, valueLabel }) => {
     <div className={styles.root}>
       <>
         <div className={styles.header}>
-          <div className={styles.index} />
+          <div className={styles.index}>&nbsp;</div>
           <div className={styles.name}>{t('discover.daoName')}</div>
           <div className={styles.proposals}>{valueLabel}</div>
           <div className={styles.chart}>{t('discover.lastMonth')}</div>
