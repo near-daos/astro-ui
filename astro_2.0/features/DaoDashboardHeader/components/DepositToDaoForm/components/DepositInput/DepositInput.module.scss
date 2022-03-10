@@ -1,0 +1,65 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.inputWrapper {
+  align-items: center;
+  border: 1px solid var(--color-neutral-40);
+  border-radius: 8px;
+  display: flex;
+  height: 40px;
+  justify-content: flex-start;
+  margin-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 12px;
+  position: relative;
+  width: 100%;
+
+  @include tablet-landscape {
+    width: 60%;
+  }
+}
+
+.inputError,
+.inputError input {
+  color: var(--color-neutral-60);
+}
+
+.input {
+  width: 60%;
+}
+
+.input input {
+  background: transparent;
+  overflow: hidden;
+  padding: 0 8px 0 0;
+}
+
+.inputLabel {
+  @extend %subtitle6;
+  background-color: var(--color-white);
+  color: var(--color-neutral-60);
+  left: 10px;
+  overflow: hidden;
+  position: absolute;
+  top: -10px;
+}
+
+.valueHolder {
+  padding: 0 8px 0 0;
+  width: 60%;
+}
+
+.tokenIcon {
+  flex: 0 0 24px;
+  height: 24px;
+  margin-left: auto;
+  margin-right: 6px;
+  width: 24px;
+}
+
+.tokenCaption {
+  @extend %caption1;
+  //flex-basis: 40px;
+  width: 40px;
+  word-break: keep-all;
+}

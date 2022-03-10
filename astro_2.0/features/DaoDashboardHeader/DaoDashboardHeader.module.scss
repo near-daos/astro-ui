@@ -4,18 +4,21 @@
 .root {
   display: grid;
   grid-template-areas:
-    'letterHeadSection letterHeadSection'
-    'usersSection usersSection'
-    'descriptionSection depositSection'
-    'linksSection linksSection';
-  grid-template-columns: 2fr 1fr;
+    'letterHeadSection'
+    'followSection'
+    'depositSection'
+    'usersSection'
+    'descriptionSection'
+    'linksSection';
+  grid-template-columns: 1fr;
+  padding-top: 24px;
 
   @include tablet-landscape {
     grid-gap: 17px 0;
     grid-template-areas:
       'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
-      'usersSection descriptionSection descriptionSection depositSection'
-      'usersSection linksSection linksSection linksSection';
+      'usersSection depositSection depositSection followSection'
+      'descriptionSection descriptionSection descriptionSection linksSection';
     grid-template-columns: 216px 1fr 1fr 200px;
   }
 }
@@ -50,25 +53,40 @@
 .depositSection {
   align-self: start;
   display: flex;
+  flex-direction: column;
   grid-area: depositSection;
   justify-content: space-between;
+  padding: 20px 24px 0;
+  width: 100%;
+}
+
+.followSection {
+  grid-area: followSection;
+  padding: 84px 24px 0;
+}
+
+.depositSection,
+.followSection {
+  @include tablet-landscape {
+    padding: 14px;
+  }
 }
 
 .usersSection {
-  @include centralize;
-  flex-direction: column;
+  align-items: center;
+  display: flex;
   grid-area: usersSection;
   justify-content: flex-start;
-  min-height: 120px;
-  padding: 74px 0 0;
+  padding: 20px 24px 0;
 
   @include tablet-landscape {
-    padding: 74px 32px 0;
+    min-height: 120px;
+    padding: 74px 24px 0;
   }
 }
 
 .label {
-  @extend %caption1;
+  @extend %subtitle1;
   color: var(--color-neutral-60);
 
   &::first-letter {
@@ -77,94 +95,31 @@
 }
 
 .value {
-  @extend %heading3;
-}
-
-.descriptionSection p {
-  margin: 0;
-  text-align: center;
+  @extend %title1;
 }
 
 .descriptionSection {
   @extend %body1;
-  align-items: center;
   color: var(--color-black);
-  display: flex;
-  flex-direction: column;
   grid-area: descriptionSection;
-  justify-content: flex-start;
-  margin-top: 17px;
+  padding: 20px 24px 0;
+  text-align: left;
 
   @include tablet-landscape {
-    align-items: flex-start;
-    flex-direction: column;
     margin-top: 0;
-    padding: 0 36px 0 0;
-
-    p {
-      text-align: left;
-    }
+    padding: 0 24px 0 0;
   }
 }
 
 .linksSection {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
   grid-area: linksSection;
-  margin-top: 17px;
+  padding: 20px 24px 0;
 
   @include tablet-landscape {
     align-items: flex-start;
     margin-top: 0;
   }
-}
-
-.links {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  list-style: none;
-  margin-bottom: 0;
-  padding: 0;
-}
-
-.link {
-  @extend %caption1;
-  color: var(--color-primary-50);
-  display: block;
-  margin-bottom: 12px;
-
-  @include tablet-landscape {
-    display: inline;
-    margin-top: 0;
-  }
-
-  .linkText,
-  .right {
-    display: inline;
-
-    @include tablet-landscape {
-      display: none;
-    }
-  }
-
-  .external {
-    display: none;
-
-    @include tablet-landscape {
-      display: inline;
-      margin: -2px 0 0 8px;
-    }
-  }
-}
-
-.legalLink {
-  @extend %body2;
-  color: var(--color-primary);
-  display: flex;
-}
-
-.legalIcon {
-  margin-left: 4px;
 }

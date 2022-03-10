@@ -98,7 +98,7 @@ exports[`Proposal Card Should render component 1`] = `
           </div>
            
           <span
-            class="caption1"
+            class="body2"
           >
             link
           </span>
