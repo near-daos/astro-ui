@@ -3,12 +3,13 @@
 
 .form {
   display: flex;
+  flex: 2;
   flex-direction: column;
   height: 100%;
-  justify-content: space-between;
-  width: 100%;
+  justify-content: space-around;
 
   @include tablet-landscape {
+    flex: 2;
     flex-direction: row;
     justify-content: space-evenly;
   }

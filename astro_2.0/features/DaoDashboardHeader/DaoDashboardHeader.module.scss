@@ -17,7 +17,7 @@
     grid-gap: 17px 0;
     grid-template-areas:
       'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
-      'usersSection depositSection depositSection followSection'
+      'usersSection buttonsSection buttonsSection buttonsSection'
       'descriptionSection descriptionSection descriptionSection linksSection';
     grid-template-columns: 216px 1fr 1fr 200px;
   }
@@ -50,26 +50,15 @@
   }
 }
 
-.depositSection {
-  align-self: start;
+.buttonsSection {
   display: flex;
-  flex-direction: column;
-  grid-area: depositSection;
-  justify-content: space-between;
-  padding: 20px 24px 0;
-  width: 100%;
+  flex: 1;
+  grid-area: buttonsSection;
+  justify-content: space-around;
 }
 
-.followSection {
-  grid-area: followSection;
-  padding: 84px 24px 0;
-}
-
-.depositSection,
-.followSection {
-  @include tablet-landscape {
-    padding: 14px;
-  }
+.alignRight {
+  justify-content: flex-end;
 }
 
 .usersSection {

@@ -34,6 +34,7 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
 }) => {
   const { accountId } = useAuthContext();
   const { t } = useTranslation();
+  const canFollow = !daoMembersList.includes(accountId);
 
   return (
     <div className={cn(styles.root, className)}>
@@ -51,14 +52,13 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
         <div className={styles.value}>{members}</div>
       </section>
 
-      <section className={styles.depositSection}>
-        <DepositToDaoForm daoId={id} />
-      </section>
+      <section className={styles.buttonsSection}>
+        <DepositToDaoForm
+          daoId={id}
+          className={!canFollow ? styles.alignRight : undefined}
+        />
 
-      <section className={styles.followSection}>
-        {!daoMembersList.includes(accountId) && (
-          <FollowButton daoId={id} daoName={displayName} />
-        )}
+        {canFollow && <FollowButton daoId={id} daoName={displayName} />}
       </section>
 
       <section className={styles.descriptionSection}>{description}</section>

@@ -5,6 +5,7 @@ import { DepositButton } from 'astro_2.0/features/DaoDashboardHeader/components/
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SputnikNearService } from 'services/sputnik';
+import cn from 'classnames';
 import styles from './DepositToDaoForm.module.scss';
 
 const schema = yup.object().shape({
@@ -22,9 +23,13 @@ const schema = yup.object().shape({
 
 interface DepositToDaoForm {
   daoId: string;
+  className?: string;
 }
 
-export const DepositToDaoForm: React.FC<DepositToDaoForm> = ({ daoId }) => {
+export const DepositToDaoForm: React.FC<DepositToDaoForm> = ({
+  daoId,
+  className,
+}) => {
   const methods = useForm<{ depositAmount: number }>({
     mode: 'all',
     reValidateMode: 'onChange',
@@ -43,7 +48,7 @@ export const DepositToDaoForm: React.FC<DepositToDaoForm> = ({ daoId }) => {
       <form
         noValidate
         onSubmit={handleSubmit(submitHandler)}
-        className={styles.form}
+        className={cn(styles.form, className)}
       >
         <DepositInput />
         <DepositButton />

@@ -3,6 +3,7 @@
 
 .depositButton {
   @include centralize;
+  flex: 1;
+  margin-right: 12px;
   text-transform: capitalize;
-  width: 100%;
 }

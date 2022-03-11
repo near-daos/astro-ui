@@ -27,8 +27,10 @@ export const DepositButton: React.FC = () => {
   };
 
   return isValid ? (
-    renderButton()
+    <div className={styles.flex}>{renderButton()}</div>
   ) : (
-    <Tooltip overlay="Fill in the field first">{renderButton()}</Tooltip>
+    <Tooltip overlay="Fill in the field first" className={styles.flex}>
+      {renderButton()}
+    </Tooltip>
   );
 };

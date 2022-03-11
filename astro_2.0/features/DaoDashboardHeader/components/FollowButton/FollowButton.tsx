@@ -69,7 +69,7 @@ export const FollowButton: FC<FollowButtonProps> = ({ daoId, daoName }) => {
   return (
     <Button
       disabled={isLoading}
-      size="block"
+      size="medium"
       variant={isSubscribed ? 'secondary' : 'primary'}
       className={styles.root}
       onClick={() => {
