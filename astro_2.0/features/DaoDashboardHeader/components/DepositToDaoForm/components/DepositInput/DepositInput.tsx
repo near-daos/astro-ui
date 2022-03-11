@@ -34,7 +34,9 @@ export const DepositInput: React.FC = () => {
       tabIndex={0}
       role="button"
     >
-      <div className={styles.inputLabel}>{t('depositToDao')}</div>
+      {(inputInFocus || !!depositAmount) && (
+        <div className={styles.inputLabel}>{t('depositToDao')}</div>
+      )}
       {inputInFocus ? (
         <Input
           isBorderless
@@ -42,7 +44,6 @@ export const DepositInput: React.FC = () => {
           size="block"
           type="number"
           step="1"
-          placeholder="0"
           className={cn(styles.input, { [styles.inputError]: !isValid })}
           {...register('depositAmount')}
           onBlur={handleBlur}
@@ -51,9 +52,12 @@ export const DepositInput: React.FC = () => {
         <div
           className={cn(styles.valueHolder, styles.input, {
             [styles.inputError]: !isValid,
+            [styles.placeholder]: !depositAmount,
           })}
         >
-          {kFormatter(Number(depositAmount), 5)}
+          {depositAmount
+            ? kFormatter(Number(depositAmount), 5)
+            : 'Deposit to DAO'}
         </div>
       )}
       <div className={styles.tokenIcon}>

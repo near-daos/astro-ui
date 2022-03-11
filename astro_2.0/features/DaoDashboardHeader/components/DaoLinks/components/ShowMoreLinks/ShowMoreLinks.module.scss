@@ -2,7 +2,20 @@
 @import 'styles/typography';
 
 .showMore {
-  @extend %title4;
+  @extend %title5;
+  align-items: center;
+  border: 1px solid var(--color-neutral-30);
+  border-radius: 4px;
   color: var(--color-brand-purple);
   display: flex;
+  margin-bottom: 0;
+  max-width: 100%;
+  padding: 10px 12px;
+
+  @include tablet-landscape {
+    border: 0;
+    margin-bottom: 4px;
+    margin-top: 4px;
+    padding: 0;
+  }
 }

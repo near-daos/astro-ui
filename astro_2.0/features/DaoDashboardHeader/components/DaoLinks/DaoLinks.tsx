@@ -1,15 +1,23 @@
 import React from 'react';
+import cn from 'classnames';
+
 import { Icon } from 'components/Icon';
 import { ShowMoreLinks } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLinks/components/ShowMoreLinks';
 import { DaoLink } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLinks/components/DaoLink';
+
 import styles from './DaoLinks.module.scss';
 
 interface DaoLinksProps {
   legal?: { legalLink?: string; legalStatus?: string };
   links: string[];
+  linkClassName?: string;
 }
 
-export const DaoLinks: React.FC<DaoLinksProps> = ({ legal, links }) => {
+export const DaoLinks: React.FC<DaoLinksProps> = ({
+  legal,
+  links,
+  linkClassName,
+}) => {
   return (
     <>
       {legal?.legalLink && (
@@ -34,11 +42,11 @@ export const DaoLinks: React.FC<DaoLinksProps> = ({ legal, links }) => {
           {links
             .filter((link, index) => link && index < 3)
             .map(link => (
-              <DaoLink link={link} />
+              <DaoLink link={link} key={link} className={cn(linkClassName)} />
             ))}
+          {links.length > 3 && <ShowMoreLinks links={links} />}
         </ul>
       )}
-      {!!links?.length && links.length > 3 && <ShowMoreLinks links={links} />}
     </>
   );
 };

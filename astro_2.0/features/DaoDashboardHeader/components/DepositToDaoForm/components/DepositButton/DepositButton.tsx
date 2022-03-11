@@ -21,7 +21,7 @@ export const DepositButton: React.FC = () => {
         type="submit"
         disabled={!isValid}
       >
-        {t('depositToDao')}
+        {t('deposit')}
       </Button>
     );
   };

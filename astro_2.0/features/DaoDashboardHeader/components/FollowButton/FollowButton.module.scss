@@ -5,7 +5,18 @@
   @include ellipse-text;
   padding: 0 8px;
   text-transform: capitalize;
-  width: 100%;
+  width: 100px;
+}
+
+.subscribedBtn {
+  border-color: var(--color-success-60);
+  color: var(--color-success-60);
+
+  &:hover {
+    background-color: var(--color-error-60);
+    border-color: var(--color-error-60);
+    color: var(--color-white);
+  }
 }
 
 .subscribed {

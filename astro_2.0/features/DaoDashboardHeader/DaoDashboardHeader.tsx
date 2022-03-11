@@ -36,7 +36,11 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
   const { t } = useTranslation();
 
   return (
-    <div className={cn(styles.root, className)}>
+    <div
+      className={cn(styles.root, className, {
+        [styles.hideFollow]: daoMembersList.includes(accountId),
+      })}
+    >
       <section
         className={styles.letterHeadSection}
         style={{
@@ -61,10 +65,14 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
         )}
       </section>
 
-      <section className={styles.descriptionSection}>{description}</section>
+      <section className={styles.separator} />
+
+      {description && (
+        <section className={styles.descriptionSection}>{description}</section>
+      )}
 
       <section className={styles.linksSection}>
-        <DaoLinks links={links} legal={legal} />
+        <DaoLinks links={links} legal={legal} linkClassName={styles.link} />
       </section>
     </div>
   );

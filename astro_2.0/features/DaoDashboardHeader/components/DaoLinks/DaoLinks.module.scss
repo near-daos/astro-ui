@@ -12,11 +12,18 @@
 }
 
 .links {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+  display: grid;
+  grid-gap: 12px;
+  grid-template-columns: 1fr 1fr;
+
   list-style: none;
   margin-bottom: 0;
   margin-top: 0;
   padding: 0;
+
+  @include tablet-landscape {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
 }

@@ -28,12 +28,12 @@ const DAOHome: NextPage<DaoHomeProps> = ({ daoContext }) => {
 
   return (
     <>
+      <DaoDashboardHeader dao={dao} className={styles.header} />
       <NestedDaoPageWrapper
         daoContext={daoContext}
         breadcrumbs={breadcrumbs}
         className={styles.pageWrapper}
       >
-        <DaoDashboardHeader dao={dao} className={styles.header} />
         <DaoDashboard
           key={`dashboard_${dao.id}`}
           className={styles.dashboard}
