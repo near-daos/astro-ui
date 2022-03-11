@@ -5,7 +5,11 @@
 .root {
   background-color: var(--color-white);
   flex: 1;
-  padding: 24px;
+  padding: 12px;
+
+  @include tablet-portrait {
+    padding: 24px;
+  }
 }
 
 .header {

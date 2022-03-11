@@ -22,6 +22,7 @@ interface SideFilterProps {
   list?: ListItem[];
   hideAllOption?: boolean;
   shallowUpdate?: boolean;
+  itemClassName?: string;
 }
 
 export const SideFilter = ({
@@ -31,6 +32,7 @@ export const SideFilter = ({
   queryName,
   className,
   titleClassName,
+  itemClassName,
   hideAllOption = false,
   shallowUpdate = false,
 }: SideFilterProps): JSX.Element => {
@@ -70,11 +72,15 @@ export const SideFilter = ({
       },
     };
 
-    const hrefClassName = cn(styles.categoriesListItem, {
-      [styles.categoriesListItemSelected]:
-        value === itemVal || (!itemVal && !value),
-      [styles.disabled]: disabled || disabledItem,
-    });
+    const hrefClassName = cn(
+      styles.categoriesListItem,
+      {
+        [styles.categoriesListItemSelected]:
+          value === itemVal || (!itemVal && !value),
+        [styles.disabled]: disabled || disabledItem,
+      },
+      itemClassName
+    );
 
     return (
       <li className={styles.categoriesListItemWrapper} key={label}>

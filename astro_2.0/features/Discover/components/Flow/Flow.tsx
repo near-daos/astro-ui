@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useAsyncFn } from 'react-use';
+import { useAsyncFn, useMountedState } from 'react-use';
 
 import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs';
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
@@ -28,6 +28,7 @@ import { Flow as TFlow, FlowMetricsItem } from 'services/DaoStatsService/types';
 import styles from './Flow.module.scss';
 
 export const Flow: FC = () => {
+  const isMounted = useMountedState();
   const { t } = useTranslation();
   const [data, setData] = useState<TFlow | null>(null);
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
@@ -82,11 +83,18 @@ export const Flow: FC = () => {
   ]);
   const [activeView, setActiveView] = useState<string>(items[0].id);
 
-  const handleTopicSelect = useCallback(async (id: string) => {
-    setChartData(null);
-    setLeaderboardData(null);
-    setActiveView(id);
-  }, []);
+  const handleTopicSelect = useCallback(
+    async (id: string) => {
+      if (!isMounted()) {
+        return;
+      }
+
+      setChartData(null);
+      setLeaderboardData(null);
+      setActiveView(id);
+    },
+    [isMounted]
+  );
 
   useEffect(() => {
     (async () => {
@@ -94,11 +102,11 @@ export const Flow: FC = () => {
         ? await daoStatsService.getFlowDao({ ...CONTRACT, dao: query.dao })
         : await daoStatsService.getFlow(CONTRACT);
 
-      if (response.data) {
+      if (response.data && isMounted()) {
         setData(response.data);
       }
     })();
-  }, [query.dao]);
+  }, [query.dao, isMounted]);
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
@@ -143,7 +151,7 @@ export const Flow: FC = () => {
       }
     }
 
-    if (chart) {
+    if (chart && isMounted()) {
       setChartData(
         (chart.data.metrics as FlowMetricsItem[]).map(
           ({ timestamp, incoming, outgoing }) => ({
@@ -158,7 +166,7 @@ export const Flow: FC = () => {
       );
     }
 
-    if (leaders?.data) {
+    if (leaders?.data && isMounted()) {
       const isIncome =
         activeView === FlowTabs.TOTAL_IN ||
         activeView === FlowTabs.INCOMING_TRANSACTIONS;
@@ -180,7 +188,7 @@ export const Flow: FC = () => {
         setLeaderboardData(newData);
       }
     }
-  }, [activeView, query.dao]);
+  }, [activeView, query.dao, isMounted]);
 
   useEffect(() => {
     getChartData();

@@ -47,7 +47,7 @@ export function getChartTitles(
       return [t('discover.usersMembersOfDao')];
     }
     case UsersAndActivityTabs.ALL_USERS_ON_PLATFORM: {
-      return [t('discover.allUsersOnPlatform')];
+      return [t('discover.allUsersOnAPlatform')];
     }
     case UsersAndActivityTabs.ALL_USERS_PER_DAO: {
       return [t('discover.allUsersPerDao')];
