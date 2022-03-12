@@ -11,9 +11,6 @@ export enum DaoStatsTopics {
 
 export enum GeneralInfoTabs {
   ACTIVITY = 'activity',
-  NUMBER_OF_DAOS = 'numberOfDaos',
-  GROUPS = 'groups',
-  AVERAGE_GROUP_DAOS = 'avgGroupDaos',
   ACTIVE_DAOS = 'activeDaos',
 }
 

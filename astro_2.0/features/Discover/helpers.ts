@@ -15,9 +15,6 @@ export function getValueLabel(topic: string, view: string): string {
         case GeneralInfoTabs.ACTIVE_DAOS: {
           return 'Number of Proposals';
         }
-        case GeneralInfoTabs.GROUPS: {
-          return 'Groups';
-        }
         default: {
           return '-';
         }

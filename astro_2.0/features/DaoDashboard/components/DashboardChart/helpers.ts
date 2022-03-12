@@ -31,15 +31,6 @@ export function getChartTitles(
     case GeneralInfoTabs.ACTIVE_DAOS: {
       return [t('discover.activeDaos')];
     }
-    case GeneralInfoTabs.NUMBER_OF_DAOS: {
-      return [t('discover.numberOfDaos')];
-    }
-    case GeneralInfoTabs.GROUPS: {
-      return [t('discover.groups')];
-    }
-    case GeneralInfoTabs.AVERAGE_GROUP_DAOS: {
-      return [t('discover.avgGroupsDao')];
-    }
     case UsersAndActivityTabs.NUMBER_OF_INTERACTIONS: {
       return [t('discover.numberOfInteractions')];
     }

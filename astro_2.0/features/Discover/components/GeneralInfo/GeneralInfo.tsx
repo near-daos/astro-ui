@@ -20,7 +20,6 @@ import {
   GeneralInfoTabs,
 } from 'astro_2.0/features/Discover/constants';
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
-import { dFormatter } from 'utils/format';
 import useQuery from 'hooks/useQuery';
 
 import { General } from 'services/DaoStatsService/types';
@@ -47,12 +46,6 @@ export const GeneralInfo: FC = () => {
           value: (generalData?.activity.count ?? 0).toLocaleString(),
           trend: generalData?.activity.growth ?? 0,
         },
-        {
-          id: GeneralInfoTabs.GROUPS,
-          label: t('discover.groups'),
-          value: (generalData?.groups.count ?? 0).toLocaleString(),
-          trend: generalData?.groups.growth ?? 0,
-        },
       ];
     }
 
@@ -63,39 +56,8 @@ export const GeneralInfo: FC = () => {
         value: (generalData?.activity.count ?? 0).toLocaleString(),
         trend: generalData?.activity.growth ?? 0,
       },
-      {
-        id: GeneralInfoTabs.NUMBER_OF_DAOS,
-        label: t('discover.numberOfDaos'),
-        value: (generalData?.dao.count ?? 0).toLocaleString(),
-        trend: generalData?.dao.growth ?? 0,
-      },
-      {
-        id: GeneralInfoTabs.GROUPS,
-        label: t('discover.groups'),
-        value: (generalData?.groups.count ?? 0).toLocaleString(),
-        trend: generalData?.groups.growth ?? 0,
-      },
-      {
-        id: GeneralInfoTabs.AVERAGE_GROUP_DAOS,
-        label: t('discover.avgGroupDaos'),
-        value: Number(
-          dFormatter(generalData?.averageGroups.count ?? 0, 2)
-        ).toLocaleString(),
-        trend: generalData?.averageGroups.growth ?? 0,
-      },
     ];
-  }, [
-    generalData?.activity.count,
-    generalData?.activity.growth,
-    generalData?.averageGroups.count,
-    generalData?.averageGroups.growth,
-    generalData?.dao.count,
-    generalData?.dao.growth,
-    generalData?.groups.count,
-    generalData?.groups.growth,
-    query.dao,
-    t,
-  ]);
+  }, [generalData?.activity.count, generalData?.activity.growth, query.dao, t]);
   const [activeView, setActiveView] = useState<string>(items[0].id);
 
   const handleTopicSelect = useCallback(
@@ -134,10 +96,6 @@ export const GeneralInfo: FC = () => {
       };
 
       switch (activeView) {
-        case GeneralInfoTabs.GROUPS: {
-          data = await daoStatsService.getGeneralDaoGroups(params);
-          break;
-        }
         case GeneralInfoTabs.ACTIVITY:
         default: {
           data = await daoStatsService.getGeneralDaoActivity(params);
@@ -146,21 +104,6 @@ export const GeneralInfo: FC = () => {
       }
     } else {
       switch (activeView) {
-        case GeneralInfoTabs.NUMBER_OF_DAOS: {
-          data = await daoStatsService.getGeneralDaos(CONTRACT);
-          break;
-        }
-        case GeneralInfoTabs.GROUPS: {
-          data = await daoStatsService.getGeneralGroups(CONTRACT);
-          leadersData = await daoStatsService.getGeneralGroupsLeaderboard(
-            CONTRACT
-          );
-          break;
-        }
-        case GeneralInfoTabs.AVERAGE_GROUP_DAOS: {
-          data = await daoStatsService.getGeneralAverageGroups(CONTRACT);
-          break;
-        }
         case GeneralInfoTabs.ACTIVE_DAOS:
         default: {
           data = await daoStatsService.getGeneralActive(CONTRACT);
