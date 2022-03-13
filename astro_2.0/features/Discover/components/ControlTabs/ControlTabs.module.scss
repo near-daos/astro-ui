@@ -5,17 +5,16 @@
   align-items: center;
   display: flex;
   margin: 0;
+  overflow: hidden;
   -ms-overflow-style: none;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 24px 12px 24px 24px;
+  padding: 24px 0;
   scrollbar-width: none;
 
-  &::after {
-    content: '';
-    flex: 0 0 24px;
-    height: 90px;
-  }
+  //&::after {
+  //  content: '';
+  //  flex: 0 0 24px;
+  //  height: 90px;
+  //}
 }
 
 .root::-webkit-scrollbar {
@@ -24,10 +23,14 @@
 
 .card {
   height: 100%;
-  margin-right: 12px;
+
   max-width: 200px;
   min-height: 90px;
   padding: 12px;
+
+  &:not(:last-of-type) {
+    margin-right: 12px;
+  }
 }
 
 .cardPanel {
@@ -61,4 +64,26 @@
 .active {
   cursor: default;
   filter: unset;
+}
+
+.scrollControls {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -24px;
+  position: relative;
+}
+
+.scrollControlButton {
+  margin-left: 24px;
+
+  &:hover {
+    background-color: var(--color-neutral-30);
+    border-radius: 4px;
+  }
+
+  &.disabled {
+    background-color: transparent;
+    color: var(--color-neutral-40);
+  }
 }
