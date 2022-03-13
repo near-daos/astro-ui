@@ -7,7 +7,6 @@ import uniq from 'lodash/uniq';
 import { nanoid } from 'nanoid';
 import Decimal from 'decimal.js';
 import dynamic from 'next/dynamic';
-import endsWith from 'lodash/endsWith';
 import React, { ReactNode } from 'react';
 
 // Types
@@ -81,7 +80,6 @@ import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 // Services
 import { httpService } from 'services/HttpService';
 import { SputnikNearService } from 'services/sputnik';
-import { configService } from 'services/ConfigService';
 
 // Local helpers
 import {
@@ -862,7 +860,8 @@ export const gasValidation = yup
   .required('Required');
 
 export function getValidationSchema(
-  proposalVariant?: ProposalVariant
+  proposalVariant?: ProposalVariant,
+  dao?: DAO
 ): yup.AnySchema {
   switch (proposalVariant) {
     case ProposalVariant.ProposeTransfer: {
@@ -952,7 +951,7 @@ export function getValidationSchema(
     case ProposalVariant.ProposeCreateGroup:
     case ProposalVariant.ProposeAddMember:
     case ProposalVariant.ProposeRemoveMember: {
-      const { nearConfig } = configService.get();
+      const id = dao?.id ?? null;
 
       return yup.object().shape({
         group: yup.string().required('Required'),
@@ -965,9 +964,9 @@ export function getValidationSchema(
           )
           .test(
             'daoMember',
-            'DAO can not be specified in this field',
+            'Current DAO can not be specified in this field',
             value => {
-              return !endsWith(value, nearConfig?.contractName);
+              return !!id && value !== id;
             }
           )
           .required('Required'),
