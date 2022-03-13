@@ -44,9 +44,11 @@
   "users": "Users",
   "archived": "Archived",
   "youFollowed": "You Followed",
+  "followed": "Followed",
   "confirmUnsubscribe": "Are you sure you want to unsubscribe from",
   "confirmDeposit": "Enter the deposit amount",
   "depositToDao": "Deposit to DAO",
+  "deposit": "Deposit",
   "bountiesPage": {
     "successClaimBountyNotification": "The blockchain transactions might take some time to perform, please visit the page in few seconds",
     "comingSoon": "Coming Soon",

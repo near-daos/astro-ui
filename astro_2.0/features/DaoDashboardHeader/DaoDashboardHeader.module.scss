@@ -3,23 +3,38 @@
 
 .root {
   display: grid;
+  grid-gap: 12px 0;
   grid-template-areas:
-    'letterHeadSection'
-    'followSection'
-    'depositSection'
-    'usersSection'
-    'descriptionSection'
-    'linksSection';
-  grid-template-columns: 1fr;
-  padding-top: 24px;
+    'letterHeadSection letterHeadSection letterHeadSection'
+    '. usersSection followSection'
+    'depositSection depositSection depositSection'
+    'descriptionSection descriptionSection descriptionSection'
+    'linksSection linksSection linksSection';
+  grid-template-columns: 1fr 64px 112px;
+
+  margin-bottom: 36px;
 
   @include tablet-landscape {
-    grid-gap: 17px 0;
+    grid-gap: 12px 0;
     grid-template-areas:
-      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
-      'usersSection depositSection depositSection followSection'
-      'descriptionSection descriptionSection descriptionSection linksSection';
-    grid-template-columns: 216px 1fr 1fr 200px;
+      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
+      '. depositSection depositSection followSection usersSection'
+      '. separator separator separator separator'
+      'descriptionSection descriptionSection descriptionSection linksSection linksSection';
+    grid-template-columns: 200px 2fr 1fr 124px 64px;
+    grid-template-rows: 1fr 40px 1px auto;
+
+    padding-top: 24px;
+  }
+
+  @include large-desktop {
+    grid-gap: 12px 0;
+    grid-template-areas:
+      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
+      '. depositSection followSection usersSection linksSection'
+      '. separator separator separator linksSection'
+      'descriptionSection descriptionSection descriptionSection descriptionSection linksSection';
+    grid-template-columns: 200px 2fr 124px 80px 1fr;
   }
 }
 
@@ -39,54 +54,53 @@
   }
 
   .logo {
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%, 60px);
-
-    @include tablet-landscape {
-      left: 0;
-      transform: translate(36px, 60px);
-    }
+    left: 0;
+    transform: translate(36px, 60px);
   }
 }
 
 .depositSection {
-  align-self: start;
-  display: flex;
-  flex-direction: column;
   grid-area: depositSection;
-  justify-content: space-between;
-  padding: 20px 24px 0;
-  width: 100%;
+  margin-top: 24px;
+
+  @include tablet-landscape {
+    border-right: 1px solid var(--color-neutral-30);
+    margin-top: unset;
+    padding-right: 12px;
+  }
 }
 
 .followSection {
   grid-area: followSection;
-  padding: 84px 24px 0;
+  padding-left: 12px;
+
+  @include tablet-landscape {
+    border-right: 1px solid var(--color-neutral-30);
+    padding-right: 12px;
+  }
 }
 
-.depositSection,
-.followSection {
+.separator {
+  background-color: var(--color-neutral-30);
+  display: none;
+  grid-area: separator;
+
   @include tablet-landscape {
-    padding: 14px;
+    display: block;
   }
 }
 
 .usersSection {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
+  flex-direction: column;
   grid-area: usersSection;
-  justify-content: flex-start;
-  padding: 20px 24px 0;
-
-  @include tablet-landscape {
-    min-height: 120px;
-    padding: 74px 24px 0;
-  }
+  justify-content: center;
+  padding: 0 0 0 12px;
 }
 
 .label {
-  @extend %subtitle1;
+  @extend %caption2;
   color: var(--color-neutral-60);
 
   &::first-letter {
@@ -95,31 +109,54 @@
 }
 
 .value {
-  @extend %title1;
+  @extend %title4;
 }
 
 .descriptionSection {
   @extend %body1;
   color: var(--color-black);
   grid-area: descriptionSection;
-  padding: 20px 24px 0;
+  padding: 12px 0;
   text-align: left;
 
   @include tablet-landscape {
-    margin-top: 0;
-    padding: 0 24px 0 0;
+    background-color: var(--color-white);
+    border-radius: 8px;
+    padding: 28px 36px;
   }
 }
 
 .linksSection {
-  align-items: flex-start;
   display: flex;
   flex-direction: column;
   grid-area: linksSection;
-  padding: 20px 24px 0;
+  overflow: hidden;
+  padding: 0;
 
   @include tablet-landscape {
     align-items: flex-start;
     margin-top: 0;
+    padding: 0 0 0 12px;
+  }
+}
+
+.link {
+  @include ellipse-text;
+  border: 1px solid var(--color-neutral-30);
+  border-radius: 4px;
+  margin-bottom: 0;
+  max-width: 100%;
+  padding: 10px 12px;
+
+  @include tablet-landscape {
+    border: 0;
+    margin-bottom: 4px;
+    padding: 0;
+  }
+}
+
+.root.hideFollow {
+  .usersSection {
+    grid-area: followSection;
   }
 }

@@ -16,10 +16,12 @@ export const ShowMoreLinks: React.FC<ShowMoreLinksProps> = ({ links }) => {
   }, [showModal]);
 
   return (
-    <Button variant="transparent" onClick={handleClick}>
-      <div className={styles.showMore}>
-        Show more links (+{additionalLinks})
-      </div>
+    <Button
+      variant="transparent"
+      onClick={handleClick}
+      className={styles.showMore}
+    >
+      Show all (+{additionalLinks})
     </Button>
   );
 };
