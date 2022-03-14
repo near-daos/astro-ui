@@ -39,6 +39,23 @@ exports[`page layout Should render component 1`] = `
           <div>
             <a
               class=""
+              href="/all/daos"
+            >
+              <svg
+                height="24"
+              >
+                <use
+                  href="/_next/undefined"
+                />
+              </svg>
+              <span>
+                 
+                allDaos
+                 
+              </span>
+            </a>
+            <a
+              class=""
               href="/discover"
             >
               <svg

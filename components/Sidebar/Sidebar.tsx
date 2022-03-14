@@ -9,6 +9,7 @@ import {
   ALL_DAOS_URL,
   ALL_FEED_URL,
   CREATE_DAO_URL,
+  DISCOVER,
 } from 'constants/routing';
 
 import { useAuthContext } from 'context/AuthContext';
@@ -69,11 +70,18 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
     return (
       <div className={styles.bottom}>
         <NavItem
-          label={t('discover.title')}
+          label={t('allDaos')}
           icon="allCommunity"
           className={styles.item}
           myDaosIds={myDaosIds}
           href={ALL_DAOS_URL}
+        />
+        <NavItem
+          label={t('discover.title')}
+          icon="discover"
+          className={styles.item}
+          myDaosIds={myDaosIds}
+          href={DISCOVER}
         />
         <NavItem
           label={t('globalFeed')}
