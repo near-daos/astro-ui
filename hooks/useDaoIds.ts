@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
 import { SputnikHttpService } from 'services/sputnik';
+import { useMountedState } from 'react-use';
 
 export const useDaoIds = (accountId: string): string[] => {
+  const isMounted = useMountedState();
   const [daoIds, setDaoIds] = useState<string[]>([]);
 
   useEffect(() => {
     if (accountId) {
       SputnikHttpService.getAccountDaos(accountId).then(daos => {
-        setDaoIds(daos.map(dao => dao.id));
+        if (isMounted()) {
+          setDaoIds(daos.map(dao => dao.id));
+        }
       });
     }
-  }, [accountId]);
+  }, [accountId, isMounted]);
 
   return daoIds;
 };
