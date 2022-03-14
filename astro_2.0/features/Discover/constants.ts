@@ -15,6 +15,7 @@ export enum GeneralInfoTabs {
 }
 
 export enum UsersAndActivityTabs {
+  ACTIVE_USERS = 'activeUsers',
   ALL_USERS_ON_PLATFORM = 'allUsersOnPlatform',
   USERS_MEMBERS_OF_DAO = 'usersMembersOfDao',
   AVERAGE_NUMBER_OF_USERS_PER_DAO = 'averageNumberOfUsersPerDao',

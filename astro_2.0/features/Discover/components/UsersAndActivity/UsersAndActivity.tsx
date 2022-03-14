@@ -24,12 +24,19 @@ import {
 import { dFormatter } from 'utils/format';
 import useQuery from 'hooks/useQuery';
 
-import { Users } from 'services/DaoStatsService/types';
+import { Interval, Users } from 'services/DaoStatsService/types';
+import { Select } from 'components/inputs/selects/Select';
 
 import styles from './UsersAndActivity.module.scss';
 
+const options = [
+  { label: 'Week', value: Interval.WEEK },
+  { label: 'Month', value: Interval.MONTH },
+];
+
 export const UsersAndActivity: FC = () => {
   const isMounted = useMountedState();
+  const [interval, setInterval] = useState<Interval>(Interval.WEEK);
   const { t } = useTranslation();
   const [data, setData] = useState<Users | null>(null);
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
@@ -42,6 +49,12 @@ export const UsersAndActivity: FC = () => {
   const items = useMemo<TControlTab[]>(() => {
     if (query.dao) {
       return [
+        {
+          id: UsersAndActivityTabs.ACTIVE_USERS,
+          label: t('discover.activeUsers'),
+          value: (data?.activeUsers.count ?? 0).toLocaleString(),
+          trend: data?.activeUsers.growth ?? 0,
+        },
         {
           id: UsersAndActivityTabs.ALL_USERS_PER_DAO,
           label: t('discover.allUsersPerDao'),
@@ -66,6 +79,12 @@ export const UsersAndActivity: FC = () => {
     }
 
     return [
+      {
+        id: UsersAndActivityTabs.ACTIVE_USERS,
+        label: t('discover.activeUsers'),
+        value: (data?.activeUsers.count ?? 0).toLocaleString(),
+        trend: data?.activeUsers.growth ?? 0,
+      },
       {
         id: UsersAndActivityTabs.ALL_USERS_ON_PLATFORM,
         label: t('discover.allUsersOnAPlatform'),
@@ -102,6 +121,8 @@ export const UsersAndActivity: FC = () => {
       },
     ];
   }, [
+    data?.activeUsers.count,
+    data?.activeUsers.growth,
     data?.averageInteractions.count,
     data?.averageInteractions.growth,
     data?.averageUsers.count,
@@ -153,6 +174,13 @@ export const UsersAndActivity: FC = () => {
       };
 
       switch (activeView) {
+        case UsersAndActivityTabs.ACTIVE_USERS: {
+          chart = await daoStatsService.getUsersDaoActiveUsers({
+            ...params,
+            interval,
+          });
+          break;
+        }
         case UsersAndActivityTabs.USERS_MEMBERS_OF_DAO: {
           chart = await daoStatsService.getUsersDaoMembers(params);
           break;
@@ -169,6 +197,17 @@ export const UsersAndActivity: FC = () => {
       }
     } else {
       switch (activeView) {
+        case UsersAndActivityTabs.ACTIVE_USERS: {
+          chart = await daoStatsService.getUsersActiveUsers({
+            ...CONTRACT,
+            interval,
+          });
+          leaders = await daoStatsService.getUsersActiveUsersLeaderboard({
+            ...CONTRACT,
+            interval,
+          });
+          break;
+        }
         case UsersAndActivityTabs.USERS_MEMBERS_OF_DAO: {
           chart = await daoStatsService.getUsersMembers(CONTRACT);
           leaders = await daoStatsService.getUsersMembersLeaderboard(CONTRACT);
@@ -222,11 +261,15 @@ export const UsersAndActivity: FC = () => {
 
       setLeaderboardData(newData);
     }
-  }, [activeView, query.dao, isMounted]);
+  }, [interval, activeView, query.dao, isMounted]);
 
   useEffect(() => {
     getChartData();
   }, [getChartData]);
+
+  const intervalChange = useCallback(value => {
+    setInterval(value);
+  }, []);
 
   return (
     <div className={styles.root}>
@@ -238,6 +281,13 @@ export const UsersAndActivity: FC = () => {
         loading={loading}
       />
       <div className={styles.body}>
+        {activeView === UsersAndActivityTabs.ACTIVE_USERS ? (
+          <Select
+            defaultValue={Interval.WEEK}
+            onChange={intervalChange}
+            options={options}
+          />
+        ) : null}
         <ChartRenderer
           data={chartData}
           loading={loading}
