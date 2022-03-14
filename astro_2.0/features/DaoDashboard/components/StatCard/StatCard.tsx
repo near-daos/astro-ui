@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { CSSProperties, FC } from 'react';
 import cn from 'classnames';
 import { Button } from 'components/button/Button';
 
@@ -9,6 +9,7 @@ interface StatCardProps {
   className?: string;
   selected: boolean;
   disabled?: boolean;
+  style?: CSSProperties;
 }
 
 export const StatCard: FC<StatCardProps> = ({
@@ -17,9 +18,11 @@ export const StatCard: FC<StatCardProps> = ({
   children,
   className,
   disabled,
+  style,
 }) => {
   return (
     <Button
+      size="block"
       onClick={onClick}
       variant="transparent"
       disabled={disabled}
@@ -27,6 +30,7 @@ export const StatCard: FC<StatCardProps> = ({
         [styles.clickable]: !!onClick,
         [styles.selected]: selected,
       })}
+      style={style}
     >
       {children}
     </Button>

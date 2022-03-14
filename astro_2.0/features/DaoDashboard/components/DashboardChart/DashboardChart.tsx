@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useDomainControl } from 'components/AreaChartRenderer/hooks';
 import RangeToggle from 'components/AreaChartRenderer/components/range-toggle/RangeToggle';
 import { Chart } from 'components/AreaChartRenderer/components/Chart';
-import { ChartDataElement } from 'components/AreaChartRenderer/types';
+import { ChartDataElement, Range } from 'components/AreaChartRenderer/types';
 import { useTranslation } from 'next-i18next';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { ChartLegend } from 'astro_2.0/features/DaoDashboard/components/DashboardChart/components/ChartLegend';
@@ -18,6 +18,9 @@ import styles from './DashboardChart.module.scss';
 interface DashboardChartProps {
   data: ChartDataElement[];
   activeView?: string;
+  initialRange?: Range;
+  onRangeChange?: (val: Range) => void;
+  timeRanges?: { label: string; type: Range }[];
 }
 
 const variants = {
@@ -28,12 +31,15 @@ const variants = {
 export const DashboardChart: FC<DashboardChartProps> = ({
   data,
   activeView,
+  initialRange,
+  onRangeChange,
+  timeRanges,
 }) => {
   const { t } = useTranslation();
   const [width, setWidth] = useState(0);
   const { data: chartData, toggleDomain, activeRange } = useDomainControl(
     data || [],
-    DOMAIN_RANGES.ALL
+    initialRange || DOMAIN_RANGES.ALL
   );
 
   const lines = [
@@ -89,7 +95,14 @@ export const DashboardChart: FC<DashboardChartProps> = ({
               )}
             </div>
             <RangeToggle
-              onClick={toggleDomain}
+              onClick={v => {
+                toggleDomain(v);
+
+                if (onRangeChange) {
+                  onRangeChange(v);
+                }
+              }}
+              timeRanges={timeRanges}
               activeRange={activeRange}
               className={styles.range}
             />
