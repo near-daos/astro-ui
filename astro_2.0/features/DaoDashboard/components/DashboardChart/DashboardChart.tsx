@@ -4,7 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { useDomainControl } from 'components/AreaChartRenderer/hooks';
 import RangeToggle from 'components/AreaChartRenderer/components/range-toggle/RangeToggle';
-import { Chart } from 'components/AreaChartRenderer/components/Chart';
+import {
+  Chart,
+  TLineAxis,
+} from 'components/AreaChartRenderer/components/Chart';
 import { ChartDataElement, Range } from 'components/AreaChartRenderer/types';
 import { useTranslation } from 'next-i18next';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
@@ -48,6 +51,7 @@ export const DashboardChart: FC<DashboardChartProps> = ({
       color: '#6038d0',
       dataKey: 'y',
       gradient: 'colorUv',
+      lineAxis: 'left' as TLineAxis,
     },
   ];
 
@@ -57,6 +61,7 @@ export const DashboardChart: FC<DashboardChartProps> = ({
       color: '#19D992',
       dataKey: 'y2',
       gradient: 'colorPv',
+      lineAxis: 'right' as TLineAxis,
     });
   }
 
