@@ -144,8 +144,10 @@
   @include ellipse-text;
   border: 1px solid var(--color-neutral-30);
   border-radius: 4px;
+  display: inline-block;
+  font-size: 14px;
   margin-bottom: 0;
-  max-width: 100%;
+  max-width: 150px;
   padding: 10px 12px;
 
   @include tablet-landscape {

@@ -42,7 +42,12 @@ export const DaoLinks: React.FC<DaoLinksProps> = ({
           {links
             .filter((link, index) => link && index < 3)
             .map(link => (
-              <DaoLink link={link} key={link} className={cn(linkClassName)} />
+              <DaoLink
+                link={link}
+                key={link}
+                className={cn(linkClassName)}
+                linkClassName={styles.linkItem}
+              />
             ))}
           {links.length > 3 && <ShowMoreLinks links={links} />}
         </ul>
