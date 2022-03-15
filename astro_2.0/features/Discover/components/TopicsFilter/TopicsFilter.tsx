@@ -72,7 +72,7 @@ export const TopicsFilter: FC = () => {
         },
         undefined,
         {
-          shallow: false,
+          shallow: true,
           scroll: false,
         }
       );
