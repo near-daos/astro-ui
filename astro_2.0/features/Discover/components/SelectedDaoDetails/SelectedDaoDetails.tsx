@@ -1,13 +1,16 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useMountedState } from 'react-use';
+import { useRouter } from 'next/router';
 
 import useQuery from 'hooks/useQuery';
 import { DAO } from 'types/dao';
 
 import { shortenString } from 'utils/format';
+import { SINGLE_DAO_PAGE } from 'constants/routing';
 
 import { SputnikHttpService } from 'services/sputnik';
 
+import { Button } from 'components/button/Button';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { IconButton } from 'components/button/IconButton';
@@ -16,6 +19,7 @@ import styles from './SelectedDaoDetails.module.scss';
 
 export const SelectedDaoDetails: FC = () => {
   const isMounted = useMountedState();
+  const router = useRouter();
   const [data, setData] = useState<DAO | null>(null);
   const { query, updateQuery } = useQuery<{
     dao: string;
@@ -61,6 +65,21 @@ export const SelectedDaoDetails: FC = () => {
           </div>
         </div>
       </div>
+      <Button
+        className={styles.navButton}
+        size="medium"
+        variant="secondary"
+        onClick={() =>
+          router.push({
+            pathname: SINGLE_DAO_PAGE,
+            query: {
+              dao: data.id,
+            },
+          })
+        }
+      >
+        Go to DAO page
+      </Button>
     </div>
   );
 };
