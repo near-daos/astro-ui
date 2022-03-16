@@ -19,11 +19,16 @@
   list-style: none;
   margin-bottom: 0;
   margin-top: 0;
-  padding: 12px 0;
+  padding: 8px 0;
 
   @include tablet-landscape {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
   }
+}
+
+.linkItem {
+  @include ellipse-text;
+  display: inline-block;
 }
