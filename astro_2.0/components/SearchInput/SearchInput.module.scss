@@ -104,3 +104,14 @@
   color: var(--color-primary-50);
   margin: 0;
 }
+
+.noResults {
+  font-size: 14px;
+  padding: 0;
+}
+
+.noResultsImage {
+  height: 100px;
+  min-height: unset;
+  width: 220px;
+}
