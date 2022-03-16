@@ -139,7 +139,11 @@ export const ControlTabs: FC<ControlTabsProps> = ({
             style={{
               maxWidth: cardWidth,
             }}
-            onClick={() => onSelect(id)}
+            onClick={() => {
+              if (activeView !== id) {
+                onSelect(id);
+              }
+            }}
           >
             <StatPanel
               title={label}
