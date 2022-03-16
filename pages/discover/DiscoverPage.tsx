@@ -14,6 +14,7 @@ import { Tvl } from 'astro_2.0/features/Discover/components/Tvl';
 import { Tokens } from 'astro_2.0/features/Discover/components/Tokens';
 import { SelectedDaoDetails } from 'astro_2.0/features/Discover/components/SelectedDaoDetails';
 import { TopicsFilter } from 'astro_2.0/features/Discover/components/TopicsFilter/TopicsFilter';
+import { DiscoverPageProvider } from 'astro_2.0/features/Discover/components/DiscoverPageContext/DiscoverPageContext';
 
 import { useDaoSearch } from 'astro_2.0/features/Discover/hooks';
 import { useAuthContext } from 'context/AuthContext';
@@ -50,7 +51,7 @@ const DiscoverPage: NextPage = () => {
           pathname: router.pathname,
           query: {
             ...query,
-            topic: 'generalInfo',
+            topic: DaoStatsTopics.GENERAL_INFO,
           },
         },
         undefined,
@@ -131,7 +132,7 @@ const DiscoverPage: NextPage = () => {
       </div>
       <div className={styles.body}>
         <ContentPanel title={t(`discover.${topic}`)}>
-          {renderContent()}
+          <DiscoverPageProvider>{renderContent()}</DiscoverPageProvider>
         </ContentPanel>
       </div>
     </div>

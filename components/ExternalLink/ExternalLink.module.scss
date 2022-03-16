@@ -1,8 +1,14 @@
 .root {
   align-items: center;
   color: var(--color-primary);
+  display: flex;
 }
 
 .text {
   text-transform: lowercase;
+}
+
+.icon {
+  min-width: 20px;
+  width: 20px;
 }

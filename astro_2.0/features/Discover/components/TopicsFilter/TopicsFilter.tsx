@@ -72,7 +72,7 @@ export const TopicsFilter: FC = () => {
         },
         undefined,
         {
-          shallow: false,
+          shallow: true,
           scroll: false,
         }
       );
@@ -104,32 +104,30 @@ export const TopicsFilter: FC = () => {
           {t('discover.financial')}
         </Button>
       </div>
-      <div className={styles.filters}>
-        {(!isMobile || activeFilter === 'overview') && (
-          <SideFilter
-            shallowUpdate
-            hideAllOption
-            queryName="topic"
-            list={overviewOptions}
-            title={t('discover.overview')}
-            titleClassName={styles.sideFilterTitle}
-            className={styles.sideFilter}
-            itemClassName={styles.filterItem}
-          />
-        )}
-        {(!isMobile || activeFilter === 'financial') && (
-          <SideFilter
-            shallowUpdate
-            hideAllOption
-            queryName="topic"
-            list={financialOptions}
-            title={t('discover.financial')}
-            titleClassName={styles.sideFilterTitle}
-            className={cn(styles.sideFilter, styles.financialFilter)}
-            itemClassName={styles.filterItem}
-          />
-        )}
-      </div>
+      {(!isMobile || activeFilter === 'overview') && (
+        <SideFilter
+          shallowUpdate
+          hideAllOption
+          queryName="topic"
+          list={overviewOptions}
+          title={t('discover.overview')}
+          titleClassName={styles.sideFilterTitle}
+          className={styles.sideFilter}
+          itemClassName={styles.filterItem}
+        />
+      )}
+      {(!isMobile || activeFilter === 'financial') && (
+        <SideFilter
+          shallowUpdate
+          hideAllOption
+          queryName="topic"
+          list={financialOptions}
+          title={t('discover.financial')}
+          titleClassName={styles.sideFilterTitle}
+          className={cn(styles.sideFilter, styles.financialFilter)}
+          itemClassName={styles.filterItem}
+        />
+      )}
     </div>
   );
 };

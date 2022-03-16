@@ -10,9 +10,14 @@ import styles from './ExternalLink.module.scss';
 interface ExternalLinkProps {
   to: string;
   icon?: IconName;
+  linkClassName?: string;
 }
 
-export const ExternalLink: FC<ExternalLinkProps> = ({ to, icon }) => {
+export const ExternalLink: FC<ExternalLinkProps> = ({
+  to,
+  icon,
+  linkClassName,
+}) => {
   const [linkTitle, setLinkTitle] = useState('');
 
   const link = composeProperLinkUrl(to);
@@ -43,9 +48,15 @@ export const ExternalLink: FC<ExternalLinkProps> = ({ to, icon }) => {
       onClick={stopPropagation}
       className={cn('caption1', styles.root)}
     >
-      <Icon name={icon || 'buttonExternal'} width={20} />
+      <Icon
+        name={icon || 'buttonExternal'}
+        width={20}
+        className={styles.icon}
+      />
       &nbsp;
-      <span className={cn('body2', styles.text)}>{linkTitle}</span>
+      <span className={cn('body2', styles.text, linkClassName)}>
+        {linkTitle}
+      </span>
     </a>
   );
 };

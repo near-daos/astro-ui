@@ -36,14 +36,17 @@ interface RangeToggleProps {
   onClick: (type: Range) => void;
   activeRange: string;
   className?: string;
+  timeRanges?: { label: string; type: Range }[];
 }
 
 const RangeToggle: FC<RangeToggleProps> = ({
   onClick,
   activeRange,
   className,
+  timeRanges,
 }) => {
   const isMobile = useMedia('(max-width: 920px)');
+  const ranges = timeRanges || TOGGLE_SET;
 
   return (
     <div className={cn(styles.root, className)}>
@@ -56,13 +59,13 @@ const RangeToggle: FC<RangeToggleProps> = ({
           onChange={v => {
             onClick(v as Range);
           }}
-          options={TOGGLE_SET.map(({ label, type }) => ({
+          options={ranges.map(({ label, type }) => ({
             label,
             value: type,
           }))}
         />
       ) : (
-        TOGGLE_SET.map(({ label, type }) => (
+        ranges.map(({ label, type }) => (
           <Button
             key={type}
             size="small"

@@ -39,6 +39,23 @@ exports[`page layout Should render component 1`] = `
           <div>
             <a
               class=""
+              href="/all/daos"
+            >
+              <svg
+                height="24"
+              >
+                <use
+                  href="/_next/undefined"
+                />
+              </svg>
+              <span>
+                 
+                allDaos
+                 
+              </span>
+            </a>
+            <a
+              class=""
               href="/discover"
             >
               <svg
@@ -143,6 +160,20 @@ exports[`page layout Should render component 1`] = `
                 target="_blank"
               >
                 components.appFooter.githubRepo
+              </a>
+              <a
+                href="https://testnet.app.astrodao.com/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Testnet env
+              </a>
+              <a
+                href="https://api.app.astrodao.com/docs/#/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Swagger API
               </a>
             </div>
             <div>

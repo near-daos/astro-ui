@@ -70,6 +70,22 @@ export const AppFooter: FC<AppFooterProps> = ({
             >
               {t('components.appFooter.githubRepo')}
             </a>
+            <a
+              className={styles.devLink}
+              href="https://testnet.app.astrodao.com/"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Testnet env
+            </a>
+            <a
+              className={styles.devLink}
+              href="https://api.app.astrodao.com/docs/#/"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Swagger API
+            </a>
           </div>
           <div className={styles.copyright}>
             {t('components.appFooter.opensourceAsIs')}

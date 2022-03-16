@@ -20,7 +20,7 @@ export const MoreLinksModal: React.FC<MoreLinksModal> = ({
         <div className={styles.title}>Links & Socials</div>
         <ul className={styles.links}>
           {links.map(link => (
-            <DaoLink link={link} />
+            <DaoLink link={link} key={link} />
           ))}
         </ul>
       </div>

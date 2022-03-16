@@ -7,7 +7,7 @@ import {
   MY_DAOS_NAV_CONFIG,
   MY_FEED_NAV_CONFIG,
   ASTRO_FEED_NAV_CONFIG,
-  CREATE_DAO_NAV_CONFIG,
+  DISCOVER_NAV_CONFIG,
 } from 'astro_2.0/components/navigation/navConfig';
 import { NavButton } from 'astro_2.0/components/navigation/NavButton';
 import { useDaoIds } from 'hooks/useDaoIds';
@@ -24,9 +24,14 @@ export const MobileNav: VFC = () => {
         ASTRO_FEED_NAV_CONFIG,
         MY_DAOS_NAV_CONFIG,
         MY_FEED_NAV_CONFIG,
-        CREATE_DAO_NAV_CONFIG,
+        DISCOVER_NAV_CONFIG,
       ]
-    : [ALL_DAOS_NAV_CONFIG, ASTRO_FEED_NAV_CONFIG, CREATE_DAO_NAV_CONFIG];
+    : [
+        DISCOVER_NAV_CONFIG,
+        ALL_DAOS_NAV_CONFIG,
+        ASTRO_FEED_NAV_CONFIG,
+        DISCOVER_NAV_CONFIG,
+      ];
 
   const navItems = navConfig.map(conf => {
     return (
