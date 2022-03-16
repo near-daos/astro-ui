@@ -161,6 +161,20 @@ exports[`page layout Should render component 1`] = `
               >
                 components.appFooter.githubRepo
               </a>
+              <a
+                href="https://testnet.app.astrodao.com/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Testnet env
+              </a>
+              <a
+                href="https://api.app.astrodao.com/docs/#/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Swagger API
+              </a>
             </div>
             <div>
               components.appFooter.opensourceAsIs
