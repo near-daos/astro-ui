@@ -20,23 +20,18 @@ import {
   DaoStatsTopics,
   UsersAndActivityTabs,
 } from 'astro_2.0/features/Discover/constants';
+import { ChartInterval } from 'astro_2.0/features/Discover/components/ChartInterval';
 
 import { dFormatter } from 'utils/format';
 import useQuery from 'hooks/useQuery';
 
 import { Interval, Users } from 'services/DaoStatsService/types';
-import { Select } from 'components/inputs/selects/Select';
 
 import styles from './UsersAndActivity.module.scss';
 
-const options = [
-  { label: 'Week', value: Interval.WEEK },
-  { label: 'Month', value: Interval.MONTH },
-];
-
 export const UsersAndActivity: FC = () => {
   const isMounted = useMountedState();
-  const [interval, setInterval] = useState<Interval>(Interval.WEEK);
+  const [interval, setInterval] = useState(Interval.WEEK);
   const { t } = useTranslation();
   const [data, setData] = useState<Users | null>(null);
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
@@ -267,10 +262,6 @@ export const UsersAndActivity: FC = () => {
     getChartData();
   }, [getChartData]);
 
-  const intervalChange = useCallback(value => {
-    setInterval(value);
-  }, []);
-
   return (
     <div className={styles.root}>
       <ControlTabs
@@ -281,18 +272,17 @@ export const UsersAndActivity: FC = () => {
         loading={loading}
       />
       <div className={styles.body}>
-        {activeView === UsersAndActivityTabs.ACTIVE_USERS ? (
-          <Select
-            defaultValue={Interval.WEEK}
-            onChange={intervalChange}
-            options={options}
-          />
-        ) : null}
         <ChartRenderer
           data={chartData}
           loading={loading}
           activeView={activeView}
         />
+        {activeView === UsersAndActivityTabs.ACTIVE_USERS && !loading ? (
+          <ChartInterval
+            interval={interval}
+            setInterval={value => setInterval(value as Interval)}
+          />
+        ) : null}
         <DaosTopList
           data={leaderboardData}
           valueLabel={getValueLabel(

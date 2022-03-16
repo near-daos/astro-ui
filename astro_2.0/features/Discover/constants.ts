@@ -1,3 +1,5 @@
+import { Interval } from 'services/DaoStatsService/types';
+
 export const CONTRACT = { contract: 'astro' };
 
 export enum DaoStatsTopics {
@@ -49,3 +51,8 @@ export enum TokensTabs {
   VL_OF_FTS = 'vlOfFts',
   NUMBER_OF_NFTS = 'numberOfNfts',
 }
+
+export const intervalOptions = [
+  { label: 'Week', value: Interval.WEEK },
+  { label: 'Month', value: Interval.MONTH },
+];
