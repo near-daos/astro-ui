@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'next-i18next';
 
 import { SubjectRule } from 'astro_2.0/features/CreateDao/components/SubjectRule';
-import { TemplateRules } from 'astro_2.0/features/CreateDao/components/TemplateRules/TemplateRules';
+import { TemplateRules } from 'astro_2.0/features/CreateDao/components/TemplateRules';
 import { DAO_RULES_INFO } from 'astro_2.0/features/CreateDao/components/data';
 
 import styles from './DaoRulesForm.module.scss';
