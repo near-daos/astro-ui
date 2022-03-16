@@ -15,6 +15,7 @@ import isEmpty from 'lodash/isEmpty';
 
 import { IconButton } from 'components/button/IconButton';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Icon } from 'components/Icon';
 
 import { DaoFeedItem } from 'types/dao';
@@ -174,6 +175,15 @@ export const SearchInput: FC<SearchInputProps> = ({
 
                     return renderResult(data);
                   })}
+                </div>
+              )}
+              {showResults && !searchResults?.length && (
+                <div className={styles.hint}>
+                  <NoResultsView
+                    title="No results found"
+                    imgClassName={styles.noResultsImage}
+                    className={styles.noResults}
+                  />
                 </div>
               )}
             </motion.div>
