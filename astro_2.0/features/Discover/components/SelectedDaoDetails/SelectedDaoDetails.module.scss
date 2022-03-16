@@ -4,8 +4,13 @@
 .root {
   align-items: flex-start;
   display: flex;
+  flex-direction: column;
   margin-top: 24px;
   width: 100%;
+
+  @include tablet-landscape {
+    flex-direction: row;
+  }
 }
 
 .name {
@@ -50,5 +55,17 @@
 
   &:hover {
     color: var(--color-primary-50);
+  }
+}
+
+.navButton {
+  margin-top: 24px;
+  text-transform: unset;
+  width: 100%;
+
+  @include tablet-landscape {
+    margin-left: auto;
+    margin-top: 6px;
+    width: auto;
   }
 }

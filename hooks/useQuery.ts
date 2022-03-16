@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 
 const useQuery = <T>(opt?: {
   shallow: boolean;
+  scroll?: boolean;
 }): {
   query: T;
   updateQuery: <K extends keyof T>(key: K, value: T[K]) => void;
