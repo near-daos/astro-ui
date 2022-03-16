@@ -49,6 +49,7 @@
   "confirmDeposit": "Enter the deposit amount",
   "depositToDao": "Deposit to DAO",
   "deposit": "Deposit",
+  "joinDao": "Join DAO",
   "bountiesPage": {
     "successClaimBountyNotification": "The blockchain transactions might take some time to perform, please visit the page in few seconds",
     "comingSoon": "Coming Soon",

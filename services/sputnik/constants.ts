@@ -44,6 +44,7 @@ export const API_QUERIES = {
   GET_PROPOSALS_LIST: 'getProposalsList',
   GET_PROPOSALS_LIST_BY_ACCOUNT_ID: 'getProposalsListByAccountId',
   FIND_DAO_BY_NAME: 'findDaoByName',
+  GET_JOINING_DAO_PROPOSALS: 'getJoiningDaoProposals',
 };
 
 export type ApiQueries = keyof typeof API_QUERIES;

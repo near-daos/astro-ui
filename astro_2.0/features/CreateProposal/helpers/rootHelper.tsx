@@ -455,7 +455,8 @@ export function getFormContentNode(
 
 export function getFormInitialValues(
   selectedProposalType: ProposalVariant,
-  accountId: string
+  accountId: string,
+  initialValues?: Record<string, unknown>
 ): Record<string, unknown> {
   switch (selectedProposalType) {
     case ProposalVariant.ProposeCreateBounty: {
@@ -538,8 +539,19 @@ export function getFormInitialValues(
         gas: DEFAULT_PROPOSAL_GAS,
       };
     }
+    case ProposalVariant.ProposeAddMember: {
+      const preset = initialValues || {};
+
+      return {
+        details: '',
+        externalUrl: '',
+        group: '',
+        memberName: '',
+        gas: DEFAULT_PROPOSAL_GAS,
+        ...preset,
+      };
+    }
     case ProposalVariant.ProposeCreateGroup:
-    case ProposalVariant.ProposeAddMember:
     case ProposalVariant.ProposeRemoveMember: {
       return {
         details: '',
