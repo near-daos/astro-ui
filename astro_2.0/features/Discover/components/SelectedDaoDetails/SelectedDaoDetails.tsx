@@ -19,7 +19,7 @@ export const SelectedDaoDetails: FC = () => {
   const [data, setData] = useState<DAO | null>(null);
   const { query, updateQuery } = useQuery<{
     dao: string;
-  }>({ shallow: false });
+  }>({ shallow: true });
 
   useEffect(() => {
     if (query.dao) {
@@ -28,6 +28,8 @@ export const SelectedDaoDetails: FC = () => {
           setData(res);
         }
       });
+    } else {
+      setData(null);
     }
   }, [isMounted, query.dao]);
 
