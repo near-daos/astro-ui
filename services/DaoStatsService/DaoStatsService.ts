@@ -114,13 +114,12 @@ class DaoStatsService {
   }
 
   public async getGeneralActive(
-    params: IntervalHistoryParams
+    params: HistoryParams
   ): Promise<AxiosResponse<Metrics>> {
     return this.httpService.get(`${params.contract}/general/active`, {
       params: {
         from: params.from,
         to: params.to,
-        interval: params.interval,
       },
     });
   }
@@ -186,7 +185,7 @@ class DaoStatsService {
   }
 
   async getGeneralDaoActivity(
-    params: DaoIntervalHistoryParams
+    params: DaoHistoryParams
   ): Promise<AxiosResponse<Metrics>> {
     return this.httpService.get(
       `${params.contract}/general/${params.dao}/activity`,
@@ -194,7 +193,6 @@ class DaoStatsService {
         params: {
           from: params.from,
           to: params.to,
-          interval: params.interval,
         },
       }
     );
