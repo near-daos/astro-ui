@@ -1,3 +1,5 @@
+import { Interval } from 'services/DaoStatsService/types';
+
 export const CONTRACT = { contract: 'astro' };
 
 export enum DaoStatsTopics {
@@ -15,6 +17,7 @@ export enum GeneralInfoTabs {
 }
 
 export enum UsersAndActivityTabs {
+  ACTIVE_USERS = 'activeUsers',
   ALL_USERS_ON_PLATFORM = 'allUsersOnPlatform',
   USERS_MEMBERS_OF_DAO = 'usersMembersOfDao',
   AVERAGE_NUMBER_OF_USERS_PER_DAO = 'averageNumberOfUsersPerDao',
@@ -48,3 +51,8 @@ export enum TokensTabs {
   VL_OF_FTS = 'vlOfFts',
   NUMBER_OF_NFTS = 'numberOfNfts',
 }
+
+export const intervalOptions = [
+  { label: 'Week', value: Interval.WEEK },
+  { label: 'Month', value: Interval.MONTH },
+];
