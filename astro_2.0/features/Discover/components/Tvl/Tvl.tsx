@@ -47,17 +47,17 @@ export const Tvl: FC = () => {
           id: TvlTabs.NUMBER_OF_BOUNTIES,
           label: t('discover.numberOfBounties'),
           value: Number(
-            dFormatter(currentData?.bounties.number.count ?? 0)
+            dFormatter(currentData?.bounties?.number.count ?? 0)
           ).toLocaleString(),
-          trend: currentData?.bounties.number.growth ?? 0,
+          trend: currentData?.bounties?.number.growth ?? 0,
         },
         {
           id: TvlTabs.VL_OF_BOUNTIES,
           label: t('discover.vlOfBounties'),
           value: Number(
-            dFormatter(currentData?.bounties.vl.count ?? 0)
+            dFormatter(currentData?.bounties?.vl.count ?? 0)
           ).toLocaleString(),
-          trend: currentData?.bounties.vl.growth ?? 0,
+          trend: currentData?.bounties?.vl.growth ?? 0,
         },
         {
           id: TvlTabs.TVL,
@@ -83,9 +83,9 @@ export const Tvl: FC = () => {
         id: TvlTabs.VL_IN_BOUNTIES,
         label: t('discover.vlInBountiesGrants'),
         value: Number(
-          dFormatter(currentData?.bountiesAndGrantsVl.count ?? 0)
+          dFormatter(currentData?.bountiesAndGrantsVl?.count ?? 0)
         ).toLocaleString(),
-        trend: currentData?.bountiesAndGrantsVl.growth ?? 0,
+        trend: currentData?.bountiesAndGrantsVl?.growth ?? 0,
       },
     ];
   }, [data, query.dao, t]);
