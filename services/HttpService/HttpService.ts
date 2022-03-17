@@ -57,7 +57,7 @@ export class HttpService {
 
   constructor(config?: AxiosRequestConfig) {
     this.client = axios.create({
-      baseURL: appConfig.apiUrl,
+      baseURL: appConfig.API_URL,
       ...config,
     });
 

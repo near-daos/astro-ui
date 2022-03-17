@@ -63,7 +63,7 @@ exports[`DaoPreviewForm Should render component 1`] = `
                 </div>
                 <div>
                   <div>
-                    address.
+                    address.sputnikv2.testnet
                   </div>
                 </div>
                 <p />

@@ -61,7 +61,7 @@ class SputnikNearServiceClass {
       this.sputnikWalletService,
       (appConfig
         ? appConfig.LOCAL_WALLET_REDIRECT
-        : applicationConfig.walletUseLocalRedirect) ?? false
+        : applicationConfig.LOCAL_WALLET_REDIRECT) ?? false
     );
 
     this.factoryTokenContract = new Contract(
