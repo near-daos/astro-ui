@@ -84,7 +84,7 @@
     overflow: hidden;
   }
 
-  .balance {
+  [data-hidden-value] {
     display: none;
     margin-left: auto;
   }
@@ -98,7 +98,7 @@
 
 .select ul {
   min-width: 260px;
-  .balance {
+  [data-hidden-value] {
     display: flex;
   }
 }

@@ -37,8 +37,8 @@ describe('format', () => {
     });
 
     it('Should properly format number', () => {
-      expect(kFormatter(80000000000)).toStrictEqual('80G');
-      expect(kFormatter(7000000000)).toStrictEqual('7G');
+      expect(kFormatter(80000000000)).toStrictEqual('80B');
+      expect(kFormatter(7000000000)).toStrictEqual('7B');
       expect(kFormatter(20000000)).toStrictEqual('20M');
       expect(kFormatter(3000)).toStrictEqual('3K');
 

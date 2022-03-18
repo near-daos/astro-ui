@@ -3,7 +3,7 @@ import { DAO } from 'types/dao';
 import {
   CustomFunctionCallInput,
   getCustomFunctionCallProposal,
-} from 'astro_2.0/features/CreateProposal/proposalObjectHelpers';
+} from 'astro_2.0/features/CreateProposal/helpers/proposalObjectHelpers';
 
 import { dao, data, tokens } from './mock';
 

@@ -1,45 +1,21 @@
 // TODO refactor the helper. It's too big now.
 
 import * as yup from 'yup';
-import get from 'lodash/get';
-import last from 'lodash/last';
 import uniq from 'lodash/uniq';
 import { nanoid } from 'nanoid';
-import Decimal from 'decimal.js';
 import dynamic from 'next/dynamic';
 import React, { ReactNode } from 'react';
 
 // Types
-import {
-  CreateProposalParams,
-  DaoConfig,
-  ProposalType,
-  ProposalVariant,
-} from 'types/proposal';
-import {
-  BondsAndDeadlinesData,
-  CreateBountyInput,
-  LinksFormData,
-  TokenDistributionInput,
-} from 'astro_2.0/features/CreateProposal/types';
+import { ProposalType, ProposalVariant } from 'types/proposal';
 import { DAO, Member } from 'types/dao';
-import { IGroupForm } from 'features/groups/types';
 import { MemberStats } from 'services/sputnik/mappers';
 import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
-import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
+import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 
 // Constants
 import { VALID_URL_REGEXP } from 'constants/regexp';
-import {
-  DEFAULT_PROPOSAL_GAS,
-  MAX_GAS,
-  MIN_GAS,
-  YOKTO_NEAR,
-} from 'services/sputnik/constants';
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
-
-// Context
-import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { MAX_GAS, MIN_GAS } from 'services/sputnik/constants';
 
 // Components
 import { TransferContent } from 'astro_2.0/features/CreateProposal/components/TransferContent';
@@ -59,39 +35,16 @@ import { TokenDistributionContent } from 'astro_2.0/features/CreateProposal/comp
 import { ContractAcceptanceContent } from 'astro_2.0/features/CreateProposal/components/ContractAcceptanceContent';
 
 // Helpers & Utils
-import {
-  getInitialData,
-  getNewProposalObject as getNewVotingPolicyProposalObject,
-  VotingPolicyPageInitialData,
-} from 'features/vote-policy/helpers';
-import {
-  getAddMemberProposal,
-  getChangePolicyProposal,
-  getRemoveMemberProposal,
-} from 'features/groups/helpers';
-import {
-  CustomFunctionCallInput,
-  getCustomFunctionCallProposal,
-} from 'astro_2.0/features/CreateProposal/proposalObjectHelpers';
-import { getTokenDistributionProposal } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent/helpers';
+import { getInitialData } from 'features/vote-policy/helpers';
 
 import {
   getImgValidationError,
   requiredImg,
   validateImgSize,
 } from 'utils/imageValidators';
-import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 
 // Services
-import { httpService } from 'services/HttpService';
 import { SputnikNearService } from 'services/sputnik';
-
-// Local helpers
-import {
-  getAddBountyProposal,
-  getChangeBondDeadlinesProposal,
-  getCompleteBountyProposal,
-} from './bountiesHelpers';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -101,51 +54,6 @@ const CustomFunctionCallContent = dynamic(
     ssr: false,
   }
 );
-
-function getChangeConfigProposal(
-  daoId: string,
-  { name, purpose, metadata }: DaoConfig,
-  reason: string,
-  proposalBond: string
-): CreateProposalParams {
-  return {
-    kind: 'ChangeConfig',
-    daoId,
-    data: {
-      config: {
-        metadata,
-        name,
-        purpose,
-      },
-    },
-    description: reason,
-    bond: proposalBond,
-  };
-}
-
-async function getTransferProposal(
-  dao: DAO,
-  data: CreateTransferInput,
-  tokens: Tokens
-): Promise<CreateProposalParams> {
-  const token = Object.values(tokens).find(item => item.symbol === data.token);
-
-  if (!token) {
-    throw new Error('No tokens data found');
-  }
-
-  return {
-    daoId: dao.id,
-    description: `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
-    kind: 'Transfer',
-    bond: dao.policy.proposalBond,
-    data: {
-      token_id: token?.tokenId,
-      receiver_id: data.target,
-      amount: new Decimal(data.amount).mul(10 ** token.decimals).toFixed(),
-    },
-  };
-}
 
 export function getProposalTypesOptions(
   isCanCreatePolicyProposals: boolean,
@@ -453,410 +361,6 @@ export function getFormContentNode(
   }
 }
 
-export function getFormInitialValues(
-  selectedProposalType: ProposalVariant,
-  accountId: string
-): Record<string, unknown> {
-  switch (selectedProposalType) {
-    case ProposalVariant.ProposeCreateBounty: {
-      return {
-        details: '',
-        externalUrl: '',
-        token: 'NEAR',
-        amount: '',
-        slots: '',
-        deadlineThreshold: '',
-        deadlineUnits: 'days',
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    case ProposalVariant.ProposeDoneBounty: {
-      return {
-        details: '',
-        externalUrl: '',
-        target: accountId,
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    case ProposalVariant.ProposeTransfer: {
-      return {
-        details: '',
-        externalUrl: '',
-        token: 'NEAR',
-        amount: '',
-        target: '',
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    case ProposalVariant.ProposeChangeDaoName: {
-      return {
-        details: '',
-        externalUrl: '',
-        displayName: '',
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    case ProposalVariant.ProposeChangeDaoPurpose: {
-      return {
-        details: '',
-        externalUrl: '',
-        purpose: '',
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    case ProposalVariant.ProposeChangeDaoLinks: {
-      return {
-        details: '',
-        externalUrl: '',
-        links: [],
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    case ProposalVariant.ProposeContractAcceptance: {
-      return {
-        unstakingPeriod: '345',
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    case ProposalVariant.ProposeTokenDistribution: {
-      return {
-        groups: [],
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    case ProposalVariant.ProposeChangeDaoLegalInfo: {
-      return {
-        details: '',
-        externalUrl: '',
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    case ProposalVariant.ProposePoll: {
-      return {
-        details: '',
-        externalUrl: '',
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    case ProposalVariant.ProposeCreateGroup:
-    case ProposalVariant.ProposeAddMember:
-    case ProposalVariant.ProposeRemoveMember: {
-      return {
-        details: '',
-        externalUrl: '',
-        group: '',
-        memberName: '',
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    case ProposalVariant.ProposeChangeVotingPolicy: {
-      return {
-        details: '',
-        externalUrl: '',
-        amount: '',
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    case ProposalVariant.ProposeChangeBonds: {
-      return {
-        details: '',
-        externalUrl: '',
-        createProposalBond: '',
-        claimBountyBond: '',
-        proposalExpireTime: '',
-        unclaimBountyTime: '',
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    case ProposalVariant.ProposeChangeDaoFlag: {
-      return {
-        details: '',
-        externalUrl: '',
-        flagCover: '',
-        flagLogo: '',
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    case ProposalVariant.ProposeCustomFunctionCall: {
-      return {
-        details: '',
-        externalUrl: '',
-        smartContractAddress: '',
-        methodName: '',
-        json: '',
-        deposit: '0',
-        token: 'NEAR',
-        actionsGas: DEFAULT_PROPOSAL_GAS,
-        gas: DEFAULT_PROPOSAL_GAS,
-      };
-    }
-    default: {
-      return {};
-    }
-  }
-}
-
-function getFlagsParamsForMetadata(
-  dao: DAO
-): {
-  flag?: string;
-  flagCover?: string;
-  flagLogo?: string;
-} {
-  const flagUrl = dao?.logo?.split('/');
-  const flagFileName = last(flagUrl);
-
-  const coverUrl = dao?.flagCover?.split('/');
-  const coverFileName = last(coverUrl);
-
-  const logoUrl = dao?.flagLogo?.split('/');
-  const logoFileName = last(logoUrl);
-
-  return {
-    flag: flagFileName,
-    flagCover: coverFileName,
-    flagLogo: logoFileName,
-  };
-}
-
-export async function getNewProposalObject(
-  dao: DAO,
-  proposalType: ProposalVariant,
-  data: Record<string, unknown>,
-  tokens: Tokens,
-  accountId: string,
-  bountyId?: number
-): Promise<CreateProposalParams | null> {
-  switch (proposalType) {
-    case ProposalVariant.ProposeCreateBounty: {
-      return Promise.resolve(
-        getAddBountyProposal(dao, data as CreateBountyInput, tokens)
-      );
-    }
-    case ProposalVariant.ProposeTransfer: {
-      return getTransferProposal(dao, data as CreateTransferInput, tokens);
-    }
-    case ProposalVariant.ProposeDoneBounty: {
-      const { externalUrl, details } = data;
-
-      return getCompleteBountyProposal(
-        dao.id,
-        details as string,
-        externalUrl as string,
-        accountId,
-        dao.policy.proposalBond,
-        bountyId
-      );
-    }
-    case ProposalVariant.ProposeChangeDaoLinks: {
-      const newDaoConfig: DaoConfig = {
-        name: dao.name,
-        purpose: dao.description,
-        metadata: jsonToBase64Str({
-          ...getFlagsParamsForMetadata(dao),
-          links: ((data as unknown) as LinksFormData).links
-            .map(item => item.url)
-            .filter(item => item.length > 0),
-          displayName: dao.displayName,
-        }),
-      };
-
-      return getChangeConfigProposal(
-        dao.id,
-        newDaoConfig,
-        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
-        dao.policy.proposalBond
-      );
-    }
-    case ProposalVariant.ProposeChangeDaoName: {
-      const newDaoConfig: DaoConfig = {
-        name: dao.name,
-        purpose: dao.description,
-        metadata: jsonToBase64Str({
-          ...getFlagsParamsForMetadata(dao),
-          links: dao.links,
-          displayName: data.displayName as string,
-        }),
-      };
-
-      return getChangeConfigProposal(
-        dao.id,
-        newDaoConfig,
-        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
-        dao.policy.proposalBond
-      );
-    }
-    case ProposalVariant.ProposeChangeDaoPurpose: {
-      const newDaoConfig: DaoConfig = {
-        name: dao.name,
-        purpose: data.purpose as string,
-        metadata: jsonToBase64Str({
-          ...getFlagsParamsForMetadata(dao),
-          links: dao.links,
-          displayName: dao.displayName,
-        }),
-      };
-
-      return getChangeConfigProposal(
-        dao.id,
-        newDaoConfig,
-        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
-        dao.policy.proposalBond
-      );
-    }
-    case ProposalVariant.ProposePoll: {
-      return {
-        daoId: dao.id,
-        description: `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
-        kind: 'Vote',
-        bond: dao.policy.proposalBond,
-      };
-    }
-    case ProposalVariant.ProposeRemoveMember: {
-      return getRemoveMemberProposal((data as unknown) as IGroupForm, dao);
-    }
-    case ProposalVariant.ProposeAddMember: {
-      return getAddMemberProposal((data as unknown) as IGroupForm, dao);
-    }
-    case ProposalVariant.ProposeCreateGroup: {
-      return getChangePolicyProposal((data as unknown) as IGroupForm, dao);
-    }
-    case ProposalVariant.ProposeChangeVotingPolicy: {
-      const initialData = getInitialData(dao);
-
-      const newData = {
-        daoSettings: {
-          details: data.details,
-          externalLink: data.externalUrl,
-        },
-        policy: {
-          ...initialData?.policy,
-          amount: data.amount,
-        },
-      };
-
-      return getNewVotingPolicyProposalObject(
-        dao,
-        newData as VotingPolicyPageInitialData
-      );
-    }
-    case ProposalVariant.ProposeChangeBonds: {
-      return getChangeBondDeadlinesProposal(
-        dao,
-        (data as unknown) as BondsAndDeadlinesData,
-        {
-          accountName: '',
-          createProposalBond: new Decimal(dao.policy.proposalBond)
-            .div(YOKTO_NEAR)
-            .toNumber(),
-          claimBountyBond: new Decimal(dao.policy.bountyBond)
-            .div(YOKTO_NEAR)
-            .toNumber(),
-          proposalExpireTime: new Decimal(dao.policy.proposalPeriod)
-            .div('3.6e12')
-            .toNumber(),
-          unclaimBountyTime: new Decimal(dao.policy.bountyForgivenessPeriod)
-            .div('3.6e12')
-            .toNumber(),
-        },
-        dao.policy.proposalBond,
-        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`
-      );
-    }
-    case ProposalVariant.ProposeChangeDaoFlag: {
-      const uploadImg = async (img: File) => {
-        if (img) {
-          const { data: key } = await httpService.post(
-            '/api/upload-to-s3',
-            img,
-            {
-              baseURL: '',
-            }
-          );
-
-          return key;
-        }
-
-        return '';
-      };
-
-      const flagCover = get(data.flagCover, '0');
-      const flagLogo = get(data.flagLogo, '0');
-
-      const [flagCoverFileName, flagLogoFileName] = await Promise.all([
-        uploadImg(flagCover),
-        uploadImg(flagLogo),
-      ]);
-
-      const newDaoConfig: DaoConfig = {
-        name: dao.name,
-        purpose: dao.description,
-        metadata: jsonToBase64Str({
-          ...getFlagsParamsForMetadata(dao),
-          links: dao.links,
-          displayName: dao.displayName,
-          flagCover: flagCoverFileName,
-          flagLogo: flagLogoFileName,
-        }),
-      };
-
-      return getChangeConfigProposal(
-        dao.id,
-        newDaoConfig,
-        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
-        dao.policy.proposalBond
-      );
-    }
-    case ProposalVariant.ProposeChangeDaoLegalInfo: {
-      const newDaoConfig: DaoConfig = {
-        name: dao.name,
-        purpose: dao.description,
-        metadata: jsonToBase64Str({
-          ...getFlagsParamsForMetadata(dao),
-          links: dao.links,
-          displayName: dao.displayName,
-          legal: {
-            legalStatus: data.legalStatus as string,
-            legalLink: data.legalLink as string,
-          },
-        }),
-      };
-
-      return getChangeConfigProposal(
-        dao.id,
-        newDaoConfig,
-        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
-        dao.policy.proposalBond
-      );
-    }
-    case ProposalVariant.ProposeCustomFunctionCall: {
-      return getCustomFunctionCallProposal(
-        dao,
-        data as CustomFunctionCallInput,
-        tokens
-      );
-    }
-    case ProposalVariant.ProposeTokenDistribution: {
-      return getTokenDistributionProposal(
-        dao,
-        (data as unknown) as TokenDistributionInput
-      );
-    }
-    case ProposalVariant.ProposeContractAcceptance: {
-      // todo - add create function
-      return {
-        daoId: dao.id,
-        description: 'contract acceptance',
-        kind: 'Vote',
-        bond: dao.policy.proposalBond,
-      };
-    }
-    default: {
-      return null;
-    }
-  }
-}
-
 export function mapProposalVariantToProposalType(
   proposalVariant: ProposalVariant
 ): ProposalType {
@@ -924,7 +428,8 @@ export const gasValidation = yup
 
 export function getValidationSchema(
   proposalVariant?: ProposalVariant,
-  dao?: DAO
+  dao?: DAO,
+  data?: { [p: string]: unknown }
 ): yup.AnySchema {
   switch (proposalVariant) {
     case ProposalVariant.ProposeTransfer: {
@@ -1083,30 +588,115 @@ export function getValidationSchema(
       });
     }
     case ProposalVariant.ProposeCustomFunctionCall: {
-      return yup.object().shape({
-        smartContractAddress: yup.string().required('Required'),
-        methodName: yup.string().required('Required'),
-        deposit: yup
-          .number()
-          .typeError('Must be a valid number.')
-          .required('Required'),
-        json: yup
-          .string()
-          .required('Required')
-          .test('validJson', 'Provided JSON is not valid', value => {
-            try {
-              JSON.parse(value ?? '');
-            } catch (e) {
-              return false;
-            }
+      const type = data?.functionCallType ?? FunctionCallType.Custom;
 
-            return true;
-          }),
-        details: yup.string().required('Required'),
-        externalUrl: yup.string().url(),
-        actionsGas: gasValidation,
-        gas: gasValidation,
-      });
+      switch (type) {
+        case FunctionCallType.BuyNFTfromMintbase: {
+          return yup.object().shape({
+            tokenKey: yup.string().required('Required'),
+            price: yup
+              .number()
+              .typeError('Must be a valid number.')
+              .required('Required'),
+            timeout: yup.string().required('Required'),
+            deposit: yup
+              .number()
+              .typeError('Must be a valid number.')
+              .required('Required'),
+            details: yup.string().required('Required'),
+            externalUrl: yup.string().url(),
+            actionsGas: gasValidation,
+            gas: gasValidation,
+          });
+        }
+        case FunctionCallType.TransferNFTfromMintbase: {
+          return yup.object().shape({
+            tokenKey: yup.string().required('Required'),
+            target: yup
+              .string()
+              .test(
+                'notValidNearAccount',
+                'Only valid near accounts are allowed',
+                validateUserAccount
+              ),
+            details: yup.string().required('Required'),
+            externalUrl: yup.string().url(),
+            gas: gasValidation,
+          });
+        }
+        case FunctionCallType.BuyNFTfromParas: {
+          return yup.object().shape({
+            smartContractAddress: yup.string().required('Required'),
+            methodName: yup.string().required('Required'),
+            tokenKey: yup.string().required('Required'),
+            timeout: yup.string().required('Required'),
+            price: yup
+              .number()
+              .typeError('Must be a valid number.')
+              .required('Required'),
+            target: yup
+              .string()
+              .test(
+                'notValidNearAccount',
+                'Only valid near accounts are allowed',
+                validateUserAccount
+              ),
+            details: yup.string().required('Required'),
+            externalUrl: yup.string().url(),
+            actionsGas: gasValidation,
+            gas: gasValidation,
+          });
+        }
+        case FunctionCallType.SwapsOnRef: {
+          return yup.object().shape({
+            pullId: yup
+              .number()
+              .typeError('Must be a valid number.')
+              .required('Required'),
+            tokenIn: yup.string().required('Required'),
+            tokenOut: yup.string().required('Required'),
+            amountIn: yup
+              .number()
+              .typeError('Must be a valid number.')
+              .required('Required'),
+            amountOut: yup
+              .number()
+              .typeError('Must be a valid number.')
+              .required('Required'),
+            amountInToken: yup.string().required('Required'),
+            amountOutToken: yup.string().required('Required'),
+            details: yup.string().required('Required'),
+            externalUrl: yup.string().url(),
+            gas: gasValidation,
+          });
+        }
+        default: {
+          return yup.object().shape({
+            smartContractAddress: yup.string().required('Required'),
+            methodName: yup.string().required('Required'),
+            deposit: yup
+              .number()
+              .typeError('Must be a valid number.')
+              .required('Required'),
+            json: yup
+              .string()
+              .required('Required')
+              .test('validJson', 'Provided JSON is not valid', value => {
+                try {
+                  JSON.parse(value ?? '');
+                } catch (e) {
+                  return false;
+                }
+
+                return true;
+              }),
+            details: yup.string().required('Required'),
+            externalUrl: yup.string().url(),
+            actionsGas: gasValidation,
+            gas: gasValidation,
+          });
+        }
+      }
     }
 
     // todo - add validation
