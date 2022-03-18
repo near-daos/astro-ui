@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { appWithTranslation } from 'next-i18next';
@@ -18,30 +18,22 @@ import { SearchResults } from 'features/search/search-results';
 
 import { SputnikNearService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
-import { configService } from 'services/ConfigService';
 
 import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 
 import { SocketProvider } from 'context/SocketContext';
 
-import { useAppConfig } from 'hooks/useAppConfig';
 import { useIntercomAdjust } from 'hooks/useIntercomAdjust';
 
+import { configService } from 'services/ConfigService';
+
 import 'styles/globals.scss';
-import { daoStatsService } from 'services/DaoStatsService';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
-  const { appConfig, nearConfig } = useAppConfig();
-  const [appInitialized, setAppInitialized] = useState(false);
 
   useEffect(() => {
-    if (!appConfig || !nearConfig) {
-      return;
-    }
-
-    configService.init(nearConfig, appConfig);
-    daoStatsService.init(appConfig);
+    const { nearConfig, appConfig } = configService.get();
 
     SputnikNearService.init(nearConfig, appConfig);
 
@@ -55,15 +47,9 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
       accountCookieOptions
     );
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
-
-    setAppInitialized(true);
-  }, [appConfig, nearConfig, router.query.dao]);
+  }, [router.query.dao]);
 
   useIntercomAdjust();
-
-  if (!appInitialized) {
-    return null;
-  }
 
   return (
     <AuthWrapper>
@@ -111,7 +97,7 @@ App.getInitialProps = async ({ ctx, router }: AppContext) => {
 };
 
 export default withLDProvider({
-  clientSideID: applicationConfig.launchDarklyId as string,
+  clientSideID: applicationConfig.LAUNCHDARKLY_ID as string,
   reactOptions: {
     useCamelCaseFlagKeys: true,
   },

@@ -1,4 +1,5 @@
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
+import { Config } from 'types/config';
 
 type SputnikRequestSignInCompleted = (result: {
   accountId?: string;
@@ -20,5 +21,6 @@ declare global {
       sputnikRequestSignInCompleted?: SputnikRequestSignInCompleted;
       sputnikRequestSignTransactionCompleted?: SputnikRequestSignTransactionCompleted;
     };
+    APP_CONFIG: Config;
   }
 }
