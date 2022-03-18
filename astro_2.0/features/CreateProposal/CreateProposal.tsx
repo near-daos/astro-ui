@@ -55,6 +55,7 @@ export interface CreateProposalProps {
   showClose?: boolean;
   showInfo?: boolean;
   canCreateTokenProposal?: boolean;
+  initialValues?: Record<string, unknown>;
 }
 
 export const CreateProposal: FC<CreateProposalProps> = ({
@@ -70,6 +71,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   showClose = true,
   showInfo = true,
   canCreateTokenProposal = false,
+  initialValues,
 }) => {
   const { t } = useTranslation();
   const { accountId } = useAuthContext();
@@ -98,7 +100,11 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   }, [initialProposalVariant]);
 
   const methods = useForm({
-    defaultValues: getFormInitialValues(selectedProposalVariant, accountId),
+    defaultValues: getFormInitialValues(
+      selectedProposalVariant,
+      accountId,
+      initialValues
+    ),
     context: schemaContext,
     mode: 'onSubmit',
     resolver: async (data, context) => {

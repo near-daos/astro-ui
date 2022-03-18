@@ -84,15 +84,15 @@ export const FollowButton: FC<FollowButtonProps> = ({ daoId, daoName }) => {
       }}
     >
       {isSubscribed ? (
-        <>
-          <div className={styles.subscribed}>
-            <Icon name="check" className={styles.followIcon} />
-            {t('followed')}
-          </div>
-          <div className={styles.subscribedHovered}>{t('unfollow')}</div>
-        </>
+        <div className={styles.subscribed}>
+          <Icon name="check" className={styles.followIcon} />
+          {t('followed')}
+        </div>
       ) : (
-        t('follow')
+        <div className={styles.subscribed}>
+          <Icon name="buttonFollow" className={styles.followIcon} />
+          {t('follow')}
+        </div>
       )}
     </Button>
   );

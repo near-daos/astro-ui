@@ -1,18 +1,18 @@
 @import 'styles/mixins';
-@import 'styles/typography';
 
-.showMore {
-  @extend %title5;
+.root {
   @include centralize;
   background-color: var(--color-neutral-20);
   border-radius: 4px;
+  flex: 1;
+  font-size: 13px;
   height: 40px;
-  margin-bottom: 0;
-  width: 40px;
+  margin-right: 12px;
+  padding: 0 12px;
+  text-transform: capitalize;
 
   @include tablet-landscape {
-    border: 0;
-    padding: 0;
+    flex: unset;
   }
 
   &:hover {
@@ -20,6 +20,6 @@
   }
 }
 
-.toggle {
+.icon {
   width: 24px;
 }

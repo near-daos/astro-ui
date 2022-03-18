@@ -3,9 +3,17 @@
 
 .root {
   @include ellipse-text;
-  padding: 0 8px;
+  @include centralize;
+  flex: 1;
+  font-size: 13px;
+  height: 40px;
+  margin-right: 12px;
+  padding: 0 12px;
   text-transform: capitalize;
-  width: 100px;
+
+  @include tablet-landscape {
+    flex: unset;
+  }
 }
 
 .subscribedBtn {
@@ -20,25 +28,25 @@
 }
 
 .subscribed {
-  display: block;
+  display: flex;
 }
 
 .subscribedHovered {
   display: none;
 }
 
-.root:hover {
-  .subscribed {
-    display: none;
-  }
-  .subscribedHovered {
-    display: block;
-  }
-}
+//.root:hover {
+//  .subscribed {
+//    display: none;
+//  }
+//  .subscribedHovered {
+//    display: block;
+//  }
+//}
 
 .followIcon {
   margin-right: 4px;
-  width: 12px;
+  width: 24px;
 }
 
 .confirmRoot {
