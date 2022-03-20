@@ -27,7 +27,11 @@
 .loading {
   @extend %subtitle3;
   @include centralize;
-  display: flex;
+}
+
+.loadingMore {
+  @include centralize;
+  padding: 20px 0;
 }
 
 .noData {
