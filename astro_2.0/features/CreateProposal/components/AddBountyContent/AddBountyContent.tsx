@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
@@ -10,6 +10,8 @@ import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 
+import { getAmountFieldWidth } from './utils';
+
 import styles from './AddBountyContent.module.scss';
 
 export const AddBountyContent: FC = () => {
@@ -17,15 +19,6 @@ export const AddBountyContent: FC = () => {
   const { register, setValue, getValues, watch } = useFormContext();
   const { tokens } = useCustomTokensContext();
   const amount = watch('amount');
-  let amountWidth;
-
-  if (amount.length <= 6) {
-    amountWidth = 7;
-  } else if (amount.length >= 15) {
-    amountWidth = 15;
-  } else {
-    amountWidth = amount.length ?? 5;
-  }
 
   const tokenOptions = Object.values(tokens).map(token => ({
     label: token.symbol,
@@ -49,6 +42,25 @@ export const AddBountyContent: FC = () => {
 
   const selectedTokenData = tokens[getValues().selectedToken];
 
+  const onTokenChange = useCallback(
+    v => {
+      setValue('token', v, {
+        shouldDirty: true,
+      });
+    },
+    [setValue]
+  );
+
+  const onTokenAmountUpdate = useCallback(event => {
+    const intRx = /\d/;
+
+    if (event.key.length > 1 || intRx.test(event.key)) {
+      return;
+    }
+
+    event.preventDefault();
+  }, []);
+
   return (
     <div className={styles.root}>
       <div className={styles.inline}>
@@ -59,7 +71,10 @@ export const AddBountyContent: FC = () => {
           <Input
             className={cn(styles.inputWrapper, styles.narrow)}
             type="number"
-            inputStyles={{ width: `${amountWidth}ch`, paddingRight: 4 }}
+            inputStyles={{
+              width: `${getAmountFieldWidth(amount)}ch`,
+              paddingRight: 4,
+            }}
             placeholder="00.0000"
             min={0}
             isBorderless
@@ -73,11 +88,7 @@ export const AddBountyContent: FC = () => {
             options={tokenOptions}
             label="&nbsp;"
             {...register('token')}
-            onChange={v => {
-              setValue('token', v, {
-                shouldDirty: true,
-              });
-            }}
+            onChange={onTokenChange}
             defaultValue={selectedTokenData?.symbol ?? 'NEAR'}
           />
         ) : (
@@ -102,15 +113,7 @@ export const AddBountyContent: FC = () => {
             isBorderless
             size="small"
             {...register('slots')}
-            onKeyDown={event => {
-              const intRx = /\d/;
-
-              if (event.key.length > 1 || intRx.test(event.key)) {
-                return;
-              }
-
-              event.preventDefault();
-            }}
+            onKeyDown={onTokenAmountUpdate}
           />
         </InputWrapper>
         <div className={styles.divider} />

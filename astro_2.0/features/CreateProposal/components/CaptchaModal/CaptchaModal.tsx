@@ -18,9 +18,7 @@ export const CaptchaModal: FC<CaptchaModalProps> = ({ isOpen, onClose }) => {
         return;
       }
 
-      if (res) {
-        onClose(res);
-      }
+      onClose(res);
     },
     [onClose]
   );
