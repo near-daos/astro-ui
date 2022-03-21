@@ -16,7 +16,6 @@ import { TransactionDetailsWidget } from 'astro_2.0/components/TransactionDetail
 
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
-import { SputnikNearService } from 'services/sputnik';
 import { httpService } from 'services/HttpService';
 import { configService } from 'services/ConfigService';
 
@@ -75,7 +74,7 @@ export function DaoSubmitForm(): JSX.Element {
           gas,
         } = data;
 
-        await SputnikNearService.createDao({
+        await window.nearService.createDao({
           name: address,
           purpose,
           links: websites as CreateDaoInput['links'],
@@ -87,7 +86,7 @@ export function DaoSubmitForm(): JSX.Element {
           amountToTransfer: '5',
           displayName,
           policy: {
-            ...getRolesVotingPolicy(data, SputnikNearService.getAccountId()),
+            ...getRolesVotingPolicy(data, window.nearService.getAccountId()),
             proposalBond: '0.1',
             proposalPeriod: '168',
             bountyBond: '0.1',

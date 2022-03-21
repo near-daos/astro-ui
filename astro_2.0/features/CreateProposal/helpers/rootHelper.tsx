@@ -84,7 +84,6 @@ import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 
 // Services
 import { httpService } from 'services/HttpService';
-import { SputnikNearService } from 'services/sputnik';
 
 // Local helpers
 import {
@@ -923,7 +922,7 @@ function validateUserAccount(
     return Promise.resolve(result);
   }
 
-  return SputnikNearService.nearAccountExist(value || '');
+  return window.nearService.nearAccountExist(value || '');
 }
 
 export const gasValidation = yup

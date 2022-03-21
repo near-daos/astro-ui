@@ -25,7 +25,6 @@ import { ProposalActions } from 'features/proposal/components/ProposalActions';
 import { ExternalLink } from 'components/ExternalLink';
 import { Icon, IconName } from 'components/Icon';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
-import { SputnikNearService } from 'services/sputnik';
 import { getProposalVariantLabel } from 'astro_2.0/features/ViewProposal/helpers';
 import { ExplorerLink } from 'components/ExplorerLink';
 import { AmountBalanceCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/AmountBalanceCard';
@@ -181,7 +180,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
     async (vote: VoteAction, gas?: string | number) => {
-      await SputnikNearService.vote(daoId, proposalId, vote, gas);
+      await window.nearService.vote(daoId, proposalId, vote, gas);
       await router.reload();
     },
     [daoId, proposalId, router]
@@ -191,7 +190,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     { loading: finalizeLoading },
     finalizeClickHandler,
   ] = useAsyncFn(async () => {
-    await SputnikNearService.finalize(daoId, proposalId);
+    await window.nearService.finalize(daoId, proposalId);
     await router.reload();
   }, [daoId, proposalId, router]);
 
