@@ -12,7 +12,7 @@ import {
 } from 'astro_2.0/features/Discover/types';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
 
-import { daoStatsService } from 'services/DaoStatsService';
+import { daoStatsService, LIMIT } from 'services/DaoStatsService';
 
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import {
@@ -34,6 +34,7 @@ export const Tokens: FC = () => {
   const [leaderboardData, setLeaderboardData] = useState<
     LeaderboardData[] | null
   >(null);
+  const [limit, setLimit] = useState(LIMIT);
 
   const { query } = useQuery<{ dao: string }>();
 
@@ -67,7 +68,7 @@ export const Tokens: FC = () => {
     data?.nfts.growth,
     t,
   ]);
-  const [activeView, setActiveView] = useState<string>(items[0].id);
+  const [activeView, setActiveView] = useState(items[0].id);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -77,6 +78,7 @@ export const Tokens: FC = () => {
 
       setChartData(null);
       setLeaderboardData(null);
+      setLimit(LIMIT);
       setActiveView(id);
     },
     [isMounted]
@@ -96,7 +98,6 @@ export const Tokens: FC = () => {
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
-    let leaders;
 
     if (query.dao) {
       const params = {
@@ -123,18 +124,15 @@ export const Tokens: FC = () => {
       switch (activeView) {
         case TokensTabs.VL_OF_FTS: {
           chart = await daoStatsService.getTokensFtsVl(CONTRACT);
-          leaders = await daoStatsService.getTokensFtsVlLeaderboard(CONTRACT);
           break;
         }
         case TokensTabs.NUMBER_OF_NFTS: {
           chart = await daoStatsService.getTokensNfts(CONTRACT);
-          leaders = await daoStatsService.getTokensNftsLeaderboard(CONTRACT);
           break;
         }
         case TokensTabs.NUMBER_OF_FTS:
         default: {
           chart = await daoStatsService.getTokensFts(CONTRACT);
-          leaders = await daoStatsService.getTokensFtsLeaderboard(CONTRACT);
           break;
         }
       }
@@ -147,6 +145,39 @@ export const Tokens: FC = () => {
           y: count,
         }))
       );
+    }
+  }, [activeView, query.dao, isMounted]);
+
+  const [, getLeaderboardData] = useAsyncFn(async () => {
+    if (query.dao) {
+      return;
+    }
+
+    let leaders;
+
+    switch (activeView) {
+      case TokensTabs.VL_OF_FTS: {
+        leaders = await daoStatsService.getTokensFtsVlLeaderboard({
+          ...CONTRACT,
+          limit,
+        });
+        break;
+      }
+      case TokensTabs.NUMBER_OF_NFTS: {
+        leaders = await daoStatsService.getTokensNftsLeaderboard({
+          ...CONTRACT,
+          limit,
+        });
+        break;
+      }
+      case TokensTabs.NUMBER_OF_FTS:
+      default: {
+        leaders = await daoStatsService.getTokensFtsLeaderboard({
+          ...CONTRACT,
+          limit,
+        });
+        break;
+      }
     }
 
     if (leaders?.data?.metrics && isMounted()) {
@@ -164,11 +195,19 @@ export const Tokens: FC = () => {
 
       setLeaderboardData(newData);
     }
-  }, [activeView, query.dao, isMounted]);
+  }, [activeView, query.dao, isMounted, limit]);
 
   useEffect(() => {
     getChartData();
   }, [getChartData]);
+
+  useEffect(() => {
+    getLeaderboardData();
+  }, [getLeaderboardData]);
+
+  const nextLeaderboardItems = () => {
+    setLimit(limit + LIMIT);
+  };
 
   return (
     <div className={styles.root}>
@@ -186,6 +225,7 @@ export const Tokens: FC = () => {
           activeView={activeView}
         />
         <DaosTopList
+          next={nextLeaderboardItems}
           data={leaderboardData}
           valueLabel={getValueLabel(DaoStatsTopics.TOKENS, activeView)}
         />

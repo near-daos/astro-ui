@@ -12,7 +12,7 @@ import {
 } from 'astro_2.0/features/Discover/types';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
 
-import { daoStatsService } from 'services/DaoStatsService';
+import { daoStatsService, LIMIT } from 'services/DaoStatsService';
 
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import {
@@ -81,7 +81,8 @@ export const Flow: FC = () => {
     data?.transactionsOut.growth,
     t,
   ]);
-  const [activeView, setActiveView] = useState<string>(items[0].id);
+  const [activeView, setActiveView] = useState(items[0].id);
+  const [limit, setLimit] = useState(LIMIT);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -91,6 +92,7 @@ export const Flow: FC = () => {
 
       setChartData(null);
       setLeaderboardData(null);
+      setLimit(LIMIT);
       setActiveView(id);
     },
     [isMounted]
@@ -110,7 +112,6 @@ export const Flow: FC = () => {
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
-    let leaders;
 
     if (query.dao) {
       const params = {
@@ -136,16 +137,12 @@ export const Flow: FC = () => {
         case FlowTabs.INCOMING_TRANSACTIONS:
         case FlowTabs.OUTGOING_TRANSACTIONS: {
           chart = await daoStatsService.getFlowTransactionsHistory(CONTRACT);
-          leaders = await daoStatsService.getFlowTransactionsLeaderboard(
-            CONTRACT
-          );
           break;
         }
         case FlowTabs.TOTAL_OUT:
         case FlowTabs.TOTAL_IN:
         default: {
           chart = await daoStatsService.getFlowHistory(CONTRACT);
-          leaders = await daoStatsService.getFlowLeaderboard(CONTRACT);
           break;
         }
       }
@@ -164,6 +161,34 @@ export const Flow: FC = () => {
           })
         )
       );
+    }
+  }, [activeView, query.dao, isMounted]);
+
+  const [, getLeaderboardData] = useAsyncFn(async () => {
+    if (query.dao) {
+      return;
+    }
+
+    let leaders;
+
+    switch (activeView) {
+      case FlowTabs.INCOMING_TRANSACTIONS:
+      case FlowTabs.OUTGOING_TRANSACTIONS: {
+        leaders = await daoStatsService.getFlowTransactionsLeaderboard({
+          ...CONTRACT,
+          limit,
+        });
+        break;
+      }
+      case FlowTabs.TOTAL_OUT:
+      case FlowTabs.TOTAL_IN:
+      default: {
+        leaders = await daoStatsService.getFlowLeaderboard({
+          ...CONTRACT,
+          limit,
+        });
+        break;
+      }
     }
 
     if (leaders?.data && isMounted()) {
@@ -188,11 +213,19 @@ export const Flow: FC = () => {
         setLeaderboardData(newData);
       }
     }
-  }, [activeView, query.dao, isMounted]);
+  }, [activeView, query.dao, isMounted, limit]);
 
   useEffect(() => {
     getChartData();
   }, [getChartData]);
+
+  useEffect(() => {
+    getLeaderboardData();
+  }, [getLeaderboardData]);
+
+  const nextLeaderboardItems = () => {
+    setLimit(limit + LIMIT);
+  };
 
   return (
     <div className={styles.root}>
@@ -210,6 +243,7 @@ export const Flow: FC = () => {
           activeView={activeView}
         />
         <DaosTopList
+          next={nextLeaderboardItems}
           data={leaderboardData}
           valueLabel={getValueLabel(DaoStatsTopics.FLOW, activeView)}
         />

@@ -20,7 +20,9 @@ import {
   DaoIntervalHistoryParams,
   IntervalHistoryParams,
   Users,
+  LimitParams,
 } from './types';
+import { LIMIT, OFFSET } from './constants';
 
 class DaoStatsService {
   private httpService = new HttpService({
@@ -53,9 +55,14 @@ class DaoStatsService {
   }
 
   public async getFlowLeaderboard(
-    params: Params
+    params: LimitParams
   ): Promise<AxiosResponse<Leaderboard>> {
-    return this.httpService.get(`${params.contract}/flow/funds/leaderboard`);
+    return this.httpService.get(`${params.contract}/flow/funds/leaderboard`, {
+      params: {
+        offset: params.offset || OFFSET,
+        limit: params.limit || LIMIT,
+      },
+    });
   }
 
   public async getFlowTransactionsHistory(
@@ -70,10 +77,16 @@ class DaoStatsService {
   }
 
   public async getFlowTransactionsLeaderboard(
-    params: Params
+    params: LimitParams
   ): Promise<AxiosResponse<Leaderboard>> {
     return this.httpService.get(
-      `${params.contract}/flow/transactions/leaderboard`
+      `${params.contract}/flow/transactions/leaderboard`,
+      {
+        params: {
+          offset: params.offset || OFFSET,
+          limit: params.limit || LIMIT,
+        },
+      }
     );
   }
 
@@ -122,10 +135,16 @@ class DaoStatsService {
   }
 
   public async getGeneralActiveLeaderboard(
-    params: Params
+    params: LimitParams
   ): Promise<AxiosResponse<Leaderboard>> {
     return this.httpService.get(
-      `${params.contract}/general/active/leaderboard`
+      `${params.contract}/general/active/leaderboard`,
+      {
+        params: {
+          offset: params.offset || OFFSET,
+          limit: params.limit || LIMIT,
+        },
+      }
     );
   }
 
@@ -141,10 +160,16 @@ class DaoStatsService {
   }
 
   async getGeneralGroupsLeaderboard(
-    params: Params
+    params: LimitParams
   ): Promise<AxiosResponse<Leaderboard>> {
     return this.httpService.get(
-      `${params.contract}/general/groups/leaderboard`
+      `${params.contract}/general/groups/leaderboard`,
+      {
+        params: {
+          offset: params.offset || OFFSET,
+          limit: params.limit || LIMIT,
+        },
+      }
     );
   }
 
@@ -211,10 +236,16 @@ class DaoStatsService {
   }
 
   async getGovernanceProposalsLeaderboard(
-    params: Params
+    params: LimitParams
   ): Promise<AxiosResponse<Leaderboard>> {
     return this.httpService.get(
-      `${params.contract}/governance/proposals/leaderboard`
+      `${params.contract}/governance/proposals/leaderboard`,
+      {
+        params: {
+          offset: params.offset || OFFSET,
+          limit: params.limit || LIMIT,
+        },
+      }
     );
   }
 
@@ -233,10 +264,16 @@ class DaoStatsService {
   }
 
   async getGovernanceProposalsTypesLeaderboard(
-    params: Params
+    params: LimitParams
   ): Promise<AxiosResponse<Leaderboard>> {
     return this.httpService.get(
-      `${params.contract}/governance/proposals-types/leaderboard`
+      `${params.contract}/governance/proposals-types/leaderboard`,
+      {
+        params: {
+          offset: params.offset || OFFSET,
+          limit: params.limit || LIMIT,
+        },
+      }
     );
   }
 
@@ -252,10 +289,16 @@ class DaoStatsService {
   }
 
   async getGovernanceVoteRateLeaderboard(
-    params: Params
+    params: LimitParams
   ): Promise<AxiosResponse<Leaderboard>> {
     return this.httpService.get(
-      `${params.contract}/governance/vote-rate/leaderboard`
+      `${params.contract}/governance/vote-rate/leaderboard`,
+      {
+        params: {
+          offset: params.offset || OFFSET,
+          limit: params.limit || LIMIT,
+        },
+      }
     );
   }
 
@@ -321,9 +364,14 @@ class DaoStatsService {
   }
 
   async getTokensFtsLeaderboard(
-    params: Params
+    params: LimitParams
   ): Promise<AxiosResponse<Leaderboard>> {
-    return this.httpService.get(`${params.contract}/tokens/fts/leaderboard`);
+    return this.httpService.get(`${params.contract}/tokens/fts/leaderboard`, {
+      params: {
+        offset: params.offset || OFFSET,
+        limit: params.limit || LIMIT,
+      },
+    });
   }
 
   async getTokensFtsVl(params: HistoryParams): Promise<AxiosResponse<Metrics>> {
@@ -336,9 +384,17 @@ class DaoStatsService {
   }
 
   async getTokensFtsVlLeaderboard(
-    params: Params
+    params: LimitParams
   ): Promise<AxiosResponse<Leaderboard>> {
-    return this.httpService.get(`${params.contract}/tokens/fts-vl/leaderboard`);
+    return this.httpService.get(
+      `${params.contract}/tokens/fts-vl/leaderboard`,
+      {
+        params: {
+          offset: params.offset || OFFSET,
+          limit: params.limit || LIMIT,
+        },
+      }
+    );
   }
 
   async getTokensNfts(params: HistoryParams): Promise<AxiosResponse<Metrics>> {
@@ -351,9 +407,14 @@ class DaoStatsService {
   }
 
   async getTokensNftsLeaderboard(
-    params: Params
+    params: LimitParams
   ): Promise<AxiosResponse<Leaderboard>> {
-    return this.httpService.get(`${params.contract}/tokens/nfts/leaderboard`);
+    return this.httpService.get(`${params.contract}/tokens/nfts/leaderboard`, {
+      params: {
+        offset: params.offset || OFFSET,
+        limit: params.limit || LIMIT,
+      },
+    });
   }
 
   async getTokensDao(params: DaoParams): Promise<AxiosResponse<Tokens>> {
@@ -412,8 +473,15 @@ class DaoStatsService {
     });
   }
 
-  async getTvlLeaderboard(params: Params): Promise<AxiosResponse<Leaderboard>> {
-    return this.httpService.get(`${params.contract}/tvl/tvl/leaderboard`);
+  async getTvlLeaderboard(
+    params: LimitParams
+  ): Promise<AxiosResponse<Leaderboard>> {
+    return this.httpService.get(`${params.contract}/tvl/tvl/leaderboard`, {
+      params: {
+        offset: params.offset || OFFSET,
+        limit: params.limit || LIMIT,
+      },
+    });
   }
 
   async getTvlBountiesAndGrantsVl(
@@ -431,10 +499,16 @@ class DaoStatsService {
   }
 
   async getTvlBountiesAndGrantsVlLeaderboard(
-    params: Params
+    params: LimitParams
   ): Promise<AxiosResponse<Leaderboard>> {
     return this.httpService.get(
-      `${params.contract}/tvl/bounties-and-grants-vl/leaderboard`
+      `${params.contract}/tvl/bounties-and-grants-vl/leaderboard`,
+      {
+        params: {
+          offset: params.offset || OFFSET,
+          limit: params.limit || LIMIT,
+        },
+      }
     );
   }
 
@@ -522,9 +596,14 @@ class DaoStatsService {
   }
 
   async getUsersLeaderboard(
-    params: Params
+    params: LimitParams
   ): Promise<AxiosResponse<Leaderboard>> {
-    return this.httpService.get(`${params.contract}/users/users/leaderboard`);
+    return this.httpService.get(`${params.contract}/users/users/leaderboard`, {
+      params: {
+        offset: params.offset || OFFSET,
+        limit: params.limit || LIMIT,
+      },
+    });
   }
 
   async getUsersMembers(
@@ -539,9 +618,17 @@ class DaoStatsService {
   }
 
   async getUsersMembersLeaderboard(
-    params: Params
+    params: LimitParams
   ): Promise<AxiosResponse<Leaderboard>> {
-    return this.httpService.get(`${params.contract}/users/members/leaderboard`);
+    return this.httpService.get(
+      `${params.contract}/users/members/leaderboard`,
+      {
+        params: {
+          offset: params.offset || OFFSET,
+          limit: params.limit || LIMIT,
+        },
+      }
+    );
   }
 
   async getUsersAverageUsers(
@@ -567,10 +654,16 @@ class DaoStatsService {
   }
 
   async getUsersInteractionsLeaderboard(
-    params: Params
+    params: LimitParams
   ): Promise<AxiosResponse<Leaderboard>> {
     return this.httpService.get(
-      `${params.contract}/users/interactions/leaderboard`
+      `${params.contract}/users/interactions/leaderboard`,
+      {
+        params: {
+          offset: params.offset || OFFSET,
+          limit: params.limit || LIMIT,
+        },
+      }
     );
   }
 
