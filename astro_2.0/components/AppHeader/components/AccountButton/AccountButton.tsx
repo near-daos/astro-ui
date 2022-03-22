@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { FC, useCallback, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useAuthContext } from 'context/AuthContext';
 
@@ -15,13 +15,21 @@ import styles from './AccountButton.module.scss';
 
 export const AccountButton: FC = () => {
   const [open, setOpen] = useState(false);
+  const [senderWalletAvailable, setSenderWalletAvailable] = useState(false);
+
   const { login, logout, accountId } = useAuthContext();
 
-  const switchWallet = useCallback((wallet: WalletType) => {
-    window.nearService.switchWallet(wallet);
+  const switchWallet = useCallback(async (wallet: WalletType) => {
+    await window.nearService.switchWallet(wallet);
   }, []);
 
   const ref = useRef(null);
+
+  useEffect(() => {
+    if (typeof window.near !== 'undefined' && window.near.isSender) {
+      setSenderWalletAvailable(true);
+    }
+  }, []);
 
   const closePopup = useCallback(() => {
     setOpen(false);
@@ -58,18 +66,22 @@ export const AccountButton: FC = () => {
           <div>
             <div className={styles.dropdown}>
               <div className={styles.name}>{accountId}</div>
-              <AccountPopupItem
-                className={styles.auth}
-                onClick={() => switchWallet(WalletType.NEAR)}
-              >
-                NEAR wallet
-              </AccountPopupItem>
-              <AccountPopupItem
-                className={styles.auth}
-                onClick={() => switchWallet(WalletType.SENDER)}
-              >
-                Sender wallet
-              </AccountPopupItem>
+              {senderWalletAvailable && (
+                <div>
+                  <AccountPopupItem
+                    className={styles.auth}
+                    onClick={() => switchWallet(WalletType.NEAR)}
+                  >
+                    NEAR wallet
+                  </AccountPopupItem>
+                  <AccountPopupItem
+                    className={styles.auth}
+                    onClick={() => switchWallet(WalletType.SENDER)}
+                  >
+                    Sender wallet
+                  </AccountPopupItem>
+                </div>
+              )}
               <AccountPopupItem className={styles.auth} onClick={logout}>
                 Disconnect
               </AccountPopupItem>

@@ -24,18 +24,23 @@ export function useAppInit(): void {
       window.localStorage.getItem('selectedWallet')
     );
 
-    if (!selectedWallet) {
+    const noSenderWalletAvailable = () =>
+      (selectedWallet === WalletType.SENDER && !window.near) || !selectedWallet;
+
+    // no extension available, but user still has sender wallet selected
+    if (noSenderWalletAvailable()) {
       window.nearService = new SputnikNearService(
         new SputnikWalletService(nearConfig)
       );
+      window.localStorage.removeItem('selectedWallet');
+    } else {
+      const walletService =
+        selectedWallet === WalletType.SENDER
+          ? new SenderWalletService(window.near)
+          : new SputnikNearService(new SputnikWalletService(nearConfig));
+
+      window.nearService = new SputnikNearService(walletService);
     }
-
-    const walletService =
-      selectedWallet === WalletType.SENDER
-        ? new SenderWalletService(window.near)
-        : new SputnikNearService(new SputnikWalletService(nearConfig));
-
-    window.nearService = new SputnikNearService(walletService);
 
     const accountCookieOptions = appConfig.APP_DOMAIN
       ? { ...DEFAULT_OPTIONS, domain: appConfig.APP_DOMAIN }
@@ -53,7 +58,7 @@ export function useAppInit(): void {
       dispatchCustomEvent('', true);
       setAccountCookie();
     } else {
-      walletService.login(nearConfig.contractName).then(() => {
+      window.nearService.login(nearConfig.contractName).then(() => {
         dispatchCustomEvent(WALLET_INIT_EVENT, true);
         setAccountCookie();
       });
