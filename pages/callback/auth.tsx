@@ -6,7 +6,6 @@ import nextI18NextConfig from 'next-i18next.config';
 
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 
-import { SputnikNearService } from 'services/sputnik';
 import { configService } from 'services/ConfigService';
 
 const Callback: NextPage = () => {
@@ -20,7 +19,6 @@ const Callback: NextPage = () => {
       const { appConfig, nearConfig } = configService.get();
 
       if (appConfig && nearConfig) {
-        SputnikNearService.init(nearConfig, appConfig);
         window.opener.sputnikRequestSignInCompleted({ accountId, errorCode });
 
         setTimeout(() => {

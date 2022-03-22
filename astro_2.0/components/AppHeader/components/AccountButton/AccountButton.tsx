@@ -8,6 +8,7 @@ import { NearIcon } from 'astro_2.0/components/NearIcon';
 import { AppFooter } from 'astro_2.0/components/AppFooter';
 import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 
+import { WalletType } from 'types/config';
 import { AccountPopupItem } from './components/AccountPopupItem';
 
 import styles from './AccountButton.module.scss';
@@ -15,6 +16,10 @@ import styles from './AccountButton.module.scss';
 export const AccountButton: FC = () => {
   const [open, setOpen] = useState(false);
   const { login, logout, accountId } = useAuthContext();
+
+  const switchWallet = useCallback((wallet: WalletType) => {
+    window.nearService.switchWallet(wallet);
+  }, []);
 
   const ref = useRef(null);
 
@@ -53,6 +58,18 @@ export const AccountButton: FC = () => {
           <div>
             <div className={styles.dropdown}>
               <div className={styles.name}>{accountId}</div>
+              <AccountPopupItem
+                className={styles.auth}
+                onClick={() => switchWallet(WalletType.NEAR)}
+              >
+                NEAR wallet
+              </AccountPopupItem>
+              <AccountPopupItem
+                className={styles.auth}
+                onClick={() => switchWallet(WalletType.SENDER)}
+              >
+                Sender wallet
+              </AccountPopupItem>
               <AccountPopupItem className={styles.auth} onClick={logout}>
                 Disconnect
               </AccountPopupItem>

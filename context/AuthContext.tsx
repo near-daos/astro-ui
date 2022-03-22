@@ -6,9 +6,9 @@ import { ALL_FEED_URL } from 'constants/routing';
 import { ACCOUNT_COOKIE, DAO_COOKIE } from 'constants/cookies';
 
 import { SputnikWalletError } from 'errors/SputnikWalletError';
-import { SputnikNearService } from 'services/sputnik';
 
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { CookieService } from 'services/CookieService';
 
 interface AuthContextInterface {
   accountId: string;
@@ -28,13 +28,15 @@ export const AuthWrapper: FC = ({ children }) => {
   const router = useRouter();
   const [, , deleteAccountCookie] = useCookie(ACCOUNT_COOKIE);
   const [, , deleteDaoCookie] = useCookie(DAO_COOKIE);
-  const [accountId, setAccountId] = useState(SputnikNearService.getAccountId());
+  const [accountId, setAccountId] = useState<string>(
+    CookieService.get(ACCOUNT_COOKIE)
+  );
 
   async function login() {
     try {
-      await SputnikNearService.login();
+      await window.nearService?.login();
 
-      const id = SputnikNearService.getAccountId();
+      const id = window.nearService?.getAccountId();
 
       if (id) {
         setAccountId(id);
@@ -53,7 +55,7 @@ export const AuthWrapper: FC = ({ children }) => {
   }
 
   async function logout() {
-    await SputnikNearService.logout();
+    await window.nearService?.logout();
 
     setAccountId('');
     deleteAccountCookie();

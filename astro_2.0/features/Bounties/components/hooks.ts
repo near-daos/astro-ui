@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useAsyncFn } from 'react-use';
 import axios, { CancelTokenSource } from 'axios';
 
-import { SputnikHttpService, SputnikNearService } from 'services/sputnik';
+import { SputnikHttpService } from 'services/sputnik';
 import { useModal } from 'components/modal';
 import { ConfirmActionModal } from 'astro_2.0/components/ConfirmActionModal';
 
@@ -37,7 +37,7 @@ export function useBountyControls(
     });
 
     if (res?.length && bounty) {
-      await SputnikNearService.claimBounty(dao.id, {
+      await window.nearService.claimBounty(dao.id, {
         bountyId: bounty?.bountyId,
         deadline: bounty?.maxDeadline,
         bountyBond: dao.policy.bountyBond,
@@ -55,7 +55,7 @@ export function useBountyControls(
     });
 
     if (res?.length && bounty) {
-      await SputnikNearService.unclaimBounty(dao.id, bounty?.bountyId);
+      await window.nearService.unclaimBounty(dao.id, bounty?.bountyId);
       onSuccessHandler();
     }
   }, [bounty, dao.id, onSuccessHandler, showModal]);
@@ -83,7 +83,7 @@ export function useBountyVoting(
       });
 
       if (res?.length) {
-        await SputnikNearService.vote(
+        await window.nearService.vote(
           dao.id,
           proposal.proposalId,
           vote,
@@ -150,8 +150,8 @@ export function useHideBounty(): {
 
   const [{ loading }, handleSubmit] = useAsyncFn(async () => {
     try {
-      const publicKey = await SputnikNearService.getPublicKey();
-      const signature = await SputnikNearService.getSignature();
+      const publicKey = await window.nearService.getPublicKey();
+      const signature = await window.nearService.getSignature();
 
       if (publicKey && signature) {
         await SputnikHttpService.toggleBountyContexts({
