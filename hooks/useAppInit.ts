@@ -8,15 +8,21 @@ import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 import { dispatchCustomEvent } from 'utils/dispatchCustomEvent';
 import { CookieService } from 'services/CookieService';
 import { useRouter } from 'next/router';
+import { useAuthContext } from 'context/AuthContext';
 
 export const WALLET_INIT_EVENT = 'walletInitialized';
 export function useAppInit(): void {
   const router = useRouter();
+  const { login } = useAuthContext();
 
   useEffect(() => {
     const { nearConfig, appConfig } = configService.get();
 
     if (!appConfig || !nearConfig) {
+      return;
+    }
+
+    if (!CookieService.get(ACCOUNT_COOKIE)) {
       return;
     }
 
@@ -58,12 +64,12 @@ export function useAppInit(): void {
       dispatchCustomEvent('', true);
       setAccountCookie();
     } else {
-      window.nearService.login(nearConfig.contractName).then(() => {
+      login().then(() => {
         dispatchCustomEvent(WALLET_INIT_EVENT, true);
         setAccountCookie();
       });
     }
 
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
-  }, [router.query.dao]);
+  }, [login, router.query.dao]);
 }

@@ -16,12 +16,16 @@ import styles from './AccountButton.module.scss';
 export const AccountButton: FC = () => {
   const [open, setOpen] = useState(false);
   const [senderWalletAvailable, setSenderWalletAvailable] = useState(false);
+  const { login, logout, accountId, switchWallet } = useAuthContext();
 
-  const { login, logout, accountId } = useAuthContext();
-
-  const switchWallet = useCallback(async (wallet: WalletType) => {
-    await window.nearService.switchWallet(wallet);
-  }, []);
+  const switchWalletHandler = useCallback(
+    async (wallet: WalletType) => {
+      await logout();
+      await switchWallet(wallet);
+      await login();
+    },
+    [login, logout, switchWallet]
+  );
 
   const ref = useRef(null);
 
@@ -70,13 +74,13 @@ export const AccountButton: FC = () => {
                 <div>
                   <AccountPopupItem
                     className={styles.auth}
-                    onClick={() => switchWallet(WalletType.NEAR)}
+                    onClick={() => switchWalletHandler(WalletType.NEAR)}
                   >
                     NEAR wallet
                   </AccountPopupItem>
                   <AccountPopupItem
                     className={styles.auth}
-                    onClick={() => switchWallet(WalletType.SENDER)}
+                    onClick={() => switchWalletHandler(WalletType.SENDER)}
                   >
                     Sender wallet
                   </AccountPopupItem>
