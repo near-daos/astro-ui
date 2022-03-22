@@ -41,7 +41,7 @@ export interface DaoService {
 }
 
 export interface WalletService {
-  login(contractId?: string): Promise<void>;
+  login(contractId: string): Promise<void>;
   sendMoney(receiverId: string, amount: BN): Promise<FinalExecutionOutcome>;
   getWalletType(): WalletType;
   logout(): void;

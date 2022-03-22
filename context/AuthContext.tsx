@@ -10,18 +10,23 @@ import { SputnikWalletError } from 'errors/SputnikWalletError';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { CookieService } from 'services/CookieService';
 import { configService } from 'services/ConfigService';
+import { WalletType } from 'types/config';
+import { SputnikNearService } from 'services/sputnik';
+import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
 
 interface AuthContextInterface {
   accountId: string;
-  login: () => void;
-  logout: () => void;
+  login: () => Promise<void>;
+  logout: () => Promise<void>;
+  switchWallet: (walletType: WalletType) => Promise<void>;
 }
 
 /* eslint-disable @typescript-eslint/no-empty-function */
 const AuthContext = createContext<AuthContextInterface>({
   accountId: '',
-  login: () => {},
-  logout: () => {},
+  login: () => Promise.resolve(),
+  logout: () => Promise.resolve(),
+  switchWallet: () => Promise.resolve(),
 });
 /* eslint-enable @typescript-eslint/no-empty-function */
 
@@ -36,6 +41,12 @@ export const AuthWrapper: FC = ({ children }) => {
 
   async function login() {
     try {
+      if (!window.nearService) {
+        const walletService = new SputnikWalletService(nearConfig);
+
+        window.nearService = new SputnikNearService(walletService);
+      }
+
       await window.nearService?.login(nearConfig.contractName);
 
       const id = window.nearService?.getAccountId();
@@ -56,6 +67,10 @@ export const AuthWrapper: FC = ({ children }) => {
     }
   }
 
+  async function switchWallet(walletType: WalletType) {
+    await window.nearService.switchWallet(walletType);
+  }
+
   async function logout() {
     await window.nearService?.logout();
 
@@ -70,6 +85,7 @@ export const AuthWrapper: FC = ({ children }) => {
     accountId,
     login,
     logout,
+    switchWallet,
   };
 
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;
