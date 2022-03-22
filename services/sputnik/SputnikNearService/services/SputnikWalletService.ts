@@ -6,7 +6,6 @@ import {
   utils,
 } from 'near-api-js';
 import { SputnikWalletConnection } from 'services/sputnik/SputnikNearService/overrides/SputnikWalletConnection';
-import { configService } from 'services/ConfigService';
 import { BrowserLocalStorageKeyStore } from 'near-api-js/lib/key_stores';
 import { AccessKey, Action } from 'near-api-js/lib/transaction';
 import { SputnikConnectedWalletAccount } from 'services/sputnik/SputnikNearService/overrides/SputnikConnectedWalletAccount';
@@ -51,7 +50,7 @@ export class SputnikWalletService implements WalletService {
   }
 
   isSignedIn(): boolean {
-    return !!this.walletConnection;
+    return !!this.walletConnection && this.getAccountId() !== '';
   }
 
   functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome> {
@@ -63,13 +62,9 @@ export class SputnikWalletService implements WalletService {
     });
   }
 
-  public async login(contractId?: string): Promise<void> {
-    const { nearConfig } = configService.get();
-
-    const contractName = nearConfig?.contractName ?? '';
-
+  public async login(contractId: string): Promise<void> {
     await this.walletConnection.sputnikRequestSignIn(
-      contractId || contractName,
+      contractId,
       this.successUrl,
       this.failureUrl
     );

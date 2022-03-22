@@ -84,8 +84,8 @@ export class SputnikNearService implements WalletService, DaoService {
     return !!CookieService.get(ACCOUNT_COOKIE);
   }
 
-  public async login(): Promise<void> {
-    await this.walletService.login();
+  public async login(accountId: string): Promise<void> {
+    await this.walletService.login(accountId);
   }
 
   public async logout(): Promise<void> {

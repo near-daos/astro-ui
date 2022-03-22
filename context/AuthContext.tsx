@@ -9,6 +9,7 @@ import { SputnikWalletError } from 'errors/SputnikWalletError';
 
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { CookieService } from 'services/CookieService';
+import { configService } from 'services/ConfigService';
 
 interface AuthContextInterface {
   accountId: string;
@@ -31,10 +32,11 @@ export const AuthWrapper: FC = ({ children }) => {
   const [accountId, setAccountId] = useState<string>(
     CookieService.get(ACCOUNT_COOKIE)
   );
+  const { nearConfig } = configService.get();
 
   async function login() {
     try {
-      await window.nearService?.login();
+      await window.nearService?.login(nearConfig.contractName);
 
       const id = window.nearService?.getAccountId();
 
