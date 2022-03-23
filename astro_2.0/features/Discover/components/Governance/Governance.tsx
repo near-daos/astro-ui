@@ -60,7 +60,8 @@ export const Governance: FC = () => {
     t,
   ]);
   const [activeView, setActiveView] = useState(items[0].id);
-  const [limit, setLimit] = useState(LIMIT);
+  const [offset, setOffset] = useState(0);
+  const [total, setTotal] = useState(0);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -70,7 +71,8 @@ export const Governance: FC = () => {
 
       setChartData(null);
       setLeaderboardData(null);
-      setLimit(LIMIT);
+      setOffset(0);
+      setTotal(0);
       setActiveView(id);
     },
     [isMounted]
@@ -146,7 +148,7 @@ export const Governance: FC = () => {
       case GovernanceTabs.VOTE_THROUGH_RATE: {
         leaders = await daoStatsService.getGovernanceVoteRateLeaderboard({
           ...CONTRACT,
-          limit,
+          offset,
         });
         break;
       }
@@ -154,7 +156,7 @@ export const Governance: FC = () => {
       default: {
         leaders = await daoStatsService.getGovernanceProposalsLeaderboard({
           ...CONTRACT,
-          limit,
+          offset,
         });
         break;
       }
@@ -162,20 +164,21 @@ export const Governance: FC = () => {
 
     if (leaders?.data?.metrics && isMounted()) {
       const newData =
-        leaders.data.metrics.map(metric => {
-          return {
-            ...metric,
-            overview:
-              metric.overview?.map(({ timestamp, count }) => ({
-                x: new Date(timestamp),
-                y: count,
-              })) ?? [],
-          };
-        }) ?? null;
+        leaders.data.metrics.map(metric => ({
+          ...metric,
+          overview:
+            metric.overview?.map(({ timestamp, count }) => ({
+              x: new Date(timestamp),
+              y: count,
+            })) ?? [],
+        })) ?? null;
 
-      setLeaderboardData(newData);
+      setTotal(leaders.data.total);
+      setLeaderboardData(
+        leaderboardData ? [...leaderboardData, ...newData] : newData
+      );
     }
-  }, [activeView, query.dao, isMounted, limit]);
+  }, [activeView, query.dao, isMounted, offset]);
 
   useEffect(() => {
     getChartData();
@@ -186,7 +189,7 @@ export const Governance: FC = () => {
   }, [getLeaderboardData]);
 
   const nextLeaderboardItems = () => {
-    setLimit(limit + LIMIT);
+    setOffset(offset + LIMIT);
   };
 
   return (
@@ -205,6 +208,7 @@ export const Governance: FC = () => {
           activeView={activeView}
         />
         <DaosTopList
+          total={total}
           next={nextLeaderboardItems}
           data={leaderboardData}
           valueLabel={getValueLabel(DaoStatsTopics.GOVERNANCE, activeView)}

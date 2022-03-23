@@ -34,7 +34,8 @@ export const GeneralInfo: FC = () => {
   const [leaderboardData, setLeaderboardData] = useState<
     LeaderboardData[] | null
   >(null);
-  const [limit, setLimit] = useState(LIMIT);
+  const [offset, setOffset] = useState(0);
+  const [total, setTotal] = useState(0);
 
   const { query } = useQuery<{ dao: string }>();
 
@@ -134,27 +135,30 @@ export const GeneralInfo: FC = () => {
       default: {
         leadersData = await daoStatsService.getGeneralActiveLeaderboard({
           ...CONTRACT,
-          limit,
+          limit: LIMIT,
+          offset,
         });
         break;
       }
     }
 
     if (leadersData?.data?.metrics && isMounted()) {
+      const newData =
+        leadersData.data.metrics.map(metric => ({
+          ...metric,
+          overview:
+            metric.overview?.map(({ timestamp, count }) => ({
+              x: new Date(timestamp),
+              y: count,
+            })) ?? [],
+        })) ?? null;
+
+      setTotal(leadersData.data.total);
       setLeaderboardData(
-        leadersData.data.metrics.map(metric => {
-          return {
-            ...metric,
-            overview:
-              metric.overview?.map(({ timestamp, count }) => ({
-                x: new Date(timestamp),
-                y: count,
-              })) ?? [],
-          };
-        }) ?? null
+        leaderboardData ? [...leaderboardData, ...newData] : newData
       );
     }
-  }, [activeView, query.dao, isMounted, limit]);
+  }, [activeView, query.dao, isMounted, offset]);
 
   useEffect(() => {
     getChartData();
@@ -165,7 +169,7 @@ export const GeneralInfo: FC = () => {
   }, [getLeaderboardData]);
 
   const nextLeaderboardItems = () => {
-    setLimit(limit + LIMIT);
+    setOffset(offset + LIMIT);
   };
 
   return (
@@ -184,6 +188,7 @@ export const GeneralInfo: FC = () => {
           activeView={activeView}
         />
         <DaosTopList
+          total={total}
           next={nextLeaderboardItems}
           data={leaderboardData}
           valueLabel={getValueLabel(DaoStatsTopics.GENERAL_INFO, activeView)}

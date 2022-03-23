@@ -34,7 +34,8 @@ export const Tokens: FC = () => {
   const [leaderboardData, setLeaderboardData] = useState<
     LeaderboardData[] | null
   >(null);
-  const [limit, setLimit] = useState(LIMIT);
+  const [offset, setOffset] = useState(0);
+  const [total, setTotal] = useState(0);
 
   const { query } = useQuery<{ dao: string }>();
 
@@ -78,7 +79,8 @@ export const Tokens: FC = () => {
 
       setChartData(null);
       setLeaderboardData(null);
-      setLimit(LIMIT);
+      setOffset(0);
+      setTotal(0);
       setActiveView(id);
     },
     [isMounted]
@@ -159,14 +161,14 @@ export const Tokens: FC = () => {
       case TokensTabs.VL_OF_FTS: {
         leaders = await daoStatsService.getTokensFtsVlLeaderboard({
           ...CONTRACT,
-          limit,
+          offset,
         });
         break;
       }
       case TokensTabs.NUMBER_OF_NFTS: {
         leaders = await daoStatsService.getTokensNftsLeaderboard({
           ...CONTRACT,
-          limit,
+          offset,
         });
         break;
       }
@@ -174,7 +176,7 @@ export const Tokens: FC = () => {
       default: {
         leaders = await daoStatsService.getTokensFtsLeaderboard({
           ...CONTRACT,
-          limit,
+          offset,
         });
         break;
       }
@@ -182,20 +184,21 @@ export const Tokens: FC = () => {
 
     if (leaders?.data?.metrics && isMounted()) {
       const newData =
-        leaders.data.metrics.map(metric => {
-          return {
-            ...metric,
-            overview:
-              metric.overview?.map(({ timestamp, count }) => ({
-                x: new Date(timestamp),
-                y: count,
-              })) ?? [],
-          };
-        }) ?? null;
+        leaders.data.metrics.map(metric => ({
+          ...metric,
+          overview:
+            metric.overview?.map(({ timestamp, count }) => ({
+              x: new Date(timestamp),
+              y: count,
+            })) ?? [],
+        })) ?? null;
 
-      setLeaderboardData(newData);
+      setTotal(leaders.data.total);
+      setLeaderboardData(
+        leaderboardData ? [...leaderboardData, ...newData] : newData
+      );
     }
-  }, [activeView, query.dao, isMounted, limit]);
+  }, [activeView, query.dao, isMounted, offset]);
 
   useEffect(() => {
     getChartData();
@@ -206,7 +209,7 @@ export const Tokens: FC = () => {
   }, [getLeaderboardData]);
 
   const nextLeaderboardItems = () => {
-    setLimit(limit + LIMIT);
+    setOffset(offset + LIMIT);
   };
 
   return (
@@ -225,6 +228,7 @@ export const Tokens: FC = () => {
           activeView={activeView}
         />
         <DaosTopList
+          total={total}
           next={nextLeaderboardItems}
           data={leaderboardData}
           valueLabel={getValueLabel(DaoStatsTopics.TOKENS, activeView)}
