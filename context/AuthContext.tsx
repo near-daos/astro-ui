@@ -47,7 +47,7 @@ export const AuthWrapper: FC = ({ children }) => {
         window.nearService = new SputnikNearService(walletService);
       }
 
-      await window.nearService?.login(nearConfig.contractName);
+      await window.nearService?.signIn(nearConfig.contractName);
 
       const id = window.nearService?.getAccountId();
 
