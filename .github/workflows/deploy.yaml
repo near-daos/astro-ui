@@ -7,7 +7,7 @@ on:
         description: Specify environment to run on. Valid values are develop, test, qa, staging, production
       tag:
         required: true
-        description: Specify environment to run on. Valid values are develop, test, qa, staging, production
+        description: Docker tag to deploy. Valid values are "latest", "<branch>-latest", "<commit_sha>", "<environment>-<commit_sha>". Exact values can be found in "Docker Build Publish" step of "Build Deploy" job.
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
