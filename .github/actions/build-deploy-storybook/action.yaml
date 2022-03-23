@@ -6,6 +6,8 @@ runs:
     with:
       node-version: '14.16.0'
       cache: 'yarn'
+      cache-dependency-path: |
+        .next/cache/**
 
   - run: yarn install
     shell: bash
