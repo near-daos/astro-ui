@@ -28,10 +28,12 @@ export class SenderWalletService implements WalletService {
     this.walletInstance.signOut();
   }
 
-  login(contractId: string): Promise<void> {
-    return this.walletInstance.requestSignIn({
+  async signIn(contractId: string): Promise<void> {
+    await this.walletInstance.requestSignIn({
       contractId,
     });
+
+    window.localStorage.setItem('selectedWallet', WalletType.SENDER.toString());
   }
 
   getAccount(): ConnectedWalletAccount {

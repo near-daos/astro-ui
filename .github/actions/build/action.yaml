@@ -7,6 +7,11 @@ runs:
       node-version: '14.16.0'
       cache: 'yarn'
 
+  - uses: actions/cache@v3
+    with:
+      path: .next/cache/**
+      key: next
+
   - run: yarn install
     shell: bash
   - run: yarn generate-assets
