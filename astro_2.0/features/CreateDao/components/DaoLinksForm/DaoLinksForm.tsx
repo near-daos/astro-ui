@@ -1,19 +1,62 @@
 import times from 'lodash/times';
 import React, { VFC, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
+import * as yup from 'yup';
+import useQuery from 'hooks/useQuery';
+import { useStateMachine } from 'little-state-machine';
 
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
+import { SubmitButton } from 'astro_2.0/features/CreateDao/components/SubmitButton';
+import {
+  handleValidate,
+  updateAction,
+} from 'astro_2.0/features/CreateDao/components/helpers';
+import { LinksStep } from 'astro_2.0/features/CreateDao/types';
+
+import { VALID_URL_REGEXP } from 'constants/regexp';
 
 import { DaoLinkLine } from './components/DaoLinkLine';
 
 import styles from './DaoLinksForm.module.scss';
 
 export const DaoLinksForm: VFC = () => {
-  const { setValue, getValues } = useFormContext();
-
   const { t } = useTranslation();
+  const { updateQuery } = useQuery<{
+    step: string;
+  }>({ shallow: true });
+  const { actions, state } = useStateMachine({ updateAction });
+
+  const methods = useForm<LinksStep>({
+    defaultValues: state.links,
+    mode: 'all',
+    resolver: async data => {
+      const schema = yup.object().shape({
+        websites: yup.array().of(
+          yup
+            .string()
+            .matches(VALID_URL_REGEXP, {
+              message: t('createDAO.daoIncorrectURLError'),
+            })
+            .required()
+        ),
+      });
+
+      const res = await handleValidate<LinksStep>(schema, data, valid =>
+        actions.updateAction({ links: { ...data, isValid: valid } })
+      );
+
+      return res;
+    },
+  });
+
+  const {
+    handleSubmit,
+    getValues,
+    setValue,
+    formState: { isValid },
+  } = methods;
 
   const initialValues = getValues();
 
@@ -40,26 +83,43 @@ export const DaoLinksForm: VFC = () => {
     ));
   }
 
+  const onSubmit = (data: LinksStep) => {
+    actions.updateAction({ links: { ...data, isValid } });
+
+    updateQuery('step', 'members');
+  };
+
   return (
-    <div className={styles.root}>
-      <div className={styles.header}>
-        <h2>{t('createDAO.daoLinksForm.daoLinks')}</h2>
-        <p>{t('createDAO.daoLinksForm.daoLinksDescription')}</p>
-      </div>
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
+        <div className={styles.header}>
+          <h2>
+            {t('createDAO.daoLinksForm.daoLinks')}{' '}
+            <span className={styles.optional}>(Optional)</span>
+          </h2>
+          <p>{t('createDAO.daoLinksForm.daoLinksDescription')}</p>
+        </div>
 
-      <section className={styles.links}>
-        {renderLinkFormEls()}
+        <section className={styles.links}>
+          {renderLinkFormEls()}
 
-        <Button className={styles.link} onClick={addLink} variant="transparent">
-          <Icon
-            className={styles.socialIcon}
-            name="socialPlaceholder"
-            width={32}
-          />
-          <span className={styles.socialText}>https://</span>
-          <Icon className={styles.addBtn} name="buttonAdd" width={24} />
-        </Button>
-      </section>
-    </div>
+          <Button
+            className={styles.link}
+            onClick={addLink}
+            variant="transparent"
+          >
+            <Icon
+              className={styles.socialIcon}
+              name="socialPlaceholder"
+              width={32}
+            />
+            <span className={styles.socialText}>https://</span>
+            <Icon className={styles.addBtn} name="buttonAdd" width={24} />
+          </Button>
+        </section>
+
+        <SubmitButton disabled={!isValid} />
+      </form>
+    </FormProvider>
   );
 };

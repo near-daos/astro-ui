@@ -12,7 +12,7 @@ import { appConfig as applicationConfig } from 'config';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import { Config, NearConfig } from 'types/config';
-import { CreateDaoInput } from 'types/dao';
+import { CreateDaoCustomInput, CreateDaoInput } from 'types/dao';
 import { CreateTokenParams, SputnikTokenService } from 'types/token';
 import { Transfer, VoteAction, CreateProposalParams } from 'types/proposal';
 
@@ -227,6 +227,12 @@ class SputnikNearServiceClass {
 
   public async createDao(params: CreateDaoInput): Promise<void> {
     await this.sputnikDaoService.create(params);
+  }
+
+  public async createDaoWithCustomEdits(
+    params: CreateDaoCustomInput
+  ): Promise<void> {
+    await this.sputnikDaoService.createDaoWithCustomEdits(params);
   }
 
   public async createProposal(

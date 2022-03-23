@@ -11912,6 +11912,11 @@ listr2@^3.8.2:
     through "^2.3.8"
     wrap-ansi "^7.0.0"
 
+little-state-machine@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/little-state-machine/-/little-state-machine-4.2.3.tgz#1599d9a280577e48b41abb50e6e6073bf022c33e"
+  integrity sha512-USuzo9sbmvvJwZVKUpcjw+pBmmTJKPRJgpjRpTFN0j2uzvH8K4wxd9ueuoRUqJI26FSWB5SnGqt7vbEz8EYSEg==
+
 load-json-file@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-4.0.0.tgz#2f5f45ab91e33216234fd53adab668eb4ec0993b"

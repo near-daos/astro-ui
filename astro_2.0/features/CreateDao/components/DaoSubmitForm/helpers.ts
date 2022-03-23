@@ -51,7 +51,7 @@ const TokenBasedVoting = {
 };
 
 export function getRolesVotingPolicy(
-  data: DAOFormValues,
+  data: Partial<DAOFormValues>,
   accountId: string
 ): {
   roles: RolesRequest[];

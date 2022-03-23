@@ -2,7 +2,6 @@
 @import 'styles/typography';
 
 .root {
-  margin-top: 72px;
   width: 100%;
 }
 
@@ -10,11 +9,15 @@
   h2 {
     @include font(1.75em, 38px, 700);
     font-family: var(--font-family-primary);
-    margin-bottom: 0;
+    margin-top: 0;
   }
 
   p {
     @extend %body2;
+  }
+
+  .optional {
+    color: var(--color-neutral-50);
   }
 }
 

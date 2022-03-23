@@ -6,6 +6,7 @@ import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { formatGasValue } from 'utils/format';
 
 import { CreateProposalParams } from 'types/proposal';
+import { CreateDaoCustomInput } from 'types/dao';
 
 import { mapCreateDaoParamsToContractArgs } from 'services/sputnik/mappers';
 import { ClaimBountyParams, CreateDaoParams } from 'services/sputnik/types';
@@ -45,6 +46,25 @@ export class SputnikDaoService {
       walletCallbackUrl: this.walletUseLocalRedirect
         ? `${window.origin}/callback/transaction`
         : `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
+    });
+  }
+
+  public async createDaoWithCustomEdits(
+    params: CreateDaoCustomInput
+  ): Promise<void> {
+    const amount = new BN(
+      utils.format.parseNearAmount(params.amountToTransfer) || '0'
+    );
+
+    await this.functionCall({
+      contractId: this.factoryContractId,
+      methodName: 'create',
+      args: {
+        name: params.name,
+        args: params.args,
+      },
+      gas: formatGasValue(params.gas),
+      attachedDeposit: amount,
     });
   }
 

@@ -29,7 +29,7 @@ export const DaoLinkLine: VFC<DaoLinkLineProps> = ({ index, removeLink }) => {
   }, [index, removeLink]);
 
   return (
-    <div>
+    <div className={styles.root}>
       <div className={styles.link}>
         <Icon
           className={styles.socialIcon}

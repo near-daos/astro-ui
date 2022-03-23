@@ -9,6 +9,7 @@ interface InputWrapperProps {
   alignRight?: boolean;
   flex?: boolean;
   labelClassName?: string;
+  className?: string;
 }
 
 export const FieldWrapper: FC<InputWrapperProps> = ({
@@ -18,14 +19,19 @@ export const FieldWrapper: FC<InputWrapperProps> = ({
   flex,
   alignRight,
   labelClassName,
+  className,
 }) => {
   return (
     <div
-      className={cn(styles.root, {
-        [styles.fullWidth]: fullWidth,
-        [styles.flex]: flex,
-        [styles.alignRight]: alignRight,
-      })}
+      className={cn(
+        styles.root,
+        {
+          [styles.fullWidth]: fullWidth,
+          [styles.flex]: flex,
+          [styles.alignRight]: alignRight,
+        },
+        className
+      )}
     >
       <div className={cn(styles.label, labelClassName)}>
         <span>{label}&nbsp;</span>

@@ -1,0 +1,30 @@
+@import '../../DaoMembersForm.module';
+
+.root {
+  margin-bottom: 18px;
+}
+
+.socialIcon {
+  color: var(--color-primary-60);
+  flex-shrink: 0;
+  margin-right: 16px;
+}
+
+.deleteBtn {
+  color: var(--color-error-70);
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+.validationWrapper {
+  width: 100%;
+}
+
+.errorEl {
+  padding-left: 40px;
+}
+
+.disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}

@@ -4,19 +4,19 @@
   width: 100%;
 }
 
-.content {
-  margin: auto;
-  max-width: 960px;
-  width: 100%;
-}
-
-.breadcrumbs {
-  @include font(0.75em, 18px, 400);
-}
-
-.header {
-  h1 {
-    @include font(2em, 42px, 700);
-    font-family: var(--font-family-primary);
-  }
-}
+//.content {
+//  margin: auto;
+//  max-width: 960px;
+//  width: 100%;
+//}
+//
+//.breadcrumbs {
+//  @include font(0.75em, 18px, 400);
+//}
+//
+//.header {
+//  h1 {
+//    @include font(2em, 42px, 700);
+//    font-family: var(--font-family-primary);
+//  }
+//}

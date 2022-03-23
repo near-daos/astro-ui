@@ -1,5 +1,9 @@
 @import '../../DaoLinksForm.module';
 
+.root {
+  margin-bottom: 18px;
+}
+
 .socialIcon {
   color: var(--color-primary-60);
   flex-shrink: 0;

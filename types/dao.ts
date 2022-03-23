@@ -103,6 +103,13 @@ export interface CreateDaoInput {
   gas: string | number;
 }
 
+export interface CreateDaoCustomInput {
+  name: string;
+  amountToTransfer: string;
+  gas: string | number;
+  args: string;
+}
+
 export type DaoSubscription = {
   id: string;
   dao: DAO;
