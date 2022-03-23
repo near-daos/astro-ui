@@ -32,7 +32,7 @@ describe('proposalObjectHelpers', () => {
             method_name: 'nft_buy',
             args: 'e30=',
             deposit: '0',
-            gas: '0.15',
+            gas: '150000000000',
           },
         ],
       },

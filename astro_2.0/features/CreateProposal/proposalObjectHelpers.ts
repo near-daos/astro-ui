@@ -3,6 +3,8 @@ import { CreateProposalParams } from 'types/proposal';
 import { DAO } from 'types/dao';
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import Decimal from 'decimal.js';
+import { formatGasValue } from 'utils/format';
+import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 
 export type CustomFunctionCallInput = {
   smartContractAddress: string;
@@ -49,7 +51,7 @@ export async function getCustomFunctionCallProposal(
           method_name: methodName,
           args,
           deposit: new Decimal(deposit).mul(10 ** token.decimals).toFixed(),
-          gas: actionsGas.toString(),
+          gas: formatGasValue(actionsGas ?? DEFAULT_PROPOSAL_GAS).toString(),
         },
       ],
     },
