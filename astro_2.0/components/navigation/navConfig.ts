@@ -2,11 +2,19 @@ import {
   ALL_DAOS_URL,
   ALL_FEED_URL,
   CREATE_DAO_URL,
+  DISCOVER,
   MY_DAOS_URL,
   MY_FEED_URL,
 } from 'constants/routing';
 
 import { NavItemProps } from './types';
+
+export const DISCOVER_NAV_CONFIG: NavItemProps = {
+  icon: 'aDiscover',
+  hoverIcon: 'aDiscover',
+  href: DISCOVER,
+  label: 'Discovery',
+};
 
 export const ALL_DAOS_NAV_CONFIG: NavItemProps = {
   icon: 'aAllDaos',

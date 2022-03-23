@@ -1,0 +1,126 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-template-areas:
+    'header'
+    'sidebar'
+    'body';
+  grid-template-columns: 1fr;
+
+  @include large-desktop {
+    grid-template-areas:
+      'header header'
+      'sidebar body';
+    grid-template-columns: 180px 1fr;
+  }
+}
+
+.header {
+  align-items: flex-start;
+  background-color: var(--color-neutral-10);
+  display: flex;
+  flex-wrap: wrap;
+  grid-area: header;
+  justify-content: space-between;
+  padding: 24px 0 32px;
+  position: relative;
+  z-index: 10;
+
+  @include tablet-portrait {
+    padding: 24px 24px 32px;
+  }
+
+  @include tablet-landscape {
+    align-items: center;
+    flex-direction: row;
+    padding: 48px 24px 32px;
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.titleWrapper {
+  align-items: center;
+  display: flex;
+
+  @include tablet-portrait {
+    flex-direction: row;
+    margin-right: 24px;
+  }
+}
+
+.title {
+  margin: 0 24px 0 0;
+}
+
+.search {
+  margin-left: auto;
+  margin-top: 24px;
+
+  @include tablet-landscape {
+    margin-top: unset;
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  grid-area: body;
+  overflow: hidden;
+  padding: 0;
+
+  @include tablet-portrait {
+    padding: 0 24px 32px;
+  }
+}
+
+.sidebar {
+  display: flex;
+  grid-area: sidebar;
+  padding: 0;
+
+  @include large-desktop {
+    flex-direction: column;
+  }
+
+  @include tablet-portrait {
+    padding: 0 24px;
+  }
+}
+
+.content {
+  width: 100%;
+}
+
+.sideFilterTitle {
+  @extend %subtitle4;
+  margin: 0 0 12px;
+}
+
+.sideFilter {
+  background-color: transparent;
+  margin-bottom: 0;
+  margin-right: 0;
+  max-width: unset;
+  top: 100px;
+
+  @include large-desktop {
+    margin-bottom: 24px;
+  }
+}
+
+.financialFilter {
+  top: 262px;
+}
+
+.searchResult {
+  @include ellipse-text;
+  max-width: 220px;
+  text-align: left;
+}

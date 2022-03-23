@@ -1,4 +1,3 @@
-import { SputnikNearService } from 'services/sputnik';
 import { configService } from 'services/ConfigService';
 
 export async function validateDaoAddress(
@@ -10,9 +9,7 @@ export async function validateDaoAddress(
 
   const { nearConfig } = configService.get();
 
-  const res = await SputnikNearService.nearAccountExist(
+  return window.nearService.nearAccountExist(
     `${value}.${nearConfig?.contractName ?? ''}`
   );
-
-  return !res;
 }

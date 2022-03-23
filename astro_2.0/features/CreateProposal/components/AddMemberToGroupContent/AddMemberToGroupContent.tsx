@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 
@@ -20,18 +20,23 @@ export const AddMemberToGroupContent: FC<AddMemberToGroupContentProps> = ({
   const { register, setValue } = useFormContext();
   const { t } = useTranslation();
 
+  const onChange = useCallback(
+    v => {
+      setValue('group', v as string, {
+        shouldDirty: true,
+        shouldValidate: true,
+      });
+    },
+    [setValue]
+  );
+
   return (
     <div className={styles.root}>
       <div className={styles.row}>
         <InputWrapper fieldName="group" label={t('proposalCard.group')}>
           <DropdownSelect
             {...register('group')}
-            onChange={v => {
-              setValue('group', v as string, {
-                shouldDirty: true,
-                shouldValidate: true,
-              });
-            }}
+            onChange={onChange}
             reverseMenu
             isBorderless
             options={groups.map(group => ({

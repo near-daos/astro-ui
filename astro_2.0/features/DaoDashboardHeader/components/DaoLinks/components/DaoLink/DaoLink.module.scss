@@ -1,0 +1,32 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.link {
+  @extend %caption1;
+  color: var(--color-primary-50);
+  display: block;
+  margin-bottom: 16px;
+
+  @include tablet-landscape {
+    display: inline;
+    margin-top: 0;
+  }
+
+  .linkText,
+  .right {
+    display: inline;
+
+    @include tablet-landscape {
+      display: none;
+    }
+  }
+
+  .external {
+    display: none;
+
+    @include tablet-landscape {
+      display: inline;
+      margin: -2px 0 0 8px;
+    }
+  }
+}

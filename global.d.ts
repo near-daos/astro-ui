@@ -1,4 +1,6 @@
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
+import { Config } from 'types/config';
+import { SputnikNearService } from 'services/sputnik';
 
 type SputnikRequestSignInCompleted = (result: {
   accountId?: string;
@@ -20,5 +22,8 @@ declare global {
       sputnikRequestSignInCompleted?: SputnikRequestSignInCompleted;
       sputnikRequestSignTransactionCompleted?: SputnikRequestSignTransactionCompleted;
     };
+    near: SenderWalletInstance;
+    nearService: SputnikNearService;
+    APP_CONFIG: Config;
   }
 }

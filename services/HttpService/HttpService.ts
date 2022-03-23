@@ -57,7 +57,7 @@ export class HttpService {
 
   constructor(config?: AxiosRequestConfig) {
     this.client = axios.create({
-      baseURL: appConfig.apiUrl,
+      baseURL: appConfig.API_URL,
       ...config,
     });
 
@@ -104,6 +104,26 @@ export class HttpService {
                   value: 0,
                 });
               }
+
+              if (query.bountyFilter === 'hidden') {
+                queryBuilder.setFilter({
+                  field: 'isArchived',
+                  operator: '$eq',
+                  value: true,
+                });
+              } else {
+                queryBuilder.setFilter({
+                  field: 'isArchived',
+                  operator: '$eq',
+                  value: false,
+                });
+              }
+            } else {
+              queryBuilder.setFilter({
+                field: 'isArchived',
+                operator: '$eq',
+                value: false,
+              });
             }
 
             if (query?.bountyPhase) {
@@ -294,6 +314,63 @@ export class HttpService {
               .query();
 
             request.url = `/proposals?${queryString.queryString}`;
+          }
+          break;
+        case API_QUERIES.GET_JOINING_DAO_PROPOSALS:
+          {
+            const { daoId, accountId } =
+              requestCustom.queryRequest?.params || {};
+
+            const queryString = RequestQueryBuilder.create();
+
+            const search: SFields | SConditionAND = {
+              $and: [
+                {
+                  daoId: {
+                    $eq: daoId,
+                  },
+                },
+              ],
+            };
+
+            search.$and?.push({
+              status: {
+                $eq: 'InProgress',
+              },
+              votePeriodEnd: {
+                $gt: Date.now() * 1000000,
+              },
+            });
+
+            search.$and?.push({
+              kind: {
+                $cont: ProposalType.AddMemberToRole,
+              },
+            });
+
+            search.$and?.push({
+              kind: {
+                $cont: ProposalType.AddMemberToRole,
+              },
+            });
+            search.$and?.push({
+              kind: {
+                $cont: accountId,
+              },
+            });
+
+            queryString.search(search);
+
+            queryString
+              .setLimit(1000)
+              .setOffset(0)
+              .sortBy({
+                field: 'createdAt',
+                order: 'DESC',
+              })
+              .query();
+
+            request.url = `/proposals/account-proposals/${accountId}?${queryString.queryString}`;
           }
           break;
         case API_QUERIES.GET_FILTERED_PROPOSALS:
@@ -491,7 +568,7 @@ export class HttpService {
 
             queryBuilder.setFilter({
               field: 'proposal.description',
-              operator: '$cont',
+              operator: '$contL',
               value: query,
             });
 
@@ -503,6 +580,33 @@ export class HttpService {
             request.url = `/bounty-contexts?${queryString}${
               accountId ? `&accountId=${accountId}` : ''
             }`;
+            request.params = { sort: 'createdAt,DESC' };
+          }
+          break;
+        case API_QUERIES.FIND_DAO_BY_NAME:
+          {
+            const { query } = requestCustom.queryRequest?.params || {};
+
+            const queryBuilder = RequestQueryBuilder.create();
+
+            queryBuilder.setFilter({
+              field: 'id',
+              operator: '$contL',
+              value: query,
+            });
+            // queryBuilder.setOr({
+            //   field: 'id',
+            //   operator: '$contL',
+            //   value: query,
+            // });
+
+            // todo - use pagination to limit results
+            const queryString = queryBuilder
+              .setLimit(2000)
+              .setOffset(0)
+              .query();
+
+            request.url = `/daos?${queryString}`;
             request.params = { sort: 'createdAt,DESC' };
           }
           break;

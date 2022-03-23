@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BountiesFeed Should render component 1`] = `
+<div>
+  <div>
+    <div
+      class=""
+    >
+      <div
+        class=""
+      >
+        <div>
+          <svg>
+            <use
+              href="/_next/undefined"
+            />
+          </svg>
+        </div>
+        <input
+          class="body1"
+          placeholder="Search Bounty Name"
+          tabindex="0"
+          type="text"
+          value=""
+        />
+        <div />
+      </div>
+    </div>
+    <div
+      class=""
+    >
+      <div
+        class=""
+      >
+        <p
+          class=""
+        >
+          feed.filters.chooseAFilter
+        </p>
+        <ul
+          style="--filter-active-transform: -100%;"
+        >
+          <li>
+            <a
+              class=""
+              href="/?bountyPhase=proposalPhase"
+              tabindex="0"
+            >
+              Proposal Phase
+            </a>
+          </li>
+          <li>
+            <a
+              class=""
+              href="/?bountyPhase=availableBounty"
+              tabindex="0"
+            >
+              Available Bounty
+            </a>
+          </li>
+          <li>
+            <a
+              class=""
+              href="/?bountyPhase=inProgress"
+              tabindex="0"
+            >
+              In Progress
+            </a>
+          </li>
+          <li>
+            <a
+              class=""
+              href="/?bountyPhase=completed"
+              tabindex="0"
+            >
+              Completed
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <div
+          class=""
+        >
+          <div
+            class="infinite-scroll-component__outerdiv"
+          >
+            <div
+              class="infinite-scroll-component "
+              style="height: auto; overflow: initial;"
+            >
+              <div>
+                <div
+                  class=""
+                >
+                  <div
+                    class=""
+                  />
+                  <div>
+                    No data found
+                  </div>
+                  <div />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div />
+  </div>
+</div>
+`;

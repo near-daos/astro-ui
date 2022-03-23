@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 
 import { Icon } from 'components/Icon';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
@@ -39,6 +40,7 @@ export const AmountContent: FC<AmountContentProps> = ({
             backgroundImage: `url(${tokenData.icon})`,
           }}
           className={styles.icon}
+          data-testid="custom-icon"
         />
       );
     }
@@ -51,13 +53,18 @@ export const AmountContent: FC<AmountContentProps> = ({
       <span className={styles.item}>
         {tokenData ? (
           <>
-            <span className={styles.value}>
-              {kFormatter(
-                Number(formatYoktoValue(amount, tokenData.decimals)),
-                2
-              )}
-            </span>
-            <span className={styles.iconWrapper}>{renderIcon()}</span>
+            <Tooltip
+              overlay={<span>{tokenData.symbol || 'NEAR'}</span>}
+              className={styles.label}
+            >
+              <div className={styles.value}>
+                {kFormatter(
+                  Number(formatYoktoValue(amount, tokenData.decimals)),
+                  2
+                )}
+              </div>
+            </Tooltip>
+            <div className={styles.iconWrapper}>{renderIcon()}</div>
             <Tooltip
               overlay={<span>{tokenData.symbol || 'NEAR'}</span>}
               className={styles.label}
@@ -66,7 +73,7 @@ export const AmountContent: FC<AmountContentProps> = ({
             </Tooltip>
           </>
         ) : (
-          <div className={styles.value}>
+          <div className={cn(styles.value, styles.loader)}>
             <LoadingIndicator />
           </div>
         )}

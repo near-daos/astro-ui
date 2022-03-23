@@ -5,7 +5,7 @@
   grid-template-areas:
     'title trend'
     'value value';
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2.7fr 1fr;
 
   &:not(:last-of-type) {
     margin-bottom: 16px;
@@ -29,6 +29,7 @@
   grid-area: trend;
   justify-content: flex-end;
   text-align: right;
+  white-space: nowrap;
 
   &.positive {
     color: var(--color-brand-green);
@@ -40,6 +41,7 @@
 }
 
 .trendIcon {
+  transform: translateY(1px);
   width: 12px;
 }
 

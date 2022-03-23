@@ -6,21 +6,27 @@ import { ALL_FEED_URL } from 'constants/routing';
 import { ACCOUNT_COOKIE, DAO_COOKIE } from 'constants/cookies';
 
 import { SputnikWalletError } from 'errors/SputnikWalletError';
-import { SputnikNearService } from 'services/sputnik';
 
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { CookieService } from 'services/CookieService';
+import { configService } from 'services/ConfigService';
+import { WalletType } from 'types/config';
+import { SputnikNearService } from 'services/sputnik';
+import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
 
 interface AuthContextInterface {
   accountId: string;
-  login: () => void;
-  logout: () => void;
+  login: () => Promise<void>;
+  logout: () => Promise<void>;
+  switchWallet: (walletType: WalletType) => Promise<void>;
 }
 
 /* eslint-disable @typescript-eslint/no-empty-function */
 const AuthContext = createContext<AuthContextInterface>({
   accountId: '',
-  login: () => {},
-  logout: () => {},
+  login: () => Promise.resolve(),
+  logout: () => Promise.resolve(),
+  switchWallet: () => Promise.resolve(),
 });
 /* eslint-enable @typescript-eslint/no-empty-function */
 
@@ -28,13 +34,22 @@ export const AuthWrapper: FC = ({ children }) => {
   const router = useRouter();
   const [, , deleteAccountCookie] = useCookie(ACCOUNT_COOKIE);
   const [, , deleteDaoCookie] = useCookie(DAO_COOKIE);
-  const [accountId, setAccountId] = useState(SputnikNearService.getAccountId());
+  const [accountId, setAccountId] = useState<string>(
+    CookieService.get(ACCOUNT_COOKIE)
+  );
+  const { nearConfig } = configService.get();
 
   async function login() {
     try {
-      await SputnikNearService.login();
+      if (!window.nearService) {
+        const walletService = new SputnikWalletService(nearConfig);
 
-      const id = SputnikNearService.getAccountId();
+        window.nearService = new SputnikNearService(walletService);
+      }
+
+      await window.nearService?.signIn(nearConfig.contractName);
+
+      const id = window.nearService?.getAccountId();
 
       if (id) {
         setAccountId(id);
@@ -52,8 +67,12 @@ export const AuthWrapper: FC = ({ children }) => {
     }
   }
 
+  async function switchWallet(walletType: WalletType) {
+    await window.nearService.switchWallet(walletType);
+  }
+
   async function logout() {
-    await SputnikNearService.logout();
+    await window.nearService?.logout();
 
     setAccountId('');
     deleteAccountCookie();
@@ -66,6 +85,7 @@ export const AuthWrapper: FC = ({ children }) => {
     accountId,
     login,
     logout,
+    switchWallet,
   };
 
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;

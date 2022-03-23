@@ -6,8 +6,9 @@ import nextI18NextConfig from 'next-i18next.config';
 
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 
-import { SputnikNearService } from 'services/sputnik';
 import { configService } from 'services/ConfigService';
+import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
+import { SputnikNearService } from 'services/sputnik';
 
 const Callback: NextPage = () => {
   useEffect(() => {
@@ -20,8 +21,12 @@ const Callback: NextPage = () => {
       const { appConfig, nearConfig } = configService.get();
 
       if (appConfig && nearConfig) {
-        SputnikNearService.init(nearConfig, appConfig);
         window.opener.sputnikRequestSignInCompleted({ accountId, errorCode });
+
+        // we need to reinit wallet service after login
+        const walletService = new SputnikWalletService(nearConfig);
+
+        window.nearService = new SputnikNearService(walletService);
 
         setTimeout(() => {
           window.close();

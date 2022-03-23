@@ -11,8 +11,6 @@ import styles from './search-results-renderer.module.scss';
 export const SearchResultsRenderer: FC = () => {
   const { searchResults } = useSearchResults();
 
-  // if (!searchResults) return null;
-
   const TABS = [
     {
       id: 0,

@@ -1,16 +1,22 @@
 import { Config, NearConfig } from 'types/config';
+import { getNearConfig, NEAR_ENV } from 'config/near';
+import { appConfig as APP_CONFIG } from 'config';
 
-class ConfigService {
-  private appConfig: Config | null = null;
+export class ConfigService {
+  private readonly appConfig;
 
-  private nearConfig: NearConfig | null = null;
+  private readonly nearConfig;
 
-  public init(nearConfig: NearConfig, appConfig: Config): void {
-    this.appConfig = appConfig;
-    this.nearConfig = nearConfig;
+  constructor() {
+    const config = process.browser ? window.APP_CONFIG : APP_CONFIG;
+
+    this.appConfig = config;
+    this.nearConfig = getNearConfig(
+      (config?.NEAR_ENV || 'development') as NEAR_ENV
+    );
   }
 
-  public get(): { appConfig: Config | null; nearConfig: NearConfig | null } {
+  public get(): { appConfig: Config; nearConfig: NearConfig } {
     return {
       appConfig: this.appConfig,
       nearConfig: this.nearConfig,

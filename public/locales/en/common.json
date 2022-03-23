@@ -44,7 +44,12 @@
   "users": "Users",
   "archived": "Archived",
   "youFollowed": "You Followed",
+  "followed": "Followed",
   "confirmUnsubscribe": "Are you sure you want to unsubscribe from",
+  "confirmDeposit": "Enter the deposit amount",
+  "depositToDao": "Deposit to DAO",
+  "deposit": "Deposit",
+  "joinDao": "Join DAO",
   "bountiesPage": {
     "successClaimBountyNotification": "The blockchain transactions might take some time to perform, please visit the page in few seconds",
     "comingSoon": "Coming Soon",
@@ -244,6 +249,7 @@
     "proposalTargetPlaceholder": "Specify target account",
     "bountyAvailableClaims": "Available Claims",
     "bountyDaysToComplete": "Days to Complete",
+    "bountyTimeToComplete": "Time to Complete",
     "newDAOName": "New DAO name",
     "newDAOPurpose": "New Purpose",
     "newDAOLinks": "New DAO links",
@@ -351,5 +357,43 @@
         "changeDaoPolicy": "Change DAO Policy"
       }
     }
+  },
+  "captcha": {
+    "dragSliderRight": "Drag the slider to the right"
+  },
+  "discover": {
+    "title": "Discovery",
+    "overview": "Overview",
+    "financial": "Financial",
+    "generalInfo": "General Info",
+    "usersAndActivity": "Users and Activity",
+    "governance": "Governance",
+    "flow": "Flow",
+    "tvl": "TVL",
+    "tokens": "Tokens",
+    "activeDaos": "Active DAOs",
+    "daoName": "DAO Name",
+    "numberOfProposals": "Number of Proposals",
+    "lastMonth": "Last Month",
+    "allUsersPerDao": "All users per DAO",
+    "allUsersOnAPlatform": "All users on a platform",
+    "usersMembersOfDao": "Users that are members of a DAO",
+    "averageNumberOfUsersPerDao": "Average number of users per DAO",
+    "numberOfInteractions": "Number of interactions",
+    "averageNumberOfInteractionsPerDao": "Average number of interactions per DAO",
+    "voteThroughRate": "Vote through rate",
+    "totalIn": "Total In",
+    "totalOut": "Total Out",
+    "incomingTransactions": "Incoming transactions",
+    "outgoingTransactions": "Outgoing transactions",
+    "platformTvl": "Platform TVL",
+    "vlInBountiesGrants": "VL in Bounties/Grants",
+    "numberOfFts": "Number of FTs",
+    "vlOfFts": "VL of FTs",
+    "numberOfNfts": "Number of NFTs",
+    "numberOfBounties": "Number of Bounties",
+    "vlOfBounties": "VL of Bounties",
+    "activity": "Activity",
+    "avgGroupsDao": "Avg. Groups/DAO"
   }
 }

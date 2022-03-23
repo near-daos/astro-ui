@@ -34,10 +34,6 @@
   width: 24px;
 }
 
-.label {
-  @extend %subtitle6;
-}
-
 .amountValue {
   padding-top: 26px;
 }
@@ -60,6 +56,10 @@
 
 .inline {
   display: flex;
+}
+
+.flex1 {
+  flex: 1;
 }
 
 @media screen and (max-width: #{breakpoints.$screen-md}px) {

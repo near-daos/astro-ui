@@ -74,7 +74,12 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
             <div>
               <section className={styles.general}>
                 <div className={styles.flag}>
-                  <FlagRenderer flag={flagCover} size="sm" fallBack={oldFlag} />
+                  <FlagRenderer
+                    flag={flagCover}
+                    size="sm"
+                    fallBack={oldFlag}
+                    variant="circle"
+                  />
                 </div>
                 <div className={styles.title}>
                   <ExplorerLink

@@ -1,0 +1,46 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  border-top: 1px solid var(--color-neutral-30);
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+  padding-top: 24px;
+}
+
+.header {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+  display: grid;
+  grid-gap: 12px;
+  grid-template-columns: 24px 2fr 80px 60px;
+  margin-bottom: 8px;
+
+  white-space: nowrap;
+
+  @include tablet-portrait {
+    grid-template-columns: 48px 2fr 130px 1fr;
+  }
+}
+
+.loading {
+  @extend %subtitle3;
+  @include centralize;
+}
+
+.loadingMore {
+  @include centralize;
+  padding: 20px 0;
+}
+
+.noData {
+  padding: 0 0 48px;
+}
+
+.chart {
+  visibility: hidden;
+  @include tablet-portrait {
+    visibility: visible;
+  }
+}

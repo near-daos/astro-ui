@@ -6,6 +6,8 @@ export const MY_FEED_URL = '/my/feed';
 export const ALL_DAOS_URL = '/all/daos';
 export const ALL_FEED_URL = '/all/feed';
 
+export const DISCOVER = '/discover';
+
 export const CREATE_DAO_URL = '/create-dao-new';
 
 export const SINGLE_DAO_PAGE = '/dao/[dao]';
@@ -21,6 +23,8 @@ export const SINGLE_PROPOSAL_PAGE_URL = `${ALL_PROPOSALS_PAGE_URL}/[proposal]`;
 export const GROUPS_PAGE_URL = '/dao/[dao]/groups/[group]';
 
 export const TREASURY_PAGE_URL = '/dao/[dao]/treasury/tokens';
+export const GOVERNANCE_TOKEN_INFO_URL =
+  '/dao/[dao]/treasury/governance-token-info';
 export const CREATE_GOV_TOKEN_PAGE_URL =
   '/dao/[dao]/treasury/create-governance-token/[step]';
 

@@ -1,0 +1,73 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.inputWrapper {
+  /* stylelint-disable */
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+  /* stylelint-enable */
+
+  input {
+    font-weight: 700;
+    height: 24px !important;
+    padding: 0 !important;
+    white-space: nowrap;
+    word-break: normal;
+    @include placeholder {
+      color: var(--color-neutral-40);
+      transition: opacity 0.2s linear;
+    }
+  }
+
+  input[disabled] {
+    background-color: var(--color-white);
+  }
+}
+
+.detailsItem {
+  @include tablet-landscape {
+    margin-left: 12px;
+  }
+}
+
+.detailsInput {
+  input {
+    border: 1px solid var(--color-neutral-40);
+    border-radius: 8px;
+    height: 39px !important;
+    padding: 10.5px 4px 10.5px 8px !important;
+  }
+}
+
+.readOnly {
+  input {
+    border-color: transparent;
+  }
+}
+
+.error {
+  input {
+    border-color: var(--color-error-50);
+  }
+}
+
+.inputLabel {
+  @extend %subtitle6;
+  background-color: var(--color-white);
+  color: var(--color-neutral-60);
+  left: 6px;
+  padding: 2px 4px;
+  position: relative;
+  top: 10px;
+  //transform: translate(6px, 6px);
+  width: fit-content;
+}

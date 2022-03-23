@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DaoAddressLink Should render component 1`] = `
+<div>
+  <a
+    href="https://explorer.testnet.near.org/accounts/HelloWorld!"
+    rel="noreferrer"
+    target="_blank"
+  >
+    HelloWorld!
+  </a>
+</div>
+`;
+
+exports[`DaoAddressLink Should render nothing if no dao address 1`] = `
+<div>
+  
+</div>
+`;

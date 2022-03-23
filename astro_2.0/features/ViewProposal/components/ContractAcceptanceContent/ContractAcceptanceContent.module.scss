@@ -1,0 +1,24 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  margin-bottom: 24px;
+}
+
+.inputWrapper {
+  margin-top: 36px;
+}
+
+.input {
+  align-items: center;
+  display: flex;
+}
+
+.suffix {
+  @extend %title3;
+  margin-left: 4px;
+}

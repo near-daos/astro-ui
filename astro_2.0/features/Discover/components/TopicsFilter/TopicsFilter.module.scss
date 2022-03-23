@@ -1,0 +1,83 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.toggle {
+  align-items: center;
+  background-color: var(--color-neutral-40);
+  border-radius: 8.91px;
+  display: flex;
+  height: 32px;
+  justify-content: center;
+  margin-bottom: 24px;
+  padding: 0 2px;
+  width: 100%;
+
+  @media screen and (min-width: #{breakpoints.$screen-lg + 1}px) {
+    display: none;
+  }
+}
+
+.button {
+  flex: 1;
+  height: 28px;
+  min-height: 28px;
+  text-transform: none;
+  transition: background-color 0.2s;
+
+  &.active {
+    background-color: var(--color-white);
+    border-radius: 6.93px;
+    color: var(--color-neutral-80);
+  }
+}
+
+.daoConfigFilter,
+.daoPolicyFilter {
+  margin-bottom: 12px;
+  max-width: 100%;
+  position: relative;
+  top: 0;
+
+  @include tablet-portrait {
+    margin-bottom: 24px;
+  }
+}
+
+.sideFilterTitle {
+  @extend %subtitle4;
+  margin: 0 0 12px;
+}
+
+.sideFilter {
+  background-color: transparent;
+  box-shadow: none;
+  margin-bottom: 0;
+  margin-right: 0;
+  max-width: unset;
+  top: 100px;
+
+  @include large-desktop {
+    margin-bottom: 24px;
+  }
+}
+
+.financialFilter {
+  top: 262px;
+}
+
+.filterItem {
+  justify-content: center;
+  width: 100%;
+
+  @include large-desktop {
+    justify-content: flex-start;
+  }
+}

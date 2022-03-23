@@ -2,15 +2,8 @@ import cn from 'classnames';
 import React, { FC } from 'react';
 import { ProposalStatus, ProposalVotingPermissions } from 'types/proposal';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
-import {
-  DEFAULT_PROPOSAL_GAS,
-  MAX_GAS,
-  MIN_GAS,
-} from 'services/sputnik/constants';
 import { kFormatter } from 'utils/format';
-import { Input } from 'components/inputs/Input';
-import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
-
+import { TgasInput } from 'astro_2.0/components/TgasInput';
 import { ProposalControlButton } from './components/ProposalControlButton';
 
 import styles from './ProposalControlPanel.module.scss';
@@ -49,12 +42,7 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
   toggleInfoPanel,
   commentsCount,
 }) => {
-  const {
-    handleSubmit,
-    register,
-    watch,
-    formState: { errors },
-  } = useFormContext();
+  const { handleSubmit } = useFormContext();
   const { canApprove, canReject } = permissions;
   const voted =
     liked || disliked || dismissed || (status && status !== 'InProgress');
@@ -62,59 +50,14 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
   const yesIconName = canApprove ? 'votingYes' : 'votingYesDisabled';
   const noIconName = canReject ? 'votingNo' : 'votingNoDisabled';
 
-  const currentGasValue = watch('gas');
-
   const showTGas = !(voted || (!canApprove && !canReject) || disableControls);
-
-  function getInputWidth() {
-    if (currentGasValue?.length > 6 && currentGasValue?.length <= 10) {
-      return `${currentGasValue?.length}ch`;
-    }
-
-    if (currentGasValue?.length > 10) {
-      return '10ch';
-    }
-
-    return '6ch';
-  }
 
   return (
     <form
       onSubmit={handleSubmit(onLike)}
       className={cn(styles.root, className)}
     >
-      {showTGas && (
-        <InputWrapper
-          className={styles.detailsItem}
-          labelClassName={styles.inputLabel}
-          fieldName="gas"
-          label="TGas"
-        >
-          <div className={styles.row}>
-            <Input
-              className={cn(styles.inputWrapper, styles.detailsInput, {
-                [styles.error]: errors?.gas,
-                [styles.readOnly]:
-                  voted || (!canApprove && !canReject) || disableControls,
-              })}
-              inputStyles={{
-                width: getInputWidth(),
-              }}
-              onClick={e => e.stopPropagation()}
-              type="number"
-              min={MIN_GAS}
-              step={1}
-              max={MAX_GAS}
-              isBorderless
-              size="block"
-              disabled={voted || (!canApprove && !canReject) || disableControls}
-              placeholder={`${DEFAULT_PROPOSAL_GAS}`}
-              {...register('gas')}
-            />
-          </div>
-        </InputWrapper>
-      )}
-
+      {showTGas && <TgasInput />}
       <ProposalControlButton
         icon={liked ? 'votingYesChecked' : yesIconName}
         voted={voted}

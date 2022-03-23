@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CaptchaModal Should render component 1`] = `
+<div>
+  <div>
+    <div>
+      <div>
+        <div>
+          <svg>
+            <use
+              href="/_next/undefined"
+            />
+          </svg>
+        </div>
+        <div>
+          <div>
+            <div>
+              Attention!
+            </div>
+            <p>
+              You can not undo an action by Acceptance of contract. Are you sure you agree to Acceptance of contract?
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class=""
+    >
+      <div
+        style="background-image: url(/assets/captcha/bg/F1.svg);"
+      >
+        <svg
+          style="width: 61px; left: 1px;"
+        >
+          <use
+            href="/_next/undefined"
+          />
+        </svg>
+        <svg
+          style="width: 60px; left: 0px;"
+        >
+          <use
+            href="/_next/undefined"
+          />
+        </svg>
+      </div>
+      <div>
+        <input
+          max="NaN"
+          min="0"
+          step="1"
+          type="range"
+          value="0"
+        />
+        <div
+          class=""
+        >
+          captcha.dragSliderRight
+        </div>
+      </div>
+      <svg>
+        <use
+          href="/_next/undefined"
+        />
+      </svg>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TimelineHeader Should render component 1`] = `
+<div>
+  <div>
+    <button
+      class="undefined"
+      type="button"
+    >
+      <svg
+        class="undefined"
+      >
+        <use
+          href="/_next/undefined"
+        />
+      </svg>
+    </button>
+    <div>
+      <div>
+        <span>
+          <svg>
+            <use
+              href="/_next/undefined"
+            />
+          </svg>
+          <span>
+            Proposal Created
+          </span>
+        </span>
+        <span>
+          <svg>
+            <use
+              href="/_next/undefined"
+            />
+          </svg>
+          <span>
+            Bounty Created
+          </span>
+        </span>
+        <span>
+          <svg>
+            <use
+              href="/_next/undefined"
+            />
+          </svg>
+          <span>
+            Claim
+          </span>
+        </span>
+        <span>
+          <svg>
+            <use
+              href="/_next/undefined"
+            />
+          </svg>
+          <span>
+            Pending Approval
+          </span>
+        </span>
+        <span>
+          <svg>
+            <use
+              href="/_next/undefined"
+            />
+          </svg>
+          <span>
+            Claim Deadline
+          </span>
+        </span>
+        <span>
+          <svg>
+            <use
+              href="/_next/undefined"
+            />
+          </svg>
+          <span>
+            Complete Bounty
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;

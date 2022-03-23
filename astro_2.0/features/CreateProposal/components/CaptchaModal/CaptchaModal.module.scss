@@ -1,0 +1,17 @@
+@import 'styles/typography';
+
+.root {
+  padding: 24px 0;
+}
+
+.warning {
+  margin-bottom: 24px;
+}
+
+.title {
+  @extend %title3;
+}
+
+.message {
+  @extend %caption1;
+}

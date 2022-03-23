@@ -12,6 +12,11 @@ export type Config = {
   LOCAL_WALLET_REDIRECT: boolean;
 };
 
+export enum WalletType {
+  NEAR,
+  SENDER,
+}
+
 export type NearConfig = {
   walletFormat?: string;
   networkId: string;

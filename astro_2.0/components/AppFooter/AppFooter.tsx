@@ -54,7 +54,7 @@ export const AppFooter: FC<AppFooterProps> = ({
           <div className={styles.version}>
             <a
               className={styles.devLink}
-              href="https://airtable.com/shr4ZmQzmTE5cKZm3"
+              href="https://github.com/near-daos/astro-ui/issues"
               target="_blank"
               rel="noreferrer noopener"
             >
@@ -69,6 +69,22 @@ export const AppFooter: FC<AppFooterProps> = ({
               rel="noreferrer noopener"
             >
               {t('components.appFooter.githubRepo')}
+            </a>
+            <a
+              className={styles.devLink}
+              href="https://testnet.app.astrodao.com/"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Testnet env
+            </a>
+            <a
+              className={styles.devLink}
+              href="https://api.app.astrodao.com/docs/#/"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Swagger API
             </a>
           </div>
           <div className={styles.copyright}>

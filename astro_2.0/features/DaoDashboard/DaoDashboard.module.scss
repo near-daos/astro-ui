@@ -6,18 +6,36 @@
   display: grid;
   grid-gap: 12px;
   grid-template-areas:
-    'chart funds'
-    'chart bounties'
-    'chart nfts'
-    'chart proposals';
-  grid-template-columns: 1fr 275px;
+    'chart'
+    'funds'
+    'bounties'
+    'nfts'
+    'proposals';
+  grid-template-columns: 1fr;
+
+  @include astro-desktop {
+    grid-template-areas:
+      'chart funds'
+      'chart bounties'
+      'chart nfts'
+      'chart proposals';
+    grid-template-columns: 1fr 275px;
+  }
 }
 
 .chart {
+  background-color: var(--color-white);
   grid-area: chart;
   margin: 0 -24px;
+  overflow: hidden;
 
   @include tablet-landscape {
+    margin: 0;
+  }
+
+  @include tablet-portrait {
+    border-radius: 8px;
+    box-shadow: 3px 2px 24px var(--color-black-opacity-1);
     margin: 0;
   }
 }
@@ -36,16 +54,4 @@
 
 .proposals {
   grid-area: proposals;
-}
-
-@media screen and (max-width: #{breakpoints.$screen-sm}px) {
-  .root {
-    grid-template-areas:
-      'chart'
-      'funds'
-      'bounties'
-      'nfts'
-      'proposals';
-    grid-template-columns: 1fr;
-  }
 }

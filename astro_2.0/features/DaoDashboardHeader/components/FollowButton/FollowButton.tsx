@@ -1,4 +1,5 @@
 import React, { FC, useCallback } from 'react';
+import cn from 'classnames';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { Modal, useModal } from 'components/modal';
@@ -69,9 +70,11 @@ export const FollowButton: FC<FollowButtonProps> = ({ daoId, daoName }) => {
   return (
     <Button
       disabled={isLoading}
-      size="block"
-      variant={isSubscribed ? 'secondary' : 'primary'}
-      className={styles.root}
+      size="small"
+      variant={isSubscribed ? 'secondary' : 'green'}
+      className={cn(styles.root, {
+        [styles.subscribedBtn]: isSubscribed,
+      })}
       onClick={() => {
         if (isSubscribed) {
           confirmUnfollow();
@@ -81,15 +84,15 @@ export const FollowButton: FC<FollowButtonProps> = ({ daoId, daoName }) => {
       }}
     >
       {isSubscribed ? (
-        <>
-          <div className={styles.subscribed}>
-            <Icon name="check" className={styles.followIcon} />
-            {t('youFollowed')}
-          </div>
-          <div className={styles.subscribedHovered}>{t('unfollow')}</div>
-        </>
+        <div className={styles.subscribed}>
+          <Icon name="check" className={styles.followIcon} />
+          {t('followed')}
+        </div>
       ) : (
-        t('follow')
+        <div className={styles.subscribed}>
+          <Icon name="buttonFollow" className={styles.followIcon} />
+          {t('follow')}
+        </div>
       )}
     </Button>
   );

@@ -25,9 +25,9 @@ import { ProposalActions } from 'features/proposal/components/ProposalActions';
 import { ExternalLink } from 'components/ExternalLink';
 import { Icon, IconName } from 'components/Icon';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
-import { SputnikNearService } from 'services/sputnik';
 import { getProposalVariantLabel } from 'astro_2.0/features/ViewProposal/helpers';
 import { ExplorerLink } from 'components/ExplorerLink';
+import { AmountBalanceCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/AmountBalanceCard';
 
 import { Button } from 'components/button/Button';
 
@@ -180,7 +180,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
     async (vote: VoteAction, gas?: string | number) => {
-      await SputnikNearService.vote(daoId, proposalId, vote, gas);
+      await window.nearService.vote(daoId, proposalId, vote, gas);
       await router.reload();
     },
     [daoId, proposalId, router]
@@ -190,7 +190,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     { loading: finalizeLoading },
     finalizeClickHandler,
   ] = useAsyncFn(async () => {
-    await SputnikNearService.finalize(daoId, proposalId);
+    await window.nearService.finalize(daoId, proposalId);
     await router.reload();
   }, [daoId, proposalId, router]);
 
@@ -209,17 +209,20 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const timeLeft = useCountdown(votePeriodEnd);
 
   const sealIcon = timeLeft !== undefined ? getSealIcon(status) : null;
+  const isProposalExpired =
+    (voteStatus === 'Expired' && !isFinalized) ||
+    (voteStatus === 'Active' && timeLeft === null && status === 'InProgress');
+  const userCanFinalize =
+    variant !== ProposalVariant.ProposeDoneBounty ||
+    (variant === ProposalVariant.ProposeDoneBounty && proposer === accountId);
+  const restrictProposalRemove = variant === ProposalVariant.ProposeDoneBounty;
+  
   const showFinalize =
     permissions.canApprove &&
     permissions.canReject &&
     permissions.canDelete &&
-    ((voteStatus === 'Expired' && !isFinalized) ||
-      (voteStatus === 'Active' &&
-        timeLeft === null &&
-        status === 'InProgress')) &&
-    (variant !== ProposalVariant.ProposeDoneBounty ||
-      (variant === ProposalVariant.ProposeDoneBounty &&
-        proposer === accountId));
+    isProposalExpired &&
+    userCanFinalize;
 
   const methods = useForm<DAOFormValues>({
     mode: 'all',
@@ -229,6 +232,84 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     },
     resolver: yupResolver(schema),
   });
+
+  function renderProposer() {
+    switch (variant) {
+      case ProposalVariant.ProposeContractAcceptance:
+      case ProposalVariant.ProposeCreateToken: {
+        return null;
+      }
+      case ProposalVariant.ProposeTokenDistribution: {
+        return (
+          <div className={styles.proposerCell}>
+            <InfoBlockWidget
+              label={t('proposalCard.proposalOwner')}
+              value={proposer}
+            />
+            <AmountBalanceCard
+              value={23000}
+              suffix="REF"
+              className={styles.amountBalance}
+            />
+          </div>
+        );
+      }
+      default: {
+        return (
+          <div className={styles.proposerCell}>
+            <InfoBlockWidget
+              label={t(`proposalCard.proposalOwner`)}
+              value={proposer}
+            />
+          </div>
+        );
+      }
+    }
+  }
+
+  function renderDescription() {
+    switch (variant) {
+      case ProposalVariant.ProposeCreateToken:
+      case ProposalVariant.ProposeContractAcceptance:
+      case ProposalVariant.ProposeTokenDistribution: {
+        return null;
+      }
+      default: {
+        return (
+          <div className={styles.descriptionCell}>
+            <FieldWrapper
+              label={t(`proposalCard.proposalDescription`)}
+              fullWidth
+            >
+              <div className={styles.proposalDescription}>{description}</div>
+            </FieldWrapper>
+
+            <div className={styles.proposalExternalLink}>
+              <ExternalLink to={link} />
+            </div>
+          </div>
+        );
+      }
+    }
+  }
+
+  function renderCardContent() {
+    switch (variant) {
+      case ProposalVariant.ProposeContractAcceptance:
+      case ProposalVariant.ProposeTokenDistribution: {
+        return <div className={styles.descriptionCell}>{content}</div>;
+      }
+      default: {
+        return (
+          <>
+            {renderProposer()}
+            {renderDescription()}
+            <div className={styles.contentCell}>{content}</div>
+          </>
+        );
+      }
+    }
+  }
 
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
@@ -277,22 +358,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           </Button>
         )}
       </div>
-      <div className={styles.proposerCell}>
-        <InfoBlockWidget
-          label={t(`proposalCard.proposalOwner`)}
-          value={proposer}
-        />
-      </div>
-      <div className={styles.descriptionCell}>
-        <FieldWrapper label={t(`proposalCard.proposalDescription`)} fullWidth>
-          <div className={styles.proposalDescription}>{description}</div>
-        </FieldWrapper>
 
-        <div className={styles.proposalExternalLink}>
-          <ExternalLink to={link} />
-        </div>
-      </div>
-      <div className={styles.contentCell}>{content}</div>
+      {renderCardContent()}
+
       <div className={styles.voteControlCell}>
         <FormProvider {...methods}>
           <ProposalControlPanel
@@ -324,6 +392,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           />
         </FormProvider>
       </div>
+
       <div className={styles.voteProgress}>
         {voteDetails && <ProgressBar detail={voteDetails} />}
       </div>
@@ -336,7 +405,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
               voteClickHandler('VoteRemove');
             }
           }}
-          disableControls={voteLoading || !timeLeft || finalizeLoading}
+          disableControls={
+            voteLoading ||
+            !timeLeft ||
+            finalizeLoading ||
+            !userCanFinalize ||
+            restrictProposalRemove
+          }
           removed={dismissed}
           removeCount={voteRemove}
           proposalVariant={variant}

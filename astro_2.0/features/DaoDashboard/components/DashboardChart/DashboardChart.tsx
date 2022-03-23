@@ -1,30 +1,29 @@
 import React, { FC, useState } from 'react';
 import Measure from 'react-measure';
-import cn from 'classnames';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { useDomainControl } from 'components/AreaChartRenderer/hooks';
 import RangeToggle from 'components/AreaChartRenderer/components/range-toggle/RangeToggle';
-import { Chart } from 'components/AreaChartRenderer/components/Chart';
-import { ChartDataElement } from 'components/AreaChartRenderer/types';
-import { TFunction, useTranslation } from 'next-i18next';
-import { Button } from 'components/button/Button';
+import {
+  Chart,
+  TLineAxis,
+} from 'components/AreaChartRenderer/components/Chart';
+import { ChartDataElement, Range } from 'components/AreaChartRenderer/types';
+import { useTranslation } from 'next-i18next';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
-import { DashboardView } from 'astro_2.0/features/DaoDashboard/types';
 import { ChartLegend } from 'astro_2.0/features/DaoDashboard/components/DashboardChart/components/ChartLegend';
 
 import { DOMAIN_RANGES } from 'components/AreaChartRenderer/helpers';
+import { getChartTitles } from 'astro_2.0/features/DaoDashboard/components/DashboardChart/helpers';
 
 import styles from './DashboardChart.module.scss';
 
 interface DashboardChartProps {
   data: ChartDataElement[];
-  activeView?: DashboardView;
-}
-
-enum DATASET {
-  NUMBER_OF_VOTES,
-  NUMBER_OF_TRANSACTIONS,
+  activeView?: string;
+  initialRange?: Range;
+  onRangeChange?: (val: Range) => void;
+  timeRanges?: { label: string; type: Range }[];
 }
 
 const variants = {
@@ -32,41 +31,18 @@ const variants = {
   hidden: { opacity: 0 },
 };
 
-function getChartTitles(activeView: DashboardView | undefined, t: TFunction) {
-  switch (activeView) {
-    case 'BOUNTIES': {
-      return [t('daoDashboard.bounties')];
-    }
-    case 'DAO_FUNDS': {
-      return [t('daoDashboard.daoFunds')];
-    }
-    case 'NFTS': {
-      return [t('daoDashboard.nfts')];
-    }
-    case 'PROPOSALS': {
-      return [
-        t('daoDashboard.activeProposals'),
-        t('daoDashboard.proposalsInTotal'),
-      ];
-    }
-    default: {
-      return [t('activity')];
-    }
-  }
-}
-
 export const DashboardChart: FC<DashboardChartProps> = ({
   data,
   activeView,
+  initialRange,
+  onRangeChange,
+  timeRanges,
 }) => {
   const { t } = useTranslation();
-  const [activeDataSet, setActiveDataSet] = useState(
-    DATASET.NUMBER_OF_TRANSACTIONS
-  );
   const [width, setWidth] = useState(0);
   const { data: chartData, toggleDomain, activeRange } = useDomainControl(
     data || [],
-    DOMAIN_RANGES.ALL
+    initialRange || DOMAIN_RANGES.ALL
   );
 
   const lines = [
@@ -75,6 +51,7 @@ export const DashboardChart: FC<DashboardChartProps> = ({
       color: '#6038d0',
       dataKey: 'y',
       gradient: 'colorUv',
+      lineAxis: 'left' as TLineAxis,
     },
   ];
 
@@ -84,6 +61,7 @@ export const DashboardChart: FC<DashboardChartProps> = ({
       color: '#19D992',
       dataKey: 'y2',
       gradient: 'colorPv',
+      lineAxis: 'right' as TLineAxis,
     });
   }
 
@@ -121,29 +99,15 @@ export const DashboardChart: FC<DashboardChartProps> = ({
                 />
               )}
             </div>
-            <Button
-              onClick={() => setActiveDataSet(DATASET.NUMBER_OF_VOTES)}
-              variant="transparent"
-              size="block"
-              className={cn(styles.dataSetButton, styles.votes, {
-                [styles.active]: activeDataSet === DATASET.NUMBER_OF_VOTES,
-              })}
-            >
-              {t('numberOfVotes')}
-            </Button>
-            <Button
-              onClick={() => setActiveDataSet(DATASET.NUMBER_OF_TRANSACTIONS)}
-              size="block"
-              variant="transparent"
-              className={cn(styles.dataSetButton, styles.transactions, {
-                [styles.active]:
-                  activeDataSet === DATASET.NUMBER_OF_TRANSACTIONS,
-              })}
-            >
-              {t('numberOfTransactions')}
-            </Button>
             <RangeToggle
-              onClick={toggleDomain}
+              onClick={v => {
+                toggleDomain(v);
+
+                if (onRangeChange) {
+                  onRangeChange(v);
+                }
+              }}
+              timeRanges={timeRanges}
               activeRange={activeRange}
               className={styles.range}
             />

@@ -591,6 +591,78 @@ class SputnikHttpServiceClass {
     }
   }
 
+  public async toggleBountyContexts(params: {
+    accountId: string;
+    publicKey: string;
+    signature: string;
+    ids: string[];
+    daoId: string;
+    isArchived: boolean;
+  }): Promise<string> {
+    const response = await this.httpService.patch<
+      {
+        accountId: string;
+        publicKey: string;
+        signature: string;
+        ids: string[];
+        daoId: string;
+        isArchived: boolean;
+      },
+      { data: string }
+    >(`/bounty-contexts`, params);
+
+    return response.data;
+  }
+
+  public async showBounties(
+    selected: string[],
+    params: {
+      accountId: string;
+      publicKey: string;
+      signature: string;
+      daoId: string;
+    }
+  ): Promise<boolean> {
+    // todo - add service action
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await this.httpService.patch<any, boolean>(
+      `/bounties-contexts`,
+      params
+    );
+
+    return response;
+  }
+
+  public async findDaoByName(params: {
+    offset?: number;
+    limit?: number;
+    sort?: string;
+    query: string;
+    cancelToken: CancelToken;
+  }): Promise<PaginationResponse<DaoFeedItem[]> | null> {
+    const { query } = params;
+
+    try {
+      const { data } = await this.httpService.get<
+        PaginationResponse<DaoFeedItem[]>
+      >('/daos', {
+        cancelToken: params.cancelToken,
+        queryRequest: {
+          name: API_QUERIES.FIND_DAO_BY_NAME,
+          params: {
+            query,
+          },
+        },
+      });
+
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+  }
+
   /* Tokens API */
   public async getAccountNFTs(accountId: string): Promise<NftToken[]> {
     try {
@@ -881,6 +953,33 @@ class SputnikHttpServiceClass {
       console.error(error);
 
       return [];
+    }
+  }
+
+  public async getJoiningDaoProposal(params: {
+    daoId: string;
+    accountId: string;
+  }): Promise<boolean> {
+    const { daoId, accountId } = params;
+
+    try {
+      const { data } = await this.httpService.get<
+        PaginationResponse<ProposalFeedItem[]>
+      >(`/proposals/account-proposals/${accountId}`, {
+        queryRequest: {
+          name: API_QUERIES.GET_JOINING_DAO_PROPOSALS,
+          params: {
+            daoId,
+            accountId,
+          },
+        },
+      });
+
+      return data.data.length > 0;
+    } catch (error) {
+      console.error(error);
+
+      return false;
     }
   }
 }

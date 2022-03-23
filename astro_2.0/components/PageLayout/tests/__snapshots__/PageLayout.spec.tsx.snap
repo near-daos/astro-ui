@@ -56,6 +56,23 @@ exports[`page layout Should render component 1`] = `
             </a>
             <a
               class=""
+              href="/discover"
+            >
+              <svg
+                height="24"
+              >
+                <use
+                  href="/_next/undefined"
+                />
+              </svg>
+              <span>
+                 
+                discover.title
+                 
+              </span>
+            </a>
+            <a
+              class=""
               href="/all/feed"
             >
               <svg
@@ -129,7 +146,7 @@ exports[`page layout Should render component 1`] = `
             </div>
             <div>
               <a
-                href="https://airtable.com/shr4ZmQzmTE5cKZm3"
+                href="https://github.com/near-daos/astro-ui/issues"
                 rel="noreferrer noopener"
                 target="_blank"
               >
@@ -143,6 +160,20 @@ exports[`page layout Should render component 1`] = `
                 target="_blank"
               >
                 components.appFooter.githubRepo
+              </a>
+              <a
+                href="https://testnet.app.astrodao.com/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Testnet env
+              </a>
+              <a
+                href="https://api.app.astrodao.com/docs/#/"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                Swagger API
               </a>
             </div>
             <div>

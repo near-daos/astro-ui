@@ -5,7 +5,6 @@ import cn from 'classnames';
 import { DaoContext } from 'types/context';
 import { ProposalVariant } from 'types/proposal';
 import { ViewToggle } from 'astro_2.0/features/Bounties/components/ViewToggle';
-import { Button } from 'components/button/Button';
 import { Dropdown } from 'components/Dropdown';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import {
@@ -62,20 +61,6 @@ export const BountiesPageContent: FC<BountiesPageContentProps> = ({
     <div className={styles.root}>
       <div className={styles.header}>
         <h1 className={styles.title}>Bounties</h1>
-        <Button
-          size="small"
-          className={styles.newProposalButton}
-          onClick={() => {
-            if (toggleCreateProposal) {
-              toggleCreateProposal({
-                proposalVariant: ProposalVariant.ProposeCreateBounty,
-              });
-            }
-          }}
-        >
-          Create new
-        </Button>
-
         <div className={styles.filters}>
           <div className={cn(styles.filter, styles.desktopOnly)}>
             <span className={styles.filterLabel}>Sorting by:</span>

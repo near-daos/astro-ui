@@ -3,20 +3,50 @@
 
 .root {
   display: grid;
+  grid-gap: 12px 0;
   grid-template-areas:
-    'letterHeadSection'
-    'usersSection'
-    'descriptionSection'
-    'linksSection';
-  grid-template-columns: 1fr;
+    'letterHeadSection letterHeadSection letterHeadSection'
+    '. usersSection linksSection'
+    'followSection followSection followSection'
+    'depositSection depositSection depositSection'
+    'descriptionSection descriptionSection descriptionSection'
+    'warningSection warningSection warningSection';
+  grid-template-columns: 160px 80px 1fr;
 
   @include tablet-landscape {
-    grid-gap: 17px 0;
+    grid-gap: 12px 0;
     grid-template-areas:
-      'letterHeadSection letterHeadSection letterHeadSection'
-      'usersSection descriptionSection descriptionSection'
-      'usersSection linksSection linksSection';
-    grid-template-columns: 216px 1fr 165px;
+      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
+      '. depositSection depositSection depositSection'
+      '. usersSection followSection followSection'
+      'descriptionSection descriptionSection descriptionSection descriptionSection'
+      'warningSection warningSection warningSection warningSection';
+    grid-template-columns: 200px 60px 1fr minmax(230px, 250px);
+    padding-top: 24px;
+  }
+
+  @include desktop {
+    grid-gap: 12px 0;
+    grid-template-areas:
+      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
+      '. usersSection followSection depositSection'
+      'descriptionSection descriptionSection descriptionSection descriptionSection'
+      'warningSection warningSection warningSection warningSection';
+    grid-template-columns: 200px 60px 1fr minmax(220px, 240px);
+
+    //grid-template-rows: 1fr 40px 1px auto;
+
+    padding-top: 24px;
+  }
+
+  @include large-desktop {
+    grid-gap: 12px 0;
+    grid-template-areas:
+      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
+      '. usersSection followSection depositSection'
+      'descriptionSection descriptionSection descriptionSection descriptionSection'
+      'warningSection warningSection warningSection warningSection';
+    grid-template-columns: 200px 80px 1fr max(270px);
   }
 }
 
@@ -36,38 +66,47 @@
   }
 
   .logo {
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%, 60px);
+    left: 0;
+    transform: translate(36px, 60px);
+  }
 
-    @include tablet-landscape {
-      left: 0;
-      transform: translate(36px, 60px);
-    }
+  .joinDao {
+    position: relative;
+    right: 0;
+  }
+}
+
+.depositSection {
+  grid-area: depositSection;
+}
+
+.followSection {
+  align-items: center;
+  display: flex;
+  grid-area: followSection;
+  justify-content: center;
+  margin-top: 24px;
+  width: 100%;
+
+  @include tablet-landscape {
+    justify-content: flex-start;
+    margin-top: 0;
+    padding-left: 12px;
+    padding-right: 12px;
+    width: unset;
   }
 }
 
 .usersSection {
-  @include centralize;
+  align-items: flex-start;
+  display: flex;
   flex-direction: column;
   grid-area: usersSection;
-  justify-content: flex-start;
-  min-height: 120px;
-  padding: 74px 0 0;
+  justify-content: center;
+  padding: 0 0 0 12px;
 
   @include tablet-landscape {
-    padding: 74px 32px 0;
-  }
-
-  .followButton {
-    @include ellipse-text;
-    margin-top: 24px;
-    text-transform: capitalize;
-  }
-
-  .followIcon {
-    margin-right: 4px;
-    width: 12px;
+    padding: 0;
   }
 }
 
@@ -81,94 +120,43 @@
 }
 
 .value {
-  @extend %heading3;
-}
-
-.descriptionSection p {
-  margin: 0;
-  text-align: center;
+  @extend %title4;
 }
 
 .descriptionSection {
   @extend %body1;
-  align-items: center;
   color: var(--color-black);
-  display: flex;
-  flex-direction: column;
   grid-area: descriptionSection;
-  justify-content: flex-start;
-  margin-top: 17px;
+  margin-top: 20px;
+  padding: 12px 0;
+  text-align: left;
 
   @include tablet-landscape {
-    align-items: flex-start;
-    flex-direction: column;
-    margin-top: 0;
-    padding: 0 36px 0 0;
-
-    p {
-      text-align: left;
-    }
+    background-color: var(--color-white);
+    border-radius: 8px;
+    padding: 24px 32px;
   }
-}
-
-.linksSection {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  grid-area: linksSection;
-  margin-top: 17px;
-
-  @include tablet-landscape {
-    align-items: flex-start;
-    margin-top: 0;
-  }
-}
-
-.links {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  list-style: none;
-  margin-bottom: 0;
-  padding: 0;
 }
 
 .link {
-  @extend %caption1;
-  color: var(--color-primary-50);
-  display: block;
-  margin-bottom: 12px;
-
-  @include tablet-landscape {
-    display: inline;
-    margin-top: 0;
-  }
-
-  .linkText,
-  .right {
-    display: inline;
-
-    @include tablet-landscape {
-      display: none;
-    }
-  }
-
-  .external {
-    display: none;
-
-    @include tablet-landscape {
-      display: inline;
-      margin: -2px 0 0 8px;
-    }
-  }
-}
-
-.legalLink {
-  @extend %body2;
-  color: var(--color-primary);
   display: flex;
+  grid-area: linksSection;
+  justify-content: flex-end;
+  @include tablet-landscape {
+    grid-area: unset;
+  }
 }
 
-.legalIcon {
-  margin-left: 4px;
+.warningWrapper {
+  grid-area: warningSection;
+  margin-top: 32px;
+}
+
+.title {
+  @extend %title3;
+  margin-bottom: 4px;
+}
+
+.text {
+  @extend %caption1;
 }

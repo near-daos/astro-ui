@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useMount } from 'react-use';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -9,12 +9,13 @@ import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
-import { SputnikNearService } from 'services/sputnik';
+import { useModal } from 'components/modal';
 
 import { ProposalCardRenderer } from 'astro_2.0/components/ProposalCardRenderer';
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
 import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import { TransactionDetailsWidget } from 'astro_2.0/components/TransactionDetailsWidget';
+import { CaptchaModal } from 'astro_2.0/features/CreateProposal/components/CaptchaModal';
 
 import { CreateProposalParams, ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
@@ -53,6 +54,7 @@ export interface CreateProposalProps {
   showClose?: boolean;
   showInfo?: boolean;
   canCreateTokenProposal?: boolean;
+  initialValues?: Record<string, unknown>;
 }
 
 export const CreateProposal: FC<CreateProposalProps> = ({
@@ -68,6 +70,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   showClose = true,
   showInfo = true,
   canCreateTokenProposal = false,
+  initialValues,
 }) => {
   const { t } = useTranslation();
   const { accountId } = useAuthContext();
@@ -84,6 +87,8 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   });
   const formRef = useRef<HTMLDivElement>(null);
 
+  const [showModal] = useModal(CaptchaModal);
+
   useMount(() => {
     formRef?.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
   });
@@ -94,11 +99,15 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   }, [initialProposalVariant]);
 
   const methods = useForm({
-    defaultValues: getFormInitialValues(selectedProposalVariant, accountId),
+    defaultValues: getFormInitialValues(
+      selectedProposalVariant,
+      accountId,
+      initialValues
+    ),
     context: schemaContext,
     mode: 'onSubmit',
     resolver: async (data, context) => {
-      const schema = getValidationSchema(context?.selectedProposalVariant);
+      const schema = getValidationSchema(context?.selectedProposalVariant, dao);
 
       try {
         let values = await schema.validate(data, {
@@ -153,6 +162,16 @@ export const CreateProposal: FC<CreateProposalProps> = ({
       );
 
       try {
+        if (
+          selectedProposalVariant === ProposalVariant.ProposeContractAcceptance
+        ) {
+          const [res] = await showModal();
+
+          if (!res) {
+            return;
+          }
+        }
+
         if (selectedProposalVariant !== ProposalVariant.ProposeTransfer) {
           // Add proposal variant and gas
           newProposal = {
@@ -166,20 +185,14 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           let resp;
 
           if (selectedProposalVariant === ProposalVariant.ProposeTransfer) {
-            resp = await SputnikNearService.createTokenTransferProposal(
+            resp = await window.nearService.createTokenTransferProposal(
               newProposal
             );
 
             resp = last(resp as FinalExecutionOutcome[]);
           } else {
-            resp = await SputnikNearService.createProposal(newProposal);
+            resp = await window.nearService.addProposal(newProposal);
           }
-
-          showNotification({
-            type: NOTIFICATION_TYPES.INFO,
-            description: t('successProposalNotification'),
-            lifetime: 20000,
-          });
 
           const newProposalId = JSON.parse(
             Buffer.from(
@@ -196,6 +209,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             query: {
               dao: dao.id,
               proposal: `${dao.id}-${newProposalId}`,
+              fromCreate: true,
             },
           });
 
@@ -221,9 +235,9 @@ export const CreateProposal: FC<CreateProposalProps> = ({
       daoTokens,
       accountId,
       bountyId,
+      showModal,
       router,
       onCreate,
-      t,
     ]
   );
 

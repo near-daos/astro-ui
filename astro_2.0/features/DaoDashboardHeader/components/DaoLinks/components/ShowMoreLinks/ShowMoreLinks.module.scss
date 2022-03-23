@@ -1,0 +1,25 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.showMore {
+  @extend %title5;
+  @include centralize;
+  background-color: var(--color-neutral-20);
+  border-radius: 4px;
+  height: 40px;
+  margin-bottom: 0;
+  width: 40px;
+
+  @include tablet-landscape {
+    border: 0;
+    padding: 0;
+  }
+
+  &:hover {
+    background-color: var(--color-neutral-30);
+  }
+}
+
+.toggle {
+  width: 24px;
+}

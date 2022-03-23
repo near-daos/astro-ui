@@ -53,31 +53,6 @@ export const ClaimsContent: FC<ClaimsContentProps> = ({
     }
 
     return null;
-
-    // return (
-    //   <div className={styles.buttonsWrapper}>
-    //     <Button
-    //       variant="secondary"
-    //       size="small"
-    //       type="submit"
-    //       onClick={() => handleUnclaim()}
-    //       className={cn(styles.unclaim, styles.button)}
-    //     >
-    //       Unclaim
-    //     </Button>
-    //
-    //     <Button
-    //       variant="black"
-    //       size="small"
-    //       onClick={() =>
-    //         completeHandler(bounty.id, ProposalVariant.ProposeDoneBounty)
-    //       }
-    //       className={cn(styles.complete, styles.button)}
-    //     >
-    //       Complete
-    //     </Button>
-    //   </div>
-    // );
   }
 
   return (

@@ -21,7 +21,7 @@
   @include tablet-landscape {
     grid-template-areas:
       'proposalType proposalType countdown'
-      'proposer proposer .'
+      'proposer proposer proposer'
       'description description description'
       'content content voteControl';
     grid-template-columns: 5fr 3fr 2fr;
@@ -80,7 +80,6 @@
 
 .proposerCell {
   display: flex;
-  flex-direction: column;
   grid-area: proposer;
 }
 

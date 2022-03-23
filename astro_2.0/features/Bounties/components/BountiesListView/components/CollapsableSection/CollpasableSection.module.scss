@@ -31,6 +31,8 @@
     'content content details';
   grid-template-columns: 1fr 1fr 1fr;
 
+  position: relative;
+
   @include tablet-landscape {
     grid-column-gap: 4px;
     grid-template-areas: unset;
@@ -50,6 +52,10 @@
   display: flex;
   font-size: 14px;
   padding: 4px 8px;
+}
+
+.content {
+  justify-content: center;
 }
 
 .control {
@@ -100,8 +106,8 @@
   border-left: 12px solid var(--color-neutral-40);
   border-radius: 4px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
-  margin-bottom: 12px;
-  overflow: hidden;
+  //margin-bottom: 12px;
+  //overflow: hidden;
   padding: 4px;
 
   @include tablet-landscape {
@@ -196,6 +202,72 @@
   &:hover {
     color: var(--color-primary-50);
   }
+}
+
+.rowRoot {
+  margin-bottom: 12px;
+  position: relative;
+
+  .rowWrapper.selected {
+    opacity: 0.3;
+  }
+}
+
+.rowWrapper {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  left: 0;
+  position: relative;
+  top: 0;
+  transition: box-shadow 0.4s, transform 0.2s ease-out;
+  z-index: 1;
+
+  &::before {
+    bottom: 0;
+    content: '';
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+.rowHideControl {
+  color: var(--color-black);
+  position: relative;
+  right: 10px;
+
+  width: 24px;
+
+  @include tablet-landscape {
+    position: absolute;
+    right: -24px;
+    top: 20px;
+  }
+
+  &:hover {
+    color: var(--color-primary-50);
+  }
+}
+
+.swipedLeft {
+  transform: translateX(-38px);
+  @include tablet-landscape {
+    transform: translateX(0);
+  }
+}
+
+.mobileActionsPanel {
+  align-items: center;
+  background-color: transparent;
+  border-radius: 8px;
+  display: flex;
+  height: 100%;
+  justify-content: flex-end;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
 
 .detailsButton {
@@ -328,7 +400,7 @@
   height: calc(100% - 24px);
   left: -20px;
   position: absolute;
-  top: -16px;
+  top: -12px;
   width: 20px;
 
   @include tablet-landscape {

@@ -79,6 +79,7 @@ export const AreaChartRenderer: FC<AreaChartProps> = ({
                   color: 'red',
                   dataKey: 'y',
                   gradient: 'colorUv',
+                  lineAxis: 'left',
                 },
               ]}
             />

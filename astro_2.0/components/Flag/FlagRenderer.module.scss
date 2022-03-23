@@ -61,3 +61,11 @@
     background-color: var(--color-neutral-20);
   }
 }
+
+.background,
+.backgroundSmall,
+.backgroundXS {
+  &.circle {
+    clip-path: circle(47% at 50% 50%);
+  }
+}

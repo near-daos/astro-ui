@@ -1,0 +1,14 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.depositButton {
+  @include centralize;
+  background-color: var(--color-neutral-30);
+  border: unset;
+  border-radius: 5px;
+  height: 32px;
+  min-width: 32px;
+  padding: 0;
+  text-transform: capitalize;
+  width: 32px;
+}

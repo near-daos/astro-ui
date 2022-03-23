@@ -1,9 +1,16 @@
 import io, { Socket as TSocket } from 'socket.io-client';
-import { createContext, FC, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { useAuthContext } from 'context/AuthContext';
-import { SputnikNearService } from 'services/sputnik';
 import { useMountedState } from 'react-use';
 import { configService } from 'services/ConfigService';
+import { WALLET_INIT_EVENT } from 'hooks/useAppInit';
 
 type Socket = typeof TSocket;
 
@@ -22,35 +29,43 @@ export const SocketProvider: FC = ({ children }) => {
   const { accountId } = useAuthContext();
   const isMounted = useMountedState();
 
+  const initSocket = useCallback(async () => {
+    let socketIo: Socket;
+    const { appConfig } = configService.get();
+
+    const publicKey = await window.nearService.getPublicKey();
+    const signature = await window.nearService.getSignature();
+
+    if (accountId && publicKey && isMounted() && appConfig) {
+      socketIo = io(appConfig.API_URL, {
+        query: {
+          accountId,
+          publicKey,
+          signature,
+        },
+        transports: ['websocket'],
+      });
+
+      setSocket(socketIo);
+    }
+  }, [accountId, isMounted]);
+
   useEffect(() => {
     let socketIo: Socket;
 
-    const { appConfig } = configService.get();
-
-    (async () => {
-      const publicKey = await SputnikNearService.getPublicKey();
-      const signature = await SputnikNearService.getSignature();
-
-      if (accountId && publicKey && isMounted() && appConfig) {
-        socketIo = io(appConfig.API_URL, {
-          query: {
-            accountId,
-            publicKey,
-            signature,
-          },
-          transports: ['websocket'],
-        });
-
-        setSocket(socketIo);
-      }
-    })();
+    document.addEventListener(WALLET_INIT_EVENT, initSocket as EventListener);
 
     return () => {
+      document.removeEventListener(
+        WALLET_INIT_EVENT,
+        initSocket as EventListener
+      );
+
       if (socketIo) {
         socketIo.disconnect();
       }
     };
-  }, [accountId, isMounted]);
+  }, [initSocket]);
 
   return (
     <SocketContext.Provider value={{ socket }}>

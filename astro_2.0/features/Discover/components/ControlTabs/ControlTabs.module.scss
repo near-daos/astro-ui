@@ -1,0 +1,89 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  align-items: center;
+  display: flex;
+  margin: 0;
+  overflow: hidden;
+  -ms-overflow-style: none;
+  padding: 24px 0;
+  scrollbar-width: none;
+
+  //&::after {
+  //  content: '';
+  //  flex: 0 0 24px;
+  //  height: 90px;
+  //}
+}
+
+.root::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  height: 100%;
+
+  max-width: 200px;
+  min-height: 90px;
+  padding: 12px;
+
+  &:not(:last-of-type) {
+    margin-right: 12px;
+  }
+}
+
+.cardPanel {
+  height: 100%;
+  min-height: 64px;
+  width: 100%;
+}
+
+.cardTitle {
+  @extend %caption1;
+}
+
+.trend {
+  align-items: flex-start;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.value {
+  align-items: flex-end;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.disabled {
+  cursor: default !important;
+  filter: blur(1px);
+  opacity: 0.5;
+}
+
+.active {
+  cursor: default;
+  filter: unset;
+}
+
+.scrollControls {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -24px;
+  position: relative;
+}
+
+.scrollControlButton {
+  margin-left: 24px;
+
+  &:hover {
+    background-color: var(--color-neutral-30);
+    border-radius: 4px;
+  }
+
+  &.disabled {
+    background-color: transparent;
+    color: var(--color-neutral-40);
+  }
+}

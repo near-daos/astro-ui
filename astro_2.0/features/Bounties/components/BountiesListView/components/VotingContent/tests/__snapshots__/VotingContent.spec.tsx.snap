@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UnclaimCompleteContent Should render component 1`] = `
+<div>
+  <div
+    class=""
+  >
+    <span
+      class=""
+    >
+      <button
+        class=""
+        type="submit"
+      >
+        <svg
+          class=""
+        >
+          <use
+            href="/_next/undefined"
+          />
+        </svg>
+      </button>
+      <span
+        class="title3"
+      />
+    </span>
+    <span
+      class=""
+    >
+      <button
+        class=""
+        type="submit"
+      >
+        <svg
+          class=""
+        >
+          <use
+            href="/_next/undefined"
+          />
+        </svg>
+      </button>
+      <span
+        class="title3"
+      />
+    </span>
+  </div>
+</div>
+`;

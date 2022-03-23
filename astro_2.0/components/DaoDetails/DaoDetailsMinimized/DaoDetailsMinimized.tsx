@@ -108,7 +108,16 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
       <div className={styles.wrapper}>
         <Link href={`/dao/${dao.id}`}>
           <a>
-            <section className={styles.general}>
+            <section
+              className={cn(
+                {
+                  [styles.paddingWithNoProposalButton]: !userPermissions.isCanCreateProposals,
+                  [styles.paddingWithProposalButton]:
+                    userPermissions.isCanCreateProposals,
+                },
+                styles.general
+              )}
+            >
               <div className={styles.flagWrapper}>
                 <FlagRenderer
                   flag={dao.flagCover}
@@ -118,7 +127,9 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
               </div>
               <div>
                 <div className={styles.displayName}>
-                  {shortenString(dao.displayName, isXsMobile ? 25 : 40)}
+                  <div className={styles.name}>
+                    {shortenString(dao.displayName, isXsMobile ? 25 : 40)}
+                  </div>
                   <ExplorerLink
                     linkData={dao.id}
                     linkType="member"

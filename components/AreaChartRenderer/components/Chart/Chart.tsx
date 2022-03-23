@@ -7,6 +7,7 @@ import {
   YAxis,
   Tooltip,
 } from 'recharts';
+import { useMedia } from 'react-use';
 
 import { ChartTooltip } from 'components/AreaChartRenderer/components/ChartTooltip';
 import {
@@ -18,14 +19,17 @@ import {
   Payload,
   Range,
 } from 'components/AreaChartRenderer/types';
-import { useMedia } from 'react-use';
+
 import { kFormatter } from 'utils/format';
+
+export type TLineAxis = 'left' | 'right';
 
 type LineItem = {
   name: string;
   color: string;
   dataKey: string;
   gradient: string;
+  lineAxis: TLineAxis;
 };
 
 interface ChartProps {
@@ -94,11 +98,6 @@ export const Chart: React.FC<ChartProps> = ({
     </g>
   );
 
-  const max = Math.max.apply(null, [
-    ...data.map(entry => entry.y),
-    ...data.map(entry => entry.y2 ?? 0),
-  ]);
-
   return (
     <AreaChart
       width={width}
@@ -119,16 +118,30 @@ export const Chart: React.FC<ChartProps> = ({
         </linearGradient>
       </defs>
       <CartesianGrid stroke={COLORS.GRID} vertical={false} />
-      <YAxis
-        type="number"
-        stroke={COLORS.AXIS}
-        domain={[0, max !== 0 ? max + max * 0.1 : 4]}
-        tickMargin={1}
-        interval={0}
-        tickLine={false}
-        tickFormatter={value => kFormatter(value, isIntegerDataset ? 0 : 1)}
-        style={tickStyles}
-      />
+      {lines.map(filterLine => {
+        const max = Math.max.apply(
+          null,
+          ((data as unknown) as Record<string, number>[]).map(
+            entry => entry[filterLine.dataKey]
+          )
+        );
+
+        return (
+          <YAxis
+            key={filterLine.lineAxis}
+            yAxisId={filterLine.lineAxis}
+            type="number"
+            stroke={filterLine.color}
+            domain={[0, max !== 0 ? max + max * 0.1 : 4]}
+            tickMargin={1}
+            interval={0}
+            orientation={filterLine.lineAxis}
+            tickLine={false}
+            tickFormatter={value => kFormatter(value, isIntegerDataset ? 0 : 1)}
+            style={tickStyles}
+          />
+        );
+      })}
       <XAxis
         interval={getXInterval(data || [], period, isMobile)}
         stroke={COLORS.AXIS}
@@ -144,6 +157,7 @@ export const Chart: React.FC<ChartProps> = ({
         <Area
           strokeWidth={2}
           dot={false}
+          yAxisId={filterLine.lineAxis}
           dataKey={filterLine.dataKey}
           type="monotone"
           stroke={filterLine.color}

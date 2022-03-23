@@ -1,0 +1,68 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.inputWrapper {
+  align-items: center;
+  border-radius: 8px;
+  display: flex;
+  height: 38px;
+  justify-content: flex-start;
+  padding-right: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.inputError,
+.inputError input {
+  color: var(--color-neutral-60);
+}
+
+.input {
+  width: 60%;
+}
+
+.input input {
+  background: transparent;
+  overflow: hidden;
+  padding: 0 8px 0 0;
+}
+
+.inputLabel {
+  @extend %subtitle6;
+  background-color: var(--color-neutral-10);
+  color: var(--color-neutral-60);
+  left: 20px;
+  overflow: hidden;
+  padding: 0 4px;
+  position: absolute;
+  top: -8px;
+}
+
+.valueHolder {
+  height: 15px;
+  max-width: 14ch;
+  overflow: hidden;
+  padding: 0 8px 0 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 60%;
+}
+
+.placeholder {
+  @extend %subtitle5;
+}
+
+.tokenIcon {
+  flex: 0 0 24px;
+  height: 20px;
+  margin-left: 0;
+  margin-right: 6px;
+  width: 24px;
+}
+
+.tokenCaption {
+  @extend %caption1;
+  margin-left: auto;
+  width: 40px;
+  word-break: keep-all;
+}

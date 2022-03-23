@@ -22,11 +22,11 @@ export default async function handler(
   }
 
   try {
-    const { appDomain } = appConfig;
+    const { APP_DOMAIN } = appConfig;
     const reqDomain = extractDomain(req.headers.host ?? '');
 
     // don't forget to add APP_DOMAIN=localhost to your .env.local for localhost development
-    if (!appDomain.endsWith(reqDomain)) {
+    if (!APP_DOMAIN.endsWith(reqDomain)) {
       return res.status(403).send('Forbidden');
     }
 

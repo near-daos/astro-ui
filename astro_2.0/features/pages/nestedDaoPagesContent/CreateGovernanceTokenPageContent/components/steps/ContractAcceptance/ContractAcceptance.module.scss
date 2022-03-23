@@ -1,0 +1,34 @@
+.root {
+  display: flex;
+  margin-top: 40px;
+}
+
+.progress {
+  margin-right: 52px;
+}
+
+.createProposal {
+  flex: 1;
+}
+
+.warning {
+  margin-top: 36px;
+}
+
+.nextStepContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.nextStepButton {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-width: 170px;
+}
+
+.buttonIcon {
+  height: 24px;
+  margin-left: 8px;
+}

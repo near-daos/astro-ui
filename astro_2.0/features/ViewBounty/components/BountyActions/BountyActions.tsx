@@ -5,6 +5,7 @@ import { SINGLE_BOUNTY_PAGE_URL } from 'constants/routing';
 
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ActionButton } from 'astro_2.0/components/ActionButton';
+import { useHideBountyContext } from 'astro_2.0/features/Bounties/components/HideBountyContext';
 
 import styles from './BountyActions.module.scss';
 
@@ -21,6 +22,7 @@ export const BountyActions: FC<BountyActionsProps> = ({
 }) => {
   const [location, setLocation] = useState<Location | null>(null);
   const isMounted = useMountedState();
+  const { selected, handleSelect, showHidden } = useHideBountyContext();
 
   useEffect(() => {
     if (window && isMounted() && !location) {
@@ -83,6 +85,22 @@ export const BountyActions: FC<BountyActionsProps> = ({
         tooltipPlacement={tooltipPlacement}
         className={styles.copyBtn}
       />
+      {contextId && (
+        <ActionButton
+          tooltip={
+            !showHidden && selected.includes(contextId)
+              ? 'Show bounty'
+              : 'Hide bounty'
+          }
+          iconName={
+            !showHidden && selected.includes(contextId) ? 'eyeClose' : 'eyeOpen'
+          }
+          size="small"
+          className={styles.icon}
+          tooltipPlacement={tooltipPlacement}
+          onClick={() => handleSelect(contextId)}
+        />
+      )}
     </div>
   );
 };

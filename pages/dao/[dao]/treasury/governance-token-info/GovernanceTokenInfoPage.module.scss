@@ -1,0 +1,25 @@
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  display: grid;
+  grid-gap: 24px;
+  grid-template-areas:
+    'token distribution'
+    'contract distribution';
+  grid-template-columns: 2fr 3fr;
+}
+
+.token {
+  grid-area: token;
+}
+
+.distribution {
+  grid-area: distribution;
+}
+
+.contract {
+  grid-area: contract;
+}

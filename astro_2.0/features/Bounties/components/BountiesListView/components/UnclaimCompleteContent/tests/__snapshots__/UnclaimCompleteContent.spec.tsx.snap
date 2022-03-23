@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UnclaimCompleteContent Should render component 1`] = `
+<div>
+  <div
+    class=""
+  >
+    <button
+      class=""
+      data-testid="ucc-unclaim"
+      type="submit"
+    >
+      Unclaim
+    </button>
+    <button
+      class=""
+      data-testid="ucc-complete"
+      type="button"
+    >
+      Complete
+    </button>
+  </div>
+</div>
+`;

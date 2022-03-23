@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { NotificationsService } from 'services/NotificationsService';
-import { SputnikNearService } from 'services/sputnik';
 import { useAuthContext } from 'context/AuthContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { PaginationResponse } from 'types/api';
@@ -33,8 +32,8 @@ export function useNotificationsSettings(): {
       delay?: string
     ) => {
       try {
-        const publicKey = await SputnikNearService.getPublicKey();
-        const signature = await SputnikNearService.getSignature();
+        const publicKey = await window.nearService.getPublicKey();
+        const signature = await window.nearService.getSignature();
 
         if (publicKey && signature) {
           await NotificationsService.updateNotificationSettings({
@@ -203,8 +202,8 @@ export function useNotificationsList(
 
   const handleUpdate = useCallback(
     async (id, { isRead, isMuted, isArchived }) => {
-      const publicKey = await SputnikNearService.getPublicKey();
-      const signature = await SputnikNearService.getSignature();
+      const publicKey = await window.nearService.getPublicKey();
+      const signature = await window.nearService.getSignature();
 
       if (accountId && publicKey && signature && isMounted() && notifications) {
         setNotifications({
@@ -249,8 +248,8 @@ export function useNotificationsList(
 
   const handleUpdateAll = useCallback(
     async (action: 'READ' | 'ARCHIVE') => {
-      const publicKey = await SputnikNearService.getPublicKey();
-      const signature = await SputnikNearService.getSignature();
+      const publicKey = await window.nearService.getPublicKey();
+      const signature = await window.nearService.getSignature();
 
       if (accountId && publicKey && signature && isMounted()) {
         if (action === 'READ') {
@@ -275,8 +274,8 @@ export function useNotificationsList(
 
   const handleRemove = useCallback(
     async (id: string, { isRead, isMuted, isArchived }) => {
-      const publicKey = await SputnikNearService.getPublicKey();
-      const signature = await SputnikNearService.getSignature();
+      const publicKey = await window.nearService.getPublicKey();
+      const signature = await window.nearService.getSignature();
 
       if (accountId && publicKey && signature && isMounted() && notifications) {
         const newData = notifications?.data.filter(item => item.id !== id);

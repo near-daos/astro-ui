@@ -7,7 +7,6 @@ import uniq from 'lodash/uniq';
 import { nanoid } from 'nanoid';
 import Decimal from 'decimal.js';
 import dynamic from 'next/dynamic';
-import endsWith from 'lodash/endsWith';
 import React, { ReactNode } from 'react';
 
 // Types
@@ -21,6 +20,7 @@ import {
   BondsAndDeadlinesData,
   CreateBountyInput,
   LinksFormData,
+  TokenDistributionInput,
 } from 'astro_2.0/features/CreateProposal/types';
 import { DAO, Member } from 'types/dao';
 import { IGroupForm } from 'features/groups/types';
@@ -55,6 +55,8 @@ import { ChangeDaoPurposeContent } from 'astro_2.0/features/CreateProposal/compo
 import { AddMemberToGroupContent } from 'astro_2.0/features/CreateProposal/components/AddMemberToGroupContent';
 import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoLegalInfoContent';
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/components/RemoveMemberFromGroupContent';
+import { TokenDistributionContent } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent';
+import { ContractAcceptanceContent } from 'astro_2.0/features/CreateProposal/components/ContractAcceptanceContent';
 
 // Helpers & Utils
 import {
@@ -71,6 +73,8 @@ import {
   CustomFunctionCallInput,
   getCustomFunctionCallProposal,
 } from 'astro_2.0/features/CreateProposal/proposalObjectHelpers';
+import { getTokenDistributionProposal } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent/helpers';
+
 import {
   getImgValidationError,
   requiredImg,
@@ -80,8 +84,6 @@ import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 
 // Services
 import { httpService } from 'services/HttpService';
-import { SputnikNearService } from 'services/sputnik';
-import { configService } from 'services/ConfigService';
 
 // Local helpers
 import {
@@ -273,6 +275,18 @@ export function getProposalTypesOptions(
       value: ProposalVariant.ProposeCreateToken,
       group: 'Change Config',
     });
+
+    config.push({
+      title: 'Custom Function',
+      disabled: false,
+      options: [
+        {
+          label: 'Distribution of tokens',
+          value: ProposalVariant.ProposeTokenDistribution,
+          group: 'Custom Function',
+        },
+      ],
+    });
   }
 
   return config;
@@ -413,6 +427,25 @@ export function getFormContentNode(
     case ProposalVariant.ProposeCustomFunctionCall: {
       return <CustomFunctionCallContent />;
     }
+    case ProposalVariant.ProposeContractAcceptance: {
+      return <ContractAcceptanceContent tokenId="someverylonglongname.near" />;
+    }
+    case ProposalVariant.ProposeTokenDistribution: {
+      const groups = dao.groups.map(group => {
+        return {
+          name: group.name,
+          numberOfMembers: group.members.length,
+          members: group.members,
+        };
+      });
+
+      return (
+        <TokenDistributionContent
+          groups={groups}
+          governanceToken={{ name: 'REF', value: 1000 }}
+        />
+      );
+    }
     default: {
       return null;
     }
@@ -421,7 +454,8 @@ export function getFormContentNode(
 
 export function getFormInitialValues(
   selectedProposalType: ProposalVariant,
-  accountId: string
+  accountId: string,
+  initialValues?: Record<string, unknown>
 ): Record<string, unknown> {
   switch (selectedProposalType) {
     case ProposalVariant.ProposeCreateBounty: {
@@ -478,6 +512,18 @@ export function getFormInitialValues(
         gas: DEFAULT_PROPOSAL_GAS,
       };
     }
+    case ProposalVariant.ProposeContractAcceptance: {
+      return {
+        unstakingPeriod: '345',
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
+    case ProposalVariant.ProposeTokenDistribution: {
+      return {
+        groups: [],
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
     case ProposalVariant.ProposeChangeDaoLegalInfo: {
       return {
         details: '',
@@ -492,8 +538,19 @@ export function getFormInitialValues(
         gas: DEFAULT_PROPOSAL_GAS,
       };
     }
+    case ProposalVariant.ProposeAddMember: {
+      const preset = initialValues || {};
+
+      return {
+        details: '',
+        externalUrl: '',
+        group: '',
+        memberName: '',
+        gas: DEFAULT_PROPOSAL_GAS,
+        ...preset,
+      };
+    }
     case ProposalVariant.ProposeCreateGroup:
-    case ProposalVariant.ProposeAddMember:
     case ProposalVariant.ProposeRemoveMember: {
       return {
         details: '',
@@ -540,7 +597,7 @@ export function getFormInitialValues(
         json: '',
         deposit: '0',
         token: 'NEAR',
-        actionsGas: 0.15,
+        actionsGas: DEFAULT_PROPOSAL_GAS,
         gas: DEFAULT_PROPOSAL_GAS,
       };
     }
@@ -790,6 +847,21 @@ export async function getNewProposalObject(
         tokens
       );
     }
+    case ProposalVariant.ProposeTokenDistribution: {
+      return getTokenDistributionProposal(
+        dao,
+        (data as unknown) as TokenDistributionInput
+      );
+    }
+    case ProposalVariant.ProposeContractAcceptance: {
+      // todo - add create function
+      return {
+        daoId: dao.id,
+        description: 'contract acceptance',
+        kind: 'Vote',
+        bond: dao.policy.proposalBond,
+      };
+    }
     default: {
       return null;
     }
@@ -850,7 +922,7 @@ function validateUserAccount(
     return Promise.resolve(result);
   }
 
-  return SputnikNearService.nearAccountExist(value || '');
+  return window.nearService.nearAccountExist(value || '');
 }
 
 export const gasValidation = yup
@@ -862,7 +934,8 @@ export const gasValidation = yup
   .required('Required');
 
 export function getValidationSchema(
-  proposalVariant?: ProposalVariant
+  proposalVariant?: ProposalVariant,
+  dao?: DAO
 ): yup.AnySchema {
   switch (proposalVariant) {
     case ProposalVariant.ProposeTransfer: {
@@ -952,7 +1025,7 @@ export function getValidationSchema(
     case ProposalVariant.ProposeCreateGroup:
     case ProposalVariant.ProposeAddMember:
     case ProposalVariant.ProposeRemoveMember: {
-      const { nearConfig } = configService.get();
+      const id = dao?.id ?? null;
 
       return yup.object().shape({
         group: yup.string().required('Required'),
@@ -965,9 +1038,9 @@ export function getValidationSchema(
           )
           .test(
             'daoMember',
-            'DAO can not be specified in this field',
+            'Current DAO can not be specified in this field',
             value => {
-              return !endsWith(value, nearConfig?.contractName);
+              return !!id && value !== id;
             }
           )
           .required('Required'),
@@ -1027,12 +1100,7 @@ export function getValidationSchema(
         deposit: yup
           .number()
           .typeError('Must be a valid number.')
-          .required('Required')
-          .test(
-            'onlyFiveDecimal',
-            'Only numbers with five optional decimal place please',
-            value => /^\d*(?:\.\d{0,5})?$/.test(`${value}`)
-          ),
+          .required('Required'),
         json: yup
           .string()
           .required('Required')
@@ -1047,13 +1115,24 @@ export function getValidationSchema(
           }),
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
-        actionsGas: yup
+        actionsGas: gasValidation,
+        gas: gasValidation,
+      });
+    }
+
+    // todo - add validation
+    case ProposalVariant.ProposeTokenDistribution: {
+      return yup.object().shape({});
+    }
+
+    case ProposalVariant.ProposeContractAcceptance: {
+      return yup.object().shape({
+        unstakingPeriod: yup
           .number()
           .typeError('Must be a valid number.')
-          .max(0.3)
-          .min(0.01)
+          .positive()
+          .min(1)
           .required('Required'),
-        gas: gasValidation,
       });
     }
 

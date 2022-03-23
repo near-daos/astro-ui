@@ -1,0 +1,17 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.title {
+  @extend %subtitle1;
+  background-color: var(--color-neutral-10);
+  display: none;
+
+  @include large-desktop {
+    display: block;
+  }
+}
