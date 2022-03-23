@@ -9,6 +9,7 @@ import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 import { configService } from 'services/ConfigService';
 import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
 import { SputnikNearService } from 'services/sputnik';
+import { CookieService } from 'services/CookieService';
 
 const Callback: NextPage = () => {
   useEffect(() => {
@@ -27,6 +28,8 @@ const Callback: NextPage = () => {
         const walletService = new SputnikWalletService(nearConfig);
 
         window.nearService = new SputnikNearService(walletService);
+
+        CookieService.set(ACCOUNT_COOKIE, accountId);
 
         setTimeout(() => {
           window.close();
