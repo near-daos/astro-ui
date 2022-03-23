@@ -28,7 +28,7 @@ export class SenderWalletService implements WalletService {
     this.walletInstance.signOut();
   }
 
-  async login(contractId: string): Promise<void> {
+  async signIn(contractId: string): Promise<void> {
     await this.walletInstance.requestSignIn({
       contractId,
     });

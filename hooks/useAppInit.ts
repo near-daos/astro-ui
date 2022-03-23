@@ -48,25 +48,11 @@ export function useAppInit(): void {
       window.nearService = new SputnikNearService(walletService);
     }
 
-    const accountCookieOptions = appConfig.APP_DOMAIN
-      ? { ...DEFAULT_OPTIONS, domain: appConfig.APP_DOMAIN }
-      : DEFAULT_OPTIONS;
-
-    const setAccountCookie = () => {
-      CookieService.set(
-        ACCOUNT_COOKIE,
-        window.nearService.getAccountId(),
-        accountCookieOptions
-      );
-    };
-
     if (window.nearService.isSignedIn()) {
       dispatchCustomEvent('', true);
-      setAccountCookie();
     } else {
       login().then(() => {
         dispatchCustomEvent(WALLET_INIT_EVENT, true);
-        setAccountCookie();
       });
     }
 

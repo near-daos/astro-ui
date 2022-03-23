@@ -62,7 +62,7 @@ export class SputnikWalletService implements WalletService {
     });
   }
 
-  public async login(contractId: string): Promise<void> {
+  public async signIn(contractId: string): Promise<void> {
     await this.walletConnection.sputnikRequestSignIn(
       contractId,
       this.successUrl,
