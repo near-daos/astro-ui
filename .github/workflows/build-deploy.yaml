@@ -87,7 +87,7 @@ jobs:
 
   build-deploy-storybook:
     runs-on: ubuntu-latest
-    if: needs.get-environment.outputs.environment == "develop"
+    if: needs.get-environment.outputs.environment == 'develop'
     name: Build Deploy Storybook
     needs:
     - get-environment
