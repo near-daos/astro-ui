@@ -8,15 +8,12 @@ import {
   utils,
 } from 'near-api-js';
 
-import { ACCOUNT_COOKIE } from 'constants/cookies';
-
 import { CreateDaoInput } from 'types/dao';
 
 import { CreateProposalParams, Transfer, VoteAction } from 'types/proposal';
 
 import { formatGasValue } from 'utils/format';
 
-import { CookieService } from 'services/CookieService';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { mapCreateDaoParamsToContractArgs } from 'services/sputnik/mappers';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
@@ -76,20 +73,13 @@ export class SputnikNearService implements WalletService, DaoService {
     return this.walletService.sendTransactions(txs);
   }
 
-  public isAuthorized(): boolean {
-    if (process.browser && this.walletService) {
-      return !!this.walletService.getAccountId();
-    }
-
-    return !!CookieService.get(ACCOUNT_COOKIE);
-  }
-
   public async login(accountId: string): Promise<void> {
     await this.walletService.login(accountId);
   }
 
   public async logout(): Promise<void> {
     this.walletService.logout();
+    window.localStorage.removeItem('selectedWallet');
   }
 
   public getAccountId(): string {
@@ -97,9 +87,6 @@ export class SputnikNearService implements WalletService, DaoService {
   }
 
   public async switchWallet(walletType: WalletType): Promise<void> {
-    this.walletService.logout();
-    window.localStorage.setItem('selectedWallet', walletType.toString());
-
     switch (walletType) {
       case WalletType.NEAR: {
         this.walletService = new SputnikWalletService(this.nearConfig);
