@@ -3,6 +3,7 @@ import { CreateProposalParams } from 'types/proposal';
 import { DAO } from 'types/dao';
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import Decimal from 'decimal.js';
+import { formatGasValue } from 'utils/format';
 
 export type CustomFunctionCallInput = {
   smartContractAddress: string;
@@ -118,7 +119,7 @@ export async function getBuyNftFromMintbaseProposal(
           method_name: 'make_offer',
           args,
           deposit: new Decimal(deposit).mul(10 ** token.decimals).toFixed(),
-          gas: actionsGas.toString(),
+          gas: formatGasValue(actionsGas).toString(),
         },
       ],
     },
@@ -127,6 +128,7 @@ export async function getBuyNftFromMintbaseProposal(
 }
 
 export type TransferMintbaseNFTInput = {
+  smartContractAddress: string;
   tokenKey: string;
   actionsGas: number;
   details: string;
@@ -137,16 +139,20 @@ export type TransferMintbaseNFTInput = {
 export async function getTransferMintbaseNFTProposal(
   dao: DAO,
   data: TransferMintbaseNFTInput
-  // tokens: Tokens
 ): Promise<CreateProposalParams> {
-  const { tokenKey, target, details, externalUrl, actionsGas } = data;
+  const {
+    tokenKey,
+    target,
+    details,
+    externalUrl,
+    actionsGas,
+    smartContractAddress,
+  } = data;
 
   const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 
-  // todo - what is JSON structure here?
   const json = JSON.stringify({
-    tokenKey,
-    target,
+    token_ids: [[tokenKey, target]],
   });
   const args = Buffer.from(json).toString('base64');
 
@@ -155,13 +161,13 @@ export async function getTransferMintbaseNFTProposal(
     description: proposalDescription,
     kind: 'FunctionCall',
     data: {
-      receiver_id: 'market.mintbase1.near',
+      receiver_id: smartContractAddress,
       actions: [
         {
-          method_name: 'make_offer',
+          method_name: 'nft_batch_transfer',
           args,
           deposit: new Decimal(0).toFixed(),
-          gas: actionsGas.toString(),
+          gas: formatGasValue(actionsGas).toString(),
         },
       ],
     },
@@ -188,19 +194,7 @@ export async function getBuyNftFromParasProposal(
   data: BuyNftFromParasInput,
   tokens: Tokens
 ): Promise<CreateProposalParams> {
-  const {
-    smartContractAddress,
-    methodName,
-    tokenKey,
-    price,
-    timeout,
-    // target,
-    // token,
-    deposit,
-    details,
-    externalUrl,
-    actionsGas,
-  } = data;
+  const { tokenKey, target, details, externalUrl, actionsGas } = data;
 
   const token = Object.values(tokens).find(item => item.symbol === data.token);
 
@@ -211,13 +205,8 @@ export async function getBuyNftFromParasProposal(
   const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 
   const json = JSON.stringify({
-    token_key: [tokenKey],
-    price: [new Decimal(price).mul(10 ** token.decimals).toFixed()],
-    timeout: [
-      {
-        Hours: timeout,
-      },
-    ],
+    token_series_id: tokenKey,
+    receiver_id: target,
   });
   const args = Buffer.from(json).toString('base64');
 
@@ -226,13 +215,13 @@ export async function getBuyNftFromParasProposal(
     description: proposalDescription,
     kind: 'FunctionCall',
     data: {
-      receiver_id: smartContractAddress,
+      receiver_id: 'x.paras.near',
       actions: [
         {
-          method_name: methodName,
+          method_name: 'nft_buy',
           args,
-          deposit: new Decimal(deposit).mul(10 ** token.decimals).toFixed(),
-          gas: actionsGas.toString(),
+          deposit: new Decimal(0).toFixed(),
+          gas: formatGasValue(actionsGas).toString(),
         },
       ],
     },
@@ -257,7 +246,6 @@ export type SwapsOnRefInput = {
 export async function getSwapsOnRefProposal(
   dao: DAO,
   data: SwapsOnRefInput
-  // tokens: Tokens
 ): Promise<CreateProposalParams> {
   const {
     poolId,
@@ -265,24 +253,10 @@ export async function getSwapsOnRefProposal(
     tokenOut,
     amountIn,
     amountOut,
-    // amountInToken,
-    // amountOutToken,
     actionsGas,
     details,
     externalUrl,
-    // target,
   } = data;
-
-  // const amountInToken = Object.values(tokens).find(
-  //   item => item.symbol === data.tokenIn
-  // );
-  // const amountOutToken = Object.values(tokens).find(
-  //   item => item.symbol === data.tokenOut
-  // );
-  //
-  // if (!amountInToken || !amountOutToken) {
-  //   throw new Error('No tokens data found');
-  // }
 
   const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 
@@ -310,7 +284,7 @@ export async function getSwapsOnRefProposal(
           method_name: 'swap',
           args,
           deposit: new Decimal(0).toFixed(),
-          gas: actionsGas.toString(),
+          gas: formatGasValue(actionsGas).toString(),
         },
       ],
     },

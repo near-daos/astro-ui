@@ -34,6 +34,9 @@ export const DepositInput: React.FC = () => {
       tabIndex={0}
       role="button"
     >
+      <div className={styles.tokenIcon}>
+        <Icon name="tokenNearBig" width={20} />
+      </div>
       {(inputInFocus || !!depositAmount) && (
         <div className={styles.inputLabel}>{t('depositToDao')}</div>
       )}
@@ -60,9 +63,6 @@ export const DepositInput: React.FC = () => {
             : 'Deposit to DAO'}
         </div>
       )}
-      <div className={styles.tokenIcon}>
-        <Icon name="tokenNearBig" />
-      </div>
       <div className={styles.tokenCaption}>NEAR</div>
     </div>
   );

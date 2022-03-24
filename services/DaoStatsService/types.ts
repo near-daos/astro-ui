@@ -7,6 +7,11 @@ export type Params = {
   contract: string;
 };
 
+export type LimitParams = Params & {
+  limit?: number;
+  offset?: number;
+};
+
 export type IntervalParams = {
   interval: Interval;
 };
@@ -48,6 +53,9 @@ export type Leaderboard = {
   metrics?: LeaderboardItem[];
   incoming?: LeaderboardItem[];
   outgoing?: LeaderboardItem[];
+  total: number;
+  outgoingTotal: number;
+  incomingTotal: number;
 };
 
 export type DaoHistoryParams = DaoParams & History;
@@ -106,14 +114,6 @@ export type FlowMetricsItem = {
 
 export type FlowMetrics = {
   metrics: FlowMetricsItem[];
-};
-
-export type MetricsEntity = Metrics & {
-  id: string;
-};
-
-export type FlowMetricsEntity = FlowMetrics & {
-  id: string;
 };
 
 export enum Currency {

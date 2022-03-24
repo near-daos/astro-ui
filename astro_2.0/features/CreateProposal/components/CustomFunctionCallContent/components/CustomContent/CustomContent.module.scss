@@ -6,9 +6,9 @@
   grid-gap: 24px;
   grid-template-areas:
     'address method'
-    'editor gas'
-    'deposit deposit';
-  grid-template-columns: 1fr 1fr;
+    'editor editor'
+    'deposit gas';
+  grid-template-columns: 2fr 1fr;
 }
 
 .address {

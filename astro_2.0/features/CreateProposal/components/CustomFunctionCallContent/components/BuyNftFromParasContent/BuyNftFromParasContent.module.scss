@@ -6,10 +6,8 @@
   display: grid;
   grid-gap: 24px;
   grid-template-areas:
-    'address method'
     'tokenKey .'
-    'timeout gas'
-    'price target';
+    'target gas';
   grid-template-columns: 1fr 1fr;
 }
 

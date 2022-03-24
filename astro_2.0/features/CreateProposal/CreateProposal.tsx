@@ -9,7 +9,6 @@ import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
-import { SputnikNearService } from 'services/sputnik';
 import { useModal } from 'components/modal';
 
 import { ProposalCardRenderer } from 'astro_2.0/components/ProposalCardRenderer';
@@ -55,6 +54,7 @@ export interface CreateProposalProps {
   showClose?: boolean;
   showInfo?: boolean;
   canCreateTokenProposal?: boolean;
+  initialValues?: Record<string, unknown>;
 }
 
 export const CreateProposal: FC<CreateProposalProps> = ({
@@ -70,6 +70,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   showClose = true,
   showInfo = true,
   canCreateTokenProposal = false,
+  initialValues,
 }) => {
   const { t } = useTranslation();
   const { accountId } = useAuthContext();
@@ -98,7 +99,11 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   }, [initialProposalVariant]);
 
   const methods = useForm({
-    defaultValues: getFormInitialValues(selectedProposalVariant, accountId),
+    defaultValues: getFormInitialValues(
+      selectedProposalVariant,
+      accountId,
+      initialValues
+    ),
     context: schemaContext,
     mode: 'onSubmit',
     resolver: async (data, context) => {
@@ -184,13 +189,13 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           let resp;
 
           if (selectedProposalVariant === ProposalVariant.ProposeTransfer) {
-            resp = await SputnikNearService.createTokenTransferProposal(
+            resp = await window.nearService.createTokenTransferProposal(
               newProposal
             );
 
             resp = last(resp as FinalExecutionOutcome[]);
           } else {
-            resp = await SputnikNearService.createProposal(newProposal);
+            resp = await window.nearService.addProposal(newProposal);
           }
 
           const newProposalId = JSON.parse(

@@ -955,6 +955,33 @@ class SputnikHttpServiceClass {
       return [];
     }
   }
+
+  public async getJoiningDaoProposal(params: {
+    daoId: string;
+    accountId: string;
+  }): Promise<boolean> {
+    const { daoId, accountId } = params;
+
+    try {
+      const { data } = await this.httpService.get<
+        PaginationResponse<ProposalFeedItem[]>
+      >(`/proposals/account-proposals/${accountId}`, {
+        queryRequest: {
+          name: API_QUERIES.GET_JOINING_DAO_PROPOSALS,
+          params: {
+            daoId,
+            accountId,
+          },
+        },
+      });
+
+      return data.data.length > 0;
+    } catch (error) {
+      console.error(error);
+
+      return false;
+    }
+  }
 }
 
 export const SputnikHttpService = new SputnikHttpServiceClass();

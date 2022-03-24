@@ -13,7 +13,7 @@ const getGlobalAWSConfig = () => {
     },
   };
 
-  if (appConfig.awsUseLocalConf) {
+  if (appConfig.AWS_USE_LOCAL_CONF) {
     baseConfig = {
       ...baseConfig,
       accessKeyId: awsConfig.accessKeyId,
@@ -33,7 +33,7 @@ const getGlobalAWSConfig = () => {
 };
 
 const getInstanceConfig = () => {
-  if (appConfig.awsUseLocalConf) {
+  if (appConfig.AWS_USE_LOCAL_CONF) {
     return {
       apiVersion: awsConfig.apiVersion,
       params: { Bucket: awsConfig.bucket },

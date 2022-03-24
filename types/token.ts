@@ -1,6 +1,3 @@
-import { BigSource } from 'big.js';
-import { Contract } from 'near-api-js';
-
 export type CreateTokenParams = {
   name: string;
   symbol: string;
@@ -97,42 +94,6 @@ export type Token = {
 export type GetTokensResponse = {
   data: TokenResponse[];
 };
-
-// Not sure about these typings, feel free to update them if you are sure
-type SputnikTokenServiceMethods = {
-  /* eslint-disable camelcase */
-  get_required_deposit?: (params: {
-    args: unknown;
-    account_id: string;
-  }) => Promise<BigSource>;
-  get_number_of_tokens?: () => Promise<number>;
-  get_tokens?: (params: {
-    from_index: number;
-    limit: number;
-  }) => Promise<Token[]>;
-  get_token?: () => Promise<Token>;
-
-  create_token?: (
-    params: {
-      args: {
-        owner_id: string;
-        total_supply: string;
-        metadata: {
-          spec: string;
-          decimals: number;
-          name: string;
-          symbol: string;
-          icon: string;
-        };
-      };
-    },
-    boatOfGas: string
-  ) => Promise<unknown>;
-  storage_deposit?: string;
-  /* eslint-enable camelcase */
-};
-
-export type SputnikTokenService<T = SputnikTokenServiceMethods> = Contract & T;
 
 export type GovernanceToken = {
   name: string;

@@ -1,0 +1,25 @@
+@import 'styles/mixins';
+
+.root {
+  @include centralize;
+  background-color: var(--color-neutral-20);
+  border-radius: 4px;
+  flex: 1;
+  font-size: 13px;
+  height: 40px;
+  margin-right: 12px;
+  padding: 0 12px;
+  text-transform: capitalize;
+
+  @include tablet-landscape {
+    flex: unset;
+  }
+
+  &:hover {
+    background-color: var(--color-neutral-30);
+  }
+}
+
+.icon {
+  width: 24px;
+}

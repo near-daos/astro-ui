@@ -12,7 +12,7 @@ import {
 } from 'astro_2.0/features/Discover/types';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
 
-import { daoStatsService } from 'services/DaoStatsService';
+import { daoStatsService, LIMIT } from 'services/DaoStatsService';
 
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import {
@@ -115,7 +115,9 @@ export const UsersAndActivity: FC = () => {
     query.dao,
     t,
   ]);
-  const [activeView, setActiveView] = useState<string>(items[0].id);
+  const [activeView, setActiveView] = useState(items[0].id);
+  const [offset, setOffset] = useState(0);
+  const [total, setTotal] = useState(0);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -125,6 +127,8 @@ export const UsersAndActivity: FC = () => {
 
       setChartData(null);
       setLeaderboardData(null);
+      setTotal(0);
+      setOffset(0);
       setActiveView(id);
     },
     [isMounted]
@@ -144,7 +148,6 @@ export const UsersAndActivity: FC = () => {
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
-    let leaders;
 
     if (query.dao) {
       const params = {
@@ -171,7 +174,6 @@ export const UsersAndActivity: FC = () => {
       switch (activeView) {
         case UsersAndActivityTabs.USERS_MEMBERS_OF_DAO: {
           chart = await daoStatsService.getUsersMembers(CONTRACT);
-          leaders = await daoStatsService.getUsersMembersLeaderboard(CONTRACT);
           break;
         }
         case UsersAndActivityTabs.AVERAGE_NUMBER_OF_USERS_PER_DAO: {
@@ -180,9 +182,6 @@ export const UsersAndActivity: FC = () => {
         }
         case UsersAndActivityTabs.NUMBER_OF_INTERACTIONS: {
           chart = await daoStatsService.getUsersInteractions(CONTRACT);
-          leaders = await daoStatsService.getUsersInteractionsLeaderboard(
-            CONTRACT
-          );
           break;
         }
         case UsersAndActivityTabs.AVERAGE_NUMBER_OF_INTERACTIONS_PER_DAO: {
@@ -192,7 +191,6 @@ export const UsersAndActivity: FC = () => {
         case UsersAndActivityTabs.ALL_USERS_ON_PLATFORM:
         default: {
           chart = await daoStatsService.getUsersUsers(CONTRACT);
-          leaders = await daoStatsService.getUsersLeaderboard(CONTRACT);
           break;
         }
       }
@@ -206,27 +204,69 @@ export const UsersAndActivity: FC = () => {
         }))
       );
     }
+  }, [activeView, query.dao, isMounted]);
+
+  const [, getLeaderboardData] = useAsyncFn(async () => {
+    if (query.dao) {
+      return;
+    }
+
+    let leaders;
+
+    switch (activeView) {
+      case UsersAndActivityTabs.USERS_MEMBERS_OF_DAO: {
+        leaders = await daoStatsService.getUsersMembersLeaderboard({
+          ...CONTRACT,
+          offset,
+        });
+        break;
+      }
+      case UsersAndActivityTabs.NUMBER_OF_INTERACTIONS: {
+        leaders = await daoStatsService.getUsersInteractionsLeaderboard({
+          ...CONTRACT,
+          offset,
+        });
+        break;
+      }
+      case UsersAndActivityTabs.ALL_USERS_ON_PLATFORM:
+      default: {
+        leaders = await daoStatsService.getUsersLeaderboard({
+          ...CONTRACT,
+          offset,
+        });
+        break;
+      }
+    }
 
     if (leaders?.data?.metrics && isMounted()) {
       const newData =
-        leaders.data.metrics.map(metric => {
-          return {
-            ...metric,
-            overview:
-              metric.overview?.map(({ timestamp, count }) => ({
-                x: new Date(timestamp),
-                y: count,
-              })) ?? [],
-          };
-        }) ?? null;
+        leaders.data.metrics.map(metric => ({
+          ...metric,
+          overview:
+            metric.overview?.map(({ timestamp, count }) => ({
+              x: new Date(timestamp),
+              y: count,
+            })) ?? [],
+        })) ?? null;
 
-      setLeaderboardData(newData);
+      setTotal(leaders.data.total);
+      setLeaderboardData(
+        leaderboardData ? [...leaderboardData, ...newData] : newData
+      );
     }
-  }, [activeView, query.dao, isMounted]);
+  }, [activeView, query.dao, isMounted, offset]);
+
+  useEffect(() => {
+    getLeaderboardData();
+  }, [getLeaderboardData]);
 
   useEffect(() => {
     getChartData();
   }, [getChartData]);
+
+  const nextLeaderboardItems = () => {
+    setOffset(offset + LIMIT);
+  };
 
   return (
     <div className={styles.root}>
@@ -244,6 +284,8 @@ export const UsersAndActivity: FC = () => {
           activeView={activeView}
         />
         <DaosTopList
+          total={total}
+          next={nextLeaderboardItems}
           data={leaderboardData}
           valueLabel={getValueLabel(
             DaoStatsTopics.USERS_AND_ACTIVITY,

@@ -43,9 +43,6 @@ import {
   validateImgSize,
 } from 'utils/imageValidators';
 
-// Services
-import { SputnikNearService } from 'services/sputnik';
-
 const CustomFunctionCallContent = dynamic(
   import(
     'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent'
@@ -415,7 +412,7 @@ function validateUserAccount(
     return Promise.resolve(result);
   }
 
-  return SputnikNearService.nearAccountExist(value || '');
+  return window.nearService.nearAccountExist(value || '');
 }
 
 export const gasValidation = yup

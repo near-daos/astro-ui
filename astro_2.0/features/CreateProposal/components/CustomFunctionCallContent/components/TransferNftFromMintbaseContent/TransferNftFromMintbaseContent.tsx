@@ -6,6 +6,12 @@ import { useTranslation } from 'next-i18next';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { Input } from 'components/inputs/Input';
 
+import {
+  DEFAULT_PROPOSAL_GAS,
+  MAX_GAS,
+  MIN_GAS,
+} from 'services/sputnik/constants';
+
 import styles from './TransferNftFromMintbaseContent.module.scss';
 
 export const TransferNftFromMintbaseContent: FC = () => {
@@ -14,6 +20,24 @@ export const TransferNftFromMintbaseContent: FC = () => {
 
   return (
     <div className={styles.root}>
+      <div className={styles.address}>
+        <InputWrapper
+          fieldName="smartContractAddress"
+          label="Smart Contract Address"
+          fullWidth
+        >
+          <Input
+            className={cn(styles.inputWrapper, styles.narrow)}
+            type="text"
+            min={0}
+            placeholder="x.paras.near"
+            isBorderless
+            size="block"
+            {...register('smartContractAddress')}
+          />
+        </InputWrapper>
+      </div>
+
       <div className={styles.tokenKey}>
         <InputWrapper fieldName="tokenKey" label="Token Key" fullWidth>
           <Input
@@ -24,6 +48,24 @@ export const TransferNftFromMintbaseContent: FC = () => {
             size="block"
             {...register('tokenKey')}
           />
+        </InputWrapper>
+      </div>
+
+      <div className={styles.gas}>
+        <InputWrapper fieldName="actionsGas" label="TGas">
+          <div className={styles.row}>
+            <Input
+              className={cn(styles.inputWrapper, styles.narrow)}
+              type="number"
+              min={MIN_GAS}
+              step={1}
+              max={MAX_GAS}
+              placeholder={`${DEFAULT_PROPOSAL_GAS}`}
+              isBorderless
+              size="block"
+              {...register('actionsGas')}
+            />
+          </div>
         </InputWrapper>
       </div>
 

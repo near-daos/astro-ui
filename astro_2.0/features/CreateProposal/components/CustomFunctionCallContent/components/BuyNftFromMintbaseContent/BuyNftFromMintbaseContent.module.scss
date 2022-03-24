@@ -7,9 +7,29 @@
   grid-gap: 24px;
   grid-template-areas:
     'tokenKey price'
-    'timeout gas'
-    'deposit deposit';
+    'timeout .'
+    'deposit gas';
   grid-template-columns: 1fr 1fr;
+}
+
+.tokenKey {
+  grid-area: tokenKey;
+}
+
+.price {
+  grid-area: price;
+}
+
+.timeout {
+  grid-area: timeout;
+}
+
+.deposit {
+  grid-area: deposit;
+}
+
+.gas {
+  grid-area: gas;
 }
 
 .row {

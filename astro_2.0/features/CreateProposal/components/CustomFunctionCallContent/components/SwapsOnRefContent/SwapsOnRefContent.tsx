@@ -11,6 +11,12 @@ import {
   useTokenOptions,
 } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/hooks';
 
+import {
+  DEFAULT_PROPOSAL_GAS,
+  MAX_GAS,
+  MIN_GAS,
+} from 'services/sputnik/constants';
+
 import styles from './SwapsOnRefContent.module.scss';
 
 export const SwapsOnRefContent: FC = () => {
@@ -75,6 +81,7 @@ export const SwapsOnRefContent: FC = () => {
             className={styles.select}
             options={tokenOptions}
             label="&nbsp;"
+            disabled
             {...register('amountInToken')}
             onChange={v => {
               setValue('amountInToken', v, {
@@ -121,6 +128,7 @@ export const SwapsOnRefContent: FC = () => {
             className={styles.select}
             options={amountOutTokenOptions}
             label="&nbsp;"
+            disabled
             {...register('amountOutToken')}
             onChange={v => {
               setValue('amountOutToken', v, {
@@ -145,6 +153,24 @@ export const SwapsOnRefContent: FC = () => {
             size="block"
             {...register('target')}
           />
+        </InputWrapper>
+      </div>
+
+      <div className={styles.gas}>
+        <InputWrapper fieldName="actionsGas" label="TGas">
+          <div className={styles.row}>
+            <Input
+              className={cn(styles.inputWrapper, styles.narrow)}
+              type="number"
+              min={MIN_GAS}
+              step={1}
+              max={MAX_GAS}
+              placeholder={`${DEFAULT_PROPOSAL_GAS}`}
+              isBorderless
+              size="block"
+              {...register('actionsGas')}
+            />
+          </div>
         </InputWrapper>
       </div>
     </div>

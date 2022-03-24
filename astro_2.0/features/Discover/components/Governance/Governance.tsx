@@ -12,7 +12,7 @@ import {
 } from 'astro_2.0/features/Discover/types';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
 
-import { daoStatsService } from 'services/DaoStatsService';
+import { daoStatsService, LIMIT } from 'services/DaoStatsService';
 
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import {
@@ -59,7 +59,9 @@ export const Governance: FC = () => {
     data?.voteRate.growth,
     t,
   ]);
-  const [activeView, setActiveView] = useState<string>(items[0].id);
+  const [activeView, setActiveView] = useState(items[0].id);
+  const [offset, setOffset] = useState(0);
+  const [total, setTotal] = useState(0);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -69,6 +71,8 @@ export const Governance: FC = () => {
 
       setChartData(null);
       setLeaderboardData(null);
+      setOffset(0);
+      setTotal(0);
       setActiveView(id);
     },
     [isMounted]
@@ -91,7 +95,6 @@ export const Governance: FC = () => {
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
-    let leaders;
 
     if (query.dao) {
       const params = {
@@ -114,17 +117,11 @@ export const Governance: FC = () => {
       switch (activeView) {
         case GovernanceTabs.VOTE_THROUGH_RATE: {
           chart = await daoStatsService.getGovernanceVoteRate(CONTRACT);
-          leaders = await daoStatsService.getGovernanceVoteRateLeaderboard(
-            CONTRACT
-          );
           break;
         }
         case GovernanceTabs.NUMBER_OF_PROPOSALS:
         default: {
           chart = await daoStatsService.getGovernanceProposals(CONTRACT);
-          leaders = await daoStatsService.getGovernanceProposalsLeaderboard(
-            CONTRACT
-          );
           break;
         }
       }
@@ -138,27 +135,62 @@ export const Governance: FC = () => {
         }))
       );
     }
+  }, [activeView, query.dao, isMounted]);
+
+  const [, getLeaderboardData] = useAsyncFn(async () => {
+    if (query.dao) {
+      return;
+    }
+
+    let leaders;
+
+    switch (activeView) {
+      case GovernanceTabs.VOTE_THROUGH_RATE: {
+        leaders = await daoStatsService.getGovernanceVoteRateLeaderboard({
+          ...CONTRACT,
+          offset,
+        });
+        break;
+      }
+      case GovernanceTabs.NUMBER_OF_PROPOSALS:
+      default: {
+        leaders = await daoStatsService.getGovernanceProposalsLeaderboard({
+          ...CONTRACT,
+          offset,
+        });
+        break;
+      }
+    }
 
     if (leaders?.data?.metrics && isMounted()) {
       const newData =
-        leaders.data.metrics.map(metric => {
-          return {
-            ...metric,
-            overview:
-              metric.overview?.map(({ timestamp, count }) => ({
-                x: new Date(timestamp),
-                y: count,
-              })) ?? [],
-          };
-        }) ?? null;
+        leaders.data.metrics.map(metric => ({
+          ...metric,
+          overview:
+            metric.overview?.map(({ timestamp, count }) => ({
+              x: new Date(timestamp),
+              y: count,
+            })) ?? [],
+        })) ?? null;
 
-      setLeaderboardData(newData);
+      setTotal(leaders.data.total);
+      setLeaderboardData(
+        leaderboardData ? [...leaderboardData, ...newData] : newData
+      );
     }
-  }, [activeView, query.dao, isMounted]);
+  }, [activeView, query.dao, isMounted, offset]);
 
   useEffect(() => {
     getChartData();
   }, [getChartData]);
+
+  useEffect(() => {
+    getLeaderboardData();
+  }, [getLeaderboardData]);
+
+  const nextLeaderboardItems = () => {
+    setOffset(offset + LIMIT);
+  };
 
   return (
     <div className={styles.root}>
@@ -176,6 +208,8 @@ export const Governance: FC = () => {
           activeView={activeView}
         />
         <DaosTopList
+          total={total}
+          next={nextLeaderboardItems}
           data={leaderboardData}
           valueLabel={getValueLabel(DaoStatsTopics.GOVERNANCE, activeView)}
         />
