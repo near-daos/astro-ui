@@ -13,18 +13,22 @@ import { CookieService } from 'services/CookieService';
 
 const Callback: NextPage = () => {
   useEffect(() => {
-    if (window.opener?.sputnikRequestSignInCompleted) {
-      const { searchParams } = new URL(window.location.toString());
-      const accountId = searchParams.get('account_id') || undefined;
-      const errorCode = (searchParams.get('errorCode') ||
-        undefined) as SputnikWalletErrorCodes;
+    const { searchParams } = new URL(window.location.toString());
+    const accountId = searchParams.get('account_id') || undefined;
+    const errorCode = (searchParams.get('errorCode') ||
+      undefined) as SputnikWalletErrorCodes;
 
+    const intervalId = setInterval(() => {
       const { appConfig, nearConfig } = configService.get();
 
       // eslint-disable-next-line no-console
       console.log(appConfig, nearConfig);
 
-      if (appConfig && nearConfig) {
+      if (
+        appConfig &&
+        nearConfig &&
+        window.opener?.sputnikRequestSignInCompleted
+      ) {
         window.opener.sputnikRequestSignInCompleted({ accountId, errorCode });
 
         // we need to reinit wallet service after login
@@ -38,14 +42,13 @@ const Callback: NextPage = () => {
 
         CookieService.set(ACCOUNT_COOKIE, accountId, accountCookieOptions);
 
+        clearInterval(intervalId);
+
         setTimeout(() => {
           window.close();
         }, 1500);
       }
-    } else {
-      console.error('Unable to find login callback function');
-      window.close();
-    }
+    }, 500);
   }, []);
 
   return null;
