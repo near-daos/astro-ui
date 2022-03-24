@@ -10,12 +10,14 @@ import { LeaderboardData } from 'astro_2.0/features/Discover/types';
 import styles from './DaosTopList.module.scss';
 
 interface DaosTopListProps {
+  total: number;
   data: LeaderboardData[] | null;
   valueLabel: string;
   next: () => void;
 }
 
 export const DaosTopList: FC<DaosTopListProps> = ({
+  total,
   data,
   valueLabel,
   next,
@@ -38,7 +40,7 @@ export const DaosTopList: FC<DaosTopListProps> = ({
         <InfiniteScroll
           dataLength={data.length}
           next={next}
-          hasMore
+          hasMore={data.length < total}
           loader={
             <div className={styles.loadingMore}>
               <LoadingIndicator />

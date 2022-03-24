@@ -37,7 +37,8 @@ export const Tvl: FC = () => {
   >(null);
 
   const { query } = useQuery<{ dao: string }>();
-  const [limit, setLimit] = useState(LIMIT);
+  const [offset, setOffset] = useState(0);
+  const [total, setTotal] = useState(0);
   const items = useMemo<TControlTab[]>(() => {
     if (query.dao) {
       const currentData = data as TvlDao;
@@ -99,7 +100,8 @@ export const Tvl: FC = () => {
 
       setChartData(null);
       setLeaderboardData(null);
-      setLimit(LIMIT);
+      setOffset(0);
+      setTotal(0);
       setActiveView(id);
     },
     [isMounted]
@@ -176,7 +178,7 @@ export const Tvl: FC = () => {
       case TvlTabs.VL_IN_BOUNTIES: {
         leaders = await daoStatsService.getTvlBountiesAndGrantsVlLeaderboard({
           ...CONTRACT,
-          limit,
+          offset,
         });
         break;
       }
@@ -184,7 +186,7 @@ export const Tvl: FC = () => {
       default: {
         leaders = await daoStatsService.getTvlLeaderboard({
           ...CONTRACT,
-          limit,
+          offset,
         });
         break;
       }
@@ -192,20 +194,21 @@ export const Tvl: FC = () => {
 
     if (leaders?.data?.metrics && isMounted()) {
       const newData =
-        leaders.data.metrics.map(metric => {
-          return {
-            ...metric,
-            overview:
-              metric.overview?.map(({ timestamp, count }) => ({
-                x: new Date(timestamp),
-                y: count,
-              })) ?? [],
-          };
-        }) ?? null;
+        leaders.data.metrics.map(metric => ({
+          ...metric,
+          overview:
+            metric.overview?.map(({ timestamp, count }) => ({
+              x: new Date(timestamp),
+              y: count,
+            })) ?? [],
+        })) ?? null;
 
-      setLeaderboardData(newData);
+      setTotal(leaders.data.total);
+      setLeaderboardData(
+        leaderboardData ? [...leaderboardData, ...newData] : newData
+      );
     }
-  }, [activeView, query.dao, isMounted, limit]);
+  }, [activeView, query.dao, isMounted, offset]);
 
   useEffect(() => {
     getChartData();
@@ -216,7 +219,7 @@ export const Tvl: FC = () => {
   }, [getLeaderboardData]);
 
   const nextLeaderboardItems = () => {
-    setLimit(limit + LIMIT);
+    setOffset(offset + LIMIT);
   };
 
   return (
@@ -235,6 +238,7 @@ export const Tvl: FC = () => {
           activeView={activeView}
         />
         <DaosTopList
+          total={total}
           next={nextLeaderboardItems}
           data={leaderboardData}
           valueLabel={getValueLabel(DaoStatsTopics.TVL, activeView)}

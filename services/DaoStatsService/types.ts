@@ -53,6 +53,9 @@ export type Leaderboard = {
   metrics?: LeaderboardItem[];
   incoming?: LeaderboardItem[];
   outgoing?: LeaderboardItem[];
+  total: number;
+  outgoingTotal: number;
+  incomingTotal: number;
 };
 
 export type DaoHistoryParams = DaoParams & History;
