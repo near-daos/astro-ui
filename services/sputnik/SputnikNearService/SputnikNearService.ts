@@ -27,8 +27,6 @@ import {
 } from 'services/sputnik/SputnikNearService/services/types';
 import { SenderWalletService } from 'services/sputnik/SputnikNearService/services/SenderWalletService';
 import { configService } from 'services/ConfigService';
-import { ACCOUNT_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
-import { CookieService } from 'services/CookieService';
 
 export const GAS_VALUE = new BN('300000000000000');
 export const FINALIZE_PROPOSAL_GAS_VALUE = new BN('150000000000000');
@@ -80,16 +78,6 @@ export class SputnikNearService implements WalletService, DaoService {
 
   public async signIn(contractId: string): Promise<void> {
     await this.walletService.signIn(contractId);
-
-    const accountCookieOptions = this.appConfig.APP_DOMAIN
-      ? { ...DEFAULT_OPTIONS, domain: this.appConfig.APP_DOMAIN }
-      : DEFAULT_OPTIONS;
-
-    CookieService.set(
-      ACCOUNT_COOKIE,
-      this.getAccountId(),
-      accountCookieOptions
-    );
   }
 
   public async logout(): Promise<void> {
@@ -105,19 +93,23 @@ export class SputnikNearService implements WalletService, DaoService {
     switch (walletType) {
       case WalletType.NEAR: {
         this.walletService = new SputnikWalletService(this.nearConfig);
-        await this.walletService.signIn(this.nearConfig.contractName);
         break;
       }
 
       case WalletType.SENDER: {
         this.walletService = new SenderWalletService(window.near);
-        await this.walletService.signIn(this.nearConfig.contractName);
         break;
       }
 
       default: {
         this.walletService = new SputnikWalletService(this.nearConfig);
       }
+    }
+
+    if (!this.walletService.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    } else {
+      window.localStorage.setItem('selectedWallet', walletType.toString());
     }
   }
 

@@ -49,7 +49,7 @@ export function useAppInit(): void {
     }
 
     if (window.nearService.isSignedIn()) {
-      dispatchCustomEvent('', true);
+      dispatchCustomEvent(WALLET_INIT_EVENT, true);
     } else {
       login().then(() => {
         dispatchCustomEvent(WALLET_INIT_EVENT, true);

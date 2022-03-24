@@ -24,7 +24,7 @@ export const AccountButton: FC = () => {
       await switchWallet(wallet);
       await login();
     },
-    [login, logout, switchWallet]
+    [logout, login, switchWallet]
   );
 
   const ref = useRef(null);
