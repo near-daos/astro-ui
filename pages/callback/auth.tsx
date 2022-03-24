@@ -1,4 +1,4 @@
-import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { ACCOUNT_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 import { GetServerSideProps, NextPage } from 'next';
 import { useEffect } from 'react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -9,6 +9,7 @@ import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 import { configService } from 'services/ConfigService';
 import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
 import { SputnikNearService } from 'services/sputnik';
+import { CookieService } from 'services/CookieService';
 
 const Callback: NextPage = () => {
   useEffect(() => {
@@ -20,6 +21,9 @@ const Callback: NextPage = () => {
 
       const { appConfig, nearConfig } = configService.get();
 
+      // eslint-disable-next-line no-console
+      console.log(appConfig, nearConfig);
+
       if (appConfig && nearConfig) {
         window.opener.sputnikRequestSignInCompleted({ accountId, errorCode });
 
@@ -27,6 +31,12 @@ const Callback: NextPage = () => {
         const walletService = new SputnikWalletService(nearConfig);
 
         window.nearService = new SputnikNearService(walletService);
+
+        const accountCookieOptions = appConfig.APP_DOMAIN
+          ? { ...DEFAULT_OPTIONS, domain: appConfig.APP_DOMAIN }
+          : DEFAULT_OPTIONS;
+
+        CookieService.set(ACCOUNT_COOKIE, accountId, accountCookieOptions);
 
         setTimeout(() => {
           window.close();

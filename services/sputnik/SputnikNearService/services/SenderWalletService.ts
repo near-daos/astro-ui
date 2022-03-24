@@ -10,14 +10,20 @@ import {
 } from 'services/sputnik/SputnikNearService/services/types';
 import { WalletType } from 'types/config';
 import BN from 'bn.js';
+import { ACCOUNT_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
+import { CookieService } from 'services/CookieService';
+import { configService } from 'services/ConfigService';
 
 export class SenderWalletService implements WalletService {
   private readonly walletInstance: SenderWalletInstance;
 
   private readonly walletType = WalletType.SENDER;
 
+  private readonly appConfig;
+
   constructor(walletInstance: SenderWalletInstance) {
     this.walletInstance = walletInstance;
+    this.appConfig = configService.get().appConfig;
   }
 
   isSignedIn(): boolean {
@@ -33,7 +39,15 @@ export class SenderWalletService implements WalletService {
       contractId,
     });
 
-    window.localStorage.setItem('selectedWallet', WalletType.SENDER.toString());
+    const accountCookieOptions = this.appConfig.APP_DOMAIN
+      ? { ...DEFAULT_OPTIONS, domain: this.appConfig.APP_DOMAIN }
+      : DEFAULT_OPTIONS;
+
+    CookieService.set(
+      ACCOUNT_COOKIE,
+      this.getAccountId(),
+      accountCookieOptions
+    );
   }
 
   getAccount(): ConnectedWalletAccount {
