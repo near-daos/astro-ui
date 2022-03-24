@@ -2,7 +2,7 @@ import { Config, NearConfig } from 'types/config';
 import { getNearConfig, NEAR_ENV } from 'config/near';
 import { appConfig as APP_CONFIG } from 'config';
 
-class ConfigService {
+export class ConfigService {
   private readonly appConfig;
 
   private readonly nearConfig;

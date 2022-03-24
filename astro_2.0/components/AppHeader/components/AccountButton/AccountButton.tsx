@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { FC, useCallback, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useAuthContext } from 'context/AuthContext';
 
@@ -8,15 +8,32 @@ import { NearIcon } from 'astro_2.0/components/NearIcon';
 import { AppFooter } from 'astro_2.0/components/AppFooter';
 import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 
+import { WalletType } from 'types/config';
 import { AccountPopupItem } from './components/AccountPopupItem';
 
 import styles from './AccountButton.module.scss';
 
 export const AccountButton: FC = () => {
   const [open, setOpen] = useState(false);
-  const { login, logout, accountId } = useAuthContext();
+  const [senderWalletAvailable, setSenderWalletAvailable] = useState(false);
+  const { login, logout, accountId, switchWallet } = useAuthContext();
+
+  const switchWalletHandler = useCallback(
+    async (wallet: WalletType) => {
+      await logout();
+      await switchWallet(wallet);
+      await login();
+    },
+    [logout, login, switchWallet]
+  );
 
   const ref = useRef(null);
+
+  useEffect(() => {
+    if (typeof window.near !== 'undefined' && window.near.isSender) {
+      setSenderWalletAvailable(true);
+    }
+  }, []);
 
   const closePopup = useCallback(() => {
     setOpen(false);
@@ -53,6 +70,22 @@ export const AccountButton: FC = () => {
           <div>
             <div className={styles.dropdown}>
               <div className={styles.name}>{accountId}</div>
+              {senderWalletAvailable && (
+                <div>
+                  <AccountPopupItem
+                    className={styles.auth}
+                    onClick={() => switchWalletHandler(WalletType.NEAR)}
+                  >
+                    NEAR wallet
+                  </AccountPopupItem>
+                  <AccountPopupItem
+                    className={styles.auth}
+                    onClick={() => switchWalletHandler(WalletType.SENDER)}
+                  >
+                    Sender wallet
+                  </AccountPopupItem>
+                </div>
+              )}
               <AccountPopupItem className={styles.auth} onClick={logout}>
                 Disconnect
               </AccountPopupItem>

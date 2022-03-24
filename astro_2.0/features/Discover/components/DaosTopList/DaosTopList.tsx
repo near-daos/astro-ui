@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { TopListItem } from 'astro_2.0/features/Discover/components/DaosTopList/components/TopListItem';
+import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 
 import { LeaderboardData } from 'astro_2.0/features/Discover/types';
 
@@ -10,9 +12,14 @@ import styles from './DaosTopList.module.scss';
 interface DaosTopListProps {
   data: LeaderboardData[] | null;
   valueLabel: string;
+  next: () => void;
 }
 
-export const DaosTopList: FC<DaosTopListProps> = ({ data, valueLabel }) => {
+export const DaosTopList: FC<DaosTopListProps> = ({
+  data,
+  valueLabel,
+  next,
+}) => {
   const { t } = useTranslation();
 
   if (!data) {
@@ -28,9 +35,22 @@ export const DaosTopList: FC<DaosTopListProps> = ({ data, valueLabel }) => {
           <div className={styles.proposals}>{valueLabel}</div>
           <div className={styles.chart}>{t('discover.lastMonth')}</div>
         </div>
-        {data.map((item, i) => {
-          return <TopListItem key={item.dao} index={i} data={item} />;
-        })}
+        <InfiniteScroll
+          dataLength={data.length}
+          next={next}
+          hasMore
+          loader={
+            <div className={styles.loadingMore}>
+              <LoadingIndicator />
+            </div>
+          }
+          style={{ overflow: 'initial' }}
+          endMessage=""
+        >
+          {data.map((item, i) => (
+            <TopListItem key={item.dao} index={i} data={item} />
+          ))}
+        </InfiniteScroll>
       </>
     </div>
   );

@@ -22,16 +22,10 @@ interface CustomEditProps {
 const CustomEdit: FC<CustomEditProps> = ({ className }) => {
   const [showModal] = useModal(CustomEditModal);
   const { state } = useStateMachine({ updateAction });
-  const { createDao, uploadAssets } = useCreateDao();
+  const { createDao } = useCreateDao();
 
   const handleClick = useCallback(async () => {
-    let coverFileName;
-
-    if (!state.assets.flagCover) {
-      coverFileName = await uploadAssets(state.assets.defaultFlag);
-    }
-
-    const newDaoParams = getNewDaoParams(state, coverFileName);
+    const newDaoParams = getNewDaoParams(state, '');
 
     const args = mapCreateDaoParamsToContractParams(newDaoParams);
 
@@ -53,7 +47,7 @@ const CustomEdit: FC<CustomEditProps> = ({ className }) => {
         });
       }
     }
-  }, [createDao, showModal, state, uploadAssets]);
+  }, [createDao, showModal, state]);
 
   return (
     <div className={cn(styles.root, className)}>

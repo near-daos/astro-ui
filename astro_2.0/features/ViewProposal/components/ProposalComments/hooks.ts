@@ -6,7 +6,7 @@ import {
   SendCommentsInput,
 } from 'types/proposal';
 import { useEffect, useState } from 'react';
-import { SputnikHttpService, SputnikNearService } from 'services/sputnik';
+import { SputnikHttpService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { useAsyncFn, useMountedState } from 'react-use';
 import { useSocket } from 'context/SocketContext';
@@ -48,8 +48,8 @@ export function useProposalComments(
   const [{ loading: uploading }, sendComment] = useAsyncFn(
     async params => {
       try {
-        const publicKey = await SputnikNearService.getPublicKey();
-        const signature = await SputnikNearService.getSignature();
+        const publicKey = await window.nearService.getPublicKey();
+        const signature = await window.nearService.getSignature();
 
         if (publicKey && signature && accountId) {
           await SputnikHttpService.sendProposalComment({
@@ -79,8 +79,8 @@ export function useProposalComments(
   const [, reportComment] = useAsyncFn(
     async params => {
       try {
-        const publicKey = await SputnikNearService.getPublicKey();
-        const signature = await SputnikNearService.getSignature();
+        const publicKey = await window.nearService.getPublicKey();
+        const signature = await window.nearService.getSignature();
 
         if (publicKey && signature && accountId) {
           await SputnikHttpService.reportProposalComment({
@@ -105,8 +105,8 @@ export function useProposalComments(
   const [, deleteComment] = useAsyncFn(
     async (commentId, reason) => {
       try {
-        const publicKey = await SputnikNearService.getPublicKey();
-        const signature = await SputnikNearService.getSignature();
+        const publicKey = await window.nearService.getPublicKey();
+        const signature = await window.nearService.getSignature();
 
         if (publicKey && signature && accountId) {
           await SputnikHttpService.deleteProposalComment(commentId, {

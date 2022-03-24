@@ -12,7 +12,7 @@ import {
 } from 'astro_2.0/features/Discover/types';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
 
-import { daoStatsService } from 'services/DaoStatsService';
+import { daoStatsService, LIMIT } from 'services/DaoStatsService';
 
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import {
@@ -37,7 +37,7 @@ export const Tvl: FC = () => {
   >(null);
 
   const { query } = useQuery<{ dao: string }>();
-
+  const [limit, setLimit] = useState(LIMIT);
   const items = useMemo<TControlTab[]>(() => {
     if (query.dao) {
       const currentData = data as TvlDao;
@@ -89,7 +89,7 @@ export const Tvl: FC = () => {
       },
     ];
   }, [data, query.dao, t]);
-  const [activeView, setActiveView] = useState<string>(items[0].id);
+  const [activeView, setActiveView] = useState(items[0].id);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -99,6 +99,7 @@ export const Tvl: FC = () => {
 
       setChartData(null);
       setLeaderboardData(null);
+      setLimit(LIMIT);
       setActiveView(id);
     },
     [isMounted]
@@ -118,7 +119,6 @@ export const Tvl: FC = () => {
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
-    let leaders;
 
     if (query.dao) {
       const params = {
@@ -145,15 +145,11 @@ export const Tvl: FC = () => {
       switch (activeView) {
         case TvlTabs.VL_IN_BOUNTIES: {
           chart = await daoStatsService.getTvlBountiesAndGrantsVl(CONTRACT);
-          leaders = await daoStatsService.getTvlBountiesAndGrantsVlLeaderboard(
-            CONTRACT
-          );
           break;
         }
         case TvlTabs.PLATFORM_TVL:
         default: {
           chart = await daoStatsService.getTvlHistory(CONTRACT);
-          leaders = await daoStatsService.getTvlLeaderboard(CONTRACT);
           break;
         }
       }
@@ -166,6 +162,32 @@ export const Tvl: FC = () => {
           y: count,
         }))
       );
+    }
+  }, [activeView, query.dao, isMounted]);
+
+  const [, getLeaderboardData] = useAsyncFn(async () => {
+    if (query.dao) {
+      return;
+    }
+
+    let leaders;
+
+    switch (activeView) {
+      case TvlTabs.VL_IN_BOUNTIES: {
+        leaders = await daoStatsService.getTvlBountiesAndGrantsVlLeaderboard({
+          ...CONTRACT,
+          limit,
+        });
+        break;
+      }
+      case TvlTabs.PLATFORM_TVL:
+      default: {
+        leaders = await daoStatsService.getTvlLeaderboard({
+          ...CONTRACT,
+          limit,
+        });
+        break;
+      }
     }
 
     if (leaders?.data?.metrics && isMounted()) {
@@ -183,11 +205,19 @@ export const Tvl: FC = () => {
 
       setLeaderboardData(newData);
     }
-  }, [activeView, query.dao, isMounted]);
+  }, [activeView, query.dao, isMounted, limit]);
 
   useEffect(() => {
     getChartData();
   }, [getChartData]);
+
+  useEffect(() => {
+    getLeaderboardData();
+  }, [getLeaderboardData]);
+
+  const nextLeaderboardItems = () => {
+    setLimit(limit + LIMIT);
+  };
 
   return (
     <div className={styles.root}>
@@ -205,6 +235,7 @@ export const Tvl: FC = () => {
           activeView={activeView}
         />
         <DaosTopList
+          next={nextLeaderboardItems}
           data={leaderboardData}
           valueLabel={getValueLabel(DaoStatsTopics.TVL, activeView)}
         />

@@ -11,14 +11,11 @@ import {
 } from 'types/notification';
 
 import { httpService } from 'services/HttpService';
-import { SputnikNearService } from 'services/sputnik';
 import { mapNotificationDtoToNotification } from 'services/NotificationsService/mappers/notification';
 import { NotificationSettingDTO } from 'services/NotificationsService/types';
 
 class NotificationsServiceClass {
   private readonly httpService = httpService;
-
-  private readonly sputnikNearService = SputnikNearService;
 
   public async getNotifications(
     showArchived: boolean,
@@ -34,7 +31,7 @@ class NotificationsServiceClass {
       daoIds: string[] | null;
     }
   ): Promise<PaginationResponse<Notification[]>> {
-    const accountId = this.sputnikNearService.getAccountId();
+    const accountId = window.nearService.getAccountId();
 
     if (!accountId) {
       return Promise.resolve({
@@ -130,7 +127,7 @@ class NotificationsServiceClass {
     const limit = 1000;
     const sort = 'createdAt,DESC';
 
-    const accountId = this.sputnikNearService.getAccountId();
+    const accountId = window.nearService.getAccountId();
 
     const query = RequestQueryBuilder.create().setFilter({
       field: 'accountId',

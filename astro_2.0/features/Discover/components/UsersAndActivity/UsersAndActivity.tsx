@@ -12,7 +12,7 @@ import {
 } from 'astro_2.0/features/Discover/types';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
 
-import { daoStatsService } from 'services/DaoStatsService';
+import { daoStatsService, LIMIT } from 'services/DaoStatsService';
 
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import {
@@ -115,7 +115,8 @@ export const UsersAndActivity: FC = () => {
     query.dao,
     t,
   ]);
-  const [activeView, setActiveView] = useState<string>(items[0].id);
+  const [activeView, setActiveView] = useState(items[0].id);
+  const [limit, setLimit] = useState(LIMIT);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -125,6 +126,7 @@ export const UsersAndActivity: FC = () => {
 
       setChartData(null);
       setLeaderboardData(null);
+      setLimit(LIMIT);
       setActiveView(id);
     },
     [isMounted]
@@ -144,7 +146,6 @@ export const UsersAndActivity: FC = () => {
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
-    let leaders;
 
     if (query.dao) {
       const params = {
@@ -171,7 +172,6 @@ export const UsersAndActivity: FC = () => {
       switch (activeView) {
         case UsersAndActivityTabs.USERS_MEMBERS_OF_DAO: {
           chart = await daoStatsService.getUsersMembers(CONTRACT);
-          leaders = await daoStatsService.getUsersMembersLeaderboard(CONTRACT);
           break;
         }
         case UsersAndActivityTabs.AVERAGE_NUMBER_OF_USERS_PER_DAO: {
@@ -180,9 +180,6 @@ export const UsersAndActivity: FC = () => {
         }
         case UsersAndActivityTabs.NUMBER_OF_INTERACTIONS: {
           chart = await daoStatsService.getUsersInteractions(CONTRACT);
-          leaders = await daoStatsService.getUsersInteractionsLeaderboard(
-            CONTRACT
-          );
           break;
         }
         case UsersAndActivityTabs.AVERAGE_NUMBER_OF_INTERACTIONS_PER_DAO: {
@@ -192,7 +189,6 @@ export const UsersAndActivity: FC = () => {
         case UsersAndActivityTabs.ALL_USERS_ON_PLATFORM:
         default: {
           chart = await daoStatsService.getUsersUsers(CONTRACT);
-          leaders = await daoStatsService.getUsersLeaderboard(CONTRACT);
           break;
         }
       }
@@ -206,9 +202,42 @@ export const UsersAndActivity: FC = () => {
         }))
       );
     }
+  }, [activeView, query.dao, isMounted]);
+
+  const [, getLeaderboardData] = useAsyncFn(async () => {
+    if (query.dao) {
+      return;
+    }
+
+    let leaders;
+
+    switch (activeView) {
+      case UsersAndActivityTabs.USERS_MEMBERS_OF_DAO: {
+        leaders = await daoStatsService.getUsersMembersLeaderboard({
+          ...CONTRACT,
+          limit,
+        });
+        break;
+      }
+      case UsersAndActivityTabs.NUMBER_OF_INTERACTIONS: {
+        leaders = await daoStatsService.getUsersInteractionsLeaderboard({
+          ...CONTRACT,
+          limit,
+        });
+        break;
+      }
+      case UsersAndActivityTabs.ALL_USERS_ON_PLATFORM:
+      default: {
+        leaders = await daoStatsService.getUsersLeaderboard({
+          ...CONTRACT,
+          limit,
+        });
+        break;
+      }
+    }
 
     if (leaders?.data?.metrics && isMounted()) {
-      const newData =
+      setLeaderboardData(
         leaders.data.metrics.map(metric => {
           return {
             ...metric,
@@ -218,15 +247,22 @@ export const UsersAndActivity: FC = () => {
                 y: count,
               })) ?? [],
           };
-        }) ?? null;
-
-      setLeaderboardData(newData);
+        }) ?? null
+      );
     }
-  }, [activeView, query.dao, isMounted]);
+  }, [activeView, query.dao, isMounted, limit]);
+
+  useEffect(() => {
+    getLeaderboardData();
+  }, [getLeaderboardData]);
 
   useEffect(() => {
     getChartData();
   }, [getChartData]);
+
+  const nextLeaderboardItems = () => {
+    setLimit(limit + LIMIT);
+  };
 
   return (
     <div className={styles.root}>
@@ -244,6 +280,7 @@ export const UsersAndActivity: FC = () => {
           activeView={activeView}
         />
         <DaosTopList
+          next={nextLeaderboardItems}
           data={leaderboardData}
           valueLabel={getValueLabel(
             DaoStatsTopics.USERS_AND_ACTIVITY,

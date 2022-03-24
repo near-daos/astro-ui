@@ -1,6 +1,5 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent } from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from 'next-i18next.config';
 import type { AppContext, AppProps } from 'next/app';
@@ -16,38 +15,19 @@ import { PageLayout } from 'astro_2.0/components/PageLayout';
 import { MobileNav } from 'astro_2.0/components/navigation/MobileNav';
 import { SearchResults } from 'features/search/search-results';
 
-import { SputnikNearService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
 
-import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
+import { ACCOUNT_COOKIE } from 'constants/cookies';
 
 import { SocketProvider } from 'context/SocketContext';
 
 import { useIntercomAdjust } from 'hooks/useIntercomAdjust';
 
-import { configService } from 'services/ConfigService';
-
 import 'styles/globals.scss';
+import { useAppInit } from 'hooks/useAppInit';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
-  const router = useRouter();
-
-  useEffect(() => {
-    const { nearConfig, appConfig } = configService.get();
-
-    SputnikNearService.init(nearConfig, appConfig);
-
-    const accountCookieOptions = appConfig.APP_DOMAIN
-      ? { ...DEFAULT_OPTIONS, domain: appConfig.APP_DOMAIN }
-      : DEFAULT_OPTIONS;
-
-    CookieService.set(
-      ACCOUNT_COOKIE,
-      SputnikNearService.getAccountId(),
-      accountCookieOptions
-    );
-    CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
-  }, [router.query.dao]);
+  useAppInit();
 
   useIntercomAdjust();
 

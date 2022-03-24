@@ -1,4 +1,3 @@
-import { SputnikNearService } from 'services/sputnik';
 import { configService } from 'services/ConfigService';
 import { CreateDaoInput } from 'types/dao';
 import { getRolesVotingPolicy } from 'astro_2.0/features/CreateDao/components/DaoSubmitForm/helpers';
@@ -18,11 +17,9 @@ export async function validateDaoAddress(
 
   const { nearConfig } = configService.get();
 
-  const res = await SputnikNearService.nearAccountExist(
+  return window.nearService.nearAccountExist(
     `${value}.${nearConfig?.contractName ?? ''}`
   );
-
-  return !res;
 }
 
 export function getNewDaoParams(
@@ -46,7 +43,7 @@ export function getNewDaoParams(
           structure: data.proposals.structure as DAOStructureType,
           proposals: data.proposals.proposals as DAOProposalsType,
         },
-        SputnikNearService.getAccountId()
+        window.nearService.getAccountId()
       ),
       proposalBond: '0.1',
       proposalPeriod: '168',
