@@ -22,8 +22,8 @@ import { SputnikWalletService } from 'services/sputnik/SputnikNearService/servic
 import { NearConfig } from 'config/near';
 import {
   DaoService,
-  WalletService,
   Transaction,
+  WalletService,
 } from 'services/sputnik/SputnikNearService/services/types';
 import { SenderWalletService } from 'services/sputnik/SputnikNearService/services/SenderWalletService';
 import { configService } from 'services/ConfigService';
@@ -321,14 +321,20 @@ export class SputnikNearService implements WalletService, DaoService {
   }
 
   async nearAccountExist(accountId: string): Promise<boolean> {
-    const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+    let account;
 
-    const near = new Near({
-      ...this.nearConfig,
-      keyStore,
-    });
+    if (this.getWalletType() === WalletType.NEAR) {
+      account = this.getAccount();
+    } else {
+      const keyStore = new keyStores.BrowserLocalStorageKeyStore();
 
-    const account = await near.account(accountId);
+      const near = new Near({
+        ...this.nearConfig,
+        keyStore,
+      });
+
+      account = await near.account(accountId);
+    }
 
     try {
       await account.state();

@@ -16,16 +16,3 @@ export enum WalletType {
   NEAR,
   SENDER,
 }
-
-export type NearConfig = {
-  walletFormat?: string;
-  networkId: string;
-  nodeUrl: string;
-  contractName: string;
-  tokenContractName: string;
-  masterAccount?: string;
-  walletUrl?: string;
-  helperUrl?: string;
-  explorerUrl?: string;
-  keyPath?: string;
-};

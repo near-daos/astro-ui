@@ -1,0 +1,36 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  .icon {
+    height: 34px;
+    width: 34px;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .row {
+    display: flex;
+    width: 100%;
+  }
+
+  .boldText,
+  .greyText {
+    @extend %subtitle4;
+  }
+
+  .boldText {
+    color: var(--color-neutral-90);
+  }
+
+  .greyText {
+    color: var(--color-neutral-60);
+  }
+}

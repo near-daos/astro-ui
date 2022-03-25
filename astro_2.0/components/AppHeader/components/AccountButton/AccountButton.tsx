@@ -9,6 +9,7 @@ import { AppFooter } from 'astro_2.0/components/AppFooter';
 import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 
 import { WalletType } from 'types/config';
+import { WalletDescription } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletDescription';
 import { AccountPopupItem } from './components/AccountPopupItem';
 
 import styles from './AccountButton.module.scss';
@@ -57,38 +58,82 @@ export const AccountButton: FC = () => {
           }
           options={{
             placement: 'bottom-end',
-            modifiers: [
-              {
-                name: 'offset',
-                options: {
-                  offset: [0, 24],
-                },
-              },
-            ],
           }}
         >
           <div>
             <div className={styles.dropdown}>
-              <div className={styles.name}>{accountId}</div>
+              <AccountPopupItem
+                content={<div className={styles.text}>My Account</div>}
+                icon={<Icon name="account" className={styles.icon} />}
+              />
+
               {senderWalletAvailable && (
-                <div>
+                <>
+                  <div className={styles.delimiter} />
+
+                  <div className={styles.chooseWalletCaption}>
+                    Choose wallet
+                  </div>
+
                   <AccountPopupItem
-                    className={styles.auth}
+                    icon={
+                      <div className={styles.iconContainer}>
+                        <Icon name="tokenNearBig" />
+                        {window.nearService.getWalletType() ===
+                          WalletType.NEAR && (
+                          <div className={styles.selectedWallet} />
+                        )}
+                      </div>
+                    }
+                    content={
+                      <WalletDescription
+                        name="NEAR"
+                        type="web"
+                        url="wallet.near.org"
+                      />
+                    }
                     onClick={() => switchWalletHandler(WalletType.NEAR)}
-                  >
-                    NEAR wallet
-                  </AccountPopupItem>
+                    className={styles.row}
+                  />
                   <AccountPopupItem
-                    className={styles.auth}
+                    icon={
+                      <div className={styles.iconContainer}>
+                        <Icon name="senderWallet" />
+                        {window.nearService.getWalletType() ===
+                          WalletType.SENDER && (
+                          <div className={styles.selectedWallet} />
+                        )}
+                      </div>
+                    }
+                    content={
+                      <WalletDescription
+                        name="Sender"
+                        type="extension"
+                        url="senderwallet.io"
+                      />
+                    }
                     onClick={() => switchWalletHandler(WalletType.SENDER)}
-                  >
-                    Sender wallet
-                  </AccountPopupItem>
-                </div>
+                    className={styles.row}
+                  />
+                  <div className={styles.delimiter} />
+                </>
               )}
-              <AccountPopupItem className={styles.auth} onClick={logout}>
-                Disconnect
-              </AccountPopupItem>
+              <AccountPopupItem
+                onClick={logout}
+                content={
+                  <div className={styles.disconnectText}>Disconnect</div>
+                }
+                icon={
+                  <Icon
+                    name="logout"
+                    className={cn(
+                      styles.disconnect,
+                      styles.icon,
+                      styles.disconnectIconColor
+                    )}
+                  />
+                }
+              />
             </div>
             <AppFooter mobile className={styles.footer} onClick={closePopup} />
           </div>
