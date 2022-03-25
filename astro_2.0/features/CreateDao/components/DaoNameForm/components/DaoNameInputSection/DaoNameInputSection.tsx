@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import get from 'lodash/get';
-import { useFormContext } from 'react-hook-form';
 import React, { VFC, useRef, ReactNode } from 'react';
+import { FieldErrors } from 'react-hook-form';
 
 import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 
@@ -12,14 +12,11 @@ interface DaoNameInputSectionProps {
   className?: string;
   labelClassName?: string;
   component: JSX.Element;
+  errors: FieldErrors;
 }
 
 export const DaoNameInputSection: VFC<DaoNameInputSectionProps> = props => {
-  const { label, component, className, labelClassName } = props;
-
-  const {
-    formState: { errors },
-  } = useFormContext();
+  const { label, component, className, labelClassName, errors } = props;
 
   const errorEl = useRef(null);
 

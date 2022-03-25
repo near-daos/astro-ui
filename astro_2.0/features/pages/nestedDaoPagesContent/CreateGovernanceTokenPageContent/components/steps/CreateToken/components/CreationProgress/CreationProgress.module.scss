@@ -19,6 +19,7 @@
 
 .step {
   align-items: center;
+  cursor: default;
   display: flex;
   position: relative;
   z-index: 1;
@@ -39,7 +40,7 @@
 
   height: $size;
   justify-content: center;
-  margin-right: 4px;
+  margin-right: 8px;
   width: $size;
 }
 
@@ -66,4 +67,8 @@
     height: 16px;
     width: 16px;
   }
+}
+
+.clickable {
+  cursor: pointer;
 }

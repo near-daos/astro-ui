@@ -8,7 +8,7 @@ import {
   utils,
 } from 'near-api-js';
 
-import { CreateDaoInput } from 'types/dao';
+import { CreateDaoCustomInput, CreateDaoInput } from 'types/dao';
 
 import { CreateProposalParams, Transfer, VoteAction } from 'types/proposal';
 
@@ -27,6 +27,7 @@ import {
 } from 'services/sputnik/SputnikNearService/services/types';
 import { SenderWalletService } from 'services/sputnik/SputnikNearService/services/SenderWalletService';
 import { configService } from 'services/ConfigService';
+import { CreateDaoParams } from 'services/sputnik/types';
 
 export const GAS_VALUE = new BN('300000000000000');
 export const FINALIZE_PROPOSAL_GAS_VALUE = new BN('150000000000000');
@@ -113,14 +114,24 @@ export class SputnikNearService implements WalletService, DaoService {
     }
   }
 
-  public async createDao(params: CreateDaoInput): Promise<void> {
-    const args = mapCreateDaoParamsToContractArgs(params);
+  public async createDao(
+    params: CreateDaoInput | CreateDaoCustomInput
+  ): Promise<void> {
+    function isCreateDaoParams(
+      _params: CreateDaoParams | CreateDaoCustomInput
+    ): _params is CreateDaoParams {
+      return (_params as CreateDaoParams).policy !== undefined;
+    }
+
+    const args = isCreateDaoParams(params)
+      ? mapCreateDaoParamsToContractArgs(params)
+      : params;
 
     const amount = new BN(
       utils.format.parseNearAmount(params.amountToTransfer) || '0'
     );
 
-    await this.walletService.functionCall({
+    await this.functionCall({
       contractId: this.nearConfig.contractName,
       methodName: 'create',
       args: {

@@ -92,7 +92,7 @@ exports[`page layout Should render component 1`] = `
           </div>
           <a
             class=""
-            href="/create-dao-new"
+            href="/create-dao-new?step=info"
           >
             <svg
               height="24"

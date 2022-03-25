@@ -1,6 +1,13 @@
 import get from 'lodash/get';
 
-import { DAO, DaoFeedItem, DaoSubscription, DaoVotePolicy } from 'types/dao';
+import {
+  DAO,
+  DaoFeedItem,
+  DaoSubscription,
+  DaoVotePolicy,
+  RolesRequest,
+  VotePolicyRequest,
+} from 'types/dao';
 import { DaoRole } from 'types/role';
 import Decimal from 'decimal.js';
 import { jsonToBase64Str } from 'utils/jsonToBase64Str';
@@ -162,10 +169,32 @@ export const mapDaoDTOListToDaoList = (daoList: DaoDTO[]): DAO[] => {
   }, []);
 };
 
-export const mapCreateDaoParamsToContractArgs = (
+/* eslint-disable camelcase */
+type ContractParams = {
+  purpose: string;
+  bond: string;
+  vote_period: string;
+  grace_period: string;
+  policy: {
+    roles: RolesRequest[];
+    default_vote_policy: VotePolicyRequest;
+    proposal_bond: string;
+    proposal_period: string;
+    bounty_bond: string;
+    bounty_forgiveness_period: string;
+  };
+  config: {
+    name: string;
+    purpose: string;
+    metadata: string;
+  };
+};
+/* eslint-enable camelcase */
+
+export const mapCreateDaoParamsToContractParams = (
   params: CreateDaoParams
-): string => {
-  const argsList = {
+): ContractParams => {
+  return {
     purpose: params.purpose,
     bond: new Decimal(params.bond).mul(YOKTO_NEAR).toFixed(),
     vote_period: new Decimal(params.votePeriod).mul('3.6e12').toFixed(),
@@ -200,6 +229,12 @@ export const mapCreateDaoParamsToContractArgs = (
       }),
     },
   };
+};
+
+export const mapCreateDaoParamsToContractArgs = (
+  params: CreateDaoParams
+): string => {
+  const argsList = mapCreateDaoParamsToContractParams(params);
 
   return jsonToBase64Str(argsList);
 };

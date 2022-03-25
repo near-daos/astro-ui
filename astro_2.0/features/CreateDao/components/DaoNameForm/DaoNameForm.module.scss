@@ -13,17 +13,12 @@
   h2 {
     @include font(1.75em, 38px, 700);
     font-family: var(--font-family-primary);
-    margin-bottom: 0;
+    margin-top: 0;
   }
 
   p {
     @extend %body2;
   }
-}
-
-.card {
-  @include card-shadow;
-  padding: 24px;
 }
 
 .address {

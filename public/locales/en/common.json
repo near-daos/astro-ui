@@ -122,6 +122,10 @@
       "daoKYCLink": "Please attach a link to the relevant document as proof of legal status.",
       "daoKYCLinkPlaceholder": "https://Legal_Document"
     },
+    "proposals": {
+      "proposalsCreation": "Proposal Creation",
+      "description": "Choose what rights you give DAO groups. This can be changed in settings later."
+    },
     "daoLinksForm": {
       "daoLinks": "Links and socials",
       "daoLinksDescription": "Looking to grow the DAO members? Add links to allow people to learn more about your DAO."
@@ -182,6 +186,14 @@
     "daoPreviewFutureForm": {
       "daoPreviewFuture": "Preview of your future DAO",
       "daoMakeSureDescription": "Make sure everything right and clear, this is how users will see your DAO on the platform!"
+    },
+    "daoMembersForm": {
+      "addMembers": "Add Members",
+      "addMembersDescription": "Looking to grow the DAO members? Add links to allow people to learn more about your DAO."
+    },
+    "daoAssets": {
+      "createDaoAssets": "Create DAO assets",
+      "createDaoAssetsDescription": "Both fields are optional. If you skip, default image will be used instead. An image and a logo together form a flag of your DAO!"
     },
     "daoSubmitForm": {
       "daoSubmitError": "There are errors in your form. Please, check validation messages on the page.",

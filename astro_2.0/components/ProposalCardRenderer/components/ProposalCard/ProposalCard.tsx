@@ -216,7 +216,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     variant !== ProposalVariant.ProposeDoneBounty ||
     (variant === ProposalVariant.ProposeDoneBounty && proposer === accountId);
   const restrictProposalRemove = variant === ProposalVariant.ProposeDoneBounty;
-  
+
   const showFinalize =
     permissions.canApprove &&
     permissions.canReject &&

@@ -110,6 +110,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
           {renderAllCommunities()}
           <NavItem
             href={CREATE_DAO_URL}
+            urlParams={{ step: 'info' }}
             className={styles.item}
             myDaosIds={myDaosIds}
             onClick={createDao}

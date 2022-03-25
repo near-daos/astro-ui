@@ -17,7 +17,7 @@ export const appConfig = {
   AWS_BUCKET: '',
   AWS_REGION: '',
   GOOGLE_ANALYTICS_KEY: '',
-  RELEASE_NOTES: '',
+  RELEASE_NOTES: process.env.RELEASE_NOTES,
   I18_RELOAD_ON_PRERENDER: false,
   TOASTS_NOTIFICATIONS_TIMEOUT: 0,
 };
