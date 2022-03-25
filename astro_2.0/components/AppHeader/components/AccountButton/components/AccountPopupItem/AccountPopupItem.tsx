@@ -5,12 +5,15 @@ import styles from './AccountPopupItem.module.scss';
 
 interface AccountPopupItemProps {
   className?: string;
+  icon: React.ReactNode;
+  content: React.ReactNode;
   onClick?: () => void;
 }
 
 export const AccountPopupItem: FC<AccountPopupItemProps> = ({
   className,
-  children,
+  icon,
+  content,
   onClick,
 }) => {
   return (
@@ -21,7 +24,8 @@ export const AccountPopupItem: FC<AccountPopupItemProps> = ({
       onKeyPress={onClick}
       className={cn(styles.root, className)}
     >
-      {children}
+      <div className={styles.icon}>{icon}</div>
+      <div className={styles.content}>{content}</div>
     </div>
   );
 };

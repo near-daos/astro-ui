@@ -14,8 +14,8 @@
   border-radius: 8px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   cursor: default;
-  padding: 8px;
-  width: 328px;
+  padding: 8px 24px;
+  width: 226px;
   z-index: 1000;
 
   &.hidden {
@@ -25,12 +25,46 @@
   .delimiter {
     background-color: var(--color-neutral-20);
     height: 1px;
-    margin: 4px 0;
+    margin: 12px 0;
   }
 
-  .auth {
+  .disconnectIconColor {
     color: var(--color-brand-coral-red);
+  }
+
+  .iconContainer {
+    position: relative;
+  }
+
+  .selectedWallet {
+    background-color: var(--color-brand-green);
+    border-radius: 50%;
+    height: 8px;
+    left: 24px;
+    position: absolute;
+    top: 0;
+    width: 8px;
+  }
+
+  .row {
     cursor: pointer;
+    display: flex;
+    margin-bottom: 24px;
+    width: auto;
+  }
+
+  .disconnectText {
+    @extend %subtitle3;
+  }
+
+  .chooseWalletCaption {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+    margin-bottom: 24px;
+  }
+  .text {
+    @extend %subtitle4;
+    color: var(--color-neutral-90);
   }
 
   .name {

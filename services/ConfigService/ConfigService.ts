@@ -1,5 +1,5 @@
-import { Config, NearConfig } from 'types/config';
-import { getNearConfig, NEAR_ENV } from 'config/near';
+import { Config } from 'types/config';
+import { getNearConfig, NEAR_ENV, NearConfig } from 'config/near';
 import { appConfig as APP_CONFIG } from 'config';
 
 export class ConfigService {

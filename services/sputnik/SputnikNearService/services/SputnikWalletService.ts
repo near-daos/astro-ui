@@ -10,7 +10,7 @@ import { BrowserLocalStorageKeyStore } from 'near-api-js/lib/key_stores';
 import { AccessKey, Action } from 'near-api-js/lib/transaction';
 import { SputnikConnectedWalletAccount } from 'services/sputnik/SputnikNearService/overrides/SputnikConnectedWalletAccount';
 import compact from 'lodash/compact';
-import { NearConfig, WalletType } from 'types/config';
+import { WalletType } from 'types/config';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { getSignature } from 'services/sputnik/SputnikNearService/services/helpers';
@@ -19,6 +19,7 @@ import {
   Transaction,
 } from 'services/sputnik/SputnikNearService/services/types';
 import BN from 'bn.js';
+import { NearConfig } from 'config/near';
 
 export class SputnikWalletService implements WalletService {
   private readonly near: Near;
