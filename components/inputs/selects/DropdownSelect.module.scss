@@ -13,7 +13,7 @@
 .dropdown {
   align-items: center;
   display: flex;
-  height: 42px;
+  height: 40px;
   justify-content: space-between;
   position: relative;
   width: 100%;
@@ -22,7 +22,7 @@
 .label {
   @extend %caption1;
   color: var(--color-neutral-60);
-  padding-bottom: 8px;
+  padding-bottom: 4px;
 }
 
 .select {

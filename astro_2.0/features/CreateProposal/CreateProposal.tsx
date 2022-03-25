@@ -29,10 +29,10 @@ import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomToken
 import { getInitialProposalVariant } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 import { UserPermissions } from 'types/context';
 
+import { getFormInitialValues } from 'astro_2.0/features/CreateProposal/helpers/initialValues';
+import { getNewProposalObject } from 'astro_2.0/features/CreateProposal/helpers/newProposalObject';
 import {
   getFormContentNode,
-  getFormInitialValues,
-  getNewProposalObject,
   getValidationSchema,
   mapProposalVariantToProposalType,
 } from './helpers';
@@ -107,7 +107,11 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     context: schemaContext,
     mode: 'onSubmit',
     resolver: async (data, context) => {
-      const schema = getValidationSchema(context?.selectedProposalVariant, dao);
+      const schema = getValidationSchema(
+        context?.selectedProposalVariant,
+        dao,
+        data
+      );
 
       try {
         let values = await schema.validate(data, {

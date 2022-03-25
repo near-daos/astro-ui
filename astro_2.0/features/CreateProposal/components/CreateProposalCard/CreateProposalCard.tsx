@@ -11,6 +11,7 @@ import { Icon } from 'components/Icon';
 import { IconButton } from 'components/button/IconButton';
 import { GroupedSelect } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
 import { AmountBalanceCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/AmountBalanceCard';
+import { FunctionCallTypeSelector } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/FunctionCallTypeSelector';
 
 import { ProposalVariant } from 'types/proposal';
 import { UserPermissions } from 'types/context';
@@ -150,6 +151,17 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
           </div>
         );
       }
+      case ProposalVariant.ProposeCustomFunctionCall: {
+        return (
+          <div className={styles.proposerCell}>
+            <InfoBlockWidget
+              label={t('proposalCard.proposalOwner')}
+              value={proposer}
+            />
+            <FunctionCallTypeSelector />
+          </div>
+        );
+      }
       default: {
         return (
           <div className={styles.proposerCell}>
@@ -187,7 +199,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
                 className={styles.textArea}
                 isBorderless
                 maxLength={500}
-                minRows={4}
+                minRows={2}
                 maxRows={4}
                 {...register('details')}
               />

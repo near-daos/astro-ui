@@ -26,6 +26,7 @@ interface GroupedSelectProps {
   defaultValue: string;
   inputSize?: number;
   inputStyles?: CSSProperties;
+  caption?: string;
 }
 
 export const GroupedSelect = React.forwardRef<
@@ -33,7 +34,7 @@ export const GroupedSelect = React.forwardRef<
   GroupedSelectProps
 >(
   (
-    { options, onChange, defaultValue, inputStyles = {}, ...rest },
+    { options, onChange, defaultValue, inputStyles = {}, caption, ...rest },
     externalRef
   ) => {
     const { t } = useTranslation();
@@ -73,7 +74,8 @@ export const GroupedSelect = React.forwardRef<
         }) => (
           <div className={styles.root}>
             <label {...getLabelProps()} className={styles.label} htmlFor={id}>
-              {t('proposalCard.proposalType')} {selectedItem?.group}
+              {caption ||
+                `${t('proposalCard.proposalType')} ${selectedItem?.group}`}
             </label>
             <label
               {...getToggleButtonProps()}
@@ -90,9 +92,9 @@ export const GroupedSelect = React.forwardRef<
                   overflow: 'hidden',
                   height: 0,
                   width: 'fit-content',
-                  fontSize: 22,
                   fontWeight: 700,
                   whiteSpace: 'nowrap',
+                  ...inputStyles,
                 }}
               >
                 {selectedItem?.label}
@@ -118,9 +120,11 @@ export const GroupedSelect = React.forwardRef<
                     (result, section) => {
                       result.sections.push(
                         <section key={section.title}>
-                          <div className={styles.sectionTitle}>
-                            {section.title}
-                          </div>
+                          {section.title && (
+                            <div className={styles.sectionTitle}>
+                              {section.title}
+                            </div>
+                          )}
                           {section.options.map((option: Option) => {
                             // eslint-disable-next-line no-param-reassign,no-plusplus
                             const index = result.itemIndex++;
