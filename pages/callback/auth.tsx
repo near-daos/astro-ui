@@ -21,16 +21,11 @@ const Callback: NextPage = () => {
     const intervalId = setInterval(() => {
       const { appConfig, nearConfig } = configService.get();
 
-      // eslint-disable-next-line no-console
-      console.log('interval started', appConfig, nearConfig);
-
       if (
         appConfig &&
         nearConfig &&
         window.opener?.sputnikRequestSignInCompleted
       ) {
-        // eslint-disable-next-line no-console
-        console.log('call back received', appConfig, nearConfig);
         window.opener.sputnikRequestSignInCompleted({ accountId, errorCode });
 
         // we need to reinit wallet service after login
@@ -50,7 +45,7 @@ const Callback: NextPage = () => {
           window.close();
         }, 1500);
       }
-    }, 1500);
+    }, 500);
   }, []);
 
   return null;
