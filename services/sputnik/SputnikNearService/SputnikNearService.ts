@@ -317,20 +317,14 @@ export class SputnikNearService implements WalletService, DaoService {
   }
 
   async nearAccountExist(accountId: string): Promise<boolean> {
-    let account;
+    const keyStore = new keyStores.BrowserLocalStorageKeyStore();
 
-    if (this.getWalletType() === WalletType.NEAR) {
-      account = this.getAccount();
-    } else {
-      const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+    const near = new Near({
+      ...this.nearConfig,
+      keyStore,
+    });
 
-      const near = new Near({
-        ...this.nearConfig,
-        keyStore,
-      });
-
-      account = await near.account(accountId);
-    }
+    const account = await near.account(accountId);
 
     try {
       await account.state();
