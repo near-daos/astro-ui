@@ -26,12 +26,7 @@ export const MobileNav: VFC = () => {
         MY_FEED_NAV_CONFIG,
         DISCOVER_NAV_CONFIG,
       ]
-    : [
-        DISCOVER_NAV_CONFIG,
-        ALL_DAOS_NAV_CONFIG,
-        ASTRO_FEED_NAV_CONFIG,
-        DISCOVER_NAV_CONFIG,
-      ];
+    : [ALL_DAOS_NAV_CONFIG, ASTRO_FEED_NAV_CONFIG, DISCOVER_NAV_CONFIG];
 
   const navItems = navConfig.map(conf => {
     return (

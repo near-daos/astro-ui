@@ -29,7 +29,7 @@ describe('Mobile nav', () => {
     const { container, getAllByTestId } = render(<MobileNav />);
 
     expect(container).toMatchSnapshot();
-    expect(getAllByTestId('nav-item')).toHaveLength(4);
+    expect(getAllByTestId('nav-item')).toHaveLength(3);
   });
 
   it('Should render full navigation for logged user', () => {
