@@ -33,27 +33,17 @@ export const AccountButton: FC = () => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      // eslint-disable-next-line no-console
-      console.log('counter', counter);
-
-      if (counter.current && counter.current === 10) {
+      if (counter.current !== undefined && counter.current === 10) {
         clearInterval(intervalId);
-
-        // eslint-disable-next-line no-console
-        console.log('counter reached ten, clearing counter ', counter);
 
         return;
       }
 
-      if (counter.current) {
-        // eslint-disable-next-line no-console
-        console.log('incrementing counter ', counter);
+      if (counter.current !== undefined) {
         counter.current += 1;
       }
 
       if (typeof window.near !== 'undefined' && window.near.isSender) {
-        // eslint-disable-next-line no-console
-        console.log('sender wallet found, clearing counter ', counter);
         setSenderWalletAvailable(true);
         clearInterval(intervalId);
       }
