@@ -107,11 +107,7 @@ export class SputnikNearService implements WalletService, DaoService {
       }
     }
 
-    if (!this.walletService.isSignedIn()) {
-      await this.walletService.signIn(this.nearConfig.contractName);
-    } else {
-      window.localStorage.setItem('selectedWallet', walletType.toString());
-    }
+    window.localStorage.setItem('selectedWallet', walletType.toString());
   }
 
   public async createDao(

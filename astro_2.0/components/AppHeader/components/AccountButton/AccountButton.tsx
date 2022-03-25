@@ -29,11 +29,25 @@ export const AccountButton: FC = () => {
   );
 
   const ref = useRef(null);
+  const counter = useRef(0);
 
   useEffect(() => {
-    if (typeof window.near !== 'undefined' && window.near.isSender) {
-      setSenderWalletAvailable(true);
-    }
+    const intervalId = setInterval(() => {
+      if (counter.current && counter.current === 10) {
+        clearInterval(intervalId);
+
+        return;
+      }
+
+      if (counter.current) {
+        counter.current += 1;
+      }
+
+      if (typeof window.near !== 'undefined' && window.near.isSender) {
+        setSenderWalletAvailable(true);
+        clearInterval(intervalId);
+      }
+    }, 500);
   }, []);
 
   const closePopup = useCallback(() => {
