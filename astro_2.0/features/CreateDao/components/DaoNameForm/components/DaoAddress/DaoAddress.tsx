@@ -29,7 +29,7 @@ export const DaoAddress: VFC<DaoAddressProps> = ({
 
       const res = await validateDaoAddress(address);
 
-      if (!res && onError) {
+      if (res && onError) {
         onError();
       } else {
         onChange(address);

@@ -79,8 +79,17 @@ export const StepWrapper: FC = ({ children }) => {
     [updateQuery]
   );
 
+  const handleReset = useCallback(() => {
+    sessionStorage.removeItem('__LSM__');
+    actions.updateAction(getInitialValues(accountId, state.assets.defaultFlag));
+  }, [accountId, actions, state.assets.defaultFlag]);
+
   useMount(() => {
     updateQuery('step', query.step);
+
+    if (state.members.accounts[0] !== accountId) {
+      handleReset();
+    }
   });
 
   return (
@@ -98,10 +107,7 @@ export const StepWrapper: FC = ({ children }) => {
               className={styles.resetButton}
               size="small"
               onClick={() => {
-                sessionStorage.removeItem('__LSM__');
-                actions.updateAction(
-                  getInitialValues(accountId, state.assets.defaultFlag)
-                );
+                handleReset();
                 handleClick('info');
               }}
             >
