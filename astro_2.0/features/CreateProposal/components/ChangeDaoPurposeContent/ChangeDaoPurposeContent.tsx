@@ -21,8 +21,6 @@ export const ChangeDaoPurposeContent: FC<ChangeDaoPurposeContentProps> = ({
 }) => {
   const {
     register,
-    // setValue,
-    // getValues,
     formState: { errors, touchedFields },
   } = useFormContext();
 
