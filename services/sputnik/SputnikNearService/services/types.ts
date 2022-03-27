@@ -4,7 +4,6 @@ import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { ConnectedWalletAccount, transactions } from 'near-api-js';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { WalletType } from 'types/config';
-import BN from 'bn.js';
 
 export interface DaoService {
   createDao(params: CreateDaoParams): Promise<void>;
@@ -42,7 +41,10 @@ export interface DaoService {
 
 export interface WalletService {
   signIn(contractId: string): Promise<void>;
-  sendMoney(receiverId: string, amount: BN): Promise<FinalExecutionOutcome>;
+  sendMoney(
+    receiverId: string,
+    amount: number
+  ): Promise<FinalExecutionOutcome | FinalExecutionOutcome[]>;
   getWalletType(): WalletType;
   logout(): void;
   isSignedIn(): boolean;
@@ -70,10 +72,10 @@ export type SenderWalletInstance = {
   isSender: boolean;
   accountId: string;
   isSignedIn: () => boolean;
-  sendMoney: (
-    receiverId: string,
-    amount: string
-  ) => Promise<FinalExecutionOutcome>;
+  sendMoney: (params: {
+    receiverId: string;
+    amount: string;
+  }) => Promise<FinalExecutionOutcome>;
   signAndSendTransaction: (transaction: {
     receiverId: string;
     actions: {

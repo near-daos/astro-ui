@@ -21,14 +21,12 @@ interface AuthContextInterface {
   switchWallet: (walletType: WalletType) => Promise<void>;
 }
 
-/* eslint-disable @typescript-eslint/no-empty-function */
 const AuthContext = createContext<AuthContextInterface>({
   accountId: '',
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   switchWallet: () => Promise.resolve(),
 });
-/* eslint-enable @typescript-eslint/no-empty-function */
 
 export const AuthWrapper: FC = ({ children }) => {
   const router = useRouter();

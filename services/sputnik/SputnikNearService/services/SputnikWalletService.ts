@@ -7,7 +7,7 @@ import {
 } from 'near-api-js';
 import { SputnikWalletConnection } from 'services/sputnik/SputnikNearService/overrides/SputnikWalletConnection';
 import { BrowserLocalStorageKeyStore } from 'near-api-js/lib/key_stores';
-import { AccessKey, Action } from 'near-api-js/lib/transaction';
+import { AccessKey, Action, transfer } from 'near-api-js/lib/transaction';
 import { SputnikConnectedWalletAccount } from 'services/sputnik/SputnikNearService/overrides/SputnikConnectedWalletAccount';
 import compact from 'lodash/compact';
 import { WalletType } from 'types/config';
@@ -20,6 +20,7 @@ import {
 } from 'services/sputnik/SputnikNearService/services/types';
 import BN from 'bn.js';
 import { NearConfig } from 'config/near';
+import { parseNearAmount } from 'near-api-js/lib/utils/format';
 
 export class SputnikWalletService implements WalletService {
   private readonly near: Near;
@@ -48,6 +49,7 @@ export class SputnikWalletService implements WalletService {
     });
 
     this.walletConnection = new SputnikWalletConnection(this.near, 'sputnik');
+    window.localStorage.setItem('selectedWallet', WalletType.NEAR.toString());
   }
 
   isSignedIn(): boolean {
@@ -193,7 +195,16 @@ export class SputnikWalletService implements WalletService {
     return this.walletType;
   }
 
-  sendMoney(receiverId: string, amount: BN): Promise<FinalExecutionOutcome> {
-    return this.getAccount().sendMoney(receiverId, amount);
+  async sendMoney(
+    receiverId: string,
+    amount: number
+  ): Promise<FinalExecutionOutcome | FinalExecutionOutcome[]> {
+    const parsedNear = parseNearAmount(amount.toString());
+
+    const nearAsBn = new BN(parsedNear ?? 0);
+
+    return this.sendTransactions([
+      { receiverId, actions: [transfer(nearAsBn)] },
+    ]);
   }
 }

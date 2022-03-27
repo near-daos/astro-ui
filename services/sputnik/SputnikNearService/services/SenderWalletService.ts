@@ -9,10 +9,10 @@ import {
   Transaction,
 } from 'services/sputnik/SputnikNearService/services/types';
 import { WalletType } from 'types/config';
-import BN from 'bn.js';
 import { ACCOUNT_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 import { CookieService } from 'services/CookieService';
 import { configService } from 'services/ConfigService';
+import { parseNearAmount } from 'near-api-js/lib/utils/format';
 
 export class SenderWalletService implements WalletService {
   private readonly walletInstance: SenderWalletInstance;
@@ -24,6 +24,7 @@ export class SenderWalletService implements WalletService {
   constructor(walletInstance: SenderWalletInstance) {
     this.walletInstance = walletInstance;
     this.appConfig = configService.get().appConfig;
+    window.localStorage.setItem('selectedWallet', WalletType.SENDER.toString());
   }
 
   isSignedIn(): boolean {
@@ -101,7 +102,15 @@ export class SenderWalletService implements WalletService {
     return this.walletType;
   }
 
-  sendMoney(receiverId: string, amount: BN): Promise<FinalExecutionOutcome> {
-    return this.walletInstance.sendMoney(receiverId, amount.toString());
+  sendMoney(
+    receiverId: string,
+    amount: number
+  ): Promise<FinalExecutionOutcome> {
+    const parsedAmount = parseNearAmount(amount.toString());
+
+    return this.walletInstance.sendMoney({
+      receiverId,
+      amount: parsedAmount ?? '',
+    });
   }
 }
