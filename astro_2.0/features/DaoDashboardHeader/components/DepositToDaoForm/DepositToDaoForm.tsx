@@ -4,7 +4,7 @@ import { DepositInput } from 'astro_2.0/features/DaoDashboardHeader/components/D
 import { DepositButton } from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm/components/DepositButton';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import BN from 'bn.js';
+
 import styles from './DepositToDaoForm.module.scss';
 
 const schema = yup.object().shape({
@@ -34,7 +34,7 @@ export const DepositToDaoForm: React.FC<DepositToDaoForm> = ({ daoId }) => {
   const { handleSubmit, setValue } = methods;
 
   const submitHandler = async (data: { depositAmount: number }) => {
-    await window.nearService.sendMoney(daoId, new BN(data.depositAmount));
+    await window.nearService.sendMoney(daoId, data.depositAmount);
     setValue('depositAmount', 0);
   };
 

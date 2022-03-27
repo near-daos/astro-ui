@@ -45,7 +45,10 @@ export class SputnikNearService implements WalletService, DaoService {
     this.appConfig = configService.get().appConfig;
   }
 
-  sendMoney(receiverId: string, amount: BN): Promise<FinalExecutionOutcome> {
+  sendMoney(
+    receiverId: string,
+    amount: number
+  ): Promise<FinalExecutionOutcome | FinalExecutionOutcome[]> {
     return this.walletService.sendMoney(receiverId, amount);
   }
 
@@ -106,8 +109,6 @@ export class SputnikNearService implements WalletService, DaoService {
         this.walletService = new SputnikWalletService(this.nearConfig);
       }
     }
-
-    window.localStorage.setItem('selectedWallet', walletType.toString());
   }
 
   public async createDao(

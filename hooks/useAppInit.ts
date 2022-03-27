@@ -30,11 +30,7 @@ export function useAppInit(): void {
       window.localStorage.getItem('selectedWallet')
     );
 
-    const noSenderWalletAvailable = () =>
-      (selectedWallet === WalletType.SENDER && !window.near) || !selectedWallet;
-
-    // no extension available, but user still has sender wallet selected
-    if (noSenderWalletAvailable()) {
+    if (selectedWallet === undefined) {
       window.nearService = new SputnikNearService(
         new SputnikWalletService(nearConfig)
       );
@@ -51,7 +47,7 @@ export function useAppInit(): void {
     if (window.nearService.isSignedIn()) {
       dispatchCustomEvent(WALLET_INIT_EVENT, true);
     } else {
-      login().then(() => {
+      window.nearService.signIn(nearConfig.contractName).then(() => {
         dispatchCustomEvent(WALLET_INIT_EVENT, true);
       });
     }
