@@ -43,7 +43,11 @@ export const AccountButton: FC = () => {
         counter.current += 1;
       }
 
-      if (typeof window.near !== 'undefined' && window.near.isSender) {
+      if (
+        typeof window.near !== 'undefined' &&
+        window.near.isSender &&
+        window.nearService
+      ) {
         setSenderWalletAvailable(true);
         clearInterval(intervalId);
       }
