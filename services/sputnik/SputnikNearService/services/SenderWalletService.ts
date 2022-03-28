@@ -12,6 +12,7 @@ import { WalletType } from 'types/config';
 import { ACCOUNT_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 import { CookieService } from 'services/CookieService';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
+import { httpService } from 'services/HttpService';
 
 export class SenderWalletService implements WalletService {
   private readonly walletInstance: SenderWalletInstance;
@@ -70,15 +71,19 @@ export class SenderWalletService implements WalletService {
     return getSignature(keyPair);
   }
 
-  sendTransactions(
+  async sendTransactions(
     transactions: Transaction[]
   ): Promise<FinalExecutionOutcome[]> {
-    return this.walletInstance.requestSignTransactions(transactions);
+    const result = await this.walletInstance.requestSignTransactions(
+      transactions
+    );
+
+    return result.response;
   }
 
   async functionCall(
     props: FunctionCallOptions
-  ): Promise<FinalExecutionOutcome> {
+  ): Promise<FinalExecutionOutcome[]> {
     const tx = {
       receiverId: props.contractId,
       actions: [
@@ -86,27 +91,45 @@ export class SenderWalletService implements WalletService {
           methodName: props.methodName,
           args: { ...props.args },
           gas: props.gas?.toString(),
-          deposit: props.attachedDeposit?.toString(),
+          deposit: props.attachedDeposit
+            ? props.attachedDeposit?.toString()
+            : '0',
         },
       ],
     };
 
-    return this.walletInstance.signAndSendTransaction(tx);
+    const result = await this.walletInstance.signAndSendTransaction(tx);
+
+    const transactionHashes = result.response[0].transaction.hash;
+    const signerId = result.response[0].transaction.signer_id;
+
+    try {
+      await httpService.get(
+        `/transactions/wallet/callback/${signerId}?transactionHashes=${transactionHashes}`
+      );
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
+    }
+
+    return result.response;
   }
 
   getWalletType(): WalletType {
     return this.walletType;
   }
 
-  sendMoney(
+  async sendMoney(
     receiverId: string,
     amount: number
-  ): Promise<FinalExecutionOutcome> {
+  ): Promise<FinalExecutionOutcome[]> {
     const parsedAmount = parseNearAmount(amount.toString());
 
-    return this.walletInstance.sendMoney({
+    const result = await this.walletInstance.sendMoney({
       receiverId,
       amount: parsedAmount ?? '',
     });
+
+    return result.response;
   }
 }

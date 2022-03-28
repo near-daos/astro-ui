@@ -8,16 +8,16 @@ import { WalletType } from 'types/config';
 export interface DaoService {
   createDao(params: CreateDaoParams): Promise<void>;
 
-  addProposal(params: CreateProposalParams): Promise<FinalExecutionOutcome>;
+  addProposal(params: CreateProposalParams): Promise<FinalExecutionOutcome[]>;
 
   vote(
     daoId: string,
     proposalId: number,
     action: 'VoteApprove' | 'VoteRemove' | 'VoteReject',
     gas?: string | number
-  ): Promise<FinalExecutionOutcome>;
+  ): Promise<FinalExecutionOutcome[]>;
 
-  finalize(daoId: string, proposalId: number): Promise<FinalExecutionOutcome>;
+  finalize(daoId: string, proposalId: number): Promise<FinalExecutionOutcome[]>;
 
   claimBounty(
     daoId: string,
@@ -36,7 +36,7 @@ export interface DaoService {
     daoId: string,
     bountyId: number,
     gas?: string | number
-  ): Promise<FinalExecutionOutcome>;
+  ): Promise<FinalExecutionOutcome[]>;
 }
 
 export interface WalletService {
@@ -44,13 +44,13 @@ export interface WalletService {
   sendMoney(
     receiverId: string,
     amount: number
-  ): Promise<FinalExecutionOutcome | FinalExecutionOutcome[]>;
+  ): Promise<FinalExecutionOutcome[]>;
   getWalletType(): WalletType;
   logout(): void;
   isSignedIn(): boolean;
   getAccount(): ConnectedWalletAccount;
   getAccountId(): string;
-  functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome>;
+  functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome[]>;
   getPublicKey(): Promise<string | null>;
   getSignature(): Promise<string | null>;
   sendTransactions(
@@ -68,6 +68,21 @@ export type Transaction = {
   actions: transactions.Action[];
 };
 
+export type SenderWalletTransactionResult = {
+  actionType: string;
+  method: string;
+  notificationId: number;
+  type: string;
+  response: FinalExecutionOutcome[];
+};
+
+export type Action = {
+  methodName: string;
+  args: Record<string, unknown>;
+  gas?: string;
+  deposit?: string;
+};
+
 export type SenderWalletInstance = {
   isSender: boolean;
   accountId: string;
@@ -75,19 +90,14 @@ export type SenderWalletInstance = {
   sendMoney: (params: {
     receiverId: string;
     amount: string;
-  }) => Promise<FinalExecutionOutcome>;
+  }) => Promise<SenderWalletTransactionResult>;
   signAndSendTransaction: (transaction: {
     receiverId: string;
-    actions: {
-      methodName: string;
-      args: Record<string, unknown>;
-      gas?: string;
-      deposit?: string;
-    }[];
-  }) => Promise<FinalExecutionOutcome>;
+    actions: Action[];
+  }) => Promise<SenderWalletTransactionResult>;
   requestSignTransactions: (
     transactions: Transaction[]
-  ) => Promise<FinalExecutionOutcome[]>;
+  ) => Promise<SenderWalletTransactionResult>;
   signOut: () => void;
   authData: {
     accountId: string;
