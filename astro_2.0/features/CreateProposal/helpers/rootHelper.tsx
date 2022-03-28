@@ -393,7 +393,7 @@ export function mapProposalVariantToProposalType(
   }
 }
 
-function validateUserAccount(
+export function validateUserAccount(
   value: string | undefined
 ): Promise<boolean> | boolean {
   if (!value) {

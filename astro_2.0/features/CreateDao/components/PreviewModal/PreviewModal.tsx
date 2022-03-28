@@ -17,7 +17,7 @@ export const PreviewModal: FC<PreviewModal> = ({
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
-      <FlagPreview coverFile={cover} logoFile={logo} />;
+      <FlagPreview coverFile={cover} logoFile={logo} />
     </Modal>
   );
 };

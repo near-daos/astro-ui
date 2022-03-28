@@ -13,7 +13,7 @@ interface DaoAddressProps {
   displayName: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange: (e: any) => void;
-  onError?: () => void;
+  onError?: (v?: string) => void;
 }
 
 export const DaoAddress: VFC<DaoAddressProps> = ({
@@ -27,15 +27,19 @@ export const DaoAddress: VFC<DaoAddressProps> = ({
     async () => {
       const address = formatDaoAddress(displayName);
 
-      const res = await validateDaoAddress(address);
+      if (!address && onError) {
+        return;
+      }
 
-      if (res && onError) {
-        onError();
+      const isAccountExist = await validateDaoAddress(address);
+
+      if (isAccountExist && onError) {
+        onError(address);
       } else {
         onChange(address);
       }
     },
-    500,
+    300,
     [displayName]
   );
 

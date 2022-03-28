@@ -3,6 +3,8 @@ import { useTranslation } from 'next-i18next';
 import { useStateMachine } from 'little-state-machine';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useMount } from 'react-use';
+import * as yup from 'yup';
+import cn from 'classnames';
 
 import { useModal } from 'components/modal';
 import { updateAction } from 'astro_2.0/features/CreateDao/components/helpers';
@@ -12,11 +14,49 @@ import { Button } from 'components/button/Button';
 import { ImageUpload } from 'astro_2.0/features/CreateDao/components/ImageUpload';
 import { DaoSubmitForm } from 'astro_2.0/features/CreateDao/components/DaoSubmitForm';
 import { PreviewModal } from 'astro_2.0/features/CreateDao/components/PreviewModal';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
 
 import { useImageUpload } from 'astro_2.0/features/CreateDao/components/hooks';
 import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
+import { getImgValidationError, validateImgSize } from 'utils/imageValidators';
 
 import styles from './DaoAssetsForm.module.scss';
+
+const schema = yup.object().shape({
+  value: yup.mixed().test('fileSize', getImgValidationError, validateImgSize),
+});
+
+async function validateAsset(data: { value: FileList }) {
+  try {
+    await schema.validate(data, {
+      abortEarly: false,
+    });
+
+    return {
+      values: { value: data.value },
+      errors: null,
+    };
+  } catch (e) {
+    return {
+      values: null,
+      errors: e.inner.reduce(
+        (
+          allErrors: Record<string, string>,
+          currentError: { path: string; type?: string; message: string }
+        ) => {
+          return {
+            ...allErrors,
+            value: {
+              type: currentError.type ?? 'validation',
+              message: currentError.message,
+            },
+          };
+        },
+        {}
+      ),
+    };
+  }
+}
 
 export const DaoAssetsForm: VFC = () => {
   const { t } = useTranslation();
@@ -48,6 +88,20 @@ export const DaoAssetsForm: VFC = () => {
     });
   });
 
+  function renderError(err?: string) {
+    if (!err) {
+      return null;
+    }
+
+    return (
+      <Tooltip overlay={<div className={styles.tooltip}>{err}</div>}>
+        <div>
+          <Icon name="info" className={styles.errorInfo} />
+        </div>
+      </Tooltip>
+    );
+  }
+
   return (
     <>
       <FormProvider {...methods}>
@@ -75,18 +129,33 @@ export const DaoAssetsForm: VFC = () => {
                 showPreview={false}
                 className={styles.uploader}
                 onSelect={async value => {
-                  const fileName = await uploadImage(value[0]);
+                  const res = await validateAsset({ value });
 
-                  actions.updateAction({
-                    assets: { ...state.assets, flagLogo: fileName },
-                  });
+                  if (res.errors) {
+                    methods.setError('flagLogo', res.errors.value);
+                  } else if (res.values) {
+                    methods.clearErrors('flagLogo');
+
+                    const fileName = await uploadImage(value[0]);
+
+                    actions.updateAction({
+                      assets: { ...state.assets, flagLogo: fileName },
+                    });
+                  }
                 }}
                 control={
                   <div className={styles.uploadControl}>
-                    <Icon name="buttonEdit" className={styles.uploadIcon} />
+                    <Icon
+                      name="buttonEdit"
+                      className={cn(styles.uploadIcon, {
+                        [styles.error]: !!methods.formState.errors.flagLogo,
+                      })}
+                    />
                   </div>
                 }
               />
+              {methods.formState.errors.flagLogo &&
+                renderError(methods.formState.errors.flagLogo.message)}
             </div>
 
             <div className={styles.coverEdit}>
@@ -95,18 +164,33 @@ export const DaoAssetsForm: VFC = () => {
                 showPreview={false}
                 className={styles.uploader}
                 onSelect={async value => {
-                  const fileName = await uploadImage(value[0]);
+                  const res = await validateAsset({ value });
 
-                  actions.updateAction({
-                    assets: { ...state.assets, flagCover: fileName },
-                  });
+                  if (res.errors) {
+                    methods.setError('flagCover', res.errors.value);
+                  } else if (res.values) {
+                    methods.clearErrors('flagCover');
+
+                    const fileName = await uploadImage(value[0]);
+
+                    actions.updateAction({
+                      assets: { ...state.assets, flagCover: fileName },
+                    });
+                  }
                 }}
                 control={
                   <div className={styles.uploadControl}>
-                    <Icon name="buttonEdit" className={styles.uploadIcon} />
+                    <Icon
+                      name="buttonEdit"
+                      className={cn(styles.uploadIcon, {
+                        [styles.error]: !!methods.formState.errors.flagCover,
+                      })}
+                    />
                   </div>
                 }
               />
+              {methods.formState.errors.flagCover &&
+                renderError(methods.formState.errors.flagCover.message)}
             </div>
           </section>
 
@@ -117,7 +201,7 @@ export const DaoAssetsForm: VFC = () => {
               onClick={handleAssetsPreview}
               className={styles.previewButton}
             >
-              Preview Flag and Letterhead
+              Preview Flag & Letterhead
             </Button>
           </div>
         </form>

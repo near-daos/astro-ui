@@ -101,6 +101,24 @@
 .uploadIcon {
   color: var(--color-neutral-60);
   width: 16px;
+
+  &.error {
+    color: var(--color-error-50);
+  }
+}
+
+.errorInfo {
+  background-color: var(--color-error-50);
+  border-radius: 50%;
+  color: var(--color-black);
+  position: absolute;
+  right: -8px;
+  top: -4px;
+  width: 16px;
+}
+
+.tooltip {
+  min-width: 200px;
 }
 
 .coverEdit {

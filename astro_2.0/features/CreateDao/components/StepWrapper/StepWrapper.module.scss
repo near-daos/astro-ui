@@ -4,9 +4,17 @@
 .root {
   display: grid;
   grid-template-areas:
-    'header header'
-    'progress content';
-  grid-template-columns: 220px 1fr;
+    'header'
+    'progress'
+    'content';
+  grid-template-columns: 1fr;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'header header'
+      'progress content';
+    grid-template-columns: 220px 1fr;
+  }
 }
 
 .header {
