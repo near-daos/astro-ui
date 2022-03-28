@@ -11,7 +11,6 @@ import {
 import { WalletType } from 'types/config';
 import { ACCOUNT_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 import { CookieService } from 'services/CookieService';
-import { configService } from 'services/ConfigService';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
 
 export class SenderWalletService implements WalletService {
@@ -19,11 +18,8 @@ export class SenderWalletService implements WalletService {
 
   private readonly walletType = WalletType.SENDER;
 
-  private readonly appConfig;
-
   constructor(walletInstance: SenderWalletInstance) {
     this.walletInstance = walletInstance;
-    this.appConfig = configService.get().appConfig;
     window.localStorage.setItem('selectedWallet', WalletType.SENDER.toString());
   }
 
@@ -40,8 +36,8 @@ export class SenderWalletService implements WalletService {
       contractId,
     });
 
-    const accountCookieOptions = this.appConfig.APP_DOMAIN
-      ? { ...DEFAULT_OPTIONS, domain: this.appConfig.APP_DOMAIN }
+    const accountCookieOptions = window.APP_CONFIG.APP_DOMAIN
+      ? { ...DEFAULT_OPTIONS, domain: window.APP_CONFIG.APP_DOMAIN }
       : DEFAULT_OPTIONS;
 
     CookieService.set(

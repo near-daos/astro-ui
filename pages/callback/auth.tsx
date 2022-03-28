@@ -6,10 +6,10 @@ import nextI18NextConfig from 'next-i18next.config';
 
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 
-import { configService } from 'services/ConfigService';
 import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
 import { SputnikNearService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
+import { getNearConfig, NEAR_ENV } from 'config/near';
 
 const Callback: NextPage = () => {
   useEffect(() => {
@@ -19,23 +19,24 @@ const Callback: NextPage = () => {
       undefined) as SputnikWalletErrorCodes;
 
     const intervalId = setInterval(() => {
-      const { appConfig, nearConfig } = configService.get();
-
-      if (
-        appConfig &&
-        nearConfig &&
-        window.opener?.sputnikRequestSignInCompleted
-      ) {
+      if (window.APP_CONFIG && window.opener?.sputnikRequestSignInCompleted) {
         window.opener.sputnikRequestSignInCompleted({ accountId, errorCode });
+
+        const nearConfig = getNearConfig(
+          (window.APP_CONFIG.NEAR_ENV || 'development') as NEAR_ENV
+        );
 
         // we need to reinit wallet service after login
         const walletService = new SputnikWalletService(nearConfig);
 
         window.nearService = new SputnikNearService(walletService);
 
-        const accountCookieOptions = appConfig.APP_DOMAIN
-          ? { ...DEFAULT_OPTIONS, domain: appConfig.APP_DOMAIN }
+        const accountCookieOptions = window.APP_CONFIG.APP_DOMAIN
+          ? { ...DEFAULT_OPTIONS, domain: window.APP_CONFIG.APP_DOMAIN }
           : DEFAULT_OPTIONS;
+
+        // eslint-disable-next-line no-console
+        console.log('window.APP_CONFIG', window.APP_CONFIG);
 
         CookieService.set(ACCOUNT_COOKIE, accountId, accountCookieOptions);
 
