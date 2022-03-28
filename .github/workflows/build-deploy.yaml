@@ -83,6 +83,7 @@ jobs:
             --set environment.near_env=${NEAR_ENV} \
             --set environment.stats_api_url=${STATS_API_URL} \
             --set environment.next_public_launchdarkly_id=${NEXT_PUBLIC_LAUNCHDARKLY_ID} \
+            --set environment.app_domain=${APP_DOMAIN} \
             --set ingress.host=${K8S_INGRESS_HOST}
 
   build-deploy-storybook:
