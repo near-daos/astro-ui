@@ -39,10 +39,13 @@ export class SputnikNearService implements WalletService, DaoService {
 
   private appConfig: Config;
 
+  public isSenderWalletAvailable: boolean;
+
   constructor(walletService: WalletService) {
     this.walletService = walletService;
     this.nearConfig = configService.get().nearConfig;
     this.appConfig = configService.get().appConfig;
+    this.isSenderWalletAvailable = false;
   }
 
   sendMoney(

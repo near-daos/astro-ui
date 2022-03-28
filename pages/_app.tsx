@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import Head from 'next/head';
 import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from 'next-i18next.config';
@@ -17,17 +17,22 @@ import { SearchResults } from 'features/search/search-results';
 
 import { CookieService } from 'services/CookieService';
 
-import { ACCOUNT_COOKIE } from 'constants/cookies';
+import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 
 import { SocketProvider } from 'context/SocketContext';
 
 import { useIntercomAdjust } from 'hooks/useIntercomAdjust';
 
 import 'styles/globals.scss';
-import { useAppInit } from 'hooks/useAppInit';
+import 'utils/init';
+import { useRouter } from 'next/router';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
-  useAppInit();
+  const router = useRouter();
+
+  useEffect(() => {
+    CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
+  }, [router]);
 
   useIntercomAdjust();
 
