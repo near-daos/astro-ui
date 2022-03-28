@@ -35,9 +35,6 @@ const Callback: NextPage = () => {
           ? { ...DEFAULT_OPTIONS, domain: window.APP_CONFIG.APP_DOMAIN }
           : DEFAULT_OPTIONS;
 
-        // eslint-disable-next-line no-console
-        console.log('window.APP_CONFIG', window.APP_CONFIG);
-
         CookieService.set(ACCOUNT_COOKIE, accountId, accountCookieOptions);
 
         clearInterval(intervalId);
@@ -53,17 +50,8 @@ const Callback: NextPage = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
-  res,
-  query,
   locale = 'en',
 }) => {
-  const accountId = query.account_id;
-
-  res.setHeader(
-    'set-cookie',
-    `${ACCOUNT_COOKIE}=${accountId}; path=/; Max-Age=${Number.MAX_SAFE_INTEGER}`
-  );
-
   return {
     props: {
       ...(await serverSideTranslations(
