@@ -1,6 +1,6 @@
 import { render } from 'jest/testUtils';
 
-import { CreateGroupContent } from 'astro_2.0/features/CreateProposal/components/CreateGroupContent';
+import { TransferNftFromMintbaseContent } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/TransferNftFromMintbaseContent';
 
 const formContextMock = {
   formState: {
@@ -25,9 +25,9 @@ jest.mock('next-i18next', () => ({
   },
 }));
 
-describe('CreateGroupContent', () => {
+describe('TransferNftFromMintbaseContent', () => {
   it('Should render component', () => {
-    const { getByText } = render(<CreateGroupContent daoId="123" />);
+    const { getByText } = render(<TransferNftFromMintbaseContent />);
 
     expect(getByText('proposalCard.proposalTarget')).toBeTruthy();
   });

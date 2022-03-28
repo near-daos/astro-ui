@@ -1,54 +1,85 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 import { render } from 'jest/testUtils';
+import { useFormContext } from 'react-hook-form';
 
-import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 
 import CustomFunctionCallContent from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent';
 
-import { tokens } from './mock';
+jest.mock(
+  'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/CustomContent',
+  () => {
+    return {
+      CustomContent: () => <div>CustomContent</div>,
+    };
+  }
+);
 
-const formContextMock = {
-  formState: {
-    errors: {},
-    touchedFields: {},
-  },
-  watch: () => '123',
-  register: () => 0,
-  setValue: () => 0,
-  getValues: () => 0,
-};
+jest.mock(
+  'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/BuyNftFromMintbaseContent',
+  () => {
+    return {
+      BuyNftFromMintbaseContent: () => <div>BuyNftFromMintbaseContent</div>,
+    };
+  }
+);
+
+jest.mock(
+  'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/SwapsOnRefContent',
+  () => {
+    return {
+      SwapsOnRefContent: () => <div>SwapsOnRefContent</div>,
+    };
+  }
+);
+
+jest.mock(
+  'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/BuyNftFromParasContent',
+  () => {
+    return {
+      BuyNftFromParasContent: () => <div>BuyNftFromParasContent</div>,
+    };
+  }
+);
+
+jest.mock(
+  'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/TransferNftFromMintbaseContent',
+  () => {
+    return {
+      TransferNftFromMintbaseContent: () => (
+        <div>TransferNftFromMintbaseContent</div>
+      ),
+    };
+  }
+);
 
 jest.mock('react-hook-form', () => {
   return {
-    useFormContext: jest.fn(() => formContextMock),
+    useFormContext: jest.fn(() => ({})),
   };
 });
-
-jest.mock('astro_2.0/features/CustomTokens/CustomTokensContext', () => {
-  return {
-    useCustomTokensContext: jest.fn(),
-  };
-});
-
-jest.mock('next-i18next', () => ({
-  // this mock makes sure any components using the translate hook can use it without a warning being shown
-  useTranslation: () => {
-    return {
-      t: (str: string): string => str,
-    };
-  },
-}));
 
 describe('CustomFunctionCallContent', () => {
-  jest.useFakeTimers();
+  it.each`
+    type                                        | component
+    ${'Unknown'}                                | ${'CustomContent'}
+    ${FunctionCallType.Custom}                  | ${'CustomContent'}
+    ${FunctionCallType.SwapsOnRef}              | ${'SwapsOnRefContent'}
+    ${FunctionCallType.BuyNFTfromParas}         | ${'BuyNftFromParasContent'}
+    ${FunctionCallType.BuyNFTfromMintbase}      | ${'BuyNftFromMintbaseContent'}
+    ${FunctionCallType.TransferNFTfromMintbase} | ${'TransferNftFromMintbaseContent'}
+  `(
+    'Should render proper component for $type function call type',
+    ({ type, component }) => {
+      // @ts-ignore
+      useFormContext.mockImplementation(() => ({
+        watch: () => type,
+      }));
 
-  it('Should render component', () => {
-    // @ts-ignore
-    useCustomTokensContext.mockImplementation(() => ({ tokens }));
+      const { getByText } = render(<CustomFunctionCallContent />);
 
-    const { getByText } = render(<CustomFunctionCallContent />);
-
-    expect(getByText('Smart Contract Address')).toBeTruthy();
-  });
+      expect(getByText(component)).toBeTruthy();
+    }
+  );
 });

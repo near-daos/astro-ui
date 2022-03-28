@@ -23,6 +23,7 @@ import styles from './BuyNftFromMintbaseContent.module.scss';
 export const BuyNftFromMintbaseContent: FC = () => {
   const { register, setValue } = useFormContext();
   const { tokenOptions, selectedTokenData } = useTokenOptions();
+
   const timeoutOptions = useMemo(
     () => [
       {
