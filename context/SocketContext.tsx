@@ -10,7 +10,7 @@ import {
 import { useAuthContext } from 'context/AuthContext';
 import { useMountedState } from 'react-use';
 import { configService } from 'services/ConfigService';
-import { WALLET_INIT_EVENT } from 'hooks/useAppInit';
+import { WALLET_INIT_EVENT } from 'utils/init';
 
 type Socket = typeof TSocket;
 

@@ -10,14 +10,31 @@ import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 
 import { WalletType } from 'types/config';
 import { WalletDescription } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletDescription';
+import { WALLET_INIT_EVENT } from 'utils/init';
 import { AccountPopupItem } from './components/AccountPopupItem';
 
 import styles from './AccountButton.module.scss';
 
 export const AccountButton: FC = () => {
   const [open, setOpen] = useState(false);
-  const [senderWalletAvailable, setSenderWalletAvailable] = useState(false);
   const { login, logout, accountId, switchWallet } = useAuthContext();
+
+  const [senderWalletAvailable, setSenderWalletAvailable] = useState(false);
+
+  const initWallet = useCallback(() => {
+    setSenderWalletAvailable(window.nearService.isSenderWalletAvailable);
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener(WALLET_INIT_EVENT, initWallet as EventListener);
+
+    return () => {
+      document.removeEventListener(
+        WALLET_INIT_EVENT,
+        initWallet as EventListener
+      );
+    };
+  }, [initWallet]);
 
   const switchWalletHandler = useCallback(
     async (wallet: WalletType) => {
@@ -29,30 +46,6 @@ export const AccountButton: FC = () => {
   );
 
   const ref = useRef(null);
-  const counter = useRef(0);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (counter.current !== undefined && counter.current === 10) {
-        clearInterval(intervalId);
-
-        return;
-      }
-
-      if (counter.current !== undefined) {
-        counter.current += 1;
-      }
-
-      if (
-        typeof window.near !== 'undefined' &&
-        window.near.isSender &&
-        window.nearService
-      ) {
-        setSenderWalletAvailable(true);
-        clearInterval(intervalId);
-      }
-    }, 500);
-  }, []);
 
   const closePopup = useCallback(() => {
     setOpen(false);
