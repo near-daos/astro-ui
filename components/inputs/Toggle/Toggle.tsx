@@ -22,11 +22,14 @@ export const Toggle = React.forwardRef<HTMLInputElement, ToggleProps>(
 
     const value = props.checked != null ? props.checked : checked;
 
-    const rootClassName = cn(styles.root, {
-      [styles.mobileList]: mobileListView,
-      [styles.groupSwitch]: groupSwitch,
-      className,
-    });
+    const rootClassName = cn(
+      styles.root,
+      {
+        [styles.mobileList]: mobileListView,
+        [styles.groupSwitch]: groupSwitch,
+      },
+      className
+    );
 
     return (
       <label htmlFor={id} className={rootClassName}>

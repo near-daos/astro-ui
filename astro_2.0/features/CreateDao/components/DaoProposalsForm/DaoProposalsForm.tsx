@@ -140,7 +140,7 @@ export const DaoProposalsForm: VFC = () => {
           </h2>
         </div>
         <p className={styles.description}>
-          {t('createDAO.daoLegalStatus.daoKYCDescription')}
+          {t('createDAO.proposals.description')}
         </p>
 
         <div className={styles.selector}>
@@ -154,7 +154,7 @@ export const DaoProposalsForm: VFC = () => {
                 label=""
                 defaultChecked={structure}
                 disabled
-                className={styles.toggle}
+                className={cn(styles.toggle, styles.disabled)}
               />
             </div>
             <div className={cn(styles.selectorCell, styles.spaceBetween)}>

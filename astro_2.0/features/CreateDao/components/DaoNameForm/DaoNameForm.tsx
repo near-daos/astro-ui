@@ -38,7 +38,7 @@ export const DaoNameForm: VFC = () => {
     formState: { errors, isValid },
   } = useForm<InfoStep>({
     defaultValues: state.info,
-    mode: 'all',
+    mode: 'onChange',
     resolver: async data => {
       const schema = yup.object().shape({
         displayName: yup
@@ -68,12 +68,18 @@ export const DaoNameForm: VFC = () => {
     [setValue]
   );
 
-  const handleAddressError = useCallback(() => {
-    setError('address', {
-      type: 'manual',
-      message: 'This DAO is already exists',
-    });
-  }, [setError]);
+  const handleAddressError = useCallback(
+    address => {
+      setError('address', {
+        type: 'manual',
+        message: 'This DAO is already exists',
+      });
+      actions.updateAction({
+        info: { ...state.info, address, isValid: false },
+      });
+    },
+    [actions, setError, state.info]
+  );
 
   const onSubmit = (data: InfoStep) => {
     actions.updateAction({ info: { ...data, isValid } });

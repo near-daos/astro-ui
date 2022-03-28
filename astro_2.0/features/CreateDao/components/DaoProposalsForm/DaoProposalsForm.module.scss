@@ -79,8 +79,13 @@
 
 .toggle {
   margin: 0 0 0 auto;
+
+  &.disabled {
+    opacity: 0.5;
+  }
 }
 
 .checkbox {
   color: var(--color-primary-50);
+  opacity: 0.5;
 }

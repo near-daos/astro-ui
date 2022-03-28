@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react';
-import { useMount } from 'react-use';
+import { useMount, useWindowSize } from 'react-use';
 import AceEditor from 'react-ace';
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -34,6 +34,8 @@ export const CustomEditModal: FC<CustomEditModalProps> = ({
   onClose,
   json,
 }) => {
+  const { height } = useWindowSize();
+
   const methods = useForm<CustomEdit>({
     mode: 'all',
     resolver: yupResolver(
@@ -78,7 +80,7 @@ export const CustomEditModal: FC<CustomEditModalProps> = ({
   });
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="md">
+    <Modal isOpen={isOpen} onClose={onClose} size="auto">
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
           <div className={styles.title}>Custom edit</div>
@@ -93,9 +95,9 @@ export const CustomEditModal: FC<CustomEditModalProps> = ({
               onChange={handleChange}
               fontSize={14}
               width="99%"
-              height="300px"
-              showPrintMargin
-              showGutter={false}
+              height={`${height / 2}px`}
+              showPrintMargin={false}
+              // showGutter={false}
               highlightActiveLine={false}
               setOptions={{
                 enableBasicAutocompletion: true,

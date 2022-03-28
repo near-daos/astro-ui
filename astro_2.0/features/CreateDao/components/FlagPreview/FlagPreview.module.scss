@@ -2,8 +2,6 @@
 @import 'styles/typography';
 
 .root {
-  @include card-shadow;
-  background-color: var(--color-neutral-10);
   padding: 24px 0;
   width: 100%;
 

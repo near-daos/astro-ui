@@ -31,6 +31,11 @@
     width: 1024px;
   }
 
+  &.auto {
+    max-width: 1024px;
+    width: 100%;
+  }
+
   &:focus {
     outline: none;
   }

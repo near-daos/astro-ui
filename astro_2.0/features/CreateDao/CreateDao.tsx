@@ -12,7 +12,7 @@ import { getInitialValues } from 'astro_2.0/features/CreateDao/components/helper
 import { DaoMembersForm } from 'astro_2.0/features/CreateDao/components/DaoMembersForm';
 import { DaoAssetsForm } from 'astro_2.0/features/CreateDao/components/DaoAssetsForm';
 import { DaoProposalsForm } from 'astro_2.0/features/CreateDao/components/DaoProposalsForm';
-import { useMount } from 'react-use';
+import { useMount, useMountedState } from 'react-use';
 import { useAuthContext } from 'context/AuthContext';
 
 interface CreateDaoProps {
@@ -21,18 +21,23 @@ interface CreateDaoProps {
 
 export const CreateDao: VFC<CreateDaoProps> = ({ defaultFlag }) => {
   const router = useRouter();
+  const isMounted = useMountedState();
   const { query } = router;
   const { step } = router.query;
   const { accountId } = useAuthContext();
   const [initialized, setInitialized] = useState(false);
 
   useMount(() => {
+    if (!isMounted()) {
+      return;
+    }
+
     createStore(getInitialValues(accountId, defaultFlag));
     setInitialized(true);
   });
 
   useEffect(() => {
-    if (!step) {
+    if (!step && isMounted()) {
       router.replace(
         {
           pathname: router.pathname,
@@ -47,7 +52,7 @@ export const CreateDao: VFC<CreateDaoProps> = ({ defaultFlag }) => {
         }
       );
     }
-  }, [query, router, step]);
+  }, [isMounted, query, router, step]);
 
   function renderContent() {
     switch (query.step) {
