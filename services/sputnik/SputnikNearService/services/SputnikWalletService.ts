@@ -56,13 +56,17 @@ export class SputnikWalletService implements WalletService {
     return !!this.walletConnection && this.getAccountId() !== '';
   }
 
-  functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome> {
+  async functionCall(
+    props: FunctionCallOptions
+  ): Promise<FinalExecutionOutcome[]> {
     const accountId = this.getAccountId();
 
-    return this.getAccount().functionCall({
+    const result = await this.getAccount().functionCall({
       ...props,
       walletCallbackUrl: `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
     });
+
+    return [result];
   }
 
   public async signIn(contractId: string): Promise<void> {
@@ -198,7 +202,7 @@ export class SputnikWalletService implements WalletService {
   async sendMoney(
     receiverId: string,
     amount: number
-  ): Promise<FinalExecutionOutcome | FinalExecutionOutcome[]> {
+  ): Promise<FinalExecutionOutcome[]> {
     const parsedNear = parseNearAmount(amount.toString());
 
     const nearAsBn = new BN(parsedNear ?? 0);

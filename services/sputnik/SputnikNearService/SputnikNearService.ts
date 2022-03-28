@@ -51,7 +51,7 @@ export class SputnikNearService implements WalletService, DaoService {
   sendMoney(
     receiverId: string,
     amount: number
-  ): Promise<FinalExecutionOutcome | FinalExecutionOutcome[]> {
+  ): Promise<FinalExecutionOutcome[]> {
     return this.walletService.sendMoney(receiverId, amount);
   }
 
@@ -67,7 +67,7 @@ export class SputnikNearService implements WalletService, DaoService {
     return this.walletService.getAccount();
   }
 
-  functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome> {
+  functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome[]> {
     return this.walletService.functionCall(props);
   }
 
@@ -145,7 +145,7 @@ export class SputnikNearService implements WalletService, DaoService {
 
   public async addProposal(
     params: CreateProposalParams
-  ): Promise<FinalExecutionOutcome> {
+  ): Promise<FinalExecutionOutcome[]> {
     const { daoId, description, kind, data, bond, gas } = params;
 
     const kindData = data
@@ -225,7 +225,7 @@ export class SputnikNearService implements WalletService, DaoService {
     daoId: string,
     bountyId: number,
     gas?: string | number
-  ): Promise<FinalExecutionOutcome> {
+  ): Promise<FinalExecutionOutcome[]> {
     return this.walletService.functionCall({
       methodName: 'bounty_giveup',
       contractId: daoId,
@@ -239,7 +239,7 @@ export class SputnikNearService implements WalletService, DaoService {
   public async finalize(
     contractId: string,
     proposalId: number
-  ): Promise<FinalExecutionOutcome> {
+  ): Promise<FinalExecutionOutcome[]> {
     return this.walletService.functionCall({
       methodName: 'act_proposal',
       contractId,
@@ -256,7 +256,7 @@ export class SputnikNearService implements WalletService, DaoService {
     proposalId: number,
     action: VoteAction,
     gas?: string | number
-  ): Promise<FinalExecutionOutcome> {
+  ): Promise<FinalExecutionOutcome[]> {
     return this.walletService.functionCall({
       methodName: 'act_proposal',
       contractId: daoId,
