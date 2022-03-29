@@ -1,4 +1,4 @@
-import { ACCOUNT_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
+import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { GetServerSideProps, NextPage } from 'next';
 import { useEffect } from 'react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -18,9 +18,12 @@ const Callback: NextPage = () => {
     const errorCode = (searchParams.get('errorCode') ||
       undefined) as SputnikWalletErrorCodes;
 
-    const intervalId = setInterval(() => {
+    const intervalId = setInterval(async () => {
       if (window.APP_CONFIG && window.opener?.sputnikRequestSignInCompleted) {
-        window.opener.sputnikRequestSignInCompleted({ accountId, errorCode });
+        await window.opener.sputnikRequestSignInCompleted({
+          accountId,
+          errorCode,
+        });
 
         const nearConfig = getNearConfig(
           (window.APP_CONFIG.NEAR_ENV || 'development') as NEAR_ENV
@@ -31,11 +34,7 @@ const Callback: NextPage = () => {
 
         window.nearService = new SputnikNearService(walletService);
 
-        const accountCookieOptions = window.APP_CONFIG.APP_DOMAIN
-          ? { ...DEFAULT_OPTIONS, domain: window.APP_CONFIG.APP_DOMAIN }
-          : DEFAULT_OPTIONS;
-
-        CookieService.set(ACCOUNT_COOKIE, accountId, accountCookieOptions);
+        CookieService.set(ACCOUNT_COOKIE, accountId);
 
         clearInterval(intervalId);
 
