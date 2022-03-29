@@ -9,18 +9,15 @@ import { dispatchCustomEvent } from 'utils/dispatchCustomEvent';
 
 export const WALLET_INIT_EVENT = 'walletInitialized';
 
-function initNearService(isSenderWalletAvailable: boolean): void {
+function initWallet(
+  selectedWallet: WalletType | undefined,
+  isSenderWalletAvailable: boolean
+): void {
   const { nearConfig, appConfig } = configService.get();
 
   if (!appConfig || !nearConfig) {
     return;
   }
-
-  if (!CookieService.get(ACCOUNT_COOKIE)) {
-    return;
-  }
-
-  const selectedWallet = Number(window.localStorage.getItem('selectedWallet'));
 
   switch (selectedWallet) {
     case WalletType.NEAR: {
@@ -67,30 +64,37 @@ function initNearService(isSenderWalletAvailable: boolean): void {
   }
 }
 
-export const init = (): void => {
+export const initNearService = (
+  walletType: WalletType | undefined
+): Promise<void> => {
   if (!process.browser) {
-    return;
+    return Promise.resolve();
+  }
+
+  // non authorized
+  if (!CookieService.get(ACCOUNT_COOKIE)) {
+    return Promise.resolve();
   }
 
   let counter = 0;
 
-  const intervalId = setInterval(() => {
-    if (counter !== undefined && counter === 10) {
-      clearInterval(intervalId);
-      initNearService(false);
+  return new Promise(resolve => {
+    const intervalId = setInterval(() => {
+      if (counter !== undefined && counter === 10) {
+        clearInterval(intervalId);
+        initWallet(walletType, false);
+        resolve();
+      }
 
-      return;
-    }
+      if (counter !== undefined) {
+        counter += 1;
+      }
 
-    if (counter !== undefined) {
-      counter += 1;
-    }
-
-    if (typeof window.near !== 'undefined' && window.near.isSender) {
-      initNearService(true);
-      clearInterval(intervalId);
-    }
-  }, 500);
+      if (typeof window.near !== 'undefined' && window.near.isSender) {
+        initWallet(walletType, true);
+        clearInterval(intervalId);
+        resolve();
+      }
+    }, 500);
+  });
 };
-
-init();

@@ -11,6 +11,7 @@ import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 import { WalletType } from 'types/config';
 import { WalletDescription } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletDescription';
 import { WALLET_INIT_EVENT } from 'utils/init';
+import { useUpdateEffect } from 'react-use';
 import { AccountPopupItem } from './components/AccountPopupItem';
 
 import styles from './AccountButton.module.scss';
@@ -28,8 +29,6 @@ export const AccountButton: FC = () => {
   useEffect(() => {
     document.addEventListener(WALLET_INIT_EVENT, initWallet as EventListener);
 
-    setSenderWalletAvailable(window.nearService?.isSenderWalletAvailable);
-
     return () => {
       document.removeEventListener(
         WALLET_INIT_EVENT,
@@ -37,6 +36,10 @@ export const AccountButton: FC = () => {
       );
     };
   }, [initWallet]);
+
+  useUpdateEffect(() => {
+    setSenderWalletAvailable(window.nearService?.isSenderWalletAvailable);
+  });
 
   const switchWalletHandler = useCallback(
     async (wallet: WalletType) => {

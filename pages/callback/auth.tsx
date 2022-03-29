@@ -6,51 +6,42 @@ import nextI18NextConfig from 'next-i18next.config';
 
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 
-import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
-import { SputnikNearService } from 'services/sputnik';
-import { CookieService } from 'services/CookieService';
-import { getNearConfig, NEAR_ENV } from 'config/near';
-
 const Callback: NextPage = () => {
   useEffect(() => {
     const { searchParams } = new URL(window.location.toString());
     const accountId = searchParams.get('account_id') || undefined;
     const errorCode = (searchParams.get('errorCode') ||
       undefined) as SputnikWalletErrorCodes;
+    const allKeys = searchParams.get('all_keys') || undefined;
+    const publicKey = searchParams.get('public_key') || undefined;
 
-    const intervalId = setInterval(async () => {
-      if (window.APP_CONFIG && window.opener?.sputnikRequestSignInCompleted) {
-        await window.opener.sputnikRequestSignInCompleted({
+    if (window.opener?.sputnikRequestSignInCompleted) {
+      window.opener
+        .sputnikRequestSignInCompleted({
           accountId,
           errorCode,
-        });
-
-        const nearConfig = getNearConfig(
-          (window.APP_CONFIG.NEAR_ENV || 'development') as NEAR_ENV
-        );
-
-        // we need to reinit wallet service after login
-        const walletService = new SputnikWalletService(nearConfig);
-
-        window.nearService = new SputnikNearService(walletService);
-
-        CookieService.set(ACCOUNT_COOKIE, accountId);
-
-        clearInterval(intervalId);
-
-        setTimeout(() => {
-          window.close();
-        }, 1500);
-      }
-    }, 500);
+          allKeys,
+          publicKey,
+        })
+        .then(() => window.close());
+    }
   }, []);
 
   return null;
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
+  res,
+  query,
   locale = 'en',
 }) => {
+  const accountId = query.account_id;
+
+  res.setHeader(
+    'set-cookie',
+    `${ACCOUNT_COOKIE}=${accountId}; path=/; Max-Age=${Number.MAX_SAFE_INTEGER}`
+  );
+
   return {
     props: {
       ...(await serverSideTranslations(
