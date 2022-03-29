@@ -35,10 +35,11 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
   const { accountId, login } = useAuthContext();
   const myDaosIds = useDaoIds(accountId);
 
-  const createDao = useCallback(
-    () => (accountId ? router.push(CREATE_DAO_URL) : login()),
-    [login, router, accountId]
-  );
+  const createDao = useCallback(() => {
+    const url = { pathname: CREATE_DAO_URL, query: { step: 'info' } };
+
+    return accountId ? router.push(url) : login().then(() => router.push(url));
+  }, [login, router, accountId]);
 
   function renderHomeNavItem() {
     if (accountId) {
@@ -109,8 +110,6 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
           {renderHomeNavItem()}
           {renderAllCommunities()}
           <NavItem
-            href={CREATE_DAO_URL}
-            urlParams={{ step: 'info' }}
             className={styles.item}
             myDaosIds={myDaosIds}
             onClick={createDao}

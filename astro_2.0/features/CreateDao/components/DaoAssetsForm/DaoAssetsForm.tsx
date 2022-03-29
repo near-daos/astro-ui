@@ -15,6 +15,7 @@ import { ImageUpload } from 'astro_2.0/features/CreateDao/components/ImageUpload
 import { DaoSubmitForm } from 'astro_2.0/features/CreateDao/components/DaoSubmitForm';
 import { PreviewModal } from 'astro_2.0/features/CreateDao/components/PreviewModal';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
+import { StepCounter } from 'astro_2.0/features/CreateDao/components/StepCounter';
 
 import { useImageUpload } from 'astro_2.0/features/CreateDao/components/hooks';
 import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
@@ -108,6 +109,7 @@ export const DaoAssetsForm: VFC = () => {
         <form className={styles.root}>
           <div className={styles.header}>
             <h2>{t('createDAO.daoAssets.createDaoAssets')}</h2>
+            <StepCounter total={6} current={6} />
           </div>
           <p className={styles.description}>
             {t('createDAO.daoAssets.createDaoAssetsDescription')}

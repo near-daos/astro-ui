@@ -16,7 +16,7 @@ import {
 } from 'astro_2.0/features/CreateDao/components/helpers';
 
 import { InfoStep } from 'astro_2.0/features/CreateDao/types';
-
+import { StepCounter } from 'astro_2.0/features/CreateDao/components/StepCounter';
 import { DaoNameInputSection } from './components/DaoNameInputSection';
 import { DaoAddress } from './components/DaoAddress';
 
@@ -72,13 +72,13 @@ export const DaoNameForm: VFC = () => {
     address => {
       setError('address', {
         type: 'manual',
-        message: 'This DAO is already exists',
+        message: t('createDAO.daoExists'),
       });
       actions.updateAction({
         info: { ...state.info, address, isValid: false },
       });
     },
-    [actions, setError, state.info]
+    [actions, setError, state.info, t]
   );
 
   const onSubmit = (data: InfoStep) => {
@@ -91,6 +91,7 @@ export const DaoNameForm: VFC = () => {
     <form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
       <div className={styles.header}>
         <h2>{t('createDAO.daoNameForm.daoNameAndPurpose')}</h2>
+        <StepCounter total={6} current={1} />
       </div>
       <DaoNameInputSection
         errors={errors}

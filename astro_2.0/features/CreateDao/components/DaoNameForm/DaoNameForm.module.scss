@@ -10,10 +10,14 @@
 }
 
 .header {
+  align-items: center;
+  display: flex;
+  margin-bottom: 24px;
+
   h2 {
     @include font(1.75em, 38px, 700);
     font-family: var(--font-family-primary);
-    margin-top: 0;
+    margin: 0;
   }
 
   p {
@@ -38,19 +42,29 @@
 }
 
 .root .purposeInput {
+  background-color: transparent;
   font-size: 14px;
 
   @include placeholder {
     color: var(--color-neutral-60);
     font-weight: 400;
   }
+
+  @include tablet-landscape {
+    background-color: var(--color-white);
+  }
 }
 
 .nameInput input {
+  background-color: transparent;
   font-size: 22px;
 
   @include placeholder {
     color: var(--color-neutral-60);
     font-weight: 700;
+  }
+
+  @include tablet-landscape {
+    background-color: var(--color-white);
   }
 }

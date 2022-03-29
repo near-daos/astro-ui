@@ -1,0 +1,16 @@
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+}
+
+.current {
+  @extend %title2;
+}
+
+.total {
+  @extend %subtitle3;
+  color: var(--color-neutral-50);
+}

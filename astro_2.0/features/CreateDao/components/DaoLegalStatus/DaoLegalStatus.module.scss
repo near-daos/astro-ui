@@ -6,7 +6,10 @@
 }
 
 .header {
+  align-items: center;
+  display: flex;
   grid-area: header;
+  margin-bottom: 24px;
 
   h2 {
     @include font(1.75em, 38px, 700);

@@ -17,6 +17,7 @@ import {
 } from 'astro_2.0/features/CreateDao/components/helpers';
 import { MembersStep } from 'astro_2.0/features/CreateDao/types';
 import { useAuthContext } from 'context/AuthContext';
+import { StepCounter } from 'astro_2.0/features/CreateDao/components/StepCounter';
 import { DaoMemberLine } from './components/DaoMemberLine';
 
 import styles from './DaoMembersForm.module.scss';
@@ -93,10 +94,15 @@ export const DaoMembersForm: VFC = () => {
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
         <div className={styles.header}>
-          <h2>{t('createDAO.daoMembersForm.addMembers')}</h2>
-          <p>{t('createDAO.daoMembersForm.addMembersDescription')}</p>
+          <h2>
+            {t('createDAO.daoMembersForm.addMembers')}{' '}
+            <span className={styles.optional}>({t('createDAO.optional')})</span>
+          </h2>
+          <StepCounter total={6} current={4} />
         </div>
-
+        <p className={styles.description}>
+          {t('createDAO.daoMembersForm.addMembersDescription')}
+        </p>
         <section className={styles.links}>
           {renderLinkFormEls()}
 

@@ -6,15 +6,24 @@
 }
 
 .header {
+  align-items: center;
+  display: flex;
+  grid-area: header;
+  margin-bottom: 24px;
+
   h2 {
     @include font(1.75em, 38px, 700);
     font-family: var(--font-family-primary);
-    margin-top: 0;
+    margin: 0;
   }
 
-  p {
-    @extend %body2;
+  .optional {
+    color: var(--color-neutral-50);
   }
+}
+
+.description {
+  @extend %body2;
 }
 
 .links {

@@ -12,6 +12,7 @@ import {
   updateAction,
 } from 'astro_2.0/features/CreateDao/components/helpers';
 import { SubmitButton } from 'astro_2.0/features/CreateDao/components/SubmitButton';
+import { StepCounter } from 'astro_2.0/features/CreateDao/components/StepCounter';
 
 import { LegalStep } from 'astro_2.0/features/CreateDao/types';
 
@@ -62,8 +63,9 @@ export const DaoLegalStatus: VFC = () => {
         <div className={styles.header}>
           <h2>
             {t('createDAO.daoLegalStatus.daoKYC')}{' '}
-            <span className={styles.optional}>(Optional)</span>
+            <span className={styles.optional}>({t('createDAO.optional')})</span>
           </h2>
+          <StepCounter total={6} current={2} />
         </div>
         <p className={styles.description}>
           {t('createDAO.daoLegalStatus.daoKYCDescription')}

@@ -101,19 +101,17 @@ export const StepWrapper: FC = ({ children }) => {
           {query.step === 'assets' && (
             <CustomEdit className={styles.customEdit} />
           )}
-          {query.step !== 'info' && (
-            <Button
-              variant="tertiary"
-              className={styles.resetButton}
-              size="small"
-              onClick={() => {
-                handleReset();
-                handleClick('info');
-              }}
-            >
-              Reset Steps
-            </Button>
-          )}
+          <Button
+            variant="tertiary"
+            className={styles.resetButton}
+            size="small"
+            onClick={() => {
+              handleReset();
+              handleClick('info');
+            }}
+          >
+            Reset Steps
+          </Button>
         </div>
       </header>
       <CreationProgress

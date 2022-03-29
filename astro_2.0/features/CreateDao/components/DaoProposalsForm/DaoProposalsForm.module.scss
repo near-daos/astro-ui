@@ -6,7 +6,10 @@
 }
 
 .header {
+  align-items: center;
+  display: flex;
   grid-area: header;
+  margin-bottom: 24px;
 
   h2 {
     @include font(1.75em, 38px, 700);
@@ -29,10 +32,14 @@
 
 .selector {
   border-radius: 8px;
-  box-shadow: 24px 24px 24px -24px rgba(0, 0, 0, 0.1);
+
   display: flex;
   flex-direction: column;
   max-width: 415px;
+
+  @include tablet-landscape {
+    box-shadow: 24px 24px 24px -24px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .selectorRow {
@@ -44,11 +51,18 @@
 
 .selectorCell {
   align-items: center;
-  border-right: 1px solid var(--color-neutral-40);
   display: flex;
   flex: 1;
   height: 100%;
   padding: 0 8px;
+
+  @include tablet-landscape {
+    border-right: 1px solid var(--color-neutral-40);
+  }
+
+  &:not(:last-of-type) {
+    border-right: 1px solid var(--color-neutral-40);
+  }
 
   &.mainCell {
     flex: 1.4;

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
+import { useTranslation } from 'next-i18next';
 
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
@@ -17,6 +18,8 @@ export const SubmitButton: FC<SubmitButtonProps> = ({
   isSubmit = false,
   className,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Button
       type="submit"
@@ -29,7 +32,7 @@ export const SubmitButton: FC<SubmitButtonProps> = ({
           <Icon name="buttonArrowRight" width={24} />
         </>
       ) : (
-        <span className={styles.text}>Create New DAO</span>
+        <span className={styles.text}>{t('createDAO.createNewDAO')}</span>
       )}
     </Button>
   );
