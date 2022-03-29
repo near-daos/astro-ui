@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import useQuery from 'hooks/useQuery';
 import { useStateMachine } from 'little-state-machine';
 
+import { StepCounter } from 'astro_2.0/features/CreateDao/components/StepCounter';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { SubmitButton } from 'astro_2.0/features/CreateDao/components/SubmitButton';
@@ -95,10 +96,13 @@ export const DaoLinksForm: VFC = () => {
         <div className={styles.header}>
           <h2>
             {t('createDAO.daoLinksForm.daoLinks')}{' '}
-            <span className={styles.optional}>(Optional)</span>
+            <span className={styles.optional}>({t('createDAO.optional')})</span>
           </h2>
-          <p>{t('createDAO.daoLinksForm.daoLinksDescription')}</p>
+          <StepCounter total={6} current={3} />
         </div>
+        <p className={styles.description}>
+          {t('createDAO.daoLinksForm.daoLinksDescription')}
+        </p>
 
         <section className={styles.links}>
           {renderLinkFormEls()}

@@ -35,13 +35,22 @@
 }
 
 .content {
-  @include card-shadow;
   grid-area: content;
-  padding: 24px;
+  padding: 24px 0 0;
+
+  @include tablet-landscape {
+    @include card-shadow;
+    padding: 24px;
+  }
 }
 
 .customEdit {
+  display: none;
   margin-right: 24px;
+
+  @include tablet-landscape {
+    display: block;
+  }
 }
 
 .resetButton {

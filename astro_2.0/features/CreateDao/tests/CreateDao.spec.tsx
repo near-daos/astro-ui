@@ -11,6 +11,11 @@ jest.mock('next-i18next', () => ({
   },
 }));
 
+jest.mock('react-use', () => ({
+  ...jest.requireActual('react-use'),
+  useMedia: jest.fn().mockReturnValue(false),
+}));
+
 describe('', () => {
   it('Should render component', () => {
     render(<CreateDao defaultFlag="" />);

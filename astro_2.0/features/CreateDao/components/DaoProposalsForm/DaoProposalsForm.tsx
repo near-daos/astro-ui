@@ -15,6 +15,7 @@ import { SubmitButton } from 'astro_2.0/features/CreateDao/components/SubmitButt
 import { Icon, IconName } from 'components/Icon';
 import { Checkbox } from 'components/inputs/Checkbox';
 import { Toggle } from 'components/inputs/Toggle';
+import { StepCounter } from 'astro_2.0/features/CreateDao/components/StepCounter';
 
 import styles from './DaoProposalsForm.module.scss';
 
@@ -136,8 +137,9 @@ export const DaoProposalsForm: VFC = () => {
         <div className={styles.header}>
           <h2>
             {t('createDAO.proposals.proposalsCreation')}{' '}
-            <span className={styles.optional}>(Optional)</span>
+            <span className={styles.optional}>({t('createDAO.optional')})</span>
           </h2>
+          <StepCounter total={6} current={5} />
         </div>
         <p className={styles.description}>
           {t('createDAO.proposals.description')}

@@ -1,5 +1,6 @@
-import { VFC } from 'react';
+import { useEffect, VFC } from 'react';
 import cn from 'classnames';
+import { useMedia } from 'react-use';
 
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
@@ -24,6 +25,24 @@ export const CreationProgress: VFC<CreationProgressProps> = ({
   className,
   onItemClick,
 }) => {
+  const isMobile = useMedia('(max-width: 768px)');
+
+  useEffect(() => {
+    if (!isMobile) {
+      return;
+    }
+
+    const currentItems = document.getElementsByClassName(styles.current);
+
+    if (currentItems && currentItems[0]) {
+      currentItems[0].scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center',
+        block: 'start',
+      });
+    }
+  }, [steps, isMobile]);
+
   return (
     <div className={cn(className, styles.root)}>
       {steps.map((step, index) => {
@@ -45,6 +64,7 @@ export const CreationProgress: VFC<CreationProgressProps> = ({
 
         return (
           <Button
+            size="small"
             variant="transparent"
             className={stepClassName}
             key={`${label}_${isComplete}`}
@@ -57,7 +77,7 @@ export const CreationProgress: VFC<CreationProgressProps> = ({
             <div className={styles.stepCircle}>
               <Icon name="buttonCheck" className={styles.checkIcon} />
             </div>
-            {label}
+            <div className={styles.stepLabel} data-label={label} />
           </Button>
         );
       })}

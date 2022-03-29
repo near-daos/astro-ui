@@ -28,12 +28,11 @@ export const CreateDao: VFC<CreateDaoProps> = ({ defaultFlag }) => {
   const [initialized, setInitialized] = useState(false);
 
   useMount(() => {
-    if (!isMounted()) {
-      return;
-    }
-
     createStore(getInitialValues(accountId, defaultFlag));
-    setInitialized(true);
+
+    if (isMounted()) {
+      setInitialized(true);
+    }
   });
 
   useEffect(() => {

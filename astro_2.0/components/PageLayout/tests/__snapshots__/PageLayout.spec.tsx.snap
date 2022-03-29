@@ -90,9 +90,8 @@ exports[`page layout Should render component 1`] = `
             </a>
             <div />
           </div>
-          <a
+          <div
             class=""
-            href="/create-dao-new?step=info"
           >
             <svg
               height="24"
@@ -106,7 +105,7 @@ exports[`page layout Should render component 1`] = `
               createNewDao
                
             </span>
-          </a>
+          </div>
         </div>
       </div>
       <div

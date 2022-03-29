@@ -11,15 +11,17 @@ import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { SubmitButton } from 'astro_2.0/features/CreateDao/components/SubmitButton';
 
-import {
-  handleValidate,
-  updateAction,
-} from 'astro_2.0/features/CreateDao/components/helpers';
+import { updateAction } from 'astro_2.0/features/CreateDao/components/helpers';
 import { MembersStep } from 'astro_2.0/features/CreateDao/types';
 import { useAuthContext } from 'context/AuthContext';
+import { StepCounter } from 'astro_2.0/features/CreateDao/components/StepCounter';
 import { DaoMemberLine } from './components/DaoMemberLine';
 
 import styles from './DaoMembersForm.module.scss';
+
+const schema = yup.object().shape({
+  accounts: yup.array().of(yup.string().required('Required')),
+});
 
 export const DaoMembersForm: VFC = () => {
   const { t } = useTranslation();
@@ -39,15 +41,45 @@ export const DaoMembersForm: VFC = () => {
     },
     mode: 'onChange',
     resolver: async data => {
-      const schema = yup.object().shape({
-        accounts: yup.array().of(yup.string().required()).required(),
-      });
+      try {
+        const values = await schema.validate(data, {
+          abortEarly: false,
+        });
 
-      const res = await handleValidate<MembersStep>(schema, data, valid =>
-        actions.updateAction({ members: { ...data, isValid: valid } })
-      );
+        actions.updateAction({ members: { ...data, isValid: true } });
 
-      return res;
+        return {
+          values,
+          errors: {},
+        };
+      } catch (e) {
+        actions.updateAction({ members: { ...data, isValid: false } });
+
+        return {
+          values: {},
+          errors: e.inner.reduce(
+            (
+              allErrors: Record<string, string>,
+              currentError: { path: string; type?: string; message: string }
+            ) => {
+              const accounts = allErrors.accounts ?? [];
+
+              return {
+                ...allErrors,
+                accounts: [
+                  ...accounts,
+                  {
+                    path: currentError.path,
+                    type: currentError.type ?? 'validation',
+                    message: currentError.message,
+                  },
+                ],
+              };
+            },
+            {}
+          ),
+        };
+      }
     },
   });
 
@@ -93,10 +125,15 @@ export const DaoMembersForm: VFC = () => {
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
         <div className={styles.header}>
-          <h2>{t('createDAO.daoMembersForm.addMembers')}</h2>
-          <p>{t('createDAO.daoMembersForm.addMembersDescription')}</p>
+          <h2>
+            {t('createDAO.daoMembersForm.addMembers')}{' '}
+            <span className={styles.optional}>({t('createDAO.optional')})</span>
+          </h2>
+          <StepCounter total={6} current={4} />
         </div>
-
+        <p className={styles.description}>
+          {t('createDAO.daoMembersForm.addMembersDescription')}
+        </p>
         <section className={styles.links}>
           {renderLinkFormEls()}
 

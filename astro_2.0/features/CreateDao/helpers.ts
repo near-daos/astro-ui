@@ -17,7 +17,7 @@ export async function validateDaoAddress(
 
   const { nearConfig } = configService.get();
 
-  return window.nearService.nearAccountExist(
+  return window.nearService?.nearAccountExist(
     `${value}.${nearConfig?.contractName ?? ''}`
   );
 }

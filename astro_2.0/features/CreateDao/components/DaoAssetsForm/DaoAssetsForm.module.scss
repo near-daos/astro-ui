@@ -5,16 +5,29 @@
   display: grid;
   grid-gap: 24px;
   grid-template-areas:
-    'header header'
-    'description description'
-    'letterHead letterHead'
-    '. preview';
-  grid-template-columns: 1fr 1fr;
+    'header'
+    'description'
+    'letterHead'
+    '.'
+    'preview';
+  grid-template-columns: 1fr;
   width: 100%;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'header header'
+      'description description'
+      'letterHead letterHead'
+      '. preview';
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .header {
+  align-items: center;
+  display: flex;
   grid-area: header;
+  margin-bottom: 24px;
 
   h2 {
     @include font(1.75em, 38px, 700);
@@ -56,22 +69,34 @@
     margin: 0;
   }
 
-  .logo {
-    left: 0;
-    transform: translate(36px, 60px);
-  }
-
   .joinDao {
     position: relative;
     right: 0;
   }
 }
 
+.letterHeadSection .logo {
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, 60px);
+
+  @include tablet-landscape {
+    left: 0;
+    transform: translate(36px, 60px);
+  }
+}
+
 .preview {
   display: flex;
   grid-area: preview;
-  justify-content: flex-end;
+  justify-content: center;
+  margin-top: 32px;
   width: 100%;
+
+  @include tablet-landscape {
+    justify-content: flex-end;
+    margin-top: 0;
+  }
 }
 
 .previewButton {

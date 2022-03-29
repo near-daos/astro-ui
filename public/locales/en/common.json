@@ -201,7 +201,9 @@
       "daoTermsAndConditionsLink": "Terms and Conditions",
       "daoCannotBeDeleted": "DAOs can not be deleted!",
       "daoCreateButton": "Create DAO"
-    }
+    },
+    "daoExists": "This DAO is already exists",
+    "optional": "Optional"
   },
   "myDAOsPage": {
     "noDAOs": "You have no DAOs, but you can",
