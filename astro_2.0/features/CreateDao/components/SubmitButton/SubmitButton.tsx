@@ -8,7 +8,7 @@ import { Icon } from 'components/Icon';
 import styles from './SubmitButton.module.scss';
 
 interface SubmitButtonProps {
-  disabled: boolean;
+  disabled?: boolean;
   isSubmit?: boolean;
   className?: string;
 }

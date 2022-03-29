@@ -76,7 +76,6 @@ export class SputnikWalletService implements WalletService {
       this.failureUrl
     );
 
-    this.walletConnection = new SputnikWalletConnection(this.near, 'sputnik');
     window.localStorage.setItem('selectedWallet', WalletType.NEAR.toString());
   }
 

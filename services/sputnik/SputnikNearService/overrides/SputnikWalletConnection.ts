@@ -44,6 +44,9 @@ export class SputnikWalletConnection extends WalletConnection {
       accessKey
     );
 
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const self = this;
+
     return new Promise<string | undefined>((resolve, reject) => {
       if (win?.location) {
         win.location.href = newUrl.toString();
@@ -52,10 +55,23 @@ export class SputnikWalletConnection extends WalletConnection {
       window.sputnikRequestSignInCompleted = async ({
         accountId,
         errorCode,
+        allKeys,
+        publicKey,
       }) => {
-        win?.close();
-
         if (accountId) {
+          this._authData = {
+            accountId,
+            allKeys,
+          };
+          window.localStorage.setItem(
+            this._authDataKey,
+            JSON.stringify(this._authData)
+          );
+
+          if (publicKey) {
+            await self._moveKeyFromTempToPermanent(accountId, publicKey);
+          }
+
           resolve(accountId);
 
           return;
