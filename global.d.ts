@@ -5,7 +5,7 @@ import { SputnikNearService } from 'services/sputnik';
 type SputnikRequestSignInCompleted = (result: {
   accountId?: string;
   errorCode?: SputnikWalletErrorCodes;
-}) => void;
+}) => Promise<void>;
 
 type SputnikRequestSignTransactionCompleted = (result: {
   transactionHashes?: string;

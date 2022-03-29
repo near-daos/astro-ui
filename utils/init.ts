@@ -39,7 +39,7 @@ function initNearService(isSenderWalletAvailable: boolean): void {
           new SputnikWalletService(nearConfig)
         );
 
-        return;
+        break;
       }
 
       window.nearService = new SputnikNearService(

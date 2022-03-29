@@ -28,6 +28,8 @@ export const AccountButton: FC = () => {
   useEffect(() => {
     document.addEventListener(WALLET_INIT_EVENT, initWallet as EventListener);
 
+    setSenderWalletAvailable(window.nearService?.isSenderWalletAvailable);
+
     return () => {
       document.removeEventListener(
         WALLET_INIT_EVENT,

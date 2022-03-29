@@ -9,7 +9,7 @@ import {
   Transaction,
 } from 'services/sputnik/SputnikNearService/services/types';
 import { WalletType } from 'types/config';
-import { ACCOUNT_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
+import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { CookieService } from 'services/CookieService';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
 import { httpService } from 'services/HttpService';
@@ -37,15 +37,7 @@ export class SenderWalletService implements WalletService {
       contractId,
     });
 
-    const accountCookieOptions = window.APP_CONFIG.APP_DOMAIN
-      ? { ...DEFAULT_OPTIONS, domain: window.APP_CONFIG.APP_DOMAIN }
-      : DEFAULT_OPTIONS;
-
-    CookieService.set(
-      ACCOUNT_COOKIE,
-      this.getAccountId(),
-      accountCookieOptions
-    );
+    CookieService.set(ACCOUNT_COOKIE, this.getAccountId());
   }
 
   getAccount(): ConnectedWalletAccount {
