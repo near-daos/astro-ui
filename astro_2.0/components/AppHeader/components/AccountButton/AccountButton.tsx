@@ -73,7 +73,7 @@ export const AccountButton: FC = () => {
       >
         <div>
           <div className={styles.dropdown}>
-            <MyAccountButton />
+            <MyAccountButton className={styles.menuButton} />
 
             {nearService && (
               <>

@@ -14,7 +14,7 @@
   border-radius: 8px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   cursor: default;
-  padding: 8px 24px;
+  padding: 12px;
   width: 226px;
   z-index: 1000;
 
@@ -85,6 +85,12 @@
   .controlIcon.open {
     transform: rotate(180deg);
   }
+}
+
+.menuButton {
+  padding: 8px;
+
+  pointer-events: none;
 }
 
 .footer {
