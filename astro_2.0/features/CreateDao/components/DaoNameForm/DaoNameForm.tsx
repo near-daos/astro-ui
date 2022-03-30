@@ -49,7 +49,7 @@ export const DaoNameForm: VFC = () => {
             VALID_WEBSITE_NAME_REGEXP,
             t('createDAO.daoIncorrectCharactersError')
           )
-          .required(),
+          .required(t('required')),
         purpose: yup.string().max(500),
       });
 
@@ -111,7 +111,7 @@ export const DaoNameForm: VFC = () => {
         className={styles.address}
         label={
           <div>
-            DAO Address <span className={styles.warning}>(auto filled)</span>
+            DAO Address <span className={styles.info}>(auto filled)</span>
           </div>
         }
         labelClassName={styles.addressLabel}

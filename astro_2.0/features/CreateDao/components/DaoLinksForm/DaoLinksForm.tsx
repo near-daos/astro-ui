@@ -40,7 +40,7 @@ export const DaoLinksForm: VFC = () => {
             .matches(VALID_URL_REGEXP, {
               message: t('createDAO.daoIncorrectURLError'),
             })
-            .required()
+            .required('Required')
         ),
       });
 
