@@ -1,168 +1,114 @@
 import cn from 'classnames';
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useRef, useState } from 'react';
 
 import { useAuthContext } from 'context/AuthContext';
 
 import { Icon } from 'components/Icon';
-import { NearIcon } from 'astro_2.0/components/NearIcon';
 import { AppFooter } from 'astro_2.0/components/AppFooter';
 import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 
 import { WalletType } from 'types/config';
-import { WalletDescription } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletDescription';
-import { WALLET_INIT_EVENT } from 'utils/init';
-import { useUpdateEffect } from 'react-use';
-import { AccountPopupItem } from './components/AccountPopupItem';
+import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletIcon/WalletIcon';
+import { DisconnectButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/DisconnectButton';
+import { MyAccountButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/MyAccount';
+import { WalletButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletButton';
 
+import { useModal } from 'components/modal';
+import { WalletSelectionModal } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletSelectionModal';
 import styles from './AccountButton.module.scss';
 
 export const AccountButton: FC = () => {
   const [open, setOpen] = useState(false);
-  const { login, logout, accountId, switchWallet } = useAuthContext();
+  const { login, logout, accountId, nearService } = useAuthContext();
 
-  const [senderWalletAvailable, setSenderWalletAvailable] = useState(false);
-
-  const initWallet = useCallback(() => {
-    setSenderWalletAvailable(window.nearService.isSenderWalletAvailable);
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener(WALLET_INIT_EVENT, initWallet as EventListener);
-
-    return () => {
-      document.removeEventListener(
-        WALLET_INIT_EVENT,
-        initWallet as EventListener
-      );
-    };
-  }, [initWallet]);
-
-  useUpdateEffect(() => {
-    setSenderWalletAvailable(window.nearService?.isSenderWalletAvailable);
+  const [showModal] = useModal(WalletSelectionModal, {
+    signIn: walletType => login(walletType),
   });
-
-  const switchWalletHandler = useCallback(
-    async (wallet: WalletType) => {
-      await logout();
-      await switchWallet(wallet);
-      await login();
-    },
-    [logout, login, switchWallet]
-  );
-
-  const ref = useRef(null);
 
   const closePopup = useCallback(() => {
     setOpen(false);
   }, [setOpen]);
 
-  function renderNearIcon() {
-    if (accountId) {
+  const switchWalletHandler = useCallback(
+    (wallet: WalletType) => async () => {
+      await login(wallet);
+      setOpen(false);
+    },
+    [login, setOpen]
+  );
+
+  const ref = useRef(null);
+
+  function render() {
+    if (!accountId) {
       return (
-        <GenericDropdown
-          isOpen={open}
-          onOpenUpdate={setOpen}
-          parent={
-            <div className={styles.accountButton}>
-              <NearIcon />
-              <span className={styles.accountId}>{accountId}</span>
-              <Icon
-                name="buttonArrowDown"
-                className={cn(styles.controlIcon, { [styles.open]: open })}
-              />
-            </div>
-          }
-          options={{
-            placement: 'bottom-end',
-          }}
-        >
-          <div>
-            <div className={styles.dropdown}>
-              <AccountPopupItem
-                content={<div className={styles.text}>My Account</div>}
-                icon={<Icon name="account" className={styles.icon} />}
-              />
-
-              {senderWalletAvailable && (
-                <>
-                  <div className={styles.delimiter} />
-
-                  <div className={styles.chooseWalletCaption}>
-                    Choose wallet
-                  </div>
-
-                  <AccountPopupItem
-                    icon={
-                      <div className={styles.iconContainer}>
-                        <Icon name="tokenNearBig" />
-                        {window.nearService.getWalletType() ===
-                          WalletType.NEAR && (
-                          <div className={styles.selectedWallet} />
-                        )}
-                      </div>
-                    }
-                    content={
-                      <WalletDescription
-                        name="NEAR"
-                        type="web"
-                        url="wallet.near.org"
-                      />
-                    }
-                    onClick={() => switchWalletHandler(WalletType.NEAR)}
-                    className={styles.row}
-                  />
-                  <AccountPopupItem
-                    icon={
-                      <div className={styles.iconContainer}>
-                        <Icon name="senderWallet" />
-                        {window.nearService.getWalletType() ===
-                          WalletType.SENDER && (
-                          <div className={styles.selectedWallet} />
-                        )}
-                      </div>
-                    }
-                    content={
-                      <WalletDescription
-                        name="Sender"
-                        type="extension"
-                        url="senderwallet.io"
-                      />
-                    }
-                    onClick={() => switchWalletHandler(WalletType.SENDER)}
-                    className={styles.row}
-                  />
-                  <div className={styles.delimiter} />
-                </>
-              )}
-              <AccountPopupItem
-                onClick={logout}
-                content={
-                  <div className={styles.disconnectText}>Disconnect</div>
-                }
-                icon={
-                  <Icon
-                    name="logout"
-                    className={cn(
-                      styles.disconnect,
-                      styles.icon,
-                      styles.disconnectIconColor
-                    )}
-                  />
-                }
-              />
-            </div>
-            <AppFooter mobile className={styles.footer} onClick={closePopup} />
-          </div>
-        </GenericDropdown>
+        <WalletIcon
+          walletType={WalletType.NEAR}
+          isSelected={false}
+          onClick={showModal}
+        />
       );
     }
 
-    return <NearIcon onClick={login} />;
+    return (
+      <GenericDropdown
+        isOpen={open}
+        onOpenUpdate={setOpen}
+        parent={
+          <div className={styles.accountButton}>
+            <WalletIcon
+              walletType={nearService?.getWalletType() ?? WalletType.NEAR}
+              isSelected={false}
+            />
+            <span className={styles.accountId}>{accountId}</span>
+            <Icon
+              name="buttonArrowDown"
+              className={cn(styles.controlIcon, { [styles.open]: open })}
+            />
+          </div>
+        }
+        options={{
+          placement: 'bottom-end',
+        }}
+      >
+        <div>
+          <div className={styles.dropdown}>
+            <MyAccountButton />
+
+            {nearService && (
+              <>
+                <div className={styles.delimiter} />
+                <div className={styles.chooseWalletCaption}>Choose wallet</div>
+                <WalletButton
+                  walletType={WalletType.NEAR}
+                  isSelected={nearService.getWalletType() === WalletType.NEAR}
+                  onClick={switchWalletHandler(WalletType.NEAR)}
+                  name="NEAR"
+                  type="web"
+                  url="wallet.near.org"
+                />
+                <WalletButton
+                  walletType={WalletType.SENDER}
+                  isSelected={nearService.getWalletType() === WalletType.SENDER}
+                  onClick={switchWalletHandler(WalletType.SENDER)}
+                  name="Sender"
+                  type="extension"
+                  url="senderwallet.io"
+                />
+                <div className={styles.delimiter} />
+              </>
+            )}
+            <DisconnectButton logout={logout} />
+          </div>
+          <AppFooter mobile className={styles.footer} onClick={closePopup} />
+        </div>
+      </GenericDropdown>
+    );
   }
 
   return (
     <div className={styles.root} ref={ref}>
-      {renderNearIcon()}
+      {render()}
     </div>
   );
 };

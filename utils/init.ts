@@ -1,27 +1,24 @@
 import { configService } from 'services/ConfigService';
-import { CookieService } from 'services/CookieService';
-import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { WalletType } from 'types/config';
 import { SputnikNearService } from 'services/sputnik';
 import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
 import { SenderWalletService } from 'services/sputnik/SputnikNearService/services/SenderWalletService';
-import { dispatchCustomEvent } from 'utils/dispatchCustomEvent';
-
-export const WALLET_INIT_EVENT = 'walletInitialized';
 
 function initWallet(
   selectedWallet: WalletType | undefined,
   isSenderWalletAvailable: boolean
-): void {
+): SputnikNearService | undefined {
   const { nearConfig, appConfig } = configService.get();
 
+  let sputnikService: SputnikNearService;
+
   if (!appConfig || !nearConfig) {
-    return;
+    return undefined;
   }
 
   switch (selectedWallet) {
     case WalletType.NEAR: {
-      window.nearService = new SputnikNearService(
+      sputnikService = new SputnikNearService(
         new SputnikWalletService(nearConfig)
       );
       break;
@@ -32,14 +29,14 @@ function initWallet(
       if (!isSenderWalletAvailable) {
         window.localStorage.removeItem('selectedWallet');
 
-        window.nearService = new SputnikNearService(
+        sputnikService = new SputnikNearService(
           new SputnikWalletService(nearConfig)
         );
 
         break;
       }
 
-      window.nearService = new SputnikNearService(
+      sputnikService = new SputnikNearService(
         new SenderWalletService(window.near)
       );
 
@@ -47,33 +44,22 @@ function initWallet(
     }
 
     default: {
-      window.nearService = new SputnikNearService(
+      sputnikService = new SputnikNearService(
         new SputnikWalletService(nearConfig)
       );
     }
   }
 
-  window.nearService.isSenderWalletAvailable = isSenderWalletAvailable;
+  sputnikService.isSenderWalletAvailable = isSenderWalletAvailable;
 
-  if (window.nearService.isSignedIn()) {
-    dispatchCustomEvent(WALLET_INIT_EVENT, true);
-  } else {
-    window.nearService.signIn(nearConfig.contractName).then(() => {
-      dispatchCustomEvent(WALLET_INIT_EVENT, true);
-    });
-  }
+  return sputnikService;
 }
 
 export const initNearService = (
-  walletType: WalletType | undefined
-): Promise<void> => {
+  walletType: WalletType
+): Promise<SputnikNearService | undefined> => {
   if (!process.browser) {
-    return Promise.resolve();
-  }
-
-  // non authorized
-  if (!CookieService.get(ACCOUNT_COOKIE)) {
-    return Promise.resolve();
+    return Promise.resolve(undefined);
   }
 
   let counter = 0;
@@ -82,8 +68,10 @@ export const initNearService = (
     const intervalId = setInterval(() => {
       if (counter !== undefined && counter === 10) {
         clearInterval(intervalId);
-        initWallet(walletType, false);
-        resolve();
+
+        const service = initWallet(walletType, false);
+
+        resolve(service);
       }
 
       if (counter !== undefined) {
@@ -91,9 +79,10 @@ export const initNearService = (
       }
 
       if (typeof window.near !== 'undefined' && window.near.isSender) {
-        initWallet(walletType, true);
+        const service = initWallet(walletType, true);
+
         clearInterval(intervalId);
-        resolve();
+        resolve(service);
       }
     }, 500);
   });

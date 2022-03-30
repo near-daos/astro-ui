@@ -28,40 +28,12 @@
     margin: 12px 0;
   }
 
-  .disconnectIconColor {
-    color: var(--color-brand-coral-red);
-  }
-
-  .iconContainer {
-    position: relative;
-  }
-
-  .selectedWallet {
-    background-color: var(--color-brand-green);
-    border-radius: 50%;
-    height: 8px;
-    left: 24px;
-    position: absolute;
-    top: 0;
-    width: 8px;
-  }
-
-  .row {
-    cursor: pointer;
-    display: flex;
-    margin-bottom: 24px;
-    width: auto;
-  }
-
-  .disconnectText {
-    @extend %subtitle3;
-  }
-
   .chooseWalletCaption {
     @extend %subtitle5;
     color: var(--color-neutral-60);
     margin-bottom: 24px;
   }
+
   .text {
     @extend %subtitle4;
     color: var(--color-neutral-90);

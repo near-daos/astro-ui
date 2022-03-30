@@ -73,7 +73,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   initialValues,
 }) => {
   const { t } = useTranslation();
-  const { accountId } = useAuthContext();
+  const { accountId, nearService } = useAuthContext();
   const router = useRouter();
   const initialProposalVariant = getInitialProposalVariant(
     proposalVariant,
@@ -110,7 +110,8 @@ export const CreateProposal: FC<CreateProposalProps> = ({
       const schema = getValidationSchema(
         context?.selectedProposalVariant,
         dao,
-        data
+        data,
+        nearService
       );
 
       try {
@@ -189,13 +190,11 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           let resp;
 
           if (selectedProposalVariant === ProposalVariant.ProposeTransfer) {
-            resp = await window.nearService.createTokenTransferProposal(
-              newProposal
-            );
+            resp = await nearService?.createTokenTransferProposal(newProposal);
 
             resp = last(resp as FinalExecutionOutcome[]);
           } else {
-            resp = await window.nearService.addProposal(newProposal);
+            resp = await nearService?.addProposal(newProposal);
           }
 
           const newProposalId = JSON.parse(
@@ -242,6 +241,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
       showModal,
       router,
       onCreate,
+      nearService,
     ]
   );
 

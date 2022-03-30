@@ -27,7 +27,7 @@ export function useDaoSubscriptions(): {
   handleUnfollow: (id: string) => void;
   isLoading: boolean;
 } {
-  const { accountId } = useAuthContext();
+  const { accountId, nearService } = useAuthContext();
   const [subscriptions, setSubscriptions] = useState<Record<
     string,
     { subscriptionId: string; dao: DAO }
@@ -52,8 +52,8 @@ export function useDaoSubscriptions(): {
   }, [accountId]);
 
   const [{ loading }, handleFollow] = useAsyncFn(async daoId => {
-    const publicKey = await window.nearService.getPublicKey();
-    const signature = await window.nearService.getSignature();
+    const publicKey = await nearService?.getPublicKey();
+    const signature = await nearService?.getSignature();
 
     if (publicKey && signature && accountId) {
       const result = await SputnikHttpService.updateAccountSubscription({
@@ -71,8 +71,8 @@ export function useDaoSubscriptions(): {
 
   const [{ loading: loadingUnfollow }, handleUnfollow] = useAsyncFn(
     async subscriptionId => {
-      const publicKey = await window.nearService.getPublicKey();
-      const signature = await window.nearService.getSignature();
+      const publicKey = await nearService?.getPublicKey();
+      const signature = await nearService?.getSignature();
 
       if (publicKey && signature && accountId) {
         await SputnikHttpService.deleteAccountSubscription(subscriptionId, {

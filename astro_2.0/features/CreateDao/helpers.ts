@@ -7,23 +7,30 @@ import {
   DAOProposalsType,
   DAOStructureType,
 } from 'astro_2.0/features/CreateDao/components/types';
+import { SputnikNearService } from 'services/sputnik';
 
 export async function validateDaoAddress(
-  value: string | undefined
+  value: string | undefined,
+  nearService: SputnikNearService | undefined
 ): Promise<boolean> {
+  if (!nearService) {
+    return false;
+  }
+
   if (!value) {
     return true;
   }
 
   const { nearConfig } = configService.get();
 
-  return window.nearService?.nearAccountExist(
+  return nearService?.nearAccountExist(
     `${value}.${nearConfig?.contractName ?? ''}`
   );
 }
 
 export function getNewDaoParams(
   data: GlobalState,
+  accountId: string,
   cover?: string
 ): CreateDaoInput {
   return {
@@ -43,7 +50,7 @@ export function getNewDaoParams(
           structure: data.proposals.structure as DAOStructureType,
           proposals: data.proposals.proposals as DAOProposalsType,
         },
-        window.nearService.getAccountId()
+        accountId
       ),
       proposalBond: '0.1',
       proposalPeriod: '168',

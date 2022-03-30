@@ -26,7 +26,7 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({ index, removeLink }) => {
     clearErrors,
     formState: { errors },
   } = useFormContext();
-  const { accountId } = useAuthContext();
+  const { accountId, nearService } = useAuthContext();
 
   const currentValue = watch(`accounts.${index}`);
   const [value, setValue] = useState(currentValue);
@@ -55,7 +55,7 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({ index, removeLink }) => {
         return;
       }
 
-      const isAccountExist = await validateUserAccount(value);
+      const isAccountExist = await validateUserAccount(value, nearService);
 
       if (!isAccountExist) {
         setFormError(fieldName, {

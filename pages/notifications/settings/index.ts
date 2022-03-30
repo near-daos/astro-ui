@@ -39,8 +39,8 @@ export const getServerSideProps: GetServerSideProps = async ({
   const accountDaosIds = accountDaos.map(item => item.id);
 
   const [daosSettings, platformSettings] = await Promise.all([
-    NotificationsService.getNotificationsSettings(accountDaosIds),
-    NotificationsService.getNotificationsSettings(),
+    NotificationsService.getNotificationsSettings(accountId, accountDaosIds),
+    NotificationsService.getNotificationsSettings(accountId),
   ]);
 
   return {

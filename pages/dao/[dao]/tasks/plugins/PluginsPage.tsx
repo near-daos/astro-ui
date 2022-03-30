@@ -13,7 +13,8 @@ import { useMedia } from 'react-use';
 import styles from 'pages/dao/[dao]/tasks/plugins/plugins.module.scss';
 import { useAuthContext } from 'context/AuthContext';
 
-import { PLUGINS_DATA, PLUGIN_INITIAL_DATA } from 'mocks/pluginsPageData';
+import { PLUGIN_INITIAL_DATA, PLUGINS_DATA } from 'mocks/pluginsPageData';
+import { WalletType } from 'types/config';
 
 interface PluginPageProps {
   plugins: PluginCardProps[];
@@ -41,7 +42,7 @@ const PluginsPage: FC<PluginPageProps> = ({ plugins = PLUGINS_DATA }) => {
   }, []);
 
   const handleCreateClick = useCallback(
-    () => (accountId ? showUsePluginPopup() : login()),
+    () => (accountId ? showUsePluginPopup() : login(WalletType.NEAR)),
     [login, showUsePluginPopup, accountId]
   );
 

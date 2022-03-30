@@ -95,7 +95,7 @@ export function useCreateDao(): {
 } {
   const router = useRouter();
   const { t } = useTranslation();
-  const { accountId } = useAuthContext();
+  const { accountId, nearService } = useAuthContext();
   const { actions, state } = useStateMachine({ updateAction });
 
   const uploadImg = useCallback(async (img: File) => {
@@ -138,9 +138,9 @@ export function useCreateDao(): {
     ) => {
       try {
         if (data) {
-          await window.nearService.createDao(data);
+          await nearService?.createDao(data);
         } else if (args) {
-          await window.nearService.createDao(args);
+          await nearService?.createDao(args);
         }
 
         showNotification({
