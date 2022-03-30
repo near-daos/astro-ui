@@ -1,12 +1,5 @@
 import { useRouter } from 'next/router';
-import {
-  createContext,
-  FC,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { createContext, FC, useCallback, useContext, useState } from 'react';
 import { useCookie, useEffectOnce } from 'react-use';
 
 import { ALL_FEED_URL } from 'constants/routing';
@@ -42,7 +35,6 @@ export const AuthWrapper: FC = ({ children }) => {
   const router = useRouter();
   const [, , deleteAccountCookie] = useCookie(ACCOUNT_COOKIE);
   const [, , deleteDaoCookie] = useCookie(DAO_COOKIE);
-  const [initWallet, setInitWallet] = useState(false);
 
   const [nearService, setNearService] = useState<
     SputnikNearService | undefined
@@ -63,13 +55,12 @@ export const AuthWrapper: FC = ({ children }) => {
     }
 
     if (Number(selectedWallet) === WalletType.SENDER) {
-      CookieService.set(ACCOUNT_COOKIE, service?.getAccountId());
+      CookieService.set(ACCOUNT_COOKIE, service?.getAccountId(), { path: '/' });
     }
 
     setNearService(service);
-    setInitWallet(false);
     setAccountId(service?.getAccountId() ?? '');
-  }, [setNearService, setInitWallet, setAccountId, nearConfig.contractName]);
+  }, [setNearService, setAccountId, nearConfig.contractName]);
 
   useEffectOnce(() => {
     if (!accountId) {
@@ -79,19 +70,11 @@ export const AuthWrapper: FC = ({ children }) => {
     initService();
   });
 
-  useEffect(() => {
-    if (!initWallet) {
-      return;
-    }
-
-    initService();
-  }, [initService, initWallet]);
-
   async function login(walletType: WalletType) {
     try {
       window.localStorage.setItem('selectedWallet', walletType.toString());
 
-      setInitWallet(true);
+      initService();
     } catch (err) {
       console.warn(err);
 
@@ -112,6 +95,7 @@ export const AuthWrapper: FC = ({ children }) => {
 
     deleteAccountCookie();
     deleteDaoCookie();
+    setNearService(undefined);
 
     setAccountId('');
     router.push(ALL_FEED_URL);

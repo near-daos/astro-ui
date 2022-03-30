@@ -35,7 +35,7 @@ export const WalletIcon: React.FC<WalletIconProps> = ({
       return renderIcon(<NearIcon />);
     }
     case WalletType.SENDER: {
-      return renderIcon(<Icon name="senderWallet" />);
+      return renderIcon(<Icon name="senderWallet" width={38} />);
     }
     default:
       return renderIcon(<NearIcon />);

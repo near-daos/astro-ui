@@ -3,9 +3,16 @@ import styles from 'astro_2.0/components/AppHeader/components/AccountButton/Acco
 import { Icon } from 'components/Icon';
 import React from 'react';
 
-export const MyAccountButton: React.FC = () => {
+interface MyAccountButtonProps {
+  className?: string;
+}
+
+export const MyAccountButton: React.FC<MyAccountButtonProps> = ({
+  className,
+}) => {
   return (
     <AccountPopupItem
+      className={className}
       content={<div className={styles.text}>My Account</div>}
       icon={<Icon name="account" className={styles.icon} />}
     />
