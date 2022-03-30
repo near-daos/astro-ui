@@ -24,14 +24,7 @@ import { SocketProvider } from 'context/SocketContext';
 import { useIntercomAdjust } from 'hooks/useIntercomAdjust';
 
 import 'styles/globals.scss';
-import { initNearService } from 'utils/init';
 import { useRouter } from 'next/router';
-
-if (process.browser) {
-  const selectedWallet = window.localStorage.getItem('selectedWallet');
-
-  initNearService(Number(selectedWallet));
-}
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();

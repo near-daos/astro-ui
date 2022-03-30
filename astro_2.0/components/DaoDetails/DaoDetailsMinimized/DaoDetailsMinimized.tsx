@@ -21,6 +21,7 @@ import { shortenString } from 'utils/format';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ExplorerLink } from 'components/ExplorerLink';
 
+import { WalletType } from 'types/config';
 import styles from './DaoDetailsMinimized.module.scss';
 
 export interface DaoDetailsMinimizedProps {
@@ -81,7 +82,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           size="block"
           onClick={() => {
             if (isEmpty(accountId)) {
-              login();
+              login(WalletType.NEAR);
             } else if (onCreateProposalClick) {
               onCreateProposalClick();
             }

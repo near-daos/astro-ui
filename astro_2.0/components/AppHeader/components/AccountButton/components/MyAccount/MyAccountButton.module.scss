@@ -1,0 +1,13 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.text {
+  @extend %subtitle4;
+  color: var(--color-neutral-90);
+}
+
+.icon {
+  height: 24px;
+  width: 24px;
+}

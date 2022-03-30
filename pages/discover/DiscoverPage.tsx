@@ -24,6 +24,7 @@ import { CREATE_DAO_URL } from 'constants/routing';
 import { DaoStatsTopics } from 'astro_2.0/features/Discover/constants';
 import useQuery from 'hooks/useQuery';
 
+import { WalletType } from 'types/config';
 import styles from './DiscoverPage.module.scss';
 
 const DiscoverPage: NextPage = () => {
@@ -40,7 +41,7 @@ const DiscoverPage: NextPage = () => {
   }>({ shallow: true });
 
   const handleCreateDao = useCallback(
-    () => (accountId ? router.push(CREATE_DAO_URL) : login()),
+    () => (accountId ? router.push(CREATE_DAO_URL) : login(WalletType.NEAR)),
     [login, router, accountId]
   );
 

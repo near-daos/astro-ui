@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { SputnikHttpService } from 'services/sputnik';
 import { useMountedState } from 'react-use';
 
-export const useDaoIds = (accountId: string): string[] => {
+export const useDaoIds = (accountId: string | undefined): string[] => {
   const isMounted = useMountedState();
   const [daoIds, setDaoIds] = useState<string[]>([]);
 

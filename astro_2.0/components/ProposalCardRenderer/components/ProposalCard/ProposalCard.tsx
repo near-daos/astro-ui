@@ -174,13 +174,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   toggleInfoPanel,
   commentsCount,
 }) => {
-  const { accountId } = useAuthContext();
+  const { accountId, nearService } = useAuthContext();
   const { t } = useTranslation();
   const router = useRouter();
 
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
     async (vote: VoteAction, gas?: string | number) => {
-      await window.nearService.vote(daoId, proposalId, vote, gas);
+      await nearService?.vote(daoId, proposalId, vote, gas);
       await router.reload();
     },
     [daoId, proposalId, router]
@@ -190,7 +190,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     { loading: finalizeLoading },
     finalizeClickHandler,
   ] = useAsyncFn(async () => {
-    await window.nearService.finalize(daoId, proposalId);
+    await nearService?.finalize(daoId, proposalId);
     await router.reload();
   }, [daoId, proposalId, router]);
 

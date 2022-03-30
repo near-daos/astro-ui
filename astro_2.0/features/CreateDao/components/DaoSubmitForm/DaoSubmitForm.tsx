@@ -25,11 +25,13 @@ import { getNewDaoParams } from 'astro_2.0/features/CreateDao/helpers';
 import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCreateDao } from 'astro_2.0/features/CreateDao/components/hooks';
 
+import { useAuthContext } from 'context/AuthContext';
 import styles from './DaoSubmitForm.module.scss';
 
 export function DaoSubmitForm(): JSX.Element {
   const { actions, state } = useStateMachine({ updateAction });
   const { createDao, uploadAssets } = useCreateDao();
+  const { accountId } = useAuthContext();
 
   const methods = useForm<SubmitStep>({
     defaultValues: state.submit,
@@ -63,7 +65,10 @@ export function DaoSubmitForm(): JSX.Element {
       coverFileName = await uploadAssets(state.assets.defaultFlag);
     }
 
-    await createDao(state.info.address, getNewDaoParams(state, coverFileName));
+    await createDao(
+      state.info.address,
+      getNewDaoParams(state, accountId, coverFileName)
+    );
   };
 
   function validateWholeForm() {

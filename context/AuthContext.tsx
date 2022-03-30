@@ -1,6 +1,13 @@
 import { useRouter } from 'next/router';
-import { createContext, FC, useContext, useState } from 'react';
-import { useCookie } from 'react-use';
+import {
+  createContext,
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { useCookie, useEffectOnce } from 'react-use';
 
 import { ALL_FEED_URL } from 'constants/routing';
 import { ACCOUNT_COOKIE, DAO_COOKIE } from 'constants/cookies';
@@ -12,46 +19,79 @@ import { CookieService } from 'services/CookieService';
 import { configService } from 'services/ConfigService';
 import { WalletType } from 'types/config';
 import { SputnikNearService } from 'services/sputnik';
-import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
+import { initNearService } from 'utils/init';
 
 interface AuthContextInterface {
   accountId: string;
-  login: () => Promise<void>;
+  login: (walletType: WalletType) => Promise<void>;
   logout: () => Promise<void>;
-  switchWallet: (walletType: WalletType) => Promise<void>;
+  nearService: SputnikNearService | undefined;
+  isLoggedIn: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextInterface>({
   accountId: '',
-  login: () => Promise.resolve(),
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  login: walletType => Promise.resolve(),
   logout: () => Promise.resolve(),
-  switchWallet: () => Promise.resolve(),
+  isLoggedIn: () => false,
+  nearService: undefined,
 });
 
 export const AuthWrapper: FC = ({ children }) => {
   const router = useRouter();
   const [, , deleteAccountCookie] = useCookie(ACCOUNT_COOKIE);
   const [, , deleteDaoCookie] = useCookie(DAO_COOKIE);
+  const [initWallet, setInitWallet] = useState(false);
+
+  const [nearService, setNearService] = useState<
+    SputnikNearService | undefined
+  >(undefined);
+
   const [accountId, setAccountId] = useState<string>(
     CookieService.get(ACCOUNT_COOKIE)
   );
   const { nearConfig } = configService.get();
 
-  async function login() {
+  const initService = useCallback(async () => {
+    const selectedWallet =
+      window.localStorage.getItem('selectedWallet') ?? WalletType.NEAR;
+    const service = await initNearService(Number(selectedWallet));
+
+    if (!service?.isSignedIn()) {
+      await service?.signIn(nearConfig.contractName);
+    }
+
+    if (Number(selectedWallet) === WalletType.SENDER) {
+      CookieService.set(ACCOUNT_COOKIE, service?.getAccountId());
+    }
+
+    setNearService(service);
+    setInitWallet(false);
+    setAccountId(service?.getAccountId() ?? '');
+  }, [setNearService, setInitWallet, setAccountId, nearConfig.contractName]);
+
+  useEffectOnce(() => {
+    if (!accountId) {
+      return;
+    }
+
+    initService();
+  });
+
+  useEffect(() => {
+    if (!initWallet) {
+      return;
+    }
+
+    initService();
+  }, [initService, initWallet]);
+
+  async function login(walletType: WalletType) {
     try {
-      if (!window.nearService) {
-        const walletService = new SputnikWalletService(nearConfig);
+      window.localStorage.setItem('selectedWallet', walletType.toString());
 
-        window.nearService = new SputnikNearService(walletService);
-      }
-
-      await window.nearService?.signIn(nearConfig.contractName);
-
-      const id = window.nearService?.getAccountId();
-
-      if (id) {
-        setAccountId(id);
-      }
+      setInitWallet(true);
     } catch (err) {
       console.warn(err);
 
@@ -65,17 +105,15 @@ export const AuthWrapper: FC = ({ children }) => {
     }
   }
 
-  async function switchWallet(walletType: WalletType) {
-    await window.nearService.switchWallet(walletType);
-  }
-
   async function logout() {
-    await window.nearService?.logout();
+    await nearService?.logout();
 
-    setAccountId('');
+    CookieService.remove(ACCOUNT_COOKIE);
+
     deleteAccountCookie();
     deleteDaoCookie();
 
+    setAccountId('');
     router.push(ALL_FEED_URL);
   }
 
@@ -83,7 +121,8 @@ export const AuthWrapper: FC = ({ children }) => {
     accountId,
     login,
     logout,
-    switchWallet,
+    nearService,
+    isLoggedIn: () => !!accountId,
   };
 
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;

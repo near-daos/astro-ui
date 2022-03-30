@@ -25,13 +25,13 @@
   }
 }
 
-@include non-touch-devices {
-  .root:hover {
-    @include button-hover-state;
-  }
-
-  // stylelint-disable-next-line
-  :global(.near-icon-parent):hover .root {
-    @include button-hover-state;
-  }
-}
+//@include non-touch-devices {
+//  .root:hover {
+//    @include button-hover-state;
+//  }
+//
+//  // stylelint-disable-next-line
+//  :global(.near-icon-parent):hover .root {
+//    @include button-hover-state;
+//  }
+//}

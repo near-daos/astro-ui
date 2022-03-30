@@ -9,8 +9,6 @@ import {
   Transaction,
 } from 'services/sputnik/SputnikNearService/services/types';
 import { WalletType } from 'types/config';
-import { ACCOUNT_COOKIE } from 'constants/cookies';
-import { CookieService } from 'services/CookieService';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
 import { httpService } from 'services/HttpService';
 
@@ -36,8 +34,6 @@ export class SenderWalletService implements WalletService {
     await this.walletInstance.requestSignIn({
       contractId,
     });
-
-    CookieService.set(ACCOUNT_COOKIE, this.getAccountId());
   }
 
   getAccount(): ConnectedWalletAccount {

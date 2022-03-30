@@ -42,6 +42,7 @@ import {
   requiredImg,
   validateImgSize,
 } from 'utils/imageValidators';
+import { SputnikNearService } from 'services/sputnik';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -394,9 +395,10 @@ export function mapProposalVariantToProposalType(
 }
 
 export function validateUserAccount(
-  value: string | undefined
+  value: string | undefined,
+  nearService: SputnikNearService | undefined
 ): Promise<boolean> | boolean {
-  if (!value) {
+  if (!value || !nearService) {
     return false;
   }
 
@@ -412,7 +414,7 @@ export function validateUserAccount(
     return Promise.resolve(result);
   }
 
-  return window.nearService.nearAccountExist(value || '');
+  return nearService?.nearAccountExist(value || '');
 }
 
 export const gasValidation = yup
@@ -426,7 +428,8 @@ export const gasValidation = yup
 export function getValidationSchema(
   proposalVariant?: ProposalVariant,
   dao?: DAO,
-  data?: { [p: string]: unknown }
+  data?: { [p: string]: unknown },
+  nearService?: SputnikNearService
 ): yup.AnySchema {
   switch (proposalVariant) {
     case ProposalVariant.ProposeTransfer: {
@@ -447,7 +450,7 @@ export function getValidationSchema(
           .test(
             'notValidNearAccount',
             'Only valid near accounts are allowed',
-            validateUserAccount
+            value => validateUserAccount(value, nearService)
           ),
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
@@ -525,7 +528,7 @@ export function getValidationSchema(
           .test(
             'notValidNearAccount',
             'Only valid near accounts are allowed',
-            validateUserAccount
+            value => validateUserAccount(value, nearService)
           )
           .test(
             'daoMember',
@@ -614,7 +617,7 @@ export function getValidationSchema(
               .test(
                 'notValidNearAccount',
                 'Only valid near accounts are allowed',
-                validateUserAccount
+                value => validateUserAccount(value, nearService)
               ),
             details: yup.string().required('Required'),
             externalUrl: yup.string().url(),
@@ -636,7 +639,7 @@ export function getValidationSchema(
               .test(
                 'notValidNearAccount',
                 'Only valid near accounts are allowed',
-                validateUserAccount
+                value => validateUserAccount(value, nearService)
               ),
             details: yup.string().required('Required'),
             externalUrl: yup.string().url(),
@@ -648,7 +651,7 @@ export function getValidationSchema(
           return yup.object().shape({
             pullId: yup
               .number()
-              .typeError('Must be a valid number.')
+              .typeError('Must be a va  lid number.')
               .required('Required'),
             tokenIn: yup.string().required('Required'),
             tokenOut: yup.string().required('Required'),
