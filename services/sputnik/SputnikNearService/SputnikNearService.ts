@@ -89,7 +89,6 @@ export class SputnikNearService implements WalletService, DaoService {
 
   public async logout(): Promise<void> {
     this.walletService.logout();
-    window.localStorage.removeItem('selectedWallet');
   }
 
   public getAccountId(): string {
@@ -181,9 +180,46 @@ export class SputnikNearService implements WalletService, DaoService {
     const accountId = this.getAccountId();
     const { bountyId: id, deadline, bountyBond, gas, tokenId } = args;
 
-    const storageDepositTransactionAction = tokenId
-      ? {
-          receiverId: tokenId,
+    let storageDepositTransactionAction;
+    let claimAction;
+
+    switch (this.getWalletType()) {
+      case WalletType.SENDER: {
+        storageDepositTransactionAction = {
+          receiverId: tokenId ?? '',
+          actions: [
+            {
+              methodName: 'storage_deposit',
+              args: {
+                account_id: accountId,
+                registration_only: true,
+              },
+              gas: GAS_VALUE.toString(),
+              amount: '100000000000000000000000',
+            },
+          ],
+        };
+
+        claimAction = {
+          receiverId: daoId,
+          actions: [
+            {
+              methodName: 'bounty_claim',
+              args: {
+                id,
+                deadline,
+              },
+              gas: (gas ? formatGasValue(gas) : GAS_VALUE).toString(),
+              deposit: bountyBond,
+            },
+          ],
+        };
+        break;
+      }
+      case WalletType.NEAR:
+      default: {
+        storageDepositTransactionAction = {
+          receiverId: tokenId ?? '',
           actions: [
             transactions.functionCall(
               'storage_deposit',
@@ -196,23 +232,24 @@ export class SputnikNearService implements WalletService, DaoService {
               new BN('100000000000000000000000')
             ),
           ],
-        }
-      : null;
+        };
 
-    const claimAction = {
-      receiverId: daoId,
-      actions: [
-        transactions.functionCall(
-          'bounty_claim',
-          {
-            id,
-            deadline,
-          },
-          gas ? formatGasValue(gas) : GAS_VALUE,
-          new BN(bountyBond)
-        ),
-      ],
-    };
+        claimAction = {
+          receiverId: daoId,
+          actions: [
+            transactions.functionCall(
+              'bounty_claim',
+              {
+                id,
+                deadline,
+              },
+              gas ? formatGasValue(gas) : GAS_VALUE,
+              new BN(bountyBond)
+            ),
+          ],
+        };
+      }
+    }
 
     const trx = storageDepositTransactionAction
       ? [storageDepositTransactionAction, claimAction]
@@ -278,40 +315,84 @@ export class SputnikNearService implements WalletService, DaoService {
       receiver_id: recipient,
     } = data as Transfer;
 
-    const storageDepositTransactionAction = {
-      receiverId: tokenContract,
-      actions: [
-        transactions.functionCall(
-          'storage_deposit',
-          {
-            account_id: recipient,
-            registration_only: true,
-          },
-          GAS_VALUE,
-          // 0.1 NEAR, minimal value
-          new BN('100000000000000000000000')
-        ),
-      ],
-    };
+    let storageDepositTransactionAction;
+    let transferTransaction;
 
-    const transferTransaction = {
-      receiverId: daoId,
-      actions: [
-        transactions.functionCall(
-          'add_proposal',
-          {
-            proposal: {
-              description,
-              kind: {
-                [kind]: data,
+    switch (this.getWalletType()) {
+      case WalletType.SENDER: {
+        storageDepositTransactionAction = {
+          receiverId: tokenContract,
+          actions: [
+            {
+              methodName: 'storage_deposit',
+              args: {
+                account_id: recipient,
+                registration_only: true,
               },
+              gas: GAS_VALUE.toString(),
+              amount: '100000000000000000000000',
             },
-          },
-          GAS_VALUE,
-          new BN(bond)
-        ),
-      ],
-    };
+          ],
+        };
+
+        transferTransaction = {
+          receiverId: daoId,
+          actions: [
+            {
+              methodName: 'add_proposal',
+              args: {
+                proposal: {
+                  description,
+                  kind: {
+                    [kind]: data,
+                  },
+                },
+              },
+              gas: GAS_VALUE.toString(),
+              deposit: bond,
+            },
+          ],
+        };
+        break;
+      }
+      case WalletType.NEAR:
+      default: {
+        storageDepositTransactionAction = {
+          receiverId: tokenContract,
+          actions: [
+            transactions.functionCall(
+              'storage_deposit',
+              {
+                account_id: recipient,
+                registration_only: true,
+              },
+              GAS_VALUE,
+              // 0.1 NEAR, minimal value
+              new BN('100000000000000000000000')
+            ),
+          ],
+        };
+
+        transferTransaction = {
+          receiverId: daoId,
+          actions: [
+            transactions.functionCall(
+              'add_proposal',
+              {
+                proposal: {
+                  description,
+                  kind: {
+                    [kind]: data,
+                  },
+                },
+              },
+              GAS_VALUE,
+              new BN(bond)
+            ),
+          ],
+        };
+      }
+    }
 
     const trx = tokenContract
       ? [storageDepositTransactionAction, transferTransaction]

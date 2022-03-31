@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { createContext, FC, useCallback, useContext, useState } from 'react';
-import { useCookie, useEffectOnce } from 'react-use';
+import { useCookie, useEffectOnce, useLocalStorage } from 'react-use';
 
 import { ALL_FEED_URL } from 'constants/routing';
 import { ACCOUNT_COOKIE, DAO_COOKIE } from 'constants/cookies';
@@ -35,6 +35,11 @@ export const AuthWrapper: FC = ({ children }) => {
   const router = useRouter();
   const [, , deleteAccountCookie] = useCookie(ACCOUNT_COOKIE);
   const [, , deleteDaoCookie] = useCookie(DAO_COOKIE);
+  const [
+    selectedWallet,
+    setSelectedWallet,
+    removeSelectedWallet,
+  ] = useLocalStorage('selectedWallet', WalletType.NEAR.toString());
 
   const [nearService, setNearService] = useState<
     SputnikNearService | undefined
@@ -53,16 +58,17 @@ export const AuthWrapper: FC = ({ children }) => {
         await service?.signIn(nearConfig.contractName);
       }
 
-      if (Number(walletType) === WalletType.SENDER) {
-        CookieService.set(ACCOUNT_COOKIE, service?.getAccountId(), {
-          path: '/',
-        });
-      }
+      CookieService.set(ACCOUNT_COOKIE, service?.getAccountId(), {
+        path: '/',
+      });
 
       setNearService(service);
+
       setAccountId(service?.getAccountId() ?? '');
+
+      setSelectedWallet(walletType.toString());
     },
-    [setNearService, setAccountId, nearConfig.contractName]
+    [setSelectedWallet, nearConfig.contractName]
   );
 
   useEffectOnce(() => {
@@ -70,8 +76,8 @@ export const AuthWrapper: FC = ({ children }) => {
       return;
     }
 
-    const selectedWallet =
-      window.localStorage.getItem('selectedWallet') ?? WalletType.NEAR;
+    // const selectedWallet =
+    //   window.localStorage.getItem('selectedWallet') ?? WalletType.NEAR;
 
     initService(Number(selectedWallet));
   });
@@ -79,8 +85,7 @@ export const AuthWrapper: FC = ({ children }) => {
   async function login(walletType: WalletType) {
     try {
       await initService(walletType);
-
-      window.localStorage.setItem('selectedWallet', walletType.toString());
+      router.reload();
     } catch (err) {
       console.warn(err);
 
@@ -96,6 +101,7 @@ export const AuthWrapper: FC = ({ children }) => {
 
   async function logout() {
     await nearService?.logout();
+    removeSelectedWallet();
 
     CookieService.remove(ACCOUNT_COOKIE);
 
