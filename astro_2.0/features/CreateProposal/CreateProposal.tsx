@@ -186,9 +186,13 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         }
 
         if (newProposal) {
-          const resp = await nearService?.createTokenTransferProposal(
-            newProposal
-          );
+          let resp;
+
+          if (selectedProposalVariant === ProposalVariant.ProposeTransfer) {
+            resp = await nearService?.createTokenTransferProposal(newProposal);
+          } else {
+            resp = await nearService?.addProposal(newProposal);
+          }
 
           const newProposalId = JSON.parse(
             Buffer.from(
