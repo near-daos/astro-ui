@@ -10,7 +10,6 @@ import { Input } from 'components/inputs/Input';
 import { Icon } from 'components/Icon';
 import { IconButton } from 'components/button/IconButton';
 import { GroupedSelect } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
-import { AmountBalanceCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/AmountBalanceCard';
 import { FunctionCallTypeSelector } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/FunctionCallTypeSelector';
 
 import { ProposalVariant } from 'types/proposal';
@@ -71,7 +70,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
           <IconButton
             icon="close"
             className={styles.action}
-            onClick={() => onClose?.()}
+            onClick={onClose}
           />
         </div>
       );
@@ -132,24 +131,8 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
 
   function renderProposer() {
     switch (type) {
-      case ProposalVariant.ProposeContractAcceptance:
       case ProposalVariant.ProposeCreateToken: {
         return null;
-      }
-      case ProposalVariant.ProposeTokenDistribution: {
-        return (
-          <div className={styles.proposerCell}>
-            <InfoBlockWidget
-              label={t('proposalCard.proposalOwner')}
-              value={proposer}
-            />
-            <AmountBalanceCard
-              value={23000}
-              suffix="REF"
-              className={styles.amountBalance}
-            />
-          </div>
-        );
       }
       case ProposalVariant.ProposeCustomFunctionCall: {
         return (
@@ -177,9 +160,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
 
   function renderDescription() {
     switch (type) {
-      case ProposalVariant.ProposeCreateToken:
-      case ProposalVariant.ProposeContractAcceptance:
-      case ProposalVariant.ProposeTokenDistribution: {
+      case ProposalVariant.ProposeCreateToken: {
         return null;
       }
       default: {
