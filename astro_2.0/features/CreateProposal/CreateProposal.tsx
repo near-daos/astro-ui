@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 import last from 'lodash/last';
-import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
@@ -187,22 +186,16 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         }
 
         if (newProposal) {
-          let resp;
-
-          if (selectedProposalVariant === ProposalVariant.ProposeTransfer) {
-            resp = await nearService?.createTokenTransferProposal(newProposal);
-
-            resp = last(resp as FinalExecutionOutcome[]);
-          } else {
-            resp = await nearService?.addProposal(newProposal);
-          }
+          const resp = await nearService?.createTokenTransferProposal(
+            newProposal
+          );
 
           const newProposalId = JSON.parse(
             Buffer.from(
               // todo - Oleg: fix this!
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
-              resp.status.SuccessValue as string,
+              last(resp).status.SuccessValue as string,
               'base64'
             ).toString('ascii')
           );
