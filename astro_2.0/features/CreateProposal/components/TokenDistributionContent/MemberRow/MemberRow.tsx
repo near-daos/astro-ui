@@ -10,7 +10,7 @@ import { Member } from 'astro_2.0/features/CreateProposal/types';
 
 import styles from './MemberRow.module.scss';
 
-interface MemberRowProps {
+export interface MemberRowProps {
   name: string;
   groupName: string;
   governanceToken: GovernanceToken;
@@ -37,6 +37,7 @@ export const MemberRow: FC<MemberRowProps> = ({
       <span className={styles.name}>{name}</span>
       <span className={styles.inputWrapper}>
         <Input
+          data-testid="mr-input"
           isBorderless
           onKeyUp={async () => {
             await trigger();

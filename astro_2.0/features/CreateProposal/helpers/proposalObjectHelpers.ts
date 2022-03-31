@@ -81,8 +81,6 @@ export async function getBuyNftFromMintbaseProposal(
     price,
     timeout,
     timeoutGranularity,
-    // target,
-    // token,
     deposit,
     details,
     externalUrl,

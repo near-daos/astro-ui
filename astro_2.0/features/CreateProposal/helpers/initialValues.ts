@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { ProposalVariant } from 'types/proposal';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 

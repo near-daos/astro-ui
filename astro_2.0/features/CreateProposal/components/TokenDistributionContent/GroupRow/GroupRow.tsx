@@ -16,7 +16,7 @@ import { Member } from 'astro_2.0/features/CreateProposal/types';
 
 import styles from './GroupRow.module.scss';
 
-interface GroupRowProps {
+export interface GroupRowProps {
   name: string;
   numberOfMembers: number;
   members: string[];
@@ -64,6 +64,7 @@ export const GroupRow: FC<GroupRowProps> = ({
           })}
         >
           <Input
+            data-testid="gr-input"
             isBorderless
             onKeyUp={async () => {
               await trigger();

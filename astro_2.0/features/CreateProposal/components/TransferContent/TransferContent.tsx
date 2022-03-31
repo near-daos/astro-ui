@@ -11,6 +11,8 @@ import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { formatCurrency } from 'utils/formatCurrency';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
+import { getProposalAmountWidth } from './utils';
+
 import styles from './TransferContent.module.scss';
 
 export const TransferContent: FC = () => {
@@ -18,15 +20,7 @@ export const TransferContent: FC = () => {
   const { register, setValue, getValues, watch } = useFormContext();
   const { tokens } = useCustomTokensContext();
   const amount = watch('amount');
-  let amountWidth;
-
-  if (amount?.length <= 6) {
-    amountWidth = 7;
-  } else if (amount?.length >= 15) {
-    amountWidth = 15;
-  } else {
-    amountWidth = amount?.length ?? 5;
-  }
+  const amountWidth = getProposalAmountWidth(amount);
 
   const nearToUsd = (tokenBalance: string) => {
     const nearPrice = tokens?.NEAR?.price;
