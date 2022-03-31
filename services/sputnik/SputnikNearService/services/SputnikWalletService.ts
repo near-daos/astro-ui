@@ -49,7 +49,6 @@ export class SputnikWalletService implements WalletService {
     });
 
     this.walletConnection = new SputnikWalletConnection(this.near, 'sputnik');
-    window.localStorage.setItem('selectedWallet', WalletType.NEAR.toString());
   }
 
   isSignedIn(): boolean {

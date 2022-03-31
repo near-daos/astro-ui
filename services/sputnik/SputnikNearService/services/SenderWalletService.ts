@@ -19,7 +19,6 @@ export class SenderWalletService implements WalletService {
 
   constructor(walletInstance: SenderWalletInstance) {
     this.walletInstance = walletInstance;
-    window.localStorage.setItem('selectedWallet', WalletType.SENDER.toString());
   }
 
   isSignedIn(): boolean {
@@ -62,9 +61,9 @@ export class SenderWalletService implements WalletService {
   async sendTransactions(
     transactions: Transaction[]
   ): Promise<FinalExecutionOutcome[]> {
-    const result = await this.walletInstance.requestSignTransactions(
-      transactions
-    );
+    const result = await this.walletInstance.requestSignTransactions({
+      transactions,
+    });
 
     return result.response;
   }

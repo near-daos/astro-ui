@@ -65,7 +65,7 @@ type SignInOptions = {
 
 export type Transaction = {
   receiverId: string;
-  actions: transactions.Action[];
+  actions: transactions.Action[] | SenderAction[];
 };
 
 export type SenderWalletTransactionResult = {
@@ -76,11 +76,12 @@ export type SenderWalletTransactionResult = {
   response: FinalExecutionOutcome[];
 };
 
-export type Action = {
+export type SenderAction = {
   methodName: string;
   args: Record<string, unknown>;
   gas?: string;
   deposit?: string;
+  amount?: string;
 };
 
 export type SenderWalletInstance = {
@@ -93,11 +94,11 @@ export type SenderWalletInstance = {
   }) => Promise<SenderWalletTransactionResult>;
   signAndSendTransaction: (transaction: {
     receiverId: string;
-    actions: Action[];
+    actions: SenderAction[];
   }) => Promise<SenderWalletTransactionResult>;
-  requestSignTransactions: (
-    transactions: Transaction[]
-  ) => Promise<SenderWalletTransactionResult>;
+  requestSignTransactions: (transactions: {
+    transactions: Transaction[];
+  }) => Promise<SenderWalletTransactionResult>;
   signOut: () => void;
   authData: {
     accountId: string;
