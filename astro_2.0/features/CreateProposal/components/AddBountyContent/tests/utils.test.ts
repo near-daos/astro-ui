@@ -6,6 +6,6 @@ describe('AddBountyContent utils', () => {
     expect(getAmountFieldWidth(times(2, i => i))).toEqual(7);
     expect(getAmountFieldWidth(times(20, i => i))).toEqual(15);
     expect(getAmountFieldWidth(times(10, i => i))).toEqual(10);
-    expect(getAmountFieldWidth()).toEqual(5);
+    expect(getAmountFieldWidth()).toEqual(7);
   });
 });

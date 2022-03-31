@@ -7,5 +7,5 @@ export function getAmountFieldWidth(amount?: unknown[]): number {
     return 15;
   }
 
-  return amount?.length ?? 5;
+  return amount?.length || 7;
 }

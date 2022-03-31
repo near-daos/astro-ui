@@ -23,7 +23,7 @@ exports[`AddBountyContent Should render component 1`] = `
             id="1"
             min="0"
             placeholder="00.0000"
-            style="text-align: left; width: 5ch; padding-right: 4px;"
+            style="text-align: left; width: 7ch; padding-right: 4px;"
             type="number"
           />
         </label>
