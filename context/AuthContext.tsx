@@ -45,36 +45,42 @@ export const AuthWrapper: FC = ({ children }) => {
   );
   const { nearConfig } = configService.get();
 
-  const initService = useCallback(async () => {
-    const selectedWallet =
-      window.localStorage.getItem('selectedWallet') ?? WalletType.NEAR;
-    const service = await initNearService(Number(selectedWallet));
+  const initService = useCallback(
+    async (walletType: WalletType) => {
+      const service = await initNearService(Number(walletType));
 
-    if (!service?.isSignedIn()) {
-      await service?.signIn(nearConfig.contractName);
-    }
+      if (!service?.isSignedIn()) {
+        await service?.signIn(nearConfig.contractName);
+      }
 
-    if (Number(selectedWallet) === WalletType.SENDER) {
-      CookieService.set(ACCOUNT_COOKIE, service?.getAccountId(), { path: '/' });
-    }
+      if (Number(walletType) === WalletType.SENDER) {
+        CookieService.set(ACCOUNT_COOKIE, service?.getAccountId(), {
+          path: '/',
+        });
+      }
 
-    setNearService(service);
-    setAccountId(service?.getAccountId() ?? '');
-  }, [setNearService, setAccountId, nearConfig.contractName]);
+      setNearService(service);
+      setAccountId(service?.getAccountId() ?? '');
+    },
+    [setNearService, setAccountId, nearConfig.contractName]
+  );
 
   useEffectOnce(() => {
     if (!accountId) {
       return;
     }
 
-    initService();
+    const selectedWallet =
+      window.localStorage.getItem('selectedWallet') ?? WalletType.NEAR;
+
+    initService(Number(selectedWallet));
   });
 
   async function login(walletType: WalletType) {
     try {
-      window.localStorage.setItem('selectedWallet', walletType.toString());
+      await initService(walletType);
 
-      initService();
+      window.localStorage.setItem('selectedWallet', walletType.toString());
     } catch (err) {
       console.warn(err);
 

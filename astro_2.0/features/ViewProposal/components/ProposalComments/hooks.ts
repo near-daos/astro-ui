@@ -73,7 +73,7 @@ export function useProposalComments(
         });
       }
     },
-    [proposalId]
+    [proposalId, nearService]
   );
 
   const [, reportComment] = useAsyncFn(
@@ -99,7 +99,7 @@ export function useProposalComments(
         });
       }
     },
-    [proposalId]
+    [proposalId, nearService]
   );
 
   const [, deleteComment] = useAsyncFn(
@@ -124,7 +124,7 @@ export function useProposalComments(
         });
       }
     },
-    [proposalId]
+    [proposalId, nearService]
   );
 
   useEffect(() => {

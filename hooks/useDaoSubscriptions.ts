@@ -51,23 +51,26 @@ export function useDaoSubscriptions(): {
     }
   }, [accountId]);
 
-  const [{ loading }, handleFollow] = useAsyncFn(async daoId => {
-    const publicKey = await nearService?.getPublicKey();
-    const signature = await nearService?.getSignature();
+  const [{ loading }, handleFollow] = useAsyncFn(
+    async daoId => {
+      const publicKey = await nearService?.getPublicKey();
+      const signature = await nearService?.getSignature();
 
-    if (publicKey && signature && accountId) {
-      const result = await SputnikHttpService.updateAccountSubscription({
-        accountId,
-        daoId,
-        publicKey,
-        signature,
-      });
+      if (publicKey && signature && accountId) {
+        const result = await SputnikHttpService.updateAccountSubscription({
+          accountId,
+          daoId,
+          publicKey,
+          signature,
+        });
 
-      if (result) {
-        getSubscriptions();
+        if (result) {
+          getSubscriptions();
+        }
       }
-    }
-  }, []);
+    },
+    [nearService]
+  );
 
   const [{ loading: loadingUnfollow }, handleUnfollow] = useAsyncFn(
     async subscriptionId => {
@@ -84,7 +87,7 @@ export function useDaoSubscriptions(): {
         await getSubscriptions();
       }
     },
-    [accountId, getSubscriptions]
+    [accountId, getSubscriptions, nearService]
   );
 
   useMount(() => {

@@ -96,7 +96,7 @@ export function useBountyVoting(
         await router.reload();
       }
     },
-    [dao, proposal, router]
+    [dao, proposal, router, nearService]
   );
 
   return {
@@ -180,7 +180,7 @@ export function useHideBounty(): {
         description: err.message,
       });
     }
-  }, [selected, daoId, showHidden, accountId, router]);
+  }, [selected, daoId, showHidden, accountId, router, nearService]);
 
   const handleSelect = useCallback(
     (id: string) => {
