@@ -170,7 +170,7 @@ export function useCreateDao(): {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [router, uploadImg]
+    [router, uploadImg, nearService]
   );
 
   return {

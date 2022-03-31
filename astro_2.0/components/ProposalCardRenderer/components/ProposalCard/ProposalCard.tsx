@@ -183,7 +183,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       await nearService?.vote(daoId, proposalId, vote, gas);
       await router.reload();
     },
-    [daoId, proposalId, router]
+    [daoId, proposalId, router, nearService]
   );
 
   const [
@@ -192,7 +192,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   ] = useAsyncFn(async () => {
     await nearService?.finalize(daoId, proposalId);
     await router.reload();
-  }, [daoId, proposalId, router]);
+  }, [daoId, proposalId, router, nearService]);
 
   const handleCardClick = useCallback(() => {
     if (id && router.pathname !== SINGLE_PROPOSAL_PAGE_URL) {

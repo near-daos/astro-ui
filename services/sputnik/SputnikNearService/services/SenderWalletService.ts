@@ -85,7 +85,6 @@ export class SenderWalletService implements WalletService {
         },
       ],
     };
-
     const result = await this.walletInstance.signAndSendTransaction(tx);
 
     const transactionHashes = result.response[0].transaction.hash;
