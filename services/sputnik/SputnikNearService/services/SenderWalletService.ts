@@ -92,7 +92,7 @@ export class SenderWalletService implements WalletService {
 
     try {
       await httpService.get(
-        `/transactions/wallet/callback/${signerId}?transactionHashes=${transactionHashes}`
+        `/transactions/wallet/callback/${signerId}?transactionHashes=${transactionHashes}&noRedirect=true`
       );
     } catch (e) {
       // eslint-disable-next-line no-console
