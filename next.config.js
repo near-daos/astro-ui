@@ -39,8 +39,8 @@ module.exports = (phase, { defaultConfig }) => {
           },
         ];
       },
-      target: 'experimental-serverless-trace',
       i18n,
+      swcMinify: true,
     }
   );
 

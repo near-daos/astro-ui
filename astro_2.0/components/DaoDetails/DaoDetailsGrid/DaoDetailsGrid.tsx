@@ -14,7 +14,6 @@ import { DaoFeedItem } from 'types/dao';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ActionButton } from 'astro_2.0/components/ActionButton';
 import * as Typography from 'components/Typography';
-import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 
 import { shortenString } from 'utils/format';
@@ -73,12 +72,14 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
           <a className={styles.content}>
             <div>
               <section className={styles.general}>
-                <div className={styles.flag}>
-                  <FlagRenderer
-                    flag={flagCover}
-                    size="sm"
-                    fallBack={oldFlag}
-                    variant="circle"
+                <div className={styles.flagWrapper}>
+                  <div
+                    className={cn(styles.flag, {
+                      [styles.scaled]: !flagCover && !!oldFlag,
+                    })}
+                    style={{
+                      backgroundImage: `url(${flagCover || oldFlag})`,
+                    }}
                   />
                 </div>
                 <div className={styles.title}>
@@ -106,7 +107,7 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                   </Tooltip>
                   <div className={styles.address}>
                     <div className={styles.addressId}>
-                      {shortenString(id, isMobile ? 20 : 36)}
+                      {shortenString(id, isMobile ? 16 : 26)}
                     </div>
                     <CopyButton
                       text={id}
