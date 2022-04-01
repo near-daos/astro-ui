@@ -68,7 +68,7 @@ export class SputnikWalletService implements WalletService {
     return [result];
   }
 
-  public async signIn(contractId: string): Promise<void> {
+  public async signIn(contractId: string): Promise<boolean> {
     await this.walletConnection.sputnikRequestSignIn(
       contractId,
       this.successUrl,
@@ -76,6 +76,8 @@ export class SputnikWalletService implements WalletService {
     );
 
     window.localStorage.setItem('selectedWallet', WalletType.NEAR.toString());
+
+    return Promise.resolve(true);
   }
 
   public logout(): void {

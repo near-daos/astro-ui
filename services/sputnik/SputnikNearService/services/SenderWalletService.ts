@@ -29,10 +29,18 @@ export class SenderWalletService implements WalletService {
     this.walletInstance.signOut();
   }
 
-  async signIn(contractId: string): Promise<void> {
-    await this.walletInstance.requestSignIn({
+  async signIn(contractId: string): Promise<boolean> {
+    const result = await this.walletInstance.requestSignIn({
       contractId,
     });
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    if (result.error) {
+      return Promise.reject(new Error('sigh on rejected'));
+    }
+
+    return Promise.resolve(true);
   }
 
   getAccount(): ConnectedWalletAccount {

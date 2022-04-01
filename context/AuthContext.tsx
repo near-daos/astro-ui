@@ -50,34 +50,60 @@ export const AuthWrapper: FC = ({ children }) => {
   );
   const { nearConfig } = configService.get();
 
+  const logout = useCallback(async () => {
+    await nearService?.logout();
+    removeSelectedWallet();
+
+    CookieService.remove(ACCOUNT_COOKIE);
+
+    deleteAccountCookie();
+    deleteDaoCookie();
+    setNearService(undefined);
+
+    setAccountId('');
+    router.push(ALL_FEED_URL);
+  }, [
+    deleteDaoCookie,
+    router,
+    deleteAccountCookie,
+    removeSelectedWallet,
+    nearService,
+  ]);
+
   const initService = useCallback(
     async (walletType: WalletType) => {
       const service = await initNearService(Number(walletType));
 
+      const initState = () => {
+        CookieService.set(ACCOUNT_COOKIE, service?.getAccountId(), {
+          path: '/',
+        });
+
+        setNearService(service);
+
+        setAccountId(service?.getAccountId() ?? '');
+
+        setSelectedWallet(walletType.toString());
+      };
+
       if (!service?.isSignedIn()) {
-        await service?.signIn(nearConfig.contractName);
+        try {
+          await service?.signIn(nearConfig.contractName);
+          initState();
+        } catch (e) {
+          await logout();
+        }
+      } else {
+        initState();
       }
-
-      CookieService.set(ACCOUNT_COOKIE, service?.getAccountId(), {
-        path: '/',
-      });
-
-      setNearService(service);
-
-      setAccountId(service?.getAccountId() ?? '');
-
-      setSelectedWallet(walletType.toString());
     },
-    [setSelectedWallet, nearConfig.contractName]
+    [logout, setSelectedWallet, nearConfig.contractName]
   );
 
   useEffectOnce(() => {
     if (!accountId) {
       return;
     }
-
-    // const selectedWallet =
-    //   window.localStorage.getItem('selectedWallet') ?? WalletType.NEAR;
 
     initService(Number(selectedWallet));
   });
@@ -99,26 +125,12 @@ export const AuthWrapper: FC = ({ children }) => {
     }
   }
 
-  async function logout() {
-    await nearService?.logout();
-    removeSelectedWallet();
-
-    CookieService.remove(ACCOUNT_COOKIE);
-
-    deleteAccountCookie();
-    deleteDaoCookie();
-    setNearService(undefined);
-
-    setAccountId('');
-    router.push(ALL_FEED_URL);
-  }
-
   const data = {
     accountId,
     login,
     logout,
     nearService,
-    isLoggedIn: () => !!accountId,
+    isLoggedIn: () => !!nearService,
   };
 
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;

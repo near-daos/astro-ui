@@ -18,14 +18,12 @@ import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { mapCreateDaoParamsToContractArgs } from 'services/sputnik/mappers';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 import { Config, WalletType } from 'types/config';
-import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
 import { NearConfig } from 'config/near';
 import {
   DaoService,
   Transaction,
   WalletService,
 } from 'services/sputnik/SputnikNearService/services/types';
-import { SenderWalletService } from 'services/sputnik/SputnikNearService/services/SenderWalletService';
 import { configService } from 'services/ConfigService';
 import { CreateDaoParams } from 'services/sputnik/types';
 
@@ -83,8 +81,8 @@ export class SputnikNearService implements WalletService, DaoService {
     return this.walletService.sendTransactions(txs);
   }
 
-  public async signIn(contractId: string): Promise<void> {
-    await this.walletService.signIn(contractId);
+  public async signIn(contractId: string): Promise<boolean> {
+    return this.walletService.signIn(contractId);
   }
 
   public async logout(): Promise<void> {
@@ -93,24 +91,6 @@ export class SputnikNearService implements WalletService, DaoService {
 
   public getAccountId(): string {
     return this.walletService.getAccountId();
-  }
-
-  public async switchWallet(walletType: WalletType): Promise<void> {
-    switch (walletType) {
-      case WalletType.NEAR: {
-        this.walletService = new SputnikWalletService(this.nearConfig);
-        break;
-      }
-
-      case WalletType.SENDER: {
-        this.walletService = new SenderWalletService(window.near);
-        break;
-      }
-
-      default: {
-        this.walletService = new SputnikWalletService(this.nearConfig);
-      }
-    }
   }
 
   public async createDao(
