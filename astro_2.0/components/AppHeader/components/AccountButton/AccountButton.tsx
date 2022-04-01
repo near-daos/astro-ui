@@ -88,6 +88,9 @@ export const AccountButton: FC = () => {
                   url="wallet.near.org"
                 />
                 <WalletButton
+                  disabled={
+                    !(window.near !== undefined && window.near.isSender)
+                  }
                   walletType={WalletType.SENDER}
                   isSelected={nearService.getWalletType() === WalletType.SENDER}
                   onClick={switchWalletHandler(WalletType.SENDER)}
@@ -95,6 +98,7 @@ export const AccountButton: FC = () => {
                   type="extension"
                   url="senderwallet.io"
                 />
+
                 <div className={styles.delimiter} />
               </>
             )}

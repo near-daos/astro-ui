@@ -14,6 +14,7 @@ interface WalletButton {
   type: 'web' | 'extension';
   url: string;
   className?: string;
+  disabled?: boolean;
 }
 
 export const WalletButton: React.FC<WalletButton> = ({
@@ -24,13 +25,16 @@ export const WalletButton: React.FC<WalletButton> = ({
   type,
   url,
   className,
+  disabled,
 }) => {
   return (
     <AccountPopupItem
       icon={<WalletIcon walletType={walletType} isSelected={isSelected} />}
       content={<WalletDescription name={name} type={type} url={url} />}
       onClick={onClick}
-      className={cn(styles.item, className)}
+      className={cn(styles.item, className, {
+        [styles.disabled]: disabled,
+      })}
     />
   );
 };
