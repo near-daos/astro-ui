@@ -40,7 +40,7 @@ export interface DaoService {
 }
 
 export interface WalletService {
-  signIn(contractId: string): Promise<void>;
+  signIn(contractId: string): Promise<boolean>;
   sendMoney(
     receiverId: string,
     amount: number
@@ -108,6 +108,6 @@ export type SenderWalletInstance = {
     };
   };
   on: () => void;
-  requestSignIn: (signInOptions: SignInOptions) => Promise<void>;
+  requestSignIn: (signInOptions: SignInOptions) => Promise<unknown>;
   account: () => ConnectedWalletAccount;
 };
