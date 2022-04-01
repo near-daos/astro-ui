@@ -43,6 +43,7 @@ export interface DAOFormValues extends IDaoCreateForm {
   legalStatus?: string;
   legalLink?: string;
   gas: number;
+  members: string[];
 }
 
 export type DaoSubjectInfo = {

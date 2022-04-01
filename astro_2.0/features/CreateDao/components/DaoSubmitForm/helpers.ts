@@ -1,9 +1,9 @@
 import { RolesRequest, VotePolicyRequest } from 'types/dao';
 import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
 
-const EveryoneCanDoEverything = (accountId: string) => ({
+const EveryoneCanDoEverything = (accountIds: string[]) => ({
   name: 'Everyone',
-  kind: { Group: [accountId] },
+  kind: { Group: accountIds },
   permissions: [
     '*:Finalize',
     '*:AddProposal',
@@ -23,11 +23,11 @@ const EveryoneCanSubmitProposal = {
 
 const GroupMembersCanActOnProposals = (
   groupName: string,
-  accountId: string,
+  accountIds: string[],
   votePolicy?: Record<string, VotePolicyRequest>
 ) => ({
   name: groupName,
-  kind: { Group: [accountId] },
+  kind: { Group: accountIds },
   permissions: [
     '*:Finalize',
     '*:AddProposal',
@@ -52,7 +52,7 @@ const TokenBasedVoting = {
 
 export function getRolesVotingPolicy(
   data: Partial<DAOFormValues>,
-  accountId: string
+  accountIds: string[]
 ): {
   roles: RolesRequest[];
   defaultVotePolicy: VotePolicyRequest;
@@ -60,9 +60,9 @@ export function getRolesVotingPolicy(
   const roles: RolesRequest[] = [];
 
   if (data.structure === 'flat') {
-    roles.push(EveryoneCanDoEverything(accountId), EveryoneCanSubmitProposal);
+    roles.push(EveryoneCanDoEverything(accountIds), EveryoneCanSubmitProposal);
   } else if (data.structure === 'groups') {
-    roles.push(GroupMembersCanActOnProposals('Council', accountId));
+    roles.push(GroupMembersCanActOnProposals('Council', accountIds));
 
     if (data.proposals === 'open') {
       roles.push(EveryoneCanSubmitProposal);
@@ -70,7 +70,7 @@ export function getRolesVotingPolicy(
 
     if (data.voting === 'weighted') {
       roles.push(
-        GroupMembersCanActOnProposals('Committee', accountId, {
+        GroupMembersCanActOnProposals('Committee', accountIds, {
           '*.*': TokenBasedVoting,
         })
       );

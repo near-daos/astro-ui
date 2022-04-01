@@ -50,7 +50,7 @@ export function getNewDaoParams(
           structure: data.proposals.structure as DAOStructureType,
           proposals: data.proposals.proposals as DAOProposalsType,
         },
-        accountId
+        data.members.accounts
       ),
       proposalBond: '0.1',
       proposalPeriod: '168',

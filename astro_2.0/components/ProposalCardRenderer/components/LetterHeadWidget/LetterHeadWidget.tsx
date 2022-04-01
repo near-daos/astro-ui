@@ -48,7 +48,7 @@ export const LetterHeadWidget: React.FC<LetterHeadWidgetProps> = ({
         [styles.rejected]: status === 'Rejected',
       })}
       style={{
-        backgroundImage: `url(${coverUrl})`,
+        backgroundImage: `url(${coverUrl || '/flags/defaultDaoFlag.png'})`,
       }}
     >
       <div className={styles.background} />

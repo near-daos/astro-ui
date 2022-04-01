@@ -129,7 +129,7 @@ export const mapProposalDTOToProposal = (
       displayName: meta?.displayName || '',
       logo: meta?.flag
         ? getAwsImageUrl(meta.flag)
-        : getAwsImageUrl('default.png'),
+        : '/flags/defaultDaoFlag.png',
     },
     proposalVariant: proposalVariant as ProposalVariant,
     updatedAt: proposalDTO.updateTimestamp
@@ -177,7 +177,7 @@ export const mapProposalFeedItemResponseToProposalFeedItem = (
       name: proposalDTO.dao.config.name ?? '',
       logo: meta?.flag
         ? getAwsImageUrl(meta.flag)
-        : getAwsImageUrl('default.png'),
+        : '/flags/defaultDaoFlag.png',
       flagCover: getAwsImageUrl(meta?.flagCover),
       flagLogo: getAwsImageUrl(meta?.flagLogo),
       legal: meta?.legal || {},
@@ -189,7 +189,7 @@ export const mapProposalFeedItemResponseToProposalFeedItem = (
       displayName: meta?.displayName || '',
       logo: meta?.flag
         ? getAwsImageUrl(meta.flag)
-        : getAwsImageUrl('default.png'),
+        : '/flags/defaultDaoFlag.png',
     },
     proposalVariant: proposalVariant as ProposalVariant,
     updatedAt: proposalDTO.updatedAt,

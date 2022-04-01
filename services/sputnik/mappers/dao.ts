@@ -140,9 +140,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
     activeProposalsCount: daoDTO.activeProposalCount ?? 0,
     totalProposalsCount: daoDTO.totalProposalCount ?? 0,
     totalProposals: numberOfProposals,
-    logo: meta?.flag
-      ? getAwsImageUrl(meta.flag)
-      : getAwsImageUrl('default.png'),
+    logo: meta?.flag ? getAwsImageUrl(meta.flag) : '/flags/defaultDaoFlag.png',
     flagCover: getAwsImageUrl(meta?.flagCover),
     flagLogo: getAwsImageUrl(meta?.flagLogo),
     funds: (daoDTO.totalDaoFunds ?? 0).toFixed(2),
@@ -278,9 +276,7 @@ export function mapDaoFeedItemResponseToDaoFeedItem(
     displayName: meta?.displayName ?? '',
 
     links: meta?.links || [],
-    logo: meta?.flag
-      ? getAwsImageUrl(meta.flag)
-      : getAwsImageUrl('default.png'),
+    logo: meta?.flag ? getAwsImageUrl(meta.flag) : '/flags/defaultDaoFlag.png',
     flagCover: getAwsImageUrl(meta?.flagCover),
     flagLogo: getAwsImageUrl(meta?.flagLogo),
     legal: meta?.legal || {},

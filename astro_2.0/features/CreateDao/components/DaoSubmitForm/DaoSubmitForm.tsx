@@ -30,7 +30,7 @@ import styles from './DaoSubmitForm.module.scss';
 
 export function DaoSubmitForm(): JSX.Element {
   const { actions, state } = useStateMachine({ updateAction });
-  const { createDao, uploadAssets } = useCreateDao();
+  const { createDao } = useCreateDao();
   const { accountId } = useAuthContext();
 
   const methods = useForm<SubmitStep>({
@@ -61,14 +61,9 @@ export function DaoSubmitForm(): JSX.Element {
   const onSubmit = async () => {
     let coverFileName;
 
-    if (!state.assets.flagCover) {
-      coverFileName = await uploadAssets(state.assets.defaultFlag);
-    }
+    const params = getNewDaoParams(state, accountId, coverFileName);
 
-    await createDao(
-      state.info.address,
-      getNewDaoParams(state, accountId, coverFileName)
-    );
+    await createDao(state.info.address, params);
   };
 
   function validateWholeForm() {

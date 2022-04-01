@@ -2,10 +2,10 @@
 @import 'styles/typography';
 @import 'styles/mixins';
 
-.root {
+.root.root {
   display: flex;
   justify-content: center;
-  width: 100%;
+  width: 320px;
 }
 
 .header {
