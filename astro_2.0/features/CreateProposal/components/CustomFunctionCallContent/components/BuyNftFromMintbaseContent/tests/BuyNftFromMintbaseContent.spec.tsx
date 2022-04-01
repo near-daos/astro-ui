@@ -43,7 +43,7 @@ jest.mock('next-i18next', () => ({
 }));
 
 describe('BuyNftFromMintbaseContent', () => {
-  jest.useFakeTimers();
+  // jest.useFakeTimers();
 
   it('Should render component', () => {
     // @ts-ignore
@@ -54,7 +54,7 @@ describe('BuyNftFromMintbaseContent', () => {
     expect(getByText('Token Key')).toBeTruthy();
   });
 
-  it('Should update token', () => {
+  it('Should update token', async () => {
     const setValue = jest.fn();
 
     // @ts-ignore
@@ -71,7 +71,8 @@ describe('BuyNftFromMintbaseContent', () => {
     fireEvent.click(getByText('hours'));
     fireEvent.click(getByText('minutes'));
 
-    jest.runAllTimers();
+    // jest.runAllTimers();
+    await new Promise(resolve => setTimeout(resolve, 0));
 
     expect(setValue).toBeCalledWith('timeoutGranularity', 'Minutes', {
       shouldDirty: true,
