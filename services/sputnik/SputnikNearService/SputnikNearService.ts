@@ -96,6 +96,10 @@ export class SputnikNearService implements WalletService, DaoService {
   public async createDao(
     params: CreateDaoInput | CreateDaoCustomInput
   ): Promise<void> {
+    if (!this.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
     function isCreateDaoParams(
       _params: CreateDaoParams | CreateDaoCustomInput
     ): _params is CreateDaoParams {
@@ -125,6 +129,10 @@ export class SputnikNearService implements WalletService, DaoService {
   public async addProposal(
     params: CreateProposalParams
   ): Promise<FinalExecutionOutcome[]> {
+    if (!this.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
     const { daoId, description, kind, data, bond, gas } = params;
 
     const kindData = data
@@ -157,6 +165,10 @@ export class SputnikNearService implements WalletService, DaoService {
       tokenId?: string;
     }
   ): Promise<FinalExecutionOutcome[]> {
+    if (!this.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
     const accountId = this.getAccountId();
     const { bountyId: id, deadline, bountyBond, gas, tokenId } = args;
 
@@ -243,6 +255,10 @@ export class SputnikNearService implements WalletService, DaoService {
     bountyId: number,
     gas?: string | number
   ): Promise<FinalExecutionOutcome[]> {
+    if (!this.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
     return this.walletService.functionCall({
       methodName: 'bounty_giveup',
       contractId: daoId,
@@ -257,6 +273,10 @@ export class SputnikNearService implements WalletService, DaoService {
     contractId: string,
     proposalId: number
   ): Promise<FinalExecutionOutcome[]> {
+    if (!this.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
     return this.walletService.functionCall({
       methodName: 'act_proposal',
       contractId,
@@ -274,6 +294,10 @@ export class SputnikNearService implements WalletService, DaoService {
     action: VoteAction,
     gas?: string | number
   ): Promise<FinalExecutionOutcome[]> {
+    if (!this.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
     return this.walletService.functionCall({
       methodName: 'act_proposal',
       contractId: daoId,
@@ -288,6 +312,10 @@ export class SputnikNearService implements WalletService, DaoService {
   public async createTokenTransferProposal(
     proposal: CreateProposalParams
   ): Promise<FinalExecutionOutcome[]> {
+    if (!this.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
     const { bond, daoId, description, kind, data } = proposal;
 
     const {
