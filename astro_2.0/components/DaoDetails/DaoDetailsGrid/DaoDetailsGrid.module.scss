@@ -29,26 +29,40 @@
   display: flex;
 }
 
-.flagWrapper {
-  border: 1px solid var(--color-black-opacity-1);
-  border-radius: 50%;
-  height: 68px;
-  margin: 24px;
-  min-height: 68px;
-  min-width: 68px;
-  overflow: hidden;
+.flag {
+  flex: 0 0 69px;
+  height: 78px;
+  margin: 8px 10px;
   position: relative;
-  width: 68px;
+  width: 69px;
 
-  .flag {
-    background-position: center;
-    background-size: cover;
-    height: 68px;
-    width: 68px;
+  @include tablet-portrait {
+    margin: 20px 24px;
   }
 
-  .flag.scaled {
-    transform: scale(2.45);
+  @include tablet-landscape {
+    margin: 28px 24px;
+  }
+
+  .background {
+    background-color: var(--color-white);
+    clip-path: url('#flag');
+    inset: 0;
+    position: absolute;
+    transform: scale(1.04, 1.045);
+  }
+
+  .cover {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    clip-path: url('#flag');
+    height: 100%;
+    width: 100%;
+  }
+
+  .cover.scaled {
+    transform: scale(1.45);
   }
 }
 

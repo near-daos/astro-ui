@@ -12,4 +12,8 @@ exports[`DaoAddressLink Should render component 1`] = `
 </div>
 `;
 
-exports[`DaoAddressLink Should render nothing if no dao address 1`] = `<div />`;
+exports[`DaoAddressLink Should render nothing if no dao address 1`] = `
+<div>
+  
+</div>
+`;
