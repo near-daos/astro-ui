@@ -5,8 +5,7 @@ export function getFormInitialValues(
   selectedProposalType: ProposalVariant,
   accountId: string,
   initialValues?: Record<string, unknown>
-  // eslint-disable-next-line @typescript-eslint/ban-types
-): Record<string, {} | undefined> {
+): Record<string, unknown> {
   switch (selectedProposalType) {
     case ProposalVariant.ProposeCreateBounty: {
       return {
