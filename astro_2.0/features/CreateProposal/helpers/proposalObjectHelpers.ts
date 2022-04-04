@@ -156,7 +156,7 @@ export async function getTransferMintbaseNFTProposal(
         {
           method_name: 'nft_batch_transfer',
           args,
-          deposit: new Decimal(0).toFixed(),
+          deposit: '1000000000000000000',
           gas: formatGasValue(actionsGas).toString(),
         },
       ],
@@ -210,7 +210,7 @@ export async function getBuyNftFromParasProposal(
         {
           method_name: 'nft_buy',
           args,
-          deposit: new Decimal(0).toFixed(),
+          deposit: new Decimal(0).toFixed(), // 0.01128
           gas: formatGasValue(actionsGas).toString(),
         },
       ],
@@ -271,9 +271,9 @@ export async function getSwapsOnRefProposal(
       receiver_id: 'v2.ref-finance.near',
       actions: [
         {
-          method_name: 'swap',
+          method_name: 'ft_transfer_call',
           args,
-          deposit: new Decimal(0).toFixed(),
+          deposit: '1000000000000000000',
           gas: formatGasValue(actionsGas).toString(),
         },
       ],

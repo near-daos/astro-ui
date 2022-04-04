@@ -113,7 +113,7 @@ describe('proposalObjectHelpers', () => {
           actions: [
             {
               args: 'eyJ0b2tlbl9pZHMiOltbIk5FQVIiLCJ0YXJnZXQiXV19',
-              deposit: '0',
+              deposit: '1000000000000000000',
               gas: '5000000000000',
               method_name: 'nft_batch_transfer',
             },
@@ -177,9 +177,9 @@ describe('proposalObjectHelpers', () => {
             {
               args:
                 'eyJhY3Rpb25zIjpbeyJwb29sX2lkIjoicG9vbElkIiwidG9rZW5faW4iOiJUMSIsInRva2VuX291dCI6IlQyIiwiYW1vdW50X2luIjoxMCwibWluX2Ftb3VudF9vdXQiOjEwMH1dfQ==',
-              deposit: '0',
+              deposit: '1000000000000000000',
               gas: '5000000000000',
-              method_name: 'swap',
+              method_name: 'ft_transfer_call',
             },
           ],
           receiver_id: 'v2.ref-finance.near',

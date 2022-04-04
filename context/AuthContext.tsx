@@ -28,6 +28,7 @@ interface AuthContextInterface {
   logout: () => Promise<void>;
   nearService: SputnikNearService | undefined;
   isLoggedIn: () => boolean;
+  connectionInProgress: boolean;
 }
 
 const AuthContext = createContext<AuthContextInterface>({
@@ -37,6 +38,7 @@ const AuthContext = createContext<AuthContextInterface>({
   logout: () => Promise.resolve(),
   isLoggedIn: () => false,
   nearService: undefined,
+  connectionInProgress: false,
 });
 
 export const AuthWrapper: FC = ({ children }) => {
@@ -45,6 +47,7 @@ export const AuthWrapper: FC = ({ children }) => {
     connectingToWallet,
     setConnectingToWallet,
   ] = useState<WalletType | null>(null);
+  const [connectionInProgress, setConnectionInProgress] = useState(false);
   const [, , deleteAccountCookie] = useCookie(ACCOUNT_COOKIE);
   const [, , deleteDaoCookie] = useCookie(DAO_COOKIE);
   const [
@@ -84,7 +87,11 @@ export const AuthWrapper: FC = ({ children }) => {
 
   const initService = useCallback(
     async (walletType: WalletType) => {
+      setConnectionInProgress(true);
+
       const service = await initNearService(Number(walletType));
+
+      setConnectionInProgress(false);
 
       const initState = () => {
         CookieService.set(ACCOUNT_COOKIE, service?.getAccountId(), {
@@ -149,8 +156,9 @@ export const AuthWrapper: FC = ({ children }) => {
       logout,
       nearService,
       isLoggedIn: () => !!nearService,
+      connectionInProgress,
     }),
-    [accountId, login, logout, nearService]
+    [accountId, connectionInProgress, login, logout, nearService]
   );
 
   return (
