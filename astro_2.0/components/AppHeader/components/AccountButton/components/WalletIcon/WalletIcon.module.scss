@@ -1,7 +1,13 @@
+.root {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
 .iconContainer {
-  height: 36px;
+  height: 38px;
   position: relative;
-  width: 36px;
+  width: 38px;
 }
 
 .selectedWallet {

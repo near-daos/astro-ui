@@ -104,3 +104,8 @@
     display: none;
   }
 }
+
+.disabled {
+  cursor: none;
+  pointer-events: none;
+}

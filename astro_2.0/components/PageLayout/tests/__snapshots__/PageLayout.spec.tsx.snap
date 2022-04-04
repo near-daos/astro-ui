@@ -290,7 +290,9 @@ exports[`page layout Should render component 1`] = `
           </div>
         </div>
         <div>
-          <div>
+          <div
+            class=""
+          >
             <button
               class=""
               type="button"

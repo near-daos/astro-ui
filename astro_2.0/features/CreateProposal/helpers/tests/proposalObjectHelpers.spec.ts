@@ -85,8 +85,8 @@ describe('proposalObjectHelpers', () => {
           actions: [
             {
               args:
-                'eyJ0b2tlbl9rZXkiOlsidG9rZW5LZXkiXSwicHJpY2UiOlsiMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiXSwidGltZW91dCI6W3siaG91cnMiOiIxMDAifV19',
-              deposit: '2000000000000000000000000',
+                'eyJ0b2tlbl9rZXkiOlsidG9rZW5LZXkiXSwicHJpY2UiOlsiMjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCJdLCJ0aW1lb3V0IjpbeyJob3VycyI6IjEwMCJ9XX0=',
+              deposit: '0',
               gas: '5000000000000',
               method_name: 'make_offer',
             },
@@ -113,12 +113,12 @@ describe('proposalObjectHelpers', () => {
           actions: [
             {
               args: 'eyJ0b2tlbl9pZHMiOltbIk5FQVIiLCJ0YXJnZXQiXV19',
-              deposit: '0',
+              deposit: '1000000000000000000',
               gas: '5000000000000',
               method_name: 'nft_batch_transfer',
             },
           ],
-          receiver_id: 'sc-address',
+          receiver_id: 'target',
         },
         description: 'some details$$$$external url',
         kind: 'FunctionCall',
@@ -177,9 +177,9 @@ describe('proposalObjectHelpers', () => {
             {
               args:
                 'eyJhY3Rpb25zIjpbeyJwb29sX2lkIjoicG9vbElkIiwidG9rZW5faW4iOiJUMSIsInRva2VuX291dCI6IlQyIiwiYW1vdW50X2luIjoxMCwibWluX2Ftb3VudF9vdXQiOjEwMH1dfQ==',
-              deposit: '0',
+              deposit: '1000000000000000000',
               gas: '5000000000000',
-              method_name: 'swap',
+              method_name: 'ft_transfer_call',
             },
           ],
           receiver_id: 'v2.ref-finance.near',
