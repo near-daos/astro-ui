@@ -33,7 +33,7 @@ export const SwapsOnRefContent: FC = () => {
   return (
     <div className={styles.root}>
       <div className={styles.address}>
-        <InputWrapper fieldName="pullId" label="Pull ID" fullWidth>
+        <InputWrapper fieldName="pullId" label="Pull" fullWidth>
           <Input
             className={cn(styles.inputWrapper, styles.narrow)}
             type="number"
@@ -81,7 +81,6 @@ export const SwapsOnRefContent: FC = () => {
             className={styles.select}
             options={tokenOptions}
             label="&nbsp;"
-            disabled
             {...register('amountInToken')}
             onChange={v => {
               setValue('amountInToken', v, {
@@ -128,7 +127,6 @@ export const SwapsOnRefContent: FC = () => {
             className={styles.select}
             options={amountOutTokenOptions}
             label="&nbsp;"
-            disabled
             {...register('amountOutToken')}
             onChange={v => {
               setValue('amountOutToken', v, {

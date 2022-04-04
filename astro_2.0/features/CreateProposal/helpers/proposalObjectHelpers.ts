@@ -78,11 +78,8 @@ export async function getBuyNftFromMintbaseProposal(
 ): Promise<CreateProposalParams> {
   const {
     tokenKey,
-    price,
     timeout,
     timeoutGranularity,
-    // target,
-    // token,
     deposit,
     details,
     externalUrl,
@@ -99,7 +96,7 @@ export async function getBuyNftFromMintbaseProposal(
 
   const json = JSON.stringify({
     token_key: [tokenKey],
-    price: [new Decimal(price).mul(10 ** token.decimals).toFixed()],
+    price: [new Decimal(deposit).mul(10 ** token.decimals).toFixed()],
     timeout: [
       {
         [timeoutGranularity]: timeout,
@@ -118,7 +115,7 @@ export async function getBuyNftFromMintbaseProposal(
         {
           method_name: 'make_offer',
           args,
-          deposit: new Decimal(deposit).mul(10 ** token.decimals).toFixed(),
+          deposit: new Decimal(0).toFixed(),
           gas: formatGasValue(actionsGas).toString(),
         },
       ],
@@ -140,14 +137,7 @@ export async function getTransferMintbaseNFTProposal(
   dao: DAO,
   data: TransferMintbaseNFTInput
 ): Promise<CreateProposalParams> {
-  const {
-    tokenKey,
-    target,
-    details,
-    externalUrl,
-    actionsGas,
-    smartContractAddress,
-  } = data;
+  const { tokenKey, target, details, externalUrl, actionsGas } = data;
 
   const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 
@@ -161,7 +151,7 @@ export async function getTransferMintbaseNFTProposal(
     description: proposalDescription,
     kind: 'FunctionCall',
     data: {
-      receiver_id: smartContractAddress,
+      receiver_id: target,
       actions: [
         {
           method_name: 'nft_batch_transfer',

@@ -105,7 +105,7 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
           userPermissions={userPermissions}
           proposalVariant={defaultProposalType}
           showFlag={false}
-          onClose={toggleCreateProposal}
+          onClose={() => toggleCreateProposal()}
         />
         {showLowBalanceWarning && (
           <DaoWarning
