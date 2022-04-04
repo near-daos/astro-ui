@@ -36,9 +36,9 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
   useIntercomAdjust();
 
   return (
-    <AuthWrapper>
-      <SocketProvider>
-        <ModalProvider>
+    <ModalProvider>
+      <AuthWrapper>
+        <SocketProvider>
           <SearchResults>
             <Head>
               <title>Astro</title>
@@ -48,9 +48,9 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
             </PageLayout>
             <MobileNav />
           </SearchResults>
-        </ModalProvider>
-      </SocketProvider>
-    </AuthWrapper>
+        </SocketProvider>
+      </AuthWrapper>
+    </ModalProvider>
   );
 }
 

@@ -1,0 +1,20 @@
+.root {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.loader {
+  margin: 0 24px;
+}
+
+.loaderDot {
+  background: var(--color-success-60);
+}

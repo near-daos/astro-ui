@@ -1,5 +1,12 @@
 import { useRouter } from 'next/router';
-import { createContext, FC, useCallback, useContext, useState } from 'react';
+import {
+  createContext,
+  FC,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import { useCookie, useEffectOnce, useLocalStorage } from 'react-use';
 
 import { ALL_FEED_URL } from 'constants/routing';
@@ -13,6 +20,7 @@ import { configService } from 'services/ConfigService';
 import { WalletType } from 'types/config';
 import { SputnikNearService } from 'services/sputnik';
 import { initNearService } from 'utils/init';
+import { ConnectingWalletModal } from 'astro_2.0/features/Auth/components/ConnectingWalletModal';
 
 interface AuthContextInterface {
   accountId: string;
@@ -33,6 +41,10 @@ const AuthContext = createContext<AuthContextInterface>({
 
 export const AuthWrapper: FC = ({ children }) => {
   const router = useRouter();
+  const [
+    connectingToWallet,
+    setConnectingToWallet,
+  ] = useState<WalletType | null>(null);
   const [, , deleteAccountCookie] = useCookie(ACCOUNT_COOKIE);
   const [, , deleteDaoCookie] = useCookie(DAO_COOKIE);
   const [
@@ -108,32 +120,51 @@ export const AuthWrapper: FC = ({ children }) => {
     initService(Number(selectedWallet));
   });
 
-  async function login(walletType: WalletType) {
-    try {
-      await initService(walletType);
-      router.reload();
-    } catch (err) {
-      console.warn(err);
+  const login = useCallback(
+    async (walletType: WalletType) => {
+      try {
+        setConnectingToWallet(walletType);
+        await initService(walletType);
+        setConnectingToWallet(null);
+        router.reload();
+      } catch (err) {
+        console.warn(err);
 
-      if (err instanceof SputnikWalletError) {
-        showNotification({
-          type: NOTIFICATION_TYPES.ERROR,
-          description: err.message,
-          lifetime: 20000,
-        });
+        if (err instanceof SputnikWalletError) {
+          showNotification({
+            type: NOTIFICATION_TYPES.ERROR,
+            description: err.message,
+            lifetime: 20000,
+          });
+        }
       }
-    }
-  }
+    },
+    [initService, router]
+  );
 
-  const data = {
-    accountId,
-    login,
-    logout,
-    nearService,
-    isLoggedIn: () => !!nearService,
-  };
+  const data = useMemo(
+    () => ({
+      accountId,
+      login,
+      logout,
+      nearService,
+      isLoggedIn: () => !!nearService,
+    }),
+    [accountId, login, logout, nearService]
+  );
 
-  return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={data}>
+      {children}
+      {connectingToWallet !== null && (
+        <ConnectingWalletModal
+          isOpen
+          onClose={() => setConnectingToWallet(null)}
+          walletType={connectingToWallet}
+        />
+      )}
+    </AuthContext.Provider>
+  );
 };
 
 export function useAuthContext(): AuthContextInterface {
