@@ -151,7 +151,7 @@ export function getFormInitialValues(
 
         functionCallType: 'Custom',
         timeout: 24,
-        timeoutGranularity: 'Days',
+        timeoutGranularity: 'Hours',
       };
     }
     default: {

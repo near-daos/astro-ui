@@ -594,11 +594,6 @@ export function getValidationSchema(
         case FunctionCallType.BuyNFTfromMintbase: {
           return yup.object().shape({
             tokenKey: yup.string().required('Required'),
-            price: yup
-              .number()
-              .typeError('Must be a valid number.')
-              .required('Required'),
-            timeout: yup.string().required('Required'),
             deposit: yup
               .number()
               .typeError('Must be a valid number.')

@@ -1,11 +1,10 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { Input } from 'components/inputs/Input';
 import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
-import { Icon } from 'components/Icon';
 
 import {
   DEFAULT_PROPOSAL_GAS,
@@ -24,37 +23,7 @@ export const BuyNftFromMintbaseContent: FC = () => {
   const { register, setValue } = useFormContext();
   const { tokenOptions, selectedTokenData } = useTokenOptions();
 
-  const timeoutOptions = useMemo(
-    () => [
-      {
-        label: 'Minutes',
-        component: (
-          <div className={styles.timeoutValueWrapper}>
-            <span className={styles.timeoutSuffix}>minutes</span>
-          </div>
-        ),
-      },
-      {
-        label: 'Hours',
-        component: (
-          <div className={styles.timeoutValueWrapper}>
-            <span className={styles.timeoutSuffix}>hours</span>
-          </div>
-        ),
-      },
-      {
-        label: 'Days',
-        component: (
-          <div className={styles.timeoutValueWrapper}>
-            <span className={styles.timeoutSuffix}>days</span>
-          </div>
-        ),
-      },
-    ],
-    []
-  );
   const depositWidth = useDepositWidth();
-  const priceWidth = useDepositWidth('price');
 
   return (
     <div className={styles.root}>
@@ -69,60 +38,6 @@ export const BuyNftFromMintbaseContent: FC = () => {
             {...register('tokenKey')}
           />
         </InputWrapper>
-      </div>
-
-      <div className={styles.price}>
-        <InputWrapper fieldName="price" label="Price">
-          <div className={styles.row}>
-            <Input
-              className={cn(styles.inputWrapper, styles.narrow)}
-              inputStyles={{ width: `${priceWidth}ch`, paddingRight: 4 }}
-              type="text"
-              placeholder="00.0"
-              isBorderless
-              size="block"
-              {...register('price')}
-            />
-            <div className={styles.iconWrapper}>
-              <Icon name="tokenNearBig" />
-            </div>
-            <div className={styles.symbol}>NEAR</div>
-          </div>
-        </InputWrapper>
-      </div>
-
-      <div className={styles.timout}>
-        <div className={styles.row}>
-          <InputWrapper
-            fieldName="timeout"
-            label="Time out"
-            labelClassName={styles.inputLabel}
-          >
-            <Input
-              className={cn(styles.inputWrapper, styles.narrow)}
-              inputStyles={{ width: `4ch`, paddingRight: 4 }}
-              type="number"
-              min={0}
-              placeholder="00"
-              isBorderless
-              size="block"
-              {...register('timeout')}
-            />
-          </InputWrapper>
-          <DropdownSelect
-            isBorderless
-            className={cn(styles.select, styles.timeoutSelect)}
-            options={timeoutOptions}
-            label="&nbsp;"
-            {...register('timeoutGranularity')}
-            onChange={v => {
-              setValue('timeoutGranularity', v, {
-                shouldDirty: true,
-              });
-            }}
-            defaultValue={timeoutOptions[1].label}
-          />
-        </div>
       </div>
 
       <div className={styles.gas}>

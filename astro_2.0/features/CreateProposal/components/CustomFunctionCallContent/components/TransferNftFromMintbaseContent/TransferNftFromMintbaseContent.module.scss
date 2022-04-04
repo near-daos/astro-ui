@@ -6,13 +6,9 @@
   display: grid;
   grid-gap: 24px;
   grid-template-areas:
-    'address tokenKey'
+    'tokenKey .'
     'target gas';
   grid-template-columns: 1fr 1fr;
-}
-
-.address {
-  grid-area: address;
 }
 
 .tokenKey {

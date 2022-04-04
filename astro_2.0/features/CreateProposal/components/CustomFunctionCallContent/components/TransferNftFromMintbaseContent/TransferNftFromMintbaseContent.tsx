@@ -20,24 +20,6 @@ export const TransferNftFromMintbaseContent: FC = () => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.address}>
-        <InputWrapper
-          fieldName="smartContractAddress"
-          label="Smart Contract Address"
-          fullWidth
-        >
-          <Input
-            className={cn(styles.inputWrapper, styles.narrow)}
-            type="text"
-            min={0}
-            placeholder="x.paras.near"
-            isBorderless
-            size="block"
-            {...register('smartContractAddress')}
-          />
-        </InputWrapper>
-      </div>
-
       <div className={styles.tokenKey}>
         <InputWrapper fieldName="tokenKey" label="Token Key" fullWidth>
           <Input
@@ -69,19 +51,21 @@ export const TransferNftFromMintbaseContent: FC = () => {
         </InputWrapper>
       </div>
 
-      <InputWrapper
-        fieldName="target"
-        label={t('proposalCard.proposalTarget')}
-        flex
-      >
-        <Input
-          className={cn(styles.inputWrapper, styles.wide)}
-          placeholder={t('proposalCard.proposalTargetPlaceholder')}
-          isBorderless
-          size="block"
-          {...register('target')}
-        />
-      </InputWrapper>
+      <div className={styles.target}>
+        <InputWrapper
+          fieldName="target"
+          label={t('proposalCard.proposalTarget')}
+          flex
+        >
+          <Input
+            className={cn(styles.inputWrapper, styles.wide)}
+            placeholder={t('proposalCard.proposalTargetPlaceholder')}
+            isBorderless
+            size="block"
+            {...register('target')}
+          />
+        </InputWrapper>
+      </div>
     </div>
   );
 };
