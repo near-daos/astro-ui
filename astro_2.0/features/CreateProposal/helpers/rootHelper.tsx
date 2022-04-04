@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 // TODO refactor the helper. It's too big now.
 
 import * as yup from 'yup';

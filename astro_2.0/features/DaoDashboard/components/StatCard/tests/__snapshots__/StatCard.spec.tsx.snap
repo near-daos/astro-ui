@@ -4,6 +4,7 @@ exports[`Stat Card Should render component 1`] = `
 <div>
   <button
     class="undefined"
+    data-testid="stat-card"
     type="button"
   />
 </div>
