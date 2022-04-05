@@ -158,7 +158,7 @@ export async function getTransferMintbaseNFTProposal(
         {
           method_name: 'nft_batch_transfer',
           args,
-          deposit: '1000000000000000000',
+          deposit: '1000000000000000000000000',
           gas: formatGasValue(actionsGas).toString(),
         },
       ],
@@ -275,7 +275,7 @@ export async function getSwapsOnRefProposal(
         {
           method_name: 'ft_transfer_call',
           args,
-          deposit: '1000000000000000000',
+          deposit: '1000000000000000000000000',
           gas: formatGasValue(actionsGas).toString(),
         },
       ],
