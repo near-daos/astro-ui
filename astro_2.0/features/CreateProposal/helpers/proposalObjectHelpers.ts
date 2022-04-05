@@ -115,7 +115,7 @@ export async function getBuyNftFromMintbaseProposal(
         {
           method_name: 'make_offer',
           args,
-          deposit: new Decimal(0).toFixed(),
+          deposit: new Decimal(deposit).mul(10 ** token.decimals).toFixed(),
           gas: formatGasValue(actionsGas).toString(),
         },
       ],
