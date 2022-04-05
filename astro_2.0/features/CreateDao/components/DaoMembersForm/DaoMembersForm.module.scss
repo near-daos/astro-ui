@@ -1,0 +1,71 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  width: 100%;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  grid-area: header;
+  margin-bottom: 24px;
+
+  h2 {
+    @include font(1.75em, 38px, 700);
+    font-family: var(--font-family-primary);
+    margin: 0;
+  }
+
+  .optional {
+    color: var(--color-neutral-50);
+  }
+}
+
+.description {
+  @extend %body2;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  max-width: 550px;
+  width: 100%;
+}
+
+.link {
+  align-items: center;
+  display: inline-flex;
+  width: 100%;
+
+  input {
+    background-color: transparent;
+  }
+
+  .socialIcon {
+    margin-right: 16px;
+  }
+}
+
+.socialText {
+  @extend %body1;
+  align-items: center;
+  border: 1.5px dashed var(--color-neutral-60);
+  border-radius: 4px;
+  color: var(--color-neutral-60);
+  display: flex;
+  flex-basis: 100%;
+  height: 41px;
+  justify-content: flex-start;
+  padding-left: 10.5px;
+
+  @include tablet-portrait {
+    height: 44px;
+  }
+}
+
+.addBtn {
+  color: var(--color-brand-purple);
+  flex-shrink: 0;
+  margin-left: 16px;
+}

@@ -18,8 +18,6 @@ export const ChangeDaoNameContent: FC<ChangeDaoNameContentProps> = ({
 }) => {
   const {
     register,
-    // setValue,
-    // getValues,
     formState: { errors, touchedFields },
   } = useFormContext();
 

@@ -23,6 +23,7 @@ export type NearConfig = {
   helperUrl?: string;
   explorerUrl?: string;
   keyPath?: string;
+  headers: { [key: string]: string | number };
 };
 
 export const getNearConfig = (env: NEAR_ENV): NearConfig => {
@@ -38,6 +39,7 @@ export const getNearConfig = (env: NEAR_ENV): NearConfig => {
         walletUrl: 'https://wallet.near.org',
         helperUrl: 'https://helper.mainnet.near.org',
         explorerUrl: 'https://explorer.mainnet.near.org',
+        headers: {},
       };
     case 'testnet':
     case 'development':
@@ -50,6 +52,7 @@ export const getNearConfig = (env: NEAR_ENV): NearConfig => {
         walletUrl: 'https://wallet.testnet.near.org',
         helperUrl: 'https://helper.testnet.near.org',
         explorerUrl: 'https://explorer.testnet.near.org',
+        headers: {},
       };
     case 'betanet':
       return {
@@ -61,6 +64,7 @@ export const getNearConfig = (env: NEAR_ENV): NearConfig => {
         walletUrl: 'https://wallet.betanet.near.org',
         helperUrl: 'https://helper.betanet.near.org',
         explorerUrl: 'https://explorer.betanet.near.org',
+        headers: {},
       };
     case 'local':
       return {
@@ -70,6 +74,7 @@ export const getNearConfig = (env: NEAR_ENV): NearConfig => {
         walletUrl: 'http://localhost:4000/wallet',
         tokenContractName: '',
         contractName: CONTRACT_NAME,
+        headers: {},
       };
     case 'test':
     case 'ci':
@@ -79,6 +84,7 @@ export const getNearConfig = (env: NEAR_ENV): NearConfig => {
         tokenContractName: '',
         contractName: CONTRACT_NAME,
         masterAccount: 'test.near',
+        headers: {},
       };
     case 'ci-betanet':
       return {
@@ -87,6 +93,7 @@ export const getNearConfig = (env: NEAR_ENV): NearConfig => {
         tokenContractName: '',
         contractName: CONTRACT_NAME,
         masterAccount: 'test.near',
+        headers: {},
       };
     default:
       throw Error(

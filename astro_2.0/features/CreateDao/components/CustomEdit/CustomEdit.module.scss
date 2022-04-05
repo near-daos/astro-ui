@@ -1,0 +1,21 @@
+@import 'styles/typography';
+
+.root {
+  overscroll-behavior: none;
+}
+
+.title {
+  @extend %title2;
+  margin-bottom: 24px;
+}
+
+.footer {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 48px;
+}
+
+.customEditButton {
+  text-transform: capitalize;
+}

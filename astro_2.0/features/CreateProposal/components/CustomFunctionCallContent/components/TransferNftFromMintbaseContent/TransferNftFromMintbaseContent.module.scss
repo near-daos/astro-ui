@@ -1,0 +1,53 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-gap: 24px;
+  grid-template-areas:
+    'tokenKey .'
+    'target gas';
+  grid-template-columns: 1fr 1fr;
+}
+
+.tokenKey {
+  grid-area: tokenKey;
+}
+
+.target {
+  grid-area: target;
+}
+
+.gas {
+  grid-area: gas;
+}
+
+.inputWrapper {
+  /* stylelint-disable */
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+  /* stylelint-enable */
+
+  input {
+    font-weight: 700;
+    @include placeholder {
+      color: var(--color-neutral-40);
+      transition: opacity 0.2s linear;
+    }
+  }
+}
+
+.wide {
+  flex: 1;
+  max-width: unset;
+}

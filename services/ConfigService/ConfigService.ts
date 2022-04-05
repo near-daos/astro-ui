@@ -1,19 +1,19 @@
-import { Config, NearConfig } from 'types/config';
+import { Config } from 'types/config';
+import { getNearConfig, NEAR_ENV, NearConfig } from 'config/near';
+import { appConfig as APP_CONFIG } from 'config';
 
-class ConfigService {
-  private appConfig: Config | null = null;
+export class ConfigService {
+  // eslint-disable-next-line class-methods-use-this
+  public get(): { appConfig: Config; nearConfig: NearConfig } {
+    const appConfig = process.browser ? window.APP_CONFIG : APP_CONFIG;
 
-  private nearConfig: NearConfig | null = null;
+    const nearConfig = getNearConfig(
+      (appConfig?.NEAR_ENV || 'development') as NEAR_ENV
+    );
 
-  public init(nearConfig: NearConfig, appConfig: Config): void {
-    this.appConfig = appConfig;
-    this.nearConfig = nearConfig;
-  }
-
-  public get(): { appConfig: Config | null; nearConfig: NearConfig | null } {
     return {
-      appConfig: this.appConfig,
-      nearConfig: this.nearConfig,
+      appConfig,
+      nearConfig,
     };
   }
 }

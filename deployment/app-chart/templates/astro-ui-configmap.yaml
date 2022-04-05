@@ -12,3 +12,4 @@ data:
   GOOGLE_ANALYTICS_KEY: "{{ .Values.environment.google_analytics_key }}"
   STATS_API_URL: "{{ .Values.environment.stats_api_url }}"
   NEXT_PUBLIC_LAUNCHDARKLY_ID: "{{ .Values.environment.next_public_launchdarkly_id }}"
+  APP_DOMAIN: "{{ .Values.environment.app_domain }}"

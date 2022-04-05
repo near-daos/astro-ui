@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useMount, useToggle } from 'react-use';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
-import React, { PropsWithRef, RefObject, useState } from 'react';
+import React, { PropsWithRef, ReactNode, RefObject, useState } from 'react';
 
 import { DaoImageType } from 'astro_2.0/features/CreateDao/components/types';
 
@@ -17,18 +17,30 @@ import styles from './ImageUpload.module.scss';
 export interface ImageUploadProps<T extends Element> {
   fieldName: DaoImageType;
   errorElRef?: RefObject<T>;
+  showPreview?: boolean;
+  control?: ReactNode;
+  className?: string;
+  onSelect?: (value: FileList) => void;
 }
 
 export const ImageUpload = <T extends Element>(
   props: PropsWithRef<ImageUploadProps<T>>
 ): JSX.Element => {
-  const { fieldName, errorElRef } = props;
+  const {
+    fieldName,
+    errorElRef,
+    control,
+    className,
+    onSelect,
+    showPreview = true,
+  } = props;
 
   const { t } = useTranslation();
 
   const {
     watch,
     register,
+    setValue,
     formState: { errors },
   } = useFormContext();
 
@@ -52,6 +64,13 @@ export const ImageUpload = <T extends Element>(
         id={id}
         type="file"
         {...register(fieldName)}
+        onChange={e => {
+          setValue(fieldName, e.target.files);
+
+          if (onSelect && e.target.files) {
+            onSelect(e.target.files);
+          }
+        }}
         className={styles.uploadInput}
         accept="image/gif, image/jpeg, image/png"
       />
@@ -72,29 +91,34 @@ export const ImageUpload = <T extends Element>(
 
   return (
     <div
-      className={styles.root}
+      className={classNames(styles.root, className)}
       onMouseEnter={toggleShow}
       onMouseLeave={toggleShow}
     >
       {renderInput()}
-      <div
-        className={classNames(styles.image, {
-          [styles.logo]: fieldName === 'flagLogo',
-        })}
-        style={{
-          backgroundImage: `url(${getImageFromImageFileList(imageFileList)})`,
-        }}
-      />
-      <label htmlFor={id}>
+      {showPreview && (
         <div
-          className={classNames(styles.overlay, {
-            [styles.clear]: !isImageUploaded,
-            [styles.show]: show,
+          className={classNames(styles.image, {
+            [styles.logo]: fieldName === 'flagLogo',
           })}
-        >
-          <Icon name="upload" width={24} />
-          {uploadText}
-        </div>
+          style={{
+            backgroundImage: `url(${getImageFromImageFileList(imageFileList)})`,
+          }}
+        />
+      )}
+
+      <label htmlFor={id}>
+        {control || (
+          <div
+            className={classNames(styles.overlay, {
+              [styles.clear]: !isImageUploaded,
+              [styles.show]: show,
+            })}
+          >
+            <Icon name="upload" width={24} />
+            {uploadText}
+          </div>
+        )}
       </label>
     </div>
   );

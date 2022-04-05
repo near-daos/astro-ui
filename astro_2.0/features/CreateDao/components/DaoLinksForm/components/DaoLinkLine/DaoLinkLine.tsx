@@ -19,7 +19,7 @@ export const DaoLinkLine: VFC<DaoLinkLineProps> = ({ index, removeLink }) => {
   const {
     register,
     getValues,
-    formState: { errors, touchedFields },
+    formState: { errors },
   } = useFormContext();
 
   const errorEl = useRef<HTMLDivElement>(null);
@@ -29,7 +29,7 @@ export const DaoLinkLine: VFC<DaoLinkLineProps> = ({ index, removeLink }) => {
   }, [index, removeLink]);
 
   return (
-    <div>
+    <div className={styles.root}>
       <div className={styles.link}>
         <Icon
           className={styles.socialIcon}
@@ -42,10 +42,6 @@ export const DaoLinkLine: VFC<DaoLinkLineProps> = ({ index, removeLink }) => {
           className={styles.validationWrapper}
           component={
             <Input
-              isValid={
-                touchedFields.websites?.[index] &&
-                !errors.websites?.[index]?.message
-              }
               key={`websites.${index}` as const}
               placeholder="https://"
               {...register(`websites.${index}` as const, {

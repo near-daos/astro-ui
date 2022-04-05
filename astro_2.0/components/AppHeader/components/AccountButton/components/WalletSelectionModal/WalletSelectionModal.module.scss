@@ -1,0 +1,20 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root.root {
+  display: flex;
+  justify-content: center;
+  width: 320px;
+}
+
+.header {
+  @extend %heading4;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 24px;
+}
+
+.wallet {
+  padding: 8px;
+}

@@ -1,0 +1,144 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-gap: 24px;
+  grid-template-areas:
+    'address method'
+    'editor editor'
+    'deposit gas';
+  grid-template-columns: 2fr 1fr;
+}
+
+.address {
+  grid-area: address;
+}
+
+.method {
+  grid-area: method;
+}
+
+.gas {
+  grid-area: gas;
+  max-width: 86px;
+}
+
+.editor {
+  grid-area: editor;
+}
+
+.deposit {
+  grid-area: deposit;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  white-space: nowrap;
+
+  .iconWrapper {
+    //background-color: var(--color-brand-black);
+    border-radius: 50%;
+    height: 24px;
+    margin-right: 8px;
+    width: 24px;
+  }
+}
+
+.inputWrapper {
+  /* stylelint-disable */
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+  /* stylelint-enable */
+
+  input {
+    font-weight: 700;
+    @include placeholder {
+      color: var(--color-neutral-40);
+      transition: opacity 0.2s linear;
+    }
+  }
+}
+
+.wide {
+  flex: 1;
+  max-width: unset;
+}
+
+.select {
+  flex: 1;
+  max-width: fit-content;
+
+  button {
+    border: 0;
+    overflow: hidden;
+  }
+
+  [data-hidden-value] {
+    display: none;
+    margin-left: auto;
+  }
+
+  .row {
+    font-family: var(--font-family-primary);
+    font-size: 14px;
+    width: 100%;
+  }
+}
+
+.select ul {
+  min-width: 260px;
+  [data-hidden-value] {
+    display: flex;
+  }
+}
+
+.divider {
+  min-width: 80px;
+}
+
+.symbol {
+  @include ellipse-text;
+  max-width: 120px;
+}
+
+.editorContent {
+  display: flex;
+  padding: 12px;
+  width: 100%;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    display: grid;
+    grid-template-areas:
+      'address'
+      'method'
+      'gas'
+      'editor'
+      'deposit';
+    grid-template-columns: 1fr;
+
+    > div:last-of-type {
+      grid-column: 1 / 3;
+      margin-left: 0;
+    }
+  }
+
+  .select ul {
+    min-width: 200px;
+    .balance {
+      display: flex;
+    }
+  }
+}

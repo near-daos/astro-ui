@@ -14,8 +14,8 @@
   border-radius: 8px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   cursor: default;
-  padding: 8px;
-  width: 328px;
+  padding: 12px;
+  width: 226px;
   z-index: 1000;
 
   &.hidden {
@@ -25,12 +25,18 @@
   .delimiter {
     background-color: var(--color-neutral-20);
     height: 1px;
-    margin: 4px 0;
+    margin: 12px 0;
   }
 
-  .auth {
-    color: var(--color-brand-coral-red);
-    cursor: pointer;
+  .chooseWalletCaption {
+    @extend %subtitle5;
+    color: var(--color-neutral-60);
+    margin-bottom: 24px;
+  }
+
+  .text {
+    @extend %subtitle4;
+    color: var(--color-neutral-90);
   }
 
   .name {
@@ -81,6 +87,12 @@
   }
 }
 
+.menuButton {
+  padding: 8px;
+
+  pointer-events: none;
+}
+
 .footer {
   background-color: var(--color-white);
   border-radius: 8px;
@@ -91,4 +103,9 @@
   @include astro-desktop {
     display: none;
   }
+}
+
+.disabled {
+  cursor: none;
+  pointer-events: none;
 }

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useAsyncFn } from 'react-use';
 import axios, { CancelTokenSource } from 'axios';
 
-import { SputnikHttpService, SputnikNearService } from 'services/sputnik';
+import { SputnikHttpService } from 'services/sputnik';
 import { useModal } from 'components/modal';
 import { ConfirmActionModal } from 'astro_2.0/components/ConfirmActionModal';
 
@@ -24,6 +24,7 @@ export function useBountyControls(
   handleUnclaim: () => void;
 } {
   const router = useRouter();
+  const { nearService } = useAuthContext();
 
   const [showModal] = useModal(ConfirmActionModal);
 
@@ -37,7 +38,7 @@ export function useBountyControls(
     });
 
     if (res?.length && bounty) {
-      await SputnikNearService.claimBounty(dao.id, {
+      await nearService?.claimBounty(dao.id, {
         bountyId: bounty?.bountyId,
         deadline: bounty?.maxDeadline,
         bountyBond: dao.policy.bountyBond,
@@ -47,7 +48,14 @@ export function useBountyControls(
 
       onSuccessHandler();
     }
-  }, [showModal, bounty, dao.id, dao.policy.bountyBond, onSuccessHandler]);
+  }, [
+    showModal,
+    bounty,
+    dao.id,
+    dao.policy.bountyBond,
+    onSuccessHandler,
+    nearService,
+  ]);
 
   const handleUnclaim = useCallback(async () => {
     const res = await showModal({
@@ -55,10 +63,10 @@ export function useBountyControls(
     });
 
     if (res?.length && bounty) {
-      await SputnikNearService.unclaimBounty(dao.id, bounty?.bountyId);
+      await nearService?.unclaimBounty(dao.id, bounty?.bountyId);
       onSuccessHandler();
     }
-  }, [bounty, dao.id, onSuccessHandler, showModal]);
+  }, [bounty, dao.id, onSuccessHandler, showModal, nearService]);
 
   return {
     handleClaim,
@@ -75,6 +83,7 @@ export function useBountyVoting(
 } {
   const router = useRouter();
   const [showModal] = useModal(ConfirmActionModal);
+  const { nearService } = useAuthContext();
 
   const [{ loading }, handleVote] = useAsyncFn(
     async (vote: VoteAction) => {
@@ -83,16 +92,11 @@ export function useBountyVoting(
       });
 
       if (res?.length) {
-        await SputnikNearService.vote(
-          dao.id,
-          proposal.proposalId,
-          vote,
-          res[0]
-        );
+        await nearService?.vote(dao.id, proposal.proposalId, vote, res[0]);
         await router.reload();
       }
     },
-    [dao, proposal, router]
+    [dao, proposal, router, nearService]
   );
 
   return {
@@ -145,13 +149,13 @@ export function useHideBounty(): {
   const router = useRouter();
   const showHidden = router.query?.bountyFilter === 'hidden';
   const daoId = router.query.dao as string;
-  const { accountId } = useAuthContext();
+  const { accountId, nearService } = useAuthContext();
   const [selected, setSelected] = useState<string[]>([]);
 
   const [{ loading }, handleSubmit] = useAsyncFn(async () => {
     try {
-      const publicKey = await SputnikNearService.getPublicKey();
-      const signature = await SputnikNearService.getSignature();
+      const publicKey = await nearService?.getPublicKey();
+      const signature = await nearService?.getSignature();
 
       if (publicKey && signature) {
         await SputnikHttpService.toggleBountyContexts({
@@ -176,7 +180,7 @@ export function useHideBounty(): {
         description: err.message,
       });
     }
-  }, [selected, daoId, showHidden, accountId, router]);
+  }, [selected, daoId, showHidden, accountId, router, nearService]);
 
   const handleSelect = useCallback(
     (id: string) => {

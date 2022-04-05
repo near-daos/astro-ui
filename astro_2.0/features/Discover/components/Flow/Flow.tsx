@@ -11,8 +11,8 @@ import {
   TControlTab,
 } from 'astro_2.0/features/Discover/types';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
-
-import { daoStatsService } from 'services/DaoStatsService';
+import { useDaoStatsContext } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
+import { LIMIT } from 'services/DaoStatsService';
 
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import {
@@ -30,6 +30,7 @@ import styles from './Flow.module.scss';
 export const Flow: FC = () => {
   const isMounted = useMountedState();
   const { t } = useTranslation();
+  const { daoStatsService } = useDaoStatsContext();
   const [data, setData] = useState<TFlow | null>(null);
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
   const [leaderboardData, setLeaderboardData] = useState<
@@ -81,7 +82,9 @@ export const Flow: FC = () => {
     data?.transactionsOut.growth,
     t,
   ]);
-  const [activeView, setActiveView] = useState<string>(items[0].id);
+  const [activeView, setActiveView] = useState(items[0].id);
+  const [total, setTotal] = useState(0);
+  const [offset, setOffset] = useState(0);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -91,6 +94,8 @@ export const Flow: FC = () => {
 
       setChartData(null);
       setLeaderboardData(null);
+      setOffset(0);
+      setTotal(0);
       setActiveView(id);
     },
     [isMounted]
@@ -106,11 +111,10 @@ export const Flow: FC = () => {
         setData(response.data);
       }
     })();
-  }, [query.dao, isMounted]);
+  }, [query.dao, isMounted, daoStatsService]);
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
-    let leaders;
 
     if (query.dao) {
       const params = {
@@ -136,16 +140,12 @@ export const Flow: FC = () => {
         case FlowTabs.INCOMING_TRANSACTIONS:
         case FlowTabs.OUTGOING_TRANSACTIONS: {
           chart = await daoStatsService.getFlowTransactionsHistory(CONTRACT);
-          leaders = await daoStatsService.getFlowTransactionsLeaderboard(
-            CONTRACT
-          );
           break;
         }
         case FlowTabs.TOTAL_OUT:
         case FlowTabs.TOTAL_IN:
         default: {
           chart = await daoStatsService.getFlowHistory(CONTRACT);
-          leaders = await daoStatsService.getFlowLeaderboard(CONTRACT);
           break;
         }
       }
@@ -165,6 +165,34 @@ export const Flow: FC = () => {
         )
       );
     }
+  }, [activeView, query.dao, isMounted]);
+
+  const [, getLeaderboardData] = useAsyncFn(async () => {
+    if (query.dao) {
+      return;
+    }
+
+    let leaders;
+
+    switch (activeView) {
+      case FlowTabs.INCOMING_TRANSACTIONS:
+      case FlowTabs.OUTGOING_TRANSACTIONS: {
+        leaders = await daoStatsService.getFlowTransactionsLeaderboard({
+          ...CONTRACT,
+          offset,
+        });
+        break;
+      }
+      case FlowTabs.TOTAL_OUT:
+      case FlowTabs.TOTAL_IN:
+      default: {
+        leaders = await daoStatsService.getFlowLeaderboard({
+          ...CONTRACT,
+          offset,
+        });
+        break;
+      }
+    }
 
     if (leaders?.data && isMounted()) {
       const isIncome =
@@ -174,25 +202,36 @@ export const Flow: FC = () => {
 
       if (dataset) {
         const newData =
-          dataset.map(metric => {
-            return {
-              ...metric,
-              overview:
-                metric.overview?.map(({ timestamp, count }) => ({
-                  x: new Date(timestamp),
-                  y: count,
-                })) ?? [],
-            };
-          }) ?? null;
+          dataset.map(metric => ({
+            ...metric,
+            overview:
+              metric.overview?.map(({ timestamp, count }) => ({
+                x: new Date(timestamp),
+                y: count,
+              })) ?? [],
+          })) ?? null;
 
-        setLeaderboardData(newData);
+        setTotal(
+          isIncome ? leaders.data.incomingTotal : leaders.data.outgoingTotal
+        );
+        setLeaderboardData(
+          leaderboardData ? [...leaderboardData, ...newData] : newData
+        );
       }
     }
-  }, [activeView, query.dao, isMounted]);
+  }, [activeView, query.dao, isMounted, offset]);
 
   useEffect(() => {
     getChartData();
   }, [getChartData]);
+
+  useEffect(() => {
+    getLeaderboardData();
+  }, [getLeaderboardData]);
+
+  const nextLeaderboardItems = () => {
+    setOffset(offset + LIMIT);
+  };
 
   return (
     <div className={styles.root}>
@@ -210,6 +249,8 @@ export const Flow: FC = () => {
           activeView={activeView}
         />
         <DaosTopList
+          total={total}
+          next={nextLeaderboardItems}
           data={leaderboardData}
           valueLabel={getValueLabel(DaoStatsTopics.FLOW, activeView)}
         />

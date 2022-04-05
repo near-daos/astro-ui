@@ -6,30 +6,24 @@ import nextI18NextConfig from 'next-i18next.config';
 
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 
-import { SputnikNearService } from 'services/sputnik';
-import { configService } from 'services/ConfigService';
-
 const Callback: NextPage = () => {
   useEffect(() => {
+    const { searchParams } = new URL(window.location.toString());
+    const accountId = searchParams.get('account_id') || undefined;
+    const errorCode = (searchParams.get('errorCode') ||
+      undefined) as SputnikWalletErrorCodes;
+    const allKeys = searchParams.get('all_keys') || undefined;
+    const publicKey = searchParams.get('public_key') || undefined;
+
     if (window.opener?.sputnikRequestSignInCompleted) {
-      const { searchParams } = new URL(window.location.toString());
-      const accountId = searchParams.get('account_id') || undefined;
-      const errorCode = (searchParams.get('errorCode') ||
-        undefined) as SputnikWalletErrorCodes;
-
-      const { appConfig, nearConfig } = configService.get();
-
-      if (appConfig && nearConfig) {
-        SputnikNearService.init(nearConfig, appConfig);
-        window.opener.sputnikRequestSignInCompleted({ accountId, errorCode });
-
-        setTimeout(() => {
-          window.close();
-        }, 1500);
-      }
-    } else {
-      console.error('Unable to find login callback function');
-      window.close();
+      window.opener
+        .sputnikRequestSignInCompleted({
+          accountId,
+          errorCode,
+          allKeys,
+          publicKey,
+        })
+        .then(() => window.close());
     }
   }, []);
 

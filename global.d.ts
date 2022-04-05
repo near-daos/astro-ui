@@ -1,9 +1,12 @@
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
+import { Config } from 'types/config';
 
 type SputnikRequestSignInCompleted = (result: {
   accountId?: string;
   errorCode?: SputnikWalletErrorCodes;
-}) => void;
+  allKeys?: string;
+  publicKey?: string;
+}) => Promise<void>;
 
 type SputnikRequestSignTransactionCompleted = (result: {
   transactionHashes?: string;
@@ -20,5 +23,7 @@ declare global {
       sputnikRequestSignInCompleted?: SputnikRequestSignInCompleted;
       sputnikRequestSignTransactionCompleted?: SputnikRequestSignTransactionCompleted;
     };
+    near: SenderWalletInstance;
+    APP_CONFIG: Config;
   }
 }

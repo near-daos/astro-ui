@@ -1,6 +1,5 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from 'next-i18next.config';
 import type { AppContext, AppProps } from 'next/app';
@@ -16,59 +15,30 @@ import { PageLayout } from 'astro_2.0/components/PageLayout';
 import { MobileNav } from 'astro_2.0/components/navigation/MobileNav';
 import { SearchResults } from 'features/search/search-results';
 
-import { SputnikNearService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
-import { configService } from 'services/ConfigService';
 
 import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 
 import { SocketProvider } from 'context/SocketContext';
 
-import { useAppConfig } from 'hooks/useAppConfig';
 import { useIntercomAdjust } from 'hooks/useIntercomAdjust';
 
 import 'styles/globals.scss';
-import { daoStatsService } from 'services/DaoStatsService';
+import { useRouter } from 'next/router';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
-  const { appConfig, nearConfig } = useAppConfig();
-  const [appInitialized, setAppInitialized] = useState(false);
 
   useEffect(() => {
-    if (!appConfig || !nearConfig) {
-      return;
-    }
-
-    configService.init(nearConfig, appConfig);
-    daoStatsService.init(appConfig);
-
-    SputnikNearService.init(nearConfig, appConfig);
-
-    const accountCookieOptions = appConfig.APP_DOMAIN
-      ? { ...DEFAULT_OPTIONS, domain: appConfig.APP_DOMAIN }
-      : DEFAULT_OPTIONS;
-
-    CookieService.set(
-      ACCOUNT_COOKIE,
-      SputnikNearService.getAccountId(),
-      accountCookieOptions
-    );
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
-
-    setAppInitialized(true);
-  }, [appConfig, nearConfig, router.query.dao]);
+  }, [router]);
 
   useIntercomAdjust();
 
-  if (!appInitialized) {
-    return null;
-  }
-
   return (
-    <AuthWrapper>
-      <SocketProvider>
-        <ModalProvider>
+    <ModalProvider>
+      <AuthWrapper>
+        <SocketProvider>
           <SearchResults>
             <Head>
               <title>Astro</title>
@@ -78,9 +48,9 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
             </PageLayout>
             <MobileNav />
           </SearchResults>
-        </ModalProvider>
-      </SocketProvider>
-    </AuthWrapper>
+        </SocketProvider>
+      </AuthWrapper>
+    </ModalProvider>
   );
 }
 
@@ -111,7 +81,7 @@ App.getInitialProps = async ({ ctx, router }: AppContext) => {
 };
 
 export default withLDProvider({
-  clientSideID: applicationConfig.launchDarklyId as string,
+  clientSideID: applicationConfig.LAUNCHDARKLY_ID as string,
   reactOptions: {
     useCamelCaseFlagKeys: true,
   },

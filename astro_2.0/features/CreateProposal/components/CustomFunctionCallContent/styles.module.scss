@@ -1,0 +1,36 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+
+.row {
+  align-items: center;
+  display: flex;
+  white-space: nowrap;
+
+  .iconWrapper {
+    //background-color: var(--color-brand-black);
+    border-radius: 50%;
+    height: 24px;
+    margin-right: 8px;
+    width: 24px;
+  }
+}
+
+.balance {
+  display: none;
+  margin-left: auto;
+}
+
+.row {
+  font-family: var(--font-family-primary);
+  font-size: 14px;
+  width: 100%;
+}
+
+.divider {
+  min-width: 80px;
+}
+
+.symbol {
+  @include ellipse-text;
+  max-width: 120px;
+}

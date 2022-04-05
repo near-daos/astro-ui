@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { NotificationsService } from 'services/NotificationsService';
-import { SputnikNearService } from 'services/sputnik';
 import { useAuthContext } from 'context/AuthContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { PaginationResponse } from 'types/api';
@@ -24,7 +23,7 @@ export function useNotificationsSettings(): {
     delay?: string
   ) => void;
 } {
-  const { accountId } = useAuthContext();
+  const { accountId, nearService } = useAuthContext();
   const updateSettings = useCallback(
     async (
       daoId: string | null,
@@ -33,8 +32,8 @@ export function useNotificationsSettings(): {
       delay?: string
     ) => {
       try {
-        const publicKey = await SputnikNearService.getPublicKey();
-        const signature = await SputnikNearService.getSignature();
+        const publicKey = await nearService?.getPublicKey();
+        const signature = await nearService?.getSignature();
 
         if (publicKey && signature) {
           await NotificationsService.updateNotificationSettings({
@@ -55,7 +54,7 @@ export function useNotificationsSettings(): {
         });
       }
     },
-    [accountId]
+    [accountId, nearService]
   );
 
   return {
@@ -97,7 +96,7 @@ export function useNotificationsList(
 } {
   const router = useRouter();
   const { socket } = useSocket();
-  const { accountId } = useAuthContext();
+  const { accountId, nearService } = useAuthContext();
   const [notifications, setNotifications] = useState<PaginationResponse<
     Notification[]
   > | null>(null);
@@ -126,6 +125,7 @@ export function useNotificationsList(
 
       const res = await NotificationsService.getNotifications(
         showArchived ?? false,
+        accountId,
         {
           offset:
             offset !== undefined ? offset : notifications?.data.length || 0,
@@ -203,8 +203,8 @@ export function useNotificationsList(
 
   const handleUpdate = useCallback(
     async (id, { isRead, isMuted, isArchived }) => {
-      const publicKey = await SputnikNearService.getPublicKey();
-      const signature = await SputnikNearService.getSignature();
+      const publicKey = await nearService?.getPublicKey();
+      const signature = await nearService?.getSignature();
 
       if (accountId && publicKey && signature && isMounted() && notifications) {
         setNotifications({
@@ -244,13 +244,13 @@ export function useNotificationsList(
         });
       }
     },
-    [accountId, isMounted, notifications]
+    [accountId, isMounted, notifications, nearService]
   );
 
   const handleUpdateAll = useCallback(
     async (action: 'READ' | 'ARCHIVE') => {
-      const publicKey = await SputnikNearService.getPublicKey();
-      const signature = await SputnikNearService.getSignature();
+      const publicKey = await nearService?.getPublicKey();
+      const signature = await nearService?.getSignature();
 
       if (accountId && publicKey && signature && isMounted()) {
         if (action === 'READ') {
@@ -270,13 +270,13 @@ export function useNotificationsList(
         await loadMore(0);
       }
     },
-    [accountId, loadMore, isMounted]
+    [accountId, loadMore, isMounted, nearService]
   );
 
   const handleRemove = useCallback(
     async (id: string, { isRead, isMuted, isArchived }) => {
-      const publicKey = await SputnikNearService.getPublicKey();
-      const signature = await SputnikNearService.getSignature();
+      const publicKey = await nearService?.getPublicKey();
+      const signature = await nearService?.getSignature();
 
       if (accountId && publicKey && signature && isMounted() && notifications) {
         const newData = notifications?.data.filter(item => item.id !== id);
@@ -299,7 +299,7 @@ export function useNotificationsList(
         });
       }
     },
-    [accountId, isMounted, notifications]
+    [accountId, isMounted, notifications, nearService]
   );
 
   return {

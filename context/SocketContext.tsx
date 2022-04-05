@@ -1,7 +1,6 @@
 import io, { Socket as TSocket } from 'socket.io-client';
 import { createContext, FC, useContext, useEffect, useState } from 'react';
 import { useAuthContext } from 'context/AuthContext';
-import { SputnikNearService } from 'services/sputnik';
 import { useMountedState } from 'react-use';
 import { configService } from 'services/ConfigService';
 
@@ -19,17 +18,20 @@ export const useSocket = (): ISocketContext => useContext(SocketContext);
 
 export const SocketProvider: FC = ({ children }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
-  const { accountId } = useAuthContext();
+  const { accountId, nearService } = useAuthContext();
   const isMounted = useMountedState();
 
   useEffect(() => {
-    let socketIo: Socket;
+    if (!nearService) {
+      return;
+    }
 
-    const { appConfig } = configService.get();
+    async function initSocket() {
+      let socketIo: Socket;
+      const { appConfig } = configService.get();
 
-    (async () => {
-      const publicKey = await SputnikNearService.getPublicKey();
-      const signature = await SputnikNearService.getSignature();
+      const publicKey = await nearService?.getPublicKey();
+      const signature = await nearService?.getSignature();
 
       if (accountId && publicKey && isMounted() && appConfig) {
         socketIo = io(appConfig.API_URL, {
@@ -43,14 +45,10 @@ export const SocketProvider: FC = ({ children }) => {
 
         setSocket(socketIo);
       }
-    })();
+    }
 
-    return () => {
-      if (socketIo) {
-        socketIo.disconnect();
-      }
-    };
-  }, [accountId, isMounted]);
+    initSocket();
+  }, [accountId, isMounted, nearService]);
 
   return (
     <SocketContext.Provider value={{ socket }}>

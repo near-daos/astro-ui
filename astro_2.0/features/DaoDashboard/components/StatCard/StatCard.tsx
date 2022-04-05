@@ -22,6 +22,7 @@ export const StatCard: FC<StatCardProps> = ({
 }) => {
   return (
     <Button
+      data-testid="stat-card"
       size="block"
       onClick={onClick}
       variant="transparent"

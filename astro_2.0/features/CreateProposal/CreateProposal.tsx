@@ -5,11 +5,9 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 import last from 'lodash/last';
-import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
-import { SputnikNearService } from 'services/sputnik';
 import { useModal } from 'components/modal';
 
 import { ProposalCardRenderer } from 'astro_2.0/components/ProposalCardRenderer';
@@ -30,10 +28,10 @@ import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomToken
 import { getInitialProposalVariant } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 import { UserPermissions } from 'types/context';
 
+import { getFormInitialValues } from 'astro_2.0/features/CreateProposal/helpers/initialValues';
+import { getNewProposalObject } from 'astro_2.0/features/CreateProposal/helpers/newProposalObject';
 import {
   getFormContentNode,
-  getFormInitialValues,
-  getNewProposalObject,
   getValidationSchema,
   mapProposalVariantToProposalType,
 } from './helpers';
@@ -55,6 +53,7 @@ export interface CreateProposalProps {
   showClose?: boolean;
   showInfo?: boolean;
   canCreateTokenProposal?: boolean;
+  initialValues?: Record<string, unknown>;
 }
 
 export const CreateProposal: FC<CreateProposalProps> = ({
@@ -70,9 +69,10 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   showClose = true,
   showInfo = true,
   canCreateTokenProposal = false,
+  initialValues,
 }) => {
   const { t } = useTranslation();
-  const { accountId } = useAuthContext();
+  const { accountId, nearService } = useAuthContext();
   const router = useRouter();
   const initialProposalVariant = getInitialProposalVariant(
     proposalVariant,
@@ -98,11 +98,20 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   }, [initialProposalVariant]);
 
   const methods = useForm({
-    defaultValues: getFormInitialValues(selectedProposalVariant, accountId),
+    defaultValues: getFormInitialValues(
+      selectedProposalVariant,
+      accountId,
+      initialValues
+    ),
     context: schemaContext,
     mode: 'onSubmit',
     resolver: async (data, context) => {
-      const schema = getValidationSchema(context?.selectedProposalVariant, dao);
+      const schema = getValidationSchema(
+        context?.selectedProposalVariant,
+        dao,
+        data,
+        nearService
+      );
 
       try {
         let values = await schema.validate(data, {
@@ -180,24 +189,28 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           let resp;
 
           if (selectedProposalVariant === ProposalVariant.ProposeTransfer) {
-            resp = await SputnikNearService.createTokenTransferProposal(
-              newProposal
-            );
-
-            resp = last(resp as FinalExecutionOutcome[]);
+            resp = await nearService?.createTokenTransferProposal(newProposal);
           } else {
-            resp = await SputnikNearService.createProposal(newProposal);
+            resp = await nearService?.addProposal(newProposal);
           }
 
-          const newProposalId = JSON.parse(
-            Buffer.from(
-              // todo - Oleg: fix this!
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              resp.status.SuccessValue as string,
-              'base64'
-            ).toString('ascii')
-          );
+          const newProposalId = resp
+            ? JSON.parse(
+                Buffer.from(
+                  // todo - Oleg: fix this!
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  last(resp)?.status?.SuccessValue as string,
+                  'base64'
+                ).toString('ascii')
+              )
+            : null;
+
+          if (newProposalId === null) {
+            onClose();
+
+            return;
+          }
 
           await router.push({
             pathname: SINGLE_PROPOSAL_PAGE_URL,
@@ -233,6 +246,8 @@ export const CreateProposal: FC<CreateProposalProps> = ({
       showModal,
       router,
       onCreate,
+      nearService,
+      onClose,
     ]
   );
 

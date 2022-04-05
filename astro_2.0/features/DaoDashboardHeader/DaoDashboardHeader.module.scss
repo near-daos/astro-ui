@@ -6,23 +6,35 @@
   grid-gap: 12px 0;
   grid-template-areas:
     'letterHeadSection letterHeadSection letterHeadSection'
-    '. usersSection followSection'
+    '. usersSection linksSection'
+    'followSection followSection followSection'
     'depositSection depositSection depositSection'
     'descriptionSection descriptionSection descriptionSection'
-    'linksSection linksSection linksSection';
-  grid-template-columns: 1fr 64px 112px;
-
-  margin-bottom: 36px;
+    'warningSection warningSection warningSection';
+  grid-template-columns: 160px 80px 1fr;
 
   @include tablet-landscape {
     grid-gap: 12px 0;
     grid-template-areas:
-      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
-      '. depositSection depositSection followSection usersSection'
-      '. separator separator separator separator'
-      'descriptionSection descriptionSection descriptionSection linksSection linksSection';
-    grid-template-columns: 200px 2fr 1fr 124px 64px;
-    grid-template-rows: 1fr 40px 1px auto;
+      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
+      '. depositSection depositSection depositSection'
+      '. usersSection followSection followSection'
+      'descriptionSection descriptionSection descriptionSection descriptionSection'
+      'warningSection warningSection warningSection warningSection';
+    grid-template-columns: 200px 60px 1fr minmax(230px, 250px);
+    padding-top: 24px;
+  }
+
+  @include desktop {
+    grid-gap: 12px 0;
+    grid-template-areas:
+      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
+      '. usersSection followSection depositSection'
+      'descriptionSection descriptionSection descriptionSection descriptionSection'
+      'warningSection warningSection warningSection warningSection';
+    grid-template-columns: 200px 60px 1fr minmax(220px, 240px);
+
+    //grid-template-rows: 1fr 40px 1px auto;
 
     padding-top: 24px;
   }
@@ -30,11 +42,11 @@
   @include large-desktop {
     grid-gap: 12px 0;
     grid-template-areas:
-      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
-      '. depositSection followSection usersSection linksSection'
-      '. separator separator separator linksSection'
-      'descriptionSection descriptionSection descriptionSection descriptionSection linksSection';
-    grid-template-columns: 200px 2fr 124px 80px 1fr;
+      'letterHeadSection letterHeadSection letterHeadSection letterHeadSection'
+      '. usersSection followSection depositSection'
+      'descriptionSection descriptionSection descriptionSection descriptionSection'
+      'warningSection warningSection warningSection warningSection';
+    grid-template-columns: 200px 80px 1fr max(270px);
   }
 }
 
@@ -57,36 +69,31 @@
     left: 0;
     transform: translate(36px, 60px);
   }
+
+  .joinDao {
+    position: relative;
+    right: 0;
+  }
 }
 
 .depositSection {
   grid-area: depositSection;
-  margin-top: 24px;
-
-  @include tablet-landscape {
-    border-right: 1px solid var(--color-neutral-30);
-    margin-top: unset;
-    padding-right: 12px;
-  }
 }
 
 .followSection {
+  align-items: center;
+  display: flex;
   grid-area: followSection;
-  padding-left: 12px;
+  justify-content: center;
+  margin-top: 24px;
+  width: 100%;
 
   @include tablet-landscape {
-    border-right: 1px solid var(--color-neutral-30);
+    justify-content: flex-start;
+    margin-top: 0;
+    padding-left: 12px;
     padding-right: 12px;
-  }
-}
-
-.separator {
-  background-color: var(--color-neutral-30);
-  display: none;
-  grid-area: separator;
-
-  @include tablet-landscape {
-    display: block;
+    width: unset;
   }
 }
 
@@ -97,10 +104,14 @@
   grid-area: usersSection;
   justify-content: center;
   padding: 0 0 0 12px;
+
+  @include tablet-landscape {
+    padding: 0;
+  }
 }
 
 .label {
-  @extend %caption2;
+  @extend %caption1;
   color: var(--color-neutral-60);
 
   &::first-letter {
@@ -116,49 +127,36 @@
   @extend %body1;
   color: var(--color-black);
   grid-area: descriptionSection;
+  margin-top: 20px;
   padding: 12px 0;
   text-align: left;
 
   @include tablet-landscape {
     background-color: var(--color-white);
     border-radius: 8px;
-    padding: 28px 36px;
-  }
-}
-
-.linksSection {
-  display: flex;
-  flex-direction: column;
-  grid-area: linksSection;
-  overflow: hidden;
-  padding: 0;
-
-  @include tablet-landscape {
-    align-items: flex-start;
-    margin-top: 0;
-    padding: 0 0 0 12px;
+    padding: 24px 32px;
   }
 }
 
 .link {
-  @include ellipse-text;
-  border: 1px solid var(--color-neutral-30);
-  border-radius: 4px;
-  display: inline-block;
-  font-size: 14px;
-  margin-bottom: 0;
-  max-width: 150px;
-  padding: 10px 12px;
-
+  display: flex;
+  grid-area: linksSection;
+  justify-content: flex-end;
   @include tablet-landscape {
-    border: 0;
-    margin-bottom: 4px;
-    padding: 0;
+    grid-area: unset;
   }
 }
 
-.root.hideFollow {
-  .usersSection {
-    grid-area: followSection;
-  }
+.warningWrapper {
+  grid-area: warningSection;
+  margin-top: 32px;
+}
+
+.title {
+  @extend %title3;
+  margin-bottom: 4px;
+}
+
+.text {
+  @extend %caption1;
 }

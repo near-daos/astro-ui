@@ -130,7 +130,7 @@ export const FlagRenderer: FC<FlagRendererProps> = ({
       return `scale(2.7) translateX(-2px)`;
     }
 
-    return `scale(1.45) translateX(${translateX})`;
+    return `scale(1) translateX(${translateX})`;
   }
 
   function getClipStyles() {

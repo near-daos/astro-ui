@@ -38,11 +38,6 @@ exports[`Mobile nav Should render partial navigation if user did not log in 1`] 
     <div
       data-testid="nav-item"
     >
-      Discovery
-    </div>
-    <div
-      data-testid="nav-item"
-    >
       All DAOs
     </div>
     <div

@@ -1,0 +1,21 @@
+.root {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.iconContainer {
+  height: 38px;
+  position: relative;
+  width: 38px;
+}
+
+.selectedWallet {
+  background-color: var(--color-brand-green);
+  border-radius: 50%;
+  height: 8px;
+  left: 25px;
+  position: absolute;
+  top: 0;
+  width: 8px;
+}

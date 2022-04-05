@@ -40,7 +40,7 @@ export function getCompleteBountyProposal(
   };
 }
 
-function getDeadline(timeAmount: number, unit: DeadlineUnit): string {
+export function getDeadline(timeAmount: number, unit: DeadlineUnit): string {
   const nanosecondsInDay = new Decimal('8.64e+13');
   let multiplier = timeAmount;
 

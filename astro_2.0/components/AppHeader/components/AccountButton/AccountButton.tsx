@@ -4,71 +4,132 @@ import React, { FC, useCallback, useRef, useState } from 'react';
 import { useAuthContext } from 'context/AuthContext';
 
 import { Icon } from 'components/Icon';
-import { NearIcon } from 'astro_2.0/components/NearIcon';
 import { AppFooter } from 'astro_2.0/components/AppFooter';
 import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 
-import { AccountPopupItem } from './components/AccountPopupItem';
+import { WalletType } from 'types/config';
+import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletIcon/WalletIcon';
+import { DisconnectButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/DisconnectButton';
+import { MyAccountButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/MyAccount';
+import { WalletButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletButton';
 
+import { useModal } from 'components/modal';
+import { WalletSelectionModal } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletSelectionModal';
 import styles from './AccountButton.module.scss';
 
 export const AccountButton: FC = () => {
   const [open, setOpen] = useState(false);
-  const { login, logout, accountId } = useAuthContext();
+  const {
+    login,
+    logout,
+    accountId,
+    nearService,
+    connectionInProgress,
+  } = useAuthContext();
 
-  const ref = useRef(null);
+  const [showModal] = useModal(WalletSelectionModal, {
+    signIn: walletType => login(walletType),
+  });
 
   const closePopup = useCallback(() => {
     setOpen(false);
   }, [setOpen]);
 
-  function renderNearIcon() {
-    if (accountId) {
+  const switchWalletHandler = useCallback(
+    (wallet: WalletType) => async () => {
+      await login(wallet);
+      setOpen(false);
+    },
+    [login, setOpen]
+  );
+
+  const ref = useRef(null);
+
+  function render() {
+    if (!accountId) {
       return (
-        <GenericDropdown
-          isOpen={open}
-          onOpenUpdate={setOpen}
-          parent={
-            <div className={styles.accountButton}>
-              <NearIcon />
-              <span className={styles.accountId}>{accountId}</span>
-              <Icon
-                name="buttonArrowDown"
-                className={cn(styles.controlIcon, { [styles.open]: open })}
-              />
-            </div>
-          }
-          options={{
-            placement: 'bottom-end',
-            modifiers: [
-              {
-                name: 'offset',
-                options: {
-                  offset: [0, 24],
-                },
-              },
-            ],
-          }}
-        >
-          <div>
-            <div className={styles.dropdown}>
-              <div className={styles.name}>{accountId}</div>
-              <AccountPopupItem className={styles.auth} onClick={logout}>
-                Disconnect
-              </AccountPopupItem>
-            </div>
-            <AppFooter mobile className={styles.footer} onClick={closePopup} />
-          </div>
-        </GenericDropdown>
+        <WalletIcon
+          walletType={WalletType.NEAR}
+          isSelected={false}
+          showLoader={connectionInProgress}
+          onClick={showModal}
+        />
       );
     }
 
-    return <NearIcon onClick={login} />;
+    return (
+      <GenericDropdown
+        isOpen={open}
+        onOpenUpdate={setOpen}
+        parent={
+          <div
+            className={cn(styles.accountButton, {
+              [styles.disabled]: connectionInProgress,
+            })}
+          >
+            <WalletIcon
+              showLoader={connectionInProgress}
+              walletType={nearService?.getWalletType() ?? WalletType.NEAR}
+              isSelected={false}
+            />
+            <span className={styles.accountId}>{accountId}</span>
+            <Icon
+              name="buttonArrowDown"
+              className={cn(styles.controlIcon, { [styles.open]: open })}
+            />
+          </div>
+        }
+        options={{
+          placement: 'bottom-end',
+        }}
+      >
+        <div>
+          <div className={styles.dropdown}>
+            <MyAccountButton className={styles.menuButton} />
+
+            {nearService && (
+              <>
+                <div className={styles.delimiter} />
+                <div className={styles.chooseWalletCaption}>Choose wallet</div>
+                <WalletButton
+                  walletType={WalletType.NEAR}
+                  isSelected={nearService.getWalletType() === WalletType.NEAR}
+                  onClick={switchWalletHandler(WalletType.NEAR)}
+                  name="NEAR"
+                  type="web"
+                  url="wallet.near.org"
+                />
+                <WalletButton
+                  disabled={
+                    !(window.near !== undefined && window.near.isSender)
+                  }
+                  walletType={WalletType.SENDER}
+                  isSelected={nearService.getWalletType() === WalletType.SENDER}
+                  onClick={switchWalletHandler(WalletType.SENDER)}
+                  name="Sender"
+                  type="extension"
+                  url="senderwallet.io"
+                />
+
+                <div className={styles.delimiter} />
+              </>
+            )}
+            <DisconnectButton logout={logout} />
+          </div>
+          <AppFooter mobile className={styles.footer} onClick={closePopup} />
+        </div>
+      </GenericDropdown>
+    );
   }
 
   return (
-    <div className={styles.root} ref={ref}>
-      {renderNearIcon()}
+    <div
+      className={cn(styles.root, {
+        [styles.disabled]: connectionInProgress,
+      })}
+      ref={ref}
+    >
+      {render()}
     </div>
   );
 };

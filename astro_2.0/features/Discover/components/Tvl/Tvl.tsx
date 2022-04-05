@@ -11,8 +11,8 @@ import {
   TControlTab,
 } from 'astro_2.0/features/Discover/types';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
-
-import { daoStatsService } from 'services/DaoStatsService';
+import { useDaoStatsContext } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
+import { LIMIT } from 'services/DaoStatsService';
 
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import {
@@ -30,6 +30,7 @@ import styles from './Tvl.module.scss';
 export const Tvl: FC = () => {
   const isMounted = useMountedState();
   const { t } = useTranslation();
+  const { daoStatsService } = useDaoStatsContext();
   const [data, setData] = useState<TTvl | TvlDao | null>(null);
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
   const [leaderboardData, setLeaderboardData] = useState<
@@ -37,7 +38,8 @@ export const Tvl: FC = () => {
   >(null);
 
   const { query } = useQuery<{ dao: string }>();
-
+  const [offset, setOffset] = useState(0);
+  const [total, setTotal] = useState(0);
   const items = useMemo<TControlTab[]>(() => {
     if (query.dao) {
       const currentData = data as TvlDao;
@@ -47,9 +49,9 @@ export const Tvl: FC = () => {
           id: TvlTabs.NUMBER_OF_BOUNTIES,
           label: t('discover.numberOfBounties'),
           value: Number(
-            dFormatter(currentData?.bounties?.number?.count ?? 0)
+            dFormatter(currentData?.bounties?.number.count ?? 0)
           ).toLocaleString(),
-          trend: currentData?.bounties?.number?.growth ?? 0,
+          trend: currentData?.bounties?.number.growth ?? 0,
         },
         {
           id: TvlTabs.VL_OF_BOUNTIES,
@@ -57,7 +59,7 @@ export const Tvl: FC = () => {
           value: Number(
             dFormatter(currentData?.bounties?.vl?.count ?? 0)
           ).toLocaleString(),
-          trend: currentData?.bounties?.vl?.growth ?? 0,
+          trend: currentData?.bounties?.vl.growth ?? 0,
         },
         {
           id: TvlTabs.TVL,
@@ -89,7 +91,7 @@ export const Tvl: FC = () => {
       },
     ];
   }, [data, query.dao, t]);
-  const [activeView, setActiveView] = useState<string>(items[0].id);
+  const [activeView, setActiveView] = useState(items[0].id);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -99,6 +101,8 @@ export const Tvl: FC = () => {
 
       setChartData(null);
       setLeaderboardData(null);
+      setOffset(0);
+      setTotal(0);
       setActiveView(id);
     },
     [isMounted]
@@ -114,11 +118,10 @@ export const Tvl: FC = () => {
         setData(response.data);
       }
     })();
-  }, [query.dao, isMounted]);
+  }, [query.dao, isMounted, daoStatsService]);
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
-    let leaders;
 
     if (query.dao) {
       const params = {
@@ -145,15 +148,11 @@ export const Tvl: FC = () => {
       switch (activeView) {
         case TvlTabs.VL_IN_BOUNTIES: {
           chart = await daoStatsService.getTvlBountiesAndGrantsVl(CONTRACT);
-          leaders = await daoStatsService.getTvlBountiesAndGrantsVlLeaderboard(
-            CONTRACT
-          );
           break;
         }
         case TvlTabs.PLATFORM_TVL:
         default: {
           chart = await daoStatsService.getTvlHistory(CONTRACT);
-          leaders = await daoStatsService.getTvlLeaderboard(CONTRACT);
           break;
         }
       }
@@ -167,27 +166,62 @@ export const Tvl: FC = () => {
         }))
       );
     }
+  }, [activeView, query.dao, isMounted]);
+
+  const [, getLeaderboardData] = useAsyncFn(async () => {
+    if (query.dao) {
+      return;
+    }
+
+    let leaders;
+
+    switch (activeView) {
+      case TvlTabs.VL_IN_BOUNTIES: {
+        leaders = await daoStatsService.getTvlBountiesAndGrantsVlLeaderboard({
+          ...CONTRACT,
+          offset,
+        });
+        break;
+      }
+      case TvlTabs.PLATFORM_TVL:
+      default: {
+        leaders = await daoStatsService.getTvlLeaderboard({
+          ...CONTRACT,
+          offset,
+        });
+        break;
+      }
+    }
 
     if (leaders?.data?.metrics && isMounted()) {
       const newData =
-        leaders.data.metrics.map(metric => {
-          return {
-            ...metric,
-            overview:
-              metric.overview?.map(({ timestamp, count }) => ({
-                x: new Date(timestamp),
-                y: count,
-              })) ?? [],
-          };
-        }) ?? null;
+        leaders.data.metrics.map(metric => ({
+          ...metric,
+          overview:
+            metric.overview?.map(({ timestamp, count }) => ({
+              x: new Date(timestamp),
+              y: count,
+            })) ?? [],
+        })) ?? null;
 
-      setLeaderboardData(newData);
+      setTotal(leaders.data.total);
+      setLeaderboardData(
+        leaderboardData ? [...leaderboardData, ...newData] : newData
+      );
     }
-  }, [activeView, query.dao, isMounted]);
+  }, [activeView, query.dao, isMounted, offset]);
 
   useEffect(() => {
     getChartData();
   }, [getChartData]);
+
+  useEffect(() => {
+    getLeaderboardData();
+  }, [getLeaderboardData]);
+
+  const nextLeaderboardItems = () => {
+    setOffset(offset + LIMIT);
+  };
 
   return (
     <div className={styles.root}>
@@ -205,6 +239,8 @@ export const Tvl: FC = () => {
           activeView={activeView}
         />
         <DaosTopList
+          total={total}
+          next={nextLeaderboardItems}
           data={leaderboardData}
           valueLabel={getValueLabel(DaoStatsTopics.TVL, activeView)}
         />

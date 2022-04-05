@@ -4,6 +4,7 @@ import React, {
   useCallback,
   cloneElement,
   isValidElement,
+  ReactNode,
 } from 'react';
 import { UrlObject } from 'url';
 import cn from 'classnames';
@@ -30,6 +31,7 @@ interface NestedDaoPageWrapperProps {
     label: string;
   }[];
   className?: string;
+  header?: (onCreateProposal: () => void) => ReactNode;
 }
 
 export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
@@ -39,6 +41,7 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
     breadcrumbs,
     children,
     className,
+    header,
   } = props;
 
   const { tokens } = useDaoCustomTokens();
@@ -70,48 +73,61 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
     });
   }
 
-  const onCreateProposal = useCallback(() => {
-    toggleCreateProposal({ proposalVariant: defaultProposalType });
-  }, [toggleCreateProposal, defaultProposalType]);
+  const onCreateProposal = useCallback(
+    (
+      initialProposalVariant?: ProposalVariant,
+      initialValues?: Record<string, unknown>
+    ) => {
+      toggleCreateProposal({
+        proposalVariant: initialProposalVariant || defaultProposalType,
+        initialValues,
+      });
+    },
+    [toggleCreateProposal, defaultProposalType]
+  );
 
   return (
-    <div className={cn(styles.root, className)}>
-      {renderBreadcrumbs()}
-      <DaoDetailsMinimized
-        dao={dao}
-        className={styles.dao}
-        userPermissions={userPermissions}
-        onCreateProposalClick={onCreateProposal}
-      />
-      <CreateProposal
-        className={styles.createProposal}
-        dao={dao}
-        key={Object.keys(tokens).length}
-        daoTokens={tokens}
-        userPermissions={userPermissions}
-        proposalVariant={defaultProposalType}
-        showFlag={false}
-        onClose={toggleCreateProposal}
-      />
-      {showLowBalanceWarning && (
-        <DaoWarning
-          content={
-            <>
-              <div className={styles.title}>Error</div>
-              <div className={styles.text}>
-                Your available balance is too low to perform any actions on your
-                account. Please send Near to your account and then try again.
-              </div>
-            </>
-          }
+    <>
+      {header && header(onCreateProposal)}
+      <div className={cn(styles.root, className)}>
+        {renderBreadcrumbs()}
+        <DaoDetailsMinimized
+          dao={dao}
+          className={styles.dao}
+          userPermissions={userPermissions}
+          onCreateProposalClick={onCreateProposal}
+        />
+        <CreateProposal
+          className={styles.createProposal}
+          dao={dao}
+          key={Object.keys(tokens).length}
+          daoTokens={tokens}
+          userPermissions={userPermissions}
+          proposalVariant={defaultProposalType}
+          showFlag={false}
+          onClose={() => toggleCreateProposal()}
+        />
+        {showLowBalanceWarning && (
+          <DaoWarning
+            content={
+              <>
+                <div className={styles.title}>Error</div>
+                <div className={styles.text}>
+                  Your available balance is too low to perform any actions on
+                  your account. Please send Near to your account and then try
+                  again.
+                </div>
+              </>
+            }
+            className={styles.warningWrapper}
+          />
+        )}
+        <PolicyAffectedWarning
+          data={policyAffectsProposals}
           className={styles.warningWrapper}
         />
-      )}
-      <PolicyAffectedWarning
-        data={policyAffectsProposals}
-        className={styles.warningWrapper}
-      />
-      {renderChildren()}
-    </div>
+        {renderChildren()}
+      </div>
+    </>
   );
 };

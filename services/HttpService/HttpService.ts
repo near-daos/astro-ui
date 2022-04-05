@@ -57,7 +57,7 @@ export class HttpService {
 
   constructor(config?: AxiosRequestConfig) {
     this.client = axios.create({
-      baseURL: appConfig.apiUrl,
+      baseURL: appConfig.API_URL,
       ...config,
     });
 
@@ -314,6 +314,63 @@ export class HttpService {
               .query();
 
             request.url = `/proposals?${queryString.queryString}`;
+          }
+          break;
+        case API_QUERIES.GET_JOINING_DAO_PROPOSALS:
+          {
+            const { daoId, accountId } =
+              requestCustom.queryRequest?.params || {};
+
+            const queryString = RequestQueryBuilder.create();
+
+            const search: SFields | SConditionAND = {
+              $and: [
+                {
+                  daoId: {
+                    $eq: daoId,
+                  },
+                },
+              ],
+            };
+
+            search.$and?.push({
+              status: {
+                $eq: 'InProgress',
+              },
+              votePeriodEnd: {
+                $gt: Date.now() * 1000000,
+              },
+            });
+
+            search.$and?.push({
+              kind: {
+                $cont: ProposalType.AddMemberToRole,
+              },
+            });
+
+            search.$and?.push({
+              kind: {
+                $cont: ProposalType.AddMemberToRole,
+              },
+            });
+            search.$and?.push({
+              kind: {
+                $cont: accountId,
+              },
+            });
+
+            queryString.search(search);
+
+            queryString
+              .setLimit(1000)
+              .setOffset(0)
+              .sortBy({
+                field: 'createdAt',
+                order: 'DESC',
+              })
+              .query();
+
+            request.url = `/proposals/account-proposals/${accountId}?${queryString.queryString}`;
           }
           break;
         case API_QUERIES.GET_FILTERED_PROPOSALS:

@@ -128,6 +128,7 @@ export const Chart: React.FC<ChartProps> = ({
 
         return (
           <YAxis
+            key={filterLine.lineAxis}
             yAxisId={filterLine.lineAxis}
             type="number"
             stroke={filterLine.color}

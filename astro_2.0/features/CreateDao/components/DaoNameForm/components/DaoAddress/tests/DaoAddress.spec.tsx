@@ -2,9 +2,11 @@ import { render } from 'jest/testUtils';
 
 import { DaoAddress } from 'astro_2.0/features/CreateDao/components/DaoNameForm/components/DaoAddress';
 
-describe('DaoAddress', () => {
-  jest.useFakeTimers();
+jest.mock('astro_2.0/features/CreateDao/helpers', () => ({
+  validateDaoAddress: jest.fn().mockResolvedValue(false),
+}));
 
+describe('DaoAddress', () => {
   it('Should render display name', () => {
     const { getByText } = render(
       <DaoAddress displayName="hello world" onChange={() => 0} />
@@ -13,13 +15,13 @@ describe('DaoAddress', () => {
     expect(getByText('hello-world', { exact: false })).toBeTruthy();
   });
 
-  it('Should call onChange callback', () => {
+  it('Should call onChange callback', async () => {
     const onChange = jest.fn();
 
     render(<DaoAddress displayName="hello world" onChange={onChange} />);
 
-    jest.runAllTimers();
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-    expect(onChange).toBeCalledWith({ target: { value: 'hello-world' } });
+    expect(onChange).toBeCalledWith('hello-world');
   });
 });

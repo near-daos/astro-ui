@@ -2,20 +2,27 @@
 @import 'styles/typography';
 
 .root {
-  margin-top: 72px;
   width: 100%;
 }
 
 .header {
+  align-items: center;
+  display: flex;
+  grid-area: header;
+  margin-bottom: 24px;
+
   h2 {
     @include font(1.75em, 38px, 700);
     font-family: var(--font-family-primary);
-    margin-bottom: 0;
+    margin: 0;
   }
+  .optional {
+    color: var(--color-neutral-50);
+  }
+}
 
-  p {
-    @extend %body2;
-  }
+.description {
+  @extend %body2;
 }
 
 .links {

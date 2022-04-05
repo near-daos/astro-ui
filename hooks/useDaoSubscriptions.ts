@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useAsyncFn, useMount } from 'react-use';
-import { SputnikHttpService, SputnikNearService } from 'services/sputnik';
+import { SputnikHttpService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { DAO, DaoSubscription } from 'types/dao';
 import { useAuthContext } from 'context/AuthContext';
@@ -27,7 +27,7 @@ export function useDaoSubscriptions(): {
   handleUnfollow: (id: string) => void;
   isLoading: boolean;
 } {
-  const { accountId } = useAuthContext();
+  const { accountId, nearService } = useAuthContext();
   const [subscriptions, setSubscriptions] = useState<Record<
     string,
     { subscriptionId: string; dao: DAO }
@@ -51,28 +51,31 @@ export function useDaoSubscriptions(): {
     }
   }, [accountId]);
 
-  const [{ loading }, handleFollow] = useAsyncFn(async daoId => {
-    const publicKey = await SputnikNearService.getPublicKey();
-    const signature = await SputnikNearService.getSignature();
+  const [{ loading }, handleFollow] = useAsyncFn(
+    async daoId => {
+      const publicKey = await nearService?.getPublicKey();
+      const signature = await nearService?.getSignature();
 
-    if (publicKey && signature && accountId) {
-      const result = await SputnikHttpService.updateAccountSubscription({
-        accountId,
-        daoId,
-        publicKey,
-        signature,
-      });
+      if (publicKey && signature && accountId) {
+        const result = await SputnikHttpService.updateAccountSubscription({
+          accountId,
+          daoId,
+          publicKey,
+          signature,
+        });
 
-      if (result) {
-        getSubscriptions();
+        if (result) {
+          getSubscriptions();
+        }
       }
-    }
-  }, []);
+    },
+    [nearService]
+  );
 
   const [{ loading: loadingUnfollow }, handleUnfollow] = useAsyncFn(
     async subscriptionId => {
-      const publicKey = await SputnikNearService.getPublicKey();
-      const signature = await SputnikNearService.getSignature();
+      const publicKey = await nearService?.getPublicKey();
+      const signature = await nearService?.getSignature();
 
       if (publicKey && signature && accountId) {
         await SputnikHttpService.deleteAccountSubscription(subscriptionId, {
@@ -84,7 +87,7 @@ export function useDaoSubscriptions(): {
         await getSubscriptions();
       }
     },
-    [accountId, getSubscriptions]
+    [accountId, getSubscriptions, nearService]
   );
 
   useMount(() => {

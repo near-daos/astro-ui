@@ -1,0 +1,159 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-gap: 24px;
+  grid-template-areas:
+    'header'
+    'description'
+    'letterHead'
+    '.'
+    'preview';
+  grid-template-columns: 1fr;
+  width: 100%;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'header header'
+      'description description'
+      'letterHead letterHead'
+      '. preview';
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  grid-area: header;
+  margin-bottom: 24px;
+
+  h2 {
+    @include font(1.75em, 38px, 700);
+    font-family: var(--font-family-primary);
+    margin: 0;
+  }
+
+  p {
+    @extend %body2;
+  }
+}
+
+.description {
+  @extend %body2;
+  grid-area: description;
+  margin: 0;
+}
+
+.inputWrapper {
+  max-width: 500px;
+
+  .inputEl {
+    background-color: transparent;
+  }
+}
+
+.letterHeadSection {
+  background: var(--color-primary-50);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  grid-area: letterHead;
+  height: 134px;
+  margin: 0 -24px;
+  position: relative;
+
+  @include tablet-landscape {
+    border-radius: 8px;
+    margin: 0;
+  }
+
+  .joinDao {
+    position: relative;
+    right: 0;
+  }
+}
+
+.letterHeadSection .logo {
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, 60px);
+
+  @include tablet-landscape {
+    left: 0;
+    transform: translate(36px, 60px);
+  }
+}
+
+.preview {
+  display: flex;
+  grid-area: preview;
+  justify-content: center;
+  margin-top: 32px;
+  width: 100%;
+
+  @include tablet-landscape {
+    justify-content: flex-end;
+    margin-top: 0;
+  }
+}
+
+.previewButton {
+  text-transform: capitalize;
+}
+
+.uploader {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-neutral-80);
+  border-radius: 50%;
+  height: 30px;
+  overflow: hidden;
+  width: 30px;
+
+  label {
+    @include centralize;
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.uploadControl {
+  cursor: pointer;
+}
+
+.uploadIcon {
+  color: var(--color-neutral-60);
+  width: 16px;
+
+  &.error {
+    color: var(--color-error-50);
+  }
+}
+
+.errorInfo {
+  background-color: var(--color-error-50);
+  border-radius: 50%;
+  color: var(--color-black);
+  position: absolute;
+  right: -8px;
+  top: -4px;
+  width: 16px;
+}
+
+.tooltip {
+  min-width: 200px;
+}
+
+.coverEdit {
+  bottom: 12px;
+  position: absolute;
+  right: 12px;
+}
+
+.logoEdit {
+  bottom: -64px;
+  left: 140px;
+  position: absolute;
+}

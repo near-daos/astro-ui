@@ -1,0 +1,66 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-template-areas:
+    'header'
+    'progress'
+    'content';
+  grid-template-columns: 1fr;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'header header'
+      'progress content';
+    grid-template-columns: 220px 1fr;
+  }
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  grid-area: header;
+  justify-content: space-between;
+}
+
+.headerControls {
+  align-items: center;
+  display: flex;
+}
+
+.progress {
+  grid-area: progress;
+  width: 100%;
+}
+
+.content {
+  grid-area: content;
+  padding: 24px 0 0;
+
+  @include tablet-landscape {
+    @include card-shadow;
+    padding: 24px;
+  }
+}
+
+.customEdit {
+  display: none;
+  margin-right: 24px;
+
+  @include tablet-landscape {
+    display: block;
+  }
+}
+
+.resetButton {
+  color: var(--color-error-70);
+  padding: 0;
+  text-transform: capitalize;
+  transition: text-shadow 0.2s ease-out;
+
+  &:hover {
+    color: var(--color-error-80);
+    text-shadow: 0 0 8px var(--color-error-70);
+  }
+}

@@ -19,7 +19,7 @@ interface DaoHomeProps {
 }
 
 const DAOHome: NextPage<DaoHomeProps> = ({ daoContext }) => {
-  const { dao } = daoContext;
+  const { dao, userPermissions } = daoContext;
   const breadcrumbsConfig = useGetBreadcrumbsConfig(dao.id, dao.displayName);
 
   const breadcrumbs = useMemo(() => {
@@ -28,11 +28,20 @@ const DAOHome: NextPage<DaoHomeProps> = ({ daoContext }) => {
 
   return (
     <>
-      <DaoDashboardHeader dao={dao} className={styles.header} />
       <NestedDaoPageWrapper
         daoContext={daoContext}
         breadcrumbs={breadcrumbs}
         className={styles.pageWrapper}
+        header={onCreateProposal => {
+          return (
+            <DaoDashboardHeader
+              userPermissions={userPermissions}
+              dao={dao}
+              className={styles.header}
+              onCreateProposal={onCreateProposal}
+            />
+          );
+        }}
       >
         <DaoDashboard
           key={`dashboard_${dao.id}`}

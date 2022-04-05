@@ -17,7 +17,9 @@ const useToggleable = <P,>(FC: ComponentType<P>): UseToggleableResult<P> => {
   const refProps = useRef<RefProps<P>>();
 
   const toggle = useCallback((props?: Partial<P>) => {
-    if (!refProps.current || !refToggle.current) return;
+    if (!refProps.current || !refToggle.current) {
+      return;
+    }
 
     const [visible, setVisible] = refToggle.current;
     const [, setProps] = refProps.current;

@@ -54,7 +54,7 @@ export const AppFooter: FC<AppFooterProps> = ({
           <div className={styles.version}>
             <a
               className={styles.devLink}
-              href="https://airtable.com/shr4ZmQzmTE5cKZm3"
+              href="https://github.com/near-daos/astro-ui/issues"
               target="_blank"
               rel="noreferrer noopener"
             >

@@ -25,7 +25,6 @@ import { ProposalActions } from 'features/proposal/components/ProposalActions';
 import { ExternalLink } from 'components/ExternalLink';
 import { Icon, IconName } from 'components/Icon';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
-import { SputnikNearService } from 'services/sputnik';
 import { getProposalVariantLabel } from 'astro_2.0/features/ViewProposal/helpers';
 import { ExplorerLink } from 'components/ExplorerLink';
 import { AmountBalanceCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/AmountBalanceCard';
@@ -175,25 +174,25 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   toggleInfoPanel,
   commentsCount,
 }) => {
-  const { accountId } = useAuthContext();
+  const { accountId, nearService } = useAuthContext();
   const { t } = useTranslation();
   const router = useRouter();
 
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
     async (vote: VoteAction, gas?: string | number) => {
-      await SputnikNearService.vote(daoId, proposalId, vote, gas);
+      await nearService?.vote(daoId, proposalId, vote, gas);
       await router.reload();
     },
-    [daoId, proposalId, router]
+    [daoId, proposalId, router, nearService]
   );
 
   const [
     { loading: finalizeLoading },
     finalizeClickHandler,
   ] = useAsyncFn(async () => {
-    await SputnikNearService.finalize(daoId, proposalId);
+    await nearService?.finalize(daoId, proposalId);
     await router.reload();
-  }, [daoId, proposalId, router]);
+  }, [daoId, proposalId, router, nearService]);
 
   const handleCardClick = useCallback(() => {
     if (id && router.pathname !== SINGLE_PROPOSAL_PAGE_URL) {
@@ -216,8 +215,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const userCanFinalize =
     variant !== ProposalVariant.ProposeDoneBounty ||
     (variant === ProposalVariant.ProposeDoneBounty && proposer === accountId);
+
   const restrictProposalRemove = variant === ProposalVariant.ProposeDoneBounty;
-  
+
   const showFinalize =
     permissions.canApprove &&
     permissions.canReject &&

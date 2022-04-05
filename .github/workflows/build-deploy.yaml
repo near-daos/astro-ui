@@ -65,9 +65,6 @@ jobs:
         cat ".github/env.common" >>$GITHUB_ENV
         cat ".github/env.${{ needs.get-environment.outputs.environment }}" >>$GITHUB_ENV
 
-    - name: Build
-      uses: ./.github/actions/build
-
     - name: Docker Build Publish
       uses: ./.github/actions/docker-build-publish
 
@@ -86,8 +83,23 @@ jobs:
             --set environment.near_env=${NEAR_ENV} \
             --set environment.stats_api_url=${STATS_API_URL} \
             --set environment.next_public_launchdarkly_id=${NEXT_PUBLIC_LAUNCHDARKLY_ID} \
+            --set environment.app_domain=${APP_DOMAIN} \
             --set ingress.host=${K8S_INGRESS_HOST}
 
+  build-deploy-storybook:
+    runs-on: ubuntu-latest
+    if: needs.get-environment.outputs.environment == 'develop'
+    name: Build Deploy Storybook
+    needs:
+    - get-environment
+    environment:
+      name: ${{ needs.get-environment.outputs.environment }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set Environment
+      run: |
+        echo DOCKER_ENV_TAG=${{ needs.get-environment.outputs.environment }}-$GITHUB_SHA >> $GITHUB_ENV
+        cat ".github/env.common" >>$GITHUB_ENV
+        cat ".github/env.${{ needs.get-environment.outputs.environment }}" >>$GITHUB_ENV
     - name: Build Deploy Storybook
-      if: github.ref == 'refs/heads/develop'
       uses: ./.github/actions/build-deploy-storybook

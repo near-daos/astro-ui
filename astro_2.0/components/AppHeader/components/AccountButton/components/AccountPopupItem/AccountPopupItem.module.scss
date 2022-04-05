@@ -5,12 +5,19 @@
   color: var(--color-brand-black);
 
   display: flex;
-  height: 40px;
-  padding: 0 8px;
-
+  //height: 40px;
   transition: 0.2s;
 
   &:hover {
     background-color: var(--color-neutral-20);
+  }
+
+  .icon {
+    height: 34px;
+    width: 34px;
+  }
+
+  .content {
+    margin-left: 20px;
   }
 }

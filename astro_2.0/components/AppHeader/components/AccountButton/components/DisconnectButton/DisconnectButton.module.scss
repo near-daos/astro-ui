@@ -1,0 +1,24 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.disconnectText {
+  @extend %subtitle3;
+}
+
+.disconnectIconColor {
+  color: var(--color-brand-coral-red);
+}
+
+.icon {
+  height: 36px;
+  width: 36px;
+}
+
+.row {
+  cursor: pointer;
+}
+
+.menuButton {
+  padding: 8px;
+}

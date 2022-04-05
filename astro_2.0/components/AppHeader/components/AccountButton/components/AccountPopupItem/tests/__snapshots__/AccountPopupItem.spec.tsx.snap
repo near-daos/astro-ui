@@ -7,7 +7,16 @@ exports[`account popup item Should render component 1`] = `
     role="button"
     tabindex="0"
   >
-    Hey
+    <div>
+      <svg>
+        <use
+          href="/_next/undefined"
+        />
+      </svg>
+    </div>
+    <div>
+      test
+    </div>
   </div>
 </div>
 `;

@@ -11,8 +11,8 @@ import {
   TControlTab,
 } from 'astro_2.0/features/Discover/types';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
-
-import { daoStatsService } from 'services/DaoStatsService';
+import { useDaoStatsContext } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
+import { LIMIT } from 'services/DaoStatsService';
 
 import {
   CONTRACT,
@@ -31,11 +31,14 @@ export const GeneralInfo: FC = () => {
   const isMounted = useMountedState();
   const { t } = useTranslation();
   const [interval, setInterval] = useState(Interval.WEEK);
+  const { daoStatsService } = useDaoStatsContext();
   const [generalData, setGeneralData] = useState<General | null>(null);
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
   const [leaderboardData, setLeaderboardData] = useState<
     LeaderboardData[] | null
   >(null);
+  const [offset, setOffset] = useState(0);
+  const [total, setTotal] = useState(0);
 
   const { query } = useQuery<{ dao: string }>();
 
@@ -60,7 +63,7 @@ export const GeneralInfo: FC = () => {
       },
     ];
   }, [generalData?.activity.count, generalData?.activity.growth, query.dao, t]);
-  const [activeView, setActiveView] = useState<string>(items[0].id);
+  const [activeView, setActiveView] = useState(items[0].id);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -85,11 +88,10 @@ export const GeneralInfo: FC = () => {
         setGeneralData(general.data);
       }
     })();
-  }, [isMounted, query.dao]);
+  }, [daoStatsService, isMounted, query.dao]);
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let data;
-    let leadersData;
 
     if (query.dao) {
       const params = {
@@ -115,9 +117,6 @@ export const GeneralInfo: FC = () => {
             ...CONTRACT,
             interval,
           });
-          leadersData = await daoStatsService.getGeneralActiveLeaderboard(
-            CONTRACT
-          );
           break;
         }
       }
@@ -131,27 +130,56 @@ export const GeneralInfo: FC = () => {
         }))
       );
     }
+  }, [activeView, query.dao, isMounted]);
+
+  const [, getLeaderboardData] = useAsyncFn(async () => {
+    if (query.dao) {
+      return;
+    }
+
+    let leadersData;
+
+    switch (activeView) {
+      case GeneralInfoTabs.ACTIVE_DAOS:
+      default: {
+        leadersData = await daoStatsService.getGeneralActiveLeaderboard({
+          ...CONTRACT,
+          limit: LIMIT,
+          offset,
+        });
+        break;
+      }
+    }
 
     if (leadersData?.data?.metrics && isMounted()) {
       const newData =
-        leadersData.data.metrics.map(metric => {
-          return {
-            ...metric,
-            overview:
-              metric.overview?.map(({ timestamp, count }) => ({
-                x: new Date(timestamp),
-                y: count,
-              })) ?? [],
-          };
-        }) ?? null;
+        leadersData.data.metrics.map(metric => ({
+          ...metric,
+          overview:
+            metric.overview?.map(({ timestamp, count }) => ({
+              x: new Date(timestamp),
+              y: count,
+            })) ?? [],
+        })) ?? null;
 
-      setLeaderboardData(newData);
+      setTotal(leadersData.data.total);
+      setLeaderboardData(
+        leaderboardData ? [...leaderboardData, ...newData] : newData
+      );
     }
-  }, [interval, activeView, query.dao, isMounted]);
+  }, [interval, activeView, query.dao, isMounted, offset]);
 
   useEffect(() => {
     getChartData();
   }, [getChartData]);
+
+  useEffect(() => {
+    getLeaderboardData();
+  }, [getLeaderboardData]);
+
+  const nextLeaderboardItems = () => {
+    setOffset(offset + LIMIT);
+  };
 
   return (
     <>
@@ -175,6 +203,8 @@ export const GeneralInfo: FC = () => {
           />
         ) : null}
         <DaosTopList
+          total={total}
+          next={nextLeaderboardItems}
           data={leaderboardData}
           valueLabel={getValueLabel(DaoStatsTopics.GENERAL_INFO, activeView)}
         />
