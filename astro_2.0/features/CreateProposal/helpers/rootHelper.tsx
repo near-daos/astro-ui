@@ -596,7 +596,22 @@ export function getValidationSchema(
         }
         case FunctionCallType.TransferNFTfromMintbase: {
           return yup.object().shape({
-            tokenKey: yup.string().required('Required'),
+            tokenKey: yup
+              .string()
+              .test(
+                'invalidFormat',
+                'It must be as Token ID:Token store format',
+                value => {
+                  if (!value) {
+                    return false;
+                  }
+
+                  const [key, store] = value.split(':');
+
+                  return !(!key || !store);
+                }
+              )
+              .required('Required'),
             target: yup
               .string()
               .test(
