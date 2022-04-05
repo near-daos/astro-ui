@@ -194,15 +194,23 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             resp = await nearService?.addProposal(newProposal);
           }
 
-          const newProposalId = JSON.parse(
-            Buffer.from(
-              // todo - Oleg: fix this!
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              last(resp).status.SuccessValue as string,
-              'base64'
-            ).toString('ascii')
-          );
+          const newProposalId = resp
+            ? JSON.parse(
+                Buffer.from(
+                  // todo - Oleg: fix this!
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  last(resp)?.status?.SuccessValue as string,
+                  'base64'
+                ).toString('ascii')
+              )
+            : null;
+
+          if (newProposalId === null) {
+            onClose();
+
+            return;
+          }
 
           await router.push({
             pathname: SINGLE_PROPOSAL_PAGE_URL,
@@ -239,6 +247,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
       router,
       onCreate,
       nearService,
+      onClose,
     ]
   );
 

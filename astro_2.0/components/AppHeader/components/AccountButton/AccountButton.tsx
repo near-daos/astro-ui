@@ -51,6 +51,7 @@ export const AccountButton: FC = () => {
         <WalletIcon
           walletType={WalletType.NEAR}
           isSelected={false}
+          showLoader={connectionInProgress}
           onClick={showModal}
         />
       );

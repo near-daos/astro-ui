@@ -404,18 +404,6 @@ export function validateUserAccount(
     return false;
   }
 
-  if (
-    navigator &&
-    navigator.userAgent.indexOf('Safari') !== -1 &&
-    navigator.userAgent.indexOf('Chrome') === -1
-  ) {
-    const result = /^(([a-z\d]+[-_])*[a-z\d]+\.)*([a-z\d]+[-_])*[a-z\d]+$/.test(
-      `${value}`
-    );
-
-    return Promise.resolve(result);
-  }
-
   return nearService?.nearAccountExist(value || '');
 }
 
