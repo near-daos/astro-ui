@@ -144,7 +144,7 @@ export async function getTransferMintbaseNFTProposal(
   const [key, store] = tokenKey.split(':');
 
   const json = JSON.stringify({
-    token_ids: [[key, store]],
+    token_ids: [[key, target]],
   });
   const args = Buffer.from(json).toString('base64');
 
@@ -153,7 +153,7 @@ export async function getTransferMintbaseNFTProposal(
     description: proposalDescription,
     kind: 'FunctionCall',
     data: {
-      receiver_id: target,
+      receiver_id: store,
       actions: [
         {
           method_name: 'nft_batch_transfer',
