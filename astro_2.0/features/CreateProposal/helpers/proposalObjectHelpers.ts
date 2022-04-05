@@ -184,7 +184,7 @@ export async function getBuyNftFromParasProposal(
   data: BuyNftFromParasInput,
   tokens: Tokens
 ): Promise<CreateProposalParams> {
-  const { tokenKey, target, details, externalUrl, actionsGas } = data;
+  const { tokenKey, target, details, externalUrl, actionsGas, deposit } = data;
 
   const token = Object.values(tokens).find(item => item.symbol === data.token);
 
@@ -210,7 +210,7 @@ export async function getBuyNftFromParasProposal(
         {
           method_name: 'nft_buy',
           args,
-          deposit: new Decimal(0).toFixed(), // 0.01128
+          deposit: new Decimal(deposit).mul(10 ** token.decimals).toFixed(),
           gas: formatGasValue(actionsGas).toString(),
         },
       ],
