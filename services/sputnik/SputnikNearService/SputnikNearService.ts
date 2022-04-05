@@ -243,7 +243,7 @@ export class SputnikNearService implements WalletService, DaoService {
       }
     }
 
-    const trx = storageDepositTransactionAction
+    const trx = tokenId
       ? [storageDepositTransactionAction, claimAction]
       : [claimAction];
 
