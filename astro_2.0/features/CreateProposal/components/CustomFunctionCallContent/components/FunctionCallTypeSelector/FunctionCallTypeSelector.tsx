@@ -37,7 +37,7 @@ export const FunctionCallTypeSelector: FC = () => {
             group: 'Templates',
           },
           {
-            label: 'Transfer Mintbase NFT',
+            label: 'Transfer NFT from DAO',
             value: FunctionCallType.TransferNFTfromMintbase,
             group: 'Templates',
           },
