@@ -180,6 +180,30 @@ class SputnikHttpServiceClass {
     }
   }
 
+  public async getProposalsByProposer(
+    params: ProposalsListParams
+  ): Promise<PaginationResponse<string[]> | null> {
+    try {
+      const { data } = await this.httpService.get<
+        Promise<PaginationResponse<string[]> | null>
+      >('/proposals', {
+        responseMapper: {
+          name: API_MAPPERS.MAP_PROPOSAL_TO_PROPOSER,
+        },
+        queryRequest: {
+          name: API_QUERIES.GET_USER_PROPOSALS_BY_PROPOSER,
+          params,
+        },
+      });
+
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+  }
+
   public async getUserProposals(accountId: string): Promise<ProposalDTO[]> {
     try {
       const response = await this.httpService.get<GetProposalsResponse>(

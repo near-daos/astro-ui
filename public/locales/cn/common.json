@@ -46,7 +46,11 @@
   "youFollowed": "You Followed",
   "confirmUnsubscribe": "Are you sure you want to unsubscribe from",
   "depositToDao": "Deposit to DAO",
-
+  "minimumSearchCharacters": "Please enter at least 3 characters to search",
+  "searchBountyPlaceholder": "Search Bounty Name",
+  "all": "All",
+  "selectedProposals": "Selected {{length}} proposals",
+  "filterByProposer": "Filter by proposer",
   "bountiesPage": {
     "successClaimBountyNotification": "The blockchain transactions might take some time to perform, please visit the page in few seconds"
   },

@@ -9,6 +9,7 @@ import { DaosParams } from './dao';
 export type ProposalsQueries = {
   status?: ProposalsFeedStatuses;
   category?: ProposalCategories;
+  proposers?: string;
 };
 
 export type ActiveProposalsParams = {

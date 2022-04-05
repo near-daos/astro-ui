@@ -4,10 +4,10 @@ import isString from 'lodash/isString';
 import { useAsyncFn, useMountedState } from 'react-use';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'next-i18next';
+import { Trans, useTranslation } from 'next-i18next';
 
 // Types
-import { DAO } from 'types/dao';
+import { DAO, DaoFeedItem } from 'types/dao';
 import { PaginationResponse } from 'types/api';
 import { ProposalsQueries } from 'services/sputnik/types/proposals';
 import {
@@ -25,8 +25,10 @@ import { Feed as FeedList } from 'astro_2.0/components/Feed';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { HeaderWithFilter } from 'astro_2.0/features/dao/HeaderWithFilter';
 import { ProposalFilter } from 'astro_2.0/features/Proposals/components/ProposalFilter';
-import { SideFilter } from 'astro_2.0/components/SideFilter';
+import { ListItem, SideFilter } from 'astro_2.0/components/SideFilter';
 import { Loader } from 'components/loader';
+import { SearchInput } from 'astro_2.0/components/SearchInput';
+import { Chip } from 'astro_2.0/components/Chip';
 
 // Hooks
 import { useAuthContext } from 'context/AuthContext';
@@ -40,9 +42,9 @@ import { SputnikHttpService } from 'services/sputnik';
 // Constants
 import { FEED_CATEGORIES } from 'constants/proposals';
 
-import styles from './Feed.module.scss';
+import styles from './FeedProposals.module.scss';
 
-interface FeedProps {
+interface FeedProposalsProps {
   dao?: DAO;
   showFlag?: boolean;
   className?: string;
@@ -53,7 +55,7 @@ interface FeedProps {
   initialProposalsStatusFilterValue: ProposalsFeedStatuses;
 }
 
-export const Feed = ({
+export const FeedProposals = ({
   dao,
   title,
   category,
@@ -62,7 +64,8 @@ export const Feed = ({
   headerClassName,
   initialProposals,
   initialProposalsStatusFilterValue,
-}: FeedProps): JSX.Element => {
+}: FeedProposalsProps): JSX.Element => {
+  const [chips, setChips] = useState<string[]>([]);
   const neighbourRef = useRef(null);
   const { query, replace, pathname } = useRouter();
   const { tokens: allTokens } = useAllCustomTokens();
@@ -84,23 +87,43 @@ export const Feed = ({
 
   const [loading, setLoading] = useState(false);
 
-  const statusFilterOptions = useMemo(
-    () => getStatusFilterOptions(isMyFeed, t),
-    [isMyFeed, t]
-  );
+  const statusFilterOptions = useMemo(() => {
+    const statuses = getStatusFilterOptions(isMyFeed, t);
 
-  const feedCategoriesOptions = useMemo(
-    () =>
-      FEED_CATEGORIES.map(item => ({
-        ...item,
-        label: t(item.label.toLowerCase()),
-      })),
-    [t]
+    statuses.shift();
+
+    return statuses;
+  }, [isMyFeed, t]);
+
+  const feedCategoriesOptions = useMemo(() => {
+    const categories = FEED_CATEGORIES.map(item => ({
+      ...item,
+      label: t(item.label.toLowerCase()),
+    }));
+
+    categories.unshift({ label: t('all'), value: ProposalCategories.All });
+
+    return categories;
+  }, [t]);
+
+  const [
+    { loading: proposalsSearchLoading },
+    fetchSearchProposals,
+  ] = useAsyncFn(
+    async (value: string) => {
+      return SputnikHttpService.getProposalsByProposer({
+        daoId: dao?.id,
+        accountId,
+        proposers: value,
+      });
+    },
+    [dao, accountId]
   );
 
   const [{ loading: proposalsDataIsLoading }, fetchProposalsData] = useAsyncFn(
     async (initialData?: typeof proposalsData) => {
       let accumulatedListData = initialData || null;
+      const proposers = chips.join(',');
 
       const res = dao
         ? await SputnikHttpService.getProposalsList({
@@ -110,6 +133,7 @@ export const Feed = ({
             category: category || queries.category,
             status,
             accountId,
+            proposers,
           })
         : await SputnikHttpService.getProposalsListByAccountId(
             {
@@ -119,6 +143,7 @@ export const Feed = ({
               status,
               daoFilter: 'All DAOs',
               accountId,
+              proposers,
             },
             isMyFeed && accountId ? accountId : undefined
           );
@@ -139,7 +164,14 @@ export const Feed = ({
 
       return accumulatedListData;
     },
-    [proposalsData?.data?.length, status, queries.category, accountId, isMyFeed]
+    [
+      proposalsData?.data?.length,
+      status,
+      queries.category,
+      accountId,
+      isMyFeed,
+      chips,
+    ]
   );
 
   useDebounceEffect(
@@ -157,7 +189,7 @@ export const Feed = ({
       window.scroll(0, 0);
     },
     1000,
-    [queries.category, status]
+    [queries.category, status, chips]
   );
 
   const loadMore = async () => {
@@ -172,10 +204,10 @@ export const Feed = ({
     }
   };
 
-  const onProposalFilterChange = async (value: string) => {
+  const onProposalFilterChange = async (key: string, value: string) => {
     const nextQuery = {
       ...queries,
-      status: value as ProposalsFeedStatuses,
+      [key]: value as ProposalsFeedStatuses,
     } as ProposalsQueries;
 
     // We use custom loading flag here and not the existing proposalsDataIsLoading because
@@ -202,72 +234,131 @@ export const Feed = ({
     return title;
   }
 
+  function renderResultItem(item: DaoFeedItem) {
+    return (
+      <button
+        type="button"
+        className={styles.resultItem}
+        key={item as string}
+        onClick={() => {
+          const newChips = new Set(chips);
+
+          newChips.add(item as string);
+          setChips(Array.from(newChips));
+        }}
+      >
+        {item}
+      </button>
+    );
+  }
+
   return (
     <main className={cn(styles.root, className)}>
       <HeaderWithFilter
+        classNameContainer={styles.headerWithFilterContainer}
         title={renderTitle()}
         titleRef={neighbourRef}
         className={cn(styles.statusFilterWrapper, headerClassName)}
       >
         <ProposalFilter
-          title={`${t('filterByProposalStatus')}:`}
-          shortTitle={`${t('filterByStatus')}:`}
+          labelClassName={styles.categoryLabel}
+          className={styles.proposalFilter}
           neighbourRef={neighbourRef}
-          value={status}
-          onChange={onProposalFilterChange}
+          value={queries.category || ProposalCategories.All}
+          onChange={(value: string) =>
+            onProposalFilterChange('category', value)
+          }
           disabled={proposalsDataIsLoading}
-          list={statusFilterOptions}
+          list={feedCategoriesOptions}
         />
       </HeaderWithFilter>
 
       <div className={styles.container}>
-        {!category && (
+        <div className={styles.sidebar}>
           <SideFilter
-            queryName="category"
-            list={feedCategoriesOptions}
+            className={styles.sideFilter}
+            queryName="status"
+            list={statusFilterOptions as ListItem[]}
             title={t('feed.filters.chooseAFilter')}
             disabled={proposalsDataIsLoading}
-            titleClassName={styles.categoriesListTitle}
+            titleClassName={styles.statusFilterTitle}
           />
-        )}
-
-        {loading ? (
-          <Loader className={styles.loader} />
-        ) : (
-          <>
-            {proposalsData && (
-              <FeedList
-                data={proposalsData}
-                loadMore={loadMore}
-                loader={<p className={styles.loading}>{t('loading')}...</p>}
-                noResults={
-                  <div className={styles.loading}>
-                    <NoResultsView
-                      title={
-                        isEmpty(proposalsData?.data)
-                          ? t('noProposalsHere')
-                          : t('noMoreResults')
-                      }
-                    />
-                  </div>
-                }
-                renderItem={proposal => (
-                  <div
-                    key={`${proposal.id}_${proposal.updatedAt}`}
-                    className={styles.proposalCardWrapper}
-                  >
-                    <ViewProposal
-                      proposal={proposal}
-                      showFlag={showFlag}
-                      tokens={allTokens}
-                    />
-                  </div>
-                )}
-                className={styles.listWrapper}
-              />
-            )}
-          </>
-        )}
+          <div className={styles.filterByProposer}>
+            <p className={styles.filterByProposerTitle}>
+              {t('filterByProposer')}
+            </p>
+            <SearchInput
+              placeholder="proposer.near"
+              key={chips.length}
+              showLoader={false}
+              className={styles.searchInput}
+              resultHintClassName={styles.resultHint}
+              onSubmit={fetchSearchProposals}
+              loading={proposalsSearchLoading}
+              showResults
+              renderResult={item => renderResultItem(item)}
+            />
+          </div>
+        </div>
+        <div className={styles.feedContainer}>
+          {chips.length ? (
+            <div className={styles.chips}>
+              <span className={styles.chipsTitle}>
+                <Trans
+                  i18nKey="selectedProposals"
+                  values={{ length: chips.length }}
+                />
+              </span>
+              {chips.map(chip => (
+                <Chip
+                  key={chip}
+                  className={styles.chip}
+                  name={chip}
+                  onRemove={() => {
+                    setChips(chips.filter(ch => ch !== chip));
+                  }}
+                />
+              ))}
+            </div>
+          ) : null}
+          {loading ? (
+            <Loader className={styles.loader} />
+          ) : (
+            <>
+              {proposalsData && (
+                <FeedList
+                  data={proposalsData}
+                  loadMore={loadMore}
+                  loader={<p className={styles.loading}>{t('loading')}...</p>}
+                  noResults={
+                    <div className={styles.loading}>
+                      <NoResultsView
+                        title={
+                          isEmpty(proposalsData?.data)
+                            ? t('noProposalsHere')
+                            : t('noMoreResults')
+                        }
+                      />
+                    </div>
+                  }
+                  renderItem={proposal => (
+                    <div
+                      key={`${proposal.id}_${proposal.updatedAt}`}
+                      className={styles.proposalCardWrapper}
+                    >
+                      <ViewProposal
+                        proposal={proposal}
+                        showFlag={showFlag}
+                        tokens={allTokens}
+                      />
+                    </div>
+                  )}
+                  className={styles.listWrapper}
+                />
+              )}
+            </>
+          )}
+        </div>
       </div>
     </main>
   );

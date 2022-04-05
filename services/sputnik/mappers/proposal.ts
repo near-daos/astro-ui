@@ -21,6 +21,7 @@ import { toMillis } from 'utils/format';
 import { DaoStatsOvertime, DaoStatsProposalsOvertime } from 'types/daoStats';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
 import { CommonOverTime } from 'types/stats';
+import { PaginationResponse } from 'types/api';
 
 import { getAwsImageUrl } from './utils/getAwsImageUrl';
 
@@ -89,6 +90,21 @@ export function getVotesStatistic(
 
   return result;
 }
+
+export const mapProposalToProposers = (
+  proposals: PaginationResponse<ProposalDTO[]>
+): PaginationResponse<unknown[]> => {
+  const proposers = new Set();
+
+  proposals.data.forEach(proposal => {
+    proposers.add(proposal.proposer);
+  });
+
+  return {
+    ...proposals,
+    data: Array.from(proposers),
+  };
+};
 
 export const mapProposalDTOToProposal = (
   proposalDTO: ProposalDTO

@@ -9,7 +9,7 @@ import { VoterDetail } from 'features/types';
 import { DaoContext } from 'types/context';
 
 import { DefaultVotingPolicy } from 'astro_2.0/components/DefaultVotingPolicy';
-import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
+import { ProposalFilter } from 'astro_2.0/features/Proposals/components/ProposalFilter';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { getProposalScope } from 'utils/getProposalScope';
 import { getVoteDetails } from 'features/vote-policy/helpers';
@@ -183,7 +183,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
             />
           </div>
           <div className={styles.filters}>
-            <ProposalStatusFilter
+            <ProposalFilter
               value={activeFilter || VoteStatuses.All}
               title="Filter by vote status:"
               onChange={value => {

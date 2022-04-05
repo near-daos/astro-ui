@@ -5,7 +5,7 @@ import { ProposalFeedItem, ProposalsFeedStatuses } from 'types/proposal';
 import { DaoContext } from 'types/context';
 import { PaginationResponse } from 'types/api';
 
-import { Feed } from 'astro_2.0/features/Feed';
+import { FeedProposals } from 'astro_2.0/features/FeedProposals';
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import { useBlockchainWarning } from 'hooks/useBlockchainWarning';
@@ -39,7 +39,7 @@ const ProposalsPage: VFC<ProposalsPageProps> = props => {
 
   return (
     <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
-      <Feed
+      <FeedProposals
         dao={dao}
         key={dao.id}
         showFlag={false}

@@ -12,6 +12,7 @@ export type RadioProps = {
   label: React.ReactNode;
   disabled?: boolean;
   type?: string;
+  labelClassName?: string;
 };
 
 export const Radio: React.FC<RadioProps> = ({
@@ -21,6 +22,7 @@ export const Radio: React.FC<RadioProps> = ({
   disabled = false,
   id,
   type,
+  labelClassName,
 }: RadioProps) => {
   const {
     itemClassName,
@@ -51,7 +53,7 @@ export const Radio: React.FC<RadioProps> = ({
         onChange={e => onChange(e.target.value, e)}
       />
       <span className={styles.checkmark} />
-      <span className={cn(styles.label)}>{label}</span>
+      <span className={cn(styles.label, labelClassName)}>{label}</span>
     </label>
   );
 };

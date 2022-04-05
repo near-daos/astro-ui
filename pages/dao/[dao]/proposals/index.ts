@@ -20,7 +20,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   query,
   locale = 'en',
 }) => {
-  const { status = ProposalStatuses.Active, category, dao: daoId } = query;
+  const { status = ProposalStatuses.All, category, dao: daoId } = query;
 
   CookieService.initServerSideCookies(req?.headers.cookie || null);
 

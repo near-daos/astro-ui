@@ -18,7 +18,7 @@ exports[`BountiesFeed Should render component 1`] = `
         </div>
         <input
           class="body1"
-          placeholder="Search Bounty Name"
+          placeholder="searchBountyPlaceholder"
           tabindex="0"
           type="text"
           value=""
