@@ -113,7 +113,7 @@ describe('proposalObjectHelpers', () => {
           actions: [
             {
               args: 'eyJ0b2tlbl9pZHMiOltbIjEyMyIsInRhcmdldCJdXX0=',
-              deposit: '1000000000000000000000000',
+              deposit: '1',
               gas: '5000000000000',
               method_name: 'nft_batch_transfer',
             },

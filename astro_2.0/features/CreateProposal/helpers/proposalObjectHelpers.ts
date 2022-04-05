@@ -158,7 +158,7 @@ export async function getTransferMintbaseNFTProposal(
         {
           method_name: 'nft_batch_transfer',
           args,
-          deposit: '1000000000000000000000000',
+          deposit: '1',
           gas: formatGasValue(actionsGas).toString(),
         },
       ],
