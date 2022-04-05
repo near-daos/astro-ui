@@ -130,7 +130,7 @@ export const GeneralInfo: FC = () => {
         }))
       );
     }
-  }, [activeView, query.dao, isMounted]);
+  }, [interval, activeView, query.dao, isMounted]);
 
   const [, getLeaderboardData] = useAsyncFn(async () => {
     if (query.dao) {
@@ -167,7 +167,7 @@ export const GeneralInfo: FC = () => {
         leaderboardData ? [...leaderboardData, ...newData] : newData
       );
     }
-  }, [interval, activeView, query.dao, isMounted, offset]);
+  }, [activeView, query.dao, isMounted, offset]);
 
   useEffect(() => {
     getChartData();
