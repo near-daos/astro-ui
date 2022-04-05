@@ -19,7 +19,13 @@ import styles from './AccountButton.module.scss';
 
 export const AccountButton: FC = () => {
   const [open, setOpen] = useState(false);
-  const { login, logout, accountId, nearService } = useAuthContext();
+  const {
+    login,
+    logout,
+    accountId,
+    nearService,
+    connectionInProgress,
+  } = useAuthContext();
 
   const [showModal] = useModal(WalletSelectionModal, {
     signIn: walletType => login(walletType),
@@ -45,6 +51,7 @@ export const AccountButton: FC = () => {
         <WalletIcon
           walletType={WalletType.NEAR}
           isSelected={false}
+          showLoader={connectionInProgress}
           onClick={showModal}
         />
       );
@@ -55,8 +62,13 @@ export const AccountButton: FC = () => {
         isOpen={open}
         onOpenUpdate={setOpen}
         parent={
-          <div className={styles.accountButton}>
+          <div
+            className={cn(styles.accountButton, {
+              [styles.disabled]: connectionInProgress,
+            })}
+          >
             <WalletIcon
+              showLoader={connectionInProgress}
               walletType={nearService?.getWalletType() ?? WalletType.NEAR}
               isSelected={false}
             />
@@ -111,7 +123,12 @@ export const AccountButton: FC = () => {
   }
 
   return (
-    <div className={styles.root} ref={ref}>
+    <div
+      className={cn(styles.root, {
+        [styles.disabled]: connectionInProgress,
+      })}
+      ref={ref}
+    >
       {render()}
     </div>
   );

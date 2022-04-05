@@ -115,7 +115,7 @@ export async function getBuyNftFromMintbaseProposal(
         {
           method_name: 'make_offer',
           args,
-          deposit: new Decimal(0).toFixed(),
+          deposit: new Decimal(deposit).mul(10 ** token.decimals).toFixed(),
           gas: formatGasValue(actionsGas).toString(),
         },
       ],
@@ -141,8 +141,10 @@ export async function getTransferMintbaseNFTProposal(
 
   const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 
+  const [key, store] = tokenKey.split(':');
+
   const json = JSON.stringify({
-    token_ids: [[tokenKey, target]],
+    token_ids: [[key, store]],
   });
   const args = Buffer.from(json).toString('base64');
 
@@ -156,7 +158,7 @@ export async function getTransferMintbaseNFTProposal(
         {
           method_name: 'nft_batch_transfer',
           args,
-          deposit: new Decimal(0).toFixed(),
+          deposit: '1000000000000000000',
           gas: formatGasValue(actionsGas).toString(),
         },
       ],
@@ -184,7 +186,7 @@ export async function getBuyNftFromParasProposal(
   data: BuyNftFromParasInput,
   tokens: Tokens
 ): Promise<CreateProposalParams> {
-  const { tokenKey, target, details, externalUrl, actionsGas } = data;
+  const { tokenKey, target, details, externalUrl, actionsGas, deposit } = data;
 
   const token = Object.values(tokens).find(item => item.symbol === data.token);
 
@@ -210,7 +212,7 @@ export async function getBuyNftFromParasProposal(
         {
           method_name: 'nft_buy',
           args,
-          deposit: new Decimal(0).toFixed(),
+          deposit: new Decimal(deposit).mul(10 ** token.decimals).toFixed(),
           gas: formatGasValue(actionsGas).toString(),
         },
       ],
@@ -271,9 +273,9 @@ export async function getSwapsOnRefProposal(
       receiver_id: 'v2.ref-finance.near',
       actions: [
         {
-          method_name: 'swap',
+          method_name: 'ft_transfer_call',
           args,
-          deposit: new Decimal(0).toFixed(),
+          deposit: '1000000000000000000',
           gas: formatGasValue(actionsGas).toString(),
         },
       ],

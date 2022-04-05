@@ -12,8 +12,8 @@ import {
 } from 'astro_2.0/features/Discover/types';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
 
-import { daoStatsService, LIMIT } from 'services/DaoStatsService';
-
+import { LIMIT } from 'services/DaoStatsService';
+import { useDaoStatsContext } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import {
   CONTRACT,
@@ -31,6 +31,7 @@ import styles from './UsersAndActivity.module.scss';
 export const UsersAndActivity: FC = () => {
   const isMounted = useMountedState();
   const { t } = useTranslation();
+  const { daoStatsService } = useDaoStatsContext();
   const [data, setData] = useState<Users | null>(null);
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
   const [leaderboardData, setLeaderboardData] = useState<
@@ -144,7 +145,7 @@ export const UsersAndActivity: FC = () => {
         setData(response.data);
       }
     })();
-  }, [query.dao, isMounted]);
+  }, [query.dao, isMounted, daoStatsService]);
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;

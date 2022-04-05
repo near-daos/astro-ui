@@ -46,11 +46,12 @@ export const FunctionCallTypeSelector: FC = () => {
             value: FunctionCallType.BuyNFTfromParas,
             group: 'Templates',
           },
-          {
-            label: 'Swaps on Ref',
-            value: FunctionCallType.SwapsOnRef,
-            group: 'Templates',
-          },
+          // Temp disable - we want to implement integration with SC to fetch required data
+          // {
+          //   label: 'Swaps on Ref',
+          //   value: FunctionCallType.SwapsOnRef,
+          //   group: 'Templates',
+          // },
         ],
       },
     ];

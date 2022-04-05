@@ -24,7 +24,7 @@ import {
 } from './types';
 import { LIMIT, OFFSET } from './constants';
 
-class DaoStatsService {
+export class DaoStatsService {
   private httpService = new HttpService({
     baseURL: `${
       process.browser
@@ -32,6 +32,10 @@ class DaoStatsService {
         : appConfig.STATS_API_URL
     }/api/v1/`,
   });
+
+  constructor(httpService: HttpService) {
+    this.httpService = httpService;
+  }
 
   // Dao
   public async getDao(params: DaoParams): Promise<AxiosResponse<Dao>> {
@@ -742,5 +746,3 @@ class DaoStatsService {
     );
   }
 }
-
-export const daoStatsService = new DaoStatsService();

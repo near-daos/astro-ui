@@ -73,7 +73,9 @@ exports[`App Header Should render AppHeader component 1`] = `
       </div>
     </div>
     <div>
-      <div>
+      <div
+        class=""
+      >
         <button
           class=""
           type="button"

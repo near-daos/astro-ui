@@ -86,7 +86,7 @@ describe('proposalObjectHelpers', () => {
             {
               args:
                 'eyJ0b2tlbl9rZXkiOlsidG9rZW5LZXkiXSwicHJpY2UiOlsiMjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCJdLCJ0aW1lb3V0IjpbeyJob3VycyI6IjEwMCJ9XX0=',
-              deposit: '0',
+              deposit: '2000000000000000000000000',
               gas: '5000000000000',
               method_name: 'make_offer',
             },
@@ -112,8 +112,8 @@ describe('proposalObjectHelpers', () => {
         data: {
           actions: [
             {
-              args: 'eyJ0b2tlbl9pZHMiOltbIk5FQVIiLCJ0YXJnZXQiXV19',
-              deposit: '0',
+              args: 'eyJ0b2tlbl9pZHMiOltbIk5FQVIiLG51bGxdXX0=',
+              deposit: '1000000000000000000',
               gas: '5000000000000',
               method_name: 'nft_batch_transfer',
             },
@@ -152,7 +152,7 @@ describe('proposalObjectHelpers', () => {
             {
               args:
                 'eyJ0b2tlbl9zZXJpZXNfaWQiOiJORUFSIiwicmVjZWl2ZXJfaWQiOiJ0YXJnZXQifQ==',
-              deposit: '0',
+              deposit: '10000000000000000000000000',
               gas: '5000000000000',
               method_name: 'nft_buy',
             },
@@ -177,9 +177,9 @@ describe('proposalObjectHelpers', () => {
             {
               args:
                 'eyJhY3Rpb25zIjpbeyJwb29sX2lkIjoicG9vbElkIiwidG9rZW5faW4iOiJUMSIsInRva2VuX291dCI6IlQyIiwiYW1vdW50X2luIjoxMCwibWluX2Ftb3VudF9vdXQiOjEwMH1dfQ==',
-              deposit: '0',
+              deposit: '1000000000000000000',
               gas: '5000000000000',
-              method_name: 'swap',
+              method_name: 'ft_transfer_call',
             },
           ],
           receiver_id: 'v2.ref-finance.near',

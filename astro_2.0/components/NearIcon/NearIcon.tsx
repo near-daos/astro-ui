@@ -7,14 +7,16 @@ interface NearIconProps {
   black?: boolean;
   className?: string;
   onClick?: () => void;
+  showLoader?: boolean;
 }
 
 export const NearIcon = forwardRef<SVGSVGElement, NearIconProps>(
   (props, ref) => {
-    const { black, className, onClick } = props;
+    const { black, className, onClick, showLoader } = props;
 
     const rootClassName = cn(styles.root, className, {
       [styles.black]: black,
+      [styles.loading]: showLoader,
     });
 
     return (

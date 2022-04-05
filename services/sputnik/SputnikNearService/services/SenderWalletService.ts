@@ -73,6 +73,18 @@ export class SenderWalletService implements WalletService {
       transactions,
     });
 
+    const transactionHashes = result.response[0].transaction.hash;
+    const signerId = result.response[0].transaction.signer_id;
+
+    try {
+      await httpService.get(
+        `/transactions/wallet/callback/${signerId}?transactionHashes=${transactionHashes}&noRedirect=true`
+      );
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
+    }
+
     return result.response;
   }
 

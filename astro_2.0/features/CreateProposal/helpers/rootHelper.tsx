@@ -404,18 +404,6 @@ export function validateUserAccount(
     return false;
   }
 
-  if (
-    navigator &&
-    navigator.userAgent.indexOf('Safari') !== -1 &&
-    navigator.userAgent.indexOf('Chrome') === -1
-  ) {
-    const result = /^(([a-z\d]+[-_])*[a-z\d]+\.)*([a-z\d]+[-_])*[a-z\d]+$/.test(
-      `${value}`
-    );
-
-    return Promise.resolve(result);
-  }
-
   return nearService?.nearAccountExist(value || '');
 }
 
@@ -608,7 +596,22 @@ export function getValidationSchema(
         }
         case FunctionCallType.TransferNFTfromMintbase: {
           return yup.object().shape({
-            tokenKey: yup.string().required('Required'),
+            tokenKey: yup
+              .string()
+              .test(
+                'invalidFormat',
+                'It must be as Token ID:Token store format',
+                value => {
+                  if (!value) {
+                    return false;
+                  }
+
+                  const [key, store] = value.split(':');
+
+                  return !(!key || !store);
+                }
+              )
+              .required('Required'),
             target: yup
               .string()
               .test(

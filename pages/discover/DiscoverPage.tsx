@@ -15,7 +15,7 @@ import { Tokens } from 'astro_2.0/features/Discover/components/Tokens';
 import { SelectedDaoDetails } from 'astro_2.0/features/Discover/components/SelectedDaoDetails';
 import { TopicsFilter } from 'astro_2.0/features/Discover/components/TopicsFilter/TopicsFilter';
 import { DiscoverPageProvider } from 'astro_2.0/features/Discover/components/DiscoverPageContext/DiscoverPageContext';
-
+import { DaoStatsDataProvider } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
 import { useDaoSearch } from 'astro_2.0/features/Discover/hooks';
 import { useAuthContext } from 'context/AuthContext';
 
@@ -94,49 +94,51 @@ const DiscoverPage: NextPage = () => {
   }
 
   return (
-    <div className={styles.root}>
-      <div className={styles.header}>
-        <div className={styles.row}>
-          <div className={styles.titleWrapper}>
-            <h1 className={styles.title}>{t('discover.title')}</h1>
-            <Button variant="black" size="small" onClick={handleCreateDao}>
-              {t('createNewDao')}
-            </Button>
+    <DaoStatsDataProvider>
+      <div className={styles.root}>
+        <div className={styles.header}>
+          <div className={styles.row}>
+            <div className={styles.titleWrapper}>
+              <h1 className={styles.title}>{t('discover.title')}</h1>
+              <Button variant="black" size="small" onClick={handleCreateDao}>
+                {t('createNewDao')}
+              </Button>
+            </div>
+            <SearchInput
+              key={searchQuery.dao}
+              placeholder="Search DAO name"
+              className={styles.search}
+              onSubmit={handleSearch}
+              showResults
+              loading={loading}
+              renderResult={res => {
+                return (
+                  <Button
+                    key={res.id}
+                    variant="transparent"
+                    size="block"
+                    onClick={() => updateQuery('dao', res.id)}
+                  >
+                    <div className={styles.searchResult}>
+                      {res.name ?? res.id}
+                    </div>
+                  </Button>
+                );
+              }}
+            />
           </div>
-          <SearchInput
-            key={searchQuery.dao}
-            placeholder="Search DAO name"
-            className={styles.search}
-            onSubmit={handleSearch}
-            showResults
-            loading={loading}
-            renderResult={res => {
-              return (
-                <Button
-                  key={res.id}
-                  variant="transparent"
-                  size="block"
-                  onClick={() => updateQuery('dao', res.id)}
-                >
-                  <div className={styles.searchResult}>
-                    {res.name ?? res.id}
-                  </div>
-                </Button>
-              );
-            }}
-          />
+          <SelectedDaoDetails />
         </div>
-        <SelectedDaoDetails />
+        <div className={styles.sidebar}>
+          <TopicsFilter />
+        </div>
+        <div className={styles.body}>
+          <ContentPanel title={t(`discover.${topic}`)}>
+            <DiscoverPageProvider>{renderContent()}</DiscoverPageProvider>
+          </ContentPanel>
+        </div>
       </div>
-      <div className={styles.sidebar}>
-        <TopicsFilter />
-      </div>
-      <div className={styles.body}>
-        <ContentPanel title={t(`discover.${topic}`)}>
-          <DiscoverPageProvider>{renderContent()}</DiscoverPageProvider>
-        </ContentPanel>
-      </div>
-    </div>
+    </DaoStatsDataProvider>
   );
 };
 
