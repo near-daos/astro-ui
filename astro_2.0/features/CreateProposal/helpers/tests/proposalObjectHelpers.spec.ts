@@ -112,13 +112,13 @@ describe('proposalObjectHelpers', () => {
         data: {
           actions: [
             {
-              args: 'eyJ0b2tlbl9pZHMiOltbIk5FQVIiLG51bGxdXX0=',
-              deposit: '1000000000000000000',
+              args: 'eyJ0b2tlbl9pZHMiOltbIjEyMyIsInRhcmdldCJdXX0=',
+              deposit: '1000000000000000000000000',
               gas: '5000000000000',
               method_name: 'nft_batch_transfer',
             },
           ],
-          receiver_id: 'target',
+          receiver_id: 'mint.near',
         },
         description: 'some details$$$$external url',
         kind: 'FunctionCall',
@@ -177,7 +177,7 @@ describe('proposalObjectHelpers', () => {
             {
               args:
                 'eyJhY3Rpb25zIjpbeyJwb29sX2lkIjoicG9vbElkIiwidG9rZW5faW4iOiJUMSIsInRva2VuX291dCI6IlQyIiwiYW1vdW50X2luIjoxMCwibWluX2Ftb3VudF9vdXQiOjEwMH1dfQ==',
-              deposit: '1000000000000000000',
+              deposit: '1000000000000000000000000',
               gas: '5000000000000',
               method_name: 'ft_transfer_call',
             },
