@@ -11,8 +11,8 @@ import {
   TControlTab,
 } from 'astro_2.0/features/Discover/types';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
-
-import { daoStatsService, LIMIT } from 'services/DaoStatsService';
+import { useDaoStatsContext } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
+import { LIMIT } from 'services/DaoStatsService';
 
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import {
@@ -29,6 +29,7 @@ import styles from './Governance.module.scss';
 export const Governance: FC = () => {
   const isMounted = useMountedState();
   const { t } = useTranslation();
+  const { daoStatsService } = useDaoStatsContext();
   const [data, setData] = useState<TGovernance | null>(null);
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
   const [leaderboardData, setLeaderboardData] = useState<
@@ -91,7 +92,7 @@ export const Governance: FC = () => {
         setData(response.data);
       }
     })();
-  }, [query.dao, isMounted]);
+  }, [query.dao, isMounted, daoStatsService]);
 
   const [{ loading }, getChartData] = useAsyncFn(async () => {
     let chart;
