@@ -37,7 +37,7 @@ export const nftFromMintbaseData = {
 
 export const transferMintbaseNFTInputData = {
   smartContractAddress: 'sc-address',
-  tokenKey: 'NEAR',
+  tokenKey: '123:mint.near',
   actionsGas: 5,
   details: 'some details',
   externalUrl: 'external url',
