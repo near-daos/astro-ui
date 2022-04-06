@@ -181,7 +181,7 @@
   flex-direction: column;
   padding: 8px;
   width: 153px;
-  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+  @include large-desktop {
     width: 100%;
   }
 }

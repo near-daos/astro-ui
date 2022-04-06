@@ -60,7 +60,7 @@
 }
 
 .input {
-  @extend %body2;
+  @extend %body1;
   @include ellipse-text;
 
   background: transparent;

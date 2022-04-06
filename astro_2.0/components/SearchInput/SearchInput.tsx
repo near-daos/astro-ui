@@ -241,11 +241,7 @@ export const SearchInput: FC<SearchInputProps> = ({
         tabIndex={0}
         value={value}
         onChange={handleChange}
-        className={cn(
-          styles.input,
-          { [styles.withoutLoading]: !showLoader },
-          'body1'
-        )}
+        className={cn(styles.input, { [styles.withoutLoading]: !showLoader })}
         type="text"
         placeholder={placeholder || t('searchBountyPlaceholder')}
         onKeyUp={handleKeys}
