@@ -1,11 +1,11 @@
 .root {
   align-items: center;
   border-radius: 6px;
-
   color: var(--color-brand-black);
 
+  cursor: pointer;
+
   display: flex;
-  //height: 40px;
   transition: 0.2s;
 
   &:hover {
