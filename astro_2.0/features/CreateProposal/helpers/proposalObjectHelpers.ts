@@ -4,6 +4,7 @@ import { DAO } from 'types/dao';
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import Decimal from 'decimal.js';
 import { formatGasValue } from 'utils/format';
+import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 
 export type CustomFunctionCallInput = {
   smartContractAddress: string;
@@ -50,7 +51,7 @@ export async function getCustomFunctionCallProposal(
           method_name: methodName,
           args,
           deposit: new Decimal(deposit).mul(10 ** token.decimals).toFixed(),
-          gas: actionsGas.toString(),
+          gas: formatGasValue(actionsGas ?? DEFAULT_PROPOSAL_GAS).toString(),
         },
       ],
     },
@@ -116,7 +117,7 @@ export async function getBuyNftFromMintbaseProposal(
           method_name: 'make_offer',
           args,
           deposit: new Decimal(deposit).mul(10 ** token.decimals).toFixed(),
-          gas: formatGasValue(actionsGas).toString(),
+          gas: formatGasValue(actionsGas ?? DEFAULT_PROPOSAL_GAS).toString(),
         },
       ],
     },
@@ -159,7 +160,7 @@ export async function getTransferMintbaseNFTProposal(
           method_name: 'nft_batch_transfer',
           args,
           deposit: '1',
-          gas: formatGasValue(actionsGas).toString(),
+          gas: formatGasValue(actionsGas ?? DEFAULT_PROPOSAL_GAS).toString(),
         },
       ],
     },
@@ -213,7 +214,7 @@ export async function getBuyNftFromParasProposal(
           method_name: 'nft_buy',
           args,
           deposit: new Decimal(deposit).mul(10 ** token.decimals).toFixed(),
-          gas: formatGasValue(actionsGas).toString(),
+          gas: formatGasValue(actionsGas ?? DEFAULT_PROPOSAL_GAS).toString(),
         },
       ],
     },
@@ -276,7 +277,7 @@ export async function getSwapsOnRefProposal(
           method_name: 'ft_transfer_call',
           args,
           deposit: '1000000000000000000000000',
-          gas: formatGasValue(actionsGas).toString(),
+          gas: formatGasValue(actionsGas ?? DEFAULT_PROPOSAL_GAS).toString(),
         },
       ],
     },
