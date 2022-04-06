@@ -9,13 +9,13 @@ interface SettingsCardProps {
     label: string;
     value: ReactNode;
   }[];
-  className: string;
+  className?: string;
 }
 
 export const SettingsCard: React.FC<SettingsCardProps> = ({
   settingName,
   settings,
-  className = '',
+  className,
 }) => {
   return (
     <div className={cn(styles.root, className)}>

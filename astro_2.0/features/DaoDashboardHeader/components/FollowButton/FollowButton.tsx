@@ -13,16 +13,22 @@ interface FollowButtonProps {
   daoName: string;
 }
 
-const ConfirmModal = ({
-  isOpen,
-  onClose,
-  daoName,
-}: {
+interface ConfirmModalProps {
   isOpen: boolean;
   onClose: (val?: boolean) => void;
   daoName: string;
+}
+
+export const ConfirmModal: FC<ConfirmModalProps> = ({
+  isOpen,
+  onClose,
+  daoName,
 }) => {
   const { t } = useTranslation();
+
+  const closeModal = useCallback(() => {
+    onClose(true);
+  }, [onClose]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="sm">
@@ -32,7 +38,7 @@ const ConfirmModal = ({
           &nbsp;
           <span className={styles.highlighted}>{daoName}</span>?
         </div>
-        <Button onClick={() => onClose(true)} className={styles.confirmButton}>
+        <Button onClick={closeModal} className={styles.confirmButton}>
           {t('unsubscribe')}
         </Button>
       </div>
@@ -63,6 +69,14 @@ export const FollowButton: FC<FollowButtonProps> = ({ daoId, daoName }) => {
     }
   }, [handleUnfollow, showModal, subscription]);
 
+  const toggleSubscription = useCallback(() => {
+    if (isSubscribed) {
+      confirmUnfollow();
+    } else {
+      handleFollow(daoId);
+    }
+  }, [daoId, handleFollow, isSubscribed, confirmUnfollow]);
+
   if (!subscriptions) {
     return null;
   }
@@ -75,13 +89,7 @@ export const FollowButton: FC<FollowButtonProps> = ({ daoId, daoName }) => {
       className={cn(styles.root, {
         [styles.subscribedBtn]: isSubscribed,
       })}
-      onClick={() => {
-        if (isSubscribed) {
-          confirmUnfollow();
-        } else {
-          handleFollow(daoId);
-        }
-      }}
+      onClick={toggleSubscription}
     >
       {isSubscribed ? (
         <div className={styles.subscribed}>

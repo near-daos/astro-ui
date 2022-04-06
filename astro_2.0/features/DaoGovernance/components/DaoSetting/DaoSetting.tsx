@@ -23,7 +23,7 @@ export const DaoSetting: React.FC<DaoSettingProps> = ({
         <Button
           disabled={disableNewProposal}
           variant="black"
-          onClick={() => settingsChangeHandler()}
+          onClick={settingsChangeHandler}
         >
           Propose Changes
         </Button>
