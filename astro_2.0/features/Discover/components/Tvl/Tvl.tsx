@@ -57,7 +57,7 @@ export const Tvl: FC = () => {
           id: TvlTabs.VL_OF_BOUNTIES,
           label: t('discover.vlOfBounties'),
           value: Number(
-            dFormatter(currentData?.bounties?.vl.count ?? 0)
+            dFormatter(currentData?.bounties?.vl?.count ?? 0)
           ).toLocaleString(),
           trend: currentData?.bounties?.vl.growth ?? 0,
         },

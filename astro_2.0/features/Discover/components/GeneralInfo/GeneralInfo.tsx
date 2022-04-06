@@ -20,15 +20,17 @@ import {
   GeneralInfoTabs,
 } from 'astro_2.0/features/Discover/constants';
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
+import { ChartInterval } from 'astro_2.0/features/Discover/components/ChartInterval';
 import useQuery from 'hooks/useQuery';
 
-import { General } from 'services/DaoStatsService/types';
+import { General, Interval } from 'services/DaoStatsService/types';
 
 import styles from './GeneralInfo.module.scss';
 
 export const GeneralInfo: FC = () => {
   const isMounted = useMountedState();
   const { t } = useTranslation();
+  const [interval, setInterval] = useState(Interval.WEEK);
   const { daoStatsService } = useDaoStatsContext();
   const [generalData, setGeneralData] = useState<General | null>(null);
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
@@ -100,7 +102,10 @@ export const GeneralInfo: FC = () => {
       switch (activeView) {
         case GeneralInfoTabs.ACTIVITY:
         default: {
-          data = await daoStatsService.getGeneralDaoActivity(params);
+          data = await daoStatsService.getGeneralDaoActivity({
+            ...params,
+            interval,
+          });
           break;
         }
       }
@@ -108,7 +113,10 @@ export const GeneralInfo: FC = () => {
       switch (activeView) {
         case GeneralInfoTabs.ACTIVE_DAOS:
         default: {
-          data = await daoStatsService.getGeneralActive(CONTRACT);
+          data = await daoStatsService.getGeneralActive({
+            ...CONTRACT,
+            interval,
+          });
           break;
         }
       }
@@ -122,7 +130,7 @@ export const GeneralInfo: FC = () => {
         }))
       );
     }
-  }, [activeView, query.dao, isMounted]);
+  }, [interval, activeView, query.dao, isMounted]);
 
   const [, getLeaderboardData] = useAsyncFn(async () => {
     if (query.dao) {
@@ -188,6 +196,12 @@ export const GeneralInfo: FC = () => {
           loading={loading}
           activeView={activeView}
         />
+        {!loading ? (
+          <ChartInterval
+            interval={interval}
+            setInterval={value => setInterval(value as Interval)}
+          />
+        ) : null}
         <DaosTopList
           total={total}
           next={nextLeaderboardItems}
