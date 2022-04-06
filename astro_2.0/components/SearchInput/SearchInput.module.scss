@@ -60,7 +60,7 @@
 }
 
 .input {
-  @extend %body2;
+  @extend %body1;
   @include ellipse-text;
 
   background: transparent;
@@ -114,4 +114,8 @@
   height: 100px;
   min-height: unset;
   width: 220px;
+}
+
+.withoutLoading {
+  margin-left: 10px;
 }

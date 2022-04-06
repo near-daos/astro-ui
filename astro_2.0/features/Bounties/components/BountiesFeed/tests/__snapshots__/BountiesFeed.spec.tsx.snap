@@ -17,8 +17,8 @@ exports[`BountiesFeed Should render component 1`] = `
           </svg>
         </div>
         <input
-          class="body1"
-          placeholder="Search Bounty Name"
+          class=""
+          placeholder="searchBountyPlaceholder"
           tabindex="0"
           type="text"
           value=""

@@ -1,13 +1,14 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { useUpdateEffect } from 'react-use';
+import { useTranslation } from 'next-i18next';
 
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useFilteredProposalsData } from 'features/search/search-results/components/proposals-tab-view/helpers';
 import { statusFilterOptions } from 'features/search/search-results/components/proposals-tab-view/constants';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
-import { ProposalStatusFilter } from 'astro_2.0/features/Proposals/components/ProposalStatusFilter';
+import { ProposalFilter } from 'astro_2.0/features/Proposals/components/ProposalFilter';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { useAllCustomTokens } from 'hooks/useCustomTokens';
@@ -25,6 +26,7 @@ const FILTER_DEFAULT_STATE = {
 
 export const ProposalsTabView: React.FC = () => {
   const { query: queries } = useRouter();
+  const { t } = useTranslation();
 
   const { searchResults } = useSearchResults();
   const { query, proposals } = searchResults || {};
@@ -73,7 +75,9 @@ export const ProposalsTabView: React.FC = () => {
   return (
     <div className={styles.root}>
       <div className={styles.statusFilterWrapper}>
-        <ProposalStatusFilter
+        <ProposalFilter
+          title={`${t('filterByProposalStatus')}:`}
+          shortTitle={`${t('filterByStatus')}:`}
           value={filter.show}
           onChange={value => {
             window.scroll(0, 0);

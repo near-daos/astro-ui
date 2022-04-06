@@ -45,7 +45,11 @@
   "archived": "Archived",
   "youFollowed": "You Followed",
   "confirmUnsubscribe": "Are you sure you want to unsubscribe from",
-
+  "minimumSearchCharacters": "Please enter at least 3 characters to search",
+  "searchBountyPlaceholder": "Search Bounty Name",
+  "all": "All",
+  "selectedProposals": "Selected {{length}} proposals",
+  "filterByProposer": "Filter by proposer",
   "bountiesPage": {
     "successClaimBountyNotification": "Транзакции в блокчейне могут занимать некоторе время, пожалуйста, обновите страницу ДАО через несколько секунд."
   },

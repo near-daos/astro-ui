@@ -1,14 +1,13 @@
 import cn from 'classnames';
-import { useTranslation } from 'next-i18next';
 import React, { MutableRefObject } from 'react';
 
 import { ProposalStatuses } from 'types/proposal';
 import { FeedFilter } from 'astro_2.0/components/Feed';
 import { Radio } from 'astro_2.0/components/inputs/radio/Radio';
 
-import styles from './ProposalStatusFilter.module.scss';
+import styles from './ProposalFilter.module.scss';
 
-type ProposalStatusFilterProps = {
+type ProposalFilterProps = {
   className?: string;
   feedFilterHeaderClassName?: string;
   disabled?: boolean;
@@ -22,28 +21,28 @@ type ProposalStatusFilterProps = {
   }[];
   value: string;
   neighbourRef?: MutableRefObject<HTMLElement | null>;
+  labelClassName?: string;
 };
 
-export const ProposalStatusFilter: React.FC<ProposalStatusFilterProps> = ({
+export const ProposalFilter: React.FC<ProposalFilterProps> = ({
   className,
   feedFilterHeaderClassName,
   onChange,
   value,
   list,
   disabled,
-  title,
-  shortTitle,
+  title = '',
+  shortTitle = '',
   neighbourRef,
+  labelClassName,
 }) => {
-  const { t } = useTranslation();
-
   return (
     <FeedFilter
       neighbourRef={neighbourRef}
       className={cn(styles.root, className)}
       headerClassName={feedFilterHeaderClassName}
-      title={title || `${t('filterByProposalStatus')}:`}
-      shortTitle={shortTitle || `${t('filterByStatus')}:`}
+      title={title}
+      shortTitle={shortTitle}
       value={value}
       selectedLabel={list.find(item => item.value === value)?.label ?? ''}
       onChange={onChange}
@@ -54,6 +53,7 @@ export const ProposalStatusFilter: React.FC<ProposalStatusFilterProps> = ({
           value={item.value}
           label={item.label}
           disabled={disabled}
+          labelClassName={labelClassName}
           className={cn(item.className, {
             [styles.all]: item.value === '',
             [styles.approved]: item.value === ProposalStatuses.Approved,

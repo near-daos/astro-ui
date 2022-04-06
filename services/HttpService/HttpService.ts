@@ -19,6 +19,7 @@ import {
   mapTokensDTOToTokens,
   mapOvertimeToChartData,
   mapProposalsOvertimeToChartData,
+  mapProposalToProposers,
 } from 'services/sputnik/mappers';
 import { mapNftTokenResponseToNftToken } from 'services/sputnik/mappers/nfts';
 
@@ -235,6 +236,47 @@ export class HttpService {
             request.url = `/proposals?${queryString}`;
           }
           break;
+        case API_QUERIES.GET_USER_PROPOSALS_BY_PROPOSER: {
+          const { proposers, accountId, daoId } =
+            requestCustom.queryRequest?.params || {};
+
+          const queryString = RequestQueryBuilder.create();
+
+          const search: SFields | SConditionAND = {
+            $and: [
+              {
+                daoId: {
+                  $eq: daoId,
+                },
+              },
+            ],
+          };
+
+          search.$and?.push({
+            proposer: {
+              $starts: proposers,
+            },
+            votePeriodEnd: {
+              $gt: Date.now() * 1000000,
+            },
+          });
+
+          queryString.search(search);
+
+          queryString
+            .setLimit(1000)
+            .setOffset(0)
+            .sortBy({
+              field: 'createdAt',
+              order: 'DESC',
+            })
+            .query();
+
+          request.url = `/proposals?${queryString.queryString}${
+            accountId ? `&accountId=${accountId}` : ''
+          }`;
+          break;
+        }
         case API_QUERIES.GET_PROPOSAL_BY_ID:
           {
             const { proposalId, accountId } =
@@ -631,6 +673,15 @@ export class HttpService {
               });
             }
 
+            // Proposers
+            if (query?.proposers) {
+              search.$and?.push({
+                proposer: {
+                  $in: query.proposers.split(','),
+                },
+              });
+            }
+
             // Statuses
             if (
               query?.status === ProposalsFeedStatuses.Active ||
@@ -817,6 +868,9 @@ export class HttpService {
           break;
         case API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL:
           response.data = mapProposalDTOToProposal(response.data);
+          break;
+        case API_MAPPERS.MAP_PROPOSAL_TO_PROPOSER:
+          response.data = mapProposalToProposers(response.data);
           break;
         case API_MAPPERS.MAP_SEARCH_RESULTS_DTO_TO_DATA_OBJECT:
           response.data = mapSearchResultsDTOToDataObject(

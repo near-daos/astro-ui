@@ -1,0 +1,200 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  width: 100%;
+}
+
+.title {
+  align-items: center;
+  display: inline-flex;
+  font-size: 18px;
+  line-height: 1;
+  margin: 0;
+  text-transform: capitalize;
+
+  @include tablet-landscape {
+    font-size: 28px;
+  }
+}
+
+.statusFilterWrapper {
+  @include wide-background;
+  padding: 56px 0 0;
+  position: sticky;
+  top: 40px;
+  width: 100%;
+  z-index: 20;
+
+  @include tablet-landscape {
+    top: 71px;
+  }
+
+  .categoriesListApprovedInputWrapperChecked {
+    --color-checkmark-active: var(--color-success-50);
+  }
+
+  .categoriesListFailedInputWrapperChecked {
+    --color-checkmark-active: var(--color-error-60);
+  }
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    padding: 40px 0 0;
+    width: 100%;
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    flex-direction: column;
+    padding: 0;
+  }
+}
+
+/* stylelint-disable-next-line */
+.container :global(.infinite-scroll-component__outerdiv) {
+  flex-grow: 1;
+
+  @media screen and (max-width: #{breakpoints.$screen-sm}px) {
+    flex-grow: 1;
+    max-width: 100%;
+  }
+}
+
+.listWrapper {
+  flex-grow: 1;
+  max-width: 100%;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    margin: 0;
+  }
+}
+
+.loader {
+  width: 100%;
+}
+
+.loading {
+  margin: 32px 0;
+  text-align: center;
+}
+
+.itemRoot {
+  margin-bottom: 60px;
+}
+
+.proposalCardWrapper {
+  margin-bottom: 60px;
+
+  &:not(:first-of-type) {
+    margin-top: 32px;
+  }
+}
+
+.statusFilterTitle {
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    display: none;
+  }
+}
+
+.filterByProposer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 35px;
+  position: sticky;
+  top: 435px;
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    margin-top: 0;
+  }
+}
+
+.filterByProposerTitle {
+  color: var(--color-main-dark);
+  display: inline-block;
+  font-family: var(--font-family-secondary);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  margin: 0 0 12px;
+}
+
+.searchInput {
+  margin: 0 46px 0 0;
+  width: 153px;
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    margin: 0;
+    width: 100%;
+  }
+}
+
+.chips {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    margin-top: 24px;
+  }
+}
+
+.chipsTitle {
+  @extend %body2;
+  margin-right: 24px;
+}
+
+.chip {
+  margin-right: 12px;
+}
+
+.sideFilter {
+  max-height: 184px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  margin-top: 6px;
+}
+
+.feedContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.resultItem {
+  background: var(--color-white);
+  border: 0;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.resultHint {
+  background: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  width: 153px;
+  @include large-desktop {
+    width: 100%;
+  }
+}
+
+.proposalFilter {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.categoryLabel {
+  color: var(--color-neutral-60);
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 4px;
+}

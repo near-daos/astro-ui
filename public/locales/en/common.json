@@ -50,6 +50,11 @@
   "depositToDao": "Deposit to DAO",
   "deposit": "Deposit",
   "joinDao": "Join DAO",
+  "minimumSearchCharacters": "Please enter at least 3 characters to search",
+  "searchBountyPlaceholder": "Search Bounty Name",
+  "all": "All",
+  "selectedProposals": "Selected {{length}} proposals",
+  "filterByProposer": "Filter by proposer",
   "bountiesPage": {
     "successClaimBountyNotification": "The blockchain transactions might take some time to perform, please visit the page in few seconds",
     "comingSoon": "Coming Soon",

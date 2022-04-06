@@ -7,7 +7,7 @@ import { useTranslation } from 'next-i18next';
 
 import styles from './SideFilter.module.scss';
 
-type ListItem = {
+export type ListItem = {
   value?: string;
   label: string;
   disabled?: boolean;

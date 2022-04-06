@@ -12,6 +12,7 @@ import { usePopper } from 'react-popper';
 import { useDebounce, useMountedState, useToggle } from 'react-use';
 import { AnimatePresence, motion } from 'framer-motion';
 import isEmpty from 'lodash/isEmpty';
+import { useTranslation } from 'next-i18next';
 
 import { IconButton } from 'components/button/IconButton';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
@@ -30,22 +31,27 @@ interface SearchInputProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (val: string) => Promise<PaginationResponse<any> | null>;
   className?: string;
+  resultHintClassName?: string;
   loading: boolean;
   onClose?: () => void;
   placeholder?: string;
   showResults?: boolean;
   renderResult?: (item: DaoFeedItem) => ReactNode;
+  showLoader?: boolean;
 }
 
 export const SearchInput: FC<SearchInputProps> = ({
   onSubmit,
   className,
+  resultHintClassName,
   loading,
   onClose,
   placeholder,
   showResults,
   renderResult,
+  showLoader = true,
 }) => {
+  const { t } = useTranslation();
   const isMounted = useMountedState();
   const ref = useRef(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -165,11 +171,11 @@ export const SearchInput: FC<SearchInputProps> = ({
             >
               {showHint && (
                 <div className={styles.hint}>
-                  Please enter at least 3 characters to search
+                  {t('minimumSearchCharacters')}
                 </div>
               )}
               {showResults && !!searchResults?.length && renderResult && (
-                <div className={styles.hint}>
+                <div className={cn(styles.hint, resultHintClassName)}>
                   {searchResults.map(item => {
                     const data = item as DaoFeedItem;
 
@@ -180,7 +186,7 @@ export const SearchInput: FC<SearchInputProps> = ({
               {showResults && !searchResults?.length && (
                 <div className={styles.hint}>
                   <NoResultsView
-                    title="No results found"
+                    title={t('noResultsFound')}
                     imgClassName={styles.noResultsImage}
                     className={styles.noResults}
                   />
@@ -213,29 +219,31 @@ export const SearchInput: FC<SearchInputProps> = ({
 
   return (
     <div className={cn(styles.root, className)} ref={ref}>
-      <div className={styles.iconHolder}>
-        <AnimatePresence>
-          {loading ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              <LoadingIndicator className={styles.loader} />
-            </motion.div>
-          ) : (
-            <Icon name="buttonSearch" className={styles.icon} />
-          )}
-        </AnimatePresence>
-      </div>
+      {showLoader ? (
+        <div className={styles.iconHolder}>
+          <AnimatePresence>
+            {loading ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <LoadingIndicator className={styles.loader} />
+              </motion.div>
+            ) : (
+              <Icon name="buttonSearch" className={styles.icon} />
+            )}
+          </AnimatePresence>
+        </div>
+      ) : null}
       <input
         ref={inputRef}
         tabIndex={0}
         value={value}
         onChange={handleChange}
-        className={cn(styles.input, 'body1')}
+        className={cn(styles.input, { [styles.withoutLoading]: !showLoader })}
         type="text"
-        placeholder={placeholder || 'Search Bounty Name'}
+        placeholder={placeholder || t('searchBountyPlaceholder')}
         onKeyUp={handleKeys}
       />
       {renderCloseButton()}
