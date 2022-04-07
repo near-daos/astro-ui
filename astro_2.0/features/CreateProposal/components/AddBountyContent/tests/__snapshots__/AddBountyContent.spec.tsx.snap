@@ -18,14 +18,16 @@ exports[`AddBountyContent Should render component 1`] = `
           class="undefined"
           for="1"
         >
-          <input
-            class=""
-            id="1"
-            min="0"
-            placeholder="00.0000"
-            style="text-align: left; width: 7ch; padding-right: 4px;"
-            type="number"
-          />
+          <div>
+            <input
+              class=""
+              id="1"
+              min="0"
+              placeholder="00.0000"
+              style="text-align: left; width: 7ch; padding-right: 4px;"
+              type="number"
+            />
+          </div>
         </label>
       </div>
       <div
@@ -96,16 +98,18 @@ exports[`AddBountyContent Should render component 1`] = `
           class="undefined"
           for="2"
         >
-          <input
-            class=""
-            id="2"
-            min="1"
-            pattern="/d+"
-            placeholder="0"
-            step="1"
-            style="text-align: left;"
-            type="number"
-          />
+          <div>
+            <input
+              class=""
+              id="2"
+              min="1"
+              pattern="/d+"
+              placeholder="0"
+              step="1"
+              style="text-align: left;"
+              type="number"
+            />
+          </div>
         </label>
       </div>
       <div />
@@ -123,14 +127,16 @@ exports[`AddBountyContent Should render component 1`] = `
           class="undefined"
           for="3"
         >
-          <input
-            class=""
-            id="3"
-            min="1"
-            placeholder="0"
-            style="text-align: left;"
-            type="number"
-          />
+          <div>
+            <input
+              class=""
+              id="3"
+              min="1"
+              placeholder="0"
+              style="text-align: left;"
+              type="number"
+            />
+          </div>
         </label>
       </div>
     </div>

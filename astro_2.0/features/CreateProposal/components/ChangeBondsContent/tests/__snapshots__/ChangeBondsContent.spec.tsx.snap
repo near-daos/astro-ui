@@ -22,14 +22,16 @@ exports[`ChangeBondsContent Should render component 1`] = `
             class="undefined"
             for="1"
           >
-            <input
-              class=""
-              id="1"
-              min="0"
-              placeholder="1e-24"
-              style="text-align: left;"
-              type="number"
-            />
+            <div>
+              <input
+                class=""
+                id="1"
+                min="0"
+                placeholder="1e-24"
+                style="text-align: left;"
+                type="number"
+              />
+            </div>
           </label>
         </div>
         <div
@@ -46,14 +48,16 @@ exports[`ChangeBondsContent Should render component 1`] = `
             class="undefined"
             for="2"
           >
-            <input
-              class=""
-              id="2"
-              min="1"
-              placeholder="5.5555555555555555556e-13"
-              style="text-align: left;"
-              type="number"
-            />
+            <div>
+              <input
+                class=""
+                id="2"
+                min="1"
+                placeholder="5.5555555555555555556e-13"
+                style="text-align: left;"
+                type="number"
+              />
+            </div>
           </label>
         </div>
       </div>
@@ -77,14 +81,16 @@ exports[`ChangeBondsContent Should render component 1`] = `
             class="undefined"
             for="3"
           >
-            <input
-              class=""
-              id="3"
-              min="0"
-              placeholder="3e-24"
-              style="text-align: left;"
-              type="number"
-            />
+            <div>
+              <input
+                class=""
+                id="3"
+                min="0"
+                placeholder="3e-24"
+                style="text-align: left;"
+                type="number"
+              />
+            </div>
           </label>
         </div>
         <div
@@ -101,14 +107,16 @@ exports[`ChangeBondsContent Should render component 1`] = `
             class="undefined"
             for="4"
           >
-            <input
-              class=""
-              id="4"
-              min="1"
-              placeholder="1.1111111111111111111e-12"
-              style="text-align: left;"
-              type="number"
-            />
+            <div>
+              <input
+                class=""
+                id="4"
+                min="1"
+                placeholder="1.1111111111111111111e-12"
+                style="text-align: left;"
+                type="number"
+              />
+            </div>
           </label>
         </div>
       </div>

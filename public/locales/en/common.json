@@ -427,13 +427,22 @@
     "popup": {
       "send": "Send",
       "save": "Save",
+      "seconds": "sec",
       "email": {
         "title": "Add email",
-        "message": "We will send you an email to confirm your new mail."
+        "message": "We will send you an email to confirm your new mail.",
+        "inputLabel": "Email",
+        "codeFrom": "Code from email",
+        "required": "Email is a required field",
+        "error": "Must be a valid email"
       },
       "phone": {
         "title": "Add phone number",
-        "message": "We will send you a sms to confirm your new phone number."
+        "message": "We will send you a sms to confirm your new phone number.",
+        "inputLabel": "Phone label",
+        "codeFrom": "Code from sms",
+        "required": "Phone number is a required field",
+        "error": "Must be a valid phone number"
       }
     }
   }
