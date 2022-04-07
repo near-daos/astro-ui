@@ -1,0 +1,9 @@
+.header {
+  margin: 32px 0 24px;
+}
+
+.cards {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}

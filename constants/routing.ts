@@ -31,3 +31,5 @@ export const CREATE_GOV_TOKEN_PAGE_URL =
 export const ALL_BOUNTIES_PAGE_URL = '/dao/[dao]/tasks/bounties/list';
 export const SINGLE_BOUNTY_PAGE_URL =
   '/dao/[dao]/tasks/bounties/[bountyContext]';
+
+export const MY_ACCOUNT_PAGE_URL = '/my-account';
