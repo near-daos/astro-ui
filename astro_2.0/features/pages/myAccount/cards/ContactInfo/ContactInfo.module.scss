@@ -1,0 +1,25 @@
+.root {
+  align-items: center;
+  display: flex;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.iconHolder {
+  align-items: center;
+  background-color: var(--color-neutral-30);
+  border-radius: 28px;
+
+  display: flex;
+  height: 28px;
+  justify-content: center;
+  margin-right: 10px;
+  width: 28px;
+}
+
+.icon {
+  color: var(--color-neutral-80);
+  height: 16px;
+  width: 16px;
+}

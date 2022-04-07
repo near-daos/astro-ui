@@ -1,3 +1,4 @@
+import isEmpty from 'lodash/isEmpty';
 import React, { useCallback } from 'react';
 import { useModal } from 'components/modal';
 import { MoreLinksModal } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLinks/components/MoreLinksModal/MoreLinksModal';
@@ -16,7 +17,7 @@ export const ShowMoreLinks: React.FC<ShowMoreLinksProps> = ({ links }) => {
     await showModal();
   }, [showModal]);
 
-  if (!links || !links.length) {
+  if (isEmpty(links)) {
     return null;
   }
 

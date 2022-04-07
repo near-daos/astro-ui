@@ -415,5 +415,26 @@
     "vlOfBounties": "VL of Bounties",
     "activity": "Activity",
     "avgGroupsDao": "Avg. Groups/DAO"
+  },
+  "myAccountPage": {
+    "header": "My account",
+    "walletId": "Wallet ID",
+    "email": "Email",
+    "phone": "Phone number",
+    "add": "Add",
+    "notification": "Notification",
+    "settings": "Settings",
+    "popup": {
+      "send": "Send",
+      "save": "Save",
+      "email": {
+        "title": "Add email",
+        "message": "We will send you an email to confirm your new mail."
+      },
+      "phone": {
+        "title": "Add phone number",
+        "message": "We will send you a sms to confirm your new phone number."
+      }
+    }
   }
 }
