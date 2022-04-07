@@ -6,13 +6,13 @@ import { DaoContext } from 'types/context';
 
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
-import { SettingsPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/SettingsPageContent';
+import { DaoConfigPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoConfigPageContent';
 
-export interface SettingsPageProps {
+export interface DaoConfigPageProps {
   daoContext: DaoContext;
 }
 
-const SettingsPage: NextPage<SettingsPageProps> = ({ daoContext }) => {
+const DaoConfigPage: NextPage<DaoConfigPageProps> = ({ daoContext }) => {
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     daoContext.dao.id,
     daoContext.dao.displayName
@@ -23,6 +23,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({ daoContext }) => {
       breadcrumbsConfig.ALL_DAOS_URL,
       breadcrumbsConfig.SINGLE_DAO_PAGE,
       breadcrumbsConfig.SETTINGS,
+      breadcrumbsConfig.DAO_CONFIG,
     ];
   }, [breadcrumbsConfig]);
 
@@ -32,9 +33,9 @@ const SettingsPage: NextPage<SettingsPageProps> = ({ daoContext }) => {
       breadcrumbs={breadcrumbs}
       defaultProposalType={ProposalVariant.ProposeChangeDaoName}
     >
-      <SettingsPageContent daoContext={daoContext} />
+      <DaoConfigPageContent daoContext={daoContext} />
     </NestedDaoPageWrapper>
   );
 };
 
-export default SettingsPage;
+export default DaoConfigPage;

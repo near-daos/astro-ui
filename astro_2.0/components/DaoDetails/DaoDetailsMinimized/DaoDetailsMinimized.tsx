@@ -52,7 +52,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
     proposals: `/dao/${dao.id}/proposals`,
     funds: `/dao/${dao.id}/treasury/tokens`,
     members: `/dao/${dao.id}/groups/all`,
-    settings: `/dao/${dao.id}/governance/settings?daoFilter=nameAndPurpose`,
+    settings: `/dao/${dao.id}/governance/settings`,
     nfts: `/dao/${dao.id}/treasury/nfts`,
     bounties: `/dao/${dao.id}/tasks/bounties/list`,
     polls: `/dao/${dao.id}/tasks/polls`,

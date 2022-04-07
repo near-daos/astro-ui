@@ -33,6 +33,11 @@ import { parseISO } from 'date-fns';
 import { getDistanceFromNow } from 'utils/format';
 import { TokenDistributionContent } from 'astro_2.0/features/ViewProposal/components/TokenDistributionContent';
 import { ContractAcceptanceContent } from 'astro_2.0/features/ViewProposal/components/ContractAcceptanceContent';
+import {
+  getInitialCreationPermissions,
+  getInitialVotingPermissions,
+} from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';
+import { ChangePermissionsContent } from 'astro_2.0/features/ViewProposal/components/ChangePermissionsContent';
 
 export function getContentNode(proposal: ProposalFeedItem): ReactNode {
   const { dao } = proposal;
@@ -340,6 +345,38 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
 
         break;
       }
+      case ProposalVariant.ProposeChangeProposalCreationPermissions: {
+        if (proposal.kind.type === ProposalType.ChangePolicy) {
+          const initialData = getInitialCreationPermissions({
+            groups: proposal.kind.policy.roles
+              .filter(role => role.kind !== 'Everyone')
+              .map(role => ({
+                name: role.name,
+                permissions: role.permissions,
+              })),
+          });
+
+          content = <ChangePermissionsContent initialData={initialData} />;
+        }
+
+        break;
+      }
+      case ProposalVariant.ProposeChangeProposalVotingPermissions: {
+        if (proposal.kind.type === ProposalType.ChangePolicy) {
+          const initialData = getInitialVotingPermissions({
+            groups: proposal.kind.policy.roles
+              .filter(role => role.kind !== 'Everyone')
+              .map(role => ({
+                name: role.name,
+                permissions: role.permissions,
+              })),
+          });
+
+          content = <ChangePermissionsContent initialData={initialData} />;
+        }
+
+        break;
+      }
       default: {
         break;
       }
@@ -479,6 +516,12 @@ export function getProposalVariantLabel(
     }
     case ProposalVariant.ProposeTokenDistribution: {
       return 'Distribution of tokens';
+    }
+    case ProposalVariant.ProposeChangeProposalCreationPermissions: {
+      return 'Proposal creation';
+    }
+    case ProposalVariant.ProposeChangeProposalVotingPermissions: {
+      return 'Voting permissions';
     }
     default: {
       return type;

@@ -11,6 +11,8 @@ import {
   SINGLE_BOUNTY_PAGE_URL,
   ALL_BOUNTIES_PAGE_URL,
   GOVERNANCE_TOKEN_INFO_URL,
+  DAO_SETTINGS_PAGE_URL,
+  DAO_CONFIG_PAGE_URL,
 } from 'constants/routing';
 import { UrlObject } from 'url';
 import { Proposal } from 'types/proposal';
@@ -141,7 +143,22 @@ export function useGetBreadcrumbsConfig(
         label: 'NFTs',
       },
       SETTINGS: {
-        label: t('settings'),
+        label: t('daoSettings'),
+        href: {
+          pathname: DAO_SETTINGS_PAGE_URL,
+          query: {
+            dao: daoId,
+          },
+        },
+      },
+      DAO_CONFIG: {
+        label: t('daoConfig'),
+        href: {
+          pathname: DAO_CONFIG_PAGE_URL,
+          query: {
+            dao: daoId,
+          },
+        },
       },
     };
   }, [

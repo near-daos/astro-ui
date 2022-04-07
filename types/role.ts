@@ -19,7 +19,31 @@ export type DaoPermission =
   | '*:AddProposal'
   | '*:VoteApprove'
   | '*:VoteReject'
-  | '*:VoteRemove';
+  | '*:VoteRemove'
+  | 'ChangePolicy:AddProposal'
+  | 'AddBounty:AddProposal'
+  | 'Transfer:AddProposal'
+  | 'Vote:AddProposal'
+  | 'RemoveMemberFromRole:AddProposal'
+  | 'AddMemberToRole:AddProposal'
+  | 'ChangePolicy:VoteApprove'
+  | 'AddBounty:VoteApprove'
+  | 'Transfer:VoteApprove'
+  | 'Vote:VoteApprove'
+  | 'RemoveMemberFromRole:VoteApprove'
+  | 'AddMemberToRole:VoteApprove'
+  | 'ChangePolicy:VoteReject'
+  | 'AddBounty:VoteReject'
+  | 'Transfer:VoteReject'
+  | 'Vote:VoteReject'
+  | 'RemoveMemberFromRole:VoteReject'
+  | 'AddMemberToRole:VoteReject'
+  | 'ChangePolicy:VoteRemove'
+  | 'AddBounty:VoteRemove'
+  | 'Transfer:VoteRemove'
+  | 'Vote:VoteRemove'
+  | 'RemoveMemberFromRole:VoteRemove'
+  | 'AddMemberToRole:VoteRemove';
 
 export type DaoRole = {
   createdAt: string;

@@ -1,17 +1,13 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
-import cn from 'classnames';
+import React, { FC, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useMedia } from 'react-use';
-import { useRouter } from 'next/router';
 
-import { Button } from 'components/button/Button';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 
 import styles from './SettingsFilterToggle.module.scss';
 
 const TEMP_DISABLED_OPTIONS = [
-  'proposalCreation',
-  'votingPermissions',
+  // 'proposalCreation',
+  // 'votingPermissions',
   'groups',
   'members',
   'daoRules',
@@ -28,14 +24,14 @@ const POLICY_OPTIONS = [
   'daoRules',
 ];
 
-export const SettingsFilterToggle: FC = () => {
-  const router = useRouter();
-  const daoFilter = router.query.daoFilter as string;
+interface SettingsFilterToggleProps {
+  variant: 'daoConfig' | 'daoPolicy';
+}
+
+export const SettingsFilterToggle: FC<SettingsFilterToggleProps> = ({
+  variant,
+}) => {
   const { t } = useTranslation();
-  const [activeFilter, setActiveFilter] = useState(
-    daoFilter && POLICY_OPTIONS.includes(daoFilter) ? 'daoPolicy' : 'daoConfig'
-  );
-  const isMobile = useMedia('(max-width: 1280px)');
 
   const daoConfigFilterOptions = useMemo(() => {
     const keys = [
@@ -61,53 +57,10 @@ export const SettingsFilterToggle: FC = () => {
     }));
   }, [t]);
 
-  const handleToggle = useCallback(
-    (filter: string, initialValue: string) => {
-      setActiveFilter(filter);
-      router.replace(
-        {
-          pathname: '',
-          query: {
-            ...router.query,
-            daoFilter: initialValue,
-          },
-        },
-        undefined,
-        {
-          shallow: false,
-          scroll: false,
-        }
-      );
-    },
-    [router]
-  );
-
   return (
     <div className={styles.root}>
-      <div className={styles.toggle}>
-        <Button
-          variant="tertiary"
-          size="block"
-          className={cn(styles.button, {
-            [styles.active]: activeFilter === 'daoConfig',
-          })}
-          onClick={() => handleToggle('daoConfig', 'nameAndPurpose')}
-        >
-          {t('daoConfig')}
-        </Button>
-        <Button
-          variant="tertiary"
-          size="block"
-          className={cn(styles.button, {
-            [styles.active]: activeFilter === 'daoPolicy',
-          })}
-          onClick={() => handleToggle('daoPolicy', 'votingPolicy')}
-        >
-          {t('settingsPage.daoPolicy')}
-        </Button>
-      </div>
       <div className={styles.filters}>
-        {(!isMobile || activeFilter === 'daoConfig') && (
+        {variant === 'daoConfig' && (
           <SideFilter
             hideAllOption
             queryName="daoFilter"
@@ -116,7 +69,7 @@ export const SettingsFilterToggle: FC = () => {
             className={styles.daoConfigFilter}
           />
         )}
-        {(!isMobile || activeFilter === 'daoPolicy') && (
+        {variant === 'daoPolicy' && (
           <SideFilter
             hideAllOption
             queryName="daoFilter"

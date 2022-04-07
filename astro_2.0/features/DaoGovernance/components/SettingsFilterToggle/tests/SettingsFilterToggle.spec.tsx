@@ -2,7 +2,6 @@
 import React from 'react';
 import { render } from 'jest/testUtils';
 import { useRouter } from 'next/router';
-import { fireEvent } from '@testing-library/dom';
 
 import { SettingsFilterToggle } from 'astro_2.0/features/DaoGovernance/components/SettingsFilterToggle';
 
@@ -47,9 +46,11 @@ describe('SettingsFilterToggle', () => {
       },
     }));
 
-    const { getAllByText } = render(<SettingsFilterToggle />);
+    const { getAllByText } = render(
+      <SettingsFilterToggle variant="daoConfig" />
+    );
 
-    expect(getAllByText('daoConfig')).toHaveLength(2);
+    expect(getAllByText('daoConfig')).toHaveLength(1);
   });
 
   it('Should render daoPolicy filter', () => {
@@ -60,52 +61,10 @@ describe('SettingsFilterToggle', () => {
       },
     }));
 
-    const { getAllByText } = render(<SettingsFilterToggle />);
+    const { getAllByText } = render(
+      <SettingsFilterToggle variant="daoPolicy" />
+    );
 
-    expect(getAllByText('settingsPage.daoPolicy')).toHaveLength(2);
-  });
-
-  it('Should switch to daoConfig filter', () => {
-    const setActiveFilter = jest.fn();
-
-    jest
-      .spyOn(React, 'useState')
-      .mockImplementationOnce(() => [true, setActiveFilter]);
-
-    // @ts-ignore
-    useRouter.mockImplementation(() => ({
-      query: {
-        daoFilter: 'someFilter',
-      },
-      replace: () => 0,
-    }));
-
-    const { getAllByRole } = render(<SettingsFilterToggle />);
-
-    fireEvent.click(getAllByRole('button')[0]);
-
-    expect(setActiveFilter).toBeCalledWith('daoConfig');
-  });
-
-  it('Should switch to daoPolicy filter', () => {
-    const setActiveFilter = jest.fn();
-
-    jest
-      .spyOn(React, 'useState')
-      .mockImplementationOnce(() => [true, setActiveFilter]);
-
-    // @ts-ignore
-    useRouter.mockImplementation(() => ({
-      query: {
-        daoFilter: 'someFilter',
-      },
-      replace: () => 0,
-    }));
-
-    const { getAllByRole } = render(<SettingsFilterToggle />);
-
-    fireEvent.click(getAllByRole('button')[1]);
-
-    expect(setActiveFilter).toBeCalledWith('daoPolicy');
+    expect(getAllByText('settingsPage.daoPolicy')).toHaveLength(1);
   });
 });

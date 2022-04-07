@@ -45,6 +45,7 @@ import {
   validateImgSize,
 } from 'utils/imageValidators';
 import { SputnikNearService } from 'services/sputnik';
+import { ChangeVotingPermissionsContent } from 'astro_2.0/features/CreateProposal/components/ChangeVotingPermissionsContent';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -354,6 +355,10 @@ export function getFormContentNode(
           governanceToken={{ name: 'REF', value: 1000 }}
         />
       );
+    }
+    case ProposalVariant.ProposeChangeProposalVotingPermissions:
+    case ProposalVariant.ProposeChangeProposalCreationPermissions: {
+      return <ChangeVotingPermissionsContent />;
     }
     default: {
       return null;

@@ -296,6 +296,27 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   function renderCardContent() {
     switch (variant) {
+      case ProposalVariant.ProposeChangeProposalVotingPermissions:
+      case ProposalVariant.ProposeChangeProposalCreationPermissions: {
+        return (
+          <>
+            {renderProposer()}
+            <div className={styles.descriptionCell}>
+              <FieldWrapper
+                label={t(`proposalCard.proposalDescription`)}
+                fullWidth
+              >
+                <div className={styles.proposalDescription}>{description}</div>
+              </FieldWrapper>
+
+              <div className={styles.proposalExternalLink}>
+                <ExternalLink to={link} />
+              </div>
+              <div className={styles.customContent}>{content}</div>
+            </div>
+          </>
+        );
+      }
       case ProposalVariant.ProposeContractAcceptance:
       case ProposalVariant.ProposeTokenDistribution: {
         return <div className={styles.descriptionCell}>{content}</div>;

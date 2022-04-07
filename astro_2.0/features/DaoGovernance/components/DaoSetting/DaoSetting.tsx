@@ -5,7 +5,7 @@ import styles from 'astro_2.0/features/DaoGovernance/components/DaoSetting/DaoSe
 interface DaoSettingProps {
   settingsName: string;
   className?: string;
-  settingsChangeHandler: () => void;
+  settingsChangeHandler?: () => void;
   disableNewProposal?: boolean;
 }
 
@@ -20,13 +20,16 @@ export const DaoSetting: React.FC<DaoSettingProps> = ({
     <div className={className}>
       <div className={styles.root}>
         <div className={styles.label}>{settingsName}</div>
-        <Button
-          disabled={disableNewProposal}
-          variant="black"
-          onClick={settingsChangeHandler}
-        >
-          Propose Changes
-        </Button>
+        {settingsChangeHandler && (
+          <Button
+            className={styles.actionButton}
+            disabled={disableNewProposal}
+            variant="black"
+            onClick={() => settingsChangeHandler()}
+          >
+            Propose Changes
+          </Button>
+        )}
       </div>
       <div>{children}</div>
     </div>

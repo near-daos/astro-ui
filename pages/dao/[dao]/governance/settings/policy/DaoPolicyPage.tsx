@@ -6,13 +6,13 @@ import { DaoContext } from 'types/context';
 
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
-import { SettingsPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/SettingsPageContent';
+import { DaoPolicyPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent';
 
-export interface SettingsPageProps {
+export interface DaoPolicyPageProps {
   daoContext: DaoContext;
 }
 
-const SettingsPage: NextPage<SettingsPageProps> = ({ daoContext }) => {
+const DaoPolicyPage: NextPage<DaoPolicyPageProps> = ({ daoContext }) => {
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     daoContext.dao.id,
     daoContext.dao.displayName
@@ -23,6 +23,7 @@ const SettingsPage: NextPage<SettingsPageProps> = ({ daoContext }) => {
       breadcrumbsConfig.ALL_DAOS_URL,
       breadcrumbsConfig.SINGLE_DAO_PAGE,
       breadcrumbsConfig.SETTINGS,
+      breadcrumbsConfig.DAO_CONFIG,
     ];
   }, [breadcrumbsConfig]);
 
@@ -30,11 +31,11 @@ const SettingsPage: NextPage<SettingsPageProps> = ({ daoContext }) => {
     <NestedDaoPageWrapper
       daoContext={daoContext}
       breadcrumbs={breadcrumbs}
-      defaultProposalType={ProposalVariant.ProposeChangeDaoName}
+      defaultProposalType={ProposalVariant.ProposeChangeVotingPolicy}
     >
-      <SettingsPageContent daoContext={daoContext} />
+      <DaoPolicyPageContent daoContext={daoContext} />
     </NestedDaoPageWrapper>
   );
 };
 
-export default SettingsPage;
+export default DaoPolicyPage;

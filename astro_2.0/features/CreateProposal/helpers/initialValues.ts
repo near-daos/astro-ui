@@ -156,6 +156,16 @@ export function getFormInitialValues(
         timeoutGranularity: 'Hours',
       };
     }
+    case ProposalVariant.ProposeChangeProposalVotingPermissions:
+    case ProposalVariant.ProposeChangeProposalCreationPermissions: {
+      return {
+        details: '',
+        externalUrl: '',
+        amount: '',
+        gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
+      };
+    }
     default: {
       return {};
     }
