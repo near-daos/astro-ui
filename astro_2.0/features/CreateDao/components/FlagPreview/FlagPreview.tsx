@@ -7,8 +7,8 @@ import { FlagRenderer } from 'astro_2.0/components/Flag';
 import styles from './FlagPreview.module.scss';
 
 interface FlagPreviewProps {
-  coverFile: string;
-  logoFile: string;
+  coverFile?: string;
+  logoFile?: string;
 }
 
 export const FlagPreview: React.FC<FlagPreviewProps> = ({

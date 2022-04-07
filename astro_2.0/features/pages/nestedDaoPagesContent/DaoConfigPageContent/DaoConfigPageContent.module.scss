@@ -1,0 +1,188 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-template-areas:
+    'dao'
+    'title'
+    'filter'
+    'content';
+  grid-template-columns: 1fr;
+  row-gap: 24px;
+
+  @media screen and (min-width: #{breakpoints.$screen-lg + 1}px) {
+    grid-template-areas:
+      'dao dao'
+      'title title'
+      'filter content';
+    grid-template-columns: 1fr 3fr;
+  }
+}
+
+.sideFilter {
+  grid-area: filter;
+}
+
+.content {
+  align-items: flex-start;
+  display: flex;
+  grid-area: content;
+  width: 100%;
+}
+
+.contentRow {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  margin-bottom: 48px;
+  padding: 36px 40px;
+  width: 100%;
+}
+
+.daoConfigFilter {
+  margin-bottom: 24px;
+  max-width: 300px;
+  position: relative;
+  top: 0;
+}
+
+.daoPolicyFilter {
+  max-width: 300px;
+  position: relative;
+  top: 0;
+}
+
+.newProposal {
+  padding-top: 56px;
+}
+
+.legalLink,
+.legalIcon {
+  align-items: center;
+  color: var(--color-brand-purple);
+  display: flex;
+}
+
+.legalIcon {
+  margin-left: 8px;
+}
+
+.label {
+  @extend %subtitle5;
+}
+
+.daoName {
+  @extend %title3;
+}
+
+.daoPurpose {
+  @extend %body1;
+}
+
+.votingPolicyRow {
+  margin-bottom: 42px;
+  width: 100%;
+}
+
+.breadcrumbsRow {
+  grid-area: breadcrumbs;
+}
+
+.titleRow {
+  @extend %heading1;
+  grid-area: title;
+
+  @include tablet-portrait {
+    margin-bottom: 16px;
+  }
+}
+
+.settingsContainer {
+  display: flex;
+  flex-direction: column;
+
+  @include tablet-portrait {
+    flex-direction: row;
+  }
+
+  > .settingsCard {
+    margin-bottom: 24px;
+  }
+
+  > .settingsCard:not(:last-of-type) {
+    margin-right: 24px;
+  }
+}
+
+.link {
+  align-items: center;
+  color: var(--color-brand-purple);
+  display: flex;
+  width: 100%;
+
+  @include tablet-portrait {
+    max-width: unset;
+    white-space: normal;
+  }
+}
+
+.linkText {
+  flex: 1;
+}
+
+.linkIcon {
+  height: 24px;
+  margin-right: 24px;
+  width: 24px;
+}
+
+.rowSeparator {
+  border: 1px solid var(--color-neutral-40);
+  height: 1px;
+  margin-top: 56px;
+}
+
+.row {
+  flex-direction: row;
+  margin-bottom: 12px;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.groupsWrapper {
+  background: var(--color-neutral-10);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px 16px;
+
+  > div {
+    margin-right: 8px;
+  }
+}
+
+.dao {
+  grid-area: dao;
+  margin: 0;
+
+  @include tablet-portrait {
+    margin: 0 0 44px;
+  }
+}
+
+.warningWrapper {
+  margin-top: 32px;
+}
+
+.createProposal {
+  margin-top: 56px;
+
+  @include tablet-landscape {
+    margin-top: 32px;
+  }
+}

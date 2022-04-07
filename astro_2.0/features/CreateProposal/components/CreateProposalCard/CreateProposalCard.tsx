@@ -81,6 +81,22 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
 
   function renderProposalCell() {
     switch (type) {
+      case ProposalVariant.ProposeChangeProposalCreationPermissions: {
+        return (
+          <InfoBlockWidget
+            label="Proposal type: Change Policy"
+            value="Proposal Creation"
+          />
+        );
+      }
+      case ProposalVariant.ProposeChangeProposalVotingPermissions: {
+        return (
+          <InfoBlockWidget
+            label="Proposal type: Change Policy"
+            value="Voting Permissions"
+          />
+        );
+      }
       case ProposalVariant.ProposeDoneBounty: {
         return (
           <InfoBlockWidget
@@ -158,7 +174,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     }
   }
 
-  function renderDescription() {
+  function renderDescription(optionalNode?: ReactNode) {
     switch (type) {
       case ProposalVariant.ProposeCreateToken: {
         return null;
@@ -201,6 +217,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
                 placeholder="example.com/putyourlinkhere"
               />
             </div>
+            {optionalNode}
           </div>
         );
       }
@@ -209,6 +226,18 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
 
   function renderCardContent() {
     switch (type) {
+      case ProposalVariant.ProposeChangeProposalVotingPermissions:
+      case ProposalVariant.ProposeChangeProposalCreationPermissions: {
+        return (
+          <>
+            {renderProposer()}
+            {renderDescription(
+              <div className={styles.customContent}>{content}</div>
+            )}
+          </>
+        );
+      }
+
       case ProposalVariant.ProposeContractAcceptance:
       case ProposalVariant.ProposeTokenDistribution: {
         return <div className={styles.descriptionCell}>{content}</div>;

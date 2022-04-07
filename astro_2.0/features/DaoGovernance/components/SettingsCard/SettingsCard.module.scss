@@ -2,7 +2,8 @@
 @import 'styles/mixins';
 
 .root {
-  @include card-shadow;
+  border: 1px solid var(--color-neutral-50);
+  border-radius: 8px;
   padding: 23px 32px;
   width: 100%;
 

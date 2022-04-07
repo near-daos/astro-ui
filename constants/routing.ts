@@ -31,3 +31,7 @@ export const CREATE_GOV_TOKEN_PAGE_URL =
 export const ALL_BOUNTIES_PAGE_URL = '/dao/[dao]/tasks/bounties/list';
 export const SINGLE_BOUNTY_PAGE_URL =
   '/dao/[dao]/tasks/bounties/[bountyContext]';
+
+export const DAO_SETTINGS_PAGE_URL = `${SINGLE_DAO_PAGE}/governance/settings`;
+export const DAO_CONFIG_PAGE_URL = `${DAO_SETTINGS_PAGE_URL}/config`;
+export const DAO_POLICY_PAGE_URL = `${DAO_SETTINGS_PAGE_URL}/policy`;

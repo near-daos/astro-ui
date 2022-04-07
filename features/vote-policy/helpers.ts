@@ -199,7 +199,7 @@ export function getVoteDetails(
   return { details, votersList };
 }
 
-function getThreshold(value: number): [number, number] {
+export function getThreshold(value: number): [number, number] {
   const fraction = value / 100;
   const gcd = (a: number, b: number): number => {
     if (b < 0.0000001) {

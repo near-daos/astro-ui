@@ -71,7 +71,7 @@ describe('dao details minimized', () => {
     ${'.proposals'} | ${`/dao/${daoMock.id}/proposals`}
     ${'.funds'}     | ${`/dao/${daoMock.id}/treasury/tokens`}
     ${'.members'}   | ${`/dao/${daoMock.id}/groups/all`}
-    ${'.settings'}  | ${`/dao/${daoMock.id}/governance/settings?daoFilter=nameAndPurpose`}
+    ${'.settings'}  | ${`/dao/${daoMock.id}/governance/settings`}
     ${'.nfts'}      | ${`/dao/${daoMock.id}/treasury/nfts`}
     ${'.bounties'}  | ${`/dao/${daoMock.id}/tasks/bounties/list`}
     ${'.polls'}     | ${`/dao/${daoMock.id}/tasks/polls`}

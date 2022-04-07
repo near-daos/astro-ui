@@ -49,6 +49,8 @@ import {
 import { getTokenDistributionProposal } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent/helpers';
 import last from 'lodash/last';
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
+import { getNewPermissionsProposalObject } from 'astro_2.0/features/CreateProposal/helpers/permissionsHelpers';
+import { SelectorRow } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';
 
 function getChangeConfigProposal(
   daoId: string,
@@ -376,6 +378,48 @@ export async function getNewProposalObject(
         kind: 'Vote',
         bond: dao.policy.proposalBond,
       };
+    }
+    case ProposalVariant.ProposeChangeProposalVotingPermissions: {
+      const initialData = getInitialData(dao);
+      const proposedChanges = data.policy as SelectorRow[];
+
+      const newData = {
+        daoSettings: {
+          details: data.details,
+          externalLink: data.externalUrl,
+        },
+        policy: {
+          ...initialData?.policy,
+        },
+      };
+
+      return getNewPermissionsProposalObject(
+        dao,
+        newData as VotingPolicyPageInitialData,
+        proposedChanges,
+        ['VoteApprove', 'VoteReject', 'VoteRemove']
+      );
+    }
+    case ProposalVariant.ProposeChangeProposalCreationPermissions: {
+      const initialData = getInitialData(dao);
+      const proposedChanges = data.policy as SelectorRow[];
+
+      const newData = {
+        daoSettings: {
+          details: data.details,
+          externalLink: data.externalUrl,
+        },
+        policy: {
+          ...initialData?.policy,
+        },
+      };
+
+      return getNewPermissionsProposalObject(
+        dao,
+        newData as VotingPolicyPageInitialData,
+        proposedChanges,
+        'AddProposal'
+      );
     }
     default: {
       return null;
