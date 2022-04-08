@@ -25,18 +25,20 @@ exports[`Transaction details widget Should render component 1`] = `
                 class="undefined"
                 for="1"
               >
-                <input
-                  class=""
-                  data-testid="gas-input"
-                  id="1"
-                  max="300"
-                  min="10"
-                  placeholder="150"
-                  step="1"
-                  style="text-align: left; width: 6ch;"
-                  type="number"
-                  value=""
-                />
+                <div>
+                  <input
+                    class=""
+                    data-testid="gas-input"
+                    id="1"
+                    max="300"
+                    min="10"
+                    placeholder="150"
+                    step="1"
+                    style="text-align: left; width: 6ch;"
+                    type="number"
+                    value=""
+                  />
+                </div>
               </label>
             </div>
           </div>
@@ -55,18 +57,20 @@ exports[`Transaction details widget Should render component 1`] = `
                 class="undefined"
                 for="2"
               >
-                <input
-                  class=""
-                  id="2"
-                  max="0.25"
-                  min="0.01"
-                  placeholder="0.25"
-                  readonly=""
-                  step="0.01"
-                  style="text-align: left; width: 5ch;"
-                  type="number"
-                  value="0"
-                />
+                <div>
+                  <input
+                    class=""
+                    id="2"
+                    max="0.25"
+                    min="0.01"
+                    placeholder="0.25"
+                    readonly=""
+                    step="0.01"
+                    style="text-align: left; width: 5ch;"
+                    type="number"
+                    value="0"
+                  />
+                </div>
               </label>
               <div>
                 NEAR

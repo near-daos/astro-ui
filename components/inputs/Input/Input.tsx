@@ -16,6 +16,7 @@ interface InputProps
   isBorderless?: boolean;
   textAlign?: Property.TextAlign;
   inputClassName?: string;
+  rightContent?: ReactNode;
 }
 
 function getStateClass(isValid: boolean | undefined) {
@@ -49,6 +50,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       textAlign = 'left',
       type = 'text',
       inputClassName,
+      rightContent,
       ...props
     },
     externalRef
@@ -64,15 +66,18 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <label className={className} htmlFor={id}>
         {label && <span className={styles.label}>{label}</span>}
-        <input
-          className={cn(getStateClass(isValid), inputClassName)}
-          {...props}
-          id={id}
-          ref={externalRef}
-          type={type}
-          size={inputSize}
-          style={{ textAlign, ...inputStyles }}
-        />
+        <div className={styles.inputHolder}>
+          <input
+            className={cn(getStateClass(isValid), inputClassName)}
+            {...props}
+            id={id}
+            ref={externalRef}
+            type={type}
+            size={inputSize}
+            style={{ textAlign, ...inputStyles }}
+          />
+          {rightContent}
+        </div>
         {description && description.length > 0 && (
           <span className={styles.description}>{description}</span>
         )}

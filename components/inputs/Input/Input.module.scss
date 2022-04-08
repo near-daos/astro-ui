@@ -8,7 +8,7 @@
   gap: 0.5em;
 
   input {
-    border: 1.5px solid var(--color-neutral-60);
+    border: 0;
     border-radius: 4px;
     box-sizing: border-box;
     flex-basis: 100%;
@@ -23,6 +23,13 @@
       opacity: 1;
       transition: opacity 0.2s linear;
     }
+  }
+
+  .inputHolder {
+    border: 1.5px solid var(--color-neutral-60);
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: flex;
   }
 
   /* stylelint-disable */
@@ -66,15 +73,18 @@
 
 .borderless {
   input {
-    border: 0;
     padding-left: 0;
+  }
+
+  .inputHolder {
+    border: 0;
   }
 }
 
 .sizeSmall {
   width: 8em;
 
-  input {
+  .inputHolder {
     width: 8em;
   }
 }
@@ -82,7 +92,7 @@
 .sizeMedium {
   width: 16em;
 
-  input {
+  .inputHolder {
     width: 16em;
   }
 }
@@ -90,7 +100,7 @@
 .sizeLarge {
   width: 25em;
 
-  input {
+  .inputHolder {
     width: 16em;
   }
 }
@@ -100,6 +110,9 @@
 
   input {
     padding: 6.5px;
+  }
+
+  .inputHolder {
     text-align: center;
     width: 42px;
   }
