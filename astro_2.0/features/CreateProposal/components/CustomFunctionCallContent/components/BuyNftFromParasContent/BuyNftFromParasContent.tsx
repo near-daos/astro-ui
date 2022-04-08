@@ -33,7 +33,7 @@ export const BuyNftFromParasContent: FC = () => {
           <Input
             className={cn(styles.inputWrapper, styles.narrow)}
             type="text"
-            placeholder="5971:gambiarra.mintbase1.near"
+            placeholder="5971:x.paras.near"
             isBorderless
             size="block"
             {...register('tokenKey')}
