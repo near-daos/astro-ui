@@ -5,8 +5,9 @@ import { getSignature } from 'services/sputnik/SputnikNearService/services/helpe
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import {
   SenderWalletInstance,
-  WalletService,
   Transaction,
+  WalletMeta,
+  WalletService,
 } from 'services/sputnik/SputnikNearService/services/types';
 import { WalletType } from 'types/config';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
@@ -16,6 +17,13 @@ export class SenderWalletService implements WalletService {
   private readonly walletInstance: SenderWalletInstance;
 
   private readonly walletType = WalletType.SENDER;
+
+  private readonly walletInfo: WalletMeta = {
+    name: 'Sender',
+    type: 'extension',
+    url: 'senderwallet.io',
+    id: WalletType.SENDER,
+  };
 
   constructor(walletInstance: SenderWalletInstance) {
     this.walletInstance = walletInstance;
@@ -52,7 +60,7 @@ export class SenderWalletService implements WalletService {
   }
 
   async getPublicKey(): Promise<string | null> {
-    if (!this.walletInstance.isSignedIn()) {
+    if (!this.walletInstance?.isSignedIn()) {
       return null;
     }
 
@@ -61,6 +69,7 @@ export class SenderWalletService implements WalletService {
 
   async getSignature(): Promise<string | null> {
     const privateKey = this.walletInstance.authData.accessKey.secretKey;
+
     const keyPair = new KeyPairEd25519(privateKey);
 
     return getSignature(keyPair);
@@ -137,5 +146,14 @@ export class SenderWalletService implements WalletService {
     });
 
     return result.response;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  availableAccounts(): Promise<string[]> {
+    return Promise.resolve([]);
+  }
+
+  walletMeta(): WalletMeta {
+    return this.walletInfo;
   }
 }

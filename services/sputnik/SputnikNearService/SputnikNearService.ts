@@ -22,10 +22,12 @@ import { NearConfig } from 'config/near';
 import {
   DaoService,
   Transaction,
+  WalletMeta,
   WalletService,
 } from 'services/sputnik/SputnikNearService/services/types';
 import { configService } from 'services/ConfigService';
 import { CreateDaoParams } from 'services/sputnik/types';
+import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
 
 export const GAS_VALUE = new BN('300000000000000');
 export const FINALIZE_PROPOSAL_GAS_VALUE = new BN('150000000000000');
@@ -39,11 +41,34 @@ export class SputnikNearService implements WalletService, DaoService {
 
   public isSenderWalletAvailable: boolean;
 
-  constructor(walletService: WalletService) {
-    this.walletService = walletService;
+  private readonly wallets: Map<WalletType, WalletService>;
+
+  constructor(
+    wallets: Map<WalletType, WalletService>,
+    selectedWallet: WalletType
+  ) {
+    this.wallets = wallets;
     this.nearConfig = configService.get().nearConfig;
     this.appConfig = configService.get().appConfig;
+    this.walletService =
+      this.wallets.get(selectedWallet) ??
+      new SputnikWalletService(this.nearConfig);
     this.isSenderWalletAvailable = false;
+  }
+
+  availableWallets(): WalletMeta[] {
+    return Array.from(this.wallets.values()).map(service =>
+      service.walletMeta()
+    );
+  }
+
+  async switchWallet(walletType: WalletType): Promise<void> {
+    this.walletService =
+      this.wallets.get(walletType) ?? new SputnikWalletService(this.nearConfig);
+
+    if (!this.walletService.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
   }
 
   sendMoney(
@@ -59,6 +84,13 @@ export class SputnikNearService implements WalletService, DaoService {
 
   isSignedIn(): boolean {
     return this.walletService.isSignedIn();
+  }
+
+  initWallet(): void {
+    this.wallets.set(
+      WalletType.NEAR,
+      new SputnikWalletService(this.nearConfig)
+    );
   }
 
   getAccount(): ConnectedWalletAccount {
@@ -86,7 +118,7 @@ export class SputnikNearService implements WalletService, DaoService {
   }
 
   public async logout(): Promise<void> {
-    this.walletService.logout();
+    this.wallets.forEach(walletService => walletService.logout());
   }
 
   public getAccountId(): string {
@@ -426,5 +458,13 @@ export class SputnikNearService implements WalletService, DaoService {
     } catch (e) {
       return false;
     }
+  }
+
+  availableAccounts(): Promise<string[]> {
+    return this.walletService.availableAccounts();
+  }
+
+  walletMeta(): WalletMeta {
+    return this.walletService.walletMeta();
   }
 }

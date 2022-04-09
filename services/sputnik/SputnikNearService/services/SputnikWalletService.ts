@@ -15,8 +15,9 @@ import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { getSignature } from 'services/sputnik/SputnikNearService/services/helpers';
 import {
-  WalletService,
   Transaction,
+  WalletMeta,
+  WalletService,
 } from 'services/sputnik/SputnikNearService/services/types';
 import BN from 'bn.js';
 import { NearConfig } from 'config/near';
@@ -31,7 +32,14 @@ export class SputnikWalletService implements WalletService {
 
   private readonly config: NearConfig;
 
-  private keyStore?: BrowserLocalStorageKeyStore;
+  private keyStore: BrowserLocalStorageKeyStore;
+
+  private walletInfo: WalletMeta = {
+    name: 'NEAR',
+    type: 'web',
+    url: 'wallet.near.org',
+    id: WalletType.NEAR,
+  };
 
   public readonly successUrl: string = `${window.origin}/callback/auth`;
 
@@ -49,6 +57,14 @@ export class SputnikWalletService implements WalletService {
     });
 
     this.walletConnection = new SputnikWalletConnection(this.near, 'sputnik');
+  }
+
+  walletMeta(): WalletMeta {
+    return this.walletInfo;
+  }
+
+  async availableAccounts(): Promise<string[]> {
+    return this.keyStore.getAccounts(this.config.networkId);
   }
 
   isSignedIn(): boolean {

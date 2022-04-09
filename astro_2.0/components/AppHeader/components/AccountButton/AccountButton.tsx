@@ -9,39 +9,46 @@ import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 
 import { WalletType } from 'types/config';
 import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletIcon/WalletIcon';
-import { DisconnectButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/DisconnectButton';
-import { MyAccountButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/MyAccount';
-import { WalletButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletButton';
-
 import { useModal } from 'components/modal';
 import { WalletSelectionModal } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletSelectionModal';
+import { WalletsList } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletsList';
+import { logout } from 'assets';
 import styles from './AccountButton.module.scss';
 
 export const AccountButton: FC = () => {
-  const [open, setOpen] = useState(false);
   const {
     login,
-    logout,
     accountId,
     nearService,
     connectionInProgress,
+    switchAccount,
+    availableNearWalletAccounts,
   } = useAuthContext();
+
+  const [open, setOpen] = useState(false);
 
   const [showModal] = useModal(WalletSelectionModal, {
     signIn: walletType => login(walletType),
   });
 
-  const closePopup = useCallback(() => {
-    setOpen(false);
-  }, [setOpen]);
+  const switchAccountHandler = useCallback(
+    (account: string) => () => {
+      switchAccount(WalletType.NEAR, account);
+    },
+    [switchAccount]
+  );
 
   const switchWalletHandler = useCallback(
     (wallet: WalletType) => async () => {
-      await login(wallet);
+      await nearService?.switchWallet(wallet);
       setOpen(false);
     },
-    [login, setOpen]
+    [nearService, setOpen]
   );
+
+  const closeDropdown = useCallback(() => {
+    setOpen(false);
+  }, [setOpen]);
 
   const ref = useRef(null);
 
@@ -83,44 +90,20 @@ export const AccountButton: FC = () => {
           placement: 'bottom-end',
         }}
       >
-        <div>
-          <div className={styles.dropdown}>
-            <MyAccountButton
-              closePopup={closePopup}
-              className={styles.menuButton}
+        <>
+          {nearService && (
+            <WalletsList
+              logoutHandler={logout}
+              availableWallets={nearService.availableWallets()}
+              availableNearAccounts={availableNearWalletAccounts}
+              selectedWallet={nearService.getWalletType()}
+              switchAccountHandler={switchAccountHandler}
+              switchWalletHandler={switchWalletHandler}
+              closeDropdownHandler={closeDropdown}
             />
-
-            {nearService && (
-              <>
-                <div className={styles.delimiter} />
-                <div className={styles.chooseWalletCaption}>Choose wallet</div>
-                <WalletButton
-                  walletType={WalletType.NEAR}
-                  isSelected={nearService.getWalletType() === WalletType.NEAR}
-                  onClick={switchWalletHandler(WalletType.NEAR)}
-                  name="NEAR"
-                  type="web"
-                  url="wallet.near.org"
-                />
-                <WalletButton
-                  disabled={
-                    !(window.near !== undefined && window.near.isSender)
-                  }
-                  walletType={WalletType.SENDER}
-                  isSelected={nearService.getWalletType() === WalletType.SENDER}
-                  onClick={switchWalletHandler(WalletType.SENDER)}
-                  name="Sender"
-                  type="extension"
-                  url="senderwallet.io"
-                />
-
-                <div className={styles.delimiter} />
-              </>
-            )}
-            <DisconnectButton logout={logout} />
-          </div>
-          <AppFooter mobile className={styles.footer} onClick={closePopup} />
-        </div>
+          )}
+          <AppFooter mobile className={styles.footer} onClick={closeDropdown} />
+        </>
       </GenericDropdown>
     );
   }

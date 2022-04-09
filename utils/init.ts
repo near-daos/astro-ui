@@ -1,61 +1,11 @@
-import { configService } from 'services/ConfigService';
 import { WalletType } from 'types/config';
 import { SputnikNearService } from 'services/sputnik';
 import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
+import { WalletService } from 'services/sputnik/SputnikNearService/services/types';
+import { configService } from 'services/ConfigService';
 import { SenderWalletService } from 'services/sputnik/SputnikNearService/services/SenderWalletService';
 
-function initWallet(
-  selectedWallet: WalletType | undefined,
-  isSenderWalletAvailable: boolean
-): SputnikNearService | undefined {
-  const { nearConfig, appConfig } = configService.get();
-
-  let sputnikService: SputnikNearService;
-
-  if (!appConfig || !nearConfig) {
-    return undefined;
-  }
-
-  switch (selectedWallet) {
-    case WalletType.NEAR: {
-      sputnikService = new SputnikNearService(
-        new SputnikWalletService(nearConfig)
-      );
-      break;
-    }
-
-    case WalletType.SENDER: {
-      // extension was removed, cleaning up the wallet selection, falling back to web wallet
-      if (!isSenderWalletAvailable) {
-        window.localStorage.removeItem('selectedWallet');
-
-        sputnikService = new SputnikNearService(
-          new SputnikWalletService(nearConfig)
-        );
-
-        break;
-      }
-
-      sputnikService = new SputnikNearService(
-        new SenderWalletService(window.near)
-      );
-
-      break;
-    }
-
-    default: {
-      sputnikService = new SputnikNearService(
-        new SputnikWalletService(nearConfig)
-      );
-    }
-  }
-
-  sputnikService.isSenderWalletAvailable = isSenderWalletAvailable;
-
-  return sputnikService;
-}
-
-export const initNearService = (
+export const initNearService = async (
   walletType: WalletType
 ): Promise<SputnikNearService | undefined> => {
   if (!process.browser) {
@@ -69,7 +19,13 @@ export const initNearService = (
       if (counter !== undefined && counter === 10) {
         clearInterval(intervalId);
 
-        const service = initWallet(walletType, false);
+        const { nearConfig } = configService.get();
+
+        const wallets = new Map<WalletType, WalletService>([
+          [WalletType.NEAR, new SputnikWalletService(nearConfig)],
+        ]);
+
+        const service = new SputnikNearService(wallets, WalletType.NEAR);
 
         resolve(service);
       }
@@ -79,7 +35,14 @@ export const initNearService = (
       }
 
       if (typeof window.near !== 'undefined' && window.near.isSender) {
-        const service = initWallet(walletType, true);
+        const { nearConfig } = configService.get();
+
+        const wallets = new Map<WalletType, WalletService>([
+          [WalletType.NEAR, new SputnikWalletService(nearConfig)],
+          [WalletType.SENDER, new SenderWalletService(window.near)],
+        ]);
+
+        const service = new SputnikNearService(wallets, walletType);
 
         clearInterval(intervalId);
         resolve(service);

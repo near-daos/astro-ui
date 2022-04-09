@@ -10,19 +10,19 @@ import styles from './MyAccountButton.module.scss';
 
 interface MyAccountButtonProps {
   className?: string;
-  closePopup: () => void;
+  closeDropdown: () => void;
 }
 
 export const MyAccountButton: React.FC<MyAccountButtonProps> = ({
   className,
-  closePopup,
+  closeDropdown,
 }) => {
   const router = useRouter();
 
   const goToMyAccountPage = useCallback(() => {
-    closePopup();
+    closeDropdown();
     router.push(MY_ACCOUNT_PAGE_URL);
-  }, [router, closePopup]);
+  }, [router, closeDropdown]);
 
   return (
     <AccountPopupItem

@@ -1,0 +1,8 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  background-color: var(--color-white);
+  padding: 0;
+}

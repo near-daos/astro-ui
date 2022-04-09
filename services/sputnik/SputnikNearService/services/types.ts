@@ -50,13 +50,22 @@ export interface WalletService {
   isSignedIn(): boolean;
   getAccount(): ConnectedWalletAccount;
   getAccountId(): string;
+  availableAccounts(): Promise<string[]>;
   functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome[]>;
   getPublicKey(): Promise<string | null>;
   getSignature(): Promise<string | null>;
   sendTransactions(
     transactions: Transaction[]
   ): Promise<FinalExecutionOutcome[]>;
+  walletMeta(): WalletMeta;
 }
+
+export type WalletMeta = {
+  id: WalletType;
+  name: string;
+  type: string;
+  url: string;
+};
 
 type SignInOptions = {
   contractId: string;
