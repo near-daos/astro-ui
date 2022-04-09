@@ -7,48 +7,6 @@
   position: relative;
 }
 
-.dropdown {
-  @extend %body2;
-  align-items: center;
-  background-color: var(--color-white);
-  border-radius: 8px;
-  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
-  cursor: default;
-  padding: 12px;
-  width: 226px;
-  z-index: 1000;
-
-  &.hidden {
-    display: none;
-  }
-
-  .delimiter {
-    background-color: var(--color-neutral-20);
-    height: 1px;
-    margin: 12px 0;
-  }
-
-  .chooseWalletCaption {
-    @extend %subtitle5;
-    color: var(--color-neutral-60);
-    margin-bottom: 24px;
-  }
-
-  .text {
-    @extend %subtitle4;
-    color: var(--color-neutral-90);
-  }
-
-  .name {
-    color: var(--color-neutral-60);
-    margin: 8px 0;
-    overflow: hidden;
-    padding-left: 8px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
-
 .accountButton {
   align-items: center;
   background-color: var(--color-neutral-30);

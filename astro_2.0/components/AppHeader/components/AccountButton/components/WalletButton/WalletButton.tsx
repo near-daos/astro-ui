@@ -10,8 +10,8 @@ interface WalletButton {
   walletType: WalletType;
   isSelected?: boolean;
   onClick: () => void;
-  name: 'NEAR' | 'Sender';
-  type: 'web' | 'extension';
+  name: string;
+  type: string;
   url: string;
   className?: string;
   disabled?: boolean;

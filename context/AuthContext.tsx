@@ -7,6 +7,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { keyStores } from 'near-api-js';
 import { useCookie, useEffectOnce, useLocalStorage } from 'react-use';
 
 import { ALL_FEED_URL } from 'constants/routing';
@@ -26,20 +27,15 @@ interface AuthContextInterface {
   accountId: string;
   login: (walletType: WalletType) => Promise<void>;
   logout: () => Promise<void>;
+  switchAccount: (walletType: WalletType, accountId: string) => void;
   nearService: SputnikNearService | undefined;
-  isLoggedIn: () => boolean;
   connectionInProgress: boolean;
+  availableNearWalletAccounts: string[];
 }
 
-const AuthContext = createContext<AuthContextInterface>({
-  accountId: '',
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  login: walletType => Promise.resolve(),
-  logout: () => Promise.resolve(),
-  isLoggedIn: () => false,
-  nearService: undefined,
-  connectionInProgress: false,
-});
+const AuthContext = createContext<AuthContextInterface>(
+  {} as AuthContextInterface
+);
 
 export const AuthWrapper: FC = ({ children }) => {
   const router = useRouter();
@@ -55,6 +51,10 @@ export const AuthWrapper: FC = ({ children }) => {
     setSelectedWallet,
     removeSelectedWallet,
   ] = useLocalStorage('selectedWallet', WalletType.NEAR.toString());
+
+  const [availableNearAccounts, setAvailableNearAccounts] = useState<string[]>(
+    []
+  );
 
   const [nearService, setNearService] = useState<
     SputnikNearService | undefined
@@ -93,7 +93,7 @@ export const AuthWrapper: FC = ({ children }) => {
 
       setConnectionInProgress(false);
 
-      const initState = () => {
+      const initState = async () => {
         CookieService.set(ACCOUNT_COOKIE, service?.getAccountId(), {
           path: '/',
         });
@@ -101,6 +101,13 @@ export const AuthWrapper: FC = ({ children }) => {
         setNearService(service);
 
         setAccountId(service?.getAccountId() ?? '');
+
+        const availableAccounts =
+          service?.getWalletType() === WalletType.NEAR
+            ? await service.availableAccounts()
+            : [];
+
+        setAvailableNearAccounts(availableAccounts);
 
         setSelectedWallet(walletType.toString());
       };
@@ -126,6 +133,29 @@ export const AuthWrapper: FC = ({ children }) => {
 
     initService(Number(selectedWallet));
   });
+
+  const switchAccount = useCallback(
+    async (walletType: WalletType, account: string) => {
+      const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+      const keypair = await keyStore.getKey(nearConfig.networkId, account);
+
+      const authData = {
+        accountId: account,
+        allKeys: keypair.getPublicKey().toString(),
+      };
+
+      // new wallet instance will take the new auth_key and will reinit the account
+      window.localStorage.setItem(
+        'sputnik_wallet_auth_key',
+        JSON.stringify(authData)
+      );
+
+      await initService(WalletType.NEAR);
+
+      CookieService.set(ACCOUNT_COOKIE, nearService?.getAccountId());
+    },
+    [nearConfig, initService, nearService]
+  );
 
   const login = useCallback(
     async (walletType: WalletType) => {
@@ -155,10 +185,19 @@ export const AuthWrapper: FC = ({ children }) => {
       login,
       logout,
       nearService,
-      isLoggedIn: () => !!nearService,
       connectionInProgress,
+      availableNearWalletAccounts: availableNearAccounts,
+      switchAccount,
     }),
-    [accountId, connectionInProgress, login, logout, nearService]
+    [
+      availableNearAccounts,
+      accountId,
+      connectionInProgress,
+      login,
+      logout,
+      nearService,
+      switchAccount,
+    ]
   );
 
   return (

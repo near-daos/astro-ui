@@ -2,14 +2,14 @@ import React from 'react';
 import cn from 'classnames';
 import styles from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletDescription/WalletDescription.module.scss';
 
-interface WalletItemProps {
-  name: 'NEAR' | 'Sender';
-  type: 'web' | 'extension';
+interface WalletDescriptionProps {
+  name: string;
+  type: string;
   url: string;
   className?: string;
 }
 
-export const WalletDescription: React.FC<WalletItemProps> = ({
+export const WalletDescription: React.FC<WalletDescriptionProps> = ({
   name,
   type,
   url,
