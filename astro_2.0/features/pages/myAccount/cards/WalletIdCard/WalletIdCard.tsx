@@ -1,34 +1,61 @@
 import { useTranslation } from 'next-i18next';
 import React, { useCallback, VFC } from 'react';
 
+import { UserContacts } from 'services/NotificationsService/types';
+
+import { useAuthContext } from 'context/AuthContext';
+
 import { useModal } from 'components/modal/hooks';
 
-import { Button } from 'components/button/Button';
-import { CardLine } from 'astro_2.0/features/pages/myAccount/cards/CardLine';
 import { AccountBadge } from 'astro_2.0/features/pages/myAccount/AccountBadge';
 import { CardTitle } from 'astro_2.0/features/pages/myAccount/cards/CardTitle';
 import { ConfigCard } from 'astro_2.0/features/pages/myAccount/cards/ConfigCard';
-import { ContactInfo } from 'astro_2.0/features/pages/myAccount/cards/ContactInfo';
 import { AddUserInfoModal } from 'astro_2.0/features/pages/myAccount/AddUserInfoModal';
 
-import styles from './WalletIdCard.module.scss';
+import { ContactLine } from './components/ContactLine';
 
-export const WalletIdCard: VFC = () => {
+interface WalletIdCardProps {
+  contactsConfig: UserContacts;
+  setConfig: (config: UserContacts) => void;
+}
+
+export const WalletIdCard: VFC<WalletIdCardProps> = props => {
+  const { setConfig, contactsConfig } = props;
+
+  const {
+    email,
+    isEmailVerified,
+    phoneNumber,
+    isPhoneVerified,
+  } = contactsConfig;
+
+  const { accountId, getPublicKey, getSignature } = useAuthContext();
+
   const { t } = useTranslation('common');
 
   const [showModal] = useModal(AddUserInfoModal);
 
+  const openModal = useCallback(
+    (isEmail: boolean, isEdit: boolean) => {
+      showModal({
+        isEdit,
+        isEmail,
+        setConfig,
+        accountId,
+        getPublicKey,
+        getSignature,
+      });
+    },
+    [setConfig, showModal, accountId, getPublicKey, getSignature]
+  );
+
   const openAddEmailModal = useCallback(() => {
-    showModal({
-      isEmail: true,
-    });
-  }, [showModal]);
+    openModal(true, isEmailVerified);
+  }, [openModal, isEmailVerified]);
 
   const openAddPhoneModal = useCallback(() => {
-    showModal({
-      isEmail: false,
-    });
-  }, [showModal]);
+    openModal(false, isPhoneVerified);
+  }, [openModal, isPhoneVerified]);
 
   return (
     <ConfigCard>
@@ -36,26 +63,21 @@ export const WalletIdCard: VFC = () => {
         {t('myAccountPage.walletId')}
         <AccountBadge />
       </CardTitle>
-      <CardLine className={styles.emailLine}>
-        <ContactInfo icon="carbonEmail">{t('myAccountPage.email')}</ContactInfo>
-        <Button
-          capitalize
-          onClick={openAddEmailModal}
-          className={styles.addButton}
-        >
-          {t('myAccountPage.add')}
-        </Button>
-      </CardLine>
-      <CardLine>
-        <ContactInfo icon="carbonPhone">{t('myAccountPage.phone')}</ContactInfo>
-        <Button
-          capitalize
-          onClick={openAddPhoneModal}
-          className={styles.addButton}
-        >
-          {t('myAccountPage.add')}
-        </Button>
-      </CardLine>
+      <ContactLine
+        icon="carbonEmail"
+        contact={email}
+        label="myAccountPage.email"
+        isVerified={isEmailVerified}
+        onButtonClick={openAddEmailModal}
+      />
+
+      <ContactLine
+        icon="carbonPhone"
+        contact={phoneNumber}
+        label="myAccountPage.phone"
+        isVerified={isPhoneVerified}
+        onButtonClick={openAddPhoneModal}
+      />
     </ConfigCard>
   );
 };

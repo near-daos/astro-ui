@@ -422,14 +422,17 @@
     "email": "Email",
     "phone": "Phone number",
     "add": "Add",
+    "edit": "Edit",
     "notification": "Notification",
     "settings": "Settings",
     "popup": {
       "send": "Send",
       "save": "Save",
       "seconds": "sec",
+      "codeIsIncorrect": "Validation code is incorrect",
       "email": {
-        "title": "Add email",
+        "addTitle": "Add email",
+        "editTitle": "Edit email",
         "message": "We will send you an email to confirm your new mail.",
         "inputLabel": "Email",
         "codeFrom": "Code from email",
@@ -437,7 +440,8 @@
         "error": "Must be a valid email"
       },
       "phone": {
-        "title": "Add phone number",
+        "addTitle": "Add phone number",
+        "editTitle": "Edit phone number",
         "message": "We will send you a sms to confirm your new phone number.",
         "inputLabel": "Phone label",
         "codeFrom": "Code from sms",
