@@ -1,6 +1,8 @@
 @import 'styles/mixins';
 
 .root {
+  align-items: center;
+  display: flex;
   .btn {
     color: var(--color-neutral-50);
   }

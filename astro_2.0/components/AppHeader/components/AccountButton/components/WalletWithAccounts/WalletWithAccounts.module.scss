@@ -4,5 +4,16 @@
 
 .root {
   background-color: var(--color-white);
+  box-shadow: none;
+  outline: none;
   padding: 0;
+}
+
+.toggle {
+  margin-bottom: 0;
+  outline: none;
+}
+
+.content {
+  max-height: 210px;
 }

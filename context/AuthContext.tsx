@@ -4,6 +4,7 @@ import {
   FC,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -28,6 +29,7 @@ interface AuthContextInterface {
   login: (walletType: WalletType) => Promise<void>;
   logout: () => Promise<void>;
   switchAccount: (walletType: WalletType, accountId: string) => void;
+  switchWallet: (walletType: WalletType) => void;
   nearService: SputnikNearService | undefined;
   connectionInProgress: boolean;
   availableNearWalletAccounts: string[];
@@ -102,10 +104,7 @@ export const AuthWrapper: FC = ({ children }) => {
 
         setAccountId(service?.getAccountId() ?? '');
 
-        const availableAccounts =
-          service?.getWalletType() === WalletType.NEAR
-            ? await service.availableAccounts()
-            : [];
+        const availableAccounts = (await service?.availableAccounts()) ?? [];
 
         setAvailableNearAccounts(availableAccounts);
 
@@ -151,10 +150,29 @@ export const AuthWrapper: FC = ({ children }) => {
       );
 
       await initService(WalletType.NEAR);
-
-      CookieService.set(ACCOUNT_COOKIE, nearService?.getAccountId());
     },
-    [nearConfig, initService, nearService]
+    [nearConfig, initService]
+  );
+
+  useEffect(() => {
+    if (window.near) {
+      window.near.on('accountChanged', () => {
+        initService(WalletType.SENDER);
+      });
+    }
+  }, [initService]);
+
+  const switchWallet = useCallback(
+    async (walletType: WalletType) => {
+      await nearService?.switchWallet(walletType);
+
+      setAccountId(nearService?.getAccountId() ?? '');
+
+      CookieService.set(ACCOUNT_COOKIE, nearService?.getAccountId(), {
+        path: '/',
+      });
+    },
+    [nearService]
   );
 
   const login = useCallback(
@@ -188,6 +206,7 @@ export const AuthWrapper: FC = ({ children }) => {
       connectionInProgress,
       availableNearWalletAccounts: availableNearAccounts,
       switchAccount,
+      switchWallet,
     }),
     [
       availableNearAccounts,
@@ -197,6 +216,7 @@ export const AuthWrapper: FC = ({ children }) => {
       logout,
       nearService,
       switchAccount,
+      switchWallet,
     ]
   );
 

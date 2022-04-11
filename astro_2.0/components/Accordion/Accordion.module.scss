@@ -15,6 +15,7 @@ $transition-time: 0.3s;
   display: flex;
   height: 60px;
   justify-content: space-between;
+  outline: none;
 }
 
 .icon {
@@ -30,6 +31,7 @@ $transition-time: 0.3s;
 }
 
 .contentContainer {
+  max-height: 200px;
   overflow: auto;
   transition: $transition-time;
 }

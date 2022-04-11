@@ -1,5 +1,8 @@
 import React from 'react';
-import { Button } from 'components/button/Button';
+import cn from 'classnames';
+import { useAuthContext } from 'context/AuthContext';
+import { CopyButton } from 'astro_2.0/components/CopyButton';
+
 import styles from './WalletAccount.module.scss';
 
 interface WalletAccountProps {
@@ -11,11 +14,25 @@ export const WalletAccount: React.FC<WalletAccountProps> = ({
   account,
   switchAccountHandler,
 }) => {
+  const { accountId } = useAuthContext();
+
+  const isActive = accountId === account;
+
   return (
-    <div className={styles.root}>
-      <Button variant="transparent" onClick={switchAccountHandler(account)}>
-        {account}
-      </Button>
+    <div
+      tabIndex={0}
+      role="button"
+      onKeyPress={switchAccountHandler(account)}
+      onClick={switchAccountHandler(account)}
+      className={cn(styles.root, {
+        [styles.selected]: isActive,
+      })}
+    >
+      <div className={styles.content}>
+        <div className={styles.label}>{account}</div>
+        <CopyButton text={account} className={styles.copy} />
+        {isActive && <div className={styles.selectedIndicator} />}
+      </div>
     </div>
   );
 };
