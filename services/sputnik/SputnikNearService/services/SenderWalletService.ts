@@ -1,7 +1,10 @@
 import { ConnectedWalletAccount } from 'near-api-js';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { KeyPairEd25519 } from 'near-api-js/lib/utils';
-import { getSignature } from 'services/sputnik/SputnikNearService/services/helpers';
+import {
+  getSignature,
+  isError,
+} from 'services/sputnik/SputnikNearService/services/helpers';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import {
   SenderWalletInstance,
@@ -73,6 +76,10 @@ export class SenderWalletService implements WalletService {
       transactions,
     });
 
+    if (isError(result.response)) {
+      throw new Error(result.response.error.kind.ExecutionError);
+    }
+
     const transactionHashes = result.response[0].transaction.hash;
     const signerId = result.response[0].transaction.signer_id;
 
@@ -106,6 +113,10 @@ export class SenderWalletService implements WalletService {
     };
     const result = await this.walletInstance.signAndSendTransaction(tx);
 
+    if (isError(result.response)) {
+      throw new Error(result.response.error.kind.ExecutionError);
+    }
+
     const transactionHashes = result.response[0].transaction.hash;
     const signerId = result.response[0].transaction.signer_id;
 
@@ -135,6 +146,10 @@ export class SenderWalletService implements WalletService {
       receiverId,
       amount: parsedAmount ?? '',
     });
+
+    if (isError(result.response)) {
+      throw new Error(result.response.error.kind.ExecutionError);
+    }
 
     return result.response;
   }
