@@ -6,7 +6,11 @@ import { DaoContext } from 'types/context';
 import { DaoSettingFlowButton } from 'astro_2.0/features/DaoGovernance/components/DaoSettingFlowButton';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 
-import { DAO_CONFIG_PAGE_URL, DAO_POLICY_PAGE_URL } from 'constants/routing';
+import {
+  DAO_CONFIG_PAGE_URL,
+  DAO_POLICY_PAGE_URL,
+  DAO_VERSION_PAGE_URL,
+} from 'constants/routing';
 
 import styles from './SettingsPageContent.module.scss';
 
@@ -23,7 +27,7 @@ export const SettingsPageContent: FC<SettingsPageContentProps> = ({
 
   return (
     <div className={styles.root}>
-      <div className={styles.titleRow}>DAO settings</div>
+      <div className={styles.titleRow}>DAO Settings</div>
       <div className={styles.content}>
         <DaoSettingFlowButton
           onClick={() =>
@@ -52,7 +56,14 @@ export const SettingsPageContent: FC<SettingsPageContentProps> = ({
           label="Policy settings"
         />
         <DaoSettingFlowButton
-          onClick={() => router.push('')}
+          onClick={() =>
+            router.push({
+              pathname: DAO_VERSION_PAGE_URL,
+              query: {
+                dao: dao.id,
+              },
+            })
+          }
           icon="navSettingsVersion"
           label="Version update"
         />

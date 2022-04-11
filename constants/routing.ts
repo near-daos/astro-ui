@@ -35,4 +35,5 @@ export const SINGLE_BOUNTY_PAGE_URL =
 export const DAO_SETTINGS_PAGE_URL = `${SINGLE_DAO_PAGE}/governance/settings`;
 export const DAO_CONFIG_PAGE_URL = `${DAO_SETTINGS_PAGE_URL}/config`;
 export const DAO_POLICY_PAGE_URL = `${DAO_SETTINGS_PAGE_URL}/policy`;
+export const DAO_VERSION_PAGE_URL = `${DAO_SETTINGS_PAGE_URL}/version`;
 export const MY_ACCOUNT_PAGE_URL = '/my-account';

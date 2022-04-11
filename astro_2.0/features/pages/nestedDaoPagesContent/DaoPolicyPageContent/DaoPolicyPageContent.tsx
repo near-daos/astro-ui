@@ -52,7 +52,7 @@ export const DaoPolicyPageContent: FC<Props> = ({
 
   return (
     <div className={styles.root}>
-      <div className={styles.titleRow}>DAO settings</div>
+      <div className={styles.titleRow}>DAO Settings</div>
       <div className={styles.sideFilter}>
         <SettingsFilterToggle variant="daoPolicy" />
       </div>
