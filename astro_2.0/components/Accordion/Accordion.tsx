@@ -9,10 +9,17 @@ interface AccordionProps {
   title: ReactNode;
   isOpen?: boolean;
   className?: string;
+  contentContainerClassName?: string;
 }
 
 export const Accordion: FC<AccordionProps> = props => {
-  const { title, children, isOpen = false, className } = props;
+  const {
+    title,
+    children,
+    isOpen = false,
+    className,
+    contentContainerClassName,
+  } = props;
 
   const [open, setOpen] = useState(isOpen);
 
@@ -55,7 +62,7 @@ export const Accordion: FC<AccordionProps> = props => {
       </div>
       <div
         ref={contentContainer}
-        className={styles.contentContainer}
+        className={cn(styles.contentContainer, contentContainerClassName)}
         data-testid="accordion-container"
       >
         <div className={styles.content}>{children}</div>

@@ -157,7 +157,7 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
           <div className={cn(styles.columns)} ref={rootRef}>
             <div ref={leftIntersectionRef} />
             {rows.map(row => (
-              <div className={styles.column}>
+              <div className={styles.column} key={row.label}>
                 <div className={styles.selectorRow}>
                   <div className={cn(styles.selectorCell, styles.groupName)}>
                     {row.label}

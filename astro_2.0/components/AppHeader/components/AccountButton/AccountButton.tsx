@@ -12,16 +12,18 @@ import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountBut
 import { useModal } from 'components/modal';
 import { WalletSelectionModal } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletSelectionModal';
 import { WalletsList } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletsList';
-import { logout } from 'assets';
+
 import styles from './AccountButton.module.scss';
 
 export const AccountButton: FC = () => {
   const {
     login,
+    logout,
     accountId,
     nearService,
     connectionInProgress,
     switchAccount,
+    switchWallet,
     availableNearWalletAccounts,
   } = useAuthContext();
 
@@ -40,10 +42,10 @@ export const AccountButton: FC = () => {
 
   const switchWalletHandler = useCallback(
     (wallet: WalletType) => async () => {
-      await nearService?.switchWallet(wallet);
+      await switchWallet(wallet);
       setOpen(false);
     },
-    [nearService, setOpen]
+    [switchWallet]
   );
 
   const closeDropdown = useCallback(() => {

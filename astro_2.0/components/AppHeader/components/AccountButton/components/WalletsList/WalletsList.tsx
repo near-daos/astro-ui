@@ -37,6 +37,7 @@ export const WalletsList: React.FC<WalletsListProps> = ({
       {availableWallets.map(wallet =>
         wallet.id === WalletType.NEAR ? (
           <WalletWithAccounts
+            key={wallet.id}
             wallet={wallet}
             isSelected={selectedWallet === wallet.id}
             accounts={availableNearAccounts}
@@ -45,6 +46,7 @@ export const WalletsList: React.FC<WalletsListProps> = ({
           />
         ) : (
           <WalletButton
+            key={wallet.id}
             walletType={wallet.id}
             isSelected={selectedWallet === wallet.id}
             onClick={switchWalletHandler(wallet.id)}

@@ -23,6 +23,7 @@ exports[`Accordion Should render component 1`] = `
       </button>
     </div>
     <div
+      class=""
       data-testid="accordion-container"
       style="height: 0px;"
     >

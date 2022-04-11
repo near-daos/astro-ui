@@ -461,7 +461,10 @@ export class SputnikNearService implements WalletService, DaoService {
   }
 
   availableAccounts(): Promise<string[]> {
-    return this.walletService.availableAccounts();
+    return (
+      this.wallets.get(WalletType.NEAR)?.availableAccounts() ??
+      Promise.resolve([])
+    );
   }
 
   walletMeta(): WalletMeta {
