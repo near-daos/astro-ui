@@ -24,6 +24,14 @@ import { SputnikNearService } from 'services/sputnik';
 import { initNearService } from 'utils/init';
 import { ConnectingWalletModal } from 'astro_2.0/features/Auth/components/ConnectingWalletModal';
 
+export type PkAndSignMethod = () => Promise<
+  | {
+      publicKey: string | null;
+      signature: string | null;
+    }
+  | Record<string, never>
+>;
+
 interface AuthContextInterface {
   accountId: string;
   login: (walletType: WalletType) => Promise<void>;
@@ -32,9 +40,8 @@ interface AuthContextInterface {
   switchWallet: (walletType: WalletType) => void;
   nearService: SputnikNearService | undefined;
   connectionInProgress: boolean;
-  getPublicKey: () => Promise<string | null>;
-  getSignature: () => Promise<string | null>;
   availableNearWalletAccounts: string[];
+  getPublicKeyAndSignature: PkAndSignMethod;
 }
 
 const AuthContext = createContext<AuthContextInterface>(
@@ -199,20 +206,20 @@ export const AuthWrapper: FC = ({ children }) => {
     [initService, router]
   );
 
-  const getPublicKey = useCallback(() => {
+  const getPublicKeyAndSignature = useCallback(async () => {
     if (nearService) {
-      return nearService?.getPublicKey();
+      const [publicKey, signature] = await Promise.all([
+        nearService?.getPublicKey(),
+        nearService?.getSignature(),
+      ]);
+
+      return {
+        publicKey,
+        signature,
+      };
     }
 
-    return Promise.resolve(null);
-  }, [nearService]);
-
-  const getSignature = useCallback(() => {
-    if (nearService) {
-      return nearService?.getSignature();
-    }
-
-    return Promise.resolve(null);
+    return Promise.resolve({});
   }, [nearService]);
 
   const data = useMemo(
@@ -225,8 +232,7 @@ export const AuthWrapper: FC = ({ children }) => {
       availableNearWalletAccounts: availableNearAccounts,
       switchAccount,
       switchWallet,
-      getPublicKey,
-      getSignature,
+      getPublicKeyAndSignature,
     }),
     [
       availableNearAccounts,
@@ -237,8 +243,7 @@ export const AuthWrapper: FC = ({ children }) => {
       nearService,
       switchAccount,
       switchWallet,
-      getPublicKey,
-      getSignature,
+      getPublicKeyAndSignature,
     ]
   );
 
