@@ -32,6 +32,8 @@ interface AuthContextInterface {
   switchWallet: (walletType: WalletType) => void;
   nearService: SputnikNearService | undefined;
   connectionInProgress: boolean;
+  getPublicKey: () => Promise<string | null>;
+  getSignature: () => Promise<string | null>;
   availableNearWalletAccounts: string[];
 }
 
@@ -197,6 +199,22 @@ export const AuthWrapper: FC = ({ children }) => {
     [initService, router]
   );
 
+  const getPublicKey = useCallback(() => {
+    if (nearService) {
+      return nearService?.getPublicKey();
+    }
+
+    return Promise.resolve(null);
+  }, [nearService]);
+
+  const getSignature = useCallback(() => {
+    if (nearService) {
+      return nearService?.getSignature();
+    }
+
+    return Promise.resolve(null);
+  }, [nearService]);
+
   const data = useMemo(
     () => ({
       accountId,
@@ -207,6 +225,8 @@ export const AuthWrapper: FC = ({ children }) => {
       availableNearWalletAccounts: availableNearAccounts,
       switchAccount,
       switchWallet,
+      getPublicKey,
+      getSignature,
     }),
     [
       availableNearAccounts,
@@ -217,6 +237,8 @@ export const AuthWrapper: FC = ({ children }) => {
       nearService,
       switchAccount,
       switchWallet,
+      getPublicKey,
+      getSignature,
     ]
   );
 

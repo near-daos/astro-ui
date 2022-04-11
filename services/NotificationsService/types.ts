@@ -1,5 +1,13 @@
 import { NotifiedActionType } from 'types/notification';
 
+export type UserContacts = {
+  accountId: string;
+  email: string;
+  isEmailVerified: boolean;
+  phoneNumber: string;
+  isPhoneVerified: boolean;
+};
+
 export type NotificationSettingDTO = {
   isArchived: false;
   createdAt: string;

@@ -12,10 +12,89 @@ import {
 
 import { httpService } from 'services/HttpService';
 import { mapNotificationDtoToNotification } from 'services/NotificationsService/mappers/notification';
-import { NotificationSettingDTO } from 'services/NotificationsService/types';
+import {
+  UserContacts,
+  NotificationSettingDTO,
+} from 'services/NotificationsService/types';
+
+import { logger } from 'utils/logger';
 
 class NotificationsServiceClass {
   private readonly httpService = httpService;
+
+  public async getUserContactConfig(accountId?: string): Promise<UserContacts> {
+    if (accountId) {
+      const result = await this.httpService.get<UserContacts>(
+        `account/${accountId}`
+      );
+
+      return result.data;
+    }
+
+    return Promise.resolve({
+      accountId: '',
+      email: '',
+      isEmailVerified: false,
+      phoneNumber: '',
+      isPhoneVerified: false,
+    });
+  }
+
+  public async sendUserEmail(
+    accountId: string,
+    email: string,
+    getPublicKey: () => Promise<string | null>,
+    getSignature: () => Promise<string | null>
+  ): Promise<boolean> {
+    const publicKey = await getPublicKey();
+    const signature = await getSignature();
+
+    try {
+      await this.httpService.post('account/email', {
+        email,
+        accountId,
+        publicKey,
+        signature,
+      });
+
+      await this.httpService.post('account/email/send-verification', {
+        accountId,
+        publicKey,
+        signature,
+      });
+    } catch (e) {
+      logger.error(e);
+
+      return false;
+    }
+
+    return true;
+  }
+
+  public async verifyEmail(
+    accountId: string,
+    code: string,
+    getPublicKey: () => Promise<string | null>,
+    getSignature: () => Promise<string | null>
+  ) {
+    const publicKey = await getPublicKey();
+    const signature = await getSignature();
+
+    try {
+      await this.httpService.post('account/email/verify', {
+        code,
+        accountId,
+        publicKey,
+        signature,
+      });
+
+      return true;
+    } catch (e) {
+      logger.error(e);
+
+      return false;
+    }
+  }
 
   public async getNotifications(
     showArchived: boolean,
