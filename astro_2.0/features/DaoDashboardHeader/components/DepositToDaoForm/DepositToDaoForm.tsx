@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useAuthContext } from 'context/AuthContext';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import styles from './DepositToDaoForm.module.scss';
 
 const schema = yup.object().shape({
@@ -37,7 +38,16 @@ export const DepositToDaoForm: React.FC<DepositToDaoForm> = ({ daoId }) => {
   const { handleSubmit, setValue } = methods;
 
   const submitHandler = async (data: { depositAmount: number }) => {
-    await nearService?.sendMoney(daoId, data.depositAmount);
+    try {
+      await nearService?.sendMoney(daoId, data.depositAmount);
+    } catch (e) {
+      showNotification({
+        type: NOTIFICATION_TYPES.ERROR,
+        description: e.message,
+        lifetime: 20000,
+      });
+    }
+
     setValue('depositAmount', 0);
   };
 

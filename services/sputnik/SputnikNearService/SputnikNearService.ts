@@ -219,7 +219,7 @@ export class SputnikNearService implements WalletService, DaoService {
                 registration_only: true,
               },
               gas: GAS_VALUE.toString(),
-              amount: '100000000000000000000000',
+              deposit: '100000000000000000000000',
             },
           ],
         };
@@ -370,7 +370,7 @@ export class SputnikNearService implements WalletService, DaoService {
                 registration_only: true,
               },
               gas: GAS_VALUE.toString(),
-              amount: '100000000000000000000000',
+              deposit: '100000000000000000000000',
             },
           ],
         };
