@@ -7,6 +7,7 @@ import {
   MembersStep,
   ProposalsStep,
   SubmitStep,
+  VotingStep,
 } from 'astro_2.0/features/CreateDao/types';
 import { AnySchema } from 'yup';
 import { ResolverError, ResolverResult } from 'react-hook-form';
@@ -42,9 +43,12 @@ export function getInitialValues(
       defaultFlag,
       isValid: false,
     },
+    voting: {
+      data: null,
+      isValid: false,
+    },
     proposals: {
-      structure: 'groups',
-      proposals: 'open',
+      data: null,
       isValid: false,
     },
     submit: {
@@ -63,6 +67,7 @@ export function updateAction(
     | LinksStep
     | MembersStep
     | AssetsStep
+    | VotingStep
     | ProposalsStep
     | SubmitStep
   >

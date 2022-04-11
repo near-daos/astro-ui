@@ -1,5 +1,8 @@
 import { RolesRequest, VotePolicyRequest } from 'types/dao';
 import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
+import { ProposalsStep, VotingStep } from 'astro_2.0/features/CreateDao/types';
+import { updateRoleWithNewPermissions } from 'astro_2.0/features/CreateProposal/helpers/permissionsHelpers';
+import { DaoPermission, DaoRole } from 'types/role';
 
 const EveryoneCanDoEverything = (accountIds: string[]) => ({
   name: 'Everyone',
@@ -79,6 +82,49 @@ export function getRolesVotingPolicy(
 
   return {
     roles,
+    defaultVotePolicy: DemocraticVoting,
+  };
+}
+
+export function getDetailedRolesVotingPolicy(
+  proposals: ProposalsStep,
+  voting: VotingStep,
+  accountIds: string[]
+): {
+  roles: RolesRequest[];
+  defaultVotePolicy: VotePolicyRequest;
+} {
+  // todo - use groups here
+  const groups = ((proposals.data ?? []) as unknown) as { label: string }[];
+
+  const roles: DaoRole[] = groups
+    .map(item => ({
+      name: item.label,
+      kind: { Group: accountIds },
+      permissions: [
+        '*:Finalize',
+        '*:AddProposal',
+        '*:VoteApprove',
+        '*:VoteReject',
+        '*:VoteRemove',
+      ] as DaoPermission[],
+      vote_policy: {},
+    }))
+    .map(role => {
+      return updateRoleWithNewPermissions(proposals.data ?? [], role, [
+        'AddProposal',
+      ]);
+    })
+    .map(role => {
+      return updateRoleWithNewPermissions(voting.data ?? [], role, [
+        'VoteApprove',
+        'VoteReject',
+        'VoteRemove',
+      ]);
+    });
+
+  return {
+    roles: (roles as unknown) as RolesRequest[],
     defaultVotePolicy: DemocraticVoting,
   };
 }

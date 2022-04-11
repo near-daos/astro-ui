@@ -17,6 +17,10 @@ interface PermissionsSelectorProps {
   onSubmit?: (values: SelectorRow[]) => void;
   disableNewProposal: boolean;
   className?: string;
+  headerClassName?: string;
+  contentClassName?: string;
+  controlClassName?: string;
+  controlLabel?: string;
 }
 
 export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
@@ -26,6 +30,10 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
   title,
   description,
   className,
+  headerClassName,
+  contentClassName,
+  controlClassName,
+  controlLabel = 'Propose Changes',
 }) => {
   const rootRef = useRef(null);
   const leftIntersectionRef = React.useRef(null);
@@ -106,18 +114,18 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
 
   return (
     <div className={cn(styles.root, className)}>
-      <div className={styles.header}>
+      <div className={cn(styles.header, headerClassName)}>
         {title && <div className={styles.title}>{title}</div>}
         {!disableNewProposal && onSubmit && (
-          <div className={styles.submitWrapper}>
+          <div className={cn(styles.submitWrapper, controlClassName)}>
             <Button onClick={() => onSubmit(rows)} className={styles.submit}>
-              Propose Changes
+              {controlLabel}
             </Button>
           </div>
         )}
       </div>
       {description && <div className={styles.description}>{description}</div>}
-      <div className={styles.content}>
+      <div className={cn(styles.content, contentClassName)}>
         <div className={styles.legend}>
           <div className={styles.selectorRow}>
             <div className={cn(styles.selectorCell, styles.mainCell)}>

@@ -45,6 +45,10 @@ const options = [
     value: 'proposals',
   },
   {
+    label: 'Voting permissions',
+    value: 'voting',
+  },
+  {
     label: 'Create DAO assets',
     value: 'assets',
   },

@@ -1,3 +1,5 @@
+import { SelectorRow } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';
+
 export type InfoStep = {
   displayName: string;
   address: string;
@@ -12,8 +14,12 @@ export type LegalStep = {
 };
 
 export type ProposalsStep = {
-  structure: string;
-  proposals: string;
+  data: SelectorRow[] | null;
+  isValid: boolean;
+};
+
+export type VotingStep = {
+  data: SelectorRow[] | null;
   isValid: boolean;
 };
 
@@ -49,6 +55,7 @@ declare module 'little-state-machine' {
       | MembersStep
       | AssetsStep
       | ProposalsStep
+      | VotingStep
       | SubmitStep
     > {
     info: InfoStep;
@@ -58,5 +65,6 @@ declare module 'little-state-machine' {
     assets: AssetsStep;
     submit: SubmitStep;
     proposals: ProposalsStep;
+    voting: VotingStep;
   }
 }
