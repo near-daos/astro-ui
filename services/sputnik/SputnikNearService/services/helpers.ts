@@ -1,4 +1,6 @@
 import { KeyPair } from 'near-api-js';
+import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
+import { FinalExecutionError } from 'services/sputnik/SputnikNearService/services/types';
 
 export const getSignature = async (
   keyPair: KeyPair
@@ -20,3 +22,9 @@ export const getSignature = async (
 
   return signatureBase64;
 };
+
+export function isError(
+  _params: FinalExecutionOutcome[] | FinalExecutionError
+): _params is FinalExecutionError {
+  return (_params as FinalExecutionError)?.error?.kind !== undefined;
+}

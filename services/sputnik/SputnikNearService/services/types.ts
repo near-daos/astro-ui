@@ -68,12 +68,20 @@ export type Transaction = {
   actions: transactions.Action[] | SenderAction[];
 };
 
+export type FinalExecutionError = {
+  error: {
+    kind: {
+      ExecutionError: string;
+    };
+  };
+};
+
 export type SenderWalletTransactionResult = {
   actionType: string;
   method: string;
   notificationId: number;
   type: string;
-  response: FinalExecutionOutcome[];
+  response: FinalExecutionOutcome[] | FinalExecutionError;
 };
 
 export type SenderAction = {
