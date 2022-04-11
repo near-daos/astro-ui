@@ -11,9 +11,10 @@ import { DaoLinksForm } from 'astro_2.0/features/CreateDao/components/DaoLinksFo
 import { getInitialValues } from 'astro_2.0/features/CreateDao/components/helpers';
 import { DaoMembersForm } from 'astro_2.0/features/CreateDao/components/DaoMembersForm';
 import { DaoAssetsForm } from 'astro_2.0/features/CreateDao/components/DaoAssetsForm';
-import { DaoProposalsForm } from 'astro_2.0/features/CreateDao/components/DaoProposalsForm';
 import { useMount, useMountedState } from 'react-use';
 import { useAuthContext } from 'context/AuthContext';
+import { DaoProposalCreationForm } from 'astro_2.0/features/CreateDao/components/DaoProposalCreationForm';
+import { DaoVotingPermissionsForm } from 'astro_2.0/features/CreateDao/components/DaoVotingPermissionsForm';
 
 interface CreateDaoProps {
   defaultFlag: string;
@@ -67,8 +68,11 @@ export const CreateDao: VFC<CreateDaoProps> = ({ defaultFlag }) => {
       case STEPS.MEMBERS: {
         return <DaoMembersForm />;
       }
+      case STEPS.VOTING: {
+        return <DaoVotingPermissionsForm />;
+      }
       case STEPS.PROPOSALS: {
-        return <DaoProposalsForm />;
+        return <DaoProposalCreationForm />;
       }
       case STEPS.ASSETS: {
         return <DaoAssetsForm />;

@@ -1,0 +1,53 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  width: 100%;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  grid-area: header;
+  margin-bottom: 24px;
+
+  h2 {
+    @include font(1.75em, 38px, 700);
+    font-family: var(--font-family-primary);
+    margin: 0;
+  }
+
+  p {
+    @extend %body2;
+  }
+
+  .optional {
+    color: var(--color-neutral-50);
+  }
+}
+
+.description {
+  @extend %body2;
+}
+
+.selector {
+  box-shadow: none;
+  display: grid;
+  grid-template-areas:
+    'content'
+    'control';
+  grid-template-columns: 1fr;
+  padding: 0;
+}
+
+.control {
+  grid-area: control;
+}
+
+.content {
+  grid-area: content;
+}
+
+.controlBtn {
+  margin: 24px 0 0;
+}

@@ -1,12 +1,8 @@
 import { configService } from 'services/ConfigService';
 import { CreateDaoInput } from 'types/dao';
-import { getRolesVotingPolicy } from 'astro_2.0/features/CreateDao/components/DaoSubmitForm/helpers';
+import { getDetailedRolesVotingPolicy } from 'astro_2.0/features/CreateDao/components/DaoSubmitForm/helpers';
 import { DEFAULT_CREATE_DAO_GAS } from 'services/sputnik/constants';
 import { GlobalState } from 'little-state-machine';
-import {
-  DAOProposalsType,
-  DAOStructureType,
-} from 'astro_2.0/features/CreateDao/components/types';
 import { SputnikNearService } from 'services/sputnik';
 
 export async function validateDaoAddress(
@@ -45,11 +41,9 @@ export function getNewDaoParams(
     amountToTransfer: '5',
     displayName: data.info.displayName,
     policy: {
-      ...getRolesVotingPolicy(
-        {
-          structure: data.proposals.structure as DAOStructureType,
-          proposals: data.proposals.proposals as DAOProposalsType,
-        },
+      ...getDetailedRolesVotingPolicy(
+        data.proposals,
+        data.voting,
         data.members.accounts
       ),
       proposalBond: '0.1',

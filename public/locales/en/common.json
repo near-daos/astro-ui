@@ -128,8 +128,12 @@
       "daoKYCLinkPlaceholder": "https://Legal_Document"
     },
     "proposals": {
-      "proposalsCreation": "Proposal Creation",
-      "description": "Choose what rights you give DAO groups. This can be changed in settings later."
+      "proposalsCreation": "Proposal creation",
+      "description": "Choose what creation rights you give DAO groups. This can be changed in settings later."
+    },
+    "voting": {
+      "votingPermissions": "Voting permissions",
+      "description": "Choose what voting rights you give DAO groups."
     },
     "daoLinksForm": {
       "daoLinks": "Links and socials",

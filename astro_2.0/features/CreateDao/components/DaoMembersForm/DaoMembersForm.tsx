@@ -129,7 +129,7 @@ export const DaoMembersForm: VFC = () => {
             {t('createDAO.daoMembersForm.addMembers')}{' '}
             <span className={styles.optional}>({t('createDAO.optional')})</span>
           </h2>
-          <StepCounter total={6} current={4} />
+          <StepCounter total={7} current={4} />
         </div>
         <p className={styles.description}>
           {t('createDAO.daoMembersForm.addMembersDescription')}
