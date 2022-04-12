@@ -1,6 +1,7 @@
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 import React, { VFC, useCallback } from 'react';
+import { useAuthContext } from 'context/AuthContext';
 
 import { SEARCH_PAGE_URL } from 'constants/routing';
 
@@ -30,6 +31,8 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
   const DAOS_TAB_IDNEX = 0;
   const PROPOSAL_TAB_INDEX = 1;
   const PEOPLE_TAB_INDEX = 2;
+
+  const { accountId } = useAuthContext();
 
   const router = useRouter();
   const { searchResults } = useSearchResults();
@@ -85,11 +88,24 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
   }
 
   function renderDaos() {
-    const dataToRender = getThreeFirstResults(daos);
+    const sorted =
+      daos?.sort((a, b) => {
+        if (a.accountIds.includes(accountId)) {
+          return -1;
+        }
+
+        if (b.accountIds.includes(accountId)) {
+          return 1;
+        }
+
+        return 0;
+      }) ?? [];
+
+    const dataToRender = getThreeFirstResults(sorted);
 
     return (
       <ResultSection
-        data={daos}
+        data={sorted}
         title="DAOS"
         onSeeAll={goToDaosTabOnSearchPage}
       >

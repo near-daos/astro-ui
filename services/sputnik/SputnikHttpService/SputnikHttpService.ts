@@ -138,6 +138,7 @@ class SputnikHttpServiceClass {
           params: {
             query: params.query,
             accountId: params.accountId,
+            limit: 300,
           },
           cancelToken: params.cancelToken,
         }
