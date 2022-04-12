@@ -383,7 +383,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
       {renderCardContent()}
 
-      <div className={styles.voteControlCell}>
+      <div
+        tabIndex={-1}
+        role="button"
+        className={styles.voteControlCell}
+        onClick={e => e.stopPropagation()}
+        onKeyPress={e => e.stopPropagation()}
+      >
         <FormProvider {...methods}>
           <ProposalControlPanel
             status={status}

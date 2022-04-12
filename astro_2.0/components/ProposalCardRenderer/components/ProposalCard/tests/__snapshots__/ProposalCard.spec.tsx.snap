@@ -110,7 +110,10 @@ exports[`Proposal Card Should render component 1`] = `
         Content
       </div>
     </div>
-    <div>
+    <div
+      role="button"
+      tabindex="-1"
+    >
       <form
         class=""
       >
