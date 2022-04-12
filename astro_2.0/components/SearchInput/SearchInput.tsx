@@ -27,6 +27,9 @@ import styles from './SearchInput.module.scss';
 const POPUP_LEFT_MARGIN = 20;
 const POPUP_RIGHT_MARGIN = 20;
 
+const OFFSET_TOP_BOTTOM = 12;
+const OFFSET_LEFT_RIGHT = 0;
+
 interface SearchInputProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (val: string) => Promise<PaginationResponse<any> | null>;
@@ -38,6 +41,8 @@ interface SearchInputProps {
   showResults?: boolean;
   renderResult?: (item: DaoFeedItem) => ReactNode;
   showLoader?: boolean;
+  offset?: [number, number];
+  inputClassName?: string;
 }
 
 export const SearchInput: FC<SearchInputProps> = ({
@@ -50,6 +55,8 @@ export const SearchInput: FC<SearchInputProps> = ({
   showResults,
   renderResult,
   showLoader = true,
+  offset = [OFFSET_LEFT_RIGHT, OFFSET_TOP_BOTTOM],
+  inputClassName,
 }) => {
   const { t } = useTranslation();
   const isMounted = useMountedState();
@@ -72,7 +79,7 @@ export const SearchInput: FC<SearchInputProps> = ({
         {
           name: 'offset',
           options: {
-            offset: [0, 12],
+            offset,
           },
         },
         {
@@ -241,7 +248,9 @@ export const SearchInput: FC<SearchInputProps> = ({
         tabIndex={0}
         value={value}
         onChange={handleChange}
-        className={cn(styles.input, { [styles.withoutLoading]: !showLoader })}
+        className={cn(styles.input, inputClassName, {
+          [styles.withoutLoading]: !showLoader,
+        })}
         type="text"
         placeholder={placeholder || t('searchBountyPlaceholder')}
         onKeyUp={handleKeys}

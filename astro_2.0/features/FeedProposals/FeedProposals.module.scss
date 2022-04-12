@@ -106,6 +106,7 @@
   display: flex;
   flex-direction: column;
   margin-top: 35px;
+  max-height: 68px;
   position: sticky;
   top: 435px;
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
@@ -123,13 +124,17 @@
   margin: 0 0 12px;
 }
 
-.searchInput {
+.searchInputWrapper {
   margin: 0 46px 0 0;
   width: 153px;
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
     margin: 0;
     width: 100%;
   }
+}
+
+.searchInput {
+  @extend %body2;
 }
 
 .chips {

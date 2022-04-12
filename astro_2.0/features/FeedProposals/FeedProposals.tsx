@@ -288,10 +288,12 @@ export const FeedProposals = ({
               {t('filterByProposer')}
             </p>
             <SearchInput
+              offset={[0, 2]}
+              inputClassName={styles.searchInput}
               placeholder="proposer.near"
               key={chips.length}
               showLoader={false}
-              className={styles.searchInput}
+              className={styles.searchInputWrapper}
               resultHintClassName={styles.resultHint}
               onSubmit={fetchSearchProposals}
               loading={proposalsSearchLoading}

@@ -15,13 +15,16 @@ interface DaoVersionPageContentProps {
 const steps = [
   {
     label: 'Get latest code',
+    value: 'getLatestCode',
     isCurrent: true,
   },
   {
     label: 'Upgrade self',
+    value: 'upgradeSelf',
   },
   {
     label: 'Remove upgrade code blob',
+    value: 'removeUpgradeCodeBlob',
   },
 ];
 
