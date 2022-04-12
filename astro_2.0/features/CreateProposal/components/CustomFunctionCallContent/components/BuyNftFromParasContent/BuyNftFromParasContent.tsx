@@ -33,10 +33,27 @@ export const BuyNftFromParasContent: FC = () => {
           <Input
             className={cn(styles.inputWrapper, styles.narrow)}
             type="text"
-            placeholder="5971:gambiarra.mintbase1.near"
+            placeholder="0000"
             isBorderless
             size="block"
             {...register('tokenKey')}
+          />
+        </InputWrapper>
+      </div>
+      <div className={styles.address}>
+        <InputWrapper
+          fieldName="smartContractAddress"
+          label="Smart contract address"
+          fullWidth
+        >
+          <Input
+            className={cn(styles.inputWrapper, styles.narrow)}
+            type="text"
+            placeholder="0000"
+            isBorderless
+            size="block"
+            disabled
+            value="x.paras.near"
           />
         </InputWrapper>
       </div>

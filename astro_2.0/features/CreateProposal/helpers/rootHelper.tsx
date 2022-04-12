@@ -631,12 +631,10 @@ export function getValidationSchema(
         }
         case FunctionCallType.BuyNFTfromParas: {
           return yup.object().shape({
-            smartContractAddress: yup.string().required('Required'),
-            methodName: yup.string().required('Required'),
             tokenKey: yup.string().required('Required'),
-            timeout: yup.string().required('Required'),
-            price: yup
+            deposit: yup
               .number()
+              .positive()
               .typeError('Must be a valid number.')
               .required('Required'),
             target: yup

@@ -74,7 +74,11 @@ export const TransferContent: FC = () => {
       <InputWrapper fieldName="amount" label={t('proposalCard.proposalAmount')}>
         <Input
           className={cn(styles.inputWrapper, styles.narrow)}
-          inputStyles={{ width: `${amountWidth}ch`, paddingRight: 4 }}
+          inputStyles={{
+            width: `${amountWidth}ch`,
+            paddingRight: 4,
+            paddingTop: 4,
+          }}
           type="number"
           min={0}
           placeholder="00.0000"
