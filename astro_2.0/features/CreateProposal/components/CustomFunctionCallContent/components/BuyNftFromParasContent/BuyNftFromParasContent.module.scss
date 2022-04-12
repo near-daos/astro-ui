@@ -6,7 +6,8 @@
   display: grid;
   grid-gap: 24px;
   grid-template-areas:
-    'tokenKey target'
+    'tokenKey address'
+    'target target'
     'deposit gas';
   grid-template-columns: 1fr 1fr;
 }
