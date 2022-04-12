@@ -1,7 +1,6 @@
-import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { AxiosResponse } from 'axios';
+import { RequestQueryBuilder } from '@nestjsx/crud-request';
 
-import { PaginationResponse } from 'types/api';
 import {
   Notification,
   NotificationDTO,
@@ -9,6 +8,8 @@ import {
   UpdateNotificationSettingsParams,
   UpdateNotificationsParams,
 } from 'types/notification';
+import { PaginationResponse } from 'types/api';
+import { PkAndSignMethod } from 'context/AuthContext';
 
 import { httpService } from 'services/HttpService';
 import { mapNotificationDtoToNotification } from 'services/NotificationsService/mappers/notification';
@@ -43,11 +44,9 @@ class NotificationsServiceClass {
   public async sendUserEmail(
     accountId: string,
     email: string,
-    getPublicKey: () => Promise<string | null>,
-    getSignature: () => Promise<string | null>
+    getPublicKeyAndSignature: PkAndSignMethod
   ): Promise<boolean> {
-    const publicKey = await getPublicKey();
-    const signature = await getSignature();
+    const { publicKey, signature } = await getPublicKeyAndSignature();
 
     try {
       await this.httpService.post('account/email', {
@@ -74,11 +73,9 @@ class NotificationsServiceClass {
   public async verifyEmail(
     accountId: string,
     code: string,
-    getPublicKey: () => Promise<string | null>,
-    getSignature: () => Promise<string | null>
+    getPublicKeyAndSignature: PkAndSignMethod
   ) {
-    const publicKey = await getPublicKey();
-    const signature = await getSignature();
+    const { publicKey, signature } = await getPublicKeyAndSignature();
 
     try {
       await this.httpService.post('account/email/verify', {

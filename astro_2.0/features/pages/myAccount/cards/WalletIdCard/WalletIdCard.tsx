@@ -1,5 +1,5 @@
 import { useTranslation } from 'next-i18next';
-import React, { useCallback, VFC } from 'react';
+import React, { VFC, useCallback } from 'react';
 
 import { UserContacts } from 'services/NotificationsService/types';
 
@@ -29,7 +29,7 @@ export const WalletIdCard: VFC<WalletIdCardProps> = props => {
     isPhoneVerified,
   } = contactsConfig;
 
-  const { accountId, getPublicKey, getSignature } = useAuthContext();
+  const { accountId, getPublicKeyAndSignature } = useAuthContext();
 
   const { t } = useTranslation('common');
 
@@ -42,11 +42,10 @@ export const WalletIdCard: VFC<WalletIdCardProps> = props => {
         isEmail,
         setConfig,
         accountId,
-        getPublicKey,
-        getSignature,
+        getPublicKeyAndSignature,
       });
     },
-    [setConfig, showModal, accountId, getPublicKey, getSignature]
+    [setConfig, showModal, accountId, getPublicKeyAndSignature]
   );
 
   const openAddEmailModal = useCallback(() => {

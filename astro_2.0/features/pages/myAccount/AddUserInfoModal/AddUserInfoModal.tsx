@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import React, { VFC, useState, useCallback } from 'react';
 import { useForm, FormProvider, FieldError } from 'react-hook-form';
 
+import { PkAndSignMethod } from 'context/AuthContext';
 import { UserContacts } from 'services/NotificationsService/types';
 
 import { NotificationsService } from 'services/NotificationsService';
@@ -30,6 +31,7 @@ interface AddUserInfoModalProps {
   setConfig: (config: UserContacts) => void;
   getPublicKey: () => Promise<string | null>;
   getSignature: () => Promise<string | null>;
+  getPublicKeyAndSignature: PkAndSignMethod;
 }
 
 const ONE_MINUTE_IN_MS = 60000;
@@ -42,8 +44,7 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
     onClose,
     isEmail,
     accountId,
-    getPublicKey,
-    getSignature,
+    getPublicKeyAndSignature,
   } = props;
 
   const tBase = 'myAccountPage.popup';
@@ -74,12 +75,11 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
         NotificationsService.sendUserEmail(
           accountId,
           contact,
-          getPublicKey,
-          getSignature
+          getPublicKeyAndSignature
         );
       }
     },
-    [start, accountId, isEmail, getPublicKey, getSignature]
+    [start, accountId, isEmail, getPublicKeyAndSignature]
   );
 
   const verifyEmail = useCallback(
@@ -89,8 +89,7 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
       const successful = await NotificationsService.verifyEmail(
         accountId,
         code,
-        getPublicKey,
-        getSignature
+        getPublicKeyAndSignature
       );
 
       if (successful) {
@@ -106,7 +105,7 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
         setCodeValid(false);
       }
     },
-    [onClose, setConfig, accountId, getPublicKey, getSignature]
+    [onClose, setConfig, accountId, getPublicKeyAndSignature]
   );
 
   return (
