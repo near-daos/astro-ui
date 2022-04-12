@@ -12,6 +12,7 @@ import { NotificationsService } from 'services/NotificationsService';
 import { Modal } from 'components/modal';
 import { Input } from 'components/inputs/Input';
 import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
+import { UsaOnly } from 'astro_2.0/features/pages/myAccount/cards/WalletIdCard/components/UsaOnly';
 
 import { ContactForm } from './types';
 
@@ -26,7 +27,7 @@ interface AddUserInfoModalProps {
   isOpen: boolean;
   isEdit: boolean;
   onClose: () => void;
-  isEmail?: boolean;
+  isEmail: boolean;
   accountId: string;
   setConfig: (config: UserContacts) => void;
   getPublicKey: () => Promise<string | null>;
@@ -38,11 +39,11 @@ const ONE_MINUTE_IN_MS = 60000;
 
 export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
   const {
-    setConfig,
     isOpen,
     isEdit,
     onClose,
     isEmail,
+    setConfig,
     accountId,
     getPublicKeyAndSignature,
   } = props;
@@ -67,29 +68,29 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
     formState: { errors },
   } = methods;
 
-  const sendEmail = useCallback(
+  const sendContact = useCallback(
     ({ contact }: ContactForm) => {
       start();
 
-      if (isEmail) {
-        NotificationsService.sendUserEmail(
-          accountId,
-          contact,
-          getPublicKeyAndSignature
-        );
-      }
+      NotificationsService.sendContact(
+        accountId,
+        contact,
+        getPublicKeyAndSignature,
+        isEmail
+      );
     },
     [start, accountId, isEmail, getPublicKeyAndSignature]
   );
 
-  const verifyEmail = useCallback(
+  const verifyContact = useCallback(
     async (code: string) => {
       setCodeValid(true);
 
-      const successful = await NotificationsService.verifyEmail(
+      const successful = await NotificationsService.verifyContact(
         accountId,
         code,
-        getPublicKeyAndSignature
+        getPublicKeyAndSignature,
+        isEmail
       );
 
       if (successful) {
@@ -105,7 +106,7 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
         setCodeValid(false);
       }
     },
-    [onClose, setConfig, accountId, getPublicKeyAndSignature]
+    [onClose, isEmail, setConfig, accountId, getPublicKeyAndSignature]
   );
 
   return (
@@ -121,7 +122,7 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
         {t(`${tBase}.${isEmail ? 'email' : 'phone'}.message`)}
       </div>
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(sendEmail)}>
+        <form onSubmit={handleSubmit(sendContact)}>
           <InputFormWrapper
             errors={errors}
             className={styles.input}
@@ -130,6 +131,7 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
                 label={
                   <div className={styles.label}>
                     {t(`${tBase}.${isEmail ? 'email' : 'phone'}.inputLabel`)}
+                    {isEmail ? null : <UsaOnly className={styles.usaOnly} />}
                   </div>
                 }
                 size="auto"
@@ -163,7 +165,7 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
             }
           />
 
-          <SaveButton tBase={tBase} onClick={verifyEmail} />
+          <SaveButton tBase={tBase} onClick={verifyContact} />
         </form>
       </FormProvider>
     </Modal>
