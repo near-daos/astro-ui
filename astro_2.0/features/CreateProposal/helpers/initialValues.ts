@@ -9,6 +9,27 @@ export function getFormInitialValues(
   initialValues?: Record<string, unknown>
 ): Record<string, unknown> {
   switch (selectedProposalType) {
+    case ProposalVariant.ProposeGetUpgradeCode: {
+      return {
+        details: 'Get latest binary for DAO upgrade',
+        gas: DEFAULT_PROPOSAL_GAS,
+        versionHash: initialValues?.versionHash,
+      };
+    }
+    case ProposalVariant.ProposeUpgradeSelf: {
+      return {
+        details: 'Upgrade DAO',
+        gas: DEFAULT_PROPOSAL_GAS,
+        versionHash: initialValues?.versionHash,
+      };
+    }
+    case ProposalVariant.ProposeRemoveUpgradeCode: {
+      return {
+        details: 'Remove binary used for DAO upgrade',
+        gas: DEFAULT_PROPOSAL_GAS,
+        versionHash: initialValues?.versionHash,
+      };
+    }
     case ProposalVariant.ProposeCreateBounty: {
       return {
         details: '',

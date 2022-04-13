@@ -4,6 +4,7 @@ import { DaoContext } from 'types/context';
 import { CreationProgress } from 'astro_2.0/components/CreationProgress';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 
+import { useDaoUpgrade } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/useDaoUpgrade';
 import { VersionCheck } from './components/VersionCheck';
 
 import styles from './DaoVersionPageContent.module.scss';
@@ -12,27 +13,15 @@ interface DaoVersionPageContentProps {
   daoContext: DaoContext;
 }
 
-const steps = [
-  {
-    label: 'Get latest code',
-    value: 'getLatestCode',
-    isCurrent: true,
-  },
-  {
-    label: 'Upgrade self',
-    value: 'upgradeSelf',
-  },
-  {
-    label: 'Remove upgrade code blob',
-    value: 'removeUpgradeCodeBlob',
-  },
-];
-
 export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
   daoContext,
 }) => {
   const [showWizard, setShowWizard] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const { currentProposalVariant, upgradeSteps, upgradeStatus } = useDaoUpgrade(
+    daoContext.dao
+  );
 
   useEffect(() => {
     const timeout = setTimeout(() => setLoading(false), 2000);
@@ -50,16 +39,21 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
       {showWizard ? (
         <>
           <div className={styles.steps}>
-            <CreationProgress steps={steps} />
+            <CreationProgress steps={upgradeSteps} />
           </div>
           <div className={styles.content}>
             <CreateProposal
               {...daoContext}
+              // todo replace with actual implementation, save to backend
+              onCreate={() => null}
+              redirectAfterCreation={false}
               onClose={() => null}
               daoTokens={{}}
               showFlag={false}
               showClose={false}
               showInfo={false}
+              proposalVariant={currentProposalVariant}
+              initialValues={{ versionHash: upgradeStatus?.versionHash }}
             />
           </div>
         </>

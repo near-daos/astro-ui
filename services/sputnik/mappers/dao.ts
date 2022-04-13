@@ -59,6 +59,14 @@ export type DaoFeedItemResponse = {
 
 export type DaoDTO = {
   createdAt: string;
+  daoVersionHash: string;
+  daoVersion: {
+    createdAt: string;
+    hash: string;
+    version: number[];
+    commitId: string;
+    changelogUrl: string;
+  };
   transactionHash: string;
   updateTimestamp: string;
   id: string;
@@ -133,6 +141,8 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
   return {
     id: daoDTO.id,
     txHash: daoDTO.transactionHash ?? '',
+    daoVersionHash: daoDTO.daoVersionHash,
+    daoVersion: daoDTO.daoVersion,
     name: config?.name ?? '',
     description: config?.purpose ?? '',
     members: numberOfMembers,

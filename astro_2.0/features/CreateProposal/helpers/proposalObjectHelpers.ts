@@ -5,6 +5,7 @@ import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import Decimal from 'decimal.js';
 import { formatGasValue } from 'utils/format';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
+import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 
 export type CustomFunctionCallInput = {
   smartContractAddress: string;
@@ -16,6 +17,81 @@ export type CustomFunctionCallInput = {
   token: string;
   actionsGas: number;
 };
+
+export function getUpgradeCodeProposal(
+  dao: DAO,
+  data: Record<string, string>
+): CreateProposalParams {
+  const { versionHash, details } = data;
+
+  const args = jsonToBase64Str({
+    code_hash: versionHash,
+  });
+
+  return {
+    daoId: dao.id,
+    description: details,
+    kind: 'FunctionCall',
+    data: {
+      receiver_id: dao.id,
+      actions: [
+        {
+          method_name: 'store_contract_self',
+          args,
+          deposit: new Decimal(6000000000000000000000000).toFixed(),
+          gas: '220000000000000',
+        },
+      ],
+    },
+    bond: dao.policy.proposalBond,
+  };
+}
+
+export function getRemoveUpgradeCodeProposal(
+  dao: DAO,
+  data: Record<string, string>
+): CreateProposalParams {
+  const { versionHash, details } = data;
+
+  const args = jsonToBase64Str({
+    code_hash: versionHash,
+  });
+
+  return {
+    daoId: dao.id,
+    description: details,
+    kind: 'FunctionCall',
+    data: {
+      receiver_id: dao.id,
+      actions: [
+        {
+          method_name: 'remove_contract_self',
+          args,
+          deposit: '0',
+          gas: '220000000000000',
+        },
+      ],
+    },
+    bond: dao.policy.proposalBond,
+  };
+}
+
+export function getUpgradeSelfProposal(
+  dao: DAO,
+  data: Record<string, string>
+): CreateProposalParams {
+  const { versionHash, details } = data;
+
+  return {
+    daoId: dao.id,
+    description: details,
+    kind: 'UpgradeSelf',
+    data: {
+      hash: versionHash,
+    },
+    bond: dao.policy.proposalBond,
+  };
+}
 
 export async function getCustomFunctionCallProposal(
   dao: DAO,
