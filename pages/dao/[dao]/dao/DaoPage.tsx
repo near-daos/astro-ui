@@ -20,6 +20,7 @@ interface DaoHomeProps {
 
 const DAOHome: NextPage<DaoHomeProps> = ({ daoContext }) => {
   const { dao, userPermissions } = daoContext;
+
   const breadcrumbsConfig = useGetBreadcrumbsConfig(dao.id, dao.displayName);
 
   const breadcrumbs = useMemo(() => {

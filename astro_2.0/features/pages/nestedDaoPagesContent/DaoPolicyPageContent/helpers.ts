@@ -1,4 +1,5 @@
 import { ProposalType } from 'types/proposal';
+import { APP_TO_CONTRACT_PROPOSAL_TYPE } from 'utils/dataConverter';
 
 export type SelectorRow = {
   label: string;
@@ -8,7 +9,6 @@ export type SelectorRow = {
   poll: boolean;
   removeMember: boolean;
   addMember: boolean;
-  createGroup: boolean;
 };
 
 export function getInitialCreationPermissions(dao: {
@@ -24,31 +24,44 @@ export function getInitialCreationPermissions(dao: {
 
     const policy =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.ChangePolicy}:AddProposal`) !==
-        -1;
+      group.permissions.indexOf(
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.ChangePolicy]
+        }:AddProposal`
+      ) !== -1;
 
     const bounty =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.AddBounty}:AddProposal`) !== -1;
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.AddBounty]}:AddProposal`
+      ) !== -1;
 
     const transfer =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.Transfer}:AddProposal`) !== -1;
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.Transfer]}:AddProposal`
+      ) !== -1;
 
     const poll =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.Vote}:AddProposal`) !== -1;
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.Vote]}:AddProposal`
+      ) !== -1;
 
     const removeMember =
       allowAll ||
       group.permissions.indexOf(
-        `${ProposalType.RemoveMemberFromRole}:AddProposal`
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.RemoveMemberFromRole]
+        }:AddProposal`
       ) !== -1;
 
     const addMember =
       allowAll ||
       group.permissions.indexOf(
-        `${ProposalType.AddMemberToRole}:AddProposal`
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.AddMemberToRole]
+        }:AddProposal`
       ) !== -1;
 
     // const createGroup =
@@ -64,7 +77,6 @@ export function getInitialCreationPermissions(dao: {
       poll,
       removeMember,
       addMember,
-      createGroup: false,
     };
   });
 }
@@ -82,31 +94,44 @@ export function getInitialVotingPermissions(dao: {
 
     const policy =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.ChangePolicy}:VoteApprove`) !==
-        -1;
+      group.permissions.indexOf(
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.ChangePolicy]
+        }:VoteApprove`
+      ) !== -1;
 
     const bounty =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.AddBounty}:VoteApprove`) !== -1;
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.AddBounty]}:VoteApprove`
+      ) !== -1;
 
     const transfer =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.Transfer}:VoteApprove`) !== -1;
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.Transfer]}:VoteApprove`
+      ) !== -1;
 
     const poll =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.Vote}:VoteApprove`) !== -1;
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.Vote]}:VoteApprove`
+      ) !== -1;
 
     const removeMember =
       allowAll ||
       group.permissions.indexOf(
-        `${ProposalType.RemoveMemberFromRole}:VoteApprove`
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.RemoveMemberFromRole]
+        }:VoteApprove`
       ) !== -1;
 
     const addMember =
       allowAll ||
       group.permissions.indexOf(
-        `${ProposalType.AddMemberToRole}:VoteApprove`
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.AddMemberToRole]
+        }:VoteApprove`
       ) !== -1;
 
     // const createGroup =
@@ -122,7 +147,6 @@ export function getInitialVotingPermissions(dao: {
       poll,
       removeMember,
       addMember,
-      createGroup: false,
     };
   });
 }

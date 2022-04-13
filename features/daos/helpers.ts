@@ -1,7 +1,10 @@
 import { SputnikHttpService } from 'services/sputnik';
 import { DaoFeedItem } from 'types/dao';
 import { DaoContext } from 'types/context';
-import { isUserPermittedToCreateProposal } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
+import {
+  getAllowedProposalsToCreate,
+  getAllowedProposalsToVote,
+} from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 
 interface GetDaoListProps {
   sort?: string;
@@ -53,10 +56,17 @@ export async function getDaoContext(
     return undefined;
   }
 
+  const allowedProposalsToCreate = getAllowedProposalsToCreate(accountId, dao);
+  const isCanCreateProposals = !!Object.values(allowedProposalsToCreate).find(
+    value => value
+  );
+
   return {
     dao,
     userPermissions: {
-      isCanCreateProposals: isUserPermittedToCreateProposal(accountId, dao),
+      isCanCreateProposals,
+      allowedProposalsToCreate,
+      allowedProposalsToVote: getAllowedProposalsToVote(accountId, dao),
       isCanCreatePolicyProposals: !policyAffectsProposals.length,
     },
     policyAffectsProposals,
