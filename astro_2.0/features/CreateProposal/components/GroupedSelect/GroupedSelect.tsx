@@ -13,6 +13,7 @@ export type Option = {
   label: string;
   value: string;
   group: string;
+  disabled?: boolean;
 };
 
 interface GroupedSelectProps {
@@ -133,7 +134,8 @@ export const GroupedSelect = React.forwardRef<
                               <div
                                 key={option.value}
                                 className={cn(styles.item, {
-                                  [styles.disabled]: section.disabled,
+                                  [styles.disabled]:
+                                    section.disabled || option.disabled,
                                 })}
                                 {...getItemProps({
                                   item: option,

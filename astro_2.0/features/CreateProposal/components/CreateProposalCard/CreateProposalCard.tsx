@@ -58,6 +58,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     () =>
       getProposalTypesOptions(
         userPermissions.isCanCreatePolicyProposals,
+        userPermissions.allowedProposalsToCreate,
         canCreateTokenProposal
       ),
     [userPermissions, canCreateTokenProposal]

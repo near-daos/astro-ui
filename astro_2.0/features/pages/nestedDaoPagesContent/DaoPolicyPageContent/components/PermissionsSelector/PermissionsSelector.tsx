@@ -150,11 +150,6 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
             'proposalAddMember',
             'Add members to group'
           )}
-          {renderLegendCell(
-            'Create Group',
-            'proposalCreateGroup',
-            'Propose Create Group'
-          )}
         </div>
         <div
           className={cn(styles.panel, {
@@ -177,7 +172,6 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
                 {renderValueCell('poll', row.label, row.poll)}
                 {renderValueCell('removeMember', row.label, row.removeMember)}
                 {renderValueCell('addMember', row.label, row.addMember)}
-                {renderValueCell('createGroup', row.label, row.createGroup)}
               </div>
             ))}
             <div ref={rightIntersectionRef} />

@@ -46,6 +46,7 @@ import {
 } from 'utils/imageValidators';
 import { SputnikNearService } from 'services/sputnik';
 import { ChangeVotingPermissionsContent } from 'astro_2.0/features/CreateProposal/components/ChangeVotingPermissionsContent';
+import { ProposalPermissions } from 'types/context';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -58,6 +59,7 @@ const CustomFunctionCallContent = dynamic(
 
 export function getProposalTypesOptions(
   isCanCreatePolicyProposals: boolean,
+  allowedProposalsToCreate: ProposalPermissions,
   canCreateTokenProposal = false
 ): {
   title: string;
@@ -69,17 +71,21 @@ export function getProposalTypesOptions(
   const config = [
     {
       title: 'Transfer/Add bounty',
-      disabled: false,
+      disabled:
+        !allowedProposalsToCreate[ProposalType.Transfer] &&
+        !allowedProposalsToCreate[ProposalType.AddBounty],
       options: [
         {
           label: 'Propose a Transfer',
           value: ProposalVariant.ProposeTransfer,
           group: 'Transfer/Add bounty',
+          disabled: !allowedProposalsToCreate[ProposalType.Transfer],
         },
         {
           label: 'Propose to Create a Bounty',
           value: ProposalVariant.ProposeCreateBounty,
           group: 'Transfer/Add bounty',
+          disabled: !allowedProposalsToCreate[ProposalType.AddBounty],
         },
       ],
     },
@@ -116,7 +122,9 @@ export function getProposalTypesOptions(
     },
     {
       title: 'Change Policy',
-      disabled: !isCanCreatePolicyProposals,
+      disabled:
+        !allowedProposalsToCreate[ProposalType.ChangePolicy] ||
+        !isCanCreatePolicyProposals,
       options: [
         {
           label: 'Propose to Change Voting Policy',
@@ -143,22 +151,27 @@ export function getProposalTypesOptions(
           label: 'Propose to Add Member to Group',
           value: ProposalVariant.ProposeAddMember,
           group: 'Change Members of DAO',
+          disabled: !allowedProposalsToCreate[ProposalType.AddMemberToRole],
         },
         {
           label: 'Propose to Remove Member from Group',
           value: ProposalVariant.ProposeRemoveMember,
           group: 'Change Members of DAO',
+          disabled: !allowedProposalsToCreate[
+            ProposalType.RemoveMemberFromRole
+          ],
         },
       ],
     },
     {
       title: 'Vote',
-      disabled: false,
+      disabled: !allowedProposalsToCreate[ProposalType.Vote],
       options: [
         {
           label: 'Propose a Poll',
           value: ProposalVariant.ProposePoll,
           group: 'Vote',
+          disabled: !allowedProposalsToCreate[ProposalType.Vote],
         },
       ],
     },
@@ -184,6 +197,7 @@ export function getProposalTypesOptions(
       label: 'Create Token',
       value: ProposalVariant.ProposeCreateToken,
       group: 'Change Config',
+      disabled: false,
     });
 
     config.push({
@@ -206,7 +220,7 @@ export function getInputSize(
   proposalType: ProposalVariant,
   max: number
 ): number {
-  const options = getProposalTypesOptions(true);
+  const options = getProposalTypesOptions(true, {} as ProposalPermissions);
 
   const length =
     options
