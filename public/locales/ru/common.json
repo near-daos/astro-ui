@@ -48,7 +48,7 @@
   "minimumSearchCharacters": "Please enter at least 3 characters to search",
   "searchBountyPlaceholder": "Search Bounty Name",
   "all": "All",
-  "selectedProposals": "Selected {{length}} proposals",
+  "selectedProposals": "Selected {{length}} proposals{{plural}}",
   "filterByProposer": "Filter by proposer",
   "bountiesPage": {
     "successClaimBountyNotification": "Транзакции в блокчейне могут занимать некоторе время, пожалуйста, обновите страницу ДАО через несколько секунд."

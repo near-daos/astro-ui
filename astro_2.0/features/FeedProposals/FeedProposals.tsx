@@ -308,7 +308,10 @@ export const FeedProposals = ({
               <span className={styles.chipsTitle}>
                 <Trans
                   i18nKey="selectedProposals"
-                  values={{ length: chips.length }}
+                  values={{
+                    length: proposalsData?.total || 0,
+                    plural: (proposalsData?.total || 0) > 1 ? 's' : '',
+                  }}
                 />
               </span>
               {chips.map(chip => (

@@ -190,7 +190,7 @@ export const SearchInput: FC<SearchInputProps> = ({
                   })}
                 </div>
               )}
-              {showResults && !searchResults?.length && (
+              {!showHint && showResults && !searchResults?.length && (
                 <div className={styles.hint}>
                   <NoResultsView
                     title={t('noResultsFound')}
