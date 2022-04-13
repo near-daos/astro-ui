@@ -306,6 +306,9 @@ export function getFormContentNode(
   dao: DAO
 ): ReactNode | null {
   switch (proposalType) {
+    case ProposalVariant.ProposeGetUpgradeCode: {
+      return null;
+    }
     case ProposalVariant.ProposeCreateBounty: {
       return <AddBountyContent />;
     }

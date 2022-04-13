@@ -41,8 +41,11 @@ import {
   getBuyNftFromMintbaseProposal,
   getBuyNftFromParasProposal,
   getCustomFunctionCallProposal,
+  getRemoveUpgradeCodeProposal,
   getSwapsOnRefProposal,
   getTransferMintbaseNFTProposal,
+  getUpgradeCodeProposal,
+  getUpgradeSelfProposal,
   SwapsOnRefInput,
   TransferMintbaseNFTInput,
 } from 'astro_2.0/features/CreateProposal/helpers/proposalObjectHelpers';
@@ -129,6 +132,15 @@ export async function getNewProposalObject(
   bountyId?: number
 ): Promise<CreateProposalParams | null> {
   switch (proposalType) {
+    case ProposalVariant.ProposeGetUpgradeCode: {
+      return getUpgradeCodeProposal(dao, data as Record<string, string>);
+    }
+    case ProposalVariant.ProposeRemoveUpgradeCode: {
+      return getRemoveUpgradeCodeProposal(dao, data as Record<string, string>);
+    }
+    case ProposalVariant.ProposeUpgradeSelf: {
+      return getUpgradeSelfProposal(dao, data as Record<string, string>);
+    }
     case ProposalVariant.ProposeCreateBounty: {
       return Promise.resolve(
         getAddBountyProposal(dao, data as CreateBountyInput, tokens)

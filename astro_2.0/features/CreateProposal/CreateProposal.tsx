@@ -47,7 +47,8 @@ export interface CreateProposalProps {
   daoTokens: Record<string, Token>;
   showFlag?: boolean;
   bountyId?: number;
-  onCreate?: (result: boolean) => void;
+  onCreate?: (proposalId: string) => void;
+  redirectAfterCreation?: boolean;
   onClose: () => void;
   userPermissions: UserPermissions;
   showClose?: boolean;
@@ -64,6 +65,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   showFlag = true,
   bountyId,
   onCreate,
+  redirectAfterCreation = true,
   onClose,
   userPermissions,
   showClose = true,
@@ -214,17 +216,19 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             return;
           }
 
-          await router.push({
-            pathname: SINGLE_PROPOSAL_PAGE_URL,
-            query: {
-              dao: dao.id,
-              proposal: `${dao.id}-${newProposalId}`,
-              fromCreate: true,
-            },
-          });
-
           if (onCreate) {
-            onCreate(true);
+            onCreate(newProposalId);
+          }
+
+          if (redirectAfterCreation) {
+            await router.push({
+              pathname: SINGLE_PROPOSAL_PAGE_URL,
+              query: {
+                dao: dao.id,
+                proposal: `${dao.id}-${newProposalId}`,
+                fromCreate: true,
+              },
+            });
           }
         }
       } catch (err) {
@@ -250,6 +254,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
       onCreate,
       nearService,
       onClose,
+      redirectAfterCreation,
       isMounted,
     ]
   );

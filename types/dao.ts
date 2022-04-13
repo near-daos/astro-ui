@@ -25,6 +25,14 @@ export type Member = {
   votes: number;
 } & { [key: string]: string | string[] | Token | number };
 
+export type DaoVersion = {
+  createdAt: string;
+  hash: string;
+  version: number[];
+  commitId: string;
+  changelogUrl: string;
+};
+
 type DaoProperties = {
   id: string;
   name: string;
@@ -42,6 +50,8 @@ type DaoProperties = {
 export type DAO = {
   txHash: string;
   members: number;
+  daoVersionHash: string;
+  daoVersion: DaoVersion;
   daoMembersList: string[];
   funds: string;
   totalProposals: number;

@@ -98,6 +98,17 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
           />
         );
       }
+      case ProposalVariant.ProposeGetUpgradeCode: {
+        return (
+          <InfoBlockWidget label="Upgrade" value="Get latest binary code" />
+        );
+      }
+      case ProposalVariant.ProposeUpgradeSelf: {
+        return <InfoBlockWidget label="Upgrade" value="Upgrade dao" />;
+      }
+      case ProposalVariant.ProposeRemoveUpgradeCode: {
+        return <InfoBlockWidget label="Upgrade" value="Remove binary" />;
+      }
       case ProposalVariant.ProposeDoneBounty: {
         return (
           <InfoBlockWidget
@@ -180,6 +191,33 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       case ProposalVariant.ProposeCreateToken: {
         return null;
       }
+      case ProposalVariant.ProposeRemoveUpgradeCode:
+      case ProposalVariant.ProposeUpgradeSelf:
+      case ProposalVariant.ProposeGetUpgradeCode: {
+        return (
+          <div className={styles.descriptionCell}>
+            <InputWrapper
+              fieldName="details"
+              label={t('proposalCard.proposalDescription')}
+              fullWidth
+            >
+              <TextArea
+                size="block"
+                textAlign="left"
+                resize="none"
+                autoFocus
+                placeholder={LOREN_IPSUM}
+                className={styles.textArea}
+                isBorderless
+                maxLength={500}
+                minRows={2}
+                maxRows={4}
+                {...register('details')}
+              />
+            </InputWrapper>
+          </div>
+        );
+      }
       default: {
         return (
           <div className={styles.descriptionCell}>
@@ -238,7 +276,6 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
           </>
         );
       }
-
       case ProposalVariant.ProposeContractAcceptance:
       case ProposalVariant.ProposeTokenDistribution: {
         return <div className={styles.descriptionCell}>{content}</div>;

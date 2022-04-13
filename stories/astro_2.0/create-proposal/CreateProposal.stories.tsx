@@ -31,6 +31,14 @@ Template.args = {
     legal: {},
     id: 'saturn.sputnikv2.testnet',
     txHash: '4px581fv2HJ5LuWBUs72qouAJnZ5ka4bEA2ZLmixgjHD',
+    daoVersion: {
+      createdAt: '',
+      hash: '',
+      changelogUrl: '',
+      commitId: '',
+      version: [],
+    },
+    daoVersionHash: '',
     name: 'saturn',
     description:
       'We’re a community grant for artists who want to build projects on our platform. Join our Discord channel to stay up to date with latest info!',
