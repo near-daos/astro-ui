@@ -39,8 +39,6 @@ export const DaoProposalCreationForm: VFC = () => {
         {t('createDAO.proposals.description')}
       </p>
       <PermissionsSelector
-        // title="Proposal creation"
-        // description="Choose what creation rights you give DAO groups. This can be changed in settings later."
         className={styles.selector}
         contentClassName={styles.content}
         headerClassName={styles.control}
