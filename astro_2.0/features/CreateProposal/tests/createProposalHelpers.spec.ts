@@ -1,17 +1,34 @@
 import { DAO } from 'types/dao';
-import { ProposalVariant } from 'types/proposal';
+import { ProposalType, ProposalVariant } from 'types/proposal';
 
 import {
   getInitialProposalVariant,
   isUserPermittedToCreateProposal,
 } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 
+const allowedProposalsToCreate = {
+  [ProposalType.ChangePolicy]: true,
+  [ProposalType.ChangeConfig]: true,
+  [ProposalType.AddBounty]: true,
+  [ProposalType.Transfer]: true,
+  [ProposalType.Vote]: true,
+  [ProposalType.RemoveMemberFromRole]: true,
+  [ProposalType.AddMemberToRole]: true,
+  [ProposalType.AddMemberToRole]: true,
+  [ProposalType.FunctionCall]: true,
+  [ProposalType.UpgradeRemote]: true,
+  [ProposalType.UpgradeSelf]: true,
+  [ProposalType.SetStakingContract]: true,
+  [ProposalType.BountyDone]: true,
+};
+
 describe('createProposalHelpers', () => {
   describe('getInitialProposalVariant', () => {
     it('Should return default proposal variant', () => {
       const result = getInitialProposalVariant(
         ProposalVariant.ProposeCreateToken,
-        true
+        true,
+        allowedProposalsToCreate
       );
 
       expect(result).toEqual(ProposalVariant.ProposeCreateToken);
@@ -20,7 +37,8 @@ describe('createProposalHelpers', () => {
     it('Should return transfer proposal variant', () => {
       const result = getInitialProposalVariant(
         ProposalVariant.ProposeRemoveMember,
-        false
+        false,
+        allowedProposalsToCreate
       );
 
       expect(result).toEqual(ProposalVariant.ProposeTransfer);

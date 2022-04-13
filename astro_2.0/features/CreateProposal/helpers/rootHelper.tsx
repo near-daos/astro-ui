@@ -91,7 +91,9 @@ export function getProposalTypesOptions(
     },
     {
       title: changeConfigTitle,
-      disabled: !isCanCreatePolicyProposals,
+      disabled:
+        !isCanCreatePolicyProposals ||
+        !allowedProposalsToCreate[ProposalType.ChangeConfig],
       options: [
         {
           label: 'Propose to Change DAO Name',
@@ -145,7 +147,10 @@ export function getProposalTypesOptions(
     },
     {
       title: 'Change Members of DAO',
-      disabled: !isCanCreatePolicyProposals,
+      disabled:
+        !isCanCreatePolicyProposals ||
+        (!allowedProposalsToCreate[ProposalType.AddMemberToRole] &&
+          !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole]),
       options: [
         {
           label: 'Propose to Add Member to Group',
@@ -177,12 +182,13 @@ export function getProposalTypesOptions(
     },
     {
       title: 'Function Call',
-      disabled: false,
+      disabled: !allowedProposalsToCreate[ProposalType.FunctionCall],
       options: [
         {
           label: 'Custom Function Call',
           value: ProposalVariant.ProposeCustomFunctionCall,
           group: 'Function Call',
+          disabled: !allowedProposalsToCreate[ProposalType.FunctionCall],
         },
       ],
     },

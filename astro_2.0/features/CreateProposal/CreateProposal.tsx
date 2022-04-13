@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useMount } from 'react-use';
+import { useMount, useMountedState } from 'react-use';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
@@ -71,12 +71,14 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   canCreateTokenProposal = false,
   initialValues,
 }) => {
+  const isMounted = useMountedState();
   const { t } = useTranslation();
   const { accountId, nearService } = useAuthContext();
   const router = useRouter();
   const initialProposalVariant = getInitialProposalVariant(
     proposalVariant,
-    userPermissions.isCanCreatePolicyProposals
+    userPermissions.isCanCreatePolicyProposals,
+    userPermissions.allowedProposalsToCreate
   );
   const [selectedProposalVariant, setSelectedProposalVariant] = useState(
     initialProposalVariant
@@ -232,7 +234,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           lifetime: 20000,
         });
 
-        if (onCreate) {
+        if (onCreate && isMounted()) {
           onCreate(false);
         }
       }
@@ -248,6 +250,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
       onCreate,
       nearService,
       onClose,
+      isMounted,
     ]
   );
 

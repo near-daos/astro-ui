@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { SettingsFilterToggle } from 'astro_2.0/features/DaoGovernance/components/SettingsFilterToggle';
 import { DaoSetting, SettingsCard } from 'astro_2.0/features/DaoGovernance';
 
-import { ProposalVariant } from 'types/proposal';
+import { ProposalType, ProposalVariant } from 'types/proposal';
 import { DaoContext } from 'types/context';
 
 import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
@@ -63,7 +63,10 @@ export const DaoPolicyPageContent: FC<Props> = ({
             description="Choose what creation rights you give DAO groups. This can be changed in settings later."
             disableNewProposal={
               !userPermissions.isCanCreateProposals ||
-              !userPermissions.isCanCreatePolicyProposals
+              !userPermissions.isCanCreatePolicyProposals ||
+              !userPermissions.allowedProposalsToCreate[
+                ProposalType.ChangePolicy
+              ]
             }
             onSubmit={initialValues => {
               handleCreateProposal(
@@ -82,7 +85,10 @@ export const DaoPolicyPageContent: FC<Props> = ({
             description="Choose what voting rights you give DAO groups."
             disableNewProposal={
               !userPermissions.isCanCreateProposals ||
-              !userPermissions.isCanCreatePolicyProposals
+              !userPermissions.isCanCreatePolicyProposals ||
+              !userPermissions.allowedProposalsToCreate[
+                ProposalType.ChangePolicy
+              ]
             }
             onSubmit={initialValues => {
               handleCreateProposal(
@@ -101,7 +107,10 @@ export const DaoPolicyPageContent: FC<Props> = ({
             className={styles.contentRow}
             disableNewProposal={
               !userPermissions.isCanCreateProposals ||
-              !userPermissions.isCanCreatePolicyProposals
+              !userPermissions.isCanCreatePolicyProposals ||
+              !userPermissions.allowedProposalsToCreate[
+                ProposalType.ChangePolicy
+              ]
             }
             settingsChangeHandler={() =>
               handleCreateProposal(ProposalVariant.ProposeChangeBonds)
@@ -159,7 +168,10 @@ export const DaoPolicyPageContent: FC<Props> = ({
             className={styles.contentRow}
             disableNewProposal={
               !userPermissions.isCanCreateProposals ||
-              !userPermissions.isCanCreatePolicyProposals
+              !userPermissions.isCanCreatePolicyProposals ||
+              !userPermissions.allowedProposalsToCreate[
+                ProposalType.ChangePolicy
+              ]
             }
             settingsChangeHandler={() =>
               handleCreateProposal(ProposalVariant.ProposeChangeVotingPolicy)

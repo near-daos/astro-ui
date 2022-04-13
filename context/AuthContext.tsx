@@ -177,11 +177,13 @@ export const AuthWrapper: FC = ({ children }) => {
 
       setAccountId(nearService?.getAccountId() ?? '');
 
+      setSelectedWallet(walletType.toString());
+
       CookieService.set(ACCOUNT_COOKIE, nearService?.getAccountId(), {
         path: '/',
       });
     },
-    [nearService]
+    [nearService, setSelectedWallet]
   );
 
   const login = useCallback(

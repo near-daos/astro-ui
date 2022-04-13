@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { SettingsFilterToggle } from 'astro_2.0/features/DaoGovernance/components/SettingsFilterToggle';
 import { DaoSetting } from 'astro_2.0/features/DaoGovernance';
 
-import { ProposalVariant } from 'types/proposal';
+import { ProposalType, ProposalVariant } from 'types/proposal';
 import { DaoContext } from 'types/context';
 
 import { Icon } from 'components/Icon';
@@ -47,7 +47,10 @@ export const DaoConfigPageContent: FC<Props> = ({
             className={styles.contentRow}
             disableNewProposal={
               !userPermissions.isCanCreateProposals ||
-              !userPermissions.isCanCreatePolicyProposals
+              !userPermissions.isCanCreatePolicyProposals ||
+              !userPermissions.allowedProposalsToCreate[
+                ProposalType.ChangeConfig
+              ]
             }
             settingsChangeHandler={() =>
               handleCreateProposal(ProposalVariant.ProposeChangeDaoName)
@@ -69,7 +72,10 @@ export const DaoConfigPageContent: FC<Props> = ({
             className={styles.contentRow}
             disableNewProposal={
               !userPermissions.isCanCreateProposals ||
-              !userPermissions.isCanCreatePolicyProposals
+              !userPermissions.isCanCreatePolicyProposals ||
+              !userPermissions.allowedProposalsToCreate[
+                ProposalType.ChangeConfig
+              ]
             }
             settingsChangeHandler={() =>
               handleCreateProposal(ProposalVariant.ProposeChangeDaoLegalInfo)
@@ -96,7 +102,10 @@ export const DaoConfigPageContent: FC<Props> = ({
             className={styles.contentRow}
             disableNewProposal={
               !userPermissions.isCanCreateProposals ||
-              !userPermissions.isCanCreatePolicyProposals
+              !userPermissions.isCanCreatePolicyProposals ||
+              !userPermissions.allowedProposalsToCreate[
+                ProposalType.ChangeConfig
+              ]
             }
             settingsChangeHandler={() =>
               handleCreateProposal(ProposalVariant.ProposeChangeDaoLinks)
@@ -130,7 +139,10 @@ export const DaoConfigPageContent: FC<Props> = ({
             className={styles.contentRow}
             disableNewProposal={
               !userPermissions.isCanCreateProposals ||
-              !userPermissions.isCanCreatePolicyProposals
+              !userPermissions.isCanCreatePolicyProposals ||
+              !userPermissions.allowedProposalsToCreate[
+                ProposalType.ChangeConfig
+              ]
             }
             settingsChangeHandler={() =>
               handleCreateProposal(ProposalVariant.ProposeChangeDaoFlag)
