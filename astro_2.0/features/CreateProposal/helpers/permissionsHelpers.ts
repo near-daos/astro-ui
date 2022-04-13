@@ -7,7 +7,8 @@ import { dataRoleToContractRole } from 'features/groups/helpers';
 import { DAO } from 'types/dao';
 import { CreateProposalParams, ProposalType } from 'types/proposal';
 import { SelectorRow } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';
-import { DaoRole } from 'types/role';
+import { DaoPermission, DaoRole } from 'types/role';
+import { APP_TO_CONTRACT_PROPOSAL_TYPE } from 'utils/dataConverter';
 
 type PermissionField =
   | 'AddProposal'
@@ -40,10 +41,27 @@ export function updateRoleWithNewPermissions(
 
   Object.keys(updatedRole).forEach(key => {
     switch (key) {
+      case 'config': {
+        if (updatedRole[key]) {
+          fields.forEach(field => {
+            newPermissions.push(
+              `${
+                APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.ChangeConfig]
+              }:${field}` as DaoPermission
+            );
+          });
+        }
+
+        break;
+      }
       case 'policy': {
         if (updatedRole[key]) {
           fields.forEach(field => {
-            newPermissions.push(`${ProposalType.ChangePolicy}:${field}`);
+            newPermissions.push(
+              `${
+                APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.ChangePolicy]
+              }:${field}` as DaoPermission
+            );
           });
         }
 
@@ -52,7 +70,24 @@ export function updateRoleWithNewPermissions(
       case 'bounty': {
         if (updatedRole[key]) {
           fields.forEach(field => {
-            newPermissions.push(`${ProposalType.AddBounty}:${field}`);
+            newPermissions.push(
+              `${
+                APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.AddBounty]
+              }:${field}` as DaoPermission
+            );
+          });
+        }
+
+        break;
+      }
+      case 'bountyDone': {
+        if (updatedRole[key]) {
+          fields.forEach(field => {
+            newPermissions.push(
+              `${
+                APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.BountyDone]
+              }:${field}` as DaoPermission
+            );
           });
         }
 
@@ -61,7 +96,11 @@ export function updateRoleWithNewPermissions(
       case 'transfer': {
         if (updatedRole[key]) {
           fields.forEach(field => {
-            newPermissions.push(`${ProposalType.Transfer}:${field}`);
+            newPermissions.push(
+              `${
+                APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.Transfer]
+              }:${field}` as DaoPermission
+            );
           });
         }
 
@@ -70,7 +109,11 @@ export function updateRoleWithNewPermissions(
       case 'poll': {
         if (updatedRole[key]) {
           fields.forEach(field => {
-            newPermissions.push(`${ProposalType.Vote}:${field}`);
+            newPermissions.push(
+              `${
+                APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.Vote]
+              }:${field}` as DaoPermission
+            );
           });
         }
 
@@ -80,7 +123,9 @@ export function updateRoleWithNewPermissions(
         if (updatedRole[key]) {
           fields.forEach(field => {
             newPermissions.push(
-              `${ProposalType.RemoveMemberFromRole}:${field}`
+              `${
+                APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.RemoveMemberFromRole]
+              }:${field}` as DaoPermission
             );
           });
         }
@@ -90,19 +135,68 @@ export function updateRoleWithNewPermissions(
       case 'addMember': {
         if (updatedRole[key]) {
           fields.forEach(field => {
-            newPermissions.push(`${ProposalType.AddMemberToRole}:${field}`);
+            newPermissions.push(
+              `${
+                APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.AddMemberToRole]
+              }:${field}` as DaoPermission
+            );
           });
         }
 
         break;
       }
-      // case 'group': {
-      //   if (updatedRole[key]) {
-      //     newPermissions.push(`${ProposalType.AddBounty}:AddProposal`);
-      //   }
-      //
-      //   break;
-      // }
+      case 'call': {
+        if (updatedRole[key]) {
+          fields.forEach(field => {
+            newPermissions.push(
+              `${
+                APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.FunctionCall]
+              }:${field}` as DaoPermission
+            );
+          });
+        }
+
+        break;
+      }
+      case 'upgradeSelf': {
+        if (updatedRole[key]) {
+          fields.forEach(field => {
+            newPermissions.push(
+              `${
+                APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.UpgradeSelf]
+              }:${field}` as DaoPermission
+            );
+          });
+        }
+
+        break;
+      }
+      case 'upgradeRemote': {
+        if (updatedRole[key]) {
+          fields.forEach(field => {
+            newPermissions.push(
+              `${
+                APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.UpgradeRemote]
+              }:${field}` as DaoPermission
+            );
+          });
+        }
+
+        break;
+      }
+      case 'setStakingContract': {
+        if (updatedRole[key]) {
+          fields.forEach(field => {
+            newPermissions.push(
+              `${
+                APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.SetStakingContract]
+              }:${field}` as DaoPermission
+            );
+          });
+        }
+
+        break;
+      }
       default: {
         break;
       }

@@ -1,6 +1,6 @@
 import { render } from 'jest/testUtils';
 
-import { ProposalVariant } from 'types/proposal';
+import { ProposalType, ProposalVariant } from 'types/proposal';
 import { IconButtonProps } from 'components/button/IconButton';
 
 import { CreateProposalCard } from 'astro_2.0/features/CreateProposal/components/CreateProposalCard';
@@ -58,6 +58,41 @@ jest.mock('components/button/IconButton', () => {
   };
 });
 
+const userPermissions = {
+  isCanCreateProposals: true,
+  isCanCreatePolicyProposals: true,
+  allowedProposalsToCreate: {
+    [ProposalType.ChangePolicy]: true,
+    [ProposalType.ChangeConfig]: true,
+    [ProposalType.AddBounty]: true,
+    [ProposalType.Transfer]: true,
+    [ProposalType.Vote]: true,
+    [ProposalType.RemoveMemberFromRole]: true,
+    [ProposalType.AddMemberToRole]: true,
+    [ProposalType.AddMemberToRole]: true,
+    [ProposalType.FunctionCall]: true,
+    [ProposalType.UpgradeRemote]: true,
+    [ProposalType.UpgradeSelf]: true,
+    [ProposalType.SetStakingContract]: true,
+    [ProposalType.BountyDone]: true,
+  },
+  allowedProposalsToVote: {
+    [ProposalType.ChangePolicy]: true,
+    [ProposalType.ChangeConfig]: true,
+    [ProposalType.AddBounty]: true,
+    [ProposalType.Transfer]: true,
+    [ProposalType.Vote]: true,
+    [ProposalType.RemoveMemberFromRole]: true,
+    [ProposalType.AddMemberToRole]: true,
+    [ProposalType.AddMemberToRole]: true,
+    [ProposalType.FunctionCall]: true,
+    [ProposalType.UpgradeRemote]: true,
+    [ProposalType.UpgradeSelf]: true,
+    [ProposalType.SetStakingContract]: true,
+    [ProposalType.BountyDone]: true,
+  },
+};
+
 describe('CreateGroupContent', () => {
   it.each`
     type                                         | content
@@ -77,10 +112,7 @@ describe('CreateGroupContent', () => {
           canCreateTokenProposal
           content={<div>content</div>}
           onTypeSelect={() => 0}
-          userPermissions={{
-            isCanCreateProposals: true,
-            isCanCreatePolicyProposals: true,
-          }}
+          userPermissions={userPermissions}
         />
       );
 
@@ -97,10 +129,7 @@ describe('CreateGroupContent', () => {
         canCreateTokenProposal
         content={<div>content</div>}
         onTypeSelect={() => 0}
-        userPermissions={{
-          isCanCreateProposals: true,
-          isCanCreatePolicyProposals: true,
-        }}
+        userPermissions={userPermissions}
       />
     );
 

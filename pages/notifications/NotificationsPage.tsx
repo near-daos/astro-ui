@@ -1,9 +1,7 @@
 import cn from 'classnames';
+import { VFC, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { VFC, useCallback, useMemo } from 'react';
-
-import { NOTIFICATIONS_SETTINGS_PAGE_URL } from 'constants/routing';
 
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
@@ -35,15 +33,6 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({
 
   const { t } = useTranslation('notificationsPage');
 
-  const gotToSettingsPage = useCallback(() => {
-    router.push({
-      pathname: NOTIFICATIONS_SETTINGS_PAGE_URL,
-      query: {
-        notyType: 'yourDaos',
-      },
-    });
-  }, [router]);
-
   const filterOptions = useMemo(() => {
     const keys = ['yourDaos', 'subscribed', 'archived'];
 
@@ -57,15 +46,6 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({
     <div className={styles.root}>
       <div className={styles.headerContainer}>
         <h1 className={styles.header}>{t('notificationsHub')}</h1>
-        <Button
-          size="small"
-          variant="secondary"
-          onClick={gotToSettingsPage}
-          className={styles.settingButton}
-        >
-          <Icon name="stateGear" className={styles.gearIcon} />
-          <div className={styles.buttonLabel}>{t('settings')}</div>
-        </Button>
       </div>
       <div className={styles.pageContent}>
         <SideFilter

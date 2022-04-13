@@ -4,7 +4,7 @@ import React, { VFC, useState, useCallback } from 'react';
 
 // Types
 import { DaoContext } from 'types/context';
-import { ProposalVariant } from 'types/proposal';
+import { ProposalType, ProposalVariant } from 'types/proposal';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 
 // Hooks
@@ -48,7 +48,7 @@ export const GroupsPageContent: VFC<GroupsPageContentProps> = ({
 }) => {
   const {
     dao,
-    userPermissions: { isCanCreateProposals },
+    userPermissions: { isCanCreateProposals, allowedProposalsToCreate },
   } = daoContext;
 
   const members = dao ? extractMembersFromDao(dao, membersStats) : [];
@@ -110,7 +110,12 @@ export const GroupsPageContent: VFC<GroupsPageContentProps> = ({
       <div className={styles.content}>
         {sortedData.map(item => (
           <MemberCard
-            onRemoveClick={isCanCreateProposals ? handleRemoveClick : undefined}
+            onRemoveClick={
+              isCanCreateProposals &&
+              allowedProposalsToCreate[ProposalType.RemoveMemberFromRole]
+                ? handleRemoveClick
+                : undefined
+            }
             onClick={handleCardClick}
             key={item.name}
             title={item.name}

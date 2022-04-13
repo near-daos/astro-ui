@@ -99,6 +99,7 @@ export function DaoSubmitForm(): JSX.Element {
                 })}
                 inputStyles={{
                   width: getInputWidth(`${gasValue}`, 8, 6),
+                  paddingTop: 2,
                 }}
                 onClick={e => e.stopPropagation()}
                 type="number"

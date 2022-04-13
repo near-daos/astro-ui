@@ -1,14 +1,20 @@
 import { ProposalType } from 'types/proposal';
+import { APP_TO_CONTRACT_PROPOSAL_TYPE } from 'utils/dataConverter';
 
 export type SelectorRow = {
   label: string;
+  config: boolean;
   policy: boolean;
+  call: boolean;
+  upgradeSelf: boolean;
+  upgradeRemote: boolean;
+  setStakingContract: boolean;
   bounty: boolean;
+  bountyDone: boolean;
   transfer: boolean;
   poll: boolean;
   removeMember: boolean;
   addMember: boolean;
-  createGroup: boolean;
 };
 
 export function getInitialCreationPermissions(dao: {
@@ -22,49 +28,106 @@ export function getInitialCreationPermissions(dao: {
       group.permissions.indexOf('*:*') !== -1 ||
       group.permissions.indexOf('*:AddProposal') !== -1;
 
+    const config =
+      allowAll ||
+      group.permissions.indexOf(
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.ChangeConfig]
+        }:AddProposal`
+      ) !== -1;
+
     const policy =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.ChangePolicy}:AddProposal`) !==
-        -1;
+      group.permissions.indexOf(
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.ChangePolicy]
+        }:AddProposal`
+      ) !== -1;
 
     const bounty =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.AddBounty}:AddProposal`) !== -1;
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.AddBounty]}:AddProposal`
+      ) !== -1;
+
+    const bountyDone =
+      allowAll ||
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.BountyDone]}:AddProposal`
+      ) !== -1;
 
     const transfer =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.Transfer}:AddProposal`) !== -1;
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.Transfer]}:AddProposal`
+      ) !== -1;
+
+    const call =
+      allowAll ||
+      group.permissions.indexOf(
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.FunctionCall]
+        }:AddProposal`
+      ) !== -1;
 
     const poll =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.Vote}:AddProposal`) !== -1;
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.Vote]}:AddProposal`
+      ) !== -1;
 
     const removeMember =
       allowAll ||
       group.permissions.indexOf(
-        `${ProposalType.RemoveMemberFromRole}:AddProposal`
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.RemoveMemberFromRole]
+        }:AddProposal`
       ) !== -1;
 
     const addMember =
       allowAll ||
       group.permissions.indexOf(
-        `${ProposalType.AddMemberToRole}:AddProposal`
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.AddMemberToRole]
+        }:AddProposal`
       ) !== -1;
 
-    // const createGroup =
-    //   allowAll ||
-    //   group.permissions.indexOf(`${ProposalType.}:VoteApprove`) !==
-    //   -1;
+    const upgradeSelf =
+      allowAll ||
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.UpgradeSelf]}:AddProposal`
+      ) !== -1;
+
+    const upgradeRemote =
+      allowAll ||
+      group.permissions.indexOf(
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.UpgradeRemote]
+        }:AddProposal`
+      ) !== -1;
+
+    const setStakingContract =
+      allowAll ||
+      group.permissions.indexOf(
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.SetStakingContract]
+        }:AddProposal`
+      ) !== -1;
 
     return {
       label: group.name,
       policy,
       bounty,
+      bountyDone,
       transfer,
       poll,
       removeMember,
       addMember,
-      createGroup: false,
+      config,
+      call,
+      upgradeRemote,
+      upgradeSelf,
+      setStakingContract,
     };
   });
 }
@@ -80,49 +143,106 @@ export function getInitialVotingPermissions(dao: {
       group.permissions.indexOf('*:*') !== -1 ||
       group.permissions.indexOf('*:VoteApprove') !== -1;
 
+    const config =
+      allowAll ||
+      group.permissions.indexOf(
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.ChangeConfig]
+        }:VoteApprove`
+      ) !== -1;
+
     const policy =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.ChangePolicy}:VoteApprove`) !==
-        -1;
+      group.permissions.indexOf(
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.ChangePolicy]
+        }:VoteApprove`
+      ) !== -1;
 
     const bounty =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.AddBounty}:VoteApprove`) !== -1;
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.AddBounty]}:VoteApprove`
+      ) !== -1;
+
+    const bountyDone =
+      allowAll ||
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.BountyDone]}:VoteApprove`
+      ) !== -1;
 
     const transfer =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.Transfer}:VoteApprove`) !== -1;
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.Transfer]}:VoteApprove`
+      ) !== -1;
+
+    const call =
+      allowAll ||
+      group.permissions.indexOf(
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.FunctionCall]
+        }:VoteApprove`
+      ) !== -1;
 
     const poll =
       allowAll ||
-      group.permissions.indexOf(`${ProposalType.Vote}:VoteApprove`) !== -1;
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.Vote]}:VoteApprove`
+      ) !== -1;
 
     const removeMember =
       allowAll ||
       group.permissions.indexOf(
-        `${ProposalType.RemoveMemberFromRole}:VoteApprove`
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.RemoveMemberFromRole]
+        }:VoteApprove`
       ) !== -1;
 
     const addMember =
       allowAll ||
       group.permissions.indexOf(
-        `${ProposalType.AddMemberToRole}:VoteApprove`
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.AddMemberToRole]
+        }:VoteApprove`
       ) !== -1;
 
-    // const createGroup =
-    //   allowAll ||
-    //   group.permissions.indexOf(`${ProposalType.}:VoteApprove`) !==
-    //   -1;
+    const upgradeSelf =
+      allowAll ||
+      group.permissions.indexOf(
+        `${APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.UpgradeSelf]}:VoteApprove`
+      ) !== -1;
+
+    const upgradeRemote =
+      allowAll ||
+      group.permissions.indexOf(
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.UpgradeRemote]
+        }:VoteApprove`
+      ) !== -1;
+
+    const setStakingContract =
+      allowAll ||
+      group.permissions.indexOf(
+        `${
+          APP_TO_CONTRACT_PROPOSAL_TYPE[ProposalType.SetStakingContract]
+        }:VoteApprove`
+      ) !== -1;
 
     return {
       label: group.name,
       policy,
       bounty,
+      bountyDone,
       transfer,
       poll,
       removeMember,
       addMember,
-      createGroup: false,
+      call,
+      config,
+      setStakingContract,
+      upgradeSelf,
+      upgradeRemote,
     };
   });
 }

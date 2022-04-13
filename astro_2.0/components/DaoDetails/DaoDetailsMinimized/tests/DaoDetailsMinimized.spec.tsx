@@ -8,6 +8,8 @@ import { useAuthContext } from 'context/AuthContext';
 
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails/DaoDetailsMinimized';
 
+import { ProposalType } from 'types/proposal';
+
 import { daoMock } from './mock';
 
 jest.mock('react-text-truncate', () => {
@@ -39,6 +41,36 @@ describe('dao details minimized', () => {
   const permissions = {
     isCanCreateProposals: true,
     isCanCreatePolicyProposals: true,
+    allowedProposalsToCreate: {
+      [ProposalType.ChangePolicy]: true,
+      [ProposalType.ChangeConfig]: true,
+      [ProposalType.AddBounty]: true,
+      [ProposalType.Transfer]: true,
+      [ProposalType.Vote]: true,
+      [ProposalType.RemoveMemberFromRole]: true,
+      [ProposalType.AddMemberToRole]: true,
+      [ProposalType.AddMemberToRole]: true,
+      [ProposalType.FunctionCall]: true,
+      [ProposalType.UpgradeRemote]: true,
+      [ProposalType.UpgradeSelf]: true,
+      [ProposalType.SetStakingContract]: true,
+      [ProposalType.BountyDone]: true,
+    },
+    allowedProposalsToVote: {
+      [ProposalType.ChangePolicy]: true,
+      [ProposalType.ChangeConfig]: true,
+      [ProposalType.AddBounty]: true,
+      [ProposalType.Transfer]: true,
+      [ProposalType.Vote]: true,
+      [ProposalType.RemoveMemberFromRole]: true,
+      [ProposalType.AddMemberToRole]: true,
+      [ProposalType.AddMemberToRole]: true,
+      [ProposalType.FunctionCall]: true,
+      [ProposalType.UpgradeRemote]: true,
+      [ProposalType.UpgradeSelf]: true,
+      [ProposalType.SetStakingContract]: true,
+      [ProposalType.BountyDone]: true,
+    },
   };
 
   afterAll(() => {

@@ -20,10 +20,7 @@ export function useValidationSchema(
       : yup
           .string()
           .required(t(`${valBase}.required`))
-          .matches(
-            /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/,
-            t(`${valBase}.error`)
-          );
+          .matches(/^(\+[0-9]*)$/, t(`${valBase}.error`));
 
     return yup.object().shape({
       contact: validation,

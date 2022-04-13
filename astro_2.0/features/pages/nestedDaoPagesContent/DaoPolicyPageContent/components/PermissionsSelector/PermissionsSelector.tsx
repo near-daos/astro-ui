@@ -49,7 +49,19 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
     threshold: 1,
   });
 
-  const [rows, setRows] = useState<SelectorRow[]>(initialData);
+  const [rows, setRows] = useState<SelectorRow[]>(
+    initialData.sort((a, b) => {
+      if (a.label > b.label) {
+        return 1;
+      }
+
+      if (a.label < b.label) {
+        return -1;
+      }
+
+      return 0;
+    })
+  );
 
   const handleToggle = useCallback(
     (dataField: string, groupName: string, value: boolean) => {
@@ -133,11 +145,25 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
             </div>
           </div>
           {renderLegendCell(
-            'DAO policy',
+            'Change DAO config',
+            'proposalGovernance',
+            'Change DAO config'
+          )}
+          {renderLegendCell(
+            'Change DAO policy',
             'proposalGovernance',
             'Change DAO policy'
           )}
-          {renderLegendCell('Bounty', 'proposalBounty', 'Add bounty')}
+          {renderLegendCell(
+            'Bounty',
+            'proposalBounty',
+            'Create add bounty proposals'
+          )}
+          {renderLegendCell(
+            'Bounty done',
+            'proposalBounty',
+            'Create bounty done proposals'
+          )}
           {renderLegendCell('Transfer', 'proposalSendFunds', 'Transfer funds')}
           {renderLegendCell('Polls', 'proposalPoll', 'Add poll')}
           {renderLegendCell(
@@ -151,10 +177,25 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
             'Add members to group'
           )}
           {renderLegendCell(
-            'Create Group',
-            'proposalCreateGroup',
-            'Propose Create Group'
+            'Function call',
+            'proposalNearFunctionCall',
+            'Function call'
           )}
+          {/* {renderLegendCell( */}
+          {/*  'Upgrade self', */}
+          {/*  'proposalGovernance', */}
+          {/*  'Upgrade self' */}
+          {/* )} */}
+          {/* {renderLegendCell( */}
+          {/*  'Upgrade remote', */}
+          {/*  'proposalGovernance', */}
+          {/*  'Upgrade remote' */}
+          {/* )} */}
+          {/* {renderLegendCell( */}
+          {/*  'Set vote token', */}
+          {/*  'proposalGovernance', */}
+          {/*  'Set vote token' */}
+          {/* )} */}
         </div>
         <div
           className={cn(styles.panel, {
@@ -171,13 +212,22 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
                     {row.label}
                   </div>
                 </div>
+                {renderValueCell('config', row.label, row.config)}
                 {renderValueCell('policy', row.label, row.policy)}
                 {renderValueCell('bounty', row.label, row.bounty)}
+                {renderValueCell('bountyDone', row.label, row.bountyDone)}
                 {renderValueCell('transfer', row.label, row.transfer)}
                 {renderValueCell('poll', row.label, row.poll)}
                 {renderValueCell('removeMember', row.label, row.removeMember)}
                 {renderValueCell('addMember', row.label, row.addMember)}
-                {renderValueCell('createGroup', row.label, row.createGroup)}
+                {renderValueCell('call', row.label, row.call)}
+                {/* {renderValueCell('upgradeSelf', row.label, row.upgradeSelf)} */}
+                {/* {renderValueCell('upgradeRemote', row.label, row.upgradeRemote)} */}
+                {/* {renderValueCell( */}
+                {/*  'setStakingContract', */}
+                {/*  row.label, */}
+                {/*  row.setStakingContract */}
+                {/* )} */}
               </div>
             ))}
             <div ref={rightIntersectionRef} />

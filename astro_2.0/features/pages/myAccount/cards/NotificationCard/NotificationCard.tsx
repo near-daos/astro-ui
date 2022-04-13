@@ -1,5 +1,8 @@
-import React, { VFC } from 'react';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import React, { VFC, useCallback } from 'react';
+
+import { NOTIFICATIONS_SETTINGS_PAGE_URL } from 'constants/routing';
 
 import { UserContacts } from 'services/NotificationsService/types';
 
@@ -19,7 +22,17 @@ interface NotificationCardProps {
 export const NotificationCard: VFC<NotificationCardProps> = props => {
   const { contactsConfig } = props;
 
+  const router = useRouter();
   const { t } = useTranslation('common');
+
+  const goToSettingsPage = useCallback(() => {
+    router.push({
+      pathname: NOTIFICATIONS_SETTINGS_PAGE_URL,
+      query: {
+        notyType: 'yourDaos',
+      },
+    });
+  }, [router]);
 
   return (
     <ConfigCard>
@@ -35,7 +48,11 @@ export const NotificationCard: VFC<NotificationCardProps> = props => {
         <ContactInfo icon="carbonPhone">{t('myAccountPage.phone')}</ContactInfo>
         <Toggle disabled={!contactsConfig.isPhoneVerified} />
       </CardLine>
-      <Button capitalize className={styles.settingsButton}>
+      <Button
+        capitalize
+        onClick={goToSettingsPage}
+        className={styles.settingsButton}
+      >
         {t('myAccountPage.settings')}
       </Button>
     </ConfigCard>
