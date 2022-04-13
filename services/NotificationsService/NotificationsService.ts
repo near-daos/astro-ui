@@ -41,22 +41,25 @@ class NotificationsServiceClass {
     });
   }
 
-  public async sendUserEmail(
+  public async sendContact(
     accountId: string,
-    email: string,
-    getPublicKeyAndSignature: PkAndSignMethod
+    contact: string,
+    getPublicKeyAndSignature: PkAndSignMethod,
+    isEmail: boolean
   ): Promise<boolean> {
     const { publicKey, signature } = await getPublicKeyAndSignature();
 
     try {
-      await this.httpService.post('account/email', {
-        email,
+      const urlPart = isEmail ? 'email' : 'phone';
+
+      await this.httpService.post(`account/${urlPart}`, {
+        [isEmail ? 'email' : 'phoneNumber']: contact,
         accountId,
         publicKey,
         signature,
       });
 
-      await this.httpService.post('account/email/send-verification', {
+      await this.httpService.post(`account/${urlPart}/send-verification`, {
         accountId,
         publicKey,
         signature,
@@ -70,15 +73,18 @@ class NotificationsServiceClass {
     return true;
   }
 
-  public async verifyEmail(
+  public async verifyContact(
     accountId: string,
     code: string,
-    getPublicKeyAndSignature: PkAndSignMethod
+    getPublicKeyAndSignature: PkAndSignMethod,
+    isEmail: boolean
   ) {
     const { publicKey, signature } = await getPublicKeyAndSignature();
 
     try {
-      await this.httpService.post('account/email/verify', {
+      const urlPart = isEmail ? 'email' : 'phone';
+
+      await this.httpService.post(`account/${urlPart}/verify`, {
         code,
         accountId,
         publicKey,

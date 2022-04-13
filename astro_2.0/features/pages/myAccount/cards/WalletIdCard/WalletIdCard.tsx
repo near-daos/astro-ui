@@ -10,8 +10,9 @@ import { useModal } from 'components/modal/hooks';
 import { AccountBadge } from 'astro_2.0/features/pages/myAccount/AccountBadge';
 import { CardTitle } from 'astro_2.0/features/pages/myAccount/cards/CardTitle';
 import { ConfigCard } from 'astro_2.0/features/pages/myAccount/cards/ConfigCard';
-import { AddUserInfoModal } from 'astro_2.0/features/pages/myAccount/AddUserInfoModal';
+import { AddUserInfoModal } from 'astro_2.0/features/pages/myAccount/cards/WalletIdCard/components/AddUserInfoModal';
 
+import { UsaOnly } from './components/UsaOnly';
 import { ContactLine } from './components/ContactLine';
 
 interface WalletIdCardProps {
@@ -75,6 +76,7 @@ export const WalletIdCard: VFC<WalletIdCardProps> = props => {
         contact={phoneNumber}
         label="myAccountPage.phone"
         isVerified={isPhoneVerified}
+        extraLabel={<UsaOnly />}
         onButtonClick={openAddPhoneModal}
       />
     </ConfigCard>

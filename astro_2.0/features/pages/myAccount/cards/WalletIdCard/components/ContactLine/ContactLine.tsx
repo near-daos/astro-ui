@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { useTranslation } from 'next-i18next';
 
 import { IconName } from 'components/Icon';
@@ -16,19 +16,24 @@ interface ContactLineProps {
   label: string;
   contact: string;
   isVerified: boolean;
+  // TODO remove this when we support all countries for phone
+  extraLabel?: ReactNode;
   onButtonClick: () => void;
 }
 
 export const ContactLine: FC<ContactLineProps> = props => {
-  const { icon, label, contact, isVerified, onButtonClick } = props;
+  const { icon, label, contact, extraLabel, isVerified, onButtonClick } = props;
 
   const { t } = useTranslation('common');
 
   return (
     <CardLine className={styles.emailLine}>
       <ContactInfo icon={icon}>
-        {t(label)}
-        {isVerified && ':'}
+        <div>
+          {t(label)}
+          {isVerified && ':'}
+          {extraLabel}
+        </div>
       </ContactInfo>
       <div className={styles.rightPart}>
         <ContactValue isVerified={isVerified}>{contact}</ContactValue>
