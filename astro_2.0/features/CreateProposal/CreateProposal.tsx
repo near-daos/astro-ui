@@ -239,7 +239,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         });
 
         if (onCreate && isMounted()) {
-          onCreate(false);
+          onCreate('');
         }
       }
     },
