@@ -249,21 +249,16 @@ export class HttpService {
                   $eq: daoId,
                 },
               },
+              {
+                proposer: {
+                  $starts: proposers,
+                },
+              },
             ],
           };
 
-          search.$and?.push({
-            proposer: {
-              $starts: proposers,
-            },
-            votePeriodEnd: {
-              $gt: Date.now() * 1000000,
-            },
-          });
-
-          queryString.search(search);
-
           queryString
+            .search(search)
             .setLimit(1000)
             .setOffset(0)
             .sortBy({
