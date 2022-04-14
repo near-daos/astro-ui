@@ -22,7 +22,9 @@ export function getUpgradeCodeProposal(
   dao: DAO,
   data: Record<string, string>
 ): CreateProposalParams {
-  const { versionHash, details } = data;
+  const { versionHash, details, externalUrl } = data;
+
+  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 
   const args = jsonToBase64Str({
     code_hash: versionHash,
@@ -30,7 +32,7 @@ export function getUpgradeCodeProposal(
 
   return {
     daoId: dao.id,
-    description: details,
+    description: proposalDescription,
     kind: 'FunctionCall',
     data: {
       receiver_id: dao.id,
@@ -51,7 +53,9 @@ export function getRemoveUpgradeCodeProposal(
   dao: DAO,
   data: Record<string, string>
 ): CreateProposalParams {
-  const { versionHash, details } = data;
+  const { versionHash, details, externalUrl } = data;
+
+  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 
   const args = jsonToBase64Str({
     code_hash: versionHash,
@@ -59,7 +63,7 @@ export function getRemoveUpgradeCodeProposal(
 
   return {
     daoId: dao.id,
-    description: details,
+    description: proposalDescription,
     kind: 'FunctionCall',
     data: {
       receiver_id: dao.id,
@@ -80,11 +84,13 @@ export function getUpgradeSelfProposal(
   dao: DAO,
   data: Record<string, string>
 ): CreateProposalParams {
-  const { versionHash, details } = data;
+  const { versionHash, details, externalUrl } = data;
+
+  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 
   return {
     daoId: dao.id,
-    description: details,
+    description: proposalDescription,
     kind: 'UpgradeSelf',
     data: {
       hash: versionHash,

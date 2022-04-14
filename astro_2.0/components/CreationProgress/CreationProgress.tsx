@@ -49,12 +49,13 @@ export const CreationProgress: VFC<CreationProgressProps> = ({
         const { label, isCurrent, isComplete } = step;
 
         const isClickable =
-          isComplete ||
-          steps.find(
-            (item, i) =>
-              (index <= i && item.isComplete) ||
-              (i === index - 1 && item.isComplete)
-          );
+          onItemClick &&
+          (isComplete ||
+            steps.find(
+              (item, i) =>
+                (index <= i && item.isComplete) ||
+                (i === index - 1 && item.isComplete)
+            ));
 
         const stepClassName = cn(styles.step, {
           [styles.complete]: isComplete,

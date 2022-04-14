@@ -31,7 +31,7 @@ export const TgasInput: FC<TgasInputProps> = ({
     formState: { errors },
   } = useFormContext();
 
-  const gas = watch('gas').toString();
+  const gas = watch('gas')?.toString();
 
   return (
     <InputWrapper

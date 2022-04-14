@@ -43,6 +43,7 @@ import {
 } from 'services/sputnik/types';
 import { HttpService, httpService } from 'services/HttpService';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
+import { Settings } from 'types/settings';
 
 class SputnikHttpServiceClass {
   private readonly httpService: HttpService = httpService;
@@ -1006,6 +1007,42 @@ class SputnikHttpServiceClass {
 
       return false;
     }
+  }
+
+  public async getDaoSettings(daoId: string): Promise<Settings | null> {
+    try {
+      const { data } = await this.httpService.get<Settings | null>(
+        `/daos/${daoId}/settings`
+      );
+
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+  }
+
+  public async updateDaoSettings(
+    daoId: string,
+    params: {
+      accountId: string;
+      publicKey: string;
+      signature: string;
+      settings: Settings;
+    }
+  ): Promise<Settings> {
+    const response = await this.httpService.patch<
+      {
+        accountId: string;
+        publicKey: string;
+        signature: string;
+        settings: Settings;
+      },
+      { data: Settings }
+    >(`/daos/${daoId}/settings`, params);
+
+    return response.data;
   }
 }
 

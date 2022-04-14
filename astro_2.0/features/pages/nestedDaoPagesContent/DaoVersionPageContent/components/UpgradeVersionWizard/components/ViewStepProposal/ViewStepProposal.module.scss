@@ -1,0 +1,27 @@
+.root {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.controlBtn {
+  margin: 32px 0 0 auto;
+}
+
+.headerControls {
+  margin-left: auto;
+  margin-top: -76px;
+}
+
+.resetButton {
+  color: var(--color-error-70);
+  padding: 0;
+  text-transform: capitalize;
+  transition: text-shadow 0.2s ease-out;
+
+  &:hover {
+    color: var(--color-error-80);
+    text-shadow: 0 0 8px var(--color-error-70);
+  }
+}

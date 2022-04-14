@@ -377,6 +377,15 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
 
         break;
       }
+      case ProposalVariant.ProposeRemoveUpgradeCode:
+      case ProposalVariant.ProposeUpgradeSelf:
+      case ProposalVariant.ProposeGetUpgradeCode: {
+        if (proposal.kind.type === ProposalType.FunctionCall) {
+          content = <div />;
+        }
+
+        break;
+      }
       default: {
         break;
       }
@@ -522,6 +531,15 @@ export function getProposalVariantLabel(
     }
     case ProposalVariant.ProposeChangeProposalVotingPermissions: {
       return 'Voting permissions';
+    }
+    case ProposalVariant.ProposeGetUpgradeCode: {
+      return 'Get latest code';
+    }
+    case ProposalVariant.ProposeUpgradeSelf: {
+      return 'Upgrade DAO';
+    }
+    case ProposalVariant.ProposeRemoveUpgradeCode: {
+      return 'Remove upgrade code blob';
     }
     default: {
       return type;

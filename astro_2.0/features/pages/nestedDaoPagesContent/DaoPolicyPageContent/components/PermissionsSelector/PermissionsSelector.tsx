@@ -181,21 +181,21 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
             'proposalNearFunctionCall',
             'Function call'
           )}
-          {/* {renderLegendCell( */}
-          {/*  'Upgrade self', */}
-          {/*  'proposalGovernance', */}
-          {/*  'Upgrade self' */}
-          {/* )} */}
-          {/* {renderLegendCell( */}
-          {/*  'Upgrade remote', */}
-          {/*  'proposalGovernance', */}
-          {/*  'Upgrade remote' */}
-          {/* )} */}
-          {/* {renderLegendCell( */}
-          {/*  'Set vote token', */}
-          {/*  'proposalGovernance', */}
-          {/*  'Set vote token' */}
-          {/* )} */}
+          {renderLegendCell(
+            'Upgrade self',
+            'proposalGovernance',
+            'Upgrade self'
+          )}
+          {renderLegendCell(
+            'Upgrade remote',
+            'proposalGovernance',
+            'Upgrade remote'
+          )}
+          {renderLegendCell(
+            'Set vote token',
+            'proposalGovernance',
+            'Set vote token'
+          )}
         </div>
         <div
           className={cn(styles.panel, {
@@ -221,13 +221,13 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
                 {renderValueCell('removeMember', row.label, row.removeMember)}
                 {renderValueCell('addMember', row.label, row.addMember)}
                 {renderValueCell('call', row.label, row.call)}
-                {/* {renderValueCell('upgradeSelf', row.label, row.upgradeSelf)} */}
-                {/* {renderValueCell('upgradeRemote', row.label, row.upgradeRemote)} */}
-                {/* {renderValueCell( */}
-                {/*  'setStakingContract', */}
-                {/*  row.label, */}
-                {/*  row.setStakingContract */}
-                {/* )} */}
+                {renderValueCell('upgradeSelf', row.label, row.upgradeSelf)}
+                {renderValueCell('upgradeRemote', row.label, row.upgradeRemote)}
+                {renderValueCell(
+                  'setStakingContract',
+                  row.label,
+                  row.setStakingContract
+                )}
               </div>
             ))}
             <div ref={rightIntersectionRef} />

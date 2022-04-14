@@ -67,8 +67,8 @@ export const VersionCheck: FC<VersionCheckProps> = ({
 
       {!loading && version ? (
         <div className={styles.version}>
-          <div className={styles.date}>Last updates {version.date}</div>
-          <div className={styles.number}>N{version.number}</div>
+          <div className={styles.date}>Last updated {version.date}</div>
+          <div className={styles.number}>N {version.number}</div>
         </div>
       ) : null}
 
