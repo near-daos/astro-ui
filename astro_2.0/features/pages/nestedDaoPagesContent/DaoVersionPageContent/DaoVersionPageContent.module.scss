@@ -3,43 +3,17 @@
 @import 'styles/mixins';
 
 .root {
-  display: grid;
-  grid-template-areas:
-    'dao'
-    'title'
-    'steps'
-    'version'
-    'content';
-  grid-template-columns: 1fr;
-  row-gap: 24px;
-
-  @include large-desktop {
-    grid-template-areas:
-      'dao dao'
-      'title title'
-      'version version'
-      'steps content';
-    grid-template-columns: 1fr 3fr;
-  }
-}
-
-.steps {
-  grid-area: steps;
-}
-
-.content {
-  align-items: flex-start;
   display: flex;
-  grid-area: content;
-  width: 100%;
+  flex-direction: column;
 }
 
 .titleRow {
-  @extend %heading1;
-  grid-area: title;
+  align-items: center;
+  display: flex;
+  margin: 32px 0;
 
-  @include tablet-portrait {
-    margin-bottom: 16px;
+  h1 {
+    margin: 0;
   }
 }
 

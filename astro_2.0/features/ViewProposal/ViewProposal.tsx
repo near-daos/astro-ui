@@ -24,6 +24,7 @@ export interface CreateProposalProps {
   proposal: ProposalFeedItem;
   showFlag: boolean;
   tokens: Record<string, Token>;
+  preventNavigate?: boolean;
 }
 
 const variants = {
@@ -35,6 +36,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
   proposal,
   showFlag,
   tokens,
+  preventNavigate,
 }) => {
   const { accountId } = useAuthContext();
   const [showInfoPanel, toggleInfoPanel] = useToggle(false);
@@ -73,6 +75,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
           variant={proposal.proposalVariant}
           type={proposal.kind.type}
           status={proposal.status}
+          preventNavigate={preventNavigate}
           voteStatus={proposal.voteStatus}
           isFinalized={proposal.isFinalized}
           proposer={proposal.proposer}
