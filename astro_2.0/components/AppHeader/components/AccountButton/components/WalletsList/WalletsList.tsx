@@ -26,6 +26,9 @@ export const WalletsList: React.FC<WalletsListProps> = ({
   switchAccountHandler,
   closeDropdownHandler,
 }) => {
+  // todo - temp disable multiple accounts
+  const showMultipleAccounts = false;
+
   return (
     <div className={styles.root}>
       <MyAccountButton
@@ -35,7 +38,7 @@ export const WalletsList: React.FC<WalletsListProps> = ({
       <div className={styles.delimiter} />
       <div className={styles.chooseWalletCaption}>Choose wallet</div>
       {availableWallets.map(wallet =>
-        wallet.id === WalletType.NEAR ? (
+        wallet.id === WalletType.NEAR && showMultipleAccounts ? (
           <WalletWithAccounts
             key={wallet.id}
             wallet={wallet}
