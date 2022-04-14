@@ -179,4 +179,6 @@ export type UpdateNotificationSettingsParams = {
   types: string[];
   mutedUntilTimestamp: string;
   isAllMuted: boolean;
+  enableSms: boolean;
+  enableEmail: boolean;
 } & UpdateNotificationsParams;
