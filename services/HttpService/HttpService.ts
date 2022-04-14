@@ -35,6 +35,7 @@ import {
   ProposalCategories,
   ProposalsFeedStatuses,
   ProposalType,
+  ProposalVariant,
 } from 'types/proposal';
 import { DaoFeedItem } from 'types/dao';
 
@@ -791,6 +792,27 @@ export class HttpService {
                 ],
               });
             }
+
+            // // Exclude proposals related to DAO upgrade as they are available only in settings upgrade wizard
+            search.$and?.push({
+              $and: [
+                {
+                  description: {
+                    $exclL: ProposalVariant.ProposeUpgradeSelf,
+                  },
+                },
+                {
+                  description: {
+                    $exclL: ProposalVariant.ProposeGetUpgradeCode,
+                  },
+                },
+                {
+                  description: {
+                    $exclL: ProposalVariant.ProposeRemoveUpgradeCode,
+                  },
+                },
+              ],
+            });
 
             if (search.$and?.length) {
               queryString.search(search);
