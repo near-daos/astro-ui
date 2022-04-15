@@ -202,7 +202,7 @@ export function extractPrefix(value: string, delimiter?: string): string {
   return value.substring(0, value.indexOf(delimiter ?? '.'));
 }
 
-const PLATFORM_RELATED_SETTINGS = [
+export const PLATFORM_RELATED_SETTINGS = [
   NotifiedActionType.CustomDao,
   NotifiedActionType.ClubDao,
   NotifiedActionType.FoundationDao,

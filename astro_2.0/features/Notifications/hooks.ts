@@ -18,6 +18,8 @@ import { useSocket } from 'context/SocketContext';
 import { useRouter } from 'next/router';
 import { mapNotificationDtoToNotification } from 'services/NotificationsService/mappers/notification';
 
+import { DAO_RELATED_SETTINGS, PLATFORM_RELATED_SETTINGS } from './helpers';
+
 type UpdateSettingsConfig = {
   daoId?: string | null;
   types?: string[];
@@ -70,7 +72,7 @@ export function useNotificationsSettings(): {
             signature,
             accountId,
             daoId: null,
-            types: [],
+            types: [...DAO_RELATED_SETTINGS, ...PLATFORM_RELATED_SETTINGS],
             mutedUntilTimestamp: '0',
             isAllMuted: false,
             enableSms: false,
