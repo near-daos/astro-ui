@@ -1,4 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
+import get from 'lodash/get';
+import omitBy from 'lodash/omitBy';
+import isUndefined from 'lodash/isUndefined';
 import { NotificationsService } from 'services/NotificationsService';
 import { useAuthContext } from 'context/AuthContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
@@ -15,35 +18,65 @@ import { useSocket } from 'context/SocketContext';
 import { useRouter } from 'next/router';
 import { mapNotificationDtoToNotification } from 'services/NotificationsService/mappers/notification';
 
+type UpdateSettingsConfig = {
+  daoId?: string | null;
+  types?: string[];
+  isAllMuted?: boolean;
+  mutedUntilTimestamp?: string;
+  enableSms?: boolean;
+  enableEmail?: boolean;
+};
+
 export function useNotificationsSettings(): {
-  updateSettings: (
-    daoId: string | null,
-    types: string[],
-    isAllMuted?: boolean,
-    delay?: string
-  ) => void;
+  updateSettings: (config: UpdateSettingsConfig) => void;
 } {
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, getPublicKeyAndSignature } = useAuthContext();
+
+  async function getPrevConfig(
+    accId: string,
+    daoId: string | null | undefined
+  ) {
+    const daoToGet = daoId ? [daoId] : undefined;
+    const prevConfigDTO = await NotificationsService.getNotificationsSettings(
+      accId,
+      daoToGet
+    );
+
+    const { types, isAllMuted, mutedUntilTimestamp, enableSms, enableEmail } =
+      get(prevConfigDTO, '0') || {};
+
+    return omitBy(
+      {
+        types,
+        isAllMuted,
+        mutedUntilTimestamp,
+        enableSms,
+        enableEmail,
+      },
+      isUndefined
+    );
+  }
+
   const updateSettings = useCallback(
-    async (
-      daoId: string | null,
-      types: string[],
-      isAllMuted?: boolean,
-      delay?: string
-    ) => {
+    async (config: UpdateSettingsConfig) => {
       try {
-        const publicKey = await nearService?.getPublicKey();
-        const signature = await nearService?.getSignature();
+        const { publicKey, signature } = await getPublicKeyAndSignature();
+
+        const prevConfig = await getPrevConfig(accountId, config.daoId);
 
         if (publicKey && signature) {
           await NotificationsService.updateNotificationSettings({
-            accountId,
             publicKey,
             signature,
-            daoId,
-            types,
-            mutedUntilTimestamp: delay ?? '0',
-            isAllMuted: isAllMuted ?? false,
+            accountId,
+            daoId: null,
+            types: [],
+            mutedUntilTimestamp: '0',
+            isAllMuted: false,
+            enableSms: false,
+            enableEmail: false,
+            ...prevConfig,
+            ...config,
           });
         }
       } catch (err) {
@@ -54,7 +87,7 @@ export function useNotificationsSettings(): {
         });
       }
     },
-    [accountId, nearService]
+    [accountId, getPublicKeyAndSignature]
   );
 
   return {

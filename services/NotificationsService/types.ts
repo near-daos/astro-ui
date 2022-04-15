@@ -18,6 +18,8 @@ export type NotificationSettingDTO = {
   types: NotifiedActionType[];
   mutedUntilTimestamp: string;
   isAllMuted: boolean;
+  enableEmail: boolean;
+  enableSms: boolean;
 };
 
 export type NotificationSettingsResponse = {
