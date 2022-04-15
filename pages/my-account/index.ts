@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps<MyAccountPageProps> = async 
 
   return {
     props: {
-      notyConfig: notyConfig[0],
+      notyConfig: notyConfig[0] || {},
       contactsConfig,
       ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
     },
