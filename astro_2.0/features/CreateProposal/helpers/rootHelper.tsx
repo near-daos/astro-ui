@@ -16,7 +16,7 @@ import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSele
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 
 // Constants
-import { VALID_URL_REGEXP } from 'constants/regexp';
+import { VALID_URL_REGEXP, VALID_METHOD_NAME_REGEXP } from 'constants/regexp';
 import { MAX_GAS, MIN_GAS } from 'services/sputnik/constants';
 
 // Components
@@ -699,7 +699,13 @@ export function getValidationSchema(
         default: {
           return yup.object().shape({
             smartContractAddress: yup.string().required('Required'),
-            methodName: yup.string().required('Required'),
+            methodName: yup
+              .string()
+              .matches(
+                VALID_METHOD_NAME_REGEXP,
+                'Provided method name is not valid'
+              )
+              .required('Required'),
             deposit: yup
               .number()
               .typeError('Must be a valid number.')
