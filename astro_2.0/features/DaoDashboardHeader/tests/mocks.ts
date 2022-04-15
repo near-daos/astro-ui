@@ -11,4 +11,7 @@ export const dao = ({
   members: 2,
   description: daoDescription,
   links: ['DL1', 'DL2'],
+  daoVersion: {
+    hash: 'qwerty',
+  },
 } as unknown) as DAO;
