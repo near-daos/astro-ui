@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import get from 'lodash/get';
+import isNil from 'lodash/isNil';
 import omitBy from 'lodash/omitBy';
-import isUndefined from 'lodash/isUndefined';
 import { NotificationsService } from 'services/NotificationsService';
 import { useAuthContext } from 'context/AuthContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
@@ -53,7 +53,7 @@ export function useNotificationsSettings(): {
         enableSms,
         enableEmail,
       },
-      isUndefined
+      isNil
     );
   }
 
