@@ -70,12 +70,18 @@ export function getAllowedProposalsToCreate(
         switch (permission) {
           case '*:*':
           case '*:AddProposal': {
+            result[ProposalType.ChangeConfig] = true;
             result[ProposalType.ChangePolicy] = true;
             result[ProposalType.AddBounty] = true;
+            result[ProposalType.BountyDone] = true;
+            result[ProposalType.FunctionCall] = true;
             result[ProposalType.Transfer] = true;
             result[ProposalType.Vote] = true;
             result[ProposalType.RemoveMemberFromRole] = true;
             result[ProposalType.AddMemberToRole] = true;
+            result[ProposalType.UpgradeRemote] = true;
+            result[ProposalType.UpgradeSelf] = true;
+            result[ProposalType.SetStakingContract] = true;
             break;
           }
           case 'config:AddProposal': {
