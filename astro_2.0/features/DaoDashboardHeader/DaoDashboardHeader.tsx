@@ -74,7 +74,9 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
         <div className={styles.value}>{members}</div>
       </section>
 
-      {(!daoMembersList.includes(accountId) || showButton) && (
+      {(!daoMembersList.includes(accountId) ||
+        showButton ||
+        !isMobileOrTablet) && (
         <section className={styles.followSection}>
           {!daoMembersList.includes(accountId) && (
             <FollowButton daoId={id} daoName={displayName} />
