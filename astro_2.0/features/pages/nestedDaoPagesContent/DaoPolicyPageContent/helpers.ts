@@ -18,12 +18,14 @@ export type SelectorRow = {
 };
 
 export function getInitialCreationPermissions(dao: {
-  groups: {
-    name: string;
-    permissions: string[];
-  }[];
+  policy: {
+    roles: {
+      name: string;
+      permissions: string[];
+    }[];
+  };
 }): SelectorRow[] {
-  return dao.groups.map(group => {
+  return dao.policy.roles.map(group => {
     const allowAll =
       group.permissions.indexOf('*:*') !== -1 ||
       group.permissions.indexOf('*:AddProposal') !== -1;
@@ -133,12 +135,14 @@ export function getInitialCreationPermissions(dao: {
 }
 
 export function getInitialVotingPermissions(dao: {
-  groups: {
-    name: string;
-    permissions: string[];
-  }[];
+  policy: {
+    roles: {
+      name: string;
+      permissions: string[];
+    }[];
+  };
 }): SelectorRow[] {
-  return dao.groups.map(group => {
+  return dao.policy.roles.map(group => {
     const allowAll =
       group.permissions.indexOf('*:*') !== -1 ||
       group.permissions.indexOf('*:VoteApprove') !== -1;
