@@ -31,7 +31,7 @@ import styles from './UsersAndActivity.module.scss';
 
 export const UsersAndActivity: FC = () => {
   const isMounted = useMountedState();
-  const [interval, setInterval] = useState(Interval.WEEK);
+  const [interval, setInterval] = useState(Interval.DAY);
   const { t } = useTranslation();
   const { daoStatsService } = useDaoStatsContext();
   const [data, setData] = useState<Users | null>(null);

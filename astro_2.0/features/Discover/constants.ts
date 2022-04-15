@@ -53,6 +53,7 @@ export enum TokensTabs {
 }
 
 export const intervalOptions = [
-  { label: 'Week', value: Interval.WEEK },
-  { label: 'Month', value: Interval.MONTH },
+  { label: 'Daily', value: Interval.DAY },
+  { label: 'Weekly', value: Interval.WEEK },
+  { label: 'Monthly', value: Interval.MONTH },
 ];

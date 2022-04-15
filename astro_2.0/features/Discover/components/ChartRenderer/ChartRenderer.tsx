@@ -20,6 +20,14 @@ const RANGE_SET = [
     type: DOMAIN_RANGES.MONTH,
   },
   {
+    label: '3M',
+    type: DOMAIN_RANGES.THREE_MONTHS,
+  },
+  {
+    label: '6M',
+    type: DOMAIN_RANGES.SIX_MONTHS,
+  },
+  {
     label: '1Y',
     type: DOMAIN_RANGES.YEAR,
   },
