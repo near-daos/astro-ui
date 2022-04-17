@@ -17,7 +17,7 @@ import { ContactInfo } from 'astro_2.0/features/pages/myAccount/cards/ContactInf
 
 import styles from './NotificationCard.module.scss';
 
-interface NotificationCardProps {
+export interface NotificationCardProps {
   smsEnabled: boolean;
   emailEnabled: boolean;
   contactsConfig: UserContacts;
@@ -64,10 +64,7 @@ export const NotificationCard: VFC<NotificationCardProps> = props => {
 
   return (
     <ConfigCard>
-      <CardTitle>
-        {t('myAccountPage.notification')}
-        {/* <Toggle checked /> */}
-      </CardTitle>
+      <CardTitle>{t('myAccountPage.notification')}</CardTitle>
       <CardLine className={styles.emailLine}>
         <ContactInfo icon="carbonEmail">{t('myAccountPage.email')}</ContactInfo>
         <Toggle

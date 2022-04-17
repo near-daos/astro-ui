@@ -23,15 +23,13 @@ import { SaveButton } from './components/SaveButton';
 
 import styles from './AddUserInfoModal.module.scss';
 
-interface AddUserInfoModalProps {
+export interface AddUserInfoModalProps {
   isOpen: boolean;
   isEdit: boolean;
   onClose: () => void;
   isEmail: boolean;
   accountId: string;
   setConfig: (config: UserContacts) => void;
-  getPublicKey: () => Promise<string | null>;
-  getSignature: () => Promise<string | null>;
   getPublicKeyAndSignature: PkAndSignMethod;
 }
 
@@ -54,7 +52,7 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
   const [codeValid, setCodeValid] = useState(true);
   const [timeLeft, { start }] = useCountDown(2 * ONE_MINUTE_IN_MS);
 
-  const schema = useValidationSchema(isEmail || false, tBase);
+  const schema = useValidationSchema(isEmail, tBase);
 
   const methods = useForm<ContactForm>({
     mode: 'onChange',
@@ -103,7 +101,6 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
         onClose();
       } else {
         setCodeValid(false);
-        setCodeValid(false);
       }
     },
     [onClose, isEmail, setConfig, accountId, getPublicKeyAndSignature]
@@ -136,6 +133,7 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
                 }
                 size="auto"
                 {...register('contact')}
+                data-testid="contact-input"
               />
             }
           />
@@ -161,6 +159,7 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
                 size="auto"
                 {...register('verificationCode')}
                 rightContent={<SendEmail tBase={tBase} timeLeft={timeLeft} />}
+                data-testid="verification-input"
               />
             }
           />
