@@ -250,3 +250,25 @@ export function getInitialVotingPermissions(dao: {
     };
   });
 }
+
+export function isOptionDisabled(
+  dataField: string,
+  groupName: string,
+  value: boolean
+): boolean {
+  if (groupName.toLowerCase() !== 'council') {
+    return false;
+  }
+
+  switch (dataField) {
+    case 'config':
+    case 'policy':
+    case 'addMember':
+    case 'removeMember': {
+      return value;
+    }
+    default: {
+      return false;
+    }
+  }
+}
