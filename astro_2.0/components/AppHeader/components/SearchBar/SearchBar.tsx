@@ -75,7 +75,9 @@ export const SearchBar: FC<SearchBarProps> = ({
 
   const setValueOnRouterChange = () => {
     if (isSearchPage) {
-      setValue(searchResults?.query || (router.query.search as string));
+      setValue(
+        value || searchResults?.query || (router.query.search as string)
+      );
     } else {
       setValue('');
     }
@@ -197,6 +199,10 @@ export const SearchBar: FC<SearchBarProps> = ({
   }, [handleClose, router, isSearchPage, onSearchStateToggle]);
 
   const handleSubmit = useCallback(() => {
+    if (isSearchPage) {
+      return;
+    }
+
     if (value.trim()) {
       router.push(
         { pathname: SEARCH_PAGE_URL, query: router.query },
@@ -208,12 +214,10 @@ export const SearchBar: FC<SearchBarProps> = ({
     } else {
       handleCancel();
     }
-  }, [handleCancel, router, value]);
+  }, [handleCancel, isSearchPage, router, value]);
 
   const handleChange = useCallback(e => {
-    const newValue = e.target.value;
-
-    setValue(newValue);
+    setValue(e.target.value);
   }, []);
 
   const handleKeys: KeyboardEventHandler<HTMLInputElement> = e => {
