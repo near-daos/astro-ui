@@ -386,7 +386,7 @@
   },
   "discover": {
     "title": "Discovery",
-    "overview": "Overview",
+    "daoActivity": "DAO Activity",
     "financial": "Financial",
     "generalInfo": "General Info",
     "usersAndActivity": "Users and Activity",

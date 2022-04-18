@@ -5,6 +5,8 @@ export const DOMAIN_RANGES: Record<string, Range> = {
   DAY: 'DAY',
   WEEK: 'WEEK',
   MONTH: 'MONTH',
+  THREE_MONTHS: 'THREE_MONTHS',
+  SIX_MONTHS: 'SIX_MONTHS',
   YEAR: 'YEAR',
   ALL: 'ALL',
 };
@@ -63,6 +65,18 @@ export function prepareDataByRange(
       func = subDays;
       break;
     }
+    case DOMAIN_RANGES.THREE_MONTHS: {
+      numberOfElements = 90;
+      keyFormat = 'dd_LLL_yyyy';
+      func = subDays;
+      break;
+    }
+    case DOMAIN_RANGES.SIX_MONTHS: {
+      numberOfElements = 180;
+      keyFormat = 'dd_LLL_yyyy';
+      func = subDays;
+      break;
+    }
     case DOMAIN_RANGES.YEAR: {
       numberOfElements = 365;
       keyFormat = 'dd_LLL_yyyy';
@@ -82,7 +96,7 @@ export function prepareDataByRange(
   // Current datetime
   const now = new Date();
 
-  // Prepopulate result data array
+  // Pre-populate result data array
   const result = new Array(numberOfElements).fill(null);
 
   // Temp variable to keep last known value
@@ -144,6 +158,8 @@ export const getXInterval = (
     case DOMAIN_RANGES.YEAR:
       return Math.floor(timestamps.length / 12);
     case DOMAIN_RANGES.MONTH:
+    case DOMAIN_RANGES.THREE_MONTHS:
+    case DOMAIN_RANGES.SIX_MONTHS:
       return Math.floor(timestamps.length / 10);
     case DOMAIN_RANGES.WEEK:
       return 1;
@@ -164,6 +180,8 @@ export const tickXFormatter = (
     case DOMAIN_RANGES.ALL:
     case DOMAIN_RANGES.YEAR:
     case DOMAIN_RANGES.MONTH:
+    case DOMAIN_RANGES.THREE_MONTHS:
+    case DOMAIN_RANGES.SIX_MONTHS:
     case DOMAIN_RANGES.WEEK:
       return format(new Date(value), 'd LLL');
     case DOMAIN_RANGES.DAY:

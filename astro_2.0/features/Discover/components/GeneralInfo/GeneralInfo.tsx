@@ -30,7 +30,7 @@ import styles from './GeneralInfo.module.scss';
 export const GeneralInfo: FC = () => {
   const isMounted = useMountedState();
   const { t } = useTranslation();
-  const [interval, setInterval] = useState(Interval.WEEK);
+  const [interval, setInterval] = useState(Interval.DAY);
   const { daoStatsService } = useDaoStatsContext();
   const [generalData, setGeneralData] = useState<General | null>(null);
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);

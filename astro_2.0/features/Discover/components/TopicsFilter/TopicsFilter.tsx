@@ -110,7 +110,7 @@ export const TopicsFilter: FC = () => {
           hideAllOption
           queryName="topic"
           list={overviewOptions}
-          title={t('discover.overview')}
+          title={t('discover.daoActivity')}
           titleClassName={styles.sideFilterTitle}
           className={styles.sideFilter}
           itemClassName={styles.filterItem}

@@ -4,7 +4,14 @@ export type ChartDataElement = {
   y2?: number;
 };
 
-export type Range = 'DAY' | 'WEEK' | 'MONTH' | 'YEAR' | 'ALL';
+export type Range =
+  | 'DAY'
+  | 'WEEK'
+  | 'MONTH'
+  | 'THREE_MONTHS'
+  | 'SIX_MONTHS'
+  | 'YEAR'
+  | 'ALL';
 
 export type LineDataPoint = {
   x: Date;
