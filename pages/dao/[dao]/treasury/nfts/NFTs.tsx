@@ -84,7 +84,7 @@ const NFTs: NextPage<NFTsPageProps> = ({ daoContext }) => {
     <NestedDaoPageWrapper
       daoContext={daoContext}
       breadcrumbs={breadcrumbs}
-      defaultProposalType={ProposalVariant.ProposeCreateBounty}
+      defaultProposalType={ProposalVariant.ProposeCustomFunctionCall}
     >
       {nfts.length === 0 ? (
         <NoResultsView title="No NFTs available" />
