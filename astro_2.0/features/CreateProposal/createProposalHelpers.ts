@@ -287,12 +287,19 @@ function getProposalTypeByVariant(
     case ProposalVariant.ProposeAddMember: {
       return ProposalType.AddMemberToRole;
     }
+    case ProposalVariant.ProposeCreateBounty: {
+      return ProposalType.AddBounty;
+    }
+    case ProposalVariant.ProposeDoneBounty: {
+      return ProposalType.BountyDone;
+    }
     case ProposalVariant.ProposeRemoveMember: {
       return ProposalType.RemoveMemberFromRole;
     }
     case ProposalVariant.ProposeTransfer: {
       return ProposalType.Transfer;
     }
+    case ProposalVariant.ProposeChangeDaoLegalInfo:
     case ProposalVariant.ProposeChangeDaoName:
     case ProposalVariant.ProposeChangeDaoFlag:
     case ProposalVariant.ProposeChangeDaoLinks:

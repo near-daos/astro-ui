@@ -127,7 +127,8 @@ export const GroupedSelect = React.forwardRef<
                             </div>
                           )}
                           {section.options.map((option: Option) => {
-                            const index = result.itemIndex + 1;
+                            // eslint-disable-next-line no-param-reassign,no-plusplus
+                            const index = result.itemIndex++;
 
                             return (
                               <div
