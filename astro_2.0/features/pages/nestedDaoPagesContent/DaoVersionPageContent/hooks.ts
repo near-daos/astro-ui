@@ -6,6 +6,7 @@ import { useAsyncFn } from 'react-use';
 import { SputnikHttpService } from 'services/sputnik';
 import { Settings, UpgradeStatus, UpgradeSteps } from 'types/settings';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { configService } from 'services/ConfigService';
 
 type RawMeta = [string, DaoVersion];
 
@@ -24,6 +25,7 @@ export function useCheckDaoUpgrade(
 } {
   const { nearService } = useAuthContext();
   const [loading, setLoading] = useState(true);
+  const { appConfig } = configService.get();
 
   const [versionHash, setVersionHash] = useState<string | null>(null);
 
@@ -64,7 +66,9 @@ export function useCheckDaoUpgrade(
     });
 
     // // todo - temp!!!
-    setVersionHash(dao.daoVersion.hash);
+    if (appConfig.NEAR_ENV !== 'mainnet') {
+      setVersionHash(dao.daoVersion.hash);
+    }
 
     // if (hash === dao.daoVersion.hash) {
     //   setLoading(false);
@@ -79,7 +83,7 @@ export function useCheckDaoUpgrade(
     //
     // setVersionHash(nextVersionHash[0]);
     setLoading(false);
-  }, [dao.daoVersion.hash, nearService]);
+  }, [appConfig.NEAR_ENV, dao.daoVersion.hash, nearService]);
 
   useEffect(() => {
     (async () => {
