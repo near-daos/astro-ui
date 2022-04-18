@@ -5,7 +5,7 @@ import { UserContacts } from 'services/NotificationsService/types';
 
 import { useAuthContext } from 'context/AuthContext';
 
-import { useModal } from 'components/modal/hooks';
+import { useModal } from 'components/modal';
 
 import { AccountBadge } from 'astro_2.0/features/pages/myAccount/AccountBadge';
 import { CardTitle } from 'astro_2.0/features/pages/myAccount/cards/CardTitle';
