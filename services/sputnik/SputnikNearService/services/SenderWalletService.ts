@@ -164,7 +164,7 @@ export class SenderWalletService implements WalletService {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  availableAccounts(): Promise<string[]> {
+  getAvailableAccounts(): Promise<string[]> {
     return Promise.resolve([]);
   }
 

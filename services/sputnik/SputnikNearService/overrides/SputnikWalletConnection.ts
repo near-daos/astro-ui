@@ -63,6 +63,7 @@ export class SputnikWalletConnection extends WalletConnection {
             accountId,
             allKeys,
           };
+
           window.localStorage.setItem(
             this._authDataKey,
             JSON.stringify(this._authData)

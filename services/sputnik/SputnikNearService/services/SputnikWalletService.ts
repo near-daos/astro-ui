@@ -6,7 +6,10 @@ import {
   utils,
 } from 'near-api-js';
 import { SputnikWalletConnection } from 'services/sputnik/SputnikNearService/overrides/SputnikWalletConnection';
-import { BrowserLocalStorageKeyStore } from 'near-api-js/lib/key_stores';
+import {
+  BrowserLocalStorageKeyStore,
+  KeyStore,
+} from 'near-api-js/lib/key_stores';
 import { AccessKey, Action, transfer } from 'near-api-js/lib/transaction';
 import { SputnikConnectedWalletAccount } from 'services/sputnik/SputnikNearService/overrides/SputnikConnectedWalletAccount';
 import compact from 'lodash/compact';
@@ -46,7 +49,9 @@ export class SputnikWalletService implements WalletService {
   public readonly failureUrl: string = `${window.origin}/callback/auth`;
 
   constructor(nearConfig: NearConfig) {
-    const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+    const keyStore = new keyStores.BrowserLocalStorageKeyStore(
+      window.localStorage
+    );
 
     this.config = nearConfig;
 
@@ -59,11 +64,15 @@ export class SputnikWalletService implements WalletService {
     this.walletConnection = new SputnikWalletConnection(this.near, 'sputnik');
   }
 
+  getKeyStore(): KeyStore {
+    return this.keyStore;
+  }
+
   walletMeta(): WalletMeta {
     return this.walletInfo;
   }
 
-  async availableAccounts(): Promise<string[]> {
+  async getAvailableAccounts(): Promise<string[]> {
     return this.keyStore.getAccounts(this.config.networkId);
   }
 
@@ -191,11 +200,12 @@ export class SputnikWalletService implements WalletService {
   ) {
     const accountId = this.getAccountId();
 
-    const keyPair = this.config
-      ? await this.keyStore?.getKey(this.config.networkId, this.getAccountId())
-      : null;
+    const keyPair = await this.keyStore.getKey(
+      this.config.networkId,
+      this.getAccountId()
+    );
 
-    const publicKey = keyPair?.getPublicKey();
+    const publicKey = keyPair.getPublicKey();
 
     if (!publicKey) {
       return null;

@@ -50,7 +50,7 @@ export interface WalletService {
   isSignedIn(): boolean;
   getAccount(): ConnectedWalletAccount;
   getAccountId(): string;
-  availableAccounts(): Promise<string[]>;
+  getAvailableAccounts(): Promise<string[]>;
   functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome[]>;
   getPublicKey(): Promise<string | null>;
   getSignature(): Promise<string | null>;

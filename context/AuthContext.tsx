@@ -8,7 +8,6 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { keyStores } from 'near-api-js';
 import { useCookie, useEffectOnce, useLocalStorage } from 'react-use';
 
 import { ALL_FEED_URL } from 'constants/routing';
@@ -23,6 +22,7 @@ import { WalletType } from 'types/config';
 import { SputnikNearService } from 'services/sputnik';
 import { initNearService } from 'utils/init';
 import { ConnectingWalletModal } from 'astro_2.0/features/Auth/components/ConnectingWalletModal';
+import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
 
 export type PkAndSignMethod = () => Promise<
   | {
@@ -113,7 +113,7 @@ export const AuthWrapper: FC = ({ children }) => {
 
         setAccountId(service?.getAccountId() ?? '');
 
-        const availableAccounts = (await service?.availableAccounts()) ?? [];
+        const availableAccounts = (await service?.getAvailableAccounts()) ?? [];
 
         setAvailableNearAccounts(availableAccounts);
 
@@ -144,12 +144,21 @@ export const AuthWrapper: FC = ({ children }) => {
 
   const switchAccount = useCallback(
     async (walletType: WalletType, account: string) => {
-      const keyStore = new keyStores.BrowserLocalStorageKeyStore();
-      const keypair = await keyStore.getKey(nearConfig.networkId, account);
+      const sputnikWallet = nearService?.getWallet(
+        walletType
+      ) as SputnikWalletService;
+
+      if (!sputnikWallet) {
+        return;
+      }
+
+      const keypair = await sputnikWallet
+        .getKeyStore()
+        .getKey(nearConfig.networkId, account);
 
       const authData = {
         accountId: account,
-        allKeys: keypair.getPublicKey().toString(),
+        allKeys: [keypair.toString()],
       };
 
       // new wallet instance will take the new auth_key and will reinit the account
@@ -160,7 +169,7 @@ export const AuthWrapper: FC = ({ children }) => {
 
       await initService(WalletType.NEAR);
     },
-    [nearConfig, initService]
+    [nearService, nearConfig.networkId, initService]
   );
 
   useEffect(() => {
@@ -173,11 +182,11 @@ export const AuthWrapper: FC = ({ children }) => {
 
   const switchWallet = useCallback(
     async (walletType: WalletType) => {
-      await nearService?.switchWallet(walletType);
-
-      setAccountId(nearService?.getAccountId() ?? '');
+      await initNearService(walletType);
 
       setSelectedWallet(walletType.toString());
+
+      setAccountId(nearService?.getAccountId() ?? '');
 
       CookieService.set(ACCOUNT_COOKIE, nearService?.getAccountId(), {
         path: '/',

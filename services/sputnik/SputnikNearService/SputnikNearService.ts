@@ -125,6 +125,10 @@ export class SputnikNearService implements WalletService, DaoService {
     return this.walletService.getAccountId();
   }
 
+  public getWallet(walletType: WalletType): WalletService | undefined {
+    return this.wallets.get(walletType);
+  }
+
   public async createDao(
     params: CreateDaoInput | CreateDaoCustomInput
   ): Promise<void> {
@@ -460,9 +464,9 @@ export class SputnikNearService implements WalletService, DaoService {
     }
   }
 
-  availableAccounts(): Promise<string[]> {
+  getAvailableAccounts(): Promise<string[]> {
     return (
-      this.wallets.get(WalletType.NEAR)?.availableAccounts() ??
+      this.wallets.get(WalletType.NEAR)?.getAvailableAccounts() ??
       Promise.resolve([])
     );
   }
