@@ -7,7 +7,6 @@ import { useFlags } from 'launchdarkly-react-client-sdk';
 import React, { useCallback, useMemo, useState } from 'react';
 
 import { CREATE_GOV_TOKEN_PAGE_URL } from 'constants/routing';
-import { STEPS as CREATE_GOV_TOKEN_STEPS } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/constants';
 
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
@@ -223,7 +222,6 @@ const TokensPage: NextPage<TokensPageProps> = ({
             pathname: CREATE_GOV_TOKEN_PAGE_URL,
             query: {
               dao: dao.id,
-              step: CREATE_GOV_TOKEN_STEPS.INTRO,
             },
           }}
         >

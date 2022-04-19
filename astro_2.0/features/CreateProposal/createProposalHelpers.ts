@@ -319,6 +319,8 @@ function getProposalTypeByVariant(
     case ProposalVariant.ProposeCreateGroup: {
       return ProposalType.ChangePolicy;
     }
+    case ProposalVariant.ProposeTokenDistribution:
+    case ProposalVariant.ProposeContractAcceptance:
     case ProposalVariant.ProposeCreateToken: {
       return ProposalType.SetStakingContract;
     }

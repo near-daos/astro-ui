@@ -1,0 +1,99 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-gap: 12px;
+  grid-template-areas:
+    'tokenName tokenImage'
+    'totalSupply tokenImage';
+  grid-template-columns: 1fr 2fr;
+}
+
+.tokenName {
+  grid-area: tokenName;
+}
+
+.tokenImage {
+  grid-area: tokenImage;
+}
+
+.totalSupply {
+  grid-area: totalSupply;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  white-space: nowrap;
+
+  .iconWrapper {
+    //background-color: var(--color-brand-black);
+    border-radius: 50%;
+    height: 24px;
+    margin-right: 8px;
+    min-width: 24px;
+    width: 24px;
+  }
+}
+
+.inputWrapper {
+  /* stylelint-disable */
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+  /* stylelint-enable */
+
+  input {
+    font-weight: 700;
+    @include placeholder {
+      color: var(--color-neutral-40);
+      transition: opacity 0.2s linear;
+    }
+  }
+}
+
+.inputLabel {
+  height: 20px;
+
+  > span {
+    position: absolute;
+  }
+}
+
+.wide {
+  flex: 1;
+  max-width: unset;
+}
+
+.uploader {
+  height: 140px;
+  width: 140px;
+}
+
+.uploadControl {
+  cursor: pointer;
+}
+
+.errorInfo {
+  background-color: var(--color-error-50);
+  border-radius: 50%;
+  color: var(--color-black);
+  position: absolute;
+  right: -8px;
+  top: -4px;
+  width: 16px;
+}
+
+.tooltip {
+  min-width: 200px;
+}

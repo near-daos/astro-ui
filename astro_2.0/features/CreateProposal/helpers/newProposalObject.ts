@@ -13,6 +13,7 @@ import {
 import {
   BondsAndDeadlinesData,
   CreateBountyInput,
+  CreateTokenInput,
   LinksFormData,
   TokenDistributionInput,
 } from 'astro_2.0/features/CreateProposal/types';
@@ -40,6 +41,7 @@ import {
   CustomFunctionCallInput,
   getBuyNftFromMintbaseProposal,
   getBuyNftFromParasProposal,
+  getCreateTokenProposal,
   getCustomFunctionCallProposal,
   getRemoveUpgradeCodeProposal,
   getSwapsOnRefProposal,
@@ -375,6 +377,9 @@ export async function getNewProposalObject(
           );
         }
       }
+    }
+    case ProposalVariant.ProposeCreateToken: {
+      return getCreateTokenProposal(dao, (data as unknown) as CreateTokenInput);
     }
     case ProposalVariant.ProposeTokenDistribution: {
       return getTokenDistributionProposal(

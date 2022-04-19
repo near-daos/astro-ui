@@ -6,6 +6,7 @@ import Decimal from 'decimal.js';
 import { formatGasValue } from 'utils/format';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 import { jsonToBase64Str } from 'utils/jsonToBase64Str';
+import { CreateTokenInput } from 'astro_2.0/features/CreateProposal/types';
 
 export type CustomFunctionCallInput = {
   smartContractAddress: string;
@@ -360,6 +361,35 @@ export async function getSwapsOnRefProposal(
           args,
           deposit: '1000000000000000000000000',
           gas: formatGasValue(actionsGas ?? DEFAULT_PROPOSAL_GAS).toString(),
+        },
+      ],
+    },
+    bond: dao.policy.proposalBond,
+  };
+}
+
+export async function getCreateTokenProposal(
+  dao: DAO,
+  data: CreateTokenInput
+): Promise<CreateProposalParams> {
+  const { details, externalUrl } = data;
+
+  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+
+  const args = jsonToBase64Str({});
+
+  return {
+    daoId: dao.id,
+    description: proposalDescription,
+    kind: 'FunctionCall',
+    data: {
+      receiver_id: dao.id,
+      actions: [
+        {
+          method_name: 'store_contract_self',
+          args,
+          deposit: new Decimal(6000000000000000000000000).toFixed(),
+          gas: '220000000000000',
         },
       ],
     },

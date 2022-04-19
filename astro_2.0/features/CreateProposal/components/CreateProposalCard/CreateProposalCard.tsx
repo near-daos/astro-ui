@@ -133,6 +133,9 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
           />
         );
       }
+      case ProposalVariant.ProposeCreateToken: {
+        return <InfoBlockWidget label="Change Config" value="Create Token" />;
+      }
       default: {
         return (
           <GroupedSelect
