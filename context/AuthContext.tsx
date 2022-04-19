@@ -23,6 +23,9 @@ import { WalletType } from 'types/config';
 import { SputnikNearService } from 'services/sputnik';
 import { initNearService } from 'utils/init';
 import { ConnectingWalletModal } from 'astro_2.0/features/Auth/components/ConnectingWalletModal';
+import { WalletService } from 'services/sputnik/SputnikNearService/services/types';
+import { SenderWalletService } from 'services/sputnik/SputnikNearService/services/SenderWalletService';
+import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
 
 export type PkAndSignMethod = () => Promise<
   | {
@@ -34,7 +37,7 @@ export type PkAndSignMethod = () => Promise<
 
 interface AuthContextInterface {
   accountId: string;
-  login: (walletType: WalletType) => Promise<void>;
+  login: (walletType: WalletType) => void;
   logout: () => Promise<void>;
   switchAccount: (walletType: WalletType, accountId: string) => void;
   switchWallet: (walletType: WalletType) => void;
@@ -187,12 +190,31 @@ export const AuthWrapper: FC = ({ children }) => {
   );
 
   const login = useCallback(
-    async (walletType: WalletType) => {
+    (walletType: WalletType) => {
       try {
         setConnectingToWallet(walletType);
-        await initService(walletType);
-        setConnectingToWallet(null);
-        router.reload();
+
+        let wallet: WalletService;
+
+        switch (walletType) {
+          case WalletType.SENDER: {
+            wallet = new SenderWalletService(window.near);
+            break;
+          }
+          case WalletType.NEAR: {
+            wallet = new SputnikWalletService(nearConfig);
+            break;
+          }
+
+          default: {
+            wallet = new SputnikWalletService(nearConfig);
+          }
+        }
+
+        wallet.signIn(nearConfig.contractName).then(() => {
+          setConnectingToWallet(null);
+          router.reload();
+        });
       } catch (err) {
         console.warn(err);
 
@@ -205,7 +227,7 @@ export const AuthWrapper: FC = ({ children }) => {
         }
       }
     },
-    [initService, router]
+    [nearConfig, router]
   );
 
   const getPublicKeyAndSignature = useCallback(async () => {
