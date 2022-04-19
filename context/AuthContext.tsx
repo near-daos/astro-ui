@@ -23,6 +23,9 @@ import { WalletType } from 'types/config';
 import { SputnikNearService } from 'services/sputnik';
 import { initNearService } from 'utils/init';
 import { ConnectingWalletModal } from 'astro_2.0/features/Auth/components/ConnectingWalletModal';
+import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
+import { WalletService } from 'services/sputnik/SputnikNearService/services/types';
+import { SenderWalletService } from 'services/sputnik/SputnikNearService/services/SenderWalletService';
 
 export type PkAndSignMethod = () => Promise<
   | {
@@ -190,7 +193,26 @@ export const AuthWrapper: FC = ({ children }) => {
     async (walletType: WalletType) => {
       try {
         setConnectingToWallet(walletType);
-        await initService(walletType);
+
+        let wallet: WalletService;
+
+        switch (walletType) {
+          case WalletType.SENDER: {
+            wallet = new SenderWalletService(window.near);
+            break;
+          }
+          case WalletType.NEAR: {
+            wallet = new SputnikWalletService(nearConfig);
+            break;
+          }
+
+          default: {
+            wallet = new SputnikWalletService(nearConfig);
+          }
+        }
+
+        await wallet.signIn(nearConfig.contractName);
+
         setConnectingToWallet(null);
         router.reload();
       } catch (err) {
@@ -205,7 +227,7 @@ export const AuthWrapper: FC = ({ children }) => {
         }
       }
     },
-    [initService, router]
+    [nearConfig, router]
   );
 
   const getPublicKeyAndSignature = useCallback(async () => {
