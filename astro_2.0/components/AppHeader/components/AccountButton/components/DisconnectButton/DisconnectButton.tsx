@@ -13,7 +13,7 @@ export const DisconnectButton: React.FC<DisconnectButtonProps> = ({
 }) => {
   return (
     <AccountPopupItem
-      onClick={() => logout()}
+      onClick={logout}
       className={styles.menuButton}
       content={<div className={styles.disconnectText}>Disconnect</div>}
       icon={
