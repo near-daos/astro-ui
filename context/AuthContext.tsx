@@ -37,7 +37,7 @@ export type PkAndSignMethod = () => Promise<
 
 interface AuthContextInterface {
   accountId: string;
-  login: (walletType: WalletType) => void;
+  login: (walletType: WalletType) => Promise<void>;
   logout: () => Promise<void>;
   switchAccount: (walletType: WalletType, accountId: string) => void;
   switchWallet: (walletType: WalletType) => void;
@@ -190,7 +190,7 @@ export const AuthWrapper: FC = ({ children }) => {
   );
 
   const login = useCallback(
-    (walletType: WalletType) => {
+    async (walletType: WalletType) => {
       try {
         setConnectingToWallet(walletType);
 
@@ -211,10 +211,9 @@ export const AuthWrapper: FC = ({ children }) => {
           }
         }
 
-        wallet.signIn(nearConfig.contractName).then(() => {
-          setConnectingToWallet(null);
-          router.reload();
-        });
+        await wallet.signIn(nearConfig.contractName);
+        setConnectingToWallet(null);
+        router.reload();
       } catch (err) {
         console.warn(err);
 
