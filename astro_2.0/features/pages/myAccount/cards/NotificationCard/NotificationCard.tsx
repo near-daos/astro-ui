@@ -14,6 +14,7 @@ import { CardLine } from 'astro_2.0/features/pages/myAccount/cards/CardLine';
 import { CardTitle } from 'astro_2.0/features/pages/myAccount/cards/CardTitle';
 import { ConfigCard } from 'astro_2.0/features/pages/myAccount/cards/ConfigCard';
 import { ContactInfo } from 'astro_2.0/features/pages/myAccount/cards/ContactInfo';
+import { WarningMessage } from 'astro_2.0/components/WarningMessage';
 
 import styles from './NotificationCard.module.scss';
 
@@ -65,6 +66,7 @@ export const NotificationCard: VFC<NotificationCardProps> = props => {
   return (
     <ConfigCard>
       <CardTitle>{t('myAccountPage.notification')}</CardTitle>
+      <WarningMessage text="Feature is in beta" />
       <CardLine className={styles.emailLine}>
         <ContactInfo icon="carbonEmail">{t('myAccountPage.email')}</ContactInfo>
         <Toggle
