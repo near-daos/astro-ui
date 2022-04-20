@@ -40,7 +40,7 @@ export const TokenCard: React.FC<TokenCardProps> = ({
           </div>
           <div className={styles.totalValue}>
             {totalValue && (
-              <FormattedNumericValue value={totalValue} suffix="usd" />
+              <FormattedNumericValue value={totalValue} suffix="LIMIT" />
             )}
           </div>
         </div>

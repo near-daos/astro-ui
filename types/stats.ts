@@ -37,3 +37,5 @@ export type CommonOverTime = {
 export type FundsOverTime = {
   metrics: FundMetric[];
 };
+
+export type UnitPosition = 'left' | 'right';

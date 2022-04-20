@@ -58,7 +58,7 @@ export const TransferContent: FC = () => {
             {token.balance}
           </span>
           {token.symbol === 'NEAR' && (
-            <span className={styles.balanceUsd}>
+            <span className={styles.balanceLIMIT}>
               &#8776;&nbsp;{nearToUsd(token.balance)}&nbsp;USD
             </span>
           )}

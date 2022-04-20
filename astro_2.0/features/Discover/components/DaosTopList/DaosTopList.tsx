@@ -1,11 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { useTranslation } from 'next-i18next';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import uniqid from 'uniqid';
 
 import { TopListItem } from 'astro_2.0/features/Discover/components/DaosTopList/components/TopListItem';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
-
 import { LeaderboardData } from 'astro_2.0/features/Discover/types';
+import { UnitPosition } from 'types/stats';
 
 import styles from './DaosTopList.module.scss';
 
@@ -14,6 +15,8 @@ interface DaosTopListProps {
   data: LeaderboardData[] | null;
   valueLabel: string;
   next: () => void;
+  unit?: string | ReactNode;
+  unitPosition?: UnitPosition;
 }
 
 export const DaosTopList: FC<DaosTopListProps> = ({
@@ -21,6 +24,8 @@ export const DaosTopList: FC<DaosTopListProps> = ({
   data,
   valueLabel,
   next,
+  unit = '',
+  unitPosition = 'left',
 }) => {
   const { t } = useTranslation();
 
@@ -50,7 +55,13 @@ export const DaosTopList: FC<DaosTopListProps> = ({
           endMessage=""
         >
           {data.map((item, i) => (
-            <TopListItem key={item.dao} index={i} data={item} />
+            <TopListItem
+              key={uniqid()}
+              unitPosition={unitPosition}
+              index={i}
+              data={item}
+              unit={unit}
+            />
           ))}
         </InfiniteScroll>
       </>

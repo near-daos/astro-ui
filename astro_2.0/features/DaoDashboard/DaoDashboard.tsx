@@ -58,7 +58,7 @@ export const DaoDashboard: FC<DaoDashboardProps> = ({ className }) => {
           title={t('daoDashboard.daoFunds')}
           value={`${formatCurrency(
             dashboardData.state?.totalDaoFunds.value ?? 0
-          )} USD`}
+          )} LIMIT`}
           trend={dashboardData.state?.totalDaoFunds.growth}
         />
         {!!dashboardData.funds && dashboardData.funds.length && (
