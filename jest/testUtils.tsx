@@ -4,7 +4,7 @@ import {
 } from '@testing-library/react';
 import { ReactNode } from 'react';
 import { NextRouter } from 'next/router';
-import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import { RouterContext } from 'next-server/dist/lib/router-context';
 
 function createMockRouter(router?: Partial<NextRouter>): NextRouter {
   return {

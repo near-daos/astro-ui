@@ -18,6 +18,7 @@ module.exports = (phase, { defaultConfig }) => {
     },
     {
       ...defaultConfig,
+      swcMinify: true,
       reactStrictMode: true,
       images: {
         domains: [
@@ -39,7 +40,9 @@ module.exports = (phase, { defaultConfig }) => {
           },
         ];
       },
-      target: 'experimental-serverless-trace',
+      experimental: {
+        outputStandalone: true,
+      },
       i18n,
     }
   );

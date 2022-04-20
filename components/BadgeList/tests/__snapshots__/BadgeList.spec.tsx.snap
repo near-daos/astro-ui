@@ -2,17 +2,21 @@
 
 exports[`Badge List Should render component 1`] = `
 <div>
-  <div>
-    <div>
+  <div
+    class="selected"
+  >
+    <div
+      class="selectedWrapper"
+    >
       <div>
         Hello
       </div>
     </div>
     <div
-      class="undefined"
+      class="collapsedLabel selectedWrapper visible"
     >
       <div
-        class=""
+        class="badge small turqoise"
       >
         +
         1

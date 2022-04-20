@@ -3,18 +3,22 @@
 exports[`account popup item Should render component 1`] = `
 <div>
   <div
-    class=""
+    class="root"
     role="button"
     tabindex="0"
   >
-    <div>
+    <div
+      class="icon"
+    >
       <svg>
         <use
           href="/_next/undefined"
         />
       </svg>
     </div>
-    <div>
+    <div
+      class="content"
+    >
       test
     </div>
   </div>

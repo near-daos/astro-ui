@@ -3,12 +3,15 @@
 exports[`search result dao card Should render component 1`] = `
 <div>
   <div
+    class="root"
     role="button"
     tabindex="0"
   >
-    <div>
+    <div
+      class="flagHolder"
+    >
       <div
-        class="undefined"
+        class="root xs defaultBackground"
       >
         <svg
           class="svg"
@@ -38,7 +41,7 @@ exports[`search result dao card Should render component 1`] = `
           </clippath>
         </svg>
         <div
-          class=""
+          class="backgroundXS"
         />
         <canvas
           style="clip-path: path('M46.4118 0L9.74793 13.103V20.3722L0 23.856V52.5981L36.6639 39.4951V32.2259L46.4118 28.7421V0Z'); max-width: 47px; transform: none;"
@@ -46,10 +49,14 @@ exports[`search result dao card Should render component 1`] = `
       </div>
     </div>
     <div>
-      <div>
+      <div
+        class="header"
+      >
         dao id
       </div>
-      <div>
+      <div
+        class="sub"
+      >
         dao id
       </div>
     </div>
