@@ -1,10 +1,13 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import cn from 'classnames';
 import { useTranslation } from 'next-i18next';
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
+import { useModal } from 'components/modal';
+import { PreviewModal } from 'astro_2.0/features/CreateDao/components/PreviewModal';
+import { Button } from 'components/button/Button';
 
 import styles from './ChangeDaoFlagContent.module.scss';
 
@@ -20,6 +23,14 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
   logo,
 }) => {
   const { t } = useTranslation();
+  const [showModal] = useModal(PreviewModal);
+
+  const handleAssetsPreview = useCallback(async () => {
+    await showModal({
+      cover: cover || '/flags/defaultDaoFlag.png',
+      logo,
+    });
+  }, [cover, logo, showModal]);
 
   return (
     <div className={styles.root}>
@@ -27,16 +38,21 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
         <FieldWrapper label={t('proposalCard.preview')} fullWidth>
           {cover && (
             <div className={styles.flag}>
-              <FlagRenderer flag={cover} size="lg" logo={logo} />
+              <FlagRenderer flag={cover} size="lg" />
             </div>
           )}
         </FieldWrapper>
       </div>
-      <svg className="svg" width="0" height="0">
-        <clipPath id="__DAO__flag-preview">
-          <path d="M240.01 0L50.4101 67.7595V105.35L0 123.366V272L189.599 204.24V166.65L240.01 148.634V0Z" />
-        </clipPath>
-      </svg>
+      <div className={styles.preview}>
+        <Button
+          variant="secondary"
+          size="small"
+          onClick={handleAssetsPreview}
+          className={styles.previewButton}
+        >
+          Preview Flag & Letterhead
+        </Button>
+      </div>
       <div className={cn(styles.row, styles.target)}>
         <InfoBlockWidget
           label={t('proposalCard.proposalTarget')}
