@@ -72,6 +72,10 @@ export const VersionCheck: FC<VersionCheckProps> = ({
         </div>
       ) : null}
 
+      {!loading && version === null && (
+        <div className={styles.version}>N/A</div>
+      )}
+
       {!loading ? renderButton() : null}
     </div>
   );
