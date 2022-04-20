@@ -8,7 +8,7 @@ import { AppFooter } from 'astro_2.0/components/AppFooter';
 import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 
 import { WalletType } from 'types/config';
-import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletIcon/WalletIcon';
+import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletIcon';
 import { useModal } from 'components/modal';
 import { WalletSelectionModal } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletSelectionModal';
 import { WalletsList } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletsList';
