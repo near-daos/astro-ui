@@ -145,14 +145,14 @@ export const useDaoUpgrade = (dao: DAO): DaoUpgradeStatus => {
         return 0;
       });
 
-      if (hash === dao.daoVersion.hash) {
+      if (hash === dao.daoVersion?.hash) {
         setUpgradePossible(false);
 
         return;
       }
 
       const currentVersionHashIndex = sortedMeta.findIndex(
-        meta => meta[0] === dao.daoVersion.hash
+        meta => meta[0] === dao.daoVersion?.hash
       );
       const nextVersionHash = sortedMeta[currentVersionHashIndex + 1];
 
@@ -165,7 +165,7 @@ export const useDaoUpgrade = (dao: DAO): DaoUpgradeStatus => {
     };
 
     getUpgradeInfo();
-  }, [dao.daoVersion.hash, nearService]);
+  }, [dao.daoVersion?.hash, nearService]);
 
   return {
     currentProposalVariant,
