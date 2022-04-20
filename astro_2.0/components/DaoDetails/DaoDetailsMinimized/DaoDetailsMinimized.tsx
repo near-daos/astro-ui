@@ -25,7 +25,7 @@ import { WalletType } from 'types/config';
 import styles from './DaoDetailsMinimized.module.scss';
 
 export interface DaoDetailsMinimizedProps {
-  dao: Pick<DAO, 'id' | 'flagCover' | 'logo' | 'displayName'>;
+  dao: Pick<DAO, 'id' | 'flagCover' | 'flagLogo' | 'logo' | 'displayName'>;
   className?: string;
   onCreateProposalClick?: () => void;
   disableNewProposal?: boolean;
@@ -121,7 +121,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
             >
               <div className={styles.flagWrapper}>
                 <FlagRenderer
-                  flag={dao.flagCover}
+                  flag={dao.flagLogo}
                   size="xs"
                   fallBack={dao.logo}
                 />

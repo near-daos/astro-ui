@@ -10,8 +10,8 @@ exports[`dao details grid Should render component 1`] = `
         <section>
           <div>
             <div
-              class=""
-              style="background-image: url(https://sputnik-dao.s3.eu-central-1.amazonaws.com/U1KVTf5ctss2feAebXooI);"
+              class="undefined"
+              style="background-image: url(https://sputnik-dao.s3.eu-central-1.amazonaws.com/default.png);"
             />
           </div>
           <div>
