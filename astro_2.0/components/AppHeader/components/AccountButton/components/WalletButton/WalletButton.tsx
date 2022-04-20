@@ -1,4 +1,4 @@
-import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletIcon/WalletIcon';
+import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletIcon';
 import { WalletType } from 'types/config';
 import { WalletDescription } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletDescription';
 import { AccountPopupItem } from 'astro_2.0/components/AppHeader/components/AccountButton/components/AccountPopupItem';

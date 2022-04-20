@@ -1,11 +1,13 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import Head from 'next/head';
+import Script from 'next/script';
 import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from 'next-i18next.config';
 import type { AppContext, AppProps } from 'next/app';
 import { withLDProvider } from 'launchdarkly-react-client-sdk';
 import { appConfig as applicationConfig } from 'config';
-
+import { configService } from 'services/ConfigService';
+import { useRouter } from 'next/router';
 import { ALL_FEED_URL, MY_FEED_URL } from 'constants/routing';
 
 import { AuthWrapper } from 'context/AuthContext';
@@ -18,16 +20,17 @@ import { SearchResults } from 'features/search/search-results';
 import { CookieService } from 'services/CookieService';
 
 import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
+import { gtag, gtagScript } from 'constants/googleTagManager';
 
 import { SocketProvider } from 'context/SocketContext';
 
 import { useIntercomAdjust } from 'hooks/useIntercomAdjust';
 
 import 'styles/globals.scss';
-import { useRouter } from 'next/router';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
+  const { appConfig } = configService.get();
 
   useEffect(() => {
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
@@ -36,21 +39,30 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
   useIntercomAdjust();
 
   return (
-    <ModalProvider>
-      <AuthWrapper>
-        <SocketProvider>
-          <SearchResults>
-            <Head>
-              <title>Astro</title>
-            </Head>
-            <PageLayout>
-              <Component {...pageProps} />
-            </PageLayout>
-            <MobileNav />
-          </SearchResults>
-        </SocketProvider>
-      </AuthWrapper>
-    </ModalProvider>
+    <>
+      <Script
+        strategy="lazyOnload"
+        src={gtag(appConfig.GOOGLE_ANALYTICS_KEY)}
+      />
+      <Script strategy="lazyOnload">
+        {gtagScript(appConfig.GOOGLE_ANALYTICS_KEY)}
+      </Script>
+      <ModalProvider>
+        <AuthWrapper>
+          <SocketProvider>
+            <SearchResults>
+              <Head>
+                <title>Astro</title>
+              </Head>
+              <PageLayout>
+                <Component {...pageProps} />
+              </PageLayout>
+              <MobileNav />
+            </SearchResults>
+          </SocketProvider>
+        </AuthWrapper>
+      </ModalProvider>
+    </>
   );
 }
 

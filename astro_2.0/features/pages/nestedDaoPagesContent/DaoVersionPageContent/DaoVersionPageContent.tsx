@@ -39,6 +39,10 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
   const versionDetails = useMemo(() => {
     const { daoVersion } = daoContext.dao;
 
+    if (!daoVersion) {
+      return null;
+    }
+
     return {
       date: format(parseISO(daoVersion.createdAt), 'dd MMM yyyy, hh:mm aaa'),
       number: daoVersion.version.join('.'),
