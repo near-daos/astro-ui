@@ -22,7 +22,7 @@ export class SenderWalletService implements WalletService {
   private readonly walletType = WalletType.SENDER;
 
   private readonly walletInfo: WalletMeta = {
-    name: 'Sender',
+    name: 'Sender (beta)',
     type: 'extension',
     url: 'senderwallet.io',
     id: WalletType.SENDER,
