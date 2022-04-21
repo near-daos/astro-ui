@@ -213,6 +213,10 @@ export const AuthWrapper: FC = ({ children }) => {
 
         await wallet.signIn(nearConfig.contractName);
         setConnectingToWallet(null);
+        setSelectedWallet(walletType.toString());
+        CookieService.set(ACCOUNT_COOKIE, wallet.getAccountId(), {
+          path: '/',
+        });
         router.reload();
       } catch (err) {
         console.warn(err);
@@ -226,7 +230,7 @@ export const AuthWrapper: FC = ({ children }) => {
         }
       }
     },
-    [nearConfig, router]
+    [nearConfig, router, setSelectedWallet]
   );
 
   const getPublicKeyAndSignature = useCallback(async () => {
