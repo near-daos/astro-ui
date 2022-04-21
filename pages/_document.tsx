@@ -1,11 +1,8 @@
 /* eslint-disable react/no-danger */
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
-import {
-  GOOGLE_TAG_MANAGER,
-  GOOGLE_TAG_MANAGER_NO_SCRIPT,
-} from 'constants/googleTagManager';
 import { APP_CONFIG } from 'config/fetchConfig';
+import { TYPE_FORM_FEEDBACK } from 'constants/integrations';
 
 export default class MyDocument extends Document {
   render(): JSX.Element {
@@ -17,20 +14,15 @@ export default class MyDocument extends Document {
               __html: APP_CONFIG,
             }}
           />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: GOOGLE_TAG_MANAGER,
-            }}
-          />
         </Head>
         <body>
-          <noscript
-            dangerouslySetInnerHTML={{
-              __html: GOOGLE_TAG_MANAGER_NO_SCRIPT,
-            }}
-          />
           <Main />
           <NextScript />
+          <div
+            dangerouslySetInnerHTML={{
+              __html: TYPE_FORM_FEEDBACK,
+            }}
+          />
         </body>
       </Html>
     );
