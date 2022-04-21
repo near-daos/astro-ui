@@ -36,9 +36,9 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
     <div className={styles.root}>
       <div className={styles.row}>
         <FieldWrapper label={t('proposalCard.preview')} fullWidth>
-          {cover && (
+          {logo && (
             <div className={styles.flag}>
-              <FlagRenderer flag={cover} size="lg" />
+              <FlagRenderer flag={logo} size="lg" />
             </div>
           )}
         </FieldWrapper>

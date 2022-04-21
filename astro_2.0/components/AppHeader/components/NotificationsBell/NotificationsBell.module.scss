@@ -1,10 +1,11 @@
+@import 'styles/typography';
+
 .root {
   align-items: center;
   cursor: pointer;
   display: flex;
   height: 40px;
   justify-content: center;
-  width: 40px;
 }
 
 .bell {
@@ -20,4 +21,13 @@
 
 .arrow {
   color: var(--color-white);
+}
+
+.notificationsCount {
+  @extend %subtitle4;
+  background-color: var(--color-success-5);
+  border-radius: 2px;
+  color: var(--color-success-60);
+  margin: 0 0 0 4px;
+  padding: 4px 7px;
 }
