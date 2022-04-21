@@ -23,7 +23,7 @@ export const NotificationsBell: VFC<NotificationsBellProps> = ({
   const rootRef = useRef(null);
   const isHovered = useHoverDirty(rootRef);
 
-  const { notifications } = useNotificationsList();
+  const { notifications } = useNotificationsList(undefined, undefined, true);
 
   const newNotificationsCount = notifications?.data?.filter(
     item => !item.isRead
