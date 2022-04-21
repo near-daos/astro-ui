@@ -1,0 +1,1 @@
+export const TYPE_FORM_FEEDBACK = `<div data-tf-sidetab="KTsmCeqB" data-tf-width="320" data-tf-height="400" data-tf-button-color="#19D992" data-tf-button-text="Feedback" data-tf-iframe-props="title=Astro" data-tf-medium="snippet" style="all:unset;"></div><script src="//embed.typeform.com/next/embed.js"></script>`;

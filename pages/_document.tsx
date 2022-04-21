@@ -6,6 +6,7 @@ import {
   GOOGLE_TAG_MANAGER_NO_SCRIPT,
 } from 'constants/googleTagManager';
 import { APP_CONFIG } from 'config/fetchConfig';
+import { TYPE_FORM_FEEDBACK } from 'constants/integrations';
 
 export default class MyDocument extends Document {
   render(): JSX.Element {
@@ -31,6 +32,11 @@ export default class MyDocument extends Document {
           />
           <Main />
           <NextScript />
+          <div
+            dangerouslySetInnerHTML={{
+              __html: TYPE_FORM_FEEDBACK,
+            }}
+          />
         </body>
       </Html>
     );
