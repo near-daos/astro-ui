@@ -418,7 +418,9 @@
     "numberOfBounties": "Number of Bounties",
     "vlOfBounties": "VL of Bounties",
     "activity": "Activity",
-    "avgGroupsDao": "Avg. Groups/DAO"
+    "avgGroupsDao": "Avg. Groups/DAO",
+    "activeProposals": "Active Proposals",
+    "activeVotes": "Active Votes"
   },
   "myAccountPage": {
     "header": "My account",
