@@ -48,10 +48,7 @@ export const DaoVotingPermissionsForm: VFC = () => {
           state.voting.data ||
           getInitialVotingPermissions({
             policy: {
-              roles: [
-                { name: 'council', permissions: ['*:*'] },
-                { name: 'all', permissions: ['*:*'] },
-              ],
+              roles: [{ name: 'council', permissions: ['*:*'], kind: 'Group' }],
             },
           })
         }

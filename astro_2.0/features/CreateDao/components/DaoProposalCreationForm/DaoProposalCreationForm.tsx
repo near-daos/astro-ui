@@ -51,8 +51,12 @@ export const DaoProposalCreationForm: VFC = () => {
           getInitialCreationPermissions({
             policy: {
               roles: [
-                { name: 'council', permissions: ['*:*'] },
-                { name: 'all', permissions: ['*:AddProposal'] },
+                { name: 'council', permissions: ['*:*'], kind: 'Group' },
+                {
+                  name: 'all',
+                  permissions: ['*:AddProposal'],
+                  kind: 'Everyone',
+                },
               ],
             },
           })

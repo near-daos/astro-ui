@@ -352,6 +352,7 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
               roles: proposal.kind.policy.roles
                 // .filter(role => role.kind !== 'Everyone')
                 .map(role => ({
+                  kind: role.kind,
                   name: role.name,
                   permissions: role.permissions,
                 })),
@@ -370,6 +371,7 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
               roles: proposal.kind.policy.roles
                 // .filter(role => role.kind !== 'Everyone')
                 .map(role => ({
+                  kind: role.kind,
                   name: role.name,
                   permissions: role.permissions,
                 })),
