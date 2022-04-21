@@ -5,6 +5,7 @@ import nextI18NextConfig from 'next-i18next.config';
 import type { AppContext, AppProps } from 'next/app';
 import { withLDProvider } from 'launchdarkly-react-client-sdk';
 import { appConfig as applicationConfig } from 'config';
+import { useRouter } from 'next/router';
 
 import { ALL_FEED_URL, MY_FEED_URL } from 'constants/routing';
 
@@ -24,7 +25,6 @@ import { SocketProvider } from 'context/SocketContext';
 import { useIntercomAdjust } from 'hooks/useIntercomAdjust';
 
 import 'styles/globals.scss';
-import { useRouter } from 'next/router';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
@@ -56,6 +56,8 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
 
 App.getInitialProps = async ({ ctx, router }: AppContext) => {
   const { req, res } = ctx;
+
+  console.log(ctx);
 
   CookieService.initServerSideCookies(req?.headers.cookie || null);
 

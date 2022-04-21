@@ -19,10 +19,10 @@
     "test:loud": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "generate-assets": "patch-package && yarn generate-assets-index",
+    "generate-assets": "yarn generate-assets-index",
     "prebuild": "yarn generate-assets",
-    "postinstall": "[ ! -d \"./scripts\" ] || yarn generate-assets",
-    "generate-assets-index": "[ -f \"./scripts/generateAssetsIndex.js\" ] && node scripts/generateAssetsIndex.js",
+    "postinstall": "yarn generate-assets",
+    "generate-assets-index": "node scripts/generateAssetsIndex.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -164,7 +164,6 @@
     "husky": "^7.0.1",
     "jest": "^27.0.6",
     "lint-staged": "^11.0.0",
-    "next-server": "^9.0.5",
     "pascal-case": "^3.1.2",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0",

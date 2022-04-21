@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import { render } from "jest/testUtils";
-import { useRouter } from "next/router";
+import { render } from 'jest/testUtils';
+import { useRouter } from 'next/router';
 
-import { SideFilter } from "astro_2.0/components/SideFilter";
+import { SideFilter } from 'astro_2.0/components/SideFilter';
 
 jest.mock('next/router', () => {
   return {

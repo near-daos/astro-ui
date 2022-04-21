@@ -40,9 +40,9 @@ module.exports = (phase, { defaultConfig }) => {
           },
         ];
       },
-      experimental: {
+     /* experimental: {
         outputStandalone: true,
-      },
+      },*/
       i18n,
     }
   );
