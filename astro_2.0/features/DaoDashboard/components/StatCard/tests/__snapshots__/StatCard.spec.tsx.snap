@@ -3,7 +3,7 @@
 exports[`Stat Card Should render component 1`] = `
 <div>
   <button
-    class="undefined"
+    class="btn transparent sizeBlock root clickable selected"
     data-testid="stat-card"
     type="button"
   />

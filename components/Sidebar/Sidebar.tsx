@@ -39,7 +39,9 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
   const createDao = useCallback(() => {
     const url = { pathname: CREATE_DAO_URL, query: { step: 'info' } };
 
-    return accountId ? router.push(url) : login(WalletType.NEAR);
+    return accountId
+      ? router.push(url)
+      : login(WalletType.NEAR).then(() => router.push(url));
   }, [login, router, accountId]);
 
   function renderHomeNavItem() {

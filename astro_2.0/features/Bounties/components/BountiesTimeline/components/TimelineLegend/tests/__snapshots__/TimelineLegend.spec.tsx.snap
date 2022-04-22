@@ -2,13 +2,15 @@
 
 exports[`TimelineHeader Should render component 1`] = `
 <div>
-  <div>
+  <div
+    class="root"
+  >
     <button
-      class="undefined"
+      class="btn transparent sizeBlock control open"
       type="button"
     >
       <svg
-        class="undefined"
+        class="controlIcon open"
       >
         <use
           href="/_next/undefined"
@@ -17,63 +19,99 @@ exports[`TimelineHeader Should render component 1`] = `
     </button>
     <div>
       <div>
-        <span>
-          <svg>
+        <span
+          class="iconWrapper"
+        >
+          <svg
+            class="icon"
+          >
             <use
               href="/_next/undefined"
             />
           </svg>
-          <span>
+          <span
+            class="label"
+          >
             Proposal Created
           </span>
         </span>
-        <span>
-          <svg>
+        <span
+          class="iconWrapper"
+        >
+          <svg
+            class="icon"
+          >
             <use
               href="/_next/undefined"
             />
           </svg>
-          <span>
+          <span
+            class="label"
+          >
             Bounty Created
           </span>
         </span>
-        <span>
-          <svg>
+        <span
+          class="iconWrapper"
+        >
+          <svg
+            class="icon"
+          >
             <use
               href="/_next/undefined"
             />
           </svg>
-          <span>
+          <span
+            class="label"
+          >
             Claim
           </span>
         </span>
-        <span>
-          <svg>
+        <span
+          class="iconWrapper"
+        >
+          <svg
+            class="icon"
+          >
             <use
               href="/_next/undefined"
             />
           </svg>
-          <span>
+          <span
+            class="label"
+          >
             Pending Approval
           </span>
         </span>
-        <span>
-          <svg>
+        <span
+          class="iconWrapper"
+        >
+          <svg
+            class="icon"
+          >
             <use
               href="/_next/undefined"
             />
           </svg>
-          <span>
+          <span
+            class="label"
+          >
             Claim Deadline
           </span>
         </span>
-        <span>
-          <svg>
+        <span
+          class="iconWrapper"
+        >
+          <svg
+            class="icon"
+          >
             <use
               href="/_next/undefined"
             />
           </svg>
-          <span>
+          <span
+            class="label"
+          >
             Complete Bounty
           </span>
         </span>

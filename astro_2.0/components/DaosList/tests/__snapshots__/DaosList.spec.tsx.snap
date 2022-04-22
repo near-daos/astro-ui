@@ -2,19 +2,27 @@
 
 exports[`Dao List Should render component 1`] = `
 <div>
-  <div>
-    <div>
-      <h1>
+  <div
+    class="root"
+  >
+    <div
+      class="header"
+    >
+      <h1
+        class="title"
+      >
         Hello World
       </h1>
       <button
-        class=""
+        class="btn black sizeSmall"
         type="button"
       >
         createNewDao
       </button>
     </div>
-    <div />
+    <div
+      class="content"
+    />
   </div>
 </div>
 `;

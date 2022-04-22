@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, ReactNode, useState } from 'react';
 import Measure from 'react-measure';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -15,6 +15,7 @@ import { ChartLegend } from 'astro_2.0/features/DaoDashboard/components/Dashboar
 
 import { DOMAIN_RANGES } from 'components/AreaChartRenderer/helpers';
 import { getChartTitles } from 'astro_2.0/features/DaoDashboard/components/DashboardChart/helpers';
+import { UnitPosition } from 'types/stats';
 
 import styles from './DashboardChart.module.scss';
 
@@ -24,6 +25,8 @@ interface DashboardChartProps {
   initialRange?: Range;
   onRangeChange?: (val: Range) => void;
   timeRanges?: { label: string; type: Range }[];
+  unit?: string | ReactNode;
+  unitPosition?: UnitPosition;
 }
 
 const variants = {
@@ -37,6 +40,8 @@ export const DashboardChart: FC<DashboardChartProps> = ({
   initialRange,
   onRangeChange,
   timeRanges,
+  unit = '',
+  unitPosition = 'left',
 }) => {
   const { t } = useTranslation();
   const [width, setWidth] = useState(0);
@@ -124,6 +129,8 @@ export const DashboardChart: FC<DashboardChartProps> = ({
                   }}
                 >
                   <Chart
+                    unit={unit}
+                    unitPosition={unitPosition}
                     width={width}
                     data={chartData}
                     period={activeRange}

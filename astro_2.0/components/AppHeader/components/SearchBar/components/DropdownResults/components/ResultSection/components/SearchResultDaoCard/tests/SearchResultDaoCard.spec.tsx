@@ -4,10 +4,10 @@ import { useRouter } from 'next/router';
 import { fireEvent } from '@testing-library/dom';
 
 import { DaoFeedItem } from 'types/dao';
-import { render } from 'jest/testUtils';
 import { SINGLE_DAO_PAGE } from 'constants/routing';
-
 import { SearchResultDaoCard } from 'astro_2.0/components/AppHeader/components/SearchBar/components/DropdownResults/components/ResultSection/components/SearchResultDaoCard';
+
+import { render } from 'jest/testUtils';
 
 jest.mock('next/router', () => {
   return {

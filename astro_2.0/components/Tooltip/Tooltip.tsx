@@ -7,7 +7,7 @@ import styles from './Tooltip.module.scss';
 
 interface TooltipProps {
   placement?: 'right' | 'top' | 'bottom' | 'left' | 'auto';
-  overlay: ReactNode;
+  overlay?: ReactNode;
   className?: string;
   popupClassName?: string;
 }
@@ -24,14 +24,16 @@ export const Tooltip: FC<TooltipProps> = ({
   return (
     <div ref={setRef} className={cn(className)}>
       {children}
-      <Popup
-        anchor={ref}
-        placement={placement}
-        delayShow={700}
-        className={cn(styles.popup, popupClassName)}
-      >
-        {overlay}
-      </Popup>
+      {overlay && (
+        <Popup
+          anchor={ref}
+          placement={placement}
+          delayShow={700}
+          className={cn(styles.popup, popupClassName)}
+        >
+          {overlay}
+        </Popup>
+      )}
     </div>
   );
 };

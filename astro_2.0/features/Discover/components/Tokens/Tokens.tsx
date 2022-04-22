@@ -21,6 +21,7 @@ import {
   TokensTabs,
 } from 'astro_2.0/features/Discover/constants';
 import useQuery from 'hooks/useQuery';
+import { USD } from 'constants/common';
 
 import { Tokens as TTokens } from 'services/DaoStatsService/types';
 
@@ -51,7 +52,9 @@ export const Tokens: FC = () => {
       {
         id: TokensTabs.VL_OF_FTS,
         label: t('discover.vlOfFts'),
-        value: (data?.ftsVl.count ?? 0).toLocaleString(),
+        value: `${data?.ftsVl.count ? USD : ''}${(
+          data?.ftsVl.count ?? 0
+        ).toLocaleString()}`,
         trend: data?.ftsVl.growth ?? 0,
       },
       {
@@ -151,6 +154,16 @@ export const Tokens: FC = () => {
     }
   }, [activeView, query.dao, isMounted]);
 
+  const getUnit = () => {
+    switch (activeView) {
+      case TokensTabs.VL_OF_FTS: {
+        return USD;
+      }
+      default:
+        return '';
+    }
+  };
+
   const [, getLeaderboardData] = useAsyncFn(async () => {
     if (query.dao) {
       return;
@@ -224,11 +237,13 @@ export const Tokens: FC = () => {
       />
       <div className={styles.body}>
         <ChartRenderer
+          unit={getUnit()}
           data={chartData}
           loading={loading}
           activeView={activeView}
         />
         <DaosTopList
+          unit={getUnit()}
           total={total}
           next={nextLeaderboardItems}
           data={leaderboardData}

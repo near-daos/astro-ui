@@ -11,7 +11,7 @@
 }
 
 .dot {
-  margin: 0 6px 0 0;
+  margin: 4px 6px 0 0;
 }
 
 .label {
@@ -25,10 +25,20 @@
   margin: 0 4px 0 0;
 }
 
+.element {
+  align-content: center;
+  display: flex;
+}
+
 .value {
   @extend %title4;
-
   color: var(--white);
+  display: flex;
   font-weight: 500;
+  justify-content: flex-end;
   margin: 0 4px 0 0;
+  &.right {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+  }
 }

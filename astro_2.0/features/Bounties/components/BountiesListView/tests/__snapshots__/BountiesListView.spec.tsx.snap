@@ -2,24 +2,30 @@
 
 exports[`BountiesListView Should render component 1`] = `
 <div>
-  <div>
+  <div
+    class="root"
+  >
     <div
-      class=""
+      class="content regular"
     >
-      <div>
+      <div
+        class="root"
+      >
         <div
-          class=""
+          class="header pending"
         >
           <div
-            class=""
+            class="title pending"
           >
-            <div>
+            <div
+              class="control"
+            >
               <button
-                class=""
+                class="iconButton small"
                 type="button"
               >
                 <svg
-                  class="undefined"
+                  class="controlIcon open"
                 >
                   <use
                     href="/_next/undefined"
@@ -29,53 +35,71 @@ exports[`BountiesListView Should render component 1`] = `
             </div>
             Coming Soon (Proposal Phase) (1)
           </div>
-          <div>
+          <div
+            class="proposer"
+          >
             Proposer
           </div>
-          <div>
+          <div
+            class="content"
+          >
             Voting
           </div>
         </div>
-        <div>
+        <div
+          class="rowRoot"
+        >
           <div
-            class=""
+            class="rowWrapper"
           >
             <div
-              class=""
+              class="row firstRow pending"
               style="opacity: 0;"
             >
               <div
-                class=""
+                class="rowTitle"
               >
                 <button
-                  class=""
+                  class="btn transparent sizeBlock"
                   disabled=""
                   type="button"
                 >
                   <div
-                    class="undefined"
+                    class="singleLine flex toggleLink disabled"
                   >
-                    <div>
+                    <div
+                      class="singleLine"
+                    >
                       Google for YouTube trends in 2021 Q41639985778397
                     </div>
-                    <div />
+                    <div
+                      class="flex"
+                    />
                   </div>
                 </button>
               </div>
-              <div>
-                <div>
+              <div
+                class="rowProposer"
+              >
+                <div
+                  class="singleLine"
+                >
                   testdao2.testnet
                 </div>
               </div>
-              <div />
               <div
-                class=""
+                class="rowContent"
+              />
+              <div
+                class="rowDetails"
               >
                 <button
-                  class=""
+                  class="btn secondary sizeSmall detailsButton"
                   type="button"
                 >
-                  <div>
+                  <div
+                    class="singleLine"
+                  >
                     Details
                   </div>
                 </button>
@@ -83,10 +107,10 @@ exports[`BountiesListView Should render component 1`] = `
             </div>
           </div>
           <div
-            class=""
+            class="mobileActionsPanel"
           >
             <button
-              class=""
+              class="iconButton small rowHideControl"
               type="button"
             >
               <svg>
@@ -98,20 +122,24 @@ exports[`BountiesListView Should render component 1`] = `
           </div>
         </div>
       </div>
-      <div>
+      <div
+        class="root"
+      >
         <div
-          class=""
+          class="header inProgress"
         >
           <div
-            class=""
+            class="title inProgress"
           >
-            <div>
+            <div
+              class="control"
+            >
               <button
-                class=""
+                class="iconButton small"
                 type="button"
               >
                 <svg
-                  class="undefined"
+                  class="controlIcon open"
                 >
                   <use
                     href="/_next/undefined"
@@ -121,53 +149,71 @@ exports[`BountiesListView Should render component 1`] = `
             </div>
             Bounties (1)
           </div>
-          <div>
+          <div
+            class="proposer"
+          >
             Proposer
           </div>
-          <div>
+          <div
+            class="content"
+          >
             Amount
           </div>
         </div>
-        <div>
+        <div
+          class="rowRoot"
+        >
           <div
-            class=""
+            class="rowWrapper"
           >
             <div
-              class=""
+              class="row firstRow inProgress"
               style="opacity: 0;"
             >
               <div
-                class=""
+                class="rowTitle"
               >
                 <button
-                  class=""
+                  class="btn transparent sizeBlock"
                   disabled=""
                   type="button"
                 >
                   <div
-                    class="undefined"
+                    class="singleLine flex toggleLink disabled"
                   >
-                    <div>
+                    <div
+                      class="singleLine"
+                    >
                       Google for YouTube trends in 2021 Q41639985778397
                     </div>
-                    <div />
+                    <div
+                      class="flex"
+                    />
                   </div>
                 </button>
               </div>
-              <div>
-                <div>
+              <div
+                class="rowProposer"
+              >
+                <div
+                  class="singleLine"
+                >
                   testdao2.testnet
                 </div>
               </div>
-              <div />
               <div
-                class=""
+                class="rowContent"
+              />
+              <div
+                class="rowDetails"
               >
                 <button
-                  class=""
+                  class="btn secondary sizeSmall detailsButton"
                   type="button"
                 >
-                  <div>
+                  <div
+                    class="singleLine"
+                  >
                     Details
                   </div>
                 </button>
@@ -175,10 +221,10 @@ exports[`BountiesListView Should render component 1`] = `
             </div>
           </div>
           <div
-            class=""
+            class="mobileActionsPanel"
           >
             <button
-              class=""
+              class="iconButton small rowHideControl"
               type="button"
             >
               <svg>
@@ -190,20 +236,24 @@ exports[`BountiesListView Should render component 1`] = `
           </div>
         </div>
       </div>
-      <div>
+      <div
+        class="root"
+      >
         <div
-          class="undefined"
+          class="header completed"
         >
           <div
-            class="undefined"
+            class="title completed"
           >
-            <div>
+            <div
+              class="control"
+            >
               <button
-                class=""
+                class="iconButton small"
                 type="button"
               >
                 <svg
-                  class="undefined"
+                  class="controlIcon open"
                 >
                   <use
                     href="/_next/undefined"
@@ -213,53 +263,71 @@ exports[`BountiesListView Should render component 1`] = `
             </div>
             Completed (1)
           </div>
-          <div>
+          <div
+            class="proposer"
+          >
             Proposer
           </div>
-          <div>
+          <div
+            class="content"
+          >
             Amount
           </div>
         </div>
-        <div>
+        <div
+          class="rowRoot"
+        >
           <div
-            class=""
+            class="rowWrapper"
           >
             <div
-              class="undefined"
+              class="row firstRow completed"
               style="opacity: 0;"
             >
               <div
-                class=""
+                class="rowTitle"
               >
                 <button
-                  class=""
+                  class="btn transparent sizeBlock"
                   disabled=""
                   type="button"
                 >
                   <div
-                    class="undefined"
+                    class="singleLine flex toggleLink disabled"
                   >
-                    <div>
+                    <div
+                      class="singleLine"
+                    >
                       Google for YouTube trends in 2021 Q41639985778397
                     </div>
-                    <div />
+                    <div
+                      class="flex"
+                    />
                   </div>
                 </button>
               </div>
-              <div>
-                <div>
+              <div
+                class="rowProposer"
+              >
+                <div
+                  class="singleLine"
+                >
                   testdao2.testnet
                 </div>
               </div>
-              <div />
               <div
-                class=""
+                class="rowContent"
+              />
+              <div
+                class="rowDetails"
               >
                 <button
-                  class=""
+                  class="btn secondary sizeSmall detailsButton"
                   type="button"
                 >
-                  <div>
+                  <div
+                    class="singleLine"
+                  >
                     Details
                   </div>
                 </button>
@@ -267,10 +335,10 @@ exports[`BountiesListView Should render component 1`] = `
             </div>
           </div>
           <div
-            class=""
+            class="mobileActionsPanel"
           >
             <button
-              class=""
+              class="iconButton small rowHideControl"
               type="button"
             >
               <svg>
@@ -284,28 +352,30 @@ exports[`BountiesListView Should render component 1`] = `
       </div>
     </div>
     <div
-      class=""
+      class="content mobile"
     >
-      <div>
+      <div
+        class="root"
+      >
         <div
-          class=""
+          class="root"
         >
           <div
             class="react-tabs"
             data-tabs="true"
           >
             <div
-              class=""
+              class="tabsWrapper tabsRoot"
             >
               <ul
-                class=""
+                class="tabs tabsListRoot"
                 role="tablist"
               >
                 <li
                   aria-controls="react-tabs-1"
                   aria-disabled="false"
                   aria-selected="true"
-                  class=""
+                  class="tab tabsListItem active activeTabsListItem"
                   data-name="bountiesPage.comingSoon"
                   id="react-tabs-0"
                   role="tab"
@@ -317,7 +387,7 @@ exports[`BountiesListView Should render component 1`] = `
                   aria-controls="react-tabs-3"
                   aria-disabled="false"
                   aria-selected="false"
-                  class=""
+                  class="tab tabsListItem"
                   data-name="bountiesPage.bounty"
                   id="react-tabs-2"
                   role="tab"
@@ -328,7 +398,7 @@ exports[`BountiesListView Should render component 1`] = `
                   aria-controls="react-tabs-5"
                   aria-disabled="false"
                   aria-selected="false"
-                  class=""
+                  class="tab tabsListItem"
                   data-name="bountiesPage.completed"
                   id="react-tabs-4"
                   role="tab"
@@ -336,7 +406,9 @@ exports[`BountiesListView Should render component 1`] = `
                   bountiesPage.completed
                 </li>
               </ul>
-              <div />
+              <div
+                class="optional"
+              />
             </div>
             <div
               aria-labelledby="react-tabs-0"
@@ -344,47 +416,63 @@ exports[`BountiesListView Should render component 1`] = `
               id="react-tabs-1"
               role="tabpanel"
             >
-              <div>
-                <div>
+              <div
+                class="tabContent"
+              >
+                <div
+                  class="rowRoot"
+                >
                   <div
-                    class=""
+                    class="rowWrapper"
                   >
                     <div
-                      class=""
+                      class="row pending"
                       style="opacity: 0;"
                     >
                       <div
-                        class=""
+                        class="rowTitle"
                       >
                         <button
-                          class=""
+                          class="btn transparent sizeBlock"
                           disabled=""
                           type="button"
                         >
                           <div
-                            class="undefined"
+                            class="singleLine flex toggleLink disabled"
                           >
-                            <div>
+                            <div
+                              class="singleLine"
+                            >
                               Google for YouTube trends in 2021 Q41639985778397
                             </div>
-                            <div />
+                            <div
+                              class="flex"
+                            />
                           </div>
                         </button>
                       </div>
-                      <div>
-                        <div>
+                      <div
+                        class="rowProposer"
+                      >
+                        <div
+                          class="singleLine"
+                        >
                           testdao2.testnet
                         </div>
                       </div>
-                      <div />
                       <div
-                        class=""
+                        class="rowContent"
+                      />
+                      <div
+                        class="rowDetails"
                       >
                         <button
-                          class=""
+                          class="btn secondary sizeSmall detailsButton"
                           type="button"
                         >
-                          <div>
+                          <div
+                            class="singleLine"
+                          >
                             Details
                           </div>
                         </button>
@@ -392,10 +480,10 @@ exports[`BountiesListView Should render component 1`] = `
                     </div>
                   </div>
                   <div
-                    class=""
+                    class="mobileActionsPanel"
                   >
                     <button
-                      class=""
+                      class="iconButton small rowHideControl"
                       type="button"
                     >
                       <svg>
@@ -424,7 +512,9 @@ exports[`BountiesListView Should render component 1`] = `
         </div>
       </div>
     </div>
-    <div />
+    <div
+      class="hideControlButtonWrapper"
+    />
   </div>
 </div>
 `;

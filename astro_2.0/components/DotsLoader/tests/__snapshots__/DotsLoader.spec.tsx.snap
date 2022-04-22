@@ -3,19 +3,19 @@
 exports[`dots loader Should render component 1`] = `
 <div>
   <div
-    class=""
+    class="root"
   >
     <div
-      class=""
+      class="p1"
     />
     <div
-      class=""
+      class="p2"
     />
     <div
-      class=""
+      class="p3"
     />
     <div
-      class=""
+      class="p4"
     />
   </div>
 </div>

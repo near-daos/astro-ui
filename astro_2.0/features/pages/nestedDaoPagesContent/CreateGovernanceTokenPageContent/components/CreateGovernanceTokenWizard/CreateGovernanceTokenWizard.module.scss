@@ -1,0 +1,23 @@
+@use 'styles/breakpoints';
+
+.root {
+  display: grid;
+  grid-template-areas:
+    'steps'
+    'content';
+  grid-template-columns: 1fr;
+  row-gap: 24px;
+
+  @media screen and (min-width: #{breakpoints.$screen-lg + 1}px) {
+    grid-template-areas: 'steps content';
+    grid-template-columns: 1fr 3fr;
+  }
+}
+
+.steps {
+  grid-area: steps;
+}
+
+.content {
+  grid-area: content;
+}

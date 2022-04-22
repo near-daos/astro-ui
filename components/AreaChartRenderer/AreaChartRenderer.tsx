@@ -72,7 +72,8 @@ export const AreaChartRenderer: FC<AreaChartProps> = ({
               width={width}
               data={chartData}
               period={activeRange}
-              tokenName={tokenName}
+              unit={tokenName}
+              unitPosition="right"
               lines={[
                 {
                   name: 'tvl',

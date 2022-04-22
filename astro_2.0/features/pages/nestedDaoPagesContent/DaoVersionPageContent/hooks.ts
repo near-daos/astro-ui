@@ -32,6 +32,10 @@ export function useCheckDaoUpgrade(
   const getUpgradeInfo = useCallback(async () => {
     const account = nearService?.getAccount();
 
+    if (appConfig?.NEAR_ENV !== 'development') {
+      return;
+    }
+
     if (!account) {
       return;
     }
@@ -66,7 +70,7 @@ export function useCheckDaoUpgrade(
     });
 
     // // todo - temp!!!
-    if (appConfig.NEAR_ENV !== 'mainnet') {
+    if (dao.daoVersion?.hash) {
       setVersionHash(dao.daoVersion.hash);
     }
 
@@ -83,7 +87,7 @@ export function useCheckDaoUpgrade(
     //
     // setVersionHash(nextVersionHash[0]);
     setLoading(false);
-  }, [appConfig.NEAR_ENV, dao.daoVersion.hash, nearService]);
+  }, [appConfig?.NEAR_ENV, dao.daoVersion?.hash, nearService]);
 
   useEffect(() => {
     (async () => {
@@ -150,7 +154,9 @@ export function useUpgradeStatus(
             settings: newSettings,
           });
 
-          setUpgradeStatus(resp.daoUpgrade);
+          if (resp.daoUpgrade) {
+            setUpgradeStatus(resp.daoUpgrade);
+          }
         }
       } catch (err) {
         const { message } = err;

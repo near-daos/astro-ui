@@ -1,17 +1,15 @@
 import React, { VFC } from 'react';
-import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 import { DaoContext } from 'types/context';
+import { ProposalType } from 'types/proposal';
 
-import { STEPS } from './constants';
+import { Loader } from 'components/loader';
+import { CreateGovernanceTokenWizard } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/CreateGovernanceTokenWizard/CreateGovernanceTokenWizard';
+
+import { useCreateGovernanceTokenStatus } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/hooks';
 
 import { Intro } from './components/steps/Intro';
-import { SelectToken } from './components/steps/SelectToken';
-import { CreateToken } from './components/steps/CreateToken';
-import { ContractAcceptance } from './components/steps/ContractAcceptance';
-import { TokenDistribution } from './components/steps/TokenDistribution';
-import { ChangeVotingPolicy } from './components/steps/ChangeVotingPolicy';
 
 import styles from './CreateGovernanceTokenPageContent.module.scss';
 
@@ -21,29 +19,38 @@ interface CreateGovernanceTokenPageContentProps {
 
 export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageContentProps> = props => {
   const { daoContext } = props;
-
-  const router = useRouter();
   const { t } = useTranslation();
-
-  const { step } = router.query;
+  const { status, update, loading } = useCreateGovernanceTokenStatus(
+    daoContext.dao.id
+  );
+  const isInProgress = status && status.step !== null;
+  const isViewProposal = status?.proposalId !== null;
+  const isPermitted =
+    daoContext.userPermissions.isCanCreateProposals &&
+    daoContext.userPermissions.allowedProposalsToCreate[
+      ProposalType.SetStakingContract
+    ];
 
   function renderContent() {
-    switch (step) {
-      case STEPS.INTRO:
-        return <Intro />;
-      case STEPS.SELECT_TOKEN:
-        return <SelectToken />;
-      case STEPS.CREATE_TOKEN:
-        return <CreateToken daoContext={daoContext} />;
-      case STEPS.CONTRACT_ACCEPTANCE:
-        return <ContractAcceptance daoContext={daoContext} />;
-      case STEPS.TOKEN_DISTRIBUTION:
-        return <TokenDistribution daoContext={daoContext} />;
-      case STEPS.CHANGE_VOTING_POLICY:
-        return <ChangeVotingPolicy daoContext={daoContext} />;
-      default:
-        return <Intro />;
+    if (!daoContext.userPermissions.isCanCreateProposals && !isViewProposal) {
+      return <div>no permissions</div>;
     }
+
+    if (loading) {
+      return <Loader />;
+    }
+
+    if (isInProgress && status) {
+      return (
+        <CreateGovernanceTokenWizard
+          daoContext={daoContext}
+          onUpdate={update}
+          status={status}
+        />
+      );
+    }
+
+    return <Intro onUpdate={update} disabled={!isPermitted} />;
   }
 
   return (

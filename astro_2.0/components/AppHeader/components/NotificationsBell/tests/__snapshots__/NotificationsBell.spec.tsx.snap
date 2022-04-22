@@ -3,10 +3,11 @@
 exports[`notifications bell Should render component if feature flag is true and account id available 1`] = `
 <div>
   <div
-    class=""
+    class="root"
     href="/notifications"
   >
     <svg
+      class="bell"
       data-testid="no-notifications-icon"
     >
       <use
@@ -14,7 +15,9 @@ exports[`notifications bell Should render component if feature flag is true and 
       />
     </svg>
   </div>
-  <div />
+  <div
+    class="root"
+  />
 </div>
 `;
 
