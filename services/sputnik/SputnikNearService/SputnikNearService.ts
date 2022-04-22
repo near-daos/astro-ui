@@ -7,7 +7,7 @@ import {
   transactions,
   utils,
 } from 'near-api-js';
-
+import { before, after } from 'ts-async-decorators';
 import { CreateDaoCustomInput, CreateDaoInput } from 'types/dao';
 
 import { CreateProposalParams, Transfer, VoteAction } from 'types/proposal';
@@ -56,19 +56,28 @@ export class SputnikNearService implements WalletService, DaoService {
     this.isSenderWalletAvailable = false;
   }
 
+  async signInGuard(): Promise<void> {
+    if (!this.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+  }
+
   availableWallets(): WalletMeta[] {
     return Array.from(this.wallets.values()).map(service =>
       service.walletMeta()
     );
   }
 
+  @after({
+    action: (pointer: SputnikNearService) => pointer.signInGuard(),
+  })
   async switchWallet(walletType: WalletType): Promise<void> {
     this.walletService =
       this.wallets.get(walletType) ?? new SputnikWalletService(this.nearConfig);
 
-    if (!this.walletService.isSignedIn()) {
-      await this.walletService.signIn(this.nearConfig.contractName);
-    }
+    // if (!this.walletService.isSignedIn()) {
+    //   await this.walletService.signIn(this.nearConfig.contractName);
+    // }
   }
 
   sendMoney(
@@ -125,12 +134,15 @@ export class SputnikNearService implements WalletService, DaoService {
     return this.walletService.getAccountId();
   }
 
+  @before({
+    action: (pointer: SputnikNearService) => pointer.signInGuard(),
+  })
   public async createDao(
     params: CreateDaoInput | CreateDaoCustomInput
   ): Promise<void> {
-    if (!this.isSignedIn()) {
-      await this.walletService.signIn(this.nearConfig.contractName);
-    }
+    // if (!this.isSignedIn()) {
+    //   await this.walletService.signIn(this.nearConfig.contractName);
+    // }
 
     function isCreateDaoParams(
       _params: CreateDaoParams | CreateDaoCustomInput

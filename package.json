@@ -93,6 +93,7 @@
     "svg-sprite-loader": "^6.0.9",
     "svgo-loader": "^3.0.0",
     "swr": "^1.0.1",
+    "ts-async-decorators": "^0.3.0",
     "uniqid": "^5.4.0",
     "utf-8-validate": "^5.0.7",
     "victory": "^35.9.0",

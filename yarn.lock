@@ -5258,6 +5258,11 @@ autoprefixer@^9.8.6:
     postcss "^7.0.32"
     postcss-value-parser "^4.1.0"
 
+await-semaphore@^0.1:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/await-semaphore/-/await-semaphore-0.1.3.tgz#2b88018cc8c28e06167ae1cdff02504f1f9688d3"
+  integrity sha512-d1W2aNSYcz/sxYO4pMGX9vq65qOTu0P800epMud+6cYYX0QcT7zyqcxec3VWzpgvdXo57UWmVbZpLMjX2m1I7Q==
+
 aws-sdk@^2.975.0:
   version "2.977.0"
   resolved "https://registry.npmjs.org/aws-sdk/-/aws-sdk-2.977.0.tgz"
@@ -13346,6 +13351,11 @@ p-all@^2.1.0:
   dependencies:
     p-map "^2.0.0"
 
+p-cancelable@^2.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/p-cancelable/-/p-cancelable-2.1.1.tgz#aab7fbd416582fa32a3db49859c122487c5ed2cf"
+  integrity sha512-BZOr3nRQHOntUjTrH8+Lh54smKHoHyur8We1V8DSMVrl5A2malOOwuJRnKRDjSnkoeBh4at6BwEnb5I7Jl31wg==
+
 p-defer@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/p-defer/-/p-defer-1.0.0.tgz"
@@ -17125,6 +17135,14 @@ trough@^1.0.0:
   version "1.0.5"
   resolved "https://registry.npmjs.org/trough/-/trough-1.0.5.tgz"
   integrity sha512-rvuRbTarPXmMb79SmzEp8aqXNKcK+y0XaB298IXueQ8I2PsrATcPBCSPyK/dDNa2iWOhKlfNnOjdAOTBU/nkFA==
+
+ts-async-decorators@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/ts-async-decorators/-/ts-async-decorators-0.3.0.tgz#a7773d92cd46981b709d7b6216adba2aef98a8ae"
+  integrity sha512-leQlUZ2ODwiertoojknEaSpdRaqjHK2cdByV2uXHZrP+amCD61X1lqEuUJ/E8hnqQKo/3NwqviKtAW1gHYls4Q==
+  dependencies:
+    await-semaphore "^0.1"
+    p-cancelable "^2.0"
 
 ts-dedent@^2.0.0:
   version "2.1.1"
