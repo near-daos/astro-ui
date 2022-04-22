@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import cn from 'classnames';
 import { useTranslation } from 'next-i18next';
@@ -7,10 +7,7 @@ import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { ImageUpload } from 'astro_2.0/features/CreateDao/components/ImageUpload';
 import { getImageFromImageFileList } from 'utils/getImageFromImageFileList';
-import { useModal } from 'components/modal';
-import { PreviewModal } from 'astro_2.0/features/CreateDao/components/PreviewModal';
-
-import { Button } from 'components/button/Button';
+import { FlagRenderer } from 'astro_2.0/components/Flag';
 
 import styles from './ChangeDaoFlagContent.module.scss';
 
@@ -21,7 +18,6 @@ interface ChangeDaoFlagContentProps {
 export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
   daoId,
 }) => {
-  const [showModal] = useModal(PreviewModal);
   const { watch } = useFormContext();
   const { t } = useTranslation();
 
@@ -30,13 +26,6 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
 
   const coverImg = getImageFromImageFileList(coverFileList);
   const logoImg = getImageFromImageFileList(logoFileList);
-
-  const handleAssetsPreview = useCallback(async () => {
-    await showModal({
-      cover: coverImg || '/flags/defaultDaoFlag.png',
-      logo: logoImg,
-    });
-  }, [coverImg, logoImg, showModal]);
 
   return (
     <div className={styles.root}>
@@ -60,16 +49,16 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
             <ImageUpload fieldName="flagLogo" />
           </div>
         </InputWrapper>
-      </div>
-      <div className={styles.preview}>
-        <Button
-          variant="secondary"
-          size="small"
-          capitalize
-          onClick={handleAssetsPreview}
+
+        <InputWrapper
+          fieldName=""
+          label={coverFileList ? 'Preview' : ''}
+          fullWidth
         >
-          Preview Flag & Letterhead
-        </Button>
+          <div className={styles.flag}>
+            <FlagRenderer flag={coverImg} size="lg" logo={logoImg} />
+          </div>
+        </InputWrapper>
       </div>
       <div className={cn(styles.row, styles.target)}>
         <InfoBlockWidget
