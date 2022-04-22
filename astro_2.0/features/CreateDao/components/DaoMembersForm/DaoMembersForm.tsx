@@ -57,8 +57,6 @@ export const DaoMembersForm: VFC = () => {
 
         return {
           values: {},
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           errors: e.inner.reduce(
             (
               allErrors: Record<string, string>,

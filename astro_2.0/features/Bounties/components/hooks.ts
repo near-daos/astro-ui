@@ -177,7 +177,7 @@ export function useHideBounty(): {
       showNotification({
         type: NOTIFICATION_TYPES.ERROR,
         lifetime: 20000,
-        description: (err as Error).message,
+        description: err.message,
       });
     }
   }, [selected, daoId, showHidden, accountId, router, nearService]);
