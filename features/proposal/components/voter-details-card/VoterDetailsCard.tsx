@@ -3,9 +3,10 @@ import cn from 'classnames';
 import dynamic from 'next/dynamic';
 
 import { Icon, IconName } from 'components/Icon';
-import { Badge, getBadgeVariant } from 'components/Badge';
+import { Badge } from 'components/Badge';
 import { ExplorerLink } from 'components/ExplorerLink';
 import { Vote } from 'features/types';
+import { getBadgeVariant } from 'features/proposal/helpers';
 import { formatTimestampAsDate } from 'utils/format';
 
 import styles from './voter-details-card.module.scss';

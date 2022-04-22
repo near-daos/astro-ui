@@ -3,12 +3,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 
-import { Badge, getBadgeVariant } from 'components/Badge';
+import { Badge } from 'components/Badge';
 import { Toggle } from 'components/inputs/Toggle';
 import { Input } from 'components/inputs/Input';
 import { MemberRow } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent/MemberRow';
 
 import { getInputWidth } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent/helpers';
+import { getBadgeVariant } from 'features/proposal/helpers';
 
 import { GovernanceToken } from 'types/token';
 import { Member } from 'astro_2.0/features/CreateProposal/types';

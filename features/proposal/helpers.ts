@@ -1,4 +1,22 @@
+import { Variant } from 'components/Badge';
 import { ProposalType } from 'types/proposal';
+
+export function getBadgeVariant(name: string): Variant {
+  const variants = [
+    'violet',
+    'blurple',
+    'blue',
+    'turqoise',
+    'green',
+    'red',
+    'orange',
+    'yellow',
+    'primary',
+  ];
+
+  return (variants[name.length] ||
+    variants[name.length % variants.length]) as Variant;
+}
 
 export function getProposalNameByType(type: ProposalType): string {
   switch (type) {

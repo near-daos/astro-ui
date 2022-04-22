@@ -30,29 +30,6 @@ interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: Variant;
 }
 
-export function getBadgeVariant(name: string): Variant {
-  const variants = [
-    'white',
-    'violet',
-    'blurple',
-    'blue',
-    'turqoise',
-    'green',
-    'red',
-    'orange',
-    'yellow',
-    'neonYellow',
-    'primary',
-  ] as Variant[];
-
-  const first = name.charCodeAt(0);
-  const last = name.charCodeAt(name.length - 1);
-
-  const key = (first + last) % variants.length;
-
-  return variants[key];
-}
-
 export const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
   (
     {
