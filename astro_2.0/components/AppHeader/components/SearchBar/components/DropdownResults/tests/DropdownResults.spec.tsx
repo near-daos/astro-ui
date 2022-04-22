@@ -86,7 +86,9 @@ describe('search results dropdown', () => {
       <DropdownResults width={100} closeSearch={() => {}} query="asd" />
     );
 
-    const seeAllBtn = component.getByText('See all', { exact: false });
+    const seeAllBtn = component.getByText('header.search.seeAll', {
+      exact: false,
+    });
 
     fireEvent.click(seeAllBtn);
 

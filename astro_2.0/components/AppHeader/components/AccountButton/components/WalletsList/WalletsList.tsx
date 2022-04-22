@@ -1,10 +1,14 @@
 import React from 'react';
-import { MyAccountButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/MyAccountButton';
+import { useTranslation } from 'next-i18next';
+
 import { WalletType } from 'types/config';
-import { DisconnectButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/DisconnectButton';
 import { WalletMeta } from 'services/sputnik/SputnikNearService/services/types';
-import { WalletWithAccounts } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletWithAccounts';
+
 import { WalletButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletButton';
+import { MyAccountButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/MyAccountButton';
+import { DisconnectButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/DisconnectButton';
+import { WalletWithAccounts } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletWithAccounts';
+
 import styles from './WalletsList.module.scss';
 
 export interface WalletsListProps {
@@ -29,6 +33,8 @@ export const WalletsList: React.FC<WalletsListProps> = ({
   // todo - temp disable multiple accounts
   const showMultipleAccounts = false;
 
+  const { t } = useTranslation('common');
+
   return (
     <div className={styles.root}>
       <MyAccountButton
@@ -36,7 +42,9 @@ export const WalletsList: React.FC<WalletsListProps> = ({
         closeDropdown={closeDropdownHandler}
       />
       <div className={styles.delimiter} />
-      <div className={styles.chooseWalletCaption}>Choose wallet</div>
+      <div className={styles.chooseWalletCaption}>
+        {t('header.chooseWallet')}
+      </div>
       {availableWallets.map(wallet =>
         wallet.id === WalletType.NEAR && showMultipleAccounts ? (
           <WalletWithAccounts

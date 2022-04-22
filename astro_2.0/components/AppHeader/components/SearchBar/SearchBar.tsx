@@ -6,6 +6,7 @@ import React, {
   MutableRefObject,
   KeyboardEventHandler,
 } from 'react';
+import { useTranslation } from 'next-i18next';
 import ReactDOM from 'react-dom';
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -57,6 +58,8 @@ export const SearchBar: FC<SearchBarProps> = ({
     searchResults,
     loading,
   } = useSearchResults();
+
+  const { t } = useTranslation('common');
 
   const ref = useRef(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -268,7 +271,7 @@ export const SearchBar: FC<SearchBarProps> = ({
             >
               {showHint && (
                 <div className={styles.hint}>
-                  Please enter at least 3 characters to search
+                  {t('header.search.minimalChars')}
                 </div>
               )}
               {showResults && (

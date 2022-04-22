@@ -1,5 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import React, { VFC, useCallback } from 'react';
 import { useAuthContext } from 'context/AuthContext';
 
@@ -31,6 +32,8 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
   const DAOS_TAB_IDNEX = 0;
   const PROPOSAL_TAB_INDEX = 1;
   const PEOPLE_TAB_INDEX = 2;
+
+  const { t } = useTranslation('common');
 
   const { accountId } = useAuthContext();
 
@@ -106,7 +109,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
     return (
       <ResultSection
         data={sorted}
-        title="DAOS"
+        title={t('header.search.daos')}
         onSeeAll={goToDaosTabOnSearchPage}
       >
         {dataToRender.map(dao => (
@@ -121,7 +124,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
 
     return (
       <ResultSection
-        title="Proposals"
+        title={t('header.search.proposals')}
         data={proposals}
         onSeeAll={goToProposalsTabOnSearchPage}
         contentClassName={styles.proposalsContent}
@@ -142,7 +145,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
 
     return (
       <ResultSection
-        title="People"
+        title={t('header.search.people')}
         data={members}
         onSeeAll={goToPeopleTabOnSearchPage}
       >

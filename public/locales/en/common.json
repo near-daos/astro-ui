@@ -422,6 +422,28 @@
     "activeProposals": "Active Proposals",
     "activeVotes": "Active Votes"
   },
+  "header": {
+    "search": {
+      "placeholder": "Search",
+      "seeAll": "See all",
+      "minimalChars": "Please enter at least 3 characters to search",
+      "daos": "DAOS",
+      "proposals": "Proposals",
+      "people": "People"
+    },
+    "myAccount": "My Account",
+    "disconnect": "Disconnect",
+    "chooseWallet": "Choose wallet",
+    "wallets": {
+      "near": {
+        "type": "web"
+      },
+      "sender": {
+        "beta": "beta",
+        "type": "extension"
+      }
+    }
+  },
   "myAccountPage": {
     "header": "My account",
     "walletId": "Wallet ID",

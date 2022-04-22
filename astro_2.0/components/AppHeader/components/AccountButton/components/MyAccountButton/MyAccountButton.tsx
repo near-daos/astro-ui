@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
 import { useRouter } from 'next/router';
+import React, { useCallback } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { MY_ACCOUNT_PAGE_URL } from 'constants/routing';
 
@@ -19,6 +20,8 @@ export const MyAccountButton: React.FC<MyAccountButtonProps> = ({
 }) => {
   const router = useRouter();
 
+  const { t } = useTranslation('common');
+
   const goToMyAccountPage = useCallback(() => {
     closeDropdown();
     router.push(MY_ACCOUNT_PAGE_URL);
@@ -29,7 +32,7 @@ export const MyAccountButton: React.FC<MyAccountButtonProps> = ({
       className={className}
       onClick={goToMyAccountPage}
       icon={<Icon name="account" />}
-      content={<div className={styles.text}>My Account</div>}
+      content={<div className={styles.text}>{t('header.myAccount')}</div>}
     />
   );
 };
