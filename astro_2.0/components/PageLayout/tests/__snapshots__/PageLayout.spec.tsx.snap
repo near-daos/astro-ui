@@ -142,6 +142,19 @@ exports[`page layout Should render component 1`] = `
                   />
                 </svg>
               </a>
+              <a
+                href="https://discord.com/invite/KmMqF4KNBM"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <svg
+                  width="24"
+                >
+                  <use
+                    href="/_next/undefined"
+                  />
+                </svg>
+              </a>
             </div>
             <div>
               <a

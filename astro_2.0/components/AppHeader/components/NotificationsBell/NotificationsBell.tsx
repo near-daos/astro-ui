@@ -23,13 +23,14 @@ export const NotificationsBell: VFC<NotificationsBellProps> = ({
   const rootRef = useRef(null);
   const isHovered = useHoverDirty(rootRef);
 
-  const { notifications } = useNotificationsList();
+  const { notifications } = useNotificationsList(undefined, undefined, true);
+
+  const newNotificationsCount = notifications?.data?.filter(
+    item => !item.isRead
+  ).length;
 
   function renderBellIcon() {
-    if (
-      isEmpty(notifications) ||
-      !notifications?.data?.filter(item => !item.isRead).length
-    ) {
+    if (isEmpty(notifications) || !newNotificationsCount) {
       return (
         <Icon
           name="noteBell"
@@ -40,11 +41,14 @@ export const NotificationsBell: VFC<NotificationsBellProps> = ({
     }
 
     return (
-      <Icon
-        className={styles.bell}
-        data-testid="notifications-icon"
-        name={isHovered ? 'noteBellActiveHover' : 'noteBellActive'}
-      />
+      <>
+        <Icon
+          className={styles.bell}
+          data-testid="notifications-icon"
+          name={isHovered ? 'noteBellActiveHover' : 'noteBellActive'}
+        />
+        <div className={styles.notificationsCount}>{newNotificationsCount}</div>
+      </>
     );
   }
 

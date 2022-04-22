@@ -23,9 +23,9 @@ import { WalletType } from 'types/config';
 import { SputnikNearService } from 'services/sputnik';
 import { initNearService } from 'utils/init';
 import { ConnectingWalletModal } from 'astro_2.0/features/Auth/components/ConnectingWalletModal';
+import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
 import { WalletService } from 'services/sputnik/SputnikNearService/services/types';
 import { SenderWalletService } from 'services/sputnik/SputnikNearService/services/SenderWalletService';
-import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
 
 export type PkAndSignMethod = () => Promise<
   | {
@@ -212,6 +212,7 @@ export const AuthWrapper: FC = ({ children }) => {
         }
 
         await wallet.signIn(nearConfig.contractName);
+
         setConnectingToWallet(null);
         setSelectedWallet(walletType.toString());
         CookieService.set(ACCOUNT_COOKIE, wallet.getAccountId(), {

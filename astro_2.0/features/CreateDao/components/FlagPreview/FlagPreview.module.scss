@@ -190,3 +190,34 @@
   top: 0;
   width: 46px;
 }
+
+.dashboardPreview {
+  margin-bottom: 90px;
+}
+
+.letterHeadSection {
+  background: var(--color-primary-50);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  grid-area: letterHeadSection;
+  height: 134px;
+  margin: 0 -24px;
+  position: relative;
+  width: 100%;
+
+  @include tablet-landscape {
+    border-radius: 8px;
+    margin: 0;
+  }
+
+  .logoDashboard {
+    left: 0;
+    transform: translate(36px, 60px);
+  }
+
+  .joinDao {
+    position: relative;
+    right: 0;
+  }
+}

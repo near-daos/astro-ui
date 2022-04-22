@@ -50,7 +50,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   const [swipedLeft, setSwipedLeft] = useState(false);
   const { t } = useTranslation('notificationsPage');
 
-  const { flagCover, logo, id: daoId = '' } = dao ?? {};
+  const { flagLogo, logo, id: daoId = '' } = dao ?? {};
   const { iconType, url, statusIcon } = getNotificationParamsByType(
     type,
     daoId,
@@ -161,7 +161,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
         <div className={styles.flagContainer}>
           <div className={styles.flagWrapper}>
             <div className={styles.flag}>
-              <FlagRenderer flag={flagCover} size="xs" fallBack={logo} />
+              <FlagRenderer flag={flagLogo} size="xs" fallBack={logo} />
             </div>
             <div className={styles.type}>
               {!!iconType && <Icon name={iconType} width={24} />}

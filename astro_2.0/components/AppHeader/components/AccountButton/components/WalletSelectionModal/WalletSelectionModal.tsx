@@ -16,7 +16,7 @@ export const WalletSelectionModal: React.FC<WalletSelectionModal> = ({
   signIn,
 }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="sm" className={styles.root}>
+    <Modal isOpen={isOpen} onClose={onClose} size="md" className={styles.root}>
       <div className={styles.header}>Connect a wallet</div>
       <WalletButton
         walletType={WalletType.NEAR}
@@ -36,7 +36,7 @@ export const WalletSelectionModal: React.FC<WalletSelectionModal> = ({
           signIn(WalletType.SENDER);
           onClose();
         }}
-        name="Sender"
+        name="Sender (beta)"
         type="extension"
         url="senderwallet.io"
         className={styles.wallet}
