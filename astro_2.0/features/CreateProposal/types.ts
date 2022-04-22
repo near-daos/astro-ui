@@ -45,3 +45,11 @@ export type TokenDistributionGroup = {
 export interface TokenDistributionInput {
   groups: TokenDistributionGroup[];
 }
+
+export interface CreateTokenInput {
+  details: string;
+  externalUrl: string;
+  tokenName: string;
+  totalSupply: string;
+  tokenImage: '';
+}

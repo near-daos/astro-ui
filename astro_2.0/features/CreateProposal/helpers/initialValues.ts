@@ -87,14 +87,28 @@ export function getFormInitialValues(
         gas: DEFAULT_PROPOSAL_GAS,
       };
     }
+    case ProposalVariant.ProposeCreateToken: {
+      return {
+        details: '',
+        externalUrl: '',
+        tokenName: '',
+        totalSupply: '',
+        tokenImage: '',
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
     case ProposalVariant.ProposeContractAcceptance: {
       return {
+        details: '',
+        externalUrl: '',
         unstakingPeriod: '345',
         gas: DEFAULT_PROPOSAL_GAS,
       };
     }
     case ProposalVariant.ProposeTokenDistribution: {
       return {
+        details: '',
+        externalUrl: '',
         groups: [],
         gas: DEFAULT_PROPOSAL_GAS,
       };

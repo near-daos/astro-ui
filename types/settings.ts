@@ -10,6 +10,26 @@ export type UpgradeStatus = {
   versionHash: string;
 };
 
+export enum CreateGovernanceTokenFlow {
+  CreateToken,
+  SelectToken,
+}
+
+export enum CreateGovernanceTokenSteps {
+  ChooseFlow,
+  CreateToken,
+  ContractAcceptance,
+  TokenDistribution,
+  ChangeDaoPolicy,
+}
+
+export type ProgressStatus = {
+  step: CreateGovernanceTokenSteps;
+  proposalId?: string;
+  flow: CreateGovernanceTokenFlow;
+};
+
 export type Settings = {
-  daoUpgrade: UpgradeStatus;
+  daoUpgrade?: UpgradeStatus;
+  createGovernanceToken?: ProgressStatus;
 };

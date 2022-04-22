@@ -3,15 +3,17 @@ import cn from 'classnames';
 
 import { Icon, IconName } from 'components/Icon';
 
+import { CreateGovernanceTokenFlow } from 'types/settings';
+
 import styles from './TokenOption.module.scss';
 
 interface TokenOptionProps {
   label: string;
-  option: string;
+  option: CreateGovernanceTokenFlow;
   icon: IconName;
   selected: boolean;
   className?: string;
-  setOption: (opt: string) => void;
+  setOption: (opt: CreateGovernanceTokenFlow) => void;
 }
 
 export const TokenOption: VFC<TokenOptionProps> = props => {

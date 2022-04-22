@@ -154,7 +154,9 @@ export function useUpgradeStatus(
             settings: newSettings,
           });
 
-          setUpgradeStatus(resp.daoUpgrade);
+          if (resp.daoUpgrade) {
+            setUpgradeStatus(resp.daoUpgrade);
+          }
         }
       } catch (err) {
         const { message } = err;
