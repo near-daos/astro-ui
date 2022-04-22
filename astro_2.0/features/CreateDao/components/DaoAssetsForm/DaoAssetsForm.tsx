@@ -40,6 +40,8 @@ async function validateAsset(data: { value: FileList }) {
   } catch (e) {
     return {
       values: null,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       errors: e.inner.reduce(
         (
           allErrors: Record<string, string>,

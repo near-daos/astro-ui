@@ -11,7 +11,7 @@ import { Dot } from './dot';
 import styles from './ChartTooltip.module.scss';
 
 export interface ChartTooltipProps extends TooltipProps<number, string> {
-  showArrow?: boolean;
+  // showArrow?: boolean;
   dataType?: string;
   payload: Payload[] | undefined;
   isIntegerDataset?: boolean;

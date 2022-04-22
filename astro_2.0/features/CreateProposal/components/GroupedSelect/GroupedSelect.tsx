@@ -46,11 +46,13 @@ export const GroupedSelect = React.forwardRef<
     const [measureRef, { width }] = useMeasure();
     const isMobileOrTablet = useMedia('(max-width: 767px)');
 
-    function itemToString(i: Option | null) {
+    const itemToString = (i: Option | null) => {
       return i ? i.label : '';
-    }
+    };
 
     return (
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       <Downshift
         itemToString={itemToString}
         onChange={handleChange}

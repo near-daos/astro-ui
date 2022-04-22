@@ -117,6 +117,10 @@
       "prettier --write"
     ]
   },
+  "resolutions": {
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.2"
+  },
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/preset-env": "^7.14.7",

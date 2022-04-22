@@ -103,6 +103,8 @@ export const StepWrapper: FC = ({ children }) => {
 
         <div className={styles.headerControls}>
           {query.step === 'assets' && (
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             <CustomEdit className={styles.customEdit} />
           )}
           <Button

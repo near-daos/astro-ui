@@ -41,10 +41,11 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
     <>
       <Script
         strategy="lazyOnload"
+        id="gtag"
         src={gtag(appConfig.GOOGLE_ANALYTICS_KEY)}
       />
 
-      <Script strategy="lazyOnload">
+      <Script strategy="lazyOnload" id="gtagScript">
         {gtagScript(appConfig.GOOGLE_ANALYTICS_KEY)}
       </Script>
 

@@ -98,8 +98,6 @@ export const SideFilter = ({
       `.${styles.categoriesListItemSelected}`
     );
 
-    console.log(selectedItem);
-
     if (selectedItem) {
       selectedItem.scrollIntoView({
         behavior: 'smooth',
