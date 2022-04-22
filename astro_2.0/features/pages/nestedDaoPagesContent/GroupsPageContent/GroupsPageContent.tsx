@@ -18,7 +18,7 @@ import MemberCard, {
   MemberCardPopup,
 } from 'components/cards/member-card';
 import { Dropdown } from 'components/Dropdown';
-import { Badge, getBadgeVariant } from 'components/Badge';
+import { Badge } from 'components/Badge';
 import { GroupsList } from 'astro_2.0/features/Groups/components';
 
 // Helpers
@@ -123,10 +123,14 @@ export const GroupsPageContent: VFC<GroupsPageContentProps> = ({
             tokens={item.tokens}
           >
             <GroupsRenderer
-              selectedItems={item.groups.map(grp => ({
+              selectedItems={item.groups.map((grp, i) => ({
                 label: grp,
                 component: (
-                  <Badge key={grp} size="small" variant={getBadgeVariant(grp)}>
+                  <Badge
+                    key={grp}
+                    size="small"
+                    variant={i % 2 > 0 ? 'turqoise' : 'blue'}
+                  >
                     {grp}
                   </Badge>
                 ),
