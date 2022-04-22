@@ -1,23 +1,28 @@
-import React, { VFC } from 'react';
-import { useRouter } from 'next/router';
+import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 
-import { CREATE_GOV_TOKEN_PAGE_URL } from 'constants/routing';
-import { STEPS } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/constants';
+import { CreateGovernanceTokenSteps } from 'types/settings';
 
 import { Button } from 'components/button/Button';
 import { Accordion } from 'astro_2.0/components/Accordion';
 import { SubHeader } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/SubHeader';
-
 import { AdvantageDescription } from './components/AdvantageDescription';
 
 import styles from './Intro.module.scss';
 
-export const Intro: VFC = () => {
-  const router = useRouter();
-  const { t } = useTranslation();
+interface Props {
+  disabled: boolean;
+  onUpdate: ({
+    step,
+    proposalId,
+  }: {
+    step: CreateGovernanceTokenSteps | null;
+    proposalId: number | null;
+  }) => Promise<void>;
+}
 
-  const { dao } = router.query;
+export const Intro: FC<Props> = ({ onUpdate, disabled }) => {
+  const { t } = useTranslation();
 
   return (
     <div className={styles.root}>
@@ -37,14 +42,14 @@ export const Intro: VFC = () => {
       </div>
       <Button
         capitalize
+        disabled={disabled}
         variant="green"
         className={styles.startToCreate}
-        href={{
-          pathname: CREATE_GOV_TOKEN_PAGE_URL,
-          query: {
-            dao,
-            step: STEPS.SELECT_TOKEN,
-          },
+        onClick={async () => {
+          await onUpdate({
+            step: CreateGovernanceTokenSteps.ChooseFlow,
+            proposalId: null,
+          });
         }}
       >
         {t('createGovernanceTokenPage.intro.startToCreate')}

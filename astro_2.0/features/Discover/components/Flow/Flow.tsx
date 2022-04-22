@@ -22,6 +22,7 @@ import {
 } from 'astro_2.0/features/Discover/constants';
 import { dFormatter } from 'utils/format';
 import useQuery from 'hooks/useQuery';
+import { Icon } from 'components/Icon';
 
 import { Flow as TFlow, FlowMetricsItem } from 'services/DaoStatsService/types';
 
@@ -46,6 +47,14 @@ export const Flow: FC = () => {
         label: t('discover.totalIn'),
         value: Number(dFormatter(data?.totalIn.count ?? 0, 2)).toLocaleString(),
         trend: data?.totalOut.growth ?? 0,
+        icon: (
+          <Icon
+            name="tokenNear"
+            width={10}
+            height={10}
+            className={styles.nearIcon}
+          />
+        ),
       },
       {
         id: FlowTabs.TOTAL_OUT,
@@ -54,6 +63,14 @@ export const Flow: FC = () => {
           dFormatter(data?.totalOut.count ?? 0, 2)
         ).toLocaleString(),
         trend: data?.totalOut.growth ?? 0,
+        icon: (
+          <Icon
+            name="tokenNear"
+            width={10}
+            height={10}
+            className={styles.nearIcon}
+          />
+        ),
       },
       {
         id: FlowTabs.INCOMING_TRANSACTIONS,
@@ -244,11 +261,29 @@ export const Flow: FC = () => {
       />
       <div className={styles.body}>
         <ChartRenderer
+          unit={
+            <Icon
+              name="tokenNear"
+              width={10}
+              height={10}
+              className={styles.nearIcon}
+            />
+          }
+          unitPosition="right"
           data={chartData}
           loading={loading}
           activeView={activeView}
         />
         <DaosTopList
+          unit={
+            <Icon
+              name="tokenNear"
+              width={10}
+              height={10}
+              className={styles.nearIcon}
+            />
+          }
+          unitPosition="right"
           total={total}
           next={nextLeaderboardItems}
           data={leaderboardData}

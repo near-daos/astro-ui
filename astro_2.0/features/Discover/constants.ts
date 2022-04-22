@@ -29,6 +29,8 @@ export enum UsersAndActivityTabs {
 export enum GovernanceTabs {
   NUMBER_OF_PROPOSALS = 'numberOfProposals',
   VOTE_THROUGH_RATE = 'voteThroughRate',
+  ACTIVE_PROPOSALS = 'activeProposals',
+  ACTIVE_VOTES = 'activeVotes',
 }
 
 export enum FlowTabs {

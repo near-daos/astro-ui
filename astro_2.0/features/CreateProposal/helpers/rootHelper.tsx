@@ -16,7 +16,7 @@ import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSele
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 
 // Constants
-import { VALID_URL_REGEXP, VALID_METHOD_NAME_REGEXP } from 'constants/regexp';
+import { VALID_METHOD_NAME_REGEXP, VALID_URL_REGEXP } from 'constants/regexp';
 import { MAX_GAS, MIN_GAS } from 'services/sputnik/constants';
 
 // Components
@@ -47,6 +47,7 @@ import {
 import { SputnikNearService } from 'services/sputnik';
 import { ChangeVotingPermissionsContent } from 'astro_2.0/features/CreateProposal/components/ChangeVotingPermissionsContent';
 import { ProposalPermissions } from 'types/context';
+import { CreateTokenContent } from 'astro_2.0/features/CreateProposal/components/CreateTokenContent';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -378,6 +379,9 @@ export function getFormContentNode(
           governanceToken={{ name: 'REF', value: 1000 }}
         />
       );
+    }
+    case ProposalVariant.ProposeCreateToken: {
+      return <CreateTokenContent />;
     }
     case ProposalVariant.ProposeChangeProposalVotingPermissions:
     case ProposalVariant.ProposeChangeProposalCreationPermissions: {

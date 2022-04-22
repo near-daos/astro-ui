@@ -1,5 +1,5 @@
 import React from 'react';
-import { MyAccountButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/MyAccount';
+import { MyAccountButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/MyAccountButton';
 import { WalletType } from 'types/config';
 import { DisconnectButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/DisconnectButton';
 import { WalletMeta } from 'services/sputnik/SputnikNearService/services/types';
@@ -7,7 +7,7 @@ import { WalletWithAccounts } from 'astro_2.0/components/AppHeader/components/Ac
 import { WalletButton } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletButton';
 import styles from './WalletsList.module.scss';
 
-interface WalletsListProps {
+export interface WalletsListProps {
   logoutHandler: () => Promise<void>;
   availableNearAccounts: string[];
   availableWallets: WalletMeta[];

@@ -8,3 +8,7 @@ export const HIDE_NOTIFICATION_EVENT_BY_TAG = 'HIDE_NOTIFICATION_EVENT_BY_TAG';
 
 export const LOREN_IPSUM =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis eleifend habitant laoreet ornare vitae consequat. Potenti ut urna, ultricies elit nam. Feugiat porta elit ultricies eu mollis.';
+
+export const ONE_HUNDRED = 100;
+export const USD = '$';
+export const PERCENT = '%';

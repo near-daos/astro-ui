@@ -152,6 +152,8 @@ export type Governance = {
   proposals: TotalMetrics;
   proposalsByType: Proposals;
   voteRate: TotalMetrics;
+  activeProposals: TotalMetrics;
+  activeVotes: TotalMetrics;
 };
 
 export type Tokens = {

@@ -1,0 +1,58 @@
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.tokens {
+  display: grid;
+  grid-gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 220px));
+}
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.controlBtn {
+  margin-left: auto;
+}
+
+.divider {
+  background-color: var(--color-neutral-50);
+  height: 1px;
+  margin: 45px 0;
+  position: relative;
+  width: 100%;
+
+  &::after {
+    background-color: var(--color-neutral-10);
+    color: var(--color-neutral-50);
+    content: 'or';
+    left: 50%;
+    padding: 0 32px;
+    position: absolute;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.iconSearch {
+  margin: 4px 8px;
+  width: 24px;
+}
+
+.inputWrapper {
+  align-items: center;
+  background-color: var(--color-neutral-10);
+  border: 1px solid var(--color-neutral-60);
+  border-radius: 4px;
+  display: flex;
+  width: 100%;
+}
+
+.input.input {
+  background-color: var(--color-neutral-10);
+}

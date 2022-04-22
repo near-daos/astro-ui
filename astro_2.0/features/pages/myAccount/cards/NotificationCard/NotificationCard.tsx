@@ -10,6 +10,7 @@ import { useNotificationsSettings } from 'astro_2.0/features/Notifications/hooks
 
 import { Button } from 'components/button/Button';
 import { Toggle } from 'components/inputs/Toggle';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { CardLine } from 'astro_2.0/features/pages/myAccount/cards/CardLine';
 import { CardTitle } from 'astro_2.0/features/pages/myAccount/cards/CardTitle';
 import { ConfigCard } from 'astro_2.0/features/pages/myAccount/cards/ConfigCard';
@@ -30,6 +31,8 @@ export const NotificationCard: VFC<NotificationCardProps> = props => {
   const router = useRouter();
   const { t } = useTranslation('common');
   const { updateSettings } = useNotificationsSettings();
+
+  const { isEmailVerified, isPhoneVerified } = contactsConfig;
 
   const goToSettingsPage = useCallback(() => {
     router.push({
@@ -69,19 +72,27 @@ export const NotificationCard: VFC<NotificationCardProps> = props => {
       <WarningMessage text="Feature is in beta" />
       <CardLine className={styles.emailLine}>
         <ContactInfo icon="carbonEmail">{t('myAccountPage.email')}</ContactInfo>
-        <Toggle
-          onChange={onEmailChange}
-          defaultChecked={emailEnabled}
-          disabled={!contactsConfig.isEmailVerified}
-        />
+        <Tooltip
+          overlay={!isEmailVerified && t('myAccountPage.notifications.email')}
+        >
+          <Toggle
+            onChange={onEmailChange}
+            defaultChecked={emailEnabled}
+            disabled={!contactsConfig.isEmailVerified}
+          />
+        </Tooltip>
       </CardLine>
       <CardLine>
         <ContactInfo icon="carbonPhone">{t('myAccountPage.phone')}</ContactInfo>
-        <Toggle
-          onChange={onPhoneChange}
-          defaultChecked={smsEnabled}
-          disabled={!contactsConfig.isPhoneVerified}
-        />
+        <Tooltip
+          overlay={!isPhoneVerified && t('myAccountPage.notifications.phone')}
+        >
+          <Toggle
+            onChange={onPhoneChange}
+            defaultChecked={smsEnabled}
+            disabled={!contactsConfig.isPhoneVerified}
+          />
+        </Tooltip>
       </CardLine>
       <Button
         capitalize

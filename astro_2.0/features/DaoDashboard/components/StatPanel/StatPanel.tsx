@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import cn from 'classnames';
 
 import { Icon } from 'components/Icon';
@@ -15,6 +15,7 @@ interface StatPanelProps {
   trendClassName?: string;
   valueClassName?: string;
   className?: string;
+  icon?: ReactNode;
 }
 
 export const StatPanel: FC<StatPanelProps> = ({
@@ -25,6 +26,7 @@ export const StatPanel: FC<StatPanelProps> = ({
   trendClassName,
   valueClassName,
   trend = 0,
+  icon,
 }) => {
   return (
     <div className={cn(styles.root, className)}>
@@ -43,7 +45,10 @@ export const StatPanel: FC<StatPanelProps> = ({
         )}
         {dFormatter(Math.abs(trend), 2)}%
       </div>
-      <div className={cn(styles.value, valueClassName)}>{value}</div>
+      <div className={cn(styles.value, valueClassName)}>
+        <span>{value}</span>
+        <span>{icon}</span>
+      </div>
     </div>
   );
 };

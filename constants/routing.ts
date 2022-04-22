@@ -26,7 +26,7 @@ export const TREASURY_PAGE_URL = '/dao/[dao]/treasury/tokens';
 export const GOVERNANCE_TOKEN_INFO_URL =
   '/dao/[dao]/treasury/governance-token-info';
 export const CREATE_GOV_TOKEN_PAGE_URL =
-  '/dao/[dao]/treasury/create-governance-token/[step]';
+  '/dao/[dao]/treasury/create-governance-token';
 
 export const ALL_BOUNTIES_PAGE_URL = '/dao/[dao]/tasks/bounties/list';
 export const SINGLE_BOUNTY_PAGE_URL =

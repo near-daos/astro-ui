@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, ReactNode, useCallback } from 'react';
 import cn from 'classnames';
 import { useMedia } from 'react-use';
 
@@ -11,15 +11,23 @@ import { LeaderboardData } from 'astro_2.0/features/Discover/types';
 
 import { dFormatter, shortenString } from 'utils/format';
 import useQuery from 'hooks/useQuery';
+import { UnitPosition } from 'types/stats';
 
 import styles from './TopListItem.module.scss';
 
 interface TopListItemProps {
   index: number;
   data: LeaderboardData;
+  unit?: string | ReactNode;
+  unitPosition?: UnitPosition;
 }
 
-export const TopListItem: FC<TopListItemProps> = ({ index, data }) => {
+export const TopListItem: FC<TopListItemProps> = ({
+  index,
+  data,
+  unit = '',
+  unitPosition = 'left',
+}) => {
   const { dao, activity, overview } = data;
   const isMobile = useMedia('(max-width: 640px)');
 
@@ -65,7 +73,12 @@ export const TopListItem: FC<TopListItemProps> = ({ index, data }) => {
         </div>
       </div>
       <div className={styles.proposals}>
-        <div className={styles.value}>
+        <div
+          className={cn(styles.value, {
+            [styles.right]: unitPosition === 'right',
+          })}
+        >
+          <span>{unit && value !== 0 ? unit : null}</span>
           {Number(dFormatter(value, 2)).toLocaleString()}
         </div>
         <div

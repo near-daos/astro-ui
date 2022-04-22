@@ -22,6 +22,7 @@ import {
 } from 'astro_2.0/features/Discover/constants';
 import { dFormatter } from 'utils/format';
 import useQuery from 'hooks/useQuery';
+import { USD } from 'constants/common';
 
 import { Tvl as TTvl, TvlDao } from 'services/DaoStatsService/types';
 
@@ -48,25 +49,25 @@ export const Tvl: FC = () => {
         {
           id: TvlTabs.NUMBER_OF_BOUNTIES,
           label: t('discover.numberOfBounties'),
-          value: Number(
-            dFormatter(currentData?.bounties?.number.count ?? 0)
-          ).toLocaleString(),
+          value: `${currentData?.bounties?.number.count ? USD : ''}${dFormatter(
+            currentData?.bounties?.number.count ?? 0
+          )}`,
           trend: currentData?.bounties?.number.growth ?? 0,
         },
         {
           id: TvlTabs.VL_OF_BOUNTIES,
           label: t('discover.vlOfBounties'),
-          value: Number(
-            dFormatter(currentData?.bounties?.vl?.count ?? 0)
-          ).toLocaleString(),
+          value: `${currentData?.bounties?.vl?.count ? USD : ''}${dFormatter(
+            currentData?.bounties?.vl?.count ?? 0
+          )}`,
           trend: currentData?.bounties?.vl.growth ?? 0,
         },
         {
           id: TvlTabs.TVL,
           label: t('discover.tvl'),
-          value: Number(
-            dFormatter(currentData?.tvl.count ?? 0)
-          ).toLocaleString(),
+          value: `${currentData?.tvl.count ? USD : ''}${dFormatter(
+            currentData?.tvl.count ?? 0
+          )}`,
           trend: currentData?.tvl.growth ?? 0,
         },
       ];
@@ -78,15 +79,17 @@ export const Tvl: FC = () => {
       {
         id: TvlTabs.PLATFORM_TVL,
         label: t('discover.platformTvl'),
-        value: Number(dFormatter(currentData?.tvl.count ?? 0)).toLocaleString(),
+        value: `${currentData?.tvl.count ? USD : ''}${Number(
+          dFormatter(currentData?.tvl.count ?? 0)
+        ).toLocaleString()}`,
         trend: data?.tvl.growth ?? 0,
       },
       {
         id: TvlTabs.VL_IN_BOUNTIES,
         label: t('discover.vlInBountiesGrants'),
-        value: Number(
+        value: `${currentData?.bountiesAndGrantsVl?.count ? USD : ''}${Number(
           dFormatter(currentData?.bountiesAndGrantsVl?.count ?? 0)
-        ).toLocaleString(),
+        ).toLocaleString()}`,
         trend: currentData?.bountiesAndGrantsVl?.growth ?? 0,
       },
     ];
@@ -234,11 +237,13 @@ export const Tvl: FC = () => {
       />
       <div className={styles.body}>
         <ChartRenderer
+          unit={USD}
           data={chartData}
           loading={loading}
           activeView={activeView}
         />
         <DaosTopList
+          unit={USD}
           total={total}
           next={nextLeaderboardItems}
           data={leaderboardData}
