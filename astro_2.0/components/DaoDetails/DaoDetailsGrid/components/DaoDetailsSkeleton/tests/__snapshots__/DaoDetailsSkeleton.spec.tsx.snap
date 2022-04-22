@@ -2,18 +2,12 @@
 
 exports[`dao details skeleton Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
+  <div>
     <div>
-      <section
-        class="general"
-      >
-        <div
-          class="flag"
-        >
+      <section>
+        <div>
           <div
-            class="root sm defaultBackground"
+            class="undefined"
           >
             <svg
               class="svg"
@@ -43,30 +37,20 @@ exports[`dao details skeleton Should render component 1`] = `
               </clippath>
             </svg>
             <div
-              class="backgroundSmall flagRenderer circle"
+              class="undefined"
             />
             <canvas
               style="clip-path: circle(34px at 34px 34px); max-width: 68px; transform: none;"
             />
           </div>
         </div>
-        <div
-          class="title"
-        >
-          <div
-            class="name"
-          />
-          <div
-            class="address"
-          />
+        <div>
+          <div />
+          <div />
         </div>
       </section>
-      <section
-        class="description"
-      >
-        <svg
-          class="spinnerIcon"
-        >
+      <section>
+        <svg>
           <use
             href="/_next/undefined"
           />
@@ -74,29 +58,17 @@ exports[`dao details skeleton Should render component 1`] = `
       </section>
     </div>
     <div>
-      <section
-        class="fundsAndMembers"
-      >
-        <div
-          class="box"
-        />
-        <div
-          class="box"
-        />
+      <section>
+        <div />
+        <div />
       </section>
-      <section
-        class="controls"
-      >
-        <div
-          class="controlIcon"
-        >
+      <section>
+        <div>
           <button
-            class="iconTextButton"
+            class=""
             type="button"
           >
-            <svg
-              class="icon"
-            >
+            <svg>
               <use
                 href="/_next/undefined"
               />
@@ -104,16 +76,12 @@ exports[`dao details skeleton Should render component 1`] = `
             settings
           </button>
         </div>
-        <div
-          class="controlIcon"
-        >
+        <div>
           <button
-            class="iconTextButton"
+            class=""
             type="button"
           >
-            <svg
-              class="icon"
-            >
+            <svg>
               <use
                 href="/_next/undefined"
               />
@@ -121,16 +89,12 @@ exports[`dao details skeleton Should render component 1`] = `
             nfts
           </button>
         </div>
-        <div
-          class="controlIcon"
-        >
+        <div>
           <button
-            class="iconTextButton"
+            class=""
             type="button"
           >
-            <svg
-              class="icon"
-            >
+            <svg>
               <use
                 href="/_next/undefined"
               />
@@ -138,16 +102,12 @@ exports[`dao details skeleton Should render component 1`] = `
             bounties
           </button>
         </div>
-        <div
-          class="controlIcon"
-        >
+        <div>
           <button
-            class="iconTextButton"
+            class=""
             type="button"
           >
-            <svg
-              class="icon"
-            >
+            <svg>
               <use
                 href="/_next/undefined"
               />
@@ -156,15 +116,9 @@ exports[`dao details skeleton Should render component 1`] = `
           </button>
         </div>
       </section>
-      <section
-        class="proposals"
-      >
-        <div
-          class="proposalBox"
-        />
-        <div
-          class="proposalBox"
-        />
+      <section>
+        <div />
+        <div />
       </section>
     </div>
   </div>

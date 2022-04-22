@@ -3,33 +3,27 @@
 exports[`FeedFilter Should render component 1`] = `
 <div>
   <div
-    class="root"
+    class=""
   >
     <div
-      class="header"
+      class=""
       role="button"
       tabindex="0"
     >
-      <p
-        class="title"
-      >
+      <p>
         Hello World!
       </p>
-      <p
-        class="selectedTitle"
-      >
+      <p>
         Label
       </p>
-      <svg
-        class="controlIcon"
-      >
+      <svg>
         <use
           href="/_next/undefined"
         />
       </svg>
     </div>
     <div
-      class="radioGroup"
+      class=""
       role="radiogroup"
     >
       <div>

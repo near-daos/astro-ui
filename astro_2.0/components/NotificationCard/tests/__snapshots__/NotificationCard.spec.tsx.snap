@@ -2,26 +2,18 @@
 
 exports[`Notification Card Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
+  <div>
     <div
-      class="content new"
+      class=""
       data-testid="noty-content"
       role="button"
       tabindex="0"
     >
-      <div
-        class="flagContainer"
-      >
-        <div
-          class="flagWrapper"
-        >
-          <div
-            class="flag"
-          >
+      <div>
+        <div>
+          <div>
             <div
-              class="root xs defaultBackground"
+              class="undefined"
             >
               <svg
                 class="svg"
@@ -51,27 +43,19 @@ exports[`Notification Card Should render component 1`] = `
                 </clippath>
               </svg>
               <div
-                class="backgroundXS"
+                class=""
               />
               <canvas
                 style="clip-path: path('M46.4118 0L9.74793 13.103V20.3722L0 23.856V52.5981L36.6639 39.4951V32.2259L46.4118 28.7421V0Z'); max-width: 47px; transform: none;"
               />
             </div>
           </div>
-          <div
-            class="type"
-          />
+          <div />
         </div>
       </div>
-      <div
-        class="text"
-      />
-      <div
-        class="description"
-      >
-        <div
-          class="descriptionHeader"
-        >
+      <div />
+      <div>
+        <div>
           description
           :
         </div>
@@ -79,33 +63,24 @@ exports[`Notification Card Should render component 1`] = `
           some description
         </span>
       </div>
-      <div
-        class="time"
-      >
+      <div>
         12:00 am
       </div>
-      <div
-        class="control"
-      >
-        <div
-          class="markRead"
-        >
+      <div>
+        <div>
           <button
-            class="btn transparent sizeBlock markReadButton"
+            class=""
             data-testid="mark-read"
             type="button"
           >
             <svg
-              class="markReadIcon"
               width="24"
             >
               <use
                 href="/_next/undefined"
               />
             </svg>
-            <div
-              class="markReadTitle"
-            >
+            <div>
               Mark read
             </div>
           </button>
@@ -113,27 +88,22 @@ exports[`Notification Card Should render component 1`] = `
       </div>
     </div>
     <div
-      class="mobileActionsPanel"
+      class=""
     >
-      <div
-        class="markRead"
-      >
+      <div>
         <button
-          class="btn transparent sizeBlock markReadButton"
+          class=""
           data-testid="mark-read"
           type="button"
         >
           <svg
-            class="markReadIcon"
             width="24"
           >
             <use
               href="/_next/undefined"
             />
           </svg>
-          <div
-            class="markReadTitle"
-          >
+          <div>
             Mark read
           </div>
         </button>

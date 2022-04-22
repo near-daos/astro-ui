@@ -2,20 +2,12 @@
 
 exports[`default voting policy Should render component 1`] = `
 <div>
-  <div
-    class="policyWrapper"
-  >
-    <div
-      class="policyLabel"
-    >
+  <div>
+    <div>
       votingPolicy
     </div>
-    <div
-      class="policy"
-    >
-      <div
-        class="bold"
-      >
+    <div>
+      <div>
         
         %
       </div>
@@ -24,7 +16,7 @@ exports[`default voting policy Should render component 1`] = `
          to pass of
       </div>
       <div
-        class="badge small primary"
+        class=""
       >
         ALL GROUPS (
         2

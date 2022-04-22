@@ -2,12 +2,8 @@
 
 exports[`App 404 Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
-    <div
-      class="logo"
-    >
+  <div>
+    <div>
       <svg
         fill="none"
         height="295"
@@ -31,17 +27,14 @@ exports[`App 404 Should render component 1`] = `
             fill-rule="evenodd"
           />
           <circle
-            class="ellipse1"
             fill="#BFBFBF"
             r="4.6"
           />
           <circle
-            class="ellipse2"
             fill="#BFBFBF"
             r="4.6"
           />
           <circle
-            class="ellipse3"
             fill="#BFBFBF"
             r="4.6"
           />
@@ -71,24 +64,18 @@ exports[`App 404 Should render component 1`] = `
         </defs>
       </svg>
     </div>
-    <h2
-      class="title"
-    >
+    <h2>
       Page not found
     </h2>
-    <div
-      class="subtitle"
-    >
+    <div>
       We’re sorry, the page you’re looking for could not be found.
     </div>
-    <div
-      class="back"
-    >
+    <div>
       <a
         href="/"
       >
         <button
-          class="btn black sizeSmall"
+          class=""
           type="button"
         >
           Go to Main Page

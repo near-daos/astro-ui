@@ -13,10 +13,6 @@ jest.mock('next/router', () => {
   };
 });
 
-beforeAll(() => {
-  window.HTMLElement.prototype.scrollIntoView = jest.fn();
-});
-
 describe('Side filter', () => {
   it('Should render component', () => {
     const { container } = render(

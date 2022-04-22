@@ -2,14 +2,9 @@
 
 exports[`Token icon Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
-    <div
-      class="iconWrapper"
-    >
+  <div>
+    <div>
       <div
-        class="icon"
         style="background-image: url(myIcon);"
       />
     </div>

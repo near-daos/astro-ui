@@ -2,9 +2,7 @@
 
 exports[`Mobile nav Should render full navigation for logged user 1`] = `
 <div>
-  <div
-    class="root"
-  >
+  <div>
     <div
       data-testid="nav-item"
     >
@@ -36,9 +34,7 @@ exports[`Mobile nav Should render full navigation for logged user 1`] = `
 
 exports[`Mobile nav Should render partial navigation if user did not log in 1`] = `
 <div>
-  <div
-    class="root"
-  >
+  <div>
     <div
       data-testid="nav-item"
     >

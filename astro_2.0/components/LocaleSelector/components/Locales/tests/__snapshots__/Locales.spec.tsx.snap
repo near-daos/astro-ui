@@ -2,15 +2,12 @@
 
 exports[`Locales Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
+  <div>
     <button
-      class="btn tertiary sizeSmall locale"
+      class=""
       type="button"
     >
       <img
-        class="flag"
         data-testid="circle-country-flag"
         height="100"
         src="https://hatscripts.github.io/circle-flags/flags/us.svg"
@@ -20,11 +17,10 @@ exports[`Locales Should render component 1`] = `
       en
     </button>
     <button
-      class="btn tertiary sizeSmall locale"
+      class=""
       type="button"
     >
       <img
-        class="flag"
         data-testid="circle-country-flag"
         height="100"
         src="https://hatscripts.github.io/circle-flags/flags/ru.svg"

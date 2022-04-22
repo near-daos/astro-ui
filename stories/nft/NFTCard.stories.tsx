@@ -1,7 +1,6 @@
 import { Meta, Story } from '@storybook/react';
 import { NFTCard } from 'astro_2.0/features/pages/nft/NtfCard';
 import React, { FC } from 'react';
-import { StaticImageData } from 'next/image';
 import example1 from './assets/example-1.png';
 import example2 from './assets/example-2.png';
 import example3 from './assets/example-3.png';

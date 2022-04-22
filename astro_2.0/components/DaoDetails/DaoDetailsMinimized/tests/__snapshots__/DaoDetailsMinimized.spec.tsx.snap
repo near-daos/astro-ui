@@ -3,22 +3,18 @@
 exports[`dao details minimized Should render component 1`] = `
 <div>
   <div
-    class="root"
+    class=""
   >
-    <div
-      class="wrapper"
-    >
+    <div>
       <a
         href="/dao/default-flag-test.sputnikv2.testnet"
       >
         <section
-          class="paddingWithProposalButton general"
+          class="undefined"
         >
-          <div
-            class="flagWrapper"
-          >
+          <div>
             <div
-              class="root xs"
+              class=""
             >
               <svg
                 class="svg"
@@ -48,7 +44,7 @@ exports[`dao details minimized Should render component 1`] = `
                 </clippath>
               </svg>
               <div
-                class="backgroundXS"
+                class=""
               />
               <canvas
                 style="clip-path: path('M46.4118 0L9.74793 13.103V20.3722L0 23.856V52.5981L36.6639 39.4951V32.2259L46.4118 28.7421V0Z'); max-width: 47px; transform: none;"
@@ -56,28 +52,18 @@ exports[`dao details minimized Should render component 1`] = `
             </div>
           </div>
           <div>
-            <div
-              class="displayName"
-            >
-              <div
-                class="name"
-              >
+            <div>
+              <div>
                 Default Flag Test
               </div>
-              <div
-                class="explorerLink"
-              >
+              <div>
                 <div
-                  class="root"
+                  class=""
                   role="button"
                   tabindex="0"
                 >
-                  <span
-                    class="iconWrapper"
-                  >
-                    <svg
-                      class="icon"
-                    >
+                  <span>
+                    <svg>
                       <use
                         href="/_next/undefined"
                       />
@@ -86,17 +72,15 @@ exports[`dao details minimized Should render component 1`] = `
                 </div>
               </div>
             </div>
-            <div
-              class="daoId"
-            >
+            <div>
               default-flag-test.sputnikv2.testnet
               <div
-                class="root copyAddress"
+                class=""
                 role="button"
                 tabindex="0"
               >
                 <button
-                  class="iconButton small btn"
+                  class=""
                   type="button"
                 >
                   <svg>
@@ -110,19 +94,15 @@ exports[`dao details minimized Should render component 1`] = `
           </div>
         </section>
       </a>
-      <section
-        class="controls"
-      >
+      <section>
         <div
-          class="controlIcon noActiveLink"
+          class="undefined"
         >
           <button
-            class="iconTextButton"
+            class=""
             type="button"
           >
-            <svg
-              class="icon"
-            >
+            <svg>
               <use
                 href="/_next/undefined"
               />
@@ -131,15 +111,13 @@ exports[`dao details minimized Should render component 1`] = `
           </button>
         </div>
         <div
-          class="controlIcon noActiveLink"
+          class="undefined"
         >
           <button
-            class="iconTextButton"
+            class=""
             type="button"
           >
-            <svg
-              class="icon"
-            >
+            <svg>
               <use
                 href="/_next/undefined"
               />
@@ -148,15 +126,13 @@ exports[`dao details minimized Should render component 1`] = `
           </button>
         </div>
         <div
-          class="controlIcon noActiveLink"
+          class="undefined"
         >
           <button
-            class="iconTextButton"
+            class=""
             type="button"
           >
-            <svg
-              class="icon"
-            >
+            <svg>
               <use
                 href="/_next/undefined"
               />
@@ -165,15 +141,13 @@ exports[`dao details minimized Should render component 1`] = `
           </button>
         </div>
         <div
-          class="controlIcon noActiveLink"
+          class="undefined"
         >
           <button
-            class="iconTextButton"
+            class=""
             type="button"
           >
-            <svg
-              class="icon"
-            >
+            <svg>
               <use
                 href="/_next/undefined"
               />
@@ -182,15 +156,13 @@ exports[`dao details minimized Should render component 1`] = `
           </button>
         </div>
         <div
-          class="controlIcon noActiveLink"
+          class="undefined"
         >
           <button
-            class="iconTextButton"
+            class=""
             type="button"
           >
-            <svg
-              class="icon"
-            >
+            <svg>
               <use
                 href="/_next/undefined"
               />
@@ -199,15 +171,13 @@ exports[`dao details minimized Should render component 1`] = `
           </button>
         </div>
         <div
-          class="controlIcon noActiveLink"
+          class="undefined"
         >
           <button
-            class="iconTextButton"
+            class=""
             type="button"
           >
-            <svg
-              class="icon"
-            >
+            <svg>
               <use
                 href="/_next/undefined"
               />
@@ -216,15 +186,13 @@ exports[`dao details minimized Should render component 1`] = `
           </button>
         </div>
         <div
-          class="controlIcon noActiveLink"
+          class="undefined"
         >
           <button
-            class="iconTextButton"
+            class=""
             type="button"
           >
-            <svg
-              class="icon"
-            >
+            <svg>
               <use
                 href="/_next/undefined"
               />

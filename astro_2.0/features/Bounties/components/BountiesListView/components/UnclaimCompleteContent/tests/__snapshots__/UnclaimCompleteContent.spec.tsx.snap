@@ -3,17 +3,17 @@
 exports[`UnclaimCompleteContent Should render component 1`] = `
 <div>
   <div
-    class="root"
+    class=""
   >
     <button
-      class="btn secondary sizeSmall unclaim button"
+      class=""
       data-testid="ucc-unclaim"
       type="submit"
     >
       Unclaim
     </button>
     <button
-      class="btn black sizeSmall complete button"
+      class=""
       data-testid="ucc-complete"
       type="button"
     >

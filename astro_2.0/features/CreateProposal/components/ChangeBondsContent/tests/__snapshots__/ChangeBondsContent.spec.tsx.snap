@@ -2,37 +2,27 @@
 
 exports[`ChangeBondsContent Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
-    <div
-      class="row"
-    >
-      <div
-        class="title"
-      >
+  <div>
+    <div>
+      <div>
         proposalCard.proposals
       </div>
-      <div
-        class="inline"
-      >
+      <div>
         <div
-          class="root"
+          class=""
         >
           <div
-            class="label"
+            class=""
           >
             <span>
               proposalCard.proposalBonds
             </span>
           </div>
           <label
-            class="input sizeBlock borderless inputWrapper narrow"
+            class="undefined"
             for="1"
           >
-            <div
-              class="inputHolder"
-            >
+            <div>
               <input
                 class=""
                 id="1"
@@ -45,22 +35,20 @@ exports[`ChangeBondsContent Should render component 1`] = `
           </label>
         </div>
         <div
-          class="root"
+          class=""
         >
           <div
-            class="label"
+            class=""
           >
             <span>
               proposalCard.proposalBondExpirationTime
             </span>
           </div>
           <label
-            class="input sizeBlock borderless inputWrapper narrow"
+            class="undefined"
             for="2"
           >
-            <div
-              class="inputHolder"
-            >
+            <div>
               <input
                 class=""
                 id="2"
@@ -74,34 +62,26 @@ exports[`ChangeBondsContent Should render component 1`] = `
         </div>
       </div>
     </div>
-    <div
-      class="row"
-    >
-      <div
-        class="title"
-      >
+    <div>
+      <div>
         proposalCard.proposalBounties
       </div>
-      <div
-        class="inline"
-      >
+      <div>
         <div
-          class="root"
+          class=""
         >
           <div
-            class="label"
+            class=""
           >
             <span>
               proposalCard.proposalClaimBounty
             </span>
           </div>
           <label
-            class="input sizeBlock borderless inputWrapper narrow"
+            class="undefined"
             for="3"
           >
-            <div
-              class="inputHolder"
-            >
+            <div>
               <input
                 class=""
                 id="3"
@@ -114,22 +94,20 @@ exports[`ChangeBondsContent Should render component 1`] = `
           </label>
         </div>
         <div
-          class="root"
+          class=""
         >
           <div
-            class="label"
+            class=""
           >
             <span>
               proposalCard.proposalBountyUnclaimTime
             </span>
           </div>
           <label
-            class="input sizeBlock borderless inputWrapper narrow"
+            class="undefined"
             for="4"
           >
-            <div
-              class="inputHolder"
-            >
+            <div>
               <input
                 class=""
                 id="4"
@@ -143,26 +121,22 @@ exports[`ChangeBondsContent Should render component 1`] = `
         </div>
       </div>
     </div>
-    <div
-      class="row"
-    >
+    <div>
       <div
-        class="root"
+        class=""
       >
-        <div
-          class="block"
-        >
+        <div>
           <div
-            class="label"
+            class=""
           >
             proposalCard.proposalTarget
           </div>
         </div>
         <div
-          class="block"
+          class=""
         >
           <div
-            class="valueSmall"
+            class=""
           >
             123
           </div>

@@ -2,20 +2,12 @@
 
 exports[`CompletedContent Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
-    <span
-      class="slotsWrapper"
-    >
-      <span
-        class="slotActive"
-      >
+  <div>
+    <span>
+      <span>
         10
       </span>
-      <span
-        class="slot"
-      >
+      <span>
          / 
         10
       </span>

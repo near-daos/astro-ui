@@ -2,24 +2,16 @@
 
 exports[`AmountContent Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
-    <span
-      class="item"
-    >
+  <div>
+    <span>
       <div
-        class="label"
+        class=""
       >
-        <div
-          class="value"
-        >
+        <div>
           0
         </div>
       </div>
-      <div
-        class="iconWrapper"
-      >
+      <div>
         <svg>
           <use
             href="/_next/undefined"
@@ -27,11 +19,9 @@ exports[`AmountContent Should render component 1`] = `
         </svg>
       </div>
       <div
-        class="label"
+        class=""
       >
-        <div
-          class="ellipse"
-        >
+        <div>
           NEAR
         </div>
       </div>

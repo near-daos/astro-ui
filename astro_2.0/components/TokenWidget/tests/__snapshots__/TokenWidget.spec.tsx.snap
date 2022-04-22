@@ -2,17 +2,11 @@
 
 exports[`Token widget Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
-    <div
-      class="amount"
-    >
+  <div>
+    <div>
       0
     </div>
-    <div
-      class="symbol"
-    >
+    <div>
       NEAR
     </div>
   </div>
@@ -21,21 +15,14 @@ exports[`Token widget Should render component 1`] = `
 
 exports[`Token widget Should render valid icon 1`] = `
 <div>
-  <div
-    class="root"
-  >
-    <div
-      class="amount"
-    >
+  <div>
+    <div>
       0
     </div>
     <div
-      class="icon"
       style="background-image: url(validIcon);"
     />
-    <div
-      class="symbol"
-    >
+    <div>
       HI
     </div>
   </div>

@@ -3,11 +3,13 @@ import { fireEvent } from '@testing-library/dom';
 
 import { ExpandableDetails } from 'astro_2.0/components/ExpandableDetails';
 
+const OPENED_CLASS = 'opened';
+
 jest.mock(
   'astro_2.0/components/ExpandableDetails/ExpandableDetails.module.scss',
   () => {
     return {
-      opened: 'opened',
+      opened: OPENED_CLASS,
     };
   }
 );
@@ -28,6 +30,6 @@ describe('expandable details', () => {
 
     fireEvent.click(component.getByRole('button'));
 
-    expect(component.getByText('Hello World')).toHaveClass('opened');
+    expect(component.getByText('Hello World')).toHaveClass(OPENED_CLASS);
   });
 });

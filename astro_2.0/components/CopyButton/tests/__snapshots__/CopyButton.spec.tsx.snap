@@ -3,13 +3,13 @@
 exports[`copy button Should render component 1`] = `
 <div>
   <div
-    class="root"
+    class=""
     role="button"
     tabindex="0"
   >
     My Title
     <button
-      class="iconButton small btn"
+      class=""
       type="button"
     >
       <svg>

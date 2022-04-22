@@ -2,9 +2,7 @@
 
 exports[`Group Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
+  <div>
     My Group
   </div>
 </div>

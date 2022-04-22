@@ -2,29 +2,23 @@
 
 exports[`AddBountyContent Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
-    <div
-      class="inline"
-    >
+  <div>
+    <div>
       <div
-        class="root"
+        class=""
       >
         <div
-          class="label"
+          class=""
         >
           <span>
             proposalCard.proposalAmount
           </span>
         </div>
         <label
-          class="input sizeBlock borderless inputWrapper narrow"
+          class="undefined"
           for="1"
         >
-          <div
-            class="inputHolder"
-          >
+          <div>
             <input
               class=""
               id="1"
@@ -37,56 +31,40 @@ exports[`AddBountyContent Should render component 1`] = `
         </label>
       </div>
       <div
-        class="root select"
+        class=""
       >
-        <label
-          class="label"
-        >
+        <label>
            
         </label>
-        <div
-          class="dropdown"
-        >
+        <div>
           <button
             aria-expanded="false"
             aria-haspopup="listbox"
             aria-labelledby="downshift-0-label downshift-0-toggle-button"
-            class="select"
+            class=""
             id="downshift-0-toggle-button"
             type="button"
           >
-            <div
-              class="container"
-            >
-              <div
-                class="selected"
-              >
-                <div
-                  class="row"
-                >
-                  <div
-                    class="iconWrapper"
-                  >
+            <div>
+              <div>
+                <div>
+                  <div>
                     <svg>
                       <use
                         href="/_next/undefined"
                       />
                     </svg>
                   </div>
-                  <div
-                    class="symbol"
-                  >
+                  <div>
                     NEAR
                   </div>
-                  <div
-                    class="balance"
-                  >
+                  <div>
                     5.1002
                   </div>
                 </div>
               </div>
               <svg
-                class="icon"
+                class=""
               >
                 <use
                   href="/_next/undefined"
@@ -96,7 +74,7 @@ exports[`AddBountyContent Should render component 1`] = `
           </button>
           <ul
             aria-labelledby="downshift-0-label"
-            class="menu"
+            class=""
             id="downshift-0-menu"
             role="listbox"
             tabindex="-1"
@@ -104,29 +82,23 @@ exports[`AddBountyContent Should render component 1`] = `
         </div>
       </div>
     </div>
-    <div
-      class="divider"
-    />
-    <div
-      class="inline"
-    >
+    <div />
+    <div>
       <div
-        class="root"
+        class=""
       >
         <div
-          class="label"
+          class=""
         >
           <span>
             proposalCard.bountyAvailableClaims
           </span>
         </div>
         <label
-          class="input sizeSmall borderless inputWrapper"
+          class="undefined"
           for="2"
         >
-          <div
-            class="inputHolder"
-          >
+          <div>
             <input
               class=""
               id="2"
@@ -140,26 +112,22 @@ exports[`AddBountyContent Should render component 1`] = `
           </div>
         </label>
       </div>
+      <div />
       <div
-        class="divider"
-      />
-      <div
-        class="root"
+        class=""
       >
         <div
-          class="label"
+          class=""
         >
           <span>
             proposalCard.bountyDaysToComplete
           </span>
         </div>
         <label
-          class="input sizeSmall borderless inputWrapper"
+          class="undefined"
           for="3"
         >
-          <div
-            class="inputHolder"
-          >
+          <div>
             <input
               class=""
               id="3"

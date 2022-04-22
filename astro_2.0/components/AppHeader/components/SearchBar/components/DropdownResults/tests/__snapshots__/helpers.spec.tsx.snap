@@ -2,13 +2,10 @@
 
 exports[`search results dropdown helpers Should render proper content for AddBounty proposals 1`] = `
 <Button
-  className="row"
   onClick={[Function]}
   variant="tertiary"
 >
-  <div
-    className="summary"
-  >
+  <div>
     <TextTruncate
       element="span"
       line={3}
@@ -24,13 +21,10 @@ exports[`search results dropdown helpers Should render proper content for AddBou
 
 exports[`search results dropdown helpers Should render proper content for AddMemberToRole proposals 1`] = `
 <Button
-  className="row"
   onClick={[Function]}
   variant="tertiary"
 >
-  <div
-    className="summary"
-  >
+  <div>
     <span>
       Add 
       <strong />
@@ -45,13 +39,10 @@ exports[`search results dropdown helpers Should render proper content for AddMem
 
 exports[`search results dropdown helpers Should render proper content for BountyDone proposals 1`] = `
 <Button
-  className="row"
   onClick={[Function]}
   variant="tertiary"
 >
-  <div
-    className="summary"
-  >
+  <div>
     <TextTruncate
       element="span"
       line={3}
@@ -67,13 +58,10 @@ exports[`search results dropdown helpers Should render proper content for Bounty
 
 exports[`search results dropdown helpers Should render proper content for ChangePolicy proposals 1`] = `
 <Button
-  className="row"
   onClick={[Function]}
   variant="tertiary"
 >
-  <div
-    className="summary"
-  >
+  <div>
     <span>
       This is a proposal to change voting policies for our groups.
     </span>
@@ -83,13 +71,10 @@ exports[`search results dropdown helpers Should render proper content for Change
 
 exports[`search results dropdown helpers Should render proper content for FunctionCall proposals 1`] = `
 <Button
-  className="row"
   onClick={[Function]}
   variant="tertiary"
 >
-  <div
-    className="summary"
-  >
+  <div>
     <span>
       Function call
     </span>
@@ -99,13 +84,10 @@ exports[`search results dropdown helpers Should render proper content for Functi
 
 exports[`search results dropdown helpers Should render proper content for RemoveMemberFromRole proposals 1`] = `
 <Button
-  className="row"
   onClick={[Function]}
   variant="tertiary"
 >
-  <div
-    className="summary"
-  >
+  <div>
     <span>
       Remove 
       <strong />
@@ -120,13 +102,10 @@ exports[`search results dropdown helpers Should render proper content for Remove
 
 exports[`search results dropdown helpers Should render proper content for SetStakingContract proposals 1`] = `
 <Button
-  className="row"
   onClick={[Function]}
   variant="tertiary"
 >
-  <div
-    className="summary"
-  >
+  <div>
     <TextTruncate
       element="span"
       line={3}
@@ -142,13 +121,10 @@ exports[`search results dropdown helpers Should render proper content for SetSta
 
 exports[`search results dropdown helpers Should render proper content for Transfer proposals 1`] = `
 <Button
-  className="row"
   onClick={[Function]}
   variant="tertiary"
 >
-  <div
-    className="summary"
-  >
+  <div>
     <span>
       I would like to request a payment
     </span>
@@ -158,13 +134,10 @@ exports[`search results dropdown helpers Should render proper content for Transf
 
 exports[`search results dropdown helpers Should render proper content for UpgradeRemote proposals 1`] = `
 <Button
-  className="row"
   onClick={[Function]}
   variant="tertiary"
 >
-  <div
-    className="summary"
-  >
+  <div>
     <TextTruncate
       element="span"
       line={3}
@@ -180,13 +153,10 @@ exports[`search results dropdown helpers Should render proper content for Upgrad
 
 exports[`search results dropdown helpers Should render proper content for UpgradeSelf proposals 1`] = `
 <Button
-  className="row"
   onClick={[Function]}
   variant="tertiary"
 >
-  <div
-    className="summary"
-  >
+  <div>
     <TextTruncate
       element="span"
       line={3}
@@ -202,13 +172,10 @@ exports[`search results dropdown helpers Should render proper content for Upgrad
 
 exports[`search results dropdown helpers Should render proper content for Vote proposals 1`] = `
 <Button
-  className="row"
   onClick={[Function]}
   variant="tertiary"
 >
-  <div
-    className="summary"
-  >
+  <div>
     <TextTruncate
       element="span"
       line={3}
