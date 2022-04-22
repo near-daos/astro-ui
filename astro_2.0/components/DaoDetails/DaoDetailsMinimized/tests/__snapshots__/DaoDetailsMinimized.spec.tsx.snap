@@ -51,7 +51,7 @@ exports[`dao details minimized Should render component 1`] = `
                 class="backgroundXS"
               />
               <canvas
-                style="clip-path: path('M46.4118 0L9.74793 13.103V20.3722L0 23.856V52.5981L36.6639 39.4951V32.2259L46.4118 28.7421V0Z'); max-width: 47px; transform: none;"
+                style="clip-path: path('M46.4118 0L9.74793 13.103V20.3722L0 23.856V52.5981L36.6639 39.4951V32.2259L46.4118 28.7421V0Z'); max-width: 47px; transform: scale(1) translateX(-3px);"
               />
             </div>
           </div>
