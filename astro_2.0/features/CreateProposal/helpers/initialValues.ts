@@ -3,18 +3,52 @@
 import { ProposalVariant } from 'types/proposal';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 
+type TFormInitialValues = {
+  links?: string[];
+  groups?: string[];
+  timeoutGranularity?: string;
+  details?: string;
+  functionCallType?: string;
+  proposalExpireTime?: string;
+  memberName?: string;
+  json?: string;
+  flagLogo?: string;
+  group?: string;
+  claimBountyBond?: string;
+  createProposalBond?: string;
+  methodName?: string;
+  unstakingPeriod?: string;
+  externalUrl?: string;
+  purpose?: string;
+  smartContractAddress?: string;
+  unclaimBountyTime?: string;
+  displayName?: string;
+  token?: string;
+  flagCover?: string;
+  amount?: string;
+  target?: string;
+  slots?: string;
+  deposit?: string;
+  deadlineThreshold?: string;
+  deadlineUnits?: string;
+  timeout?: number;
+  gas?: number;
+  actionsGas?: number;
+  versionHash?: string | undefined;
+};
+
 export function getFormInitialValues(
   selectedProposalType: ProposalVariant,
   accountId: string,
   initialValues?: Record<string, unknown>
-): Record<string, unknown> {
+): TFormInitialValues {
   switch (selectedProposalType) {
     case ProposalVariant.ProposeGetUpgradeCode: {
       return {
         details: 'Get latest binary for DAO upgrade',
         externalUrl: '',
         gas: DEFAULT_PROPOSAL_GAS,
-        versionHash: initialValues?.versionHash,
+        versionHash: initialValues?.versionHash as string,
       };
     }
     case ProposalVariant.ProposeUpgradeSelf: {
@@ -22,7 +56,7 @@ export function getFormInitialValues(
         details: 'Upgrade DAO',
         externalUrl: '',
         gas: DEFAULT_PROPOSAL_GAS,
-        versionHash: initialValues?.versionHash,
+        versionHash: initialValues?.versionHash as string,
       };
     }
     case ProposalVariant.ProposeRemoveUpgradeCode: {
@@ -30,7 +64,7 @@ export function getFormInitialValues(
         details: 'Remove binary used for DAO upgrade',
         externalUrl: '',
         gas: DEFAULT_PROPOSAL_GAS,
-        versionHash: initialValues?.versionHash,
+        versionHash: initialValues?.versionHash as string,
       };
     }
     case ProposalVariant.ProposeCreateBounty: {

@@ -2,9 +2,15 @@
 
 exports[`DaoPreviewForm Should render component 1`] = `
 <div>
-  <div>
-    <div />
-    <div>
+  <div
+    class="root"
+  >
+    <div
+      class="root"
+    />
+    <div
+      class="header"
+    >
       <h2>
         createDAO.daoPreviewFutureForm.daoPreviewFuture
       </h2>
@@ -12,13 +18,23 @@ exports[`DaoPreviewForm Should render component 1`] = `
         createDAO.daoPreviewFutureForm.daoMakeSureDescription
       </p>
     </div>
-    <div>
-      <div>
-        <section>
-          <div>
-            <div>
+    <div
+      class="content"
+    >
+      <div
+        class="root"
+      >
+        <section
+          class="general"
+        >
+          <div
+            class="root"
+          >
+            <div
+              class="flagWrapper"
+            >
               <div
-                class="undefined"
+                class="root lg defaultBackground"
               >
                 <svg
                   class="svg"
@@ -48,7 +64,7 @@ exports[`DaoPreviewForm Should render component 1`] = `
                   </clippath>
                 </svg>
                 <div
-                  class=""
+                  class="background"
                 />
                 <canvas
                   style="clip-path: path('M240.01 0L50.4101 67.7595V105.35L0 123.366V272L189.599 204.24V166.65L240.01 148.634V0Z'); max-width: 238px; transform: none;"
@@ -56,12 +72,18 @@ exports[`DaoPreviewForm Should render component 1`] = `
                 
               </div>
             </div>
-            <div>
+            <div
+              class="generalInfoWrapper"
+            >
               <section>
-                <div>
+                <div
+                  class="displayName"
+                >
                   displayName
                 </div>
-                <div>
+                <div
+                  class="daoId"
+                >
                   <div>
                     address.sputnikv2.testnet
                   </div>
@@ -73,34 +95,52 @@ exports[`DaoPreviewForm Should render component 1`] = `
             </div>
           </div>
         </section>
-        <section>
-          <div>
+        <section
+          class="funds"
+        >
+          <div
+            class="label"
+          >
             components.daoDetailsPreview.daoFunds
           </div>
-          <div>
-            <span>
+          <div
+            class="value"
+          >
+            <span
+              class="bold"
+            >
               62.45
             </span>
              USD
           </div>
         </section>
-        <section>
-          <div>
+        <section
+          class="members"
+        >
+          <div
+            class="label"
+          >
             components.daoDetailsPreview.daoMembersAndGroups
           </div>
-          <div>
-            <span>
+          <div
+            class="value"
+          >
+            <span
+              class="bold"
+            >
               1
             </span>
             /0
           </div>
         </section>
-        <section>
+        <section
+          class="controls"
+        >
           <div
-            class=""
+            class="controlIcon previewIcon"
           >
             <button
-              class=""
+              class="iconButton large btn"
               type="button"
             >
               <svg
@@ -113,10 +153,10 @@ exports[`DaoPreviewForm Should render component 1`] = `
             </button>
           </div>
           <div
-            class=""
+            class="controlIcon previewIcon"
           >
             <button
-              class=""
+              class="iconButton large btn"
               type="button"
             >
               <svg
@@ -129,10 +169,10 @@ exports[`DaoPreviewForm Should render component 1`] = `
             </button>
           </div>
           <div
-            class=""
+            class="controlIcon previewIcon"
           >
             <button
-              class=""
+              class="iconButton large btn"
               type="button"
             >
               <svg
@@ -145,10 +185,10 @@ exports[`DaoPreviewForm Should render component 1`] = `
             </button>
           </div>
           <div
-            class=""
+            class="controlIcon previewIcon"
           >
             <button
-              class=""
+              class="iconButton large btn"
               type="button"
             >
               <svg
@@ -161,11 +201,17 @@ exports[`DaoPreviewForm Should render component 1`] = `
             </button>
           </div>
         </section>
-        <section>
-          <div>
-            <div>
+        <section
+          class="proposals"
+        >
+          <div
+            class="root"
+          >
+            <div
+              class="content"
+            >
               <p
-                class="subtitle2"
+                class="subtitle2 title active"
               >
                 <span>
                   0
@@ -176,12 +222,14 @@ exports[`DaoPreviewForm Should render component 1`] = `
                 components.daoDetails.proposalTrackerCard.proposals
               </p>
               <p
-                class="subtitle6"
+                class="subtitle6 subtitle"
               >
                 0 components.daoDetails.proposalTrackerCard.proposalsInTotal
               </p>
             </div>
-            <div>
+            <div
+              class="action"
+            >
               components.daoDetails.proposalTrackerCard.createProposal
             </div>
           </div>

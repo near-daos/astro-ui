@@ -3,13 +3,13 @@
 exports[`UnclaimCompleteContent Should render component 1`] = `
 <div>
   <div
-    class=""
+    class="root"
   >
     <span
-      class=""
+      class="item controlButton"
     >
       <button
-        class=""
+        class="iconButton large icon yesAvailable"
         type="submit"
       >
         <svg
@@ -21,14 +21,14 @@ exports[`UnclaimCompleteContent Should render component 1`] = `
         </svg>
       </button>
       <span
-        class="title3"
+        class="value title3"
       />
     </span>
     <span
-      class=""
+      class="item controlButton"
     >
       <button
-        class=""
+        class="iconButton large icon noAvailable"
         type="submit"
       >
         <svg
@@ -40,7 +40,7 @@ exports[`UnclaimCompleteContent Should render component 1`] = `
         </svg>
       </button>
       <span
-        class="title3"
+        class="value title3"
       />
     </span>
   </div>

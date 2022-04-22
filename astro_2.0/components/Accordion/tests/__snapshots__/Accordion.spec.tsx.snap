@@ -3,16 +3,17 @@
 exports[`Accordion Should render component 1`] = `
 <div>
   <div
-    class=""
+    class="root"
   >
     <div
+      class="header"
       data-testid="accordion-header"
       role="button"
       tabindex="0"
     >
       Hello
       <button
-        class=""
+        class="iconButton medium icon"
         type="button"
       >
         <svg>
@@ -23,11 +24,13 @@ exports[`Accordion Should render component 1`] = `
       </button>
     </div>
     <div
-      class=""
+      class="contentContainer"
       data-testid="accordion-container"
       style="height: 0px;"
     >
-      <div>
+      <div
+        class="content"
+      >
         World
       </div>
     </div>

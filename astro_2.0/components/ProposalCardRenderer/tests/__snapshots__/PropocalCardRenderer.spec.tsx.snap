@@ -3,12 +3,16 @@
 exports[`proposal card renderer Should render component 1`] = `
 <div>
   <div
-    class=""
+    class="root"
   >
-    <div>
+    <div
+      class="header"
+    >
       <div />
     </div>
-    <div>
+    <div
+      class="proposal"
+    >
       <div>
         Proposal Node
       </div>

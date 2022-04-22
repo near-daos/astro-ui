@@ -3,11 +3,11 @@
 exports[`Comment Should render Comment component 1`] = `
 <div>
   <li
-    class="undefined"
+    class="root myComment"
     style="opacity: 0;"
   >
     <svg
-      class=""
+      class="tickMark tickRight"
       fill="none"
       height="12"
       viewBox="0 0 10 12"
@@ -22,20 +22,26 @@ exports[`Comment Should render Comment component 1`] = `
     <p>
       My name is Bond. James bond.
     </p>
-    <div>
+    <div
+      class="time"
+    >
       format mock
     </div>
     <div
-      class=""
+      class="commentControls"
     >
-      <div>
-        <div>
+      <div
+        class="commentControlButtonWrapper"
+      >
+        <div
+          class="commentControlButton"
+        >
           <button
-            class=""
+            class="iconButton large btn"
             type="button"
           >
             <svg
-              class=""
+              class="commentControlIcon"
             >
               <use
                 href="/_next/undefined"
@@ -44,7 +50,9 @@ exports[`Comment Should render Comment component 1`] = `
           </button>
         </div>
       </div>
-      <div>
+      <div
+        class="reportedInfo"
+      >
         comments.thisMessageWasReported 1/4
       </div>
     </div>

@@ -3,14 +3,14 @@
 exports[`ViewToggle Should render component 1`] = `
 <div>
   <div
-    class=""
+    class="root"
   >
     <button
-      class=""
+      class="btn tertiary sizeSmall buttonWrapper first"
       type="button"
     >
       <svg
-        class="undefined"
+        class="button active"
       >
         <use
           href="/_next/undefined"
@@ -18,11 +18,11 @@ exports[`ViewToggle Should render component 1`] = `
       </svg>
     </button>
     <button
-      class=""
+      class="btn tertiary sizeSmall buttonWrapper"
       type="button"
     >
       <svg
-        class="undefined"
+        class="button active"
       >
         <use
           href="/_next/undefined"
