@@ -44,7 +44,7 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
     id,
     displayName,
     description,
-    flagLogo,
+    flagCover,
     logo: oldFlag,
     numberOfMembers,
     numberOfGroups,
@@ -75,10 +75,10 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                 <div className={styles.flagWrapper}>
                   <div
                     className={cn(styles.flag, {
-                      [styles.scaled]: !flagLogo && !!oldFlag,
+                      [styles.scaled]: !flagCover && !!oldFlag,
                     })}
                     style={{
-                      backgroundImage: `url(${flagLogo || oldFlag})`,
+                      backgroundImage: `url(${flagCover || oldFlag})`,
                     }}
                   />
                 </div>

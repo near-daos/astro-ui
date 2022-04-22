@@ -4,8 +4,6 @@ import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 import { Icon } from 'components/Icon';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
-import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
-
 import styles from './FlagPreview.module.scss';
 
 interface FlagPreviewProps {
@@ -28,25 +26,6 @@ export const FlagPreview: React.FC<FlagPreviewProps> = ({
 
         <div className={styles.titles}>
           <div className={styles.titleOut}>
-            {t('createDAO.daoPreviewForm.daoDashboard')}
-          </div>
-        </div>
-
-        <div className={styles.dashboardPreview}>
-          <section
-            className={styles.letterHeadSection}
-            style={{
-              backgroundImage: `url(${
-                coverFile || '/flags/defaultDaoFlag.png'
-              })`,
-            }}
-          >
-            <DaoLogo src={logoFile} className={styles.logoDashboard} />
-          </section>
-        </div>
-
-        <div className={styles.titles}>
-          <div className={styles.titleOut}>
             {t('createDAO.daoPreviewForm.daoPreviewFlagAndIcon')}
           </div>
           <div className={styles.titleOut}>
@@ -61,10 +40,15 @@ export const FlagPreview: React.FC<FlagPreviewProps> = ({
             </div>
             <div className={styles.flags}>
               <div className={cn(styles.flag, styles.sm)}>
-                <FlagRenderer key={logoFile} flag={logoFile} size="sm" />
+                <FlagRenderer key={coverFile} flag={coverFile} size="sm" />
               </div>
               <div className={styles.flag}>
-                <FlagRenderer key={logoFile} flag={logoFile} size="lg" />
+                <FlagRenderer
+                  key={coverFile}
+                  flag={coverFile}
+                  size="lg"
+                  logo={logoFile}
+                />
               </div>
             </div>
           </div>

@@ -20,7 +20,7 @@ export const SearchResultDaoCard: VFC<SearchResultDaoCardProps> = ({
   onClick,
 }) => {
   const router = useRouter();
-  const { id, logo, flagLogo, displayName } = data;
+  const { id, logo, flagCover, displayName } = data;
 
   const { nearConfig } = configService.get();
 
@@ -45,7 +45,7 @@ export const SearchResultDaoCard: VFC<SearchResultDaoCardProps> = ({
       className={styles.root}
     >
       <div className={styles.flagHolder}>
-        <FlagRenderer flag={flagLogo} size="xs" fallBack={logo} />
+        <FlagRenderer flag={flagCover} size="xs" fallBack={logo} />
       </div>
       <div>
         <div className={styles.header}>{header}</div>
