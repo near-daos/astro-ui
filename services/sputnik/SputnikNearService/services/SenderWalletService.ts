@@ -63,7 +63,10 @@ export class SenderWalletService implements WalletService {
   }
 
   async getPublicKey(): Promise<string | null> {
-    if (!this.walletInstance?.isSignedIn()) {
+    if (
+      !this.walletInstance?.isSignedIn() ||
+      !this.walletInstance.authData?.accessKey
+    ) {
       return null;
     }
 

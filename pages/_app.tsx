@@ -40,13 +40,17 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
 
   return (
     <>
-      <Script
-        strategy="lazyOnload"
-        src={gtag(appConfig.GOOGLE_ANALYTICS_KEY)}
-      />
-      <Script strategy="lazyOnload">
-        {gtagScript(appConfig.GOOGLE_ANALYTICS_KEY)}
-      </Script>
+      {appConfig && (
+        <>
+          <Script
+            strategy="lazyOnload"
+            src={gtag(appConfig.GOOGLE_ANALYTICS_KEY)}
+          />
+          <Script strategy="lazyOnload">
+            {gtagScript(appConfig.GOOGLE_ANALYTICS_KEY)}
+          </Script>
+        </>
+      )}
       <ModalProvider>
         <AuthWrapper>
           <SocketProvider>

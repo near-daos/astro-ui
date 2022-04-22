@@ -7,7 +7,7 @@ import { dataRoleToContractRole } from 'features/groups/helpers';
 import { DAO } from 'types/dao';
 import { CreateProposalParams, ProposalType } from 'types/proposal';
 import { SelectorRow } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';
-import { DaoPermission, DaoRole } from 'types/role';
+import { DaoPermission, DaoRole, DaoRoleKind } from 'types/role';
 import { APP_TO_CONTRACT_PROPOSAL_TYPE } from 'utils/dataConverter';
 
 type PermissionField =
@@ -218,7 +218,28 @@ export function getNewPermissionsProposalObject(
   const fields = Array.isArray(permissionsFields)
     ? permissionsFields
     : [permissionsFields];
-  const roles = dao.policy.roles.map(role => {
+
+  const hasAll = dao.policy.roles.find(
+    role => role.kind === 'Everyone' && role.name === 'all'
+  );
+
+  let roles = hasAll
+    ? dao.policy.roles
+    : [
+        {
+          createdAt: new Date().toISOString(),
+          id: `${dao.id}-all`,
+          name: 'all',
+          kind: 'Everyone' as DaoRoleKind,
+          balance: null,
+          accountIds: null,
+          permissions: [],
+          votePolicy: {},
+        },
+        ...dao.policy.roles,
+      ];
+
+  roles = roles.map(role => {
     return updateRoleWithNewPermissions(proposedChanges, role, fields);
   }) as DaoRole[];
 
