@@ -3,45 +3,35 @@
 exports[`Proposal Card Should render component 1`] = `
 <div>
   <div
-    class="root"
+    class=""
     data-testid="proposal-card-root"
   >
-    <div
-      class="proposalCell"
-    >
+    <div>
       <div
-        class="root"
+        class=""
       >
-        <div
-          class="block"
-        >
+        <div>
           <div
-            class="label"
+            class=""
           >
             proposalCard.proposalTypeVote
           </div>
         </div>
         <div
-          class="block"
+          class=""
         >
           <div
-            class="valueLarge"
+            class="undefined"
           >
-            <div
-              class="proposalType"
-            >
+            <div>
               Poll
-              <div
-                class="proposalWalletLink"
-              >
+              <div>
                 <div
-                  class="root"
+                  class=""
                   role="button"
                   tabindex="0"
                 >
-                  <span
-                    class="iconWrapper"
-                  >
+                  <span>
                     <div>
                       buttonExternal
                     </div>
@@ -53,66 +43,52 @@ exports[`Proposal Card Should render component 1`] = `
         </div>
       </div>
     </div>
-    <div
-      class="countdownCell"
-    >
-      <span
-        class="errorLabel"
-      >
+    <div>
+      <span>
         Time expired
       </span>
     </div>
-    <div
-      class="proposerCell"
-    >
+    <div>
       <div
-        class="root"
+        class=""
       >
-        <div
-          class="block"
-        >
+        <div>
           <div
-            class="label"
+            class=""
           >
             proposalCard.proposalOwner
           </div>
         </div>
         <div
-          class="block"
+          class=""
         >
           <div
-            class="valueSmall"
+            class=""
           >
             proposer
           </div>
         </div>
       </div>
     </div>
-    <div
-      class="descriptionCell"
-    >
+    <div>
       <div
-        class="root fullWidth"
+        class=""
       >
         <div
-          class="label"
+          class=""
         >
           <span>
             proposalCard.proposalDescription
              
           </span>
         </div>
-        <div
-          class="proposalDescription"
-        >
+        <div>
           description
         </div>
       </div>
-      <div
-        class="proposalExternalLink"
-      >
+      <div>
         <a
-          class="caption1 root"
+          class="caption1"
           href="http://link"
           rel="noreferrer"
           target="_blank"
@@ -122,33 +98,30 @@ exports[`Proposal Card Should render component 1`] = `
           </div>
            
           <span
-            class="body2 text"
+            class="body2"
           >
             link
           </span>
         </a>
       </div>
     </div>
-    <div
-      class="contentCell"
-    >
+    <div>
       <div>
         Content
       </div>
     </div>
     <div
-      class="voteControlCell"
       role="button"
       tabindex="-1"
     >
       <form
-        class="root"
+        class=""
       >
         <span
-          class="item"
+          class=""
         >
           <button
-            class="iconButton large icon"
+            class=""
             disabled=""
             type="submit"
           >
@@ -157,16 +130,16 @@ exports[`Proposal Card Should render component 1`] = `
             </div>
           </button>
           <span
-            class="value title3"
+            class="title3"
           >
             0
           </span>
         </span>
         <span
-          class="item"
+          class=""
         >
           <button
-            class="iconButton large icon"
+            class=""
             disabled=""
             type="submit"
           >
@@ -175,16 +148,16 @@ exports[`Proposal Card Should render component 1`] = `
             </div>
           </button>
           <span
-            class="value title3"
+            class="title3"
           >
             0
           </span>
         </span>
         <span
-          class="item"
+          class=""
         >
           <button
-            class="iconButton large icon"
+            class=""
             type="button"
           >
             <div>
@@ -192,27 +165,19 @@ exports[`Proposal Card Should render component 1`] = `
             </div>
           </button>
           <span
-            class="value title3"
+            class="title3"
           >
             0
           </span>
         </span>
       </form>
     </div>
-    <div
-      class="voteProgress"
-    />
-    <div
-      class="actionBar"
-    >
-      <div
-        class="root"
-      >
-        <div
-          class="icon"
-        >
+    <div />
+    <div>
+      <div>
+        <div>
           <button
-            class="iconButton small btn disabled"
+            class="undefined"
             disabled=""
             type="button"
           >
@@ -225,11 +190,9 @@ exports[`Proposal Card Should render component 1`] = `
           class="twitter-share-button"
           href="https://twitter.com/intent/tweet?text=Vote%3AProposePoll%20%0A%20description"
         >
-          <div
-            class="icon"
-          >
+          <div>
             <button
-              class="iconButton small btn"
+              class=""
               type="button"
             >
               <div>
@@ -242,11 +205,9 @@ exports[`Proposal Card Should render component 1`] = `
           href="https://t.me/share/url?url=http%3A%2F%2Flocalhost%2Fdao%2FdaoId%2Fproposals%2F&text=Vote:ProposePoll 
  description"
         >
-          <div
-            class="icon"
-          >
+          <div>
             <button
-              class="iconButton small btn"
+              class=""
               type="button"
             >
               <div>
@@ -256,12 +217,12 @@ exports[`Proposal Card Should render component 1`] = `
           </div>
         </a>
         <div
-          class="root copyBtn"
+          class=""
           role="button"
           tabindex="0"
         >
           <button
-            class="iconButton small btn"
+            class=""
             type="button"
           >
             <div>

@@ -6,34 +6,26 @@ exports[`Transaction details widget Should render component 1`] = `
     novalidate=""
   >
     <div
-      class="root"
+      class=""
     >
-      <div
-        class="mainContent"
-      >
-        <div
-          class="transactionDetails"
-        >
+      <div>
+        <div>
           <div
-            class="root detailsItem tgasInput"
+            class=""
           >
             <div
-              class="label inputLabel tgasInput"
+              class=""
             >
               <span>
                 TGas
               </span>
             </div>
-            <div
-              class="row"
-            >
+            <div>
               <label
-                class="input sizeBlock borderless inputWrapper detailsInput"
+                class="undefined"
                 for="1"
               >
-                <div
-                  class="inputHolder"
-                >
+                <div>
                   <input
                     class=""
                     data-testid="gas-input"
@@ -51,25 +43,21 @@ exports[`Transaction details widget Should render component 1`] = `
             </div>
           </div>
           <div
-            class="root detailsItem"
+            class=""
           >
             <div
-              class="label inputLabel"
+              class=""
             >
               <span>
                 components.transactionDetailsWidget.bond
               </span>
             </div>
-            <div
-              class="row"
-            >
+            <div>
               <label
-                class="input sizeContent borderless inputWrapper detailsInput readOnly"
+                class="undefined"
                 for="2"
               >
-                <div
-                  class="inputHolder"
-                >
+                <div>
                   <input
                     class=""
                     id="2"
@@ -84,16 +72,14 @@ exports[`Transaction details widget Should render component 1`] = `
                   />
                 </div>
               </label>
-              <div
-                class="tokenLabel"
-              >
+              <div>
                 NEAR
               </div>
             </div>
           </div>
         </div>
         <button
-          class="btn black sizeMedium createButton"
+          class=""
           type="submit"
         >
           Purpose

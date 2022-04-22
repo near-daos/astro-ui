@@ -2,32 +2,24 @@
 
 exports[`TimelineHeader Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
+  <div>
     <button
-      class="btn transparent sizeBlock btn"
+      class=""
       disabled=""
       type="button"
     >
-      <svg
-        class="icon"
-      >
+      <svg>
         <use
           href="/_next/undefined"
         />
       </svg>
     </button>
-    <div
-      class="divider"
-    />
+    <div />
     <button
-      class="btn transparent sizeBlock btn"
+      class=""
       type="button"
     >
-      <svg
-        class="icon"
-      >
+      <svg>
         <use
           href="/_next/undefined"
         />

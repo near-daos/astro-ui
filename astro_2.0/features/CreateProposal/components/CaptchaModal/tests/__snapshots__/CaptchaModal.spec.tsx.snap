@@ -2,38 +2,22 @@
 
 exports[`CaptchaModal Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
-    <div
-      class="warning"
-    >
-      <div
-        class="root"
-      >
-        <div
-          class="status"
-        >
-          <svg
-            class="icon"
-          >
+  <div>
+    <div>
+      <div>
+        <div>
+          <svg>
             <use
               href="/_next/undefined"
             />
           </svg>
         </div>
-        <div
-          class="content"
-        >
+        <div>
           <div>
-            <div
-              class="title"
-            >
+            <div>
               Attention!
             </div>
-            <p
-              class="message"
-            >
+            <p>
               You can not undo an action by Acceptance of contract. Are you sure you agree to Acceptance of contract?
             </p>
           </div>
@@ -41,14 +25,12 @@ exports[`CaptchaModal Should render component 1`] = `
       </div>
     </div>
     <div
-      class="root"
+      class=""
     >
       <div
-        class="captcha"
         style="background-image: url(/assets/captcha/bg/F1.svg);"
       >
         <svg
-          class="hole"
           style="width: 61px; left: 1px;"
         >
           <use
@@ -56,7 +38,6 @@ exports[`CaptchaModal Should render component 1`] = `
           />
         </svg>
         <svg
-          class="fill"
           style="width: 60px; left: 0px;"
         >
           <use
@@ -64,11 +45,8 @@ exports[`CaptchaModal Should render component 1`] = `
           />
         </svg>
       </div>
-      <div
-        class="sliderContainer"
-      >
+      <div>
         <input
-          class="rangeInput"
           max="NaN"
           min="0"
           step="1"
@@ -76,14 +54,12 @@ exports[`CaptchaModal Should render component 1`] = `
           value="0"
         />
         <div
-          class="helperText"
+          class=""
         >
           captcha.dragSliderRight
         </div>
       </div>
-      <svg
-        class="resetButton"
-      >
+      <svg>
         <use
           href="/_next/undefined"
         />

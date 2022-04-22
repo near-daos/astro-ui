@@ -3,22 +3,19 @@
 exports[`Side filter Should render component 1`] = `
 <div>
   <div
-    class="categoriesListRoot"
+    class=""
   >
     <p
-      class="categoriesListTitle"
+      class=""
     >
       Hello World!
     </p>
     <ul
-      class="categoriesList"
       style="--filter-active-transform: -100%;"
     >
-      <li
-        class="categoriesListItemWrapper"
-      >
+      <li>
         <a
-          class="categoriesListItem categoriesListItemSelected"
+          class=""
           href="/?="
           tabindex="0"
         >

@@ -2,42 +2,27 @@
 
 exports[`dao details grid Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
+  <div>
     <a
-      class="content"
       href="/dao/default-flag-test.sputnikv2.testnet"
     >
       <div>
-        <section
-          class="general"
-        >
-          <div
-            class="flagWrapper"
-          >
+        <section>
+          <div>
             <div
-              class="flag"
+              class=""
               style="background-image: url(https://sputnik-dao.s3.eu-central-1.amazonaws.com/U1KVTf5ctss2feAebXooI);"
             />
           </div>
-          <div
-            class="title"
-          >
-            <div
-              class="explorerLink"
-            >
+          <div>
+            <div>
               <div
-                class="root"
+                class=""
                 role="button"
                 tabindex="0"
               >
-                <span
-                  class="iconWrapper"
-                >
-                  <svg
-                    class="icon"
-                  >
+                <span>
+                  <svg>
                     <use
                       href="/_next/undefined"
                     />
@@ -49,27 +34,22 @@ exports[`dao details grid Should render component 1`] = `
               class=""
             >
               <div
-                class="name"
                 style="max-width: -132px;"
               >
                 Default Flag Test
               </div>
             </div>
-            <div
-              class="address"
-            >
-              <div
-                class="addressId"
-              >
+            <div>
+              <div>
                 default-flag-test.sput...stnet
               </div>
               <div
-                class="root copyAddress"
+                class=""
                 role="button"
                 tabindex="0"
               >
                 <button
-                  class="iconButton small btn"
+                  class=""
                   type="button"
                 >
                   <svg>
@@ -82,34 +62,24 @@ exports[`dao details grid Should render component 1`] = `
             </div>
           </div>
         </section>
-        <section
-          class="description"
-        >
+        <section>
           <div />
         </section>
       </div>
       <div>
-        <section
-          class="fundsAndMembers"
-        >
+        <section>
           <div
-            class="root"
+            class=""
           >
             <button
-              class="btn transparent sizeBlock"
+              class=""
               type="button"
             >
-              <div
-                class="label"
-              >
+              <div>
                 daoFunds
               </div>
-              <div
-                class="value"
-              >
-                <span
-                  class="bold"
-                >
+              <div>
+                <span>
                   97.30
                 </span>
                  USD
@@ -117,41 +87,29 @@ exports[`dao details grid Should render component 1`] = `
             </button>
           </div>
           <div
-            class="root members"
+            class="undefined"
           >
             <button
-              class="btn transparent sizeBlock"
+              class=""
               type="button"
             >
-              <div
-                class="label"
-              >
+              <div>
                 membersGroups
               </div>
-              <div
-                class="value"
-              >
-                <span
-                  class="bold"
-                />
+              <div>
+                <span />
                 /undefined
               </div>
             </button>
           </div>
         </section>
-        <section
-          class="controls"
-        >
-          <div
-            class="controlIcon"
-          >
+        <section>
+          <div>
             <button
-              class="iconTextButton"
+              class=""
               type="button"
             >
-              <svg
-                class="icon"
-              >
+              <svg>
                 <use
                   href="/_next/undefined"
                 />
@@ -159,16 +117,12 @@ exports[`dao details grid Should render component 1`] = `
               settings
             </button>
           </div>
-          <div
-            class="controlIcon"
-          >
+          <div>
             <button
-              class="iconTextButton"
+              class=""
               type="button"
             >
-              <svg
-                class="icon"
-              >
+              <svg>
                 <use
                   href="/_next/undefined"
                 />
@@ -176,16 +130,12 @@ exports[`dao details grid Should render component 1`] = `
               nfts
             </button>
           </div>
-          <div
-            class="controlIcon"
-          >
+          <div>
             <button
-              class="iconTextButton"
+              class=""
               type="button"
             >
-              <svg
-                class="icon"
-              >
+              <svg>
                 <use
                   href="/_next/undefined"
                 />
@@ -193,16 +143,12 @@ exports[`dao details grid Should render component 1`] = `
               bounties
             </button>
           </div>
-          <div
-            class="controlIcon"
-          >
+          <div>
             <button
-              class="iconTextButton"
+              class=""
               type="button"
             >
-              <svg
-                class="icon"
-              >
+              <svg>
                 <use
                   href="/_next/undefined"
                 />
@@ -211,11 +157,9 @@ exports[`dao details grid Should render component 1`] = `
             </button>
           </div>
         </section>
-        <section
-          class="proposals"
-        >
+        <section>
           <p
-            class="subtitle2 proposalsTitle active"
+            class="subtitle2"
           >
             <span>
               12
@@ -226,7 +170,7 @@ exports[`dao details grid Should render component 1`] = `
             components.daoDetails.proposalTrackerCard.proposals
           </p>
           <p
-            class="subtitle6 proposalsSubtitle"
+            class="subtitle6"
           >
             12 components.daoDetails.proposalTrackerCard.proposalsInTotal
           </p>
@@ -239,9 +183,7 @@ exports[`dao details grid Should render component 1`] = `
 
 exports[`dao details grid Should render skeleton if data is loading 1`] = `
 <div>
-  <div
-    class="root"
-  >
+  <div>
     <div>
       Skeleton
     </div>

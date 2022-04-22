@@ -3,29 +3,21 @@
 exports[`Nav button Should render component 1`] = `
 <div>
   <div
-    class="root"
+    class=""
     role="button"
     tabindex="0"
   >
-    <div
-      class="description"
-    >
-      <div
-        class="iconHolder"
-      >
+    <div>
+      <div>
         <div>
           aAllDaos
         </div>
       </div>
-      <div
-        class="label"
-      >
+      <div>
         Hello World
       </div>
     </div>
-    <div
-      class="underline"
-    />
+    <div />
   </div>
 </div>
 `;

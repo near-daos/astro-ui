@@ -2,23 +2,17 @@
 
 exports[`Filters Panel Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
+  <div>
     <div>
       <button
-        class="btn secondary sizeSmall"
+        class=""
         type="button"
       >
-        <span
-          class="buttonContent"
-        >
+        <span>
           <span>
             Filters
           </span>
-          <svg
-            class="controlIcon"
-          >
+          <svg>
             <use
               href="/_next/undefined"
             />

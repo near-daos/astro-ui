@@ -1,11 +1,12 @@
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const path = require('path');
+const { extendDefaultPlugins } = require('svgo');
 
 module.exports = (nextConfig = {}) => {
   return Object.assign({}, nextConfig, {
     target: 'serverless',
     reactStrictMode: true,
-    webpack: config => {
+    webpack: (config, options) => {
       const allowedColors = [
         'none',
         'white',
@@ -39,18 +40,16 @@ module.exports = (nextConfig = {}) => {
             options: {
               // TODO // We should get rid of this. It processes all icons and replaces
               // TODO // colors even where we should keep them (e.g. colorful icons).
-              plugins: [
+              plugins: extendDefaultPlugins([
                 {
-                  name: 'preset-default',
+                  name: 'convertColors',
                   params: {
-                    overrides: {
-                      currentColor: {
-                        exec: val => !allowedColors.includes(val),
-                      },
+                    currentColor: {
+                      exec: val => !allowedColors.includes(val),
                     },
                   },
                 },
-              ],
+              ]),
             },
           },
         ],
@@ -67,16 +66,6 @@ module.exports = (nextConfig = {}) => {
       });
 
       config.plugins.push(new SpriteLoaderPlugin());
-
-      config.module.rules = config.module.rules.map(rule => {
-        const ruleUse = rule?.use;
-        const isRuleUseIterable = Array.isArray(ruleUse);
-        if (ruleUse && !isRuleUseIterable) {
-          rule.use = [ruleUse];
-        }
-
-        return rule;
-      });
 
       return config;
     },

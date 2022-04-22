@@ -2,15 +2,11 @@
 
 exports[`ChartLegend Should render Chart legend component 1`] = `
 <div>
-  <div
-    class="root"
-  >
+  <div>
     <span
-      class="legendIndicator indicatorClassName"
+      class="indicatorClassName"
     />
-    <span
-      class="legendLabel"
-    >
+    <span>
       DAO funds
     </span>
   </div>

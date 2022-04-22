@@ -2,16 +2,12 @@
 
 exports[`TimelineHeader Should render component 1`] = `
 <div>
-  <div
-    class="topColumnLabel"
-  >
+  <div>
     Formatted date
   </div>
-  <div
-    class="subColumns"
-  >
+  <div>
     <div
-      class="column subColumn lastHeaderColumn"
+      class="undefined"
     >
       Formatted column label
     </div>

@@ -3,20 +3,18 @@
 exports[`Radio Should render component 1`] = `
 <div>
   <label
-    class="root"
+    class=""
     for="input-radio-Hello"
   >
     <input
-      class="input"
+      class=""
       id="input-radio-Hello"
       type="radio"
       value="Hello"
     />
+    <span />
     <span
-      class="checkmark"
-    />
-    <span
-      class="label"
+      class=""
     >
       World
     </span>

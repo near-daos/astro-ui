@@ -2,14 +2,10 @@
 
 exports[`dao general card Should render component 1`] = `
 <div>
-  <div
-    class="root"
-  >
-    <div
-      class="flagWrapper"
-    >
+  <div>
+    <div>
       <div
-        class="root lg defaultBackground"
+        class="undefined"
       >
         <svg
           class="svg"
@@ -39,35 +35,29 @@ exports[`dao general card Should render component 1`] = `
           </clippath>
         </svg>
         <div
-          class="background"
+          class=""
         />
         <canvas
           style="clip-path: path('M240.01 0L50.4101 67.7595V105.35L0 123.366V272L189.599 204.24V166.65L240.01 148.634V0Z'); max-width: 238px; transform: none;"
         />
       </div>
     </div>
-    <div
-      class="generalInfoWrapper"
-    >
+    <div>
       <section>
-        <div
-          class="displayName"
-        >
+        <div>
           dao name
         </div>
-        <div
-          class="daoId"
-        >
+        <div>
           <div>
             123
           </div>
           <div
-            class="root copyIcon"
+            class=""
             role="button"
             tabindex="0"
           >
             <button
-              class="iconButton small btn"
+              class=""
               type="button"
             >
               <svg>
@@ -85,14 +75,12 @@ exports[`dao general card Should render component 1`] = `
       <section>
         <div>
           <a
-            class="legalLink"
             href="legalLink"
             rel="noreferrer"
             target="_blank"
           >
             Public Limited Company
             <svg
-              class="legalIcon"
               width="14"
             >
               <use
@@ -103,20 +91,15 @@ exports[`dao general card Should render component 1`] = `
         </div>
       </section>
       <section>
-        <ul
-          class="links"
-        >
-          <li
-            class="link"
-          >
+        <ul>
+          <li>
             <a
-              class="caption1 root"
+              class="caption1"
               href="http://1"
               rel="noreferrer"
               target="_blank"
             >
               <svg
-                class="icon"
                 width="20"
               >
                 <use
@@ -125,23 +108,20 @@ exports[`dao general card Should render component 1`] = `
               </svg>
                
               <span
-                class="body2 text"
+                class="body2"
               >
                 0.0.0.1
               </span>
             </a>
           </li>
-          <li
-            class="link"
-          >
+          <li>
             <a
-              class="caption1 root"
+              class="caption1"
               href="http://2"
               rel="noreferrer"
               target="_blank"
             >
               <svg
-                class="icon"
                 width="20"
               >
                 <use
@@ -150,7 +130,7 @@ exports[`dao general card Should render component 1`] = `
               </svg>
                
               <span
-                class="body2 text"
+                class="body2"
               >
                 0.0.0.2
               </span>
