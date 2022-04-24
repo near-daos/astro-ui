@@ -1,6 +1,9 @@
 import React, { FC, ReactNode } from 'react';
+
+import { Token } from 'components/cards/member-card/types';
+
 import { Modal } from 'components/modal';
-import MemberCard, { Token } from 'components/cards/member-card/MemberCard';
+import MemberCard from 'components/cards/member-card/MemberCard';
 
 export interface MemberCardPopupProps {
   title: string;

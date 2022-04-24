@@ -4,7 +4,7 @@ import { Badge } from 'components/Badge';
 import {
   MemberCardPopup,
   MemberCardPopupProps,
-} from 'components/cards/member-card';
+} from 'components/cards/member-card/MemberCardPopup';
 
 export default {
   title: 'Components/Cards/MemberCardExpanded',

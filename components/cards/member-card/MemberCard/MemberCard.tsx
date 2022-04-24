@@ -1,18 +1,16 @@
-import React, { FC, ReactNode, useCallback } from 'react';
 import cn from 'classnames';
 import TextTruncate from 'react-text-truncate';
+import React, { FC, ReactNode, useCallback } from 'react';
+
+import { Token } from 'components/cards/member-card/types';
+
 import { Icon } from 'components/Icon';
 import { ExplorerLink } from 'components/ExplorerLink';
 
+// import { Tokens } from './components/Tokens';
 import { SmileSvg } from './components/SmileSvg';
 
-import styles from './member-card.module.scss';
-
-export type Token = {
-  value: number;
-  type: string;
-  percent: number;
-};
+import styles from './MemberCard.module.scss';
 
 export interface MemberCardProps {
   children: ReactNode;
@@ -34,31 +32,6 @@ export interface MemberCardProps {
   }) => void;
 }
 
-interface TokensProps {
-  data?: Token;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Tokens: FC<TokensProps> = ({ data }) => {
-  if (!data) {
-    return null;
-  }
-
-  const { value, type, percent } = data;
-
-  return (
-    <div className={styles.footerItem}>
-      <div className={cn(styles.label, 'subtitle4')}>Tokens</div>
-      <div className={styles.inline}>
-        <span className={cn(styles.value, 'title2')}>
-          {value} {type}
-        </span>
-        <span className={cn(styles.label, 'title4')}>{percent}%</span>
-      </div>
-    </div>
-  );
-};
-
 const MemberCard: FC<MemberCardProps> = ({
   title,
   children,
@@ -68,21 +41,38 @@ const MemberCard: FC<MemberCardProps> = ({
   onClick,
   onRemoveClick,
 }) => {
+  const onCardClick = useCallback(() => {
+    if (onClick) {
+      onClick({ title, children, votes, tokens });
+    }
+  }, [title, children, votes, tokens, onClick]);
+
   const handleKeyPress = useCallback(
     e => {
-      if (e.key === 'Enter' && onClick) {
-        onClick({ title, children, votes, tokens });
+      if (e.key === 'Enter') {
+        onCardClick();
       }
     },
-    [children, onClick, title, tokens, votes]
+    [onCardClick]
+  );
+
+  const onRemoveButton = useCallback(
+    e => {
+      e.stopPropagation();
+
+      if (onRemoveClick) {
+        onRemoveClick();
+      }
+    },
+    [onRemoveClick]
   );
 
   return (
     <div
       tabIndex={0}
       role="button"
+      onClick={onCardClick}
       onKeyPress={handleKeyPress}
-      onClick={() => onClick && onClick({ title, children, votes, tokens })}
       className={cn(styles.root, {
         [styles.expanded]: expandedView,
         [styles.clickable]: !!onClick,
@@ -114,12 +104,8 @@ const MemberCard: FC<MemberCardProps> = ({
       {!expandedView && onRemoveClick && (
         <button
           type="button"
+          onClick={onRemoveButton}
           className={styles.cardFooter}
-          onClick={e => {
-            e.stopPropagation();
-
-            onRemoveClick();
-          }}
         >
           <div className={styles.personIcon}>
             <Icon name="proposalRemoveMember" width={16} />
