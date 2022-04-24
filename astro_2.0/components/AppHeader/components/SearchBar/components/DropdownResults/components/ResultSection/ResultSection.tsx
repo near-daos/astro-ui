@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import cn from 'classnames';
 import isEmpty from 'lodash/isEmpty';
+import { useTranslation } from 'next-i18next';
 
 import { DaoFeedItem, Member } from 'types/dao';
 import { ProposalFeedItem } from 'types/proposal';
@@ -17,6 +18,8 @@ interface ResultSectionProps {
 export const ResultSection: FC<ResultSectionProps> = props => {
   const { title, data, onSeeAll, children, contentClassName } = props;
 
+  const { t } = useTranslation('common');
+
   if (isEmpty(data)) {
     return null;
   }
@@ -32,7 +35,7 @@ export const ResultSection: FC<ResultSectionProps> = props => {
           onClick={onSeeAll}
           onKeyPress={onSeeAll}
         >
-          See all ({data?.length})
+          {t('header.search.seeAll')} ({data?.length})
         </div>
       </div>
       <div className={cn(styles.content, contentClassName)}>{children}</div>

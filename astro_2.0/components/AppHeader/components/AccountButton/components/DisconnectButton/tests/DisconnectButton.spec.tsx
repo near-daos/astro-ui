@@ -6,6 +6,6 @@ describe('DisconnectButton', () => {
   it('Should render component', () => {
     const { getByText } = render(<DisconnectButton logout={() => 0} />);
 
-    expect(getByText('Disconnect')).toBeTruthy();
+    expect(getByText('header.disconnect')).toBeTruthy();
   });
 });

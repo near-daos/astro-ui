@@ -282,7 +282,7 @@ exports[`page layout Should render component 1`] = `
             </div>
             <input
               class="body1"
-              placeholder="Search"
+              placeholder="header.search.placeholder"
               tabindex="0"
               type="text"
               value=""
