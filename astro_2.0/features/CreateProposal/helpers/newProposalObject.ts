@@ -94,7 +94,7 @@ async function getTransferProposal(
     bond: dao.policy.proposalBond,
     data: {
       token_id: token?.tokenId,
-      receiver_id: data.target,
+      receiver_id: data.target.trim(),
       amount: new Decimal(data.amount).mul(10 ** token.decimals).toFixed(),
     },
   };

@@ -227,7 +227,7 @@ export async function getTransferMintbaseNFTProposal(
   const [key, store] = tokenKey.split(':');
 
   const json = JSON.stringify({
-    token_ids: [[key, target]],
+    token_ids: [[key, target.trim()]],
   });
   const args = Buffer.from(json).toString('base64');
 
@@ -281,7 +281,7 @@ export async function getBuyNftFromParasProposal(
 
   const json = JSON.stringify({
     token_series_id: tokenKey,
-    receiver_id: target,
+    receiver_id: target.trim(),
   });
   const args = Buffer.from(json).toString('base64');
 
