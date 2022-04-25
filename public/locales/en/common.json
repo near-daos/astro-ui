@@ -71,6 +71,7 @@
   },
   "components": {
     "appFooter": {
+      "askQuestion": "Ask a question",
       "reportAnIssue": "Report an issue",
       "githubRepo": " Github repo",
       "opensourceAsIs": "SputnikDAO 2021-2022. The software is an open source and provided “as is”, without warranty of any kind.",
