@@ -4,8 +4,9 @@ import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Highlighter } from 'features/search/search-results/components/highlighter';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 
-import MemberCard, { MemberCardPopup } from 'components/cards/member-card';
-import { Badge, Variant } from 'components/Badge/Badge';
+import { Badge, Variant } from 'components/Badge';
+import MemberCard from 'components/cards/member-card/MemberCard/MemberCard';
+import { MemberCardPopup } from 'components/cards/member-card/MemberCardPopup';
 import { useModal } from 'components/modal';
 
 import { GROUP_COLOR } from './constants';
