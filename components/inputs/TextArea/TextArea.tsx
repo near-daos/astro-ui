@@ -2,13 +2,13 @@ import { useId } from '@reach/auto-id';
 import classNames from 'classnames';
 import inputStyles from 'components/inputs/Input/Input.module.scss';
 import { Property } from 'csstype';
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import styles from './Textarea.module.scss';
 
 interface TextAreaProps extends React.ComponentProps<typeof TextareaAutosize> {
   label?: string | undefined;
-  size: 'medium' | 'large' | 'block';
+  size?: 'medium' | 'large' | 'block';
   isBorderless?: boolean;
   textAlign?: Property.TextAlign;
   resize?: Property.Resize;
@@ -43,6 +43,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
       minRows = 8,
       maxRows = 8,
       textAlign,
+      onChange,
       ...props
     },
     externalRef
@@ -53,6 +54,14 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
     });
     const [currentLength, setCurrentLength] = useState(0);
 
+    const onChangeCallback = useCallback(
+      e => {
+        onChange?.(e);
+        setCurrentLength(e.currentTarget.value?.length);
+      },
+      [onChange]
+    );
+
     return (
       <label className={className} htmlFor={id}>
         {label && label.length > 0 && (
@@ -61,18 +70,16 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
         <TextareaAutosize
           {...props}
           id={id}
-          onChange={e => {
-            props.onChange?.(e);
-            setCurrentLength(e.currentTarget.value?.length);
-          }}
           minRows={minRows}
           maxRows={maxRows}
+          onChange={onChangeCallback}
           className={classNames(classNameProp, getStateClass(isValid))}
           ref={externalRef}
           style={{
             textAlign,
             resize,
           }}
+          data-testid="ata-textarea"
         />
         {maxLength != null && !isBorderless && (
           <span

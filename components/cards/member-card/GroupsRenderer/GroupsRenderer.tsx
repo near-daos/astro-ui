@@ -4,7 +4,7 @@ import { Badge } from 'components/Badge';
 import { BadgeList } from 'components/BadgeList';
 import { useMeasure } from 'react-use';
 
-import styles from './groups-renderer.module.scss';
+import styles from './GroupsRenderer.module.scss';
 
 type Item = {
   label: string;

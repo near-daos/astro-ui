@@ -13,10 +13,9 @@ import { useAuthCheck } from 'astro_2.0/features/Auth';
 import { useSortMembers } from 'astro_2.0/features/Groups/hooks/useSortMembers';
 
 // Components
-import MemberCard, {
-  GroupsRenderer,
-  MemberCardPopup,
-} from 'components/cards/member-card';
+import MemberCard from 'components/cards/member-card/MemberCard/MemberCard';
+import { GroupsRenderer } from 'components/cards/member-card/GroupsRenderer';
+import { MemberCardPopup } from 'components/cards/member-card/MemberCardPopup';
 import { Dropdown } from 'components/Dropdown';
 import { Badge, getBadgeVariant } from 'components/Badge';
 import { GroupsList } from 'astro_2.0/features/Groups/components';

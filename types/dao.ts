@@ -1,4 +1,4 @@
-import { Token } from 'components/cards/member-card';
+import { Token } from 'components/cards/member-card/types';
 import { PolicyType } from 'types/policy';
 
 export type DaoVotePolicy = {
