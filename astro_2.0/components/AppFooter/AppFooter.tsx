@@ -55,6 +55,14 @@ export const AppFooter: FC<AppFooterProps> = ({
               'socialDiscord'
             )}
           </div>
+          <a
+            className={styles.devLink}
+            href="https://github.com/near-daos/astro-ui/discussions"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {t('components.appFooter.askQuestion')}
+          </a>
           <div className={styles.version}>
             <a
               className={styles.devLink}
