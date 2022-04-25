@@ -381,3 +381,44 @@ export function useNotificationsList(
     handleUpdateAll,
   };
 }
+
+export function useNotificationsCount(): number | null {
+  const isMounted = useMountedState();
+  const { accountId } = useAuthContext();
+  const [counter, setCounter] = useState<number | null>(null);
+
+  const [, fetchData] = useAsyncFn(async () => {
+    try {
+      const count = await NotificationsService.getNotificationsCount(accountId);
+
+      if (isMounted()) {
+        setCounter(count);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, [accountId, isMounted]);
+
+  const handleUpdates = useCallback(async () => {
+    await fetchData();
+  }, [fetchData]);
+
+  useMount(async () => {
+    await fetchData();
+  });
+
+  useEffect(() => {
+    document.addEventListener(
+      NOTIFICATIONS_UPDATED,
+      handleUpdates as EventListener
+    );
+
+    return () =>
+      document.removeEventListener(
+        NOTIFICATIONS_UPDATED,
+        handleUpdates as EventListener
+      );
+  }, [handleUpdates]);
+
+  return counter;
+}
