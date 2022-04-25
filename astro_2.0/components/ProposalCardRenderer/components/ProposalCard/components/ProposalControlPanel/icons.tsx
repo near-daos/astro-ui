@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import React, { FC } from 'react';
 
 export const VotingNo: FC = () => (
