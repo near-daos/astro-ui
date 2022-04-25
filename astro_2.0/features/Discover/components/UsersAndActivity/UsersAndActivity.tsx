@@ -152,6 +152,13 @@ export const UsersAndActivity: FC = () => {
   );
 
   useEffect(() => {
+    setLeaderboardData(null);
+    setOffset(0);
+    setTotal(0);
+    setActiveView(items[0].id);
+  }, [items, query.dao]);
+
+  useEffect(() => {
     (async () => {
       const response = query.dao
         ? await daoStatsService.getUsersDao({ ...CONTRACT, dao: query.dao })

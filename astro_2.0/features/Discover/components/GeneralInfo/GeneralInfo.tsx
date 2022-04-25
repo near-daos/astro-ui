@@ -65,6 +65,13 @@ export const GeneralInfo: FC = () => {
   }, [generalData?.activity.count, generalData?.activity.growth, query.dao, t]);
   const [activeView, setActiveView] = useState(items[0].id);
 
+  useEffect(() => {
+    setLeaderboardData(null);
+    setOffset(0);
+    setTotal(0);
+    setActiveView(items[0].id);
+  }, [items, query.dao]);
+
   const handleTopicSelect = useCallback(
     async (id: string) => {
       if (!isMounted()) {

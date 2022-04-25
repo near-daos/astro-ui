@@ -99,6 +99,13 @@ export const Governance: FC = () => {
   );
 
   useEffect(() => {
+    setLeaderboardData(null);
+    setOffset(0);
+    setTotal(0);
+    setActiveView(items[0].id);
+  }, [items, query.dao]);
+
+  useEffect(() => {
     (async () => {
       const response = query.dao
         ? await daoStatsService.getGovernanceDao({
@@ -182,7 +189,7 @@ export const Governance: FC = () => {
     }
   }, [activeView, query.dao, isMounted]);
 
-  const getUnit = () => {
+  const unit = useMemo(() => {
     switch (activeView) {
       case GovernanceTabs.VOTE_THROUGH_RATE: {
         return PERCENT;
@@ -190,7 +197,7 @@ export const Governance: FC = () => {
       default:
         return '';
     }
-  };
+  }, [activeView]);
 
   const [, getLeaderboardData] = useAsyncFn(async () => {
     if (query.dao) {
@@ -272,14 +279,14 @@ export const Governance: FC = () => {
       />
       <div className={styles.body}>
         <ChartRenderer
-          unit={getUnit()}
+          unit={unit}
           unitPosition="right"
           data={chartData}
           loading={loading}
           activeView={activeView}
         />
         <DaosTopList
-          unit={getUnit()}
+          unit={unit}
           unitPosition="right"
           total={total}
           next={nextLeaderboardItems}

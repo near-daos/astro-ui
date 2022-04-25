@@ -47,14 +47,14 @@ export const Flow: FC = () => {
         label: t('discover.totalIn'),
         value: Number(dFormatter(data?.totalIn.count ?? 0, 2)).toLocaleString(),
         trend: data?.totalOut.growth ?? 0,
-        icon: (
+        icon: data?.totalIn.count ? (
           <Icon
             name="tokenNear"
             width={10}
             height={10}
             className={styles.nearIcon}
           />
-        ),
+        ) : null,
       },
       {
         id: FlowTabs.TOTAL_OUT,
@@ -63,14 +63,14 @@ export const Flow: FC = () => {
           dFormatter(data?.totalOut.count ?? 0, 2)
         ).toLocaleString(),
         trend: data?.totalOut.growth ?? 0,
-        icon: (
+        icon: data?.totalOut.count ? (
           <Icon
             name="tokenNear"
             width={10}
             height={10}
             className={styles.nearIcon}
           />
-        ),
+        ) : null,
       },
       {
         id: FlowTabs.INCOMING_TRANSACTIONS,
@@ -117,6 +117,13 @@ export const Flow: FC = () => {
     },
     [isMounted]
   );
+
+  useEffect(() => {
+    setLeaderboardData(null);
+    setOffset(0);
+    setTotal(0);
+    setActiveView(items[0].id);
+  }, [items, query.dao]);
 
   useEffect(() => {
     (async () => {

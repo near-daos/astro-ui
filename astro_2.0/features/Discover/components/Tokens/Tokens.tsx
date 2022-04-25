@@ -91,6 +91,13 @@ export const Tokens: FC = () => {
   );
 
   useEffect(() => {
+    setLeaderboardData(null);
+    setOffset(0);
+    setTotal(0);
+    setActiveView(items[0].id);
+  }, [items, query.dao]);
+
+  useEffect(() => {
     (async () => {
       const response = query.dao
         ? await daoStatsService.getTokensDao({ ...CONTRACT, dao: query.dao })
@@ -154,7 +161,7 @@ export const Tokens: FC = () => {
     }
   }, [activeView, query.dao, isMounted]);
 
-  const getUnit = () => {
+  const unit = useMemo(() => {
     switch (activeView) {
       case TokensTabs.VL_OF_FTS: {
         return USD;
@@ -162,7 +169,7 @@ export const Tokens: FC = () => {
       default:
         return '';
     }
-  };
+  }, [activeView]);
 
   const [, getLeaderboardData] = useAsyncFn(async () => {
     if (query.dao) {
@@ -237,13 +244,13 @@ export const Tokens: FC = () => {
       />
       <div className={styles.body}>
         <ChartRenderer
-          unit={getUnit()}
+          unit={unit}
           data={chartData}
           loading={loading}
           activeView={activeView}
         />
         <DaosTopList
-          unit={getUnit()}
+          unit={unit}
           total={total}
           next={nextLeaderboardItems}
           data={leaderboardData}

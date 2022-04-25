@@ -47,6 +47,14 @@ export const Tvl: FC = () => {
 
       return [
         {
+          id: TvlTabs.TVL,
+          label: t('discover.tvl'),
+          value: `${currentData?.tvl.count ? USD : ''}${Number(
+            dFormatter(currentData?.tvl.count ?? 0)
+          ).toLocaleString()}`,
+          trend: currentData?.tvl.growth ?? 0,
+        },
+        {
           id: TvlTabs.NUMBER_OF_BOUNTIES,
           label: t('discover.numberOfBounties'),
           value: `${currentData?.bounties?.number.count ? USD : ''}${dFormatter(
@@ -61,14 +69,6 @@ export const Tvl: FC = () => {
             currentData?.bounties?.vl?.count ?? 0
           )}`,
           trend: currentData?.bounties?.vl.growth ?? 0,
-        },
-        {
-          id: TvlTabs.TVL,
-          label: t('discover.tvl'),
-          value: `${currentData?.tvl.count ? USD : ''}${dFormatter(
-            currentData?.tvl.count ?? 0
-          )}`,
-          trend: currentData?.tvl.growth ?? 0,
         },
       ];
     }
@@ -110,6 +110,13 @@ export const Tvl: FC = () => {
     },
     [isMounted]
   );
+
+  useEffect(() => {
+    setLeaderboardData(null);
+    setOffset(0);
+    setTotal(0);
+    setActiveView(items[0].id);
+  }, [items, query.dao]);
 
   useEffect(() => {
     (async () => {
