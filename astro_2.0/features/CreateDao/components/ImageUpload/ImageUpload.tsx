@@ -40,7 +40,6 @@ export const ImageUpload = <T extends Element>(
   const {
     watch,
     register,
-    setValue,
     formState: { errors },
   } = useFormContext();
 
@@ -53,6 +52,8 @@ export const ImageUpload = <T extends Element>(
     setId(uniqid());
   });
 
+  const { onChange, ...inputProps } = register(fieldName);
+
   const [show, toggleShow] = useToggle(false);
   const uploadText = isImageUploaded
     ? t('common.clickToChangeImage')
@@ -63,9 +64,9 @@ export const ImageUpload = <T extends Element>(
       <input
         id={id}
         type="file"
-        {...register(fieldName)}
+        {...inputProps}
         onChange={e => {
-          setValue(fieldName, e.target.files);
+          onChange(e);
 
           if (onSelect && e.target.files) {
             onSelect(e.target.files);
