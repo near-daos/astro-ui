@@ -6,11 +6,7 @@ import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs'
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
 import { DaosTopList } from 'astro_2.0/features/Discover/components/DaosTopList';
 
-import {
-  LeaderboardData,
-  TControlTab,
-} from 'astro_2.0/features/Discover/types';
-import { ChartDataElement } from 'components/AreaChartRenderer/types';
+import { TControlTab } from 'astro_2.0/features/Discover/types';
 import { useDaoStatsContext } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
 import { LIMIT } from 'services/DaoStatsService';
 
@@ -23,6 +19,7 @@ import {
 import { dFormatter } from 'utils/format';
 import useQuery from 'hooks/useQuery';
 import { Icon } from 'components/Icon';
+import { useDiscoveryState } from 'astro_2.0/features/Discover/hooks';
 
 import { Flow as TFlow, FlowMetricsItem } from 'services/DaoStatsService/types';
 
@@ -33,11 +30,6 @@ export const Flow: FC = () => {
   const { t } = useTranslation();
   const { daoStatsService } = useDaoStatsContext();
   const [data, setData] = useState<TFlow | null>(null);
-  const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
-  const [leaderboardData, setLeaderboardData] = useState<
-    LeaderboardData[] | null
-  >(null);
-
   const { query } = useQuery<{ dao: string }>();
 
   const items = useMemo<TControlTab[]>(() => {
@@ -99,9 +91,18 @@ export const Flow: FC = () => {
     data?.transactionsOut.growth,
     t,
   ]);
-  const [activeView, setActiveView] = useState(items[0].id);
-  const [total, setTotal] = useState(0);
-  const [offset, setOffset] = useState(0);
+  const {
+    setOffset,
+    setTotal,
+    total,
+    offset,
+    leaderboardData,
+    setLeaderboardData,
+    chartData,
+    setChartData,
+    resetData,
+    activeView,
+  } = useDiscoveryState(items);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -109,21 +110,10 @@ export const Flow: FC = () => {
         return;
       }
 
-      setChartData(null);
-      setLeaderboardData(null);
-      setOffset(0);
-      setTotal(0);
-      setActiveView(id);
+      resetData(id);
     },
-    [isMounted]
+    [resetData, isMounted]
   );
-
-  useEffect(() => {
-    setLeaderboardData(null);
-    setOffset(0);
-    setTotal(0);
-    setActiveView(items[0].id);
-  }, [items, query.dao]);
 
   useEffect(() => {
     (async () => {

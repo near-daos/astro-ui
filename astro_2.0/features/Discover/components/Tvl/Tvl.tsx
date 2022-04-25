@@ -6,15 +6,12 @@ import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs'
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
 import { DaosTopList } from 'astro_2.0/features/Discover/components/DaosTopList';
 
-import {
-  LeaderboardData,
-  TControlTab,
-} from 'astro_2.0/features/Discover/types';
-import { ChartDataElement } from 'components/AreaChartRenderer/types';
+import { TControlTab } from 'astro_2.0/features/Discover/types';
 import { useDaoStatsContext } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
 import { LIMIT } from 'services/DaoStatsService';
 
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
+import { useDiscoveryState } from 'astro_2.0/features/Discover/hooks';
 import {
   CONTRACT,
   DaoStatsTopics,
@@ -23,7 +20,6 @@ import {
 import { dFormatter } from 'utils/format';
 import useQuery from 'hooks/useQuery';
 import { USD } from 'constants/common';
-
 import { Tvl as TTvl, TvlDao } from 'services/DaoStatsService/types';
 
 import styles from './Tvl.module.scss';
@@ -33,14 +29,7 @@ export const Tvl: FC = () => {
   const { t } = useTranslation();
   const { daoStatsService } = useDaoStatsContext();
   const [data, setData] = useState<TTvl | TvlDao | null>(null);
-  const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
-  const [leaderboardData, setLeaderboardData] = useState<
-    LeaderboardData[] | null
-  >(null);
-
   const { query } = useQuery<{ dao: string }>();
-  const [offset, setOffset] = useState(0);
-  const [total, setTotal] = useState(0);
   const items = useMemo<TControlTab[]>(() => {
     if (query.dao) {
       const currentData = data as TvlDao;
@@ -94,7 +83,19 @@ export const Tvl: FC = () => {
       },
     ];
   }, [data, query.dao, t]);
-  const [activeView, setActiveView] = useState(items[0].id);
+
+  const {
+    setOffset,
+    setTotal,
+    total,
+    offset,
+    leaderboardData,
+    setLeaderboardData,
+    chartData,
+    setChartData,
+    resetData,
+    activeView,
+  } = useDiscoveryState(items);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -102,21 +103,10 @@ export const Tvl: FC = () => {
         return;
       }
 
-      setChartData(null);
-      setLeaderboardData(null);
-      setOffset(0);
-      setTotal(0);
-      setActiveView(id);
+      resetData(id);
     },
-    [isMounted]
+    [isMounted, resetData]
   );
-
-  useEffect(() => {
-    setLeaderboardData(null);
-    setOffset(0);
-    setTotal(0);
-    setActiveView(items[0].id);
-  }, [items, query.dao]);
 
   useEffect(() => {
     (async () => {
