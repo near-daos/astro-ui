@@ -22,7 +22,7 @@ function getAddRemoveMemberProposal(
     description: `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
     kind: isRemove ? 'RemoveMemberFromRole' : 'AddMemberToRole',
     data: {
-      member_id: memberName,
+      member_id: memberName.trim(),
       role: group,
     },
     bond: dao.policy.proposalBond,
