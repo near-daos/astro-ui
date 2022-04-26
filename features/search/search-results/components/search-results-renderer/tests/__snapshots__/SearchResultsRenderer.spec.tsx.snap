@@ -81,10 +81,15 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                       <div>
                         <section>
                           <div>
-                            <div
-                              class="undefined"
-                              style="background-image: url(https://sputnik-dao.s3.eu-central-1.amazonaws.com/default.png);"
-                            />
+                            <div>
+                              <svg
+                                width="24"
+                              >
+                                <use
+                                  href="/_next/undefined"
+                                />
+                              </svg>
+                            </div>
                           </div>
                           <div>
                             <div>
