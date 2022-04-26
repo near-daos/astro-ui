@@ -6,11 +6,7 @@ import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs'
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
 import { DaosTopList } from 'astro_2.0/features/Discover/components/DaosTopList';
 
-import {
-  LeaderboardData,
-  TControlTab,
-} from 'astro_2.0/features/Discover/types';
-import { ChartDataElement } from 'components/AreaChartRenderer/types';
+import { TControlTab } from 'astro_2.0/features/Discover/types';
 import { useDaoStatsContext } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
 import { LIMIT } from 'services/DaoStatsService';
 
@@ -21,6 +17,7 @@ import {
   GovernanceTabs,
 } from 'astro_2.0/features/Discover/constants';
 import useQuery from 'hooks/useQuery';
+import { useDiscoveryState } from 'astro_2.0/features/Discover/hooks';
 
 import { Governance as TGovernance } from 'services/DaoStatsService/types';
 import { ONE_HUNDRED, PERCENT } from 'constants/common';
@@ -32,10 +29,6 @@ export const Governance: FC = () => {
   const { t } = useTranslation();
   const { daoStatsService } = useDaoStatsContext();
   const [data, setData] = useState<TGovernance | null>(null);
-  const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
-  const [leaderboardData, setLeaderboardData] = useState<
-    LeaderboardData[] | null
-  >(null);
 
   const { query } = useQuery<{ dao: string }>();
 
@@ -79,9 +72,18 @@ export const Governance: FC = () => {
     data?.activeProposals.growth,
     t,
   ]);
-  const [activeView, setActiveView] = useState(items[0].id);
-  const [offset, setOffset] = useState(0);
-  const [total, setTotal] = useState(0);
+  const {
+    setOffset,
+    setTotal,
+    total,
+    offset,
+    leaderboardData,
+    setLeaderboardData,
+    chartData,
+    setChartData,
+    resetData,
+    activeView,
+  } = useDiscoveryState(items);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -89,13 +91,9 @@ export const Governance: FC = () => {
         return;
       }
 
-      setChartData(null);
-      setLeaderboardData(null);
-      setOffset(0);
-      setTotal(0);
-      setActiveView(id);
+      resetData(id);
     },
-    [isMounted]
+    [resetData, isMounted]
   );
 
   useEffect(() => {
@@ -182,7 +180,7 @@ export const Governance: FC = () => {
     }
   }, [activeView, query.dao, isMounted]);
 
-  const getUnit = () => {
+  const unit = useMemo(() => {
     switch (activeView) {
       case GovernanceTabs.VOTE_THROUGH_RATE: {
         return PERCENT;
@@ -190,7 +188,7 @@ export const Governance: FC = () => {
       default:
         return '';
     }
-  };
+  }, [activeView]);
 
   const [, getLeaderboardData] = useAsyncFn(async () => {
     if (query.dao) {
@@ -272,14 +270,14 @@ export const Governance: FC = () => {
       />
       <div className={styles.body}>
         <ChartRenderer
-          unit={getUnit()}
+          unit={unit}
           unitPosition="right"
           data={chartData}
           loading={loading}
           activeView={activeView}
         />
         <DaosTopList
-          unit={getUnit()}
+          unit={unit}
           unitPosition="right"
           total={total}
           next={nextLeaderboardItems}
