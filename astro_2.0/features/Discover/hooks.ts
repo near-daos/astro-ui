@@ -46,7 +46,7 @@ export function useDaoSearch(): {
   };
 }
 
-type DiscoveryStateReturn = {
+type DiscoveryState = {
   resetData: (id: string) => void;
   offset: number;
   setOffset: Dispatch<SetStateAction<number>>;
@@ -60,9 +60,7 @@ type DiscoveryStateReturn = {
   setActiveView: Dispatch<SetStateAction<string>>;
 };
 
-export const useDiscoveryState = (
-  items: TControlTab[]
-): DiscoveryStateReturn => {
+export const useDiscoveryState = (items: TControlTab[]): DiscoveryState => {
   const { query } = useQuery<{ dao: string }>();
   const [offset, setOffset] = useState(0);
   const [total, setTotal] = useState(0);
