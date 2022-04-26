@@ -20,7 +20,7 @@ export const ChartInterval: FC<ChartIntervalProps> = ({
     <RadioGroup
       className={styles.radioGroup}
       value={interval}
-      onChange={value => setInterval(value)}
+      onChange={setInterval}
     >
       {intervalOptions.map((option: { value: string; label: string }) => (
         <Radio key={option.value} value={option.value} label={option.label} />
