@@ -12,7 +12,7 @@ exports[`search results dropdown Should render component 1`] = `
         class=""
       />
       <div>
-        No results
+        No results for asd
       </div>
       <div>
         We couldn't find anything matching your search. Try again with a different term.
