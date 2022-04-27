@@ -1,5 +1,5 @@
 import { Config } from 'types/config';
-import { getNearConfig, NEAR_ENV, NearConfig } from 'config/near';
+import { getNearConfig, NearConfig } from 'config/near';
 import { appConfig as APP_CONFIG } from 'config';
 
 export class ConfigService {
@@ -7,9 +7,7 @@ export class ConfigService {
   public get(): { appConfig: Config; nearConfig: NearConfig } {
     const appConfig = process.browser ? window.APP_CONFIG : APP_CONFIG;
 
-    const nearConfig = getNearConfig(
-      (appConfig?.NEAR_ENV || 'development') as NEAR_ENV
-    );
+    const nearConfig = getNearConfig(appConfig);
 
     return {
       appConfig,

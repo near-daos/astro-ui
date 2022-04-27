@@ -16,6 +16,8 @@ declare global {
       APP_DOMAIN: string;
       LOCAL_WALLET_REDIRECT: boolean;
 
+      NEAR_CONTRACT_NAME: string;
+
       RELEASE_NOTES: string;
       TOASTS_NOTIFICATIONS_TIMEOUT: number;
       I18_RELOAD_ON_PRERENDER: boolean;
