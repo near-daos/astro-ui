@@ -32,6 +32,6 @@ describe('BuyNftFromParasContent', () => {
   it('Should render component', () => {
     const { getByText } = render(<BuyNftFromParasContent />);
 
-    expect(getByText('Token Key')).toBeTruthy();
+    expect(getByText('Token Id')).toBeTruthy();
   });
 });

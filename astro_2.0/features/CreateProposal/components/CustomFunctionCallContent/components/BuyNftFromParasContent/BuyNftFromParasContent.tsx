@@ -29,7 +29,7 @@ export const BuyNftFromParasContent: FC = () => {
   return (
     <div className={styles.root}>
       <div className={styles.tokenKey}>
-        <InputWrapper fieldName="tokenKey" label="Token Key" fullWidth>
+        <InputWrapper fieldName="tokenKey" label="Token Id" fullWidth>
           <Input
             className={cn(styles.inputWrapper, styles.narrow)}
             type="text"

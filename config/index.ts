@@ -20,4 +20,5 @@ export const appConfig = {
   RELEASE_NOTES: process.env.RELEASE_NOTES,
   I18_RELOAD_ON_PRERENDER: false,
   TOASTS_NOTIFICATIONS_TIMEOUT: 0,
+  NEAR_CONTRACT_NAME: process.env.NEAR_CONTRACT_NAME,
 };

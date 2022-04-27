@@ -10,6 +10,7 @@ export type Config = {
   APP_DOMAIN: string;
   NEAR_ENV: string;
   LOCAL_WALLET_REDIRECT: boolean;
+  NEAR_CONTRACT_NAME: string;
 };
 
 export enum WalletType {
