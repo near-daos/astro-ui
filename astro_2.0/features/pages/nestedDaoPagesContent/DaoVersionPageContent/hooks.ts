@@ -32,7 +32,8 @@ export function useCheckDaoUpgrade(
   const getUpgradeInfo = useCallback(async () => {
     const account = nearService?.getAccount();
 
-    if (appConfig?.NEAR_ENV !== 'development') {
+    // todo - remove before release
+    if (appConfig?.NEAR_ENV === 'mainnet') {
       return;
     }
 
@@ -40,16 +41,11 @@ export function useCheckDaoUpgrade(
       return;
     }
 
-    const contract = new Contract(
-      account,
-      'sputnik-factory-v3.ctindogaru.testnet',
-      {
-        viewMethods: ['get_default_code_hash', 'get_contracts_metadata'],
-        changeMethods: [],
-      }
-    ) as ExtendedContract;
+    const contract = new Contract(account, appConfig.NEAR_CONTRACT_NAME, {
+      viewMethods: ['get_default_code_hash', 'get_contracts_metadata'],
+      changeMethods: [],
+    }) as ExtendedContract;
 
-    // todo - this is just to enable upgrade flow for demo
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [hash, metadata] = await Promise.all([
       contract.get_default_code_hash(),
@@ -69,25 +65,30 @@ export function useCheckDaoUpgrade(
       return 0;
     });
 
-    // // todo - temp!!!
-    if (dao.daoVersion?.hash) {
-      setVersionHash(dao.daoVersion.hash);
+    // todo - temp!!!
+    // if (dao.daoVersion?.hash) {
+    //   setVersionHash(dao.daoVersion.hash);
+    // }
+
+    if (hash === dao.daoVersion.hash) {
+      setLoading(false);
+
+      return;
     }
 
-    // if (hash === dao.daoVersion.hash) {
-    //   setLoading(false);
-    //
-    //   return;
-    // }
-    //
-    // const currentVersionHashIndex = sortedMeta.findIndex(
-    //   meta => meta[0] === dao.daoVersion.hash
-    // );
-    // const nextVersionHash = sortedMeta[currentVersionHashIndex + 1];
-    //
-    // setVersionHash(nextVersionHash[0]);
+    const currentVersionHashIndex = sortedMeta.findIndex(
+      meta => meta[0] === dao.daoVersion.hash
+    );
+    const nextVersionHash = sortedMeta[currentVersionHashIndex + 1];
+
+    setVersionHash(nextVersionHash[0]);
     setLoading(false);
-  }, [appConfig?.NEAR_ENV, dao.daoVersion?.hash, nearService]);
+  }, [
+    appConfig.NEAR_CONTRACT_NAME,
+    appConfig?.NEAR_ENV,
+    dao.daoVersion.hash,
+    nearService,
+  ]);
 
   useEffect(() => {
     (async () => {
