@@ -4,7 +4,7 @@ const { extendDefaultPlugins } = require('svgo');
 
 module.exports = (nextConfig = {}) => {
   return Object.assign({}, nextConfig, {
-    target: 'serverless',
+    // target: 'serverless',
     reactStrictMode: true,
     webpack: (config, options) => {
       const allowedColors = [

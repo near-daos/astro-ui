@@ -7,6 +7,7 @@ module.exports = (phase, { defaultConfig }) => {
   const plugins = [svgSprite, cssLoaderConfig];
 
   const transformers = [];
+
   const nextConfig = plugins.reduce(
     (acc, next) => {
       const nextConfig = next(acc);
@@ -40,10 +41,13 @@ module.exports = (phase, { defaultConfig }) => {
           },
         ];
       },
-     /* experimental: {
+      /* experimental: {
         outputStandalone: true,
       },*/
       i18n,
+      publicRuntimeConfig: {
+        shouldUseExternalAssetUrl: process.env.NODE_ENV === 'production',
+      },
     }
   );
 
