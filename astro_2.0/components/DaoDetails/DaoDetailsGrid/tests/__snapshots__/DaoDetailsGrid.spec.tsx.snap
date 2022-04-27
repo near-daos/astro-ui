@@ -17,9 +17,17 @@ exports[`dao details grid Should render component 1`] = `
             class="flagWrapper"
           >
             <div
-              class="flag scaled"
-              style="background-image: url(https://sputnik-dao.s3.eu-central-1.amazonaws.com/default.png);"
-            />
+              class="logo"
+            >
+              <svg
+                class="defaultLogo"
+                width="24"
+              >
+                <use
+                  href="/_next/undefined"
+                />
+              </svg>
+            </div>
           </div>
           <div
             class="title"
