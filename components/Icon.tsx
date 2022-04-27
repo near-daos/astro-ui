@@ -13,15 +13,15 @@ export type IconProps = React.SVGProps<SVGSVGElement> & {
 export const Icon: React.VFC<IconProps> = ({ name, title, ...svgProps }) => {
   const { viewBox, id, url } = icons[name];
 
-  const { publicRuntimeConfig } = getConfig();
+  const config = getConfig();
 
   return (
     <svg viewBox={viewBox} {...svgProps}>
       {title && <title> {title}</title>}
       <use
         href={
-          publicRuntimeConfig.shouldUseExternalAssetUrl
-            ? `${publicRuntimeConfig.assetUrl}${id}`
+          config?.publicRuntimeConfig?.shouldUseExternalAssetUrl
+            ? `${config?.publicRuntimeConfig?.assetUrl}#${id}`
             : `/_next/${url}`
         }
       />
