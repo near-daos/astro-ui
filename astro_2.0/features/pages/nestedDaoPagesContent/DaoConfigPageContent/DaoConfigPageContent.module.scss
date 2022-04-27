@@ -37,8 +37,13 @@
   border-radius: 8px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-1);
   margin-bottom: 48px;
-  padding: 36px 40px;
+  padding: 24px;
+
   width: 100%;
+
+  @include tablet-landscape {
+    padding: 36px 40px;
+  }
 }
 
 .daoConfigFilter {
