@@ -44,7 +44,29 @@ exports[`App Footer Should render AppFooter component 1`] = `
               />
             </svg>
           </a>
+          <a
+            href="https://discord.com/invite/KmMqF4KNBM"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <svg
+              class="icon"
+              width="24"
+            >
+              <use
+                href="/_next/undefined"
+              />
+            </svg>
+          </a>
         </div>
+        <a
+          class="devLink"
+          href="https://github.com/near-daos/astro-ui/discussions"
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          components.appFooter.askQuestion
+        </a>
         <div
           class="version"
         >

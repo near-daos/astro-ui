@@ -13,12 +13,11 @@ import { useAuthCheck } from 'astro_2.0/features/Auth';
 import { useSortMembers } from 'astro_2.0/features/Groups/hooks/useSortMembers';
 
 // Components
-import MemberCard, {
-  GroupsRenderer,
-  MemberCardPopup,
-} from 'components/cards/member-card';
+import MemberCard from 'components/cards/member-card/MemberCard/MemberCard';
+import { GroupsRenderer } from 'components/cards/member-card/GroupsRenderer';
+import { MemberCardPopup } from 'components/cards/member-card/MemberCardPopup';
 import { Dropdown } from 'components/Dropdown';
-import { Badge } from 'components/Badge';
+import { Badge, getBadgeVariant } from 'components/Badge';
 import { GroupsList } from 'astro_2.0/features/Groups/components';
 
 // Helpers
@@ -123,14 +122,10 @@ export const GroupsPageContent: VFC<GroupsPageContentProps> = ({
             tokens={item.tokens}
           >
             <GroupsRenderer
-              selectedItems={item.groups.map((grp, i) => ({
+              selectedItems={item.groups.map(grp => ({
                 label: grp,
                 component: (
-                  <Badge
-                    key={grp}
-                    size="small"
-                    variant={i % 2 > 0 ? 'turqoise' : 'blue'}
-                  >
+                  <Badge key={grp} size="small" variant={getBadgeVariant(grp)}>
                     {grp}
                   </Badge>
                 ),

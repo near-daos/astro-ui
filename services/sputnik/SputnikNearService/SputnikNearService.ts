@@ -95,13 +95,6 @@ export class SputnikNearService implements WalletService, DaoService {
     return this.walletService.isSignedIn();
   }
 
-  initWallet(): void {
-    this.wallets.set(
-      WalletType.NEAR,
-      new SputnikWalletService(this.nearConfig)
-    );
-  }
-
   getAccount(): ConnectedWalletAccount {
     return this.walletService.getAccount();
   }

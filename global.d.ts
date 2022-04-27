@@ -1,3 +1,4 @@
+import React from 'react';
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
 import { Config } from 'types/config';
 
@@ -25,5 +26,12 @@ declare global {
     };
     near: SenderWalletInstance;
     APP_CONFIG: Config;
+  }
+}
+
+declare module 'react' {
+  interface StyleHTMLAttributes<T> extends React.HTMLAttributes<T> {
+    jsx?: boolean;
+    global?: boolean;
   }
 }

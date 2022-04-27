@@ -103,13 +103,7 @@ export function getDetailedRolesVotingPolicy(
         return {
           name: item.label,
           kind: 'Everyone',
-          permissions: [
-            '*:Finalize',
-            '*:AddProposal',
-            '*:VoteApprove',
-            '*:VoteReject',
-            '*:VoteRemove',
-          ] as DaoPermission[],
+          permissions: ['*:AddProposal'] as DaoPermission[],
           vote_policy: {},
         };
       }

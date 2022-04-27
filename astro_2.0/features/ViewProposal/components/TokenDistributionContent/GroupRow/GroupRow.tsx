@@ -1,10 +1,8 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 
-import { Badge } from 'components/Badge';
+import { Badge, getBadgeVariant } from 'components/Badge';
 import { MemberRow } from 'astro_2.0/features/ViewProposal/components/TokenDistributionContent/MemberRow';
-
-import { getBadgeVariant } from 'features/proposal/helpers';
 
 import { TokenDistributionGroup } from 'astro_2.0/features/CreateProposal/types';
 import { GovernanceToken } from 'types/token';

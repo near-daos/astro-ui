@@ -308,6 +308,59 @@ export class DaoStatsService {
     );
   }
 
+  async getGovernanceActiveProposals(
+    params: HistoryParams
+  ): Promise<AxiosResponse<Metrics>> {
+    return this.httpService.get(
+      `${params.contract}/governance/active-proposals`,
+      {
+        params: {
+          from: params.from,
+          to: params.to,
+        },
+      }
+    );
+  }
+
+  async getGovernanceActiveProposalsLeaderboard(
+    params: LimitParams
+  ): Promise<AxiosResponse<Leaderboard>> {
+    return this.httpService.get(
+      `${params.contract}/governance/active-proposals/leaderboard`,
+      {
+        params: {
+          offset: params.offset || OFFSET,
+          limit: params.limit || LIMIT,
+        },
+      }
+    );
+  }
+
+  async getGovernanceActiveVotes(
+    params: HistoryParams
+  ): Promise<AxiosResponse<Metrics>> {
+    return this.httpService.get(`${params.contract}/governance/active-votes`, {
+      params: {
+        from: params.from,
+        to: params.to,
+      },
+    });
+  }
+
+  async getGovernanceActiveVotesLeaderboard(
+    params: LimitParams
+  ): Promise<AxiosResponse<Leaderboard>> {
+    return this.httpService.get(
+      `${params.contract}/governance/active-votes/leaderboard`,
+      {
+        params: {
+          offset: params.offset || OFFSET,
+          limit: params.limit || LIMIT,
+        },
+      }
+    );
+  }
+
   async getGovernanceDao(
     params: DaoParams
   ): Promise<AxiosResponse<Governance>> {
@@ -347,6 +400,34 @@ export class DaoStatsService {
   ): Promise<AxiosResponse<Metrics>> {
     return this.httpService.get(
       `${params.contract}/governance/${params.dao}/vote-rate`,
+      {
+        params: {
+          from: params.from,
+          to: params.to,
+        },
+      }
+    );
+  }
+
+  async getGovernanceDaoActiveProposals(
+    params: DaoHistoryParams
+  ): Promise<AxiosResponse<Metrics>> {
+    return this.httpService.get(
+      `${params.contract}/governance/${params.dao}/active-proposals`,
+      {
+        params: {
+          from: params.from,
+          to: params.to,
+        },
+      }
+    );
+  }
+
+  async getGovernanceDaoActiveVotes(
+    params: DaoHistoryParams
+  ): Promise<AxiosResponse<Metrics>> {
+    return this.httpService.get(
+      `${params.contract}/governance/${params.dao}/active-votes`,
       {
         params: {
           from: params.from,

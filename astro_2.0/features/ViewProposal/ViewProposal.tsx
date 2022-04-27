@@ -56,7 +56,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
         showFlag && (
           <DaoFlagWidget
             daoName={proposal.dao.name}
-            flagUrl={proposal.dao.flagCover}
+            flagUrl={proposal.dao.flagLogo}
             daoId={proposal.dao.id}
             fallBack={proposal.dao.logo}
           />

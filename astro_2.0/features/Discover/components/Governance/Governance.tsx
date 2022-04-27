@@ -6,11 +6,7 @@ import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs'
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
 import { DaosTopList } from 'astro_2.0/features/Discover/components/DaosTopList';
 
-import {
-  LeaderboardData,
-  TControlTab,
-} from 'astro_2.0/features/Discover/types';
-import { ChartDataElement } from 'components/AreaChartRenderer/types';
+import { TControlTab } from 'astro_2.0/features/Discover/types';
 import { useDaoStatsContext } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
 import { LIMIT } from 'services/DaoStatsService';
 
@@ -21,8 +17,10 @@ import {
   GovernanceTabs,
 } from 'astro_2.0/features/Discover/constants';
 import useQuery from 'hooks/useQuery';
+import { useDiscoveryState } from 'astro_2.0/features/Discover/hooks';
 
 import { Governance as TGovernance } from 'services/DaoStatsService/types';
+import { ONE_HUNDRED, PERCENT } from 'constants/common';
 
 import styles from './Governance.module.scss';
 
@@ -31,10 +29,6 @@ export const Governance: FC = () => {
   const { t } = useTranslation();
   const { daoStatsService } = useDaoStatsContext();
   const [data, setData] = useState<TGovernance | null>(null);
-  const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
-  const [leaderboardData, setLeaderboardData] = useState<
-    LeaderboardData[] | null
-  >(null);
 
   const { query } = useQuery<{ dao: string }>();
 
@@ -49,8 +43,22 @@ export const Governance: FC = () => {
       {
         id: GovernanceTabs.VOTE_THROUGH_RATE,
         label: t('discover.voteThroughRate'),
-        value: (data?.voteRate.count ?? 0).toLocaleString(),
+        value: `${Math.round(
+          (data?.voteRate.count ?? 0) * ONE_HUNDRED
+        ).toLocaleString()}%`,
         trend: data?.voteRate.growth ?? 0,
+      },
+      {
+        id: GovernanceTabs.ACTIVE_PROPOSALS,
+        label: t('discover.activeProposals'),
+        value: (data?.activeProposals.count ?? 0).toLocaleString(),
+        trend: data?.activeProposals.growth ?? 0,
+      },
+      {
+        id: GovernanceTabs.ACTIVE_VOTES,
+        label: t('discover.activeVotes'),
+        value: (data?.activeVotes.count ?? 0).toLocaleString(),
+        trend: data?.activeVotes.growth ?? 0,
       },
     ];
   }, [
@@ -58,11 +66,24 @@ export const Governance: FC = () => {
     data?.proposals.growth,
     data?.voteRate.count,
     data?.voteRate.growth,
+    data?.activeVotes.count,
+    data?.activeVotes.growth,
+    data?.activeProposals.count,
+    data?.activeProposals.growth,
     t,
   ]);
-  const [activeView, setActiveView] = useState(items[0].id);
-  const [offset, setOffset] = useState(0);
-  const [total, setTotal] = useState(0);
+  const {
+    setOffset,
+    setTotal,
+    total,
+    offset,
+    leaderboardData,
+    setLeaderboardData,
+    chartData,
+    setChartData,
+    resetData,
+    activeView,
+  } = useDiscoveryState(items);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -70,13 +91,9 @@ export const Governance: FC = () => {
         return;
       }
 
-      setChartData(null);
-      setLeaderboardData(null);
-      setOffset(0);
-      setTotal(0);
-      setActiveView(id);
+      resetData(id);
     },
-    [isMounted]
+    [resetData, isMounted]
   );
 
   useEffect(() => {
@@ -104,6 +121,14 @@ export const Governance: FC = () => {
       };
 
       switch (activeView) {
+        case GovernanceTabs.ACTIVE_PROPOSALS: {
+          chart = await daoStatsService.getGovernanceDaoActiveProposals(params);
+          break;
+        }
+        case GovernanceTabs.ACTIVE_VOTES: {
+          chart = await daoStatsService.getGovernanceDaoActiveVotes(params);
+          break;
+        }
         case GovernanceTabs.VOTE_THROUGH_RATE: {
           chart = await daoStatsService.getGovernanceDaoVoteRate(params);
           break;
@@ -116,6 +141,14 @@ export const Governance: FC = () => {
       }
     } else {
       switch (activeView) {
+        case GovernanceTabs.ACTIVE_PROPOSALS: {
+          chart = await daoStatsService.getGovernanceActiveProposals(CONTRACT);
+          break;
+        }
+        case GovernanceTabs.ACTIVE_VOTES: {
+          chart = await daoStatsService.getGovernanceActiveVotes(CONTRACT);
+          break;
+        }
         case GovernanceTabs.VOTE_THROUGH_RATE: {
           chart = await daoStatsService.getGovernanceVoteRate(CONTRACT);
           break;
@@ -129,14 +162,33 @@ export const Governance: FC = () => {
     }
 
     if (chart && isMounted()) {
-      setChartData(
-        chart.data.metrics.map(({ timestamp, count }) => ({
+      let newData;
+
+      if (activeView === GovernanceTabs.VOTE_THROUGH_RATE) {
+        newData = chart.data.metrics.map(({ timestamp, count }) => ({
+          x: new Date(timestamp),
+          y: Math.round(count * ONE_HUNDRED),
+        }));
+      } else {
+        newData = chart.data.metrics.map(({ timestamp, count }) => ({
           x: new Date(timestamp),
           y: count,
-        }))
-      );
+        }));
+      }
+
+      setChartData(newData);
     }
   }, [activeView, query.dao, isMounted]);
+
+  const unit = useMemo(() => {
+    switch (activeView) {
+      case GovernanceTabs.VOTE_THROUGH_RATE: {
+        return PERCENT;
+      }
+      default:
+        return '';
+    }
+  }, [activeView]);
 
   const [, getLeaderboardData] = useAsyncFn(async () => {
     if (query.dao) {
@@ -164,15 +216,29 @@ export const Governance: FC = () => {
     }
 
     if (leaders?.data?.metrics && isMounted()) {
-      const newData =
-        leaders.data.metrics.map(metric => ({
-          ...metric,
-          overview:
-            metric.overview?.map(({ timestamp, count }) => ({
-              x: new Date(timestamp),
-              y: count,
-            })) ?? [],
-        })) ?? null;
+      let newData;
+
+      if (activeView === GovernanceTabs.VOTE_THROUGH_RATE) {
+        newData =
+          leaders.data.metrics.map(metric => ({
+            ...metric,
+            overview:
+              metric.overview?.map(({ timestamp, count }) => ({
+                x: new Date(timestamp),
+                y: Math.round(count * ONE_HUNDRED),
+              })) ?? [],
+          })) ?? null;
+      } else {
+        newData =
+          leaders.data.metrics.map(metric => ({
+            ...metric,
+            overview:
+              metric.overview?.map(({ timestamp, count }) => ({
+                x: new Date(timestamp),
+                y: count,
+              })) ?? [],
+          })) ?? null;
+      }
 
       setTotal(leaders.data.total);
       setLeaderboardData(
@@ -204,11 +270,15 @@ export const Governance: FC = () => {
       />
       <div className={styles.body}>
         <ChartRenderer
+          unit={unit}
+          unitPosition="right"
           data={chartData}
           loading={loading}
           activeView={activeView}
         />
         <DaosTopList
+          unit={unit}
+          unitPosition="right"
           total={total}
           next={nextLeaderboardItems}
           data={leaderboardData}

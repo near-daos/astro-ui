@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useCallback } from 'react';
 import { useMountedState } from 'react-use';
 import { useRouter } from 'next/router';
 
@@ -37,6 +37,19 @@ export const SelectedDaoDetails: FC = () => {
     }
   }, [isMounted, query.dao]);
 
+  const goToDaoPage = useCallback(() => {
+    router.push({
+      pathname: SINGLE_DAO_PAGE,
+      query: {
+        dao: data?.id,
+      },
+    });
+  }, [data, router]);
+
+  const onClose = useCallback(() => {
+    updateQuery('dao', '');
+  }, [updateQuery]);
+
   if (!data) {
     return null;
   }
@@ -44,9 +57,9 @@ export const SelectedDaoDetails: FC = () => {
   return (
     <div className={styles.root}>
       <IconButton
+        onClick={onClose}
         icon="closeCircle"
         className={styles.close}
-        onClick={() => updateQuery('dao', '')}
       />
       <div className={styles.name}>
         <FlagRenderer
@@ -71,14 +84,7 @@ export const SelectedDaoDetails: FC = () => {
         className={styles.navButton}
         size="medium"
         variant="secondary"
-        onClick={() =>
-          router.push({
-            pathname: SINGLE_DAO_PAGE,
-            query: {
-              dao: data.id,
-            },
-          })
-        }
+        onClick={goToDaoPage}
       >
         Go to DAO page
       </Button>

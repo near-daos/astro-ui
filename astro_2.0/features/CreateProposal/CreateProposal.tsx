@@ -102,6 +102,8 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   }, [initialProposalVariant]);
 
   const methods = useForm({
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     defaultValues: getFormInitialValues(
       selectedProposalVariant,
       accountId,

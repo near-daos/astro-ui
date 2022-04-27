@@ -18,6 +18,9 @@ import { useSocket } from 'context/SocketContext';
 import { useRouter } from 'next/router';
 import { mapNotificationDtoToNotification } from 'services/NotificationsService/mappers/notification';
 
+import { dispatchCustomEvent } from 'utils/dispatchCustomEvent';
+import { NOTIFICATIONS_UPDATED } from 'features/notifications/notificationConstants';
+
 import { DAO_RELATED_SETTINGS, PLATFORM_RELATED_SETTINGS } from './helpers';
 
 type UpdateSettingsConfig = {
@@ -99,7 +102,8 @@ export function useNotificationsSettings(): {
 
 export function useNotificationsList(
   accountDaosIds?: string[],
-  subscribedDaosIds?: string[]
+  subscribedDaosIds?: string[],
+  reactOnUpdates?: boolean
 ): {
   notifications: PaginationResponse<Notification[]> | null;
   loadMore: () => void;
@@ -236,6 +240,33 @@ export function useNotificationsList(
     socket,
   ]);
 
+  const triggerUpdate = useCallback(() => {
+    dispatchCustomEvent(NOTIFICATIONS_UPDATED, true);
+  }, []);
+
+  const handleUpdates = useCallback(async () => {
+    const newNotificationsData = await fetchData(0);
+
+    if (isMounted()) {
+      setNotifications(newNotificationsData);
+    }
+  }, [fetchData, isMounted]);
+
+  useEffect(() => {
+    if (reactOnUpdates) {
+      document.addEventListener(
+        NOTIFICATIONS_UPDATED,
+        handleUpdates as EventListener
+      );
+    }
+
+    return () =>
+      document.removeEventListener(
+        NOTIFICATIONS_UPDATED,
+        handleUpdates as EventListener
+      );
+  }, [handleUpdates, reactOnUpdates]);
+
   const handleUpdate = useCallback(
     async (id, { isRead, isMuted, isArchived }) => {
       const publicKey = await nearService?.getPublicKey();
@@ -277,9 +308,11 @@ export function useNotificationsList(
             return item;
           }),
         });
+
+        triggerUpdate();
       }
     },
-    [accountId, isMounted, notifications, nearService]
+    [nearService, accountId, isMounted, notifications, triggerUpdate]
   );
 
   const handleUpdateAll = useCallback(
@@ -294,6 +327,7 @@ export function useNotificationsList(
             publicKey,
             signature,
           });
+          triggerUpdate();
         } else if (action === 'ARCHIVE') {
           await NotificationsService.archiveAllNotifications({
             accountId,
@@ -305,7 +339,7 @@ export function useNotificationsList(
         await loadMore(0);
       }
     },
-    [accountId, loadMore, isMounted, nearService]
+    [nearService, accountId, isMounted, loadMore, triggerUpdate]
   );
 
   const handleRemove = useCallback(
@@ -332,9 +366,11 @@ export function useNotificationsList(
           isMuted,
           isArchived,
         });
+
+        triggerUpdate();
       }
     },
-    [accountId, isMounted, notifications, nearService]
+    [nearService, accountId, isMounted, notifications, triggerUpdate]
   );
 
   return {
@@ -344,4 +380,45 @@ export function useNotificationsList(
     handleUpdate,
     handleUpdateAll,
   };
+}
+
+export function useNotificationsCount(): number | null {
+  const isMounted = useMountedState();
+  const { accountId } = useAuthContext();
+  const [counter, setCounter] = useState<number | null>(null);
+
+  const [, fetchData] = useAsyncFn(async () => {
+    try {
+      const count = await NotificationsService.getNotificationsCount(accountId);
+
+      if (isMounted()) {
+        setCounter(count);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, [accountId, isMounted]);
+
+  const handleUpdates = useCallback(async () => {
+    await fetchData();
+  }, [fetchData]);
+
+  useMount(async () => {
+    await fetchData();
+  });
+
+  useEffect(() => {
+    document.addEventListener(
+      NOTIFICATIONS_UPDATED,
+      handleUpdates as EventListener
+    );
+
+    return () =>
+      document.removeEventListener(
+        NOTIFICATIONS_UPDATED,
+        handleUpdates as EventListener
+      );
+  }, [handleUpdates]);
+
+  return counter;
 }

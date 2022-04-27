@@ -6,11 +6,7 @@ import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs'
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
 import { DaosTopList } from 'astro_2.0/features/Discover/components/DaosTopList';
 
-import {
-  LeaderboardData,
-  TControlTab,
-} from 'astro_2.0/features/Discover/types';
-import { ChartDataElement } from 'components/AreaChartRenderer/types';
+import { TControlTab } from 'astro_2.0/features/Discover/types';
 
 import { LIMIT } from 'services/DaoStatsService';
 import { useDaoStatsContext } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
@@ -21,6 +17,7 @@ import {
   UsersAndActivityTabs,
 } from 'astro_2.0/features/Discover/constants';
 import { ChartInterval } from 'astro_2.0/features/Discover/components/ChartInterval';
+import { useDiscoveryState } from 'astro_2.0/features/Discover/hooks';
 
 import { dFormatter } from 'utils/format';
 import useQuery from 'hooks/useQuery';
@@ -35,10 +32,6 @@ export const UsersAndActivity: FC = () => {
   const { t } = useTranslation();
   const { daoStatsService } = useDaoStatsContext();
   const [data, setData] = useState<Users | null>(null);
-  const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
-  const [leaderboardData, setLeaderboardData] = useState<
-    LeaderboardData[] | null
-  >(null);
 
   const { query } = useQuery<{ dao: string }>();
 
@@ -132,9 +125,18 @@ export const UsersAndActivity: FC = () => {
     query.dao,
     t,
   ]);
-  const [activeView, setActiveView] = useState(items[0].id);
-  const [offset, setOffset] = useState(0);
-  const [total, setTotal] = useState(0);
+  const {
+    setOffset,
+    setTotal,
+    total,
+    offset,
+    leaderboardData,
+    setLeaderboardData,
+    chartData,
+    setChartData,
+    resetData,
+    activeView,
+  } = useDiscoveryState(items);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -142,13 +144,9 @@ export const UsersAndActivity: FC = () => {
         return;
       }
 
-      setChartData(null);
-      setLeaderboardData(null);
-      setTotal(0);
-      setOffset(0);
-      setActiveView(id);
+      resetData(id);
     },
-    [isMounted]
+    [resetData, isMounted]
   );
 
   useEffect(() => {

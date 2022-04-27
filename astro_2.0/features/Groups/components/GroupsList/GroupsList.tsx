@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import { NavLink } from 'astro_2.0/components/NavLink';
-import { Badge } from 'components/Badge';
+import { Badge, getBadgeVariant } from 'components/Badge';
 import { useTranslation } from 'next-i18next';
 
 import styles from './GroupsList.module.scss';
@@ -29,7 +29,7 @@ export const GroupsList: React.FC<GroupsListProps> = ({
               className={styles.link}
               href={`/dao/${daoId}/groups/${group}`}
             >
-              <Badge key={group} size="small" variant="turqoise">
+              <Badge key={group} size="small" variant={getBadgeVariant(group)}>
                 {group}
               </Badge>
             </NavLink>

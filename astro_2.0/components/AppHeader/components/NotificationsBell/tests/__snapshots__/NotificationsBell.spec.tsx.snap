@@ -8,12 +8,17 @@ exports[`notifications bell Should render component if feature flag is true and 
   >
     <svg
       class="bell"
-      data-testid="no-notifications-icon"
+      data-testid="notifications-icon"
     >
       <use
         href="/_next/undefined"
       />
     </svg>
+    <div
+      class="notificationsCount"
+    >
+      5
+    </div>
   </div>
   <div
     class="root"

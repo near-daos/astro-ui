@@ -15,7 +15,7 @@ interface Step {
 }
 
 interface CreationProgressProps {
-  steps: Step[];
+  steps: Step[] | null;
   className?: string;
   onItemClick?: (value: string) => void;
 }
@@ -42,6 +42,10 @@ export const CreationProgress: VFC<CreationProgressProps> = ({
       });
     }
   }, [steps, isMobile]);
+
+  if (!steps) {
+    return null;
+  }
 
   return (
     <div className={cn(className, styles.root)}>
