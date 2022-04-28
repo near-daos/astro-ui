@@ -28,8 +28,8 @@ export type NearConfig = {
 };
 
 export const getNearConfig = (config: Config): NearConfig => {
-  const CONTRACT_NAME = config.NEAR_CONTRACT_NAME;
-  const env = config.NEAR_ENV;
+  const CONTRACT_NAME = config?.NEAR_CONTRACT_NAME ?? 'sputnikv2.testnet';
+  const env = config?.NEAR_ENV ?? 'development';
 
   switch (env) {
     case 'production':
