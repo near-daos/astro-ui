@@ -7,6 +7,7 @@ import { formatGasValue } from 'utils/format';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 import { CreateTokenInput } from 'astro_2.0/features/CreateProposal/types';
+import { configService } from 'services/ConfigService';
 
 export type CustomFunctionCallInput = {
   smartContractAddress: string;
@@ -24,6 +25,7 @@ export function getUpgradeCodeProposal(
   data: Record<string, string>
 ): CreateProposalParams {
   const { versionHash, details, externalUrl } = data;
+  const { appConfig } = configService.get();
 
   const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 
@@ -36,7 +38,7 @@ export function getUpgradeCodeProposal(
     description: proposalDescription,
     kind: 'FunctionCall',
     data: {
-      receiver_id: dao.id,
+      receiver_id: appConfig.NEAR_CONTRACT_NAME,
       actions: [
         {
           method_name: 'store_contract_self',
@@ -55,6 +57,7 @@ export function getRemoveUpgradeCodeProposal(
   data: Record<string, string>
 ): CreateProposalParams {
   const { versionHash, details, externalUrl } = data;
+  const { appConfig } = configService.get();
 
   const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 
@@ -67,7 +70,7 @@ export function getRemoveUpgradeCodeProposal(
     description: proposalDescription,
     kind: 'FunctionCall',
     data: {
-      receiver_id: dao.id,
+      receiver_id: appConfig.NEAR_CONTRACT_NAME,
       actions: [
         {
           method_name: 'remove_contract_self',

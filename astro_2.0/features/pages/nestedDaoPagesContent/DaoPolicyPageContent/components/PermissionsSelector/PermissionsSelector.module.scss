@@ -8,17 +8,24 @@
   display: flex;
   flex-direction: column;
   max-width: 100%;
-  padding: 36px 40px;
+  padding: 24px;
   width: 100%;
 
   @include tablet-landscape {
     margin: 0;
+    padding: 36px 40px;
   }
 }
 
 .header {
-  align-items: center;
   display: flex;
+  flex-direction: column;
+
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
+  }
+
   .title {
     @extend %heading2;
     line-height: 24px;
@@ -39,7 +46,11 @@
 .content {
   display: grid;
   grid-template-columns: 160px 1fr;
-  margin-top: 24px;
+  margin: 24px -12px;
+
+  @include tablet-landscape {
+    margin: 24px 0;
+  }
 }
 
 .legend {

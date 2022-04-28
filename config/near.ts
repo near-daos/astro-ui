@@ -1,4 +1,5 @@
-const CONTRACT_NAME = 'sputnikv2.testnet';
+import { Config } from 'types/config';
+
 const TOKEN_CONTRACT_NAME = 'tokens.testnet';
 
 export type NEAR_ENV =
@@ -26,8 +27,10 @@ export type NearConfig = {
   headers: { [key: string]: string | number };
 };
 
-export const getNearConfig = (env: NEAR_ENV): NearConfig => {
-  switch (env) {
+export const getNearConfig = (config: Config): NearConfig => {
+  const CONTRACT_NAME = config.NEAR_CONTRACT_NAME;
+
+  switch (config.NEAR_ENV) {
     case 'production':
     case 'mainnet':
       return {
@@ -97,7 +100,7 @@ export const getNearConfig = (env: NEAR_ENV): NearConfig => {
       };
     default:
       throw Error(
-        `Unconfigured environment '${env}'. Can be configured in src/config.ts.`
+        `Unconfigured environment '${config.NEAR_ENV}'. Can be configured in src/config.ts.`
       );
   }
 };

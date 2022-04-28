@@ -15,6 +15,7 @@ import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ActionButton } from 'astro_2.0/components/ActionButton';
 import * as Typography from 'components/Typography';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
+import { Icon } from 'components/Icon';
 
 import { shortenString } from 'utils/format';
 import { formatCurrency } from 'utils/formatCurrency';
@@ -73,14 +74,24 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
             <div>
               <section className={styles.general}>
                 <div className={styles.flagWrapper}>
-                  <div
-                    className={cn(styles.flag, {
-                      [styles.scaled]: !flagLogo && !!oldFlag,
-                    })}
-                    style={{
-                      backgroundImage: `url(${flagLogo || oldFlag})`,
-                    }}
-                  />
+                  {flagLogo ? (
+                    <div
+                      className={cn(styles.flag, {
+                        [styles.scaled]: !flagLogo && !!oldFlag,
+                      })}
+                      style={{
+                        backgroundImage: `url(${flagLogo || oldFlag})`,
+                      }}
+                    />
+                  ) : (
+                    <div className={styles.logo}>
+                      <Icon
+                        name="defaultDaoLogo"
+                        className={styles.defaultLogo}
+                        width={24}
+                      />
+                    </div>
+                  )}
                 </div>
                 <div className={styles.title}>
                   <ExplorerLink
