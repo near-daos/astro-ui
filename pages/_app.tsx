@@ -6,7 +6,7 @@ import nextI18NextConfig from 'next-i18next.config';
 import type { AppContext, AppProps } from 'next/app';
 import { withLDProvider } from 'launchdarkly-react-client-sdk';
 import { appConfig as applicationConfig } from 'config';
-import { configService } from 'services/ConfigService';
+// import { configService } from 'services/ConfigService';
 import { useRouter } from 'next/router';
 import { ALL_FEED_URL, MY_FEED_URL } from 'constants/routing';
 
@@ -30,7 +30,7 @@ import 'styles/globals.scss';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
-  const { appConfig } = configService.get();
+  // const { appConfig } = configService.get();
 
   useEffect(() => {
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
@@ -40,14 +40,14 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
 
   return (
     <>
-      {appConfig && (
+      {applicationConfig && (
         <>
           <Script
             strategy="lazyOnload"
-            src={gtag(appConfig.GOOGLE_ANALYTICS_KEY)}
+            src={gtag(applicationConfig.GOOGLE_ANALYTICS_KEY)}
           />
           <Script strategy="lazyOnload">
-            {gtagScript(appConfig.GOOGLE_ANALYTICS_KEY)}
+            {gtagScript(applicationConfig.GOOGLE_ANALYTICS_KEY)}
           </Script>
         </>
       )}
