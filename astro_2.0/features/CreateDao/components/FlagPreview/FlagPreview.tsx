@@ -22,13 +22,9 @@ export const FlagPreview: React.FC<FlagPreviewProps> = ({
   return (
     <>
       <div className={styles.root}>
-        <div className={styles.header}>
-          <h3>{t('createDAO.daoPreviewForm.daoPreviewHeader')}</h3>
-        </div>
-
         <div className={styles.titles}>
           <div className={styles.titleOut}>
-            {t('createDAO.daoPreviewForm.daoDashboard')}
+            {t('createDAO.daoPreviewForm.daoPreviewHeader')}
           </div>
         </div>
 

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
-import { Input } from 'components/inputs/Input';
+import { DebouncedInput } from 'components/inputs/Input';
 import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
 import { Group } from 'features/vote-policy/components/Group';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
@@ -45,12 +45,15 @@ export const RemoveMemberFromGroupContent: FC<ChangeDaoNameContentProps> = ({
           label={t('proposalCard.proposalTarget')}
           flex
         >
-          <Input
+          <DebouncedInput
             className={cn(styles.inputWrapper, styles.wide)}
             placeholder="someverylonglongname.near"
             isBorderless
             size="block"
             {...register('memberName')}
+            onValueChange={val =>
+              setValue('memberName', val, { shouldValidate: true })
+            }
           />
         </InputWrapper>
       </div>

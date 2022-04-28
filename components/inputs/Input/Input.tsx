@@ -1,23 +1,10 @@
 import cn from 'classnames';
-import { Property } from 'csstype';
 import { useId } from '@reach/auto-id';
-import React, { CSSProperties, ReactNode } from 'react';
+import React from 'react';
+
+import { InputProps } from 'components/inputs/Input/types';
 
 import styles from './Input.module.scss';
-
-interface InputProps
-  extends Omit<React.HTMLProps<HTMLInputElement>, 'size' | 'label'> {
-  label?: string | ReactNode;
-  description?: string | undefined;
-  isValid?: boolean | undefined;
-  inputSize?: number | undefined;
-  inputStyles?: CSSProperties;
-  size?: 'small' | 'medium' | 'large' | 'block' | 'content' | 'auto';
-  isBorderless?: boolean;
-  textAlign?: Property.TextAlign;
-  inputClassName?: string;
-  rightContent?: ReactNode;
-}
 
 function getStateClass(isValid: boolean | undefined) {
   if (isValid === undefined) {
