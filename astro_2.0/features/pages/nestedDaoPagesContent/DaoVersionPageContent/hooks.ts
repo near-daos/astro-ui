@@ -37,7 +37,7 @@ export function useCheckDaoUpgrade(
       return;
     }
 
-    if (!account) {
+    if (!account || !dao.daoVersion) {
       return;
     }
 
@@ -83,7 +83,7 @@ export function useCheckDaoUpgrade(
 
     setVersionHash(nextVersionHash[0]);
     setLoading(false);
-  }, [appConfig, dao.daoVersion.hash, nearService]);
+  }, [appConfig, dao.daoVersion, nearService]);
 
   useEffect(() => {
     (async () => {
