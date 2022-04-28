@@ -40,7 +40,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
 
   return (
     <>
-      {appConfig && (
+      {appConfig?.GOOGLE_ANALYTICS_KEY && (
         <>
           <Script
             strategy="lazyOnload"

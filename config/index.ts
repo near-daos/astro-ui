@@ -12,7 +12,7 @@ export const appConfig = {
   STATS_API_URL: process.env.STATS_API_URL,
   APP_DOMAIN: process.env.APP_DOMAIN,
   LAUNCHDARKLY_ID: process.env.NEXT_PUBLIC_LAUNCHDARKLY_ID,
-  NEAR_ENV: process.env.NEAR_ENV,
+  NEAR_ENV: process.env.NEAR_ENV || 'development',
 
   AWS_BUCKET: '',
   AWS_REGION: '',
@@ -20,5 +20,5 @@ export const appConfig = {
   RELEASE_NOTES: process.env.RELEASE_NOTES,
   I18_RELOAD_ON_PRERENDER: false,
   TOASTS_NOTIFICATIONS_TIMEOUT: 0,
-  NEAR_CONTRACT_NAME: process.env.NEAR_CONTRACT_NAME,
+  NEAR_CONTRACT_NAME: process.env.NEAR_CONTRACT_NAME || 'sputnikv2.testnet',
 };
