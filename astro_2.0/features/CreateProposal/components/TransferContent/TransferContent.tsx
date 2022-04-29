@@ -3,7 +3,7 @@ import cn from 'classnames';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 
-import { Input } from 'components/inputs/Input';
+import { DebouncedInput, Input } from 'components/inputs/Input';
 import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
 import { Icon } from 'components/Icon';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
@@ -110,12 +110,15 @@ export const TransferContent: FC = () => {
         label={t('proposalCard.proposalTarget')}
         flex
       >
-        <Input
+        <DebouncedInput
           className={cn(styles.inputWrapper, styles.wide)}
           placeholder={t('proposalCard.proposalTargetPlaceholder')}
           isBorderless
           size="block"
           {...register('target')}
+          onValueChange={val =>
+            setValue('target', val, { shouldValidate: true })
+          }
         />
       </InputWrapper>
     </div>

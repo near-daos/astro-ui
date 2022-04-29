@@ -33,11 +33,11 @@ export function useCheckDaoUpgrade(
     const account = nearService?.getAccount();
 
     // todo - remove before release
-    if (appConfig?.NEAR_ENV === 'mainnet') {
+    if (!appConfig || appConfig?.NEAR_ENV === 'mainnet') {
       return;
     }
 
-    if (!account) {
+    if (!account || !dao.daoVersion) {
       return;
     }
 
@@ -83,12 +83,7 @@ export function useCheckDaoUpgrade(
 
     setVersionHash(nextVersionHash[0]);
     setLoading(false);
-  }, [
-    appConfig.NEAR_CONTRACT_NAME,
-    appConfig?.NEAR_ENV,
-    dao.daoVersion.hash,
-    nearService,
-  ]);
+  }, [appConfig, dao.daoVersion, nearService]);
 
   useEffect(() => {
     (async () => {

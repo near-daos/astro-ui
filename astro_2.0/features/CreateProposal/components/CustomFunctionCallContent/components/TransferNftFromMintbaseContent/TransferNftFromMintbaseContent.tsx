@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
-import { Input } from 'components/inputs/Input';
+import { DebouncedInput, Input } from 'components/inputs/Input';
 
 import {
   DEFAULT_PROPOSAL_GAS,
@@ -16,7 +16,7 @@ import styles from './TransferNftFromMintbaseContent.module.scss';
 
 export const TransferNftFromMintbaseContent: FC = () => {
   const { t } = useTranslation();
-  const { register } = useFormContext();
+  const { register, setValue } = useFormContext();
 
   return (
     <div className={styles.root}>
@@ -57,12 +57,15 @@ export const TransferNftFromMintbaseContent: FC = () => {
           label={t('proposalCard.proposalTarget')}
           flex
         >
-          <Input
+          <DebouncedInput
             className={cn(styles.inputWrapper, styles.wide)}
             placeholder={t('proposalCard.proposalTargetPlaceholder')}
             isBorderless
             size="block"
             {...register('target')}
+            onValueChange={val =>
+              setValue('target', val, { shouldValidate: true })
+            }
           />
         </InputWrapper>
       </div>
