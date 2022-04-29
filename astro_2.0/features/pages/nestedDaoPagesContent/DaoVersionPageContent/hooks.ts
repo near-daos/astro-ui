@@ -37,7 +37,7 @@ export function useCheckDaoUpgrade(
       return;
     }
 
-    if (!account || !dao.daoVersion) {
+    if (!account) {
       return;
     }
 
@@ -66,20 +66,23 @@ export function useCheckDaoUpgrade(
     });
 
     // todo - temp!!!
-    // if (dao.daoVersion?.hash) {
-    //   setVersionHash(dao.daoVersion.hash);
-    // }
+    if (dao.daoVersion?.hash) {
+      setVersionHash(dao.daoVersion.hash);
+    }
 
-    if (hash === dao.daoVersion.hash) {
+    if (hash === dao.daoVersion?.hash) {
       setLoading(false);
 
       return;
     }
 
     const currentVersionHashIndex = sortedMeta.findIndex(
-      meta => meta[0] === dao.daoVersion.hash
+      meta => meta[0] === dao.daoVersion?.hash
     );
-    const nextVersionHash = sortedMeta[currentVersionHashIndex + 1];
+    const nextVersionHash =
+      currentVersionHashIndex === -1
+        ? sortedMeta[0]
+        : sortedMeta[currentVersionHashIndex + 1];
 
     setVersionHash(nextVersionHash[0]);
     setLoading(false);
