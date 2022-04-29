@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "rm -rf .next && NODE_OPTIONS='--inspect' next dev -p 8080",
-    "build": "next build",
+    "build": "rm -rf .next && next build",
     "start": "next start",
     "lint": "next lint",
     "commit": "cz",

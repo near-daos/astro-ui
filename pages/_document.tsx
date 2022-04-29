@@ -9,6 +9,10 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Open+Sans:wght@400;600;700&family=Roboto:wght@700&family=Rubik:wght@500&display=swap"
+          />
           <script
             dangerouslySetInnerHTML={{
               __html: APP_CONFIG,
