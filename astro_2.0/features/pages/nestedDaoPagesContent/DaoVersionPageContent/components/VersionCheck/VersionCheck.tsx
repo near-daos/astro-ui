@@ -65,7 +65,7 @@ export const VersionCheck: FC<VersionCheckProps> = ({
         </>
       ) : null}
 
-      {!loading && version ? (
+      {!loading && version?.current ? (
         <div>
           <div className={styles.version}>
             <div className={styles.date}>
@@ -73,11 +73,16 @@ export const VersionCheck: FC<VersionCheckProps> = ({
             </div>
             <div className={styles.number}>N {version.current.number}</div>
           </div>
+        </div>
+      ) : null}
+
+      {!loading && version?.next?.number ? (
+        <>
+          <div className={styles.title}>Next available version</div>
           <div className={styles.version}>
-            <div className={styles.date}>Next {version.next.date}</div>
             <div className={styles.number}>N {version.next.number}</div>
           </div>
-        </div>
+        </>
       ) : null}
 
       {!loading && version === null && (

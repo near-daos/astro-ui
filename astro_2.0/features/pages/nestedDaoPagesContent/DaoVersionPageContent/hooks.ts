@@ -32,68 +32,64 @@ export function useCheckDaoUpgrade(
   const [version, setVersion] = useState<Version | null>(null);
 
   const getUpgradeInfo = useCallback(async () => {
-    const account = nearService?.getAccount();
+    try {
+      const account = nearService?.getAccount();
 
-    // todo - remove before release
-    if (!appConfig || appConfig?.NEAR_ENV === 'mainnet') {
-      return;
-    }
-
-    if (!account) {
-      return;
-    }
-
-    const contract = new Contract(account, appConfig.NEAR_CONTRACT_NAME, {
-      viewMethods: ['get_default_code_hash', 'get_contracts_metadata'],
-      changeMethods: [],
-    }) as ExtendedContract;
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // const [hash, metadata] = await Promise.all([
-    //   // contract.get_default_code_hash(),
-    //   contract.get_contracts_metadata(),
-    // ]);
-
-    const metadata = await contract.get_contracts_metadata();
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const sortedMeta = metadata.sort((v1, v2) => {
-      if (v1[1].version > v2[1].version) {
-        return 1;
+      // todo - remove before release
+      if (!appConfig || appConfig?.NEAR_ENV === 'mainnet') {
+        return;
       }
 
-      if (v1[1].version < v2[1].version) {
-        return -1;
+      if (!account) {
+        return;
       }
 
-      return 0;
-    });
+      const contract = new Contract(account, appConfig.NEAR_CONTRACT_NAME, {
+        viewMethods: ['get_default_code_hash', 'get_contracts_metadata'],
+        changeMethods: [],
+      }) as ExtendedContract;
 
-    // todo - temp!!!
-    // if (dao.daoVersion?.hash) {
-    //   setVersionHash(dao.daoVersion.hash);
-    // }
+      const metadata = await contract.get_contracts_metadata();
 
-    // console.log(dao.daoVersion?.hash, sortedMeta);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const sortedMeta = metadata.sort((v1, v2) => {
+        if (v1[1].version > v2[1].version) {
+          return 1;
+        }
 
-    const currentVersionHashIndex = sortedMeta.findIndex(
-      meta => meta[0] === dao.daoVersion?.hash
-    );
-    const nextVersion =
-      currentVersionHashIndex === -1
-        ? sortedMeta[0]
-        : sortedMeta[currentVersionHashIndex + 1];
+        if (v1[1].version < v2[1].version) {
+          return -1;
+        }
 
-    const hash = nextVersion[0];
+        return 0;
+      });
 
-    if (hash === dao.daoVersion?.hash) {
+      // todo - temp!!!
+      // if (dao.daoVersion?.hash) {
+      //   setVersionHash(dao.daoVersion.hash);
+      // }
+
+      const currentVersionHashIndex = sortedMeta.findIndex(
+        meta => meta[0] === dao.daoVersion?.hash
+      );
+      const nextVersion =
+        currentVersionHashIndex === -1
+          ? sortedMeta[0]
+          : sortedMeta[currentVersionHashIndex + 1];
+
+      const hash = nextVersion[0];
+
+      if (hash === dao.daoVersion?.hash) {
+        setLoading(false);
+
+        return;
+      }
+
+      setVersion(nextVersion);
       setLoading(false);
-
-      return;
+    } catch (e) {
+      setLoading(false);
     }
-
-    setVersion(nextVersion);
-    setLoading(false);
   }, [appConfig, dao.daoVersion, nearService]);
 
   useEffect(() => {

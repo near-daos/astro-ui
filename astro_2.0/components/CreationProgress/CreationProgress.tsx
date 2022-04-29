@@ -50,12 +50,7 @@ export const CreationProgress: VFC<CreationProgressProps> = ({
         const { label, value, isCurrent, isComplete } = step;
 
         const complete = !!(
-          isComplete ||
-          steps.find(
-            (item, i) =>
-              (index <= i && item.isComplete) ||
-              (i === index - 1 && item.isComplete)
-          )
+          isComplete || steps.find((item, i) => index <= i && item.isComplete)
         );
 
         return (

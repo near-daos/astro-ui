@@ -49,7 +49,6 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
         number: daoVersion.version.join('.'),
       },
       next: {
-        date: format(parseISO(daoVersion.createdAt), 'dd MMM yyyy, hh:mm aaa'),
         number: version ? version[1].version.join('.') : '',
       },
     };
