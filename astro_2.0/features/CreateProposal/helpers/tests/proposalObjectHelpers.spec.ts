@@ -1,11 +1,16 @@
 import { DAO } from 'types/dao';
+import { CreateTokenInput } from 'astro_2.0/features/CreateProposal/types';
 
 import {
   BuyNftFromParasInput,
   BuyNftFromMintbaseInput,
   CustomFunctionCallInput,
   getSwapsOnRefProposal,
+  getUpgradeSelfProposal,
+  getUpgradeCodeProposal,
+  getCreateTokenProposal,
   getBuyNftFromParasProposal,
+  getRemoveUpgradeCodeProposal,
   getBuyNftFromMintbaseProposal,
   getCustomFunctionCallProposal,
   getTransferMintbaseNFTProposal,
@@ -186,6 +191,115 @@ describe('proposalObjectHelpers', () => {
         },
         description: 'some details$$$$external url',
         kind: 'FunctionCall',
+      });
+    });
+  });
+
+  describe('getUpgradeCodeProposal', () => {
+    it('Should return proposal', () => {
+      const data = {
+        versionHash: 'versionHash',
+        details: 'details',
+        externalUrl: 'externalUrl',
+      };
+
+      const result = getUpgradeCodeProposal(dao, data);
+
+      expect(result).toEqual({
+        daoId: 'legaldao.sputnikv2.testnet',
+        description: 'details$$$$externalUrl',
+        kind: 'FunctionCall',
+        data: {
+          receiver_id: 'sputnikv2.testnet',
+          actions: [
+            {
+              method_name: 'store_contract_self',
+              args: 'eyJjb2RlX2hhc2giOiJ2ZXJzaW9uSGFzaCJ9',
+              deposit: '6000000000000000000000000',
+              gas: '220000000000000',
+            },
+          ],
+        },
+        bond: '100000000000000000000000',
+      });
+    });
+  });
+
+  describe('getRemoveUpgradeCodeProposal', () => {
+    it('Should return proposal', () => {
+      const data = {
+        versionHash: 'versionHash',
+        details: 'details',
+        externalUrl: 'externalUrl',
+      };
+
+      const result = getRemoveUpgradeCodeProposal(dao, data);
+
+      expect(result).toEqual({
+        daoId: 'legaldao.sputnikv2.testnet',
+        description: 'details$$$$externalUrl',
+        kind: 'FunctionCall',
+        data: {
+          receiver_id: 'sputnikv2.testnet',
+          actions: [
+            {
+              method_name: 'remove_contract_self',
+              args: 'eyJjb2RlX2hhc2giOiJ2ZXJzaW9uSGFzaCJ9',
+              deposit: '0',
+              gas: '220000000000000',
+            },
+          ],
+        },
+        bond: '100000000000000000000000',
+      });
+    });
+  });
+
+  describe('getUpgradeSelfProposal', () => {
+    it('Should return proposal', () => {
+      const data = {
+        versionHash: 'versionHash',
+        details: 'details',
+        externalUrl: 'externalUrl',
+      };
+
+      const result = getUpgradeSelfProposal(dao, data);
+
+      expect(result).toEqual({
+        daoId: 'legaldao.sputnikv2.testnet',
+        description: 'details$$$$externalUrl',
+        kind: 'UpgradeSelf',
+        data: { hash: 'versionHash' },
+        bond: '100000000000000000000000',
+      });
+    });
+  });
+
+  describe('getCreateTokenProposal', () => {
+    it('Should return proposal', async () => {
+      const data = {
+        details: 'details',
+        externalUrl: 'externalUrl',
+      } as CreateTokenInput;
+
+      const result = await getCreateTokenProposal(dao, data);
+
+      expect(result).toEqual({
+        daoId: 'legaldao.sputnikv2.testnet',
+        description: 'details$$$$externalUrl',
+        kind: 'FunctionCall',
+        data: {
+          receiver_id: 'legaldao.sputnikv2.testnet',
+          actions: [
+            {
+              args: 'e30=',
+              deposit: '6000000000000000000000000',
+              gas: '220000000000000',
+              method_name: 'store_contract_self',
+            },
+          ],
+        },
+        bond: '100000000000000000000000',
       });
     });
   });

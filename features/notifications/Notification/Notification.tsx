@@ -1,7 +1,9 @@
 import React from 'react';
 import cn from 'classnames';
+
 import { dispatchCustomEvent } from 'utils/dispatchCustomEvent';
-import { Icon, IconName } from 'components/Icon';
+
+import { Icon } from 'components/Icon';
 
 import { HIDE_NOTIFICATION_EVENT } from 'constants/common';
 
@@ -22,19 +24,6 @@ export const Notification: React.FC<NotificationProps> = props => {
     [s.flat]: flat,
   });
 
-  function getIconName(): IconName {
-    switch (type) {
-      case NOTIFICATION_TYPES.SUCCESS:
-        return 'info';
-      case NOTIFICATION_TYPES.ERROR:
-        return 'info';
-      case NOTIFICATION_TYPES.INFO:
-        return 'info';
-      default:
-        return 'info';
-    }
-  }
-
   function onCloseClick() {
     dispatchCustomEvent(HIDE_NOTIFICATION_EVENT, { id });
   }
@@ -52,7 +41,7 @@ export const Notification: React.FC<NotificationProps> = props => {
           [s.info]: type === NOTIFICATION_TYPES.INFO,
         })}
       >
-        <Icon name={getIconName()} width={18} />
+        <Icon name="info" width={18} />
       </div>
       <div className={s.content}>
         {renderTag()}
@@ -63,6 +52,7 @@ export const Notification: React.FC<NotificationProps> = props => {
         className={s.closeIcon}
         onClick={onCloseClick}
         width={18}
+        data-testid="agn-close-button"
       />
     </div>
   );
