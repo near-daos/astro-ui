@@ -8,7 +8,7 @@ import { ExplorerLink } from 'components/ExplorerLink';
 import { Vote } from 'features/types';
 import { formatTimestampAsDate } from 'utils/format';
 
-import styles from './voter-details-card.module.scss';
+import styles from './VoterDetailsCard.module.scss';
 
 const GroupsRenderer = dynamic(
   import('components/cards/member-card/GroupsRenderer'),

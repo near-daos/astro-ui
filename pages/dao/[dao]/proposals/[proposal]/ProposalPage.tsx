@@ -15,7 +15,7 @@ import { getProposalScope } from 'utils/getProposalScope';
 import { getVoteDetails } from 'features/vote-policy/helpers';
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 
-import { VotersList } from 'features/proposal/components/voters-list';
+import { VotersList } from 'features/proposal/components/VotersList';
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 

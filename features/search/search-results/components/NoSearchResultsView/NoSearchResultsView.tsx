@@ -11,7 +11,7 @@ interface NoSearchResultsViewProps {
 export const NoSearchResultsView: FC<NoSearchResultsViewProps> = ({
   query,
 }) => {
-  const title = query ? 'No results' : `No results for ${query}`;
+  const title = query ? `No results for ${query}` : 'No results';
 
   return (
     <NoResultsView

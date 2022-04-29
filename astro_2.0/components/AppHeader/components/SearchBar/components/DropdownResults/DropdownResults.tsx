@@ -7,7 +7,7 @@ import { useAuthContext } from 'context/AuthContext';
 import { SEARCH_PAGE_URL } from 'constants/routing';
 
 import { useSearchResults } from 'features/search/search-results';
-import { NoSearchResultsView } from 'features/search/search-results/components/no-search-results-view';
+import { NoSearchResultsView } from 'features/search/search-results/components/NoSearchResultsView';
 
 import {
   ResultSection,

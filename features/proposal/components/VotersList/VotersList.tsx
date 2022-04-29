@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { VoterDetail } from 'features/types';
-import { VoterDetailsCard } from 'features/proposal/components/voter-details-card';
+import { VoterDetailsCard } from 'features/proposal/components/VoterDetailsCard';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
-import styles from './voters-list.module.scss';
+import styles from './VotersList.module.scss';
 
 interface VotersListProps {
   data: VoterDetail[];
