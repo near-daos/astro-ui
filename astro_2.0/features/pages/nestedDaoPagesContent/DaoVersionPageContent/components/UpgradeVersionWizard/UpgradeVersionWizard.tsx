@@ -118,6 +118,18 @@ export const UpgradeVersionWizard: FC<Props> = ({
         <CreationProgress steps={steps} />
       </div>
       <div className={styles.content}>
+        <button
+          tabIndex={-1}
+          type="button"
+          onClick={async e => {
+            if (e.shiftKey) {
+              await handleViewProposalReject();
+            }
+          }}
+          className={styles.hidden}
+        >
+          Reset steps
+        </button>
         {isViewProposal && proposal && (
           <ViewStepProposal
             isLastStep={

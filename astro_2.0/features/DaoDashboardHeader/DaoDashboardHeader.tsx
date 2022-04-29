@@ -56,9 +56,9 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
   const { accountId } = useAuthContext();
   const { t } = useTranslation();
   const isMobileOrTablet = useMedia('(max-width: 767px)');
-  const { versionHash } = useCheckDaoUpgrade(dao);
+  const { version } = useCheckDaoUpgrade(dao);
   const isUpgradeAvailable =
-    versionHash &&
+    version &&
     userPermissions.isCanCreateProposals &&
     userPermissions.allowedProposalsToCreate[ProposalType.UpgradeSelf];
 
