@@ -3,19 +3,26 @@
 exports[`App Footer Should render AppFooter component 1`] = `
 <div>
   <div
-    class=""
+    class="root"
     role="button"
     tabindex="0"
   >
-    <div>
-      <div>
-        <div>
+    <div
+      class="side"
+    >
+      <div
+        class="wrapper"
+      >
+        <div
+          class="social"
+        >
           <a
             href="https://twitter.com/AstroDao"
             rel="noopener noreferrer"
             target="_blank"
           >
             <svg
+              class="icon"
               width="24"
             >
               <use
@@ -29,6 +36,7 @@ exports[`App Footer Should render AppFooter component 1`] = `
             target="_blank"
           >
             <svg
+              class="icon"
               width="24"
             >
               <use
@@ -42,6 +50,7 @@ exports[`App Footer Should render AppFooter component 1`] = `
             target="_blank"
           >
             <svg
+              class="icon"
               width="24"
             >
               <use
@@ -51,14 +60,18 @@ exports[`App Footer Should render AppFooter component 1`] = `
           </a>
         </div>
         <a
+          class="devLink"
           href="https://github.com/near-daos/astro-ui/discussions"
           rel="noreferrer noopener"
           target="_blank"
         >
           components.appFooter.askQuestion
         </a>
-        <div>
+        <div
+          class="version"
+        >
           <a
+            class="devLink"
             href="https://github.com/near-daos/astro-ui/issues"
             rel="noreferrer noopener"
             target="_blank"
@@ -66,8 +79,11 @@ exports[`App Footer Should render AppFooter component 1`] = `
             reportAnIssue
           </a>
         </div>
-        <div>
+        <div
+          class="repo"
+        >
           <a
+            class="devLink"
             href="https://github.com/near-daos/astro-ui"
             rel="noreferrer noopener"
             target="_blank"
@@ -75,6 +91,7 @@ exports[`App Footer Should render AppFooter component 1`] = `
             components.appFooter.githubRepo
           </a>
           <a
+            class="devLink"
             href="https://testnet.app.astrodao.com/"
             rel="noreferrer noopener"
             target="_blank"
@@ -82,6 +99,7 @@ exports[`App Footer Should render AppFooter component 1`] = `
             Testnet env
           </a>
           <a
+            class="devLink"
             href="https://api.app.astrodao.com/docs/#/"
             rel="noreferrer noopener"
             target="_blank"
@@ -89,20 +107,28 @@ exports[`App Footer Should render AppFooter component 1`] = `
             Swagger API
           </a>
         </div>
-        <div>
+        <div
+          class="copyright"
+        >
           components.appFooter.opensourceAsIs
           <br />
           components.appFooter.communityDeveloped
         </div>
-        <div>
+        <div
+          class="terms"
+        >
           <a
+            class="devLink"
             href="/terms-conditions"
           >
             termsAndConditions
           </a>
         </div>
-        <div>
+        <div
+          class="release"
+        >
           <a
+            class="devLink"
             href=""
             rel="noreferrer noopener"
             target="_blank"
@@ -110,13 +136,18 @@ exports[`App Footer Should render AppFooter component 1`] = `
             releaseNotes
           </a>
         </div>
-        <div>
-          <div>
+        <div
+          class="locale"
+        >
+          <div
+            class="root"
+          >
             <div>
               <div
-                class=""
+                class="selector"
               >
                 <img
+                  class="flag"
                   data-testid="circle-country-flag"
                   height="100"
                   src="https://hatscripts.github.io/circle-flags/flags/us.svg"

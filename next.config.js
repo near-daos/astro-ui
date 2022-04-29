@@ -7,6 +7,7 @@ module.exports = (phase, { defaultConfig }) => {
   const plugins = [svgSprite, cssLoaderConfig];
 
   const transformers = [];
+
   const nextConfig = plugins.reduce(
     (acc, next) => {
       const nextConfig = next(acc);
@@ -18,6 +19,7 @@ module.exports = (phase, { defaultConfig }) => {
     },
     {
       ...defaultConfig,
+      swcMinify: true,
       reactStrictMode: true,
       images: {
         domains: [
@@ -39,8 +41,14 @@ module.exports = (phase, { defaultConfig }) => {
           },
         ];
       },
-      target: 'experimental-serverless-trace',
+      /* experimental: {
+        outputStandalone: true,
+      },*/
       i18n,
+      publicRuntimeConfig: {
+        shouldUseExternalAssetUrl: process.env.NODE_ENV === 'production',
+        assetUrl: '/_next/static/sprite.svg',
+      },
     }
   );
 

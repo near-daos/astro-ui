@@ -1,4 +1,5 @@
 import React from 'react';
+import getConfig from 'next/config';
 
 import * as icons from 'assets/icons';
 
@@ -10,12 +11,20 @@ export type IconProps = React.SVGProps<SVGSVGElement> & {
 };
 
 export const Icon: React.VFC<IconProps> = ({ name, title, ...svgProps }) => {
-  const { viewBox, url } = icons[name];
+  const { viewBox, id, url } = icons[name];
+
+  const config = getConfig();
 
   return (
     <svg viewBox={viewBox} {...svgProps}>
       {title && <title> {title}</title>}
-      <use href={`/_next/${url}`} />
+      <use
+        href={
+          config?.publicRuntimeConfig?.shouldUseExternalAssetUrl
+            ? `${config?.publicRuntimeConfig?.assetUrl}#${id}`
+            : `/_next/${url}`
+        }
+      />
     </svg>
   );
 };

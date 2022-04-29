@@ -1,39 +1,11 @@
 {
   "name": "astro",
-  "jest": {
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/jest/__mocks__/fileMock.js",
-      "\\.(css|scss)$": "<rootDir>/jest/__mocks__/styleMock.js"
-    },
-    "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": [
-      "./setupTests.ts"
-    ],
-    "moduleDirectories": [
-      "node_modules",
-      "."
-    ],
-    "collectCoverageFrom": [
-      "astro_2.0/**/*.{ts,tsx}",
-      "components/**/*.{ts,tsx}",
-      "context/**/*.{ts,tsx}",
-      "errors/**/*.{ts,tsx}",
-      "features/**/*.{ts,tsx}",
-      "helpers/**/*.{ts,tsx}",
-      "hooks/**/*.{ts,tsx}",
-      "pages/**/*.{ts,tsx}",
-      "services/**/*.{ts,tsx}",
-      "utils/**/*.{ts,tsx}",
-      "!**/index.ts",
-      "!**/types/*.ts",
-      "!**/tests/*.{ts,tsx}"
-    ]
-  },
+  "jest": {},
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "rm -rf .next && NODE_OPTIONS='--inspect' next dev -p 8080",
-    "build": "next build",
+    "build": "rm -rf .next && next build",
     "start": "next start",
     "lint": "next lint",
     "commit": "cz",
@@ -47,10 +19,10 @@
     "test:loud": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "generate-assets": "patch-package && yarn generate-assets-index",
+    "generate-assets": "yarn generate-assets-index",
     "prebuild": "yarn generate-assets",
-    "postinstall": "[ ! -d \"./scripts\" ] || yarn generate-assets",
-    "generate-assets-index": "[ -f \"./scripts/generateAssetsIndex.js\" ] && node scripts/generateAssetsIndex.js",
+    "postinstall": "yarn generate-assets",
+    "generate-assets-index": "node scripts/generateAssetsIndex.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -85,10 +57,11 @@
     "mark.js": "^8.11.1",
     "nanoid": "^3.1.23",
     "near-api-js": "^0.44.2",
-    "next": "11.0.1",
+    "next": "^12.1.0",
     "next-i18next": "10.0.1",
     "next-optimized-images": "^2.6.2",
     "next-plugin-svgr": "^1.0.0",
+    "next-router-mock": "^0.6.7",
     "nookies": "^2.5.2",
     "react": "17.0.2",
     "react-ace": "^9.4.3",
@@ -118,8 +91,10 @@
     "sanitize.css": "^12.0.1",
     "socket.io-client": "2.4.0",
     "svg-sprite-loader": "^6.0.9",
+    "svgo": "^2.8.0",
     "svgo-loader": "^3.0.0",
     "swr": "^1.0.1",
+    "ts-async-decorators": "^0.3.0",
     "uniqid": "^5.4.0",
     "utf-8-validate": "^5.0.7",
     "victory": "^35.9.0",
@@ -142,6 +117,10 @@
       "stylelint --quiet --syntax=scss --fix",
       "prettier --write"
     ]
+  },
+  "resolutions": {
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",

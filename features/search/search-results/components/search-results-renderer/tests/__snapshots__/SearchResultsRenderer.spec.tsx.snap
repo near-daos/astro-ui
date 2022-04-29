@@ -2,9 +2,15 @@
 
 exports[`SearchResultsRenderer Should render component 1`] = `
 <div>
-  <div>
-    <div>
-      <span>
+  <div
+    class="root"
+  >
+    <div
+      class="header"
+    >
+      <span
+        class="secondaryLabel"
+      >
         results for
       </span>
       <span>
@@ -13,26 +19,28 @@ exports[`SearchResultsRenderer Should render component 1`] = `
         ’
       </span>
     </div>
-    <div>
+    <div
+      class="content"
+    >
       <div
-        class=""
+        class="root"
       >
         <div
           class="react-tabs"
           data-tabs="true"
         >
           <div
-            class=""
+            class="tabsWrapper tabsRoot"
           >
             <ul
-              class=""
+              class="tabs tabsListRoot"
               role="tablist"
             >
               <li
                 aria-controls="react-tabs-1"
                 aria-disabled="false"
                 aria-selected="true"
-                class=""
+                class="tab tabsListItem active"
                 data-name="DAOs (1)"
                 id="react-tabs-0"
                 role="tab"
@@ -44,7 +52,7 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                 aria-controls="react-tabs-3"
                 aria-disabled="false"
                 aria-selected="false"
-                class=""
+                class="tab tabsListItem"
                 data-name="Proposals (2)"
                 id="react-tabs-2"
                 role="tab"
@@ -55,7 +63,7 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                 aria-controls="react-tabs-5"
                 aria-disabled="false"
                 aria-selected="false"
-                class=""
+                class="tab tabsListItem"
                 data-name="Members (1)"
                 id="react-tabs-4"
                 role="tab"
@@ -63,7 +71,9 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                 Members (1)
               </li>
             </ul>
-            <div />
+            <div
+              class="optional"
+            />
           </div>
           <div
             aria-labelledby="react-tabs-0"
@@ -71,18 +81,32 @@ exports[`SearchResultsRenderer Should render component 1`] = `
             id="react-tabs-1"
             role="tabpanel"
           >
-            <div>
+            <div
+              class="root"
+            >
               <div>
-                <div>
-                  <div>
+                <div
+                  class="content"
+                >
+                  <div
+                    class="root"
+                  >
                     <a
+                      class="content"
                       href="/dao/hello-world.sputnikv2.testnet"
                     >
                       <div>
-                        <section>
-                          <div>
-                            <div>
+                        <section
+                          class="general"
+                        >
+                          <div
+                            class="flagWrapper"
+                          >
+                            <div
+                              class="logo"
+                            >
                               <svg
+                                class="defaultLogo"
                                 width="24"
                               >
                                 <use
@@ -91,15 +115,23 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                               </svg>
                             </div>
                           </div>
-                          <div>
-                            <div>
+                          <div
+                            class="title"
+                          >
+                            <div
+                              class="explorerLink"
+                            >
                               <div
-                                class=""
+                                class="root"
                                 role="button"
                                 tabindex="0"
                               >
-                                <span>
-                                  <svg>
+                                <span
+                                  class="iconWrapper"
+                                >
+                                  <svg
+                                    class="icon"
+                                  >
                                     <use
                                       href="/_next/undefined"
                                     />
@@ -111,6 +143,7 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                               class=""
                             >
                               <div
+                                class="name"
                                 style="max-width: -142px;"
                               >
                                 New 
@@ -122,8 +155,12 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                                  World!
                               </div>
                             </div>
-                            <div>
-                              <div>
+                            <div
+                              class="address"
+                            >
+                              <div
+                                class="addressId"
+                              >
                                 
                                 <mark
                                   data-markjs="true"
@@ -133,12 +170,12 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                                 -world....stnet
                               </div>
                               <div
-                                class=""
+                                class="root copyAddress"
                                 role="button"
                                 tabindex="0"
                               >
                                 <button
-                                  class=""
+                                  class="iconButton small btn"
                                   type="button"
                                 >
                                   <svg>
@@ -151,24 +188,34 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                             </div>
                           </div>
                         </section>
-                        <section>
+                        <section
+                          class="description"
+                        >
                           <div />
                         </section>
                       </div>
                       <div>
-                        <section>
+                        <section
+                          class="fundsAndMembers"
+                        >
                           <div
-                            class=""
+                            class="root"
                           >
                             <button
-                              class=""
+                              class="btn transparent sizeBlock"
                               type="button"
                             >
-                              <div>
+                              <div
+                                class="label"
+                              >
                                 daoFunds
                               </div>
-                              <div>
-                                <span>
+                              <div
+                                class="value"
+                              >
+                                <span
+                                  class="bold"
+                                >
                                   1,190.70
                                 </span>
                                  USD
@@ -176,17 +223,23 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                             </button>
                           </div>
                           <div
-                            class="undefined"
+                            class="root members"
                           >
                             <button
-                              class=""
+                              class="btn transparent sizeBlock"
                               type="button"
                             >
-                              <div>
+                              <div
+                                class="label"
+                              >
                                 membersGroups
                               </div>
-                              <div>
-                                <span>
+                              <div
+                                class="value"
+                              >
+                                <span
+                                  class="bold"
+                                >
                                   1
                                 </span>
                                 /1
@@ -194,13 +247,19 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                             </button>
                           </div>
                         </section>
-                        <section>
-                          <div>
+                        <section
+                          class="controls"
+                        >
+                          <div
+                            class="controlIcon"
+                          >
                             <button
-                              class=""
+                              class="iconTextButton"
                               type="button"
                             >
-                              <svg>
+                              <svg
+                                class="icon"
+                              >
                                 <use
                                   href="/_next/undefined"
                                 />
@@ -208,12 +267,16 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                               settings
                             </button>
                           </div>
-                          <div>
+                          <div
+                            class="controlIcon"
+                          >
                             <button
-                              class=""
+                              class="iconTextButton"
                               type="button"
                             >
-                              <svg>
+                              <svg
+                                class="icon"
+                              >
                                 <use
                                   href="/_next/undefined"
                                 />
@@ -221,12 +284,16 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                               nfts
                             </button>
                           </div>
-                          <div>
+                          <div
+                            class="controlIcon"
+                          >
                             <button
-                              class=""
+                              class="iconTextButton"
                               type="button"
                             >
-                              <svg>
+                              <svg
+                                class="icon"
+                              >
                                 <use
                                   href="/_next/undefined"
                                 />
@@ -234,12 +301,16 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                               bounties
                             </button>
                           </div>
-                          <div>
+                          <div
+                            class="controlIcon"
+                          >
                             <button
-                              class=""
+                              class="iconTextButton"
                               type="button"
                             >
-                              <svg>
+                              <svg
+                                class="icon"
+                              >
                                 <use
                                   href="/_next/undefined"
                                 />
@@ -248,9 +319,11 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                             </button>
                           </div>
                         </section>
-                        <section>
+                        <section
+                          class="proposals"
+                        >
                           <p
-                            class="subtitle2"
+                            class="subtitle2 proposalsTitle active"
                           >
                             <span>
                               0
@@ -261,7 +334,7 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                             components.daoDetails.proposalTrackerCard.proposals
                           </p>
                           <p
-                            class="subtitle6"
+                            class="subtitle6 proposalsSubtitle"
                           >
                             13 components.daoDetails.proposalTrackerCard.proposalsInTotal
                           </p>

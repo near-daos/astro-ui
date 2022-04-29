@@ -2,9 +2,11 @@
 
 exports[`DataRow Should render component 1`] = `
 <div>
-  <div>
+  <div
+    class="dataColumns"
+  >
     <div
-      class=""
+      class="column dataColumn"
       data-milestone="false"
     />
   </div>

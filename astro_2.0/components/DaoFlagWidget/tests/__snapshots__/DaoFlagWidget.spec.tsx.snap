@@ -3,11 +3,11 @@
 exports[`dao flag widget Should render component 1`] = `
 <div>
   <div
-    class=""
+    class="root"
     href="/dao/123"
   >
     <div
-      class="undefined"
+      class="root sm defaultBackground"
     >
       <svg
         class="svg"
@@ -37,27 +37,29 @@ exports[`dao flag widget Should render component 1`] = `
         </clippath>
       </svg>
       <div
-        class=""
+        class="backgroundSmall"
       />
       <canvas
         style="clip-path: path('M68.8249 0L14.4555 19.4307V30.2124L0 35.3785V78.0007L54.3694 58.57V47.7883L68.8249 42.6222V0Z'); max-width: 68px; transform: none;"
       />
     </div>
     <div
-      class=""
+      class="root info"
     >
-      <div>
+      <div
+        class="block"
+      >
         <div
-          class=""
+          class="label"
         >
           DAO name
         </div>
       </div>
       <div
-        class=""
+        class="block"
       >
         <div
-          class=""
+          class="valueSmall"
         >
           Dao Name
         </div>

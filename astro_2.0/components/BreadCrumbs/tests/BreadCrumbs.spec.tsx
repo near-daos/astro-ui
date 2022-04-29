@@ -5,8 +5,6 @@ import { getElementSize } from 'utils/getElementSize';
 
 import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 
-const ITEM_CLASS_NAME = 'item';
-
 jest.mock('utils/getElementSize', () => {
   return {
     getElementSize: jest.fn(),
@@ -15,7 +13,7 @@ jest.mock('utils/getElementSize', () => {
 
 jest.mock('astro_2.0/components/BreadCrumbs/Breadcrumbs.module.scss', () => {
   return {
-    item: ITEM_CLASS_NAME,
+    item: 'item',
   };
 });
 
