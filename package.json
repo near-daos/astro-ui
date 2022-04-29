@@ -21,8 +21,8 @@
     "test:coverage": "jest --coverage",
     "generate-assets": "yarn generate-assets-index",
     "prebuild": "yarn generate-assets",
-    "postinstall": "yarn generate-assets",
-    "generate-assets-index": "node scripts/generateAssetsIndex.js",
+    "postinstall": "[ ! -d \"./scripts\" ] || yarn generate-assets",
+    "generate-assets-index": "[ -f \"./scripts/generateAssetsIndex.js\" ] && node scripts/generateAssetsIndex.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
