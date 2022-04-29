@@ -1,3 +1,4 @@
+import isEmpty from 'lodash/isEmpty';
 import React, { FC, useCallback } from 'react';
 
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
@@ -11,7 +12,7 @@ import { useModal } from 'components/modal';
 
 import { GROUP_COLOR } from './constants';
 
-import styles from './members-tab-view.module.scss';
+import styles from './MembersTabView.module.scss';
 
 export const MembersTabView: FC = () => {
   const { searchResults } = useSearchResults();
@@ -24,7 +25,7 @@ export const MembersTabView: FC = () => {
     [showCardModal]
   );
 
-  if ((searchResults?.members || []).length === 0) {
+  if (isEmpty(searchResults?.members)) {
     return (
       <NoResultsView
         title={

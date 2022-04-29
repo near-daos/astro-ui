@@ -15,7 +15,7 @@ exports[`search results dropdown Should render component 1`] = `
       <div
         class="title"
       >
-        No results
+        No results for asd
       </div>
       <div
         class="desc"
