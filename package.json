@@ -177,7 +177,7 @@
     "sass": "^1.35.1",
     "sass-loader": "^12.1.0",
     "semantic-release": "^17.4.4",
-    "storybook-addon-next-router": "2",
+    "storybook-addon-next-router": "3.1.1",
     "stylelint": "^13.13.1",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-sass-guidelines": "^8.0.0",
