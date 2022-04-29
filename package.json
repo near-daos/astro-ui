@@ -21,8 +21,8 @@
     "test:coverage": "jest --coverage",
     "generate-assets": "yarn generate-assets-index",
     "prebuild": "yarn generate-assets",
-    "postinstall": "[ ! -d \"./scripts\" ] || yarn generate-assets",
-    "generate-assets-index": "[ -f \"./scripts/generateAssetsIndex.js\" ] && node scripts/generateAssetsIndex.js",
+    "postinstall": "yarn generate-assets",
+    "generate-assets-index": "node scripts/generateAssetsIndex.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -91,6 +91,7 @@
     "sanitize.css": "^12.0.1",
     "socket.io-client": "2.4.0",
     "svg-sprite-loader": "^6.0.9",
+    "svgo": "^2.8.0",
     "svgo-loader": "^3.0.0",
     "swr": "^1.0.1",
     "ts-async-decorators": "^0.3.0",
