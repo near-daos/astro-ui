@@ -118,6 +118,9 @@ export const UpgradeVersionWizard: FC<Props> = ({
         <CreationProgress steps={steps} />
       </div>
       <div className={styles.content}>
+        <button type="button" onClick={handleViewProposalReject}>
+          reset
+        </button>
         {isViewProposal && proposal && (
           <ViewStepProposal
             isLastStep={

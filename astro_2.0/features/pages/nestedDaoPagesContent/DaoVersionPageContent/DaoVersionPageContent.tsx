@@ -22,7 +22,7 @@ interface DaoVersionPageContentProps {
 export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
   daoContext,
 }) => {
-  const { versionHash } = useCheckDaoUpgrade(daoContext.dao);
+  const { version } = useCheckDaoUpgrade(daoContext.dao);
   const { loading, upgradeStatus, update } = useUpgradeStatus(
     daoContext.dao.id
   );
@@ -30,7 +30,7 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
   const isUpgradeInProgress =
     upgradeStatus && upgradeStatus.upgradeStep !== null;
   const isUpgradeAvailable =
-    versionHash &&
+    version &&
     daoContext.userPermissions.isCanCreateProposals &&
     daoContext.userPermissions.allowedProposalsToCreate[
       ProposalType.UpgradeSelf
@@ -44,10 +44,16 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
     }
 
     return {
-      date: format(parseISO(daoVersion.createdAt), 'dd MMM yyyy, hh:mm aaa'),
-      number: daoVersion.version.join('.'),
+      current: {
+        date: format(parseISO(daoVersion.createdAt), 'dd MMM yyyy, hh:mm aaa'),
+        number: daoVersion.version.join('.'),
+      },
+      next: {
+        date: format(parseISO(daoVersion.createdAt), 'dd MMM yyyy, hh:mm aaa'),
+        number: version ? version[1].version.join('.') : '',
+      },
     };
-  }, [daoContext.dao]);
+  }, [daoContext.dao, version]);
 
   if (!daoContext.userPermissions.isCanCreateProposals && !isViewProposal) {
     return <div>no permissions</div>;
@@ -62,7 +68,7 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
         <UpgradeVersionWizard
           daoContext={daoContext}
           upgradeStatus={upgradeStatus}
-          versionHash={versionHash ?? ''}
+          versionHash={version ? version[0] : ''}
           onUpdate={update}
         />
       ) : (
@@ -71,7 +77,7 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
             await update({
               upgradeStep: UpgradeSteps.GetUpgradeCode,
               proposalId: null,
-              versionHash: versionHash ?? '',
+              versionHash: version ? version[0] : '',
             });
           }}
           disabled={!isUpgradeAvailable}

@@ -17,17 +17,19 @@ interface ExtendedContract extends Contract {
   get_contracts_metadata: () => Promise<RawMeta[]>;
 }
 
+type Version = [string, { version: number[] }];
+
 export function useCheckDaoUpgrade(
   dao: DAO
 ): {
-  versionHash: string | null;
+  version: Version | null;
   loading: boolean;
 } {
   const { nearService } = useAuthContext();
   const [loading, setLoading] = useState(true);
   const { appConfig } = configService.get();
 
-  const [versionHash, setVersionHash] = useState<string | null>(null);
+  const [version, setVersion] = useState<Version | null>(null);
 
   const getUpgradeInfo = useCallback(async () => {
     const account = nearService?.getAccount();
@@ -47,10 +49,12 @@ export function useCheckDaoUpgrade(
     }) as ExtendedContract;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [hash, metadata] = await Promise.all([
-      contract.get_default_code_hash(),
-      contract.get_contracts_metadata(),
-    ]);
+    // const [hash, metadata] = await Promise.all([
+    //   // contract.get_default_code_hash(),
+    //   contract.get_contracts_metadata(),
+    // ]);
+
+    const metadata = await contract.get_contracts_metadata();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const sortedMeta = metadata.sort((v1, v2) => {
@@ -66,9 +70,21 @@ export function useCheckDaoUpgrade(
     });
 
     // todo - temp!!!
-    if (dao.daoVersion?.hash) {
-      setVersionHash(dao.daoVersion.hash);
-    }
+    // if (dao.daoVersion?.hash) {
+    //   setVersionHash(dao.daoVersion.hash);
+    // }
+
+    // console.log(dao.daoVersion?.hash, sortedMeta);
+
+    const currentVersionHashIndex = sortedMeta.findIndex(
+      meta => meta[0] === dao.daoVersion?.hash
+    );
+    const nextVersion =
+      currentVersionHashIndex === -1
+        ? sortedMeta[0]
+        : sortedMeta[currentVersionHashIndex + 1];
+
+    const hash = nextVersion[0];
 
     if (hash === dao.daoVersion?.hash) {
       setLoading(false);
@@ -76,15 +92,7 @@ export function useCheckDaoUpgrade(
       return;
     }
 
-    const currentVersionHashIndex = sortedMeta.findIndex(
-      meta => meta[0] === dao.daoVersion?.hash
-    );
-    const nextVersionHash =
-      currentVersionHashIndex === -1
-        ? sortedMeta[0]
-        : sortedMeta[currentVersionHashIndex + 1];
-
-    setVersionHash(nextVersionHash[0]);
+    setVersion(nextVersion);
     setLoading(false);
   }, [appConfig, dao.daoVersion, nearService]);
 
@@ -95,7 +103,7 @@ export function useCheckDaoUpgrade(
   }, [getUpgradeInfo]);
 
   return {
-    versionHash,
+    version,
     loading,
   };
 }

@@ -13,7 +13,7 @@ interface VersionCheckProps {
   className?: string;
   loading?: boolean;
   disabled?: boolean;
-  version: Version | null;
+  version: { current: Version; next: Version } | null;
   handleUpdate: () => void;
 }
 
@@ -66,9 +66,17 @@ export const VersionCheck: FC<VersionCheckProps> = ({
       ) : null}
 
       {!loading && version ? (
-        <div className={styles.version}>
-          <div className={styles.date}>Last updated {version.date}</div>
-          <div className={styles.number}>N {version.number}</div>
+        <div>
+          <div className={styles.version}>
+            <div className={styles.date}>
+              Last updated {version.current.date}
+            </div>
+            <div className={styles.number}>N {version.current.number}</div>
+          </div>
+          <div className={styles.version}>
+            <div className={styles.date}>Next {version.next.date}</div>
+            <div className={styles.number}>N {version.next.number}</div>
+          </div>
         </div>
       ) : null}
 
