@@ -1,12 +1,17 @@
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
-import { CreateProposalParams } from 'types/proposal';
-import { DAO } from 'types/dao';
-import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import Decimal from 'decimal.js';
-import { formatGasValue } from 'utils/format';
+
+import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
-import { jsonToBase64Str } from 'utils/jsonToBase64Str';
+
+import { DAO } from 'types/dao';
+import { CreateProposalParams, DaoConfig } from 'types/proposal';
 import { CreateTokenInput } from 'astro_2.0/features/CreateProposal/types';
+import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
+
+import { formatGasValue } from 'utils/format';
+import { jsonToBase64Str } from 'utils/jsonToBase64Str';
+
 import { configService } from 'services/ConfigService';
 
 export type CustomFunctionCallInput = {
@@ -397,5 +402,52 @@ export async function getCreateTokenProposal(
       ],
     },
     bond: dao.policy.proposalBond,
+  };
+}
+
+export async function getTransferProposal(
+  dao: DAO,
+  data: CreateTransferInput,
+  tokens: Tokens
+): Promise<CreateProposalParams> {
+  const { token: dToken, details, externalUrl, target, amount } = data;
+
+  const token = Object.values(tokens).find(item => item.symbol === dToken);
+
+  if (!token) {
+    throw new Error('No tokens data found');
+  }
+
+  return {
+    daoId: dao.id,
+    description: `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
+    kind: 'Transfer',
+    bond: dao.policy.proposalBond,
+    data: {
+      token_id: token?.tokenId,
+      receiver_id: target.trim(),
+      amount: new Decimal(amount).mul(10 ** token.decimals).toFixed(),
+    },
+  };
+}
+
+export function getChangeConfigProposal(
+  daoId: string,
+  { name, purpose, metadata }: DaoConfig,
+  reason: string,
+  proposalBond: string
+): CreateProposalParams {
+  return {
+    kind: 'ChangeConfig',
+    daoId,
+    data: {
+      config: {
+        metadata,
+        name,
+        purpose,
+      },
+    },
+    description: reason,
+    bond: proposalBond,
   };
 }

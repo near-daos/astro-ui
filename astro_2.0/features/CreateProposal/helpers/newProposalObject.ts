@@ -48,6 +48,8 @@ import {
   getTransferMintbaseNFTProposal,
   getUpgradeCodeProposal,
   getUpgradeSelfProposal,
+  getTransferProposal,
+  getChangeConfigProposal,
   SwapsOnRefInput,
   TransferMintbaseNFTInput,
 } from 'astro_2.0/features/CreateProposal/helpers/proposalObjectHelpers';
@@ -56,51 +58,6 @@ import last from 'lodash/last';
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 import { getNewPermissionsProposalObject } from 'astro_2.0/features/CreateProposal/helpers/permissionsHelpers';
 import { SelectorRow } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';
-
-function getChangeConfigProposal(
-  daoId: string,
-  { name, purpose, metadata }: DaoConfig,
-  reason: string,
-  proposalBond: string
-): CreateProposalParams {
-  return {
-    kind: 'ChangeConfig',
-    daoId,
-    data: {
-      config: {
-        metadata,
-        name,
-        purpose,
-      },
-    },
-    description: reason,
-    bond: proposalBond,
-  };
-}
-
-async function getTransferProposal(
-  dao: DAO,
-  data: CreateTransferInput,
-  tokens: Tokens
-): Promise<CreateProposalParams> {
-  const token = Object.values(tokens).find(item => item.symbol === data.token);
-
-  if (!token) {
-    throw new Error('No tokens data found');
-  }
-
-  return {
-    daoId: dao.id,
-    description: `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
-    kind: 'Transfer',
-    bond: dao.policy.proposalBond,
-    data: {
-      token_id: token?.tokenId,
-      receiver_id: data.target.trim(),
-      amount: new Decimal(data.amount).mul(10 ** token.decimals).toFixed(),
-    },
-  };
-}
 
 function getFlagsParamsForMetadata(
   dao: DAO
