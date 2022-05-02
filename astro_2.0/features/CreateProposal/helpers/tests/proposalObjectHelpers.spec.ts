@@ -1,11 +1,20 @@
 import { DAO } from 'types/dao';
 
+import { CreateTokenInput } from 'astro_2.0/features/CreateProposal/types';
+import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
+
 import {
   BuyNftFromParasInput,
   BuyNftFromMintbaseInput,
   CustomFunctionCallInput,
+  getTransferProposal,
   getSwapsOnRefProposal,
+  getUpgradeSelfProposal,
+  getUpgradeCodeProposal,
+  getCreateTokenProposal,
+  getChangeConfigProposal,
   getBuyNftFromParasProposal,
+  getRemoveUpgradeCodeProposal,
   getBuyNftFromMintbaseProposal,
   getCustomFunctionCallProposal,
   getTransferMintbaseNFTProposal,
@@ -186,6 +195,182 @@ describe('proposalObjectHelpers', () => {
         },
         description: 'some details$$$$external url',
         kind: 'FunctionCall',
+      });
+    });
+  });
+
+  describe('getUpgradeCodeProposal', () => {
+    it('Should return proposal', () => {
+      const data = {
+        versionHash: 'versionHash',
+        details: 'details',
+        externalUrl: 'externalUrl',
+      };
+
+      const result = getUpgradeCodeProposal(dao, data);
+
+      expect(result).toEqual({
+        daoId: 'legaldao.sputnikv2.testnet',
+        description: 'details$$$$externalUrl',
+        kind: 'FunctionCall',
+        data: {
+          receiver_id: 'sputnikv2.testnet',
+          actions: [
+            {
+              method_name: 'store_contract_self',
+              args: 'eyJjb2RlX2hhc2giOiJ2ZXJzaW9uSGFzaCJ9',
+              deposit: '6000000000000000000000000',
+              gas: '220000000000000',
+            },
+          ],
+        },
+        bond: '100000000000000000000000',
+      });
+    });
+  });
+
+  describe('getRemoveUpgradeCodeProposal', () => {
+    it('Should return proposal', () => {
+      const data = {
+        versionHash: 'versionHash',
+        details: 'details',
+        externalUrl: 'externalUrl',
+      };
+
+      const result = getRemoveUpgradeCodeProposal(dao, data);
+
+      expect(result).toEqual({
+        daoId: 'legaldao.sputnikv2.testnet',
+        description: 'details$$$$externalUrl',
+        kind: 'FunctionCall',
+        data: {
+          receiver_id: 'sputnikv2.testnet',
+          actions: [
+            {
+              method_name: 'remove_contract_self',
+              args: 'eyJjb2RlX2hhc2giOiJ2ZXJzaW9uSGFzaCJ9',
+              deposit: '0',
+              gas: '220000000000000',
+            },
+          ],
+        },
+        bond: '100000000000000000000000',
+      });
+    });
+  });
+
+  describe('getUpgradeSelfProposal', () => {
+    it('Should return proposal', () => {
+      const data = {
+        versionHash: 'versionHash',
+        details: 'details',
+        externalUrl: 'externalUrl',
+      };
+
+      const result = getUpgradeSelfProposal(dao, data);
+
+      expect(result).toEqual({
+        daoId: 'legaldao.sputnikv2.testnet',
+        description: 'details$$$$externalUrl',
+        kind: 'UpgradeSelf',
+        data: { hash: 'versionHash' },
+        bond: '100000000000000000000000',
+      });
+    });
+  });
+
+  describe('getCreateTokenProposal', () => {
+    it('Should return proposal', async () => {
+      const data = {
+        details: 'details',
+        externalUrl: 'externalUrl',
+      } as CreateTokenInput;
+
+      const result = await getCreateTokenProposal(dao, data);
+
+      expect(result).toEqual({
+        daoId: 'legaldao.sputnikv2.testnet',
+        description: 'details$$$$externalUrl',
+        kind: 'FunctionCall',
+        data: {
+          receiver_id: 'legaldao.sputnikv2.testnet',
+          actions: [
+            {
+              args: 'e30=',
+              deposit: '6000000000000000000000000',
+              gas: '220000000000000',
+              method_name: 'store_contract_self',
+            },
+          ],
+        },
+        bond: '100000000000000000000000',
+      });
+    });
+  });
+
+  describe('getTransferProposal', () => {
+    it('Should throw error if no token info provided', async () => {
+      await expect(
+        getTransferProposal(
+          ({} as unknown) as DAO,
+          ({} as unknown) as CreateTransferInput,
+          {}
+        )
+      ).rejects.toThrow();
+    });
+
+    it('Should return proposal', async () => {
+      const data = {
+        token: 'NEAR',
+        details: 'details',
+        externalUrl: 'externalUrl',
+        target: 'target',
+        amount: 10,
+      } as CreateTransferInput;
+
+      const result = await getTransferProposal(dao, data, tokens);
+
+      expect(result).toEqual({
+        daoId: 'legaldao.sputnikv2.testnet',
+        description: 'details$$$$externalUrl',
+        kind: 'Transfer',
+        bond: '100000000000000000000000',
+        data: {
+          token_id: '',
+          receiver_id: 'target',
+          amount: '10000000000000000000000000',
+        },
+      });
+    });
+  });
+
+  describe('getChangeConfigProposal', () => {
+    it('Should return proposal', () => {
+      const config = {
+        name: 'MyName',
+        purpose: 'MyPurpose',
+        metadata: 'SomeMeta',
+      };
+
+      const result = getChangeConfigProposal(
+        'daoId',
+        config,
+        'Some reason to live',
+        'Bond'
+      );
+
+      expect(result).toEqual({
+        kind: 'ChangeConfig',
+        daoId: 'daoId',
+        data: {
+          config: {
+            metadata: 'SomeMeta',
+            name: 'MyName',
+            purpose: 'MyPurpose',
+          },
+        },
+        description: 'Some reason to live',
+        bond: 'Bond',
       });
     });
   });
