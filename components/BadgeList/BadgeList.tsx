@@ -39,6 +39,7 @@ export const BadgeList: FC<BadgeListProps> = ({
           [styles.visible]: showPlaceholder,
         })}
       >
+        ddd
         <Badge size="small" variant="turqoise">
           +{selectedItems.length - 1}
         </Badge>

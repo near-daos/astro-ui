@@ -15,9 +15,9 @@ export const VotersList: FC<VotersListProps> = ({ data }) => {
   }
 
   return (
-    <ul className={styles.root}>
+    <ul className={styles.votersList}>
       {data.map(item => (
-        <li key={item.name}>
+        <li key={item.name} className={styles.voteListItem}>
           <VoterDetailsCard
             timestamp={item.timestamp}
             transactionHash={item.transactionHash}

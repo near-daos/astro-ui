@@ -1,21 +1,12 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
-import dynamic from 'next/dynamic';
 
 import { Icon, IconName } from 'components/Icon';
-import { Badge, getBadgeVariant } from 'components/Badge';
 import { ExplorerLink } from 'components/ExplorerLink';
 import { Vote } from 'features/types';
 import { formatTimestampAsDate } from 'utils/format';
 
 import styles from './VoterDetailsCard.module.scss';
-
-const GroupsRenderer = dynamic(
-  import('components/cards/member-card/GroupsRenderer'),
-  {
-    ssr: false,
-  }
-);
 
 interface VoterDetailsCardProps {
   vote: Vote | null;
@@ -28,7 +19,6 @@ interface VoterDetailsCardProps {
 export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
   vote,
   name,
-  groups,
   transactionHash,
   timestamp,
 }) => {
@@ -55,15 +45,6 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
     }
   }
 
-  const selectedItems = groups?.map(n => ({
-    label: n,
-    component: (
-      <Badge size="small" variant={getBadgeVariant(n)}>
-        {n}
-      </Badge>
-    ),
-  }));
-
   return (
     <div className={styles.root}>
       <div
@@ -77,9 +58,6 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
         <Icon width={iconSize} name={icon as IconName} />
       </div>
       <div className={styles.name}>{name}</div>
-      <div className={styles.groups}>
-        <GroupsRenderer selectedItems={selectedItems ?? []} />
-      </div>
       <div className={styles.other}>
         &nbsp;
         {timestamp ? formatTimestampAsDate(timestamp) : null}
