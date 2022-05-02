@@ -1,0 +1,70 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.header {
+  align-items: flex-start;
+  background: var(--color-white);
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+  width: 100%;
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
+  }
+}
+
+.controlIcon {
+  color: var(--color-neutral-90);
+  width: 16px;
+}
+
+.open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+
+  .controlIcon {
+    transform: rotate(180deg);
+  }
+}
+
+.leftPart,
+.rightPart {
+  align-items: center;
+  display: flex;
+}
+
+.rightPart {
+  margin-top: 12px;
+  width: 100%;
+
+  @include tablet-portrait {
+    margin-top: 0;
+    width: auto;
+  }
+}
+
+.badge {
+  margin: 0 16px 0 0;
+}
+
+.separator {
+  background: var(--color-neutral-40);
+  height: 24px;
+  margin: 0 16px 0 0;
+  width: 1px;
+}
+
+.voicesCounter {
+  @extend %subtitle5;
+  color: var(--color-neutral-90);
+}
+
+.progressBar {
+  margin: 0 39px 0 0;
+}

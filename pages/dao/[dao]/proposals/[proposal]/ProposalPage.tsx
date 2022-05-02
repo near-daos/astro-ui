@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { DAO, Member } from 'types/dao';
 import { ProposalFeedItem } from 'types/proposal';
@@ -15,7 +16,7 @@ import { getProposalScope } from 'utils/getProposalScope';
 import { getVoteDetails } from 'features/vote-policy/helpers';
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 
-import { VotersList } from 'features/proposal/components/VotersList';
+import { VoteCollapsableList } from 'features/proposal/components/VoteCollapsableList';
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
@@ -48,6 +49,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
     undefined
   );
   const { tokens } = useDaoCustomTokens();
+  const { t } = useTranslation();
 
   const { fullVotersList, votersByStatus } = useMemo(() => {
     if (!proposal) {
@@ -151,6 +153,25 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
     ];
   }, [breadcrumbsConfig]);
 
+  const filterList = useMemo(
+    () => [
+      { value: VoteStatuses.All, label: t('proposalVotes.filters.all') },
+      {
+        value: VoteStatuses.Approved,
+        label: t('proposalVotes.filters.approved'),
+      },
+      {
+        value: VoteStatuses.Failed,
+        label: t('proposalVotes.filters.failed'),
+      },
+      {
+        value: VoteStatuses.NotVoted,
+        label: t('proposalVotes.filters.notVoted'),
+      },
+    ],
+    [t]
+  );
+
   return (
     <>
       <Head>
@@ -183,32 +204,19 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
             />
           </div>
           <div className={styles.filters}>
+            <div className={styles.filterTitle}>{t('proposalVotes.title')}</div>
             <ProposalFilter
               value={activeFilter || VoteStatuses.All}
-              title="Filter by vote status:"
+              title={t('proposalVotes.filters.title')}
               onChange={value => {
                 setActiveFilter(value === VoteStatuses.All ? undefined : value);
               }}
-              list={[
-                { value: VoteStatuses.All, label: 'All' },
-                {
-                  value: VoteStatuses.Approved,
-                  label: 'Approved',
-                },
-                {
-                  value: VoteStatuses.Failed,
-                  label: 'Failed',
-                },
-                {
-                  value: VoteStatuses.NotVoted,
-                  label: 'Not Voted',
-                },
-              ]}
+              list={filterList}
               className={styles.statusFilterRoot}
             />
           </div>
           <div className={styles.body}>
-            <VotersList
+            <VoteCollapsableList
               data={
                 !activeFilter ? fullVotersList : votersByStatus[activeFilter]
               }

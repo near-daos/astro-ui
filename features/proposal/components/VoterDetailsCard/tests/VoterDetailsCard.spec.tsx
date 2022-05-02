@@ -9,22 +9,6 @@ jest.mock('components/Icon', () => {
 });
 
 describe('VoterDetailsCard', () => {
-  // it('Should render component', () => {
-  //   const name = 'Hello World!';
-  //
-  //   const { getByText } = render(
-  //     <VoterDetailsCard
-  //       vote="Yes"
-  //       name="Hello World!"
-  //       transactionHash="123"
-  //       timestamp={null}
-  //       groups={['GR1', 'GR2']}
-  //     />
-  //   );
-  //
-  //   expect(getByText(name)).toBeInTheDocument();
-  // });
-
   it.each`
     vote         | icon
     ${'Yes'}     | ${'votingYes'}
