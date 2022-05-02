@@ -5,9 +5,9 @@ import groupBy from 'lodash/groupBy';
 import { VoterDetail } from 'features/types';
 import { ONE_HUNDRED } from 'constants/common';
 
-import styles from './VoicesProgressBar.module.scss';
+import styles from './VotesProgressBar.module.scss';
 
-interface VoicesProgressBarProps {
+interface VotesProgressBarProps {
   votes: VoterDetail[];
   className?: string;
 }
@@ -20,7 +20,7 @@ const calculateWidth = (allVoices: number, countVoices: number) => {
   return (allVoices / countVoices) * ONE_HUNDRED;
 };
 
-export const VoicesProgressBar: FC<VoicesProgressBarProps> = ({
+export const VotesProgressBar: FC<VotesProgressBarProps> = ({
   className,
   votes,
 }) => {
@@ -36,7 +36,7 @@ export const VoicesProgressBar: FC<VoicesProgressBarProps> = ({
   );
 
   return (
-    <div className={cn(styles.progressBar, className)}>
+    <div className={cn(styles.votesProgressBar, className)}>
       <div
         className={cn(styles.no, { [styles.withoutBorder]: yesWidth > 0 })}
         style={{ width: `${noWidth}%` }}

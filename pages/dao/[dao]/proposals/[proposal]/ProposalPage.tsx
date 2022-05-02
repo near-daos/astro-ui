@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { DAO, Member } from 'types/dao';
 import { ProposalFeedItem } from 'types/proposal';
@@ -48,6 +49,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
     undefined
   );
   const { tokens } = useDaoCustomTokens();
+  const { t } = useTranslation();
 
   const { fullVotersList, votersByStatus } = useMemo(() => {
     if (!proposal) {
@@ -153,21 +155,21 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
 
   const filterList = useMemo(
     () => [
-      { value: VoteStatuses.All, label: 'All' },
+      { value: VoteStatuses.All, label: t('proposalVotes.filters.all') },
       {
         value: VoteStatuses.Approved,
-        label: 'Approved',
+        label: t('proposalVotes.filters.approved'),
       },
       {
         value: VoteStatuses.Failed,
-        label: 'Failed',
+        label: t('proposalVotes.filters.failed'),
       },
       {
         value: VoteStatuses.NotVoted,
-        label: 'Not Voted',
+        label: t('proposalVotes.filters.notVoted'),
       },
     ],
-    []
+    [t]
   );
 
   return (
@@ -202,10 +204,10 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
             />
           </div>
           <div className={styles.filters}>
-            <div className={styles.filterTitle}>Votes</div>
+            <div className={styles.filterTitle}>{t('proposalVotes.title')}</div>
             <ProposalFilter
               value={activeFilter || VoteStatuses.All}
-              title="Filter by vote status:"
+              title={t('proposalVotes.filters.title')}
               onChange={value => {
                 setActiveFilter(value === VoteStatuses.All ? undefined : value);
               }}

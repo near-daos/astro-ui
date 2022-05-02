@@ -1,8 +1,9 @@
 import React, { FC, useMemo } from 'react';
 import cn from 'classnames';
+import { useTranslation } from 'next-i18next';
 
 import { VoterDetail } from 'features/types';
-import { VoicesProgressBar } from 'features/proposal/components/VoicesProgressBar';
+import { VotesProgressBar } from 'features/proposal/components/VoicesProgressBar';
 import { Badge, getBadgeVariant } from 'components/Badge';
 import { IconButton } from 'components/button/IconButton';
 
@@ -21,16 +22,19 @@ export const VoteCollapsableHeader: FC<VoteCollapsableHeaderProps> = ({
   votes,
   groupName,
 }) => {
+  const { t } = useTranslation();
   const voiceCounter = useMemo(
     () => votes.filter(vote => Boolean(vote.vote)).length,
     [votes]
   );
 
   return (
-    <button
-      type="button"
+    <div
+      tabIndex={0}
+      role="button"
       className={cn(styles.header, { [styles.open]: state })}
       onClick={() => setToggle(!state)}
+      onKeyPress={() => undefined}
     >
       <div className={styles.leftPart}>
         <Badge
@@ -42,12 +46,12 @@ export const VoteCollapsableHeader: FC<VoteCollapsableHeaderProps> = ({
         </Badge>
         <div className={styles.separator} />
         <div className={styles.voicesCounter}>
-          {voiceCounter}/{votes.length} voices
+          {voiceCounter}/{votes.length} {t('proposalVotes.voices')}
         </div>
       </div>
 
       <div className={styles.rightPart}>
-        <VoicesProgressBar votes={votes} className={styles.progressBar} />
+        <VotesProgressBar votes={votes} className={styles.progressBar} />
         <IconButton
           icon="buttonArrowDown"
           iconProps={{
@@ -57,6 +61,6 @@ export const VoteCollapsableHeader: FC<VoteCollapsableHeaderProps> = ({
           }}
         />
       </div>
-    </button>
+    </div>
   );
 };

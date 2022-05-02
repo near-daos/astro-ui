@@ -1,1 +1,1 @@
-export * from './VoicesProgressBar';
+export * from './VotesProgressBar';

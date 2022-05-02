@@ -348,5 +348,17 @@
     "groups": "Groups",
     "members": "Members",
     "daoRules": "DAO Rules"
+  },
+
+  "proposalVotes": {
+    "title": "Votes",
+    "voices": "voices",
+    "filters": {
+      "title": "Filter by vote status:",
+      "all": "All",
+      "approved": "Approved",
+      "failed": "Failed",
+      "notVoted": "Not Voted"
+    }
   }
 }
