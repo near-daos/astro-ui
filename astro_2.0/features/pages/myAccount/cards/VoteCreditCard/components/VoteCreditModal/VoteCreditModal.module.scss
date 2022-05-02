@@ -1,0 +1,28 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.desc {
+  @extend %subtitle4;
+  margin: 0 0 24px;
+}
+
+.input {
+  align-items: center;
+  display: flex;
+
+  .suffix {
+    margin-left: 12px;
+  }
+}
+
+.footer {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 36px 0 12px;
+}
