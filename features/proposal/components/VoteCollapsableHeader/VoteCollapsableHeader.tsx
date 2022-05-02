@@ -30,7 +30,7 @@ export const VoteCollapsableHeader: FC<VoteCollapsableHeaderProps> = ({
 
   return (
     <div
-      tabIndex={0}
+      tabIndex={-1}
       role="button"
       className={cn(styles.header, { [styles.open]: state })}
       onClick={() => setToggle(!state)}

@@ -1,6 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { VoterDetail } from 'features/types';
 import groupBy from 'lodash/groupBy';
+import isEmpty from 'lodash/isEmpty';
 
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Collapsable } from 'components/collapsable/Collapsable';
@@ -19,7 +20,7 @@ export const VoteCollapsableList: FC<VoteCollapsableListProps> = ({ data }) => {
     [data]
   );
 
-  if (!data?.length) {
+  if (isEmpty(data)) {
     return <NoResultsView title="No votes here" />;
   }
 
