@@ -4,12 +4,14 @@ import { InputProps } from 'components/inputs/Input/types';
 import { Input } from './Input';
 
 interface Props extends InputProps {
-  onValueChange: (value: string) => void;
+  onValueChange: (
+    value: string | number | readonly string[] | undefined
+  ) => void;
 }
 
 export const DebouncedInput = React.forwardRef<HTMLInputElement, Props>(
-  ({ onValueChange, ...rest }, ref) => {
-    const [val, setVal] = React.useState('');
+  ({ onValueChange, defaultValue, ...rest }, ref) => {
+    const [val, setVal] = React.useState(defaultValue ?? '');
 
     useDebounce(
       () => {
