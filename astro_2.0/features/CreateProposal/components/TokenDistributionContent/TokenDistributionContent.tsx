@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { useTranslation } from 'next-i18next';
 import { useFormContext } from 'react-hook-form';
 
@@ -26,7 +26,7 @@ export const TokenDistributionContent: FC<TokenDistributionContentProps> = ({
   governanceToken,
 }) => {
   const { t } = useTranslation();
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
 
   const { watch } = useFormContext();
 

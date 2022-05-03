@@ -13,7 +13,7 @@ import { VoteAction } from 'types/proposal';
 
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { PaginationResponse } from 'types/api';
 
 export function useBountyControls(
@@ -24,7 +24,7 @@ export function useBountyControls(
   handleUnclaim: () => void;
 } {
   const router = useRouter();
-  const { nearService } = useAuthContext();
+  const { nearService } = useWalletContext();
 
   const [showModal] = useModal(ConfirmActionModal);
 
@@ -83,7 +83,7 @@ export function useBountyVoting(
 } {
   const router = useRouter();
   const [showModal] = useModal(ConfirmActionModal);
-  const { nearService } = useAuthContext();
+  const { nearService } = useWalletContext();
 
   const [{ loading }, handleVote] = useAsyncFn(
     async (vote: VoteAction) => {
@@ -113,7 +113,7 @@ export function useBountySearch(): {
 } {
   const router = useRouter();
   const daoId = router.query.dao as string;
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
   const cancelTokenRef = useRef<CancelTokenSource | null>(null);
 
   const [{ loading }, handleSearch] = useAsyncFn(async query => {
@@ -149,7 +149,7 @@ export function useHideBounty(): {
   const router = useRouter();
   const showHidden = router.query?.bountyFilter === 'hidden';
   const daoId = router.query.dao as string;
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, nearService } = useWalletContext();
   const [selected, setSelected] = useState<string[]>([]);
 
   const [{ loading }, handleSubmit] = useAsyncFn(async () => {

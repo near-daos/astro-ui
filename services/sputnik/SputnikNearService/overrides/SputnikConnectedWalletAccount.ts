@@ -46,31 +46,17 @@ export class SputnikConnectedWalletAccount extends ConnectedWalletAccount {
       this.accountId,
       this.connection.networkId
     );
-    let accessKey = await this.accessKeyForTransaction(
-      receiverId,
-      actions,
-      localKey
+
+    const accessKeys = await this.getAccessKeys();
+
+    const accessKey = accessKeys.find(
+      key => key.public_key === localKey.toString()
     );
 
     if (!accessKey) {
       throw new Error(
         `Cannot find matching key for transaction sent to ${receiverId}`
       );
-    }
-
-    if (localKey && localKey.toString() === accessKey.public_key) {
-      try {
-        return await super.signAndSendTransaction({
-          receiverId,
-          actions,
-        });
-      } catch (e) {
-        if (e.type === 'NotEnoughAllowance') {
-          accessKey = await this.accessKeyForTransaction(receiverId, actions);
-        } else {
-          throw e;
-        }
-      }
     }
 
     const block = await this.connection.provider.block({

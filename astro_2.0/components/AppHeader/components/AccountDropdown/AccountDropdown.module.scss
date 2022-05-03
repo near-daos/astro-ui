@@ -1,0 +1,47 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  cursor: pointer;
+  position: relative;
+}
+
+@include mobile-only {
+  .controlIcon {
+    display: none;
+  }
+}
+
+.controlIcon {
+  margin: 0 8px 0 4px;
+  width: 20px;
+}
+
+.controlIcon.open {
+  transform: rotate(180deg);
+}
+
+.menuButton {
+  padding: 8px;
+
+  // TODO remove to enable navigation to my-account page
+  pointer-events: none;
+}
+
+.footer {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  color: var(--color-brand-black);
+  margin-top: 8px;
+  width: 328px;
+
+  @include astro-desktop {
+    display: none;
+  }
+}
+
+.disabled {
+  cursor: none;
+  pointer-events: none;
+}

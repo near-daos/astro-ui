@@ -3,14 +3,14 @@ import { render } from 'jest/testUtils';
 
 import { FEATURE_FLAGS } from 'constants/featureFlags';
 
-import { useAuthContext } from 'context/AuthContext';
-import { useNotificationsCount } from 'astro_2.0/features/Notifications/hooks';
+import { useWalletContext } from 'context/WalletContext';
 
 import { NotificationsBell } from 'astro_2.0/components/AppHeader/components/NotificationsBell';
+import { useNotificationsCount } from 'astro_2.0/features/Notifications/hooks';
 
-jest.mock('context/AuthContext', () => {
+jest.mock('context/WalletContext', () => {
   return {
-    useAuthContext: jest.fn(),
+    useWalletContext: jest.fn(),
   };
 });
 
@@ -29,7 +29,7 @@ describe('notifications bell', () => {
     FEATURE_FLAGS.NOTIFICATIONS = false;
 
     // @ts-ignore
-    useAuthContext.mockImplementation(() => ({
+    useWalletContext.mockImplementation(() => ({
       accountId: '123',
     }));
 
@@ -42,7 +42,7 @@ describe('notifications bell', () => {
     FEATURE_FLAGS.NOTIFICATIONS = true;
 
     // @ts-ignore
-    useAuthContext.mockImplementation(() => ({
+    useWalletContext.mockImplementation(() => ({
       accountId: '123',
     }));
 
@@ -56,7 +56,7 @@ describe('notifications bell', () => {
     useNotificationsCount.mockImplementation(() => 12);
 
     // @ts-ignore
-    useAuthContext.mockImplementation(() => ({
+    useWalletContext.mockImplementation(() => ({
       accountId: '123',
     }));
 

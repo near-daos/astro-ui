@@ -17,7 +17,6 @@ import { TopicsFilter } from 'astro_2.0/features/Discover/components/TopicsFilte
 import { DiscoverPageProvider } from 'astro_2.0/features/Discover/components/DiscoverPageContext/DiscoverPageContext';
 import { DaoStatsDataProvider } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
 import { useDaoSearch } from 'astro_2.0/features/Discover/hooks';
-import { useAuthContext } from 'context/AuthContext';
 
 import { CREATE_DAO_URL } from 'constants/routing';
 
@@ -25,11 +24,12 @@ import { DaoStatsTopics } from 'astro_2.0/features/Discover/constants';
 import useQuery from 'hooks/useQuery';
 
 import { WalletType } from 'types/config';
+import { useWalletContext } from 'context/WalletContext';
 import styles from './DiscoverPage.module.scss';
 
 const DiscoverPage: NextPage = () => {
   const { t } = useTranslation();
-  const { accountId, login } = useAuthContext();
+  const { accountId, login } = useWalletContext();
   const router = useRouter();
   const { query } = router;
   const topic = query.topic as string;

@@ -14,7 +14,7 @@ import { ShowMoreLinks } from 'astro_2.0/features/DaoDashboardHeader/components/
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { UserPermissions } from 'types/context';
 
 import { DepositToDaoForm } from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm';
@@ -53,7 +53,7 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
     links,
   } = dao;
   const router = useRouter();
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
   const { t } = useTranslation();
   const isMobileOrTablet = useMedia('(max-width: 767px)');
   const { version } = useCheckDaoUpgrade(dao);

@@ -5,7 +5,7 @@ import { DepositButton } from 'astro_2.0/features/DaoDashboardHeader/components/
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import styles from './DepositToDaoForm.module.scss';
 
@@ -33,7 +33,7 @@ export const DepositToDaoForm: React.FC<DepositToDaoForm> = ({ daoId }) => {
     resolver: yupResolver(schema),
   });
 
-  const { nearService } = useAuthContext();
+  const { nearService } = useWalletContext();
 
   const { handleSubmit, setValue } = methods;
 

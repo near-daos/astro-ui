@@ -29,7 +29,7 @@ import {
   updateAction,
 } from 'astro_2.0/features/CreateDao/components/helpers';
 import { useStateMachine } from 'little-state-machine';
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 
 type DaoFormStateReturn = {
   options: DaoSettingOption<
@@ -95,7 +95,7 @@ export function useCreateDao(): {
 } {
   const router = useRouter();
   const { t } = useTranslation();
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, nearService } = useWalletContext();
   const { actions, state } = useStateMachine({ updateAction });
 
   const uploadImg = useCallback(async (img: File) => {

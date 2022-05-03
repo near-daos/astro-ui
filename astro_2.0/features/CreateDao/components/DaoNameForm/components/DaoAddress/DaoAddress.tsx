@@ -6,7 +6,7 @@ import { validateDaoAddress } from 'astro_2.0/features/CreateDao/helpers';
 
 import { configService } from 'services/ConfigService';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import styles from './DaoAddress.module.scss';
 
 interface DaoAddressProps {
@@ -23,7 +23,7 @@ export const DaoAddress: VFC<DaoAddressProps> = ({
   onError,
 }) => {
   const { nearConfig } = configService.get();
-  const { nearService } = useAuthContext();
+  const { nearService } = useWalletContext();
 
   useDebounce(
     async () => {
@@ -33,7 +33,10 @@ export const DaoAddress: VFC<DaoAddressProps> = ({
         return;
       }
 
-      const isAccountExist = await validateDaoAddress(address, nearService);
+      const isAccountExist = await validateDaoAddress(
+        address,
+        nearService ?? undefined
+      );
 
       if (isAccountExist && onError) {
         onError(address);

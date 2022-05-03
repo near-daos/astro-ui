@@ -1,4 +1,4 @@
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { useEffect, useState } from 'react';
 import { Contract } from 'near-api-js';
 import { DAO, DaoVersion } from 'types/dao';
@@ -62,7 +62,7 @@ export interface DaoUpgradeStatus {
 }
 
 export const useDaoUpgrade = (dao: DAO): DaoUpgradeStatus => {
-  const { nearService } = useAuthContext();
+  const { nearService } = useWalletContext();
   const [steps, setSteps] = useState<Step[]>(upgradeSteps);
   const [upgradeStatus, setUpgradeStatus] = useState<
     UpgradeStatus | undefined

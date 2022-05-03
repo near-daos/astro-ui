@@ -1,0 +1,31 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.accountButton {
+  align-items: center;
+  background-color: var(--color-neutral-30);
+  border-radius: 22px;
+  cursor: pointer;
+  display: flex;
+  height: 38px;
+  white-space: nowrap;
+
+  @include mobile-only {
+    .accountId {
+      display: none;
+    }
+  }
+
+  &:hover .accountId {
+    color: var(--color-neutral-90);
+  }
+
+  .accountId {
+    @extend %subtitle4;
+    @include ellipse-text;
+    color: var(--color-neutral-70);
+    margin: 0 4px 0 8px;
+    max-width: 220px;
+  }
+}

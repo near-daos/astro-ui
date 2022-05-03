@@ -2,12 +2,12 @@ import cn from 'classnames';
 import React, { FC, useRef } from 'react';
 import { useTranslation } from 'next-i18next';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { FEATURE_FLAGS } from 'constants/featureFlags';
 
 import { Icon } from 'components/Icon';
+import { AccountDropdown } from 'astro_2.0/components/AppHeader/components/AccountDropdown';
 import { SearchBar } from './components/SearchBar';
-import { AccountButton } from './components/AccountButton';
 import { NotificationsBell } from './components/NotificationsBell';
 
 import styles from './AppHeader.module.scss';
@@ -16,7 +16,7 @@ export const AppHeader: FC = () => {
   const { t } = useTranslation('common');
 
   const centralEl = useRef(null);
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
 
   function renderLogo(className?: string) {
     return (
@@ -48,9 +48,8 @@ export const AppHeader: FC = () => {
         />
       </div>
       {!!accountId && <NotificationsBell className={styles.bell} />}
-      <div>
-        <AccountButton />
-      </div>
+
+      <AccountDropdown />
     </header>
   );
 };

@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { render } from 'jest/testUtils';
 
-import { useAuthContext } from 'context/AuthContext';
-
 import { MobileNav } from 'astro_2.0/components/navigation/MobileNav';
+import { useWalletContext } from 'context/WalletContext';
 
-jest.mock('context/AuthContext', () => {
+jest.mock('context/WalletContext', () => {
   return {
-    useAuthContext: jest.fn(),
+    useWalletContext: jest.fn(),
   };
 });
 
@@ -22,7 +21,7 @@ jest.mock('astro_2.0/components/navigation/NavButton', () => {
 describe('Mobile nav', () => {
   it('Should render partial navigation if user did not log in', () => {
     // @ts-ignore
-    useAuthContext.mockImplementation(() => ({
+    useWalletContext.mockImplementation(() => ({
       accountId: undefined,
     }));
 
@@ -34,7 +33,7 @@ describe('Mobile nav', () => {
 
   it('Should render full navigation for logged user', () => {
     // @ts-ignore
-    useAuthContext.mockImplementation(() => ({
+    useWalletContext.mockImplementation(() => ({
       accountId: 'accountId',
     }));
 

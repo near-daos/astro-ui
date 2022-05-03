@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { useRouter } from 'next/router';
 import { fireEvent } from '@testing-library/dom';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails/DaoDetailsMinimized';
 
@@ -31,9 +31,9 @@ jest.mock('react-use', () => {
   };
 });
 
-jest.mock('context/AuthContext', () => {
+jest.mock('context/WalletContext', () => {
   return {
-    useAuthContext: jest.fn(() => ({})),
+    useWalletContext: jest.fn(() => ({})),
   };
 });
 
@@ -154,7 +154,7 @@ describe('dao details minimized', () => {
     const login = jest.fn();
 
     // @ts-ignore
-    useAuthContext.mockImplementation(() => ({ login }));
+    useWalletContext.mockImplementation(() => ({ login }));
 
     const { getAllByRole } = render(
       <DaoDetailsMinimized
@@ -173,7 +173,7 @@ describe('dao details minimized', () => {
     const onCreateProposalClick = jest.fn();
 
     // @ts-ignore
-    useAuthContext.mockImplementation(() => ({ accountId: '123' }));
+    useWalletContext.mockImplementation(() => ({ accountId: '123' }));
 
     const { getAllByRole } = render(
       <DaoDetailsMinimized

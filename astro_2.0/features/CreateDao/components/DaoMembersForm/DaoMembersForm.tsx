@@ -13,7 +13,7 @@ import { SubmitButton } from 'astro_2.0/features/CreateDao/components/SubmitButt
 
 import { updateAction } from 'astro_2.0/features/CreateDao/components/helpers';
 import { MembersStep } from 'astro_2.0/features/CreateDao/types';
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { StepCounter } from 'astro_2.0/features/CreateDao/components/StepCounter';
 import { DaoMemberLine } from './components/DaoMemberLine';
 
@@ -25,7 +25,7 @@ const schema = yup.object().shape({
 
 export const DaoMembersForm: VFC = () => {
   const { t } = useTranslation();
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
   const { updateQuery } = useQuery<{
     step: string;
   }>({ shallow: true });

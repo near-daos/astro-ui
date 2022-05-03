@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import isNil from 'lodash/isNil';
 import omitBy from 'lodash/omitBy';
 import { NotificationsService } from 'services/NotificationsService';
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { PaginationResponse } from 'types/api';
 import { Notification, NotificationDTO } from 'types/notification';
@@ -35,7 +35,7 @@ type UpdateSettingsConfig = {
 export function useNotificationsSettings(): {
   updateSettings: (config: UpdateSettingsConfig) => void;
 } {
-  const { accountId, getPublicKeyAndSignature } = useAuthContext();
+  const { accountId, getPublicKeyAndSignature } = useWalletContext();
 
   async function getPrevConfig(
     accId: string,
@@ -65,8 +65,13 @@ export function useNotificationsSettings(): {
   const updateSettings = useCallback(
     async (config: UpdateSettingsConfig) => {
       try {
-        const { publicKey, signature } = await getPublicKeyAndSignature();
+        const result = await getPublicKeyAndSignature();
 
+        if (!result) {
+          return;
+        }
+
+        const { publicKey, signature } = result;
         const prevConfig = await getPrevConfig(accountId, config.daoId);
 
         if (publicKey && signature) {
@@ -135,7 +140,7 @@ export function useNotificationsList(
 } {
   const router = useRouter();
   const { socket } = useSocket();
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, nearService } = useWalletContext();
   const [notifications, setNotifications] = useState<PaginationResponse<
     Notification[]
   > | null>(null);
@@ -384,7 +389,7 @@ export function useNotificationsList(
 
 export function useNotificationsCount(): number | null {
   const isMounted = useMountedState();
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
   const [counter, setCounter] = useState<number | null>(null);
 
   const [, fetchData] = useAsyncFn(async () => {
