@@ -345,5 +345,16 @@
     "groups": "Группы",
     "members": "Участники",
     "daoRules": "Правила ДАО"
+  },
+  "proposalVotes": {
+    "title": "Votes",
+    "voices": "voices",
+    "filters": {
+      "title": "Filter by vote status:",
+      "all": "All",
+      "approved": "Approved",
+      "failed": "Failed",
+      "notVoted": "Not Voted"
+    }
   }
 }

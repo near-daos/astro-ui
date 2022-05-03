@@ -9,7 +9,7 @@ import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 
 import { ProposalFeedItem } from 'types/proposal';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { getVoteDetails } from 'features/vote-policy/helpers';
 import { getProposalScope } from 'utils/getProposalScope';
 import { getContentNode } from 'astro_2.0/features/ViewProposal/helpers';
@@ -38,7 +38,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
   tokens,
   preventNavigate,
 }) => {
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
   const [showInfoPanel, toggleInfoPanel] = useToggle(false);
   const [commentsCount, setCommentsCount] = useState(proposal?.commentsCount);
   const isCouncilUser = proposal?.permissions?.isCouncil ?? false;

@@ -11,17 +11,17 @@ import { IconButton } from 'components/button/IconButton';
 import { ListOnScrollProps, VariableSizeList } from 'react-window';
 import { useMedia } from 'react-use';
 import styles from 'pages/dao/[dao]/tasks/plugins/plugins.module.scss';
-import { useAuthContext } from 'context/AuthContext';
 
 import { PLUGIN_INITIAL_DATA, PLUGINS_DATA } from 'mocks/pluginsPageData';
 import { WalletType } from 'types/config';
+import { useWalletContext } from 'context/WalletContext';
 
 interface PluginPageProps {
   plugins: PluginCardProps[];
 }
 
 const PluginsPage: FC<PluginPageProps> = ({ plugins = PLUGINS_DATA }) => {
-  const { accountId, login } = useAuthContext();
+  const { accountId, login } = useWalletContext();
 
   const [pluginsList] = useState(plugins);
 

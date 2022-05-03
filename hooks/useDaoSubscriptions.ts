@@ -3,7 +3,7 @@ import { useAsyncFn, useMount } from 'react-use';
 import { SputnikHttpService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { DAO, DaoSubscription } from 'types/dao';
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 
 function normalizeSubscriptions(
   data: DaoSubscription[]
@@ -27,7 +27,7 @@ export function useDaoSubscriptions(): {
   handleUnfollow: (id: string) => void;
   isLoading: boolean;
 } {
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, nearService } = useWalletContext();
   const [subscriptions, setSubscriptions] = useState<Record<
     string,
     { subscriptionId: string; dao: DAO }

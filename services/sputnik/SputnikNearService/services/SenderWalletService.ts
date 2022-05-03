@@ -15,6 +15,7 @@ import {
 import { WalletType } from 'types/config';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
 import { httpService } from 'services/HttpService';
+import { KeyStore } from 'near-api-js/lib/key_stores';
 
 export class SenderWalletService implements WalletService {
   private readonly walletInstance: SenderWalletInstance;
@@ -33,7 +34,10 @@ export class SenderWalletService implements WalletService {
   }
 
   isSignedIn(): boolean {
-    return this.walletInstance.isSignedIn();
+    return (
+      this.walletInstance.isSignedIn() &&
+      !!this.walletInstance.authData.accessKey
+    );
   }
 
   logout(): void {
@@ -167,11 +171,16 @@ export class SenderWalletService implements WalletService {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  availableAccounts(): Promise<string[]> {
+  getAvailableAccounts(): Promise<string[]> {
     return Promise.resolve([]);
   }
 
   walletMeta(): WalletMeta {
     return this.walletInfo;
+  }
+
+  getKeyStore(): KeyStore {
+    // eslint-disable-next-line no-underscore-dangle
+    return this.getAccount().walletConnection._keyStore;
   }
 }

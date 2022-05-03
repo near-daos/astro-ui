@@ -32,4 +32,5 @@ export type ProgressStatus = {
 export type Settings = {
   daoUpgrade?: UpgradeStatus;
   createGovernanceToken?: ProgressStatus;
+  features: Record<string, boolean>;
 };

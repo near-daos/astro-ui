@@ -1,0 +1,16 @@
+.voteCollapsableList {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.voteCollapsableItem {
+  margin: 0 0 24px;
+  &:last-child {
+    margin: 0;
+  }
+}

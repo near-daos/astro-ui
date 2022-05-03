@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Contract } from 'near-api-js';
-import { useAuthContext } from 'context/AuthContext';
 import { DAO, DaoVersion } from 'types/dao';
 import { useAsyncFn } from 'react-use';
 import { SputnikHttpService } from 'services/sputnik';
 import { Settings, UpgradeStatus, UpgradeSteps } from 'types/settings';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { configService } from 'services/ConfigService';
+import { useWalletContext } from 'context/WalletContext';
 
 type RawMeta = [string, DaoVersion];
 
@@ -25,7 +25,7 @@ export function useCheckDaoUpgrade(
   version: Version | null;
   loading: boolean;
 } {
-  const { nearService } = useAuthContext();
+  const { nearService } = useWalletContext();
   const [loading, setLoading] = useState(true);
   const { appConfig } = configService.get();
 
@@ -119,7 +119,7 @@ export function useUpgradeStatus(
     versionHash: string;
   }) => Promise<void>;
 } {
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, nearService } = useWalletContext();
   const [upgradeStatus, setUpgradeStatus] = useState<UpgradeStatus | null>(
     null
   );
@@ -135,7 +135,8 @@ export function useUpgradeStatus(
   const [{ loading: updatingStatus }, update] = useAsyncFn(
     async ({ upgradeStep, proposalId, versionHash }) => {
       try {
-        const settings = await SputnikHttpService.getDaoSettings(daoId);
+        const settings =
+          (await SputnikHttpService.getDaoSettings(daoId)) ?? ({} as Settings);
 
         const newSettings: Settings = {
           ...settings,

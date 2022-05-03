@@ -1,4 +1,3 @@
-import { useAuthContext } from 'context/AuthContext';
 import { useEffect, useState } from 'react';
 import { useAsyncFn } from 'react-use';
 import { SputnikHttpService } from 'services/sputnik';
@@ -8,6 +7,7 @@ import {
   Settings,
 } from 'types/settings';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { useWalletContext } from 'context/WalletContext';
 
 export function useCreateGovernanceTokenStatus(
   daoId: string
@@ -22,7 +22,7 @@ export function useCreateGovernanceTokenStatus(
     proposalId: number | null;
   }) => Promise<void>;
 } {
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, nearService } = useWalletContext();
   const [status, setStatus] = useState<ProgressStatus | null>(null);
 
   const [{ loading }, getSettings] = useAsyncFn(async () => {
@@ -36,7 +36,8 @@ export function useCreateGovernanceTokenStatus(
   const [{ loading: updatingStatus }, update] = useAsyncFn(
     async ({ step, proposalId, flow }) => {
       try {
-        const settings = await SputnikHttpService.getDaoSettings(daoId);
+        const settings =
+          (await SputnikHttpService.getDaoSettings(daoId)) ?? ({} as Settings);
 
         const newSettings: Settings = {
           ...settings,

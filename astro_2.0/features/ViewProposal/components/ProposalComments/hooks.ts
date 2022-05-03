@@ -10,7 +10,7 @@ import { SputnikHttpService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { useAsyncFn, useMountedState } from 'react-use';
 import { useSocket } from 'context/SocketContext';
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { useTranslation } from 'next-i18next';
 
 export function useProposalComments(
@@ -23,7 +23,7 @@ export function useProposalComments(
   reportComment: (params: ReportCommentsInput) => void;
   deleteComment: (commentId: number, reason: string) => void;
 } {
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
   const { socket } = useSocket();
   const isMounted = useMountedState();

@@ -7,7 +7,7 @@ import { DebouncedInput } from 'components/inputs/Input';
 import { IconButton } from 'components/button/IconButton';
 import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 
 import styles from './DaoMemberLine.module.scss';
 
@@ -24,7 +24,7 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({ index, onRemove }) => {
     setValue: setFormValue,
     formState: { errors },
   } = useFormContext();
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
 
   const errorEl = useRef<HTMLDivElement>(null);
 

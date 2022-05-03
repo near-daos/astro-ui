@@ -4,7 +4,7 @@ import { Modal } from 'components/modal';
 import { WalletType } from 'types/config';
 
 import { Icon } from 'components/Icon';
-import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountButton/components/WalletIcon';
+import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletIcon';
 import { DotsLoader } from 'astro_2.0/components/DotsLoader';
 
 import styles from './ConnectingWalletModal.module.scss';

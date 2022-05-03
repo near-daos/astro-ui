@@ -25,13 +25,13 @@ import { getNewDaoParams } from 'astro_2.0/features/CreateDao/helpers';
 import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCreateDao } from 'astro_2.0/features/CreateDao/components/hooks';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import styles from './DaoSubmitForm.module.scss';
 
 export function DaoSubmitForm(): JSX.Element {
   const { actions, state } = useStateMachine({ updateAction });
   const { createDao } = useCreateDao();
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
 
   const methods = useForm<SubmitStep>({
     defaultValues: state.submit,

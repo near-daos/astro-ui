@@ -5,7 +5,7 @@ import { fireEvent } from '@testing-library/dom';
 
 import { CREATE_DAO_URL } from 'constants/routing';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 
 import { DaosList } from 'astro_2.0/components/DaosList';
 
@@ -15,9 +15,9 @@ jest.mock('next/router', () => {
   };
 });
 
-jest.mock('context/AuthContext', () => {
+jest.mock('context/WalletContext', () => {
   return {
-    useAuthContext: jest.fn(() => ({})),
+    useWalletContext: jest.fn(() => ({})),
   };
 });
 
@@ -41,7 +41,7 @@ describe('Dao List', () => {
     const login = jest.fn();
 
     // @ts-ignore
-    useAuthContext.mockImplementation(() => ({ login }));
+    useWalletContext.mockImplementation(() => ({ login }));
 
     const { getByRole } = render(<DaosList label="Hello World" />);
 
@@ -52,7 +52,7 @@ describe('Dao List', () => {
 
   it('Should navigate to "create dao" page for logged user', () => {
     // @ts-ignore
-    useAuthContext.mockImplementation(() => ({ accountId: 'accountId' }));
+    useWalletContext.mockImplementation(() => ({ accountId: 'accountId' }));
 
     const router = {
       push: jest.fn(),

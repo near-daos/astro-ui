@@ -1,13 +1,22 @@
 import {
   ConnectedWalletAccount,
+  InMemorySigner,
   keyStores,
   Near,
   transactions,
   utils,
 } from 'near-api-js';
 import { SputnikWalletConnection } from 'services/sputnik/SputnikNearService/overrides/SputnikWalletConnection';
-import { BrowserLocalStorageKeyStore } from 'near-api-js/lib/key_stores';
-import { AccessKey, Action, transfer } from 'near-api-js/lib/transaction';
+import {
+  BrowserLocalStorageKeyStore,
+  KeyStore,
+} from 'near-api-js/lib/key_stores';
+import {
+  AccessKey,
+  Action,
+  functionCall,
+  transfer,
+} from 'near-api-js/lib/transaction';
 import { SputnikConnectedWalletAccount } from 'services/sputnik/SputnikNearService/overrides/SputnikConnectedWalletAccount';
 import compact from 'lodash/compact';
 import { WalletType } from 'types/config';
@@ -22,6 +31,7 @@ import {
 import BN from 'bn.js';
 import { NearConfig } from 'config/near';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
+import { FunctionCallPermissionView } from 'near-api-js/lib/providers/provider';
 
 export class SputnikWalletService implements WalletService {
   private readonly near: Near;
@@ -46,7 +56,9 @@ export class SputnikWalletService implements WalletService {
   public readonly failureUrl: string = `${window.origin}/callback/auth`;
 
   constructor(nearConfig: NearConfig) {
-    const keyStore = new keyStores.BrowserLocalStorageKeyStore();
+    const keyStore = new keyStores.BrowserLocalStorageKeyStore(
+      window.localStorage
+    );
 
     this.config = nearConfig;
 
@@ -59,11 +71,15 @@ export class SputnikWalletService implements WalletService {
     this.walletConnection = new SputnikWalletConnection(this.near, 'sputnik');
   }
 
+  getKeyStore(): KeyStore {
+    return this.keyStore;
+  }
+
   walletMeta(): WalletMeta {
     return this.walletInfo;
   }
 
-  async availableAccounts(): Promise<string[]> {
+  async getAvailableAccounts(): Promise<string[]> {
     return this.keyStore.getAccounts(this.config.networkId);
   }
 
@@ -74,7 +90,55 @@ export class SputnikWalletService implements WalletService {
   async functionCall(
     props: FunctionCallOptions
   ): Promise<FinalExecutionOutcome[]> {
+    const directCallsList = ['act_proposal'];
     const accountId = this.getAccountId();
+
+    const accessKeys = await this.getAccount().getAccessKeys();
+
+    const accessKeyForDao = accessKeys
+      .filter(accessKey => accessKey.access_key.permission !== 'FullAccess')
+      .find(accessKey => {
+        const functionCallPermission = accessKey.access_key
+          .permission as FunctionCallPermissionView;
+
+        return (
+          functionCallPermission.FunctionCall.receiver_id === props.contractId
+        );
+      });
+
+    if (directCallsList.includes(props.methodName) && accessKeyForDao) {
+      const transaction = await this.buildTransaction(
+        props.contractId,
+        accessKeyForDao.access_key.nonce + 1,
+        [
+          functionCall(
+            props.methodName,
+            props.args,
+            props.gas ?? new BN(0),
+            new BN(0)
+          ),
+        ]
+      );
+
+      const signer = new InMemorySigner(this.keyStore);
+
+      const [, signedTransaction] = await transactions.signTransaction(
+        transaction,
+        signer,
+        accountId,
+        this.walletConnection.account().connection.networkId
+      );
+
+      try {
+        const result = await this.near.connection.provider.sendTransaction(
+          signedTransaction
+        );
+
+        return [result];
+      } catch (e) {
+        console.error(e);
+      }
+    }
 
     const result = await this.getAccount().functionCall({
       ...props,
@@ -90,8 +154,6 @@ export class SputnikWalletService implements WalletService {
       this.successUrl,
       this.failureUrl
     );
-
-    window.localStorage.setItem('selectedWallet', WalletType.NEAR.toString());
 
     return Promise.resolve(true);
   }
@@ -162,11 +224,6 @@ export class SputnikWalletService implements WalletService {
       throw new Error(`Cannot find matching key for transaction`);
     }
 
-    const block = await this.near.connection.provider.block({
-      finality: 'final',
-    });
-    const blockHash = utils.serialize.base_decode(block.header.hash);
-
     const account = (this.getAccount() as unknown) as SputnikConnectedWalletAccount;
 
     const trx = await Promise.all(
@@ -174,8 +231,7 @@ export class SputnikWalletService implements WalletService {
         this.buildTransaction(
           receiverId,
           accessKey.nonce + i + 1,
-          actions.map(action => (action as unknown) as Action),
-          blockHash
+          actions.map(action => (action as unknown) as Action)
         )
       )
     );
@@ -186,20 +242,20 @@ export class SputnikWalletService implements WalletService {
   private async buildTransaction(
     contractId: string,
     nonce: number,
-    actions: transactions.Action[],
-    blockHash: Uint8Array
+    actions: transactions.Action[]
   ) {
     const accountId = this.getAccountId();
+    const block = await this.near.connection.provider.block({
+      finality: 'final',
+    });
+    const blockHash = utils.serialize.base_decode(block.header.hash);
 
-    const keyPair = this.config
-      ? await this.keyStore?.getKey(this.config.networkId, this.getAccountId())
-      : null;
+    const keyPair = await this.keyStore.getKey(
+      this.config.networkId,
+      this.getAccountId()
+    );
 
-    const publicKey = keyPair?.getPublicKey();
-
-    if (!publicKey) {
-      return null;
-    }
+    const publicKey = keyPair.getPublicKey();
 
     return transactions.createTransaction(
       accountId,

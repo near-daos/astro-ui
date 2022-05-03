@@ -1,6 +1,6 @@
 import React, { VFC } from 'react';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 
 import {
   ALL_DAOS_NAV_CONFIG,
@@ -15,7 +15,7 @@ import { useDaoIds } from 'hooks/useDaoIds';
 import styles from './MobileNav.module.scss';
 
 export const MobileNav: VFC = () => {
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
   const myDaosIds = useDaoIds(accountId);
 
   const navConfig = accountId

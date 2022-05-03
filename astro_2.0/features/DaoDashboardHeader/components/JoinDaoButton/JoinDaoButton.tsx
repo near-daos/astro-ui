@@ -7,7 +7,7 @@ import { Icon } from 'components/Icon';
 
 import { ProposalVariant } from 'types/proposal';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 
 import styles from './JoinDaoButton.module.scss';
 
@@ -24,7 +24,7 @@ export const JoinDaoButton: FC<JoinDaoButtonProps> = ({
   className,
 }) => {
   const { t } = useTranslation();
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
 
   return (
     <Button

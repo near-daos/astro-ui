@@ -5,7 +5,7 @@ import { useTranslation } from 'next-i18next';
 import { Button } from 'components/button/Button';
 import { CREATE_DAO_URL } from 'constants/routing';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 
 import { WalletType } from 'types/config';
 import styles from './DaosList.module.scss';
@@ -17,7 +17,7 @@ interface DaosListProps {
 export const DaosList: FC<DaosListProps> = ({ label, children }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { accountId, login } = useAuthContext();
+  const { accountId, login } = useWalletContext();
 
   const handleCreateDao = useCallback(
     () => (accountId ? router.push(CREATE_DAO_URL) : login(WalletType.NEAR)),

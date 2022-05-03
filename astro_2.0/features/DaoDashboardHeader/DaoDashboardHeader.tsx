@@ -14,7 +14,7 @@ import { ShowMoreLinks } from 'astro_2.0/features/DaoDashboardHeader/components/
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { UserPermissions } from 'types/context';
 
 import { DepositToDaoForm } from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm';
@@ -23,6 +23,8 @@ import { DaoWarning } from 'astro_2.0/components/DaoWarning';
 
 import { useJoinDao } from 'astro_2.0/features/DaoDashboardHeader/components/hooks';
 import { useCheckDaoUpgrade } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/hooks';
+import { DaoFeatureInfo } from 'astro_2.0/features/DaoFeatureInfo';
+import { VoteCreditDeposit } from 'astro_2.0/features/DaoDashboardHeader/components/VoteCreditDeposit';
 
 import { DAO_VERSION_PAGE_URL } from 'constants/routing';
 
@@ -53,7 +55,7 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
     links,
   } = dao;
   const router = useRouter();
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
   const { t } = useTranslation();
   const isMobileOrTablet = useMedia('(max-width: 767px)');
   const { version } = useCheckDaoUpgrade(dao);
@@ -139,6 +141,14 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
       {description && (
         <section className={styles.descriptionSection}>{description}</section>
       )}
+
+      <DaoFeatureInfo
+        dao={dao}
+        title="Vote Seamlessly"
+        description="To vote without confirmation on NEAR Wallet use deposit amount on your Account"
+        featureKey="voteCredit"
+        control={onClose => <VoteCreditDeposit dao={dao} onClose={onClose} />}
+      />
 
       {showWarning && (
         <DaoWarning

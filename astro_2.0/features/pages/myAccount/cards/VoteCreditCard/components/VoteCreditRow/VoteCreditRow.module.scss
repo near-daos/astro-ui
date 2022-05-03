@@ -1,0 +1,48 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  align-items: center;
+  display: flex;
+  padding: 12px 0;
+  width: 100%;
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid var(--color-neutral-30);
+  }
+}
+
+.name {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  margin-right: 12px;
+  overflow: hidden;
+}
+
+.details {
+  overflow: hidden;
+}
+
+.daoName {
+  @extend %title3;
+  @include ellipse-text;
+  color: var(--color-black);
+}
+
+.address {
+  @extend %caption1;
+  align-items: center;
+  color: var(--color-neutral-60);
+  display: block;
+  word-break: break-all;
+}
+
+.addressId {
+  display: inline;
+}
+
+.copyAddress {
+  display: inline-block;
+  margin-left: 6px;
+}

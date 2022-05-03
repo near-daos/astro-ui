@@ -59,11 +59,27 @@
 }
 
 .filters {
-  align-items: center;
+  align-items: flex-end;
   display: flex;
+  flex-direction: column;
   grid-area: filters;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 60px;
+
+  @include tablet-portrait {
+    align-items: center;
+    flex-direction: row;
+  }
+}
+
+.filterTitle {
+  @extend %heading1;
+  color: var(--color-neutral-90);
+  display: none;
+
+  @include tablet-landscape {
+    display: block;
+  }
 }
 
 .label {

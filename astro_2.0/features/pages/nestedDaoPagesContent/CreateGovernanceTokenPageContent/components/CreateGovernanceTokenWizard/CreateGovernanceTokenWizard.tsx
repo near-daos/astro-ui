@@ -13,14 +13,13 @@ import { ViewStepProposal } from 'astro_2.0/features/pages/nestedDaoPagesContent
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 import { ChooseExistingToken } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/ChooseExistingToken/ChooseExistingToken';
 
-import { useAuthContext } from 'context/AuthContext';
-
 import { ProposalFeedItem, ProposalType } from 'types/proposal';
 import { DaoContext } from 'types/context';
 import { CreateGovernanceTokenSteps, ProgressStatus } from 'types/settings';
 
 import { SputnikHttpService } from 'services/sputnik';
 
+import { useWalletContext } from 'context/WalletContext';
 import styles from './CreateGovernanceTokenWizard.module.scss';
 
 interface Props {
@@ -40,7 +39,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
   onUpdate,
   status,
 }) => {
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
   const [proposal, setProposal] = useState<ProposalFeedItem | null>(null);
   const steps = getCreateGovernanceTokenSteps(status, proposal);
   const stepProposalVariant = getCreateGovernanceTokenStepProposalVariant(

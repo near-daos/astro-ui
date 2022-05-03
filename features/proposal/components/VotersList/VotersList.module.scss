@@ -1,5 +1,15 @@
-.root {
+.votersList {
+  background-color: var(--color-white);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   list-style: none;
-  margin-top: 24px;
-  padding: 0;
+  margin: 0;
+  padding: 0 24px 24px;
+}
+
+.voteListItem {
+  margin: 0 0 12px;
+  &:last-child {
+    margin: 0;
+  }
 }

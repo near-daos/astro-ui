@@ -1,0 +1,33 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-primary-10);
+}
+
+.status {
+  background-color: var(--color-primary-20);
+}
+
+.icon {
+  color: var(--color-primary-50);
+}
+
+.warningWrapper {
+  grid-area: warningSection;
+  margin-top: 32px;
+}
+
+.title {
+  @extend %title3;
+  margin-bottom: 4px;
+}
+
+.text {
+  @extend %caption1;
+}
+
+.control {
+  align-items: center;
+  display: flex;
+}

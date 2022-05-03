@@ -12,7 +12,7 @@ import { Button } from 'components/button/Button';
 import { SubmitButton } from 'astro_2.0/features/CreateDao/components/SubmitButton';
 
 import { updateAction } from 'astro_2.0/features/CreateDao/components/helpers';
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { StepCounter } from 'astro_2.0/features/CreateDao/components/StepCounter';
 import { DaoMemberLine } from 'astro_2.0/features/CreateDao/components/DaoMembersForm/components/DaoMemberLine';
 import { validateUserAccount } from 'astro_2.0/features/CreateProposal/helpers';
@@ -23,7 +23,7 @@ type Form = { accounts: { account: string }[] };
 
 export const DaoMembersForm: VFC = () => {
   const { t } = useTranslation();
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, nearService } = useWalletContext();
   const { updateQuery } = useQuery<{
     step: string;
   }>({ shallow: true });

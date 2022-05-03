@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { GroupedSelect } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
 
 import { getFormInitialValues } from 'astro_2.0/features/CreateProposal/helpers/initialValues';
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { ProposalVariant } from 'types/proposal';
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 
@@ -12,7 +12,7 @@ import styles from './FunctionCallTypeSelector.module.scss';
 
 export const FunctionCallTypeSelector: FC = () => {
   const { register, reset } = useFormContext();
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
 
   const options = useMemo(() => {
     return [

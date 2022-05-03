@@ -1,6 +1,6 @@
 import io, { Socket as TSocket } from 'socket.io-client';
 import { createContext, FC, useContext, useEffect, useState } from 'react';
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { useMountedState } from 'react-use';
 import { configService } from 'services/ConfigService';
 
@@ -18,7 +18,7 @@ export const useSocket = (): ISocketContext => useContext(SocketContext);
 
 export const SocketProvider: FC = ({ children }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, nearService } = useWalletContext();
   const isMounted = useMountedState();
 
   useEffect(() => {

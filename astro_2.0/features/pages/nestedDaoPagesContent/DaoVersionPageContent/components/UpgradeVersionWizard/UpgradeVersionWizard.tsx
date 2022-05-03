@@ -9,7 +9,6 @@ import { UpgradeStatus, UpgradeSteps } from 'types/settings';
 import { ProposalFeedItem, ProposalType } from 'types/proposal';
 
 import { SputnikHttpService } from 'services/sputnik';
-import { useAuthContext } from 'context/AuthContext';
 
 import {
   getNextUpgradeStep,
@@ -17,6 +16,7 @@ import {
   getVersionUpgradeSteps,
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/components/UpgradeVersionWizard/helpers';
 
+import { useWalletContext } from 'context/WalletContext';
 import styles from './UpgradeVersionWizard.module.scss';
 
 interface Props {
@@ -40,7 +40,7 @@ export const UpgradeVersionWizard: FC<Props> = ({
   onUpdate,
   versionHash,
 }) => {
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
   const [proposal, setProposal] = useState<ProposalFeedItem | null>(null);
   const steps = getVersionUpgradeSteps(upgradeStatus, proposal);
   const stepProposalVariant = getStepProposalVariant(upgradeStatus);
