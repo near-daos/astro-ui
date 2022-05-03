@@ -6,11 +6,7 @@ import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs'
 import { DaosTopList } from 'astro_2.0/features/Discover/components/DaosTopList';
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
 
-import {
-  LeaderboardData,
-  TControlTab,
-} from 'astro_2.0/features/Discover/types';
-import { ChartDataElement } from 'components/AreaChartRenderer/types';
+import { TControlTab } from 'astro_2.0/features/Discover/types';
 import { useDaoStatsContext } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
 import { LIMIT } from 'services/DaoStatsService';
 
@@ -21,6 +17,7 @@ import {
 } from 'astro_2.0/features/Discover/constants';
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
 import { ChartInterval } from 'astro_2.0/features/Discover/components/ChartInterval';
+import { useDiscoveryState } from 'astro_2.0/features/Discover/hooks';
 import useQuery from 'hooks/useQuery';
 
 import { General, Interval } from 'services/DaoStatsService/types';
@@ -30,16 +27,9 @@ import styles from './GeneralInfo.module.scss';
 export const GeneralInfo: FC = () => {
   const isMounted = useMountedState();
   const { t } = useTranslation();
-  const [interval, setInterval] = useState(Interval.WEEK);
+  const [interval, setInterval] = useState(Interval.DAY);
   const { daoStatsService } = useDaoStatsContext();
   const [generalData, setGeneralData] = useState<General | null>(null);
-  const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
-  const [leaderboardData, setLeaderboardData] = useState<
-    LeaderboardData[] | null
-  >(null);
-  const [offset, setOffset] = useState(0);
-  const [total, setTotal] = useState(0);
-
   const { query } = useQuery<{ dao: string }>();
 
   const items = useMemo<TControlTab[]>(() => {
@@ -63,7 +53,18 @@ export const GeneralInfo: FC = () => {
       },
     ];
   }, [generalData?.activity.count, generalData?.activity.growth, query.dao, t]);
-  const [activeView, setActiveView] = useState(items[0].id);
+  const {
+    setOffset,
+    setTotal,
+    total,
+    offset,
+    leaderboardData,
+    setLeaderboardData,
+    chartData,
+    setChartData,
+    resetData,
+    activeView,
+  } = useDiscoveryState(items);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -71,11 +72,9 @@ export const GeneralInfo: FC = () => {
         return;
       }
 
-      setChartData(null);
-      setLeaderboardData(null);
-      setActiveView(id);
+      resetData(id);
     },
-    [isMounted]
+    [resetData, isMounted]
   );
 
   useEffect(() => {

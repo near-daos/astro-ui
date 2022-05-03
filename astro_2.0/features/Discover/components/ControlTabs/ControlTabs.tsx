@@ -129,7 +129,7 @@ export const ControlTabs: FC<ControlTabsProps> = ({
         </div>
       )}
       <div className={cn(styles.root, className)} ref={mergeRefs}>
-        {items.map(({ id, label, value, trend }) => (
+        {items.map(({ id, label, value, trend, icon }) => (
           <StatCard
             key={id}
             selected={activeView === id}
@@ -146,6 +146,7 @@ export const ControlTabs: FC<ControlTabsProps> = ({
             }}
           >
             <StatPanel
+              icon={icon}
               title={label}
               value={value}
               trend={trend}

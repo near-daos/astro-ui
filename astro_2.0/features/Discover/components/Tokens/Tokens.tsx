@@ -6,11 +6,7 @@ import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs'
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
 import { DaosTopList } from 'astro_2.0/features/Discover/components/DaosTopList';
 
-import {
-  LeaderboardData,
-  TControlTab,
-} from 'astro_2.0/features/Discover/types';
-import { ChartDataElement } from 'components/AreaChartRenderer/types';
+import { TControlTab } from 'astro_2.0/features/Discover/types';
 import { useDaoStatsContext } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
 import { LIMIT } from 'services/DaoStatsService';
 
@@ -21,6 +17,8 @@ import {
   TokensTabs,
 } from 'astro_2.0/features/Discover/constants';
 import useQuery from 'hooks/useQuery';
+import { USD } from 'constants/common';
+import { useDiscoveryState } from 'astro_2.0/features/Discover/hooks';
 
 import { Tokens as TTokens } from 'services/DaoStatsService/types';
 
@@ -31,13 +29,6 @@ export const Tokens: FC = () => {
   const { t } = useTranslation();
   const { daoStatsService } = useDaoStatsContext();
   const [data, setData] = useState<TTokens | null>(null);
-  const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
-  const [leaderboardData, setLeaderboardData] = useState<
-    LeaderboardData[] | null
-  >(null);
-  const [offset, setOffset] = useState(0);
-  const [total, setTotal] = useState(0);
-
   const { query } = useQuery<{ dao: string }>();
 
   const items = useMemo<TControlTab[]>(() => {
@@ -51,7 +42,9 @@ export const Tokens: FC = () => {
       {
         id: TokensTabs.VL_OF_FTS,
         label: t('discover.vlOfFts'),
-        value: (data?.ftsVl.count ?? 0).toLocaleString(),
+        value: `${data?.ftsVl.count ? USD : ''}${(
+          data?.ftsVl.count ?? 0
+        ).toLocaleString()}`,
         trend: data?.ftsVl.growth ?? 0,
       },
       {
@@ -70,7 +63,18 @@ export const Tokens: FC = () => {
     data?.nfts.growth,
     t,
   ]);
-  const [activeView, setActiveView] = useState(items[0].id);
+  const {
+    setOffset,
+    setTotal,
+    total,
+    offset,
+    leaderboardData,
+    setLeaderboardData,
+    chartData,
+    setChartData,
+    resetData,
+    activeView,
+  } = useDiscoveryState(items);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -78,13 +82,9 @@ export const Tokens: FC = () => {
         return;
       }
 
-      setChartData(null);
-      setLeaderboardData(null);
-      setOffset(0);
-      setTotal(0);
-      setActiveView(id);
+      resetData(id);
     },
-    [isMounted]
+    [resetData, isMounted]
   );
 
   useEffect(() => {
@@ -150,6 +150,16 @@ export const Tokens: FC = () => {
       );
     }
   }, [activeView, query.dao, isMounted]);
+
+  const unit = useMemo(() => {
+    switch (activeView) {
+      case TokensTabs.VL_OF_FTS: {
+        return USD;
+      }
+      default:
+        return '';
+    }
+  }, [activeView]);
 
   const [, getLeaderboardData] = useAsyncFn(async () => {
     if (query.dao) {
@@ -224,11 +234,13 @@ export const Tokens: FC = () => {
       />
       <div className={styles.body}>
         <ChartRenderer
+          unit={unit}
           data={chartData}
           loading={loading}
           activeView={activeView}
         />
         <DaosTopList
+          unit={unit}
           total={total}
           next={nextLeaderboardItems}
           data={leaderboardData}

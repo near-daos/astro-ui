@@ -2,28 +2,39 @@
 
 exports[`TimelineGroups Should render component 1`] = `
 <div>
-  <div>
-    <div>
+  <div
+    class="groups"
+  >
+    <div
+      class="groupsHeader"
+    >
       Name
     </div>
     <div
+      class="group"
       role="button"
       tabindex="0"
     >
       <div>
-        <svg>
+        <svg
+          class="groupIcon"
+        >
           <use
             href="/_next/undefined"
           />
         </svg>
       </div>
-      <div>
+      <div
+        class="groupName"
+      >
         Group 1
       </div>
     </div>
-    <div>
+    <div
+      class="group"
+    >
       <div
-        class=""
+        class="groupName claimName"
       >
         Claim 1
       </div>

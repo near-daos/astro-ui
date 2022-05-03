@@ -4,7 +4,7 @@ import { Tabs } from 'components/Tabs';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { DaosTabView } from 'features/search/search-results/components/daos-tab-view';
 import { ProposalsTabView } from 'features/search/search-results/components/proposals-tab-view';
-import { MembersTabView } from 'features/search/search-results/components/members-tab-view';
+import { MembersTabView } from 'features/search/search-results/components/MembersTabView';
 
 import styles from './search-results-renderer.module.scss';
 

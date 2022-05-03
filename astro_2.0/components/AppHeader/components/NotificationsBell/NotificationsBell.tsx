@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import isEmpty from 'lodash/isEmpty';
 import { useHoverDirty } from 'react-use';
 import { useRef, VFC } from 'react';
 import Link from 'next/link';
@@ -9,7 +8,7 @@ import { FEATURE_FLAGS } from 'constants/featureFlags';
 import { NotificationsToastsContainer } from 'astro_2.0/components/AppHeader/components/NotificationsBell/components/NotificationsToastsContainer';
 import { Icon } from 'components/Icon';
 
-import { useNotificationsList } from 'astro_2.0/features/Notifications/hooks';
+import { useNotificationsCount } from 'astro_2.0/features/Notifications/hooks';
 
 import styles from './NotificationsBell.module.scss';
 
@@ -23,13 +22,10 @@ export const NotificationsBell: VFC<NotificationsBellProps> = ({
   const rootRef = useRef(null);
   const isHovered = useHoverDirty(rootRef);
 
-  const { notifications } = useNotificationsList();
+  const counter = useNotificationsCount();
 
   function renderBellIcon() {
-    if (
-      isEmpty(notifications) ||
-      !notifications?.data?.filter(item => !item.isRead).length
-    ) {
+    if (!counter) {
       return (
         <Icon
           name="noteBell"
@@ -40,11 +36,16 @@ export const NotificationsBell: VFC<NotificationsBellProps> = ({
     }
 
     return (
-      <Icon
-        className={styles.bell}
-        data-testid="notifications-icon"
-        name={isHovered ? 'noteBellActiveHover' : 'noteBellActive'}
-      />
+      <>
+        <Icon
+          className={styles.bell}
+          data-testid="notifications-icon"
+          name={isHovered ? 'noteBellActiveHover' : 'noteBellActive'}
+        />
+        <div className={styles.notificationsCount}>
+          {counter > 99 ? '99+' : counter}
+        </div>
+      </>
     );
   }
 

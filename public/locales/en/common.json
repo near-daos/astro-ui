@@ -71,6 +71,7 @@
   },
   "components": {
     "appFooter": {
+      "askQuestion": "Ask a question",
       "reportAnIssue": "Report an issue",
       "githubRepo": " Github repo",
       "opensourceAsIs": "SputnikDAO 2021-2022. The software is an open source and provided “as is”, without warranty of any kind.",
@@ -386,7 +387,7 @@
   },
   "discover": {
     "title": "Discovery",
-    "overview": "Overview",
+    "daoActivity": "DAO Activity",
     "financial": "Financial",
     "generalInfo": "General Info",
     "usersAndActivity": "Users and Activity",
@@ -418,7 +419,31 @@
     "numberOfBounties": "Number of Bounties",
     "vlOfBounties": "VL of Bounties",
     "activity": "Activity",
-    "avgGroupsDao": "Avg. Groups/DAO"
+    "avgGroupsDao": "Avg. Groups/DAO",
+    "activeProposals": "Active Proposals",
+    "activeVotes": "Active Votes"
+  },
+  "header": {
+    "search": {
+      "placeholder": "Search",
+      "seeAll": "See all",
+      "minimalChars": "Please enter at least 3 characters to search",
+      "daos": "DAOS",
+      "proposals": "Proposals",
+      "people": "People"
+    },
+    "myAccount": "My Account",
+    "disconnect": "Disconnect",
+    "chooseWallet": "Choose wallet",
+    "wallets": {
+      "near": {
+        "type": "web"
+      },
+      "sender": {
+        "beta": "beta",
+        "type": "extension"
+      }
+    }
   },
   "myAccountPage": {
     "header": "My account",
@@ -453,6 +478,21 @@
         "required": "Phone number is a required field",
         "error": "Must be a valid phone number"
       }
+    },
+    "notifications": {
+      "email": "Please, verify your email to enable notifications.",
+      "phone": "Please, verify your phone number to enable notifications."
+    }
+  },
+  "proposalVotes": {
+    "title": "Votes",
+    "voices": "voices",
+    "filters": {
+      "title": "Filter by vote status:",
+      "all": "All",
+      "approved": "Approved",
+      "failed": "Failed",
+      "notVoted": "Not Voted"
     }
   }
 }

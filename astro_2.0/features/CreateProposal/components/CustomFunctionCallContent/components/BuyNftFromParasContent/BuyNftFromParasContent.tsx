@@ -10,7 +10,7 @@ import {
 } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/hooks';
 
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
-import { Input } from 'components/inputs/Input';
+import { DebouncedInput, Input } from 'components/inputs/Input';
 import {
   DEFAULT_PROPOSAL_GAS,
   MAX_GAS,
@@ -29,7 +29,7 @@ export const BuyNftFromParasContent: FC = () => {
   return (
     <div className={styles.root}>
       <div className={styles.tokenKey}>
-        <InputWrapper fieldName="tokenKey" label="Token Key" fullWidth>
+        <InputWrapper fieldName="tokenKey" label="Token Id" fullWidth>
           <Input
             className={cn(styles.inputWrapper, styles.narrow)}
             type="text"
@@ -108,12 +108,15 @@ export const BuyNftFromParasContent: FC = () => {
           label={t('proposalCard.proposalTarget')}
           flex
         >
-          <Input
+          <DebouncedInput
             className={cn(styles.inputWrapper, styles.wide)}
             placeholder={t('proposalCard.proposalTargetPlaceholder')}
             isBorderless
             size="block"
             {...register('target')}
+            onValueChange={val =>
+              setValue('target', val, { shouldValidate: true })
+            }
           />
         </InputWrapper>
       </div>

@@ -70,12 +70,18 @@ export function getAllowedProposalsToCreate(
         switch (permission) {
           case '*:*':
           case '*:AddProposal': {
+            result[ProposalType.ChangeConfig] = true;
             result[ProposalType.ChangePolicy] = true;
             result[ProposalType.AddBounty] = true;
+            result[ProposalType.BountyDone] = true;
+            result[ProposalType.FunctionCall] = true;
             result[ProposalType.Transfer] = true;
             result[ProposalType.Vote] = true;
             result[ProposalType.RemoveMemberFromRole] = true;
             result[ProposalType.AddMemberToRole] = true;
+            result[ProposalType.UpgradeRemote] = true;
+            result[ProposalType.UpgradeSelf] = true;
+            result[ProposalType.SetStakingContract] = true;
             break;
           }
           case 'config:AddProposal': {
@@ -116,18 +122,18 @@ export function getAllowedProposalsToCreate(
           }
 
           // todo - temp disable some as they are hidden in ui
-          // case 'upgrade_self:AddProposal': {
-          //   result[ProposalType.UpgradeSelf] = true;
-          //   break;
-          // }
-          // case 'upgrade_remote:AddProposal': {
-          //   result[ProposalType.UpgradeRemote] = true;
-          //   break;
-          // }
-          // case 'set_vote_token:AddProposal': {
-          //   result[ProposalType.SetStakingContract] = true;
-          //   break;
-          // }
+          case 'upgrade_self:AddProposal': {
+            result[ProposalType.UpgradeSelf] = true;
+            break;
+          }
+          case 'upgrade_remote:AddProposal': {
+            result[ProposalType.UpgradeRemote] = true;
+            break;
+          }
+          case 'set_vote_token:AddProposal': {
+            result[ProposalType.SetStakingContract] = true;
+            break;
+          }
 
           default: {
             break;
@@ -281,12 +287,19 @@ function getProposalTypeByVariant(
     case ProposalVariant.ProposeAddMember: {
       return ProposalType.AddMemberToRole;
     }
+    case ProposalVariant.ProposeCreateBounty: {
+      return ProposalType.AddBounty;
+    }
+    case ProposalVariant.ProposeDoneBounty: {
+      return ProposalType.BountyDone;
+    }
     case ProposalVariant.ProposeRemoveMember: {
       return ProposalType.RemoveMemberFromRole;
     }
     case ProposalVariant.ProposeTransfer: {
       return ProposalType.Transfer;
     }
+    case ProposalVariant.ProposeChangeDaoLegalInfo:
     case ProposalVariant.ProposeChangeDaoName:
     case ProposalVariant.ProposeChangeDaoFlag:
     case ProposalVariant.ProposeChangeDaoLinks:
@@ -306,8 +319,15 @@ function getProposalTypeByVariant(
     case ProposalVariant.ProposeCreateGroup: {
       return ProposalType.ChangePolicy;
     }
+    case ProposalVariant.ProposeTokenDistribution:
+    case ProposalVariant.ProposeContractAcceptance:
     case ProposalVariant.ProposeCreateToken: {
       return ProposalType.SetStakingContract;
+    }
+    case ProposalVariant.ProposeRemoveUpgradeCode:
+    case ProposalVariant.ProposeGetUpgradeCode:
+    case ProposalVariant.ProposeUpgradeSelf: {
+      return ProposalType.UpgradeSelf;
     }
     default: {
       return null;
@@ -320,6 +340,8 @@ export function getInitialProposalVariant(
   isCanCreatePolicyProposals: boolean,
   allowedProposalsToCreate: ProposalPermissions
 ): ProposalVariant {
+  // Before we return initial proposal variant we have to check if user allowed to create corresponding proposals
+  // So we first build an array of allowed proposal types as configured per user's groups
   const allowedProposals = Object.keys(allowedProposalsToCreate).reduce<
     ProposalType[]
   >((res, key) => {
@@ -340,14 +362,17 @@ export function getInitialProposalVariant(
       return ProposalVariant.ProposeTransfer;
     }
 
+    // If user cannot create transfer proposals we return first available
     return getDefaultProposalVariantByType(allowedProposals[0]);
   }
 
+  // Translate selected proposal variant to type as we know only permissions by type
   const defaultType = getProposalTypeByVariant(defaultProposalVariant);
 
   if (defaultType !== null && allowedProposals.includes(defaultType)) {
     return defaultProposalVariant;
   }
 
+  // If user cannot create required proposals we return first available
   return getDefaultProposalVariantByType(allowedProposals[0]);
 }

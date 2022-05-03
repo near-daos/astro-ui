@@ -1,12 +1,13 @@
 import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import React, { VFC, useCallback } from 'react';
 import { useWalletContext } from 'context/WalletContext';
 
 import { SEARCH_PAGE_URL } from 'constants/routing';
 
 import { useSearchResults } from 'features/search/search-results';
-import { NoSearchResultsView } from 'features/search/search-results/components/no-search-results-view';
+import { NoSearchResultsView } from 'features/search/search-results/components/NoSearchResultsView';
 
 import {
   ResultSection,
@@ -33,6 +34,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
   const PEOPLE_TAB_INDEX = 2;
 
   const { accountId } = useWalletContext();
+  const { t } = useTranslation('common');
 
   const router = useRouter();
   const { searchResults } = useSearchResults();
@@ -106,7 +108,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
     return (
       <ResultSection
         data={sorted}
-        title="DAOS"
+        title={t('header.search.daos')}
         onSeeAll={goToDaosTabOnSearchPage}
       >
         {dataToRender.map(dao => (
@@ -121,7 +123,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
 
     return (
       <ResultSection
-        title="Proposals"
+        title={t('header.search.proposals')}
         data={proposals}
         onSeeAll={goToProposalsTabOnSearchPage}
         contentClassName={styles.proposalsContent}
@@ -142,7 +144,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
 
     return (
       <ResultSection
-        title="People"
+        title={t('header.search.people')}
         data={members}
         onSeeAll={goToPeopleTabOnSearchPage}
       >

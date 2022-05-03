@@ -49,7 +49,16 @@ export const DaoProposalCreationForm: VFC = () => {
         initialData={
           state.proposals.data ||
           getInitialCreationPermissions({
-            groups: [{ name: 'council', permissions: ['*:*'] }],
+            policy: {
+              roles: [
+                { name: 'council', permissions: ['*:*'], kind: 'Group' },
+                {
+                  name: 'all',
+                  permissions: ['*:AddProposal'],
+                  kind: 'Everyone',
+                },
+              ],
+            },
           })
         }
       />

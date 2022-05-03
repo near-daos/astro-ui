@@ -9,8 +9,8 @@ import { Toggle } from 'components/inputs/Toggle';
 import { NotificationCollapsableSettings } from 'astro_2.0/features/Notifications/components/NotificationCollapsableSettings';
 import { PlatformNotificationSettings } from 'astro_2.0/features/Notifications/components/PlatformNotificationSettings';
 import {
-  NotificationSettingsGroup,
-  NotificationSettingsPlatform,
+  // NotificationSettingsGroup,
+  // NotificationSettingsPlatform,
   NotificationsGroupStatus,
   NotifiedActionType,
 } from 'types/notification';
@@ -28,8 +28,8 @@ import { SideFilter } from 'astro_2.0/components/SideFilter';
 import styles from './NotificationSettings.module.scss';
 
 interface NotificationSettingsProps {
-  settingsGroupsData: NotificationSettingsGroup[];
-  settingsPlatformData: NotificationSettingsPlatform;
+  // settingsGroupsData: NotificationSettingsGroup[];
+  // settingsPlatformData: NotificationSettingsPlatform;
   myDaos: DaoSettings[];
   subscribedDaos: DaoSettings[];
   platformSettings: NotificationSettingDTO[];
@@ -88,7 +88,10 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
     if (daoData) {
       const types = extractTypes(daoData?.settings);
 
-      updateSettings(daoId, types ?? []);
+      updateSettings({
+        daoId,
+        types: types ?? [],
+      });
     }
   };
 
@@ -107,7 +110,9 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
 
     const types = extractTypes(newSettingsState.platform.settings);
 
-    updateSettings(null, [...types, ...DAO_RELATED_SETTINGS]);
+    updateSettings({
+      types: [...types, ...DAO_RELATED_SETTINGS],
+    });
   };
 
   const toggleDaoSwitch = (daoId: string, groupId: string) => {
@@ -149,7 +154,10 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
     if (daoData) {
       const types = extractTypes(daoData?.settings);
 
-      updateSettings(daoId, types ?? []);
+      updateSettings({
+        daoId,
+        types: types ?? [],
+      });
     }
   };
 
@@ -216,14 +224,14 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
         return res;
       }, []);
 
-      updateSettings(
-        null,
-        isMuted && delay === 0
-          ? DAO_RELATED_SETTINGS
-          : [...newTypes, ...DAO_RELATED_SETTINGS],
-        isMuted,
-        `${delay}`
-      );
+      updateSettings({
+        types:
+          isMuted && delay === 0
+            ? DAO_RELATED_SETTINGS
+            : [...newTypes, ...DAO_RELATED_SETTINGS],
+        isAllMuted: isMuted,
+        mutedUntilTimestamp: `${delay}`,
+      });
     } else {
       const newStatus =
         typeStatus === NotificationsGroupStatus.Enabled
@@ -250,12 +258,12 @@ const NotificationSettings: FC<NotificationSettingsProps> = ({
         selectedGroup?.daos?.map(dao => {
           const types = extractTypes(dao.settings);
 
-          return updateSettings(
-            dao.daoId,
+          return updateSettings({
+            daoId: dao.daoId,
             types,
-            newStatus === NotificationsGroupStatus.Disable,
-            `${delay}`
-          );
+            isAllMuted: newStatus === NotificationsGroupStatus.Disable,
+            mutedUntilTimestamp: `${delay}`,
+          });
         }) ?? []
       );
     }

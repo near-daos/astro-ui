@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import React, { FC, useRef } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import { useWalletContext } from 'context/WalletContext';
 import { FEATURE_FLAGS } from 'constants/featureFlags';
@@ -12,6 +13,8 @@ import { NotificationsBell } from './components/NotificationsBell';
 import styles from './AppHeader.module.scss';
 
 export const AppHeader: FC = () => {
+  const { t } = useTranslation('common');
+
   const centralEl = useRef(null);
   const { accountId } = useWalletContext();
 
@@ -39,7 +42,7 @@ export const AppHeader: FC = () => {
         {renderLogo(styles.mobileLogo)}
         <SearchBar
           withSideBar
-          placeholder="Search"
+          placeholder={t('header.search.placeholder')}
           parentElRef={centralEl}
           className={styles.search}
         />

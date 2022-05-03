@@ -348,12 +348,15 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
       case ProposalVariant.ProposeChangeProposalCreationPermissions: {
         if (proposal.kind.type === ProposalType.ChangePolicy) {
           const initialData = getInitialCreationPermissions({
-            groups: proposal.kind.policy.roles
-              .filter(role => role.kind !== 'Everyone')
-              .map(role => ({
-                name: role.name,
-                permissions: role.permissions,
-              })),
+            policy: {
+              roles: proposal.kind.policy.roles
+                // .filter(role => role.kind !== 'Everyone')
+                .map(role => ({
+                  kind: role.kind,
+                  name: role.name,
+                  permissions: role.permissions,
+                })),
+            },
           });
 
           content = <ChangePermissionsContent initialData={initialData} />;
@@ -364,15 +367,27 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
       case ProposalVariant.ProposeChangeProposalVotingPermissions: {
         if (proposal.kind.type === ProposalType.ChangePolicy) {
           const initialData = getInitialVotingPermissions({
-            groups: proposal.kind.policy.roles
-              .filter(role => role.kind !== 'Everyone')
-              .map(role => ({
-                name: role.name,
-                permissions: role.permissions,
-              })),
+            policy: {
+              roles: proposal.kind.policy.roles
+                // .filter(role => role.kind !== 'Everyone')
+                .map(role => ({
+                  kind: role.kind,
+                  name: role.name,
+                  permissions: role.permissions,
+                })),
+            },
           });
 
           content = <ChangePermissionsContent initialData={initialData} />;
+        }
+
+        break;
+      }
+      case ProposalVariant.ProposeRemoveUpgradeCode:
+      case ProposalVariant.ProposeUpgradeSelf:
+      case ProposalVariant.ProposeGetUpgradeCode: {
+        if (proposal.kind.type === ProposalType.FunctionCall) {
+          content = <div />;
         }
 
         break;
@@ -522,6 +537,15 @@ export function getProposalVariantLabel(
     }
     case ProposalVariant.ProposeChangeProposalVotingPermissions: {
       return 'Voting permissions';
+    }
+    case ProposalVariant.ProposeGetUpgradeCode: {
+      return 'Get latest code';
+    }
+    case ProposalVariant.ProposeUpgradeSelf: {
+      return 'Upgrade DAO';
+    }
+    case ProposalVariant.ProposeRemoveUpgradeCode: {
+      return 'Remove upgrade code blob';
     }
     default: {
       return type;

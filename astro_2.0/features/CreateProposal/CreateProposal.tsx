@@ -47,7 +47,7 @@ export interface CreateProposalProps {
   daoTokens: Record<string, Token>;
   showFlag?: boolean;
   bountyId?: number;
-  onCreate?: (proposalId: string) => void;
+  onCreate?: (proposalId: number | null) => void;
   redirectAfterCreation?: boolean;
   onClose: () => void;
   userPermissions: UserPermissions;
@@ -102,6 +102,8 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   }, [initialProposalVariant]);
 
   const methods = useForm({
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     defaultValues: getFormInitialValues(
       selectedProposalVariant,
       accountId,
@@ -239,7 +241,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         });
 
         if (onCreate && isMounted()) {
-          onCreate('');
+          onCreate(null);
         }
       }
     },

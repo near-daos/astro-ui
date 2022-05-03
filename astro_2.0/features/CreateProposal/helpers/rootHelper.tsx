@@ -16,7 +16,7 @@ import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSele
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 
 // Constants
-import { VALID_URL_REGEXP } from 'constants/regexp';
+import { VALID_METHOD_NAME_REGEXP, VALID_URL_REGEXP } from 'constants/regexp';
 import { MAX_GAS, MIN_GAS } from 'services/sputnik/constants';
 
 // Components
@@ -47,6 +47,7 @@ import {
 import { SputnikNearService } from 'services/sputnik';
 import { ChangeVotingPermissionsContent } from 'astro_2.0/features/CreateProposal/components/ChangeVotingPermissionsContent';
 import { ProposalPermissions } from 'types/context';
+import { CreateTokenContent } from 'astro_2.0/features/CreateProposal/components/CreateTokenContent';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -379,6 +380,9 @@ export function getFormContentNode(
         />
       );
     }
+    case ProposalVariant.ProposeCreateToken: {
+      return <CreateTokenContent />;
+    }
     case ProposalVariant.ProposeChangeProposalVotingPermissions:
     case ProposalVariant.ProposeChangeProposalCreationPermissions: {
       return <ChangeVotingPermissionsContent />;
@@ -432,7 +436,9 @@ export function validateUserAccount(
     return false;
   }
 
-  return nearService?.nearAccountExist(value || '');
+  const accountAddress = value.trim();
+
+  return nearService?.nearAccountExist(accountAddress || '');
 }
 
 export const gasValidation = yup
@@ -463,13 +469,12 @@ export function getValidationSchema(
             'Only numbers with five optional decimal place please',
             value => /^\d*(?:\.\d{0,5})?$/.test(`${value}`)
           ),
-        target: yup
-          .string()
-          .test(
-            'notValidNearAccount',
-            'Only valid near accounts are allowed',
-            value => validateUserAccount(value, nearService)
-          ),
+        target: yup.string().test({
+          name: 'notValidNearAccount',
+          exclusive: true,
+          message: 'Only valid near accounts are allowed',
+          test: async value => validateUserAccount(value, nearService),
+        }),
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
         gas: gasValidation,
@@ -543,11 +548,12 @@ export function getValidationSchema(
         group: yup.string().required('Required'),
         memberName: yup
           .string()
-          .test(
-            'notValidNearAccount',
-            'Only valid near accounts are allowed',
-            value => validateUserAccount(value, nearService)
-          )
+          .test({
+            name: 'notValidNearAccount',
+            exclusive: true,
+            message: 'Only valid near accounts are allowed',
+            test: async value => validateUserAccount(value, nearService),
+          })
           .test(
             'daoMember',
             'Current DAO can not be specified in this field',
@@ -640,13 +646,12 @@ export function getValidationSchema(
                 }
               )
               .required('Required'),
-            target: yup
-              .string()
-              .test(
-                'notValidNearAccount',
-                'Only valid near accounts are allowed',
-                value => validateUserAccount(value, nearService)
-              ),
+            target: yup.string().test({
+              name: 'notValidNearAccount',
+              exclusive: true,
+              message: 'Only valid near accounts are allowed',
+              test: async value => validateUserAccount(value, nearService),
+            }),
             details: yup.string().required('Required'),
             externalUrl: yup.string().url(),
             gas: gasValidation,
@@ -660,13 +665,12 @@ export function getValidationSchema(
               .positive()
               .typeError('Must be a valid number.')
               .required('Required'),
-            target: yup
-              .string()
-              .test(
-                'notValidNearAccount',
-                'Only valid near accounts are allowed',
-                value => validateUserAccount(value, nearService)
-              ),
+            target: yup.string().test({
+              name: 'notValidNearAccount',
+              exclusive: true,
+              message: 'Only valid near accounts are allowed',
+              test: async value => validateUserAccount(value, nearService),
+            }),
             details: yup.string().required('Required'),
             externalUrl: yup.string().url(),
             actionsGas: gasValidation,
@@ -699,7 +703,13 @@ export function getValidationSchema(
         default: {
           return yup.object().shape({
             smartContractAddress: yup.string().required('Required'),
-            methodName: yup.string().required('Required'),
+            methodName: yup
+              .string()
+              .matches(
+                VALID_METHOD_NAME_REGEXP,
+                'Provided method name is not valid'
+              )
+              .required('Required'),
             deposit: yup
               .number()
               .typeError('Must be a valid number.')

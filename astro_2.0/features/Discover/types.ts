@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
 
 export type TControlTab = {
@@ -5,6 +6,7 @@ export type TControlTab = {
   label: string;
   value: string;
   trend: number;
+  icon?: ReactNode;
 };
 
 export type TopicValue = {

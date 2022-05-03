@@ -179,6 +179,17 @@ class NotificationsServiceClass {
     };
   }
 
+  public async getNotificationsCount(
+    accountId: string | undefined
+  ): Promise<number> {
+    const response = await this.httpService.get<{
+      accountId: string;
+      unreadCount: number;
+    }>(`/account-notification-status/${accountId}`);
+
+    return response.data.unreadCount;
+  }
+
   public async updateNotification(
     id: string,
     params: UpdateNotificationParams

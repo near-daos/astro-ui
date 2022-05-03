@@ -6,7 +6,10 @@ import { Icon, IconName } from 'components/Icon';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { Button } from 'components/button/Button';
 import { Checkbox } from 'components/inputs/Checkbox';
-import { SelectorRow } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';
+import {
+  isOptionDisabled,
+  SelectorRow,
+} from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';
 
 import styles from './PermissionsSelector.module.scss';
 
@@ -96,7 +99,10 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
           <Checkbox
             label=""
             checked={value}
-            disabled={disableNewProposal}
+            disabled={
+              disableNewProposal ||
+              isOptionDisabled(dataField, groupName, value)
+            }
             onClick={() => handleToggle(dataField, groupName, !value)}
             className={styles.checkbox}
           />
@@ -181,21 +187,21 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
             'proposalNearFunctionCall',
             'Function call'
           )}
-          {/* {renderLegendCell( */}
-          {/*  'Upgrade self', */}
-          {/*  'proposalGovernance', */}
-          {/*  'Upgrade self' */}
-          {/* )} */}
-          {/* {renderLegendCell( */}
-          {/*  'Upgrade remote', */}
-          {/*  'proposalGovernance', */}
-          {/*  'Upgrade remote' */}
-          {/* )} */}
-          {/* {renderLegendCell( */}
-          {/*  'Set vote token', */}
-          {/*  'proposalGovernance', */}
-          {/*  'Set vote token' */}
-          {/* )} */}
+          {renderLegendCell(
+            'Upgrade self',
+            'proposalGovernance',
+            'Upgrade self'
+          )}
+          {renderLegendCell(
+            'Upgrade remote',
+            'proposalGovernance',
+            'Upgrade remote'
+          )}
+          {renderLegendCell(
+            'Set vote token',
+            'proposalGovernance',
+            'Set vote token'
+          )}
         </div>
         <div
           className={cn(styles.panel, {
@@ -221,13 +227,13 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
                 {renderValueCell('removeMember', row.label, row.removeMember)}
                 {renderValueCell('addMember', row.label, row.addMember)}
                 {renderValueCell('call', row.label, row.call)}
-                {/* {renderValueCell('upgradeSelf', row.label, row.upgradeSelf)} */}
-                {/* {renderValueCell('upgradeRemote', row.label, row.upgradeRemote)} */}
-                {/* {renderValueCell( */}
-                {/*  'setStakingContract', */}
-                {/*  row.label, */}
-                {/*  row.setStakingContract */}
-                {/* )} */}
+                {renderValueCell('upgradeSelf', row.label, row.upgradeSelf)}
+                {renderValueCell('upgradeRemote', row.label, row.upgradeRemote)}
+                {renderValueCell(
+                  'setStakingContract',
+                  row.label,
+                  row.setStakingContract
+                )}
               </div>
             ))}
             <div ref={rightIntersectionRef} />

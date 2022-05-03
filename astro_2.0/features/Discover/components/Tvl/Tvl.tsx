@@ -6,15 +6,12 @@ import { ControlTabs } from 'astro_2.0/features/Discover/components/ControlTabs'
 import { ChartRenderer } from 'astro_2.0/features/Discover/components/ChartRenderer';
 import { DaosTopList } from 'astro_2.0/features/Discover/components/DaosTopList';
 
-import {
-  LeaderboardData,
-  TControlTab,
-} from 'astro_2.0/features/Discover/types';
-import { ChartDataElement } from 'components/AreaChartRenderer/types';
+import { TControlTab } from 'astro_2.0/features/Discover/types';
 import { useDaoStatsContext } from 'astro_2.0/features/Discover/DaoStatsDataProvider';
 import { LIMIT } from 'services/DaoStatsService';
 
 import { getValueLabel } from 'astro_2.0/features/Discover/helpers';
+import { useDiscoveryState } from 'astro_2.0/features/Discover/hooks';
 import {
   CONTRACT,
   DaoStatsTopics,
@@ -22,7 +19,7 @@ import {
 } from 'astro_2.0/features/Discover/constants';
 import { dFormatter } from 'utils/format';
 import useQuery from 'hooks/useQuery';
-
+import { USD } from 'constants/common';
 import { Tvl as TTvl, TvlDao } from 'services/DaoStatsService/types';
 
 import styles from './Tvl.module.scss';
@@ -32,42 +29,35 @@ export const Tvl: FC = () => {
   const { t } = useTranslation();
   const { daoStatsService } = useDaoStatsContext();
   const [data, setData] = useState<TTvl | TvlDao | null>(null);
-  const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
-  const [leaderboardData, setLeaderboardData] = useState<
-    LeaderboardData[] | null
-  >(null);
-
   const { query } = useQuery<{ dao: string }>();
-  const [offset, setOffset] = useState(0);
-  const [total, setTotal] = useState(0);
   const items = useMemo<TControlTab[]>(() => {
     if (query.dao) {
       const currentData = data as TvlDao;
 
       return [
         {
+          id: TvlTabs.TVL,
+          label: t('discover.tvl'),
+          value: `${currentData?.tvl.count ? USD : ''}${Number(
+            dFormatter(currentData?.tvl.count ?? 0)
+          ).toLocaleString()}`,
+          trend: currentData?.tvl.growth ?? 0,
+        },
+        {
           id: TvlTabs.NUMBER_OF_BOUNTIES,
           label: t('discover.numberOfBounties'),
-          value: Number(
-            dFormatter(currentData?.bounties?.number.count ?? 0)
-          ).toLocaleString(),
+          value: `${currentData?.bounties?.number.count ? USD : ''}${dFormatter(
+            currentData?.bounties?.number.count ?? 0
+          )}`,
           trend: currentData?.bounties?.number.growth ?? 0,
         },
         {
           id: TvlTabs.VL_OF_BOUNTIES,
           label: t('discover.vlOfBounties'),
-          value: Number(
-            dFormatter(currentData?.bounties?.vl?.count ?? 0)
-          ).toLocaleString(),
+          value: `${currentData?.bounties?.vl?.count ? USD : ''}${dFormatter(
+            currentData?.bounties?.vl?.count ?? 0
+          )}`,
           trend: currentData?.bounties?.vl.growth ?? 0,
-        },
-        {
-          id: TvlTabs.TVL,
-          label: t('discover.tvl'),
-          value: Number(
-            dFormatter(currentData?.tvl.count ?? 0)
-          ).toLocaleString(),
-          trend: currentData?.tvl.growth ?? 0,
         },
       ];
     }
@@ -78,20 +68,34 @@ export const Tvl: FC = () => {
       {
         id: TvlTabs.PLATFORM_TVL,
         label: t('discover.platformTvl'),
-        value: Number(dFormatter(currentData?.tvl.count ?? 0)).toLocaleString(),
+        value: `${currentData?.tvl.count ? USD : ''}${Number(
+          dFormatter(currentData?.tvl.count ?? 0)
+        ).toLocaleString()}`,
         trend: data?.tvl.growth ?? 0,
       },
       {
         id: TvlTabs.VL_IN_BOUNTIES,
         label: t('discover.vlInBountiesGrants'),
-        value: Number(
+        value: `${currentData?.bountiesAndGrantsVl?.count ? USD : ''}${Number(
           dFormatter(currentData?.bountiesAndGrantsVl?.count ?? 0)
-        ).toLocaleString(),
+        ).toLocaleString()}`,
         trend: currentData?.bountiesAndGrantsVl?.growth ?? 0,
       },
     ];
   }, [data, query.dao, t]);
-  const [activeView, setActiveView] = useState(items[0].id);
+
+  const {
+    setOffset,
+    setTotal,
+    total,
+    offset,
+    leaderboardData,
+    setLeaderboardData,
+    chartData,
+    setChartData,
+    resetData,
+    activeView,
+  } = useDiscoveryState(items);
 
   const handleTopicSelect = useCallback(
     async (id: string) => {
@@ -99,13 +103,9 @@ export const Tvl: FC = () => {
         return;
       }
 
-      setChartData(null);
-      setLeaderboardData(null);
-      setOffset(0);
-      setTotal(0);
-      setActiveView(id);
+      resetData(id);
     },
-    [isMounted]
+    [isMounted, resetData]
   );
 
   useEffect(() => {
@@ -234,11 +234,13 @@ export const Tvl: FC = () => {
       />
       <div className={styles.body}>
         <ChartRenderer
+          unit={USD}
           data={chartData}
           loading={loading}
           activeView={activeView}
         />
         <DaosTopList
+          unit={USD}
           total={total}
           next={nextLeaderboardItems}
           data={leaderboardData}

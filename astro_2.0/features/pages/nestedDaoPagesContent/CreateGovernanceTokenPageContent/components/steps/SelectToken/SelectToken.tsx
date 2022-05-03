@@ -1,35 +1,47 @@
-import { useRouter } from 'next/router';
-import React, { useState, VFC } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 
-import { CREATE_GOV_TOKEN_PAGE_URL } from 'constants/routing';
-import { STEPS } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/constants';
+import {
+  CreateGovernanceTokenFlow,
+  CreateGovernanceTokenSteps,
+} from 'types/settings';
 
 import { Icon, IconName } from 'components/Icon';
-
 import { Button } from 'components/button/Button';
 import { SubHeader } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/SubHeader';
-
-import { TOKEN_OPTIONS } from './constants';
-
 import { TokenOption } from './components/TokenOption';
 
 import styles from './SelectToken.module.scss';
 
-export const SelectToken: VFC = () => {
-  const router = useRouter();
+interface Props {
+  onUpdate: ({
+    step,
+    proposalId,
+    flow,
+  }: {
+    step: CreateGovernanceTokenSteps | null;
+    proposalId: number | null;
+    flow: CreateGovernanceTokenFlow;
+  }) => Promise<void>;
+}
+
+export const SelectToken: FC<Props> = ({ onUpdate }) => {
   const { t } = useTranslation();
 
-  const { dao } = router.query;
+  const [option, setOption] = useState<CreateGovernanceTokenFlow>(
+    CreateGovernanceTokenFlow.CreateToken
+  );
 
-  const [option, setOption] = useState(TOKEN_OPTIONS.NEW);
-
-  function renderOption(opt: string, label: string, icon: IconName) {
+  function renderOption(
+    opt: CreateGovernanceTokenFlow,
+    label: string,
+    icon: IconName
+  ) {
     return (
       <TokenOption
         icon={icon}
         option={opt}
-        setOption={setOption}
+        setOption={val => setOption(val)}
         className={styles.option}
         selected={option === opt}
         label={t(`createGovernanceTokenPage.selectToken.${label}`)}
@@ -42,8 +54,16 @@ export const SelectToken: VFC = () => {
       <SubHeader>{t('createGovernanceTokenPage.selectToken.header')}</SubHeader>
 
       <div className={styles.optionsContainer}>
-        {renderOption(TOKEN_OPTIONS.NEW, 'createToken', 'createToken')}
-        {renderOption(TOKEN_OPTIONS.EXISTING, 'chooseExisting', 'selectToken')}
+        {renderOption(
+          CreateGovernanceTokenFlow.CreateToken,
+          'createToken',
+          'createToken'
+        )}
+        {renderOption(
+          CreateGovernanceTokenFlow.SelectToken,
+          'chooseExisting',
+          'selectToken'
+        )}
       </div>
 
       <div className={styles.nextStepContainer}>
@@ -51,13 +71,12 @@ export const SelectToken: VFC = () => {
           capitalize
           variant="secondary"
           className={styles.nextStepButton}
-          href={{
-            pathname: CREATE_GOV_TOKEN_PAGE_URL,
-            query: {
-              dao,
-              // TODO provide proper "select token" step
-              step: option === TOKEN_OPTIONS.NEW ? STEPS.CREATE_TOKEN : '',
-            },
+          onClick={async () => {
+            await onUpdate({
+              step: CreateGovernanceTokenSteps.CreateToken,
+              proposalId: null,
+              flow: option,
+            });
           }}
         >
           {t('createGovernanceTokenPage.selectToken.nextStep')}

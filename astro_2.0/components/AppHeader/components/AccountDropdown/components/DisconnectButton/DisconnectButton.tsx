@@ -1,18 +1,24 @@
-import { AccountPopupItem } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/AccountPopupItem';
-import { Icon } from 'components/Icon';
-import cn from 'classnames';
 import React from 'react';
-import styles from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/DisconnectButton/DisconnectButton.module.scss';
+import cn from 'classnames';
+import { useTranslation } from 'next-i18next';
+
+import { Icon } from 'components/Icon';
+
 import { useWalletContext } from 'context/WalletContext';
+import { AccountPopupItem } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/AccountPopupItem';
+import styles from './DisconnectButton.module.scss';
 
 export const DisconnectButton: React.FC = () => {
+  const { t } = useTranslation('common');
   const { logout } = useWalletContext();
 
   return (
     <AccountPopupItem
-      onClick={() => logout()}
+      onClick={logout}
       className={styles.menuButton}
-      content={<div className={styles.disconnectText}>Disconnect</div>}
+      content={
+        <div className={styles.disconnectText}>{t('header.disconnect')}</div>
+      }
       icon={
         <Icon
           name="logout"

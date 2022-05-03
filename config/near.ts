@@ -1,4 +1,5 @@
-const CONTRACT_NAME = 'sputnikv2.testnet';
+import { Config } from 'types/config';
+
 const TOKEN_CONTRACT_NAME = 'tokens.testnet';
 
 export type NEAR_ENV =
@@ -26,7 +27,10 @@ export type NearConfig = {
   headers: { [key: string]: string | number };
 };
 
-export const getNearConfig = (env: NEAR_ENV): NearConfig => {
+export const getNearConfig = (config: Config): NearConfig => {
+  const CONTRACT_NAME = config?.NEAR_CONTRACT_NAME ?? 'sputnikv2.testnet';
+  const env = config?.NEAR_ENV ?? 'development';
+
   switch (env) {
     case 'production':
     case 'mainnet':

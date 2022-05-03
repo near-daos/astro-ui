@@ -12,14 +12,19 @@ import MyAccountPage, { MyAccountPageProps } from './MyAccountPage';
 export const getServerSideProps: GetServerSideProps<MyAccountPageProps> = async ({
   locale = 'en',
 }) => {
-  const accountId = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
+  const accountId = CookieService.get<string>(ACCOUNT_COOKIE);
 
   const contactsConfig = await NotificationsService.getUserContactConfig(
     accountId
   );
 
+  const notyConfig = await NotificationsService.getNotificationsSettings(
+    accountId
+  );
+
   return {
     props: {
+      notyConfig: notyConfig[0] || {},
       contactsConfig,
       ...(await serverSideTranslations(locale, ['common'], nextI18NextConfig)),
     },

@@ -3,29 +3,43 @@
 exports[`policy affected warning Should render component 1`] = `
 <div>
   <div>
-    <div>
-      <div>
-        <svg>
+    <div
+      class="root"
+    >
+      <div
+        class="status"
+      >
+        <svg
+          class="icon"
+        >
           <use
             href="/_next/undefined"
           />
         </svg>
       </div>
-      <div>
-        <div>
+      <div
+        class="content"
+      >
+        <div
+          class="title"
+        >
           <div>
             policyAffectedProposalsTitle daoConfig
           </div>
         </div>
-        <div>
+        <div
+          class="text"
+        >
           <div>
             policyAffectedProposalsText daoConfig
           </div>
         </div>
       </div>
-      <div>
+      <div
+        class="control"
+      >
         <button
-          class=""
+          class="btn primary sizeMedium"
           type="button"
         >
           viewProposal

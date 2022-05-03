@@ -3,18 +3,22 @@
 exports[`dao details minimized Should render component 1`] = `
 <div>
   <div
-    class=""
+    class="root"
   >
-    <div>
+    <div
+      class="wrapper"
+    >
       <a
         href="/dao/default-flag-test.sputnikv2.testnet"
       >
         <section
-          class="undefined"
+          class="paddingWithProposalButton general"
         >
-          <div>
+          <div
+            class="flagWrapper"
+          >
             <div
-              class=""
+              class="root xs"
             >
               <svg
                 class="svg"
@@ -44,26 +48,36 @@ exports[`dao details minimized Should render component 1`] = `
                 </clippath>
               </svg>
               <div
-                class=""
+                class="backgroundXS"
               />
               <canvas
-                style="clip-path: path('M46.4118 0L9.74793 13.103V20.3722L0 23.856V52.5981L36.6639 39.4951V32.2259L46.4118 28.7421V0Z'); max-width: 47px; transform: none;"
+                style="clip-path: path('M46.4118 0L9.74793 13.103V20.3722L0 23.856V52.5981L36.6639 39.4951V32.2259L46.4118 28.7421V0Z'); max-width: 47px; transform: scale(1) translateX(-3px);"
               />
             </div>
           </div>
           <div>
-            <div>
-              <div>
+            <div
+              class="displayName"
+            >
+              <div
+                class="name"
+              >
                 Default Flag Test
               </div>
-              <div>
+              <div
+                class="explorerLink"
+              >
                 <div
-                  class=""
+                  class="root"
                   role="button"
                   tabindex="0"
                 >
-                  <span>
-                    <svg>
+                  <span
+                    class="iconWrapper"
+                  >
+                    <svg
+                      class="icon"
+                    >
                       <use
                         href="/_next/undefined"
                       />
@@ -72,15 +86,17 @@ exports[`dao details minimized Should render component 1`] = `
                 </div>
               </div>
             </div>
-            <div>
+            <div
+              class="daoId"
+            >
               default-flag-test.sputnikv2.testnet
               <div
-                class=""
+                class="root copyAddress"
                 role="button"
                 tabindex="0"
               >
                 <button
-                  class=""
+                  class="iconButton small btn"
                   type="button"
                 >
                   <svg>
@@ -94,15 +110,19 @@ exports[`dao details minimized Should render component 1`] = `
           </div>
         </section>
       </a>
-      <section>
+      <section
+        class="controls"
+      >
         <div
-          class="undefined"
+          class="controlIcon noActiveLink"
         >
           <button
-            class=""
+            class="iconTextButton"
             type="button"
           >
-            <svg>
+            <svg
+              class="icon"
+            >
               <use
                 href="/_next/undefined"
               />
@@ -111,13 +131,15 @@ exports[`dao details minimized Should render component 1`] = `
           </button>
         </div>
         <div
-          class="undefined"
+          class="controlIcon noActiveLink"
         >
           <button
-            class=""
+            class="iconTextButton"
             type="button"
           >
-            <svg>
+            <svg
+              class="icon"
+            >
               <use
                 href="/_next/undefined"
               />
@@ -126,13 +148,15 @@ exports[`dao details minimized Should render component 1`] = `
           </button>
         </div>
         <div
-          class="undefined"
+          class="controlIcon noActiveLink"
         >
           <button
-            class=""
+            class="iconTextButton"
             type="button"
           >
-            <svg>
+            <svg
+              class="icon"
+            >
               <use
                 href="/_next/undefined"
               />
@@ -141,13 +165,15 @@ exports[`dao details minimized Should render component 1`] = `
           </button>
         </div>
         <div
-          class="undefined"
+          class="controlIcon noActiveLink"
         >
           <button
-            class=""
+            class="iconTextButton"
             type="button"
           >
-            <svg>
+            <svg
+              class="icon"
+            >
               <use
                 href="/_next/undefined"
               />
@@ -156,13 +182,15 @@ exports[`dao details minimized Should render component 1`] = `
           </button>
         </div>
         <div
-          class="undefined"
+          class="controlIcon noActiveLink"
         >
           <button
-            class=""
+            class="iconTextButton"
             type="button"
           >
-            <svg>
+            <svg
+              class="icon"
+            >
               <use
                 href="/_next/undefined"
               />
@@ -171,13 +199,15 @@ exports[`dao details minimized Should render component 1`] = `
           </button>
         </div>
         <div
-          class="undefined"
+          class="controlIcon noActiveLink"
         >
           <button
-            class=""
+            class="iconTextButton"
             type="button"
           >
-            <svg>
+            <svg
+              class="icon"
+            >
               <use
                 href="/_next/undefined"
               />
@@ -186,13 +216,15 @@ exports[`dao details minimized Should render component 1`] = `
           </button>
         </div>
         <div
-          class="undefined"
+          class="controlIcon noActiveLink"
         >
           <button
-            class=""
+            class="iconTextButton"
             type="button"
           >
-            <svg>
+            <svg
+              class="icon"
+            >
               <use
                 href="/_next/undefined"
               />

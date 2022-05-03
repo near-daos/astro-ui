@@ -1,11 +1,18 @@
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
-import { CreateProposalParams } from 'types/proposal';
-import { DAO } from 'types/dao';
-import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import Decimal from 'decimal.js';
-import { formatGasValue } from 'utils/format';
+
+import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
+
+import { DAO } from 'types/dao';
+import { CreateProposalParams, DaoConfig } from 'types/proposal';
+import { CreateTokenInput } from 'astro_2.0/features/CreateProposal/types';
+import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
+
+import { formatGasValue } from 'utils/format';
 import { jsonToBase64Str } from 'utils/jsonToBase64Str';
+
+import { configService } from 'services/ConfigService';
 
 export type CustomFunctionCallInput = {
   smartContractAddress: string;
@@ -22,7 +29,10 @@ export function getUpgradeCodeProposal(
   dao: DAO,
   data: Record<string, string>
 ): CreateProposalParams {
-  const { versionHash, details } = data;
+  const { versionHash, details, externalUrl } = data;
+  const { appConfig } = configService.get();
+
+  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 
   const args = jsonToBase64Str({
     code_hash: versionHash,
@@ -30,10 +40,10 @@ export function getUpgradeCodeProposal(
 
   return {
     daoId: dao.id,
-    description: details,
+    description: proposalDescription,
     kind: 'FunctionCall',
     data: {
-      receiver_id: dao.id,
+      receiver_id: appConfig.NEAR_CONTRACT_NAME,
       actions: [
         {
           method_name: 'store_contract_self',
@@ -51,7 +61,10 @@ export function getRemoveUpgradeCodeProposal(
   dao: DAO,
   data: Record<string, string>
 ): CreateProposalParams {
-  const { versionHash, details } = data;
+  const { versionHash, details, externalUrl } = data;
+  const { appConfig } = configService.get();
+
+  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 
   const args = jsonToBase64Str({
     code_hash: versionHash,
@@ -59,10 +72,10 @@ export function getRemoveUpgradeCodeProposal(
 
   return {
     daoId: dao.id,
-    description: details,
+    description: proposalDescription,
     kind: 'FunctionCall',
     data: {
-      receiver_id: dao.id,
+      receiver_id: appConfig.NEAR_CONTRACT_NAME,
       actions: [
         {
           method_name: 'remove_contract_self',
@@ -80,11 +93,13 @@ export function getUpgradeSelfProposal(
   dao: DAO,
   data: Record<string, string>
 ): CreateProposalParams {
-  const { versionHash, details } = data;
+  const { versionHash, details, externalUrl } = data;
+
+  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
 
   return {
     daoId: dao.id,
-    description: details,
+    description: proposalDescription,
     kind: 'UpgradeSelf',
     data: {
       hash: versionHash,
@@ -221,7 +236,7 @@ export async function getTransferMintbaseNFTProposal(
   const [key, store] = tokenKey.split(':');
 
   const json = JSON.stringify({
-    token_ids: [[key, target]],
+    token_ids: [[key, target.trim()]],
   });
   const args = Buffer.from(json).toString('base64');
 
@@ -275,7 +290,7 @@ export async function getBuyNftFromParasProposal(
 
   const json = JSON.stringify({
     token_series_id: tokenKey,
-    receiver_id: target,
+    receiver_id: target.trim(),
   });
   const args = Buffer.from(json).toString('base64');
 
@@ -358,5 +373,81 @@ export async function getSwapsOnRefProposal(
       ],
     },
     bond: dao.policy.proposalBond,
+  };
+}
+
+export async function getCreateTokenProposal(
+  dao: DAO,
+  data: CreateTokenInput
+): Promise<CreateProposalParams> {
+  const { details, externalUrl } = data;
+
+  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+
+  const args = jsonToBase64Str({});
+
+  return {
+    daoId: dao.id,
+    description: proposalDescription,
+    kind: 'FunctionCall',
+    data: {
+      receiver_id: dao.id,
+      actions: [
+        {
+          method_name: 'store_contract_self',
+          args,
+          deposit: new Decimal(6000000000000000000000000).toFixed(),
+          gas: '220000000000000',
+        },
+      ],
+    },
+    bond: dao.policy.proposalBond,
+  };
+}
+
+export async function getTransferProposal(
+  dao: DAO,
+  data: CreateTransferInput,
+  tokens: Tokens
+): Promise<CreateProposalParams> {
+  const { token: dToken, details, externalUrl, target, amount } = data;
+
+  const token = Object.values(tokens).find(item => item.symbol === dToken);
+
+  if (!token) {
+    throw new Error('No tokens data found');
+  }
+
+  return {
+    daoId: dao.id,
+    description: `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
+    kind: 'Transfer',
+    bond: dao.policy.proposalBond,
+    data: {
+      token_id: token?.tokenId,
+      receiver_id: target.trim(),
+      amount: new Decimal(amount).mul(10 ** token.decimals).toFixed(),
+    },
+  };
+}
+
+export function getChangeConfigProposal(
+  daoId: string,
+  { name, purpose, metadata }: DaoConfig,
+  reason: string,
+  proposalBond: string
+): CreateProposalParams {
+  return {
+    kind: 'ChangeConfig',
+    daoId,
+    data: {
+      config: {
+        metadata,
+        name,
+        purpose,
+      },
+    },
+    description: reason,
+    bond: proposalBond,
   };
 }

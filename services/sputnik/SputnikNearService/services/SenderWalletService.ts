@@ -23,7 +23,7 @@ export class SenderWalletService implements WalletService {
   private readonly walletType = WalletType.SENDER;
 
   private readonly walletInfo: WalletMeta = {
-    name: 'Sender',
+    name: 'Sender (beta)',
     type: 'extension',
     url: 'senderwallet.io',
     id: WalletType.SENDER,
@@ -67,7 +67,10 @@ export class SenderWalletService implements WalletService {
   }
 
   async getPublicKey(): Promise<string | null> {
-    if (!this.walletInstance?.isSignedIn()) {
+    if (
+      !this.walletInstance?.isSignedIn() ||
+      !this.walletInstance.authData?.accessKey
+    ) {
       return null;
     }
 

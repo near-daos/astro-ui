@@ -96,9 +96,9 @@ export const DaoMembersForm: VFC = () => {
     initialValues?.accounts?.length ?? 0
   );
 
-  function addLink() {
+  const addLink = () => {
     setLinksCount(count => count + 1);
-  }
+  };
 
   function removeLink(index: number) {
     const accounts = getValues('accounts');
@@ -111,6 +111,7 @@ export const DaoMembersForm: VFC = () => {
 
   function renderLinkFormEls() {
     return times(linksCount, index => (
+      // eslint-disable-next-line react/jsx-no-bind
       <DaoMemberLine key={index} index={index} removeLink={removeLink} />
     ));
   }

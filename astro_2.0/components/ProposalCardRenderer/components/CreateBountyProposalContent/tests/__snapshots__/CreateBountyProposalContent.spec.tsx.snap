@@ -2,29 +2,41 @@
 
 exports[`create bounty proposal content Should render component 1`] = `
 <div>
-  <div>
+  <div
+    class="root"
+  >
     <div
-      class=""
+      class="root"
     >
-      <div>
+      <div
+        class="block"
+      >
         <div
-          class=""
+          class="label"
         >
           Amount
         </div>
       </div>
       <div
-        class=""
+        class="block"
       >
         <div
-          class=""
+          class="valueSmall"
         >
-          <div>
-            <div>
+          <div
+            class="root"
+          >
+            <div
+              class="amount"
+            >
               0
             </div>
-            <div />
-            <div>
+            <div
+              class="icon"
+            />
+            <div
+              class="symbol"
+            >
               T
             </div>
           </div>
@@ -32,40 +44,44 @@ exports[`create bounty proposal content Should render component 1`] = `
       </div>
     </div>
     <div
-      class=""
+      class="root"
     >
-      <div>
+      <div
+        class="block"
+      >
         <div
-          class=""
+          class="label"
         >
           Available claims
         </div>
       </div>
       <div
-        class=""
+        class="block"
       >
         <div
-          class=""
+          class="valueSmall"
         >
           0
         </div>
       </div>
     </div>
     <div
-      class=""
+      class="root"
     >
-      <div>
+      <div
+        class="block"
+      >
         <div
-          class=""
+          class="label"
         >
           Days to complete
         </div>
       </div>
       <div
-        class=""
+        class="block"
       >
         <div
-          class=""
+          class="valueSmall"
         >
           0
         </div>

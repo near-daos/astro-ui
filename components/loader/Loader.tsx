@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 
-import styles from './loader.module.scss';
+import styles from './Loader.module.scss';
 
 const PRELOADER = (
   <svg

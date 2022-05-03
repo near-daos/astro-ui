@@ -1,4 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
+import get from 'lodash/get';
+import isNil from 'lodash/isNil';
+import omitBy from 'lodash/omitBy';
 import { NotificationsService } from 'services/NotificationsService';
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
@@ -15,35 +18,75 @@ import { useSocket } from 'context/SocketContext';
 import { useRouter } from 'next/router';
 import { mapNotificationDtoToNotification } from 'services/NotificationsService/mappers/notification';
 
+import { dispatchCustomEvent } from 'utils/dispatchCustomEvent';
+import { NOTIFICATIONS_UPDATED } from 'features/notifications/notificationConstants';
+
+import { DAO_RELATED_SETTINGS, PLATFORM_RELATED_SETTINGS } from './helpers';
+
+type UpdateSettingsConfig = {
+  daoId?: string | null;
+  types?: string[];
+  isAllMuted?: boolean;
+  mutedUntilTimestamp?: string;
+  enableSms?: boolean;
+  enableEmail?: boolean;
+};
+
 export function useNotificationsSettings(): {
-  updateSettings: (
-    daoId: string | null,
-    types: string[],
-    isAllMuted?: boolean,
-    delay?: string
-  ) => void;
+  updateSettings: (config: UpdateSettingsConfig) => void;
 } {
-  const { accountId, nearService } = useWalletContext();
+  const { accountId, getPublicKeyAndSignature } = useWalletContext();
+
+  async function getPrevConfig(
+    accId: string,
+    daoId: string | null | undefined
+  ) {
+    const daoToGet = daoId ? [daoId] : undefined;
+    const prevConfigDTO = await NotificationsService.getNotificationsSettings(
+      accId,
+      daoToGet
+    );
+
+    const { types, isAllMuted, mutedUntilTimestamp, enableSms, enableEmail } =
+      get(prevConfigDTO, '0') || {};
+
+    return omitBy(
+      {
+        types,
+        isAllMuted,
+        mutedUntilTimestamp,
+        enableSms,
+        enableEmail,
+      },
+      isNil
+    );
+  }
+
   const updateSettings = useCallback(
-    async (
-      daoId: string | null,
-      types: string[],
-      isAllMuted?: boolean,
-      delay?: string
-    ) => {
+    async (config: UpdateSettingsConfig) => {
       try {
-        const publicKey = await nearService?.getPublicKey();
-        const signature = await nearService?.getSignature();
+        const result = await getPublicKeyAndSignature();
+
+        if (!result) {
+          return;
+        }
+
+        const { publicKey, signature } = result;
+        const prevConfig = await getPrevConfig(accountId, config.daoId);
 
         if (publicKey && signature) {
           await NotificationsService.updateNotificationSettings({
-            accountId,
             publicKey,
             signature,
-            daoId,
-            types,
-            mutedUntilTimestamp: delay ?? '0',
-            isAllMuted: isAllMuted ?? false,
+            accountId,
+            daoId: null,
+            types: [...DAO_RELATED_SETTINGS, ...PLATFORM_RELATED_SETTINGS],
+            mutedUntilTimestamp: '0',
+            isAllMuted: false,
+            enableSms: false,
+            enableEmail: false,
+            ...prevConfig,
+            ...config,
           });
         }
       } catch (err) {
@@ -54,7 +97,7 @@ export function useNotificationsSettings(): {
         });
       }
     },
-    [accountId, nearService]
+    [accountId, getPublicKeyAndSignature]
   );
 
   return {
@@ -64,7 +107,8 @@ export function useNotificationsSettings(): {
 
 export function useNotificationsList(
   accountDaosIds?: string[],
-  subscribedDaosIds?: string[]
+  subscribedDaosIds?: string[],
+  reactOnUpdates?: boolean
 ): {
   notifications: PaginationResponse<Notification[]> | null;
   loadMore: () => void;
@@ -201,6 +245,33 @@ export function useNotificationsList(
     socket,
   ]);
 
+  const triggerUpdate = useCallback(() => {
+    dispatchCustomEvent(NOTIFICATIONS_UPDATED, true);
+  }, []);
+
+  const handleUpdates = useCallback(async () => {
+    const newNotificationsData = await fetchData(0);
+
+    if (isMounted()) {
+      setNotifications(newNotificationsData);
+    }
+  }, [fetchData, isMounted]);
+
+  useEffect(() => {
+    if (reactOnUpdates) {
+      document.addEventListener(
+        NOTIFICATIONS_UPDATED,
+        handleUpdates as EventListener
+      );
+    }
+
+    return () =>
+      document.removeEventListener(
+        NOTIFICATIONS_UPDATED,
+        handleUpdates as EventListener
+      );
+  }, [handleUpdates, reactOnUpdates]);
+
   const handleUpdate = useCallback(
     async (id, { isRead, isMuted, isArchived }) => {
       const publicKey = await nearService?.getPublicKey();
@@ -242,9 +313,11 @@ export function useNotificationsList(
             return item;
           }),
         });
+
+        triggerUpdate();
       }
     },
-    [accountId, isMounted, notifications, nearService]
+    [nearService, accountId, isMounted, notifications, triggerUpdate]
   );
 
   const handleUpdateAll = useCallback(
@@ -259,6 +332,7 @@ export function useNotificationsList(
             publicKey,
             signature,
           });
+          triggerUpdate();
         } else if (action === 'ARCHIVE') {
           await NotificationsService.archiveAllNotifications({
             accountId,
@@ -270,7 +344,7 @@ export function useNotificationsList(
         await loadMore(0);
       }
     },
-    [accountId, loadMore, isMounted, nearService]
+    [nearService, accountId, isMounted, loadMore, triggerUpdate]
   );
 
   const handleRemove = useCallback(
@@ -297,9 +371,11 @@ export function useNotificationsList(
           isMuted,
           isArchived,
         });
+
+        triggerUpdate();
       }
     },
-    [accountId, isMounted, notifications, nearService]
+    [nearService, accountId, isMounted, notifications, triggerUpdate]
   );
 
   return {
@@ -309,4 +385,45 @@ export function useNotificationsList(
     handleUpdate,
     handleUpdateAll,
   };
+}
+
+export function useNotificationsCount(): number | null {
+  const isMounted = useMountedState();
+  const { accountId } = useWalletContext();
+  const [counter, setCounter] = useState<number | null>(null);
+
+  const [, fetchData] = useAsyncFn(async () => {
+    try {
+      const count = await NotificationsService.getNotificationsCount(accountId);
+
+      if (isMounted()) {
+        setCounter(count);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, [accountId, isMounted]);
+
+  const handleUpdates = useCallback(async () => {
+    await fetchData();
+  }, [fetchData]);
+
+  useMount(async () => {
+    await fetchData();
+  });
+
+  useEffect(() => {
+    document.addEventListener(
+      NOTIFICATIONS_UPDATED,
+      handleUpdates as EventListener
+    );
+
+    return () =>
+      document.removeEventListener(
+        NOTIFICATIONS_UPDATED,
+        handleUpdates as EventListener
+      );
+  }, [handleUpdates]);
+
+  return counter;
 }

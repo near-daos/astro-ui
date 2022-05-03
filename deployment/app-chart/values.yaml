@@ -19,19 +19,19 @@ container:
   internalPort: 3000
   # Specifies the endpoint for liveness checks
   livenessProbe:
-    failureThreshold: 10
-    initialDelaySeconds: 90
+    failureThreshold: 2
+    initialDelaySeconds: 10
     periodSeconds: 60
     successThreshold: 1
-    timeoutSeconds: 60
+    timeoutSeconds: 5
     port: 3000
     path: /api/health
   readinessProbe:
-    failureThreshold: 10
+    failureThreshold: 2
     initialDelaySeconds: 20
     periodSeconds: 60
     successThreshold: 1
-    timeoutSeconds: 60
+    timeoutSeconds: 5
     port: 3000
     path: /api/health
 

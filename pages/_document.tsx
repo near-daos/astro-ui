@@ -1,34 +1,25 @@
 /* eslint-disable react/no-danger */
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
-import {
-  GOOGLE_TAG_MANAGER,
-  GOOGLE_TAG_MANAGER_NO_SCRIPT,
-} from 'constants/googleTagManager';
 import { APP_CONFIG } from 'config/fetchConfig';
+// import { TYPE_FORM_FEEDBACK } from 'constants/integrations';
 
 export default class MyDocument extends Document {
   render(): JSX.Element {
     return (
       <Html>
         <Head>
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Open+Sans:wght@400;600;700&family=Roboto:wght@700&family=Rubik:wght@500&display=swap"
+          />
           <script
             dangerouslySetInnerHTML={{
               __html: APP_CONFIG,
             }}
           />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: GOOGLE_TAG_MANAGER,
-            }}
-          />
         </Head>
         <body>
-          <noscript
-            dangerouslySetInnerHTML={{
-              __html: GOOGLE_TAG_MANAGER_NO_SCRIPT,
-            }}
-          />
           <Main />
           <NextScript />
         </body>

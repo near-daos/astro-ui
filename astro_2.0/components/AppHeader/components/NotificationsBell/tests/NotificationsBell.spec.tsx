@@ -4,9 +4,9 @@ import { render } from 'jest/testUtils';
 import { FEATURE_FLAGS } from 'constants/featureFlags';
 
 import { useWalletContext } from 'context/WalletContext';
-import { useNotificationsList } from 'astro_2.0/features/Notifications/hooks';
 
 import { NotificationsBell } from 'astro_2.0/components/AppHeader/components/NotificationsBell';
+import { useNotificationsCount } from 'astro_2.0/features/Notifications/hooks';
 
 jest.mock('context/WalletContext', () => {
   return {
@@ -16,7 +16,7 @@ jest.mock('context/WalletContext', () => {
 
 jest.mock('astro_2.0/features/Notifications/hooks', () => {
   return {
-    useNotificationsList: jest.fn(() => ({})),
+    useNotificationsCount: jest.fn(() => 5),
   };
 });
 
@@ -53,11 +53,7 @@ describe('notifications bell', () => {
 
   it('Should render "notifications" icon if unread notifications presented', () => {
     // @ts-ignore
-    useNotificationsList.mockImplementation(() => ({
-      notifications: {
-        data: [{ isRead: false }],
-      },
-    }));
+    useNotificationsCount.mockImplementation(() => 12);
 
     // @ts-ignore
     useWalletContext.mockImplementation(() => ({

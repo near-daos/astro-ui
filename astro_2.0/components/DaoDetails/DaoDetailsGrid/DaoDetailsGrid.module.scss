@@ -50,6 +50,13 @@
   .flag.scaled {
     transform: scale(2.45);
   }
+
+  .logo {
+    @include centralize;
+    background-color: var(--color-black);
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .title {

@@ -2,74 +2,91 @@
 
 exports[`BountiesFeed Should render component 1`] = `
 <div>
-  <div>
+  <div
+    class="root"
+  >
     <div
-      class=""
+      class="row additionalFilters"
     >
       <div
-        class=""
+        class="root"
       >
-        <div>
-          <svg>
+        <div
+          class="iconHolder"
+        >
+          <svg
+            class="icon"
+          >
             <use
               href="/_next/undefined"
             />
           </svg>
         </div>
         <input
-          class=""
+          class="input"
           placeholder="searchBountyPlaceholder"
           tabindex="0"
           type="text"
           value=""
         />
-        <div />
+        <div
+          class="anchor"
+        />
       </div>
     </div>
     <div
-      class=""
+      class="row content"
     >
       <div
-        class=""
+        class="categoriesListRoot filter"
       >
         <p
-          class=""
+          class="categoriesListTitle"
         >
           feed.filters.chooseAFilter
         </p>
         <ul
+          class="categoriesList"
           style="--filter-active-transform: -100%;"
         >
-          <li>
+          <li
+            class="categoriesListItemWrapper"
+          >
             <a
-              class=""
+              class="categoriesListItem"
               href="/?bountyPhase=proposalPhase"
               tabindex="0"
             >
               Proposal Phase
             </a>
           </li>
-          <li>
+          <li
+            class="categoriesListItemWrapper"
+          >
             <a
-              class=""
+              class="categoriesListItem"
               href="/?bountyPhase=availableBounty"
               tabindex="0"
             >
               Available Bounty
             </a>
           </li>
-          <li>
+          <li
+            class="categoriesListItemWrapper"
+          >
             <a
-              class=""
+              class="categoriesListItem"
               href="/?bountyPhase=inProgress"
               tabindex="0"
             >
               In Progress
             </a>
           </li>
-          <li>
+          <li
+            class="categoriesListItemWrapper"
+          >
             <a
-              class=""
+              class="categoriesListItem"
               href="/?bountyPhase=completed"
               tabindex="0"
             >
@@ -78,9 +95,11 @@ exports[`BountiesFeed Should render component 1`] = `
           </li>
         </ul>
       </div>
-      <div>
+      <div
+        class="container"
+      >
         <div
-          class=""
+          class="root listWrapper"
         >
           <div
             class="infinite-scroll-component__outerdiv"
@@ -89,17 +108,23 @@ exports[`BountiesFeed Should render component 1`] = `
               class="infinite-scroll-component "
               style="height: auto; overflow: initial;"
             >
-              <div>
+              <div
+                class="loading"
+              >
                 <div
-                  class=""
+                  class="root"
                 >
                   <div
-                    class=""
+                    class="image"
                   />
-                  <div>
+                  <div
+                    class="title"
+                  >
                     No data found
                   </div>
-                  <div />
+                  <div
+                    class="desc"
+                  />
                 </div>
               </div>
             </div>
@@ -107,7 +132,9 @@ exports[`BountiesFeed Should render component 1`] = `
         </div>
       </div>
     </div>
-    <div />
+    <div
+      class="hideControlButtonWrapper"
+    />
   </div>
 </div>
 `;

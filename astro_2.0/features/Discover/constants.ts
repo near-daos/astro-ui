@@ -29,6 +29,8 @@ export enum UsersAndActivityTabs {
 export enum GovernanceTabs {
   NUMBER_OF_PROPOSALS = 'numberOfProposals',
   VOTE_THROUGH_RATE = 'voteThroughRate',
+  ACTIVE_PROPOSALS = 'activeProposals',
+  ACTIVE_VOTES = 'activeVotes',
 }
 
 export enum FlowTabs {
@@ -53,6 +55,7 @@ export enum TokensTabs {
 }
 
 export const intervalOptions = [
-  { label: 'Week', value: Interval.WEEK },
-  { label: 'Month', value: Interval.MONTH },
+  { label: 'Daily', value: Interval.DAY },
+  { label: 'Weekly', value: Interval.WEEK },
+  { label: 'Monthly', value: Interval.MONTH },
 ];

@@ -2,17 +2,27 @@
 
 exports[`ClaimsContent Should render component 1`] = `
 <div>
-  <div>
-    <span>
-      <span>
+  <div
+    class="root"
+  >
+    <span
+      class="slotsWrapper"
+    >
+      <span
+        class="slotActive"
+      >
         1
       </span>
-      <span>
+      <span
+        class="slot"
+      >
          / 
         1
       </span>
     </span>
-    <div />
+    <div
+      class="stub"
+    />
   </div>
 </div>
 `;

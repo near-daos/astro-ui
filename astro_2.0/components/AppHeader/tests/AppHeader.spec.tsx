@@ -4,8 +4,8 @@ import { AppHeader } from 'astro_2.0/components/AppHeader';
 
 describe('App Header', () => {
   it('Should render AppHeader component', () => {
-    const { container } = render(<AppHeader />);
+    const { getByPlaceholderText } = render(<AppHeader />);
 
-    expect(container).toMatchSnapshot();
+    expect(getByPlaceholderText('header.search.placeholder')).toBeTruthy();
   });
 });

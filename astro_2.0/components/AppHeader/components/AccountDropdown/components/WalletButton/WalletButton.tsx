@@ -1,10 +1,10 @@
-import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletIcon/WalletIcon';
 import { WalletType } from 'types/config';
-import { WalletDescription } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletDescription';
-import { AccountPopupItem } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/AccountPopupItem';
 import React from 'react';
 import cn from 'classnames';
-import styles from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletButton/WalletButton.module.scss';
+import { AccountPopupItem } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/AccountPopupItem';
+import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletIcon';
+import { WalletDescription } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletDescription';
+import styles from './WalletButton.module.scss';
 
 interface WalletButton {
   walletType: WalletType;

@@ -50,7 +50,19 @@ export const AppFooter: FC<AppFooterProps> = ({
           <div className={styles.social}>
             {renderSocialIcon('https://twitter.com/AstroDao', 'socialTwitter')}
             {renderSocialIcon('https://t.me/astro_near', 'socialTelegram')}
+            {renderSocialIcon(
+              'https://discord.com/invite/KmMqF4KNBM',
+              'socialDiscord'
+            )}
           </div>
+          <a
+            className={styles.devLink}
+            href="https://github.com/near-daos/astro-ui/discussions"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {t('components.appFooter.askQuestion')}
+          </a>
           <div className={styles.version}>
             <a
               className={styles.devLink}

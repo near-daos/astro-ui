@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
   AreaChart,
   Area,
@@ -19,6 +19,7 @@ import {
   Payload,
   Range,
 } from 'components/AreaChartRenderer/types';
+import { UnitPosition } from 'types/stats';
 
 import { kFormatter } from 'utils/format';
 
@@ -38,8 +39,9 @@ interface ChartProps {
   lines?: LineItem[];
   data: LineDataPoint[] | undefined;
   period: Range;
-  tokenName?: string;
   isIntegerDataset?: boolean;
+  unit?: string | ReactNode;
+  unitPosition?: UnitPosition;
 }
 
 const tickStyles = {
@@ -63,8 +65,9 @@ export const Chart: React.FC<ChartProps> = ({
   width = 685,
   height = 340,
   period,
-  tokenName,
   isIntegerDataset = false,
+  unit = '',
+  unitPosition = 'left',
 }) => {
   const isMobile = useMedia('(max-width: 768px)');
   const renderActiveDot = ({
@@ -170,7 +173,8 @@ export const Chart: React.FC<ChartProps> = ({
       <Tooltip
         content={({ active, payload, label, viewBox, coordinate, offset }) => (
           <ChartTooltip
-            dataType={tokenName}
+            unit={unit}
+            unitPosition={unitPosition}
             active={active}
             payload={payload as Payload[]}
             label={label}

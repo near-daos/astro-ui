@@ -24,6 +24,7 @@ export interface CreateProposalProps {
   proposal: ProposalFeedItem;
   showFlag: boolean;
   tokens: Record<string, Token>;
+  preventNavigate?: boolean;
 }
 
 const variants = {
@@ -35,6 +36,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
   proposal,
   showFlag,
   tokens,
+  preventNavigate,
 }) => {
   const { accountId } = useWalletContext();
   const [showInfoPanel, toggleInfoPanel] = useToggle(false);
@@ -54,7 +56,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
         showFlag && (
           <DaoFlagWidget
             daoName={proposal.dao.name}
-            flagUrl={proposal.dao.flagCover}
+            flagUrl={proposal.dao.flagLogo}
             daoId={proposal.dao.id}
             fallBack={proposal.dao.logo}
           />
@@ -73,6 +75,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
           variant={proposal.proposalVariant}
           type={proposal.kind.type}
           status={proposal.status}
+          preventNavigate={preventNavigate}
           voteStatus={proposal.voteStatus}
           isFinalized={proposal.isFinalized}
           proposer={proposal.proposer}

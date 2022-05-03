@@ -98,18 +98,29 @@ export function getDetailedRolesVotingPolicy(
   const groups = ((proposals.data ?? []) as unknown) as { label: string }[];
 
   const roles: DaoRole[] = groups
-    .map(item => ({
-      name: item.label,
-      kind: { Group: accountIds },
-      permissions: [
-        '*:Finalize',
-        '*:AddProposal',
-        '*:VoteApprove',
-        '*:VoteReject',
-        '*:VoteRemove',
-      ] as DaoPermission[],
-      vote_policy: {},
-    }))
+    .map(item => {
+      if (item.label === 'all') {
+        return {
+          name: item.label,
+          kind: 'Everyone',
+          permissions: ['*:AddProposal'] as DaoPermission[],
+          vote_policy: {},
+        };
+      }
+
+      return {
+        name: item.label,
+        kind: { Group: accountIds },
+        permissions: [
+          '*:Finalize',
+          '*:AddProposal',
+          '*:VoteApprove',
+          '*:VoteReject',
+          '*:VoteRemove',
+        ] as DaoPermission[],
+        vote_policy: {},
+      };
+    })
     .map(role => {
       return updateRoleWithNewPermissions(proposals.data ?? [], role, [
         'AddProposal',

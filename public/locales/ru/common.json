@@ -65,6 +65,7 @@
 
   "components": {
     "appFooter": {
+      "askQuestion": "Задайте вопрос",
       "reportAnIssue": "Сообщить о проблеме",
       "githubRepo": " Github репозиторий",
       "opensourceAsIs": "SputnikDAO 2021. Данное ПО с открытым исходным кодом предоставляется “как есть”, без каких-либо гарантий.",
@@ -344,5 +345,16 @@
     "groups": "Группы",
     "members": "Участники",
     "daoRules": "Правила ДАО"
+  },
+  "proposalVotes": {
+    "title": "Votes",
+    "voices": "voices",
+    "filters": {
+      "title": "Filter by vote status:",
+      "all": "All",
+      "approved": "Approved",
+      "failed": "Failed",
+      "notVoted": "Not Voted"
+    }
   }
 }

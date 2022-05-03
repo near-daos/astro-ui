@@ -1,0 +1,32 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.votesProgressBar {
+  align-content: center;
+  background: var(--color-neutral-40);
+  border-radius: 80px;
+  display: flex;
+  height: 8px;
+  overflow: hidden;
+  width: 100%;
+
+  @include tablet-portrait {
+    width: 356px;
+  }
+}
+
+.yes {
+  background: var(--color-brand-green);
+  border-bottom-right-radius: 80px;
+  border-top-right-radius: 80px;
+}
+
+.no {
+  background: var(--color-error-50);
+  border-bottom-right-radius: 80px;
+  border-top-right-radius: 80px;
+}
+
+.withoutBorder {
+  border-radius: 0;
+}

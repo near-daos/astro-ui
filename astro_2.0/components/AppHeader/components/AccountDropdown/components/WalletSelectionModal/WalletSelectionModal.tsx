@@ -1,8 +1,12 @@
-import { Modal } from 'components/modal';
 import React from 'react';
+import { useTranslation } from 'next-i18next';
+
 import { WalletButton } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletButton';
 import { WalletType } from 'types/config';
-import styles from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletSelectionModal/WalletSelectionModal.module.scss';
+
+import { Modal } from 'components/modal';
+
+import styles from './WalletSelectionModal.module.scss';
 
 interface WalletSelectionModal {
   isOpen: boolean;
@@ -15,8 +19,10 @@ export const WalletSelectionModal: React.FC<WalletSelectionModal> = ({
   onClose,
   signIn,
 }) => {
+  const { t } = useTranslation('common');
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="sm" className={styles.root}>
+    <Modal isOpen={isOpen} onClose={onClose} size="md" className={styles.root}>
       <div className={styles.header}>Connect a wallet</div>
       <WalletButton
         walletType={WalletType.NEAR}
@@ -25,7 +31,7 @@ export const WalletSelectionModal: React.FC<WalletSelectionModal> = ({
           onClose();
         }}
         name="NEAR"
-        type="web"
+        type={t('header.wallets.near.type')}
         url="wallet.near.org"
         className={styles.wallet}
       />
@@ -36,8 +42,8 @@ export const WalletSelectionModal: React.FC<WalletSelectionModal> = ({
           signIn(WalletType.SENDER);
           onClose();
         }}
-        name="Sender"
-        type="extension"
+        name={`Sender (${t('header.wallets.sender.beta')})`}
+        type={t('header.wallets.sender.type')}
         url="senderwallet.io"
         className={styles.wallet}
       />

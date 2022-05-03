@@ -1,10 +1,16 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useMemo } from 'react';
+import { format, parseISO } from 'date-fns';
 
+import {
+  useCheckDaoUpgrade,
+  useUpgradeStatus,
+} from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/hooks';
+import { UpgradeVersionWizard } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/components/UpgradeVersionWizard';
+
+import { UpgradeSteps } from 'types/settings';
 import { DaoContext } from 'types/context';
-import { CreationProgress } from 'astro_2.0/components/CreationProgress';
-import { CreateProposal } from 'astro_2.0/features/CreateProposal';
+import { ProposalType } from 'types/proposal';
 
-import { useDaoUpgrade } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/useDaoUpgrade';
 import { VersionCheck } from './components/VersionCheck';
 
 import styles from './DaoVersionPageContent.module.scss';
@@ -16,52 +22,66 @@ interface DaoVersionPageContentProps {
 export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
   daoContext,
 }) => {
-  const [showWizard, setShowWizard] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  const { currentProposalVariant, upgradeSteps, upgradeStatus } = useDaoUpgrade(
-    daoContext.dao
+  const { version } = useCheckDaoUpgrade(daoContext.dao);
+  const { loading, upgradeStatus, update } = useUpgradeStatus(
+    daoContext.dao.id
   );
+  const isViewProposal = upgradeStatus?.proposalId !== null;
+  const isUpgradeInProgress =
+    upgradeStatus && upgradeStatus.upgradeStep !== null;
+  const isUpgradeAvailable =
+    version &&
+    daoContext.userPermissions.isCanCreateProposals &&
+    daoContext.userPermissions.allowedProposalsToCreate[
+      ProposalType.UpgradeSelf
+    ];
 
-  useEffect(() => {
-    const timeout = setTimeout(() => setLoading(false), 2000);
+  const versionDetails = useMemo(() => {
+    const { daoVersion } = daoContext.dao;
 
-    return () => clearTimeout(timeout);
-  }, []);
+    if (!daoVersion) {
+      return null;
+    }
 
-  const handleVersionCheck = useCallback(() => {
-    setShowWizard(true);
-  }, []);
+    return {
+      current: {
+        date: format(parseISO(daoVersion.createdAt), 'dd MMM yyyy, hh:mm aaa'),
+        number: daoVersion.version.join('.'),
+      },
+      next: {
+        number: version ? version[1].version.join('.') : '',
+      },
+    };
+  }, [daoContext.dao, version]);
+
+  if (!daoContext.userPermissions.isCanCreateProposals && !isViewProposal) {
+    return <div>no permissions</div>;
+  }
 
   return (
     <div className={styles.root}>
-      <div className={styles.titleRow}>DAO Settings</div>
-      {showWizard ? (
-        <>
-          <div className={styles.steps}>
-            <CreationProgress steps={upgradeSteps} />
-          </div>
-          <div className={styles.content}>
-            <CreateProposal
-              {...daoContext}
-              // todo replace with actual implementation, save to backend
-              onCreate={() => null}
-              redirectAfterCreation={false}
-              onClose={() => null}
-              daoTokens={{}}
-              showFlag={false}
-              showClose={false}
-              showInfo={false}
-              proposalVariant={currentProposalVariant}
-              initialValues={{ versionHash: upgradeStatus?.versionHash }}
-            />
-          </div>
-        </>
+      <div className={styles.titleRow}>
+        <h1>DAO Settings</h1>
+      </div>
+      {isUpgradeInProgress && upgradeStatus ? (
+        <UpgradeVersionWizard
+          daoContext={daoContext}
+          upgradeStatus={upgradeStatus}
+          versionHash={version ? version[0] : ''}
+          onUpdate={update}
+        />
       ) : (
         <VersionCheck
-          handleUpdate={handleVersionCheck}
+          handleUpdate={async () => {
+            await update({
+              upgradeStep: UpgradeSteps.GetUpgradeCode,
+              proposalId: null,
+              versionHash: version ? version[0] : '',
+            });
+          }}
+          disabled={!isUpgradeAvailable}
           className={styles.versionCheck}
-          version={{ date: '12.03.21', number: '12.3456.14' }}
+          version={versionDetails}
           loading={loading}
         />
       )}

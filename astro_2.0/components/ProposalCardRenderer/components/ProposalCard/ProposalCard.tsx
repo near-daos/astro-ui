@@ -37,6 +37,8 @@ import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCountdown } from 'hooks/useCountdown';
 import { ProposalControlPanel } from './components/ProposalControlPanel';
 
+// import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+
 import styles from './ProposalCard.module.scss';
 
 export interface ProposalCardProps {
@@ -44,6 +46,7 @@ export interface ProposalCardProps {
   type: ProposalType;
   variant: ProposalVariant;
   status: ProposalStatus;
+  preventNavigate?: boolean;
   proposer: string;
   description: string;
   link: string;
@@ -153,6 +156,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   variant,
   proposalTxHash,
   proposer,
+  preventNavigate,
   description,
   link,
   status,
@@ -180,8 +184,18 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
     async (vote: VoteAction, gas?: string | number) => {
-      await nearService?.vote(daoId, proposalId, vote, gas);
-      await router.reload();
+      try {
+        await nearService?.vote(daoId, proposalId, vote, gas);
+        await router.reload();
+      } catch (e) {
+        // todo - handle errors
+        await router.reload();
+        // showNotification({
+        //   type: NOTIFICATION_TYPES.ERROR,
+        //   description: e.message,
+        //   lifetime: 20000,
+        // });
+      }
     },
     [daoId, proposalId, router, nearService]
   );
@@ -195,6 +209,10 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   }, [daoId, proposalId, router, nearService]);
 
   const handleCardClick = useCallback(() => {
+    if (preventNavigate) {
+      return;
+    }
+
     if (id && router.pathname !== SINGLE_PROPOSAL_PAGE_URL) {
       router.push({
         pathname: SINGLE_PROPOSAL_PAGE_URL,
@@ -204,7 +222,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         },
       });
     }
-  }, [daoId, id, router]);
+  }, [daoId, id, preventNavigate, router]);
 
   const timeLeft = useCountdown(votePeriodEnd);
 
@@ -229,7 +247,11 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     mode: 'all',
     reValidateMode: 'onChange',
     defaultValues: {
-      gas: DEFAULT_VOTE_GAS,
+      gas:
+        variant === ProposalVariant.ProposeGetUpgradeCode ||
+        variant === ProposalVariant.ProposeRemoveUpgradeCode
+          ? 230
+          : DEFAULT_VOTE_GAS,
     },
     resolver: yupResolver(schema),
   });
@@ -338,7 +360,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     <div
       data-testid="proposal-card-root"
       className={cn(styles.root, {
-        [styles.clickable]: !!id,
+        [styles.clickable]: !!id && !preventNavigate,
       })}
       onClick={handleCardClick}
     >
