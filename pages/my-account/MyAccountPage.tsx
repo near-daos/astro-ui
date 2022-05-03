@@ -9,6 +9,7 @@ import {
 
 import { WalletIdCard } from 'astro_2.0/features/pages/myAccount/cards/WalletIdCard';
 import { NotificationCard } from 'astro_2.0/features/pages/myAccount/cards/NotificationCard';
+import { VoteCreditCard } from 'astro_2.0/features/pages/myAccount/cards/VoteCreditCard';
 
 import styles from './MyAccountPage.module.scss';
 
@@ -31,12 +32,17 @@ const MyAccountPage: VFC<MyAccountPageProps> = ({
     <div>
       <h1 className={styles.header}>{t('myAccountPage.header')}</h1>
       <div className={styles.cards}>
-        <WalletIdCard contactsConfig={config} setConfig={setConfig} />
-        <NotificationCard
-          contactsConfig={config}
-          smsEnabled={enableSms}
-          emailEnabled={enableEmail}
-        />
+        <div className={styles.column}>
+          <WalletIdCard contactsConfig={config} setConfig={setConfig} />
+          <VoteCreditCard />
+        </div>
+        <div className={styles.column}>
+          <NotificationCard
+            contactsConfig={config}
+            smsEnabled={enableSms}
+            emailEnabled={enableEmail}
+          />
+        </div>
       </div>
     </div>
   );

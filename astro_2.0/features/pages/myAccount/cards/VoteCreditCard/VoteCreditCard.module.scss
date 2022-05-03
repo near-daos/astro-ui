@@ -1,0 +1,17 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.loader {
+  min-height: unset;
+
+  svg {
+    height: 140px;
+    width: 200px;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
+}

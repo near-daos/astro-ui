@@ -135,7 +135,8 @@ export function useUpgradeStatus(
   const [{ loading: updatingStatus }, update] = useAsyncFn(
     async ({ upgradeStep, proposalId, versionHash }) => {
       try {
-        const settings = await SputnikHttpService.getDaoSettings(daoId);
+        const settings =
+          (await SputnikHttpService.getDaoSettings(daoId)) ?? ({} as Settings);
 
         const newSettings: Settings = {
           ...settings,
