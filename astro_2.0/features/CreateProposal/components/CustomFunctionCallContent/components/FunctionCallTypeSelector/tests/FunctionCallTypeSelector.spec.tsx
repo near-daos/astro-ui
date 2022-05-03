@@ -42,9 +42,9 @@ jest.mock('astro_2.0/features/CreateProposal/helpers/initialValues', () => {
   };
 });
 
-jest.mock('context/AuthContext', () => {
+jest.mock('context/WalletContext', () => {
   return {
-    useAuthContext: () => ({
+    useWalletContext: () => ({
       accountId: '123',
     }),
   };

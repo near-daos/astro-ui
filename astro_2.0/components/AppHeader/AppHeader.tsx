@@ -1,28 +1,19 @@
 import cn from 'classnames';
 import React, { FC, useRef } from 'react';
 
-import { useRouter } from 'next/router';
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { FEATURE_FLAGS } from 'constants/featureFlags';
-import {
-  NOTIFICATIONS_PAGE_URL,
-  NOTIFICATIONS_SETTINGS_PAGE_URL,
-} from 'constants/routing';
 
 import { Icon } from 'components/Icon';
+import { AccountDropdown } from 'astro_2.0/components/AppHeader/components/AccountDropdown';
 import { SearchBar } from './components/SearchBar';
-import { AccountButton } from './components/AccountButton';
 import { NotificationsBell } from './components/NotificationsBell';
 
 import styles from './AppHeader.module.scss';
 
 export const AppHeader: FC = () => {
-  const router = useRouter();
-  const isNotificationsPage =
-    router.pathname.includes(NOTIFICATIONS_PAGE_URL) &&
-    !router.pathname.includes(NOTIFICATIONS_SETTINGS_PAGE_URL);
   const centralEl = useRef(null);
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
 
   function renderLogo(className?: string) {
     return (
@@ -53,12 +44,9 @@ export const AppHeader: FC = () => {
           className={styles.search}
         />
       </div>
-      {!!accountId && !isNotificationsPage && (
-        <NotificationsBell className={styles.bell} />
-      )}
-      <div>
-        <AccountButton />
-      </div>
+      {!!accountId && <NotificationsBell className={styles.bell} />}
+
+      <AccountDropdown />
     </header>
   );
 };

@@ -15,7 +15,7 @@ import { ActionButton } from 'astro_2.0/components/ActionButton';
 import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { Popup } from 'components/Popup';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { UserPermissions } from 'types/context';
 import { shortenString } from 'utils/format';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
@@ -73,7 +73,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
     });
   };
 
-  const { accountId, login } = useAuthContext();
+  const { accountId, login } = useWalletContext();
   const action = (
     <>
       <div className={styles.addProposalWrapper} ref={setRef}>

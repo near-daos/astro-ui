@@ -8,8 +8,6 @@ import { appConfig as applicationConfig } from 'config';
 
 import { ALL_FEED_URL, MY_FEED_URL } from 'constants/routing';
 
-import { AuthWrapper } from 'context/AuthContext';
-
 import { ModalProvider } from 'components/modal';
 import { PageLayout } from 'astro_2.0/components/PageLayout';
 import { MobileNav } from 'astro_2.0/components/navigation/MobileNav';
@@ -25,6 +23,7 @@ import { useIntercomAdjust } from 'hooks/useIntercomAdjust';
 
 import 'styles/globals.scss';
 import { useRouter } from 'next/router';
+import { WrappedWalletContext } from 'context/WalletContext';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
@@ -37,7 +36,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
 
   return (
     <ModalProvider>
-      <AuthWrapper>
+      <WrappedWalletContext>
         <SocketProvider>
           <SearchResults>
             <Head>
@@ -49,7 +48,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
             <MobileNav />
           </SearchResults>
         </SocketProvider>
-      </AuthWrapper>
+      </WrappedWalletContext>
     </ModalProvider>
   );
 }

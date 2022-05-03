@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import React, { VFC, useState, useCallback } from 'react';
 import { useForm, FormProvider, FieldError } from 'react-hook-form';
 
-import { PkAndSignMethod } from 'context/AuthContext';
+import { PkAndSignature } from 'context/WalletContext';
 import { UserContacts } from 'services/NotificationsService/types';
 
 import { NotificationsService } from 'services/NotificationsService';
@@ -30,9 +30,7 @@ interface AddUserInfoModalProps {
   isEmail: boolean;
   accountId: string;
   setConfig: (config: UserContacts) => void;
-  getPublicKey: () => Promise<string | null>;
-  getSignature: () => Promise<string | null>;
-  getPublicKeyAndSignature: PkAndSignMethod;
+  getPublicKeyAndSignature: () => Promise<PkAndSignature | null>;
 }
 
 const ONE_MINUTE_IN_MS = 60000;

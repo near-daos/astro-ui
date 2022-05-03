@@ -12,7 +12,7 @@ import { getInitialValues } from 'astro_2.0/features/CreateDao/components/helper
 import { DaoMembersForm } from 'astro_2.0/features/CreateDao/components/DaoMembersForm';
 import { DaoAssetsForm } from 'astro_2.0/features/CreateDao/components/DaoAssetsForm';
 import { useMount, useMountedState } from 'react-use';
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { DaoProposalCreationForm } from 'astro_2.0/features/CreateDao/components/DaoProposalCreationForm';
 import { DaoVotingPermissionsForm } from 'astro_2.0/features/CreateDao/components/DaoVotingPermissionsForm';
 
@@ -25,7 +25,7 @@ export const CreateDao: VFC<CreateDaoProps> = ({ defaultFlag }) => {
   const isMounted = useMountedState();
   const { query } = router;
   const { step } = router.query;
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
   const [initialized, setInitialized] = useState(false);
 
   useMount(() => {

@@ -12,7 +12,7 @@ import {
   MY_FEED_URL,
 } from 'constants/routing';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { useDaoIds } from 'hooks/useDaoIds';
 
 import { Logo } from 'components/Logo';
@@ -33,7 +33,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { accountId, login } = useAuthContext();
+  const { accountId, login } = useWalletContext();
   const myDaosIds = useDaoIds(accountId);
 
   const createDao = useCallback(() => {

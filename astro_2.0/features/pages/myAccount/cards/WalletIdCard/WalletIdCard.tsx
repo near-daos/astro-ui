@@ -3,7 +3,7 @@ import React, { VFC, useCallback } from 'react';
 
 import { UserContacts } from 'services/NotificationsService/types';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 
 import { useModal } from 'components/modal/hooks';
 
@@ -30,7 +30,7 @@ export const WalletIdCard: VFC<WalletIdCardProps> = props => {
     isPhoneVerified,
   } = contactsConfig;
 
-  const { accountId, getPublicKeyAndSignature } = useAuthContext();
+  const { accountId, getPublicKeyAndSignature } = useWalletContext();
 
   const { t } = useTranslation('common');
 

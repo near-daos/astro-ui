@@ -2,6 +2,7 @@ import BN from 'bn.js';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import {
   ConnectedWalletAccount,
+  KeyPair,
   keyStores,
   Near,
   transactions,
@@ -22,53 +23,27 @@ import { NearConfig } from 'config/near';
 import {
   DaoService,
   Transaction,
-  WalletMeta,
   WalletService,
 } from 'services/sputnik/SputnikNearService/services/types';
 import { configService } from 'services/ConfigService';
 import { CreateDaoParams } from 'services/sputnik/types';
-import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
+import { PublicKey } from 'near-api-js/lib/utils';
+import { parseNearAmount } from 'near-api-js/lib/utils/format';
 
 export const GAS_VALUE = new BN('300000000000000');
 export const FINALIZE_PROPOSAL_GAS_VALUE = new BN('150000000000000');
 
-export class SputnikNearService implements WalletService, DaoService {
+export class SputnikNearService implements DaoService {
   private walletService: WalletService;
 
   private readonly nearConfig: NearConfig;
 
   private appConfig: Config;
 
-  public isSenderWalletAvailable: boolean;
-
-  private readonly wallets: Map<WalletType, WalletService>;
-
-  constructor(
-    wallets: Map<WalletType, WalletService>,
-    selectedWallet: WalletType
-  ) {
-    this.wallets = wallets;
+  constructor(currentWallet: WalletService) {
+    this.walletService = currentWallet;
     this.nearConfig = configService.get().nearConfig;
     this.appConfig = configService.get().appConfig;
-    this.walletService =
-      this.wallets.get(selectedWallet) ??
-      new SputnikWalletService(this.nearConfig);
-    this.isSenderWalletAvailable = false;
-  }
-
-  availableWallets(): WalletMeta[] {
-    return Array.from(this.wallets.values()).map(service =>
-      service.walletMeta()
-    );
-  }
-
-  async switchWallet(walletType: WalletType): Promise<void> {
-    this.walletService =
-      this.wallets.get(walletType) ?? new SputnikWalletService(this.nearConfig);
-
-    if (!this.walletService.isSignedIn()) {
-      await this.walletService.signIn(this.nearConfig.contractName);
-    }
   }
 
   sendMoney(
@@ -86,13 +61,6 @@ export class SputnikNearService implements WalletService, DaoService {
     return this.walletService.isSignedIn();
   }
 
-  initWallet(): void {
-    this.wallets.set(
-      WalletType.NEAR,
-      new SputnikWalletService(this.nearConfig)
-    );
-  }
-
   getAccount(): ConnectedWalletAccount {
     return this.walletService.getAccount();
   }
@@ -101,11 +69,19 @@ export class SputnikNearService implements WalletService, DaoService {
     return this.walletService.functionCall(props);
   }
 
-  getPublicKey(): Promise<string | null> {
+  async getPublicKey(): Promise<string | null> {
+    if (!this.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
     return this.walletService.getPublicKey();
   }
 
-  getSignature(): Promise<string | null> {
+  async getSignature(): Promise<string | null> {
+    if (!this.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
     return this.walletService.getSignature();
   }
 
@@ -117,16 +93,8 @@ export class SputnikNearService implements WalletService, DaoService {
     return this.walletService.signIn(contractId);
   }
 
-  public async logout(): Promise<void> {
-    this.wallets.forEach(walletService => walletService.logout());
-  }
-
   public getAccountId(): string {
     return this.walletService.getAccountId();
-  }
-
-  public getWallet(walletType: WalletType): WalletService | undefined {
-    return this.wallets.get(walletType);
   }
 
   public async createDao(
@@ -324,6 +292,37 @@ export class SputnikNearService implements WalletService, DaoService {
     });
   }
 
+  public async requestDaoAccessKey(
+    daoId: string,
+    allowance: string
+  ): Promise<FinalExecutionOutcome[]> {
+    const accessKey = KeyPair.fromRandom('ed25519');
+
+    const accessKeyTransaction = transactions.functionCallAccessKey(
+      daoId,
+      ['act_proposal'],
+      new BN(parseNearAmount(allowance) ?? 0)
+    );
+
+    const result = await this.sendTransactions([
+      {
+        receiverId: this.getAccountId(),
+        actions: [
+          transactions.addKey(
+            PublicKey.from(accessKey.getPublicKey()),
+            accessKeyTransaction
+          ),
+        ],
+      },
+    ]);
+
+    await this.walletService
+      .getKeyStore()
+      .setKey(this.nearConfig.networkId, this.getAccountId(), accessKey);
+
+    return result;
+  }
+
   public async vote(
     daoId: string,
     proposalId: number,
@@ -462,16 +461,5 @@ export class SputnikNearService implements WalletService, DaoService {
     } catch (e) {
       return false;
     }
-  }
-
-  getAvailableAccounts(): Promise<string[]> {
-    return (
-      this.wallets.get(WalletType.NEAR)?.getAvailableAccounts() ??
-      Promise.resolve([])
-    );
-  }
-
-  walletMeta(): WalletMeta {
-    return this.walletService.walletMeta();
   }
 }

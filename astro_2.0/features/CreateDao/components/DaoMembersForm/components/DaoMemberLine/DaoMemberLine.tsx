@@ -7,7 +7,7 @@ import { Input } from 'components/inputs/Input';
 import { IconButton } from 'components/button/IconButton';
 import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { validateUserAccount } from 'astro_2.0/features/CreateProposal/helpers';
 
 import styles from './DaoMemberLine.module.scss';
@@ -26,7 +26,7 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({ index, removeLink }) => {
     clearErrors,
     formState: { errors },
   } = useFormContext();
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, nearService } = useWalletContext();
 
   const currentValue = watch(`accounts.${index}`);
   const [value, setValue] = useState(currentValue);
@@ -55,7 +55,10 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({ index, removeLink }) => {
         return;
       }
 
-      const isAccountExist = await validateUserAccount(value, nearService);
+      const isAccountExist = await validateUserAccount(
+        value,
+        nearService ?? undefined
+      );
 
       if (!isAccountExist) {
         setFormError(fieldName, {

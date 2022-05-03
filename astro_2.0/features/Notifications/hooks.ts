@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { NotificationsService } from 'services/NotificationsService';
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { PaginationResponse } from 'types/api';
 import { Notification, NotificationDTO } from 'types/notification';
@@ -23,7 +23,7 @@ export function useNotificationsSettings(): {
     delay?: string
   ) => void;
 } {
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, nearService } = useWalletContext();
   const updateSettings = useCallback(
     async (
       daoId: string | null,
@@ -96,7 +96,7 @@ export function useNotificationsList(
 } {
   const router = useRouter();
   const { socket } = useSocket();
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, nearService } = useWalletContext();
   const [notifications, setNotifications] = useState<PaginationResponse<
     Notification[]
   > | null>(null);

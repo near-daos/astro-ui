@@ -9,7 +9,6 @@ import {
   UpdateNotificationsParams,
 } from 'types/notification';
 import { PaginationResponse } from 'types/api';
-import { PkAndSignMethod } from 'context/AuthContext';
 
 import { httpService } from 'services/HttpService';
 import { mapNotificationDtoToNotification } from 'services/NotificationsService/mappers/notification';
@@ -19,6 +18,7 @@ import {
 } from 'services/NotificationsService/types';
 
 import { logger } from 'utils/logger';
+import { PkAndSignature } from 'context/WalletContext';
 
 class NotificationsServiceClass {
   private readonly httpService = httpService;
@@ -44,10 +44,16 @@ class NotificationsServiceClass {
   public async sendContact(
     accountId: string,
     contact: string,
-    getPublicKeyAndSignature: PkAndSignMethod,
+    getPublicKeyAndSignature: () => Promise<PkAndSignature | null>,
     isEmail: boolean
   ): Promise<boolean> {
-    const { publicKey, signature } = await getPublicKeyAndSignature();
+    const result = await getPublicKeyAndSignature();
+
+    if (!result) {
+      return false;
+    }
+
+    const { publicKey, signature } = result;
 
     try {
       const urlPart = isEmail ? 'email' : 'phone';
@@ -76,10 +82,16 @@ class NotificationsServiceClass {
   public async verifyContact(
     accountId: string,
     code: string,
-    getPublicKeyAndSignature: PkAndSignMethod,
+    getPublicKeyAndSignature: () => Promise<PkAndSignature | null>,
     isEmail: boolean
   ) {
-    const { publicKey, signature } = await getPublicKeyAndSignature();
+    const result = await getPublicKeyAndSignature();
+
+    if (!result) {
+      return false;
+    }
+
+    const { publicKey, signature } = result;
 
     try {
       const urlPart = isEmail ? 'email' : 'phone';

@@ -10,7 +10,7 @@ import { FollowButton } from 'astro_2.0/features/DaoDashboardHeader/components/F
 import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 import { ShowMoreLinks } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLinks/components/ShowMoreLinks';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { UserPermissions } from 'types/context';
 
 import { DepositToDaoForm } from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm';
@@ -44,7 +44,7 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
   onCreateProposal,
   userPermissions,
 }) => {
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
   const { t } = useTranslation();
   const isMobileOrTablet = useMedia('(max-width: 767px)');
 

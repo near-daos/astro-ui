@@ -23,7 +23,7 @@ import { Token } from 'types/token';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { getInitialProposalVariant } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 import { UserPermissions } from 'types/context';
@@ -75,7 +75,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
 }) => {
   const isMounted = useMountedState();
   const { t } = useTranslation();
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, nearService } = useWalletContext();
   const router = useRouter();
   const initialProposalVariant = getInitialProposalVariant(
     proposalVariant,
@@ -114,7 +114,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         context?.selectedProposalVariant,
         dao,
         data,
-        nearService
+        nearService ?? undefined
       );
 
       try {
