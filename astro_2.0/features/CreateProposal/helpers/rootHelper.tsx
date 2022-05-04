@@ -430,7 +430,7 @@ export function mapProposalVariantToProposalType(
 
 export function validateUserAccount(
   value: string | undefined,
-  nearService: SputnikNearService | undefined
+  nearService: SputnikNearService | undefined | null
 ): Promise<boolean> | boolean {
   if (!value || !nearService) {
     return false;

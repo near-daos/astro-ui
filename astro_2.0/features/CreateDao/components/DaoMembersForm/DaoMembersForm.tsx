@@ -1,9 +1,9 @@
-import times from 'lodash/times';
-import React, { VFC, useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import React, { VFC } from 'react';
+import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
-import uniq from 'lodash/uniq';
+import uniqBy from 'lodash/uniqBy';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import useQuery from 'hooks/useQuery';
 import { useStateMachine } from 'little-state-machine';
 
@@ -12,112 +12,70 @@ import { Button } from 'components/button/Button';
 import { SubmitButton } from 'astro_2.0/features/CreateDao/components/SubmitButton';
 
 import { updateAction } from 'astro_2.0/features/CreateDao/components/helpers';
-import { MembersStep } from 'astro_2.0/features/CreateDao/types';
 import { useWalletContext } from 'context/WalletContext';
 import { StepCounter } from 'astro_2.0/features/CreateDao/components/StepCounter';
-import { DaoMemberLine } from './components/DaoMemberLine';
+import { DaoMemberLine } from 'astro_2.0/features/CreateDao/components/DaoMembersForm/components/DaoMemberLine';
+import { validateUserAccount } from 'astro_2.0/features/CreateProposal/helpers';
 
 import styles from './DaoMembersForm.module.scss';
 
-const schema = yup.object().shape({
-  accounts: yup.array().of(yup.string().required('Required')),
-});
+type Form = { accounts: { account: string }[] };
 
 export const DaoMembersForm: VFC = () => {
   const { t } = useTranslation();
-  const { accountId } = useWalletContext();
+  const { accountId, nearService } = useWalletContext();
   const { updateQuery } = useQuery<{
     step: string;
   }>({ shallow: true });
   const { actions, state } = useStateMachine({ updateAction });
 
-  const methods = useForm<MembersStep>({
+  const methods = useForm<Form>({
     defaultValues: {
-      accounts: uniq(
+      accounts: uniqBy(
         state.members.accounts
-          ? [accountId, ...state.members.accounts]
-          : [accountId]
+          ? [
+              { account: accountId },
+              ...state.members.accounts.map(item => ({ account: item })),
+            ]
+          : [{ account: accountId }],
+        item => item.account
       ),
     },
     mode: 'onChange',
-    resolver: async data => {
-      try {
-        const values = await schema.validate(data, {
-          abortEarly: false,
-        });
-
-        actions.updateAction({ members: { ...data, isValid: true } });
-
-        return {
-          values,
-          errors: {},
-        };
-      } catch (e) {
-        actions.updateAction({ members: { ...data, isValid: false } });
-
-        return {
-          values: {},
-          errors: e.inner.reduce(
-            (
-              allErrors: Record<string, string>,
-              currentError: { path: string; type?: string; message: string }
-            ) => {
-              const accounts = allErrors.accounts ?? [];
-
-              return {
-                ...allErrors,
-                accounts: [
-                  ...accounts,
-                  {
-                    path: currentError.path,
-                    type: currentError.type ?? 'validation',
-                    message: currentError.message,
-                  },
-                ],
-              };
-            },
-            {}
-          ),
-        };
-      }
-    },
+    resolver: yupResolver(
+      yup.object().shape({
+        accounts: yup.array().of(
+          yup.object().shape({
+            account: yup
+              .string()
+              .test({
+                name: 'notValidNearAccount',
+                exclusive: true,
+                message: 'Only valid near accounts are allowed',
+                test: async value => validateUserAccount(value, nearService),
+              })
+              .required('Required'),
+          })
+        ),
+      })
+    ),
   });
 
   const {
+    control,
     handleSubmit,
-    getValues,
-    setValue,
     formState: { isValid },
   } = methods;
 
-  const initialValues = getValues();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'accounts',
+  });
 
-  const [linksCount, setLinksCount] = useState<number>(
-    initialValues?.accounts?.length ?? 0
-  );
-
-  const addLink = () => {
-    setLinksCount(count => count + 1);
-  };
-
-  function removeLink(index: number) {
-    const accounts = getValues('accounts');
-
-    accounts.splice(index, 1);
-
-    setValue('accounts', accounts, { shouldValidate: true });
-    setLinksCount(count => count - 1);
-  }
-
-  function renderLinkFormEls() {
-    return times(linksCount, index => (
-      // eslint-disable-next-line react/jsx-no-bind
-      <DaoMemberLine key={index} index={index} removeLink={removeLink} />
-    ));
-  }
-
-  const onSubmit = (data: MembersStep) => {
-    actions.updateAction({ members: { ...data, isValid } });
+  const onSubmit = (data: Form) => {
+    actions.updateAction({
+      members: { accounts: data.accounts.map(item => item.account), isValid },
+    });
 
     updateQuery('step', 'proposals');
   };
@@ -136,19 +94,26 @@ export const DaoMembersForm: VFC = () => {
           {t('createDAO.daoMembersForm.addMembersDescription')}
         </p>
         <section className={styles.links}>
-          {renderLinkFormEls()}
-
+          {fields.map((item, index) => {
+            return (
+              <DaoMemberLine
+                key={item.id}
+                item={item}
+                index={index}
+                onRemove={() => remove(index)}
+              />
+            );
+          })}
           <Button
             className={styles.link}
-            onClick={addLink}
+            onClick={() => append({ account: '' })}
             variant="transparent"
           >
             <span className={styles.socialText} />
             <Icon className={styles.addBtn} name="buttonAdd" width={24} />
           </Button>
         </section>
-
-        <SubmitButton disabled={!isValid} />
+        <SubmitButton />
       </form>
     </FormProvider>
   );
