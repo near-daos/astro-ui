@@ -83,6 +83,14 @@ export const WrappedWalletContext: FC = ({ children }) => {
 
     const { nearConfig } = configService.get();
 
+    if (currentWallet) {
+      CookieService.set(ACCOUNT_COOKIE, currentWallet.getAccountId(), {
+        path: '/',
+      });
+    } else {
+      CookieService.remove(ACCOUNT_COOKIE);
+    }
+
     const selectedWalletContext: WalletContext = {
       nearService: currentWallet ? new SputnikNearService(currentWallet) : null,
       availableWallets: availableWallets.map(wallet => wallet.walletMeta()),
@@ -164,7 +172,11 @@ export const WrappedWalletContext: FC = ({ children }) => {
           JSON.stringify(authData)
         );
 
-        setPersistedWallet(WalletType.NEAR);
+        CookieService.set(ACCOUNT_COOKIE, accountId, {
+          path: '/',
+        });
+
+        router.reload();
       },
       async switchWallet(walletType: WalletType): Promise<void> {
         const selectedWallet = availableWallets.find(

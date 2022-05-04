@@ -17,7 +17,6 @@ export const WalletsList: React.FC<WalletsListProps> = ({
   const {
     currentWallet,
     getAvailableAccounts,
-
     availableWallets,
     switchAccount,
     switchWallet,
@@ -57,7 +56,7 @@ export const WalletsList: React.FC<WalletsListProps> = ({
       <div className={styles.delimiter} />
       <div className={styles.chooseWalletCaption}>Choose wallet</div>
       {availableWallets.map(wallet =>
-        wallet.id === WalletType.NEAR && availableAccounts.length > 0 ? (
+        wallet.id === WalletType.NEAR && availableAccounts.length > 1 ? (
           <WalletWithAccounts
             key={wallet.id}
             wallet={wallet}
