@@ -1,6 +1,5 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import { VoterDetail } from 'features/types';
-import groupBy from 'lodash/groupBy';
 import isEmpty from 'lodash/isEmpty';
 
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
@@ -15,10 +14,16 @@ interface VoteCollapsableListProps {
 }
 
 export const VoteCollapsableList: FC<VoteCollapsableListProps> = ({ data }) => {
-  const votesGroups: { [key: string]: VoterDetail[] } = useMemo(
-    () => groupBy(data, 'groups'),
-    [data]
-  );
+  const votesGroups: { [key: string]: VoterDetail[] } = {};
+  const uniqueGroups = Array.from(new Set(data.flatMap(item => item.groups)));
+
+  uniqueGroups.forEach(uniqueGroup => {
+    if (uniqueGroup) {
+      votesGroups[uniqueGroup] = data.filter(item =>
+        item.groups?.includes(uniqueGroup)
+      );
+    }
+  });
 
   if (isEmpty(data)) {
     return <NoResultsView title="No votes here" />;

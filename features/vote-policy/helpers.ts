@@ -157,9 +157,8 @@ export function getVoteDetails(
         },
       ];
 
-  const defaulPolicy = defaultVotePolicy;
-
-  const amount = (defaulPolicy.ratio[0] / defaulPolicy.ratio[1]) * 100;
+  const amount =
+    (defaultVotePolicy.ratio[0] / defaultVotePolicy.ratio[1]) * 100;
 
   const details = {
     label: '',
@@ -194,9 +193,7 @@ export function getVoteDetails(
       return res;
     }, {}) ?? {};
 
-  const votersList = Object.values(list);
-
-  return { details, votersList };
+  return { details, votersList: Object.values(list) };
 }
 
 export function getThreshold(value: number): [number, number] {
