@@ -23,6 +23,7 @@ import styles from './NotificationCard.module.scss';
 const EMPTY_OBJECT = {};
 
 export type NotificationCardProps = {
+  className?: string;
   regular?: boolean;
   onRemove?: NotificationAction;
   onUpdate?: NotificationAction;
@@ -45,6 +46,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   status,
   onUpdate,
   onRemove,
+  className,
 }) => {
   const router = useRouter();
   const [swipedLeft, setSwipedLeft] = useState(false);
@@ -148,7 +150,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   const swipeProps = !regular ? handlers : EMPTY_OBJECT;
 
   return (
-    <div className={styles.root}>
+    <div className={cn(styles.root, className)}>
       <div
         data-testid="noty-content"
         className={contentClassName}
