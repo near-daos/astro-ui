@@ -6,7 +6,7 @@ import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 export function getFormInitialValues(
   selectedProposalType: ProposalVariant,
   accountId: string,
-  initialValues?: Record<string, unknown>
+  initialValues: Record<string, unknown> = {}
 ): Record<string, unknown> {
   switch (selectedProposalType) {
     case ProposalVariant.ProposeGetUpgradeCode: {
@@ -43,6 +43,7 @@ export function getFormInitialValues(
         deadlineThreshold: '',
         deadlineUnits: 'days',
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeDoneBounty: {
@@ -51,6 +52,7 @@ export function getFormInitialValues(
         externalUrl: '',
         target: accountId,
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeTransfer: {
@@ -61,6 +63,7 @@ export function getFormInitialValues(
         amount: '',
         target: '',
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeChangeDaoName: {
@@ -69,6 +72,7 @@ export function getFormInitialValues(
         externalUrl: '',
         displayName: '',
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeChangeDaoPurpose: {
@@ -77,6 +81,7 @@ export function getFormInitialValues(
         externalUrl: '',
         purpose: '',
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeChangeDaoLinks: {
@@ -85,6 +90,7 @@ export function getFormInitialValues(
         externalUrl: '',
         links: [],
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeCreateToken: {
@@ -95,6 +101,7 @@ export function getFormInitialValues(
         totalSupply: '',
         tokenImage: '',
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeContractAcceptance: {
@@ -103,6 +110,7 @@ export function getFormInitialValues(
         externalUrl: '',
         unstakingPeriod: '345',
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeTokenDistribution: {
@@ -111,6 +119,7 @@ export function getFormInitialValues(
         externalUrl: '',
         groups: [],
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeChangeDaoLegalInfo: {
@@ -118,6 +127,7 @@ export function getFormInitialValues(
         details: '',
         externalUrl: '',
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposePoll: {
@@ -125,18 +135,17 @@ export function getFormInitialValues(
         details: '',
         externalUrl: '',
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeAddMember: {
-      const preset = initialValues || {};
-
       return {
         details: '',
         externalUrl: '',
         group: '',
         memberName: '',
         gas: DEFAULT_PROPOSAL_GAS,
-        ...preset,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeCreateGroup:
@@ -147,6 +156,7 @@ export function getFormInitialValues(
         group: '',
         memberName: '',
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeChangeVotingPolicy: {
@@ -155,6 +165,7 @@ export function getFormInitialValues(
         externalUrl: '',
         amount: '',
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeChangeBonds: {
@@ -166,6 +177,7 @@ export function getFormInitialValues(
         proposalExpireTime: '',
         unclaimBountyTime: '',
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeChangeDaoFlag: {
@@ -175,6 +187,7 @@ export function getFormInitialValues(
         flagCover: '',
         flagLogo: '',
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeCustomFunctionCall: {
@@ -192,6 +205,7 @@ export function getFormInitialValues(
         functionCallType: 'Custom',
         timeout: 24,
         timeoutGranularity: 'Hours',
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeChangeProposalVotingPermissions:

@@ -10,6 +10,7 @@ const formContextMock = {
   watch: () => 0,
   register: () => 0,
   getValues: () => ({}),
+  setValue: () => true,
 };
 
 jest.mock('react-hook-form', () => {

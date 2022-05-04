@@ -2,6 +2,7 @@ import React, { FC, useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 import cn from 'classnames';
 import AceEditor from 'react-ace';
+import { useMount } from 'react-use';
 
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
@@ -22,7 +23,7 @@ import {
 import styles from './CustomContent.module.scss';
 
 export const CustomContent: FC = () => {
-  const { register, setValue } = useFormContext();
+  const { register, setValue, getValues } = useFormContext();
   const depositWidth = useDepositWidth();
   const { tokenOptions, selectedTokenData } = useTokenOptions();
 
@@ -32,6 +33,13 @@ export const CustomContent: FC = () => {
     },
     [setValue]
   );
+  const values = getValues();
+  const json = JSON.stringify(values.json, null, 2);
+
+  useMount(() => {
+    // Setting default value on form hook doesn't work with Ace so we update value manually
+    setValue('json', json, { shouldValidate: true });
+  });
 
   return (
     <div className={styles.root}>
@@ -76,6 +84,7 @@ export const CustomContent: FC = () => {
             theme="github"
             {...register('json')}
             onChange={handleChange}
+            defaultValue={json}
             fontSize={14}
             width="99%"
             height="116px"

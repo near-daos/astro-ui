@@ -8,6 +8,8 @@ import React, {
 } from 'react';
 import { UrlObject } from 'url';
 import cn from 'classnames';
+import omit from 'lodash/omit';
+import { useRouter } from 'next/router';
 
 import { DaoContext } from 'types/context';
 import { ProposalVariant } from 'types/proposal';
@@ -17,6 +19,7 @@ import { BreadCrumbs } from 'astro_2.0/components/BreadCrumbs';
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails';
 import { PolicyAffectedWarning } from 'astro_2.0/components/PolicyAffectedWarning';
 import { DaoWarning } from 'astro_2.0/components/DaoWarning';
+import { CreateExternalProposal } from 'astro_2.0/features/CreateExternalProposal';
 
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { useCreateProposal } from 'astro_2.0/features/CreateProposal/hooks';
@@ -43,7 +46,7 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
     className,
     header,
   } = props;
-
+  const router = useRouter();
   const { tokens } = useDaoCustomTokens();
   const [CreateProposal, toggleCreateProposal] = useCreateProposal();
   const showLowBalanceWarning =
@@ -86,6 +89,16 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
     [toggleCreateProposal, defaultProposalType]
   );
 
+  const handleProposalDone = useCallback(async () => {
+    await router.replace({
+      pathname: router.pathname,
+      query: {
+        ...omit(router.query, ['action', 'variant', 'params']),
+      },
+    });
+    toggleCreateProposal();
+  }, [router, toggleCreateProposal]);
+
   return (
     <>
       {header && header(onCreateProposal)}
@@ -105,9 +118,10 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
           userPermissions={userPermissions}
           proposalVariant={defaultProposalType}
           showFlag={false}
-          onCreate={() => toggleCreateProposal()}
-          onClose={() => toggleCreateProposal()}
+          onCreate={handleProposalDone}
+          onClose={handleProposalDone}
         />
+        <CreateExternalProposal onCreateProposal={onCreateProposal} />
         {showLowBalanceWarning && (
           <DaoWarning
             content={
