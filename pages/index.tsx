@@ -13,7 +13,7 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { useRouter } from 'next/router';
 
 type Props = {
-  account: string | undefined;
+  account: string | null;
 };
 
 export default function RootPage({ account }: Props): JSX.Element {
@@ -38,14 +38,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         ['common', 'notificationsPage'],
         nextI18NextConfig
       )),
-      account,
+      account: account || null,
     },
   };
 };
-/*
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  return {
-    props: {}
-  };
-};
-*/

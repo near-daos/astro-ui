@@ -9,7 +9,7 @@ import { Settings } from 'types/settings';
 
 import { IconName } from 'components/Icon';
 
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 import { SputnikHttpService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
@@ -34,7 +34,7 @@ export const DaoFeatureInfo: FC<Props> = ({
   description,
   control,
 }) => {
-  const { accountId, nearService } = useAuthContext();
+  const { accountId, nearService } = useWalletContext();
   const isMounted = useMountedState();
   const [showInfo, setShowInfo] = useState(false);
 

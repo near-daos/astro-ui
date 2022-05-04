@@ -7,7 +7,7 @@ import { ConfigCard } from 'astro_2.0/features/pages/myAccount/cards/ConfigCard'
 import { VoteCreditRow } from 'astro_2.0/features/pages/myAccount/cards/VoteCreditCard/components/VoteCreditRow';
 
 import { SputnikHttpService } from 'services/sputnik';
-import { useAuthContext } from 'context/AuthContext';
+import { useWalletContext } from 'context/WalletContext';
 
 import { DaoFeedItem } from 'types/dao';
 
@@ -15,7 +15,7 @@ import styles from './VoteCreditCard.module.scss';
 
 export const VoteCreditCard: FC = () => {
   const isMounted = useMountedState();
-  const { accountId } = useAuthContext();
+  const { accountId } = useWalletContext();
   const [accountDaos, setAccountDaos] = useState<DaoFeedItem[]>([]);
 
   const [{ loading }, getDaosList] = useAsyncFn(async () => {
