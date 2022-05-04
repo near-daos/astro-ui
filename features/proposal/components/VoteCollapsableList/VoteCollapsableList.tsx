@@ -1,6 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { VoterDetail } from 'features/types';
 import isEmpty from 'lodash/isEmpty';
+import { useTranslation } from 'next-i18next';
 
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Collapsable } from 'components/collapsable/Collapsable';
@@ -13,17 +14,41 @@ interface VoteCollapsableListProps {
   data: VoterDetail[];
 }
 
-export const VoteCollapsableList: FC<VoteCollapsableListProps> = ({ data }) => {
-  const votesGroups: { [key: string]: VoterDetail[] } = {};
-  const uniqueGroups = Array.from(new Set(data.flatMap(item => item.groups)));
+interface VoteGroups {
+  [key: string]: VoterDetail[];
+}
 
-  uniqueGroups.forEach(uniqueGroup => {
-    if (uniqueGroup) {
-      votesGroups[uniqueGroup] = data.filter(item =>
-        item.groups?.includes(uniqueGroup)
-      );
-    }
-  });
+export const VoteCollapsableList: FC<VoteCollapsableListProps> = ({ data }) => {
+  const { t } = useTranslation();
+  const noGroupTranslate = t('proposalVotes.noGroup');
+  const votesGroups: VoteGroups = useMemo(() => {
+    const vGroups: VoteGroups = {};
+    const uniqueGroups = Array.from(
+      new Set(
+        data.flatMap(item =>
+          item?.groups?.length ? item.groups : [noGroupTranslate]
+        )
+      )
+    );
+
+    uniqueGroups.forEach(uniqueGroup => {
+      if (uniqueGroup === noGroupTranslate) {
+        vGroups[noGroupTranslate] = data.filter(
+          item => item.groups?.length === 0
+        );
+
+        return;
+      }
+
+      if (uniqueGroup) {
+        vGroups[uniqueGroup] = data.filter(item =>
+          item.groups?.includes(uniqueGroup)
+        );
+      }
+    });
+
+    return vGroups;
+  }, [data, noGroupTranslate]);
 
   if (isEmpty(data)) {
     return <NoResultsView title="No votes here" />;
