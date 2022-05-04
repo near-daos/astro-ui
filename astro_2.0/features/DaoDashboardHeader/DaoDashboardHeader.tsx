@@ -111,14 +111,14 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
         showButton ||
         !isMobileOrTablet) && (
         <section className={styles.followSection}>
-          {!daoMembersList.includes(accountId) && (
-            <FollowButton daoId={id} daoName={displayName} />
-          )}
           {showButton && (
             <JoinDaoButton
               onClick={onCreateProposal}
               className={styles.joinDao}
             />
+          )}
+          {!daoMembersList.includes(accountId) && (
+            <FollowButton daoId={id} daoName={displayName} />
           )}
           {!isMobileOrTablet && (
             <div className={styles.link}>
