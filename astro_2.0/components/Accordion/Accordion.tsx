@@ -10,6 +10,7 @@ interface AccordionProps {
   isOpen?: boolean;
   className?: string;
   contentContainerClassName?: string;
+  headerClassName?: string;
 }
 
 export const Accordion: FC<AccordionProps> = props => {
@@ -19,6 +20,7 @@ export const Accordion: FC<AccordionProps> = props => {
     isOpen = false,
     className,
     contentContainerClassName,
+    headerClassName,
   } = props;
 
   const [open, setOpen] = useState(isOpen);
@@ -48,7 +50,7 @@ export const Accordion: FC<AccordionProps> = props => {
       <div
         tabIndex={0}
         role="button"
-        className={styles.header}
+        className={cn(styles.header, headerClassName)}
         onClick={toggleOpenState}
         onKeyPress={toggleOpenState}
         data-testid="accordion-header"

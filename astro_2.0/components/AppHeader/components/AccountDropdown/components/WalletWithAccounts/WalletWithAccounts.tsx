@@ -7,6 +7,7 @@ import React from 'react';
 import { WalletMeta } from 'services/sputnik/SputnikNearService/services/types';
 import { WalletAccount } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletAccount';
 import styles from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletWithAccounts/WalletWithAccounts.module.scss';
+import cn from 'classnames';
 
 interface WalletAccountsProps {
   wallet: WalletMeta;
@@ -35,10 +36,11 @@ export const WalletWithAccounts: React.FC<WalletAccountsProps> = ({
           name={wallet.name}
           type={wallet.type}
           url={wallet.url}
-          className={styles.toggle}
+          className={cn(styles.toggle, styles.notInteractive)}
         />
       }
       className={styles.root}
+      headerClassName={styles.header}
       contentContainerClassName={styles.content}
     >
       {accounts
