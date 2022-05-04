@@ -48,12 +48,12 @@ export const AppFooter: FC<AppFooterProps> = ({
       <div className={styles.side}>
         <div className={styles.wrapper}>
           <div className={styles.social}>
-            {renderSocialIcon('https://twitter.com/AstroDao', 'socialTwitter')}
-            {renderSocialIcon('https://t.me/astro_near', 'socialTelegram')}
             {renderSocialIcon(
               'https://discord.com/invite/KmMqF4KNBM',
               'socialDiscord'
             )}
+            {renderSocialIcon('https://twitter.com/AstroDao', 'socialTwitter')}
+            {renderSocialIcon('https://t.me/astro_near', 'socialTelegram')}
           </div>
           <a
             className={styles.devLink}

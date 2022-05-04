@@ -146,6 +146,20 @@ exports[`page layout Should render component 1`] = `
               class="social"
             >
               <a
+                href="https://discord.com/invite/KmMqF4KNBM"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <svg
+                  class="icon"
+                  width="24"
+                >
+                  <use
+                    href="/_next/undefined"
+                  />
+                </svg>
+              </a>
+              <a
                 href="https://twitter.com/AstroDao"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -161,20 +175,6 @@ exports[`page layout Should render component 1`] = `
               </a>
               <a
                 href="https://t.me/astro_near"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <svg
-                  class="icon"
-                  width="24"
-                >
-                  <use
-                    href="/_next/undefined"
-                  />
-                </svg>
-              </a>
-              <a
-                href="https://discord.com/invite/KmMqF4KNBM"
                 rel="noopener noreferrer"
                 target="_blank"
               >
