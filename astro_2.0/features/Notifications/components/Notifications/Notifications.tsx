@@ -79,6 +79,7 @@ export const Notifications: FC<NotificationsProps> = ({
                 {...item}
                 onUpdate={onUpdate}
                 onRemove={onRemove}
+                className={styles.notification}
               />
             </motion.div>
           ))}
