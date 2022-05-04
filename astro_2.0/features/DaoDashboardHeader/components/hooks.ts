@@ -23,7 +23,8 @@ export function useJoinDao(
     (async () => {
       if (
         !userPermissions.isCanCreateProposals ||
-        daoMembers.includes(accountId)
+        daoMembers.includes(accountId) ||
+        !accountId
       ) {
         return;
       }
