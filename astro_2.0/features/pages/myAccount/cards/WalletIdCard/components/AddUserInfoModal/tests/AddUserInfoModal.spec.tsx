@@ -41,7 +41,7 @@ describe('AddUserInfoModal', () => {
         onClose={() => 0}
         accountId={accountId}
         setConfig={() => 0}
-        getPublicKeyAndSignature={() => Promise.resolve({})}
+        pkAndSignature={null}
         {...props}
       />
     );
@@ -74,12 +74,7 @@ describe('AddUserInfoModal', () => {
 
     await new Promise(resolve => setTimeout(resolve, 0));
 
-    expect(sendContact).toBeCalledWith(
-      accountId,
-      email,
-      expect.anything(),
-      true
-    );
+    expect(sendContact).toBeCalledWith(accountId, email, null, true);
   });
 
   it('Should verify code', async () => {
@@ -108,11 +103,6 @@ describe('AddUserInfoModal', () => {
 
     await new Promise(resolve => setTimeout(resolve, 0));
 
-    expect(verifyContact).toBeCalledWith(
-      accountId,
-      code,
-      expect.anything(),
-      true
-    );
+    expect(verifyContact).toBeCalledWith(accountId, code, null, true);
   });
 });

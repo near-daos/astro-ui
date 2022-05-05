@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { MyAccountButton } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/MyAccount';
 import { WalletType } from 'types/config';
 import { DisconnectButton } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/DisconnectButton';
@@ -16,21 +16,11 @@ export const WalletsList: React.FC<WalletsListProps> = ({
 }) => {
   const {
     currentWallet,
-    getAvailableAccounts,
+    availableAccounts,
     availableWallets,
     switchAccount,
     switchWallet,
   } = useWalletContext();
-
-  const [availableAccounts, setAvailableAccounts] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (!getAvailableAccounts) {
-      return;
-    }
-
-    getAvailableAccounts().then(setAvailableAccounts);
-  }, [getAvailableAccounts]);
 
   const switchAccountHandler = useCallback(
     (account: string) => () => {

@@ -30,7 +30,7 @@ export const WalletIdCard: VFC<WalletIdCardProps> = props => {
     isPhoneVerified,
   } = contactsConfig;
 
-  const { accountId, getPublicKeyAndSignature } = useWalletContext();
+  const { accountId, pkAndSignature } = useWalletContext();
 
   const { t } = useTranslation('common');
 
@@ -43,10 +43,10 @@ export const WalletIdCard: VFC<WalletIdCardProps> = props => {
         isEmail,
         setConfig,
         accountId,
-        getPublicKeyAndSignature,
+        pkAndSignature,
       });
     },
-    [setConfig, showModal, accountId, getPublicKeyAndSignature]
+    [setConfig, showModal, accountId, pkAndSignature]
   );
 
   const openAddEmailModal = useCallback(() => {
