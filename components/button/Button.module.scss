@@ -147,16 +147,18 @@
 }
 
 @include non-touch-devices {
-  .primary:hover {
-    @include button-hover-state;
-  }
+  .btn:not([disabled]) {
+    &.primary:hover {
+      @include button-hover-state;
+    }
 
-  .secondary:hover {
-    @include button-hover-state(--color-approved-opacity-35);
-  }
+    &.secondary:not([disabled]):hover {
+      @include button-hover-state(--color-approved-opacity-35);
+    }
 
-  .black:hover {
-    @include button-hover-state;
+    &.black:not([disabled]):hover {
+      @include button-hover-state;
+    }
   }
 }
 
