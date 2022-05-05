@@ -32,6 +32,7 @@ import BN from 'bn.js';
 import { NearConfig } from 'config/near';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
 import { FunctionCallPermissionView } from 'near-api-js/lib/providers/provider';
+import { httpService } from 'services/HttpService';
 
 export class SputnikWalletService implements WalletService {
   private readonly near: Near;
@@ -132,6 +133,13 @@ export class SputnikWalletService implements WalletService {
       try {
         const result = await this.near.connection.provider.sendTransaction(
           signedTransaction
+        );
+
+        const transactionHashes = result.transaction.hash;
+        const signerId = result.transaction.signer_id;
+
+        await httpService.get(
+          `/transactions/wallet/callback/${signerId}?transactionHashes=${transactionHashes}&noRedirect=true`
         );
 
         return [result];

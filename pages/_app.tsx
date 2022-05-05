@@ -35,8 +35,8 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
   return (
     <>
       <AppMonitoring />
-      <ModalProvider>
-        <WrappedWalletContext>
+      <WrappedWalletContext>
+        <ModalProvider>
           <SocketProvider>
             <SearchResults>
               <Head>
@@ -50,8 +50,8 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
               <MobileNav />
             </SearchResults>
           </SocketProvider>
-        </WrappedWalletContext>
-      </ModalProvider>
+        </ModalProvider>
+      </WrappedWalletContext>
     </>
   );
 }

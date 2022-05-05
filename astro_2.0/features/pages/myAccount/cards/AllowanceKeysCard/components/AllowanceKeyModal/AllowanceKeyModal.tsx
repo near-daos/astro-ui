@@ -8,43 +8,47 @@ import { Input } from 'components/inputs/Input';
 import { Button } from 'components/button/Button';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 
-import styles from './VoteCreditModal.module.scss';
+import styles from 'astro_2.0/features/pages/myAccount/cards/AllowanceKeysCard/components/AllowanceKeyModal/AllowanceKeyModal.module.scss';
+import { useWalletContext } from 'context/WalletContext';
+import { useRouter } from 'next/router';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   daoName: string;
-  daoFunds: number;
 }
 
-export const VoteCreditModal: FC<Props> = ({
-  isOpen,
-  onClose,
-  daoName,
-  daoFunds,
-}) => {
+export const AllowanceKeyModal: FC<Props> = ({ isOpen, onClose, daoName }) => {
   const schema = yup.object().shape({
-    credit: yup
+    allowance: yup
       .number()
       .typeError('Must be a valid number.')
       .positive()
-      .max(daoFunds, 'Must not exceed dao funds')
+      .max(1)
       .required('Required'),
   });
 
-  const methods = useForm<{ credit: number }>({
+  const { nearService } = useWalletContext();
+  const router = useRouter();
+
+  const methods = useForm<{ allowance: number }>({
     mode: 'all',
     reValidateMode: 'onChange',
     defaultValues: {
-      credit: 0,
+      allowance: 0.1,
     },
     resolver: yupResolver(schema),
   });
 
   const { register, handleSubmit } = methods;
 
-  const submitHandler = () => {
-    // todo - update credit
+  const submitHandler = async (data: { allowance: number }) => {
+    const allowance = data.allowance.toString();
+
+    await nearService?.requestDaoAllowanceKey(daoName, allowance);
+
+    router.reload();
+
     return onClose();
   };
 
@@ -56,19 +60,19 @@ export const VoteCreditModal: FC<Props> = ({
           className={styles.root}
           onSubmit={handleSubmit(submitHandler)}
         >
-          <h2>Vote credit</h2>
+          <h2>Allowance amount</h2>
           <p className={styles.desc}>
-            Enter vote credit for <b>{daoName}</b> to vote without confirmation
-            on NEAR Wallet
+            Approve up to 1 NEAR allowance for <b>{daoName}</b> to vote without
+            confirmation on NEAR Wallet
           </p>
           <div className={styles.input}>
-            <InputWrapper fieldName="credit" label="Credit" fullWidth>
+            <InputWrapper fieldName="credit" label="Allowance amount" fullWidth>
               <div>
                 <Input
                   type="number"
                   min={0}
                   step={0.1}
-                  {...register('credit')}
+                  {...register('allowance')}
                   size="medium"
                 />
                 <span className={styles.suffix}>NEAR</span>

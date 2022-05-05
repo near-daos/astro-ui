@@ -104,8 +104,7 @@ export class SenderWalletService implements WalletService {
         `/transactions/wallet/callback/${signerId}?transactionHashes=${transactionHashes}&noRedirect=true`
       );
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log(e);
+      console.error(e);
     }
 
     return result.response;
