@@ -104,7 +104,13 @@ exports[`App Footer Should render AppFooter component 1`] = `
             rel="noreferrer noopener"
             target="_blank"
           >
-            Swagger API
+            components.appFooter.swaggerApi
+          </a>
+          <a
+            class="devLink"
+            href="/discover"
+          >
+            components.appFooter.stats
           </a>
         </div>
         <div
