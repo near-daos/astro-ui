@@ -17,8 +17,10 @@ interface AddMemberToGroupContentProps {
 export const AddMemberToGroupContent: FC<AddMemberToGroupContentProps> = ({
   groups,
 }) => {
-  const { register, setValue } = useFormContext();
+  const { register, setValue, watch } = useFormContext();
   const { t } = useTranslation();
+
+  const currentValue = watch('memberName');
 
   const onChange = useCallback(
     v => {
@@ -53,6 +55,7 @@ export const AddMemberToGroupContent: FC<AddMemberToGroupContentProps> = ({
           flex
         >
           <DebouncedInput
+            defaultValue={currentValue}
             className={cn(styles.inputWrapper, styles.wide)}
             placeholder="someverylonglongname.near"
             isBorderless

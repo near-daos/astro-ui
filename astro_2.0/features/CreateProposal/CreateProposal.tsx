@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 import last from 'lodash/last';
+import omit from 'lodash/omit';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
@@ -238,6 +239,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             await router.push({
               pathname: SINGLE_PROPOSAL_PAGE_URL,
               query: {
+                ...omit(router.query, ['action', 'variant', 'params']),
                 dao: dao.id,
                 proposal: `${dao.id}-${newProposalId}`,
                 fromCreate: true,
