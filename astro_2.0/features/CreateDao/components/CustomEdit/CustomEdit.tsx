@@ -41,7 +41,7 @@ const CustomEdit: FC<CustomEditProps> = ({ className }) => {
       const mappedArgs = jsonToBase64Str(result);
 
       if (result?.config?.name) {
-        await createDao(result.config.name, null, {
+        await createDao(result.config.name, {
           args: mappedArgs,
           amountToTransfer: newDaoParams.amountToTransfer,
           gas: newDaoParams.gas,

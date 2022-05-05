@@ -26,6 +26,11 @@ declare global {
     };
     near: SenderWalletInstance;
     APP_CONFIG: Config;
+    gtag: (
+      type: 'event',
+      name: string,
+      params: Record<string, string | number | string[]>
+    ) => void;
   }
 }
 

@@ -28,6 +28,8 @@ import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomToken
 import { getInitialProposalVariant } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 import { UserPermissions } from 'types/context';
 
+import { GA_EVENTS, sendGAEvent } from 'utils/ga';
+
 import { getFormInitialValues } from 'astro_2.0/features/CreateProposal/helpers/initialValues';
 import { getNewProposalObject } from 'astro_2.0/features/CreateProposal/helpers/newProposalObject';
 import {
@@ -217,6 +219,16 @@ export const CreateProposal: FC<CreateProposalProps> = ({
 
             return;
           }
+
+          sendGAEvent({
+            name: GA_EVENTS.CREATE_PROPOSAL,
+            daoId: dao.id,
+            accountId,
+            params: {
+              variant: selectedProposalVariant,
+              proposalId: newProposalId,
+            },
+          });
 
           if (onCreate) {
             onCreate(newProposalId);

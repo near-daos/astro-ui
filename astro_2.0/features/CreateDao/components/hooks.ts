@@ -30,6 +30,7 @@ import {
 } from 'astro_2.0/features/CreateDao/components/helpers';
 import { useStateMachine } from 'little-state-machine';
 import { useWalletContext } from 'context/WalletContext';
+import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 
 type DaoFormStateReturn = {
   options: DaoSettingOption<
@@ -89,8 +90,7 @@ export function useCreateDao(): {
   uploadAssets: (defaultFlag: string) => Promise<string>;
   createDao: (
     daoName: string,
-    data: CreateDaoInput | null,
-    args?: CreateDaoCustomInput
+    data: CreateDaoInput | CreateDaoCustomInput
   ) => Promise<void>;
 } {
   const router = useRouter();
@@ -131,17 +131,18 @@ export function useCreateDao(): {
   );
 
   const createDao = useCallback(
-    async (
-      daoName: string,
-      data: CreateDaoInput | null,
-      args?: CreateDaoCustomInput
-    ) => {
+    async (daoName: string, data: CreateDaoInput | CreateDaoCustomInput) => {
       try {
-        if (data) {
-          await nearService?.createDao(data);
-        } else if (args) {
-          await nearService?.createDao(args);
-        }
+        await nearService?.createDao(data);
+
+        const { nearConfig } = configService.get();
+        const daoId = `${daoName}.${nearConfig?.contractName ?? ''}`;
+
+        sendGAEvent({
+          name: GA_EVENTS.CREATE_DAO,
+          daoId,
+          accountId,
+        });
 
         showNotification({
           type: NOTIFICATION_TYPES.INFO,
@@ -154,9 +155,7 @@ export function useCreateDao(): {
           getInitialValues(accountId, state.assets.defaultFlag)
         );
 
-        const { nearConfig } = configService.get();
-
-        await router.push(`/dao/${daoName}.${nearConfig?.contractName ?? ''}`);
+        await router.push(`/dao/${daoId}`);
       } catch (error) {
         console.warn(error);
 

@@ -31,6 +31,7 @@ import { AmountBalanceCard } from 'astro_2.0/features/pages/nestedDaoPagesConten
 
 import { Button } from 'components/button/Button';
 
+import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
 import { DEFAULT_VOTE_GAS } from 'services/sputnik/constants';
 import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
@@ -186,6 +187,17 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     async (vote: VoteAction, gas?: string | number) => {
       try {
         await nearService?.vote(daoId, proposalId, vote, gas);
+
+        sendGAEvent({
+          name: GA_EVENTS.ACT_PROPOSAL,
+          daoId,
+          accountId,
+          params: {
+            voteAction: vote,
+            proposalId,
+          },
+        });
+
         await router.reload();
       } catch (e) {
         // todo - handle errors
