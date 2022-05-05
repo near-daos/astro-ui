@@ -4,7 +4,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import React, { VFC, useState, useCallback } from 'react';
 import { useForm, FormProvider, FieldError } from 'react-hook-form';
 
-import { PkAndSignature } from 'context/WalletContext';
 import { UserContacts } from 'services/NotificationsService/types';
 
 import { NotificationsService } from 'services/NotificationsService';
@@ -14,6 +13,7 @@ import { Input } from 'components/inputs/Input';
 import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 import { UsaOnly } from 'astro_2.0/features/pages/myAccount/cards/WalletIdCard/components/UsaOnly';
 
+import { PkAndSignature } from 'context/WalletContextHooks';
 import { ContactForm } from './types';
 
 import { useValidationSchema } from './useValidationSchema';
@@ -30,7 +30,7 @@ export interface AddUserInfoModalProps {
   isEmail: boolean;
   accountId: string;
   setConfig: (config: UserContacts) => void;
-  getPublicKeyAndSignature: () => Promise<PkAndSignature | null>;
+  pkAndSignature: PkAndSignature | null;
 }
 
 const ONE_MINUTE_IN_MS = 60000;
@@ -43,7 +43,7 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
     isEmail,
     setConfig,
     accountId,
-    getPublicKeyAndSignature,
+    pkAndSignature,
   } = props;
 
   const tBase = 'myAccountPage.popup';
@@ -73,11 +73,11 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
       NotificationsService.sendContact(
         accountId,
         contact,
-        getPublicKeyAndSignature,
+        pkAndSignature,
         isEmail
       );
     },
-    [start, accountId, isEmail, getPublicKeyAndSignature]
+    [start, accountId, isEmail, pkAndSignature]
   );
 
   const verifyContact = useCallback(
@@ -87,7 +87,7 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
       const successful = await NotificationsService.verifyContact(
         accountId,
         code,
-        getPublicKeyAndSignature,
+        pkAndSignature,
         isEmail
       );
 
@@ -103,7 +103,7 @@ export const AddUserInfoModal: VFC<AddUserInfoModalProps> = props => {
         setCodeValid(false);
       }
     },
-    [onClose, isEmail, setConfig, accountId, getPublicKeyAndSignature]
+    [onClose, isEmail, setConfig, accountId, pkAndSignature]
   );
 
   return (
