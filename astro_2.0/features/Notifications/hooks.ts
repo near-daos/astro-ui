@@ -35,7 +35,7 @@ type UpdateSettingsConfig = {
 export function useNotificationsSettings(): {
   updateSettings: (config: UpdateSettingsConfig) => void;
 } {
-  const { accountId, getPublicKeyAndSignature } = useWalletContext();
+  const { accountId, pkAndSignature } = useWalletContext();
 
   async function getPrevConfig(
     accId: string,
@@ -65,13 +65,11 @@ export function useNotificationsSettings(): {
   const updateSettings = useCallback(
     async (config: UpdateSettingsConfig) => {
       try {
-        const result = await getPublicKeyAndSignature();
-
-        if (!result) {
+        if (!pkAndSignature) {
           return;
         }
 
-        const { publicKey, signature } = result;
+        const { publicKey, signature } = pkAndSignature;
         const prevConfig = await getPrevConfig(accountId, config.daoId);
 
         if (publicKey && signature) {
@@ -97,7 +95,7 @@ export function useNotificationsSettings(): {
         });
       }
     },
-    [accountId, getPublicKeyAndSignature]
+    [accountId, pkAndSignature]
   );
 
   return {

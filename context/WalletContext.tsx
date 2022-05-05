@@ -12,7 +12,6 @@ import {
   useState,
 } from 'react';
 import { useBoolean, useLocalStorage } from 'react-use';
-import { useAvailableWallets } from 'hooks/useAvailableWallets';
 
 import { configService } from 'services/ConfigService';
 import { CookieService } from 'services/CookieService';
@@ -20,6 +19,12 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikNearService } from 'services/sputnik';
 import { useRouter } from 'next/router';
 import { ConnectingWalletModal } from 'astro_2.0/features/Auth/components/ConnectingWalletModal';
+import {
+  PkAndSignature,
+  useAvailableAccounts,
+  useWallet,
+  usePkAndSignature,
+} from 'context/WalletContextHooks';
 
 export interface WalletContext {
   availableWallets: WalletMeta[];
@@ -30,28 +35,23 @@ export interface WalletContext {
   logout: () => Promise<void>;
   switchAccount: (walletType: WalletType, accountId: string) => void;
   switchWallet: (walletType: WalletType) => void;
-  getAvailableAccounts: () => Promise<string[]>;
-  getPublicKeyAndSignature: () => Promise<PkAndSignature | null>;
+  availableAccounts: string[];
+  pkAndSignature: PkAndSignature | null;
   // todo get rid of
   nearService: SputnikNearService | null;
 }
 
-export type PkAndSignature =
-  | { publicKey: string | null; signature: string | null }
-  | Record<string, never>;
-
 const WalletContext = createContext<WalletContext>({} as WalletContext);
 
 export const WrappedWalletContext: FC = ({ children }) => {
-  const availableWallets = useAvailableWallets();
+  const [currentWallet, availableWallets, getWallet, setWallet] = useWallet();
+  const availableAccounts = useAvailableAccounts();
+  const pkAndSignature = usePkAndSignature();
   const [walletContext, setWalletContext] = useState<WalletContext>(
     {} as WalletContext
   );
-  const [
-    persistedWallet,
-    setPersistedWallet,
-    removePersistedWallet,
-  ] = useLocalStorage('selectedWallet');
+
+  const [, , removePersistedWallet] = useLocalStorage('selectedWallet');
 
   const [connectingToWallet, toggleConnection] = useBoolean(false);
 
@@ -65,75 +65,37 @@ export const WrappedWalletContext: FC = ({ children }) => {
         await wallet.signIn(contractName);
       }
 
-      CookieService.set(ACCOUNT_COOKIE, wallet.getAccountId(), {
-        path: '/',
-      });
+      setWallet(wallet);
 
       toggleConnection(false);
-
-      setPersistedWallet(wallet.getWalletType());
     },
-    [setPersistedWallet, toggleConnection]
+    [setWallet, toggleConnection]
   );
 
   useEffect(() => {
-    const currentWallet = availableWallets.find(
-      wallet => wallet.getWalletType() === persistedWallet
-    );
-
     const { nearConfig } = configService.get();
-
-    if (currentWallet) {
-      CookieService.set(ACCOUNT_COOKIE, currentWallet.getAccountId(), {
-        path: '/',
-      });
-    } else {
-      CookieService.remove(ACCOUNT_COOKIE);
-    }
 
     const selectedWalletContext: WalletContext = {
       nearService: currentWallet ? new SputnikNearService(currentWallet) : null,
-      availableWallets: availableWallets.map(wallet => wallet.walletMeta()),
+      availableWallets,
       accountId: currentWallet?.getAccountId() ?? '',
       currentWallet: currentWallet?.getWalletType() ?? null,
       connectingToWallet,
-      getAvailableAccounts: async () => {
-        if (!currentWallet) {
-          return [];
-        }
-
-        return currentWallet.getAvailableAccounts();
-      },
-      async getPublicKeyAndSignature(): Promise<PkAndSignature | null> {
-        if (!currentWallet) {
-          return null;
-        }
-
-        const [publicKey, signature] = await Promise.all([
-          currentWallet.getPublicKey(),
-          currentWallet.getSignature(),
-        ]);
-
-        return {
-          publicKey,
-          signature,
-        };
-      },
+      availableAccounts,
+      pkAndSignature,
       async login(walletType: WalletType) {
-        const selectedWallet = availableWallets.find(
-          wallet => wallet.getWalletType() === walletType
-        );
+        const wallet = getWallet(walletType);
 
-        if (!selectedWallet) {
+        if (!wallet) {
           return;
         }
 
-        signIn(selectedWallet, nearConfig.contractName);
+        signIn(wallet, nearConfig.contractName);
       },
       async logout(): Promise<void> {
         CookieService.remove(ACCOUNT_COOKIE);
         removePersistedWallet();
-        availableWallets.forEach(wallet => wallet.logout());
+        availableWallets.forEach(wallet => getWallet(wallet.id)?.logout());
       },
       async switchAccount(
         walletType: WalletType,
@@ -144,9 +106,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
           return;
         }
 
-        const nearWallet = availableWallets.find(
-          wallet => wallet.getWalletType() === WalletType.NEAR
-        );
+        const nearWallet = getWallet(WalletType.NEAR);
 
         if (!nearWallet) {
           return;
@@ -179,9 +139,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
         router.reload();
       },
       async switchWallet(walletType: WalletType): Promise<void> {
-        const selectedWallet = availableWallets.find(
-          wallet => wallet.getWalletType() === walletType
-        );
+        const selectedWallet = getWallet(walletType);
 
         if (!selectedWallet) {
           return;
@@ -200,11 +158,13 @@ export const WrappedWalletContext: FC = ({ children }) => {
     availableWallets,
     connectingToWallet,
     signIn,
-    persistedWallet,
     router,
-    setPersistedWallet,
     walletContext.accountId,
     removePersistedWallet,
+    availableAccounts,
+    pkAndSignature,
+    currentWallet,
+    getWallet,
   ]);
 
   return (

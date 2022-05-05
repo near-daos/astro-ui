@@ -18,7 +18,7 @@ import {
 } from 'services/NotificationsService/types';
 
 import { logger } from 'utils/logger';
-import { PkAndSignature } from 'context/WalletContext';
+import { PkAndSignature } from 'context/WalletContextHooks';
 
 class NotificationsServiceClass {
   private readonly httpService = httpService;
@@ -44,16 +44,14 @@ class NotificationsServiceClass {
   public async sendContact(
     accountId: string,
     contact: string,
-    getPublicKeyAndSignature: () => Promise<PkAndSignature | null>,
+    pkAndSignature: PkAndSignature | null,
     isEmail: boolean
   ): Promise<boolean> {
-    const result = await getPublicKeyAndSignature();
-
-    if (!result) {
+    if (!pkAndSignature) {
       return false;
     }
 
-    const { publicKey, signature } = result;
+    const { publicKey, signature } = pkAndSignature;
 
     try {
       const urlPart = isEmail ? 'email' : 'phone';
@@ -82,16 +80,14 @@ class NotificationsServiceClass {
   public async verifyContact(
     accountId: string,
     code: string,
-    getPublicKeyAndSignature: () => Promise<PkAndSignature | null>,
+    pkAndSignature: PkAndSignature | null,
     isEmail: boolean
   ) {
-    const result = await getPublicKeyAndSignature();
-
-    if (!result) {
+    if (!pkAndSignature) {
       return false;
     }
 
-    const { publicKey, signature } = result;
+    const { publicKey, signature } = pkAndSignature;
 
     try {
       const urlPart = isEmail ? 'email' : 'phone';
