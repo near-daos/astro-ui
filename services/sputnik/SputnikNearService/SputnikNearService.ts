@@ -29,6 +29,8 @@ import { configService } from 'services/ConfigService';
 import { CreateDaoParams } from 'services/sputnik/types';
 import { PublicKey } from 'near-api-js/lib/utils';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
+import { FunctionCallPermissionView } from 'near-api-js/lib/providers/provider';
+import { AllowanceKey } from 'services/sputnik/SputnikNearService/types';
 
 export const GAS_VALUE = new BN('300000000000000');
 export const FINALIZE_PROPOSAL_GAS_VALUE = new BN('150000000000000');
@@ -292,7 +294,40 @@ export class SputnikNearService implements DaoService {
     });
   }
 
-  public async requestDaoAccessKey(
+  public async getAllowanceKeys(): Promise<AllowanceKey[]> {
+    const accessKeys = await this.getAccount().getAccessKeys();
+
+    const permissionPredicate = (permission: FunctionCallPermissionView) => {
+      return (
+        permission.FunctionCall.receiver_id.endsWith('sputnikv2.testnet') &&
+        permission.FunctionCall.allowance !== null &&
+        permission.FunctionCall.method_names.includes('act_proposal')
+      );
+    };
+
+    return accessKeys.reduce<AllowanceKey[]>((acc, accessKey) => {
+      if (accessKey.access_key.permission === 'FullAccess') {
+        return acc;
+      }
+
+      const permission = accessKey.access_key
+        .permission as FunctionCallPermissionView;
+
+      if (!permissionPredicate(permission)) {
+        return acc;
+      }
+
+      acc.push({
+        allowance: permission.FunctionCall.allowance,
+        daoId: permission.FunctionCall.receiver_id,
+        methodNames: permission.FunctionCall.method_names,
+      });
+
+      return acc;
+    }, []);
+  }
+
+  public async requestDaoAllowanceKey(
     daoId: string,
     allowance: string
   ): Promise<FinalExecutionOutcome[]> {

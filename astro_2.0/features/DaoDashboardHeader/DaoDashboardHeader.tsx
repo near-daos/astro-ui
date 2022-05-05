@@ -23,8 +23,6 @@ import { DaoWarning } from 'astro_2.0/components/DaoWarning';
 
 import { useJoinDao } from 'astro_2.0/features/DaoDashboardHeader/components/hooks';
 import { useCheckDaoUpgrade } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/hooks';
-import { DaoFeatureInfo } from 'astro_2.0/features/DaoFeatureInfo';
-import { VoteCreditDeposit } from 'astro_2.0/features/DaoDashboardHeader/components/VoteCreditDeposit';
 
 import { DAO_VERSION_PAGE_URL } from 'constants/routing';
 
@@ -142,13 +140,13 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
         <section className={styles.descriptionSection}>{description}</section>
       )}
 
-      <DaoFeatureInfo
-        dao={dao}
-        title="Vote Seamlessly"
-        description="To vote without confirmation on NEAR Wallet use deposit amount on your Account"
-        featureKey="voteCredit"
-        control={onClose => <VoteCreditDeposit dao={dao} onClose={onClose} />}
-      />
+      {/* <DaoFeatureInfo */}
+      {/*  dao={dao} */}
+      {/*  title="Vote Seamlessly" */}
+      {/*  description="To vote without confirmation on NEAR Wallet use deposit amount on your Account" */}
+      {/*  featureKey="voteCredit" */}
+      {/*  control={onClose => <AllowanceKey dao={dao} onClose={onClose} />} */}
+      {/* /> */}
 
       {showWarning && (
         <DaoWarning

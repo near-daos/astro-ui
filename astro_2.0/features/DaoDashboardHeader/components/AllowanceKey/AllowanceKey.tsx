@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { Button } from 'components/button/Button';
 import { useModal } from 'components/modal';
-import { VoteCreditModal } from 'astro_2.0/features/pages/myAccount/cards/VoteCreditCard/components/VoteCreditModal';
+import { AllowanceKeyModal } from 'astro_2.0/features/pages/myAccount/cards/AllowanceKeysCard/components/AllowanceKeyModal';
 import { DAO } from 'types/dao';
 
 interface Props {
@@ -9,19 +9,18 @@ interface Props {
   onClose: () => void;
 }
 
-export const VoteCreditDeposit: FC<Props> = ({ dao, onClose }) => {
-  const [showModal] = useModal(VoteCreditModal);
+export const AllowanceKey: FC<Props> = ({ dao, onClose }) => {
+  const [showModal] = useModal(AllowanceKeyModal);
 
   const handleClick = useCallback(async () => {
     const res = await showModal({
       daoName: dao.name || dao.id,
-      daoFunds: dao.totalDaoFunds,
     });
 
     if (res.length) {
       onClose();
     }
-  }, [dao.id, dao.name, dao.totalDaoFunds, onClose, showModal]);
+  }, [dao.id, dao.name, onClose, showModal]);
 
   return <Button onClick={handleClick}>Deposit</Button>;
 };
