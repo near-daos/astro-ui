@@ -54,7 +54,7 @@ export const SideFilter = ({
 
     const transformVal =
       index === -1
-        ? -100
+        ? 0
         : index * HUNDRED_PERCENT + (hideAllOption ? 0 : HUNDRED_PERCENT);
 
     return {

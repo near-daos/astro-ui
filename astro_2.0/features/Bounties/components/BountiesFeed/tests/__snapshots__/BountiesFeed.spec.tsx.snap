@@ -47,7 +47,7 @@ exports[`BountiesFeed Should render component 1`] = `
         </p>
         <ul
           class="categoriesList"
-          style="--filter-active-transform: -100%;"
+          style="--filter-active-transform: 0%;"
         >
           <li
             class="categoriesListItemWrapper"
