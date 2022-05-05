@@ -7,7 +7,6 @@ import {
   ALL_DAOS_URL,
   ALL_FEED_URL,
   CREATE_DAO_URL,
-  DISCOVER,
   MY_DAOS_URL,
   MY_FEED_URL,
 } from 'constants/routing';
@@ -79,13 +78,6 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
           className={styles.item}
           myDaosIds={myDaosIds}
           href={ALL_DAOS_URL}
-        />
-        <NavItem
-          label={t('discover.title')}
-          icon="discover"
-          className={styles.item}
-          myDaosIds={myDaosIds}
-          href={DISCOVER}
         />
         <NavItem
           label={t('globalFeed')}

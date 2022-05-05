@@ -68,26 +68,6 @@ exports[`page layout Should render component 1`] = `
             </a>
             <a
               class="nav item"
-              href="/discover"
-            >
-              <svg
-                class="icon"
-                height="24"
-              >
-                <use
-                  href="/_next/undefined"
-                />
-              </svg>
-              <span
-                class="label"
-              >
-                 
-                discover.title
-                 
-              </span>
-            </a>
-            <a
-              class="nav item"
               href="/all/feed"
             >
               <svg
@@ -233,7 +213,13 @@ exports[`page layout Should render component 1`] = `
                 rel="noreferrer noopener"
                 target="_blank"
               >
-                Swagger API
+                components.appFooter.swaggerApi
+              </a>
+              <a
+                class="devLink"
+                href="/discover"
+              >
+                components.appFooter.stats
               </a>
             </div>
             <div

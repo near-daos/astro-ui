@@ -2,6 +2,9 @@ import cn from 'classnames';
 import Link from 'next/link';
 import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
+
+import { DISCOVER } from 'constants/routing';
+
 import { Icon, IconName } from 'components/Icon';
 import { LocaleSelector } from 'astro_2.0/components/LocaleSelector';
 
@@ -96,8 +99,13 @@ export const AppFooter: FC<AppFooterProps> = ({
               target="_blank"
               rel="noreferrer noopener"
             >
-              Swagger API
+              {t('components.appFooter.swaggerApi')}
             </a>
+            <Link passHref href={DISCOVER}>
+              <a href="*" className={styles.devLink}>
+                {t('components.appFooter.stats')}
+              </a>
+            </Link>
           </div>
           <div className={styles.copyright}>
             {t('components.appFooter.opensourceAsIs')}
