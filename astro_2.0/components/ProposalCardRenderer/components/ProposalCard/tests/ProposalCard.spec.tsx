@@ -98,18 +98,6 @@ describe('Proposal Card', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('Should render progress bar when vote details provided', () => {
-    const label = 'I am vote details';
-    const { getAllByText } = renderProposalCard({
-      voteDetails: {
-        limit: '3',
-        label,
-      },
-    });
-
-    expect(getAllByText(label)).toHaveLength(1);
-  });
-
   it('Should render "Finalize" button', () => {
     const { getAllByText } = renderProposalCard({
       voteStatus: 'Expired',

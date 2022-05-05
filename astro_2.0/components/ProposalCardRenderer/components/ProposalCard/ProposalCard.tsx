@@ -18,7 +18,6 @@ import {
   ProposalVariant,
   VoteAction,
 } from 'types/proposal';
-import { ProgressBar } from 'components/VoteDetails/components/progress-bar/ProgressBar';
 import { VoteDetail } from 'features/types';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { ProposalActions } from 'features/proposal/components/ProposalActions';
@@ -171,7 +170,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   disliked,
   dismissed,
   voteRemove,
-  voteDetails,
   content,
   daoId,
   permissions,
@@ -455,9 +453,6 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         </FormProvider>
       </div>
 
-      <div className={styles.voteProgress}>
-        {voteDetails && <ProgressBar detail={voteDetails} />}
-      </div>
       <div className={styles.actionBar}>
         <ProposalActions
           onRemove={e => {

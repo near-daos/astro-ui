@@ -200,9 +200,6 @@ exports[`Proposal Card Should render component 1`] = `
       </form>
     </div>
     <div
-      class="voteProgress"
-    />
-    <div
       class="actionBar"
     >
       <div

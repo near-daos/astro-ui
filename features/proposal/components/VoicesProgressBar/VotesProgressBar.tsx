@@ -17,7 +17,7 @@ const calculateWidth = (allVoices: number, countVoices: number) => {
     return 0;
   }
 
-  return (allVoices / countVoices) * ONE_HUNDRED;
+  return (countVoices / allVoices) * ONE_HUNDRED;
 };
 
 export const VotesProgressBar: FC<VotesProgressBarProps> = ({

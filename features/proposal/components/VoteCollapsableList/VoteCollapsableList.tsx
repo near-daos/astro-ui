@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { VoterDetail } from 'features/types';
-import groupBy from 'lodash/groupBy';
 import isEmpty from 'lodash/isEmpty';
+import { useTranslation } from 'next-i18next';
 
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Collapsable } from 'components/collapsable/Collapsable';
@@ -14,10 +14,37 @@ interface VoteCollapsableListProps {
   data: VoterDetail[];
 }
 
+interface VoteGroups {
+  [key: string]: VoterDetail[];
+}
+
 export const VoteCollapsableList: FC<VoteCollapsableListProps> = ({ data }) => {
-  const votesGroups: { [key: string]: VoterDetail[] } = useMemo(
-    () => groupBy(data, 'groups'),
-    [data]
+  const { t } = useTranslation();
+  const noGroupTranslate = t('proposalVotes.noGroup');
+
+  const votesGroups = useMemo(
+    () =>
+      data.reduce<VoteGroups>(
+        (res, item) => {
+          const { groups } = item;
+
+          if (!groups?.length) {
+            res[noGroupTranslate].push(item);
+          }
+
+          groups?.forEach(group => {
+            if (res[group]) {
+              res[group].push(item);
+            } else {
+              res[group] = [item];
+            }
+          });
+
+          return res;
+        },
+        { [noGroupTranslate]: [] }
+      ),
+    [data, noGroupTranslate]
   );
 
   if (isEmpty(data)) {
@@ -26,22 +53,30 @@ export const VoteCollapsableList: FC<VoteCollapsableListProps> = ({ data }) => {
 
   return (
     <ul className={styles.voteCollapsableList}>
-      {Object.keys(votesGroups).map(votesGroupsKey => (
-        <li key={votesGroupsKey} className={styles.voteCollapsableItem}>
-          <Collapsable
-            renderHeading={(setToggle, state) => (
-              <VoteCollapsableHeader
-                setToggle={setToggle}
-                state={state}
-                votes={votesGroups[votesGroupsKey]}
-                groupName={votesGroupsKey}
-              />
-            )}
-          >
-            <VotersList data={votesGroups[votesGroupsKey]} />
-          </Collapsable>
-        </li>
-      ))}
+      {Object.keys(votesGroups).map(votesGroupsKey => {
+        const list = votesGroups[votesGroupsKey];
+
+        if (!list.length) {
+          return null;
+        }
+
+        return (
+          <li key={votesGroupsKey} className={styles.voteCollapsableItem}>
+            <Collapsable
+              renderHeading={(setToggle, state) => (
+                <VoteCollapsableHeader
+                  setToggle={setToggle}
+                  state={state}
+                  votes={list}
+                  groupName={votesGroupsKey}
+                />
+              )}
+            >
+              <VotersList data={list} />
+            </Collapsable>
+          </li>
+        );
+      })}
     </ul>
   );
 };
