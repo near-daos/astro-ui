@@ -35,6 +35,7 @@ import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
 import { DEFAULT_VOTE_GAS } from 'services/sputnik/constants';
 import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCountdown } from 'hooks/useCountdown';
+import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { ProposalControlPanel } from './components/ProposalControlPanel';
 
 // import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
@@ -374,6 +375,12 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       })}
       onClick={handleCardClick}
     >
+      {voteLoading && (
+        <div className={styles.signingTransactionState}>
+          <LoadingIndicator />
+          Signing transaction
+        </div>
+      )}
       {sealIcon && !showFinalize && (
         <div className={styles.proposalStatusSeal}>
           <Icon name={sealIcon as IconName} />

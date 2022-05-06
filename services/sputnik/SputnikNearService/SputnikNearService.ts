@@ -472,9 +472,10 @@ export class SputnikNearService implements DaoService {
       }
     }
 
-    const trx = tokenContract
-      ? [storageDepositTransactionAction, transferTransaction]
-      : [transferTransaction];
+    const trx =
+      tokenContract && !tokenContract.startsWith('usdn')
+        ? [storageDepositTransactionAction, transferTransaction]
+        : [transferTransaction];
 
     return this.walletService.sendTransactions(trx);
   }
