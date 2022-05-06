@@ -1,3 +1,5 @@
+// TODO requires localisation
+
 import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
@@ -6,7 +8,7 @@ import { useSwipeable } from 'react-swipeable';
 import { useTranslation } from 'next-i18next';
 
 import { FlagRenderer } from 'astro_2.0/components/Flag';
-import { ActionButton } from 'astro_2.0/components/ActionButton';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import {
@@ -104,35 +106,44 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   function renderControls() {
     return (
       <>
-        <div className={styles.markRead}>
-          <Button
-            data-testid="mark-read"
-            variant="transparent"
-            size="block"
-            onClick={e => handleMarkReadClick(e)}
-            className={cn(styles.markReadButton, { [styles.read]: isRead })}
-          >
-            <Icon
-              name={isRead ? 'noteCheckDouble' : 'noteCheck'}
-              width={24}
-              className={styles.markReadIcon}
-            />
-            <div className={styles.markReadTitle}>Mark read</div>
-          </Button>
-        </div>
+        <Tooltip overlay={isRead ? 'Mark as unread' : 'Mark as read'}>
+          <div className={styles.markRead}>
+            <Button
+              data-testid="mark-read"
+              variant="transparent"
+              size="block"
+              onClick={e => handleMarkReadClick(e)}
+              className={cn(styles.markReadButton, { [styles.read]: isRead })}
+            >
+              <Icon
+                name={isRead ? 'noteCheckDouble' : 'noteCheck'}
+                width={24}
+                className={styles.markReadIcon}
+              />
+            </Button>
+          </div>
+        </Tooltip>
         {!regular && (
-          <ActionButton
-            testId="delete-action-button"
-            className={styles.deleteButton}
-            size="medium"
-            iconName={isArchived ? 'noteRestore' : 'noteArchive'}
-            tooltip={isArchived ? 'Restore' : 'Archive'}
-            onClick={e => {
-              e.stopPropagation();
-              handleDeleteClick(!isArchived);
-            }}
-            iconClassName={styles.deleteIcon}
-          />
+          <div className={styles.markRead}>
+            <Tooltip overlay={isArchived ? 'Restore' : 'Archive'}>
+              <Button
+                data-testid="delete-action-button"
+                variant="transparent"
+                size="block"
+                onClick={e => {
+                  e.stopPropagation();
+                  handleDeleteClick(!isArchived);
+                }}
+                className={styles.deleteButton}
+              >
+                <Icon
+                  name={isArchived ? 'noteRestore' : 'noteArchive'}
+                  width={24}
+                  className={styles.deleteIcon}
+                />
+              </Button>
+            </Tooltip>
+          </div>
         )}
       </>
     );
