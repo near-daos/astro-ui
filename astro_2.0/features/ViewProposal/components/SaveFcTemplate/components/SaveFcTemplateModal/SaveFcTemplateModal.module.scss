@@ -1,0 +1,63 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.modalRoot {
+  overflow: visible;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.desc {
+  @extend %subtitle4;
+  margin: 0 0 24px;
+}
+
+.inputWrapper {
+  align-items: center;
+  display: flex;
+  margin-bottom: 24px;
+
+  .suffix {
+    margin-left: 12px;
+  }
+}
+
+.input.input {
+  height: unset;
+  padding: 6.5px 6px;
+
+  @include placeholder {
+    @extend %body2;
+  }
+}
+
+.listItem {
+  @extend %caption1;
+}
+
+.selectedItem.selectedItem {
+  @extend %body2;
+  display: flex;
+  justify-content: flex-start;
+  margin-right: 8px;
+  max-width: 140px;
+  overflow: hidden;
+}
+
+.menuClassName {
+  width: 100%;
+}
+
+.ellipsed {
+  @include ellipse-text;
+}
+
+.footer {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 24px 0 12px;
+}

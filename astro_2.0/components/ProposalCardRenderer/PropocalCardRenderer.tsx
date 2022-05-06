@@ -15,6 +15,7 @@ export interface ProposalCardRendererProps {
   infoPanelNode?: React.ReactNode;
   className?: string;
   showInfo?: boolean;
+  optionalActionNode?: React.ReactNode;
 }
 
 export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
@@ -25,6 +26,7 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
   className,
   proposalId,
   showInfo,
+  optionalActionNode,
 }) => {
   const { t } = useTranslation();
 
@@ -60,9 +62,10 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
   return (
     <div className={cn(styles.root, className)}>
       <div className={styles.header}>
-        <div>{renderFlag()}</div>
+        <div className={styles.flagWrapper}>{renderFlag()}</div>
         {renderInfoPanel()}
         {renderProposalId()}
+        {optionalActionNode}
       </div>
       {letterHeadNode && (
         <div className={styles.letterHead}>{letterHeadNode}</div>

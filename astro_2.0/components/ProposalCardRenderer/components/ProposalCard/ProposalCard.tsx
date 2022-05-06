@@ -68,6 +68,7 @@ export interface ProposalCardProps {
   updatedAt?: string | null;
   toggleInfoPanel?: () => void;
   commentsCount: number;
+  hasOptionalControl?: boolean;
   permissions: {
     canApprove: boolean;
     canReject: boolean;
@@ -176,6 +177,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   updatedAt,
   toggleInfoPanel,
   commentsCount,
+  hasOptionalControl,
 }) => {
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
@@ -371,6 +373,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       data-testid="proposal-card-root"
       className={cn(styles.root, {
         [styles.clickable]: !!id && !preventNavigate,
+        [styles.withOptionalControl]: hasOptionalControl,
       })}
       onClick={handleCardClick}
     >

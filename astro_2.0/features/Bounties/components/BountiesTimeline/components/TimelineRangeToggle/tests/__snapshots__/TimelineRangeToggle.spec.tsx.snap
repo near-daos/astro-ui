@@ -6,7 +6,7 @@ exports[`TimelineHeader Should render component 1`] = `
     class="root"
   >
     <button
-      class="btn transparent sizeBlock btn"
+      class="btn transparent sizeBlock btn disabled"
       disabled=""
       type="button"
     >

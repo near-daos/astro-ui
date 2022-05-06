@@ -400,3 +400,19 @@ export type ProposalFeedItem = {
     isCouncil: boolean;
   };
 } & ProposalProperties;
+
+export interface CustomFcTemplatePayload {
+  methodName: string;
+  deposit: string;
+  smartContractAddress: string;
+  json: string;
+  actionsGas: string;
+  token: string;
+}
+
+export interface CustomFcTemplate {
+  id: string;
+  isActive: boolean;
+  name: string;
+  payload: CustomFcTemplatePayload;
+}

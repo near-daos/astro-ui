@@ -135,8 +135,13 @@
 }
 
 .checkbox {
+  color: var(--color-neutral-50);
   margin-right: 8px;
   pointer-events: none;
+
+  &.checked {
+    color: var(--color-primary-50);
+  }
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {

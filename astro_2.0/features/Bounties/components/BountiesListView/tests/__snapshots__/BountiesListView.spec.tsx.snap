@@ -60,7 +60,7 @@ exports[`BountiesListView Should render component 1`] = `
                 class="rowTitle"
               >
                 <button
-                  class="btn transparent sizeBlock"
+                  class="btn transparent sizeBlock disabled"
                   disabled=""
                   type="button"
                 >
@@ -174,7 +174,7 @@ exports[`BountiesListView Should render component 1`] = `
                 class="rowTitle"
               >
                 <button
-                  class="btn transparent sizeBlock"
+                  class="btn transparent sizeBlock disabled"
                   disabled=""
                   type="button"
                 >
@@ -288,7 +288,7 @@ exports[`BountiesListView Should render component 1`] = `
                 class="rowTitle"
               >
                 <button
-                  class="btn transparent sizeBlock"
+                  class="btn transparent sizeBlock disabled"
                   disabled=""
                   type="button"
                 >
@@ -433,7 +433,7 @@ exports[`BountiesListView Should render component 1`] = `
                         class="rowTitle"
                       >
                         <button
-                          class="btn transparent sizeBlock"
+                          class="btn transparent sizeBlock disabled"
                           disabled=""
                           type="button"
                         >

@@ -8,7 +8,9 @@ exports[`proposal card renderer Should render component 1`] = `
     <div
       class="header"
     >
-      <div />
+      <div
+        class="flagWrapper"
+      />
     </div>
     <div
       class="proposal"

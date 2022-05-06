@@ -67,7 +67,7 @@ export function useDepositWidth(
 ): number {
   const { watch } = useFormContext();
 
-  const deposit = watch(fieldName);
+  const deposit = watch(fieldName).toString();
 
   let depositWidth;
 
