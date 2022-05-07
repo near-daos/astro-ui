@@ -62,7 +62,7 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({
               className={styles.controlButton}
               size="small"
             >
-              <Icon name="noteCheck" className={styles.buttonIcon} />
+              <Icon name="noteCheckDouble" className={styles.buttonIcon} />
               {t('markReadAll')}
             </Button>
             <Button
@@ -72,11 +72,11 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({
               className={styles.controlButton}
               size="small"
             >
-              {t('archiveAll')}
               <Icon
                 name="noteArchive"
                 className={cn(styles.buttonIcon, styles.archiveIcon)}
               />
+              {t('archiveAll')}
             </Button>
           </div>
           <Notifications

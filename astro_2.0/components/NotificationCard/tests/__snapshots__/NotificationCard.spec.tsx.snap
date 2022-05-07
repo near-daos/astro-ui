@@ -88,6 +88,36 @@ exports[`Notification Card Should render component 1`] = `
         class="control"
       >
         <div
+          class=""
+        >
+          <div
+            class="markRead"
+          >
+            <button
+              class="btn transparent sizeBlock markReadButton"
+              data-testid="mark-read"
+              type="button"
+            >
+              <svg
+                class="markReadIcon"
+                width="24"
+              >
+                <use
+                  href="/_next/undefined"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mobileActionsPanel"
+    >
+      <div
+        class=""
+      >
+        <div
           class="markRead"
         >
           <button
@@ -103,40 +133,8 @@ exports[`Notification Card Should render component 1`] = `
                 href="/_next/undefined"
               />
             </svg>
-            <div
-              class="markReadTitle"
-            >
-              Mark read
-            </div>
           </button>
         </div>
-      </div>
-    </div>
-    <div
-      class="mobileActionsPanel"
-    >
-      <div
-        class="markRead"
-      >
-        <button
-          class="btn transparent sizeBlock markReadButton"
-          data-testid="mark-read"
-          type="button"
-        >
-          <svg
-            class="markReadIcon"
-            width="24"
-          >
-            <use
-              href="/_next/undefined"
-            />
-          </svg>
-          <div
-            class="markReadTitle"
-          >
-            Mark read
-          </div>
-        </button>
       </div>
     </div>
   </div>
