@@ -34,6 +34,7 @@ import { AllowanceKey } from 'services/sputnik/SputnikNearService/types';
 
 export const GAS_VALUE = new BN('300000000000000');
 export const FINALIZE_PROPOSAL_GAS_VALUE = new BN('150000000000000');
+const USN_TOKEN_CONTRACTS = ['usn', 'usdn.testnet'];
 
 export class SputnikNearService implements DaoService {
   private walletService: WalletService;
@@ -473,7 +474,7 @@ export class SputnikNearService implements DaoService {
     }
 
     const trx =
-      tokenContract && !tokenContract.startsWith('usn')
+      tokenContract && !USN_TOKEN_CONTRACTS.includes(tokenContract)
         ? [storageDepositTransactionAction, transferTransaction]
         : [transferTransaction];
 
