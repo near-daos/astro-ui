@@ -26,9 +26,10 @@ export const SenderIcon = forwardRef<SVGSVGElement, NearIconProps>(
         height="38"
         fill="none"
         viewBox="0 0 38 38"
-        xmlns="http://www.w3.org/2000/svg"
         onClick={onClick}
         className={rootClassName}
+        data-testid="asi-root"
+        xmlns="http://www.w3.org/2000/svg"
       >
         <circle cx="19" cy="19" r="18.5" className={styles.circle} />
         <path

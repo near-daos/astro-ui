@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateExternalProposal Should render nothing if no error 1`] = `<div />`;
