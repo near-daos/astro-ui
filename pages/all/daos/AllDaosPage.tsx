@@ -3,6 +3,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useRouter } from 'next/router';
 import { TFunction, useTranslation } from 'next-i18next';
 import { useAsyncFn } from 'react-use';
+import Head from 'next/head';
 
 import { DaoFeedItem } from 'types/dao';
 
@@ -144,6 +145,9 @@ const AllDaosPage: FC<BrowseAllDaosProps> = ({
 
   return (
     <DaosList label="allDaos">
+      <Head>
+        <title>All Daos</title>
+      </Head>
       <div className={styles.filter}>
         <Dropdown
           options={sortOptions}

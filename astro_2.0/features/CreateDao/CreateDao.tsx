@@ -1,6 +1,7 @@
 import React, { useEffect, useState, VFC } from 'react';
 import { StateMachineProvider, createStore } from 'little-state-machine';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 import { STEPS } from 'astro_2.0/features/CreateDao/constants';
 
@@ -88,6 +89,9 @@ export const CreateDao: VFC<CreateDaoProps> = ({ defaultFlag }) => {
 
   return (
     <StateMachineProvider>
+      <Head>
+        <title>Create DAO</title>
+      </Head>
       <StepWrapper>{renderContent()}</StepWrapper>
     </StateMachineProvider>
   );

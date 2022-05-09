@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import React, { useMemo } from 'react';
+import Head from 'next/head';
 
 import { PaginationResponse } from 'types/api';
 import { Proposal } from 'types/proposal';
@@ -29,6 +30,9 @@ const DAOHome: NextPage<DaoHomeProps> = ({ daoContext }) => {
 
   return (
     <>
+      <Head>
+        <title>DAO Main Page</title>
+      </Head>
       <NestedDaoPageWrapper
         daoContext={daoContext}
         breadcrumbs={breadcrumbs}

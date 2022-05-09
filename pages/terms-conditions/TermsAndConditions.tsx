@@ -1,4 +1,5 @@
 import React, { VFC } from 'react';
+import Head from 'next/head';
 
 import {
   Paragraph,
@@ -18,6 +19,9 @@ const TermsAndConditions: VFC = () => {
 
   return (
     <div className={styles.root}>
+      <Head>
+        <title>ASTRO DAO Terms and Conditions</title>
+      </Head>
       <div className={styles.pageHeader}>ASTRO DAO Terms and Conditions</div>
       <div className={styles.textBlock}>
         These “Terms and Conditions” last material update was made on: 12th

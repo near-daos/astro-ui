@@ -8,6 +8,7 @@ import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesCon
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import { CustomFunctionCallTemplatesPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent';
 import { DaoFeedItem } from 'types/dao';
+import Head from 'next/head';
 
 interface Props {
   daoContext: DaoContext;
@@ -35,6 +36,9 @@ const CustomTemplatesPage: NextPage<Props> = ({ daoContext, accountDaos }) => {
       breadcrumbs={breadcrumbs}
       defaultProposalType={ProposalVariant.ProposeChangeDaoName}
     >
+      <Head>
+        <title>DAO Custom FC Templates</title>
+      </Head>
       <CustomFunctionCallTemplatesPageContent
         daoContext={daoContext}
         accountDaos={accountDaos}

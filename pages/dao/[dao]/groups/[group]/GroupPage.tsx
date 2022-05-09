@@ -10,6 +10,7 @@ import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 
 import { GroupsPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/GroupsPageContent';
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
+import Head from 'next/head';
 
 export interface GroupPageProps {
   daoContext: DaoContext;
@@ -50,6 +51,9 @@ const GroupPage: VFC<GroupPageProps> = ({ daoContext, membersStats }) => {
       breadcrumbs={breadcrumbs}
       defaultProposalType={ProposalVariant.ProposeCreateGroup}
     >
+      <Head>
+        <title>DAO Groups Page</title>
+      </Head>
       <GroupsPageContent
         daoContext={daoContext}
         membersStats={membersStats}

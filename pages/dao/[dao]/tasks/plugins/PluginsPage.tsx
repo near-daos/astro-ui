@@ -15,6 +15,7 @@ import styles from 'pages/dao/[dao]/tasks/plugins/plugins.module.scss';
 import { PLUGIN_INITIAL_DATA, PLUGINS_DATA } from 'mocks/pluginsPageData';
 import { WalletType } from 'types/config';
 import { useWalletContext } from 'context/WalletContext';
+import Head from 'next/head';
 
 interface PluginPageProps {
   plugins: PluginCardProps[];
@@ -75,6 +76,9 @@ const PluginsPage: FC<PluginPageProps> = ({ plugins = PLUGINS_DATA }) => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
+        <Head>
+          <title>Plugins</title>
+        </Head>
         <h1>Plugins</h1>
         <Button variant="black" size="small" onClick={handleCreateClick}>
           Run a plugin

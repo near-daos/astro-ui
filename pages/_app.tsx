@@ -22,6 +22,7 @@ import { WrappedWalletContext } from 'context/WalletContext';
 import { CookieService } from 'services/CookieService';
 import { DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 import { AppMonitoring } from 'astro_2.0/features/AppMonitoring/AppMonitoring';
+import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
@@ -44,7 +45,9 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
               </Head>
 
               <PageLayout>
-                <Component {...pageProps} />
+                <ErrorBoundary>
+                  <Component {...pageProps} />
+                </ErrorBoundary>
               </PageLayout>
 
               <MobileNav />

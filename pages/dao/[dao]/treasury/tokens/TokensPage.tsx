@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { useTranslation } from 'next-i18next';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 import React, { useCallback, useMemo, useState } from 'react';
+import Head from 'next/head';
 
 import { CREATE_GOV_TOKEN_PAGE_URL } from 'constants/routing';
 
@@ -123,6 +124,9 @@ const TokensPage: NextPage<TokensPageProps> = ({
 
     return (
       <>
+        <Head>
+          <title>Treasury</title>
+        </Head>
         <div className={styles.chart}>
           {viewToken !== 'NEAR' && !!chartData.length && !loading && (
             <AreaChart

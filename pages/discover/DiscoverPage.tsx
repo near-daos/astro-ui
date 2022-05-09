@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 import { Button } from 'components/button/Button';
 import { SearchInput } from 'astro_2.0/components/SearchInput';
@@ -95,6 +96,9 @@ const DiscoverPage: NextPage = () => {
 
   return (
     <DaoStatsDataProvider>
+      <Head>
+        <title>Discovery</title>
+      </Head>
       <div className={styles.root}>
         <div className={styles.header}>
           <div className={styles.row}>

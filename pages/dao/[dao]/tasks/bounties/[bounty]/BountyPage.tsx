@@ -55,7 +55,7 @@ const BountyPage: NextPage<BountyPageProps> = ({
   return (
     <>
       <Head>
-        <title>Astro</title>
+        <title>Bounty</title>
         <meta property="og:url" content={router.asPath} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Astro" />
