@@ -4066,6 +4066,13 @@
   resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.172.tgz"
   integrity sha512-/BHF5HAx3em7/KkzVKm3LrsD6HZAXuXO1AJZQ3cRRBZj4oHZDviWPYu0aEplAqDFNHZPW6d3G7KN+ONcCCC7pw==
 
+"@types/logrocket-react@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/logrocket-react/-/logrocket-react-3.0.0.tgz#88278ec2fe093ff55496d66aea9056fe1061ecea"
+  integrity sha512-bQ7LUwqwt2RNpRoco3vt8QBHy78nOQFF+KfFRol1PgKq8S1nIiLYA6Y0ZUAzqGw1viA0lyjAHlPQeTI+wl4wnw==
+  dependencies:
+    logrocket "1.0.1"
+
 "@types/long@^4.0.1":
   version "4.0.1"
   resolved "https://registry.npmjs.org/@types/long/-/long-4.0.1.tgz"
@@ -11955,6 +11962,21 @@ log-update@^4.0.0:
     cli-cursor "^3.1.0"
     slice-ansi "^4.0.0"
     wrap-ansi "^6.2.0"
+
+logrocket-react@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/logrocket-react/-/logrocket-react-5.0.1.tgz#f71a1cfa539bafe581576a7a6b92dfc6104c5a7b"
+  integrity sha512-d5RAi1giur9Yv7/lDK/c2S1hviopN5K1XMMpfpSFRDG3Rr/j5RmGuvNHdXNTJUwGuxTVrpnKUOB43ceQMJfO1Q==
+
+logrocket@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/logrocket/-/logrocket-1.0.1.tgz#0555ec619d2db54a7b345c4e8df09baea835b176"
+  integrity sha512-oPA0c5GzMKsWp/6p19OaujZQMzttluqVOI+989uHeciPAljPZvGEpZRbNO3Rr+jC/8jVLJdlMP9IHuyhKsASGA==
+
+logrocket@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/logrocket/-/logrocket-3.0.0.tgz#d97ca1a57fab7543811a08d2b9c435369f3585d9"
+  integrity sha512-RDbF28Np+XsBIb6egJiPPQmRupdrmXURESPpxUo4awH3h7Mk0s9iZVF+AMy64GixznlWevgm01+uuAq8NYfvMw==
 
 long@^4.0.0:
   version "4.0.0"

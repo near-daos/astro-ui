@@ -6,6 +6,7 @@ declare global {
       AWS_REGION: string;
       AWS_IDENTITY_POOL_ID: string;
       GOOGLE_ANALYTICS_KEY: string;
+      LOG_ROCKET_APP_ID: string;
 
       APP_VERSION: string;
       CHANGELOG_URL: string;
