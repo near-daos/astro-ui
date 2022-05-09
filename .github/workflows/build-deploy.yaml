@@ -16,6 +16,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   GOOGLE_ANALYTICS_KEY: ${{ secrets.GOOGLE_ANALYTICS_KEY }}
+  LOG_ROCKET_APP_ID: ${{ secrets.LOG_ROCKET_APP_ID }}
   AWS_ECR_URL: ${{ secrets.AWS_ECR_URL }}
   EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
   KUBE_CONFIG_DATA:  ${{ secrets.KUBE_CONFIG_DATA }}
@@ -80,6 +81,7 @@ jobs:
             --set environment.near_contract_name=${NEAR_CONTRACT_NAME} \
             --set environment.api_url=${API_URL} \
             --set environment.google_analytics_key=${GOOGLE_ANALYTICS_KEY} \
+            --set environment.log_rocket_app_id=${LOG_ROCKET_APP_ID} \
             --set environment.near_env=${NEAR_ENV} \
             --set environment.stats_api_url=${STATS_API_URL} \
             --set environment.next_public_launchdarkly_id=${NEXT_PUBLIC_LAUNCHDARKLY_ID} \

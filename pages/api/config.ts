@@ -10,6 +10,7 @@ export default function handler(
     AWS_BUCKET: process.env.AWS_BUCKET,
     AWS_REGION: process.env.AWS_REGION,
     GOOGLE_ANALYTICS_KEY: process.env.GOOGLE_ANALYTICS_KEY,
+    LOG_ROCKET_APP_ID: process.env.LOG_ROCKET_APP_ID,
     RELEASE_NOTES: process.env.RELEASE_NOTES,
     I18_RELOAD_ON_PRERENDER: process.env.I18_RELOAD_ON_PRERENDER,
     LOCAL_WALLET_REDIRECT: process.env.LOCAL_WALLET_REDIRECT,

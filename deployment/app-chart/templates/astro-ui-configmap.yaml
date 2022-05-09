@@ -10,6 +10,7 @@ data:
   AWS_REGION: "{{ .Values.environment.aws_region }}"
   AWS_IDENTITY_POOL_ID: "{{ .Values.environment.aws_identity_pool_id }}"
   GOOGLE_ANALYTICS_KEY: "{{ .Values.environment.google_analytics_key }}"
+  LOG_ROCKET_APP_ID: "{{ .Values.environment.log_rocket_app_id }}"
   STATS_API_URL: "{{ .Values.environment.stats_api_url }}"
   NEXT_PUBLIC_LAUNCHDARKLY_ID: "{{ .Values.environment.next_public_launchdarkly_id }}"
   APP_DOMAIN: "{{ .Values.environment.app_domain }}"
