@@ -27,6 +27,8 @@ export interface DropdownMultiSelectProps {
   defaultValue?: string[];
   simple?: boolean;
   onChange: (value: string[]) => void;
+  selectedItemRenderer?: (item: Option) => React.ReactNode;
+  menuClassName?: string;
 }
 
 function getInitialValues(values?: string[]): Option[] {
@@ -47,6 +49,8 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
   defaultValue,
   simple,
   onChange,
+  selectedItemRenderer,
+  menuClassName,
 }) => {
   const [selectedItems, setSelectedItems] = useState<Option[]>(() =>
     getInitialValues(defaultValue)
@@ -114,6 +118,10 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
           ref={contentRef as React.LegacyRef<HTMLDivElement>}
         >
           {selectedItems.map(sel => {
+            if (selectedItemRenderer) {
+              return selectedItemRenderer(sel);
+            }
+
             return (
               <div key={sel.label} className={styles.selectedWrapper}>
                 {sel.component}
@@ -131,6 +139,7 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
           </div>
         </div>
         <BadgeList
+          selectedItemRenderer={selectedItemRenderer}
           selectedItems={selectedItems}
           showPlaceholder={showPlaceholder}
         />
@@ -139,6 +148,10 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
   }
 
   function renderDropdownSelectedList() {
+    if (!selectedItems.length) {
+      return null;
+    }
+
     return (
       <div className={styles.selectedFullList}>
         {selectedItems.map(sel => {
@@ -169,8 +182,16 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
           {...props}
           key={item.label}
         >
-          <Checkbox label="" className={styles.checkbox} checked={checked} />
-          {item.component}
+          <>
+            <Checkbox
+              label=""
+              className={cn(styles.checkbox, {
+                [styles.checked]: checked,
+              })}
+              checked={checked}
+            />
+            {item.component}
+          </>
         </li>
       );
     });
@@ -214,7 +235,10 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
                   />
                 </div>
               </button>
-              <ul className={styles.menu} {...getMenuProps()}>
+              <ul
+                className={cn(styles.menu, menuClassName)}
+                {...getMenuProps()}
+              >
                 {isOpen && (
                   <>
                     {!simple && renderDropdownSelectedList()}

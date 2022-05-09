@@ -14,7 +14,8 @@ export type Variant =
   | 'orange'
   | 'yellow'
   | 'neonYellow'
-  | 'primary';
+  | 'primary'
+  | 'lightgray';
 
 const sizes = {
   small: styles.small,

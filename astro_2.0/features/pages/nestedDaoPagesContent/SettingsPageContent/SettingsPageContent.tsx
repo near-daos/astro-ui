@@ -8,6 +8,7 @@ import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 
 import {
   DAO_CONFIG_PAGE_URL,
+  DAO_CUSTOM_FC_TEMPLATES_PAGE_URL,
   DAO_POLICY_PAGE_URL,
   DAO_VERSION_PAGE_URL,
 } from 'constants/routing';
@@ -66,6 +67,19 @@ export const SettingsPageContent: FC<SettingsPageContentProps> = ({
           }
           icon="navSettingsVersion"
           label="Version update"
+        />
+        <DaoSettingFlowButton
+          onClick={() =>
+            router.push({
+              pathname: DAO_CUSTOM_FC_TEMPLATES_PAGE_URL,
+              query: {
+                dao: dao.id,
+                stateFilter: 'all',
+              },
+            })
+          }
+          icon="proposalNearFunctionCall"
+          label="Custom Function Call templates"
         />
       </div>
     </div>

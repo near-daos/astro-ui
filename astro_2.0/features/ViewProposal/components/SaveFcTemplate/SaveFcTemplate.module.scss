@@ -1,0 +1,28 @@
+@import 'styles/mixins';
+
+.root {
+  align-items: center;
+  background-color: var(--color-primary-50);
+  border-radius: 4px 4px 0 0;
+  color: var(--color-white);
+  display: flex;
+  justify-content: center;
+  margin-left: 12px;
+  padding: 0;
+}
+
+.control.control {
+  @include centralize;
+  color: var(--color-white);
+}
+
+.loading {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+.icon.icon {
+  color: var(--color-white);
+  margin-left: 8px;
+  width: 24px;
+}

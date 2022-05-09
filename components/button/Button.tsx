@@ -54,6 +54,7 @@ export const Button: React.FC<ButtonProps> = ({
     classNameProp,
     {
       [styles.capitalize]: capitalize,
+      [styles.disabled]: disabled,
     }
   );
 

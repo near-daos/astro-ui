@@ -8,14 +8,16 @@ type Item = {
   component: JSX.Element;
 };
 
-interface BadgeListProps {
+interface BadgeListProps<T> {
   selectedItems: Item[];
   showPlaceholder: boolean;
+  selectedItemRenderer?: (item: T) => React.ReactNode;
 }
 
-export const BadgeList: FC<BadgeListProps> = ({
+export const BadgeList: FC<BadgeListProps<Item>> = ({
   selectedItems,
   showPlaceholder,
+  selectedItemRenderer,
 }) => {
   return (
     <div className={styles.selected}>
@@ -28,6 +30,10 @@ export const BadgeList: FC<BadgeListProps> = ({
           return !showPlaceholder;
         })
         .map(sel => {
+          if (selectedItemRenderer) {
+            return selectedItemRenderer(sel);
+          }
+
           return (
             <div key={sel.label} className={styles.selectedWrapper}>
               {sel.component}

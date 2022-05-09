@@ -7,7 +7,7 @@ import {
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
 import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 
-import { ProposalFeedItem } from 'types/proposal';
+import { ProposalFeedItem, ProposalVariant } from 'types/proposal';
 
 import { useWalletContext } from 'context/WalletContext';
 import { getVoteDetails } from 'features/vote-policy/helpers';
@@ -19,6 +19,7 @@ import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 import { useToggle } from 'react-use';
 import { ProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments';
 import { AnimatePresence, motion } from 'framer-motion';
+import { SaveFcTemplate } from 'astro_2.0/features/ViewProposal/components/SaveFcTemplate';
 
 export interface CreateProposalProps {
   proposal: ProposalFeedItem;
@@ -42,6 +43,9 @@ export const ViewProposal: FC<CreateProposalProps> = ({
   const [showInfoPanel, toggleInfoPanel] = useToggle(false);
   const [commentsCount, setCommentsCount] = useState(proposal?.commentsCount);
   const isCouncilUser = proposal?.permissions?.isCouncil ?? false;
+  const showOptionalControl =
+    proposal.proposalVariant === ProposalVariant.ProposeCustomFunctionCall &&
+    proposal.status === 'Approved';
 
   if (!proposal || !proposal.dao) {
     return null;
@@ -61,6 +65,9 @@ export const ViewProposal: FC<CreateProposalProps> = ({
             fallBack={proposal.dao.logo}
           />
         )
+      }
+      optionalActionNode={
+        showOptionalControl && <SaveFcTemplate proposal={proposal} />
       }
       letterHeadNode={
         <LetterHeadWidget
@@ -95,6 +102,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
           updatedAt={proposal.updatedAt}
           toggleInfoPanel={toggleInfoPanel}
           commentsCount={commentsCount}
+          hasOptionalControl={showOptionalControl}
           voteDetails={
             proposal.dao.policy.defaultVotePolicy.ratio
               ? getVoteDetails(

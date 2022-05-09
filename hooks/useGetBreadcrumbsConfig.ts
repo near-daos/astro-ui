@@ -13,6 +13,7 @@ import {
   GOVERNANCE_TOKEN_INFO_URL,
   DAO_SETTINGS_PAGE_URL,
   DAO_CONFIG_PAGE_URL,
+  DAO_CUSTOM_FC_TEMPLATES_PAGE_URL,
 } from 'constants/routing';
 import { UrlObject } from 'url';
 import { Proposal } from 'types/proposal';
@@ -155,6 +156,15 @@ export function useGetBreadcrumbsConfig(
         label: t('daoConfig'),
         href: {
           pathname: DAO_CONFIG_PAGE_URL,
+          query: {
+            dao: daoId,
+          },
+        },
+      },
+      CUSTOM_FC_TEMPLATES: {
+        label: t('customFunctionCallTemplates'),
+        href: {
+          pathname: DAO_CUSTOM_FC_TEMPLATES_PAGE_URL,
           query: {
             dao: daoId,
           },

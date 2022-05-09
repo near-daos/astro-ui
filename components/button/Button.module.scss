@@ -165,3 +165,7 @@
 .capitalize {
   text-transform: capitalize;
 }
+
+.disabled {
+  pointer-events: none;
+}

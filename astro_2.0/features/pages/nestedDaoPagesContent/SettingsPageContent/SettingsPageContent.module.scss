@@ -14,9 +14,10 @@
 
 .content {
   align-items: center;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   grid-area: content;
+  grid-gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(204px, 304px));
   width: 100%;
 
   @include tablet-landscape {
