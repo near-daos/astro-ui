@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 
+import Head from 'next/head';
 import { Tabs } from 'components/Tabs';
 import { useSearchResults } from 'features/search/search-results/SearchResults';
 import { DaosTabView } from 'features/search/search-results/components/daos-tab-view';
@@ -34,6 +35,9 @@ export const SearchResultsRenderer: FC = () => {
 
   return (
     <div className={styles.root}>
+      <Head>
+        <title>Search results</title>
+      </Head>
       <div className={styles.header}>
         <span className={styles.secondaryLabel}>results for</span>
         <span>&nbsp;&lsquo;{searchResults?.query}&rsquo;</span>

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
 import isEmpty from 'lodash/isEmpty';
+import Head from 'next/head';
 
 import { DaoFeedItem } from 'types/dao';
 
@@ -56,7 +57,14 @@ const MyDaosPage: FC<MyDaosPageProps> = ({ accountDaos }) => {
     return <div className={daosListClassList}>{daoEls}</div>;
   }
 
-  return <DaosList label="myDaos">{renderDaos()}</DaosList>;
+  return (
+    <DaosList label="myDaos">
+      <Head>
+        <title>My DAOs</title>
+      </Head>
+      {renderDaos()}
+    </DaosList>
+  );
 };
 
 export default MyDaosPage;

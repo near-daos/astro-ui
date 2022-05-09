@@ -12,9 +12,15 @@ import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { Feed } from 'astro_2.0/features/Feed';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
+import Head from 'next/head';
 
 const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
-  <Feed {...props} title="Global Feed" />
+  <>
+    <Head>
+      <title>Global feed</title>
+    </Head>
+    <Feed {...props} title="Global Feed" />
+  </>
 );
 
 export const getServerSideProps: GetServerSideProps<React.ComponentProps<

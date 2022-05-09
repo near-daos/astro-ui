@@ -11,6 +11,7 @@ import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import { BountiesPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/BountiesPageContent';
 import { BountiesFeed } from 'astro_2.0/features/Bounties/components/BountiesFeed';
 import { PaginationResponse } from 'types/api';
+import Head from 'next/head';
 
 export interface BountiesFeedPageProps {
   daoContext: DaoContext;
@@ -40,6 +41,9 @@ const BountiesFeedPage: VFC<BountiesFeedPageProps> = ({
       breadcrumbs={breadcrumbs}
       defaultProposalType={ProposalVariant.ProposeCreateBounty}
     >
+      <Head>
+        <title>Bounties feed</title>
+      </Head>
       <BountiesPageContent daoContext={daoContext}>
         <BountiesFeed initialData={bountiesContext} />
       </BountiesPageContent>

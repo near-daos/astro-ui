@@ -1,4 +1,5 @@
 import React, { FC, useMemo } from 'react';
+import Head from 'next/head';
 
 // Types
 import { PaginationResponse } from 'types/api';
@@ -49,6 +50,9 @@ const PollsPage: FC<PollsPageProps> = ({
       breadcrumbs={breadcrumbs}
       defaultProposalType={ProposalVariant.ProposeCreateBounty}
     >
+      <Head>
+        <title>Polls</title>
+      </Head>
       <Feed
         title={<h1 className={styles.header}>Polls</h1>}
         dao={daoContext.dao}

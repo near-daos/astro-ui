@@ -3,6 +3,7 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import uniqBy from 'lodash/uniqBy';
 import isEmpty from 'lodash/isEmpty';
+import Head from 'next/head';
 
 import { NFTCard } from 'astro_2.0/features/pages/nft/NtfCard';
 
@@ -86,6 +87,9 @@ const NFTs: NextPage<NFTsPageProps> = ({ daoContext }) => {
       breadcrumbs={breadcrumbs}
       defaultProposalType={ProposalVariant.ProposeCustomFunctionCall}
     >
+      <Head>
+        <title>NFTs</title>
+      </Head>
       {nfts.length === 0 ? (
         <NoResultsView title="No NFTs available" />
       ) : (

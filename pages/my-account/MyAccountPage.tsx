@@ -1,4 +1,5 @@
 import React, { VFC, useState } from 'react';
+import Head from 'next/head';
 
 import { useTranslation } from 'next-i18next';
 
@@ -30,6 +31,9 @@ const MyAccountPage: VFC<MyAccountPageProps> = ({
 
   return (
     <div>
+      <Head>
+        <title>My account</title>
+      </Head>
       <h1 className={styles.header}>{t('myAccountPage.header')}</h1>
       <div className={styles.cards}>
         <div className={styles.column}>

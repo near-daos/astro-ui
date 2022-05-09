@@ -10,6 +10,7 @@ import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 
 import { BountiesPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/BountiesPageContent';
 import { BountiesListView } from 'astro_2.0/features/Bounties/components/BountiesListView';
+import Head from 'next/head';
 
 export interface BountiesListPageProps {
   daoContext: DaoContext;
@@ -39,6 +40,9 @@ const BountiesListPage: VFC<BountiesListPageProps> = ({
       breadcrumbs={breadcrumbs}
       defaultProposalType={ProposalVariant.ProposeCreateBounty}
     >
+      <Head>
+        <title>Bounties list</title>
+      </Head>
       <BountiesPageContent daoContext={daoContext}>
         <BountiesListView bountiesContext={bountiesContext} />
       </BountiesPageContent>

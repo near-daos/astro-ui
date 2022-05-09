@@ -12,9 +12,15 @@ import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { ALL_FEED_URL } from 'constants/routing';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from 'next-i18next.config';
+import Head from 'next/head';
 
 const MyFeedPage = (props: React.ComponentProps<typeof Feed>): JSX.Element => (
-  <Feed {...props} title="My proposals feed" />
+  <>
+    <Head>
+      <title>My proposals feed</title>
+    </Head>
+    <Feed {...props} title="My proposals feed" />
+  </>
 );
 
 export const getServerSideProps: GetServerSideProps<React.ComponentProps<

@@ -7,6 +7,7 @@ import { DaoContext } from 'types/context';
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import { DaoConfigPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoConfigPageContent';
+import Head from 'next/head';
 
 export interface DaoConfigPageProps {
   daoContext: DaoContext;
@@ -33,6 +34,9 @@ const DaoConfigPage: NextPage<DaoConfigPageProps> = ({ daoContext }) => {
       breadcrumbs={breadcrumbs}
       defaultProposalType={ProposalVariant.ProposeChangeDaoName}
     >
+      <Head>
+        <title>DAO Config</title>
+      </Head>
       <DaoConfigPageContent daoContext={daoContext} />
     </NestedDaoPageWrapper>
   );

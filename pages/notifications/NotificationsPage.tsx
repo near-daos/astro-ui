@@ -1,7 +1,8 @@
 import cn from 'classnames';
-import { VFC, useMemo } from 'react';
+import React, { VFC, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import Head from 'next/head';
 
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
@@ -44,6 +45,9 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({
 
   return (
     <div className={styles.root}>
+      <Head>
+        <title>Notifications</title>
+      </Head>
       <div className={styles.headerContainer}>
         <h1 className={styles.header}>{t('notificationsHub')}</h1>
       </div>
