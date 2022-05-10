@@ -7,41 +7,15 @@ exports[`dao flag widget Should render component 1`] = `
     href="/dao/123"
   >
     <div
-      class="root sm defaultBackground"
+      class="root md"
     >
       <svg
-        class="svg"
-        height="0"
-        width="0"
+        class="defaultLogo"
       >
-        <clippath
-          id="_ASTRO_flag"
-        >
-          <path
-            d="M240.01 0L50.4101 67.7595V105.35L0 123.366V272L189.599 204.24V166.65L240.01 148.634V0Z"
-          />
-        </clippath>
-        <clippath
-          id="_ASTRO_flagMinimized"
-        >
-          <path
-            d="M68.8249 0L14.4555 19.4307V30.2124L0 35.3785V78.0007L54.3694 58.57V47.7883L68.8249 42.6222V0Z"
-          />
-        </clippath>
-        <clippath
-          id="_ASTRO_flagXS"
-        >
-          <path
-            d="M46.4118 0L9.74793 13.103V20.3722L0 23.856V52.5981L36.6639 39.4951V32.2259L46.4118 28.7421V0Z"
-          />
-        </clippath>
+        <use
+          href="/_next/undefined"
+        />
       </svg>
-      <div
-        class="backgroundSmall"
-      />
-      <canvas
-        style="clip-path: path('M68.8249 0L14.4555 19.4307V30.2124L0 35.3785V78.0007L54.3694 58.57V47.7883L68.8249 42.6222V0Z'); max-width: 68px; transform: none;"
-      />
     </div>
     <div
       class="root info"

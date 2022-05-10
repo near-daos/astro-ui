@@ -12,8 +12,8 @@ import { SputnikHttpService } from 'services/sputnik';
 
 import { Button } from 'components/button/Button';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
-import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { IconButton } from 'components/button/IconButton';
+import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 
 import styles from './SelectedDaoDetails.module.scss';
 
@@ -62,12 +62,7 @@ export const SelectedDaoDetails: FC = () => {
         className={styles.close}
       />
       <div className={styles.name}>
-        <FlagRenderer
-          flag={data.flagCover}
-          logo={data.flagLogo}
-          fallBack={data.logo}
-          size="xs"
-        />
+        <DaoLogo src={data.flagCover || data.flagLogo || data.logo} size="md" />
         <div className={styles.details}>
           <div className={styles.daoName}>{data.name ?? data.id}</div>
           <div className={styles.address}>
