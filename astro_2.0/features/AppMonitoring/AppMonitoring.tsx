@@ -15,7 +15,7 @@ export const AppMonitoring: FC = () => {
 
   useEffect(() => {
     // only initialize when in the browser
-    if (typeof window !== 'undefined' && appConfig.LOG_ROCKET_APP_ID) {
+    if (typeof window !== 'undefined' && appConfig?.LOG_ROCKET_APP_ID) {
       LogRocket.init(appConfig.LOG_ROCKET_APP_ID);
       // plugins should also only be initialized when in the browser
       setupLogRocketReact(LogRocket);
@@ -23,7 +23,7 @@ export const AppMonitoring: FC = () => {
       // This is an example script - don't forget to change it!
       LogRocket.identify(CookieService.get(ACCOUNT_COOKIE));
     }
-  }, [appConfig.LOG_ROCKET_APP_ID]);
+  }, [appConfig?.LOG_ROCKET_APP_ID]);
 
   if (appConfig?.GOOGLE_ANALYTICS_KEY) {
     return (
