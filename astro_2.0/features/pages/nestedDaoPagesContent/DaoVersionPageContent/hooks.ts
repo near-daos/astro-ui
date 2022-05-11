@@ -44,8 +44,6 @@ export function useCheckDaoUpgrade(
         return;
       }
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const contract = new Contract(account, appConfig.NEAR_CONTRACT_NAME, {
         viewMethods: ['get_default_code_hash', 'get_contracts_metadata'],
         changeMethods: [],

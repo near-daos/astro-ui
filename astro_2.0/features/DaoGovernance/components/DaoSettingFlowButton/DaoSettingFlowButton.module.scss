@@ -1,3 +1,6 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+
 .root {
   align-items: center;
   background-color: var(--color-white);
@@ -8,10 +11,18 @@
   flex-direction: column;
   height: 171px;
   justify-content: center;
+  margin-bottom: 12px;
+  min-height: 171px;
   transition: border-color 0.2s ease-out;
 
-  &:not(:last-child) {
-    margin-right: 12px;
+  width: 100%;
+
+  @include tablet-landscape {
+    margin-bottom: 0;
+
+    &:not(:last-child) {
+      margin-right: 12px;
+    }
   }
 }
 
