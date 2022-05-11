@@ -35,6 +35,7 @@ export interface CreateProposalCardProps {
   userPermissions: UserPermissions;
   showClose: boolean;
   canCreateTokenProposal: boolean;
+  daoId: string;
 }
 
 export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
@@ -46,6 +47,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   onClose,
   userPermissions,
   canCreateTokenProposal,
+  daoId,
 }) => {
   const {
     register,
@@ -172,7 +174,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
               label={t('proposalCard.proposalOwner')}
               value={proposer}
             />
-            <FunctionCallTypeSelector />
+            <FunctionCallTypeSelector daoId={daoId} />
           </div>
         );
       }

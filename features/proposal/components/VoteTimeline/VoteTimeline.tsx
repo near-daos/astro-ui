@@ -79,20 +79,10 @@ export const VoteTimeline: FC<VoteTimelineProps> = ({
             voteActions[i].action = action;
             break;
           }
-
-          if (TOTAL - 1 === i) {
-            const emptyIndex = i;
-
-            for (let j = i; j < TOTAL; i += 1) {
-              let swap = '';
-            }
-          }
         }
       }
     });
   });
-
-  console.log('voteActions', voteActions);
 
   return (
     <div className={cn(styles.voteTimeline, className)}>

@@ -2,7 +2,6 @@ import React, { FC, ReactNode, useCallback } from 'react';
 import cn from 'classnames';
 import { useMedia } from 'react-use';
 
-// import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { Icon } from 'components/Icon';
 import { StatChart } from 'astro_2.0/features/DaoDashboard/components/StatChart';
@@ -52,12 +51,6 @@ export const TopListItem: FC<TopListItemProps> = ({
     >
       <div className={styles.index}>{index + 1}</div>
       <div className={styles.name}>
-        {/* <FlagRenderer
-          flag={flagCover}
-          logo={flagLogo}
-          fallBack={logo}
-          size="xs"
-        /> */}
         <div className={styles.details}>
           <div className={styles.daoName}>{dao}</div>
           <div className={styles.address}>

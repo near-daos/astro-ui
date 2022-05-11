@@ -8,9 +8,10 @@ import styles from './DaoLogo.module.scss';
 interface DaoLogoProps {
   src: string | undefined | null;
   className?: string;
+  size?: 'md';
 }
 
-export const DaoLogo: FC<DaoLogoProps> = ({ src, className }) => {
+export const DaoLogo: FC<DaoLogoProps> = ({ src, size, className }) => {
   function renderLogo() {
     if (src) {
       return (
@@ -24,5 +25,9 @@ export const DaoLogo: FC<DaoLogoProps> = ({ src, className }) => {
     return <Icon name="defaultDaoLogo" className={styles.defaultLogo} />;
   }
 
-  return <div className={cn(styles.root, className)}>{renderLogo()}</div>;
+  const rootClassName = cn(styles.root, className, {
+    [styles.md]: size === 'md',
+  });
+
+  return <div className={rootClassName}>{renderLogo()}</div>;
 };

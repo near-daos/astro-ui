@@ -44,6 +44,10 @@ import {
 import { HttpService, httpService } from 'services/HttpService';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
 import { Settings } from 'types/settings';
+import {
+  ProposalTemplate,
+  ProposalTemplateInput,
+} from 'types/proposalTemplate';
 
 class SputnikHttpServiceClass {
   private readonly httpService: HttpService = httpService;
@@ -1041,6 +1045,54 @@ class SputnikHttpServiceClass {
       },
       { data: Settings }
     >(`/daos/${daoId}/settings`, params);
+
+    return response.data;
+  }
+
+  public async saveProposalTemplate(
+    daoId: string,
+    params: ProposalTemplateInput
+  ): Promise<ProposalTemplate> {
+    const response = await this.httpService.post<
+      ProposalTemplateInput,
+      { data: ProposalTemplate }
+    >(`/daos/${daoId}/proposal-templates`, params);
+
+    return response.data;
+  }
+
+  public async updateProposalTemplate(
+    daoId: string,
+    id: string,
+    params: ProposalTemplateInput
+  ): Promise<ProposalTemplate> {
+    const response = await this.httpService.patch<
+      ProposalTemplateInput,
+      { data: ProposalTemplate }
+    >(`/daos/${daoId}/proposal-templates/${id}`, params);
+
+    return response.data;
+  }
+
+  public async deleteProposalTemplate(
+    daoId: string,
+    id: string,
+    params: Pick<ProposalTemplateInput, 'accountId' | 'publicKey' | 'signature'>
+  ): Promise<ProposalTemplate> {
+    const response = await this.httpService.delete<
+      ProposalTemplateInput,
+      { data: ProposalTemplate }
+    >(`/daos/${daoId}/proposal-templates/${id}`, params);
+
+    return response.data;
+  }
+
+  public async getProposalTemplates(
+    daoId: string
+  ): Promise<ProposalTemplate[]> {
+    const response = await this.httpService.get<ProposalTemplate[]>(
+      `/daos/${daoId}/proposal-templates`
+    );
 
     return response.data;
   }

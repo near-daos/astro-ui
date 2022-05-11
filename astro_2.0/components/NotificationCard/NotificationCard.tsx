@@ -7,7 +7,7 @@ import { format, parseISO } from 'date-fns';
 import { useSwipeable } from 'react-swipeable';
 import { useTranslation } from 'next-i18next';
 
-import { FlagRenderer } from 'astro_2.0/components/Flag';
+import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
@@ -174,7 +174,11 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
         <div className={styles.flagContainer}>
           <div className={styles.flagWrapper}>
             <div className={styles.flag}>
-              <FlagRenderer flag={flagLogo} size="xs" fallBack={logo} />
+              <DaoLogo
+                size="md"
+                src={flagLogo || logo}
+                className={styles.logo}
+              />
             </div>
             <div className={styles.type}>
               {!!iconType && <Icon name={iconType} width={24} />}

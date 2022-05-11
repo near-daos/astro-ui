@@ -2,7 +2,8 @@ import React, { VFC } from 'react';
 import { useRouter } from 'next/router';
 
 import { SINGLE_DAO_PAGE } from 'constants/routing';
-import { FlagRenderer } from 'astro_2.0/components/Flag';
+
+import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 
 import { DaoFeedItem } from 'types/dao';
 
@@ -45,7 +46,7 @@ export const SearchResultDaoCard: VFC<SearchResultDaoCardProps> = ({
       className={styles.root}
     >
       <div className={styles.flagHolder}>
-        <FlagRenderer flag={flagLogo} size="xs" fallBack={logo} />
+        <DaoLogo size="md" src={flagLogo || logo} />
       </div>
       <div>
         <div className={styles.header}>{header}</div>

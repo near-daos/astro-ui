@@ -12,8 +12,8 @@ import { DAO } from 'types/dao';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { ActionButton } from 'astro_2.0/components/ActionButton';
-import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { Popup } from 'components/Popup';
+import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 
 import { useWalletContext } from 'context/WalletContext';
 import { UserPermissions } from 'types/context';
@@ -120,11 +120,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
               )}
             >
               <div className={styles.flagWrapper}>
-                <FlagRenderer
-                  flag={dao.flagLogo}
-                  size="xs"
-                  fallBack={dao.logo}
-                />
+                <DaoLogo size="md" src={dao.flagLogo} className={styles.logo} />
               </div>
               <div>
                 <div className={styles.displayName}>

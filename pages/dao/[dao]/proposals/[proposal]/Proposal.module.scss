@@ -66,12 +66,7 @@
 .voteTitle {
   @extend %heading1;
   color: var(--color-neutral-90);
-  display: none;
-  margin-bottom: 24px;
-
-  @include tablet-landscape {
-    display: block;
-  }
+  margin-top: 60px;
 }
 
 .label {

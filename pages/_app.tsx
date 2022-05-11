@@ -23,15 +23,21 @@ import { CookieService } from 'services/CookieService';
 import { DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 import { AppMonitoring } from 'astro_2.0/features/AppMonitoring/AppMonitoring';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
+import { useAppInitialize } from 'hooks/useAppInitialize';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
+  const initialized = useAppInitialize();
 
   useEffect(() => {
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
   }, [router]);
 
   useIntercomAdjust();
+
+  if (!initialized) {
+    return null;
+  }
 
   return (
     <>

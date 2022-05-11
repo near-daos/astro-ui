@@ -57,14 +57,15 @@ describe('FunctionCallTypeSelector', () => {
     // @ts-ignore
     getFormInitialValues.mockImplementation(mock);
 
-    const { getByText } = render(<FunctionCallTypeSelector />);
+    const { getByText } = render(<FunctionCallTypeSelector daoId="jason" />);
 
     fireEvent.click(getByText('Custom'));
     fireEvent.click(getByText('Buy NFT from Mintbase'));
 
     expect(mock).toBeCalledWith(
       ProposalVariant.ProposeCustomFunctionCall,
-      '123'
+      '123',
+      {}
     );
   });
 });

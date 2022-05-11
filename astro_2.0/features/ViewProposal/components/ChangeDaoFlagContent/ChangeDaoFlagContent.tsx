@@ -4,7 +4,7 @@ import { useTranslation } from 'next-i18next';
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
-import { FlagRenderer } from 'astro_2.0/components/Flag';
+import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 import { useModal } from 'components/modal';
 import { PreviewModal } from 'astro_2.0/features/CreateDao/components/PreviewModal';
 import { Button } from 'components/button/Button';
@@ -38,7 +38,7 @@ export const ChangeDaoFlagContent: FC<ChangeDaoFlagContentProps> = ({
         <FieldWrapper label={t('proposalCard.preview')} fullWidth>
           {logo && (
             <div className={styles.flag}>
-              <FlagRenderer flag={logo} size="lg" />
+              <DaoLogo src={logo} />
             </div>
           )}
         </FieldWrapper>
