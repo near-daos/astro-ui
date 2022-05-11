@@ -3,7 +3,6 @@ import { useTranslation } from 'next-i18next';
 
 import cn from 'classnames';
 import { Icon } from 'components/Icon';
-import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 
 import styles from './FlagPreview.module.scss';
@@ -57,10 +56,10 @@ export const FlagPreview: React.FC<FlagPreviewProps> = ({
             </div>
             <div className={styles.flags}>
               <div className={cn(styles.flag, styles.sm)}>
-                <FlagRenderer key={logoFile} flag={logoFile} size="sm" />
+                <DaoLogo src={logoFile} size="md" />
               </div>
               <div className={styles.flag}>
-                <FlagRenderer key={logoFile} flag={logoFile} size="lg" />
+                <DaoLogo src={logoFile} />
               </div>
             </div>
           </div>

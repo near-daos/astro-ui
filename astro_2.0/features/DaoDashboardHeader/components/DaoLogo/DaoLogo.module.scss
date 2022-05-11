@@ -8,6 +8,15 @@
   height: 144px;
   overflow: hidden;
   width: 144px;
+
+  &.md {
+    $logo-size: 50px;
+
+    height: $logo-size;
+    min-height: $logo-size;
+    min-width: $logo-size;
+    width: $logo-size;
+  }
 }
 
 .logo {

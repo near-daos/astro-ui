@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import { useMedia } from 'react-use';
-import { FlagRenderer } from 'astro_2.0/components/Flag';
 import { shortenString } from 'utils/format';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { Toggle } from 'components/inputs/Toggle';
 import { IconButton } from 'components/button/IconButton';
 import { Collapsable } from 'components/collapsable/Collapsable';
+import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 import { NotificationSettingsItem } from 'types/notification';
 
 import styles from './NotificationCollapsableSettings.module.scss';
@@ -52,12 +52,7 @@ export const NotificationCollapsableSettings: FC<NotificationCollapsableSettings
           onKeyDown={e => e.key === 'Spacebar' && toggle()}
         >
           <div className={styles.flagWrapper}>
-            <FlagRenderer
-              className={styles.flag}
-              flag={flagCover}
-              size="xs"
-              fallBack={flagBack}
-            />
+            <DaoLogo src={flagCover || flagBack} size="md" />
           </div>
           <div className={styles.daoDetails}>
             <div className={cn(styles.inline)}>{daoName}</div>
