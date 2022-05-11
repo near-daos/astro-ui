@@ -100,7 +100,8 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
             }
           >
             <Icon name="upgrade" className={styles.upgradeIcon} />
-            {upgradeStatus?.upgradeStep !== null
+            {upgradeStatus?.upgradeStep !== null &&
+            upgradeStatus?.upgradeStep !== undefined
               ? 'Upgrade in progress'
               : 'Upgrade DAO version'}
           </Button>
