@@ -6,10 +6,13 @@ import {
   useUpgradeStatus,
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/hooks';
 import { UpgradeVersionWizard } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/components/UpgradeVersionWizard';
+import { DaoWarning } from 'astro_2.0/components/DaoWarning';
 
 import { UpgradeSteps } from 'types/settings';
 import { DaoContext } from 'types/context';
 import { ProposalType } from 'types/proposal';
+
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import { VersionCheck } from './components/VersionCheck';
 
@@ -26,6 +29,9 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
   const { loading, upgradeStatus, update } = useUpgradeStatus(
     daoContext.dao.id
   );
+  const { tokens } = useDaoCustomTokens();
+  const showLowBalanceWarning =
+    !!tokens?.NEAR?.balance && Number(tokens?.NEAR?.balance) < 6;
   const isViewProposal = upgradeStatus?.proposalId !== null;
   const isUpgradeInProgress =
     upgradeStatus && upgradeStatus.upgradeStep !== null;
@@ -63,6 +69,20 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
       <div className={styles.titleRow}>
         <h1>DAO Settings</h1>
       </div>
+      {showLowBalanceWarning && (
+        <DaoWarning
+          content={
+            <>
+              <div className={styles.title}>Warning</div>
+              <div className={styles.text}>
+                DAO available balance is too low to perform upgrade. Please send
+                Near to your account and then try again.
+              </div>
+            </>
+          }
+          className={styles.warningWrapper}
+        />
+      )}
       {isUpgradeInProgress && upgradeStatus ? (
         <UpgradeVersionWizard
           daoContext={daoContext}
@@ -79,7 +99,7 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
               versionHash: version ? version[0] : '',
             });
           }}
-          disabled={!isUpgradeAvailable}
+          disabled={!isUpgradeAvailable || showLowBalanceWarning}
           className={styles.versionCheck}
           version={versionDetails}
           loading={loading}
