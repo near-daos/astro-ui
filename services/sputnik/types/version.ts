@@ -1,4 +1,4 @@
 export type Version = {
-  date: string;
+  date?: string;
   number: string;
 };

@@ -1,12 +1,10 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import Head from 'next/head';
-import Script from 'next/script';
 import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from 'next-i18next.config';
 import type { AppContext, AppProps } from 'next/app';
 import { withLDProvider } from 'launchdarkly-react-client-sdk';
 import { appConfig as applicationConfig } from 'config';
-import { configService } from 'services/ConfigService';
 import { useRouter } from 'next/router';
 import { ALL_FEED_URL, MY_FEED_URL } from 'constants/routing';
 
@@ -20,17 +18,20 @@ import { SearchResults } from 'features/search/search-results';
 import { CookieService } from 'services/CookieService';
 
 import { ACCOUNT_COOKIE, DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
-import { gtag, gtagScript } from 'constants/googleTagManager';
 
 import { SocketProvider } from 'context/SocketContext';
 
 import { useIntercomAdjust } from 'hooks/useIntercomAdjust';
 
+import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
+import { useAppInitialize } from 'hooks/useAppInitialize';
+
 import 'styles/globals.scss';
+import { AppMonitoring } from 'astro_2.0/features/AppMonitoring/AppMonitoring';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
-  const { appConfig } = configService.get();
+  const initialized = useAppInitialize();
 
   useEffect(() => {
     CookieService.set(DAO_COOKIE, router.query.dao, DEFAULT_OPTIONS);
@@ -38,19 +39,13 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
 
   useIntercomAdjust();
 
+  if (!initialized) {
+    return null;
+  }
+
   return (
     <>
-      {appConfig && (
-        <>
-          <Script
-            strategy="lazyOnload"
-            src={gtag(appConfig.GOOGLE_ANALYTICS_KEY)}
-          />
-          <Script strategy="lazyOnload">
-            {gtagScript(appConfig.GOOGLE_ANALYTICS_KEY)}
-          </Script>
-        </>
-      )}
+      <AppMonitoring />
       <ModalProvider>
         <AuthWrapper>
           <SocketProvider>
@@ -59,7 +54,9 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
                 <title>Astro</title>
               </Head>
               <PageLayout>
-                <Component {...pageProps} />
+                <ErrorBoundary>
+                  <Component {...pageProps} />
+                </ErrorBoundary>
               </PageLayout>
               <MobileNav />
             </SearchResults>

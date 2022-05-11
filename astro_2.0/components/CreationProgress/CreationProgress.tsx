@@ -1,9 +1,8 @@
-import { useEffect, VFC } from 'react';
 import cn from 'classnames';
 import { useMedia } from 'react-use';
+import { useEffect, VFC } from 'react';
 
-import { Icon } from 'components/Icon';
-import { Button } from 'components/button/Button';
+import { CreationProgressStep } from './components/CreationProgressStep';
 
 import styles from './CreationProgress.module.scss';
 
@@ -20,6 +19,8 @@ interface CreationProgressProps {
   onItemClick?: (value: string) => void;
 }
 
+const CURRENT_EL_CLASSNAME = 'a-cp-current';
+
 export const CreationProgress: VFC<CreationProgressProps> = ({
   steps,
   className,
@@ -32,7 +33,7 @@ export const CreationProgress: VFC<CreationProgressProps> = ({
       return;
     }
 
-    const currentItems = document.getElementsByClassName(styles.current);
+    const currentItems = document.getElementsByClassName(CURRENT_EL_CLASSNAME);
 
     if (currentItems && currentItems[0]) {
       currentItems[0].scrollIntoView({
@@ -46,40 +47,22 @@ export const CreationProgress: VFC<CreationProgressProps> = ({
   return (
     <div className={cn(className, styles.root)}>
       {steps.map((step, index) => {
-        const { label, isCurrent, isComplete } = step;
+        const { label, value, isCurrent, isComplete } = step;
 
-        const isClickable =
-          onItemClick &&
-          (isComplete ||
-            steps.find(
-              (item, i) =>
-                (index <= i && item.isComplete) ||
-                (i === index - 1 && item.isComplete)
-            ));
-
-        const stepClassName = cn(styles.step, {
-          [styles.complete]: isComplete,
-          [styles.current]: isCurrent,
-          [styles.clickable]: isClickable,
-        });
+        const complete = !!(
+          isComplete || steps.find((item, i) => index <= i && item.isComplete)
+        );
 
         return (
-          <Button
-            size="small"
-            variant="transparent"
-            className={stepClassName}
+          <CreationProgressStep
             key={`${label}_${isComplete}`}
-            onClick={() => {
-              if (onItemClick && step.value && isClickable) {
-                onItemClick(step.value);
-              }
-            }}
-          >
-            <div className={styles.stepCircle}>
-              <Icon name="buttonCheck" className={styles.checkIcon} />
-            </div>
-            <div className={styles.stepLabel} data-label={label} />
-          </Button>
+            label={label}
+            value={value}
+            isCurrent={isCurrent}
+            isComplete={complete}
+            onItemClick={onItemClick}
+            className={cn({ [CURRENT_EL_CLASSNAME]: isCurrent })}
+          />
         );
       })}
     </div>

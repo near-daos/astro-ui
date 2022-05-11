@@ -17,77 +17,80 @@ interface ExtendedContract extends Contract {
   get_contracts_metadata: () => Promise<RawMeta[]>;
 }
 
+type Version = [string, { version: number[] }];
+
 export function useCheckDaoUpgrade(
   dao: DAO
 ): {
-  versionHash: string | null;
+  version: Version | null;
   loading: boolean;
 } {
   const { nearService } = useAuthContext();
   const [loading, setLoading] = useState(true);
   const { appConfig } = configService.get();
 
-  const [versionHash, setVersionHash] = useState<string | null>(null);
+  const [version, setVersion] = useState<Version | null>(null);
 
   const getUpgradeInfo = useCallback(async () => {
-    const account = nearService?.getAccount();
+    try {
+      const account = nearService?.getAccount();
 
-    if (appConfig?.NEAR_ENV !== 'development') {
-      return;
-    }
+      // todo - remove before release
+      if (!appConfig || appConfig?.NEAR_ENV === 'mainnet') {
+        return;
+      }
 
-    if (!account) {
-      return;
-    }
+      if (!account) {
+        return;
+      }
 
-    const contract = new Contract(
-      account,
-      'sputnik-factory-v3.ctindogaru.testnet',
-      {
+      const contract = new Contract(account, appConfig.NEAR_CONTRACT_NAME, {
         viewMethods: ['get_default_code_hash', 'get_contracts_metadata'],
         changeMethods: [],
+      }) as ExtendedContract;
+
+      const metadata = await contract.get_contracts_metadata();
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const sortedMeta = metadata.sort((v1, v2) => {
+        if (v1[1].version > v2[1].version) {
+          return 1;
+        }
+
+        if (v1[1].version < v2[1].version) {
+          return -1;
+        }
+
+        return 0;
+      });
+
+      // todo - temp!!!
+      // if (dao.daoVersion?.hash) {
+      //   setVersionHash(dao.daoVersion.hash);
+      // }
+
+      const currentVersionHashIndex = sortedMeta.findIndex(
+        meta => meta[0] === dao.daoVersion?.hash
+      );
+      const nextVersion =
+        currentVersionHashIndex === -1
+          ? sortedMeta[0]
+          : sortedMeta[currentVersionHashIndex + 1];
+
+      const hash = nextVersion[0];
+
+      if (hash === dao.daoVersion?.hash) {
+        setLoading(false);
+
+        return;
       }
-    ) as ExtendedContract;
 
-    // todo - this is just to enable upgrade flow for demo
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [hash, metadata] = await Promise.all([
-      contract.get_default_code_hash(),
-      contract.get_contracts_metadata(),
-    ]);
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const sortedMeta = metadata.sort((v1, v2) => {
-      if (v1[1].version > v2[1].version) {
-        return 1;
-      }
-
-      if (v1[1].version < v2[1].version) {
-        return -1;
-      }
-
-      return 0;
-    });
-
-    // // todo - temp!!!
-    if (dao.daoVersion?.hash) {
-      setVersionHash(dao.daoVersion.hash);
+      setVersion(nextVersion);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
     }
-
-    // if (hash === dao.daoVersion.hash) {
-    //   setLoading(false);
-    //
-    //   return;
-    // }
-    //
-    // const currentVersionHashIndex = sortedMeta.findIndex(
-    //   meta => meta[0] === dao.daoVersion.hash
-    // );
-    // const nextVersionHash = sortedMeta[currentVersionHashIndex + 1];
-    //
-    // setVersionHash(nextVersionHash[0]);
-    setLoading(false);
-  }, [appConfig?.NEAR_ENV, dao.daoVersion?.hash, nearService]);
+  }, [appConfig, dao.daoVersion, nearService]);
 
   useEffect(() => {
     (async () => {
@@ -96,7 +99,7 @@ export function useCheckDaoUpgrade(
   }, [getUpgradeInfo]);
 
   return {
-    versionHash,
+    version,
     loading,
   };
 }
@@ -154,7 +157,9 @@ export function useUpgradeStatus(
             settings: newSettings,
           });
 
-          setUpgradeStatus(resp.daoUpgrade);
+          if (resp.daoUpgrade) {
+            setUpgradeStatus(resp.daoUpgrade);
+          }
         }
       } catch (err) {
         const { message } = err;
