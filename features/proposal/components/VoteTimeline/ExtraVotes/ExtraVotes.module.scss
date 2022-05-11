@@ -1,0 +1,62 @@
+@use "sass:math";
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+$point: 32px;
+
+.extraVotes {
+  @include centralize;
+  background: var(--color-neutral-40);
+  border: 1px solid var(--color-neutral-90);
+  border-radius: 50%;
+  cursor: pointer;
+  height: $point;
+  left: 0;
+  position: absolute;
+  top: -(math.div($point, 2));
+  width: $point;
+}
+
+.number {
+  @extend %body2;
+  color: var(--color-neutral-90);
+  height: 32px;
+  line-height: 32px;
+}
+
+.tooltip {
+  @extend %caption1;
+  padding: 8px;
+  white-space: nowrap;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  align-items: center;
+  display: flex;
+  margin: 0 0 6px;
+  &:last-child {
+    margin: 0;
+  }
+}
+
+.icon {
+  height: 11px;
+  margin-right: 4px;
+  width: 11px;
+}
+
+.name,
+.date {
+  @extend %caption1;
+}
+
+.name {
+  margin-right: 9px;
+}

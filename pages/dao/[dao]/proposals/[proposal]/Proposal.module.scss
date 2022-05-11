@@ -8,7 +8,7 @@
     'dao'
     'proposalInfo'
     'policy'
-    'filters'
+    'votes'
     'body';
   grid-template-columns: 1fr;
   margin-top: 56px;
@@ -58,24 +58,16 @@
   grid-area: proposalStat;
 }
 
-.filters {
-  align-items: flex-end;
-  display: flex;
-  flex-direction: column;
-  grid-area: filters;
-  justify-content: space-between;
+.votes {
+  grid-area: votes;
   margin-top: 60px;
-
-  @include tablet-portrait {
-    align-items: center;
-    flex-direction: row;
-  }
 }
 
-.filterTitle {
+.voteTitle {
   @extend %heading1;
   color: var(--color-neutral-90);
   display: none;
+  margin-bottom: 24px;
 
   @include tablet-landscape {
     display: block;

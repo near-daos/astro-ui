@@ -1,0 +1,68 @@
+@use "sass:math";
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+$point: 32px;
+$icon: 21px;
+
+@mixin icon {
+  border-radius: 50%;
+  height: $icon;
+  width: $icon;
+}
+
+.voteTimeline {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  position: relative;
+}
+
+.line {
+  border-top: 1px dashed var(--color-neutral-60);
+  height: 1px;
+  position: relative;
+  width: 864px;
+}
+
+.successLine {
+  background-color: var(--color-success-50);
+  height: 4px;
+  left: 0;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.createProposal {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.text {
+  @extend %body2;
+  bottom: -24px;
+  left: 0;
+  position: absolute;
+  white-space: nowrap;
+}
+
+.statusSuccess {
+  @include icon;
+}
+
+.successPoint {
+  align-items: center;
+  background: var(--color-success-50);
+  border-radius: 50%;
+  display: flex;
+  height: $point;
+  justify-content: center;
+  position: relative;
+  width: $point;
+  z-index: 1;
+}

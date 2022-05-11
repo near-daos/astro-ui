@@ -17,6 +17,7 @@ import { getVoteDetails } from 'features/vote-policy/helpers';
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 
 import { VoteCollapsableList } from 'features/proposal/components/VoteCollapsableList';
+import { VoteTimeline } from 'features/proposal/components/VoteTimeline';
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
@@ -203,17 +204,19 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
               numberOfGroups={dao.groups.length}
             />
           </div>
-          <div className={styles.filters}>
-            <div className={styles.filterTitle}>{t('proposalVotes.title')}</div>
-            <ProposalFilter
-              value={activeFilter || VoteStatuses.All}
-              title={t('proposalVotes.filters.title')}
-              onChange={value => {
-                setActiveFilter(value === VoteStatuses.All ? undefined : value);
-              }}
-              list={filterList}
-              className={styles.statusFilterRoot}
-            />
+          <div className={styles.votes}>
+            <div className={styles.voteTitle}>{t('proposalVotes.title')}</div>
+            <VoteTimeline proposal={proposal} />
+
+            {/*<ProposalFilter*/}
+            {/*  value={activeFilter || VoteStatuses.All}*/}
+            {/*  title={t('proposalVotes.filters.title')}*/}
+            {/*  onChange={value => {*/}
+            {/*    setActiveFilter(value === VoteStatuses.All ? undefined : value);*/}
+            {/*  }}*/}
+            {/*  list={filterList}*/}
+            {/*  className={styles.statusFilterRoot}*/}
+            {/*/>*/}
           </div>
           <div className={styles.body}>
             <VoteCollapsableList

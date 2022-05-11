@@ -1,0 +1,29 @@
+@use "sass:math";
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+$point: 32px;
+
+.voteAction {
+  border-radius: 50%;
+  cursor: pointer;
+  height: $point;
+  position: absolute;
+  top: -(math.div($point, 2));
+  width: $point;
+
+  &.approve {
+    border: 1px solid var(--color-success-50);
+  }
+
+  &.failure {
+    border: 1px solid var(--color-error-50);
+  }
+}
+
+.tooltip {
+  @extend %caption1;
+  padding: 8px;
+  white-space: nowrap;
+}
