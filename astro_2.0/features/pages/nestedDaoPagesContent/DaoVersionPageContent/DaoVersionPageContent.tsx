@@ -31,7 +31,7 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
   );
   const { tokens } = useDaoCustomTokens();
   const showLowBalanceWarning =
-    !!tokens?.NEAR?.balance && Number(tokens?.NEAR?.balance) < 6;
+    !!tokens?.NEAR?.balance && Number(tokens?.NEAR?.balance) < 11;
   const isViewProposal = upgradeStatus?.proposalId !== null;
   const isUpgradeInProgress =
     upgradeStatus && upgradeStatus.upgradeStep !== null;
@@ -61,7 +61,24 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
   }, [daoContext.dao, version]);
 
   if (!daoContext.userPermissions.isCanCreateProposals && !isViewProposal) {
-    return <div>no permissions</div>;
+    return (
+      <div className={styles.root}>
+        <div className={styles.titleRow}>
+          <h1>DAO Settings</h1>
+        </div>
+        <DaoWarning
+          content={
+            <>
+              <div className={styles.title}>Info</div>
+              <div className={styles.text}>
+                You do not have permissions to perform DAO upgrade
+              </div>
+            </>
+          }
+          className={styles.warningWrapper}
+        />
+      </div>
+    );
   }
 
   return (
