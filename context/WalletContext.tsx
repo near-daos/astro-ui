@@ -84,7 +84,8 @@ export const WrappedWalletContext: FC = ({ children }) => {
     CookieService.remove(ACCOUNT_COOKIE);
     removePersistedWallet();
     availableWallets.forEach(wallet => wallet.logout());
-  }, [availableWallets, removePersistedWallet]);
+    router.reload();
+  }, [availableWallets, removePersistedWallet, router]);
 
   const switchAccount = useCallback(
     async (walletType: WalletType, accountId: string) => {
