@@ -347,14 +347,8 @@
     "daoRules": "Правила ДАО"
   },
   "proposalVotes": {
+    "noGroup": "No longer in any group",
     "title": "Votes",
-    "voices": "voices",
-    "filters": {
-      "title": "Filter by vote status:",
-      "all": "All",
-      "approved": "Approved",
-      "failed": "Failed",
-      "notVoted": "Not Voted"
-    }
+    "voices": "voices"
   }
 }
