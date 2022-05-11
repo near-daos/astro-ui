@@ -1,29 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`notifications bell Should render component if feature flag is true and account id available 1`] = `
-<div>
-  <div
-    class="root"
-    href="/notifications"
-  >
-    <svg
-      class="bell"
-      data-testid="notifications-icon"
-    >
-      <use
-        href="/_next/undefined"
-      />
-    </svg>
-    <div
-      class="notificationsCount"
-    >
-      5
-    </div>
-  </div>
-  <div
-    class="root"
-  />
-</div>
-`;
-
 exports[`notifications bell Should render nothing if feature flag is false 1`] = `<div />`;
