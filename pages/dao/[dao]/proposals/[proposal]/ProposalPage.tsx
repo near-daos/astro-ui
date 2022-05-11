@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 
 import { DAO, Member } from 'types/dao';
@@ -10,7 +10,6 @@ import { VoterDetail } from 'features/types';
 import { DaoContext } from 'types/context';
 
 import { DefaultVotingPolicy } from 'astro_2.0/components/DefaultVotingPolicy';
-import { ProposalFilter } from 'astro_2.0/features/Proposals/components/ProposalFilter';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { getProposalScope } from 'utils/getProposalScope';
 import { getVoteDetails } from 'features/vote-policy/helpers';
@@ -30,13 +29,6 @@ interface ProposalPageProps {
   daoContext: DaoContext;
 }
 
-enum VoteStatuses {
-  Approved = 'approved',
-  Failed = 'failed',
-  NotVoted = 'notVoted',
-  All = 'all',
-}
-
 const ProposalPage: NextPage<ProposalPageProps> = ({
   dao,
   proposal,
@@ -45,18 +37,12 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
 }) => {
   const router = useRouter();
   const scope = getProposalScope(proposal?.kind.type);
-  const [activeFilter, setActiveFilter] = useState<string | undefined>(
-    undefined
-  );
   const { tokens } = useDaoCustomTokens();
   const { t } = useTranslation();
 
-  const { fullVotersList, votersByStatus } = useMemo(() => {
+  const fullVotersList = useMemo(() => {
     if (!proposal) {
-      return {
-        votersByStatus: {},
-        fullVotersList: [],
-      };
+      return [];
     }
 
     const { votersList } = getVoteDetails(
@@ -93,7 +79,7 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
       return res;
     }, [] as VoterDetail[]);
 
-    const votersListData = [
+    return [
       ...votersList.map(item => {
         const member = members.find(m => m.name === item.name);
 
@@ -105,37 +91,6 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
       }),
       ...notVotedList,
     ];
-
-    const votersByStatusData = votersListData.reduce((res, item) => {
-      let status;
-
-      switch (item.vote) {
-        case 'Yes': {
-          status = 'approved';
-          break;
-        }
-        case 'No': {
-          status = 'failed';
-          break;
-        }
-        default: {
-          status = 'notVoted';
-        }
-      }
-
-      if (res[status]) {
-        res[status].push(item);
-      } else {
-        res[status] = [item];
-      }
-
-      return res;
-    }, {} as Record<string, VoterDetail[]>);
-
-    return {
-      votersByStatus: votersByStatusData,
-      fullVotersList: votersListData,
-    };
   }, [proposal, scope, members]);
 
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
@@ -152,25 +107,6 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
       breadcrumbsConfig.SINGLE_PROPOSAL_PAGE_URL,
     ];
   }, [breadcrumbsConfig]);
-
-  const filterList = useMemo(
-    () => [
-      { value: VoteStatuses.All, label: t('proposalVotes.filters.all') },
-      {
-        value: VoteStatuses.Approved,
-        label: t('proposalVotes.filters.approved'),
-      },
-      {
-        value: VoteStatuses.Failed,
-        label: t('proposalVotes.filters.failed'),
-      },
-      {
-        value: VoteStatuses.NotVoted,
-        label: t('proposalVotes.filters.notVoted'),
-      },
-    ],
-    [t]
-  );
 
   return (
     <>
@@ -203,24 +139,9 @@ const ProposalPage: NextPage<ProposalPageProps> = ({
               numberOfGroups={dao.groups.length}
             />
           </div>
-          <div className={styles.filters}>
-            <div className={styles.filterTitle}>{t('proposalVotes.title')}</div>
-            <ProposalFilter
-              value={activeFilter || VoteStatuses.All}
-              title={t('proposalVotes.filters.title')}
-              onChange={value => {
-                setActiveFilter(value === VoteStatuses.All ? undefined : value);
-              }}
-              list={filterList}
-              className={styles.statusFilterRoot}
-            />
-          </div>
+          <div className={styles.voteTitle}>{t('proposalVotes.title')}</div>
           <div className={styles.body}>
-            <VoteCollapsableList
-              data={
-                !activeFilter ? fullVotersList : votersByStatus[activeFilter]
-              }
-            />
+            <VoteCollapsableList data={fullVotersList} />
           </div>
         </>
       </NestedDaoPageWrapper>
