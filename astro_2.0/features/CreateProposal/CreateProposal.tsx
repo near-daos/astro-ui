@@ -10,7 +10,6 @@ import omit from 'lodash/omit';
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
 import { useModal } from 'components/modal';
-
 import { ProposalCardRenderer } from 'astro_2.0/components/ProposalCardRenderer';
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
 import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
@@ -299,29 +298,28 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             />
           }
           proposalCardNode={
-            <CreateProposalCard
-              showClose={showClose}
-              key={selectedProposalVariant}
-              userPermissions={userPermissions}
-              canCreateTokenProposal={canCreateTokenProposal}
-              onClose={onClose}
-              onTypeSelect={v => {
-                const defaults = getFormInitialValues(v, accountId);
+            <CustomTokensContext.Provider value={{ tokens: daoTokens }}>
+              <CreateProposalCard
+                showClose={showClose}
+                key={selectedProposalVariant}
+                userPermissions={userPermissions}
+                canCreateTokenProposal={canCreateTokenProposal}
+                onClose={onClose}
+                onTypeSelect={v => {
+                  const defaults = getFormInitialValues(v, accountId);
 
-                methods.reset({ ...defaults });
+                  methods.reset({ ...defaults });
 
-                setSchemaContext({ selectedProposalVariant: v });
+                  setSchemaContext({ selectedProposalVariant: v });
 
-                setSelectedProposalVariant(v);
-              }}
-              type={selectedProposalVariant}
-              content={
-                <CustomTokensContext.Provider value={{ tokens: daoTokens }}>
-                  {contentNode}
-                </CustomTokensContext.Provider>
-              }
-              proposer={accountId}
-            />
+                  setSelectedProposalVariant(v);
+                }}
+                type={selectedProposalVariant}
+                content={contentNode}
+                proposer={accountId}
+                daoId={dao.id}
+              />
+            </CustomTokensContext.Provider>
           }
           infoPanelNode={
             <TransactionDetailsWidget

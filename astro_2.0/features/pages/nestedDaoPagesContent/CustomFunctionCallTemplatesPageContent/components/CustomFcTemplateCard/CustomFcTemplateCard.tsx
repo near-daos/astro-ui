@@ -6,22 +6,30 @@ import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import uniqid from 'uniqid';
+import omit from 'lodash/omit';
+import Decimal from 'decimal.js';
+import cn from 'classnames';
 
 import {
   LetterHeadWidget,
   ProposalCardRenderer,
 } from 'astro_2.0/components/ProposalCardRenderer';
+
 import { DaoContext } from 'types/context';
-import { CustomFcTemplate, ProposalType } from 'types/proposal';
+import { ProposalType } from 'types/proposal';
 import { DaoFeedItem } from 'types/dao';
+import {
+  ProposalTemplate,
+  TemplateUpdatePayload,
+} from 'types/proposalTemplate';
 
 import { VALID_METHOD_NAME_REGEXP } from 'constants/regexp';
 import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { CardContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/CardContent';
 import { ApplyToDaos } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/components/ApplyToDaos';
-import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
-import { Tokens } from 'context/CustomTokensContext';
+import { formatGasValue, formatYoktoValue } from 'utils/format';
 
 import styles from './CustomFcTemplateCard.module.scss';
 
@@ -32,98 +40,132 @@ ace.config.set(
 
 interface Props {
   daoContext: DaoContext;
-  daoTokens: Tokens;
-  template: CustomFcTemplate;
+  template: ProposalTemplate;
   accountDaos: DaoFeedItem[];
+  onUpdate: (id: string, data: TemplateUpdatePayload) => void;
+  onDelete: (id: string) => void;
+  className?: string;
+  onSaveToDaos: (data: TemplateUpdatePayload[]) => Promise<void>;
 }
 
 interface Form {
   smartContractAddress: string;
   methodName: string;
-  deposit: number;
+  deposit: string;
   json: string;
   actionsGas: number;
+  token: string;
   isActive: boolean;
   name: string;
 }
 
+const schema = yup.object().shape({
+  name: yup.string().required('Required'),
+  smartContractAddress: yup.string().required('Required'),
+  methodName: yup
+    .string()
+    .matches(VALID_METHOD_NAME_REGEXP, 'Provided method name is not valid')
+    .required('Required'),
+  deposit: yup
+    .number()
+    .typeError('Must be a valid number.')
+    .required('Required'),
+  json: yup
+    .string()
+    .required('Required')
+    .test('validJson', 'Provided JSON is not valid', value => {
+      try {
+        JSON.parse(value ?? '');
+      } catch (e) {
+        return false;
+      }
+
+      return true;
+    }),
+  actionsGas: gasValidation,
+});
+
 export const CustomFcTemplateCard: FC<Props> = ({
   daoContext,
   template,
-  daoTokens,
   accountDaos,
+  onUpdate,
+  className,
+  onDelete,
+  onSaveToDaos,
 }) => {
   const { dao } = daoContext;
-  const { payload } = template;
+  const { config } = template;
+  const { tokens } = useCustomTokensContext();
+  const tokenData = config.token ? tokens[config.token] : tokens.NEAR;
   const formKeyRef = useRef(uniqid());
 
-  const schema = yup.object().shape({
-    name: yup.string().required('Required'),
-    smartContractAddress: yup.string().required('Required'),
-    methodName: yup
-      .string()
-      .matches(VALID_METHOD_NAME_REGEXP, 'Provided method name is not valid')
-      .required('Required'),
-    deposit: yup
-      .number()
-      .typeError('Must be a valid number.')
-      .required('Required'),
-    json: yup
-      .string()
-      .required('Required')
-      .test('validJson', 'Provided JSON is not valid', value => {
-        try {
-          JSON.parse(value ?? '');
-        } catch (e) {
-          return false;
-        }
-
-        return true;
-      }),
-    actionsGas: gasValidation,
-  });
-
   const parsedJson = useMemo(() => {
-    return payload.json
-      ? decodeURIComponent(payload.json as string)
+    return config.json
+      ? decodeURIComponent(config.json as string)
           .trim()
           .replace(/\\/g, '')
       : '';
-  }, [payload.json]);
+  }, [config.json]);
 
   const defaultValues = useMemo(() => {
     return {
-      smartContractAddress: payload.smartContractAddress,
-      methodName: payload.methodName,
-      actionsGas: Number(payload.actionsGas ?? DEFAULT_PROPOSAL_GAS),
-      deposit: Number(payload.deposit ?? '0'),
+      smartContractAddress: config.smartContractAddress,
+      methodName: config.methodName,
+      actionsGas: config.actionsGas
+        ? Number(config.actionsGas) / 10 ** 12
+        : DEFAULT_PROPOSAL_GAS,
+      deposit: tokenData
+        ? formatYoktoValue(config.deposit, tokenData.decimals)
+        : config.deposit,
+      token: config.token,
       json: parsedJson,
-      isActive: template.isActive,
+      isActive: template.isEnabled,
       name: template.name,
     };
   }, [
+    config.smartContractAddress,
+    config.methodName,
+    config.actionsGas,
+    config.deposit,
+    config.token,
+    tokenData,
     parsedJson,
-    payload.actionsGas,
-    payload.deposit,
-    payload.methodName,
-    payload.smartContractAddress,
-    template.isActive,
+    template.isEnabled,
     template.name,
   ]);
 
   const methods = useForm<Form>({
     mode: 'all',
     reValidateMode: 'onChange',
-
     defaultValues,
     resolver: yupResolver(schema),
   });
 
   const { handleSubmit, reset } = methods;
 
-  const submitHandler = (data: Form) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
+  const submitHandler = async (data: Form) => {
+    const newTokenData = data.token ? tokens[data.token] : tokens.NEAR;
+    const templatePayload = {
+      ...omit(data, 'isActive'),
+      deposit: new Decimal(data.deposit)
+        .mul(10 ** newTokenData.decimals)
+        .toFixed(),
+      actionsGas: formatGasValue(
+        data.actionsGas ?? DEFAULT_PROPOSAL_GAS
+      ).toString(),
+    };
+
+    if (!template.id || !templatePayload) {
+      return;
+    }
+
+    await onUpdate(template.id, {
+      daoId: dao.id,
+      name: data.name,
+      isEnabled: data.isActive,
+      config: templatePayload,
+    });
   };
 
   const handleReset = useCallback(() => {
@@ -141,22 +183,24 @@ export const CustomFcTemplateCard: FC<Props> = ({
   function renderContent() {
     return (
       <div className={styles.wrapper}>
-        <CustomTokensContext.Provider value={{ tokens: daoTokens }}>
-          <FormProvider {...methods}>
-            <form
-              key={formKeyRef.current}
-              noValidate
-              onSubmit={handleSubmit(submitHandler)}
-              className={styles.root}
-            >
-              <CardContent onReset={handleReset} />
-            </form>
-          </FormProvider>
-        </CustomTokensContext.Provider>
+        <FormProvider {...methods}>
+          <form
+            key={formKeyRef.current}
+            noValidate
+            onSubmit={handleSubmit(submitHandler)}
+            className={styles.root}
+          >
+            <CardContent
+              onReset={handleReset}
+              onDelete={() => template.id && onDelete(template.id)}
+            />
+          </form>
+        </FormProvider>
         <ApplyToDaos
           accountDaos={accountDaos}
           template={template}
           className={styles.applyToDaos}
+          onSave={onSaveToDaos}
         />
       </div>
     );
@@ -164,7 +208,7 @@ export const CustomFcTemplateCard: FC<Props> = ({
 
   return (
     <ProposalCardRenderer
-      className={styles.container}
+      className={cn(styles.container, className)}
       proposalCardNode={renderContent()}
       letterHeadNode={
         <LetterHeadWidget

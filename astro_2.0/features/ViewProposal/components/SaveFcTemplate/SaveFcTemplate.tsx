@@ -10,6 +10,7 @@ import { SaveFcTemplateModal } from 'astro_2.0/features/ViewProposal/components/
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 
 import { ProposalFeedItem } from 'types/proposal';
+import { useSaveTemplates } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/hooks';
 
 import styles from './SaveFcTemplate.module.scss';
 
@@ -18,7 +19,7 @@ interface Props {
 }
 
 export const SaveFcTemplate: FC<Props> = ({ proposal }) => {
-  const { accountId } = useWalletContext();
+  const { accountId, pkAndSignature } = useWalletContext();
 
   const [{ loading }, getDaosList] = useAsyncFn(async () => {
     return SputnikHttpService.getAccountDaos(accountId);
@@ -26,11 +27,19 @@ export const SaveFcTemplate: FC<Props> = ({ proposal }) => {
 
   const [showModal] = useModal(SaveFcTemplateModal);
 
+  const { saveTemplates } = useSaveTemplates();
+
   const handleClick = useCallback(async () => {
     const accountDaos = await getDaosList();
 
-    await showModal({ accountDaos, proposal });
-  }, [getDaosList, proposal, showModal]);
+    const res = await showModal({ accountDaos, proposal });
+
+    if (res && res[0] && pkAndSignature) {
+      const data = res[0];
+
+      await saveTemplates(data);
+    }
+  }, [getDaosList, pkAndSignature, proposal, saveTemplates, showModal]);
 
   return (
     <div className={styles.root}>

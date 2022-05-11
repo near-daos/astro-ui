@@ -6,7 +6,6 @@ import { useMount } from 'react-use';
 
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
-
 import { Input } from 'components/inputs/Input';
 
 import {
@@ -33,8 +32,7 @@ export const CustomContent: FC = () => {
     },
     [setValue]
   );
-  const values = getValues();
-  const json = JSON.stringify(values.json, null, 2);
+  const { json } = getValues();
 
   useMount(() => {
     // Setting default value on form hook doesn't work with Ace so we update value manually
@@ -78,6 +76,7 @@ export const CustomContent: FC = () => {
       <div className={styles.editor}>
         <InputWrapper fieldName="json" label="JSON" fullWidth>
           <AceEditor
+            key={getValues().functionCallType}
             placeholder=""
             mode="json"
             className={styles.editorContent}
