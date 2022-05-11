@@ -1,7 +1,10 @@
 /* istanbul ignore file */
 
 import { ProposalVariant } from 'types/proposal';
-import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
+import {
+  DEFAULT_PROPOSAL_GAS,
+  DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
+} from 'services/sputnik/constants';
 
 export function getFormInitialValues(
   selectedProposalType: ProposalVariant,
@@ -13,7 +16,7 @@ export function getFormInitialValues(
       return {
         details: 'Get latest binary for DAO upgrade',
         externalUrl: '',
-        gas: DEFAULT_PROPOSAL_GAS,
+        gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
       };
     }
@@ -21,7 +24,7 @@ export function getFormInitialValues(
       return {
         details: 'Upgrade DAO',
         externalUrl: '',
-        gas: DEFAULT_PROPOSAL_GAS,
+        gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
       };
     }
@@ -29,7 +32,7 @@ export function getFormInitialValues(
       return {
         details: 'Remove binary used for DAO upgrade',
         externalUrl: '',
-        gas: DEFAULT_PROPOSAL_GAS,
+        gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
       };
     }

@@ -32,13 +32,15 @@ import { AmountBalanceCard } from 'astro_2.0/features/pages/nestedDaoPagesConten
 import { Button } from 'components/button/Button';
 
 import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
-import { DEFAULT_VOTE_GAS } from 'services/sputnik/constants';
+import {
+  DEFAULT_UPGRADE_DAO_VOTE_GAS,
+  DEFAULT_VOTE_GAS,
+} from 'services/sputnik/constants';
 import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCountdown } from 'hooks/useCountdown';
 import { ProposalControlPanel } from './components/ProposalControlPanel';
 
 // import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-
 import styles from './ProposalCard.module.scss';
 
 export interface ProposalCardProps {
@@ -249,8 +251,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     defaultValues: {
       gas:
         variant === ProposalVariant.ProposeGetUpgradeCode ||
-        variant === ProposalVariant.ProposeRemoveUpgradeCode
-          ? 230
+        variant === ProposalVariant.ProposeRemoveUpgradeCode ||
+        variant === ProposalVariant.ProposeUpgradeSelf
+          ? DEFAULT_UPGRADE_DAO_VOTE_GAS
           : DEFAULT_VOTE_GAS,
     },
     resolver: yupResolver(schema),
