@@ -6,6 +6,7 @@
   display: flex;
   height: 40px;
   justify-content: center;
+  position: relative;
 }
 
 .bell {
@@ -13,21 +14,31 @@
   height: 24px;
   pointer-events: none;
   width: 24px;
-
-  &:hover {
-    color: var(--color-black);
-  }
 }
 
-.arrow {
-  color: var(--color-white);
+.root:hover .bell {
+  color: var(--color-black);
 }
 
 .notificationsCount {
   @extend %subtitle4;
-  background-color: var(--color-success-5);
-  border-radius: 2px;
-  color: var(--color-success-60);
+  align-items: center;
+  background-color: var(--color-error-60);
+  border-radius: 16px;
+  color: var(--color-white);
+  display: none;
+  font-size: 10px;
+  justify-content: center;
+  left: 6px;
   margin: 0 0 0 4px;
-  padding: 4px 7px;
+  max-height: 16px;
+  min-width: 16px;
+  padding: 0 4px;
+  position: absolute;
+  top: 4px;
+  white-space: nowrap;
+
+  &.visible {
+    display: flex;
+  }
 }
