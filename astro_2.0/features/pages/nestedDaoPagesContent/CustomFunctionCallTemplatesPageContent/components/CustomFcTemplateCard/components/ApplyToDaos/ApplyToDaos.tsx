@@ -1,35 +1,45 @@
 import React, { FC, useMemo } from 'react';
 import cn from 'classnames';
+import * as yup from 'yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Badge } from 'components/Badge';
 import {
   DropdownMultiSelect,
   Option,
 } from 'components/inputs/selects/DropdownMultiSelect';
-import { DaoFeedItem } from 'types/dao';
-import * as yup from 'yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { CustomFcTemplate } from 'types/proposal';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
+
+import { DaoFeedItem } from 'types/dao';
+import {
+  ProposalTemplate,
+  TemplateUpdatePayload,
+} from 'types/proposalTemplate';
 
 import styles from './ApplyToDaos.module.scss';
 
 interface Props {
   accountDaos: DaoFeedItem[];
-  template: CustomFcTemplate;
+  template: ProposalTemplate;
   className?: string;
+  onSave: (data: TemplateUpdatePayload[]) => Promise<void>;
 }
 
 interface Form {
   daos: string[];
 }
 
+const schema = yup.object().shape({
+  daos: yup.array().of(yup.string()).min(1).required(),
+});
+
 export const ApplyToDaos: FC<Props> = ({
   accountDaos,
   template,
   className,
+  onSave,
 }) => {
   const daosOptions = useMemo<Option[]>(() => {
     return accountDaos.map(item => ({
@@ -41,10 +51,6 @@ export const ApplyToDaos: FC<Props> = ({
       ),
     }));
   }, [accountDaos]);
-
-  const schema = yup.object().shape({
-    daos: yup.array().of(yup.string()).min(1).required(),
-  });
 
   const methods = useForm<Form>({
     mode: 'all',
@@ -61,20 +67,17 @@ export const ApplyToDaos: FC<Props> = ({
     formState: { isValid },
   } = methods;
 
-  const submitHandler = (data: Form) => {
-    const templatePayload = template.payload;
+  const submitHandler = async (data: Form) => {
+    const templatePayload = template.config;
 
     const dataToSave = data.daos.map(daoId => ({
-      id: '1',
       daoId,
       name: template.name,
-      payload: templatePayload,
-      isActive: true,
+      config: templatePayload,
+      isEnabled: true,
     }));
 
-    // todo - save template data to API
-    // eslint-disable-next-line no-console
-    console.log(dataToSave);
+    await onSave(dataToSave);
   };
 
   return (

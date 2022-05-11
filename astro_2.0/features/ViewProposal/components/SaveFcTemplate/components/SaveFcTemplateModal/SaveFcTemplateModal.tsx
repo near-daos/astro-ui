@@ -16,6 +16,7 @@ import { Badge } from 'components/Badge';
 
 import { DaoFeedItem } from 'types/dao';
 import { ProposalFeedItem } from 'types/proposal';
+import { TemplateUpdatePayload } from 'types/proposalTemplate';
 
 import { getFcTemplateFromProposal } from 'astro_2.0/features/ViewProposal/components/SaveFcTemplate/components/SaveFcTemplateModal/helpers';
 
@@ -23,7 +24,7 @@ import styles from './SaveFcTemplateModal.module.scss';
 
 interface Props {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (args?: TemplateUpdatePayload[]) => void;
   accountDaos: DaoFeedItem[];
   proposal: ProposalFeedItem;
 }
@@ -76,18 +77,13 @@ export const SaveFcTemplateModal: FC<Props> = ({
     }
 
     const dataToSave = data.daos.map(daoId => ({
-      id: '1',
       daoId,
       name: data.name,
-      payload: templatePayload,
-      isActive: true,
+      config: templatePayload,
+      isEnabled: true,
     }));
 
-    // todo - save template data to API
-    // eslint-disable-next-line no-console
-    console.log(dataToSave);
-
-    return onClose();
+    return onClose(dataToSave);
   };
 
   return (

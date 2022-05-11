@@ -28,6 +28,7 @@
 .content {
   align-items: flex-start;
   display: flex;
+  flex-direction: column;
   grid-area: content;
   width: 100%;
 }
@@ -191,4 +192,8 @@
   @include tablet-landscape {
     margin-top: 32px;
   }
+}
+
+.card {
+  margin-bottom: 42px;
 }

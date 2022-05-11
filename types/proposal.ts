@@ -406,13 +406,6 @@ export interface CustomFcTemplatePayload {
   deposit: string;
   smartContractAddress: string;
   json: string;
-  actionsGas: string;
+  actionsGas: string | number;
   token: string;
-}
-
-export interface CustomFcTemplate {
-  id: string;
-  isActive: boolean;
-  name: string;
-  payload: CustomFcTemplatePayload;
 }

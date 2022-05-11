@@ -7,13 +7,12 @@ import styles from './ConfirmModal.module.scss';
 
 export interface Props {
   isOpen: boolean;
-  onClose: (val?: string) => void;
+  onClose: (val?: boolean) => void;
 }
 
 export const ConfirmModal: FC<Props> = ({ isOpen, onClose }) => {
   const handleSubmit = () => {
-    // todo - delete template
-    return onClose();
+    return onClose(true);
   };
 
   return (

@@ -106,6 +106,7 @@ describe('CreateGroupContent', () => {
     ({ type, content }) => {
       const { getByText } = render(
         <CreateProposalCard
+          daoId="test-dao"
           type={type}
           showClose={false}
           proposer="proposer"
@@ -123,6 +124,7 @@ describe('CreateGroupContent', () => {
   it('Should render close button', () => {
     const { getByText } = render(
       <CreateProposalCard
+        daoId="test-dao"
         showClose
         type={ProposalVariant.ProposeCreateToken}
         proposer="proposer"

@@ -1,32 +1,37 @@
 import React, { FC, useCallback, useState } from 'react';
-import { Toggle } from 'components/inputs/Toggle';
-import styles from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/CustomFcTemplateCard.module.scss';
-import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
-import { Input } from 'components/inputs/Input';
 import cn from 'classnames';
 import AceEditor from 'react-ace';
-import {
-  DEFAULT_PROPOSAL_GAS,
-  MAX_GAS,
-  MIN_GAS,
-} from 'services/sputnik/constants';
-import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
 import { useFormContext } from 'react-hook-form';
-import {
-  useDepositWidth,
-  useTokenOptions,
-} from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/hooks';
 import { useMount } from 'react-use';
+
+import { Toggle } from 'components/inputs/Toggle';
+import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
+import { Input } from 'components/inputs/Input';
+import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 import { useModal } from 'components/modal';
 import { ConfirmModal } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/ConfirmModal';
 
+import {
+  DEFAULT_PROPOSAL_GAS,
+  MAX_GAS,
+  MIN_GAS,
+} from 'services/sputnik/constants';
+
+import {
+  useDepositWidth,
+  useTokenOptions,
+} from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/hooks';
+
+import styles from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/CustomFcTemplateCard.module.scss';
+
 interface Props {
   onReset: () => void;
+  onDelete: () => void;
 }
 
-export const CardContent: FC<Props> = ({ onReset }) => {
+export const CardContent: FC<Props> = ({ onReset, onDelete }) => {
   const {
     register,
     setValue,
@@ -42,8 +47,12 @@ export const CardContent: FC<Props> = ({ onReset }) => {
   const { tokenOptions, selectedTokenData } = useTokenOptions();
 
   const handleDelete = useCallback(async () => {
-    await showModal();
-  }, [showModal]);
+    const res = await showModal();
+
+    if (res.length) {
+      onDelete();
+    }
+  }, [onDelete, showModal]);
 
   const handleChange = useCallback(
     v => {

@@ -1,20 +1,23 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useRouter } from 'next/router';
-import { useAsyncFn, useMount, useMountedState } from 'react-use';
+import isEmpty from 'lodash/isEmpty';
+import dynamic from 'next/dynamic';
 
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 import { Loader } from 'components/loader';
-import dynamic from 'next/dynamic';
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import { DaoContext } from 'types/context';
-import { CustomFcTemplate } from 'types/proposal';
 import { DaoFeedItem } from 'types/dao';
-
-import { useWalletContext } from 'context/WalletContext';
-// import { SputnikHttpService } from 'services/sputnik';
 
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+
+import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import {
+  useProposalTemplates,
+  useSaveTemplates,
+} from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/hooks';
 
 import styles from './CustomFunctionCallTemplatesPageContent.module.scss';
 
@@ -40,38 +43,15 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
   const router = useRouter();
   const { stateFilter } = router.query;
   const { tokens } = useDaoCustomTokens();
-  // const { userPermissions, dao } = daoContext;
 
-  const isMounted = useMountedState();
-  const { accountId } = useWalletContext();
-  const [templates, setTemplates] = useState<CustomFcTemplate[]>([]);
+  const {
+    templates,
+    loading,
+    updateTemplate,
+    deleteTemplate,
+  } = useProposalTemplates(daoContext.dao.id);
 
-  const [{ loading }, getTemplates] = useAsyncFn(async () => {
-    // const res = await SputnikHttpService.getCustomFcTemplates(
-    //   daoContext.dao.id
-    // );
-    const res = [
-      {
-        id: '1',
-        isActive: true,
-        name: 'My custom template',
-        payload: {
-          methodName: 'create',
-          deposit: '1',
-          smartContractAddress: 'saturn.sputnikv2.testnet',
-          json: '{"key": "value" }',
-        },
-      } as CustomFcTemplate,
-    ];
-
-    if (isMounted()) {
-      setTemplates(res);
-    }
-  }, [accountId, isMounted]);
-
-  useMount(async () => {
-    await getTemplates();
-  });
+  const { saveTemplates } = useSaveTemplates();
 
   const filterOptions = useMemo(() => {
     const keys = ['Active', 'Inactive'];
@@ -94,30 +74,38 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
         />
       </div>
       <div className={styles.content}>
-        {loading ? (
+        {loading || isEmpty(tokens) ? (
           <Loader />
         ) : (
-          templates
-            .filter(item => {
-              if (stateFilter === 'Active') {
-                return item.isActive;
-              }
+          <CustomTokensContext.Provider value={{ tokens }}>
+            {!templates.length && (
+              <NoResultsView title="No templates saved yet" />
+            )}
+            {templates
+              .filter(item => {
+                if (stateFilter === 'Active') {
+                  return item.isEnabled;
+                }
 
-              if (stateFilter === 'Inactive') {
-                return !item.isActive;
-              }
+                if (stateFilter === 'Inactive') {
+                  return !item.isEnabled;
+                }
 
-              return true;
-            })
-            .map(item => (
-              <CustomFcTemplateCard
-                key={item.id}
-                daoContext={daoContext}
-                daoTokens={tokens}
-                template={item}
-                accountDaos={accountDaos}
-              />
-            ))
+                return true;
+              })
+              .map(item => (
+                <CustomFcTemplateCard
+                  key={`${item.id}_${item.updatedAt}`}
+                  daoContext={daoContext}
+                  template={item}
+                  accountDaos={accountDaos}
+                  onUpdate={updateTemplate}
+                  onDelete={deleteTemplate}
+                  className={styles.card}
+                  onSaveToDaos={saveTemplates}
+                />
+              ))}
+          </CustomTokensContext.Provider>
         )}
       </div>
     </div>
