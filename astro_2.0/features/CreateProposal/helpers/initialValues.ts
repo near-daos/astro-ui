@@ -14,7 +14,7 @@ export function getFormInitialValues(
   switch (selectedProposalType) {
     case ProposalVariant.ProposeGetUpgradeCode: {
       return {
-        details: 'Get latest binary for DAO upgrade',
+        details: 'Get the latest binary for the DAO upgrade',
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
@@ -30,7 +30,7 @@ export function getFormInitialValues(
     }
     case ProposalVariant.ProposeRemoveUpgradeCode: {
       return {
-        details: 'Remove binary used for DAO upgrade',
+        details: 'Remove the binary used for the DAO upgrade',
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,

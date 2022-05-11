@@ -22,7 +22,10 @@ import { DaoLinks } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLi
 import { DaoWarning } from 'astro_2.0/components/DaoWarning';
 
 import { useJoinDao } from 'astro_2.0/features/DaoDashboardHeader/components/hooks';
-import { useCheckDaoUpgrade } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/hooks';
+import {
+  useCheckDaoUpgrade,
+  useUpgradeStatus,
+} from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/hooks';
 
 import { DAO_VERSION_PAGE_URL } from 'constants/routing';
 
@@ -57,6 +60,7 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
   const { t } = useTranslation();
   const isMobileOrTablet = useMedia('(max-width: 767px)');
   const { version } = useCheckDaoUpgrade(dao);
+  const { upgradeStatus } = useUpgradeStatus(id);
   const isUpgradeAvailable =
     version &&
     userPermissions.isCanCreateProposals &&
@@ -95,7 +99,9 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
             }
           >
             <Icon name="upgrade" className={styles.upgradeIcon} />
-            Upgrade DAO version
+            {upgradeStatus?.upgradeStep !== null
+              ? 'Upgrade in progress'
+              : 'Upgrade DAO version'}
           </Button>
         )}
       </section>
