@@ -7,7 +7,7 @@ import {
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
 import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 
-import { ProposalFeedItem, ProposalVariant } from 'types/proposal';
+import { ProposalFeedItem, ProposalType } from 'types/proposal';
 
 import { useWalletContext } from 'context/WalletContext';
 import { getVoteDetails } from 'features/vote-policy/helpers';
@@ -44,8 +44,9 @@ export const ViewProposal: FC<CreateProposalProps> = ({
   const [commentsCount, setCommentsCount] = useState(proposal?.commentsCount);
   const isCouncilUser = proposal?.permissions?.isCouncil ?? false;
   const showOptionalControl =
-    proposal.proposalVariant === ProposalVariant.ProposeCustomFunctionCall &&
-    proposal.status === 'Approved';
+    proposal?.kind?.type === ProposalType.FunctionCall &&
+    proposal.status === 'Approved' &&
+    !!accountId;
 
   if (!proposal || !proposal.dao) {
     return null;
