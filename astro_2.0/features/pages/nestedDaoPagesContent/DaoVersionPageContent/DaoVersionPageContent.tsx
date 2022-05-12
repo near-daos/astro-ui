@@ -104,7 +104,7 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
         <UpgradeVersionWizard
           daoContext={daoContext}
           upgradeStatus={upgradeStatus}
-          versionHash={version ? version[0] : ''}
+          versionHash={upgradeStatus.versionHash}
           onUpdate={update}
         />
       ) : (
