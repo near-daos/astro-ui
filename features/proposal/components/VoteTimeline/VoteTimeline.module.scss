@@ -14,10 +14,14 @@ $icon: 21px;
 
 .voteTimeline {
   align-items: center;
-  display: flex;
+  display: none;
   flex-direction: row;
   height: 60px;
   position: relative;
+
+  @include tablet-landscape {
+    display: flex;
+  }
 }
 
 .line {
@@ -27,13 +31,16 @@ $icon: 21px;
   width: 864px;
 }
 
-.successLine {
+.fulfilLine {
   background-color: var(--color-success-50);
   height: 4px;
   left: 0;
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
+  &.failed {
+    background-color: var(--color-error-50);
+  }
 }
 
 .createProposal {

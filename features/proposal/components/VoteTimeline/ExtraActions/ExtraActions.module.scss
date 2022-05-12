@@ -16,6 +16,7 @@ $point: 32px;
   position: absolute;
   top: -(math.div($point, 2));
   width: $point;
+  z-index: 1;
 }
 
 .number {

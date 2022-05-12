@@ -32,7 +32,9 @@ export const FinishProposal: FC<FinishProposalProps> = ({
           name={status === 'Approved' ? 'statusSuccess' : 'clock'}
           className={styles.icon}
         />
-        <div className={styles.text}>{status}</div>
+        <div className={styles.text}>
+          {status === 'InProgress' ? '' : status}{' '}
+        </div>
       </>
     ) : null}
   </div>

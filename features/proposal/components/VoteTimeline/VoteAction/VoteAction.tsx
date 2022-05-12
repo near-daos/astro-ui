@@ -3,12 +3,13 @@ import cn from 'classnames';
 
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { Icon } from 'components/Icon';
+import { ProposalAction } from 'types/role';
 
 import styles from './VoteAction.module.scss';
 
 export type VoteActionProps = {
   className?: string;
-  type: 'failure' | 'approved';
+  type: ProposalAction;
   position: string;
   date: string;
   name: string;
@@ -26,8 +27,8 @@ export const VoteAction: FC<VoteActionProps> = ({
     className={cn(
       styles.voteAction,
       {
-        [styles.failure]: type === 'failure',
-        [styles.approve]: type === 'approved',
+        [styles.failure]: type === 'VoteReject',
+        [styles.approve]: type === 'VoteApprove',
       },
       className
     )}
@@ -41,7 +42,7 @@ export const VoteAction: FC<VoteActionProps> = ({
         </>
       }
     >
-      <Icon name={type === 'approved' ? 'votingYes' : 'votingNo'} />
+      <Icon name={type === 'VoteApprove' ? 'votingYes' : 'votingNo'} />
     </Tooltip>
   </div>
 );

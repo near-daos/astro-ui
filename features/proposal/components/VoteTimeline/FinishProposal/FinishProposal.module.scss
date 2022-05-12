@@ -11,6 +11,7 @@ $icon: 21px;
   background: var(--color-white);
   border: 1px solid var(--color-neutral-90);
   border-radius: 50%;
+  flex-shrink: 0;
   height: $point;
   position: relative;
   width: $point;
