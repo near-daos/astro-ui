@@ -435,6 +435,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         <FormProvider {...methods}>
           <ProposalControlPanel
             status={status}
+            variant={variant}
             onLike={(data, e) => {
               e?.stopPropagation();
 
