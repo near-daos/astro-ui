@@ -16,7 +16,7 @@ import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSele
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 
 // Constants
-import { VALID_URL_REGEXP, VALID_METHOD_NAME_REGEXP } from 'constants/regexp';
+import { VALID_METHOD_NAME_REGEXP, VALID_URL_REGEXP } from 'constants/regexp';
 import { MAX_GAS, MIN_GAS } from 'services/sputnik/constants';
 
 // Components
@@ -744,6 +744,14 @@ export function getValidationSchema(
           .positive()
           .min(1)
           .required('Required'),
+      });
+    }
+
+    case ProposalVariant.ProposeUpgradeSelf:
+    case ProposalVariant.ProposeGetUpgradeCode:
+    case ProposalVariant.ProposeRemoveUpgradeCode: {
+      return yup.object().shape({
+        details: yup.string().required('Required'),
       });
     }
 

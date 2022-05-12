@@ -30,6 +30,7 @@ import { UserPermissions } from 'types/context';
 
 import { getFormInitialValues } from 'astro_2.0/features/CreateProposal/helpers/initialValues';
 import { getNewProposalObject } from 'astro_2.0/features/CreateProposal/helpers/newProposalObject';
+import { getNonEditableGasValue } from 'astro_2.0/features/CreateProposal/helpers/proposalVariantsHelpers';
 import {
   getFormContentNode,
   getValidationSchema,
@@ -261,6 +262,11 @@ export const CreateProposal: FC<CreateProposalProps> = ({
 
   const contentNode = getFormContentNode(selectedProposalVariant, dao);
 
+  const nonEditableGas = getNonEditableGasValue(
+    selectedProposalVariant,
+    methods.getValues()
+  );
+
   return (
     <FormProvider {...methods}>
       <div className={cn(styles.root, className)} ref={formRef}>
@@ -309,6 +315,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           }
           infoPanelNode={
             <TransactionDetailsWidget
+              gas={nonEditableGas}
               onSubmit={onSubmit}
               buttonLabel={t('propose')}
               bond={{ value: dao.policy.proposalBond }}
