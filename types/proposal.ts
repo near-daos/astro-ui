@@ -298,6 +298,7 @@ export enum ProposalCategories {
   Bounties = 'Bounties',
   Members = 'Groups',
   Polls = 'Polls',
+  FunctionCalls = 'FunctionCalls',
 }
 
 export interface Indexed {

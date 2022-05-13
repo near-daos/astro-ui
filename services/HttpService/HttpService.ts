@@ -776,6 +776,14 @@ export class HttpService {
               });
             }
 
+            if (query.category === ProposalCategories.FunctionCalls) {
+              search.$and?.push({
+                kind: {
+                  $cont: ProposalType.FunctionCall,
+                },
+              });
+            }
+
             if (query.category === ProposalCategories.Members) {
               search.$and?.push({
                 $or: [
