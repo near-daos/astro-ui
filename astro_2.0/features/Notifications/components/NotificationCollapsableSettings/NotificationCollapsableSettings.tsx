@@ -1,3 +1,5 @@
+// TODO requires localisation
+
 import React, { FC } from 'react';
 import cn from 'classnames';
 import { useMedia } from 'react-use';
@@ -57,12 +59,11 @@ export const NotificationCollapsableSettings: FC<NotificationCollapsableSettings
           <div className={styles.daoDetails}>
             <div className={cn(styles.inline)}>{daoName}</div>
             <div className={cn(styles.sub)}>
-              {shortenString(daoAddress, isMobile ? 20 : 36)}
-              <CopyButton
-                text={daoAddress}
-                tooltipPlacement="auto"
-                className={styles.copyAddress}
-              />
+              <CopyButton text={daoAddress} tooltipPlacement="auto">
+                <div className={styles.addressId}>
+                  {shortenString(daoAddress, isMobile ? 20 : 36)}
+                </div>
+              </CopyButton>
             </div>
           </div>
           <div className={styles.toggle}>

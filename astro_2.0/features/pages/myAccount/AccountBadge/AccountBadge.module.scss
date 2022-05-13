@@ -19,25 +19,22 @@
   text-overflow: ellipsis;
 }
 
-.copyBtn {
-  align-items: center;
-  background-color: var(--color-white);
-  border-radius: 30px;
-  cursor: pointer;
-  display: flex;
-  height: 30px;
-  justify-content: center;
-  margin-left: 8px;
-  width: 30px;
+.iconHolder {
+  height: auto !important;
+  margin-left: 6px;
+  width: auto !important;
 }
 
-.icon,
-.iconHolder {
+.icon {
+  background-color: var(--color-white);
+  border-radius: 15px;
+  box-sizing: content-box;
   color: var(--color-neutral-70);
   height: 20px !important;
+  padding: 5px;
   width: 20px !important;
+}
 
-  &:hover {
-    color: var(--color-neutral-50);
-  }
+.root:hover .icon {
+  color: var(--color-neutral-50);
 }

@@ -134,12 +134,15 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
                   />
                 </div>
                 <div className={styles.daoId}>
-                  {shortenString(dao.id, isXsMobile ? 32 : 45)}
                   <CopyButton
                     text={dao.id}
                     tooltipPlacement="auto"
                     className={styles.copyAddress}
-                  />
+                  >
+                    <div className={styles.daoId}>
+                      {shortenString(dao.id, isXsMobile ? 32 : 45)}
+                    </div>
+                  </CopyButton>
                 </div>
               </div>
             </section>

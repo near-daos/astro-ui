@@ -159,21 +159,21 @@ exports[`SearchResultsRenderer Should render component 1`] = `
                               class="address"
                             >
                               <div
-                                class="addressId"
-                              >
-                                
-                                <mark
-                                  data-markjs="true"
-                                >
-                                  hello
-                                </mark>
-                                -world....stnet
-                              </div>
-                              <div
                                 class="root copyAddress"
                                 role="button"
                                 tabindex="0"
                               >
+                                <div
+                                  class="addressId"
+                                >
+                                  
+                                  <mark
+                                    data-markjs="true"
+                                  >
+                                    hello
+                                  </mark>
+                                  -world....stnet
+                                </div>
                                 <button
                                   class="iconButton small btn"
                                   type="button"

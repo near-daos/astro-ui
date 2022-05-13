@@ -1,3 +1,5 @@
+// TODO requires localisation
+
 import axios from 'axios';
 import cn from 'classnames';
 import React, { useEffect, useRef, useState, VFC } from 'react';
@@ -164,7 +166,9 @@ export const NFTCard: VFC<NFTCardProps> = ({ image, contractId, tokenId }) => {
               <div className={styles.label}>Token ID</div>
             </div>
             <div className={cn(styles.contract, styles.value)}>
-              <CopyButton text={tokenId}>{tokenId}</CopyButton>
+              <CopyButton text={tokenId} showIcon={false}>
+                {tokenId}
+              </CopyButton>
             </div>
           </div>
         </div>

@@ -107,21 +107,16 @@
 
   @include astro-mobile {
     font-size: 14px;
-
-    .addressId {
-      @include ellipse-text;
-      max-width: 78%;
-    }
   }
 }
 
 .addressId {
   display: inline;
+  margin-right: 6px;
 }
 
 .copyAddress {
-  display: inline-block;
-  margin-left: 6px;
+  max-width: fit-content;
 }
 
 .description {

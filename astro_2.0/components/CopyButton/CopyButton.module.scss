@@ -2,7 +2,9 @@
 
 .root {
   align-items: center;
+  cursor: pointer;
   display: flex;
+
   .btn {
     color: var(--color-neutral-50);
   }

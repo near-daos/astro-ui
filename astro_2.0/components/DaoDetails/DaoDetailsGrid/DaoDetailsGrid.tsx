@@ -117,14 +117,15 @@ export const DaoDetailsGrid: FC<DaoDetailsGridProps> = ({
                     </div>
                   </Tooltip>
                   <div className={styles.address}>
-                    <div className={styles.addressId}>
-                      {shortenString(id, isMobile ? 16 : 26)}
-                    </div>
                     <CopyButton
                       text={id}
                       tooltipPlacement="auto"
                       className={styles.copyAddress}
-                    />
+                    >
+                      <div className={styles.addressId}>
+                        {shortenString(id, isMobile ? 16 : 26)}
+                      </div>
+                    </CopyButton>
                   </div>
                 </div>
               </section>

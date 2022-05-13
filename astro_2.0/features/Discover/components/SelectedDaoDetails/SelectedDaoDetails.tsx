@@ -66,12 +66,11 @@ export const SelectedDaoDetails: FC = () => {
         <div className={styles.details}>
           <div className={styles.daoName}>{data.name ?? data.id}</div>
           <div className={styles.address}>
-            <div className={styles.addressId}>{shortenString(data.id, 36)}</div>
-            <CopyButton
-              text={data.id}
-              tooltipPlacement="auto"
-              className={styles.copyAddress}
-            />
+            <CopyButton text={data.id} tooltipPlacement="auto">
+              <div className={styles.addressId}>
+                {shortenString(data.id, 36)}
+              </div>
+            </CopyButton>
           </div>
         </div>
       </div>

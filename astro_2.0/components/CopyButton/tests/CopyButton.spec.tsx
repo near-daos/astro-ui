@@ -33,16 +33,14 @@ describe('copy button', () => {
   });
 
   it('Should render component', () => {
-    const { container } = render(
-      <CopyButton text="Copy Me!" title="My Title" />
-    );
+    const { container } = render(<CopyButton text="Copy Me!" />);
 
     expect(container).toMatchSnapshot();
   });
 
   it('Should copy text by click', async () => {
-    const title = 'title';
-    const component = render(<CopyButton text="Copy Me!" title={title} />);
+    const title = 'Some Title';
+    const component = render(<CopyButton text="Copy Me!">{title}</CopyButton>);
 
     fireEvent.click(component.getByText(title));
 
