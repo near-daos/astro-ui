@@ -8,6 +8,7 @@
     'dao'
     'proposalInfo'
     'policy'
+    'votes'
     'body';
   grid-template-columns: 1fr;
   margin-top: 56px;
@@ -55,6 +56,11 @@
 
 .proposalStat {
   grid-area: proposalStat;
+}
+
+.votes {
+  grid-area: votes;
+  margin-top: 60px;
 }
 
 .voteTitle {
