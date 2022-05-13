@@ -9,20 +9,55 @@
   justify-content: center;
   margin-left: 12px;
   padding: 0;
+  position: relative;
+
+  &::before {
+    background-color: var(--color-primary-50);
+    bottom: -8px;
+    content: '';
+    height: 8px;
+    left: 0;
+    position: absolute;
+    width: 100%;
+  }
 }
 
 .control.control {
   @include centralize;
   color: var(--color-white);
+  min-width: 0;
+  padding: 0 8px;
+
+  @include tablet-landscape {
+    display: flex;
+    min-width: 80px;
+    padding: 0 24px;
+  }
+}
+
+.label {
+  display: none;
+
+  @include tablet-landscape {
+    display: flex;
+  }
 }
 
 .loading {
-  margin-left: 8px;
+  margin-left: 0;
   margin-right: 0;
+
+  @include tablet-landscape {
+    margin-left: 8px;
+  }
 }
 
 .icon.icon {
   color: var(--color-white);
-  margin-left: 8px;
   width: 24px;
+
+  @include tablet-landscape {
+    display: flex;
+    margin-left: 8px;
+  }
 }

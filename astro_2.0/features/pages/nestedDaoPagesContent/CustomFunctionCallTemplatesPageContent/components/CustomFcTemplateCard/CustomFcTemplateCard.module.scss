@@ -24,8 +24,12 @@
     'deposit gas'
     'editor editor';
   grid-template-columns: 1fr 1fr;
-  padding: 32px 32px 0;
+  padding: 12px 12px 0;
   width: 100%;
+
+  @include tablet-landscape {
+    padding: 32px 32px 0;
+  }
 }
 
 .toggle {
@@ -41,6 +45,7 @@
   height: 24px;
   margin-left: auto;
   min-height: 24px;
+  white-space: nowrap;
 
   .icon {
     color: currentColor;
@@ -64,8 +69,25 @@
 .controls {
   align-items: center;
   display: flex;
-  grid-area: controls;
-  justify-content: flex-end;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  @include tablet-landscape {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+.cancel {
+  order: 1;
+
+  @include tablet-landscape {
+    order: 0;
+  }
+}
+
+.save {
+  order: 0;
 }
 
 .method {
@@ -75,9 +97,13 @@
 .editor {
   border-top: 1px solid var(--color-neutral-40);
   grid-area: editor;
-  margin: 0 -32px;
+  margin: 0 -12px;
   padding-bottom: 12px;
   padding-top: 12px;
+
+  @include tablet-landscape {
+    margin: 0 -36px;
+  }
 
   &.expanded {
     padding-bottom: 0;
@@ -167,7 +193,7 @@
 }
 
 .select ul {
-  min-width: 260px;
+  left: 0;
   [data-hidden-value] {
     display: flex;
   }
@@ -191,7 +217,11 @@
 .editorLabel {
   display: flex;
   flex-direction: row;
-  padding: 0 32px;
+  padding: 0 12px;
+
+  @include tablet-landscape {
+    padding: 0 32px;
+  }
 
   &.expanded {
     flex-direction: column !important;

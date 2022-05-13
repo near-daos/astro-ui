@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react';
-import { useAsyncFn, useMount } from 'react-use';
+import { useCallback, useEffect, useState } from 'react';
+import { useAsyncFn } from 'react-use';
 import { SputnikHttpService } from 'services/sputnik';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { DAO, DaoSubscription } from 'types/dao';
@@ -65,7 +65,7 @@ export function useDaoSubscriptions(): {
         });
 
         if (result) {
-          getSubscriptions();
+          await getSubscriptions();
         }
       }
     },
@@ -90,9 +90,11 @@ export function useDaoSubscriptions(): {
     [accountId, getSubscriptions, nearService]
   );
 
-  useMount(() => {
-    getSubscriptions();
-  });
+  useEffect(() => {
+    if (accountId) {
+      getSubscriptions();
+    }
+  }, [accountId, getSubscriptions]);
 
   return {
     subscriptions,

@@ -93,6 +93,14 @@
   width: 18px;
 }
 
+.anchor {
+  height: 0;
+  left: 0;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+}
+
 .menu {
   background: var(--color-white);
   border-radius: 8px;

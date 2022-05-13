@@ -90,6 +90,7 @@
   font-size: 14px;
   line-height: 30px;
   padding-left: 12px;
+  width: 100%;
 
   &.disabled {
     @extend %disabled;

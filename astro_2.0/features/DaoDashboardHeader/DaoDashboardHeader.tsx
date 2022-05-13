@@ -62,16 +62,17 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
     userPermissions.isCanCreateProposals &&
     userPermissions.allowedProposalsToCreate[ProposalType.UpgradeSelf];
 
-  const { showButton, showWarning } = useJoinDao(
+  const { showButton: showJoinButton, showWarning } = useJoinDao(
     id,
     userPermissions,
     daoMembersList
   );
+  const showFollowButton = !daoMembersList.includes(accountId);
 
   return (
     <div
       className={cn(styles.root, className, {
-        [styles.hideFollow]: daoMembersList.includes(accountId),
+        [styles.hideFollow]: !showFollowButton,
       })}
     >
       <section
@@ -105,17 +106,15 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
         <div className={styles.value}>{members}</div>
       </section>
 
-      {(!daoMembersList.includes(accountId) ||
-        showButton ||
-        !isMobileOrTablet) && (
+      {(showFollowButton || showJoinButton || !isMobileOrTablet) && (
         <section className={styles.followSection}>
-          {showButton && (
+          {showJoinButton && (
             <JoinDaoButton
               onClick={onCreateProposal}
               className={styles.joinDao}
             />
           )}
-          {!daoMembersList.includes(accountId) && (
+          {showFollowButton && (
             <FollowButton daoId={id} daoName={displayName} />
           )}
           {!isMobileOrTablet && (

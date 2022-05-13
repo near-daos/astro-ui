@@ -121,6 +121,7 @@
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .root {
     display: grid;
+    grid-column-gap: 0;
     grid-template-areas:
       'address'
       'method'
