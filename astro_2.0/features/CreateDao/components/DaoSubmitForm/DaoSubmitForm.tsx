@@ -88,7 +88,7 @@ export function DaoSubmitForm(): JSX.Element {
             labelClassName={styles.label}
           >
             <div>
-              <strong>5</strong> NEAR
+              <strong>5.4</strong> NEAR
             </div>
           </FieldWrapper>
           <InputWrapper fieldName="gas" label="TGas">
