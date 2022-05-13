@@ -59,11 +59,11 @@
 
 .addressId {
   display: inline;
+  margin-right: 6px;
 }
 
 .copyAddress {
   display: inline-block;
-  margin-left: 6px;
 }
 
 .proposals {
@@ -78,6 +78,7 @@
   display: flex;
   justify-content: flex-start;
   white-space: nowrap;
+
   &.right {
     flex-direction: row-reverse;
     justify-content: flex-end;

@@ -54,14 +54,15 @@ export const TopListItem: FC<TopListItemProps> = ({
         <div className={styles.details}>
           <div className={styles.daoName}>{dao}</div>
           <div className={styles.address}>
-            <div className={styles.addressId}>
-              {shortenString(dao, isMobile ? 18 : 36)}
-            </div>
             <CopyButton
               text={dao}
               tooltipPlacement="auto"
               className={styles.copyAddress}
-            />
+            >
+              <div className={styles.addressId}>
+                {shortenString(dao, isMobile ? 18 : 36)}
+              </div>
+            </CopyButton>
           </div>
         </div>
       </div>

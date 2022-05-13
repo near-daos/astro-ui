@@ -17,12 +17,12 @@ import styles from './CopyButton.module.scss';
 
 interface CopyButtonProps {
   text: string;
-  title?: string;
   className?: string;
   iconHolderClassName?: string;
   iconClassName?: string;
   iconName?: IconName;
   tooltipPlacement?: 'right' | 'top' | 'bottom' | 'left' | 'auto';
+  showIcon?: boolean;
 }
 
 const COPY_TEXT = 'Copy';
@@ -31,11 +31,11 @@ export const CopyButton: FC<CopyButtonProps> = ({
   text,
   className,
   iconName = 'buttonCopy',
-  title,
   tooltipPlacement = 'right',
   children,
   iconClassName,
   iconHolderClassName,
+  showIcon = true,
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const [tooltip, setTooltip] = useState(COPY_TEXT);
@@ -66,8 +66,8 @@ export const CopyButton: FC<CopyButtonProps> = ({
         onClick={copyAccountName}
         onKeyPress={copyAccountName}
       >
-        {title && title}
-        {children || (
+        {children}
+        {showIcon && (
           <IconButton
             icon={iconName}
             className={cn(styles.btn, iconHolderClassName)}

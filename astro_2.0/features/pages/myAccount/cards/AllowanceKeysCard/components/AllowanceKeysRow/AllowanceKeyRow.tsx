@@ -1,3 +1,5 @@
+// TODO requires localisation
+
 import React, { FC, useCallback } from 'react';
 import { useMedia } from 'react-use';
 
@@ -33,14 +35,15 @@ export const AllowanceKeyRow: FC<Props> = ({ daoWithAllowanceKey }) => {
         <div className={styles.details}>
           <div className={styles.daoName}>{daoWithAllowanceKey.daoId}</div>
           <div className={styles.address}>
-            <div className={styles.addressId}>
-              {shortenString(daoWithAllowanceKey.daoId, isMobile ? 18 : 36)}
-            </div>
             <CopyButton
-              text={daoWithAllowanceKey.daoId}
               tooltipPlacement="auto"
+              text={daoWithAllowanceKey.daoId}
               className={styles.copyAddress}
-            />
+            >
+              <div className={styles.addressId}>
+                {shortenString(daoWithAllowanceKey.daoId, isMobile ? 18 : 36)}
+              </div>
+            </CopyButton>
           </div>
         </div>
       </div>

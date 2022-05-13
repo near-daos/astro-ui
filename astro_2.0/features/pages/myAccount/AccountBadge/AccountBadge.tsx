@@ -10,15 +10,13 @@ export const AccountBadge: VFC = () => {
   const { accountId } = useWalletContext();
 
   return (
-    <div className={styles.root}>
+    <CopyButton
+      text={accountId}
+      className={styles.root}
+      iconClassName={styles.icon}
+      iconHolderClassName={styles.iconHolder}
+    >
       <div className={styles.account}>{accountId}</div>
-
-      <CopyButton
-        text={accountId}
-        className={styles.copyBtn}
-        iconClassName={styles.icon}
-        iconHolderClassName={styles.iconHolder}
-      />
-    </div>
+    </CopyButton>
   );
 };

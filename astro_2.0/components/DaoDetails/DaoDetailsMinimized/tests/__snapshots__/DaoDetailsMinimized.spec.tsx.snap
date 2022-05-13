@@ -63,12 +63,16 @@ exports[`dao details minimized Should render component 1`] = `
             <div
               class="daoId"
             >
-              default-flag-test.sputnikv2.testnet
               <div
                 class="root copyAddress"
                 role="button"
                 tabindex="0"
               >
+                <div
+                  class="daoId"
+                >
+                  default-flag-test.sputnikv2.testnet
+                </div>
                 <button
                   class="iconButton small btn"
                   type="button"

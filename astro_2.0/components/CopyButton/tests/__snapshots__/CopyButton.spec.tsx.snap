@@ -7,7 +7,6 @@ exports[`copy button Should render component 1`] = `
     role="button"
     tabindex="0"
   >
-    My Title
     <button
       class="iconButton small btn"
       type="button"
