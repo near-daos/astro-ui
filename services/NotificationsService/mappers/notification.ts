@@ -40,7 +40,8 @@ export function mapNotificationDtoToNotification(
         targetId,
         type,
         metadata,
-        createdAt: date && date.toISOString ? date.toISOString() : '',
+        createdAt:
+          createdAt && date && date.toISOString ? date.toISOString() : '',
         isMuteAvailable: false,
         isMarkReadAvailable: true,
         isDeleteAvailable: false,

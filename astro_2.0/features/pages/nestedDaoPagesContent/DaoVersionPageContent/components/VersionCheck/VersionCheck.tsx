@@ -56,7 +56,6 @@ export const VersionCheck: FC<VersionCheckProps> = ({
       <div className={styles.iconWrapper}>
         <Icon name="navSettingsVersion" className={styles.icon} />
       </div>
-      <div className={styles.title}>Your version</div>
 
       {loading ? (
         <>
@@ -66,27 +65,32 @@ export const VersionCheck: FC<VersionCheckProps> = ({
       ) : null}
 
       {!loading && version?.current ? (
-        <div>
+        <>
+          <div className={styles.title}>
+            Current version: V{version.current.number}
+          </div>
           <div className={styles.version}>
             <div className={styles.date}>
-              Last updated {version.current.date}
+              Last updated: {version.current.date}
             </div>
-            <div className={styles.number}>N {version.current.number}</div>
+            <div className={styles.date}>Hash: {version.current.hash}</div>
           </div>
-        </div>
+        </>
       ) : null}
 
       {!loading && version?.next?.number ? (
         <>
-          <div className={styles.title}>Next available version</div>
+          <div className={styles.title}>
+            Available version: V{version.next.number}
+          </div>
           <div className={styles.version}>
-            <div className={styles.number}>N {version.next.number}</div>
+            <div className={styles.date}>Hash: {version.next.hash}</div>
           </div>
         </>
       ) : null}
 
       {!loading && version === null && (
-        <div className={styles.version}>N/A</div>
+        <div className={styles.version}>Version: N/A</div>
       )}
 
       {!loading ? renderButton() : null}
