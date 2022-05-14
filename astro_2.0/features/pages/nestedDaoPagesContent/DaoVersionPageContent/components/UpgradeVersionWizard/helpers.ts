@@ -9,17 +9,17 @@ type Step = {
 
 const upgradeSteps: Step[] = [
   {
-    label: 'Get latest code',
+    label: 'Get Code From Factory',
     value: 'getLatestCode',
     isCurrent: true,
   },
   {
-    label: 'Upgrade self',
+    label: 'Upgrade DAO',
     value: 'upgradeSelf',
     isCurrent: false,
   },
   {
-    label: 'Remove upgrade code blob',
+    label: 'Recover Storage Costs',
     value: 'removeUpgradeCodeBlob',
     isCurrent: false,
   },

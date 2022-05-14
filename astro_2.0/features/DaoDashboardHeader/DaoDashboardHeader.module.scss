@@ -152,6 +152,10 @@
   margin-top: 32px;
 }
 
+.warning {
+  margin-bottom: 24px;
+}
+
 .title {
   @extend %title3;
   margin-bottom: 4px;
@@ -159,28 +163,4 @@
 
 .text {
   @extend %caption1;
-}
-
-.upgradeDaoButton {
-  align-items: center;
-  background: var(--color-white);
-  border-radius: 4px;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
-  display: flex;
-  font-size: 13px;
-  opacity: 0.8;
-  position: absolute;
-  right: 24px;
-  text-transform: capitalize;
-  top: 24px;
-  transition: opacity 0.1s ease-out;
-
-  &:hover {
-    opacity: 0.9;
-  }
-}
-
-.upgradeIcon {
-  margin-right: 4px;
-  width: 24px;
 }

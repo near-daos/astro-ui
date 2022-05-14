@@ -53,9 +53,12 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
       current: {
         date: format(parseISO(daoVersion.createdAt), 'dd MMM yyyy, hh:mm aaa'),
         number: daoVersion.version.join('.'),
+        hash: daoVersion.hash ?? '',
       },
       next: {
-        number: version ? version[1].version.join('.') : '',
+        number:
+          version && version[1]?.version ? version[1].version.join('.') : '',
+        hash: version && version[0] ? version[0] : '',
       },
     };
   }, [daoContext.dao, version]);
@@ -92,8 +95,8 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
             <>
               <div className={styles.title}>Warning</div>
               <div className={styles.text}>
-                DAO available balance is too low to perform upgrade. Please send
-                Near to your account and then try again.
+                DAO available balance is too low to perform upgrade. Send 6 NEAR
+                to <b>{daoContext.dao.id}</b> and reload this page to proceed.
               </div>
             </>
           }

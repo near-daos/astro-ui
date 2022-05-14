@@ -14,7 +14,7 @@ export function getFormInitialValues(
   switch (selectedProposalType) {
     case ProposalVariant.ProposeGetUpgradeCode: {
       return {
-        details: 'Get the latest binary for the DAO upgrade',
+        details: `Upgrading your DAO requires you to retrieve the new code you want your DAO to run. This proposal is to get a copy of the upgrade code. The code comes from the Sputnik DAO Factory, the same place your DAO came from when you created it.`,
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
@@ -22,7 +22,7 @@ export function getFormInitialValues(
     }
     case ProposalVariant.ProposeUpgradeSelf: {
       return {
-        details: 'Upgrade DAO',
+        details: `Now that your DAO has a copy of the code it wants to run, it's time to propose that the DAO "Upgrades Itself." This proposal will switch the DAO from running its old code to the code you retrieved in step 1.`,
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
@@ -30,7 +30,7 @@ export function getFormInitialValues(
     }
     case ProposalVariant.ProposeRemoveUpgradeCode: {
       return {
-        details: 'Remove the binary used for the DAO upgrade',
+        details: `Your DAO is now running the latest code! This proposal is to delete the upgrade code which you retrieved from the factory. Deleting that code saves NEAR for your DAO. It's safe to delete that code because smart contracts always store a copy of the code they're running.`,
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,

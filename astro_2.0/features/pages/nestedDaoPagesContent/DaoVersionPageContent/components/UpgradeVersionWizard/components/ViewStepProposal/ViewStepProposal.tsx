@@ -48,6 +48,7 @@ export const ViewStepProposal: FC<Props> = ({
         showFlag={false}
         tokens={{}}
         preventNavigate
+        optionalPostVoteAction={onApproved}
       />
       {isApproved && canControlUpgrade && (
         <Button

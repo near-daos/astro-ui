@@ -100,14 +100,16 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       }
       case ProposalVariant.ProposeGetUpgradeCode: {
         return (
-          <InfoBlockWidget label="Upgrade" value="Get latest binary code" />
+          <InfoBlockWidget label="Upgrade" value="Get Code From Factory" />
         );
       }
       case ProposalVariant.ProposeUpgradeSelf: {
-        return <InfoBlockWidget label="Upgrade" value="Upgrade dao" />;
+        return <InfoBlockWidget label="Upgrade" value="Upgrade DAO" />;
       }
       case ProposalVariant.ProposeRemoveUpgradeCode: {
-        return <InfoBlockWidget label="Upgrade" value="Remove binary" />;
+        return (
+          <InfoBlockWidget label="Upgrade" value="Recover Storage Costs" />
+        );
       }
       case ProposalVariant.ProposeDoneBounty: {
         return (
