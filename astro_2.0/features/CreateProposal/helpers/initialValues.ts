@@ -14,7 +14,7 @@ export function getFormInitialValues(
   switch (selectedProposalType) {
     case ProposalVariant.ProposeGetUpgradeCode: {
       return {
-        details: 'Get the latest binary for the DAO upgrade',
+        details: `Upgrading your DAO requires you to retrieve the new code you want your DAO to run. This step gets V3 code from the Sputnik DAO Factory.This is the same place your DAO came from when you created it.\nIt's advised to get your DAO members online for the upgrade process. That way it will be fast to approve each of the 3 upgrade steps.`,
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
@@ -22,7 +22,7 @@ export function getFormInitialValues(
     }
     case ProposalVariant.ProposeUpgradeSelf: {
       return {
-        details: 'Upgrade DAO',
+        details: `The second step to upgrade your DAO is to run the V3 code you retrieved from the factory. You do this by proposing that the DAO "Upgrades Itself".\nLike the previous step it's advised to have DAO members online for fast proposal approval. After your DAO approves this proposal you’ll be upgraded to V3!`,
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
@@ -30,7 +30,7 @@ export function getFormInitialValues(
     }
     case ProposalVariant.ProposeRemoveUpgradeCode: {
       return {
-        details: 'Remove the binary used for the DAO upgrade',
+        details: `When you upgraded to V3 your DAO stored a copy of that code to its address. That means you can delete the copy of the code you retrieved from the factory. Deleting the extra code copy saves NEAR for your DAO!`,
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
