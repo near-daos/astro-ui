@@ -7,12 +7,12 @@
   flex: 1;
   font-size: 13px;
   height: 40px;
-  margin-right: 12px;
   padding: 0 12px;
   text-transform: capitalize;
 
   @include tablet-landscape {
     flex: unset;
+    margin-right: 12px;
   }
 }
 

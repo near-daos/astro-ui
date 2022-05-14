@@ -103,7 +103,6 @@ export const ViewProposal: FC<CreateProposalProps> = ({
           updatedAt={proposal.updatedAt}
           toggleInfoPanel={toggleInfoPanel}
           commentsCount={commentsCount}
-          hasOptionalControl={showOptionalControl}
           voteDetails={
             proposal.dao.policy.defaultVotePolicy.ratio
               ? getVoteDetails(

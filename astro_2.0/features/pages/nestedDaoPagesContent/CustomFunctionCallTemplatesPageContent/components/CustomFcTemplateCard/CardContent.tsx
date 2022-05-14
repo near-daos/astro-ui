@@ -71,15 +71,38 @@ export const CardContent: FC<Props> = ({ onReset, onDelete }) => {
 
   return (
     <>
-      {isDirty && (
-        <div className={styles.controls}>
-          <Button capitalize variant="tertiary" size="small" onClick={onReset}>
+      {isDirty ? (
+        <div className={cn(styles.delete, styles.controls)}>
+          <Button
+            capitalize
+            variant="tertiary"
+            size="small"
+            onClick={onReset}
+            className={styles.cancel}
+          >
             Cancel
           </Button>
-          <Button disabled={!isValid} capitalize size="small" type="submit">
+          <Button
+            disabled={!isValid}
+            capitalize
+            size="small"
+            type="submit"
+            className={styles.save}
+          >
             Save
           </Button>
         </div>
+      ) : (
+        <Button
+          variant="tertiary"
+          className={styles.delete}
+          capitalize
+          size="small"
+          onClick={handleDelete}
+        >
+          <Icon name="buttonDelete" className={styles.icon} />
+          Delete
+        </Button>
       )}
 
       <Toggle
@@ -95,16 +118,6 @@ export const CardContent: FC<Props> = ({ onReset, onDelete }) => {
         }}
         className={styles.toggle}
       />
-      <Button
-        variant="tertiary"
-        className={styles.delete}
-        capitalize
-        size="small"
-        onClick={handleDelete}
-      >
-        <Icon name="buttonDelete" className={styles.icon} />
-        Delete
-      </Button>
 
       <div className={styles.name}>
         <InputWrapper fieldName="name" label="Template Name" fullWidth>
@@ -177,7 +190,7 @@ export const CardContent: FC<Props> = ({ onReset, onDelete }) => {
               onChange={handleChange}
               defaultValue={json}
               fontSize={14}
-              width={expanded ? '90%' : '0'}
+              width={expanded ? '100%' : '0'}
               height="200px"
               showPrintMargin
               showGutter={false}

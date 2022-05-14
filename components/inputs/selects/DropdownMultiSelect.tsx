@@ -6,6 +6,8 @@ import Downshift, {
 } from 'downshift';
 import cn from 'classnames';
 import { useMeasure } from 'react-use';
+import { usePopper } from 'react-popper';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { Checkbox } from 'components/inputs/Checkbox';
 import { Icon } from 'components/Icon';
@@ -197,6 +199,36 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
     });
   }
 
+  const [referenceElement, setReferenceElement] = useState(null);
+  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
+    null
+  );
+
+  const POPUP_LEFT_MARGIN = 20;
+  const POPUP_RIGHT_MARGIN = 20;
+
+  const { styles: popperStyles, attributes } = usePopper(
+    referenceElement,
+    popperElement,
+    {
+      placement: 'bottom-start',
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: [0, 23],
+          },
+        },
+        {
+          name: 'preventOverflow',
+          options: {
+            padding: { left: POPUP_LEFT_MARGIN, right: POPUP_RIGHT_MARGIN },
+          },
+        },
+      ],
+    }
+  );
+
   return (
     <Downshift
       onSelect={handleSelect}
@@ -235,17 +267,35 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
                   />
                 </div>
               </button>
-              <ul
-                className={cn(styles.menu, menuClassName)}
-                {...getMenuProps()}
-              >
-                {isOpen && (
-                  <>
-                    {!simple && renderDropdownSelectedList()}
-                    {renderDropdownOptionsList(getItemProps)}
-                  </>
-                )}
-              </ul>
+              <div
+                className={styles.anchor}
+                ref={setReferenceElement as React.LegacyRef<HTMLDivElement>}
+              />
+              <AnimatePresence>
+                <div
+                  ref={setPopperElement}
+                  style={{ ...popperStyles.popper, zIndex: 100, width: '100%' }}
+                  {...attributes.popper}
+                >
+                  <motion.div
+                    initial={{ opacity: 0, transform: 'translateY(40px)' }}
+                    animate={{ opacity: 1, transform: 'translateY(0px)' }}
+                    exit={{ opacity: 0 }}
+                  >
+                    <ul
+                      className={cn(styles.menu, menuClassName)}
+                      {...getMenuProps()}
+                    >
+                      {isOpen && (
+                        <>
+                          {!simple && renderDropdownSelectedList()}
+                          {renderDropdownOptionsList(getItemProps)}
+                        </>
+                      )}
+                    </ul>
+                  </motion.div>
+                </div>
+              </AnimatePresence>
             </div>
           </div>
         );

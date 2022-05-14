@@ -135,6 +135,8 @@ export const CustomFcTemplateCard: FC<Props> = ({
     template.name,
   ]);
 
+  // todo - filter out daos where im not a council
+
   const methods = useForm<Form>({
     mode: 'all',
     reValidateMode: 'onChange',
