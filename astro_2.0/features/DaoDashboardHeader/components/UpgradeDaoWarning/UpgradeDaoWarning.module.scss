@@ -1,0 +1,24 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.upgradeDaoButton {
+  align-items: center;
+  display: flex;
+  font-size: 13px;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.upgradeIcon {
+  margin-right: 4px;
+  width: 24px;
+}
+
+.title {
+  @extend %title3;
+  margin-bottom: 4px;
+}
+
+.text {
+  @extend %caption1;
+}

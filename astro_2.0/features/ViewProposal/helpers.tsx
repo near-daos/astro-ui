@@ -539,13 +539,13 @@ export function getProposalVariantLabel(
       return 'Voting permissions';
     }
     case ProposalVariant.ProposeGetUpgradeCode: {
-      return 'Get latest code';
+      return 'Get code from factory';
     }
     case ProposalVariant.ProposeUpgradeSelf: {
       return 'Upgrade DAO';
     }
     case ProposalVariant.ProposeRemoveUpgradeCode: {
-      return 'Remove upgrade code blob';
+      return 'Recover Storage Costs';
     }
     default: {
       return type;

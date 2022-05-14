@@ -70,6 +70,7 @@ export interface ProposalCardProps {
   updatedAt?: string | null;
   toggleInfoPanel?: () => void;
   commentsCount: number;
+  optionalPostVoteAction?: () => Promise<void>;
   permissions: {
     canApprove: boolean;
     canReject: boolean;
@@ -179,6 +180,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   updatedAt,
   toggleInfoPanel,
   commentsCount,
+  optionalPostVoteAction,
 }) => {
   const { accountId, nearService } = useAuthContext();
   const { t } = useTranslation();
@@ -187,7 +189,22 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
     async (vote: VoteAction, gas?: string | number) => {
       try {
-        await nearService?.vote(daoId, proposalId, vote, gas);
+        const res = await nearService?.vote(daoId, proposalId, vote, gas);
+
+        // One of the usages - in upgrade dao wizard to auto update steps
+        if (optionalPostVoteAction) {
+          if (res && res[0]) {
+            const successReceipt =
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              res[0]?.transaction_outcome?.outcome?.status?.SuccessReceiptId;
+
+            if (successReceipt) {
+              await optionalPostVoteAction();
+            }
+          }
+        }
+
         await router.reload();
       } catch (e) {
         // todo - handle errors
