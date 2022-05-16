@@ -47,6 +47,20 @@ export const API_QUERIES = {
   GET_PROPOSALS_LIST_BY_ACCOUNT_ID: 'getProposalsListByAccountId',
   FIND_DAO_BY_NAME: 'findDaoByName',
   GET_JOINING_DAO_PROPOSALS: 'getJoiningDaoProposals',
+  SEND_COMMENT: 'sendComment',
+  DELETE_COMMENT: 'deleteComment',
+  REPORT_COMMENT: 'reportComment',
+  SEND_CONTACT: 'sendContact',
+  SEND_VERIFICATION: 'sendVerification',
+  VERIFY: 'verify',
+  TOGGLE_BOUNTY_CONTEXTS: 'toggleBountyContexts',
+  SHOW_BOUNTIES: 'showBounties',
+  UPDATE_DAO_SETTINGS: 'updateDaoSettings',
+  SAVE_PROPOSAL_TEMPLATE: 'saveProposalTemplate',
+  UPDATE_PROPOSAL_TEMPLATE: 'updateProposalTemplate',
+  DELETE_PROPOSAL_TEMPLATE: 'deleteProposalTemplate',
+  UPDATE_ACCOUNT_SUBSCRIPTION: 'updateAccountSubscription',
+  DELETE_ACCOUNT_SUBSCRIPTION: 'deleteAccountSubscription',
 };
 
 export type ApiQueries = keyof typeof API_QUERIES;

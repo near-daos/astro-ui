@@ -19,6 +19,7 @@ import {
 
 import { logger } from 'utils/logger';
 import { PkAndSignature } from 'context/WalletContextHooks';
+import { API_QUERIES } from 'services/sputnik/constants';
 
 class NotificationsServiceClass {
   private readonly httpService = httpService;
@@ -56,18 +57,34 @@ class NotificationsServiceClass {
     try {
       const urlPart = isEmail ? 'email' : 'phone';
 
-      await this.httpService.post(`account/${urlPart}`, {
-        [isEmail ? 'email' : 'phoneNumber']: contact,
-        accountId,
-        publicKey,
-        signature,
-      });
+      await this.httpService.post(
+        `account/${urlPart}`,
+        {
+          [isEmail ? 'email' : 'phoneNumber']: contact,
+          accountId,
+          publicKey,
+          signature,
+        },
+        {
+          queryRequest: {
+            name: API_QUERIES.SEND_CONTACT,
+          },
+        }
+      );
 
-      await this.httpService.post(`account/${urlPart}/send-verification`, {
-        accountId,
-        publicKey,
-        signature,
-      });
+      await this.httpService.post(
+        `account/${urlPart}/send-verification`,
+        {
+          accountId,
+          publicKey,
+          signature,
+        },
+        {
+          queryRequest: {
+            name: API_QUERIES.SEND_VERIFICATION,
+          },
+        }
+      );
     } catch (e) {
       logger.error(e);
 
@@ -92,12 +109,20 @@ class NotificationsServiceClass {
     try {
       const urlPart = isEmail ? 'email' : 'phone';
 
-      await this.httpService.post(`account/${urlPart}/verify`, {
-        code,
-        accountId,
-        publicKey,
-        signature,
-      });
+      await this.httpService.post(
+        `account/${urlPart}/verify`,
+        {
+          code,
+          accountId,
+          publicKey,
+          signature,
+        },
+        {
+          queryRequest: {
+            name: API_QUERIES.VERIFY,
+          },
+        }
+      );
 
       return true;
     } catch (e) {

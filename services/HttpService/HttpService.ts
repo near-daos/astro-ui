@@ -5,6 +5,7 @@ import {
   SConditionAND,
   SFields,
 } from '@nestjsx/crud-request';
+import omit from 'lodash/omit';
 
 // Mappers
 import {
@@ -859,6 +860,36 @@ export class HttpService {
             }
           }
           break;
+
+        case API_QUERIES.SEND_CONTACT:
+        case API_QUERIES.SEND_VERIFICATION:
+        case API_QUERIES.VERIFY:
+        case API_QUERIES.TOGGLE_BOUNTY_CONTEXTS:
+        case API_QUERIES.SHOW_BOUNTIES:
+        case API_QUERIES.UPDATE_DAO_SETTINGS:
+        case API_QUERIES.SAVE_PROPOSAL_TEMPLATE:
+        case API_QUERIES.UPDATE_PROPOSAL_TEMPLATE:
+        case API_QUERIES.DELETE_PROPOSAL_TEMPLATE:
+        case API_QUERIES.UPDATE_ACCOUNT_SUBSCRIPTION:
+        case API_QUERIES.DELETE_ACCOUNT_SUBSCRIPTION:
+        case API_QUERIES.DELETE_COMMENT:
+        case API_QUERIES.REPORT_COMMENT:
+        case API_QUERIES.SEND_COMMENT: {
+          const { accountId, publicKey, signature } = request.data;
+
+          const buff = Buffer.from(`${accountId}|${publicKey}|${signature}`);
+
+          request.data = omit(request.data, [
+            'accountId',
+            'publicKey',
+            'signature',
+          ]);
+
+          request.headers = {
+            Authorization: `Bearer ${buff.toString('base64')}`,
+          };
+          break;
+        }
         default:
           break;
       }
@@ -961,8 +992,12 @@ export class HttpService {
     return this.client.get<T, R>(url, config);
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  post<T, R>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R> {
+  post<T, R>(
+    url: string,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    data?: any,
+    config?: CustomAxiosRequestConfig
+  ): Promise<R> {
     return this.client.post<T, R>(url, data, config);
   }
 
@@ -970,7 +1005,7 @@ export class HttpService {
     url: string,
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     data?: any,
-    config?: AxiosRequestConfig
+    config?: CustomAxiosRequestConfig
   ): Promise<R> {
     return this.client.patch<T, R>(url, data, config);
   }
@@ -979,7 +1014,7 @@ export class HttpService {
     url: string,
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     data?: any,
-    config?: AxiosRequestConfig
+    config?: CustomAxiosRequestConfig
   ): Promise<R> {
     return this.client.delete<T, R>(url, {
       ...config,

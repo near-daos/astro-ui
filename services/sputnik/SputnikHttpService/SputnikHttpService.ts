@@ -639,7 +639,11 @@ class SputnikHttpServiceClass {
         isArchived: boolean;
       },
       { data: string }
-    >(`/bounty-contexts`, params);
+    >(`/bounty-contexts`, params, {
+      queryRequest: {
+        name: API_QUERIES.TOGGLE_BOUNTY_CONTEXTS,
+      },
+    });
 
     return response.data;
   }
@@ -657,7 +661,12 @@ class SputnikHttpServiceClass {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await this.httpService.patch<any, boolean>(
       `/bounties-contexts`,
-      params
+      params,
+      {
+        queryRequest: {
+          name: API_QUERIES.SHOW_BOUNTIES,
+        },
+      }
     );
 
     return response;
@@ -791,7 +800,11 @@ class SputnikHttpServiceClass {
       const response = await this.httpService.post<
         UpdateDaoSubscription,
         { data: { accountId: string } }
-      >(`/subscriptions`, params);
+      >(`/subscriptions`, params, {
+        queryRequest: {
+          name: API_QUERIES.UPDATE_ACCOUNT_SUBSCRIPTION,
+        },
+      });
 
       return response.data.accountId;
     } catch (error) {
@@ -809,7 +822,11 @@ class SputnikHttpServiceClass {
       const response = await this.httpService.delete<
         DaoSubscriptionInput,
         { data: { accountId: string } }
-      >(`/subscriptions/${subscriptionId}`, params);
+      >(`/subscriptions/${subscriptionId}`, params, {
+        queryRequest: {
+          name: API_QUERIES.DELETE_ACCOUNT_SUBSCRIPTION,
+        },
+      });
 
       return response.data.accountId;
     } catch (error) {
@@ -848,7 +865,11 @@ class SputnikHttpServiceClass {
       const response = await this.httpService.post<
         SendProposalComment,
         { data: { accountId: string } }
-      >(`/comments`, params);
+      >(`/comments`, params, {
+        queryRequest: {
+          name: API_QUERIES.SEND_COMMENT,
+        },
+      });
 
       return response.data.accountId;
     } catch (error) {
@@ -865,7 +886,11 @@ class SputnikHttpServiceClass {
       const response = await this.httpService.post<
         ReportProposalComment,
         { data: { accountId: string } }
-      >(`/comments/report`, params);
+      >(`/comments/report`, params, {
+        queryRequest: {
+          name: API_QUERIES.REPORT_COMMENT,
+        },
+      });
 
       return response.data.accountId;
     } catch (error) {
@@ -883,7 +908,11 @@ class SputnikHttpServiceClass {
       const response = await this.httpService.delete<
         DeleteProposalComment,
         { data: { accountId: string } }
-      >(`/comments/${commentId}`, params);
+      >(`/comments/${commentId}`, params, {
+        queryRequest: {
+          name: API_QUERIES.DELETE_COMMENT,
+        },
+      });
 
       return response.data.accountId;
     } catch (error) {
@@ -1044,7 +1073,11 @@ class SputnikHttpServiceClass {
         settings: Settings;
       },
       { data: Settings }
-    >(`/daos/${daoId}/settings`, params);
+    >(`/daos/${daoId}/settings`, params, {
+      queryRequest: {
+        name: API_QUERIES.UPDATE_DAO_SETTINGS,
+      },
+    });
 
     return response.data;
   }
@@ -1056,7 +1089,11 @@ class SputnikHttpServiceClass {
     const response = await this.httpService.post<
       ProposalTemplateInput,
       { data: ProposalTemplate }
-    >(`/daos/${daoId}/proposal-templates`, params);
+    >(`/daos/${daoId}/proposal-templates`, params, {
+      queryRequest: {
+        name: API_QUERIES.SAVE_PROPOSAL_TEMPLATE,
+      },
+    });
 
     return response.data;
   }
@@ -1069,7 +1106,11 @@ class SputnikHttpServiceClass {
     const response = await this.httpService.patch<
       ProposalTemplateInput,
       { data: ProposalTemplate }
-    >(`/daos/${daoId}/proposal-templates/${id}`, params);
+    >(`/daos/${daoId}/proposal-templates/${id}`, params, {
+      queryRequest: {
+        name: API_QUERIES.UPDATE_PROPOSAL_TEMPLATE,
+      },
+    });
 
     return response.data;
   }
@@ -1082,7 +1123,11 @@ class SputnikHttpServiceClass {
     const response = await this.httpService.delete<
       ProposalTemplateInput,
       { data: ProposalTemplate }
-    >(`/daos/${daoId}/proposal-templates/${id}`, params);
+    >(`/daos/${daoId}/proposal-templates/${id}`, params, {
+      queryRequest: {
+        name: API_QUERIES.DELETE_PROPOSAL_TEMPLATE,
+      },
+    });
 
     return response.data;
   }
