@@ -30,17 +30,19 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
     daoContext.dao.id
   );
   const { tokens } = useDaoCustomTokens();
-  const showLowBalanceWarning =
-    !!tokens?.NEAR?.balance && Number(tokens?.NEAR?.balance) < 11;
   const isViewProposal = upgradeStatus?.proposalId !== null;
   const isUpgradeInProgress =
     upgradeStatus && upgradeStatus.upgradeStep !== null;
   const isUpgradeAvailable =
-    version &&
+    !!version &&
     daoContext.userPermissions.isCanCreateProposals &&
     daoContext.userPermissions.allowedProposalsToCreate[
       ProposalType.UpgradeSelf
     ];
+  const showLowBalanceWarning =
+    isUpgradeAvailable &&
+    !!tokens?.NEAR?.balance &&
+    Number(tokens?.NEAR?.balance) < 11;
 
   const versionDetails = useMemo(() => {
     const { daoVersion } = daoContext.dao;
