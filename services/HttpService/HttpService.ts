@@ -861,6 +861,10 @@ export class HttpService {
           }
           break;
 
+        case API_QUERIES.UPDATE_NOTIFICATION:
+        case API_QUERIES.READ_ALL_NOTIFICATIONS:
+        case API_QUERIES.ARCHIVE_ALL_NOTIFICATIONS:
+        case API_QUERIES.UPDATE_NOTIFICATION_SETTINGS:
         case API_QUERIES.SEND_CONTACT:
         case API_QUERIES.SEND_VERIFICATION:
         case API_QUERIES.VERIFY:

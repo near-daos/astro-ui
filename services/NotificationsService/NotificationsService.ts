@@ -218,7 +218,11 @@ class NotificationsServiceClass {
     const response = await this.httpService.patch<
       UpdateNotificationParams,
       AxiosResponse<NotificationDTO>
-    >(`/account-notifications/${id}`, params);
+    >(`/account-notifications/${id}`, params, {
+      queryRequest: {
+        name: API_QUERIES.UPDATE_NOTIFICATION,
+      },
+    });
 
     return mapNotificationDtoToNotification([response.data])[0];
   }
@@ -228,7 +232,12 @@ class NotificationsServiceClass {
   ): Promise<string> {
     return this.httpService.patch<UpdateNotificationsParams, string>(
       '/account-notifications/read-all',
-      params
+      params,
+      {
+        queryRequest: {
+          name: API_QUERIES.READ_ALL_NOTIFICATIONS,
+        },
+      }
     );
   }
 
@@ -237,7 +246,12 @@ class NotificationsServiceClass {
   ): Promise<string> {
     return this.httpService.patch<UpdateNotificationsParams, string>(
       '/account-notifications/archive-all',
-      params
+      params,
+      {
+        queryRequest: {
+          name: API_QUERIES.ARCHIVE_ALL_NOTIFICATIONS,
+        },
+      }
     );
   }
 
@@ -287,7 +301,11 @@ class NotificationsServiceClass {
     return this.httpService.post<
       UpdateNotificationSettingsParams,
       NotificationSettingDTO
-    >(`/notification-settings`, params);
+    >(`/notification-settings`, params, {
+      queryRequest: {
+        name: API_QUERIES.UPDATE_NOTIFICATION_SETTINGS,
+      },
+    });
   }
 }
 

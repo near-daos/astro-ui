@@ -61,6 +61,10 @@ export const API_QUERIES = {
   DELETE_PROPOSAL_TEMPLATE: 'deleteProposalTemplate',
   UPDATE_ACCOUNT_SUBSCRIPTION: 'updateAccountSubscription',
   DELETE_ACCOUNT_SUBSCRIPTION: 'deleteAccountSubscription',
+  UPDATE_NOTIFICATION: 'updateNotification',
+  READ_ALL_NOTIFICATIONS: 'readAllNotifications',
+  ARCHIVE_ALL_NOTIFICATIONS: 'archiveAllNotifications',
+  UPDATE_NOTIFICATION_SETTINGS: 'updateNotificationsSettings',
 };
 
 export type ApiQueries = keyof typeof API_QUERIES;
