@@ -100,6 +100,13 @@ export const SaveFcTemplateModal: FC<Props> = ({
           onSubmit={handleSubmit(submitHandler)}
         >
           <h2>Save template</h2>
+
+          {!daosOptions.length && (
+            <span className={styles.warning}>
+              Only councils can save templates to their DAOs
+            </span>
+          )}
+
           <div className={styles.inputWrapper}>
             <InputWrapper fieldName="name" label="Add Name" fullWidth>
               <Input
@@ -107,6 +114,7 @@ export const SaveFcTemplateModal: FC<Props> = ({
                 size="block"
                 inputClassName={styles.input}
                 placeholder="Template Name"
+                disabled={!daosOptions.length}
               />
             </InputWrapper>
           </div>

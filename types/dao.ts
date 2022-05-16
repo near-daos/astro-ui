@@ -152,4 +152,6 @@ export type DaoFeedItem = {
       accountIds: string[];
     }[];
   };
+  council: string[];
+  isCouncil: boolean;
 } & DaoProperties;
