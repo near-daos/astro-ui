@@ -48,6 +48,8 @@ export type DaoFeedItemResponse = {
   totalProposalCount: number;
   totalDaoFunds: number;
   transactionHash: string;
+  council: string[];
+  isCouncil: boolean;
   policy: {
     daoId: string;
     roles: {
@@ -291,6 +293,9 @@ export function mapDaoFeedItemResponseToDaoFeedItem(
     flagLogo: getAwsImageUrl(meta?.flagLogo),
     legal: meta?.legal || {},
     policy: item.policy ?? {},
+
+    council: item.council,
+    isCouncil: item.isCouncil,
   };
 }
 

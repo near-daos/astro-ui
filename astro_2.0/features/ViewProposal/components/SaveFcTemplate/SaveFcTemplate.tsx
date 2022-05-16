@@ -32,9 +32,9 @@ export const SaveFcTemplate: FC<Props> = ({ proposal }) => {
   const handleClick = useCallback(async () => {
     const accountDaos = await getDaosList();
 
-    // todo - filter out daos where im not a council
+    const availableDaos = accountDaos.filter(item => item.isCouncil);
 
-    const res = await showModal({ accountDaos, proposal });
+    const res = await showModal({ accountDaos: availableDaos, proposal });
 
     if (res && res[0] && pkAndSignature) {
       const data = res[0];

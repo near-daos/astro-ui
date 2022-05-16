@@ -43,6 +43,10 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
   const router = useRouter();
   const { stateFilter } = router.query;
   const { tokens } = useDaoCustomTokens();
+  const availableDaos = useMemo(
+    () => accountDaos.filter(item => item.isCouncil),
+    [accountDaos]
+  );
 
   const {
     templates,
@@ -98,7 +102,7 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
                   key={`${item.id}_${item.updatedAt}`}
                   daoContext={daoContext}
                   template={item}
-                  accountDaos={accountDaos}
+                  accountDaos={availableDaos}
                   onUpdate={updateTemplate}
                   onDelete={deleteTemplate}
                   className={styles.card}

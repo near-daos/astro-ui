@@ -257,7 +257,7 @@ export const DropdownMultiSelect: React.FC<DropdownMultiSelectProps> = ({
               <button
                 type="button"
                 className={styles.select}
-                {...getToggleButtonProps()}
+                {...getToggleButtonProps({ disabled: !options.length })}
               >
                 <div className={styles.container}>
                   {renderSelectContainer()}
