@@ -1,3 +1,5 @@
+@import 'styles/typography';
+
 .root {
   display: flex;
   flex-direction: column;
@@ -7,6 +9,10 @@
 
 .controlBtn {
   margin: 32px 0 0 auto;
+}
+
+.reload {
+  margin: 24px 0 0 auto;
 }
 
 .headerControls {
@@ -24,4 +30,38 @@
     color: var(--color-error-80);
     text-shadow: 0 0 8px var(--color-error-70);
   }
+}
+
+.info {
+  margin: 24px 0;
+
+  .title {
+    @extend %title4;
+  }
+
+  .text {
+    @extend %body2;
+    align-items: center;
+    //display: flex;
+  }
+
+  .text > span {
+    margin-right: 4px;
+  }
+
+  .copy {
+    display: inline;
+  }
+}
+
+.infoRoot {
+  background-color: var(--color-primary-10);
+}
+
+.infoStatus {
+  background-color: var(--color-primary-20);
+}
+
+.infoIcon {
+  color: var(--color-primary-50);
 }
