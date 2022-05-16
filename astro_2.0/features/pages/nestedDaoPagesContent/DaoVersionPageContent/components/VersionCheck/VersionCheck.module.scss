@@ -48,7 +48,7 @@
 .version {
   align-items: center;
   display: flex;
-  gap: 24px;
+  flex-direction: column;
   margin-bottom: 35px;
 }
 

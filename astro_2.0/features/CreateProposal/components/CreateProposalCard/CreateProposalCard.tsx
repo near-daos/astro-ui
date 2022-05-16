@@ -102,7 +102,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       }
       case ProposalVariant.ProposeGetUpgradeCode: {
         return (
-          <InfoBlockWidget label="Upgrade" value="Get code from factory" />
+          <InfoBlockWidget label="Upgrade" value="Get Code From Factory" />
         );
       }
       case ProposalVariant.ProposeUpgradeSelf: {
