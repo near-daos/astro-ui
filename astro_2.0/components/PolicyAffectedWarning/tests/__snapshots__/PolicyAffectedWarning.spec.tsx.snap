@@ -3,9 +3,15 @@
 exports[`policy affected warning Should render component 1`] = `
 <div>
   <div>
-    <div>
-      <div>
-        <svg>
+    <div
+      class=""
+    >
+      <div
+        class=""
+      >
+        <svg
+          class=""
+        >
           <use
             href="/_next/undefined"
           />
