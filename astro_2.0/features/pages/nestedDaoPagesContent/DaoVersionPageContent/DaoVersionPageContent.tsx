@@ -52,12 +52,12 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
     return {
       current: {
         date: format(parseISO(daoVersion.createdAt), 'dd MMM yyyy, hh:mm aaa'),
-        number: `${daoVersion.version[0]}`,
+        number: daoVersion.version.join('.'),
         hash: daoVersion.hash ?? '',
       },
       next: {
         number:
-          version && version[1]?.version ? `${version[1].version[0]}` : '',
+          version && version[1]?.version ? version[1].version.join('.') : '',
         hash: version && version[0] ? version[0] : '',
       },
     };

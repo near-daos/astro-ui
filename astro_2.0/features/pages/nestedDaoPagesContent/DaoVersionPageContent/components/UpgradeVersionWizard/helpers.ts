@@ -9,7 +9,7 @@ type Step = {
 
 const upgradeSteps: Step[] = [
   {
-    label: 'Get code from factory',
+    label: 'Get Code From Factory',
     value: 'getLatestCode',
     isCurrent: true,
   },
