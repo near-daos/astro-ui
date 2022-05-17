@@ -94,6 +94,7 @@ export function useCreateProposalFromExternal(
 
           onCreateProposal(variant as ProposalVariant, {
             ...parsedParams,
+            json: JSON.stringify(parsedParams.json),
           });
         }, 1500);
       } catch (e) {
