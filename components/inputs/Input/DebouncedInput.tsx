@@ -10,12 +10,14 @@ interface Props extends InputProps {
 }
 
 export const DebouncedInput = React.forwardRef<HTMLInputElement, Props>(
-  ({ onValueChange, defaultValue, ...rest }, ref) => {
+  ({ onValueChange, defaultValue = '', ...rest }, ref) => {
     const [val, setVal] = React.useState(defaultValue ?? '');
 
     useDebounce(
       () => {
-        onValueChange(val);
+        if (val !== defaultValue) {
+          onValueChange(val);
+        }
       },
       700,
       [val]
@@ -25,6 +27,7 @@ export const DebouncedInput = React.forwardRef<HTMLInputElement, Props>(
       <Input
         {...rest}
         ref={ref}
+        defaultValue={defaultValue}
         onChange={({ currentTarget }) => {
           setVal(currentTarget.value);
         }}
