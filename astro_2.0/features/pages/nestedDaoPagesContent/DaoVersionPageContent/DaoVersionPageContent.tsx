@@ -14,6 +14,9 @@ import { ProposalType } from 'types/proposal';
 
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
+import { GA_EVENTS, sendGAEvent } from 'utils/ga';
+import { useWalletContext } from 'context/WalletContext';
+
 import { VersionCheck } from './components/VersionCheck';
 
 import styles from './DaoVersionPageContent.module.scss';
@@ -25,6 +28,7 @@ interface DaoVersionPageContentProps {
 export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
   daoContext,
 }) => {
+  const { accountId } = useWalletContext();
   const { version } = useCheckDaoUpgrade(daoContext.dao);
   const { loading, upgradeStatus, update } = useUpgradeStatus(
     daoContext.dao.id
@@ -119,6 +123,12 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
               upgradeStep: UpgradeSteps.GetUpgradeCode,
               proposalId: null,
               versionHash: version ? version[0] : '',
+            });
+
+            sendGAEvent({
+              name: GA_EVENTS.DAO_UPGRADE_STARTED,
+              daoId: daoContext.dao.id,
+              accountId,
             });
           }}
           disabled={!isUpgradeAvailable || showLowBalanceWarning}
