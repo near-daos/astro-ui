@@ -88,12 +88,16 @@ export function getFormInitialValues(
       };
     }
     case ProposalVariant.ProposeChangeDaoLinks: {
+      const initial = initialValues as { links?: string[] };
+
+      const links = initial ? initial?.links?.map(item => ({ url: item })) : [];
+
       return {
         details: '',
         externalUrl: '',
-        links: [],
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
+        links,
       };
     }
     case ProposalVariant.ProposeCreateToken: {

@@ -1,7 +1,6 @@
 import cn from 'classnames';
 import { useSelect } from 'downshift';
 import React, { ReactNode, useEffect } from 'react';
-import { useTranslation } from 'next-i18next';
 
 import { Icon } from 'components/Icon';
 
@@ -75,8 +74,6 @@ export const DropdownSelect = React.forwardRef<
       }
     }, [defaultValue, options, selectItem, selectedItem]);
 
-    const { t } = useTranslation();
-
     return (
       <div className={cn(styles.root, className)}>
         {label && (
@@ -96,9 +93,7 @@ export const DropdownSelect = React.forwardRef<
             <div className={styles.container}>
               <div className={styles.selected}>
                 {selectedItem?.component ?? (
-                  <div className={styles.placeholder}>
-                    {placeholder || t('proposalCard.chooseGroup')}
-                  </div>
+                  <div className={styles.placeholder}>{placeholder || ''}</div>
                 )}
               </div>
               {controlIcon || (

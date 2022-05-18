@@ -16,7 +16,7 @@ interface ChangeDaoNameContentProps {
 export const RemoveMemberFromGroupContent: FC<ChangeDaoNameContentProps> = ({
   groups,
 }) => {
-  const { register, setValue } = useFormContext();
+  const { register, setValue, getValues } = useFormContext();
   const { t } = useTranslation();
 
   return (
@@ -31,6 +31,7 @@ export const RemoveMemberFromGroupContent: FC<ChangeDaoNameContentProps> = ({
                 shouldValidate: true,
               });
             }}
+            defaultValue={getValues().group}
             isBorderless
             options={groups.map(group => ({
               label: group,

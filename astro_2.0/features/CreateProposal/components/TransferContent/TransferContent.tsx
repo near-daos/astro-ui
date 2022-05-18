@@ -67,7 +67,7 @@ export const TransferContent: FC = () => {
     ),
   }));
 
-  const selectedTokenData = tokens[getValues().selectedToken];
+  const selectedTokenData = tokens[getValues().token];
 
   return (
     <div className={styles.root}>
@@ -98,7 +98,9 @@ export const TransferContent: FC = () => {
               shouldDirty: true,
             });
           }}
-          defaultValue={selectedTokenData?.symbol ?? 'NEAR'}
+          defaultValue={
+            selectedTokenData?.symbol ?? getValues().token ?? 'NEAR'
+          }
         />
       ) : (
         <div className={styles.loaderWrapper}>

@@ -12,6 +12,9 @@ const formContextMock = {
     touchedFields: {},
   },
   register: () => 0,
+  getValues: () => ({
+    group: 'GR1',
+  }),
 };
 
 jest.mock('react-hook-form', () => {
@@ -45,7 +48,7 @@ describe('RemoveMemberFromGroupContent', () => {
       <RemoveMemberFromGroupContent groups={['GR1', 'GR2']} />
     );
 
-    fireEvent.click(getByText('proposalCard.chooseGroup'));
+    fireEvent.click(getByText('GR1'));
     fireEvent.click(getByText('GR2'));
 
     jest.runAllTimers();

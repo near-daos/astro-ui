@@ -40,7 +40,7 @@ export const AddBountyContent: FC = () => {
     ),
   }));
 
-  const selectedTokenData = tokens[getValues().selectedToken];
+  const selectedTokenData = tokens[getValues().token];
 
   const onTokenChange = useCallback(
     v => {
@@ -89,7 +89,9 @@ export const AddBountyContent: FC = () => {
             label="&nbsp;"
             {...register('token')}
             onChange={onTokenChange}
-            defaultValue={selectedTokenData?.symbol ?? 'NEAR'}
+            defaultValue={
+              selectedTokenData?.symbol ?? getValues().token ?? 'NEAR'
+            }
           />
         ) : (
           <div className={styles.loaderWrapper}>
