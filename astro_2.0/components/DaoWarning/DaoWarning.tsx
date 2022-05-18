@@ -9,10 +9,10 @@ interface DaoWarningProps {
   content: ReactNode;
   control?: ReactNode;
   className?: string;
-  icon?: IconName;
-  iconClassName?: string;
-  statusClassName?: string;
   rootClassName?: string;
+  statusClassName?: string;
+  iconClassName?: string;
+  icon?: IconName;
 }
 
 export const DaoWarning: FC<DaoWarningProps> = ({
