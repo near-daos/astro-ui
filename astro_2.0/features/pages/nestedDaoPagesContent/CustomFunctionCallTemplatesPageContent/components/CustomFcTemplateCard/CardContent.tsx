@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, ReactNode, useCallback, useState } from 'react';
 import cn from 'classnames';
 import AceEditor from 'react-ace';
 import { useFormContext } from 'react-hook-form';
@@ -29,9 +29,14 @@ import styles from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctio
 interface Props {
   onReset: () => void;
   onDelete: () => void;
+  optionalControl?: ReactNode;
 }
 
-export const CardContent: FC<Props> = ({ onReset, onDelete }) => {
+export const CardContent: FC<Props> = ({
+  onReset,
+  onDelete,
+  optionalControl,
+}) => {
   const {
     register,
     setValue,
@@ -72,7 +77,7 @@ export const CardContent: FC<Props> = ({ onReset, onDelete }) => {
   return (
     <>
       {isDirty ? (
-        <div className={cn(styles.delete, styles.controls)}>
+        <div className={cn(styles.controls)}>
           <Button
             capitalize
             variant="tertiary"
@@ -93,16 +98,19 @@ export const CardContent: FC<Props> = ({ onReset, onDelete }) => {
           </Button>
         </div>
       ) : (
-        <Button
-          variant="tertiary"
-          className={styles.delete}
-          capitalize
-          size="small"
-          onClick={handleDelete}
-        >
-          <Icon name="buttonDelete" className={styles.icon} />
-          Delete
-        </Button>
+        <div className={styles.controls}>
+          <Button
+            variant="tertiary"
+            className={styles.delete}
+            capitalize
+            size="small"
+            onClick={handleDelete}
+          >
+            <Icon name="buttonDelete" className={styles.icon} />
+            Delete
+          </Button>
+          {optionalControl}
+        </div>
       )}
 
       <Toggle

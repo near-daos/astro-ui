@@ -195,15 +195,17 @@ export const CustomFcTemplateCard: FC<Props> = ({
             <CardContent
               onReset={handleReset}
               onDelete={() => template.id && onDelete(template.id)}
+              optionalControl={
+                <ApplyToDaos
+                  accountDaos={accountDaos}
+                  template={template}
+                  className={styles.applyToDaos}
+                  onSave={onSaveToDaos}
+                />
+              }
             />
           </form>
         </FormProvider>
-        <ApplyToDaos
-          accountDaos={accountDaos}
-          template={template}
-          className={styles.applyToDaos}
-          onSave={onSaveToDaos}
-        />
       </div>
     );
   }
