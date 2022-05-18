@@ -58,6 +58,7 @@ export const ChangeLinksContent: FC<ChangeLinksContentProps> = ({ daoId }) => {
                 <Input
                   isBorderless
                   {...register(`links.${index}.url`)}
+                  defaultValue={currentUrl}
                   onKeyUp={async () => {
                     await trigger();
                   }}

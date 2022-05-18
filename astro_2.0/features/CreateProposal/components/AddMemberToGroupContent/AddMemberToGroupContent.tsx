@@ -17,7 +17,7 @@ interface AddMemberToGroupContentProps {
 export const AddMemberToGroupContent: FC<AddMemberToGroupContentProps> = ({
   groups,
 }) => {
-  const { register, setValue, watch } = useFormContext();
+  const { register, setValue, getValues, watch } = useFormContext();
   const { t } = useTranslation();
 
   const currentValue = watch('memberName');
@@ -39,6 +39,7 @@ export const AddMemberToGroupContent: FC<AddMemberToGroupContentProps> = ({
           <DropdownSelect
             {...register('group')}
             onChange={onChange}
+            defaultValue={getValues().group}
             reverseMenu
             isBorderless
             options={groups.map(group => ({

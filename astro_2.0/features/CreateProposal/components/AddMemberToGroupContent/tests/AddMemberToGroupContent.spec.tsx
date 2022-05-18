@@ -12,6 +12,9 @@ const formContextMock = {
   setValue: () => 0,
   register: () => 0,
   watch: () => '',
+  getValues: () => ({
+    group: 'Gr1',
+  }),
 };
 
 jest.mock('react-hook-form', () => {
@@ -45,7 +48,7 @@ describe('AddMemberToGroupContent', () => {
       <AddMemberToGroupContent groups={['Gr1', 'Gr2']} />
     );
 
-    fireEvent.click(getByText('proposalCard.chooseGroup'));
+    fireEvent.click(getByText('Gr1'));
     fireEvent.click(getByText('Gr2'));
 
     jest.runAllTimers();

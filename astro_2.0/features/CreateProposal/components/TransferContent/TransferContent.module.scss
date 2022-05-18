@@ -18,6 +18,7 @@
     border-radius: 50%;
     height: 24px;
     margin-right: 8px;
+    overflow: hidden;
     width: 24px;
   }
 }
@@ -62,6 +63,7 @@
 
   button {
     border: 0;
+    margin-top: 4px;
     overflow: hidden;
   }
 
@@ -115,8 +117,9 @@
 }
 
 .loaderWrapper {
-  align-items: flex-end;
+  align-items: center;
   display: flex;
+  margin-top: 24px;
   padding: 8px;
 }
 

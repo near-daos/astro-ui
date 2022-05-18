@@ -11,6 +11,13 @@ export default function handler(
       'https://dev.app.astrodao.com/dao/aviarium.sputnikv2.testnet/proposals?action=create_proposal&variant=ProposeCustomFunctionCall&params={"details":"Proposal description here", "methodName": "create", "smartContractAddress": "sputnikv2.testnet", "json":{ "key": "some value" }}',
     action: 'create_proposal',
     variant: {
+      ProposeChangeDaoLegalInfo: {
+        details: '',
+        externalUrl: '',
+        legalStatus: '',
+        legalLink: '',
+        gas: '',
+      },
       ProposeAddMember: {
         details: '',
         externalUrl: '',
