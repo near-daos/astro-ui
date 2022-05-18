@@ -26,6 +26,7 @@ export interface CreateProposalProps {
   showFlag: boolean;
   tokens: Record<string, Token>;
   preventNavigate?: boolean;
+  optionalPostVoteAction?: () => Promise<void>;
 }
 
 const variants = {
@@ -38,6 +39,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
   showFlag,
   tokens,
   preventNavigate,
+  optionalPostVoteAction,
 }) => {
   const { accountId } = useWalletContext();
   const [showInfoPanel, toggleInfoPanel] = useToggle(false);
@@ -103,6 +105,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
           updatedAt={proposal.updatedAt}
           toggleInfoPanel={toggleInfoPanel}
           commentsCount={commentsCount}
+          optionalPostVoteAction={optionalPostVoteAction}
           voteDetails={
             proposal.dao.policy.defaultVotePolicy.ratio
               ? getVoteDetails(

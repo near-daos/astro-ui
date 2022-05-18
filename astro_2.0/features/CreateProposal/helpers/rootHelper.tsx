@@ -751,6 +751,14 @@ export function getValidationSchema(
       });
     }
 
+    case ProposalVariant.ProposeUpgradeSelf:
+    case ProposalVariant.ProposeGetUpgradeCode:
+    case ProposalVariant.ProposeRemoveUpgradeCode: {
+      return yup.object().shape({
+        details: yup.string().required('Required'),
+      });
+    }
+
     case ProposalVariant.ProposeDoneBounty:
     default: {
       return yup.object().shape({

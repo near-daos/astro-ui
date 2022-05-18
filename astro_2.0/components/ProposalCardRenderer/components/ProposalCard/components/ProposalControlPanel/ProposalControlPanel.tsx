@@ -1,6 +1,10 @@
 import cn from 'classnames';
 import React, { FC } from 'react';
-import { ProposalStatus, ProposalVotingPermissions } from 'types/proposal';
+import {
+  ProposalStatus,
+  ProposalVariant,
+  ProposalVotingPermissions,
+} from 'types/proposal';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
 import { kFormatter } from 'utils/format';
 import { TgasInput } from 'astro_2.0/components/TgasInput';
@@ -25,6 +29,7 @@ interface ProposalControlPanelProps {
   status?: ProposalStatus;
   toggleInfoPanel?: React.MouseEventHandler<HTMLButtonElement>;
   commentsCount: number;
+  variant: ProposalVariant;
 }
 
 export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
@@ -41,6 +46,7 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
   disableControls,
   toggleInfoPanel,
   commentsCount,
+  variant,
 }) => {
   const { handleSubmit } = useFormContext();
   const { canApprove, canReject } = permissions;
@@ -52,12 +58,17 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
 
   const showTGas = !(voted || (!canApprove && !canReject) || disableControls);
 
+  const readOnlyGas =
+    variant === ProposalVariant.ProposeRemoveUpgradeCode ||
+    variant === ProposalVariant.ProposeUpgradeSelf ||
+    variant === ProposalVariant.ProposeGetUpgradeCode;
+
   return (
     <form
       onSubmit={handleSubmit(onLike)}
       className={cn(styles.root, className)}
     >
-      {showTGas && <TgasInput />}
+      {showTGas && <TgasInput readOnly={readOnlyGas} />}
       <ProposalControlButton
         icon={liked ? 'votingYesChecked' : yesIconName}
         voted={voted}

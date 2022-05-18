@@ -35,12 +35,7 @@ export function useCheckDaoUpgrade(
     try {
       const account = nearService?.getAccount();
 
-      // todo - remove before release
-      if (!appConfig || appConfig?.NEAR_ENV === 'mainnet') {
-        return;
-      }
-
-      if (!account) {
+      if (!appConfig || !account) {
         return;
       }
 
@@ -64,18 +59,21 @@ export function useCheckDaoUpgrade(
         return 0;
       });
 
-      // todo - temp!!!
-      // if (dao.daoVersion?.hash) {
-      //   setVersionHash(dao.daoVersion.hash);
-      // }
-
-      const currentVersionHashIndex = sortedMeta.findIndex(
+      const currentVersionMeta = sortedMeta.find(
         meta => meta[0] === dao.daoVersion?.hash
       );
-      const nextVersion =
-        currentVersionHashIndex === -1
-          ? sortedMeta[0]
-          : sortedMeta[currentVersionHashIndex + 1];
+
+      const nextVersion = currentVersionMeta
+        ? sortedMeta.find(
+            meta => meta[1].version[0] > currentVersionMeta[1].version[0]
+          )
+        : null;
+
+      if (!nextVersion) {
+        setLoading(false);
+
+        return;
+      }
 
       const hash = nextVersion[0];
 

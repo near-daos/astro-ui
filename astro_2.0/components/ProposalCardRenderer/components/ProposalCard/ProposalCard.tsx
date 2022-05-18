@@ -32,14 +32,16 @@ import { Button } from 'components/button/Button';
 
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 import { DAOFormValues } from 'astro_2.0/features/CreateDao/components/types';
-import { DEFAULT_VOTE_GAS } from 'services/sputnik/constants';
+import {
+  DEFAULT_UPGRADE_DAO_VOTE_GAS,
+  DEFAULT_VOTE_GAS,
+} from 'services/sputnik/constants';
 import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCountdown } from 'hooks/useCountdown';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { ProposalControlPanel } from './components/ProposalControlPanel';
 
 // import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-
 import styles from './ProposalCard.module.scss';
 
 export interface ProposalCardProps {
@@ -69,6 +71,7 @@ export interface ProposalCardProps {
   updatedAt?: string | null;
   toggleInfoPanel?: () => void;
   commentsCount: number;
+  optionalPostVoteAction?: () => Promise<void>;
   permissions: {
     canApprove: boolean;
     canReject: boolean;
@@ -177,6 +180,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   updatedAt,
   toggleInfoPanel,
   commentsCount,
+  optionalPostVoteAction,
 }) => {
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
@@ -185,7 +189,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
     async (vote: VoteAction, gas?: string | number) => {
       try {
-        await nearService?.vote(daoId, proposalId, vote, gas);
+        const res = await nearService?.vote(daoId, proposalId, vote, gas);
 
         sendGAEvent({
           name: GA_EVENTS.ACT_PROPOSAL,
@@ -196,6 +200,20 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
             proposalId,
           },
         });
+
+        // One of the usages - in upgrade dao wizard to auto update steps
+        if (optionalPostVoteAction) {
+          if (res && res[0]) {
+            const successReceipt =
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              res[0]?.transaction_outcome?.outcome?.status?.SuccessReceiptId;
+
+            if (successReceipt) {
+              await optionalPostVoteAction();
+            }
+          }
+        }
 
         await router.reload();
       } catch (e) {
@@ -260,8 +278,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     defaultValues: {
       gas:
         variant === ProposalVariant.ProposeGetUpgradeCode ||
-        variant === ProposalVariant.ProposeRemoveUpgradeCode
-          ? 230
+        variant === ProposalVariant.ProposeRemoveUpgradeCode ||
+        variant === ProposalVariant.ProposeUpgradeSelf
+          ? DEFAULT_UPGRADE_DAO_VOTE_GAS
           : DEFAULT_VOTE_GAS,
     },
     resolver: yupResolver(schema),
@@ -432,6 +451,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         <FormProvider {...methods}>
           <ProposalControlPanel
             status={status}
+            variant={variant}
             onLike={(data, e) => {
               e?.stopPropagation();
 

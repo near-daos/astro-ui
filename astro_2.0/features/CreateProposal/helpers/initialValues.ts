@@ -1,7 +1,10 @@
 /* istanbul ignore file */
 
 import { ProposalVariant } from 'types/proposal';
-import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
+import {
+  DEFAULT_PROPOSAL_GAS,
+  DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
+} from 'services/sputnik/constants';
 
 export function getFormInitialValues(
   selectedProposalType: ProposalVariant,
@@ -11,25 +14,25 @@ export function getFormInitialValues(
   switch (selectedProposalType) {
     case ProposalVariant.ProposeGetUpgradeCode: {
       return {
-        details: 'Get latest binary for DAO upgrade',
+        details: `Upgrading your DAO requires you to retrieve the new code you want your DAO to run. This proposal is to get a copy of the upgrade code. The code comes from the Sputnik DAO Factory, the same place your DAO came from when you created it.`,
         externalUrl: '',
-        gas: DEFAULT_PROPOSAL_GAS,
+        gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
       };
     }
     case ProposalVariant.ProposeUpgradeSelf: {
       return {
-        details: 'Upgrade DAO',
+        details: `Now that your DAO has a copy of the code it wants to run, it's time to propose that the DAO "Upgrades Itself." This proposal will switch the DAO from running its old code to the code you retrieved in step 1.`,
         externalUrl: '',
-        gas: DEFAULT_PROPOSAL_GAS,
+        gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
       };
     }
     case ProposalVariant.ProposeRemoveUpgradeCode: {
       return {
-        details: 'Remove binary used for DAO upgrade',
+        details: `Your DAO is now running the latest code! This proposal is to delete the upgrade code which you retrieved from the factory. Deleting that code saves NEAR for your DAO. It's safe to delete that code because smart contracts always store a copy of the code they're running.`,
         externalUrl: '',
-        gas: DEFAULT_PROPOSAL_GAS,
+        gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
       };
     }

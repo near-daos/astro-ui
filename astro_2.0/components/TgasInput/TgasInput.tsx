@@ -53,11 +53,11 @@ export const TgasInput: FC<TgasInputProps> = ({
           type="number"
           min={MIN_GAS}
           step={1}
+          readOnly={readOnly}
           defaultValue={defaultValue}
           max={MAX_GAS}
           isBorderless
           size="block"
-          disabled={readOnly}
           data-testid="gas-input"
           placeholder={`${DEFAULT_PROPOSAL_GAS}`}
           {...register('gas')}

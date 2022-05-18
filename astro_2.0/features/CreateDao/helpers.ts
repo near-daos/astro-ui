@@ -38,7 +38,7 @@ export function getNewDaoParams(
     bond: '0.1',
     votePeriod: '168',
     gracePeriod: '24',
-    amountToTransfer: '5.4',
+    amountToTransfer: '6',
     displayName: data.info.displayName,
     policy: {
       ...getDetailedRolesVotingPolicy(

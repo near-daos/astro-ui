@@ -2,17 +2,13 @@ import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 import { useMedia } from 'react-use';
-import { useRouter } from 'next/router';
 
 import { DAO } from 'types/dao';
-import { ProposalType } from 'types/proposal';
 
 import { JoinDaoButton } from 'astro_2.0/features/DaoDashboardHeader/components/JoinDaoButton';
 import { FollowButton } from 'astro_2.0/features/DaoDashboardHeader/components/FollowButton';
 import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 import { ShowMoreLinks } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLinks/components/ShowMoreLinks';
-import { Button } from 'components/button/Button';
-import { Icon } from 'components/Icon';
 
 import { useWalletContext } from 'context/WalletContext';
 import { UserPermissions } from 'types/context';
@@ -20,11 +16,9 @@ import { UserPermissions } from 'types/context';
 import { DepositToDaoForm } from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm';
 import { DaoLinks } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLinks';
 import { DaoWarning } from 'astro_2.0/components/DaoWarning';
+import { UpgradeDaoWarning } from 'astro_2.0/features/DaoDashboardHeader/components/UpgradeDaoWarning';
 
 import { useJoinDao } from 'astro_2.0/features/DaoDashboardHeader/components/hooks';
-import { useCheckDaoUpgrade } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/hooks';
-
-import { DAO_VERSION_PAGE_URL } from 'constants/routing';
 
 import styles from './DaoDashboardHeader.module.scss';
 
@@ -52,15 +46,9 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
     description,
     links,
   } = dao;
-  const router = useRouter();
   const { accountId } = useWalletContext();
   const { t } = useTranslation();
   const isMobileOrTablet = useMedia('(max-width: 767px)');
-  const { version } = useCheckDaoUpgrade(dao);
-  const isUpgradeAvailable =
-    version &&
-    userPermissions.isCanCreateProposals &&
-    userPermissions.allowedProposalsToCreate[ProposalType.UpgradeSelf];
 
   const { showButton: showJoinButton, showWarning } = useJoinDao(
     id,
@@ -82,23 +70,6 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
         }}
       >
         <DaoLogo src={flagLogo} className={styles.logo} />
-        {isUpgradeAvailable && (
-          <Button
-            className={styles.upgradeDaoButton}
-            variant="tertiary"
-            onClick={() =>
-              router.push({
-                pathname: DAO_VERSION_PAGE_URL,
-                query: {
-                  dao: id,
-                },
-              })
-            }
-          >
-            <Icon name="upgrade" className={styles.upgradeIcon} />
-            Upgrade DAO version
-          </Button>
-        )}
       </section>
 
       <section className={styles.usersSection}>
@@ -139,29 +110,29 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
         <section className={styles.descriptionSection}>{description}</section>
       )}
 
-      {/* <DaoFeatureInfo */}
-      {/*  dao={dao} */}
-      {/*  title="Vote Seamlessly" */}
-      {/*  description="To vote without confirmation on NEAR Wallet use deposit amount on your Account" */}
-      {/*  featureKey="voteCredit" */}
-      {/*  control={onClose => <AllowanceKey dao={dao} onClose={onClose} />} */}
-      {/* /> */}
+      <div className={styles.warningWrapper}>
+        {showWarning && (
+          <DaoWarning
+            content={
+              <>
+                <div className={styles.title}>
+                  Your request to join is pending
+                </div>
+                <div className={styles.text}>
+                  If your membership request is approved, you will be notified.
+                </div>
+              </>
+            }
+            className={styles.warning}
+          />
+        )}
 
-      {showWarning && (
-        <DaoWarning
-          content={
-            <>
-              <div className={styles.title}>
-                Your request to join is pending
-              </div>
-              <div className={styles.text}>
-                If your membership request is approved, you will be notified.
-              </div>
-            </>
-          }
-          className={styles.warningWrapper}
+        <UpgradeDaoWarning
+          dao={dao}
+          userPermissions={userPermissions}
+          className={styles.warning}
         />
-      )}
+      </div>
     </div>
   );
 };
