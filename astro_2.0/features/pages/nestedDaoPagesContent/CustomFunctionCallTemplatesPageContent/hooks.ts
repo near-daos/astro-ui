@@ -11,6 +11,7 @@ import {
   ProposalTemplate,
   TemplateUpdatePayload,
 } from 'types/proposalTemplate';
+import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 
 export function useProposalTemplates(
   daoId: string
@@ -159,6 +160,17 @@ export function useSaveTemplates(): {
               }
             )
           );
+
+          sendGAEvent({
+            name: GA_EVENTS.SAVE_FC_TEMPLATE,
+            accountId,
+            params: {
+              templateName: data[0].name,
+              daoIds: data
+                .map((item: TemplateUpdatePayload) => item.daoId)
+                .join(','),
+            },
+          });
 
           showNotification({
             type: NOTIFICATION_TYPES.SUCCESS,

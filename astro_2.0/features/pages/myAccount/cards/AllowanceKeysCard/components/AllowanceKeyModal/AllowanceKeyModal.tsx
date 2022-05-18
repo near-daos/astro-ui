@@ -11,6 +11,7 @@ import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/Input
 import styles from 'astro_2.0/features/pages/myAccount/cards/AllowanceKeysCard/components/AllowanceKeyModal/AllowanceKeyModal.module.scss';
 import { useWalletContext } from 'context/WalletContext';
 import { useRouter } from 'next/router';
+import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 
 interface Props {
   isOpen: boolean;
@@ -28,7 +29,7 @@ export const AllowanceKeyModal: FC<Props> = ({ isOpen, onClose, daoName }) => {
       .required('Required'),
   });
 
-  const { nearService } = useWalletContext();
+  const { nearService, accountId } = useWalletContext();
   const router = useRouter();
 
   const methods = useForm<{ allowance: number }>({
@@ -46,6 +47,12 @@ export const AllowanceKeyModal: FC<Props> = ({ isOpen, onClose, daoName }) => {
     const allowance = data.allowance.toString();
 
     await nearService?.requestDaoAllowanceKey(daoName, allowance);
+
+    sendGAEvent({
+      name: GA_EVENTS.REQUEST_ALLOWANCE_KEY,
+      accountId,
+      daoId: daoName,
+    });
 
     router.reload();
 

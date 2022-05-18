@@ -2,6 +2,14 @@ export enum GA_EVENTS {
   CREATE_PROPOSAL = 'create_proposal',
   ACT_PROPOSAL = 'act_proposal',
   CREATE_DAO = 'create_dao',
+  DAO_UPGRADE_STARTED = 'dao_upgrade_started',
+  DAO_UPGRADE_FINISHED = 'dao_upgrade_finished',
+  SWITCH_ACCOUNT = 'switch_account',
+  SWITCH_WALLET = 'switch_wallet',
+  SIGN_IN = 'sign_in',
+  SIGN_OUT = 'sign_out',
+  REQUEST_ALLOWANCE_KEY = 'request_allowance_key',
+  SAVE_FC_TEMPLATE = 'save_fc_template',
 }
 
 type CustomGaEvent = {

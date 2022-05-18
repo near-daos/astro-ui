@@ -16,6 +16,7 @@ import {
   getVersionUpgradeSteps,
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/components/UpgradeVersionWizard/helpers';
 
+import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 import { useWalletContext } from 'context/WalletContext';
 import styles from './UpgradeVersionWizard.module.scss';
 
@@ -74,12 +75,30 @@ export const UpgradeVersionWizard: FC<Props> = ({
       return;
     }
 
+    const nextStep = getNextUpgradeStep(upgradeStatus.upgradeStep);
+
     await onUpdate({
-      upgradeStep: getNextUpgradeStep(upgradeStatus.upgradeStep),
+      upgradeStep: nextStep,
       proposalId: null,
       versionHash,
     });
-  }, [canControlUpgrade, onUpdate, upgradeStatus.upgradeStep, versionHash]);
+
+    if (nextStep === null) {
+      // this is finalise action
+      sendGAEvent({
+        name: GA_EVENTS.DAO_UPGRADE_FINISHED,
+        daoId: daoContext.dao.id,
+        accountId,
+      });
+    }
+  }, [
+    accountId,
+    canControlUpgrade,
+    daoContext.dao.id,
+    onUpdate,
+    upgradeStatus.upgradeStep,
+    versionHash,
+  ]);
 
   const handleViewProposalReject = useCallback(async () => {
     if (!canControlUpgrade) {

@@ -18,6 +18,7 @@ import {
   useWallet,
   usePkAndSignature,
 } from 'context/WalletContextHooks';
+import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 
 export interface WalletContext {
   availableWallets: WalletMeta[];
@@ -63,6 +64,11 @@ export const WrappedWalletContext: FC = ({ children }) => {
       setWallet(wallet);
 
       toggleConnection(false);
+
+      sendGAEvent({
+        name: GA_EVENTS.SIGN_IN,
+        accountId: wallet.getAccountId(),
+      });
     },
     [setWallet, toggleConnection]
   );
@@ -81,11 +87,16 @@ export const WrappedWalletContext: FC = ({ children }) => {
   );
 
   const logout = useCallback(async () => {
+    sendGAEvent({
+      name: GA_EVENTS.SIGN_OUT,
+      accountId: currentWallet?.getAccountId() ?? '',
+    });
+
     CookieService.remove(ACCOUNT_COOKIE);
     removePersistedWallet();
     availableWallets.forEach(wallet => wallet.logout());
     router.reload();
-  }, [availableWallets, removePersistedWallet, router]);
+  }, [availableWallets, currentWallet, removePersistedWallet, router]);
 
   const switchAccount = useCallback(
     async (walletType: WalletType, accountId: string) => {
@@ -124,6 +135,11 @@ export const WrappedWalletContext: FC = ({ children }) => {
         path: '/',
       });
 
+      sendGAEvent({
+        name: GA_EVENTS.SWITCH_ACCOUNT,
+        accountId,
+      });
+
       router.reload();
     },
     [getWallet, nearConfig.networkId, router]
@@ -141,6 +157,15 @@ export const WrappedWalletContext: FC = ({ children }) => {
 
       const currentWalletAccountId = currentWallet.getAccountId();
       const selectedWalletAccountId = selectedWallet.getAccountId();
+
+      sendGAEvent({
+        name: GA_EVENTS.SWITCH_WALLET,
+        accountId: selectedWalletAccountId,
+        params: {
+          wallet: walletType,
+          previousAccountId: currentWalletAccountId,
+        },
+      });
 
       if (currentWalletAccountId !== selectedWalletAccountId) {
         router.reload();
