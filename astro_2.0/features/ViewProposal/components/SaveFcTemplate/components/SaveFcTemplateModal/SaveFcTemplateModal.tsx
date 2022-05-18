@@ -16,7 +16,10 @@ import { Badge } from 'components/Badge';
 
 import { DaoFeedItem } from 'types/dao';
 import { ProposalFeedItem } from 'types/proposal';
-import { TemplateUpdatePayload } from 'types/proposalTemplate';
+import {
+  ProposalTemplate,
+  TemplateUpdatePayload,
+} from 'types/proposalTemplate';
 
 import { getFcTemplateFromProposal } from 'astro_2.0/features/ViewProposal/components/SaveFcTemplate/components/SaveFcTemplateModal/helpers';
 
@@ -27,6 +30,8 @@ interface Props {
   onClose: (args?: TemplateUpdatePayload[]) => void;
   accountDaos: DaoFeedItem[];
   proposal: ProposalFeedItem;
+  template?: ProposalTemplate;
+  name?: string;
 }
 
 type Form = {
@@ -39,6 +44,8 @@ export const SaveFcTemplateModal: FC<Props> = ({
   onClose,
   accountDaos,
   proposal,
+  template,
+  name,
 }) => {
   const daosOptions = useMemo<Option[]>(() => {
     return accountDaos.map(item => ({
@@ -56,7 +63,7 @@ export const SaveFcTemplateModal: FC<Props> = ({
     mode: 'all',
     reValidateMode: 'onChange',
     defaultValues: {
-      name: '',
+      name: name ?? '',
       daos: [],
     },
     resolver: yupResolver(schema),
@@ -70,7 +77,9 @@ export const SaveFcTemplateModal: FC<Props> = ({
   } = methods;
 
   const submitHandler = (data: Form) => {
-    const templatePayload = getFcTemplateFromProposal(proposal);
+    const templatePayload = template
+      ? template.config
+      : getFcTemplateFromProposal(proposal);
 
     if (!templatePayload) {
       return onClose();
