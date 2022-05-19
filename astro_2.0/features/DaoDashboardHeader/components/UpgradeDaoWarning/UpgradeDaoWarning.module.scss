@@ -5,6 +5,7 @@
   align-items: center;
   display: flex;
   font-size: 13px;
+  margin-left: auto;
   text-transform: capitalize;
   white-space: nowrap;
 }
@@ -21,4 +22,32 @@
 
 .text {
   @extend %caption1;
+}
+
+.link {
+  @extend %subtitle4;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  margin-top: 24px;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.linkIcon {
+  margin-right: 6px;
+}
+
+.infoRoot {
+  background-color: var(--color-primary-10);
+}
+
+.infoStatus {
+  background-color: var(--color-primary-20);
+}
+
+.infoIcon {
+  color: var(--color-primary-50);
 }
