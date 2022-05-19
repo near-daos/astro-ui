@@ -569,3 +569,21 @@ export function checkIsCouncilUser(
 
   return councilGroup.members.includes(accountId);
 }
+
+export function isSaveTemplateActionAvailable(
+  proposal: ProposalFeedItem,
+  accountId: string
+): boolean {
+  const unsupportedVariants = [
+    ProposalVariant.ProposeGetUpgradeCode,
+    ProposalVariant.ProposeRemoveUpgradeCode,
+    ProposalVariant.ProposeUpgradeSelf,
+  ];
+
+  return (
+    !unsupportedVariants.includes(proposal?.proposalVariant) &&
+    proposal?.kind?.type === ProposalType.FunctionCall &&
+    proposal.status === 'Approved' &&
+    !!accountId
+  );
+}
