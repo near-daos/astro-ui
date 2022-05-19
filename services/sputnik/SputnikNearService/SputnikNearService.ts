@@ -300,7 +300,9 @@ export class SputnikNearService implements DaoService {
 
     const permissionPredicate = (permission: FunctionCallPermissionView) => {
       return (
-        permission.FunctionCall.receiver_id.endsWith('sputnikv2.testnet') &&
+        permission.FunctionCall.receiver_id.endsWith(
+          this.nearConfig.contractName
+        ) &&
         permission.FunctionCall.allowance !== null &&
         permission.FunctionCall.method_names.includes('act_proposal')
       );
