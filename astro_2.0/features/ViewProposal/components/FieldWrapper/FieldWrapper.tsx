@@ -1,5 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import cn from 'classnames';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
 
 import styles from './FieldWrapper.module.scss';
 
@@ -65,7 +66,15 @@ export const FieldValue: FC<FieldValueProps> = ({
         className
       )}
     >
-      {value}
+      {noWrap ? (
+        <div className={styles.ellipse}>
+          <Tooltip overlay={<div className={styles.tooltip}>{value}</div>}>
+            {value}
+          </Tooltip>
+        </div>
+      ) : (
+        value
+      )}
     </div>
   );
 };
