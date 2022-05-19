@@ -23,6 +23,7 @@ interface CopyButtonProps {
   iconName?: IconName;
   tooltipPlacement?: 'right' | 'top' | 'bottom' | 'left' | 'auto';
   showIcon?: boolean;
+  defaultTooltip?: string;
 }
 
 const COPY_TEXT = 'Copy';
@@ -36,9 +37,10 @@ export const CopyButton: FC<CopyButtonProps> = ({
   iconClassName,
   iconHolderClassName,
   showIcon = true,
+  defaultTooltip,
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
-  const [tooltip, setTooltip] = useState(COPY_TEXT);
+  const [tooltip, setTooltip] = useState(defaultTooltip ?? COPY_TEXT);
 
   const copyAccountName = useCallback(
     async (e: MouseEvent | KeyboardEvent) => {
