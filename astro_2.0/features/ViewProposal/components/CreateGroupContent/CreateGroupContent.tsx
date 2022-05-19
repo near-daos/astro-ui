@@ -30,7 +30,7 @@ export const CreateGroupContent: FC<CreateGroupContentProps> = ({
         </FieldWrapper>
 
         <FieldWrapper label={t('proposalCard.initialMemberName')}>
-          <FieldValue value={memberName} />
+          <FieldValue value={memberName} noWrap />
         </FieldWrapper>
       </div>
 

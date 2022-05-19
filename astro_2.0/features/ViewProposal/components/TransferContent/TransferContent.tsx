@@ -75,7 +75,7 @@ export const TransferContent: FC<TransferContentProps> = ({
         </div>
       </FieldWrapper>
       <FieldWrapper label={t('proposalCard.proposalTarget')}>
-        <FieldValue value={target} />
+        <FieldValue value={target} noWrap />
       </FieldWrapper>
     </div>
   );

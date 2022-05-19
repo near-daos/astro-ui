@@ -7,12 +7,15 @@ import {
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
 import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 
-import { ProposalFeedItem, ProposalType } from 'types/proposal';
+import { ProposalFeedItem } from 'types/proposal';
 
 import { useWalletContext } from 'context/WalletContext';
 import { getVoteDetails } from 'features/vote-policy/helpers';
 import { getProposalScope } from 'utils/getProposalScope';
-import { getContentNode } from 'astro_2.0/features/ViewProposal/helpers';
+import {
+  getContentNode,
+  isSaveTemplateActionAvailable,
+} from 'astro_2.0/features/ViewProposal/helpers';
 import { Token } from 'types/token';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
@@ -45,10 +48,10 @@ export const ViewProposal: FC<CreateProposalProps> = ({
   const [showInfoPanel, toggleInfoPanel] = useToggle(false);
   const [commentsCount, setCommentsCount] = useState(proposal?.commentsCount);
   const isCouncilUser = proposal?.permissions?.isCouncil ?? false;
-  const showOptionalControl =
-    proposal?.kind?.type === ProposalType.FunctionCall &&
-    proposal.status === 'Approved' &&
-    !!accountId;
+  const showOptionalControl = isSaveTemplateActionAvailable(
+    proposal,
+    accountId
+  );
 
   if (!proposal || !proposal.dao) {
     return null;
