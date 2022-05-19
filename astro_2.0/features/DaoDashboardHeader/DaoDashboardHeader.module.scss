@@ -165,3 +165,29 @@
 .text {
   @extend %caption1;
 }
+
+.currentDaoVersion {
+  @extend %caption1;
+  align-items: center;
+  background-color: var(--color-white-opacity-70);
+  border-radius: 4px;
+  color: var(--color-neutral-80);
+  display: flex;
+  padding: 6px 12px;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+
+  .copyHash {
+    margin-left: 4px;
+  }
+
+  .copyIcon {
+    color: var(--color-neutral-80);
+    transform: translateY(-1px);
+  }
+
+  .copyIcon:hover {
+    opacity: 0.8;
+  }
+}
