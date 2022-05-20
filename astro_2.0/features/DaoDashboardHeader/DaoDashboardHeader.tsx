@@ -9,6 +9,7 @@ import { JoinDaoButton } from 'astro_2.0/features/DaoDashboardHeader/components/
 import { FollowButton } from 'astro_2.0/features/DaoDashboardHeader/components/FollowButton';
 import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 import { ShowMoreLinks } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLinks/components/ShowMoreLinks';
+import { CopyButton } from 'astro_2.0/components/CopyButton';
 
 import { useWalletContext } from 'context/WalletContext';
 import { UserPermissions } from 'types/context';
@@ -45,6 +46,7 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
     members,
     description,
     links,
+    daoVersion,
   } = dao;
   const { accountId } = useWalletContext();
   const { t } = useTranslation();
@@ -70,6 +72,17 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
         }}
       >
         <DaoLogo src={flagLogo} className={styles.logo} />
+        {daoVersion && (
+          <div className={styles.currentDaoVersion}>
+            DAO Version:&nbsp;<b>{daoVersion?.version.join('.')}</b>
+            <CopyButton
+              defaultTooltip="Copy hash"
+              text={daoVersion.hash}
+              className={styles.copyHash}
+              iconClassName={styles.copyIcon}
+            />
+          </div>
+        )}
       </section>
 
       <section className={styles.usersSection}>
