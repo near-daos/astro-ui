@@ -55,6 +55,7 @@ export const CreationProgress: VFC<CreationProgressProps> = ({
 
         return (
           <CreationProgressStep
+            key={value}
             label={label}
             value={value}
             isCurrent={isCurrent}
