@@ -1,0 +1,41 @@
+@import 'styles/mixins';
+
+.root {
+  $grid-gap: 24px;
+
+  display: grid;
+  grid-row-gap: $grid-gap;
+  grid-template-areas:
+    'address'
+    'method'
+    'editor'
+    'deposit';
+  grid-template-columns: 1fr;
+  // dirty hack to remove last gap
+  margin-bottom: $grid-gap * -1;
+
+  @include tablet-landscape {
+    grid-gap: $grid-gap;
+    grid-template-areas:
+      'address method'
+      'editor editor'
+      'deposit deposit';
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.address {
+  grid-area: address;
+}
+
+.method {
+  grid-area: method;
+}
+
+.editor {
+  grid-area: editor;
+
+  pre {
+    white-space: pre-wrap;
+  }
+}

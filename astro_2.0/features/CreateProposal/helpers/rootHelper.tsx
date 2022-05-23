@@ -7,6 +7,7 @@ import uniq from 'lodash/uniq';
 import { nanoid } from 'nanoid';
 import dynamic from 'next/dynamic';
 import React, { ReactNode } from 'react';
+import { TFunction } from 'react-i18next';
 
 // Types
 import { ProposalType, ProposalVariant } from 'types/proposal';
@@ -359,7 +360,7 @@ export function getFormContentNode(
       return <ChangeBondsContent dao={dao} />;
     }
     case ProposalVariant.ProposeCustomFunctionCall: {
-      return <CustomFunctionCallContent />;
+      return <CustomFunctionCallContent dao={dao} />;
     }
     case ProposalVariant.ProposeContractAcceptance: {
       return <ContractAcceptanceContent tokenId="someverylonglongname.near" />;
@@ -450,6 +451,7 @@ export const gasValidation = yup
   .required('Required');
 
 export function getValidationSchema(
+  t: TFunction,
   proposalVariant?: ProposalVariant,
   dao?: DAO,
   data?: { [p: string]: unknown },
@@ -626,6 +628,16 @@ export function getValidationSchema(
             externalUrl: yup.string().url(),
             actionsGas: gasValidation,
             gas: gasValidation,
+          });
+        }
+        case FunctionCallType.VoteInAnotherDao: {
+          const gerErr = (field: string) =>
+            t(`proposalCard.voteInDao.${field}.required`);
+
+          return yup.object().shape({
+            targetDao: yup.string().required(gerErr('targetDao')),
+            proposal: yup.string().required(gerErr('proposal')),
+            vote: yup.string().required(gerErr('vote')),
           });
         }
         case FunctionCallType.TransferNFTfromMintbase: {
