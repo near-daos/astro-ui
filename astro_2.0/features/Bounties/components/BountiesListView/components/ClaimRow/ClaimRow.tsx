@@ -10,7 +10,6 @@ import { ProposalVariant } from 'types/proposal';
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
 import { Icon } from 'components/Icon';
-import { UnclaimCompleteContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/UnclaimCompleteContent';
 import { VotingContent } from 'astro_2.0/features/Bounties/components/BountiesListView/components/VotingContent';
 import { getClaimProgress } from 'astro_2.0/features/Bounties/helpers';
 
@@ -38,9 +37,6 @@ export const ClaimRow: FC<ClaimRowProps> = ({
   doneProposals,
   maxDeadline,
   dao,
-  bounty,
-  // claimedByMe,
-  completeHandler,
 }) => {
   const { accountId, startTime, id } = data;
 
@@ -51,7 +47,6 @@ export const ClaimRow: FC<ClaimRowProps> = ({
   const claimStart = new Date(claimStartTime);
   const claimEnd = new Date(claimStartTime + deadline);
 
-  let showControls = false;
   let showVoting = false;
   let status;
   let statusLabel;
@@ -60,7 +55,6 @@ export const ClaimRow: FC<ClaimRowProps> = ({
   if (!proposal) {
     statusLabel = 'In progress';
     status = 'InProgress';
-    showControls = false;
   } else {
     const proposalStatus = proposal.status;
 
@@ -125,14 +119,6 @@ export const ClaimRow: FC<ClaimRowProps> = ({
           </Link>
         )}
       </div>
-      {showControls && (
-        <UnclaimCompleteContent
-          dao={dao}
-          bounty={bounty}
-          className={styles.controls}
-          completeHandler={completeHandler}
-        />
-      )}
       {showVoting && !!proposal && (
         <VotingContent
           proposal={proposal}

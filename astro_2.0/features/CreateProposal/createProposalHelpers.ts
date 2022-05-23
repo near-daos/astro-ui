@@ -248,7 +248,9 @@ const policyAffectsProposalVariants = [
   ProposalVariant.ProposeRemoveMember,
 ];
 
-function getDefaultProposalVariantByType(type: ProposalType): ProposalVariant {
+export function getDefaultProposalVariantByType(
+  type: ProposalType
+): ProposalVariant {
   switch (type) {
     case ProposalType.ChangeConfig: {
       return ProposalVariant.ProposeChangeDaoName;
@@ -280,7 +282,7 @@ function getDefaultProposalVariantByType(type: ProposalType): ProposalVariant {
   }
 }
 
-function getProposalTypeByVariant(
+export function getProposalTypeByVariant(
   variant: ProposalVariant
 ): ProposalType | null {
   switch (variant) {
