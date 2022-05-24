@@ -1,14 +1,19 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 
-import { Icon } from 'components/Icon';
 import {
   FieldValue,
   FieldWrapper,
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
+import { Icon } from 'components/Icon';
 
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+
+import { logger } from 'utils/logger';
 import { formatYoktoValue } from 'utils/format';
+
+import { CommonContent } from './components/CommonContent';
+import { ViewVoteInOtherDao } from './components/ViewVoteInOtherDao';
 
 import styles from './CustomFunctionCallContent.module.scss';
 
@@ -32,25 +37,42 @@ export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
 
   const tokenData = token ? tokens[token] : tokens.NEAR;
 
+  function isVoteAction(action: string) {
+    return ['VoteApprove', 'VoteReject', 'VoteRemove'].includes(action);
+  }
+
+  function getContent() {
+    try {
+      const data = JSON.parse(json);
+      const { action } = data;
+
+      if (isVoteAction(action)) {
+        const { id } = data;
+
+        return (
+          <ViewVoteInOtherDao
+            action={action}
+            proposalId={id}
+            daoId={smartContractAddress}
+          />
+        );
+      }
+    } catch (e) {
+      logger.error('Could not parse JSON to Object', e);
+    }
+
+    return (
+      <CommonContent
+        json={json}
+        methodName={methodName}
+        smartContractAddress={smartContractAddress}
+      />
+    );
+  }
+
   return (
     <div className={styles.root}>
-      <div className={styles.address}>
-        <FieldWrapper label={t('proposalCard.smartContractAddress')}>
-          <FieldValue value={smartContractAddress} />
-        </FieldWrapper>
-      </div>
-
-      <div className={styles.method}>
-        <FieldWrapper label={t('proposalCard.methodName')}>
-          <FieldValue value={methodName} />
-        </FieldWrapper>
-      </div>
-
-      <div className={styles.editor}>
-        <FieldWrapper label={t('proposalCard.json')}>
-          <pre>{json}</pre>
-        </FieldWrapper>
-      </div>
+      {getContent()}
 
       <div className={styles.deposit}>
         <div className={styles.row}>

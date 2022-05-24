@@ -116,6 +116,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     mode: 'onSubmit',
     resolver: async (data, context) => {
       const schema = getValidationSchema(
+        t,
         context?.selectedProposalVariant,
         dao,
         data,

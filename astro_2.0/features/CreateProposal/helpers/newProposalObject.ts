@@ -41,15 +41,16 @@ import {
   CustomFunctionCallInput,
   getBuyNftFromMintbaseProposal,
   getBuyNftFromParasProposal,
+  getChangeConfigProposal,
   getCreateTokenProposal,
   getCustomFunctionCallProposal,
   getRemoveUpgradeCodeProposal,
   getSwapsOnRefProposal,
   getTransferMintbaseNFTProposal,
+  getTransferProposal,
   getUpgradeCodeProposal,
   getUpgradeSelfProposal,
-  getTransferProposal,
-  getChangeConfigProposal,
+  getVoteInOtherDaoProposal,
   SwapsOnRefInput,
   TransferMintbaseNFTInput,
 } from 'astro_2.0/features/CreateProposal/helpers/proposalObjectHelpers';
@@ -305,6 +306,9 @@ export async function getNewProposalObject(
       switch (data.functionCallType) {
         case FunctionCallType.SwapsOnRef: {
           return getSwapsOnRefProposal(dao, data as SwapsOnRefInput);
+        }
+        case FunctionCallType.VoteInAnotherDao: {
+          return getVoteInOtherDaoProposal(dao, data as Record<string, string>);
         }
         case FunctionCallType.BuyNFTfromParas: {
           return getBuyNftFromParasProposal(

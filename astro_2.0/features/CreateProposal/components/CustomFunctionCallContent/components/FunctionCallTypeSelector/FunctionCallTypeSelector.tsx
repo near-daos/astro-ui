@@ -69,6 +69,11 @@ export const FunctionCallTypeSelector: FC<Props> = ({ daoId }) => {
             value: FunctionCallType.BuyNFTfromParas,
             group: 'Templates',
           },
+          {
+            label: 'Vote in Another DAO',
+            value: FunctionCallType.VoteInAnotherDao,
+            group: 'Templates',
+          },
           // Temp disable - we want to implement integration with SC to fetch required data
           // {
           //   label: 'Swaps on Ref',
