@@ -392,7 +392,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       className={cn(styles.root, {
         [styles.clickable]: !!id && !preventNavigate,
       })}
-      onClick={handleCardClick}
+      onMouseDown={handleCardClick}
     >
       {voteLoading && (
         <div className={styles.signingTransactionState}>
