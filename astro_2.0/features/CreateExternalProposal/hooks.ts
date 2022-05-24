@@ -78,11 +78,7 @@ export function useCreateProposalFromExternal(
         }
 
         const parsedParams = params
-          ? JSON.parse(
-              decodeURIComponent(params as string)
-                .trim()
-                .replace(/\\/g, '')
-            )
+          ? JSON.parse(decodeURIComponent(params as string).trim())
           : {};
 
         setError('');
