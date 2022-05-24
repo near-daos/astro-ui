@@ -139,29 +139,6 @@
   margin-right: 4px;
 }
 
-.addProposalWrapper {
-  height: 100%;
-}
-
-.addProposalButton {
-  @include centralize;
-  background-color: var(--color-brand-green);
-  border-radius: 0 8px 8px 0;
-  height: 66px;
-  padding: 0;
-  width: 56px;
-
-  @include tablet-landscape {
-    border-radius: 0 8px 8px 0;
-    height: 100%;
-    padding: 0;
-  }
-
-  @include large-desktop {
-    padding: 0;
-  }
-}
-
 .createPopup {
   display: none;
 

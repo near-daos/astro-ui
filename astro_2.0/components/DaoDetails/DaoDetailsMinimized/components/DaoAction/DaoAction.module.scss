@@ -1,0 +1,91 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  height: 100%;
+  position: relative;
+}
+
+.menu {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+}
+
+.addProposalWrapper {
+  height: 100%;
+  position: relative;
+}
+
+.action {
+  align-items: center;
+  background-color: var(--color-primary-10);
+  border-radius: 4px;
+  display: flex;
+  height: unset;
+  justify-content: flex-start;
+  padding: 12px;
+  text-align: left;
+  text-transform: unset;
+
+  &:not(:last-of-type) {
+    margin-bottom: 8px;
+  }
+
+  &:hover {
+    background-color: var(--color-primary-20);
+  }
+}
+
+.actionIcon {
+  color: var(--color-brand-purple);
+  width: 18px;
+}
+
+.navIcon {
+  margin-left: auto;
+}
+
+.separator {
+  background-color: var(--color-primary-30);
+  height: 24px;
+  margin: 0 16px;
+  width: 1px;
+}
+
+.labelWrapper {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.4;
+  margin-right: 24px;
+  text-transform: unset;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.desc {
+  font-size: 12px;
+}
+
+.addProposalButton {
+  @include centralize;
+  background-color: var(--color-brand-green);
+  border-radius: 0 8px 8px 0;
+  height: 66px;
+  padding: 0;
+  width: 56px;
+
+  @include tablet-landscape {
+    border-radius: 0 8px 8px 0;
+    height: 100%;
+    padding: 0;
+  }
+
+  @include large-desktop {
+    padding: 0;
+  }
+}

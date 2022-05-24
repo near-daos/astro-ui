@@ -14,6 +14,7 @@ import {
   DAO_SETTINGS_PAGE_URL,
   DAO_CONFIG_PAGE_URL,
   DAO_CUSTOM_FC_TEMPLATES_PAGE_URL,
+  DRAFTS_PAGE_URL,
 } from 'constants/routing';
 import { UrlObject } from 'url';
 import { Proposal } from 'types/proposal';
@@ -165,6 +166,15 @@ export function useGetBreadcrumbsConfig(
         label: t('customFunctionCallTemplates'),
         href: {
           pathname: DAO_CUSTOM_FC_TEMPLATES_PAGE_URL,
+          query: {
+            dao: daoId,
+          },
+        },
+      },
+      DRAFTS: {
+        label: t('drafts'),
+        href: {
+          pathname: DRAFTS_PAGE_URL,
           query: {
             dao: daoId,
           },

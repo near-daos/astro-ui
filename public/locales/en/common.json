@@ -234,6 +234,7 @@
     "proposalsInTotal": "proposals in total"
   },
   "daoDetailsMinimized": {
+    "drafts": "Drafts",
     "proposals": "Proposals",
     "funds": "Funds",
     "members": "Members",
