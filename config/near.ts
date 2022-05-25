@@ -1,7 +1,5 @@
 import { Config } from 'types/config';
 
-const TOKEN_CONTRACT_NAME = 'tokens.testnet';
-
 export type NEAR_ENV =
   | 'production'
   | 'development'
@@ -18,7 +16,7 @@ export type NearConfig = {
   networkId: string;
   nodeUrl: string;
   contractName: string;
-  tokenContractName: string;
+  tokenFactoryContractName: string;
   masterAccount?: string;
   walletUrl?: string;
   helperUrl?: string;
@@ -28,7 +26,9 @@ export type NearConfig = {
 };
 
 export const getNearConfig = (config: Config): NearConfig => {
-  const CONTRACT_NAME = config?.NEAR_CONTRACT_NAME ?? 'sputnikv2.testnet';
+  // const CONTRACT_NAME = config?.NEAR_CONTRACT_NAME ?? 'sputnikv2.testnet';
+  // const TOKEN_FACTORY_CONTRACT_NAME =
+  //   config?.TOKEN_FACTORY_CONTRACT_NAME ?? 'tokens.testnet';
   const env = config?.NEAR_ENV ?? 'development';
 
   switch (env) {
@@ -38,8 +38,8 @@ export const getNearConfig = (config: Config): NearConfig => {
         walletFormat: '.near',
         networkId: 'mainnet',
         nodeUrl: 'https://rpc.mainnet.near.org',
-        contractName: CONTRACT_NAME,
-        tokenContractName: '',
+        contractName: 'sputnik-dao.near',
+        tokenFactoryContractName: config.TOKEN_FACTORY_CONTRACT_NAME,
         walletUrl: 'https://wallet.near.org',
         helperUrl: 'https://helper.mainnet.near.org',
         explorerUrl: 'https://explorer.mainnet.near.org',
@@ -51,8 +51,8 @@ export const getNearConfig = (config: Config): NearConfig => {
         walletFormat: '.testnet',
         networkId: 'testnet',
         nodeUrl: 'https://rpc.testnet.near.org',
-        contractName: CONTRACT_NAME,
-        tokenContractName: TOKEN_CONTRACT_NAME,
+        contractName: config.NEAR_CONTRACT_NAME,
+        tokenFactoryContractName: config.TOKEN_FACTORY_CONTRACT_NAME,
         walletUrl: 'https://wallet.testnet.near.org',
         helperUrl: 'https://helper.testnet.near.org',
         explorerUrl: 'https://explorer.testnet.near.org',
@@ -63,8 +63,8 @@ export const getNearConfig = (config: Config): NearConfig => {
         walletFormat: '.betanet',
         networkId: 'betanet',
         nodeUrl: 'https://rpc.betanet.near.org',
-        tokenContractName: '',
-        contractName: CONTRACT_NAME,
+        tokenFactoryContractName: '',
+        contractName: config.NEAR_CONTRACT_NAME,
         walletUrl: 'https://wallet.betanet.near.org',
         helperUrl: 'https://helper.betanet.near.org',
         explorerUrl: 'https://explorer.betanet.near.org',
@@ -76,8 +76,8 @@ export const getNearConfig = (config: Config): NearConfig => {
         nodeUrl: 'http://localhost:3030',
         keyPath: `${process.env.HOME}/.near/validator_key.json`,
         walletUrl: 'http://localhost:4000/wallet',
-        tokenContractName: '',
-        contractName: CONTRACT_NAME,
+        tokenFactoryContractName: config.TOKEN_FACTORY_CONTRACT_NAME,
+        contractName: config.NEAR_CONTRACT_NAME,
         headers: {},
       };
     case 'test':
@@ -85,8 +85,8 @@ export const getNearConfig = (config: Config): NearConfig => {
       return {
         networkId: 'shared-test',
         nodeUrl: 'https://rpc.ci-testnet.near.org',
-        tokenContractName: '',
-        contractName: CONTRACT_NAME,
+        tokenFactoryContractName: config.TOKEN_FACTORY_CONTRACT_NAME,
+        contractName: config.NEAR_CONTRACT_NAME,
         masterAccount: 'test.near',
         headers: {},
       };
@@ -94,8 +94,8 @@ export const getNearConfig = (config: Config): NearConfig => {
       return {
         networkId: 'shared-test-staging',
         nodeUrl: 'https://rpc.ci-betanet.near.org',
-        tokenContractName: '',
-        contractName: CONTRACT_NAME,
+        tokenFactoryContractName: config.TOKEN_FACTORY_CONTRACT_NAME,
+        contractName: config.NEAR_CONTRACT_NAME,
         masterAccount: 'test.near',
         headers: {},
       };
