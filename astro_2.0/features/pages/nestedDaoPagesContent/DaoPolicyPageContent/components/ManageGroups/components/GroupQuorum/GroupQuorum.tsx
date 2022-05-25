@@ -1,3 +1,5 @@
+// TODO requires localisation
+
 import React from 'react';
 import { Range, getTrackBackground } from 'react-range';
 
