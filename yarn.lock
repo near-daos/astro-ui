@@ -14790,6 +14790,11 @@ react-popper@^2.2.4, react-popper@^2.2.5:
     react-fast-compare "^3.0.1"
     warning "^4.0.2"
 
+react-range@^1.8.12:
+  version "1.8.12"
+  resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.8.12.tgz#61fe79421a519a4d77c76838012d895b75ead42f"
+  integrity sha512-vY2eCNDvKlXtEpl8xx5AQVIBeE4ZZ46dLVL+82f4FcS9XrPqz4+XagPHmq3IPqYuVQ2H4b8UArXzvVAsd/B03Q==
+
 react-refresh@^0.10.0:
   version "0.10.0"
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.10.0.tgz"

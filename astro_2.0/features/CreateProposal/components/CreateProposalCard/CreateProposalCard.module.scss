@@ -23,6 +23,7 @@
       'proposalType proposalType countdown'
       'proposer proposer proposer'
       'description description description'
+      'group group group'
       'content content voteControl';
     grid-template-columns: 5fr 3fr 2fr;
   }
@@ -63,6 +64,10 @@
 
 .proposalContentCell {
   grid-area: content;
+}
+
+.proposalGroupCell {
+  grid-area: group;
 }
 
 .proposalTypeAndLink {

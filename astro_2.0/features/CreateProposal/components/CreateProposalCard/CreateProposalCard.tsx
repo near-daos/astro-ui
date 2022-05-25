@@ -140,6 +140,9 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       case ProposalVariant.ProposeCreateToken: {
         return <InfoBlockWidget label="Change Config" value="Create Token" />;
       }
+      case ProposalVariant.ProposeUpdateGroup: {
+        return <InfoBlockWidget label="Change Policy" value="Group" />;
+      }
       default: {
         return (
           <GroupedSelect
@@ -286,6 +289,15 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       case ProposalVariant.ProposeContractAcceptance:
       case ProposalVariant.ProposeTokenDistribution: {
         return <div className={styles.descriptionCell}>{content}</div>;
+      }
+      case ProposalVariant.ProposeUpdateGroup: {
+        return (
+          <>
+            {renderProposer()}
+            {renderDescription()}
+            <div className={styles.proposalGroupCell}>{content}</div>
+          </>
+        );
       }
       default: {
         return (

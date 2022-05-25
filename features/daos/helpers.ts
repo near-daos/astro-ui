@@ -38,7 +38,11 @@ export async function getDaosList({
   }
 
   return {
-    daos: dao.data,
+    daos: dao.data.map(rec => ({
+      ...rec,
+      council: rec.council || null,
+      isCouncil: rec.isCouncil || false,
+    })),
     total: dao.total,
   };
 }

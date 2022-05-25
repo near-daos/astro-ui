@@ -246,6 +246,7 @@ const policyAffectsProposalVariants = [
   ProposalVariant.ProposeChangeVotingPolicy,
   ProposalVariant.ProposeCreateGroup,
   ProposalVariant.ProposeRemoveMember,
+  ProposalVariant.ProposeUpdateGroup,
 ];
 
 export function getDefaultProposalVariantByType(
@@ -318,6 +319,7 @@ export function getProposalTypeByVariant(
     case ProposalVariant.ProposeChangeProposalVotingPermissions:
     case ProposalVariant.ProposeChangeVotingPolicy:
     case ProposalVariant.ProposeChangeBonds:
+    case ProposalVariant.ProposeUpdateGroup:
     case ProposalVariant.ProposeCreateGroup: {
       return ProposalType.ChangePolicy;
     }
