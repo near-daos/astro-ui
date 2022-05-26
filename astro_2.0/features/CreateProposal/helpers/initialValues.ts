@@ -20,6 +20,13 @@ export function getFormInitialValues(
         versionHash: initialValues?.versionHash,
       };
     }
+    case ProposalVariant.ProposeUpdateGroup: {
+      return {
+        externalUrl: '',
+        gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
+        groups: initialValues.groups,
+      };
+    }
     case ProposalVariant.ProposeUpgradeSelf: {
       return {
         details: `Now that your DAO has a copy of the code it wants to run, it's time to propose that the DAO "Upgrades Itself." This proposal will switch the DAO from running its old code to the code you retrieved in step 1.`,

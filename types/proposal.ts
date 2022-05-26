@@ -65,6 +65,7 @@ export enum ProposalVariant {
   ProposeGetUpgradeCode = 'ProposeGetUpgradeCode',
   ProposeUpgradeSelf = 'ProposeUpgradeSelf',
   ProposeRemoveUpgradeCode = 'ProposeRemoveUpgradeCode',
+  ProposeUpdateGroup = 'ProposeUpdateGroup',
 }
 
 export type VoteAction = 'VoteApprove' | 'VoteRemove' | 'VoteReject';

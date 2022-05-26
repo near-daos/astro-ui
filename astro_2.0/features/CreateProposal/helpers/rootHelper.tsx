@@ -36,6 +36,9 @@ import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/CreateProposal/com
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/components/RemoveMemberFromGroupContent';
 import { TokenDistributionContent } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent';
 import { ContractAcceptanceContent } from 'astro_2.0/features/CreateProposal/components/ContractAcceptanceContent';
+import { ChangeVotingPermissionsContent } from 'astro_2.0/features/CreateProposal/components/ChangeVotingPermissionsContent';
+import { CreateTokenContent } from 'astro_2.0/features/CreateProposal/components/CreateTokenContent';
+import { UpdateGroupContent } from 'astro_2.0/features/CreateProposal/components/UpdateGroupContent';
 
 // Helpers & Utils
 import { getInitialData } from 'features/vote-policy/helpers';
@@ -46,9 +49,7 @@ import {
   validateImgSize,
 } from 'utils/imageValidators';
 import { SputnikNearService } from 'services/sputnik';
-import { ChangeVotingPermissionsContent } from 'astro_2.0/features/CreateProposal/components/ChangeVotingPermissionsContent';
 import { ProposalPermissions } from 'types/context';
-import { CreateTokenContent } from 'astro_2.0/features/CreateProposal/components/CreateTokenContent';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -383,6 +384,9 @@ export function getFormContentNode(
     }
     case ProposalVariant.ProposeCreateToken: {
       return <CreateTokenContent />;
+    }
+    case ProposalVariant.ProposeUpdateGroup: {
+      return <UpdateGroupContent groups={[]} getDataFromContext />;
     }
     case ProposalVariant.ProposeChangeProposalVotingPermissions:
     case ProposalVariant.ProposeChangeProposalCreationPermissions: {

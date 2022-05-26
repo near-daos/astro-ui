@@ -29,6 +29,7 @@ export const SettingsPageContent: FC<SettingsPageContentProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.titleRow}>DAO Settings</div>
+
       <div className={styles.content}>
         <DaoSettingFlowButton
           onClick={() =>
@@ -43,6 +44,7 @@ export const SettingsPageContent: FC<SettingsPageContentProps> = ({
           icon="navSettingsConfig"
           label="Configuration settings"
         />
+
         <DaoSettingFlowButton
           onClick={() =>
             router.push({
@@ -56,18 +58,7 @@ export const SettingsPageContent: FC<SettingsPageContentProps> = ({
           icon="navSettingsPolicy"
           label="Policy settings"
         />
-        <DaoSettingFlowButton
-          onClick={() =>
-            router.push({
-              pathname: DAO_VERSION_PAGE_URL,
-              query: {
-                dao: dao.id,
-              },
-            })
-          }
-          icon="navSettingsVersion"
-          label="Version update"
-        />
+
         <DaoSettingFlowButton
           onClick={() =>
             router.push({
@@ -80,6 +71,19 @@ export const SettingsPageContent: FC<SettingsPageContentProps> = ({
           }
           icon="proposalNearFunctionCall"
           label="Custom Function Call templates"
+        />
+
+        <DaoSettingFlowButton
+          onClick={() =>
+            router.push({
+              pathname: DAO_VERSION_PAGE_URL,
+              query: {
+                dao: dao.id,
+              },
+            })
+          }
+          icon="navSettingsVersion"
+          label="Version update"
         />
       </div>
     </div>

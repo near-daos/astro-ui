@@ -27,5 +27,23 @@
 }
 
 .actionButton {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
   margin-left: auto;
+
+  @include mobile-only {
+    margin-left: 0;
+
+    svg {
+      display: none;
+    }
+  }
+
+  svg {
+    height: 24px;
+    margin-left: 8px;
+    width: 24px;
+  }
 }

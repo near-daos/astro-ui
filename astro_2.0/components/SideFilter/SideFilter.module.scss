@@ -1,3 +1,5 @@
+/* stylelint-disable max-nesting-depth */
+
 @use 'styles/breakpoints';
 @import 'styles/mixins';
 @import 'styles/helpers';
@@ -22,6 +24,67 @@
     margin: 0 0 32px;
     max-width: initial;
     top: 124px;
+  }
+
+  &.categoriesListHorizontal {
+    @include wide-background;
+    box-shadow: none;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 0 32px;
+    max-width: initial;
+
+    .categoriesList {
+      display: flex;
+      justify-content: unset;
+      overflow-x: auto;
+      padding-bottom: 2px;
+
+      &::before,
+      &::after {
+        display: none;
+      }
+    }
+
+    .categoriesListItem {
+      font-family: var(--font-family-primary);
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 32px;
+      padding: 0 14px;
+      position: relative;
+
+      &::before {
+        background-color: var(--color-passive-gray);
+        bottom: -4px;
+        content: '';
+        height: 2px;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+      }
+    }
+
+    .categoriesListItemSelected {
+      position: relative;
+
+      &::after {
+        background-color: var(--color-brand-purple);
+        bottom: -4px;
+        content: '';
+        height: 2px;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+      }
+    }
+
+    .categoriesListTitle {
+      display: none;
+    }
   }
 }
 

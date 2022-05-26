@@ -1,5 +1,8 @@
-import { Button } from 'components/button/Button';
 import React from 'react';
+
+import { Button } from 'components/button/Button';
+import { Icon } from 'components/Icon';
+
 import styles from 'astro_2.0/features/DaoGovernance/components/DaoSetting/DaoSetting.module.scss';
 
 interface DaoSettingProps {
@@ -28,6 +31,7 @@ export const DaoSetting: React.FC<DaoSettingProps> = ({
             onClick={() => settingsChangeHandler()}
           >
             Propose Changes
+            <Icon name="buttonArrowRight" />
           </Button>
         )}
       </div>

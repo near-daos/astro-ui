@@ -1,8 +1,8 @@
 import values from 'lodash/values';
 import isEmpty from 'lodash/isEmpty';
-import { DAO, VotePolicyRequest } from 'types/dao';
-import { DaoRole, DefaultVotePolicy } from 'types/role';
-import { CreateProposalParams } from 'types/proposal';
+import { DAO, DaoVotePolicy, TGroup, VotePolicyRequest } from 'types/dao';
+import { DaoRole } from 'types/role';
+import { CreateProposalParams, ProposalType } from 'types/proposal';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
@@ -50,7 +50,7 @@ type ContractRole = {
   // eslint-disable-next-line camelcase,@typescript-eslint/ban-types
   vote_policy: Record<string, VotePolicyRequest> | {};
 };
-
+/*
 function formatVotePolicy(value: DefaultVotePolicy) {
   return {
     weight_kind: value.weightKind,
@@ -69,7 +69,7 @@ function formatVotePolicies(
 
     return res;
   }, {} as Record<string, VotePolicyRequest>);
-}
+} */
 
 export function dataRoleToContractRole(role: DaoRole): ContractRole {
   const { name, kind, permissions, votePolicy, accountIds } = role;
@@ -87,7 +87,8 @@ export function dataRoleToContractRole(role: DaoRole): ContractRole {
     permissions: values(permissions),
     vote_policy:
       votePolicy && !isEmpty(votePolicy)
-        ? formatVotePolicies(votePolicy)
+        ? //   ? formatVotePolicies(votePolicy)
+          votePolicy
         : ({} as Record<string, VotePolicyRequest>),
   };
 }
@@ -145,6 +146,101 @@ export function getChangePolicyProposal(
         bounty_forgiveness_period: bountyForgivenessPeriod,
       },
     },
+    bond: dao.policy.proposalBond,
+  };
+}
+
+export function generateVotePolicyForEachProposalType(
+  quorum: string
+): Record<string, DaoVotePolicy> {
+  const policy: Record<string, DaoVotePolicy> = {};
+
+  Object.keys(ProposalType).forEach(type => {
+    policy[type] = keysToSnakeCase({
+      quorum,
+      threshold: [1, 2],
+      weightKind: 'RoleWeight',
+    });
+  });
+
+  return policy;
+}
+
+export function getUpdateGroupProposal(
+  groups: TGroup[],
+  formData: IGroupForm,
+  dao: DAO
+): CreateProposalParams {
+  const { id } = dao;
+  const { details, externalUrl } = formData;
+
+  const {
+    bountyBond,
+    proposalBond,
+    proposalPeriod,
+    defaultVotePolicy,
+    bountyForgivenessPeriod,
+  } = dao.policy;
+
+  const { ratio, quorum, weightKind } = defaultVotePolicy;
+
+  return {
+    daoId: id,
+    description: `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
+    kind: 'ChangePolicy',
+    data: {
+      policy: {
+        roles: [
+          ...dao.policy.roles
+            .filter(role => role.kind !== 'Group')
+            .map(dataRoleToContractRole),
+          ...(groups.map(group => {
+            const role = {
+              name: group.name,
+              kind: {
+                Group: group.members,
+              },
+              permissions: [
+                '*:Finalize',
+                '*:AddProposal',
+                '*:VoteApprove',
+                '*:VoteReject',
+                '*:VoteRemove',
+              ],
+              vote_policy: generateVotePolicyForEachProposalType(
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                group.votePolicy.quorum
+              ),
+            };
+
+            const oldGroupData = dao.policy.roles.find(
+              el => el.id.replace(dao.id, '') === group.slug
+            );
+
+            if (oldGroupData) {
+              return {
+                ...oldGroupData,
+                ...role,
+                permissions: oldGroupData.permissions,
+              };
+            }
+
+            return role;
+          }) as ContractRole[]),
+        ],
+        default_vote_policy: keysToSnakeCase({
+          quorum,
+          threshold: ratio,
+          weightKind,
+        }),
+        proposal_bond: proposalBond,
+        proposal_period: proposalPeriod,
+        bounty_bond: bountyBond,
+        bounty_forgiveness_period: bountyForgivenessPeriod,
+      },
+    },
+
     bond: dao.policy.proposalBond,
   };
 }

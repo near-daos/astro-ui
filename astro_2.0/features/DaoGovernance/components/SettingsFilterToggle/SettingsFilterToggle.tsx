@@ -8,7 +8,7 @@ import styles from './SettingsFilterToggle.module.scss';
 const TEMP_DISABLED_OPTIONS = [
   // 'proposalCreation',
   // 'votingPermissions',
-  'groups',
+  // 'groups',
   'members',
   'daoRules',
   'groupNames',
@@ -72,6 +72,7 @@ export const SettingsFilterToggle: FC<SettingsFilterToggleProps> = ({
         {variant === 'daoPolicy' && (
           <SideFilter
             hideAllOption
+            forceHorizontalView
             queryName="daoFilter"
             list={daoPolicyFilterOptions}
             title={t('settingsPage.daoPolicy')}
