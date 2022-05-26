@@ -49,6 +49,7 @@ export const TgasInput: FC<TgasInputProps> = ({
           inputStyles={{
             width: getInputWidth(gas, 8, 6),
           }}
+          onMouseDown={e => e.stopPropagation()}
           onClick={e => e.stopPropagation()}
           type="number"
           min={MIN_GAS}
