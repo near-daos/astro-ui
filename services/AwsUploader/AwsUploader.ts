@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk';
 import { ManagedUpload } from 'aws-sdk/clients/s3';
-import { awsConfig, appConfig } from 'config';
+import { awsConfig } from 'config';
 import { nanoid } from 'nanoid';
 import { Readable } from 'form-data';
 
@@ -13,35 +13,18 @@ const getGlobalAWSConfig = () => {
     },
   };
 
-  if (appConfig.AWS_USE_LOCAL_CONF) {
-    baseConfig = {
-      ...baseConfig,
-      accessKeyId: awsConfig.accessKeyId,
-      secretAccessKey: awsConfig.secretAccessKey,
-    };
-  } else {
-    baseConfig = {
-      ...baseConfig,
-      region: awsConfig.region,
-      credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: awsConfig.identityPoolId,
-      }),
-    };
-  }
+  baseConfig = {
+    ...baseConfig,
+    region: awsConfig.region,
+    credentials: new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: awsConfig.identityPoolId,
+    }),
+  };
 
   return baseConfig;
 };
 
 const getInstanceConfig = () => {
-  if (appConfig.AWS_USE_LOCAL_CONF) {
-    return {
-      apiVersion: awsConfig.apiVersion,
-      params: { Bucket: awsConfig.bucket },
-      endpoint: awsConfig.endpoint,
-      s3ForcePathStyle: awsConfig.s3ForcePathStyle,
-    };
-  }
-
   return {
     apiVersion: awsConfig.apiVersion,
     params: { Bucket: awsConfig.bucket },

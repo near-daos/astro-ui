@@ -1,0 +1,105 @@
+@import 'styles/typography';
+
+.voting {
+  align-items: flex-start;
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+  justify-content: flex-start;
+}
+
+.votingHead {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  width: 100%;
+
+  svg {
+    height: 18px;
+    width: 18px;
+  }
+}
+
+.votingTitle {
+  @extend %heading3;
+  line-height: 38px;
+  margin: 0 8px;
+}
+
+.votingText {
+  @extend %body2;
+  color: var(--color-neutral-70);
+  margin: 0 0 32px;
+}
+
+.quorum {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  width: 100%;
+}
+
+.quorumText {
+  @extend %body1;
+  color: var(--color-brand-black);
+
+  margin: 0;
+}
+
+.quorumInput {
+  @extend %body1;
+  border: 1px solid var(--color-neutral-50);
+  border-radius: 6px;
+  height: 28px;
+  outline: none;
+
+  padding: 2px 9px;
+  width: 51px;
+}
+
+.slider {
+  display: flex;
+  height: 36px;
+  width: 100%;
+}
+
+.sliderTrack {
+  align-self: center;
+  border-radius: 4px;
+  height: 5px;
+  width: 100%;
+}
+
+.sliderThumb {
+  align-items: center;
+  background-color: transparent;
+  border-radius: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  height: 24px;
+  justify-content: center;
+  outline-width: 0;
+  transition: background-color 0.1s linear;
+  width: 24px;
+
+  &:hover,
+  :focus,
+  :focus-visible {
+    background-color: rgba(96, 56, 208, 0.15);
+  }
+
+  &:active,
+  :focus {
+    background-color: rgba(96, 56, 208, 0.35);
+  }
+}
+
+.sliderThumbFigure {
+  background-color: var(--color-brand-purple);
+  border-radius: 100%;
+  height: 14px;
+  width: 14px;
+}

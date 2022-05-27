@@ -9,10 +9,10 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  height: 171px;
+  height: 210px;
   justify-content: center;
   margin-bottom: 12px;
-  min-height: 171px;
+  min-height: 210px;
   transition: border-color 0.2s ease-out;
 
   width: 100%;
@@ -24,20 +24,24 @@
       margin-right: 12px;
     }
   }
+
+  p {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+  }
 }
 
 .root:hover {
   border-color: var(--color-primary-50);
-
-  .icon {
-    color: var(--color-primary-30);
-  }
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
 }
 
 .icon {
   color: var(--color-neutral-60);
+  height: 100px;
   transition: color 0.2s ease-out;
-  width: 40px;
 }
 
 .label {

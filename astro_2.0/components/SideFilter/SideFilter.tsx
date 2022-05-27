@@ -16,6 +16,7 @@ export type ListItem = {
 interface SideFilterProps {
   title: string;
   disabled?: boolean;
+  forceHorizontalView?: boolean;
   queryName: string;
   className?: string;
   titleClassName?: string;
@@ -35,6 +36,7 @@ export const SideFilter = ({
   itemClassName,
   hideAllOption = false,
   shallowUpdate = false,
+  forceHorizontalView = false,
 }: SideFilterProps): JSX.Element => {
   const { t } = useTranslation();
 
@@ -108,7 +110,11 @@ export const SideFilter = ({
   }, [value]);
 
   return (
-    <div className={cn(styles.categoriesListRoot, className)}>
+    <div
+      className={cn(styles.categoriesListRoot, className, {
+        [styles.categoriesListHorizontal]: forceHorizontalView,
+      })}
+    >
       <p className={cn(styles.categoriesListTitle, titleClassName)}>{title}</p>
 
       <ul

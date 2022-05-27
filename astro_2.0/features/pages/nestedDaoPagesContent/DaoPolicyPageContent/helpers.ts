@@ -159,13 +159,10 @@ export function getInitialVotingPermissions(dao: {
   };
 }): SelectorRow[] {
   return dao.policy.roles
-    .filter(group => {
-      if (group.kind.toLowerCase && group.kind.toLowerCase() === 'everyone') {
-        return false;
-      }
-
-      return true;
-    })
+    .filter(
+      group =>
+        !(group.kind.toLowerCase && group.kind.toLowerCase() === 'everyone')
+    )
     .map(group => {
       const allowAll =
         group.permissions.indexOf('*:*') !== -1 ||

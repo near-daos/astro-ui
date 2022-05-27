@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import Decimal from 'decimal.js';
 
-import { DAO } from 'types/dao';
+import { DAO, TGroup } from 'types/dao';
 import {
   ProposalFeedItem,
   ProposalType,
@@ -38,6 +38,7 @@ import {
   getInitialVotingPermissions,
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';
 import { ChangePermissionsContent } from 'astro_2.0/features/ViewProposal/components/ChangePermissionsContent';
+import { UpdateGroupContent } from 'astro_2.0/features/CreateProposal/components/UpdateGroupContent';
 import { CreateDaoContent } from 'astro_2.0/features/ViewProposal/components/CreateDaoContent';
 
 export function getContentNode(proposal: ProposalFeedItem): ReactNode {
@@ -106,6 +107,32 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
               purpose={proposal.kind.config.purpose}
             />
           );
+          break;
+        }
+
+        break;
+      }
+      case ProposalVariant.ProposeUpdateGroup: {
+        if (proposal.kind.type === ProposalType.ChangePolicy) {
+          const groups = proposal.kind.policy.roles
+            .filter(el => el.kind !== 'Everyone')
+            .map(
+              role =>
+                ({
+                  name: role.name,
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  members: role.kind.group,
+                  permissions: role.permissions,
+                  slug: role.name.replaceAll(' ', '_'),
+                  votePolicy: {
+                    ...role.votePolicy,
+                    defaultPolicy: dao.policy.defaultVotePolicy,
+                  },
+                } as TGroup)
+            );
+
+          content = <UpdateGroupContent groups={groups} />;
           break;
         }
 

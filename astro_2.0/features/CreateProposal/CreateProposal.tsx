@@ -100,7 +100,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     ),
     context: schemaContext,
     mode: 'onSubmit',
-    resolver: resolver(dao, nearService),
+    resolver: resolver(dao, nearService, t),
   });
 
   const { onSubmit } = useSubmitProposal({

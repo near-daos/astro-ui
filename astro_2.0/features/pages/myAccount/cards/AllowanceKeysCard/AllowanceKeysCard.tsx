@@ -20,18 +20,20 @@ export const AllowanceKeysCard: FC = () => {
   >([]);
 
   const [{ loading }, getDaosList] = useAsyncFn(async () => {
-    const daosList = await SputnikHttpService.getAccountDaos(accountId);
-    const allowanceKeys = (await nearService?.getAllowanceKeys()) ?? [];
+    if (accountId) {
+      const daosList = await SputnikHttpService.getAccountDaos(accountId);
+      const allowanceKeys = (await nearService?.getAllowanceKeys()) ?? [];
 
-    const result: DaoWithAllowanceKey[] = daosList.map(dao => {
-      return {
-        daoId: dao.id,
-        allowanceKey: allowanceKeys.find(key => key.daoId === dao.id),
-      };
-    });
+      const result: DaoWithAllowanceKey[] = daosList.map(dao => {
+        return {
+          daoId: dao.id,
+          allowanceKey: allowanceKeys.find(key => key.daoId === dao.id),
+        };
+      });
 
-    if (isMounted()) {
-      setDaosWithAllowanceKey(result);
+      if (isMounted()) {
+        setDaosWithAllowanceKey(result);
+      }
     }
   }, [accountId, isMounted]);
 

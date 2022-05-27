@@ -7,6 +7,7 @@ import uniq from 'lodash/uniq';
 import { nanoid } from 'nanoid';
 import dynamic from 'next/dynamic';
 import React, { ReactNode } from 'react';
+import { TFunction } from 'react-i18next';
 
 // Types
 import { ProposalType, ProposalVariant } from 'types/proposal';
@@ -40,6 +41,9 @@ import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/
 import { TokenDistributionContent } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent';
 import { ContractAcceptanceContent } from 'astro_2.0/features/CreateProposal/components/ContractAcceptanceContent';
 import { CreateDaoContent } from 'astro_2.0/features/CreateProposal/components/CreateDaoContent';
+import { ChangeVotingPermissionsContent } from 'astro_2.0/features/CreateProposal/components/ChangeVotingPermissionsContent';
+import { CreateTokenContent } from 'astro_2.0/features/CreateProposal/components/CreateTokenContent';
+import { UpdateGroupContent } from 'astro_2.0/features/CreateProposal/components/UpdateGroupContent';
 
 // Helpers & Utils
 import { getInitialData } from 'features/vote-policy/helpers';
@@ -50,9 +54,7 @@ import {
   validateImgSize,
 } from 'utils/imageValidators';
 import { SputnikNearService } from 'services/sputnik';
-import { ChangeVotingPermissionsContent } from 'astro_2.0/features/CreateProposal/components/ChangeVotingPermissionsContent';
 import { ProposalPermissions } from 'types/context';
-import { CreateTokenContent } from 'astro_2.0/features/CreateProposal/components/CreateTokenContent';
 import { TransferFundsContent } from 'astro_2.0/features/CreateProposal/components/TransferFundsContent';
 import { Token } from 'types/token';
 import { AnySchema } from 'yup';
@@ -367,7 +369,7 @@ export function getFormContentNode(
       return <ChangeBondsContent dao={dao} />;
     }
     case ProposalVariant.ProposeCustomFunctionCall: {
-      return <CustomFunctionCallContent />;
+      return <CustomFunctionCallContent dao={dao} />;
     }
     case ProposalVariant.ProposeContractAcceptance: {
       return <ContractAcceptanceContent tokenId="someverylonglongname.near" />;
@@ -390,6 +392,9 @@ export function getFormContentNode(
     }
     case ProposalVariant.ProposeCreateToken: {
       return <CreateTokenContent />;
+    }
+    case ProposalVariant.ProposeUpdateGroup: {
+      return <UpdateGroupContent groups={[]} getDataFromContext />;
     }
     case ProposalVariant.ProposeChangeProposalVotingPermissions:
     case ProposalVariant.ProposeChangeProposalCreationPermissions: {
@@ -464,6 +469,7 @@ export const gasValidation = yup
   .required('Required');
 
 export function getValidationSchema(
+  t: TFunction,
   proposalVariant?: ProposalVariant,
   dao?: DAO,
   data?: { [p: string]: unknown },
@@ -640,6 +646,16 @@ export function getValidationSchema(
             externalUrl: yup.string().url(),
             actionsGas: gasValidation,
             gas: gasValidation,
+          });
+        }
+        case FunctionCallType.VoteInAnotherDao: {
+          const gerErr = (field: string) =>
+            t(`proposalCard.voteInDao.${field}.required`);
+
+          return yup.object().shape({
+            targetDao: yup.string().required(gerErr('targetDao')),
+            proposal: yup.string().required(gerErr('proposal')),
+            vote: yup.string().required(gerErr('vote')),
           });
         }
         case FunctionCallType.TransferNFTfromMintbase: {

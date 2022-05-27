@@ -3,6 +3,7 @@
 import { render } from 'jest/testUtils';
 import { useFormContext } from 'react-hook-form';
 
+import { DAO } from 'types/dao';
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 
 import CustomFunctionCallContent from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent';
@@ -77,7 +78,9 @@ describe('CustomFunctionCallContent', () => {
         watch: () => type,
       }));
 
-      const { getByText } = render(<CustomFunctionCallContent />);
+      const { getByText } = render(
+        <CustomFunctionCallContent dao={({} as unknown) as DAO} />
+      );
 
       expect(getByText(component)).toBeTruthy();
     }
