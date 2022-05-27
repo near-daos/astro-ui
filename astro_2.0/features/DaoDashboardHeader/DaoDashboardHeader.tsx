@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 import { useMedia } from 'react-use';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { DAO } from 'types/dao';
 
@@ -49,6 +50,7 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
     links,
     daoVersion,
   } = dao;
+  const flags = useFlags();
   const { accountId } = useWalletContext();
   const { t } = useTranslation();
   const isMobileOrTablet = useMedia('(max-width: 767px)');
@@ -141,18 +143,22 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
           />
         )}
 
-        <CloneDaoWarning
-          dao={dao}
-          userPermissions={userPermissions}
-          className={styles.warning}
-          onCreateProposal={onCreateProposal}
-        />
+        {flags.cloneDaoFlow && (
+          <CloneDaoWarning
+            dao={dao}
+            userPermissions={userPermissions}
+            className={styles.warning}
+            onCreateProposal={onCreateProposal}
+          />
+        )}
 
-        <UpgradeDaoWarning
-          dao={dao}
-          userPermissions={userPermissions}
-          className={styles.warning}
-        />
+        {flags.migrateDaoFlow && (
+          <UpgradeDaoWarning
+            dao={dao}
+            userPermissions={userPermissions}
+            className={styles.warning}
+          />
+        )}
       </div>
     </div>
   );
