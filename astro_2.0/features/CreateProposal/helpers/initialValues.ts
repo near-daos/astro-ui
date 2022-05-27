@@ -2,14 +2,17 @@
 
 import { ProposalVariant } from 'types/proposal';
 import {
+  DEFAULT_CREATE_DAO_GAS,
   DEFAULT_PROPOSAL_GAS,
   DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
 } from 'services/sputnik/constants';
+import { Token } from 'types/token';
 
 export function getFormInitialValues(
   selectedProposalType: ProposalVariant,
   accountId: string,
-  initialValues: Record<string, unknown> = {}
+  initialValues: Record<string, unknown> = {},
+  daoTokens?: Record<string, Token>
 ): Record<string, unknown> {
   switch (selectedProposalType) {
     case ProposalVariant.ProposeGetUpgradeCode: {
@@ -34,6 +37,38 @@ export function getFormInitialValues(
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
+      };
+    }
+    case ProposalVariant.ProposeCreateDao: {
+      return {
+        details: `Lets create new DAO`,
+        externalUrl: '',
+        gas: DEFAULT_CREATE_DAO_GAS,
+        displayName: initialValues.displayName,
+      };
+    }
+    case ProposalVariant.ProposeTransferFunds: {
+      const tokens = (daoTokens as Record<string, Token>) ?? {};
+      const tokensIds = Object.values(tokens).map(item => item.symbol);
+
+      const tokensFields = tokensIds.reduce<Record<string, string | null>>(
+        (res, item) => {
+          res[`${item}_amount`] = null;
+
+          res[`${item}_target`] = initialValues.target as string;
+
+          return res;
+        },
+        {}
+      );
+
+      return {
+        details: `Lets transfer DAO funds`,
+        externalUrl: '',
+        gas: DEFAULT_CREATE_DAO_GAS,
+        daoTokens,
+        ...tokensFields,
+        ...initialValues,
       };
     }
     case ProposalVariant.ProposeCreateBounty: {

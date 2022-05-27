@@ -68,7 +68,10 @@ export const FieldValue: FC<FieldValueProps> = ({
     >
       {noWrap ? (
         <div className={styles.ellipse}>
-          <Tooltip overlay={<div className={styles.tooltip}>{value}</div>}>
+          <Tooltip
+            placement="top"
+            overlay={<div className={styles.tooltip}>{value}</div>}
+          >
             {value}
           </Tooltip>
         </div>

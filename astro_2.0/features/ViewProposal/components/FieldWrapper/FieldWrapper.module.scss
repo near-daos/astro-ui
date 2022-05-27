@@ -60,7 +60,7 @@
 
   &.noWrap {
     @include ellipse-text;
-    max-width: 200px;
+    //max-width: 120px;
     width: 100%;
   }
 

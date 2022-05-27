@@ -15,4 +15,7 @@ export const dao = ({
     version: [2, 0],
     hash: 'qwerty',
   },
+  policy: {
+    roles: [],
+  },
 } as unknown) as DAO;

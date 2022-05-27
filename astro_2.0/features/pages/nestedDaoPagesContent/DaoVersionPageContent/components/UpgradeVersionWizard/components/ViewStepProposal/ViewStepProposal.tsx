@@ -6,6 +6,7 @@ import { Button } from 'components/button/Button';
 import { DaoWarning } from 'astro_2.0/components/DaoWarning';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import styles from './ViewStepProposal.module.scss';
 
@@ -24,6 +25,7 @@ export const ViewStepProposal: FC<Props> = ({
   onApproved,
   onRejected,
 }) => {
+  const { tokens } = useDaoCustomTokens();
   const router = useRouter();
   const isApproved = proposal?.status === 'Approved';
   const isRejected = proposal?.status === 'Rejected';
@@ -58,7 +60,7 @@ export const ViewStepProposal: FC<Props> = ({
       <ViewProposal
         proposal={proposal}
         showFlag={false}
-        tokens={{}}
+        tokens={tokens}
         preventNavigate
         // optionalPostVoteAction={onApproved}
       />

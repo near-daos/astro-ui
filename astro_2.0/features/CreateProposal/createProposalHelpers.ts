@@ -324,6 +324,9 @@ function getProposalTypeByVariant(
     case ProposalVariant.ProposeCreateToken: {
       return ProposalType.SetStakingContract;
     }
+    // these 2 proposals are for migrate dao
+    case ProposalVariant.ProposeCreateDao:
+    case ProposalVariant.ProposeTransferFunds:
     case ProposalVariant.ProposeRemoveUpgradeCode:
     case ProposalVariant.ProposeGetUpgradeCode:
     case ProposalVariant.ProposeUpgradeSelf: {

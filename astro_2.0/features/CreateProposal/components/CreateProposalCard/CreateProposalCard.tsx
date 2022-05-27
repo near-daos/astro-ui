@@ -100,6 +100,12 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
           />
         );
       }
+      case ProposalVariant.ProposeCreateDao: {
+        return <InfoBlockWidget label="Migrate" value="Create DAO" />;
+      }
+      case ProposalVariant.ProposeTransferFunds: {
+        return <InfoBlockWidget label="Migrate" value="Transfer DAO funds" />;
+      }
       case ProposalVariant.ProposeGetUpgradeCode: {
         return (
           <InfoBlockWidget label="Upgrade" value="Get Code From Factory" />

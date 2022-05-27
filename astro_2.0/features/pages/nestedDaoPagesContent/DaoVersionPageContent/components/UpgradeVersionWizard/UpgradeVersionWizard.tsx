@@ -54,7 +54,7 @@ export const UpgradeVersionWizard: FC<Props> = ({
     ];
 
   const handleProposalCreate = useCallback(
-    async (newProposalId: number | null) => {
+    async (newProposalId: number | number[] | null) => {
       if (
         newProposalId !== null &&
         newProposalId !== undefined &&

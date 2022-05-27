@@ -112,6 +112,8 @@
 
 .proposalContentCell {
   grid-area: content;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .proposalTypeAndLink {
@@ -149,6 +151,8 @@
 
 .contentCell {
   grid-area: content;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 
 .descriptionCell {
