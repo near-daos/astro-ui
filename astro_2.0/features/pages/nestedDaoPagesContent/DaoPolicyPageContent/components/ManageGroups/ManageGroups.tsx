@@ -24,6 +24,7 @@ type Props = {
 
 type TLocalGroup = Omit<TGroup, 'votePolicy'> & {
   hasChanges: boolean;
+  isCreated: boolean;
   votePolicy: DaoVotePolicy;
 };
 
@@ -40,8 +41,15 @@ export const ManageGroups: React.FC<Props> = ({
       dao.groups.map(group => ({
         ...group,
         hasChanges: false,
-        votePolicy:
-          group.votePolicy?.ChangePolicy || dao.policy.defaultVotePolicy,
+        isCreated: false,
+        votePolicy: group.votePolicy?.ChangePolicy || {
+          ...dao.policy.defaultVotePolicy,
+          quorum: (
+            (dao.policy.defaultVotePolicy.ratio[0] /
+              dao.policy.defaultVotePolicy.ratio[1]) *
+            100
+          ).toString(),
+        },
       }))
     );
   }, [dao.groups, dao.policy.defaultVotePolicy]);
@@ -82,9 +90,15 @@ export const ManageGroups: React.FC<Props> = ({
               return {
                 ...oldGroup,
                 hasChanges: false,
-                votePolicy:
-                  oldGroup.votePolicy?.ChangePolicy ||
-                  dao.policy.defaultVotePolicy,
+                isCreated: group.isCreated,
+                votePolicy: oldGroup.votePolicy?.ChangePolicy || {
+                  ...dao.policy.defaultVotePolicy,
+                  quorum: (
+                    (dao.policy.defaultVotePolicy.ratio[0] /
+                      dao.policy.defaultVotePolicy.ratio[1]) *
+                    100
+                  ).toString(),
+                },
               };
             }
 
@@ -113,12 +127,13 @@ export const ManageGroups: React.FC<Props> = ({
       slug: 'new_group',
       votePolicy: {
         kind: 'Ratio',
-        quorum: '1',
+        quorum: '50',
         ratio: [1, 2],
         weightKind: 'RoleWeight',
         weight: '',
       },
-      hasChanges: true,
+      hasChanges: false,
+      isCreated: true,
     };
 
     setActiveGroupSlug(newGroup.slug);
@@ -127,7 +142,15 @@ export const ManageGroups: React.FC<Props> = ({
   };
 
   const handleOnSubmit = () => {
-    handleCreateProposal(ProposalVariant.ProposeUpdateGroup, { groups });
+    handleCreateProposal(ProposalVariant.ProposeUpdateGroup, {
+      groups: groups.map(group => ({
+        ...group,
+        votePolicy: {
+          ...group.votePolicy,
+          ratio: [group.votePolicy.quorum, 100],
+        },
+      })),
+    });
   };
 
   const activeGroup = groups.find(group => group.slug === activeGroupSlug);

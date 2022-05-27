@@ -22,7 +22,13 @@ type Props = {
 
 type TLocalGroup = Omit<TGroup, 'votePolicy'> & {
   hasChanges: boolean;
+  isCreated: boolean;
   votePolicy: DaoVotePolicy;
+};
+
+type TAllowedFeatures = {
+  canRename: boolean;
+  canDelete: boolean;
 };
 
 const BAN_SLUGS = ['council'];
@@ -101,7 +107,10 @@ export const EditGroup: React.FC<Props> = ({
     member.toLowerCase().includes(searchMemberValue)
   );
 
-  const shouldHideExtraFeatures = BAN_SLUGS.includes(group.slug);
+  const allowedFeatures: TAllowedFeatures = {
+    canRename: !BAN_SLUGS.includes(group.slug),
+    canDelete: !BAN_SLUGS.includes(group.slug) && !group.isCreated,
+  };
 
   return (
     <div className={styles.content}>
@@ -127,7 +136,7 @@ export const EditGroup: React.FC<Props> = ({
           <div className={styles.headerContent}>
             <p className={styles.headerText}>{group.name}</p>
 
-            {!shouldHideExtraFeatures && (
+            {allowedFeatures.canRename && (
               <Button
                 variant="transparent"
                 className={styles.headerEdit}
@@ -155,7 +164,7 @@ export const EditGroup: React.FC<Props> = ({
               Reset
             </Button>
           )}
-          {!shouldHideExtraFeatures && (
+          {allowedFeatures.canDelete && (
             <Button
               variant="tertiary"
               className={styles.headerDelete}
