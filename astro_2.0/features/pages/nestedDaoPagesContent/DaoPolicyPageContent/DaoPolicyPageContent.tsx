@@ -13,6 +13,7 @@ import { InfoValue } from 'astro_2.0/components/InfoBlockWidget/components/InfoV
 import { DefaultVotingPolicy } from 'astro_2.0/components/DefaultVotingPolicy';
 import { Badge, getBadgeVariant } from 'components/Badge';
 import { PermissionsSelector } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/components/PermissionsSelector';
+import { ManageGroups } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/components/ManageGroups';
 import {
   getInitialCreationPermissions,
   getInitialVotingPermissions,
@@ -20,6 +21,9 @@ import {
 
 import { formatYoktoValue } from 'utils/format';
 
+import { Icon } from 'components/Icon';
+
+import { Button } from 'components/button/Button';
 import styles from './DaoPolicyPageContent.module.scss';
 
 interface Props {
@@ -51,6 +55,16 @@ export const DaoPolicyPageContent: FC<Props> = ({
 
   return (
     <div className={styles.root}>
+      <Button
+        variant="transparent"
+        className={styles.navigation}
+        onClick={() => router.push(router.asPath.split('/policy')[0])}
+      >
+        <Icon name="buttonArrowLeft" className={styles.navigationIcon} />
+
+        <p className={styles.navigationText}>Back to settings overview</p>
+      </Button>
+
       <div className={styles.titleRow}>DAO Settings</div>
       <div className={styles.sideFilter}>
         <SettingsFilterToggle variant="daoPolicy" />
@@ -194,6 +208,19 @@ export const DaoPolicyPageContent: FC<Props> = ({
               numberOfGroups={dao.groups.length}
             />
           </DaoSetting>
+        )}
+        {daoFilter === 'groups' && (
+          <ManageGroups
+            dao={dao}
+            handleCreateProposal={handleCreateProposal}
+            disableNewProposal={
+              !userPermissions.isCanCreateProposals ||
+              !userPermissions.isCanCreatePolicyProposals ||
+              !userPermissions.allowedProposalsToCreate[
+                ProposalType.ChangePolicy
+              ]
+            }
+          />
         )}
       </div>
     </div>

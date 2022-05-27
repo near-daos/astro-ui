@@ -246,9 +246,12 @@ const policyAffectsProposalVariants = [
   ProposalVariant.ProposeChangeVotingPolicy,
   ProposalVariant.ProposeCreateGroup,
   ProposalVariant.ProposeRemoveMember,
+  ProposalVariant.ProposeUpdateGroup,
 ];
 
-function getDefaultProposalVariantByType(type: ProposalType): ProposalVariant {
+export function getDefaultProposalVariantByType(
+  type: ProposalType
+): ProposalVariant {
   switch (type) {
     case ProposalType.ChangeConfig: {
       return ProposalVariant.ProposeChangeDaoName;
@@ -280,7 +283,7 @@ function getDefaultProposalVariantByType(type: ProposalType): ProposalVariant {
   }
 }
 
-function getProposalTypeByVariant(
+export function getProposalTypeByVariant(
   variant: ProposalVariant
 ): ProposalType | null {
   switch (variant) {
@@ -316,6 +319,7 @@ function getProposalTypeByVariant(
     case ProposalVariant.ProposeChangeProposalVotingPermissions:
     case ProposalVariant.ProposeChangeVotingPolicy:
     case ProposalVariant.ProposeChangeBonds:
+    case ProposalVariant.ProposeUpdateGroup:
     case ProposalVariant.ProposeCreateGroup: {
       return ProposalType.ChangePolicy;
     }

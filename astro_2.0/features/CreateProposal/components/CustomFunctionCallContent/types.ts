@@ -5,4 +5,5 @@ export enum FunctionCallType {
   MintNFTsfromMintbase = 'MintNFTsfromMintbase',
   BuyNFTfromParas = 'BuyNFTfromParas',
   SwapsOnRef = 'SwapsOnRef',
+  VoteInAnotherDao = 'VoteInAnotherDao',
 }

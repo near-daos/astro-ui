@@ -4,20 +4,29 @@ import ace from 'ace-builds';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
 
-import { CustomContent } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/CustomContent';
-import { BuyNftFromMintbaseContent } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/BuyNftFromMintbaseContent';
-import { TransferNftFromMintbaseContent } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/TransferNftFromMintbaseContent';
-import { BuyNftFromParasContent } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/BuyNftFromParasContent';
-import { SwapsOnRefContent } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/SwapsOnRefContent';
+import { DAO } from 'types/dao';
 
-import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
+import { FunctionCallType } from './types';
+
+import { CustomContent } from './components/CustomContent';
+import { VoteInOtherDao } from './components/VoteInOtherDao';
+import { SwapsOnRefContent } from './components/SwapsOnRefContent';
+import { BuyNftFromParasContent } from './components/BuyNftFromParasContent';
+import { BuyNftFromMintbaseContent } from './components/BuyNftFromMintbaseContent';
+import { TransferNftFromMintbaseContent } from './components/TransferNftFromMintbaseContent';
 
 ace.config.set(
   'basePath',
   'https://cdn.jsdelivr.net/npm/ace-builds@1.4.3/src-noconflict/'
 );
 
-const CustomFunctionCallContent: FC = () => {
+interface CustomFunctionCallContentProps {
+  dao: DAO;
+}
+
+const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
+  dao,
+}) => {
   const { watch } = useFormContext();
   const type = watch('functionCallType');
 
@@ -33,6 +42,9 @@ const CustomFunctionCallContent: FC = () => {
     }
     case FunctionCallType.BuyNFTfromMintbase: {
       return <BuyNftFromMintbaseContent />;
+    }
+    case FunctionCallType.VoteInAnotherDao: {
+      return <VoteInOtherDao dao={dao} />;
     }
     case FunctionCallType.Custom:
     default: {

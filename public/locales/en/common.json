@@ -267,6 +267,23 @@
     "waitSomeTime": "This may take some time"
   },
   "proposalCard": {
+    "voteInDao": {
+      "targetDao": {
+        "label": "DAO",
+        "placeholder": "Select DAO",
+        "required": "DAO is a required field"
+      },
+      "proposal": {
+        "label": "Proposal",
+        "placeholder": "Select Proposal",
+        "required": "Proposal is a required field"
+      },
+      "vote": {
+        "label": "Vote",
+        "placeholder": "Vote",
+        "required": "Vote is a required field"
+      }
+    },
     "proposalID": "Proposal ID:",
     "proposalType": "Proposal type: ",
     "proposalOwner": "Proposer",

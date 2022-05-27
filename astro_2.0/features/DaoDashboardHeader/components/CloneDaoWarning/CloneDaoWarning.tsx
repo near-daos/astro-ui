@@ -139,9 +139,12 @@ export const CloneDaoWarning: FC<Props> = ({
   function renderContent() {
     if (isFlowCompleted && canActOnFlow) {
       return (
-        <button type="button" onClick={() => update({ cloneState: null })}>
-          Reset clone flow
-        </button>
+        // eslint-disable-next-line jsx-a11y/control-has-associated-label
+        <button
+          type="button"
+          onClick={() => update({ cloneState: null })}
+          className={styles.resetFlowBtn}
+        />
       );
     }
 

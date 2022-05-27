@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { GroupedSelect } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
 
@@ -37,7 +38,41 @@ export const FunctionCallTypeSelector: FC<Props> = ({ daoId }) => {
   const { templates } = useProposalTemplates(daoId);
   const { tokens } = useCustomTokensContext();
 
+  const { voteInOtherDao } = useFlags();
+
   const options = useMemo(() => {
+    const templateOptions = [
+      {
+        label: 'Buy NFT from Mintbase',
+        value: FunctionCallType.BuyNFTfromMintbase,
+        group: 'Templates',
+      },
+      {
+        label: 'Transfer NFT from DAO',
+        value: FunctionCallType.TransferNFTfromMintbase,
+        group: 'Templates',
+      },
+      {
+        label: 'Buy NFT from Paras',
+        value: FunctionCallType.BuyNFTfromParas,
+        group: 'Templates',
+      },
+      // Temp disable - we want to implement integration with SC to fetch required data
+      // {
+      //   label: 'Swaps on Ref',
+      //   value: FunctionCallType.SwapsOnRef,
+      //   group: 'Templates',
+      // },
+    ];
+
+    if (voteInOtherDao) {
+      templateOptions.push({
+        label: 'Vote in Another DAO',
+        value: FunctionCallType.VoteInAnotherDao,
+        group: 'Templates',
+      });
+    }
+
     const result: Option[] = [
       {
         title: '',
@@ -53,29 +88,7 @@ export const FunctionCallTypeSelector: FC<Props> = ({ daoId }) => {
       {
         title: 'Templates',
         disabled: false,
-        options: [
-          {
-            label: 'Buy NFT from Mintbase',
-            value: FunctionCallType.BuyNFTfromMintbase,
-            group: 'Templates',
-          },
-          {
-            label: 'Transfer NFT from DAO',
-            value: FunctionCallType.TransferNFTfromMintbase,
-            group: 'Templates',
-          },
-          {
-            label: 'Buy NFT from Paras',
-            value: FunctionCallType.BuyNFTfromParas,
-            group: 'Templates',
-          },
-          // Temp disable - we want to implement integration with SC to fetch required data
-          // {
-          //   label: 'Swaps on Ref',
-          //   value: FunctionCallType.SwapsOnRef,
-          //   group: 'Templates',
-          // },
-        ],
+        options: templateOptions,
       },
     ];
 
@@ -96,7 +109,7 @@ export const FunctionCallTypeSelector: FC<Props> = ({ daoId }) => {
     }
 
     return result;
-  }, [templates]);
+  }, [templates, voteInOtherDao]);
 
   return (
     <div className={styles.root}>

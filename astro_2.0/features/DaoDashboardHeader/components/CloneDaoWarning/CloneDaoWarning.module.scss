@@ -63,6 +63,19 @@
   }
 }
 
+.resetFlowBtn {
+  background: transparent;
+  border: 0;
+  height: 24px;
+  position: absolute;
+  transform: translate(-24px, -168px);
+  width: 24px;
+
+  @include tablet-landscape {
+    transform: translate(0, -108px);
+  }
+}
+
 .infoRoot {
   background-color: var(--color-primary-10);
 }

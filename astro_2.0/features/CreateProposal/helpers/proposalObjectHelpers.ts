@@ -452,6 +452,36 @@ export function getChangeConfigProposal(
   };
 }
 
+export async function getVoteInOtherDaoProposal(
+  dao: DAO,
+  data: Record<string, string>
+): Promise<CreateProposalParams> {
+  const { gas, vote, details, proposal, targetDao } = data;
+
+  const proposalObj = {
+    daoId: dao.id,
+    description: details,
+    kind: 'FunctionCall' as const,
+    data: {
+      receiver_id: targetDao,
+      actions: [
+        {
+          method_name: 'act_proposal',
+          args: jsonToBase64Str({
+            id: parseInt(proposal, 10),
+            action: vote,
+          }),
+          deposit: '0',
+          gas: formatGasValue(gas).toString(),
+        },
+      ],
+    },
+    bond: dao?.policy.proposalBond,
+  };
+
+  return proposalObj;
+}
+
 export function getNewDaoProposal(
   dao: DAO,
   data: Record<string, string>

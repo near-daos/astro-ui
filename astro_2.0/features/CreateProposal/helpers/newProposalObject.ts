@@ -1,4 +1,4 @@
-import { DAO } from 'types/dao';
+import { DAO, TGroup } from 'types/dao';
 import {
   CreateProposalParams,
   DaoConfig,
@@ -24,6 +24,7 @@ import {
   getAddMemberProposal,
   getChangePolicyProposal,
   getRemoveMemberProposal,
+  getUpdateGroupProposal,
 } from 'features/groups/helpers';
 import { IGroupForm } from 'features/groups/types';
 import {
@@ -52,6 +53,7 @@ import {
   getTransferProposal,
   getUpgradeCodeProposal,
   getUpgradeSelfProposal,
+  getVoteInOtherDaoProposal,
   SwapsOnRefInput,
   TransferMintbaseNFTInput,
 } from 'astro_2.0/features/CreateProposal/helpers/proposalObjectHelpers';
@@ -205,6 +207,13 @@ export async function getNewProposalObject(
     case ProposalVariant.ProposeCreateGroup: {
       return getChangePolicyProposal((data as unknown) as IGroupForm, dao);
     }
+    case ProposalVariant.ProposeUpdateGroup: {
+      return getUpdateGroupProposal(
+        data.groups as TGroup[],
+        (data as unknown) as IGroupForm,
+        dao
+      );
+    }
     case ProposalVariant.ProposeChangeVotingPolicy: {
       const initialData = getInitialData(dao);
 
@@ -317,6 +326,9 @@ export async function getNewProposalObject(
       switch (data.functionCallType) {
         case FunctionCallType.SwapsOnRef: {
           return getSwapsOnRefProposal(dao, data as SwapsOnRefInput);
+        }
+        case FunctionCallType.VoteInAnotherDao: {
+          return getVoteInOtherDaoProposal(dao, data as Record<string, string>);
         }
         case FunctionCallType.BuyNFTfromParas: {
           return getBuyNftFromParasProposal(

@@ -8,7 +8,7 @@ import styles from './DropdownSelect.module.scss';
 
 interface Option {
   label: string;
-  component: JSX.Element;
+  component: ReactNode;
   disabled?: boolean;
 }
 

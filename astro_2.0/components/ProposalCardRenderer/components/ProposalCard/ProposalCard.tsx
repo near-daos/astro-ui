@@ -370,6 +370,15 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           </>
         );
       }
+      case ProposalVariant.ProposeUpdateGroup: {
+        return (
+          <>
+            {renderProposer()}
+            {renderDescription()}
+            <div className={styles.proposalGroupCell}>{content}</div>
+          </>
+        );
+      }
       case ProposalVariant.ProposeContractAcceptance:
       case ProposalVariant.ProposeTokenDistribution: {
         return <div className={styles.descriptionCell}>{content}</div>;
@@ -393,7 +402,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       className={cn(styles.root, {
         [styles.clickable]: !!id && !preventNavigate,
       })}
-      onClick={handleCardClick}
+      onMouseDown={handleCardClick}
     >
       {voteLoading && (
         <div className={styles.signingTransactionState}>
