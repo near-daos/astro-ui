@@ -45,8 +45,10 @@ import {
   getChangeConfigProposal,
   getCreateTokenProposal,
   getCustomFunctionCallProposal,
+  getNewDaoProposal,
   getRemoveUpgradeCodeProposal,
   getSwapsOnRefProposal,
+  getTransferDaoFundsProposal,
   getTransferMintbaseNFTProposal,
   getTransferProposal,
   getUpgradeCodeProposal,
@@ -93,6 +95,16 @@ export async function getNewProposalObject(
   bountyId?: number
 ): Promise<CreateProposalParams | null> {
   switch (proposalType) {
+    case ProposalVariant.ProposeCreateDao: {
+      return getNewDaoProposal(dao, data as Record<string, string>);
+    }
+    case ProposalVariant.ProposeTransferFunds: {
+      return getTransferDaoFundsProposal(
+        dao,
+        data as Record<string, string>,
+        tokens
+      );
+    }
     case ProposalVariant.ProposeGetUpgradeCode: {
       return getUpgradeCodeProposal(dao, data as Record<string, string>);
     }

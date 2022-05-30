@@ -924,7 +924,7 @@ export class HttpService {
           );
           break;
         case API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSALS:
-          response.data = response.data.map(mapProposalDTOToProposal);
+          response.data = response.data.data.map(mapProposalDTOToProposal);
           break;
         case API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSAL:
           response.data = mapProposalDTOToProposal(response.data);

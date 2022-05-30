@@ -17,7 +17,11 @@ import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSele
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 
 // Constants
-import { VALID_METHOD_NAME_REGEXP, VALID_URL_REGEXP } from 'constants/regexp';
+import {
+  VALID_METHOD_NAME_REGEXP,
+  VALID_URL_REGEXP,
+  VALID_WEBSITE_NAME_REGEXP,
+} from 'constants/regexp';
 import { MAX_GAS, MIN_GAS } from 'services/sputnik/constants';
 
 // Components
@@ -36,6 +40,7 @@ import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/CreateProposal/com
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/components/RemoveMemberFromGroupContent';
 import { TokenDistributionContent } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent';
 import { ContractAcceptanceContent } from 'astro_2.0/features/CreateProposal/components/ContractAcceptanceContent';
+import { CreateDaoContent } from 'astro_2.0/features/CreateProposal/components/CreateDaoContent';
 import { ChangeVotingPermissionsContent } from 'astro_2.0/features/CreateProposal/components/ChangeVotingPermissionsContent';
 import { CreateTokenContent } from 'astro_2.0/features/CreateProposal/components/CreateTokenContent';
 import { UpdateGroupContent } from 'astro_2.0/features/CreateProposal/components/UpdateGroupContent';
@@ -50,6 +55,9 @@ import {
 } from 'utils/imageValidators';
 import { SputnikNearService } from 'services/sputnik';
 import { ProposalPermissions } from 'types/context';
+import { TransferFundsContent } from 'astro_2.0/features/CreateProposal/components/TransferFundsContent';
+import { Token } from 'types/token';
+import { AnySchema } from 'yup';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -391,6 +399,12 @@ export function getFormContentNode(
     case ProposalVariant.ProposeChangeProposalVotingPermissions:
     case ProposalVariant.ProposeChangeProposalCreationPermissions: {
       return <ChangeVotingPermissionsContent />;
+    }
+    case ProposalVariant.ProposeCreateDao: {
+      return <CreateDaoContent daoId={dao.id} />;
+    }
+    case ProposalVariant.ProposeTransferFunds: {
+      return <TransferFundsContent />;
     }
     default: {
       return null;
@@ -767,6 +781,54 @@ export function getValidationSchema(
       });
     }
 
+    case ProposalVariant.ProposeCreateDao: {
+      return yup.object().shape({
+        details: yup.string().required('Required'),
+        displayName: yup
+          .string()
+          .trim()
+          .min(3, 'At least 3 characters expected.')
+          .matches(
+            VALID_WEBSITE_NAME_REGEXP,
+            'Only letters and numbers with hyphens and spaces in the middle.'
+          )
+          .required('Required'),
+      });
+    }
+    case ProposalVariant.ProposeTransferFunds: {
+      const tokens = (data?.daoTokens as Record<string, Token>) ?? {};
+      const tokensIds = Object.values(tokens).map(item => item.symbol);
+
+      const tokensFields = tokensIds.reduce<Record<string, AnySchema>>(
+        (res, item) => {
+          res[`${item}_amount`] = yup
+            .number()
+            .typeError('Must be a valid number.')
+            .positive()
+            .required('Required')
+            .test(
+              'onlyFiveDecimal',
+              'Only numbers with five optional decimal place please',
+              value => /^\d*(?:\.\d{0,5})?$/.test(`${value}`)
+            );
+
+          res[`${item}_target`] = yup.string().test({
+            name: 'notValidNearAccount',
+            exclusive: true,
+            message: 'Only valid near accounts are allowed',
+            test: async value => validateUserAccount(value, nearService),
+          });
+
+          return res;
+        },
+        {}
+      );
+
+      return yup.object().shape({
+        details: yup.string().required('Required'),
+        ...tokensFields,
+      });
+    }
     case ProposalVariant.ProposeUpgradeSelf:
     case ProposalVariant.ProposeGetUpgradeCode:
     case ProposalVariant.ProposeRemoveUpgradeCode: {

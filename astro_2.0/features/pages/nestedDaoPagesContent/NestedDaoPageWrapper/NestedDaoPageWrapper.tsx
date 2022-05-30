@@ -79,11 +79,13 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
   const onCreateProposal = useCallback(
     (
       initialProposalVariant?: ProposalVariant,
-      initialValues?: Record<string, unknown>
+      initialValues?: Record<string, unknown>,
+      onCreateCallback?: (newProposalId: number | number[] | null) => void
     ) => {
       toggleCreateProposal({
         proposalVariant: initialProposalVariant || defaultProposalType,
         initialValues,
+        onCreate: onCreateCallback,
       });
     },
     [toggleCreateProposal, defaultProposalType]

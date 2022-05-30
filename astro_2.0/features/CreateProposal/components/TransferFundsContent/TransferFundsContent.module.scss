@@ -1,0 +1,88 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  white-space: nowrap;
+}
+
+.amount {
+  flex: 0 1 100px;
+}
+
+.inputWrapper {
+  //max-width: 160px;
+
+  /* stylelint-disable */
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+  /* stylelint-enable */
+
+  input {
+    font-weight: 700;
+    @include placeholder {
+      color: var(--color-neutral-40);
+      transition: opacity 0.2s linear;
+    }
+  }
+}
+
+.tokenDetails {
+  align-items: center;
+  display: flex;
+  flex: 0 0 212px;
+  height: 68px;
+  min-width: 212px;
+}
+
+.target {
+  flex: 1 0 200px;
+}
+
+.maxButton {
+  background-color: var(--color-brand-purple-light);
+  border-radius: 4px;
+  color: var(--color-brand-purple);
+  height: unset;
+  margin-right: 18px;
+  min-height: unset;
+  min-width: unset;
+  padding: 0 4px;
+}
+
+.iconWrapper {
+  border-radius: 50%;
+  height: 24px;
+  margin-right: 8px;
+  overflow: hidden;
+  width: 24px;
+}
+
+.symbol {
+  @include ellipse-text;
+  max-width: 120px;
+}
+
+.icon {
+  background-color: var(--color-brand-black);
+  background-position: center;
+  background-size: contain;
+  height: 24px;
+  width: 24px;
+}

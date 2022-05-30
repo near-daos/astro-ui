@@ -13,7 +13,7 @@ interface VersionCheckProps {
   className?: string;
   loading?: boolean;
   disabled?: boolean;
-  version: { current: Version; next: Version } | null;
+  version: { current: Version; next?: Version } | null;
   handleUpdate: () => void;
 }
 

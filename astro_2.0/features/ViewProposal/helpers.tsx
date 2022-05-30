@@ -39,6 +39,7 @@ import {
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';
 import { ChangePermissionsContent } from 'astro_2.0/features/ViewProposal/components/ChangePermissionsContent';
 import { UpdateGroupContent } from 'astro_2.0/features/CreateProposal/components/UpdateGroupContent';
+import { CreateDaoContent } from 'astro_2.0/features/ViewProposal/components/CreateDaoContent';
 
 export function getContentNode(proposal: ProposalFeedItem): ReactNode {
   const { dao } = proposal;
@@ -410,6 +411,26 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
 
         break;
       }
+      case ProposalVariant.ProposeCreateDao: {
+        if (proposal.kind.type === ProposalType.FunctionCall) {
+          try {
+            const { kind } = proposal;
+            const data = kind.actions[0];
+
+            const json = JSON.parse(
+              Buffer.from(data.args, 'base64').toString('utf-8')
+            );
+
+            content = <CreateDaoContent displayName={json.name} />;
+            break;
+          } catch (e) {
+            break;
+          }
+        }
+
+        break;
+      }
+      case ProposalVariant.ProposeTransferFunds:
       case ProposalVariant.ProposeRemoveUpgradeCode:
       case ProposalVariant.ProposeUpgradeSelf:
       case ProposalVariant.ProposeGetUpgradeCode: {
@@ -574,6 +595,9 @@ export function getProposalVariantLabel(
     case ProposalVariant.ProposeRemoveUpgradeCode: {
       return 'Recover Storage Costs';
     }
+    case ProposalVariant.ProposeCreateDao: {
+      return 'Create DAO';
+    }
     default: {
       return type;
     }
@@ -605,6 +629,8 @@ export function isSaveTemplateActionAvailable(
     ProposalVariant.ProposeGetUpgradeCode,
     ProposalVariant.ProposeRemoveUpgradeCode,
     ProposalVariant.ProposeUpgradeSelf,
+    ProposalVariant.ProposeCreateDao,
+    ProposalVariant.ProposeTransferFunds,
   ];
 
   return (

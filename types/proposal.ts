@@ -66,6 +66,8 @@ export enum ProposalVariant {
   ProposeUpgradeSelf = 'ProposeUpgradeSelf',
   ProposeRemoveUpgradeCode = 'ProposeRemoveUpgradeCode',
   ProposeUpdateGroup = 'ProposeUpdateGroup',
+  ProposeCreateDao = 'ProposeCreateDao',
+  ProposeTransferFunds = 'ProposeTransferFunds',
 }
 
 export type VoteAction = 'VoteApprove' | 'VoteRemove' | 'VoteReject';

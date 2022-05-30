@@ -31,6 +31,7 @@ export type ProgressStatus = {
 
 export type Settings = {
   daoUpgrade?: UpgradeStatus;
+  cloneState?: { proposalId?: number | null; isFlowCompleted: boolean };
   createGovernanceToken?: ProgressStatus;
   features: Record<string, boolean>;
 };
