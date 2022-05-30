@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import last from 'lodash/last';
 import { render, screen } from '@testing-library/react';
 import { useRouter } from 'next/router';
 import { fireEvent } from '@testing-library/dom';
-
-import { useWalletContext } from 'context/WalletContext';
 
 import { DaoDetailsMinimized } from 'astro_2.0/components/DaoDetails/DaoDetailsMinimized';
 
@@ -148,44 +145,6 @@ describe('dao details minimized', () => {
     fireEvent.click(actionButton);
 
     expect(router.push).not.toBeCalled();
-  });
-
-  it('Should redirect user to login page on proposal click attempt if not logged', () => {
-    const login = jest.fn();
-
-    // @ts-ignore
-    useWalletContext.mockImplementation(() => ({ login }));
-
-    const { getAllByRole } = render(
-      <DaoDetailsMinimized
-        dao={daoMock}
-        userPermissions={permissions}
-        onCreateProposalClick={() => 0}
-      />
-    );
-
-    fireEvent.click(last(getAllByRole('button')) as Element);
-
-    expect(login).toBeCalled();
-  });
-
-  it('Should call onCreateProposalClick on proposal click', () => {
-    const onCreateProposalClick = jest.fn();
-
-    // @ts-ignore
-    useWalletContext.mockImplementation(() => ({ accountId: '123' }));
-
-    const { getAllByRole } = render(
-      <DaoDetailsMinimized
-        dao={daoMock}
-        userPermissions={permissions}
-        onCreateProposalClick={onCreateProposalClick}
-      />
-    );
-
-    fireEvent.click(last(getAllByRole('button')) as Element);
-
-    expect(onCreateProposalClick).toBeCalled();
   });
 });
 

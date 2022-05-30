@@ -48,6 +48,7 @@ import {
   ProposalTemplate,
   ProposalTemplateInput,
 } from 'types/proposalTemplate';
+import { DraftProposal } from 'types/draftProposal';
 
 class SputnikHttpServiceClass {
   private readonly httpService: HttpService = httpService;
@@ -1146,6 +1147,37 @@ class SputnikHttpServiceClass {
     );
 
     return response.data;
+  }
+
+  public async getDraftProposalsList(query: {
+    offset: number;
+    limit: number;
+    daoId: string;
+    category: string;
+    accountId: string;
+  }): Promise<PaginationResponse<DraftProposal[]> | null> {
+    try {
+      const { data } = await this.httpService.get<
+        PaginationResponse<DraftProposal[]>
+      >('/drafts', {
+        // responseMapper: {
+        //   name:
+        //     API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+        // },
+        queryRequest: {
+          name: API_QUERIES.GET_PROPOSALS_LIST,
+          params: {
+            query,
+          },
+        },
+      });
+
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
   }
 }
 

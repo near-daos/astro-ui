@@ -77,6 +77,9 @@ export function useCreateProposalFromExternal(
           return;
         }
 
+        // http://localhost:8080/dao/aviarium.sputnikv2.testnet/proposals?action=create_proposal&variant=ProposeCustomFunctionCall&params={"details":"Proposal description here", "methodName": "create", "smartContractAddress": "sputnikv2.testnet", "json":{ "msg": "{\"draft_group_id\":1}" }}
+        // http://localhost:8080/dao/aviarium.sputnikv2.testnet/proposals?action=create_proposal&variant=ProposeCustomFunctionCall&params={"details":"Proposal description here", "methodName": "create", "smartContractAddress": "sputnikv2.testnet", "json":{ "msg": {"draft_group_id":1} }}
+
         const parsedParams = params
           ? JSON.parse(decodeURIComponent(params as string).trim())
           : {};
