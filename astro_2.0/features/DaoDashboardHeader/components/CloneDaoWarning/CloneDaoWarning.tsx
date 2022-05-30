@@ -85,7 +85,10 @@ export const CloneDaoWarning: FC<Props> = ({
   const isCouncil = isActiveUserCouncil(dao, accountId);
   const canActOnFlow = isCouncil && userPermissions.isCanCreateProposals;
   const isCloneAvailable =
-    daoVersion?.version[0] === 2 && canActOnFlow && !cloneState && !loading;
+    (daoVersion?.version[0] === 2 || !daoVersion) &&
+    canActOnFlow &&
+    !cloneState &&
+    !loading;
   const isCloneInProgress = !!activeProposalLink;
   const isFlowCompleted = cloneState?.isFlowCompleted;
 
