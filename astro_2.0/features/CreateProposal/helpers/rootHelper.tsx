@@ -7,6 +7,7 @@ import uniq from 'lodash/uniq';
 import { nanoid } from 'nanoid';
 import dynamic from 'next/dynamic';
 import React, { ReactNode } from 'react';
+import { TFunction } from 'react-i18next';
 
 // Types
 import { ProposalType, ProposalVariant } from 'types/proposal';
@@ -16,7 +17,11 @@ import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSele
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 
 // Constants
-import { VALID_METHOD_NAME_REGEXP, VALID_URL_REGEXP } from 'constants/regexp';
+import {
+  VALID_METHOD_NAME_REGEXP,
+  VALID_URL_REGEXP,
+  VALID_WEBSITE_NAME_REGEXP,
+} from 'constants/regexp';
 import { MAX_GAS, MIN_GAS } from 'services/sputnik/constants';
 
 // Components
@@ -35,6 +40,10 @@ import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/CreateProposal/com
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/components/RemoveMemberFromGroupContent';
 import { TokenDistributionContent } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent';
 import { ContractAcceptanceContent } from 'astro_2.0/features/CreateProposal/components/ContractAcceptanceContent';
+import { CreateDaoContent } from 'astro_2.0/features/CreateProposal/components/CreateDaoContent';
+import { ChangeVotingPermissionsContent } from 'astro_2.0/features/CreateProposal/components/ChangeVotingPermissionsContent';
+import { CreateTokenContent } from 'astro_2.0/features/CreateProposal/components/CreateTokenContent';
+import { UpdateGroupContent } from 'astro_2.0/features/CreateProposal/components/UpdateGroupContent';
 
 // Helpers & Utils
 import { getInitialData } from 'features/vote-policy/helpers';
@@ -45,9 +54,10 @@ import {
   validateImgSize,
 } from 'utils/imageValidators';
 import { SputnikNearService } from 'services/sputnik';
-import { ChangeVotingPermissionsContent } from 'astro_2.0/features/CreateProposal/components/ChangeVotingPermissionsContent';
 import { ProposalPermissions } from 'types/context';
-import { CreateTokenContent } from 'astro_2.0/features/CreateProposal/components/CreateTokenContent';
+import { TransferFundsContent } from 'astro_2.0/features/CreateProposal/components/TransferFundsContent';
+import { Token } from 'types/token';
+import { AnySchema } from 'yup';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -359,7 +369,7 @@ export function getFormContentNode(
       return <ChangeBondsContent dao={dao} />;
     }
     case ProposalVariant.ProposeCustomFunctionCall: {
-      return <CustomFunctionCallContent />;
+      return <CustomFunctionCallContent dao={dao} />;
     }
     case ProposalVariant.ProposeContractAcceptance: {
       return <ContractAcceptanceContent tokenId="someverylonglongname.near" />;
@@ -383,9 +393,18 @@ export function getFormContentNode(
     case ProposalVariant.ProposeCreateToken: {
       return <CreateTokenContent />;
     }
+    case ProposalVariant.ProposeUpdateGroup: {
+      return <UpdateGroupContent groups={[]} getDataFromContext />;
+    }
     case ProposalVariant.ProposeChangeProposalVotingPermissions:
     case ProposalVariant.ProposeChangeProposalCreationPermissions: {
       return <ChangeVotingPermissionsContent />;
+    }
+    case ProposalVariant.ProposeCreateDao: {
+      return <CreateDaoContent daoId={dao.id} />;
+    }
+    case ProposalVariant.ProposeTransferFunds: {
+      return <TransferFundsContent />;
     }
     default: {
       return null;
@@ -450,6 +469,7 @@ export const gasValidation = yup
   .required('Required');
 
 export function getValidationSchema(
+  t: TFunction,
   proposalVariant?: ProposalVariant,
   dao?: DAO,
   data?: { [p: string]: unknown },
@@ -628,6 +648,16 @@ export function getValidationSchema(
             gas: gasValidation,
           });
         }
+        case FunctionCallType.VoteInAnotherDao: {
+          const gerErr = (field: string) =>
+            t(`proposalCard.voteInDao.${field}.required`);
+
+          return yup.object().shape({
+            targetDao: yup.string().required(gerErr('targetDao')),
+            proposal: yup.string().required(gerErr('proposal')),
+            vote: yup.string().required(gerErr('vote')),
+          });
+        }
         case FunctionCallType.TransferNFTfromMintbase: {
           return yup.object().shape({
             tokenKey: yup
@@ -751,6 +781,54 @@ export function getValidationSchema(
       });
     }
 
+    case ProposalVariant.ProposeCreateDao: {
+      return yup.object().shape({
+        details: yup.string().required('Required'),
+        displayName: yup
+          .string()
+          .trim()
+          .min(3, 'At least 3 characters expected.')
+          .matches(
+            VALID_WEBSITE_NAME_REGEXP,
+            'Only letters and numbers with hyphens and spaces in the middle.'
+          )
+          .required('Required'),
+      });
+    }
+    case ProposalVariant.ProposeTransferFunds: {
+      const tokens = (data?.daoTokens as Record<string, Token>) ?? {};
+      const tokensIds = Object.values(tokens).map(item => item.symbol);
+
+      const tokensFields = tokensIds.reduce<Record<string, AnySchema>>(
+        (res, item) => {
+          res[`${item}_amount`] = yup
+            .number()
+            .typeError('Must be a valid number.')
+            .positive()
+            .required('Required')
+            .test(
+              'onlyFiveDecimal',
+              'Only numbers with five optional decimal place please',
+              value => /^\d*(?:\.\d{0,5})?$/.test(`${value}`)
+            );
+
+          res[`${item}_target`] = yup.string().test({
+            name: 'notValidNearAccount',
+            exclusive: true,
+            message: 'Only valid near accounts are allowed',
+            test: async value => validateUserAccount(value, nearService),
+          });
+
+          return res;
+        },
+        {}
+      );
+
+      return yup.object().shape({
+        details: yup.string().required('Required'),
+        ...tokensFields,
+      });
+    }
     case ProposalVariant.ProposeUpgradeSelf:
     case ProposalVariant.ProposeGetUpgradeCode:
     case ProposalVariant.ProposeRemoveUpgradeCode: {

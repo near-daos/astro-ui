@@ -100,6 +100,12 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
           />
         );
       }
+      case ProposalVariant.ProposeCreateDao: {
+        return <InfoBlockWidget label="Migrate" value="Create DAO" />;
+      }
+      case ProposalVariant.ProposeTransferFunds: {
+        return <InfoBlockWidget label="Migrate" value="Transfer DAO funds" />;
+      }
       case ProposalVariant.ProposeGetUpgradeCode: {
         return (
           <InfoBlockWidget label="Upgrade" value="Get Code From Factory" />
@@ -139,6 +145,9 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       }
       case ProposalVariant.ProposeCreateToken: {
         return <InfoBlockWidget label="Change Config" value="Create Token" />;
+      }
+      case ProposalVariant.ProposeUpdateGroup: {
+        return <InfoBlockWidget label="Change Policy" value="Group" />;
       }
       default: {
         return (
@@ -286,6 +295,15 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       case ProposalVariant.ProposeContractAcceptance:
       case ProposalVariant.ProposeTokenDistribution: {
         return <div className={styles.descriptionCell}>{content}</div>;
+      }
+      case ProposalVariant.ProposeUpdateGroup: {
+        return (
+          <>
+            {renderProposer()}
+            {renderDescription()}
+            <div className={styles.proposalGroupCell}>{content}</div>
+          </>
+        );
       }
       default: {
         return (

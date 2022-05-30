@@ -279,7 +279,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       gas:
         variant === ProposalVariant.ProposeGetUpgradeCode ||
         variant === ProposalVariant.ProposeRemoveUpgradeCode ||
-        variant === ProposalVariant.ProposeUpgradeSelf
+        variant === ProposalVariant.ProposeUpgradeSelf ||
+        variant === ProposalVariant.ProposeCreateDao
           ? DEFAULT_UPGRADE_DAO_VOTE_GAS
           : DEFAULT_VOTE_GAS,
     },
@@ -369,6 +370,15 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           </>
         );
       }
+      case ProposalVariant.ProposeUpdateGroup: {
+        return (
+          <>
+            {renderProposer()}
+            {renderDescription()}
+            <div className={styles.proposalGroupCell}>{content}</div>
+          </>
+        );
+      }
       case ProposalVariant.ProposeContractAcceptance:
       case ProposalVariant.ProposeTokenDistribution: {
         return <div className={styles.descriptionCell}>{content}</div>;
@@ -392,7 +402,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       className={cn(styles.root, {
         [styles.clickable]: !!id && !preventNavigate,
       })}
-      onClick={handleCardClick}
+      onMouseDown={handleCardClick}
     >
       {voteLoading && (
         <div className={styles.signingTransactionState}>

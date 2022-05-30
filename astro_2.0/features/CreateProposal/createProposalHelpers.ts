@@ -246,6 +246,7 @@ const policyAffectsProposalVariants = [
   ProposalVariant.ProposeChangeVotingPolicy,
   ProposalVariant.ProposeCreateGroup,
   ProposalVariant.ProposeRemoveMember,
+  ProposalVariant.ProposeUpdateGroup,
 ];
 
 export function getDefaultProposalVariantByType(
@@ -318,6 +319,7 @@ export function getProposalTypeByVariant(
     case ProposalVariant.ProposeChangeProposalVotingPermissions:
     case ProposalVariant.ProposeChangeVotingPolicy:
     case ProposalVariant.ProposeChangeBonds:
+    case ProposalVariant.ProposeUpdateGroup:
     case ProposalVariant.ProposeCreateGroup: {
       return ProposalType.ChangePolicy;
     }
@@ -326,6 +328,9 @@ export function getProposalTypeByVariant(
     case ProposalVariant.ProposeCreateToken: {
       return ProposalType.SetStakingContract;
     }
+    // these 2 proposals are for migrate dao
+    case ProposalVariant.ProposeCreateDao:
+    case ProposalVariant.ProposeTransferFunds:
     case ProposalVariant.ProposeRemoveUpgradeCode:
     case ProposalVariant.ProposeGetUpgradeCode:
     case ProposalVariant.ProposeUpgradeSelf: {

@@ -2,42 +2,7 @@
 
 .root {
   display: grid;
-  grid-row-gap: 24px;
-  grid-template-areas:
-    'address'
-    'method'
-    'editor'
-    'deposit';
-  grid-template-columns: 1fr;
-
-  @include tablet-landscape {
-    grid-gap: 24px;
-    grid-template-areas:
-      'address method'
-      'editor editor'
-      'deposit deposit';
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.address {
-  grid-area: address;
-}
-
-.method {
-  grid-area: method;
-}
-
-.editor {
-  grid-area: editor;
-
-  pre {
-    white-space: pre-wrap;
-  }
-}
-
-.deposit {
-  grid-area: deposit;
+  grid-gap: 24px;
 }
 
 .row {

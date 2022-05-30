@@ -451,3 +451,127 @@ export function getChangeConfigProposal(
     bond: proposalBond,
   };
 }
+
+export async function getVoteInOtherDaoProposal(
+  dao: DAO,
+  data: Record<string, string>
+): Promise<CreateProposalParams> {
+  const { gas, vote, details, proposal, targetDao } = data;
+
+  const proposalObj = {
+    daoId: dao.id,
+    description: details,
+    kind: 'FunctionCall' as const,
+    data: {
+      receiver_id: targetDao,
+      actions: [
+        {
+          method_name: 'act_proposal',
+          args: jsonToBase64Str({
+            id: parseInt(proposal, 10),
+            action: vote,
+          }),
+          deposit: '0',
+          gas: formatGasValue(gas).toString(),
+        },
+      ],
+    },
+    bond: dao?.policy.proposalBond,
+  };
+
+  return proposalObj;
+}
+
+export function getNewDaoProposal(
+  dao: DAO,
+  data: Record<string, string>
+): CreateProposalParams {
+  const { nearConfig } = configService.get();
+  const { details, externalUrl, displayName, address } = data;
+
+  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+
+  const daoArgs = JSON.stringify({
+    name: address,
+    args: jsonToBase64Str({
+      purpose: dao.description,
+      bond: dao.policy.proposalBond,
+      vote_period: dao.policy.proposalPeriod,
+      grace_period: dao.policy.bountyForgivenessPeriod,
+      policy: {
+        roles: dao.policy.roles.map(role => ({
+          name: role.name,
+          kind: role.kind === 'Group' ? { Group: role.accountIds } : role.kind,
+          permissions: role.permissions,
+          vote_policy: role.votePolicy,
+        })),
+        default_vote_policy: {
+          weight_kind: dao.policy.defaultVotePolicy.weightKind,
+          quorum: dao.policy.defaultVotePolicy.quorum,
+          threshold: dao.policy.defaultVotePolicy.ratio,
+        },
+        proposal_bond: dao.policy.proposalBond,
+        proposal_period: dao.policy.proposalPeriod,
+        bounty_bond: dao.policy.bountyBond,
+        bounty_forgiveness_period: dao.policy.bountyForgivenessPeriod,
+      },
+      config: {
+        name: address,
+        purpose: dao.description,
+        metadata: jsonToBase64Str({
+          links: dao.links,
+          flagCover: dao.flagCover,
+          flagLogo: dao.flagLogo,
+          displayName,
+          legal: dao.legal,
+        }),
+      },
+    }),
+  });
+
+  const args = Buffer.from(daoArgs).toString('base64');
+
+  return {
+    daoId: dao.id,
+    description: proposalDescription,
+    kind: 'FunctionCall',
+    data: {
+      receiver_id: nearConfig.contractName,
+      actions: [
+        {
+          method_name: 'create',
+          args,
+          deposit: new Decimal(6).mul(10 ** 24).toFixed(),
+          gas: '220000000000000',
+        },
+      ],
+    },
+    bond: dao.policy.proposalBond,
+  };
+}
+
+export function getTransferDaoFundsProposal(
+  dao: DAO,
+  data: Record<string, string>,
+  tokens: Tokens
+): CreateProposalParams {
+  const { token: dToken, details, externalUrl, target, amount } = data;
+
+  const token = Object.values(tokens).find(item => item.symbol === dToken);
+
+  if (!token) {
+    throw new Error('No tokens data found');
+  }
+
+  return {
+    daoId: dao.id,
+    description: `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
+    kind: 'Transfer',
+    bond: dao.policy.proposalBond,
+    data: {
+      token_id: token?.tokenId,
+      receiver_id: target.trim(),
+      amount: new Decimal(amount).mul(10 ** token.decimals).toFixed(),
+    },
+  };
+}

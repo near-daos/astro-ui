@@ -138,7 +138,7 @@ describe('Proposal Card', () => {
 
     const component = renderProposalCard({ id, daoId });
 
-    fireEvent.click(component.getByTestId('proposal-card-root'));
+    fireEvent.mouseDown(component.getByTestId('proposal-card-root'));
 
     expect(router.push).toBeCalledWith({
       pathname: SINGLE_PROPOSAL_PAGE_URL,

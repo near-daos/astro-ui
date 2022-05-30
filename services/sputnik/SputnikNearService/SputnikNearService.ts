@@ -300,7 +300,9 @@ export class SputnikNearService implements DaoService {
 
     const permissionPredicate = (permission: FunctionCallPermissionView) => {
       return (
-        permission.FunctionCall.receiver_id.endsWith('sputnikv2.testnet') &&
+        permission.FunctionCall.receiver_id.endsWith(
+          this.nearConfig.contractName
+        ) &&
         permission.FunctionCall.allowance !== null &&
         permission.FunctionCall.method_names.includes('act_proposal')
       );
@@ -380,13 +382,7 @@ export class SputnikNearService implements DaoService {
     });
   }
 
-  public async createTokenTransferProposal(
-    proposal: CreateProposalParams
-  ): Promise<FinalExecutionOutcome[]> {
-    if (!this.isSignedIn()) {
-      await this.walletService.signIn(this.nearConfig.contractName);
-    }
-
+  private mapTokenTransferProposal(proposal: CreateProposalParams) {
     const { bond, daoId, description, kind, data } = proposal;
 
     const {
@@ -472,6 +468,41 @@ export class SputnikNearService implements DaoService {
         };
       }
     }
+
+    return tokenContract && !USN_TOKEN_CONTRACTS.includes(tokenContract)
+      ? [storageDepositTransactionAction, transferTransaction]
+      : [transferTransaction];
+  }
+
+  public async createTokensTransferProposal(
+    proposalsData: CreateProposalParams[]
+  ): Promise<FinalExecutionOutcome[]> {
+    if (!this.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
+    const trx = proposalsData.flatMap(proposal =>
+      this.mapTokenTransferProposal(proposal)
+    );
+
+    return this.walletService.sendTransactions(trx);
+  }
+
+  public async createTokenTransferProposal(
+    proposal: CreateProposalParams
+  ): Promise<FinalExecutionOutcome[]> {
+    if (!this.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
+    const { data } = proposal;
+
+    const { token_id: tokenContract } = data as Transfer;
+
+    const [
+      storageDepositTransactionAction,
+      transferTransaction,
+    ] = this.mapTokenTransferProposal(proposal);
 
     const trx =
       tokenContract && !USN_TOKEN_CONTRACTS.includes(tokenContract)

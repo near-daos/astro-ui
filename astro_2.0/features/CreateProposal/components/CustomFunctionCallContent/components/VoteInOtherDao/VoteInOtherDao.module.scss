@@ -1,0 +1,35 @@
+.root {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.loadingCover {
+  align-items: center;
+  background-color: var(--color-white);
+  bottom: 0;
+  display: none;
+  justify-content: center;
+  left: 0;
+  opacity: 0.8;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+
+  &.show {
+    display: flex;
+  }
+}
+
+.iWrapper {
+  flex: 1 0 calc(33% - 24px);
+
+  &:not(:last-of-type) {
+    margin-right: 24px;
+  }
+}
+
+.select {
+  white-space: nowrap;
+}

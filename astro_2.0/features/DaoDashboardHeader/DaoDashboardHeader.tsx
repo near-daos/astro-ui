@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 import { useMedia } from 'react-use';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { DAO } from 'types/dao';
 
@@ -9,6 +10,7 @@ import { JoinDaoButton } from 'astro_2.0/features/DaoDashboardHeader/components/
 import { FollowButton } from 'astro_2.0/features/DaoDashboardHeader/components/FollowButton';
 import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
 import { ShowMoreLinks } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLinks/components/ShowMoreLinks';
+import { CopyButton } from 'astro_2.0/components/CopyButton';
 
 import { useWalletContext } from 'context/WalletContext';
 import { UserPermissions } from 'types/context';
@@ -17,6 +19,7 @@ import { DepositToDaoForm } from 'astro_2.0/features/DaoDashboardHeader/componen
 import { DaoLinks } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLinks';
 import { DaoWarning } from 'astro_2.0/components/DaoWarning';
 import { UpgradeDaoWarning } from 'astro_2.0/features/DaoDashboardHeader/components/UpgradeDaoWarning';
+import { CloneDaoWarning } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning';
 
 import { useJoinDao } from 'astro_2.0/features/DaoDashboardHeader/components/hooks';
 
@@ -45,7 +48,9 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
     members,
     description,
     links,
+    daoVersion,
   } = dao;
+  const flags = useFlags();
   const { accountId } = useWalletContext();
   const { t } = useTranslation();
   const isMobileOrTablet = useMedia('(max-width: 767px)');
@@ -70,6 +75,17 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
         }}
       >
         <DaoLogo src={flagLogo} className={styles.logo} />
+        {daoVersion && (
+          <div className={styles.currentDaoVersion}>
+            DAO Version:&nbsp;<b>{daoVersion?.version.join('.')}</b>
+            <CopyButton
+              defaultTooltip="Copy hash"
+              text={daoVersion.hash}
+              className={styles.copyHash}
+              iconClassName={styles.copyIcon}
+            />
+          </div>
+        )}
       </section>
 
       <section className={styles.usersSection}>
@@ -127,11 +143,22 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
           />
         )}
 
-        <UpgradeDaoWarning
-          dao={dao}
-          userPermissions={userPermissions}
-          className={styles.warning}
-        />
+        {flags.cloneDaoFlow && (
+          <CloneDaoWarning
+            dao={dao}
+            userPermissions={userPermissions}
+            className={styles.warning}
+            onCreateProposal={onCreateProposal}
+          />
+        )}
+
+        {flags.migrateDaoFlow && (
+          <UpgradeDaoWarning
+            dao={dao}
+            userPermissions={userPermissions}
+            className={styles.warning}
+          />
+        )}
       </div>
     </div>
   );

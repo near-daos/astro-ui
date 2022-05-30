@@ -294,8 +294,8 @@ export function mapDaoFeedItemResponseToDaoFeedItem(
     legal: meta?.legal || {},
     policy: item.policy ?? {},
 
-    council: item.council,
-    isCouncil: item.isCouncil,
+    council: item.council ?? null,
+    isCouncil: item.isCouncil ?? null,
   };
 }
 

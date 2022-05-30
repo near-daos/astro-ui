@@ -14,6 +14,7 @@
     'proposer'
     'description'
     'content'
+    'group'
     'voteControl';
   grid-template-columns: 1fr;
   padding: 22px 20px;
@@ -26,6 +27,7 @@
       'proposalType proposalType countdown'
       'proposer proposer .'
       'description description description'
+      'group group group'
       'content content voteControl';
     grid-template-columns: 1fr 1fr 1fr;
     padding: 22px 30px;
@@ -112,6 +114,8 @@
 
 .proposalContentCell {
   grid-area: content;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .proposalTypeAndLink {
@@ -149,6 +153,12 @@
 
 .contentCell {
   grid-area: content;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+
+.proposalGroupCell {
+  grid-area: group;
 }
 
 .descriptionCell {
