@@ -11,6 +11,7 @@ import { DaoLegalStatus } from 'astro_2.0/features/CreateDao/components/DaoLegal
 import { DaoLinksForm } from 'astro_2.0/features/CreateDao/components/DaoLinksForm';
 import { getInitialValues } from 'astro_2.0/features/CreateDao/components/helpers';
 import { DaoMembersForm } from 'astro_2.0/features/CreateDao/components/DaoMembersForm';
+import { DaoGroupsForm } from 'astro_2.0/features/CreateDao/components/DaoGroupsForm';
 import { DaoAssetsForm } from 'astro_2.0/features/CreateDao/components/DaoAssetsForm';
 import { useMount, useMountedState } from 'react-use';
 import { useWalletContext } from 'context/WalletContext';
@@ -65,6 +66,9 @@ export const CreateDao: VFC<CreateDaoProps> = ({ defaultFlag }) => {
       }
       case STEPS.LINKS: {
         return <DaoLinksForm />;
+      }
+      case STEPS.GROUPS: {
+        return <DaoGroupsForm />;
       }
       case STEPS.MEMBERS: {
         return <DaoMembersForm />;

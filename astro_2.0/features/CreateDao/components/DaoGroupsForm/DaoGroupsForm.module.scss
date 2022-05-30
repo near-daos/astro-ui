@@ -9,7 +9,7 @@
   align-items: center;
   display: flex;
   grid-area: header;
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 
   h2 {
     @include font(1.75em, 38px, 700);
@@ -20,10 +20,6 @@
   .optional {
     color: var(--color-neutral-50);
   }
-}
-
-.description {
-  @extend %body2;
 }
 
 .row {
@@ -42,9 +38,26 @@
   margin-top: auto;
 }
 
+.description {
+  @extend %body2;
+  margin: 0;
+}
+
+.subtitle {
+  @extend %title3;
+  margin: 28px 0 8px;
+}
+
+.caption {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+  margin-bottom: 12px;
+}
+
 .links {
   display: flex;
   flex-direction: column;
+  margin-top: 12px;
   max-width: 550px;
   width: 100%;
 }
@@ -63,39 +76,10 @@
   }
 }
 
-.linkUser {
-  @extend %body1;
-  border: 1.5px dashed var(--color-neutral-60);
-  border-radius: 4px;
-  color: var(--color-neutral-60);
-  padding: 12px;
-  width: 50%;
-}
-
-.linkGroup {
-  @extend %body1;
-  align-items: center;
-  border: 1.5px solid var(--color-neutral-60);
-  border-radius: 4px;
-  color: var(--color-neutral-60);
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  margin: 0 8px;
-  padding: 12px;
-  width: calc(100% - 50% - 16px - 48px);
-
-  svg {
-    color: var(--color-primary-50);
-    height: 20px;
-    margin-left: 10px;
-    width: 20px;
-  }
-}
-
 .socialText {
   @extend %body1;
   align-items: center;
+  border: 1.5px dashed var(--color-neutral-60);
   border-radius: 4px;
   color: var(--color-neutral-60);
   display: flex;

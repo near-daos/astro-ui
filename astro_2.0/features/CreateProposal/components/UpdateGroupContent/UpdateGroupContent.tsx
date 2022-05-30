@@ -8,6 +8,7 @@ import { TGroup } from 'types/dao';
 
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
 
 import styles from './UpdateGroupContent.module.scss';
 
@@ -61,7 +62,21 @@ export const UpdateGroupContent: FC<Props> = ({
           <p className={styles.contentValueName}>{activeGroup.name}</p>
 
           <h6 className={styles.contentTitle}>
-            Voting policy <Icon name="info" className={styles.infoIcon} />
+            Voting policy
+            <Tooltip
+              placement="top"
+              arrowClassName={styles.popupArrow}
+              popupClassName={styles.popupWrapper}
+              className={styles.popover}
+              overlay={
+                <div className={styles.tooltip}>
+                  What is the quorum required <br /> for the decision of this
+                  group
+                </div>
+              }
+            >
+              <Icon name="info" className={styles.infoIcon} />
+            </Tooltip>
           </h6>
 
           <p className={styles.contentValue}>

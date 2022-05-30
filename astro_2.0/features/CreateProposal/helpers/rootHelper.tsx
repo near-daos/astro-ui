@@ -291,6 +291,10 @@ export const extractMembersFromDao = (
   });
 };
 
+function getAllowedGroups(dao: DAO) {
+  return uniq(dao.groups.map(group => group.name));
+}
+
 function getUniqueGroups(dao: DAO) {
   const members = dao ? extractMembersFromDao(dao, []) : [];
 
@@ -339,7 +343,7 @@ export function getFormContentNode(
       return null;
     }
     case ProposalVariant.ProposeAddMember: {
-      const availableGroups = getUniqueGroups(dao);
+      const availableGroups = getAllowedGroups(dao);
 
       return <AddMemberToGroupContent groups={availableGroups} />;
     }

@@ -3,16 +3,21 @@ import { useFormContext } from 'react-hook-form';
 import cn from 'classnames';
 import get from 'lodash/get';
 
+import { updateAction } from 'astro_2.0/features/CreateDao/components/helpers';
+import { Icon } from 'components/Icon';
 import { DebouncedInput } from 'components/inputs/Input';
 import { IconButton } from 'components/button/IconButton';
 import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
+import { Button } from 'components/button/Button';
+import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 
 import { useWalletContext } from 'context/WalletContext';
 
+import { useStateMachine } from 'little-state-machine';
 import styles from './DaoMemberLine.module.scss';
 
 interface DaoLinkLineProps {
-  item: { account: string };
+  item: { name: string; role: string };
   index: number;
   onRemove: () => void;
 }
@@ -25,11 +30,13 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({ index, onRemove }) => {
     formState: { errors },
   } = useFormContext();
   const { accountId } = useWalletContext();
+  const { state } = useStateMachine({ updateAction });
 
   const errorEl = useRef<HTMLDivElement>(null);
 
-  const currentValue = watch(`accounts.${index}.account`);
-  const error = get(errors, `accounts.${index}.account`);
+  const currentValue = watch(`accounts.${index}`);
+
+  const error = get(errors, `accounts.${index}`);
 
   return (
     <div className={styles.root}>
@@ -40,26 +47,63 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({ index, onRemove }) => {
           className={styles.validationWrapper}
           component={
             <DebouncedInput
-              readOnly={currentValue === accountId}
-              tabIndex={currentValue === accountId ? -1 : 0}
+              readOnly={currentValue.name === accountId}
+              tabIndex={currentValue.name === accountId ? -1 : 0}
               inputClassName={cn({
                 [styles.error]: !!error,
               })}
               className={cn({
-                [styles.disabled]: currentValue === accountId,
+                [styles.disabled]: currentValue.name === accountId,
               })}
-              placeholder=""
-              {...register(`accounts.${index}.account`)}
-              defaultValue={currentValue}
+              placeholder="NEAR name"
+              {...register(`accounts.${index}.name`)}
+              defaultValue={currentValue.name}
               onValueChange={val => {
-                setFormValue(`accounts.${index}.account`, val, {
-                  shouldValidate: true,
-                });
+                setFormValue(
+                  `accounts.${index}`,
+                  { ...currentValue, name: val },
+                  {
+                    shouldValidate: true,
+                  }
+                );
               }}
               size="block"
             />
           }
         />
+
+        <GenericDropdown
+          isOpen={false}
+          parent={
+            <div className={styles.dropdown}>
+              <p>{currentValue.role || 'Select group'}</p>
+
+              <Icon name="buttonArrowDown" />
+            </div>
+          }
+        >
+          <div className={styles.dropdownWrapper}>
+            {state.groups.items.map(group => (
+              <Button
+                variant="transparent"
+                key={group.name}
+                className={styles.dropdownItem}
+                onClick={() =>
+                  setFormValue(
+                    `accounts.${index}`,
+                    { ...currentValue, role: group.name },
+                    {
+                      shouldValidate: true,
+                    }
+                  )
+                }
+              >
+                {group.name}
+              </Button>
+            ))}
+          </div>
+        </GenericDropdown>
+
         <IconButton
           disabled={currentValue === accountId}
           className={styles.deleteBtn}
@@ -68,6 +112,7 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({ index, onRemove }) => {
           size="medium"
         />
       </div>
+
       <div ref={errorEl} className={styles.errorEl} />
     </div>
   );

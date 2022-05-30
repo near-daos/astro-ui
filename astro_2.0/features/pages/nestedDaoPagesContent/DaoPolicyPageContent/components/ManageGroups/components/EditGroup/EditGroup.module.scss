@@ -213,6 +213,10 @@
   width: calc(100% - 24px);
 }
 
+.addMemberInputInvalid {
+  border-bottom-color: var(--color-error-60);
+}
+
 .addMemberTrigger {
   height: 24px;
   min-width: unset;

@@ -1,6 +1,7 @@
 import { GlobalState } from 'little-state-machine';
 import {
   AssetsStep,
+  GroupsStep,
   InfoStep,
   LegalStep,
   LinksStep,
@@ -31,6 +32,13 @@ export function getInitialValues(
     },
     links: {
       websites: [],
+      isValid: false,
+    },
+    groups: {
+      items: [
+        { name: 'All', slug: 'all' },
+        { name: 'Councils', slug: 'councils' },
+      ],
       isValid: false,
     },
     members: {
@@ -66,6 +74,7 @@ export function updateAction(
     | LegalStep
     | LinksStep
     | MembersStep
+    | GroupsStep
     | AssetsStep
     | VotingStep
     | ProposalsStep

@@ -91,7 +91,7 @@ export const DaoNameForm: VFC = () => {
     <form onSubmit={handleSubmit(onSubmit)} className={styles.root}>
       <div className={styles.header}>
         <h2>{t('createDAO.daoNameForm.daoNameAndPurpose')}</h2>
-        <StepCounter total={7} current={1} />
+        <StepCounter total={8} current={1} />
       </div>
       <DaoNameInputSection
         errors={errors}

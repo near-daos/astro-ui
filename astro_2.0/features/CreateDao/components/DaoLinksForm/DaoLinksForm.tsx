@@ -87,7 +87,7 @@ export const DaoLinksForm: VFC = () => {
   const onSubmit = (data: LinksStep) => {
     actions.updateAction({ links: { ...data, isValid } });
 
-    updateQuery('step', 'members');
+    updateQuery('step', 'groups');
   };
 
   return (
@@ -98,7 +98,7 @@ export const DaoLinksForm: VFC = () => {
             {t('createDAO.daoLinksForm.daoLinks')}{' '}
             <span className={styles.optional}>({t('createDAO.optional')})</span>
           </h2>
-          <StepCounter total={7} current={3} />
+          <StepCounter total={8} current={3} />
         </div>
         <p className={styles.description}>
           {t('createDAO.daoLinksForm.daoLinksDescription')}

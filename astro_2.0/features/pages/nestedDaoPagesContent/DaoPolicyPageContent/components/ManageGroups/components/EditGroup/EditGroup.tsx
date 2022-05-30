@@ -6,7 +6,9 @@ import cn from 'classnames';
 import { DaoVotePolicy, TGroup } from 'types/dao';
 
 import { GroupQuorum } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/components/ManageGroups/components/GroupQuorum';
+import { validateUserAccount } from 'astro_2.0/features/CreateProposal/helpers';
 
+import { useWalletContext } from 'context/WalletContext';
 import { Badge } from 'components/Badge';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
@@ -27,11 +29,10 @@ type TLocalGroup = Omit<TGroup, 'votePolicy'> & {
 };
 
 type TAllowedFeatures = {
-  canRename: boolean;
   canDelete: boolean;
 };
 
-const BAN_SLUGS = ['council'];
+const BAN_SLUGS = ['council', 'councils'];
 
 export const EditGroup: React.FC<Props> = ({
   group,
@@ -39,19 +40,31 @@ export const EditGroup: React.FC<Props> = ({
   onReset,
   onDelete,
 }) => {
+  const { nearService } = useWalletContext();
+
   const [addMemberName, setAddMemberName] = useState('');
+  const [isNewMemberNameValid, setIsNewMemberNameValid] = useState(true);
 
   const [searchMemberValue, setSearchMemberValue] = useState('');
   const [showSearchResult, setShowSearchResult] = useState(false);
 
   const [newGroupName, setNewGroupName] = useState(group.name);
-  const [showEditGroupName, setShowEditGroupName] = useState(false);
+  const [showEditGroupName, setShowEditGroupName] = useState(
+    group.isCreated && group.name === ''
+  );
 
   useEffect(() => {
     setShowEditGroupName(false);
 
     setNewGroupName(group.name);
   }, [group.name, group.slug, group.votePolicy.quorum]);
+
+  useEffect(() => {
+    if (group.isCreated && group.name === '') {
+      setShowEditGroupName(true);
+      setNewGroupName('');
+    }
+  }, [group, group.isCreated, group.name]);
 
   const handleSearch = () => {
     setShowSearchResult(true);
@@ -64,6 +77,10 @@ export const EditGroup: React.FC<Props> = ({
   };
 
   const handleNewGroupName = () => {
+    if (newGroupName.trim() === '') {
+      return;
+    }
+
     setShowEditGroupName(false);
 
     onChange({
@@ -79,13 +96,15 @@ export const EditGroup: React.FC<Props> = ({
     });
   };
 
-  const handleAddGroupMember = () => {
-    onChange({
-      ...group,
-      members: [...group.members, addMemberName.trim()],
-    });
+  const handleAddGroupMember = async () => {
+    if (isNewMemberNameValid) {
+      onChange({
+        ...group,
+        members: [...group.members, addMemberName.trim()],
+      });
 
-    setAddMemberName('');
+      setAddMemberName('');
+    }
   };
 
   const handleRemoveGroupMember = (name: string) => {
@@ -108,8 +127,8 @@ export const EditGroup: React.FC<Props> = ({
   );
 
   const allowedFeatures: TAllowedFeatures = {
-    canRename: !BAN_SLUGS.includes(group.slug),
-    canDelete: !BAN_SLUGS.includes(group.slug) && !group.isCreated,
+    canDelete:
+      !BAN_SLUGS.includes(group.slug.toLowerCase()) && !group.isCreated,
   };
 
   return (
@@ -136,19 +155,17 @@ export const EditGroup: React.FC<Props> = ({
           <div className={styles.headerContent}>
             <p className={styles.headerText}>{group.name}</p>
 
-            {allowedFeatures.canRename && (
-              <Button
-                variant="transparent"
-                className={styles.headerEdit}
-                onClick={() => {
-                  setNewGroupName(group.name);
+            <Button
+              variant="transparent"
+              className={styles.headerEdit}
+              onClick={() => {
+                setNewGroupName(group.name);
 
-                  setShowEditGroupName(true);
-                }}
-              >
-                <Icon name="pencil" />
-              </Button>
-            )}
+                setShowEditGroupName(true);
+              }}
+            >
+              <Icon name="pencil" />
+            </Button>
           </div>
         )}
 
@@ -213,10 +230,23 @@ export const EditGroup: React.FC<Props> = ({
             </div>
           </div>
 
-          <div className={styles.addMember}>
+          <div
+            className={cn(styles.addMember, {
+              [styles.addMemberInputInvalid]: !isNewMemberNameValid,
+            })}
+          >
             <input
               type="text"
-              onChange={e => setAddMemberName(e.target.value)}
+              onChange={async e => {
+                setAddMemberName(e.target.value);
+
+                const isNameValid = await validateUserAccount(
+                  e.target.value,
+                  nearService
+                );
+
+                setIsNewMemberNameValid(isNameValid);
+              }}
               className={styles.addMemberInput}
               value={addMemberName}
               placeholder="Type member name"

@@ -17,7 +17,60 @@
 }
 
 .validationWrapper {
+  width: 50%;
+}
+
+.dropdown {
+  align-items: center;
+  border: 1.5px solid var(--color-neutral-60);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  margin: 0 8px;
+  max-width: calc(100% - 50% - 16px - 48px);
+  padding: 0 14px;
   width: 100%;
+
+  p {
+    line-height: 48px;
+    margin: 0;
+    max-width: calc(100% - 30px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  svg {
+    color: var(--color-brand-purple);
+    height: 20px;
+    margin-left: 10px;
+    width: 20px;
+  }
+}
+
+.dropdownWrapper {
+  align-items: flex-start;
+  background: var(--color-white);
+  border: 1.5px solid var(--color-neutral-60);
+  border-radius: 4px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  padding: 14px 0;
+  z-index: 2;
+}
+
+.dropdownItem {
+  min-width: 110px;
+  padding: 8px 14px;
+  text-align: left;
+  width: 100%;
+
+  &:hover {
+    background: var(--color-neutral-20);
+  }
 }
 
 .disabled {
