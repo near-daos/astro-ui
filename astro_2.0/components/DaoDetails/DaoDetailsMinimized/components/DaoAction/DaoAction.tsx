@@ -2,6 +2,7 @@ import React, { FC, useCallback, useState } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import cn from 'classnames';
 import { useRouter } from 'next/router';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { WalletType } from 'types/config';
 
@@ -22,6 +23,7 @@ interface Props {
 
 export const DaoAction: FC<Props> = ({ onCreateProposalClick, daoId }) => {
   const router = useRouter();
+  const flags = useFlags();
   const { accountId, login } = useWalletContext();
   const [open, setOpen] = useState(false);
 
@@ -73,6 +75,20 @@ export const DaoAction: FC<Props> = ({ onCreateProposalClick, daoId }) => {
           name="buttonArrowRight"
           className={cn(styles.actionIcon, styles.navIcon)}
         />
+      </Button>
+    );
+  }
+
+  if (!flags.draftProposals) {
+    return (
+      <Button
+        data-testid="createProposal"
+        size="block"
+        onClick={handleCreateProposal}
+        className={styles.addProposalButton}
+        variant="tertiary"
+      >
+        <Icon width={32} name="buttonAdd" className={styles.createIcon} />
       </Button>
     );
   }

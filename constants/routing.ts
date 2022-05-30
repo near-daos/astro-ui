@@ -40,3 +40,4 @@ export const DAO_CUSTOM_FC_TEMPLATES_PAGE_URL = `${DAO_SETTINGS_PAGE_URL}/custom
 export const MY_ACCOUNT_PAGE_URL = '/my-account';
 
 export const DRAFTS_PAGE_URL = `${SINGLE_DAO_PAGE}/drafts`;
+export const DRAFT_PAGE_URL = `${SINGLE_DAO_PAGE}/drafts/[draft]`;

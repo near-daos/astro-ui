@@ -11,6 +11,7 @@ interface LetterHeadWidgetProps {
   type: ProposalType;
   coverUrl?: string;
   status?: string;
+  className?: string;
 }
 
 const getIconName = (type: ProposalType) => {
@@ -39,14 +40,19 @@ export const LetterHeadWidget: React.FC<LetterHeadWidgetProps> = ({
   type,
   coverUrl,
   status,
+  className,
 }) => {
   return (
     <div
-      className={cn(styles.root, {
-        [styles.active]: status === 'InProgress',
-        [styles.approved]: status === 'Approved',
-        [styles.rejected]: status === 'Rejected',
-      })}
+      className={cn(
+        styles.root,
+        {
+          [styles.active]: status === 'InProgress',
+          [styles.approved]: status === 'Approved',
+          [styles.rejected]: status === 'Rejected',
+        },
+        className
+      )}
       style={{
         backgroundImage: `url(${coverUrl || '/flags/defaultDaoFlag.png'})`,
       }}

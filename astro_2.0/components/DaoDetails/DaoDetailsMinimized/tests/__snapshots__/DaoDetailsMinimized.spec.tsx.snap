@@ -105,23 +105,6 @@ exports[`dao details minimized Should render component 1`] = `
                 href="/_next/undefined"
               />
             </svg>
-            daoDetailsMinimized.drafts
-          </button>
-        </div>
-        <div
-          class="controlIcon noActiveLink"
-        >
-          <button
-            class="iconTextButton"
-            type="button"
-          >
-            <svg
-              class="icon"
-            >
-              <use
-                href="/_next/undefined"
-              />
-            </svg>
             daoDetailsMinimized.proposals
           </button>
         </div>

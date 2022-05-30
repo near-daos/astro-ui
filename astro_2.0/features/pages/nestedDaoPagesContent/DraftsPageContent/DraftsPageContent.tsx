@@ -17,6 +17,8 @@ import { useWalletContext } from 'context/WalletContext';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { FEED_CATEGORIES } from 'constants/proposals';
 
+import { StateFilter } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/StateFilter';
+import { DraftCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/DraftCard';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
 import { Loader } from 'components/loader';
 import { Feed as FeedList } from 'astro_2.0/components/Feed';
@@ -120,13 +122,18 @@ export const DraftsPageContent: FC<Props> = ({
         onSearch={handleSearch}
       />
       <div className={styles.content}>
-        <SideFilter
-          queryName="category"
-          list={feedCategoriesOptions}
-          title={t('feed.filters.chooseAFilter')}
-          disabled={loading}
-          titleClassName={styles.categoriesListTitle}
-        />
+        <div className={styles.sideFilters}>
+          <SideFilter
+            className={styles.categories}
+            queryName="category"
+            list={feedCategoriesOptions}
+            title={t('feed.filters.chooseAFilter')}
+            disabled={loading}
+            titleClassName={styles.categoriesListTitle}
+          />
+          <StateFilter />
+        </div>
+
         {loading ? (
           <Loader className={styles.loader} />
         ) : (
@@ -149,7 +156,11 @@ export const DraftsPageContent: FC<Props> = ({
                 }
                 renderItem={item => (
                   <div key={item.id} className={styles.cardWrapper}>
-                    <div>draft card here</div>
+                    <DraftCard
+                      data={item}
+                      flag={dao.flagCover ?? ''}
+                      daoId={dao.id}
+                    />
                   </div>
                 )}
                 className={styles.listWrapper}

@@ -38,6 +38,10 @@
   }
 }
 
+.sideFilters {
+  margin-right: 24px;
+}
+
 /* stylelint-disable-next-line */
 .content :global(.infinite-scroll-component__outerdiv) {
   flex-grow: 1;
@@ -76,6 +80,10 @@
   &:not(:first-of-type) {
     margin-top: 32px;
   }
+}
+
+.categories {
+  max-height: unset;
 }
 
 .categoriesListTitle {

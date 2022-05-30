@@ -5,6 +5,7 @@ import includes from 'lodash/includes';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { DAO } from 'types/dao';
 
@@ -34,7 +35,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   userPermissions,
 }) => {
   const isXsMobile = useMedia('(max-width: 600px)');
-
+  const flags = useFlags();
   const router = useRouter();
   const { t } = useTranslation();
   const { asPath } = router;
@@ -112,13 +113,15 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
         </Link>
 
         <section className={styles.controls}>
-          <ActionButton
-            iconName="sheet"
-            onClick={() => handleChapterClick(url.drafts)}
-            className={generateChapterStyle('drafts')}
-          >
-            {t('daoDetailsMinimized.drafts')}
-          </ActionButton>
+          {flags.draftProposals && (
+            <ActionButton
+              iconName="sheet"
+              onClick={() => handleChapterClick(url.drafts)}
+              className={generateChapterStyle('drafts')}
+            >
+              {t('daoDetailsMinimized.drafts')}
+            </ActionButton>
+          )}
           <ActionButton
             iconName="pencil"
             onClick={() => handleChapterClick(url.proposals)}

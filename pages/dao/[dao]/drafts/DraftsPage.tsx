@@ -7,7 +7,10 @@ import { DaoContext } from 'types/context';
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import Head from 'next/head';
-import { DraftsPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent';
+import {
+  DraftsPageContent,
+  mocks,
+} from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent';
 
 export interface DraftsPageProps {
   daoContext: DaoContext;
@@ -36,7 +39,7 @@ const DraftsPage: NextPage<DraftsPageProps> = ({ daoContext }) => {
       <Head>
         <title>Drafts</title>
       </Head>
-      <DraftsPageContent daoContext={daoContext} initialData={null} />
+      <DraftsPageContent daoContext={daoContext} initialData={mocks} />
     </NestedDaoPageWrapper>
   );
 };

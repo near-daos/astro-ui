@@ -1,0 +1,17 @@
+@import 'styles/typography';
+
+.root {
+  padding-top: 24px;
+  position: sticky;
+  top: 506px;
+  z-index: 10;
+}
+
+.title {
+  @extend %subtitle4;
+  margin-bottom: 8px;
+}
+
+.option {
+  @extend %body1;
+}
