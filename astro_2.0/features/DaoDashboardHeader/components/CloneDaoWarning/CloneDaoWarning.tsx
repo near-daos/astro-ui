@@ -136,8 +136,8 @@ export const CloneDaoWarning: FC<Props> = ({
     })();
   }, [accountId, cloningProposalId, dao.id]);
 
-  function renderContent() {
-    if (isFlowCompleted && canActOnFlow) {
+  function renderResetFlowButton() {
+    if (canActOnFlow) {
       return (
         // eslint-disable-next-line jsx-a11y/control-has-associated-label
         <button
@@ -146,6 +146,14 @@ export const CloneDaoWarning: FC<Props> = ({
           className={styles.resetFlowBtn}
         />
       );
+    }
+
+    return null;
+  }
+
+  function renderContent() {
+    if (isFlowCompleted && canActOnFlow) {
+      return null;
     }
 
     if (isCloneAvailable) {
@@ -306,5 +314,10 @@ export const CloneDaoWarning: FC<Props> = ({
     return null;
   }
 
-  return <AnimatePresence>{renderContent()}</AnimatePresence>;
+  return (
+    <>
+      {renderResetFlowButton()}
+      <AnimatePresence>{renderContent()}</AnimatePresence>
+    </>
+  );
 };
