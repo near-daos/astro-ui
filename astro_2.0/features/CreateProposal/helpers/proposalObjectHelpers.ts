@@ -503,7 +503,22 @@ export function getNewDaoProposal(
           name: role.name,
           kind: role.kind === 'Group' ? { Group: role.accountIds } : role.kind,
           permissions: role.permissions,
-          vote_policy: role.votePolicy,
+          vote_policy: role.votePolicy
+            ? Object.keys(role.votePolicy).reduce<Record<string, unknown>>(
+                (res, key) => {
+                  const value = role.votePolicy[key];
+
+                  res[key] = {
+                    weight_kind: value.weightKind,
+                    quorum: value.quorum,
+                    threshold: value.ratio ?? value.weight,
+                  };
+
+                  return res;
+                },
+                {}
+              )
+            : {},
         })),
         default_vote_policy: {
           weight_kind: dao.policy.defaultVotePolicy.weightKind,
