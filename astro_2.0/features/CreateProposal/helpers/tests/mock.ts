@@ -5,6 +5,7 @@ import { BuyNftFromMintbaseInput } from 'astro_2.0/features/CreateProposal/helpe
 
 export const dao = ({
   id: 'legaldao.sputnikv2.testnet',
+  name: 'legaldao',
   policy: {
     bountyBond: '100000000000000000000000',
     proposalBond: '100000000000000000000000',

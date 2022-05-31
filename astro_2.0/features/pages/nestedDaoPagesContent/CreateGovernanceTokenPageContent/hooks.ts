@@ -34,7 +34,7 @@ export function useCreateGovernanceTokenStatus(
   }, [daoId]);
 
   const [{ loading: updatingStatus }, update] = useAsyncFn(
-    async ({ step, proposalId, flow }) => {
+    async ({ step, proposalId, flow, ...rest }) => {
       try {
         const settings =
           (await SputnikHttpService.getDaoSettings(daoId)) ?? ({} as Settings);
@@ -45,6 +45,7 @@ export function useCreateGovernanceTokenStatus(
             step,
             proposalId,
             flow,
+            ...rest,
           },
         };
 

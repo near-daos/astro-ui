@@ -1,3 +1,5 @@
+import Decimal from 'decimal.js';
+import { useTranslation } from 'next-i18next';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import { CreationProgress } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/steps/CreateToken/components/CreationProgress';
@@ -39,9 +41,11 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
   onUpdate,
   status,
 }) => {
+  const { t } = useTranslation();
+
   const { accountId } = useWalletContext();
   const [proposal, setProposal] = useState<ProposalFeedItem | null>(null);
-  const steps = getCreateGovernanceTokenSteps(status, proposal);
+  const steps = getCreateGovernanceTokenSteps(status, proposal, t);
   const stepProposalVariant = getCreateGovernanceTokenStepProposalVariant(
     status
   );
@@ -145,6 +149,12 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
           showInfo={false}
           canCreateTokenProposal={canControl}
           proposalVariant={stepProposalVariant}
+          initialValues={{
+            token: status.selectedToken,
+            unstakingPeriod: new Decimal(daoContext.dao.policy.proposalPeriod)
+              .div('3.6e12')
+              .toString(),
+          }}
         />
       );
     }
@@ -160,6 +170,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
       </div>
       <div className={styles.content}>
         {/* <button onClick={handleViewProposalReject}>reset</button> */}
+        {/* <button onClick={() => handleProposalCreate(16)}>update state</button> */}
         {renderContent()}
       </div>
     </div>

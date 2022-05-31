@@ -46,6 +46,7 @@ import {
   getCreateTokenProposal,
   getCustomFunctionCallProposal,
   getNewDaoProposal,
+  getDeployStakingContractProposal,
   getRemoveUpgradeCodeProposal,
   getSwapsOnRefProposal,
   getTransferDaoFundsProposal,
@@ -375,13 +376,7 @@ export async function getNewProposalObject(
       );
     }
     case ProposalVariant.ProposeContractAcceptance: {
-      // todo - add create function
-      return {
-        daoId: dao.id,
-        description: 'contract acceptance',
-        kind: 'Vote',
-        bond: dao.policy.proposalBond,
-      };
+      return getDeployStakingContractProposal(dao, data);
     }
     case ProposalVariant.ProposeChangeProposalVotingPermissions: {
       const initialData = getInitialData(dao);

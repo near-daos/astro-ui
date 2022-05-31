@@ -74,6 +74,7 @@ describe('newProposalObject', () => {
     details: 'details',
     externalUrl: 'externalUrl',
     versionHash: 'versionHash',
+    unstakingPeriod: 'unstakingPeriod',
     links: [
       {
         id: 'someId',
@@ -146,10 +147,11 @@ describe('newProposalObject', () => {
     );
 
     expect(result).toEqual({
+      stakingContractName: 'legaldao-staking',
       daoId: 'legaldao.sputnikv2.testnet',
-      description: 'contract acceptance',
-      kind: 'Vote',
-      bond: '100000000000000000000000',
+      tokenId: undefined,
+      daoBond: '100000000000000000000000',
+      unstakingPeriodInHours: 'unstakingPeriod',
     });
   });
 

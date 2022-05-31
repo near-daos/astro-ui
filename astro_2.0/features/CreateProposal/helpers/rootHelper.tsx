@@ -783,6 +783,7 @@ export function getValidationSchema(
 
     case ProposalVariant.ProposeContractAcceptance: {
       return yup.object().shape({
+        token: yup.string(),
         unstakingPeriod: yup
           .number()
           .typeError('Must be a valid number.')
