@@ -220,7 +220,9 @@ export function getNewPermissionsProposalObject(
     : [permissionsFields];
 
   const hasAll = dao.policy.roles.find(
-    role => role.kind === 'Everyone' && role.name === 'all'
+    // TODO: check is there are only one role with kind Everyone
+    // role => role.kind === 'Everyone' && role.slug === 'all'
+    role => role.kind === 'Everyone'
   );
 
   let roles = hasAll

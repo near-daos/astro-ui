@@ -34,7 +34,12 @@ export type LinksStep = {
 };
 
 export type MembersStep = {
-  accounts: string[];
+  accounts: { name: string; role: string }[];
+  isValid: boolean;
+};
+
+export type GroupsStep = {
+  items: { name: string; slug?: string }[];
   isValid: boolean;
 };
 
@@ -52,6 +57,7 @@ declare module 'little-state-machine' {
       | InfoStep
       | LegalStep
       | LinksStep
+      | GroupsStep
       | MembersStep
       | AssetsStep
       | ProposalsStep
@@ -62,6 +68,7 @@ declare module 'little-state-machine' {
     kyc: LegalStep;
     links: LinksStep;
     members: MembersStep;
+    groups: GroupsStep;
     assets: AssetsStep;
     submit: SubmitStep;
     proposals: ProposalsStep;

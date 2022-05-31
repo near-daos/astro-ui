@@ -200,9 +200,18 @@
       "daoPreviewFuture": "Preview of your future DAO",
       "daoMakeSureDescription": "Make sure everything right and clear, this is how users will see your DAO on the platform!"
     },
+    "daoGroupsForm": {
+      "addGroups": "Add groups",
+      "addGroupsDescription": "Looking to grow the DAO members? Add links to allow people to learn more about your DAO.",
+      "defaultGroup": "Default groups",
+      "defaultGroupDescription": "You can’t delete them but you can rename them",
+      "customGroup": "Custom groups"
+    },
     "daoMembersForm": {
       "addMembers": "Add Members",
-      "addMembersDescription": "Add members to your DAO."
+      "addMembersDescription": "Add members to your DAO.",
+      "newMemberNamePlaceholder": "NEAR name",
+      "newMemberRolePlaceholder": "Select group"
     },
     "daoAssets": {
       "createDaoAssets": "Create DAO assets",

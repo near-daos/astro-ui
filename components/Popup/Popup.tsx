@@ -6,6 +6,7 @@ import styles from './Popup.module.scss';
 
 interface PopupProps {
   className?: string;
+  arrowClassName?: string;
   anchor: HTMLElement | null;
 }
 
@@ -13,6 +14,7 @@ export const Popup: React.FC<PopupProps & Config> = ({
   children,
   className,
   anchor,
+  arrowClassName,
   ...config
 }) => {
   const {
@@ -40,7 +42,7 @@ export const Popup: React.FC<PopupProps & Config> = ({
     >
       <div
         {...getArrowProps({
-          className: classNames(styles.tooltipArrow),
+          className: classNames(styles.tooltipArrow, arrowClassName),
         })}
       />
       {children}

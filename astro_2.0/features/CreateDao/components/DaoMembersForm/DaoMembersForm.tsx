@@ -19,7 +19,7 @@ import { validateUserAccount } from 'astro_2.0/features/CreateProposal/helpers';
 
 import styles from './DaoMembersForm.module.scss';
 
-type Form = { accounts: { account: string }[] };
+type Form = { accounts: { name: string; role: string }[] };
 
 export const DaoMembersForm: VFC = () => {
   const { t } = useTranslation();
@@ -34,11 +34,14 @@ export const DaoMembersForm: VFC = () => {
       accounts: uniqBy(
         state.members.accounts
           ? [
-              { account: accountId },
-              ...state.members.accounts.map(item => ({ account: item })),
+              { name: accountId, role: state.groups.items[0]?.name || '' },
+              ...state.members.accounts.map(item => ({
+                name: item.name,
+                role: item.role,
+              })),
             ]
-          : [{ account: accountId }],
-        item => item.account
+          : [{ name: accountId, role: state.groups.items[0].name || '' }],
+        item => item.name
       ),
     },
     mode: 'onChange',
@@ -46,7 +49,7 @@ export const DaoMembersForm: VFC = () => {
       yup.object().shape({
         accounts: yup.array().of(
           yup.object().shape({
-            account: yup
+            name: yup
               .string()
               .test({
                 name: 'notValidNearAccount',
@@ -55,6 +58,12 @@ export const DaoMembersForm: VFC = () => {
                 test: async value => validateUserAccount(value, nearService),
               })
               .required('Required'),
+            role: yup.string().test({
+              name: 'notValidRole',
+              exclusive: true,
+              message: 'Select user role',
+              test: value => value?.trim() !== '',
+            }),
           })
         ),
       })
@@ -74,7 +83,7 @@ export const DaoMembersForm: VFC = () => {
 
   const onSubmit = (data: Form) => {
     actions.updateAction({
-      members: { accounts: data.accounts.map(item => item.account), isValid },
+      members: { accounts: data.accounts, isValid },
     });
 
     updateQuery('step', 'proposals');
@@ -88,32 +97,50 @@ export const DaoMembersForm: VFC = () => {
             {t('createDAO.daoMembersForm.addMembers')}{' '}
             <span className={styles.optional}>({t('createDAO.optional')})</span>
           </h2>
-          <StepCounter total={7} current={4} />
+
+          <StepCounter total={8} current={5} />
         </div>
+
         <p className={styles.description}>
           {t('createDAO.daoMembersForm.addMembersDescription')}
         </p>
-        <section className={styles.links}>
-          {fields.map((item, index) => {
-            return (
-              <DaoMemberLine
-                key={item.id}
-                item={item}
-                index={index}
-                onRemove={() => remove(index)}
-              />
-            );
-          })}
-          <Button
-            className={styles.link}
-            onClick={() => append({ account: '' })}
-            variant="transparent"
-          >
-            <span className={styles.socialText} />
-            <Icon className={styles.addBtn} name="buttonAdd" width={24} />
-          </Button>
-        </section>
-        <SubmitButton />
+
+        <div className={styles.row}>
+          <div className={styles.column}>
+            <section className={styles.links}>
+              {fields.map((item, index) => {
+                return (
+                  <DaoMemberLine
+                    key={item.name}
+                    item={item}
+                    index={index}
+                    onRemove={() => remove(index)}
+                  />
+                );
+              })}
+
+              <Button
+                className={styles.link}
+                onClick={() => append({ name: '', role: '' })}
+                variant="transparent"
+              >
+                <div className={styles.linkUser}>
+                  {t('createDAO.daoMembersForm.newMemberNamePlaceholder')}
+                </div>
+
+                <div className={styles.linkGroup}>
+                  {t('createDAO.daoMembersForm.newMemberRolePlaceholder')}
+
+                  <Icon name="buttonArrowDown" />
+                </div>
+
+                <Icon className={styles.addBtn} name="buttonAdd" width={24} />
+              </Button>
+            </section>
+          </div>
+
+          <SubmitButton className={styles.submit} />
+        </div>
       </form>
     </FormProvider>
   );

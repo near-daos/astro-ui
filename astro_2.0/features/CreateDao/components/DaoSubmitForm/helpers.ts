@@ -89,19 +89,21 @@ export function getRolesVotingPolicy(
 export function getDetailedRolesVotingPolicy(
   proposals: ProposalsStep,
   voting: VotingStep,
-  accountIds: string[]
+  accountIds: { name: string; role: string }[],
+  groups: { name: string; slug?: string }[]
 ): {
   roles: RolesRequest[];
   defaultVotePolicy: VotePolicyRequest;
 } {
   // todo - use groups here
-  const groups = ((proposals.data ?? []) as unknown) as { label: string }[];
+  // const oldGroups = ((proposals.data ?? []) as unknown) as { label: string }[];
 
   const roles: DaoRole[] = groups
     .map(item => {
-      if (item.label === 'all') {
+      if (item.slug === 'all') {
         return {
-          name: item.label,
+          name: item.name,
+          slug: item.slug,
           kind: 'Everyone',
           permissions: ['*:AddProposal'] as DaoPermission[],
           vote_policy: {},
@@ -109,8 +111,13 @@ export function getDetailedRolesVotingPolicy(
       }
 
       return {
-        name: item.label,
-        kind: { Group: accountIds },
+        name: item.name,
+        slug: item.slug,
+        kind: {
+          Group: accountIds
+            .filter(account => account.role === item.name)
+            .map(account => account.name),
+        },
         permissions: [
           '*:Finalize',
           '*:AddProposal',

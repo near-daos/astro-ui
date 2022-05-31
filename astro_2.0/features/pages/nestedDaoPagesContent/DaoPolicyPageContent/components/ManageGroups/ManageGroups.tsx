@@ -34,7 +34,9 @@ export const ManageGroups: React.FC<Props> = ({
   disableNewProposal,
 }) => {
   const [groups, setGroups] = useState<TLocalGroup[]>([]);
-  const [activeGroupSlug, setActiveGroupSlug] = useState(dao.groups[0].slug);
+  const [activeGroupSlug, setActiveGroupSlug] = useState<string>(
+    dao.groups[0].slug
+  );
 
   useEffect(() => {
     setGroups(
@@ -122,7 +124,7 @@ export const ManageGroups: React.FC<Props> = ({
 
     const newGroup = {
       members: [],
-      name: 'New Group',
+      name: '',
       permissions: [],
       slug: 'new_group',
       votePolicy: {
@@ -132,7 +134,7 @@ export const ManageGroups: React.FC<Props> = ({
         weightKind: 'RoleWeight',
         weight: '',
       },
-      hasChanges: false,
+      hasChanges: true,
       isCreated: true,
     };
 
@@ -159,6 +161,13 @@ export const ManageGroups: React.FC<Props> = ({
     (count, group) => (group.hasChanges ? count + 1 : count),
     0
   );
+
+  const isGroupsValid = () =>
+    groups.reduce(
+      (isValid, group) =>
+        isValid || group.members.length === 0 || group.name.trim() === '',
+      false
+    );
 
   return (
     <>
@@ -203,9 +212,10 @@ export const ManageGroups: React.FC<Props> = ({
       <Button
         variant="primary"
         className={cn(styles.submit, {
-          [styles.submitVisible]: modifiedGroups > 0,
+          [styles.submitVisible]:
+            modifiedGroups > 0 || dao.groups.length - groups.length > 0,
         })}
-        disabled={disableNewProposal}
+        disabled={disableNewProposal || isGroupsValid()}
         onClick={handleOnSubmit}
       >
         {modifiedGroups > 1

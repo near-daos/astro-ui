@@ -33,11 +33,14 @@ export const DaoProposalCreationForm: VFC = () => {
     <div className={styles.root}>
       <div className={styles.header}>
         <h2>{t('createDAO.proposals.proposalsCreation')}</h2>
-        <StepCounter total={7} current={5} />
+
+        <StepCounter total={8} current={6} />
       </div>
+
       <p className={styles.description}>
         {t('createDAO.proposals.description')}
       </p>
+
       <PermissionsSelector
         className={styles.selector}
         contentClassName={styles.content}
@@ -50,14 +53,21 @@ export const DaoProposalCreationForm: VFC = () => {
           state.proposals.data ||
           getInitialCreationPermissions({
             policy: {
-              roles: [
-                { name: 'council', permissions: ['*:*'], kind: 'Group' },
-                {
-                  name: 'all',
-                  permissions: ['*:AddProposal'],
-                  kind: 'Everyone',
-                },
-              ],
+              roles: state.groups.items.map(group =>
+                group?.slug === 'all'
+                  ? {
+                      name: group.name,
+                      slug: group.slug,
+                      permissions: ['*:AddProposal'],
+                      kind: 'Everyone',
+                    }
+                  : {
+                      name: group.name,
+                      slug: group.slug,
+                      permissions: ['*:*'],
+                      kind: 'Group',
+                    }
+              ),
             },
           })
         }

@@ -44,7 +44,8 @@ export function getNewDaoParams(
       ...getDetailedRolesVotingPolicy(
         data.proposals,
         data.voting,
-        data.members.accounts
+        data.members.accounts,
+        data.groups.items
       ),
       proposalBond: '0.1',
       proposalPeriod: '168',

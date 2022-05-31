@@ -10,6 +10,7 @@ interface TooltipProps {
   overlay?: ReactNode;
   className?: string;
   popupClassName?: string;
+  arrowClassName?: string;
 }
 
 export const Tooltip: FC<TooltipProps> = ({
@@ -18,6 +19,7 @@ export const Tooltip: FC<TooltipProps> = ({
   overlay,
   className,
   popupClassName,
+  arrowClassName,
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
 
@@ -30,6 +32,7 @@ export const Tooltip: FC<TooltipProps> = ({
           placement={placement}
           delayShow={700}
           className={cn(styles.popup, popupClassName)}
+          arrowClassName={arrowClassName}
         >
           {overlay}
         </Popup>

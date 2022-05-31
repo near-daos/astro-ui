@@ -33,9 +33,12 @@ export const DaoVotingPermissionsForm: VFC = () => {
     <div className={styles.root}>
       <div className={styles.header}>
         <h2>{t('createDAO.voting.votingPermissions')}</h2>
-        <StepCounter total={7} current={6} />
+
+        <StepCounter total={8} current={7} />
       </div>
+
       <p className={styles.description}>{t('createDAO.voting.description')}</p>
+
       <PermissionsSelector
         disableNewProposal={false}
         className={styles.selector}
@@ -48,7 +51,12 @@ export const DaoVotingPermissionsForm: VFC = () => {
           state.voting.data ||
           getInitialVotingPermissions({
             policy: {
-              roles: [{ name: 'council', permissions: ['*:*'], kind: 'Group' }],
+              roles: state.groups.items.map(role => ({
+                name: role.name,
+                slug: role?.slug,
+                permissions: ['*:*'],
+                kind: 'Group',
+              })),
             },
           })
         }

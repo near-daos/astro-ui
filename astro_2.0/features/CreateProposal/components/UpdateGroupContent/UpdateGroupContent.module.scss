@@ -89,6 +89,28 @@
   width: 18px;
 }
 
+.popover {
+  display: inline;
+}
+
+.popupArrow::after {
+  border-top-color: var(--color-white) !important;
+}
+
+.popupWrapper {
+  background: var(--color-white);
+  border: 0;
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  padding: 16px 20px;
+}
+
+.tooltip {
+  @extend %caption1;
+  color: var(--color-brand-black);
+  font-size: 1em;
+}
+
 .contentValue {
   @extend %heading3;
   margin-top: 14px;
