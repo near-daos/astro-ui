@@ -231,6 +231,18 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             },
           });
 
+          if (selectedProposalVariant === ProposalVariant.ProposeUpdateGroup) {
+            sendGAEvent({
+              name: GA_EVENTS.GROUP_BULK_EDIT,
+              daoId: dao.id,
+              accountId,
+              params: {
+                variant: selectedProposalVariant,
+                proposalId: newProposalId,
+              },
+            });
+          }
+
           if (onCreate) {
             onCreate(newProposalId);
           }
