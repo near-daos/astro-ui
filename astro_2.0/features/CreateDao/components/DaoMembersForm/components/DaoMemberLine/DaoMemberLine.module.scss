@@ -22,6 +22,7 @@
 
 .dropdown {
   align-items: center;
+  background: transparent;
   border: 1.5px solid var(--color-neutral-60);
   border-radius: 4px;
   cursor: pointer;
@@ -34,6 +35,10 @@
   width: 100%;
 
   p {
+    @extend %body1;
+    color: var(--color-brand-black);
+    font-size: 16px;
+    font-weight: 400;
     line-height: 48px;
     margin: 0;
     max-width: calc(100% - 30px);
@@ -79,5 +84,9 @@
 }
 
 .error.error {
+  border-color: var(--color-error-50);
+}
+
+.error {
   border-color: var(--color-error-50);
 }

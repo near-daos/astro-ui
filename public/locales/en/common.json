@@ -54,6 +54,7 @@
   "minimumSearchCharacters": "Please enter at least 3 characters to search",
   "searchBountyPlaceholder": "Search Bounty Name",
   "all": "All",
+  "cancel": "Cancel",
   "selectedProposals": "Selected {{length}} proposal{{plural}}",
   "filterByProposer": "Filter by proposer",
   "bountiesPage": {
@@ -205,7 +206,13 @@
       "addGroupsDescription": "Looking to grow the DAO members? Add links to allow people to learn more about your DAO.",
       "defaultGroup": "Default groups",
       "defaultGroupDescription": "You can’t delete them but you can rename them",
-      "customGroup": "Custom groups"
+      "customGroup": "Custom groups",
+      "deleteModalTitle": "Are you sure you want to delete the group",
+      "deleteModalSubtitle": "Proposal will be created to delete this group After confirmation",
+      "deleteModalAction": "Delete group",
+      "resetModalTitle": "Are you sure you want to Reset edits?",
+      "resetModalSubtitle": "The action cannot be undone. All data entered will be reset.",
+      "resetModalAction": "Reset edits"
     },
     "daoMembersForm": {
       "addMembers": "Add Members",

@@ -5,13 +5,19 @@ import cn from 'classnames';
 
 import { DaoVotePolicy, TGroup } from 'types/dao';
 
+import { onPressEnterBtn } from 'utils/handlePressEnterBtn';
+
+import { ConfirmResetModal } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/components/ManageGroups/components/ConfirmResetModal';
+import { ConfirmDeleteModal } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/components/ManageGroups/components/ConfirmDeleteModal';
 import { GroupQuorum } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/components/ManageGroups/components/GroupQuorum';
 import { validateUserAccount } from 'astro_2.0/features/CreateProposal/helpers';
 
 import { useWalletContext } from 'context/WalletContext';
+
 import { Badge } from 'components/Badge';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
+import { useModal } from 'components/modal';
 
 import styles from './EditGroup.module.scss';
 
@@ -52,6 +58,19 @@ export const EditGroup: React.FC<Props> = ({
   const [showEditGroupName, setShowEditGroupName] = useState(
     group.isCreated && group.name === ''
   );
+
+  const [showConfirmDeleteModal] = useModal(ConfirmDeleteModal, {
+    initialData: {
+      groupName: group.name,
+      callback: onDelete,
+    },
+  });
+
+  const [showConfirmResetModal] = useModal(ConfirmResetModal, {
+    initialData: {
+      callback: onReset,
+    },
+  });
 
   useEffect(() => {
     setShowEditGroupName(false);
@@ -141,6 +160,7 @@ export const EditGroup: React.FC<Props> = ({
               value={newGroupName}
               onChange={e => setNewGroupName(e.target.value)}
               placeholder="New group"
+              onKeyDown={e => onPressEnterBtn(e, handleNewGroupName)}
             />
 
             <Button
@@ -175,7 +195,7 @@ export const EditGroup: React.FC<Props> = ({
               variant="transparent"
               className={styles.headerReset}
               size="small"
-              onClick={onReset}
+              onClick={() => showConfirmResetModal()}
             >
               <Icon name="refresh" />
               Reset
@@ -186,7 +206,7 @@ export const EditGroup: React.FC<Props> = ({
               variant="tertiary"
               className={styles.headerDelete}
               size="small"
-              onClick={onDelete}
+              onClick={() => showConfirmDeleteModal()}
             >
               <Icon name="buttonDeletePressed" />
               Delete group
@@ -218,6 +238,7 @@ export const EditGroup: React.FC<Props> = ({
                 value={searchMemberValue}
                 onChange={e => handleSearchInputChanges(e.target.value)}
                 placeholder="Search by member"
+                onKeyDown={e => onPressEnterBtn(e, handleSearch)}
               />
 
               <Icon
