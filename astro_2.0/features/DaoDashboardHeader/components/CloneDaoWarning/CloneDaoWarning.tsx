@@ -94,7 +94,7 @@ export const CloneDaoWarning: FC<Props> = ({
 
   useEffect(() => {
     (async () => {
-      if (cloningProposalId) {
+      if (cloningProposalId || cloningProposalId === 0) {
         const proposalId = `${dao.id}-${cloningProposalId}`;
         const res = await SputnikHttpService.getProposalById(
           proposalId,
