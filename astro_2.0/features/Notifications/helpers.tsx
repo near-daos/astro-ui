@@ -16,7 +16,11 @@ import uniqid from 'uniqid';
 import { DaoSettings } from 'astro_2.0/features/Notifications/types';
 import { DAO } from 'types/dao';
 import { TFunction } from 'next-i18next';
-import { SINGLE_DAO_PAGE, SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
+import {
+  DRAFT_PAGE_URL,
+  SINGLE_DAO_PAGE,
+  SINGLE_PROPOSAL_PAGE_URL,
+} from 'constants/routing';
 
 export function getNotificationParamsByType(
   type: NotifiedActionType,
@@ -132,6 +136,19 @@ export function getNotificationParamsByType(
         query: {
           dao: daoId,
           proposal: targetId,
+        },
+      };
+
+      break;
+    }
+
+    case NotifiedActionType.CommentLike: {
+      noteType = NotificationType.CommentLike;
+      url = {
+        pathname: DRAFT_PAGE_URL,
+        query: {
+          dao: daoId,
+          draft: targetId,
         },
       };
 
@@ -453,6 +470,9 @@ const mapNotificationTypeToMessage = (
     case NotifiedActionType.Vote: {
       return t('poll');
     }
+    case NotifiedActionType.CommentLike: {
+      return t('commentLike');
+    }
     default: {
       return '';
     }
@@ -535,6 +555,18 @@ export function generateProposalNotificationText(
         proposalAuthor,
         type,
         dao: dao.displayName || extractPrefix(dao.id),
+      });
+    }
+    case NotificationStatus.CommentLike: {
+      const actioner =
+        accountId === proposerId ? t('you') : extractPrefix(proposerId);
+
+      const proposalAuthor =
+        accountId === proposerId ? t('your') : extractPrefix(proposerId);
+
+      return t('liked', {
+        actioner,
+        proposalAuthor,
       });
     }
     default: {
