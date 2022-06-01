@@ -22,12 +22,12 @@ import compact from 'lodash/compact';
 import { WalletType } from 'types/config';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
-import { getSignature } from 'services/sputnik/SputnikNearService/services/helpers';
+import { getSignature } from 'services/sputnik/SputnikNearService/walletServices/helpers';
 import {
   Transaction,
   WalletMeta,
   WalletService,
-} from 'services/sputnik/SputnikNearService/services/types';
+} from 'services/sputnik/SputnikNearService/walletServices/types';
 import BN from 'bn.js';
 import { NearConfig } from 'config/near';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';

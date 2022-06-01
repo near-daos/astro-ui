@@ -1,6 +1,6 @@
 import { KeyPair } from 'near-api-js';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
-import { FinalExecutionError } from 'services/sputnik/SputnikNearService/services/types';
+import { FinalExecutionError } from 'services/sputnik/SputnikNearService/walletServices/types';
 
 export const getSignature = async (
   keyPair: KeyPair

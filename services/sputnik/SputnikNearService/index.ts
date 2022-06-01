@@ -1,1 +1,1 @@
-export * from './NearService';
+export * from './SputnikNearService';

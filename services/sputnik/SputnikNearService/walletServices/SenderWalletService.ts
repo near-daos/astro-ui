@@ -4,14 +4,14 @@ import { KeyPairEd25519 } from 'near-api-js/lib/utils';
 import {
   getSignature,
   isError,
-} from 'services/sputnik/SputnikNearService/services/helpers';
+} from 'services/sputnik/SputnikNearService/walletServices/helpers';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import {
   SenderWalletInstance,
   Transaction,
   WalletMeta,
   WalletService,
-} from 'services/sputnik/SputnikNearService/services/types';
+} from 'services/sputnik/SputnikNearService/walletServices/types';
 import { WalletType } from 'types/config';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
 import { httpService } from 'services/HttpService';

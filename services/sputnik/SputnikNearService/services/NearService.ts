@@ -19,7 +19,7 @@ import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { mapCreateDaoParamsToContractArgs } from 'services/sputnik/mappers';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 import { WalletType } from 'types/config';
-import { Transaction } from 'services/sputnik/SputnikNearService/services/types';
+import { Transaction } from 'services/sputnik/SputnikNearService/walletServices/types';
 
 import { CreateDaoParams } from 'services/sputnik/types';
 import { PublicKey } from 'near-api-js/lib/utils';
@@ -33,7 +33,7 @@ export const GAS_VALUE = new BN('300000000000000');
 export const FINALIZE_PROPOSAL_GAS_VALUE = new BN('150000000000000');
 const USN_TOKEN_CONTRACTS = ['usn', 'usdn.testnet'];
 
-export class SputnikNearService extends BaseService {
+export class NearService extends BaseService {
   sendMoney(
     receiverId: string,
     amount: number
