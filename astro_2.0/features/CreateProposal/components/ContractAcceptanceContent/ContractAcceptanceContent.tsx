@@ -18,10 +18,11 @@ export const ContractAcceptanceContent: FC<ContractAcceptanceContentProps> = ({
   const { register, watch } = useFormContext();
 
   const currentValue = watch('unstakingPeriod');
+  const token = watch('token');
 
   return (
     <div className={styles.root}>
-      <InfoBlockWidget label="Token ID" value={tokenId} />
+      <InfoBlockWidget label="Token ID" value={token || tokenId} />
       <InputWrapper
         fieldName="unstakingPeriod"
         label="Unstaking Period"

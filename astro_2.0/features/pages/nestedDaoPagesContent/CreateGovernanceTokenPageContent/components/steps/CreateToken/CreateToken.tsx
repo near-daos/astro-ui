@@ -1,3 +1,5 @@
+// TODO verify component is used after "Create Token" flow is implemented
+
 import React, { VFC } from 'react';
 import { useTranslation } from 'next-i18next';
 

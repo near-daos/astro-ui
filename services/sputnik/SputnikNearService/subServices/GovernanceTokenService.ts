@@ -1,9 +1,11 @@
-import { WalletService } from 'services/sputnik/SputnikNearService/services/types';
+import BN from 'bn.js';
+import Decimal from 'decimal.js';
+import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
+
 import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 import { formatGasValue } from 'utils/format';
-import BN from 'bn.js';
-import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
-import { NearConfig } from 'config/near';
+
+import { BaseService } from './BaseService';
 
 export const ONE_NEAR = new BN(`1${'0'.repeat(24)}`);
 export const FIVE_NEAR = ONE_NEAR.mul(new BN(5));
@@ -30,6 +32,7 @@ export type DeployStakingContractParams = {
   tokenId: string;
   daoId: string;
   daoBond: string;
+  unstakingPeriodInHours: number;
 };
 
 export type AcceptStakingContractParams = {
@@ -38,16 +41,7 @@ export type AcceptStakingContractParams = {
   daoBond: string;
 };
 
-export class GovernanceTokenService {
-  private readonly walletService;
-
-  private readonly nearConfig;
-
-  constructor(walletService: WalletService, nearConfig: NearConfig) {
-    this.walletService = walletService;
-    this.nearConfig = nearConfig;
-  }
-
+export class GovernanceTokenService extends BaseService {
   async acceptStakingContract({
     stakingContractName,
     daoId,
@@ -78,6 +72,7 @@ export class GovernanceTokenService {
     tokenId,
     daoId,
     daoBond,
+    unstakingPeriodInHours,
   }: DeployStakingContractParams): Promise<FinalExecutionOutcome[]> {
     const currentAccountPublicKey = await this.walletService.getPublicKey();
 
@@ -93,7 +88,9 @@ export class GovernanceTokenService {
     const encodedStakingContractArgs = jsonToBase64Str({
       token_id: tokenId,
       owner_id: daoId,
-      unstake_period: '604800000000000',
+      unstake_period: new Decimal(unstakingPeriodInHours)
+        .mul('3.6e12')
+        .toFixed(),
     });
 
     const encodedFactoryContractArgs = jsonToBase64Str({
@@ -128,19 +125,6 @@ export class GovernanceTokenService {
       gas: formatGasValue(150),
       attachedDeposit: new BN(daoBond),
     });
-    //
-    // return this.walletService.functionCall({
-    //   contractId: 'generic.testnet',
-    //   methodName: 'create',
-    //   args: {
-    //     name: contractName,
-    //     hash: '4ThdGjTKbBTad45CyePPAiZmWJEpEoFwViFusy4cpEmA',
-    //     access_keys: [currentAccountPublicKey],
-    //     args: encodedArgs,
-    //   },
-    //   gas: formatGasValue(200),
-    //   attachedDeposit: ONE_NEAR.mul(new BN(5)),
-    // });
   }
 
   async distributeToken(

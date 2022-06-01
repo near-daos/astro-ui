@@ -18,37 +18,22 @@ import { formatGasValue } from 'utils/format';
 import { FunctionCallOptions } from 'near-api-js/lib/account';
 import { mapCreateDaoParamsToContractArgs } from 'services/sputnik/mappers';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
-import { Config, WalletType } from 'types/config';
-import { NearConfig } from 'config/near';
-import {
-  DaoService,
-  Transaction,
-  WalletService,
-} from 'services/sputnik/SputnikNearService/services/types';
-import { configService } from 'services/ConfigService';
+import { WalletType } from 'types/config';
+import { Transaction } from 'services/sputnik/SputnikNearService/services/types';
+
 import { CreateDaoParams } from 'services/sputnik/types';
 import { PublicKey } from 'near-api-js/lib/utils';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
 import { FunctionCallPermissionView } from 'near-api-js/lib/providers/provider';
 import { AllowanceKey } from 'services/sputnik/SputnikNearService/types';
 
+import { BaseService } from './BaseService';
+
 export const GAS_VALUE = new BN('300000000000000');
 export const FINALIZE_PROPOSAL_GAS_VALUE = new BN('150000000000000');
 const USN_TOKEN_CONTRACTS = ['usn', 'usdn.testnet'];
 
-export class SputnikNearService implements DaoService {
-  private walletService: WalletService;
-
-  private readonly nearConfig: NearConfig;
-
-  private appConfig: Config;
-
-  constructor(currentWallet: WalletService) {
-    this.walletService = currentWallet;
-    this.nearConfig = configService.get().nearConfig;
-    this.appConfig = configService.get().appConfig;
-  }
-
+export class SputnikNearService extends BaseService {
   sendMoney(
     receiverId: string,
     amount: number

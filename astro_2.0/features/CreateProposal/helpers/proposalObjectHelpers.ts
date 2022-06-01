@@ -595,3 +595,20 @@ export function getTransferDaoFundsProposal(
     },
   };
 }
+
+export async function getDeployStakingContractProposal(
+  dao: DAO,
+  data: Record<string, unknown>
+): Promise<CreateProposalParams> {
+  const { id, name, policy } = dao;
+  const { unstakingPeriod, token } = data;
+
+  return ({
+    stakingContractName: `${name}-staking`,
+    daoId: id,
+    tokenId: token,
+    daoBond: policy.proposalBond,
+    unstakingPeriodInHours: unstakingPeriod,
+  } as unknown) as CreateProposalParams;
+}
+

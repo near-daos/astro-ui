@@ -25,8 +25,9 @@ export enum CreateGovernanceTokenSteps {
 
 export type ProgressStatus = {
   step: CreateGovernanceTokenSteps;
-  proposalId?: string;
+  proposalId?: string | null;
   flow: CreateGovernanceTokenFlow;
+  selectedToken?: string;
 };
 
 export type Settings = {

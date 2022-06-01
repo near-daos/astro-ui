@@ -15,6 +15,7 @@ import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 import omit from 'lodash/omit';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { DeployStakingContractParams } from 'services/sputnik/SputnikNearService/subServices/GovernanceTokenService';
 
 export function useSubmitProposal({
   selectedProposalVariant,
@@ -160,6 +161,13 @@ export function useSubmitProposal({
             if (selectedProposalVariant === ProposalVariant.ProposeTransfer) {
               resp = await nearService?.createTokenTransferProposal(
                 newProposal
+              );
+            } else if (
+              selectedProposalVariant ===
+              ProposalVariant.ProposeContractAcceptance
+            ) {
+              resp = await nearService?.deployStakingContract(
+                (newProposal as unknown) as DeployStakingContractParams
               );
             } else {
               resp = await nearService?.addProposal(newProposal);
