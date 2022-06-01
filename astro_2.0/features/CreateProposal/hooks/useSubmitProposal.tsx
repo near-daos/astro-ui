@@ -140,7 +140,11 @@ export function useSubmitProposal({
               // Add proposal variant and gas
               newProposal = {
                 ...newProposal,
-                description: `${newProposal?.description}${EXTERNAL_LINK_SEPARATOR}${selectedProposalVariant}`,
+                description: `${
+                  newProposal?.description
+                }${EXTERNAL_LINK_SEPARATOR}${
+                  newProposal?.variant ?? selectedProposalVariant
+                }`,
                 gas: data.gas,
               } as CreateProposalParams;
             }

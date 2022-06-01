@@ -11,8 +11,12 @@ import { useWalletContext } from 'context/WalletContext';
 import { ProposalVariant } from 'types/proposal';
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
 
+import { useDaoSettings } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/hooks';
 import { useProposalTemplates } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/hooks';
-import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
+import {
+  DEFAULT_PROPOSAL_GAS,
+  DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
+} from 'services/sputnik/constants';
 import { formatYoktoValue } from 'utils/format';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
@@ -37,6 +41,7 @@ export const FunctionCallTypeSelector: FC<Props> = ({ daoId }) => {
   const { accountId } = useWalletContext();
   const { templates } = useProposalTemplates(daoId);
   const { tokens } = useCustomTokensContext();
+  const { settings } = useDaoSettings(daoId);
 
   const { voteInOtherDao } = useFlags();
 
@@ -64,6 +69,14 @@ export const FunctionCallTypeSelector: FC<Props> = ({ daoId }) => {
       //   group: 'Templates',
       // },
     ];
+
+    if (settings?.daoUpgrade?.versionHash) {
+      templateOptions.push({
+        label: 'Remove upgrade code',
+        value: FunctionCallType.RemoveUpgradeCode,
+        group: 'Templates',
+      });
+    }
 
     if (voteInOtherDao) {
       templateOptions.push({
@@ -109,7 +122,7 @@ export const FunctionCallTypeSelector: FC<Props> = ({ daoId }) => {
     }
 
     return result;
-  }, [templates, voteInOtherDao]);
+  }, [settings?.daoUpgrade?.versionHash, templates, voteInOtherDao]);
 
   return (
     <div className={styles.root}>
@@ -119,7 +132,7 @@ export const FunctionCallTypeSelector: FC<Props> = ({ daoId }) => {
         defaultValue={FunctionCallType.Custom}
         options={options}
         {...register('functionCallType')}
-        onChange={v => {
+        onChange={async v => {
           let initialValues = {};
           const predefinedTypes = Object.values(FunctionCallType) as string[];
 
@@ -152,6 +165,19 @@ export const FunctionCallTypeSelector: FC<Props> = ({ daoId }) => {
                 json: parsedJson,
                 isActive: template.isEnabled,
                 name: template.name,
+              };
+            }
+          }
+
+          if (v === FunctionCallType.RemoveUpgradeCode) {
+            const hash = settings?.daoUpgrade?.versionHash;
+
+            if (hash) {
+              initialValues = {
+                details: `This proposal is to delete the upgrade code which you retrieved from the factory. Deleting that code saves NEAR for your DAO. It's safe to delete that code because smart contracts always store a copy of the code they're running.`,
+                externalUrl: '',
+                gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
+                versionHash: hash,
               };
             }
           }

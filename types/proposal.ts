@@ -213,6 +213,7 @@ export interface CreateProposalParams {
     | FunctionCall;
   bond: string;
   gas?: number;
+  variant?: ProposalVariant;
 }
 
 interface AddBounty {

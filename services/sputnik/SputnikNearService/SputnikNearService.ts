@@ -495,19 +495,7 @@ export class SputnikNearService implements DaoService {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
-    const { data } = proposal;
-
-    const { token_id: tokenContract } = data as Transfer;
-
-    const [
-      storageDepositTransactionAction,
-      transferTransaction,
-    ] = this.mapTokenTransferProposal(proposal);
-
-    const trx =
-      tokenContract && !USN_TOKEN_CONTRACTS.includes(tokenContract)
-        ? [storageDepositTransactionAction, transferTransaction]
-        : [transferTransaction];
+    const trx = this.mapTokenTransferProposal(proposal);
 
     return this.walletService.sendTransactions(trx);
   }
