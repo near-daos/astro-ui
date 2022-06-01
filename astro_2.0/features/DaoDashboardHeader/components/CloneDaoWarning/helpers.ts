@@ -51,7 +51,7 @@ export function hasAvailableFunds(tokens: Record<string, Token>): boolean {
       }
     }
 
-    if (max > 0) {
+    if (max > 0.0001) {
       hasFunds = true;
     }
   });

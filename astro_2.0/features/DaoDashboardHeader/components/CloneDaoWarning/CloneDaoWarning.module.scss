@@ -37,8 +37,12 @@
 }
 
 .close {
-  //margin-right: 24px;
-  //margin-left: auto;
+  color: var(--color-error-70);
+
+  &:hover {
+    opacity: 0.8;
+    text-shadow: 0 0 8px var(--color-error-70);
+  }
 }
 
 .link {

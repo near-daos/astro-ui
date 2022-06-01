@@ -7,10 +7,8 @@ import cn from 'classnames';
 import { UserPermissions } from 'types/context';
 import { DAO } from 'types/dao';
 import { ProposalFeedItem, ProposalVariant } from 'types/proposal';
-
-import { DaoWarning } from 'astro_2.0/components/DaoWarning';
+import { WarningRenderer } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/components/WarningRenderer';
 import { Button } from 'components/button/Button';
-import { IconButton } from 'components/button/IconButton';
 
 import { SputnikHttpService } from 'services/sputnik';
 import { useWalletContext } from 'context/WalletContext';
@@ -83,6 +81,12 @@ export const CloneDaoWarning: FC<Props> = ({
     [update]
   );
 
+  const onDismiss = useCallback(async () => {
+    await update({
+      cloneState: { isFlowCompleted: true },
+    });
+  }, [update]);
+
   const onCreateTransfer = useCallback(
     async res => {
       const target = `${daoName}.${nearConfig.contractName}`;
@@ -105,7 +109,7 @@ export const CloneDaoWarning: FC<Props> = ({
     !loading;
   const isCloneInProgress = !!activeProposalLink;
   const isFlowCompleted = cloneState?.isFlowCompleted;
-  const isTransferDone = cloneState?.transferDone && !hasAvailableFunds(tokens); // check funds
+  const isTransferDone = cloneState?.transferDone && !hasAvailableFunds(tokens);
 
   useEffect(() => {
     (async () => {
@@ -172,7 +176,7 @@ export const CloneDaoWarning: FC<Props> = ({
         // eslint-disable-next-line jsx-a11y/control-has-associated-label
         <button
           type="button"
-          onClick={() => update({ cloneState: { isFlowCompleted: true } })}
+          onClick={() => update({ cloneState: null })}
           className={styles.resetFlowBtn}
         />
       );
@@ -189,44 +193,26 @@ export const CloneDaoWarning: FC<Props> = ({
     if (cloneState?.transferDone && transferProposals.length) {
       return (
         <AnimatedContent>
-          <DaoWarning
-            rootClassName={styles.progressRoot}
-            statusClassName={styles.progressStatus}
-            iconClassName={styles.progressIcon}
-            icon="proposalSendFunds"
-            content={
-              <>
-                <div className={styles.title}>
-                  Transfer DAO funds proposals are active. View proposals and
-                  vote to make a decision
-                </div>
-                <div className={cn(styles.text, styles.list)}>
-                  {transferProposals.map(proposal => {
-                    return (
-                      <Link
-                        key={proposal.id}
-                        href={`/dao/${dao.id}/proposals/${proposal.id}`}
-                      >
-                        <a className={styles.linkProposal}>{proposal.id}</a>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </>
-            }
-            control={
-              <IconButton
-                icon="close"
-                className={styles.close}
-                onClick={async () => {
-                  await update({
-                    cloneState: { ...cloneState, isFlowCompleted: true },
-                  });
-                }}
-              />
-            }
-            className={className}
-          />
+          <WarningRenderer
+            onDismiss={onDismiss}
+            variant="progress"
+            title="Transfer DAO funds proposals are active. View proposals and
+                  vote to make a decision"
+            daoId={dao.id}
+          >
+            <div className={cn(styles.text, styles.list)}>
+              {transferProposals.map(proposal => {
+                return (
+                  <Link
+                    key={proposal.id}
+                    href={`/dao/${dao.id}/proposals/${proposal.id}`}
+                  >
+                    <a className={styles.linkProposal}>{proposal.id}</a>
+                  </Link>
+                );
+              })}
+            </div>
+          </WarningRenderer>
         </AnimatedContent>
       );
     }
@@ -234,19 +220,15 @@ export const CloneDaoWarning: FC<Props> = ({
     if (isCloneAvailable) {
       return (
         <AnimatedContent>
-          <DaoWarning
-            rootClassName={styles.infoRoot}
-            statusClassName={styles.infoStatus}
-            iconClassName={styles.infoIcon}
-            icon="proposalSendFunds"
-            content={
-              <>
-                <div className={styles.title}>Let&apos;s migrate your DAO</div>
-                <div className={styles.text}>[PLACEHOLDER] - description!</div>
-              </>
-            }
+          <WarningRenderer
+            onDismiss={onDismiss}
+            className={className}
+            variant="info"
+            title="Let's migrate your DAO"
+            daoId={dao.id}
             control={
               <Button
+                size="small"
                 className={styles.upgradeDaoButton}
                 variant="primary"
                 onClick={() =>
@@ -262,8 +244,9 @@ export const CloneDaoWarning: FC<Props> = ({
                 Migrate DAO
               </Button>
             }
-            className={className}
-          />
+          >
+            <div className={styles.text}>[PLACEHOLDER] - description!</div>
+          </WarningRenderer>
         </AnimatedContent>
       );
     }
@@ -271,22 +254,16 @@ export const CloneDaoWarning: FC<Props> = ({
     if (isCloneInProgress) {
       return (
         <AnimatedContent>
-          <DaoWarning
-            rootClassName={styles.progressRoot}
-            statusClassName={styles.progressStatus}
-            iconClassName={styles.progressIcon}
-            icon="proposalSendFunds"
-            content={
-              <>
-                <div className={styles.title}>
-                  DAO is the process of migration. View proposal and vote to
-                  make a decision
-                </div>
-                <div className={styles.text}>[PLACEHOLDER] - description!.</div>
-              </>
-            }
+          <WarningRenderer
+            onDismiss={onDismiss}
+            className={className}
+            variant="progress"
+            title="DAO is the process of migration. View proposal and vote to
+                  make a decision"
+            daoId={dao.id}
             control={
               <Button
+                size="small"
                 className={styles.upgradeDaoButton}
                 variant="primary"
                 onClick={() => router.push(activeProposalLink)}
@@ -294,8 +271,9 @@ export const CloneDaoWarning: FC<Props> = ({
                 View proposal
               </Button>
             }
-            className={className}
-          />
+          >
+            <div className={styles.text}>[PLACEHOLDER] - description!.</div>
+          </WarningRenderer>
         </AnimatedContent>
       );
     }
@@ -303,24 +281,15 @@ export const CloneDaoWarning: FC<Props> = ({
     if (isCloneCompleted && canActOnFlow && !isTransferDone) {
       return (
         <AnimatedContent>
-          <DaoWarning
-            rootClassName={styles.successRoot}
-            statusClassName={styles.successStatus}
-            iconClassName={styles.successIcon}
-            icon="proposalSendFunds"
-            content={
-              <>
-                <div className={styles.title}>
-                  Proposal migrate DAO was successfully approved
-                </div>
-                <div className={styles.text}>
-                  [PLACEHOLDER] - description! Now you can create proposals to
-                  transfer your DAO&apos;s funds
-                </div>
-              </>
-            }
+          <WarningRenderer
+            onDismiss={onDismiss}
+            className={className}
+            variant="success"
+            title="Proposal migrate DAO was successfully approved"
+            daoId={dao.id}
             control={
               <Button
+                size="small"
                 className={styles.upgradeDaoButton}
                 variant="primary"
                 onClick={async () => {
@@ -343,8 +312,12 @@ export const CloneDaoWarning: FC<Props> = ({
                 Transfer funds
               </Button>
             }
-            className={className}
-          />
+          >
+            <div className={styles.text}>
+              [PLACEHOLDER] - description! Now you can create proposals to
+              transfer your DAO&apos;s funds
+            </div>
+          </WarningRenderer>
         </AnimatedContent>
       );
     }
@@ -352,24 +325,16 @@ export const CloneDaoWarning: FC<Props> = ({
     if (isCloneFailed && canActOnFlow) {
       return (
         <AnimatedContent>
-          <DaoWarning
-            rootClassName={styles.failRoot}
-            statusClassName={styles.failStatus}
-            iconClassName={styles.failIcon}
-            icon="proposalSendFunds"
-            content={
-              <>
-                <div className={styles.title}>
-                  Proposal migrate DAO was rejected
-                </div>
-                <div className={styles.text}>
-                  [PLACEHOLDER] - description! Would you like to try again?
-                </div>
-              </>
-            }
+          <WarningRenderer
+            onDismiss={onDismiss}
+            className={className}
+            variant="fail"
+            title="Proposal migrate DAO was rejected"
+            daoId={dao.id}
             control={
               <>
                 <Button
+                  size="small"
                   className={styles.upgradeDaoButton}
                   variant="primary"
                   onClick={() => {
@@ -386,8 +351,11 @@ export const CloneDaoWarning: FC<Props> = ({
                 </Button>
               </>
             }
-            className={className}
-          />
+          >
+            <div className={styles.text}>
+              [PLACEHOLDER] - description! Would you like to try again?
+            </div>
+          </WarningRenderer>
         </AnimatedContent>
       );
     }
