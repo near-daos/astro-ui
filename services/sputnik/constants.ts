@@ -67,6 +67,7 @@ export const API_QUERIES = {
   READ_ALL_NOTIFICATIONS: 'readAllNotifications',
   ARCHIVE_ALL_NOTIFICATIONS: 'archiveAllNotifications',
   UPDATE_NOTIFICATION_SETTINGS: 'updateNotificationsSettings',
+  FIND_TRANSFER_PROPOSALS: 'findTransferProposals',
 };
 
 export type ApiQueries = keyof typeof API_QUERIES;

@@ -20,98 +20,100 @@ export const TransferFundsContent: FC = () => {
 
   return (
     <div className={styles.root}>
-      {tokensOptions.map(token => {
-        const amountField = `${token.symbol}_amount`;
-        const targetField = `${token.symbol}_target`;
+      {tokensOptions
+        .filter(token => Number(token.balance) > 0)
+        .map(token => {
+          const amountField = `${token.symbol}_amount`;
+          const targetField = `${token.symbol}_target`;
 
-        return (
-          <div key={token.symbol} className={styles.row}>
-            <InputWrapper
-              className={styles.amount}
-              fieldName={amountField}
-              label={t('proposalCard.proposalAmount')}
-            >
-              <Input
-                // defaultValue={token.balance}
-                className={cn(styles.inputWrapper, styles.narrow)}
-                inputStyles={{
-                  width: `${7}ch`,
-                  padding: 0,
-                  height: 24,
-                  marginRight: 18,
-                }}
-                type="number"
-                min={0}
-                placeholder="00.00"
-                isBorderless
-                size="block"
-                {...register(amountField)}
-              />
-            </InputWrapper>
-            <div className={styles.tokenDetails}>
-              <Button
-                variant="tertiary"
-                size="small"
-                className={styles.maxButton}
-                onClick={() => {
-                  let max = Number(token.balance);
-
-                  if (token.symbol === 'NEAR') {
-                    const maxPossibleValue = Number(max) - 6;
-
-                    if (maxPossibleValue <= 0) {
-                      max = 0;
-                    } else {
-                      max = maxPossibleValue;
-                    }
-                  }
-
-                  setValue(amountField, Number(max.toFixed(5)), {
-                    shouldValidate: true,
-                  });
-                }}
+          return (
+            <div key={token.symbol} className={styles.row}>
+              <InputWrapper
+                className={styles.amount}
+                fieldName={amountField}
+                label={t('proposalCard.proposalAmount')}
               >
-                MAX
-              </Button>
-              <div className={styles.iconWrapper}>
-                {token.symbol === 'NEAR' ? (
-                  <Icon name="tokenNearBig" />
-                ) : (
-                  <div
-                    className={styles.icon}
-                    style={{
-                      backgroundImage: `url(${token.icon})`,
-                    }}
-                  />
-                )}
+                <Input
+                  // defaultValue={token.balance}
+                  className={cn(styles.inputWrapper, styles.narrow)}
+                  inputStyles={{
+                    width: `${7}ch`,
+                    padding: 0,
+                    height: 24,
+                    marginRight: 18,
+                  }}
+                  type="number"
+                  min={0}
+                  placeholder="00.00"
+                  isBorderless
+                  size="block"
+                  {...register(amountField)}
+                />
+              </InputWrapper>
+              <div className={styles.tokenDetails}>
+                <Button
+                  variant="tertiary"
+                  size="small"
+                  className={styles.maxButton}
+                  onClick={() => {
+                    let max = Number(token.balance);
+
+                    if (token.symbol === 'NEAR') {
+                      const maxPossibleValue = Number(max) - 6;
+
+                      if (maxPossibleValue <= 0) {
+                        max = 0;
+                      } else {
+                        max = maxPossibleValue;
+                      }
+                    }
+
+                    setValue(amountField, Number(max.toFixed(5)), {
+                      shouldValidate: true,
+                    });
+                  }}
+                >
+                  MAX
+                </Button>
+                <div className={styles.iconWrapper}>
+                  {token.symbol === 'NEAR' ? (
+                    <Icon name="tokenNearBig" />
+                  ) : (
+                    <div
+                      className={styles.icon}
+                      style={{
+                        backgroundImage: `url(${token.icon})`,
+                      }}
+                    />
+                  )}
+                </div>
+                <div className={styles.symbol}>{token.symbol}</div>
               </div>
-              <div className={styles.symbol}>{token.symbol}</div>
+              <InputWrapper
+                className={styles.target}
+                fieldName={targetField}
+                label={t('proposalCard.proposalTarget')}
+                flex
+              >
+                <DebouncedInput
+                  // defaultValue={initialTarget}
+                  className={cn(styles.inputWrapper, styles.wide)}
+                  placeholder={t('proposalCard.proposalTargetPlaceholder')}
+                  isBorderless
+                  size="block"
+                  inputStyles={{
+                    padding: 0,
+                    height: 24,
+                  }}
+                  {...register(targetField)}
+                  onValueChange={val =>
+                    setValue(targetField, val, { shouldValidate: true })
+                  }
+                />
+              </InputWrapper>
             </div>
-            <InputWrapper
-              className={styles.target}
-              fieldName={targetField}
-              label={t('proposalCard.proposalTarget')}
-              flex
-            >
-              <DebouncedInput
-                // defaultValue={initialTarget}
-                className={cn(styles.inputWrapper, styles.wide)}
-                placeholder={t('proposalCard.proposalTargetPlaceholder')}
-                isBorderless
-                size="block"
-                inputStyles={{
-                  padding: 0,
-                  height: 24,
-                }}
-                {...register(targetField)}
-                onValueChange={val =>
-                  setValue(targetField, val, { shouldValidate: true })
-                }
-              />
-            </InputWrapper>
-          </div>
-        );
-      })}
+          );
+        })}
     </div>
   );
 };

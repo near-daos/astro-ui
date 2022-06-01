@@ -37,7 +37,10 @@
 }
 
 .control {
+  display: flex;
   flex: 1;
+  justify-content: flex-end;
+  padding: 20px 32px 20px 48px;
 }
 
 .title {

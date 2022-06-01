@@ -1,5 +1,6 @@
 import { ProposalFeedItem, ProposalType } from 'types/proposal';
 import { DAO } from 'types/dao';
+import { Token } from 'types/token';
 
 export function extractNewDaoName(proposal: ProposalFeedItem): string {
   if (proposal.kind.type === ProposalType.FunctionCall) {
@@ -30,4 +31,30 @@ export function isActiveUserCouncil(dao: DAO, acoountId: string): boolean {
   }
 
   return false;
+}
+
+export function hasAvailableFunds(tokens: Record<string, Token>): boolean {
+  const tokensOptions = Object.values(tokens);
+
+  let hasFunds = false;
+
+  tokensOptions.forEach(token => {
+    let max = Number(token.balance);
+
+    if (token.symbol === 'NEAR') {
+      const maxPossibleValue = Number(max) - 6;
+
+      if (maxPossibleValue <= 0) {
+        max = 0;
+      } else {
+        max = maxPossibleValue;
+      }
+    }
+
+    if (max > 0) {
+      hasFunds = true;
+    }
+  });
+
+  return hasFunds;
 }

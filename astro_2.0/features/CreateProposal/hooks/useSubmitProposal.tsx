@@ -58,7 +58,9 @@ export function useSubmitProposal({
       switch (selectedProposalVariant) {
         case ProposalVariant.ProposeTransferFunds: {
           try {
-            const tokenIds = Object.values(daoTokens).map(item => item.symbol);
+            const tokenIds = Object.values(daoTokens)
+              .filter(token => Number(token.balance) > 0)
+              .map(item => item.symbol);
             // iterate dao tokens and prepare array of transfer params
             const proposalsData = tokenIds.map(token => {
               const amount = data[`${token}_amount`];

@@ -1,13 +1,16 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { AnimatePresence, motion } from 'framer-motion';
+import Link from 'next/link';
+import cn from 'classnames';
 
 import { UserPermissions } from 'types/context';
 import { DAO } from 'types/dao';
-import { ProposalVariant } from 'types/proposal';
+import { ProposalFeedItem, ProposalVariant } from 'types/proposal';
 
 import { DaoWarning } from 'astro_2.0/components/DaoWarning';
 import { Button } from 'components/button/Button';
+import { IconButton } from 'components/button/IconButton';
 
 import { SputnikHttpService } from 'services/sputnik';
 import { useWalletContext } from 'context/WalletContext';
@@ -18,8 +21,11 @@ import { useDaoSettings } from 'astro_2.0/features/DaoDashboardHeader/components
 
 import {
   extractNewDaoName,
+  hasAvailableFunds,
   isActiveUserCouncil,
 } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/helpers';
+
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import styles from './CloneDaoWarning.module.scss';
 
@@ -56,6 +62,7 @@ export const CloneDaoWarning: FC<Props> = ({
   const router = useRouter();
   const { daoVersion } = dao;
   const { accountId } = useWalletContext();
+  const { tokens } = useDaoCustomTokens();
   const { nearConfig } = configService.get();
   const { settings, update, loading } = useDaoSettings(dao.id);
   const cloneState = settings ? settings.cloneState : null;
@@ -63,6 +70,9 @@ export const CloneDaoWarning: FC<Props> = ({
 
   const [daoName, setDaoName] = useState('');
   const [activeProposalLink, setActiveProposalLink] = useState('');
+  const [transferProposals, setTransferProposals] = useState<
+    ProposalFeedItem[]
+  >([]);
   const [isCloneCompleted, setIsCloneCompleted] = useState(false);
   const [isCloneFailed, setIsCloneFailed] = useState(false);
 
@@ -75,11 +85,15 @@ export const CloneDaoWarning: FC<Props> = ({
 
   const onCreateTransfer = useCallback(
     async res => {
-      if (res) {
-        await update({ cloneState: { isFlowCompleted: true } });
+      const target = `${daoName}.${nearConfig.contractName}`;
+
+      if (res && cloneState) {
+        await update({
+          cloneState: { ...cloneState, target, transferDone: true },
+        });
       }
     },
-    [update]
+    [cloneState, daoName, nearConfig.contractName, update]
   );
 
   const isCouncil = isActiveUserCouncil(dao, accountId);
@@ -91,6 +105,7 @@ export const CloneDaoWarning: FC<Props> = ({
     !loading;
   const isCloneInProgress = !!activeProposalLink;
   const isFlowCompleted = cloneState?.isFlowCompleted;
+  const isTransferDone = cloneState?.transferDone && !hasAvailableFunds(tokens); // check funds
 
   useEffect(() => {
     (async () => {
@@ -136,13 +151,28 @@ export const CloneDaoWarning: FC<Props> = ({
     })();
   }, [accountId, cloningProposalId, dao.id]);
 
+  useEffect(() => {
+    (async () => {
+      if (cloneState?.transferDone && cloneState?.target) {
+        const res = await SputnikHttpService.findTransferProposals(
+          dao,
+          cloneState.target
+        );
+
+        if (res?.data) {
+          setTransferProposals(res?.data);
+        }
+      }
+    })();
+  }, [cloneState, dao]);
+
   function renderResetFlowButton() {
     if (canActOnFlow) {
       return (
         // eslint-disable-next-line jsx-a11y/control-has-associated-label
         <button
           type="button"
-          onClick={() => update({ cloneState: null })}
+          onClick={() => update({ cloneState: { isFlowCompleted: true } })}
           className={styles.resetFlowBtn}
         />
       );
@@ -152,8 +182,53 @@ export const CloneDaoWarning: FC<Props> = ({
   }
 
   function renderContent() {
-    if (isFlowCompleted && canActOnFlow) {
+    if (isFlowCompleted) {
       return null;
+    }
+
+    if (cloneState?.transferDone && transferProposals.length) {
+      return (
+        <AnimatedContent>
+          <DaoWarning
+            rootClassName={styles.progressRoot}
+            statusClassName={styles.progressStatus}
+            iconClassName={styles.progressIcon}
+            icon="proposalSendFunds"
+            content={
+              <>
+                <div className={styles.title}>
+                  Transfer DAO funds proposals are active. View proposals and
+                  vote to make a decision
+                </div>
+                <div className={cn(styles.text, styles.list)}>
+                  {transferProposals.map(proposal => {
+                    return (
+                      <Link
+                        key={proposal.id}
+                        href={`/dao/${dao.id}/proposals/${proposal.id}`}
+                      >
+                        <a className={styles.linkProposal}>{proposal.id}</a>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </>
+            }
+            control={
+              <IconButton
+                icon="close"
+                className={styles.close}
+                onClick={async () => {
+                  await update({
+                    cloneState: { ...cloneState, isFlowCompleted: true },
+                  });
+                }}
+              />
+            }
+            className={className}
+          />
+        </AnimatedContent>
+      );
     }
 
     if (isCloneAvailable) {
@@ -225,7 +300,7 @@ export const CloneDaoWarning: FC<Props> = ({
       );
     }
 
-    if (isCloneCompleted && canActOnFlow) {
+    if (isCloneCompleted && canActOnFlow && !isTransferDone) {
       return (
         <AnimatedContent>
           <DaoWarning
@@ -248,11 +323,17 @@ export const CloneDaoWarning: FC<Props> = ({
               <Button
                 className={styles.upgradeDaoButton}
                 variant="primary"
-                onClick={() => {
+                onClick={async () => {
+                  const target = `${daoName}.${nearConfig.contractName}`;
+
+                  await update({
+                    cloneState: { proposalId: cloningProposalId, target },
+                  });
+
                   onCreateProposal(
                     ProposalVariant.ProposeTransferFunds,
                     {
-                      target: `${daoName}.${nearConfig.contractName}`,
+                      target,
                       // tokens:
                     },
                     onCreateTransfer

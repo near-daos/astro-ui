@@ -801,7 +801,9 @@ export function getValidationSchema(
     }
     case ProposalVariant.ProposeTransferFunds: {
       const tokens = (data?.daoTokens as Record<string, Token>) ?? {};
-      const tokensIds = Object.values(tokens).map(item => item.symbol);
+      const tokensIds = Object.values(tokens)
+        .filter(token => Number(token.balance) > 0)
+        .map(item => item.symbol);
 
       const tokensFields = tokensIds.reduce<Record<string, AnySchema>>(
         (res, item) => {
