@@ -860,6 +860,52 @@ export class HttpService {
             }
           }
           break;
+        case API_QUERIES.FIND_TRANSFER_PROPOSALS: {
+          const { daoId, targetDaoId } =
+            requestCustom.queryRequest?.params || {};
+
+          const queryString = RequestQueryBuilder.create();
+
+          const search: SFields | SConditionAND = {
+            $and: [
+              {
+                daoId: {
+                  $eq: daoId,
+                },
+              },
+              {
+                kind: {
+                  $cont: targetDaoId,
+                },
+              },
+              {
+                kind: {
+                  $cont: ProposalType.Transfer,
+                },
+              },
+              {
+                status: {
+                  $eq: 'InProgress',
+                },
+              },
+            ],
+          };
+
+          queryString.search(search);
+
+          queryString
+            .setLimit(200)
+            .setOffset(0)
+            .sortBy({
+              field: 'createdAt',
+              order: 'DESC',
+            })
+            .query();
+
+          request.url = `/proposals?${queryString.queryString}`;
+
+          break;
+        }
 
         case API_QUERIES.UPDATE_NOTIFICATION:
         case API_QUERIES.READ_ALL_NOTIFICATIONS:

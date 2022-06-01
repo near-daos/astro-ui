@@ -1149,6 +1149,35 @@ class SputnikHttpServiceClass {
     return response.data;
   }
 
+  public async findTransferProposals(
+    dao: DAO,
+    target: string
+  ): Promise<PaginationResponse<ProposalFeedItem[]> | null> {
+    try {
+      const { data } = await this.httpService.get<
+        PaginationResponse<ProposalFeedItem[]>
+      >('/proposals', {
+        responseMapper: {
+          name:
+            API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+        },
+        queryRequest: {
+          name: API_QUERIES.FIND_TRANSFER_PROPOSALS,
+          params: {
+            daoId: dao.id,
+            targetDaoId: target,
+          },
+        },
+      });
+
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+  }
+
   public async getDraftProposalsList(query: {
     offset: number;
     limit: number;

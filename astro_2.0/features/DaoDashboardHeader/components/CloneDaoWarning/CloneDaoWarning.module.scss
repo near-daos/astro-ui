@@ -25,6 +25,22 @@
   @extend %caption1;
 }
 
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.linkProposal {
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.close {
+  //margin-right: 24px;
+  //margin-left: auto;
+}
+
 .link {
   @extend %subtitle4;
   align-items: center;
