@@ -46,6 +46,9 @@ const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
     case FunctionCallType.VoteInAnotherDao: {
       return <VoteInOtherDao dao={dao} />;
     }
+    case FunctionCallType.RemoveUpgradeCode: {
+      return null;
+    }
     case FunctionCallType.Custom:
     default: {
       return <CustomContent />;

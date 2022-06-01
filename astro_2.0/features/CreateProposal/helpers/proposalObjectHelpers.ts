@@ -4,7 +4,11 @@ import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 
 import { DAO } from 'types/dao';
-import { CreateProposalParams, DaoConfig } from 'types/proposal';
+import {
+  CreateProposalParams,
+  DaoConfig,
+  ProposalVariant,
+} from 'types/proposal';
 import { CreateTokenInput } from 'astro_2.0/features/CreateProposal/types';
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
@@ -71,6 +75,7 @@ export function getRemoveUpgradeCodeProposal(
   });
 
   return {
+    variant: ProposalVariant.ProposeRemoveUpgradeCode,
     daoId: dao.id,
     description: proposalDescription,
     kind: 'FunctionCall',

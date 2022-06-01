@@ -639,6 +639,13 @@ export function getValidationSchema(
       const type = data?.functionCallType ?? FunctionCallType.Custom;
 
       switch (type) {
+        case FunctionCallType.RemoveUpgradeCode: {
+          return yup.object().shape({
+            details: yup.string().required('Required'),
+            externalUrl: yup.string().url(),
+            gas: gasValidation,
+          });
+        }
         case FunctionCallType.BuyNFTfromMintbase: {
           return yup.object().shape({
             tokenKey: yup.string().required('Required'),

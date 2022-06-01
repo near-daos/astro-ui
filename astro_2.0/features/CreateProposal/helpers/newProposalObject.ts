@@ -324,6 +324,12 @@ export async function getNewProposalObject(
     }
     case ProposalVariant.ProposeCustomFunctionCall: {
       switch (data.functionCallType) {
+        case FunctionCallType.RemoveUpgradeCode: {
+          return getRemoveUpgradeCodeProposal(
+            dao,
+            data as Record<string, string>
+          );
+        }
         case FunctionCallType.SwapsOnRef: {
           return getSwapsOnRefProposal(dao, data as SwapsOnRefInput);
         }

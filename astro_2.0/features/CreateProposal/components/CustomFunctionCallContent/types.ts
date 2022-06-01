@@ -6,4 +6,5 @@ export enum FunctionCallType {
   BuyNFTfromParas = 'BuyNFTfromParas',
   SwapsOnRef = 'SwapsOnRef',
   VoteInAnotherDao = 'VoteInAnotherDao',
+  RemoveUpgradeCode = 'RemoveUpgradeCode',
 }
