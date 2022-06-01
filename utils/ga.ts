@@ -10,6 +10,7 @@ export enum GA_EVENTS {
   SIGN_OUT = 'sign_out',
   REQUEST_ALLOWANCE_KEY = 'request_allowance_key',
   SAVE_FC_TEMPLATE = 'save_fc_template',
+  GROUP_BULK_UPDATE = 'group_bulk_update',
 }
 
 type CustomGaEvent = {

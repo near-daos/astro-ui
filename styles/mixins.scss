@@ -77,6 +77,12 @@
   }
 }
 
+@mixin max-large-x-desktop {
+  @media (max-width: #{breakpoints.$screen-lgx}px) {
+    @content;
+  }
+}
+
 @mixin large-desktop {
   @media (min-width: #{breakpoints.$screen-lg}px) {
     @content;

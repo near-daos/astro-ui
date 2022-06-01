@@ -30,14 +30,10 @@ export const DaoGroupsForm: VFC = () => {
     defaultValues: {
       groups: uniqBy(
         state.groups.items
-          ? [
-              { group: 'All', slug: 'all' },
-              { group: 'Councils', slug: 'councils' },
-              ...state.groups.items.map(item => ({
-                ...item,
-                group: item.name,
-              })),
-            ]
+          ? state.groups.items.map(item => ({
+              slug: item?.slug,
+              group: item.name,
+            }))
           : [
               { group: 'All', slug: 'all' },
               { group: 'Councils', slug: 'councils' },
@@ -134,17 +130,17 @@ export const DaoGroupsForm: VFC = () => {
                   />
                 );
               })}
+
+              <Button
+                className={styles.link}
+                onClick={() => append({ group: '' })}
+                variant="transparent"
+              >
+                <span className={styles.socialText} />
+
+                <Icon className={styles.addBtn} name="buttonAdd" width={24} />
+              </Button>
             </section>
-
-            <Button
-              className={styles.link}
-              onClick={() => append({ group: '' })}
-              variant="transparent"
-            >
-              <span className={styles.socialText} />
-
-              <Icon className={styles.addBtn} name="buttonAdd" width={24} />
-            </Button>
           </div>
 
           <SubmitButton className={styles.submit} />

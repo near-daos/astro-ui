@@ -189,6 +189,20 @@ export function useSubmitProposal({
               },
             });
 
+            if (
+              selectedProposalVariant === ProposalVariant.ProposeUpdateGroup
+            ) {
+              sendGAEvent({
+                name: GA_EVENTS.GROUP_BULK_UPDATE,
+                daoId: dao.id,
+                accountId,
+                params: {
+                  variant: selectedProposalVariant,
+                  proposalId: newProposalId,
+                },
+              });
+            }
+
             if (onCreate) {
               onCreate(newProposalId);
             }

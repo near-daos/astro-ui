@@ -129,7 +129,9 @@ export const DaoMembersForm: VFC = () => {
                 </div>
 
                 <div className={styles.linkGroup}>
-                  {t('createDAO.daoMembersForm.newMemberRolePlaceholder')}
+                  <span>
+                    {t('createDAO.daoMembersForm.newMemberRolePlaceholder')}
+                  </span>
 
                   <Icon name="buttonArrowDown" />
                 </div>

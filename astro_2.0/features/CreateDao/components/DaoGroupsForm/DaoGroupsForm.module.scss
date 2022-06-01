@@ -28,14 +28,28 @@
   flex-flow: row nowrap;
   justify-content: space-between;
   width: 100%;
+
+  @include max-large-x-desktop {
+    align-items: flex-start;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+  }
 }
 
 .column {
   width: 67%;
+
+  @include max-large-x-desktop {
+    width: 100%;
+  }
 }
 
 .submit {
   margin-top: auto;
+
+  @include max-large-x-desktop {
+    margin-top: 32px;
+  }
 }
 
 .description {

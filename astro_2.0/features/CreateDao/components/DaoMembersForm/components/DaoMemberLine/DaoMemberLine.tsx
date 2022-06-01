@@ -1,4 +1,4 @@
-import React, { useRef, VFC } from 'react';
+import React, { useCallback, useRef, useState, VFC } from 'react';
 import { useFormContext } from 'react-hook-form';
 import cn from 'classnames';
 import get from 'lodash/get';
@@ -32,10 +32,15 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({ index, onRemove }) => {
   const { accountId } = useWalletContext();
   const { state } = useStateMachine({ updateAction });
 
+  const [openGroupDropdown, setOpenGroupDropdown] = useState(false);
+
+  const closeDropdown = useCallback(() => {
+    setOpenGroupDropdown(false);
+  }, [setOpenGroupDropdown]);
+
   const errorEl = useRef<HTMLDivElement>(null);
 
   const currentValue = watch(`accounts.${index}`);
-
   const error = get(errors, `accounts.${index}`);
 
   return (
@@ -50,7 +55,7 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({ index, onRemove }) => {
               readOnly={currentValue.name === accountId}
               tabIndex={currentValue.name === accountId ? -1 : 0}
               inputClassName={cn({
-                [styles.error]: !!error,
+                [styles.error]: !!error?.name,
               })}
               className={cn({
                 [styles.disabled]: currentValue.name === accountId,
@@ -73,13 +78,20 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({ index, onRemove }) => {
         />
 
         <GenericDropdown
-          isOpen={false}
+          isOpen={openGroupDropdown}
+          onOpenUpdate={setOpenGroupDropdown}
           parent={
-            <div className={styles.dropdown}>
+            <button
+              type="button"
+              className={cn(styles.dropdown, {
+                [styles.error]: !!error?.role,
+              })}
+              onClick={() => setOpenGroupDropdown(true)}
+            >
               <p>{currentValue.role || 'Select group'}</p>
 
               <Icon name="buttonArrowDown" />
-            </div>
+            </button>
           }
         >
           <div className={styles.dropdownWrapper}>
@@ -88,15 +100,17 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({ index, onRemove }) => {
                 variant="transparent"
                 key={group.name}
                 className={styles.dropdownItem}
-                onClick={() =>
+                onClick={() => {
                   setFormValue(
                     `accounts.${index}`,
                     { ...currentValue, role: group.name },
                     {
                       shouldValidate: true,
                     }
-                  )
-                }
+                  );
+
+                  closeDropdown();
+                }}
               >
                 {group.name}
               </Button>
