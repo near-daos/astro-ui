@@ -1,0 +1,19 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+// We don't have this font in typography
+.backButton {
+  align-items: center;
+  color: var(--color-neutral-60);
+  display: flex;
+  font-family: var(--font-family-primary);
+  font-size: 0.875em;
+  font-weight: 500;
+  margin: 16px 0 32px;
+}
+
+.icon {
+  height: 24px;
+  width: 24px;
+}

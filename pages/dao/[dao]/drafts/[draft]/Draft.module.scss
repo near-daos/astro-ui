@@ -1,0 +1,125 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: grid;
+  grid-template-areas:
+    'breadcrumbs'
+    'dao'
+    'policy'
+    'votes'
+    'body';
+  grid-template-columns: 1fr;
+  margin-top: 56px;
+}
+
+.breadcrumbs {
+  align-items: center;
+  grid-area: breadcrumbs;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.dao {
+  grid-area: dao;
+  margin-top: 24px;
+
+  @include tablet-landscape {
+    margin-top: 24px;
+  }
+}
+
+.policy {
+  grid-area: policy;
+}
+
+.header {
+  align-items: flex-start;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin-top: 42px;
+}
+
+.proposalInfo {
+  flex: 3;
+  grid-area: proposalInfo;
+  margin-top: 60px;
+
+  > div {
+    width: auto;
+  }
+}
+
+.proposalStat {
+  grid-area: proposalStat;
+}
+
+.votes {
+  grid-area: votes;
+  margin-top: 60px;
+}
+
+.voteTitle {
+  @extend %heading1;
+  color: var(--color-neutral-90);
+  margin-top: 60px;
+}
+
+.label {
+  @extend %subtitle6;
+  color: var(--color-neutral-60);
+  margin-bottom: 4px;
+}
+
+.sub {
+  @extend %body1;
+  color: var(--color-neutral-60);
+}
+
+.subheader {
+  margin: 32px 0;
+}
+
+.content {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
+
+.description {
+  margin: 32px 0 14px;
+
+  > p {
+    margin: 0;
+  }
+}
+
+.row {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+
+  > div:first-of-type {
+    flex: 1 0 80%;
+  }
+
+  > div:last-of-type {
+    flex: 1 1 20%;
+  }
+}
+
+.body {
+  grid-area: body;
+  margin-top: 36px;
+}
+
+.voteNow {
+  background-color: var(--color-neutral-10);
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  inset: auto 24px 24px;
+  position: fixed;
+}

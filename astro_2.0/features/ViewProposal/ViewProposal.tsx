@@ -1,4 +1,6 @@
 import React, { FC, useState } from 'react';
+import { useToggle } from 'react-use';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import {
   ProposalCard,
@@ -6,8 +8,11 @@ import {
 } from 'astro_2.0/components/ProposalCardRenderer';
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
 import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
+import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 
 import { ProposalFeedItem } from 'types/proposal';
+import { DraftProposal } from 'types/draftProposal';
+import { Token } from 'types/token';
 
 import { useWalletContext } from 'context/WalletContext';
 import { getVoteDetails } from 'features/vote-policy/helpers';
@@ -16,16 +21,13 @@ import {
   getContentNode,
   isSaveTemplateActionAvailable,
 } from 'astro_2.0/features/ViewProposal/helpers';
-import { Token } from 'types/token';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
-import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
-import { useToggle } from 'react-use';
 import { ProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments';
-import { AnimatePresence, motion } from 'framer-motion';
 import { SaveFcTemplate } from 'astro_2.0/features/ViewProposal/components/SaveFcTemplate';
 
-export interface CreateProposalProps {
-  proposal: ProposalFeedItem;
+export interface ViewProposalProps {
+  proposal: ProposalFeedItem | DraftProposal;
+  isDraft?: boolean;
   showFlag: boolean;
   tokens: Record<string, Token>;
   preventNavigate?: boolean;
@@ -37,7 +39,8 @@ const variants = {
   visible: { opacity: 1, transform: 'translateY(0px)' },
 };
 
-export const ViewProposal: FC<CreateProposalProps> = ({
+export const ViewProposal: FC<ViewProposalProps> = ({
+  isDraft,
   proposal,
   showFlag,
   tokens,
@@ -61,6 +64,7 @@ export const ViewProposal: FC<CreateProposalProps> = ({
 
   return (
     <ProposalCardRenderer
+      isDraft={isDraft}
       proposalId={proposal.proposalId}
       daoFlagNode={
         showFlag && (
@@ -83,6 +87,11 @@ export const ViewProposal: FC<CreateProposalProps> = ({
       }
       proposalCardNode={
         <ProposalCard
+          title={'title' in proposal ? proposal?.title : undefined}
+          hashtags={'hashtags' in proposal ? proposal?.hashtags : undefined}
+          comments={'comments' in proposal ? proposal?.comments : undefined}
+          bookmarks={'comments' in proposal ? proposal?.bookmarks : undefined}
+          isDraft={isDraft}
           id={proposal.id}
           proposalId={proposal.proposalId}
           variant={proposal.proposalVariant}

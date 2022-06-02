@@ -16,6 +16,7 @@ export interface ProposalCardRendererProps {
   className?: string;
   showInfo?: boolean;
   optionalActionNode?: React.ReactNode;
+  isDraft?: boolean;
 }
 
 export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
@@ -27,6 +28,7 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
   proposalId,
   showInfo,
   optionalActionNode,
+  isDraft,
 }) => {
   const { t } = useTranslation();
 
@@ -37,6 +39,10 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
   }
 
   function renderProposalId() {
+    if (isDraft) {
+      return null;
+    }
+
     if (isNumber(proposalId)) {
       return (
         <div className={styles.proposalIdCell}>
