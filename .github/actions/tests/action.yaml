@@ -21,9 +21,8 @@ runs:
       mv {categories-trend.json,duration-trend.json,history.json,history-trend.json,retry-trend.json} build/allure-results/history/
       ./gradlew --no-daemon allureReport generateCoverage
     shell: bash
-    working-directory: astro-test-framework
 
   - uses: actions/upload-artifact@v2
     with:
-      name: astro-test-framework/allure_report
-      path: astro-test-framework/allure-report/**
+      name: allure_report
+      path: allure-report/**

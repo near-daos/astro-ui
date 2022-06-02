@@ -61,8 +61,6 @@ jobs:
     - name: Set Environment
       id: set_environment
       run: |
-        cat ".github/env.common" | grep -E -v '^\ *#' >>$GITHUB_ENV
-        cat ".github/env.development" | grep -E -v '^\ *#' >>$GITHUB_ENV
         echo "::set-output name=workflow_name::${GITHUB_WORKFLOW// /-}"
         echo "::set-output name=environment::develop}"
 
@@ -102,29 +100,29 @@ jobs:
           find ./
           set -x
         fi
-        sudo mkdir astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}
-        sudo cp -r astro-test-framework/build/reports/allure-report astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/
-        sudo cp -r astro-test-framework/build/swagger-coverage-output astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/
-        sudo find astro-test-framework/build -name swagger-coverage-report.html -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/index.html \;
-        sudo find astro-test-framework/build -name swagger-coverage-results.json -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/ \;
-        cat .github/actions/test/reports-site/HEADER.html.template | envsubst | sudo tee astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/HEADER.html
+        sudo mkdir build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}
+        sudo cp -r build/reports/allure-report astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/
+        sudo cp -r build/swagger-coverage-output astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/
+        sudo find build -name swagger-coverage-report.html -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/index.html \;
+        sudo find build -name swagger-coverage-results.json -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/ \;
+        cat .github/actions/test/reports-site/HEADER.html.template | envsubst | sudo tee build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/HEADER.html
 
     - uses: actions/upload-artifact@v2
       with:
         name: coverage_report
-        path: astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/**
+        path: build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/**
 
     - uses: Consensys/kubernetes-action@1.1.0
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: cp -n sputnik-v2-development astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }} ${{ steps.get_pod.outputs.kubectl-out }}:/app/ui-${{ steps.set_environment.outputs.environment }}
+        args: cp -n sputnik-v2-development build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }} ${{ steps.get_pod.outputs.kubectl-out }}:/app/ui-${{ steps.set_environment.outputs.environment }}
 
     - uses: Consensys/kubernetes-action@1.1.0
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:
-        args: cp -n sputnik-v2-development astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/allure-report/history ${{ steps.get_pod.outputs.kubectl-out }}:/app/ui-${{ steps.set_environment.outputs.environment }}/history
+        args: cp -n sputnik-v2-development build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/allure-report/history ${{ steps.get_pod.outputs.kubectl-out }}:/app/ui-${{ steps.set_environment.outputs.environment }}/history
 
     - name: Add Annotation
       run: |
