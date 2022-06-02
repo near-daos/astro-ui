@@ -48,7 +48,7 @@ export function getFormInitialValues(
     }
     case ProposalVariant.ProposeCreateDao: {
       return {
-        details: `Lets create new DAO`,
+        details: `Because V2 DAOs can not be upgraded we will create a new DAO running the V3 smart contract. After this step we will transfer all assets to the V3 DAO.`,
         externalUrl: '',
         gas: DEFAULT_CREATE_DAO_GAS,
         displayName: initialValues.displayName,
@@ -70,7 +70,7 @@ export function getFormInitialValues(
       );
 
       return {
-        details: `Lets transfer DAO funds`,
+        details: `To manage our assets with our new V3 DAO we will transfer them from our old V2 DAO. We're creating the proposals all at once but each proposal needs separate approval.`,
         externalUrl: '',
         gas: DEFAULT_CREATE_DAO_GAS,
         daoTokens,

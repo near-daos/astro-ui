@@ -196,8 +196,7 @@ export const CloneDaoWarning: FC<Props> = ({
           <WarningRenderer
             onDismiss={onDismiss}
             variant="progress"
-            title="Transfer DAO funds proposals are active. View proposals and
-                  vote to make a decision"
+            title="Transfer assets still requires votes"
             daoId={dao.id}
           >
             <div className={cn(styles.text, styles.list)}>
@@ -224,7 +223,7 @@ export const CloneDaoWarning: FC<Props> = ({
             onDismiss={onDismiss}
             className={className}
             variant="info"
-            title="Let's migrate your DAO"
+            title="Migrate your DAO from V2 to V3"
             daoId={dao.id}
             control={
               <Button
@@ -235,7 +234,7 @@ export const CloneDaoWarning: FC<Props> = ({
                   onCreateProposal(
                     ProposalVariant.ProposeCreateDao,
                     {
-                      displayName: `${dao.displayName}-v3`,
+                      displayName: `${dao.displayName}-plus`,
                     },
                     onCreate
                   )
@@ -245,7 +244,10 @@ export const CloneDaoWarning: FC<Props> = ({
               </Button>
             }
           >
-            <div className={styles.text}>[PLACEHOLDER] - description!</div>
+            <div className={styles.text}>
+              Be ready for future fixes and upgrades by migrating your
+              configuration and assets to V3.
+            </div>
           </WarningRenderer>
         </AnimatedContent>
       );
@@ -258,8 +260,7 @@ export const CloneDaoWarning: FC<Props> = ({
             onDismiss={onDismiss}
             className={className}
             variant="progress"
-            title="DAO is the process of migration. View proposal and vote to
-                  make a decision"
+            title="DAO migration to V3 still requires votes"
             daoId={dao.id}
             control={
               <Button
@@ -272,7 +273,10 @@ export const CloneDaoWarning: FC<Props> = ({
               </Button>
             }
           >
-            <div className={styles.text}>[PLACEHOLDER] - description!.</div>
+            <div className={styles.text}>
+              Complete the migration by gathering votes from your council
+              members.
+            </div>
           </WarningRenderer>
         </AnimatedContent>
       );
@@ -285,7 +289,7 @@ export const CloneDaoWarning: FC<Props> = ({
             onDismiss={onDismiss}
             className={className}
             variant="success"
-            title="Proposal migrate DAO was successfully approved"
+            title="Your new DAO has been created, config and assets have been migrated to V3"
             daoId={dao.id}
             control={
               <Button
@@ -309,13 +313,13 @@ export const CloneDaoWarning: FC<Props> = ({
                   );
                 }}
               >
-                Transfer funds
+                Transfer Assets
               </Button>
             }
           >
             <div className={styles.text}>
-              [PLACEHOLDER] - description! Now you can create proposals to
-              transfer your DAO&apos;s funds
+              The next step is to transfer your assets from this DAO to your V3
+              DAO.
             </div>
           </WarningRenderer>
         </AnimatedContent>
@@ -329,7 +333,7 @@ export const CloneDaoWarning: FC<Props> = ({
             onDismiss={onDismiss}
             className={className}
             variant="fail"
-            title="Proposal migrate DAO was rejected"
+            title="Your DAO migration proposal was rejected"
             daoId={dao.id}
             control={
               <>
@@ -353,7 +357,8 @@ export const CloneDaoWarning: FC<Props> = ({
             }
           >
             <div className={styles.text}>
-              [PLACEHOLDER] - description! Would you like to try again?
+              Continue using your V2 DAO or restart the V3 migration process
+              after discussing with your council members.
             </div>
           </WarningRenderer>
         </AnimatedContent>
