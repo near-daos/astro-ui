@@ -11,6 +11,7 @@ import { Button } from 'components/button/Button';
 
 import { EditGroup } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/components/ManageGroups/components/EditGroup';
 
+import { formatPolicyRatio } from 'features/vote-policy/helpers';
 import styles from './ManageGroups.module.scss';
 
 type Props = {
@@ -44,14 +45,19 @@ export const ManageGroups: React.FC<Props> = ({
         ...group,
         hasChanges: false,
         isCreated: false,
-        votePolicy: group.votePolicy?.ChangePolicy || {
-          ...dao.policy.defaultVotePolicy,
-          quorum: (
-            (dao.policy.defaultVotePolicy.ratio[0] /
-              dao.policy.defaultVotePolicy.ratio[1]) *
-            100
-          ).toString(),
-        },
+        votePolicy: group.votePolicy?.ChangePolicy
+          ? {
+              ...group.votePolicy?.ChangePolicy,
+              quorum: formatPolicyRatio(
+                group.votePolicy?.ChangePolicy
+              ).toString(),
+            }
+          : {
+              ...dao.policy.defaultVotePolicy,
+              quorum: formatPolicyRatio(
+                dao.policy.defaultVotePolicy
+              ).toString(),
+            },
       }))
     );
   }, [dao.groups, dao.policy.defaultVotePolicy]);
@@ -93,14 +99,19 @@ export const ManageGroups: React.FC<Props> = ({
                 ...oldGroup,
                 hasChanges: false,
                 isCreated: group.isCreated,
-                votePolicy: oldGroup.votePolicy?.ChangePolicy || {
-                  ...dao.policy.defaultVotePolicy,
-                  quorum: (
-                    (dao.policy.defaultVotePolicy.ratio[0] /
-                      dao.policy.defaultVotePolicy.ratio[1]) *
-                    100
-                  ).toString(),
-                },
+                votePolicy: oldGroup.votePolicy?.ChangePolicy
+                  ? {
+                      ...oldGroup.votePolicy?.ChangePolicy,
+                      quorum: formatPolicyRatio(
+                        oldGroup.votePolicy?.ChangePolicy
+                      ).toString(),
+                    }
+                  : {
+                      ...dao.policy.defaultVotePolicy,
+                      quorum: formatPolicyRatio(
+                        dao.policy.defaultVotePolicy
+                      ).toString(),
+                    },
               };
             }
 
@@ -116,17 +127,11 @@ export const ManageGroups: React.FC<Props> = ({
   };
 
   const handleCreateNewGroup = () => {
-    if (groups.find(group => group.slug === 'new_group')) {
-      setActiveGroupSlug('new_group');
-
-      return;
-    }
-
     const newGroup = {
       members: [],
       name: '',
       permissions: [],
-      slug: 'new_group',
+      slug: `new_group_${Date.now()}`,
       votePolicy: {
         kind: 'Ratio',
         quorum: '50',

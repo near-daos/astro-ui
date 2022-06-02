@@ -1,9 +1,6 @@
-import {
-  getThreshold,
-  VotingPolicyPageInitialData,
-} from 'features/vote-policy/helpers';
+import { VotingPolicyPageInitialData } from 'features/vote-policy/helpers';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
-import { dataRoleToContractRole } from 'features/groups/helpers';
+import { dataRoleToContractRole, getThreshold } from 'features/groups/helpers';
 import { DAO } from 'types/dao';
 import { CreateProposalParams, ProposalType } from 'types/proposal';
 import { SelectorRow } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';

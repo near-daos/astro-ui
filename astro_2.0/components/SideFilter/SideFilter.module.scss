@@ -47,6 +47,7 @@
     }
 
     .categoriesListItem {
+      display: inline;
       font-family: var(--font-family-primary);
       font-size: 16px;
       font-style: normal;
@@ -54,6 +55,7 @@
       line-height: 32px;
       padding: 0 14px;
       position: relative;
+      text-align: center;
 
       &::before {
         background-color: var(--color-passive-gray);

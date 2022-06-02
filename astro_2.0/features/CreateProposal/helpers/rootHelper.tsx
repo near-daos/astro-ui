@@ -139,11 +139,11 @@ export function getProposalTypesOptions(
         !allowedProposalsToCreate[ProposalType.ChangePolicy] ||
         !isCanCreatePolicyProposals,
       options: [
-        {
+        /*  {
           label: 'Propose to Change Voting Policy',
           value: ProposalVariant.ProposeChangeVotingPolicy,
           group: 'Change Policy',
-        },
+        }, */
         {
           label: 'Propose to Change Bonds and Deadlines',
           value: ProposalVariant.ProposeChangeBonds,
