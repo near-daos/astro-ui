@@ -1,0 +1,12 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  margin-top: 22px;
+}
+
+.header {
+  @extend %title4;
+  margin-bottom: 12px;
+}

@@ -1,0 +1,42 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.author {
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+
+  .avatar {
+    background-color: var(--color-neutral-30);
+    border-radius: 50%;
+    height: 32px;
+    margin-right: 12px;
+    overflow: hidden;
+    width: 32px;
+  }
+
+  .primaryLabel {
+    @extend %title4;
+  }
+}
+
+.datetime {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+}
+
+.body {
+  @extend %body2;
+  margin: 0 0 12px;
+}
