@@ -18,11 +18,13 @@ on:
   workflow_call:
     secrets:
       KUBE_CONFIG_DATA:
-         required: true
+        required: true
       AWS_ACCESS_KEY_ID:
-         required: true
+        required: true
       AWS_SECRET_ACCESS_KEY:
-         required: true
+        required: true
+      TEST_REPO_TOKEN:
+        required: true
     inputs:
       env:
         description: Environment to run on (as described in [test docs](https://github.com/near-daos/astro-test-framework#environments)). Valid choices are dev, testnet, prd.
@@ -54,6 +56,7 @@ jobs:
       with:
         repository: near-daos/astro-test-framework
         ref: main
+        token: ${{ secrets.TEST_REPO_TOKEN }}
 
     - name: Set Environment
       id: set_environment
