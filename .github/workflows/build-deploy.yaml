@@ -90,6 +90,7 @@ jobs:
 
 
   run-autotests:
+    continue-on-error: true
     name: Run Autotests
     needs:
     - build-deploy
