@@ -109,7 +109,7 @@ export const DaoAssetsForm: VFC = () => {
         <form className={styles.root}>
           <div className={styles.header}>
             <h2>{t('createDAO.daoAssets.createDaoAssets')}</h2>
-            <StepCounter total={7} current={7} />
+            <StepCounter total={8} current={8} />
           </div>
           <p className={styles.description}>
             {t('createDAO.daoAssets.createDaoAssetsDescription')}

@@ -26,6 +26,36 @@
   @extend %body2;
 }
 
+.row {
+  align-items: flex-start;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  width: 100%;
+
+  @include max-large-x-desktop {
+    align-items: flex-start;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+  }
+}
+
+.column {
+  width: 67%;
+
+  @include max-large-x-desktop {
+    width: 100%;
+  }
+}
+
+.submit {
+  margin-top: auto;
+
+  @include max-large-x-desktop {
+    margin-top: 32px;
+  }
+}
+
 .links {
   display: flex;
   flex-direction: column;
@@ -47,10 +77,48 @@
   }
 }
 
+.linkUser {
+  @extend %body1;
+  border: 1.5px dashed var(--color-neutral-60);
+  border-radius: 4px;
+  color: var(--color-neutral-60);
+  padding: 12px;
+  width: 50%;
+}
+
+.linkGroup {
+  align-items: center;
+  border: 1.5px solid var(--color-neutral-60);
+  border-radius: 4px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  margin: 0 8px;
+  padding: 12px;
+  width: calc(100% - 50% - 16px - 48px);
+
+  span {
+    @extend %body1;
+    color: var(--color-neutral-60);
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  svg {
+    color: var(--color-primary-50);
+    height: 20px;
+    margin-left: 10px;
+    min-height: 20px;
+    min-width: 20px;
+    width: 20px;
+  }
+}
+
 .socialText {
   @extend %body1;
   align-items: center;
-  border: 1.5px dashed var(--color-neutral-60);
   border-radius: 4px;
   color: var(--color-neutral-60);
   display: flex;

@@ -1,0 +1,145 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.upgradeDaoButton {
+  align-items: center;
+  display: flex;
+  font-size: 13px;
+  justify-content: center;
+  margin-left: auto;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.upgradeIcon {
+  margin-right: 4px;
+  width: 24px;
+}
+
+.title {
+  @extend %title3;
+  margin-bottom: 4px;
+}
+
+.text {
+  @extend %caption1;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.linkProposal {
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.close {
+  color: var(--color-error-70);
+
+  &:hover {
+    opacity: 0.8;
+    text-shadow: 0 0 8px var(--color-error-70);
+  }
+}
+
+.link {
+  @extend %subtitle4;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  margin-top: 24px;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.linkIcon {
+  margin-right: 6px;
+}
+
+.info {
+  margin: 24px 0;
+
+  .title {
+    @extend %title4;
+  }
+
+  .text {
+    @extend %body2;
+    align-items: center;
+    //display: flex;
+  }
+
+  .text > span {
+    margin-right: 4px;
+  }
+
+  .copy {
+    display: inline;
+  }
+}
+
+.resetFlowBtn {
+  background: transparent;
+  border: 0;
+  height: 24px;
+  position: absolute;
+  transform: translate(-24px, -168px);
+  width: 24px;
+
+  @include tablet-landscape {
+    transform: translate(0, -108px);
+  }
+}
+
+.infoRoot {
+  background-color: var(--color-primary-10);
+}
+
+.infoStatus {
+  background-color: var(--color-primary-20);
+}
+
+.infoIcon {
+  color: var(--color-primary-50);
+}
+
+.progressRoot {
+  background-color: var(--color-pastel-turqoise);
+}
+
+.progressStatus {
+  background-color: var(--color-info);
+}
+
+.progressIcon {
+  color: var(--color-primary-70);
+}
+
+.successRoot {
+  background-color: var(--color-success-5);
+}
+
+.successStatus {
+  background-color: var(--color-success-20);
+}
+
+.successIcon {
+  color: var(--color-success-70);
+}
+
+.failRoot {
+  background-color: var(--color-error-10);
+}
+
+.failStatus {
+  background-color: var(--color-error-20);
+}
+
+.failIcon {
+  color: var(--color-error-70);
+}

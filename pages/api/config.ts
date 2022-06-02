@@ -7,6 +7,7 @@ export default function handler(
   res: NextApiResponse<Config>
 ): void {
   const config: Config = {
+    TOKEN_FACTORY_CONTRACT_NAME: process.env.TOKEN_FACTORY_CONTRACT_NAME,
     AWS_BUCKET: process.env.AWS_BUCKET,
     AWS_REGION: process.env.AWS_REGION,
     GOOGLE_ANALYTICS_KEY: process.env.GOOGLE_ANALYTICS_KEY,

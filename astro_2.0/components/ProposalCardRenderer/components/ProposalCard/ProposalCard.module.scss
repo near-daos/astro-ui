@@ -15,7 +15,8 @@
     'description'
     'content'
     'group'
-    'voteControl';
+    'voteControl'
+    'draftFooter';
   grid-template-columns: 1fr;
   padding: 22px 20px;
   position: relative;
@@ -28,7 +29,8 @@
       'proposer proposer .'
       'description description description'
       'group group group'
-      'content content voteControl';
+      'content content voteControl'
+      'draftFooter draftFooter draftFooter';
     grid-template-columns: 1fr 1fr 1fr;
     padding: 22px 30px;
   }
@@ -114,6 +116,8 @@
 
 .proposalContentCell {
   grid-area: content;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .proposalTypeAndLink {
@@ -151,6 +155,8 @@
 
 .contentCell {
   grid-area: content;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 
 .proposalGroupCell {
@@ -238,4 +244,36 @@
   .proposalWalletLink {
     display: flex;
   }
+}
+
+.draftContent {
+  grid-area: description;
+}
+
+.draftTitle {
+  color: var(--color-neutral-90);
+  font-family: var(--font-family-primary);
+  font-size: 1.375em;
+  font-weight: 700;
+  line-height: 2em;
+  margin-bottom: 12px;
+}
+
+.draftHashTags {
+  margin-bottom: 12px;
+}
+
+.tag {
+  @extend %subtitle5;
+  margin-right: 10px;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.draftFooter {
+  align-items: center;
+  display: flex;
+  grid-area: draftFooter;
+  justify-content: space-between;
 }

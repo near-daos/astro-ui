@@ -25,12 +25,19 @@ export enum CreateGovernanceTokenSteps {
 
 export type ProgressStatus = {
   step: CreateGovernanceTokenSteps;
-  proposalId?: string;
+  proposalId?: string | null;
   flow: CreateGovernanceTokenFlow;
+  selectedToken?: string;
 };
 
 export type Settings = {
   daoUpgrade?: UpgradeStatus;
+  cloneState?: {
+    proposalId?: number | null;
+    isFlowCompleted: boolean;
+    target?: string;
+    transferDone?: boolean;
+  };
   createGovernanceToken?: ProgressStatus;
   features: Record<string, boolean>;
 };

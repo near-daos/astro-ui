@@ -37,6 +37,10 @@ const options = [
     value: 'links',
   },
   {
+    label: 'Add groups',
+    value: 'groups',
+  },
+  {
     label: 'Add members',
     value: 'members',
   },
@@ -91,7 +95,7 @@ export const StepWrapper: FC = ({ children }) => {
   useMount(() => {
     updateQuery('step', query.step);
 
-    if (state.members.accounts[0] !== accountId) {
+    if (state.members.accounts[0]?.name !== accountId) {
       handleReset();
     }
   });

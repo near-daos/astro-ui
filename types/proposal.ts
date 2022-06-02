@@ -66,6 +66,8 @@ export enum ProposalVariant {
   ProposeUpgradeSelf = 'ProposeUpgradeSelf',
   ProposeRemoveUpgradeCode = 'ProposeRemoveUpgradeCode',
   ProposeUpdateGroup = 'ProposeUpdateGroup',
+  ProposeCreateDao = 'ProposeCreateDao',
+  ProposeTransferFunds = 'ProposeTransferFunds',
 }
 
 export type VoteAction = 'VoteApprove' | 'VoteRemove' | 'VoteReject';
@@ -211,6 +213,7 @@ export interface CreateProposalParams {
     | FunctionCall;
   bond: string;
   gas?: number;
+  variant?: ProposalVariant;
 }
 
 interface AddBounty {

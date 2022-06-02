@@ -11,6 +11,7 @@ import { Button } from 'components/button/Button';
 
 import { EditGroup } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/components/ManageGroups/components/EditGroup';
 
+import { formatPolicyRatio } from 'features/vote-policy/helpers';
 import styles from './ManageGroups.module.scss';
 
 type Props = {
@@ -24,6 +25,7 @@ type Props = {
 
 type TLocalGroup = Omit<TGroup, 'votePolicy'> & {
   hasChanges: boolean;
+  isCreated: boolean;
   votePolicy: DaoVotePolicy;
 };
 
@@ -33,15 +35,29 @@ export const ManageGroups: React.FC<Props> = ({
   disableNewProposal,
 }) => {
   const [groups, setGroups] = useState<TLocalGroup[]>([]);
-  const [activeGroupSlug, setActiveGroupSlug] = useState(dao.groups[0].slug);
+  const [activeGroupSlug, setActiveGroupSlug] = useState<string>(
+    dao.groups[0].slug
+  );
 
   useEffect(() => {
     setGroups(
       dao.groups.map(group => ({
         ...group,
         hasChanges: false,
-        votePolicy:
-          group.votePolicy?.ChangePolicy || dao.policy.defaultVotePolicy,
+        isCreated: false,
+        votePolicy: group.votePolicy?.ChangePolicy
+          ? {
+              ...group.votePolicy?.ChangePolicy,
+              quorum: formatPolicyRatio(
+                group.votePolicy?.ChangePolicy
+              ).toString(),
+            }
+          : {
+              ...dao.policy.defaultVotePolicy,
+              quorum: formatPolicyRatio(
+                dao.policy.defaultVotePolicy
+              ).toString(),
+            },
       }))
     );
   }, [dao.groups, dao.policy.defaultVotePolicy]);
@@ -82,9 +98,20 @@ export const ManageGroups: React.FC<Props> = ({
               return {
                 ...oldGroup,
                 hasChanges: false,
-                votePolicy:
-                  oldGroup.votePolicy?.ChangePolicy ||
-                  dao.policy.defaultVotePolicy,
+                isCreated: group.isCreated,
+                votePolicy: oldGroup.votePolicy?.ChangePolicy
+                  ? {
+                      ...oldGroup.votePolicy?.ChangePolicy,
+                      quorum: formatPolicyRatio(
+                        oldGroup.votePolicy?.ChangePolicy
+                      ).toString(),
+                    }
+                  : {
+                      ...dao.policy.defaultVotePolicy,
+                      quorum: formatPolicyRatio(
+                        dao.policy.defaultVotePolicy
+                      ).toString(),
+                    },
               };
             }
 
@@ -100,25 +127,20 @@ export const ManageGroups: React.FC<Props> = ({
   };
 
   const handleCreateNewGroup = () => {
-    if (groups.find(group => group.slug === 'new_group')) {
-      setActiveGroupSlug('new_group');
-
-      return;
-    }
-
     const newGroup = {
       members: [],
-      name: 'New Group',
+      name: '',
       permissions: [],
-      slug: 'new_group',
+      slug: `new_group_${Date.now()}`,
       votePolicy: {
         kind: 'Ratio',
-        quorum: '1',
+        quorum: '50',
         ratio: [1, 2],
         weightKind: 'RoleWeight',
         weight: '',
       },
       hasChanges: true,
+      isCreated: true,
     };
 
     setActiveGroupSlug(newGroup.slug);
@@ -127,7 +149,15 @@ export const ManageGroups: React.FC<Props> = ({
   };
 
   const handleOnSubmit = () => {
-    handleCreateProposal(ProposalVariant.ProposeUpdateGroup, { groups });
+    handleCreateProposal(ProposalVariant.ProposeUpdateGroup, {
+      groups: groups.map(group => ({
+        ...group,
+        votePolicy: {
+          ...group.votePolicy,
+          ratio: [group.votePolicy.quorum, 100],
+        },
+      })),
+    });
   };
 
   const activeGroup = groups.find(group => group.slug === activeGroupSlug);
@@ -136,6 +166,13 @@ export const ManageGroups: React.FC<Props> = ({
     (count, group) => (group.hasChanges ? count + 1 : count),
     0
   );
+
+  const isGroupsValid = () =>
+    groups.reduce(
+      (isValid, group) =>
+        isValid || group.members.length === 0 || group.name.trim() === '',
+      false
+    );
 
   return (
     <>
@@ -180,9 +217,10 @@ export const ManageGroups: React.FC<Props> = ({
       <Button
         variant="primary"
         className={cn(styles.submit, {
-          [styles.submitVisible]: modifiedGroups > 0,
+          [styles.submitVisible]:
+            modifiedGroups > 0 || dao.groups.length - groups.length > 0,
         })}
-        disabled={disableNewProposal}
+        disabled={disableNewProposal || isGroupsValid()}
         onClick={handleOnSubmit}
       >
         {modifiedGroups > 1

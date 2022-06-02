@@ -1,0 +1,31 @@
+@import '../../DaoGroupsForm.module';
+
+.root {
+  margin-bottom: 12px;
+}
+
+.socialIcon {
+  color: var(--color-primary-60);
+  flex-shrink: 0;
+  margin-right: 16px;
+}
+
+.deleteBtn {
+  color: var(--color-error-70);
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+.validationWrapper {
+  max-width: calc(100% - 40px);
+  width: 100%;
+}
+
+.disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.error.error {
+  border-color: var(--color-error-50);
+}

@@ -150,6 +150,29 @@ export function getChangePolicyProposal(
   };
 }
 
+export function getThreshold(value: number): [number, number] {
+  const fraction = value / 100;
+  const gcd = (a: number, b: number): number => {
+    if (b < 0.0000001) {
+      return a;
+    } // Since there is a limited precision we need to limit the value.
+
+    return gcd(b, Math.floor(a % b)); // Discard any fractions due to limitations in precision.
+  };
+
+  const len = fraction.toString().length - 2;
+
+  let denominator = 10 ** len;
+  let numerator = fraction * denominator;
+
+  const divisor = gcd(numerator, denominator); // Should be 5
+
+  numerator /= divisor; // Should be 687
+  denominator /= divisor; // Should be 2000
+
+  return [numerator, denominator];
+}
+
 export function generateVotePolicyForEachProposalType(
   quorum: string
 ): Record<string, DaoVotePolicy> {
@@ -157,8 +180,8 @@ export function generateVotePolicyForEachProposalType(
 
   Object.keys(ProposalType).forEach(type => {
     policy[type] = keysToSnakeCase({
-      quorum,
-      threshold: [1, 2],
+      quorum: '0',
+      threshold: getThreshold(parseInt(quorum, 10)),
       weightKind: 'RoleWeight',
     });
   });

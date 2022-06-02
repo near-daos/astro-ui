@@ -1,0 +1,75 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  //display: flex;
+  //flex: 1;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  margin-bottom: 24px;
+  transition: box-shadow 0.2s ease-out;
+
+  &:hover {
+    box-shadow: 3px 2px 24px var(--color-black-opacity-14);
+  }
+}
+
+.card {
+  grid-template-columns: 32px 1fr;
+}
+
+.letterhead {
+  width: 32px;
+}
+
+.content {
+  background-color: var(--color-white);
+  //background: red;
+  border-radius: 0 8px 8px 0;
+  flex: 1;
+  padding: 16px;
+  width: 100%;
+}
+
+.header {
+  align-items: center;
+  display: grid;
+  grid-column-gap: 12px;
+  grid-template-columns: 1fr 60px 60px 90px;
+  margin-bottom: 4px;
+}
+
+.title {
+  @extend %title3;
+  @include ellipse-text;
+}
+
+.views,
+.replies,
+.updated {
+  @extend %caption1;
+  @include ellipse-text;
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.updated {
+  justify-content: flex-end;
+}
+
+.icon {
+  color: var(--color-neutral-50);
+  margin-right: 4px;
+  width: 18px;
+}
+
+.footer {
+  @include ellipse-text;
+  display: flex;
+}
+
+.tag {
+  @extend %subtitle5;
+  margin-right: 8px;
+}

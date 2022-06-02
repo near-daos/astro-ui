@@ -35,7 +35,7 @@ export function useCheckDaoUpgrade(
     try {
       const account = nearService?.getAccount();
 
-      if (!appConfig || !account) {
+      if (!appConfig || !account || dao.daoVersion?.version[0] === 2) {
         return;
       }
 

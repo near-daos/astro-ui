@@ -8,7 +8,7 @@ export default function handler(
     url_format:
       'http://app.astrodao.com/dao/<dao_id>/proposals?action=create_proposal&variant=<selected_proposal_variant>&params=<initial_params_object>',
     example:
-      'https://dev.app.astrodao.com/dao/aviarium.sputnikv2.testnet/proposals?action=create_proposal&variant=ProposeCustomFunctionCall&params={"details":"Proposal description here", "methodName": "create", "smartContractAddress": "sputnikv2.testnet", "json":{ "key": "some value" }}',
+      'https://dev.app.astrodao.com/dao/aviarium.sputnikv2.testnet/proposals?action=create_proposal&variant=ProposeCustomFunctionCall&params={"details":"Proposal description here", "methodName": "create", "smartContractAddress": "sputnikv2.testnet", "json":{ "key": "{\\"somevalue\\":1}" }}',
     action: 'create_proposal',
     variant: {
       ProposeChangeDaoLegalInfo: {

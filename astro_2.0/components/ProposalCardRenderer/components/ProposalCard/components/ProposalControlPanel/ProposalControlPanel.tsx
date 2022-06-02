@@ -61,7 +61,8 @@ export const ProposalControlPanel: FC<ProposalControlPanelProps> = ({
   const readOnlyGas =
     variant === ProposalVariant.ProposeRemoveUpgradeCode ||
     variant === ProposalVariant.ProposeUpgradeSelf ||
-    variant === ProposalVariant.ProposeGetUpgradeCode;
+    variant === ProposalVariant.ProposeGetUpgradeCode ||
+    variant === ProposalVariant.ProposeCreateDao;
 
   return (
     <form

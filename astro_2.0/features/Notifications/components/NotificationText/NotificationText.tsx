@@ -65,7 +65,8 @@ export const NotificationText: FC<NotificationTextProps> = ({
     case NotifiedActionType.RemoveMemberFromRole:
     case NotifiedActionType.FunctionCall:
     case NotifiedActionType.ChangePolicy:
-    case NotifiedActionType.ChangeConfig: {
+    case NotifiedActionType.ChangeConfig:
+    case NotifiedActionType.CommentLike: {
       action = generateProposalNotificationText(
         accountId,
         proposerId,

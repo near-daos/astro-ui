@@ -1,0 +1,41 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  @extend %heading1;
+  margin-top: 12px;
+
+  @include tablet-portrait {
+    margin-bottom: 16px;
+  }
+}
+
+.tabBtn {
+  color: var(--color-neutral-50);
+  height: 40px;
+  min-width: unset;
+  padding: 0 12px;
+  width: unset;
+
+  &:hover {
+    color: var(--color-neutral-60);
+  }
+
+  &.active {
+    border-bottom: 2px solid var(--color-primary-50);
+    color: var(--color-neutral-80);
+  }
+}
+
+.sorting {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 120px;
+}

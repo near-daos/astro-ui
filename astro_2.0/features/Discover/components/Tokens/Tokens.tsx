@@ -72,7 +72,7 @@ export const Tokens: FC = () => {
     setLeaderboardData,
     chartData,
     setChartData,
-    resetData,
+    setActiveView,
     activeView,
   } = useDiscoveryState(items);
 
@@ -82,9 +82,9 @@ export const Tokens: FC = () => {
         return;
       }
 
-      resetData(id);
+      setActiveView(id);
     },
-    [resetData, isMounted]
+    [setActiveView, isMounted]
   );
 
   useEffect(() => {

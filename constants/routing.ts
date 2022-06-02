@@ -22,11 +22,11 @@ export const SINGLE_PROPOSAL_PAGE_URL = `${ALL_PROPOSALS_PAGE_URL}/[proposal]`;
 
 export const GROUPS_PAGE_URL = '/dao/[dao]/groups/[group]';
 
-export const TREASURY_PAGE_URL = '/dao/[dao]/treasury/tokens';
-export const GOVERNANCE_TOKEN_INFO_URL =
-  '/dao/[dao]/treasury/governance-token-info';
-export const CREATE_GOV_TOKEN_PAGE_URL =
-  '/dao/[dao]/treasury/create-governance-token';
+const TREASURY_URL = '/dao/[dao]/treasury';
+export const TREASURY_PAGE_URL = `${TREASURY_URL}/tokens`;
+export const GOVERNANCE_TOKEN_INFO_URL = `${TREASURY_URL}/governance-token-info`;
+export const CREATE_GOV_TOKEN_PAGE_URL = `${TREASURY_URL}/create-governance-token`;
+export const CREATE_GOV_TOKEN_UNDER_CONSTRUCTION = `${TREASURY_URL}/under-construction`;
 
 export const ALL_BOUNTIES_PAGE_URL = '/dao/[dao]/tasks/bounties/list';
 export const SINGLE_BOUNTY_PAGE_URL =
@@ -38,3 +38,6 @@ export const DAO_POLICY_PAGE_URL = `${DAO_SETTINGS_PAGE_URL}/policy`;
 export const DAO_VERSION_PAGE_URL = `${DAO_SETTINGS_PAGE_URL}/version`;
 export const DAO_CUSTOM_FC_TEMPLATES_PAGE_URL = `${DAO_SETTINGS_PAGE_URL}/custom-templates`;
 export const MY_ACCOUNT_PAGE_URL = '/my-account';
+
+export const DRAFTS_PAGE_URL = `${SINGLE_DAO_PAGE}/drafts`;
+export const DRAFT_PAGE_URL = `${SINGLE_DAO_PAGE}/drafts/[draft]`;

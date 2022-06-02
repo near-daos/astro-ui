@@ -240,6 +240,7 @@ describe('proposalObjectHelpers', () => {
       const result = getRemoveUpgradeCodeProposal(dao, data);
 
       expect(result).toEqual({
+        variant: 'ProposeRemoveUpgradeCode',
         daoId: 'legaldao.sputnikv2.testnet',
         description: 'details$$$$externalUrl',
         kind: 'FunctionCall',

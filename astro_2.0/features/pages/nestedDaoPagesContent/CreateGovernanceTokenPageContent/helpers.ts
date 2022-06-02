@@ -3,6 +3,7 @@ import {
   CreateGovernanceTokenSteps,
   ProgressStatus,
 } from 'types/settings';
+import { TFunction } from 'next-i18next';
 import { ProposalFeedItem, ProposalVariant } from 'types/proposal';
 
 type Step = {
@@ -12,38 +13,47 @@ type Step = {
   isHidden?: boolean;
 };
 
-const steps: Step[] = [
-  {
-    label: 'Create Token',
-    value: 'createToken',
-    isCurrent: false,
-  },
-  {
-    label: 'Contract Acceptance',
-    value: 'contractAcceptance',
-    isCurrent: false,
-  },
-  {
-    label: 'Token Distribution',
-    value: 'tokenDistribution',
-    isCurrent: false,
-  },
-  {
-    label: 'Change DAO Policy',
-    value: 'changeDaoPolicy',
-    isCurrent: false,
-  },
-];
+const T_BASE = 'createGovernanceTokenPage.createToken.progress';
+
+function getSteps(t: TFunction) {
+  const steps: Step[] = [
+    {
+      label: t(`${T_BASE}.createToken`),
+      value: 'createToken',
+      isCurrent: false,
+    },
+    {
+      label: t(`${T_BASE}.deployStakingContract`),
+      value: 'deployStakingContract',
+      isCurrent: false,
+    },
+    {
+      label: t(`${T_BASE}.acceptStakingContract`),
+      value: 'acceptStakingContract',
+      isCurrent: false,
+    },
+    {
+      label: t(`${T_BASE}.changeDaoPolicy`),
+      value: 'changeDaoPolicy',
+      isCurrent: false,
+    },
+  ];
+
+  return steps;
+}
 
 export function getCreateGovernanceTokenSteps(
   status: ProgressStatus,
-  proposal: ProposalFeedItem | null
+  proposal: ProposalFeedItem | null,
+  t: TFunction
 ): Step[] | null {
   if (!status) {
     return null;
   }
 
   const { step, flow } = status;
+
+  const steps = getSteps(t);
 
   return steps
     ?.map((currentStep, ind) => {
@@ -60,7 +70,7 @@ export function getCreateGovernanceTokenSteps(
       ) {
         stepContent = {
           ...stepContent,
-          label: 'Select Token',
+          label: t(`${T_BASE}.selectToken`),
         };
       }
 

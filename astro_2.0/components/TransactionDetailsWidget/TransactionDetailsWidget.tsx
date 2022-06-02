@@ -35,7 +35,10 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
   buttonLabel = 'Purpose',
   warning,
 }) => {
-  const { handleSubmit } = useFormContext();
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = useFormContext();
   const { t } = useTranslation();
 
   function renderWarning() {
@@ -98,6 +101,7 @@ export const TransactionDetailsWidget: React.FC<CreateProposalWidgetProps> = ({
             </InputWrapper>
           </div>
           <Button
+            disabled={Object.keys(errors).length > 0}
             type="submit"
             size="medium"
             variant="black"

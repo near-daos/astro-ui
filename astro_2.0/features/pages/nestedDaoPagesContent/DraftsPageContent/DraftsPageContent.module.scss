@@ -1,0 +1,93 @@
+@use 'styles/breakpoints';
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-template-areas:
+    'header'
+    'content';
+  grid-template-columns: 1fr;
+  row-gap: 24px;
+}
+
+.header {
+  grid-area: header;
+  margin-top: 24px;
+}
+
+.titleRow {
+  @extend %heading1;
+  grid-area: title;
+  margin-top: 12px;
+
+  @include tablet-portrait {
+    margin-bottom: 16px;
+  }
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 100%;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    flex-direction: column;
+    padding: 0;
+  }
+}
+
+.sideFilters {
+  margin-right: 24px;
+}
+
+/* stylelint-disable-next-line */
+.content :global(.infinite-scroll-component__outerdiv) {
+  flex-grow: 1;
+
+  @media screen and (max-width: #{breakpoints.$screen-sm}px) {
+    flex-grow: 1;
+    max-width: 100%;
+  }
+}
+
+.listWrapper {
+  flex-grow: 1;
+  max-width: 100%;
+
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    margin: 0;
+  }
+}
+
+.loader {
+  width: 100%;
+}
+
+.loading {
+  margin: 32px 0;
+  text-align: center;
+}
+
+.itemRoot {
+  margin-bottom: 60px;
+}
+
+.proposalCardWrapper {
+  margin-bottom: 60px;
+
+  &:not(:first-of-type) {
+    margin-top: 32px;
+  }
+}
+
+.categories {
+  max-height: unset;
+}
+
+.categoriesListTitle {
+  @media screen and (max-width: #{breakpoints.$screen-lg}px) {
+    display: none;
+  }
+}

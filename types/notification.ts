@@ -9,6 +9,7 @@ export enum NotificationType {
   AddMember = 'AddMember',
   RemoveMember = 'RemoveMember',
   Governance = 'Governance',
+  CommentLike = 'CommentLike',
 }
 
 export enum NotificationStatus {
@@ -19,6 +20,7 @@ export enum NotificationStatus {
   VoteApprove = 'VoteApprove',
   VoteReject = 'VoteReject',
   VoteRemove = 'VoteRemove',
+  CommentLike = 'CommentLike',
 }
 
 export enum NotificationsGroupStatus {
@@ -88,6 +90,8 @@ export enum NotifiedActionType {
   AddBounty = 'AddBounty',
   BountyDone = 'BountyDone',
   Vote = 'Vote',
+
+  CommentLike = 'CommentLike',
 
   // TransferProposalCreation = 'TransferProposalCreation',
   // BountyProposalCreation = 'BountyProposalCreation',

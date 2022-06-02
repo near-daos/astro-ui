@@ -48,6 +48,7 @@ import {
   ProposalTemplate,
   ProposalTemplateInput,
 } from 'types/proposalTemplate';
+import { DraftProposal } from 'types/draftProposal';
 
 class SputnikHttpServiceClass {
   private readonly httpService: HttpService = httpService;
@@ -377,29 +378,35 @@ class SputnikHttpServiceClass {
     daoId,
     offset = 0,
     limit = 50,
-  }: DaoParams): Promise<Proposal[]> {
+    filter,
+    accountId,
+  }: {
+    filter?: string;
+    accountId?: string;
+  } & DaoParams): Promise<PaginationResponse<ProposalFeedItem[]> | null> {
     const params = {
-      filter: `daoId||$eq||${daoId}`,
+      filter: filter || `daoId||$eq||${daoId}`,
       offset,
       limit,
+      accountId,
     };
 
     try {
-      const { data: proposals } = await this.httpService.get<Proposal[]>(
-        '/proposals',
-        {
-          responseMapper: {
-            name: API_MAPPERS.MAP_PROPOSAL_DTO_TO_PROPOSALS,
-          },
-          params: daoId ? params : omit(params, 'filter'),
-        }
-      );
+      const { data } = await this.httpService.get<
+        PaginationResponse<ProposalFeedItem[]>
+      >('/proposals', {
+        responseMapper: {
+          name:
+            API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+        },
+        params: daoId ? params : omit(params, 'filter'),
+      });
 
-      return proposals;
+      return data;
     } catch (error) {
       console.error(error);
 
-      return [];
+      return null;
     }
   }
 
@@ -1140,6 +1147,66 @@ class SputnikHttpServiceClass {
     );
 
     return response.data;
+  }
+
+  public async findTransferProposals(
+    dao: DAO,
+    target: string
+  ): Promise<PaginationResponse<ProposalFeedItem[]> | null> {
+    try {
+      const { data } = await this.httpService.get<
+        PaginationResponse<ProposalFeedItem[]>
+      >('/proposals', {
+        responseMapper: {
+          name:
+            API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+        },
+        queryRequest: {
+          name: API_QUERIES.FIND_TRANSFER_PROPOSALS,
+          params: {
+            daoId: dao.id,
+            targetDaoId: target,
+          },
+        },
+      });
+
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+  }
+
+  public async getDraftProposalsList(query: {
+    offset: number;
+    limit: number;
+    daoId: string;
+    category: string;
+    accountId: string;
+  }): Promise<PaginationResponse<DraftProposal[]> | null> {
+    try {
+      const { data } = await this.httpService.get<
+        PaginationResponse<DraftProposal[]>
+      >('/drafts', {
+        // responseMapper: {
+        //   name:
+        //     API_MAPPERS.MAP_PROPOSAL_FEED_ITEM_RESPONSE_TO_PROPOSAL_FEED_ITEM,
+        // },
+        queryRequest: {
+          name: API_QUERIES.GET_PROPOSALS_LIST,
+          params: {
+            query,
+          },
+        },
+      });
+
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
   }
 }
 

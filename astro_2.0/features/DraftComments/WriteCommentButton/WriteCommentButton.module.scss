@@ -1,0 +1,13 @@
+.writeCommentButton {
+  background: var(--color-white);
+  border: 1px solid var(--color-neutral-40);
+  border-radius: 4px;
+  color: var(--color-neutral-70);
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  padding: 12px;
+  width: 100%;
+}

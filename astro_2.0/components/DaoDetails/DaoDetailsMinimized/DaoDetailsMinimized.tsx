@@ -1,27 +1,23 @@
 import cn from 'classnames';
 import Link from 'next/link';
-import isEmpty from 'lodash/isEmpty';
 import { useMedia } from 'react-use';
 import includes from 'lodash/includes';
 import { useRouter } from 'next/router';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { DAO } from 'types/dao';
 
-import { Button } from 'components/button/Button';
-import { Icon } from 'components/Icon';
 import { ActionButton } from 'astro_2.0/components/ActionButton';
-import { Popup } from 'components/Popup';
 import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLogo';
+import { DaoAction } from 'astro_2.0/components/DaoDetails/DaoDetailsMinimized/components/DaoAction';
 
-import { useWalletContext } from 'context/WalletContext';
 import { UserPermissions } from 'types/context';
 import { shortenString } from 'utils/format';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ExplorerLink } from 'components/ExplorerLink';
 
-import { WalletType } from 'types/config';
 import styles from './DaoDetailsMinimized.module.scss';
 
 export interface DaoDetailsMinimizedProps {
@@ -38,17 +34,15 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   onCreateProposalClick,
   userPermissions,
 }) => {
-  const [ref, setRef] = useState<HTMLElement | null>(null);
-  const isMobile = useMedia('(max-width: 768px)');
   const isXsMobile = useMedia('(max-width: 600px)');
-  const tooltipPlacement = isMobile ? 'bottom' : 'top-end';
-
+  const flags = useFlags();
   const router = useRouter();
   const { t } = useTranslation();
   const { asPath } = router;
   const currentPath = asPath.split('?')[0];
 
   const url = {
+    drafts: `/dao/${dao.id}/drafts`,
     proposals: `/dao/${dao.id}/proposals`,
     funds: `/dao/${dao.id}/treasury/tokens`,
     members: `/dao/${dao.id}/groups/all`,
@@ -72,37 +66,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
       [styles.noActiveLink]: !activeLinkPresent,
     });
   };
-
-  const { accountId, login } = useWalletContext();
-  const action = (
-    <>
-      <div className={styles.addProposalWrapper} ref={setRef}>
-        <Button
-          data-testid="createProposal"
-          size="block"
-          onClick={() => {
-            if (isEmpty(accountId)) {
-              login(WalletType.NEAR);
-            } else if (onCreateProposalClick) {
-              onCreateProposalClick();
-            }
-          }}
-          className={styles.addProposalButton}
-          variant="tertiary"
-        >
-          <Icon width={32} name="buttonAdd" className={styles.createIcon} />
-        </Button>
-      </div>
-      <Popup
-        offset={[0, 10]}
-        anchor={ref}
-        placement={tooltipPlacement}
-        className={styles.createPopup}
-      >
-        {t('daoDetailsMinimized.createProposal')}
-      </Popup>
-    </>
-  );
 
   return (
     <div className={cn(styles.root, className)}>
@@ -150,6 +113,15 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
         </Link>
 
         <section className={styles.controls}>
+          {flags.draftProposals && (
+            <ActionButton
+              iconName="sheet"
+              onClick={() => handleChapterClick(url.drafts)}
+              className={generateChapterStyle('drafts')}
+            >
+              {t('daoDetailsMinimized.drafts')}
+            </ActionButton>
+          )}
           <ActionButton
             iconName="pencil"
             onClick={() => handleChapterClick(url.proposals)}
@@ -202,7 +174,12 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
         </section>
 
         {onCreateProposalClick && userPermissions.isCanCreateProposals && (
-          <section className={styles.proposals}>{action}</section>
+          <section className={styles.proposals}>
+            <DaoAction
+              onCreateProposalClick={onCreateProposalClick}
+              daoId={dao.id}
+            />
+          </section>
         )}
       </div>
     </div>

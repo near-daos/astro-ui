@@ -22,23 +22,15 @@ export function getInitialCreationPermissions(dao: {
     roles: {
       kind: 'Everyone' | 'Group';
       name: string;
+      slug?: string;
       permissions: string[];
     }[];
   };
 }): SelectorRow[] {
-  const hasAll = dao.policy.roles.find(
-    role => role.kind === 'Everyone' && role.name === 'all'
-  );
+  // TODO: check is there are only one role with kind Everyone
+  // role => role.kind === 'Everyone' && role.slug === 'all'
 
-  const roles = hasAll
-    ? dao.policy.roles
-    : [
-        {
-          name: 'all',
-          permissions: [] as string[],
-        },
-        ...dao.policy.roles,
-      ];
+  const { roles } = dao.policy;
 
   return roles.map(group => {
     const allowAll =

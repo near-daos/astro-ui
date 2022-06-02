@@ -65,7 +65,7 @@ export const DaoLegalStatus: VFC = () => {
             {t('createDAO.daoLegalStatus.daoKYC')}{' '}
             <span className={styles.optional}>({t('createDAO.optional')})</span>
           </h2>
-          <StepCounter total={7} current={2} />
+          <StepCounter total={8} current={2} />
         </div>
         <p className={styles.description}>
           {t('createDAO.daoLegalStatus.daoKYCDescription')}

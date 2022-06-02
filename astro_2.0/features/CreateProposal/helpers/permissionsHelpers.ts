@@ -1,9 +1,6 @@
-import {
-  getThreshold,
-  VotingPolicyPageInitialData,
-} from 'features/vote-policy/helpers';
+import { VotingPolicyPageInitialData } from 'features/vote-policy/helpers';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
-import { dataRoleToContractRole } from 'features/groups/helpers';
+import { dataRoleToContractRole, getThreshold } from 'features/groups/helpers';
 import { DAO } from 'types/dao';
 import { CreateProposalParams, ProposalType } from 'types/proposal';
 import { SelectorRow } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/helpers';
@@ -220,7 +217,9 @@ export function getNewPermissionsProposalObject(
     : [permissionsFields];
 
   const hasAll = dao.policy.roles.find(
-    role => role.kind === 'Everyone' && role.name === 'all'
+    // TODO: check is there are only one role with kind Everyone
+    // role => role.kind === 'Everyone' && role.slug === 'all'
+    role => role.kind === 'Everyone'
   );
 
   let roles = hasAll

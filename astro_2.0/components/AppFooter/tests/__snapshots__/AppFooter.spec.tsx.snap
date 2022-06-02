@@ -135,7 +135,7 @@ exports[`App Footer Should render AppFooter component 1`] = `
         >
           <a
             class="devLink"
-            href=""
+            href="https://github.com/near-daos/astro-ui/releases/latest"
             rel="noreferrer noopener"
             target="_blank"
           >

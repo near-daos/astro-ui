@@ -45,8 +45,11 @@ import {
   getChangeConfigProposal,
   getCreateTokenProposal,
   getCustomFunctionCallProposal,
+  getNewDaoProposal,
+  getDeployStakingContractProposal,
   getRemoveUpgradeCodeProposal,
   getSwapsOnRefProposal,
+  getTransferDaoFundsProposal,
   getTransferMintbaseNFTProposal,
   getTransferProposal,
   getUpgradeCodeProposal,
@@ -93,6 +96,16 @@ export async function getNewProposalObject(
   bountyId?: number
 ): Promise<CreateProposalParams | null> {
   switch (proposalType) {
+    case ProposalVariant.ProposeCreateDao: {
+      return getNewDaoProposal(dao, data as Record<string, string>);
+    }
+    case ProposalVariant.ProposeTransferFunds: {
+      return getTransferDaoFundsProposal(
+        dao,
+        data as Record<string, string>,
+        tokens
+      );
+    }
     case ProposalVariant.ProposeGetUpgradeCode: {
       return getUpgradeCodeProposal(dao, data as Record<string, string>);
     }
@@ -312,6 +325,12 @@ export async function getNewProposalObject(
     }
     case ProposalVariant.ProposeCustomFunctionCall: {
       switch (data.functionCallType) {
+        case FunctionCallType.RemoveUpgradeCode: {
+          return getRemoveUpgradeCodeProposal(
+            dao,
+            data as Record<string, string>
+          );
+        }
         case FunctionCallType.SwapsOnRef: {
           return getSwapsOnRefProposal(dao, data as SwapsOnRefInput);
         }
@@ -357,13 +376,7 @@ export async function getNewProposalObject(
       );
     }
     case ProposalVariant.ProposeContractAcceptance: {
-      // todo - add create function
-      return {
-        daoId: dao.id,
-        description: 'contract acceptance',
-        kind: 'Vote',
-        bond: dao.policy.proposalBond,
-      };
+      return getDeployStakingContractProposal(dao, data);
     }
     case ProposalVariant.ProposeChangeProposalVotingPermissions: {
       const initialData = getInitialData(dao);

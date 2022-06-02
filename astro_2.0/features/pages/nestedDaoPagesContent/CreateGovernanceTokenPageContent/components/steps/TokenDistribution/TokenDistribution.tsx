@@ -1,3 +1,5 @@
+// TODO verify component is used after "Create Token" flow is implemented
+
 import React, { FC } from 'react';
 import { DaoContext } from 'types/context';
 import { useTranslation } from 'next-i18next';

@@ -1,0 +1,37 @@
+@import 'styles/typography';
+
+.root {
+  max-width: 434px !important;
+}
+
+.title {
+  @extend %subtitle1;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  margin: 0 0 12px;
+  width: 80%;
+}
+
+.subtitle {
+  @extend %body1;
+  font-family: 'Inter';
+  font-style: normal;
+  margin: 0 0 34px;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.actionBtn {
+  text-transform: none;
+}
+
+.cancelBtn {
+  text-transform: none;
+}

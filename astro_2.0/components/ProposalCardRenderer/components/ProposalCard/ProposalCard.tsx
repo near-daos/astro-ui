@@ -18,6 +18,7 @@ import {
   ProposalVariant,
   VoteAction,
 } from 'types/proposal';
+import { DraftComment } from 'types/draftProposal';
 import { VoteDetail } from 'features/types';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { ProposalActions } from 'features/proposal/components/ProposalActions';
@@ -39,6 +40,11 @@ import {
 import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCountdown } from 'hooks/useCountdown';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
+import { DraftDescription } from 'astro_2.0/components/ProposalCardRenderer/components/DraftDescription';
+import { Badge } from 'components/Badge';
+import { DraftInfo } from 'astro_2.0/components/ProposalCardRenderer/components/DraftInfo';
+import { DraftManagement } from 'astro_2.0/components/ProposalCardRenderer/components/DraftManagement';
+
 import { ProposalControlPanel } from './components/ProposalControlPanel';
 
 // import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
@@ -78,14 +84,24 @@ export interface ProposalCardProps {
     canDelete: boolean;
     isCouncil: boolean;
   };
+  isDraft?: boolean;
+  title?: string;
+  hashtags?: string[];
+  bookmarks?: number;
+  comments?: DraftComment[];
 }
 
 function getTimestampLabel(
   timeLeft: string | null | undefined,
   status: ProposalStatus,
   updatedAt?: string | null,
-  votingEndDate?: string | null
+  votingEndDate?: string | null,
+  isDraft?: boolean
 ) {
+  if (isDraft) {
+    return `Created ${timeLeft}`;
+  }
+
   if (status === 'InProgress') {
     if (timeLeft) {
       return `${timeLeft} left`;
@@ -181,6 +197,11 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   toggleInfoPanel,
   commentsCount,
   optionalPostVoteAction,
+  isDraft,
+  title,
+  hashtags,
+  bookmarks,
+  comments,
 }) => {
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
@@ -279,7 +300,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       gas:
         variant === ProposalVariant.ProposeGetUpgradeCode ||
         variant === ProposalVariant.ProposeRemoveUpgradeCode ||
-        variant === ProposalVariant.ProposeUpgradeSelf
+        variant === ProposalVariant.ProposeUpgradeSelf ||
+        variant === ProposalVariant.ProposeCreateDao
           ? DEFAULT_UPGRADE_DAO_VOTE_GAS
           : DEFAULT_VOTE_GAS,
     },
@@ -347,6 +369,31 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   }
 
   function renderCardContent() {
+    if (isDraft) {
+      return (
+        <>
+          {renderProposer()}
+          <div className={styles.draftContent}>
+            <div className={styles.draftTitle}>{title}</div>
+            <div className={styles.draftHashTags}>
+              {hashtags?.map(tag => (
+                <Badge
+                  key={tag}
+                  size="small"
+                  className={styles.tag}
+                  variant="lightgray"
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+            <DraftDescription description={description} />
+          </div>
+          <div className={styles.contentCell}>{content}</div>
+        </>
+      );
+    }
+
     switch (variant) {
       case ProposalVariant.ProposeChangeProposalVotingPermissions:
       case ProposalVariant.ProposeChangeProposalCreationPermissions: {
@@ -394,6 +441,98 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     }
   }
 
+  const getInfoBlockWidgetLabel = () => {
+    return isDraft ? 'Draft' : `${t(`proposalCard.proposalType`)}${type}`;
+  };
+
+  const renderBottomContent = () => {
+    if (isDraft) {
+      return (
+        <div className={styles.draftFooter}>
+          <DraftManagement
+            onConvertToProposal={() => undefined}
+            onEditDraft={() => undefined}
+          />
+          <DraftInfo
+            onReply={() => undefined}
+            comments={comments?.length || 0}
+            bookmarks={bookmarks || 0}
+          />
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <div
+          tabIndex={-1}
+          role="button"
+          className={styles.voteControlCell}
+          onClick={e => e.stopPropagation()}
+          onKeyPress={e => e.stopPropagation()}
+        >
+          <FormProvider {...methods}>
+            <ProposalControlPanel
+              status={status}
+              variant={variant}
+              onLike={(data, e) => {
+                e?.stopPropagation();
+
+                return voteClickHandler('VoteApprove', data.gas);
+              }}
+              onDislike={(data, e) => {
+                e?.stopPropagation();
+
+                return voteClickHandler('VoteReject', data.gas);
+              }}
+              disableControls={voteLoading || !timeLeft || finalizeLoading}
+              likes={likes}
+              liked={liked}
+              dislikes={dislikes}
+              disliked={disliked}
+              permissions={permissions}
+              commentsCount={commentsCount}
+              toggleInfoPanel={e => {
+                e.stopPropagation();
+
+                if (toggleInfoPanel) {
+                  toggleInfoPanel();
+                }
+              }}
+            />
+          </FormProvider>
+        </div>
+
+        <div className={styles.actionBar}>
+          <ProposalActions
+            onRemove={e => {
+              e.stopPropagation();
+
+              if (permissions.canDelete) {
+                voteClickHandler('VoteRemove');
+              }
+            }}
+            disableControls={
+              voteLoading ||
+              !timeLeft ||
+              finalizeLoading ||
+              !userCanFinalize ||
+              restrictProposalRemove
+            }
+            removed={dismissed}
+            removeCount={voteRemove}
+            proposalVariant={variant}
+            proposalType={type}
+            permissions={permissions}
+            proposalDescription={description}
+            daoId={daoId}
+            proposalId={id}
+          />
+        </div>
+      </>
+    );
+  };
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div
@@ -417,21 +556,23 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       <div className={styles.proposalCell}>
         <InfoBlockWidget
           valueFontSize="L"
-          label={`${t(`proposalCard.proposalType`)}${type}`}
+          label={getInfoBlockWidgetLabel()}
           value={
             <div className={styles.proposalType}>
               {getProposalVariantLabel(variant, type)}
-              <ExplorerLink
-                linkData={proposalTxHash}
-                linkType="transaction"
-                className={styles.proposalWalletLink}
-              />
+              {!isDraft ? (
+                <ExplorerLink
+                  linkData={proposalTxHash}
+                  linkType="transaction"
+                  className={styles.proposalWalletLink}
+                />
+              ) : null}
             </div>
           }
         />
       </div>
       <div className={styles.countdownCell}>
-        {getTimestampLabel(timeLeft, status, updatedAt, votePeriodEnd)}
+        {getTimestampLabel(timeLeft, status, updatedAt, votePeriodEnd, isDraft)}
         {showFinalize && (
           <Button
             size="small"
@@ -450,71 +591,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
       {renderCardContent()}
 
-      <div
-        tabIndex={-1}
-        role="button"
-        className={styles.voteControlCell}
-        onClick={e => e.stopPropagation()}
-        onKeyPress={e => e.stopPropagation()}
-      >
-        <FormProvider {...methods}>
-          <ProposalControlPanel
-            status={status}
-            variant={variant}
-            onLike={(data, e) => {
-              e?.stopPropagation();
-
-              return voteClickHandler('VoteApprove', data.gas);
-            }}
-            onDislike={(data, e) => {
-              e?.stopPropagation();
-
-              return voteClickHandler('VoteReject', data.gas);
-            }}
-            disableControls={voteLoading || !timeLeft || finalizeLoading}
-            likes={likes}
-            liked={liked}
-            dislikes={dislikes}
-            disliked={disliked}
-            permissions={permissions}
-            commentsCount={commentsCount}
-            toggleInfoPanel={e => {
-              e.stopPropagation();
-
-              if (toggleInfoPanel) {
-                toggleInfoPanel();
-              }
-            }}
-          />
-        </FormProvider>
-      </div>
-
-      <div className={styles.actionBar}>
-        <ProposalActions
-          onRemove={e => {
-            e.stopPropagation();
-
-            if (permissions.canDelete) {
-              voteClickHandler('VoteRemove');
-            }
-          }}
-          disableControls={
-            voteLoading ||
-            !timeLeft ||
-            finalizeLoading ||
-            !userCanFinalize ||
-            restrictProposalRemove
-          }
-          removed={dismissed}
-          removeCount={voteRemove}
-          proposalVariant={variant}
-          proposalType={type}
-          permissions={permissions}
-          proposalDescription={description}
-          daoId={daoId}
-          proposalId={id}
-        />
-      </div>
+      {renderBottomContent()}
     </div>
   );
 };
