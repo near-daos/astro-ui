@@ -2,7 +2,7 @@ import { WalletType } from 'types/config';
 import {
   WalletMeta,
   WalletService,
-} from 'services/sputnik/SputnikNearService/services/types';
+} from 'services/sputnik/SputnikNearService/walletServices/types';
 import { createContext, FC, useCallback, useContext, useMemo } from 'react';
 import { useBoolean } from 'react-use';
 

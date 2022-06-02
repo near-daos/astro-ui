@@ -1,5 +1,5 @@
 import { configService } from 'services/ConfigService';
-import { WalletService } from 'services/sputnik/SputnikNearService/services/types';
+import { WalletService } from 'services/sputnik/SputnikNearService/walletServices/types';
 
 export class BaseService {
   protected readonly walletService;

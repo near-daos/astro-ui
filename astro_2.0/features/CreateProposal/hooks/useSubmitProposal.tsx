@@ -15,7 +15,7 @@ import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 import omit from 'lodash/omit';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-import { DeployStakingContractParams } from 'services/sputnik/SputnikNearService/subServices/GovernanceTokenService';
+import { DeployStakingContractParams } from 'services/sputnik/SputnikNearService/services/GovernanceTokenService';
 
 export function useSubmitProposal({
   selectedProposalVariant,

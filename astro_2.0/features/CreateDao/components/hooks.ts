@@ -17,7 +17,6 @@ import {
   DAO_VOTING_POWER_OPTIONS,
 } from 'astro_2.0/features/CreateDao/components/data';
 import { httpService } from 'services/HttpService';
-// import { SputnikNearService } from 'services/sputnik';
 import { CreateDaoCustomInput, CreateDaoInput } from 'types/dao';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { configService } from 'services/ConfigService';
