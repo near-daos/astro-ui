@@ -53,10 +53,12 @@ jobs:
     steps:
 
     - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
       with:
         repository: near-daos/astro-test-framework
         ref: main
         token: ${{ secrets.TEST_REPO_TOKEN }}
+        path: astro-test-framework
 
     - name: Set Environment
       id: set_environment
