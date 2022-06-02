@@ -15,6 +15,7 @@ import {
   DAO_CONFIG_PAGE_URL,
   DAO_CUSTOM_FC_TEMPLATES_PAGE_URL,
   DRAFTS_PAGE_URL,
+  DRAFT_PAGE_URL,
 } from 'constants/routing';
 import { UrlObject } from 'url';
 import { Proposal } from 'types/proposal';
@@ -37,7 +38,8 @@ export function useGetBreadcrumbsConfig(
   daoDisplayName: string,
   group?: GroupConfig,
   proposal?: Pick<Proposal, 'id'>,
-  bountyContextId?: string
+  bountyContextId?: string,
+  draft?: Pick<Proposal, 'id'>
 ): Breadcrumbs {
   const { t } = useTranslation();
 
@@ -180,6 +182,15 @@ export function useGetBreadcrumbsConfig(
           },
         },
       },
+      SINGLE_DRAFT_PAGE_URL: {
+        label: draft?.id ?? '',
+        href: {
+          pathname: DRAFT_PAGE_URL,
+          query: {
+            dao: daoId,
+          },
+        },
+      },
     };
   }, [
     t,
@@ -189,6 +200,7 @@ export function useGetBreadcrumbsConfig(
     bountyContextId,
     group?.id,
     group?.label,
+    draft?.id,
   ]);
 
   return breadcrumbs;
