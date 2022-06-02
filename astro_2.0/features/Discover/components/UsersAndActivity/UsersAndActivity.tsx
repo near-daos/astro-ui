@@ -134,8 +134,8 @@ export const UsersAndActivity: FC = () => {
     setLeaderboardData,
     chartData,
     setChartData,
-    resetData,
     activeView,
+    setActiveView,
   } = useDiscoveryState(items);
 
   const handleTopicSelect = useCallback(
@@ -144,9 +144,9 @@ export const UsersAndActivity: FC = () => {
         return;
       }
 
-      resetData(id);
+      setActiveView(id);
     },
-    [resetData, isMounted]
+    [isMounted, setActiveView]
   );
 
   useEffect(() => {

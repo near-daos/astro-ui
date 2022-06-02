@@ -62,7 +62,7 @@ export const GeneralInfo: FC = () => {
     setLeaderboardData,
     chartData,
     setChartData,
-    resetData,
+    setActiveView,
     activeView,
   } = useDiscoveryState(items);
 
@@ -72,9 +72,9 @@ export const GeneralInfo: FC = () => {
         return;
       }
 
-      resetData(id);
+      setActiveView(id);
     },
-    [resetData, isMounted]
+    [setActiveView, isMounted]
   );
 
   useEffect(() => {

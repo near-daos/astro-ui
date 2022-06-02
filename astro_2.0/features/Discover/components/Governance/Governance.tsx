@@ -81,7 +81,7 @@ export const Governance: FC = () => {
     setLeaderboardData,
     chartData,
     setChartData,
-    resetData,
+    setActiveView,
     activeView,
   } = useDiscoveryState(items);
 
@@ -91,9 +91,9 @@ export const Governance: FC = () => {
         return;
       }
 
-      resetData(id);
+      setActiveView(id);
     },
-    [resetData, isMounted]
+    [setActiveView, isMounted]
   );
 
   useEffect(() => {

@@ -70,17 +70,16 @@ export const useDiscoveryState = (items: TControlTab[]): DiscoveryState => {
   const [chartData, setChartData] = useState<ChartDataElement[] | null>(null);
   const [activeView, setActiveView] = useState(items[0].id);
 
-  const resetData = useCallback((id: string) => {
+  const resetData = useCallback(() => {
     setOffset(0);
     setTotal(0);
     setLeaderboardData(null);
     setChartData(null);
-    setActiveView(id);
   }, []);
 
   useEffect(() => {
-    resetData(items[0].id);
-  }, [items, query.dao, resetData]);
+    resetData();
+  }, [query.dao, resetData]);
 
   return {
     resetData,
