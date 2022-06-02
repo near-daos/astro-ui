@@ -95,14 +95,32 @@
   }
 }
 
+@mixin desktop-max {
+  @media (max-width: #{breakpoints.$screen-md}px) {
+    @content;
+  }
+}
+
 @mixin astro-desktop {
   @media (min-width: #{breakpoints.$screen-mobile + 1}px) {
     @content;
   }
 }
 
+@mixin astro-desktop-max {
+  @media (max-width: #{breakpoints.$screen-mobile + 1}px) {
+    @content;
+  }
+}
+
 @mixin tablet-landscape {
   @media (min-width: #{breakpoints.$screen-sm}px) {
+    @content;
+  }
+}
+
+@mixin tablet-landscape-max {
+  @media (max-width: #{breakpoints.$screen-sm}px) {
     @content;
   }
 }
