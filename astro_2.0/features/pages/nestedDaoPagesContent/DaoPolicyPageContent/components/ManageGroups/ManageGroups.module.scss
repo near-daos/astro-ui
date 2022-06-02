@@ -8,6 +8,13 @@
   grid-template-columns: 207px 1fr;
   min-height: 400px;
   width: 100%;
+
+  @include mobile-only {
+    align-items: flex-start;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+  }
 }
 
 .list {
@@ -17,6 +24,10 @@
   flex-flow: column nowrap;
   justify-content: flex-start;
   padding: 16px 0;
+
+  @include mobile-only {
+    width: 100%;
+  }
 }
 
 .createGroup {
