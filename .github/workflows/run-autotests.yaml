@@ -18,11 +18,13 @@ on:
   workflow_call:
     secrets:
       KUBE_CONFIG_DATA:
-         required: true
+        required: true
       AWS_ACCESS_KEY_ID:
-         required: true
+        required: true
       AWS_SECRET_ACCESS_KEY:
-         required: true
+        required: true
+      TEST_REPO_TOKEN:
+        required: true
     inputs:
       env:
         description: Environment to run on (as described in [test docs](https://github.com/near-daos/astro-test-framework#environments)). Valid choices are dev, testnet, prd.
@@ -51,15 +53,18 @@ jobs:
     steps:
 
     - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
       with:
         repository: near-daos/astro-test-framework
         ref: main
+        token: ${{ secrets.TEST_REPO_TOKEN }}
+        path: astro-test-framework
 
     - name: Set Environment
       id: set_environment
       run: |
         cat ".github/env.common" | grep -E -v '^\ *#' >>$GITHUB_ENV
-        cat ".github/env.development" | grep -E -v '^\ *#' >>$GITHUB_ENV
+        cat ".github/env.develop" | grep -E -v '^\ *#' >>$GITHUB_ENV
         echo "::set-output name=workflow_name::${GITHUB_WORKFLOW// /-}"
         echo "::set-output name=environment::develop}"
 
