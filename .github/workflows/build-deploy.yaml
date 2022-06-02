@@ -88,6 +88,19 @@ jobs:
             --set environment.app_domain=${APP_DOMAIN} \
             --set ingress.host=${K8S_INGRESS_HOST}
 
+
+  run-autotests:
+    name: Run Autotests
+    needs:
+    - build-deploy
+    - get-environment
+    if: needs.get-environment.outputs.environment == 'develop'
+    uses: near-daos/astro-ui/.github/workflows/run-autotests.yaml@autotests
+    with:
+      env: dev
+      tags: smoke
+      browser: chrome
+
   build-deploy-storybook:
     runs-on: ubuntu-latest
     if: needs.get-environment.outputs.environment == 'develop'

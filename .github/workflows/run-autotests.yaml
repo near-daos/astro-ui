@@ -1,0 +1,130 @@
+name: Run Autotests
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: Environment to run on (as described in [test docs](https://github.com/near-daos/astro-test-framework#environments)). Valid choices are dev, testnet, prd.
+        default: dev
+        required: false
+      tags:
+        description: Tags of test suites to run (as described in [test docs](https://github.com/near-daos/astro-test-framework#tags-test-suites)). Valid choices are all, smoke.
+        default: smoke
+        required: false
+      browser:
+        description: Browser to run in (as described in [test docs](https://github.com/near-daos/astro-test-framework#tags-test-suites)). Valid choices are chrome, firefox.
+        default: chrome
+        required: false
+
+  workflow_call:
+    secrets:
+      KUBE_CONFIG_DATA:
+         required: true
+      AWS_ACCESS_KEY_ID:
+         required: true
+      AWS_SECRET_ACCESS_KEY:
+         required: true
+    inputs:
+      env:
+        description: Environment to run on (as described in [test docs](https://github.com/near-daos/astro-test-framework#environments)). Valid choices are dev, testnet, prd.
+        default: dev
+        required: false
+        type: string
+      tags:
+        description: Tags of test suites to run (as described in [test docs](https://github.com/near-daos/astro-test-framework#tags-test-suites)). Valid choices are all, smoke.
+        default: smoke
+        required: false
+        type: string
+      browser:
+        description: Browser to run in (as described in [test docs](https://github.com/near-daos/astro-test-framework#tags-test-suites)). Valid choices are chrome, firefox.
+        default: chrome
+        required: false
+        type: string
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+jobs:
+  run-tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        repository: near-daos/astro-test-framework
+        ref: main
+
+    - name: Set Environment
+      id: set_environment
+      run: |
+        cat ".github/env.common" | grep -E -v '^\ *#' >>$GITHUB_ENV
+        cat ".github/env.development" | grep -E -v '^\ *#' >>$GITHUB_ENV
+        echo "::set-output name=workflow_name::${GITHUB_WORKFLOW// /-}"
+        echo "::set-output name=environment::develop}"
+
+    - name: Run Tests
+      uses: ./.github/actions/tests
+      with:
+        env: ${{ inputs.env }}
+        browser: ${{ inputs.browser }}
+        tags: ${{ inputs.tags }}
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+
+    - uses: Consensys/kubernetes-action@1.1.0
+      id: kubectl
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: -n sputnik-v2-development get pods --selector=app.kubernetes.io/instance=automation-report -o jsonpath='{.items[0].metadata.name}'
+
+    - name: Clean Output
+      id: get_pod
+      shell: bash
+      run: |
+        clean_output=$(printf ${{steps.kubectl.outputs.result}} | tr -t "'" "")
+        echo "pod name is $clean_output"
+        echo "::set-output name=kubectl-out::$clean_output"
+
+    - name: Generate Upload Bundle
+      shell: bash
+      run: |
+        if [ "${ACTIONS_RUNNER_DEBUG:-}" = "true" ]; then
+          find ./
+          set -x
+        fi
+        sudo mkdir astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}
+        sudo cp -r astro-test-framework/build/reports/allure-report astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/
+        sudo cp -r astro-test-framework/build/swagger-coverage-output astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/
+        sudo find astro-test-framework/build -name swagger-coverage-report.html -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/index.html \;
+        sudo find astro-test-framework/build -name swagger-coverage-results.json -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/ \;
+        cat .github/actions/test/reports-site/HEADER.html.template | envsubst | sudo tee astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/HEADER.html
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: coverage_report
+        path: astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/**
+
+    - uses: Consensys/kubernetes-action@1.1.0
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: cp -n sputnik-v2-development astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }} ${{ steps.get_pod.outputs.kubectl-out }}:/app/ui-${{ steps.set_environment.outputs.environment }}
+
+    - uses: Consensys/kubernetes-action@1.1.0
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        args: cp -n sputnik-v2-development astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/allure-report/history ${{ steps.get_pod.outputs.kubectl-out }}:/app/ui-${{ steps.set_environment.outputs.environment }}/history
+
+    - name: Add Annotation
+      run: |
+        echo "::notice title=Allure Report::https://automation-report.app.astrodao.com/ui-${{ steps.set_environment.outputs.environment }}/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/allure-report/"
+        echo "::notice title=Coverage Report::https://automation-report.app.astrodao.com/ui-${{ steps.set_environment.outputs.environment }}/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/"
+        echo "::notice title=History for Environment::https://automation-report.app.astrodao.com/ui-${{ steps.set_environment.outputs.environment }}/"
