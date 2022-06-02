@@ -17,7 +17,7 @@ const TEMP_DISABLED_OPTIONS = [
 const POLICY_OPTIONS = [
   'proposalCreation',
   'votingPermissions',
-  'votingPolicy',
+  // 'votingPolicy',
   'bondAndDeadlines',
   'groups',
   'members',

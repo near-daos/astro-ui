@@ -6,7 +6,7 @@ import difference from 'lodash/difference';
 import isEmpty from 'lodash/isEmpty';
 import { DefaultVotePolicy, ProposalAction } from 'types/role';
 import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
-import { dataRoleToContractRole } from 'features/groups/helpers';
+import { dataRoleToContractRole, getThreshold } from 'features/groups/helpers';
 
 export interface VotePolicy {
   whoCanVote?: string;
@@ -194,29 +194,6 @@ export function getVoteDetails(
     }, {}) ?? {};
 
   return { details, votersList: Object.values(list) };
-}
-
-export function getThreshold(value: number): [number, number] {
-  const fraction = value / 100;
-  const gcd = (a: number, b: number): number => {
-    if (b < 0.0000001) {
-      return a;
-    } // Since there is a limited precision we need to limit the value.
-
-    return gcd(b, Math.floor(a % b)); // Discard any fractions due to limitations in precision.
-  };
-
-  const len = fraction.toString().length - 2;
-
-  let denominator = 10 ** len;
-  let numerator = fraction * denominator;
-
-  const divisor = gcd(numerator, denominator); // Should be 5
-
-  numerator /= divisor; // Should be 687
-  denominator /= divisor; // Should be 2000
-
-  return [numerator, denominator];
 }
 
 export const getNewProposalObject = (
