@@ -108,6 +108,7 @@ export const TopicsFilter: FC = () => {
         <SideFilter
           shallowUpdate
           hideAllOption
+          markerOffset={-100}
           queryName="topic"
           list={overviewOptions}
           title={t('discover.daoActivity')}
@@ -120,6 +121,7 @@ export const TopicsFilter: FC = () => {
         <SideFilter
           shallowUpdate
           hideAllOption
+          markerOffset={-100}
           queryName="topic"
           list={financialOptions}
           title={t('discover.financial')}

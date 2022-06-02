@@ -93,7 +93,7 @@ export const Tvl: FC = () => {
     setLeaderboardData,
     chartData,
     setChartData,
-    resetData,
+    setActiveView,
     activeView,
   } = useDiscoveryState(items);
 
@@ -103,9 +103,9 @@ export const Tvl: FC = () => {
         return;
       }
 
-      resetData(id);
+      setActiveView(id);
     },
-    [isMounted, resetData]
+    [isMounted, setActiveView]
   );
 
   useEffect(() => {

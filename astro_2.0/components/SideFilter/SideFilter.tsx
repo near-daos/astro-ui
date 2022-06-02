@@ -24,6 +24,7 @@ interface SideFilterProps {
   hideAllOption?: boolean;
   shallowUpdate?: boolean;
   itemClassName?: string;
+  markerOffset?: number;
 }
 
 export const SideFilter = ({
@@ -37,6 +38,7 @@ export const SideFilter = ({
   hideAllOption = false,
   shallowUpdate = false,
   forceHorizontalView = false,
+  markerOffset = 0,
 }: SideFilterProps): JSX.Element => {
   const { t } = useTranslation();
 
@@ -56,7 +58,7 @@ export const SideFilter = ({
 
     const transformVal =
       index === -1
-        ? 0
+        ? markerOffset
         : index * HUNDRED_PERCENT + (hideAllOption ? 0 : HUNDRED_PERCENT);
 
     return {

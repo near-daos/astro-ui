@@ -100,7 +100,7 @@ export const Flow: FC = () => {
     setLeaderboardData,
     chartData,
     setChartData,
-    resetData,
+    setActiveView,
     activeView,
   } = useDiscoveryState(items);
 
@@ -110,9 +110,9 @@ export const Flow: FC = () => {
         return;
       }
 
-      resetData(id);
+      setActiveView(id);
     },
-    [resetData, isMounted]
+    [setActiveView, isMounted]
   );
 
   useEffect(() => {
