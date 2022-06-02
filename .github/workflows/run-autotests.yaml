@@ -64,7 +64,7 @@ jobs:
       id: set_environment
       run: |
         cat ".github/env.common" | grep -E -v '^\ *#' >>$GITHUB_ENV
-        cat ".github/env.development" | grep -E -v '^\ *#' >>$GITHUB_ENV
+        cat ".github/env.develop" | grep -E -v '^\ *#' >>$GITHUB_ENV
         echo "::set-output name=workflow_name::${GITHUB_WORKFLOW// /-}"
         echo "::set-output name=environment::develop}"
 
