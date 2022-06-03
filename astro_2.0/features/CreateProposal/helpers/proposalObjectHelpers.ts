@@ -1,6 +1,6 @@
 import Decimal from 'decimal.js';
 
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { DATA_SEPARATOR } from 'constants/common';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 
 import { DAO } from 'types/dao';
@@ -36,7 +36,7 @@ export function getUpgradeCodeProposal(
   const { versionHash, details, externalUrl } = data;
   const { appConfig } = configService.get();
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const args = jsonToBase64Str({
     code_hash: versionHash,
@@ -68,7 +68,7 @@ export function getRemoveUpgradeCodeProposal(
   const { versionHash, details, externalUrl } = data;
   const { appConfig } = configService.get();
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const args = jsonToBase64Str({
     code_hash: versionHash,
@@ -100,7 +100,7 @@ export function getUpgradeSelfProposal(
 ): CreateProposalParams {
   const { versionHash, details, externalUrl } = data;
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   return {
     daoId: dao.id,
@@ -133,7 +133,7 @@ export async function getCustomFunctionCallProposal(
     throw new Error('No tokens data found');
   }
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
   const args = Buffer.from(json).toString('base64');
 
   return {
@@ -189,7 +189,7 @@ export async function getBuyNftFromMintbaseProposal(
     throw new Error('No tokens data found');
   }
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const json = JSON.stringify({
     token_key: [tokenKey],
@@ -236,7 +236,7 @@ export async function getTransferMintbaseNFTProposal(
 ): Promise<CreateProposalParams> {
   const { tokenKey, target, details, externalUrl, actionsGas } = data;
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const [key, store] = tokenKey.split(':');
 
@@ -291,7 +291,7 @@ export async function getBuyNftFromParasProposal(
     throw new Error('No tokens data found');
   }
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const json = JSON.stringify({
     token_series_id: tokenKey,
@@ -347,7 +347,7 @@ export async function getSwapsOnRefProposal(
     externalUrl,
   } = data;
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const json = JSON.stringify({
     actions: [
@@ -387,7 +387,7 @@ export async function getCreateTokenProposal(
 ): Promise<CreateProposalParams> {
   const { details, externalUrl } = data;
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const args = jsonToBase64Str({});
 
@@ -425,7 +425,7 @@ export async function getTransferProposal(
 
   return {
     daoId: dao.id,
-    description: `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
+    description: `${details}${DATA_SEPARATOR}${externalUrl}`,
     kind: 'Transfer',
     bond: dao.policy.proposalBond,
     data: {
@@ -494,7 +494,7 @@ export function getNewDaoProposal(
   const { nearConfig } = configService.get();
   const { details, externalUrl, displayName, address } = data;
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const daoArgs = JSON.stringify({
     name: address,
@@ -585,7 +585,7 @@ export function getTransferDaoFundsProposal(
 
   return {
     daoId: dao.id,
-    description: `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
+    description: `${details}${DATA_SEPARATOR}${externalUrl}`,
     kind: 'Transfer',
     bond: dao.policy.proposalBond,
     data: {
@@ -611,4 +611,3 @@ export async function getDeployStakingContractProposal(
     unstakingPeriodInHours: unstakingPeriod,
   } as unknown) as CreateProposalParams;
 }
-

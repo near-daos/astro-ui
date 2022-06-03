@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import { DAO, DaoVotePolicy, TGroup, VotePolicyRequest } from 'types/dao';
 import { DaoRole } from 'types/role';
 import { CreateProposalParams, ProposalType } from 'types/proposal';
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { DATA_SEPARATOR } from 'constants/common';
 
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
 
@@ -19,7 +19,7 @@ function getAddRemoveMemberProposal(
 
   return {
     daoId: id,
-    description: `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
+    description: `${details}${DATA_SEPARATOR}${externalUrl}`,
     kind: isRemove ? 'RemoveMemberFromRole' : 'AddMemberToRole',
     data: {
       member_id: memberName.trim(),
@@ -114,7 +114,7 @@ export function getChangePolicyProposal(
 
   return {
     daoId: id,
-    description: `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
+    description: `${details}${DATA_SEPARATOR}${externalUrl}`,
     kind: 'ChangePolicy',
     data: {
       policy: {
@@ -209,7 +209,7 @@ export function getUpdateGroupProposal(
 
   return {
     daoId: id,
-    description: `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
+    description: `${details}${DATA_SEPARATOR}${externalUrl}`,
     kind: 'ChangePolicy',
     data: {
       policy: {

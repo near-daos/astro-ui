@@ -5,7 +5,7 @@ import {
   TimelineGroup,
   TimelineMilestone,
 } from 'astro_2.0/features/Bounties/components/BountiesTimeline/types';
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { DATA_SEPARATOR } from 'constants/common';
 import {
   addDays,
   eachDayOfInterval,
@@ -181,7 +181,7 @@ export function prepareTimelineDataset(data: BountyContext[]): TimelineGroup[] {
   return data.map(context => {
     const item = context.bounty || context.proposal;
     let milestones: TimelineMilestone[] = [];
-    const [description] = item.description.split(EXTERNAL_LINK_SEPARATOR);
+    const [description] = item.description.split(DATA_SEPARATOR);
 
     if (context.proposal) {
       // Create proposal milestone
