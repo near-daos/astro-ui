@@ -19,7 +19,7 @@ import {
 } from 'astro_2.0/features/CreateProposal/types';
 import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/components/types';
 import { jsonToBase64Str } from 'utils/jsonToBase64Str';
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { DATA_SEPARATOR } from 'constants/common';
 import {
   getAddMemberProposal,
   getChangePolicyProposal,
@@ -151,7 +151,7 @@ export async function getNewProposalObject(
       return getChangeConfigProposal(
         dao.id,
         newDaoConfig,
-        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
+        `${data.details}${DATA_SEPARATOR}${data.externalUrl}`,
         dao.policy.proposalBond
       );
     }
@@ -169,7 +169,7 @@ export async function getNewProposalObject(
       return getChangeConfigProposal(
         dao.id,
         newDaoConfig,
-        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
+        `${data.details}${DATA_SEPARATOR}${data.externalUrl}`,
         dao.policy.proposalBond
       );
     }
@@ -187,14 +187,14 @@ export async function getNewProposalObject(
       return getChangeConfigProposal(
         dao.id,
         newDaoConfig,
-        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
+        `${data.details}${DATA_SEPARATOR}${data.externalUrl}`,
         dao.policy.proposalBond
       );
     }
     case ProposalVariant.ProposePoll: {
       return {
         daoId: dao.id,
-        description: `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
+        description: `${data.details}${DATA_SEPARATOR}${data.externalUrl}`,
         kind: 'Vote',
         bond: dao.policy.proposalBond,
       };
@@ -254,7 +254,7 @@ export async function getNewProposalObject(
             .toNumber(),
         },
         dao.policy.proposalBond,
-        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`
+        `${data.details}${DATA_SEPARATOR}${data.externalUrl}`
       );
     }
     case ProposalVariant.ProposeChangeDaoFlag: {
@@ -297,7 +297,7 @@ export async function getNewProposalObject(
       return getChangeConfigProposal(
         dao.id,
         newDaoConfig,
-        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
+        `${data.details}${DATA_SEPARATOR}${data.externalUrl}`,
         dao.policy.proposalBond
       );
     }
@@ -319,7 +319,7 @@ export async function getNewProposalObject(
       return getChangeConfigProposal(
         dao.id,
         newDaoConfig,
-        `${data.details}${EXTERNAL_LINK_SEPARATOR}${data.externalUrl}`,
+        `${data.details}${DATA_SEPARATOR}${data.externalUrl}`,
         dao.policy.proposalBond
       );
     }

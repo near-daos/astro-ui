@@ -1,6 +1,6 @@
 import { BountyContext } from 'types/bounties';
 import { differenceInMinutes } from 'date-fns';
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { DATA_SEPARATOR } from 'constants/common';
 import {
   SINGLE_BOUNTY_PAGE_URL,
   SINGLE_PROPOSAL_PAGE_URL,
@@ -123,9 +123,7 @@ export function prepareBountiesPageContent(
 
   return {
     proposalPhase: result.proposalPhase.map(item => {
-      const [description] = item.proposal.description.split(
-        EXTERNAL_LINK_SEPARATOR
-      );
+      const [description] = item.proposal.description.split(DATA_SEPARATOR);
 
       return {
         id: item.id,
@@ -149,9 +147,7 @@ export function prepareBountiesPageContent(
       };
     }),
     bounties: result.bounties.map(item => {
-      const [description] = item.bounty.description.split(
-        EXTERNAL_LINK_SEPARATOR
-      );
+      const [description] = item.bounty.description.split(DATA_SEPARATOR);
 
       return {
         id: item.id,
@@ -178,9 +174,7 @@ export function prepareBountiesPageContent(
       };
     }),
     completed: result.completed.map(item => {
-      const [description] = item.bounty.description.split(
-        EXTERNAL_LINK_SEPARATOR
-      );
+      const [description] = item.bounty.description.split(DATA_SEPARATOR);
 
       return {
         id: item.id,

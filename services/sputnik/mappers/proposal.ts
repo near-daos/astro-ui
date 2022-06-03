@@ -16,7 +16,7 @@ import {
   fromBase64ToMetadata,
   mapDaoDTOtoDao,
 } from 'services/sputnik/mappers/dao';
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { DATA_SEPARATOR } from 'constants/common';
 import { toMillis } from 'utils/format';
 import { DaoStatsOvertime, DaoStatsProposalsOvertime } from 'types/daoStats';
 import { ChartDataElement } from 'components/AreaChartRenderer/types';
@@ -113,7 +113,7 @@ export const mapProposalDTOToProposal = (
     description,
     link,
     proposalVariant = ProposalVariant.ProposeDefault,
-  ] = proposalDTO.description.split(EXTERNAL_LINK_SEPARATOR);
+  ] = proposalDTO.description.split(DATA_SEPARATOR);
 
   const config = get(proposalDTO.dao, 'config');
   const meta = config?.metadata ? fromBase64ToMetadata(config.metadata) : null;
@@ -162,7 +162,7 @@ export const mapProposalFeedItemResponseToProposalFeedItem = (
     description,
     link,
     proposalVariant = ProposalVariant.ProposeDefault,
-  ] = proposalDTO.description.split(EXTERNAL_LINK_SEPARATOR);
+  ] = proposalDTO.description.split(DATA_SEPARATOR);
 
   const config = get(proposalDTO.dao, 'config');
   const meta = config.metadata ? fromBase64ToMetadata(config.metadata) : null;

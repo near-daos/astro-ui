@@ -9,7 +9,7 @@ import { DAO } from 'types/dao';
 import { CreateProposalParams } from 'types/proposal';
 import { Tokens } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { DATA_SEPARATOR } from 'constants/common';
 
 // Helpers & Utils
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
@@ -26,7 +26,7 @@ export function getCompleteBountyProposal(
   bond: string,
   bountyId?: number
 ): CreateProposalParams {
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   return {
     daoId,
@@ -73,7 +73,7 @@ export function getAddBountyProposal(
     throw new Error('No tokens data found');
   }
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
   const { tokenId, decimals } = tokenData;
   const tokenDecimal = 10 ** decimals;
 

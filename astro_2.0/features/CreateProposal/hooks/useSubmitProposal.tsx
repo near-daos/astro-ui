@@ -9,7 +9,7 @@ import { CaptchaModal } from 'astro_2.0/features/CreateProposal/components/Captc
 import { useCallback } from 'react';
 import { getTransferDaoFundsProposal } from 'astro_2.0/features/CreateProposal/helpers/proposalObjectHelpers';
 import { getNewProposalObject } from 'astro_2.0/features/CreateProposal/helpers/newProposalObject';
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { DATA_SEPARATOR } from 'constants/common';
 import last from 'lodash/last';
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
@@ -138,16 +138,23 @@ export function useSubmitProposal({
             bountyId
           );
 
+          const { variant, description } = newProposal || {};
+
           try {
+            const pVariant = variant ?? selectedProposalVariant;
+
+            const getDescr = (separator: string) =>
+              `${description}${separator}${pVariant}`;
+
+            const pDescription = description?.includes(DATA_SEPARATOR)
+              ? getDescr(DATA_SEPARATOR)
+              : getDescr(`${DATA_SEPARATOR + DATA_SEPARATOR}`);
+
             if (selectedProposalVariant !== ProposalVariant.ProposeTransfer) {
               // Add proposal variant and gas
               newProposal = {
                 ...newProposal,
-                description: `${
-                  newProposal?.description
-                }${EXTERNAL_LINK_SEPARATOR}${
-                  newProposal?.variant ?? selectedProposalVariant
-                }`,
+                description: pDescription,
                 gas: data.gas,
               } as CreateProposalParams;
             }

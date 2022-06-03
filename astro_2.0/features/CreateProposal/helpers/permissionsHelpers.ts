@@ -1,5 +1,5 @@
 import { VotingPolicyPageInitialData } from 'features/vote-policy/helpers';
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { DATA_SEPARATOR } from 'constants/common';
 import { dataRoleToContractRole, getThreshold } from 'features/groups/helpers';
 import { DAO } from 'types/dao';
 import { CreateProposalParams, ProposalType } from 'types/proposal';
@@ -244,7 +244,7 @@ export function getNewPermissionsProposalObject(
 
   return {
     daoId: dao.id,
-    description: `${data.daoSettings.details}${EXTERNAL_LINK_SEPARATOR}${data.daoSettings.externalLink}`,
+    description: `${data.daoSettings.details}${DATA_SEPARATOR}${data.daoSettings.externalLink}`,
     kind: 'ChangePolicy',
     data: {
       policy: {
