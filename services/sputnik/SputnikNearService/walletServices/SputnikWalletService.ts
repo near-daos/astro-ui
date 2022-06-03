@@ -31,7 +31,10 @@ import {
 import BN from 'bn.js';
 import { NearConfig } from 'config/near';
 import { parseNearAmount } from 'near-api-js/lib/utils/format';
-import { FunctionCallPermissionView } from 'near-api-js/lib/providers/provider';
+import {
+  AccessKeyInfoView,
+  FunctionCallPermissionView,
+} from 'near-api-js/lib/providers/provider';
 import { httpService } from 'services/HttpService';
 
 export class SputnikWalletService implements WalletService {
@@ -55,6 +58,8 @@ export class SputnikWalletService implements WalletService {
   public readonly successUrl: string = `${window.origin}/callback/auth`;
 
   public readonly failureUrl: string = `${window.origin}/callback/auth`;
+
+  private accessKeys: AccessKeyInfoView[] = [];
 
   constructor(nearConfig: NearConfig) {
     const keyStore = new keyStores.BrowserLocalStorageKeyStore(
@@ -93,8 +98,7 @@ export class SputnikWalletService implements WalletService {
   ): Promise<FinalExecutionOutcome[]> {
     const directCallsList = ['act_proposal'];
     const accountId = this.getAccountId();
-
-    const accessKeys = await this.getAccount().getAccessKeys();
+    const { accessKeys } = this;
 
     const accessKeyForDao = accessKeys
       .filter(accessKey => accessKey.access_key.permission !== 'FullAccess')
@@ -162,6 +166,12 @@ export class SputnikWalletService implements WalletService {
       this.successUrl,
       this.failureUrl
     );
+
+    const keys = await this.getAccount().getAccessKeys();
+
+    if (keys) {
+      this.accessKeys = keys;
+    }
 
     return Promise.resolve(true);
   }
