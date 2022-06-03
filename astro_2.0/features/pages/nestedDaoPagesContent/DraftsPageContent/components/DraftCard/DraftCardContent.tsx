@@ -54,7 +54,12 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
       </div>
       <div className={styles.footer}>
         {hashtags?.map(tag => (
-          <Badge size="small" className={styles.tag} variant="lightgray">
+          <Badge
+            key={tag}
+            size="small"
+            className={styles.tag}
+            variant="lightgray"
+          >
             {tag}
           </Badge>
         ))}
