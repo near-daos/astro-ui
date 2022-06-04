@@ -18,7 +18,7 @@ import {
   ProposalVariant,
   VoteAction,
 } from 'types/proposal';
-import { DraftComment } from 'types/draftProposal';
+import { DraftComment, Hashtag } from 'types/draftProposal';
 import { VoteDetail } from 'features/types';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { ProposalActions } from 'features/proposal/components/ProposalActions';
@@ -86,7 +86,7 @@ export interface ProposalCardProps {
   };
   isDraft?: boolean;
   title?: string;
-  hashtags?: string[];
+  hashtags?: Hashtag[];
   bookmarks?: number;
   comments?: DraftComment[];
 }
@@ -378,12 +378,12 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
             <div className={styles.draftHashTags}>
               {hashtags?.map(tag => (
                 <Badge
-                  key={tag}
+                  key={tag.id}
                   size="small"
                   className={styles.tag}
                   variant="lightgray"
                 >
-                  {tag}
+                  {tag.value}
                 </Badge>
               ))}
             </div>
