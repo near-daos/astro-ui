@@ -1,5 +1,18 @@
 import { ProposalType } from 'types/proposal';
 import { DraftComment, DraftProposal } from 'types/draftProposal';
+import { nanoid } from 'nanoid';
+
+const hashtags = [
+  {
+    id: nanoid(),
+    value: '#mintbase',
+  },
+  {
+    id: nanoid(),
+    value: '#community',
+  },
+  { id: nanoid(), value: '#marketing' },
+];
 
 const proposal = {
   voteYes: 0,
@@ -98,7 +111,7 @@ export const mocks = {
       type: ProposalType.Transfer,
       title: 'Draft Name kickstart medical outreaches by near medical',
       text: 'some desc here',
-      hashtags: ['#mintbase', '#community', '#marketing'],
+      hashtags,
       views: 0,
       replies: 0,
       createdAt: '2021-12-26T20:30:46.036Z',
@@ -115,7 +128,7 @@ export const mocks = {
       type: ProposalType.FunctionCall,
       title: 'Some title',
       text: 'some desc here',
-      hashtags: ['#mintbase', '#community', '#marketing'],
+      hashtags,
       views: 0,
       replies: 0,
       isRead: false,

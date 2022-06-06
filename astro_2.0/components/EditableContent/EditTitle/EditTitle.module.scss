@@ -1,0 +1,22 @@
+.editTitle {
+  background: var(--color-white);
+  padding: 22px 12px 12px;
+  width: 100%;
+}
+
+.input {
+  border: 0;
+  color: var(--color-neutral-90);
+  font-family: var(--font-family-primary);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px;
+  width: 100%;
+  &:focus {
+    outline: none;
+  }
+  &::placeholder {
+    color: var(--color-neutral-60);
+  }
+}

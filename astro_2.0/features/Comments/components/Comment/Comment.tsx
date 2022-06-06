@@ -6,7 +6,7 @@ import { IconButton } from 'components/button/IconButton';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { CommentContent } from 'astro_2.0/features/Comments/components/CommentContent';
-import { CreateComment } from 'astro_2.0/features/DraftComments/CreateComment';
+import { EditableContent } from 'astro_2.0/components/EditableContent';
 
 import styles from './Comment.module.scss';
 
@@ -18,7 +18,7 @@ interface Props {
 
 export const Comment: FC<Props> = ({ data, onLike }) => {
   const { author, updatedAt, description, comments, likes, id } = data;
-
+  const [html, setHTML] = useState('');
   const [showReplies, setShowReplies] = useState(false);
   const [showReplyInput, setShowReplyInput] = useState(false);
 
@@ -80,7 +80,12 @@ export const Comment: FC<Props> = ({ data, onLike }) => {
       )}
       {showReplyInput && (
         <div className={styles.replyInputWrapper}>
-          <CreateComment />
+          <EditableContent
+            id={`key-${id}`}
+            html={html}
+            setHTML={setHTML}
+            placeholder="Reply..."
+          />
         </div>
       )}
     </div>
