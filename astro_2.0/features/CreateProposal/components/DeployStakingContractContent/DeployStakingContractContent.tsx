@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React, { VFC } from 'react';
+import { useTranslation } from 'next-i18next';
 import { useFormContext } from 'react-hook-form';
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
@@ -6,15 +7,10 @@ import { Input } from 'components/inputs/Input';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { getInputWidth } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent/helpers';
 
-import styles from './ContractAcceptanceContent.module.scss';
+import styles from './DeployStakingContractContent.module.scss';
 
-interface ContractAcceptanceContentProps {
-  tokenId: string;
-}
-
-export const ContractAcceptanceContent: FC<ContractAcceptanceContentProps> = ({
-  tokenId,
-}) => {
+export const DeployStakingContractContent: VFC = () => {
+  const { t } = useTranslation();
   const { register, watch } = useFormContext();
 
   const currentValue = watch('unstakingPeriod');
@@ -22,16 +18,19 @@ export const ContractAcceptanceContent: FC<ContractAcceptanceContentProps> = ({
 
   return (
     <div className={styles.root}>
-      <InfoBlockWidget label="Token ID" value={token || tokenId} />
+      <InfoBlockWidget
+        label={t('proposalCard.deployStakingContract.tokenId')}
+        value={token}
+      />
       <InputWrapper
         fieldName="unstakingPeriod"
-        label="Unstaking Period"
+        label={t('proposalCard.deployStakingContract.unstakingPeriod')}
         flex
         className={styles.inputWrapper}
       >
         <div className={styles.input}>
           <Input
-            placeholder="hours"
+            placeholder={t('proposalCard.deployStakingContract.hours')}
             isBorderless
             size="auto"
             inputStyles={{
@@ -40,7 +39,11 @@ export const ContractAcceptanceContent: FC<ContractAcceptanceContentProps> = ({
             }}
             {...register('unstakingPeriod')}
           />
-          {currentValue && <div className={styles.suffix}>hours</div>}
+          {currentValue && (
+            <div className={styles.suffix}>
+              {t('proposalCard.deployStakingContract.hours')}
+            </div>
+          )}
         </div>
       </InputWrapper>
     </div>

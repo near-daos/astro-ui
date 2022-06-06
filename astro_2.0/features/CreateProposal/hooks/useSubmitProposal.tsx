@@ -15,7 +15,10 @@ import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 import omit from 'lodash/omit';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-import { DeployStakingContractParams } from 'services/sputnik/SputnikNearService/services/GovernanceTokenService';
+import {
+  AcceptStakingContractParams,
+  DeployStakingContractParams,
+} from 'services/sputnik/SputnikNearService/services/GovernanceTokenService';
 import { SputnikNearService } from 'services/sputnik';
 
 async function createProposal(
@@ -30,6 +33,12 @@ async function createProposal(
   if (variant === ProposalVariant.ProposeStakingContractDeployment) {
     return nearService?.deployStakingContract(
       (proposal as unknown) as DeployStakingContractParams
+    );
+  }
+
+  if (variant === ProposalVariant.ProposeAcceptStakingContract) {
+    return nearService?.acceptStakingContract(
+      (proposal as unknown) as AcceptStakingContractParams
     );
   }
 

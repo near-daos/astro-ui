@@ -602,6 +602,9 @@ export function getProposalVariantLabel(
       return getVarLabel('createDao');
     }
     case ProposalVariant.ProposeStakingContractDeployment: {
+      return getVarLabel('deployStakingContract');
+    }
+    case ProposalVariant.ProposeAcceptStakingContract: {
       return getVarLabel('contractAcceptance');
     }
     default: {

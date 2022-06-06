@@ -2,6 +2,8 @@ import Decimal from 'decimal.js';
 import { useTranslation } from 'next-i18next';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 
+import { STAKING_CONTRACT_PREFIX } from 'constants/proposals';
+
 import { CreationProgress } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/steps/CreateToken/components/CreationProgress';
 import { WarningPanel } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/WarningPanel';
 import { SelectToken } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/steps/SelectToken';
@@ -26,6 +28,7 @@ import { CreateGovernanceTokenSteps, ProgressStatus } from 'types/settings';
 import { SputnikHttpService } from 'services/sputnik';
 
 import { useWalletContext } from 'context/WalletContext';
+
 import styles from './CreateGovernanceTokenWizard.module.scss';
 
 interface Props {
@@ -149,7 +152,9 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
                 .div('3.6e12')
                 .toString(),
             }
-          : {};
+          : {
+              contract: `${daoContext.dao.name}${STAKING_CONTRACT_PREFIX}`,
+            };
 
       return (
         <CreateProposal

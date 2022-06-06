@@ -40,11 +40,12 @@ import { AddMemberToGroupContent } from 'astro_2.0/features/CreateProposal/compo
 import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoLegalInfoContent';
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/components/RemoveMemberFromGroupContent';
 import { TokenDistributionContent } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent';
-import { ContractAcceptanceContent } from 'astro_2.0/features/CreateProposal/components/ContractAcceptanceContent';
+import { DeployStakingContractContent } from 'astro_2.0/features/CreateProposal/components/DeployStakingContractContent';
 import { CreateDaoContent } from 'astro_2.0/features/CreateProposal/components/CreateDaoContent';
 import { ChangeVotingPermissionsContent } from 'astro_2.0/features/CreateProposal/components/ChangeVotingPermissionsContent';
 import { CreateTokenContent } from 'astro_2.0/features/CreateProposal/components/CreateTokenContent';
 import { UpdateGroupContent } from 'astro_2.0/features/CreateProposal/components/UpdateGroupContent';
+import { AcceptStakingContractContent } from 'astro_2.0/features/CreateProposal/components/AcceptStakingContractContent';
 
 // Helpers & Utils
 import { getInitialData } from 'features/vote-policy/helpers';
@@ -376,7 +377,10 @@ export function getFormContentNode(
       return <CustomFunctionCallContent dao={dao} />;
     }
     case ProposalVariant.ProposeStakingContractDeployment: {
-      return <ContractAcceptanceContent tokenId="someverylonglongname.near" />;
+      return <DeployStakingContractContent />;
+    }
+    case ProposalVariant.ProposeAcceptStakingContract: {
+      return <AcceptStakingContractContent />;
     }
     case ProposalVariant.ProposeTokenDistribution: {
       const groups = dao.groups.map(group => {
@@ -790,6 +794,12 @@ export function getValidationSchema(
           .positive()
           .min(1)
           .required('Required'),
+      });
+    }
+
+    case ProposalVariant.ProposeAcceptStakingContract: {
+      return yup.object().shape({
+        contract: yup.string(),
       });
     }
 

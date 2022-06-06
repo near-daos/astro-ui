@@ -1,3 +1,5 @@
+// TODO requires localisation
+
 import React, { ReactNode, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 
@@ -138,8 +140,8 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       case ProposalVariant.ProposeStakingContractDeployment: {
         return (
           <InfoBlockWidget
-            label="Creating Token"
-            value="Acceptance of contract"
+            label="Create Governance Token"
+            value="Deploy Staking Contract"
           />
         );
       }
@@ -148,6 +150,14 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       }
       case ProposalVariant.ProposeUpdateGroup: {
         return <InfoBlockWidget label="Change Policy" value="Group" />;
+      }
+      case ProposalVariant.ProposeAcceptStakingContract: {
+        return (
+          <InfoBlockWidget
+            label="Create Governance Token"
+            value="Accept Staking Contract"
+          />
+        );
       }
       default: {
         return (
@@ -293,6 +303,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
         );
       }
       case ProposalVariant.ProposeStakingContractDeployment:
+      case ProposalVariant.ProposeAcceptStakingContract:
       case ProposalVariant.ProposeTokenDistribution: {
         return <div className={styles.descriptionCell}>{content}</div>;
       }

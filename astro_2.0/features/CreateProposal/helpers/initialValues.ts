@@ -162,6 +162,12 @@ export function getFormInitialValues(
         ...initialValues,
       };
     }
+    case ProposalVariant.ProposeAcceptStakingContract: {
+      return {
+        gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
+      };
+    }
     case ProposalVariant.ProposeTokenDistribution: {
       return {
         details: '',

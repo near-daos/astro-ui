@@ -99,7 +99,7 @@ describe('CreateGroupContent', () => {
     ${'Unknown'}                                        | ${'proposalCard.proposalOwner'}
     ${ProposalVariant.ProposeDoneBounty}                | ${'Complete Bounty'}
     ${ProposalVariant.ProposeTokenDistribution}         | ${'Distribution of tokens'}
-    ${ProposalVariant.ProposeStakingContractDeployment} | ${'Acceptance of contract'}
+    ${ProposalVariant.ProposeStakingContractDeployment} | ${'Deploy Staking Contract'}
     ${ProposalVariant.ProposeCustomFunctionCall}        | ${'FunctionCallTypeSelector'}
   `(
     'Should render component for $type proposal variant',
