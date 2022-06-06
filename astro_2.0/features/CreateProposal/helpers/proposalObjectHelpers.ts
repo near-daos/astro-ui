@@ -1,6 +1,7 @@
 import Decimal from 'decimal.js';
 
 import { DATA_SEPARATOR } from 'constants/common';
+import { STAKING_CONTRACT_PREFIX } from 'constants/proposals';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 
 import { DAO } from 'types/dao';
@@ -604,10 +605,26 @@ export async function getDeployStakingContractProposal(
   const { unstakingPeriod, token } = data;
 
   return ({
-    stakingContractName: `${name}-staking`,
+    description: 'Deploy staking contract via factory',
+    stakingContractName: `${name}${STAKING_CONTRACT_PREFIX}`,
     daoId: id,
     tokenId: token,
     daoBond: policy.proposalBond,
     unstakingPeriodInHours: unstakingPeriod,
+  } as unknown) as CreateProposalParams;
+}
+
+export async function getAcceptStakingContractProposal(
+  dao: DAO
+): Promise<CreateProposalParams> {
+  const { id, name, policy } = dao;
+
+  const stakingContractName = `${name}${STAKING_CONTRACT_PREFIX}`;
+
+  return ({
+    daoId: id,
+    daoBond: policy.proposalBond,
+    description: `Accept staking contract ${stakingContractName}`,
+    stakingContractName,
   } as unknown) as CreateProposalParams;
 }

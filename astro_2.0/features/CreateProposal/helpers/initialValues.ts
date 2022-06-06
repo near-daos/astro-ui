@@ -153,7 +153,7 @@ export function getFormInitialValues(
         ...initialValues,
       };
     }
-    case ProposalVariant.ProposeContractAcceptance: {
+    case ProposalVariant.ProposeStakingContractDeployment: {
       return {
         details: '',
         externalUrl: '',

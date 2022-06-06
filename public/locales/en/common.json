@@ -360,6 +360,44 @@
       "proposePoll": "Propose a Poll",
       "groupFunctionCall": "Function Call",
       "proposeCustomCall": "Custom Function Call"
+    },
+    "upgradeContent": {
+      "groups": "Groups",
+      "groupName": "Group name",
+      "groupQuorum": "Group quorum is",
+      "quorumDescr": "What is the quorum required\nfor the decision of this group",
+      "members": "Members"
+    }
+  },
+  "viewProposalCard": {
+    "proposalVariant": {
+      "createBounty": "Create a Bounty",
+      "bountyDone": "Bounty Done",
+      "transfer": "Transfer",
+      "changeDaoName": "Change DAO name",
+      "changeDaoPurpose": "Change DAO purpose",
+      "changeDaoLinks": "Change DAO links",
+      "poll": "Poll",
+      "createGroup": "Create group",
+      "addMember": "Add member to Role",
+      "removeMember": "Remove member from Role",
+      "changeVotingPolicy": "Change Voting Policy",
+      "changeBonds": "Change Bonds and Deadlines",
+      "changeDaoFlag": "Change DAO flag",
+      "tokenDistribution": "Distribution of tokens",
+      "changeProposalCreationPermissions": "Proposal creation",
+      "changeProposalVotingPermissions": "Voting permissions",
+      "getCodeFromFactory": "Get Code From Factory",
+      "upgradeDao": "Upgrade DAO",
+      "recoverStorageCosts": "Recover Storage Costs",
+      "createDao": "Create DAO",
+      "contractAcceptance": "Accept Staking Contract"
+    },
+    "proposalType": {
+      "addBounty": "Add Bounty",
+      "changePolicy": "Change Policy",
+      "changeConfig": "Change Config",
+      "functionCall": "Function Call"
     }
   },
   "settingsPage": {
@@ -496,6 +534,7 @@
     "notification": "Notification",
     "settings": "Settings",
     "usaOnly": "only USA",
+    "requestKey": "Request key",
     "popup": {
       "send": "Send",
       "save": "Save",
@@ -529,5 +568,15 @@
     "noGroup": "No longer in any group",
     "title": "Votes",
     "voices": "voices"
+  },
+  "daoPolicy": {
+    "title": "DAO Settings",
+    "backToSettingsOverview": "Back to settings overview",
+    "tabs": {
+      "proposalCreation": {
+        "title": "Proposal creation",
+        "description": "Choose what creation rights you give DAO groups. This can be changed in settings later."
+      }
+    }
   }
 }

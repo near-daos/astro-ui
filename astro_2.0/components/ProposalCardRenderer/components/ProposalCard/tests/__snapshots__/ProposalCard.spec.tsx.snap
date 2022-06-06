@@ -30,7 +30,7 @@ exports[`Proposal Card Should render component 1`] = `
             <div
               class="proposalType"
             >
-              Poll
+              viewProposalCard.proposalVariant.poll
               <div
                 class="proposalWalletLink"
               >

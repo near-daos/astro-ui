@@ -15,7 +15,11 @@ import { ViewStepProposal } from 'astro_2.0/features/pages/nestedDaoPagesContent
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 import { ChooseExistingToken } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/ChooseExistingToken/ChooseExistingToken';
 
-import { ProposalFeedItem, ProposalType } from 'types/proposal';
+import {
+  ProposalFeedItem,
+  ProposalType,
+  ProposalVariant,
+} from 'types/proposal';
 import { DaoContext } from 'types/context';
 import { CreateGovernanceTokenSteps, ProgressStatus } from 'types/settings';
 
@@ -137,6 +141,16 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
     }
 
     if (!isViewProposal) {
+      const initialValues =
+        stepProposalVariant === ProposalVariant.ProposeStakingContractDeployment
+          ? {
+              token: status.selectedToken,
+              unstakingPeriod: new Decimal(daoContext.dao.policy.proposalPeriod)
+                .div('3.6e12')
+                .toString(),
+            }
+          : {};
+
       return (
         <CreateProposal
           {...daoContext}
@@ -149,12 +163,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
           showInfo={false}
           canCreateTokenProposal={canControl}
           proposalVariant={stepProposalVariant}
-          initialValues={{
-            token: status.selectedToken,
-            unstakingPeriod: new Decimal(daoContext.dao.policy.proposalPeriod)
-              .div('3.6e12')
-              .toString(),
-          }}
+          initialValues={initialValues}
         />
       );
     }
@@ -170,7 +179,10 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
       </div>
       <div className={styles.content}>
         {/* <button onClick={handleViewProposalReject}>reset</button> */}
-        {/* <button onClick={() => handleProposalCreate(16)}>update state</button> */}
+        {/* <button onClick={() => handleProposalCreate(20)}>update state</button> */}
+        {/* <button onClick={() => handleViewProposalApprove()}> */}
+        {/*  proposal approved */}
+        {/* </button> */}
         {renderContent()}
       </div>
     </div>

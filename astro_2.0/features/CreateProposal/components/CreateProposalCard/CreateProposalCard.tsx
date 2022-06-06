@@ -135,7 +135,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
           />
         );
       }
-      case ProposalVariant.ProposeContractAcceptance: {
+      case ProposalVariant.ProposeStakingContractDeployment: {
         return (
           <InfoBlockWidget
             label="Creating Token"
@@ -292,7 +292,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
           </>
         );
       }
-      case ProposalVariant.ProposeContractAcceptance:
+      case ProposalVariant.ProposeStakingContractDeployment:
       case ProposalVariant.ProposeTokenDistribution: {
         return <div className={styles.descriptionCell}>{content}</div>;
       }

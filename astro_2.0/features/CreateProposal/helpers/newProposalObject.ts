@@ -375,7 +375,7 @@ export async function getNewProposalObject(
         (data as unknown) as TokenDistributionInput
       );
     }
-    case ProposalVariant.ProposeContractAcceptance: {
+    case ProposalVariant.ProposeStakingContractDeployment: {
       return getDeployStakingContractProposal(dao, data);
     }
     case ProposalVariant.ProposeChangeProposalVotingPermissions: {

@@ -3,6 +3,7 @@
 // TODO refactor the helper. It's too big now.
 
 import * as yup from 'yup';
+import { AnySchema } from 'yup';
 import uniq from 'lodash/uniq';
 import { nanoid } from 'nanoid';
 import dynamic from 'next/dynamic';
@@ -57,7 +58,6 @@ import { SputnikNearService } from 'services/sputnik';
 import { ProposalPermissions } from 'types/context';
 import { TransferFundsContent } from 'astro_2.0/features/CreateProposal/components/TransferFundsContent';
 import { Token } from 'types/token';
-import { AnySchema } from 'yup';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -375,7 +375,7 @@ export function getFormContentNode(
     case ProposalVariant.ProposeCustomFunctionCall: {
       return <CustomFunctionCallContent dao={dao} />;
     }
-    case ProposalVariant.ProposeContractAcceptance: {
+    case ProposalVariant.ProposeStakingContractDeployment: {
       return <ContractAcceptanceContent tokenId="someverylonglongname.near" />;
     }
     case ProposalVariant.ProposeTokenDistribution: {
@@ -781,7 +781,7 @@ export function getValidationSchema(
       return yup.object().shape({});
     }
 
-    case ProposalVariant.ProposeContractAcceptance: {
+    case ProposalVariant.ProposeStakingContractDeployment: {
       return yup.object().shape({
         token: yup.string(),
         unstakingPeriod: yup

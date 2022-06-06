@@ -324,7 +324,7 @@ export function getProposalTypeByVariant(
       return ProposalType.ChangePolicy;
     }
     case ProposalVariant.ProposeTokenDistribution:
-    case ProposalVariant.ProposeContractAcceptance:
+    case ProposalVariant.ProposeStakingContractDeployment:
     case ProposalVariant.ProposeCreateToken: {
       return ProposalType.SetStakingContract;
     }

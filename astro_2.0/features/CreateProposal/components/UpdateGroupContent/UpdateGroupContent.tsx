@@ -1,7 +1,6 @@
-// TODO requires localisation
-
-import React, { FC, useState } from 'react';
 import cn from 'classnames';
+import React, { FC, useState } from 'react';
+import { useTranslation } from 'next-i18next';
 import { useFormContext } from 'react-hook-form';
 
 import { TGroup } from 'types/dao';
@@ -21,6 +20,8 @@ export const UpdateGroupContent: FC<Props> = ({
   groups,
   getDataFromContext = false,
 }) => {
+  const { t } = useTranslation();
+
   const formContext = useFormContext();
 
   let groupsList: TGroup[] = [];
@@ -41,7 +42,9 @@ export const UpdateGroupContent: FC<Props> = ({
   return (
     <div className={styles.root}>
       <div className={styles.list}>
-        <h4 className={styles.listTitle}>Groups</h4>
+        <h4 className={styles.listTitle}>
+          {t('proposalCard.upgradeContent.groups')}
+        </h4>
 
         {groupsList.map(group => (
           <Button
@@ -57,12 +60,14 @@ export const UpdateGroupContent: FC<Props> = ({
       </div>
       <div className={styles.content}>
         <div className={styles.column}>
-          <h6 className={styles.contentTitle}>Group name</h6>
+          <h6 className={styles.contentTitle}>
+            {t('proposalCard.upgradeContent.groupName')}
+          </h6>
 
           <p className={styles.contentValueName}>{activeGroup.name}</p>
 
           <h6 className={styles.contentTitle}>
-            Voting policy
+            {t('votingPolicy')}
             <Tooltip
               placement="top"
               arrowClassName={styles.popupArrow}
@@ -70,8 +75,7 @@ export const UpdateGroupContent: FC<Props> = ({
               className={styles.popover}
               overlay={
                 <div className={styles.tooltip}>
-                  What is the quorum required <br /> for the decision of this
-                  group
+                  {t('proposalCard.upgradeContent.quorumDescr')}
                 </div>
               }
             >
@@ -80,7 +84,7 @@ export const UpdateGroupContent: FC<Props> = ({
           </h6>
 
           <p className={styles.contentValue}>
-            Group quorum is{' '}
+            {`${t('proposalCard.upgradeContent.groupQuorum')} `}
             <b>
               {activeGroup.votePolicy.quorum ||
                 (
@@ -94,7 +98,7 @@ export const UpdateGroupContent: FC<Props> = ({
 
         <div className={styles.column}>
           <h6 className={cn(styles.contentTitle, styles.contentTitleSmall)}>
-            Members
+            {t('proposalCard.upgradeContent.members')}
           </h6>
 
           {activeGroup.members.map(member => (

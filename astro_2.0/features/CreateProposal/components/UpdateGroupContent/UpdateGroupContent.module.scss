@@ -140,6 +140,7 @@
   @extend %caption1;
   color: var(--color-brand-black);
   font-size: 1em;
+  white-space: break-spaces;
 }
 
 .contentValue {

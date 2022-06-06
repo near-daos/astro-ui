@@ -47,7 +47,6 @@ import { DraftManagement } from 'astro_2.0/components/ProposalCardRenderer/compo
 
 import { ProposalControlPanel } from './components/ProposalControlPanel';
 
-// import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import styles from './ProposalCard.module.scss';
 
 export interface ProposalCardProps {
@@ -310,7 +309,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   function renderProposer() {
     switch (variant) {
-      case ProposalVariant.ProposeContractAcceptance:
+      case ProposalVariant.ProposeStakingContractDeployment:
       case ProposalVariant.ProposeCreateToken: {
         return null;
       }
@@ -345,7 +344,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   function renderDescription() {
     switch (variant) {
       case ProposalVariant.ProposeCreateToken:
-      case ProposalVariant.ProposeContractAcceptance:
+      case ProposalVariant.ProposeStakingContractDeployment:
       case ProposalVariant.ProposeTokenDistribution: {
         return null;
       }
@@ -425,7 +424,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           </>
         );
       }
-      case ProposalVariant.ProposeContractAcceptance:
+      case ProposalVariant.ProposeStakingContractDeployment:
       case ProposalVariant.ProposeTokenDistribution: {
         return <div className={styles.descriptionCell}>{content}</div>;
       }
@@ -559,7 +558,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           label={getInfoBlockWidgetLabel()}
           value={
             <div className={styles.proposalType}>
-              {getProposalVariantLabel(variant, type)}
+              {getProposalVariantLabel(variant, type, t)}
               {!isDraft ? (
                 <ExplorerLink
                   linkData={proposalTxHash}

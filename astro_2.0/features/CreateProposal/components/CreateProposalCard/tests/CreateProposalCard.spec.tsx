@@ -95,12 +95,12 @@ const userPermissions = {
 
 describe('CreateGroupContent', () => {
   it.each`
-    type                                         | content
-    ${'Unknown'}                                 | ${'proposalCard.proposalOwner'}
-    ${ProposalVariant.ProposeDoneBounty}         | ${'Complete Bounty'}
-    ${ProposalVariant.ProposeTokenDistribution}  | ${'Distribution of tokens'}
-    ${ProposalVariant.ProposeContractAcceptance} | ${'Acceptance of contract'}
-    ${ProposalVariant.ProposeCustomFunctionCall} | ${'FunctionCallTypeSelector'}
+    type                                                | content
+    ${'Unknown'}                                        | ${'proposalCard.proposalOwner'}
+    ${ProposalVariant.ProposeDoneBounty}                | ${'Complete Bounty'}
+    ${ProposalVariant.ProposeTokenDistribution}         | ${'Distribution of tokens'}
+    ${ProposalVariant.ProposeStakingContractDeployment} | ${'Acceptance of contract'}
+    ${ProposalVariant.ProposeCustomFunctionCall}        | ${'FunctionCallTypeSelector'}
   `(
     'Should render component for $type proposal variant',
     ({ type, content }) => {
