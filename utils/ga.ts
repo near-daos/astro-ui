@@ -11,6 +11,7 @@ export enum GA_EVENTS {
   REQUEST_ALLOWANCE_KEY = 'request_allowance_key',
   SAVE_FC_TEMPLATE = 'save_fc_template',
   GROUP_BULK_UPDATE = 'group_bulk_update',
+  GROUP_BULK_UPDATE_INVALID_WALLET = 'group_bulk_update_invalid_wallet',
 }
 
 type CustomGaEvent = {
