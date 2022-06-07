@@ -71,9 +71,9 @@ jobs:
     - name: Run Tests
       uses: ./.github/actions/tests
       with:
-        env: ${{ inputs.env }}
-        browser: ${{ inputs.browser }}
-        tags: ${{ inputs.tags }}
+        env: ${{ github.event.inputs.env }}
+        browser: ${{ github.event.inputs.browser }}
+        tags: ${{ github.event.inputs.tags }}
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
