@@ -3,6 +3,7 @@
 // TODO refactor the helper. It's too big now.
 
 import * as yup from 'yup';
+import { AnySchema } from 'yup';
 import uniq from 'lodash/uniq';
 import { nanoid } from 'nanoid';
 import dynamic from 'next/dynamic';
@@ -39,11 +40,12 @@ import { AddMemberToGroupContent } from 'astro_2.0/features/CreateProposal/compo
 import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/CreateProposal/components/ChangeDaoLegalInfoContent';
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/components/RemoveMemberFromGroupContent';
 import { TokenDistributionContent } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent';
-import { ContractAcceptanceContent } from 'astro_2.0/features/CreateProposal/components/ContractAcceptanceContent';
+import { DeployStakingContractContent } from 'astro_2.0/features/CreateProposal/components/DeployStakingContractContent';
 import { CreateDaoContent } from 'astro_2.0/features/CreateProposal/components/CreateDaoContent';
 import { ChangeVotingPermissionsContent } from 'astro_2.0/features/CreateProposal/components/ChangeVotingPermissionsContent';
 import { CreateTokenContent } from 'astro_2.0/features/CreateProposal/components/CreateTokenContent';
 import { UpdateGroupContent } from 'astro_2.0/features/CreateProposal/components/UpdateGroupContent';
+import { AcceptStakingContractContent } from 'astro_2.0/features/CreateProposal/components/AcceptStakingContractContent';
 
 // Helpers & Utils
 import { getInitialData } from 'features/vote-policy/helpers';
@@ -57,7 +59,6 @@ import { SputnikNearService } from 'services/sputnik';
 import { ProposalPermissions } from 'types/context';
 import { TransferFundsContent } from 'astro_2.0/features/CreateProposal/components/TransferFundsContent';
 import { Token } from 'types/token';
-import { AnySchema } from 'yup';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -375,8 +376,11 @@ export function getFormContentNode(
     case ProposalVariant.ProposeCustomFunctionCall: {
       return <CustomFunctionCallContent dao={dao} />;
     }
-    case ProposalVariant.ProposeContractAcceptance: {
-      return <ContractAcceptanceContent tokenId="someverylonglongname.near" />;
+    case ProposalVariant.ProposeStakingContractDeployment: {
+      return <DeployStakingContractContent />;
+    }
+    case ProposalVariant.ProposeAcceptStakingContract: {
+      return <AcceptStakingContractContent />;
     }
     case ProposalVariant.ProposeTokenDistribution: {
       const groups = dao.groups.map(group => {
@@ -781,7 +785,7 @@ export function getValidationSchema(
       return yup.object().shape({});
     }
 
-    case ProposalVariant.ProposeContractAcceptance: {
+    case ProposalVariant.ProposeStakingContractDeployment: {
       return yup.object().shape({
         token: yup.string(),
         unstakingPeriod: yup
@@ -790,6 +794,12 @@ export function getValidationSchema(
           .positive()
           .min(1)
           .required('Required'),
+      });
+    }
+
+    case ProposalVariant.ProposeAcceptStakingContract: {
+      return yup.object().shape({
+        contract: yup.string(),
       });
     }
 

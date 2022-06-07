@@ -8,3 +8,5 @@ export const FEED_CATEGORIES = [
   { value: ProposalCategories.Polls, label: 'Polls' },
   { value: ProposalCategories.FunctionCalls, label: 'Function Calls' },
 ];
+
+export const STAKING_CONTRACT_PREFIX = '-staking';

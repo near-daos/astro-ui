@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react';
 import Decimal from 'decimal.js';
+import React, { ReactNode } from 'react';
+import { TFunction } from 'next-i18next';
 
 import { DAO, TGroup } from 'types/dao';
 import {
@@ -333,13 +334,8 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
 
         break;
       }
-      case ProposalVariant.ProposeContractAcceptance: {
-        content = (
-          <ContractAcceptanceContent
-            tokenId="someverylonglongname.near"
-            unstakingPeriod="345"
-          />
-        );
+      case ProposalVariant.ProposeStakingContractDeployment: {
+        content = <ContractAcceptanceContent proposal={proposal} />;
 
         break;
       }
@@ -535,71 +531,95 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
 
 export function getProposalVariantLabel(
   variant: ProposalVariant,
-  type: ProposalType
+  type: ProposalType,
+  t: TFunction
 ): string {
+  const getVarLabel = (key: string) =>
+    t(`viewProposalCard.proposalVariant.${key}`);
+
+  const getTypeLabel = (key: string) =>
+    t(`viewProposalCard.proposalType.${key}`);
+
   switch (variant) {
     case ProposalVariant.ProposeCreateBounty: {
-      return 'Create a Bounty';
+      return getVarLabel('createBounty');
     }
     case ProposalVariant.ProposeDoneBounty: {
-      return 'Bounty Done';
+      return getVarLabel('bountyDone');
     }
     case ProposalVariant.ProposeTransfer: {
-      return 'Transfer';
+      return getVarLabel('transfer');
     }
     case ProposalVariant.ProposeChangeDaoName: {
-      return 'Change DAO name';
+      return getVarLabel('changeDaoName');
     }
     case ProposalVariant.ProposeChangeDaoPurpose: {
-      return 'Change DAO purpose';
+      return getVarLabel('changeDaoPurpose');
     }
     case ProposalVariant.ProposeChangeDaoLinks: {
-      return 'Change DAO links';
+      return getVarLabel('changeDaoLinks');
     }
     case ProposalVariant.ProposePoll: {
-      return 'Poll';
+      return getVarLabel('poll');
     }
     case ProposalVariant.ProposeCreateGroup: {
-      return 'Create group';
+      return getVarLabel('createGroup');
     }
     case ProposalVariant.ProposeAddMember: {
-      return 'Add member to Role';
+      return getVarLabel('addMember');
     }
     case ProposalVariant.ProposeRemoveMember: {
-      return 'Remove member from Role';
+      return getVarLabel('removeMember');
     }
     case ProposalVariant.ProposeChangeVotingPolicy: {
-      return 'Change Voting Policy';
+      return getVarLabel('changeVotingPolicy');
     }
     case ProposalVariant.ProposeChangeBonds: {
-      return 'Change Bonds and Deadlines';
+      return getVarLabel('changeBonds');
     }
     case ProposalVariant.ProposeChangeDaoFlag: {
-      return 'Change DAO flag';
+      return getVarLabel('changeDaoFlag');
     }
     case ProposalVariant.ProposeTokenDistribution: {
-      return 'Distribution of tokens';
+      return getVarLabel('tokenDistribution');
     }
     case ProposalVariant.ProposeChangeProposalCreationPermissions: {
-      return 'Proposal creation';
+      return getVarLabel('changeProposalCreationPermissions');
     }
     case ProposalVariant.ProposeChangeProposalVotingPermissions: {
-      return 'Voting permissions';
+      return getVarLabel('changeProposalVotingPermissions');
     }
     case ProposalVariant.ProposeGetUpgradeCode: {
-      return 'Get Code From Factory';
+      return getVarLabel('getCodeFromFactory');
     }
     case ProposalVariant.ProposeUpgradeSelf: {
-      return 'Upgrade DAO';
+      return getVarLabel('upgradeDao');
     }
     case ProposalVariant.ProposeRemoveUpgradeCode: {
-      return 'Recover Storage Costs';
+      return getVarLabel('recoverStorageCosts');
     }
     case ProposalVariant.ProposeCreateDao: {
-      return 'Create DAO';
+      return getVarLabel('createDao');
+    }
+    case ProposalVariant.ProposeStakingContractDeployment: {
+      return getVarLabel('deployStakingContract');
+    }
+    case ProposalVariant.ProposeAcceptStakingContract: {
+      return getVarLabel('contractAcceptance');
     }
     default: {
-      return type;
+      switch (type) {
+        case ProposalType.AddBounty:
+          return getTypeLabel('addBounty');
+        case ProposalType.ChangePolicy:
+          return getTypeLabel('changePolicy');
+        case ProposalType.ChangeConfig:
+          return getTypeLabel('changeConfig');
+        case ProposalType.FunctionCall:
+          return getTypeLabel('functionCall');
+        default:
+          return type;
+      }
     }
   }
 }

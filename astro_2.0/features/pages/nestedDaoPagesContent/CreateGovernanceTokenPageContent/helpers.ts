@@ -97,10 +97,10 @@ export function getCreateGovernanceTokenStepProposalVariant(
         : null;
     }
     case CreateGovernanceTokenSteps.ContractAcceptance: {
-      return ProposalVariant.ProposeContractAcceptance;
+      return ProposalVariant.ProposeStakingContractDeployment;
     }
-    case CreateGovernanceTokenSteps.TokenDistribution: {
-      return ProposalVariant.ProposeTokenDistribution;
+    case CreateGovernanceTokenSteps.AcceptStakingContract: {
+      return ProposalVariant.ProposeAcceptStakingContract;
     }
     case CreateGovernanceTokenSteps.ChangeDaoPolicy: {
       return ProposalVariant.ProposeChangeVotingPolicy;
@@ -122,9 +122,9 @@ export function getNextCreateGovernanceTokenWizardStep(
       return CreateGovernanceTokenSteps.ContractAcceptance;
     }
     case CreateGovernanceTokenSteps.ContractAcceptance: {
-      return CreateGovernanceTokenSteps.TokenDistribution;
+      return CreateGovernanceTokenSteps.AcceptStakingContract;
     }
-    case CreateGovernanceTokenSteps.TokenDistribution: {
+    case CreateGovernanceTokenSteps.AcceptStakingContract: {
       return CreateGovernanceTokenSteps.ChangeDaoPolicy;
     }
     case CreateGovernanceTokenSteps.ChangeDaoPolicy: {

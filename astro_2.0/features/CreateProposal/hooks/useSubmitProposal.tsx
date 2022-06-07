@@ -15,7 +15,35 @@ import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 import omit from 'lodash/omit';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-import { DeployStakingContractParams } from 'services/sputnik/SputnikNearService/services/GovernanceTokenService';
+import {
+  AcceptStakingContractParams,
+  DeployStakingContractParams,
+} from 'services/sputnik/SputnikNearService/services/GovernanceTokenService';
+import { SputnikNearService } from 'services/sputnik';
+
+async function createProposal(
+  variant: ProposalVariant,
+  proposal: CreateProposalParams,
+  nearService: SputnikNearService | null
+) {
+  if (variant === ProposalVariant.ProposeTransfer) {
+    return nearService?.createTokenTransferProposal(proposal);
+  }
+
+  if (variant === ProposalVariant.ProposeStakingContractDeployment) {
+    return nearService?.deployStakingContract(
+      (proposal as unknown) as DeployStakingContractParams
+    );
+  }
+
+  if (variant === ProposalVariant.ProposeAcceptStakingContract) {
+    return nearService?.acceptStakingContract(
+      (proposal as unknown) as AcceptStakingContractParams
+    );
+  }
+
+  return nearService?.addProposal(proposal);
+}
 
 export function useSubmitProposal({
   selectedProposalVariant,
@@ -46,7 +74,8 @@ export function useSubmitProposal({
     async data => {
       // show captcha modal for some proposals
       if (
-        selectedProposalVariant === ProposalVariant.ProposeContractAcceptance
+        selectedProposalVariant ===
+        ProposalVariant.ProposeStakingContractDeployment
       ) {
         const [res] = await showModal();
 
@@ -163,22 +192,11 @@ export function useSubmitProposal({
               return;
             }
 
-            let resp;
-
-            if (selectedProposalVariant === ProposalVariant.ProposeTransfer) {
-              resp = await nearService?.createTokenTransferProposal(
-                newProposal
-              );
-            } else if (
-              selectedProposalVariant ===
-              ProposalVariant.ProposeContractAcceptance
-            ) {
-              resp = await nearService?.deployStakingContract(
-                (newProposal as unknown) as DeployStakingContractParams
-              );
-            } else {
-              resp = await nearService?.addProposal(newProposal);
-            }
+            const resp = await createProposal(
+              selectedProposalVariant,
+              newProposal,
+              nearService
+            );
 
             const newProposalId = resp
               ? JSON.parse(
