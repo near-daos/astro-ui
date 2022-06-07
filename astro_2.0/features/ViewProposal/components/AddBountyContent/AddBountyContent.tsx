@@ -54,6 +54,10 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
     return <div className={styles.icon} />;
   }
 
+  function renderAmount() {
+    return tokenData ? formatYoktoValue(amount, tokenData.decimals) : amount;
+  }
+
   return (
     <div className={styles.root}>
       <div className={styles.inline}>
@@ -65,7 +69,7 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
             <FieldValue
               value={
                 <>
-                  {formatYoktoValue(amount, tokenData.decimals)}
+                  {renderAmount()}
                   <div className={styles.iconWrapper}>{renderIcon()}</div>
                   <div className={styles.symbol}>{tokenData.symbol}</div>
                 </>

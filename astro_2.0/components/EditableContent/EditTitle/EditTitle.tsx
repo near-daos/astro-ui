@@ -5,9 +5,14 @@ import styles from './EditTitle.module.scss';
 type EditTitleProps = {
   title?: string;
   setTitle: (value: string) => void;
+  placeholder?: string;
 };
 
-export const EditTitle: FC<EditTitleProps> = ({ title, setTitle }) => {
+export const EditTitle: FC<EditTitleProps> = ({
+  title,
+  setTitle,
+  placeholder = 'Title',
+}) => {
   return (
     <div className={styles.editTitle}>
       <input
@@ -17,7 +22,7 @@ export const EditTitle: FC<EditTitleProps> = ({ title, setTitle }) => {
         onChange={(event: ChangeEvent<HTMLInputElement>) =>
           setTitle(event.target.value)
         }
-        placeholder="Add draft name"
+        placeholder={placeholder}
       />
     </div>
   );

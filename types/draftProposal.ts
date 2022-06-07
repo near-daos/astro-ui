@@ -31,4 +31,5 @@ export interface DraftProposal extends ProposalFeedItem {
   comments: DraftComment[];
   bookmarks: number;
   state: 'open' | 'closed';
+  history: ProposalFeedItem[];
 }

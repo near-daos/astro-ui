@@ -31,6 +31,11 @@
     width: 1024px;
   }
 
+  &.xxxl {
+    max-width: 1280px;
+    width: 100%;
+  }
+
   &.auto {
     max-width: 1024px;
     width: 100%;

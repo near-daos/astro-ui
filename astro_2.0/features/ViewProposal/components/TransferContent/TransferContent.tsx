@@ -50,14 +50,15 @@ export const TransferContent: FC<TransferContentProps> = ({
     return <div className={styles.icon} />;
   }
 
+  function renderAmount() {
+    return tokenData ? formatYoktoValue(amount, tokenData.decimals) : amount;
+  }
+
   return (
     <div className={styles.root}>
       <FieldWrapper label={t('proposalCard.proposalAmount')}>
         {tokenData ? (
-          <FieldValue
-            value={formatYoktoValue(amount, tokenData.decimals)}
-            noWrap
-          />
+          <FieldValue value={renderAmount()} noWrap />
         ) : (
           <div className={styles.loaderWrapper}>
             <LoadingIndicator />

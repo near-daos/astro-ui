@@ -46,6 +46,7 @@ const formats = ['list', 'bold', 'italic', 'image'];
 type EditableContentProps = {
   id?: string;
   placeholder?: string;
+  titlePlaceholder?: string;
   html: string;
   setHTML: (html: string) => void;
   title?: string;
@@ -65,6 +66,7 @@ export const EditableContent: FC<EditableContentProps> = ({
   setTitle,
   hashtags,
   setHashtags,
+  titlePlaceholder,
 }) => {
   const modules = {
     toolbar: {
@@ -81,7 +83,13 @@ export const EditableContent: FC<EditableContentProps> = ({
   return (
     <div className={styles.createComment}>
       {renderCustomToolbar(id)}
-      {setTitle ? <EditTitle title={title} setTitle={setTitle} /> : null}
+      {setTitle ? (
+        <EditTitle
+          title={title}
+          placeholder={titlePlaceholder}
+          setTitle={setTitle}
+        />
+      ) : null}
       {setHashtags && hashtags ? (
         <EditHashtags hashtags={hashtags} setHashtags={setHashtags} />
       ) : null}

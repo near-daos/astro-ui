@@ -11,6 +11,8 @@ export function useAppInitialize(): boolean {
     console.error(
       `Global error: ${e.message}, ${e.source}, ${e.lineno}, ${e.colno}`
     );
+    // eslint-disable-next-line
+    console.trace(e);
 
     return true;
   }, []);

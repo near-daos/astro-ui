@@ -1,0 +1,61 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  @extend %subtitle1;
+  border-bottom: 1px solid var(--color-neutral-40);
+  padding: 0 0 12px;
+}
+
+.body {
+  display: flex;
+}
+
+.column {
+  flex: 1;
+  max-height: 80vh;
+  overflow: auto;
+
+  &:first-of-type {
+    border-right: 1px solid var(--color-neutral-40);
+  }
+}
+
+.column {
+  del {
+    background-color: var(--color-error-20);
+    text-decoration: none;
+  }
+  ins {
+    background-color: var(--color-success-20);
+    text-decoration: none;
+  }
+}
+
+.footer {
+  @extend %subtitle1;
+  align-items: center;
+  border-top: 1px solid var(--color-neutral-40);
+  display: flex;
+  justify-content: center;
+  padding: 24px 0 0;
+}
+
+.arrow {
+  margin: 0 24px;
+  width: 24px;
+}
+
+.secondary {
+  color: var(--color-neutral-50);
+}
+
+.prerenderContainer {
+  height: 0;
+  overflow: hidden;
+  width: 0;
+}
