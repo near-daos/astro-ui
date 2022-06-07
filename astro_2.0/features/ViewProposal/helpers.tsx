@@ -216,30 +216,6 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
         if (proposal.kind.type === ProposalType.ChangePolicy) {
           const { policy } = proposal.kind;
 
-          let compareOptions;
-
-          if (
-            compareWith &&
-            compareWith.kind.type === ProposalType.ChangePolicy
-          ) {
-            const cPolicy = compareWith.kind.policy;
-
-            compareOptions = {
-              createProposalBond: new Decimal(cPolicy.proposalBond)
-                .div(YOKTO_NEAR)
-                .toNumber(),
-              claimBountyBond: new Decimal(cPolicy.bountyBond)
-                .div(YOKTO_NEAR)
-                .toNumber(),
-              proposalExpireTime: new Decimal(cPolicy.proposalPeriod)
-                .div('3.6e12')
-                .toNumber(),
-              unclaimBountyTime: new Decimal(cPolicy.bountyForgivenessPeriod)
-                .div('3.6e12')
-                .toNumber(),
-            };
-          }
-
           content = (
             <ChangeBondsContent
               daoId={dao.id}
@@ -255,7 +231,6 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
               unclaimBountyTime={new Decimal(policy.bountyForgivenessPeriod)
                 .div('3.6e12')
                 .toNumber()}
-              compareOptions={compareOptions}
             />
           );
           break;
@@ -306,25 +281,10 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
       }
       case ProposalVariant.ProposeAddMember: {
         if (proposal.kind.type === ProposalType.AddMemberToRole) {
-          let compareOptions;
-
-          if (
-            compareWith &&
-            compareWith.kind.type === ProposalType.AddMemberToRole
-          ) {
-            const compareKind = compareWith.kind;
-
-            compareOptions = {
-              memberName: compareKind.memberId,
-              group: compareKind.role,
-            };
-          }
-
           content = (
             <AddMemberToGroupContent
               group={proposal.kind.role}
               memberName={proposal.kind.memberId}
-              compareOptions={compareOptions}
             />
           );
           break;
@@ -334,25 +294,10 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
       }
       case ProposalVariant.ProposeRemoveMember: {
         if (proposal.kind.type === ProposalType.RemoveMemberFromRole) {
-          let compareOptions;
-
-          if (
-            compareWith &&
-            compareWith.kind.type === ProposalType.RemoveMemberFromRole
-          ) {
-            const compareKind = compareWith.kind;
-
-            compareOptions = {
-              memberName: compareKind.memberId,
-              group: compareKind.role,
-            };
-          }
-
           content = (
             <RemoveMemberFromGroupContent
               group={proposal.kind.role}
               memberName={proposal.kind.memberId}
-              compareOptions={compareOptions}
             />
           );
           break;
