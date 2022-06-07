@@ -6,6 +6,7 @@ import {
   FieldValue,
   FieldWrapper,
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
+import { DiffRenderer } from 'astro_2.0/features/ViewProposal/components/DiffRenderer';
 
 import styles from './ChangeBondsContent.module.scss';
 
@@ -15,6 +16,12 @@ interface ChangeBondsContentProps {
   proposalExpireTime: number;
   claimBountyBond: number;
   unclaimBountyTime: number;
+  compareOptions?: {
+    createProposalBond: number;
+    proposalExpireTime: number;
+    claimBountyBond: number;
+    unclaimBountyTime: number;
+  };
 }
 
 export const ChangeBondsContent: FC<ChangeBondsContentProps> = ({
@@ -23,6 +30,7 @@ export const ChangeBondsContent: FC<ChangeBondsContentProps> = ({
   proposalExpireTime,
   claimBountyBond,
   unclaimBountyTime,
+  compareOptions,
 }) => {
   const { t } = useTranslation();
 
@@ -32,11 +40,33 @@ export const ChangeBondsContent: FC<ChangeBondsContentProps> = ({
         <div className={styles.title}>{t('proposalCard.proposals')}</div>
         <div className={styles.inline}>
           <FieldWrapper label={t('proposalCard.proposalBonds')}>
-            <FieldValue value={createProposalBond} />
+            <FieldValue
+              value={
+                compareOptions ? (
+                  <DiffRenderer
+                    oldValue={compareOptions.createProposalBond}
+                    newValue={createProposalBond}
+                  />
+                ) : (
+                  createProposalBond
+                )
+              }
+            />
           </FieldWrapper>
 
           <FieldWrapper label={t('proposalCard.proposalBondExpirationTime')}>
-            <FieldValue value={proposalExpireTime} />
+            <FieldValue
+              value={
+                compareOptions ? (
+                  <DiffRenderer
+                    oldValue={compareOptions.proposalExpireTime}
+                    newValue={proposalExpireTime}
+                  />
+                ) : (
+                  proposalExpireTime
+                )
+              }
+            />
           </FieldWrapper>
         </div>
       </div>
@@ -44,11 +74,33 @@ export const ChangeBondsContent: FC<ChangeBondsContentProps> = ({
         <div className={styles.title}>{t('proposalCard.proposalBounties')}</div>
         <div className={styles.inline}>
           <FieldWrapper label={t('proposalCard.proposalClaimBounty')}>
-            <FieldValue value={claimBountyBond} />
+            <FieldValue
+              value={
+                compareOptions ? (
+                  <DiffRenderer
+                    oldValue={compareOptions.claimBountyBond}
+                    newValue={claimBountyBond}
+                  />
+                ) : (
+                  claimBountyBond
+                )
+              }
+            />
           </FieldWrapper>
 
           <FieldWrapper label={t('proposalCard.proposalBountyUnclaimTime')}>
-            <FieldValue value={unclaimBountyTime} />
+            <FieldValue
+              value={
+                compareOptions ? (
+                  <DiffRenderer
+                    oldValue={compareOptions.unclaimBountyTime}
+                    newValue={unclaimBountyTime}
+                  />
+                ) : (
+                  unclaimBountyTime
+                )
+              }
+            />
           </FieldWrapper>
         </div>
       </div>

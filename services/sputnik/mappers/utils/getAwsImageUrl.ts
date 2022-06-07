@@ -5,6 +5,10 @@ export function getAwsImageUrl(flag?: string): string {
   let bucket;
   let region;
 
+  if (flag?.startsWith('http')) {
+    return flag;
+  }
+
   if (process.browser) {
     const { appConfig } = configService.get();
 

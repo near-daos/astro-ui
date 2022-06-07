@@ -34,13 +34,13 @@ export const DaoMembersForm: VFC = () => {
       accounts: uniqBy(
         state.members.accounts
           ? [
-              { name: accountId, role: state.groups.items[0]?.name || '' },
+              { name: accountId, role: state.groups.items[1]?.name || '' },
               ...state.members.accounts.map(item => ({
                 name: item.name,
                 role: item.role,
               })),
             ]
-          : [{ name: accountId, role: state.groups.items[0].name || '' }],
+          : [{ name: accountId, role: state.groups.items[1].name || '' }],
         item => item.name
       ),
     },
