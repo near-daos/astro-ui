@@ -11,6 +11,7 @@ import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTo
 import { formatYoktoValue } from 'utils/format';
 import { useIsValidImage } from 'hooks/useIsValidImage';
 import { useTranslation } from 'next-i18next';
+import { DiffRenderer } from 'astro_2.0/features/ViewProposal/components/DiffRenderer';
 
 import styles from './AddBountyContent.module.scss';
 
@@ -19,6 +20,12 @@ interface AddBountyContentProps {
   slots: number;
   deadlineThreshold: string;
   token: string;
+  compareOptions?: {
+    amount: string;
+    slots: number;
+    deadlineThreshold: string;
+    token: string;
+  };
 }
 
 export const AddBountyContent: FC<AddBountyContentProps> = ({
@@ -26,6 +33,7 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
   slots,
   deadlineThreshold,
   token,
+  compareOptions,
 }) => {
   const { t } = useTranslation();
 
@@ -54,6 +62,25 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
     return <div className={styles.icon} />;
   }
 
+  function renderAmount() {
+    const val = tokenData
+      ? formatYoktoValue(amount, tokenData.decimals)
+      : amount;
+
+    if (compareOptions) {
+      const cTokenData = compareOptions.token
+        ? tokens[compareOptions.token]
+        : tokens.NEAR;
+      const compareVal = cTokenData
+        ? formatYoktoValue(compareOptions.amount, cTokenData.decimals)
+        : compareOptions.amount;
+
+      return <DiffRenderer oldValue={compareVal} newValue={val} />;
+    }
+
+    return tokenData ? formatYoktoValue(amount, tokenData.decimals) : amount;
+  }
+
   return (
     <div className={styles.root}>
       <div className={styles.inline}>
@@ -65,7 +92,7 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
             <FieldValue
               value={
                 <>
-                  {formatYoktoValue(amount, tokenData.decimals)}
+                  {renderAmount()}
                   <div className={styles.iconWrapper}>{renderIcon()}</div>
                   <div className={styles.symbol}>{tokenData.symbol}</div>
                 </>
@@ -85,7 +112,18 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
           label={t('proposalCard.bountyAvailableClaims')}
           labelClassName={styles.label}
         >
-          <FieldValue value={slots} />
+          <FieldValue
+            value={
+              compareOptions ? (
+                <DiffRenderer
+                  newValue={slots}
+                  oldValue={compareOptions.slots}
+                />
+              ) : (
+                slots
+              )
+            }
+          />
         </FieldWrapper>
         <div className={styles.divider} />
         <FieldWrapper
@@ -93,7 +131,18 @@ export const AddBountyContent: FC<AddBountyContentProps> = ({
           label={t('proposalCard.bountyTimeToComplete')}
           labelClassName={styles.label}
         >
-          <FieldValue value={deadlineThreshold} />
+          <FieldValue
+            value={
+              compareOptions ? (
+                <DiffRenderer
+                  newValue={deadlineThreshold}
+                  oldValue={compareOptions.deadlineThreshold}
+                />
+              ) : (
+                deadlineThreshold
+              )
+            }
+          />
         </FieldWrapper>
       </div>
     </div>

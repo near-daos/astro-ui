@@ -75,6 +75,7 @@ export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
         json={json}
         methodName={methodName}
         smartContractAddress={smartContractAddress}
+        compareOptions={compareOptions}
       />
     );
   }

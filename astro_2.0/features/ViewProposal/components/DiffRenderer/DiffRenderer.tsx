@@ -6,8 +6,8 @@ import { useCompareProposalContext } from 'astro_2.0/features/ViewProposal/compo
 import s from './DiffRenderer.module.scss';
 
 interface Props {
-  oldValue: string;
-  newValue: string;
+  oldValue: string | number;
+  newValue: string | number;
   codeView?: boolean;
 }
 
@@ -69,8 +69,8 @@ export const DiffRenderer: FC<Props> = ({ oldValue, newValue, codeView }) => {
       <ReactDiffViewer
         // splitView
         // showDiffOnly={false}
-        oldValue={oldValue}
-        newValue={newValue}
+        oldValue={`${oldValue}`}
+        newValue={`${newValue}`}
         hideLineNumbers
         compareMethod={DiffMethod.WORDS}
         styles={viewStyles}

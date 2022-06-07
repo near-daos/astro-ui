@@ -179,10 +179,10 @@ const proposal3 = {
   status: 'InProgress',
   kind: {
     type: 'FunctionCall',
-    receiverId: 'v1_02.multicall.testnet',
+    receiverId: 'v1_04.multicall.testnet',
     actions: [
       {
-        methodName: 'create',
+        methodName: 'create_new',
         args:
           'eyJtdWx0aWNhbGxfaW5pdF9hcmdzIjp7ImFkbWluX2FjY291bnRzIjpbInRlc3Quc3B1dG5pa3YyLnRlc3RuZXQiXSwiY3JvbmNhdF9tYW5hZ2VyIjoibWFuYWdlcl92MS5jcm9uY2F0LnRlc3RuZXQiLCJqb2JfYm9uZCI6IjEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAifX0=',
         deposit: '3000000000000000000000000',
