@@ -96,7 +96,7 @@ export const ManageGroups: React.FC<Props> = ({
   const validateGroup = (group: TLocalGroup): boolean => {
     if (
       BANNED_GROUP_NAMES.includes(group.name.toLowerCase()) &&
-      group.slug !== 'council'
+      !BANNED_GROUP_NAMES.includes(group.slug)
     ) {
       return false;
     }

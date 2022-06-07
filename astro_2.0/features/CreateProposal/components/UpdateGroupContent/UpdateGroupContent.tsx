@@ -17,6 +17,9 @@ type Props = {
   getDataFromContext?: boolean;
 };
 
+const calculateQuorum = (threshold: number[] = [1, 2]): number =>
+  Math.floor((threshold[0] / threshold[1]) * 100);
+
 export const UpdateGroupContent: FC<Props> = ({
   groups,
   getDataFromContext = false,
@@ -82,11 +85,12 @@ export const UpdateGroupContent: FC<Props> = ({
           <p className={styles.contentValue}>
             Group quorum is{' '}
             <b>
-              {activeGroup.votePolicy.quorum ||
-                (
-                  activeGroup.votePolicy?.changePolicy ||
-                  activeGroup.votePolicy.defaultPolicy
-                ).quorum}{' '}
+              {activeGroup.votePolicy?.quorum
+                ? activeGroup.votePolicy?.quorum
+                : calculateQuorum(
+                    activeGroup.votePolicy?.changePolicy?.threshold ||
+                      activeGroup.votePolicy?.defaultPolicy?.threshold
+                  )}{' '}
               %
             </b>
           </p>

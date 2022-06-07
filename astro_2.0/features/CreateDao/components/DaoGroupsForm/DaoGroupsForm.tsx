@@ -36,7 +36,7 @@ export const DaoGroupsForm: VFC = () => {
             }))
           : [
               { group: 'All', slug: 'all' },
-              { group: 'Councils', slug: 'councils' },
+              { group: 'Councils', slug: 'council' },
             ],
         item => item.group
       ),
