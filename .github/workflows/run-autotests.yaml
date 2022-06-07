@@ -106,15 +106,15 @@ jobs:
         fi
         sudo mkdir astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}
         sudo cp -r astro-test-framework/build/reports/allure-report astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/
-        sudo cp -r astro-test-framework/build/swagger-coverage-output astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/
-        sudo find astro-test-framework/build -name swagger-coverage-report.html -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/index.html \;
-        sudo find astro-test-framework/build -name swagger-coverage-results.json -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/ \;
+        #sudo cp -r astro-test-framework/build/swagger-coverage-output astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/
+        #sudo find astro-test-framework/build -name swagger-coverage-report.html -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/index.html \;
+        #sudo find astro-test-framework/build -name swagger-coverage-results.json -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/ \;
         cat .github/actions/test/reports-site/HEADER.html.template | envsubst | sudo tee astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/HEADER.html
 
-    - uses: actions/upload-artifact@v2
-      with:
-        name: coverage_report
-        path: astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/**
+#    - uses: actions/upload-artifact@v2
+#      with:
+#        name: coverage_report
+#        path: astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/**
 
     - uses: Consensys/kubernetes-action@1.1.0
       env:
@@ -131,5 +131,5 @@ jobs:
     - name: Add Annotation
       run: |
         echo "::notice title=Allure Report::https://automation-report.app.astrodao.com/ui-${{ steps.set_environment.outputs.environment }}/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/allure-report/"
-        echo "::notice title=Coverage Report::https://automation-report.app.astrodao.com/ui-${{ steps.set_environment.outputs.environment }}/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/"
+        #echo "::notice title=Coverage Report::https://automation-report.app.astrodao.com/ui-${{ steps.set_environment.outputs.environment }}/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/"
         echo "::notice title=History for Environment::https://automation-report.app.astrodao.com/ui-${{ steps.set_environment.outputs.environment }}/"
