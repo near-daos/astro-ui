@@ -13,6 +13,7 @@ interface DaoLinkLineProps {
   item: { group: string };
   index: number;
   canBeRemoved?: boolean;
+  readOnly?: boolean;
   onRemove: () => void;
 }
 
@@ -20,6 +21,7 @@ export const DaoGroupLine: VFC<DaoLinkLineProps> = ({
   index,
   onRemove,
   canBeRemoved = true,
+  readOnly = false,
 }) => {
   const {
     register,
@@ -44,13 +46,18 @@ export const DaoGroupLine: VFC<DaoLinkLineProps> = ({
               inputClassName={cn({
                 [styles.error]: !!error,
               })}
+              readOnly={readOnly}
               placeholder="Group name"
               {...register(`groups.${index}.group`)}
               defaultValue={currentValue}
               onValueChange={val => {
-                setFormValue(`groups.${index}.group`, val, {
-                  shouldValidate: true,
-                });
+                setFormValue(
+                  `groups.${index}.group`,
+                  val?.toString().toLowerCase(),
+                  {
+                    shouldValidate: true,
+                  }
+                );
               }}
               size="block"
             />
