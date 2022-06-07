@@ -174,7 +174,41 @@ const proposal3 = {
   daoId: 'test.sputnikv2.testnet',
   proposer: 'terratest.testnet',
   commentsCount: 0,
-  description: 'More details here.',
+  description:
+    '<div>\n' +
+    '    <span style="font-size: 18px;">Quill Rich Text Editor</span>\n' +
+    '</div>\n' +
+    '<div>\n' +
+    '    <br>\n' +
+    '</div>\n' +
+    '<div>Quill is a free,\n' +
+    '    <a href="https://github.com/quilljs/quill/">open source</a>WYSIWYG editor built for the modern web. With its\n' +
+    '    <a href="http://quilljs.com/docs/modules/">extensible architecture</a>and a\n' +
+    '    <a href="http://quilljs.com/docs/api/">expressive API</a>you can completely customize it to fulfill your needs. Some built in features include:</div>\n' +
+    '<div>\n' +
+    '    <br>\n' +
+    '</div>\n' +
+    '<ul>\n' +
+    '    <li>Fast and lightweight</li>\n' +
+    '    <li>Semantic markup</li>\n' +
+    '    <li>Standardized HTML between browsers</li>\n' +
+    '    <li>Cross browser support including Chrome, Firefox, Safari, and IE 9+</li>\n' +
+    '</ul>\n' +
+    '<div>\n' +
+    '    <br>\n' +
+    '</div>\n' +
+    '<div>\n' +
+    '    <span style="font-size: 18px;">Downloads</span>\n' +
+    '</div>\n' +
+    '<div>\n' +
+    '    <br>\n' +
+    '</div>\n' +
+    '<ul>\n' +
+    '    <li>\n' +
+    '        <a href="https://quilljs.com">Quill.js</a>, the free, open source WYSIWYG editor</li>\n' +
+    '    <li>\n' +
+    '        <a href="https://zenoamaro.github.io/react-quill">React-quill</a>, a React component that wraps Quill.js</li>\n' +
+    '</ul>',
   link: '',
   status: 'InProgress',
   kind: {
@@ -220,7 +254,7 @@ const proposal3 = {
     logo: '/flags/defaultDaoFlag.png',
   },
   proposalVariant: 'ProposeCustomFunctionCall',
-  updatedAt: '2022-06-27T02:21:17.140Z',
+  updatedAt: '2022-02-27T02:21:17.140Z',
   actions: [
     {
       id: 'test.sputnikv2.testnet-6-terratest.testnet-AddProposal',

@@ -6,7 +6,6 @@ import {
   FieldWrapper,
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { Icon } from 'components/Icon';
-import { DiffRenderer } from 'astro_2.0/features/ViewProposal/components/DiffRenderer';
 
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
@@ -24,13 +23,6 @@ interface CustomFunctionCallContentProps {
   methodName: string;
   json: string;
   deposit: string;
-  compareOptions?: {
-    token: string;
-    smartContractAddress: string;
-    methodName: string;
-    json: string;
-    deposit: string;
-  };
 }
 
 export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
@@ -39,7 +31,6 @@ export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
   methodName,
   json,
   deposit,
-  compareOptions,
 }) => {
   const { tokens } = useCustomTokensContext();
   const { t } = useTranslation();
@@ -75,27 +66,11 @@ export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
         json={json}
         methodName={methodName}
         smartContractAddress={smartContractAddress}
-        compareOptions={compareOptions}
       />
     );
   }
 
   function renderDeposit() {
-    const val = tokenData
-      ? formatYoktoValue(deposit, tokenData.decimals)
-      : deposit;
-
-    if (compareOptions) {
-      const cTokenData = compareOptions.token
-        ? tokens[compareOptions.token]
-        : tokens.NEAR;
-      const compareVal = cTokenData
-        ? formatYoktoValue(compareOptions.deposit, cTokenData.decimals)
-        : compareOptions.deposit;
-
-      return <DiffRenderer oldValue={compareVal} newValue={val} />;
-    }
-
     return tokenData ? formatYoktoValue(deposit, tokenData.decimals) : deposit;
   }
 

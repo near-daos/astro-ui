@@ -35,8 +35,8 @@ export const DaoGroupsForm: VFC = () => {
               group: item.name,
             }))
           : [
-              { group: 'All', slug: 'all' },
-              { group: 'Councils', slug: 'council' },
+              { group: 'all', slug: 'all' },
+              { group: 'council', slug: 'council' },
             ],
         item => item.group
       ),
@@ -108,6 +108,7 @@ export const DaoGroupsForm: VFC = () => {
                     key={item.id}
                     item={item}
                     index={index}
+                    readOnly
                     canBeRemoved={false}
                     onRemove={() => remove(index)}
                   />

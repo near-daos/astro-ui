@@ -42,10 +42,7 @@ import { ChangePermissionsContent } from 'astro_2.0/features/ViewProposal/compon
 import { UpdateGroupContent } from 'astro_2.0/features/CreateProposal/components/UpdateGroupContent';
 import { CreateDaoContent } from 'astro_2.0/features/ViewProposal/components/CreateDaoContent';
 
-export function getContentNode(
-  proposal: ProposalFeedItem,
-  compareWith?: ProposalFeedItem
-): ReactNode {
+export function getContentNode(proposal: ProposalFeedItem): ReactNode {
   const { dao } = proposal;
   let content;
 
@@ -53,24 +50,11 @@ export function getContentNode(
     switch (proposal?.proposalVariant) {
       case ProposalVariant.ProposeTransfer: {
         if (proposal.kind.type === ProposalType.Transfer) {
-          let compareOptions;
-
-          if (compareWith && compareWith.kind.type === ProposalType.Transfer) {
-            const compareKind = compareWith.kind;
-
-            compareOptions = {
-              token: compareKind.tokenId,
-              amount: compareKind.amount,
-              target: compareKind.receiverId,
-            };
-          }
-
           content = (
             <TransferContent
               amount={proposal.kind.amount}
               token={proposal.kind.tokenId}
               target={proposal.kind.receiverId}
-              compareOptions={compareOptions}
             />
           );
           break;
@@ -86,30 +70,12 @@ export function getContentNode(
           // @ts-ignore
           const deadline = nanosToDays(bountyData.maxDeadline);
 
-          let compareOptions;
-
-          if (compareWith && compareWith.kind.type === ProposalType.AddBounty) {
-            const compareData = compareWith.kind.bounty;
-
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            const cDeadline = nanosToDays(compareData.maxDeadline);
-
-            compareOptions = {
-              slots: compareData.times,
-              deadlineThreshold: cDeadline.join(' '),
-              token: compareData.token,
-              amount: compareData.amount,
-            };
-          }
-
           content = (
             <AddBountyContent
               slots={bountyData.times}
               deadlineThreshold={deadline.join(' ')}
               token={bountyData.token}
               amount={bountyData.amount}
-              compareOptions={compareOptions}
             />
           );
           break;
@@ -123,27 +89,10 @@ export function getContentNode(
             ? fromBase64ToMetadata(proposal.kind.config.metadata)
             : null;
 
-          let compareOptions;
-
-          if (
-            compareWith &&
-            compareWith.kind.type === ProposalType.ChangeConfig
-          ) {
-            const cMeta = compareWith.kind.config.metadata
-              ? fromBase64ToMetadata(compareWith.kind.config.metadata)
-              : null;
-
-            compareOptions = {
-              displayName: cMeta?.displayName ?? '',
-              daoId: dao.id,
-            };
-          }
-
           content = (
             <ChangeDaoNameContent
               daoId={dao.id}
               displayName={meta?.displayName ?? ''}
-              compareOptions={compareOptions}
             />
           );
           break;
@@ -153,23 +102,10 @@ export function getContentNode(
       }
       case ProposalVariant.ProposeChangeDaoPurpose: {
         if (proposal.kind.type === ProposalType.ChangeConfig) {
-          let compareOptions;
-
-          if (
-            compareWith &&
-            compareWith.kind.type === ProposalType.ChangeConfig
-          ) {
-            compareOptions = {
-              purpose: compareWith.kind.config.purpose,
-              daoId: dao.id,
-            };
-          }
-
           content = (
             <ChangeDaoPurposeContent
               daoId={dao.id}
               purpose={proposal.kind.config.purpose}
-              compareOptions={compareOptions}
             />
           );
           break;
@@ -379,30 +315,6 @@ export function getContentNode(
               Buffer.from(data.args, 'base64').toString('utf-8')
             );
 
-            let compareOptions;
-
-            if (
-              compareWith &&
-              compareWith.kind.type === ProposalType.FunctionCall
-            ) {
-              const compareKind = compareWith.kind;
-              const compareData = compareKind.actions[0];
-
-              const compareJson = JSON.parse(
-                Buffer.from(compareData.args, 'base64').toString('utf-8')
-              );
-
-              compareOptions = {
-                token: 'NEAR',
-                smartContractAddress: compareKind.receiverId,
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                methodName: compareData.methodName,
-                json: JSON.stringify(compareJson, null, 2),
-                deposit: compareData.deposit,
-              };
-            }
-
             content = (
               <CustomFunctionCallContent
                 token="NEAR"
@@ -412,7 +324,6 @@ export function getContentNode(
                 methodName={data.methodName}
                 json={JSON.stringify(json, null, 2)}
                 deposit={data.deposit}
-                compareOptions={compareOptions}
               />
             );
             break;

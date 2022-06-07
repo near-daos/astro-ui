@@ -25,6 +25,17 @@
   }
 }
 
+.column {
+  del {
+    background-color: var(--color-error-20);
+    text-decoration: none;
+  }
+  ins {
+    background-color: var(--color-success-20);
+    text-decoration: none;
+  }
+}
+
 .footer {
   @extend %subtitle1;
   align-items: center;
@@ -41,4 +52,10 @@
 
 .secondary {
   color: var(--color-neutral-50);
+}
+
+.prerenderContainer {
+  height: 0;
+  overflow: hidden;
+  width: 0;
 }

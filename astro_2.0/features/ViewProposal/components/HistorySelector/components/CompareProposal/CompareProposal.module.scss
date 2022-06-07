@@ -9,6 +9,7 @@
   grid-template-areas:
     'countdownCell'
     'proposalCell'
+    'card'
     'proposerCell'
     'descriptionCell'
     'contentCell';
@@ -21,12 +22,21 @@
   @include tablet-landscape {
     grid-template-areas:
       'proposalCell countdownCell'
-      'proposerCell proposerCell'
-      'descriptionCell descriptionCell'
-      'contentCell contentCell';
+      'card card';
     grid-template-columns: 1fr 1fr;
     padding: 22px 30px;
   }
+}
+
+.card {
+  display: grid;
+  grid-area: card;
+  grid-row-gap: 22px;
+  grid-template-areas:
+    'proposerCell'
+    'descriptionCell'
+    'contentCell';
+  grid-template-columns: 1fr;
 }
 
 .proposalCell {

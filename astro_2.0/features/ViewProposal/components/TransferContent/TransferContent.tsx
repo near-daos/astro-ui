@@ -9,7 +9,6 @@ import {
 import { formatYoktoValue } from 'utils/format';
 import { useIsValidImage } from 'hooks/useIsValidImage';
 import { useTranslation } from 'next-i18next';
-import { DiffRenderer } from 'astro_2.0/features/ViewProposal/components/DiffRenderer';
 
 import styles from './TransferContent.module.scss';
 
@@ -17,18 +16,12 @@ interface TransferContentProps {
   amount: string;
   target: string;
   token: string;
-  compareOptions?: {
-    amount: string;
-    target: string;
-    token: string;
-  };
 }
 
 export const TransferContent: FC<TransferContentProps> = ({
   amount,
   target,
   token,
-  compareOptions,
 }) => {
   const { t } = useTranslation();
 
@@ -58,21 +51,6 @@ export const TransferContent: FC<TransferContentProps> = ({
   }
 
   function renderAmount() {
-    const val = tokenData
-      ? formatYoktoValue(amount, tokenData.decimals)
-      : amount;
-
-    if (compareOptions) {
-      const cTokenData = compareOptions.token
-        ? tokens[compareOptions.token]
-        : tokens.NEAR;
-      const compareVal = cTokenData
-        ? formatYoktoValue(compareOptions.amount, cTokenData.decimals)
-        : compareOptions.amount;
-
-      return <DiffRenderer oldValue={compareVal} newValue={val} />;
-    }
-
     return tokenData ? formatYoktoValue(amount, tokenData.decimals) : amount;
   }
 
@@ -98,19 +76,7 @@ export const TransferContent: FC<TransferContentProps> = ({
         </div>
       </FieldWrapper>
       <FieldWrapper label={t('proposalCard.proposalTarget')}>
-        <FieldValue
-          value={
-            compareOptions ? (
-              <DiffRenderer
-                newValue={target}
-                oldValue={compareOptions.target}
-              />
-            ) : (
-              target
-            )
-          }
-          noWrap
-        />
+        <FieldValue value={target} noWrap />
       </FieldWrapper>
     </div>
   );
