@@ -15,7 +15,7 @@ runs:
   steps:
   - name: run tests
     run: |
-      ./gradlew --no-daemon --debug clean test -Dtest.env=${{ inputs.env }} -Dtags=${{ inputs.tags }} -Dtest.threadCount=3 -Dtest.browser=${{ inputs.browser }}
+      ./gradlew --no-daemon clean test -Dtest.env=${{ inputs.env }} -Dtags=${{ inputs.tags }} -Dtest.threadCount=3 -Dtest.browser=${{ inputs.browser }} || true
       mkdir -p build/allure-results/history
       curl https://automation-report.app.astrodao.com/ui-${INPUT_ENV}/history/{categories-trend.json,duration-trend.json,history.json,history-trend.json,retry-trend.json} -O -O -O -O -O
       mv {categories-trend.json,duration-trend.json,history.json,history-trend.json,retry-trend.json} build/allure-results/history/
