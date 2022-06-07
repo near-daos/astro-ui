@@ -146,7 +146,6 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
         {flags.cloneDaoFlow && (
           <CloneDaoWarning
             dao={dao}
-            userPermissions={userPermissions}
             className={styles.warning}
             onCreateProposal={onCreateProposal}
           />
