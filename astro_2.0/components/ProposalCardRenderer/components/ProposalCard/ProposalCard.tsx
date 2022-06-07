@@ -13,6 +13,7 @@ import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 import { useWalletContext } from 'context/WalletContext';
 
 import {
+  ProposalFeedItem,
   ProposalStatus,
   ProposalType,
   ProposalVariant,
@@ -28,6 +29,7 @@ import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { getProposalVariantLabel } from 'astro_2.0/features/ViewProposal/helpers';
 import { ExplorerLink } from 'components/ExplorerLink';
 import { AmountBalanceCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/AmountBalanceCard';
+import { HistorySelector } from 'astro_2.0/features/ViewProposal/components/HistorySelector';
 
 import { Button } from 'components/button/Button';
 
@@ -89,6 +91,7 @@ export interface ProposalCardProps {
   hashtags?: Hashtag[];
   bookmarks?: number;
   comments?: DraftComment[];
+  history?: ProposalFeedItem[];
 }
 
 function getTimestampLabel(
@@ -202,6 +205,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   hashtags,
   bookmarks,
   comments,
+  history,
 }) => {
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
@@ -533,6 +537,46 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     );
   };
 
+  function renderTimestampCell() {
+    if (!isDraft) {
+      return (
+        <div className={styles.countdownCell}>
+          {getTimestampLabel(
+            timeLeft,
+            status,
+            updatedAt,
+            votePeriodEnd,
+            isDraft
+          )}
+          {showFinalize && (
+            <Button
+              size="small"
+              disabled={finalizeLoading}
+              className={styles.finalizeButton}
+              onClick={e => {
+                e.stopPropagation();
+
+                return finalizeClickHandler();
+              }}
+            >
+              Finalize
+            </Button>
+          )}
+        </div>
+      );
+    }
+
+    if (history) {
+      return (
+        <div className={styles.countdownCell}>
+          <HistorySelector data={history} />
+        </div>
+      );
+    }
+
+    return <div className={styles.countdownCell}>{updatedAt}</div>;
+  }
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div
@@ -571,23 +615,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           }
         />
       </div>
-      <div className={styles.countdownCell}>
-        {getTimestampLabel(timeLeft, status, updatedAt, votePeriodEnd, isDraft)}
-        {showFinalize && (
-          <Button
-            size="small"
-            disabled={finalizeLoading}
-            className={styles.finalizeButton}
-            onClick={e => {
-              e.stopPropagation();
-
-              return finalizeClickHandler();
-            }}
-          >
-            Finalize
-          </Button>
-        )}
-      </div>
+      {renderTimestampCell()}
 
       {renderCardContent()}
 

@@ -41,7 +41,10 @@ import { ChangePermissionsContent } from 'astro_2.0/features/ViewProposal/compon
 import { UpdateGroupContent } from 'astro_2.0/features/CreateProposal/components/UpdateGroupContent';
 import { CreateDaoContent } from 'astro_2.0/features/ViewProposal/components/CreateDaoContent';
 
-export function getContentNode(proposal: ProposalFeedItem): ReactNode {
+export function getContentNode(
+  proposal: ProposalFeedItem,
+  compareWith?: ProposalFeedItem
+): ReactNode {
   const { dao } = proposal;
   let content;
 
@@ -314,6 +317,30 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
               Buffer.from(data.args, 'base64').toString('utf-8')
             );
 
+            let compareOptions;
+
+            if (
+              compareWith &&
+              compareWith.kind.type === ProposalType.FunctionCall
+            ) {
+              const compareKind = compareWith.kind;
+              const compareData = compareKind.actions[0];
+
+              const compareJson = JSON.parse(
+                Buffer.from(compareData.args, 'base64').toString('utf-8')
+              );
+
+              compareOptions = {
+                token: 'NEAR',
+                smartContractAddress: compareKind.receiverId,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                methodName: compareData.methodName,
+                json: JSON.stringify(compareJson, null, 2),
+                deposit: compareData.deposit,
+              };
+            }
+
             content = (
               <CustomFunctionCallContent
                 token="NEAR"
@@ -323,6 +350,7 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
                 methodName={data.methodName}
                 json={JSON.stringify(json, null, 2)}
                 deposit={data.deposit}
+                compareOptions={compareOptions}
               />
             );
             break;

@@ -117,7 +117,7 @@ export const DraftsPageHeader: FC<Props> = ({
       <div className={styles.sorting}>
         <Dropdown
           options={sortOptions}
-          value={sort}
+          value={sort ?? sortOptions[0].value}
           defaultValue={sort ?? sortOptions[0].value}
           onChange={handleSort}
         />

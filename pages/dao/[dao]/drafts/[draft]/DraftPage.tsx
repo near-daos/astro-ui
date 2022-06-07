@@ -63,25 +63,27 @@ const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
         <meta name="twitter:image" content={dao?.flagCover || dao?.logo} />
       </Head>
       <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
-        <div className={styles.draftInfo}>
-          <BackButton
-            name="Back to Draft Feed"
-            href={{
-              pathname: DRAFTS_PAGE_URL,
-              query: {
-                dao: dao.id,
-              },
-            }}
-          />
-          <ViewProposal
-            preventNavigate
-            isDraft
-            proposal={draft}
-            showFlag={false}
-            tokens={tokens}
-          />
-          <DraftComments comments={draft.comments} />
-        </div>
+        <>
+          <div className={styles.draftInfo}>
+            <BackButton
+              name="Back to Draft Feed"
+              href={{
+                pathname: DRAFTS_PAGE_URL,
+                query: {
+                  dao: dao.id,
+                },
+              }}
+            />
+            <ViewProposal
+              preventNavigate
+              isDraft
+              proposal={draft}
+              showFlag={false}
+              tokens={tokens}
+            />
+            <DraftComments comments={draft.comments} />
+          </div>
+        </>
       </NestedDaoPageWrapper>
     </>
   );

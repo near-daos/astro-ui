@@ -1,0 +1,50 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-white);
+  display: grid;
+  grid-row-gap: 22px;
+  grid-template-areas:
+    'countdownCell'
+    'proposalCell'
+    'proposerCell'
+    'descriptionCell'
+    'contentCell';
+  grid-template-columns: 1fr;
+  padding: 0;
+  position: relative;
+  transition: box-shadow 0.3s ease-out;
+  z-index: 1;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'proposalCell countdownCell'
+      'proposerCell proposerCell'
+      'descriptionCell descriptionCell'
+      'contentCell contentCell';
+    grid-template-columns: 1fr 1fr;
+    padding: 22px 30px;
+  }
+}
+
+.proposalCell {
+  grid-area: proposalCell;
+}
+
+.countdownCell {
+  grid-area: countdownCell;
+}
+
+.proposerCell {
+  grid-area: proposerCell;
+}
+
+.descriptionCell {
+  grid-area: descriptionCell;
+}
+
+.contentCell {
+  grid-area: contentCell;
+}

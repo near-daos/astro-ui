@@ -91,6 +91,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
           hashtags={'hashtags' in proposal ? proposal?.hashtags : undefined}
           comments={'comments' in proposal ? proposal?.comments : undefined}
           bookmarks={'comments' in proposal ? proposal?.bookmarks : undefined}
+          history={'history' in proposal ? proposal?.history : undefined}
           isDraft={isDraft}
           id={proposal.id}
           proposalId={proposal.proposalId}

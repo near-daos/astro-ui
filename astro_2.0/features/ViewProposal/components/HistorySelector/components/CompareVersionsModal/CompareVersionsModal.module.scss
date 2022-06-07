@@ -1,0 +1,23 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  @extend %subtitle1;
+  border-bottom: 1px solid var(--color-neutral-40);
+  padding: 0 0 12px;
+}
+
+.body {
+  display: flex;
+}
+
+.column {
+  flex: 1;
+  &:first-of-type {
+    border-right: 1px solid var(--color-neutral-40);
+  }
+}

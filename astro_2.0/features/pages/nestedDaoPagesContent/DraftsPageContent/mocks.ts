@@ -70,8 +70,83 @@ const proposal = {
     displayName: '',
     logo: '/flags/defaultDaoFlag.png',
   },
-  proposalVariant: 'ProposeDefault',
+  proposalVariant: 'ProposeCustomFunctionCall',
   updatedAt: '2022-05-27T02:21:17.140Z',
+  actions: [
+    {
+      id: 'test.sputnikv2.testnet-6-terratest.testnet-AddProposal',
+      proposalId: 'test.sputnikv2.testnet-6',
+      accountId: 'terratest.testnet',
+      action: 'AddProposal',
+      transactionHash: '6CfB5TM3iS9nQNAusXsqSSKhK2r9t3jfiKD4eRyHbiPr',
+      timestamp: '1653618065837431071',
+    },
+  ],
+  permissions: {
+    isCouncil: false,
+    canApprove: false,
+    canReject: false,
+    canDelete: false,
+  },
+};
+const proposal2 = {
+  voteYes: 0,
+  voteNo: 0,
+  voteRemove: 0,
+  votes: {},
+  id: 'test.sputnikv2.testnet-6',
+  proposalId: 6,
+  daoId: 'test.sputnikv2.testnet',
+  proposer: 'terratest.testnet',
+  commentsCount: 0,
+  description:
+    'Create multicall instance for this DAO at test.v1_02.multicall.testnet. More details here.',
+  link: '',
+  status: 'InProgress',
+  kind: {
+    type: 'FunctionCall',
+    receiverId: 'v1_02.multicall.testnet',
+    actions: [
+      {
+        methodName: 'create',
+        args:
+          'eyJtdWx0aWNhbGxfaW5pdF9hcmdzIjp7ImFkbWluX2FjY291bnRzIjpbInRlc3Quc3B1dG5pa3YyLnRlc3RuZXQiXSwiY3JvbmNhdF9tYW5hZ2VyIjoibWFuYWdlcl92MS5jcm9uY2F0LnRlc3RuZXQiLCJqb2JfYm9uZCI6IjEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAifX0=',
+        deposit: '3000000000000000000000000',
+        gas: '150000000000000',
+      },
+    ],
+  },
+  votePeriodEnd: '2022-06-03T02:21:05.837Z',
+  votePeriodEndDate: '2022-06-03T02:21:05.837Z',
+  voteStatus: 'Active',
+  isFinalized: false,
+  txHash: '6CfB5TM3iS9nQNAusXsqSSKhK2r9t3jfiKD4eRyHbiPr',
+  createdAt: '2022-05-27T02:21:17.140Z',
+  dao: {
+    id: 'test.sputnikv2.testnet',
+    name: 'test',
+    logo: '/flags/defaultDaoFlag.png',
+    flagCover: '',
+    flagLogo: '',
+    legal: {},
+    numberOfMembers: 2,
+    policy: {
+      daoId: 'test.sputnikv2.testnet',
+      defaultVotePolicy: {
+        weightKind: 'RoleWeight',
+        quorum: '0',
+        kind: 'Ratio',
+        ratio: [1, 2],
+      },
+    },
+  },
+  daoDetails: {
+    name: 'test',
+    displayName: '',
+    logo: '/flags/defaultDaoFlag.png',
+  },
+  proposalVariant: 'ProposeCustomFunctionCall',
+  updatedAt: '2022-06-27T02:21:17.140Z',
   actions: [
     {
       id: 'test.sputnikv2.testnet-6-terratest.testnet-AddProposal',
@@ -121,6 +196,7 @@ export const mocks = {
       bookmarks: 10,
       comments: [comment],
       state: 'open',
+      history: [proposal, proposal2],
     },
     {
       ...proposal,
@@ -136,6 +212,7 @@ export const mocks = {
       bookmarks: 10,
       comments: [comment],
       state: 'open',
+      history: [proposal, proposal2],
     },
   ] as DraftProposal[],
 };
