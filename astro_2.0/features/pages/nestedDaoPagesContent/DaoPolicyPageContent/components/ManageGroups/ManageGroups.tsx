@@ -2,16 +2,22 @@
 
 import React, { useEffect, useState } from 'react';
 import cn from 'classnames';
+import { useWalletContext } from 'context/WalletContext';
 
 import { DAO, DaoVotePolicy, TGroup } from 'types/dao';
 import { ProposalVariant } from 'types/proposal';
+import { WalletType } from 'types/config';
+
+import { formatPolicyRatio } from 'features/vote-policy/helpers';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+
+import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 
 import { EditGroup } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/components/ManageGroups/components/EditGroup';
 
-import { formatPolicyRatio } from 'features/vote-policy/helpers';
 import styles from './ManageGroups.module.scss';
 
 type Props = {
@@ -29,11 +35,15 @@ type TLocalGroup = Omit<TGroup, 'votePolicy'> & {
   votePolicy: DaoVotePolicy;
 };
 
+const BANNED_GROUP_NAMES = ['council', 'councils'];
+
 export const ManageGroups: React.FC<Props> = ({
   dao,
   handleCreateProposal,
   disableNewProposal,
 }) => {
+  const { currentWallet, accountId } = useWalletContext();
+
   const [groups, setGroups] = useState<TLocalGroup[]>([]);
   const [activeGroupSlug, setActiveGroupSlug] = useState<string>(
     dao.groups[0].slug
@@ -74,6 +84,31 @@ export const ManageGroups: React.FC<Props> = ({
           : group
       )
     );
+
+  const isWalletSupportAmount = (): boolean => {
+    if (currentWallet === WalletType.NEAR) {
+      return groups.length < 9;
+    }
+
+    return true;
+  };
+
+  const validateGroup = (group: TLocalGroup): boolean => {
+    if (
+      BANNED_GROUP_NAMES.includes(group.name.toLowerCase()) &&
+      !BANNED_GROUP_NAMES.includes(group.slug)
+    ) {
+      return false;
+    }
+
+    return (
+      !groups.find(
+        item => item.name === group.name && item.slug !== group.slug
+      ) ||
+      group.members.length === 0 ||
+      group.name.trim() === ''
+    );
+  };
 
   const handleDeleteGroup = () => {
     const filteredGroups = groups.filter(
@@ -149,6 +184,23 @@ export const ManageGroups: React.FC<Props> = ({
   };
 
   const handleOnSubmit = () => {
+    if (!isWalletSupportAmount()) {
+      showNotification({
+        type: NOTIFICATION_TYPES.ERROR,
+        description:
+          "Near wallet doesn't support so large request. Please, use Sender wallet instead!",
+        lifetime: 10000,
+      });
+
+      sendGAEvent({
+        name: GA_EVENTS.GROUP_BULK_UPDATE_INVALID_WALLET,
+        daoId: dao.id,
+        accountId,
+      });
+
+      return;
+    }
+
     handleCreateProposal(ProposalVariant.ProposeUpdateGroup, {
       groups: groups.map(group => ({
         ...group,
@@ -168,11 +220,7 @@ export const ManageGroups: React.FC<Props> = ({
   );
 
   const isGroupsValid = () =>
-    groups.reduce(
-      (isValid, group) =>
-        isValid || group.members.length === 0 || group.name.trim() === '',
-      false
-    );
+    groups.reduce((isValid, group) => isValid || !validateGroup(group), false);
 
   return (
     <>
@@ -196,6 +244,7 @@ export const ManageGroups: React.FC<Props> = ({
               className={cn(styles.group, {
                 [styles.groupActive]: group.slug === activeGroup?.slug,
                 [styles.hasChanges]: group.hasChanges,
+                [styles.hasError]: !validateGroup(group),
               })}
               onClick={() => handleSelectGroup(group)}
             >

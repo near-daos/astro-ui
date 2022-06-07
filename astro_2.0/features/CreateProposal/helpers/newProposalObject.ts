@@ -40,13 +40,14 @@ import {
   BuyNftFromMintbaseInput,
   BuyNftFromParasInput,
   CustomFunctionCallInput,
+  getAcceptStakingContractProposal,
   getBuyNftFromMintbaseProposal,
   getBuyNftFromParasProposal,
   getChangeConfigProposal,
   getCreateTokenProposal,
   getCustomFunctionCallProposal,
-  getNewDaoProposal,
   getDeployStakingContractProposal,
+  getNewDaoProposal,
   getRemoveUpgradeCodeProposal,
   getSwapsOnRefProposal,
   getTransferDaoFundsProposal,
@@ -375,8 +376,11 @@ export async function getNewProposalObject(
         (data as unknown) as TokenDistributionInput
       );
     }
-    case ProposalVariant.ProposeContractAcceptance: {
+    case ProposalVariant.ProposeStakingContractDeployment: {
       return getDeployStakingContractProposal(dao, data);
+    }
+    case ProposalVariant.ProposeAcceptStakingContract: {
+      return getAcceptStakingContractProposal(dao);
     }
     case ProposalVariant.ProposeChangeProposalVotingPermissions: {
       const initialData = getInitialData(dao);

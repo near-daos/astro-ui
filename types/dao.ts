@@ -6,6 +6,7 @@ export type DaoVotePolicy = {
   quorum: string;
   kind: string;
   ratio: number[];
+  threshold?: number[];
   weight?: string;
 };
 

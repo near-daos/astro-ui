@@ -17,7 +17,28 @@
 
 .column {
   flex: 1;
+  max-height: 80vh;
+  overflow: auto;
+
   &:first-of-type {
     border-right: 1px solid var(--color-neutral-40);
   }
+}
+
+.footer {
+  @extend %subtitle1;
+  align-items: center;
+  border-top: 1px solid var(--color-neutral-40);
+  display: flex;
+  justify-content: center;
+  padding: 24px 0 0;
+}
+
+.arrow {
+  margin: 0 24px;
+  width: 24px;
+}
+
+.secondary {
+  color: var(--color-neutral-50);
 }

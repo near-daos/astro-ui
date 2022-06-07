@@ -140,7 +140,7 @@ describe('newProposalObject', () => {
   it('Should return proposal for ProposeContractAcceptance proposal', async () => {
     const result = await getNewProposalObject(
       dao,
-      ProposalVariant.ProposeContractAcceptance,
+      ProposalVariant.ProposeStakingContractDeployment,
       data,
       tokens,
       'MyAccount'
@@ -152,6 +152,7 @@ describe('newProposalObject', () => {
       tokenId: undefined,
       daoBond: '100000000000000000000000',
       unstakingPeriodInHours: 'unstakingPeriod',
+      description: 'Deploy staking contract via factory',
     });
   });
 

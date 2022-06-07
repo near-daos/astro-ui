@@ -494,7 +494,7 @@ export function generateProposalNotificationText(
       const actioner =
         accountId === proposerId ? t('you') : extractPrefix(proposerId);
 
-      return `${actioner} ${t('submittedNewProposal', {
+      return `<b>${actioner}</b> ${t('submittedNewProposal', {
         type,
         dao: dao.displayName || extractPrefix(dao.id),
       })}`;
@@ -503,7 +503,7 @@ export function generateProposalNotificationText(
       const actioner =
         accountId === proposerId ? t('your') : extractPrefix(proposerId);
 
-      return `${actioner}'s "${type}" ${t('proposalWasRejected', {
+      return `<b>${actioner}'s</b> "${type}" ${t('proposalWasRejected', {
         dao: dao.displayName || extractPrefix(dao.id),
       })}`;
     }
@@ -511,7 +511,7 @@ export function generateProposalNotificationText(
       const actioner =
         accountId === proposerId ? t('your') : extractPrefix(proposerId);
 
-      return `${actioner}'s "${type}" ${t('proposalWasApproved', {
+      return `<b>${actioner}'s</b> "${type}" ${t('proposalWasApproved', {
         dao: dao.displayName || extractPrefix(dao.id),
       })}`;
     }

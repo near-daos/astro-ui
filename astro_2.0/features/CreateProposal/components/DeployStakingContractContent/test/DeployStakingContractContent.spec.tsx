@@ -3,7 +3,7 @@
 import { render } from 'jest/testUtils';
 import { useFormContext } from 'react-hook-form';
 
-import { ContractAcceptanceContent } from 'astro_2.0/features/CreateProposal/components/ContractAcceptanceContent';
+import { DeployStakingContractContent } from 'astro_2.0/features/CreateProposal/components/DeployStakingContractContent';
 
 const formContextMock = {
   formState: {
@@ -31,9 +31,11 @@ jest.mock('next-i18next', () => ({
 
 describe('ContractAcceptanceContent', () => {
   it('Should render component', () => {
-    const { getByText } = render(<ContractAcceptanceContent tokenId="123" />);
+    const { getByText } = render(<DeployStakingContractContent />);
 
-    expect(getByText('Unstaking Period')).toBeTruthy();
+    expect(
+      getByText('proposalCard.deployStakingContract.unstakingPeriod')
+    ).toBeTruthy();
   });
 
   it('Should render "hours"', () => {
@@ -43,8 +45,8 @@ describe('ContractAcceptanceContent', () => {
       watch: () => 123,
     }));
 
-    const { getByText } = render(<ContractAcceptanceContent tokenId="123" />);
+    const { getByText } = render(<DeployStakingContractContent />);
 
-    expect(getByText('hours')).toBeTruthy();
+    expect(getByText('proposalCard.deployStakingContract.hours')).toBeTruthy();
   });
 });

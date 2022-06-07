@@ -28,6 +28,7 @@ export type DistributeVotingTokenParams = {
 };
 
 export type DeployStakingContractParams = {
+  description: string;
   stakingContractName: string;
   tokenId: string;
   daoId: string;
@@ -39,6 +40,7 @@ export type AcceptStakingContractParams = {
   stakingContractName: string;
   daoId: string;
   daoBond: string;
+  description: string;
 };
 
 export class GovernanceTokenService extends BaseService {
@@ -46,6 +48,7 @@ export class GovernanceTokenService extends BaseService {
     stakingContractName,
     daoId,
     daoBond,
+    description,
   }: AcceptStakingContractParams): Promise<FinalExecutionOutcome[]> {
     const contract = `${stakingContractName}.${GENERIC_FACTORY}`;
 
@@ -54,7 +57,7 @@ export class GovernanceTokenService extends BaseService {
       contractId: daoId,
       args: {
         proposal: {
-          description: `Accept staking contract ${contract}`,
+          description,
           kind: {
             SetStakingContract: {
               staking_id: contract,
@@ -68,6 +71,7 @@ export class GovernanceTokenService extends BaseService {
   }
 
   async deployStakingContract({
+    description,
     stakingContractName,
     tokenId,
     daoId,
@@ -106,7 +110,7 @@ export class GovernanceTokenService extends BaseService {
       contractId: daoId,
       args: {
         proposal: {
-          description: `Deploy staking contract via factory`,
+          description,
           kind: {
             FunctionCall: {
               receiver_id: GENERIC_FACTORY,

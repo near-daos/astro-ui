@@ -7,7 +7,6 @@ import { ProposalFeedItem } from 'types/proposal';
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
-import { ExternalLink } from 'components/ExternalLink';
 
 import {
   getContentNode,
@@ -16,6 +15,7 @@ import {
 import { Tokens } from 'context/CustomTokensContext';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { CompareProposalContext } from 'astro_2.0/features/ViewProposal/components/HistorySelector/components/CompareProposalContext';
+import { DiffRenderer } from 'astro_2.0/features/ViewProposal/components/DiffRenderer';
 
 import styles from './CompareProposal.module.scss';
 
@@ -52,7 +52,7 @@ export const CompareProposal: FC<Props> = ({
             label=""
             value={
               <div className={styles.proposalType}>
-                {getProposalVariantLabel(proposalVariant, type)}
+                {getProposalVariantLabel(proposalVariant, type, t)}
               </div>
             }
           />
@@ -70,11 +70,16 @@ export const CompareProposal: FC<Props> = ({
 
         <div className={styles.descriptionCell}>
           <FieldWrapper label={t(`proposalCard.proposalDescription`)} fullWidth>
-            <div className={styles.proposalDescription}>{description}</div>
+            <div className={styles.proposalDescription}>
+              <DiffRenderer
+                oldValue={compareWith.description}
+                newValue={description}
+              />
+            </div>
           </FieldWrapper>
 
           <div className={styles.proposalExternalLink}>
-            <ExternalLink to={link} />
+            <DiffRenderer oldValue={compareWith.link} newValue={link} />
           </div>
         </div>
 

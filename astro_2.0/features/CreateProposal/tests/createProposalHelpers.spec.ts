@@ -293,7 +293,7 @@ describe('createProposalHelpers', () => {
       ${ProposalVariant.ProposeChangeBonds}                       | ${ProposalType.ChangePolicy}
       ${ProposalVariant.ProposeCreateGroup}                       | ${ProposalType.ChangePolicy}
       ${ProposalVariant.ProposeTokenDistribution}                 | ${ProposalType.SetStakingContract}
-      ${ProposalVariant.ProposeContractAcceptance}                | ${ProposalType.SetStakingContract}
+      ${ProposalVariant.ProposeStakingContractDeployment}         | ${ProposalType.SetStakingContract}
       ${ProposalVariant.ProposeCreateToken}                       | ${ProposalType.SetStakingContract}
       ${ProposalVariant.ProposeRemoveUpgradeCode}                 | ${ProposalType.UpgradeSelf}
       ${ProposalVariant.ProposeGetUpgradeCode}                    | ${ProposalType.UpgradeSelf}

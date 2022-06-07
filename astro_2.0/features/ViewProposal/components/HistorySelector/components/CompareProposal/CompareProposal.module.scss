@@ -34,7 +34,10 @@
 }
 
 .countdownCell {
+  @extend %title4;
+  color: var(--color-primary-50);
   grid-area: countdownCell;
+  text-align: right;
 }
 
 .proposerCell {

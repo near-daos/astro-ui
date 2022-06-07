@@ -1,7 +1,12 @@
 @import 'styles/typography';
 
 .root {
+  cursor: pointer;
   display: block;
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .menu {

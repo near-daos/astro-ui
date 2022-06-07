@@ -1,13 +1,17 @@
 import React, { FC, useMemo } from 'react';
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
+import cn from 'classnames';
 import { useCompareProposalContext } from 'astro_2.0/features/ViewProposal/components/HistorySelector/components/CompareProposalContext';
+
+import s from './DiffRenderer.module.scss';
 
 interface Props {
   oldValue: string;
   newValue: string;
+  codeView?: boolean;
 }
 
-export const DiffRenderer: FC<Props> = ({ oldValue, newValue }) => {
+export const DiffRenderer: FC<Props> = ({ oldValue, newValue, codeView }) => {
   const { view } = useCompareProposalContext();
 
   const viewStyles = useMemo(() => {
@@ -52,13 +56,25 @@ export const DiffRenderer: FC<Props> = ({ oldValue, newValue }) => {
     return styles;
   }, [view]);
 
+  if (oldValue === newValue) {
+    return <>{newValue}</>;
+  }
+
   return (
-    <ReactDiffViewer
-      oldValue={oldValue}
-      newValue={newValue}
-      hideLineNumbers
-      compareMethod={DiffMethod.WORDS}
-      styles={viewStyles}
-    />
+    <span
+      className={cn(s.root, {
+        [s.codeView]: codeView,
+      })}
+    >
+      <ReactDiffViewer
+        // splitView
+        // showDiffOnly={false}
+        oldValue={oldValue}
+        newValue={newValue}
+        hideLineNumbers
+        compareMethod={DiffMethod.WORDS}
+        styles={viewStyles}
+      />
+    </span>
   );
 };

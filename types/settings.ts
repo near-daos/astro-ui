@@ -19,7 +19,7 @@ export enum CreateGovernanceTokenSteps {
   ChooseFlow,
   CreateToken,
   ContractAcceptance,
-  TokenDistribution,
+  AcceptStakingContract,
   ChangeDaoPolicy,
 }
 

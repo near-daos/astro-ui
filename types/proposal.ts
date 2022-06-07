@@ -59,7 +59,7 @@ export enum ProposalVariant {
   ProposeCustomFunctionCall = 'ProposeCustomFunctionCall',
   ProposeCreateToken = 'ProposeCreateToken',
   ProposeTokenDistribution = 'ProposeTokenDistribution',
-  ProposeContractAcceptance = 'ProposeContractAcceptance',
+  ProposeStakingContractDeployment = 'ProposeStakingContractDeployment',
   ProposeChangeProposalCreationPermissions = 'ProposeChangeProposalCreationPermissions',
   ProposeChangeProposalVotingPermissions = 'ProposeChangeProposalVotingPermissions',
   ProposeGetUpgradeCode = 'ProposeGetUpgradeCode',
@@ -68,6 +68,7 @@ export enum ProposalVariant {
   ProposeUpdateGroup = 'ProposeUpdateGroup',
   ProposeCreateDao = 'ProposeCreateDao',
   ProposeTransferFunds = 'ProposeTransferFunds',
+  ProposeAcceptStakingContract = 'ProposeAcceptStakingContract',
 }
 
 export type VoteAction = 'VoteApprove' | 'VoteRemove' | 'VoteReject';

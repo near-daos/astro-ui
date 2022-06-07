@@ -25,10 +25,10 @@ export const HistorySelector: FC<Props> = ({ data }) => {
   const [showModal] = useModal(CompareVersionsModal);
 
   const handleCompare = useCallback(
-    async prevVersion => {
-      await showModal({ currentVersion, prevVersion, tokens });
+    async prevVersionInd => {
+      await showModal({ data, index: prevVersionInd, tokens });
     },
-    [currentVersion, showModal, tokens]
+    [data, showModal, tokens]
   );
 
   return (
@@ -48,15 +48,16 @@ export const HistorySelector: FC<Props> = ({ data }) => {
         <div className={styles.menuLegend}>
           Edited {data.length} time{data.length > 1 ? 's' : ''}
         </div>
-        {data.map(item => (
+        {data.map((item, i) => (
           <Button
             capitalize
             variant="tertiary"
             size="small"
             key={item.updatedAt}
+            disabled={i === data.length - 1}
             className={styles.option}
             onClick={() => {
-              handleCompare(item);
+              handleCompare(i);
               setOpen(false);
             }}
           >

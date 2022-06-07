@@ -1,5 +1,8 @@
+// TODO requires localisation
+
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
 import { SettingsFilterToggle } from 'astro_2.0/features/DaoGovernance/components/SettingsFilterToggle';
 import { DaoSetting, SettingsCard } from 'astro_2.0/features/DaoGovernance';
@@ -35,6 +38,8 @@ export const DaoPolicyPageContent: FC<Props> = ({
   daoContext,
   toggleCreateProposal,
 }) => {
+  const { t } = useTranslation();
+
   const router = useRouter();
   const { daoFilter } = router.query;
   const { userPermissions, dao } = daoContext;
@@ -62,18 +67,20 @@ export const DaoPolicyPageContent: FC<Props> = ({
       >
         <Icon name="buttonArrowLeft" className={styles.navigationIcon} />
 
-        <p className={styles.navigationText}>Back to settings overview</p>
+        <p className={styles.navigationText}>
+          {t('daoPolicy.backToSettingsOverview')}
+        </p>
       </Button>
 
-      <div className={styles.titleRow}>DAO Settings</div>
+      <div className={styles.titleRow}>{t('daoPolicy.title')}</div>
       <div className={styles.sideFilter}>
         <SettingsFilterToggle variant="daoPolicy" />
       </div>
       <div className={styles.content}>
         {daoFilter === 'proposalCreation' && (
           <PermissionsSelector
-            title="Proposal creation"
-            description="Choose what creation rights you give DAO groups. This can be changed in settings later."
+            title={t('daoPolicy.tabs.proposalCreation.title')}
+            description={t('daoPolicy.tabs.proposalCreation.description')}
             disableNewProposal={
               !userPermissions.isCanCreateProposals ||
               !userPermissions.isCanCreatePolicyProposals ||
