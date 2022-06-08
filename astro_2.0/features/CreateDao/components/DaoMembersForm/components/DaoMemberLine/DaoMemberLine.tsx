@@ -20,9 +20,14 @@ interface DaoLinkLineProps {
   item: { name: string; role: string };
   index: number;
   onRemove: () => void;
+  canBeRemoved?: boolean;
 }
 
-export const DaoMemberLine: VFC<DaoLinkLineProps> = ({ index, onRemove }) => {
+export const DaoMemberLine: VFC<DaoLinkLineProps> = ({
+  index,
+  onRemove,
+  canBeRemoved = true,
+}) => {
   const {
     register,
     watch,
@@ -118,13 +123,15 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({ index, onRemove }) => {
           </div>
         </GenericDropdown>
 
-        <IconButton
-          disabled={currentValue === accountId}
-          className={styles.deleteBtn}
-          icon="buttonDelete"
-          onClick={onRemove}
-          size="medium"
-        />
+        {canBeRemoved && (
+          <IconButton
+            disabled={currentValue === accountId}
+            className={styles.deleteBtn}
+            icon="buttonDelete"
+            onClick={onRemove}
+            size="medium"
+          />
+        )}
       </div>
 
       <div ref={errorEl} className={styles.errorEl} />
