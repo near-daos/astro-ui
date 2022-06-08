@@ -44,6 +44,7 @@ import {
   getBuyNftFromMintbaseProposal,
   getBuyNftFromParasProposal,
   getChangeConfigProposal,
+  getChangeVotingPolicyToWeightVoting,
   getCreateTokenProposal,
   getCustomFunctionCallProposal,
   getDeployStakingContractProposal,
@@ -381,6 +382,9 @@ export async function getNewProposalObject(
     }
     case ProposalVariant.ProposeAcceptStakingContract: {
       return getAcceptStakingContractProposal(dao);
+    }
+    case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
+      return getChangeVotingPolicyToWeightVoting(dao);
     }
     case ProposalVariant.ProposeChangeProposalVotingPermissions: {
       const initialData = getInitialData(dao);

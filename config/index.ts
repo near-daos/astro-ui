@@ -2,7 +2,7 @@ export { awsConfig } from './aws';
 
 export const appConfig = {
   API_URL: process.browser
-    ? `${window.APP_CONFIG?.API_URL}/api/v1/`
+    ? '/api/server/v1/'
     : `${process.env.API_URL}/api/v1/`,
   LOCAL_WALLET_REDIRECT: process.env.LOCAL_WALLET_REDIRECT,
   STATS_API_URL: process.env.STATS_API_URL,
