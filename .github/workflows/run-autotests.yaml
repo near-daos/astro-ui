@@ -109,7 +109,7 @@ jobs:
         #sudo cp -r astro-test-framework/build/swagger-coverage-output astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/
         #sudo find astro-test-framework/build -name swagger-coverage-report.html -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/index.html \;
         #sudo find astro-test-framework/build -name swagger-coverage-results.json -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/ \;
-        cat .github/actions/test/reports-site/HEADER.html.template | envsubst | sudo tee astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/HEADER.html
+        cat .github/actions/tests/reports-site/HEADER.html.template | envsubst | sudo tee astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/HEADER.html
 
 #    - uses: actions/upload-artifact@v2
 #      with:
