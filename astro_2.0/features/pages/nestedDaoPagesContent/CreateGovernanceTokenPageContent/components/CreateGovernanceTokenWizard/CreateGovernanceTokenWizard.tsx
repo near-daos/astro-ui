@@ -144,17 +144,26 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
     }
 
     if (!isViewProposal) {
-      const initialValues =
-        stepProposalVariant === ProposalVariant.ProposeStakingContractDeployment
-          ? {
-              token: status.selectedToken,
-              unstakingPeriod: new Decimal(daoContext.dao.policy.proposalPeriod)
-                .div('3.6e12')
-                .toString(),
-            }
-          : {
-              contract: `${daoContext.dao.name}${STAKING_CONTRACT_PREFIX}`,
-            };
+      let initialValues;
+
+      switch (stepProposalVariant) {
+        case ProposalVariant.ProposeStakingContractDeployment:
+          initialValues = {
+            token: status.selectedToken,
+            unstakingPeriod: new Decimal(daoContext.dao.policy.proposalPeriod)
+              .div('3.6e12')
+              .toString(),
+          };
+          break;
+        case ProposalVariant.ProposeAcceptStakingContract:
+          initialValues = {
+            contract: `${daoContext.dao.name}${STAKING_CONTRACT_PREFIX}`,
+          };
+          break;
+        default:
+          initialValues = {};
+          break;
+      }
 
       return (
         <CreateProposal
@@ -184,7 +193,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
       </div>
       <div className={styles.content}>
         {/* <button onClick={handleViewProposalReject}>reset</button> */}
-        {/* <button onClick={() => handleProposalCreate(20)}>update state</button> */}
+        {/* <button onClick={() => handleProposalCreate(3)}>update state</button> */}
         {/* <button onClick={() => handleViewProposalApprove()}> */}
         {/*  proposal approved */}
         {/* </button> */}

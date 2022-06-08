@@ -797,6 +797,10 @@ export function getValidationSchema(
       });
     }
 
+    case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
+      return yup.object().shape({});
+    }
+
     case ProposalVariant.ProposeAcceptStakingContract: {
       return yup.object().shape({
         contract: yup.string(),

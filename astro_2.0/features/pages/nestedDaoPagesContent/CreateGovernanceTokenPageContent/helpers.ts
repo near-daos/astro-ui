@@ -103,7 +103,7 @@ export function getCreateGovernanceTokenStepProposalVariant(
       return ProposalVariant.ProposeAcceptStakingContract;
     }
     case CreateGovernanceTokenSteps.ChangeDaoPolicy: {
-      return ProposalVariant.ProposeChangeVotingPolicy;
+      return ProposalVariant.ProposeUpdateVotePolicyToWeightVoting;
     }
     default: {
       return null;
