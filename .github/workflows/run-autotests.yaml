@@ -2,8 +2,8 @@ name: Run Autotests
 on:
   workflow_dispatch:
     inputs:
-      env:
-        description: Environment to run on (as described in [test docs](https://github.com/near-daos/astro-test-framework#environments)). Valid choices are dev, testnet, prd.
+      environment:
+        description: Environment to run on. Valid choices are develop, test, production.
         default: dev
         required: false
       tags:
@@ -26,7 +26,7 @@ on:
       TEST_REPO_TOKEN:
         required: true
     inputs:
-      env:
+      environment:
         description: Environment to run on (as described in [test docs](https://github.com/near-daos/astro-test-framework#environments)). Valid choices are dev, testnet, prd.
         default: dev
         required: false
@@ -63,15 +63,25 @@ jobs:
     - name: Set Environment
       id: set_environment
       run: |
+        if [[ "${{ github.event.inputs.environment }}" != '' ]]
+        then
+          echo "Environment ${{ github.event.inputs.environment }} was provided manually"
+          echo "ENVIRONMENT=${{ github.event.inputs.environment }}" >>$GITHUB_ENV
+          export ENVIRONMENT=${{ github.event.inputs.environment }}
+        else
+          echo "Environment ${{ inputs.environment }} was provided by parent workflow"
+          echo "ENVIRONMENT=${{ inputs.environment }}" >>$GITHUB_ENV
+          export ENVIRONMENT=${{ inputs.environment }}
+        fi
         cat ".github/env.common" | grep -E -v '^\ *#' >>$GITHUB_ENV
-        cat ".github/env.develop" | grep -E -v '^\ *#' >>$GITHUB_ENV
+        cat ".github/env.$ENVIRONMENT" | grep -E -v '^\ *#' >>$GITHUB_ENV
         echo "::set-output name=workflow_name::${GITHUB_WORKFLOW// /-}"
-        echo "::set-output name=environment::develop}"
+        echo "::set-output name=environment::$ENVIRONMENT"
 
     - name: Run Tests
       uses: ./.github/actions/tests
       with:
-        env: ${{ github.event.inputs.env }}
+        env: ${{ env.TEST_ENV_NAME }}
         browser: ${{ github.event.inputs.browser }}
         tags: ${{ github.event.inputs.tags }}
 
