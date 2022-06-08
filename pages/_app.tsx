@@ -1,11 +1,10 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Head from 'next/head';
 import { appWithTranslation } from 'next-i18next';
 import type { AppContext, AppProps } from 'next/app';
-import { withLDProvider } from 'launchdarkly-react-client-sdk';
+import { LDProvider } from 'launchdarkly-react-client-sdk';
 
 import nextI18NextConfig from 'next-i18next.config';
-import { appConfig as applicationConfig } from 'config';
 
 import { ModalProvider } from 'components/modal';
 import { PageLayout } from 'astro_2.0/components/PageLayout';
@@ -24,6 +23,7 @@ import { DAO_COOKIE, DEFAULT_OPTIONS } from 'constants/cookies';
 import { AppMonitoring } from 'astro_2.0/features/AppMonitoring/AppMonitoring';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 import { useAppInitialize } from 'hooks/useAppInitialize';
+import { configService } from 'services/ConfigService';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
@@ -35,12 +35,27 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
 
   useIntercomAdjust();
 
-  if (!initialized) {
+  const ldProps = useMemo(() => {
+    if (initialized) {
+      const { appConfig } = configService.get();
+
+      return {
+        clientSideID: appConfig.LAUNCHDARKLY_ID as string,
+        reactOptions: {
+          useCamelCaseFlagKeys: true,
+        },
+      };
+    }
+
+    return null;
+  }, [initialized]);
+
+  if (!initialized || !ldProps) {
     return null;
   }
 
   return (
-    <>
+    <LDProvider {...ldProps}>
       <AppMonitoring />
       <WrappedWalletContext>
         <ModalProvider>
@@ -61,7 +76,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
           </SocketProvider>
         </ModalProvider>
       </WrappedWalletContext>
-    </>
+    </LDProvider>
   );
 }
 
@@ -73,9 +88,4 @@ App.getInitialProps = async ({ ctx }: AppContext) => {
   return {};
 };
 
-export default withLDProvider({
-  clientSideID: applicationConfig.LAUNCHDARKLY_ID as string,
-  reactOptions: {
-    useCamelCaseFlagKeys: true,
-  },
-})(appWithTranslation(App, nextI18NextConfig) as FunctionComponent);
+export default appWithTranslation(App, nextI18NextConfig);
