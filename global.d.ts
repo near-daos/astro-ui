@@ -40,3 +40,12 @@ declare module 'react' {
     global?: boolean;
   }
 }
+
+declare module 'yup' {
+  interface ArraySchema<T> {
+    unique(
+      message: string,
+      mapper?: (value: T, index?: number, list?: T[]) => T[]
+    ): ArraySchema<T>;
+  }
+}
