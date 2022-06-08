@@ -21,6 +21,7 @@ export default function handler(
     APP_DOMAIN: process.env.APP_DOMAIN,
     NEAR_ENV: process.env.NEAR_ENV,
     NEAR_CONTRACT_NAME: process.env.NEAR_CONTRACT_NAME,
+    LAUNCHDARKLY_ID: process.env.NEXT_PUBLIC_LAUNCHDARKLY_ID,
   };
 
   res.status(200).json(config);

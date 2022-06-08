@@ -13,6 +13,7 @@ export type Config = {
   LOCAL_WALLET_REDIRECT: boolean;
   NEAR_CONTRACT_NAME: string;
   TOKEN_FACTORY_CONTRACT_NAME: string;
+  LAUNCHDARKLY_ID: string;
 };
 
 export enum WalletType {

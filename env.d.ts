@@ -24,6 +24,8 @@ declare global {
       TOASTS_NOTIFICATIONS_TIMEOUT: number;
       I18_RELOAD_ON_PRERENDER: boolean;
 
+      NEXT_PUBLIC_LAUNCHDARKLY_ID: string;
+
       NEAR_ENV: string;
     }
   }
