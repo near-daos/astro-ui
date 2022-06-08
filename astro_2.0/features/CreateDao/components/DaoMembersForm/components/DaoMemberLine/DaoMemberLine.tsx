@@ -100,26 +100,28 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({
           }
         >
           <div className={styles.dropdownWrapper}>
-            {state.groups.items.map(group => (
-              <Button
-                variant="transparent"
-                key={group.name}
-                className={styles.dropdownItem}
-                onClick={() => {
-                  setFormValue(
-                    `accounts.${index}`,
-                    { ...currentValue, role: group.name },
-                    {
-                      shouldValidate: true,
-                    }
-                  );
+            {state.groups.items
+              .filter(item => item?.slug !== 'all')
+              .map(group => (
+                <Button
+                  variant="transparent"
+                  key={group.name}
+                  className={styles.dropdownItem}
+                  onClick={() => {
+                    setFormValue(
+                      `accounts.${index}`,
+                      { ...currentValue, role: group.name },
+                      {
+                        shouldValidate: true,
+                      }
+                    );
 
-                  closeDropdown();
-                }}
-              >
-                {group.name}
-              </Button>
-            ))}
+                    closeDropdown();
+                  }}
+                >
+                  {group.name}
+                </Button>
+              ))}
           </div>
         </GenericDropdown>
 

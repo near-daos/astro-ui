@@ -43,10 +43,12 @@ export const DaoGroupsForm: VFC = () => {
     defaultValues: {
       groups: uniqBy(
         state.groups.items
-          ? state.groups.items.map(item => ({
-              slug: item?.slug,
-              group: item.name,
-            }))
+          ? state.groups.items
+              .filter(item => item?.slug !== 'all')
+              .map(item => ({
+                slug: item?.slug,
+                group: item.name,
+              }))
           : [{ group: 'council', slug: 'council' }],
         item => item.group
       ),
@@ -89,10 +91,13 @@ export const DaoGroupsForm: VFC = () => {
   const onSubmit = (data: Form) => {
     actions.updateAction({
       groups: {
-        items: data.groups.map(item => ({
-          slug: item?.slug,
-          name: item.group,
-        })),
+        items: [
+          ...data.groups.map(item => ({
+            slug: item?.slug,
+            name: item.group,
+          })),
+          { name: 'all', slug: 'all' },
+        ],
         isValid,
       },
     });
