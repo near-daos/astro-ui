@@ -153,6 +153,11 @@ export function getFormInitialValues(
         ...initialValues,
       };
     }
+    case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
+      return {
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
     case ProposalVariant.ProposeStakingContractDeployment: {
       return {
         details: '',

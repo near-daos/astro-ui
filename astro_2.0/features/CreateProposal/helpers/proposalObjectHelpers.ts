@@ -16,6 +16,7 @@ import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/component
 
 import { formatGasValue } from 'utils/format';
 import { jsonToBase64Str } from 'utils/jsonToBase64Str';
+import { dataRoleToContractRole } from 'features/groups/helpers';
 
 import { configService } from 'services/ConfigService';
 
@@ -627,4 +628,57 @@ export async function getAcceptStakingContractProposal(
     description: `Accept staking contract ${stakingContractName}`,
     stakingContractName,
   } as unknown) as CreateProposalParams;
+}
+
+export async function getChangeVotingPolicyToWeightVoting(
+  dao: DAO
+): Promise<CreateProposalParams> {
+  const { id, policy } = dao;
+  const {
+    roles,
+    bountyBond,
+    proposalBond,
+    proposalPeriod,
+    defaultVotePolicy,
+    bountyForgivenessPeriod,
+  } = policy;
+
+  const { ratio, quorum, weightKind } = defaultVotePolicy;
+
+  return {
+    daoId: id,
+    description: `Change voting policy to weight voting`,
+    kind: 'ChangePolicy',
+    data: {
+      policy: {
+        roles: [
+          ...roles.map(dataRoleToContractRole),
+          {
+            name: 'TokenHolders',
+            kind: {
+              Member: '1',
+            },
+            permissions: ['*:*'],
+            vote_policy: {
+              '*.*': {
+                weight_kind: 'TokenWeight',
+                quorum: '0',
+                threshold: '400000000000000000000',
+              },
+            },
+          },
+        ],
+        default_vote_policy: {
+          weight_kind: weightKind,
+          quorum,
+          threshold: ratio,
+        },
+        proposal_bond: proposalBond,
+        proposal_period: proposalPeriod,
+        bounty_bond: bountyBond,
+        bounty_forgiveness_period: bountyForgivenessPeriod,
+      },
+    },
+    bond: dao.policy.proposalBond,
+  };
 }

@@ -159,6 +159,14 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
           />
         );
       }
+      case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
+        return (
+          <InfoBlockWidget
+            label="Create Governance Token"
+            value="Change Voting Policy"
+          />
+        );
+      }
       default: {
         return (
           <GroupedSelect
@@ -303,6 +311,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
         );
       }
       case ProposalVariant.ProposeStakingContractDeployment:
+      case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting:
       case ProposalVariant.ProposeAcceptStakingContract:
       case ProposalVariant.ProposeTokenDistribution: {
         return <div className={styles.descriptionCell}>{content}</div>;

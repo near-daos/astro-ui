@@ -69,6 +69,7 @@ export enum ProposalVariant {
   ProposeCreateDao = 'ProposeCreateDao',
   ProposeTransferFunds = 'ProposeTransferFunds',
   ProposeAcceptStakingContract = 'ProposeAcceptStakingContract',
+  ProposeUpdateVotePolicyToWeightVoting = 'ProposeUpdateVotePolicyToWeightVoting',
 }
 
 export type VoteAction = 'VoteApprove' | 'VoteRemove' | 'VoteReject';
