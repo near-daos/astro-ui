@@ -30,12 +30,14 @@ interface Props {
   onReset: () => void;
   onDelete: () => void;
   optionalControl?: ReactNode;
+  disabled: boolean;
 }
 
 export const CardContent: FC<Props> = ({
   onReset,
   onDelete,
   optionalControl,
+  disabled,
 }) => {
   const {
     register,
@@ -84,11 +86,12 @@ export const CardContent: FC<Props> = ({
             size="small"
             onClick={onReset}
             className={styles.cancel}
+            disabled={disabled}
           >
             Cancel
           </Button>
           <Button
-            disabled={!isValid}
+            disabled={!isValid || disabled}
             capitalize
             size="small"
             type="submit"
@@ -99,17 +102,22 @@ export const CardContent: FC<Props> = ({
         </div>
       ) : (
         <div className={styles.controls}>
-          <Button
-            variant="tertiary"
-            className={styles.delete}
-            capitalize
-            size="small"
-            onClick={handleDelete}
-          >
-            <Icon name="buttonDelete" className={styles.icon} />
-            Delete
-          </Button>
-          {optionalControl}
+          {!disabled && (
+            <>
+              <Button
+                variant="tertiary"
+                className={styles.delete}
+                capitalize
+                size="small"
+                onClick={handleDelete}
+                disabled={disabled}
+              >
+                <Icon name="buttonDelete" className={styles.icon} />
+                Delete
+              </Button>
+              {optionalControl}
+            </>
+          )}
         </div>
       )}
 
@@ -117,6 +125,7 @@ export const CardContent: FC<Props> = ({
         key={isActive}
         label="Enable template"
         defaultChecked={isActive}
+        disabled={disabled}
         {...register('isActive')}
         onChange={() => {
           setValue('isActive', !isActive, {
@@ -135,6 +144,7 @@ export const CardContent: FC<Props> = ({
               styles.narrow,
               styles.templateName
             )}
+            disabled={disabled}
             type="text"
             isBorderless
             size="block"
@@ -153,6 +163,7 @@ export const CardContent: FC<Props> = ({
             className={cn(styles.inputWrapper, styles.narrow)}
             type="text"
             min={0}
+            disabled={disabled}
             placeholder="x.paras.near"
             isBorderless
             size="block"
@@ -167,6 +178,7 @@ export const CardContent: FC<Props> = ({
             className={cn(styles.inputWrapper, styles.narrow)}
             type="text"
             min={0}
+            disabled={disabled}
             placeholder="nft_buy"
             isBorderless
             size="block"
@@ -202,6 +214,7 @@ export const CardContent: FC<Props> = ({
               height="200px"
               showPrintMargin
               showGutter={false}
+              // disabled={disabled}
               highlightActiveLine={false}
               setOptions={{
                 enableBasicAutocompletion: true,
@@ -221,6 +234,7 @@ export const CardContent: FC<Props> = ({
             })}
             onClick={() => setExpanded(!expanded)}
             capitalize
+            disabled={disabled}
           >
             <Icon
               name={expanded ? 'buttonArrowUp' : 'buttonEdit'}
@@ -240,6 +254,7 @@ export const CardContent: FC<Props> = ({
               min={MIN_GAS}
               step={1}
               max={MAX_GAS}
+              disabled={disabled}
               placeholder={`${DEFAULT_PROPOSAL_GAS}`}
               isBorderless
               size="block"
@@ -259,6 +274,7 @@ export const CardContent: FC<Props> = ({
                 paddingRight: 4,
               }}
               type="number"
+              disabled={disabled}
               min={0}
               placeholder="00.0000"
               isBorderless
@@ -270,6 +286,7 @@ export const CardContent: FC<Props> = ({
             className={styles.select}
             options={tokenOptions}
             label="&nbsp;"
+            disabled={disabled}
             {...register('token')}
             onChange={v => {
               setValue('token', v, {

@@ -22,6 +22,10 @@ export function extractNewDaoName(proposal: ProposalFeedItem): string {
 }
 
 export function isActiveUserCouncil(dao: DAO, acoountId: string): boolean {
+  if (!dao || !acoountId) {
+    return false;
+  }
+
   const { roles } = dao.policy;
 
   const councilRole = roles.find(role => role.name.toLowerCase() === 'council');

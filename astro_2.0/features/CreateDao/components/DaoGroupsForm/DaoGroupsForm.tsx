@@ -17,7 +17,20 @@ import { DaoGroupLine } from 'astro_2.0/features/CreateDao/components/DaoGroupsF
 
 import styles from './DaoGroupsForm.module.scss';
 
-type Form = { groups: { group: string; slug?: string }[] };
+type Group = { group: string; slug?: string };
+
+type Form = { groups: Group[] };
+
+yup.addMethod(yup.array, 'unique', function validate(
+  message,
+  mapper = (val: unknown) => val
+) {
+  return this.test(
+    'unique',
+    message,
+    (list = []) => list.length === new Set(list.map(mapper)).size
+  );
+});
 
 export const DaoGroupsForm: VFC = () => {
   const { t } = useTranslation();
@@ -34,21 +47,29 @@ export const DaoGroupsForm: VFC = () => {
               slug: item?.slug,
               group: item.name,
             }))
-          : [
-              { group: 'all', slug: 'all' },
-              { group: 'council', slug: 'council' },
-            ],
+          : [{ group: 'council', slug: 'council' }],
         item => item.group
       ),
     },
     mode: 'onChange',
     resolver: yupResolver(
       yup.object().shape({
-        groups: yup.array().of(
-          yup.object().shape({
-            group: yup.string().required('Required'),
-          })
-        ),
+        groups: yup
+          .array()
+          .of(
+            yup.object().shape({
+              group: yup
+                .string()
+                .test(
+                  'filled',
+                  'Please add group name',
+                  name => name?.trim() !== ''
+                ),
+            })
+          )
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          .unique('Group name must be unique', val => val?.group),
       })
     ),
   });
@@ -57,6 +78,7 @@ export const DaoGroupsForm: VFC = () => {
     control,
     handleSubmit,
     formState: { isValid },
+    getValues,
   } = methods;
 
   const { fields, append, remove } = useFieldArray({
@@ -76,6 +98,12 @@ export const DaoGroupsForm: VFC = () => {
     });
 
     updateQuery('step', 'members');
+  };
+
+  const checkUniqError = (): boolean => {
+    const list = getValues('groups').map(field => field.group);
+
+    return list.length !== new Set(list).size;
   };
 
   return (
@@ -102,7 +130,7 @@ export const DaoGroupsForm: VFC = () => {
             </p>
 
             <section className={styles.links}>
-              {fields.slice(0, 2).map((item, index) => {
+              {fields.slice(0, 1).map((item, index) => {
                 return (
                   <DaoGroupLine
                     key={item.id}
@@ -121,13 +149,13 @@ export const DaoGroupsForm: VFC = () => {
             </h4>
 
             <section className={styles.links}>
-              {fields.slice(1, -1).map((item, index) => {
+              {fields.slice(0, -1).map((item, index) => {
                 return (
                   <DaoGroupLine
                     key={item.id}
                     item={item}
-                    index={index + 2}
-                    onRemove={() => remove(index + 2)}
+                    index={index + 1}
+                    onRemove={() => remove(index + 1)}
                   />
                 );
               })}
@@ -144,7 +172,11 @@ export const DaoGroupsForm: VFC = () => {
             </section>
           </div>
 
-          <SubmitButton className={styles.submit} />
+          {checkUniqError() && (
+            <p className={styles.errorText}>Group name must be unique</p>
+          )}
+
+          <SubmitButton className={styles.submit} disabled={!isValid} />
         </div>
       </form>
     </FormProvider>

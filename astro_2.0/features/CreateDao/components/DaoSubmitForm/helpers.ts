@@ -98,7 +98,7 @@ export function getDetailedRolesVotingPolicy(
   // todo - use groups here
   // const oldGroups = ((proposals.data ?? []) as unknown) as { label: string }[];
 
-  const roles: DaoRole[] = groups
+  const roles: DaoRole[] = [{ name: 'all', slug: 'all' }, ...groups]
     .map(item => {
       if (item.slug === 'all') {
         return {
