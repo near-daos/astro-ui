@@ -157,14 +157,6 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
 
   const swipeProps = !regular ? handlers : EMPTY_OBJECT;
 
-  function getFormattedTime() {
-    try {
-      return format(parseISO(createdAt), 'h:mm aaa');
-    } catch (e) {
-      return 'n/a';
-    }
-  }
-
   return (
     <div className={cn(styles.root, className)}>
       <div
@@ -215,7 +207,9 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
             </span>
           </div>
         )}
-        <div className={styles.time}>{getFormattedTime()}</div>
+        <div className={styles.time}>
+          {format(parseISO(createdAt), 'h:mm aaa')}
+        </div>
         <div className={styles.control}>{renderControls()}</div>
       </div>
       <div
