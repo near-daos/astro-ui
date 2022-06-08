@@ -51,13 +51,9 @@ export const DaoGroupLine: VFC<DaoLinkLineProps> = ({
               {...register(`groups.${index}.group`)}
               defaultValue={currentValue}
               onValueChange={val => {
-                setFormValue(
-                  `groups.${index}.group`,
-                  val?.toString().toLowerCase(),
-                  {
-                    shouldValidate: true,
-                  }
-                );
+                setFormValue(`groups.${index}.group`, val, {
+                  shouldValidate: true,
+                });
               }}
               size="block"
             />

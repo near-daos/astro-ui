@@ -35,10 +35,7 @@ export function getInitialValues(
       isValid: false,
     },
     groups: {
-      items: [
-        { name: 'all', slug: 'all' },
-        { name: 'council', slug: 'council' },
-      ],
+      items: [{ name: 'council', slug: 'council' }],
       isValid: false,
     },
     members: {

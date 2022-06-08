@@ -12,7 +12,7 @@ import { formatPolicyRatio } from 'features/vote-policy/helpers';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
-
+import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 
@@ -34,8 +34,6 @@ type TLocalGroup = Omit<TGroup, 'votePolicy'> & {
   isCreated: boolean;
   votePolicy: DaoVotePolicy;
 };
-
-const BANNED_GROUP_NAMES = ['council', 'councils'];
 
 export const ManageGroups: React.FC<Props> = ({
   dao,
@@ -93,21 +91,24 @@ export const ManageGroups: React.FC<Props> = ({
     return true;
   };
 
-  const validateGroup = (group: TLocalGroup): boolean => {
+  const validateGroup = (
+    group: TLocalGroup
+  ): { hasError: boolean; message: string } => {
     if (
-      BANNED_GROUP_NAMES.includes(group.name.toLowerCase()) &&
-      !BANNED_GROUP_NAMES.includes(group.slug)
+      groups.find(item => item.name === group.name && item.slug !== group.slug)
     ) {
-      return false;
+      return { hasError: true, message: 'Group name should be unique' };
     }
 
-    return (
-      !groups.find(
-        item => item.name === group.name && item.slug !== group.slug
-      ) ||
-      group.members.length === 0 ||
-      group.name.trim() === ''
-    );
+    if (group.name.trim() === '') {
+      return { hasError: true, message: 'Add group name' };
+    }
+
+    // if (group.members.length === 0) {
+    //   return { hasError: true, message: 'Add group members' };
+    // }
+
+    return { hasError: false, message: '' };
   };
 
   const handleDeleteGroup = () => {
@@ -220,7 +221,10 @@ export const ManageGroups: React.FC<Props> = ({
   );
 
   const isGroupsValid = () =>
-    groups.reduce((isValid, group) => isValid || !validateGroup(group), false);
+    groups.reduce(
+      (isValid, group) => isValid && !validateGroup(group).hasError,
+      true
+    );
 
   return (
     <>
@@ -237,20 +241,33 @@ export const ManageGroups: React.FC<Props> = ({
 
           <h4 className={styles.title}>Groups</h4>
 
-          {groups.map(group => (
-            <Button
-              key={group.slug}
-              variant="transparent"
-              className={cn(styles.group, {
-                [styles.groupActive]: group.slug === activeGroup?.slug,
-                [styles.hasChanges]: group.hasChanges,
-                [styles.hasError]: !validateGroup(group),
-              })}
-              onClick={() => handleSelectGroup(group)}
-            >
-              {group.name}
-            </Button>
-          ))}
+          {groups.map(group => {
+            const validation = validateGroup(group);
+
+            return (
+              <Button
+                key={group.slug}
+                variant="transparent"
+                className={cn(styles.group, {
+                  [styles.groupActive]: group.slug === activeGroup?.slug,
+                  [styles.hasChanges]: group.hasChanges && !validation.hasError,
+                  [styles.hasError]: validation.hasError,
+                })}
+                onClick={() => handleSelectGroup(group)}
+              >
+                <span>{group.name}</span>
+
+                {validation.hasError && (
+                  <Tooltip
+                    overlay={<span>{validation.message}</span>}
+                    className={styles.label}
+                  >
+                    <Icon name="stateAlert" className={styles.groupIcon} />
+                  </Tooltip>
+                )}
+              </Button>
+            );
+          })}
         </div>
 
         {activeGroup && (
@@ -269,7 +286,7 @@ export const ManageGroups: React.FC<Props> = ({
           [styles.submitVisible]:
             modifiedGroups > 0 || dao.groups.length - groups.length > 0,
         })}
-        disabled={disableNewProposal || isGroupsValid()}
+        disabled={disableNewProposal || !isGroupsValid()}
         onClick={handleOnSubmit}
       >
         {modifiedGroups > 1
