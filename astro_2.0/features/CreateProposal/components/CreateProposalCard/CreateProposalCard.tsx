@@ -1,5 +1,3 @@
-// TODO requires localisation
-
 import React, { ReactNode, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 
@@ -85,85 +83,119 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   }
 
   function renderProposalCell() {
+    const getTranslation = (key: string) =>
+      t(`proposalCard.createProposal.header.${key}`);
+
     switch (type) {
       case ProposalVariant.ProposeChangeProposalCreationPermissions: {
         return (
           <InfoBlockWidget
-            label="Proposal type: Change Policy"
-            value="Proposal Creation"
+            label={getTranslation('changePolicy')}
+            value={getTranslation('proposalCreation')}
           />
         );
       }
       case ProposalVariant.ProposeChangeProposalVotingPermissions: {
         return (
           <InfoBlockWidget
-            label="Proposal type: Change Policy"
-            value="Voting Permissions"
+            label={getTranslation('changePolicy')}
+            value={getTranslation('votingPermissions')}
           />
         );
       }
       case ProposalVariant.ProposeCreateDao: {
-        return <InfoBlockWidget label="Migrate" value="Create DAO" />;
+        return (
+          <InfoBlockWidget
+            label={getTranslation('migrate')}
+            value={getTranslation('createDao')}
+          />
+        );
       }
       case ProposalVariant.ProposeTransferFunds: {
-        return <InfoBlockWidget label="Migrate" value="Transfer DAO funds" />;
+        return (
+          <InfoBlockWidget
+            label={getTranslation('migrate')}
+            value={getTranslation('transferDaoFunds')}
+          />
+        );
       }
       case ProposalVariant.ProposeGetUpgradeCode: {
         return (
-          <InfoBlockWidget label="Upgrade" value="Get Code From Factory" />
+          <InfoBlockWidget
+            label={getTranslation('upgrade')}
+            value={getTranslation('getCodeFromFactory')}
+          />
         );
       }
       case ProposalVariant.ProposeUpgradeSelf: {
-        return <InfoBlockWidget label="Upgrade" value="Upgrade DAO" />;
+        return (
+          <InfoBlockWidget
+            label={getTranslation('upgrade')}
+            value={getTranslation('upgradeDao')}
+          />
+        );
       }
       case ProposalVariant.ProposeRemoveUpgradeCode: {
         return (
-          <InfoBlockWidget label="Upgrade" value="Recover Storage Costs" />
+          <InfoBlockWidget
+            label={getTranslation('upgrade')}
+            value={getTranslation('recoverStorageCosts')}
+          />
         );
       }
       case ProposalVariant.ProposeDoneBounty: {
         return (
           <InfoBlockWidget
-            label="Proposal type: Transfer/Bounty Done"
-            value="Complete Bounty"
+            label={getTranslation('transferBountyDone')}
+            value={getTranslation('completeBounty')}
           />
         );
       }
       case ProposalVariant.ProposeTokenDistribution: {
         return (
           <InfoBlockWidget
-            label="Custom Function"
-            value="Distribution of tokens"
+            label={getTranslation('customFunction')}
+            value={getTranslation('distributionOfTokens')}
           />
         );
       }
       case ProposalVariant.ProposeStakingContractDeployment: {
         return (
           <InfoBlockWidget
-            label="Create Governance Token"
-            value="Deploy Staking Contract"
+            label={getTranslation('createGovernanceToken')}
+            value={getTranslation('deployStakingContract')}
           />
         );
       }
       case ProposalVariant.ProposeCreateToken: {
-        return <InfoBlockWidget label="Change Config" value="Create Token" />;
+        return (
+          <InfoBlockWidget
+            label={getTranslation('changeConfig')}
+            value={getTranslation('createToken')}
+          />
+        );
       }
       case ProposalVariant.ProposeUpdateGroup: {
-        return <InfoBlockWidget label="Change Policy" value="Group" />;
+        return (
+          <InfoBlockWidget
+            label={getTranslation('changePolicy')}
+            value={getTranslation('group')}
+          />
+        );
       }
       case ProposalVariant.ProposeAcceptStakingContract: {
         return (
           <InfoBlockWidget
-            label="Create Governance Token"
-            value="Accept Staking Contract"
+            label={getTranslation('createGovernanceToken')}
+            value={getTranslation('acceptStakingContract')}
           />
         );
       }
       case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
         return (
           <InfoBlockWidget
-            label="Create Governance Token"
-            value="Change Voting Policy"
+            label={getTranslation('createGovernanceToken')}
+            value={getTranslation('changeVotingPolicy')}
           />
         );
       }
@@ -342,7 +374,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       <div className={styles.proposalCell}>{renderProposalCell()}</div>
 
       <div className={styles.countdownCell}>
-        Countdown will&nbsp;be&nbsp;here
+        {t('proposalCard.createProposal.countdown')}
       </div>
 
       {renderCardContent()}
