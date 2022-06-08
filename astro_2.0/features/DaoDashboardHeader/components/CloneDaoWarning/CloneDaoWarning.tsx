@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import cn from 'classnames';
 
-import { UserPermissions } from 'types/context';
 import { DAO } from 'types/dao';
 import { ProposalFeedItem, ProposalVariant } from 'types/proposal';
 import { WarningRenderer } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/components/WarningRenderer';
@@ -29,7 +28,6 @@ import styles from './CloneDaoWarning.module.scss';
 
 interface Props {
   dao: DAO;
-  userPermissions: UserPermissions;
   className?: string;
   onCreateProposal: (
     initialVariant: ProposalVariant,
@@ -53,7 +51,6 @@ const AnimatedContent: FC = ({ children }) => {
 
 export const CloneDaoWarning: FC<Props> = ({
   dao,
-  userPermissions,
   className,
   onCreateProposal,
 }) => {
@@ -100,8 +97,7 @@ export const CloneDaoWarning: FC<Props> = ({
     [cloneState, daoName, nearConfig.contractName, update]
   );
 
-  const isCouncil = isActiveUserCouncil(dao, accountId);
-  const canActOnFlow = isCouncil && userPermissions.isCanCreateProposals;
+  const canActOnFlow = isActiveUserCouncil(dao, accountId);
   const isCloneAvailable =
     (daoVersion?.version[0] === 2 || !daoVersion) &&
     canActOnFlow &&

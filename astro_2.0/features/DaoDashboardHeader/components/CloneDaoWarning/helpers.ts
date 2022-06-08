@@ -39,19 +39,11 @@ export function hasAvailableFunds(tokens: Record<string, Token>): boolean {
   let hasFunds = false;
 
   tokensOptions.forEach(token => {
-    let max = Number(token.balance);
+    const balance = Number(token.balance);
 
-    if (token.symbol === 'NEAR') {
-      const maxPossibleValue = Number(max) - 6;
-
-      if (maxPossibleValue <= 0) {
-        max = 0;
-      } else {
-        max = maxPossibleValue;
-      }
-    }
-
-    if (max > 0.0001) {
+    if (token.symbol === 'NEAR' && balance > 7) {
+      hasFunds = true;
+    } else if (token.symbol !== 'NEAR' && balance > 0) {
       hasFunds = true;
     }
   });
