@@ -36,6 +36,7 @@ import {
   FunctionCallPermissionView,
 } from 'near-api-js/lib/providers/provider';
 import { httpService } from 'services/HttpService';
+import { configService } from 'services/ConfigService';
 
 export class SputnikWalletService implements WalletService {
   private readonly near: Near;
@@ -152,9 +153,11 @@ export class SputnikWalletService implements WalletService {
       }
     }
 
+    const { appConfig } = configService.get();
+
     const result = await this.getAccount().functionCall({
       ...props,
-      walletCallbackUrl: `${window.origin}/api/server/v1/transactions/wallet/callback/${accountId}`,
+      walletCallbackUrl: `${appConfig.API_URL}/api/v1/transactions/wallet/callback/${accountId}`,
     });
 
     return [result];
