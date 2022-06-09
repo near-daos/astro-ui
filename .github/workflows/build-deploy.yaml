@@ -97,7 +97,7 @@ jobs:
     if: needs.get-environment.outputs.environment == 'develop'
     uses: near-daos/astro-ui/.github/workflows/run-autotests.yaml@autotests
     with:
-      env: dev
+      environment: develop
       tags: smoke
       browser: chrome
     secrets:
