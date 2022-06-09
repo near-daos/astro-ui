@@ -112,7 +112,8 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
                   onDelete={deleteTemplate}
                   className={styles.card}
                   onSaveToDaos={saveTemplates}
-                  disabled={!canActOnFlow}
+                  disabled={!accountId}
+                  editable={canActOnFlow}
                 />
               ))}
           </CustomTokensContext.Provider>

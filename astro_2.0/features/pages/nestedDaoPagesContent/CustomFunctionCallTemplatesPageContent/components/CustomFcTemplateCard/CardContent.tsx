@@ -103,21 +103,19 @@ export const CardContent: FC<Props> = ({
       ) : (
         <div className={styles.controls}>
           {!disabled && (
-            <>
-              <Button
-                variant="tertiary"
-                className={styles.delete}
-                capitalize
-                size="small"
-                onClick={handleDelete}
-                disabled={disabled}
-              >
-                <Icon name="buttonDelete" className={styles.icon} />
-                Delete
-              </Button>
-              {optionalControl}
-            </>
+            <Button
+              variant="tertiary"
+              className={styles.delete}
+              capitalize
+              size="small"
+              onClick={handleDelete}
+              disabled={disabled}
+            >
+              <Icon name="buttonDelete" className={styles.icon} />
+              Delete
+            </Button>
           )}
+          {optionalControl}
         </div>
       )}
 
@@ -201,29 +199,33 @@ export const CardContent: FC<Props> = ({
               [styles.expanded]: expanded,
             })}
           >
-            <AceEditor
-              placeholder=""
-              mode="json"
-              className={styles.editorContent}
-              theme="github"
-              {...register('json')}
-              onChange={handleChange}
-              defaultValue={json}
-              fontSize={14}
-              width={expanded ? '100%' : '0'}
-              height="200px"
-              showPrintMargin
-              showGutter={false}
-              // disabled={disabled}
-              highlightActiveLine={false}
-              setOptions={{
-                enableBasicAutocompletion: true,
-                enableLiveAutocompletion: true,
-                enableSnippets: false,
-                showLineNumbers: false,
-                tabSize: 2,
-              }}
-            />
+            {disabled ? (
+              <pre>{json}</pre>
+            ) : (
+              <AceEditor
+                placeholder=""
+                mode="json"
+                className={styles.editorContent}
+                theme="github"
+                {...register('json')}
+                onChange={handleChange}
+                defaultValue={json}
+                fontSize={14}
+                width={expanded ? '100%' : '0'}
+                height="240px"
+                showPrintMargin
+                showGutter={false}
+                // disabled={disabled}
+                highlightActiveLine={false}
+                setOptions={{
+                  enableBasicAutocompletion: true,
+                  enableLiveAutocompletion: true,
+                  enableSnippets: false,
+                  showLineNumbers: false,
+                  tabSize: 2,
+                }}
+              />
+            )}
           </div>
           <Button
             size={expanded ? 'block' : 'small'}
@@ -234,13 +236,13 @@ export const CardContent: FC<Props> = ({
             })}
             onClick={() => setExpanded(!expanded)}
             capitalize
-            disabled={disabled}
+            // disabled={disabled}
           >
             <Icon
               name={expanded ? 'buttonArrowUp' : 'buttonEdit'}
               className={styles.icon}
             />
-            {!expanded && 'Edit'}
+            {!expanded && (disabled ? 'View' : 'Edit')}
           </Button>
         </InputWrapper>
       </div>
