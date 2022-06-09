@@ -2,30 +2,32 @@
 @import 'styles/mixins';
 
 .root {
-  display: flex;
-
-  > div:last-of-type {
-    margin-left: 80px;
-  }
+  display: grid;
+  grid-gap: 24px;
+  grid-template-areas:
+    'amount target'
+    'total commission';
+  grid-template-columns: 2fr 1fr;
 }
 
-.row {
-  align-items: center;
+.amount {
   display: flex;
-  white-space: nowrap;
+  grid-area: amount;
+}
 
-  .iconWrapper {
-    border-radius: 50%;
-    height: 24px;
-    margin-right: 8px;
-    overflow: hidden;
-    width: 24px;
-  }
+.target {
+  grid-area: target;
+}
+
+.commission {
+  grid-area: commission;
+}
+
+.total {
+  grid-area: total;
 }
 
 .inputWrapper {
-  max-width: 160px;
-
   /* stylelint-disable */
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
@@ -50,8 +52,13 @@
   }
 }
 
-.wide {
-  max-width: unset;
+.inputWrapper .inputContainer {
+  display: flex;
+
+  input {
+    color: var(--color-neutral-70);
+    font-weight: 500;
+  }
 }
 
 .select {
@@ -68,20 +75,42 @@
     overflow: hidden;
   }
 
-  .balance {
+  [data-hidden-value] {
     display: none;
+    margin-left: auto;
   }
 
   .row {
-    @include font(16px, 16px, 400);
     font-family: var(--font-family-primary);
-    min-height: 32px;
+    font-size: 14px;
     width: 100%;
+  }
+
+  .balance {
+    display: none;
+  }
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  white-space: nowrap;
+
+  .iconWrapper {
+    border-radius: 50%;
+    height: 24px;
+    margin-right: 8px;
+    overflow: hidden;
+    width: 24px;
   }
 }
 
 .select ul {
   min-width: 260px;
+
+  [data-hidden-value] {
+    display: flex;
+  }
 
   .balance {
     display: flex;
@@ -127,10 +156,14 @@
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .root {
     display: grid;
+    grid-column-gap: 0;
     grid-template-areas:
-      'amount token'
-      'target target';
-    grid-template-columns: 1fr 1fr;
+      'address'
+      'method'
+      'gas'
+      'editor'
+      'deposit';
+    grid-template-columns: 1fr;
 
     > div:last-of-type {
       grid-column: 1 / 3;
@@ -139,8 +172,7 @@
   }
 
   .select ul {
-    min-width: 240px;
-    right: calc(100% - 110px);
+    min-width: 200px;
 
     .balance {
       display: flex;

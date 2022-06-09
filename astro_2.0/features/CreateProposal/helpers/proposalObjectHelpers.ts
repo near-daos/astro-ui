@@ -8,6 +8,7 @@ import { DAO } from 'types/dao';
 import {
   CreateProposalParams,
   DaoConfig,
+  FunctionCallAction,
   ProposalVariant,
 } from 'types/proposal';
 import { CreateTokenInput } from 'astro_2.0/features/CreateProposal/types';
@@ -315,6 +316,107 @@ export async function getBuyNftFromParasProposal(
           gas: formatGasValue(actionsGas ?? DEFAULT_PROPOSAL_GAS).toString(),
         },
       ],
+    },
+    bond: dao.policy.proposalBond,
+  };
+}
+
+export type CreateRoketoStreamInput = {
+  details: string;
+  externalUrl?: string;
+  token: string;
+  commission: string; // TODO: work with this
+  commissionToken: string; // TODO: work with this
+  // Stream configuration
+  receiverId: string;
+  amount: string;
+  tokensPerSec: string;
+  description?: string;
+  cliffPeriodInSec?: string;
+  isAutoStartEnabled?: boolean;
+  isExpirable?: boolean;
+  isLocked?: boolean;
+};
+
+export async function getCreateRoketoStreamProposal(
+  dao: DAO,
+  data: CreateRoketoStreamInput,
+  tokens: Tokens
+): Promise<CreateProposalParams> {
+  const { externalUrl, details, ...stream } = data;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
+
+  const token = Object.values(tokens).find(item => item.symbol === data.token);
+  const commissionToken = Object.values(tokens).find(
+    item => item.symbol === data.commissionToken
+  );
+
+  if (!token || !commissionToken) {
+    throw new Error('No tokens data found');
+  }
+
+  const deposit = new Decimal(stream.amount)
+    .mul(10 ** token.decimals)
+    .toFixed();
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const commission = new Decimal(data.commission)
+    .mul(10 ** commissionToken.decimals)
+    .toFixed();
+
+  const CreateRequest = {
+    Create: {
+      request: {
+        owner_id: dao.id,
+        receiver_id: stream.receiverId,
+        tokens_per_sec: new Decimal(stream.tokensPerSec).toFixed(),
+        description: stream.description,
+        cliff_period_in_sec: stream.cliffPeriodInSec,
+        is_auto_start_enabled: stream.isAutoStartEnabled,
+        is_expirable: stream.isExpirable,
+        is_locked: stream.isLocked,
+      },
+    },
+  };
+
+  const TransferCall = {
+    receiver_id: 'streaming-r-v2.dcversus.testnet', // move to ENV VAR
+    amount: new Decimal('1').toFixed(),
+    memo: details,
+    msg: JSON.stringify(CreateRequest),
+  };
+
+  // TODO calculate commission in the token
+  // TODO if token is not listed, commission should be taken in NEAR
+  // TODO otherwise in the listed token provided
+
+  // https://github.com/roke-to/roketo-ui/blob/master/src/shared/api/ft/ft-api.ts#L101
+  const actions: FunctionCallAction[] = [
+    {
+      method_name: 'ft_transfer_call',
+      deposit: new Decimal(deposit).toFixed(),
+      args: Buffer.from(JSON.stringify(TransferCall)).toString('base64'),
+      gas: formatGasValue(300).toString(),
+    },
+  ];
+  const isNear = token.tokenId === 'NEAR';
+
+  if (isNear) {
+    actions.unshift({
+      method_name: 'near_deposit',
+      deposit,
+      args: Buffer.from('{}').toString('base64'),
+      gas: formatGasValue(DEFAULT_PROPOSAL_GAS).toString(),
+    });
+  }
+
+  return {
+    daoId: dao.id,
+    description: proposalDescription,
+    kind: 'FunctionCall',
+    data: {
+      receiver_id: token.tokenId,
+      actions,
     },
     bond: dao.policy.proposalBond,
   };

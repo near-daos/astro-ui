@@ -19,6 +19,7 @@ declare global {
       LOCAL_WALLET_REDIRECT: boolean;
 
       NEAR_CONTRACT_NAME: string;
+      ROKETO_CONTRACT_NAME: string;
       TOKEN_FACTORY_CONTRACT_NAME: string;
 
       RELEASE_NOTES: string;

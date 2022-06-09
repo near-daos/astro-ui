@@ -88,6 +88,7 @@ version:
 environment:
   near_env: "testnet"
   near_contract_name: "sputnikv2.testnet"
+  roketo_contract_name: "streaming-r-v2.dcversus.testnet"
   api_url: "http://a6f2431dfded249d18fc7a20377342db-2021398035.eu-central-1.elb.amazonaws.com"
   aws_bucket: "sputnik-dao"
   aws_region: "eu-central-1"

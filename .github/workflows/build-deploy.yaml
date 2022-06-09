@@ -79,6 +79,7 @@ jobs:
             --set image.tag=$DOCKER_ENV_TAG \
             --set environment.near_env=${NEAR_ENV} \
             --set environment.near_contract_name=${NEAR_CONTRACT_NAME} \
+            --set environment.roketo_contract_name=${ROKETO_CONTRACT_NAME} \
             --set environment.api_url=${API_URL} \
             --set environment.google_analytics_key=${GOOGLE_ANALYTICS_KEY} \
             --set environment.log_rocket_app_id=${LOG_ROCKET_APP_ID} \
