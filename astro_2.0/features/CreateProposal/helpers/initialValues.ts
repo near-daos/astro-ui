@@ -153,11 +153,22 @@ export function getFormInitialValues(
         ...initialValues,
       };
     }
-    case ProposalVariant.ProposeContractAcceptance: {
+    case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
+      return {
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
+    case ProposalVariant.ProposeStakingContractDeployment: {
       return {
         details: '',
         externalUrl: '',
         unstakingPeriod: '345',
+        gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
+      };
+    }
+    case ProposalVariant.ProposeAcceptStakingContract: {
+      return {
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };

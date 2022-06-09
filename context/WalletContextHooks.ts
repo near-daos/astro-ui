@@ -1,8 +1,8 @@
-import { WalletService } from 'services/sputnik/SputnikNearService/services/types';
+import { WalletService } from 'services/sputnik/SputnikNearService/walletServices/types';
 import { useEffectOnce, useList, useLocalStorage } from 'react-use';
 import { configService } from 'services/ConfigService';
-import { SputnikWalletService } from 'services/sputnik/SputnikNearService/services/SputnikWalletService';
-import { SenderWalletService } from 'services/sputnik/SputnikNearService/services/SenderWalletService';
+import { SputnikWalletService } from 'services/sputnik/SputnikNearService/walletServices/SputnikWalletService';
+import { SenderWalletService } from 'services/sputnik/SputnikNearService/walletServices/SenderWalletService';
 import { useCallback, useEffect, useState } from 'react';
 import { WalletType } from 'types/config';
 import { CookieService } from 'services/CookieService';

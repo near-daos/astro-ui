@@ -1,4 +1,5 @@
 import get from 'lodash/get';
+import Decimal from 'decimal.js';
 
 import {
   DAO,
@@ -9,10 +10,12 @@ import {
   VotePolicyRequest,
 } from 'types/dao';
 import { DaoRole } from 'types/role';
-import Decimal from 'decimal.js';
-import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 import { CreateDaoParams } from 'services/sputnik/types';
 import { YOKTO_NEAR } from 'services/sputnik/constants';
+
+import { jsonToBase64Str } from 'utils/jsonToBase64Str';
+import { fromBase64ToObj } from 'utils/fromBase64ToObj';
+
 import { getAwsImageUrl } from './utils/getAwsImageUrl';
 
 export type DaoPolicy = {
@@ -100,7 +103,7 @@ export type MemberStats = {
 export type DaoSubscriptionDTO = { id: string; dao: DaoDTO };
 
 export const fromBase64ToMetadata = (metaAsBase64: string): DaoMetadata => {
-  return JSON.parse(Buffer.from(metaAsBase64, 'base64').toString('utf-8'));
+  return fromBase64ToObj(metaAsBase64);
 };
 
 export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {

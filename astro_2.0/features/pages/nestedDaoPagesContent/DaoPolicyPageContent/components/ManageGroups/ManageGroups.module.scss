@@ -14,6 +14,7 @@
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
+    margin-bottom: 20px;
   }
 }
 
@@ -61,18 +62,32 @@
 
 .group {
   @extend %title4;
+  align-items: center;
   background: transparent;
   border-left: 1px solid transparent;
   color: var(--color-neutral-60);
+  display: flex;
+  flex-flow: row nowrap;
   height: 42px;
-  max-width: 100%;
-  overflow: hidden;
+  justify-content: space-between;
   padding: 8px 16px;
   position: relative;
   text-align: left;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   width: 100%;
+
+  span {
+    max-width: calc(100% - 20px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: calc(100% - 20px);
+  }
+}
+
+.groupIcon {
+  height: 20px;
+  width: 20px;
+  z-index: 2;
 }
 
 .groupActive {
@@ -88,11 +103,15 @@
     content: ' ';
     height: 6px;
     position: absolute;
-    right: 18px;
+    right: 26px;
     top: 50%;
     transform: translate(50%, -50%);
     width: 6px;
   }
+}
+
+.hasError {
+  color: var(--color-error-60);
 }
 
 .submit {
@@ -100,6 +119,11 @@
   margin-left: auto;
   margin-top: 32px;
   text-transform: none;
+
+  @include mobile-only {
+    margin: 32px auto;
+    width: 100%;
+  }
 }
 
 .submitVisible {

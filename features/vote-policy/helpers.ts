@@ -5,7 +5,7 @@ import { Vote, VoteDetail, VoterDetail } from 'features/types';
 import difference from 'lodash/difference';
 import isEmpty from 'lodash/isEmpty';
 import { DefaultVotePolicy, ProposalAction } from 'types/role';
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { DATA_SEPARATOR } from 'constants/common';
 import { dataRoleToContractRole, getThreshold } from 'features/groups/helpers';
 
 export interface VotePolicy {
@@ -202,7 +202,7 @@ export const getNewProposalObject = (
 ): CreateProposalParams => {
   return {
     daoId: dao.id,
-    description: `${data.daoSettings.details}${EXTERNAL_LINK_SEPARATOR}${data.daoSettings.externalLink}`,
+    description: `${data.daoSettings.details}${DATA_SEPARATOR}${data.daoSettings.externalLink}`,
     kind: 'ChangePolicy',
     data: {
       policy: {

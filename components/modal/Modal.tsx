@@ -10,7 +10,7 @@ export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children?: ReactNode;
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'auto';
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl' | 'auto';
   className?: string;
   hideCloseIcon?: boolean;
 }
@@ -44,6 +44,7 @@ export const Modal: FC<ModalProps> = memo(
             [styles.lg]: size === 'lg',
             [styles.xl]: size === 'xl',
             [styles.xxl]: size === 'xxl',
+            [styles.xxxl]: size === 'xxxl',
             [styles.auto]: size === 'auto',
           }),
           afterOpen: styles.contentAfterOpen,

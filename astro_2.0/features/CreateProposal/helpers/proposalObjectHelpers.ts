@@ -1,6 +1,7 @@
 import Decimal from 'decimal.js';
 
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { DATA_SEPARATOR } from 'constants/common';
+import { STAKING_CONTRACT_PREFIX } from 'constants/proposals';
 import { DEFAULT_PROPOSAL_GAS } from 'services/sputnik/constants';
 
 import { DAO } from 'types/dao';
@@ -15,6 +16,7 @@ import { CreateTransferInput } from 'astro_2.0/features/CreateProposal/component
 
 import { formatGasValue } from 'utils/format';
 import { jsonToBase64Str } from 'utils/jsonToBase64Str';
+import { dataRoleToContractRole } from 'features/groups/helpers';
 
 import { configService } from 'services/ConfigService';
 
@@ -36,7 +38,7 @@ export function getUpgradeCodeProposal(
   const { versionHash, details, externalUrl } = data;
   const { appConfig } = configService.get();
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const args = jsonToBase64Str({
     code_hash: versionHash,
@@ -68,7 +70,7 @@ export function getRemoveUpgradeCodeProposal(
   const { versionHash, details, externalUrl } = data;
   const { appConfig } = configService.get();
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const args = jsonToBase64Str({
     code_hash: versionHash,
@@ -100,7 +102,7 @@ export function getUpgradeSelfProposal(
 ): CreateProposalParams {
   const { versionHash, details, externalUrl } = data;
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   return {
     daoId: dao.id,
@@ -133,7 +135,7 @@ export async function getCustomFunctionCallProposal(
     throw new Error('No tokens data found');
   }
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
   const args = Buffer.from(json).toString('base64');
 
   return {
@@ -189,7 +191,7 @@ export async function getBuyNftFromMintbaseProposal(
     throw new Error('No tokens data found');
   }
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const json = JSON.stringify({
     token_key: [tokenKey],
@@ -236,7 +238,7 @@ export async function getTransferMintbaseNFTProposal(
 ): Promise<CreateProposalParams> {
   const { tokenKey, target, details, externalUrl, actionsGas } = data;
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const [key, store] = tokenKey.split(':');
 
@@ -291,7 +293,7 @@ export async function getBuyNftFromParasProposal(
     throw new Error('No tokens data found');
   }
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const json = JSON.stringify({
     token_series_id: tokenKey,
@@ -347,7 +349,7 @@ export async function getSwapsOnRefProposal(
     externalUrl,
   } = data;
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const json = JSON.stringify({
     actions: [
@@ -387,7 +389,7 @@ export async function getCreateTokenProposal(
 ): Promise<CreateProposalParams> {
   const { details, externalUrl } = data;
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const args = jsonToBase64Str({});
 
@@ -425,7 +427,7 @@ export async function getTransferProposal(
 
   return {
     daoId: dao.id,
-    description: `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
+    description: `${details}${DATA_SEPARATOR}${externalUrl}`,
     kind: 'Transfer',
     bond: dao.policy.proposalBond,
     data: {
@@ -494,7 +496,7 @@ export function getNewDaoProposal(
   const { nearConfig } = configService.get();
   const { details, externalUrl, displayName, address } = data;
 
-  const proposalDescription = `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
   const daoArgs = JSON.stringify({
     name: address,
@@ -585,7 +587,7 @@ export function getTransferDaoFundsProposal(
 
   return {
     daoId: dao.id,
-    description: `${details}${EXTERNAL_LINK_SEPARATOR}${externalUrl}`,
+    description: `${details}${DATA_SEPARATOR}${externalUrl}`,
     kind: 'Transfer',
     bond: dao.policy.proposalBond,
     data: {
@@ -604,7 +606,8 @@ export async function getDeployStakingContractProposal(
   const { unstakingPeriod, token } = data;
 
   return ({
-    stakingContractName: `${name}-staking`,
+    description: 'Deploy staking contract via factory',
+    stakingContractName: `${name}${STAKING_CONTRACT_PREFIX}`,
     daoId: id,
     tokenId: token,
     daoBond: policy.proposalBond,
@@ -612,3 +615,70 @@ export async function getDeployStakingContractProposal(
   } as unknown) as CreateProposalParams;
 }
 
+export async function getAcceptStakingContractProposal(
+  dao: DAO
+): Promise<CreateProposalParams> {
+  const { id, name, policy } = dao;
+
+  const stakingContractName = `${name}${STAKING_CONTRACT_PREFIX}`;
+
+  return ({
+    daoId: id,
+    daoBond: policy.proposalBond,
+    description: `Accept staking contract ${stakingContractName}`,
+    stakingContractName,
+  } as unknown) as CreateProposalParams;
+}
+
+export async function getChangeVotingPolicyToWeightVoting(
+  dao: DAO
+): Promise<CreateProposalParams> {
+  const { id, policy } = dao;
+  const {
+    roles,
+    bountyBond,
+    proposalBond,
+    proposalPeriod,
+    defaultVotePolicy,
+    bountyForgivenessPeriod,
+  } = policy;
+
+  const { ratio, quorum, weightKind } = defaultVotePolicy;
+
+  return {
+    daoId: id,
+    description: `Change voting policy to weight voting`,
+    kind: 'ChangePolicy',
+    data: {
+      policy: {
+        roles: [
+          ...roles.map(dataRoleToContractRole),
+          {
+            name: 'TokenHolders',
+            kind: {
+              Member: '1',
+            },
+            permissions: ['*:*'],
+            vote_policy: {
+              '*.*': {
+                weight_kind: 'TokenWeight',
+                quorum: '0',
+                threshold: '400000000000000000000',
+              },
+            },
+          },
+        ],
+        default_vote_policy: {
+          weight_kind: weightKind,
+          quorum,
+          threshold: ratio,
+        },
+        proposal_bond: proposalBond,
+        proposal_period: proposalPeriod,
+        bounty_bond: bountyBond,
+        bounty_forgiveness_period: bountyForgivenessPeriod,
+      },
+    },
+    bond: dao.policy.proposalBond,
+  };
+}

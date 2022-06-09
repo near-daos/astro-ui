@@ -1,0 +1,63 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  background-color: var(--color-white);
+  display: grid;
+  grid-row-gap: 22px;
+  grid-template-areas:
+    'countdownCell'
+    'proposalCell'
+    'card'
+    'proposerCell'
+    'descriptionCell'
+    'contentCell';
+  grid-template-columns: 1fr;
+  padding: 0;
+  position: relative;
+  transition: box-shadow 0.3s ease-out;
+  z-index: 1;
+
+  @include tablet-landscape {
+    grid-template-areas:
+      'proposalCell countdownCell'
+      'card card';
+    grid-template-columns: 1fr 1fr;
+    padding: 22px 30px;
+  }
+}
+
+.card {
+  display: grid;
+  grid-area: card;
+  grid-row-gap: 22px;
+  grid-template-areas:
+    'proposerCell'
+    'descriptionCell'
+    'contentCell';
+  grid-template-columns: 1fr;
+}
+
+.proposalCell {
+  grid-area: proposalCell;
+}
+
+.countdownCell {
+  @extend %title4;
+  color: var(--color-primary-50);
+  grid-area: countdownCell;
+  text-align: right;
+}
+
+.proposerCell {
+  grid-area: proposerCell;
+}
+
+.descriptionCell {
+  grid-area: descriptionCell;
+}
+
+.contentCell {
+  grid-area: contentCell;
+}

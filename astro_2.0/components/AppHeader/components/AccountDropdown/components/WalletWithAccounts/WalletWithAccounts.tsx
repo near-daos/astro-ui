@@ -4,7 +4,7 @@ import { useWalletContext } from 'context/WalletContext';
 
 import { Accordion } from 'astro_2.0/components/Accordion';
 import React from 'react';
-import { WalletMeta } from 'services/sputnik/SputnikNearService/services/types';
+import { WalletMeta } from 'services/sputnik/SputnikNearService/walletServices/types';
 import { WalletAccount } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletAccount';
 import styles from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletWithAccounts/WalletWithAccounts.module.scss';
 import cn from 'classnames';

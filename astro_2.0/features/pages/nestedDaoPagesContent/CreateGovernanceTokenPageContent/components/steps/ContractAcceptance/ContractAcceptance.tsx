@@ -58,7 +58,7 @@ export const ContractAcceptance: FC<ContractAcceptanceProps> = ({
           key={0}
           daoTokens={{}}
           userPermissions={userPermissions}
-          proposalVariant={ProposalVariant.ProposeContractAcceptance}
+          proposalVariant={ProposalVariant.ProposeStakingContractDeployment}
           showFlag={false}
           onClose={() => undefined}
           showClose={false}

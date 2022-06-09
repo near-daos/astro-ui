@@ -70,6 +70,10 @@ export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
     );
   }
 
+  function renderDeposit() {
+    return tokenData ? formatYoktoValue(deposit, tokenData.decimals) : deposit;
+  }
+
   return (
     <div className={styles.root}>
       {getContent()}
@@ -77,13 +81,7 @@ export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
       <div className={styles.deposit}>
         <div className={styles.row}>
           <FieldWrapper label={t('proposalCard.deposit')}>
-            <FieldValue
-              value={
-                tokenData
-                  ? formatYoktoValue(deposit, tokenData.decimals)
-                  : deposit
-              }
-            />
+            <FieldValue value={renderDeposit()} />
           </FieldWrapper>
           {tokenData && (
             <FieldWrapper label="">

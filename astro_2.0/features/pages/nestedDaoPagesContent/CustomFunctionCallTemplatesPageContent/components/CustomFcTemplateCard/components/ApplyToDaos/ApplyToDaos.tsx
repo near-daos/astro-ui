@@ -20,6 +20,7 @@ interface Props {
   template: ProposalTemplate;
   className?: string;
   onSave: (data: TemplateUpdatePayload[]) => Promise<void>;
+  disabled: boolean;
 }
 
 export const ApplyToDaos: FC<Props> = ({
@@ -27,6 +28,7 @@ export const ApplyToDaos: FC<Props> = ({
   template,
   onSave,
   className,
+  disabled,
 }) => {
   const { pkAndSignature } = useWalletContext();
   const [showModal] = useModal(SaveFcTemplateModal);
@@ -54,6 +56,7 @@ export const ApplyToDaos: FC<Props> = ({
       capitalize
       className={cn(styles.control, className)}
       onClick={handleClick}
+      disabled={disabled}
     >
       <span className={styles.label}>Copy to dao</span>
     </Button>

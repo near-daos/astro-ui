@@ -13,12 +13,13 @@ import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 import { useWalletContext } from 'context/WalletContext';
 
 import {
+  ProposalFeedItem,
   ProposalStatus,
   ProposalType,
   ProposalVariant,
   VoteAction,
 } from 'types/proposal';
-import { DraftComment } from 'types/draftProposal';
+import { DraftComment, Hashtag } from 'types/draftProposal';
 import { VoteDetail } from 'features/types';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { ProposalActions } from 'features/proposal/components/ProposalActions';
@@ -28,6 +29,7 @@ import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { getProposalVariantLabel } from 'astro_2.0/features/ViewProposal/helpers';
 import { ExplorerLink } from 'components/ExplorerLink';
 import { AmountBalanceCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/AmountBalanceCard';
+import { HistorySelector } from 'astro_2.0/features/ViewProposal/components/HistorySelector';
 
 import { Button } from 'components/button/Button';
 
@@ -47,7 +49,6 @@ import { DraftManagement } from 'astro_2.0/components/ProposalCardRenderer/compo
 
 import { ProposalControlPanel } from './components/ProposalControlPanel';
 
-// import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import styles from './ProposalCard.module.scss';
 
 export interface ProposalCardProps {
@@ -86,9 +87,10 @@ export interface ProposalCardProps {
   };
   isDraft?: boolean;
   title?: string;
-  hashtags?: string[];
+  hashtags?: Hashtag[];
   bookmarks?: number;
   comments?: DraftComment[];
+  history?: ProposalFeedItem[];
 }
 
 function getTimestampLabel(
@@ -202,6 +204,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   hashtags,
   bookmarks,
   comments,
+  history,
 }) => {
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
@@ -310,7 +313,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
   function renderProposer() {
     switch (variant) {
-      case ProposalVariant.ProposeContractAcceptance:
+      case ProposalVariant.ProposeStakingContractDeployment:
       case ProposalVariant.ProposeCreateToken: {
         return null;
       }
@@ -345,7 +348,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   function renderDescription() {
     switch (variant) {
       case ProposalVariant.ProposeCreateToken:
-      case ProposalVariant.ProposeContractAcceptance:
+      case ProposalVariant.ProposeStakingContractDeployment:
       case ProposalVariant.ProposeTokenDistribution: {
         return null;
       }
@@ -378,12 +381,12 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
             <div className={styles.draftHashTags}>
               {hashtags?.map(tag => (
                 <Badge
-                  key={tag}
+                  key={tag.id}
                   size="small"
                   className={styles.tag}
                   variant="lightgray"
                 >
-                  {tag}
+                  {tag.value}
                 </Badge>
               ))}
             </div>
@@ -425,7 +428,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           </>
         );
       }
-      case ProposalVariant.ProposeContractAcceptance:
+      case ProposalVariant.ProposeStakingContractDeployment:
       case ProposalVariant.ProposeTokenDistribution: {
         return <div className={styles.descriptionCell}>{content}</div>;
       }
@@ -533,6 +536,46 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     );
   };
 
+  function renderTimestampCell() {
+    if (!isDraft) {
+      return (
+        <div className={styles.countdownCell}>
+          {getTimestampLabel(
+            timeLeft,
+            status,
+            updatedAt,
+            votePeriodEnd,
+            isDraft
+          )}
+          {showFinalize && (
+            <Button
+              size="small"
+              disabled={finalizeLoading}
+              className={styles.finalizeButton}
+              onClick={e => {
+                e.stopPropagation();
+
+                return finalizeClickHandler();
+              }}
+            >
+              Finalize
+            </Button>
+          )}
+        </div>
+      );
+    }
+
+    if (history && history.length >= 2) {
+      return (
+        <div className={styles.countdownCell}>
+          <HistorySelector data={history} />
+        </div>
+      );
+    }
+
+    return <div className={styles.countdownCell}>{updatedAt}</div>;
+  }
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div
@@ -559,7 +602,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           label={getInfoBlockWidgetLabel()}
           value={
             <div className={styles.proposalType}>
-              {getProposalVariantLabel(variant, type)}
+              {getProposalVariantLabel(variant, type, t)}
               {!isDraft ? (
                 <ExplorerLink
                   linkData={proposalTxHash}
@@ -571,23 +614,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           }
         />
       </div>
-      <div className={styles.countdownCell}>
-        {getTimestampLabel(timeLeft, status, updatedAt, votePeriodEnd, isDraft)}
-        {showFinalize && (
-          <Button
-            size="small"
-            disabled={finalizeLoading}
-            className={styles.finalizeButton}
-            onClick={e => {
-              e.stopPropagation();
-
-              return finalizeClickHandler();
-            }}
-          >
-            Finalize
-          </Button>
-        )}
-      </div>
+      {renderTimestampCell()}
 
       {renderCardContent()}
 

@@ -7,6 +7,24 @@ export function useAppInitialize(): boolean {
     setInitialized(true);
   }, []);
 
+  const handleError = useCallback(e => {
+    console.error(
+      `Global error: ${e.message}, ${e.source}, ${e.lineno}, ${e.colno}`
+    );
+    // eslint-disable-next-line
+    console.trace(e);
+
+    return true;
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('error', handleError);
+
+    return () => {
+      window.removeEventListener('error', handleError);
+    };
+  }, [handleError]);
+
   useEffect(() => {
     if (window.APP_CONFIG) {
       setInitialized(true);

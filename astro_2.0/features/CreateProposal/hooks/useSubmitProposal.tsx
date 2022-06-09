@@ -9,13 +9,41 @@ import { CaptchaModal } from 'astro_2.0/features/CreateProposal/components/Captc
 import { useCallback } from 'react';
 import { getTransferDaoFundsProposal } from 'astro_2.0/features/CreateProposal/helpers/proposalObjectHelpers';
 import { getNewProposalObject } from 'astro_2.0/features/CreateProposal/helpers/newProposalObject';
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { DATA_SEPARATOR } from 'constants/common';
 import last from 'lodash/last';
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 import omit from 'lodash/omit';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-import { DeployStakingContractParams } from 'services/sputnik/SputnikNearService/subServices/GovernanceTokenService';
+import {
+  AcceptStakingContractParams,
+  DeployStakingContractParams,
+} from 'services/sputnik/SputnikNearService/services/GovernanceTokenService';
+import { SputnikNearService } from 'services/sputnik';
+
+async function createProposal(
+  variant: ProposalVariant,
+  proposal: CreateProposalParams,
+  nearService: SputnikNearService | null
+) {
+  if (variant === ProposalVariant.ProposeTransfer) {
+    return nearService?.createTokenTransferProposal(proposal);
+  }
+
+  if (variant === ProposalVariant.ProposeStakingContractDeployment) {
+    return nearService?.deployStakingContract(
+      (proposal as unknown) as DeployStakingContractParams
+    );
+  }
+
+  if (variant === ProposalVariant.ProposeAcceptStakingContract) {
+    return nearService?.acceptStakingContract(
+      (proposal as unknown) as AcceptStakingContractParams
+    );
+  }
+
+  return nearService?.addProposal(proposal);
+}
 
 export function useSubmitProposal({
   selectedProposalVariant,
@@ -46,7 +74,8 @@ export function useSubmitProposal({
     async data => {
       // show captcha modal for some proposals
       if (
-        selectedProposalVariant === ProposalVariant.ProposeContractAcceptance
+        selectedProposalVariant ===
+        ProposalVariant.ProposeStakingContractDeployment
       ) {
         const [res] = await showModal();
 
@@ -138,16 +167,23 @@ export function useSubmitProposal({
             bountyId
           );
 
+          const { variant, description } = newProposal || {};
+
           try {
+            const pVariant = variant ?? selectedProposalVariant;
+
+            const getDescr = (separator: string) =>
+              `${description}${separator}${pVariant}`;
+
+            const pDescription = description?.includes(DATA_SEPARATOR)
+              ? getDescr(DATA_SEPARATOR)
+              : getDescr(`${DATA_SEPARATOR + DATA_SEPARATOR}`);
+
             if (selectedProposalVariant !== ProposalVariant.ProposeTransfer) {
               // Add proposal variant and gas
               newProposal = {
                 ...newProposal,
-                description: `${
-                  newProposal?.description
-                }${EXTERNAL_LINK_SEPARATOR}${
-                  newProposal?.variant ?? selectedProposalVariant
-                }`,
+                description: pDescription,
                 gas: data.gas,
               } as CreateProposalParams;
             }
@@ -156,22 +192,11 @@ export function useSubmitProposal({
               return;
             }
 
-            let resp;
-
-            if (selectedProposalVariant === ProposalVariant.ProposeTransfer) {
-              resp = await nearService?.createTokenTransferProposal(
-                newProposal
-              );
-            } else if (
-              selectedProposalVariant ===
-              ProposalVariant.ProposeContractAcceptance
-            ) {
-              resp = await nearService?.deployStakingContract(
-                (newProposal as unknown) as DeployStakingContractParams
-              );
-            } else {
-              resp = await nearService?.addProposal(newProposal);
-            }
+            const resp = await createProposal(
+              selectedProposalVariant,
+              newProposal,
+              nearService
+            );
 
             const newProposalId = resp
               ? JSON.parse(

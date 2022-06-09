@@ -115,6 +115,7 @@ export const DaoMembersForm: VFC = () => {
                     item={item}
                     index={index}
                     onRemove={() => remove(index)}
+                    canBeRemoved={item.name !== accountId}
                   />
                 );
               })}

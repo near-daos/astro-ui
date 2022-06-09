@@ -20,7 +20,7 @@ import { Icon } from 'components/Icon';
 
 import { useBountyControls } from 'astro_2.0/features/Bounties/components/hooks';
 import { useWalletContext } from 'context/WalletContext';
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { DATA_SEPARATOR } from 'constants/common';
 import { SINGLE_BOUNTY_PAGE_URL } from 'constants/routing';
 
 import { AddBountyRequest, ProposalType } from 'types/proposal';
@@ -61,7 +61,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   const canNavigateToBounty = !router.query.bounty;
 
   const desc = bounty ? bounty.description : proposal.description;
-  const [description, url] = desc.split(EXTERNAL_LINK_SEPARATOR);
+  const [description, url] = desc.split(DATA_SEPARATOR);
   const kind = proposal.kind as {
     type: ProposalType.AddBounty;
     bounty: AddBountyRequest;

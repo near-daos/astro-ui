@@ -1,7 +1,6 @@
-// TODO requires localisation
-
-import React, { FC, useCallback } from 'react';
 import { useMedia } from 'react-use';
+import { useTranslation } from 'next-i18next';
+import React, { FC, useCallback } from 'react';
 
 import { shortenString } from 'utils/format';
 
@@ -19,6 +18,8 @@ interface Props {
 }
 
 export const AllowanceKeyRow: FC<Props> = ({ daoWithAllowanceKey }) => {
+  const { t } = useTranslation();
+
   const isMobile = useMedia('(max-width: 640px)');
 
   const [showModal] = useModal(AllowanceKeyModal);
@@ -52,7 +53,7 @@ export const AllowanceKeyRow: FC<Props> = ({ daoWithAllowanceKey }) => {
           formatNearAmount(daoWithAllowanceKey.allowanceKey.allowance, 3)
         ) : (
           <Button size="small" capitalize onClick={handleAssign}>
-            Request key
+            {t('myAccountPage.requestKey')}
           </Button>
         )}
       </div>

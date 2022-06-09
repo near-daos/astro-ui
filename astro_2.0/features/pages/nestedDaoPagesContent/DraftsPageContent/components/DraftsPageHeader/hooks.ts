@@ -1,19 +1,14 @@
-import { PaginationResponse } from 'types/api';
-// import { useRouter } from 'next/router';
-// import { useWalletContext } from 'context/WalletContext';
 import { useRef } from 'react';
-import axios, { CancelTokenSource } from 'axios';
 import { useAsyncFn } from 'react-use';
-// import { SputnikHttpService } from 'services/sputnik';
+import axios, { CancelTokenSource } from 'axios';
+
+import { PaginationResponse } from 'types/api';
 
 export function useDraftsSearch(): {
   handleSearch: (val: string) => Promise<PaginationResponse<unknown[]> | null>;
   loading: boolean;
   value: PaginationResponse<unknown[]> | undefined;
 } {
-  // const router = useRouter();
-  // const daoId = router.query.dao as string;
-  // const { accountId } = useWalletContext();
   const cancelTokenRef = useRef<CancelTokenSource | null>(null);
 
   const [{ loading, value }, handleSearch] = useAsyncFn(async () => {

@@ -18,7 +18,7 @@ import {
 
 import { Notification } from 'types/notification';
 import { NotificationAction } from 'astro_2.0/features/Notifications/types';
-import { EXTERNAL_LINK_SEPARATOR } from 'constants/common';
+import { DATA_SEPARATOR } from 'constants/common';
 
 import styles from './NotificationCard.module.scss';
 
@@ -43,7 +43,6 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   accountId,
   targetId,
   createdAt,
-  signerId,
   id,
   status,
   onUpdate,
@@ -99,9 +98,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     [handleMarkReadClick, router, url]
   );
 
-  const description = metadata?.proposal?.description.split(
-    EXTERNAL_LINK_SEPARATOR
-  )[0];
+  const description = metadata?.proposal?.description.split(DATA_SEPARATOR)[0];
 
   function renderControls() {
     return (
@@ -197,7 +194,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
             dao={dao}
             status={status}
             metadata={metadata}
-            proposerId={signerId ?? metadata?.proposal?.proposer ?? ''}
+            proposerId={metadata?.proposal?.proposer ?? ''}
           />
         </div>
         {description && (

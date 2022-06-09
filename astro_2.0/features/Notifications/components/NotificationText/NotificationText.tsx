@@ -84,5 +84,8 @@ export const NotificationText: FC<NotificationTextProps> = ({
     }
   }
 
-  return <div className={styles.root}>{action}</div>;
+  return (
+    // eslint-disable-next-line react/no-danger
+    <div className={styles.root} dangerouslySetInnerHTML={{ __html: action }} />
+  );
 };
