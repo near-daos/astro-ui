@@ -95,7 +95,7 @@ jobs:
     - build-deploy
     - get-environment
     if: needs.get-environment.outputs.environment == 'develop'
-    uses: near-daos/astro-ui/.github/workflows/run-autotests.yaml@autotests
+    uses: near-daos/astro-ui/.github/workflows/run-autotests.yaml@develop
     with:
       environment: develop
       tags: smoke
