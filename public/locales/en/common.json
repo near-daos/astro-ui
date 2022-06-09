@@ -377,6 +377,33 @@
       "unstakingPeriod": "Unstaking Period"
     }
   },
+  "createProposal": {
+    "header": {
+      "changePolicy": "Proposal type: Change Policy",
+      "proposalCreation": "Proposal Creation",
+      "votingPermissions": "Voting Permissions",
+      "migrate": "Migrate",
+      "createDao": "Create DAO",
+      "transferDaoFunds": "Transfer DAO funds",
+      "upgrade": "Upgrade",
+      "getCodeFromFactory": "Get Code From Factory",
+      "upgradeDao": "Upgrade DAO",
+      "recoverStorageCosts": "Recover Storage Costs",
+      "transferBountyDone": "Proposal type: Transfer/Bounty Done",
+      "completeBounty": "Complete Bounty",
+      "customFunction": "Custom Function",
+      "distributionOfTokens": "Distribution of tokens",
+      "createGovernanceToken": "Create Governance Token",
+      "deployStakingContract": "Deploy Staking Contract",
+      "changeConfig": "Change Config",
+      "createToken": "Create Token",
+      "group": "Group",
+      "createGovToken": "Create Governance Token",
+      "acceptStakingContract": "Accept Staking Contract",
+      "changeVotingPolicy": "Change Voting Policy"
+    },
+    "countdown": "Countdown will be here"
+  },
   "viewProposalCard": {
     "proposalVariant": {
       "createBounty": "Create a Bounty",

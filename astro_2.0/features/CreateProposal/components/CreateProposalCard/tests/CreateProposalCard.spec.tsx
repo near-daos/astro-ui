@@ -97,9 +97,9 @@ describe('CreateGroupContent', () => {
   it.each`
     type                                                | content
     ${'Unknown'}                                        | ${'proposalCard.proposalOwner'}
-    ${ProposalVariant.ProposeDoneBounty}                | ${'Complete Bounty'}
-    ${ProposalVariant.ProposeTokenDistribution}         | ${'Distribution of tokens'}
-    ${ProposalVariant.ProposeStakingContractDeployment} | ${'Deploy Staking Contract'}
+    ${ProposalVariant.ProposeDoneBounty}                | ${'proposalCard.createProposal.header.completeBounty'}
+    ${ProposalVariant.ProposeTokenDistribution}         | ${'proposalCard.createProposal.header.distributionOfTokens'}
+    ${ProposalVariant.ProposeStakingContractDeployment} | ${'proposalCard.createProposal.header.deployStakingContract'}
     ${ProposalVariant.ProposeCustomFunctionCall}        | ${'FunctionCallTypeSelector'}
   `(
     'Should render component for $type proposal variant',
