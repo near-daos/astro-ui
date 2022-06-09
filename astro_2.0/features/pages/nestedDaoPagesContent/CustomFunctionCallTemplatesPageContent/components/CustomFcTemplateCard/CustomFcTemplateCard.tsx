@@ -47,6 +47,7 @@ interface Props {
   className?: string;
   onSaveToDaos: (data: TemplateUpdatePayload[]) => Promise<void>;
   disabled: boolean;
+  editable: boolean;
 }
 
 interface Form {
@@ -95,6 +96,7 @@ export const CustomFcTemplateCard: FC<Props> = ({
   onDelete,
   onSaveToDaos,
   disabled,
+  editable,
 }) => {
   const { dao } = daoContext;
   const { config } = template;
@@ -195,17 +197,19 @@ export const CustomFcTemplateCard: FC<Props> = ({
             className={styles.root}
           >
             <CardContent
-              disabled={disabled}
+              disabled={!editable}
               onReset={handleReset}
               onDelete={() => template.id && onDelete(template.id)}
               optionalControl={
-                <ApplyToDaos
-                  accountDaos={accountDaos}
-                  template={template}
-                  className={styles.applyToDaos}
-                  onSave={onSaveToDaos}
-                  disabled={disabled}
-                />
+                !disabled && (
+                  <ApplyToDaos
+                    accountDaos={accountDaos}
+                    template={template}
+                    className={styles.applyToDaos}
+                    onSave={onSaveToDaos}
+                    disabled={disabled}
+                  />
+                )
               }
             />
           </form>
