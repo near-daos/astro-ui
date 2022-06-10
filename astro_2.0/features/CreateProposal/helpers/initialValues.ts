@@ -1,5 +1,6 @@
 /* istanbul ignore file */
 
+import { TFunction } from 'react-i18next';
 import { ProposalVariant } from 'types/proposal';
 import {
   DEFAULT_CREATE_DAO_GAS,
@@ -9,15 +10,19 @@ import {
 import { Token } from 'types/token';
 
 export function getFormInitialValues(
+  t: TFunction,
   selectedProposalType: ProposalVariant,
   accountId: string,
   initialValues: Record<string, unknown> = {},
   daoTokens?: Record<string, Token>
 ): Record<string, unknown> {
+  const getDescr = (key: string) =>
+    t(`proposalCard.functionCalls.${key}.description`);
+
   switch (selectedProposalType) {
     case ProposalVariant.ProposeGetUpgradeCode: {
       return {
-        details: `Upgrading your DAO requires you to retrieve the new code you want your DAO to run. This proposal is to get a copy of the upgrade code. The code comes from the Sputnik DAO Factory, the same place your DAO came from when you created it.`,
+        details: getDescr('proposeGetUpgradeCode'),
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
@@ -32,7 +37,7 @@ export function getFormInitialValues(
     }
     case ProposalVariant.ProposeUpgradeSelf: {
       return {
-        details: `Now that your DAO has a copy of the code it wants to run, it's time to propose that the DAO "Upgrades Itself." This proposal will switch the DAO from running its old code to the code you retrieved in step 1.`,
+        details: getDescr('proposeUpgradeSelf'),
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
@@ -40,7 +45,7 @@ export function getFormInitialValues(
     }
     case ProposalVariant.ProposeRemoveUpgradeCode: {
       return {
-        details: `Your DAO is now running the latest code! This proposal is to delete the upgrade code which you retrieved from the factory. Deleting that code saves NEAR for your DAO. It's safe to delete that code because smart contracts always store a copy of the code they're running.`,
+        details: getDescr('proposeRemoveUpgradeCode'),
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
@@ -48,7 +53,7 @@ export function getFormInitialValues(
     }
     case ProposalVariant.ProposeCreateDao: {
       return {
-        details: `Because V2 DAOs can not be upgraded we will create a new DAO running the V3 smart contract. After this step we will transfer all assets to the V3 DAO.`,
+        details: getDescr('proposeCreateDao'),
         externalUrl: '',
         gas: DEFAULT_CREATE_DAO_GAS,
         displayName: initialValues.displayName,
@@ -70,7 +75,7 @@ export function getFormInitialValues(
       );
 
       return {
-        details: `To manage our assets with our new V3 DAO we will transfer them from our old V2 DAO. We're creating the proposals all at once but each proposal needs separate approval.`,
+        details: getDescr('proposeTransferFunds'),
         externalUrl: '',
         gas: DEFAULT_CREATE_DAO_GAS,
         daoTokens,

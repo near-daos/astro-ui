@@ -55,5 +55,10 @@
   "clubDaoCreate": "Notify me about the creation of a DAO with a Club structure",
   "foundationDaoCreate": "Notify me about the creation of a DAO with a Foundation structure",
   "corporationDaoCreate": "Notify me about the creation of a DAO with a Corporation structure",
-  "cooperativeDaoCreate": "Notify me about the creation of a DAO with a Cooperative structure"
+  "cooperativeDaoCreate": "Notify me about the creation of a DAO with a Cooperative structure",
+
+  "markAsUnread": "Mark as unread",
+  "markAsRead": "Mark as read",
+  "restore": "Restore",
+  "archive": "Archive"
 }
