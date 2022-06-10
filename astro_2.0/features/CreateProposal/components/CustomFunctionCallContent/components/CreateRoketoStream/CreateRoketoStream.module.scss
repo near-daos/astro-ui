@@ -6,7 +6,8 @@
   grid-gap: 24px;
   grid-template-areas:
     'amount target'
-    'total commission';
+    'commission commission'
+    'total total';
   grid-template-columns: 2fr 1fr;
 }
 
@@ -21,10 +22,33 @@
 
 .commission {
   grid-area: commission;
+
+  .receipt {
+    display: grid;
+    font-size: 14px;
+    grid-column-gap: 6px;
+    grid-row-gap: 10px;
+    grid-template-columns: auto auto auto;
+  }
+
+  .receiptAmount {
+    text-align: end;
+  }
 }
 
 .total {
   grid-area: total;
+
+  .totalLines {
+    display: grid;
+    grid-gap: 6px;
+    grid-template-columns: auto auto;
+  }
+
+  span {
+    line-height: 24px;
+    margin-right: 10px;
+  }
 }
 
 .inputWrapper {
@@ -53,8 +77,6 @@
 }
 
 .inputWrapper .inputContainer {
-  display: flex;
-
   input {
     color: var(--color-neutral-70);
     font-weight: 500;

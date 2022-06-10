@@ -1,8 +1,10 @@
 import { DAO } from 'types/dao';
-import React, { useEffect, useMemo, VFC } from 'react';
+import React, { useMemo, VFC } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useFormContext } from 'react-hook-form';
 import cn from 'classnames';
+import Decimal from 'decimal.js';
+import { formatNearAmount } from 'near-api-js/lib/utils/format';
 
 import { useDepositWidth } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/hooks';
 import { Input } from 'components/inputs/Input';
@@ -15,7 +17,7 @@ import { formatCurrency } from 'utils/formatCurrency';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
 import styles from './CreateRoketoStream.module.scss';
-import { useRoketoCreateCommission } from './hooks';
+import { useRoketoReceipt } from './hooks';
 
 interface CreateRoketoStreamProps {
   dao: DAO;
@@ -48,25 +50,35 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
   const depositWidth = useDepositWidth();
   const { tokens } = useCustomTokensContext();
   const selectedTokenId = watch('token');
-  const commission = useRoketoCreateCommission(selectedTokenId);
-  const commissionToken = useMemo(
+  const selectedToken = useMemo(
     () =>
-      Object.values(tokens).find(found => found.id === commission.inToken) ??
+      Object.values(tokens).find(found => found.symbol === selectedTokenId) ??
       null,
-    [tokens, commission]
+    [tokens, selectedTokenId]
   );
 
-  useEffect(() => {
-    setValue('commission', commission.amount);
-  }, [commission, setValue]);
+  // TODO add check for storage_deposit for dao account and target account
 
-  // console.log({ selectedTokenId, commission, commissionToken, tokens });
+  const shouldDepositForDao = watch('shouldDepositForDao');
+  const shouldDepositForTarget = watch('shouldDepositForTarget');
+  const { total, positions } = useRoketoReceipt({
+    amountToStream: new Decimal(watch('amount') || '0')
+      .mul(10 ** (selectedToken?.decimals ?? 24))
+      .toFixed(),
+    tokenId: selectedToken?.id || 'NEAR',
+    storageDeposit: {
+      forSender: shouldDepositForDao ?? true,
+      forRecipient: shouldDepositForTarget ?? false,
+    },
+  });
 
-  const nearToUsd = (tokenBalance: string) => {
-    const nearPrice = tokens?.NEAR?.price;
+  // console.log({ selectedTokenId, selectedToken, tokens, positions, total });
 
-    if (nearPrice) {
-      return formatCurrency(parseFloat(tokenBalance) * parseFloat(nearPrice));
+  const toUsd = (token: Token) => {
+    if (token.price) {
+      return formatCurrency(
+        parseFloat(token.balance) * parseFloat(token.price)
+      );
     }
 
     return '';
@@ -97,18 +109,13 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
           >
             {token.balance}
           </span>
-          {token.symbol === 'NEAR' && (
-            <span>&#8776;&nbsp;{nearToUsd(token.balance)}&nbsp;USD</span>
-          )}
+          {token.price && <span>&#8776;&nbsp;{toUsd(token)}&nbsp;USD</span>}
         </div>
       </div>
     ),
   }));
 
   const selectedTokenData = tokens[getValues().token];
-
-  // TODO add commission calculations
-  // TODO if listed token, show commission in token, otherwise show in NEAR
 
   return (
     <div className={styles.root}>
@@ -163,18 +170,22 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
         <InputWrapper
           className={styles.inputWrapper}
           fieldName="commission"
-          label="Commission"
+          label="Receipt"
         >
-          <div className={styles.inputContainer}>
-            <Input
-              type="number"
-              min={0}
-              isBorderless
-              size="small"
-              readOnly
-              {...register('commission')}
-            />
-            {commissionToken ? <TokenSymbol token={commissionToken} /> : null}
+          <div className={styles.receipt}>
+            {positions.map(position => {
+              const token = tokens[position.token];
+
+              return (
+                <React.Fragment key={`${position.token}-${position.amount}`}>
+                  <span>{position.description}</span>
+                  <span className={styles.receiptAmount}>
+                    {formatNearAmount(position.amount, token.decimals)}
+                  </span>
+                  <span>{token.symbol}</span>
+                </React.Fragment>
+              );
+            })}
           </div>
         </InputWrapper>
       </div>
@@ -185,15 +196,17 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
           fieldName="total"
           label="Total"
         >
-          <div className={styles.inputContainer}>
-            <Input
-              type="number"
-              min={0}
-              isBorderless
-              size="block"
-              readOnly
-              value={1}
-            />
+          <div className={styles.totalLines}>
+            {Object.entries(total).map(([tokenId, amount]) => {
+              const token = tokens[tokenId];
+
+              return (
+                <React.Fragment key={tokenId}>
+                  <span>{formatNearAmount(amount, token.decimals)}</span>
+                  <TokenSymbol token={token} />
+                </React.Fragment>
+              );
+            })}
           </div>
         </InputWrapper>
       </div>
