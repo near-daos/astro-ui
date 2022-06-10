@@ -322,6 +322,7 @@ export async function getBuyNftFromParasProposal(
 }
 
 export type CreateRoketoStreamInput = {
+  // TODO: rewrite this form to conform with interface (receipt)
   details: string;
   externalUrl?: string;
   token: string;
@@ -334,7 +335,6 @@ export type CreateRoketoStreamInput = {
   description?: string;
   cliffPeriodInSec?: string;
   isAutoStartEnabled?: boolean;
-  isExpirable?: boolean;
   isLocked?: boolean;
 };
 
@@ -373,7 +373,7 @@ export async function getCreateRoketoStreamProposal(
         description: stream.description,
         cliff_period_in_sec: stream.cliffPeriodInSec,
         is_auto_start_enabled: stream.isAutoStartEnabled,
-        is_expirable: stream.isExpirable,
+        is_expirable: true,
         is_locked: stream.isLocked,
       },
     },
@@ -386,9 +386,7 @@ export async function getCreateRoketoStreamProposal(
     msg: JSON.stringify(CreateRequest),
   };
 
-  // TODO calculate commission in the token
-  // TODO if token is not listed, commission should be taken in NEAR
-  // TODO otherwise in the listed token provided
+  // TODO read commission from the creation form
 
   // https://github.com/roke-to/roketo-ui/blob/master/src/shared/api/ft/ft-api.ts#L101
   const actions: FunctionCallAction[] = [
