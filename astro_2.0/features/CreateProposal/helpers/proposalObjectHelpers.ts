@@ -466,6 +466,7 @@ export async function getVoteInOtherDaoProposal(
   const { gas, vote, details, proposal, targetDao } = data;
 
   const proposalObj = {
+    variant: ProposalVariant.VoteInAnotherDao,
     daoId: dao.id,
     description: details,
     kind: 'FunctionCall' as const,

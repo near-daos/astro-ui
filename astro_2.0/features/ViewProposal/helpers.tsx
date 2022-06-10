@@ -41,6 +41,7 @@ import {
 import { ChangePermissionsContent } from 'astro_2.0/features/ViewProposal/components/ChangePermissionsContent';
 import { UpdateGroupContent } from 'astro_2.0/features/CreateProposal/components/UpdateGroupContent';
 import { CreateDaoContent } from 'astro_2.0/features/ViewProposal/components/CreateDaoContent';
+import { ViewVoteInOtherDao } from './components/CustomFunctionCallContent/components/ViewVoteInOtherDao';
 
 export function getContentNode(proposal: ProposalFeedItem): ReactNode {
   const { dao } = proposal;
@@ -436,6 +437,11 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
 
         break;
       }
+      case ProposalVariant.VoteInAnotherDao: {
+        content = <ViewVoteInOtherDao proposal={proposal} />;
+
+        break;
+      }
       default: {
         break;
       }
@@ -606,6 +612,9 @@ export function getProposalVariantLabel(
     }
     case ProposalVariant.ProposeAcceptStakingContract: {
       return getVarLabel('contractAcceptance');
+    }
+    case ProposalVariant.VoteInAnotherDao: {
+      return getVarLabel('voteInAnotherDao');
     }
     default: {
       switch (type) {
