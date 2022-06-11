@@ -375,6 +375,23 @@
       "tokenId": "Token ID",
       "hours": "hours",
       "unstakingPeriod": "Unstaking Period"
+    },
+    "functionCalls": {
+      "proposeGetUpgradeCode": {
+        "description": "Upgrading your DAO requires you to retrieve the new code you want your DAO to run. This proposal is to get a copy of the upgrade code. The code comes from the Sputnik DAO Factory, the same place your DAO came from when you created it."
+      },
+      "proposeUpgradeSelf": {
+        "description": "Now that your DAO has a copy of the code it wants to run, it's time to propose that the DAO \"Upgrades Itself.\" This proposal will switch the DAO from running its old code to the code you retrieved in step 1."
+      },
+      "proposeRemoveUpgradeCode": {
+        "description": "Your DAO is now running the latest code! This proposal is to delete the upgrade code which you retrieved from the factory. Deleting that code saves NEAR for your DAO. It's safe to delete that code because smart contracts always store a copy of the code they're running."
+      },
+      "proposeCreateDao": {
+        "description": "Because V2 DAOs can not be upgraded we will create a new DAO running the V3 smart contract. After this step we will transfer all assets to the V3 DAO."
+      },
+      "proposeTransferFunds": {
+        "description": "To manage our assets with our new V3 DAO we will transfer them from our old V2 DAO. We're creating the proposals all at once but each proposal needs separate approval."
+      }
     }
   },
   "createProposal": {
@@ -609,10 +626,30 @@
   "daoPolicy": {
     "title": "DAO Settings",
     "backToSettingsOverview": "Back to settings overview",
+    "bondAndDeadlines": "Bond and deadlines",
     "tabs": {
       "proposalCreation": {
         "title": "Proposal creation",
         "description": "Choose what creation rights you give DAO groups. This can be changed in settings later."
+      },
+      "votingPermissions": {
+        "title": "Voting permissions",
+        "description": "Choose what voting rights you give DAO groups."
+      }
+    },
+    "settings": {
+      "proposals": {
+        "title": "Proposals",
+        "bondToCreateProposal": "Bond to create a proposal",
+        "timeBeforeProposalExpires": "Time before proposal expires"
+      },
+      "bounties": {
+        "title": "Bounties",
+        "bondToClaimABounty": "Bond to claim a bounty",
+        "timeToUnclaimBounty": "Time to unclaim a bounty without penalty"
+      },
+      "daoSettings": {
+        "title": "Voting policy"
       }
     }
   }

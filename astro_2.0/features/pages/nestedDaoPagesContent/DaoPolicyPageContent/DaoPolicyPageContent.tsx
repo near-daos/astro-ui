@@ -1,5 +1,3 @@
-// TODO requires localisation
-
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -101,8 +99,8 @@ export const DaoPolicyPageContent: FC<Props> = ({
         )}
         {daoFilter === 'votingPermissions' && (
           <PermissionsSelector
-            title="Voting permissions"
-            description="Choose what voting rights you give DAO groups."
+            title={t('daoPolicy.tabs.votingPermissions.title')}
+            description={t('daoPolicy.tabs.votingPermissions.description')}
             disableNewProposal={
               !userPermissions.isCanCreateProposals ||
               !userPermissions.isCanCreatePolicyProposals ||
@@ -123,7 +121,7 @@ export const DaoPolicyPageContent: FC<Props> = ({
         )}
         {daoFilter === 'bondAndDeadlines' && (
           <DaoSetting
-            settingsName="Bond and deadlines"
+            settingsName={t('daoPolicy.bondAndDeadlines')}
             className={styles.contentRow}
             disableNewProposal={
               !userPermissions.isCanCreateProposals ||
@@ -139,10 +137,10 @@ export const DaoPolicyPageContent: FC<Props> = ({
             <div className={styles.settingsContainer}>
               <SettingsCard
                 className={styles.settingsCard}
-                settingName="Proposals"
+                settingName={t('daoPolicy.settings.proposals.title')}
                 settings={[
                   {
-                    label: 'Bond to create a proposal',
+                    label: t('daoPolicy.settings.bondToCreateProposal'),
                     value: (
                       <InfoValue
                         value={formatYoktoValue(dao.policy.proposalBond, 24)}
@@ -151,7 +149,7 @@ export const DaoPolicyPageContent: FC<Props> = ({
                     ),
                   },
                   {
-                    label: 'Time before proposal expires',
+                    label: t('daoPolicy.settings.timeBeforeProposalExpires'),
                     value: (
                       <InfoValue value={proposalPeriod.join(' ')} label="" />
                     ),
@@ -160,10 +158,10 @@ export const DaoPolicyPageContent: FC<Props> = ({
               />
               <SettingsCard
                 className={styles.settingsCard}
-                settingName="Bounties"
+                settingName={t('daoPolicy.settings.bounties.title')}
                 settings={[
                   {
-                    label: 'Bond to claim a bounty',
+                    label: t('daoPolicy.settings.bounties.bondToClaimABounty'),
                     value: (
                       <InfoValue
                         value={formatYoktoValue(dao.policy.bountyBond, 24)}
@@ -172,7 +170,7 @@ export const DaoPolicyPageContent: FC<Props> = ({
                     ),
                   },
                   {
-                    label: 'Time to unclaim a bounty without penalty',
+                    label: t('daoPolicy.settings.bounties.timeToUnclaimBounty'),
                     value: (
                       <InfoValue value={bountyPeriod.join(' ')} label="" />
                     ),
@@ -184,7 +182,7 @@ export const DaoPolicyPageContent: FC<Props> = ({
         )}
         {daoFilter === 'votingPolicy' && (
           <DaoSetting
-            settingsName="Voting policy"
+            settingsName={t('daoPolicy.settings.daoSettings.title')}
             className={styles.contentRow}
             disableNewProposal={
               !userPermissions.isCanCreateProposals ||

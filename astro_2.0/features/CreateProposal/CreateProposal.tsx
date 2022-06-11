@@ -93,6 +93,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     defaultValues: getFormInitialValues(
+      t,
       selectedProposalVariant,
       accountId,
       initialValues,
@@ -150,7 +151,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
                 canCreateTokenProposal={canCreateTokenProposal}
                 onClose={onClose}
                 onTypeSelect={v => {
-                  const defaults = getFormInitialValues(v, accountId);
+                  const defaults = getFormInitialValues(t, v, accountId);
 
                   methods.reset({ ...defaults });
 
