@@ -291,7 +291,7 @@
         "required": "DAO is a required field"
       },
       "proposal": {
-        "label": "Proposal",
+        "label": "Related Proposal",
         "placeholder": "Select Proposal",
         "required": "Proposal is a required field"
       },
@@ -406,6 +406,7 @@
   },
   "viewProposalCard": {
     "proposalVariant": {
+      "voteInAnotherDao": "Vote in Another DAO",
       "createBounty": "Create a Bounty",
       "bountyDone": "Bounty Done",
       "transfer": "Transfer",

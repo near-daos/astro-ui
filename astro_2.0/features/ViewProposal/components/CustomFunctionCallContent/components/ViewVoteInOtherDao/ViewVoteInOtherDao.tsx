@@ -1,59 +1,65 @@
-import { useMount } from 'react-use';
+import get from 'lodash/get';
+import Link from 'next/link';
+import React, { VFC } from 'react';
 import { useTranslation } from 'next-i18next';
-import React, { VFC, useMemo, useState } from 'react';
 
-import { Proposal } from 'types/proposal';
+import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
-import { SputnikHttpService } from 'services/sputnik';
+import { ProposalFeedItem, FunctionCallProposalType } from 'types/proposal';
 
 import {
   FieldValue,
   FieldWrapper,
 } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
-import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
+
+import { fromBase64ToObj } from 'utils/fromBase64ToObj';
 
 import styles from './ViewVoteInOtherDao.module.scss';
 
 interface ViewVoteInOtherDaoProps {
-  daoId: string;
-  action: string;
-  proposalId: number;
+  proposal: ProposalFeedItem;
 }
 
 export const ViewVoteInOtherDao: VFC<ViewVoteInOtherDaoProps> = ({
-  daoId,
-  action,
-  proposalId,
+  proposal,
 }) => {
   const { t } = useTranslation();
 
-  const [proposal, setProposal] = useState<Proposal | null>();
-
-  useMount(async () => {
-    const res = await SputnikHttpService.getProposal(daoId, proposalId);
-
-    setProposal(res);
-  });
+  const { dao, kind } = proposal;
+  const { actions, receiverId } = kind as FunctionCallProposalType;
+  const { id, action } = fromBase64ToObj(get(actions, '0.args')) || {};
 
   const getLabel = (field: string) =>
     t(`proposalCard.voteInDao.${field}.label`);
 
-  const proposalDescription = useMemo(() => {
-    return proposal ? (
-      `ID: ${proposal?.proposalId || ''}. ${proposal?.description || ''}`
-    ) : (
-      <LoadingIndicator />
-    );
-  }, [proposal]);
-
   return (
     <div className={styles.root}>
       <FieldWrapper label={getLabel('targetDao')}>
-        <FieldValue value={daoId} />
+        <FieldValue value={dao.id} />
       </FieldWrapper>
 
       <FieldWrapper label={getLabel('proposal')}>
-        <FieldValue value={proposalDescription} />
+        <FieldValue
+          value={
+            <Link
+              href={{
+                pathname: SINGLE_PROPOSAL_PAGE_URL,
+                query: {
+                  dao: receiverId,
+                  proposal: `${receiverId}-${id}`,
+                },
+              }}
+            >
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.proposalLink}
+              >
+                ID: {id}
+              </a>
+            </Link>
+          }
+        />
       </FieldWrapper>
 
       <FieldWrapper label={getLabel('vote')}>
