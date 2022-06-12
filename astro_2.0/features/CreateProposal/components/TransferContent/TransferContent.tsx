@@ -33,8 +33,8 @@ export const TransferContent: FC = () => {
   };
 
   const tokenOptions = Object.values(tokens).map(token => ({
-    label: token.symbol,
-    component: (
+    value: token.symbol,
+    label: (
       <div className={styles.row}>
         <div className={styles.iconWrapper}>
           {token.symbol === 'NEAR' ? (

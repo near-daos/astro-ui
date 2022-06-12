@@ -43,8 +43,8 @@ export const AddMemberToGroupContent: FC<AddMemberToGroupContentProps> = ({
             reverseMenu
             isBorderless
             options={groups.map(group => ({
-              label: group,
-              component: <Group name={group} />,
+              value: group,
+              label: <Group name={group} />,
             }))}
           />
         </InputWrapper>

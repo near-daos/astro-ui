@@ -7,8 +7,8 @@ import { Icon } from 'components/Icon';
 import styles from './DropdownSelect.module.scss';
 
 interface Option {
-  label: string;
-  component: ReactNode;
+  value: string;
+  label: ReactNode;
   disabled?: boolean;
 }
 
@@ -54,10 +54,10 @@ export const DropdownSelect = React.forwardRef<
       getItemProps,
     } = useSelect({
       items: options,
-      itemToString: item => (item != null ? item.label : ''),
+      itemToString: item => (item != null ? item.value : ''),
       onSelectedItemChange(changes) {
-        if (changes.selectedItem?.label !== defaultValue) {
-          onChange?.(changes.selectedItem?.label);
+        if (changes.selectedItem?.value !== defaultValue) {
+          onChange?.(changes.selectedItem?.value);
         }
       },
     });
@@ -65,7 +65,7 @@ export const DropdownSelect = React.forwardRef<
     useEffect(() => {
       if (defaultValue && !selectedItem) {
         const defaultOption = options.find(
-          option => option.label === defaultValue
+          option => option.value === defaultValue
         );
 
         if (defaultOption != null) {
@@ -92,7 +92,7 @@ export const DropdownSelect = React.forwardRef<
           >
             <div className={styles.container}>
               <div className={styles.selected}>
-                {selectedItem?.component ?? (
+                {selectedItem?.label ?? (
                   <div className={styles.placeholder}>{placeholder || ''}</div>
                 )}
               </div>
@@ -120,9 +120,9 @@ export const DropdownSelect = React.forwardRef<
                       [styles.disabled]: item.disabled,
                     })}
                     {...props}
-                    key={item.label}
+                    key={item.value}
                   >
-                    {item.component}
+                    {item.label}
                   </li>
                 );
               })}

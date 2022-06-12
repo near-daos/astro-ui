@@ -1,3 +1,5 @@
+// TODO requires localisation
+
 import cn from 'classnames';
 import map from 'lodash/map';
 import isNil from 'lodash/isNil';
@@ -19,8 +21,8 @@ import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/Input
 import styles from './VoteInOtherDao.module.scss';
 
 type DropdownOpt = {
-  label: string;
-  component: ReactNode;
+  value: string;
+  label: ReactNode;
 };
 
 interface VoteInOtherDaoProps {
@@ -48,8 +50,8 @@ export const VoteInOtherDao: VFC<VoteInOtherDaoProps> = ({ dao }) => {
     const daos = await SputnikHttpService.getAccountDaos(dao.id);
 
     const daoIds = map(daos, ({ id }) => ({
+      value: id,
       label: id,
-      component: id,
     }));
 
     setAccountDaos(daoIds);
@@ -69,8 +71,8 @@ export const VoteInOtherDao: VFC<VoteInOtherDaoProps> = ({ dao }) => {
         daoId: selectedDao,
       }).then(data => {
         const proposals = map(data?.data, ({ proposalId, description }) => ({
-          label: proposalId.toString(),
-          component: `ID: ${proposalId}. ${description}`,
+          value: proposalId.toString(),
+          label: `ID: ${proposalId}. ${description}`,
         }));
 
         setDaoProposals(proposals);
@@ -130,8 +132,8 @@ export const VoteInOtherDao: VFC<VoteInOtherDaoProps> = ({ dao }) => {
         <DropdownSelect
           isBorderless
           options={[
-            { label: 'VoteApprove', component: 'Approve' },
-            { label: 'VoteReject', component: 'Reject' },
+            { value: 'VoteApprove', label: 'Approve' },
+            { value: 'VoteReject', label: 'Reject' },
           ]}
           {...register('vote')}
           onChange={value => setValue('vote', value)}
