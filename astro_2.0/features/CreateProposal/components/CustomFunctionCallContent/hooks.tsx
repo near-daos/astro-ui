@@ -15,8 +15,8 @@ export function useTokenOptions(
 ): {
   tokens: Tokens;
   tokenOptions: {
-    label: string;
-    component: ReactElement;
+    value: string;
+    label: ReactElement;
   }[];
   selectedTokenData: Token;
 } {
@@ -29,8 +29,8 @@ export function useTokenOptions(
 
   const tokenOptions = Object.values(tokens)
     .map(token => ({
-      label: token.symbol,
-      component: (
+      value: token.symbol,
+      label: (
         <div className={styles.row}>
           <div className={styles.iconWrapper}>
             {token.symbol === 'NEAR' ? (
@@ -52,7 +52,7 @@ export function useTokenOptions(
         </div>
       ),
     }))
-    .filter(token => token.label === 'NEAR');
+    .filter(token => token.value === 'NEAR');
 
   return {
     tokens,
