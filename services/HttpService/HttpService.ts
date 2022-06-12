@@ -649,6 +649,35 @@ export class HttpService {
             request.params = { sort: 'createdAt,DESC' };
           }
           break;
+        case API_QUERIES.GET_SHARED_PROPOSAL_TEMPLATES: {
+          const { query } = requestCustom.queryRequest?.params || {};
+
+          const queryString = RequestQueryBuilder.create();
+
+          const search: SFields | SConditionAND = {
+            $and: [],
+          };
+
+          // search
+          if (query.searchInput) {
+            search.$and?.push({
+              name: {
+                $contL: query.searchInput,
+              },
+            });
+          }
+
+          if (search.$and?.length) {
+            queryString.search(search);
+          }
+
+          queryString.setLimit(query.limit).setOffset(query.offset).query();
+
+          request.url = `/shared-templates?${queryString.queryString}`;
+          request.params = { sort: query.sort };
+
+          break;
+        }
         case API_QUERIES.GET_PROPOSALS_LIST:
         case API_QUERIES.GET_PROPOSALS_LIST_BY_ACCOUNT_ID:
           {

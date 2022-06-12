@@ -15,8 +15,7 @@ import {
   ProposalCardRenderer,
 } from 'astro_2.0/components/ProposalCardRenderer';
 
-import { DaoContext } from 'types/context';
-import { ProposalType } from 'types/proposal';
+import { CustomFcTemplatePayload, ProposalType } from 'types/proposal';
 import { DaoFeedItem } from 'types/dao';
 import {
   ProposalTemplate,
@@ -39,15 +38,21 @@ ace.config.set(
 );
 
 interface Props {
-  daoContext: DaoContext;
-  template: ProposalTemplate;
-  accountDaos: DaoFeedItem[];
-  onUpdate: (id: string, data: TemplateUpdatePayload) => void;
-  onDelete: (id: string) => void;
+  daoId?: string;
+  templateId?: string;
+  flagCover?: string;
+  // daoContext: DaoContext;
+  template?: ProposalTemplate;
+  config: CustomFcTemplatePayload;
+  accountDaos?: DaoFeedItem[];
+  onUpdate?: (id: string, data: TemplateUpdatePayload) => void;
+  onDelete?: (id: string) => void;
   className?: string;
-  onSaveToDaos: (data: TemplateUpdatePayload[]) => Promise<void>;
+  onSaveToDaos?: (data: TemplateUpdatePayload[]) => Promise<void>;
   disabled: boolean;
   editable: boolean;
+  name: string;
+  isEnabled: boolean;
 }
 
 interface Form {
@@ -88,8 +93,11 @@ const schema = yup.object().shape({
 });
 
 export const CustomFcTemplateCard: FC<Props> = ({
-  daoContext,
+  daoId,
+  templateId,
   template,
+  flagCover,
+  config,
   accountDaos,
   onUpdate,
   className,
@@ -97,9 +105,10 @@ export const CustomFcTemplateCard: FC<Props> = ({
   onSaveToDaos,
   disabled,
   editable,
+  name,
+  isEnabled,
 }) => {
-  const { dao } = daoContext;
-  const { config } = template;
+  // const { dao } = daoContext;
   const { tokens } = useCustomTokensContext();
   const tokenData = config.token ? tokens[config.token] : tokens.NEAR;
   const formKeyRef = useRef(uniqid());
@@ -124,8 +133,8 @@ export const CustomFcTemplateCard: FC<Props> = ({
         : config.deposit,
       token: config.token,
       json: parsedJson,
-      isActive: template.isEnabled,
-      name: template.name,
+      isActive: isEnabled,
+      name,
     };
   }, [
     config.smartContractAddress,
@@ -135,8 +144,8 @@ export const CustomFcTemplateCard: FC<Props> = ({
     config.token,
     tokenData,
     parsedJson,
-    template.isEnabled,
-    template.name,
+    isEnabled,
+    name,
   ]);
 
   // todo - filter out daos where im not a council
@@ -162,16 +171,18 @@ export const CustomFcTemplateCard: FC<Props> = ({
       ).toString(),
     };
 
-    if (!template.id || !templatePayload) {
+    if (!templateId || !templatePayload) {
       return;
     }
 
-    await onUpdate(template.id, {
-      daoId: dao.id,
-      name: data.name,
-      isEnabled: data.isActive,
-      config: templatePayload,
-    });
+    if (daoId && onUpdate) {
+      await onUpdate(templateId, {
+        daoId,
+        name: data.name,
+        isEnabled: data.isActive,
+        config: templatePayload,
+      });
+    }
   };
 
   const handleReset = useCallback(() => {
@@ -194,12 +205,14 @@ export const CustomFcTemplateCard: FC<Props> = ({
             key={formKeyRef.current}
             noValidate
             onSubmit={handleSubmit(submitHandler)}
-            className={styles.root}
+            className={cn(styles.root, {
+              [styles.disabled]: disabled,
+            })}
           >
             <CardContent
               disabled={!editable}
               onReset={handleReset}
-              onDelete={() => template.id && onDelete(template.id)}
+              onDelete={() => templateId && onDelete && onDelete(templateId)}
               optionalControl={
                 !disabled && (
                   <ApplyToDaos
@@ -225,7 +238,7 @@ export const CustomFcTemplateCard: FC<Props> = ({
       letterHeadNode={
         <LetterHeadWidget
           type={ProposalType.FunctionCall}
-          coverUrl={dao.flagCover}
+          coverUrl={flagCover}
         />
       }
     />

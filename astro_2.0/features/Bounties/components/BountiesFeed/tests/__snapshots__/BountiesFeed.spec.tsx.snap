@@ -10,6 +10,8 @@ exports[`BountiesFeed Should render component 1`] = `
     >
       <div
         class="root"
+        role="button"
+        tabindex="0"
       >
         <div
           class="iconHolder"

@@ -37,6 +37,7 @@
   cursor: pointer;
   display: flex;
   height: 40px;
+  margin-bottom: 2px;
   padding: 0 8px;
   white-space: nowrap;
 
@@ -53,6 +54,11 @@
   align-items: center;
   cursor: pointer;
   display: flex;
+
+  &.disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
 }
 
 .controlIcon {
