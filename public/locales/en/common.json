@@ -299,7 +299,8 @@
         "label": "Vote",
         "placeholder": "Vote",
         "required": "Vote is a required field"
-      }
+      },
+      "noProposalsToVote": "No proposals to vote"
     },
     "proposalID": "Proposal ID:",
     "proposalType": "Proposal type: ",
