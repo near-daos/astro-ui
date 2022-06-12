@@ -1,5 +1,3 @@
-// TODO requires localisation
-
 import React, { ReactNode, useCallback } from 'react';
 import { useAsyncFn } from 'react-use';
 import { useRouter } from 'next/router';
@@ -9,6 +7,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useTranslation } from 'next-i18next';
+import { TFunction } from 'react-i18next';
 
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
@@ -41,7 +40,7 @@ import {
   DEFAULT_UPGRADE_DAO_VOTE_GAS,
   DEFAULT_VOTE_GAS,
 } from 'services/sputnik/constants';
-import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
+import { getGasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCountdown } from 'hooks/useCountdown';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { DraftDescription } from 'astro_2.0/components/ProposalCardRenderer/components/DraftDescription';
@@ -96,6 +95,7 @@ export interface ProposalCardProps {
 }
 
 function getTimestampLabel(
+  t: TFunction,
   timeLeft: string | null | undefined,
   status: ProposalStatus,
   updatedAt?: string | null,
@@ -103,12 +103,12 @@ function getTimestampLabel(
   isDraft?: boolean
 ) {
   if (isDraft) {
-    return `Created ${timeLeft}`;
+    return `${t('proposalCard.created')} ${timeLeft}`;
   }
 
   if (status === 'InProgress') {
     if (timeLeft) {
-      return `${timeLeft} left`;
+      return `${timeLeft} ${t('proposalCard.timeLeft')}`;
     }
 
     return <span className={styles.errorLabel}>Time expired</span>;
@@ -143,7 +143,7 @@ function getTimestampLabel(
     );
   }
 
-  return 'Voting ended';
+  return t('proposalCard.votingEnded');
 }
 
 function getSealIcon(status: ProposalStatus): string | null {
@@ -169,10 +169,6 @@ function getSealIcon(status: ProposalStatus): string | null {
 
   return sealIcon;
 }
-
-const schema = yup.object().shape({
-  gas: gasValidation,
-});
 
 export const ProposalCard: React.FC<ProposalCardProps> = ({
   id,
@@ -211,6 +207,10 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
   const router = useRouter();
+
+  const schema = yup.object().shape({
+    gas: getGasValidation(t),
+  });
 
   const [{ loading: voteLoading }, voteClickHandler] = useAsyncFn(
     async (vote: VoteAction, gas?: string | number) => {
@@ -447,7 +447,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   }
 
   const getInfoBlockWidgetLabel = () => {
-    return isDraft ? 'Draft' : `${t(`proposalCard.proposalType`)}${type}`;
+    return isDraft
+      ? t('proposalCard.draft')
+      : `${t(`proposalCard.proposalType`)}${type}`;
   };
 
   const renderBottomContent = () => {
@@ -543,6 +545,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       return (
         <div className={styles.countdownCell}>
           {getTimestampLabel(
+            t,
             timeLeft,
             status,
             updatedAt,
@@ -560,7 +563,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
                 return finalizeClickHandler();
               }}
             >
-              Finalize
+              {t('proposalCard.finalize')}
             </Button>
           )}
         </div>
@@ -590,7 +593,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       {voteLoading && (
         <div className={styles.signingTransactionState}>
           <LoadingIndicator />
-          Signing transaction
+          {t('proposalCard.signingTransaction')}
         </div>
       )}
       {sealIcon && !showFinalize && (

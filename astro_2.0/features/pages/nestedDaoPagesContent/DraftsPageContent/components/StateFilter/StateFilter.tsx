@@ -8,16 +8,16 @@ import styles from './StateFilter.module.scss';
 
 const options = [
   {
-    label: 'All',
-    component: <span className={styles.option}>All</span>,
+    value: 'All',
+    label: <span className={styles.option}>All</span>,
   },
   {
-    label: 'Open',
-    component: <span className={styles.option}>Open</span>,
+    value: 'Open',
+    label: <span className={styles.option}>Open</span>,
   },
   {
-    label: 'Closed',
-    component: <span className={styles.option}>Closed</span>,
+    value: 'Closed',
+    label: <span className={styles.option}>Closed</span>,
   },
 ];
 

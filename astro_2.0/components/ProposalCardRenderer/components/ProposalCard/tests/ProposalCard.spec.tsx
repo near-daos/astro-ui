@@ -103,7 +103,7 @@ describe('Proposal Card', () => {
       voteStatus: 'Expired',
     });
 
-    expect(getAllByText('Finalize')).toHaveLength(1);
+    expect(getAllByText('proposalCard.finalize')).toHaveLength(1);
   });
 
   it.each`
@@ -157,7 +157,7 @@ describe('Proposal Card', () => {
       votePeriodEnd: '3016-12-12',
     });
 
-    expect(getAllByText('123 left')).toHaveLength(1);
+    expect(getAllByText('123 proposalCard.timeLeft')).toHaveLength(1);
   });
 
   it('Should render proper timestamp when status Approved', () => {
