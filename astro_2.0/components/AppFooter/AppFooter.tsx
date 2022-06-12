@@ -2,6 +2,7 @@ import cn from 'classnames';
 import Link from 'next/link';
 import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { DISCOVER } from 'constants/routing';
 
@@ -24,6 +25,7 @@ export const AppFooter: FC<AppFooterProps> = ({
   onClick,
 }) => {
   const { t } = useTranslation();
+  const { canny } = useFlags();
 
   const { appConfig } = configService.get();
   const RELEASE_NOTES = appConfig?.RELEASE_NOTES || '';
@@ -67,6 +69,16 @@ export const AppFooter: FC<AppFooterProps> = ({
             {t('components.appFooter.askQuestion')}
           </a>
           <div className={styles.version}>
+            {canny && (
+              <a
+                className={styles.devLink}
+                href="https://feedback.astrodao.com"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                {t('leaveFeedback')}
+              </a>
+            )}
             <a
               className={styles.devLink}
               href="https://github.com/near-daos/astro-ui/issues"
