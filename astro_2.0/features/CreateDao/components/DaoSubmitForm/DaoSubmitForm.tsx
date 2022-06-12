@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'next-i18next';
 import { useStateMachine } from 'little-state-machine';
 import { useForm, FormProvider } from 'react-hook-form';
 import * as yup from 'yup';
@@ -22,13 +23,15 @@ import {
   updateAction,
 } from 'astro_2.0/features/CreateDao/components/helpers';
 import { getNewDaoParams } from 'astro_2.0/features/CreateDao/helpers';
-import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
+import { getGasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCreateDao } from 'astro_2.0/features/CreateDao/components/hooks';
 
 import { useWalletContext } from 'context/WalletContext';
 import styles from './DaoSubmitForm.module.scss';
 
 export function DaoSubmitForm(): JSX.Element {
+  const { t } = useTranslation();
+
   const { actions, state } = useStateMachine({ updateAction });
   const { createDao } = useCreateDao();
   const { accountId } = useWalletContext();
@@ -38,7 +41,7 @@ export function DaoSubmitForm(): JSX.Element {
     mode: 'all',
     resolver: async data => {
       const schema = yup.object().shape({
-        gas: gasValidation,
+        gas: getGasValidation(t),
       });
 
       return handleValidate<SubmitStep>(schema, data, (valid: boolean) =>

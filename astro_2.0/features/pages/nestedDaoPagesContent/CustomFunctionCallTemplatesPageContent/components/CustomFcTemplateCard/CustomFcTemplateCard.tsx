@@ -3,6 +3,7 @@ import ace from 'ace-builds';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-github';
 import { FormProvider, useForm } from 'react-hook-form';
+import { TFunction, useTranslation } from 'next-i18next';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import uniqid from 'uniqid';
@@ -24,7 +25,7 @@ import {
 } from 'types/proposalTemplate';
 
 import { VALID_METHOD_NAME_REGEXP } from 'constants/regexp';
-import { gasValidation } from 'astro_2.0/features/CreateProposal/helpers';
+import { getGasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { CardContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/CardContent';
 import { ApplyToDaos } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/components/ApplyToDaos';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
@@ -61,31 +62,33 @@ interface Form {
   name: string;
 }
 
-const schema = yup.object().shape({
-  name: yup.string().required('Required'),
-  smartContractAddress: yup.string().required('Required'),
-  methodName: yup
-    .string()
-    .matches(VALID_METHOD_NAME_REGEXP, 'Provided method name is not valid')
-    .required('Required'),
-  deposit: yup
-    .number()
-    .typeError('Must be a valid number.')
-    .required('Required'),
-  json: yup
-    .string()
-    .required('Required')
-    .test('validJson', 'Provided JSON is not valid', value => {
-      try {
-        JSON.parse(value ?? '');
-      } catch (e) {
-        return false;
-      }
+function getSchema(t: TFunction) {
+  return yup.object().shape({
+    name: yup.string().required('Required'),
+    smartContractAddress: yup.string().required('Required'),
+    methodName: yup
+      .string()
+      .matches(VALID_METHOD_NAME_REGEXP, 'Provided method name is not valid')
+      .required('Required'),
+    deposit: yup
+      .number()
+      .typeError('Must be a valid number.')
+      .required('Required'),
+    json: yup
+      .string()
+      .required('Required')
+      .test('validJson', 'Provided JSON is not valid', value => {
+        try {
+          JSON.parse(value ?? '');
+        } catch (e) {
+          return false;
+        }
 
-      return true;
-    }),
-  actionsGas: gasValidation,
-});
+        return true;
+      }),
+    actionsGas: getGasValidation(t),
+  });
+}
 
 export const CustomFcTemplateCard: FC<Props> = ({
   daoContext,
@@ -98,6 +101,8 @@ export const CustomFcTemplateCard: FC<Props> = ({
   disabled,
   editable,
 }) => {
+  const { t } = useTranslation();
+
   const { dao } = daoContext;
   const { config } = template;
   const { tokens } = useCustomTokensContext();
@@ -145,7 +150,7 @@ export const CustomFcTemplateCard: FC<Props> = ({
     mode: 'all',
     reValidateMode: 'onChange',
     defaultValues,
-    resolver: yupResolver(schema),
+    resolver: yupResolver(getSchema(t)),
   });
 
   const { handleSubmit, reset } = methods;

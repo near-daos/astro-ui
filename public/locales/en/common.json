@@ -284,6 +284,12 @@
     "waitSomeTime": "This may take some time"
   },
   "proposalCard": {
+    "signingTransaction": "Signing transaction",
+    "finalize": "Finalize",
+    "draft": "Draft",
+    "created": "Created",
+    "timeLeft": "left",
+    "votingEnded": "Voting ended",
     "voteInDao": {
       "targetDao": {
         "label": "DAO",
@@ -339,6 +345,7 @@
     "json": "JSON",
     "deposit": "Deposit",
     "preview": "Preview",
+    "timeExpired": "Time expired",
     "proposalTypes": {
       "groupTransferAddBounty": "Transfer/Add bounty",
       "proposeTransfer": "Propose a Transfer",
@@ -359,7 +366,8 @@
       "groupVote": "Vote",
       "proposePoll": "Propose a Poll",
       "groupFunctionCall": "Function Call",
-      "proposeCustomCall": "Custom Function Call"
+      "proposeCustomCall": "Custom Function Call",
+      "createToken": "Create Token"
     },
     "upgradeContent": {
       "groups": "Groups",
@@ -652,5 +660,20 @@
         "title": "Voting policy"
       }
     }
+  },
+  "validation": {
+    "mustBeAValidNumber": "Must be a valid number.",
+    "required": "Required",
+    "onlyFiveOptDecimals": "Only numbers with five optional decimal place please.",
+    "onlyValidNearAccounts": "Only valid near accounts are allowed.",
+    "validUrl": "Must be a valid URL",
+    "canNotBeEmpty": "Cannot be empty",
+    "daoCanNotBeSpecifiedInThisField": "Current DAO can not be specified in this field",
+    "enterCorrectUrl": "Enter correct url!",
+    "tokenFormat": "It must be as Token ID:Token store format",
+    "methodNameInvalid": "Provided method name is not valid",
+    "jsonNotValid": "Provided JSON is not valid",
+    "atLeastThreeChars": "At least 3 characters expected.",
+    "lettersNumbersHyphensSpaces": "Only letters and numbers with hyphens and spaces in the middle"
   }
 }
