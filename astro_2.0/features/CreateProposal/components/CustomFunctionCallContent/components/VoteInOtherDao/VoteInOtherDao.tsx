@@ -1,5 +1,7 @@
 import cn from 'classnames';
 import map from 'lodash/map';
+import isNil from 'lodash/isNil';
+import isEmpty from 'lodash/isEmpty';
 import { useMount } from 'react-use';
 import { useTranslation } from 'next-i18next';
 import { useFormContext } from 'react-hook-form';
@@ -28,7 +30,7 @@ interface VoteInOtherDaoProps {
 export const VoteInOtherDao: VFC<VoteInOtherDaoProps> = ({ dao }) => {
   const [showLoader, setShowLoader] = useState(false);
   const [accountDaos, setAccountDaos] = useState<DropdownOpt[]>([]);
-  const [daoProposals, setDaoProposals] = useState<DropdownOpt[]>([]);
+  const [daoProposals, setDaoProposals] = useState<DropdownOpt[]>();
 
   const { t } = useTranslation();
   const tBase = 'proposalCard.voteInDao';
@@ -103,15 +105,21 @@ export const VoteInOtherDao: VFC<VoteInOtherDaoProps> = ({ dao }) => {
         className={styles.iWrapper}
         label={t(`${tBase}.proposal.label`)}
       >
-        <DropdownSelect
-          isBorderless
-          options={daoProposals}
-          {...register('proposal')}
-          onChange={value => setValue('proposal', value)}
-          disabled={!selectedDao}
-          className={styles.select}
-          placeholder={t(`${tBase}.proposal.placeholder`)}
-        />
+        {isNil(daoProposals) || !isEmpty(daoProposals) ? (
+          <DropdownSelect
+            isBorderless
+            options={daoProposals || []}
+            {...register('proposal')}
+            onChange={value => setValue('proposal', value)}
+            disabled={!selectedDao}
+            className={styles.select}
+            placeholder={t(`${tBase}.proposal.placeholder`)}
+          />
+        ) : (
+          <div className={styles.noProposals}>
+            {t(`${tBase}.noProposalsToVote`)}
+          </div>
+        )}
       </InputWrapper>
 
       <InputWrapper
