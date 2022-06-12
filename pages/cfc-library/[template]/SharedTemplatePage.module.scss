@@ -1,0 +1,112 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav {
+  display: flex;
+  margin: 16px 0 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.meta {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.title {
+  @extend %title1;
+  //@include ellipse-text;
+  //max-width: 320px;
+}
+
+.creator {
+  @extend %body2;
+  color: var(--color-neutral-60);
+  display: flex;
+  max-width: 360px;
+
+  > span:first-of-type {
+    margin-right: 4px;
+    white-space: nowrap;
+  }
+
+  .creatorName {
+    color: var(--color-brand-black);
+    font-weight: 500;
+  }
+}
+
+.control {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.controlIconButton {
+  border: 1px solid var(--color-neutral-40);
+  border-radius: 4px;
+  color: var(--color-brand-black);
+  height: 40px;
+  margin-left: 8px;
+  width: 40px;
+
+  &:hover {
+    background-color: var(--color-neutral-30);
+  }
+}
+
+.duplicateControlBtn {
+  margin-left: 24px;
+}
+
+.body {
+  display: grid;
+  grid-column-gap: 24px;
+  grid-template-columns: 220px 1fr;
+  margin-top: 52px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+}
+
+.listTitle {
+  @extend %caption1;
+  color: var(--color-neutral-60);
+}
+
+.listItem {
+  @extend %heading5;
+}
+
+.listTotal {
+  @extend %title5;
+  @include centralize;
+  border: 1px solid var(--color-neutral-30);
+  border-radius: 4px;
+  max-width: 180px;
+
+  padding: 6px;
+}

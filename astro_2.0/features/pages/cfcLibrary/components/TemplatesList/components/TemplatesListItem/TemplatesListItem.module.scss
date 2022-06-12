@@ -1,0 +1,59 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  cursor: pointer;
+  display: grid;
+  grid-gap: 12px;
+  grid-template-columns: 2fr 1fr 80px 1fr;
+  margin-bottom: 16px;
+
+  white-space: nowrap;
+}
+
+.root:hover {
+  .title {
+    text-shadow: 3px 2px 12px var(--color-neutral-50);
+  }
+}
+
+.name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+
+  .title {
+    @extend %title4;
+    @include ellipse-text;
+  }
+
+  .desc {
+    @extend %caption2;
+    white-space: normal;
+  }
+}
+
+.creator,
+.duplicated {
+  @extend %subtitle4;
+  @include ellipse-text;
+  align-items: center;
+  display: flex;
+  white-space: normal;
+}
+
+.control {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+
+  .icon {
+    margin-right: 4px;
+    width: 20px;
+  }
+
+  .controlBtn {
+    @include centralize;
+  }
+}

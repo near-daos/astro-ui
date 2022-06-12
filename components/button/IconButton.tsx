@@ -8,7 +8,7 @@ export interface IconButtonProps
   testId?: string;
   icon: IconName;
   size?: 'small' | 'medium' | 'large';
-  iconProps?: Omit<IconProps, 'name' | 'width' | 'height'>;
+  iconProps?: Omit<IconProps, 'name'>;
 }
 
 export const IconButton: React.VFC<IconButtonProps> = ({

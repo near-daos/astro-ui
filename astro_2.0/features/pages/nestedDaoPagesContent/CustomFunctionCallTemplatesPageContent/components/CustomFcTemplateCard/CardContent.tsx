@@ -119,20 +119,22 @@ export const CardContent: FC<Props> = ({
         </div>
       )}
 
-      <Toggle
-        key={isActive}
-        label="Enable template"
-        defaultChecked={isActive}
-        disabled={disabled}
-        {...register('isActive')}
-        onChange={() => {
-          setValue('isActive', !isActive, {
-            shouldValidate: true,
-            shouldDirty: true,
-          });
-        }}
-        className={styles.toggle}
-      />
+      {!disabled && (
+        <Toggle
+          key={isActive}
+          label="Enable template"
+          defaultChecked={isActive}
+          disabled={disabled}
+          {...register('isActive')}
+          onChange={() => {
+            setValue('isActive', !isActive, {
+              shouldValidate: true,
+              shouldDirty: true,
+            });
+          }}
+          className={styles.toggle}
+        />
+      )}
 
       <div className={styles.name}>
         <InputWrapper fieldName="name" label="Template Name" fullWidth>
