@@ -59,11 +59,12 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   const proposalTypesOptions = useMemo(
     () =>
       getProposalTypesOptions(
+        t,
         userPermissions.isCanCreatePolicyProposals,
         userPermissions.allowedProposalsToCreate,
         canCreateTokenProposal
       ),
-    [userPermissions, canCreateTokenProposal]
+    [t, userPermissions, canCreateTokenProposal]
   );
 
   function renderCloseButton() {
@@ -206,7 +207,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
             inputStyles={
               isMobile
                 ? {
-                    width: `${getInputSize(type, 26) - 2}ch`,
+                    width: `${getInputSize(t, type, 26) - 2}ch`,
                     paddingRight: 0,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
