@@ -329,9 +329,9 @@ export type CreateRoketoStreamInput = {
   receiverId: string;
   tokenId: string;
   amount: string;
+  comment?: string;
 
   tokensPerSec: string;
-  description?: string;
   cliffPeriodInSec?: string;
   isAutoStartEnabled?: boolean;
   isLocked?: boolean;
@@ -361,7 +361,7 @@ export async function getCreateRoketoStreamProposal(
         owner_id: dao.id,
         receiver_id: stream.receiverId,
         tokens_per_sec: new Decimal(stream.tokensPerSec).toFixed(),
-        description: stream.description,
+        description: stream.comment,
         cliff_period_in_sec: stream.cliffPeriodInSec,
         is_auto_start_enabled: stream.isAutoStartEnabled,
         is_expirable: true,

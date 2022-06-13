@@ -11,6 +11,7 @@ import { Input } from 'components/inputs/Input';
 import { Token } from 'types/token';
 import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
 import { Icon } from 'components/Icon';
+import { TextArea } from 'components/inputs/TextArea';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { formatCurrency } from 'utils/formatCurrency';
@@ -101,6 +102,25 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
 
   return (
     <div className={styles.root}>
+      <div className={styles.comment}>
+        <InputWrapper
+          className={styles.inputWrapper}
+          fieldName="comment"
+          label="Comment for the stream"
+        >
+          <TextArea
+            size="block"
+            isBorderless
+            textAlign="left"
+            placeholder="This text will be saved in the created stream"
+            resize="none"
+            maxLength={80}
+            minRows={2}
+            maxRows={2}
+            {...register('comment')}
+          />
+        </InputWrapper>
+      </div>
       <div className={styles.amount}>
         <InputWrapper fieldName="amount" label="Amount">
           <Input
@@ -149,50 +169,54 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
       </div>
 
       <div className={styles.commission}>
-        <InputWrapper
-          className={styles.inputWrapper}
-          fieldName="commission"
-          label="Receipt"
-        >
-          <div className={styles.receipt}>
-            {positions.map(position => {
-              const token = tokens[position.token];
+        {positions.length !== 0 && (
+          <InputWrapper
+            className={styles.inputWrapper}
+            fieldName="commission"
+            label="Receipt"
+          >
+            <div className={styles.receipt}>
+              {positions.map(position => {
+                const token = tokens[position.token];
 
-              return (
-                <React.Fragment key={`${position.token}-${position.amount}`}>
-                  <span>{position.description}</span>
-                  <span className={styles.receiptAmount}>
-                    {formatNearAmount(position.amount, token.decimals)}
-                  </span>
-                  <span>{token.symbol}</span>
-                </React.Fragment>
-              );
-            })}
-          </div>
-        </InputWrapper>
+                return (
+                  <React.Fragment key={`${position.token}-${position.amount}`}>
+                    <span>{position.description}</span>
+                    <span className={styles.receiptAmount}>
+                      {formatNearAmount(position.amount, token.decimals)}
+                    </span>
+                    <span>{token.symbol}</span>
+                  </React.Fragment>
+                );
+              })}
+            </div>
+          </InputWrapper>
+        )}
       </div>
 
       <div className={styles.total}>
-        <InputWrapper
-          className={styles.inputWrapper}
-          fieldName="total"
-          label="Total it will be charged off"
-        >
-          <div className={styles.totalLines}>
-            {Object.entries(total).map(([tokenId, amount]) => {
-              const token = tokens[tokenId];
+        {Object.values(total).length !== 0 && (
+          <InputWrapper
+            className={styles.inputWrapper}
+            fieldName="total"
+            label="Total it will be charged off"
+          >
+            <div className={styles.totalLines}>
+              {Object.entries(total).map(([tokenId, amount]) => {
+                const token = tokens[tokenId];
 
-              return (
-                <React.Fragment key={tokenId}>
-                  <span className={styles.totalAmount}>
-                    {formatNearAmount(amount, token.decimals)}
-                  </span>
-                  <span>{token.symbol}</span>
-                </React.Fragment>
-              );
-            })}
-          </div>
-        </InputWrapper>
+                return (
+                  <React.Fragment key={tokenId}>
+                    <span className={styles.totalAmount}>
+                      {formatNearAmount(amount, token.decimals)}
+                    </span>
+                    <span>{token.symbol}</span>
+                  </React.Fragment>
+                );
+              })}
+            </div>
+          </InputWrapper>
+        )}
       </div>
     </div>
   );

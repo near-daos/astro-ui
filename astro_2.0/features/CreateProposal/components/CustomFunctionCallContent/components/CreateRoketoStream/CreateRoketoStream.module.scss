@@ -5,10 +5,23 @@
   display: grid;
   grid-gap: 24px;
   grid-template-areas:
+    'comment comment'
     'amount target'
     'commission commission'
     'total total';
   grid-template-columns: 2fr 1fr;
+}
+
+.comment {
+  grid-area: comment;
+
+  .inputWrapper {
+    width: 100%;
+  }
+
+  textarea::-webkit-scrollbar {
+    display: none !important;
+  }
 }
 
 .amount {
@@ -47,6 +60,7 @@
     display: grid;
     grid-gap: 6px;
     grid-template-columns: auto auto;
+    width: fit-content;
   }
 
   span {
