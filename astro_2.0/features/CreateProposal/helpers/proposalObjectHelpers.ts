@@ -322,15 +322,14 @@ export async function getBuyNftFromParasProposal(
 }
 
 export type CreateRoketoStreamInput = {
-  // TODO: rewrite this form to conform with interface (receipt)
   details: string;
   externalUrl?: string;
-  token: string;
-  commission: string; // TODO: work with this
-  commissionToken: string; // TODO: work with this
+
   // Stream configuration
   receiverId: string;
+  tokenId: string;
   amount: string;
+
   tokensPerSec: string;
   description?: string;
   cliffPeriodInSec?: string;
@@ -346,22 +345,14 @@ export async function getCreateRoketoStreamProposal(
   const { externalUrl, details, ...stream } = data;
   const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
 
-  const token = Object.values(tokens).find(item => item.symbol === data.token);
-  const commissionToken = Object.values(tokens).find(
-    item => item.symbol === data.commissionToken
-  );
+  const token = Object.values(tokens).find(item => item.id === data.tokenId);
 
-  if (!token || !commissionToken) {
+  if (!token) {
     throw new Error('No tokens data found');
   }
 
   const deposit = new Decimal(stream.amount)
     .mul(10 ** token.decimals)
-    .toFixed();
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const commission = new Decimal(data.commission)
-    .mul(10 ** commissionToken.decimals)
     .toFixed();
 
   const CreateRequest = {

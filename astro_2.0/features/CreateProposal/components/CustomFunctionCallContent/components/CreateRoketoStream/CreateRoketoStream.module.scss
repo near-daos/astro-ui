@@ -34,6 +34,10 @@
   .receiptAmount {
     text-align: end;
   }
+
+  .inputWrapper {
+    width: 100%;
+  }
 }
 
 .total {
@@ -48,6 +52,10 @@
   span {
     line-height: 24px;
     margin-right: 10px;
+  }
+
+  .totalAmount {
+    text-align: end;
   }
 }
 

@@ -1,5 +1,5 @@
 import { DAO } from 'types/dao';
-import React, { useMemo, VFC } from 'react';
+import React, { useEffect, useMemo, VFC } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useFormContext } from 'react-hook-form';
 import cn from 'classnames';
@@ -29,7 +29,7 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
   const { register, setValue, getValues, watch } = useFormContext();
   const depositWidth = useDepositWidth();
   const { tokens } = useCustomTokensContext();
-  const selectedTokenId = watch('token');
+  const selectedTokenId = watch('tokenId');
   const selectedToken = useMemo(
     () =>
       Object.values(tokens).find(found => found.id === selectedTokenId) ?? null,
@@ -39,7 +39,8 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
   // TODO add check for storage_deposit for dao account and target account
 
   const shouldDepositForDao = watch('shouldDepositForDao');
-  const shouldDepositForTarget = watch('shouldDepositForTarget');
+  const shouldDepositForTarget = watch('shouldDepositForReceiver');
+
   const { total, positions } = useRoketoReceipt({
     amountToStream: new Decimal(watch('amount') || '0')
       .mul(10 ** (selectedToken?.decimals ?? 24))
@@ -51,7 +52,9 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
     },
   });
 
-  // console.log({ selectedTokenId, selectedToken, tokens, positions, total });
+  useEffect(() => {
+    setValue('receipt', { total, positions });
+  }, [total, positions, setValue]);
 
   const toUsd = (token: Token) => {
     if (token.price) {
@@ -116,8 +119,8 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
             className={styles.select}
             options={tokenOptions}
             label="&nbsp;"
-            {...register('token')}
-            onChange={v => setValue('token', v, { shouldDirty: true })}
+            {...register('tokenId')}
+            onChange={v => setValue('tokenId', v, { shouldDirty: true })}
             defaultValue={
               selectedTokenData?.symbol ?? getValues().token ?? 'NEAR'
             }
@@ -173,7 +176,7 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
         <InputWrapper
           className={styles.inputWrapper}
           fieldName="total"
-          label="Total"
+          label="Total it will be charged off"
         >
           <div className={styles.totalLines}>
             {Object.entries(total).map(([tokenId, amount]) => {
@@ -181,7 +184,9 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
 
               return (
                 <React.Fragment key={tokenId}>
-                  <span>{formatNearAmount(amount, token.decimals)}</span>
+                  <span className={styles.totalAmount}>
+                    {formatNearAmount(amount, token.decimals)}
+                  </span>
                   <span>{token.symbol}</span>
                 </React.Fragment>
               );
