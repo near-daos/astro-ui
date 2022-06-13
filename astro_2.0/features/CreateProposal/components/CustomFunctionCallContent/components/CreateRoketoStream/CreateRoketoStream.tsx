@@ -23,26 +23,6 @@ interface CreateRoketoStreamProps {
   dao: DAO;
 }
 
-function TokenSymbol({ token }: { token: Token }) {
-  return (
-    <div className={styles.row}>
-      <div className={styles.iconWrapper}>
-        {token.symbol === 'NEAR' ? (
-          <Icon name="tokenNearBig" />
-        ) : (
-          <div
-            className={styles.icon}
-            style={{
-              backgroundImage: `url(${token.icon})`,
-            }}
-          />
-        )}
-      </div>
-      <div className={styles.symbol}>{token.symbol}</div>
-    </div>
-  );
-}
-
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
   const { t } = useTranslation();
@@ -84,9 +64,8 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
   };
 
   const tokenOptions = Object.values(tokens).map(token => ({
-    label: token.symbol,
     value: token.id,
-    component: (
+    label: (
       <div className={styles.row}>
         <div className={styles.iconWrapper}>
           {token.symbol === 'NEAR' ? (
@@ -203,7 +182,7 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
               return (
                 <React.Fragment key={tokenId}>
                   <span>{formatNearAmount(amount, token.decimals)}</span>
-                  <TokenSymbol token={token} />
+                  <span>{token.symbol}</span>
                 </React.Fragment>
               );
             })}
