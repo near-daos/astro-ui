@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 
-import { DISCOVER } from 'constants/routing';
+import { CFC_LIBRARY, DISCOVER } from 'constants/routing';
 
 import { Icon, IconName } from 'components/Icon';
 import { LocaleSelector } from 'astro_2.0/components/LocaleSelector';
@@ -25,7 +25,7 @@ export const AppFooter: FC<AppFooterProps> = ({
   onClick,
 }) => {
   const { t } = useTranslation();
-  const { canny } = useFlags();
+  const { canny, cfcLibrary } = useFlags();
 
   const { appConfig } = configService.get();
   const RELEASE_NOTES = appConfig?.RELEASE_NOTES || '';
@@ -60,6 +60,11 @@ export const AppFooter: FC<AppFooterProps> = ({
             {renderSocialIcon('https://twitter.com/AstroDao', 'socialTwitter')}
             {renderSocialIcon('https://t.me/astro_near', 'socialTelegram')}
           </div>
+          {cfcLibrary && (
+            <Link passHref href={CFC_LIBRARY}>
+              <a className={styles.devLink}>{t('cfcLibrary')}</a>
+            </Link>
+          )}
           <a
             className={styles.devLink}
             href="https://github.com/near-daos/astro-ui/discussions"

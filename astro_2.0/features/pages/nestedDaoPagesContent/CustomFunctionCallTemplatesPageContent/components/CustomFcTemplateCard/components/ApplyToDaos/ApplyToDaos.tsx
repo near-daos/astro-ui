@@ -16,10 +16,10 @@ import { useWalletContext } from 'context/WalletContext';
 import styles from './ApplyToDaos.module.scss';
 
 interface Props {
-  accountDaos: DaoFeedItem[];
-  template: ProposalTemplate;
+  accountDaos?: DaoFeedItem[];
+  template?: ProposalTemplate;
   className?: string;
-  onSave: (data: TemplateUpdatePayload[]) => Promise<void>;
+  onSave?: (data: TemplateUpdatePayload[]) => Promise<void>;
   disabled: boolean;
 }
 
@@ -34,6 +34,10 @@ export const ApplyToDaos: FC<Props> = ({
   const [showModal] = useModal(SaveFcTemplateModal);
 
   const handleClick = useCallback(async () => {
+    if (!accountDaos || !template) {
+      return;
+    }
+
     const availableDaos = accountDaos.filter(item => item.isCouncil);
 
     const res = await showModal({
@@ -42,7 +46,7 @@ export const ApplyToDaos: FC<Props> = ({
       name: template.name,
     });
 
-    if (res && res[0] && pkAndSignature) {
+    if (res && res[0] && pkAndSignature && onSave) {
       const data = res[0];
 
       await onSave(data);

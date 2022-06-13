@@ -47,6 +47,7 @@ import { Settings } from 'types/settings';
 import {
   ProposalTemplate,
   ProposalTemplateInput,
+  SharedProposalTemplate,
 } from 'types/proposalTemplate';
 import { DraftProposal } from 'types/draftProposal';
 
@@ -1200,6 +1201,113 @@ class SputnikHttpServiceClass {
           },
         },
       });
+
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+  }
+
+  public async getSharedProposalTemplates(query: {
+    offset: number;
+    limit: number;
+    sort: string;
+    searchInput?: string;
+  }): Promise<PaginationResponse<SharedProposalTemplate[]> | null> {
+    // const mock = {
+    //   count: 2,
+    //   total: 2,
+    //   page: 0,
+    //   pageCount: 1,
+    //   data: [
+    //     {
+    //       id: '1',
+    //       name: 'This is a custom fc templat to vote in other daos',
+    //       description:
+    //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum',
+    //       creator:
+    //         'jasonbornjasonbornjasonbornjasonbornjasonbornjasonbornjasonborn.near',
+    //       config: {} as CustomFcTemplatePayload,
+    //       createdAt: '2021-12-07T19:15:52.793Z',
+    //       duplicated: 12,
+    //     },
+    //     {
+    //       id: '2',
+    //       name: 'Another template',
+    //       description:
+    //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum',
+    //       creator: 'ethanhunt.near',
+    //       config: {} as CustomFcTemplatePayload,
+    //       createdAt: '2021-03-07T19:15:52.793Z',
+    //       duplicated: 8,
+    //     },
+    //   ],
+    // };
+
+    // return mock;
+
+    try {
+      const { data } = await this.httpService.get<
+        PaginationResponse<SharedProposalTemplate[]>
+      >('/shared-templates', {
+        queryRequest: {
+          name: API_QUERIES.GET_SHARED_PROPOSAL_TEMPLATES,
+          params: {
+            query,
+          },
+        },
+      });
+
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+  }
+
+  public async getSharedProposalTemplate(
+    templateId: string
+  ): Promise<SharedProposalTemplate | null> {
+    // const mock = {
+    //   id: '1',
+    //   name: 'This is a custom fc templat to vote in other daos',
+    //   description:
+    //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum',
+    //   creator:
+    //     'jasonbornjasonbornjasonbornjasonbornjasonbornjasonbornjasonborn.near',
+    //   config: {
+    //     actionsGas: '130000000000000',
+    //     json:
+    //       '{\n  "args": {\n    "owner_id": "warfinntroll.testnet",\n    "total_supply": "1000000000000000000000",\n    "metadata": {\n      "spec": "ft-1.0.0",\n      "name": "warfinntroll-staking-token",\n      "symbol": "WST",\n      "icon": "",\n      "decimals": 18\n    }\n  }\n}',
+    //     deposit: '1000000000000000000000000',
+    //     methodName: 'create_token',
+    //     smartContractAddress: 'tokenfactory.testnet',
+    //     name: 'Create token ',
+    //   },
+    //   createdAt: '2021-12-07T19:15:52.793Z',
+    //   duplicated: 12,
+    //   usedInDaos: [
+    //     'my-dao',
+    //     'pets',
+    //     'birds',
+    //     'aviarium',
+    //     'cage',
+    //     'forest',
+    //     'sea',
+    //     'river',
+    //   ],
+    //   usedInDaosTotal: 127,
+    // };
+
+    // return mock;
+
+    try {
+      const { data } = await this.httpService.get<SharedProposalTemplate>(
+        `/shared-templates/${templateId}`
+      );
 
       return data;
     } catch (error) {

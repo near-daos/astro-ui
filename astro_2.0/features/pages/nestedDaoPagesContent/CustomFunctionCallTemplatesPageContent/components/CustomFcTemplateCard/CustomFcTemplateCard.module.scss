@@ -32,6 +32,14 @@
   }
 }
 
+.root.disabled {
+  grid-template-areas:
+    'name controls'
+    'address method'
+    'deposit gas'
+    'editor editor';
+}
+
 .toggle {
   color: var(--color-neutral-85);
   grid-area: toggle;

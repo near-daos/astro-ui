@@ -22,6 +22,7 @@ export interface DropdownProps<T> {
   options: Option<T>[];
   defaultValue?: T;
   placeholder?: string;
+  disabled?: boolean;
 }
 
 export const Dropdown = <T,>(
@@ -36,6 +37,7 @@ export const Dropdown = <T,>(
     placeholder,
     controlClassName,
     menuClassName,
+    disabled: isDisabled,
   } = props;
 
   const {
@@ -105,8 +107,13 @@ export const Dropdown = <T,>(
     <div className={className}>
       <Title
         size={3}
-        {...getToggleButtonProps()}
-        className={cn(styles.control, controlClassName)}
+        {...getToggleButtonProps({
+          disabled: isDisabled,
+          readOnly: isDisabled,
+        })}
+        className={cn(styles.control, controlClassName, {
+          [styles.disabled]: isDisabled,
+        })}
       >
         {selectedItem?.label || placeholder}
         <IconButton
@@ -118,7 +125,7 @@ export const Dropdown = <T,>(
       </Title>
       <ul
         className={cn(styles.menu, menuClassName, { [styles.open]: isOpen })}
-        {...getMenuProps()}
+        {...getMenuProps({ readOnly: isDisabled })}
       >
         {renderList()}
       </ul>
