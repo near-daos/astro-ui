@@ -18,7 +18,7 @@ import { formatCurrency } from 'utils/formatCurrency';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
 import styles from './CreateRoketoStream.module.scss';
-import { useRoketoReceipt } from './hooks';
+import { useRoketoReceipt, useRoketoStorageDeposit } from './hooks';
 
 interface CreateRoketoStreamProps {
   dao: DAO;
@@ -30,25 +30,54 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
   const { register, setValue, getValues, watch } = useFormContext();
   const depositWidth = useDepositWidth();
   const { tokens } = useCustomTokensContext();
-  const selectedTokenId = watch('tokenId');
+  const selectedTokenId = watch('tokenId') ?? 'NEAR';
   const selectedToken = useMemo(
     () =>
       Object.values(tokens).find(found => found.id === selectedTokenId) ?? null,
     [tokens, selectedTokenId]
   );
+  const wrapToken = useMemo(
+    () =>
+      Object.values(tokens).find(
+        found => found.id === 'wrap.testnet' || found.id === 'wrap.near'
+      ),
+    [tokens]
+  );
 
-  // TODO add check for storage_deposit for dao account and target account
+  const tokenToCheckForDeposit =
+    selectedTokenId === 'NEAR'
+      ? wrapToken?.id ?? 'wrap.testnet'
+      : selectedTokenId;
+
+  const depositStorageDao = useRoketoStorageDeposit(
+    dao.id,
+    tokenToCheckForDeposit
+  );
+  const depositStorageReceiver = useRoketoStorageDeposit(
+    watch('receiverId'),
+    tokenToCheckForDeposit
+  );
 
   const shouldDepositForDao = watch('shouldDepositForDao');
   const shouldDepositForTarget = watch('shouldDepositForReceiver');
+
+  useEffect(() => {
+    setValue('shouldDepositForDao', !depositStorageDao.hasStorage);
+    setValue('shouldDepositForReceiver', !depositStorageReceiver.hasStorage);
+  }, [
+    setValue,
+    depositStorageDao.hasStorage,
+    depositStorageReceiver.hasStorage,
+  ]);
 
   const { total, positions } = useRoketoReceipt({
     amountToStream: new Decimal(watch('amount') || '0')
       .mul(10 ** (selectedToken?.decimals ?? 24))
       .toFixed(),
     tokenId: selectedToken?.id || 'NEAR',
+    tokenDecimals: selectedToken?.decimals ?? 24,
     storageDeposit: {
-      forSender: shouldDepositForDao ?? true,
+      forSender: shouldDepositForDao ?? false,
       forRecipient: shouldDepositForTarget ?? false,
     },
   });
@@ -98,7 +127,7 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
     ),
   }));
 
-  const selectedTokenData = tokens[getValues().token];
+  const selectedTokenData = tokens[getValues().tokenId];
 
   return (
     <div className={styles.root}>
@@ -139,7 +168,7 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
             {...register('tokenId')}
             onChange={v => setValue('tokenId', v, { shouldDirty: true })}
             defaultValue={
-              selectedTokenData?.symbol ?? getValues().token ?? 'NEAR'
+              selectedTokenData?.id ?? getValues().tokenId ?? 'NEAR'
             }
           />
         ) : (
@@ -180,7 +209,9 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
                 const token = tokens[position.token];
 
                 return (
-                  <React.Fragment key={`${position.token}-${position.amount}`}>
+                  <React.Fragment
+                    key={`${position.token}-${position.amount}-${position.description}`}
+                  >
                     <span>{position.description}</span>
                     <span className={styles.receiptAmount}>
                       {formatNearAmount(position.amount, token.decimals)}
