@@ -2,12 +2,13 @@ import { getValidationSchema } from 'astro_2.0/features/CreateProposal/helpers/r
 import { ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
 import { SputnikNearService } from 'services/sputnik';
-import { TFunction } from 'i18next';
+import { TFunction } from 'next-i18next';
 
 export const resolver = (
   dao: DAO,
   nearService: SputnikNearService | null,
-  t: TFunction
+  t: TFunction,
+  isDraft?: boolean
 ) => async (
   data: Record<string, unknown>,
   context: { selectedProposalVariant: ProposalVariant } | undefined
@@ -20,7 +21,8 @@ export const resolver = (
     context?.selectedProposalVariant,
     dao,
     data,
-    nearService ?? undefined
+    nearService ?? undefined,
+    isDraft
   );
 
   try {

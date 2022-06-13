@@ -7,16 +7,17 @@ import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { CommentContent } from 'astro_2.0/features/Comments/components/CommentContent';
 import { EditableContent } from 'astro_2.0/components/EditableContent';
+import { ReplyButton } from 'astro_2.0/components/ReplyButton';
 
 import styles from './Comment.module.scss';
 
-interface Props {
+interface CommentProps {
   data: DraftComment;
   onLike: (id: string) => Promise<void>;
   onReply?: (parentId: string, value: string) => Promise<void>;
 }
 
-export const Comment: FC<Props> = ({ data, onLike }) => {
+export const Comment: FC<CommentProps> = ({ data, onLike }) => {
   const { author, updatedAt, description, comments, likes, id } = data;
   const [html, setHTML] = useState('');
   const [showReplies, setShowReplies] = useState(false);
@@ -55,15 +56,10 @@ export const Comment: FC<Props> = ({ data, onLike }) => {
             onClick={() => onLike(id)}
           />
         </div>
-        <Button
-          capitalize
+        <ReplyButton
           className={styles.replyButton}
-          size="small"
-          variant="tertiary"
           onClick={() => setShowReplyInput(!showReplyInput)}
-        >
-          Reply <Icon name="reply" className={styles.replyIcon} />
-        </Button>
+        />
       </div>
       {showReplies && comments?.length && (
         <div className={styles.repliesWrapper}>

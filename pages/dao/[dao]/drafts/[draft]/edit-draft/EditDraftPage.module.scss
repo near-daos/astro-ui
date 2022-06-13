@@ -1,0 +1,6 @@
+@import 'styles/typography';
+
+.title {
+  @extend %heading1;
+  margin: 0 0 12px;
+}

@@ -56,6 +56,34 @@ jest.mock('hooks/useCountdown', () => ({
   useCountdown: jest.fn(),
 }));
 
+jest.mock('react-hook-form', () => {
+  return {
+    ...jest.requireActual('react-hook-form'),
+    useFormContext: jest.fn(() => ({
+      formState: { errors: {} },
+      handleSubmit: jest.fn().mockReturnValue(jest.fn()),
+      watch: () => 0,
+      setValue: () => 0,
+      register: () => 0,
+    })),
+    useForm: jest.fn(() => ({
+      setValue: () => 0,
+      getValues: (key: string) => {
+        if (!key) {
+          return 0;
+        }
+
+        return [];
+      },
+      formState: {
+        touchedFields: {},
+      },
+      register: () => 0,
+      handleSubmit: jest.fn().mockReturnValue(jest.fn()),
+    })),
+  };
+});
+
 describe('Proposal Card', () => {
   function renderProposalCard(props?: Partial<ProposalCardProps>) {
     return render(
@@ -103,7 +131,7 @@ describe('Proposal Card', () => {
       voteStatus: 'Expired',
     });
 
-    expect(getAllByText('Finalize')).toHaveLength(1);
+    expect(getAllByText('proposalCard.finalize')).toHaveLength(1);
   });
 
   it.each`
@@ -157,7 +185,7 @@ describe('Proposal Card', () => {
       votePeriodEnd: '3016-12-12',
     });
 
-    expect(getAllByText('123 left')).toHaveLength(1);
+    expect(getAllByText('123 proposalCard.timeLeft')).toHaveLength(1);
   });
 
   it('Should render proper timestamp when status Approved', () => {
