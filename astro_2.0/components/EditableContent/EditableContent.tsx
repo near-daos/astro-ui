@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
+import { FieldError } from 'react-hook-form';
 
 import 'react-quill/dist/quill.snow.css';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { Hashtag } from 'types/draftProposal';
 
-import { EditTitle } from './EditTitle';
 import { EditHashtags } from './EditHashtags';
 
 import styles from './EditableContent.module.scss';
@@ -43,6 +43,12 @@ const renderCustomToolbar = (id: string) => {
 
 const formats = ['list', 'bold', 'italic', 'image'];
 
+type EditableContentErrors = {
+  title?: FieldError;
+  hashtags?: FieldError;
+  description?: FieldError;
+};
+
 type EditableContentProps = {
   id?: string;
   placeholder?: string;
@@ -54,6 +60,8 @@ type EditableContentProps = {
   hashtags?: Hashtag[];
   setHashtags?: (hashtags: Hashtag[]) => void;
   handleSend?: (html: string) => void;
+  className?: string;
+  errors?: EditableContentErrors;
 };
 
 export const EditableContent: FC<EditableContentProps> = ({
@@ -67,6 +75,8 @@ export const EditableContent: FC<EditableContentProps> = ({
   hashtags,
   setHashtags,
   titlePlaceholder,
+  className,
+  errors,
 }) => {
   const modules = {
     toolbar: {
@@ -81,22 +91,36 @@ export const EditableContent: FC<EditableContentProps> = ({
   };
 
   return (
-    <div className={styles.createComment}>
+    <div className={cn(styles.createComment, className)}>
       {renderCustomToolbar(id)}
       {setTitle ? (
-        <EditTitle
-          title={title}
-          placeholder={titlePlaceholder}
-          setTitle={setTitle}
-        />
+        <div
+          className={cn(styles.titleEdit, {
+            [styles.titleError]: errors?.title?.message,
+          })}
+        >
+          <input
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            className={styles.titleInput}
+            type="text"
+            placeholder={titlePlaceholder}
+          />
+        </div>
       ) : null}
       {setHashtags && hashtags ? (
-        <EditHashtags hashtags={hashtags} setHashtags={setHashtags} />
+        <EditHashtags
+          hashtags={hashtags}
+          setHashtags={setHashtags}
+          error={errors?.hashtags?.message}
+        />
       ) : null}
       <ReactQuill
         onChange={setHTML}
         value={html}
-        className={styles.textField}
+        className={cn(styles.textField, {
+          [styles.error]: errors?.description?.message,
+        })}
         placeholder={placeholder}
         modules={modules}
         formats={formats}

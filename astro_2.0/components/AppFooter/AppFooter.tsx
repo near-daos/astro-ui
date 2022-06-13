@@ -26,6 +26,7 @@ export const AppFooter: FC<AppFooterProps> = ({
 }) => {
   const { t } = useTranslation();
   const { cfcLibrary } = useFlags();
+  const { canny, cfcLibrary } = useFlags();
 
   const { appConfig } = configService.get();
   const RELEASE_NOTES = appConfig?.RELEASE_NOTES || '';
@@ -74,6 +75,16 @@ export const AppFooter: FC<AppFooterProps> = ({
             {t('components.appFooter.askQuestion')}
           </a>
           <div className={styles.version}>
+            {canny && (
+              <a
+                className={styles.devLink}
+                href="https://feedback.astrodao.com"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                {t('leaveFeedback')}
+              </a>
+            )}
             <a
               className={styles.devLink}
               href="https://github.com/near-daos/astro-ui/issues"

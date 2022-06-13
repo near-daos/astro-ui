@@ -8,7 +8,7 @@ import { WalletType } from 'types/config';
 
 import { useWalletContext } from 'context/WalletContext';
 
-import { DRAFTS_PAGE_URL } from 'constants/routing';
+import { CREATE_DRAFT_PAGE_URL } from 'constants/routing';
 
 import { Icon, IconName } from 'components/Icon';
 import { Button } from 'components/button/Button';
@@ -43,7 +43,7 @@ export const DaoAction: FC<Props> = ({ onCreateProposalClick, daoId }) => {
 
   const handleCreateDraft = useCallback(() => {
     router.push({
-      pathname: DRAFTS_PAGE_URL,
+      pathname: CREATE_DRAFT_PAGE_URL,
       query: {
         dao: daoId,
       },

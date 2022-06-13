@@ -27,3 +27,7 @@
   @extend %subtitle5;
   color: var(--color-neutral-50);
 }
+
+.error {
+  color: var(--color-error);
+}

@@ -16,9 +16,12 @@ import {
   DAO_CUSTOM_FC_TEMPLATES_PAGE_URL,
   DRAFTS_PAGE_URL,
   DRAFT_PAGE_URL,
+  CREATE_DRAFT_PAGE_URL,
+  EDIT_DRAFT_PAGE_URL,
 } from 'constants/routing';
 import { UrlObject } from 'url';
 import { Proposal } from 'types/proposal';
+import { DraftProposal } from 'types/draftProposal';
 
 type GroupConfig = {
   id: string;
@@ -39,7 +42,7 @@ export function useGetBreadcrumbsConfig(
   group?: GroupConfig,
   proposal?: Pick<Proposal, 'id'>,
   bountyContextId?: string,
-  draft?: Pick<Proposal, 'id'>
+  draft?: Pick<DraftProposal, 'id'>
 ): Breadcrumbs {
   const { t } = useTranslation();
 
@@ -188,6 +191,26 @@ export function useGetBreadcrumbsConfig(
           pathname: DRAFT_PAGE_URL,
           query: {
             dao: daoId,
+            draft: draft?.id ?? '',
+          },
+        },
+      },
+      CREATE_DRAFT_PAGE_URL: {
+        label: 'Create draft',
+        href: {
+          pathname: CREATE_DRAFT_PAGE_URL,
+          query: {
+            dao: daoId,
+          },
+        },
+      },
+      EDIT_DRAFT_PAGE_URL: {
+        label: 'Edit draft',
+        href: {
+          pathname: EDIT_DRAFT_PAGE_URL,
+          query: {
+            dao: daoId,
+            draft: draft?.id ?? '',
           },
         },
       },
