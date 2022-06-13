@@ -1,9 +1,13 @@
+@import 'styles/typography';
+
 .root {
+  align-items: center;
   //background-color: var(--color-neutral-30);
   border-radius: 50%;
+  display: flex;
   height: 24px;
   margin-right: 8px;
-  width: 24px;
+  //width: 24px;
 }
 
 .icon {
@@ -23,4 +27,10 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.label {
+  @extend %caption1;
+  color: var(--color-neutral-50);
+  margin-left: 4px;
 }

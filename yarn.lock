@@ -4706,7 +4706,7 @@
     "@webassemblyjs/wasm-gen" "1.9.0"
     "@webassemblyjs/wasm-parser" "1.9.0"
 
-"@webassemblyjs/wasm-parser@1.11.1":
+"@webassemblyjs/wasm-parser@1.11.1", "@webassemblyjs/wasm-parser@^1.11.1":
   version "1.11.1"
   resolved "https://registry.npmjs.org/@webassemblyjs/wasm-parser/-/wasm-parser-1.11.1.tgz"
   integrity sha512-rrBujw+dJu32gYB7/Lup6UhdkPx9S9SnobZzRVL7VcBH9Bt9bCBLEuX/YXOOtBsOZ4NQrRykKhffRWHvigQvOA==
@@ -12812,6 +12812,13 @@ near-api-js@^0.44.2:
     node-fetch "^2.6.1"
     text-encoding-utf-8 "^1.0.2"
     tweetnacl "^1.0.1"
+
+near-contract-parser@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/near-contract-parser/-/near-contract-parser-0.1.4.tgz#dcd907572d9ad1ccdc485448b6241c6ab4c7be80"
+  integrity sha512-rKy94qZufpX9Qy5N3/0R6Glo+57tQn4QpDmGxmEvUM9x85MNVZ85gJ4KRX9rBcjpCTwDN7hLZaNsxllL1ZCWKg==
+  dependencies:
+    "@webassemblyjs/wasm-parser" "^1.11.1"
 
 negotiator@0.6.2, negotiator@^0.6.2:
   version "0.6.2"
