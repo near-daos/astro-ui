@@ -1,12 +1,13 @@
 // TODO requires localisation
 
-import React, { useEffect, useState } from 'react';
 import cn from 'classnames';
+import React, { KeyboardEvent, useCallback, useEffect, useState } from 'react';
 
 import { DaoVotePolicy, TGroup } from 'types/dao';
 
 import { onPressEnterBtn } from 'utils/handlePressEnterBtn';
 
+import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { ConfirmResetModal } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/components/ManageGroups/components/ConfirmResetModal';
 import { ConfirmDeleteModal } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/components/ManageGroups/components/ConfirmDeleteModal';
 import { GroupQuorum } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoPolicyPageContent/components/ManageGroups/components/GroupQuorum';
@@ -18,6 +19,8 @@ import { Badge } from 'components/Badge';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { useModal } from 'components/modal';
+
+import { useProcessMembersPaste } from './hooks/useProcessMembersPaste';
 
 import styles from './EditGroup.module.scss';
 
@@ -115,16 +118,30 @@ export const EditGroup: React.FC<Props> = ({
     });
   };
 
-  const handleAddGroupMember = async () => {
-    if (isNewMemberNameValid) {
+  const addGroupMembers = useCallback(
+    (members: string[]) => {
+      const newMembers = new Set([...group.members, ...members]);
+
       onChange({
         ...group,
-        members: [...group.members, addMemberName.trim()],
+        members: [...newMembers],
       });
+    },
+    [group, onChange]
+  );
+
+  const handleAddGroupMember = async () => {
+    if (isNewMemberNameValid) {
+      addGroupMembers([addMemberName.trim()]);
 
       setAddMemberName('');
     }
   };
+
+  const { processing, onPasteMembers } = useProcessMembersPaste({
+    setAddMemberName,
+    addGroupMembers,
+  });
 
   const handleRemoveGroupMember = (name: string) => {
     onChange({
@@ -149,6 +166,12 @@ export const EditGroup: React.FC<Props> = ({
     canDelete:
       !BAN_SLUGS.includes(group.slug.toLowerCase()) && !group.isCreated,
   };
+
+  function onMemberInputButtonPress(e: KeyboardEvent) {
+    if (e.key === 'Enter') {
+      handleAddGroupMember();
+    }
+  }
 
   return (
     <div className={styles.content}>
@@ -256,6 +279,11 @@ export const EditGroup: React.FC<Props> = ({
               [styles.addMemberInputInvalid]: !isNewMemberNameValid,
             })}
           >
+            {processing && (
+              <div className={styles.cover}>
+                <LoadingIndicator className={styles.loadingIndicator} />
+              </div>
+            )}
             <input
               type="text"
               onChange={async e => {
@@ -271,8 +299,9 @@ export const EditGroup: React.FC<Props> = ({
               className={styles.addMemberInput}
               value={addMemberName}
               placeholder="Type member name"
+              onKeyPress={onMemberInputButtonPress}
+              onPaste={onPasteMembers}
             />
-
             <Button
               variant="transparent"
               className={cn(styles.addMemberTrigger, {
