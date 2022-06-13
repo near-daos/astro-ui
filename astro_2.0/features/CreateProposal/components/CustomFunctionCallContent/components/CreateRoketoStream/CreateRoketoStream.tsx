@@ -102,22 +102,19 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.comment}>
+      <div className={styles.target}>
         <InputWrapper
           className={styles.inputWrapper}
-          fieldName="comment"
-          label="Comment for the stream"
+          fieldName="receiverId"
+          label="Receiver"
         >
-          <TextArea
-            size="block"
+          <Input
+            type="text"
+            min={0}
+            placeholder="someuser.near"
             isBorderless
-            textAlign="left"
-            placeholder="This text will be saved in the created stream"
-            resize="none"
-            maxLength={80}
-            minRows={2}
-            maxRows={2}
-            {...register('comment')}
+            size="block"
+            {...register('receiverId')}
           />
         </InputWrapper>
       </div>
@@ -151,19 +148,22 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
           </div>
         )}
       </div>
-      <div className={styles.target}>
+      <div className={styles.comment}>
         <InputWrapper
           className={styles.inputWrapper}
-          fieldName="receiverId"
-          label="Target"
+          fieldName="comment"
+          label="Comment for the stream"
         >
-          <Input
-            type="text"
-            min={0}
-            placeholder="someuser.near"
-            isBorderless
+          <TextArea
             size="block"
-            {...register('receiverId')}
+            isBorderless
+            textAlign="left"
+            placeholder="This text will be saved in the created stream"
+            resize="none"
+            maxLength={80}
+            minRows={2}
+            maxRows={2}
+            {...register('comment')}
           />
         </InputWrapper>
       </div>
