@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useMount } from 'react-use';
 import { useTranslation } from 'next-i18next';
@@ -8,6 +8,7 @@ import { ProposalCardRenderer } from 'astro_2.0/components/ProposalCardRenderer'
 import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/components/LetterHeadWidget';
 import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import { TransactionDetailsWidget } from 'astro_2.0/components/TransactionDetailsWidget';
+import { Button } from 'components/button/Button';
 
 import { ProposalVariant } from 'types/proposal';
 import { DAO } from 'types/dao';
@@ -19,6 +20,7 @@ import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomToken
 import { getInitialProposalVariant } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 
 import { useSubmitProposal } from 'astro_2.0/features/CreateProposal/hooks/useSubmitProposal';
+import { useSubmitDraft } from 'astro_2.0/features/CreateProposal/hooks/useSubmitDraft';
 
 import { getFormInitialValues } from 'astro_2.0/features/CreateProposal/helpers/initialValues';
 import { getNonEditableGasValue } from 'astro_2.0/features/CreateProposal/helpers/proposalVariantsHelpers';
@@ -47,6 +49,7 @@ export interface CreateProposalProps {
   showInfo?: boolean;
   canCreateTokenProposal?: boolean;
   initialValues?: Record<string, unknown>;
+  isDraft?: boolean;
 }
 
 export const CreateProposal: FC<CreateProposalProps> = ({
@@ -64,6 +67,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   showInfo = true,
   canCreateTokenProposal = false,
   initialValues,
+  isDraft,
 }) => {
   const { t } = useTranslation();
   const { accountId, nearService } = useWalletContext();
@@ -96,11 +100,13 @@ export const CreateProposal: FC<CreateProposalProps> = ({
       selectedProposalVariant,
       accountId,
       initialValues,
-      daoTokens
+      daoTokens,
+      isDraft
     ),
     context: schemaContext,
+    shouldUnregister: false,
     mode: 'onSubmit',
-    resolver: resolver(dao, nearService, t),
+    resolver: resolver(dao, nearService, t, isDraft),
   });
 
   const { onSubmit } = useSubmitProposal({
@@ -113,11 +119,32 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     redirectAfterCreation,
   });
 
+  const { onDraftSubmit } = useSubmitDraft();
+
   const contentNode = getFormContentNode(selectedProposalVariant, dao);
 
   const nonEditableGas = getNonEditableGasValue(
     selectedProposalVariant,
     methods.getValues()
+  );
+
+  const onTypeSelect = useCallback(
+    v => {
+      const defaults = getFormInitialValues(
+        v,
+        accountId,
+        undefined,
+        undefined,
+        isDraft
+      );
+
+      methods.reset({ ...defaults });
+
+      setSchemaContext({ selectedProposalVariant: v });
+
+      setSelectedProposalVariant(v);
+    },
+    [accountId, isDraft, methods]
   );
 
   return (
@@ -144,20 +171,13 @@ export const CreateProposal: FC<CreateProposalProps> = ({
           proposalCardNode={
             <CustomTokensContext.Provider value={{ tokens: daoTokens }}>
               <CreateProposalCard
+                isDraft={isDraft}
                 showClose={showClose}
                 key={selectedProposalVariant}
                 userPermissions={userPermissions}
                 canCreateTokenProposal={canCreateTokenProposal}
                 onClose={onClose}
-                onTypeSelect={v => {
-                  const defaults = getFormInitialValues(v, accountId);
-
-                  methods.reset({ ...defaults });
-
-                  setSchemaContext({ selectedProposalVariant: v });
-
-                  setSelectedProposalVariant(v);
-                }}
+                onTypeSelect={onTypeSelect}
                 type={selectedProposalVariant}
                 content={contentNode}
                 proposer={accountId}
@@ -166,14 +186,27 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             </CustomTokensContext.Provider>
           }
           infoPanelNode={
-            <TransactionDetailsWidget
-              gas={nonEditableGas}
-              onSubmit={onSubmit}
-              buttonLabel={t('propose')}
-              bond={{ value: dao.policy.proposalBond }}
-            />
+            isDraft ? undefined : (
+              <TransactionDetailsWidget
+                gas={nonEditableGas}
+                onSubmit={onSubmit}
+                buttonLabel={t('propose')}
+                bond={{ value: dao.policy.proposalBond }}
+              />
+            )
           }
         />
+        {isDraft ? (
+          <Button
+            disabled={Object.keys(methods.formState.errors).length > 0}
+            capitalize
+            size="small"
+            className={styles.saveDraft}
+            onClick={methods.handleSubmit(onDraftSubmit)}
+          >
+            Save
+          </Button>
+        ) : null}
       </div>
     </FormProvider>
   );

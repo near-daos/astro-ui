@@ -481,11 +481,14 @@ export function getValidationSchema(
   proposalVariant?: ProposalVariant,
   dao?: DAO,
   data?: { [p: string]: unknown },
-  nearService?: SputnikNearService
+  nearService?: SputnikNearService,
+  isDraft?: boolean
 ): yup.AnySchema {
+  let schema: yup.AnySchema;
+
   switch (proposalVariant) {
     case ProposalVariant.ProposeTransfer: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         token: yup.string().required('Required'),
         amount: yup
           .number()
@@ -507,9 +510,10 @@ export function getValidationSchema(
         externalUrl: yup.string().url(),
         gas: gasValidation,
       });
+      break;
     }
     case ProposalVariant.ProposeCreateBounty: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         token: yup.string().required('Required'),
         amount: yup
           .number()
@@ -535,25 +539,28 @@ export function getValidationSchema(
         externalUrl: yup.string().url(),
         gas: gasValidation,
       });
+      break;
     }
     case ProposalVariant.ProposeChangeDaoName: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         displayName: yup.string().min(2).required('Required'),
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
         gas: gasValidation,
       });
+      break;
     }
     case ProposalVariant.ProposeChangeDaoPurpose: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         purpose: yup.string().max(500).required('Required'),
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
         gas: gasValidation,
       });
+      break;
     }
     case ProposalVariant.ProposeChangeDaoLinks: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
         links: yup.array().of(
@@ -566,13 +573,14 @@ export function getValidationSchema(
           })
         ),
       });
+      break;
     }
     case ProposalVariant.ProposeCreateGroup:
     case ProposalVariant.ProposeAddMember:
     case ProposalVariant.ProposeRemoveMember: {
       const id = dao?.id ?? null;
 
-      return yup.object().shape({
+      schema = yup.object().shape({
         group: yup.string().required('Required'),
         memberName: yup
           .string()
@@ -594,9 +602,10 @@ export function getValidationSchema(
         externalUrl: yup.string().url(),
         gas: gasValidation,
       });
+      break;
     }
     case ProposalVariant.ProposeChangeBonds: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
         createProposalBond: yup.string().required('Required'),
@@ -605,17 +614,19 @@ export function getValidationSchema(
         unclaimBountyTime: yup.string().required('Required'),
         gas: gasValidation,
       });
+      break;
     }
     case ProposalVariant.ProposeChangeVotingPolicy: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
         amount: yup.string().required('Required'),
         gas: gasValidation,
       });
+      break;
     }
     case ProposalVariant.ProposeChangeDaoFlag: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
         flagCover: yup
@@ -628,9 +639,10 @@ export function getValidationSchema(
           .test('fileSize', getImgValidationError, validateImgSize),
         gas: gasValidation,
       });
+      break;
     }
     case ProposalVariant.ProposeChangeDaoLegalInfo: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required('Required'),
         legalStatus: yup.string().max(50),
         legalLink: yup.string().matches(VALID_URL_REGEXP, {
@@ -638,20 +650,22 @@ export function getValidationSchema(
         }),
         gas: gasValidation,
       });
+      break;
     }
     case ProposalVariant.ProposeCustomFunctionCall: {
       const type = data?.functionCallType ?? FunctionCallType.Custom;
 
       switch (type) {
         case FunctionCallType.RemoveUpgradeCode: {
-          return yup.object().shape({
+          schema = yup.object().shape({
             details: yup.string().required('Required'),
             externalUrl: yup.string().url(),
             gas: gasValidation,
           });
+          break;
         }
         case FunctionCallType.BuyNFTfromMintbase: {
-          return yup.object().shape({
+          schema = yup.object().shape({
             tokenKey: yup.string().required('Required'),
             deposit: yup
               .number()
@@ -662,19 +676,21 @@ export function getValidationSchema(
             actionsGas: gasValidation,
             gas: gasValidation,
           });
+          break;
         }
         case FunctionCallType.VoteInAnotherDao: {
           const gerErr = (field: string) =>
             t(`proposalCard.voteInDao.${field}.required`);
 
-          return yup.object().shape({
+          schema = yup.object().shape({
             targetDao: yup.string().required(gerErr('targetDao')),
             proposal: yup.string().required(gerErr('proposal')),
             vote: yup.string().required(gerErr('vote')),
           });
+          break;
         }
         case FunctionCallType.TransferNFTfromMintbase: {
-          return yup.object().shape({
+          schema = yup.object().shape({
             tokenKey: yup
               .string()
               .test(
@@ -701,9 +717,10 @@ export function getValidationSchema(
             externalUrl: yup.string().url(),
             gas: gasValidation,
           });
+          break;
         }
         case FunctionCallType.BuyNFTfromParas: {
-          return yup.object().shape({
+          schema = yup.object().shape({
             tokenKey: yup.string().required('Required'),
             deposit: yup
               .number()
@@ -721,9 +738,10 @@ export function getValidationSchema(
             actionsGas: gasValidation,
             gas: gasValidation,
           });
+          break;
         }
         case FunctionCallType.SwapsOnRef: {
-          return yup.object().shape({
+          schema = yup.object().shape({
             pullId: yup
               .number()
               .typeError('Must be a va  lid number.')
@@ -744,9 +762,10 @@ export function getValidationSchema(
             externalUrl: yup.string().url(),
             gas: gasValidation,
           });
+          break;
         }
         default: {
-          return yup.object().shape({
+          schema = yup.object().shape({
             smartContractAddress: yup.string().required('Required'),
             methodName: yup
               .string()
@@ -776,17 +795,22 @@ export function getValidationSchema(
             actionsGas: gasValidation,
             gas: gasValidation,
           });
+          break;
         }
       }
+
+      break;
     }
 
     // todo - add validation
     case ProposalVariant.ProposeTokenDistribution: {
-      return yup.object().shape({});
+      schema = yup.object().shape({});
+
+      break;
     }
 
     case ProposalVariant.ProposeStakingContractDeployment: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         token: yup.string(),
         unstakingPeriod: yup
           .number()
@@ -795,16 +819,18 @@ export function getValidationSchema(
           .min(1)
           .required('Required'),
       });
+      break;
     }
 
     case ProposalVariant.ProposeAcceptStakingContract: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         contract: yup.string(),
       });
+      break;
     }
 
     case ProposalVariant.ProposeCreateDao: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required('Required'),
         displayName: yup
           .string()
@@ -816,6 +842,7 @@ export function getValidationSchema(
           )
           .required('Required'),
       });
+      break;
     }
     case ProposalVariant.ProposeTransferFunds: {
       const tokens = (data?.daoTokens as Record<string, Token>) ?? {};
@@ -848,26 +875,42 @@ export function getValidationSchema(
         {}
       );
 
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required('Required'),
         ...tokensFields,
       });
+      break;
     }
     case ProposalVariant.ProposeUpgradeSelf:
     case ProposalVariant.ProposeGetUpgradeCode:
     case ProposalVariant.ProposeRemoveUpgradeCode: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required('Required'),
       });
+      break;
     }
 
     case ProposalVariant.ProposeDoneBounty:
     default: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required('Required'),
         externalUrl: yup.string().url(),
         gas: gasValidation,
       });
+      break;
     }
   }
+
+  if (isDraft) {
+    schema = schema.concat(
+      yup.object().shape({
+        details: yup.string().notRequired(),
+        description: yup.string().required('Required'),
+        hashtags: yup.array().min(1, 'Required'),
+        title: yup.string().required('Required'),
+      })
+    );
+  }
+
+  return schema;
 }

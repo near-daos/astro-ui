@@ -81,9 +81,6 @@ export function updateAction(
     | SubmitStep
   >
 ): GlobalState {
-  // console.log('state:', state);
-  // console.log('payload:', payload);
-
   return {
     ...state,
     ...payload,

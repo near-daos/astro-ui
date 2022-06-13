@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { FC } from 'react';
 import { nanoid } from 'nanoid';
+import cn from 'classnames';
 
 import { Hashtag } from 'types/draftProposal';
 
@@ -13,11 +14,13 @@ const MAX_HASHTAGS = 6;
 type EditHashtagsProps = {
   hashtags: Hashtag[];
   setHashtags: (hashtags: Hashtag[]) => void;
+  error?: string;
 };
 
 export const EditHashtags: FC<EditHashtagsProps> = ({
   hashtags,
   setHashtags,
+  error,
 }) => {
   const addHashtag = () => {
     if (hashtags.length !== MAX_HASHTAGS) {
@@ -73,7 +76,7 @@ export const EditHashtags: FC<EditHashtagsProps> = ({
             #hashtag_name
           </button>
         ) : null}
-        <div className={styles.count}>
+        <div className={cn(styles.count, { [styles.error]: error })}>
           {hashtags.length}/{MAX_HASHTAGS}
         </div>
       </div>

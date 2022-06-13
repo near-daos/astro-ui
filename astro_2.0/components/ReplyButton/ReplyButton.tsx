@@ -15,12 +15,12 @@ export const ReplyButton: FC<ReplyButtonProps> = ({ className, onClick }) => {
   return (
     <Button
       capitalize
+      size="small"
       variant="transparent"
       className={cn(styles.replyButton, className)}
       onClick={onClick}
     >
-      <span className={styles.text}>Reply</span>{' '}
-      <Icon className={styles.icon} name="reply" />
+      Reply <Icon className={styles.icon} name="reply" />
     </Button>
   );
 };

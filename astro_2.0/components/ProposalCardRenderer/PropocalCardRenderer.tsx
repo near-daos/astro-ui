@@ -2,8 +2,10 @@ import React from 'react';
 import cn from 'classnames';
 import isNumber from 'lodash/isNumber';
 import { useTranslation } from 'next-i18next';
+import { useFormContext } from 'react-hook-form';
 
 import { InfoPanel } from 'astro_2.0/components/ProposalCardRenderer/components/InfoPanel';
+import { Button } from 'components/button/Button';
 
 import styles from './ProposalCardRenderer.module.scss';
 
@@ -17,6 +19,7 @@ export interface ProposalCardRendererProps {
   showInfo?: boolean;
   optionalActionNode?: React.ReactNode;
   isDraft?: boolean;
+  isEditDraft?: boolean;
 }
 
 export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
@@ -29,8 +32,10 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
   showInfo,
   optionalActionNode,
   isDraft,
+  isEditDraft,
 }) => {
   const { t } = useTranslation();
+  const draftMethods = useFormContext();
 
   function renderFlag() {
     return daoFlagNode ? (
@@ -65,6 +70,8 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
     return null;
   }
 
+  const onSaveDraft = () => undefined;
+
   return (
     <div className={cn(styles.root, className)}>
       <div className={styles.header}>
@@ -78,6 +85,17 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
       )}
       <div className={styles.proposal}>{proposalCardNode}</div>
       {infoPanelNode && <div className={styles.infoPanel}>{infoPanelNode}</div>}
+      {isEditDraft ? (
+        <Button
+          disabled={Object.keys(draftMethods?.formState?.errors).length > 0}
+          capitalize
+          type="submit"
+          className={styles.saveDraftButton}
+          onClick={draftMethods?.handleSubmit(onSaveDraft)}
+        >
+          Save
+        </Button>
+      ) : null}
     </div>
   );
 };

@@ -56,6 +56,34 @@ jest.mock('hooks/useCountdown', () => ({
   useCountdown: jest.fn(),
 }));
 
+jest.mock('react-hook-form', () => {
+  return {
+    ...jest.requireActual('react-hook-form'),
+    useFormContext: jest.fn(() => ({
+      formState: { errors: {} },
+      handleSubmit: jest.fn().mockReturnValue(jest.fn()),
+      watch: () => 0,
+      setValue: () => 0,
+      register: () => 0,
+    })),
+    useForm: jest.fn(() => ({
+      setValue: () => 0,
+      getValues: (key: string) => {
+        if (!key) {
+          return 0;
+        }
+
+        return [];
+      },
+      formState: {
+        touchedFields: {},
+      },
+      register: () => 0,
+      handleSubmit: jest.fn().mockReturnValue(jest.fn()),
+    })),
+  };
+});
+
 describe('Proposal Card', () => {
   function renderProposalCard(props?: Partial<ProposalCardProps>) {
     return render(
