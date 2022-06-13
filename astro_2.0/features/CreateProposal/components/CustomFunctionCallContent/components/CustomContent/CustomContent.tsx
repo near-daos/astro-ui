@@ -1,12 +1,13 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import cn from 'classnames';
 import AceEditor from 'react-ace';
-import { useMount } from 'react-use';
+import { useAsyncFn, useMount } from 'react-use';
 
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { DropdownSelect } from 'components/inputs/selects/DropdownSelect';
-import { Input } from 'components/inputs/Input';
+import { DebouncedInput, Input } from 'components/inputs/Input';
+import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 
 import {
   DEFAULT_PROPOSAL_GAS,
@@ -19,12 +20,22 @@ import {
   useTokenOptions,
 } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/hooks';
 
+import { useWalletContext } from 'context/WalletContext';
+
 import styles from './CustomContent.module.scss';
 
 export const CustomContent: FC = () => {
+  const { nearService } = useWalletContext();
   const { register, setValue, getValues } = useFormContext();
   const depositWidth = useDepositWidth();
   const { tokenOptions, selectedTokenData } = useTokenOptions();
+  const [availableMethods, setAvailableMethods] = useState<
+    | {
+        value: string;
+        label: string;
+      }[]
+    | null
+  >(null);
 
   const handleChange = useCallback(
     v => {
@@ -39,6 +50,71 @@ export const CustomContent: FC = () => {
     setValue('json', json, { shouldValidate: true });
   });
 
+  const [{ loading }, handleSmartContractAddressChange] = useAsyncFn(
+    async val => {
+      setValue('smartContractAddress', val, { shouldValidate: true });
+
+      if (!nearService || !val) {
+        setAvailableMethods(null);
+
+        return;
+      }
+
+      const methods = await nearService.getSmartContractMethods(val);
+
+      if (methods) {
+        const options = methods.map(item => ({ value: item, label: item }));
+
+        setAvailableMethods(options);
+
+        return;
+      }
+
+      setAvailableMethods(null);
+    },
+    [nearService, setValue]
+  );
+
+  function renderMethods() {
+    if (loading) {
+      return (
+        <LoadingIndicator
+          className={styles.loader}
+          label="Looking for method names..."
+        />
+      );
+    }
+
+    if (availableMethods) {
+      return (
+        <DropdownSelect
+          className={styles.methodSelect}
+          options={availableMethods}
+          {...register('methodName')}
+          onChange={v => {
+            setValue('methodName', v, {
+              shouldDirty: true,
+            });
+          }}
+          defaultValue={getValues().methodName}
+          placeholder="Select contract method"
+        />
+      );
+    }
+
+    return (
+      <Input
+        className={cn(styles.inputWrapper, styles.narrow)}
+        type="text"
+        min={0}
+        placeholder="nft_buy"
+        isBorderless
+        size="block"
+        {...register('methodName')}
+      />
+    );
+  }
+
   return (
     <div className={styles.root}>
       <div className={styles.address}>
@@ -47,29 +123,20 @@ export const CustomContent: FC = () => {
           label="Smart Contract Address"
           fullWidth
         >
-          <Input
+          <DebouncedInput
             className={cn(styles.inputWrapper, styles.narrow)}
-            type="text"
-            min={0}
             placeholder="x.paras.near"
             isBorderless
             size="block"
             {...register('smartContractAddress')}
+            onValueChange={handleSmartContractAddressChange}
           />
         </InputWrapper>
       </div>
 
       <div className={styles.method}>
         <InputWrapper fieldName="methodName" label="Method Name" fullWidth>
-          <Input
-            className={cn(styles.inputWrapper, styles.narrow)}
-            type="text"
-            min={0}
-            placeholder="nft_buy"
-            isBorderless
-            size="block"
-            {...register('methodName')}
-          />
+          {renderMethods()}
         </InputWrapper>
       </div>
 
