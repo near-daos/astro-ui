@@ -42,6 +42,7 @@
     align-items: center;
     color: var(--color-neutral-60);
     display: flex;
+    margin-left: 6px;
     width: 24px;
   }
 
@@ -51,20 +52,7 @@
 }
 
 .replyButton {
-  align-items: center;
-  color: var(--color-brand-black);
-  display: flex;
-  justify-content: flex-end;
-  padding: 0;
-
-  &:hover {
-    color: var(--color-primary-50);
-  }
-
-  .replyIcon {
-    margin-left: 4px;
-    width: 24px;
-  }
+  margin-left: 24px;
 }
 
 .repliesWrapper {

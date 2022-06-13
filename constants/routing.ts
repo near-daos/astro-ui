@@ -41,3 +41,5 @@ export const MY_ACCOUNT_PAGE_URL = '/my-account';
 
 export const DRAFTS_PAGE_URL = `${SINGLE_DAO_PAGE}/drafts`;
 export const DRAFT_PAGE_URL = `${SINGLE_DAO_PAGE}/drafts/[draft]`;
+export const CREATE_DRAFT_PAGE_URL = `${SINGLE_DAO_PAGE}/create-draft`;
+export const EDIT_DRAFT_PAGE_URL = `${DRAFT_PAGE_URL}/edit-draft`;

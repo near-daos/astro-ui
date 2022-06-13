@@ -6,6 +6,7 @@ import { IconButtonProps } from 'components/button/IconButton';
 import { CreateProposalCard } from 'astro_2.0/features/CreateProposal/components/CreateProposalCard';
 
 const formContextMock = {
+  watch: () => 0,
   formState: {
     errors: {},
     touchedFields: {},

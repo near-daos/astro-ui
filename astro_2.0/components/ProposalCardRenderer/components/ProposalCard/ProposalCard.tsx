@@ -3,13 +3,16 @@ import { useAsyncFn } from 'react-use';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { format, parseISO } from 'date-fns';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useTranslation } from 'next-i18next';
 import { TFunction } from 'react-i18next';
 
-import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
+import {
+  SINGLE_PROPOSAL_PAGE_URL,
+  EDIT_DRAFT_PAGE_URL,
+} from 'constants/routing';
 
 import { useWalletContext } from 'context/WalletContext';
 
@@ -47,6 +50,7 @@ import { DraftDescription } from 'astro_2.0/components/ProposalCardRenderer/comp
 import { Badge } from 'components/Badge';
 import { DraftInfo } from 'astro_2.0/components/ProposalCardRenderer/components/DraftInfo';
 import { DraftManagement } from 'astro_2.0/components/ProposalCardRenderer/components/DraftManagement';
+import { EditableContent } from 'astro_2.0/components/EditableContent';
 
 import { ProposalControlPanel } from './components/ProposalControlPanel';
 
@@ -87,11 +91,13 @@ export interface ProposalCardProps {
     isCouncil: boolean;
   };
   isDraft?: boolean;
+  isEditDraft?: boolean;
   title?: string;
   hashtags?: Hashtag[];
   bookmarks?: number;
   comments?: DraftComment[];
   history?: ProposalFeedItem[];
+  onReplyClick?: () => void;
 }
 
 function getTimestampLabel(
@@ -198,15 +204,22 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   commentsCount,
   optionalPostVoteAction,
   isDraft,
+  isEditDraft,
   title,
   hashtags,
   bookmarks,
   comments,
   history,
+  onReplyClick,
 }) => {
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
   const router = useRouter();
+  const draftMethods = useFormContext();
+
+  const draftTitle = draftMethods.watch('title');
+  const draftDescription = draftMethods.watch('description');
+  const draftHashtags = draftMethods.watch('hashtags');
 
   const schema = yup.object().shape({
     gas: getGasValidation(t),
@@ -374,6 +387,42 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   }
 
   function renderCardContent() {
+    if (isEditDraft) {
+      return (
+        <>
+          {renderProposer()}
+          <EditableContent
+            errors={draftMethods.formState.errors}
+            placeholder="Describe your draft..."
+            titlePlaceholder="Add draft name"
+            title={draftTitle}
+            setTitle={titleValue => {
+              draftMethods.setValue('title', titleValue);
+              draftMethods.trigger('title');
+            }}
+            hashtags={draftHashtags}
+            setHashtags={hashtagsValue => {
+              draftMethods.setValue('hashtags', hashtagsValue);
+              draftMethods.trigger('hashtags');
+            }}
+            className={styles.editable}
+            html={draftDescription}
+            setHTML={html => {
+              let value = html;
+
+              if (value === '<p><br></p>') {
+                value = '';
+              }
+
+              draftMethods.setValue('description', value);
+              draftMethods.trigger('description');
+            }}
+          />
+          <div className={styles.contentCell}>{content}</div>
+        </>
+      );
+    }
+
     if (isDraft) {
       return (
         <>
@@ -453,15 +502,27 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   };
 
   const renderBottomContent = () => {
+    if (isEditDraft) {
+      return null;
+    }
+
     if (isDraft) {
       return (
         <div className={styles.draftFooter}>
           <DraftManagement
             onConvertToProposal={() => undefined}
-            onEditDraft={() => undefined}
+            onEditDraft={() =>
+              router.push({
+                pathname: EDIT_DRAFT_PAGE_URL,
+                query: {
+                  dao: daoId,
+                  draft: id || '',
+                },
+              })
+            }
           />
           <DraftInfo
-            onReply={() => undefined}
+            onReply={() => onReplyClick && onReplyClick()}
             comments={comments?.length || 0}
             bookmarks={bookmarks || 0}
           />
@@ -570,6 +631,20 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       );
     }
 
+    if (isEditDraft) {
+      return (
+        <Button
+          capitalize
+          variant="transparent"
+          className={styles.deleteButton}
+          onClick={() => undefined}
+        >
+          <Icon name="buttonDelete" className={styles.deleteButtonIcon} />
+          Delete
+        </Button>
+      );
+    }
+
     if (history && history.length >= 2) {
       return (
         <div className={styles.countdownCell}>
@@ -620,9 +695,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         />
       </div>
       {renderTimestampCell()}
-
       {renderCardContent()}
-
       {renderBottomContent()}
     </div>
   );

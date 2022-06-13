@@ -487,11 +487,14 @@ export function getValidationSchema(
   proposalVariant?: ProposalVariant,
   dao?: DAO,
   data?: { [p: string]: unknown },
-  nearService?: SputnikNearService
+  nearService?: SputnikNearService,
+  isDraft?: boolean
 ): yup.AnySchema {
+  let schema: yup.AnySchema;
+
   switch (proposalVariant) {
     case ProposalVariant.ProposeTransfer: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         token: yup.string().required(t('validation.required')),
         amount: yup
           .number()
@@ -511,9 +514,10 @@ export function getValidationSchema(
         externalUrl: yup.string().url(),
         gas: getGasValidation(t),
       });
+      break;
     }
     case ProposalVariant.ProposeCreateBounty: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         token: yup.string().required(t('validation.required')),
         amount: yup
           .number()
@@ -537,25 +541,28 @@ export function getValidationSchema(
         externalUrl: yup.string().url(),
         gas: getGasValidation(t),
       });
+      break;
     }
     case ProposalVariant.ProposeChangeDaoName: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         displayName: yup.string().min(2).required(t('validation.required')),
         details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
         gas: getGasValidation(t),
       });
+      break;
     }
     case ProposalVariant.ProposeChangeDaoPurpose: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         purpose: yup.string().max(500).required(t('validation.required')),
         details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
         gas: getGasValidation(t),
       });
+      break;
     }
     case ProposalVariant.ProposeChangeDaoLinks: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
         links: yup.array().of(
@@ -568,13 +575,14 @@ export function getValidationSchema(
           })
         ),
       });
+      break;
     }
     case ProposalVariant.ProposeCreateGroup:
     case ProposalVariant.ProposeAddMember:
     case ProposalVariant.ProposeRemoveMember: {
       const id = dao?.id ?? null;
 
-      return yup.object().shape({
+      schema = yup.object().shape({
         group: yup.string().required(t('validation.required')),
         memberName: yup
           .string()
@@ -596,9 +604,10 @@ export function getValidationSchema(
         externalUrl: yup.string().url(),
         gas: getGasValidation(t),
       });
+      break;
     }
     case ProposalVariant.ProposeChangeBonds: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
         createProposalBond: yup.string().required(t('validation.required')),
@@ -607,17 +616,19 @@ export function getValidationSchema(
         unclaimBountyTime: yup.string().required(t('validation.required')),
         gas: getGasValidation(t),
       });
+      break;
     }
     case ProposalVariant.ProposeChangeVotingPolicy: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
         amount: yup.string().required(t('validation.required')),
         gas: getGasValidation(t),
       });
+      break;
     }
     case ProposalVariant.ProposeChangeDaoFlag: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
         flagCover: yup
@@ -630,9 +641,10 @@ export function getValidationSchema(
           .test('fileSize', getImgValidationError, validateImgSize),
         gas: getGasValidation(t),
       });
+      break;
     }
     case ProposalVariant.ProposeChangeDaoLegalInfo: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required(t('validation.required')),
         legalStatus: yup.string().max(50),
         legalLink: yup.string().matches(VALID_URL_REGEXP, {
@@ -640,20 +652,22 @@ export function getValidationSchema(
         }),
         gas: getGasValidation(t),
       });
+      break;
     }
     case ProposalVariant.ProposeCustomFunctionCall: {
       const type = data?.functionCallType ?? FunctionCallType.Custom;
 
       switch (type) {
         case FunctionCallType.RemoveUpgradeCode: {
-          return yup.object().shape({
+          schema = yup.object().shape({
             details: yup.string().required(t('validation.required')),
             externalUrl: yup.string().url(),
             gas: getGasValidation(t),
           });
+          break;
         }
         case FunctionCallType.BuyNFTfromMintbase: {
-          return yup.object().shape({
+          schema = yup.object().shape({
             tokenKey: yup.string().required(t('validation.required')),
             deposit: yup
               .number()
@@ -664,19 +678,21 @@ export function getValidationSchema(
             actionsGas: getGasValidation(t),
             gas: getGasValidation(t),
           });
+          break;
         }
         case FunctionCallType.VoteInAnotherDao: {
           const gerErr = (field: string) =>
             t(`proposalCard.voteInDao.${field}.required`);
 
-          return yup.object().shape({
+          schema = yup.object().shape({
             targetDao: yup.string().required(gerErr('targetDao')),
             proposal: yup.string().required(gerErr('proposal')),
             vote: yup.string().required(gerErr('vote')),
           });
+          break;
         }
         case FunctionCallType.TransferNFTfromMintbase: {
-          return yup.object().shape({
+          schema = yup.object().shape({
             tokenKey: yup
               .string()
               .test('invalidFormat', t('proposalCard.tokenFormat'), value => {
@@ -699,9 +715,10 @@ export function getValidationSchema(
             externalUrl: yup.string().url(),
             gas: getGasValidation(t),
           });
+          break;
         }
         case FunctionCallType.BuyNFTfromParas: {
-          return yup.object().shape({
+          schema = yup.object().shape({
             tokenKey: yup.string().required(t('validation.required')),
             deposit: yup
               .number()
@@ -719,9 +736,10 @@ export function getValidationSchema(
             actionsGas: getGasValidation(t),
             gas: getGasValidation(t),
           });
+          break;
         }
         case FunctionCallType.SwapsOnRef: {
-          return yup.object().shape({
+          schema = yup.object().shape({
             pullId: yup
               .number()
               .typeError(t('validation.mustBeAValidNumber'))
@@ -742,9 +760,10 @@ export function getValidationSchema(
             externalUrl: yup.string().url(),
             gas: getGasValidation(t),
           });
+          break;
         }
         default: {
-          return yup.object().shape({
+          schema = yup.object().shape({
             smartContractAddress: yup
               .string()
               .required(t('validation.required')),
@@ -776,17 +795,22 @@ export function getValidationSchema(
             actionsGas: getGasValidation(t),
             gas: getGasValidation(t),
           });
+          break;
         }
       }
+
+      break;
     }
 
     // todo - add validation
     case ProposalVariant.ProposeTokenDistribution: {
-      return yup.object().shape({});
+      schema = yup.object().shape({});
+
+      break;
     }
 
     case ProposalVariant.ProposeStakingContractDeployment: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         token: yup.string(),
         unstakingPeriod: yup
           .number()
@@ -795,20 +819,24 @@ export function getValidationSchema(
           .min(1)
           .required(t('validation.required')),
       });
+      break;
     }
 
     case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
-      return yup.object().shape({});
+      schema = yup.object().shape({});
+
+      break;
     }
 
     case ProposalVariant.ProposeAcceptStakingContract: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         contract: yup.string(),
       });
+      break;
     }
 
     case ProposalVariant.ProposeCreateDao: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required(t('validation.required')),
         displayName: yup
           .string()
@@ -820,6 +848,7 @@ export function getValidationSchema(
           )
           .required(t('validation.required')),
       });
+      break;
     }
     case ProposalVariant.ProposeTransferFunds: {
       const tokens = (data?.daoTokens as Record<string, Token>) ?? {};
@@ -852,26 +881,42 @@ export function getValidationSchema(
         {}
       );
 
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required(t('validation.required')),
         ...tokensFields,
       });
+      break;
     }
     case ProposalVariant.ProposeUpgradeSelf:
     case ProposalVariant.ProposeGetUpgradeCode:
     case ProposalVariant.ProposeRemoveUpgradeCode: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required(t('validation.required')),
       });
+      break;
     }
 
     case ProposalVariant.ProposeDoneBounty:
     default: {
-      return yup.object().shape({
+      schema = yup.object().shape({
         details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
         gas: getGasValidation(t),
       });
+      break;
     }
   }
+
+  if (isDraft) {
+    schema = schema.concat(
+      yup.object().shape({
+        details: yup.string().notRequired(),
+        description: yup.string().required('Required'),
+        hashtags: yup.array().min(1, 'Required'),
+        title: yup.string().required('Required'),
+      })
+    );
+  }
+
+  return schema;
 }

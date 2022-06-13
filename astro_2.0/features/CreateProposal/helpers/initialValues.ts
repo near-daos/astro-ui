@@ -14,26 +14,31 @@ export function getFormInitialValues(
   selectedProposalType: ProposalVariant,
   accountId: string,
   initialValues: Record<string, unknown> = {},
-  daoTokens?: Record<string, Token>
+  daoTokens?: Record<string, Token>,
+  isDraft?: boolean
 ): Record<string, unknown> {
+  let result: Record<string, unknown>;
+
   const getDescr = (key: string) =>
     t(`proposalCard.functionCalls.${key}.description`);
 
   switch (selectedProposalType) {
     case ProposalVariant.ProposeGetUpgradeCode: {
-      return {
+      result = {
         details: getDescr('proposeGetUpgradeCode'),
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
       };
+      break;
     }
     case ProposalVariant.ProposeUpdateGroup: {
-      return {
+      result = {
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         groups: initialValues.groups,
       };
+      break;
     }
     case ProposalVariant.ProposeUpgradeSelf: {
       return {
@@ -42,14 +47,16 @@ export function getFormInitialValues(
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
       };
+      break;
     }
     case ProposalVariant.ProposeRemoveUpgradeCode: {
-      return {
+      result = {
         details: getDescr('proposeRemoveUpgradeCode'),
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: initialValues?.versionHash,
       };
+      break;
     }
     case ProposalVariant.ProposeCreateDao: {
       return {
@@ -74,7 +81,7 @@ export function getFormInitialValues(
         {}
       );
 
-      return {
+      result = {
         details: getDescr('proposeTransferFunds'),
         externalUrl: '',
         gas: DEFAULT_CREATE_DAO_GAS,
@@ -82,9 +89,10 @@ export function getFormInitialValues(
         ...tokensFields,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeCreateBounty: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         token: 'NEAR',
@@ -95,18 +103,20 @@ export function getFormInitialValues(
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeDoneBounty: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         target: accountId,
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeTransfer: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         token: 'NEAR',
@@ -115,40 +125,44 @@ export function getFormInitialValues(
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeChangeDaoName: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         displayName: '',
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeChangeDaoPurpose: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         purpose: '',
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeChangeDaoLinks: {
       const initial = initialValues as { links?: string[] };
 
       const links = initial ? initial?.links?.map(item => ({ url: item })) : [];
 
-      return {
+      result = {
         details: '',
         externalUrl: '',
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
         links,
       };
+      break;
     }
     case ProposalVariant.ProposeCreateToken: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         tokenName: '',
@@ -157,54 +171,61 @@ export function getFormInitialValues(
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
-      return {
+      result = {
         gas: DEFAULT_PROPOSAL_GAS,
       };
+      break;
     }
     case ProposalVariant.ProposeStakingContractDeployment: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         unstakingPeriod: '345',
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeAcceptStakingContract: {
-      return {
+      result = {
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeTokenDistribution: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         groups: [],
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeChangeDaoLegalInfo: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposePoll: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeAddMember: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         group: '',
@@ -212,10 +233,11 @@ export function getFormInitialValues(
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeCreateGroup:
     case ProposalVariant.ProposeRemoveMember: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         group: '',
@@ -223,18 +245,20 @@ export function getFormInitialValues(
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeChangeVotingPolicy: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         amount: '',
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeChangeBonds: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         createProposalBond: '',
@@ -244,9 +268,10 @@ export function getFormInitialValues(
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeChangeDaoFlag: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         flagCover: '',
@@ -254,9 +279,10 @@ export function getFormInitialValues(
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeCustomFunctionCall: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         smartContractAddress: '',
@@ -272,19 +298,30 @@ export function getFormInitialValues(
         timeoutGranularity: 'Hours',
         ...initialValues,
       };
+      break;
     }
     case ProposalVariant.ProposeChangeProposalVotingPermissions:
     case ProposalVariant.ProposeChangeProposalCreationPermissions: {
-      return {
+      result = {
         details: '',
         externalUrl: '',
         amount: '',
         gas: DEFAULT_PROPOSAL_GAS,
         ...initialValues,
       };
+      break;
     }
     default: {
-      return {};
+      result = {};
+      break;
     }
   }
+
+  if (isDraft) {
+    result.title = '';
+    result.hashtags = [];
+    result.description = '';
+  }
+
+  return result;
 }

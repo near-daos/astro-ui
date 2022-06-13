@@ -23,6 +23,7 @@ import {
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
+import { EditableContent } from 'astro_2.0/components/EditableContent';
 
 import styles from './CreateProposalCard.module.scss';
 
@@ -36,6 +37,8 @@ export interface CreateProposalCardProps {
   showClose: boolean;
   canCreateTokenProposal: boolean;
   daoId: string;
+  isDraft?: boolean;
+  isEditDraft?: boolean;
 }
 
 export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
@@ -48,13 +51,21 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   userPermissions,
   canCreateTokenProposal,
   daoId,
+  isDraft,
 }) => {
   const {
     register,
     formState: { errors },
+    setValue,
+    watch,
+    trigger,
   } = useFormContext();
   const isMobile = useMedia('(max-width: 767px)');
   const { t } = useTranslation();
+
+  const title = watch('title');
+  const description = watch('description');
+  const hashtags = watch('hashtags');
 
   const proposalTypesOptions = useMemo(
     () =>
@@ -253,7 +264,45 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     }
   }
 
+  function renderEditableContent() {
+    return (
+      <EditableContent
+        errors={errors}
+        placeholder="Describe your draft..."
+        titlePlaceholder="Add draft name"
+        title={title}
+        setTitle={titleValue => {
+          setValue('title', titleValue);
+          trigger('title');
+        }}
+        hashtags={hashtags}
+        setHashtags={hashtagsValue => {
+          setValue('hashtags', hashtagsValue);
+          trigger('hashtags');
+        }}
+        className={styles.editable}
+        html={description}
+        setHTML={html => {
+          let value = html;
+
+          if (value === '<p><br></p>') {
+            value = '';
+          }
+
+          setValue('description', value);
+          setValue('details', value);
+          trigger('description');
+          trigger('details');
+        }}
+      />
+    );
+  }
+
   function renderDescription(optionalNode?: ReactNode) {
+    if (isDraft) {
+      return renderEditableContent();
+    }
+
     switch (type) {
       case ProposalVariant.ProposeCreateToken: {
         return null;
@@ -347,7 +396,12 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting:
       case ProposalVariant.ProposeAcceptStakingContract:
       case ProposalVariant.ProposeTokenDistribution: {
-        return <div className={styles.descriptionCell}>{content}</div>;
+        return (
+          <>
+            <div className={styles.descriptionCell}>{content}</div>
+            {renderEditableContent()}
+          </>
+        );
       }
       case ProposalVariant.ProposeUpdateGroup: {
         return (
@@ -373,18 +427,14 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   return (
     <div className={styles.root}>
       <div className={styles.proposalCell}>{renderProposalCell()}</div>
-
       <div className={styles.countdownCell}>
         {t('proposalCard.createProposal.countdown')}
       </div>
-
       {renderCardContent()}
-
       <div className={styles.voteControlCell}>
         <Icon name="votingYesChecked" className={styles.voteIcon} />
         <Icon name="votingNoChecked" className={styles.voteIcon} />
       </div>
-
       {renderCloseButton()}
     </div>
   );

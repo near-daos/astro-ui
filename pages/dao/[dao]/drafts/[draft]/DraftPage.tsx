@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { DAO } from 'types/dao';
 import { DaoContext } from 'types/context';
@@ -28,6 +28,7 @@ interface DraftPageProps {
 const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
   const router = useRouter();
   const { tokens } = useDaoCustomTokens();
+  const [openEditComment, setEditComment] = useState(false);
 
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     dao.id,
@@ -80,8 +81,11 @@ const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
               proposal={draft}
               showFlag={false}
               tokens={tokens}
+              onReplyClick={() => {
+                setEditComment(true);
+              }}
             />
-            <DraftComments comments={draft.comments} />
+            <DraftComments openEditComment={openEditComment} />
           </div>
         </>
       </NestedDaoPageWrapper>
