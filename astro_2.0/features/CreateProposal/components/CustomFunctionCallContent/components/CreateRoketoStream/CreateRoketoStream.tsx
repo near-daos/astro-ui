@@ -52,8 +52,7 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
   const selectedTokenId = watch('token');
   const selectedToken = useMemo(
     () =>
-      Object.values(tokens).find(found => found.symbol === selectedTokenId) ??
-      null,
+      Object.values(tokens).find(found => found.id === selectedTokenId) ?? null,
     [tokens, selectedTokenId]
   );
 
@@ -86,6 +85,7 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
 
   const tokenOptions = Object.values(tokens).map(token => ({
     label: token.symbol,
+    value: token.id,
     component: (
       <div className={styles.row}>
         <div className={styles.iconWrapper}>
