@@ -9,11 +9,9 @@ import { Icon } from 'components/Icon';
 
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 
-import { logger } from 'utils/logger';
 import { formatYoktoValue } from 'utils/format';
 
 import { CommonContent } from './components/CommonContent';
-import { ViewVoteInOtherDao } from './components/ViewVoteInOtherDao';
 
 import styles from './CustomFunctionCallContent.module.scss';
 
@@ -37,46 +35,17 @@ export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
 
   const tokenData = token ? tokens[token] : tokens.NEAR;
 
-  function isVoteAction(action: string) {
-    return ['VoteApprove', 'VoteReject', 'VoteRemove'].includes(action);
-  }
-
-  function getContent() {
-    try {
-      const data = JSON.parse(json);
-      const { action } = data;
-
-      if (isVoteAction(action)) {
-        const { id } = data;
-
-        return (
-          <ViewVoteInOtherDao
-            action={action}
-            proposalId={id}
-            daoId={smartContractAddress}
-          />
-        );
-      }
-    } catch (e) {
-      logger.error('Could not parse JSON to Object', e);
-    }
-
-    return (
-      <CommonContent
-        json={json}
-        methodName={methodName}
-        smartContractAddress={smartContractAddress}
-      />
-    );
-  }
-
   function renderDeposit() {
     return tokenData ? formatYoktoValue(deposit, tokenData.decimals) : deposit;
   }
 
   return (
     <div className={styles.root}>
-      {getContent()}
+      <CommonContent
+        json={json}
+        methodName={methodName}
+        smartContractAddress={smartContractAddress}
+      />
 
       <div className={styles.deposit}>
         <div className={styles.row}>

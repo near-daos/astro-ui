@@ -1,4 +1,7 @@
+// TODO Requires localisation
+
 import React, { FC, useMemo } from 'react';
+import { useTranslation } from 'next-i18next';
 import { useFormContext } from 'react-hook-form';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 
@@ -37,6 +40,8 @@ type Option = {
 };
 
 export const FunctionCallTypeSelector: FC<Props> = ({ daoId }) => {
+  const { t } = useTranslation();
+
   const { register, reset } = useFormContext();
   const { accountId } = useWalletContext();
   const { templates } = useProposalTemplates(daoId);
@@ -183,6 +188,7 @@ export const FunctionCallTypeSelector: FC<Props> = ({ daoId }) => {
           }
 
           const defaults = getFormInitialValues(
+            t,
             ProposalVariant.ProposeCustomFunctionCall,
             accountId,
             initialValues

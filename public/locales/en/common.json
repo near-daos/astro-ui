@@ -284,6 +284,12 @@
     "waitSomeTime": "This may take some time"
   },
   "proposalCard": {
+    "signingTransaction": "Signing transaction",
+    "finalize": "Finalize",
+    "draft": "Draft",
+    "created": "Created",
+    "timeLeft": "left",
+    "votingEnded": "Voting ended",
     "voteInDao": {
       "targetDao": {
         "label": "DAO",
@@ -291,7 +297,7 @@
         "required": "DAO is a required field"
       },
       "proposal": {
-        "label": "Proposal",
+        "label": "Related Proposal",
         "placeholder": "Select Proposal",
         "required": "Proposal is a required field"
       },
@@ -299,7 +305,8 @@
         "label": "Vote",
         "placeholder": "Vote",
         "required": "Vote is a required field"
-      }
+      },
+      "noProposalsToVote": "No proposals to vote"
     },
     "proposalID": "Proposal ID:",
     "proposalType": "Proposal type: ",
@@ -339,6 +346,7 @@
     "json": "JSON",
     "deposit": "Deposit",
     "preview": "Preview",
+    "timeExpired": "Time expired",
     "proposalTypes": {
       "groupTransferAddBounty": "Transfer/Add bounty",
       "proposeTransfer": "Propose a Transfer",
@@ -359,7 +367,8 @@
       "groupVote": "Vote",
       "proposePoll": "Propose a Poll",
       "groupFunctionCall": "Function Call",
-      "proposeCustomCall": "Custom Function Call"
+      "proposeCustomCall": "Custom Function Call",
+      "createToken": "Create Token"
     },
     "upgradeContent": {
       "groups": "Groups",
@@ -375,10 +384,55 @@
       "tokenId": "Token ID",
       "hours": "hours",
       "unstakingPeriod": "Unstaking Period"
+    },
+    "functionCalls": {
+      "proposeGetUpgradeCode": {
+        "description": "Upgrading your DAO requires you to retrieve the new code you want your DAO to run. This proposal is to get a copy of the upgrade code. The code comes from the Sputnik DAO Factory, the same place your DAO came from when you created it."
+      },
+      "proposeUpgradeSelf": {
+        "description": "Now that your DAO has a copy of the code it wants to run, it's time to propose that the DAO \"Upgrades Itself.\" This proposal will switch the DAO from running its old code to the code you retrieved in step 1."
+      },
+      "proposeRemoveUpgradeCode": {
+        "description": "Your DAO is now running the latest code! This proposal is to delete the upgrade code which you retrieved from the factory. Deleting that code saves NEAR for your DAO. It's safe to delete that code because smart contracts always store a copy of the code they're running."
+      },
+      "proposeCreateDao": {
+        "description": "Because V2 DAOs can not be upgraded we will create a new DAO running the V3 smart contract. After this step we will transfer all assets to the V3 DAO."
+      },
+      "proposeTransferFunds": {
+        "description": "To manage our assets with our new V3 DAO we will transfer them from our old V2 DAO. We're creating the proposals all at once but each proposal needs separate approval."
+      }
     }
+  },
+  "createProposal": {
+    "header": {
+      "changePolicy": "Proposal type: Change Policy",
+      "proposalCreation": "Proposal Creation",
+      "votingPermissions": "Voting Permissions",
+      "migrate": "Migrate",
+      "createDao": "Create DAO",
+      "transferDaoFunds": "Transfer DAO funds",
+      "upgrade": "Upgrade",
+      "getCodeFromFactory": "Get Code From Factory",
+      "upgradeDao": "Upgrade DAO",
+      "recoverStorageCosts": "Recover Storage Costs",
+      "transferBountyDone": "Proposal type: Transfer/Bounty Done",
+      "completeBounty": "Complete Bounty",
+      "customFunction": "Custom Function",
+      "distributionOfTokens": "Distribution of tokens",
+      "createGovernanceToken": "Create Governance Token",
+      "deployStakingContract": "Deploy Staking Contract",
+      "changeConfig": "Change Config",
+      "createToken": "Create Token",
+      "group": "Group",
+      "createGovToken": "Create Governance Token",
+      "acceptStakingContract": "Accept Staking Contract",
+      "changeVotingPolicy": "Change Voting Policy"
+    },
+    "countdown": "Countdown will be here"
   },
   "viewProposalCard": {
     "proposalVariant": {
+      "voteInAnotherDao": "Vote in Another DAO",
       "createBounty": "Create a Bounty",
       "bountyDone": "Bounty Done",
       "transfer": "Transfer",
@@ -581,11 +635,46 @@
   "daoPolicy": {
     "title": "DAO Settings",
     "backToSettingsOverview": "Back to settings overview",
+    "bondAndDeadlines": "Bond and deadlines",
     "tabs": {
       "proposalCreation": {
         "title": "Proposal creation",
         "description": "Choose what creation rights you give DAO groups. This can be changed in settings later."
+      },
+      "votingPermissions": {
+        "title": "Voting permissions",
+        "description": "Choose what voting rights you give DAO groups."
+      }
+    },
+    "settings": {
+      "proposals": {
+        "title": "Proposals",
+        "bondToCreateProposal": "Bond to create a proposal",
+        "timeBeforeProposalExpires": "Time before proposal expires"
+      },
+      "bounties": {
+        "title": "Bounties",
+        "bondToClaimABounty": "Bond to claim a bounty",
+        "timeToUnclaimBounty": "Time to unclaim a bounty without penalty"
+      },
+      "daoSettings": {
+        "title": "Voting policy"
       }
     }
+  },
+  "validation": {
+    "mustBeAValidNumber": "Must be a valid number.",
+    "required": "Required",
+    "onlyFiveOptDecimals": "Only numbers with five optional decimal place please.",
+    "onlyValidNearAccounts": "Only valid near accounts are allowed.",
+    "validUrl": "Must be a valid URL",
+    "canNotBeEmpty": "Cannot be empty",
+    "daoCanNotBeSpecifiedInThisField": "Current DAO can not be specified in this field",
+    "enterCorrectUrl": "Enter correct url!",
+    "tokenFormat": "It must be as Token ID:Token store format",
+    "methodNameInvalid": "Provided method name is not valid",
+    "jsonNotValid": "Provided JSON is not valid",
+    "atLeastThreeChars": "At least 3 characters expected.",
+    "lettersNumbersHyphensSpaces": "Only letters and numbers with hyphens and spaces in the middle"
   }
 }

@@ -69,6 +69,8 @@ export enum ProposalVariant {
   ProposeCreateDao = 'ProposeCreateDao',
   ProposeTransferFunds = 'ProposeTransferFunds',
   ProposeAcceptStakingContract = 'ProposeAcceptStakingContract',
+  ProposeUpdateVotePolicyToWeightVoting = 'ProposeUpdateVotePolicyToWeightVoting',
+  VoteInAnotherDao = 'VoteInAnotherDao',
 }
 
 export type VoteAction = 'VoteApprove' | 'VoteRemove' | 'VoteReject';
@@ -94,6 +96,12 @@ export type BountyAddProposalType = {
   bountyId?: string;
 };
 
+export type FunctionCallProposalType = {
+  type: ProposalType.FunctionCall;
+  receiverId: string;
+  actions: FunctionCallAction[];
+};
+
 export type ProposalKind =
   | {
       type: ProposalType.AddMemberToRole;
@@ -105,11 +113,7 @@ export type ProposalKind =
       memberId: string;
       role: string;
     }
-  | {
-      type: ProposalType.FunctionCall;
-      receiverId: string;
-      actions: FunctionCallAction[];
-    }
+  | FunctionCallProposalType
   | {
       type: ProposalType.UpgradeRemote;
       receiverId: string;

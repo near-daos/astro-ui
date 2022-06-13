@@ -112,3 +112,9 @@
   flex-shrink: 0;
   margin-left: 16px;
 }
+
+.errorText {
+  @extend %caption1;
+  color: var(--color-error-60);
+  margin: 12px 0;
+}

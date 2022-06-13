@@ -34,13 +34,13 @@ export const DaoMembersForm: VFC = () => {
       accounts: uniqBy(
         state.members.accounts
           ? [
-              { name: accountId, role: state.groups.items[1]?.name || '' },
+              { name: accountId, role: state.groups.items[0]?.name || '' },
               ...state.members.accounts.map(item => ({
                 name: item.name,
                 role: item.role,
               })),
             ]
-          : [{ name: accountId, role: state.groups.items[1].name || '' }],
+          : [{ name: accountId, role: state.groups.items[0].name || '' }],
         item => item.name
       ),
     },
@@ -115,6 +115,7 @@ export const DaoMembersForm: VFC = () => {
                     item={item}
                     index={index}
                     onRemove={() => remove(index)}
+                    canBeRemoved={item.name !== accountId}
                   />
                 );
               })}

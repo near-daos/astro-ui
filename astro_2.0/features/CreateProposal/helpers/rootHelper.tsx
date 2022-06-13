@@ -1,5 +1,4 @@
 /* istanbul ignore file */
-
 // TODO refactor the helper. It's too big now.
 
 import * as yup from 'yup';
@@ -70,6 +69,7 @@ const CustomFunctionCallContent = dynamic(
 );
 
 export function getProposalTypesOptions(
+  t: TFunction,
   isCanCreatePolicyProposals: boolean,
   allowedProposalsToCreate: ProposalPermissions,
   canCreateTokenProposal = false
@@ -78,25 +78,28 @@ export function getProposalTypesOptions(
   options: Option[];
   disabled: boolean;
 }[] {
-  const changeConfigTitle = 'Change Config';
+  const getTitle = (key: string) => t(`createProposal.header.${key}`);
+  const getLabel = (key: string) => t(`proposalCard.proposalTypes.${key}`);
+
+  const changeConfigTitle = getLabel('groupChangeConfig');
 
   const config = [
     {
-      title: 'Transfer/Add bounty',
+      title: getLabel('groupTransferAddBounty'),
       disabled:
         !allowedProposalsToCreate[ProposalType.Transfer] &&
         !allowedProposalsToCreate[ProposalType.AddBounty],
       options: [
         {
-          label: 'Propose a Transfer',
+          label: getLabel('proposeTransfer'),
           value: ProposalVariant.ProposeTransfer,
-          group: 'Transfer/Add bounty',
+          group: getLabel('groupTransferAddBounty'),
           disabled: !allowedProposalsToCreate[ProposalType.Transfer],
         },
         {
-          label: 'Propose to Create a Bounty',
+          label: getLabel('proposeBounty'),
           value: ProposalVariant.ProposeCreateBounty,
-          group: 'Transfer/Add bounty',
+          group: getLabel('groupTransferAddBounty'),
           disabled: !allowedProposalsToCreate[ProposalType.AddBounty],
         },
       ],
@@ -108,72 +111,72 @@ export function getProposalTypesOptions(
         !allowedProposalsToCreate[ProposalType.ChangeConfig],
       options: [
         {
-          label: 'Propose to Change DAO Name',
+          label: getLabel('proposeDAOName'),
           value: ProposalVariant.ProposeChangeDaoName,
-          group: 'Change Config',
+          group: getLabel('groupChangeConfig'),
         },
         {
-          label: 'Propose to Change DAO Purpose',
+          label: getLabel('proposeDAOPurpose'),
           value: ProposalVariant.ProposeChangeDaoPurpose,
-          group: 'Change Config',
+          group: getLabel('groupChangeConfig'),
         },
         {
-          label: 'Propose to Change DAO Links',
+          label: getLabel('proposeDAOLinks'),
           value: ProposalVariant.ProposeChangeDaoLinks,
-          group: 'Change Config',
+          group: getLabel('groupChangeConfig'),
         },
         {
-          label: 'Propose to Change DAO Flag and Logo',
+          label: getLabel('proposeDAOFlagAndLogo'),
           value: ProposalVariant.ProposeChangeDaoFlag,
-          group: 'Change Config',
+          group: getLabel('groupChangeConfig'),
         },
         {
-          label: 'Propose to change DAO Legal Status and Doc',
+          label: getLabel('proposeLegalStatusAndDoc'),
           value: ProposalVariant.ProposeChangeDaoLegalInfo,
-          group: 'Change Config',
+          group: getLabel('groupChangeConfig'),
         },
       ],
     },
     {
-      title: 'Change Policy',
+      title: getLabel('groupChangePolicy'),
       disabled:
         !allowedProposalsToCreate[ProposalType.ChangePolicy] ||
         !isCanCreatePolicyProposals,
       options: [
         /*  {
-          label: 'Propose to Change Voting Policy',
+          label: getLabel('proposeChangePolicy'),
           value: ProposalVariant.ProposeChangeVotingPolicy,
-          group: 'Change Policy',
+          group: getLabel('groupChangePolicy'),
         }, */
         {
-          label: 'Propose to Change Bonds and Deadlines',
+          label: getLabel('proposeBondsAndDeadlines'),
           value: ProposalVariant.ProposeChangeBonds,
-          group: 'Change Policy',
+          group: getLabel('groupChangePolicy'),
         },
         {
-          label: 'Propose to Create a Group',
+          label: getLabel('proposeGroup'),
           value: ProposalVariant.ProposeCreateGroup,
-          group: 'Change Policy',
+          group: getLabel('groupChangePolicy'),
         },
       ],
     },
     {
-      title: 'Change Members of DAO',
+      title: getLabel('groupChangeMembers'),
       disabled:
         !isCanCreatePolicyProposals ||
         (!allowedProposalsToCreate[ProposalType.AddMemberToRole] &&
           !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole]),
       options: [
         {
-          label: 'Propose to Add Member to Group',
+          label: getLabel('proposeAddMember'),
           value: ProposalVariant.ProposeAddMember,
-          group: 'Change Members of DAO',
+          group: getLabel('groupChangeMembers'),
           disabled: !allowedProposalsToCreate[ProposalType.AddMemberToRole],
         },
         {
-          label: 'Propose to Remove Member from Group',
+          label: getLabel('proposeRemoveMember'),
           value: ProposalVariant.ProposeRemoveMember,
-          group: 'Change Members of DAO',
+          group: getLabel('groupChangeMembers'),
           disabled: !allowedProposalsToCreate[
             ProposalType.RemoveMemberFromRole
           ],
@@ -181,25 +184,25 @@ export function getProposalTypesOptions(
       ],
     },
     {
-      title: 'Vote',
+      title: getLabel('groupVote'),
       disabled: !allowedProposalsToCreate[ProposalType.Vote],
       options: [
         {
-          label: 'Propose a Poll',
+          label: getLabel('proposePoll'),
           value: ProposalVariant.ProposePoll,
-          group: 'Vote',
+          group: getLabel('groupVote'),
           disabled: !allowedProposalsToCreate[ProposalType.Vote],
         },
       ],
     },
     {
-      title: 'Function Call',
+      title: getLabel('groupFunctionCall'),
       disabled: !allowedProposalsToCreate[ProposalType.FunctionCall],
       options: [
         {
-          label: 'Custom Function Call',
+          label: getLabel('proposeCustomCall'),
           value: ProposalVariant.ProposeCustomFunctionCall,
-          group: 'Function Call',
+          group: getLabel('groupFunctionCall'),
           disabled: !allowedProposalsToCreate[ProposalType.FunctionCall],
         },
       ],
@@ -212,20 +215,20 @@ export function getProposalTypesOptions(
     );
 
     changeConfigGroup?.options.push({
-      label: 'Create Token',
+      label: getLabel('createToken'),
       value: ProposalVariant.ProposeCreateToken,
-      group: 'Change Config',
+      group: getLabel('groupChangeConfig'),
       disabled: false,
     });
 
     config.push({
-      title: 'Custom Function',
+      title: getTitle('customFunction'),
       disabled: false,
       options: [
         {
-          label: 'Distribution of tokens',
+          label: getTitle('distributionOfTokens'),
           value: ProposalVariant.ProposeTokenDistribution,
-          group: 'Custom Function',
+          group: getTitle('customFunction'),
         },
       ],
     });
@@ -235,10 +238,11 @@ export function getProposalTypesOptions(
 }
 
 export function getInputSize(
+  t: TFunction,
   proposalType: ProposalVariant,
   max: number
 ): number {
-  const options = getProposalTypesOptions(true, {} as ProposalPermissions);
+  const options = getProposalTypesOptions(t, true, {} as ProposalPermissions);
 
   const length =
     options
@@ -468,13 +472,15 @@ export function validateUserAccount(
   return nearService?.nearAccountExist(accountAddress || '');
 }
 
-export const gasValidation = yup
-  .number()
-  .typeError('Must be a valid number.')
-  .positive()
-  .min(MIN_GAS)
-  .max(MAX_GAS)
-  .required('Required');
+export function getGasValidation(t: TFunction): AnySchema {
+  return yup
+    .number()
+    .typeError(t('validation.mustBeAValidNumber'))
+    .positive()
+    .min(MIN_GAS)
+    .max(MAX_GAS)
+    .required(t('validation.required'));
+}
 
 export function getValidationSchema(
   t: TFunction,
@@ -489,87 +495,83 @@ export function getValidationSchema(
   switch (proposalVariant) {
     case ProposalVariant.ProposeTransfer: {
       schema = yup.object().shape({
-        token: yup.string().required('Required'),
+        token: yup.string().required(t('validation.required')),
         amount: yup
           .number()
-          .typeError('Must be a valid number.')
+          .typeError(t('validation.mustBeAValidNumber'))
           .positive()
-          .required('Required')
-          .test(
-            'onlyFiveDecimal',
-            'Only numbers with five optional decimal place please',
-            value => /^\d*(?:\.\d{0,5})?$/.test(`${value}`)
+          .required(t('validation.required'))
+          .test('onlyFiveDecimal', t('validation.onlyFiveOptDecimals'), value =>
+            /^\d*(?:\.\d{0,5})?$/.test(`${value}`)
           ),
         target: yup.string().test({
           name: 'notValidNearAccount',
           exclusive: true,
-          message: 'Only valid near accounts are allowed',
+          message: t('validation.onlyValidNearAccounts'),
           test: async value => validateUserAccount(value, nearService),
         }),
-        details: yup.string().required('Required'),
+        details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
-        gas: gasValidation,
+        gas: getGasValidation(t),
       });
       break;
     }
     case ProposalVariant.ProposeCreateBounty: {
       schema = yup.object().shape({
-        token: yup.string().required('Required'),
+        token: yup.string().required(t('validation.required')),
         amount: yup
           .number()
-          .typeError('Must be a valid number.')
+          .typeError(t('validation.mustBeAValidNumber'))
           .positive()
-          .required('Required')
-          .test(
-            'onlyFiveDecimal',
-            'Only numbers with five optional decimal place please',
-            value => /^\d*(?:\.\d{0,5})?$/.test(`${value}`)
+          .required(t('validation.required'))
+          .test('onlyFiveDecimal', t('validation.onlyFiveOptDecimals'), value =>
+            /^\d*(?:\.\d{0,5})?$/.test(`${value}`)
           ),
         slots: yup
           .number()
-          .typeError('Must be a valid number.')
+          .typeError(t('validation.mustBeAValidNumber'))
           .positive()
-          .required('Required'),
+          .required(t('validation.required')),
         deadlineThreshold: yup
           .number()
-          .typeError('Must be a valid number.')
+          .typeError(t('validation.mustBeAValidNumber'))
           .positive()
-          .required('Required'),
-        details: yup.string().required('Required'),
+          .required(t('validation.required')),
+        details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
-        gas: gasValidation,
+        gas: getGasValidation(t),
       });
       break;
     }
     case ProposalVariant.ProposeChangeDaoName: {
       schema = yup.object().shape({
-        displayName: yup.string().min(2).required('Required'),
-        details: yup.string().required('Required'),
+        displayName: yup.string().min(2).required(t('validation.required')),
+        details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
-        gas: gasValidation,
+        gas: getGasValidation(t),
       });
       break;
     }
     case ProposalVariant.ProposeChangeDaoPurpose: {
       schema = yup.object().shape({
-        purpose: yup.string().max(500).required('Required'),
-        details: yup.string().required('Required'),
+        purpose: yup.string().max(500).required(t('validation.required')),
+        details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
-        gas: gasValidation,
+        gas: getGasValidation(t),
       });
       break;
     }
     case ProposalVariant.ProposeChangeDaoLinks: {
       schema = yup.object().shape({
-        details: yup.string().required('Required'),
+        details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
         links: yup.array().of(
           yup.object().shape({
             id: yup.string().required(),
             url: yup
               .string()
-              .url('Must be a valid URL')
-              .required('Cannot be empty'),
+              .url(t('validation.validUrl'))
+              .required(t('validation.canNotBeEmpty')),
           })
         ),
       });
@@ -581,74 +583,74 @@ export function getValidationSchema(
       const id = dao?.id ?? null;
 
       schema = yup.object().shape({
-        group: yup.string().required('Required'),
+        group: yup.string().required(t('validation.required')),
         memberName: yup
           .string()
           .test({
             name: 'notValidNearAccount',
             exclusive: true,
-            message: 'Only valid near accounts are allowed',
+            message: t('validation.onlyValidNearAccounts'),
             test: async value => validateUserAccount(value, nearService),
           })
           .test(
             'daoMember',
-            'Current DAO can not be specified in this field',
+            t('validation.daoCanNotBeSpecifiedInThisField'),
             value => {
               return !!id && value !== id;
             }
           )
-          .required('Required'),
-        details: yup.string().required('Required'),
+          .required(t('validation.required')),
+        details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
-        gas: gasValidation,
+        gas: getGasValidation(t),
       });
       break;
     }
     case ProposalVariant.ProposeChangeBonds: {
       schema = yup.object().shape({
-        details: yup.string().required('Required'),
+        details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
-        createProposalBond: yup.string().required('Required'),
-        proposalExpireTime: yup.string().required('Required'),
-        claimBountyBond: yup.string().required('Required'),
-        unclaimBountyTime: yup.string().required('Required'),
-        gas: gasValidation,
+        createProposalBond: yup.string().required(t('validation.required')),
+        proposalExpireTime: yup.string().required(t('validation.required')),
+        claimBountyBond: yup.string().required(t('validation.required')),
+        unclaimBountyTime: yup.string().required(t('validation.required')),
+        gas: getGasValidation(t),
       });
       break;
     }
     case ProposalVariant.ProposeChangeVotingPolicy: {
       schema = yup.object().shape({
-        details: yup.string().required('Required'),
+        details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
-        amount: yup.string().required('Required'),
-        gas: gasValidation,
+        amount: yup.string().required(t('validation.required')),
+        gas: getGasValidation(t),
       });
       break;
     }
     case ProposalVariant.ProposeChangeDaoFlag: {
       schema = yup.object().shape({
-        details: yup.string().required('Required'),
+        details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
         flagCover: yup
           .mixed()
-          .test('Required', 'Required', requiredImg)
+          .test('Required', t('validation.required'), requiredImg)
           .test('fileSize', getImgValidationError, validateImgSize),
         flagLogo: yup
           .mixed()
-          .test('Required', 'Required', requiredImg)
+          .test('Required', t('validation.required'), requiredImg)
           .test('fileSize', getImgValidationError, validateImgSize),
-        gas: gasValidation,
+        gas: getGasValidation(t),
       });
       break;
     }
     case ProposalVariant.ProposeChangeDaoLegalInfo: {
       schema = yup.object().shape({
-        details: yup.string().required('Required'),
+        details: yup.string().required(t('validation.required')),
         legalStatus: yup.string().max(50),
         legalLink: yup.string().matches(VALID_URL_REGEXP, {
-          message: 'Enter correct url!',
+          message: t('validation.enterCorrectUrl'),
         }),
-        gas: gasValidation,
+        gas: getGasValidation(t),
       });
       break;
     }
@@ -658,23 +660,23 @@ export function getValidationSchema(
       switch (type) {
         case FunctionCallType.RemoveUpgradeCode: {
           schema = yup.object().shape({
-            details: yup.string().required('Required'),
+            details: yup.string().required(t('validation.required')),
             externalUrl: yup.string().url(),
-            gas: gasValidation,
+            gas: getGasValidation(t),
           });
           break;
         }
         case FunctionCallType.BuyNFTfromMintbase: {
           schema = yup.object().shape({
-            tokenKey: yup.string().required('Required'),
+            tokenKey: yup.string().required(t('validation.required')),
             deposit: yup
               .number()
-              .typeError('Must be a valid number.')
-              .required('Required'),
-            details: yup.string().required('Required'),
+              .typeError(t('validation.mustBeAValidNumber'))
+              .required(t('validation.required')),
+            details: yup.string().required(t('validation.required')),
             externalUrl: yup.string().url(),
-            actionsGas: gasValidation,
-            gas: gasValidation,
+            actionsGas: getGasValidation(t),
+            gas: getGasValidation(t),
           });
           break;
         }
@@ -693,50 +695,46 @@ export function getValidationSchema(
           schema = yup.object().shape({
             tokenKey: yup
               .string()
-              .test(
-                'invalidFormat',
-                'It must be as Token ID:Token store format',
-                value => {
-                  if (!value) {
-                    return false;
-                  }
-
-                  const [key, store] = value.split(':');
-
-                  return !(!key || !store);
+              .test('invalidFormat', t('proposalCard.tokenFormat'), value => {
+                if (!value) {
+                  return false;
                 }
-              )
-              .required('Required'),
+
+                const [key, store] = value.split(':');
+
+                return !(!key || !store);
+              })
+              .required(t('validation.required')),
             target: yup.string().test({
               name: 'notValidNearAccount',
               exclusive: true,
-              message: 'Only valid near accounts are allowed',
+              message: t('validation.onlyValidNearAccounts'),
               test: async value => validateUserAccount(value, nearService),
             }),
-            details: yup.string().required('Required'),
+            details: yup.string().required(t('validation.required')),
             externalUrl: yup.string().url(),
-            gas: gasValidation,
+            gas: getGasValidation(t),
           });
           break;
         }
         case FunctionCallType.BuyNFTfromParas: {
           schema = yup.object().shape({
-            tokenKey: yup.string().required('Required'),
+            tokenKey: yup.string().required(t('validation.required')),
             deposit: yup
               .number()
               .positive()
-              .typeError('Must be a valid number.')
-              .required('Required'),
+              .typeError(t('validation.mustBeAValidNumber'))
+              .required(t('validation.required')),
             target: yup.string().test({
               name: 'notValidNearAccount',
               exclusive: true,
-              message: 'Only valid near accounts are allowed',
+              message: t('validation.onlyValidNearAccounts'),
               test: async value => validateUserAccount(value, nearService),
             }),
-            details: yup.string().required('Required'),
+            details: yup.string().required(t('validation.required')),
             externalUrl: yup.string().url(),
-            actionsGas: gasValidation,
-            gas: gasValidation,
+            actionsGas: getGasValidation(t),
+            gas: getGasValidation(t),
           });
           break;
         }
@@ -744,44 +742,46 @@ export function getValidationSchema(
           schema = yup.object().shape({
             pullId: yup
               .number()
-              .typeError('Must be a va  lid number.')
-              .required('Required'),
-            tokenIn: yup.string().required('Required'),
-            tokenOut: yup.string().required('Required'),
+              .typeError(t('validation.mustBeAValidNumber'))
+              .required(t('validation.required')),
+            tokenIn: yup.string().required(t('validation.required')),
+            tokenOut: yup.string().required(t('validation.required')),
             amountIn: yup
               .number()
-              .typeError('Must be a valid number.')
-              .required('Required'),
+              .typeError(t('validation.mustBeAValidNumber'))
+              .required(t('validation.required')),
             amountOut: yup
               .number()
-              .typeError('Must be a valid number.')
-              .required('Required'),
-            amountInToken: yup.string().required('Required'),
-            amountOutToken: yup.string().required('Required'),
-            details: yup.string().required('Required'),
+              .typeError(t('validation.mustBeAValidNumber'))
+              .required(t('validation.required')),
+            amountInToken: yup.string().required(t('validation.required')),
+            amountOutToken: yup.string().required(t('validation.required')),
+            details: yup.string().required(t('validation.required')),
             externalUrl: yup.string().url(),
-            gas: gasValidation,
+            gas: getGasValidation(t),
           });
           break;
         }
         default: {
           schema = yup.object().shape({
-            smartContractAddress: yup.string().required('Required'),
+            smartContractAddress: yup
+              .string()
+              .required(t('validation.required')),
             methodName: yup
               .string()
               .matches(
                 VALID_METHOD_NAME_REGEXP,
-                'Provided method name is not valid'
+                t('validation.methodNameInvalid')
               )
-              .required('Required'),
+              .required(t('validation.required')),
             deposit: yup
               .number()
-              .typeError('Must be a valid number.')
-              .required('Required'),
+              .typeError(t('validation.mustBeAValidNumber'))
+              .required(t('validation.required')),
             json: yup
               .string()
-              .required('Required')
-              .test('validJson', 'Provided JSON is not valid', value => {
+              .required(t('validation.required'))
+              .test('validJson', t('validation.jsonNotValid'), value => {
                 try {
                   JSON.parse(value ?? '');
                 } catch (e) {
@@ -790,10 +790,10 @@ export function getValidationSchema(
 
                 return true;
               }),
-            details: yup.string().required('Required'),
+            details: yup.string().required(t('validation.required')),
             externalUrl: yup.string().url(),
-            actionsGas: gasValidation,
-            gas: gasValidation,
+            actionsGas: getGasValidation(t),
+            gas: getGasValidation(t),
           });
           break;
         }
@@ -814,11 +814,17 @@ export function getValidationSchema(
         token: yup.string(),
         unstakingPeriod: yup
           .number()
-          .typeError('Must be a valid number.')
+          .typeError(t('validation.mustBeAValidNumber'))
           .positive()
           .min(1)
-          .required('Required'),
+          .required(t('validation.required')),
       });
+      break;
+    }
+
+    case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
+      schema = yup.object().shape({});
+
       break;
     }
 
@@ -831,16 +837,16 @@ export function getValidationSchema(
 
     case ProposalVariant.ProposeCreateDao: {
       schema = yup.object().shape({
-        details: yup.string().required('Required'),
+        details: yup.string().required(t('validation.required')),
         displayName: yup
           .string()
           .trim()
-          .min(3, 'At least 3 characters expected.')
+          .min(3, t('validation.atLeastThreeChars'))
           .matches(
             VALID_WEBSITE_NAME_REGEXP,
-            'Only letters and numbers with hyphens and spaces in the middle.'
+            t('validation.lettersNumbersHyphensSpaces')
           )
-          .required('Required'),
+          .required(t('validation.required')),
       });
       break;
     }
@@ -854,19 +860,19 @@ export function getValidationSchema(
         (res, item) => {
           res[`${item}_amount`] = yup
             .number()
-            .typeError('Must be a valid number.')
+            .typeError(t('validation.mustBeAValidNumber'))
             .positive()
-            .required('Required')
+            .required(t('validation.required'))
             .test(
               'onlyFiveDecimal',
-              'Only numbers with five optional decimal place please',
+              t('validation.onlyFiveOptDecimals'),
               value => /^\d*(?:\.\d{0,5})?$/.test(`${value}`)
             );
 
           res[`${item}_target`] = yup.string().test({
             name: 'notValidNearAccount',
             exclusive: true,
-            message: 'Only valid near accounts are allowed',
+            message: t('validation.onlyValidNearAccounts'),
             test: async value => validateUserAccount(value, nearService),
           });
 
@@ -876,7 +882,7 @@ export function getValidationSchema(
       );
 
       schema = yup.object().shape({
-        details: yup.string().required('Required'),
+        details: yup.string().required(t('validation.required')),
         ...tokensFields,
       });
       break;
@@ -885,7 +891,7 @@ export function getValidationSchema(
     case ProposalVariant.ProposeGetUpgradeCode:
     case ProposalVariant.ProposeRemoveUpgradeCode: {
       schema = yup.object().shape({
-        details: yup.string().required('Required'),
+        details: yup.string().required(t('validation.required')),
       });
       break;
     }
@@ -893,9 +899,9 @@ export function getValidationSchema(
     case ProposalVariant.ProposeDoneBounty:
     default: {
       schema = yup.object().shape({
-        details: yup.string().required('Required'),
+        details: yup.string().required(t('validation.required')),
         externalUrl: yup.string().url(),
-        gas: gasValidation,
+        gas: getGasValidation(t),
       });
       break;
     }

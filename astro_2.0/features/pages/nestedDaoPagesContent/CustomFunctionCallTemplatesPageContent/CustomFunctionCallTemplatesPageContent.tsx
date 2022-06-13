@@ -19,6 +19,9 @@ import {
   useSaveTemplates,
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/hooks';
 
+import { isActiveUserCouncil } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/helpers';
+import { useWalletContext } from 'context/WalletContext';
+
 import styles from './CustomFunctionCallTemplatesPageContent.module.scss';
 
 const CustomFcTemplateCard = dynamic(
@@ -47,6 +50,8 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
     () => accountDaos.filter(item => item.isCouncil),
     [accountDaos]
   );
+  const { accountId } = useWalletContext();
+  const canActOnFlow = isActiveUserCouncil(daoContext.dao, accountId);
 
   const {
     templates,
@@ -107,6 +112,8 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
                   onDelete={deleteTemplate}
                   className={styles.card}
                   onSaveToDaos={saveTemplates}
+                  disabled={!accountId}
+                  editable={canActOnFlow}
                 />
               ))}
           </CustomTokensContext.Provider>

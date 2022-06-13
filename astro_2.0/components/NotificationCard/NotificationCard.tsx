@@ -1,5 +1,3 @@
-// TODO requires localisation
-
 import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
@@ -103,7 +101,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   function renderControls() {
     return (
       <>
-        <Tooltip overlay={isRead ? 'Mark as unread' : 'Mark as read'}>
+        <Tooltip overlay={isRead ? t('markAsUnread') : t('markAsRead')}>
           <div className={styles.markRead}>
             <Button
               data-testid="mark-read"
@@ -122,7 +120,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
         </Tooltip>
         {!regular && (
           <div className={styles.markRead}>
-            <Tooltip overlay={isArchived ? 'Restore' : 'Archive'}>
+            <Tooltip overlay={isArchived ? t('restore') : t('archive')}>
               <Button
                 data-testid="delete-action-button"
                 variant="transparent"

@@ -936,7 +936,7 @@ export class HttpService {
           ]);
 
           request.headers = {
-            Authorization: `Bearer ${buff.toString('base64')}`,
+            'X-Authorization': `Bearer ${buff.toString('base64')}`,
           };
           break;
         }

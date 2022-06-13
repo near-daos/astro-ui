@@ -15,15 +15,15 @@ runs:
   steps:
   - name: run tests
     run: |
-      ./gradlew --no-daemon clean test -Dtest.env=${{ inputs.env }} -Dtags=${{ inputs.tags }} -Dtest.threadCount=3 -Dtest.browser=${{ inputs.browser }}
+      ./gradlew --no-daemon clean test -Dtest.env=${{ inputs.env }} -Dtags=${{ inputs.tags }} -Dtest.threadCount=3 -Dtest.browser=${{ inputs.browser }} || true
       mkdir -p build/allure-results/history
-      curl https://automation-report.app.astrodao.com/ui-${INPUT_ENV}/history/{categories-trend.json,duration-trend.json,history.json,history-trend.json,retry-trend.json} -O -O -O -O -O
+      curl https://automation-report.app.astrodao.com/ui-develop/history/{categories-trend.json,duration-trend.json,history.json,history-trend.json,retry-trend.json} -O -O -O -O -O
       mv {categories-trend.json,duration-trend.json,history.json,history-trend.json,retry-trend.json} build/allure-results/history/
-      ./gradlew --no-daemon allureReport generateCoverage
+      ./gradlew --no-daemon allureReport # generateCoverage
     shell: bash
     working-directory: astro-test-framework
 
   - uses: actions/upload-artifact@v2
     with:
-      name: astro-test-framework/allure_report
-      path: astro-test-framework/allure-report/**
+      name: allure_report
+      path: astro-test-framework/build/reports/allure-report/**

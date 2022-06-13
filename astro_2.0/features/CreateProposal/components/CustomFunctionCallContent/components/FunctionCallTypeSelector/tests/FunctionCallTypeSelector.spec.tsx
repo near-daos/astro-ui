@@ -63,6 +63,7 @@ describe('FunctionCallTypeSelector', () => {
     fireEvent.click(getByText('Buy NFT from Mintbase'));
 
     expect(mock).toBeCalledWith(
+      expect.anything(),
       ProposalVariant.ProposeCustomFunctionCall,
       '123',
       {}

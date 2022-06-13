@@ -34,8 +34,8 @@ export const RemoveMemberFromGroupContent: FC<ChangeDaoNameContentProps> = ({
             defaultValue={getValues().group}
             isBorderless
             options={groups.map(group => ({
-              label: group,
-              component: <Group name={group} />,
+              value: group,
+              label: <Group name={group} />,
             }))}
           />
         </InputWrapper>

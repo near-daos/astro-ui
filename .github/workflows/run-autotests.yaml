@@ -2,9 +2,9 @@ name: Run Autotests
 on:
   workflow_dispatch:
     inputs:
-      env:
-        description: Environment to run on (as described in [test docs](https://github.com/near-daos/astro-test-framework#environments)). Valid choices are dev, testnet, prd.
-        default: dev
+      environment:
+        description: Environment to run on. Valid choices are develop, test, production.
+        default: develop
         required: false
       tags:
         description: Tags of test suites to run (as described in [test docs](https://github.com/near-daos/astro-test-framework#tags-test-suites)). Valid choices are all, smoke.
@@ -26,7 +26,7 @@ on:
       TEST_REPO_TOKEN:
         required: true
     inputs:
-      env:
+      environment:
         description: Environment to run on (as described in [test docs](https://github.com/near-daos/astro-test-framework#environments)). Valid choices are dev, testnet, prd.
         default: dev
         required: false
@@ -63,17 +63,27 @@ jobs:
     - name: Set Environment
       id: set_environment
       run: |
+        if [[ "${{ github.event.inputs.environment }}" != '' ]]
+        then
+          echo "Environment ${{ github.event.inputs.environment }} was provided manually"
+          echo "ENVIRONMENT=${{ github.event.inputs.environment }}" >>$GITHUB_ENV
+          export ENVIRONMENT=${{ github.event.inputs.environment }}
+        else
+          echo "Environment ${{ inputs.environment }} was provided by parent workflow"
+          echo "ENVIRONMENT=${{ inputs.environment }}" >>$GITHUB_ENV
+          export ENVIRONMENT=${{ inputs.environment }}
+        fi
         cat ".github/env.common" | grep -E -v '^\ *#' >>$GITHUB_ENV
-        cat ".github/env.develop" | grep -E -v '^\ *#' >>$GITHUB_ENV
+        cat ".github/env.$ENVIRONMENT" | grep -E -v '^\ *#' >>$GITHUB_ENV
         echo "::set-output name=workflow_name::${GITHUB_WORKFLOW// /-}"
-        echo "::set-output name=environment::develop}"
+        echo "::set-output name=environment::$ENVIRONMENT"
 
     - name: Run Tests
       uses: ./.github/actions/tests
       with:
-        env: ${{ inputs.env }}
-        browser: ${{ inputs.browser }}
-        tags: ${{ inputs.tags }}
+        env: ${{ env.TEST_ENV_NAME }}
+        browser: ${{ github.event.inputs.browser }}
+        tags: ${{ github.event.inputs.tags }}
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -106,15 +116,15 @@ jobs:
         fi
         sudo mkdir astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}
         sudo cp -r astro-test-framework/build/reports/allure-report astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/
-        sudo cp -r astro-test-framework/build/swagger-coverage-output astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/
-        sudo find astro-test-framework/build -name swagger-coverage-report.html -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/index.html \;
-        sudo find astro-test-framework/build -name swagger-coverage-results.json -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/ \;
-        cat .github/actions/test/reports-site/HEADER.html.template | envsubst | sudo tee astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/HEADER.html
+        #sudo cp -r astro-test-framework/build/swagger-coverage-output astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/
+        #sudo find astro-test-framework/build -name swagger-coverage-report.html -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/index.html \;
+        #sudo find astro-test-framework/build -name swagger-coverage-results.json -exec cp '{}' astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/ \;
+        cat .github/actions/tests/reports-site/HEADER.html.template | envsubst | sudo tee astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/HEADER.html
 
-    - uses: actions/upload-artifact@v2
-      with:
-        name: coverage_report
-        path: astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/**
+#    - uses: actions/upload-artifact@v2
+#      with:
+#        name: coverage_report
+#        path: astro-test-framework/build/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/**
 
     - uses: Consensys/kubernetes-action@1.1.0
       env:
@@ -131,5 +141,5 @@ jobs:
     - name: Add Annotation
       run: |
         echo "::notice title=Allure Report::https://automation-report.app.astrodao.com/ui-${{ steps.set_environment.outputs.environment }}/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/allure-report/"
-        echo "::notice title=Coverage Report::https://automation-report.app.astrodao.com/ui-${{ steps.set_environment.outputs.environment }}/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/"
+        #echo "::notice title=Coverage Report::https://automation-report.app.astrodao.com/ui-${{ steps.set_environment.outputs.environment }}/${{ steps.set_environment.outputs.workflow_name }}-${{ github.run_number }}/swagger-coverage-output/"
         echo "::notice title=History for Environment::https://automation-report.app.astrodao.com/ui-${{ steps.set_environment.outputs.environment }}/"

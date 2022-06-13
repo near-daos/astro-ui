@@ -1,5 +1,9 @@
+// TODO requires localisation
+
 import cn from 'classnames';
 import map from 'lodash/map';
+import isNil from 'lodash/isNil';
+import isEmpty from 'lodash/isEmpty';
 import { useMount } from 'react-use';
 import { useTranslation } from 'next-i18next';
 import { useFormContext } from 'react-hook-form';
@@ -17,8 +21,8 @@ import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/Input
 import styles from './VoteInOtherDao.module.scss';
 
 type DropdownOpt = {
-  label: string;
-  component: ReactNode;
+  value: string;
+  label: ReactNode;
 };
 
 interface VoteInOtherDaoProps {
@@ -28,7 +32,7 @@ interface VoteInOtherDaoProps {
 export const VoteInOtherDao: VFC<VoteInOtherDaoProps> = ({ dao }) => {
   const [showLoader, setShowLoader] = useState(false);
   const [accountDaos, setAccountDaos] = useState<DropdownOpt[]>([]);
-  const [daoProposals, setDaoProposals] = useState<DropdownOpt[]>([]);
+  const [daoProposals, setDaoProposals] = useState<DropdownOpt[]>();
 
   const { t } = useTranslation();
   const tBase = 'proposalCard.voteInDao';
@@ -46,8 +50,8 @@ export const VoteInOtherDao: VFC<VoteInOtherDaoProps> = ({ dao }) => {
     const daos = await SputnikHttpService.getAccountDaos(dao.id);
 
     const daoIds = map(daos, ({ id }) => ({
+      value: id,
       label: id,
-      component: id,
     }));
 
     setAccountDaos(daoIds);
@@ -67,8 +71,8 @@ export const VoteInOtherDao: VFC<VoteInOtherDaoProps> = ({ dao }) => {
         daoId: selectedDao,
       }).then(data => {
         const proposals = map(data?.data, ({ proposalId, description }) => ({
-          label: proposalId.toString(),
-          component: `ID: ${proposalId}. ${description}`,
+          value: proposalId.toString(),
+          label: `ID: ${proposalId}. ${description}`,
         }));
 
         setDaoProposals(proposals);
@@ -103,15 +107,21 @@ export const VoteInOtherDao: VFC<VoteInOtherDaoProps> = ({ dao }) => {
         className={styles.iWrapper}
         label={t(`${tBase}.proposal.label`)}
       >
-        <DropdownSelect
-          isBorderless
-          options={daoProposals}
-          {...register('proposal')}
-          onChange={value => setValue('proposal', value)}
-          disabled={!selectedDao}
-          className={styles.select}
-          placeholder={t(`${tBase}.proposal.placeholder`)}
-        />
+        {isNil(daoProposals) || !isEmpty(daoProposals) ? (
+          <DropdownSelect
+            isBorderless
+            options={daoProposals || []}
+            {...register('proposal')}
+            onChange={value => setValue('proposal', value)}
+            disabled={!selectedDao}
+            className={styles.select}
+            placeholder={t(`${tBase}.proposal.placeholder`)}
+          />
+        ) : (
+          <div className={styles.noProposals}>
+            {t(`${tBase}.noProposalsToVote`)}
+          </div>
+        )}
       </InputWrapper>
 
       <InputWrapper
@@ -122,8 +132,8 @@ export const VoteInOtherDao: VFC<VoteInOtherDaoProps> = ({ dao }) => {
         <DropdownSelect
           isBorderless
           options={[
-            { label: 'VoteApprove', component: 'Approve' },
-            { label: 'VoteReject', component: 'Reject' },
+            { value: 'VoteApprove', label: 'Approve' },
+            { value: 'VoteReject', label: 'Reject' },
           ]}
           {...register('vote')}
           onChange={value => setValue('vote', value)}
