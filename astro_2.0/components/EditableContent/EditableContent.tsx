@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo, useRef } from 'react';
 import cn from 'classnames';
 import { FieldError } from 'react-hook-form';
 
@@ -6,6 +6,8 @@ import 'react-quill/dist/quill.snow.css';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { Hashtag } from 'types/draftProposal';
+import { useImageUpload } from 'astro_2.0/features/CreateDao/components/hooks';
+import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
 
 import { EditHashtags } from './EditHashtags';
 
@@ -78,11 +80,48 @@ export const EditableContent: FC<EditableContentProps> = ({
   className,
   errors,
 }) => {
-  const modules = {
-    toolbar: {
-      container: `#${id}`,
-    },
-  };
+  // eslint-disable-next-line
+  const quillRef = useRef<any>();
+  const { uploadImage } = useImageUpload();
+
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: `#${id}`,
+        handlers: {
+          image() {
+            const input = document.createElement('input');
+
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.click();
+
+            input.onchange = async () => {
+              const file: File | null = input?.files?.length
+                ? input?.files[0]
+                : null;
+
+              if (!file || !quillRef.current) {
+                return;
+              }
+
+              const formData = new FormData();
+
+              formData.append('image', file);
+
+              const image = await uploadImage(file);
+              const range = quillRef.current.getEditorSelection();
+
+              quillRef.current
+                .getEditor()
+                .insertEmbed(range.index, 'image', getAwsImageUrl(image));
+            };
+          },
+        },
+      },
+    }),
+    [id, uploadImage]
+  );
 
   const send = () => {
     if (handleSend) {
@@ -116,6 +155,7 @@ export const EditableContent: FC<EditableContentProps> = ({
         />
       ) : null}
       <ReactQuill
+        ref={quillRef}
         onChange={setHTML}
         value={html}
         className={cn(styles.textField, {
