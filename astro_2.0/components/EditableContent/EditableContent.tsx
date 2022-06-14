@@ -17,7 +17,9 @@ const ReactQuill =
   typeof window === 'object' ? require('react-quill') : () => false;
 
 const icons =
-  typeof window === 'object' ? ReactQuill.Quill.import('ui/icons') : {};
+  typeof window === 'object' && ReactQuill?.Quill
+    ? ReactQuill.Quill.import('ui/icons')
+    : {};
 
 icons.list = null;
 icons.bold = null;
@@ -39,11 +41,14 @@ const renderCustomToolbar = (id: string) => {
       <button type="button" className={cn('ql-image', styles.button)}>
         <Icon name="toolbarEditorImage" />
       </button>
+      <button type="button" className={cn('ql-code-block', styles.button)}>
+        <Icon name="commentBlock" />
+      </button>
     </div>
   );
 };
 
-const formats = ['list', 'bold', 'italic', 'image'];
+const formats = ['list', 'bold', 'italic', 'image', 'code-block'];
 
 type EditableContentErrors = {
   title?: FieldError;
@@ -118,6 +123,7 @@ export const EditableContent: FC<EditableContentProps> = ({
             };
           },
         },
+        syntax: true,
       },
     }),
     [id, uploadImage]

@@ -1,5 +1,6 @@
 @use 'styles/breakpoints';
 @import 'styles/mixins';
+@import 'styles/typography';
 
 .root {
   display: grid;
@@ -103,6 +104,38 @@
   }
 }
 
+.methodSelect {
+  flex: 1;
+  max-width: fit-content;
+
+  button {
+    @extend %title3;
+    border: 0;
+    overflow: hidden;
+    padding-left: 0;
+    padding-top: 12px;
+    white-space: nowrap;
+  }
+
+  .row {
+    font-family: var(--font-family-primary);
+    font-size: 14px;
+    width: 100%;
+  }
+}
+
+.methodSelect ul {
+  @extend %body2;
+  min-width: 260px;
+  [data-hidden-value] {
+    display: flex;
+  }
+}
+
+.loader {
+  padding-top: 18px;
+}
+
 .divider {
   min-width: 80px;
 }
@@ -116,6 +149,12 @@
   display: flex;
   padding: 12px;
   width: 100%;
+}
+
+.inline {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
@@ -138,6 +177,15 @@
 
   .select ul {
     min-width: 200px;
+    .balance {
+      display: flex;
+    }
+  }
+
+  .methodSelect ul {
+    left: 0;
+    min-width: 200px;
+
     .balance {
       display: flex;
     }

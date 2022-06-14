@@ -225,7 +225,18 @@ export const SearchInput: FC<SearchInputProps> = ({
   }
 
   return (
-    <div className={cn(styles.root, className)} ref={ref}>
+    <div
+      tabIndex={0}
+      role="button"
+      onKeyPress={() => {
+        inputRef.current?.focus();
+      }}
+      className={cn(styles.root, className)}
+      ref={ref}
+      onClick={() => {
+        inputRef.current?.focus();
+      }}
+    >
       {showLoader ? (
         <div className={styles.iconHolder}>
           <AnimatePresence>

@@ -20,7 +20,20 @@ export type ProposalTemplate = {
   daoId: string;
   dao: DAO;
   name: string;
+  description?: string;
   isEnabled: boolean;
   config: CustomFcTemplatePayload;
   updatedAt?: string;
+};
+
+export type SharedProposalTemplate = {
+  id: string;
+  name: string;
+  description: string;
+  creator: string;
+  config: CustomFcTemplatePayload;
+  createdAt: string;
+  duplicated: number;
+  usedInDaos: string[];
+  usedInDaosTotal: number;
 };

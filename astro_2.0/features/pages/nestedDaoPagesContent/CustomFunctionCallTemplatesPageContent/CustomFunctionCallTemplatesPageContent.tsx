@@ -105,8 +105,11 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
               .map(item => (
                 <CustomFcTemplateCard
                   key={`${item.id}_${item.updatedAt}`}
-                  daoContext={daoContext}
+                  templateId={item.id}
+                  daoId={daoContext.dao.id}
+                  flagCover={daoContext.dao.flagCover}
                   template={item}
+                  config={item.config}
                   accountDaos={availableDaos}
                   onUpdate={updateTemplate}
                   onDelete={deleteTemplate}
@@ -114,6 +117,8 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
                   onSaveToDaos={saveTemplates}
                   disabled={!accountId}
                   editable={canActOnFlow}
+                  name={item.name}
+                  isEnabled={item.isEnabled}
                 />
               ))}
           </CustomTokensContext.Provider>
