@@ -59,6 +59,8 @@ jest.mock('components/button/IconButton', () => {
   };
 });
 
+jest.mock('react-quill', () => () => <div>Editor</div>);
+
 const userPermissions = {
   isCanCreateProposals: true,
   isCanCreatePolicyProposals: true,
