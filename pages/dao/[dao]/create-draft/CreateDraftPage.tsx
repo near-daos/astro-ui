@@ -49,28 +49,30 @@ export const CreateDraftPage: FC<CreateDraftPageProps> = ({
         breadcrumbs={breadcrumbs}
         defaultProposalType={ProposalVariant.ProposePoll}
       >
-        <BackButton
-          name="Back to Draft Feed"
-          href={{
-            pathname: DRAFTS_PAGE_URL,
-            query: {
-              dao: dao.id,
-            },
-          }}
-        />
+        <>
+          <BackButton
+            name="Back to Draft Feed"
+            href={{
+              pathname: DRAFTS_PAGE_URL,
+              query: {
+                dao: dao.id,
+              },
+            }}
+          />
 
-        <h1 className={styles.title}>Creating draft</h1>
+          <h1 className={styles.title}>Creating draft</h1>
 
-        <CreateProposal
-          isDraft
-          showInfo={false}
-          showClose={false}
-          showFlag={false}
-          dao={dao}
-          daoTokens={tokens}
-          onClose={() => undefined}
-          userPermissions={daoContext.userPermissions}
-        />
+          <CreateProposal
+            isDraft
+            showInfo={false}
+            showClose={false}
+            showFlag={false}
+            dao={dao}
+            daoTokens={tokens}
+            onClose={() => undefined}
+            userPermissions={daoContext.userPermissions}
+          />
+        </>
       </NestedDaoPageWrapper>
     </>
   );
