@@ -95,8 +95,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   }
 
   function renderProposalCell() {
-    const getTranslation = (key: string) =>
-      t(`proposalCard.createProposal.header.${key}`);
+    const getTranslation = (key: string) => t(`createProposal.header.${key}`);
 
     switch (type) {
       case ProposalVariant.ProposeChangeProposalCreationPermissions: {
@@ -427,7 +426,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     <div className={styles.root}>
       <div className={styles.proposalCell}>{renderProposalCell()}</div>
       <div className={styles.countdownCell}>
-        {t('proposalCard.createProposal.countdown')}
+        {t('createProposal.countdown')}
       </div>
       {renderCardContent()}
       <div className={styles.voteControlCell}>
