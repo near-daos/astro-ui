@@ -6,6 +6,7 @@
   grid-gap: 24px;
   grid-template-areas:
     'target amount'
+    'duration speed'
     'comment comment'
     'commission commission'
     'no total';
@@ -31,6 +32,14 @@
 
 .target {
   grid-area: target;
+}
+
+.duration {
+  grid-area: duration;
+}
+
+.speed {
+  grid-area: speed;
 }
 
 .commission {

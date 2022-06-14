@@ -5,6 +5,8 @@ import { useFormContext } from 'react-hook-form';
 import cn from 'classnames';
 import Decimal from 'decimal.js';
 import { formatNearAmount } from 'near-api-js/lib/utils/format';
+import parseDuration from 'parse-duration';
+import { TokenFormatter } from '@roketo/sdk/ft';
 
 import { useDepositWidth } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/hooks';
 import { Input } from 'components/inputs/Input';
@@ -70,10 +72,33 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
     depositStorageReceiver.hasStorage,
   ]);
 
+  const amount = watch('amount') || '0';
+  const amountToStream = useMemo(
+    () =>
+      new Decimal(amount).mul(10 ** (selectedToken?.decimals ?? 24)).toFixed(),
+    [amount, selectedToken]
+  );
+
+  const duration = watch('duration');
+  const speed = useMemo(() => {
+    const durationMs = parseDuration(duration ?? '');
+
+    if (!durationMs || !selectedToken) {
+      return { formattedValue: '0', unit: 'second' };
+    }
+
+    const durationSeconds = new Decimal(durationMs).div(1000);
+    const speedInYokto = new Decimal(amountToStream)
+      .div(durationSeconds)
+      .toFixed();
+
+    const formatter = new TokenFormatter(selectedToken.decimals);
+
+    return formatter.tokensPerMeaningfulPeriod(speedInYokto);
+  }, [duration, amountToStream, selectedToken]);
+
   const { total, positions } = useRoketoReceipt({
-    amountToStream: new Decimal(watch('amount') || '0')
-      .mul(10 ** (selectedToken?.decimals ?? 24))
-      .toFixed(),
+    amountToStream,
     tokenId: selectedToken?.id || 'NEAR',
     tokenDecimals: selectedToken?.decimals ?? 24,
     storageDeposit: {
@@ -177,6 +202,33 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
           </div>
         )}
       </div>
+      <div className={styles.duration}>
+        <InputWrapper fieldName="duration" label="Duration">
+          <Input
+            className={cn(styles.inputWrapper)}
+            placeholder="2w 5d 8h 10m"
+            isBorderless
+            size="block"
+            {...register('duration')}
+          />
+        </InputWrapper>
+      </div>
+      <div className={styles.speed}>
+        <InputWrapper fieldName="speed" label="Streaming speed">
+          <Input
+            isBorderless
+            readOnly
+            size="block"
+            onChange={() => null}
+            value={
+              speed.formattedValue === '0'
+                ? ''
+                : `${speed.formattedValue} ${selectedToken?.symbol} / ${speed.unit}`
+            }
+          />
+        </InputWrapper>
+      </div>
+
       <div className={styles.comment}>
         <InputWrapper
           className={styles.inputWrapper}
@@ -233,13 +285,13 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
             label="Total it will be charged off"
           >
             <div className={styles.totalLines}>
-              {Object.entries(total).map(([tokenId, amount]) => {
+              {Object.entries(total).map(([tokenId, amountPerToken]) => {
                 const token = tokens[tokenId];
 
                 return (
                   <React.Fragment key={tokenId}>
                     <span className={styles.totalAmount}>
-                      {formatNearAmount(amount, token.decimals)}
+                      {formatNearAmount(amountPerToken, token.decimals)}
                     </span>
                     <span>{token.symbol}</span>
                   </React.Fragment>
