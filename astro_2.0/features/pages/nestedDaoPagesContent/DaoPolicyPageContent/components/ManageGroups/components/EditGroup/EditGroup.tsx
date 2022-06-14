@@ -286,6 +286,7 @@ export const EditGroup: React.FC<Props> = ({
             )}
             <input
               type="text"
+              disabled={processing}
               onChange={async e => {
                 setAddMemberName(e.target.value);
 
