@@ -110,7 +110,7 @@ const proposal2 = {
       {
         methodName: 'create',
         args:
-          'eyJtdWx0aWNhbGxfaW5pdF9hcmdzIjp7ImFkbWluX2FjY291bnRzIjpbInRlc3Quc3B1dG5pa3YyLnRlc3RuZXQiXSwiY3JvbmNhdF9tYW5hZ2VyIjoibWFuYWdlcl92MS5jcm9uY2F0LnRlc3RuZXQiLCJqb2JfYm9uZCI6IjEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAifX0=',
+          'eyJtdWx0aWNhbGxfaW5pdF9hcmdzIjp7ImFkbWluX2FjY291bnRzIjpbInRlc3QtYWNjb3VudC5zcHV0bmlrdjIudGVzdG5ldCJdLCJjcm9uY2F0X21hbmFnZXIiOiJtYW5hZ2VyX3ZlcnNpb24zLmNyb25jYXQudGVzdG5ldCIsImpvYl9ib25kIjoiMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCJ9fQ==',
         deposit: '3000000000000000000000000',
         gas: '150000000000000',
       },
