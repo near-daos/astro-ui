@@ -3,6 +3,7 @@ import split from 'lodash/split';
 import reduce from 'lodash/reduce';
 import flatten from 'lodash/flatten';
 import compact from 'lodash/compact';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 import { useState, useCallback, ClipboardEvent } from 'react';
 
 import { useWalletContext } from 'context/WalletContext';
@@ -22,49 +23,52 @@ type PasteProcessOutput = {
 export function useProcessMembersPaste(input: Input): PasteProcessOutput {
   const { addGroupMembers, setAddMemberName } = input;
 
+  const { groupUploadOfGroupMembers } = useFlags();
   const [processing, setProcessing] = useState(false);
 
   const { nearService } = useWalletContext();
 
   const onPasteMembers = useCallback(
     async e => {
-      setProcessing(true);
+      if (groupUploadOfGroupMembers) {
+        setProcessing(true);
 
-      const pastedString = e.clipboardData.getData('text');
+        const pastedString = e.clipboardData.getData('text');
 
-      const membersByLineBreak = split(pastedString, /\r?\n/);
-      const membersBySpaces = flatten(
-        map(membersByLineBreak, m => split(m, ' '))
-      );
-      const nonEmptyMembers = compact(membersBySpaces);
-      const uniqueMembers = [...new Set(nonEmptyMembers)];
+        const membersByLineBreak = split(pastedString, /\r?\n/);
+        const membersBySpaces = flatten(
+          map(membersByLineBreak, m => split(m, ' '))
+        );
+        const nonEmptyMembers = compact(membersBySpaces);
+        const uniqueMembers = [...new Set(nonEmptyMembers)];
 
-      const validationPromises = uniqueMembers.map(member =>
-        validateUserAccount(member, nearService)
-      );
+        const validationPromises = uniqueMembers.map(member =>
+          validateUserAccount(member, nearService)
+        );
 
-      const validationResult = await Promise.allSettled(validationPromises);
+        const validationResult = await Promise.allSettled(validationPromises);
 
-      const membersToAdd = reduce(
-        validationResult,
-        (acc, res, index) => {
-          if (res.status === 'fulfilled' && res.value) {
-            acc.push(uniqueMembers[index].trim());
-          }
+        const membersToAdd = reduce(
+          validationResult,
+          (acc, res, index) => {
+            if (res.status === 'fulfilled' && res.value) {
+              acc.push(uniqueMembers[index].trim());
+            }
 
-          return acc;
-        },
-        [] as string[]
-      );
+            return acc;
+          },
+          [] as string[]
+        );
 
-      addGroupMembers(membersToAdd);
+        addGroupMembers(membersToAdd);
 
-      setTimeout(() => {
-        setAddMemberName('');
-        setProcessing(false);
-      }, 500);
+        setTimeout(() => {
+          setAddMemberName('');
+          setProcessing(false);
+        }, 500);
+      }
     },
-    [nearService, addGroupMembers, setAddMemberName]
+    [nearService, addGroupMembers, setAddMemberName, groupUploadOfGroupMembers]
   );
 
   return {
