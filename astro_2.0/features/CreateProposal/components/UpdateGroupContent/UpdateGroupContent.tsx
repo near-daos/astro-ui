@@ -51,6 +51,7 @@ export const UpdateGroupContent: FC<Props> = ({
 
         {groupsList.map(group => (
           <Button
+            key={group.slug}
             variant="transparent"
             className={cn(styles.group, {
               [styles.groupActive]: group.slug === activeGroupSlug,

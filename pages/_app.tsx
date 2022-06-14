@@ -24,6 +24,7 @@ import { AppMonitoring } from 'astro_2.0/features/AppMonitoring/AppMonitoring';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 import { useAppInitialize } from 'hooks/useAppInitialize';
 import { configService } from 'services/ConfigService';
+import { AppHealth } from 'astro_2.0/features/AppHealth';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
@@ -60,6 +61,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
       <WrappedWalletContext>
         <ModalProvider>
           <SocketProvider>
+            <AppHealth />
             <SearchResults>
               <Head>
                 <title>Astro</title>
