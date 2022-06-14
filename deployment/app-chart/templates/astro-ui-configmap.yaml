@@ -14,3 +14,4 @@ data:
   STATS_API_URL: "{{ .Values.environment.stats_api_url }}"
   NEXT_PUBLIC_LAUNCHDARKLY_ID: "{{ .Values.environment.next_public_launchdarkly_id }}"
   APP_DOMAIN: "{{ .Values.environment.app_domain }}"
+  RELEASE_NOTES: "{{ .Values.environment.release_notes }}"

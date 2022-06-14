@@ -93,3 +93,4 @@ environment:
   aws_region: "eu-central-1"
   aws_identity_pool_id: "eu-central-1:5887fd21-7b40-4871-a6cb-21097fe079a2"
   stats_api_url: "https://testnet.api.daostats.io"
+  release_notes: "https://astrodao.canny.io/changelog"
