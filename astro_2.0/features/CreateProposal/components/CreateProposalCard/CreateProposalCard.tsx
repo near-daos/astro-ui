@@ -399,7 +399,6 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
         return (
           <>
             <div className={styles.descriptionCell}>{content}</div>
-            {renderEditableContent()}
           </>
         );
       }
