@@ -11,8 +11,10 @@ jest.mock('features/notifications', () => {
 
 describe('page layout', () => {
   it('Should render component', () => {
-    const { container } = render(<PageLayout>Hello World!</PageLayout>);
+    const content = 'Hello World!';
 
-    expect(container).toMatchSnapshot();
+    const { getByText } = render(<PageLayout>{content}</PageLayout>);
+
+    expect(getByText(content)).toBeInTheDocument();
   });
 });
