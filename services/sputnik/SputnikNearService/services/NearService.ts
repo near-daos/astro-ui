@@ -101,7 +101,7 @@ export class NearService extends BaseService {
 
     const args = isCreateDaoParams(params)
       ? mapCreateDaoParamsToContractArgs(params)
-      : params;
+      : params.args;
 
     const amount = new BN(
       utils.format.parseNearAmount(params.amountToTransfer) || '0'
