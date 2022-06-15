@@ -135,7 +135,7 @@ exports[`App Footer Should render AppFooter component 1`] = `
         >
           <a
             class="devLink"
-            href="https://github.com/near-daos/astro-ui/releases/latest"
+            href="https://astrodao.canny.io/changelog"
             rel="noreferrer noopener"
             target="_blank"
           >
