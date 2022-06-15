@@ -4,7 +4,6 @@ import nextI18NextConfig from 'next-i18next.config';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getDaoContext } from 'features/daos/helpers';
-import { SputnikHttpService } from 'services/sputnik';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -17,10 +16,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const daoId = query.dao as string;
 
-  const [dao, daoContext] = await Promise.all([
-    SputnikHttpService.getDaoById(daoId),
-    getDaoContext(account, daoId as string),
-  ]);
+  const daoContext = await getDaoContext(account, daoId as string);
 
   if (!daoContext) {
     return {
@@ -35,7 +31,6 @@ export const getServerSideProps: GetServerSideProps = async ({
         ['common', 'notificationsPage'],
         nextI18NextConfig
       )),
-      dao,
       daoContext,
     },
   };
