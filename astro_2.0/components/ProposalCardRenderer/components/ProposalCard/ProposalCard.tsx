@@ -276,21 +276,28 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     await router.reload();
   }, [daoId, proposalId, router, nearService]);
 
-  const handleCardClick = useCallback(() => {
-    if (preventNavigate) {
-      return;
-    }
+  const handleCardClick = useCallback(
+    e => {
+      if (
+        preventNavigate ||
+        e?.target?.closest(`.${styles.voteControlCell}`) ||
+        e?.target?.closest(`.${styles.actionBar}`)
+      ) {
+        return;
+      }
 
-    if (id && router.pathname !== SINGLE_PROPOSAL_PAGE_URL) {
-      router.push({
-        pathname: SINGLE_PROPOSAL_PAGE_URL,
-        query: {
-          dao: daoId,
-          proposal: id,
-        },
-      });
-    }
-  }, [daoId, id, preventNavigate, router]);
+      if (id && router.pathname !== SINGLE_PROPOSAL_PAGE_URL) {
+        router.push({
+          pathname: SINGLE_PROPOSAL_PAGE_URL,
+          query: {
+            dao: daoId,
+            proposal: id,
+          },
+        });
+      }
+    },
+    [daoId, id, preventNavigate, router]
+  );
 
   const timeLeft = useCountdown(votePeriodEnd);
 
