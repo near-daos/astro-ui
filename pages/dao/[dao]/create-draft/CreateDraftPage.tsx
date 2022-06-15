@@ -3,7 +3,6 @@ import Head from 'next/head';
 
 import { DaoContext } from 'types/context';
 import { ProposalVariant } from 'types/proposal';
-import { DAO } from 'types/dao';
 
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
@@ -18,18 +17,12 @@ import styles from './CreateDraftPage.module.scss';
 
 export type CreateDraftPageProps = {
   daoContext: DaoContext;
-  dao: DAO;
 };
 
-export const CreateDraftPage: FC<CreateDraftPageProps> = ({
-  daoContext,
-  dao,
-}) => {
+export const CreateDraftPage: FC<CreateDraftPageProps> = ({ daoContext }) => {
+  const { dao } = daoContext;
   const { tokens } = useDaoCustomTokens();
-  const breadcrumbsConfig = useGetBreadcrumbsConfig(
-    daoContext.dao.id,
-    daoContext.dao.displayName
-  );
+  const breadcrumbsConfig = useGetBreadcrumbsConfig(dao.id, dao.displayName);
 
   const breadcrumbs = useMemo(() => {
     return [

@@ -19,11 +19,12 @@ export const getServerSideProps: GetServerSideProps = async ({
   const daoId = query.dao as string;
   const bountyId = query.bounty as string;
 
-  const [dao, bountyContext, daoContext] = await Promise.all([
-    SputnikHttpService.getDaoById(daoId),
+  const [bountyContext, daoContext] = await Promise.all([
     SputnikHttpService.getBountyContextById(bountyId, account),
     getDaoContext(account, daoId as string),
   ]);
+
+  const dao = daoContext?.dao;
 
   if (!daoContext || !bountyContext || !dao) {
     return {
