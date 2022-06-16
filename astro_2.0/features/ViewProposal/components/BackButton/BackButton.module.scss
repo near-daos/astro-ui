@@ -10,7 +10,11 @@
   font-family: var(--font-family-primary);
   font-size: 0.875em;
   font-weight: 500;
-  margin: 16px 0 32px;
+  margin: 16px 0 0;
+
+  @include tablet-landscape {
+    margin: 16px 0 32px;
+  }
 }
 
 .icon {

@@ -1,21 +1,32 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { NextPage } from 'next';
 import TextTruncate from 'react-text-truncate';
 import dynamic from 'next/dynamic';
+import cn from 'classnames';
 
-import { CFC_LIBRARY } from 'constants/routing';
+import { CFC_LIBRARY, CFC_LIBRARY_TEMPLATE_VIEW } from 'constants/routing';
 
 import { BackButton } from 'astro_2.0/features/ViewProposal/components/BackButton';
 import { Loader } from 'components/loader';
 import { IconButton } from 'components/button/IconButton';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
-import { useSharedTemplatePageData } from 'astro_2.0/features/pages/cfcLibrary/hooks';
+import {
+  useCloneCfcTemplate,
+  useSharedTemplatePageData,
+} from 'astro_2.0/features/pages/cfcLibrary/hooks';
 
-import { DuplicateSharedTemplate } from 'astro_2.0/features/pages/cfcLibrary/components/DuplicateSharedTemplate';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
+import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
+import { ApplyToDaos } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/components/ApplyToDaos';
 
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { useAllCustomTokens } from 'hooks/useCustomTokens';
+import { useWalletContext } from 'context/WalletContext';
+
+import { copyToClipboard } from 'utils/copyToClipboard';
+
+import { DaoFeedItem } from 'types/dao';
 
 import styles from './SharedTemplatePage.module.scss';
 
@@ -28,10 +39,24 @@ const CustomFcTemplateCard = dynamic(
   }
 );
 
-const SharedTemplatePage: NextPage = () => {
-  const { data, loading } = useSharedTemplatePageData();
+const defaultTooltipText = 'Copy page URL';
+
+interface Props {
+  accountDaos: DaoFeedItem[];
+}
+
+const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
+  const { data, loading, templateId } = useSharedTemplatePageData();
+  const { cloning, cloneToDao } = useCloneCfcTemplate();
+  const { accountId } = useWalletContext();
+  const [tooltip, setTooltip] = useState(defaultTooltipText);
 
   const { tokens } = useAllCustomTokens();
+
+  const availableDaos = useMemo(
+    () => accountDaos?.filter(item => item.isCouncil),
+    [accountDaos]
+  );
 
   function renderContent() {
     if (loading) {
@@ -42,7 +67,11 @@ const SharedTemplatePage: NextPage = () => {
       return <NoResultsView title="No data found" />;
     }
 
-    const { creator, name } = data;
+    const { createdBy, name, description } = data;
+
+    const url = CFC_LIBRARY_TEMPLATE_VIEW.replace('[template]', templateId);
+    const shareUrl = `${document.location?.origin}${url}`;
+    const shareContent = `CFC template: ${name} \n ${description}`;
 
     return (
       <div className={styles.content}>
@@ -64,54 +93,94 @@ const SharedTemplatePage: NextPage = () => {
                   line={2}
                   element="span"
                   truncateText="…"
-                  text={creator}
+                  text={createdBy}
                   textTruncateChild={null}
                 />
               </span>
             </div>
           </div>
           <div className={styles.control}>
-            <IconButton
-              size="large"
-              icon="buttonLink"
-              iconProps={{
-                width: 18,
+            <Tooltip overlay={<span>{tooltip}</span>} placement="top">
+              <IconButton
+                size="large"
+                icon="buttonLink"
+                iconProps={{
+                  width: 18,
+                }}
+                className={styles.controlIconButton}
+                onClick={async () => {
+                  await copyToClipboard(shareUrl);
+
+                  setTooltip('Copied successfully');
+
+                  setTimeout(() => {
+                    setTooltip(defaultTooltipText);
+                  }, 2000);
+                }}
+              />
+            </Tooltip>
+            <a
+              href={`https://t.me/share/url?url=${encodeURIComponent(
+                shareUrl
+              )}&text=${shareContent}`}
+            >
+              <IconButton
+                size="large"
+                iconProps={{
+                  width: 18,
+                }}
+                icon="socialTelegram"
+                className={styles.controlIconButton}
+              />
+            </a>
+            <a
+              className="twitter-share-button"
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                shareContent
+              )}`}
+            >
+              <IconButton
+                size="large"
+                iconProps={{
+                  width: 18,
+                }}
+                icon="socialTwitter"
+                className={styles.controlIconButton}
+              />
+            </a>
+
+            <ApplyToDaos
+              accountDaos={availableDaos}
+              template={data}
+              onSave={async values => {
+                cloneToDao(
+                  values.map(value => ({ templateId, targetDao: value.daoId }))
+                );
               }}
-              className={styles.controlIconButton}
-            />
-            <IconButton
-              size="large"
-              iconProps={{
-                width: 18,
+              disabled={!accountId || cloning}
+              buttonProps={{
+                variant: 'green',
               }}
-              icon="socialTelegram"
-              className={styles.controlIconButton}
-            />
-            <IconButton
-              size="large"
-              iconProps={{
-                width: 18,
-              }}
-              icon="socialTwitter"
-              className={styles.controlIconButton}
-            />
-            <DuplicateSharedTemplate className={styles.duplicateControlBtn} />
+              className={styles.duplicateControlBtn}
+            >
+              {cloning ? <LoadingIndicator /> : 'Duplicate'}
+            </ApplyToDaos>
           </div>
         </div>
 
         <div className={styles.body}>
-          <div className={styles.list}>
+          <div className={cn(styles.list, styles.hideMobile)}>
             <div className={styles.listTitle}>Duplicated</div>
             <ul>
-              {data.usedInDaos.map(item => (
+              {data.usedInDaos?.map(item => (
                 <li key={item} className={styles.listItem}>
                   {item}
                 </li>
               ))}
             </ul>
-            {data.usedInDaosTotal > data.usedInDaos.length && (
+            {data.daoCount > (data.usedInDaos?.length ?? 0) && (
               <div className={styles.listTotal}>
-                + {data.usedInDaosTotal - data.usedInDaos.length} DAOs
+                + {data.daoCount - (data.usedInDaos?.length ?? 0)} DAOs
               </div>
             )}
           </div>
@@ -124,6 +193,7 @@ const SharedTemplatePage: NextPage = () => {
                 editable={false}
                 name={data.name}
                 isEnabled={false}
+                defaultExpanded
               />
             </CustomTokensContext.Provider>
           </div>

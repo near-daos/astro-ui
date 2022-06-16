@@ -53,6 +53,7 @@ interface Props {
   editable: boolean;
   name: string;
   isEnabled: boolean;
+  defaultExpanded?: boolean;
 }
 
 interface Form {
@@ -109,6 +110,7 @@ export const CustomFcTemplateCard: FC<Props> = ({
   editable,
   name,
   isEnabled,
+  defaultExpanded,
 }) => {
   const { t } = useTranslation();
   const { tokens } = useCustomTokensContext();
@@ -212,6 +214,7 @@ export const CustomFcTemplateCard: FC<Props> = ({
             })}
           >
             <CardContent
+              defaultExpanded={defaultExpanded}
               disabled={!editable}
               onReset={handleReset}
               onDelete={() => templateId && onDelete && onDelete(templateId)}

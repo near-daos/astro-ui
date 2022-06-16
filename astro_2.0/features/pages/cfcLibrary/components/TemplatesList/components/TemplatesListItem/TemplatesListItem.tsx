@@ -1,12 +1,17 @@
 import React, { FC, useCallback } from 'react';
 import TextTruncate from 'react-text-truncate';
 import { useRouter } from 'next/router';
+import cn from 'classnames';
 
 import { SharedProposalTemplate } from 'types/proposalTemplate';
 
-import { DuplicateSharedTemplate } from 'astro_2.0/features/pages/cfcLibrary/components/DuplicateSharedTemplate';
+import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 
 import { CFC_LIBRARY_TEMPLATE_VIEW } from 'constants/routing';
+
+import { ApplyToDaos } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/components/ApplyToDaos';
+import { useCfcValues } from 'astro_2.0/features/pages/cfcLibrary/context';
+import { useCloneCfcTemplate } from 'astro_2.0/features/pages/cfcLibrary/hooks';
 
 import styles from './TemplatesListItem.module.scss';
 
@@ -16,7 +21,11 @@ interface Props {
 
 export const TemplatesListItem: FC<Props> = ({ data }) => {
   const router = useRouter();
-  const { id, name, description, creator, duplicated } = data;
+  const { id, name, description, createdBy, daoCount } = data;
+
+  const { cloning, cloneToDao } = useCloneCfcTemplate();
+
+  const { accountDaos, accountId, onUpdate } = useCfcValues();
 
   const handleRowClick = useCallback(() => {
     router.push({
@@ -46,18 +55,40 @@ export const TemplatesListItem: FC<Props> = ({ data }) => {
           textTruncateChild={null}
         />
       </div>
-      <div className={styles.creator}>
+      <div className={cn(styles.creator, styles.hideMobile)}>
         <TextTruncate
           line={2}
           element="div"
           truncateText="…"
-          text={creator}
+          text={createdBy}
           textTruncateChild={null}
         />
       </div>
-      <div className={styles.duplicated}>{duplicated}</div>
+      <div className={cn(styles.duplicated, styles.hideMobile)}>{daoCount}</div>
       <div className={styles.control}>
-        <DuplicateSharedTemplate />
+        <ApplyToDaos
+          accountDaos={accountDaos}
+          template={data}
+          onSave={async values => {
+            const res = await cloneToDao(
+              values.map(value => ({ templateId: id, targetDao: value.daoId }))
+            );
+
+            const daosIds = (res.filter(item => item !== null) as {
+              proposalTemplateId: string;
+              daoId: string;
+            }[]).map(item => item.daoId);
+
+            onUpdate(id, daosIds.length);
+          }}
+          disabled={!accountId || cloning}
+          className={styles.duplicateControlBtn}
+          buttonProps={{
+            variant: 'green',
+          }}
+        >
+          {cloning ? <LoadingIndicator /> : 'Duplicate'}
+        </ApplyToDaos>
       </div>
     </div>
   );

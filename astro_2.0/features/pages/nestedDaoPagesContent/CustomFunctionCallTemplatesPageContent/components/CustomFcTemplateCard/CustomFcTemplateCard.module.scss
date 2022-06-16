@@ -18,16 +18,27 @@
   display: grid;
   grid-gap: 24px;
   grid-template-areas:
-    'toggle delete'
-    'name controls'
-    'address method'
-    'deposit gas'
-    'editor editor';
-  grid-template-columns: 1fr 1fr;
+    'toggle'
+    'controls'
+    'name'
+    'address'
+    'method'
+    'deposit'
+    'gas'
+    'editor';
+  grid-template-columns: 1fr;
   padding: 12px 12px 0;
   width: 100%;
 
   @include tablet-landscape {
+    grid-template-areas:
+      'toggle delete'
+      'name controls'
+      'address method'
+      'deposit gas'
+      'editor editor';
+    grid-template-columns: 1fr 1fr;
+
     padding: 32px 32px 0;
   }
 }
@@ -51,9 +62,13 @@
   display: flex;
   grid-area: delete;
   height: 24px;
-  margin-left: auto;
+
   min-height: 24px;
   white-space: nowrap;
+
+  @include tablet-landscape {
+    margin-left: auto;
+  }
 
   .icon {
     color: currentColor;
@@ -77,8 +92,9 @@
 .controls {
   align-items: center;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  //flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
 
   @include tablet-landscape {
     flex-direction: row;
@@ -220,6 +236,10 @@
   display: flex;
   padding: 12px;
   width: 100%;
+
+  pre {
+    overflow-y: hidden;
+  }
 }
 
 .editorLabel {
@@ -236,12 +256,21 @@
   }
 }
 
+.inputLabel {
+  min-width: 50px;
+}
+
 .editorWrapper {
   height: 0;
-  overflow: hidden;
+  overflow: auto;
 
   &.expanded {
-    height: 240px;
+    height: auto;
+  }
+
+  > pre {
+    margin: 0;
+    padding-bottom: 24px;
   }
 }
 

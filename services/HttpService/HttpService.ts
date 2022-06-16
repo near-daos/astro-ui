@@ -673,7 +673,7 @@ export class HttpService {
 
           queryString.setLimit(query.limit).setOffset(query.offset).query();
 
-          request.url = `/shared-templates?${queryString.queryString}`;
+          request.url = `/proposals/templates?${queryString.queryString}`;
           request.params = { sort: query.sort };
 
           break;
@@ -947,6 +947,7 @@ export class HttpService {
         case API_QUERIES.SHOW_BOUNTIES:
         case API_QUERIES.UPDATE_DAO_SETTINGS:
         case API_QUERIES.SAVE_PROPOSAL_TEMPLATE:
+        case API_QUERIES.CLONE_PROPOSAL_TEMPLATE:
         case API_QUERIES.UPDATE_PROPOSAL_TEMPLATE:
         case API_QUERIES.DELETE_PROPOSAL_TEMPLATE:
         case API_QUERIES.UPDATE_ACCOUNT_SUBSCRIPTION:

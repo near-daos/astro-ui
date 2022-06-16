@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
+
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { TemplatesListItem } from 'astro_2.0/features/pages/cfcLibrary/components/TemplatesList/components/TemplatesListItem';
@@ -22,8 +24,10 @@ export const TemplatesList: FC<Props> = ({ total, data, next }) => {
     <div className={styles.root}>
       <div className={styles.header}>
         <div className={styles.name}>Name</div>
-        <div className={styles.creator}>Creator</div>
-        <div className={styles.duplicated}>Duplicated</div>
+        <div className={cn(styles.creator, styles.hideMobile)}>Creator</div>
+        <div className={cn(styles.duplicated, styles.hideMobile)}>
+          Duplicated
+        </div>
         <div className={styles.control}>&nbsp;</div>
       </div>
       <InfiniteScroll

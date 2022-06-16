@@ -24,7 +24,6 @@ import {
   ReportProposalComment,
   DeleteProposalComment,
   ProposalFeedItem,
-  CustomFcTemplatePayload,
 } from 'types/proposal';
 import { DaoStatsState } from 'types/daoStats';
 
@@ -1218,128 +1217,82 @@ class SputnikHttpServiceClass {
     sort: string;
     searchInput?: string;
   }): Promise<PaginationResponse<SharedProposalTemplate[]> | null> {
-    const mock = {
-      count: 2,
-      total: 2,
-      page: 0,
-      pageCount: 1,
-      data: [
-        {
-          id: '1',
-          name: 'Create custom FT',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum ${JSON.stringify(
-            query
-          )}`,
-          creator: 'jasonborn.near',
-          config: {} as CustomFcTemplatePayload,
-          createdAt: '2021-12-07T19:15:52.793Z',
-          duplicated: 12,
-          usedInDaos: [
-            'my-dao',
-            'pets',
-            'birds',
-            'aviarium',
-            'cage',
-            'forest',
-            'sea',
-            'river',
-          ],
-          usedInDaosTotal: 127,
+    try {
+      const { data } = await this.httpService.get<
+        PaginationResponse<SharedProposalTemplate[]>
+      >('/proposals/templates', {
+        queryRequest: {
+          name: API_QUERIES.GET_SHARED_PROPOSAL_TEMPLATES,
+          params: {
+            query,
+          },
         },
-        {
-          id: '2',
-          name: 'Another template',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum',
-          creator: 'ethanhunt.near',
-          config: {} as CustomFcTemplatePayload,
-          createdAt: '2021-03-07T19:15:52.793Z',
-          duplicated: 8,
-          usedInDaos: [
-            'my-dao',
-            'pets',
-            'birds',
-            'aviarium',
-            'cage',
-            'forest',
-            'sea',
-            'river',
-          ],
-          usedInDaosTotal: 127,
-        },
-      ],
-    };
+      });
 
-    return mock;
+      return data;
+    } catch (error) {
+      console.error(error);
 
-    // try {
-    //   const { data } = await this.httpService.get<
-    //     PaginationResponse<SharedProposalTemplate[]>
-    //   >('/shared-templates', {
-    //     queryRequest: {
-    //       name: API_QUERIES.GET_SHARED_PROPOSAL_TEMPLATES,
-    //       params: {
-    //         query,
-    //       },
-    //     },
-    //   });
-    //
-    //   return data;
-    // } catch (error) {
-    //   console.error(error);
-    //
-    //   return null;
-    // }
+      return null;
+    }
   }
 
   // eslint-disable-next-line class-methods-use-this
   public async getSharedProposalTemplate(
     templateId: string
   ): Promise<SharedProposalTemplate | null> {
-    const mock = {
-      id: '1',
-      name: `Create custom FT ${templateId}`,
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien nibh nulla leo phasellus consequat fermentum',
-      creator: 'jasonborn.near',
-      config: {
-        actionsGas: '130000000000000',
-        token: '',
-        json:
-          '{\n  "args": {\n    "owner_id": "warfinntroll.testnet",\n    "total_supply": "1000000000000000000000",\n    "metadata": {\n      "spec": "ft-1.0.0",\n      "name": "warfinntroll-staking-token",\n      "symbol": "WST",\n      "icon": "",\n      "decimals": 18\n    }\n  }\n}',
-        deposit: '2',
-        methodName: 'create_token',
-        smartContractAddress: 'tokenfactory.testnet',
-        name: 'Create token ',
-      },
-      createdAt: '2021-12-07T19:15:52.793Z',
-      duplicated: 12,
-      usedInDaos: [
-        'my-dao',
-        'pets',
-        'birds',
-        'aviarium',
-        'cage',
-        'forest',
-        'sea',
-        'river',
-      ],
-      usedInDaosTotal: 127,
-    };
+    try {
+      const { data } = await this.httpService.get<SharedProposalTemplate>(
+        `/proposals/templates/${templateId}`
+      );
 
-    return mock;
+      return data;
+    } catch (error) {
+      console.error(error);
 
-    // try {
-    //   const { data } = await this.httpService.get<SharedProposalTemplate>(
-    //     `/shared-templates/${templateId}`
-    //   );
-    //
-    //   return data;
-    // } catch (error) {
-    //   console.error(error);
-    //
-    //   return null;
-    // }
+      return null;
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public async cloneTemplateToDao(params: {
+    templateId: string;
+    targetDao: string;
+    accountId: string;
+    publicKey: string;
+    signature: string;
+  }): Promise<{ proposalTemplateId: string; daoId: string } | null> {
+    try {
+      const { data } = await this.httpService.post<
+        {
+          templateId: string;
+          targetDao: string;
+          accountId: string;
+          publicKey: string;
+          signature: string;
+        },
+        {
+          data: {
+            proposalTemplateId: string;
+            daoId: string;
+          };
+        }
+      >(
+        `/proposals/templates/${params.templateId}/clone/${params.targetDao}`,
+        params,
+        {
+          queryRequest: {
+            name: API_QUERIES.SAVE_PROPOSAL_TEMPLATE,
+          },
+        }
+      );
+
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
   }
 }
 
