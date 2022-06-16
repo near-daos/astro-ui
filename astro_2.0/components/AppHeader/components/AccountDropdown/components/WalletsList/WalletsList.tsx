@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { MyAccountButton } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/MyAccount';
+import { MyAccountButton } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/MyAccountButton';
 import { WalletType } from 'types/config';
 import { DisconnectButton } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/DisconnectButton';
 import { WalletWithAccounts } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletWithAccounts';

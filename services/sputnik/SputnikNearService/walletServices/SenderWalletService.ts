@@ -171,7 +171,7 @@ export class SenderWalletService implements WalletService {
 
   // eslint-disable-next-line class-methods-use-this
   getAvailableAccounts(): Promise<string[]> {
-    return Promise.resolve([]);
+    return Promise.resolve([this.walletInstance.accountId]);
   }
 
   walletMeta(): WalletMeta {
