@@ -150,7 +150,8 @@ export type ProposalStatus =
   | 'Rejected'
   | 'Removed'
   | 'Expired'
-  | 'Moved';
+  | 'Moved'
+  | 'Failed';
 
 type ProposalProperties = {
   id: string;

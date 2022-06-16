@@ -131,13 +131,16 @@ function getTimestampLabel(
     );
   }
 
-  if ((status === 'Approved' || status === 'Rejected') && updatedAt) {
+  if (
+    (status === 'Approved' || status === 'Rejected' || status === 'Failed') &&
+    updatedAt
+  ) {
     return (
       <div className={cn(styles.timestampLabel)}>
         <span
           className={cn(styles.label, {
             [styles.approved]: status === 'Approved',
-            [styles.rejected]: status === 'Rejected',
+            [styles.rejected]: status === 'Rejected' || status === 'Failed',
           })}
         >
           {status} at&nbsp;
@@ -163,6 +166,7 @@ function getSealIcon(status: ProposalStatus): string | null {
     case 'Expired':
     case 'Moved':
     case 'Rejected':
+    case 'Failed':
     case 'Removed': {
       sealIcon = 'sealFailed';
       break;
