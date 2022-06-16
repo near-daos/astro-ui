@@ -16,6 +16,10 @@
   flex-direction: column;
 }
 
+.content input:disabled {
+  background-color: var(--color-white);
+}
+
 .header {
   align-items: center;
   display: flex;

@@ -131,13 +131,16 @@ function getTimestampLabel(
     );
   }
 
-  if ((status === 'Approved' || status === 'Rejected') && updatedAt) {
+  if (
+    (status === 'Approved' || status === 'Rejected' || status === 'Failed') &&
+    updatedAt
+  ) {
     return (
       <div className={cn(styles.timestampLabel)}>
         <span
           className={cn(styles.label, {
             [styles.approved]: status === 'Approved',
-            [styles.rejected]: status === 'Rejected',
+            [styles.rejected]: status === 'Rejected' || status === 'Failed',
           })}
         >
           {status} at&nbsp;
@@ -163,6 +166,7 @@ function getSealIcon(status: ProposalStatus): string | null {
     case 'Expired':
     case 'Moved':
     case 'Rejected':
+    case 'Failed':
     case 'Removed': {
       sealIcon = 'sealFailed';
       break;
@@ -276,21 +280,28 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     await router.reload();
   }, [daoId, proposalId, router, nearService]);
 
-  const handleCardClick = useCallback(() => {
-    if (preventNavigate) {
-      return;
-    }
+  const handleCardClick = useCallback(
+    e => {
+      if (
+        preventNavigate ||
+        e?.target?.closest(`.${styles.voteControlCell}`) ||
+        e?.target?.closest(`.${styles.actionBar}`)
+      ) {
+        return;
+      }
 
-    if (id && router.pathname !== SINGLE_PROPOSAL_PAGE_URL) {
-      router.push({
-        pathname: SINGLE_PROPOSAL_PAGE_URL,
-        query: {
-          dao: daoId,
-          proposal: id,
-        },
-      });
-    }
-  }, [daoId, id, preventNavigate, router]);
+      if (id && router.pathname !== SINGLE_PROPOSAL_PAGE_URL) {
+        router.push({
+          pathname: SINGLE_PROPOSAL_PAGE_URL,
+          query: {
+            dao: daoId,
+            proposal: id,
+          },
+        });
+      }
+    },
+    [daoId, id, preventNavigate, router]
+  );
 
   const timeLeft = useCountdown(votePeriodEnd);
 

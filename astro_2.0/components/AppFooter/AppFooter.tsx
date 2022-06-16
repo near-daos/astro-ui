@@ -28,6 +28,8 @@ export const AppFooter: FC<AppFooterProps> = ({
   const { canny, cfcLibrary } = useFlags();
 
   const { appConfig } = configService.get();
+
+  // Note that variables on deployed envs are being controlled by dev-ops team
   const RELEASE_NOTES = appConfig?.RELEASE_NOTES || '';
 
   function renderSocialIcon(href: string, icon: IconName) {

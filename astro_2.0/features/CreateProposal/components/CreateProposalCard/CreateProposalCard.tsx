@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode, useCallback, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 
 import cn from 'classnames';
@@ -95,8 +95,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   }
 
   function renderProposalCell() {
-    const getTranslation = (key: string) =>
-      t(`proposalCard.createProposal.header.${key}`);
+    const getTranslation = (key: string) => t(`createProposal.header.${key}`);
 
     switch (type) {
       case ProposalVariant.ProposeChangeProposalCreationPermissions: {
@@ -264,6 +263,38 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     }
   }
 
+  const handlerChangeTitle = useCallback(
+    titleValue => {
+      setValue('title', titleValue);
+      trigger('title');
+    },
+    [setValue, trigger]
+  );
+
+  const handlerChangeHashtags = useCallback(
+    hashtagsValue => {
+      setValue('hashtags', hashtagsValue);
+      trigger('hashtags');
+    },
+    [setValue, trigger]
+  );
+
+  const handlerChangeDescription = useCallback(
+    html => {
+      let value = html;
+
+      if (value === '<p><br></p>') {
+        value = '';
+      }
+
+      setValue('description', value);
+      setValue('details', value);
+      trigger('description');
+      trigger('details');
+    },
+    [setValue, trigger]
+  );
+
   function renderEditableContent() {
     return (
       <EditableContent
@@ -271,29 +302,12 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
         placeholder="Describe your draft..."
         titlePlaceholder="Add draft name"
         title={title}
-        setTitle={titleValue => {
-          setValue('title', titleValue);
-          trigger('title');
-        }}
+        setTitle={handlerChangeTitle}
         hashtags={hashtags}
-        setHashtags={hashtagsValue => {
-          setValue('hashtags', hashtagsValue);
-          trigger('hashtags');
-        }}
+        setHashtags={handlerChangeHashtags}
         className={styles.editable}
         html={description}
-        setHTML={html => {
-          let value = html;
-
-          if (value === '<p><br></p>') {
-            value = '';
-          }
-
-          setValue('description', value);
-          setValue('details', value);
-          trigger('description');
-          trigger('details');
-        }}
+        setHTML={handlerChangeDescription}
       />
     );
   }
@@ -427,7 +441,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     <div className={styles.root}>
       <div className={styles.proposalCell}>{renderProposalCell()}</div>
       <div className={styles.countdownCell}>
-        {t('proposalCard.createProposal.countdown')}
+        {t('createProposal.countdown')}
       </div>
       {renderCardContent()}
       <div className={styles.voteControlCell}>

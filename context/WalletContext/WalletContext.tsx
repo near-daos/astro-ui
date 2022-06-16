@@ -1,24 +1,25 @@
+import { useBoolean } from 'react-use';
+import { useRouter } from 'next/router';
+import { createContext, FC, useCallback, useContext, useMemo } from 'react';
+
 import { WalletType } from 'types/config';
 import {
   WalletMeta,
   WalletService,
 } from 'services/sputnik/SputnikNearService/walletServices/types';
-import { createContext, FC, useCallback, useContext, useMemo } from 'react';
-import { useBoolean } from 'react-use';
 
 import { configService } from 'services/ConfigService';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikNearService } from 'services/sputnik';
-import { useRouter } from 'next/router';
 import { ConnectingWalletModal } from 'astro_2.0/features/Auth/components/ConnectingWalletModal';
-import {
-  PkAndSignature,
-  useAvailableAccounts,
-  useWallet,
-  usePkAndSignature,
-} from 'context/WalletContextHooks';
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
+
+import { PkAndSignature } from './types';
+
+import { useWallet } from './hooks/useWallet';
+import { useAvailableAccounts } from './hooks/useAvailableAccounts';
+import { usePkAndSignature } from './hooks/usePkAndSignature';
 
 export interface WalletContext {
   availableWallets: WalletMeta[];

@@ -263,7 +263,24 @@
   justify-content: flex-start;
   margin: 22px 0 0;
   padding-bottom: 12px;
+  position: relative;
   width: 100%;
+}
+
+.cover {
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+
+  .loadingIndicator {
+    background: var(--color-white);
+    margin: 0;
+  }
 }
 
 .addMemberInput {

@@ -20,7 +20,7 @@ export const FinishProposal: FC<FinishProposalProps> = ({
       styles.finishProposal,
       {
         [styles.approved]: status === 'Approved',
-        [styles.rejected]: status === 'Rejected',
+        [styles.rejected]: status === 'Rejected' || status === 'Failed',
         [styles.expired]: status === 'Expired',
       },
       className
