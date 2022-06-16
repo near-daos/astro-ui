@@ -321,20 +321,27 @@ export async function getBuyNftFromParasProposal(
   };
 }
 
+interface ReceiptPosition {
+  token: string;
+  amount: string;
+  description: string;
+}
+
 export type CreateRoketoStreamInput = {
+  tokenId: string;
+  shouldDepositForDao: boolean;
+  shouldDepositForReceiver: boolean;
+  amount: string;
+  duration: string;
+  speed: string;
+  receiverId: string;
+  comment?: string;
+  receipt: {
+    total: Record<string, string>;
+    positions: ReceiptPosition[];
+  };
   details: string;
   externalUrl?: string;
-
-  // Stream configuration
-  receiverId: string;
-  tokenId: string;
-  amount: string;
-  comment?: string;
-
-  tokensPerSec: string;
-  cliffPeriodInSec?: string;
-  isAutoStartEnabled?: boolean;
-  isLocked?: boolean;
 };
 
 export async function getCreateRoketoStreamProposal(
@@ -351,7 +358,19 @@ export async function getCreateRoketoStreamProposal(
     throw new Error('No tokens data found');
   }
 
-  const deposit = new Decimal(stream.amount)
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  const {
+    shouldDepositForReceiver,
+    shouldDepositForDao,
+    amount,
+    speed,
+    receiverId,
+    comment,
+    receipt,
+  } = stream;
+  /* eslint-enable @typescript-eslint/no-unused-vars */
+
+  const amountInYocto = new Decimal(stream.amount)
     .mul(10 ** token.decimals)
     .toFixed();
 
@@ -360,12 +379,11 @@ export async function getCreateRoketoStreamProposal(
       request: {
         owner_id: dao.id,
         receiver_id: stream.receiverId,
-        tokens_per_sec: new Decimal(stream.tokensPerSec).toFixed(),
+        tokens_per_sec: speed,
         description: stream.comment,
-        cliff_period_in_sec: stream.cliffPeriodInSec,
-        is_auto_start_enabled: stream.isAutoStartEnabled,
+        // is_auto_start_enabled: stream.isAutoStartEnabled,
         is_expirable: true,
-        is_locked: stream.isLocked,
+        // is_locked: stream.isLocked,
       },
     },
   };
@@ -383,7 +401,7 @@ export async function getCreateRoketoStreamProposal(
   const actions: FunctionCallAction[] = [
     {
       method_name: 'ft_transfer_call',
-      deposit: new Decimal(deposit).toFixed(),
+      deposit: new Decimal(amountInYocto).toFixed(),
       args: Buffer.from(JSON.stringify(TransferCall)).toString('base64'),
       gas: formatGasValue(300).toString(),
     },
@@ -393,7 +411,7 @@ export async function getCreateRoketoStreamProposal(
   if (isNear) {
     actions.unshift({
       method_name: 'near_deposit',
-      deposit,
+      deposit: amountInYocto,
       args: Buffer.from('{}').toString('base64'),
       gas: formatGasValue(DEFAULT_PROPOSAL_GAS).toString(),
     });

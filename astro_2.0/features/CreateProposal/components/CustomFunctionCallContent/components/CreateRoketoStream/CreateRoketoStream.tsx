@@ -88,14 +88,16 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
     }
 
     const durationSeconds = new Decimal(durationMs).div(1000);
-    const speedInYokto = new Decimal(amountToStream)
+    const speedInYocto = new Decimal(amountToStream)
       .div(durationSeconds)
       .toFixed();
 
+    setValue('speed', speedInYocto);
+
     const formatter = new TokenFormatter(selectedToken.decimals);
 
-    return formatter.tokensPerMeaningfulPeriod(speedInYokto);
-  }, [duration, amountToStream, selectedToken]);
+    return formatter.tokensPerMeaningfulPeriod(speedInYocto);
+  }, [setValue, duration, amountToStream, selectedToken]);
 
   const { total, positions } = useRoketoReceipt({
     amountToStream,
