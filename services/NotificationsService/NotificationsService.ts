@@ -18,7 +18,7 @@ import {
 } from 'services/NotificationsService/types';
 
 import { logger } from 'utils/logger';
-import { PkAndSignature } from 'context/WalletContextHooks';
+import { PkAndSignature } from 'context/WalletContext/types';
 import { API_QUERIES } from 'services/sputnik/constants';
 
 class NotificationsServiceClass {

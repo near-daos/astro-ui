@@ -6,7 +6,7 @@ import { MY_ACCOUNT_PAGE_URL } from 'constants/routing';
 import { Icon } from 'components/Icon';
 import { AccountPopupItem } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/AccountPopupItem';
 
-import styles from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/MyAccount/MyAccountButton.module.scss';
+import styles from './MyAccountButton.module.scss';
 
 interface MyAccountButtonProps {
   className?: string;

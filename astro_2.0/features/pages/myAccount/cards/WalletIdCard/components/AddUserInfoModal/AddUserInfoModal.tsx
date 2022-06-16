@@ -13,7 +13,7 @@ import { Input } from 'components/inputs/Input';
 import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 import { UsaOnly } from 'astro_2.0/features/pages/myAccount/cards/WalletIdCard/components/UsaOnly';
 
-import { PkAndSignature } from 'context/WalletContextHooks';
+import { PkAndSignature } from 'context/WalletContext/types';
 import { ContactForm } from './types';
 
 import { useValidationSchema } from './useValidationSchema';
