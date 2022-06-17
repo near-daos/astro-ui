@@ -6,6 +6,7 @@ import { PaginationResponse } from 'types/api';
 import { SharedProposalTemplate } from 'types/proposalTemplate';
 import { useRouter } from 'next/router';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
+import { useWalletContext } from 'context/WalletContext';
 
 export type PageData = PaginationResponse<SharedProposalTemplate[]>;
 
@@ -15,6 +16,7 @@ export function useCfcLibraryData(): {
   data: PageData | null;
   handleSearch: (val: string) => Promise<PageData | null>;
   handleReset: () => void;
+  onUpdate: (templateId: string, daosCount: number) => void;
 } {
   const router = useRouter();
   const isMounted = useMountedState();
@@ -99,18 +101,82 @@ export function useCfcLibraryData(): {
     }
   };
 
+  const onUpdate = useCallback(
+    (templateId, daosCount) => {
+      if (!data) {
+        return;
+      }
+
+      const newData = data.data.map(item => {
+        if (templateId === item.id) {
+          return {
+            ...item,
+            daoCount: item.daoCount + daosCount,
+          };
+        }
+
+        return item;
+      });
+
+      setData({
+        ...data,
+        data: newData,
+      });
+    },
+    [data]
+  );
+
   return {
     loading,
     loadMore,
     data,
     handleSearch,
     handleReset,
+    onUpdate,
+  };
+}
+
+type CloneDaoParams = { templateId: string; targetDao: string };
+
+export function useCloneCfcTemplate(): {
+  cloning: boolean;
+  cloneToDao: (
+    params: CloneDaoParams[]
+  ) => Promise<({ proposalTemplateId: string; daoId: string } | null)[]>;
+} {
+  const { accountId, pkAndSignature } = useWalletContext();
+
+  const [{ loading: cloning }, cloneToDao] = useAsyncFn(
+    async (params: CloneDaoParams[]) => {
+      if (pkAndSignature?.publicKey && pkAndSignature?.signature) {
+        return Promise.all(
+          params.map(({ templateId, targetDao }) =>
+            SputnikHttpService.cloneTemplateToDao({
+              templateId,
+              targetDao,
+              accountId,
+              publicKey: pkAndSignature.publicKey ?? '',
+              signature: pkAndSignature.signature ?? '',
+            })
+          )
+        );
+      }
+
+      return Promise.resolve([]);
+    },
+    [accountId, pkAndSignature]
+  );
+
+  return {
+    cloning,
+    cloneToDao,
   };
 }
 
 export function useSharedTemplatePageData(): {
   data: SharedProposalTemplate | null;
   loading: boolean;
+  templateId: string;
 } {
   const router = useRouter();
   const isMounted = useMountedState();
@@ -139,5 +205,6 @@ export function useSharedTemplatePageData(): {
   return {
     data,
     loading,
+    templateId,
   };
 }

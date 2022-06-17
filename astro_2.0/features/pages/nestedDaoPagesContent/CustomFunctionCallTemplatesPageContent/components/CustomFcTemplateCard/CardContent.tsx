@@ -31,6 +31,7 @@ interface Props {
   onDelete: () => void;
   optionalControl?: ReactNode;
   disabled: boolean;
+  defaultExpanded?: boolean;
 }
 
 export const CardContent: FC<Props> = ({
@@ -38,6 +39,7 @@ export const CardContent: FC<Props> = ({
   onDelete,
   optionalControl,
   disabled,
+  defaultExpanded,
 }) => {
   const {
     register,
@@ -48,7 +50,7 @@ export const CardContent: FC<Props> = ({
   } = useFormContext();
 
   const isValid = Object.keys(errors).length === 0;
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(defaultExpanded);
   const [showModal] = useModal(ConfirmModal);
   const depositWidth = useDepositWidth('deposit');
   const { tokenOptions, selectedTokenData } = useTokenOptions();
@@ -73,7 +75,7 @@ export const CardContent: FC<Props> = ({
 
   useMount(() => {
     // Setting default value on form hook doesn't work with Ace so we update value manually
-    setValue('json', json, { shouldValidate: true });
+    setValue('json', json, { shouldValidate: !disabled });
   });
 
   return (
@@ -192,6 +194,7 @@ export const CardContent: FC<Props> = ({
           fieldName="json"
           label="JSON"
           fullWidth
+          labelClassName={styles.inputLabel}
           className={cn(styles.editorLabel, {
             [styles.expanded]: expanded,
           })}

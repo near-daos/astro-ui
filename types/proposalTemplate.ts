@@ -30,10 +30,13 @@ export type SharedProposalTemplate = {
   id: string;
   name: string;
   description: string;
-  creator: string;
+  createdBy: string;
   config: CustomFcTemplatePayload;
   createdAt: string;
-  duplicated: number;
-  usedInDaos: string[];
-  usedInDaosTotal: number;
+  updatedAt: string;
+  daoCount: number;
+
+  // duplicated: number;
+  usedInDaos?: string[];
+  // usedInDaosTotal?: number;
 };

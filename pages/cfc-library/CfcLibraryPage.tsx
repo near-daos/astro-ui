@@ -12,7 +12,16 @@ import { SearchInput } from 'astro_2.0/components/SearchInput';
 import { Dropdown } from 'components/Dropdown';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
+import { DaoFeedItem } from 'types/dao';
+
+import { CfcLibraryContext } from 'astro_2.0/features/pages/cfcLibrary';
+import { useWalletContext } from 'context/WalletContext';
+
 import styles from './CfcLibraryPage.module.scss';
+
+interface Props {
+  accountDaos: DaoFeedItem[];
+}
 
 function getSortOptions(t: TFunction) {
   return [
@@ -27,13 +36,31 @@ function getSortOptions(t: TFunction) {
   ];
 }
 
-const CfcLibraryPage: NextPage = () => {
+const CfcLibraryPage: NextPage<Props> = ({ accountDaos }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const sortOptions = useMemo(() => getSortOptions(t), [t]);
+  const { accountId } = useWalletContext();
 
   const { query } = useQuery<{ sort: string; view: string }>();
   const { sort } = query;
+
+  const {
+    data,
+    handleSearch,
+    loading,
+    loadMore,
+    handleReset,
+    onUpdate,
+  } = useCfcLibraryData();
+
+  const contextValue = useMemo(() => {
+    return {
+      accountDaos: accountDaos?.filter(item => item.isCouncil),
+      accountId,
+      onUpdate,
+    };
+  }, [accountDaos, accountId, onUpdate]);
 
   const handleSort = useCallback(
     async value => {
@@ -52,14 +79,6 @@ const CfcLibraryPage: NextPage = () => {
     },
     [query, router]
   );
-
-  const {
-    data,
-    handleSearch,
-    loading,
-    loadMore,
-    handleReset,
-  } = useCfcLibraryData();
 
   return (
     <div className={styles.root}>
@@ -95,15 +114,17 @@ const CfcLibraryPage: NextPage = () => {
           </div>
         </div>
         <div className={styles.content}>
-          {data && data.data.length > 0 ? (
-            <TemplatesList
-              total={data.total}
-              data={data.data}
-              next={loadMore}
-            />
-          ) : (
-            <NoResultsView title="No data found" />
-          )}
+          <CfcLibraryContext.Provider value={contextValue}>
+            {data && data.data.length > 0 ? (
+              <TemplatesList
+                total={data.total}
+                data={data.data}
+                next={loadMore}
+              />
+            ) : (
+              <NoResultsView title="No data found" />
+            )}
+          </CfcLibraryContext.Provider>
         </div>
       </div>
     </div>

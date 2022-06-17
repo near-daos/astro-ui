@@ -64,3 +64,8 @@
 .ellipsed {
   @include ellipse-text;
 }
+
+.label {
+  @include centralize;
+  min-width: 80px;
+}

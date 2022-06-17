@@ -10,9 +10,21 @@
   @extend %subtitle4;
   color: var(--color-neutral-60);
   display: grid;
-  grid-gap: 12px;
-  grid-template-columns: 2fr 1fr 80px 1fr;
+  grid-gap: 24px;
+  grid-template-columns: 2fr 1fr;
   margin-bottom: 16px;
 
   white-space: nowrap;
+
+  @include tablet-landscape {
+    grid-template-columns: 2fr 1fr 80px 1fr;
+  }
+}
+
+.hideMobile {
+  display: none;
+
+  @include tablet-landscape {
+    display: block;
+  }
 }

@@ -60,6 +60,7 @@ export const API_QUERIES = {
   SHOW_BOUNTIES: 'showBounties',
   UPDATE_DAO_SETTINGS: 'updateDaoSettings',
   SAVE_PROPOSAL_TEMPLATE: 'saveProposalTemplate',
+  CLONE_PROPOSAL_TEMPLATE: 'cloneProposalTemplate',
   UPDATE_PROPOSAL_TEMPLATE: 'updateProposalTemplate',
   DELETE_PROPOSAL_TEMPLATE: 'deleteProposalTemplate',
   UPDATE_ACCOUNT_SUBSCRIPTION: 'updateAccountSubscription',

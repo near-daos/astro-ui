@@ -30,7 +30,7 @@ interface Props {
   onClose: (args?: TemplateUpdatePayload[]) => void;
   accountDaos: DaoFeedItem[];
   proposal: ProposalFeedItem;
-  template?: ProposalTemplate;
+  template?: Partial<ProposalTemplate>;
   name?: string;
 }
 

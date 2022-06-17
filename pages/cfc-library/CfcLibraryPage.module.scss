@@ -9,7 +9,10 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  margin-top: 72px;
+
+  @include tablet-landscape {
+    margin-top: 72px;
+  }
 
   h1 {
     margin: 16px 0;
@@ -26,10 +29,14 @@
 }
 
 .body {
-  border-radius: 8px;
-  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
-  margin-top: 32px;
-  //padding: 24px;
+  margin: 0 -24px;
+
+  @include tablet-landscape {
+    border-radius: 8px;
+    box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+
+    margin: 32px 0 0;
+  }
 }
 
 .filters {
@@ -65,4 +72,7 @@
 
 .content {
   padding: 24px;
+  @include tablet-landscape {
+    padding: 24px;
+  }
 }

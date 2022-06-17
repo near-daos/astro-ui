@@ -17,10 +17,11 @@ import styles from './ApplyToDaos.module.scss';
 
 interface Props {
   accountDaos?: DaoFeedItem[];
-  template?: ProposalTemplate;
+  template?: Partial<ProposalTemplate>;
   className?: string;
   onSave?: (data: TemplateUpdatePayload[]) => Promise<void>;
   disabled: boolean;
+  buttonProps?: React.ComponentProps<typeof Button>;
 }
 
 export const ApplyToDaos: FC<Props> = ({
@@ -29,29 +30,36 @@ export const ApplyToDaos: FC<Props> = ({
   onSave,
   className,
   disabled,
+  children,
+  buttonProps = {},
 }) => {
   const { pkAndSignature } = useWalletContext();
   const [showModal] = useModal(SaveFcTemplateModal);
 
-  const handleClick = useCallback(async () => {
-    if (!accountDaos || !template) {
-      return;
-    }
+  const handleClick = useCallback(
+    async e => {
+      e.stopPropagation();
 
-    const availableDaos = accountDaos.filter(item => item.isCouncil);
+      if (!accountDaos || !template) {
+        return;
+      }
 
-    const res = await showModal({
-      accountDaos: availableDaos,
-      template,
-      name: template.name,
-    });
+      const availableDaos = accountDaos.filter(item => item.isCouncil);
 
-    if (res && res[0] && pkAndSignature && onSave) {
-      const data = res[0];
+      const res = await showModal({
+        accountDaos: availableDaos,
+        template,
+        name: template.name,
+      });
 
-      await onSave(data);
-    }
-  }, [accountDaos, onSave, pkAndSignature, showModal, template]);
+      if (res && res[0] && pkAndSignature && onSave) {
+        const data = res[0];
+
+        await onSave(data);
+      }
+    },
+    [accountDaos, onSave, pkAndSignature, showModal, template]
+  );
 
   return (
     <Button
@@ -61,8 +69,11 @@ export const ApplyToDaos: FC<Props> = ({
       className={cn(styles.control, className)}
       onClick={handleClick}
       disabled={disabled}
+      {...buttonProps}
     >
-      <span className={styles.label}>Copy to dao</span>
+      <span className={cn(styles.label, styles.row)}>
+        {children || 'Copy to dao'}
+      </span>
     </Button>
   );
 };
