@@ -4,16 +4,19 @@ import React, { FC } from 'react';
 import styles from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/AccountPopupItem/AccountPopupItem.module.scss';
 
 interface AccountPopupItemProps {
-  className?: string;
   icon: React.ReactNode;
-  content: React.ReactNode;
+  classes?: {
+    root?: string;
+    content?: string;
+  };
+
   onClick?: () => void;
 }
 
 export const AccountPopupItem: FC<AccountPopupItemProps> = ({
-  className,
+  classes = {},
   icon,
-  content,
+  children,
   onClick,
 }) => {
   return (
@@ -22,10 +25,10 @@ export const AccountPopupItem: FC<AccountPopupItemProps> = ({
       role="button"
       onClick={onClick}
       onKeyPress={onClick}
-      className={cn(styles.root, className)}
+      className={cn(styles.root, classes.root)}
     >
       <div className={styles.icon}>{icon}</div>
-      <div className={styles.content}>{content}</div>
+      <div className={cn(styles.content, classes.content)}>{children}</div>
     </div>
   );
 };

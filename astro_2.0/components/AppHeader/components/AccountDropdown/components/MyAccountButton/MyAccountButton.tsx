@@ -26,10 +26,13 @@ export const MyAccountButton: React.FC<MyAccountButtonProps> = ({
 
   return (
     <AccountPopupItem
-      className={className}
+      classes={{
+        root: className,
+      }}
       onClick={goToMyAccountPage}
       icon={<Icon name="account" />}
-      content={<div className={styles.text}>My Account</div>}
-    />
+    >
+      <div className={styles.text}>My Account</div>
+    </AccountPopupItem>
   );
 };

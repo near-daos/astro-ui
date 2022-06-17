@@ -30,11 +30,14 @@ export const WalletButton: React.FC<WalletButton> = ({
   return (
     <AccountPopupItem
       icon={<WalletIcon walletType={walletType} isSelected={isSelected} />}
-      content={<WalletDescription name={name} type={type} url={url} />}
       onClick={onClick}
-      className={cn(styles.item, className, {
-        [styles.disabled]: disabled,
-      })}
-    />
+      classes={{
+        root: cn(styles.item, className, {
+          [styles.disabled]: disabled,
+        }),
+      }}
+    >
+      <WalletDescription name={name} type={type} url={url} />
+    </AccountPopupItem>
   );
 };
