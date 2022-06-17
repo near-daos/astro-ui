@@ -67,7 +67,7 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
       return <NoResultsView title="No data found" />;
     }
 
-    const { createdBy, name, description } = data;
+    const { createdBy, name, description, daos } = data;
 
     const url = CFC_LIBRARY_TEMPLATE_VIEW.replace('[template]', templateId);
     const shareUrl = `${document.location?.origin}${url}`;
@@ -172,17 +172,19 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
           <div className={cn(styles.list, styles.hideMobile)}>
             <div className={styles.listTitle}>Duplicated</div>
             <ul>
-              {data.usedInDaos?.map(item => (
-                <li key={item} className={styles.listItem}>
-                  {item}
+              {daos?.slice(0, 9).map(item => (
+                <li key={item.id} className={styles.listItem}>
+                  {item.id}
                 </li>
               ))}
             </ul>
-            {data.daoCount > (data.usedInDaos?.length ?? 0) && (
-              <div className={styles.listTotal}>
-                + {data.daoCount - (data.usedInDaos?.length ?? 0)} DAOs
-              </div>
-            )}
+            <div className={styles.listTotal}>
+              {(daos?.length ?? 0) > 9 ? (
+                <span>+ {(daos?.length ?? 0) - 9} DAOs</span>
+              ) : (
+                <span>{daos?.length} DAOs</span>
+              )}
+            </div>
           </div>
           <div className={styles.card}>
             <CustomTokensContext.Provider value={{ tokens }}>

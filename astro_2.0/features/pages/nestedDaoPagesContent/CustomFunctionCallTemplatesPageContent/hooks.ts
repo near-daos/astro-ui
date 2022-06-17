@@ -44,7 +44,7 @@ export function useProposalTemplates(
       }
 
       const { publicKey, signature } = pkAndSignature;
-      const { name, isEnabled, config } = data;
+      const { name, isEnabled, config, description } = data;
 
       if (publicKey && signature) {
         try {
@@ -56,6 +56,7 @@ export function useProposalTemplates(
               publicKey,
               signature,
               name,
+              description,
               isEnabled,
               config,
             }
@@ -148,13 +149,20 @@ export function useSaveTemplates(): {
         try {
           await Promise.all(
             data.map(
-              ({ daoId, name, isEnabled, config }: TemplateUpdatePayload) => {
+              ({
+                daoId,
+                name,
+                description = '',
+                isEnabled,
+                config,
+              }: TemplateUpdatePayload) => {
                 return SputnikHttpService.saveProposalTemplate(daoId, {
                   accountId,
                   publicKey,
                   signature,
                   name,
                   isEnabled,
+                  description,
                   config,
                 });
               }

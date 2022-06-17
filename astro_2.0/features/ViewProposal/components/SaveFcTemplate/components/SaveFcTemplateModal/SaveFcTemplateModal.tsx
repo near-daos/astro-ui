@@ -13,6 +13,7 @@ import {
   Option,
 } from 'components/inputs/selects/DropdownMultiSelect';
 import { Badge } from 'components/Badge';
+import { TextArea } from 'components/inputs/TextArea';
 
 import { DaoFeedItem } from 'types/dao';
 import { ProposalFeedItem } from 'types/proposal';
@@ -36,6 +37,7 @@ interface Props {
 
 type Form = {
   name: string;
+  description: string;
   daos: string[];
 };
 
@@ -88,6 +90,7 @@ export const SaveFcTemplateModal: FC<Props> = ({
     const dataToSave = data.daos.map(daoId => ({
       daoId,
       name: data.name,
+      description: data.description,
       config: templatePayload,
       isEnabled: true,
     }));
@@ -123,6 +126,22 @@ export const SaveFcTemplateModal: FC<Props> = ({
                 size="block"
                 inputClassName={styles.input}
                 placeholder="Template Name"
+                disabled={!daosOptions.length}
+              />
+            </InputWrapper>
+          </div>
+
+          <div className={styles.inputWrapper}>
+            <InputWrapper
+              fieldName="description"
+              label="Add Desctription"
+              fullWidth
+            >
+              <TextArea
+                {...register('description')}
+                size="block"
+                maxLength={500}
+                placeholder="Template description"
                 disabled={!daosOptions.length}
               />
             </InputWrapper>

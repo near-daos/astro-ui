@@ -650,7 +650,8 @@ export class HttpService {
           }
           break;
         case API_QUERIES.GET_SHARED_PROPOSAL_TEMPLATES: {
-          const { query } = requestCustom.queryRequest?.params || {};
+          const { query, templateId } =
+            requestCustom.queryRequest?.params || {};
 
           const queryString = RequestQueryBuilder.create();
 
@@ -659,7 +660,7 @@ export class HttpService {
           };
 
           // search
-          if (query.searchInput) {
+          if (query?.searchInput) {
             search.$and?.push({
               name: {
                 $contL: query.searchInput,
@@ -671,10 +672,21 @@ export class HttpService {
             queryString.search(search);
           }
 
-          queryString.setLimit(query.limit).setOffset(query.offset).query();
+          if (templateId) {
+            queryString.setFilter({
+              field: 'id',
+              operator: '$eq',
+              value: templateId,
+            });
+          }
 
-          request.url = `/proposals/templates?${queryString.queryString}`;
-          request.params = { sort: query.sort };
+          queryString
+            .setLimit(query?.limit ?? 1000)
+            .setOffset(query?.offset ?? 0)
+            .query();
+
+          request.url = `/proposals/templates?${queryString.queryString}&join=daos||id`;
+          request.params = { sort: query?.sort };
 
           break;
         }
