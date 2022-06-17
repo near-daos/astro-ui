@@ -6,6 +6,7 @@ data:
   NEAR_ENV: "{{ .Values.environment.near_env }}"
   NEAR_CONTRACT_NAME: "{{ .Values.environment.near_contract_name }}"
   ROKETO_CONTRACT_NAME: "{{ .Values.environment.roketo_contract_name }}"
+  ROKETO_MULTICALL_NAME: "{{ .Values.environment.roketo_multicall_name }}"
   API_URL: "{{ .Values.environment.api_url }}"
   AWS_BUCKET: "{{ .Values.environment.aws_bucket }}"
   AWS_REGION: "{{ .Values.environment.aws_region }}"

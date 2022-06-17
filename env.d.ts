@@ -20,6 +20,7 @@ declare global {
 
       NEAR_CONTRACT_NAME: string;
       ROKETO_CONTRACT_NAME: string;
+      ROKETO_MULTICALL_NAME: string;
       TOKEN_FACTORY_CONTRACT_NAME: string;
 
       RELEASE_NOTES: string;
