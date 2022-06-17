@@ -3,14 +3,14 @@ import cn from 'classnames';
 import { useWalletContext } from 'context/WalletContext';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 
-import styles from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletAccount/WalletAccount.module.scss';
+import styles from './WalletAccountV1.module.scss';
 
 interface WalletAccountProps {
   account: string;
   switchAccountHandler: (account: string) => () => void;
 }
 
-export const WalletAccount: React.FC<WalletAccountProps> = ({
+export const WalletAccountV1: React.FC<WalletAccountProps> = ({
   account,
   switchAccountHandler,
 }) => {

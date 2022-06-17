@@ -1,5 +1,7 @@
+import compact from 'lodash/compact';
 import { useBoolean } from 'react-use';
 import { useRouter } from 'next/router';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 import { createContext, FC, useCallback, useContext, useMemo } from 'react';
 
 import { WalletType } from 'types/config';
@@ -15,7 +17,7 @@ import { SputnikNearService } from 'services/sputnik';
 import { ConnectingWalletModal } from 'astro_2.0/features/Auth/components/ConnectingWalletModal';
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 
-import { PkAndSignature } from './types';
+import { PkAndSignature, WalletAccount } from './types';
 
 import { useWallet } from './hooks/useWallet';
 import { useAvailableAccounts } from './hooks/useAvailableAccounts';
@@ -30,7 +32,7 @@ export interface WalletContext {
   logout: () => Promise<void>;
   switchAccount: (walletType: WalletType, accountId: string) => void;
   switchWallet: (walletType: WalletType) => void;
-  availableAccounts: string[];
+  availableAccounts: WalletAccount[];
   pkAndSignature: PkAndSignature | null;
   // todo get rid of
   nearService: SputnikNearService | null;
@@ -46,7 +48,14 @@ export const WrappedWalletContext: FC = ({ children }) => {
     setWallet,
     removePersistedWallet,
   ] = useWallet();
-  const availableAccounts = useAvailableAccounts(currentWallet);
+
+  const { newWalletDropdown } = useFlags();
+
+  const wallets = useMemo(() => {
+    return compact(newWalletDropdown ? availableWallets : [currentWallet]);
+  }, [currentWallet, availableWallets, newWalletDropdown]);
+
+  const availableAccounts = useAvailableAccounts(wallets);
   const pkAndSignature = usePkAndSignature(currentWallet);
   const { nearConfig } = configService.get();
 

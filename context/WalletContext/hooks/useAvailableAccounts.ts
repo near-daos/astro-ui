@@ -1,25 +1,51 @@
+import reduce from 'lodash/reduce';
+import isEmpty from 'lodash/isEmpty';
 import { useEffect, useState } from 'react';
 
+import { WalletAccount } from 'context/WalletContext/types';
 import { WalletService } from 'services/sputnik/SputnikNearService/walletServices/types';
 
 export const useAvailableAccounts = (
-  currentWallet: WalletService | null
-): string[] => {
-  const [availableAccounts, setAvailableAccounts] = useState<string[]>([]);
+  wallets: WalletService[]
+): WalletAccount[] => {
+  const [availableAccounts, setAvailableAccounts] = useState<WalletAccount[]>(
+    []
+  );
 
   useEffect(() => {
-    if (!currentWallet) {
+    if (isEmpty(wallets)) {
       return;
     }
 
     const getAccounts = async () => {
-      const accounts = await currentWallet.getAvailableAccounts();
+      const results = await Promise.allSettled(
+        wallets.map(wallet => wallet.getAvailableAccounts())
+      );
+
+      const accounts = reduce(
+        wallets,
+        (acc: WalletAccount[], wallet, index) => {
+          const result = results[index];
+
+          if (result.status === 'fulfilled') {
+            const walletAccounts = result.value.map((account: string) => ({
+              acc: account,
+              walletType: wallet.getWalletType(),
+            }));
+
+            acc.push(...walletAccounts);
+          }
+
+          return acc;
+        },
+        []
+      );
 
       setAvailableAccounts(accounts);
     };
 
     getAccounts().catch(console.error);
-  }, [currentWallet]);
+  }, [wallets]);
 
   return availableAccounts;
 };

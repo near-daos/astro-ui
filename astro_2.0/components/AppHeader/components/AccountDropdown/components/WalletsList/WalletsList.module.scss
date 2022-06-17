@@ -13,34 +13,8 @@
   width: 260px;
   z-index: 1000;
 
-  &.hidden {
-    display: none;
-  }
-
-  .delimiter {
-    background-color: var(--color-neutral-20);
-    height: 1px;
-    margin: 12px 0;
-  }
-
-  .chooseWalletCaption {
-    @extend %subtitle5;
-    color: var(--color-neutral-60);
-    margin-bottom: 24px;
-  }
-
-  .text {
-    @extend %subtitle4;
-    color: var(--color-neutral-90);
-  }
-
-  .name {
-    color: var(--color-neutral-60);
-    margin: 8px 0;
-    overflow: hidden;
-    padding-left: 8px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  &.v2 {
+    width: 284px;
   }
 }
 

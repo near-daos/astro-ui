@@ -1,0 +1,37 @@
+.root {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  height: 52px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--color-neutral-20);
+  }
+}
+
+.statusDot {
+  $dot-size: 6px;
+
+  background-color: transparent;
+  border-radius: $dot-size;
+  flex-shrink: 0;
+  height: $dot-size;
+  margin-right: 8px;
+  width: $dot-size;
+}
+
+.active .statusDot {
+  background-color: var(--color-brand-green);
+}
+
+.iconHolder {
+  margin-right: 10px;
+}
+
+.account {
+  margin-right: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
