@@ -8,7 +8,7 @@ import { configService } from 'services/ConfigService';
 /* eslint-disable camelcase */
 interface RoketoToken {
   account_id: string;
-  is_listed: boolean;
+  is_payment: boolean;
   commission_on_create: string;
   commission_on_transfer: string;
   gas_for_ft_transfer: string;
@@ -19,7 +19,6 @@ type RoketoTokens = Record<string, RoketoToken>;
 
 interface RoketoDao {
   tokens: RoketoTokens;
-  commission_unlisted: string;
   commission_non_payment_ft: string;
 }
 
@@ -77,7 +76,6 @@ function useRoketoDao(): { loading: boolean; roketoDao: RoketoDao } {
   const [loading, setLoading] = useState(true);
   const [roketoDao, setRoketoDao] = useState<RoketoDao>({
     tokens: {},
-    commission_unlisted: '0',
     commission_non_payment_ft: '0',
   });
 
@@ -161,7 +159,10 @@ export function useRoketoReceipt({
           description: 'Stream creation fee',
         }
       );
-    } else if (roketoDao.tokens[tokenId]) {
+    } else if (
+      roketoDao.tokens[tokenId] &&
+      roketoDao.tokens[tokenId].is_payment
+    ) {
       const token = roketoDao.tokens[tokenId];
 
       positions.push(
@@ -185,9 +186,7 @@ export function useRoketoReceipt({
         },
         {
           token: 'NEAR',
-          amount:
-            roketoDao.commission_unlisted ??
-            roketoDao.commission_non_payment_ft,
+          amount: roketoDao.commission_non_payment_ft,
           description: 'Stream creation fee',
         }
       );
