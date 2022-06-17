@@ -1242,11 +1242,18 @@ class SputnikHttpServiceClass {
     templateId: string
   ): Promise<SharedProposalTemplate | null> {
     try {
-      const { data } = await this.httpService.get<SharedProposalTemplate>(
-        `/proposals/templates/${templateId}`
-      );
+      const { data } = await this.httpService.get<
+        PaginationResponse<SharedProposalTemplate[]>
+      >('/proposals/templates', {
+        queryRequest: {
+          name: API_QUERIES.GET_SHARED_PROPOSAL_TEMPLATES,
+          params: {
+            templateId,
+          },
+        },
+      });
 
-      return data;
+      return data.data[0];
     } catch (error) {
       console.error(error);
 

@@ -6,13 +6,14 @@ export type ProposalTemplateInput = {
   publicKey: string;
   signature: string;
   name: string;
+  description: string;
   isEnabled: boolean;
   config: CustomFcTemplatePayload;
 };
 
 export type TemplateUpdatePayload = Pick<
   ProposalTemplate,
-  'daoId' | 'config' | 'isEnabled' | 'name'
+  'daoId' | 'config' | 'isEnabled' | 'name' | 'description'
 >;
 
 export type ProposalTemplate = {
@@ -35,8 +36,5 @@ export type SharedProposalTemplate = {
   createdAt: string;
   updatedAt: string;
   daoCount: number;
-
-  // duplicated: number;
-  usedInDaos?: string[];
-  // usedInDaosTotal?: number;
+  daos?: { id: string }[];
 };
