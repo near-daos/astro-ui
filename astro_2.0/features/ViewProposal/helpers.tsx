@@ -660,6 +660,7 @@ export function isSaveTemplateActionAvailable(
     ProposalVariant.ProposeUpgradeSelf,
     ProposalVariant.ProposeCreateDao,
     ProposalVariant.ProposeTransferFunds,
+    ProposalVariant.ProposeStakingContractDeployment,
   ];
 
   return (

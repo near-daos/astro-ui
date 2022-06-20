@@ -1,13 +1,15 @@
 import { useEffect, useRef, VFC } from 'react';
 import { useSocket } from 'context/SocketContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 export const AppHealth: VFC = () => {
   const { socket } = useSocket();
+  const { appHealth } = useFlags();
   const notyRef = useRef<boolean>(false);
 
   useEffect(() => {
-    if (socket) {
+    if (socket && appHealth) {
       socket.on('connect', () => {
         if (notyRef.current) {
           notyRef.current = false;
@@ -29,7 +31,7 @@ export const AppHealth: VFC = () => {
         }
       });
     }
-  }, [socket]);
+  }, [appHealth, socket]);
 
   return null;
 };
