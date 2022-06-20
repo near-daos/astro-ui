@@ -92,7 +92,7 @@ export const UpdateGroupContent: FC<Props> = ({
               {activeGroup.votePolicy?.quorum
                 ? activeGroup.votePolicy?.quorum
                 : calculateQuorum(
-                    activeGroup.votePolicy?.changePolicy?.threshold ||
+                    activeGroup.votePolicy?.policy?.threshold ||
                       activeGroup.votePolicy?.defaultPolicy?.threshold
                   )}{' '}
               %
