@@ -14,7 +14,7 @@
   }
 
   @include desktop {
-    padding: 8px 8px 8px 10px;
+    padding: 8px;
   }
 
   div {
@@ -30,6 +30,11 @@
       margin-left: 0;
     }
   }
+}
+
+.checkbox {
+  color: var(--color-primary-50);
+  cursor: pointer;
 }
 
 .icon {

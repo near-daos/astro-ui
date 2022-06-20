@@ -37,6 +37,8 @@ export interface ViewProposalProps {
   preventNavigate?: boolean;
   optionalPostVoteAction?: () => Promise<void>;
   onReplyClick?: () => void;
+  onSelect?: (p: string) => void;
+  selectedList?: string[];
 }
 
 const variants = {
@@ -53,6 +55,8 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   preventNavigate,
   optionalPostVoteAction,
   onReplyClick,
+  onSelect,
+  selectedList,
 }) => {
   const methods = useForm<{
     title: string;
@@ -151,6 +155,8 @@ export const ViewProposal: FC<ViewProposalProps> = ({
             toggleInfoPanel={toggleInfoPanel}
             commentsCount={commentsCount}
             optionalPostVoteAction={optionalPostVoteAction}
+            onSelect={onSelect}
+            selectedList={selectedList}
             voteDetails={
               proposal.dao.policy.defaultVotePolicy.ratio
                 ? getVoteDetails(

@@ -10,3 +10,5 @@ export const FEED_CATEGORIES = [
 ];
 
 export const STAKING_CONTRACT_PREFIX = '-staking';
+
+export const MAX_MULTI_VOTES = 20;

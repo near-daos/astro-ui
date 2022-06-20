@@ -1,8 +1,4 @@
-import { useMedia, useMountedState } from 'react-use';
-import React, { FC, useEffect, useState } from 'react';
-import cn from 'classnames';
-
-import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
+import React, { FC } from 'react';
 
 import {
   ProposalType,
@@ -10,8 +6,13 @@ import {
   ProposalVotingPermissions,
 } from 'types/proposal';
 
-import { CopyButton } from 'astro_2.0/components/CopyButton';
-import { ActionButton } from 'astro_2.0/components/ActionButton';
+import { BehaviorActions } from 'features/proposal/components/ProposalActions/components/BehaviorActions';
+
+import { SocialActions } from 'features/proposal/components/ProposalActions/components/SocialActions';
+
+import { Checkbox } from 'components/inputs/Checkbox';
+
+import { MAX_MULTI_VOTES } from 'constants/proposals';
 
 import styles from './ProposalActions.module.scss';
 
@@ -26,9 +27,13 @@ interface ProposalActionsProps {
   disableControls: boolean;
   daoId: string;
   proposalId: string | undefined;
+  onSelect?: (p: string) => void;
+  selectedList?: string[];
+  allowSelect?: boolean;
 }
 
 export const ProposalActions: FC<ProposalActionsProps> = ({
+  onSelect,
   onRemove,
   removeCount,
   removed,
@@ -39,78 +44,45 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
   disableControls,
   daoId,
   proposalId,
+  selectedList,
+  allowSelect,
 }) => {
-  const [location, setLocation] = useState<Location | null>(null);
-  const isMounted = useMountedState();
   const { canDelete } = permissions;
 
-  useEffect(() => {
-    if (window && isMounted() && !location) {
-      setLocation(window.location);
-    }
-  }, [isMounted, location]);
-
-  const isLargeDesktop = useMedia('(min-width: 1280px)');
-
-  const tooltipPlacement = isLargeDesktop ? 'right' : 'left';
-
-  const shareContent = `${proposalType}:${proposalVariant} \n ${proposalDescription}`;
-
-  const url = SINGLE_PROPOSAL_PAGE_URL.replace('[dao]', daoId).replace(
-    '[proposal]',
-    proposalId || ''
-  );
-  const shareUrl = `${location?.origin}${url}`;
+  const isChecked = selectedList?.findIndex(item => item === proposalId) !== -1;
 
   return (
     <div className={styles.root}>
-      {canDelete && (
-        <ActionButton
-          tooltip={`Remove: ${removeCount}`}
-          onClick={removed ? undefined : onRemove}
-          iconName="buttonDelete"
-          size="small"
-          buttonClassName={cn({
-            [styles.inactive]: removed,
-            [styles.disabled]: disableControls,
-          })}
-          className={styles.icon}
-          disabled={disableControls}
-          tooltipPlacement={tooltipPlacement}
+      {selectedList && selectedList.length > 0 && allowSelect ? (
+        <Checkbox
+          disabled={!isChecked && selectedList.length === MAX_MULTI_VOTES}
+          className={styles.checkbox}
+          checked={isChecked}
+          onClick={() =>
+            onSelect && proposalId !== undefined && onSelect(proposalId)
+          }
         />
+      ) : (
+        <>
+          <BehaviorActions
+            allowSelect={allowSelect}
+            removeCount={removeCount}
+            onRemove={onRemove}
+            onSelect={() =>
+              onSelect && proposalId !== undefined && onSelect(proposalId)
+            }
+            removed={removed}
+            disabled={disableControls || !canDelete}
+          />
+          <SocialActions
+            daoId={daoId}
+            proposalDescription={proposalDescription}
+            proposalId={proposalId}
+            proposalType={proposalType}
+            proposalVariant={proposalVariant}
+          />
+        </>
       )}
-      <a
-        className="twitter-share-button"
-        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-          shareContent
-        )}`}
-      >
-        <ActionButton
-          tooltip="Tweet"
-          iconName="socialTwitterAlt"
-          size="small"
-          className={styles.icon}
-          tooltipPlacement={tooltipPlacement}
-        />
-      </a>
-      <a
-        href={`https://t.me/share/url?url=${encodeURIComponent(
-          shareUrl
-        )}&text=${shareContent}`}
-      >
-        <ActionButton
-          tooltip="Telegram"
-          iconName="socialTelegram"
-          size="small"
-          className={styles.icon}
-          tooltipPlacement={tooltipPlacement}
-        />
-      </a>
-      <CopyButton
-        text={shareUrl}
-        tooltipPlacement={tooltipPlacement}
-        className={styles.copyBtn}
-      />
     </div>
   );
 };

@@ -368,6 +368,69 @@ export class NearService extends BaseService {
     });
   }
 
+  private mapVoteProposalAction(
+    daoId: string,
+    proposalId: string,
+    action: string
+  ) {
+    let transaction;
+
+    switch (this.getWalletType()) {
+      case WalletType.SENDER: {
+        transaction = {
+          receiverId: daoId,
+          actions: [
+            {
+              methodName: 'act_proposal',
+              args: {
+                id: Number(proposalId),
+                action,
+              },
+              gas: GAS_VALUE.toString(),
+              deposit: '0',
+            },
+          ],
+        };
+
+        break;
+      }
+      case WalletType.NEAR:
+      default: {
+        transaction = {
+          receiverId: daoId,
+          actions: [
+            transactions.functionCall(
+              'act_proposal',
+              {
+                id: Number(proposalId),
+                action,
+              },
+              GAS_VALUE,
+              new BN(0)
+            ),
+          ],
+        };
+      }
+    }
+
+    return transaction;
+  }
+
+  public async multiVote(
+    action: VoteAction,
+    params: { daoId: string; proposalId: string }[]
+  ): Promise<FinalExecutionOutcome[]> {
+    if (!this.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
+    const trx = params.map(({ daoId, proposalId }) =>
+      this.mapVoteProposalAction(daoId, proposalId, action)
+    );
+
+    return this.walletService.sendTransactions(trx);
+  }
+
   private mapTokenTransferProposal(proposal: CreateProposalParams) {
     const { bond, daoId, description, kind, data } = proposal;
 
