@@ -23,6 +23,7 @@ import { ApplyToDaos } from 'astro_2.0/features/pages/nestedDaoPagesContent/Cust
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { useAllCustomTokens } from 'hooks/useCustomTokens';
 import { useWalletContext } from 'context/WalletContext';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import { copyToClipboard } from 'utils/copyToClipboard';
 
@@ -71,7 +72,7 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
 
     const url = CFC_LIBRARY_TEMPLATE_VIEW.replace('[template]', templateId);
     const shareUrl = `${document.location?.origin}${url}`;
-    const shareContent = `CFC template: ${name} \n ${description}`;
+    const shareContent = `CFC template: ${name} \n ${description || ''}`;
 
     return (
       <div className={styles.content}>
@@ -120,6 +121,8 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
               />
             </Tooltip>
             <a
+              rel="noreferrer"
+              target="_blank"
               href={`https://t.me/share/url?url=${encodeURIComponent(
                 shareUrl
               )}&text=${shareContent}`}
@@ -134,9 +137,11 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
               />
             </a>
             <a
+              rel="noreferrer"
+              target="_blank"
               className="twitter-share-button"
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                shareContent
+                `${shareContent}\n${shareUrl}`
               )}`}
             >
               <IconButton
@@ -156,6 +161,12 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
                 cloneToDao(
                   values.map(value => ({ templateId, targetDao: value.daoId }))
                 );
+
+                showNotification({
+                  type: NOTIFICATION_TYPES.SUCCESS,
+                  lifetime: 10000,
+                  description: 'Successfully saved proposal template',
+                });
               }}
               disabled={!accountId || cloning}
               buttonProps={{

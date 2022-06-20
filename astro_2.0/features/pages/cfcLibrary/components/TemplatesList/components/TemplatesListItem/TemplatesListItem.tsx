@@ -13,6 +13,8 @@ import { ApplyToDaos } from 'astro_2.0/features/pages/nestedDaoPagesContent/Cust
 import { useCfcValues } from 'astro_2.0/features/pages/cfcLibrary/context';
 import { useCloneCfcTemplate } from 'astro_2.0/features/pages/cfcLibrary/hooks';
 
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+
 import styles from './TemplatesListItem.module.scss';
 
 interface Props {
@@ -73,6 +75,12 @@ export const TemplatesListItem: FC<Props> = ({ data }) => {
             const res = await cloneToDao(
               values.map(value => ({ templateId: id, targetDao: value.daoId }))
             );
+
+            showNotification({
+              type: NOTIFICATION_TYPES.SUCCESS,
+              lifetime: 10000,
+              description: 'Successfully saved proposal template',
+            });
 
             const daosIds = (res.filter(item => item !== null) as {
               proposalTemplateId: string;

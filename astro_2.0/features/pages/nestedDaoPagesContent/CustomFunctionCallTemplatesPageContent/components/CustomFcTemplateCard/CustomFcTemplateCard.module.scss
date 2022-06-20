@@ -127,6 +127,7 @@
 
   @include tablet-landscape {
     margin: 0 -36px;
+    width: calc(100% + 68px);
   }
 
   &.expanded {
