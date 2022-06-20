@@ -178,7 +178,10 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
         <InputWrapper fieldName="amount" label="Amount">
           <Input
             className={cn(styles.inputWrapper)}
-            inputStyles={{ width: `${depositWidth}ch`, paddingRight: 4 }}
+            inputStyles={{
+              width: `${depositWidth}ch`,
+              paddingRight: 4,
+            }}
             type="number"
             min={0}
             placeholder="00.0000"
@@ -193,7 +196,11 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
             options={tokenOptions}
             label="&nbsp;"
             {...register('tokenId')}
-            onChange={v => setValue('tokenId', v, { shouldDirty: true })}
+            onChange={v =>
+              setValue('tokenId', v, {
+                shouldDirty: true,
+              })
+            }
             defaultValue={
               selectedTokenData?.id ?? getValues().tokenId ?? 'NEAR'
             }

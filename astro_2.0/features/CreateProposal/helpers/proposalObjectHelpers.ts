@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import Decimal from 'decimal.js';
 
 import { DATA_SEPARATOR } from 'constants/common';
@@ -344,6 +345,81 @@ export type CreateRoketoStreamInput = {
   externalUrl?: string;
 };
 
+interface Action {
+  func: string;
+  args: Record<string, unknown>;
+  gas: string;
+  depo: string;
+}
+
+class Call {
+  private actions: Action[];
+
+  constructor(private address: string) {
+    this.actions = [];
+  }
+
+  addAction(
+    func: string,
+    args: Record<string, unknown>,
+    gas = '10000000000000',
+    depo = '0'
+  ) {
+    this.actions.push({
+      func,
+      args,
+      gas,
+      depo,
+    });
+  }
+
+  serialize(): unknown {
+    return {
+      address: this.address,
+      actions: this.actions.map(action => ({
+        func: action.func,
+        args: Buffer.from(JSON.stringify(action.args)).toString('base64'),
+        gas: action.gas,
+        depo: action.depo,
+      })),
+    };
+  }
+}
+
+class Batch {
+  private calls: Call[] = [];
+
+  createCall(contractAddress: string): Call {
+    const call = new Call(contractAddress);
+
+    this.calls.push(call);
+
+    return call;
+  }
+
+  serialize(): unknown {
+    return this.calls.map(call => call.serialize());
+  }
+}
+
+class Multicall {
+  private batches: Batch[] = [];
+
+  createBatch(): Batch {
+    const batch = new Batch();
+
+    this.batches.push(batch);
+
+    return batch;
+  }
+
+  serialize(): unknown {
+    return {
+      calls: this.batches.map(batch => batch.serialize()),
+    };
+  }
+}
+
 export async function getCreateRoketoStreamProposal(
   dao: DAO,
   data: CreateRoketoStreamInput,
@@ -370,9 +446,32 @@ export async function getCreateRoketoStreamProposal(
   } = stream;
   /* eslint-enable @typescript-eslint/no-unused-vars */
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const multicall = new Multicall();
+
   const amountInYocto = new Decimal(stream.amount)
     .mul(10 ** token.decimals)
     .toFixed();
+
+  // console.log(multicall.serialize());
+
+  // A. User streams NEAR
+  // 1. Wrap NEAR into wNEAR
+  // 2. Commission in the wNEAR
+  // 3. Create stream (deposit = amount + commission)
+
+  // B. User streams wNEAR(is_payment=true)
+  // 1. Commission in the wNEAR
+  // 2. Create stream (deposit = amount + commission)
+
+  // C. User streams USN (is_payment=true)
+  // 1. Commission in the USN
+  // 2. Create stream (deposit = amount + commission)
+
+  // D. User streams LITER (is_payment=false)
+  // 1. Commission in the NEAR
+  // 2. near_transfer to a streaming contract
+  // 3. Create stream (deposit = amount)
 
   const CreateRequest = {
     Create: {
