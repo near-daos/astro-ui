@@ -11,6 +11,7 @@ import { TemplatesList } from 'astro_2.0/features/pages/cfcLibrary/components/Te
 import { SearchInput } from 'astro_2.0/components/SearchInput';
 import { Dropdown } from 'components/Dropdown';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
+import { Loader } from 'components/loader';
 
 import { DaoFeedItem } from 'types/dao';
 
@@ -80,6 +81,20 @@ const CfcLibraryPage: NextPage<Props> = ({ accountDaos }) => {
     [query, router]
   );
 
+  function renderContent() {
+    if (loading) {
+      return <Loader />;
+    }
+
+    if (data && data.data.length > 0) {
+      return (
+        <TemplatesList total={data.total} data={data.data} next={loadMore} />
+      );
+    }
+
+    return <NoResultsView title="No data found" />;
+  }
+
   return (
     <div className={styles.root}>
       <Head>
@@ -115,15 +130,7 @@ const CfcLibraryPage: NextPage<Props> = ({ accountDaos }) => {
         </div>
         <div className={styles.content}>
           <CfcLibraryContext.Provider value={contextValue}>
-            {data && data.data.length > 0 ? (
-              <TemplatesList
-                total={data.total}
-                data={data.data}
-                next={loadMore}
-              />
-            ) : (
-              <NoResultsView title="No data found" />
-            )}
+            {renderContent()}
           </CfcLibraryContext.Provider>
         </div>
       </div>
