@@ -53,12 +53,10 @@ export const ManageGroups: React.FC<Props> = ({
         ...group,
         hasChanges: false,
         isCreated: false,
-        votePolicy: group.votePolicy?.ChangePolicy
+        votePolicy: group.votePolicy?.policy
           ? {
-              ...group.votePolicy?.ChangePolicy,
-              quorum: formatPolicyRatio(
-                group.votePolicy?.ChangePolicy
-              ).toString(),
+              ...group.votePolicy?.policy,
+              quorum: formatPolicyRatio(group.votePolicy?.policy).toString(),
             }
           : {
               ...dao.policy.defaultVotePolicy,

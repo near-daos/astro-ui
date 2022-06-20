@@ -4,6 +4,7 @@ import { DAO, DaoVotePolicy, TGroup, VotePolicyRequest } from 'types/dao';
 import { DaoRole } from 'types/role';
 import { CreateProposalParams, ProposalType } from 'types/proposal';
 import { DATA_SEPARATOR } from 'constants/common';
+import { APP_TO_CONTRACT_PROPOSAL_TYPE } from 'utils/dataConverter';
 
 import { keysToSnakeCase } from 'utils/keysToSnakeCase';
 
@@ -178,8 +179,10 @@ export function generateVotePolicyForEachProposalType(
 ): Record<string, DaoVotePolicy> {
   const policy: Record<string, DaoVotePolicy> = {};
 
-  Object.keys(ProposalType).forEach(type => {
-    policy[type] = keysToSnakeCase({
+  Object.values(ProposalType).forEach(type => {
+    const proposalLabel = APP_TO_CONTRACT_PROPOSAL_TYPE[type];
+
+    policy[proposalLabel] = keysToSnakeCase({
       quorum: '0',
       threshold: getThreshold(parseInt(quorum, 10)),
       weightKind: 'RoleWeight',
