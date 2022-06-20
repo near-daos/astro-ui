@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
-import { format, parseISO } from 'date-fns';
 import { useSwipeable } from 'react-swipeable';
 import { useTranslation } from 'next-i18next';
 
@@ -17,6 +16,8 @@ import {
 import { Notification } from 'types/notification';
 import { NotificationAction } from 'astro_2.0/features/Notifications/types';
 import { DATA_SEPARATOR } from 'constants/common';
+
+import { formatISODate } from 'utils/format';
 
 import styles from './NotificationCard.module.scss';
 
@@ -206,7 +207,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
           </div>
         )}
         <div className={styles.time}>
-          {format(parseISO(createdAt), 'h:mm aaa')}
+          {formatISODate(createdAt, 'h:mm aaa')}
         </div>
         <div className={styles.control}>{renderControls()}</div>
       </div>

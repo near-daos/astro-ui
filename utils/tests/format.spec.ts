@@ -1,4 +1,5 @@
 import {
+  formatISODate,
   formatTimestampAsDate,
   formatYoktoValue,
   kFormatter,
@@ -81,6 +82,20 @@ describe('format', () => {
       expect(
         shortenString(stringThatIsMoreThan20CharsInLength, 10)
       ).toStrictEqual('eat so...e tea');
+    });
+  });
+
+  describe('formatISODate', () => {
+    it('returns formatted date using provided format pattern', () => {
+      const date = '2021-11-25T15:25:59.159Z';
+
+      expect(formatISODate(date, 'yyyy-MM-dd')).toBe('2021-11-25');
+    });
+
+    it('returns n/a in case invalid ISO string', () => {
+      const date = '2021-11-25T_invalid:25:59.159Z';
+
+      expect(formatISODate(date, 'yyyy-MM-dd')).toBe('n/a');
     });
   });
 });
