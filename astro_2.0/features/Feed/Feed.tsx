@@ -251,7 +251,7 @@ export const Feed = ({
                     />
                   </div>
                 }
-                renderItem={proposal => (
+                renderItem={(proposal, onSelect, selectedList) => (
                   <div
                     key={`${proposal.id}_${proposal.updatedAt}`}
                     className={styles.proposalCardWrapper}
@@ -260,6 +260,8 @@ export const Feed = ({
                       proposal={proposal}
                       showFlag={showFlag}
                       tokens={allTokens}
+                      onSelect={onSelect}
+                      selectedList={selectedList}
                     />
                   </div>
                 )}

@@ -98,6 +98,8 @@ export interface ProposalCardProps {
   comments?: DraftComment[];
   history?: ProposalFeedItem[];
   onReplyClick?: () => void;
+  onSelect?: (p: string) => void;
+  selectedList?: string[];
 }
 
 function getTimestampLabel(
@@ -215,6 +217,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   comments,
   history,
   onReplyClick,
+  onSelect,
+  selectedList,
 }) => {
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
@@ -584,6 +588,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
         <div className={styles.actionBar}>
           <ProposalActions
+            allowSelect={status === 'InProgress' && !liked && !disliked}
+            onSelect={onSelect}
+            selectedList={selectedList}
             onRemove={e => {
               e.stopPropagation();
 

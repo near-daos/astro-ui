@@ -131,6 +131,9 @@ exports[`BountiesFeed Should render component 1`] = `
               </div>
             </div>
           </div>
+          <div
+            class="selection"
+          />
         </div>
       </div>
     </div>

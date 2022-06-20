@@ -52,16 +52,16 @@
   top: -30px;
 
   @include tablet-landscape {
-    display: none;
+    display: block;
     left: 100%;
     right: auto;
     top: 0;
   }
 }
 
-.root:hover .actionBar {
-  display: block;
-}
+//.root:hover .actionBar {
+//  display: block;
+//}
 
 .voteControlCell {
   align-items: flex-end;

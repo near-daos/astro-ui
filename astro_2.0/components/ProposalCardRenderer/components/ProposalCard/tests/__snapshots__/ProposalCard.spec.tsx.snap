@@ -206,63 +206,26 @@ exports[`Proposal Card Should render component 1`] = `
         class="root"
       >
         <div
-          class="icon"
+          class="root"
         >
           <button
-            class="iconButton small btn disabled"
-            disabled=""
+            class="iconButton small rootIcon"
             type="button"
           >
             <div>
-              buttonDelete
+              buttonMore
             </div>
           </button>
         </div>
-        <a
-          class="twitter-share-button"
-          href="https://twitter.com/intent/tweet?text=Vote%3AProposePoll%20%0A%20description"
-        >
-          <div
-            class="icon"
-          >
-            <button
-              class="iconButton small btn"
-              type="button"
-            >
-              <div>
-                socialTwitterAlt
-              </div>
-            </button>
-          </div>
-        </a>
-        <a
-          href="https://t.me/share/url?url=http%3A%2F%2Flocalhost%2Fdao%2FdaoId%2Fproposals%2F&text=Vote:ProposePoll 
- description"
-        >
-          <div
-            class="icon"
-          >
-            <button
-              class="iconButton small btn"
-              type="button"
-            >
-              <div>
-                socialTelegram
-              </div>
-            </button>
-          </div>
-        </a>
         <div
-          class="root copyBtn"
-          role="button"
-          tabindex="0"
+          class="root"
         >
           <button
-            class="iconButton small btn"
+            class="iconButton small rootIcon"
             type="button"
           >
             <div>
-              buttonCopy
+              reply
             </div>
           </button>
         </div>
