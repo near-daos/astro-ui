@@ -15,10 +15,9 @@ export const DisconnectButton: React.FC = () => {
   return (
     <AccountPopupItem
       onClick={logout}
-      className={styles.menuButton}
-      content={
-        <div className={styles.disconnectText}>{t('header.disconnect')}</div>
-      }
+      classes={{
+        root: styles.menuButton,
+      }}
       icon={
         <Icon
           name="logout"
@@ -29,6 +28,8 @@ export const DisconnectButton: React.FC = () => {
           )}
         />
       }
-    />
+    >
+      <div className={styles.disconnectText}>{t('header.disconnect')}</div>
+    </AccountPopupItem>
   );
 };
