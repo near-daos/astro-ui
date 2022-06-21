@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react';
-import { DraftProposal } from 'types/draftProposal';
+import { DraftProposalFeedItem } from 'types/draftProposal';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { useRouter } from 'next/router';
 
@@ -11,7 +11,7 @@ import { DRAFT_PAGE_URL } from 'constants/routing';
 import styles from './DraftCard.module.scss';
 
 interface Props {
-  data: DraftProposal;
+  data: DraftProposalFeedItem;
   daoId: string;
 }
 
@@ -55,12 +55,12 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
       <div className={styles.footer}>
         {hashtags?.map(tag => (
           <Badge
-            key={tag.id}
+            key={tag}
             size="small"
             className={styles.tag}
             variant="lightgray"
           >
-            {tag.value}
+            {tag}
           </Badge>
         ))}
       </div>

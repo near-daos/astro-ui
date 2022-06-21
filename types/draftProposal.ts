@@ -33,3 +33,19 @@ export interface DraftProposal extends ProposalFeedItem {
   state: 'open' | 'closed';
   history: ProposalFeedItem[];
 }
+
+export interface DraftProposalFeedItem {
+  id: string;
+  daoId: string;
+  proposer: string;
+  title: string;
+  type: ProposalType;
+  state: 'open';
+  hashtags: string[];
+  replies: number;
+  views: number;
+  updatedAt: string;
+  createdAt: string;
+  isRead: boolean;
+  isSaved: boolean;
+}
