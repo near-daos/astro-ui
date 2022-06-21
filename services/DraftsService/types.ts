@@ -10,7 +10,7 @@ export type DraftParams = {
   type?: string;
   state?: 'open' | 'closed';
   accountId?: string;
-  isReady?: 'true' | 'false';
+  isRead?: 'true' | 'false';
   isSaved?: 'true' | 'false';
 } & DraftBaseParams;
 

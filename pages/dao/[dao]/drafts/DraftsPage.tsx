@@ -1,16 +1,14 @@
 import React, { useMemo } from 'react';
 import { NextPage } from 'next';
+import Head from 'next/head';
 
 import { ProposalVariant } from 'types/proposal';
 import { DaoContext } from 'types/context';
 
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
-import Head from 'next/head';
-import {
-  DraftsPageContent,
-  mocks,
-} from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent';
+import { DraftsPageContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent';
+import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 
 export interface DraftsPageProps {
   daoContext: DaoContext;
@@ -39,7 +37,9 @@ const DraftsPage: NextPage<DraftsPageProps> = ({ daoContext }) => {
       <Head>
         <title>Drafts</title>
       </Head>
-      <DraftsPageContent daoContext={daoContext} initialData={mocks} />
+      <DraftsDataProvider>
+        <DraftsPageContent daoContext={daoContext} />
+      </DraftsDataProvider>
     </NestedDaoPageWrapper>
   );
 };

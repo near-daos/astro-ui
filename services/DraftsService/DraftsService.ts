@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 
 import { HttpService } from 'services/HttpService';
 import { appConfig } from 'config';
-import { DraftProposal } from 'types/draftProposal';
+import { DraftProposal, DraftProposalFeedItem } from 'types/draftProposal';
 import { PaginationResponse } from 'types/api';
 
 import {
@@ -28,9 +28,17 @@ export class DraftsService {
 
   // Draft
   public async getDrafts(
-    params: DraftParams
-  ): Promise<AxiosResponse<PaginationResponse<DraftProposal[]>>> {
-    return this.httpService.get('/draft-proposals', { params });
+    params: DraftParams & {
+      daoId: string;
+      accountId: string;
+      searchInput?: string;
+    }
+  ): Promise<PaginationResponse<DraftProposalFeedItem[]>> {
+    const { data } = await this.httpService.get<
+      PaginationResponse<DraftProposalFeedItem[]>
+    >('/draft-proposals', { params });
+
+    return data;
   }
 
   public async createDraft(

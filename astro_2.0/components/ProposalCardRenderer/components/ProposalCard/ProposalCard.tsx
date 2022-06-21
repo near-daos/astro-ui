@@ -327,6 +327,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     isProposalExpired &&
     userCanFinalize;
 
+  const { canApprove, canReject } = permissions;
+
   const methods = useForm<DAOFormValues>({
     mode: 'all',
     reValidateMode: 'onChange',
@@ -589,7 +591,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
 
         <div className={styles.actionBar}>
           <ProposalActions
-            allowSelect={status === 'InProgress' && !liked && !disliked}
+            allowSelect={
+              status === 'InProgress' &&
+              !liked &&
+              !disliked &&
+              canApprove &&
+              canReject
+            }
             onSelect={onSelect}
             selectedList={selectedList}
             onRemove={e => {

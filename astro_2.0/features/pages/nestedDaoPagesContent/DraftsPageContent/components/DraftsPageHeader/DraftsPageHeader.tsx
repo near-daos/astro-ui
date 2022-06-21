@@ -17,17 +17,18 @@ interface Props {
   className?: string;
   onSearch: (val: string) => Promise<PaginationResponse<unknown[]> | null>;
   loading: boolean;
+  handleReset: () => void;
 }
 
 function getSortOptions(t: TFunction) {
   return [
     {
       label: t('allDAOsFilter.newest'),
-      value: 'createdAt,DESC',
+      value: 'updatedAt,DESC',
     },
     {
       label: t('allDAOsFilter.oldest'),
-      value: 'createdAt,ASC',
+      value: 'updatedAt,ASC',
     },
   ];
 }
@@ -36,6 +37,7 @@ export const DraftsPageHeader: FC<Props> = ({
   className,
   onSearch,
   loading,
+  handleReset,
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -107,6 +109,8 @@ export const DraftsPageHeader: FC<Props> = ({
           onSubmit={onSearch}
           loading={loading}
           placeholder="Search by name or hashtags"
+          onClose={handleReset}
+          showResults={false}
         />
       </div>
       <div className={styles.tabs}>
@@ -115,11 +119,13 @@ export const DraftsPageHeader: FC<Props> = ({
         {renderTabButton('Saved', 'saved')}
       </div>
       <div className={styles.sorting}>
+        <span className={styles.label}>Sorting by:</span>
         <Dropdown
           options={sortOptions}
           value={sort ?? sortOptions[0].value}
           defaultValue={sort ?? sortOptions[0].value}
           onChange={handleSort}
+          menuClassName={styles.menu}
         />
       </div>
     </div>

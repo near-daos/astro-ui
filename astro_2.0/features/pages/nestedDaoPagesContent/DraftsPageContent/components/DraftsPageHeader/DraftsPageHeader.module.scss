@@ -35,7 +35,20 @@
 }
 
 .sorting {
+  @extend %body2;
+  align-items: center;
   display: flex;
   justify-content: flex-end;
   min-width: 120px;
+
+  .label {
+    color: var(--color-neutral-60);
+    margin-right: 4px;
+  }
+
+  .menu {
+    margin-top: 12px;
+    position: absolute;
+    right: 0;
+  }
 }

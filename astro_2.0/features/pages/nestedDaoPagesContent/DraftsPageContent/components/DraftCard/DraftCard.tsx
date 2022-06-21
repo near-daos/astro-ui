@@ -5,12 +5,12 @@ import {
 } from 'astro_2.0/components/ProposalCardRenderer';
 import { DraftCardContent } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/DraftCard/DraftCardContent';
 
-import { DraftProposal } from 'types/draftProposal';
+import { DraftProposalFeedItem } from 'types/draftProposal';
 
 import styles from './DraftCard.module.scss';
 
 interface Props {
-  data: DraftProposal;
+  data: DraftProposalFeedItem;
   flag: string;
   daoId: string;
 }

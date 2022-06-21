@@ -84,10 +84,41 @@
 
 .categories {
   max-height: unset;
+  top: 90px;
 }
 
 .categoriesListTitle {
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
     display: none;
+  }
+}
+
+.listWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.listHeader {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  padding: 0 16px 4px;
+}
+
+.status {
+  width: 32px;
+}
+
+.columns {
+  @extend %body2;
+
+  align-items: center;
+  color: var(--color-neutral-60);
+  display: grid;
+  grid-column-gap: 12px;
+  grid-template-columns: 1fr 60px 60px 90px;
+  margin-bottom: 4px;
+
+  .updated {
+    text-align: right;
   }
 }
