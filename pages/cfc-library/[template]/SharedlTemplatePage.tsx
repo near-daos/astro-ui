@@ -1,10 +1,15 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { NextPage } from 'next';
 import TextTruncate from 'react-text-truncate';
 import dynamic from 'next/dynamic';
 import cn from 'classnames';
+import Link from 'next/link';
 
-import { CFC_LIBRARY, CFC_LIBRARY_TEMPLATE_VIEW } from 'constants/routing';
+import {
+  CFC_LIBRARY,
+  CFC_LIBRARY_TEMPLATE_VIEW,
+  SINGLE_DAO_PAGE,
+} from 'constants/routing';
 
 import { BackButton } from 'astro_2.0/features/ViewProposal/components/BackButton';
 import { Loader } from 'components/loader';
@@ -19,15 +24,18 @@ import {
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { ApplyToDaos } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/components/ApplyToDaos';
-
+import { Button } from 'components/button/Button';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { useAllCustomTokens } from 'hooks/useCustomTokens';
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { DaosListModal } from 'astro_2.0/features/pages/cfcLibrary/components/DaosListModal';
 
 import { copyToClipboard } from 'utils/copyToClipboard';
 
 import { DaoFeedItem } from 'types/dao';
+
+import { useModal } from 'components/modal';
 
 import styles from './SharedTemplatePage.module.scss';
 
@@ -54,10 +62,20 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
 
   const { tokens } = useAllCustomTokens();
 
+  const [showModal] = useModal(DaosListModal);
+
   const availableDaos = useMemo(
     () => accountDaos?.filter(item => item.isCouncil),
     [accountDaos]
   );
+
+  const handleMoreDaosClick = useCallback(async () => {
+    if (!data?.daos) {
+      return;
+    }
+
+    await showModal({ daos: data.daos });
+  }, [data?.daos, showModal]);
 
   function renderContent() {
     if (loading) {
@@ -155,6 +173,7 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
             </a>
 
             <ApplyToDaos
+              simpleView
               accountDaos={availableDaos}
               template={data}
               onSave={async values => {
@@ -185,17 +204,29 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
             <ul>
               {daos?.slice(0, 9).map(item => (
                 <li key={item.id} className={styles.listItem}>
-                  {item.id}
+                  <Link
+                    passHref
+                    href={{
+                      pathname: SINGLE_DAO_PAGE,
+                      query: { dao: item.id },
+                    }}
+                  >
+                    <a className={styles.link}>{item.id}</a>
+                  </Link>
                 </li>
               ))}
             </ul>
-            <div className={styles.listTotal}>
-              {(daos?.length ?? 0) > 9 ? (
+            {(daos?.length ?? 0) > 9 && (
+              <Button
+                onClick={handleMoreDaosClick}
+                size="medium"
+                variant="tertiary"
+                capitalize
+                className={styles.listTotal}
+              >
                 <span>+ {(daos?.length ?? 0) - 9} DAOs</span>
-              ) : (
-                <span>{daos?.length} DAOs</span>
-              )}
-            </div>
+              </Button>
+            )}
           </div>
           <div className={styles.card}>
             <CustomTokensContext.Provider value={{ tokens }}>

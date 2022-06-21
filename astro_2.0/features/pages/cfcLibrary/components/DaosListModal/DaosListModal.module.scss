@@ -1,0 +1,61 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  @extend %title2;
+  margin-bottom: 24px;
+}
+
+.list {
+  list-style: none;
+  max-height: 500px;
+  overflow: auto;
+  padding: 0;
+
+  /* Turn on custom 4px wide scrollbar */
+  ::-webkit-scrollbar {
+    background: transparent;
+    border-radius: 0;
+    width: 4px;
+  }
+
+  /* hover effect for both scrollbar area, and scrollbar 'thumb' */
+  ::-webkit-scrollbar:hover {
+    background-color: rgba(232, 224, 255, 0.09);
+  }
+
+  /* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
+  ::-webkit-scrollbar-thumb:vertical {
+    background-color: rgba(232, 224, 255, 1);
+    border-radius: 0;
+  }
+
+  ::-webkit-scrollbar-thumb:vertical:active {
+    /* Some darker color when you click it */
+    background: rgba(232, 224, 255, 0.61);
+    border-radius: 0;
+  }
+}
+
+.listItem {
+  padding: 8px 0;
+
+  &:hover {
+    text-shadow: 0 0 8px var(--color-neutral-40);
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 34px;
+  width: 100%;
+}
+
+.confirmButton {
+  margin-left: auto;
+}
