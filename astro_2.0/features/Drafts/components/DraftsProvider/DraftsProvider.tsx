@@ -25,14 +25,12 @@ export const DraftsDataProvider: FC = ({ children }) => {
       const httpService = new HttpService({
         baseURL: `${
           process.browser
-            ? window.APP_CONFIG.STATS_API_URL
-            : appConfig.STATS_API_URL
+            ? window.APP_CONFIG.DRAFTS_API_URL
+            : appConfig.DRAFTS_API_URL
         }/api/v1/`,
       });
 
-      const statsService = new DraftsService(httpService);
-
-      setDraftsService(statsService);
+      setDraftsService(new DraftsService(httpService));
     }, 500);
   }, []);
 
