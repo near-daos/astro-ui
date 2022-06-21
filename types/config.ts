@@ -14,6 +14,7 @@ export type Config = {
   NEAR_CONTRACT_NAME: string;
   TOKEN_FACTORY_CONTRACT_NAME: string;
   LAUNCHDARKLY_ID: string;
+  DRAFTS_API_URL: string;
 };
 
 export enum WalletType {

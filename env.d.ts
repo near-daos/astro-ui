@@ -14,6 +14,7 @@ declare global {
 
       API_URL: string;
       STATS_API_URL;
+      DRAFTS_API_URL: string;
       APP_DOMAIN: string;
       LOCAL_WALLET_REDIRECT: boolean;
 

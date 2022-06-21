@@ -6,6 +6,7 @@ export const appConfig = {
     : `${process.env.API_URL}/api/v1/`,
   LOCAL_WALLET_REDIRECT: process.env.LOCAL_WALLET_REDIRECT,
   STATS_API_URL: process.env.STATS_API_URL,
+  DRAFTS_API_URL: process.env.DRAFTS_API_URL,
   APP_DOMAIN: process.env.APP_DOMAIN,
   LAUNCHDARKLY_ID: process.env.NEXT_PUBLIC_LAUNCHDARKLY_ID,
   NEAR_ENV: process.env.NEAR_ENV,
