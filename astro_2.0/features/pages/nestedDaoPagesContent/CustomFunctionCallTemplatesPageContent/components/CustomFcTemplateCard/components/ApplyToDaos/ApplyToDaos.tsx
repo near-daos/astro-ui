@@ -22,6 +22,7 @@ interface Props {
   onSave?: (data: TemplateUpdatePayload[]) => Promise<void>;
   disabled: boolean;
   buttonProps?: React.ComponentProps<typeof Button>;
+  simpleView?: boolean;
 }
 
 export const ApplyToDaos: FC<Props> = ({
@@ -32,6 +33,7 @@ export const ApplyToDaos: FC<Props> = ({
   disabled,
   children,
   buttonProps = {},
+  simpleView,
 }) => {
   const { pkAndSignature } = useWalletContext();
   const [showModal] = useModal(SaveFcTemplateModal);
@@ -50,6 +52,7 @@ export const ApplyToDaos: FC<Props> = ({
         accountDaos: availableDaos,
         template,
         name: template.name,
+        simpleView,
       });
 
       if (res && res[0] && pkAndSignature && onSave) {
@@ -58,7 +61,7 @@ export const ApplyToDaos: FC<Props> = ({
         await onSave(data);
       }
     },
-    [accountDaos, onSave, pkAndSignature, showModal, template]
+    [accountDaos, onSave, pkAndSignature, showModal, simpleView, template]
   );
 
   return (
