@@ -69,6 +69,7 @@ export const TemplatesListItem: FC<Props> = ({ data }) => {
       <div className={cn(styles.duplicated, styles.hideMobile)}>{daoCount}</div>
       <div className={styles.control}>
         <ApplyToDaos
+          simpleView
           accountDaos={accountDaos}
           template={data}
           onSave={async values => {

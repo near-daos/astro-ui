@@ -119,6 +119,10 @@
 .listItem {
   @extend %heading5;
   margin-bottom: 8px;
+
+  &:hover {
+    text-shadow: 0 0 8px var(--color-neutral-40);
+  }
 }
 
 .listTotal {
@@ -129,6 +133,10 @@
   max-width: 180px;
 
   padding: 6px;
+
+  &:hover {
+    box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  }
 }
 
 .hideMobile {

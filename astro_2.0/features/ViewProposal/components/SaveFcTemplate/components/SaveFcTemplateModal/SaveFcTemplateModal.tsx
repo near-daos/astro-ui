@@ -33,6 +33,7 @@ interface Props {
   proposal: ProposalFeedItem;
   template?: Partial<ProposalTemplate>;
   name?: string;
+  simpleView?: boolean;
 }
 
 type Form = {
@@ -48,6 +49,7 @@ export const SaveFcTemplateModal: FC<Props> = ({
   proposal,
   template,
   name,
+  simpleView,
 }) => {
   const daosOptions = useMemo<Option[]>(() => {
     return accountDaos.map(item => ({
@@ -119,33 +121,36 @@ export const SaveFcTemplateModal: FC<Props> = ({
             </span>
           )}
 
-          <div className={styles.inputWrapper}>
-            <InputWrapper fieldName="name" label="Add Name" fullWidth>
-              <Input
-                {...register('name')}
-                size="block"
-                inputClassName={styles.input}
-                placeholder="Template Name"
-                disabled={!daosOptions.length}
-              />
-            </InputWrapper>
-          </div>
-
-          <div className={styles.inputWrapper}>
-            <InputWrapper
-              fieldName="description"
-              label="Add Desctription"
-              fullWidth
-            >
-              <TextArea
-                {...register('description')}
-                size="block"
-                maxLength={500}
-                placeholder="Template description"
-                disabled={!daosOptions.length}
-              />
-            </InputWrapper>
-          </div>
+          {!simpleView && (
+            <>
+              <div className={styles.inputWrapper}>
+                <InputWrapper fieldName="name" label="Add Name" fullWidth>
+                  <Input
+                    {...register('name')}
+                    size="block"
+                    inputClassName={styles.input}
+                    placeholder="Template Name"
+                    disabled={!daosOptions.length}
+                  />
+                </InputWrapper>
+              </div>
+              <div className={styles.inputWrapper}>
+                <InputWrapper
+                  fieldName="description"
+                  label="Add Desctription"
+                  fullWidth
+                >
+                  <TextArea
+                    {...register('description')}
+                    size="block"
+                    maxLength={500}
+                    placeholder="Template description"
+                    disabled={!daosOptions.length}
+                  />
+                </InputWrapper>
+              </div>
+            </>
+          )}
 
           <div className={styles.inputWrapper}>
             <InputWrapper fieldName="daos" label="Choose DAO" fullWidth>

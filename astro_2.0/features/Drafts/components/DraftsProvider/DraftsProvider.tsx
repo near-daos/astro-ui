@@ -30,9 +30,7 @@ export const DraftsDataProvider: FC = ({ children }) => {
         }/api/v1/`,
       });
 
-      const statsService = new DraftsService(httpService);
-
-      setDraftsService(statsService);
+      setDraftsService(new DraftsService(httpService));
     }, 500);
   }, []);
 
