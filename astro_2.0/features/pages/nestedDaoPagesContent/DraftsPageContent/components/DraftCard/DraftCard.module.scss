@@ -40,7 +40,7 @@
 }
 
 .title {
-  @extend %title3;
+  @extend %heading3;
   @include ellipse-text;
 }
 

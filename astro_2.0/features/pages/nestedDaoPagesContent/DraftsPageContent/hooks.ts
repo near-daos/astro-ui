@@ -1,12 +1,14 @@
 import { PaginationResponse } from 'types/api';
 import { DraftProposalFeedItem } from 'types/draftProposal';
 import { useRouter } from 'next/router';
-import { useAsyncFn, useMountedState } from 'react-use';
+import { useAsyncFn, useMount, useMountedState } from 'react-use';
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { useCallback, useState } from 'react';
 import { useWalletContext } from 'context/WalletContext';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
+import { getDraftProposalTypeByCategory } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/helpers';
+import { ProposalCategories } from 'types/proposal';
 
 type PageData = PaginationResponse<DraftProposalFeedItem[]>;
 
@@ -22,25 +24,31 @@ export function useDraftsPageData(
   const router = useRouter();
   const isMounted = useMountedState();
   const { accountId } = useWalletContext();
-
   const { draftsService } = useDraftsContext();
 
   const { query } = router;
+  const { sort, category, state, view } = query;
 
   const [data, setData] = useState<PageData | null>(null);
 
   const [{ loading }, fetchData] = useAsyncFn(
-    async (_initialData?: PageData | null, searchInput?: string) => {
+    async (_initialData?: PageData | null, search?: string) => {
       let accumulatedListData = _initialData || null;
+
+      const [orderBy, order] = (sort as string).split(',');
 
       const res = await draftsService.getDrafts({
         offset: accumulatedListData?.data.length || 0,
         limit: LIST_LIMIT_DEFAULT,
-        orderBy: query.sort as string,
+        orderBy,
+        order: order === 'ASC' || order === 'DESC' ? order : undefined,
         daoId,
-        category: query.category as string,
+        type: getDraftProposalTypeByCategory(category as ProposalCategories),
         accountId,
-        searchInput,
+        search,
+        state: state === 'open' || state === 'closed' ? state : undefined,
+        isRead: view === 'unread' ? 'false' : undefined,
+        isSaved: view === 'saved' ? 'true' : undefined,
       });
 
       if (!res) {
@@ -54,7 +62,7 @@ export function useDraftsPageData(
 
       return accumulatedListData;
     },
-    [query.sort, query.category, accountId, daoId]
+    [sort, category, accountId, daoId, state, view]
   );
 
   const handleSearch = useCallback(
@@ -95,7 +103,7 @@ export function useDraftsPageData(
       window.scroll(0, 0);
     },
     1000,
-    [query.sort, query.category]
+    [fetchData]
   );
 
   const loadMore = async () => {
@@ -109,6 +117,24 @@ export function useDraftsPageData(
       setData(newData);
     }
   };
+
+  useMount(() => {
+    if (!sort) {
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: {
+            ...query,
+            sort: 'updatedAt,DESC',
+          },
+        },
+        undefined,
+        {
+          shallow: true,
+        }
+      );
+    }
+  });
 
   return {
     data,

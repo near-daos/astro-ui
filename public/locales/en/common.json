@@ -679,5 +679,11 @@
     "jsonNotValid": "Provided JSON is not valid",
     "atLeastThreeChars": "At least 3 characters expected.",
     "lettersNumbersHyphensSpaces": "Only letters and numbers with hyphens and spaces in the middle"
+  },
+  "drafts": {
+    "topic": "Topic",
+    "views": "Views",
+    "replies": "Replies",
+    "lastActivity": "Last activity"
   }
 }

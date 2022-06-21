@@ -7,6 +7,7 @@ import { DaoContext } from 'types/context';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { FEED_CATEGORIES } from 'constants/proposals';
 
+import { DraftsListHeader } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/DraftsListHeader';
 import { StateFilter } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/StateFilter';
 import { DraftCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/DraftCard';
 import { SideFilter } from 'astro_2.0/components/SideFilter';
@@ -29,7 +30,13 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
   const { t } = useTranslation();
   const { dao } = daoContext;
 
-  const { data, handleSearch, loading, loadMore } = useDraftsPageData(dao.id);
+  const {
+    data,
+    handleSearch,
+    loading,
+    loadMore,
+    handleReset,
+  } = useDraftsPageData(dao.id);
 
   const feedCategoriesOptions = useMemo(
     () =>
@@ -46,6 +53,7 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
         className={styles.header}
         loading={loading}
         onSearch={handleSearch}
+        handleReset={handleReset}
       />
       <div className={styles.content}>
         <div className={styles.sideFilters}>
@@ -59,38 +67,40 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
           />
           <StateFilter />
         </div>
-
         {loading ? (
           <Loader className={styles.loader} />
         ) : (
           <>
             {data ? (
-              <FeedList
-                data={data}
-                loadMore={loadMore}
-                loader={<p className={styles.loading}>{t('loading')}...</p>}
-                noResults={
-                  <div className={styles.loading}>
-                    <NoResultsView
-                      title={
-                        isEmpty(data?.data)
-                          ? t('noResultsFound')
-                          : t('noMoreResults')
-                      }
-                    />
-                  </div>
-                }
-                renderItem={item => (
-                  <div key={item.id} className={styles.cardWrapper}>
-                    <DraftCard
-                      data={item}
-                      flag={dao.flagCover ?? ''}
-                      daoId={dao.id}
-                    />
-                  </div>
-                )}
-                className={styles.listWrapper}
-              />
+              <div className={styles.listWrapper}>
+                <DraftsListHeader />
+                <FeedList
+                  data={data}
+                  loadMore={loadMore}
+                  loader={<p className={styles.loading}>{t('loading')}...</p>}
+                  noResults={
+                    <div className={styles.loading}>
+                      <NoResultsView
+                        title={
+                          isEmpty(data?.data)
+                            ? t('noResultsFound')
+                            : t('noMoreResults')
+                        }
+                      />
+                    </div>
+                  }
+                  renderItem={item => (
+                    <div key={item.id} className={styles.cardWrapper}>
+                      <DraftCard
+                        data={item}
+                        flag={dao.flagCover ?? ''}
+                        daoId={dao.id}
+                      />
+                    </div>
+                  )}
+                  className={styles.listWrapper}
+                />
+              </div>
             ) : (
               <NoResultsView title="No data found" />
             )}

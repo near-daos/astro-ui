@@ -30,12 +30,15 @@ export class DraftsService {
   public async getDrafts(
     params: DraftParams & {
       daoId: string;
-      category: string;
       accountId: string;
       searchInput?: string;
     }
   ): Promise<PaginationResponse<DraftProposalFeedItem[]>> {
-    return this.httpService.get('/draft-proposals', { params });
+    const { data } = await this.httpService.get<
+      PaginationResponse<DraftProposalFeedItem[]>
+    >('/draft-proposals', { params });
+
+    return data;
   }
 
   public async createDraft(

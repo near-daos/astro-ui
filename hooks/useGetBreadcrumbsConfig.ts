@@ -177,7 +177,7 @@ export function useGetBreadcrumbsConfig(
         },
       },
       DRAFTS: {
-        label: t('drafts'),
+        label: t('daoDetailsMinimized.drafts'),
         href: {
           pathname: DRAFTS_PAGE_URL,
           query: {

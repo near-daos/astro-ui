@@ -8,15 +8,15 @@ import styles from './StateFilter.module.scss';
 
 const options = [
   {
-    value: 'All',
+    value: '',
     label: <span className={styles.option}>All</span>,
   },
   {
-    value: 'Open',
+    value: 'open',
     label: <span className={styles.option}>Open</span>,
   },
   {
-    value: 'Closed',
+    value: 'closed',
     label: <span className={styles.option}>Closed</span>,
   },
 ];
@@ -51,7 +51,7 @@ export const StateFilter: FC = () => {
         <DropdownSelect
           options={options}
           onChange={handleChange}
-          defaultValue={state || 'All'}
+          defaultValue={state || ''}
         />
       </div>
     </div>
