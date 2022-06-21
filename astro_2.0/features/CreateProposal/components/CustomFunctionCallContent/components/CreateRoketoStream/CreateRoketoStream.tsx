@@ -99,10 +99,14 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
     return formatter.tokensPerMeaningfulPeriod(speedInYocto);
   }, [setValue, duration, amountToStream, selectedToken]);
 
-  const { total, positions } = useRoketoReceipt({
+  const { total, actions, positions } = useRoketoReceipt({
+    daoId: dao.id,
     amountToStream,
     tokenId: selectedToken?.id || 'NEAR',
     tokenDecimals: selectedToken?.decimals ?? 24,
+    receiverId: watch('receiverId') ?? '',
+    speedTokensPerSec: watch('speed'),
+    streamComment: watch('comment'),
     storageDeposit: {
       forSender: shouldDepositForDao ?? false,
       forRecipient: shouldDepositForTarget ?? false,
@@ -112,6 +116,10 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
   useEffect(() => {
     setValue('receipt', { total, positions });
   }, [total, positions, setValue]);
+
+  useEffect(() => {
+    setValue('actions', actions);
+  }, [setValue, actions]);
 
   const toUsd = (token: Token) => {
     if (token.price) {

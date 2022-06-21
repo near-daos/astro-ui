@@ -4,6 +4,7 @@ import Decimal from 'decimal.js';
 
 import { useWalletContext } from 'context/WalletContext';
 import { configService } from 'services/ConfigService';
+import { formatGasValue } from 'utils/format';
 
 /* eslint-disable camelcase */
 interface RoketoToken {
@@ -117,17 +118,84 @@ type TotalAmount = Record<TokenId, Amount>;
 interface RoketoReceipt {
   positions: ReceiptPosition[];
   total: TotalAmount;
+  actions: MulticallAction[];
+}
+
+/* eslint-disable camelcase */
+interface MulticallAction {
+  contract: string;
+  method: string;
+  args: Record<string, unknown>;
+  deposit?: string;
+  gas?: string;
+}
+
+/* eslint-enable camelcase */
+
+function createStreamTransferCall({
+  amountToStream,
+  createCommission,
+  daoId,
+  receiverId,
+  speedTokensPerSec,
+  streamComment,
+  tokenAccountId,
+}: {
+  amountToStream: string;
+  createCommission: string;
+  daoId: string;
+  receiverId: string;
+  speedTokensPerSec: string;
+  streamComment: string;
+  tokenAccountId: string;
+}): MulticallAction {
+  const config = configService.get();
+  const streamingContract = config.appConfig.ROKETO_CONTRACT_NAME;
+
+  const CreateStreamMessage = {
+    Create: {
+      request: {
+        owner_id: daoId,
+        receiver_id: receiverId,
+        tokens_per_sec: speedTokensPerSec,
+        description: streamComment,
+        is_expirable: true,
+        is_auto_start_enabled: true,
+      },
+    },
+  };
+
+  return {
+    contract: tokenAccountId,
+    method: 'ft_transfer_call',
+    deposit: '1',
+    gas: formatGasValue(270).toString(),
+    args: {
+      receiver_id: streamingContract,
+      amount: new Decimal(amountToStream).plus(createCommission).toFixed(),
+      memo: streamComment,
+      msg: JSON.stringify(CreateStreamMessage),
+    },
+  };
 }
 
 export function useRoketoReceipt({
   amountToStream,
+  daoId,
   tokenId,
   tokenDecimals,
+  speedTokensPerSec,
+  receiverId,
+  streamComment,
   storageDeposit,
 }: {
   amountToStream: string;
+  daoId: string;
   tokenId: 'NEAR' | string;
   tokenDecimals: number;
+  receiverId: string;
+  streamComment: string;
+  speedTokensPerSec: string;
   storageDeposit: {
     forSender: boolean;
     forRecipient: boolean;
@@ -135,18 +203,20 @@ export function useRoketoReceipt({
 }): RoketoReceipt {
   const { roketoDao, loading } = useRoketoDao();
   const [positionsList, setPositionsList] = useState<ReceiptPosition[]>([]);
+  const [actionsList, setActionsList] = useState<MulticallAction[]>([]);
 
   useEffect(() => {
     const positions: ReceiptPosition[] = [];
+    const actions: MulticallAction[] = [];
+
+    const wrap =
+      roketoDao.tokens['wrap.near'] ?? roketoDao.tokens['wrap.testnet'];
+
+    if (!wrap) {
+      return;
+    }
 
     if (tokenId === 'NEAR') {
-      const wrap =
-        roketoDao.tokens['wrap.near'] ?? roketoDao.tokens['wrap.testnet'];
-
-      if (!wrap) {
-        return;
-      }
-
       positions.push(
         {
           token: 'NEAR',
@@ -158,6 +228,25 @@ export function useRoketoReceipt({
           amount: wrap.commission_on_create,
           description: 'Stream creation fee',
         }
+      );
+      actions.push(
+        {
+          contract: wrap.account_id,
+          method: 'near_deposit',
+          args: {},
+          deposit: new Decimal(amountToStream)
+            .plus(wrap.commission_on_create)
+            .toFixed(),
+        },
+        createStreamTransferCall({
+          amountToStream,
+          createCommission: wrap.commission_on_create,
+          daoId,
+          receiverId,
+          speedTokensPerSec,
+          streamComment,
+          tokenAccountId: wrap.account_id,
+        })
       );
     } else if (
       roketoDao.tokens[tokenId] &&
@@ -177,6 +266,17 @@ export function useRoketoReceipt({
           description: 'Stream creation fee',
         }
       );
+      actions.push(
+        createStreamTransferCall({
+          amountToStream,
+          createCommission: token.commission_on_create,
+          daoId,
+          receiverId,
+          speedTokensPerSec,
+          streamComment,
+          tokenAccountId: token.account_id,
+        })
+      );
     } else {
       positions.push(
         {
@@ -190,6 +290,27 @@ export function useRoketoReceipt({
           description: 'Stream creation fee',
         }
       );
+
+      const config = configService.get();
+      const streamingContract = config.appConfig.ROKETO_CONTRACT_NAME;
+
+      actions.push(
+        {
+          contract: streamingContract,
+          method: 'account_deposit_near',
+          args: {},
+          deposit: roketoDao.commission_non_payment_ft,
+        },
+        createStreamTransferCall({
+          amountToStream,
+          createCommission: '0',
+          daoId,
+          receiverId,
+          speedTokensPerSec,
+          streamComment,
+          tokenAccountId: tokenId,
+        })
+      );
     }
 
     const storageDepositFee = new Decimal('0.00125').mul(10 ** 24).toFixed();
@@ -200,6 +321,12 @@ export function useRoketoReceipt({
         amount: storageDepositFee,
         description: 'Storage deposit fee for the recipient',
       });
+      actions.unshift({
+        contract: tokenId === 'NEAR' ? wrap.account_id : tokenId,
+        method: 'storage_deposit',
+        args: { account_id: receiverId },
+        deposit: storageDepositFee,
+      });
     }
 
     if (storageDeposit.forSender) {
@@ -208,14 +335,25 @@ export function useRoketoReceipt({
         amount: storageDepositFee,
         description: 'Storage deposit fee for the sender',
       });
+      actions.unshift({
+        contract: tokenId === 'NEAR' ? wrap.account_id : tokenId,
+        method: 'storage_deposit',
+        args: { account_id: daoId },
+        deposit: storageDepositFee,
+      });
     }
 
     setPositionsList(positions);
+    setActionsList(actions);
   }, [
+    daoId,
     amountToStream,
     roketoDao,
     storageDeposit.forRecipient,
     storageDeposit.forSender,
+    receiverId,
+    streamComment,
+    speedTokensPerSec,
     tokenDecimals,
     tokenId,
   ]);
@@ -246,10 +384,14 @@ export function useRoketoReceipt({
   }, [positionsList]);
 
   if (loading || amountToStream === '0') {
-    return { positions: [], total: {} };
+    return { positions: [], total: {}, actions: [] };
   }
 
-  return { positions: positionsList, total: totalCharges };
+  return {
+    positions: positionsList,
+    total: totalCharges,
+    actions: actionsList,
+  };
 }
 
 function useDebounce<T>(value: T, delay: number): T {

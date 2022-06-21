@@ -9,7 +9,6 @@ import { DAO } from 'types/dao';
 import {
   CreateProposalParams,
   DaoConfig,
-  FunctionCallAction,
   ProposalVariant,
 } from 'types/proposal';
 import { CreateTokenInput } from 'astro_2.0/features/CreateProposal/types';
@@ -337,6 +336,7 @@ export type CreateRoketoStreamInput = {
   speed: string;
   receiverId: string;
   comment?: string;
+  actions?: MulticallAction[];
   receipt: {
     total: Record<string, string>;
     positions: ReceiptPosition[];
@@ -344,6 +344,14 @@ export type CreateRoketoStreamInput = {
   details: string;
   externalUrl?: string;
 };
+
+interface MulticallAction {
+  contract: string;
+  method: string;
+  args: Record<string, unknown>;
+  deposit?: string;
+  gas?: string;
+}
 
 interface Action {
   func: string;
@@ -386,6 +394,9 @@ class Call {
   }
 }
 
+/**
+ * Calls in the batch called sequentially
+ */
 class Batch {
   private calls: Call[] = [];
 
@@ -402,6 +413,9 @@ class Batch {
   }
 }
 
+/**
+ * Multiple batches called in parallel
+ */
 class Multicall {
   private batches: Batch[] = [];
 
@@ -425,8 +439,10 @@ export async function getCreateRoketoStreamProposal(
   data: CreateRoketoStreamInput,
   tokens: Tokens
 ): Promise<CreateProposalParams> {
-  const { externalUrl, details, ...stream } = data;
+  const { externalUrl, details, actions, receipt } = data;
   const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
+  const config = configService.get();
+  const multicallContract = config.appConfig.ROKETO_MULTICALL_NAME;
 
   const token = Object.values(tokens).find(item => item.id === data.tokenId);
 
@@ -434,95 +450,32 @@ export async function getCreateRoketoStreamProposal(
     throw new Error('No tokens data found');
   }
 
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  const {
-    shouldDepositForReceiver,
-    shouldDepositForDao,
-    amount,
-    speed,
-    receiverId,
-    comment,
-    receipt,
-  } = stream;
-  /* eslint-enable @typescript-eslint/no-unused-vars */
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const multicall = new Multicall();
 
-  const amountInYocto = new Decimal(stream.amount)
-    .mul(10 ** token.decimals)
-    .toFixed();
+  const serialCalls = multicall.createBatch();
 
-  // console.log(multicall.serialize());
-
-  // A. User streams NEAR
-  // 1. Wrap NEAR into wNEAR
-  // 2. Commission in the wNEAR
-  // 3. Create stream (deposit = amount + commission)
-
-  // B. User streams wNEAR(is_payment=true)
-  // 1. Commission in the wNEAR
-  // 2. Create stream (deposit = amount + commission)
-
-  // C. User streams USN (is_payment=true)
-  // 1. Commission in the USN
-  // 2. Create stream (deposit = amount + commission)
-
-  // D. User streams LITER (is_payment=false)
-  // 1. Commission in the NEAR
-  // 2. near_transfer to a streaming contract
-  // 3. Create stream (deposit = amount)
-
-  const CreateRequest = {
-    Create: {
-      request: {
-        owner_id: dao.id,
-        receiver_id: stream.receiverId,
-        tokens_per_sec: speed,
-        description: stream.comment,
-        // is_auto_start_enabled: stream.isAutoStartEnabled,
-        is_expirable: true,
-        // is_locked: stream.isLocked,
-      },
-    },
-  };
-
-  const TransferCall = {
-    receiver_id: 'streaming-r-v2.dcversus.testnet', // move to ENV VAR
-    amount: new Decimal('1').toFixed(),
-    memo: details,
-    msg: JSON.stringify(CreateRequest),
-  };
-
-  // TODO read commission from the creation form
-
-  // https://github.com/roke-to/roketo-ui/blob/master/src/shared/api/ft/ft-api.ts#L101
-  const actions: FunctionCallAction[] = [
-    {
-      method_name: 'ft_transfer_call',
-      deposit: new Decimal(amountInYocto).toFixed(),
-      args: Buffer.from(JSON.stringify(TransferCall)).toString('base64'),
-      gas: formatGasValue(300).toString(),
-    },
-  ];
-  const isNear = token.tokenId === 'NEAR';
-
-  if (isNear) {
-    actions.unshift({
-      method_name: 'near_deposit',
-      deposit: amountInYocto,
-      args: Buffer.from('{}').toString('base64'),
-      gas: formatGasValue(DEFAULT_PROPOSAL_GAS).toString(),
-    });
-  }
+  actions?.forEach(action => {
+    serialCalls
+      .createCall(action.contract)
+      .addAction(action.method, action.args, action.gas, action.deposit);
+  });
 
   return {
     daoId: dao.id,
     description: proposalDescription,
     kind: 'FunctionCall',
     data: {
-      receiver_id: token.tokenId,
-      actions,
+      receiver_id: multicallContract,
+      actions: [
+        {
+          method_name: 'multicall',
+          args: Buffer.from(JSON.stringify(multicall.serialize())).toString(
+            'base64'
+          ),
+          deposit: receipt?.total.NEAR ?? '0',
+          gas: formatGasValue(270).toString(),
+        },
+      ],
     },
     bond: dao.policy.proposalBond,
   };
