@@ -1,5 +1,4 @@
 import React, { FC, useMemo } from 'react';
-import { format, parseISO } from 'date-fns';
 
 import {
   useCheckDaoUpgrade,
@@ -16,6 +15,8 @@ import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 import { useWalletContext } from 'context/WalletContext';
+
+import { formatISODate } from 'utils/format';
 
 import { VersionCheck } from './components/VersionCheck';
 
@@ -57,7 +58,7 @@ export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
 
     return {
       current: {
-        date: format(parseISO(daoVersion.createdAt), 'dd MMM yyyy, hh:mm aaa'),
+        date: formatISODate(daoVersion.createdAt, 'dd MMM yyyy, hh:mm aaa'),
         number: daoVersion.version.join('.'),
         hash: daoVersion.hash ?? '',
       },

@@ -2,7 +2,6 @@ import React, { ReactNode, useCallback } from 'react';
 import { useAsyncFn } from 'react-use';
 import { useRouter } from 'next/router';
 import cn from 'classnames';
-import { format, parseISO } from 'date-fns';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -51,6 +50,8 @@ import { Badge } from 'components/Badge';
 import { DraftInfo } from 'astro_2.0/components/ProposalCardRenderer/components/DraftInfo';
 import { DraftManagement } from 'astro_2.0/components/ProposalCardRenderer/components/DraftManagement';
 import { EditableContent } from 'astro_2.0/components/EditableContent';
+
+import { formatISODate } from 'utils/format';
 
 import { ProposalControlPanel } from './components/ProposalControlPanel';
 
@@ -127,7 +128,7 @@ function getTimestampLabel(
       <div className={cn(styles.timestampLabel)}>
         <span className={cn(styles.label)}>{status} at&nbsp;</span>
         <span className={cn(styles.value)}>
-          {format(parseISO(votingEndDate as string), 'dd MMMM yyyy')}
+          {formatISODate(votingEndDate, 'dd MMMM yyyy')}
         </span>
       </div>
     );
@@ -148,7 +149,7 @@ function getTimestampLabel(
           {status} at&nbsp;
         </span>
         <span className={cn(styles.value)}>
-          {format(parseISO(updatedAt as string), 'dd MMMM yyyy')}
+          {formatISODate(updatedAt, 'dd MMMM yyyy')}
         </span>
       </div>
     );

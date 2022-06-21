@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
-
-import { format, parseISO } from 'date-fns';
-
+import { formatISODate } from 'utils/format';
 import styles from './CommentContent.module.scss';
 
 interface Props {
@@ -26,7 +24,7 @@ export const CommentContent: FC<Props> = ({
           <span className={styles.primaryLabel}>{author}</span>
         </div>
         <div className={styles.datetime}>
-          {format(parseISO(updatedAt as string), 'dd MMMM yyyy, HH:mm')}
+          {formatISODate(updatedAt, 'dd MMMM yyyy, HH:mm')}
         </div>
       </div>
       <p className={styles.body}>{text}</p>

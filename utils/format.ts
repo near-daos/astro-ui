@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import { format, formatDistance } from 'date-fns';
+import { format, formatDistance, parseISO } from 'date-fns';
 
 import { YOKTO_NEAR } from 'services/sputnik/constants';
 import { DATE_TIME_FORMAT } from 'constants/timeConstants';
@@ -31,6 +31,23 @@ export const formatTimestampAsDate = (time: string): string => {
 
   return format(date, DATE_TIME_FORMAT);
 };
+
+export function formatISODate(
+  date: string | null | undefined,
+  expectedFormatPattern?: string
+): string {
+  if (!date) {
+    return 'n/a';
+  }
+
+  try {
+    const parsed = parseISO(date);
+
+    return format(parsed, expectedFormatPattern ?? 'h:mm aaa');
+  } catch (e) {
+    return 'n/a';
+  }
+}
 
 export function dFormatter(n: number, toFixed = 0): string {
   return n % 1 !== 0 ? `${n.toFixed(toFixed)}` : n.toFixed();

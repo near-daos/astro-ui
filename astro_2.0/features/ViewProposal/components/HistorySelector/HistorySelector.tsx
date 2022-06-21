@@ -1,5 +1,4 @@
 import React, { FC, useCallback, useState } from 'react';
-import { format, parseISO } from 'date-fns';
 
 import { useModal } from 'components/modal';
 import { Icon } from 'components/Icon';
@@ -10,6 +9,8 @@ import { CompareVersionsModal } from 'astro_2.0/features/ViewProposal/components
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import { ProposalFeedItem } from 'types/proposal';
+
+import { formatISODate } from 'utils/format';
 
 import styles from './HistorySelector.module.scss';
 
@@ -37,10 +38,7 @@ export const HistorySelector: FC<Props> = ({ data }) => {
       onOpenUpdate={setOpen}
       parent={
         <div className={styles.root}>
-          {format(
-            parseISO(currentVersion.updatedAt as string),
-            'dd MMMM yyyy, hh:mm'
-          )}
+          {formatISODate(currentVersion.updatedAt, 'dd MMMM yyyy, hh:mm')}
         </div>
       }
     >
@@ -61,7 +59,7 @@ export const HistorySelector: FC<Props> = ({ data }) => {
               setOpen(false);
             }}
           >
-            {format(parseISO(item.updatedAt as string), 'dd MMMM yyyy, hh:mm')}
+            {formatISODate(item.updatedAt, 'dd MMMM yyyy, hh:mm')}
             <Icon name="buttonArrowRight" className={styles.icon} />
           </Button>
         ))}

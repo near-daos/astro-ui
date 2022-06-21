@@ -1,6 +1,5 @@
 import React from 'react';
 import cn from 'classnames';
-import { format, parseISO } from 'date-fns';
 import { useTranslation } from 'next-i18next';
 
 import { ProposalFeedItem } from 'types/proposal';
@@ -16,6 +15,8 @@ import {
 import { Tokens } from 'context/CustomTokensContext';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { CompareProposalContext } from 'astro_2.0/features/ViewProposal/components/HistorySelector/components/CompareProposalContext';
+
+import { formatISODate } from 'utils/format';
 
 import styles from './CompareProposal.module.scss';
 
@@ -54,7 +55,7 @@ export const CompareProposal = React.forwardRef<HTMLDivElement, Props>(
             />
           </div>
           <div className={styles.countdownCell}>
-            {format(parseISO(updatedAt as string), 'dd MMMM yyyy, hh:mm')}
+            {formatISODate(updatedAt, 'dd MMMM yyyy, hh:mm')}
           </div>
 
           {content ? (

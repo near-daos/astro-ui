@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
-import { format, parseISO } from 'date-fns';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'next-i18next';
 import Linkify from 'react-linkify';
@@ -14,6 +13,8 @@ import { getImagesFromLinks } from 'astro_2.0/features/ViewProposal/components/P
 import { ReportCommentsInput } from 'types/proposal';
 
 import { useModal } from 'components/modal';
+
+import { formatISODate } from 'utils/format';
 
 import styles from './Comment.module.scss';
 
@@ -214,9 +215,7 @@ export const Comment: FC<CommentProps> = ({
       >
         <p>{message}</p>
       </Linkify>
-      <div className={styles.time}>
-        {format(parseISO(createdAt), 'hh:mm a')}
-      </div>
+      <div className={styles.time}>{formatISODate(createdAt, 'hh:mm a')}</div>
       <div
         className={cn(styles.commentControls, {
           [styles.reported]: isReported,
