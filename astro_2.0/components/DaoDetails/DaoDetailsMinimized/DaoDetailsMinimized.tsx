@@ -111,7 +111,6 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
             </section>
           </a>
         </Link>
-
         <section className={styles.controls}>
           {flags.draftProposals && (
             <ActionButton

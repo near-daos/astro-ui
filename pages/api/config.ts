@@ -22,6 +22,7 @@ export default function handler(
     NEAR_ENV: process.env.NEAR_ENV,
     NEAR_CONTRACT_NAME: process.env.NEAR_CONTRACT_NAME,
     LAUNCHDARKLY_ID: process.env.NEXT_PUBLIC_LAUNCHDARKLY_ID,
+    DRAFTS_API_URL: process.env.DRAFTS_API_URL,
   };
 
   res.status(200).json(config);
