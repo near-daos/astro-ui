@@ -1,7 +1,7 @@
 import values from 'lodash/values';
 import isEmpty from 'lodash/isEmpty';
 import { DAO, DaoVotePolicy, TGroup, VotePolicyRequest } from 'types/dao';
-import { DaoRole } from 'types/role';
+import { DaoRole, DefaultVotePolicy } from 'types/role';
 import { CreateProposalParams, ProposalType } from 'types/proposal';
 import { DATA_SEPARATOR } from 'constants/common';
 import { APP_TO_CONTRACT_PROPOSAL_TYPE } from 'utils/dataConverter';
@@ -51,7 +51,7 @@ type ContractRole = {
   // eslint-disable-next-line camelcase,@typescript-eslint/ban-types
   vote_policy: Record<string, VotePolicyRequest> | {};
 };
-/*
+
 function formatVotePolicy(value: DefaultVotePolicy) {
   return {
     weight_kind: value.weightKind,
@@ -70,7 +70,7 @@ function formatVotePolicies(
 
     return res;
   }, {} as Record<string, VotePolicyRequest>);
-} */
+}
 
 export function dataRoleToContractRole(role: DaoRole): ContractRole {
   const { name, kind, permissions, votePolicy, accountIds } = role;
@@ -88,8 +88,7 @@ export function dataRoleToContractRole(role: DaoRole): ContractRole {
     permissions: values(permissions),
     vote_policy:
       votePolicy && !isEmpty(votePolicy)
-        ? //   ? formatVotePolicies(votePolicy)
-          votePolicy
+        ? formatVotePolicies(votePolicy)
         : ({} as Record<string, VotePolicyRequest>),
   };
 }
@@ -226,31 +225,13 @@ export function getUpdateGroupProposal(
               kind: {
                 Group: group.members,
               },
-              permissions: [
-                '*:Finalize',
-                '*:AddProposal',
-                '*:VoteApprove',
-                '*:VoteReject',
-                '*:VoteRemove',
-              ],
+              permissions: group.permissions,
               vote_policy: generateVotePolicyForEachProposalType(
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 group.votePolicy.quorum
               ),
             };
-
-            const oldGroupData = dao.policy.roles.find(
-              el => el.id.replace(dao.id, '') === group.slug
-            );
-
-            if (oldGroupData) {
-              return {
-                ...oldGroupData,
-                ...role,
-                permissions: oldGroupData.permissions,
-              };
-            }
 
             return role;
           }) as ContractRole[]),
