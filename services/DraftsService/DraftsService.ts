@@ -24,8 +24,10 @@ export class DraftsService {
     }/api/v1/`,
   });
 
-  constructor(httpService: HttpService) {
-    this.httpService = httpService;
+  constructor(httpService?: HttpService) {
+    if (httpService) {
+      this.httpService = httpService;
+    }
   }
 
   // Draft
@@ -67,11 +69,13 @@ export class DraftsService {
     id: string,
     accountId?: string
   ): Promise<AxiosResponse<DraftProposal>> {
-    return this.httpService.get(`/draft-proposals/${id}`, {
+    const { data } = await this.httpService.get(`/draft-proposals/${id}`, {
       params: {
         accountId,
       },
     });
+
+    return data;
   }
 
   public async patchDraft(data: DraftProposal): Promise<AxiosResponse<string>> {

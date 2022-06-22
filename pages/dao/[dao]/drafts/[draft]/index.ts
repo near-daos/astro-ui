@@ -4,26 +4,29 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { SputnikHttpService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
+import { DraftsService } from 'services/DraftsService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { extractMembersFromDao } from 'astro_2.0/features/CreateProposal/helpers';
 import { getDaoContext } from 'features/daos/helpers';
-import { mocks } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
   query,
   locale = 'en',
 }) => {
+  const draftService = new DraftsService();
+
   CookieService.initServerSideCookies(req?.headers.cookie || null);
 
-  const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
+  const accountId = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
 
   const daoId = query.dao as string;
   const draftId = query.draft as string;
 
-  const [membersStats, daoContext] = await Promise.all([
+  const [draft, membersStats, daoContext] = await Promise.all([
+    draftService.getDraft(draftId),
     SputnikHttpService.getDaoMembersStats(daoId),
-    getDaoContext(account, daoId as string),
+    getDaoContext(accountId, daoId as string),
   ]);
 
   const dao = daoContext?.dao;
@@ -45,8 +48,6 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   }
-
-  const draft = mocks.data.find(mock => mock.id === draftId);
 
   return {
     props: {
