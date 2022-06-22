@@ -1,10 +1,9 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { NextPage } from 'next';
 import TextTruncate from 'react-text-truncate';
 import dynamic from 'next/dynamic';
 import cn from 'classnames';
 import Link from 'next/link';
-import ContentLoader from 'react-content-loader';
 
 import {
   CFC_LIBRARY,
@@ -25,18 +24,15 @@ import {
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { ApplyToDaos } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/components/ApplyToDaos';
-import { Button } from 'components/button/Button';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { useAllCustomTokens } from 'hooks/useCustomTokens';
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
-import { DaosListModal } from 'astro_2.0/features/pages/cfcLibrary/components/DaosListModal';
+import { OptionsList } from 'astro_2.0/features/pages/cfcLibrary/components/OptionsList';
 
 import { copyToClipboard } from 'utils/copyToClipboard';
 
 import { DaoFeedItem } from 'types/dao';
-
-import { useModal } from 'components/modal';
 
 import styles from './SharedTemplatePage.module.scss';
 
@@ -69,66 +65,10 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
 
   const { tokens } = useAllCustomTokens();
 
-  const [showModal] = useModal(DaosListModal);
-
   const availableDaos = useMemo(
     () => accountDaos?.filter(item => item.isCouncil),
     [accountDaos]
   );
-
-  const handleMoreDaosClick = useCallback(async () => {
-    if (!data?.daos) {
-      return;
-    }
-
-    await showModal({ daos: data.daos });
-  }, [data?.daos, showModal]);
-
-  function renderSmartContractsList() {
-    if (loadingSmartContractData) {
-      return (
-        <ContentLoader height={280}>
-          <rect x="0" y="10" width="180" height="20" />
-          <rect x="0" y="50" width="180" height="20" />
-          <rect x="0" y="90" width="180" height="20" />
-          <rect x="0" y="130" width="180" height="20" />
-          <rect x="0" y="170" width="180" height="20" />
-          <rect x="0" y="210" width="180" height="20" />
-          <rect x="0" y="250" width="180" height="20" />
-        </ContentLoader>
-      );
-    }
-
-    if (!templatesBySmartContract?.length) {
-      return null;
-    }
-
-    return (
-      <>
-        <div className={styles.listTitle}>
-          Available Smart Contract templates
-        </div>
-        <ul>
-          {templatesBySmartContract.map(item => (
-            <li key={item.id} className={styles.listItem}>
-              <Link
-                passHref
-                href={{
-                  pathname: CFC_LIBRARY_TEMPLATE_VIEW,
-                  query: { template: item.id },
-                }}
-              >
-                <a className={styles.link}>
-                  {item.name}
-                  <span className={styles.sub}>{item.config.methodName}</span>
-                </a>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </>
-    );
-  }
 
   function renderContent() {
     if (loading) {
@@ -253,9 +193,11 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
 
         <div className={styles.body}>
           <div className={cn(styles.list, styles.hideMobile)}>
-            <div className={styles.listTitle}>Used in DAOs</div>
-            <ul>
-              {daos?.slice(0, 9).map(item => (
+            <OptionsList
+              loading={loading}
+              title="Used in DAOs"
+              data={daos}
+              renderItem={item => (
                 <li key={item.id} className={styles.listItem}>
                   <Link
                     passHref
@@ -267,21 +209,34 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
                     <a className={styles.link}>{item.id}</a>
                   </Link>
                 </li>
-              ))}
-            </ul>
-            {(daos?.length ?? 0) > 9 && (
-              <Button
-                onClick={handleMoreDaosClick}
-                size="medium"
-                variant="tertiary"
-                capitalize
-                className={styles.listTotal}
-              >
-                <span>+ {(daos?.length ?? 0) - 9} DAOs</span>
-              </Button>
-            )}
+              )}
+              suffix="DAOs"
+            />
 
-            {renderSmartContractsList()}
+            <OptionsList
+              loading={loadingSmartContractData}
+              title="Available Smart Contract templates"
+              data={templatesBySmartContract}
+              renderItem={item => (
+                <li key={item.id} className={styles.listItem}>
+                  <Link
+                    passHref
+                    href={{
+                      pathname: CFC_LIBRARY_TEMPLATE_VIEW,
+                      query: { template: item.id },
+                    }}
+                  >
+                    <a className={styles.link}>
+                      {item.name}
+                      <span className={styles.sub}>
+                        {item.config.methodName}
+                      </span>
+                    </a>
+                  </Link>
+                </li>
+              )}
+              suffix="templates"
+            />
           </div>
           <div className={styles.card}>
             <CustomTokensContext.Provider value={{ tokens }}>
