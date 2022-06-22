@@ -1205,7 +1205,6 @@ class SputnikHttpServiceClass {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public async getSharedProposalTemplate(
     templateId: string
   ): Promise<SharedProposalTemplate | null> {
@@ -1222,6 +1221,33 @@ class SputnikHttpServiceClass {
       });
 
       return data.data[0];
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+  }
+
+  public async getTemplatesBySmartContract(
+    smartContractAddress: string,
+    templateId: string
+  ): Promise<SharedProposalTemplate[] | null> {
+    try {
+      const { data } = await this.httpService.get<
+        PaginationResponse<SharedProposalTemplate[]>
+      >('/proposals/templates', {
+        queryRequest: {
+          name: API_QUERIES.GET_TEMPLATES_BY_SMART_CONTRACT,
+          params: {
+            smartContractAddress,
+            templateId,
+          },
+        },
+      });
+
+      return data.data.filter(
+        item => item.config.smartContractAddress === smartContractAddress
+      );
     } catch (error) {
       console.error(error);
 

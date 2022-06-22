@@ -4,6 +4,7 @@ import TextTruncate from 'react-text-truncate';
 import dynamic from 'next/dynamic';
 import cn from 'classnames';
 import Link from 'next/link';
+import ContentLoader from 'react-content-loader';
 
 import {
   CFC_LIBRARY,
@@ -55,7 +56,13 @@ interface Props {
 }
 
 const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
-  const { data, loading, templateId } = useSharedTemplatePageData();
+  const {
+    data,
+    loading,
+    templateId,
+    templatesBySmartContract,
+    loadingSmartContractData,
+  } = useSharedTemplatePageData();
   const { cloning, cloneToDao } = useCloneCfcTemplate();
   const { accountId } = useWalletContext();
   const [tooltip, setTooltip] = useState(defaultTooltipText);
@@ -76,6 +83,52 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
 
     await showModal({ daos: data.daos });
   }, [data?.daos, showModal]);
+
+  function renderSmartContractsList() {
+    if (loadingSmartContractData) {
+      return (
+        <ContentLoader height={280}>
+          <rect x="0" y="10" width="180" height="20" />
+          <rect x="0" y="50" width="180" height="20" />
+          <rect x="0" y="90" width="180" height="20" />
+          <rect x="0" y="130" width="180" height="20" />
+          <rect x="0" y="170" width="180" height="20" />
+          <rect x="0" y="210" width="180" height="20" />
+          <rect x="0" y="250" width="180" height="20" />
+        </ContentLoader>
+      );
+    }
+
+    if (!templatesBySmartContract?.length) {
+      return null;
+    }
+
+    return (
+      <>
+        <div className={styles.listTitle}>
+          Available Smart Contract templates
+        </div>
+        <ul>
+          {templatesBySmartContract.map(item => (
+            <li key={item.id} className={styles.listItem}>
+              <Link
+                passHref
+                href={{
+                  pathname: CFC_LIBRARY_TEMPLATE_VIEW,
+                  query: { template: item.id },
+                }}
+              >
+                <a className={styles.link}>
+                  {item.name}
+                  <span className={styles.sub}>{item.config.methodName}</span>
+                </a>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </>
+    );
+  }
 
   function renderContent() {
     if (loading) {
@@ -193,14 +246,14 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
               }}
               className={styles.duplicateControlBtn}
             >
-              {cloning ? <LoadingIndicator /> : 'Duplicate'}
+              {cloning ? <LoadingIndicator /> : 'Use in DAO'}
             </ApplyToDaos>
           </div>
         </div>
 
         <div className={styles.body}>
           <div className={cn(styles.list, styles.hideMobile)}>
-            <div className={styles.listTitle}>Duplicated</div>
+            <div className={styles.listTitle}>Used in DAOs</div>
             <ul>
               {daos?.slice(0, 9).map(item => (
                 <li key={item.id} className={styles.listItem}>
@@ -227,6 +280,8 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
                 <span>+ {(daos?.length ?? 0) - 9} DAOs</span>
               </Button>
             )}
+
+            {renderSmartContractsList()}
           </div>
           <div className={styles.card}>
             <CustomTokensContext.Provider value={{ tokens }}>

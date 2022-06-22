@@ -23,7 +23,13 @@ interface Props {
 
 export const TemplatesListItem: FC<Props> = ({ data }) => {
   const router = useRouter();
-  const { id, name, description, createdBy, daoCount } = data;
+  const {
+    id,
+    name,
+    description,
+    daoCount,
+    config: { smartContractAddress },
+  } = data;
 
   const { cloning, cloneToDao } = useCloneCfcTemplate();
 
@@ -62,7 +68,7 @@ export const TemplatesListItem: FC<Props> = ({ data }) => {
           line={2}
           element="div"
           truncateText="…"
-          text={createdBy}
+          text={smartContractAddress}
           textTruncateChild={null}
         />
       </div>
@@ -96,7 +102,7 @@ export const TemplatesListItem: FC<Props> = ({ data }) => {
             variant: 'green',
           }}
         >
-          {cloning ? <LoadingIndicator /> : 'Duplicate'}
+          {cloning ? <LoadingIndicator /> : 'Use in DAO'}
         </ApplyToDaos>
       </div>
     </div>

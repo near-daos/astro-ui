@@ -649,6 +649,33 @@ export class HttpService {
             request.params = { sort: 'createdAt,DESC' };
           }
           break;
+        case API_QUERIES.GET_TEMPLATES_BY_SMART_CONTRACT: {
+          const { query, smartContractAddress, templateId } =
+            requestCustom.queryRequest?.params || {};
+
+          const queryString = RequestQueryBuilder.create();
+
+          queryString.setFilter({
+            field: 'config',
+            operator: '$contL',
+            value: smartContractAddress,
+          });
+
+          queryString.setFilter({
+            field: 'id',
+            operator: '$ne',
+            value: templateId,
+          });
+
+          queryString
+            .setLimit(query?.limit ?? 1000)
+            .setOffset(query?.offset ?? 0)
+            .query();
+
+          request.url = `/proposals/templates?${queryString.queryString}`;
+
+          break;
+        }
         case API_QUERIES.GET_SHARED_PROPOSAL_TEMPLATES: {
           const { query, templateId } =
             requestCustom.queryRequest?.params || {};
