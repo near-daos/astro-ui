@@ -24,9 +24,11 @@ export const TemplatesList: FC<Props> = ({ total, data, next }) => {
     <div className={styles.root}>
       <div className={styles.header}>
         <div className={styles.name}>Name</div>
-        <div className={cn(styles.creator, styles.hideMobile)}>Creator</div>
+        <div className={cn(styles.creator, styles.hideMobile)}>
+          Smart Contract address
+        </div>
         <div className={cn(styles.duplicated, styles.hideMobile)}>
-          Duplicated
+          Used in # DAOs
         </div>
         <div className={styles.control}>&nbsp;</div>
       </div>

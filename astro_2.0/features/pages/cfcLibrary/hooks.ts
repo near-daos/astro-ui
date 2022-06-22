@@ -177,6 +177,8 @@ export function useSharedTemplatePageData(): {
   data: SharedProposalTemplate | null;
   loading: boolean;
   templateId: string;
+  loadingSmartContractData: boolean;
+  templatesBySmartContract: SharedProposalTemplate[] | null | undefined;
 } {
   const router = useRouter();
   const isMounted = useMountedState();
@@ -196,6 +198,24 @@ export function useSharedTemplatePageData(): {
     }
   }, [templateId, isMounted]);
 
+  const [
+    { loading: loadingSmartContractData, value: templatesBySmartContract },
+    fetchSmartContractData,
+  ] = useAsyncFn(async () => {
+    if (!data) {
+      return null;
+    }
+
+    return SputnikHttpService.getTemplatesBySmartContract(
+      data.config.smartContractAddress,
+      templateId
+    );
+  }, [data, templateId]);
+
+  useEffect(() => {
+    fetchSmartContractData();
+  }, [fetchSmartContractData]);
+
   useEffect(() => {
     (async () => {
       await fetchData();
@@ -206,5 +226,7 @@ export function useSharedTemplatePageData(): {
     data,
     loading,
     templateId,
+    loadingSmartContractData,
+    templatesBySmartContract,
   };
 }
