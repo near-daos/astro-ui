@@ -357,7 +357,7 @@ export interface ProposalComment {
   reports: ProposalCommentReport[];
 }
 
-type AuthorizedRequest = {
+export type AuthorizedRequest = {
   accountId: string;
   publicKey: string;
   signature: string;

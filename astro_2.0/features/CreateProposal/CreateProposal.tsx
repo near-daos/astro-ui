@@ -120,7 +120,12 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     redirectAfterCreation,
   });
 
-  const { onDraftSubmit } = useSubmitDraft();
+  const { onDraftSubmit } = useSubmitDraft({
+    selectedProposalVariant,
+    dao,
+    daoTokens,
+    bountyId,
+  });
 
   const contentNode = getFormContentNode(selectedProposalVariant, dao);
 

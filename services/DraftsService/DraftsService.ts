@@ -1,9 +1,11 @@
 import { AxiosResponse } from 'axios';
+import omit from 'lodash/omit';
 
 import { HttpService } from 'services/HttpService';
 import { appConfig } from 'config';
 import { DraftProposal, DraftProposalFeedItem } from 'types/draftProposal';
 import { PaginationResponse } from 'types/api';
+import { AuthorizedRequest } from 'types/proposal';
 
 import {
   DraftParams,
@@ -42,9 +44,23 @@ export class DraftsService {
   }
 
   public async createDraft(
-    data: DraftProposal
+    data: DraftProposal & AuthorizedRequest
   ): Promise<AxiosResponse<DraftProposal>> {
-    return this.httpService.post('/draft-proposals', data);
+    const { accountId, publicKey, signature } = data;
+
+    const buff = Buffer.from(`${accountId}|${publicKey}|${signature}`);
+
+    const body = omit(data, ['accountId', 'publicKey', 'signature']);
+
+    const headers = {
+      'X-Authorization': `Bearer ${buff.toString('base64')}`,
+    };
+
+    body.hashtags = body.hashtags.map(hashtag =>
+      typeof hashtag !== 'string' ? hashtag.value : hashtag
+    );
+
+    return this.httpService.post('/draft-proposals', body, { headers });
   }
 
   public async getDraft(

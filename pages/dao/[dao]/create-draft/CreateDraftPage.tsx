@@ -14,6 +14,7 @@ import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 import { DRAFTS_PAGE_URL } from 'constants/routing';
 
 import styles from './CreateDraftPage.module.scss';
+import { DraftsDataProvider } from '../../../../astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 
 export type CreateDraftPageProps = {
   daoContext: DaoContext;
@@ -54,17 +55,18 @@ export const CreateDraftPage: FC<CreateDraftPageProps> = ({ daoContext }) => {
           />
 
           <h1 className={styles.title}>Creating draft</h1>
-
-          <CreateProposal
-            isDraft
-            showInfo={false}
-            showClose={false}
-            showFlag={false}
-            dao={dao}
-            daoTokens={tokens}
-            onClose={() => undefined}
-            userPermissions={daoContext.userPermissions}
-          />
+          <DraftsDataProvider>
+            <CreateProposal
+              isDraft
+              showInfo={false}
+              showClose={false}
+              showFlag={false}
+              dao={dao}
+              daoTokens={tokens}
+              onClose={() => undefined}
+              userPermissions={daoContext.userPermissions}
+            />
+          </DraftsDataProvider>
         </>
       </NestedDaoPageWrapper>
     </>
