@@ -149,7 +149,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
       switch (stepProposalVariant) {
         case ProposalVariant.ProposeStakingContractDeployment:
           initialValues = {
-            token: status.selectedToken,
+            token: status.selectedToken || status.contractAddress,
             unstakingPeriod: new Decimal(daoContext.dao.policy.proposalPeriod)
               .div('3.6e12')
               .toString(),

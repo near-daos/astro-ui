@@ -28,6 +28,7 @@ export type ProgressStatus = {
   proposalId?: string | null;
   flow: CreateGovernanceTokenFlow;
   selectedToken?: string;
+  contractAddress?: string;
 };
 
 export type Settings = {

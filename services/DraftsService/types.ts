@@ -31,8 +31,8 @@ export type DraftComment = {
   contextType: 'DraftProposal';
   author: string;
   message: string;
-  replyTo: string;
-  replies: string[];
+  replyTo: string | undefined;
+  replies: DraftComment[];
   likeAccounts: string[];
   createdAt: string;
 };

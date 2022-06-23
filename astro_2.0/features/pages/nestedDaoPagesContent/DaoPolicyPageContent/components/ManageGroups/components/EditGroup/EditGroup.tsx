@@ -1,9 +1,13 @@
 // TODO requires localisation
-
+import { useTranslation } from 'next-i18next';
 import cn from 'classnames';
 import React, { KeyboardEvent, useCallback, useEffect, useState } from 'react';
 
 import { DaoVotePolicy, TGroup } from 'types/dao';
+
+import { VALID_WEBSITE_NAME_REGEXP } from 'constants/regexp';
+
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import { onPressEnterBtn } from 'utils/handlePressEnterBtn';
 
@@ -49,6 +53,7 @@ export const EditGroup: React.FC<Props> = ({
   onReset,
   onDelete,
 }) => {
+  const { t } = useTranslation();
   const { nearService } = useWalletContext();
 
   const [addMemberName, setAddMemberName] = useState('');
@@ -100,6 +105,16 @@ export const EditGroup: React.FC<Props> = ({
 
   const handleNewGroupName = () => {
     if (newGroupName.trim() === '') {
+      return;
+    }
+
+    if (!newGroupName.match(VALID_WEBSITE_NAME_REGEXP)) {
+      showNotification({
+        type: NOTIFICATION_TYPES.WARNING,
+        description: t('manageGroups.groupIncorrectCharactersError'),
+        lifetime: 10000,
+      });
+
       return;
     }
 
