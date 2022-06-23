@@ -1,3 +1,6 @@
+import { Hashtag } from 'types/draftProposal';
+import { AuthorizedRequest, ProposalVariant } from 'types/proposal';
+
 export type DraftBaseParams = {
   limit?: number;
   offset?: number;
@@ -9,7 +12,9 @@ export type DraftBaseParams = {
 export type DraftParams = {
   type?: string;
   state?: 'open' | 'closed';
-  accountId?: string;
+  daoId: string;
+  searchInput?: string;
+  accountId: string;
   isRead?: 'true' | 'false';
   isSaved?: 'true' | 'false';
 } & DraftBaseParams;
@@ -36,3 +41,12 @@ export type CreateDraftCommentData = Omit<
   DraftComment,
   'id' | 'author' | 'createdAt' | 'likeAccounts' | 'replies'
 >;
+
+export type CreateDraftParams = {
+  daoId: string;
+  title: string;
+  description: string;
+  hashtags: Hashtag[];
+  type: ProposalVariant;
+  kind: Record<string, unknown>;
+} & AuthorizedRequest;

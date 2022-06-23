@@ -123,8 +123,8 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   const { onDraftSubmit } = useSubmitDraft({
     selectedProposalVariant,
     dao,
+    initialValues,
     daoTokens,
-    bountyId,
   });
 
   const contentNode = getFormContentNode(selectedProposalVariant, dao);

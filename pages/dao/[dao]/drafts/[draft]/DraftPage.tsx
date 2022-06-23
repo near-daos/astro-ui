@@ -14,6 +14,7 @@ import { DRAFTS_PAGE_URL } from 'constants/routing';
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { DraftComments } from 'astro_2.0/features/DraftComments';
+import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 
 import { DraftProposal } from 'types/draftProposal';
 
@@ -64,7 +65,7 @@ const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
         <meta name="twitter:image" content={dao?.flagCover || dao?.logo} />
       </Head>
       <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
-        <>
+        <DraftsDataProvider>
           <div className={styles.draftInfo}>
             <BackButton
               name="Back to Draft Feed"
@@ -87,7 +88,7 @@ const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
             />
             <DraftComments openEditComment={openEditComment} />
           </div>
-        </>
+        </DraftsDataProvider>
       </NestedDaoPageWrapper>
     </>
   );

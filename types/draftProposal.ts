@@ -15,13 +15,12 @@ export type DraftComment = {
   comments?: DraftComment[];
 };
 
-// todo - draft version of DraftProposal :)
 export interface DraftProposal extends ProposalFeedItem {
   type: ProposalType;
   title: string;
   description: string;
   text: string;
-  hashtags: Hashtag[] | string[];
+  hashtags: Hashtag[];
   views: number;
   replies: number;
   createdAt: string;

@@ -1,11 +1,11 @@
 import { AxiosResponse } from 'axios';
 import omit from 'lodash/omit';
+import { nanoid } from 'nanoid';
 
 import { HttpService } from 'services/HttpService';
 import { appConfig } from 'config';
 import { DraftProposal, DraftProposalFeedItem } from 'types/draftProposal';
 import { PaginationResponse } from 'types/api';
-import { AuthorizedRequest } from 'types/proposal';
 
 import {
   DraftParams,
@@ -13,6 +13,7 @@ import {
   DraftComment,
   DraftBaseParams,
   CreateDraftCommentData,
+  CreateDraftParams,
 } from './types';
 
 export class DraftsService {
@@ -32,11 +33,7 @@ export class DraftsService {
 
   // Draft
   public async getDrafts(
-    params: DraftParams & {
-      daoId: string;
-      accountId: string;
-      searchInput?: string;
-    }
+    params: DraftParams
   ): Promise<PaginationResponse<DraftProposalFeedItem[]>> {
     const { data } = await this.httpService.get<
       PaginationResponse<DraftProposalFeedItem[]>
@@ -46,23 +43,26 @@ export class DraftsService {
   }
 
   public async createDraft(
-    data: DraftProposal & AuthorizedRequest
-  ): Promise<AxiosResponse<DraftProposal>> {
-    const { accountId, publicKey, signature } = data;
+    params: CreateDraftParams
+  ): Promise<AxiosResponse<string>> {
+    const { accountId, publicKey, signature } = params;
 
     const buff = Buffer.from(`${accountId}|${publicKey}|${signature}`);
 
-    const body = omit(data, ['accountId', 'publicKey', 'signature']);
+    const body = omit(params, ['accountId', 'publicKey', 'signature']);
 
     const headers = {
       'X-Authorization': `Bearer ${buff.toString('base64')}`,
     };
 
-    body.hashtags = body.hashtags.map(hashtag =>
-      typeof hashtag !== 'string' ? hashtag.value : hashtag
+    return this.httpService.post(
+      '/draft-proposals',
+      {
+        ...body,
+        hashtags: body.hashtags.map(hashtag => hashtag.value),
+      },
+      { headers }
     );
-
-    return this.httpService.post('/draft-proposals', body, { headers });
   }
 
   public async getDraft(
@@ -75,7 +75,13 @@ export class DraftsService {
       },
     });
 
-    return data;
+    return {
+      ...data,
+      hashtags: data.hashtags.map((hashtag: string) => ({
+        id: nanoid(),
+        value: hashtag,
+      })),
+    };
   }
 
   public async patchDraft(data: DraftProposal): Promise<AxiosResponse<string>> {

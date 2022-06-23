@@ -5,13 +5,15 @@ import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { getDaoContext } from 'features/daos/helpers';
 import { SputnikHttpService } from 'services/sputnik';
-import { mocks } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent';
+import { DraftsService } from 'services/DraftsService';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
   query,
   locale = 'en',
 }) => {
+  const draftService = new DraftsService();
+
   CookieService.initServerSideCookies(req?.headers.cookie || null);
 
   const account = CookieService.get<string | undefined>(ACCOUNT_COOKIE);
@@ -19,7 +21,8 @@ export const getServerSideProps: GetServerSideProps = async ({
   const daoId = query.dao as string;
   const draftId = query.draft as string;
 
-  const [dao, daoContext] = await Promise.all([
+  const [draft, dao, daoContext] = await Promise.all([
+    draftService.getDraft(draftId),
     SputnikHttpService.getDaoById(daoId),
     getDaoContext(account, daoId as string),
   ]);
@@ -29,8 +32,6 @@ export const getServerSideProps: GetServerSideProps = async ({
       notFound: true,
     };
   }
-
-  const draft = mocks.data.find(mock => mock.id === draftId);
 
   return {
     props: {
