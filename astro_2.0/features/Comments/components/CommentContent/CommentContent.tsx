@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
+import DOMPurify from 'dompurify';
 import { formatISODate } from 'utils/format';
 import styles from './CommentContent.module.scss';
 
@@ -16,6 +17,8 @@ export const CommentContent: FC<Props> = ({
   text,
   className,
 }) => {
+  const clean = DOMPurify.sanitize(text);
+
   return (
     <div className={cn(styles.root, className)}>
       <div className={styles.header}>
@@ -27,7 +30,8 @@ export const CommentContent: FC<Props> = ({
           {formatISODate(updatedAt, 'dd MMMM yyyy, HH:mm')}
         </div>
       </div>
-      <p className={styles.body}>{text}</p>
+      {/* eslint-disable-next-line react/no-danger */}
+      <p className={styles.body} dangerouslySetInnerHTML={{ __html: clean }} />
     </div>
   );
 };

@@ -57,21 +57,27 @@ $border-radius: 3px;
 
 .textField {
   border: 0;
+  font-size: 14px;
 }
 
 .bottom {
+  align-items: center;
   background: var(--color-white);
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
+  display: flex;
   height: 40px + $gap * 2;
+  justify-content: flex-end;
+  padding: 0 12px;
   position: relative;
   width: 100%;
 }
 
 .send {
-  bottom: $gap;
-  position: absolute;
-  right: $gap;
+  //bottom: $gap;
+  //position: absolute;
+  //right: $gap;
+  margin-left: 12px;
 }
 
 .error :global(.ql-editor.ql-blank) {

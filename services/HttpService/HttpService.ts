@@ -993,7 +993,8 @@ export class HttpService {
         case API_QUERIES.DELETE_ACCOUNT_SUBSCRIPTION:
         case API_QUERIES.DELETE_COMMENT:
         case API_QUERIES.REPORT_COMMENT:
-        case API_QUERIES.SEND_COMMENT: {
+        case API_QUERIES.SEND_COMMENT:
+        case API_QUERIES.ADD_AUTHORIZATION: {
           const { accountId, publicKey, signature } = request.data;
 
           const buff = Buffer.from(`${accountId}|${publicKey}|${signature}`);
