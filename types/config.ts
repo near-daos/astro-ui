@@ -13,6 +13,8 @@ export type Config = {
   LOCAL_WALLET_REDIRECT: boolean;
   NEAR_CONTRACT_NAME: string;
   TOKEN_FACTORY_CONTRACT_NAME: string;
+  GENERIC_FACTORY_CONTRACT_NAME: string;
+  STAKING_CONTRACT_BINARY_HASH: string;
   LAUNCHDARKLY_ID: string;
   DRAFTS_API_URL: string;
 };
