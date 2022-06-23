@@ -211,7 +211,10 @@ export function getNotificationParamsByType(
   };
 }
 
-export function extractPrefix(value: string, delimiter?: string): string {
+export function extractPrefix(
+  value: string | null,
+  delimiter?: string
+): string {
   if (!value) {
     return '';
   }
@@ -481,6 +484,7 @@ const mapNotificationTypeToMessage = (
 
 export function generateProposalNotificationText(
   accountId: string,
+  signerId: string | null,
   proposerId: string,
   status: NotificationStatus,
   notificationType: NotifiedActionType,
@@ -492,7 +496,7 @@ export function generateProposalNotificationText(
   switch (status) {
     case NotificationStatus.Created: {
       const actioner =
-        accountId === proposerId ? t('you') : extractPrefix(proposerId);
+        accountId === signerId ? t('you') : extractPrefix(signerId);
 
       return `<b>${actioner}</b> ${t('submittedNewProposal', {
         type,
@@ -501,7 +505,7 @@ export function generateProposalNotificationText(
     }
     case NotificationStatus.Rejected: {
       const actioner =
-        accountId === proposerId ? t('your') : extractPrefix(proposerId);
+        accountId === signerId ? t('your') : extractPrefix(signerId);
 
       return `<b>${actioner}'s</b> "${type}" ${t('proposalWasRejected', {
         dao: dao.displayName || extractPrefix(dao.id),
@@ -509,7 +513,7 @@ export function generateProposalNotificationText(
     }
     case NotificationStatus.Approved: {
       const actioner =
-        accountId === proposerId ? t('your') : extractPrefix(proposerId);
+        accountId === signerId ? t('your') : extractPrefix(signerId);
 
       return `<b>${actioner}'s</b> "${type}" ${t('proposalWasApproved', {
         dao: dao.displayName || extractPrefix(dao.id),
@@ -517,7 +521,7 @@ export function generateProposalNotificationText(
     }
     case NotificationStatus.VoteApprove: {
       const actioner =
-        accountId === proposerId ? t('you') : extractPrefix(proposerId);
+        accountId === signerId ? t('you') : extractPrefix(signerId);
 
       const proposalAuthor =
         accountId === proposerId ? t('your') : extractPrefix(proposerId);
@@ -531,7 +535,7 @@ export function generateProposalNotificationText(
     }
     case NotificationStatus.VoteReject: {
       const actioner =
-        accountId === proposerId ? t('you') : extractPrefix(proposerId);
+        accountId === signerId ? t('you') : extractPrefix(signerId);
 
       const proposalAuthor =
         accountId === proposerId ? t('your') : extractPrefix(proposerId);
@@ -545,7 +549,7 @@ export function generateProposalNotificationText(
     }
     case NotificationStatus.VoteRemove: {
       const actioner =
-        accountId === proposerId ? t('you') : extractPrefix(proposerId);
+        accountId === signerId ? t('you') : extractPrefix(signerId);
 
       const proposalAuthor =
         accountId === proposerId ? t('your') : extractPrefix(proposerId);
@@ -559,7 +563,7 @@ export function generateProposalNotificationText(
     }
     case NotificationStatus.CommentLike: {
       const actioner =
-        accountId === proposerId ? t('you') : extractPrefix(proposerId);
+        accountId === signerId ? t('you') : extractPrefix(signerId);
 
       const proposalAuthor =
         accountId === proposerId ? t('your') : extractPrefix(proposerId);

@@ -19,6 +19,7 @@ interface NotificationTextProps {
   metadata: unknown;
   dao: DAO | null;
   status: NotificationStatus;
+  signerId: string | null;
 }
 
 export const NotificationText: FC<NotificationTextProps> = ({
@@ -28,6 +29,7 @@ export const NotificationText: FC<NotificationTextProps> = ({
   metadata,
   status,
   dao,
+  signerId,
 }) => {
   const { t } = useTranslation('notificationsPage');
   let action;
@@ -69,6 +71,7 @@ export const NotificationText: FC<NotificationTextProps> = ({
     case NotifiedActionType.CommentLike: {
       action = generateProposalNotificationText(
         accountId,
+        signerId,
         proposerId,
         status,
         type,

@@ -47,6 +47,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
   onUpdate,
   onRemove,
   className,
+  signerId,
 }) => {
   const router = useRouter();
   const [swipedLeft, setSwipedLeft] = useState(false);
@@ -193,6 +194,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
             dao={dao}
             status={status}
             metadata={metadata}
+            signerId={signerId}
             proposerId={metadata?.proposal?.proposer ?? ''}
           />
         </div>
