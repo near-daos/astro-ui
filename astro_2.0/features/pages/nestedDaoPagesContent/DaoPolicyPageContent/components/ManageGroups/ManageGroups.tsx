@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import cn from 'classnames';
+import { useTranslation } from 'next-i18next';
+
 import { useWalletContext } from 'context/WalletContext';
 
 import { DAO, DaoVotePolicy, TGroup } from 'types/dao';
@@ -40,6 +42,7 @@ export const ManageGroups: React.FC<Props> = ({
   handleCreateProposal,
   disableNewProposal,
 }) => {
+  const { t } = useTranslation();
   const { currentWallet, accountId } = useWalletContext();
 
   const [groups, setGroups] = useState<TLocalGroup[]>([]);
@@ -110,6 +113,23 @@ export const ManageGroups: React.FC<Props> = ({
   };
 
   const handleDeleteGroup = () => {
+    const filledGroupSlugs = groups
+      .filter(group => group.members.length > 0)
+      .map(group => group.slug);
+
+    if (
+      filledGroupSlugs.includes(activeGroupSlug) &&
+      filledGroupSlugs.length === 1
+    ) {
+      showNotification({
+        type: NOTIFICATION_TYPES.ERROR,
+        description: t('manageGroups.preventDeleteLastGroupWithMembers'),
+        lifetime: 10000,
+      });
+
+      return;
+    }
+
     const filteredGroups = groups.filter(
       group => group.slug !== activeGroupSlug
     );
