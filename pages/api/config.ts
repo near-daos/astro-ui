@@ -23,6 +23,8 @@ export default function handler(
     NEAR_CONTRACT_NAME: process.env.NEAR_CONTRACT_NAME,
     LAUNCHDARKLY_ID: process.env.NEXT_PUBLIC_LAUNCHDARKLY_ID,
     DRAFTS_API_URL: process.env.DRAFTS_API_URL,
+    GENERIC_FACTORY_CONTRACT_NAME: process.env.GENERIC_FACTORY_CONTRACT_NAME,
+    STAKING_CONTRACT_BINARY_HASH: process.env.STAKING_CONTRACT_BINARY_HASH,
   };
 
   res.status(200).json(config);
