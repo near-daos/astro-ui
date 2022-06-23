@@ -2,11 +2,13 @@
 @import 'styles/mixins';
 
 .root {
+  border-radius: 4px;
   cursor: pointer;
   display: grid;
   grid-gap: 24px;
   grid-template-columns: 2fr 1fr;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
+  padding: 8px;
 
   white-space: nowrap;
 
@@ -16,9 +18,7 @@
 }
 
 .root:hover {
-  .title {
-    text-shadow: 3px 2px 12px var(--color-neutral-50);
-  }
+  background-color: var(--color-neutral-20);
 }
 
 .name {

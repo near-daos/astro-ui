@@ -94,9 +94,21 @@ export const ViewProposal: FC<ViewProposalProps> = ({
 
   const contentNode = getContentNode(proposal);
 
+  const { canApprove, canReject } = proposal.permissions;
+  const voted =
+    proposal.votes[accountId] === 'Yes' ||
+    proposal.votes[accountId] === 'No' ||
+    proposal.votes[accountId] === 'Dismiss' ||
+    (proposal.status && proposal.status !== 'InProgress');
+
   return (
     <FormProvider {...methods}>
       <ProposalCardRenderer
+        nonActionable={
+          selectedList &&
+          selectedList?.length > 0 &&
+          (voted || !canApprove || !canReject)
+        }
         isDraft={isDraft}
         isEditDraft={isEditDraft}
         proposalId={proposal.proposalId}
