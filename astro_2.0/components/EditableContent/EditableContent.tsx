@@ -67,6 +67,7 @@ type EditableContentProps = {
   hashtags?: Hashtag[];
   setHashtags?: (hashtags: Hashtag[]) => void;
   handleSend?: (html: string) => void;
+  handleCancel?: () => void;
   className?: string;
   errors?: EditableContentErrors;
 };
@@ -77,6 +78,7 @@ export const EditableContent: FC<EditableContentProps> = ({
   setHTML,
   placeholder = 'Write a comment...',
   handleSend,
+  handleCancel,
   title,
   setTitle,
   hashtags,
@@ -173,6 +175,15 @@ export const EditableContent: FC<EditableContentProps> = ({
       />
       {handleSend ? (
         <div className={styles.bottom}>
+          <Button
+            capitalize
+            variant="secondary"
+            size="small"
+            // className={styles.send}
+            onClick={handleCancel}
+          >
+            Cancel
+          </Button>
           <Button
             disabled={html === '' || html === '<p><br></p>'}
             capitalize

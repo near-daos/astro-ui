@@ -5,6 +5,9 @@ import { appConfig } from 'config';
 import { DraftProposal, DraftProposalFeedItem } from 'types/draftProposal';
 import { PaginationResponse } from 'types/api';
 
+import { API_QUERIES } from 'services/sputnik/constants';
+import { Authorization } from 'types/auth';
+
 import {
   DraftParams,
   DraftCommentParams,
@@ -85,22 +88,47 @@ export class DraftsService {
   // Draft comment
   public async getDraftComments(
     params: DraftCommentParams
-  ): Promise<AxiosResponse<PaginationResponse<DraftComment>>> {
-    return this.httpService.get('/draft-comments', { params });
+  ): Promise<DraftComment[]> {
+    const { data } = await this.httpService.get<AxiosResponse<DraftComment[]>>(
+      '/draft-comments',
+      { params }
+    );
+
+    return data.data.filter(item => !item.replyTo);
   }
 
   public async createDraftComment(
-    data: CreateDraftCommentData
+    data: CreateDraftCommentData & Authorization
   ): Promise<AxiosResponse<DraftComment>> {
-    return this.httpService.post('/draft-comments', data);
+    return this.httpService.post('/draft-comments', data, {
+      queryRequest: {
+        name: API_QUERIES.ADD_AUTHORIZATION,
+      },
+    });
   }
 
-  public async likeDraftComment(id: string): Promise<AxiosResponse<boolean>> {
-    return this.httpService.post(`/draft-comments/${id}/like`);
+  public async likeDraftComment(
+    params: { id: string } & Authorization
+  ): Promise<AxiosResponse<boolean>> {
+    return this.httpService.post(`/draft-comments/${params.id}/like`, params, {
+      queryRequest: {
+        name: API_QUERIES.ADD_AUTHORIZATION,
+      },
+    });
   }
 
-  public async unlikeDraftComment(id: string): Promise<AxiosResponse<boolean>> {
-    return this.httpService.post(`/draft-comments/${id}/unlike`);
+  public async unlikeDraftComment(
+    params: { id: string } & Authorization
+  ): Promise<AxiosResponse<boolean>> {
+    return this.httpService.post(
+      `/draft-comments/${params.id}/unlike`,
+      params,
+      {
+        queryRequest: {
+          name: API_QUERIES.ADD_AUTHORIZATION,
+        },
+      }
+    );
   }
 
   // Drafts hashtags
