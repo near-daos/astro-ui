@@ -1,0 +1,13 @@
+@import 'styles/typography';
+
+.root {
+  @extend %subtitle4;
+
+  color: var(--color-brand-purple);
+  font-size: 14px;
+}
+
+.icon {
+  margin: 0 8px 0 22px;
+  width: 24px;
+}

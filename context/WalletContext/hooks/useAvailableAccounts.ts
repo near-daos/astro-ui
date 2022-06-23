@@ -28,10 +28,19 @@ export const useAvailableAccounts = (
           const result = results[index];
 
           if (result.status === 'fulfilled') {
-            const walletAccounts = result.value.map((account: string) => ({
-              acc: account,
-              walletType: wallet.getWalletType(),
-            }));
+            const walletAccounts = result.value.reduce(
+              (accumulator: WalletAccount[], account: string) => {
+                if (account) {
+                  acc.push({
+                    acc: account,
+                    walletType: wallet.getWalletType(),
+                  });
+                }
+
+                return accumulator;
+              },
+              []
+            );
 
             acc.push(...walletAccounts);
           }

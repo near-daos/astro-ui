@@ -4,6 +4,9 @@ import { WalletType } from 'types/config';
 
 import { useWalletContext } from 'context/WalletContext';
 
+import { Delimiter } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletsList/components/Delimiter';
+
+import { AddNewWallet } from './components/AddNewWallet';
 import { WalletAccountV2 } from './components/WalletAccountV2';
 
 interface WalletListContentV2Props {
@@ -43,6 +46,9 @@ export const WalletListContentV2: VFC<WalletListContentV2Props> = props => {
           />
         );
       })}
+      <Delimiter />
+      <AddNewWallet />
+      <Delimiter />
     </div>
   );
 };

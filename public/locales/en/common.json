@@ -588,7 +588,8 @@
         "beta": "beta",
         "type": "extension"
       }
-    }
+    },
+    "addWallet": "Add new wallet"
   },
   "myAccountPage": {
     "header": "My account",

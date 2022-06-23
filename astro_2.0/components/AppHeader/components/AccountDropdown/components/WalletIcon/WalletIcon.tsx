@@ -6,7 +6,7 @@ import { Button } from 'components/button/Button';
 import styles from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletIcon/WalletIcon.module.scss';
 
 interface WalletIconProps {
-  walletType: WalletType;
+  walletType: WalletType | null;
   isSelected: boolean;
   onClick?: () => void;
   showLoader?: boolean;

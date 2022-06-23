@@ -1,0 +1,14 @@
+.root {
+  align-items: center;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  height: 52px;
+  margin-bottom: 2px;
+  padding: 0 8px;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--color-neutral-20);
+  }
+}

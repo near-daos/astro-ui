@@ -1,16 +1,27 @@
-import { useWalletContext } from 'context/WalletContext';
+import cn from 'classnames';
+import isEmpty from 'lodash/isEmpty';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 import React, { useCallback, useRef, useState } from 'react';
+
+import { useWalletContext } from 'context/WalletContext';
+
 import { LoginButton } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/LoginButton';
 import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
-import cn from 'classnames';
 import { Icon } from 'components/Icon';
 import { WalletsList } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletsList';
 import { AppFooter } from 'astro_2.0/components/AppFooter';
 import { ConnectedAccountButton } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/ConnectedAccountButton';
+
 import styles from './AccountDropdown.module.scss';
 
 export const AccountDropdown: React.FC = () => {
-  const { accountId, nearService, connectingToWallet } = useWalletContext();
+  const {
+    accountId,
+    nearService,
+    availableAccounts,
+    connectingToWallet,
+  } = useWalletContext();
+  const { newWalletDropdown } = useFlags();
   const [open, setOpen] = useState(false);
 
   const closeDropdown = useCallback(() => {
@@ -20,7 +31,11 @@ export const AccountDropdown: React.FC = () => {
   const ref = useRef(null);
 
   function render() {
-    if (!accountId) {
+    const showLogin = newWalletDropdown
+      ? isEmpty(availableAccounts)
+      : !accountId;
+
+    if (showLogin) {
       return <LoginButton />;
     }
 
@@ -43,7 +58,9 @@ export const AccountDropdown: React.FC = () => {
         }}
       >
         <>
-          {nearService && <WalletsList closeDropdownHandler={closeDropdown} />}
+          {(nearService || newWalletDropdown) && (
+            <WalletsList closeDropdownHandler={closeDropdown} />
+          )}
           <AppFooter mobile className={styles.footer} onClick={closeDropdown} />
         </>
       </GenericDropdown>

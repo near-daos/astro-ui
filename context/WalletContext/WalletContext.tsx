@@ -67,7 +67,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
     async (wallet: WalletService, contractName: string) => {
       toggleConnection(true);
 
-      if (!wallet.isSignedIn()) {
+      if (!wallet.isSignedIn() || newWalletDropdown) {
         await wallet.signIn(contractName);
       }
 
@@ -80,7 +80,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
         accountId: wallet.getAccountId(),
       });
     },
-    [setWallet, toggleConnection]
+    [setWallet, toggleConnection, newWalletDropdown]
   );
 
   const login = useCallback(
@@ -91,7 +91,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
         return;
       }
 
-      signIn(wallet, nearConfig.contractName);
+      await signIn(wallet, nearConfig.contractName);
     },
     [getWallet, nearConfig.contractName, signIn]
   );
@@ -141,6 +141,8 @@ export const WrappedWalletContext: FC = ({ children }) => {
         JSON.stringify(authData)
       );
 
+      window.localStorage.setItem('selectedWallet', walletType.toString());
+
       CookieService.set(ACCOUNT_COOKIE, accountId, {
         path: '/',
       });
@@ -159,13 +161,13 @@ export const WrappedWalletContext: FC = ({ children }) => {
     async (walletType: WalletType) => {
       const selectedWallet = getWallet(walletType);
 
-      if (!selectedWallet || !currentWallet) {
+      if (!selectedWallet || (!currentWallet && !newWalletDropdown)) {
         return;
       }
 
       await signIn(selectedWallet, nearConfig.contractName);
 
-      const currentWalletAccountId = currentWallet.getAccountId();
+      const currentWalletAccountId = currentWallet?.getAccountId();
       const selectedWalletAccountId = selectedWallet.getAccountId();
 
       sendGAEvent({
@@ -173,7 +175,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
         accountId: selectedWalletAccountId,
         params: {
           wallet: walletType,
-          previousAccountId: currentWalletAccountId,
+          previousAccountId: currentWalletAccountId || '',
         },
       });
 
@@ -181,7 +183,14 @@ export const WrappedWalletContext: FC = ({ children }) => {
         router.reload();
       }
     },
-    [currentWallet, getWallet, nearConfig.contractName, router, signIn]
+    [
+      currentWallet,
+      getWallet,
+      nearConfig.contractName,
+      router,
+      signIn,
+      newWalletDropdown,
+    ]
   );
 
   const walletContext = useMemo(() => {
