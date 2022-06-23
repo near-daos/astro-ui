@@ -130,17 +130,19 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   );
 
   const onTypeSelect = useCallback(
-    v => {
-      const defaults = getFormInitialValues(
-        t,
-        v,
-        accountId,
-        undefined,
-        undefined,
-        isDraft
-      );
+    (v, skip) => {
+      if (!skip) {
+        const defaults = getFormInitialValues(
+          t,
+          v,
+          accountId,
+          undefined,
+          undefined,
+          isDraft
+        );
 
-      methods.reset({ ...defaults });
+        methods.reset({ ...defaults });
+      }
 
       setSchemaContext({ selectedProposalVariant: v });
 
