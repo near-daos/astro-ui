@@ -18,6 +18,35 @@
       'infoPanel infoPanel';
     grid-template-columns: 50px 1fr;
   }
+
+  &.nonActionable * {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &.nonActionable .header {
+    opacity: 0.2;
+  }
+
+  &.nonActionable .proposal::after {
+    background-color: var(--color-white);
+    border-radius: 8px;
+    bottom: 0;
+    content: '';
+    cursor: default;
+    left: 0;
+    opacity: 0.8;
+    position: absolute;
+    right: 0;
+    top: -48px;
+
+    z-index: 10;
+
+    @include tablet-landscape {
+      left: -50px;
+      top: 0;
+    }
+  }
 }
 
 .header {
@@ -33,6 +62,7 @@
 
 .proposal {
   grid-area: proposal;
+  position: relative;
 }
 
 .letterHead {

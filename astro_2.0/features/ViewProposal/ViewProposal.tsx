@@ -36,7 +36,6 @@ export interface ViewProposalProps {
   tokens: Record<string, Token>;
   preventNavigate?: boolean;
   optionalPostVoteAction?: () => Promise<void>;
-  onReplyClick?: () => void;
   onSelect?: (p: string) => void;
   selectedList?: string[];
 }
@@ -54,7 +53,6 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   tokens,
   preventNavigate,
   optionalPostVoteAction,
-  onReplyClick,
   onSelect,
   selectedList,
 }) => {
@@ -94,9 +92,21 @@ export const ViewProposal: FC<ViewProposalProps> = ({
 
   const contentNode = getContentNode(proposal);
 
+  const { canApprove, canReject } = proposal.permissions;
+  const voted =
+    proposal.votes[accountId] === 'Yes' ||
+    proposal.votes[accountId] === 'No' ||
+    proposal.votes[accountId] === 'Dismiss' ||
+    (proposal.status && proposal.status !== 'InProgress');
+
   return (
     <FormProvider {...methods}>
       <ProposalCardRenderer
+        nonActionable={
+          selectedList &&
+          selectedList?.length > 0 &&
+          (voted || !canApprove || !canReject)
+        }
         isDraft={isDraft}
         isEditDraft={isEditDraft}
         proposalId={proposal.proposalId}
@@ -121,12 +131,11 @@ export const ViewProposal: FC<ViewProposalProps> = ({
         }
         proposalCardNode={
           <ProposalCard
-            onReplyClick={onReplyClick}
             title={'title' in proposal ? proposal?.title : undefined}
             hashtags={'hashtags' in proposal ? proposal?.hashtags : undefined}
-            comments={'comments' in proposal ? proposal?.comments : undefined}
-            bookmarks={'comments' in proposal ? proposal?.bookmarks : undefined}
             history={'history' in proposal ? proposal?.history : undefined}
+            replies={'replies' in proposal ? proposal?.replies : undefined}
+            views={'views' in proposal ? proposal?.views : undefined}
             isDraft={isDraft}
             isEditDraft={isEditDraft}
             id={proposal.id}

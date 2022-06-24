@@ -36,15 +36,6 @@ jest.mock('next-i18next', () => ({
   },
 }));
 
-jest.mock(
-  'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/FunctionCallTypeSelector',
-  () => {
-    return {
-      FunctionCallTypeSelector: () => <div>FunctionCallTypeSelector</div>,
-    };
-  }
-);
-
 jest.mock('components/button/IconButton', () => {
   const { IconButton } = jest.requireActual('components/button/IconButton');
 
@@ -103,7 +94,6 @@ describe('CreateGroupContent', () => {
     ${ProposalVariant.ProposeDoneBounty}                | ${'createProposal.header.completeBounty'}
     ${ProposalVariant.ProposeTokenDistribution}         | ${'createProposal.header.distributionOfTokens'}
     ${ProposalVariant.ProposeStakingContractDeployment} | ${'createProposal.header.deployStakingContract'}
-    ${ProposalVariant.ProposeCustomFunctionCall}        | ${'FunctionCallTypeSelector'}
   `(
     'Should render component for $type proposal variant',
     ({ type, content }) => {

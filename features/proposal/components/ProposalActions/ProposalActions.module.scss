@@ -5,7 +5,7 @@
 .root {
   align-items: flex-start;
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   padding: 0;
 
   @include tablet-landscape {
@@ -35,6 +35,11 @@
 .checkbox {
   color: var(--color-primary-50);
   cursor: pointer;
+  transform: translateY(8px);
+
+  @include tablet-landscape {
+    transform: translateY(0);
+  }
 }
 
 .icon {

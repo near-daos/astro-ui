@@ -10,11 +10,11 @@ import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 import { BackButton } from 'astro_2.0/features/ViewProposal/components/BackButton';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
+import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 
 import { DRAFTS_PAGE_URL } from 'constants/routing';
 
 import styles from './CreateDraftPage.module.scss';
-import { DraftsDataProvider } from '../../../../astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 
 export type CreateDraftPageProps = {
   daoContext: DaoContext;

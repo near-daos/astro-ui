@@ -22,7 +22,7 @@ import {
   ProposalVariant,
   VoteAction,
 } from 'types/proposal';
-import { DraftComment, Hashtag } from 'types/draftProposal';
+import { Hashtag } from 'types/draftProposal';
 import { VoteDetail } from 'features/types';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { ProposalActions } from 'features/proposal/components/ProposalActions';
@@ -95,10 +95,9 @@ export interface ProposalCardProps {
   isEditDraft?: boolean;
   title?: string;
   hashtags?: Hashtag[];
-  bookmarks?: number;
-  comments?: DraftComment[];
+  views?: number;
+  replies?: number;
   history?: ProposalFeedItem[];
-  onReplyClick?: () => void;
   onSelect?: (p: string) => void;
   selectedList?: string[];
 }
@@ -214,10 +213,9 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   isEditDraft,
   title,
   hashtags,
-  bookmarks,
-  comments,
+  views,
+  replies,
   history,
-  onReplyClick,
   onSelect,
   selectedList,
 }) => {
@@ -295,6 +293,12 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         return;
       }
 
+      if (selectedList?.length !== 0 && onSelect && id !== undefined) {
+        onSelect(id);
+
+        return;
+      }
+
       if (id && router.pathname !== SINGLE_PROPOSAL_PAGE_URL) {
         router.push({
           pathname: SINGLE_PROPOSAL_PAGE_URL,
@@ -305,7 +309,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         });
       }
     },
-    [daoId, id, preventNavigate, router]
+    [daoId, id, onSelect, preventNavigate, router, selectedList?.length]
   );
 
   const timeLeft = useCountdown(votePeriodEnd);
@@ -539,11 +543,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
               })
             }
           />
-          <DraftInfo
-            onReply={() => onReplyClick && onReplyClick()}
-            comments={comments?.length || 0}
-            bookmarks={bookmarks || 0}
-          />
+          <DraftInfo views={views || 0} replies={replies || 0} />
         </div>
       );
     }

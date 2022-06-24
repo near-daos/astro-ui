@@ -9,6 +9,7 @@ import { Button } from 'components/button/Button';
 import { CommentContent } from 'astro_2.0/features/Comments/components/CommentContent';
 import { EditableContent } from 'astro_2.0/components/EditableContent';
 import { ReplyButton } from 'astro_2.0/components/ReplyButton';
+import { CommentActions } from 'astro_2.0/features/Comments/components/CommentActions';
 
 import { useWalletContext } from 'context/WalletContext';
 
@@ -18,11 +19,23 @@ interface CommentProps {
   data: DraftComment;
   onLike: (id: string, unlike?: boolean) => Promise<void>;
   onReply: (value: string, replyTo: string) => Promise<void>;
+  onEdit: (value: string, id: string) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
+  isEditable: boolean;
 }
 
-export const Comment: FC<CommentProps> = ({ data, onLike, onReply }) => {
-  const { author, message, createdAt, replies, likeAccounts, id } = data;
+export const Comment: FC<CommentProps> = ({
+  data,
+  onLike,
+  onReply,
+  onEdit,
+  onDelete,
+  isEditable,
+}) => {
+  const [edit, setEdit] = useState(false);
+  const [contentHtml, setContentHtml] = useState(data.message);
 
+  const { author, message, createdAt, replies, likeAccounts, id } = data;
   const [html, setHTML] = useState('');
   const [showReplies, setShowReplies] = useState(false);
   const [showReplyInput, setShowReplyInput] = useState(false);
@@ -32,7 +45,24 @@ export const Comment: FC<CommentProps> = ({ data, onLike, onReply }) => {
 
   return (
     <div className={styles.root}>
-      <CommentContent author={author} updatedAt={createdAt} text={message} />
+      <CommentActions
+        id={id}
+        isEditable={isEditable}
+        onEdit={() => setEdit(!edit)}
+        onDelete={onDelete}
+      />
+      {edit ? (
+        <EditableContent
+          id={`key-edit-${id}`}
+          html={contentHtml}
+          setHTML={setContentHtml}
+          handleSend={msg => onEdit(msg, id)}
+          handleCancel={() => setEdit(!edit)}
+          placeholder="Type your comment..."
+        />
+      ) : (
+        <CommentContent author={author} updatedAt={createdAt} text={message} />
+      )}
       <div className={styles.footer}>
         {!!replies?.length && (
           <div className={styles.replies}>
@@ -51,21 +81,23 @@ export const Comment: FC<CommentProps> = ({ data, onLike, onReply }) => {
             </Button>
           </div>
         )}
-        <div className={styles.likes}>
-          {likeAccounts.length > 0 ? likeAccounts.length : null}{' '}
-          <IconButton
-            disabled={!accountId}
-            icon={isLikedByMe ? 'heartFilled' : 'heart'}
-            className={cn(styles.likeIcon, { [styles.liked]: isLikedByMe })}
-            onClick={() => onLike(id, isLikedByMe)}
-          />
+        <div className={styles.right}>
+          <div className={styles.likes}>
+            {likeAccounts.length > 0 ? likeAccounts.length : null}{' '}
+            <IconButton
+              disabled={!accountId}
+              icon={isLikedByMe ? 'heartFilled' : 'heart'}
+              className={cn(styles.likeIcon, { [styles.liked]: isLikedByMe })}
+              onClick={() => onLike(id, isLikedByMe)}
+            />
+          </div>
+          {accountId && (
+            <ReplyButton
+              className={styles.replyButton}
+              onClick={() => setShowReplyInput(!showReplyInput)}
+            />
+          )}
         </div>
-        {accountId && (
-          <ReplyButton
-            className={styles.replyButton}
-            onClick={() => setShowReplyInput(!showReplyInput)}
-          />
-        )}
       </div>
       {showReplies && !!replies?.length && (
         <div className={styles.repliesWrapper}>

@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useCallback, useState } from 'react';
 import { useId } from '@reach/auto-id';
 import { useMeasure, useMedia } from 'react-use';
 import { useTranslation } from 'next-i18next';
@@ -6,6 +6,7 @@ import cn from 'classnames';
 
 import Downshift from 'downshift';
 import { IconButton } from 'components/button/IconButton';
+import { SearchInput } from 'astro_2.0/components/SearchInput';
 
 import styles from './GroupedSelect.module.scss';
 
@@ -14,15 +15,18 @@ export type Option = {
   value: string;
   group: string;
   disabled?: boolean;
+  opt?: string;
 };
 
+interface Section {
+  title: string;
+  options: Option[];
+  disabled: boolean;
+}
+
 interface GroupedSelectProps {
-  options: {
-    title: string;
-    options: Option[];
-    disabled: boolean;
-  }[];
-  onChange: (value: string | null) => void;
+  options: Section[];
+  onChange: (value: Option | null) => void;
   id?: string;
   defaultValue: string;
   inputSize?: number;
@@ -35,13 +39,21 @@ export const GroupedSelect = React.forwardRef<
   GroupedSelectProps
 >(
   (
-    { options, onChange, defaultValue, inputStyles = {}, caption, ...rest },
+    {
+      options: initialOptions,
+      onChange,
+      defaultValue,
+      inputStyles = {},
+      caption,
+      ...rest
+    },
     externalRef
   ) => {
+    const [options, setOptions] = useState(initialOptions);
     const { t } = useTranslation();
     const id = useId(rest.id);
     const handleChange = (selectedItem: Option | null) => {
-      onChange(selectedItem?.value ?? null);
+      onChange(selectedItem);
     };
     const [measureRef, { width }] = useMeasure();
     const isMobileOrTablet = useMedia('(max-width: 767px)');
@@ -49,6 +61,38 @@ export const GroupedSelect = React.forwardRef<
     const itemToString = (i: Option | null) => {
       return i ? i.label : '';
     };
+
+    const handleFilter = useCallback(
+      (val: string) => {
+        const value = val.toLowerCase();
+
+        if (value === '') {
+          setOptions(initialOptions);
+
+          return Promise.resolve(null);
+        }
+
+        const newOptions = initialOptions.reduce<Section[]>((res, item) => {
+          const sectionOptions = item.options.filter(option =>
+            option.label.toLowerCase().includes(value)
+          );
+
+          if (sectionOptions.length) {
+            res.push({
+              ...item,
+              options: sectionOptions,
+            });
+          }
+
+          return res;
+        }, []);
+
+        setOptions(newOptions);
+
+        return Promise.resolve(null);
+      },
+      [initialOptions]
+    );
 
     return (
       <Downshift
@@ -116,6 +160,15 @@ export const GroupedSelect = React.forwardRef<
             </label>
             {!isOpen ? null : (
               <ul className={styles.menu}>
+                <section className={styles.controlItem}>
+                  <SearchInput
+                    onSubmit={handleFilter}
+                    loading={false}
+                    placeholder="Search proposal by name"
+                    className={styles.searchFilter}
+                    onClose={() => setOptions(initialOptions)}
+                  />
+                </section>
                 {
                   options.reduce(
                     (result, section) => {
@@ -132,7 +185,7 @@ export const GroupedSelect = React.forwardRef<
 
                             return (
                               <div
-                                key={option.value}
+                                key={`${option.value}_${option.label}`}
                                 className={cn(styles.item, {
                                   [styles.disabled]:
                                     section.disabled || option.disabled,

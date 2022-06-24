@@ -7,6 +7,9 @@
   display: flex;
   height: 32px;
   justify-content: center;
+  position: absolute;
+  right: -38px;
+  top: 0;
   width: 32px;
 
   @include tablet-landscape {
@@ -47,7 +50,7 @@
   display: flex;
   font-weight: 400;
   height: 40px;
-  padding: 8px 12px;
+  padding: 0;
 
   &:hover {
     background-color: var(--color-neutral-10);
@@ -57,9 +60,8 @@
     color: var(--color-error-70);
   }
 
-  > a {
-    align-items: center;
-    display: flex;
+  &:not(:last-of-type) {
+    margin-bottom: 8px;
   }
 }
 
@@ -72,4 +74,15 @@
   align-items: center;
   color: var(--color-neutral-70);
   display: flex;
+  padding: 8px 12px;
+  width: 100%;
+
+  &.red {
+    color: var(--color-error-70);
+  }
+
+  &.disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
 }

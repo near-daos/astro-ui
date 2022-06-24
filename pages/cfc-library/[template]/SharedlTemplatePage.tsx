@@ -198,7 +198,7 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
               title="Used in DAOs"
               data={daos}
               renderItem={item => (
-                <li key={item.id} className={styles.listItem}>
+                <li key={item.id} className={styles.listItemCond}>
                   <Link
                     passHref
                     href={{
@@ -214,6 +214,7 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
             />
 
             <OptionsList
+              className={styles.optionsList}
               loading={loadingSmartContractData}
               title="Available Smart Contract templates"
               data={templatesBySmartContract}

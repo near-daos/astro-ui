@@ -72,6 +72,7 @@
 
   @include tablet-landscape {
     min-width: 360px;
+    right: unset;
   }
 }
 
@@ -81,6 +82,15 @@
   color: var(--color-neutral-50);
   margin: 0 32px 8px;
   padding-bottom: 4px;
+}
+
+.controlItem {
+  align-items: center;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  margin: 4px 4px 16px;
+  padding: 6px 28px;
 }
 
 .item {
@@ -116,6 +126,10 @@
 
 .icon {
   appearance: none;
+}
+
+.searchFilter {
+  max-width: unset;
 }
 
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {

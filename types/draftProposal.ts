@@ -27,8 +27,6 @@ export interface DraftProposal extends ProposalFeedItem {
   updatedAt: string;
   isRead: boolean;
   isSaved: boolean;
-  comments: DraftComment[];
-  bookmarks: number;
   state: 'open' | 'closed';
   history: ProposalFeedItem[];
 }

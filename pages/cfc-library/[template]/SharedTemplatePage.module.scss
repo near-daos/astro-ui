@@ -101,6 +101,10 @@
   }
 }
 
+.optionsList {
+  margin-top: 24px;
+}
+
 .list {
   display: flex;
   flex-direction: column;
@@ -116,13 +120,18 @@
   color: var(--color-neutral-60);
 }
 
+.listItemCond,
 .listItem {
   @extend %heading5;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 
   &:hover {
     text-shadow: 0 0 8px var(--color-neutral-40);
   }
+}
+
+.listItem {
+  margin-bottom: 16px;
 }
 
 .link {
@@ -130,9 +139,10 @@
   flex-direction: column;
 
   .sub {
-    @extend %caption1;
+    @extend %caption2;
     color: var(--color-neutral-60);
-    line-height: 0.85;
+    line-height: 1;
+    margin-top: 2px;
   }
 }
 

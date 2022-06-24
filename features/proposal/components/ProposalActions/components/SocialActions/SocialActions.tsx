@@ -73,7 +73,7 @@ export const SocialActions: FC<Props> = ({
                 }, 2000);
               }}
             >
-              <Icon name="buttonCopy" className={styles.icon} />
+              <Icon name="copy" className={styles.icon} />
               <span>Copy link</span>
             </Button>
           </Tooltip>
@@ -87,7 +87,7 @@ export const SocialActions: FC<Props> = ({
               `${shareContent}\n${shareUrl} `
             )}`}
           >
-            <Icon name="socialTwitterAlt" className={styles.icon} />
+            <Icon name="tweet" className={styles.icon} />
             <span>Share on Twitter</span>
           </a>
         </li>
@@ -99,7 +99,7 @@ export const SocialActions: FC<Props> = ({
               shareUrl
             )}&text=${shareContent}`}
           >
-            <Icon name="socialTelegram" className={styles.icon} />
+            <Icon name="telegram" className={styles.icon} />
             <span>Share on Telegram</span>
           </a>
         </li>

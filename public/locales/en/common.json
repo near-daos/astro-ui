@@ -685,6 +685,7 @@
     "lettersNumbersHyphensSpaces": "Only letters and numbers with hyphens and spaces in the middle"
   },
   "drafts": {
+    "noDrafts": "No drafts",
     "topic": "Topic",
     "views": "Views",
     "replies": "Replies",

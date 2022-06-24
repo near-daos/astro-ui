@@ -1,5 +1,8 @@
-import { Hashtag } from 'types/draftProposal';
-import { AuthorizedRequest, ProposalVariant } from 'types/proposal';
+import {
+  AuthorizedRequest,
+  ProposalType,
+  ProposalVariant,
+} from 'types/proposal';
 
 export type DraftBaseParams = {
   limit?: number;
@@ -37,16 +40,36 @@ export type DraftComment = {
   createdAt: string;
 };
 
+export type EditDraftCommentData = Omit<
+  DraftComment,
+  | 'contextId'
+  | 'contextType'
+  | 'author'
+  | 'createdAt'
+  | 'likeAccounts'
+  | 'replies'
+  | 'replyTo'
+>;
+
 export type CreateDraftCommentData = Omit<
   DraftComment,
   'id' | 'author' | 'createdAt' | 'likeAccounts' | 'replies'
+>;
+
+export type DraftKind = { proposalVariant: ProposalVariant } & Record<
+  string,
+  unknown
 >;
 
 export type CreateDraftParams = {
   daoId: string;
   title: string;
   description: string;
-  hashtags: Hashtag[];
-  type: ProposalVariant;
-  kind: Record<string, unknown>;
+  hashtags: string[];
+  type: ProposalType;
+  kind: DraftKind;
+} & AuthorizedRequest;
+
+export type DraftIdParams = {
+  id: string;
 } & AuthorizedRequest;

@@ -23,7 +23,7 @@ interface ProposalActionsProps {
   proposalVariant: ProposalVariant;
   proposalType: ProposalType;
   proposalDescription: string;
-  permissions: ProposalVotingPermissions;
+  permissions?: ProposalVotingPermissions;
   disableControls: boolean;
   daoId: string;
   proposalId: string | undefined;
@@ -40,15 +40,12 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
   proposalVariant,
   proposalType,
   proposalDescription,
-  permissions,
   disableControls,
   daoId,
   proposalId,
   selectedList,
   allowSelect,
 }) => {
-  const { canDelete } = permissions;
-
   const isChecked = selectedList?.findIndex(item => item === proposalId) !== -1;
 
   return (
@@ -64,16 +61,19 @@ export const ProposalActions: FC<ProposalActionsProps> = ({
         />
       ) : (
         <>
-          <BehaviorActions
-            allowSelect={allowSelect}
-            removeCount={removeCount}
-            onRemove={onRemove}
-            onSelect={() =>
-              onSelect && proposalId !== undefined && onSelect(proposalId)
-            }
-            removed={removed}
-            disabled={disableControls || !canDelete}
-          />
+          {!allowSelect ? null : (
+            <BehaviorActions
+              allowSelect={allowSelect}
+              removeCount={removeCount}
+              onRemove={onRemove}
+              hideSelect={!onSelect}
+              onSelect={() =>
+                onSelect && proposalId !== undefined && onSelect(proposalId)
+              }
+              removed={removed}
+              disabled={disableControls}
+            />
+          )}
           <SocialActions
             daoId={daoId}
             proposalDescription={proposalDescription}

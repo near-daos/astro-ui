@@ -23,13 +23,14 @@ export const getServerSideProps: GetServerSideProps = async ({
   const daoId = query.dao as string;
   const draftId = query.draft as string;
 
-  const [draft, membersStats, daoContext] = await Promise.all([
-    draftService.getDraft(draftId),
+  const [membersStats, daoContext] = await Promise.all([
     SputnikHttpService.getDaoMembersStats(daoId),
     getDaoContext(accountId, daoId as string),
   ]);
 
   const dao = daoContext?.dao;
+
+  const draft = await draftService.getDraft(draftId, dao);
 
   const members = dao ? extractMembersFromDao(dao, membersStats) : [];
 
