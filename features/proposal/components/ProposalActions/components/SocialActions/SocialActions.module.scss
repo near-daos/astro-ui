@@ -9,15 +9,21 @@
   justify-content: center;
   width: 32px;
 
-  &:hover {
-    background-color: var(--color-neutral-30);
+  @include tablet-landscape {
+    &:hover {
+      background-color: var(--color-neutral-30);
+    }
   }
 }
 
 .rootIcon.rootIcon {
-  color: var(--color-neutral-60);
+  color: var(--color-white);
   transform: translateY(-4px);
   width: 24px;
+
+  @include tablet-landscape {
+    color: var(--color-neutral-60);
+  }
 }
 
 .menu {
@@ -27,6 +33,7 @@
   display: flex;
   flex-direction: column;
   list-style: none;
+  margin: 0;
   min-width: 140px;
   padding: 8px;
   position: absolute;
@@ -36,7 +43,10 @@
 .menuItem {
   @extend %subtitle4;
   align-items: center;
+  color: var(--color-neutral-70);
   display: flex;
+  font-weight: 400;
+  height: 40px;
   padding: 8px 12px;
 
   &:hover {
@@ -47,8 +57,9 @@
     color: var(--color-error-70);
   }
 
-  &:not(:last-of-type) {
-    margin-bottom: 8px;
+  > a {
+    align-items: center;
+    display: flex;
   }
 }
 
@@ -58,7 +69,7 @@
 }
 
 .buttonContent {
-  @extend %subtitle4;
   align-items: center;
+  color: var(--color-neutral-70);
   display: flex;
 }

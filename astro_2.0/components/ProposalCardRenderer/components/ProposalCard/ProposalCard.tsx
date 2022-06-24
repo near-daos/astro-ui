@@ -295,6 +295,12 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         return;
       }
 
+      if (selectedList?.length !== 0 && onSelect && id !== undefined) {
+        onSelect(id);
+
+        return;
+      }
+
       if (id && router.pathname !== SINGLE_PROPOSAL_PAGE_URL) {
         router.push({
           pathname: SINGLE_PROPOSAL_PAGE_URL,
@@ -305,7 +311,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         });
       }
     },
-    [daoId, id, preventNavigate, router]
+    [daoId, id, onSelect, preventNavigate, router, selectedList?.length]
   );
 
   const timeLeft = useCountdown(votePeriodEnd);

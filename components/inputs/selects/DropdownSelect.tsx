@@ -63,7 +63,7 @@ export const DropdownSelect = React.forwardRef<
     });
 
     useEffect(() => {
-      if (defaultValue && !selectedItem) {
+      if (defaultValue !== undefined && !selectedItem) {
         const defaultOption = options.find(
           option => option.value === defaultValue
         );

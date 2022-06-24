@@ -121,6 +121,7 @@
 }
 
 .item {
+  @extend %body2;
   border-radius: 6px;
   display: flex;
   justify-content: flex-start;

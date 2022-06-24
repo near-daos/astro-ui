@@ -16,6 +16,7 @@ interface Props {
   removed: boolean;
   disabled: boolean;
   allowSelect?: boolean;
+  hideSelect?: boolean;
 }
 
 export const BehaviorActions: FC<Props> = ({
@@ -24,6 +25,7 @@ export const BehaviorActions: FC<Props> = ({
   removed,
   disabled,
   allowSelect,
+  hideSelect,
 }) => {
   const { multiVoting } = useFlags();
   const [open, setOpen] = useState(false);
@@ -39,7 +41,7 @@ export const BehaviorActions: FC<Props> = ({
       }
     >
       <ul className={styles.menu}>
-        {multiVoting && (
+        {multiVoting && !hideSelect && (
           <li className={styles.menuItem}>
             <Button
               variant="transparent"
@@ -66,7 +68,7 @@ export const BehaviorActions: FC<Props> = ({
             disabled={removed || disabled}
           >
             <Icon name="buttonDelete" className={styles.icon} />{' '}
-            <span>Delete</span>
+            <span>Remove</span>
           </Button>
         </li>
       </ul>

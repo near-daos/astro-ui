@@ -20,6 +20,7 @@ export interface ProposalCardRendererProps {
   optionalActionNode?: React.ReactNode;
   isDraft?: boolean;
   isEditDraft?: boolean;
+  nonActionable?: boolean;
 }
 
 export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
@@ -33,6 +34,7 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
   optionalActionNode,
   isDraft,
   isEditDraft,
+  nonActionable,
 }) => {
   const { t } = useTranslation();
   const draftMethods = useFormContext();
@@ -73,7 +75,15 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
   const onSaveDraft = () => undefined;
 
   return (
-    <div className={cn(styles.root, className)}>
+    <div
+      className={cn(
+        styles.root,
+        {
+          [styles.nonActionable]: nonActionable,
+        },
+        className
+      )}
+    >
       <div className={styles.header}>
         <div className={styles.flagWrapper}>{renderFlag()}</div>
         {renderInfoPanel()}

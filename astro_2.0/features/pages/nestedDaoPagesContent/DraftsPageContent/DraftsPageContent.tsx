@@ -1,12 +1,14 @@
 import React, { FC, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 import isEmpty from 'lodash/isEmpty';
+import { useRouter } from 'next/router';
 
 import { DaoContext } from 'types/context';
 
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { FEED_CATEGORIES } from 'constants/proposals';
 
+import { Button } from 'components/button/Button';
 import { DraftsListHeader } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/DraftsListHeader';
 import { StateFilter } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/StateFilter';
 import { DraftCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/components/DraftCard';
@@ -16,6 +18,8 @@ import { Feed as FeedList } from 'astro_2.0/components/Feed';
 import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 
 import { useDraftsPageData } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/hooks';
+
+import { CREATE_DRAFT_PAGE_URL } from 'constants/routing';
 
 import { DraftsPageHeader } from './components/DraftsPageHeader';
 
@@ -27,6 +31,7 @@ export interface Props {
 }
 
 export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
+  const router = useRouter();
   const { t } = useTranslation();
   const { dao } = daoContext;
 
@@ -81,12 +86,30 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
                   noResults={
                     <div className={styles.loading}>
                       <NoResultsView
+                        className={styles.noResults}
                         title={
                           isEmpty(data?.data)
-                            ? t('noResultsFound')
+                            ? t('noDrafts')
                             : t('noMoreResults')
                         }
-                      />
+                      >
+                        {data?.total === 0 && (
+                          <Button
+                            capitalize
+                            size="small"
+                            onClick={() => {
+                              router.push({
+                                pathname: CREATE_DRAFT_PAGE_URL,
+                                query: {
+                                  dao: dao.id,
+                                },
+                              });
+                            }}
+                          >
+                            Create Draft
+                          </Button>
+                        )}
+                      </NoResultsView>
                     </div>
                   }
                   renderItem={item => (
@@ -101,9 +124,7 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
                   className={styles.listWrapper}
                 />
               </div>
-            ) : (
-              <NoResultsView title="No data found" />
-            )}
+            ) : null}
           </>
         )}
       </div>
