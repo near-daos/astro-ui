@@ -74,8 +74,14 @@ export class DraftsService {
     return this.httpService.delete(`/draft-proposals/${id}`);
   }
 
-  public async updateDraftView(id: string): Promise<AxiosResponse<boolean>> {
-    return this.httpService.post(`/draft-proposals/${id}/view`);
+  public async updateDraftView(
+    params: { id: string } & Authorization
+  ): Promise<AxiosResponse<boolean>> {
+    return this.httpService.post(`/draft-proposals/${params.id}/view`, params, {
+      queryRequest: {
+        name: API_QUERIES.ADD_AUTHORIZATION,
+      },
+    });
   }
 
   public async updateDraftSave(id: string): Promise<AxiosResponse<boolean>> {
