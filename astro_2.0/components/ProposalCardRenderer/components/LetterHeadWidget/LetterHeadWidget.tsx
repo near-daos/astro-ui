@@ -12,6 +12,8 @@ interface LetterHeadWidgetProps {
   coverUrl?: string;
   status?: string;
   className?: string;
+  iconWrapperClassName?: string;
+  iconClassName?: string;
 }
 
 const getIconName = (type: ProposalType) => {
@@ -30,9 +32,9 @@ const getIconName = (type: ProposalType) => {
     case 'ChangePolicy':
       return 'proposalGovernance';
     case 'FunctionCall':
-      return 'proposalNearFunctionCall';
+      return 'proposalFunctionCall';
     default:
-      return 'proposalNearFunctionCall';
+      return 'proposalFunctionCall';
   }
 };
 
@@ -41,6 +43,8 @@ export const LetterHeadWidget: React.FC<LetterHeadWidgetProps> = ({
   coverUrl,
   status,
   className,
+  iconWrapperClassName,
+  iconClassName,
 }) => {
   return (
     <div
@@ -58,8 +62,11 @@ export const LetterHeadWidget: React.FC<LetterHeadWidgetProps> = ({
       }}
     >
       <div className={styles.background} />
-      <div className={styles.iconHolder}>
-        <Icon name={getIconName(type)} className={styles.icon} />
+      <div className={cn(styles.iconHolder, iconWrapperClassName)}>
+        <Icon
+          name={getIconName(type)}
+          className={cn(styles.icon, iconClassName)}
+        />
       </div>
     </div>
   );

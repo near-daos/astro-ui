@@ -22,6 +22,18 @@
   width: 32px;
 }
 
+.letterheadIcon {
+  margin: 0;
+  width: 18px;
+}
+
+.letterheadIconWrapper {
+  @include tablet-landscape {
+    padding-top: 8px;
+    width: 18px;
+  }
+}
+
 .content {
   background-color: var(--color-white);
   //background: red;

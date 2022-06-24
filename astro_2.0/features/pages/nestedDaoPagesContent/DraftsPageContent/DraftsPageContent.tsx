@@ -89,7 +89,7 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
                         className={styles.noResults}
                         title={
                           isEmpty(data?.data)
-                            ? t('noDrafts')
+                            ? t('drafts.noDrafts')
                             : t('noMoreResults')
                         }
                       >
