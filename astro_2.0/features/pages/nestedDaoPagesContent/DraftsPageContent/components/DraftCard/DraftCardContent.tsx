@@ -8,6 +8,8 @@ import { Icon } from 'components/Icon';
 
 import { DRAFT_PAGE_URL } from 'constants/routing';
 
+import { useDraftsPageActions } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/hooks';
+
 import styles from './DraftCard.module.scss';
 
 interface Props {
@@ -19,9 +21,13 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
   const router = useRouter();
   const { id, title, views, replies, updatedAt, hashtags } = data;
 
-  const handleCardClick = useCallback(() => {
+  const { handleView } = useDraftsPageActions();
+
+  const handleCardClick = useCallback(async () => {
     if (id && router.pathname !== DRAFT_PAGE_URL) {
-      router.push({
+      await handleView(id);
+
+      await router.push({
         pathname: DRAFT_PAGE_URL,
         query: {
           dao: daoId,
@@ -29,7 +35,7 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
         },
       });
     }
-  }, [daoId, id, router]);
+  }, [daoId, handleView, id, router]);
 
   return (
     <div
