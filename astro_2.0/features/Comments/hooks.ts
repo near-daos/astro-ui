@@ -10,6 +10,8 @@ export function useDraftComments(): {
   loading: boolean;
   data: DraftComment[];
   addComment: (val: string) => Promise<void>;
+  editComment: (val: string, id: string) => Promise<void>;
+  deleteComment: (id: string) => Promise<void>;
   likeComment: (id: string) => Promise<void>;
 } {
   const router = useRouter();
@@ -74,6 +76,39 @@ export function useDraftComments(): {
     [accountId, contextId, draftsService, fetchComments, pkAndSignature]
   );
 
+  const editComment = useCallback(
+    async (msg: string, id: string) => {
+      if (!pkAndSignature) {
+        return;
+      }
+
+      const { publicKey, signature } = pkAndSignature;
+
+      if (!publicKey || !signature) {
+        return;
+      }
+
+      try {
+        await draftsService.editDraftComment({
+          id,
+          message: msg,
+          accountId,
+          publicKey,
+          signature,
+        });
+
+        await fetchComments();
+      } catch (e) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          lifetime: 20000,
+          description: e?.message,
+        });
+      }
+    },
+    [accountId, draftsService, fetchComments, pkAndSignature]
+  );
+
   const likeComment = useCallback(
     async (id: string, unlike?: boolean) => {
       if (!pkAndSignature) {
@@ -115,6 +150,38 @@ export function useDraftComments(): {
     [accountId, draftsService, fetchComments, pkAndSignature]
   );
 
+  const deleteComment = useCallback(
+    async (id: string) => {
+      if (!pkAndSignature) {
+        return;
+      }
+
+      const { publicKey, signature } = pkAndSignature;
+
+      if (!publicKey || !signature) {
+        return;
+      }
+
+      try {
+        await draftsService.deleteDraftComment({
+          id,
+          accountId,
+          publicKey,
+          signature,
+        });
+
+        await fetchComments();
+      } catch (e) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          lifetime: 20000,
+          description: e?.message,
+        });
+      }
+    },
+    [accountId, draftsService, fetchComments, pkAndSignature]
+  );
+
   useEffect(() => {
     (async () => {
       await fetchComments();
@@ -125,6 +192,8 @@ export function useDraftComments(): {
     loading,
     data: value ?? [],
     addComment,
+    editComment,
+    deleteComment,
     likeComment,
   };
 }

@@ -82,7 +82,7 @@ const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
             showFlag={false}
             tokens={tokens}
           />
-          <DraftComments />
+          <DraftComments dao={dao} />
         </div>
       </DraftsDataProvider>
     </NestedDaoPageWrapper>

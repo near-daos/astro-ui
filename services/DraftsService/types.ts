@@ -32,6 +32,17 @@ export type DraftComment = {
   createdAt: string;
 };
 
+export type EditDraftCommentData = Omit<
+  DraftComment,
+  | 'contextId'
+  | 'contextType'
+  | 'author'
+  | 'createdAt'
+  | 'likeAccounts'
+  | 'replies'
+  | 'replyTo'
+>;
+
 export type CreateDraftCommentData = Omit<
   DraftComment,
   'id' | 'author' | 'createdAt' | 'likeAccounts' | 'replies'

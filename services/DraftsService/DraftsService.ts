@@ -14,6 +14,7 @@ import {
   DraftComment,
   DraftBaseParams,
   CreateDraftCommentData,
+  EditDraftCommentData,
 } from './types';
 
 export class DraftsService {
@@ -101,6 +102,26 @@ export class DraftsService {
     data: CreateDraftCommentData & Authorization
   ): Promise<AxiosResponse<DraftComment>> {
     return this.httpService.post('/draft-comments', data, {
+      queryRequest: {
+        name: API_QUERIES.ADD_AUTHORIZATION,
+      },
+    });
+  }
+
+  public async editDraftComment(
+    data: EditDraftCommentData & Authorization
+  ): Promise<AxiosResponse<DraftComment>> {
+    return this.httpService.patch(`/draft-comments/${data.id}`, data, {
+      queryRequest: {
+        name: API_QUERIES.ADD_AUTHORIZATION,
+      },
+    });
+  }
+
+  public async deleteDraftComment(
+    params: { id: string } & Authorization
+  ): Promise<AxiosResponse<boolean>> {
+    return this.httpService.delete(`/draft-comments/${params.id}`, params, {
       queryRequest: {
         name: API_QUERIES.ADD_AUTHORIZATION,
       },
