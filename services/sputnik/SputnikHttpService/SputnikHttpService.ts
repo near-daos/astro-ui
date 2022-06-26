@@ -410,32 +410,6 @@ class SputnikHttpServiceClass {
     }
   }
 
-  public async getAllKindProposals({
-    field,
-  }: {
-    field: string;
-  }): Promise<PaginationResponse<ProposalFeedItem[]> | null> {
-    const params = {
-      filter: `type||$eq||${field}`,
-      offset: 0,
-      limit: 5,
-    };
-
-    try {
-      const { data } = await this.httpService.get<
-        PaginationResponse<ProposalFeedItem[]>
-      >('/proposals', {
-        params,
-      });
-
-      return data;
-    } catch (error) {
-      console.error(error);
-
-      return null;
-    }
-  }
-
   public async getAccountReceiptsByTokens(
     accountId: string,
     tokenId: string
