@@ -76,8 +76,14 @@ export class DraftsService {
     return data;
   }
 
-  public async patchDraft(data: DraftProposal): Promise<AxiosResponse<string>> {
-    return this.httpService.patch(`/draft-proposals/${data.id}`, data);
+  public async patchDraft(
+    params: { id: string } & CreateDraftParams
+  ): Promise<AxiosResponse<string>> {
+    return this.httpService.patch(`/draft-proposals/${params.id}`, params, {
+      queryRequest: {
+        name: API_QUERIES.ADD_AUTHORIZATION,
+      },
+    });
   }
 
   public async deleteDraft(

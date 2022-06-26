@@ -1,5 +1,6 @@
 import {
   AuthorizedRequest,
+  ProposalKind,
   ProposalType,
   ProposalVariant,
 } from 'types/proposal';
@@ -67,7 +68,7 @@ export type CreateDraftParams = {
   description: string;
   hashtags: string[];
   type: ProposalType;
-  kind: DraftKind;
+  kind?: DraftKind | ProposalKind;
 } & AuthorizedRequest;
 
 export type DraftIdParams = {

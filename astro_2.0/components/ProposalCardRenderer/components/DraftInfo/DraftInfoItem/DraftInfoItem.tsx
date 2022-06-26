@@ -34,7 +34,7 @@ export const DraftInfoItem: FC<DraftInfoItemProps> = ({
 
   return (
     <div className={cn(styles.draftInfoItem, className)}>
-      {count ? <div className={styles.count}>{count}</div> : null}
+      <div className={styles.count}>{count}</div>
       {renderIcon()}
     </div>
   );

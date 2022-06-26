@@ -13,15 +13,15 @@ import styles from './DraftInfo.module.scss';
 interface DraftInfoProps {
   className?: string;
   replies: number;
-  views: number;
+  isSaved: boolean;
 }
 
 export const DraftInfo: FC<DraftInfoProps> = ({
   className,
   replies,
-  views,
+  isSaved,
 }) => {
-  const [viewItems, setViewItems] = useState(views);
+  const [isSavedDraft, setSavedDraft] = useState(isSaved);
   const { draftsService } = useDraftsContext();
   const router = useRouter();
   const { draft } = router.query;
@@ -41,16 +41,14 @@ export const DraftInfo: FC<DraftInfoProps> = ({
     }
 
     try {
-      await draftsService.updateDraftView({
+      const { data } = await draftsService.updateDraftSave({
         id: draftId,
         publicKey,
         signature,
         accountId,
       });
 
-      const draftResponse = await draftsService.getDraft(draftId);
-
-      setViewItems(draftResponse.views);
+      setSavedDraft(data);
     } catch (e) {
       showNotification({
         type: NOTIFICATION_TYPES.ERROR,
@@ -69,8 +67,8 @@ export const DraftInfo: FC<DraftInfoProps> = ({
       />
       <DraftInfoItem
         onClick={handlerSaveDraft}
-        iconName="draftBookmark"
-        count={viewItems}
+        iconName={isSavedDraft ? 'draftBookmarkFulfill' : 'draftBookmark'}
+        count={0}
         className={styles.draftInfoItem}
       />
       <ReplyButton onClick={() => setToggleWriteComment(true)} />

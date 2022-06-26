@@ -136,7 +136,6 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     proposalType,
     proposalVariant: selectedProposalVariant,
     dao,
-    initialValues,
     bountyId,
     daoTokens,
   });
@@ -149,11 +148,11 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   );
 
   const onTypeSelect = useCallback(
-    (v, skip) => {
+    (value, skip) => {
       if (!skip) {
         const defaults = getFormInitialValues(
           t,
-          v,
+          value,
           accountId,
           undefined,
           undefined,
@@ -163,9 +162,9 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         methods.reset({ ...defaults });
       }
 
-      setSchemaContext({ selectedProposalVariant: v });
+      setSchemaContext({ selectedProposalVariant: value });
 
-      setSelectedProposalVariant(v);
+      setSelectedProposalVariant(value);
     },
     [t, accountId, isDraft, methods]
   );

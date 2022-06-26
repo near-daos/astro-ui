@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useToggle } from 'react-use';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -22,11 +22,14 @@ import { getVoteDetails } from 'features/vote-policy/helpers';
 import { getProposalScope } from 'utils/getProposalScope';
 import {
   getContentNode,
+  getInitialFormValuesFromDraft,
   isSaveTemplateActionAvailable,
 } from 'astro_2.0/features/ViewProposal/helpers';
+
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { ProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments';
 import { SaveFcTemplate } from 'astro_2.0/features/ViewProposal/components/SaveFcTemplate';
+import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 
 export interface ViewProposalProps {
   proposal: ProposalFeedItem | DraftProposal;
@@ -38,6 +41,7 @@ export interface ViewProposalProps {
   optionalPostVoteAction?: () => Promise<void>;
   onSelect?: (p: string) => void;
   selectedList?: string[];
+  toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
 }
 
 const variants = {
@@ -55,6 +59,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   optionalPostVoteAction,
   onSelect,
   selectedList,
+  toggleCreateProposal,
 }) => {
   const methods = useForm<{
     title: string;
@@ -86,6 +91,22 @@ export const ViewProposal: FC<ViewProposalProps> = ({
     accountId
   );
 
+  const handleToggleCreateProposal = useCallback(async () => {
+    if (toggleCreateProposal) {
+      const initialValues = await getInitialFormValuesFromDraft(
+        proposal.proposalVariant,
+        proposal as Record<string, unknown>,
+        tokens,
+        accountId
+      );
+
+      toggleCreateProposal({
+        proposalVariant: proposal.proposalVariant,
+        initialValues,
+      });
+    }
+  }, [accountId, proposal, toggleCreateProposal, tokens]);
+
   if (!proposal || !proposal.dao) {
     return null;
   }
@@ -109,7 +130,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
         }
         isDraft={isDraft}
         isEditDraft={isEditDraft}
-        proposalId={proposal.proposalId}
+        proposal={proposal}
         daoFlagNode={
           showFlag && (
             <DaoFlagWidget
@@ -131,11 +152,12 @@ export const ViewProposal: FC<ViewProposalProps> = ({
         }
         proposalCardNode={
           <ProposalCard
+            convertTOProposal={handleToggleCreateProposal}
             title={'title' in proposal ? proposal?.title : undefined}
             hashtags={'hashtags' in proposal ? proposal?.hashtags : undefined}
             history={'history' in proposal ? proposal?.history : undefined}
             replies={'replies' in proposal ? proposal?.replies : undefined}
-            views={'views' in proposal ? proposal?.views : undefined}
+            isSaved={'isSaved' in proposal ? proposal?.isSaved : undefined}
             isDraft={isDraft}
             isEditDraft={isEditDraft}
             id={proposal.id}
