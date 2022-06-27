@@ -51,14 +51,8 @@ export const DraftInfo: FC<DraftInfoProps> = ({
         accountId,
       });
 
-      const updatedDraft = await draftsService.getDraft(
-        draftId,
-        undefined,
-        accountId
-      );
-
       setSavedDraft(data);
-      setSavesCount(updatedDraft.saves);
+      setSavesCount(data ? savesCount + 1 : savesCount);
     } catch (e) {
       showNotification({
         type: NOTIFICATION_TYPES.ERROR,
@@ -66,7 +60,7 @@ export const DraftInfo: FC<DraftInfoProps> = ({
         description: e?.message,
       });
     }
-  }, [accountId, draftId, draftsService, pkAndSignature]);
+  }, [accountId, draftId, draftsService, pkAndSignature, savesCount]);
 
   return (
     <div className={cn(styles.draftInfo, className)}>
@@ -76,7 +70,7 @@ export const DraftInfo: FC<DraftInfoProps> = ({
         className={styles.draftInfoItem}
       />
       <DraftInfoItem
-        onClick={handlerSaveDraft}
+        onClick={!isSavedDraft ? () => handlerSaveDraft() : undefined}
         iconName={isSavedDraft ? 'draftBookmarkFulfill' : 'draftBookmark'}
         count={savesCount}
         className={styles.draftInfoItem}
