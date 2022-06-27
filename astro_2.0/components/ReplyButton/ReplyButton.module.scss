@@ -2,7 +2,11 @@
   align-items: center;
   display: flex;
   min-width: auto;
-  &:hover {
+}
+
+.replyButton:hover {
+  color: var(--color-primary-50);
+  .icon {
     color: var(--color-primary-50);
   }
 }
