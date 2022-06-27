@@ -41,6 +41,10 @@ export type AcceptStakingContractParams = {
   description: string;
 };
 
+export type UpdateVotePolicyToWeightVoting = {
+  threshold: string;
+};
+
 export class GovernanceTokenService extends BaseService {
   async acceptStakingContract({
     stakingContractName,
