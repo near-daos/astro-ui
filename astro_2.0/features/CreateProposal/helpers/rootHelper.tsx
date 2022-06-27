@@ -456,6 +456,9 @@ export function mapProposalVariantToProposalType(
     case ProposalVariant.ProposeRemoveMember: {
       return ProposalType.RemoveMemberFromRole;
     }
+    case ProposalVariant.ProposeCustomFunctionCall: {
+      return ProposalType.FunctionCall;
+    }
     default:
     case ProposalVariant.ProposePoll: {
       return ProposalType.Vote;

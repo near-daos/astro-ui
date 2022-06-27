@@ -56,7 +56,8 @@ export function getCustomTemplatesDefaults(
   settings: Settings | null | undefined,
   t: TFunction,
   accountId: string,
-  templateId: string
+  templateId: string,
+  isDraft?: boolean
 ): Record<string, unknown> {
   let initialValues = {};
   const predefinedTypes = Object.values(FunctionCallType) as string[];
@@ -86,7 +87,9 @@ export function getCustomTemplatesDefaults(
     t,
     ProposalVariant.ProposeCustomFunctionCall,
     accountId,
-    initialValues
+    initialValues,
+    undefined,
+    isDraft
   );
 
   return defaults;

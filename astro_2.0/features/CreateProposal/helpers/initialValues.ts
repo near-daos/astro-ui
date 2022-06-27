@@ -41,7 +41,7 @@ export function getFormInitialValues(
       break;
     }
     case ProposalVariant.ProposeUpgradeSelf: {
-      return {
+      result = {
         details: getDescr('proposeUpgradeSelf'),
         externalUrl: '',
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
@@ -59,12 +59,13 @@ export function getFormInitialValues(
       break;
     }
     case ProposalVariant.ProposeCreateDao: {
-      return {
+      result = {
         details: getDescr('proposeCreateDao'),
         externalUrl: '',
         gas: DEFAULT_CREATE_DAO_GAS,
         displayName: initialValues.displayName,
       };
+      break;
     }
     case ProposalVariant.ProposeTransferFunds: {
       const tokens = (daoTokens as Record<string, Token>) ?? {};

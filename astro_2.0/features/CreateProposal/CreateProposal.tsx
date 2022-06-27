@@ -1,4 +1,11 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+} from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useMount } from 'react-use';
 import { useTranslation } from 'next-i18next';
@@ -93,6 +100,11 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     setSchemaContext({ selectedProposalVariant: initialProposalVariant });
   }, [initialProposalVariant]);
 
+  const proposalType = useMemo(
+    () => mapProposalVariantToProposalType(selectedProposalVariant),
+    [selectedProposalVariant]
+  );
+
   const methods = useForm({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -120,7 +132,13 @@ export const CreateProposal: FC<CreateProposalProps> = ({
     redirectAfterCreation,
   });
 
-  const { onDraftSubmit } = useSubmitDraft();
+  const { onDraftSubmit } = useSubmitDraft({
+    proposalType,
+    proposalVariant: selectedProposalVariant,
+    dao,
+    bountyId,
+    daoTokens,
+  });
 
   const contentNode = getFormContentNode(selectedProposalVariant, dao);
 
@@ -130,11 +148,11 @@ export const CreateProposal: FC<CreateProposalProps> = ({
   );
 
   const onTypeSelect = useCallback(
-    (v, skip) => {
+    (value, skip) => {
       if (!skip) {
         const defaults = getFormInitialValues(
           t,
-          v,
+          value,
           accountId,
           undefined,
           undefined,
@@ -144,9 +162,9 @@ export const CreateProposal: FC<CreateProposalProps> = ({
         methods.reset({ ...defaults });
       }
 
-      setSchemaContext({ selectedProposalVariant: v });
+      setSchemaContext({ selectedProposalVariant: value });
 
-      setSelectedProposalVariant(v);
+      setSelectedProposalVariant(value);
     },
     [t, accountId, isDraft, methods]
   );
@@ -167,10 +185,7 @@ export const CreateProposal: FC<CreateProposalProps> = ({
             )
           }
           letterHeadNode={
-            <LetterHeadWidget
-              type={mapProposalVariantToProposalType(selectedProposalVariant)}
-              coverUrl={dao.flagCover}
-            />
+            <LetterHeadWidget type={proposalType} coverUrl={dao.flagCover} />
           }
           proposalCardNode={
             <CustomTokensContext.Provider value={{ tokens: daoTokens }}>
