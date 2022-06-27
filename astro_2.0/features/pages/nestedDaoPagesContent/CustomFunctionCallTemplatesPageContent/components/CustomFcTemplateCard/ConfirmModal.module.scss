@@ -67,6 +67,12 @@
   }
 }
 
+.footer {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
 .detailsItem {
   @include tablet-landscape {
     margin-left: 12px;

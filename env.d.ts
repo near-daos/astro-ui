@@ -27,6 +27,9 @@ declare global {
 
       NEXT_PUBLIC_LAUNCHDARKLY_ID: string;
 
+      GENERIC_FACTORY_CONTRACT_NAME: string;
+      STAKING_CONTRACT_BINARY_HASH: string;
+
       NEAR_ENV: string;
     }
   }

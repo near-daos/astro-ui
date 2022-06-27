@@ -20,7 +20,7 @@ describe('letter head widget', () => {
     ${ProposalType.Transfer}             | ${'proposalSendFunds'}
     ${ProposalType.Vote}                 | ${'proposalPoll'}
     ${ProposalType.ChangePolicy}         | ${'proposalGovernance'}
-    ${ProposalType.FunctionCall}         | ${'proposalNearFunctionCall'}
+    ${ProposalType.FunctionCall}         | ${'proposalFunctionCall'}
   `('Should render $icon for $type proposal type', ({ type, icon }) => {
     const { getAllByText } = render(<LetterHeadWidget type={type} />);
 

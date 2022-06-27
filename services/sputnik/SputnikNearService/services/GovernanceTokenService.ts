@@ -10,8 +10,6 @@ import { BaseService } from './BaseService';
 export const ONE_NEAR = new BN(`1${'0'.repeat(24)}`);
 export const FIVE_NEAR = ONE_NEAR.mul(new BN(5));
 
-export const GENERIC_FACTORY = 'generic.testnet';
-
 export type MintTokenParams = {
   ownerId: string;
   totalSupply: string;
@@ -43,6 +41,10 @@ export type AcceptStakingContractParams = {
   description: string;
 };
 
+export type UpdateVotePolicyToWeightVoting = {
+  threshold: string;
+};
+
 export class GovernanceTokenService extends BaseService {
   async acceptStakingContract({
     stakingContractName,
@@ -50,7 +52,7 @@ export class GovernanceTokenService extends BaseService {
     daoBond,
     description,
   }: AcceptStakingContractParams): Promise<FinalExecutionOutcome[]> {
-    const contract = `${stakingContractName}.${GENERIC_FACTORY}`;
+    const contract = `${stakingContractName}.${this.appConfig.GENERIC_FACTORY_CONTRACT_NAME}`;
 
     return this.walletService.functionCall({
       methodName: 'add_proposal',
@@ -78,6 +80,11 @@ export class GovernanceTokenService extends BaseService {
     daoBond,
     unstakingPeriodInHours,
   }: DeployStakingContractParams): Promise<FinalExecutionOutcome[]> {
+    const {
+      GENERIC_FACTORY_CONTRACT_NAME,
+      STAKING_CONTRACT_BINARY_HASH,
+    } = this.appConfig;
+
     const currentAccountPublicKey = await this.walletService.getPublicKey();
 
     if (!currentAccountPublicKey) {
@@ -99,7 +106,7 @@ export class GovernanceTokenService extends BaseService {
 
     const encodedFactoryContractArgs = jsonToBase64Str({
       name: stakingContractName,
-      hash: '4ThdGjTKbBTad45CyePPAiZmWJEpEoFwViFusy4cpEmA',
+      hash: STAKING_CONTRACT_BINARY_HASH,
       access_keys: [currentAccountPublicKey],
       method_name: 'new',
       args: encodedStakingContractArgs,
@@ -113,7 +120,7 @@ export class GovernanceTokenService extends BaseService {
           description,
           kind: {
             FunctionCall: {
-              receiver_id: GENERIC_FACTORY,
+              receiver_id: GENERIC_FACTORY_CONTRACT_NAME,
               actions: [
                 {
                   method_name: 'create',

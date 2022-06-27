@@ -15,6 +15,8 @@ export type Config = {
   TOKEN_FACTORY_CONTRACT_NAME: string;
   LAUNCHDARKLY_ID: string;
   DRAFTS_API_URL: string;
+  GENERIC_FACTORY_CONTRACT_NAME: string;
+  STAKING_CONTRACT_BINARY_HASH: string;
 };
 
 export enum WalletType {

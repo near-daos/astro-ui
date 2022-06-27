@@ -70,6 +70,10 @@
   text-align: center;
 }
 
+.noResults {
+  padding: 24px 0;
+}
+
 .itemRoot {
   margin-bottom: 60px;
 }
@@ -115,7 +119,7 @@
   color: var(--color-neutral-60);
   display: grid;
   grid-column-gap: 12px;
-  grid-template-columns: 1fr 60px 60px 90px;
+  grid-template-columns: 1fr 60px 60px 120px;
   margin-bottom: 4px;
 
   .updated {

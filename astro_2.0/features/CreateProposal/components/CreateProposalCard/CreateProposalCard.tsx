@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useMemo } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 import { useTranslation } from 'next-i18next';
 
 import cn from 'classnames';
@@ -10,20 +10,23 @@ import { Input } from 'components/inputs/Input';
 import { Icon } from 'components/Icon';
 import { IconButton } from 'components/button/IconButton';
 import { GroupedSelect } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
-import { FunctionCallTypeSelector } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/components/FunctionCallTypeSelector';
 
 import { ProposalVariant } from 'types/proposal';
 import { UserPermissions } from 'types/context';
 import { LOREN_IPSUM } from 'constants/common';
 
-import {
-  getInputSize,
-  getProposalTypesOptions,
-} from 'astro_2.0/features/CreateProposal/helpers';
+import { getInputSize } from 'astro_2.0/features/CreateProposal/helpers';
 
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
 import { InputWrapper } from 'astro_2.0/features/CreateProposal/components/InputWrapper';
 import { EditableContent } from 'astro_2.0/components/EditableContent';
+import { useProposalTypeOptions } from 'astro_2.0/features/CreateProposal/components/CreateProposalCard/hooks';
+import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
+import { useProposalTemplates } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/hooks';
+import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
+import { useDaoSettings } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/hooks';
+import { useWalletContext } from 'context/WalletContext';
+import { getCustomTemplatesDefaults } from 'astro_2.0/features/CreateProposal/components/CreateProposalCard/helpers';
 
 import styles from './CreateProposalCard.module.scss';
 
@@ -31,7 +34,7 @@ export interface CreateProposalCardProps {
   type: ProposalVariant;
   proposer: string;
   content: ReactNode;
-  onTypeSelect: (newType: ProposalVariant) => void;
+  onTypeSelect: (newType: ProposalVariant, skipDefaults?: boolean) => void;
   onClose?: () => void;
   userPermissions: UserPermissions;
   showClose: boolean;
@@ -59,6 +62,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     setValue,
     watch,
     trigger,
+    reset,
   } = useFormContext();
   const isMobile = useMedia('(max-width: 767px)');
   const { t } = useTranslation();
@@ -66,17 +70,19 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   const title = watch('title');
   const description = watch('description');
   const hashtags = watch('hashtags');
+  const fcType = watch('functionCallType');
 
-  const proposalTypesOptions = useMemo(
-    () =>
-      getProposalTypesOptions(
-        t,
-        userPermissions.isCanCreatePolicyProposals,
-        userPermissions.allowedProposalsToCreate,
-        canCreateTokenProposal
-      ),
-    [t, userPermissions, canCreateTokenProposal]
+  const proposalTypesOptions = useProposalTypeOptions(
+    daoId,
+    userPermissions,
+    canCreateTokenProposal,
+    isDraft
   );
+
+  const { accountId } = useWalletContext();
+  const { templates } = useProposalTemplates(daoId);
+  const { tokens } = useCustomTokensContext();
+  const { settings } = useDaoSettings(daoId);
 
   function renderCloseButton() {
     if (showClose) {
@@ -213,7 +219,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
       default: {
         return (
           <GroupedSelect
-            key={type}
+            key={`${type}_${fcType}`}
             inputStyles={
               isMobile
                 ? {
@@ -227,7 +233,36 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
             }
             defaultValue={type}
             options={proposalTypesOptions}
-            onChange={v => onTypeSelect(v as ProposalVariant)}
+            onChange={option => {
+              if (!option) {
+                return;
+              }
+
+              const proposalVariant =
+                option.group === 'Custom Templates'
+                  ? ProposalVariant.ProposeCustomFunctionCall
+                  : option.value;
+
+              if (
+                proposalVariant === ProposalVariant.ProposeCustomFunctionCall
+              ) {
+                const defs = getCustomTemplatesDefaults(
+                  (option.opt ?? '') as FunctionCallType,
+                  templates,
+                  tokens,
+                  settings,
+                  t,
+                  accountId,
+                  option.value,
+                  isDraft
+                );
+
+                reset({ ...defs, functionCallType: option.opt });
+                onTypeSelect(proposalVariant as ProposalVariant, true);
+              } else {
+                onTypeSelect(proposalVariant as ProposalVariant);
+              }
+            }}
           />
         );
       }
@@ -246,7 +281,6 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
               label={t('proposalCard.proposalOwner')}
               value={proposer}
             />
-            <FunctionCallTypeSelector daoId={daoId} />
           </div>
         );
       }

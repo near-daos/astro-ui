@@ -49,7 +49,7 @@
   left: unset;
   position: absolute;
   right: 12px;
-  top: -30px;
+  top: -36px;
 
   @include tablet-landscape {
     display: block;
@@ -276,26 +276,6 @@
   display: flex;
   grid-area: draftFooter;
   justify-content: space-between;
-}
-
-.deleteButton {
-  align-items: center;
-  color: var(--color-error-70);
-  display: flex;
-  font-family: var(--font-family-primary);
-  font-size: 14px;
-  font-weight: 500;
-  grid-area: countdown;
-  height: 24px;
-  justify-content: flex-end;
-  line-height: 24px;
-  min-width: auto;
-}
-
-.deleteButtonIcon {
-  height: 24px;
-  margin-right: 4px;
-  width: 24px;
 }
 
 .editable {

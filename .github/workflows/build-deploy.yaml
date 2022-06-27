@@ -87,6 +87,8 @@ jobs:
             --set environment.next_public_launchdarkly_id=${NEXT_PUBLIC_LAUNCHDARKLY_ID} \
             --set environment.app_domain=${APP_DOMAIN} \
             --set environment.release_notes=${RELEASE_NOTES} \
+            --set environment.generic_factory_contract_name=${GENERIC_FACTORY_CONTRACT_NAME} \
+            --set environment.staking_contract_binary_hash=${STAKING_CONTRACT_BINARY_HASH} \
             --set ingress.host=${K8S_INGRESS_HOST}
 
 

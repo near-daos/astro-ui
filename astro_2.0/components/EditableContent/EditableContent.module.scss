@@ -4,26 +4,26 @@
 $gap: 12px;
 $border-radius: 3px;
 
-.createComment {
+.editable {
   border: 1px solid var(--color-neutral-40);
   border-radius: $border-radius;
 }
 
-.createComment :global(.ql-editor.ql-blank) {
+.editable :global(.ql-editor.ql-blank) {
   color: var(--color-neutral-70);
   &::before {
-    font-size: initial;
+    font-size: 14px;
     font-style: normal;
     left: $gap;
   }
 }
 
-.createComment :global(.ql-container) {
+.editable :global(.ql-container) {
   @extend %body2;
   font-family: var(--font-family-primary);
 }
 
-.createComment :global(.ql-editor) {
+.editable :global(.ql-editor) {
   background-color: var(--color-white);
   caret-color: var(--color-primary-40);
   color: var(--color-neutral-90);
@@ -32,16 +32,17 @@ $border-radius: 3px;
   padding: $gap;
   li,
   p {
+    font-size: 14px;
     line-height: 24px;
   }
 }
 
-.createComment :global(.ql-editor .ql-syntax) {
+.editable :global(.ql-editor .ql-syntax) {
   background-color: var(--color-neutral-20) !important;
   color: var(--color-neutral-80) !important;
 }
 
-.createComment :global(.ql-container.ql-snow) {
+.editable :global(.ql-container.ql-snow) {
   border: 0;
 }
 
@@ -57,21 +58,27 @@ $border-radius: 3px;
 
 .textField {
   border: 0;
+  font-size: 14px;
 }
 
 .bottom {
+  align-items: center;
   background: var(--color-white);
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
+  display: flex;
   height: 40px + $gap * 2;
+  justify-content: flex-end;
+  padding: 0 12px;
   position: relative;
   width: 100%;
 }
 
 .send {
-  bottom: $gap;
-  position: absolute;
-  right: $gap;
+  //bottom: $gap;
+  //position: absolute;
+  //right: $gap;
+  margin-left: 12px;
 }
 
 .error :global(.ql-editor.ql-blank) {

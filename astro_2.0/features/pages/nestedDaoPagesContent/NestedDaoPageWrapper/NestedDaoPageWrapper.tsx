@@ -92,13 +92,14 @@ export const NestedDaoPageWrapper: FC<NestedDaoPageWrapperProps> = props => {
   );
 
   const handleProposalDone = useCallback(async () => {
+    toggleCreateProposal();
+
     await router.replace({
       pathname: router.pathname,
       query: {
         ...omit(router.query, ['action', 'variant', 'params']),
       },
     });
-    toggleCreateProposal();
   }, [router, toggleCreateProposal]);
 
   return (

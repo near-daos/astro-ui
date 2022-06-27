@@ -2,15 +2,20 @@ import { DraftsService } from 'services/DraftsService';
 import { createContext, FC, useContext, useEffect, useState } from 'react';
 import { HttpService } from 'services/HttpService';
 import { appConfig } from 'config';
+import { useToggle } from 'react-use';
 
 interface IDraftsContext {
   draftsService: DraftsService;
+  toggleWriteComment: boolean;
+  setToggleWriteComment: (toggle?: boolean) => void;
 }
 
 const DraftsContext = createContext<IDraftsContext>({
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   draftsService: undefined,
+  toggleWriteComment: false,
+  setToggleWriteComment: () => undefined,
 });
 
 export const useDraftsContext = (): IDraftsContext => useContext(DraftsContext);
@@ -19,6 +24,7 @@ export const DraftsDataProvider: FC = ({ children }) => {
   const [draftsService, setDraftsService] = useState<
     DraftsService | undefined
   >();
+  const [toggleWriteComment, setToggleWriteComment] = useToggle(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -39,7 +45,9 @@ export const DraftsDataProvider: FC = ({ children }) => {
   }
 
   return (
-    <DraftsContext.Provider value={{ draftsService }}>
+    <DraftsContext.Provider
+      value={{ draftsService, toggleWriteComment, setToggleWriteComment }}
+    >
       {children}
     </DraftsContext.Provider>
   );

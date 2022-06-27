@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
 import { DAO } from 'types/dao';
 import { DaoContext } from 'types/context';
@@ -17,6 +17,9 @@ import { DraftComments } from 'astro_2.0/features/DraftComments';
 
 import { DraftProposal } from 'types/draftProposal';
 
+import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
+import { DraftWrapper } from 'astro_2.0/features/Drafts/components/DraftWrapper/DraftWrapper';
+
 import styles from './Draft.module.scss';
 
 interface DraftPageProps {
@@ -28,7 +31,6 @@ interface DraftPageProps {
 const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
   const router = useRouter();
   const { tokens } = useDaoCustomTokens();
-  const [openEditComment, setEditComment] = useState(false);
 
   const breadcrumbsConfig = useGetBreadcrumbsConfig(
     dao.id,
@@ -48,48 +50,53 @@ const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
   }, [breadcrumbsConfig]);
 
   return (
-    <>
-      <Head>
-        <title>DAO Proposal</title>
-        <meta property="og:url" content={router.asPath} />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="Astro" />
-        <meta property="og:description" content={draft?.description} />
-        <meta property="og:image" content={dao?.flagCover || dao?.logo} />
+    <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
+      <DraftWrapper>
+        {toggleCreateProposal => (
+          <>
+            <Head>
+              <title>DAO Proposal</title>
+              <meta property="og:url" content={router.asPath} />
+              <meta property="og:type" content="website" />
+              <meta property="og:title" content="Astro" />
+              <meta property="og:description" content={draft?.description} />
+              <meta property="og:image" content={dao?.flagCover || dao?.logo} />
 
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={router.asPath} />
-        <meta name="twitter:title" content="Astro" />
-        <meta name="twitter:description" content={draft?.description} />
-        <meta name="twitter:image" content={dao?.flagCover || dao?.logo} />
-      </Head>
-      <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
-        <>
-          <div className={styles.draftInfo}>
-            <BackButton
-              name="Back to Draft Feed"
-              href={{
-                pathname: DRAFTS_PAGE_URL,
-                query: {
-                  dao: dao.id,
-                },
-              }}
-            />
-            <ViewProposal
-              preventNavigate
-              isDraft
-              proposal={draft}
-              showFlag={false}
-              tokens={tokens}
-              onReplyClick={() => {
-                setEditComment(true);
-              }}
-            />
-            <DraftComments openEditComment={openEditComment} />
-          </div>
-        </>
-      </NestedDaoPageWrapper>
-    </>
+              <meta name="twitter:card" content="summary_large_image" />
+              <meta property="twitter:url" content={router.asPath} />
+              <meta name="twitter:title" content="Astro" />
+              <meta name="twitter:description" content={draft?.description} />
+              <meta
+                name="twitter:image"
+                content={dao?.flagCover || dao?.logo}
+              />
+            </Head>
+            <div className={styles.draftInfo}>
+              <BackButton
+                name="Back to Draft Feed"
+                href={{
+                  pathname: DRAFTS_PAGE_URL,
+                  query: {
+                    dao: dao.id,
+                  },
+                }}
+              />
+              <DraftsDataProvider>
+                <ViewProposal
+                  preventNavigate
+                  isDraft
+                  proposal={draft}
+                  showFlag={false}
+                  tokens={tokens}
+                  toggleCreateProposal={toggleCreateProposal}
+                />
+                <DraftComments dao={dao} />
+              </DraftsDataProvider>
+            </div>
+          </>
+        )}
+      </DraftWrapper>
+    </NestedDaoPageWrapper>
   );
 };
 

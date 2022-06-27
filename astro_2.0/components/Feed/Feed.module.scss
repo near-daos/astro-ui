@@ -23,13 +23,25 @@
   border-radius: 8px;
   box-shadow: 3px 2px 24px var(--color-black-opacity-14);
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   min-width: 40vw;
-  padding: 20px 24px;
+  padding: 20px;
   width: 100%;
 
-  @include mobile-only {
-    flex-direction: column;
+  @include tablet-landscape {
+    padding: 20px 24px;
+  }
+}
+
+.details {
+  display: flex;
+  flex-direction: column-reverse;
+  margin-right: 12px;
+
+  @include tablet-landscape {
+    display: flex;
+    flex-direction: row;
+    margin-right: 24px;
   }
 }
 
@@ -55,6 +67,11 @@
 
 .dismiss {
   color: var(--color-error-70);
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-left: 8px;
+  padding-right: 8px;
+
+  @include tablet-landscape {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 }

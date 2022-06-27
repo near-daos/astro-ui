@@ -31,6 +31,7 @@ import {
   ApiQueries,
   LIST_LIMIT_DEFAULT,
 } from 'services/sputnik/constants';
+import { mapDraftToProposalDraft } from 'services/DraftsService/mappers';
 import { appConfig } from 'config';
 import {
   ProposalCategories,
@@ -42,7 +43,7 @@ import { DaoFeedItem } from 'types/dao';
 
 interface Mapper {
   name: ApiMappers | string;
-  params?: { [key: string]: string };
+  params?: { [key: string]: any };
 }
 
 interface Query {
@@ -993,7 +994,8 @@ export class HttpService {
         case API_QUERIES.DELETE_ACCOUNT_SUBSCRIPTION:
         case API_QUERIES.DELETE_COMMENT:
         case API_QUERIES.REPORT_COMMENT:
-        case API_QUERIES.SEND_COMMENT: {
+        case API_QUERIES.SEND_COMMENT:
+        case API_QUERIES.ADD_AUTHORIZATION: {
           const { accountId, publicKey, signature } = request.data;
 
           const buff = Buffer.from(`${accountId}|${publicKey}|${signature}`);
@@ -1095,6 +1097,12 @@ export class HttpService {
           break;
         case API_MAPPERS.MAP_OVERTIME_TO_CHART_DATA:
           response.data = mapOvertimeToChartData(response.data);
+          break;
+        case API_MAPPERS.MAP_DRAFT_TO_PROPOSAL_DRAFT:
+          response.data = mapDraftToProposalDraft(
+            response.data,
+            responseConfig?.responseMapper?.params?.dao
+          );
           break;
         default:
           break;

@@ -7,6 +7,7 @@
   flex-direction: column;
   margin-bottom: 24px;
   padding: 24px 24px 12px;
+  position: relative;
 }
 
 .footer {
@@ -33,17 +34,37 @@
   }
 }
 
+.right {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+}
+
+.delete,
+.edit {
+  color: var(--color-neutral-60);
+  margin-right: 24px;
+
+  &:hover {
+    color: var(--color-primary-50);
+  }
+}
+
 .likes {
   align-items: center;
   display: flex;
   margin-left: auto;
 
   .likeIcon {
-    align-items: center;
     color: var(--color-neutral-60);
-    display: flex;
+    display: block;
+    height: 24px;
     margin-left: 6px;
     width: 24px;
+  }
+
+  .likeIcon.liked {
+    color: var(--color-primary-50);
   }
 
   .likeIcon:hover {

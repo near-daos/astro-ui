@@ -71,9 +71,11 @@ export const Feed = <T,>({
               exit={{ opacity: 0, transform: 'translateY(60px)' }}
             >
               <div className={styles.panel}>
-                <span className={styles.value}>{list.length}</span>
-                <span className={styles.label}>
-                  Proposal{list.length > 1 ? 's' : ''} selected
+                <span className={styles.details}>
+                  <span className={styles.value}>{list.length}</span>
+                  <span className={styles.label}>
+                    Proposal{list.length > 1 ? 's' : ''} selected
+                  </span>
                 </span>
 
                 <span className={styles.controls}>

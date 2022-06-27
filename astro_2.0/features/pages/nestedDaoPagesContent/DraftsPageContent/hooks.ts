@@ -9,6 +9,7 @@ import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
 import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 import { getDraftProposalTypeByCategory } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/helpers';
 import { ProposalCategories } from 'types/proposal';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 type PageData = PaginationResponse<DraftProposalFeedItem[]>;
 
@@ -142,5 +143,46 @@ export function useDraftsPageData(
     loading,
     loadMore,
     handleReset,
+  };
+}
+
+export function useDraftsPageActions(): {
+  handleView: (id: string) => void;
+} {
+  const { accountId, pkAndSignature } = useWalletContext();
+  const { draftsService } = useDraftsContext();
+
+  const handleView = useCallback(
+    async (id: string) => {
+      try {
+        if (!pkAndSignature) {
+          return;
+        }
+
+        const { publicKey, signature } = pkAndSignature;
+
+        if (!publicKey || !signature) {
+          return;
+        }
+
+        await draftsService.updateDraftView({
+          id,
+          accountId,
+          publicKey,
+          signature,
+        });
+      } catch (e) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          lifetime: 20000,
+          description: e?.message,
+        });
+      }
+    },
+    [accountId, draftsService, pkAndSignature]
+  );
+
+  return {
+    handleView,
   };
 }

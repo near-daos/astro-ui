@@ -1,4 +1,5 @@
 import React, { ReactElement, useCallback } from 'react';
+import cn from 'classnames';
 import styles from 'pages/cfc-library/[template]/SharedTemplatePage.module.scss';
 import { Button } from 'components/button/Button';
 import { useModal } from 'components/modal';
@@ -11,6 +12,7 @@ interface Props<T> {
   renderItem: (item: T) => ReactElement;
   suffix: string;
   loading: boolean;
+  className?: string;
 }
 
 export const OptionsList = <T,>({
@@ -19,6 +21,7 @@ export const OptionsList = <T,>({
   renderItem,
   suffix,
   loading,
+  className,
 }: Props<T>): ReactElement | null => {
   const [showModal] = useModal(ListModal);
 
@@ -54,7 +57,7 @@ export const OptionsList = <T,>({
 
   return (
     <>
-      <div className={styles.listTitle}>{title}</div>
+      <div className={cn(styles.listTitle, className)}>{title}</div>
       <ul>{data.slice(0, 9).map(item => renderItem(item))}</ul>
       {(data?.length ?? 0) > 9 && (
         <Button

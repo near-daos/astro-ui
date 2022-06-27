@@ -6,6 +6,9 @@ import { useFormContext } from 'react-hook-form';
 
 import { InfoPanel } from 'astro_2.0/components/ProposalCardRenderer/components/InfoPanel';
 import { Button } from 'components/button/Button';
+import { useSubmitPatchDraft } from 'astro_2.0/features/ViewProposal/hooks/useSubmitPatchDraft';
+import { ProposalFeedItem } from 'types/proposal';
+import { DraftProposal } from 'types/draftProposal';
 
 import styles from './ProposalCardRenderer.module.scss';
 
@@ -20,6 +23,8 @@ export interface ProposalCardRendererProps {
   optionalActionNode?: React.ReactNode;
   isDraft?: boolean;
   isEditDraft?: boolean;
+  nonActionable?: boolean;
+  proposal?: ProposalFeedItem | DraftProposal;
 }
 
 export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
@@ -33,9 +38,17 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
   optionalActionNode,
   isDraft,
   isEditDraft,
+  nonActionable,
+  proposal,
 }) => {
   const { t } = useTranslation();
-  const draftMethods = useFormContext();
+  const formMethods = useFormContext();
+
+  const { onDraftPatchSubmit } = useSubmitPatchDraft({
+    draftId: proposal?.id || '',
+    daoId: proposal?.dao.id || '',
+    proposal,
+  });
 
   function renderFlag() {
     return daoFlagNode ? (
@@ -70,10 +83,16 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
     return null;
   }
 
-  const onSaveDraft = () => undefined;
-
   return (
-    <div className={cn(styles.root, className)}>
+    <div
+      className={cn(
+        styles.root,
+        {
+          [styles.nonActionable]: nonActionable,
+        },
+        className
+      )}
+    >
       <div className={styles.header}>
         <div className={styles.flagWrapper}>{renderFlag()}</div>
         {renderInfoPanel()}
@@ -87,11 +106,11 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
       {infoPanelNode && <div className={styles.infoPanel}>{infoPanelNode}</div>}
       {isEditDraft ? (
         <Button
-          disabled={Object.keys(draftMethods?.formState?.errors).length > 0}
+          disabled={Object.keys(formMethods?.formState?.errors).length > 0}
           capitalize
           type="submit"
           className={styles.saveDraftButton}
-          onClick={draftMethods?.handleSubmit(onSaveDraft)}
+          onClick={formMethods?.handleSubmit(onDraftPatchSubmit)}
         >
           Save
         </Button>

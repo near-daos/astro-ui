@@ -6,8 +6,14 @@ export class BaseService {
 
   protected readonly nearConfig;
 
+  protected readonly appConfig;
+
   constructor(walletService: WalletService) {
     this.walletService = walletService;
-    this.nearConfig = configService.get().nearConfig;
+
+    const { nearConfig, appConfig } = configService.get();
+
+    this.nearConfig = nearConfig;
+    this.appConfig = appConfig;
   }
 }

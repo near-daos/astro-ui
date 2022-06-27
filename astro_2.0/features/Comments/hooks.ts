@@ -1,64 +1,199 @@
-import { DraftComment } from 'types/draftProposal';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useAsyncFn } from 'react-use';
+import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
+import { DraftComment } from 'services/DraftsService/types';
+import { useWalletContext } from 'context/WalletContext';
+import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 export function useDraftComments(): {
+  loading: boolean;
   data: DraftComment[];
   addComment: (val: string) => Promise<void>;
+  editComment: (val: string, id: string) => Promise<void>;
+  deleteComment: (id: string) => Promise<void>;
   likeComment: (id: string) => Promise<void>;
 } {
-  const data: DraftComment[] = [
-    {
-      id: '1',
-      likes: 0,
-      author: 'jamesbond.near',
-      createdAt: '2021-11-25T15:25:59.159Z',
-      updatedAt: '2021-11-25T15:25:59.159Z',
-      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget scelerisque fringilla auctor consequat non ornare. Aliquet convallis commodo neque molestie sed. Pellentesque tortor proin dignissim quis feugiat. Cursus ut sed habitasse blandit malesuada felis. Ipsum arcu a nunc ut nibh. Viverra vulputate ut venenatis cursus rhoncus, at convallis egestas. `,
-      comments: undefined,
-    },
-    {
-      id: '2',
-      likes: 0,
-      author: 'ethanhunt.near',
-      createdAt: '2021-11-25T15:25:59.159Z',
-      updatedAt: '2021-11-25T15:25:59.159Z',
-      description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget scelerisque fringilla auctor consequat non ornare.`,
-      comments: [
-        {
-          id: '3',
-          likes: 0,
-          author: 'jasonborn.near',
-          createdAt: '2021-11-25T15:25:59.159Z',
-          updatedAt: '2021-11-25T15:25:59.159Z',
-          description: `Eget scelerisque fringilla auctor consequat non ornare.`,
-          comments: undefined,
-        },
-        {
-          id: '4',
-          likes: 0,
-          author: 'rudolfabel.near',
-          createdAt: '2021-11-25T15:25:59.159Z',
-          updatedAt: '2021-11-25T15:25:59.159Z',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget scelerisque fringilla auctor consequat non ornare. Aliquet convallis commodo neque molestie sed. Pellentesque tortor proin dignissim quis feugiat. Cursus ut sed habitasse blandit malesuada felis. Ipsum arcu a nunc ut nibh. Viverra vulputate ut venenatis cursus rhoncus, at convallis egestas.`,
-          comments: undefined,
-        },
-      ],
-    },
-  ];
+  const router = useRouter();
+  const { draft } = router.query;
+  const contextId = draft as string;
+  const contextType = 'DraftProposal';
 
-  const addComment = useCallback(async (val: string) => {
-    // eslint-disable-next-line no-console
-    console.log('adding comment', val);
-  }, []);
+  const { draftsService } = useDraftsContext();
+  const { accountId, pkAndSignature } = useWalletContext();
 
-  const likeComment = useCallback(async (id: string) => {
-    // eslint-disable-next-line no-console
-    console.log('like comment', id);
-  }, []);
+  const [{ loading, value }, fetchComments] = useAsyncFn(async () => {
+    try {
+      return draftsService.getDraftComments({
+        contextId,
+        contextType,
+        offset: 0,
+        limit: 1000,
+      });
+    } catch (e) {
+      showNotification({
+        type: NOTIFICATION_TYPES.ERROR,
+        lifetime: 20000,
+        description: e?.message,
+      });
+
+      return null;
+    }
+  }, [contextId]);
+
+  const addComment = useCallback(
+    async (msg: string, replyTo?: string) => {
+      if (!pkAndSignature) {
+        return;
+      }
+
+      const { publicKey, signature } = pkAndSignature;
+
+      if (!publicKey || !signature) {
+        return;
+      }
+
+      try {
+        await draftsService.createDraftComment({
+          contextId,
+          contextType,
+          message: msg,
+          replyTo,
+          accountId,
+          publicKey,
+          signature,
+        });
+
+        await fetchComments();
+      } catch (e) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          lifetime: 20000,
+          description: e?.message,
+        });
+      }
+    },
+    [accountId, contextId, draftsService, fetchComments, pkAndSignature]
+  );
+
+  const editComment = useCallback(
+    async (msg: string, id: string) => {
+      if (!pkAndSignature) {
+        return;
+      }
+
+      const { publicKey, signature } = pkAndSignature;
+
+      if (!publicKey || !signature) {
+        return;
+      }
+
+      try {
+        await draftsService.editDraftComment({
+          id,
+          message: msg,
+          accountId,
+          publicKey,
+          signature,
+        });
+
+        await fetchComments();
+      } catch (e) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          lifetime: 20000,
+          description: e?.message,
+        });
+      }
+    },
+    [accountId, draftsService, fetchComments, pkAndSignature]
+  );
+
+  const likeComment = useCallback(
+    async (id: string, unlike?: boolean) => {
+      if (!pkAndSignature) {
+        return;
+      }
+
+      const { publicKey, signature } = pkAndSignature;
+
+      if (!publicKey || !signature) {
+        return;
+      }
+
+      try {
+        if (unlike) {
+          await draftsService.unlikeDraftComment({
+            id,
+            accountId,
+            publicKey,
+            signature,
+          });
+        } else {
+          await draftsService.likeDraftComment({
+            id,
+            accountId,
+            publicKey,
+            signature,
+          });
+        }
+
+        await fetchComments();
+      } catch (e) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          lifetime: 20000,
+          description: e?.message,
+        });
+      }
+    },
+    [accountId, draftsService, fetchComments, pkAndSignature]
+  );
+
+  const deleteComment = useCallback(
+    async (id: string) => {
+      if (!pkAndSignature) {
+        return;
+      }
+
+      const { publicKey, signature } = pkAndSignature;
+
+      if (!publicKey || !signature) {
+        return;
+      }
+
+      try {
+        await draftsService.deleteDraftComment({
+          id,
+          accountId,
+          publicKey,
+          signature,
+        });
+
+        await fetchComments();
+      } catch (e) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          lifetime: 20000,
+          description: e?.message,
+        });
+      }
+    },
+    [accountId, draftsService, fetchComments, pkAndSignature]
+  );
+
+  useEffect(() => {
+    (async () => {
+      await fetchComments();
+    })();
+  }, [fetchComments]);
 
   return {
-    data,
+    loading,
+    data: value ?? [],
     addComment,
+    editComment,
+    deleteComment,
     likeComment,
   };
 }

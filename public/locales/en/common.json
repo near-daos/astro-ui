@@ -113,6 +113,10 @@
     "thisMessageWasReported": "This message was reported",
     "commentsSpamProtection": "Due to spam protection no more than 5 messages per minute are allowed."
   },
+  "manageGroups": {
+    "groupIncorrectCharactersError": "Incorrect Group name - you can use letters and numbers only with hyphens and spaces in the middle.",
+    "preventDeleteLastGroupWithMembers": "You can't delete last group with members"
+  },
   "createDAO": {
     "createNewDAO": "Create new DAO",
     "createNewDAOWay": "A DAO is a new way for people to organize and work together",
@@ -681,6 +685,7 @@
     "lettersNumbersHyphensSpaces": "Only letters and numbers with hyphens and spaces in the middle"
   },
   "drafts": {
+    "noDrafts": "No drafts",
     "topic": "Topic",
     "views": "Views",
     "replies": "Replies",

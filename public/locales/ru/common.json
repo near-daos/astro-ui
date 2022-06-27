@@ -104,7 +104,10 @@
     "thisMessageWasReported": "This message was reported",
     "commentsSpamProtection": "Due to spam protection no more than 5 messages per minute are allowed."
   },
-
+  "manageGroups": {
+    "groupIncorrectCharactersError": "Некорректное название группы - вы можете использовать английские буквы и цифры вместе с тире и пробелами внутри.",
+    "preventDeleteLastGroupWithMembers": "Нельзя удалить единственную группу с учасниками"
+  },
   "createDAO": {
     "createNewDAO": "Создать новое ДАО",
     "createNewDAOWay": "ДАО - это новый способ организации людей и их работы",

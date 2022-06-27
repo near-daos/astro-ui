@@ -1,13 +1,30 @@
 import React, { FC } from 'react';
 
 import { Comment } from 'astro_2.0/features/Comments/components/Comment';
-import { useDraftComments } from 'astro_2.0/features/Comments/hooks';
+
+import { DraftComment } from 'services/DraftsService/types';
 
 import styles from './Comments.module.scss';
 
-export const Comments: FC = () => {
-  const { data, addComment, likeComment } = useDraftComments();
+interface Props {
+  data: DraftComment[];
+  onLike: (id: string) => Promise<void>;
+  onReply: (value: string, replyTo: string) => Promise<void>;
+  onEdit: (value: string, id: string) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
+  canModerate: boolean;
+  accountId: string;
+}
 
+export const Comments: FC<Props> = ({
+  data,
+  onLike,
+  onReply,
+  onEdit,
+  onDelete,
+  canModerate,
+  accountId,
+}) => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
@@ -19,8 +36,11 @@ export const Comments: FC = () => {
             <Comment
               key={comment.id}
               data={comment}
-              onLike={likeComment}
-              onReply={addComment}
+              onLike={onLike}
+              onReply={onReply}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              isEditable={canModerate || comment.author === accountId}
             />
           );
         })}
