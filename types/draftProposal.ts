@@ -23,6 +23,7 @@ export interface DraftProposal extends ProposalFeedItem {
   hashtags: Hashtag[];
   views: number;
   replies: number;
+  saves: number;
   createdAt: string;
   updatedAt: string;
   isRead: boolean;

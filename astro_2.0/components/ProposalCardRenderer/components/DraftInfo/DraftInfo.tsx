@@ -14,14 +14,17 @@ interface DraftInfoProps {
   className?: string;
   replies: number;
   isSaved: boolean;
+  saves: number;
 }
 
 export const DraftInfo: FC<DraftInfoProps> = ({
   className,
   replies,
   isSaved,
+  saves,
 }) => {
   const [isSavedDraft, setSavedDraft] = useState(isSaved);
+  const [savesCount, setSavesCount] = useState(saves);
   const { draftsService } = useDraftsContext();
   const router = useRouter();
   const { draft } = router.query;
@@ -48,7 +51,14 @@ export const DraftInfo: FC<DraftInfoProps> = ({
         accountId,
       });
 
+      const updatedDraft = await draftsService.getDraft(
+        draftId,
+        undefined,
+        accountId
+      );
+
       setSavedDraft(data);
+      setSavesCount(updatedDraft.saves);
     } catch (e) {
       showNotification({
         type: NOTIFICATION_TYPES.ERROR,
@@ -68,7 +78,7 @@ export const DraftInfo: FC<DraftInfoProps> = ({
       <DraftInfoItem
         onClick={handlerSaveDraft}
         iconName={isSavedDraft ? 'draftBookmarkFulfill' : 'draftBookmark'}
-        count={0}
+        count={savesCount}
         className={styles.draftInfoItem}
       />
       <ReplyButton onClick={() => setToggleWriteComment(true)} />

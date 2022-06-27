@@ -158,6 +158,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
             history={'history' in proposal ? proposal?.history : undefined}
             replies={'replies' in proposal ? proposal?.replies : undefined}
             isSaved={'isSaved' in proposal ? proposal?.isSaved : undefined}
+            saves={'isSaved' in proposal ? proposal?.saves : undefined}
             isDraft={isDraft}
             isEditDraft={isEditDraft}
             id={proposal.id}

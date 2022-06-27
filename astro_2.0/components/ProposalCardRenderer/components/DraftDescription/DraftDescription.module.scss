@@ -3,4 +3,7 @@
   font-family: var(--font-family-primary);
   font-size: 0.875em;
   line-height: 10px;
+  img {
+    max-width: 100%;
+  }
 }
