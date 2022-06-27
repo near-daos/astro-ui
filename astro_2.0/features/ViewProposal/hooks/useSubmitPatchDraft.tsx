@@ -22,14 +22,11 @@ export const useSubmitPatchDraft = ({
 } => {
   const router = useRouter();
   const { draftsService } = useDraftsContext();
-  const { accountId, nearService } = useWalletContext();
+  const { accountId, pkAndSignature } = useWalletContext();
 
   const onDraftPatchSubmit = useCallback(
     async (data: Record<string, unknown>) => {
-      const publicKey = await nearService?.getPublicKey();
-      const signature = await nearService?.getSignature();
-
-      if (publicKey && signature && accountId) {
+      if (pkAndSignature && accountId) {
         try {
           const updatedDraftResponse = await draftsService.patchDraft({
             id: draftId,
@@ -42,8 +39,8 @@ export const useSubmitPatchDraft = ({
             kind: proposal?.kind,
             type: proposal?.kind.type || ProposalType.AddBounty,
             accountId,
-            publicKey,
-            signature,
+            publicKey: pkAndSignature.publicKey || '',
+            signature: pkAndSignature.signature || '',
           });
 
           router.push({
@@ -67,7 +64,7 @@ export const useSubmitPatchDraft = ({
       daoId,
       draftId,
       draftsService,
-      nearService,
+      pkAndSignature,
       proposal?.kind,
       router,
     ]

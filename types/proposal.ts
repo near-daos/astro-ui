@@ -2,6 +2,7 @@
 import { DAO } from 'types/dao';
 import { PolicyType } from 'types/policy';
 import { ProposalAction } from 'types/role';
+import { Authorization } from 'types/auth';
 
 export type DaoDetails = {
   name: string;
@@ -357,12 +358,6 @@ export interface ProposalComment {
   reports: ProposalCommentReport[];
 }
 
-export type AuthorizedRequest = {
-  accountId: string;
-  publicKey: string;
-  signature: string;
-};
-
 export type SendCommentsInput = {
   contextId: string;
   contextType: CommentContextType;
@@ -378,9 +373,9 @@ export type DeleteCommentsInput = {
   reason: string;
 };
 
-export type SendProposalComment = AuthorizedRequest & SendCommentsInput;
-export type ReportProposalComment = AuthorizedRequest & ReportCommentsInput;
-export type DeleteProposalComment = AuthorizedRequest & DeleteCommentsInput;
+export type SendProposalComment = Authorization & SendCommentsInput;
+export type ReportProposalComment = Authorization & ReportCommentsInput;
+export type DeleteProposalComment = Authorization & DeleteCommentsInput;
 
 export type ProposalFeedItem = {
   dao: {

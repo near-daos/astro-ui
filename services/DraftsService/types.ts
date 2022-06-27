@@ -1,9 +1,5 @@
-import {
-  AuthorizedRequest,
-  ProposalKind,
-  ProposalType,
-  ProposalVariant,
-} from 'types/proposal';
+import { ProposalKind, ProposalType, ProposalVariant } from 'types/proposal';
+import { Authorization } from 'types/auth';
 
 export type DraftBaseParams = {
   limit?: number;
@@ -69,8 +65,8 @@ export type CreateDraftParams = {
   hashtags: string[];
   type: ProposalType;
   kind?: DraftKind | ProposalKind;
-} & AuthorizedRequest;
+} & Authorization;
 
 export type DraftIdParams = {
   id: string;
-} & AuthorizedRequest;
+} & Authorization;

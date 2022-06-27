@@ -1031,10 +1031,8 @@ export async function getInitialFormValuesFromDraft(
       return {};
     }
     case ProposalVariant.ProposeCustomFunctionCall: {
-      if (kind.type === ProposalType.Vote) {
+      if (kind.type === ProposalType.FunctionCall) {
         try {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           const action = kind.actions[0];
 
           const json = JSON.parse(
@@ -1044,8 +1042,6 @@ export async function getInitialFormValuesFromDraft(
           return {
             details: data.title,
             externalUrl: '',
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             smartContractAddress: kind.receiverId,
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore

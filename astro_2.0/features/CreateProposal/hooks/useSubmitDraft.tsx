@@ -32,16 +32,13 @@ export const useSubmitDraft = ({
 } => {
   const router = useRouter();
   const { draftsService } = useDraftsContext();
-  const { accountId, nearService } = useWalletContext();
+  const { accountId, pkAndSignature } = useWalletContext();
 
   const onDraftSubmit = useCallback(
     async (data: Record<string, unknown>) => {
-      const publicKey = await nearService?.getPublicKey();
-      const signature = await nearService?.getSignature();
-
       const proposalData = omit(data, ['title', 'description', 'hashtags']);
 
-      if (publicKey && signature && accountId) {
+      if (pkAndSignature && accountId) {
         try {
           const newProposal = await getNewProposalObject(
             dao,
@@ -72,8 +69,8 @@ export const useSubmitDraft = ({
               ...kind,
             },
             accountId,
-            publicKey,
-            signature,
+            publicKey: pkAndSignature.publicKey || '',
+            signature: pkAndSignature.signature || '',
           });
 
           router.push({
@@ -98,7 +95,7 @@ export const useSubmitDraft = ({
       dao,
       daoTokens,
       draftsService,
-      nearService,
+      pkAndSignature,
       proposalType,
       proposalVariant,
       router,

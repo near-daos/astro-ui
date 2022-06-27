@@ -8,7 +8,6 @@ import { PaginationResponse } from 'types/api';
 import { API_MAPPERS, API_QUERIES } from 'services/sputnik/constants';
 import { Authorization } from 'types/auth';
 import { DAO } from 'types/dao';
-import { AuthorizedRequest } from 'types/proposal';
 
 import {
   DraftParams,
@@ -89,7 +88,7 @@ export class DraftsService {
   public async deleteDraft(
     params: {
       id: string;
-    } & AuthorizedRequest
+    } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.delete(`/draft-proposals/${params.id}`, params, {
       queryRequest: {
@@ -111,7 +110,7 @@ export class DraftsService {
   public async updateDraftSave(
     params: {
       id: string;
-    } & AuthorizedRequest
+    } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.post(`/draft-proposals/${params.id}/save`, params, {
       queryRequest: {
@@ -123,7 +122,7 @@ export class DraftsService {
   public async updateDraftClose(
     params: {
       id: string;
-    } & AuthorizedRequest
+    } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.post(
       `/draft-proposals/${params.id}/close`,
