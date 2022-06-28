@@ -6,7 +6,8 @@ import { ProposalType } from 'types/proposal';
 
 import { Loader } from 'components/loader';
 import { CreateGovernanceTokenWizard } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/CreateGovernanceTokenWizard/CreateGovernanceTokenWizard';
-
+import { DaoWarning } from 'astro_2.0/components/DaoWarning';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { useCreateGovernanceTokenStatus } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/hooks';
 
 import { Intro } from './components/steps/Intro';
@@ -30,6 +31,13 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
     daoContext.userPermissions.allowedProposalsToCreate[
       ProposalType.SetStakingContract
     ];
+  const { tokens } = useDaoCustomTokens();
+  const showLowBalanceWarning =
+    isPermitted &&
+    status &&
+    status.step < 2 &&
+    !!tokens?.NEAR?.balance &&
+    Number(tokens?.NEAR?.balance) < 11;
 
   function renderContent() {
     if (!daoContext.userPermissions.isCanCreateProposals && !isViewProposal) {
@@ -58,6 +66,20 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
       <h1 className={styles.header}>
         {t('createGovernanceTokenPage.createGovernanceToken')}
       </h1>
+      {showLowBalanceWarning && (
+        <DaoWarning
+          content={
+            <>
+              <div className={styles.title}>Warning</div>
+              <div className={styles.text}>
+                DAO available balance is too low. Send 6 NEAR to{' '}
+                <b>{daoContext.dao.id}</b> and reload this page to proceed.
+              </div>
+            </>
+          }
+          className={styles.warningWrapper}
+        />
+      )}
       {renderContent()}
     </div>
   );

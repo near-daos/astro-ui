@@ -343,7 +343,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
         variant === ProposalVariant.ProposeGetUpgradeCode ||
         variant === ProposalVariant.ProposeRemoveUpgradeCode ||
         variant === ProposalVariant.ProposeUpgradeSelf ||
-        variant === ProposalVariant.ProposeCreateDao
+        variant === ProposalVariant.ProposeCreateDao ||
+        variant === ProposalVariant.ProposeStakingContractDeployment
           ? DEFAULT_UPGRADE_DAO_VOTE_GAS
           : DEFAULT_VOTE_GAS,
     },

@@ -14,6 +14,9 @@ import { Icon, IconName } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { SubHeader } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/SubHeader';
 
+import { GA_EVENTS, sendGAEvent } from 'utils/ga';
+import { useWalletContext } from 'context/WalletContext';
+
 import { TokenOption } from './components/TokenOption';
 
 import styles from './SelectToken.module.scss';
@@ -35,22 +38,28 @@ export const SelectToken: FC<Props> = ({ onUpdate }) => {
   const tBase = 'createGovernanceTokenPage.selectToken';
 
   const router = useRouter();
+  const { dao } = router.query;
+  const { accountId } = useWalletContext();
   const { createGovernanceToken } = useFlags();
 
   const [option, setOption] = useState<CreateGovernanceTokenFlow>(
     CreateGovernanceTokenFlow.SelectToken
   );
 
-  const navigateToUnderConstruction = useCallback(
-    () =>
-      router.push({
-        pathname: CREATE_GOV_TOKEN_UNDER_CONSTRUCTION,
-        query: {
-          dao: router.query.dao,
-        },
-      }),
-    [router]
-  );
+  const navigateToUnderConstruction = useCallback(() => {
+    sendGAEvent({
+      name: GA_EVENTS.GOVERNANCE_TOKEN_CREATE_FLOW,
+      daoId: dao as string,
+      accountId,
+    });
+
+    router.push({
+      pathname: CREATE_GOV_TOKEN_UNDER_CONSTRUCTION,
+      query: {
+        dao: router.query.dao,
+      },
+    });
+  }, [accountId, dao, router]);
 
   const selectCreateToken = useCallback(
     () => setOption(CreateGovernanceTokenFlow.CreateToken),

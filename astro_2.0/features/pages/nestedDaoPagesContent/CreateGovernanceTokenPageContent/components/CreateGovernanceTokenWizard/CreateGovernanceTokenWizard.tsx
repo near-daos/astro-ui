@@ -16,6 +16,8 @@ import {
 import { ViewStepProposal } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/components/UpgradeVersionWizard/components/ViewStepProposal';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
 import { ChooseExistingToken } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/ChooseExistingToken/ChooseExistingToken';
+import { StakeTokens } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/steps/StakeTokens';
+import { DelegateVoting } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/steps/DelegateVoting';
 
 import {
   ProposalFeedItem,
@@ -82,9 +84,11 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
       return;
     }
 
+    const nextStep = getNextCreateGovernanceTokenWizardStep(status.step);
+
     await onUpdate({
       ...status,
-      step: getNextCreateGovernanceTokenWizardStep(status.step),
+      step: nextStep,
       proposalId: null,
     });
   }, [canControl, onUpdate, status]);
@@ -132,9 +136,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
     if (isViewProposal && proposal) {
       return (
         <ViewStepProposal
-          isLastStep={
-            status.step === CreateGovernanceTokenSteps.ChangeDaoPolicy
-          }
+          isLastStep={status.step === CreateGovernanceTokenSteps.DelegateVoting}
           canControlUpgrade={canControl}
           proposal={proposal}
           onApproved={handleViewProposalApprove}
@@ -145,6 +147,8 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
 
     if (!isViewProposal) {
       let initialValues;
+
+      const contractAddress = status.selectedToken || status.contractAddress;
 
       switch (stepProposalVariant) {
         case ProposalVariant.ProposeStakingContractDeployment:
@@ -160,6 +164,40 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
             contract: `${daoContext.dao.name}${STAKING_CONTRACT_PREFIX}`,
           };
           break;
+        case ProposalVariant.ProposeStakeTokens: {
+          if (!contractAddress) {
+            return (
+              <div>
+                No contract address found. Please, reset steps and try again
+              </div>
+            );
+          }
+
+          return (
+            <StakeTokens
+              contractAddress={contractAddress}
+              onSubmit={handleViewProposalApprove}
+              daoName={daoContext.dao.name}
+            />
+          );
+        }
+        case ProposalVariant.ProposeDelegateVoting: {
+          if (!contractAddress) {
+            return (
+              <div>
+                No contract address found. Please, reset steps and try again
+              </div>
+            );
+          }
+
+          return (
+            <DelegateVoting
+              contractAddress={contractAddress}
+              onSubmit={handleViewProposalApprove}
+              dao={daoContext.dao}
+            />
+          );
+        }
         default:
           initialValues = {};
           break;
@@ -193,7 +231,17 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
       </div>
       <div className={styles.content}>
         {/* <button onClick={handleViewProposalReject}>reset</button> */}
-        {/* <button onClick={() => handleProposalCreate(3)}>update state</button> */}
+        {/* <button */}
+        {/*  onClick={() => */}
+        {/*    onUpdate({ */}
+        {/*      ...status, */}
+        {/*      contractAddress: 'portos.tokenfactory.testnet', */}
+        {/*      step: 4, */}
+        {/*    }) */}
+        {/*  } */}
+        {/* > */}
+        {/*  update state */}
+        {/* </button> */}
         {/* <button onClick={() => handleViewProposalApprove()}> */}
         {/*  proposal approved */}
         {/* </button> */}

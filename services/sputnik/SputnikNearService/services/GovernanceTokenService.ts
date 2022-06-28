@@ -1,9 +1,15 @@
 import BN from 'bn.js';
 import Decimal from 'decimal.js';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
+import { transactions } from 'near-api-js';
 
 import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 import { formatGasValue } from 'utils/format';
+
+import { WalletType } from 'types/config';
+
+import { GAS_VALUE } from 'services/sputnik/SputnikNearService/services/NearService';
+import { STAKING_CONTRACT_PREFIX } from 'constants/proposals';
 
 import { BaseService } from './BaseService';
 
@@ -41,7 +47,22 @@ export type AcceptStakingContractParams = {
   description: string;
 };
 
+export type StakeTokensParams = {
+  tokenContract: string;
+  stakingContract: string;
+  amount: string;
+};
+
+export type DelegateVotingParams = {
+  name: string;
+  amount: string;
+};
+
 export class GovernanceTokenService extends BaseService {
+  getStackingContract(daoId: string): string {
+    return `${daoId}${STAKING_CONTRACT_PREFIX}.${this.appConfig.GENERIC_FACTORY_CONTRACT_NAME}`;
+  }
+
   async acceptStakingContract({
     stakingContractName,
     daoId,
@@ -280,5 +301,187 @@ export class GovernanceTokenService extends BaseService {
     });
 
     return result[0];
+  }
+
+  async stakeTokens({
+    tokenContract,
+    stakingContract,
+    amount,
+  }: StakeTokensParams): Promise<FinalExecutionOutcome[]> {
+    if (!this.walletService.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
+    let storageDepositTransactionAction;
+    let transferTransaction;
+
+    switch (this.walletService.getWalletType()) {
+      case WalletType.SENDER: {
+        storageDepositTransactionAction = {
+          receiverId: tokenContract,
+          actions: [
+            {
+              methodName: 'storage_deposit',
+              args: {
+                account_id: stakingContract,
+                // registration_only: true,
+              },
+              gas: GAS_VALUE.toString(),
+              deposit: '100000000000000000000000',
+            },
+          ],
+        };
+
+        transferTransaction = {
+          receiverId: tokenContract,
+          actions: [
+            {
+              methodName: 'ft_transfer_call',
+              args: {
+                receiver_id: stakingContract,
+                amount,
+                msg: '',
+              },
+              gas: GAS_VALUE.toString(),
+              deposit: '1',
+            },
+          ],
+        };
+
+        break;
+      }
+      case WalletType.NEAR:
+      default: {
+        storageDepositTransactionAction = {
+          receiverId: tokenContract,
+          actions: [
+            transactions.functionCall(
+              'storage_deposit',
+              {
+                account_id: stakingContract,
+                // registration_only: true,
+              },
+              GAS_VALUE,
+              new BN('100000000000000000000000')
+            ),
+          ],
+        };
+
+        transferTransaction = {
+          receiverId: tokenContract,
+          actions: [
+            transactions.functionCall(
+              'ft_transfer_call',
+              {
+                receiver_id: stakingContract,
+                amount,
+                msg: '',
+              },
+              GAS_VALUE,
+              new BN('1')
+            ),
+          ],
+        };
+      }
+    }
+
+    return this.walletService.sendTransactions([
+      storageDepositTransactionAction,
+      transferTransaction,
+    ]);
+  }
+
+  private mapDelegateVoting(
+    stakingContract: string,
+    accountId: string,
+    amount: string
+  ) {
+    let transaction;
+
+    switch (this.walletService.getWalletType()) {
+      case WalletType.SENDER: {
+        transaction = [
+          {
+            receiverId: stakingContract,
+            actions: [
+              {
+                methodName: 'storage_deposit',
+                args: {
+                  account_id: accountId,
+                  // registration_only: true,
+                },
+                gas: GAS_VALUE.toString(),
+                deposit: new Decimal(0.003).mul(10 ** 24).toFixed(),
+              },
+            ],
+          },
+          {
+            receiverId: stakingContract,
+            actions: [
+              {
+                methodName: 'delegate',
+                args: {
+                  account_id: accountId,
+                  amount,
+                },
+                gas: GAS_VALUE.toString(),
+                deposit: '0',
+              },
+            ],
+          },
+        ];
+
+        break;
+      }
+      case WalletType.NEAR:
+      default: {
+        transaction = [
+          // {
+          //   receiverId: stakingContract,
+          //   actions: [
+          //     transactions.functionCall(
+          //       'storage_deposit',
+          //       {
+          //         account_id: 'rudolfabel.testnet',
+          //       },
+          //       GAS_VALUE,
+          //       new BN(new Decimal(0.003).mul(10 ** 24).toFixed())
+          //     ),
+          //   ],
+          // },
+          {
+            receiverId: stakingContract,
+            actions: [
+              transactions.functionCall(
+                'delegate',
+                {
+                  account_id: accountId,
+                  amount,
+                },
+                GAS_VALUE,
+                new BN(0)
+              ),
+            ],
+          },
+        ];
+      }
+    }
+
+    return transaction;
+  }
+
+  async delegateVoting(
+    stakingContract: string,
+    params: DelegateVotingParams[]
+  ): Promise<FinalExecutionOutcome[]> {
+    if (!this.walletService.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
+    const trx = params.flatMap(({ name, amount }) => [
+      ...this.mapDelegateVoting(stakingContract, name, amount),
+    ]);
+
+    return this.walletService.sendTransactions(trx);
   }
 }
