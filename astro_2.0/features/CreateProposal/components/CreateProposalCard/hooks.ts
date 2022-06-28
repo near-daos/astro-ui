@@ -34,7 +34,7 @@ export function useProposalTypeOptions(
   const { templates } = useProposalTemplates(daoId);
   const { settings } = useDaoSettings(daoId);
 
-  const { voteInOtherDao } = useFlags();
+  const { voteInOtherDao, roketoStreaming } = useFlags();
 
   const customFunctionCallsOptions = useMemo(() => {
     const templateOptions = [
@@ -56,13 +56,16 @@ export function useProposalTypeOptions(
         group: fcLabel,
         opt: FunctionCallType.BuyNFTfromParas,
       },
-      {
+    ];
+
+    if (roketoStreaming) {
+      templateOptions.push({
         label: 'Create Roketo Stream',
         value: ProposalVariant.ProposeCustomFunctionCall,
         group: fcLabel,
         opt: FunctionCallType.CreateRoketoStream,
-      },
-    ];
+      });
+    }
 
     if (settings?.daoUpgrade?.versionHash) {
       templateOptions.push({
@@ -115,7 +118,13 @@ export function useProposalTypeOptions(
     }
 
     return result;
-  }, [fcLabel, settings?.daoUpgrade?.versionHash, templates, voteInOtherDao]);
+  }, [
+    fcLabel,
+    settings?.daoUpgrade?.versionHash,
+    templates,
+    voteInOtherDao,
+    roketoStreaming,
+  ]);
 
   const config = [
     {
