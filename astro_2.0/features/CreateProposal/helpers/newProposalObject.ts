@@ -361,7 +361,7 @@ export async function getNewProposalObject(
             data as TransferMintbaseNFTInput
           );
         }
-        case FunctionCallType.CreateStream: {
+        case FunctionCallType.CreateRoketoStream: {
           return getCreateRoketoStreamProposal(
             dao,
             data as CreateRoketoStreamInput,

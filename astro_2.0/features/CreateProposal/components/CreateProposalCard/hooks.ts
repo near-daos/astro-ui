@@ -56,6 +56,12 @@ export function useProposalTypeOptions(
         group: fcLabel,
         opt: FunctionCallType.BuyNFTfromParas,
       },
+      {
+        label: 'Create Roketo Stream',
+        value: ProposalVariant.ProposeCustomFunctionCall,
+        group: fcLabel,
+        opt: FunctionCallType.CreateRoketoStream,
+      },
     ];
 
     if (settings?.daoUpgrade?.versionHash) {

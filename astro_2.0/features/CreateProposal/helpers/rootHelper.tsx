@@ -769,7 +769,7 @@ export function getValidationSchema(
           });
           break;
         }
-        case FunctionCallType.CreateStream: {
+        case FunctionCallType.CreateRoketoStream: {
           schema = yup.object().shape({
             tokenId: yup.string().default('NEAR'),
             shouldDepositForDao: yup.boolean(),
@@ -858,12 +858,6 @@ export function getValidationSchema(
           .min(1)
           .required(t('validation.required')),
       });
-      break;
-    }
-
-    case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
-      schema = yup.object().shape({});
-
       break;
     }
 

@@ -7,5 +7,5 @@ export enum FunctionCallType {
   SwapsOnRef = 'SwapsOnRef',
   VoteInAnotherDao = 'VoteInAnotherDao',
   RemoveUpgradeCode = 'RemoveUpgradeCode',
-  CreateStream = 'CreateStream',
+  CreateRoketoStream = 'CreateRoketoStream',
 }

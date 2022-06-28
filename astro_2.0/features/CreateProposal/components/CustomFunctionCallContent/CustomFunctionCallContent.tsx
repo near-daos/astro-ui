@@ -41,7 +41,7 @@ const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
     case FunctionCallType.TransferNFTfromMintbase: {
       return <TransferNftFromMintbaseContent />;
     }
-    case FunctionCallType.CreateStream: {
+    case FunctionCallType.CreateRoketoStream: {
       return <CreateRoketoStream dao={dao} />;
     }
     case FunctionCallType.BuyNFTfromMintbase: {
