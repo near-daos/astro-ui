@@ -7,8 +7,10 @@ import { ProposalType } from 'types/proposal';
 import { Loader } from 'components/loader';
 import { CreateGovernanceTokenWizard } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/CreateGovernanceTokenWizard/CreateGovernanceTokenWizard';
 import { DaoWarning } from 'astro_2.0/components/DaoWarning';
-import { useDaoCustomTokens } from 'hooks/useCustomTokens';
-import { useCreateGovernanceTokenStatus } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/hooks';
+import {
+  useCreateGovernanceTokenStatus,
+  useLowBalanceWarning,
+} from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/hooks';
 
 import { Intro } from './components/steps/Intro';
 
@@ -31,13 +33,10 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
     daoContext.userPermissions.allowedProposalsToCreate[
       ProposalType.SetStakingContract
     ];
-  const { tokens } = useDaoCustomTokens();
-  const showLowBalanceWarning =
-    isPermitted &&
-    status &&
-    status.step < 2 &&
-    !!tokens?.NEAR?.balance &&
-    Number(tokens?.NEAR?.balance) < 11;
+  const showLowBalanceWarning = useLowBalanceWarning(
+    daoContext.userPermissions,
+    status?.step
+  );
 
   function renderContent() {
     if (!daoContext.userPermissions.isCanCreateProposals && !isViewProposal) {

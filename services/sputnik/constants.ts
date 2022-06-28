@@ -30,6 +30,7 @@ export const API_MAPPERS = {
   MAP_RECEIPTS_RESPONSE: 'mapReceiptsResponse',
   MAP_PROPOSALS_OVERTIME_TO_CHART_DATA: 'mapProposalsOvertimeToChartData',
   MAP_OVERTIME_TO_CHART_DATA: 'mapOvertimeToChartData',
+  MAP_DRAFT_TO_PROPOSAL_DRAFT: 'mapDraftToProposalDraft',
 };
 
 export type ApiMappers = keyof typeof API_MAPPERS;

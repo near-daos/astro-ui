@@ -384,7 +384,7 @@ export async function getNewProposalObject(
       return getAcceptStakingContractProposal(dao);
     }
     case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
-      return getChangeVotingPolicyToWeightVoting(dao);
+      return getChangeVotingPolicyToWeightVoting(dao, data);
     }
     case ProposalVariant.ProposeChangeProposalVotingPermissions: {
       const initialData = getInitialData(dao);

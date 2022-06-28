@@ -1,17 +1,17 @@
 import React, { FC, useCallback, useState } from 'react';
 import { EditableContent } from 'astro_2.0/components/EditableContent';
 import styles from 'astro_2.0/features/DraftComments/DraftComments.module.scss';
-import { useToggle } from 'react-use';
 import { useWalletContext } from 'context/WalletContext';
+import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 
 interface Props {
   onSubmit: (va: string) => void;
 }
 
 export const NewComment: FC<Props> = ({ onSubmit }) => {
-  const [toggle, setToggle] = useToggle(false);
   const [html, setHTML] = useState('');
   const { accountId } = useWalletContext();
+  const { toggleWriteComment, setToggleWriteComment } = useDraftsContext();
 
   const handleSend = useCallback(
     async msg => {
@@ -19,9 +19,9 @@ export const NewComment: FC<Props> = ({ onSubmit }) => {
 
       setHTML('');
 
-      setToggle();
+      setToggleWriteComment();
     },
-    [onSubmit, setToggle]
+    [onSubmit, setToggleWriteComment]
   );
 
   if (!accountId) {
@@ -29,20 +29,20 @@ export const NewComment: FC<Props> = ({ onSubmit }) => {
   }
 
   return (
-    <div>
-      {toggle ? (
+    <div className={styles.newComment}>
+      {toggleWriteComment ? (
         <EditableContent
           id="head"
           html={html}
           setHTML={setHTML}
           handleSend={handleSend}
-          handleCancel={() => setToggle()}
+          handleCancel={() => setToggleWriteComment()}
         />
       ) : (
         <button
           className={styles.writeCommentButton}
           type="button"
-          onClick={() => setToggle()}
+          onClick={() => setToggleWriteComment()}
         >
           Write a comment...
         </button>

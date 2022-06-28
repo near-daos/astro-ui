@@ -1,10 +1,12 @@
 import Decimal from 'decimal.js';
 import React, { ReactNode } from 'react';
 import { TFunction } from 'next-i18next';
+import { differenceInDays, parseISO } from 'date-fns';
 
 import { DAO, TGroup } from 'types/dao';
 import {
   ProposalFeedItem,
+  ProposalKind,
   ProposalType,
   ProposalVariant,
 } from 'types/proposal';
@@ -13,7 +15,12 @@ import { getInitialData } from 'features/vote-policy/helpers';
 
 import { fromBase64ToMetadata } from 'services/sputnik/mappers';
 import { getAwsImageUrl } from 'services/sputnik/mappers/utils/getAwsImageUrl';
-import { YOKTO_NEAR } from 'services/sputnik/constants';
+import {
+  DEFAULT_CREATE_DAO_GAS,
+  DEFAULT_PROPOSAL_GAS,
+  DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
+  YOKTO_NEAR,
+} from 'services/sputnik/constants';
 
 import { TransferContent } from 'astro_2.0/features/ViewProposal/components/TransferContent';
 import { AddBountyContent } from 'astro_2.0/features/ViewProposal/components/AddBountyContent';
@@ -30,8 +37,7 @@ import { CustomFunctionCallContent } from 'astro_2.0/features/ViewProposal/compo
 import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/ViewProposal//components/ChangeDaoLegalInfoContent';
 
 import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
-import { parseISO } from 'date-fns';
-import { getDistanceFromNow } from 'utils/format';
+import { formatYoktoValue, getDistanceFromNow, toMillis } from 'utils/format';
 import { TokenDistributionContent } from 'astro_2.0/features/ViewProposal/components/TokenDistributionContent';
 import { ContractAcceptanceContent } from 'astro_2.0/features/ViewProposal/components/ContractAcceptanceContent';
 import {
@@ -41,6 +47,8 @@ import {
 import { ChangePermissionsContent } from 'astro_2.0/features/ViewProposal/components/ChangePermissionsContent';
 import { UpdateGroupContent } from 'astro_2.0/features/CreateProposal/components/UpdateGroupContent';
 import { CreateDaoContent } from 'astro_2.0/features/ViewProposal/components/CreateDaoContent';
+import { Token } from 'types/token';
+
 import { ViewVoteInOtherDao } from './components/CustomFunctionCallContent/components/ViewVoteInOtherDao';
 
 export function getContentNode(proposal: ProposalFeedItem): ReactNode {
@@ -669,4 +677,404 @@ export function isSaveTemplateActionAvailable(
     proposal.status === 'Approved' &&
     !!accountId
   );
+}
+
+export const getImageFiles = async (
+  url: string,
+  name?: string
+): Promise<File[]> => {
+  const blob = await fetch(url).then(r => r.blob());
+
+  const file = new File([blob], name || '');
+
+  return [file];
+};
+
+export async function getInitialFormValuesFromDraft(
+  variant: ProposalVariant,
+  data: Record<string, unknown>,
+  daoTokens: Record<string, Token>,
+  accountId: string
+): Promise<Record<string, unknown>> {
+  const kind = data.kind as ProposalKind;
+
+  switch (variant) {
+    case ProposalVariant.ProposeGetUpgradeCode: {
+      return {
+        details: data.title,
+        externalUrl: '',
+        gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
+        versionHash: '',
+      };
+    }
+    case ProposalVariant.ProposeUpdateGroup: {
+      return {
+        externalUrl: '',
+        gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
+        groups: '',
+      };
+    }
+    case ProposalVariant.ProposeUpgradeSelf: {
+      return {
+        details: data.title,
+        externalUrl: '',
+        gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
+        versionHash: '',
+      };
+    }
+    case ProposalVariant.ProposeRemoveUpgradeCode: {
+      return {
+        details: data.title,
+        externalUrl: '',
+        gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
+        versionHash: '',
+      };
+    }
+    case ProposalVariant.ProposeCreateDao: {
+      return {
+        details: data.title,
+        externalUrl: '',
+        gas: DEFAULT_CREATE_DAO_GAS,
+        displayName: data.displayName,
+      };
+    }
+    case ProposalVariant.ProposeTransferFunds: {
+      const tokens = (daoTokens as Record<string, Token>) ?? {};
+      const tokensIds = Object.values(tokens).map(item => item.symbol);
+
+      const tokensFields = tokensIds.reduce<Record<string, string | null>>(
+        (res, item) => {
+          res[`${item}_amount`] = null;
+
+          res[`${item}_target`] = data.target as string;
+
+          return res;
+        },
+        {}
+      );
+
+      return {
+        details: data.title,
+        externalUrl: data.externalUrl,
+        gas: DEFAULT_CREATE_DAO_GAS,
+        daoTokens,
+        ...tokensFields,
+        ...data,
+      };
+    }
+    case ProposalVariant.ProposeCreateBounty: {
+      if (kind.type === ProposalType.AddBounty) {
+        const bountyData = kind.bounty;
+
+        return {
+          details: data.title,
+          externalUrl: '',
+          token: 'NEAR',
+          amount: formatYoktoValue(bountyData.amount),
+          slots: bountyData.times,
+          deadlineThreshold: differenceInDays(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            toMillis(bountyData.maxDeadline),
+            0
+          ),
+          deadlineUnits: 'days',
+          gas: DEFAULT_PROPOSAL_GAS,
+        };
+      }
+
+      return {};
+    }
+    case ProposalVariant.ProposeDoneBounty: {
+      return {
+        details: '',
+        externalUrl: '',
+        target: accountId,
+        gas: DEFAULT_PROPOSAL_GAS,
+        ...data,
+      };
+    }
+    case ProposalVariant.ProposeTransfer: {
+      if (kind.type === ProposalType.Transfer) {
+        return {
+          details: data.title,
+          externalUrl: '',
+          token: kind.tokenId,
+          amount: formatYoktoValue(
+            kind.amount,
+            daoTokens[kind.tokenId]?.decimals
+          ),
+          target: kind.receiverId,
+          gas: DEFAULT_PROPOSAL_GAS,
+        };
+      }
+
+      return {};
+    }
+    case ProposalVariant.ProposeChangeDaoName: {
+      if (kind.type === ProposalType.ChangeConfig) {
+        return {
+          details: data.title,
+          externalUrl: '',
+          displayName: fromBase64ToMetadata(kind.config.metadata).displayName,
+          gas: DEFAULT_PROPOSAL_GAS,
+        };
+      }
+
+      return {};
+    }
+    case ProposalVariant.ProposeChangeDaoPurpose: {
+      if (kind.type === ProposalType.ChangeConfig) {
+        return {
+          details: data.title,
+          externalUrl: '',
+          purpose: kind.config.purpose,
+          gas: DEFAULT_PROPOSAL_GAS,
+        };
+      }
+
+      return {};
+    }
+    case ProposalVariant.ProposeChangeDaoLinks: {
+      if (kind.type === ProposalType.ChangeConfig) {
+        return {
+          details: data.title,
+          externalUrl: '',
+          gas: DEFAULT_PROPOSAL_GAS,
+          links: fromBase64ToMetadata(kind.config.metadata).links,
+        };
+      }
+
+      return {};
+    }
+    case ProposalVariant.ProposeCreateToken: {
+      return {
+        details: data.title,
+        externalUrl: '',
+        tokenName: '',
+        totalSupply: '',
+        tokenImage: '',
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
+    case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
+      return {
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
+    case ProposalVariant.ProposeStakingContractDeployment: {
+      return {
+        details: data.title,
+        externalUrl: '',
+        unstakingPeriod: '345',
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
+    case ProposalVariant.ProposeAcceptStakingContract: {
+      return {
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
+    case ProposalVariant.ProposeTokenDistribution: {
+      return {
+        details: data.title,
+        externalUrl: '',
+        groups: [],
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
+    case ProposalVariant.ProposeChangeDaoLegalInfo: {
+      if (kind.type === ProposalType.ChangeConfig) {
+        const meta = kind.config.metadata
+          ? fromBase64ToMetadata(kind.config.metadata)
+          : null;
+
+        const { legalLink, legalStatus } = meta?.legal || {};
+
+        return {
+          details: data.title,
+          externalUrl: '',
+          legalStatus,
+          legalLink,
+          gas: DEFAULT_PROPOSAL_GAS,
+        };
+      }
+
+      return {};
+    }
+    case ProposalVariant.ProposePoll: {
+      return {
+        details: data.title,
+        externalUrl: '',
+        gas: DEFAULT_PROPOSAL_GAS,
+      };
+    }
+    case ProposalVariant.ProposeAddMember: {
+      if (kind.type === ProposalType.AddMemberToRole) {
+        return {
+          details: data.title,
+          externalUrl: '',
+          group: kind.role,
+          memberName: kind.memberId,
+          gas: DEFAULT_PROPOSAL_GAS,
+        };
+      }
+
+      return {};
+    }
+    case ProposalVariant.ProposeRemoveMember: {
+      if (kind.type === ProposalType.RemoveMemberFromRole) {
+        return {
+          details: data.title,
+          externalUrl: '',
+          group: kind.role,
+          memberName: kind.memberId,
+          gas: DEFAULT_PROPOSAL_GAS,
+        };
+      }
+
+      return {};
+    }
+    case ProposalVariant.ProposeCreateGroup: {
+      if (kind.type === ProposalType.ChangePolicy) {
+        const proposalGroups = kind.policy.roles
+          .map(item => ({
+            ...item,
+            createdAt: parseISO(item.createdAt),
+          }))
+          .sort((a, b) => {
+            if (a.createdAt > b.createdAt) {
+              return 1;
+            }
+
+            if (a.createdAt < b.createdAt) {
+              return -1;
+            }
+
+            return 0;
+          });
+
+        const newGroup = proposalGroups[proposalGroups.length - 1];
+
+        if (newGroup) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          const memberName = newGroup?.kind?.group[0] ?? '';
+
+          return {
+            details: data.title,
+            externalUrl: '',
+            group: newGroup.name,
+            memberName,
+            gas: DEFAULT_PROPOSAL_GAS,
+          };
+        }
+
+        return {};
+      }
+
+      return {};
+    }
+    case ProposalVariant.ProposeChangeVotingPolicy: {
+      return {
+        details: '',
+        externalUrl: '',
+        amount: '',
+        gas: DEFAULT_PROPOSAL_GAS,
+        ...data,
+      };
+    }
+    case ProposalVariant.ProposeChangeBonds: {
+      if (kind.type === ProposalType.ChangePolicy) {
+        return {
+          details: data.title,
+          externalUrl: '',
+          createProposalBond: new Decimal(kind.policy.proposalBond)
+            .div(YOKTO_NEAR)
+            .toNumber(),
+          claimBountyBond: new Decimal(kind.policy.bountyBond)
+            .div(YOKTO_NEAR)
+            .toNumber(),
+          proposalExpireTime: new Decimal(kind.policy.proposalPeriod)
+            .div('3.6e12')
+            .toNumber(),
+          unclaimBountyTime: new Decimal(kind.policy.bountyForgivenessPeriod)
+            .div('3.6e12')
+            .toNumber(),
+          gas: DEFAULT_PROPOSAL_GAS,
+        };
+      }
+
+      return {};
+    }
+    case ProposalVariant.ProposeChangeDaoFlag: {
+      if (kind.type === ProposalType.ChangeConfig) {
+        const meta = kind.config.metadata
+          ? fromBase64ToMetadata(kind.config.metadata)
+          : null;
+
+        const cover = getAwsImageUrl(meta?.flagCover);
+        const logo = getAwsImageUrl(meta?.flagLogo);
+
+        const coverFiles = await getImageFiles(cover, 'cover');
+        const logoFiles = await getImageFiles(logo, 'logo');
+
+        return {
+          details: data.title,
+          externalUrl: '',
+          flagCover: coverFiles,
+          flagLogo: logoFiles,
+          gas: DEFAULT_PROPOSAL_GAS,
+        };
+      }
+
+      return {};
+    }
+    case ProposalVariant.ProposeCustomFunctionCall: {
+      if (kind.type === ProposalType.FunctionCall) {
+        try {
+          const action = kind.actions[0];
+
+          const json = JSON.parse(
+            Buffer.from(action.args, 'base64').toString('utf-8')
+          );
+
+          return {
+            details: data.title,
+            externalUrl: '',
+            smartContractAddress: kind.receiverId,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            methodName: action.methodName,
+            json: JSON.stringify(json, null, 2),
+            deposit: formatYoktoValue(action.deposit),
+            token: 'NEAR',
+            actionsGas: DEFAULT_PROPOSAL_GAS,
+            gas: formatYoktoValue(action.gas),
+
+            functionCallType: 'Custom',
+            timeout: 24,
+            timeoutGranularity: 'Hours',
+          };
+        } catch (e) {
+          return {};
+        }
+      }
+
+      return {};
+    }
+    case ProposalVariant.ProposeChangeProposalVotingPermissions:
+    case ProposalVariant.ProposeChangeProposalCreationPermissions: {
+      return {
+        details: '',
+        externalUrl: '',
+        amount: '',
+        gas: DEFAULT_PROPOSAL_GAS,
+        ...data,
+      };
+    }
+    default: {
+      return {};
+    }
+  }
 }

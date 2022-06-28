@@ -11,6 +11,7 @@ import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesCon
 import { BackButton } from 'astro_2.0/features/ViewProposal/components/BackButton';
 import { ViewProposal } from 'astro_2.0/features/ViewProposal';
 import { DraftProposal } from 'types/draftProposal';
+import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 
 import { DRAFTS_PAGE_URL } from 'constants/routing';
 
@@ -53,7 +54,7 @@ export const EditDraftPage: FC<CreateDraftPageProps> = ({
         <title>Edit Draft</title>
       </Head>
       <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
-        <>
+        <DraftsDataProvider>
           <div className={styles.draftInfo}>
             <BackButton
               name="Back to Draft Feed"
@@ -73,7 +74,7 @@ export const EditDraftPage: FC<CreateDraftPageProps> = ({
               tokens={tokens}
             />
           </div>
-        </>
+        </DraftsDataProvider>
       </NestedDaoPageWrapper>
     </>
   );

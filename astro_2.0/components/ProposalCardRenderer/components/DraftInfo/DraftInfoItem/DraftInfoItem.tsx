@@ -9,17 +9,39 @@ interface DraftInfoItemProps {
   className?: string;
   count: number;
   iconName: IconName;
+  onClick?: () => void;
 }
 
 export const DraftInfoItem: FC<DraftInfoItemProps> = ({
   className,
   count,
   iconName,
+  onClick,
 }) => {
-  return (
-    <div className={cn(styles.draftInfoItem, className)}>
+  const infoItem = (
+    <>
       <div className={styles.count}>{count}</div>
       <Icon name={iconName} className={styles.icon} />
-    </div>
+    </>
   );
+
+  const renderInfo = () => {
+    if (onClick) {
+      return (
+        <button
+          className={cn(styles.button, className)}
+          type="button"
+          onClick={onClick}
+        >
+          {infoItem}
+        </button>
+      );
+    }
+
+    return (
+      <div className={cn(styles.draftInfoItem, className)}>{infoItem}</div>
+    );
+  };
+
+  return renderInfo();
 };

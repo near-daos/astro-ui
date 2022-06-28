@@ -47,6 +47,10 @@ export type AcceptStakingContractParams = {
   description: string;
 };
 
+export type UpdateVotePolicyToWeightVoting = {
+  threshold: string;
+};
+
 export type StakeTokensParams = {
   tokenContract: string;
   stakingContract: string;
@@ -312,11 +316,26 @@ export class GovernanceTokenService extends BaseService {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
+    let userStorageDepositTransactionAction;
     let storageDepositTransactionAction;
     let transferTransaction;
 
     switch (this.walletService.getWalletType()) {
       case WalletType.SENDER: {
+        userStorageDepositTransactionAction = {
+          receiverId: stakingContract,
+          actions: [
+            {
+              methodName: 'storage_deposit',
+              args: {
+                account_id: this.walletService.getAccountId(),
+              },
+              gas: GAS_VALUE.toString(),
+              deposit: new Decimal(0.003).mul(10 ** 24).toFixed(),
+            },
+          ],
+        };
+
         storageDepositTransactionAction = {
           receiverId: tokenContract,
           actions: [
@@ -324,7 +343,6 @@ export class GovernanceTokenService extends BaseService {
               methodName: 'storage_deposit',
               args: {
                 account_id: stakingContract,
-                // registration_only: true,
               },
               gas: GAS_VALUE.toString(),
               deposit: '100000000000000000000000',
@@ -352,6 +370,20 @@ export class GovernanceTokenService extends BaseService {
       }
       case WalletType.NEAR:
       default: {
+        userStorageDepositTransactionAction = {
+          receiverId: stakingContract,
+          actions: [
+            transactions.functionCall(
+              'storage_deposit',
+              {
+                account_id: this.walletService.getAccountId(),
+              },
+              GAS_VALUE,
+              new BN(new Decimal(0.003).mul(10 ** 24).toFixed())
+            ),
+          ],
+        };
+
         storageDepositTransactionAction = {
           receiverId: tokenContract,
           actions: [
@@ -359,7 +391,6 @@ export class GovernanceTokenService extends BaseService {
               'storage_deposit',
               {
                 account_id: stakingContract,
-                // registration_only: true,
               },
               GAS_VALUE,
               new BN('100000000000000000000000')
@@ -387,6 +418,7 @@ export class GovernanceTokenService extends BaseService {
 
     return this.walletService.sendTransactions([
       storageDepositTransactionAction,
+      userStorageDepositTransactionAction,
       transferTransaction,
     ]);
   }
@@ -407,8 +439,7 @@ export class GovernanceTokenService extends BaseService {
               {
                 methodName: 'storage_deposit',
                 args: {
-                  account_id: accountId,
-                  // registration_only: true,
+                  account_id: this.walletService.getAccountId(),
                 },
                 gas: GAS_VALUE.toString(),
                 deposit: new Decimal(0.003).mul(10 ** 24).toFixed(),
@@ -436,19 +467,19 @@ export class GovernanceTokenService extends BaseService {
       case WalletType.NEAR:
       default: {
         transaction = [
-          // {
-          //   receiverId: stakingContract,
-          //   actions: [
-          //     transactions.functionCall(
-          //       'storage_deposit',
-          //       {
-          //         account_id: 'rudolfabel.testnet',
-          //       },
-          //       GAS_VALUE,
-          //       new BN(new Decimal(0.003).mul(10 ** 24).toFixed())
-          //     ),
-          //   ],
-          // },
+          {
+            receiverId: stakingContract,
+            actions: [
+              transactions.functionCall(
+                'storage_deposit',
+                {
+                  account_id: this.walletService.getAccountId(),
+                },
+                GAS_VALUE,
+                new BN(new Decimal(0.003).mul(10 ** 24).toFixed())
+              ),
+            ],
+          },
           {
             receiverId: stakingContract,
             actions: [

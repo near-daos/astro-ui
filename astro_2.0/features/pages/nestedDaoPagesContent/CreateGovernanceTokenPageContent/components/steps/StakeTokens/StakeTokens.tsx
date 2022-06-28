@@ -11,6 +11,8 @@ import { useWalletContext } from 'context/WalletContext';
 import { useAsync } from 'react-use';
 import { formatYoktoValue } from 'utils/format';
 
+import { CustomContract } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/types';
+
 import styles from './StakeTokens.module.scss';
 
 interface Props {
@@ -44,17 +46,12 @@ export const StakeTokens: FC<Props> = ({
     const contract = nearService.getContract(contractAddress, [
       'ft_balance_of',
       'ft_metadata',
+    ]) as CustomContract;
+
+    const [meta, balance] = await Promise.all([
+      contract.ft_metadata(),
+      contract.ft_balance_of({ account_id: accountId }),
     ]);
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const meta = await contract.ft_metadata();
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const balance = await contract.ft_balance_of({ account_id: accountId });
-
-    // console.log(balance, meta);
 
     setTokenDetails({
       balance: Number(formatYoktoValue(balance, meta.decimals)),

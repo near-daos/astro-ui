@@ -18,6 +18,7 @@ import {
   DRAFT_PAGE_URL,
   CREATE_DRAFT_PAGE_URL,
   EDIT_DRAFT_PAGE_URL,
+  DELEGATE_PAGE_URL,
 } from 'constants/routing';
 import { UrlObject } from 'url';
 import { Proposal } from 'types/proposal';
@@ -171,6 +172,15 @@ export function useGetBreadcrumbsConfig(
         label: t('customFunctionCallTemplates'),
         href: {
           pathname: DAO_CUSTOM_FC_TEMPLATES_PAGE_URL,
+          query: {
+            dao: daoId,
+          },
+        },
+      },
+      DELEGATE: {
+        label: 'Delegate',
+        href: {
+          pathname: DELEGATE_PAGE_URL,
           query: {
             dao: daoId,
           },

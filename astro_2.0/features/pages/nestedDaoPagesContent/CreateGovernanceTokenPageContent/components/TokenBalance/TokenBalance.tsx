@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import isNil from 'lodash/isNil';
 
 import { Icon } from 'components/Icon';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
@@ -14,7 +15,7 @@ interface TokenBalanceProps {
 }
 
 export const TokenBalance: FC<TokenBalanceProps> = ({ value, suffix }) => {
-  if (value === undefined || value === null) {
+  if (isNil(value)) {
     return null;
   }
 

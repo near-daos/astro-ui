@@ -14,7 +14,7 @@ import styles from './DelegateVoting.module.scss';
 interface Props {
   item: { name: string; amount: number };
   index: number;
-  onRemove: () => void;
+  onRemove: (index: number) => void;
 }
 
 export const AccountAmount: VFC<Props> = ({ index, onRemove }) => {
@@ -92,7 +92,7 @@ export const AccountAmount: VFC<Props> = ({ index, onRemove }) => {
           disabled={currentValue === accountId}
           className={styles.deleteBtn}
           icon="buttonDelete"
-          onClick={onRemove}
+          onClick={() => onRemove(index)}
           size="small"
         />
       </div>

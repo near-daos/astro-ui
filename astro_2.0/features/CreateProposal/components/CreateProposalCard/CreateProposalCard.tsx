@@ -75,7 +75,8 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
   const proposalTypesOptions = useProposalTypeOptions(
     daoId,
     userPermissions,
-    canCreateTokenProposal
+    canCreateTokenProposal,
+    isDraft
   );
 
   const { accountId } = useWalletContext();
@@ -232,30 +233,31 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
             }
             defaultValue={type}
             options={proposalTypesOptions}
-            onChange={v => {
-              if (!v) {
+            onChange={option => {
+              if (!option) {
                 return;
               }
 
               const proposalVariant =
-                v.group === 'Custom Templates'
+                option.group === 'Custom Templates'
                   ? ProposalVariant.ProposeCustomFunctionCall
-                  : v.value;
+                  : option.value;
 
               if (
                 proposalVariant === ProposalVariant.ProposeCustomFunctionCall
               ) {
                 const defs = getCustomTemplatesDefaults(
-                  (v.opt ?? '') as FunctionCallType,
+                  (option.opt ?? '') as FunctionCallType,
                   templates,
                   tokens,
                   settings,
                   t,
                   accountId,
-                  v.value
+                  option.value,
+                  isDraft
                 );
 
-                reset({ ...defs, functionCallType: v.opt });
+                reset({ ...defs, functionCallType: option.opt });
                 onTypeSelect(proposalVariant as ProposalVariant, true);
               } else {
                 onTypeSelect(proposalVariant as ProposalVariant);

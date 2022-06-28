@@ -56,6 +56,9 @@
 
 .descriptionCell {
   grid-area: descriptionCell;
+  img {
+    max-width: 100%;
+  }
 }
 
 .contentCell {
