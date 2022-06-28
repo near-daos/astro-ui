@@ -9,6 +9,7 @@ import { DAO } from 'types/dao';
 import {
   CreateProposalParams,
   DaoConfig,
+  FunctionCallAction,
   ProposalVariant,
 } from 'types/proposal';
 import { CreateTokenInput } from 'astro_2.0/features/CreateProposal/types';
@@ -450,21 +451,24 @@ export async function getCreateRoketoStreamProposal(
     throw new Error('No tokens data found');
   }
 
-  const multicall = new Multicall();
+  let proposalData: {
+    // eslint-disable-next-line camelcase
+    receiver_id: string;
+    actions: FunctionCallAction[];
+  } = { receiver_id: '', actions: [] };
 
-  const serialCalls = multicall.createBatch();
+  // eslint-disable-next-line no-constant-condition
+  if (false) {
+    const multicall = new Multicall();
+    const serialCalls = multicall.createBatch();
 
-  actions?.forEach(action => {
-    serialCalls
-      .createCall(action.contract)
-      .addAction(action.method, action.args, action.gas, action.deposit);
-  });
+    actions?.forEach(action => {
+      serialCalls
+        .createCall(action.contract)
+        .addAction(action.method, action.args, action.gas, action.deposit);
+    });
 
-  return {
-    daoId: dao.id,
-    description: proposalDescription,
-    kind: 'FunctionCall',
-    data: {
+    proposalData = {
       receiver_id: multicallContract,
       actions: [
         {
@@ -476,7 +480,28 @@ export async function getCreateRoketoStreamProposal(
           gas: formatGasValue(270).toString(),
         },
       ],
-    },
+    };
+  } else {
+    actions?.forEach(action => {
+      proposalData = {
+        receiver_id: action.contract,
+        actions: [
+          {
+            method_name: action.method,
+            args: Buffer.from(JSON.stringify(action.args)).toString('base64'),
+            deposit: action.deposit ?? '1',
+            gas: action.gas ?? formatGasValue('270').toString(),
+          },
+        ],
+      };
+    });
+  }
+
+  return {
+    daoId: dao.id,
+    description: proposalDescription,
+    kind: 'FunctionCall',
+    data: proposalData,
     bond: dao.policy.proposalBond,
   };
 }

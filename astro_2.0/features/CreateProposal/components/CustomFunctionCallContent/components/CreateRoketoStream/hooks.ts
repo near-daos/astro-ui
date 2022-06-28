@@ -169,7 +169,7 @@ function createStreamTransferCall({
     contract: tokenAccountId,
     method: 'ft_transfer_call',
     deposit: '1',
-    gas: formatGasValue(270).toString(),
+    gas: formatGasValue(150).toString(),
     args: {
       receiver_id: streamingContract,
       amount: new Decimal(amountToStream).plus(createCommission).toFixed(),
@@ -230,14 +230,15 @@ export function useRoketoReceipt({
         }
       );
       actions.push(
-        {
-          contract: wrap.account_id,
-          method: 'near_deposit',
-          args: {},
-          deposit: new Decimal(amountToStream)
-            .plus(wrap.commission_on_create)
-            .toFixed(),
-        },
+        // TODO: reenable when support contract will be available for RoketoStreaming
+        // {
+        //   contract: wrap.account_id,
+        //   method: 'near_deposit',
+        //   args: {},
+        //   deposit: new Decimal(amountToStream)
+        //     .plus(wrap.commission_on_create)
+        //     .toFixed(),
+        // },
         createStreamTransferCall({
           amountToStream,
           createCommission: wrap.commission_on_create,
