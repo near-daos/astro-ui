@@ -18,24 +18,30 @@ export const DraftInfoItem: FC<DraftInfoItemProps> = ({
   iconName,
   onClick,
 }) => {
-  const icon = <Icon name={iconName} className={styles.icon} />;
+  const infoItem = (
+    <>
+      <div className={styles.count}>{count}</div>
+      <Icon name={iconName} className={styles.icon} />
+    </>
+  );
 
-  const renderIcon = () => {
+  const renderInfo = () => {
     if (onClick) {
       return (
-        <button className={styles.button} type="button" onClick={onClick}>
-          {icon}
+        <button
+          className={cn(styles.button, className)}
+          type="button"
+          onClick={onClick}
+        >
+          {infoItem}
         </button>
       );
     }
 
-    return icon;
+    return (
+      <div className={cn(styles.draftInfoItem, className)}>{infoItem}</div>
+    );
   };
 
-  return (
-    <div className={cn(styles.draftInfoItem, className)}>
-      <div className={styles.count}>{count}</div>
-      {renderIcon()}
-    </div>
-  );
+  return renderInfo();
 };

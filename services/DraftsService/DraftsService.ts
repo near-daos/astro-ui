@@ -58,7 +58,7 @@ export class DraftsService {
   public async getDraft(
     id: string,
     dao?: DAO,
-    accountId?: string
+    accountIdParams?: string
   ): Promise<DraftProposal> {
     const { data } = await this.httpService.get(`/draft-proposals/${id}`, {
       responseMapper: {
@@ -68,7 +68,7 @@ export class DraftsService {
         },
       },
       params: {
-        accountId,
+        accountId: accountIdParams,
       },
     });
 
@@ -110,6 +110,7 @@ export class DraftsService {
   public async updateDraftSave(
     params: {
       id: string;
+      accountId: string;
     } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.post(`/draft-proposals/${params.id}/save`, params, {

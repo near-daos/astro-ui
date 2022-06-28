@@ -14,14 +14,17 @@ interface DraftInfoProps {
   className?: string;
   replies: number;
   isSaved: boolean;
+  saves: number;
 }
 
 export const DraftInfo: FC<DraftInfoProps> = ({
   className,
   replies,
   isSaved,
+  saves,
 }) => {
   const [isSavedDraft, setSavedDraft] = useState(isSaved);
+  const [savesCount, setSavesCount] = useState(saves);
   const { draftsService } = useDraftsContext();
   const router = useRouter();
   const { draft } = router.query;
@@ -49,6 +52,7 @@ export const DraftInfo: FC<DraftInfoProps> = ({
       });
 
       setSavedDraft(data);
+      setSavesCount(data ? savesCount + 1 : savesCount);
     } catch (e) {
       showNotification({
         type: NOTIFICATION_TYPES.ERROR,
@@ -56,7 +60,7 @@ export const DraftInfo: FC<DraftInfoProps> = ({
         description: e?.message,
       });
     }
-  }, [accountId, draftId, draftsService, pkAndSignature]);
+  }, [accountId, draftId, draftsService, pkAndSignature, savesCount]);
 
   return (
     <div className={cn(styles.draftInfo, className)}>
@@ -66,9 +70,9 @@ export const DraftInfo: FC<DraftInfoProps> = ({
         className={styles.draftInfoItem}
       />
       <DraftInfoItem
-        onClick={handlerSaveDraft}
+        onClick={!isSavedDraft ? () => handlerSaveDraft() : undefined}
         iconName={isSavedDraft ? 'draftBookmarkFulfill' : 'draftBookmark'}
-        count={0}
+        count={savesCount}
         className={styles.draftInfoItem}
       />
       <ReplyButton onClick={() => setToggleWriteComment(true)} />

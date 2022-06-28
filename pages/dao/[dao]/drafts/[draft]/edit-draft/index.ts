@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const dao = daoContext?.dao;
 
-  const draft = await draftService.getDraft(draftId, dao);
+  const draft = await draftService.getDraft(draftId, dao, account);
 
   return {
     props: {
