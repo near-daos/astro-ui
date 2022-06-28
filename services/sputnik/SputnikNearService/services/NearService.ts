@@ -609,14 +609,9 @@ export class NearService extends BaseService {
   }
 
   getContract(contractId: string, viewMethods: string[]): Contract {
-    return new Contract(
-      this.getAccount(), // the account object that is connecting
-      contractId,
-      {
-        // name of contract you're connecting to
-        viewMethods, // view methods do not change state but usually return a value
-        changeMethods: [], // change methods modify state
-      }
-    );
+    return new Contract(this.getAccount(), contractId, {
+      viewMethods,
+      changeMethods: [],
+    });
   }
 }

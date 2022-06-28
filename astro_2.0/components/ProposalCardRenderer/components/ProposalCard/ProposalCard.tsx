@@ -22,7 +22,7 @@ import {
   ProposalVariant,
   VoteAction,
 } from 'types/proposal';
-import { DraftComment, Hashtag } from 'types/draftProposal';
+import { Hashtag } from 'types/draftProposal';
 import { VoteDetail } from 'features/types';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { ProposalActions } from 'features/proposal/components/ProposalActions';
@@ -50,10 +50,10 @@ import { Badge } from 'components/Badge';
 import { DraftInfo } from 'astro_2.0/components/ProposalCardRenderer/components/DraftInfo';
 import { DraftManagement } from 'astro_2.0/components/ProposalCardRenderer/components/DraftManagement';
 import { EditableContent } from 'astro_2.0/components/EditableContent';
+import { DeleteDraftButton } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/DeleteDraftButton';
+import { ProposalControlPanel } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/ProposalControlPanel';
 
 import { formatISODate } from 'utils/format';
-
-import { ProposalControlPanel } from './components/ProposalControlPanel';
 
 import styles from './ProposalCard.module.scss';
 
@@ -95,12 +95,13 @@ export interface ProposalCardProps {
   isEditDraft?: boolean;
   title?: string;
   hashtags?: Hashtag[];
-  bookmarks?: number;
-  comments?: DraftComment[];
+  replies?: number;
+  isSaved?: boolean;
   history?: ProposalFeedItem[];
-  onReplyClick?: () => void;
   onSelect?: (p: string) => void;
   selectedList?: string[];
+  convertTOProposal?: () => void;
+  saves?: number;
 }
 
 function getTimestampLabel(
@@ -214,12 +215,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   isEditDraft,
   title,
   hashtags,
-  bookmarks,
-  comments,
+  replies,
+  isSaved,
   history,
-  onReplyClick,
   onSelect,
   selectedList,
+  convertTOProposal,
+  saves,
 }) => {
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
@@ -411,6 +413,48 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     }
   }
 
+  const handlerChangeTitle = useCallback(
+    titleValue => {
+      draftMethods.setValue('title', titleValue);
+      draftMethods.trigger('title');
+    },
+    [draftMethods]
+  );
+
+  const handlerChangeHashtags = useCallback(
+    hashtagsValue => {
+      draftMethods.setValue('hashtags', hashtagsValue);
+      draftMethods.trigger('hashtags');
+    },
+    [draftMethods]
+  );
+
+  const handlerChangeDescription = useCallback(
+    html => {
+      let value = html;
+
+      if (value === '<p><br></p>') {
+        value = '';
+      }
+
+      draftMethods.setValue('description', value);
+      draftMethods.setValue('details', value);
+      draftMethods.trigger('description');
+      draftMethods.trigger('details');
+    },
+    [draftMethods]
+  );
+
+  const handleEditDraft = useCallback(() => {
+    router.push({
+      pathname: EDIT_DRAFT_PAGE_URL,
+      query: {
+        dao: daoId,
+        draft: id || '',
+      },
+    });
+  }, [daoId, id, router]);
+
   function renderCardContent() {
     if (isEditDraft) {
       return (
@@ -421,27 +465,12 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
             placeholder="Describe your draft..."
             titlePlaceholder="Add draft name"
             title={draftTitle}
-            setTitle={titleValue => {
-              draftMethods.setValue('title', titleValue);
-              draftMethods.trigger('title');
-            }}
+            setTitle={handlerChangeTitle}
             hashtags={draftHashtags}
-            setHashtags={hashtagsValue => {
-              draftMethods.setValue('hashtags', hashtagsValue);
-              draftMethods.trigger('hashtags');
-            }}
+            setHashtags={handlerChangeHashtags}
             className={styles.editable}
             html={draftDescription}
-            setHTML={html => {
-              let value = html;
-
-              if (value === '<p><br></p>') {
-                value = '';
-              }
-
-              draftMethods.setValue('description', value);
-              draftMethods.trigger('description');
-            }}
+            setHTML={handlerChangeDescription}
           />
           <div className={styles.contentCell}>{content}</div>
         </>
@@ -535,21 +564,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       return (
         <div className={styles.draftFooter}>
           <DraftManagement
-            onConvertToProposal={() => undefined}
-            onEditDraft={() =>
-              router.push({
-                pathname: EDIT_DRAFT_PAGE_URL,
-                query: {
-                  dao: daoId,
-                  draft: id || '',
-                },
-              })
-            }
+            convertTOProposal={convertTOProposal}
+            onEditDraft={handleEditDraft}
           />
           <DraftInfo
-            onReply={() => onReplyClick && onReplyClick()}
-            comments={comments?.length || 0}
-            bookmarks={bookmarks || 0}
+            saves={saves || 0}
+            isSaved={Boolean(isSaved)}
+            replies={replies || 0}
           />
         </div>
       );
@@ -666,17 +687,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     }
 
     if (isEditDraft) {
-      return (
-        <Button
-          capitalize
-          variant="transparent"
-          className={styles.deleteButton}
-          onClick={() => undefined}
-        >
-          <Icon name="buttonDelete" className={styles.deleteButtonIcon} />
-          Delete
-        </Button>
-      );
+      return <DeleteDraftButton draftId={id || ''} daoId={daoId} />;
     }
 
     if (history && history.length >= 2) {

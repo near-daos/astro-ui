@@ -632,7 +632,8 @@ export async function getAcceptStakingContractProposal(
 }
 
 export async function getChangeVotingPolicyToWeightVoting(
-  dao: DAO
+  dao: DAO,
+  data: Record<string, unknown>
 ): Promise<CreateProposalParams> {
   const { id, policy } = dao;
   const {
@@ -645,6 +646,35 @@ export async function getChangeVotingPolicyToWeightVoting(
   } = policy;
 
   const { ratio, quorum, weightKind } = defaultVotePolicy;
+
+  const { threshold } = data;
+
+  // TODO: add selector or use wildcard instead(should be changed on a smart contract side)
+  const proposalKindPolicyLabels = [
+    'config',
+    'policy',
+    'add_member_to_role',
+    'remove_member_from_role',
+    'call',
+    'upgrade_self',
+    'upgrade_remote',
+    'transfer',
+    'set_vote_token',
+    'add_bounty',
+    'bounty_done',
+    'vote',
+    'factory_info_update',
+    'policy_add_or_update_role',
+    'policy_remove_role',
+    'policy_update_default_vote_policy',
+    'policy_update_parameters',
+  ];
+
+  const tokenWeightDefaultPolicy = {
+    weight_kind: 'TokenWeight',
+    quorum: '0',
+    threshold: `${threshold}`,
+  };
 
   return {
     daoId: id,
@@ -660,13 +690,13 @@ export async function getChangeVotingPolicyToWeightVoting(
               Member: '1',
             },
             permissions: ['*:*'],
-            vote_policy: {
-              '*.*': {
-                weight_kind: 'TokenWeight',
-                quorum: '0',
-                threshold: '400000000000000000000',
-              },
-            },
+            vote_policy: proposalKindPolicyLabels.reduce(
+              (acc, value) => ({
+                ...acc,
+                [value]: { ...tokenWeightDefaultPolicy },
+              }),
+              {}
+            ),
           },
         ],
         default_vote_policy: {

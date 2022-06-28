@@ -42,6 +42,8 @@ export const DAO_VERSION_PAGE_URL = `${DAO_SETTINGS_PAGE_URL}/version`;
 export const DAO_CUSTOM_FC_TEMPLATES_PAGE_URL = `${DAO_SETTINGS_PAGE_URL}/custom-templates`;
 export const MY_ACCOUNT_PAGE_URL = '/my-account';
 
+export const DELEGATE_PAGE_URL = `${SINGLE_DAO_PAGE}/delegate`;
+
 export const DRAFTS_PAGE_URL = `${SINGLE_DAO_PAGE}/drafts`;
 export const DRAFT_PAGE_URL = `${SINGLE_DAO_PAGE}/drafts/[draft]`;
 export const CREATE_DRAFT_PAGE_URL = `${SINGLE_DAO_PAGE}/create-draft`;

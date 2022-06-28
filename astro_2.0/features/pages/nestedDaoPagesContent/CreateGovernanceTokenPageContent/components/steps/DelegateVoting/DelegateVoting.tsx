@@ -15,6 +15,7 @@ import { AccountAmount } from 'astro_2.0/features/pages/nestedDaoPagesContent/Cr
 import { Button } from 'components/button/Button';
 import { Icon } from 'components/Icon';
 
+import { CustomContract } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/types';
 import { DAO } from 'types/dao';
 
 import styles from './DelegateVoting.module.scss';
@@ -25,9 +26,9 @@ interface Props {
   contractAddress: string;
 }
 
-type TAccountAmount = { name: string; amount: number };
+type AccountAmountDetails = { name: string; amount: number };
 
-type Form = { accounts: TAccountAmount[] };
+type Form = { accounts: AccountAmountDetails[] };
 
 export const DelegateVoting: FC<Props> = ({
   dao,
@@ -50,24 +51,17 @@ export const DelegateVoting: FC<Props> = ({
     const ftContract = nearService.getContract(contractAddress, [
       'ft_balance_of',
       'ft_metadata',
-    ]);
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const meta = await ftContract.ft_metadata();
+    ]) as CustomContract;
 
     const stContract = nearService.getContract(
       nearService.getStackingContract(dao.name),
-      ['ft_balance_of', 'get_user']
-    );
+      ['ft_balance_of']
+    ) as CustomContract;
 
-    // const user = await stContract.get_user({ account_id: accountId });
-    //
-    // console.log(user);
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const balance = await stContract.ft_balance_of({ account_id: accountId });
+    const [meta, balance] = await Promise.all([
+      ftContract.ft_metadata(),
+      stContract.ft_balance_of({ account_id: accountId }),
+    ]);
 
     setTokenDetails({
       balance: Number(formatYoktoValue(balance, meta.decimals)),
@@ -81,7 +75,7 @@ export const DelegateVoting: FC<Props> = ({
     defaultValues: {
       accounts: dao.groups
         .filter(group => group.slug === 'council')
-        .reduce<TAccountAmount[]>((res, group) => {
+        .reduce<AccountAmountDetails[]>((res, group) => {
           const members = group.members.map(member => ({
             name: member,
             amount: 0,

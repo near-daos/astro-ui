@@ -138,7 +138,7 @@ export const EditableContent: FC<EditableContentProps> = ({
   };
 
   return (
-    <div className={cn(styles.createComment, className)}>
+    <div className={cn(styles.editable, className)}>
       {renderCustomToolbar(id)}
       {setTitle ? (
         <div

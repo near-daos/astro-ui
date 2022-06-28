@@ -10,6 +10,7 @@ import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { NestedDaoPageWrapper } from 'astro_2.0/features/pages/nestedDaoPagesContent/NestedDaoPageWrapper';
 import { BackButton } from 'astro_2.0/features/ViewProposal/components/BackButton';
 import { CreateProposal } from 'astro_2.0/features/CreateProposal';
+import { DraftsDataProvider } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 
 import { DRAFTS_PAGE_URL } from 'constants/routing';
 
@@ -54,17 +55,18 @@ export const CreateDraftPage: FC<CreateDraftPageProps> = ({ daoContext }) => {
           />
 
           <h1 className={styles.title}>Creating draft</h1>
-
-          <CreateProposal
-            isDraft
-            showInfo={false}
-            showClose={false}
-            showFlag={false}
-            dao={dao}
-            daoTokens={tokens}
-            onClose={() => undefined}
-            userPermissions={daoContext.userPermissions}
-          />
+          <DraftsDataProvider>
+            <CreateProposal
+              isDraft
+              showInfo={false}
+              showClose={false}
+              showFlag={false}
+              dao={dao}
+              daoTokens={tokens}
+              onClose={() => undefined}
+              userPermissions={daoContext.userPermissions}
+            />
+          </DraftsDataProvider>
         </>
       </NestedDaoPageWrapper>
     </>

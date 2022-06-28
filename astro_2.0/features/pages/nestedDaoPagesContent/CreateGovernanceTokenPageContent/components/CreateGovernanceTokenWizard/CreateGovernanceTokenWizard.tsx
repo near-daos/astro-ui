@@ -236,7 +236,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
         {/*    onUpdate({ */}
         {/*      ...status, */}
         {/*      contractAddress: 'portos.tokenfactory.testnet', */}
-        {/*      step: 4, */}
+        {/*      step: 5, */}
         {/*    }) */}
         {/*  } */}
         {/* > */}

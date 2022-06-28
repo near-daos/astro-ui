@@ -15,7 +15,6 @@ export type DraftComment = {
   comments?: DraftComment[];
 };
 
-// todo - draft version of DraftProposal :)
 export interface DraftProposal extends ProposalFeedItem {
   type: ProposalType;
   title: string;
@@ -24,12 +23,11 @@ export interface DraftProposal extends ProposalFeedItem {
   hashtags: Hashtag[];
   views: number;
   replies: number;
+  saves: number;
   createdAt: string;
   updatedAt: string;
   isRead: boolean;
   isSaved: boolean;
-  comments: DraftComment[];
-  bookmarks: number;
   state: 'open' | 'closed';
   history: ProposalFeedItem[];
 }

@@ -40,6 +40,7 @@ import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/CreateProposal/com
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/CreateProposal/components/RemoveMemberFromGroupContent';
 import { TokenDistributionContent } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent';
 import { DeployStakingContractContent } from 'astro_2.0/features/CreateProposal/components/DeployStakingContractContent';
+import { UpdateVotePolicyToWeightVoting } from 'astro_2.0/features/CreateProposal/components/UpdateVotePolicyToWeightVoting';
 import { CreateDaoContent } from 'astro_2.0/features/CreateProposal/components/CreateDaoContent';
 import { ChangeVotingPermissionsContent } from 'astro_2.0/features/CreateProposal/components/ChangeVotingPermissionsContent';
 import { CreateTokenContent } from 'astro_2.0/features/CreateProposal/components/CreateTokenContent';
@@ -383,6 +384,9 @@ export function getFormContentNode(
     case ProposalVariant.ProposeStakingContractDeployment: {
       return <DeployStakingContractContent />;
     }
+    case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
+      return <UpdateVotePolicyToWeightVoting />;
+    }
     case ProposalVariant.ProposeAcceptStakingContract: {
       return <AcceptStakingContractContent />;
     }
@@ -451,6 +455,9 @@ export function mapProposalVariantToProposalType(
     }
     case ProposalVariant.ProposeRemoveMember: {
       return ProposalType.RemoveMemberFromRole;
+    }
+    case ProposalVariant.ProposeCustomFunctionCall: {
+      return ProposalType.FunctionCall;
     }
     default:
     case ProposalVariant.ProposePoll: {
@@ -823,8 +830,14 @@ export function getValidationSchema(
     }
 
     case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
-      schema = yup.object().shape({});
-
+      schema = yup.object().shape({
+        threshold: yup
+          .number()
+          .typeError(t('validation.mustBeAValidNumber'))
+          .positive()
+          .min(1)
+          .required(t('validation.required')),
+      });
       break;
     }
 

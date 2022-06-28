@@ -6,12 +6,12 @@ import styles from './DraftManagement.module.scss';
 
 interface DraftManagementProps {
   onEditDraft: () => void;
-  onConvertToProposal: () => void;
+  convertTOProposal?: () => void;
 }
 
 export const DraftManagement: FC<DraftManagementProps> = ({
   onEditDraft,
-  onConvertToProposal,
+  convertTOProposal,
 }) => {
   return (
     <div>
@@ -26,7 +26,11 @@ export const DraftManagement: FC<DraftManagementProps> = ({
       <Button
         capitalize
         className={styles.button}
-        onClick={onConvertToProposal}
+        onClick={() => {
+          if (convertTOProposal) {
+            convertTOProposal();
+          }
+        }}
       >
         Convert to proposal
       </Button>

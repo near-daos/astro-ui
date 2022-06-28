@@ -11,7 +11,8 @@ import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/C
 export function useProposalTypeOptions(
   daoId: string,
   userPermissions: UserPermissions,
-  canCreateTokenProposal: boolean
+  canCreateTokenProposal: boolean,
+  isDraft?: boolean
 ): {
   title: string;
   options: Option[];
@@ -114,6 +115,7 @@ export function useProposalTypeOptions(
     {
       title: getLabel('groupTransferAddBounty'),
       disabled:
+        !isDraft &&
         !allowedProposalsToCreate[ProposalType.Transfer] &&
         !allowedProposalsToCreate[ProposalType.AddBounty],
       options: [
@@ -121,21 +123,24 @@ export function useProposalTypeOptions(
           label: getLabel('proposeTransfer'),
           value: ProposalVariant.ProposeTransfer,
           group: getLabel('groupTransferAddBounty'),
-          disabled: !allowedProposalsToCreate[ProposalType.Transfer],
+          disabled:
+            !isDraft && !allowedProposalsToCreate[ProposalType.Transfer],
         },
         {
           label: getLabel('proposeBounty'),
           value: ProposalVariant.ProposeCreateBounty,
           group: getLabel('groupTransferAddBounty'),
-          disabled: !allowedProposalsToCreate[ProposalType.AddBounty],
+          disabled:
+            !isDraft && !allowedProposalsToCreate[ProposalType.AddBounty],
         },
       ],
     },
     {
       title: changeConfigTitle,
       disabled:
-        !isCanCreatePolicyProposals ||
-        !allowedProposalsToCreate[ProposalType.ChangeConfig],
+        !isDraft &&
+        (!isCanCreatePolicyProposals ||
+          !allowedProposalsToCreate[ProposalType.ChangeConfig]),
       options: [
         {
           label: getLabel('proposeDAOName'),
@@ -167,8 +172,9 @@ export function useProposalTypeOptions(
     {
       title: getLabel('groupChangePolicy'),
       disabled:
-        !allowedProposalsToCreate[ProposalType.ChangePolicy] ||
-        !isCanCreatePolicyProposals,
+        !isDraft &&
+        (!allowedProposalsToCreate[ProposalType.ChangePolicy] ||
+          !isCanCreatePolicyProposals),
       options: [
         /*  {
           label: getLabel('proposeChangePolicy'),
@@ -190,35 +196,37 @@ export function useProposalTypeOptions(
     {
       title: getLabel('groupChangeMembers'),
       disabled:
-        !isCanCreatePolicyProposals ||
-        (!allowedProposalsToCreate[ProposalType.AddMemberToRole] &&
-          !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole]),
+        !isDraft &&
+        (!isCanCreatePolicyProposals ||
+          (!allowedProposalsToCreate[ProposalType.AddMemberToRole] &&
+            !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole])),
       options: [
         {
           label: getLabel('proposeAddMember'),
           value: ProposalVariant.ProposeAddMember,
           group: getLabel('groupChangeMembers'),
-          disabled: !allowedProposalsToCreate[ProposalType.AddMemberToRole],
+          disabled:
+            !isDraft && !allowedProposalsToCreate[ProposalType.AddMemberToRole],
         },
         {
           label: getLabel('proposeRemoveMember'),
           value: ProposalVariant.ProposeRemoveMember,
           group: getLabel('groupChangeMembers'),
-          disabled: !allowedProposalsToCreate[
-            ProposalType.RemoveMemberFromRole
-          ],
+          disabled:
+            !isDraft &&
+            !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole],
         },
       ],
     },
     {
       title: getLabel('groupVote'),
-      disabled: !allowedProposalsToCreate[ProposalType.Vote],
+      disabled: !isDraft && !allowedProposalsToCreate[ProposalType.Vote],
       options: [
         {
           label: getLabel('proposePoll'),
           value: ProposalVariant.ProposePoll,
           group: getLabel('groupVote'),
-          disabled: !allowedProposalsToCreate[ProposalType.Vote],
+          disabled: !isDraft && !allowedProposalsToCreate[ProposalType.Vote],
         },
       ],
     },
