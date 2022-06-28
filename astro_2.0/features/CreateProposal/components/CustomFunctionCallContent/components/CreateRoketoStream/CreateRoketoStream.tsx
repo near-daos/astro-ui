@@ -131,36 +131,39 @@ export const CreateRoketoStream: VFC<CreateRoketoStreamProps> = ({ dao }) => {
     return '';
   };
 
-  const tokenOptions = Object.values(tokens).map(token => ({
-    value: token.id,
-    label: (
-      <div className={styles.row}>
-        <div className={styles.iconWrapper}>
-          {token.symbol === 'NEAR' ? (
-            <Icon name="tokenNearBig" />
-          ) : (
-            <div
-              className={styles.icon}
-              style={{
-                backgroundImage: `url(${token.icon})`,
-              }}
-            />
-          )}
+  const tokenOptions = Object.values(tokens)
+    // TODO: Reenable when support contract will be available for RoketoStreaming
+    .filter(token => token.id === 'NEAR')
+    .map(token => ({
+      value: token.id,
+      label: (
+        <div className={styles.row}>
+          <div className={styles.iconWrapper}>
+            {token.symbol === 'NEAR' ? (
+              <Icon name="tokenNearBig" />
+            ) : (
+              <div
+                className={styles.icon}
+                style={{
+                  backgroundImage: `url(${token.icon})`,
+                }}
+              />
+            )}
+          </div>
+          <div className={styles.symbol}>{token.symbol}</div>
+          <div className={styles.balance}>
+            <span
+              className={cn({
+                [styles.balanceNear]: token.symbol === 'NEAR',
+              })}
+            >
+              {token.balance}
+            </span>
+            {token.price && <span>&#8776;&nbsp;{toUsd(token)}&nbsp;USD</span>}
+          </div>
         </div>
-        <div className={styles.symbol}>{token.symbol}</div>
-        <div className={styles.balance}>
-          <span
-            className={cn({
-              [styles.balanceNear]: token.symbol === 'NEAR',
-            })}
-          >
-            {token.balance}
-          </span>
-          {token.price && <span>&#8776;&nbsp;{toUsd(token)}&nbsp;USD</span>}
-        </div>
-      </div>
-    ),
-  }));
+      ),
+    }));
 
   const selectedTokenData = tokens[getValues().tokenId];
 
