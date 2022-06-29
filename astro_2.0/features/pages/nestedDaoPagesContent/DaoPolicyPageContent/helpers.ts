@@ -141,20 +141,28 @@ export function getInitialCreationPermissions(dao: {
   });
 }
 
-export function getInitialVotingPermissions(dao: {
-  policy: {
-    roles: {
-      kind: 'Everyone' | 'Group';
-      name: string;
-      permissions: string[];
-    }[];
-  };
-}): SelectorRow[] {
+export function getInitialVotingPermissions(
+  dao: {
+    policy: {
+      roles: {
+        kind: 'Everyone' | 'Group';
+        name: string;
+        permissions: string[];
+      }[];
+    };
+  },
+  allowEveryoneVoting?: boolean
+): SelectorRow[] {
   return dao.policy.roles
-    .filter(
-      group =>
-        !(group.kind.toLowerCase && group.kind.toLowerCase() === 'everyone')
-    )
+    .filter(group => {
+      if (allowEveryoneVoting) {
+        return true;
+      }
+
+      return !(
+        group.kind.toLowerCase && group.kind.toLowerCase() === 'everyone'
+      );
+    })
     .map(group => {
       const allowAll =
         group.permissions.indexOf('*:*') !== -1 ||
