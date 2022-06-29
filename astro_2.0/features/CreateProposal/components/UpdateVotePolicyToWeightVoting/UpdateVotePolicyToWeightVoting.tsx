@@ -14,8 +14,6 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
 
   const threshold = watch('threshold');
 
-  console.log(threshold);
-
   return (
     <div className={styles.root}>
       <InputWrapper

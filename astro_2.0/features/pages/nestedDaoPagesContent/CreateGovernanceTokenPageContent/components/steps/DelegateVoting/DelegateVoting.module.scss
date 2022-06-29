@@ -1,0 +1,105 @@
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.header {
+  h2 {
+    margin: 0;
+  }
+}
+
+.body {
+  display: grid;
+  grid-column-gap: 24px;
+  grid-template-columns: 1fr 207px;
+  margin-top: 10px;
+
+  p {
+    @extend %body1;
+  }
+
+  .rows {
+    margin-right: 12px;
+  }
+}
+
+.footer {
+  align-items: center;
+  display: flex;
+}
+
+.inputLabel {
+  @extend %heading2;
+  font-size: 24px;
+  font-weight: 500;
+  margin-right: 12px;
+}
+
+.input {
+  @extend %heading2;
+  background: transparent;
+  font-size: 24px;
+  font-weight: 400;
+
+  input {
+    background: transparent;
+  }
+}
+
+.error {
+  border-color: var(--color-error-70);
+}
+
+.controls {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.rowWrapper {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.row {
+  align-items: center;
+  display: grid;
+  grid-column-gap: 12px;
+  grid-template-columns: 1fr 110px 24px;
+  width: 100%;
+}
+
+.deleteBtn {
+  align-self: flex-end;
+  color: var(--color-error-70);
+  margin-bottom: 18px;
+}
+
+.accountPlaceholder,
+.amountPlaceholder {
+  border: 1px dashed var(--color-neutral-40);
+  border-radius: 4px;
+  height: 40px;
+  width: 100%;
+}
+
+.addBtn {
+  margin: 12px 0;
+}

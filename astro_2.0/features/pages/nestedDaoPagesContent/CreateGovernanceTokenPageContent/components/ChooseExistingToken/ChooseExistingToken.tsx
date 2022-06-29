@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import cn from 'classnames';
 
 import { TokenCard } from 'components/cards/TokenCard';
 import { Button } from 'components/button/Button';
@@ -43,7 +44,7 @@ export const ChooseExistingToken: FC<Props> = ({ onUpdate, status }) => {
     <div className={styles.root}>
       <h2>Choose existing token for using in voting</h2>
 
-      <section>
+      <section className={styles.hidden}>
         <div className={styles.tokens}>
           {Object.values(tokens)
             .sort(sorter)
@@ -86,7 +87,7 @@ export const ChooseExistingToken: FC<Props> = ({ onUpdate, status }) => {
         </div>
       </section>
 
-      <div className={styles.divider} />
+      <div className={cn(styles.divider, styles.hidden)} />
 
       <section>
         <div className={styles.inputWrapper}>

@@ -841,12 +841,6 @@ export function getValidationSchema(
       break;
     }
 
-    case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
-      schema = yup.object().shape({});
-
-      break;
-    }
-
     case ProposalVariant.ProposeAcceptStakingContract: {
       schema = yup.object().shape({
         contract: yup.string(),

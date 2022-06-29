@@ -8,6 +8,9 @@ import {
 } from 'types/settings';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { useWalletContext } from 'context/WalletContext';
+import { ProposalType } from 'types/proposal';
+import { useDaoCustomTokens } from 'hooks/useCustomTokens';
+import { UserPermissions } from 'types/context';
 
 export function useCreateGovernanceTokenStatus(
   daoId: string
@@ -88,4 +91,24 @@ export function useCreateGovernanceTokenStatus(
     status,
     update,
   };
+}
+
+export function useLowBalanceWarning(
+  userPermissions: UserPermissions,
+  step?: CreateGovernanceTokenSteps
+): boolean {
+  const { tokens } = useDaoCustomTokens();
+
+  const isPermitted =
+    userPermissions.isCanCreateProposals &&
+    userPermissions.allowedProposalsToCreate[ProposalType.SetStakingContract];
+
+  if (!isPermitted || !tokens?.NEAR?.balance || step === undefined) {
+    return false;
+  }
+
+  return (
+    step < CreateGovernanceTokenSteps.ContractAcceptance &&
+    Number(tokens.NEAR.balance) < 11
+  );
 }

@@ -37,6 +37,16 @@ function getSteps(t: TFunction) {
       value: 'changeDaoPolicy',
       isCurrent: false,
     },
+    {
+      label: t(`${T_BASE}.stakeTokens`),
+      value: 'stakeTokens',
+      isCurrent: false,
+    },
+    {
+      label: t(`${T_BASE}.delegateVoting`),
+      value: 'delegateVoting',
+      isCurrent: false,
+    },
   ];
 
   return steps;
@@ -105,6 +115,12 @@ export function getCreateGovernanceTokenStepProposalVariant(
     case CreateGovernanceTokenSteps.ChangeDaoPolicy: {
       return ProposalVariant.ProposeUpdateVotePolicyToWeightVoting;
     }
+    case CreateGovernanceTokenSteps.StakeTokens: {
+      return ProposalVariant.ProposeStakeTokens;
+    }
+    case CreateGovernanceTokenSteps.DelegateVoting: {
+      return ProposalVariant.ProposeDelegateVoting;
+    }
     default: {
       return null;
     }
@@ -128,6 +144,12 @@ export function getNextCreateGovernanceTokenWizardStep(
       return CreateGovernanceTokenSteps.ChangeDaoPolicy;
     }
     case CreateGovernanceTokenSteps.ChangeDaoPolicy: {
+      return CreateGovernanceTokenSteps.StakeTokens;
+    }
+    case CreateGovernanceTokenSteps.StakeTokens: {
+      return CreateGovernanceTokenSteps.DelegateVoting;
+    }
+    case CreateGovernanceTokenSteps.DelegateVoting: {
       return null;
     }
     default: {

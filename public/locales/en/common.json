@@ -527,7 +527,9 @@
         "changeDaoPolicy": "Change DAO Policy",
         "selectToken": "Select Token",
         "deployStakingContract": "Deploy Staking Contract",
-        "acceptStakingContract": "Accept Staking Contract"
+        "acceptStakingContract": "Accept Staking Contract",
+        "stakeTokens": "Stake tokens",
+        "delegateVoting": "Delegate Voting"
       }
     }
   },
