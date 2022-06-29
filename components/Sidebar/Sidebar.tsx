@@ -4,9 +4,10 @@ import React, { forwardRef, useCallback } from 'react';
 import { useTranslation } from 'next-i18next';
 
 import {
-  ALL_DAOS_URL,
   ALL_FEED_URL,
+  CFC_LIBRARY,
   CREATE_DAO_URL,
+  DISCOVER,
   MY_DAOS_URL,
   MY_FEED_URL,
 } from 'constants/routing';
@@ -46,14 +47,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
   function renderHomeNavItem() {
     if (accountId) {
       return (
-        <div>
-          <NavItem
-            label={t('myDaos')}
-            icon="myDaos"
-            className={styles.item}
-            myDaosIds={myDaosIds}
-            href={MY_DAOS_URL}
-          />
+        <>
           <NavItem
             label={t('myFeed')}
             icon="myFeed"
@@ -61,8 +55,14 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
             myDaosIds={myDaosIds}
             href={MY_FEED_URL}
           />
-          <div className={styles.divider} />
-        </div>
+          <NavItem
+            label={t('myDaos')}
+            icon="myDaos"
+            className={styles.item}
+            myDaosIds={myDaosIds}
+            href={MY_DAOS_URL}
+          />
+        </>
       );
     }
 
@@ -71,13 +71,20 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
 
   function renderAllCommunities() {
     return (
-      <div className={styles.bottom}>
+      <>
         <NavItem
-          label={t('allDaos')}
+          label={t('actionsLibrary')}
+          icon="proposalFunctionCall"
+          className={styles.item}
+          myDaosIds={myDaosIds}
+          href={CFC_LIBRARY}
+        />
+        <NavItem
+          label={t('daosAndUsers')}
           icon="allCommunity"
           className={styles.item}
           myDaosIds={myDaosIds}
-          href={ALL_DAOS_URL}
+          href={DISCOVER}
         />
         <NavItem
           label={t('globalFeed')}
@@ -86,22 +93,23 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
           myDaosIds={myDaosIds}
           href={ALL_FEED_URL}
         />
-        <div className={styles.divider} />
-      </div>
+      </>
     );
   }
 
   return (
     <aside className={cn(styles.sidebar, className)} ref={ref}>
       <div className={styles.wrapper}>
-        <Logo className={styles.mainLogo} />
-        <div className={styles.subheader}>
-          <span>powered by</span>
-          <i>
-            <Icon name="logoNearFull" width={44} className={styles.logo} />
-          </i>
+        <div className={styles.logo}>
+          <Logo className={styles.mainLogo} />
+          <div className={styles.subheader}>
+            <span>powered by</span>
+            <i>
+              <Icon name="logoNearFull" width={44} className={styles.logo} />
+            </i>
+          </div>
         </div>
-        <div className={styles.scrolling}>
+        <div>
           {renderHomeNavItem()}
           {renderAllCommunities()}
           <NavItem

@@ -8,7 +8,7 @@
   display: flex;
   grid-area: footer;
   height: 100%;
-  padding-bottom: 60px;
+  //padding-bottom: 60px;
   width: 100%;
 }
 
@@ -62,7 +62,7 @@
   @include font(12px, 18px, 500);
   color: var(--color-white);
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 12px;
 
   &:hover {
     color: var(--color-success);
@@ -146,10 +146,10 @@
       'report'
       'version'
       'repo'
-      'copyright'
-      'terms'
       'links'
       'release'
+      'terms'
+      'copyright'
       'locale';
 
     max-width: 1130px;
@@ -252,10 +252,10 @@
       'report'
       'version'
       'repo'
-      'copyright'
-      'terms'
       'links'
       'release'
+      'terms'
+      'copyright'
       'locale';
   }
 
