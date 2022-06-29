@@ -61,13 +61,13 @@ export const ProposalCardRenderer: React.FC<ProposalCardRendererProps> = ({
       return null;
     }
 
-    if (isNumber(proposalId)) {
+    if (isNumber(proposal?.proposalId)) {
       return (
-        <div className={styles.proposalIdCell}>
+        <div className={styles.proposalIdCell} data-testid="proposal-id">
           <span className={styles.proposalIdLabel}>
             {t('proposalCard.proposalID')}
           </span>
-          <span className={styles.proposalIdValue}>{proposalId}</span>
+          <span className={styles.proposalIdValue}>{proposal?.proposalId}</span>
         </div>
       );
     }
