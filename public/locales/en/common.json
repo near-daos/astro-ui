@@ -639,7 +639,7 @@
     }
   },
   "proposalVotes": {
-    "noGroup": "No longer in any group",
+    "noGroup": "Non DAO members",
     "title": "Votes",
     "voices": "voices"
   },
