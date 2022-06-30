@@ -32,7 +32,7 @@ const DaoPolicyPage: NextPage<DaoPolicyPageProps> = ({ daoContext }) => {
     <NestedDaoPageWrapper
       daoContext={daoContext}
       breadcrumbs={breadcrumbs}
-      defaultProposalType={ProposalVariant.ProposeChangeVotingPolicy}
+      defaultProposalType={ProposalVariant.ProposeChangeBonds}
     >
       <Head>
         <title>DAO Policy</title>
