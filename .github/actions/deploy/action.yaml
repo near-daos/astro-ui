@@ -32,7 +32,7 @@ runs:
         if [ "${{ env.K8S_INGRESS_HOST }}" != "" ]
         then
           echo "ingress:" >> env-values.yaml
-          echo "  host:" >> env-values.yaml
+          echo "  host: ${{ env.K8S_INGRESS_HOST }}" >> env-values.yaml
         fi
 
         if [ "$ACTIONS_STEP_DEBUG" == "true" ]
