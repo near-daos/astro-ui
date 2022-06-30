@@ -1,6 +1,12 @@
-import React, { FC, useState } from 'react';
-import cn from 'classnames';
+// TODO requires localisation
 
+import cn from 'classnames';
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import React, { FC, useCallback, useRef, useState } from 'react';
+
+import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 import { TokenCard } from 'components/cards/TokenCard';
 import { Button } from 'components/button/Button';
 import { Input } from 'components/inputs/Input';
@@ -15,6 +21,9 @@ import {
   CreateGovernanceTokenSteps,
   ProgressStatus,
 } from 'types/settings';
+
+import { useWalletContext } from 'context/WalletContext';
+import { validateUserAccount } from 'astro_2.0/features/CreateProposal/helpers';
 
 import styles from './ChooseExistingToken.module.scss';
 
@@ -37,8 +46,48 @@ interface Props {
 
 export const ChooseExistingToken: FC<Props> = ({ onUpdate, status }) => {
   const { tokens } = useDaoCustomTokens();
+  const { nearService } = useWalletContext();
   const [selected, setSelected] = useState<string>();
-  const [contractAddress, setContractAddress] = useState<string>('');
+
+  const errorEl = useRef<HTMLDivElement>(null);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<{ contractAddress: string }>({
+    mode: 'onSubmit',
+    resolver: yupResolver(
+      yup.object().shape({
+        contractAddress: yup
+          .string()
+          .test(
+            'tokenExists',
+            'You should use a valid token address',
+            async address => {
+              const exists = await validateUserAccount(
+                address,
+                nearService || undefined
+              );
+
+              return exists;
+            }
+          ),
+      })
+    ),
+  });
+
+  const onSubmit = useCallback(
+    async ({ contractAddress }) => {
+      await onUpdate({
+        ...status,
+        step: CreateGovernanceTokenSteps.ContractAcceptance,
+        proposalId: null,
+        contractAddress,
+      });
+    },
+    [status, onUpdate]
+  );
 
   return (
     <div className={styles.root}>
@@ -89,39 +138,38 @@ export const ChooseExistingToken: FC<Props> = ({ onUpdate, status }) => {
 
       <div className={cn(styles.divider, styles.hidden)} />
 
-      <section>
-        <div className={styles.inputWrapper}>
-          <Icon name="buttonSearch" className={styles.iconSearch} />
-          <Input
-            isBorderless
-            inputClassName={styles.input}
-            size="block"
-            placeholder="Provide contract address"
-            onChange={e =>
-              setContractAddress((e.target as HTMLInputElement).value)
-            }
-          />
-        </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <section>
+          <div className={styles.inputWrapper}>
+            <Icon name="buttonSearch" className={styles.iconSearch} />
+            <InputFormWrapper
+              errors={errors}
+              errorElRef={errorEl}
+              component={
+                <Input
+                  isBorderless
+                  inputClassName={styles.input}
+                  size="block"
+                  placeholder="Provide contract address"
+                  {...register('contractAddress')}
+                />
+              }
+            />
+          </div>
+          <div ref={errorEl} />
 
-        <div className={styles.controls}>
-          <Button
-            className={styles.controlBtn}
-            variant="secondary"
-            size="medium"
-            disabled={!contractAddress}
-            onClick={async () => {
-              await onUpdate({
-                ...status,
-                step: CreateGovernanceTokenSteps.ContractAcceptance,
-                proposalId: null,
-                contractAddress,
-              });
-            }}
-          >
-            Next step
-          </Button>
-        </div>
-      </section>
+          <div className={styles.controls}>
+            <Button
+              className={styles.controlBtn}
+              variant="secondary"
+              size="medium"
+              type="submit"
+            >
+              Next step
+            </Button>
+          </div>
+        </section>
+      </form>
     </div>
   );
 };
