@@ -16,10 +16,6 @@ runs:
 
   - name: helm deploy
     uses: koslib/helm-eks-action@v1.24.1
-    env:
-      KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     with:
       command: |
         if [ "$ACTIONS_STEP_DEBUG" == "true" ]
