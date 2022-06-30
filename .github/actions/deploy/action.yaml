@@ -1,0 +1,49 @@
+name: 'Deploy'
+inputs:
+  name:
+    description: Name of helm release to deploy
+  namespace:
+    description: Target namespace
+  tag:
+    description: Docker tag to deploy
+    default: latest
+  chart_directory:
+    description: Location of helm chart
+  
+runs:
+  using: 'composite'
+  steps:
+
+  - name: helm deploy
+    uses: koslib/helm-eks-action@v1.24.1
+    with:
+      command: |
+        if [ "$ACTIONS_STEP_DEBUG" == "true" ]
+        then
+          set -x
+          jq --version || true
+        fi
+
+        # put env vars into values file
+        echo "environment: ${{ toJson(env) }}" > env-values.yaml
+        #env | grep '^HELM' | sed -e 's/^HELM_//' -e 's/=/: "/' -e 's/^/  /' -e 's/$/"/' >> env-values.yaml
+
+        # provide ingress if set
+        if [ "${{ env.K8S_INGRESS_HOST }}" != "" ]
+        then
+          echo "ingress:" >> env-values.yaml
+          echo "  host:" >> env-values.yaml
+        fi
+
+        if [ "$ACTIONS_STEP_DEBUG" == "true" ]
+        then
+          cat env-values.yaml
+          helm upgrade --install --namespace ${{inputs.namespace}} --dry-run --debug ${{inputs.name}} ${{inputs.chart_directory}} \
+          --set image.tag=${{inputs.tag}} \
+          -f env-values.yaml
+        fi
+
+        helm lint ${{inputs.chart_directory}}
+        helm --namespace ${{inputs.namespace}} upgrade --install --wait ${{inputs.name}} ${{inputs.chart_directory}} \
+          --set image.tag=${{inputs.tag}} \
+          -f env-values.yaml
