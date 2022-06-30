@@ -50,9 +50,13 @@
 
 .pageContent {
   display: flex;
+  margin-top: -24px;
 
   @media screen and (max-width: #{breakpoints.$screen-lg}px) {
     flex-direction: column;
+  }
+  @include max-large-x-desktop {
+    margin-top: -36px;
   }
 }
 
@@ -64,6 +68,7 @@
 }
 
 .notifications {
+  margin-top: 26px;
   width: 100%;
 }
 
@@ -109,13 +114,27 @@
 .controls {
   align-items: center;
 
+  background: var(--color-neutral-10);
+
   display: flex;
   justify-content: space-around;
-  margin-bottom: 32px;
+  position: sticky;
+  right: 0;
+  top: calc(167px + 24px);
+  width: 100%;
+  z-index: 3;
+
+  @include large-desktop-max {
+    height: 36px;
+    top: 238px;
+  }
 
   @include tablet-landscape {
     justify-content: flex-end;
-    margin-bottom: 0;
+  }
+
+  @include tablet-landscape-max {
+    top: 204px;
   }
 }
 
