@@ -147,45 +147,46 @@ export function useNotificationsList(
 
   const isMounted = useMountedState();
 
-  const fetchDaoIds = async () => {
-    if (accountId) {
-      const [
-        accountDaosResponse,
-        subscribedDaosResponse,
-      ] = await Promise.allSettled([
-        SputnikHttpService.getAccountDaos(accountId),
-        SputnikHttpService.getAccountDaoSubscriptions(accountId),
-      ]);
-
-      // console.log(accountDaosResponse.status);
-      // console.log(subscribedDaosResponse.status);
-      setAccountDaosIds(
-        accountDaosResponse.status === 'fulfilled'
-          ? accountDaosResponse.value.map(item => item.id)
-          : []
-      );
-      setSubscribedDaosIds(
-        subscribedDaosResponse.status === 'fulfilled'
-          ? subscribedDaosResponse.value.map(item => item.dao.id)
-          : []
-      );
-      setDaoIdsLoaded(true);
-    }
-  };
-
   const getDaosIds = async () => {
     const showSubscribed = router.query.notyType === 'subscribed';
     const showYourDaos = router.query.notyType === 'yourDaos';
 
     if (!daoIdsLoaded) {
-      // console.log('accountDaosIds before');
-      // console.log(accountDaosIds);
+      if (accountId) {
+        const [
+          accountDaosResponse,
+          subscribedDaosResponse,
+        ] = await Promise.allSettled([
+          SputnikHttpService.getAccountDaos(accountId),
+          SputnikHttpService.getAccountDaoSubscriptions(accountId),
+        ]);
 
-      await fetchDaoIds();
+        const tmpAccountDaoIds =
+          accountDaosResponse.status === 'fulfilled'
+            ? accountDaosResponse.value.map(item => item.id)
+            : [];
+
+        const tmpSubscribedDaoIds =
+          subscribedDaosResponse.status === 'fulfilled'
+            ? subscribedDaosResponse.value.map(item => item.dao.id)
+            : [];
+
+        setAccountDaosIds(tmpAccountDaoIds);
+        setSubscribedDaosIds(tmpSubscribedDaoIds);
+
+        setDaoIdsLoaded(true);
+
+        if (showYourDaos && accountDaosIds) {
+          return tmpAccountDaoIds;
+        }
+
+        if (showSubscribed && subscribedDaosIds) {
+          return tmpSubscribedDaoIds;
+        }
+
+        return [...tmpAccountDaoIds, ...tmpSubscribedDaoIds];
+      }
     }
-
-    // console.log('accountDaosIds after');
-    // console.log(accountDaosIds);
 
     if (showYourDaos && accountDaosIds) {
       return accountDaosIds;
@@ -247,6 +248,12 @@ export function useNotificationsList(
   useMount(() => {
     (() => loadMore())();
   });
+
+  useEffect(() => {
+    if (accountId && isMounted() && !daoIdsLoaded) {
+      loadMore();
+    }
+  }, [accountId, daoIdsLoaded, fetchData, isMounted, loadMore]);
 
   useUpdateEffect(() => {
     loadMore(0);

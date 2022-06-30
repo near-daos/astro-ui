@@ -45,6 +45,32 @@ const NotificationsPage: VFC = () => {
         <h1 className={styles.header}>{t('notificationsHub')}</h1>
       </div>
 
+      <div className={styles.controls}>
+        <Button
+          onClick={() => handleUpdateAll('READ')}
+          variant="tertiary"
+          className={styles.controlButton}
+          size="small"
+        >
+          <Icon name="noteCheckDouble" className={styles.buttonIcon} />
+          {t('markReadAll')}
+        </Button>
+
+        <Button
+          disabled={showArchived}
+          onClick={() => handleUpdateAll('ARCHIVE')}
+          variant="tertiary"
+          className={styles.controlButton}
+          size="small"
+        >
+          <Icon
+            name="noteArchive"
+            className={cn(styles.buttonIcon, styles.archiveIcon)}
+          />
+          {t('archiveAll')}
+        </Button>
+      </div>
+
       <div className={styles.pageContent}>
         <SideFilter
           queryName="notyType"
@@ -54,32 +80,6 @@ const NotificationsPage: VFC = () => {
         />
 
         <div className={styles.notifications}>
-          <div className={styles.controls}>
-            <Button
-              onClick={() => handleUpdateAll('READ')}
-              variant="tertiary"
-              className={styles.controlButton}
-              size="small"
-            >
-              <Icon name="noteCheckDouble" className={styles.buttonIcon} />
-              {t('markReadAll')}
-            </Button>
-
-            <Button
-              disabled={showArchived}
-              onClick={() => handleUpdateAll('ARCHIVE')}
-              variant="tertiary"
-              className={styles.controlButton}
-              size="small"
-            >
-              <Icon
-                name="noteArchive"
-                className={cn(styles.buttonIcon, styles.archiveIcon)}
-              />
-              {t('archiveAll')}
-            </Button>
-          </div>
-
           <Notifications
             onUpdate={handleUpdate}
             loadMore={loadMore}
