@@ -25,6 +25,7 @@ import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 import { useAppInitialize } from 'hooks/useAppInitialize';
 import { configService } from 'services/ConfigService';
 import { AppHealth } from 'astro_2.0/features/AppHealth';
+import { WalletSelectorProvider } from '../context/WalletSelectorContext';
 
 function App({ Component, pageProps }: AppProps): JSX.Element | null {
   const router = useRouter();
@@ -58,26 +59,28 @@ function App({ Component, pageProps }: AppProps): JSX.Element | null {
   return (
     <LDProvider {...ldProps}>
       <AppMonitoring />
-      <WrappedWalletContext>
-        <ModalProvider>
-          <SocketProvider>
-            <AppHealth />
-            <SearchResults>
-              <Head>
-                <title>Astro</title>
-              </Head>
+      <WalletSelectorProvider>
+        <WrappedWalletContext>
+          <ModalProvider>
+            <SocketProvider>
+              <AppHealth />
+              <SearchResults>
+                <Head>
+                  <title>Astro</title>
+                </Head>
 
-              <PageLayout>
-                <ErrorBoundary>
-                  <Component {...pageProps} />
-                </ErrorBoundary>
-              </PageLayout>
+                <PageLayout>
+                  <ErrorBoundary>
+                    <Component {...pageProps} />
+                  </ErrorBoundary>
+                </PageLayout>
 
-              <MobileNav />
-            </SearchResults>
-          </SocketProvider>
-        </ModalProvider>
-      </WrappedWalletContext>
+                <MobileNav />
+              </SearchResults>
+            </SocketProvider>
+          </ModalProvider>
+        </WrappedWalletContext>
+      </WalletSelectorProvider>
     </LDProvider>
   );
 }

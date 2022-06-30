@@ -1,21 +1,26 @@
-import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletIcon';
-import { WalletType } from 'types/config';
 import React from 'react';
+
+import { WALLETS } from 'types/config';
+
 import { useModal } from 'components/modal';
+
+import { WalletIcon } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletIcon';
 import { WalletSelectionModal } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletSelectionModal';
-import { useWalletContext } from 'context/WalletContext';
+
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 export const LoginButton: React.FC = () => {
-  const { login, connectingToWallet } = useWalletContext();
+  const { logIn, connecting } = useWalletSelectorContext();
+
   const [showModal] = useModal(WalletSelectionModal, {
-    signIn: walletType => login(walletType),
+    signIn: walletType => logIn(walletType),
   });
 
   return (
     <WalletIcon
-      walletType={WalletType.NEAR}
+      walletType={WALLETS.NEAR}
       isSelected={false}
-      showLoader={connectingToWallet}
+      showLoader={connecting}
       onClick={showModal}
     />
   );

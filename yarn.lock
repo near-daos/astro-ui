@@ -1958,6 +1958,68 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
+"@near-wallet-selector/core@4.1.1", "@near-wallet-selector/core@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-4.1.1.tgz#a455b991b9e185185ad33cbc781fcce61aa7a28a"
+  integrity sha512-qtAAEUtj2z9bh/0vZ1dRUXhpvhYEaf/p805E6eXuya8FZ7aNcKEhFMpLHl72hLg63pXEvjvLKlZP6KjPPOBYBg==
+  dependencies:
+    near-api-js "0.44.2"
+    rxjs "~7.4.0"
+
+"@near-wallet-selector/modal-ui@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/modal-ui/-/modal-ui-4.1.1.tgz#db1b22d7b449b4efae1c24bc40ee8a89291fb61c"
+  integrity sha512-7egytgtqtQ+fCgICcAsgQ6b7RW5DXbDbgjtkYHZuRrigLC95SQKmc/7sr9CD8r3tt+hiuxqkBzgyx2bqREMRHw==
+  dependencies:
+    "@near-wallet-selector/core" "4.1.1"
+    near-api-js "0.44.2"
+    react "^17.0.2"
+    react-dom "^17.0.2"
+    rxjs "~7.4.0"
+
+"@near-wallet-selector/my-near-wallet@4.1.1", "@near-wallet-selector/my-near-wallet@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/my-near-wallet/-/my-near-wallet-4.1.1.tgz#f122511eda59a285da20d58a11dfd94bf39f0d02"
+  integrity sha512-WmZIvny1leNt2QRDOPJlgNBPwKHqOiR6PIGWd29ZxGXp41SEgnQlwRZ0FcmKfYQk1gJj+IVF/BbrB42Fd1hBqA==
+  dependencies:
+    "@near-wallet-selector/core" "4.1.1"
+    "@near-wallet-selector/wallet-utils" "4.1.1"
+    bn.js "^5.2.0"
+    near-api-js "0.44.2"
+    rxjs "~7.4.0"
+
+"@near-wallet-selector/near-wallet@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/near-wallet/-/near-wallet-4.1.1.tgz#022151bafbfe1bef0f8b13a99cede62fd3e1b439"
+  integrity sha512-xNywFgY7goxHjG7dcXJD+nyAA1NjSA5KY8F1lKCvZS3WtOl+UY0AcGdqsVL2IFeip2jo4nNL3CAKgquIDigTmQ==
+  dependencies:
+    "@near-wallet-selector/core" "4.1.1"
+    "@near-wallet-selector/my-near-wallet" "4.1.1"
+    "@near-wallet-selector/wallet-utils" "4.1.1"
+    bn.js "^5.2.0"
+    near-api-js "0.44.2"
+    rxjs "~7.4.0"
+
+"@near-wallet-selector/sender@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/sender/-/sender-4.1.1.tgz#1a0615b2d6f8228491998a46b672b07e23fb4366"
+  integrity sha512-t1/dFGt8oW2a+1a78l9BcLDf7GzUnJrsDBp8CWNnC0yPy0pOGdchXJ8oe+VdapUrCwR2Z6GNsdAke1Uc6jWfZw==
+  dependencies:
+    "@near-wallet-selector/core" "4.1.1"
+    is-mobile "^3.0.0"
+    near-api-js "0.44.2"
+    rxjs "~7.4.0"
+
+"@near-wallet-selector/wallet-utils@4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/wallet-utils/-/wallet-utils-4.1.1.tgz#cc02ee240e1b2156e1eae2144d961b0bebc677d5"
+  integrity sha512-8eNxpxCzrz7tSYNr90qm3yWVGFA5Bq4rV1A9R9nIPMaCH68PG5ogRrikj84PttStH1BhkVC3apDsObyIK2942w==
+  dependencies:
+    "@near-wallet-selector/core" "4.1.1"
+    bn.js "^5.2.0"
+    near-api-js "0.44.2"
+    rxjs "~7.4.0"
+
 "@nestjsx/crud-request@^5.0.0-alpha.3":
   version "5.0.0-alpha.3"
   resolved "https://registry.npmjs.org/@nestjsx/crud-request/-/crud-request-5.0.0-alpha.3.tgz"
@@ -10565,6 +10627,11 @@ is-map@^2.0.2:
   resolved "https://registry.npmjs.org/is-map/-/is-map-2.0.2.tgz"
   integrity sha512-cOZFQQozTha1f4MxLFzlgKYPTyj26picdZTx82hbc/Xf4K/tZOOXSCkMvU4pKioRXGDLJRn0GM7Upe7kR721yg==
 
+is-mobile@^3.0.0:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/is-mobile/-/is-mobile-3.1.1.tgz#3b9e48f40068e4ea2da411f5009779844ce8d6aa"
+  integrity sha512-RRoXXR2HNFxNkUnxtaBdGBXtFlUMFa06S0NUKf/LCF+MuGLu13gi9iBCkoEmc6+rpXuwi5Mso5V8Zf7mNynMBQ==
+
 is-negative-zero@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/is-negative-zero/-/is-negative-zero-2.0.1.tgz"
@@ -12798,7 +12865,7 @@ natural-compare@^1.4.0:
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-near-api-js@^0.44.2:
+near-api-js@0.44.2, near-api-js@^0.44.2:
   version "0.44.2"
   resolved "https://registry.npmjs.org/near-api-js/-/near-api-js-0.44.2.tgz"
   integrity sha512-eMnc4V+geggapEUa3nU2p8HSHn/njtloI4P2mceHQWO8vDE1NGpnAw8FuTBrLmXSgIv9m6oocgFc9t3VNf5zwg==
@@ -14771,7 +14838,7 @@ react-dom-factories@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-dom-factories/-/react-dom-factories-1.0.2.tgz#eb7705c4db36fb501b3aa38ff759616aa0ff96e0"
   integrity sha1-63cFxNs2+1AbOqOP91lhaqD/luA=
 
-react-dom@17.0.2:
+react-dom@17.0.2, react-dom@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
   integrity sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==
@@ -15095,7 +15162,7 @@ react-window@^1.8.6:
     "@babel/runtime" "^7.0.0"
     memoize-one ">=3.1.1 <6"
 
-react@17.0.2:
+react@17.0.2, react@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
   integrity sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==
@@ -15691,6 +15758,13 @@ rxjs@^6.4.0, rxjs@^6.6.7:
   integrity sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ==
   dependencies:
     tslib "^1.9.0"
+
+rxjs@~7.4.0:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.4.0.tgz#a12a44d7eebf016f5ff2441b87f28c9a51cebc68"
+  integrity sha512-7SQDi7xeTMCJpqViXh8gL/lebcwlp3d831F05+9B44A4B0WfsEwUQHR64gsH1kvJ+Ep/J9K2+n1hVl1CsGN23w==
+  dependencies:
+    tslib "~2.1.0"
 
 safe-buffer@5.1.1:
   version "5.1.1"
@@ -17399,6 +17473,11 @@ tslib@^2.0.0, tslib@^2.0.1, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.0:
   version "2.3.0"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.3.0.tgz"
   integrity sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==
+
+tslib@~2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.1.0.tgz#da60860f1c2ecaa5703ab7d39bc05b6bf988b97a"
+  integrity sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==
 
 tsscmp@1.0.6:
   version "1.0.6"

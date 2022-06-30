@@ -27,6 +27,11 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^2.7.1",
+    "@near-wallet-selector/core": "^4.1.1",
+    "@near-wallet-selector/modal-ui": "^4.1.1",
+    "@near-wallet-selector/my-near-wallet": "^4.1.1",
+    "@near-wallet-selector/near-wallet": "^4.1.1",
+    "@near-wallet-selector/sender": "^4.1.1",
     "@nestjsx/crud-request": "^5.0.0-alpha.3",
     "@popperjs/core": "^2.9.2",
     "@reach/auto-id": "^0.15.3",

@@ -8,9 +8,12 @@ import { WalletsList } from 'astro_2.0/components/AppHeader/components/AccountDr
 import { AppFooter } from 'astro_2.0/components/AppFooter';
 import { ConnectedAccountButton } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/ConnectedAccountButton';
 import styles from './AccountDropdown.module.scss';
+import { useWalletSelectorContext } from '../../../../../context/WalletSelectorContext';
 
 export const AccountDropdown: React.FC = () => {
-  const { accountId, nearService, connectingToWallet } = useWalletContext();
+  const { selector } = useWalletSelectorContext();
+
+  const { nearService, connectingToWallet } = useWalletContext();
   const [open, setOpen] = useState(false);
 
   const closeDropdown = useCallback(() => {
@@ -20,7 +23,7 @@ export const AccountDropdown: React.FC = () => {
   const ref = useRef(null);
 
   function render() {
-    if (!accountId) {
+    if (!selector?.isSignedIn()) {
       return <LoginButton />;
     }
 

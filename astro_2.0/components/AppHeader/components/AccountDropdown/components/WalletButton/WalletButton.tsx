@@ -1,4 +1,4 @@
-import { WalletType } from 'types/config';
+import { WALLETS } from 'types/config';
 import React from 'react';
 import cn from 'classnames';
 import { AccountPopupItem } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/AccountPopupItem';
@@ -7,7 +7,7 @@ import { WalletDescription } from 'astro_2.0/components/AppHeader/components/Acc
 import styles from './WalletButton.module.scss';
 
 interface WalletButton {
-  walletType: WalletType;
+  walletType: WALLETS;
   isSelected?: boolean;
   onClick: () => void;
   name: string;
