@@ -439,7 +439,7 @@ export class GovernanceTokenService extends BaseService {
               {
                 methodName: 'storage_deposit',
                 args: {
-                  account_id: this.walletService.getAccountId(),
+                  account_id: accountId,
                 },
                 gas: GAS_VALUE.toString(),
                 deposit: new Decimal(0.003).mul(10 ** 24).toFixed(),
