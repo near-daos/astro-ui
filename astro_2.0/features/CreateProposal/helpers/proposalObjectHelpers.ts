@@ -647,7 +647,10 @@ export async function getChangeVotingPolicyToWeightVoting(
 
   const { ratio, quorum, weightKind } = defaultVotePolicy;
 
-  const { threshold } = data;
+  const { threshold, symbol } = data as {
+    threshold: number;
+    symbol: string;
+  };
 
   // TODO: add selector or use wildcard instead(should be changed on a smart contract side)
   const proposalKindPolicyLabels = [
@@ -678,12 +681,14 @@ export async function getChangeVotingPolicyToWeightVoting(
 
   return {
     daoId: id,
-    description: `Change voting policy to weight voting`,
+    description: `Change voting policy to weight voting ${threshold} ${symbol}`,
     kind: 'ChangePolicy',
     data: {
       policy: {
         roles: [
-          ...roles.map(dataRoleToContractRole),
+          ...roles
+            .filter(role => role.kind !== 'Member')
+            .map(dataRoleToContractRole),
           {
             name: 'TokenHolders',
             kind: {

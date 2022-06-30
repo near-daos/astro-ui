@@ -11,7 +11,7 @@
 .actionsRow {
   display: grid;
   grid-column-gap: 12px;
-  grid-template-columns: repeat(3, 1fr) 0.7fr;
+  grid-template-columns: 1fr 0.7fr 1fr 0.9fr;
 
   padding: 12px 24px;
 
@@ -75,6 +75,10 @@
   &:hover {
     color: var(--color-primary-50);
   }
+
+  &.disabled {
+    opacity: 0.5;
+  }
 }
 
 .actionsRow {
@@ -84,4 +88,33 @@
   border-bottom: 1px solid var(--color-neutral-40);
   color: var(--color-neutral-70);
   padding: 24px;
+}
+
+.label {
+  font-weight: 400;
+}
+
+.value {
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.controlWrapper.controlWrapper {
+  display: flex;
+  justify-content: flex-end;
+  overflow: visible;
+  width: 100%;
+}
+
+.error {
+  color: var(--color-error-70);
+}
+
+.input.input {
+  background: transparent;
+  border: 1px solid var(--color-neutral-40);
+  border-radius: 5px;
+  height: unset;
+  min-height: unset;
+  padding: 5.5px;
 }

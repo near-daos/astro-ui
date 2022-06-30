@@ -423,10 +423,65 @@ export class GovernanceTokenService extends BaseService {
     ]);
   }
 
+  async unstakeTokens({
+    tokenContract,
+    stakingContract,
+    amount,
+  }: StakeTokensParams): Promise<FinalExecutionOutcome[]> {
+    if (!this.walletService.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
+    let transferTransaction;
+
+    switch (this.walletService.getWalletType()) {
+      case WalletType.SENDER: {
+        transferTransaction = {
+          receiverId: stakingContract,
+          actions: [
+            {
+              methodName: 'withdraw',
+              args: {
+                receiver_id: tokenContract,
+                amount,
+                msg: '',
+              },
+              gas: GAS_VALUE.toString(),
+              // deposit: '1',
+            },
+          ],
+        };
+
+        break;
+      }
+      case WalletType.NEAR:
+      default: {
+        transferTransaction = {
+          receiverId: stakingContract,
+          actions: [
+            transactions.functionCall(
+              'withdraw',
+              {
+                receiver_id: tokenContract,
+                amount,
+                msg: '',
+              },
+              GAS_VALUE,
+              new BN('1')
+            ),
+          ],
+        };
+      }
+    }
+
+    return this.walletService.sendTransactions([transferTransaction]);
+  }
+
   private mapDelegateVoting(
     stakingContract: string,
     accountId: string,
-    amount: string
+    amount: string,
+    methodName = 'delegate'
   ) {
     let transaction;
 
@@ -450,7 +505,7 @@ export class GovernanceTokenService extends BaseService {
             receiverId: stakingContract,
             actions: [
               {
-                methodName: 'delegate',
+                methodName,
                 args: {
                   account_id: accountId,
                   amount,
@@ -473,7 +528,7 @@ export class GovernanceTokenService extends BaseService {
               transactions.functionCall(
                 'storage_deposit',
                 {
-                  account_id: this.walletService.getAccountId(),
+                  account_id: accountId,
                 },
                 GAS_VALUE,
                 new BN(new Decimal(0.003).mul(10 ** 24).toFixed())
@@ -484,7 +539,7 @@ export class GovernanceTokenService extends BaseService {
             receiverId: stakingContract,
             actions: [
               transactions.functionCall(
-                'delegate',
+                methodName,
                 {
                   account_id: accountId,
                   amount,
@@ -511,6 +566,21 @@ export class GovernanceTokenService extends BaseService {
 
     const trx = params.flatMap(({ name, amount }) => [
       ...this.mapDelegateVoting(stakingContract, name, amount),
+    ]);
+
+    return this.walletService.sendTransactions(trx);
+  }
+
+  async undelegateVoting(
+    stakingContract: string,
+    params: DelegateVotingParams[]
+  ): Promise<FinalExecutionOutcome[]> {
+    if (!this.walletService.isSignedIn()) {
+      await this.walletService.signIn(this.nearConfig.contractName);
+    }
+
+    const trx = params.flatMap(({ name, amount }) => [
+      ...this.mapDelegateVoting(stakingContract, name, amount, 'undelegate'),
     ]);
 
     return this.walletService.sendTransactions(trx);

@@ -46,7 +46,7 @@ export function getRemoveMemberProposal(
 
 type ContractRole = {
   name: string;
-  kind: 'Everyone' | { Group: string[] | null };
+  kind: 'Everyone' | { Group: string[] | null } | 'Member';
   permissions: string[];
   // eslint-disable-next-line camelcase,@typescript-eslint/ban-types
   vote_policy: Record<string, VotePolicyRequest> | {};

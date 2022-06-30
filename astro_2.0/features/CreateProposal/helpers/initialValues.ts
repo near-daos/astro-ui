@@ -177,6 +177,7 @@ export function getFormInitialValues(
     case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
       result = {
         gas: DEFAULT_PROPOSAL_GAS,
+        ...initialValues,
       };
       break;
     }

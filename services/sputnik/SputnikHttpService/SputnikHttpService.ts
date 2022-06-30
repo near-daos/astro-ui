@@ -5,6 +5,7 @@ import { PaginationResponse } from 'types/api';
 import { NftToken, Token } from 'types/token';
 import {
   DAO,
+  DaoDelegation,
   DaoFeedItem,
   DaoSubscription,
   DaoSubscriptionInput,
@@ -1178,7 +1179,6 @@ class SputnikHttpServiceClass {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public async getSharedProposalTemplates(query: {
     offset: number;
     limit: number;
@@ -1255,7 +1255,6 @@ class SputnikHttpServiceClass {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   public async cloneTemplateToDao(params: {
     templateId: string;
     targetDao: string;
@@ -1294,6 +1293,14 @@ class SputnikHttpServiceClass {
 
       return null;
     }
+  }
+
+  public async getDelegations(daoId: string): Promise<DaoDelegation[]> {
+    const response = await this.httpService.get<DaoDelegation[]>(
+      `/daos/${daoId}/delegations`
+    );
+
+    return response.data;
   }
 }
 

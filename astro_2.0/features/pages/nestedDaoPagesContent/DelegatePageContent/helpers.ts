@@ -6,11 +6,11 @@ export function getSortOptions(
   return [
     {
       label: t('ascending'),
-      value: 'updatedAt,DESC',
+      value: 'ASC',
     },
     {
       label: t('descending'),
-      value: 'updatedAt,ASC',
+      value: 'DESC',
     },
   ];
 }

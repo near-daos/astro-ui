@@ -56,12 +56,16 @@
   "depositToDao": "Deposit to DAO",
   "deposit": "Deposit",
   "joinDao": "Join DAO",
+  "threshold": "Threshold",
+  "amount": "Amount",
   "minimumSearchCharacters": "Please enter at least 3 characters to search",
   "searchBountyPlaceholder": "Search Bounty Name",
   "all": "All",
   "cancel": "Cancel",
   "selectedProposals": "Selected {{length}} proposal{{plural}}",
   "filterByProposer": "Filter by proposer",
+  "ascending": "Ascending",
+  "descending": "Descending",
   "bountiesPage": {
     "successClaimBountyNotification": "The blockchain transactions might take some time to perform, please visit the page in few seconds",
     "comingSoon": "Coming Soon",
@@ -259,6 +263,7 @@
     "proposalsInTotal": "proposals in total"
   },
   "daoDetailsMinimized": {
+    "delegates": "Delegate",
     "drafts": "Drafts",
     "proposals": "Proposals",
     "funds": "Funds",
