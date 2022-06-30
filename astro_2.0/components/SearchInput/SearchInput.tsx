@@ -20,7 +20,6 @@ import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Icon } from 'components/Icon';
 
 import { DaoFeedItem } from 'types/dao';
-import { PaginationResponse } from 'types/api';
 
 import styles from './SearchInput.module.scss';
 
@@ -32,7 +31,7 @@ const OFFSET_LEFT_RIGHT = 0;
 
 interface SearchInputProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onSubmit: (val: string) => Promise<PaginationResponse<any> | null>;
+  onSubmit: (val: string) => Promise<any>;
   className?: string;
   resultHintClassName?: string;
   loading: boolean;

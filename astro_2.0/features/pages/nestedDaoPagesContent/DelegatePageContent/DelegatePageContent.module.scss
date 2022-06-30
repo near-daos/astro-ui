@@ -1,0 +1,100 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  h1 {
+    margin: 32px 0 24px;
+  }
+}
+
+.widgets {
+  display: grid;
+  grid-column-gap: 24px;
+  grid-template-columns: repeat(3, 1fr);
+
+  margin-bottom: 24px;
+}
+
+.content {
+  background-color: var(--color-white);
+  border-radius: 5px;
+
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.05);
+}
+
+.contentHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  padding: 20px 24px;
+
+  .title {
+    @extend %subtitle1;
+  }
+
+  .search {
+    margin-left: auto;
+  }
+
+  .sorting,
+  .search {
+    margin-right: 24px;
+  }
+}
+
+.sorting {
+  @extend %body2;
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  min-width: 120px;
+
+  .label {
+    color: var(--color-neutral-60);
+    margin-right: 4px;
+  }
+
+  .menu {
+    margin-top: 12px;
+    position: absolute;
+    right: 0;
+  }
+}
+
+.primaryValue {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.secondaryValue {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.sub {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.depositWidget {
+  align-items: center;
+  display: flex;
+  flex: 1;
+}
+
+.widgetButton.widgetButton {
+  @include centralize;
+
+  background-color: var(--color-neutral-30);
+  border-radius: 5px;
+  height: 32px;
+  margin-left: 12px;
+  width: 32px;
+}
+
+.alignRight {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+}

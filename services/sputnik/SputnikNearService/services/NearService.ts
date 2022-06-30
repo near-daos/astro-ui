@@ -2,6 +2,7 @@ import BN from 'bn.js';
 import { FinalExecutionOutcome } from 'near-api-js/lib/providers';
 import {
   ConnectedWalletAccount,
+  Contract,
   KeyPair,
   keyStores,
   Near,
@@ -605,5 +606,12 @@ export class NearService extends BaseService {
 
       return null;
     }
+  }
+
+  getContract(contractId: string, viewMethods: string[]): Contract {
+    return new Contract(this.getAccount(), contractId, {
+      viewMethods,
+      changeMethods: [],
+    });
   }
 }

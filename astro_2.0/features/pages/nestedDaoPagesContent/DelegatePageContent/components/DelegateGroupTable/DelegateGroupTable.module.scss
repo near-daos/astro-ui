@@ -1,0 +1,87 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.header,
+.row,
+.actionsRow {
+  display: grid;
+  grid-column-gap: 12px;
+  grid-template-columns: repeat(3, 1fr) 0.7fr;
+
+  padding: 12px 24px;
+
+  > div {
+    @include ellipse-text;
+  }
+}
+
+.header {
+  @extend %body2;
+  background-color: var(--color-neutral-10);
+  color: var(--color-neutral-70);
+}
+
+.row {
+  @extend %body2;
+  align-items: center;
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-neutral-40);
+  color: var(--color-neutral-70);
+  padding: 24px;
+}
+
+.inline {
+  align-items: center;
+  display: flex;
+}
+
+.progressBarWrapper {
+  display: flex;
+  flex-direction: column;
+
+  .progressBar {
+    background-color: var(--color-neutral-40);
+    border-radius: 50px;
+    height: 8px;
+    overflow: hidden;
+    position: relative;
+    width: 80%;
+  }
+
+  .progress {
+    background-color: var(--color-primary-50);
+    border-radius: 50px;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+  }
+}
+
+.controlButton {
+  color: var(--color-neutral-70);
+  min-width: unset;
+  padding: 0;
+
+  &:last-of-type {
+    margin-left: 24px;
+  }
+
+  &:hover {
+    color: var(--color-primary-50);
+  }
+}
+
+.actionsRow {
+  @extend %body2;
+  align-items: center;
+  background-color: var(--color-neutral-10);
+  border-bottom: 1px solid var(--color-neutral-40);
+  color: var(--color-neutral-70);
+  padding: 24px;
+}

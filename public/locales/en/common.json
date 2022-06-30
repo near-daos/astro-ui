@@ -4,6 +4,8 @@
   "myDaos": "My DAOs",
   "myFeed": "My Feed",
   "globalFeed": "Global Feed",
+  "actionsLibrary": "Actions Library",
+  "daosAndUsers": "DAOs and Users",
   "daoFunds": "DAO funds",
   "createNewDao": "Create new DAO",
   "loading": "Loading",
@@ -527,7 +529,9 @@
         "changeDaoPolicy": "Change DAO Policy",
         "selectToken": "Select Token",
         "deployStakingContract": "Deploy Staking Contract",
-        "acceptStakingContract": "Accept Staking Contract"
+        "acceptStakingContract": "Accept Staking Contract",
+        "stakeTokens": "Stake tokens",
+        "delegateVoting": "Delegate Voting"
       }
     }
   },

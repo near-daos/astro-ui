@@ -11,18 +11,6 @@ describe('proposal card renderer', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('Should render proposalId', () => {
-    const proposalId = 123456;
-    const { getAllByText } = render(
-      <ProposalCardRenderer
-        proposalCardNode={<div>Proposal Node</div>}
-        proposalId={proposalId}
-      />
-    );
-
-    expect(getAllByText(proposalId)).toHaveLength(1);
-  });
-
   it('Should render dao flag node', () => {
     const daoFlagNode = 'Dao Flag Node';
 

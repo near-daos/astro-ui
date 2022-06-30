@@ -9,7 +9,7 @@
   max-width: 255px;
   min-height: 100vh;
   min-width: 215px;
-  overflow-y: hidden;
+  overflow-y: auto;
   position: sticky;
   top: 0;
   z-index: 20;
@@ -41,16 +41,14 @@
     background: rgba(232, 224, 255, 0.61);
     border-radius: 0;
   }
+}
 
-  &::after {
-    background: var(--color-brand-black);
-    bottom: -4px;
-    content: '';
-    height: 6px;
-    left: 0;
-    position: absolute;
-    right: 0;
-  }
+.logo {
+  background: var(--color-brand-black);
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .wrapper {
@@ -91,7 +89,7 @@
   align-items: center;
   color: var(--color-white);
   display: flex;
-  margin: 0 32px 38px;
+  margin: 0 32px 8px;
 
   .logo {
     margin-left: 4px;

@@ -28,11 +28,21 @@
 .column {
   del {
     background-color: var(--color-error-20);
-    text-decoration: none;
   }
+
   ins {
     background-color: var(--color-success-20);
+  }
+
+  del,
+  ins {
+    display: inline-flex;
     text-decoration: none;
+  }
+
+  del img,
+  ins img {
+    opacity: 0.5;
   }
 }
 

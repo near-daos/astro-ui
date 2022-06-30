@@ -9,11 +9,15 @@ import { kFormatter } from 'utils/format';
 import styles from './TokenBalance.module.scss';
 
 interface TokenBalanceProps {
-  value: number;
-  suffix: string;
+  value: number | undefined;
+  suffix?: string;
 }
 
 export const TokenBalance: FC<TokenBalanceProps> = ({ value, suffix }) => {
+  if (value === undefined || value === null) {
+    return null;
+  }
+
   return (
     <div className={styles.root}>
       <Icon name="chartTrend" className={styles.icon} />
@@ -21,7 +25,7 @@ export const TokenBalance: FC<TokenBalanceProps> = ({ value, suffix }) => {
         overlay={<FormattedNumericValue value={value} suffix={suffix} />}
       >
         <FormattedNumericValue
-          value={kFormatter(value)}
+          value={kFormatter(value, 1)}
           suffix={suffix}
           valueClassName={styles.value}
           suffixClassName={styles.value}

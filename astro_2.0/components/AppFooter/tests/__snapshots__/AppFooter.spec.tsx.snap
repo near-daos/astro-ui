@@ -59,67 +59,9 @@ exports[`App Footer Should render AppFooter component 1`] = `
             </svg>
           </a>
         </div>
-        <a
-          class="devLink"
-          href="https://github.com/near-daos/astro-ui/discussions"
-          rel="noreferrer noopener"
-          target="_blank"
-        >
-          components.appFooter.askQuestion
-        </a>
         <div
           class="version"
-        >
-          <a
-            class="devLink"
-            href="https://github.com/near-daos/astro-ui/issues"
-            rel="noreferrer noopener"
-            target="_blank"
-          >
-            reportAnIssue
-          </a>
-        </div>
-        <div
-          class="repo"
-        >
-          <a
-            class="devLink"
-            href="https://github.com/near-daos/astro-ui"
-            rel="noreferrer noopener"
-            target="_blank"
-          >
-            components.appFooter.githubRepo
-          </a>
-          <a
-            class="devLink"
-            href="https://testnet.app.astrodao.com/"
-            rel="noreferrer noopener"
-            target="_blank"
-          >
-            Testnet env
-          </a>
-          <a
-            class="devLink"
-            href="https://api.app.astrodao.com/docs/#/"
-            rel="noreferrer noopener"
-            target="_blank"
-          >
-            components.appFooter.swaggerApi
-          </a>
-          <a
-            class="devLink"
-            href="/discover"
-          >
-            components.appFooter.stats
-          </a>
-        </div>
-        <div
-          class="copyright"
-        >
-          components.appFooter.opensourceAsIs
-          <br />
-          components.appFooter.communityDeveloped
-        </div>
+        />
         <div
           class="terms"
         >
@@ -141,6 +83,13 @@ exports[`App Footer Should render AppFooter component 1`] = `
           >
             releaseNotes
           </a>
+        </div>
+        <div
+          class="copyright"
+        >
+          components.appFooter.opensourceAsIs
+          <br />
+          components.appFooter.communityDeveloped
         </div>
         <div
           class="locale"

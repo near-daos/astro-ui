@@ -72,6 +72,8 @@ export enum ProposalVariant {
   ProposeAcceptStakingContract = 'ProposeAcceptStakingContract',
   ProposeUpdateVotePolicyToWeightVoting = 'ProposeUpdateVotePolicyToWeightVoting',
   VoteInAnotherDao = 'VoteInAnotherDao',
+  ProposeStakeTokens = 'ProposeStakeTokens',
+  ProposeDelegateVoting = 'ProposeDelegateVoting',
 }
 
 export type VoteAction = 'VoteApprove' | 'VoteRemove' | 'VoteReject';
