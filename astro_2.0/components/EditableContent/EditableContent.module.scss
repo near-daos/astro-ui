@@ -30,10 +30,32 @@ $border-radius: 3px;
   line-height: 24px;
   min-height: 160px;
   padding: $gap;
-  li,
+
+  ul,
+  pre {
+    margin: 0;
+  }
+
   p {
+    margin: 0 0 10px;
+  }
+
+  p,
+  ul {
     font-size: 14px;
     line-height: 24px;
+  }
+
+  pre {
+    background-color: var(--color-neutral-20);
+    font-family: monospace, monospace;
+    font-size: 12px;
+    margin: 4px 0;
+    padding: 5px 10px;
+  }
+
+  img {
+    max-width: 100%;
   }
 }
 
@@ -75,9 +97,6 @@ $border-radius: 3px;
 }
 
 .send {
-  //bottom: $gap;
-  //position: absolute;
-  //right: $gap;
   margin-left: 12px;
 }
 

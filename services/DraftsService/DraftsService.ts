@@ -145,7 +145,7 @@ export class DraftsService {
       { params }
     );
 
-    return data.data.filter(item => !item.replyTo);
+    return data.data;
   }
 
   public async createDraftComment(
@@ -188,11 +188,39 @@ export class DraftsService {
     });
   }
 
-  public async unlikeDraftComment(
+  public async removeLikeDraftComment(
     params: { id: string } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.post(
-      `/draft-comments/${params.id}/unlike`,
+      `/draft-comments/${params.id}/remove-like`,
+      params,
+      {
+        queryRequest: {
+          name: API_QUERIES.ADD_AUTHORIZATION,
+        },
+      }
+    );
+  }
+
+  public async dislikeDraftComment(
+    params: { id: string } & Authorization
+  ): Promise<AxiosResponse<boolean>> {
+    return this.httpService.post(
+      `/draft-comments/${params.id}/dislike`,
+      params,
+      {
+        queryRequest: {
+          name: API_QUERIES.ADD_AUTHORIZATION,
+        },
+      }
+    );
+  }
+
+  public async removeDislikeDraftComment(
+    params: { id: string } & Authorization
+  ): Promise<AxiosResponse<boolean>> {
+    return this.httpService.post(
+      `/draft-comments/${params.id}/remove-dislike`,
       params,
       {
         queryRequest: {

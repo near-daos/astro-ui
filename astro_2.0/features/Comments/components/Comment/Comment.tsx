@@ -17,7 +17,8 @@ import styles from './Comment.module.scss';
 
 interface CommentProps {
   data: DraftComment;
-  onLike: (id: string, unlike?: boolean) => Promise<void>;
+  onLike: (id: string, isLiked: boolean) => Promise<void>;
+  onDislike: (id: string, isDisliked: boolean) => Promise<void>;
   onReply: (value: string, replyTo: string) => Promise<void>;
   onEdit: (value: string, id: string) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
@@ -27,6 +28,7 @@ interface CommentProps {
 export const Comment: FC<CommentProps> = ({
   data,
   onLike,
+  onDislike,
   onReply,
   onEdit,
   onDelete,
@@ -35,13 +37,22 @@ export const Comment: FC<CommentProps> = ({
   const [edit, setEdit] = useState(false);
   const [contentHtml, setContentHtml] = useState(data.message);
 
-  const { author, message, createdAt, replies, likeAccounts, id } = data;
+  const {
+    author,
+    message,
+    createdAt,
+    replies,
+    likeAccounts,
+    dislikeAccounts = [],
+    id,
+  } = data;
   const [html, setHTML] = useState('');
   const [showReplies, setShowReplies] = useState(false);
   const [showReplyInput, setShowReplyInput] = useState(false);
 
   const { accountId } = useWalletContext();
   const isLikedByMe = likeAccounts.includes(accountId);
+  const isDislikedByMe = dislikeAccounts.includes(accountId);
 
   return (
     <div className={styles.root}>
@@ -83,12 +94,23 @@ export const Comment: FC<CommentProps> = ({
         )}
         <div className={styles.right}>
           <div className={styles.likes}>
-            {likeAccounts.length > 0 ? likeAccounts.length : null}{' '}
+            {likeAccounts.length}
             <IconButton
+              size="medium"
               disabled={!accountId}
-              icon={isLikedByMe ? 'heartFilled' : 'heart'}
-              className={cn(styles.likeIcon, { [styles.liked]: isLikedByMe })}
+              icon={isLikedByMe ? 'likeFilled' : 'like'}
+              className={styles.likeIcon}
               onClick={() => onLike(id, isLikedByMe)}
+            />
+          </div>
+          <div className={styles.likes}>
+            {dislikeAccounts.length}
+            <IconButton
+              size="medium"
+              disabled={!accountId}
+              icon={isDislikedByMe ? 'likeFilled' : 'like'}
+              className={cn(styles.likeIcon, styles.dislikeIcon)}
+              onClick={() => onDislike(id, isDislikedByMe)}
             />
           </div>
           {accountId && (

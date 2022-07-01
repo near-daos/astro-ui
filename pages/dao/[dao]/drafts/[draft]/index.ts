@@ -24,10 +24,15 @@ export const getServerSideProps: GetServerSideProps = async ({
   const daoContext = await getDaoContext(accountId, daoId as string);
 
   const dao = daoContext?.dao;
+  let draft;
 
-  const draft = await draftService.getDraft(draftId, dao, accountId);
+  try {
+    draft = await draftService.getDraft(draftId, dao, accountId);
+  } catch (error) {
+    console.error(error);
+  }
 
-  if (!daoContext) {
+  if (!draft || !daoContext) {
     return {
       props: {
         ...(await serverSideTranslations(

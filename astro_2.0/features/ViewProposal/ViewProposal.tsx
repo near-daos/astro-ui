@@ -30,6 +30,7 @@ import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomToken
 import { ProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments';
 import { SaveFcTemplate } from 'astro_2.0/features/ViewProposal/components/SaveFcTemplate';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
+import { DAO } from 'types/dao';
 
 export interface ViewProposalProps {
   proposal: ProposalFeedItem | DraftProposal;
@@ -42,6 +43,7 @@ export interface ViewProposalProps {
   onSelect?: (p: string) => void;
   selectedList?: string[];
   toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
+  dao?: DAO;
 }
 
 const variants = {
@@ -60,6 +62,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   onSelect,
   selectedList,
   toggleCreateProposal,
+  dao,
 }) => {
   const methods = useForm<{
     title: string;
@@ -156,7 +159,6 @@ export const ViewProposal: FC<ViewProposalProps> = ({
             title={'title' in proposal ? proposal?.title : undefined}
             hashtags={'hashtags' in proposal ? proposal?.hashtags : undefined}
             history={'history' in proposal ? proposal?.history : undefined}
-            replies={'replies' in proposal ? proposal?.replies : undefined}
             isSaved={'isSaved' in proposal ? proposal?.isSaved : undefined}
             saves={'isSaved' in proposal ? proposal?.saves : undefined}
             isDraft={isDraft}
@@ -176,6 +178,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
             votePeriodEnd={proposal.votePeriodEndDate}
             accountId={accountId}
             daoId={proposal.daoId}
+            dao={dao}
             permissions={proposal.permissions}
             likes={proposal.voteYes}
             dislikes={proposal.voteNo}

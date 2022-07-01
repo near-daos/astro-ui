@@ -72,6 +72,7 @@ export const EditDraftPage: FC<CreateDraftPageProps> = ({
               proposal={draft}
               showFlag={false}
               tokens={tokens}
+              dao={dao}
             />
           </div>
         </DraftsDataProvider>

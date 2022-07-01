@@ -10,6 +10,10 @@
   justify-content: flex-end;
   line-height: 24px;
   min-width: auto;
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
 .deleteButtonIcon {

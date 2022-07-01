@@ -8,28 +8,35 @@ import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 export function useDraftComments(): {
   loading: boolean;
+  countComments: number;
   data: DraftComment[];
   addComment: (val: string) => Promise<void>;
   editComment: (val: string, id: string) => Promise<void>;
   deleteComment: (id: string) => Promise<void>;
-  likeComment: (id: string) => Promise<void>;
+  likeComment: (id: string, isLiked: boolean) => Promise<void>;
+  dislikeComment: (id: string, idDislike: boolean) => Promise<void>;
 } {
   const router = useRouter();
   const { draft } = router.query;
   const contextId = draft as string;
   const contextType = 'DraftProposal';
 
-  const { draftsService } = useDraftsContext();
+  const { draftsService, setAmountComments } = useDraftsContext();
   const { accountId, pkAndSignature } = useWalletContext();
 
   const [{ loading, value }, fetchComments] = useAsyncFn(async () => {
     try {
-      return draftsService.getDraftComments({
+      const data = await draftsService.getDraftComments({
         contextId,
         contextType,
         offset: 0,
         limit: 1000,
       });
+
+      return {
+        data: data.filter((item: DraftComment) => !item.replyTo),
+        countComments: data.length,
+      };
     } catch (e) {
       showNotification({
         type: NOTIFICATION_TYPES.ERROR,
@@ -40,6 +47,10 @@ export function useDraftComments(): {
       return null;
     }
   }, [contextId]);
+
+  useEffect(() => {
+    setAmountComments(value?.countComments || 0);
+  }, [value?.countComments, setAmountComments]);
 
   const addComment = useCallback(
     async (msg: string, replyTo?: string) => {
@@ -110,7 +121,7 @@ export function useDraftComments(): {
   );
 
   const likeComment = useCallback(
-    async (id: string, unlike?: boolean) => {
+    async (id: string, isLiked: boolean) => {
       if (!pkAndSignature) {
         return;
       }
@@ -121,21 +132,58 @@ export function useDraftComments(): {
         return;
       }
 
+      const params = {
+        id,
+        accountId,
+        publicKey,
+        signature,
+      };
+
       try {
-        if (unlike) {
-          await draftsService.unlikeDraftComment({
-            id,
-            accountId,
-            publicKey,
-            signature,
-          });
+        if (isLiked) {
+          await draftsService.removeLikeDraftComment(params);
         } else {
-          await draftsService.likeDraftComment({
-            id,
-            accountId,
-            publicKey,
-            signature,
-          });
+          await draftsService.removeDislikeDraftComment(params);
+          await draftsService.likeDraftComment(params);
+        }
+
+        await fetchComments();
+      } catch (e) {
+        showNotification({
+          type: NOTIFICATION_TYPES.ERROR,
+          lifetime: 20000,
+          description: e?.message,
+        });
+      }
+    },
+    [accountId, draftsService, fetchComments, pkAndSignature]
+  );
+
+  const dislikeComment = useCallback(
+    async (id: string, isDislike: boolean) => {
+      if (!pkAndSignature) {
+        return;
+      }
+
+      const { publicKey, signature } = pkAndSignature;
+
+      if (!publicKey || !signature) {
+        return;
+      }
+
+      const params = {
+        id,
+        accountId,
+        publicKey,
+        signature,
+      };
+
+      try {
+        if (isDislike) {
+          await draftsService.removeDislikeDraftComment(params);
+        } else {
+          await draftsService.removeLikeDraftComment(params);
+          await draftsService.dislikeDraftComment(params);
         }
 
         await fetchComments();
@@ -190,10 +238,12 @@ export function useDraftComments(): {
 
   return {
     loading,
-    data: value ?? [],
+    countComments: value?.countComments || 0,
+    data: value?.data ?? [],
     addComment,
     editComment,
     deleteComment,
     likeComment,
+    dislikeComment,
   };
 }
