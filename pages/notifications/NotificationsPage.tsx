@@ -12,15 +12,7 @@ import { useNotificationsList } from 'astro_2.0/features/Notifications/hooks';
 
 import styles from './NotificationsPage.module.scss';
 
-interface NotificationsPageProps {
-  accountDaosIds: string[];
-  subscribedDaosIds: string[];
-}
-
-const NotificationsPage: VFC<NotificationsPageProps> = ({
-  accountDaosIds,
-  subscribedDaosIds,
-}) => {
+const NotificationsPage: VFC = () => {
   const router = useRouter();
   const showArchived = router.query.notyType === 'archived';
 
@@ -30,7 +22,7 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({
     loadMore,
     handleUpdate,
     handleRemove,
-  } = useNotificationsList(accountDaosIds, subscribedDaosIds);
+  } = useNotificationsList();
 
   const { t } = useTranslation('notificationsPage');
 
@@ -48,9 +40,37 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({
       <Head>
         <title>Notifications</title>
       </Head>
+
       <div className={styles.headerContainer}>
         <h1 className={styles.header}>{t('notificationsHub')}</h1>
       </div>
+
+      <div className={styles.controls}>
+        <Button
+          onClick={() => handleUpdateAll('READ')}
+          variant="tertiary"
+          className={styles.controlButton}
+          size="small"
+        >
+          <Icon name="noteCheckDouble" className={styles.buttonIcon} />
+          {t('markReadAll')}
+        </Button>
+
+        <Button
+          disabled={showArchived}
+          onClick={() => handleUpdateAll('ARCHIVE')}
+          variant="tertiary"
+          className={styles.controlButton}
+          size="small"
+        >
+          <Icon
+            name="noteArchive"
+            className={cn(styles.buttonIcon, styles.archiveIcon)}
+          />
+          {t('archiveAll')}
+        </Button>
+      </div>
+
       <div className={styles.pageContent}>
         <SideFilter
           queryName="notyType"
@@ -58,31 +78,8 @@ const NotificationsPage: VFC<NotificationsPageProps> = ({
           title={t('chooseAType')}
           className={styles.sideFilter}
         />
+
         <div className={styles.notifications}>
-          <div className={styles.controls}>
-            <Button
-              onClick={() => handleUpdateAll('READ')}
-              variant="tertiary"
-              className={styles.controlButton}
-              size="small"
-            >
-              <Icon name="noteCheckDouble" className={styles.buttonIcon} />
-              {t('markReadAll')}
-            </Button>
-            <Button
-              disabled={showArchived}
-              onClick={() => handleUpdateAll('ARCHIVE')}
-              variant="tertiary"
-              className={styles.controlButton}
-              size="small"
-            >
-              <Icon
-                name="noteArchive"
-                className={cn(styles.buttonIcon, styles.archiveIcon)}
-              />
-              {t('archiveAll')}
-            </Button>
-          </div>
           <Notifications
             onUpdate={handleUpdate}
             loadMore={loadMore}

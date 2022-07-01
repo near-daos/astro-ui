@@ -11,6 +11,7 @@ import { FunctionCallType } from './types';
 import { CustomContent } from './components/CustomContent';
 import { VoteInOtherDao } from './components/VoteInOtherDao';
 import { SwapsOnRefContent } from './components/SwapsOnRefContent';
+import { CreateRoketoStream } from './components/CreateRoketoStream';
 import { BuyNftFromParasContent } from './components/BuyNftFromParasContent';
 import { BuyNftFromMintbaseContent } from './components/BuyNftFromMintbaseContent';
 import { TransferNftFromMintbaseContent } from './components/TransferNftFromMintbaseContent';
@@ -39,6 +40,9 @@ const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
     }
     case FunctionCallType.TransferNFTfromMintbase: {
       return <TransferNftFromMintbaseContent />;
+    }
+    case FunctionCallType.CreateRoketoStream: {
+      return <CreateRoketoStream dao={dao} />;
     }
     case FunctionCallType.BuyNFTfromMintbase: {
       return <BuyNftFromMintbaseContent />;

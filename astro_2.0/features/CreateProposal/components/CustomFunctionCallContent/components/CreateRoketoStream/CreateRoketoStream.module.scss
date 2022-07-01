@@ -1,0 +1,234 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+
+.root {
+  display: grid;
+  grid-gap: 24px;
+  grid-template-areas:
+    'target amount'
+    'duration speed'
+    'comment comment'
+    'commission commission'
+    'no total';
+  grid-template-columns: 2fr 1fr;
+}
+
+.comment {
+  grid-area: comment;
+
+  .inputWrapper {
+    width: 100%;
+  }
+
+  textarea::-webkit-scrollbar {
+    display: none !important;
+  }
+}
+
+.amount {
+  display: flex;
+  grid-area: amount;
+}
+
+.target {
+  grid-area: target;
+}
+
+.duration {
+  grid-area: duration;
+}
+
+.speed {
+  grid-area: speed;
+}
+
+.commission {
+  grid-area: commission;
+
+  .receipt {
+    display: grid;
+    font-size: 14px;
+    grid-column-gap: 6px;
+    grid-row-gap: 10px;
+    grid-template-columns: auto auto auto;
+  }
+
+  .receiptAmount {
+    text-align: end;
+  }
+
+  .inputWrapper {
+    width: 100%;
+  }
+}
+
+.total {
+  grid-area: total;
+
+  .totalLines {
+    display: grid;
+    grid-gap: 6px;
+    grid-template-columns: auto auto;
+    width: fit-content;
+  }
+
+  span {
+    line-height: 24px;
+    margin-right: 10px;
+  }
+
+  .totalAmount {
+    text-align: end;
+  }
+}
+
+.inputWrapper {
+  /* stylelint-disable */
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  /* stylelint-enable */
+
+  input {
+    font-weight: 700;
+    @include placeholder {
+      color: var(--color-neutral-40);
+      transition: opacity 0.2s linear;
+    }
+  }
+}
+
+.inputWrapper .inputContainer {
+  input {
+    color: var(--color-neutral-70);
+    font-weight: 500;
+  }
+}
+
+.select {
+  flex: 1;
+  max-width: fit-content;
+
+  label {
+    padding-bottom: 4px;
+  }
+
+  button {
+    border: 0;
+    margin-top: 4px;
+    overflow: hidden;
+  }
+
+  [data-hidden-value] {
+    display: none;
+    margin-left: auto;
+  }
+
+  .row {
+    font-family: var(--font-family-primary);
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .balance {
+    display: none;
+  }
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  white-space: nowrap;
+
+  .iconWrapper {
+    border-radius: 50%;
+    height: 24px;
+    margin-right: 8px;
+    overflow: hidden;
+    width: 24px;
+  }
+}
+
+.select ul {
+  min-width: 260px;
+
+  [data-hidden-value] {
+    display: flex;
+  }
+
+  .balance {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .balanceNear {
+    font-weight: 700;
+  }
+
+  .balanceUsd {
+    color: var(--color-neutral-60);
+    font-size: 10px;
+  }
+}
+
+.divider {
+  min-width: 80px;
+}
+
+.symbol {
+  @include ellipse-text;
+  max-width: 120px;
+}
+
+.icon {
+  background-color: var(--color-brand-black);
+  background-position: center;
+  background-size: contain;
+  height: 24px;
+  width: 24px;
+}
+
+.loaderWrapper {
+  align-items: center;
+  display: flex;
+  margin-top: 24px;
+  padding: 8px;
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .root {
+    display: grid;
+    grid-column-gap: 0;
+    grid-template-areas:
+      'address'
+      'method'
+      'gas'
+      'editor'
+      'deposit';
+    grid-template-columns: 1fr;
+
+    > div:last-of-type {
+      grid-column: 1 / 3;
+      margin-left: 0;
+    }
+  }
+
+  .select ul {
+    min-width: 200px;
+
+    .balance {
+      display: flex;
+    }
+  }
+}

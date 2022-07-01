@@ -5,6 +5,8 @@ metadata:
 data:
   NEAR_ENV: "{{ .Values.environment.near_env }}"
   NEAR_CONTRACT_NAME: "{{ .Values.environment.near_contract_name }}"
+  ROKETO_CONTRACT_NAME: "{{ .Values.environment.roketo_contract_name }}"
+  ROKETO_MULTICALL_NAME: "{{ .Values.environment.roketo_multicall_name }}"
   API_URL: "{{ .Values.environment.api_url }}"
   AWS_BUCKET: "{{ .Values.environment.aws_bucket }}"
   AWS_REGION: "{{ .Values.environment.aws_region }}"
@@ -15,5 +17,6 @@ data:
   NEXT_PUBLIC_LAUNCHDARKLY_ID: "{{ .Values.environment.next_public_launchdarkly_id }}"
   APP_DOMAIN: "{{ .Values.environment.app_domain }}"
   RELEASE_NOTES: "{{ .Values.environment.release_notes }}"
+  DRAFTS_API_URL: "{{ .Values.environment.drafts_api_url }}"
   GENERIC_FACTORY_CONTRACT_NAME: "{{ .Values.environment.generic_factory_contract_name }}"
   STAKING_CONTRACT_BINARY_HASH: "{{ .Values.environment.staking_contract_binary_hash }}"

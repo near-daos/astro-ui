@@ -89,6 +89,12 @@
   }
 }
 
+@mixin large-desktop-max {
+  @media (max-width: #{breakpoints.$screen-lg}px) {
+    @content;
+  }
+}
+
 @mixin desktop {
   @media (min-width: #{breakpoints.$screen-md}px) {
     @content;

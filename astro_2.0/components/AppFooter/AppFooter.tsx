@@ -4,8 +4,6 @@ import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 
-import { CFC_LIBRARY, DISCOVER } from 'constants/routing';
-
 import { Icon, IconName } from 'components/Icon';
 import { LocaleSelector } from 'astro_2.0/components/LocaleSelector';
 
@@ -25,7 +23,7 @@ export const AppFooter: FC<AppFooterProps> = ({
   onClick,
 }) => {
   const { t } = useTranslation();
-  const { canny, cfcLibrary } = useFlags();
+  const { canny } = useFlags();
 
   const { appConfig } = configService.get();
 
@@ -62,19 +60,6 @@ export const AppFooter: FC<AppFooterProps> = ({
             {renderSocialIcon('https://twitter.com/AstroDao', 'socialTwitter')}
             {renderSocialIcon('https://t.me/astro_near', 'socialTelegram')}
           </div>
-          {cfcLibrary && (
-            <Link passHref href={CFC_LIBRARY}>
-              <a className={styles.devLink}>{t('cfcLibrary')}</a>
-            </Link>
-          )}
-          <a
-            className={styles.devLink}
-            href="https://github.com/near-daos/astro-ui/discussions"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            {t('components.appFooter.askQuestion')}
-          </a>
           <div className={styles.version}>
             {canny && (
               <a
@@ -86,50 +71,6 @@ export const AppFooter: FC<AppFooterProps> = ({
                 {t('leaveFeedback')}
               </a>
             )}
-            <a
-              className={styles.devLink}
-              href="https://github.com/near-daos/astro-ui/issues"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              {t('reportAnIssue')}
-            </a>
-          </div>
-          <div className={styles.repo}>
-            <a
-              className={styles.devLink}
-              href="https://github.com/near-daos/astro-ui"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              {t('components.appFooter.githubRepo')}
-            </a>
-            <a
-              className={styles.devLink}
-              href="https://testnet.app.astrodao.com/"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Testnet env
-            </a>
-            <a
-              className={styles.devLink}
-              href="https://api.app.astrodao.com/docs/#/"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              {t('components.appFooter.swaggerApi')}
-            </a>
-            <Link passHref href={DISCOVER}>
-              <a href="*" className={styles.devLink}>
-                {t('components.appFooter.stats')}
-              </a>
-            </Link>
-          </div>
-          <div className={styles.copyright}>
-            {t('components.appFooter.opensourceAsIs')}
-            <br />
-            {t('components.appFooter.communityDeveloped')}
           </div>
           <div className={styles.terms}>
             <Link passHref href="/terms-conditions">
@@ -147,6 +88,12 @@ export const AppFooter: FC<AppFooterProps> = ({
             >
               {t('releaseNotes')}
             </a>
+          </div>
+
+          <div className={styles.copyright}>
+            {t('components.appFooter.opensourceAsIs')}
+            <br />
+            {t('components.appFooter.communityDeveloped')}
           </div>
 
           <div className={styles.locale}>

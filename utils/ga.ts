@@ -12,6 +12,7 @@ export enum GA_EVENTS {
   SAVE_FC_TEMPLATE = 'save_fc_template',
   GROUP_BULK_UPDATE = 'group_bulk_update',
   GROUP_BULK_UPDATE_INVALID_WALLET = 'group_bulk_update_invalid_wallet',
+  GOVERNANCE_TOKEN_CREATE_FLOW = 'governance_token_create_flow',
 }
 
 type CustomGaEvent = {

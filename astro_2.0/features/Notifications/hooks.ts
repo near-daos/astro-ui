@@ -16,6 +16,7 @@ import {
 import { LIST_LIMIT_DEFAULT } from 'services/sputnik/constants';
 import { useSocket } from 'context/SocketContext';
 import { useRouter } from 'next/router';
+import { SputnikHttpService } from 'services/sputnik';
 import { mapNotificationDtoToNotification } from 'services/NotificationsService/mappers/notification';
 
 import { dispatchCustomEvent } from 'utils/dispatchCustomEvent';
@@ -104,8 +105,6 @@ export function useNotificationsSettings(): {
 }
 
 export function useNotificationsList(
-  accountDaosIds?: string[],
-  subscribedDaosIds?: string[],
   reactOnUpdates?: boolean
 ): {
   notifications: PaginationResponse<Notification[]> | null;
@@ -142,11 +141,52 @@ export function useNotificationsList(
   const [notifications, setNotifications] = useState<PaginationResponse<
     Notification[]
   > | null>(null);
+  const [accountDaosIds, setAccountDaosIds] = useState<string[]>([]);
+  const [subscribedDaosIds, setSubscribedDaosIds] = useState<string[]>([]);
+  const [daoIdsLoaded, setDaoIdsLoaded] = useState<boolean>(false);
+
   const isMounted = useMountedState();
 
-  function getDaosIds() {
+  const getDaosIds = async () => {
     const showSubscribed = router.query.notyType === 'subscribed';
     const showYourDaos = router.query.notyType === 'yourDaos';
+
+    if (!daoIdsLoaded) {
+      if (accountId) {
+        const [
+          accountDaosResponse,
+          subscribedDaosResponse,
+        ] = await Promise.allSettled([
+          SputnikHttpService.getAccountDaos(accountId),
+          SputnikHttpService.getAccountDaoSubscriptions(accountId),
+        ]);
+
+        const tmpAccountDaoIds =
+          accountDaosResponse.status === 'fulfilled'
+            ? accountDaosResponse.value.map(item => item.id)
+            : [];
+
+        const tmpSubscribedDaoIds =
+          subscribedDaosResponse.status === 'fulfilled'
+            ? subscribedDaosResponse.value.map(item => item.dao.id)
+            : [];
+
+        setAccountDaosIds(tmpAccountDaoIds);
+        setSubscribedDaosIds(tmpSubscribedDaoIds);
+
+        setDaoIdsLoaded(true);
+
+        if (showYourDaos && accountDaosIds) {
+          return tmpAccountDaoIds;
+        }
+
+        if (showSubscribed && subscribedDaosIds) {
+          return tmpSubscribedDaoIds;
+        }
+
+        return [...tmpAccountDaoIds, ...tmpSubscribedDaoIds];
+      }
+    }
 
     if (showYourDaos && accountDaosIds) {
       return accountDaosIds;
@@ -157,7 +197,7 @@ export function useNotificationsList(
     }
 
     return null;
-  }
+  };
 
   const [{ loading }, fetchData] = useAsyncFn(
     async (offset?: number) => {
@@ -173,7 +213,7 @@ export function useNotificationsList(
             offset !== undefined ? offset : notifications?.data.length || 0,
           limit: LIST_LIMIT_DEFAULT,
           sort: 'createdAt,DESC',
-          daoIds: getDaosIds(),
+          daoIds: await getDaosIds(),
         }
       );
 
@@ -187,7 +227,7 @@ export function useNotificationsList(
 
       return accumulatedListData;
     },
-    [notifications?.data?.length, router.query]
+    [notifications?.data?.length, router.query, accountId]
   );
 
   const loadMore = useCallback(
@@ -208,6 +248,12 @@ export function useNotificationsList(
   useMount(() => {
     (() => loadMore())();
   });
+
+  useEffect(() => {
+    if (accountId && isMounted() && !daoIdsLoaded) {
+      loadMore();
+    }
+  }, [accountId, daoIdsLoaded, fetchData, isMounted, loadMore]);
 
   useUpdateEffect(() => {
     loadMore(0);

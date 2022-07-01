@@ -769,6 +769,26 @@ export function getValidationSchema(
           });
           break;
         }
+        case FunctionCallType.CreateRoketoStream: {
+          schema = yup.object().shape({
+            tokenId: yup.string().default('NEAR'),
+            shouldDepositForDao: yup.boolean(),
+            shouldDepositForReceiver: yup.boolean(),
+            amount: yup.string().required(t('validation.required')),
+            duration: yup.string().required(t('validation.required')),
+            receiverId: yup.string().required(t('validation.required')),
+            comment: yup.string(),
+            receipt: yup.object().shape({
+              // eslint-disable-next-line react/forbid-prop-types
+              total: yup.object(),
+              // eslint-disable-next-line react/forbid-prop-types
+              positions: yup.array(),
+            }),
+            details: yup.string().required(t('validation.required')),
+            externalUrl: yup.string().url(),
+          });
+          break;
+        }
         default: {
           schema = yup.object().shape({
             smartContractAddress: yup
@@ -841,12 +861,6 @@ export function getValidationSchema(
       break;
     }
 
-    case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
-      schema = yup.object().shape({});
-
-      break;
-    }
-
     case ProposalVariant.ProposeAcceptStakingContract: {
       schema = yup.object().shape({
         contract: yup.string(),
@@ -869,6 +883,7 @@ export function getValidationSchema(
       });
       break;
     }
+
     case ProposalVariant.ProposeTransferFunds: {
       const tokens = (data?.daoTokens as Record<string, Token>) ?? {};
       const tokensIds = Object.values(tokens)

@@ -72,10 +72,10 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
       e.stopPropagation();
 
       if (onUpdate) {
-        onUpdate(id, { isMuted, isArchived, isRead: true });
+        onUpdate(id, { isMuted, isArchived, isRead: !isRead });
       }
     },
-    [id, isArchived, isMuted, onUpdate]
+    [id, isArchived, isMuted, onUpdate, isRead]
   );
 
   const handleDeleteClick = useCallback(
@@ -109,7 +109,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
               data-testid="mark-read"
               variant="transparent"
               size="block"
-              onClick={e => handleMarkReadClick(e)}
+              onClick={handleMarkReadClick}
               className={cn(styles.markReadButton, { [styles.read]: isRead })}
             >
               <Icon
