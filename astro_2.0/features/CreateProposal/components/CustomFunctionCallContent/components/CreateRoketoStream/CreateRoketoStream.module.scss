@@ -2,30 +2,87 @@
 @import 'styles/mixins';
 
 .root {
-  display: flex;
+  display: grid;
+  grid-gap: 24px;
+  grid-template-areas:
+    'target amount'
+    'duration speed'
+    'comment comment'
+    'commission commission'
+    'no total';
+  grid-template-columns: 2fr 1fr;
+}
 
-  > div:last-of-type {
-    margin-left: 80px;
+.comment {
+  grid-area: comment;
+
+  .inputWrapper {
+    width: 100%;
+  }
+
+  textarea::-webkit-scrollbar {
+    display: none !important;
   }
 }
 
-.row {
-  align-items: center;
+.amount {
   display: flex;
-  white-space: nowrap;
+  grid-area: amount;
+}
 
-  .iconWrapper {
-    border-radius: 50%;
-    height: 24px;
-    margin-right: 8px;
-    overflow: hidden;
-    width: 24px;
+.target {
+  grid-area: target;
+}
+
+.duration {
+  grid-area: duration;
+}
+
+.speed {
+  grid-area: speed;
+}
+
+.commission {
+  grid-area: commission;
+
+  .receipt {
+    display: grid;
+    font-size: 14px;
+    grid-column-gap: 6px;
+    grid-row-gap: 10px;
+    grid-template-columns: auto auto auto;
+  }
+
+  .receiptAmount {
+    text-align: end;
+  }
+
+  .inputWrapper {
+    width: 100%;
+  }
+}
+
+.total {
+  grid-area: total;
+
+  .totalLines {
+    display: grid;
+    grid-gap: 6px;
+    grid-template-columns: auto auto;
+    width: fit-content;
+  }
+
+  span {
+    line-height: 24px;
+    margin-right: 10px;
+  }
+
+  .totalAmount {
+    text-align: end;
   }
 }
 
 .inputWrapper {
-  max-width: 160px;
-
   /* stylelint-disable */
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
@@ -50,8 +107,11 @@
   }
 }
 
-.wide {
-  max-width: unset;
+.inputWrapper .inputContainer {
+  input {
+    color: var(--color-neutral-70);
+    font-weight: 500;
+  }
 }
 
 .select {
@@ -68,20 +128,42 @@
     overflow: hidden;
   }
 
-  .balance {
+  [data-hidden-value] {
     display: none;
+    margin-left: auto;
   }
 
   .row {
-    @include font(16px, 16px, 400);
     font-family: var(--font-family-primary);
-    min-height: 32px;
+    font-size: 14px;
     width: 100%;
+  }
+
+  .balance {
+    display: none;
+  }
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  white-space: nowrap;
+
+  .iconWrapper {
+    border-radius: 50%;
+    height: 24px;
+    margin-right: 8px;
+    overflow: hidden;
+    width: 24px;
   }
 }
 
 .select ul {
   min-width: 260px;
+
+  [data-hidden-value] {
+    display: flex;
+  }
 
   .balance {
     display: flex;
@@ -127,10 +209,14 @@
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .root {
     display: grid;
+    grid-column-gap: 0;
     grid-template-areas:
-      'amount token'
-      'target target';
-    grid-template-columns: 1fr 1fr;
+      'address'
+      'method'
+      'gas'
+      'editor'
+      'deposit';
+    grid-template-columns: 1fr;
 
     > div:last-of-type {
       grid-column: 1 / 3;
@@ -139,8 +225,7 @@
   }
 
   .select ul {
-    min-width: 240px;
-    right: calc(100% - 110px);
+    min-width: 200px;
 
     .balance {
       display: flex;

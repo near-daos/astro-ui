@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import Decimal from 'decimal.js';
 
 import { DATA_SEPARATOR } from 'constants/common';
@@ -8,6 +9,7 @@ import { DAO } from 'types/dao';
 import {
   CreateProposalParams,
   DaoConfig,
+  FunctionCallAction,
   ProposalVariant,
 } from 'types/proposal';
 import { CreateTokenInput } from 'astro_2.0/features/CreateProposal/types';
@@ -316,6 +318,190 @@ export async function getBuyNftFromParasProposal(
         },
       ],
     },
+    bond: dao.policy.proposalBond,
+  };
+}
+
+interface ReceiptPosition {
+  token: string;
+  amount: string;
+  description: string;
+}
+
+export type CreateRoketoStreamInput = {
+  tokenId: string;
+  shouldDepositForDao: boolean;
+  shouldDepositForReceiver: boolean;
+  amount: string;
+  duration: string;
+  speed: string;
+  receiverId: string;
+  comment?: string;
+  actions?: MulticallAction[];
+  receipt: {
+    total: Record<string, string>;
+    positions: ReceiptPosition[];
+  };
+  details: string;
+  externalUrl?: string;
+};
+
+interface MulticallAction {
+  contract: string;
+  method: string;
+  args: Record<string, unknown>;
+  deposit?: string;
+  gas?: string;
+}
+
+interface Action {
+  func: string;
+  args: Record<string, unknown>;
+  gas: string;
+  depo: string;
+}
+
+class Call {
+  private actions: Action[];
+
+  constructor(private address: string) {
+    this.actions = [];
+  }
+
+  addAction(
+    func: string,
+    args: Record<string, unknown>,
+    gas = '10000000000000',
+    depo = '0'
+  ) {
+    this.actions.push({
+      func,
+      args,
+      gas,
+      depo,
+    });
+  }
+
+  serialize(): unknown {
+    return {
+      address: this.address,
+      actions: this.actions.map(action => ({
+        func: action.func,
+        args: Buffer.from(JSON.stringify(action.args)).toString('base64'),
+        gas: action.gas,
+        depo: action.depo,
+      })),
+    };
+  }
+}
+
+/**
+ * Calls in the batch called sequentially
+ */
+class Batch {
+  private calls: Call[] = [];
+
+  createCall(contractAddress: string): Call {
+    const call = new Call(contractAddress);
+
+    this.calls.push(call);
+
+    return call;
+  }
+
+  serialize(): unknown {
+    return this.calls.map(call => call.serialize());
+  }
+}
+
+/**
+ * Multiple batches called in parallel
+ */
+class Multicall {
+  private batches: Batch[] = [];
+
+  createBatch(): Batch {
+    const batch = new Batch();
+
+    this.batches.push(batch);
+
+    return batch;
+  }
+
+  serialize(): unknown {
+    return {
+      calls: this.batches.map(batch => batch.serialize()),
+    };
+  }
+}
+
+export async function getCreateRoketoStreamProposal(
+  dao: DAO,
+  data: CreateRoketoStreamInput,
+  tokens: Tokens
+): Promise<CreateProposalParams> {
+  const { externalUrl, details, actions, receipt } = data;
+  const proposalDescription = `${details}${DATA_SEPARATOR}${externalUrl}`;
+  const config = configService.get();
+  const multicallContract = config.appConfig.ROKETO_MULTICALL_NAME;
+
+  const token = Object.values(tokens).find(item => item.id === data.tokenId);
+
+  if (!token) {
+    throw new Error('No tokens data found');
+  }
+
+  let proposalData: {
+    // eslint-disable-next-line camelcase
+    receiver_id: string;
+    actions: FunctionCallAction[];
+  } = { receiver_id: '', actions: [] };
+
+  // eslint-disable-next-line no-constant-condition
+  if (false) {
+    const multicall = new Multicall();
+    const serialCalls = multicall.createBatch();
+
+    actions?.forEach(action => {
+      serialCalls
+        .createCall(action.contract)
+        .addAction(action.method, action.args, action.gas, action.deposit);
+    });
+
+    proposalData = {
+      receiver_id: multicallContract,
+      actions: [
+        {
+          method_name: 'multicall',
+          args: Buffer.from(JSON.stringify(multicall.serialize())).toString(
+            'base64'
+          ),
+          deposit: receipt?.total.NEAR ?? '0',
+          gas: formatGasValue(270).toString(),
+        },
+      ],
+    };
+  } else {
+    actions?.forEach(action => {
+      proposalData = {
+        receiver_id: action.contract,
+        actions: [
+          {
+            method_name: action.method,
+            args: Buffer.from(JSON.stringify(action.args)).toString('base64'),
+            deposit: action.deposit ?? '1',
+            gas: action.gas ?? formatGasValue('270').toString(),
+          },
+        ],
+      };
+    });
+  }
+
+  return {
+    daoId: dao.id,
+    description: proposalDescription,
+    kind: 'FunctionCall',
+    data: proposalData,
     bond: dao.policy.proposalBond,
   };
 }
