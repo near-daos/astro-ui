@@ -145,11 +145,13 @@ export const ChooseExistingToken: FC<Props> = ({ onUpdate, status }) => {
             <InputFormWrapper
               errors={errors}
               errorElRef={errorEl}
+              className={styles.fullWidth}
               component={
                 <Input
                   isBorderless
                   inputClassName={styles.input}
                   size="block"
+                  inputStyles={{ width: '100%' }}
                   placeholder="Provide contract address"
                   {...register('contractAddress')}
                 />
