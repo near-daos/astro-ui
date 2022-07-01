@@ -1,15 +1,14 @@
 import React, { FC, useState } from 'react';
-import cn from 'classnames';
 
 import { DraftComment } from 'services/DraftsService/types';
 
-import { IconButton } from 'components/button/IconButton';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { CommentContent } from 'astro_2.0/features/Comments/components/CommentContent';
 import { EditableContent } from 'astro_2.0/components/EditableContent';
 import { ReplyButton } from 'astro_2.0/components/ReplyButton';
 import { CommentActions } from 'astro_2.0/features/Comments/components/CommentActions';
+import { LikeButton } from 'astro_2.0/features/Comments/components/Comment/LikeButton';
 
 import { useWalletContext } from 'context/WalletContext';
 
@@ -93,26 +92,18 @@ export const Comment: FC<CommentProps> = ({
           </div>
         )}
         <div className={styles.right}>
-          <div className={styles.likes}>
-            {likeAccounts.length}
-            <IconButton
-              size="medium"
-              disabled={!accountId}
-              icon={isLikedByMe ? 'likeFilled' : 'like'}
-              className={styles.likeIcon}
-              onClick={() => onLike(id, isLikedByMe)}
-            />
-          </div>
-          <div className={styles.likes}>
-            {dislikeAccounts.length}
-            <IconButton
-              size="medium"
-              disabled={!accountId}
-              icon={isDislikedByMe ? 'likeFilled' : 'like'}
-              className={cn(styles.likeIcon, styles.dislikeIcon)}
-              onClick={() => onDislike(id, isDislikedByMe)}
-            />
-          </div>
+          <LikeButton
+            disabled={!accountId}
+            onClick={() => onLike(id, isLikedByMe)}
+            isActive={isLikedByMe}
+            amount={likeAccounts.length}
+          />
+          <LikeButton
+            disabled={!accountId}
+            onClick={() => onDislike(id, isDislikedByMe)}
+            isActive={isDislikedByMe}
+            amount={dislikeAccounts.length}
+          />
           {accountId && (
             <ReplyButton
               className={styles.replyButton}

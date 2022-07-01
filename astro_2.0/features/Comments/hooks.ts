@@ -54,11 +54,7 @@ export function useDraftComments(): {
 
   const addComment = useCallback(
     async (msg: string, replyTo?: string) => {
-      if (!pkAndSignature) {
-        return;
-      }
-
-      const { publicKey, signature } = pkAndSignature;
+      const { publicKey, signature } = pkAndSignature || {};
 
       if (!publicKey || !signature) {
         return;
@@ -89,11 +85,7 @@ export function useDraftComments(): {
 
   const editComment = useCallback(
     async (msg: string, id: string) => {
-      if (!pkAndSignature) {
-        return;
-      }
-
-      const { publicKey, signature } = pkAndSignature;
+      const { publicKey, signature } = pkAndSignature || {};
 
       if (!publicKey || !signature) {
         return;
@@ -122,11 +114,7 @@ export function useDraftComments(): {
 
   const likeComment = useCallback(
     async (id: string, isLiked: boolean) => {
-      if (!pkAndSignature) {
-        return;
-      }
-
-      const { publicKey, signature } = pkAndSignature;
+      const { publicKey, signature } = pkAndSignature || {};
 
       if (!publicKey || !signature) {
         return;
@@ -161,11 +149,7 @@ export function useDraftComments(): {
 
   const dislikeComment = useCallback(
     async (id: string, isDislike: boolean) => {
-      if (!pkAndSignature) {
-        return;
-      }
-
-      const { publicKey, signature } = pkAndSignature;
+      const { publicKey, signature } = pkAndSignature || {};
 
       if (!publicKey || !signature) {
         return;
@@ -200,11 +184,7 @@ export function useDraftComments(): {
 
   const deleteComment = useCallback(
     async (id: string) => {
-      if (!pkAndSignature) {
-        return;
-      }
-
-      const { publicKey, signature } = pkAndSignature;
+      const { publicKey, signature } = pkAndSignature || {};
 
       if (!publicKey || !signature) {
         return;

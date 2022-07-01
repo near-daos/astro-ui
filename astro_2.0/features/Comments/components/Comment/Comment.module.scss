@@ -51,28 +51,6 @@
   }
 }
 
-.likes {
-  align-items: center;
-  display: flex;
-  font-size: 12px;
-  margin-left: 12px;
-
-  .likeIcon {
-    color: var(--color-neutral-60);
-    height: 24px;
-    margin-left: 6px;
-    width: 24px;
-  }
-
-  .likeIcon:hover {
-    color: var(--color-primary-50);
-  }
-}
-
-.dislikeIcon {
-  transform: rotate(180deg);
-}
-
 .replyButton {
   margin-left: 24px;
 }

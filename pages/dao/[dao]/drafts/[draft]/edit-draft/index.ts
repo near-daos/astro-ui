@@ -30,13 +30,8 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   const dao = daoContext?.dao;
-  let draft;
 
-  try {
-    draft = await draftService.getDraft(draftId, dao, accountId);
-  } catch (error) {
-    console.error(error);
-  }
+  const draft = await draftService.getDraft(draftId, dao, accountId);
 
   const isCouncil = isCouncilUser(dao, accountId || '');
 

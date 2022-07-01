@@ -24,39 +24,11 @@ $border-radius: 3px;
 }
 
 .editable :global(.ql-editor) {
+  @include editable-content;
   background-color: var(--color-white);
   caret-color: var(--color-primary-40);
-  color: var(--color-neutral-90);
-  line-height: 24px;
   min-height: 160px;
   padding: $gap;
-
-  ul,
-  pre {
-    margin: 0;
-  }
-
-  p {
-    margin: 0 0 10px;
-  }
-
-  p,
-  ul {
-    font-size: 14px;
-    line-height: 24px;
-  }
-
-  pre {
-    background-color: var(--color-neutral-20);
-    font-family: monospace, monospace;
-    font-size: 12px;
-    margin: 4px 0;
-    padding: 5px 10px;
-  }
-
-  img {
-    max-width: 100%;
-  }
 }
 
 .editable :global(.ql-editor .ql-syntax) {
@@ -80,7 +52,6 @@ $border-radius: 3px;
 
 .textField {
   border: 0;
-  font-size: 14px;
 }
 
 .bottom {
@@ -103,6 +74,7 @@ $border-radius: 3px;
 .error :global(.ql-editor.ql-blank) {
   &::before {
     color: var(--color-error);
+    line-height: 24px;
   }
 }
 

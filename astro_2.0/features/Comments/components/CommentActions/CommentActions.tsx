@@ -2,9 +2,7 @@ import React, { FC, useCallback } from 'react';
 
 import { useModal } from 'components/modal';
 import { ConfirmModal } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/ConfirmModal';
-import { Icon } from 'components/Icon';
-import { Button } from 'components/button/Button';
-import { Tooltip } from 'astro_2.0/components/Tooltip';
+import { CommentAction } from 'astro_2.0/features/Comments/components/CommentActions/CommentAction';
 
 import styles from './CommentActions.module.scss';
 
@@ -40,36 +38,12 @@ export const CommentActions: FC<Props> = ({
 
   return (
     <div className={styles.root}>
-      <Tooltip
-        popupClassName={styles.tooltipPopup}
-        className={styles.tooltip}
-        placement="left"
-        overlay={<span className={styles.tooltipOverlay}>Delete</span>}
-      >
-        <Button
-          variant="transparent"
-          className={styles.button}
-          size="small"
-          onClick={handleDelete}
-        >
-          <Icon name="buttonDelete" />{' '}
-        </Button>
-      </Tooltip>
-      <Tooltip
-        popupClassName={styles.tooltipPopup}
-        className={styles.tooltip}
-        placement="left"
-        overlay={<span className={styles.tooltipOverlay}>Edit</span>}
-      >
-        <Button
-          variant="transparent"
-          className={styles.button}
-          size="small"
-          onClick={onEdit}
-        >
-          <Icon name="buttonEdit" />{' '}
-        </Button>
-      </Tooltip>
+      <CommentAction
+        overlayText="Delete"
+        icon="buttonDelete"
+        onClick={handleDelete}
+      />
+      <CommentAction overlayText="Edit" icon="buttonEdit" onClick={onEdit} />
     </div>
   );
 };

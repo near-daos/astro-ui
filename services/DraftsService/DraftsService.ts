@@ -59,20 +59,26 @@ export class DraftsService {
     id: string,
     dao?: DAO,
     accountIdParams?: string
-  ): Promise<DraftProposal> {
-    const { data } = await this.httpService.get(`/draft-proposals/${id}`, {
-      responseMapper: {
-        name: API_MAPPERS.MAP_DRAFT_TO_PROPOSAL_DRAFT,
-        params: {
-          dao,
+  ): Promise<DraftProposal | null> {
+    try {
+      const { data } = await this.httpService.get(`/draft-proposals/${id}`, {
+        responseMapper: {
+          name: API_MAPPERS.MAP_DRAFT_TO_PROPOSAL_DRAFT,
+          params: {
+            dao,
+          },
         },
-      },
-      params: {
-        accountId: accountIdParams,
-      },
-    });
+        params: {
+          accountId: accountIdParams,
+        },
+      });
 
-    return data;
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
   }
 
   public async patchDraft(
