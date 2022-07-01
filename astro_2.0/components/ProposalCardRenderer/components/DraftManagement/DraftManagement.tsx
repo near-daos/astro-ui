@@ -27,7 +27,7 @@ export const DraftManagement: FC<DraftManagementProps> = ({
     isCouncil = isCouncilUser(dao, accountId);
   }
 
-  const disabled = !isCouncil || proposer !== accountId;
+  const disabled = !(isCouncil || proposer === accountId);
 
   return (
     <div className={styles.draftManagement}>
