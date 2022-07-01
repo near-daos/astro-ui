@@ -14,6 +14,7 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
+  margin-top: 22px;
 }
 
 .replies {
@@ -46,28 +47,6 @@
   margin-right: 24px;
 
   &:hover {
-    color: var(--color-primary-50);
-  }
-}
-
-.likes {
-  align-items: center;
-  display: flex;
-  margin-left: auto;
-
-  .likeIcon {
-    color: var(--color-neutral-60);
-    display: block;
-    height: 24px;
-    margin-left: 6px;
-    width: 24px;
-  }
-
-  .likeIcon.liked {
-    color: var(--color-primary-50);
-  }
-
-  .likeIcon:hover {
     color: var(--color-primary-50);
   }
 }

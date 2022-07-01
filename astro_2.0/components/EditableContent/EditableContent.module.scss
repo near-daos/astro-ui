@@ -24,17 +24,11 @@ $border-radius: 3px;
 }
 
 .editable :global(.ql-editor) {
+  @include editable-content;
   background-color: var(--color-white);
   caret-color: var(--color-primary-40);
-  color: var(--color-neutral-90);
-  line-height: 24px;
   min-height: 160px;
   padding: $gap;
-  li,
-  p {
-    font-size: 14px;
-    line-height: 24px;
-  }
 }
 
 .editable :global(.ql-editor .ql-syntax) {
@@ -58,7 +52,6 @@ $border-radius: 3px;
 
 .textField {
   border: 0;
-  font-size: 14px;
 }
 
 .bottom {
@@ -75,15 +68,13 @@ $border-radius: 3px;
 }
 
 .send {
-  //bottom: $gap;
-  //position: absolute;
-  //right: $gap;
   margin-left: 12px;
 }
 
 .error :global(.ql-editor.ql-blank) {
   &::before {
     color: var(--color-error);
+    line-height: 24px;
   }
 }
 

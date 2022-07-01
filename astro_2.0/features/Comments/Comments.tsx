@@ -8,12 +8,14 @@ import styles from './Comments.module.scss';
 
 interface Props {
   data: DraftComment[];
-  onLike: (id: string) => Promise<void>;
+  onLike: (id: string, isLike: boolean) => Promise<void>;
   onReply: (value: string, replyTo: string) => Promise<void>;
   onEdit: (value: string, id: string) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
   canModerate: boolean;
   accountId: string;
+  countComments: number;
+  onDislike: (id: string, isDislike: boolean) => Promise<void>;
 }
 
 export const Comments: FC<Props> = ({
@@ -24,16 +26,19 @@ export const Comments: FC<Props> = ({
   onDelete,
   canModerate,
   accountId,
+  countComments,
+  onDislike,
 }) => {
   return (
     <div className={styles.root}>
       <div className={styles.header}>
-        {data.length} {data.length > 1 ? 'replies' : 'reply'}
+        {countComments} {countComments > 1 ? 'replies' : 'reply'}
       </div>
       <div className={styles.list}>
         {data.map(comment => {
           return (
             <Comment
+              onDislike={onDislike}
               key={comment.id}
               data={comment}
               onLike={onLike}

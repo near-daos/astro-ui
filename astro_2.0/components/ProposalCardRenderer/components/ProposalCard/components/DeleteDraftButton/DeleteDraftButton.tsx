@@ -7,6 +7,8 @@ import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsPro
 import { DRAFTS_PAGE_URL } from 'constants/routing';
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { ConfirmModal } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/ConfirmModal';
+import { useModal } from 'components/modal';
 
 import styles from './DeleteDraftButton.module.scss';
 
@@ -21,22 +23,33 @@ export const DeleteDraftButton: FC<DeleteDraftButtonProps> = ({
 }) => {
   const router = useRouter();
   const { draftsService } = useDraftsContext();
-  const { accountId, nearService } = useWalletContext();
+  const { accountId, pkAndSignature } = useWalletContext();
+  const [showModal] = useModal(ConfirmModal);
 
   const handleDeleteDraft = useCallback(async () => {
-    const publicKey = await nearService?.getPublicKey();
-    const signature = await nearService?.getSignature();
+    if (!pkAndSignature) {
+      return;
+    }
 
-    if (publicKey && signature && accountId) {
+    const { publicKey, signature } = pkAndSignature;
+
+    const res = await showModal({
+      title: 'Delete draft',
+      message: 'Are you sure you want to delete selected draft?',
+    });
+
+    if (publicKey && signature) {
       try {
-        await draftsService.deleteDraft({
-          id: draftId,
-          publicKey,
-          signature,
-          accountId,
-        });
+        if (res[0]) {
+          await draftsService.deleteDraft({
+            id: draftId,
+            publicKey,
+            signature,
+            accountId,
+          });
 
-        router.push({ pathname: DRAFTS_PAGE_URL, query: { dao: daoId } });
+          router.push({ pathname: DRAFTS_PAGE_URL, query: { dao: daoId } });
+        }
       } catch (e) {
         showNotification({
           type: NOTIFICATION_TYPES.ERROR,
@@ -45,7 +58,15 @@ export const DeleteDraftButton: FC<DeleteDraftButtonProps> = ({
         });
       }
     }
-  }, [accountId, daoId, draftId, draftsService, nearService, router]);
+  }, [
+    accountId,
+    daoId,
+    draftId,
+    draftsService,
+    pkAndSignature,
+    router,
+    showModal,
+  ]);
 
   return (
     <Button

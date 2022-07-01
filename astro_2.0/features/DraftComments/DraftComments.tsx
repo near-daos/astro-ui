@@ -21,11 +21,13 @@ type DraftCommentsProps = {
 
 export const DraftComments: FC<DraftCommentsProps> = ({ className, dao }) => {
   const {
+    countComments,
     data,
     addComment,
     editComment,
     deleteComment,
     likeComment,
+    dislikeComment,
     loading,
   } = useDraftComments();
   const { accountId } = useWalletContext();
@@ -39,6 +41,8 @@ export const DraftComments: FC<DraftCommentsProps> = ({ className, dao }) => {
       ) : (
         <Comments
           data={data}
+          countComments={countComments}
+          onDislike={dislikeComment}
           onLike={likeComment}
           onReply={addComment}
           onEdit={editComment}

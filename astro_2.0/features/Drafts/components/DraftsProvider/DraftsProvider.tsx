@@ -8,6 +8,8 @@ interface IDraftsContext {
   draftsService: DraftsService;
   toggleWriteComment: boolean;
   setToggleWriteComment: (toggle?: boolean) => void;
+  amountComments: number;
+  setAmountComments: (amount: number) => void;
 }
 
 const DraftsContext = createContext<IDraftsContext>({
@@ -16,6 +18,8 @@ const DraftsContext = createContext<IDraftsContext>({
   draftsService: undefined,
   toggleWriteComment: false,
   setToggleWriteComment: () => undefined,
+  amountComments: 0,
+  setAmountComments: () => undefined,
 });
 
 export const useDraftsContext = (): IDraftsContext => useContext(DraftsContext);
@@ -24,6 +28,7 @@ export const DraftsDataProvider: FC = ({ children }) => {
   const [draftsService, setDraftsService] = useState<
     DraftsService | undefined
   >();
+  const [amountComments, setAmountComments] = useState(0);
   const [toggleWriteComment, setToggleWriteComment] = useToggle(false);
 
   useEffect(() => {
@@ -46,7 +51,13 @@ export const DraftsDataProvider: FC = ({ children }) => {
 
   return (
     <DraftsContext.Provider
-      value={{ draftsService, toggleWriteComment, setToggleWriteComment }}
+      value={{
+        draftsService,
+        toggleWriteComment,
+        setToggleWriteComment,
+        setAmountComments,
+        amountComments,
+      }}
     >
       {children}
     </DraftsContext.Provider>

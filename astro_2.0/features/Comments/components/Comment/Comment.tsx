@@ -1,15 +1,14 @@
 import React, { FC, useState } from 'react';
-import cn from 'classnames';
 
 import { DraftComment } from 'services/DraftsService/types';
 
-import { IconButton } from 'components/button/IconButton';
 import { Icon } from 'components/Icon';
 import { Button } from 'components/button/Button';
 import { CommentContent } from 'astro_2.0/features/Comments/components/CommentContent';
 import { EditableContent } from 'astro_2.0/components/EditableContent';
 import { ReplyButton } from 'astro_2.0/components/ReplyButton';
 import { CommentActions } from 'astro_2.0/features/Comments/components/CommentActions';
+import { LikeButton } from 'astro_2.0/features/Comments/components/Comment/LikeButton';
 
 import { useWalletContext } from 'context/WalletContext';
 
@@ -17,7 +16,8 @@ import styles from './Comment.module.scss';
 
 interface CommentProps {
   data: DraftComment;
-  onLike: (id: string, unlike?: boolean) => Promise<void>;
+  onLike: (id: string, isLiked: boolean) => Promise<void>;
+  onDislike: (id: string, isDisliked: boolean) => Promise<void>;
   onReply: (value: string, replyTo: string) => Promise<void>;
   onEdit: (value: string, id: string) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
@@ -27,6 +27,7 @@ interface CommentProps {
 export const Comment: FC<CommentProps> = ({
   data,
   onLike,
+  onDislike,
   onReply,
   onEdit,
   onDelete,
@@ -35,13 +36,22 @@ export const Comment: FC<CommentProps> = ({
   const [edit, setEdit] = useState(false);
   const [contentHtml, setContentHtml] = useState(data.message);
 
-  const { author, message, createdAt, replies, likeAccounts, id } = data;
+  const {
+    author,
+    message,
+    createdAt,
+    replies,
+    likeAccounts,
+    dislikeAccounts = [],
+    id,
+  } = data;
   const [html, setHTML] = useState('');
   const [showReplies, setShowReplies] = useState(false);
   const [showReplyInput, setShowReplyInput] = useState(false);
 
   const { accountId } = useWalletContext();
   const isLikedByMe = likeAccounts.includes(accountId);
+  const isDislikedByMe = dislikeAccounts.includes(accountId);
 
   return (
     <div className={styles.root}>
@@ -82,15 +92,18 @@ export const Comment: FC<CommentProps> = ({
           </div>
         )}
         <div className={styles.right}>
-          <div className={styles.likes}>
-            {likeAccounts.length > 0 ? likeAccounts.length : null}{' '}
-            <IconButton
-              disabled={!accountId}
-              icon={isLikedByMe ? 'heartFilled' : 'heart'}
-              className={cn(styles.likeIcon, { [styles.liked]: isLikedByMe })}
-              onClick={() => onLike(id, isLikedByMe)}
-            />
-          </div>
+          <LikeButton
+            disabled={!accountId}
+            onClick={() => onLike(id, isLikedByMe)}
+            isActive={isLikedByMe}
+            amount={likeAccounts.length}
+          />
+          <LikeButton
+            disabled={!accountId}
+            onClick={() => onDislike(id, isDislikedByMe)}
+            isActive={isDislikedByMe}
+            amount={dislikeAccounts.length}
+          />
           {accountId && (
             <ReplyButton
               className={styles.replyButton}

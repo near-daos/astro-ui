@@ -12,20 +12,18 @@ import styles from './DraftInfo.module.scss';
 
 interface DraftInfoProps {
   className?: string;
-  replies: number;
   isSaved: boolean;
   saves: number;
 }
 
 export const DraftInfo: FC<DraftInfoProps> = ({
   className,
-  replies,
   isSaved,
   saves,
 }) => {
   const [isSavedDraft, setSavedDraft] = useState(isSaved);
   const [savesCount, setSavesCount] = useState(saves);
-  const { draftsService } = useDraftsContext();
+  const { draftsService, amountComments } = useDraftsContext();
   const router = useRouter();
   const { draft } = router.query;
   const draftId = draft as string;
@@ -66,7 +64,7 @@ export const DraftInfo: FC<DraftInfoProps> = ({
     <div className={cn(styles.draftInfo, className)}>
       <DraftInfoItem
         iconName="draftComments"
-        count={replies}
+        count={amountComments}
         className={styles.draftInfoItem}
       />
       <DraftInfoItem
