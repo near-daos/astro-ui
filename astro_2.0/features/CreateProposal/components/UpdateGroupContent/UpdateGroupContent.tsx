@@ -106,7 +106,7 @@ export const UpdateGroupContent: FC<Props> = ({
             {t('proposalCard.upgradeContent.members')}
           </h6>
 
-          {activeGroup.members.map(member => (
+          {activeGroup.members?.map(member => (
             <p className={styles.member} key={member}>
               {member}
             </p>

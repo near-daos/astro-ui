@@ -125,7 +125,7 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
       case ProposalVariant.ProposeUpdateGroup: {
         if (proposal.kind.type === ProposalType.ChangePolicy) {
           const groups = proposal.kind.policy.roles
-            .filter(el => el.kind !== 'Everyone')
+            .filter(el => el.kind !== 'Everyone' && el.name !== 'TokenHolders')
             .map(
               role =>
                 ({
