@@ -59,6 +59,7 @@ import { SputnikNearService } from 'services/sputnik';
 import { ProposalPermissions } from 'types/context';
 import { TransferFundsContent } from 'astro_2.0/features/CreateProposal/components/TransferFundsContent';
 import { Token } from 'types/token';
+import Decimal from 'decimal.js';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -837,13 +838,21 @@ export function getValidationSchema(
     }
 
     case ProposalVariant.ProposeStakingContractDeployment: {
+      const votingPeriod = dao
+        ? new Decimal(dao.policy.proposalPeriod).div('3.6e12').toString()
+        : null;
+      const min = votingPeriod || 1;
+
       schema = yup.object().shape({
         token: yup.string(),
         unstakingPeriod: yup
           .number()
           .typeError(t('validation.mustBeAValidNumber'))
           .positive()
-          .min(1)
+          .min(
+            +min,
+            `Must be greater than proposal voting period: ${min} hours`
+          )
           .required(t('validation.required')),
       });
       break;
