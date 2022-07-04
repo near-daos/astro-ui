@@ -3,9 +3,7 @@ import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useAsync } from 'react-use';
-import Decimal from 'decimal.js';
 
-import { formatYoktoValue } from 'utils/format';
 import { validateUserAccount } from 'astro_2.0/features/CreateProposal/helpers';
 import { useWalletContext } from 'context/WalletContext';
 
@@ -64,7 +62,7 @@ export const DelegateVoting: FC<Props> = ({
     ]);
 
     setTokenDetails({
-      balance: Number(formatYoktoValue(balance, meta.decimals)),
+      balance: Number(balance), // : Number(formatYoktoValue(balance, meta.decimals)),
       symbol: meta.symbol,
       decimals: meta.decimals,
     });
@@ -130,9 +128,7 @@ export const DelegateVoting: FC<Props> = ({
       nearService.getStackingContract(dao.name),
       data.accounts.map(item => ({
         ...item,
-        amount: new Decimal(item.amount)
-          .mul(10 ** tokenDetails.decimals)
-          .toFixed(),
+        amount: item.amount.toFixed(),
       }))
     );
 

@@ -1,0 +1,146 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+$panel-background: var(--color-brand-purple);
+
+.widgetWrapper {
+  background-color: $panel-background;
+  color: var(--color-white);
+}
+
+.icon {
+  color: var(--color-primary-30);
+  margin-right: 4px;
+  width: 24px;
+}
+
+.title {
+  color: var(--color-white);
+}
+
+.root {
+  position: relative;
+  width: 100%;
+  z-index: 10;
+}
+
+.primaryValue {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.secondaryValue {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.sub {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.depositWidget {
+  align-items: center;
+  display: flex;
+  flex: 1;
+}
+
+.widgetButton.widgetButton {
+  @include centralize;
+
+  background-color: var(--color-primary-30);
+  border-radius: 5px;
+  color: var(--color-brand-black);
+  height: 32px;
+  margin-left: 12px;
+  width: 32px;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.alignRight {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+}
+
+.actionsPanel {
+  background-color: $panel-background;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 3px 2px 15px rgba(0, 0, 0, 0.05);
+  left: 0;
+  margin: 0 -14px;
+  padding: 14px;
+  position: absolute;
+  top: calc(100% + 7px);
+  width: calc(100% + 28px);
+
+  &::before {
+    background-color: $panel-background;
+    content: '';
+    height: 6px;
+    left: 0;
+    position: absolute;
+    top: -6px;
+    width: 100%;
+  }
+}
+
+.actionsContext {
+  @extend %body2;
+  color: var(--color-white);
+  text-transform: capitalize;
+}
+
+.label {
+  @extend %body3;
+  color: var(--color-white);
+  margin-right: 4px;
+}
+
+.value {
+  @extend %body3;
+  color: var(--color-white);
+}
+
+.footer {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.controlButton {
+  color: var(--color-white);
+  flex: 1;
+  min-width: unset;
+}
+
+.primaryButton {
+  background-color: var(--color-primary-30);
+  color: var(--color-brand-black);
+
+  &:hover {
+    background-color: var(--color-primary-40);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+.input {
+  color: var(--color-white);
+}
+
+.controlWrapper.controlWrapper {
+  display: flex;
+  justify-content: flex-end;
+  overflow: visible;
+  width: 100%;
+}
