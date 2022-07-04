@@ -38,22 +38,3 @@ jobs:
         namespace: ${{ env.DEPLOYMENT_NAMESPACE }}
         tag: ${{ github.event.inputs.tag }}
         chart_directory: deployment/app-chart
-
-#        command: |
-#          export CHART_FOLDER=deployment/app-chart
-#          helm lint $CHART_FOLDER
-#          helm --namespace $DEPLOYMENT_NAMESPACE upgrade --install --create-namespace --wait $APP_NAME $CHART_FOLDER \
-#            --set image.tag=$DOCKER_ENV_TAG \
-#            --set environment.near_env=${NEAR_ENV} \
-#            --set environment.near_contract_name=${NEAR_CONTRACT_NAME} \
-#            --set environment.api_url=${API_URL} \
-#            --set environment.google_analytics_key=${GOOGLE_ANALYTICS_KEY} \
-#            --set environment.log_rocket_app_id=${LOG_ROCKET_APP_ID} \
-#            --set environment.near_env=${NEAR_ENV} \
-#            --set environment.stats_api_url=${STATS_API_URL} \
-#            --set environment.next_public_launchdarkly_id=${NEXT_PUBLIC_LAUNCHDARKLY_ID} \
-#            --set environment.app_domain=${APP_DOMAIN} \
-#            --set environment.release_notes=${RELEASE_NOTES} \
-#            --set environment.generic_factory_contract_name=${GENERIC_FACTORY_CONTRACT_NAME} \
-#            --set environment.staking_contract_binary_hash=${STAKING_CONTRACT_BINARY_HASH} \
-#            --set ingress.host=${K8S_INGRESS_HOST}

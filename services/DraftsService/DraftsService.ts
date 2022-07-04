@@ -59,20 +59,26 @@ export class DraftsService {
     id: string,
     dao?: DAO,
     accountIdParams?: string
-  ): Promise<DraftProposal> {
-    const { data } = await this.httpService.get(`/draft-proposals/${id}`, {
-      responseMapper: {
-        name: API_MAPPERS.MAP_DRAFT_TO_PROPOSAL_DRAFT,
-        params: {
-          dao,
+  ): Promise<DraftProposal | null> {
+    try {
+      const { data } = await this.httpService.get(`/draft-proposals/${id}`, {
+        responseMapper: {
+          name: API_MAPPERS.MAP_DRAFT_TO_PROPOSAL_DRAFT,
+          params: {
+            dao,
+          },
         },
-      },
-      params: {
-        accountId: accountIdParams,
-      },
-    });
+        params: {
+          accountId: accountIdParams,
+        },
+      });
 
-    return data;
+      return data;
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
   }
 
   public async patchDraft(
@@ -145,7 +151,7 @@ export class DraftsService {
       { params }
     );
 
-    return data.data.filter(item => !item.replyTo);
+    return data.data;
   }
 
   public async createDraftComment(
@@ -188,11 +194,39 @@ export class DraftsService {
     });
   }
 
-  public async unlikeDraftComment(
+  public async removeLikeDraftComment(
     params: { id: string } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.post(
-      `/draft-comments/${params.id}/unlike`,
+      `/draft-comments/${params.id}/remove-like`,
+      params,
+      {
+        queryRequest: {
+          name: API_QUERIES.ADD_AUTHORIZATION,
+        },
+      }
+    );
+  }
+
+  public async dislikeDraftComment(
+    params: { id: string } & Authorization
+  ): Promise<AxiosResponse<boolean>> {
+    return this.httpService.post(
+      `/draft-comments/${params.id}/dislike`,
+      params,
+      {
+        queryRequest: {
+          name: API_QUERIES.ADD_AUTHORIZATION,
+        },
+      }
+    );
+  }
+
+  public async removeDislikeDraftComment(
+    params: { id: string } & Authorization
+  ): Promise<AxiosResponse<boolean>> {
+    return this.httpService.post(
+      `/draft-comments/${params.id}/remove-dislike`,
       params,
       {
         queryRequest: {

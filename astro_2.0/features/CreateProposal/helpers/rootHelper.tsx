@@ -59,6 +59,7 @@ import { SputnikNearService } from 'services/sputnik';
 import { ProposalPermissions } from 'types/context';
 import { TransferFundsContent } from 'astro_2.0/features/CreateProposal/components/TransferFundsContent';
 import { Token } from 'types/token';
+import Decimal from 'decimal.js';
 
 const CustomFunctionCallContent = dynamic(
   import(
@@ -769,6 +770,26 @@ export function getValidationSchema(
           });
           break;
         }
+        case FunctionCallType.CreateRoketoStream: {
+          schema = yup.object().shape({
+            tokenId: yup.string().default('NEAR'),
+            shouldDepositForDao: yup.boolean(),
+            shouldDepositForReceiver: yup.boolean(),
+            amount: yup.string().required(t('validation.required')),
+            duration: yup.string().required(t('validation.required')),
+            receiverId: yup.string().required(t('validation.required')),
+            comment: yup.string(),
+            receipt: yup.object().shape({
+              // eslint-disable-next-line react/forbid-prop-types
+              total: yup.object(),
+              // eslint-disable-next-line react/forbid-prop-types
+              positions: yup.array(),
+            }),
+            details: yup.string().required(t('validation.required')),
+            externalUrl: yup.string().url(),
+          });
+          break;
+        }
         default: {
           schema = yup.object().shape({
             smartContractAddress: yup
@@ -817,13 +838,21 @@ export function getValidationSchema(
     }
 
     case ProposalVariant.ProposeStakingContractDeployment: {
+      const votingPeriod = dao
+        ? new Decimal(dao.policy.proposalPeriod).div('3.6e12').toString()
+        : null;
+      const min = votingPeriod || 1;
+
       schema = yup.object().shape({
         token: yup.string(),
         unstakingPeriod: yup
           .number()
           .typeError(t('validation.mustBeAValidNumber'))
           .positive()
-          .min(1)
+          .min(
+            +min,
+            `Must be greater than proposal voting period: ${min} hours`
+          )
           .required(t('validation.required')),
       });
       break;
@@ -863,6 +892,7 @@ export function getValidationSchema(
       });
       break;
     }
+
     case ProposalVariant.ProposeTransferFunds: {
       const tokens = (data?.daoTokens as Record<string, Token>) ?? {};
       const tokensIds = Object.values(tokens)

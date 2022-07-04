@@ -1,4 +1,5 @@
 @import 'styles/typography';
+@import 'styles/mixins';
 
 .root {
   display: flex;
@@ -37,25 +38,6 @@
 }
 
 .body {
+  @include editable-content;
   margin: 0 0 12px;
-
-  p,
-  ul,
-  pre {
-    margin: 0;
-  }
-
-  p,
-  ul {
-    font-size: 13.78px;
-    line-height: 24px;
-  }
-
-  pre {
-    background-color: var(--color-neutral-20);
-    font-family: monospace, monospace;
-    font-size: 12px;
-    margin: 4px 0;
-    padding: 5px 10px;
-  }
 }

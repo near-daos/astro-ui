@@ -42,6 +42,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   const currentPath = asPath.split('?')[0];
 
   const url = {
+    delegates: `/dao/${dao.id}/delegate`,
     drafts: `/dao/${dao.id}/drafts`,
     proposals: `/dao/${dao.id}/proposals`,
     funds: `/dao/${dao.id}/treasury/tokens`,
@@ -112,6 +113,15 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           </a>
         </Link>
         <section className={styles.controls}>
+          {flags.delegateVoting && (
+            <ActionButton
+              iconName="stateGovernance"
+              onClick={() => handleChapterClick(url.delegates)}
+              className={generateChapterStyle('delegates')}
+            >
+              {t('daoDetailsMinimized.delegates')}
+            </ActionButton>
+          )}
           {flags.draftProposals && (
             <ActionButton
               iconName="sheet"

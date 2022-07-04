@@ -100,7 +100,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
 
     await onUpdate({
       ...status,
-      step: null,
+      // step: null,
       proposalId: null,
     });
   }, [canControl, onUpdate, status]);
@@ -164,6 +164,13 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
             contract: `${daoContext.dao.name}${STAKING_CONTRACT_PREFIX}`,
           };
           break;
+        case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
+          initialValues = {
+            contractAddress,
+          };
+
+          break;
+        }
         case ProposalVariant.ProposeStakeTokens: {
           if (!contractAddress) {
             return (

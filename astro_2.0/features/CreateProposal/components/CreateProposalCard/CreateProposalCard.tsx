@@ -329,26 +329,22 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     [setValue, trigger]
   );
 
-  function renderEditableContent() {
-    return (
-      <EditableContent
-        errors={errors}
-        placeholder="Describe your draft..."
-        titlePlaceholder="Add draft name"
-        title={title}
-        setTitle={handlerChangeTitle}
-        hashtags={hashtags}
-        setHashtags={handlerChangeHashtags}
-        className={styles.editable}
-        html={description}
-        setHTML={handlerChangeDescription}
-      />
-    );
-  }
-
   function renderDescription(optionalNode?: ReactNode) {
     if (isDraft) {
-      return renderEditableContent();
+      return (
+        <EditableContent
+          errors={errors}
+          placeholder="Describe your draft..."
+          titlePlaceholder="Add draft name"
+          title={title}
+          setTitle={handlerChangeTitle}
+          hashtags={hashtags}
+          setHashtags={handlerChangeHashtags}
+          className={styles.editable}
+          html={description}
+          setHTML={handlerChangeDescription}
+        />
+      );
     }
 
     switch (type) {

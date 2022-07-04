@@ -52,6 +52,7 @@ import { DraftManagement } from 'astro_2.0/components/ProposalCardRenderer/compo
 import { EditableContent } from 'astro_2.0/components/EditableContent';
 import { DeleteDraftButton } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/DeleteDraftButton';
 import { ProposalControlPanel } from 'astro_2.0/components/ProposalCardRenderer/components/ProposalCard/components/ProposalControlPanel';
+import { DAO } from 'types/dao';
 
 import { formatISODate } from 'utils/format';
 
@@ -95,13 +96,13 @@ export interface ProposalCardProps {
   isEditDraft?: boolean;
   title?: string;
   hashtags?: Hashtag[];
-  replies?: number;
   isSaved?: boolean;
   history?: ProposalFeedItem[];
   onSelect?: (p: string) => void;
   selectedList?: string[];
   convertTOProposal?: () => void;
   saves?: number;
+  dao?: DAO;
 }
 
 function getTimestampLabel(
@@ -215,13 +216,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   isEditDraft,
   title,
   hashtags,
-  replies,
   isSaved,
   history,
   onSelect,
   selectedList,
   convertTOProposal,
   saves,
+  dao,
 }) => {
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
@@ -564,14 +565,13 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       return (
         <div className={styles.draftFooter}>
           <DraftManagement
+            accountId={accountId}
+            proposer={proposer}
             convertTOProposal={convertTOProposal}
             onEditDraft={handleEditDraft}
+            dao={dao}
           />
-          <DraftInfo
-            saves={saves || 0}
-            isSaved={Boolean(isSaved)}
-            replies={replies || 0}
-          />
+          <DraftInfo saves={saves || 0} isSaved={Boolean(isSaved)} />
         </div>
       );
     }
@@ -687,7 +687,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     }
 
     if (isEditDraft) {
-      return <DeleteDraftButton draftId={id || ''} daoId={daoId} />;
+      return <DeleteDraftButton draftId={id || ''} daoId={daoId || ''} />;
     }
 
     if (history && history.length >= 2) {
@@ -698,7 +698,11 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       );
     }
 
-    return <div className={styles.countdownCell}>{updatedAt}</div>;
+    return (
+      <div className={styles.countdownCell}>
+        {formatISODate(updatedAt, 'dd MMMM yyyy, HH:mm')}
+      </div>
+    );
   }
 
   return (

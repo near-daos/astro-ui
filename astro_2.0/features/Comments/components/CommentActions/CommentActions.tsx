@@ -1,12 +1,8 @@
-import React, { FC, useCallback, useState } from 'react';
-import cn from 'classnames';
+import React, { FC, useCallback } from 'react';
 
-import { IconButton } from 'components/button/IconButton';
-import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 import { useModal } from 'components/modal';
 import { ConfirmModal } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/ConfirmModal';
-import { Icon } from 'components/Icon';
-import { Button } from 'components/button/Button';
+import { CommentAction } from 'astro_2.0/features/Comments/components/CommentActions/CommentAction';
 
 import styles from './CommentActions.module.scss';
 
@@ -23,7 +19,6 @@ export const CommentActions: FC<Props> = ({
   id,
   isEditable,
 }) => {
-  const [open, setOpen] = useState(false);
   const [showModal] = useModal(ConfirmModal);
 
   const handleDelete = useCallback(async () => {
@@ -42,38 +37,13 @@ export const CommentActions: FC<Props> = ({
   }
 
   return (
-    <GenericDropdown
-      isOpen={open}
-      onOpenUpdate={setOpen}
-      parent={
-        <div className={styles.root}>
-          <IconButton icon="buttonMore" className={styles.rootIcon} />
-        </div>
-      }
-    >
-      <ul className={styles.menu}>
-        <li className={styles.menuItem}>
-          <Button
-            variant="transparent"
-            className={cn(styles.buttonContent)}
-            size="small"
-            onClick={onEdit}
-          >
-            <Icon name="buttonEdit" className={styles.icon} /> <span>Edit</span>
-          </Button>
-        </li>
-        <li className={cn(styles.menuItem, styles.red)}>
-          <Button
-            variant="transparent"
-            className={cn(styles.buttonContent, styles.red)}
-            size="small"
-            onClick={handleDelete}
-          >
-            <Icon name="buttonDelete" className={styles.icon} />{' '}
-            <span>Remove</span>
-          </Button>
-        </li>
-      </ul>
-    </GenericDropdown>
+    <div className={styles.root}>
+      <CommentAction
+        overlayText="Delete"
+        icon="buttonDelete"
+        onClick={handleDelete}
+      />
+      <CommentAction overlayText="Edit" icon="buttonEdit" onClick={onEdit} />
+    </div>
   );
 };

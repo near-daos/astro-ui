@@ -39,11 +39,13 @@ import get from 'lodash/get';
 import {
   BuyNftFromMintbaseInput,
   BuyNftFromParasInput,
+  CreateRoketoStreamInput,
   CustomFunctionCallInput,
   getAcceptStakingContractProposal,
   getBuyNftFromMintbaseProposal,
   getBuyNftFromParasProposal,
   getChangeConfigProposal,
+  getCreateRoketoStreamProposal,
   getChangeVotingPolicyToWeightVoting,
   getCreateTokenProposal,
   getCustomFunctionCallProposal,
@@ -357,6 +359,13 @@ export async function getNewProposalObject(
           return getTransferMintbaseNFTProposal(
             dao,
             data as TransferMintbaseNFTInput
+          );
+        }
+        case FunctionCallType.CreateRoketoStream: {
+          return getCreateRoketoStreamProposal(
+            dao,
+            data as CreateRoketoStreamInput,
+            tokens
           );
         }
         default: {

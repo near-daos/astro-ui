@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
 import cn from 'classnames';
 import DOMPurify from 'dompurify';
+
 import { formatISODate } from 'utils/format';
+
 import styles from './CommentContent.module.scss';
 
 interface Props {
@@ -30,8 +32,11 @@ export const CommentContent: FC<Props> = ({
           {formatISODate(updatedAt, 'dd MMMM yyyy, HH:mm')}
         </div>
       </div>
-      {/* eslint-disable-next-line react/no-danger */}
-      <p className={styles.body} dangerouslySetInnerHTML={{ __html: clean }} />
+      <p
+        className={styles.body}
+        /* eslint-disable-next-line react/no-danger */
+        dangerouslySetInnerHTML={{ __html: clean }}
+      />
     </div>
   );
 };

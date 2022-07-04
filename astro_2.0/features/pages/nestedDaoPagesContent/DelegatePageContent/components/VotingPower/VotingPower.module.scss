@@ -1,0 +1,24 @@
+.root {
+  display: flex;
+  flex-direction: column;
+
+  .progressBar {
+    background-color: var(--color-neutral-40);
+    border-radius: 50px;
+    height: 8px;
+    overflow: hidden;
+    position: relative;
+    width: 80%;
+  }
+
+  .progress {
+    background-color: var(--color-primary-50);
+    border-radius: 50px;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+
+    transition: width 0.3s ease-out;
+  }
+}

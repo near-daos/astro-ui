@@ -1,0 +1,43 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  border: 1px solid var(--color-neutral-40);
+  border-radius: 8px;
+
+  display: flex;
+  justify-content: flex-start;
+
+  overflow: hidden;
+
+  padding: 0 3px;
+}
+
+.inputWrapper {
+  flex: 1;
+}
+
+.input.input {
+  background: transparent;
+  height: unset;
+  min-height: unset;
+  padding: 5.5px;
+}
+
+.symbol {
+  @extend %caption1;
+  @include ellipse-text;
+  font-size: 12px;
+  max-width: 40px;
+}
+
+.maxButton {
+  @extend %caption1;
+  background-color: var(--color-primary-20);
+  border-radius: 8px;
+  color: var(--color-primary-50);
+  font-size: 12px;
+  min-width: unset;
+  padding: 6px 8px;
+}
