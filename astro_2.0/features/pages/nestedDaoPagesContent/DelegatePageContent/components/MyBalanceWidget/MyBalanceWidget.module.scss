@@ -1,11 +1,10 @@
 @import 'styles/typography';
 @import 'styles/mixins';
 
-$panel-background: var(--color-brand-purple);
+$panel-background: var(--color-white);
 
 .widgetWrapper {
   background-color: $panel-background;
-  color: var(--color-white);
 }
 
 .icon {
@@ -15,13 +14,17 @@ $panel-background: var(--color-brand-purple);
 }
 
 .title {
-  color: var(--color-white);
+  color: var(--color-neutral-60);
 }
 
 .root {
-  position: relative;
   width: 100%;
   z-index: 10;
+}
+
+.combined {
+  align-items: baseline;
+  display: flex;
 }
 
 .primaryValue {
@@ -35,8 +38,10 @@ $panel-background: var(--color-brand-purple);
 }
 
 .sub {
+  @include ellipse-text;
   font-size: 16px;
   font-weight: 400;
+  max-width: 90px;
 }
 
 .depositWidget {
@@ -48,7 +53,7 @@ $panel-background: var(--color-brand-purple);
 .widgetButton.widgetButton {
   @include centralize;
 
-  background-color: var(--color-primary-30);
+  background-color: var(--color-neutral-30);
   border-radius: 5px;
   color: var(--color-brand-black);
   height: 32px;
@@ -74,38 +79,34 @@ $panel-background: var(--color-brand-purple);
   border-radius: 0 0 5px 5px;
   box-shadow: 3px 2px 15px rgba(0, 0, 0, 0.05);
   left: 0;
-  margin: 0 -14px;
   padding: 14px;
   position: absolute;
-  top: calc(100% + 7px);
-  width: calc(100% + 28px);
+  top: 100%;
+  width: 100%;
 
   &::before {
     background-color: $panel-background;
     content: '';
-    height: 6px;
+    height: 12px;
     left: 0;
     position: absolute;
-    top: -6px;
+    top: -12px;
     width: 100%;
   }
 }
 
 .actionsContext {
   @extend %body2;
-  color: var(--color-white);
   text-transform: capitalize;
 }
 
 .label {
   @extend %body3;
-  color: var(--color-white);
   margin-right: 4px;
 }
 
 .value {
   @extend %body3;
-  color: var(--color-white);
 }
 
 .footer {
@@ -116,26 +117,14 @@ $panel-background: var(--color-brand-purple);
 }
 
 .controlButton {
-  color: var(--color-white);
   flex: 1;
   min-width: unset;
 }
 
 .primaryButton {
-  background-color: var(--color-primary-30);
-  color: var(--color-brand-black);
-
-  &:hover {
-    background-color: var(--color-primary-40);
-  }
-
   &:disabled {
     opacity: 0.5;
   }
-}
-
-.input {
-  color: var(--color-white);
 }
 
 .controlWrapper.controlWrapper {

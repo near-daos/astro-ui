@@ -24,6 +24,7 @@ export const VotingThresholdWidget: FC<Props> = ({
 }) => {
   return (
     <DelegatePageWidget
+      className={styles.secondaryWidget}
       title="Voting Threshold"
       info="Required number of tokens to complete the voting"
     >

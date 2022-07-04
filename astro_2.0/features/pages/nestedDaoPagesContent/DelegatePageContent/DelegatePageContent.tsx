@@ -110,7 +110,10 @@ export const DelegatePageContent: FC<Props> = ({
             symbol={tokenDetails?.symbol}
             availableBalance={tokenDetails?.balance}
           />
-          <DelegatePageWidget title="Total Delegated Balance">
+          <DelegatePageWidget
+            title="Total Delegated Balance"
+            className={styles.secondaryWidget}
+          >
             {loadingTotalSupply ? (
               <ContentLoader height={28} width={80}>
                 <rect x="0" y="0" width="80" height="28" />
