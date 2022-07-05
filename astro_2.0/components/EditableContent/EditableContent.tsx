@@ -135,6 +135,10 @@ export const EditableContent: FC<EditableContentProps> = ({
     if (handleSend) {
       handleSend(html);
     }
+
+    if (handleCancel) {
+      handleCancel();
+    }
   };
 
   return (

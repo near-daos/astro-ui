@@ -1,10 +1,39 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAsyncFn } from 'react-use';
+import { useAsync, useMountedState } from 'react-use';
 import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 import { DraftComment } from 'services/DraftsService/types';
 import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { configService } from 'services/ConfigService';
+import io, { Socket as TSocket } from 'socket.io-client';
+
+type Socket = typeof TSocket;
+
+function prepareData(data: DraftComment[]) {
+  const groups = data.reduce<Record<string, DraftComment[]>>((res, item) => {
+    const key = item.replyTo ?? '';
+
+    if (res[key]) {
+      res[key].push(item);
+    } else {
+      res[key] = [item];
+    }
+
+    return res;
+  }, {});
+
+  if (!groups['']) {
+    return data;
+  }
+
+  return groups[''].map(item => {
+    return {
+      ...item,
+      replies: groups[item.id] ?? [],
+    };
+  });
+}
 
 export function useDraftComments(): {
   loading: boolean;
@@ -16,6 +45,7 @@ export function useDraftComments(): {
   likeComment: (id: string, isLiked: boolean) => Promise<void>;
   dislikeComment: (id: string, idDislike: boolean) => Promise<void>;
 } {
+  const isMounted = useMountedState();
   const router = useRouter();
   const { draft } = router.query;
   const contextId = draft as string;
@@ -24,7 +54,15 @@ export function useDraftComments(): {
   const { draftsService, setAmountComments } = useDraftsContext();
   const { accountId, pkAndSignature } = useWalletContext();
 
-  const [{ loading, value }, fetchComments] = useAsyncFn(async () => {
+  const [value, setValue] = useState<{
+    data: DraftComment[];
+    countComments: number;
+  }>({
+    data: [],
+    countComments: 0,
+  });
+
+  const { loading } = useAsync(async () => {
     try {
       const data = await draftsService.getDraftComments({
         contextId,
@@ -33,24 +71,18 @@ export function useDraftComments(): {
         limit: 1000,
       });
 
-      return {
-        data: data.filter((item: DraftComment) => !item.replyTo),
+      setValue({
+        data,
         countComments: data.length,
-      };
+      });
     } catch (e) {
       showNotification({
         type: NOTIFICATION_TYPES.ERROR,
         lifetime: 20000,
         description: e?.message,
       });
-
-      return null;
     }
   }, [contextId]);
-
-  useEffect(() => {
-    setAmountComments(value?.countComments || 0);
-  }, [value?.countComments, setAmountComments]);
 
   const addComment = useCallback(
     async (msg: string, replyTo?: string) => {
@@ -70,8 +102,6 @@ export function useDraftComments(): {
           publicKey,
           signature,
         });
-
-        await fetchComments();
       } catch (e) {
         showNotification({
           type: NOTIFICATION_TYPES.ERROR,
@@ -80,7 +110,7 @@ export function useDraftComments(): {
         });
       }
     },
-    [accountId, contextId, draftsService, fetchComments, pkAndSignature]
+    [accountId, contextId, draftsService, pkAndSignature]
   );
 
   const editComment = useCallback(
@@ -99,8 +129,6 @@ export function useDraftComments(): {
           publicKey,
           signature,
         });
-
-        await fetchComments();
       } catch (e) {
         showNotification({
           type: NOTIFICATION_TYPES.ERROR,
@@ -109,7 +137,7 @@ export function useDraftComments(): {
         });
       }
     },
-    [accountId, draftsService, fetchComments, pkAndSignature]
+    [accountId, draftsService, pkAndSignature]
   );
 
   const likeComment = useCallback(
@@ -134,8 +162,6 @@ export function useDraftComments(): {
           await draftsService.removeDislikeDraftComment(params);
           await draftsService.likeDraftComment(params);
         }
-
-        await fetchComments();
       } catch (e) {
         showNotification({
           type: NOTIFICATION_TYPES.ERROR,
@@ -144,7 +170,7 @@ export function useDraftComments(): {
         });
       }
     },
-    [accountId, draftsService, fetchComments, pkAndSignature]
+    [accountId, draftsService, pkAndSignature]
   );
 
   const dislikeComment = useCallback(
@@ -169,8 +195,6 @@ export function useDraftComments(): {
           await draftsService.removeLikeDraftComment(params);
           await draftsService.dislikeDraftComment(params);
         }
-
-        await fetchComments();
       } catch (e) {
         showNotification({
           type: NOTIFICATION_TYPES.ERROR,
@@ -179,7 +203,7 @@ export function useDraftComments(): {
         });
       }
     },
-    [accountId, draftsService, fetchComments, pkAndSignature]
+    [accountId, draftsService, pkAndSignature]
   );
 
   const deleteComment = useCallback(
@@ -197,8 +221,6 @@ export function useDraftComments(): {
           publicKey,
           signature,
         });
-
-        await fetchComments();
       } catch (e) {
         showNotification({
           type: NOTIFICATION_TYPES.ERROR,
@@ -207,19 +229,86 @@ export function useDraftComments(): {
         });
       }
     },
-    [accountId, draftsService, fetchComments, pkAndSignature]
+    [accountId, draftsService, pkAndSignature]
   );
 
   useEffect(() => {
-    (async () => {
-      await fetchComments();
-    })();
-  }, [fetchComments]);
+    setAmountComments(value?.countComments || 0);
+  }, [value?.countComments, setAmountComments]);
+
+  useEffect(() => {
+    let socket: Socket;
+    const { appConfig } = configService.get();
+
+    const { publicKey, signature } = pkAndSignature || {};
+
+    if (accountId && publicKey && isMounted() && appConfig) {
+      socket = io(appConfig.DRAFTS_API_URL, {
+        query: {
+          accountId,
+          publicKey,
+          signature,
+        },
+        transports: ['websocket'],
+      });
+
+      if (socket) {
+        socket.on('draft-comment', (comment: DraftComment) => {
+          if (isMounted()) {
+            setValue(prev => {
+              return {
+                data: [comment, ...prev.data],
+                countComments: prev.countComments + 1,
+              };
+            });
+          }
+        });
+        socket.on('draft-comment-updated', (comment: DraftComment) => {
+          if (isMounted()) {
+            setValue(prev => {
+              const newData = prev.data.map(item => {
+                if (item.id !== comment.id) {
+                  return item;
+                }
+
+                return comment;
+              });
+
+              return {
+                data: newData,
+                countComments: newData.length,
+              };
+            });
+          }
+        });
+        socket.on('draft-comment-removed', (comment: DraftComment) => {
+          if (isMounted()) {
+            setValue(prev => {
+              const newData = prev.data.filter(item => item.id !== comment.id);
+
+              return {
+                data: newData,
+                countComments: newData.length,
+              };
+            });
+          }
+        });
+      }
+    }
+
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+  }, [accountId, isMounted, pkAndSignature]);
+
+  const preparedData = prepareData(value.data);
 
   return {
     loading,
-    countComments: value?.countComments || 0,
-    data: value?.data ?? [],
+    countComments: preparedData?.length || 0,
+    data: preparedData ?? [],
     addComment,
     editComment,
     deleteComment,
