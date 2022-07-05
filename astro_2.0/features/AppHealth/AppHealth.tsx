@@ -31,6 +31,10 @@ export const AppHealth: VFC = () => {
         }
       });
     }
+
+    return () => {
+      socket?.disconnect();
+    };
   }, [appHealth, socket]);
 
   return null;

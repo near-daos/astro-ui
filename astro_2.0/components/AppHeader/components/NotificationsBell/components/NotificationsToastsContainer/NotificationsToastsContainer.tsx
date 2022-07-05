@@ -41,6 +41,10 @@ export const NotificationsToastsContainer: FC = () => {
         );
       });
     }
+
+    return () => {
+      socket?.disconnect();
+    };
   }, [socket]);
 
   useEffect(() => {
