@@ -1,13 +1,11 @@
-name: Deploy
+name: Deploy Latest Image
 on:
   workflow_dispatch:
     inputs:
       environment:
         required: true
         description: Specify environment to run on. Valid values are test, production
-      tag:
-        required: true
-        description: Docker tag to deploy. Valid values are "latest", "<branch>-latest", "<commit_sha>", "<environment>-<commit_sha>". Exact values can be found in "Docker Build Publish" step of "Build Deploy" job.
+        default: production
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -31,10 +29,30 @@ jobs:
         cat ".github/env.common" >>$GITHUB_ENV
         cat ".github/env.${{ github.event.inputs.environment }}" >>$GITHUB_ENV
 
+    - name: Get Previous Tag
+      id: get-previous-tag
+      run: |
+        TAG=$(aws ecr describe-images --repository-name $APP_NAME --region $AWS_DEFAULT_REGION | jq -r '.imageDetails | .[].imageTags | select(index( "prod-previous" )) | .[] | select(.|test("^[a-f0-9]{40}$"))' | sed -e '2,$d')
+        echo "::set-output name=tag::$TAG"
+
     - name: Helm Deploy
       uses: ./.github/actions/deploy
       with:
         name: ${{ env.APP_NAME }}      
         namespace: ${{ env.DEPLOYMENT_NAMESPACE }}
-        tag: ${{ github.event.inputs.tag }}
+        tag: ${{ steps.get-previous-tag.outputs.tag }}
         chart_directory: deployment/app-chart
+
+    - name: Tag Previous Image
+      uses: tmknom/retag-ecr-action@v1
+      with:
+        repository-name: ${{ env.APP_NAME }}
+        source-tag: prod-current
+        destination-tag: prod-rolled-back
+
+    - name: Tag Current Image
+      uses: tmknom/retag-ecr-action@v1
+      with:
+        repository-name: ${{ env.APP_NAME }}
+        source-tag: prod-previous
+        destination-tag: prod-current
