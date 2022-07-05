@@ -88,6 +88,14 @@ export const AppFooter: FC<AppFooterProps> = ({
             >
               {t('releaseNotes')}
             </a>
+            <a
+              className={styles.devLink}
+              href="https://testnet.app.astrodao.com/"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Testnet env
+            </a>
           </div>
 
           <div className={styles.copyright}>
