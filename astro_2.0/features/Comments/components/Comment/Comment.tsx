@@ -99,6 +99,7 @@ export const Comment: FC<CommentProps> = ({
             amount={likeAccounts.length}
           />
           <LikeButton
+            iconClassName={styles.dislike}
             disabled={!accountId}
             onClick={() => onDislike(id, isDislikedByMe)}
             isActive={isDislikedByMe}
