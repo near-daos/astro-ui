@@ -14,6 +14,7 @@ interface Props {
   value: number;
   suffix?: string;
   onEdit: () => void;
+  disabled: boolean;
 }
 
 export const VotingThresholdWidget: FC<Props> = ({
@@ -21,6 +22,7 @@ export const VotingThresholdWidget: FC<Props> = ({
   value,
   suffix,
   onEdit,
+  disabled,
 }) => {
   return (
     <DelegatePageWidget
@@ -46,6 +48,7 @@ export const VotingThresholdWidget: FC<Props> = ({
               <IconButton
                 iconProps={{ width: 16 }}
                 icon="buttonEdit"
+                disabled={disabled}
                 className={styles.widgetButton}
                 onClick={onEdit}
               />

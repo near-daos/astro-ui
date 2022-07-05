@@ -24,7 +24,11 @@ export const DelegatePageWidget: FC<Props> = ({
 }) => {
   return (
     <div className={cn(styles.root, className)}>
-      {avatar && <div className={styles.avatar} />}
+      {avatar && (
+        <div className={styles.avatar}>
+          <Icon name="defaultAvatar" className={styles.avatarIcon} />
+        </div>
+      )}
       <div className={styles.body}>
         <div className={cn(styles.title, titleClassName)}>
           {title}

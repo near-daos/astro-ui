@@ -40,9 +40,15 @@ export const TableRow: FC<Props> = ({
   const progressPercent = (+balance * 100) / +votingThreshold;
   const formattedBalance = Number(balance).toFixed(0);
 
-  const { nextActionTime } = useDelegatePageContext();
+  const {
+    nextActionTime,
+    stakedBalance,
+    delegatedBalance,
+  } = useDelegatePageContext();
 
   const actionsNotAvailable = nextActionTime && nextActionTime > new Date();
+  const notEnoughStakedBalance = (stakedBalance || 0) === 0;
+  const notEnoughDelegatedBalance = (delegatedBalance || 0) === 0;
 
   return (
     <>
@@ -78,12 +84,13 @@ export const TableRow: FC<Props> = ({
               size="small"
               capitalize
               className={cn(styles.controlButton, {
-                [styles.disabled]: actionsNotAvailable,
+                [styles.disabled]:
+                  actionsNotAvailable || notEnoughStakedBalance,
               })}
               onClick={() =>
                 onActionClick(actionContext !== 'Delegate' ? 'Delegate' : null)
               }
-              disabled={actionsNotAvailable}
+              disabled={actionsNotAvailable || notEnoughStakedBalance}
             >
               Delegate
             </Button>
@@ -93,9 +100,9 @@ export const TableRow: FC<Props> = ({
             size="small"
             capitalize
             className={cn(styles.controlButton, {
-              [styles.disabled]: +balance === 0,
+              [styles.disabled]: +balance === 0 || notEnoughDelegatedBalance,
             })}
-            disabled={+balance === 0}
+            disabled={+balance === 0 || notEnoughDelegatedBalance}
             onClick={() =>
               onActionClick(
                 actionContext !== 'Undelegate' ? 'Undelegate' : null
