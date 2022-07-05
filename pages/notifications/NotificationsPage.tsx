@@ -20,6 +20,7 @@ const NotificationsPage: VFC = () => {
     handleUpdateAll,
     notifications,
     loadMore,
+    loading,
     handleUpdate,
     handleRemove,
   } = useNotificationsList();
@@ -81,6 +82,7 @@ const NotificationsPage: VFC = () => {
 
         <div className={styles.notifications}>
           <Notifications
+            loading={loading}
             onUpdate={handleUpdate}
             loadMore={loadMore}
             notifications={notifications}
