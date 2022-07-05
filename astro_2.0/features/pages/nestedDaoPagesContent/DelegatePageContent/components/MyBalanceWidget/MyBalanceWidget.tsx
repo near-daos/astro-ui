@@ -55,6 +55,7 @@ export const MyBalanceWidget: FC<Props> = ({
                 <IconButton
                   iconProps={{ width: 16 }}
                   icon="buttonDeposit"
+                  disabled={availableBalance === 0}
                   className={styles.widgetButton}
                   onClick={() => setContext('stake')}
                 />
@@ -63,6 +64,7 @@ export const MyBalanceWidget: FC<Props> = ({
                 <IconButton
                   iconProps={{ width: 16 }}
                   icon="buttonWithdraw"
+                  disabled={(stakedBalance || 0) === 0}
                   className={styles.widgetButton}
                   onClick={() => setContext('unstake')}
                 />

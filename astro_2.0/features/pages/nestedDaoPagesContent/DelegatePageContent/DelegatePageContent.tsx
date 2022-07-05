@@ -58,6 +58,9 @@ export const DelegatePageContent: FC<Props> = ({
     data,
   } = useDelegatePageData(daoContext.dao);
   const votingThreshold = useVotingThreshold(daoContext.dao);
+  const canCreateProposal =
+    daoContext.userPermissions.isCanCreatePolicyProposals &&
+    daoContext.policyAffectsProposals.length === 0;
 
   const handleSort = useCallback(
     async value => {
@@ -131,6 +134,7 @@ export const DelegatePageContent: FC<Props> = ({
             loading={loadingDelegateByUser}
             value={Number(votingThreshold)}
             suffix={tokenDetails?.symbol}
+            disabled={!canCreateProposal}
             onEdit={() => {
               if (toggleCreateProposal) {
                 toggleCreateProposal({
@@ -184,7 +188,8 @@ export const DelegatePageContent: FC<Props> = ({
                 size="small"
                 capitalize
                 disabled={
-                  delegateByUser && delegateByUser?.nextActionTime > new Date()
+                  actionsNotAvailable ||
+                  (delegateByUser?.stakedBalance || 0) === 0
                 }
                 onClick={() => setAddNewMemeberMode(!addNewMemberMode)}
               >

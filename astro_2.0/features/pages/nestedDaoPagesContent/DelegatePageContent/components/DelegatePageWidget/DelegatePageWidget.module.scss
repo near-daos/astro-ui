@@ -15,11 +15,17 @@
 }
 
 .avatar {
+  @include centralize;
   background-color: var(--color-neutral-40);
   border-radius: 50%;
   height: 58px;
   margin-right: 16px;
   width: 58px;
+}
+
+.avatarIcon {
+  color: var(--color-neutral-60);
+  width: 32px;
 }
 
 .body {
