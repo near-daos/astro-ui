@@ -118,3 +118,8 @@
   min-height: unset;
   padding: 5.5px;
 }
+
+.secondaryValue {
+  @include ellipse-text;
+  max-width: 120px;
+}

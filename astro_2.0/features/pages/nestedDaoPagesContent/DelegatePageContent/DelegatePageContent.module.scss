@@ -81,11 +81,14 @@
 .primaryValue {
   font-size: 24px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .secondaryValue {
+  @include ellipse-text;
   font-size: 24px;
   font-weight: 400;
+  max-width: 120px;
 }
 
 .sub {

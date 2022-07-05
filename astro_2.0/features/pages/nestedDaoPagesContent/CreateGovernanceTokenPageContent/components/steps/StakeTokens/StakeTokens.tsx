@@ -117,7 +117,7 @@ export const StakeTokens: FC<Props> = ({
           />
         </div>
         <div className={styles.footer}>
-          <span className={styles.inputLabel}>PORTOS</span>
+          <span className={styles.inputLabel}>{tokenDetails?.symbol}</span>
           <Input
             isBorderless
             isValid={!errors.stake?.message}

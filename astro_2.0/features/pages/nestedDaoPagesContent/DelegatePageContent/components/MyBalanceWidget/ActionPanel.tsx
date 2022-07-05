@@ -153,6 +153,7 @@ export const ActionPanel: FC<Props> = ({
         />
       </div>
       <div className={styles.footer}>
+        {renderSubmitButton()}
         <div className={styles.controlWrapper}>
           <Button
             capitalize
@@ -164,7 +165,6 @@ export const ActionPanel: FC<Props> = ({
             Cancel
           </Button>
         </div>
-        {renderSubmitButton()}
       </div>
     </form>
   );
