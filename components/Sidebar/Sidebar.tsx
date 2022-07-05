@@ -12,7 +12,8 @@ import {
   MY_FEED_URL,
 } from 'constants/routing';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
+
 import { useDaoIds } from 'hooks/useDaoIds';
 
 import { Logo } from 'components/Logo';
@@ -33,7 +34,8 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { accountId, login } = useWalletContext();
+  const { accountId, logIn } = useWalletSelectorContext();
+
   const myDaosIds = useDaoIds(accountId);
 
   const createDao = useCallback(() => {
@@ -41,8 +43,8 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
 
     return accountId
       ? router.push(url)
-      : login(WalletType.NEAR).then(() => router.push(url));
-  }, [login, router, accountId]);
+      : logIn(WalletType.NEAR).then(() => router.push(url));
+  }, [logIn, router, accountId]);
 
   function renderHomeNavItem() {
     if (accountId) {

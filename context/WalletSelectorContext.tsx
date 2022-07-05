@@ -1,23 +1,37 @@
+/* eslint-disable  @typescript-eslint/ban-ts-comment */
+
 import {
+  FC,
+  useMemo,
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+  createContext,
+} from 'react';
+import {
+  AccountState,
+  BrowserWallet,
   WalletSelector,
   setupWalletSelector,
-  BrowserWallet,
-  AccountState,
 } from '@near-wallet-selector/core';
-import { useMount } from 'react-use';
+import first from 'lodash/first';
 import { map, distinctUntilChanged } from 'rxjs';
-import { FC, createContext, useState, useContext, useEffect } from 'react';
+import { useLocalStorage, useMount } from 'react-use';
 
 import { setupSender } from '@near-wallet-selector/sender';
 import { setupNearWallet } from '@near-wallet-selector/near-wallet';
 import { setupMyNearWallet } from '@near-wallet-selector/my-near-wallet';
 
-import { WALLETS } from 'types/config';
+import { WalletType } from 'types/config';
 
 interface IWalletSelectorContext {
-  logIn: (walletId: WALLETS) => Promise<void>;
-  selector?: WalletSelector;
+  accountId: string;
   connecting: boolean;
+  selector?: WalletSelector;
+  selectedWalletId?: WalletType;
+  logIn: (walletId: WalletType) => Promise<void>;
+  logOut: () => Promise<void>;
 }
 
 export const WalletSelectorContext = createContext<IWalletSelectorContext>(
@@ -27,32 +41,23 @@ export const WalletSelectorContext = createContext<IWalletSelectorContext>(
 export const WalletSelectorProvider: FC = ({ children }) => {
   const [selector, setSelector] = useState<WalletSelector>();
   const [connecting, setConnecting] = useState(false);
-  const [accountId, setAccountId] = useState<string | null>(null);
-  const [accounts, setAccounts] = useState<Array<AccountState>>([]);
+  const [selectedWalletId, setSelectedWalletId] = useState<WalletType>();
+  const [accountId = '', setAccountId, removeAccountId] = useLocalStorage(
+    'accountId'
+  );
 
-  const syncAccountState = (
-    currentAccountId: string | null,
-    newAccounts: Array<AccountState>
-  ) => {
-    if (!newAccounts.length) {
-      localStorage.removeItem('accountId');
-      setAccountId(null);
-      setAccounts([]);
+  const syncAccountState = useCallback(
+    (accounts: AccountState[]) => {
+      const { accountId: acc } = first(accounts) || {};
 
-      return;
-    }
-
-    const validAccountId =
-      currentAccountId &&
-      newAccounts.some(x => x.accountId === currentAccountId);
-    const newAccountId = validAccountId
-      ? currentAccountId
-      : newAccounts[0].accountId;
-
-    localStorage.setItem('accountId', newAccountId || '');
-    setAccountId(newAccountId);
-    setAccounts(newAccounts);
-  };
+      if (acc) {
+        setAccountId(acc);
+      } else {
+        removeAccountId();
+      }
+    },
+    [setAccountId, removeAccountId]
+  );
 
   useMount(async () => {
     const s = await setupWalletSelector({
@@ -60,46 +65,83 @@ export const WalletSelectorProvider: FC = ({ children }) => {
       modules: [setupNearWallet(), setupMyNearWallet(), setupSender()],
     });
 
-    const state = s.store.getState();
-
-    syncAccountState(localStorage.getItem('accountId'), state.accounts);
-
-    console.log('>>>', s);
-
     setSelector(s);
   });
 
   useEffect(() => {
-    if (!selector) {
-      return;
-    }
-
-    const subscription = selector.store.observable
+    const accountSubscription = selector?.store.observable
       .pipe(
+        // @ts-ignore
         map(state => state.accounts),
         distinctUntilChanged()
       )
       .subscribe(nextAccounts => {
-        console.log('Accounts Update', nextAccounts);
-
-        syncAccountState(accountId, nextAccounts);
+        syncAccountState(nextAccounts);
       });
 
-    return () => subscription.unsubscribe();
-  }, [selector, accountId]);
+    const walletSubscription = selector?.store.observable
+      .pipe(
+        // @ts-ignore
+        map(state => state.selectedWalletId),
+        distinctUntilChanged()
+      )
+      .subscribe(nextWalletId => {
+        const wallet = (nextWalletId || undefined) as WalletType;
 
-  async function logIn(walletId: WALLETS) {
-    setConnecting(true);
+        setSelectedWalletId(wallet);
+      });
 
-    const wallet = await selector?.wallet(walletId);
+    return () => {
+      accountSubscription?.unsubscribe();
+      walletSubscription?.unsubscribe();
+    };
+  }, [selector, syncAccountState]);
 
-    (wallet as BrowserWallet)?.signIn({ contractId: 'test.testnet' });
+  const logIn = useCallback(
+    async (walletId: WalletType) => {
+      setConnecting(true);
 
-    setConnecting(false);
-  }
+      const wallet = (await selector?.wallet(walletId)) as BrowserWallet;
+
+      try {
+        await wallet?.signIn({ contractId: 'test.testnet' });
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setConnecting(false);
+      }
+    },
+    [selector]
+  );
+
+  const logOut = useCallback(async () => {
+    const wallet = (await selector?.wallet()) as BrowserWallet;
+
+    try {
+      await wallet.signOut();
+
+      removeAccountId();
+    } catch (e) {
+      console.error(e);
+    }
+  }, [selector, removeAccountId]);
+
+  // console.log('>>>', selector);
+
+  const values = useMemo(
+    () => ({
+      accountId,
+      logIn,
+      logOut,
+      selector,
+      connecting,
+      selectedWalletId,
+    }),
+    [accountId, logIn, logOut, selector, connecting, selectedWalletId]
+  );
 
   return (
-    <WalletSelectorContext.Provider value={{ logIn, selector, connecting }}>
+    <WalletSelectorContext.Provider value={values}>
       {children}
     </WalletSelectorContext.Provider>
   );

@@ -1,12 +1,15 @@
-import { WALLETS } from 'types/config';
 import React from 'react';
+
+import { WalletType } from 'types/config';
+
+import { Button } from 'components/button/Button';
 import { NearIcon } from 'astro_2.0/components/NearIcon';
 import { SenderIcon } from 'astro_2.0/components/SenderIcon';
-import { Button } from 'components/button/Button';
-import styles from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletIcon/WalletIcon.module.scss';
+
+import styles from './WalletIcon.module.scss';
 
 interface WalletIconProps {
-  walletType: WALLETS;
+  walletType: WalletType;
   isSelected: boolean;
   onClick?: () => void;
   showLoader?: boolean;
@@ -34,10 +37,10 @@ export const WalletIcon: React.FC<WalletIconProps> = ({
   };
 
   switch (walletType) {
-    case WALLETS.NEAR: {
+    case WalletType.NEAR: {
       return renderIcon(<NearIcon showLoader={showLoader} />);
     }
-    case WALLETS.SENDER: {
+    case WalletType.SENDER: {
       return renderIcon(<SenderIcon showLoader={showLoader} />);
     }
     default:

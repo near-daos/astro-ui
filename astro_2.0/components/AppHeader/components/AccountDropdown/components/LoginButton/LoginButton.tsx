@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { WALLETS } from 'types/config';
+import { WalletType } from 'types/config';
 
 import { useModal } from 'components/modal';
 
@@ -18,7 +18,7 @@ export const LoginButton: React.FC = () => {
 
   return (
     <WalletIcon
-      walletType={WALLETS.NEAR}
+      walletType={WalletType.NEAR}
       isSelected={false}
       showLoader={connecting}
       onClick={showModal}

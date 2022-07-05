@@ -3,18 +3,19 @@ import cn from 'classnames';
 import { useTranslation } from 'next-i18next';
 
 import { Icon } from 'components/Icon';
-
-import { useWalletContext } from 'context/WalletContext';
 import { AccountPopupItem } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/AccountPopupItem';
+
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
+
 import styles from './DisconnectButton.module.scss';
 
 export const DisconnectButton: React.FC = () => {
   const { t } = useTranslation('common');
-  const { logout } = useWalletContext();
+  const { logOut } = useWalletSelectorContext();
 
   return (
     <AccountPopupItem
-      onClick={logout}
+      onClick={logOut}
       classes={{
         root: styles.menuButton,
       }}
