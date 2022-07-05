@@ -1,4 +1,4 @@
-name: Deploy Latest Image
+name: Rollback Latest Production Deployment
 on:
   workflow_dispatch:
     inputs:
