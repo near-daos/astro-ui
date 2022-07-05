@@ -4,9 +4,9 @@
   background: none;
   color: var(--color-neutral-50);
   cursor: pointer;
-  height: 24px;
+  height: 16px;
   min-width: auto;
-  width: 24px;
+  width: 16px;
 
   @include tablet-landscape {
     &:hover {
@@ -21,6 +21,7 @@
 
 .tooltip {
   height: 24px;
+  margin-bottom: 6px;
   width: 24px;
 }
 

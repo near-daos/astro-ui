@@ -115,7 +115,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
         <section className={styles.controls}>
           {flags.delegateVoting && (
             <ActionButton
-              iconName="stateGovernance"
+              iconName="delegate"
               onClick={() => handleChapterClick(url.delegates)}
               className={generateChapterStyle('delegates')}
             >

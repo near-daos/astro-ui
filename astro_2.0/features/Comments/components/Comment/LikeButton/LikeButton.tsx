@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
 import { IconButton } from 'components/button/IconButton';
 
 import styles from './LikeButton.module.scss';
@@ -8,6 +9,7 @@ export type LikeButtonProps = {
   disabled: boolean;
   isActive: boolean;
   onClick: () => void;
+  iconClassName?: string;
 };
 
 export const LikeButton: FC<LikeButtonProps> = ({
@@ -15,6 +17,7 @@ export const LikeButton: FC<LikeButtonProps> = ({
   disabled,
   isActive,
   onClick,
+  iconClassName,
 }) => {
   return (
     <div className={styles.likes}>
@@ -23,7 +26,7 @@ export const LikeButton: FC<LikeButtonProps> = ({
         size="medium"
         disabled={disabled}
         icon={isActive ? 'likeFilled' : 'like'}
-        className={styles.likeIcon}
+        className={cn(styles.likeIcon, iconClassName)}
         onClick={onClick}
       />
     </div>
