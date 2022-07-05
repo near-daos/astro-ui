@@ -10,9 +10,25 @@
 .widgets {
   display: grid;
   grid-column-gap: 24px;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1.5fr repeat(2, 1fr);
 
   margin-bottom: 24px;
+}
+
+.secondaryWidget {
+  background-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+
+  &:not(:last-of-type)::after {
+    background-color: var(--color-neutral-50);
+    bottom: 12px;
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 12px;
+    width: 1px;
+  }
 }
 
 .content {

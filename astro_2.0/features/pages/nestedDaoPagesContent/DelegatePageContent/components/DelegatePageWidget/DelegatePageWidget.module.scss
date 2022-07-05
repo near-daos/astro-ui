@@ -1,13 +1,29 @@
 @import 'styles/typography';
 
 .root {
+  align-items: center;
   background-color: var(--color-white);
   border-radius: 5px;
   box-shadow: 3px 2px 15px rgba(0, 0, 0, 0.05);
 
+  display: flex;
+
   padding: 14px;
+  position: relative;
 
   width: auto;
+}
+
+.avatar {
+  background-color: var(--color-neutral-40);
+  border-radius: 50%;
+  height: 58px;
+  margin-right: 16px;
+  width: 58px;
+}
+
+.body {
+  flex: 1;
 }
 
 .title {

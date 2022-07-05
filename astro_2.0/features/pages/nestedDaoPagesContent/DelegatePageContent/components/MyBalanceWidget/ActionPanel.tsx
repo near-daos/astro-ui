@@ -102,7 +102,7 @@ export const ActionPanel: FC<Props> = ({
       <Button
         capitalize
         type="submit"
-        variant="tertiary"
+        variant="primary"
         size="medium"
         className={cn(styles.controlButton, styles.primaryButton)}
         disabled={!isValid}

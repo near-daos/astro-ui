@@ -30,8 +30,7 @@ export const MyBalanceWidget: FC<Props> = ({
   return (
     <DelegatePageWidget
       title="My delegated / staked balance"
-      icon="userAccount"
-      iconClassName={styles.icon}
+      avatar="userAccount"
       className={styles.widgetWrapper}
       titleClassName={styles.title}
     >
@@ -42,11 +41,13 @@ export const MyBalanceWidget: FC<Props> = ({
       ) : (
         <div className={styles.root}>
           <div className={styles.depositWidget}>
-            <span className={styles.primaryValue}>
-              {delegatedBalance ? delegatedBalance.toString() : '0'}/
-            </span>
-            <span className={styles.sub}>
-              {stakedBalance ? stakedBalance.toString() : '0'}
+            <span className={styles.combined}>
+              <span className={styles.primaryValue}>
+                {delegatedBalance ? delegatedBalance.toString() : '0'}/
+              </span>
+              <span className={styles.sub}>
+                {stakedBalance ? stakedBalance.toString() : '0'} {symbol}
+              </span>
             </span>
 
             <span className={styles.alignRight}>
