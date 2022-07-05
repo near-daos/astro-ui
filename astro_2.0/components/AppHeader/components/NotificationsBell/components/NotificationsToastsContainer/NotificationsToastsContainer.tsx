@@ -105,6 +105,11 @@ export const NotificationsToastsContainer: FC = () => {
               className={styles.showAllButton}
               variant="tertiary"
               size="block"
+              onClick={() => {
+                setTimeout(() => {
+                  setShowAllButton(false);
+                });
+              }}
             >
               <Link href={NOTIFICATIONS_PAGE_URL}>
                 <a>Read all new notifications</a>

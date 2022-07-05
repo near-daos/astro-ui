@@ -18,6 +18,7 @@ import styles from './Notifications.module.scss';
 
 interface NotificationsProps {
   daos?: string[];
+  loading?: boolean;
   notifications: PaginationResponse<Notification[]> | null;
   loadMore: () => void;
   onRemove: NotificationAction;
@@ -29,8 +30,13 @@ export const Notifications: FC<NotificationsProps> = ({
   loadMore,
   onRemove,
   onUpdate,
+  loading = false,
 }) => {
   const { t } = useTranslation('notificationsPage');
+
+  if (loading) {
+    return <Loader className={styles.loading} title={t('loading')} />;
+  }
 
   if (!notifications?.data?.length) {
     return (
