@@ -11,14 +11,22 @@ import { shortenString } from 'utils/format';
 import { NFTUri } from 'types/token';
 
 import styles from './NtfCard.module.scss';
+import { NFTActions } from 'features/proposal/components/ProposalActions/components/NFTActions';
+import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 
 export interface NFTCardProps {
   image: NFTUri[];
   contractId: string;
   tokenId: string;
+  toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
 }
 
-export const NFTCard: VFC<NFTCardProps> = ({ image, contractId, tokenId }) => {
+export const NFTCard: VFC<NFTCardProps> = ({
+  image,
+  contractId,
+  tokenId,
+  toggleCreateProposal,
+}) => {
   const imgRef = useRef<HTMLImageElement>(null);
   const linkRef = useRef<HTMLAnchorElement>(null);
   const nameRef = useRef('');
@@ -169,6 +177,13 @@ export const NFTCard: VFC<NFTCardProps> = ({ image, contractId, tokenId }) => {
               <CopyButton text={tokenId} showIcon={false}>
                 {tokenId}
               </CopyButton>
+            </div>
+            <div className={cn(styles.contract, styles.value)}>
+              <NFTActions
+                contractId={contractId}
+                tokenId={tokenId}
+                toggleCreateProposal={toggleCreateProposal}
+              />
             </div>
           </div>
         </div>
