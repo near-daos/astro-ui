@@ -1,6 +1,7 @@
 import Decimal from 'decimal.js';
 import { useTranslation } from 'next-i18next';
 import React, { FC, useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 import { STAKING_CONTRACT_PREFIX } from 'constants/proposals';
 
@@ -29,6 +30,8 @@ import { CreateGovernanceTokenSteps, ProgressStatus } from 'types/settings';
 
 import { SputnikHttpService } from 'services/sputnik';
 
+import { DELEGATE_PAGE_URL } from 'constants/routing';
+
 import { useWalletContext } from 'context/WalletContext';
 
 import styles from './CreateGovernanceTokenWizard.module.scss';
@@ -50,6 +53,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
   onUpdate,
   status,
 }) => {
+  const router = useRouter();
   const { t } = useTranslation();
 
   const { accountId } = useWalletContext();
@@ -86,12 +90,23 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
 
     const nextStep = getNextCreateGovernanceTokenWizardStep(status.step);
 
+    const isFinalise =
+      status.step === CreateGovernanceTokenSteps.DelegateVoting &&
+      nextStep === null;
+
     await onUpdate({
       ...status,
       step: nextStep,
       proposalId: null,
     });
-  }, [canControl, onUpdate, status]);
+
+    if (isFinalise) {
+      router.push({
+        pathname: DELEGATE_PAGE_URL,
+        query: { dao: daoContext.dao.id },
+      });
+    }
+  }, [canControl, daoContext.dao.id, onUpdate, router, status]);
 
   const handleViewProposalReject = useCallback(async () => {
     if (!canControl) {
@@ -167,6 +182,9 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
         case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
           initialValues = {
             contractAddress,
+            details: 'Detailed explanation about threshold, balance and quorum',
+            quorum: daoContext.dao.policy.defaultVotePolicy.quorum,
+            balance: 1,
           };
 
           break;
@@ -241,12 +259,10 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
         {/* <button */}
         {/*  onClick={() => */}
         {/*    onUpdate({ */}
-        {/*      ...status, */}
-        {/*      contractAddress: 'portos.tokenfactory.testnet', */}
-        {/*      step: 5, */}
+        {/*      step: null, */}
         {/*    }) */}
         {/*  } */}
-        {/* > */}
+        {/* /> */}
         {/*  update state */}
         {/* </button> */}
         {/* <button onClick={() => handleViewProposalApprove()}> */}

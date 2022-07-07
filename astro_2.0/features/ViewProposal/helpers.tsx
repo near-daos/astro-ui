@@ -35,6 +35,7 @@ import { AddMemberToGroupContent } from 'astro_2.0/features/ViewProposal/compone
 import { RemoveMemberFromGroupContent } from 'astro_2.0/features/ViewProposal/components/RemoveMemberFromGroupContent';
 import { CustomFunctionCallContent } from 'astro_2.0/features/ViewProposal/components/CustomFunctionCallContent';
 import { ChangeDaoLegalInfoContent } from 'astro_2.0/features/ViewProposal//components/ChangeDaoLegalInfoContent';
+import { UpdateVotePolicyToWeightVoting } from 'astro_2.0/features/ViewProposal/components/UpdateVotePolicyToWeightVoting';
 
 import { nanosToDays } from 'astro_2.0/features/DaoGovernance/helper';
 import { formatYoktoValue, getDistanceFromNow, toMillis } from 'utils/format';
@@ -412,6 +413,45 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
           });
 
           content = <ChangePermissionsContent initialData={initialData} />;
+        }
+
+        break;
+      }
+      case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
+        if (proposal.kind.type === ProposalType.ChangePolicy) {
+          const { policy } = proposal.kind;
+
+          const holdersRole = policy.roles.find(
+            role => role.name === 'TokenHolders' && role.kind !== 'Everyone'
+          );
+
+          let balance;
+          let threshold;
+          let quorum;
+
+          if (holdersRole) {
+            if (typeof holdersRole.kind !== 'string') {
+              if (Reflect.has(holdersRole.kind, 'member')) {
+                balance = (holdersRole.kind as Record<string, string>).member;
+              }
+            }
+
+            const votePolicy = (holdersRole.votePolicy.vote as unknown) as {
+              threshold: string;
+              quorum: string;
+            };
+
+            threshold = votePolicy.threshold;
+            quorum = votePolicy.quorum;
+          }
+
+          content = (
+            <UpdateVotePolicyToWeightVoting
+              balance={balance ?? '0'}
+              quorum={quorum ?? '0'}
+              threshold={threshold ?? '0'}
+            />
+          );
         }
 
         break;

@@ -103,12 +103,12 @@ export function useLowBalanceWarning(
     userPermissions.isCanCreateProposals &&
     userPermissions.allowedProposalsToCreate[ProposalType.SetStakingContract];
 
-  if (!isPermitted || !tokens?.NEAR?.balance || step === undefined) {
+  if (!isPermitted || !tokens?.NEAR?.balance) {
     return false;
   }
 
   return (
-    step < CreateGovernanceTokenSteps.ContractAcceptance &&
+    (!step || step < CreateGovernanceTokenSteps.ContractAcceptance) &&
     Number(tokens.NEAR.balance) < 11
   );
 }

@@ -21,4 +21,8 @@
 
     transition: width 0.3s ease-out;
   }
+
+  .progress.inactive {
+    background-color: var(--color-primary-30);
+  }
 }

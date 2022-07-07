@@ -5,6 +5,7 @@ import {
   getAllowedProposalsToCreate,
   getAllowedProposalsToVote,
 } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
+import { ProposalType } from 'types/proposal';
 
 interface GetDaoListProps {
   sort?: string;
@@ -51,16 +52,35 @@ export async function getDaoContext(
   accountId: string | undefined,
   daoId: string
 ): Promise<DaoContext | undefined> {
-  const [dao, policyAffectsProposals] = await Promise.all([
+  const [dao, policyAffectsProposals, delegations] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
     SputnikHttpService.findPolicyAffectsProposals(daoId),
+    SputnikHttpService.getDelegations(daoId),
   ]);
 
   if (!dao) {
     return undefined;
   }
 
-  const allowedProposalsToCreate = getAllowedProposalsToCreate(accountId, dao);
+  let userHasDelegatedTokens = false;
+  const userDelegation = delegations.find(item => item.accountId === accountId);
+  const holdersRole = dao.policy.roles.find(
+    role => role.kind === 'Member' && role.name === 'TokenHolders'
+  );
+
+  if (
+    userDelegation &&
+    holdersRole &&
+    Number(userDelegation.balance) > Number(holdersRole.balance)
+  ) {
+    userHasDelegatedTokens = true;
+  }
+
+  const allowedProposalsToCreate = getAllowedProposalsToCreate(
+    accountId,
+    dao,
+    userHasDelegatedTokens
+  );
   const isCanCreateProposals = !!Object.values(allowedProposalsToCreate).find(
     value => value
   );
@@ -71,7 +91,9 @@ export async function getDaoContext(
       isCanCreateProposals,
       allowedProposalsToCreate,
       allowedProposalsToVote: getAllowedProposalsToVote(accountId, dao),
-      isCanCreatePolicyProposals: !policyAffectsProposals.length,
+      isCanCreatePolicyProposals:
+        allowedProposalsToCreate[ProposalType.ChangePolicy] &&
+        !policyAffectsProposals.length,
     },
     policyAffectsProposals,
   };

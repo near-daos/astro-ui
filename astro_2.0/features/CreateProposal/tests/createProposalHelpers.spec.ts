@@ -138,9 +138,9 @@ describe('createProposalHelpers', () => {
     );
 
     it('Should return default result', () => {
-      expect(getAllowedProposalsToCreate(null, null)).toEqual(result);
-      expect(getAllowedProposalsToCreate('123', null)).toEqual(result);
-      expect(getAllowedProposalsToCreate('123', getDao('abcd'))).toEqual(
+      expect(getAllowedProposalsToCreate(null, null, false)).toEqual(result);
+      expect(getAllowedProposalsToCreate('123', null, false)).toEqual(result);
+      expect(getAllowedProposalsToCreate('123', getDao('abcd'), false)).toEqual(
         result
       );
     });
@@ -153,7 +153,7 @@ describe('createProposalHelpers', () => {
       'Should allow everything for $permission permission',
       ({ permission }) => {
         expect(
-          getAllowedProposalsToCreate('123', getDao(permission, '123'))
+          getAllowedProposalsToCreate('123', getDao(permission, '123'), false)
         ).toEqual(allowedProposalsToCreate);
       }
     );
@@ -175,7 +175,9 @@ describe('createProposalHelpers', () => {
     `(
       'Should allow $proposalType for $permission $permission',
       ({ permission, proposalType }) => {
-        expect(getAllowedProposalsToCreate('123', getDao(permission))).toEqual({
+        expect(
+          getAllowedProposalsToCreate('123', getDao(permission), false)
+        ).toEqual({
           ...result,
           [proposalType]: true,
         });

@@ -437,7 +437,6 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
         );
       }
       case ProposalVariant.ProposeStakingContractDeployment:
-      case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting:
       case ProposalVariant.ProposeAcceptStakingContract:
       case ProposalVariant.ProposeTokenDistribution: {
         return (

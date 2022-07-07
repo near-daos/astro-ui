@@ -81,6 +81,7 @@ export type DaoDTO = {
   activeProposalCount: number;
   totalProposalCount: number;
   totalDaoFunds: number;
+  stakingContract: string;
 };
 
 export type DaoMetadata = {
@@ -167,6 +168,7 @@ export const mapDaoDTOtoDao = (daoDTO: DaoDTO): DAO | null => {
     displayName: meta?.displayName || '',
     lastProposalId: daoDTO.lastProposalId,
     legal: meta?.legal || {},
+    stakingContract: daoDTO.stakingContract,
   };
 };
 
