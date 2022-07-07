@@ -83,6 +83,14 @@ exports[`App Footer Should render AppFooter component 1`] = `
           >
             releaseNotes
           </a>
+          <a
+            class="devLink"
+            href="https://testnet.app.astrodao.com/"
+            rel="noreferrer noopener"
+            target="_blank"
+          >
+            Testnet env
+          </a>
         </div>
         <div
           class="copyright"

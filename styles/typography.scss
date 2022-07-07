@@ -83,6 +83,10 @@
   @include font(0.875em, 24px, 400);
 }
 
+%body3 {
+  @include font(0.75em, 24px, 400);
+}
+
 %paragraph1 {
   @include font(1.125em, 28px, 400);
 }

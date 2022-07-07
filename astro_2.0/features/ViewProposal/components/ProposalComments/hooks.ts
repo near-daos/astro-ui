@@ -165,6 +165,10 @@ export function useProposalComments(
     }
 
     getComments();
+
+    return () => {
+      socket?.disconnect();
+    };
   }, [contextType, getComments, isMounted, proposalId, socket]);
 
   return {

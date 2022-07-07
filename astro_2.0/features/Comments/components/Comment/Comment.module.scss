@@ -41,6 +41,10 @@
   margin-left: auto;
 }
 
+.dislike {
+  transform: rotateX(180deg);
+}
+
 .delete,
 .edit {
   color: var(--color-neutral-60);

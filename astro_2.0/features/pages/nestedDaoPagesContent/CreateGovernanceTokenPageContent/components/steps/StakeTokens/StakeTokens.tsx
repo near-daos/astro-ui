@@ -2,7 +2,6 @@ import React, { FC, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import Decimal from 'decimal.js';
 
 import { AmountBalanceCard } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/AmountBalanceCard';
 import { Input } from 'components/inputs/Input';
@@ -81,7 +80,7 @@ export const StakeTokens: FC<Props> = ({
   });
 
   const submitHandler = async (data: Form) => {
-    if (!nearService || !tokenDetails) {
+    if (!nearService) {
       return;
     }
 
@@ -89,9 +88,7 @@ export const StakeTokens: FC<Props> = ({
     await nearService.stakeTokens({
       tokenContract: contractAddress,
       stakingContract: nearService.getStackingContract(daoName),
-      amount: new Decimal(data.stake)
-        .mul(10 ** tokenDetails.decimals)
-        .toFixed(),
+      amount: data.stake.toFixed(),
     });
 
     // toggle onsubmit
@@ -120,7 +117,7 @@ export const StakeTokens: FC<Props> = ({
           />
         </div>
         <div className={styles.footer}>
-          <span className={styles.inputLabel}>PORTOS</span>
+          <span className={styles.inputLabel}>{tokenDetails?.symbol}</span>
           <Input
             isBorderless
             isValid={!errors.stake?.message}

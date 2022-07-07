@@ -4,7 +4,7 @@ on:
     inputs:
       environment:
         required: false
-        description: Specify environment to run on. Valid values are develop, test, qa, staging, production
+        description: Specify environment to run on. Valid values are test, production
   push:
     branches:
     - develop
@@ -35,15 +35,9 @@ jobs:
       shell: bash
       run: |
         set -x
-        if [[ "${{ github.ref }}" =~ ^refs/tags.* ]]
+        if [[ "${{ github.ref }}" =~ ^refs/heads/develop ]]
         then
-          echo "::set-output name=environment::production"
-        elif [[ "${{ github.ref }}" =~ ^refs/heads/staging ]]
-        then
-          echo "::set-output name=environment::staging"
-        elif [[ "${{ github.ref }}" =~ ^refs/heads/develop ]]
-        then
-          echo "::set-output name=environment::develop"
+          echo "::set-output name=environment::test"
         fi
         if [[ "${{ github.event.inputs.environment }}" != "" ]]
         then
@@ -100,10 +94,10 @@ jobs:
     needs:
     - build-deploy
     - get-environment
-    if: needs.get-environment.outputs.environment == 'develop'
+    if: needs.get-environment.outputs.environment == 'test'
     uses: near-daos/astro-ui/.github/workflows/run-autotests.yaml@develop
     with:
-      environment: develop
+      environment: test
       tags: smoke
       browser: chrome
     secrets:
@@ -114,7 +108,7 @@ jobs:
 
   build-deploy-storybook:
     runs-on: ubuntu-latest
-    if: needs.get-environment.outputs.environment == 'develop'
+    if: needs.get-environment.outputs.environment == 'test'
     name: Build Deploy Storybook
     needs:
     - get-environment

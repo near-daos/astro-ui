@@ -1,27 +1,34 @@
 import React, { FC } from 'react';
+import cn from 'classnames';
+import { format } from 'date-fns';
 
-import { UserDelegateDetails } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/types';
+import { DaoDelegation } from 'types/dao';
+
+import { ActionsRow } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/DelegateGroupTable/ActionsRow';
 import { FormattedNumericValue } from 'components/cards/TokenCard/components/FormattedNumericValue';
-
 import { Button } from 'components/button/Button';
+import { VotingPower } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/VotingPower';
 
-import { formatYoktoValue, kFormatter } from 'utils/format';
+import { kFormatter } from 'utils/format';
+import { useDelegatePageContext } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/DelegatePageContext';
+import { DATE_TIME_FORMAT } from 'constants/timeConstants';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
 
 import styles from './DelegateGroupTable.module.scss';
 
-interface Props extends UserDelegateDetails {
-  votingThreshold: number;
+interface Props extends DaoDelegation {
+  votingThreshold: string;
   decimals?: number;
   symbol?: string;
   isActive: boolean;
   actionContext?: 'Delegate' | 'Undelegate';
-  onActionClick: (actionType: string) => void;
+  onActionClick: (actionType: string | null) => void;
   availableBalance: number;
 }
 
 export const TableRow: FC<Props> = ({
   accountId,
-  delegatedBalance,
+  balance,
   votingThreshold,
   decimals,
   symbol,
@@ -30,11 +37,18 @@ export const TableRow: FC<Props> = ({
   onActionClick,
   availableBalance,
 }) => {
-  const progressPercent = (delegatedBalance * 100) / votingThreshold;
-  const formattedBalance = formatYoktoValue(
-    delegatedBalance?.toString(),
-    decimals
-  );
+  const progressPercent = (+balance * 100) / +votingThreshold;
+  const formattedBalance = Number(balance).toFixed(0);
+
+  const {
+    nextActionTime,
+    stakedBalance,
+    delegatedBalance,
+  } = useDelegatePageContext();
+
+  const actionsNotAvailable = nextActionTime && nextActionTime > new Date();
+  const notEnoughStakedBalance = (stakedBalance || 0) === 0;
+  const notEnoughDelegatedBalance = (delegatedBalance || 0) === 0;
 
   return (
     <>
@@ -49,56 +63,67 @@ export const TableRow: FC<Props> = ({
           />
         </div>
         <div>
-          <div className={styles.progressBarWrapper}>
-            <div className={styles.progressValue}>
-              {progressPercent.toFixed()}%
-            </div>
-            <div className={styles.progressBar}>
-              <div
-                className={styles.progress}
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
-          </div>
+          <VotingPower progressPercent={progressPercent} />
         </div>
         <div className={styles.inline}>
-          <Button
-            variant="transparent"
-            size="small"
-            capitalize
-            className={styles.controlButton}
-            onClick={() => onActionClick('Delegate')}
+          <Tooltip
+            placement="top"
+            overlay={
+              <span>
+                {actionsNotAvailable && nextActionTime
+                  ? `Next action will be available at ${format(
+                      nextActionTime,
+                      DATE_TIME_FORMAT
+                    )}`
+                  : 'Delegate voting'}
+              </span>
+            }
           >
-            Delegate
-          </Button>
+            <Button
+              variant="transparent"
+              size="small"
+              capitalize
+              className={cn(styles.controlButton, {
+                [styles.disabled]:
+                  actionsNotAvailable || notEnoughStakedBalance,
+              })}
+              onClick={() =>
+                onActionClick(actionContext !== 'Delegate' ? 'Delegate' : null)
+              }
+              disabled={actionsNotAvailable || notEnoughStakedBalance}
+            >
+              Delegate
+            </Button>
+          </Tooltip>
           <Button
             variant="transparent"
             size="small"
             capitalize
-            className={styles.controlButton}
-            onClick={() => onActionClick('Undelegate')}
+            className={cn(styles.controlButton, {
+              [styles.disabled]: +balance === 0 || notEnoughDelegatedBalance,
+            })}
+            disabled={+balance === 0 || notEnoughDelegatedBalance}
+            onClick={() =>
+              onActionClick(
+                actionContext !== 'Undelegate' ? 'Undelegate' : null
+              )
+            }
           >
             Undelegate
           </Button>
         </div>
       </div>
       {isActive && (
-        <div className={styles.actionsRow}>
-          <div>{actionContext}</div>
-          <div>
-            <span>Available:</span>
-            <span>
-              {actionContext === 'Delegate'
-                ? kFormatter(availableBalance)
-                : formattedBalance}
-            </span>
-            <span>{symbol}</span>
-          </div>
-          <div>input</div>
-          <Button size="small" capitalize>
-            {actionContext}
-          </Button>
-        </div>
+        <ActionsRow
+          key={actionContext}
+          accountId={accountId}
+          actionContext={actionContext}
+          onActionClick={onActionClick}
+          availableBalance={availableBalance}
+          formattedBalance={formattedBalance}
+          symbol={symbol}
+          decimals={decimals}
+        />
       )}
     </>
   );

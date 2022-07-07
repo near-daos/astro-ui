@@ -46,7 +46,7 @@ export function getRemoveMemberProposal(
 
 type ContractRole = {
   name: string;
-  kind: 'Everyone' | { Group: string[] | null };
+  kind: 'Everyone' | { Group: string[] | null } | { Member: string };
   permissions: string[];
   // eslint-disable-next-line camelcase,@typescript-eslint/ban-types
   vote_policy: Record<string, VotePolicyRequest> | {};
@@ -75,12 +75,27 @@ function formatVotePolicies(
 export function dataRoleToContractRole(role: DaoRole): ContractRole {
   const { name, kind, permissions, votePolicy, accountIds } = role;
 
-  const newKind =
-    kind === 'Group'
-      ? {
-          Group: accountIds,
-        }
-      : kind;
+  let newKind;
+
+  switch (kind) {
+    case 'Group': {
+      newKind = {
+        Group: accountIds,
+      };
+
+      break;
+    }
+    case 'Member': {
+      newKind = {
+        Member: '1',
+      };
+
+      break;
+    }
+    default: {
+      newKind = kind;
+    }
+  }
 
   return {
     name,

@@ -13,21 +13,26 @@ interface Props {
   loading: boolean;
   value: number;
   suffix?: string;
+  onEdit: () => void;
+  disabled: boolean;
 }
 
 export const VotingThresholdWidget: FC<Props> = ({
   loading,
   value,
   suffix,
+  onEdit,
+  disabled,
 }) => {
   return (
     <DelegatePageWidget
+      className={styles.secondaryWidget}
       title="Voting Threshold"
       info="Required number of tokens to complete the voting"
     >
       {loading ? (
-        <ContentLoader height={28}>
-          <rect x="0" y="0" width="180" height="28" />
+        <ContentLoader height={28} width={80}>
+          <rect x="0" y="0" width="80" height="28" />
         </ContentLoader>
       ) : (
         <div className={styles.depositWidget}>
@@ -43,7 +48,9 @@ export const VotingThresholdWidget: FC<Props> = ({
               <IconButton
                 iconProps={{ width: 16 }}
                 icon="buttonEdit"
+                disabled={disabled}
                 className={styles.widgetButton}
+                onClick={onEdit}
               />
             </Tooltip>
           </span>

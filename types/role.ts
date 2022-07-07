@@ -69,7 +69,7 @@ export type DaoPermission =
   | 'remove_member_from_role:VoteRemove'
   | 'add_member_to_role:VoteRemove';
 
-export type DaoRoleKind = 'Everyone' | 'Group';
+export type DaoRoleKind = 'Everyone' | 'Group' | 'Member';
 
 export type DaoRole = {
   createdAt: string;

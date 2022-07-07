@@ -109,6 +109,7 @@ export function useNotificationsList(
 ): {
   notifications: PaginationResponse<Notification[]> | null;
   loadMore: () => void;
+  loading: boolean;
   handleRemove: (
     id: string,
     {
@@ -278,6 +279,10 @@ export function useNotificationsList(
         }
       });
     }
+
+    return () => {
+      socket?.disconnect();
+    };
   }, [
     fetchData,
     isMounted,
@@ -428,6 +433,7 @@ export function useNotificationsList(
     handleRemove,
     handleUpdate,
     handleUpdateAll,
+    loading: !daoIdsLoaded,
   };
 }
 

@@ -125,7 +125,7 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
       case ProposalVariant.ProposeUpdateGroup: {
         if (proposal.kind.type === ProposalType.ChangePolicy) {
           const groups = proposal.kind.policy.roles
-            .filter(el => el.kind !== 'Everyone')
+            .filter(el => el.kind !== 'Everyone' && el.name !== 'TokenHolders')
             .map(
               role =>
                 ({
@@ -698,18 +698,21 @@ export async function getInitialFormValuesFromDraft(
 ): Promise<Record<string, unknown>> {
   const kind = data.kind as ProposalKind;
 
+  const externalUrl = `${document.location?.origin}/dao/${data.daoId}/drafts/${data.id}`;
+
   switch (variant) {
     case ProposalVariant.ProposeGetUpgradeCode: {
       return {
         details: data.title,
-        externalUrl: '',
+        externalUrl,
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: '',
       };
     }
     case ProposalVariant.ProposeUpdateGroup: {
       return {
-        externalUrl: '',
+        details: data.title,
+        externalUrl,
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         groups: '',
       };
@@ -717,7 +720,7 @@ export async function getInitialFormValuesFromDraft(
     case ProposalVariant.ProposeUpgradeSelf: {
       return {
         details: data.title,
-        externalUrl: '',
+        externalUrl,
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: '',
       };
@@ -725,7 +728,7 @@ export async function getInitialFormValuesFromDraft(
     case ProposalVariant.ProposeRemoveUpgradeCode: {
       return {
         details: data.title,
-        externalUrl: '',
+        externalUrl,
         gas: DEFAULT_UPGRADE_DAO_PROPOSALS_GAS,
         versionHash: '',
       };
@@ -733,7 +736,7 @@ export async function getInitialFormValuesFromDraft(
     case ProposalVariant.ProposeCreateDao: {
       return {
         details: data.title,
-        externalUrl: '',
+        externalUrl,
         gas: DEFAULT_CREATE_DAO_GAS,
         displayName: data.displayName,
       };
@@ -755,7 +758,7 @@ export async function getInitialFormValuesFromDraft(
 
       return {
         details: data.title,
-        externalUrl: data.externalUrl,
+        externalUrl,
         gas: DEFAULT_CREATE_DAO_GAS,
         daoTokens,
         ...tokensFields,
@@ -768,7 +771,7 @@ export async function getInitialFormValuesFromDraft(
 
         return {
           details: data.title,
-          externalUrl: '',
+          externalUrl,
           token: 'NEAR',
           amount: formatYoktoValue(bountyData.amount),
           slots: bountyData.times,
@@ -787,8 +790,8 @@ export async function getInitialFormValuesFromDraft(
     }
     case ProposalVariant.ProposeDoneBounty: {
       return {
-        details: '',
-        externalUrl: '',
+        details: data.title,
+        externalUrl,
         target: accountId,
         gas: DEFAULT_PROPOSAL_GAS,
         ...data,
@@ -798,8 +801,8 @@ export async function getInitialFormValuesFromDraft(
       if (kind.type === ProposalType.Transfer) {
         return {
           details: data.title,
-          externalUrl: '',
-          token: kind.tokenId,
+          externalUrl,
+          token: kind.tokenId || 'NEAR',
           amount: formatYoktoValue(
             kind.amount,
             daoTokens[kind.tokenId]?.decimals
@@ -815,7 +818,7 @@ export async function getInitialFormValuesFromDraft(
       if (kind.type === ProposalType.ChangeConfig) {
         return {
           details: data.title,
-          externalUrl: '',
+          externalUrl,
           displayName: fromBase64ToMetadata(kind.config.metadata).displayName,
           gas: DEFAULT_PROPOSAL_GAS,
         };
@@ -827,7 +830,7 @@ export async function getInitialFormValuesFromDraft(
       if (kind.type === ProposalType.ChangeConfig) {
         return {
           details: data.title,
-          externalUrl: '',
+          externalUrl,
           purpose: kind.config.purpose,
           gas: DEFAULT_PROPOSAL_GAS,
         };
@@ -839,7 +842,7 @@ export async function getInitialFormValuesFromDraft(
       if (kind.type === ProposalType.ChangeConfig) {
         return {
           details: data.title,
-          externalUrl: '',
+          externalUrl,
           gas: DEFAULT_PROPOSAL_GAS,
           links: fromBase64ToMetadata(kind.config.metadata).links,
         };
@@ -850,7 +853,7 @@ export async function getInitialFormValuesFromDraft(
     case ProposalVariant.ProposeCreateToken: {
       return {
         details: data.title,
-        externalUrl: '',
+        externalUrl,
         tokenName: '',
         totalSupply: '',
         tokenImage: '',
@@ -865,7 +868,7 @@ export async function getInitialFormValuesFromDraft(
     case ProposalVariant.ProposeStakingContractDeployment: {
       return {
         details: data.title,
-        externalUrl: '',
+        externalUrl,
         unstakingPeriod: '345',
         gas: DEFAULT_PROPOSAL_GAS,
       };
@@ -878,7 +881,7 @@ export async function getInitialFormValuesFromDraft(
     case ProposalVariant.ProposeTokenDistribution: {
       return {
         details: data.title,
-        externalUrl: '',
+        externalUrl,
         groups: [],
         gas: DEFAULT_PROPOSAL_GAS,
       };
@@ -893,7 +896,7 @@ export async function getInitialFormValuesFromDraft(
 
         return {
           details: data.title,
-          externalUrl: '',
+          externalUrl,
           legalStatus,
           legalLink,
           gas: DEFAULT_PROPOSAL_GAS,
@@ -905,7 +908,7 @@ export async function getInitialFormValuesFromDraft(
     case ProposalVariant.ProposePoll: {
       return {
         details: data.title,
-        externalUrl: '',
+        externalUrl,
         gas: DEFAULT_PROPOSAL_GAS,
       };
     }
@@ -913,7 +916,7 @@ export async function getInitialFormValuesFromDraft(
       if (kind.type === ProposalType.AddMemberToRole) {
         return {
           details: data.title,
-          externalUrl: '',
+          externalUrl,
           group: kind.role,
           memberName: kind.memberId,
           gas: DEFAULT_PROPOSAL_GAS,
@@ -926,7 +929,7 @@ export async function getInitialFormValuesFromDraft(
       if (kind.type === ProposalType.RemoveMemberFromRole) {
         return {
           details: data.title,
-          externalUrl: '',
+          externalUrl,
           group: kind.role,
           memberName: kind.memberId,
           gas: DEFAULT_PROPOSAL_GAS,
@@ -963,7 +966,7 @@ export async function getInitialFormValuesFromDraft(
 
           return {
             details: data.title,
-            externalUrl: '',
+            externalUrl,
             group: newGroup.name,
             memberName,
             gas: DEFAULT_PROPOSAL_GAS,
@@ -977,8 +980,8 @@ export async function getInitialFormValuesFromDraft(
     }
     case ProposalVariant.ProposeChangeVotingPolicy: {
       return {
-        details: '',
-        externalUrl: '',
+        details: data.title,
+        externalUrl,
         amount: '',
         gas: DEFAULT_PROPOSAL_GAS,
         ...data,
@@ -988,7 +991,7 @@ export async function getInitialFormValuesFromDraft(
       if (kind.type === ProposalType.ChangePolicy) {
         return {
           details: data.title,
-          externalUrl: '',
+          externalUrl,
           createProposalBond: new Decimal(kind.policy.proposalBond)
             .div(YOKTO_NEAR)
             .toNumber(),
@@ -1021,7 +1024,7 @@ export async function getInitialFormValuesFromDraft(
 
         return {
           details: data.title,
-          externalUrl: '',
+          externalUrl,
           flagCover: coverFiles,
           flagLogo: logoFiles,
           gas: DEFAULT_PROPOSAL_GAS,
@@ -1041,7 +1044,7 @@ export async function getInitialFormValuesFromDraft(
 
           return {
             details: data.title,
-            externalUrl: '',
+            externalUrl,
             smartContractAddress: kind.receiverId,
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
@@ -1066,8 +1069,8 @@ export async function getInitialFormValuesFromDraft(
     case ProposalVariant.ProposeChangeProposalVotingPermissions:
     case ProposalVariant.ProposeChangeProposalCreationPermissions: {
       return {
-        details: '',
-        externalUrl: '',
+        details: data.title,
+        externalUrl,
         amount: '',
         gas: DEFAULT_PROPOSAL_GAS,
         ...data,

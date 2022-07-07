@@ -1,0 +1,75 @@
+@import 'styles/typography';
+
+.root {
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+  float: right;
+
+  @include tablet-landscape {
+    &:hover {
+      background-color: var(--color-neutral-30);
+    }
+  }
+}
+
+.rootIcon.rootIcon {
+  color: var(--color-white);
+  transform: translateY(-4px);
+  width: 24px;
+
+  @include tablet-landscape {
+    color: var(--color-neutral-60);
+  }
+}
+
+.menu {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 3px 2px 24px var(--color-black-opacity-1);
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  min-width: 140px;
+  padding: 8px;
+  right: 0;
+}
+
+.menuItem {
+  @extend %subtitle4;
+  align-items: center;
+  color: var(--color-neutral-70);
+  display: flex;
+  font-weight: 400;
+  height: 40px;
+  padding: 8px 12px;
+
+  &:hover {
+    background-color: var(--color-neutral-10);
+  }
+
+  &.red {
+    color: var(--color-error-70);
+  }
+
+  > a {
+    align-items: center;
+    display: flex;
+  }
+}
+
+.icon {
+  margin-right: 8px;
+  width: 18px;
+}
+
+.buttonContent {
+  align-items: center;
+  color: var(--color-neutral-70);
+  display: flex;
+}

@@ -4,7 +4,7 @@ on:
     inputs:
       environment:
         required: true
-        description: Specify environment to run on. Valid values are develop, test, qa, staging, production
+        description: Specify environment to run on. Valid values are test, production
       tag:
         required: true
         description: Docker tag to deploy. Valid values are "latest", "<branch>-latest", "<commit_sha>", "<environment>-<commit_sha>". Exact values can be found in "Docker Build Publish" step of "Build Deploy" job.
@@ -14,46 +14,27 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   GOOGLE_ANALYTICS_KEY: ${{ secrets.GOOGLE_ANALYTICS_KEY }}
   LOG_ROCKET_APP_ID: ${{ secrets.LOG_ROCKET_APP_ID }}
-  AWS_ECR_URL: ${{ secrets.AWS_ECR_URL }}
-  EKS_CLUSTER_NAME: ${{ secrets.EKS_CLUSTER_NAME }}
   KUBE_CONFIG_DATA:  ${{ secrets.KUBE_CONFIG_DATA }}
   NODE_OPTIONS: "--max-old-space-size=7168"
   NEXT_PUBLIC_LAUNCHDARKLY_ID: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_ID }}
 
 jobs:
-  build-deploy:
+  deploy:
     runs-on: ubuntu-latest
-    name: Build Deploy
+    name: Deploy
     environment:
       name: ${{ github.event.inputs.environment }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set Environment
       run: |
-        echo DOCKER_ENV_TAG=${{ github.event.inputs.tag }} >> $GITHUB_ENV
         cat ".github/env.common" >>$GITHUB_ENV
         cat ".github/env.${{ github.event.inputs.environment }}" >>$GITHUB_ENV
 
-    - name: helm deploy
-      uses: koslib/helm-eks-action@v1.8.0
+    - name: Helm Deploy
+      uses: ./.github/actions/deploy
       with:
-        command: |
-          export CHART_FOLDER=deployment/app-chart
-          helm lint $CHART_FOLDER
-          helm --namespace $DEPLOYMENT_NAMESPACE upgrade --install --create-namespace --wait $APP_NAME $CHART_FOLDER \
-            --set image.tag=$DOCKER_ENV_TAG \
-            --set environment.near_env=${NEAR_ENV} \
-            --set environment.near_contract_name=${NEAR_CONTRACT_NAME} \
-            --set environment.roketo_contract_name=${ROKETO_CONTRACT_NAME} \
-            --set environment.roketo_multicall_name=${ROKETO_MULTICALL_NAME} \
-            --set environment.api_url=${API_URL} \
-            --set environment.google_analytics_key=${GOOGLE_ANALYTICS_KEY} \
-            --set environment.log_rocket_app_id=${LOG_ROCKET_APP_ID} \
-            --set environment.near_env=${NEAR_ENV} \
-            --set environment.stats_api_url=${STATS_API_URL} \
-            --set environment.next_public_launchdarkly_id=${NEXT_PUBLIC_LAUNCHDARKLY_ID} \
-            --set environment.app_domain=${APP_DOMAIN} \
-            --set environment.release_notes=${RELEASE_NOTES} \
-            --set environment.generic_factory_contract_name=${GENERIC_FACTORY_CONTRACT_NAME} \
-            --set environment.staking_contract_binary_hash=${STAKING_CONTRACT_BINARY_HASH} \
-            --set ingress.host=${K8S_INGRESS_HOST}
+        name: ${{ env.APP_NAME }}      
+        namespace: ${{ env.DEPLOYMENT_NAMESPACE }}
+        tag: ${{ github.event.inputs.tag }}
+        chart_directory: deployment/app-chart

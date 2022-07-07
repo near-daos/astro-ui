@@ -156,3 +156,11 @@ export type DaoFeedItem = {
   council: string[];
   isCouncil: boolean;
 } & DaoProperties;
+
+export type DaoDelegation = {
+  id: string;
+  daoId: string;
+  balance: string;
+  accountId: string;
+  delegators: Record<string, string>;
+};

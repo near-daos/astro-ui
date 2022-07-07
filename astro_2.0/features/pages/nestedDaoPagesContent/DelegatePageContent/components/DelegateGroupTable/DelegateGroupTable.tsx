@@ -2,20 +2,23 @@ import React, { FC, useState } from 'react';
 
 import { Loader } from 'components/loader';
 
-import {
-  DelegateTokenDetails,
-  UserDelegateDetails,
-} from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/types';
+import { AddMemberRow } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/DelegateGroupTable/AddMemberRow';
+import { DelegateTokenDetails } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/types';
+import { DaoDelegation } from 'types/dao';
 
 import { TableRow } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/DelegateGroupTable/TableRow';
+
+import useQuery from 'hooks/useQuery';
 
 import styles from './DelegateGroupTable.module.scss';
 
 interface Props {
-  data: UserDelegateDetails[] | undefined;
+  data: DaoDelegation[] | undefined;
   loading: boolean;
-  votingThreshold: number;
+  votingThreshold: string;
   tokenDetails: DelegateTokenDetails | undefined;
+  addMemberMode: boolean;
+  onAddMember: () => void;
 }
 
 type TableAction = 'Delegate' | 'Undelegate';
@@ -25,7 +28,12 @@ export const DelegateGroupTable: FC<Props> = ({
   loading,
   tokenDetails,
   votingThreshold,
+  addMemberMode,
+  onAddMember,
 }) => {
+  const { query } = useQuery<{ sort: string }>();
+  const { sort } = query;
+
   const [activeRow, setActiveRow] = useState<{
     index: number;
     actionType: TableAction;
@@ -48,21 +56,44 @@ export const DelegateGroupTable: FC<Props> = ({
         <div>Actions</div>
       </div>
       <div className={styles.body}>
-        {data.map((item, index) => (
-          <TableRow
-            key={item.accountId}
-            {...item}
-            onActionClick={actionType =>
-              setActiveRow({ index, actionType: actionType as TableAction })
-            }
-            isActive={activeRow?.index === index}
-            actionContext={activeRow?.actionType}
+        {addMemberMode && (
+          <AddMemberRow
             votingThreshold={votingThreshold}
-            decimals={tokenDetails?.decimals}
             symbol={tokenDetails?.symbol}
-            availableBalance={tokenDetails?.balance ?? 0}
+            onAddMember={onAddMember}
           />
-        ))}
+        )}
+        {data
+          .sort((a, b) => {
+            if (a.accountId > b.accountId) {
+              return sort === 'ASC' ? 1 : -1;
+            }
+
+            if (a.accountId < b.accountId) {
+              return sort === 'ASC' ? -1 : 1;
+            }
+
+            return 0;
+          })
+          .map((item, index) => (
+            <TableRow
+              key={item.accountId}
+              {...item}
+              onActionClick={actionType => {
+                setActiveRow(
+                  actionType
+                    ? { index, actionType: actionType as TableAction }
+                    : null
+                );
+              }}
+              isActive={activeRow?.index === index}
+              actionContext={activeRow?.actionType}
+              votingThreshold={votingThreshold}
+              decimals={tokenDetails?.decimals}
+              symbol={tokenDetails?.symbol}
+              availableBalance={tokenDetails?.balance ?? 0}
+            />
+          ))}
       </div>
     </div>
   );
