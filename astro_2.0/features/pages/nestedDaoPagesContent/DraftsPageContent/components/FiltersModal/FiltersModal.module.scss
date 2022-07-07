@@ -1,0 +1,22 @@
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.modal {
+  display: block;
+  height: 100%;
+  padding: 40px 0;
+
+  @include tablet-landscape {
+    display: none;
+  }
+}
+
+.overlay {
+  padding: 0;
+}
+
+.title {
+  @extend %heading1;
+  margin-bottom: 28px;
+  padding: 0 24px;
+}

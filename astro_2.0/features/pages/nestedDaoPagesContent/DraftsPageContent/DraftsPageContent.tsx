@@ -22,6 +22,7 @@ import { useDraftsPageData } from 'astro_2.0/features/pages/nestedDaoPagesConten
 import { CREATE_DRAFT_PAGE_URL } from 'constants/routing';
 
 import { DraftsPageHeader } from './components/DraftsPageHeader';
+import { DraftMobileFilters } from './components/DraftMobileFilters';
 
 import styles from './DraftsPageContent.module.scss';
 
@@ -60,6 +61,7 @@ export const DraftsPageContent: FC<Props> = ({ daoContext }) => {
         onSearch={handleSearch}
         handleReset={handleReset}
       />
+      <DraftMobileFilters />
       <div className={styles.content}>
         <div className={styles.sideFilters}>
           <SideFilter

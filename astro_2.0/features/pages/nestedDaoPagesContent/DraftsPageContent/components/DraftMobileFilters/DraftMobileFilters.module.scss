@@ -1,0 +1,29 @@
+@import 'styles/typography';
+@import 'styles/mixins';
+
+.draftMobileFilters {
+  display: flex;
+  justify-content: space-between;
+  @include tablet-landscape {
+    display: none;
+  }
+}
+
+.sorting {
+  @extend %subtitle5;
+  height: auto;
+  margin: 0;
+}
+
+.filters {
+  @extend %subtitle5;
+  align-items: center;
+  display: flex;
+  min-width: auto;
+}
+
+.icon {
+  height: 24px;
+  margin-left: 15px;
+  width: 24px;
+}

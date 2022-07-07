@@ -14,6 +14,7 @@ interface LetterHeadWidgetProps {
   className?: string;
   iconWrapperClassName?: string;
   iconClassName?: string;
+  backgroundClassName?: string;
 }
 
 const getIconName = (type: ProposalType) => {
@@ -45,6 +46,7 @@ export const LetterHeadWidget: React.FC<LetterHeadWidgetProps> = ({
   className,
   iconWrapperClassName,
   iconClassName,
+  backgroundClassName,
 }) => {
   return (
     <div
@@ -61,7 +63,7 @@ export const LetterHeadWidget: React.FC<LetterHeadWidgetProps> = ({
         backgroundImage: `url(${coverUrl || '/flags/defaultDaoFlag.png'})`,
       }}
     >
-      <div className={styles.background} />
+      <div className={cn(styles.background, backgroundClassName)} />
       <div className={cn(styles.iconHolder, iconWrapperClassName)}>
         <Icon
           name={getIconName(type)}

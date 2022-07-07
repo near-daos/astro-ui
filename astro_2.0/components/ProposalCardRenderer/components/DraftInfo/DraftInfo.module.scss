@@ -1,4 +1,18 @@
+@import 'styles/mixins';
+
 .draftInfo {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 22px;
+  width: 100%;
+  @include desktop {
+    justify-content: flex-start;
+    margin-top: 0;
+    width: auto;
+  }
+}
+
+.draftInfoWrapper {
   display: flex;
 }
 

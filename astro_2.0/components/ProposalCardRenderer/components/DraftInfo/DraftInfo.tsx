@@ -62,17 +62,20 @@ export const DraftInfo: FC<DraftInfoProps> = ({
 
   return (
     <div className={cn(styles.draftInfo, className)}>
-      <DraftInfoItem
-        iconName="draftComments"
-        count={amountComments}
-        className={styles.draftInfoItem}
-      />
-      <DraftInfoItem
-        onClick={!isSavedDraft ? () => handlerSaveDraft() : undefined}
-        iconName={isSavedDraft ? 'draftBookmarkFulfill' : 'draftBookmark'}
-        count={savesCount}
-        className={styles.draftInfoItem}
-      />
+      <div className={styles.draftInfoWrapper}>
+        <DraftInfoItem
+          iconName="draftComments"
+          count={amountComments}
+          className={styles.draftInfoItem}
+        />
+        <DraftInfoItem
+          onClick={!isSavedDraft ? () => handlerSaveDraft() : undefined}
+          iconName={isSavedDraft ? 'draftBookmarkFulfill' : 'draftBookmark'}
+          count={savesCount}
+          className={styles.draftInfoItem}
+        />
+      </div>
+
       <ReplyButton onClick={() => setToggleWriteComment(true)} />
     </div>
   );

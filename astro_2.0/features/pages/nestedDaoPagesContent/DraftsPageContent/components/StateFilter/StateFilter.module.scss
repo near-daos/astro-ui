@@ -1,10 +1,16 @@
+@import 'styles/mixins';
+
 @import 'styles/typography';
 
 .root {
-  padding-top: 24px;
+  padding: 24px 0;
   position: sticky;
-  top: 386px;
+  top: 0;
   z-index: 10;
+  @include desktop {
+    margin-right: 32px;
+    top: 386px;
+  }
 }
 
 .title {

@@ -1,7 +1,16 @@
+@import 'styles/mixins';
+
 .draftManagement {
   display: flex;
+  flex-wrap: wrap;
+  @include tablet-landscape {
+    flex-wrap: nowrap;
+  }
 }
 
 .button {
-  margin-right: 12px;
+  margin: 0 12px 12px 0;
+  @include tablet-landscape {
+    margin: 0 12px 0 0;
+  }
 }
