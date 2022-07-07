@@ -78,11 +78,14 @@ export const CreateProposal: FC<CreateProposalProps> = ({
 }) => {
   const { t } = useTranslation();
   const { accountId, nearService } = useWalletContext();
-  const initialProposalVariant = getInitialProposalVariant(
-    proposalVariant,
-    userPermissions.isCanCreatePolicyProposals,
-    userPermissions.allowedProposalsToCreate
-  );
+  const initialProposalVariant = !isDraft
+    ? getInitialProposalVariant(
+        proposalVariant,
+        userPermissions.isCanCreatePolicyProposals,
+        userPermissions.allowedProposalsToCreate
+      )
+    : proposalVariant;
+
   const [selectedProposalVariant, setSelectedProposalVariant] = useState(
     initialProposalVariant
   );

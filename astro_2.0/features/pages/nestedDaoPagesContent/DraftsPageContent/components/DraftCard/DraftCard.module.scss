@@ -2,8 +2,6 @@
 @import 'styles/typography';
 
 .root {
-  //display: flex;
-  //flex: 1;
   border-radius: 0 8px 8px 0;
   cursor: pointer;
   margin-bottom: 24px;
@@ -15,70 +13,124 @@
 }
 
 .card {
-  grid-template-columns: 32px 1fr;
+  grid-template-columns: 1fr;
+  @include tablet-landscape {
+    grid-template-columns: 30px 1fr;
+  }
 }
 
 .letterhead {
-  width: 32px;
+  height: 30px;
+  padding-left: 20px;
+  width: 100%;
+  @include tablet-landscape {
+    height: 100%;
+    padding-left: 0;
+    width: 30px;
+  }
+}
+
+.letterBackground {
+  height: 30px;
+  @include tablet-landscape {
+    height: 100%;
+    width: 30px;
+  }
 }
 
 .letterheadIcon {
+  display: flex;
+  height: 14px;
   margin: 0;
-  width: 18px;
+  width: 14px;
+  @include tablet-landscape {
+    height: 14px;
+    width: 14px;
+  }
 }
 
 .letterheadIconWrapper {
+  height: 14px;
+  padding-top: 0;
+  width: 14px;
   @include tablet-landscape {
-    padding-top: 8px;
-    width: 18px;
+    height: 14px;
+    padding-top: 22px;
+    width: 14px;
   }
 }
 
 .content {
   background-color: var(--color-white);
-  //background: red;
   border-radius: 0 8px 8px 0;
-  flex: 1;
+  display: grid;
+  gap: 28px;
+  grid-row-gap: 0;
+  grid-template-areas:
+    'title title title'
+    'tags tags tags'
+    'views replies date';
+  grid-template-columns: 30px 30px 1fr;
   padding: 16px;
   width: 100%;
-}
-
-.header {
-  align-items: center;
-  display: grid;
-  grid-column-gap: 12px;
-  grid-template-columns: 1fr 60px 60px 120px;
-  margin-bottom: 4px;
+  @include tablet-landscape {
+    gap: 12px;
+    grid-template-areas:
+      'title views replies date'
+      'tags tags tags tags';
+    grid-template-columns: 1fr 60px 60px 120px;
+  }
 }
 
 .title {
-  @extend %heading3;
+  @extend %subtitle3;
   @include ellipse-text;
+  grid-area: title;
+  margin-bottom: 16px;
+  @include tablet-landscape {
+    margin-bottom: 7px;
+  }
+}
+
+.views {
+  grid-area: views;
+}
+
+.replies {
+  grid-area: replies;
+}
+
+.date {
+  grid-area: date;
+  justify-content: flex-end;
 }
 
 .views,
 .replies,
-.updated {
+.date {
   @extend %caption1;
-  @include ellipse-text;
   align-items: center;
   display: flex;
-  justify-content: flex-start;
-}
-
-.updated {
-  justify-content: flex-end;
 }
 
 .icon {
   color: var(--color-neutral-50);
+  display: flex;
   margin-right: 4px;
   width: 18px;
 }
 
-.footer {
+.tags {
   @include ellipse-text;
+  align-items: center;
   display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  grid-area: tags;
+  margin-bottom: 16px;
+  @include tablet-landscape {
+    margin-bottom: 0;
+  }
 }
 
 .tag {

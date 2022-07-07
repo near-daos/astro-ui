@@ -31,6 +31,7 @@ export const DraftCard: FC<Props> = ({ data, flag, daoId }) => {
             className={styles.letterhead}
             iconClassName={styles.letterheadIcon}
             iconWrapperClassName={styles.letterheadIconWrapper}
+            backgroundClassName={styles.letterBackground}
           />
         }
       />

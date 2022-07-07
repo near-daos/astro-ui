@@ -5,15 +5,30 @@
 .root {
   align-items: center;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
+  @include tablet-landscape {
+    gap: 0;
+    justify-content: space-between;
+    margin-top: 40px;
+  }
 }
 
 .title {
   @extend %heading1;
-  margin-top: 12px;
 
-  @include tablet-portrait {
-    margin-bottom: 16px;
+  @include large-desktop-max {
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 38px;
+  }
+}
+
+.tabs {
+  display: none;
+  @include tablet-landscape {
+    display: block;
   }
 }
 
@@ -37,9 +52,13 @@
 .sorting {
   @extend %body2;
   align-items: center;
-  display: flex;
+  display: none;
   justify-content: flex-end;
   min-width: 120px;
+
+  @include tablet-landscape {
+    display: flex;
+  }
 
   .label {
     color: var(--color-neutral-60);

@@ -13,6 +13,7 @@ export interface ModalProps {
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl' | 'auto';
   className?: string;
   hideCloseIcon?: boolean;
+  overlayClassName?: string;
 }
 
 export const Modal: FC<ModalProps> = memo(
@@ -23,6 +24,7 @@ export const Modal: FC<ModalProps> = memo(
     size = 'md',
     className = '',
     hideCloseIcon,
+    overlayClassName,
   }) => {
     const [open, setOpen] = useState(isOpen);
 
@@ -51,7 +53,7 @@ export const Modal: FC<ModalProps> = memo(
           beforeClose: styles.contentBeforeClose,
         }}
         overlayClassName={{
-          base: styles.overlay,
+          base: cn(styles.overlay, overlayClassName),
           afterOpen: styles.overlayAfterOpen,
           beforeClose: styles.overlayBeforeClose,
         }}

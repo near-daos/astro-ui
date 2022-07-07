@@ -274,6 +274,7 @@
 .draftFooter {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
   grid-area: draftFooter;
   justify-content: space-between;
 }

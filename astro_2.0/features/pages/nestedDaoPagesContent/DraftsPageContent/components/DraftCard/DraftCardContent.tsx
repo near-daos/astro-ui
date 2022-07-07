@@ -44,21 +44,20 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
       className={styles.content}
       onMouseDown={handleCardClick}
     >
-      <div className={styles.header}>
-        <div className={styles.title}>{title}</div>
-        <div className={styles.views}>
-          <Icon name="eyeOpen" className={styles.icon} />
-          {views}
-        </div>
-        <div className={styles.replies}>
-          <Icon name="chat" className={styles.icon} />
-          {replies}
-        </div>
-        <div className={styles.updated}>
-          {formatDistanceToNow(parseISO(updatedAt))} ago
-        </div>
+      <div className={styles.title}>{title}</div>
+      <div className={styles.views}>
+        <Icon name="eyeOpen" className={styles.icon} />
+        {views}
       </div>
-      <div className={styles.footer}>
+      <div className={styles.replies}>
+        <Icon name="chat" className={styles.icon} />
+        {replies}
+      </div>
+
+      <div className={styles.date}>
+        {formatDistanceToNow(parseISO(updatedAt))} ago
+      </div>
+      <div className={styles.tags}>
         {hashtags?.map(tag => (
           <Badge
             key={tag}
