@@ -50,53 +50,59 @@ const DraftPage: NextPage<DraftPageProps> = ({ dao, draft, daoContext }) => {
   }, [breadcrumbsConfig]);
 
   return (
-    <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
-      <DraftWrapper>
-        {toggleCreateProposal => (
-          <>
-            <Head>
-              <title>DAO Proposal</title>
-              <meta property="og:url" content={router.asPath} />
-              <meta property="og:type" content="website" />
-              <meta property="og:title" content="Astro" />
-              <meta property="og:description" content={draft?.description} />
-              <meta property="og:image" content={dao?.flagCover || dao?.logo} />
+    <DraftsDataProvider>
+      <NestedDaoPageWrapper daoContext={daoContext} breadcrumbs={breadcrumbs}>
+        <DraftWrapper>
+          {toggleCreateProposal => (
+            <>
+              <Head>
+                <title>DAO Proposal</title>
+                <meta property="og:url" content={router.asPath} />
+                <meta property="og:type" content="website" />
+                <meta property="og:title" content="Astro" />
+                <meta property="og:description" content={draft?.description} />
+                <meta
+                  property="og:image"
+                  content={dao?.flagCover || dao?.logo}
+                />
 
-              <meta name="twitter:card" content="summary_large_image" />
-              <meta property="twitter:url" content={router.asPath} />
-              <meta name="twitter:title" content="Astro" />
-              <meta name="twitter:description" content={draft?.description} />
-              <meta
-                name="twitter:image"
-                content={dao?.flagCover || dao?.logo}
-              />
-            </Head>
-            <div className={styles.draftInfo}>
-              <BackButton
-                name="Back to Draft Feed"
-                href={{
-                  pathname: DRAFTS_PAGE_URL,
-                  query: {
-                    dao: dao.id,
-                  },
-                }}
-              />
-              <DraftsDataProvider>
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta property="twitter:url" content={router.asPath} />
+                <meta name="twitter:title" content="Astro" />
+                <meta name="twitter:description" content={draft?.description} />
+                <meta
+                  name="twitter:image"
+                  content={dao?.flagCover || dao?.logo}
+                />
+              </Head>
+              <div className={styles.draftInfo}>
+                <BackButton
+                  name="Back to Draft Feed"
+                  href={{
+                    pathname: DRAFTS_PAGE_URL,
+                    query: {
+                      dao: dao.id,
+                    },
+                  }}
+                />
+
                 <ViewProposal
                   preventNavigate
                   isDraft
+                  dao={dao}
                   proposal={draft}
                   showFlag={false}
                   tokens={tokens}
+                  userPermissions={daoContext.userPermissions}
                   toggleCreateProposal={toggleCreateProposal}
                 />
                 <DraftComments dao={dao} />
-              </DraftsDataProvider>
-            </div>
-          </>
-        )}
-      </DraftWrapper>
-    </NestedDaoPageWrapper>
+              </div>
+            </>
+          )}
+        </DraftWrapper>
+      </NestedDaoPageWrapper>
+    </DraftsDataProvider>
   );
 };
 

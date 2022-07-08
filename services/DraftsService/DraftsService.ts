@@ -129,6 +129,7 @@ export class DraftsService {
   public async updateDraftClose(
     params: {
       id: string;
+      proposalId: string;
     } & Authorization
   ): Promise<AxiosResponse<boolean>> {
     return this.httpService.post(

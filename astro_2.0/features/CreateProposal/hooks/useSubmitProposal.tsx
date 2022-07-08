@@ -20,6 +20,7 @@ import {
   DeployStakingContractParams,
 } from 'services/sputnik/SputnikNearService/services/GovernanceTokenService';
 import { SputnikNearService } from 'services/sputnik';
+import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 
 async function createProposal(
   variant: ProposalVariant,
@@ -66,7 +67,8 @@ export function useSubmitProposal({
 } {
   const router = useRouter();
   const isMounted = useMountedState();
-  const { accountId, nearService } = useWalletContext();
+  const { accountId, nearService, pkAndSignature } = useWalletContext();
+  const { draftsService } = useDraftsContext();
 
   const [showModal] = useModal(CaptchaModal);
 
@@ -142,6 +144,22 @@ export function useSubmitProposal({
 
                 onClose();
               }
+
+              if (router.query.draft && pkAndSignature) {
+                const { publicKey, signature } = pkAndSignature;
+
+                if (publicKey && signature) {
+                  const draftId = router.query.draft as string;
+
+                  await draftsService.updateDraftClose({
+                    id: draftId,
+                    proposalId: `${newProposalsIds[0]}`,
+                    publicKey,
+                    signature,
+                    accountId,
+                  });
+                }
+              }
             }
           } catch (err) {
             showNotification({
@@ -216,6 +234,22 @@ export function useSubmitProposal({
               return;
             }
 
+            if (router.query.draft && pkAndSignature) {
+              const { publicKey, signature } = pkAndSignature;
+
+              if (publicKey && signature) {
+                const draftId = router.query.draft as string;
+
+                await draftsService.updateDraftClose({
+                  id: draftId,
+                  proposalId: newProposalId,
+                  publicKey,
+                  signature,
+                  accountId,
+                });
+              }
+            }
+
             sendGAEvent({
               name: GA_EVENTS.CREATE_PROPOSAL,
               daoId: dao.id,
@@ -270,18 +304,20 @@ export function useSubmitProposal({
       }
     },
     [
-      dao,
       selectedProposalVariant,
-      daoTokens,
-      accountId,
-      bountyId,
       showModal,
-      router,
-      onCreate,
+      daoTokens,
       nearService,
+      dao,
+      onCreate,
+      pkAndSignature,
       onClose,
-      redirectAfterCreation,
+      router,
+      draftsService,
+      accountId,
       isMounted,
+      bountyId,
+      redirectAfterCreation,
     ]
   );
 

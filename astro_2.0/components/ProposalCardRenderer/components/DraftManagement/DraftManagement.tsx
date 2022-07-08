@@ -8,18 +8,20 @@ import styles from './DraftManagement.module.scss';
 
 interface DraftManagementProps {
   onEditDraft: () => void;
-  convertTOProposal?: () => void;
+  convertToProposal?: () => void;
   proposer: string;
   accountId: string;
   dao?: DAO;
+  state?: string;
 }
 
 export const DraftManagement: FC<DraftManagementProps> = ({
   onEditDraft,
-  convertTOProposal,
+  convertToProposal,
   accountId,
   proposer,
   dao,
+  state,
 }) => {
   let isCouncil = false;
 
@@ -27,7 +29,7 @@ export const DraftManagement: FC<DraftManagementProps> = ({
     isCouncil = isCouncilUser(dao, accountId);
   }
 
-  const disabled = !(isCouncil || proposer === accountId);
+  const disabled = state === 'closed' || !(isCouncil || proposer === accountId);
 
   return (
     <div className={styles.draftManagement}>
@@ -45,8 +47,8 @@ export const DraftManagement: FC<DraftManagementProps> = ({
         capitalize
         className={styles.button}
         onClick={() => {
-          if (convertTOProposal) {
-            convertTOProposal();
+          if (convertToProposal) {
+            convertToProposal();
           }
         }}
       >
