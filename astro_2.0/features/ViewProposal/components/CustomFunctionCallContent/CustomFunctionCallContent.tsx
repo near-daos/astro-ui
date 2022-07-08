@@ -13,6 +13,9 @@ import { formatYoktoValue } from 'utils/format';
 
 import { CommonContent } from './components/CommonContent';
 
+import { useRoketoStreamCheck } from './components/helpers';
+import { CreateStreamContent } from './components/Stream/CreateStreamContent';
+
 import styles from './CustomFunctionCallContent.module.scss';
 
 interface CustomFunctionCallContentProps {
@@ -32,6 +35,7 @@ export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
 }) => {
   const { tokens } = useCustomTokensContext();
   const { t } = useTranslation();
+  const isStream = useRoketoStreamCheck(json);
 
   const tokenData = token ? tokens[token] : tokens.NEAR;
 
@@ -39,14 +43,26 @@ export const CustomFunctionCallContent: FC<CustomFunctionCallContentProps> = ({
     return tokenData ? formatYoktoValue(deposit, tokenData.decimals) : deposit;
   }
 
+  function renderContent() {
+    switch (true) {
+      // There will be .pause .stop .resume
+      case isStream.create:
+        return <CreateStreamContent stream={isStream.stream} />;
+
+      default:
+        return (
+          <CommonContent
+            json={json}
+            methodName={methodName}
+            smartContractAddress={smartContractAddress}
+          />
+        );
+    }
+  }
+
   return (
     <div className={styles.root}>
-      <CommonContent
-        json={json}
-        methodName={methodName}
-        smartContractAddress={smartContractAddress}
-      />
-
+      {renderContent()}
       <div className={styles.deposit}>
         <div className={styles.row}>
           <FieldWrapper label={t('proposalCard.deposit')}>

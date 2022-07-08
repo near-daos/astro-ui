@@ -1,0 +1,31 @@
+@import 'styles/mixins';
+
+.root {
+  $grid-gap: 24px;
+
+  display: grid;
+  grid-gap: $grid-gap;
+  grid-template-areas:
+    'receiver amount'
+    'speed duration';
+}
+
+.receiver {
+  grid-area: receiver;
+}
+
+.amount {
+  grid-area: amount;
+}
+
+.speed {
+  grid-area: speed;
+}
+
+.duration {
+  grid-area: duration;
+}
+
+.tokenSymbol {
+  height: 24px;
+}
