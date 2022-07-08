@@ -11,6 +11,7 @@ import styles from './CommentContent.module.scss';
 interface Props {
   author: string;
   updatedAt: string;
+  createdAt: string;
   text: string;
   className?: string;
 }
@@ -18,10 +19,19 @@ interface Props {
 export const CommentContent: FC<Props> = ({
   author,
   updatedAt,
+  createdAt,
   text,
   className,
 }) => {
   const clean = DOMPurify.sanitize(text);
+
+  const renderDateTime = () => {
+    if (updatedAt) {
+      return `Edited ${formatISODate(updatedAt, 'dd MMMM yyyy, HH:mm')}`;
+    }
+
+    return formatISODate(createdAt, 'dd MMMM yyyy, HH:mm');
+  };
 
   return (
     <div className={cn(styles.root, className)}>
@@ -32,9 +42,7 @@ export const CommentContent: FC<Props> = ({
           </span>
           <span className={styles.primaryLabel}>{author}</span>
         </div>
-        <div className={styles.datetime}>
-          {formatISODate(updatedAt, 'dd MMMM yyyy, HH:mm')}
-        </div>
+        <div className={styles.datetime}>{renderDateTime()}</div>
       </div>
       <p
         className={styles.body}

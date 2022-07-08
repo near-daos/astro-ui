@@ -40,6 +40,7 @@ export const Comment: FC<CommentProps> = ({
     author,
     message,
     createdAt,
+    updatedAt,
     replies,
     likeAccounts,
     dislikeAccounts = [],
@@ -71,7 +72,12 @@ export const Comment: FC<CommentProps> = ({
           placeholder="Type your comment..."
         />
       ) : (
-        <CommentContent author={author} updatedAt={createdAt} text={message} />
+        <CommentContent
+          author={author}
+          updatedAt={updatedAt}
+          createdAt={createdAt}
+          text={message}
+        />
       )}
       <div className={styles.footer}>
         {!!replies?.length && (
@@ -119,7 +125,8 @@ export const Comment: FC<CommentProps> = ({
             <CommentContent
               key={item.id}
               author={item.author}
-              updatedAt={item.createdAt}
+              createdAt={item.createdAt}
+              updatedAt={item.updatedAt}
               text={item.message}
               className={styles.reply}
             />

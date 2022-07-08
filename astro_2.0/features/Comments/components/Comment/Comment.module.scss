@@ -35,6 +35,12 @@
   }
 }
 
+.replies:hover {
+  .toggleIcon {
+    color: var(--color-primary-50);
+  }
+}
+
 .right {
   align-items: center;
   display: flex;

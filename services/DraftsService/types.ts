@@ -36,6 +36,7 @@ export type DraftComment = {
   likeAccounts: string[];
   dislikeAccounts: string[];
   createdAt: string;
+  updatedAt: string;
 };
 
 export type EditDraftCommentData = Omit<
@@ -44,6 +45,7 @@ export type EditDraftCommentData = Omit<
   | 'contextType'
   | 'author'
   | 'createdAt'
+  | 'updatedAt'
   | 'likeAccounts'
   | 'dislikeAccounts'
   | 'replies'
@@ -52,7 +54,13 @@ export type EditDraftCommentData = Omit<
 
 export type CreateDraftCommentData = Omit<
   DraftComment,
-  'id' | 'author' | 'createdAt' | 'likeAccounts' | 'dislikeAccounts' | 'replies'
+  | 'id'
+  | 'author'
+  | 'createdAt'
+  | 'updatedAt'
+  | 'likeAccounts'
+  | 'dislikeAccounts'
+  | 'replies'
 >;
 
 export type DraftKind = { proposalVariant: ProposalVariant } & Record<
