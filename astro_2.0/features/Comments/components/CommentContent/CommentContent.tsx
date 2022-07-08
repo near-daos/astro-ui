@@ -26,7 +26,7 @@ export const CommentContent: FC<Props> = ({
   const clean = DOMPurify.sanitize(text);
 
   const renderDateTime = () => {
-    if (updatedAt) {
+    if (updatedAt && updatedAt !== createdAt) {
       return `Edited ${formatISODate(updatedAt, 'dd MMMM yyyy, HH:mm')}`;
     }
 

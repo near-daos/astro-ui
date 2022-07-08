@@ -13,6 +13,7 @@ type HashtagInputProps = {
   value: string;
   id: string;
   removeHashtag: (id: string) => void;
+  onBlur: () => void;
 };
 
 export const HashtagInput: FC<HashtagInputProps> = ({
@@ -20,6 +21,7 @@ export const HashtagInput: FC<HashtagInputProps> = ({
   value,
   id,
   removeHashtag,
+  onBlur,
 }) => {
   const [width, setWidth] = useState(MIN_WIDTH);
   const [focus, setFocus] = useState(false);
@@ -32,6 +34,7 @@ export const HashtagInput: FC<HashtagInputProps> = ({
 
   const handleBlur = () => {
     setFocus(false);
+    onBlur();
   };
 
   useEffect(() => {
