@@ -41,9 +41,11 @@ interface Props {
   onUpdate: ({
     step,
     proposalId,
+    wizardCompleted,
   }: {
     step: CreateGovernanceTokenSteps | null;
     proposalId: number | null;
+    wizardCompleted?: boolean;
   }) => Promise<void>;
   status: ProgressStatus;
 }
@@ -98,6 +100,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
       ...status,
       step: nextStep,
       proposalId: null,
+      wizardCompleted: isFinalise,
     });
 
     if (isFinalise) {

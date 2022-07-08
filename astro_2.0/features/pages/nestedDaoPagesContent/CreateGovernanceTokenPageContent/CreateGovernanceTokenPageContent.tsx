@@ -34,10 +34,9 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
     daoContext.userPermissions.allowedProposalsToCreate[
       ProposalType.SetStakingContract
     ];
-  const showLowBalanceWarning = useLowBalanceWarning(
-    daoContext.userPermissions,
-    status?.step
-  );
+  const showLowBalanceWarning =
+    useLowBalanceWarning(daoContext.userPermissions, status?.step) &&
+    !status?.wizardCompleted;
 
   function renderContent() {
     if (!daoContext.userPermissions.isCanCreateProposals && !isViewProposal) {

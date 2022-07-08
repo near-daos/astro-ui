@@ -18,6 +18,8 @@ import { shortenString } from 'utils/format';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { ExplorerLink } from 'components/ExplorerLink';
 
+import { useDaoSettings } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/hooks';
+
 import styles from './DaoDetailsMinimized.module.scss';
 
 export interface DaoDetailsMinimizedProps {
@@ -37,6 +39,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   onCreateProposalClick,
   userPermissions,
 }) => {
+  const { settings } = useDaoSettings(dao.id);
   const isXsMobile = useMedia('(max-width: 600px)');
   const flags = useFlags();
   const router = useRouter();
@@ -44,7 +47,8 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   const { asPath } = router;
   const currentPath = asPath.split('?')[0];
 
-  const daoHasGovernanceTokenConfigured = !!dao.stakingContract;
+  const daoHasGovernanceTokenConfigured =
+    settings?.createGovernanceToken?.wizardCompleted;
 
   const url = {
     delegates: `/dao/${dao.id}/delegate`,
