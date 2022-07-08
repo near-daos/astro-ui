@@ -31,6 +31,7 @@ export type ProgressStatus = {
   flow: CreateGovernanceTokenFlow;
   selectedToken?: string;
   contractAddress?: string;
+  wizardCompleted?: boolean;
 };
 
 export type Settings = {

@@ -35,6 +35,7 @@ import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { formatCurrency } from 'utils/formatCurrency';
 import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import { useDaoDashboardData } from 'astro_2.0/features/DaoDashboard/hooks';
+import { useDaoSettings } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/hooks';
 
 import styles from './Tokens.module.scss';
 
@@ -54,10 +55,11 @@ const TokensPage: NextPage<TokensPageProps> = ({
   const flags = useFlags();
 
   const { t } = useTranslation();
-
+  const { settings } = useDaoSettings(dao.id);
   const { tokens } = useDaoCustomTokens();
   const breadcrumbsConfig = useGetBreadcrumbsConfig(dao.id, dao.displayName);
-  const daoHasGovernanceTokenConfigured = !!dao.stakingContract;
+  const daoHasGovernanceTokenConfigured =
+    settings?.createGovernanceToken?.wizardCompleted;
 
   const {
     chartData,
