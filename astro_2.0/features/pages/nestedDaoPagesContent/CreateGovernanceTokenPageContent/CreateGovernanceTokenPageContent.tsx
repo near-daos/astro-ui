@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next';
 import { DaoContext } from 'types/context';
 import { ProposalType } from 'types/proposal';
 
+import { NoResultsView } from 'astro_2.0/components/NoResultsView';
 import { Loader } from 'components/loader';
 import { CreateGovernanceTokenWizard } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/CreateGovernanceTokenWizard/CreateGovernanceTokenWizard';
 import { DaoWarning } from 'astro_2.0/components/DaoWarning';
@@ -40,7 +41,7 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
 
   function renderContent() {
     if (!daoContext.userPermissions.isCanCreateProposals && !isViewProposal) {
-      return <div>no permissions</div>;
+      return <NoResultsView title="You don't have permissions to proceed" />;
     }
 
     if (loading) {
@@ -57,7 +58,12 @@ export const CreateGovernanceTokenPageContent: VFC<CreateGovernanceTokenPageCont
       );
     }
 
-    return <Intro onUpdate={update} disabled={!isPermitted} />;
+    return (
+      <Intro
+        onUpdate={update}
+        disabled={!isPermitted || showLowBalanceWarning}
+      />
+    );
   }
 
   return (

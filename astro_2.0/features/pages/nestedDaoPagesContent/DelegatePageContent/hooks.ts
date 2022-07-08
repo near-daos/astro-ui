@@ -20,7 +20,12 @@ export function useDelegatePageData(
     | (DelegateTokenDetails & { contractAddress: string })
     | undefined;
   loadingDelegateByUser: boolean;
-  delegateByUser: (UserDelegateDetails & { nextActionTime: Date }) | undefined;
+  delegateByUser:
+    | (UserDelegateDetails & {
+        nextActionTime: Date;
+        delegatedToUser: Record<string, string>;
+      })
+    | undefined;
   handleSearch: (val: string) => Promise<void>;
   handleReset: () => void;
   data: DaoDelegation[];
@@ -106,11 +111,24 @@ export function useDelegatePageData(
       return undefined;
     }
 
-    const delegatedTotal = userData.delegated_amounts.reduce((res, item) => {
-      const [, balance] = item;
+    const {
+      delegatedTotal,
+      delegatedToUser,
+    } = userData.delegated_amounts.reduce<{
+      delegatedTotal: number;
+      delegatedToUser: Record<string, string>;
+    }>(
+      (res, item) => {
+        const [acc, balance] = item;
 
-      return res + +balance;
-    }, 0);
+        res.delegatedTotal += +balance;
+
+        res.delegatedToUser[acc] = balance;
+
+        return res;
+      },
+      { delegatedTotal: 0, delegatedToUser: {} }
+    );
 
     return {
       accountId,
@@ -119,6 +137,7 @@ export function useDelegatePageData(
       nextActionTime: new Date(
         Number(userData.next_action_timestamp) / 1000000
       ),
+      delegatedToUser,
     };
   }, [dao, nearService, accountId, ts]);
 
@@ -158,16 +177,30 @@ export function useDelegatePageData(
   };
 }
 
-export function useVotingThreshold(dao: DAO): string {
+export function useVotingPolicyDetails(
+  dao: DAO
+): {
+  balance: string;
+  threshold: string;
+  quorum: string;
+} {
   const holdersRole = dao.policy.roles.find(
     role => role.kind === 'Member' && role.name === 'TokenHolders'
   );
 
   if (!holdersRole) {
-    return '0';
+    return {
+      balance: '0',
+      threshold: '0',
+      quorum: '0',
+    };
   }
 
-  return holdersRole.votePolicy.vote.weight ?? '0';
+  return {
+    threshold: holdersRole.votePolicy.vote.weight ?? '0',
+    balance: holdersRole.balance ?? '0',
+    quorum: holdersRole.votePolicy.vote.quorum ?? '0',
+  };
 }
 
 export function useTriggerUpdate(): {

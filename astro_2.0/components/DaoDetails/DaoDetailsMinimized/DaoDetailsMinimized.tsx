@@ -21,7 +21,10 @@ import { ExplorerLink } from 'components/ExplorerLink';
 import styles from './DaoDetailsMinimized.module.scss';
 
 export interface DaoDetailsMinimizedProps {
-  dao: Pick<DAO, 'id' | 'flagCover' | 'flagLogo' | 'logo' | 'displayName'>;
+  dao: Pick<
+    DAO,
+    'id' | 'flagCover' | 'flagLogo' | 'logo' | 'displayName' | 'stakingContract'
+  >;
   className?: string;
   onCreateProposalClick?: () => void;
   disableNewProposal?: boolean;
@@ -40,6 +43,8 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
   const { t } = useTranslation();
   const { asPath } = router;
   const currentPath = asPath.split('?')[0];
+
+  const daoHasGovernanceTokenConfigured = !!dao.stakingContract;
 
   const url = {
     delegates: `/dao/${dao.id}/delegate`,
@@ -113,7 +118,7 @@ export const DaoDetailsMinimized: FC<DaoDetailsMinimizedProps> = ({
           </a>
         </Link>
         <section className={styles.controls}>
-          {flags.delegateVoting && (
+          {flags.delegateVoting && daoHasGovernanceTokenConfigured && (
             <ActionButton
               iconName="delegate"
               onClick={() => handleChapterClick(url.delegates)}

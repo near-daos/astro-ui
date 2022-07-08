@@ -40,7 +40,8 @@ export function isUserPermittedToCreateProposal(
 
 export function getAllowedProposalsToCreate(
   accountId: string | null | undefined,
-  dao: DAO | null
+  dao: DAO | null,
+  userHasDelegatedTokens: boolean
 ): ProposalPermissions {
   // Restrict create by default
   const result = {
@@ -65,7 +66,11 @@ export function getAllowedProposalsToCreate(
 
   // Iterate through roles and try to find relevant permissions in user's roles
   dao?.policy.roles.forEach(role => {
-    if (role.kind === 'Everyone' || role.accountIds?.includes(accountId)) {
+    if (
+      role.kind === 'Everyone' ||
+      role.accountIds?.includes(accountId) ||
+      (role.kind === 'Member' && userHasDelegatedTokens)
+    ) {
       role.permissions.forEach(permission => {
         switch (permission) {
           case '*:*':

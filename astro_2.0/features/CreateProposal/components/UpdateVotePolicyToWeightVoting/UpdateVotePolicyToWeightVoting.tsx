@@ -16,6 +16,8 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
   const { register, watch, setValue } = useFormContext();
   const { nearService, accountId } = useWalletContext();
 
+  const balance = watch('balance');
+  const quorum = watch('quorum');
   const threshold = watch('threshold');
   const contractAddress = watch('contractAddress');
 
@@ -43,8 +45,31 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
   return (
     <div className={styles.root}>
       <InputWrapper
+        fieldName="balance"
+        label="Balance (minimum amount of tokens delegated to user to vote in DAO)"
+        flex
+        className={styles.inputWrapper}
+      >
+        <div className={styles.input}>
+          <Input
+            placeholder="1"
+            isBorderless
+            size="auto"
+            inputStyles={{
+              padding: '10.5px 0',
+              width: getInputWidth(balance, 30, 6),
+            }}
+            {...register('balance')}
+          />
+          <span className={styles.suffix}>{tokenDetails?.symbol}</span>
+        </div>
+      </InputWrapper>
+
+      <InputWrapper
         fieldName="threshold"
-        label={t('threshold')}
+        label={`${t(
+          'threshold'
+        )} (minimum amount of tokens needed to approve/reject proposal)`}
         flex
         className={styles.inputWrapper}
       >
@@ -58,6 +83,27 @@ export const UpdateVotePolicyToWeightVoting: VFC = () => {
               width: getInputWidth(threshold, 30, 6),
             }}
             {...register('threshold')}
+          />
+          <span className={styles.suffix}>{tokenDetails?.symbol}</span>
+        </div>
+      </InputWrapper>
+
+      <InputWrapper
+        fieldName="quorum"
+        label="Quorum (minimum amount of tokens required to approve/reject proposal)"
+        flex
+        className={styles.inputWrapper}
+      >
+        <div className={styles.input}>
+          <Input
+            placeholder="0"
+            isBorderless
+            size="auto"
+            inputStyles={{
+              padding: '10.5px 0',
+              width: getInputWidth(quorum, 30, 6),
+            }}
+            {...register('quorum')}
           />
           <span className={styles.suffix}>{tokenDetails?.symbol}</span>
         </div>

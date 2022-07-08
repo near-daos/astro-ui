@@ -1,0 +1,79 @@
+@use 'styles/breakpoints';
+@import 'styles/mixins';
+@import 'styles/typography';
+
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  margin-bottom: 8px;
+
+  > div:first-of-type {
+    margin-right: 24px;
+  }
+
+  > div:last-of-type {
+    margin-left: 40px;
+  }
+}
+
+.value {
+  align-items: center;
+  display: flex;
+  font-weight: 700;
+  height: 40px;
+}
+
+.label {
+  @extend %subtitle5;
+  color: var(--color-neutral-60);
+  margin-bottom: 8px;
+}
+
+.icon {
+  color: var(--color-primary);
+  margin-right: 12px;
+  width: 24px;
+}
+
+.amount {
+  text-align: right;
+  input {
+    font-weight: 700;
+    padding-right: 0;
+    text-align: right !important;
+    @include placeholder {
+      color: var(--color-neutral-40);
+      font-weight: 700;
+      transition: opacity 0.2s linear;
+    }
+  }
+}
+
+@media screen and (max-width: #{breakpoints.$screen-sm}px) {
+  .row {
+    flex-wrap: wrap;
+    > div {
+      margin-bottom: 12px;
+      width: 100%;
+
+      > div:last-of-type {
+        height: 24px;
+      }
+
+      &:last-of-type {
+        margin-left: 0;
+        text-align: left;
+
+        > div:first-of-type {
+          justify-content: flex-start;
+        }
+      }
+    }
+  }
+}

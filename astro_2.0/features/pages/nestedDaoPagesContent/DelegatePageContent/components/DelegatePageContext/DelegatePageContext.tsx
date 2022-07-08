@@ -7,6 +7,8 @@ interface DelegatePageContext {
   triggerUpdate?: () => void;
   contractAddress?: string;
   nextActionTime?: Date;
+  memberBalance: string;
+  delegateToUser?: Record<string, string>;
 }
 
 export const DelegatePageContext = createContext<DelegatePageContext>({
@@ -17,6 +19,8 @@ export const DelegatePageContext = createContext<DelegatePageContext>({
   triggerUpdate: () => {},
   contractAddress: '',
   nextActionTime: new Date(),
+  memberBalance: '0',
+  delegateToUser: {},
 });
 
 export const useDelegatePageContext = (): DelegatePageContext =>

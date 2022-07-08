@@ -831,11 +831,13 @@ export async function getChangeVotingPolicyToWeightVoting(
     bountyForgivenessPeriod,
   } = policy;
 
-  const { ratio, quorum, weightKind } = defaultVotePolicy;
+  const { ratio, weightKind, quorum: defaultQuorum } = defaultVotePolicy;
 
-  const { threshold, symbol } = data as {
+  const { threshold, symbol, balance, quorum } = data as {
     threshold: number;
     symbol: string;
+    balance: number;
+    quorum: number;
   };
 
   // TODO: add selector or use wildcard instead(should be changed on a smart contract side)
@@ -861,9 +863,13 @@ export async function getChangeVotingPolicyToWeightVoting(
 
   const tokenWeightDefaultPolicy = {
     weight_kind: 'TokenWeight',
-    quorum: '0',
+    quorum,
     threshold: `${threshold}`,
   };
+
+  const holdersRole = roles.find(
+    role => role.kind === 'Member' && role.name === 'TokenHolders'
+  );
 
   return {
     daoId: id,
@@ -878,9 +884,9 @@ export async function getChangeVotingPolicyToWeightVoting(
           {
             name: 'TokenHolders',
             kind: {
-              Member: '1',
+              Member: balance,
             },
-            permissions: ['*:*'],
+            permissions: holdersRole?.permissions ?? ['*:*'],
             vote_policy: proposalKindPolicyLabels.reduce(
               (acc, value) => ({
                 ...acc,
@@ -892,7 +898,7 @@ export async function getChangeVotingPolicyToWeightVoting(
         ],
         default_vote_policy: {
           weight_kind: weightKind,
-          quorum,
+          quorum: defaultQuorum,
           threshold: ratio,
         },
         proposal_bond: proposalBond,

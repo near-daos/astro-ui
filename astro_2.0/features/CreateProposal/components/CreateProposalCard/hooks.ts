@@ -88,7 +88,7 @@ export function useProposalTypeOptions(
     const result = [
       {
         title: fcLabel,
-        disabled: false,
+        disabled: !allowedProposalsToCreate[ProposalType.FunctionCall],
         options: [
           {
             label: fcLabel,
@@ -120,10 +120,11 @@ export function useProposalTypeOptions(
     return result;
   }, [
     fcLabel,
-    settings?.daoUpgrade?.versionHash,
-    templates,
-    voteInOtherDao,
     roketoStreaming,
+    settings?.daoUpgrade?.versionHash,
+    voteInOtherDao,
+    allowedProposalsToCreate,
+    templates,
   ]);
 
   const config = [

@@ -16,7 +16,7 @@ import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 
 import {
   useDelegatePageData,
-  useVotingThreshold,
+  useVotingPolicyDetails,
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/hooks';
 
 import { DaoContext } from 'types/context';
@@ -57,7 +57,11 @@ export const DelegatePageContent: FC<Props> = ({
     delegateByUser,
     data,
   } = useDelegatePageData(daoContext.dao);
-  const votingThreshold = useVotingThreshold(daoContext.dao);
+  const {
+    threshold: votingThreshold,
+    balance,
+    quorum,
+  } = useVotingPolicyDetails(daoContext.dao);
   const canCreateProposal =
     daoContext.userPermissions.isCanCreatePolicyProposals &&
     daoContext.policyAffectsProposals.length === 0;
@@ -91,10 +95,14 @@ export const DelegatePageContent: FC<Props> = ({
       delegatedBalance: delegateByUser?.delegatedBalance,
       contractAddress: tokenDetails?.contractAddress,
       nextActionTime: delegateByUser?.nextActionTime,
+      memberBalance: balance,
+      delegateToUser: delegateByUser?.delegatedToUser,
     };
   }, [
+    balance,
     daoContext.dao.name,
     delegateByUser?.delegatedBalance,
+    delegateByUser?.delegatedToUser,
     delegateByUser?.nextActionTime,
     delegateByUser?.stakedBalance,
     tokenDetails?.contractAddress,
@@ -142,6 +150,8 @@ export const DelegatePageContent: FC<Props> = ({
                     ProposalVariant.ProposeUpdateVotePolicyToWeightVoting,
                   initialValues: {
                     threshold: votingThreshold,
+                    quorum,
+                    balance,
                   },
                 });
               }
@@ -189,7 +199,7 @@ export const DelegatePageContent: FC<Props> = ({
                 capitalize
                 disabled={
                   actionsNotAvailable ||
-                  (delegateByUser?.stakedBalance || 0) === 0
+                  Number(delegateByUser?.stakedBalance || 0) === 0
                 }
                 onClick={() => setAddNewMemeberMode(!addNewMemberMode)}
               >

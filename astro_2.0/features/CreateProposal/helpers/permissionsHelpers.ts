@@ -28,7 +28,7 @@ export function updateRoleWithNewPermissions(
     let res = true;
 
     fields.forEach(field => {
-      if (item.includes(field)) {
+      if (item.includes(field) || item === '*:*') {
         res = false;
       }
     });

@@ -57,6 +57,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
 
   const { tokens } = useDaoCustomTokens();
   const breadcrumbsConfig = useGetBreadcrumbsConfig(dao.id, dao.displayName);
+  const daoHasGovernanceTokenConfigured = !!dao.stakingContract;
 
   const {
     chartData,
@@ -217,7 +218,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
   }
 
   function renderCreateGovTokenButton() {
-    if (flags.governanceToken) {
+    if (flags.governanceToken && !daoHasGovernanceTokenConfigured) {
       return (
         <Button
           capitalize

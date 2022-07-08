@@ -42,13 +42,19 @@ export const TableRow: FC<Props> = ({
 
   const {
     nextActionTime,
-    stakedBalance,
-    delegatedBalance,
+    stakedBalance = 0,
+    delegatedBalance = 0,
+    memberBalance,
+    delegateToUser,
   } = useDelegatePageContext();
 
   const actionsNotAvailable = nextActionTime && nextActionTime > new Date();
-  const notEnoughStakedBalance = (stakedBalance || 0) === 0;
-  const notEnoughDelegatedBalance = (delegatedBalance || 0) === 0;
+  const notEnoughStakedBalance =
+    stakedBalance === 0 || Number(stakedBalance) <= delegatedBalance;
+  const notEnoughDelegatedBalance =
+    !delegateToUser ||
+    !delegateToUser[accountId] ||
+    (!!delegateToUser[accountId] && Number(delegateToUser[accountId]) === 0);
 
   return (
     <>
@@ -63,7 +69,10 @@ export const TableRow: FC<Props> = ({
           />
         </div>
         <div>
-          <VotingPower progressPercent={progressPercent} />
+          <VotingPower
+            progressPercent={progressPercent}
+            inactiveVotingPower={Number(balance) < Number(memberBalance)}
+          />
         </div>
         <div className={styles.inline}>
           <Tooltip

@@ -166,7 +166,10 @@ export const AddMemberRow: FC<Props> = ({ votingThreshold, onAddMember }) => {
       <div>{renderAccountInput()}</div>
       <div>{renderAmountInput()}</div>
       <div>
-        <VotingPower progressPercent={progressPercent} />
+        <VotingPower
+          progressPercent={progressPercent}
+          inactiveVotingPower={false}
+        />
       </div>
       <div className={styles.inline}>
         <Button

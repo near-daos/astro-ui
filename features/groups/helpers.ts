@@ -73,7 +73,7 @@ function formatVotePolicies(
 }
 
 export function dataRoleToContractRole(role: DaoRole): ContractRole {
-  const { name, kind, permissions, votePolicy, accountIds } = role;
+  const { name, kind, permissions, votePolicy, accountIds, balance } = role;
 
   let newKind;
 
@@ -87,7 +87,7 @@ export function dataRoleToContractRole(role: DaoRole): ContractRole {
     }
     case 'Member': {
       newKind = {
-        Member: '1',
+        Member: balance ?? '1',
       };
 
       break;
