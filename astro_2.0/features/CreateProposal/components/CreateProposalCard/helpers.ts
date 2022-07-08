@@ -57,7 +57,8 @@ export function getCustomTemplatesDefaults(
   t: TFunction,
   accountId: string,
   templateId: string,
-  isDraft?: boolean
+  isDraft?: boolean,
+  draftValues?: Record<string, unknown>
 ): Record<string, unknown> {
   let initialValues = {};
   const predefinedTypes = Object.values(FunctionCallType) as string[];
@@ -81,6 +82,10 @@ export function getCustomTemplatesDefaults(
         versionHash: hash,
       };
     }
+  }
+
+  if (isDraft) {
+    initialValues = { ...initialValues, ...draftValues };
   }
 
   const defaults = getFormInitialValues(
