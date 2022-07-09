@@ -23,6 +23,18 @@
   }
 
   .progress.inactive {
-    background-color: var(--color-primary-30);
+    background-color: var(--color-error-50);
+  }
+
+  .progressValue {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+  }
+
+  .alert {
+    color: var(--color-error-50);
+    width: 18px;
   }
 }

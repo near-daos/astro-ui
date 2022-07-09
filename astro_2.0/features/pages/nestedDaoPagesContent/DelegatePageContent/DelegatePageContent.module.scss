@@ -9,10 +9,43 @@
 
 .widgets {
   display: grid;
-  grid-column-gap: 24px;
+  grid-column-gap: 12px;
   grid-template-columns: 1.5fr repeat(2, 1fr);
 
   margin-bottom: 24px;
+
+  &.widgetExpanded {
+    margin-bottom: 12px;
+  }
+}
+
+.goalChartWrapper {
+  background-color: var(--color-white);
+  border-radius: 5px 0 5px 5px;
+  box-shadow: 3px 2px 15px rgba(0, 0, 0, 0.05);
+  display: flex;
+
+  margin-bottom: 24px;
+  padding: 24px 24px 32px;
+}
+
+.expandableWidget {
+  position: relative;
+}
+
+.expandableWidget.expanded {
+  border-radius: 5px 5px 0 0;
+
+  &::after {
+    background-color: var(--color-white);
+    content: '';
+    height: 18px;
+    left: 0;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    z-index: 0;
+  }
 }
 
 .secondaryWidget {
@@ -116,4 +149,63 @@
   align-items: center;
   display: flex;
   margin-left: auto;
+}
+
+.editButtonWrapper {
+  @include centralize;
+  border-radius: 50%;
+  bottom: -16px;
+  height: 32px;
+  position: absolute;
+  right: -16px;
+  transition: transform 0.4s ease-out;
+  width: 32px;
+  z-index: 1;
+
+  &.visible {
+    transform: translateX(-40px);
+  }
+}
+
+.editButton {
+  @include centralize;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-primary-20);
+  border-radius: 50%;
+  cursor: pointer;
+  height: 32px;
+  position: relative;
+  transition: transform 0.2s ease-out;
+  width: 32px;
+  z-index: 1;
+
+  &:hover {
+    background-color: var(--color-primary-30);
+  }
+
+  &.visible {
+    transform: translateX(-40px);
+  }
+}
+
+.chartToggle {
+  @include centralize;
+  background-color: var(--color-primary-20);
+  border-radius: 50%;
+  bottom: -16px;
+  cursor: pointer;
+  height: 32px;
+  position: absolute;
+  right: -16px;
+  width: 32px;
+  z-index: 1;
+
+  &:hover {
+    background-color: var(--color-primary-30);
+  }
+}
+
+.toggleIcon {
+  color: var(--color-primary-50);
+  width: 16px;
 }

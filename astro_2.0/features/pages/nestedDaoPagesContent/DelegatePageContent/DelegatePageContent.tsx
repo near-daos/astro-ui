@@ -3,6 +3,7 @@ import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import ContentLoader from 'react-content-loader';
 import { format } from 'date-fns';
+import cn from 'classnames';
 
 import { SearchInput } from 'astro_2.0/components/SearchInput';
 import { Dropdown } from 'components/Dropdown';
@@ -13,6 +14,7 @@ import { DelegateGroupTable } from 'astro_2.0/features/pages/nestedDaoPagesConte
 import { MyBalanceWidget } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/MyBalanceWidget';
 import { VotingThresholdWidget } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/VotingThresholdWidget';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
+import { GoalChart } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/GoalChart';
 
 import {
   useDelegatePageData,
@@ -20,7 +22,10 @@ import {
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/hooks';
 
 import { DaoContext } from 'types/context';
-import { getSortOptions } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/helpers';
+import {
+  getSortOptions,
+  getVotingGoal,
+} from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/helpers';
 import useQuery from 'hooks/useQuery';
 import { kFormatter } from 'utils/format';
 
@@ -46,6 +51,7 @@ export const DelegatePageContent: FC<Props> = ({
   const { query } = useQuery<{ sort: string }>();
   const { sort } = query;
   const [addNewMemberMode, setAddNewMemeberMode] = useState(false);
+  const [showGoalChart, setShowGoalChart] = useState(false);
 
   const {
     loadingDelegateByUser,
@@ -65,6 +71,12 @@ export const DelegatePageContent: FC<Props> = ({
   const canCreateProposal =
     daoContext.userPermissions.isCanCreatePolicyProposals &&
     daoContext.policyAffectsProposals.length === 0;
+
+  const votingGoal = getVotingGoal(
+    Number(votingThreshold),
+    Number(totalSupply ?? 0),
+    Number(quorum ?? 0)
+  );
 
   const handleSort = useCallback(
     async value => {
@@ -112,7 +124,11 @@ export const DelegatePageContent: FC<Props> = ({
     <DelegatePageContext.Provider value={contextValue}>
       <div className={styles.root}>
         <h1>Delegate Voting</h1>
-        <div className={styles.widgets}>
+        <div
+          className={cn(styles.widgets, {
+            [styles.widgetExpanded]: showGoalChart,
+          })}
+        >
           <MyBalanceWidget
             loading={loadingDelegateByUser}
             decimals={tokenDetails?.decimals}
@@ -122,8 +138,7 @@ export const DelegatePageContent: FC<Props> = ({
             availableBalance={tokenDetails?.balance}
           />
           <DelegatePageWidget
-            title="Total Delegated Balance"
-            className={styles.secondaryWidget}
+            title={`Total Delegated Balance (${tokenDetails?.symbol})`}
           >
             {loadingTotalSupply ? (
               <ContentLoader height={28} width={80}>
@@ -132,7 +147,7 @@ export const DelegatePageContent: FC<Props> = ({
             ) : (
               <FormattedNumericValue
                 value={kFormatter(totalSupply ? Number(totalSupply) : 0)}
-                suffix={tokenDetails?.symbol}
+                // suffix={tokenDetails?.symbol}
                 valueClassName={styles.primaryValue}
                 suffixClassName={styles.secondaryValue}
               />
@@ -140,9 +155,11 @@ export const DelegatePageContent: FC<Props> = ({
           </DelegatePageWidget>
           <VotingThresholdWidget
             loading={loadingDelegateByUser}
-            value={Number(votingThreshold)}
-            suffix={tokenDetails?.symbol}
+            value={votingGoal}
+            // suffix={tokenDetails?.symbol}
             disabled={!canCreateProposal}
+            showGoalChart={showGoalChart}
+            onToggleChart={() => setShowGoalChart(!showGoalChart)}
             onEdit={() => {
               if (toggleCreateProposal) {
                 toggleCreateProposal({
@@ -158,6 +175,15 @@ export const DelegatePageContent: FC<Props> = ({
             }}
           />
         </div>
+        {showGoalChart && (
+          <div className={styles.goalChartWrapper}>
+            <GoalChart
+              threshold={Number(votingThreshold)}
+              quorum={Number(quorum)}
+              totalDelegated={Number(totalSupply)}
+            />
+          </div>
+        )}
         <div className={styles.content}>
           <div className={styles.contentHeader}>
             <div className={styles.title}>Delegate group</div>
