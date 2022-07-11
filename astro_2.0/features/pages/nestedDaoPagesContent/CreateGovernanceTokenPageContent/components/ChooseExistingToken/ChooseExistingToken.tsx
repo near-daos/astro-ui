@@ -22,8 +22,10 @@ import {
   ProgressStatus,
 } from 'types/settings';
 
+import { CustomContract } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/types';
+import { SputnikNearService } from 'services/sputnik';
+
 import { useWalletContext } from 'context/WalletContext';
-import { validateUserAccount } from 'astro_2.0/features/CreateProposal/helpers';
 
 import styles from './ChooseExistingToken.module.scss';
 
@@ -42,6 +44,29 @@ interface Props {
     selectedToken?: string;
   }) => Promise<void>;
   status: ProgressStatus;
+}
+
+async function validateTokenAccount(
+  value: string | undefined,
+  nearService: SputnikNearService | undefined | null
+) {
+  if (!value || !nearService) {
+    return false;
+  }
+
+  try {
+    const contractAddress = value.trim();
+
+    const contract = nearService.getContract(contractAddress, [
+      'ft_metadata',
+    ]) as CustomContract;
+
+    const meta = await contract.ft_metadata();
+
+    return !!meta;
+  } catch (e) {
+    return false;
+  }
 }
 
 export const ChooseExistingToken: FC<Props> = ({ onUpdate, status }) => {
@@ -65,7 +90,7 @@ export const ChooseExistingToken: FC<Props> = ({ onUpdate, status }) => {
             'tokenExists',
             'You should use a valid token address',
             async address => {
-              const exists = await validateUserAccount(
+              const exists = await validateTokenAccount(
                 address,
                 nearService || undefined
               );
@@ -83,7 +108,7 @@ export const ChooseExistingToken: FC<Props> = ({ onUpdate, status }) => {
         ...status,
         step: CreateGovernanceTokenSteps.ContractAcceptance,
         proposalId: null,
-        contractAddress,
+        contractAddress: contractAddress.trim(),
       });
     },
     [status, onUpdate]
