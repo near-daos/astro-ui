@@ -15,6 +15,7 @@ import { MyBalanceWidget } from 'astro_2.0/features/pages/nestedDaoPagesContent/
 import { VotingThresholdWidget } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/VotingThresholdWidget';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { GoalChart } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/GoalChart';
+import { QuorumErrorWarning } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/QuorumErrorWarning';
 
 import {
   useDelegatePageData,
@@ -27,7 +28,6 @@ import {
   getVotingGoal,
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/helpers';
 import useQuery from 'hooks/useQuery';
-import { kFormatter } from 'utils/format';
 
 import { DelegatePageContext } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/DelegatePageContext';
 
@@ -78,6 +78,19 @@ export const DelegatePageContent: FC<Props> = ({
     Number(quorum ?? 0)
   );
 
+  const handleCreateNewProposal = useCallback(() => {
+    if (toggleCreateProposal) {
+      toggleCreateProposal({
+        proposalVariant: ProposalVariant.ProposeUpdateVotePolicyToWeightVoting,
+        initialValues: {
+          threshold: votingThreshold,
+          quorum,
+          balance,
+        },
+      });
+    }
+  }, [balance, quorum, toggleCreateProposal, votingThreshold]);
+
   const handleSort = useCallback(
     async value => {
       const nextQuery = {
@@ -97,6 +110,8 @@ export const DelegatePageContent: FC<Props> = ({
   );
 
   const sortOptions = getSortOptions(t);
+
+  const isQuorumError = Number(totalSupply) < Number(votingGoal);
   const actionsNotAvailable =
     delegateByUser && delegateByUser?.nextActionTime > new Date();
 
@@ -146,8 +161,7 @@ export const DelegatePageContent: FC<Props> = ({
               </ContentLoader>
             ) : (
               <FormattedNumericValue
-                value={kFormatter(totalSupply ? Number(totalSupply) : 0)}
-                // suffix={tokenDetails?.symbol}
+                value={totalSupply ? Number(totalSupply) : 0}
                 valueClassName={styles.primaryValue}
                 suffixClassName={styles.secondaryValue}
               />
@@ -156,33 +170,23 @@ export const DelegatePageContent: FC<Props> = ({
           <VotingThresholdWidget
             loading={loadingDelegateByUser}
             value={votingGoal}
-            // suffix={tokenDetails?.symbol}
             disabled={!canCreateProposal}
             showGoalChart={showGoalChart}
             onToggleChart={() => setShowGoalChart(!showGoalChart)}
-            onEdit={() => {
-              if (toggleCreateProposal) {
-                toggleCreateProposal({
-                  proposalVariant:
-                    ProposalVariant.ProposeUpdateVotePolicyToWeightVoting,
-                  initialValues: {
-                    threshold: votingThreshold,
-                    quorum,
-                    balance,
-                  },
-                });
-              }
-            }}
+            onEdit={handleCreateNewProposal}
           />
         </div>
         {showGoalChart && (
           <div className={styles.goalChartWrapper}>
             <GoalChart
-              threshold={Number(votingThreshold)}
-              quorum={Number(quorum)}
-              totalDelegated={Number(totalSupply)}
+              threshold={Number(votingThreshold ?? 0)}
+              quorum={Number(quorum ?? 0)}
+              totalDelegated={Number(totalSupply ?? 0)}
             />
           </div>
+        )}
+        {isQuorumError && (
+          <QuorumErrorWarning onClick={handleCreateNewProposal} />
         )}
         <div className={styles.content}>
           <div className={styles.contentHeader}>

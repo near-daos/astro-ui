@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'next-i18next';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { CreateGovernanceTokenSteps } from 'types/settings';
 
@@ -23,6 +24,7 @@ interface Props {
 
 export const Intro: FC<Props> = ({ onUpdate, disabled }) => {
   const { t } = useTranslation();
+  const { createGovernanceTokenFaq } = useFlags();
 
   return (
     <div className={styles.root}>
@@ -52,30 +54,34 @@ export const Intro: FC<Props> = ({ onUpdate, disabled }) => {
           });
         }}
       >
-        {t('createGovernanceTokenPage.intro.startToCreate')}
+        {t('createGovernanceTokenPage.intro.setupGovernanceToken')}
       </Button>
 
-      <SubHeader className={styles.faq}>
-        {t('createGovernanceTokenPage.intro.faq')}
-      </SubHeader>
-      <Accordion
-        className={styles.accordion}
-        title={t('createGovernanceTokenPage.intro.accordions.first.title')}
-      >
-        {t('createGovernanceTokenPage.intro.accordions.first.description')}
-      </Accordion>
-      <Accordion
-        className={styles.accordion}
-        title={t('createGovernanceTokenPage.intro.accordions.second.title')}
-      >
-        {t('createGovernanceTokenPage.intro.accordions.second.description')}
-      </Accordion>
-      <Accordion
-        className={styles.accordion}
-        title={t('createGovernanceTokenPage.intro.accordions.third.title')}
-      >
-        {t('createGovernanceTokenPage.intro.accordions.third.description')}
-      </Accordion>
+      {createGovernanceTokenFaq && (
+        <>
+          <SubHeader className={styles.faq}>
+            {t('createGovernanceTokenPage.intro.faq')}
+          </SubHeader>
+          <Accordion
+            className={styles.accordion}
+            title={t('createGovernanceTokenPage.intro.accordions.first.title')}
+          >
+            {t('createGovernanceTokenPage.intro.accordions.first.description')}
+          </Accordion>
+          <Accordion
+            className={styles.accordion}
+            title={t('createGovernanceTokenPage.intro.accordions.second.title')}
+          >
+            {t('createGovernanceTokenPage.intro.accordions.second.description')}
+          </Accordion>
+          <Accordion
+            className={styles.accordion}
+            title={t('createGovernanceTokenPage.intro.accordions.third.title')}
+          >
+            {t('createGovernanceTokenPage.intro.accordions.third.description')}
+          </Accordion>
+        </>
+      )}
     </div>
   );
 };

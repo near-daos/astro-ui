@@ -496,9 +496,11 @@
     "createGovernanceToken": "Create Governance Token"
   },
   "createGovernanceTokenPage": {
+    "tokenWeightedVoting": "Token weighted voting",
     "createGovernanceToken": "Create Governance Token",
     "underConstruction": "The feature is under construction",
     "intro": {
+      "setupGovernanceToken": "Setup Governance Token",
       "description": "Governance tokens are blockchain tokens that grant voting and management power to their users. They are really important in a DeFi environment where there is a requirement for power balance. Through governance tokens, you can vote on proposals that are related to your blockchain.",
       "advOne": "Governance tokens pave the way for collaboration. They get people involved in the project and help engineers in the decision-making process.",
       "advTwo": "Founders can distribute these tokens based on distribution of funds or with users' normal income. ",

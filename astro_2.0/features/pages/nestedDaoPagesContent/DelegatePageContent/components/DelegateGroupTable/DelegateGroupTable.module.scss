@@ -123,3 +123,9 @@
   @include ellipse-text;
   max-width: 120px;
 }
+
+.alert {
+  color: var(--color-error-50);
+  margin-left: 8px;
+  width: 18px;
+}

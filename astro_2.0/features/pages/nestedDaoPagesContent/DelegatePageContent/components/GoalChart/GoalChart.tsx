@@ -31,7 +31,7 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
         value: threshold,
       },
       {
-        label: 'Total delegated',
+        label: 'Total Delegated',
         info: 'some info on tooltip',
         value: totalDelegated,
       },
@@ -52,7 +52,7 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
       return 0;
     });
 
-    const max: number = sortedData[2].value;
+    const max: number = sortedData[2].value || 1;
     const maxPos = width - ITEM_WIDTH;
     let minPos = ITEM_WIDTH;
 
@@ -73,9 +73,13 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
       } else if (i === 1) {
         if (itemPixelPosition < minPos) {
           itemPixelPosition = minPos;
+
+          minPos += ITEM_WIDTH;
         } else if (itemPixelPosition > maxPos) {
           itemPixelPosition = maxPos;
         }
+      } else if (i === sortedData.length - 1) {
+        itemPixelPosition = width;
       }
 
       let isLeftOriented;
@@ -84,6 +88,7 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
         isLeftOriented = itemPixelPosition - ITEM_WIDTH >= 0;
       } else if (i === 1) {
         isLeftOriented = itemPixelPosition + ITEM_WIDTH > maxPos;
+        // itemPixelPosition - ITEM_WIDTH >= minPos;
       } else {
         isLeftOriented = true;
       }
@@ -139,7 +144,7 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
                   placement="top"
                   overlay={<span className={styles.tooltip}>{item.info}</span>}
                 >
-                  <Icon name="info" width={16} className={styles.infoIcon} />
+                  <Icon name="info" width={12} className={styles.infoIcon} />
                 </Tooltip>
               </div>
               <div
@@ -149,14 +154,14 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
               />
               {item.showGoal && (
                 <div className={styles.votingGoal}>
-                  <Icon name="goal" width={14} />
+                  <Icon name="goal" width={18} />
                   {votingGoal}
                 </div>
               )}
               <div
                 className={cn(styles.valueBadge, {
                   [styles.errorReason]:
-                    isError && item.label === 'Total delegated',
+                    isError && item.label === 'Total Delegated',
                 })}
               >
                 {item.value}
