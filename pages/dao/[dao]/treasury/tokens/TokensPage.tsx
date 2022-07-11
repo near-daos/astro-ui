@@ -232,7 +232,7 @@ const TokensPage: NextPage<TokensPageProps> = ({
             },
           }}
         >
-          {t('tokensPage.createGovernanceToken')}
+          {t('tokensPage.setupGovernanceToken')}
         </Button>
       );
     }
