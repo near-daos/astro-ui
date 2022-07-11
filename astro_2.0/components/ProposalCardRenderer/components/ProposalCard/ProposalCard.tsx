@@ -100,9 +100,10 @@ export interface ProposalCardProps {
   history?: ProposalFeedItem[];
   onSelect?: (p: string) => void;
   selectedList?: string[];
-  convertTOProposal?: () => void;
+  convertToProposal?: () => void;
   saves?: number;
   dao?: DAO;
+  state?: string;
 }
 
 function getTimestampLabel(
@@ -220,9 +221,10 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   history,
   onSelect,
   selectedList,
-  convertTOProposal,
+  convertToProposal,
   saves,
   dao,
+  state,
 }) => {
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
@@ -565,9 +567,10 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       return (
         <div className={styles.draftFooter}>
           <DraftManagement
+            state={state}
             accountId={accountId}
             proposer={proposer}
-            convertTOProposal={convertTOProposal}
+            convertToProposal={convertToProposal}
             onEditDraft={handleEditDraft}
             dao={dao}
           />

@@ -31,6 +31,7 @@ import { ProposalComments } from 'astro_2.0/features/ViewProposal/components/Pro
 import { SaveFcTemplate } from 'astro_2.0/features/ViewProposal/components/SaveFcTemplate';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { DAO } from 'types/dao';
+import { UserPermissions } from 'types/context';
 
 export interface ViewProposalProps {
   proposal: ProposalFeedItem | DraftProposal;
@@ -44,6 +45,7 @@ export interface ViewProposalProps {
   selectedList?: string[];
   toggleCreateProposal?: (props?: Partial<CreateProposalProps>) => void;
   dao?: DAO;
+  userPermissions?: UserPermissions;
 }
 
 const variants = {
@@ -63,6 +65,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
   selectedList,
   toggleCreateProposal,
   dao,
+  userPermissions,
 }) => {
   const methods = useForm<{
     title: string;
@@ -104,11 +107,14 @@ export const ViewProposal: FC<ViewProposalProps> = ({
       );
 
       toggleCreateProposal({
+        dao,
+        userPermissions,
+        daoTokens: tokens,
         proposalVariant: proposal.proposalVariant,
         initialValues,
       });
     }
-  }, [accountId, proposal, toggleCreateProposal, tokens]);
+  }, [accountId, dao, proposal, toggleCreateProposal, tokens, userPermissions]);
 
   if (!proposal || !proposal.dao) {
     return null;
@@ -155,12 +161,13 @@ export const ViewProposal: FC<ViewProposalProps> = ({
         }
         proposalCardNode={
           <ProposalCard
-            convertTOProposal={handleToggleCreateProposal}
+            convertToProposal={handleToggleCreateProposal}
             title={'title' in proposal ? proposal?.title : undefined}
             hashtags={'hashtags' in proposal ? proposal?.hashtags : undefined}
             history={'history' in proposal ? proposal?.history : undefined}
             isSaved={'isSaved' in proposal ? proposal?.isSaved : undefined}
             saves={'isSaved' in proposal ? proposal?.saves : undefined}
+            state={'state' in proposal ? proposal?.state : undefined}
             isDraft={isDraft}
             isEditDraft={isEditDraft}
             id={proposal.id}
