@@ -47,7 +47,7 @@ export const AccountDropdown: React.FC = () => {
         }}
       >
         <>
-          <WalletsList />
+          <WalletsList closeDropdownHandler={closeDropdown} />
           <AppFooter mobile className={styles.footer} onClick={closeDropdown} />
         </>
       </GenericDropdown>

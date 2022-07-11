@@ -12,7 +12,7 @@ import { WalletIdCard } from 'astro_2.0/features/pages/myAccount/cards/WalletIdC
 import { NotificationCard } from 'astro_2.0/features/pages/myAccount/cards/NotificationCard';
 import { AllowanceKeysCard } from 'astro_2.0/features/pages/myAccount/cards/AllowanceKeysCard';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 import { ALL_FEED_URL } from 'constants/routing';
 import { useRouter } from 'next/router';
 
@@ -29,7 +29,7 @@ const MyAccountPage: VFC<MyAccountPageProps> = ({
 }) => {
   const router = useRouter();
   const { t } = useTranslation('common');
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
 
   const [config, setConfig] = useState(contactsConfig);
 

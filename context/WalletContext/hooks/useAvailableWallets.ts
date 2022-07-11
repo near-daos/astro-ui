@@ -3,7 +3,10 @@ import { useRouter } from 'next/router';
 import { useEffectOnce, useList } from 'react-use';
 
 // Types
-import { WalletService } from 'services/sputnik/SputnikNearService/walletServices/types';
+import {
+  SenderWalletInstance,
+  WalletService,
+} from 'services/sputnik/SputnikNearService/walletServices/types';
 
 // Services
 import { configService } from 'services/ConfigService';
@@ -37,7 +40,11 @@ const initSenderWallet = (
       });
 
       clearInterval(intervalId);
-      push(new SenderWalletService(window.near));
+      push(
+        new SenderWalletService(
+          (window.near as unknown) as SenderWalletInstance
+        )
+      );
     }
   }, 500);
 };

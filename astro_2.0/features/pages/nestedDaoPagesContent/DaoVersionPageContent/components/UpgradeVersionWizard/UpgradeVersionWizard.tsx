@@ -17,7 +17,8 @@ import {
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DaoVersionPageContent/components/UpgradeVersionWizard/helpers';
 
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
+
 import styles from './UpgradeVersionWizard.module.scss';
 
 interface Props {
@@ -41,7 +42,7 @@ export const UpgradeVersionWizard: FC<Props> = ({
   onUpdate,
   versionHash,
 }) => {
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const [proposal, setProposal] = useState<ProposalFeedItem | null>(null);
   const steps = getVersionUpgradeSteps(upgradeStatus, proposal);
   const stepProposalVariant = getStepProposalVariant(upgradeStatus);

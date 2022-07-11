@@ -5,6 +5,10 @@ import { useCallback, useEffect } from 'react';
 import { distinctUntilChanged, map } from 'rxjs';
 import { AccountState, WalletSelector } from '@near-wallet-selector/core';
 
+import { ACCOUNT_COOKIE } from 'constants/cookies';
+
+import { CookieService } from 'services/CookieService';
+
 import { useLsAccount } from './useLsAccount';
 
 type ReturnType = {
@@ -24,6 +28,10 @@ export function useGetAccount(selector?: WalletSelector): ReturnType {
       } else {
         removeAccountId();
       }
+
+      CookieService.set(ACCOUNT_COOKIE, acc || '', {
+        path: '/',
+      });
     },
     [setAccountId, removeAccountId]
   );

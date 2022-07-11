@@ -10,6 +10,7 @@ import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsPro
 import { getDraftProposalTypeByCategory } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/helpers';
 import { ProposalCategories } from 'types/proposal';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 type PageData = PaginationResponse<DraftProposalFeedItem[]>;
 
@@ -24,7 +25,7 @@ export function useDraftsPageData(
 } {
   const router = useRouter();
   const isMounted = useMountedState();
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const { draftsService } = useDraftsContext();
 
   const { query } = router;

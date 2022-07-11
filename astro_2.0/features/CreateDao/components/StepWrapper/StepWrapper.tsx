@@ -3,7 +3,7 @@ import useQuery from 'hooks/useQuery';
 import { useStateMachine } from 'little-state-machine';
 import { useMount } from 'react-use';
 import dynamic from 'next/dynamic';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import { CreationProgress } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/steps/CreateToken/components/CreationProgress';
 
@@ -60,7 +60,7 @@ const options = [
 
 export const StepWrapper: FC = ({ children }) => {
   const { t } = useTranslation();
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const { query, updateQuery } = useQuery<{
     step: string;
   }>({ shallow: true });
