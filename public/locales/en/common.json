@@ -493,7 +493,8 @@
     "daoRules": "DAO Rules"
   },
   "tokensPage": {
-    "createGovernanceToken": "Create Governance Token"
+    "createGovernanceToken": "Create Governance Token",
+    "setupGovernanceToken": "Setup Governance Token"
   },
   "createGovernanceTokenPage": {
     "tokenWeightedVoting": "Token weighted voting",
