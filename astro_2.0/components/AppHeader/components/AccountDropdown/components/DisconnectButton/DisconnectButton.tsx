@@ -11,11 +11,11 @@ import styles from './DisconnectButton.module.scss';
 
 export const DisconnectButton: React.FC = () => {
   const { t } = useTranslation('common');
-  const { logOut } = useWalletSelectorContext();
+  const { logout } = useWalletSelectorContext();
 
   return (
     <AccountPopupItem
-      onClick={logOut}
+      onClick={logout}
       classes={{
         root: styles.menuButton,
       }}

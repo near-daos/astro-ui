@@ -34,7 +34,7 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { accountId, logIn } = useWalletSelectorContext();
+  const { accountId, login } = useWalletSelectorContext();
 
   const myDaosIds = useDaoIds(accountId);
 
@@ -43,8 +43,8 @@ export const Sidebar = forwardRef<HTMLElement, SidebarProps>((props, ref) => {
 
     return accountId
       ? router.push(url)
-      : logIn(WalletType.NEAR).then(() => router.push(url));
-  }, [logIn, router, accountId]);
+      : login(WalletType.NEAR).then(() => router.push(url));
+  }, [login, router, accountId]);
 
   function renderHomeNavItem() {
     if (accountId) {

@@ -6,7 +6,7 @@ import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { WalletType } from 'types/config';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import { CREATE_DRAFT_PAGE_URL } from 'constants/routing';
 
@@ -24,7 +24,9 @@ interface Props {
 export const DaoAction: FC<Props> = ({ onCreateProposalClick, daoId }) => {
   const router = useRouter();
   const flags = useFlags();
-  const { accountId, login } = useWalletContext();
+
+  const { accountId, login } = useWalletSelectorContext();
+
   const [open, setOpen] = useState(false);
 
   const closeDropdown = useCallback(() => {

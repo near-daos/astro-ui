@@ -1,3 +1,5 @@
+// TODO drop it
+
 import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { GetServerSideProps, NextPage } from 'next';
 import { useEffect } from 'react';

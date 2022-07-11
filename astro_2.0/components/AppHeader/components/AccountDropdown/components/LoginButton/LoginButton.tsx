@@ -10,10 +10,10 @@ import { WalletSelectionModal } from 'astro_2.0/components/AppHeader/components/
 import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 export const LoginButton: React.FC = () => {
-  const { logIn, connecting } = useWalletSelectorContext();
+  const { login, connecting } = useWalletSelectorContext();
 
   const [showModal] = useModal(WalletSelectionModal, {
-    signIn: walletType => logIn(walletType),
+    signIn: walletType => login(walletType),
   });
 
   return (

@@ -1,6 +1,8 @@
 import React from 'react';
+
+import { Config, LoginResponse } from 'types/config';
+
 import { SputnikWalletErrorCodes } from 'errors/SputnikWalletError';
-import { Config } from 'types/config';
 
 type SputnikRequestSignInCompleted = (result: {
   accountId?: string;
@@ -18,6 +20,7 @@ declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fabric: any;
+    onLogin?: (response: LoginResponse) => Promise<unknown>;
     sputnikRequestSignInCompleted?: SputnikRequestSignInCompleted;
     sputnikRequestSignTransactionCompleted?: SputnikRequestSignTransactionCompleted;
     opener: {

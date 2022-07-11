@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DependencyList, useCallback } from 'react';
-import { useWalletContext } from 'context/WalletContext';
+
 import { WalletType } from 'types/config';
+
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 export const useAuthCheck = <T extends (...args: any[]) => any>(
   callback: T,
   deps: DependencyList
 ): T => {
-  const { accountId, login } = useWalletContext();
+  const { accountId, login } = useWalletSelectorContext();
 
   return useCallback(
     (...args: Parameters<T>) => {
