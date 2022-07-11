@@ -13,11 +13,14 @@ import { LetterHeadWidget } from 'astro_2.0/components/ProposalCardRenderer/comp
 import { DaoFlagWidget } from 'astro_2.0/components/DaoFlagWidget';
 import ErrorBoundary from 'astro_2.0/components/ErrorBoundary';
 
+import { DAO } from 'types/dao';
+import { Token } from 'types/token';
+import { UserPermissions } from 'types/context';
 import { ProposalFeedItem } from 'types/proposal';
 import { DraftProposal, Hashtag } from 'types/draftProposal';
-import { Token } from 'types/token';
+import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 import { getVoteDetails } from 'features/vote-policy/helpers';
 import { getProposalScope } from 'utils/getProposalScope';
 import {
@@ -29,9 +32,6 @@ import {
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { ProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments';
 import { SaveFcTemplate } from 'astro_2.0/features/ViewProposal/components/SaveFcTemplate';
-import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
-import { DAO } from 'types/dao';
-import { UserPermissions } from 'types/context';
 
 export interface ViewProposalProps {
   proposal: ProposalFeedItem | DraftProposal;
@@ -88,7 +88,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
     ),
   });
 
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const [showInfoPanel, toggleInfoPanel] = useToggle(false);
   const [commentsCount, setCommentsCount] = useState(proposal?.commentsCount);
   const isCouncilUser = proposal?.permissions?.isCouncil ?? false;

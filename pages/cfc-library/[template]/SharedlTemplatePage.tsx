@@ -26,7 +26,7 @@ import { LoadingIndicator } from 'astro_2.0/components/LoadingIndicator';
 import { ApplyToDaos } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/components/ApplyToDaos';
 import { CustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { useAllCustomTokens } from 'hooks/useCustomTokens';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { OptionsList } from 'astro_2.0/features/pages/cfcLibrary/components/OptionsList';
 
@@ -60,7 +60,7 @@ const SharedTemplatePage: NextPage<Props> = ({ accountDaos }) => {
     loadingSmartContractData,
   } = useSharedTemplatePageData();
   const { cloning, cloneToDao } = useCloneCfcTemplate();
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const [tooltip, setTooltip] = useState(defaultTooltipText);
 
   const { tokens } = useAllCustomTokens();

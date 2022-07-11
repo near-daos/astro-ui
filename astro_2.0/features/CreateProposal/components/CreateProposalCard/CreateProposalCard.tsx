@@ -25,7 +25,7 @@ import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/C
 import { useProposalTemplates } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/hooks';
 import { useCustomTokensContext } from 'astro_2.0/features/CustomTokens/CustomTokensContext';
 import { useDaoSettings } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/hooks';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 import { getCustomTemplatesDefaults } from 'astro_2.0/features/CreateProposal/components/CreateProposalCard/helpers';
 
 import styles from './CreateProposalCard.module.scss';
@@ -79,7 +79,7 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
     isDraft
   );
 
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const { templates } = useProposalTemplates(daoId);
   const { tokens } = useCustomTokensContext();
   const { settings } = useDaoSettings(daoId);

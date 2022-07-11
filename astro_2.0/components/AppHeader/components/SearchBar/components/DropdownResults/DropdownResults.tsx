@@ -2,7 +2,8 @@ import isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import React, { VFC, useCallback } from 'react';
-import { useWalletContext } from 'context/WalletContext';
+
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import { SEARCH_PAGE_URL } from 'constants/routing';
 
@@ -33,7 +34,7 @@ export const DropdownResults: VFC<DropdownResultsProps> = ({
   const PROPOSAL_TAB_INDEX = 1;
   const PEOPLE_TAB_INDEX = 2;
 
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const { t } = useTranslation('common');
 
   const router = useRouter();

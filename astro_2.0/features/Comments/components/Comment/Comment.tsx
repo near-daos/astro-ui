@@ -10,7 +10,7 @@ import { ReplyButton } from 'astro_2.0/components/ReplyButton';
 import { CommentActions } from 'astro_2.0/features/Comments/components/CommentActions';
 import { LikeButton } from 'astro_2.0/features/Comments/components/Comment/LikeButton';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import styles from './Comment.module.scss';
 
@@ -50,7 +50,7 @@ export const Comment: FC<CommentProps> = ({
   const [showReplies, setShowReplies] = useState(false);
   const [showReplyInput, setShowReplyInput] = useState(false);
 
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const isLikedByMe = likeAccounts.includes(accountId);
   const isDislikedByMe = dislikeAccounts.includes(accountId);
 

@@ -7,7 +7,7 @@ import { DebouncedInput } from 'components/inputs/Input';
 import { IconButton } from 'components/button/IconButton';
 import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import styles from './DelegateVoting.module.scss';
 
@@ -24,7 +24,7 @@ export const AccountAmount: VFC<Props> = ({ index, onRemove }) => {
     setValue: setFormValue,
     formState: { errors },
   } = useFormContext();
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
 
   const errorEl = useRef<HTMLDivElement>(null);
 

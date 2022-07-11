@@ -4,6 +4,7 @@ import isNil from 'lodash/isNil';
 import omitBy from 'lodash/omitBy';
 import { NotificationsService } from 'services/NotificationsService';
 import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { PaginationResponse } from 'types/api';
 import { Notification, NotificationDTO } from 'types/notification';
@@ -439,7 +440,7 @@ export function useNotificationsList(
 
 export function useNotificationsCount(): number | null {
   const isMounted = useMountedState();
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const [counter, setCounter] = useState<number | null>(null);
 
   const [, fetchData] = useAsyncFn(async () => {

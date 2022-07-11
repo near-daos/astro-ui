@@ -1,18 +1,19 @@
 import React, {
-  createContext,
   FC,
-  useCallback,
-  useContext,
   useRef,
   useState,
+  useContext,
+  useCallback,
+  createContext,
 } from 'react';
+import { useAsyncFn } from 'react-use';
+import axios, { CancelTokenSource } from 'axios';
 
 import { SputnikHttpService } from 'services/sputnik';
 
 import { SearchResultsData } from 'types/search';
-import { useAsyncFn } from 'react-use';
-import axios, { CancelTokenSource } from 'axios';
-import { useWalletContext } from 'context/WalletContext';
+
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 interface SearchResultsContextProps {
   searchResults: SearchResultsData | null;
@@ -37,7 +38,7 @@ export const useSearchResults = (): SearchResultsContextProps =>
   useContext(SearchResultsContext);
 
 export const SearchResults: FC = ({ children }) => {
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const [searchResults, setSearchResults] = useState<null | SearchResultsData>(
     null
   );

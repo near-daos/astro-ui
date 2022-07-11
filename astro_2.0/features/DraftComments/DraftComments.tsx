@@ -9,7 +9,7 @@ import { useDraftComments } from 'astro_2.0/features/Comments/hooks';
 
 import { DAO } from 'types/dao';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 import { isCouncilUser } from 'astro_2.0/features/DraftComments/helpers';
 
 import styles from './DraftComments.module.scss';
@@ -30,7 +30,7 @@ export const DraftComments: FC<DraftCommentsProps> = ({ className, dao }) => {
     dislikeComment,
     loading,
   } = useDraftComments();
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const isCouncil = isCouncilUser(dao, accountId);
 
   return (

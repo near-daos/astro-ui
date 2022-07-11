@@ -1,13 +1,13 @@
 import { VFC } from 'react';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 
 import styles from './AccountBadge.module.scss';
 
 export const AccountBadge: VFC = () => {
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
 
   return (
     <CopyButton

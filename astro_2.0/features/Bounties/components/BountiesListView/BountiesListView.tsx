@@ -13,7 +13,7 @@ import { HideBountyContextProvider } from 'astro_2.0/features/Bounties/component
 import { DAO } from 'types/dao';
 import { ProposalVariant } from 'types/proposal';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import styles from './BountiesListView.module.scss';
 
@@ -33,7 +33,7 @@ export const BountiesListView: FC<BountiesListViewProps> = ({
   handleCreateProposal,
   tokens,
 }) => {
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
 
   if (!dao || !tokens || !handleCreateProposal) {
     return null;

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import cn from 'classnames';
 import { useTranslation } from 'next-i18next';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import { DAO, DaoVotePolicy, TGroup } from 'types/dao';
 import { ProposalVariant } from 'types/proposal';
@@ -43,7 +43,7 @@ export const ManageGroups: React.FC<Props> = ({
   disableNewProposal,
 }) => {
   const { t } = useTranslation();
-  const { currentWallet, accountId } = useWalletContext();
+  const { selectedWalletId, accountId } = useWalletSelectorContext();
 
   const [groups, setGroups] = useState<TLocalGroup[]>([]);
   const [activeGroupSlug, setActiveGroupSlug] = useState<string>(
@@ -85,7 +85,7 @@ export const ManageGroups: React.FC<Props> = ({
     );
 
   const isWalletSupportAmount = (): boolean => {
-    if (currentWallet === WalletType.NEAR) {
+    if (selectedWalletId === WalletType.NEAR) {
       return groups.length < 9;
     }
 

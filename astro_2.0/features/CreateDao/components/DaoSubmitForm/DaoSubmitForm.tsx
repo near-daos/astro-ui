@@ -1,17 +1,17 @@
 import React from 'react';
+import * as yup from 'yup';
+import cn from 'classnames';
 import { useTranslation } from 'next-i18next';
 import { useStateMachine } from 'little-state-machine';
 import { useForm, FormProvider } from 'react-hook-form';
-import * as yup from 'yup';
-import cn from 'classnames';
-import { Input } from 'components/inputs/Input';
 
 import {
-  DEFAULT_CREATE_DAO_GAS,
   MAX_GAS,
   MIN_GAS,
+  DEFAULT_CREATE_DAO_GAS,
 } from 'services/sputnik/constants';
 
+import { Input } from 'components/inputs/Input';
 import { FieldWrapper } from 'astro_2.0/features/ViewProposal/components/FieldWrapper';
 import { SubmitButton } from 'astro_2.0/features/CreateDao/components/SubmitButton';
 import { SubmitStep } from 'astro_2.0/features/CreateDao/types';
@@ -26,7 +26,8 @@ import { getNewDaoParams } from 'astro_2.0/features/CreateDao/helpers';
 import { getGasValidation } from 'astro_2.0/features/CreateProposal/helpers';
 import { useCreateDao } from 'astro_2.0/features/CreateDao/components/hooks';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
+
 import styles from './DaoSubmitForm.module.scss';
 
 export function DaoSubmitForm(): JSX.Element {
@@ -34,7 +35,7 @@ export function DaoSubmitForm(): JSX.Element {
 
   const { actions, state } = useStateMachine({ updateAction });
   const { createDao } = useCreateDao();
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
 
   const methods = useForm<SubmitStep>({
     defaultValues: state.submit,

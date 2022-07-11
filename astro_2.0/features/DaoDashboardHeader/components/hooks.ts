@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { SputnikHttpService } from 'services/sputnik';
 import { UserPermissions } from 'types/context';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 type JoinDaoState = {
   showButton: boolean;
@@ -13,7 +13,7 @@ export function useJoinDao(
   userPermissions: UserPermissions,
   daoMembers: string[]
 ): JoinDaoState {
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const [state, setState] = useState<JoinDaoState>({
     showButton: false,
     showWarning: false,

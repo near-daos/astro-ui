@@ -13,7 +13,8 @@ import { useCreateDao } from 'astro_2.0/features/CreateDao/components/hooks';
 import { mapCreateDaoParamsToContractParams } from 'services/sputnik/mappers';
 import { jsonToBase64Str } from 'utils/jsonToBase64Str';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
+
 import styles from './CustomEdit.module.scss';
 
 interface CustomEditProps {
@@ -24,7 +25,7 @@ const CustomEdit: FC<CustomEditProps> = ({ className }) => {
   const [showModal] = useModal(CustomEditModal);
   const { state } = useStateMachine({ updateAction });
   const { createDao } = useCreateDao();
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
 
   const handleClick = useCallback(async () => {
     const newDaoParams = getNewDaoParams(state, accountId, '');

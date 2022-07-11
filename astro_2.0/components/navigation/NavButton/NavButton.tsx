@@ -2,7 +2,7 @@ import cn from 'classnames';
 import { useRouter } from 'next/router';
 import React, { useCallback, useState, VFC } from 'react';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import { DotsLoader } from 'astro_2.0/components/DotsLoader';
 import { NavItemProps } from 'astro_2.0/components/navigation/types';
@@ -38,7 +38,7 @@ export const NavButton: VFC<NavButtonProps> = props => {
 
   const router = useRouter();
 
-  const { login, accountId } = useWalletContext();
+  const { login, accountId } = useWalletSelectorContext();
 
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const [isHovered, setIsHovered] = useState(false);

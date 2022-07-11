@@ -31,9 +31,9 @@ import { SearchInput } from 'astro_2.0/components/SearchInput';
 import { Chip } from 'astro_2.0/components/Chip';
 
 // Hooks
-import { useWalletContext } from 'context/WalletContext';
 import { useAllCustomTokens } from 'hooks/useCustomTokens';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 import { getStatusFilterOptions } from 'astro_2.0/features/Proposals/helpers/getStatusFilterOptions';
 
 // Services
@@ -81,7 +81,7 @@ export const FeedProposals = ({
 
   const isMyFeed = pathname.startsWith('/my');
 
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
 
   const [proposalsData, setProposalsData] = useState(initialProposals);
 

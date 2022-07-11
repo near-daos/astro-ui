@@ -20,7 +20,7 @@ import {
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/hooks';
 
 import { isActiveUserCouncil } from 'astro_2.0/features/DaoDashboardHeader/components/CloneDaoWarning/helpers';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import styles from './CustomFunctionCallTemplatesPageContent.module.scss';
 
@@ -50,7 +50,7 @@ export const CustomFunctionCallTemplatesPageContent: FC<Props> = ({
     () => accountDaos.filter(item => item.isCouncil),
     [accountDaos]
   );
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const canActOnFlow = isActiveUserCouncil(daoContext.dao, accountId);
 
   const {

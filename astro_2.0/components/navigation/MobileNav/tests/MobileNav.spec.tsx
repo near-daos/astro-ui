@@ -2,11 +2,11 @@
 import { render } from 'jest/testUtils';
 
 import { MobileNav } from 'astro_2.0/components/navigation/MobileNav';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
-jest.mock('context/WalletContext', () => {
+jest.mock('context/WalletSelectorContext', () => {
   return {
-    useWalletContext: jest.fn(),
+    useWalletSelectorContext: jest.fn(),
   };
 });
 
@@ -21,7 +21,7 @@ jest.mock('astro_2.0/components/navigation/NavButton', () => {
 describe('Mobile nav', () => {
   it('Should render partial navigation if user did not log in', () => {
     // @ts-ignore
-    useWalletContext.mockImplementation(() => ({
+    useWalletSelectorContext.mockImplementation(() => ({
       accountId: undefined,
     }));
 
@@ -33,7 +33,7 @@ describe('Mobile nav', () => {
 
   it('Should render full navigation for logged user', () => {
     // @ts-ignore
-    useWalletContext.mockImplementation(() => ({
+    useWalletSelectorContext.mockImplementation(() => ({
       accountId: 'accountId',
     }));
 

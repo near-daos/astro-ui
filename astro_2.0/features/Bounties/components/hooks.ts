@@ -14,6 +14,7 @@ import { VoteAction } from 'types/proposal';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 
 import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 import { PaginationResponse } from 'types/api';
 
 export function useBountyControls(
@@ -113,7 +114,7 @@ export function useBountySearch(): {
 } {
   const router = useRouter();
   const daoId = router.query.dao as string;
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const cancelTokenRef = useRef<CancelTokenSource | null>(null);
 
   const [{ loading }, handleSearch] = useAsyncFn(async query => {

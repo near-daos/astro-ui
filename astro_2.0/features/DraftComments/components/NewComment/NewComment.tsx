@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useState } from 'react';
 import { EditableContent } from 'astro_2.0/components/EditableContent';
 import styles from 'astro_2.0/features/DraftComments/DraftComments.module.scss';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 
 export const NewComment: FC<Props> = ({ onSubmit }) => {
   const [html, setHTML] = useState('');
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const { toggleWriteComment, setToggleWriteComment } = useDraftsContext();
 
   const handleSend = useCallback(

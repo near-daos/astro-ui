@@ -14,7 +14,7 @@ import { ProposalType } from 'types/proposal';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import { formatISODate } from 'utils/format';
 
@@ -29,7 +29,7 @@ interface DaoVersionPageContentProps {
 export const DaoVersionPageContent: FC<DaoVersionPageContentProps> = ({
   daoContext,
 }) => {
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const { version } = useCheckDaoUpgrade(daoContext.dao);
   const { loading, upgradeStatus, update } = useUpgradeStatus(
     daoContext.dao.id

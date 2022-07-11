@@ -25,12 +25,13 @@ import { DaoStatsTopics } from 'astro_2.0/features/Discover/constants';
 import useQuery from 'hooks/useQuery';
 
 import { WalletType } from 'types/config';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
+
 import styles from './DiscoverPage.module.scss';
 
 const DiscoverPage: NextPage = () => {
   const { t } = useTranslation();
-  const { accountId, login } = useWalletContext();
+  const { accountId, login } = useWalletSelectorContext();
   const router = useRouter();
   const { query } = router;
   const topic = query.topic as string;

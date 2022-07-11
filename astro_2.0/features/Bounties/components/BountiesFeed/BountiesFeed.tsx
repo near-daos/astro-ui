@@ -20,7 +20,7 @@ import { ViewBounty } from 'astro_2.0/features/ViewBounty';
 import { SearchInput } from 'astro_2.0/components/SearchInput';
 
 import { Tokens } from 'context/CustomTokensContext';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 import { HideBountyContextProvider } from 'astro_2.0/features/Bounties/components/HideBountyContext';
 
 import { SputnikHttpService } from 'services/sputnik';
@@ -58,7 +58,7 @@ export const BountiesFeed: FC<BountiesFeedProps> = ({
   dao,
   tokens,
 }) => {
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const { t } = useTranslation();
   const isMounted = useMountedState();
   const { query } = useRouter();

@@ -29,9 +29,9 @@ import { SideFilter } from 'astro_2.0/components/SideFilter';
 import { Loader } from 'components/loader';
 
 // Hooks
-import { useWalletContext } from 'context/WalletContext';
 import { useAllCustomTokens } from 'hooks/useCustomTokens';
 import { useDebounceEffect } from 'hooks/useDebounceUpdateEffect';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 import { getStatusFilterOptions } from 'astro_2.0/features/Proposals/helpers/getStatusFilterOptions';
 
 // Services
@@ -78,7 +78,7 @@ export const Feed = ({
 
   const isMyFeed = pathname.startsWith('/my');
 
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
 
   const [proposalsData, setProposalsData] = useState(initialProposals);
 

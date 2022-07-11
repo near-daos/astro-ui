@@ -32,7 +32,7 @@ import { SputnikHttpService } from 'services/sputnik';
 
 import { DELEGATE_PAGE_URL } from 'constants/routing';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import styles from './CreateGovernanceTokenWizard.module.scss';
 
@@ -58,7 +58,7 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const [proposal, setProposal] = useState<ProposalFeedItem | null>(null);
   const steps = getCreateGovernanceTokenSteps(status, proposal, t);
   const stepProposalVariant = getCreateGovernanceTokenStepProposalVariant(

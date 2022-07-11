@@ -12,8 +12,9 @@ import { DaoLogo } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLog
 import { ShowMoreLinks } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLinks/components/ShowMoreLinks';
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 
-import { useWalletContext } from 'context/WalletContext';
 import { UserPermissions } from 'types/context';
+
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import { DepositToDaoForm } from 'astro_2.0/features/DaoDashboardHeader/components/DepositToDaoForm';
 import { DaoLinks } from 'astro_2.0/features/DaoDashboardHeader/components/DaoLinks';
@@ -51,7 +52,7 @@ export const DaoDashboardHeader: FC<DaoDashboardHeaderProps> = ({
     daoVersion,
   } = dao;
   const flags = useFlags();
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const { t } = useTranslation();
   const isMobileOrTablet = useMedia('(max-width: 767px)');
 

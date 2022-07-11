@@ -16,7 +16,7 @@ import { Loader } from 'components/loader';
 import { DaoFeedItem } from 'types/dao';
 
 import { CfcLibraryContext } from 'astro_2.0/features/pages/cfcLibrary';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import styles from './CfcLibraryPage.module.scss';
 
@@ -41,7 +41,7 @@ const CfcLibraryPage: NextPage<Props> = ({ accountDaos }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const sortOptions = useMemo(() => getSortOptions(t), [t]);
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
 
   const { query } = useQuery<{ sort: string; view: string }>();
   const { sort } = query;

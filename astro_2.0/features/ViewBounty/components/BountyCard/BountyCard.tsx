@@ -19,7 +19,8 @@ import { BountyActions } from 'astro_2.0/features/ViewBounty/components/BountyAc
 import { Icon } from 'components/Icon';
 
 import { useBountyControls } from 'astro_2.0/features/Bounties/components/hooks';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
+
 import { DATA_SEPARATOR } from 'constants/common';
 import { SINGLE_BOUNTY_PAGE_URL } from 'constants/routing';
 
@@ -57,7 +58,7 @@ export const BountyCard: React.FC<BountyCardProps> = ({
   completeHandler,
 }) => {
   const router = useRouter();
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const canNavigateToBounty = !router.query.bounty;
 
   const desc = bounty ? bounty.description : proposal.description;

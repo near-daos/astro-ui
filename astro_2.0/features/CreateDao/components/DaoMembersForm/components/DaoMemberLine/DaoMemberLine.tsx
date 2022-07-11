@@ -1,7 +1,8 @@
-import React, { useCallback, useRef, useState, VFC } from 'react';
-import { useFormContext } from 'react-hook-form';
 import cn from 'classnames';
 import get from 'lodash/get';
+import { useFormContext } from 'react-hook-form';
+import { useStateMachine } from 'little-state-machine';
+import React, { useCallback, useRef, useState, VFC } from 'react';
 
 import { updateAction } from 'astro_2.0/features/CreateDao/components/helpers';
 import { Icon } from 'components/Icon';
@@ -11,9 +12,8 @@ import { InputFormWrapper } from 'components/inputs/InputFormWrapper';
 import { Button } from 'components/button/Button';
 import { GenericDropdown } from 'astro_2.0/components/GenericDropdown';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
-import { useStateMachine } from 'little-state-machine';
 import styles from './DaoMemberLine.module.scss';
 
 interface DaoLinkLineProps {
@@ -34,7 +34,7 @@ export const DaoMemberLine: VFC<DaoLinkLineProps> = ({
     setValue: setFormValue,
     formState: { errors },
   } = useFormContext();
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const { state } = useStateMachine({ updateAction });
 
   const [openGroupDropdown, setOpenGroupDropdown] = useState(false);

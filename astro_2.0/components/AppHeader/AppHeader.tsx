@@ -2,8 +2,9 @@ import cn from 'classnames';
 import React, { FC, useRef } from 'react';
 import { useTranslation } from 'next-i18next';
 
-import { useWalletContext } from 'context/WalletContext';
 import { FEATURE_FLAGS } from 'constants/featureFlags';
+
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import { Icon } from 'components/Icon';
 import { AccountDropdown } from 'astro_2.0/components/AppHeader/components/AccountDropdown';
@@ -16,7 +17,7 @@ export const AppHeader: FC = () => {
   const { t } = useTranslation('common');
 
   const centralEl = useRef(null);
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
 
   function renderLogo(className?: string) {
     return (

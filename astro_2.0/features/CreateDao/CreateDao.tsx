@@ -1,7 +1,8 @@
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useMount, useMountedState } from 'react-use';
 import React, { useEffect, useState, VFC } from 'react';
 import { StateMachineProvider, createStore } from 'little-state-machine';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
 
 import { STEPS } from 'astro_2.0/features/CreateDao/constants';
 
@@ -13,8 +14,7 @@ import { getInitialValues } from 'astro_2.0/features/CreateDao/components/helper
 import { DaoMembersForm } from 'astro_2.0/features/CreateDao/components/DaoMembersForm';
 import { DaoGroupsForm } from 'astro_2.0/features/CreateDao/components/DaoGroupsForm';
 import { DaoAssetsForm } from 'astro_2.0/features/CreateDao/components/DaoAssetsForm';
-import { useMount, useMountedState } from 'react-use';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 import { DaoProposalCreationForm } from 'astro_2.0/features/CreateDao/components/DaoProposalCreationForm';
 import { DaoVotingPermissionsForm } from 'astro_2.0/features/CreateDao/components/DaoVotingPermissionsForm';
 
@@ -27,7 +27,7 @@ export const CreateDao: VFC<CreateDaoProps> = ({ defaultFlag }) => {
   const isMounted = useMountedState();
   const { query } = router;
   const { step } = router.query;
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const [initialized, setInitialized] = useState(false);
 
   useMount(() => {

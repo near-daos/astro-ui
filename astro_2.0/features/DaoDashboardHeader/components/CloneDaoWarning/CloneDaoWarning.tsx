@@ -10,7 +10,7 @@ import { WarningRenderer } from 'astro_2.0/features/DaoDashboardHeader/component
 import { Button } from 'components/button/Button';
 
 import { SputnikHttpService } from 'services/sputnik';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 import { SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 import { configService } from 'services/ConfigService';
 
@@ -56,7 +56,7 @@ export const CloneDaoWarning: FC<Props> = ({
 }) => {
   const router = useRouter();
   const { daoVersion } = dao;
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const { tokens } = useDaoCustomTokens();
   const { nearConfig } = configService.get();
   const { settings, update, loading } = useDaoSettings(dao.id);

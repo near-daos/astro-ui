@@ -1,9 +1,11 @@
 import React from 'react';
 import cn from 'classnames';
-import { useWalletContext } from 'context/WalletContext';
+
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
+
 import { CopyButton } from 'astro_2.0/components/CopyButton';
 
-import styles from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletAccount/WalletAccount.module.scss';
+import styles from './WalletAccount.module.scss';
 
 interface WalletAccountProps {
   account: string;
@@ -14,7 +16,7 @@ export const WalletAccount: React.FC<WalletAccountProps> = ({
   account,
   switchAccountHandler,
 }) => {
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
 
   const isActive = accountId === account;
 

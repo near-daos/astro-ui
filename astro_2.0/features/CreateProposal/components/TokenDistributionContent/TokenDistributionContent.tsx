@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
-import { useWalletContext } from 'context/WalletContext';
 import { useTranslation } from 'next-i18next';
 import { useFormContext } from 'react-hook-form';
+
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import { GroupRow } from 'astro_2.0/features/CreateProposal/components/TokenDistributionContent/GroupRow';
 import { InfoBlockWidget } from 'astro_2.0/components/InfoBlockWidget';
@@ -26,7 +27,7 @@ export const TokenDistributionContent: FC<TokenDistributionContentProps> = ({
   governanceToken,
 }) => {
   const { t } = useTranslation();
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
 
   const { watch } = useFormContext();
 

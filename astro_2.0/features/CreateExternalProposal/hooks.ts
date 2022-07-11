@@ -1,9 +1,11 @@
-import { ProposalVariant } from 'types/proposal';
-import { useCallback, useEffect, useState } from 'react';
-import { useWalletContext } from 'context/WalletContext';
-import { useMountedState } from 'react-use';
-import { useRouter } from 'next/router';
 import omit from 'lodash/omit';
+import { useRouter } from 'next/router';
+import { useMountedState } from 'react-use';
+import { useCallback, useEffect, useState } from 'react';
+
+import { ProposalVariant } from 'types/proposal';
+
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 const CREATE_PROPOSAL = 'create_proposal';
 
@@ -31,7 +33,7 @@ export function useCreateProposalFromExternal(
 } {
   const router = useRouter();
   const isMounted = useMountedState();
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const { action, variant, params } = router.query;
 
   const [error, setError] = useState<string>('');

@@ -14,7 +14,7 @@ import { Icon, IconName } from 'components/Icon';
 import { Button } from 'components/button/Button';
 
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import { TokenOption } from './components/TokenOption';
 
@@ -38,7 +38,7 @@ export const SelectToken: FC<Props> = ({ onUpdate }) => {
 
   const router = useRouter();
   const { dao } = router.query;
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
   const { createGovernanceToken } = useFlags();
 
   const [option, setOption] = useState<CreateGovernanceTokenFlow>(

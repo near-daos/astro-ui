@@ -3,7 +3,7 @@ import { useMedia, useMountedState } from 'react-use';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'next-i18next';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 import { useProposalComments } from 'astro_2.0/features/ViewProposal/components/ProposalComments/hooks';
 
 import { Comment } from 'astro_2.0/features/ViewProposal/components/ProposalComments/components/Comment';
@@ -32,7 +32,7 @@ export const ProposalComments: FC<ProposalCommentsProps> = ({
   updateCommentsCount,
 }) => {
   const isMobile = useMedia('(max-width: 920px)');
-  const { accountId: loggedInAccountId } = useWalletContext();
+  const { accountId: loggedInAccountId } = useWalletSelectorContext();
   const commentsRef = useRef<HTMLUListElement>(null);
   const inputRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState('');

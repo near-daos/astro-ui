@@ -1,6 +1,6 @@
 import { WalletButton } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletButton';
 import { WalletType } from 'types/config';
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import { Accordion } from 'astro_2.0/components/Accordion';
 import React from 'react';
@@ -24,7 +24,7 @@ export const WalletWithAccounts: React.FC<WalletAccountsProps> = ({
   switchWalletHandler,
   accounts,
 }) => {
-  const { accountId } = useWalletContext();
+  const { accountId } = useWalletSelectorContext();
 
   return (
     <Accordion

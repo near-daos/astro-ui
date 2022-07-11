@@ -3,7 +3,7 @@ import { render } from 'jest/testUtils';
 import { useRouter } from 'next/router';
 import { fireEvent } from '@testing-library/dom';
 
-import { useWalletContext } from 'context/WalletContext';
+import { useWalletSelectorContext } from 'context/WalletSelectorContext';
 
 import {
   NavButton,
@@ -19,9 +19,9 @@ jest.mock('next/router', () => {
   };
 });
 
-jest.mock('context/WalletContext', () => {
+jest.mock('context/WalletSelectorContext', () => {
   return {
-    useWalletContext: jest.fn(() => ({})),
+    useWalletSelectorContext: jest.fn(() => ({})),
   };
 });
 
@@ -73,7 +73,7 @@ describe('Nav button', () => {
     const login = jest.fn();
 
     // @ts-ignore
-    useWalletContext.mockImplementation(() => ({ login }));
+    useWalletSelectorContext.mockImplementation(() => ({ login }));
 
     const { getByRole } = renderNavButton({ authRequired: true });
 
