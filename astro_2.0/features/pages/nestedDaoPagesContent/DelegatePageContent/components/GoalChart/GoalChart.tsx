@@ -31,7 +31,7 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
         value: threshold,
       },
       {
-        label: 'Total delegated',
+        label: 'Total Delegated',
         info: 'some info on tooltip',
         value: totalDelegated,
       },
@@ -139,7 +139,7 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
                   placement="top"
                   overlay={<span className={styles.tooltip}>{item.info}</span>}
                 >
-                  <Icon name="info" width={16} className={styles.infoIcon} />
+                  <Icon name="info" width={12} className={styles.infoIcon} />
                 </Tooltip>
               </div>
               <div
@@ -149,14 +149,14 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
               />
               {item.showGoal && (
                 <div className={styles.votingGoal}>
-                  <Icon name="goal" width={14} />
+                  <Icon name="goal" width={18} />
                   {votingGoal}
                 </div>
               )}
               <div
                 className={cn(styles.valueBadge, {
                   [styles.errorReason]:
-                    isError && item.label === 'Total delegated',
+                    isError && item.label === 'Total Delegated',
                 })}
               >
                 {item.value}

@@ -13,6 +13,7 @@ import { kFormatter } from 'utils/format';
 import { useDelegatePageContext } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/DelegatePageContext';
 import { DATE_TIME_FORMAT } from 'constants/timeConstants';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
+import { Icon } from 'components/Icon';
 
 import styles from './DelegateGroupTable.module.scss';
 
@@ -55,23 +56,35 @@ export const TableRow: FC<Props> = ({
     !delegateToUser ||
     !delegateToUser[accountId] ||
     (!!delegateToUser[accountId] && Number(delegateToUser[accountId]) === 0);
+  const inactiveVotingPower = Number(balance) < Number(memberBalance);
 
   return (
     <>
       <div className={styles.row}>
         <div>{accountId}</div>
         <div>
-          <FormattedNumericValue
-            value={kFormatter(Number(formattedBalance))}
-            suffix={symbol}
-            valueClassName={styles.primaryValue}
-            suffixClassName={styles.secondaryValue}
-          />
+          <Tooltip
+            placement="top"
+            className={styles.inline}
+            overlay={
+              inactiveVotingPower
+                ? `Minimum number of tokens for member voting is ${memberBalance}`
+                : 'Voting power'
+            }
+          >
+            <FormattedNumericValue
+              value={kFormatter(Number(formattedBalance))}
+              suffix={symbol}
+            />
+            {inactiveVotingPower && (
+              <Icon name="alertTriangle" className={styles.alert} />
+            )}
+          </Tooltip>
         </div>
         <div>
           <VotingPower
             progressPercent={progressPercent}
-            inactiveVotingPower={Number(balance) < Number(memberBalance)}
+            inactiveVotingPower={inactiveVotingPower}
           />
         </div>
         <div className={styles.inline}>
