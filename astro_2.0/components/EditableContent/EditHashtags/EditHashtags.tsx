@@ -49,8 +49,25 @@ export const EditHashtags: FC<EditHashtagsProps> = ({
       newValue = `#${value}`;
     }
 
-    nextHashtags[hashtagIndex].value = newValue === '#' ? '' : newValue;
+    nextHashtags[hashtagIndex].value =
+      newValue === '#' || newValue === ' ' ? '' : newValue.replace(/\s/g, '');
     setHashtags(nextHashtags);
+  };
+
+  const handlerBlur = (id: string) => {
+    const hashtagIndex = hashtags.findIndex(hashtag => hashtag.id === id);
+    const nextHashtags = [...hashtags];
+
+    if (hashtagIndex === -1) {
+      return;
+    }
+
+    if (
+      nextHashtags[hashtagIndex].value === '' ||
+      nextHashtags[hashtagIndex].value === '#'
+    ) {
+      removeHashtag(id);
+    }
   };
 
   return (
@@ -64,6 +81,7 @@ export const EditHashtags: FC<EditHashtagsProps> = ({
               key={hashtag.id}
               value={hashtag.value}
               onChange={(value: string) => updateHashtags(value, hashtag.id)}
+              onBlur={() => handlerBlur(hashtag.id)}
             />
           );
         })}

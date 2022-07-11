@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAsync, useMountedState } from 'react-use';
+import { useAsyncFn, useMount, useMountedState } from 'react-use';
 import { useDraftsContext } from 'astro_2.0/features/Drafts/components/DraftsProvider/DraftsProvider';
 import { DraftComment } from 'services/DraftsService/types';
 import { useWalletContext } from 'context/WalletContext';
@@ -62,7 +62,7 @@ export function useDraftComments(): {
     countComments: 0,
   });
 
-  const { loading } = useAsync(async () => {
+  const [{ loading }, getAllComments] = useAsyncFn(async () => {
     try {
       const data = await draftsService.getDraftComments({
         contextId,
@@ -83,6 +83,8 @@ export function useDraftComments(): {
       });
     }
   }, [contextId]);
+
+  useMount(() => getAllComments());
 
   const addComment = useCallback(
     async (msg: string, replyTo?: string) => {
@@ -129,6 +131,8 @@ export function useDraftComments(): {
           publicKey,
           signature,
         });
+
+        await getAllComments();
       } catch (e) {
         showNotification({
           type: NOTIFICATION_TYPES.ERROR,
@@ -137,7 +141,7 @@ export function useDraftComments(): {
         });
       }
     },
-    [accountId, draftsService, pkAndSignature]
+    [getAllComments, accountId, draftsService, pkAndSignature]
   );
 
   const likeComment = useCallback(
