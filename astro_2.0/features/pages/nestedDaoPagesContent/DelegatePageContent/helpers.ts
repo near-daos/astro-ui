@@ -1,4 +1,6 @@
 import { TFunction } from 'next-i18next';
+import min from 'lodash/min';
+import max from 'lodash/max';
 
 export function getSortOptions(
   t: TFunction
@@ -13,4 +15,16 @@ export function getSortOptions(
       value: 'DESC',
     },
   ];
+}
+
+export function getVotingGoal(
+  votingThreshold: number,
+  totalSupply: number,
+  quorum: number
+): number {
+  const target = min([votingThreshold, totalSupply]);
+
+  const goal = max([target, quorum]);
+
+  return goal ?? 0;
 }

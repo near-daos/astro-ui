@@ -41,8 +41,10 @@ export const ActionsRow: FC<Props> = ({
 
   const maxValue =
     actionContext === 'Delegate'
-      ? kFormatter(Number(stakedBalance) - Number(delegatedBalance))
+      ? Number(stakedBalance) - Number(delegatedBalance)
       : formattedBalance;
+
+  const maxValueFormatted = kFormatter(+maxValue);
 
   const schema = useMemo(() => {
     return yup.object().shape({
@@ -145,7 +147,7 @@ export const ActionsRow: FC<Props> = ({
             [styles.error]: !isValid,
           })}
         >
-          {maxValue} {symbol}
+          {maxValueFormatted} {symbol}
         </span>
       </div>
       <div>

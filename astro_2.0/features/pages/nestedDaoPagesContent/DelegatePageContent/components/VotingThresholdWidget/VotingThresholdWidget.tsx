@@ -3,11 +3,13 @@ import ContentLoader from 'react-content-loader';
 
 import { FormattedNumericValue } from 'components/cards/TokenCard/components/FormattedNumericValue';
 import { kFormatter } from 'utils/format';
-import { IconButton } from 'components/button/IconButton';
 import { DelegatePageWidget } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/DelegatePageWidget';
 
+import cn from 'classnames';
+import { Icon } from 'components/Icon';
+import { Button } from 'components/button/Button';
+
 import styles from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/DelegatePageContent.module.scss';
-import { Tooltip } from 'astro_2.0/components/Tooltip';
 
 interface Props {
   loading: boolean;
@@ -15,6 +17,8 @@ interface Props {
   suffix?: string;
   onEdit: () => void;
   disabled: boolean;
+  showGoalChart: boolean;
+  onToggleChart: () => void;
 }
 
 export const VotingThresholdWidget: FC<Props> = ({
@@ -23,12 +27,16 @@ export const VotingThresholdWidget: FC<Props> = ({
   suffix,
   onEdit,
   disabled,
+  showGoalChart,
+  onToggleChart,
 }) => {
   return (
     <DelegatePageWidget
-      className={styles.secondaryWidget}
-      title="Voting Threshold"
-      info="Required number of tokens to complete the voting"
+      titleIcon="goal"
+      className={cn(styles.expandableWidget, {
+        [styles.expanded]: showGoalChart,
+      })}
+      title="Amount tokens to accept proposal"
     >
       {loading ? (
         <ContentLoader height={28} width={80}>
@@ -42,20 +50,29 @@ export const VotingThresholdWidget: FC<Props> = ({
             valueClassName={styles.primaryValue}
             suffixClassName={styles.secondaryValue}
           />
-
-          <span className={styles.alignRight}>
-            <Tooltip overlay={<span>Change</span>} placement="top">
-              <IconButton
-                iconProps={{ width: 16 }}
-                icon="buttonEdit"
-                disabled={disabled}
-                className={styles.widgetButton}
-                onClick={onEdit}
-              />
-            </Tooltip>
-          </span>
         </div>
       )}
+      <Button
+        size="block"
+        variant="transparent"
+        disabled={disabled}
+        className={cn(styles.editButtonWrapper, {
+          [styles.visible]: showGoalChart,
+        })}
+        onClick={onEdit}
+      >
+        <div className={styles.editButton}>
+          <Icon name="buttonEdit" className={styles.toggleIcon} />
+        </div>
+      </Button>
+      <Button
+        size="block"
+        variant="transparent"
+        className={styles.chartToggle}
+        onClick={onToggleChart}
+      >
+        <Icon name="info" className={styles.toggleIcon} />
+      </Button>
     </DelegatePageWidget>
   );
 };

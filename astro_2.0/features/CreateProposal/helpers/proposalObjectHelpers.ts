@@ -884,7 +884,7 @@ export async function getChangeVotingPolicyToWeightVoting(
           {
             name: 'TokenHolders',
             kind: {
-              Member: balance,
+              Member: balance?.toString() ?? '1',
             },
             permissions: holdersRole?.permissions ?? ['*:*'],
             vote_policy: proposalKindPolicyLabels.reduce(

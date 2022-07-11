@@ -262,7 +262,11 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
         {/* <button */}
         {/*  onClick={() => */}
         {/*    onUpdate({ */}
+        {/*      contractAddress: 'portos.tokenfactory.testnet', */}
+        {/*      proposalId: null, */}
+        {/*      flow: 1, */}
         {/*      step: null, */}
+        {/*      wizardCompleted: true, */}
         {/*    }) */}
         {/*  } */}
         {/* /> */}

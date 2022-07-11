@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import cn from 'classnames';
 
 import { Tooltip } from 'astro_2.0/components/Tooltip';
-import { Icon } from 'components/Icon';
+import { Icon, IconName } from 'components/Icon';
 
 import styles from './DelegatePageWidget.module.scss';
 
@@ -12,6 +12,7 @@ interface Props {
   titleClassName?: string;
   info?: string;
   avatar?: string;
+  titleIcon?: IconName;
 }
 
 export const DelegatePageWidget: FC<Props> = ({
@@ -21,6 +22,7 @@ export const DelegatePageWidget: FC<Props> = ({
   info,
   avatar,
   titleClassName,
+  titleIcon,
 }) => {
   return (
     <div className={cn(styles.root, className)}>
@@ -31,6 +33,7 @@ export const DelegatePageWidget: FC<Props> = ({
       )}
       <div className={styles.body}>
         <div className={cn(styles.title, titleClassName)}>
+          {titleIcon && <Icon name={titleIcon} className={styles.titleIcon} />}
           {title}
           {info && (
             <Tooltip overlay={<span>{info}</span>} placement="top">
