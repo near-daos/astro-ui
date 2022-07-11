@@ -254,7 +254,12 @@ export const CreateProposalCard: React.FC<CreateProposalCardProps> = ({
                   t,
                   accountId,
                   option.value,
-                  isDraft
+                  isDraft,
+                  {
+                    title,
+                    description,
+                    hashtags,
+                  }
                 );
 
                 reset({ ...defs, functionCallType: option.opt });
