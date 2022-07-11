@@ -12,7 +12,6 @@ import { CREATE_GOV_TOKEN_UNDER_CONSTRUCTION } from 'constants/routing';
 
 import { Icon, IconName } from 'components/Icon';
 import { Button } from 'components/button/Button';
-import { SubHeader } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/components/SubHeader';
 
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
 import { useWalletContext } from 'context/WalletContext';
@@ -90,7 +89,6 @@ export const SelectToken: FC<Props> = ({ onUpdate }) => {
 
   return (
     <div className={styles.root}>
-      <SubHeader>{t(`${tBase}.header`)}</SubHeader>
       <div className={styles.optionsContainer}>
         {renderOption(
           CreateGovernanceTokenFlow.CreateToken,

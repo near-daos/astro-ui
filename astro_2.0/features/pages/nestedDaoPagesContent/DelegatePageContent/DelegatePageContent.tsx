@@ -179,9 +179,9 @@ export const DelegatePageContent: FC<Props> = ({
         {showGoalChart && (
           <div className={styles.goalChartWrapper}>
             <GoalChart
-              threshold={Number(votingThreshold)}
-              quorum={Number(quorum)}
-              totalDelegated={Number(totalSupply)}
+              threshold={Number(votingThreshold ?? 0)}
+              quorum={Number(quorum ?? 0)}
+              totalDelegated={Number(totalSupply ?? 0)}
             />
           </div>
         )}

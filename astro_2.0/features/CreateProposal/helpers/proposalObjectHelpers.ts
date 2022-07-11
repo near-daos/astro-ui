@@ -863,8 +863,8 @@ export async function getChangeVotingPolicyToWeightVoting(
 
   const tokenWeightDefaultPolicy = {
     weight_kind: 'TokenWeight',
-    quorum,
-    threshold: `${threshold}`,
+    quorum: quorum.toString(),
+    threshold: threshold.toString(),
   };
 
   const holdersRole = roles.find(

@@ -52,7 +52,7 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
       return 0;
     });
 
-    const max: number = sortedData[2].value;
+    const max: number = sortedData[2].value || 1;
     const maxPos = width - ITEM_WIDTH;
     let minPos = ITEM_WIDTH;
 
@@ -73,9 +73,13 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
       } else if (i === 1) {
         if (itemPixelPosition < minPos) {
           itemPixelPosition = minPos;
+
+          minPos += ITEM_WIDTH;
         } else if (itemPixelPosition > maxPos) {
           itemPixelPosition = maxPos;
         }
+      } else if (i === sortedData.length - 1) {
+        itemPixelPosition = width;
       }
 
       let isLeftOriented;
@@ -84,6 +88,7 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
         isLeftOriented = itemPixelPosition - ITEM_WIDTH >= 0;
       } else if (i === 1) {
         isLeftOriented = itemPixelPosition + ITEM_WIDTH > maxPos;
+        // itemPixelPosition - ITEM_WIDTH >= minPos;
       } else {
         isLeftOriented = true;
       }

@@ -860,11 +860,22 @@ export function getValidationSchema(
 
     case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
       schema = yup.object().shape({
+        balance: yup
+          .number()
+          .typeError(t('validation.mustBeAValidNumber'))
+          .positive()
+          .min(1)
+          .required(t('validation.required')),
         threshold: yup
           .number()
           .typeError(t('validation.mustBeAValidNumber'))
           .positive()
           .min(1)
+          .required(t('validation.required')),
+        quorum: yup
+          .number()
+          .typeError(t('validation.mustBeAValidNumber'))
+          .min(0)
           .required(t('validation.required')),
       });
       break;
