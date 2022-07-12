@@ -9,22 +9,36 @@ import { useWalletContext } from 'context/WalletContext';
 import { NOTIFICATION_TYPES, showNotification } from 'features/notifications';
 import { ConfirmModal } from 'astro_2.0/features/pages/nestedDaoPagesContent/CustomFunctionCallTemplatesPageContent/components/CustomFcTemplateCard/ConfirmModal';
 import { useModal } from 'components/modal';
+import { isCouncilUser } from 'astro_2.0/features/DraftComments/helpers';
+import { DAO } from 'types/dao';
 
 import styles from './DeleteDraftButton.module.scss';
 
 type DeleteDraftButtonProps = {
   draftId: string;
-  daoId: string;
+  dao?: DAO;
+  state?: string;
+  proposer?: string;
 };
 
 export const DeleteDraftButton: FC<DeleteDraftButtonProps> = ({
   draftId,
-  daoId,
+  dao,
+  state,
+  proposer,
 }) => {
   const router = useRouter();
   const { draftsService } = useDraftsContext();
   const { accountId, pkAndSignature } = useWalletContext();
   const [showModal] = useModal(ConfirmModal);
+
+  let isCouncil = false;
+
+  if (dao) {
+    isCouncil = isCouncilUser(dao, accountId);
+  }
+
+  const disabled = state === 'closed' || !(isCouncil || proposer === accountId);
 
   const handleDeleteDraft = useCallback(async () => {
     if (!pkAndSignature) {
@@ -48,7 +62,10 @@ export const DeleteDraftButton: FC<DeleteDraftButtonProps> = ({
             accountId,
           });
 
-          router.push({ pathname: DRAFTS_PAGE_URL, query: { dao: daoId } });
+          await router.push({
+            pathname: DRAFTS_PAGE_URL,
+            query: { dao: dao?.id },
+          });
         }
       } catch (e) {
         showNotification({
@@ -60,7 +77,7 @@ export const DeleteDraftButton: FC<DeleteDraftButtonProps> = ({
     }
   }, [
     accountId,
-    daoId,
+    dao,
     draftId,
     draftsService,
     pkAndSignature,
@@ -70,6 +87,7 @@ export const DeleteDraftButton: FC<DeleteDraftButtonProps> = ({
 
   return (
     <Button
+      disabled={disabled}
       capitalize
       variant="transparent"
       className={styles.deleteButton}
