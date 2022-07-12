@@ -86,10 +86,6 @@
   @extend %subtitle3;
   @include ellipse-text;
   grid-area: title;
-  margin-bottom: 16px;
-  @include tablet-landscape {
-    margin-bottom: 7px;
-  }
 }
 
 .views {
@@ -135,5 +131,28 @@
 
 .tag {
   @extend %subtitle5;
+  background: none !important;
+  border: 1px solid var(--color-neutral-40);
+  border-radius: 100px;
   margin-right: 8px;
+}
+
+.convertedProposalIcon {
+  color: var(--color-primary-50);
+  height: 24px;
+  margin-right: 9px;
+  width: 24px;
+}
+
+.letterClosed,
+.letterBgClosed {
+  background-image: linear-gradient(
+    0deg,
+    var(--color-neutral-50),
+    var(--color-neutral-50)
+  ) !important;
+}
+
+.tooltipArrow {
+  transform: translate3d(73px, 0, 0) !important;
 }

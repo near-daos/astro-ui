@@ -38,7 +38,7 @@ export interface DraftProposalFeedItem {
   proposer: string;
   title: string;
   type: ProposalType;
-  state: 'open';
+  state: 'open' | 'closed';
   hashtags: string[];
   replies: number;
   views: number;

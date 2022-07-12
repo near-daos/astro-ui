@@ -2,6 +2,7 @@ import React, { FC, useCallback } from 'react';
 import { DraftProposalFeedItem } from 'types/draftProposal';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { useRouter } from 'next/router';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
 
 import { Badge } from 'components/Badge';
 import { Icon } from 'components/Icon';
@@ -37,6 +38,27 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
     }
   }, [daoId, handleView, id, router]);
 
+  const renderDraftTitle = () => {
+    if (data.state === 'open') {
+      return <div className={styles.title}>{title}</div>;
+    }
+
+    return (
+      <Tooltip
+        className={styles.title}
+        overlay={<>Converted to proposal</>}
+        placement="top-start"
+        arrowClassName={styles.tooltipArrow}
+      >
+        <Icon
+          name="convertedProposal"
+          className={styles.convertedProposalIcon}
+        />
+        <span>{title}</span>
+      </Tooltip>
+    );
+  };
+
   return (
     <div
       tabIndex={0}
@@ -44,7 +66,7 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
       className={styles.content}
       onMouseDown={handleCardClick}
     >
-      <div className={styles.title}>{title}</div>
+      {renderDraftTitle()}
       <div className={styles.views}>
         <Icon name="eyeOpen" className={styles.icon} />
         {views}
@@ -59,12 +81,7 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
       </div>
       <div className={styles.tags}>
         {hashtags?.map(tag => (
-          <Badge
-            key={tag}
-            size="small"
-            className={styles.tag}
-            variant="lightgray"
-          >
+          <Badge key={tag} size="small" className={styles.tag}>
             {tag}
           </Badge>
         ))}
