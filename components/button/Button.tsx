@@ -13,7 +13,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     | 'black'
     | 'transparent'
     | 'green';
-  size?: 'small' | 'medium' | 'large' | 'block';
+  size?: 'small' | 'medium' | 'large' | 'block' | 'flex';
   disabled?: boolean | undefined;
   href?: string | UrlObject;
   capitalize?: boolean;
@@ -45,6 +45,7 @@ export const Button: React.FC<ButtonProps> = ({
     medium: styles.sizeMedium,
     large: styles.sizeLarge,
     block: styles.sizeBlock,
+    flex: styles.sizeFlex,
   };
 
   const className = classNames(

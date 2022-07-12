@@ -4,16 +4,40 @@
 .root {
   display: flex;
   flex-direction: column;
+  margin: 0 -24px;
+
+  @include tablet-landscape {
+    margin: 0;
+  }
 }
 
 .header,
-.row,
+.row {
+  display: grid;
+  grid-column-gap: 12px;
+  grid-template-columns: 1fr 1fr 0.7fr;
+
+  padding: 12px 24px;
+
+  @include tablet-landscape {
+    grid-template-columns: 1fr 0.7fr 1fr 0.9fr;
+  }
+
+  > div {
+    @include ellipse-text;
+  }
+}
+
 .actionsRow {
   display: grid;
   grid-column-gap: 12px;
-  grid-template-columns: 1fr 0.7fr 1fr 0.9fr;
+  grid-template-columns: 1fr auto;
 
   padding: 12px 24px;
+
+  @include tablet-landscape {
+    grid-template-columns: 1fr 0.7fr 1fr 0.9fr;
+  }
 
   > div {
     @include ellipse-text;
@@ -24,6 +48,11 @@
   @extend %body2;
   background-color: var(--color-neutral-10);
   color: var(--color-neutral-70);
+  font-size: 10px;
+
+  @include tablet-landscape {
+    font-size: 12px;
+  }
 }
 
 .row {
@@ -128,4 +157,31 @@
   color: var(--color-error-50);
   margin-left: 8px;
   width: 18px;
+}
+
+.widgetButton.widgetButton {
+  @include centralize;
+
+  background-color: var(--color-neutral-30);
+  border-radius: 5px;
+  color: var(--color-brand-black);
+  height: 32px;
+  margin-left: 12px;
+  width: 32px;
+}
+
+.mobile {
+  display: flex;
+
+  @include tablet-landscape {
+    display: none;
+  }
+}
+
+.desktop {
+  display: none;
+
+  @include tablet-landscape {
+    display: flex;
+  }
 }
