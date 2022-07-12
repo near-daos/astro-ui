@@ -20,6 +20,12 @@
   }
 }
 
+.actions {
+  position: absolute;
+  right: 4px;
+  top: 8px;
+}
+
 .imageWrapper {
   height: 296px;
   width: 296px;
@@ -64,6 +70,8 @@
 }
 
 .value {
+  display: flex;
+  justify-content: flex-end;
   text-align: right;
 }
 
