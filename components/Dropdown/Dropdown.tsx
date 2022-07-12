@@ -115,7 +115,9 @@ export const Dropdown = <T,>(
           [styles.disabled]: isDisabled,
         })}
       >
-        {selectedItem?.label || placeholder}
+        <span className={styles.selected}>
+          {selectedItem?.label || placeholder}
+        </span>
         <IconButton
           icon="buttonArrowDown"
           className={cn(styles.controlIcon, {

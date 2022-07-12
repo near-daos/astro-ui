@@ -14,6 +14,7 @@ import { useDelegatePageContext } from 'astro_2.0/features/pages/nestedDaoPagesC
 import { DATE_TIME_FORMAT } from 'constants/timeConstants';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { Icon } from 'components/Icon';
+import { IconButton } from 'components/button/IconButton';
 
 import styles from './DelegateGroupTable.module.scss';
 
@@ -81,58 +82,90 @@ export const TableRow: FC<Props> = ({
             )}
           </Tooltip>
         </div>
-        <div>
+        <div className={styles.desktop}>
           <VotingPower
             progressPercent={progressPercent}
             inactiveVotingPower={inactiveVotingPower}
           />
         </div>
         <div className={styles.inline}>
-          <Tooltip
-            placement="top"
-            overlay={
-              <span>
-                {actionsNotAvailable && nextActionTime
-                  ? `Next action will be available at ${format(
-                      nextActionTime,
-                      DATE_TIME_FORMAT
-                    )}`
-                  : 'Delegate voting'}
-              </span>
-            }
-          >
-            <Button
-              variant="transparent"
-              size="small"
-              capitalize
-              className={cn(styles.controlButton, {
+          <div className={styles.mobile}>
+            <IconButton
+              iconProps={{ width: 16 }}
+              icon="buttonDeposit"
+              disabled={actionsNotAvailable || notEnoughStakedBalance}
+              className={cn(styles.widgetButton, {
                 [styles.disabled]:
                   actionsNotAvailable || notEnoughStakedBalance,
               })}
               onClick={() =>
                 onActionClick(actionContext !== 'Delegate' ? 'Delegate' : null)
               }
-              disabled={actionsNotAvailable || notEnoughStakedBalance}
+            />
+
+            <IconButton
+              iconProps={{ width: 16 }}
+              icon="buttonWithdraw"
+              disabled={+balance === 0 || notEnoughDelegatedBalance}
+              className={cn(styles.widgetButton, {
+                [styles.disabled]: +balance === 0 || notEnoughDelegatedBalance,
+              })}
+              onClick={() =>
+                onActionClick(
+                  actionContext !== 'Undelegate' ? 'Undelegate' : null
+                )
+              }
+            />
+          </div>
+          <div className={styles.desktop}>
+            <Tooltip
+              placement="top"
+              overlay={
+                <span>
+                  {actionsNotAvailable && nextActionTime
+                    ? `Next action will be available at ${format(
+                        nextActionTime,
+                        DATE_TIME_FORMAT
+                      )}`
+                    : 'Delegate voting'}
+                </span>
+              }
             >
-              Delegate
+              <Button
+                variant="transparent"
+                size="small"
+                capitalize
+                className={cn(styles.controlButton, {
+                  [styles.disabled]:
+                    actionsNotAvailable || notEnoughStakedBalance,
+                })}
+                onClick={() =>
+                  onActionClick(
+                    actionContext !== 'Delegate' ? 'Delegate' : null
+                  )
+                }
+                disabled={actionsNotAvailable || notEnoughStakedBalance}
+              >
+                Delegate
+              </Button>
+            </Tooltip>
+            <Button
+              variant="transparent"
+              size="small"
+              capitalize
+              className={cn(styles.controlButton, {
+                [styles.disabled]: +balance === 0 || notEnoughDelegatedBalance,
+              })}
+              disabled={+balance === 0 || notEnoughDelegatedBalance}
+              onClick={() =>
+                onActionClick(
+                  actionContext !== 'Undelegate' ? 'Undelegate' : null
+                )
+              }
+            >
+              Undelegate
             </Button>
-          </Tooltip>
-          <Button
-            variant="transparent"
-            size="small"
-            capitalize
-            className={cn(styles.controlButton, {
-              [styles.disabled]: +balance === 0 || notEnoughDelegatedBalance,
-            })}
-            disabled={+balance === 0 || notEnoughDelegatedBalance}
-            onClick={() =>
-              onActionClick(
-                actionContext !== 'Undelegate' ? 'Undelegate' : null
-              )
-            }
-          >
-            Undelegate
-          </Button>
+          </div>
         </div>
       </div>
       {isActive && (

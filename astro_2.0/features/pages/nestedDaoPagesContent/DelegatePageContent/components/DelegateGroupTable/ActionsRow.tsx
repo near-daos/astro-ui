@@ -133,8 +133,8 @@ export const ActionsRow: FC<Props> = ({
       onSubmit={handleSubmit(onSubmit)}
       noValidate
     >
-      <div>{actionContext}</div>
-      <div>
+      <div className={styles.desktop}>{actionContext}</div>
+      <div className={styles.desktop}>
         <span
           className={cn(styles.label, {
             [styles.error]: !isValid,

@@ -7,10 +7,11 @@
   margin-bottom: 24px;
   overflow: auto;
   position: relative;
-  width: 100%;
+  width: calc(100vw - 48px);
 
   @include tablet-landscape {
     flex-direction: column;
+    width: 100%;
   }
 
   &::-webkit-scrollbar {

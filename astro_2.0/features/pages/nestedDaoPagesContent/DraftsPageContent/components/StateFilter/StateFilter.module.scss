@@ -16,6 +16,7 @@
 .title {
   @extend %subtitle4;
   margin-bottom: 8px;
+  white-space: nowrap;
 }
 
 .option {

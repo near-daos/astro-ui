@@ -28,8 +28,10 @@ $panel-background: var(--color-white);
 }
 
 .primaryValue {
+  @include ellipse-text;
   font-size: 24px;
   font-weight: 600;
+  max-width: 90px;
 }
 
 .secondaryValue {
@@ -132,4 +134,43 @@ $panel-background: var(--color-white);
   justify-content: flex-end;
   overflow: visible;
   width: 100%;
+}
+
+.controlBlock {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.controlBlockButton {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  &:not(:last-of-type) {
+    margin-right: 12px;
+  }
+}
+
+.secondaryGreen {
+  border-color: var(--color-brand-green);
+}
+
+.buttonIcon {
+  margin-right: 8px;
+}
+
+.mobile {
+  display: flex;
+
+  @include tablet-landscape {
+    display: none;
+  }
+}
+
+.desktop {
+  display: none;
+
+  @include tablet-landscape {
+    display: flex;
+  }
 }
