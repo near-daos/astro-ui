@@ -52,7 +52,7 @@ export const DelegateGroupTable: FC<Props> = ({
       <div className={styles.header}>
         <div>Name</div>
         <div>Delegated Balance</div>
-        <div>Voting Power</div>
+        <div className={styles.desktop}>Voting Power</div>
         <div>Actions</div>
       </div>
       <div className={styles.body}>

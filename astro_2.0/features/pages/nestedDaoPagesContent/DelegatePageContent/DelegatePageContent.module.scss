@@ -1,3 +1,4 @@
+@use 'styles/breakpoints';
 @import 'styles/typography';
 @import 'styles/mixins';
 
@@ -9,10 +10,14 @@
 
 .widgets {
   display: grid;
-  grid-column-gap: 12px;
-  grid-template-columns: 1.5fr repeat(2, 1fr);
+  grid-gap: 12px;
+  grid-template-columns: 1fr;
 
   margin-bottom: 24px;
+
+  @include tablet-landscape {
+    grid-template-columns: 1.5fr repeat(2, 1fr);
+  }
 
   &.widgetExpanded {
     margin-bottom: 12px;
@@ -66,25 +71,53 @@
 }
 
 .content {
-  background-color: var(--color-white);
-  border-radius: 5px;
+  @include large-desktop {
+    background-color: var(--color-white);
+    border-radius: 5px;
 
-  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.05);
+  }
 }
 
 .contentHeader {
   align-items: center;
-  display: flex;
+  display: grid;
+  grid-gap: 12px;
+  grid-template-areas:
+    'title title'
+    'add add'
+    'sort search';
+  grid-template-columns: 2fr 1fr;
   justify-content: space-between;
 
-  padding: 20px 24px;
+  @include tablet-landscape {
+    grid-template-areas:
+      'title title .'
+      'sort search add';
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+
+  @include large-desktop {
+    display: flex;
+    padding: 20px 24px;
+  }
 
   .title {
     @extend %subtitle1;
+    grid-area: title;
   }
 
   .search {
+    grid-area: search;
     margin-left: auto;
+  }
+
+  .sorting {
+    grid-area: sort;
+  }
+
+  .add {
+    grid-area: add;
   }
 
   .sorting,
@@ -93,12 +126,26 @@
   }
 }
 
+.addButton {
+  @include centralize;
+  @include ellipse-text;
+  width: 100%;
+
+  @include tablet-landscape {
+    width: auto;
+  }
+}
+
 .sorting {
   @extend %body2;
   align-items: center;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   min-width: 120px;
+
+  @include large-desktop {
+    justify-content: flex-end;
+  }
 
   .label {
     color: var(--color-neutral-60);
@@ -211,6 +258,10 @@
   width: 16px;
 }
 
+.buttonIcon {
+  margin-right: 8px;
+}
+
 .warning {
   margin-bottom: 24px;
 
@@ -220,5 +271,13 @@
 
   .text {
     @extend %caption1;
+  }
+}
+
+.desktop {
+  display: none;
+
+  @include tablet-landscape {
+    display: flex;
   }
 }

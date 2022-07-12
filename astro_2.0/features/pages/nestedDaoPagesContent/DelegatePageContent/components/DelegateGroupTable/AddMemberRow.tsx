@@ -165,7 +165,7 @@ export const AddMemberRow: FC<Props> = ({ votingThreshold, onAddMember }) => {
     <form className={styles.row} onSubmit={handleSubmit(onSubmit)} noValidate>
       <div>{renderAccountInput()}</div>
       <div>{renderAmountInput()}</div>
-      <div>
+      <div className={styles.desktop}>
         <VotingPower
           progressPercent={progressPercent}
           inactiveVotingPower={false}
