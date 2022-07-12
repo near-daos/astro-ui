@@ -144,22 +144,6 @@ export function useSubmitProposal({
 
                 onClose();
               }
-
-              if (router.query.draft && pkAndSignature) {
-                const { publicKey, signature } = pkAndSignature;
-
-                if (publicKey && signature) {
-                  const draftId = router.query.draft as string;
-
-                  await draftsService.updateDraftClose({
-                    id: draftId,
-                    proposalId: `${newProposalsIds[0]}`,
-                    publicKey,
-                    signature,
-                    accountId,
-                  });
-                }
-              }
             }
           } catch (err) {
             showNotification({

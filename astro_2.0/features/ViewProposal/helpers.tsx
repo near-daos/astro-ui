@@ -730,17 +730,6 @@ export const getImageFiles = async (
   return [file];
 };
 
-export const prepareAmountForNewProposal = (
-  token: string,
-  amount: string
-): string => {
-  if (token === 'NEAR') {
-    return formatYoktoValue(amount);
-  }
-
-  return String(Number(amount) / 10);
-};
-
 export async function getInitialFormValuesFromDraft(
   variant: ProposalVariant,
   data: Record<string, unknown>,
@@ -824,9 +813,9 @@ export async function getInitialFormValuesFromDraft(
           details: data.title,
           externalUrl,
           token: bountyData.token || 'NEAR',
-          amount: prepareAmountForNewProposal(
-            bountyData.token || 'NEAR',
-            bountyData.amount
+          amount: formatYoktoValue(
+            bountyData.amount,
+            daoTokens[bountyData.token].decimals
           ),
           slots: bountyData.times,
           deadlineThreshold: differenceInDays(
