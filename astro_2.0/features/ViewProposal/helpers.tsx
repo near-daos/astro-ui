@@ -812,7 +812,7 @@ export async function getInitialFormValuesFromDraft(
         return {
           details: data.title,
           externalUrl,
-          token: bountyData.token || 'NEAR',
+          token: daoTokens[bountyData.token].symbol,
           amount: formatYoktoValue(
             bountyData.amount,
             daoTokens[bountyData.token].decimals
