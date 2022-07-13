@@ -6,6 +6,8 @@ import { ExplorerLink } from 'components/ExplorerLink';
 import { Vote } from 'features/types';
 import { formatTimestampAsDate } from 'utils/format';
 
+import { Token as TokenDetails } from 'components/cards/member-card/types';
+
 import styles from './VoterDetailsCard.module.scss';
 
 interface VoterDetailsCardProps {
@@ -14,6 +16,7 @@ interface VoterDetailsCardProps {
   groups?: string[];
   transactionHash: string | undefined;
   timestamp: string | null | undefined;
+  tokensDetails?: TokenDetails | null;
 }
 
 export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
@@ -21,6 +24,7 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
   name,
   transactionHash,
   timestamp,
+  tokensDetails,
 }) => {
   let icon;
   let iconSize = 40;
@@ -58,6 +62,12 @@ export const VoterDetailsCard: FC<VoterDetailsCardProps> = ({
         <Icon width={iconSize} name={icon as IconName} />
       </div>
       <div className={styles.name}>{name}</div>
+      {tokensDetails && (
+        <div className={styles.tokensDetails}>
+          <span className={styles.primaryValue}>{tokensDetails.value}</span>
+          <span className={styles.secondaryValue}>{tokensDetails.symbol}</span>
+        </div>
+      )}
       <div className={styles.other}>
         &nbsp;
         {timestamp ? formatTimestampAsDate(timestamp) : null}

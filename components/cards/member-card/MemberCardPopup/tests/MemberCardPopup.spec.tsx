@@ -16,8 +16,7 @@ describe('MemberCardPopup', () => {
   it('Should render component', () => {
     const token = {
       value: 10,
-      type: 'NEAR',
-      percent: 10,
+      symbol: 'NEAR',
     };
 
     const { getByText } = render(

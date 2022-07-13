@@ -33,7 +33,6 @@ Template.args = {
   isOpen: true,
   tokens: {
     value: 5,
-    type: 'MEW',
-    percent: 11.5,
+    symbol: 'MEW',
   },
 };

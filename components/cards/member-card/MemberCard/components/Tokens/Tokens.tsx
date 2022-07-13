@@ -14,16 +14,15 @@ export const Tokens: FC<TokensProps> = ({ data }) => {
     return null;
   }
 
-  const { value, type, percent } = data;
+  const { value, symbol } = data;
 
   return (
     <div className={styles.footerItem}>
       <div className={cn(styles.label, 'subtitle4')}>Tokens</div>
       <div className={styles.inline}>
         <span className={cn(styles.value, 'title2')}>
-          {value} {type}
+          {value} {symbol}
         </span>
-        <span className={cn(styles.label, 'title4')}>{percent}%</span>
       </div>
     </div>
   );

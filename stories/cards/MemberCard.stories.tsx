@@ -37,8 +37,7 @@ Default.args = {
   votes: 23,
   tokens: {
     value: 5,
-    type: 'MEW',
-    percent: 11.5,
+    symbol: 'MEW',
   },
 };
 

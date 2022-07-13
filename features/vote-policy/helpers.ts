@@ -124,7 +124,6 @@ export function getVoteDetails(
     ratio: number[];
     quorum: string;
   },
-  scope: Scope,
   proposal?: Pick<
     Proposal,
     'voteYes' | 'voteNo' | 'voteRemove' | 'votes' | 'actions'

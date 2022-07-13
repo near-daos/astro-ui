@@ -48,7 +48,7 @@ const PollsPage: FC<PollsPageProps> = ({
     <NestedDaoPageWrapper
       daoContext={daoContext}
       breadcrumbs={breadcrumbs}
-      defaultProposalType={ProposalVariant.ProposeCreateBounty}
+      defaultProposalType={ProposalVariant.ProposePoll}
     >
       <Head>
         <title>Polls</title>
