@@ -812,8 +812,11 @@ export async function getInitialFormValuesFromDraft(
         return {
           details: data.title,
           externalUrl,
-          token: 'NEAR',
-          amount: formatYoktoValue(bountyData.amount),
+          token: bountyData.token || 'NEAR',
+          amount: formatYoktoValue(
+            bountyData.amount,
+            daoTokens[bountyData.token].decimals
+          ),
           slots: bountyData.times,
           deadlineThreshold: differenceInDays(
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -1022,7 +1025,7 @@ export async function getInitialFormValuesFromDraft(
       return {
         details: data.title,
         externalUrl,
-        amount: '',
+        amount: data.amount,
         gas: DEFAULT_PROPOSAL_GAS,
         ...data,
       };
