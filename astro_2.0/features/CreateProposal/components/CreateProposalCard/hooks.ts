@@ -5,19 +5,21 @@ import { useFlags } from 'launchdarkly-react-client-sdk';
 import { UserPermissions } from 'types/context';
 import { ProposalType, ProposalVariant } from 'types/proposal';
 import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
+
+type DropdownOption = {
+  title: string;
+  options: Option[];
+  disabled: boolean;
+};
 
 export function useProposalTypeOptions(
   daoId: string,
   userPermissions: UserPermissions,
   canCreateTokenProposal: boolean,
   isDraft?: boolean
-): {
-  title: string;
-  options: Option[];
-  disabled: boolean;
-}[] {
+): DropdownOption[] {
   const { t } = useTranslation();
 
   const {
@@ -26,7 +28,10 @@ export function useProposalTypeOptions(
   } = userPermissions;
 
   const getTitle = (key: string) => t(`createProposal.header.${key}`);
-  const getLabel = (key: string) => t(`proposalCard.proposalTypes.${key}`);
+  const getLabel = useCallback(
+    (key: string) => t(`proposalCard.proposalTypes.${key}`),
+    [t]
+  );
 
   const changeConfigTitle = getLabel('groupChangeConfig');
   const fcLabel = getLabel('groupFunctionCall');
@@ -36,7 +41,7 @@ export function useProposalTypeOptions(
 
   const { voteInOtherDao, roketoStreaming } = useFlags();
 
-  const customFunctionCallsOptions = useMemo(() => {
+  const customFunctionCallsOptions = useMemo<DropdownOption[]>(() => {
     const templateOptions = [
       {
         label: 'Buy NFT from Mintbase',
@@ -127,127 +132,137 @@ export function useProposalTypeOptions(
     templates,
   ]);
 
-  const config = [
-    {
-      title: getLabel('groupTransferAddBounty'),
-      disabled:
-        !isDraft &&
-        !allowedProposalsToCreate[ProposalType.Transfer] &&
-        !allowedProposalsToCreate[ProposalType.AddBounty],
-      options: [
-        {
-          label: getLabel('proposeTransfer'),
-          value: ProposalVariant.ProposeTransfer,
-          group: getLabel('groupTransferAddBounty'),
-          disabled:
-            !isDraft && !allowedProposalsToCreate[ProposalType.Transfer],
-        },
-        {
-          label: getLabel('proposeBounty'),
-          value: ProposalVariant.ProposeCreateBounty,
-          group: getLabel('groupTransferAddBounty'),
-          disabled:
-            !isDraft && !allowedProposalsToCreate[ProposalType.AddBounty],
-        },
-      ],
-    },
-    {
-      title: changeConfigTitle,
-      disabled:
-        !isDraft &&
-        (!isCanCreatePolicyProposals ||
-          !allowedProposalsToCreate[ProposalType.ChangeConfig]),
-      options: [
-        {
-          label: getLabel('proposeDAOName'),
-          value: ProposalVariant.ProposeChangeDaoName,
-          group: getLabel('groupChangeConfig'),
-        },
-        {
-          label: getLabel('proposeDAOPurpose'),
-          value: ProposalVariant.ProposeChangeDaoPurpose,
-          group: getLabel('groupChangeConfig'),
-        },
-        {
-          label: getLabel('proposeDAOLinks'),
-          value: ProposalVariant.ProposeChangeDaoLinks,
-          group: getLabel('groupChangeConfig'),
-        },
-        {
-          label: getLabel('proposeDAOFlagAndLogo'),
-          value: ProposalVariant.ProposeChangeDaoFlag,
-          group: getLabel('groupChangeConfig'),
-        },
-        {
-          label: getLabel('proposeLegalStatusAndDoc'),
-          value: ProposalVariant.ProposeChangeDaoLegalInfo,
-          group: getLabel('groupChangeConfig'),
-        },
-      ],
-    },
-    {
-      title: getLabel('groupChangePolicy'),
-      disabled:
-        !isDraft &&
-        (!allowedProposalsToCreate[ProposalType.ChangePolicy] ||
-          !isCanCreatePolicyProposals),
-      options: [
-        /*  {
-          label: getLabel('proposeChangePolicy'),
-          value: ProposalVariant.ProposeChangeVotingPolicy,
-          group: getLabel('groupChangePolicy'),
-        }, */
-        {
-          label: getLabel('proposeBondsAndDeadlines'),
-          value: ProposalVariant.ProposeChangeBonds,
-          group: getLabel('groupChangePolicy'),
-        },
-        {
-          label: getLabel('proposeGroup'),
-          value: ProposalVariant.ProposeCreateGroup,
-          group: getLabel('groupChangePolicy'),
-        },
-      ],
-    },
-    {
-      title: getLabel('groupChangeMembers'),
-      disabled:
-        !isDraft &&
-        (!isCanCreatePolicyProposals ||
-          (!allowedProposalsToCreate[ProposalType.AddMemberToRole] &&
-            !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole])),
-      options: [
-        {
-          label: getLabel('proposeAddMember'),
-          value: ProposalVariant.ProposeAddMember,
-          group: getLabel('groupChangeMembers'),
-          disabled:
-            !isDraft && !allowedProposalsToCreate[ProposalType.AddMemberToRole],
-        },
-        {
-          label: getLabel('proposeRemoveMember'),
-          value: ProposalVariant.ProposeRemoveMember,
-          group: getLabel('groupChangeMembers'),
-          disabled:
-            !isDraft &&
-            !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole],
-        },
-      ],
-    },
-    {
-      title: getLabel('groupVote'),
-      disabled: !isDraft && !allowedProposalsToCreate[ProposalType.Vote],
-      options: [
-        {
-          label: getLabel('proposePoll'),
-          value: ProposalVariant.ProposePoll,
-          group: getLabel('groupVote'),
-          disabled: !isDraft && !allowedProposalsToCreate[ProposalType.Vote],
-        },
-      ],
-    },
-    ...customFunctionCallsOptions,
-  ];
+  const config = useMemo<DropdownOption[]>(() => {
+    return [
+      {
+        title: getLabel('groupTransferAddBounty'),
+        disabled:
+          !isDraft &&
+          !allowedProposalsToCreate[ProposalType.Transfer] &&
+          !allowedProposalsToCreate[ProposalType.AddBounty],
+        options: [
+          {
+            label: getLabel('proposeTransfer'),
+            value: ProposalVariant.ProposeTransfer,
+            group: getLabel('groupTransferAddBounty'),
+            disabled:
+              !isDraft && !allowedProposalsToCreate[ProposalType.Transfer],
+          },
+          {
+            label: getLabel('proposeBounty'),
+            value: ProposalVariant.ProposeCreateBounty,
+            group: getLabel('groupTransferAddBounty'),
+            disabled:
+              !isDraft && !allowedProposalsToCreate[ProposalType.AddBounty],
+          },
+        ],
+      },
+      {
+        title: changeConfigTitle,
+        disabled:
+          !isDraft &&
+          (!isCanCreatePolicyProposals ||
+            !allowedProposalsToCreate[ProposalType.ChangeConfig]),
+        options: [
+          {
+            label: getLabel('proposeDAOName'),
+            value: ProposalVariant.ProposeChangeDaoName,
+            group: getLabel('groupChangeConfig'),
+          },
+          {
+            label: getLabel('proposeDAOPurpose'),
+            value: ProposalVariant.ProposeChangeDaoPurpose,
+            group: getLabel('groupChangeConfig'),
+          },
+          {
+            label: getLabel('proposeDAOLinks'),
+            value: ProposalVariant.ProposeChangeDaoLinks,
+            group: getLabel('groupChangeConfig'),
+          },
+          {
+            label: getLabel('proposeDAOFlagAndLogo'),
+            value: ProposalVariant.ProposeChangeDaoFlag,
+            group: getLabel('groupChangeConfig'),
+          },
+          {
+            label: getLabel('proposeLegalStatusAndDoc'),
+            value: ProposalVariant.ProposeChangeDaoLegalInfo,
+            group: getLabel('groupChangeConfig'),
+          },
+        ],
+      },
+      {
+        title: getLabel('groupChangePolicy'),
+        disabled:
+          !isDraft &&
+          (!allowedProposalsToCreate[ProposalType.ChangePolicy] ||
+            !isCanCreatePolicyProposals),
+        options: [
+          /*  {
+            label: getLabel('proposeChangePolicy'),
+            value: ProposalVariant.ProposeChangeVotingPolicy,
+            group: getLabel('groupChangePolicy'),
+          }, */
+          {
+            label: getLabel('proposeBondsAndDeadlines'),
+            value: ProposalVariant.ProposeChangeBonds,
+            group: getLabel('groupChangePolicy'),
+          },
+          {
+            label: getLabel('proposeGroup'),
+            value: ProposalVariant.ProposeCreateGroup,
+            group: getLabel('groupChangePolicy'),
+          },
+        ],
+      },
+      {
+        title: getLabel('groupChangeMembers'),
+        disabled:
+          !isDraft &&
+          (!isCanCreatePolicyProposals ||
+            (!allowedProposalsToCreate[ProposalType.AddMemberToRole] &&
+              !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole])),
+        options: [
+          {
+            label: getLabel('proposeAddMember'),
+            value: ProposalVariant.ProposeAddMember,
+            group: getLabel('groupChangeMembers'),
+            disabled:
+              !isDraft &&
+              !allowedProposalsToCreate[ProposalType.AddMemberToRole],
+          },
+          {
+            label: getLabel('proposeRemoveMember'),
+            value: ProposalVariant.ProposeRemoveMember,
+            group: getLabel('groupChangeMembers'),
+            disabled:
+              !isDraft &&
+              !allowedProposalsToCreate[ProposalType.RemoveMemberFromRole],
+          },
+        ],
+      },
+      {
+        title: getLabel('groupVote'),
+        disabled: !isDraft && !allowedProposalsToCreate[ProposalType.Vote],
+        options: [
+          {
+            label: getLabel('proposePoll'),
+            value: ProposalVariant.ProposePoll,
+            group: getLabel('groupVote'),
+            disabled: !isDraft && !allowedProposalsToCreate[ProposalType.Vote],
+          },
+        ],
+      },
+      ...customFunctionCallsOptions,
+    ];
+  }, [
+    allowedProposalsToCreate,
+    changeConfigTitle,
+    customFunctionCallsOptions,
+    getLabel,
+    isCanCreatePolicyProposals,
+    isDraft,
+  ]);
 
   if (canCreateTokenProposal) {
     const changeConfigGroup = config.find(
@@ -269,10 +284,21 @@ export function useProposalTypeOptions(
           label: getTitle('distributionOfTokens'),
           value: ProposalVariant.ProposeTokenDistribution,
           group: getTitle('customFunction'),
-        },
+        } as Option,
       ],
     });
   }
 
-  return config;
+  return useMemo(() => {
+    return config.reduce<DropdownOption[]>((res, item) => {
+      if (!item.disabled) {
+        res.push({
+          ...item,
+          options: item.options.filter(option => !option.disabled),
+        });
+      }
+
+      return res;
+    }, []);
+  }, [config]);
 }

@@ -2,10 +2,11 @@ import React, { FC, useMemo } from 'react';
 import cn from 'classnames';
 import { useTranslation } from 'next-i18next';
 
-import { VoterDetail } from 'features/types';
+import { GroupPolicyDetails, VoterDetail } from 'features/types';
 import { VotesProgressBar } from 'features/proposal/components/VoicesProgressBar';
 import { Badge, getBadgeVariant } from 'components/Badge';
 import { IconButton } from 'components/button/IconButton';
+import { Tooltip } from 'astro_2.0/components/Tooltip';
 
 import styles from './VoteCollapsableHeader.module.scss';
 
@@ -14,6 +15,7 @@ interface VoteCollapsableHeaderProps {
   state: boolean;
   votes: VoterDetail[];
   groupName: string;
+  threshold?: GroupPolicyDetails;
 }
 
 export const VoteCollapsableHeader: FC<VoteCollapsableHeaderProps> = ({
@@ -21,6 +23,7 @@ export const VoteCollapsableHeader: FC<VoteCollapsableHeaderProps> = ({
   state,
   votes,
   groupName,
+  threshold,
 }) => {
   const { t } = useTranslation();
   const voiceCounter = useMemo(
@@ -48,6 +51,23 @@ export const VoteCollapsableHeader: FC<VoteCollapsableHeaderProps> = ({
         <div className={styles.voicesCounter}>
           {voiceCounter}/{votes.length} {t('proposalVotes.voices')}
         </div>
+        <div className={styles.separator} />
+        {threshold && (
+          <Tooltip
+            placement="top"
+            className={styles.votingThreshold}
+            overlay={
+              <span>
+                <b>Voting policy:</b> {threshold.tooltip}
+              </span>
+            }
+          >
+            <>
+              <span className={styles.primaryValue}>{threshold.value}</span>
+              <span className={styles.secondaryValue}>{threshold.suffix}</span>
+            </>
+          </Tooltip>
+        )}
       </div>
 
       <div className={styles.rightPart}>

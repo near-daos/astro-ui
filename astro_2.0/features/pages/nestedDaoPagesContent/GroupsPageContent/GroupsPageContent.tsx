@@ -11,6 +11,7 @@ import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { useModal } from 'components/modal/hooks';
 import { useAuthCheck } from 'astro_2.0/features/Auth';
 import { useSortMembers } from 'astro_2.0/features/Groups/hooks/useSortMembers';
+import { useDelegatePageData } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/hooks';
 
 // Components
 import MemberCard from 'components/cards/member-card/MemberCard/MemberCard';
@@ -21,7 +22,12 @@ import { Badge, getBadgeVariant } from 'components/Badge';
 import { GroupsList } from 'astro_2.0/features/Groups/components';
 
 // Helpers
-import { extractMembersFromDao, MemberStats } from 'services/sputnik/mappers';
+import { MemberStats } from 'services/sputnik/mappers';
+import {
+  getActiveTokenHolders,
+  getTokensVotingPolicyDetails,
+} from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/helpers';
+import { extractMembersFromDao } from 'astro_2.0/features/CreateProposal/helpers';
 
 import styles from './GroupsPageContent.module.scss';
 
@@ -50,7 +56,13 @@ export const GroupsPageContent: VFC<GroupsPageContentProps> = ({
     userPermissions: { isCanCreateProposals, allowedProposalsToCreate },
   } = daoContext;
 
-  const members = dao ? extractMembersFromDao(dao, membersStats) : [];
+  const { data: delegations } = useDelegatePageData(daoContext.dao);
+  const { balance } = getTokensVotingPolicyDetails(dao);
+  const activeTokenHolders = getActiveTokenHolders(delegations, balance);
+
+  const members = dao
+    ? extractMembersFromDao(dao, membersStats, activeTokenHolders)
+    : [];
 
   const availableGroups = uniq(
     members.reduce<string[]>((res, item) => {
@@ -111,7 +123,8 @@ export const GroupsPageContent: VFC<GroupsPageContentProps> = ({
           <MemberCard
             onRemoveClick={
               isCanCreateProposals &&
-              allowedProposalsToCreate[ProposalType.RemoveMemberFromRole]
+              allowedProposalsToCreate[ProposalType.RemoveMemberFromRole] &&
+              !(item.groups.length === 1 && item.groups[0] === 'TokenHolders')
                 ? handleRemoveClick
                 : undefined
             }

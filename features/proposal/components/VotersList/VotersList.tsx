@@ -7,9 +7,10 @@ import styles from './VotersList.module.scss';
 
 interface VotersListProps {
   data: VoterDetail[];
+  showTokensInfo?: boolean;
 }
 
-export const VotersList: FC<VotersListProps> = ({ data }) => {
+export const VotersList: FC<VotersListProps> = ({ data, showTokensInfo }) => {
   if (!data?.length) {
     return <NoResultsView title="No votes here" />;
   }
@@ -24,6 +25,7 @@ export const VotersList: FC<VotersListProps> = ({ data }) => {
             vote={item.vote}
             name={item.name}
             groups={item.groups}
+            tokensDetails={showTokensInfo ? item.tokens : null}
           />
         </li>
       ))}

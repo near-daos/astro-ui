@@ -50,13 +50,13 @@
 }
 
 .badge {
-  margin: 0 16px 0 0;
+  margin: 0;
 }
 
 .separator {
   background: var(--color-neutral-40);
   height: 24px;
-  margin: 0 16px 0 0;
+  margin: 0 16px;
   width: 1px;
 }
 
@@ -67,4 +67,16 @@
 
 .progressBar {
   margin: 0 39px 0 0;
+}
+
+.votingThreshold {
+  .primaryValue {
+    @extend %body2;
+    font-weight: 600;
+  }
+  .secondaryValue {
+    @extend %body3;
+    color: var(--color-neutral-60);
+    margin-left: 8px;
+  }
 }

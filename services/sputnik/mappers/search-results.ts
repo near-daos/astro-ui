@@ -77,9 +77,8 @@ export const extractMembersFromDaosList = (
             name: user,
             groups: [grp.name],
             tokens: {
-              type: 'NEAR',
+              symbol: 'NEAR',
               value: 18,
-              percent: 14,
             },
             votes: votesPerProposer[user],
           };
@@ -131,9 +130,8 @@ export const extractMembersFromDao = (
           groups: [grp.name],
           // TODO - tokens are now hidden in UI
           tokens: {
-            type: 'NEAR',
+            symbol: 'NEAR',
             value: 18,
-            percent: 14,
           },
           votes: votesPerProposer[user] ?? null,
         };

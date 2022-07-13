@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { VoterDetail } from 'features/types';
+import { GroupPolicyDetails, VoterDetail } from 'features/types';
 import isEmpty from 'lodash/isEmpty';
 import { useTranslation } from 'next-i18next';
 
@@ -12,13 +12,17 @@ import styles from './VoteCollapsableList.module.scss';
 
 interface VoteCollapsableListProps {
   data: VoterDetail[];
+  votingPolicyByGroup: Record<string, GroupPolicyDetails>;
 }
 
 interface VoteGroups {
   [key: string]: VoterDetail[];
 }
 
-export const VoteCollapsableList: FC<VoteCollapsableListProps> = ({ data }) => {
+export const VoteCollapsableList: FC<VoteCollapsableListProps> = ({
+  data,
+  votingPolicyByGroup,
+}) => {
   const { t } = useTranslation();
   const noGroupTranslate = t('proposalVotes.noGroup');
 
@@ -69,10 +73,14 @@ export const VoteCollapsableList: FC<VoteCollapsableListProps> = ({ data }) => {
                   state={state}
                   votes={list}
                   groupName={votesGroupsKey}
+                  threshold={votingPolicyByGroup[votesGroupsKey]}
                 />
               )}
             >
-              <VotersList data={list} />
+              <VotersList
+                data={list}
+                showTokensInfo={votesGroupsKey === 'TokenHolders'}
+              />
             </Collapsable>
           </li>
         );

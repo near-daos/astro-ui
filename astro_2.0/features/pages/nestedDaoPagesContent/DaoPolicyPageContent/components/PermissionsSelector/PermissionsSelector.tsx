@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useRef, useState } from 'react';
 import cn from 'classnames';
+import pick from 'lodash/pick';
 import { useIntersection } from 'react-use';
 
 import { Icon, IconName } from 'components/Icon';
@@ -25,6 +26,21 @@ interface PermissionsSelectorProps {
   controlClassName?: string;
   controlLabel?: string;
 }
+
+const DATA_FIELDS = [
+  'config',
+  'policy',
+  'bounty',
+  'bountyDone',
+  'transfer',
+  'poll',
+  'removeMember',
+  'addMember',
+  'call',
+  'upgradeSelf',
+  'upgradeRemote',
+  'setStakingContract',
+];
 
 export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
   initialData,
@@ -74,6 +90,42 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
             ...row,
             [dataField]: value,
           };
+        }
+
+        return row;
+      });
+
+      setRows(res);
+    },
+    [rows]
+  );
+
+  function isAllChecked(row: SelectorRow) {
+    const values = pick(row, DATA_FIELDS);
+
+    return Object.values(values).filter(value => !value).length === 0;
+  }
+
+  const handleAllToggle = useCallback(
+    (selectedRow: SelectorRow, val: boolean) => {
+      const res = rows.map(row => {
+        if (row.label === selectedRow.label) {
+          const values = pick(row, DATA_FIELDS);
+
+          return Object.keys(values).reduce<
+            SelectorRow & Record<string, boolean | string>
+          >(
+            (acc, key) => {
+              const isDisabled = isOptionDisabled(key, row.label, true);
+
+              acc[key] = isDisabled ? true : val;
+
+              return acc;
+            },
+            {
+              ...row,
+            }
+          );
         }
 
         return row;
@@ -211,31 +263,52 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
         >
           <div className={cn(styles.columns)} ref={rootRef}>
             <div ref={leftIntersectionRef} />
-            {rows.map(row => (
-              <div className={styles.column} key={row.label}>
-                <div className={styles.selectorRow}>
-                  <div className={cn(styles.selectorCell, styles.groupName)}>
-                    {row.label}
+            {rows.map(row => {
+              const allChecked = isAllChecked(row);
+
+              return (
+                <div className={styles.column} key={row.label}>
+                  <div className={styles.selectorRow}>
+                    <div className={cn(styles.selectorCell, styles.groupName)}>
+                      <Tooltip
+                        overlay={<span>{row.label}</span>}
+                        placement="top"
+                        className={styles.columnLabel}
+                      >
+                        {row.label}
+                      </Tooltip>
+                      <Checkbox
+                        label=""
+                        checked={allChecked}
+                        disabled={disableNewProposal}
+                        onClick={() => handleAllToggle(row, !allChecked)}
+                        className={styles.checkbox}
+                      />
+                    </div>
                   </div>
+                  {renderValueCell('config', row.label, row.config)}
+                  {renderValueCell('policy', row.label, row.policy)}
+                  {renderValueCell('bounty', row.label, row.bounty)}
+                  {renderValueCell('bountyDone', row.label, row.bountyDone)}
+                  {renderValueCell('transfer', row.label, row.transfer)}
+                  {renderValueCell('poll', row.label, row.poll)}
+                  {renderValueCell('removeMember', row.label, row.removeMember)}
+                  {renderValueCell('addMember', row.label, row.addMember)}
+                  {renderValueCell('call', row.label, row.call)}
+                  {renderValueCell('upgradeSelf', row.label, row.upgradeSelf)}
+                  {renderValueCell(
+                    'upgradeRemote',
+                    row.label,
+                    row.upgradeRemote
+                  )}
+                  {renderValueCell(
+                    'setStakingContract',
+                    row.label,
+                    row.setStakingContract
+                  )}
                 </div>
-                {renderValueCell('config', row.label, row.config)}
-                {renderValueCell('policy', row.label, row.policy)}
-                {renderValueCell('bounty', row.label, row.bounty)}
-                {renderValueCell('bountyDone', row.label, row.bountyDone)}
-                {renderValueCell('transfer', row.label, row.transfer)}
-                {renderValueCell('poll', row.label, row.poll)}
-                {renderValueCell('removeMember', row.label, row.removeMember)}
-                {renderValueCell('addMember', row.label, row.addMember)}
-                {renderValueCell('call', row.label, row.call)}
-                {renderValueCell('upgradeSelf', row.label, row.upgradeSelf)}
-                {renderValueCell('upgradeRemote', row.label, row.upgradeRemote)}
-                {renderValueCell(
-                  'setStakingContract',
-                  row.label,
-                  row.setStakingContract
-                )}
-              </div>
-            ))}
+              );
+            })}
             <div ref={rightIntersectionRef} />
           </div>
         </div>

@@ -187,6 +187,13 @@
   &.groupName {
     @extend %title5;
     color: var(--color-black);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .columnLabel {
+    @include ellipse-text;
+    margin-right: 4px;
   }
 
   &.alignCenter {
