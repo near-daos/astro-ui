@@ -24,7 +24,20 @@ export function updateRoleWithNewPermissions(
     return role as DaoRole;
   }
 
-  const newPermissions = role.permissions.filter(item => {
+  let newPermissions = role.permissions;
+
+  if (newPermissions.includes('*:*')) {
+    newPermissions = [
+      ...newPermissions,
+      '*:Finalize',
+      '*:AddProposal',
+      '*:VoteApprove',
+      '*:VoteReject',
+      '*:VoteRemove',
+    ];
+  }
+
+  newPermissions = newPermissions.filter(item => {
     let res = true;
 
     fields.forEach(field => {
