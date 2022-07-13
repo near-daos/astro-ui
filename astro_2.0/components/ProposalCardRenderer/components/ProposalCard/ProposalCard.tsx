@@ -690,7 +690,14 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     }
 
     if (isEditDraft) {
-      return <DeleteDraftButton draftId={id || ''} daoId={daoId || ''} />;
+      return (
+        <DeleteDraftButton
+          proposer={proposer}
+          state={state}
+          draftId={id || ''}
+          dao={dao}
+        />
+      );
     }
 
     if (history && history.length >= 2) {
