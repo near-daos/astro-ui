@@ -845,7 +845,7 @@ export async function getInitialFormValuesFromDraft(
         return {
           details: data.title,
           externalUrl,
-          token: kind.tokenId || 'NEAR',
+          token: daoTokens[kind.tokenId].symbol,
           amount: formatYoktoValue(
             kind.amount,
             daoTokens[kind.tokenId]?.decimals
