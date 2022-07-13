@@ -175,7 +175,6 @@ export const TableRow: FC<Props> = ({
           actionContext={actionContext}
           onActionClick={onActionClick}
           availableBalance={availableBalance}
-          formattedBalance={formattedBalance}
           symbol={symbol}
           decimals={decimals}
         />
