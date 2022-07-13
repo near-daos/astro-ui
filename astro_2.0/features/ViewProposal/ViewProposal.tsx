@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useForm, FormProvider } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import cn from 'classnames';
 
 import {
   ProposalCard,

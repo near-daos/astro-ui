@@ -40,6 +40,7 @@ export interface DraftProposalFeedItem {
   type: ProposalType;
   state: 'open' | 'closed';
   hashtags: string[];
+  proposalId?: number;
   replies: number;
   views: number;
   updatedAt: string;
