@@ -1,10 +1,13 @@
 import React, { FC, useState } from 'react';
 import ContentLoader from 'react-content-loader';
+import { format } from 'date-fns';
 
 import { IconButton } from 'components/button/IconButton';
 import { DelegatePageWidget } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/DelegatePageWidget';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
 import { ActionPanel } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/MyBalanceWidget/ActionPanel';
+
+import { DATE_TIME_FORMAT } from 'constants/timeConstants';
 
 import styles from './MyBalanceWidget.module.scss';
 
@@ -15,6 +18,8 @@ interface Props {
   stakedBalance?: string;
   decimals?: number;
   symbol?: string;
+  actionsNotAvailable?: boolean;
+  nextActionTime?: Date;
 }
 
 export const MyBalanceWidget: FC<Props> = ({
@@ -24,6 +29,8 @@ export const MyBalanceWidget: FC<Props> = ({
   stakedBalance,
   decimals,
   symbol,
+  actionsNotAvailable,
+  nextActionTime,
 }) => {
   const [context, setContext] = useState<'stake' | 'unstake' | null>(null);
 
@@ -60,11 +67,23 @@ export const MyBalanceWidget: FC<Props> = ({
                   onClick={() => setContext('stake')}
                 />
               </Tooltip>
-              <Tooltip overlay={<span>Unstake</span>} placement="top">
+              <Tooltip
+                overlay={
+                  <span>
+                    {actionsNotAvailable && nextActionTime
+                      ? `Next action will be available at ${format(
+                          nextActionTime,
+                          DATE_TIME_FORMAT
+                        )}`
+                      : ''}
+                  </span>
+                }
+                placement="top"
+              >
                 <IconButton
                   iconProps={{ width: 16 }}
                   icon="buttonWithdraw"
-                  disabled={(stakedBalance || 0) === 0}
+                  disabled={(stakedBalance || 0) === 0 || actionsNotAvailable}
                   className={styles.widgetButton}
                   onClick={() => setContext('unstake')}
                 />
