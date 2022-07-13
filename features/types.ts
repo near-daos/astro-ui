@@ -1,3 +1,5 @@
+import { Token as TokenDetails } from 'components/cards/member-card/types';
+
 export const NEAR_TOKEN = 'NEAR';
 export const FUNGIBLE_TOKEN = 'Fungible Token';
 
@@ -28,6 +30,13 @@ export type VoterDetail = {
   groups?: string[];
   timestamp?: string | null;
   transactionHash?: string | undefined;
+  tokens?: TokenDetails;
+};
+
+export type GroupPolicyDetails = {
+  value: string | number;
+  suffix: string;
+  tooltip: string;
 };
 
 export type BondDetail = {

@@ -11,7 +11,7 @@ import { TFunction } from 'react-i18next';
 
 // Types
 import { ProposalType, ProposalVariant } from 'types/proposal';
-import { DAO, Member } from 'types/dao';
+import { DAO, DaoDelegation, Member } from 'types/dao';
 import { MemberStats } from 'services/sputnik/mappers';
 import { Option } from 'astro_2.0/features/CreateProposal/components/GroupedSelect';
 import { FunctionCallType } from 'astro_2.0/features/CreateProposal/components/CustomFunctionCallContent/types';
@@ -260,7 +260,8 @@ export function getInputSize(
 
 export const extractMembersFromDao = (
   dao: DAO,
-  membersStats: MemberStats[]
+  membersStats: MemberStats[],
+  activeTokenHolders: DaoDelegation[] = []
 ): Member[] => {
   const votesPerProposer = membersStats.reduce<Record<string, number>>(
     (res, item) => {
@@ -282,12 +283,6 @@ export const extractMembersFromDao = (
           id: nanoid(),
           name: user,
           groups: [grp.name],
-          // TODO - tokens are now hidden in UI
-          tokens: {
-            type: 'NEAR',
-            value: 18,
-            percent: 14,
-          },
           votes: votesPerProposer[user] ?? null,
         };
       } else {
@@ -297,6 +292,34 @@ export const extractMembersFromDao = (
         };
       }
     });
+  });
+
+  activeTokenHolders.forEach(tokenHolder => {
+    const user = tokenHolder.accountId;
+
+    if (!members[user]) {
+      members[user] = {
+        id: nanoid(),
+        name: user,
+        groups: ['TokenHolders'],
+        tokens: {
+          // todo - get symbol
+          symbol: 'TODO',
+          value: Number(tokenHolder.balance ?? 0),
+        },
+        votes: votesPerProposer[user] ?? null,
+      };
+    } else {
+      members[user] = {
+        ...members[user],
+        groups: [...members[user].groups, 'TokenHolders'],
+        tokens: {
+          // todo - get symbol
+          symbol: 'TODO',
+          value: Number(tokenHolder.balance ?? 0),
+        },
+      };
+    }
   });
 
   return Object.values(members).map(item => {

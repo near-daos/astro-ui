@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { SettingsFilterToggle } from 'astro_2.0/features/DaoGovernance/components/SettingsFilterToggle';
 import { DaoSetting, SettingsCard } from 'astro_2.0/features/DaoGovernance';
@@ -42,8 +41,6 @@ export const DaoPolicyPageContent: FC<Props> = ({
   const router = useRouter();
   const { daoFilter } = router.query;
   const { userPermissions, dao } = daoContext;
-
-  const { allowEveryoneVoting } = useFlags();
 
   const proposalPeriod = nanosToDays(daoContext.dao.policy.proposalPeriod);
   const bountyPeriod = nanosToDays(
@@ -119,7 +116,7 @@ export const DaoPolicyPageContent: FC<Props> = ({
                 }
               );
             }}
-            initialData={getInitialVotingPermissions(dao, allowEveryoneVoting)}
+            initialData={getInitialVotingPermissions(dao)}
           />
         )}
         {daoFilter === 'bondAndDeadlines' && (

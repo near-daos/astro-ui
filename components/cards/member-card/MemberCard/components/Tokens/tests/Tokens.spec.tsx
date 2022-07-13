@@ -11,16 +11,15 @@ describe('Tokens', () => {
 
   it('Should render component', () => {
     const value = 10;
-    const type = 'NEAR';
+    const symbol = 'NEAR';
 
     const token = {
-      type,
+      symbol,
       value,
-      percent: 10,
     };
 
     const { getByText } = render(<Tokens data={token} />);
 
-    expect(getByText(`${value} ${type}`)).toBeTruthy();
+    expect(getByText(`${value} ${symbol}`)).toBeTruthy();
   });
 });
