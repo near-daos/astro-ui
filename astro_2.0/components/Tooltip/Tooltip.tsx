@@ -6,8 +6,24 @@ import { Popup } from 'components/Popup';
 import styles from './Tooltip.module.scss';
 
 interface TooltipProps {
-  placement?: 'right' | 'top' | 'bottom' | 'left' | 'auto';
+  placement?:
+    | 'auto'
+    | 'auto-start'
+    | 'auto-end'
+    | 'top'
+    | 'top-start'
+    | 'top-end'
+    | 'bottom'
+    | 'bottom-start'
+    | 'bottom-end'
+    | 'right'
+    | 'right-start'
+    | 'right-end'
+    | 'left'
+    | 'left-start'
+    | 'left-end';
   overlay?: ReactNode;
+  offset?: [number, number];
   className?: string;
   popupClassName?: string;
   arrowClassName?: string;
@@ -20,6 +36,7 @@ export const Tooltip: FC<TooltipProps> = ({
   className,
   popupClassName,
   arrowClassName,
+  offset,
 }) => {
   const [ref, setRef] = useState<HTMLElement | null>(null);
 
@@ -28,6 +45,7 @@ export const Tooltip: FC<TooltipProps> = ({
       {children}
       {overlay && (
         <Popup
+          offset={offset}
           anchor={ref}
           placement={placement}
           delayShow={700}

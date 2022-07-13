@@ -10,9 +10,10 @@ import { CopyButton } from 'astro_2.0/components/CopyButton';
 import { shortenString } from 'utils/format';
 import { NFTUri } from 'types/token';
 
-import styles from './NtfCard.module.scss';
 import { NFTActions } from 'features/proposal/components/ProposalActions/components/NFTActions';
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
+
+import styles from './NtfCard.module.scss';
 
 export interface NFTCardProps {
   image: NFTUri[];
@@ -152,6 +153,13 @@ export const NFTCard: VFC<NFTCardProps> = ({
             className={styles.image}
           />
         </div>
+        <div className={cn(styles.actions)}>
+          <NFTActions
+            contractId={contractId}
+            tokenId={tokenId}
+            toggleCreateProposal={toggleCreateProposal}
+          />
+        </div>
         <div className={styles.description}>
           <div className={styles.name}>{nameRef.current}</div>
           <div className={styles.info}>
@@ -177,13 +185,6 @@ export const NFTCard: VFC<NFTCardProps> = ({
               <CopyButton text={tokenId} showIcon={false}>
                 {tokenId}
               </CopyButton>
-            </div>
-            <div className={cn(styles.contract, styles.value)}>
-              <NFTActions
-                contractId={contractId}
-                tokenId={tokenId}
-                toggleCreateProposal={toggleCreateProposal}
-              />
             </div>
           </div>
         </div>

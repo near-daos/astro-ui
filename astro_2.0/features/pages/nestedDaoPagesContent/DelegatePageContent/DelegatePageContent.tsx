@@ -5,6 +5,7 @@ import ContentLoader from 'react-content-loader';
 import { format } from 'date-fns';
 import cn from 'classnames';
 
+import { Icon } from 'components/Icon';
 import { SearchInput } from 'astro_2.0/components/SearchInput';
 import { Dropdown } from 'components/Dropdown';
 import { Button } from 'components/button/Button';
@@ -193,7 +194,7 @@ export const DelegatePageContent: FC<Props> = ({
         <div className={styles.content}>
           <div className={styles.contentHeader}>
             <div className={styles.title}>Delegate group</div>
-            <div className={styles.search}>
+            <div className={cn(styles.search, styles.desktop)}>
               <SearchInput
                 onSubmit={handleSearch}
                 loading={false}
@@ -213,6 +214,7 @@ export const DelegatePageContent: FC<Props> = ({
               />
             </div>
             <Tooltip
+              className={styles.add}
               placement="top"
               overlay={
                 <span>
@@ -227,14 +229,16 @@ export const DelegatePageContent: FC<Props> = ({
             >
               <Button
                 variant="secondary"
-                size="small"
+                className={styles.addButton}
                 capitalize
+                size="small"
                 disabled={
                   actionsNotAvailable ||
                   Number(delegateByUser?.stakedBalance || 0) === 0
                 }
                 onClick={() => setAddNewMemeberMode(!addNewMemberMode)}
               >
+                <Icon name="plus" width={18} className={styles.buttonIcon} />
                 Add member
               </Button>
             </Tooltip>

@@ -16,7 +16,7 @@ interface PuzzleCaptchaProps {
 }
 
 const HOLE_WIDTH = 60;
-const ALLOWED_DEVIATION = 2;
+const ALLOWED_DEVIATION = 20;
 
 export const PuzzleCaptcha: VFC<PuzzleCaptchaProps> = props => {
   const { className, onCaptchaDone, onReset: onResetCallbasck } = props;
@@ -129,6 +129,7 @@ export const PuzzleCaptcha: VFC<PuzzleCaptchaProps> = props => {
           value={rangeValue}
           onChange={onChange}
           onMouseUp={onMouseUp}
+          onTouchEnd={onMouseUp}
           className={styles.rangeInput}
         />
         <div className={helperTextClassName}>

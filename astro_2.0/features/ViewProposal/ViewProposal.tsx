@@ -19,7 +19,6 @@ import { Token } from 'types/token';
 
 import { useWalletContext } from 'context/WalletContext';
 import { getVoteDetails } from 'features/vote-policy/helpers';
-import { getProposalScope } from 'utils/getProposalScope';
 import {
   getContentNode,
   getInitialFormValuesFromDraft,
@@ -204,7 +203,6 @@ export const ViewProposal: FC<ViewProposalProps> = ({
                 ? getVoteDetails(
                     proposal.dao.numberOfMembers,
                     proposal.dao.policy.defaultVotePolicy,
-                    getProposalScope(proposal.kind.type),
                     proposal
                   ).details
                 : undefined

@@ -1,6 +1,7 @@
 .root {
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   .progressBar {
     background-color: var(--color-neutral-40);

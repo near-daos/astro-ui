@@ -48,8 +48,9 @@ export function getBadgeVariant(name: string): Variant {
 
   const first = name.charCodeAt(0);
   const last = name.charCodeAt(name.length - 1);
+  const totalLength = name.length;
 
-  const key = (first + last) % variants.length;
+  const key = (first + last + totalLength) % variants.length;
 
   return variants[key];
 }
