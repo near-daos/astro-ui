@@ -5,12 +5,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { SputnikHttpService } from 'services/sputnik';
 import { CookieService } from 'services/CookieService';
 import { ACCOUNT_COOKIE } from 'constants/cookies';
-import { extractMembersFromDao } from 'astro_2.0/features/CreateProposal/helpers';
 import { getDaoContext } from 'features/daos/helpers';
-import {
-  getActiveTokenHolders,
-  getTokensVotingPolicyDetails,
-} from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/helpers';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -24,21 +19,13 @@ export const getServerSideProps: GetServerSideProps = async ({
   const daoId = query.dao as string;
   const proposalId = query.proposal as string;
 
-  const [proposal, membersStats, daoContext, delegations] = await Promise.all([
+  const [proposal, membersStats, daoContext] = await Promise.all([
     SputnikHttpService.getProposalById(proposalId, account),
     SputnikHttpService.getDaoMembersStats(daoId),
     getDaoContext(account, daoId as string),
-    SputnikHttpService.getDelegations(daoId),
   ]);
 
   const dao = daoContext?.dao;
-
-  const { balance } = getTokensVotingPolicyDetails(dao);
-  const activeTokenHolders = getActiveTokenHolders(delegations, balance);
-
-  const members = dao
-    ? extractMembersFromDao(dao, membersStats, activeTokenHolders)
-    : [];
 
   if (!daoContext || !proposal) {
     return {
@@ -65,7 +52,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       )),
       dao,
       proposal,
-      members,
+      membersStats,
       daoContext,
     },
   };

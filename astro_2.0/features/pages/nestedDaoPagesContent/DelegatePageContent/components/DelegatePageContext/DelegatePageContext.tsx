@@ -9,6 +9,8 @@ interface DelegatePageContext {
   nextActionTime?: Date;
   memberBalance: string;
   delegateToUser?: Record<string, string>;
+  decimals?: number;
+  symbol?: string;
 }
 
 export const DelegatePageContext = createContext<DelegatePageContext>({
@@ -21,6 +23,8 @@ export const DelegatePageContext = createContext<DelegatePageContext>({
   nextActionTime: new Date(),
   memberBalance: '0',
   delegateToUser: {},
+  decimals: 0,
+  symbol: '',
 });
 
 export const useDelegatePageContext = (): DelegatePageContext =>

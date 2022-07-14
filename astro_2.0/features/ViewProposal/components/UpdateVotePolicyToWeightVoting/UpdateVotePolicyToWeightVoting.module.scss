@@ -55,6 +55,12 @@
   }
 }
 
+.suffix {
+  color: var(--color-neutral-60);
+  font-weight: 400;
+  margin-left: 8px;
+}
+
 @media screen and (max-width: #{breakpoints.$screen-sm}px) {
   .row {
     flex-wrap: wrap;

@@ -16,6 +16,7 @@ import { useDelegatePageContext } from 'astro_2.0/features/pages/nestedDaoPagesC
 
 import styles from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/DelegateGroupTable/DelegateGroupTable.module.scss';
 import { useTriggerUpdate } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/hooks';
+import { formatValueToYokto } from 'utils/format';
 
 interface Props {
   symbol?: string;
@@ -31,7 +32,12 @@ interface Form {
 export const AddMemberRow: FC<Props> = ({ votingThreshold, onAddMember }) => {
   const { nearService } = useWalletContext();
 
-  const { daoName, stakedBalance, delegatedBalance } = useDelegatePageContext();
+  const {
+    daoName,
+    stakedBalance,
+    delegatedBalance,
+    decimals,
+  } = useDelegatePageContext();
   const { triggerUpdate } = useTriggerUpdate();
 
   const maxValue = Number(stakedBalance) - Number(delegatedBalance);
@@ -79,7 +85,7 @@ export const AddMemberRow: FC<Props> = ({ votingThreshold, onAddMember }) => {
     await nearService.delegateVoting(nearService.getStackingContract(daoName), [
       {
         name: values.account,
-        amount: values.amount.toFixed(),
+        amount: formatValueToYokto(values.amount, decimals ?? 0),
       },
     ]);
 

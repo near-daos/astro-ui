@@ -22,6 +22,7 @@ env:
   KUBE_CONFIG_DATA:  ${{ secrets.KUBE_CONFIG_DATA }}
   NODE_OPTIONS: "--max-old-space-size=7168"
   NEXT_PUBLIC_LAUNCHDARKLY_ID: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_ID }}
+  NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY }}
 
 jobs:
   get-environment:
@@ -81,6 +82,7 @@ jobs:
             --set environment.near_env=${NEAR_ENV} \
             --set environment.stats_api_url=${STATS_API_URL} \
             --set environment.next_public_launchdarkly_id=${NEXT_PUBLIC_LAUNCHDARKLY_ID} \
+            --set environment.next_public_launchdarkly_sdk_key=${NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY} \
             --set environment.app_domain=${APP_DOMAIN} \
             --set environment.release_notes=${RELEASE_NOTES} \
             --set environment.drafts_api_url=${DRAFTS_API_URL} \

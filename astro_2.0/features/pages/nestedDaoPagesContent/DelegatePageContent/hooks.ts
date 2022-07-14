@@ -10,6 +10,8 @@ import {
   DelegateTokenDetails,
   UserDelegateDetails,
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/types';
+import { objectKeys } from 'utils/objects';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 export function useDelegatePageData(
   dao: DAO
@@ -30,6 +32,7 @@ export function useDelegatePageData(
   handleReset: () => void;
   data: DaoDelegation[];
 } {
+  const { governanceToken } = useFlags();
   const router = useRouter();
   const { nearService, accountId } = useWalletContext();
 
@@ -123,7 +126,10 @@ export function useDelegatePageData(
 
         res.delegatedTotal += +balance;
 
-        res.delegatedToUser[acc] = balance;
+        res.delegatedToUser[acc] = formatYoktoValue(
+          balance,
+          tokenDetails?.decimals
+        );
 
         return res;
       },
@@ -132,20 +138,25 @@ export function useDelegatePageData(
 
     return {
       accountId,
-      delegatedBalance: delegatedTotal,
-      stakedBalance: userData.vote_amount,
+      delegatedBalance: Number(
+        formatYoktoValue(delegatedTotal.toString(), tokenDetails?.decimals)
+      ),
+      stakedBalance: formatYoktoValue(
+        userData.vote_amount,
+        tokenDetails?.decimals
+      ),
       nextActionTime: new Date(
         Number(userData.next_action_timestamp) / 1000000
       ),
       delegatedToUser,
     };
-  }, [dao, nearService, accountId, ts]);
+  }, [dao, nearService, accountId, ts, tokenDetails]);
 
   const [, fetchData] = useAsyncFn(async () => {
-    const res = await SputnikHttpService.getDelegations(daoId);
+    const res = await SputnikHttpService.getDelegations(daoId, governanceToken);
 
     setData(res);
-  }, [daoId, ts]);
+  }, [daoId, ts, governanceToken]);
 
   const handleSearch = useCallback(async searchInput => {
     setSearchFilter(searchInput);
@@ -161,13 +172,30 @@ export function useDelegatePageData(
     })();
   }, [fetchData]);
 
-  const filteredData = data.filter(item =>
-    item.accountId.startsWith(searchFilter)
-  );
+  const filteredData = data
+    .filter(item => item.accountId.startsWith(searchFilter))
+    .map(item => ({
+      ...item,
+      balance: formatYoktoValue(item.balance, tokenDetails?.decimals),
+      delegators: objectKeys(item.delegators).reduce<Record<string, string>>(
+        (acc, key) => {
+          acc[key] = formatYoktoValue(
+            item.delegators[key],
+            tokenDetails?.decimals
+          );
+
+          return acc;
+        },
+        {}
+      ),
+    }));
 
   return {
     loadingTotalSupply,
-    totalSupply,
+    totalSupply: formatYoktoValue(
+      totalSupply ?? '0',
+      tokenDetails?.decimals ?? 0
+    ),
     tokenDetails,
     loadingDelegateByUser,
     delegateByUser,
@@ -184,6 +212,38 @@ export function useVotingPolicyDetails(
   threshold: string;
   quorum: string;
 } {
+  const { nearService, accountId } = useWalletContext();
+  const { value: tokenDetails } = useAsync(async () => {
+    if (!nearService) {
+      return undefined;
+    }
+
+    const settings = await SputnikHttpService.getDaoSettings(dao.id);
+
+    const contractAddress = settings?.createGovernanceToken?.contractAddress;
+
+    if (!contractAddress) {
+      return undefined;
+    }
+
+    const contract = nearService.getContract(contractAddress, [
+      'ft_balance_of',
+      'ft_metadata',
+    ]) as CustomContract;
+
+    const [meta, balance] = await Promise.all([
+      contract.ft_metadata(),
+      contract.ft_balance_of({ account_id: accountId }),
+    ]);
+
+    return {
+      balance: Number(formatYoktoValue(balance, meta.decimals)),
+      symbol: meta.symbol,
+      decimals: meta.decimals,
+      contractAddress,
+    };
+  }, [nearService]);
+
   const holdersRole = dao.policy.roles.find(
     role => role.kind === 'Member' && role.name === 'TokenHolders'
   );
@@ -197,9 +257,18 @@ export function useVotingPolicyDetails(
   }
 
   return {
-    threshold: holdersRole.votePolicy.vote.weight ?? '0',
-    balance: holdersRole.balance ?? '0',
-    quorum: holdersRole.votePolicy.vote.quorum ?? '0',
+    threshold: formatYoktoValue(
+      holdersRole.votePolicy.vote.weight ?? '0',
+      tokenDetails?.decimals
+    ),
+    balance: formatYoktoValue(
+      holdersRole.balance ?? '0',
+      tokenDetails?.decimals
+    ),
+    quorum: formatYoktoValue(
+      holdersRole.votePolicy.vote.quorum ?? '0',
+      tokenDetails?.decimals
+    ),
   };
 }
 

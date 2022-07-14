@@ -273,17 +273,17 @@ export const PermissionsSelector: FC<PermissionsSelectorProps> = ({
                       <Tooltip
                         overlay={<span>{row.label}</span>}
                         placement="top"
-                        className={styles.columnLabel}
                       >
-                        {row.label}
+                        <Button
+                          size="small"
+                          disabled={disableNewProposal}
+                          variant="transparent"
+                          onClick={() => handleAllToggle(row, !allChecked)}
+                          className={styles.columnLabel}
+                        >
+                          {row.label}
+                        </Button>
                       </Tooltip>
-                      <Checkbox
-                        label=""
-                        checked={allChecked}
-                        disabled={disableNewProposal}
-                        onClick={() => handleAllToggle(row, !allChecked)}
-                        className={styles.checkbox}
-                      />
                     </div>
                   </div>
                   {renderValueCell('config', row.label, row.config)}

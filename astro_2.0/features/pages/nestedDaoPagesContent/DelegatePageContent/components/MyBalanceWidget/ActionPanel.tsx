@@ -12,6 +12,7 @@ import styles from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageC
 import { useWalletContext } from 'context/WalletContext';
 import { useDelegatePageContext } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/DelegatePageContext';
 import { useTriggerUpdate } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/hooks';
+import { formatValueToYokto } from 'utils/format';
 
 type Context = 'stake' | 'unstake' | null;
 
@@ -38,13 +39,11 @@ export const ActionPanel: FC<Props> = ({
   delegatedBalance,
 }) => {
   const { nearService } = useWalletContext();
-  const { daoName, contractAddress } = useDelegatePageContext();
+  const { daoName, contractAddress, decimals } = useDelegatePageContext();
   const { triggerUpdate } = useTriggerUpdate();
 
   const maxValue =
-    context === 'stake'
-      ? availableBalance.toFixed(0)
-      : (stakedBalance - delegatedBalance).toString();
+    context === 'stake' ? availableBalance : stakedBalance - delegatedBalance;
 
   const schema = useMemo(() => {
     return yup.object().shape({
@@ -79,13 +78,13 @@ export const ActionPanel: FC<Props> = ({
         await nearService.stakeTokens({
           tokenContract: contractAddress,
           stakingContract: nearService.getStackingContract(daoName),
-          amount: data.amount.toFixed(),
+          amount: formatValueToYokto(data.amount, decimals ?? 0),
         });
       } else if (context === 'unstake') {
         await nearService.unstakeTokens({
           tokenContract: contractAddress,
           stakingContract: nearService.getStackingContract(daoName),
-          amount: data.amount.toFixed(),
+          amount: formatValueToYokto(data.amount, decimals ?? 0),
         });
       }
 
