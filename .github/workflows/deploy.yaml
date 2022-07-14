@@ -17,6 +17,7 @@ env:
   KUBE_CONFIG_DATA:  ${{ secrets.KUBE_CONFIG_DATA }}
   NODE_OPTIONS: "--max-old-space-size=7168"
   NEXT_PUBLIC_LAUNCHDARKLY_ID: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_ID }}
+  NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY: ${{ secrets.NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY }}
 
 jobs:
   deploy:
@@ -34,7 +35,7 @@ jobs:
     - name: Helm Deploy
       uses: ./.github/actions/deploy
       with:
-        name: ${{ env.APP_NAME }}      
+        name: ${{ env.APP_NAME }}
         namespace: ${{ env.DEPLOYMENT_NAMESPACE }}
         tag: ${{ github.event.inputs.tag }}
         chart_directory: deployment/app-chart

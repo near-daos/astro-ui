@@ -9,6 +9,7 @@ export const appConfig = {
   DRAFTS_API_URL: process.env.DRAFTS_API_URL,
   APP_DOMAIN: process.env.APP_DOMAIN,
   LAUNCHDARKLY_ID: process.env.NEXT_PUBLIC_LAUNCHDARKLY_ID,
+  LAUNCHDARKLY_SDK_KEY: process.env.NEXT_PUBLIC_LAUNCHDARKLY_SDK_KEY,
   NEAR_ENV: process.env.NEAR_ENV,
   AWS_BUCKET: '',
   AWS_REGION: '',

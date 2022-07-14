@@ -43,8 +43,8 @@ export const ActionPanel: FC<Props> = ({
 
   const maxValue =
     context === 'stake'
-      ? availableBalance.toFixed(0)
-      : (stakedBalance - delegatedBalance).toString();
+      ? availableBalance - stakedBalance
+      : stakedBalance - delegatedBalance;
 
   const schema = useMemo(() => {
     return yup.object().shape({

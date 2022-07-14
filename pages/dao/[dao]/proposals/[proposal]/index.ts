@@ -11,6 +11,7 @@ import {
   getActiveTokenHolders,
   getTokensVotingPolicyDetails,
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/helpers';
+import { getClient } from 'utils/launchdarkly-server-client';
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -24,11 +25,20 @@ export const getServerSideProps: GetServerSideProps = async ({
   const daoId = query.dao as string;
   const proposalId = query.proposal as string;
 
+  const client = await getClient();
+  const governanceToken = await client.variation(
+    'governance-token',
+    {
+      key: account ?? '',
+    },
+    false
+  );
+
   const [proposal, membersStats, daoContext, delegations] = await Promise.all([
     SputnikHttpService.getProposalById(proposalId, account),
     SputnikHttpService.getDaoMembersStats(daoId),
     getDaoContext(account, daoId as string),
-    SputnikHttpService.getDelegations(daoId),
+    SputnikHttpService.getDelegations(daoId, governanceToken),
   ]);
 
   const dao = daoContext?.dao;

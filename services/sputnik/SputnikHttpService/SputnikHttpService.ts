@@ -1295,7 +1295,14 @@ class SputnikHttpServiceClass {
     }
   }
 
-  public async getDelegations(daoId: string): Promise<DaoDelegation[]> {
+  public async getDelegations(
+    daoId: string,
+    governanceToken: boolean
+  ): Promise<DaoDelegation[]> {
+    if (!governanceToken) {
+      return [];
+    }
+
     const response = await this.httpService.get<DaoDelegation[]>(
       `/daos/${daoId}/delegations`
     );
