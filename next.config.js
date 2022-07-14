@@ -55,6 +55,16 @@ module.exports = (phase, { defaultConfig }) => {
   nextConfig.webpack = (config, options) => {
     config.externals = [...config.externals, 'bufferutil', 'utf-8-validate'];
 
+    config.resolve.fallback = {
+      fs: false,
+      tls: false,
+      net: false,
+      https: false,
+      http: false,
+      crypto: false,
+      os: false,
+    };
+
     return transformers.reduce((acc, next) => next(acc, options), config);
   };
 
