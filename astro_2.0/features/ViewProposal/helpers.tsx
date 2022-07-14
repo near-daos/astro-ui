@@ -812,10 +812,10 @@ export async function getInitialFormValuesFromDraft(
         return {
           details: data.title,
           externalUrl,
-          token: daoTokens[bountyData.token].symbol,
+          token: daoTokens[bountyData.token]?.symbol ?? 'NEAR',
           amount: formatYoktoValue(
             bountyData.amount,
-            daoTokens[bountyData.token].decimals
+            daoTokens[bountyData.token]?.decimals
           ),
           slots: bountyData.times,
           deadlineThreshold: differenceInDays(
@@ -845,7 +845,7 @@ export async function getInitialFormValuesFromDraft(
         return {
           details: data.title,
           externalUrl,
-          token: daoTokens[kind.tokenId].symbol,
+          token: daoTokens[kind.tokenId]?.symbol ?? 'NEAR',
           amount: formatYoktoValue(
             kind.amount,
             daoTokens[kind.tokenId]?.decimals
