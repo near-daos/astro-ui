@@ -185,7 +185,8 @@ export const CreateGovernanceTokenWizard: FC<Props> = ({
         case ProposalVariant.ProposeUpdateVotePolicyToWeightVoting: {
           initialValues = {
             contractAddress,
-            details: 'Detailed explanation about threshold, balance and quorum',
+            details:
+              'With every vote on a proposal the Balance, Quorum, and Threshold determine if the proposal passes or fails.',
             quorum: daoContext.dao.policy.defaultVotePolicy.quorum,
             balance: 1,
           };

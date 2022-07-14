@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import styles from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/DelegateGroupTable/DelegateGroupTable.module.scss';
-import { kFormatter } from 'utils/format';
+import { formatValueToYokto, kFormatter } from 'utils/format';
 import { ControlledInput } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/components/ControlledInput';
 import { Button } from 'components/button/Button';
 import { useForm } from 'react-hook-form';
@@ -39,18 +39,14 @@ export const ActionsRow: FC<Props> = ({
     stakedBalance,
     delegatedBalance,
     delegateToUser,
+    decimals,
   } = useDelegatePageContext();
 
   const delegatedAmount = (delegateToUser && delegateToUser[accountId]) || 0;
 
   const maxValue =
     actionContext === 'Delegate'
-      ? Number(stakedBalance) -
-        Number(
-          delegateToUser && delegateToUser[accountId]
-            ? delegateToUser[accountId]
-            : delegatedBalance
-        )
+      ? Number(stakedBalance) - Number(delegatedBalance)
       : delegatedAmount;
 
   const maxValueFormatted = kFormatter(+maxValue);
@@ -90,7 +86,7 @@ export const ActionsRow: FC<Props> = ({
           [
             {
               name: accountId,
-              amount: values.amount.toFixed(),
+              amount: formatValueToYokto(values.amount, decimals ?? 0),
             },
           ]
         );
@@ -100,7 +96,7 @@ export const ActionsRow: FC<Props> = ({
           [
             {
               name: accountId,
-              amount: values.amount.toFixed(),
+              amount: formatValueToYokto(values.amount, decimals ?? 0),
             },
           ]
         );
