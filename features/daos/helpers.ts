@@ -6,6 +6,7 @@ import {
   getAllowedProposalsToVote,
 } from 'astro_2.0/features/CreateProposal/createProposalHelpers';
 import { ProposalType } from 'types/proposal';
+import { getClient } from 'utils/launchdarkly-server-client';
 
 interface GetDaoListProps {
   sort?: string;
@@ -52,10 +53,19 @@ export async function getDaoContext(
   accountId: string | undefined,
   daoId: string
 ): Promise<DaoContext | undefined> {
+  const client = await getClient();
+  const governanceToken = await client.variation(
+    'governance-token',
+    {
+      key: accountId ?? '',
+    },
+    false
+  );
+
   const [dao, policyAffectsProposals, delegations] = await Promise.all([
     SputnikHttpService.getDaoById(daoId),
     SputnikHttpService.findPolicyAffectsProposals(daoId),
-    SputnikHttpService.getDelegations(daoId),
+    SputnikHttpService.getDelegations(daoId, governanceToken),
   ]);
 
   if (!dao) {

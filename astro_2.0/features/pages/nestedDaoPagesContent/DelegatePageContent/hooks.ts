@@ -10,6 +10,7 @@ import {
   DelegateTokenDetails,
   UserDelegateDetails,
 } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/types';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 export function useDelegatePageData(
   dao: DAO
@@ -32,6 +33,7 @@ export function useDelegatePageData(
 } {
   const router = useRouter();
   const { nearService, accountId } = useWalletContext();
+  const { flags } = useFlags();
 
   const daoId = router.query.dao as string;
   const ts = router.query.ts as string;
@@ -142,7 +144,10 @@ export function useDelegatePageData(
   }, [dao, nearService, accountId, ts]);
 
   const [, fetchData] = useAsyncFn(async () => {
-    const res = await SputnikHttpService.getDelegations(daoId);
+    const res = await SputnikHttpService.getDelegations(
+      daoId,
+      flags.governanceToken
+    );
 
     setData(res);
   }, [daoId, ts]);

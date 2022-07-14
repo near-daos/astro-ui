@@ -54,6 +54,7 @@
     "htmldiff-js": "^1.0.5",
     "i18next": "^21.6.5",
     "imagemin-svgo": "^9.0.0",
+    "launchdarkly-node-server-sdk": "^6.4.2",
     "launchdarkly-react-client-sdk": "^2.25.0",
     "little-state-machine": "^4.2.3",
     "lodash": "^4.17.21",
