@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const isCouncil = isCouncilUser(dao, accountId || '');
 
-  if (!draft || !daoContext || (!isCouncil && draft.proposer !== accountId)) {
+  if (!draft || !daoContext || (draft.proposer !== accountId && !isCouncil)) {
     return {
       props: {
         ...(await serverSideTranslations(
