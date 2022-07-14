@@ -134,6 +134,7 @@ export const GoalChart: FC<Props> = ({ threshold, totalDelegated, quorum }) => {
         {data.map((item, i) => {
           return (
             <div
+              key={item.label}
               id={`goal-item-${i}`}
               className={cn(styles.itemWrapper, {
                 [styles.leftOriented]: item.isLeftOriented,

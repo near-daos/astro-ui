@@ -107,9 +107,11 @@
 
   white-space: nowrap;
 
+  z-index: -1;
+
   @include tablet-landscape {
     left: unset;
-    position: static;
+    position: relative;
     top: unset;
   }
 

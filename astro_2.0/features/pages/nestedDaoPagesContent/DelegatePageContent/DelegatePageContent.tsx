@@ -152,6 +152,8 @@ export const DelegatePageContent: FC<Props> = ({
             stakedBalance={delegateByUser?.stakedBalance}
             symbol={tokenDetails?.symbol}
             availableBalance={tokenDetails?.balance}
+            actionsNotAvailable={actionsNotAvailable}
+            nextActionTime={delegateByUser?.nextActionTime}
           />
           <DelegatePageWidget
             title={`Total Delegated Balance (${tokenDetails?.symbol})`}
