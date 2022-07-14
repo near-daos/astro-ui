@@ -17,7 +17,6 @@ interface Props {
   actionContext?: 'Delegate' | 'Undelegate';
   onActionClick: (actionType: string | null) => void;
   availableBalance: number;
-  formattedBalance: string;
   symbol?: string;
   decimals?: number;
 }
@@ -29,20 +28,30 @@ interface Form {
 export const ActionsRow: FC<Props> = ({
   accountId,
   actionContext,
-  // availableBalance,
-  formattedBalance,
   symbol,
   onActionClick,
 }) => {
   const { nearService } = useWalletContext();
   const { triggerUpdate } = useTriggerUpdate();
 
-  const { daoName, stakedBalance, delegatedBalance } = useDelegatePageContext();
+  const {
+    daoName,
+    stakedBalance,
+    delegatedBalance,
+    delegateToUser,
+  } = useDelegatePageContext();
+
+  const delegatedAmount = (delegateToUser && delegateToUser[accountId]) || 0;
 
   const maxValue =
     actionContext === 'Delegate'
-      ? Number(stakedBalance) - Number(delegatedBalance)
-      : formattedBalance;
+      ? Number(stakedBalance) -
+        Number(
+          delegateToUser && delegateToUser[accountId]
+            ? delegateToUser[accountId]
+            : delegatedBalance
+        )
+      : delegatedAmount;
 
   const maxValueFormatted = kFormatter(+maxValue);
 
