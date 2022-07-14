@@ -64,6 +64,7 @@ export const DelegatePageContent: FC<Props> = ({
     delegateByUser,
     data,
   } = useDelegatePageData(daoContext.dao);
+
   const {
     threshold: votingThreshold,
     balance,
@@ -125,6 +126,8 @@ export const DelegatePageContent: FC<Props> = ({
       nextActionTime: delegateByUser?.nextActionTime,
       memberBalance: balance,
       delegateToUser: delegateByUser?.delegatedToUser,
+      symbol: tokenDetails?.symbol,
+      decimals: tokenDetails?.decimals,
     };
   }, [
     balance,
@@ -134,6 +137,8 @@ export const DelegatePageContent: FC<Props> = ({
     delegateByUser?.nextActionTime,
     delegateByUser?.stakedBalance,
     tokenDetails?.contractAddress,
+    tokenDetails?.decimals,
+    tokenDetails?.symbol,
   ]);
 
   return (

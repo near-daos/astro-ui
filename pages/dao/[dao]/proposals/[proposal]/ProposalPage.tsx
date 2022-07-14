@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 
-import { DAO, Member } from 'types/dao';
+import { DAO } from 'types/dao';
 import { ProposalFeedItem } from 'types/proposal';
 import { DaoContext } from 'types/context';
 
@@ -17,25 +17,41 @@ import { useGetBreadcrumbsConfig } from 'hooks/useGetBreadcrumbsConfig';
 import { useDaoCustomTokens } from 'hooks/useCustomTokens';
 import { useProposalVotingDetails } from 'features/proposal/hooks';
 
+import {
+  useDelegatePageData,
+  useVotingPolicyDetails,
+} from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/hooks';
+import { getActiveTokenHolders } from 'astro_2.0/features/pages/nestedDaoPagesContent/DelegatePageContent/helpers';
+import { extractMembersFromDao } from 'astro_2.0/features/CreateProposal/helpers';
+import { MemberStats } from 'services/sputnik/mappers';
+
 import styles from './Proposal.module.scss';
 
 interface ProposalPageProps {
   dao: DAO;
   proposal: ProposalFeedItem;
   availableGroups: string[];
-  members: Member[];
+  membersStats: MemberStats[];
   daoContext: DaoContext;
 }
 
 const ProposalPage: NextPage<ProposalPageProps> = ({
   dao,
   proposal,
-  members,
+  membersStats,
   daoContext,
 }) => {
   const router = useRouter();
   const { tokens } = useDaoCustomTokens();
   const { t } = useTranslation();
+
+  const { data: delegations } = useDelegatePageData(daoContext.dao);
+  const { balance } = useVotingPolicyDetails(daoContext.dao);
+  const activeTokenHolders = getActiveTokenHolders(delegations, balance);
+
+  const members = dao
+    ? extractMembersFromDao(dao, membersStats, activeTokenHolders)
+    : [];
 
   const { votesDetails, votingPolicyByGroup } = useProposalVotingDetails(
     proposal,

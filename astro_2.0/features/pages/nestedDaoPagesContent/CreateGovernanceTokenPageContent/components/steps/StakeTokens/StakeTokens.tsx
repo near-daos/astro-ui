@@ -8,7 +8,7 @@ import { Input } from 'components/inputs/Input';
 import { Button } from 'components/button/Button';
 import { useWalletContext } from 'context/WalletContext';
 import { useAsync } from 'react-use';
-import { formatYoktoValue } from 'utils/format';
+import { formatValueToYokto, formatYoktoValue } from 'utils/format';
 
 import { CustomContract } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/types';
 
@@ -80,7 +80,7 @@ export const StakeTokens: FC<Props> = ({
   });
 
   const submitHandler = async (data: Form) => {
-    if (!nearService) {
+    if (!nearService || !tokenDetails) {
       return;
     }
 
@@ -88,7 +88,7 @@ export const StakeTokens: FC<Props> = ({
     await nearService.stakeTokens({
       tokenContract: contractAddress,
       stakingContract: nearService.getStackingContract(daoName),
-      amount: data.stake.toFixed(),
+      amount: formatValueToYokto(data.stake, tokenDetails.decimals),
     });
 
     // toggle onsubmit
@@ -107,8 +107,8 @@ export const StakeTokens: FC<Props> = ({
         </div>
         <div className={styles.body}>
           <p className={styles.description}>
-            Stake your voting tokens. You can delegate voting to other
-            participants with these tokens
+            For every token you stake you will receive voting power, which you
+            can delegate to yourself or others.
           </p>
           <AmountBalanceCard
             value={tokenDetails?.balance}

@@ -450,6 +450,7 @@ export function getContentNode(proposal: ProposalFeedItem): ReactNode {
               balance={balance ?? '0'}
               quorum={quorum ?? '0'}
               threshold={threshold ?? '0'}
+              daoId={proposal.daoId}
             />
           );
         }

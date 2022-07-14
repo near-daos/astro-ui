@@ -16,6 +16,8 @@ import { Icon } from 'components/Icon';
 import { CustomContract } from 'astro_2.0/features/pages/nestedDaoPagesContent/CreateGovernanceTokenPageContent/types';
 import { DAO } from 'types/dao';
 
+import { formatValueToYokto, formatYoktoValue } from 'utils/format';
+
 import styles from './DelegateVoting.module.scss';
 
 interface Props {
@@ -62,7 +64,7 @@ export const DelegateVoting: FC<Props> = ({
     ]);
 
     setTokenDetails({
-      balance: Number(balance), // : Number(formatYoktoValue(balance, meta.decimals)),
+      balance: Number(formatYoktoValue(balance, meta.decimals)),
       symbol: meta.symbol,
       decimals: meta.decimals,
     });
@@ -128,7 +130,7 @@ export const DelegateVoting: FC<Props> = ({
       nearService.getStackingContract(dao.name),
       data.accounts.map(item => ({
         ...item,
-        amount: item.amount.toFixed(),
+        amount: formatValueToYokto(item.amount, tokenDetails.decimals),
       }))
     );
 
