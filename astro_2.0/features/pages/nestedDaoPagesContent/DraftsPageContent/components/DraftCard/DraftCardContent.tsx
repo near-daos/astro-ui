@@ -3,11 +3,12 @@ import { DraftProposalFeedItem } from 'types/draftProposal';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { useRouter } from 'next/router';
 import { Tooltip } from 'astro_2.0/components/Tooltip';
+import Link from 'next/link';
 
 import { Badge } from 'components/Badge';
 import { Icon } from 'components/Icon';
 
-import { DRAFT_PAGE_URL } from 'constants/routing';
+import { DRAFT_PAGE_URL, SINGLE_PROPOSAL_PAGE_URL } from 'constants/routing';
 
 import { useDraftsPageActions } from 'astro_2.0/features/pages/nestedDaoPagesContent/DraftsPageContent/hooks';
 
@@ -20,7 +21,16 @@ interface Props {
 
 export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
   const router = useRouter();
-  const { id, title, views, replies, updatedAt, hashtags } = data;
+  const {
+    id,
+    title,
+    views,
+    replies,
+    updatedAt,
+    hashtags,
+    state,
+    proposalId,
+  } = data;
 
   const { handleView } = useDraftsPageActions();
 
@@ -39,23 +49,30 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
   }, [daoId, handleView, id, router]);
 
   const renderDraftTitle = () => {
-    if (data.state === 'open') {
+    if (state === 'open') {
       return <div className={styles.title}>{title}</div>;
     }
 
     return (
-      <Tooltip
-        className={styles.title}
-        overlay={<>Converted to proposal</>}
-        placement="top-start"
-        arrowClassName={styles.tooltipArrow}
-      >
-        <Icon
-          name="convertedProposal"
-          className={styles.convertedProposalIcon}
-        />
-        <span>{title}</span>
-      </Tooltip>
+      <>
+        <div className={styles.title}>{title}</div>
+        <Tooltip overlay={<>Link converted proposal</>}>
+          <Link
+            passHref
+            href={{
+              pathname: SINGLE_PROPOSAL_PAGE_URL,
+              query: {
+                dao: daoId,
+                proposal: `${daoId}-${proposalId}`,
+              },
+            }}
+          >
+            <a className={styles.linkToProposal}>
+              <Icon name="buttonLink" className={styles.linkToProposalIcon} />
+            </a>
+          </Link>
+        </Tooltip>
+      </>
     );
   };
 
@@ -66,7 +83,7 @@ export const DraftCardContent: FC<Props> = ({ data, daoId }) => {
       className={styles.content}
       onMouseDown={handleCardClick}
     >
-      {renderDraftTitle()}
+      <div className={styles.inputWrapper}>{renderDraftTitle()}</div>
       <div className={styles.views}>
         <Icon name="eyeOpen" className={styles.icon} />
         {views}

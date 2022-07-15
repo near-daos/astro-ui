@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useTranslation } from 'next-i18next';
 import { TFunction } from 'react-i18next';
+import Link from 'next/link';
 
 import {
   SINGLE_PROPOSAL_PAGE_URL,
@@ -103,7 +104,7 @@ export interface ProposalCardProps {
   convertToProposal?: () => void;
   saves?: number;
   dao?: DAO;
-  state?: string;
+  draftState?: string;
 }
 
 function getTimestampLabel(
@@ -224,7 +225,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   convertToProposal,
   saves,
   dao,
-  state,
+  draftState,
 }) => {
   const { accountId, nearService } = useWalletContext();
   const { t } = useTranslation();
@@ -234,6 +235,8 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
   const draftTitle = draftMethods.watch('title');
   const draftDescription = draftMethods.watch('description');
   const draftHashtags = draftMethods.watch('hashtags');
+
+  const isDraftClosed = draftState === 'closed';
 
   const schema = yup.object().shape({
     gas: getGasValidation(t),
@@ -458,6 +461,36 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     });
   }, [daoId, id, router]);
 
+  function renderLinkToProposal() {
+    if (!isDraftClosed) {
+      return null;
+    }
+
+    return (
+      <InfoBlockWidget
+        className={styles.createdProposal}
+        label="Link to proposal"
+        value={
+          <Link
+            passHref
+            href={{
+              pathname: SINGLE_PROPOSAL_PAGE_URL,
+              query: {
+                dao: daoId,
+                proposal: `${daoId}-${proposalId}`,
+              },
+            }}
+          >
+            <a className={styles.createdProposalLink}>
+              <Icon name="buttonLink" className={styles.createdProposalIcon} />
+              Proposal link
+            </a>
+          </Link>
+        }
+      />
+    );
+  }
+
   function renderCardContent() {
     if (isEditDraft) {
       return (
@@ -484,6 +517,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       return (
         <>
           {renderProposer()}
+          {renderLinkToProposal()}
           <div className={styles.draftContent}>
             <div className={styles.draftTitle}>{title}</div>
             <div className={styles.draftHashTags}>
@@ -567,7 +601,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       return (
         <div className={styles.draftFooter}>
           <DraftManagement
-            state={state}
+            state={draftState}
             accountId={accountId}
             proposer={proposer}
             convertToProposal={convertToProposal}
@@ -693,10 +727,23 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
       return (
         <DeleteDraftButton
           proposer={proposer}
-          state={state}
+          state={draftState}
           draftId={id || ''}
           dao={dao}
         />
+      );
+    }
+
+    if (isDraft) {
+      return (
+        <div className={styles.countdownCell}>
+          <span>
+            <span className={styles.convertedDraftCountdownTitle}>
+              Converted
+            </span>{' '}
+            {formatISODate(updatedAt, 'dd MMMM yyyy, HH:mm')}
+          </span>
+        </div>
       );
     }
 
@@ -715,6 +762,25 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
     );
   }
 
+  const renderStatusSeal = () => {
+    if (isDraftClosed) {
+      return (
+        <div className={cn(styles.proposalStatusSeal, styles.sealClosed)}>
+          <Icon name="sealClosed" />
+        </div>
+      );
+    }
+
+    return (
+      sealIcon &&
+      !showFinalize && (
+        <div className={styles.proposalStatusSeal}>
+          <Icon name={sealIcon as IconName} />
+        </div>
+      )
+    );
+  };
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div
@@ -730,11 +796,7 @@ export const ProposalCard: React.FC<ProposalCardProps> = ({
           {t('proposalCard.signingTransaction')}
         </div>
       )}
-      {sealIcon && !showFinalize && (
-        <div className={styles.proposalStatusSeal}>
-          <Icon name={sealIcon as IconName} />
-        </div>
-      )}
+      {renderStatusSeal()}
       <div className={styles.proposalCell}>
         <InfoBlockWidget
           valueFontSize="L"

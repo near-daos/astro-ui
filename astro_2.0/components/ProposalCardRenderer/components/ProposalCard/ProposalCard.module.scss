@@ -12,6 +12,7 @@
     'countdown'
     'proposalType'
     'proposer'
+    'createdProposal'
     'description'
     'content'
     'group'
@@ -26,7 +27,7 @@
   @include tablet-landscape {
     grid-template-areas:
       'proposalType proposalType countdown'
-      'proposer proposer .'
+      'proposer proposer createdProposal'
       'description description description'
       'group group group'
       'content content voteControl'
@@ -281,4 +282,28 @@
 
 .editable {
   grid-area: description;
+}
+
+.createdProposalLink {
+  align-items: center;
+  display: flex;
+}
+
+.createdProposalIcon {
+  color: var(--color-brand-purple);
+  height: 20px;
+  margin-right: 8px;
+  width: 20px;
+}
+
+.createdProposal {
+  grid-area: createdProposal;
+}
+
+.convertedDraftCountdownTitle {
+  color: var(--color-success-60);
+}
+
+.sealClosed {
+  top: 64px;
 }

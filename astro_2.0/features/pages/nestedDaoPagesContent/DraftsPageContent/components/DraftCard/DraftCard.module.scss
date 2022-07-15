@@ -85,7 +85,6 @@
 .title {
   @extend %subtitle3;
   @include ellipse-text;
-  grid-area: title;
 }
 
 .views {
@@ -137,11 +136,16 @@
   margin-right: 8px;
 }
 
-.convertedProposalIcon {
-  color: var(--color-primary-50);
-  height: 24px;
-  margin-right: 9px;
-  width: 24px;
+.linkToProposal {
+  flex-shrink: 1;
+}
+
+.linkToProposalIcon {
+  height: 20px;
+  width: 20px;
+  &:hover {
+    color: var(--color-primary-50);
+  }
 }
 
 .letterClosed,
@@ -153,6 +157,11 @@
   ) !important;
 }
 
-.tooltipArrow {
-  transform: translate3d(73px, 0, 0) !important;
+
+.inputWrapper {
+  justify-content: space-between;
+  grid-area: title;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
