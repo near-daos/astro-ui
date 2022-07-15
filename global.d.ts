@@ -18,6 +18,7 @@ declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fabric: any;
+    onLogin?: (response: LoginResponse) => Promise<unknown>;
     sputnikRequestSignInCompleted?: SputnikRequestSignInCompleted;
     sputnikRequestSignTransactionCompleted?: SputnikRequestSignTransactionCompleted;
     opener: {

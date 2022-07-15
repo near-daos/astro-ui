@@ -312,7 +312,9 @@ export class GovernanceTokenService extends BaseService {
     stakingContract,
     amount,
   }: StakeTokensParams): Promise<FinalExecutionOutcome[]> {
-    if (!this.walletService.isSignedIn()) {
+    const isSignedIn = await this.walletService.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
@@ -428,7 +430,9 @@ export class GovernanceTokenService extends BaseService {
     stakingContract,
     amount,
   }: StakeTokensParams): Promise<FinalExecutionOutcome[]> {
-    if (!this.walletService.isSignedIn()) {
+    const isSignedIn = await this.walletService.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
@@ -560,7 +564,9 @@ export class GovernanceTokenService extends BaseService {
     stakingContract: string,
     params: DelegateVotingParams[]
   ): Promise<FinalExecutionOutcome[]> {
-    if (!this.walletService.isSignedIn()) {
+    const isSignedIn = await this.walletService.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 
@@ -575,7 +581,9 @@ export class GovernanceTokenService extends BaseService {
     stakingContract: string,
     params: DelegateVotingParams[]
   ): Promise<FinalExecutionOutcome[]> {
-    if (!this.walletService.isSignedIn()) {
+    const isSignedIn = await this.walletService.isSignedIn();
+
+    if (!isSignedIn) {
       await this.walletService.signIn(this.nearConfig.contractName);
     }
 

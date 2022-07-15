@@ -49,9 +49,9 @@ export interface WalletService {
   getWalletType(): WalletType;
   getKeyStore(): KeyStore;
   logout(): void;
-  isSignedIn(): boolean;
+  isSignedIn(): Promise<boolean>;
   getAccount(): ConnectedWalletAccount;
-  getAccountId(): string;
+  getAccountId(): Promise<string>;
   getAvailableAccounts(): Promise<string[]>;
   functionCall(props: FunctionCallOptions): Promise<FinalExecutionOutcome[]>;
   getPublicKey(): Promise<string | null>;
@@ -69,7 +69,7 @@ export type WalletMeta = {
   url: string;
 };
 
-type SignInOptions = {
+export type SignInOptions = {
   contractId: string;
   methodNames?: string[];
 };

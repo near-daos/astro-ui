@@ -27,6 +27,10 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^2.7.1",
+    "@near-wallet-selector/core": "^5.0.0",
+    "@near-wallet-selector/my-near-wallet": "^5.0.0",
+    "@near-wallet-selector/near-wallet": "^5.0.0",
+    "@near-wallet-selector/sender": "^5.0.0",
     "@nestjsx/crud-request": "^5.0.0-alpha.3",
     "@popperjs/core": "^2.9.2",
     "@reach/auto-id": "^0.15.3",
@@ -99,6 +103,7 @@
     "react-window": "^1.8.6",
     "react-window-infinite-loader": "^1.0.7",
     "recharts": "^2.1.6",
+    "rxjs": "^7.5.6",
     "sanitize.css": "^12.0.1",
     "socket.io-client": "4.2.0",
     "svg-sprite-loader": "^6.0.9",

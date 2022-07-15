@@ -10,19 +10,22 @@ import { CookieService } from 'services/CookieService';
 
 import { useAvailableWallets } from './useAvailableWallets';
 
-export const useWallet = (): [
-  WalletService | null,
-  WalletService[],
-  (walletType: WalletType) => WalletService | undefined,
-  (walletService: WalletService) => void,
-  () => void
-] => {
+type ReturnVal = {
+  currentWallet: WalletService | null;
+  availableWallets: WalletService[];
+  getWallet: (walletType: WalletType) => WalletService | undefined;
+  setWallet: (walletService: WalletService) => void;
+  removePersistedWallet: () => void;
+};
+
+export const useWallet = (): ReturnVal => {
   const availableWallets = useAvailableWallets();
   const [
     persistedWallet,
     setPersistedWallet,
     removePersistedWallet,
   ] = useLocalStorage('selectedWallet');
+
   const [currentWallet, setCurrentWallet] = useState<WalletService | null>(
     null
   );
@@ -59,11 +62,11 @@ export const useWallet = (): [
     }
   }, [availableWallets, persistedWallet]);
 
-  return [
+  return {
     currentWallet,
     availableWallets,
     getWallet,
     setWallet,
     removePersistedWallet,
-  ];
+  };
 };

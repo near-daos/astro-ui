@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'next-i18next';
+import { useFlags } from 'launchdarkly-react-client-sdk';
 
 import { WalletButton } from 'astro_2.0/components/AppHeader/components/AccountDropdown/components/WalletButton';
 import { WalletType } from 'types/config';
@@ -19,6 +20,7 @@ export const WalletSelectionModal: React.FC<WalletSelectionModal> = ({
   onClose,
   signIn,
 }) => {
+  const { useWalletSelector } = useFlags();
   const { t } = useTranslation('common');
 
   return (
@@ -47,6 +49,19 @@ export const WalletSelectionModal: React.FC<WalletSelectionModal> = ({
         url="senderwallet.io"
         className={styles.wallet}
       />
+      {useWalletSelector && (
+        <WalletButton
+          walletType={WalletType.NEAR}
+          onClick={() => {
+            signIn(WalletType.SELECTOR_NEAR);
+            onClose();
+          }}
+          name="Selector NEAR"
+          type={t('header.wallets.near.type')}
+          url="wallet.near.org"
+          className={styles.wallet}
+        />
+      )}
     </Modal>
   );
 };

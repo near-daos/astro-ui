@@ -33,11 +33,11 @@ export class SenderWalletService implements WalletService {
     this.walletInstance = walletInstance;
   }
 
-  isSignedIn(): boolean {
-    return (
-      this.walletInstance.isSignedIn() &&
-      !!this.walletInstance.authData.accessKey
-    );
+  isSignedIn(): Promise<boolean> {
+    const wallet = this.walletInstance;
+    const isSigned = wallet.isSignedIn() && !!wallet.authData.accessKey;
+
+    return Promise.resolve(isSigned);
   }
 
   logout(): void {
@@ -62,8 +62,8 @@ export class SenderWalletService implements WalletService {
     return this.walletInstance.account();
   }
 
-  getAccountId(): string {
-    return this.walletInstance.accountId;
+  getAccountId(): Promise<string> {
+    return Promise.resolve(this.walletInstance.accountId);
   }
 
   async getPublicKey(): Promise<string | null> {

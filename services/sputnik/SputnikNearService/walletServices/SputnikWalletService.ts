@@ -89,15 +89,17 @@ export class SputnikWalletService implements WalletService {
     return this.keyStore.getAccounts(this.config.networkId);
   }
 
-  isSignedIn(): boolean {
-    return !!this.walletConnection && this.getAccountId() !== '';
+  async isSignedIn(): Promise<boolean> {
+    const accountId = await this.getAccountId();
+
+    return !!this.walletConnection && accountId !== '';
   }
 
   async functionCall(
     props: FunctionCallOptions
   ): Promise<FinalExecutionOutcome[]> {
     const directCallsList = ['act_proposal'];
-    const accountId = this.getAccountId();
+    const accountId = await this.getAccountId();
     const { accessKeys } = this;
 
     const accessKeyForDao = accessKeys
@@ -184,13 +186,17 @@ export class SputnikWalletService implements WalletService {
     return this.walletConnection.account();
   }
 
-  public getAccountId(): string {
-    return this.walletConnection.getAccountId();
+  public getAccountId(): Promise<string> {
+    const accountId = this.walletConnection.getAccountId();
+
+    return Promise.resolve(accountId);
   }
 
   public async getPublicKey(): Promise<string | null> {
+    const accountId = await this.getAccountId();
+
     const keyPair = this.config
-      ? await this.keyStore?.getKey(this.config.networkId, this.getAccountId())
+      ? await this.keyStore?.getKey(this.config.networkId, accountId)
       : null;
 
     const publicKey = keyPair?.getPublicKey();
@@ -204,11 +210,10 @@ export class SputnikWalletService implements WalletService {
 
   async getSignature(): Promise<string | null> {
     try {
+      const accountId = await this.getAccountId();
+
       const keyPair = this.config
-        ? await this.keyStore?.getKey(
-            this.config.networkId,
-            this.getAccountId()
-          )
+        ? await this.keyStore?.getKey(this.config.networkId, accountId)
         : null;
 
       if (!keyPair) {
@@ -262,7 +267,7 @@ export class SputnikWalletService implements WalletService {
     nonce: number,
     actions: transactions.Action[]
   ) {
-    const accountId = this.getAccountId();
+    const accountId = await this.getAccountId();
     const block = await this.near.connection.provider.block({
       finality: 'final',
     });
@@ -270,7 +275,7 @@ export class SputnikWalletService implements WalletService {
 
     const keyPair = await this.keyStore.getKey(
       this.config.networkId,
-      this.getAccountId()
+      accountId
     );
 
     const publicKey = keyPair.getPublicKey();
