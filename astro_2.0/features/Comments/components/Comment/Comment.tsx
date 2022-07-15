@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useCallback } from 'react';
 
 import { DraftComment } from 'services/DraftsService/types';
 
@@ -33,9 +33,6 @@ export const Comment: FC<CommentProps> = ({
   onDelete,
   isEditable,
 }) => {
-  const [edit, setEdit] = useState(false);
-  const [contentHtml, setContentHtml] = useState(data.message);
-
   const {
     author,
     message,
@@ -46,6 +43,10 @@ export const Comment: FC<CommentProps> = ({
     dislikeAccounts = [],
     id,
   } = data;
+
+  const [edit, setEdit] = useState(false);
+  const [contentHtml, setContentHtml] = useState(message);
+
   const [html, setHTML] = useState('');
   const [showReplies, setShowReplies] = useState(false);
   const [showReplyInput, setShowReplyInput] = useState(false);
@@ -53,6 +54,26 @@ export const Comment: FC<CommentProps> = ({
   const { accountId } = useWalletContext();
   const isLikedByMe = likeAccounts.includes(accountId);
   const isDislikedByMe = dislikeAccounts.includes(accountId);
+
+  const handlerReply = useCallback(
+    msg => {
+      onReply(msg, id);
+
+      setHTML('');
+      setShowReplies(true);
+    },
+    [id, onReply]
+  );
+
+  const handlerEdit = useCallback(
+    msg => {
+      onEdit(msg, id);
+
+      setContentHtml('');
+      setEdit(false);
+    },
+    [id, onEdit]
+  );
 
   return (
     <div className={styles.root}>
@@ -67,7 +88,7 @@ export const Comment: FC<CommentProps> = ({
           id={`key-edit-${id}`}
           html={contentHtml}
           setHTML={setContentHtml}
-          handleSend={msg => onEdit(msg, id)}
+          handleSend={handlerEdit}
           handleCancel={() => setEdit(!edit)}
           placeholder="Type your comment..."
         />
@@ -139,7 +160,7 @@ export const Comment: FC<CommentProps> = ({
             id={`key-${id}`}
             html={html}
             setHTML={setHTML}
-            handleSend={msg => onReply(msg, id)}
+            handleSend={handlerReply}
             handleCancel={() => setShowReplyInput(!showReplyInput)}
             placeholder="Reply..."
           />

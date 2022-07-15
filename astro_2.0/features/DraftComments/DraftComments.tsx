@@ -36,21 +36,19 @@ export const DraftComments: FC<DraftCommentsProps> = ({ className, dao }) => {
   return (
     <div className={cn(styles.root, className)}>
       <NewComment onSubmit={addComment} />
-      {loading ? (
-        <Loader />
-      ) : (
-        <Comments
-          data={data}
-          countComments={countComments}
-          onDislike={dislikeComment}
-          onLike={likeComment}
-          onReply={addComment}
-          onEdit={editComment}
-          onDelete={deleteComment}
-          canModerate={isCouncil}
-          accountId={accountId}
-        />
-      )}
+      <Loader className={cn({ [styles.hidden]: !loading })} />
+      <Comments
+        className={cn({ [styles.hidden]: loading })}
+        data={data}
+        countComments={countComments}
+        onDislike={dislikeComment}
+        onLike={likeComment}
+        onReply={addComment}
+        onEdit={editComment}
+        onDelete={deleteComment}
+        canModerate={isCouncil}
+        accountId={accountId}
+      />
     </div>
   );
 };
