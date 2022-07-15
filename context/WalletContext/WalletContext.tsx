@@ -1,6 +1,15 @@
+import {
+  FC,
+  useMemo,
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+  createContext,
+} from 'react';
+import get from 'lodash/get';
 import { useBoolean } from 'react-use';
 import { useRouter } from 'next/router';
-import { createContext, FC, useCallback, useContext, useMemo } from 'react';
 
 import { WalletType } from 'types/config';
 import {
@@ -14,6 +23,11 @@ import { ACCOUNT_COOKIE } from 'constants/cookies';
 import { SputnikNearService } from 'services/sputnik';
 import { ConnectingWalletModal } from 'astro_2.0/features/Auth/components/ConnectingWalletModal';
 import { GA_EVENTS, sendGAEvent } from 'utils/ga';
+
+import {
+  NEAR_WALLET_METADATA,
+  SENDER_WALLET_METADATA,
+} from 'services/sputnik/SputnikNearService/walletServices/constants';
 
 import { PkAndSignature } from './types';
 
@@ -43,23 +57,37 @@ export const WrappedWalletContext: FC = ({ children }) => {
     getWallet,
     setWallet,
     currentWallet,
-    availableWallets,
     removePersistedWallet,
   } = useWallet();
 
-  const availableAccounts = useAvailableAccounts(currentWallet);
-  const pkAndSignature = usePkAndSignature(currentWallet);
   const { nearConfig } = configService.get();
+  const pkAndSignature = usePkAndSignature(currentWallet);
+  const availableAccounts = useAvailableAccounts(currentWallet);
+  const [currentAccount, setCurrentAccount] = useState('');
 
   const [connectingToWallet, toggleConnection] = useBoolean(false);
 
   const router = useRouter();
 
+  useEffect(() => {
+    async function updateAccountId() {
+      if (currentWallet) {
+        const account = await currentWallet.getAccountId();
+
+        setCurrentAccount(account);
+      }
+    }
+
+    updateAccountId();
+  }, [currentWallet]);
+
   const signIn = useCallback(
     async (wallet: WalletService, contractName: string) => {
       toggleConnection(true);
 
-      if (!wallet.isSignedIn()) {
+      const isSignedIn = await wallet.isSignedIn();
+
+      if (!isSignedIn) {
         await wallet.signIn(contractName);
       }
 
@@ -79,7 +107,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
 
   const login = useCallback(
     async (walletType: WalletType) => {
-      const wallet = getWallet(walletType);
+      const wallet = await getWallet(walletType);
 
       if (!wallet) {
         return;
@@ -100,9 +128,11 @@ export const WrappedWalletContext: FC = ({ children }) => {
 
     CookieService.remove(ACCOUNT_COOKIE);
     removePersistedWallet();
-    availableWallets.forEach(wallet => wallet.logout());
+
+    currentWallet?.logout();
+
     router.reload();
-  }, [availableWallets, currentWallet, removePersistedWallet, router]);
+  }, [currentWallet, removePersistedWallet, router]);
 
   const switchAccount = useCallback(
     async (walletType: WalletType, accountId: string) => {
@@ -111,7 +141,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
         return;
       }
 
-      const nearWallet = getWallet(WalletType.NEAR);
+      const nearWallet = await getWallet(WalletType.NEAR);
 
       if (!nearWallet) {
         return;
@@ -153,7 +183,7 @@ export const WrappedWalletContext: FC = ({ children }) => {
 
   const switchWallet = useCallback(
     async (walletType: WalletType) => {
-      const selectedWallet = getWallet(walletType);
+      const selectedWallet = await getWallet(walletType);
 
       if (!selectedWallet || !currentWallet) {
         return;
@@ -181,13 +211,18 @@ export const WrappedWalletContext: FC = ({ children }) => {
   );
 
   const walletContext = useMemo(() => {
+    const availableWallets = [NEAR_WALLET_METADATA];
+
+    const senderWalletAvailable = get(window, 'near.isSender') || false;
+
+    if (senderWalletAvailable) {
+      availableWallets.push(SENDER_WALLET_METADATA);
+    }
+
     return {
       nearService: currentWallet ? new SputnikNearService(currentWallet) : null,
-      availableWallets: availableWallets.map(availableWallet =>
-        availableWallet.walletMeta()
-      ),
-      // TODO need to implement proper retrieving of accountId
-      accountId: '',
+      availableWallets,
+      accountId: currentAccount,
       currentWallet: currentWallet?.getWalletType() ?? null,
       connectingToWallet,
       availableAccounts,
@@ -198,15 +233,15 @@ export const WrappedWalletContext: FC = ({ children }) => {
       switchWallet,
     };
   }, [
-    availableAccounts,
-    availableWallets,
-    connectingToWallet,
-    currentWallet,
     login,
     logout,
-    pkAndSignature,
-    switchAccount,
     switchWallet,
+    switchAccount,
+    currentWallet,
+    pkAndSignature,
+    currentAccount,
+    availableAccounts,
+    connectingToWallet,
   ]);
 
   return (

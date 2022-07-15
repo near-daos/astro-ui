@@ -1,3 +1,5 @@
+import isNil from 'lodash/isNil';
+import { useRouter } from 'next/router';
 import { useLocalStorage } from 'react-use';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -7,19 +9,19 @@ import { WalletType } from 'types/config';
 import { WalletService } from 'services/sputnik/SputnikNearService/walletServices/types';
 
 import { CookieService } from 'services/CookieService';
-
-import { useAvailableWallets } from './useAvailableWallets';
+import { initNearWallet } from '../utils/initNearWallet';
+import { initSenderWallet } from '../utils/initSenderWallet';
 
 type ReturnVal = {
-  currentWallet: WalletService | null;
-  availableWallets: WalletService[];
-  getWallet: (walletType: WalletType) => WalletService | undefined;
-  setWallet: (walletService: WalletService) => void;
   removePersistedWallet: () => void;
+  currentWallet: WalletService | null;
+  setWallet: (walletService: WalletService) => void;
+  getWallet: (walletType: WalletType) => Promise<WalletService | undefined>;
 };
 
 export const useWallet = (): ReturnVal => {
-  const availableWallets = useAvailableWallets();
+  const router = useRouter();
+
   const [
     persistedWallet,
     setPersistedWallet,
@@ -31,15 +33,24 @@ export const useWallet = (): ReturnVal => {
   );
 
   const getWallet = useCallback(
-    (walletType: WalletType) =>
-      availableWallets.find(wallet => wallet.getWalletType() === walletType),
-    [availableWallets]
+    (walletType: WalletType) => {
+      switch (walletType) {
+        case WalletType.NEAR:
+          return initNearWallet();
+        case WalletType.SENDER:
+          return initSenderWallet(router.reload);
+        default:
+          return Promise.resolve(undefined);
+      }
+    },
+    [router]
   );
 
   const setWallet = useCallback(
     (wallet: WalletService) => {
       setPersistedWallet(wallet.getWalletType());
       setCurrentWallet(wallet);
+
       CookieService.set(ACCOUNT_COOKIE, wallet.getAccountId(), {
         path: '/',
       });
@@ -48,25 +59,31 @@ export const useWallet = (): ReturnVal => {
   );
 
   useEffect(() => {
-    const selectedWallet = availableWallets.find(
-      w => w.getWalletType() === persistedWallet
-    );
+    async function initWallet() {
+      if (isNil(persistedWallet)) {
+        CookieService.remove(ACCOUNT_COOKIE);
+      } else {
+        const wallet = await getWallet(persistedWallet as WalletType);
 
-    if (selectedWallet) {
-      CookieService.set(ACCOUNT_COOKIE, selectedWallet.getAccountId(), {
-        path: '/',
-      });
-      setCurrentWallet(selectedWallet);
-    } else {
-      CookieService.remove(ACCOUNT_COOKIE);
+        if (wallet) {
+          const accountId = await wallet.getAccountId();
+
+          CookieService.set(ACCOUNT_COOKIE, accountId, {
+            path: '/',
+          });
+
+          setCurrentWallet(wallet);
+        }
+      }
     }
-  }, [availableWallets, persistedWallet]);
+
+    initWallet();
+  }, [getWallet, persistedWallet]);
 
   return {
     getWallet,
     setWallet,
     currentWallet,
-    availableWallets,
     removePersistedWallet,
   };
 };

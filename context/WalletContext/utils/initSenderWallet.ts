@@ -1,9 +1,10 @@
-import { SenderWalletInstance } from 'services/sputnik/SputnikNearService/walletServices/types';
+import {
+  WalletService,
+  SenderWalletInstance,
+} from 'services/sputnik/SputnikNearService/walletServices/types';
 import { SenderWalletService } from 'services/sputnik/SputnikNearService/walletServices/SenderWalletService';
 
-export function initSenderWallet(
-  reload: () => void
-): Promise<SenderWalletService> {
+export function initSenderWallet(reload: () => void): Promise<WalletService> {
   return new Promise((resolve, reject) => {
     let counter = 0;
 

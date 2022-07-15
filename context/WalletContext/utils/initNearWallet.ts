@@ -3,8 +3,8 @@ import { WalletService } from 'services/sputnik/SputnikNearService/walletService
 import { configService } from 'services/ConfigService';
 import { SputnikWalletService } from 'services/sputnik/SputnikNearService/walletServices/SputnikWalletService';
 
-export function initNearWallet(): WalletService {
+export function initNearWallet(): Promise<WalletService> {
   const { nearConfig } = configService.get();
 
-  return new SputnikWalletService(nearConfig);
+  return Promise.resolve(new SputnikWalletService(nearConfig));
 }
