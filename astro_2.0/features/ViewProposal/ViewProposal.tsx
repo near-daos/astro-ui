@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useForm, FormProvider } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import cn from 'classnames';
 
 import {
   ProposalCard,
@@ -32,6 +31,8 @@ import { SaveFcTemplate } from 'astro_2.0/features/ViewProposal/components/SaveF
 import { CreateProposalProps } from 'astro_2.0/features/CreateProposal';
 import { DAO } from 'types/dao';
 import { UserPermissions } from 'types/context';
+
+import styles from './ViewProposal.module.scss';
 
 export interface ViewProposalProps {
   proposal: ProposalFeedItem | DraftProposal;
@@ -129,6 +130,8 @@ export const ViewProposal: FC<ViewProposalProps> = ({
     proposal.votes[accountId] === 'Dismiss' ||
     (proposal.status && proposal.status !== 'InProgress');
 
+  const isClosedDraft = 'state' in proposal && proposal?.state === 'closed';
+
   return (
     <FormProvider {...methods}>
       <ProposalCardRenderer
@@ -155,6 +158,10 @@ export const ViewProposal: FC<ViewProposalProps> = ({
         }
         letterHeadNode={
           <LetterHeadWidget
+            className={isClosedDraft ? styles.closedDraft : ''}
+            backgroundClassName={
+              isClosedDraft ? styles.letterHeaderBackgroundClosedDraft : ''
+            }
             type={proposal.kind.type}
             coverUrl={proposal.dao.flagCover}
           />
@@ -167,7 +174,7 @@ export const ViewProposal: FC<ViewProposalProps> = ({
             history={'history' in proposal ? proposal?.history : undefined}
             isSaved={'isSaved' in proposal ? proposal?.isSaved : undefined}
             saves={'isSaved' in proposal ? proposal?.saves : undefined}
-            state={'state' in proposal ? proposal?.state : undefined}
+            draftState={'state' in proposal ? proposal?.state : undefined}
             isDraft={isDraft}
             isEditDraft={isEditDraft}
             id={proposal.id}
